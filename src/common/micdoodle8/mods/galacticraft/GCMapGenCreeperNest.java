@@ -14,7 +14,7 @@ public class GCMapGenCreeperNest extends MapGenStructure
 {
     protected boolean canSpawnStructureAtCoords(int par1, int par2)
     {
-    	if (this.rand.nextInt(300) != 0)
+    	if (this.rand.nextInt(100) != 0)
     	{
     		return false;
     	}

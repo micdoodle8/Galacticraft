@@ -21,24 +21,24 @@ public abstract class GCStructureComponent extends StructureComponent
         super(var1);
     }
 
-    public static StructureBoundingBox getComponentToAddBoundingBox(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9)
+    public static StructureBoundingBox getComponentToAddBoundingBox(int x, int y, int z, int lengthOffset, int heightOffset, int widthOffset, int length, int height, int width, int coordBaseMode)
     {
-        switch (var9)
+        switch (coordBaseMode)
         {
             case 0:
-                return new StructureBoundingBox(var0 + var3, var1 + var4, var2 + var5, var0 + var6 + var3, var1 + var7 + var4, var2 + var8 + var5);
+                return new StructureBoundingBox(x + lengthOffset, y + heightOffset, z + widthOffset, x + length + lengthOffset, y + height + heightOffset, z + width + widthOffset);
 
             case 1:
-                return new StructureBoundingBox(var0 - var8 + var5, var1 + var4, var2 + var3, var0 + var5, var1 + var7 + var4, var2 + var6 + var3);
+                return new StructureBoundingBox(x - width + widthOffset, y + heightOffset, z + lengthOffset, x + widthOffset, y + height + heightOffset, z + length + lengthOffset);
 
             case 2:
-                return new StructureBoundingBox(var0 - var6 - var3, var1 + var4, var2 - var8 - var5, var0 - var3, var1 + var7 + var4, var2 - var5);
+                return new StructureBoundingBox(x - length - lengthOffset, y + heightOffset, z - width - widthOffset, x - lengthOffset, y + height + heightOffset, z - widthOffset);
 
             case 3:
-                return new StructureBoundingBox(var0 + var5, var1 + var4, var2 - var6, var0 + var8 + var5, var1 + var7 + var4, var2 + var3);
+                return new StructureBoundingBox(x + widthOffset, y + heightOffset, z - length, x + width + widthOffset, y + height + heightOffset, z + lengthOffset);
 
             default:
-                return new StructureBoundingBox(var0 + var3, var1 + var4, var2 + var5, var0 + var6 + var3, var1 + var7 + var4, var2 + var8 + var5);
+                return new StructureBoundingBox(x + lengthOffset, y + heightOffset, z + widthOffset, x + length + lengthOffset, y + height + heightOffset, z + width + widthOffset);
         }
     }
 
@@ -154,8 +154,8 @@ public abstract class GCStructureComponent extends StructureComponent
         return super.getBlockIdAtCurrentPosition(var1, var2, var3, var4, var5);
     }
 
-    protected void placeBlockAtCurrentPosition(World var1, int var2, int var3, int var4, int var5, int var6, StructureBoundingBox var7)
+    protected void placeBlockAtCurrentPosition(World world, int blockID, int meta, int x, int y, int z, StructureBoundingBox bb)
     {
-        super.placeBlockAtCurrentPosition(var1, var2, var3, var4, var5, var6, var7);
+        super.placeBlockAtCurrentPosition(world, blockID, meta, x, y, z, bb);
     }
 }

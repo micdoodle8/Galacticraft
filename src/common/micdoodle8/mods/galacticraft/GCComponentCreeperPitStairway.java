@@ -13,7 +13,7 @@ import net.minecraft.src.World;
  *  All rights reserved.
  *
  */
-public class GCComponentCreeperPitStairway extends StructureComponent
+public class GCComponentCreeperPitStairway extends GCStructureComponent
 {
     private int[] orig = new int[3];
     private GCComponentCreeperPitRoom originalRoom;
@@ -23,7 +23,7 @@ public class GCComponentCreeperPitStairway extends StructureComponent
 		super(type);
         this.orig = new int[] {x, y, z};
         this.originalRoom = origRoom;
-        this.boundingBox = new StructureBoundingBox(Math.min(x, x + 3), Math.min(y - 20, y - 20), Math.min(z, z + 3), Math.max(x, x + 3), Math.max(y, y), Math.max(z, z + 3));
+        this.boundingBox = new StructureBoundingBox(Math.min(x - 5, x - 2), Math.min(y - 20, y - 20), Math.min(z - 5, z - 2), Math.max(x - 5, x - 2), Math.max(y, y), Math.max(z - 5, z - 2));
 	}
 	
 	@Override
