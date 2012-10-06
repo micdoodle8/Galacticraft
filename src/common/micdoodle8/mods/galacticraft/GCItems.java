@@ -26,11 +26,11 @@ public class GCItems
 	
 	public static void initItems() 
 	{
-		lightOxygenTankFull = new GCItem(GCConfigManager.idItemLightOxygenTank).setIconIndex(0).setItemName("lightFull");
+		lightOxygenTankFull = new GCItem(GCConfigManager.idItemLightOxygenTank).setMaxDamage(60).setIconIndex(0).setItemName("lightFull");
 		lightOxygenTankEmpty = new GCItem(GCConfigManager.idItemLightOxygenTankEmpty).setIconIndex(3).setItemName("lightEmpty");
-		medOxygenTankFull = new GCItem(GCConfigManager.idItemMedOxygenTank).setIconIndex(1).setItemName("medFull");
+		medOxygenTankFull = new GCItem(GCConfigManager.idItemMedOxygenTank).setMaxDamage(120).setIconIndex(1).setItemName("medFull");
 		medOxygenTankEmpty = new GCItem(GCConfigManager.idItemMedOxygenTankEmpty).setIconIndex(4).setItemName("medEmpty");
-		heavyOxygenTankFull = new GCItem(GCConfigManager.idItemHeavyOxygenTank).setIconIndex(2).setItemName("heavyFull");
+		heavyOxygenTankFull = new GCItem(GCConfigManager.idItemHeavyOxygenTank).setMaxDamage(90).setIconIndex(2).setItemName("heavyFull");
 		heavyOxygenTankEmpty = new GCItem(GCConfigManager.idItemHeavyOxygenTankEmpty).setIconIndex(5).setItemName("heavyEmpty");
 		oxygenMask = new GCItemOxygenMask(GCConfigManager.idArmorOxygenMask, OXYGENMASK, 5, 0).setIconIndex(7).setItemName("oxygenMask");
 		spaceship = new GCItemSpaceship(GCConfigManager.idItemSpaceship).setIconIndex(8).setItemName("spaceship");

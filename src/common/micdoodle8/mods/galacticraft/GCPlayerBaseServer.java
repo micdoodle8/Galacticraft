@@ -141,8 +141,10 @@ public class GCPlayerBaseServer extends ServerPlayerBase
 			if (drainSpacing > 0 && Galacticraft.instance.tick % drainSpacing == 0 && !isAABBInBreathableAirBlock()) 
 	    	{
 	    		this.airRemaining -= 1;
-			}
-			else if (Galacticraft.instance.tick % 20 == 0 && !isAABBInBreathableAirBlock())
+	    		tankInSlot.damageItem(1, player);
+	    	}
+			
+			if (drainSpacing == 0 && Galacticraft.instance.tick % 20 == 0 && !isAABBInBreathableAirBlock())
 			{
 	    		this.airRemaining -= 1;
 			}
