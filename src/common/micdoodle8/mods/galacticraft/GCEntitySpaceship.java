@@ -137,11 +137,6 @@ public class GCEntitySpaceship extends Entity
 
     public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
     {
-        if (!this.worldObj.isRemote && !this.isDead)
-        {
-        	ignite();
-        }
-        
         return true;
     }
 
@@ -160,8 +155,6 @@ public class GCEntitySpaceship extends Entity
     
     public void onUpdate()
     {
-    	
-    	
     	if (this.rumble > 0)
     	{
     		this.rumble--;
@@ -455,8 +448,6 @@ public class GCEntitySpaceship extends Entity
 	    			if (entityplayermp.username == playerBase.getPlayer().username)
 	    			{
 	    				Galacticraft.proxy.displayChoosePlanetGui();
-//	            		playerBase.timeUntilPortal = 15;
-//	            		playerBase.setInPortal();
 	    				if (this.riddenByEntity != null)
 	    				{
 		            		riddenByEntity.mountEntity(this);

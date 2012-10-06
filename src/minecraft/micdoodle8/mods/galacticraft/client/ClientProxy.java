@@ -284,6 +284,12 @@ public class ClientProxy extends CommonProxy
     		
     		if (type.equals(EnumSet.of(TickType.CLIENT)))
             {
+    			if (player != null && player.ridingEntity != null && minecraft.gameSettings.keyBindJump.pressed)
+    			{
+    	    		Object[] toSend = {0};
+    	            PacketDispatcher.sendPacketToServer(GCUtil.createPacket("Galacticraft", 3, toSend));
+    			}
+    			
     			if (requested == false && player != null && player.worldObj != null && !(player.worldObj.provider instanceof GCWorldProvider) && dimension == GCConfigManager.dimensionIDMars)
     			{
     				this.requestRespawn(player);
@@ -387,11 +393,10 @@ public class ClientProxy extends CommonProxy
     public static class GCKeyHandler extends KeyHandler
     {
     	static KeyBinding tankRefill = new KeyBinding("Tank Refill", Keyboard.KEY_H);
-    	static KeyBinding launch = new KeyBinding("Launch Spaceship", Keyboard.KEY_L);
 
         public GCKeyHandler() 
         {
-            super(new KeyBinding[] {tankRefill, launch}, new boolean[] {false, false});
+            super(new KeyBinding[] {tankRefill}, new boolean[] {false});
         }
 
         @Override
@@ -415,26 +420,6 @@ public class ClientProxy extends CommonProxy
                     PacketDispatcher.sendPacketToServer(GCUtil.createPacket("Galacticraft", 0, toSend));
             	    player.openGui(Galacticraft.instance, GCConfigManager.idGuiTankRefill, minecraft.theWorld, (int)player.posX, (int)player.posY, (int)player.posZ);
             	}
-        	}
-        	else if (kb == this.launch)
-        	{
-        		if (minecraft.currentScreen == null)
-        		{
-                	EntityPlayerSP player = minecraft.thePlayer;
-                	
-                	if (player.ridingEntity != null)
-                	{
-                		if (player.ridingEntity instanceof GCEntitySpaceship)
-                		{
-                			GCEntitySpaceship ship = (GCEntitySpaceship) player.ridingEntity;
-                			
-                			ship.ignite();
-                		}
-                	}
-                	
-//                    Object[] toSend = {player.username};
-//                    PacketDispatcher.sendPacketToServer(GCUtil.createPacket("Galacticraft", 1, toSend));
-        		}
         	}
         }
 
