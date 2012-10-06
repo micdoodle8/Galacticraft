@@ -182,14 +182,14 @@ public class GCComponentCreeperPitRoom extends GCStructureComponent
 								
 								if (x > 0 && x < 7 && z > 0 && z < 7)
 								{
-									this.placeBlockAtCurrentPosition(world, Block.mobSpawner.blockID, 0, x, y, z, getBoundingBox());
+									this.placeBlockAtCurrentPosition(world, Block.mobSpawner.blockID, 0, x, y + 1, z, getBoundingBox());
 									
 									if (world.getBlockId(this.getBoundingBox().minX + x, this.getBoundingBox().minY + y + 1, this.getBoundingBox().minZ + z) == 0)
 									{
-										this.placeBlockAtCurrentPosition(world, GCBlocks.creeperEgg.blockID, 0, x, y + 1, z, getBoundingBox());
+										this.placeBlockAtCurrentPosition(world, GCBlocks.creeperEgg.blockID, 0, x, y + 2, z, getBoundingBox());
 									}
 									
-					                TileEntityMobSpawner var7 = (TileEntityMobSpawner)world.getBlockTileEntity(this.getBoundingBox().minX + x, this.getBoundingBox().minY + y, this.getBoundingBox().minZ + z);
+					                TileEntityMobSpawner var7 = (TileEntityMobSpawner)world.getBlockTileEntity(this.getBoundingBox().minX + x, this.getBoundingBox().minY + y + 1, this.getBoundingBox().minZ + z);
 
 					                if (var7 != null)
 					                {
