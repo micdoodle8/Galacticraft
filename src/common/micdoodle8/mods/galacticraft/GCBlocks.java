@@ -7,6 +7,7 @@ import net.minecraft.src.MapColor;
 import net.minecraft.src.Material;
 import net.minecraft.src.MaterialLiquid;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
@@ -37,6 +38,9 @@ public class GCBlocks
 	public static GCBlockAirDistributor airDistributor;
 	public static GCBlockAirDistributor airDistributorActive;
 	public static GCBlockOxygenPipe oxygenPipe;
+	public static Block blockOreAluminum;
+	public static Block blockOreCopper;
+	public static Block blockOreTitanium;
 
     public static final Material bacterialSludge = (new MaterialLiquid(MapColor.waterColor));
 	
@@ -61,6 +65,9 @@ public class GCBlocks
 		airDistributor = (GCBlockAirDistributor)		new GCBlockAirDistributor		(GCConfigManager.idBlockAirDistributor, false)								.setHardness(3.5F)																				.setCreativeTab(CreativeTabs.tabDecorations)		.setStepSound(Block.soundStoneFootstep)					.setBlockName("distributor");
 		airDistributorActive = (GCBlockAirDistributor)	new GCBlockAirDistributor		(GCConfigManager.idBlockAirDistributorActive, true)							.setHardness(3.5F)																				.setCreativeTab((CreativeTabs)null)					.setStepSound(Block.soundStoneFootstep)					.setBlockName("distributorActive");
 		oxygenPipe = (GCBlockOxygenPipe)				new GCBlockOxygenPipe			(GCConfigManager.idBlockAirPipe, 40)										.setHardness(0.3F)																				.setCreativeTab(CreativeTabs.tabDecorations)  		.setStepSound(Block.soundGlassFootstep)                 .setBlockName("oxygenPipe");
+		blockOreAluminum = 								new GCBlockOre					(GCConfigManager.idBlockOreAluminum, 				9)						.setHardness(3.0F) 																				.setCreativeTab(CreativeTabs.tabBlock) 																		.setBlockName("marsOreAluminum");	
+		blockOreCopper = 								new GCBlockOre					(GCConfigManager.idBlockOreCopper, 					9)						.setHardness(3.0F) 																				.setCreativeTab(CreativeTabs.tabBlock) 																		.setBlockName("marsOreCopper");
+		blockOreTitanium = 								new GCBlockOre					(GCConfigManager.idBlockOreTitanium, 				9)						.setHardness(3.0F) 																				.setCreativeTab(CreativeTabs.tabBlock) 																		.setBlockName("marsOreTitanium");		
 	}
 
 	public static void setHarvestLevels() 
@@ -95,6 +102,13 @@ public class GCBlocks
 		GameRegistry.registerBlock(airDistributor);
 		GameRegistry.registerBlock(airDistributorActive);
 		GameRegistry.registerBlock(oxygenPipe);
+		GameRegistry.registerBlock(blockOreAluminum);
+		GameRegistry.registerBlock(blockOreCopper);
+		GameRegistry.registerBlock(blockOreTitanium);
+		
+		OreDictionary.registerOre("oreAluminum", blockOreAluminum);
+		OreDictionary.registerOre("oreCopper", blockOreCopper);
+		OreDictionary.registerOre("oreTitanium", blockOreTitanium);
 	}
 
 	public static void addNames() 
@@ -116,5 +130,8 @@ public class GCBlocks
 		LanguageRegistry.instance().addNameForObject(unlitTorchLit,			"en_US", 	"Torch");
 		LanguageRegistry.instance().addNameForObject(airDistributor,		"en_US", 	"Air Distributor");
 		LanguageRegistry.instance().addNameForObject(airDistributorActive,	"en_US", 	"Air Distributor Active");
+		LanguageRegistry.instance().addNameForObject(blockOreAluminum,		"en_US", 	"Aluminum Ore");
+		LanguageRegistry.instance().addNameForObject(blockOreCopper,		"en_US", 	"Copper Ore");
+		LanguageRegistry.instance().addNameForObject(blockOreTitanium,		"en_US", 	"Titanium Ore");
 	}
 }

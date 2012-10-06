@@ -47,9 +47,9 @@ public class GCConfigManager
 	public static int idBlockCreeperEgg;
 	public static int idBlockCreeperDungeonWall;
 	public static int idBlockTreasureChest;
-	public static int idBlockAluminum;
-	public static int idBlockCopper;
-	public static int idBlockTitanium;
+	public static int idBlockOreAluminum;
+	public static int idBlockOreCopper;
+	public static int idBlockOreTitanium;
 	public static int idBlockLandingPad;
 	public static int idBlockBacterialSludgeMoving;
 	public static int idBlockBacterialSludgeStill;
