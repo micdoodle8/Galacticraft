@@ -300,7 +300,7 @@ public class ClientProxy extends CommonProxy
     			
     			if (player != null && dimension == GCConfigManager.dimensionIDMars && !player.capabilities.isFlying && !minecraft.isGamePaused && !handleLiquidMovement(player)) 
     			{
-    				player.motionY = player.motionY + 0.05;
+    				player.motionY = player.motionY + 0.062;
     			}
             }
         }
