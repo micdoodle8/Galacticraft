@@ -75,10 +75,13 @@ public class GCComponentCreeperPitRoom extends GCStructureComponent
     	int var10 = (this.getCoordBaseMode() + cbm) % 4;
         int[] var11 = this.offsetCorridorCoords(x, y, z, width, var10);
         
-    	GCComponentCreeperPitCorridor var12 = new GCComponentCreeperPitCorridor(1, var11[0], var11[1], var11[2], height, 7, 30, var10);//new GCComponentCreeperPitCorridor(var3, var11[0], var11[1], var11[2], var7, var8, var10);
+    	GCComponentCreeperPitCorridor var12 = new GCComponentCreeperPitCorridor(0 + var10, var11[0], var11[1], var11[2], height, 7, 30, var10);//new GCComponentCreeperPitCorridor(var3, var11[0], var11[1], var11[2], var7, var8, var10);
 
-        list.add(var12);
-        var12.buildComponent(this, list, random);
+    	if (var12 != null)
+    	{
+            list.add(var12);
+            var12.buildComponent(this, list, random);
+    	}
         return true;
     }
     

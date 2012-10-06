@@ -264,7 +264,6 @@ public class GCChunkProvider extends ChunkProviderGenerate implements IChunkProv
 		this.caveGenerator.generate(this, this.worldObj, par1, par2, var3);
 		this.caveGenerator2.generate(this, this.worldObj, par1, par2, var3);
 		this.ravineGenerator.generate(this, this.worldObj, par1, par2, var3);
-		this.creeperNest.generate(this, this.worldObj, par1, par2, var3);
 
 		Chunk var4 = new Chunk(this.worldObj, var3, par1, par2);
 		byte[] var5 = var4.getBiomeArray();
@@ -274,6 +273,7 @@ public class GCChunkProvider extends ChunkProviderGenerate implements IChunkProv
 			var5[var6] = (byte) this.biomesForGeneration[var6].biomeID;
 		}
 
+		this.creeperNest.generate(this, this.worldObj, par1, par2, var3);
 		var4.generateSkylightMap();
 		return var4;
 	}

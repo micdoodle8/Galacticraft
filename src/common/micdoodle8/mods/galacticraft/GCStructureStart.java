@@ -19,8 +19,13 @@ public class GCStructureStart extends StructureStart
         int var5 = (x << 4) + 8;
         int var6 = (z << 4) + 8;
         GCComponentCreeperPitRoom room = new GCComponentCreeperPitRoom(0, world, random, var5, 90, var6, 40, 7, 0);
-        this.components.add(room);
-        room.buildComponent(room, this.components, random);
+        
+        if (room != null)
+        {
+            this.components.add(room);
+            room.buildComponent(room, this.components, random);
+        }
+        
         this.updateBoundingBox();
 	}
 }
