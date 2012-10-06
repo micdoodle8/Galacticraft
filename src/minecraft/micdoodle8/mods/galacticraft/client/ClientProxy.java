@@ -269,8 +269,6 @@ public class ClientProxy extends CommonProxy
     	
     	public static int airRemaining;
     	
-    	private static boolean requested = false;
-    	
     	@Override
     	public void tickStart(EnumSet<TickType> type, Object... tickData)
         {
@@ -288,12 +286,6 @@ public class ClientProxy extends CommonProxy
     			{
     	    		Object[] toSend = {0};
     	            PacketDispatcher.sendPacketToServer(GCUtil.createPacket("Galacticraft", 3, toSend));
-    			}
-    			
-    			if (requested == false && player != null && player.worldObj != null && !(player.worldObj.provider instanceof GCWorldProvider) && dimension == GCConfigManager.dimensionIDMars)
-    			{
-    				this.requestRespawn(player);
-    				requested = true;
     			}
     			
     			if (world != null && world.provider instanceof GCWorldProvider)

@@ -40,5 +40,11 @@ public class GCItems
 	{
 		LanguageRegistry.instance().addNameForObject(oxygenMask, "en_US", "Oxygen Mask");
 		LanguageRegistry.instance().addNameForObject(spaceship, "en_US", "Spaceship");
+		LanguageRegistry.instance().addNameForObject(lightOxygenTankFull, "en_US", "Light Oxygen Tank");
+		LanguageRegistry.instance().addNameForObject(lightOxygenTankEmpty, "en_US", "Empty Light Oxygen Tank");
+		LanguageRegistry.instance().addNameForObject(medOxygenTankFull, "en_US", "Medium Oxygen Tank");
+		LanguageRegistry.instance().addNameForObject(medOxygenTankEmpty, "en_US", "Empty Medium Oxygen Tank");
+		LanguageRegistry.instance().addNameForObject(heavyOxygenTankFull, "en_US", "Heavy Oxygen Tank");
+		LanguageRegistry.instance().addNameForObject(heavyOxygenTankEmpty, "en_US", "Empty Heavy Oxygen Tank");
 	}
 }
