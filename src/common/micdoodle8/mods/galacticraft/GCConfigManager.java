@@ -37,19 +37,19 @@ public class GCConfigManager
 	public static int idBlockMarsStone;
 	public static int idBlockMarsGrass;
 	public static int idBlockMarsDirt;
-	public static int idBlockOreDesh;
-	public static int idBlockOreQuandrium;
-	public static int idBlockOreRhodium;
-	public static int idBlockOreElectrum;
-	public static int idBlockOreGreenstone;
-	public static int idBlockOreGreenstoneGlowing;
+//	public static int idBlockOreDesh;
+//	public static int idBlockOreQuandrium;
+//	public static int idBlockOreRhodium;
+//	public static int idBlockOreElectrum;
+//	public static int idBlockOreGreenstone;
+//	public static int idBlockOreGreenstoneGlowing;
 	public static int idBlockMarsCobblestone;
 	public static int idBlockCreeperEgg;
 	public static int idBlockCreeperDungeonWall;
 	public static int idBlockTreasureChest;
-	public static int idBlockOreAluminum;
-	public static int idBlockOreCopper;
-	public static int idBlockOreTitanium;
+//	public static int idBlockOreAluminum;
+//	public static int idBlockOreCopper;
+//	public static int idBlockOreTitanium;
 	public static int idBlockLandingPad;
 	public static int idBlockBacterialSludgeMoving;
 	public static int idBlockBacterialSludgeStill;
@@ -58,6 +58,7 @@ public class GCConfigManager
 	public static int idBlockAirDistributor;
 	public static int idBlockAirDistributorActive;
 	public static int idBlockAirPipe;
+	public static int idBlockOre;
 
 	public static int idItemLightOxygenTank;
 	public static int idItemLightOxygenTankEmpty;
@@ -129,12 +130,6 @@ public class GCConfigManager
 			idBlockMarsStone = Integer.parseInt(configuration.getOrCreateIntProperty("idBlockMarsStone", configuration.CATEGORY_BLOCK, 203).value);
 			idBlockMarsGrass = Integer.parseInt(configuration.getOrCreateIntProperty("idBlockMarsGrass", configuration.CATEGORY_BLOCK, 204).value);
 			idBlockMarsDirt = Integer.parseInt(configuration.getOrCreateIntProperty("idBlockMarsDirt", configuration.CATEGORY_BLOCK, 205).value);
-			idBlockOreDesh = Integer.parseInt(configuration.getOrCreateIntProperty("idBlockOreDesh", configuration.CATEGORY_BLOCK, 206).value);
-			idBlockOreGreenstone = Integer.parseInt(configuration.getOrCreateIntProperty("idBlockOreGreenstone", configuration.CATEGORY_BLOCK, 207).value);
-			idBlockOreGreenstoneGlowing = Integer.parseInt(configuration.getOrCreateIntProperty("idBlockOreGreenstoneGlowing", configuration.CATEGORY_BLOCK, 208).value);
-			idBlockOreRhodium = Integer.parseInt(configuration.getOrCreateIntProperty("idBlockOreRhodium", configuration.CATEGORY_BLOCK, 209).value);
-			idBlockOreQuandrium = Integer.parseInt(configuration.getOrCreateIntProperty("idBlockOreQuandrium", configuration.CATEGORY_BLOCK, 210).value);
-			idBlockOreElectrum = Integer.parseInt(configuration.getOrCreateIntProperty("idBlockOreElectrum", configuration.CATEGORY_BLOCK, 211).value);
 			idBlockMarsCobblestone = Integer.parseInt(configuration.getOrCreateIntProperty("idBlockMarsCobblestone", configuration.CATEGORY_BLOCK, 212).value);
 	        idBlockCreeperEgg = Integer.parseInt(configuration.getOrCreateIntProperty("idBlockCreeperEgg", configuration.CATEGORY_BLOCK, 213).value);
 	        idBlockCreeperDungeonWall = Integer.parseInt(configuration.getOrCreateIntProperty("idBlockCreeperDungeonWall", configuration.CATEGORY_BLOCK, 214).value);
@@ -147,6 +142,7 @@ public class GCConfigManager
 	        idBlockAirDistributor = Integer.parseInt(configuration.getOrCreateIntProperty("idBlockAirDistributor", configuration.CATEGORY_BLOCK, 221).value);
 	        idBlockAirDistributorActive = Integer.parseInt(configuration.getOrCreateIntProperty("idBlockAirDistributorActive", configuration.CATEGORY_BLOCK, 222).value);
 	        idBlockAirPipe = Integer.parseInt(configuration.getOrCreateIntProperty("idBlockAirPipe", configuration.CATEGORY_BLOCK, 223).value);
+	        idBlockOre = Integer.parseInt(configuration.getOrCreateIntProperty("idBlockOre", configuration.CATEGORY_BLOCK, 224).value);
 
 	        //Items
 	        idItemLightOxygenTankEmpty = Integer.parseInt(configuration.getOrCreateIntProperty("idItemLightOxygenTankEmpty", configuration.CATEGORY_ITEM, 9854).value);
