@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft;
 import net.minecraft.src.Container;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.InventoryPlayer;
+import net.minecraft.src.ItemStack;
 import net.minecraft.src.Slot;
 
 /**
@@ -38,4 +39,40 @@ public class GCContainerTankRefill extends Container
 	{
 		return true;
 	}
+
+	@Override
+    public ItemStack transferStackInSlot(int slot)
+    {
+        ItemStack stack = null;
+        Slot slotObj = (Slot)this.inventorySlots.get(slot);
+
+        if (slotObj != null && slotObj.getHasStack())
+        {
+        	ItemStack stackInSlot = slotObj.getStack();
+        	stack = stackInSlot.copy();
+            
+            if (slot == 0)
+            {
+            	if (!mergeItemStack(stackInSlot, 1, inventorySlots.size(), true)) 
+            	{
+            		return null;
+            	}
+            }
+            else if (!mergeItemStack(stackInSlot, 0, 1, false))
+            {
+            	return null;
+            }
+            
+            if (stackInSlot.stackSize == 0)
+            {
+            	slotObj.putStack(null);
+            }
+            else
+            {
+            	slotObj.onSlotChanged();
+            }
+        }
+        
+    	return null;
+    }
 }

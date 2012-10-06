@@ -42,62 +42,41 @@ public class GCContainerAirDistributor extends Container
         }
     }
 
-    public ItemStack transferStackInSlot(int par1)
+
+	@Override
+    public ItemStack transferStackInSlot(int slot)
     {
-        ItemStack var2 = null;
-        Slot var3 = (Slot)this.inventorySlots.get(par1);
+        ItemStack stack = null;
+        Slot slotObj = (Slot)this.inventorySlots.get(slot);
 
-        if (var3 != null && var3.getHasStack())
+        if (slotObj != null && slotObj.getHasStack())
         {
-            ItemStack var4 = var3.getStack();
-            var2 = var4.copy();
-
-            if (par1 == 0)
+        	ItemStack stackInSlot = slotObj.getStack();
+        	stack = stackInSlot.copy();
+            
+            if (slot == 0)
             {
-                if (!this.mergeItemStack(var4, 10, 46, true))
-                {
-                    return null;
-                }
-
-                var3.onSlotChange(var4, var2);
+            	if (!mergeItemStack(stackInSlot, 1, inventorySlots.size(), true)) 
+            	{
+            		return null;
+            	}
             }
-            else if (par1 >= 10 && par1 < 37)
+            else if (!mergeItemStack(stackInSlot, 0, 1, false))
             {
-                if (!this.mergeItemStack(var4, 37, 46, false))
-                {
-                    return null;
-                }
+            	return null;
             }
-            else if (par1 >= 37 && par1 < 46)
+            
+            if (stackInSlot.stackSize == 0)
             {
-                if (!this.mergeItemStack(var4, 10, 37, false))
-                {
-                    return null;
-                }
-            }
-            else if (!this.mergeItemStack(var4, 10, 46, false))
-            {
-                return null;
-            }
-
-            if (var4.stackSize == 0)
-            {
-                var3.putStack((ItemStack)null);
+            	slotObj.putStack(null);
             }
             else
             {
-                var3.onSlotChanged();
+            	slotObj.onSlotChanged();
             }
-
-            if (var4.stackSize == var2.stackSize)
-            {
-                return null;
-            }
-
-            var3.onPickupFromSlot(var4);
         }
-
-        return var2;
+        
+    	return null;
     }
     
     @Override
