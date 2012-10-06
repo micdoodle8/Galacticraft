@@ -24,6 +24,7 @@ public class GCBlockOre extends Block
 	{
 		super(i, j, Material.rock);
         this.setRequiresSelfNotify();
+        this.setCreativeTab(CreativeTabs.tabBlock);
 	}
 
 	@Override
@@ -32,11 +33,25 @@ public class GCBlockOre extends Block
 		switch (meta) 
 		{
 		case 0:
-			return 0;
+			return 6;
 		case 1:
-			return 1;
+			return 7;
+		case 2:
+			return 8;
+		case 3:
+			return 9;
+		case 4:
+			return 10;
+		case 5:
+			return 11;
+		case 6:
+			return 12;
+		case 7:
+			return 13;
+		case 8:
+			return 14;
 		default:
-			return 0;
+			return meta;
 		}
 	}
 
@@ -73,20 +88,20 @@ public class GCBlockOre extends Block
 			return 1;
 		}
     }
+
+    @SideOnly(Side.CLIENT)
+	@Override
+    public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
+    {
+        for (int var4 = 0; var4 < 9; ++var4)
+        {
+            par3List.add(new ItemStack(par1, 1, var4));
+        }
+    }
 	
 	@Override
 	public String getTextureFile()
 	{
 		return "/micdoodle8/mods/galacticraft/client/blocks/mars.png";
 	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-    public void getSubBlocks(int blockid, CreativeTabs par2CreativeTabs, List par3List)
-    {
-        for (int meta = 0; meta < 9; ++meta)
-        {
-            par3List.add(new ItemStack(blockid, 1, meta));
-        }
-    }
 }

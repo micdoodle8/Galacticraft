@@ -1,15 +1,19 @@
 package micdoodle8.mods.galacticraft;
 
+import java.util.List;
+
 import net.minecraft.src.Block;
+import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.ItemBlock;
 import net.minecraft.src.ItemStack;
 
 public class GCItemBlockOre extends ItemBlock
 {
-	public GCItemBlockOre(int i, Block block)
+	public GCItemBlockOre(int i)
 	{
 		super(i);
-		setHasSubtypes(true);
+        this.setMaxDamage(0);
+        this.setHasSubtypes(true);
 	}
 	
 	@Override
@@ -25,14 +29,9 @@ public class GCItemBlockOre extends ItemBlock
 		
 		switch(itemstack.getItemDamage()) 
 		{
-		case 0: 
-		{
-			name = "desh";
-			break;
-		}
 		case 1: 
 		{
-			name = "elecrum";
+			name = "electrum";
 			break;
 		}
 		case 2: 
@@ -71,7 +70,7 @@ public class GCItemBlockOre extends ItemBlock
 			break;
 		}
 		default: 
-			name = "ore";
+			name = "desh";
 		}
 		return getItemName() + "." + name;
 	}

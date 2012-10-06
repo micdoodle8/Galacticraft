@@ -48,12 +48,12 @@ public class GCBlocks
 	
 	public static void initBlocks() 
 	{
-		blockOres = 									new GCBlockOre					(GCConfigManager.idBlockOre + 256,  						9)						.setHardness(3.0F) 																				.setCreativeTab(CreativeTabs.tabBlock) 																		.setBlockName("blockores");
+		blockOres = 									new GCBlockOre					(GCConfigManager.idBlockOre + 256,  						9)						.setHardness(3.0F) 																				 																		.setBlockName("blockores");
 		breatheableAir = (GCBlockBreatheableAir)		new GCBlockBreatheableAir		(GCConfigManager.idBlockBreatheableAir + 256)										.setHardness(0.0F) 																				.setCreativeTab(CreativeTabs.tabDecorations)																.setBlockName("breatheableAir");
-		marsCobblestone = 								new GCBlock						(GCConfigManager.idBlockMarsCobblestone + 256, 			11, Material.rock)		.setHardness(2.2F)																				.setCreativeTab(CreativeTabs.tabDecorations)																.setBlockName("marsCobblestone");
+		marsCobblestone = 								new GCBlock						(GCConfigManager.idBlockMarsCobblestone + 256, 			27, Material.rock)		.setHardness(2.2F)																				.setCreativeTab(CreativeTabs.tabDecorations)																.setBlockName("marsCobblestone");
 		marsStone = 									new GCBlockStone				(GCConfigManager.idBlockMarsStone + 256, 					2)						.setHardness(1.7F)																				.setCreativeTab(CreativeTabs.tabDecorations)																.setBlockName("marsStone");
 		marsDirt = 										new GCBlock						(GCConfigManager.idBlockMarsDirt + 256, 					5, Material.ground)		.setHardness(0.6F)																				.setCreativeTab(CreativeTabs.tabDecorations)																.setBlockName("marsDirt");
-		marsGrass = 									new GCBlockGrass				(GCConfigManager.idBlockMarsGrass + 256,					4)						.setHardness(0.7F)																				.setCreativeTab(CreativeTabs.tabBlock)																		.setBlockName("marsGrass");
+		marsGrass = 									new GCBlockGrass				(GCConfigManager.idBlockMarsGrass + 256,					4)						.setHardness(0.7F)																				.setCreativeTab(CreativeTabs.tabDecorations)																		.setBlockName("marsGrass");
 //		marsOreDesh = 									new GCBlockOre					(GCConfigManager.idBlockOreDesh, 					6)						.setHardness(3.0F)																				.setCreativeTab(CreativeTabs.tabBlock)																		.setBlockName("marsOreDesh");
 //		marsOreElectrum = 								new GCBlockOre					(GCConfigManager.idBlockOreElectrum, 				7)						.setHardness(3.0F)																				.setCreativeTab(CreativeTabs.tabBlock)																		.setBlockName("marsOreElectrum");
 //		marsOreQuandrium = 								new GCBlockOre					(GCConfigManager.idBlockOreQuandrium, 				8)						.setHardness(3.0F)																				.setCreativeTab(CreativeTabs.tabBlock)																		.setBlockName("marsOreQuandrium");
@@ -63,14 +63,15 @@ public class GCBlocks
 		landingPad = 									new GCBlockLandingPad			(GCConfigManager.idBlockLandingPad + 256,					24)						.setHardness(1.0F)      .setResistance(10.0F)  	 												.setCreativeTab(CreativeTabs.tabDecorations)       	.setStepSound(Block.soundStoneFootstep)                 .setBlockName("landingPad");
 		bacterialSludgeStill = 							new GCBlockStationary 			(GCConfigManager.idBlockBacterialSludgeStill + 256,  		237, bacterialSludge)	.setHardness(0.0F)								.setLightValue(0.2F)	.setLightOpacity(3)		.setCreativeTab(CreativeTabs.tabDecorations)																.setBlockName("bacterialSludgeStill");
 		bacterialSludgeMoving = 						new GCBlockFlowing 				(GCConfigManager.idBlockBacterialSludgeMoving + 256, 		237, bacterialSludge)	.setHardness(0.0F)								.setLightValue(0.2F)	.setLightOpacity(3)		.setCreativeTab(CreativeTabs.tabDecorations)																.setBlockName("bacterialSludgeMoving");
-		unlitTorch = (GCBlockUnlitTorch) 				new GCBlockUnlitTorch 			(GCConfigManager.idBlockUnlitTorch + 256,             	37, false)				.setHardness(0.0F)								.setLightValue(0.2F)							.setCreativeTab(CreativeTabs.tabDecorations)		.setStepSound(Block.soundWoodFootstep)					.setBlockName("unlitTorch");
-		unlitTorchLit = (GCBlockUnlitTorch) 			new GCBlockUnlitTorch 			(GCConfigManager.idBlockUnlitTorchLit + 256,             	37, true)				.setHardness(0.0F)								.setLightValue(0.9375F)							.setCreativeTab(CreativeTabs.tabDecorations)		.setStepSound(Block.soundWoodFootstep)					.setBlockName("unlitTorchLit");
+		unlitTorch = (GCBlockUnlitTorch) 				new GCBlockUnlitTorch 			(GCConfigManager.idBlockUnlitTorch + 256,             	37, false)				.setHardness(0.0F)								.setLightValue(0.2F)							.setCreativeTab(null)		.setStepSound(Block.soundWoodFootstep)					.setBlockName("unlitTorch");
+		unlitTorchLit = (GCBlockUnlitTorch) 			new GCBlockUnlitTorch 			(GCConfigManager.idBlockUnlitTorchLit + 256,             	37, true)				.setHardness(0.0F)								.setLightValue(0.9375F)							.setCreativeTab(null)		.setStepSound(Block.soundWoodFootstep)					.setBlockName("unlitTorchLit");
 		airDistributor = (GCBlockAirDistributor)		new GCBlockAirDistributor		(GCConfigManager.idBlockAirDistributor + 256, false)								.setHardness(3.5F)																				.setCreativeTab(CreativeTabs.tabDecorations)		.setStepSound(Block.soundStoneFootstep)					.setBlockName("distributor");
 		airDistributorActive = (GCBlockAirDistributor)	new GCBlockAirDistributor		(GCConfigManager.idBlockAirDistributorActive + 256, true)							.setHardness(3.5F)																				.setCreativeTab((CreativeTabs)null)					.setStepSound(Block.soundStoneFootstep)					.setBlockName("distributorActive");
 		oxygenPipe = (GCBlockOxygenPipe)				new GCBlockOxygenPipe			(GCConfigManager.idBlockAirPipe + 256, 40)										.setHardness(0.3F)																				.setCreativeTab(CreativeTabs.tabDecorations)  		.setStepSound(Block.soundGlassFootstep)                 .setBlockName("oxygenPipe");
 //		blockOreAluminum = 								new GCBlockOre					(GCConfigManager.idBlockOreAluminum, 				9)						.setHardness(3.0F) 																				.setCreativeTab(CreativeTabs.tabBlock) 																		.setBlockName("marsOreAluminum");	
 //		blockOreCopper = 								new GCBlockOre					(GCConfigManager.idBlockOreCopper, 					9)						.setHardness(3.0F) 																				.setCreativeTab(CreativeTabs.tabBlock) 																		.setBlockName("marsOreCopper");
-//		blockOreTitanium = 								new GCBlockOre					(GCConfigManager.idBlockOreTitanium, 				9)						.setHardness(3.0F) 																				.setCreativeTab(CreativeTabs.tabBlock) 																		.setBlockName("marsOreTitanium");		
+//		blockOreTitanium = 								new GCBlockOre					(GCConfigManager.idBlockOreTitanium, 				9)						.setHardness(3.0F) 																				.setCreativeTab(CreativeTabs.tabBlock) 																		.setBlockName("marsOreTitanium");	
+		Item.itemsList[blockOres.blockID] = new GCItemBlockOre(blockOres.blockID - 256).setItemName("blockores");	
 	}
 
 	public static void setHarvestLevels() 
@@ -83,11 +84,9 @@ public class GCBlocks
 //		MinecraftForge.setBlockHarvestLevel(marsOreQuandrium, 			"pickaxe", 	5);
 //		MinecraftForge.setBlockHarvestLevel(marsOreElectrum, 			"pickaxe", 	6);
 	}
-
+	
 	public static void registerBlocks() 
 	{
-		Item.itemsList[GCConfigManager.idBlockOre] = new GCItemBlockOre(GCConfigManager.idBlockOre, blockOres).setItemName("oreblock");
-		
 		GameRegistry.registerBlock(marsStone);
 		GameRegistry.registerBlock(marsDirt);
 		GameRegistry.registerBlock(marsGrass);
