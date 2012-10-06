@@ -138,9 +138,13 @@ public class GCPlayerBaseServer extends ServerPlayerBase
 		
 		if (player.dimension == GCConfigManager.dimensionIDMars && !player.capabilities.isCreativeMode)
         {
+			if (drainSpacing > 0)
+			{
+	    		this.airRemaining = 90 - tankInSlot.getItemDamage();
+			}
+			
 			if (drainSpacing > 0 && Galacticraft.instance.tick % drainSpacing == 0 && !isAABBInBreathableAirBlock()) 
 	    	{
-	    		this.airRemaining -= 1;
 	    		tankInSlot.damageItem(1, player);
 	    	}
 			
