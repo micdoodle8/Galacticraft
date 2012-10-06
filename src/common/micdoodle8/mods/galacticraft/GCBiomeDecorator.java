@@ -42,9 +42,7 @@ public class GCBiomeDecorator
 	{
 		this.deshGen = new GCWorldGenMinable(GCBlocks.marsOreDesh.blockID, 10, 0, false);
 		this.electrumGen = new GCWorldGenMinable(GCBlocks.marsOreElectrum.blockID, 4, 0, false);
-		this.greenstoneGen = new GCWorldGenMinable(GCBlocks.marsOreGreenstone.blockID, 9, 0, false);
 		this.quandriumGen = new GCWorldGenMinable(GCBlocks.marsOreQuandrium.blockID, 3, 0, false);
-		this.rhodiumGen = new GCWorldGenMinable(GCBlocks.marsOreRhodium.blockID, 5, 0, false);
 		this.dirtGen = new GCWorldGenMinable(GCBlocks.marsDirt.blockID, 32, 0, false);
 		this.biome = par1BiomeGenBase;
 	}

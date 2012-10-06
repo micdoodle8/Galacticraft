@@ -35,11 +35,7 @@ public class GCBlockOre extends Block
 	@Override
 	public int idDropped(int i, Random random, int par3) 
 	{
-		if (this.blockID == GCBlocks.marsOreGreenstone.blockID || this.blockID == GCBlocks.marsOreGreenstoneGlowing.blockID) 
-		{
-//			return Items.greenstone.shiftedIndex;
-		}
-		else if (this.blockID == GCBlocks.marsOreDesh.blockID)
+		if (this.blockID == GCBlocks.marsOreDesh.blockID)
 		{
 //			return Items.rawDesh.shiftedIndex;
 		}
@@ -58,16 +54,5 @@ public class GCBlockOre extends Block
 		{
 			return "/micdoodle8/mods/galacticraft/client/blocks/core.png";
 		}
-	}
-	
-	@Override
-	public int quantityDropped(Random par1Random) 
-	{
-		Random rand = new Random();
-		if (this.blockID == GCBlocks.marsOreGreenstone.blockID || this.blockID == GCBlocks.marsOreGreenstoneGlowing.blockID) 
-		{
-			return rand.nextInt(2) + 4;
-		}
-		return 1;
 	}
 }
