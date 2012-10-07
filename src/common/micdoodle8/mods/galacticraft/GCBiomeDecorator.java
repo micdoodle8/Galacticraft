@@ -78,10 +78,10 @@ public class GCBiomeDecorator
 
 	protected void generateOres() {
 		this.genStandardOre1(20, this.dirtGen, 0, 192);
-		this.genStandardOre1(10, this.deshGen, 0, 192);
-		this.genStandardOre1(7, this.greenstoneGen, 0, 32);
-		this.genStandardOre1(4, this.rhodiumGen, 0, 16);
-		this.genStandardOre1(2, this.electrumGen, 0, 16);
-		this.genStandardOre1(1, this.quandriumGen, 0, 10);
+//		this.genStandardOre1(10, this.deshGen, 0, 192);
+//		this.genStandardOre1(7, this.greenstoneGen, 0, 32);
+//		this.genStandardOre1(4, this.rhodiumGen, 0, 16);
+//		this.genStandardOre1(2, this.electrumGen, 0, 16);
+//		this.genStandardOre1(1, this.quandriumGen, 0, 10);
 	}
 }
