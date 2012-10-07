@@ -42,29 +42,41 @@ public class GCTeleporter extends Teleporter
 
 	public boolean placeInExistingPortal(World world, Entity entity) 
 	{
-		for (double i = 200; i > 10; i--)
+//		for (double i = 200; i > 10; i--)
+//		{
+//			if (world.getBlockMaterial(MathHelper.floor_double(entity.posX), MathHelper.floor_double(i), MathHelper.floor_double(entity.posZ)) != Material.air)
+//			{
+//				entity.setLocationAndAngles(entity.posX, i + 1D, entity.posZ, entity.rotationYaw, 0.0F);
+//				entity.motionX = entity.motionY = entity.motionZ = 0.0D;
+//				
+//				if (entity instanceof EntityPlayer && !((EntityPlayer) entity).capabilities.isCreativeMode)
+//				{
+//					EntityItem var14 = new EntityItem(world, MathHelper.floor_double(entity.posX + 0.5D), MathHelper.floor_double(i + 1D), MathHelper.floor_double(entity.posZ + 0.5D), new ItemStack(GCItems.spaceship));
+//
+//			        float var15 = 0.05F;
+//			        var14.motionX = (double)((float)this.random.nextGaussian() * var15);
+//			        var14.motionY = (double)((float)this.random.nextGaussian() * var15 + 0.2F);
+//			        var14.motionZ = (double)((float)this.random.nextGaussian() * var15);
+//			        world.spawnEntityInWorld(var14);
+//				}
+//				
+//		        return true;
+//			}
+//		}
+		
+		if (!world.isRemote && entity instanceof EntityPlayer)
 		{
-			if (world.getBlockMaterial(MathHelper.floor_double(entity.posX), MathHelper.floor_double(i), MathHelper.floor_double(entity.posZ)) != Material.air)
-			{
-				entity.setLocationAndAngles(entity.posX, i + 1D, entity.posZ, entity.rotationYaw, 0.0F);
-				entity.motionX = entity.motionY = entity.motionZ = 0.0D;
-				
-				if (entity instanceof EntityPlayer && !((EntityPlayer) entity).capabilities.isCreativeMode)
-				{
-					EntityItem var14 = new EntityItem(world, MathHelper.floor_double(entity.posX + 0.5D), MathHelper.floor_double(i + 1D), MathHelper.floor_double(entity.posZ + 0.5D), new ItemStack(GCItems.spaceship));
-
-			        float var15 = 0.05F;
-			        var14.motionX = (double)((float)this.random.nextGaussian() * var15);
-			        var14.motionY = (double)((float)this.random.nextGaussian() * var15 + 0.2F);
-			        var14.motionZ = (double)((float)this.random.nextGaussian() * var15);
-			        world.spawnEntityInWorld(var14);
-				}
-				
-		        return true;
-			}
+			GCEntitySpaceship ship = new GCEntitySpaceship(world, entity.posX, 300, entity.posZ, true);
+			EntityPlayer player = (EntityPlayer) entity;
+			
+			world.spawnEntityInWorld(ship);
+			
+			player.mountEntity(ship);
+			ship.timeSinceEntityEntry = 20;
+			ship.launched = true;
 		}
 		
-		return false;
+		return true;
 	}
 	
 	public boolean test(World world, Entity entity)
@@ -104,8 +116,6 @@ public class GCTeleporter extends Teleporter
                 }
             }
         }
-        
-        FMLLog.info("" + var4);
 
         if (var4 >= 0.0D)
         {
@@ -168,8 +178,6 @@ public class GCTeleporter extends Teleporter
         {
             ;
         }
-        
-        FMLLog.info("" + par1 + " " + var3 + " " + par2);
 
         return new Integer[] {par1, var3, par2};
     }
