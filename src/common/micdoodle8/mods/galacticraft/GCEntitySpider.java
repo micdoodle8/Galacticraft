@@ -17,7 +17,7 @@ import cpw.mods.fml.common.asm.SideOnly;
  *  All rights reserved.
  *
  */
-public class GCEntitySpider extends EntityMob
+public class GCEntitySpider extends GCEntityMob
 {
     public GCEntitySpider(World par1World)
     {

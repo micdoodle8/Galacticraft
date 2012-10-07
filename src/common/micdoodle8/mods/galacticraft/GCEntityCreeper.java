@@ -28,7 +28,7 @@ import cpw.mods.fml.common.asm.SideOnly;
  *  All rights reserved.
  *
  */
-public class GCEntityCreeper extends EntityMob
+public class GCEntityCreeper extends GCEntityMob
 {
     /**
      * The amount of time since the creeper was close enough to the player to ignite

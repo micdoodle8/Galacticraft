@@ -29,7 +29,7 @@ import cpw.mods.fml.common.asm.SideOnly;
  *  All rights reserved.
  *
  */
-public class GCEntitySkeleton extends EntityMob
+public class GCEntitySkeleton extends GCEntityMob
 {
     /** The ItemStack that any Skeleton holds (a bow). */
     private static final ItemStack defaultHeldItem = new ItemStack(Item.bow, 1);

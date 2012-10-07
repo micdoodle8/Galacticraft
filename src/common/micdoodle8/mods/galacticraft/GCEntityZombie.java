@@ -24,7 +24,7 @@ import net.minecraft.src.World;
  *  All rights reserved.
  *
  */
-public class GCEntityZombie extends EntityMob
+public class GCEntityZombie extends GCEntityMob
 {
     public GCEntityZombie(World par1World)
     {
