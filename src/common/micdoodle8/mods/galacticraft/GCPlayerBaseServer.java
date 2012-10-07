@@ -207,7 +207,6 @@ public class GCPlayerBaseServer extends ServerPlayerBase
             	var5 = 0;
             }
 
-            FMLLog.info("" + var5);
             player.mcServer.getConfigurationManager().transferPlayerToDimension(player, var5, new GCTeleporter());
             player.timeUntilPortal = 10;
             player.timeInPortal = 0.0F;

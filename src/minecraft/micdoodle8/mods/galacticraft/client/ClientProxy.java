@@ -2,8 +2,8 @@ package micdoodle8.mods.galacticraft.client;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
-import java.io.File;
 import java.util.EnumSet;
+import java.util.Random;
 
 import micdoodle8.mods.galacticraft.CommonProxy;
 import micdoodle8.mods.galacticraft.GCBlocks;
@@ -24,6 +24,8 @@ import micdoodle8.mods.galacticraft.Galacticraft;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.EntityClientPlayerMP;
 import net.minecraft.src.EntityFX;
+import net.minecraft.src.EntityHugeExplodeFX;
+import net.minecraft.src.EntityLargeExplodeFX;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EntityPlayerSP;
 import net.minecraft.src.KeyBinding;
@@ -75,6 +77,7 @@ public class ClientProxy extends CommonProxy
 	private static int oxygenPipeRenderID;
 	public static long getFirstBootTime;
 	public static long getCurrentTime;
+	private Random rand = new Random();
 	
 	@Override
 	public void preInit(FMLPreInitializationEvent event) 
@@ -191,11 +194,35 @@ public class ClientProxy extends CommonProxy
             
             if (var1.equals("whitesmoke"))
             {
-            	var14.effectRenderer.addEffect(new GCEntityLaunchSmokeFX(var14.theWorld, var2, var4, var6, var8, var10, var12, 1.0F));
+        		EntityFX fx = new GCEntityLaunchSmokeFX(var14.theWorld, var2, var4, var6, var8, var10, var12, 1.0F);
+        		if (fx != null)
+        		{
+                	var14.effectRenderer.addEffect(fx);
+        		}
             }
             else if (var1.equals("whitesmokelarge"))
             {
-            	var14.effectRenderer.addEffect(new GCEntityLaunchSmokeFX(var14.theWorld, var2, var4, var6, var8, var10, var12, 2.5F));
+        		EntityFX fx = new GCEntityLaunchSmokeFX(var14.theWorld, var2, var4, var6, var8, var10, var12, 2.5F);
+        		if (fx != null)
+        		{
+        			var14.effectRenderer.addEffect(fx);
+        		}
+        	}
+            if (var1.equals("hugeexplosion2"))
+            {
+                EntityFX fx = new EntityHugeExplodeFX(var14.theWorld, var2, var4, var6, var8, var10, var12);
+        		if (fx != null)
+        		{
+        			var14.effectRenderer.addEffect(fx);
+        		}
+            }
+            else if (var1.equals("largeexplode2"))
+            {
+                EntityFX fx = new EntityLargeExplodeFX(var14.renderEngine, var14.theWorld, var2, var4, var6, var8, var10, var12);
+        		if (fx != null)
+        		{
+        			var14.effectRenderer.addEffect(fx);
+        		}
             }
 
             if (var15 * var15 + var17 * var17 + var19 * var19 < var22 * var22)

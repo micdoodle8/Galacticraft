@@ -285,7 +285,7 @@ public class Galacticraft
             }
             else if (packetType == 3)
             {
-                if (!player.worldObj.isRemote && !player.isDead && !player.ridingEntity.isDead && player.ridingEntity instanceof GCEntitySpaceship)
+                if (!player.worldObj.isRemote && !player.isDead && player.ridingEntity != null && !player.ridingEntity.isDead && player.ridingEntity instanceof GCEntitySpaceship)
                 {
                 	GCEntitySpaceship ship = (GCEntitySpaceship) player.ridingEntity;
                 	
