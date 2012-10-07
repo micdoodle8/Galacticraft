@@ -1,9 +1,13 @@
 package micdoodle8.mods.galacticraft;
 
+import java.util.List;
+
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.World;
 import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.common.Side;
+import cpw.mods.fml.common.asm.SideOnly;
 
 /**
  * Copyright 2012, micdoodle8
@@ -42,7 +46,7 @@ public class GCItemSpaceship extends GCItem
     		
     		if (amountOfCorrectBlocks == 9)
     		{
-	    		par3World.spawnEntityInWorld(new GCEntitySpaceship(par3World, (double)((float)par4 + 0.5F), (double)((float)par5 - 1.5F), (double)((float)par6 + 0.5F)));
+	    		par3World.spawnEntityInWorld(new GCEntitySpaceship(par3World, (double)((float)par4 + 0.5F), (double)((float)par5 - 1.5F), (double)((float)par6 + 0.5F), false));
 	    		if (!par2EntityPlayer.capabilities.isCreativeMode)
 	    		par2EntityPlayer.inventory.consumeInventoryItem(par1ItemStack.getItem().shiftedIndex);
     		}
@@ -52,5 +56,11 @@ public class GCItemSpaceship extends GCItem
     		}
     	}
         return true;
+    }
+	
+    @SideOnly(Side.CLIENT)
+    public void addInformation(ItemStack par1ItemStack, List par2List) 
+    {
+    	par2List.add("Failure chance: 7.8%");
     }
 }
