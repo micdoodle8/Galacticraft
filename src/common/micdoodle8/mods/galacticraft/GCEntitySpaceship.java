@@ -4,9 +4,11 @@ import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.BlockRail;
 import net.minecraft.src.DamageSource;
 import net.minecraft.src.Entity;
+import net.minecraft.src.EntityItem;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EntityPlayerMP;
 import net.minecraft.src.EntitySmokeFX;
+import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.NBTTagCompound;
@@ -98,6 +100,7 @@ public class GCEntitySpaceship extends Entity
         this.dataWatcher.addObject(18, new Integer(1));
         this.dataWatcher.addObject(19, new Integer(0));
         this.dataWatcher.addObject(20, new Integer(0));
+        this.dataWatcher.addObject(21, new Integer(0));
     }
 
     public AxisAlignedBB getCollisionBox(Entity par1Entity)
@@ -168,6 +171,11 @@ public class GCEntitySpaceship extends Entity
     	{
     		this.timeSinceEntityEntry--;
     	}
+    	
+    	if (this.reversed)
+    	{
+    		this.dataWatcher.updateObject(21, Integer.valueOf(1));
+    	}
 		
     	if (this.motionY < 0)
     	{
@@ -179,6 +187,27 @@ public class GCEntitySpaceship extends Entity
                 }
 
                 GCUtil.createNewExplosion(worldObj, this, this.posX, this.posY, this.posZ, 6, false);
+                
+				if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayer && !((EntityPlayer) this.riddenByEntity).capabilities.isCreativeMode)
+				{
+					EntityItem var14 = new EntityItem(this.worldObj, MathHelper.floor_double(this.riddenByEntity.posX + 0.5D), MathHelper.floor_double(this.riddenByEntity.posY + 1D), MathHelper.floor_double(this.riddenByEntity.posZ + 0.5D), new ItemStack(GCItems.spaceship));
+
+			        float var15 = 0.05F;
+			        var14.motionX = (double)((float)this.rand.nextGaussian() * var15);
+			        var14.motionY = (double)((float)this.rand.nextGaussian() * var15 + 0.2F);
+			        var14.motionZ = (double)((float)this.rand.nextGaussian() * var15);
+			        this.worldObj.spawnEntityInWorld(var14);
+				}
+				else if (this.riddenByEntity == null)
+				{
+					EntityItem var14 = new EntityItem(this.worldObj, MathHelper.floor_double(this.posX + 0.5D), MathHelper.floor_double(this.posY + 1D), MathHelper.floor_double(this.posZ + 0.5D), new ItemStack(GCItems.spaceship));
+
+			        float var15 = 0.05F;
+			        var14.motionX = (double)((float)this.rand.nextGaussian() * var15);
+			        var14.motionY = (double)((float)this.rand.nextGaussian() * var15 + 0.2F);
+			        var14.motionZ = (double)((float)this.rand.nextGaussian() * var15);
+			        this.worldObj.spawnEntityInWorld(var14);
+				}
                 
     			this.setDead();
     		}
@@ -223,7 +252,7 @@ public class GCEntitySpaceship extends Entity
             this.setDamage(this.getDamage() - 1);
         }
 
-        if (this.posY < -64.0D || this.posY > 500D && !this.reversed)
+        if (this.posY < -64.0D || this.posY > 500D && this.dataWatcher.getWatchableObjectInt(21) == 0)
         {
             this.kill();
         }
@@ -273,7 +302,7 @@ public class GCEntitySpaceship extends Entity
         	this.rumble = (float) (rand.nextInt(3)) - 3;
         }
 
-        if ((this.launched || this.rand.nextInt(i) == 0) && !this.reversed)
+        if ((this.launched || this.rand.nextInt(i) == 0) && this.dataWatcher.getWatchableObjectInt(21) == 0)
         {
         	this.spawnParticles(this.launched);
         }
