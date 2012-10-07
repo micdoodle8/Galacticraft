@@ -133,13 +133,6 @@ public class GCEntitySpaceship extends Entity
         	this.rotationPitch += 180F;
         	this.motionY = -1.0D;
         }
-        else
-        {
-//        	if (this.rand.nextInt(100) < 90)
-        	{
-        		this.failedLaunch = true;
-        	}
-        }
     }
 
     public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
@@ -185,9 +178,9 @@ public class GCEntitySpaceship extends Entity
                 {
                     this.riddenByEntity.mountEntity(this);
                 }
-                
-//                GCUtil.createNewExplosion(this.worldObj, this, this.posX, this.posY, this.posZ, 12, false);
-                this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 12);
+
+//                this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 6);
+                GCUtil.createNewExplosion(worldObj, this, this.posX, this.posY, this.posZ, 6, false);
                 
     			this.setDead();
     		}
@@ -195,8 +188,16 @@ public class GCEntitySpaceship extends Entity
     	
     	if (this.riddenByEntity != null)
     	{
-    		this.riddenByEntity.posX += (this.rumble) / 30F;
-    		this.riddenByEntity.posZ += (this.rumble) / 30F;
+    		if (this.failedLaunch && this.timeSinceLaunch >= 100)
+    		{
+        		this.riddenByEntity.posX += (this.rumble) / 20F;
+        		this.riddenByEntity.posZ += (this.rumble) / 20F;
+    		}
+    		else
+    		{
+        		this.riddenByEntity.posX += (this.rumble) / 30F;
+        		this.riddenByEntity.posZ += (this.rumble) / 30F;
+    		}
     		
         	if (FMLClientHandler.instance().getClient().gameSettings.keyBindLeft.pressed)
         	{
@@ -278,16 +279,6 @@ public class GCEntitySpaceship extends Entity
         {
         	this.spawnParticles();
         }
-        
-//        if (this.failedLaunch)
-//        {
-//    		FMLLog.info("1");
-//        	if (this.timeSinceLaunch > 100)
-//        	{
-//        		FMLLog.info("2");
-//        		this.rotationPitch += 10;
-//        	}
-//        }
 
         if (this.worldObj.isRemote)
         {
@@ -427,6 +418,7 @@ public class GCEntitySpaceship extends Entity
     	par1NBTTagCompound.setInteger("timeUntilLaunch", this.timeUntilLaunch);
     	par1NBTTagCompound.setInteger("ignite", this.ignite);
     	par1NBTTagCompound.setBoolean("reversed", this.reversed);
+    	par1NBTTagCompound.setBoolean("failedlaunch", this.failedLaunch);
     }
 
     protected void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
@@ -435,6 +427,7 @@ public class GCEntitySpaceship extends Entity
 		this.timeUntilLaunch = par1NBTTagCompound.getInteger("timeUntilLaunch");
 		this.ignite = par1NBTTagCompound.getInteger("ignite");
 		this.reversed = par1NBTTagCompound.getBoolean("reversed");
+		this.failedLaunch = par1NBTTagCompound.getBoolean("failedlaunch");
     }
 
     public boolean interact(EntityPlayer par1EntityPlayer)
@@ -443,6 +436,7 @@ public class GCEntitySpaceship extends Entity
     	{
         	par1EntityPlayer.mountEntity(this);
             this.timeSinceEntityEntry = 20;
+            this.updateFailChance(par1EntityPlayer);
         	return true;
     	}
         return false;
@@ -534,6 +528,18 @@ public class GCEntitySpaceship extends Entity
 	    			}
 	            }
             }
+    	}
+    }
+    
+    protected void updateFailChance(EntityPlayer player)
+    {
+    	if (this.rand.nextInt(100) < GCUtil.getSpaceshipFailChance(player))
+    	{
+    		this.failedLaunch = true;
+    	}
+    	else
+    	{
+    		this.failedLaunch = false;
     	}
     }
 }

@@ -3,8 +3,10 @@ package micdoodle8.mods.galacticraft;
 import java.util.List;
 
 import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.EnumRarity;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.World;
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
@@ -57,10 +59,16 @@ public class GCItemSpaceship extends GCItem
     	}
         return true;
     }
+
+    @SideOnly(Side.CLIENT)
+    public EnumRarity getRarity(ItemStack par1ItemStack)
+    {
+        return EnumRarity.epic;
+    }
 	
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack par1ItemStack, List par2List) 
     {
-    	par2List.add("Failure chance: 7.8%");
+    	par2List.add("Failure chance: " + String.valueOf(GCUtil.getSpaceshipFailChance(FMLClientHandler.instance().getClient().thePlayer)) + "%");
     }
 }

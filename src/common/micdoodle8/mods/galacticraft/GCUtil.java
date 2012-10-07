@@ -11,6 +11,7 @@ import java.util.Random;
 
 import net.minecraft.src.Block;
 import net.minecraft.src.Entity;
+import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.Packet250CustomPayload;
 import net.minecraft.src.StructureBoundingBox;
@@ -368,5 +369,19 @@ public class GCUtil
 		}
 		
 		return map;
+	}
+	
+	public static double getSpaceshipFailChance(EntityPlayer player)
+	{
+		Double level = Double.valueOf(player.experienceLevel);
+		
+		if (level <= 50.0D)
+		{
+			return 25.0D - (level / 2.0D);
+		}
+		else
+		{
+			return 0.0;
+		}
 	}
 }
