@@ -29,7 +29,7 @@ public class GCBlockCreeperDungeonWall extends GCBlock
     {
     	if (par5Random.nextInt(70) == 0)
     	{
-    		Galacticraft.proxy.spawnParticle("sludgeDrip", par2 + 0.5F, par3, par4 + 0.5F, 0, 0, 0);
+    		Galacticraft.proxy.spawnParticle("sludgeDrip", par2 + 0.5F, par3, par4 + 0.5F, 0, 0, 0, false);
     	}
     	
         if (par5Random.nextInt(2000) == 0)

@@ -17,7 +17,7 @@ public class GCEntityLaunchSmokeFX extends EntityFX
 {
     float smokeParticleScale;
 
-    public GCEntityLaunchSmokeFX(World par1World, double par2, double par4, double par6, double par8, double par10, double par12, float par14)
+    public GCEntityLaunchSmokeFX(World par1World, double par2, double par4, double par6, double par8, double par10, double par12, float par14, boolean b)
     {
         super(par1World, par2, par4, par6, 0.0D, 0.0D, 0.0D);
         this.motionX *= 0.10000000149011612D;
@@ -30,8 +30,16 @@ public class GCEntityLaunchSmokeFX extends EntityFX
         this.particleScale *= 0.75F;
         this.particleScale *= par14 * 3;
         this.smokeParticleScale = this.particleScale;
-        this.particleMaxAge = (int)(20.0D / (Math.random() * 0.8D + 0.2D));
-        this.particleMaxAge = (int)((float)this.particleMaxAge * par14);
+        if (b)
+        {
+            this.particleMaxAge = (int)(20.0D / (Math.random() * 0.8D + 0.2D));
+            this.particleMaxAge = (int)((float)this.particleMaxAge * par14);
+        }
+        else
+        {
+            this.particleMaxAge = (int)(20.0D / (Math.random() * 0.8D + 4D));
+            this.particleMaxAge = (int)((float)this.particleMaxAge * par14);
+        }
         this.noClip = false;
     }
 

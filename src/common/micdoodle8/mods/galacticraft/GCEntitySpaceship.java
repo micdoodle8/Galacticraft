@@ -30,8 +30,7 @@ public class GCEntitySpaceship extends Entity
     
     public double pushX;
     public double pushZ;
-//    protected static final int[][][] field_70500_g = new int[][][] {{{0, 0, -1}, {0, 0, 1}}, {{ -1, 0, 0}, {1, 0, 0}}, {{ -1, -1, 0}, {1, 0, 0}}, {{ -1, 0, 0}, {1, -1, 0}}, {{0, 0, -1}, {0, -1, 1}}, {{0, -1, -1}, {0, 0, 1}}, {{0, 0, 1}, {1, 0, 0}}, {{0, 0, 1}, { -1, 0, 0}}, {{0, 0, -1}, { -1, 0, 0}}, {{0, 0, -1}, {1, 0, 0}}};
-
+    
     protected double minecartX;
     protected double minecartY;
     protected double minecartZ;
@@ -179,7 +178,6 @@ public class GCEntitySpaceship extends Entity
                     this.riddenByEntity.mountEntity(this);
                 }
 
-//                this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 6);
                 GCUtil.createNewExplosion(worldObj, this, this.posX, this.posY, this.posZ, 6, false);
                 
     			this.setDead();
@@ -275,9 +273,9 @@ public class GCEntitySpaceship extends Entity
         	this.rumble = (float) (rand.nextInt(3)) - 3;
         }
 
-        if ((this.launched || this.rand.nextInt(i) == 0))
+        if ((this.launched || this.rand.nextInt(i) == 0) && !this.reversed)
         {
-        	this.spawnParticles();
+        	this.spawnParticles(this.launched);
         }
 
         if (this.worldObj.isRemote)
@@ -358,58 +356,43 @@ public class GCEntitySpaceship extends Entity
     }
     
     @SideOnly(Side.CLIENT)
-    protected void spawnParticles()
+    protected void spawnParticles(boolean launched)
     {
     	if (!this.isDead && (!this.failedLaunch || (this.failedLaunch && this.timeSinceLaunch <= 200)))
     	{
         	if (this.riddenByEntity != null)
         	{
-            	Galacticraft.proxy.spawnParticle("whitesmokelarge", 	this.posX, 		this.riddenByEntity.prevPosY - 1.8D - (this.timeSinceLaunch / 200), this.posZ, 			(this.rotationPitch / 360), -1D, (this.rotationPitch / 360));
-            	Galacticraft.proxy.spawnParticle("whitesmoke", 			this.posX, 		this.riddenByEntity.prevPosY - 1.8D - (this.timeSinceLaunch / 200), this.posZ, 			(this.rotationPitch / 360), -1D, (this.rotationPitch / 360));
-                Galacticraft.proxy.spawnParticle("whitesmokelarge", 	this.posX + 0.5, this.riddenByEntity.prevPosY - 1.8D - (this.timeSinceLaunch / 200), this.posZ, 		(this.rotationPitch / 360), -1D, (this.rotationPitch / 360));
-                Galacticraft.proxy.spawnParticle("whitesmoke", 			this.posX + 0.5, this.riddenByEntity.prevPosY - 1.8D - (this.timeSinceLaunch / 200), this.posZ, 		(this.rotationPitch / 360), -1D, (this.rotationPitch / 360));
-                Galacticraft.proxy.spawnParticle("whitesmokelarge", 	this.posX - 0.5, this.riddenByEntity.prevPosY - 1.8D - (this.timeSinceLaunch / 200), this.posZ, 		(this.rotationPitch / 360), -1D, (this.rotationPitch / 360));
-                Galacticraft.proxy.spawnParticle("whitesmoke", 			this.posX - 0.5, this.riddenByEntity.prevPosY - 1.8D - (this.timeSinceLaunch / 200), this.posZ,			(this.rotationPitch / 360), -1D, (this.rotationPitch / 360));
-                Galacticraft.proxy.spawnParticle("whitesmokelarge", 	this.posX, 		this.riddenByEntity.prevPosY - 1.8D - (this.timeSinceLaunch / 200), this.posZ + 0.5D, 	(this.rotationPitch / 360), -1D, (this.rotationPitch / 360));
-                Galacticraft.proxy.spawnParticle("whitesmoke", 			this.posX, 		this.riddenByEntity.prevPosY - 1.8D - (this.timeSinceLaunch / 200), this.posZ + 0.5D, 	(this.rotationPitch / 360), -1D, (this.rotationPitch / 360));
-                Galacticraft.proxy.spawnParticle("whitesmokelarge", 	this.posX, 		this.riddenByEntity.prevPosY - 1.8D - (this.timeSinceLaunch / 200), this.posZ - 0.5D, 	(this.rotationPitch / 360), -1D, (this.rotationPitch / 360));
-                Galacticraft.proxy.spawnParticle("whitesmoke", 			this.posX, 		this.riddenByEntity.prevPosY - 1.8D - (this.timeSinceLaunch / 200), this.posZ - 0.5D, 	(this.rotationPitch / 360), -1D, (this.rotationPitch / 360));
+            	Galacticraft.proxy.spawnParticle("whitesmokelarge", 	this.posX, 		this.riddenByEntity.prevPosY - 1.8D - (this.timeSinceLaunch / 200), this.posZ, 			(this.rotationPitch / 360), -1D, (this.rotationPitch / 360), launched);
+            	Galacticraft.proxy.spawnParticle("whitesmoke", 			this.posX, 		this.riddenByEntity.prevPosY - 1.8D - (this.timeSinceLaunch / 200), this.posZ, 			(this.rotationPitch / 360), -1D, (this.rotationPitch / 360), launched);
+                Galacticraft.proxy.spawnParticle("whitesmokelarge", 	this.posX + 0.5, this.riddenByEntity.prevPosY - 1.8D - (this.timeSinceLaunch / 200), this.posZ, 		(this.rotationPitch / 360), -1D, (this.rotationPitch / 360), launched);
+                Galacticraft.proxy.spawnParticle("whitesmoke", 			this.posX + 0.5, this.riddenByEntity.prevPosY - 1.8D - (this.timeSinceLaunch / 200), this.posZ, 		(this.rotationPitch / 360), -1D, (this.rotationPitch / 360), launched);
+                Galacticraft.proxy.spawnParticle("whitesmokelarge", 	this.posX - 0.5, this.riddenByEntity.prevPosY - 1.8D - (this.timeSinceLaunch / 200), this.posZ, 		(this.rotationPitch / 360), -1D, (this.rotationPitch / 360), launched);
+                Galacticraft.proxy.spawnParticle("whitesmoke", 			this.posX - 0.5, this.riddenByEntity.prevPosY - 1.8D - (this.timeSinceLaunch / 200), this.posZ,			(this.rotationPitch / 360), -1D, (this.rotationPitch / 360), launched);
+                Galacticraft.proxy.spawnParticle("whitesmokelarge", 	this.posX, 		this.riddenByEntity.prevPosY - 1.8D - (this.timeSinceLaunch / 200), this.posZ + 0.5D, 	(this.rotationPitch / 360), -1D, (this.rotationPitch / 360), launched);
+                Galacticraft.proxy.spawnParticle("whitesmoke", 			this.posX, 		this.riddenByEntity.prevPosY - 1.8D - (this.timeSinceLaunch / 200), this.posZ + 0.5D, 	(this.rotationPitch / 360), -1D, (this.rotationPitch / 360), launched);
+                Galacticraft.proxy.spawnParticle("whitesmokelarge", 	this.posX, 		this.riddenByEntity.prevPosY - 1.8D - (this.timeSinceLaunch / 200), this.posZ - 0.5D, 	(this.rotationPitch / 360), -1D, (this.rotationPitch / 360), launched);
+                Galacticraft.proxy.spawnParticle("whitesmoke", 			this.posX, 		this.riddenByEntity.prevPosY - 1.8D - (this.timeSinceLaunch / 200), this.posZ - 0.5D, 	(this.rotationPitch / 360), -1D, (this.rotationPitch / 360), launched);
         	}
         	else
         	{
-            	Galacticraft.proxy.spawnParticle("whitesmokelarge", 	this.posX, 		this.posY - 1.8D, this.posZ, 			(this.rotationPitch / 360), -1D, (this.rotationPitch / 360));
-            	Galacticraft.proxy.spawnParticle("whitesmoke", 			this.posX, 		this.posY - 1.8D, this.posZ, 			(this.rotationPitch / 360), -1D, (this.rotationPitch / 360));
-                Galacticraft.proxy.spawnParticle("whitesmokelarge", 	this.posX + 0.5, this.posY - 1.8D, this.posZ, 			(this.rotationPitch / 360), -1D, (this.rotationPitch / 360));
-                Galacticraft.proxy.spawnParticle("whitesmoke", 			this.posX + 0.5, this.posY - 1.8D, this.posZ, 			(this.rotationPitch / 360), -1D, (this.rotationPitch / 360));
-                Galacticraft.proxy.spawnParticle("whitesmokelarge", 	this.posX - 0.5, this.posY - 1.8D, this.posZ, 			(this.rotationPitch / 360), -1D, (this.rotationPitch / 360));
-                Galacticraft.proxy.spawnParticle("whitesmoke", 			this.posX - 0.5, this.posY - 1.8D, this.posZ,			(this.rotationPitch / 360), -1D, (this.rotationPitch / 360));
-                Galacticraft.proxy.spawnParticle("whitesmokelarge", 	this.posX, 		this.posY - 1.8D, this.posZ + 0.5D, 	(this.rotationPitch / 360), -1D, (this.rotationPitch / 360));
-                Galacticraft.proxy.spawnParticle("whitesmoke", 			this.posX, 		this.posY - 1.8D, this.posZ + 0.5D, 	(this.rotationPitch / 360), -1D, (this.rotationPitch / 360));
-                Galacticraft.proxy.spawnParticle("whitesmokelarge", 	this.posX, 		this.posY - 1.8D, this.posZ - 0.5D, 	(this.rotationPitch / 360), -1D, (this.rotationPitch / 360));
-                Galacticraft.proxy.spawnParticle("whitesmoke", 			this.posX, 		this.posY - 1.8D, this.posZ - 0.5D, 	(this.rotationPitch / 360), -1D, (this.rotationPitch / 360));
+            	Galacticraft.proxy.spawnParticle("whitesmokelarge", 	this.posX, 		this.posY - 1.8D, this.posZ, 			(this.rotationPitch / 360), -1D, (this.rotationPitch / 360), launched);
+            	Galacticraft.proxy.spawnParticle("whitesmoke", 			this.posX, 		this.posY - 1.8D, this.posZ, 			(this.rotationPitch / 360), -1D, (this.rotationPitch / 360), launched);
+                Galacticraft.proxy.spawnParticle("whitesmokelarge", 	this.posX + 0.5, this.posY - 1.8D, this.posZ, 			(this.rotationPitch / 360), -1D, (this.rotationPitch / 360), launched);
+                Galacticraft.proxy.spawnParticle("whitesmoke", 			this.posX + 0.5, this.posY - 1.8D, this.posZ, 			(this.rotationPitch / 360), -1D, (this.rotationPitch / 360), launched);
+                Galacticraft.proxy.spawnParticle("whitesmokelarge", 	this.posX - 0.5, this.posY - 1.8D, this.posZ, 			(this.rotationPitch / 360), -1D, (this.rotationPitch / 360), launched);
+                Galacticraft.proxy.spawnParticle("whitesmoke", 			this.posX - 0.5, this.posY - 1.8D, this.posZ,			(this.rotationPitch / 360), -1D, (this.rotationPitch / 360), launched);
+                Galacticraft.proxy.spawnParticle("whitesmokelarge", 	this.posX, 		this.posY - 1.8D, this.posZ + 0.5D, 	(this.rotationPitch / 360), -1D, (this.rotationPitch / 360), launched);
+                Galacticraft.proxy.spawnParticle("whitesmoke", 			this.posX, 		this.posY - 1.8D, this.posZ + 0.5D, 	(this.rotationPitch / 360), -1D, (this.rotationPitch / 360), launched);
+                Galacticraft.proxy.spawnParticle("whitesmokelarge", 	this.posX, 		this.posY - 1.8D, this.posZ - 0.5D, 	(this.rotationPitch / 360), -1D, (this.rotationPitch / 360), launched);
+                Galacticraft.proxy.spawnParticle("whitesmoke", 			this.posX, 		this.posY - 1.8D, this.posZ - 0.5D, 	(this.rotationPitch / 360), -1D, (this.rotationPitch / 360), launched);
         	}
     	}
     }
     
     @SideOnly(Side.CLIENT)
-    protected void spawnParticlesReversed()
-    {
-    	Galacticraft.proxy.spawnParticle("whitesmokelarge", 	this.posX, 		this.riddenByEntity.posY + 22, this.posZ, 			0D, 1D, 0D);
-    	Galacticraft.proxy.spawnParticle("whitesmoke", 			this.posX, 		this.riddenByEntity.posY + 22, this.posZ, 			0D, 1D, 0D);
-        Galacticraft.proxy.spawnParticle("whitesmokelarge", 	this.posX + 0.5, this.riddenByEntity.posY + 22, this.posZ, 			0D, 1D, 0D);
-        Galacticraft.proxy.spawnParticle("whitesmoke", 			this.posX + 0.5, this.riddenByEntity.posY + 22, this.posZ, 			0D, 1D, 0D);
-        Galacticraft.proxy.spawnParticle("whitesmokelarge", 	this.posX - 0.5, this.riddenByEntity.posY + 22, this.posZ, 			0D, 1D, 0D);
-        Galacticraft.proxy.spawnParticle("whitesmoke", 			this.posX - 0.5, this.riddenByEntity.posY + 22, this.posZ,			0D, 1D, 0D);
-        Galacticraft.proxy.spawnParticle("whitesmokelarge", 	this.posX, 		this.riddenByEntity.posY + 22, this.posZ + 0.5D, 	0D, 1D, 0D);
-        Galacticraft.proxy.spawnParticle("whitesmoke", 			this.posX, 		this.riddenByEntity.posY + 22, this.posZ + 0.5D, 	0D, 1D, 0D);
-        Galacticraft.proxy.spawnParticle("whitesmokelarge", 	this.posX, 		this.riddenByEntity.posY + 22, this.posZ - 0.5D, 	0D, 1D, 0D);
-        Galacticraft.proxy.spawnParticle("whitesmoke", 			this.posX, 		this.riddenByEntity.posY + 22, this.posZ - 0.5D, 	0D, 1D, 0D);
-    }
-    
-    @SideOnly(Side.CLIENT)
     protected void spawnParticlesExplosion()
     {
-        Galacticraft.proxy.spawnParticle("hugeexplosion2", this.posX, this.posY, this.posZ, 0D, 0D, 0D);
+        Galacticraft.proxy.spawnParticle("hugeexplosion2", this.posX, this.posY, this.posZ, 0D, 0D, 0D, false);
     }
     
     protected void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)

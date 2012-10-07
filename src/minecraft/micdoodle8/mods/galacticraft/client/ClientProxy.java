@@ -180,7 +180,7 @@ public class ClientProxy extends CommonProxy
 	}
 
 	@Override
-    public void spawnParticle(String var1, double var2, double var4, double var6, double var8, double var10, double var12)
+    public void spawnParticle(String var1, double var2, double var4, double var6, double var8, double var10, double var12, boolean b)
     {
         Minecraft var14 = FMLClientHandler.instance().getClient();
 
@@ -194,7 +194,7 @@ public class ClientProxy extends CommonProxy
             
             if (var1.equals("whitesmoke"))
             {
-        		EntityFX fx = new GCEntityLaunchSmokeFX(var14.theWorld, var2, var4, var6, var8, var10, var12, 1.0F);
+        		EntityFX fx = new GCEntityLaunchSmokeFX(var14.theWorld, var2, var4, var6, var8, var10, var12, 1.0F, b);
         		if (fx != null)
         		{
                 	var14.effectRenderer.addEffect(fx);
@@ -202,7 +202,7 @@ public class ClientProxy extends CommonProxy
             }
             else if (var1.equals("whitesmokelarge"))
             {
-        		EntityFX fx = new GCEntityLaunchSmokeFX(var14.theWorld, var2, var4, var6, var8, var10, var12, 2.5F);
+        		EntityFX fx = new GCEntityLaunchSmokeFX(var14.theWorld, var2, var4, var6, var8, var10, var12, 2.5F, b);
         		if (fx != null)
         		{
         			var14.effectRenderer.addEffect(fx);
