@@ -282,48 +282,6 @@ public class GCUtil
 
         return -1;
     }
-    
-    /**
-     *  Checks if a block is in the structure bounding box, then sets the block
-     * 
-     * @param world The World to spawn the block in
-     * @param i x-pos
-     * @param j y-pos
-     * @param k z-pos
-     * @param ID block ID to set
-     * @param meta block metadata, 0 if no metadata
-     * @param notify notify adjacent blocks of change?
-     * @param bb the bounding box to check
-     * @param if the block set needs to be inside the walls
-     * @return true if block was set, false if not
-     */
-	public static boolean checkAndSetBlock(World world, int i, int j, int k, int ID, int meta, boolean notify, StructureBoundingBox bb)
-	{
-		if (!notify)
-		{
-			if (bb.isVecInside(i, j, k))
-			{
-				world.setBlockAndMetadata(i, j, k, ID, meta);
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-		}
-		else
-		{
-			if (bb.isVecInside(i, j, k))
-			{
-				world.setBlockAndMetadataWithNotify(i, j, k, ID, meta);
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-		}
-	}
 	
 	public static WorldProvider getProviderForName(String par1String)
 	{
@@ -358,7 +316,6 @@ public class GCUtil
 	public static HashMap getArrayOfPossibleDimensions(Integer[] ids)
 	{
 		HashMap map = new HashMap();
-//		Integer[] array = new Integer[getAmountOfPossibleProviders(ids)];
 		
 		for (int i = 0; i < ids.length; i++)
 		{
