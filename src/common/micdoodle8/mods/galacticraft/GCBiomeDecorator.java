@@ -37,6 +37,8 @@ public class GCBiomeDecorator
 	protected WorldGenerator quandriumGen;
 
 	protected WorldGenerator rhodiumGen;
+	
+	protected WorldGenerator bacteriaGen;
 
 	public GCBiomeDecorator(BiomeGenBase par1BiomeGenBase) 
 	{
@@ -44,6 +46,7 @@ public class GCBiomeDecorator
 //		this.electrumGen = new GCWorldGenMinable(GCBlocks.marsOreElectrum.blockID, 4, 0, false);
 //		this.quandriumGen = new GCWorldGenMinable(GCBlocks.marsOreQuandrium.blockID, 3, 0, false);
 		this.dirtGen = new GCWorldGenMinable(GCBlocks.marsDirt.blockID, 32, 0, false);
+		this.bacteriaGen = new GCWorldGenMinable(GCBlocks.bacterialSludgeMoving.blockID, 5, 0, false);
 		this.biome = par1BiomeGenBase;
 	}
 
@@ -77,7 +80,8 @@ public class GCBiomeDecorator
 	}
 
 	protected void generateOres() {
-		this.genStandardOre1(20, this.dirtGen, 0, 192);
+		this.genStandardOre1(20, this.dirtGen, 0, 200);
+		this.genStandardOre1(15, this.bacteriaGen, 0, 200);
 //		this.genStandardOre1(10, this.deshGen, 0, 192);
 //		this.genStandardOre1(7, this.greenstoneGen, 0, 32);
 //		this.genStandardOre1(4, this.rhodiumGen, 0, 16);
