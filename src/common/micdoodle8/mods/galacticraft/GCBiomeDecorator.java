@@ -30,21 +30,23 @@ public class GCBiomeDecorator
 
 	protected WorldGenerator deshGen;
 
-	protected WorldGenerator electrumGen;
-
-	protected WorldGenerator greenstoneGen;
-
 	protected WorldGenerator quandriumGen;
-
-	protected WorldGenerator rhodiumGen;
+	
+	protected WorldGenerator aluminumGen;
+	
+	protected WorldGenerator copperGen;
+	
+	protected WorldGenerator titaniumGen;
 	
 	protected WorldGenerator bacteriaGen;
 
 	public GCBiomeDecorator(BiomeGenBase par1BiomeGenBase) 
 	{
-//		this.deshGen = new GCWorldGenMinable(GCBlocks.marsOreDesh.blockID, 10, 0, false); TODO
-//		this.electrumGen = new GCWorldGenMinable(GCBlocks.marsOreElectrum.blockID, 4, 0, false);
-//		this.quandriumGen = new GCWorldGenMinable(GCBlocks.marsOreQuandrium.blockID, 3, 0, false);
+		this.deshGen = new GCWorldGenMinable(GCBlocks.blockOres.blockID, 12, 0, true);
+		this.copperGen = new GCWorldGenMinable(GCBlocks.blockOres.blockID, 8, 6, true);
+		this.aluminumGen = new GCWorldGenMinable(GCBlocks.blockOres.blockID, 8, 4, true);
+		this.titaniumGen = new GCWorldGenMinable(GCBlocks.blockOres.blockID, 7, 8, true);
+		this.quandriumGen = new GCWorldGenMinable(GCBlocks.blockOres.blockID, 7, 2, true);
 		this.dirtGen = new GCWorldGenMinable(GCBlocks.marsDirt.blockID, 32, 0, false);
 		this.bacteriaGen = new GCWorldGenMinable(GCBlocks.bacterialSludgeMoving.blockID, 5, 0, false);
 		this.biome = par1BiomeGenBase;
@@ -81,11 +83,11 @@ public class GCBiomeDecorator
 
 	protected void generateOres() {
 		this.genStandardOre1(20, this.dirtGen, 0, 200);
-		this.genStandardOre1(15, this.bacteriaGen, 0, 200);
-//		this.genStandardOre1(10, this.deshGen, 0, 192);
-//		this.genStandardOre1(7, this.greenstoneGen, 0, 32);
-//		this.genStandardOre1(4, this.rhodiumGen, 0, 16);
-//		this.genStandardOre1(2, this.electrumGen, 0, 16);
-//		this.genStandardOre1(1, this.quandriumGen, 0, 10);
+		this.genStandardOre1(10, this.bacteriaGen, 0, 200);
+        this.genStandardOre1(15, this.deshGen, 0, 128);
+        this.genStandardOre1(10, this.copperGen, 0, 64);
+        this.genStandardOre1(8, this.aluminumGen, 0, 32);
+        this.genStandardOre1(1, this.titaniumGen, 0, 16);
+        this.genStandardOre1(1, this.quandriumGen, 0, 16);
 	}
 }
