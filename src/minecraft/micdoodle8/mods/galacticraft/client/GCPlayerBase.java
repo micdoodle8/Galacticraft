@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.client;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.GCBlocks;
+import micdoodle8.mods.galacticraft.GCEntitySpaceship;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.PlayerAPI;
 import net.minecraft.src.PlayerBase;
@@ -31,6 +32,11 @@ public class GCPlayerBase extends PlayerBase
 	public void onLivingUpdate()
     {
 		super.onLivingUpdate();
+		
+		if (FMLClientHandler.instance().getClient().currentScreen instanceof GCGuiChoosePlanet)
+		{
+			this.player.motionY = 0;
+		}
 		
 		if (isNearCreeperDungeon())
 		{
