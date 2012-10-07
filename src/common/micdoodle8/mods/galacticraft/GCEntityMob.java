@@ -22,6 +22,8 @@ public abstract class GCEntityMob extends EntityMob
     public void onUpdate()
     {
     	super.onUpdate();
+    	
+    	this.fallDistance = 0;
 
         if (this.rand.nextFloat() < 0.8F && handleBacterialMovement())
         {
@@ -54,5 +56,11 @@ public abstract class GCEntityMob extends EntityMob
                 this.motionY = 0.30000001192092896D;
             }
         }
+    }
+
+	@Override
+    public void fall(float var1)
+    {
+		;
     }
 }
