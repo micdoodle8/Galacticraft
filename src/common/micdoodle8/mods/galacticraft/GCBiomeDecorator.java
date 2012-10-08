@@ -44,7 +44,7 @@ public class GCBiomeDecorator
 	{
 		this.deshGen = new GCWorldGenMinable(GCBlocks.blockOres.blockID, 12, 0, true);
 		this.copperGen = new GCWorldGenMinable(GCBlocks.blockOres.blockID, 8, 6, true);
-		this.aluminumGen = new GCWorldGenMinable(GCBlocks.blockOres.blockID, 8, 4, true);
+		this.aluminumGen = new GCWorldGenMinable(GCBlocks.blockOres.blockID, 7, 4, true);
 		this.titaniumGen = new GCWorldGenMinable(GCBlocks.blockOres.blockID, 7, 8, true);
 		this.quandriumGen = new GCWorldGenMinable(GCBlocks.blockOres.blockID, 7, 2, true);
 		this.dirtGen = new GCWorldGenMinable(GCBlocks.marsDirt.blockID, 32, 0, false);
@@ -83,7 +83,7 @@ public class GCBiomeDecorator
 
 	protected void generateOres() {
 		this.genStandardOre1(20, this.dirtGen, 0, 200);
-		this.genStandardOre1(10, this.bacteriaGen, 0, 200);
+		this.genStandardOre1(8, this.bacteriaGen, 0, 200);
         this.genStandardOre1(15, this.deshGen, 0, 128);
         this.genStandardOre1(10, this.copperGen, 0, 64);
         this.genStandardOre1(8, this.aluminumGen, 0, 32);
