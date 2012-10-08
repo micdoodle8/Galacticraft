@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft;
 
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.client.GCPointOfInterest;
 import net.minecraft.src.Block;
 import net.minecraft.src.IChunkProvider;
 import net.minecraft.src.MathHelper;
@@ -53,7 +54,7 @@ public class GCCaveGen
             var7 = 0;
         }
 
-        for (int var8 = 0; var8 < var7; ++var8)
+        for (int var8 = 0; var8 < 1; ++var8)
         {
             double xPos = (double)(xChunkCoord * 16 + this.rand.nextInt(16));
             double yPos = (double)this.rand.nextInt(10) + 20;
@@ -63,22 +64,9 @@ public class GCCaveGen
 
             if (this.rand.nextInt(22) == 0)
             {
+//                GCChunkProvider.giantCaveLocations.add(new GCPointOfInterest((origXChunkCoord + 20), MathHelper.floor_double((40 * 0.2D)), (origZChunkCoord + 20), true, 0, 1, 1, 1));
                 this.generateLargeCaveNode(this.rand.nextLong(), origXChunkCoord, origZChunkCoord, par6ArrayOfByte, xPos, yPos, zPos);
                 var15 += this.rand.nextInt(4);
-            }
-
-            for (int var16 = 0; var16 < var15; ++var16)
-            {
-                float var17 = this.rand.nextFloat() * (float)Math.PI * 2.0F;
-                float var18 = (this.rand.nextFloat() - 0.5F) * 2.0F / 8.0F;
-                float var19 = this.rand.nextFloat() * 19.0F + this.rand.nextFloat();
-
-                if (this.rand.nextInt(10) == 0)
-                {
-                    var19 *= this.rand.nextFloat() * this.rand.nextFloat() * 3.0F + 1.0F;
-                }
-
-//                this.generateCaveNode(this.rand.nextLong(), par4, par5, par6ArrayOfByte, var9, var11, var13, var19, var17, var18, 0, 0, 1.0D);
             }
         }
     }
@@ -111,13 +99,13 @@ public class GCCaveGen
         }
 
         int var27 = var25.nextInt(par16 / 2) + par16 / 4;
+        
+        FMLLog.info("" + (origXChunkCoord + 20) + " " + (40 * heightMultiplier) + " " + (origZChunkCoord + 20));
 
         for (boolean var28 = var25.nextInt(6) == 0; par15 < par16; ++par15)
         {
             double caveWidth = 40;
             double caveHeight = caveWidth * heightMultiplier;
-//            float var33 = MathHelper.cos(par14);
-//            float var34 = MathHelper.sin(par14);
 
             if (var28)
             {
@@ -137,8 +125,6 @@ public class GCCaveGen
 
             if (!var54 && par15 == var27 && par12 > 1.0F && par16 > 0)
             {
-//                this.generateCaveNode(var25.nextLong(), par3, par4, par5ArrayOfByte, par6, par8, par10, var25.nextFloat() * 0.5F + 0.5F, par13 - ((float)Math.PI / 2F), par14 / 3.0F, par15, par16, 1.0D);
-//                this.generateCaveNode(var25.nextLong(), par3, par4, par5ArrayOfByte, par6, par8, par10, var25.nextFloat() * 0.5F + 0.5F, par13 + ((float)Math.PI / 2F), par14 / 3.0F, par15, par16, 1.0D);
                 return;
             }
 
@@ -192,8 +178,6 @@ public class GCCaveGen
                     {
                     	caveMaxZ = 16;
                     }
-                    
-//                    FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(0).setBlockWithNotify(par1, par2, par3, par4)
 
                     boolean isBlockWater = false;
                     int var42;

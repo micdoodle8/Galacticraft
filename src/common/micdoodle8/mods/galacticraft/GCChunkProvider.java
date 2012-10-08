@@ -29,6 +29,9 @@ import net.minecraft.src.World;
  */
 public class GCChunkProvider extends ChunkProviderGenerate implements IChunkProvider 
 {
+	public static List giantCaveLocations;
+	public static List creeperDungeonLocations;
+	
 	private Random rand;
 
 	private NoiseGeneratorOctaves noiseGen1;
@@ -82,6 +85,8 @@ public class GCChunkProvider extends ChunkProviderGenerate implements IChunkProv
 		this.noiseGen5 = new NoiseGeneratorOctaves(this.rand, 10);
 		this.noiseGen6 = new NoiseGeneratorOctaves(this.rand, 16);
 		this.mobSpawnerNoise = new NoiseGeneratorOctaves(this.rand, 8);
+		this.giantCaveLocations = new ArrayList();
+		this.creeperDungeonLocations = new ArrayList();
 	}
 
 	@Override
