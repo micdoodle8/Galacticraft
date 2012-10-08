@@ -7,12 +7,14 @@ import java.util.Random;
 
 import micdoodle8.mods.galacticraft.CommonProxy;
 import micdoodle8.mods.galacticraft.GCBlocks;
+import micdoodle8.mods.galacticraft.GCChunkProvider;
 import micdoodle8.mods.galacticraft.GCConfigManager;
 import micdoodle8.mods.galacticraft.GCEntityArrow;
 import micdoodle8.mods.galacticraft.GCEntityCreeper;
 import micdoodle8.mods.galacticraft.GCEntityCreeperBoss;
 import micdoodle8.mods.galacticraft.GCEntityProjectileTNT;
 import micdoodle8.mods.galacticraft.GCEntitySkeleton;
+import micdoodle8.mods.galacticraft.GCEntitySludgeling;
 import micdoodle8.mods.galacticraft.GCEntitySpaceship;
 import micdoodle8.mods.galacticraft.GCEntitySpider;
 import micdoodle8.mods.galacticraft.GCEntityZombie;
@@ -136,6 +138,7 @@ public class ClientProxy extends CommonProxy
         RenderingRegistry.registerEntityRenderingHandler(GCEntityZombie.class, new RenderLiving(new GCModelZombie(), 1.0F));
         RenderingRegistry.registerEntityRenderingHandler(GCEntityCreeper.class, new GCRenderCreeper());
         RenderingRegistry.registerEntityRenderingHandler(GCEntitySkeleton.class, new RenderLiving(new GCModelSkeleton(), 1.0F));
+        RenderingRegistry.registerEntityRenderingHandler(GCEntitySludgeling.class, new GCRenderSludgeling());
         RenderingRegistry.addNewArmourRendererPrefix("oxygen");
         RenderingRegistry.addNewArmourRendererPrefix("sensor");
         RenderingRegistry.addNewArmourRendererPrefix("sensorox");
@@ -348,6 +351,8 @@ public class ClientProxy extends CommonProxy
             EntityPlayerSP player = minecraft.thePlayer;
             
             ItemStack helmetSlot = null;
+            
+            if (GCChunkProvider.giantCaveLocations != null)
     		
     		if (player != null && player.inventory.armorItemInSlot(3) != null)
     		{
@@ -361,8 +366,6 @@ public class ClientProxy extends CommonProxy
         			i++;
         			
         	        float f = MathHelper.sin(((float)i) / 80.0F) * 0.1F + 0.1F;
-        			
-        			FMLLog.info("" + f);
         			
 					ScaledResolution scaledresolution = new ScaledResolution(minecraft.gameSettings, minecraft.displayWidth, minecraft.displayHeight);
 			        int i = scaledresolution.getScaledWidth();

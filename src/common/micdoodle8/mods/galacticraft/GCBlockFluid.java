@@ -327,7 +327,7 @@ public abstract class GCBlockFluid extends Block
      */
     public int tickRate()
     {
-        return 5;
+        return 15;
     }
 
     @SideOnly(Side.CLIENT)

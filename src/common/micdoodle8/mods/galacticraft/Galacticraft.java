@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
-import micdoodle8.mods.galacticraft.client.GCGuiAirDistributor;
-import micdoodle8.mods.galacticraft.client.GCGuiTankRefill;
 import net.minecraft.src.Block;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EntityPlayerMP;
@@ -16,12 +14,7 @@ import net.minecraft.src.NetworkManager;
 import net.minecraft.src.Packet250CustomPayload;
 import net.minecraft.src.Packet9Respawn;
 import net.minecraft.src.ServerPlayerAPI;
-import net.minecraft.src.TileEntity;
-import net.minecraft.src.World;
 import net.minecraftforge.common.DimensionManager;
-
-import com.google.common.collect.Lists;
-
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.IScheduledTickHandler;
@@ -40,7 +33,6 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
-import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
@@ -124,6 +116,7 @@ public class Galacticraft
 		registerGalacticraftCreature(GCEntityZombie.class, "Evolved Zombie", 206, 44975, 7969893);
 		registerGalacticraftCreature(GCEntityCreeper.class, "Evolved Creeper", 207, 894731, 0);
 		registerGalacticraftCreature(GCEntitySkeleton.class, "Evolved Skeleton", 208, 12698049, 4802889);
+		registerGalacticraftCreature(GCEntitySludgeling.class, "Sludgeling", 210, 12698049, 4802889);
 	}
 	
 	public void registerOtherEntities()

@@ -70,6 +70,11 @@ public class GCConfigManager
 	public static int idItemSpaceship;
 	public static int idItemSensorGlasses;
 	public static int idItemSensorGlassesWithOxygenMask;
+	public static int idItemReinforcedBucket;
+	public static int idItemReinforcedBucketMilk;
+	public static int idItemReinforcedBucketLava;
+	public static int idItemReinforcedBucketWater;
+	public static int idItemReinforcedBucketBacteria;
 	
 	public static int idArmorOxygenMask;
 	public static int idBlueCrystal;
@@ -163,6 +168,11 @@ public class GCConfigManager
 			idItemMarsTeleporter = Integer.parseInt(configuration.getOrCreateIntProperty("idItemGalacticOrb", configuration.CATEGORY_ITEM, 9867).value);
 			idItemSensorGlasses = Integer.parseInt(configuration.getOrCreateIntProperty("idItemSensorGlasses", configuration.CATEGORY_ITEM, 9868).value);
 			idItemSensorGlassesWithOxygenMask = Integer.parseInt(configuration.getOrCreateIntProperty("idItemSensorGlassesWithOxygenMask", configuration.CATEGORY_ITEM, 9869).value);
+			idItemReinforcedBucket = Integer.parseInt(configuration.getOrCreateIntProperty("idItemReinforcedBucket", configuration.CATEGORY_ITEM, 9870).value);
+			idItemReinforcedBucketMilk = Integer.parseInt(configuration.getOrCreateIntProperty("idItemReinforcedBucketMilk", configuration.CATEGORY_ITEM, 9871).value);
+			idItemReinforcedBucketWater = Integer.parseInt(configuration.getOrCreateIntProperty("idItemReinforcedBucketWater", configuration.CATEGORY_ITEM, 9872).value);
+			idItemReinforcedBucketLava = Integer.parseInt(configuration.getOrCreateIntProperty("idItemReinforcedBucketLava", configuration.CATEGORY_ITEM, 9873).value);
+			idItemReinforcedBucketBacteria = Integer.parseInt(configuration.getOrCreateIntProperty("idItemReinforcedBucketBacteria", configuration.CATEGORY_ITEM, 9874).value);
 	        
 			//GUI
 	        idGuiTankRefill = Integer.parseInt(configuration.getOrCreateIntProperty("GuiIdTankRefill", "GUI", 128).value);
