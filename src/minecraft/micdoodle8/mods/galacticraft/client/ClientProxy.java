@@ -133,6 +133,9 @@ public class ClientProxy extends CommonProxy
         RenderingRegistry.registerEntityRenderingHandler(GCEntityZombie.class, new RenderLiving(new GCModelZombie(), 1.0F));
         RenderingRegistry.registerEntityRenderingHandler(GCEntityCreeper.class, new GCRenderCreeper());
         RenderingRegistry.registerEntityRenderingHandler(GCEntitySkeleton.class, new RenderLiving(new GCModelSkeleton(), 1.0F));
+        RenderingRegistry.addNewArmourRendererPrefix("oxygen");
+        RenderingRegistry.addNewArmourRendererPrefix("sensor");
+        RenderingRegistry.addNewArmourRendererPrefix("sensorox");
         RenderingRegistry.registerEntityRenderingHandler(GCEntityArrow.class, new GCRenderArrow());
 		MinecraftForgeClient.preloadTexture("/micdoodle8/mods/galacticraft/client/blocks/core.png");
 		MinecraftForgeClient.preloadTexture("/micdoodle8/mods/galacticraft/client/blocks/mars.png");

@@ -21,8 +21,11 @@ public class GCItems
 	public static Item heavyOxygenTankEmpty;
 	public static Item oxygenMask;
 	public static Item spaceship;
+	public static Item sensorGlasses;
+	public static Item sensorGlassesWithOxygenMask;
 	
 	static EnumArmorMaterial OXYGENMASK = EnumHelper.addArmorMaterial("OXYGENMASK", 200, new int[] {0, 0, 0, 0}, 0);
+	static EnumArmorMaterial SENSORGLASSES = EnumHelper.addArmorMaterial("SENSORGLASSES", 200, new int[] {0, 0, 0, 0}, 0);
 	
 	public static void initItems() 
 	{
@@ -34,6 +37,8 @@ public class GCItems
 		heavyOxygenTankEmpty = new GCItem(GCConfigManager.idItemHeavyOxygenTankEmpty).setIconIndex(5).setItemName("heavyEmpty");
 		oxygenMask = new GCItemOxygenMask(GCConfigManager.idArmorOxygenMask, OXYGENMASK, 5, 0).setIconIndex(7).setItemName("oxygenMask");
 		spaceship = new GCItemSpaceship(GCConfigManager.idItemSpaceship).setIconIndex(8).setItemName("spaceship");
+		sensorGlasses = new GCItemSensorGlasses(GCConfigManager.idItemSensorGlasses, SENSORGLASSES, 6, 0, false).setIconIndex(9).setItemName("sensorGlasses");
+		sensorGlassesWithOxygenMask = new GCItemSensorGlasses(GCConfigManager.idItemSensorGlassesWithOxygenMask, SENSORGLASSES, 7, 0, true).setIconIndex(10).setItemName("sensorGlassesWithOxygenMask");
 	}
 
 	public static void addNames() 
@@ -46,5 +51,7 @@ public class GCItems
 		LanguageRegistry.instance().addNameForObject(medOxygenTankEmpty, "en_US", "Empty Medium Oxygen Tank");
 		LanguageRegistry.instance().addNameForObject(heavyOxygenTankFull, "en_US", "Heavy Oxygen Tank");
 		LanguageRegistry.instance().addNameForObject(heavyOxygenTankEmpty, "en_US", "Empty Heavy Oxygen Tank");
+		LanguageRegistry.instance().addNameForObject(sensorGlasses, "en_US", "Sensor Glasses");
+		LanguageRegistry.instance().addNameForObject(sensorGlassesWithOxygenMask, "en_US", "Sensor Glasses with Oxygen Mask");
 	}
 }

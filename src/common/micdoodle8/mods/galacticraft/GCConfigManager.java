@@ -68,6 +68,8 @@ public class GCConfigManager
 	public static int idItemHeavyOxygenTankEmpty;
 	public static int idItemGalacticOrb;
 	public static int idItemSpaceship;
+	public static int idItemSensorGlasses;
+	public static int idItemSensorGlassesWithOxygenMask;
 	
 	public static int idArmorOxygenMask;
 	public static int idBlueCrystal;
@@ -159,6 +161,8 @@ public class GCConfigManager
 	        idGreenCrystal = Integer.parseInt(configuration.getOrCreateIntProperty("idGreenCrystal", configuration.CATEGORY_ITEM, 9865).value);
 	        idItemSpaceship = Integer.parseInt(configuration.getOrCreateIntProperty("idItemSpaceship", configuration.CATEGORY_ITEM, 9866).value);
 			idItemMarsTeleporter = Integer.parseInt(configuration.getOrCreateIntProperty("idItemGalacticOrb", configuration.CATEGORY_ITEM, 9867).value);
+			idItemSensorGlasses = Integer.parseInt(configuration.getOrCreateIntProperty("idItemSensorGlasses", configuration.CATEGORY_ITEM, 9868).value);
+			idItemSensorGlassesWithOxygenMask = Integer.parseInt(configuration.getOrCreateIntProperty("idItemSensorGlassesWithOxygenMask", configuration.CATEGORY_ITEM, 9869).value);
 	        
 			//GUI
 	        idGuiTankRefill = Integer.parseInt(configuration.getOrCreateIntProperty("GuiIdTankRefill", "GUI", 128).value);
