@@ -25,7 +25,7 @@ public class GCItemSensorGlasses extends GCItemBreathableHelmet implements IArmo
 
     public String getArmorTextureFile(ItemStack itemstack)
     {
-    	return attachedMask ? "/micdoodle8/mods/galacticraft/client/armor/sensorox_1.png" : "/micdoodle8/mods/galacticraft/client/armor/oxygen_1.png";
+    	return attachedMask ? "/micdoodle8/mods/galacticraft/client/armor/sensorox_1.png" : "/micdoodle8/mods/galacticraft/client/armor/sensor_1.png";
     }
 	
 	public String getTextureFile()

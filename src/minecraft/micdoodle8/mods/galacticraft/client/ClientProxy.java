@@ -16,6 +16,7 @@ import micdoodle8.mods.galacticraft.GCEntitySkeleton;
 import micdoodle8.mods.galacticraft.GCEntitySpaceship;
 import micdoodle8.mods.galacticraft.GCEntitySpider;
 import micdoodle8.mods.galacticraft.GCEntityZombie;
+import micdoodle8.mods.galacticraft.GCItemSensorGlasses;
 import micdoodle8.mods.galacticraft.GCItems;
 import micdoodle8.mods.galacticraft.GCTileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.GCUtil;
@@ -28,8 +29,10 @@ import net.minecraft.src.EntityHugeExplodeFX;
 import net.minecraft.src.EntityLargeExplodeFX;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EntityPlayerSP;
+import net.minecraft.src.ItemStack;
 import net.minecraft.src.KeyBinding;
 import net.minecraft.src.Material;
+import net.minecraft.src.MathHelper;
 import net.minecraft.src.NetworkManager;
 import net.minecraft.src.Packet250CustomPayload;
 import net.minecraft.src.PlayerAPI;
@@ -332,6 +335,8 @@ public class ClientProxy extends CommonProxy
     			}
             }
         }
+    	
+		int i = 0;
 
     	@Override
     	public void tickEnd(EnumSet<TickType> type, Object... tickData) 
@@ -342,11 +347,49 @@ public class ClientProxy extends CommonProxy
             
             EntityPlayerSP player = minecraft.thePlayer;
             
+            ItemStack helmetSlot = null;
+    		
+    		if (player != null && player.inventory.armorItemInSlot(3) != null)
+    		{
+    			helmetSlot = player.inventory.armorItemInSlot(3);
+    		}
+            
     		if (type.equals(EnumSet.of(TickType.RENDER)))
             {
-    			if (dimension == GCConfigManager.dimensionIDMars)
+        		if (helmetSlot != null && helmetSlot.getItem() instanceof GCItemSensorGlasses && minecraft.currentScreen == null)
+        		{
+        			i++;
+        			
+        	        float f = MathHelper.sin(((float)i) / 80.0F) * 0.1F + 0.1F;
+        			
+        			FMLLog.info("" + f);
+        			
+					ScaledResolution scaledresolution = new ScaledResolution(minecraft.gameSettings, minecraft.displayWidth, minecraft.displayHeight);
+			        int i = scaledresolution.getScaledWidth();
+			        int k = scaledresolution.getScaledHeight();
+			        minecraft.entityRenderer.setupOverlayRendering();
+			        GL11.glEnable(GL11.GL_BLEND);
+			        GL11.glDisable(GL11.GL_DEPTH_TEST);
+			        GL11.glDepthMask(false);
+					GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+					GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+					GL11.glDisable(GL11.GL_ALPHA_TEST);
+    				GL11.glBindTexture(GL11.GL_TEXTURE_2D, minecraft.renderEngine.getTexture("/micdoodle8/mods/galacticraft/client/gui/hud.png"));
+					Tessellator tessellator = Tessellator.instance;
+					tessellator.startDrawingQuads();
+					tessellator.addVertexWithUV(i / 2 - 2 * k - f * 80, k + f * 40, -90D, 0.0D, 1.0D);
+					tessellator.addVertexWithUV(i / 2 + 2 * k + f * 80, k + f * 40, -90D, 1.0D, 1.0D);
+					tessellator.addVertexWithUV(i / 2 + 2 * k + f * 80, 0.0D - f * 40, -90D, 1.0D, 0.0D);
+					tessellator.addVertexWithUV(i / 2 - 2 * k - f * 80, 0.0D - f * 40, -90D, 0.0D, 0.0D);
+					tessellator.draw();
+					GL11.glDepthMask(true);
+					GL11.glEnable(GL11.GL_DEPTH_TEST);
+					GL11.glEnable(GL11.GL_ALPHA_TEST);
+					GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        		}
+
+        		if (dimension == GCConfigManager.dimensionIDMars)
     			{
-    				
     				short var8 = 90;
     				int var6 = (airRemaining - 90) * -1;
     				if (airRemaining <= 0) 
