@@ -45,15 +45,6 @@ public class GCEntitySpaceship extends Entity
     @SideOnly(Side.CLIENT)
     protected double velocityZ;
 
-    public static float defaultMaxSpeedRail = 0.4f;
-    public static float defaultMaxSpeedGround = 0.4f;
-    public static float defaultMaxSpeedAirLateral = 0.4f;
-    public static float defaultMaxSpeedAirVertical = -1f;
-    public static double defaultDragRidden = 0.996999979019165D;
-    public static double defaultDragEmpty = 0.9599999785423279D;
-    public static double defaultDragAir = 0.94999998807907104D;
-    private static IMinecartCollisionHandler collisionHandler = null;
-
     protected float maxSpeedRail;
     protected float maxSpeedGround;
     protected float maxSpeedAirLateral;
@@ -80,12 +71,6 @@ public class GCEntitySpaceship extends Entity
         this.preventEntitySpawning = true;
         this.setSize(0.98F, 4F);
         this.yOffset = this.height / 2.0F;
-
-        maxSpeedRail = defaultMaxSpeedRail;
-        maxSpeedGround = defaultMaxSpeedGround;
-        maxSpeedAirLateral = defaultMaxSpeedAirLateral;
-        maxSpeedAirVertical = defaultMaxSpeedAirVertical;
-        dragAir = defaultDragAir;
     }
 
     protected boolean canTriggerWalking()
@@ -177,9 +162,9 @@ public class GCEntitySpaceship extends Entity
     		this.dataWatcher.updateObject(21, Integer.valueOf(1));
     	}
 		
-    	if (this.motionY < 0)
+    	if (this.reversed)
     	{
-    		if (this.worldObj.getBlockMaterial((int)this.posX, (int)this.posY - 5, (int)this.posZ) != Material.air)
+    		if (this.worldObj.getBlockMaterial((int)this.posX, (int)this.posY - 5, (int)this.posZ) != Material.air || this.motionY == 0)
     		{
                 if (this.riddenByEntity != null)
                 {
