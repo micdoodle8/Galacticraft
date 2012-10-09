@@ -167,7 +167,14 @@ public class GCPlayerBaseServer extends ServerPlayerBase
         			helmetSlot = player.inventory.armorItemInSlot(3);
         		}
         		
-        		if ((helmetSlot == null || (!(helmetSlot.getItem() instanceof GCItemBreathableHelmet) || (helmetSlot.getItem() instanceof GCItemSensorGlasses && !((GCItemSensorGlasses)helmetSlot.getItem()).attachedMask)) || this.airRemaining <= 0) && !isAABBInBreathableAirBlock()) 
+        		boolean flag = helmetSlot == null;
+        		boolean flag2 = helmetSlot != null && !(helmetSlot.getItem() instanceof GCItemBreathableHelmet);
+        		boolean flag3 = helmetSlot != null && helmetSlot.getItem() instanceof GCItemSensorGlasses && !((GCItemSensorGlasses)helmetSlot.getItem()).attachedMask;
+        		boolean flag4 = helmetSlot != null && helmetSlot.getItem() instanceof GCItemArmor && !((GCItemArmor)helmetSlot.getItem()).attachedMask == true;
+        		boolean flag5 = this.airRemaining <= 0;
+        		boolean b = flag || flag2 || flag3 || flag4 || flag5;
+        		
+        		if (b && !isAABBInBreathableAirBlock()) 
 				{
 					player.superDamageEntity(DamageSource.inWall, 2);
 					player.worldObj.playSoundAtEntity(player, "", 1.0f, 1.0F);
