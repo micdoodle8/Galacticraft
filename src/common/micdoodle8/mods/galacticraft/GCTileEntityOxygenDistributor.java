@@ -1,6 +1,15 @@
 package micdoodle8.mods.galacticraft;
 
-import net.minecraft.src.*;
+import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.IInventory;
+import net.minecraft.src.Item;
+import net.minecraft.src.ItemStack;
+import net.minecraft.src.MathHelper;
+import net.minecraft.src.NBTTagCompound;
+import net.minecraft.src.NBTTagList;
+import net.minecraft.src.StatList;
+import net.minecraft.src.TileEntity;
+import cpw.mods.fml.common.FMLLog;
 
 /**
  * Copyright 2012, micdoodle8
@@ -8,11 +17,11 @@ import net.minecraft.src.*;
  *  All rights reserved.
  *
  */
-public class GCTileEntityAirDistributor extends TileEntity implements IInventory 
+public class GCTileEntityOxygenDistributor extends TileEntity implements IInventory 
 {
     private ItemStack[] distributorStacks;
 
-    public GCTileEntityAirDistributor()
+    public GCTileEntityOxygenDistributor()
     {
     	distributorStacks = new ItemStack[3];
     }
@@ -25,16 +34,16 @@ public class GCTileEntityAirDistributor extends TileEntity implements IInventory
         	
         	if (tank == GCItems.heavyOxygenTankFull || tank == GCItems.medOxygenTankFull || tank == GCItems.lightOxygenTankFull)
         	{
-        		GCBlockAirDistributor.updateDistributorState(true, worldObj, xCoord, yCoord, zCoord);
+        		GCBlockOxygenDistributor.updateDistributorState(true, worldObj, xCoord, yCoord, zCoord);
         	}
         	else
         	{
-        		GCBlockAirDistributor.updateDistributorState(false, worldObj, xCoord, yCoord, zCoord);
+        		GCBlockOxygenDistributor.updateDistributorState(false, worldObj, xCoord, yCoord, zCoord);
         	}
     	}
     	else if (this.distributorStacks[0] == null)
     	{
-    		GCBlockAirDistributor.updateDistributorState(false, worldObj, xCoord, yCoord, zCoord);
+    		GCBlockOxygenDistributor.updateDistributorState(false, worldObj, xCoord, yCoord, zCoord);
     	}
     }
     
@@ -42,6 +51,26 @@ public class GCTileEntityAirDistributor extends TileEntity implements IInventory
 	public void updateEntity() 
 	{
 		super.updateEntity();
+
+		ItemStack tankInSlot = this.getStackInSlot(0);
+		
+		if (tankInSlot != null)
+		{
+			int drainSpacing = GCUtil.getDrainSpacing(tankInSlot);
+			
+			if (drainSpacing > 0 && Galacticraft.instance.tick % (MathHelper.floor_double(drainSpacing / 4)) == 0) 
+	    	{
+	            if (tankInSlot.getItemDamage() < tankInSlot.getMaxDamage() - 2)
+	            {
+		    		tankInSlot.damageItem(1, null);
+	            }
+	            else
+	            {
+	            	this.distributorStacks[0] = null;
+	            }
+	    	}
+		}
+		
 		
 		if (this.worldObj.getBlockId(xCoord, yCoord, zCoord) == GCBlocks.airDistributorActive.blockID)
 		{
@@ -75,11 +104,11 @@ public class GCTileEntityAirDistributor extends TileEntity implements IInventory
 				this.worldObj.setBlockWithNotify(this.xCoord, this.yCoord - 1, this.zCoord, GCBlocks.breatheableAir.blockID);
 			}
 			
-			for (int j = -4; j < 6; j++)
+			for (int j = -5; j < 6; j++)
 			{
-				for (int i = -4; i < 6; i++)
+				for (int i = -5; i < 6; i++)
 				{
-					for (int k = -4; k < 6; k++)
+					for (int k = -5; k < 6; k++)
 					{
 						if (this.worldObj.getBlockId(this.xCoord + i, this.yCoord + j, this.zCoord + k) == GCBlocks.breatheableAir.blockID)
 						{

@@ -1,14 +1,12 @@
 package micdoodle8.mods.galacticraft.client;
 
 import micdoodle8.mods.galacticraft.GCContainerAirDistributor;
-import micdoodle8.mods.galacticraft.GCTileEntityAirDistributor;
+import micdoodle8.mods.galacticraft.GCTileEntityOxygenDistributor;
 import net.minecraft.src.GuiContainer;
 import net.minecraft.src.InventoryPlayer;
 import net.minecraft.src.StatCollector;
 
 import org.lwjgl.opengl.GL11;
-
-import cpw.mods.fml.common.FMLLog;
 
 /**
  * Copyright 2012, micdoodle8
@@ -18,9 +16,9 @@ import cpw.mods.fml.common.FMLLog;
  */
 public class GCGuiAirDistributor extends GuiContainer
 {
-    private GCTileEntityAirDistributor distributorInv;
+    private GCTileEntityOxygenDistributor distributorInv;
     
-	public GCGuiAirDistributor(InventoryPlayer par1InventoryPlayer, GCTileEntityAirDistributor par2TileEntityAirDistributor) 
+	public GCGuiAirDistributor(InventoryPlayer par1InventoryPlayer, GCTileEntityOxygenDistributor par2TileEntityAirDistributor) 
 	{
         super(new GCContainerAirDistributor(par1InventoryPlayer, par2TileEntityAirDistributor));
         this.distributorInv = par2TileEntityAirDistributor;

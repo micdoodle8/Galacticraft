@@ -2,22 +2,19 @@ package micdoodle8.mods.galacticraft;
 
 import java.util.Random;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.Side;
-import cpw.mods.fml.common.asm.SideOnly;
 import net.minecraft.src.Block;
 import net.minecraft.src.BlockContainer;
 import net.minecraft.src.EntityItem;
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.TileEntity;
-import net.minecraft.src.TileEntityFurnace;
 import net.minecraft.src.World;
+import cpw.mods.fml.common.Side;
+import cpw.mods.fml.common.asm.SideOnly;
 
 /**
  * Copyright 2012, micdoodle8
@@ -25,17 +22,15 @@ import net.minecraft.src.World;
  *  All rights reserved.
  *
  */
-public class GCBlockAirDistributor extends BlockContainer
+public class GCBlockOxygenDistributor extends BlockContainer
 {
     private Random distributorRand = new Random();
     
 	protected boolean isActive;
     
     private static boolean keepDistributorInventory = false;
-    
-    private boolean derp = false;
 	
-	public GCBlockAirDistributor(int par1, boolean isActive) 
+	public GCBlockOxygenDistributor(int par1, boolean isActive) 
 	{
 		super(par1, Material.rock);
 		this.blockIndexInTexture = 34;
@@ -46,7 +41,7 @@ public class GCBlockAirDistributor extends BlockContainer
 	@Override
 	public TileEntity createNewTileEntity(World var1) 
 	{
-		return new GCTileEntityAirDistributor();
+		return new GCTileEntityOxygenDistributor();
 	}
 
     public void onBlockAdded(World par1World, int par2, int par3, int par4)
@@ -161,7 +156,7 @@ public class GCBlockAirDistributor extends BlockContainer
     	
     	if (!keepDistributorInventory)
     	{
-            GCTileEntityAirDistributor var7 = (GCTileEntityAirDistributor)par1World.getBlockTileEntity(par2, par3, par4);
+    		GCTileEntityOxygenDistributor var7 = (GCTileEntityOxygenDistributor)par1World.getBlockTileEntity(par2, par3, par4);
 
             if (var7 != null)
             {
@@ -216,7 +211,7 @@ public class GCBlockAirDistributor extends BlockContainer
 				{
 					if (world.getBlockId(x + i, y + j, z + k) == GCBlocks.breatheableAir.blockID)
 					{
-						if (!GCBlockBreatheableAir.activeDistributorNearby(world, x + i, y + j, z + k, true))
+						if (!GCBlockBreathableAir.activeDistributorNearby(world, x + i, y + j, z + k, true))
 						{
 							world.setBlockWithNotify(x + i, y + j, z + k, 0);
 						}

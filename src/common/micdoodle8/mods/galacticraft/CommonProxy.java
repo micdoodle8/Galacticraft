@@ -98,7 +98,7 @@ public class CommonProxy implements IGuiHandler
 		}
 		else if (ID == GCConfigManager.idGuiAirDistributor)
 		{
-			GCTileEntityAirDistributor distributor = (GCTileEntityAirDistributor) world.getBlockTileEntity(x, y, z);
+			GCTileEntityOxygenDistributor distributor = (GCTileEntityOxygenDistributor) world.getBlockTileEntity(x, y, z);
 
 			return new GCContainerAirDistributor(player.inventory, distributor);
 		}
@@ -115,7 +115,7 @@ public class CommonProxy implements IGuiHandler
 		}
 		else if (ID == GCConfigManager.idGuiAirDistributor)
 		{
-			GCTileEntityAirDistributor distributor = (GCTileEntityAirDistributor) world.getBlockTileEntity(x, y, z);
+			GCTileEntityOxygenDistributor distributor = (GCTileEntityOxygenDistributor) world.getBlockTileEntity(x, y, z);
 			
 			return new GCGuiAirDistributor(player.inventory, distributor);
 		}

@@ -16,9 +16,9 @@ import cpw.mods.fml.common.FMLLog;
  *  All rights reserved.
  *
  */
-public class GCBlockBreatheableAir extends GCBlock
+public class GCBlockBreathableAir extends GCBlock
 {
-	public GCBlockBreatheableAir(int par1) 
+	public GCBlockBreathableAir(int par1) 
 	{
 		super(par1, 0, Material.air);
         this.setTickRandomly(true);
@@ -53,6 +53,12 @@ public class GCBlockBreatheableAir extends GCBlock
     public int tickRate()
     {
         return 30;
+    }
+
+	@Override
+    public int quantityDropped(Random par1Random)
+    {
+        return 0;
     }
 
 	@Override
@@ -167,27 +173,27 @@ public class GCBlockBreatheableAir extends GCBlock
         	}
         	boolean var7 = i == 0;
 
-            if ((var6 || var7) && par5 == 3)
+            if ((var6 || var7) && par5 == 3 && !var6)
             {
             	return true;
             }
-            else if ((var6 || var7) && par5 == 4)
+            else if ((var6 || var7) && par5 == 4 && !var6)
             {
             	return true;
             }
-            else if ((var6 || var7) && par5 == 5)
+            else if ((var6 || var7) && par5 == 5 && !var6)
             {
             	return true;
             }
-            else if ((var6 || var7) && par5 == 2)
+            else if ((var6 || var7) && par5 == 2 && !var6)
             {
             	return true;
             }
-            else if ((var6 || var7) && par5 == 0)
+            else if ((var6 || var7) && par5 == 0 && !var6)
             {
             	return true;
             }
-            else if ((var6 || var7) && par5 == 1)
+            else if ((var6 || var7) && par5 == 1 && !var6)
             {
             	return true;
             }
@@ -196,34 +202,5 @@ public class GCBlockBreatheableAir extends GCBlock
             	return false;
             }
         }
-    }
-
-	@Override
-	public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random)
-    {
-		if (par5Random.nextInt(4) != 0)
-		{
-			return;
-		}
-		
-		if (par1World.getBlockId(par2 + 1, par3, par4) == 0)
-		{
-			par1World.spawnParticle("mobSpell", par2 + 1F, par3 + 0.5F, par4 + 0.5F, 0.9F, 0.9F, 1F);
-		}
-
-		if (par1World.getBlockId(par2 - 1, par3, par4) == 0)
-		{
-			par1World.spawnParticle("mobSpell", par2, par3 + 0.5F, par4 + 0.5F, 0.9F, 0.9F, 1F);
-		}
-
-		if (par1World.getBlockId(par2, par3, par4 + 1) == 0)
-		{
-			par1World.spawnParticle("mobSpell", par2 + 0.5F, par3 + 0.5F, par4 + 1F, 0.9F, 0.9F, 1F);
-		}
-
-		if (par1World.getBlockId(par2, par3, par4 - 1) == 0)
-		{
-			par1World.spawnParticle("mobSpell", par2 + 0.5F, par3 + 0.5F, par4, 0.9F, 0.9F, 1F);
-		}
     }
 }
