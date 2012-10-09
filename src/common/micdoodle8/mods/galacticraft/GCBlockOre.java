@@ -95,7 +95,10 @@ public class GCBlockOre extends Block
     {
         for (int var4 = 0; var4 < 9; ++var4)
         {
-            par3List.add(new ItemStack(par1, 1, var4));
+        	if (var4 != 1)
+        	{
+                par3List.add(new ItemStack(par1, 1, var4));
+        	}
         }
     }
 	
