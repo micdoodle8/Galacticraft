@@ -18,6 +18,7 @@ import micdoodle8.mods.galacticraft.GCEntitySludgeling;
 import micdoodle8.mods.galacticraft.GCEntitySpaceship;
 import micdoodle8.mods.galacticraft.GCEntitySpider;
 import micdoodle8.mods.galacticraft.GCEntityZombie;
+import micdoodle8.mods.galacticraft.GCItemJetpack;
 import micdoodle8.mods.galacticraft.GCItemSensorGlasses;
 import micdoodle8.mods.galacticraft.GCItems;
 import micdoodle8.mods.galacticraft.GCTileEntityTreasureChest;
@@ -82,6 +83,7 @@ public class ClientProxy extends CommonProxy
 	private static int oxygenPipeRenderID;
 	public static long getFirstBootTime;
 	public static long getCurrentTime;
+	public static int jetpackCooldown = 0;
 	private Random rand = new Random();
 	
 	@Override
@@ -149,6 +151,7 @@ public class ClientProxy extends CommonProxy
         RenderingRegistry.addNewArmourRendererPrefix("titanium");
         RenderingRegistry.addNewArmourRendererPrefix("titaniumox");
         RenderingRegistry.addNewArmourRendererPrefix("heavy");
+        RenderingRegistry.addNewArmourRendererPrefix("jetpack");
         RenderingRegistry.registerEntityRenderingHandler(GCEntityArrow.class, new GCRenderArrow());
 		MinecraftForgeClient.preloadTexture("/micdoodle8/mods/galacticraft/client/blocks/core.png");
 		MinecraftForgeClient.preloadTexture("/micdoodle8/mods/galacticraft/client/blocks/mars.png");
@@ -325,6 +328,25 @@ public class ClientProxy extends CommonProxy
     		
     		if (type.equals(EnumSet.of(TickType.CLIENT)))
             {
+    			if (jetpackCooldown > 0)
+    			{
+    				jetpackCooldown--;
+    			}
+    			
+    			FMLLog.info("" + (Math.abs((player.rotationYaw % 360)) / 360));
+        		
+        		if (player != null && world != null && player.inventory.armorItemInSlot(2) != null && player.inventory.armorItemInSlot(2).getItem().shiftedIndex == GCItems.jetpack.shiftedIndex && FMLClientHandler.instance().getClient().gameSettings.keyBindJump.pressed && player.posY < 125)
+        		{
+        			((GCItemJetpack)player.inventory.armorItemInSlot(2).getItem()).active = true;
+        			player.motionY += (0.05 - ((player.rotationPitch * 2) / 180) * 0.05);
+        			player.fallDistance = 0;
+//            		world.spawnParticle("smoke", player.posX, player.posY, player.posZ, 0, (0.05 - ((player.rotationPitch * 2) / 180) * 0.05), 0);
+//            		world.spawnParticle("smoke", player.posX, player.posY, player.posZ, 0.2, (0.05 - ((player.rotationPitch * 2) / 180) * 0.05), 0);
+//            		world.spawnParticle("smoke", player.posX, player.posY, player.posZ, -0.2, (0.05 - ((player.rotationPitch * 2) / 180) * 0.05), 0);
+//            		world.spawnParticle("smoke", player.posX, player.posY, player.posZ, 0, (0.05 - ((player.rotationPitch * 2) / 180) * 0.05), 0.2);
+//            		world.spawnParticle("smoke", player.posX, player.posY, player.posZ, 0, (0.05 - ((player.rotationPitch * 2) / 180) * 0.05), -0.2);
+        		}
+    			
     			if (player != null && player.ridingEntity != null && minecraft.gameSettings.keyBindJump.pressed)
     			{
     	    		Object[] toSend = {0};
@@ -339,6 +361,11 @@ public class ClientProxy extends CommonProxy
                     }
     			}
     			
+    			if (player != null && player.inventory.armorItemInSlot(0) != null && player.inventory.armorItemInSlot(0).getItem().shiftedIndex == GCItems.heavyBoots.shiftedIndex)
+    			{
+    				player.motionY = player.motionY - 0.062;
+    			}
+
     			if (player != null && dimension == GCConfigManager.dimensionIDMars && !player.capabilities.isFlying && !minecraft.isGamePaused && !handleLiquidMovement(player)) 
     			{
     				player.motionY = player.motionY + 0.062;

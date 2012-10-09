@@ -74,6 +74,7 @@ public class GCItems
 	public static Item ingotTitanium;
 	public static Item ingotCopper;
 	public static Item ingotAluminum;
+	public static Item jetpack;
 	
 	public static EnumArmorMaterial OXYGENMASK = EnumHelper.addArmorMaterial("OXYGENMASK", 200, new int[] {0, 0, 0, 0}, 0);
 	public static EnumArmorMaterial SENSORGLASSES = EnumHelper.addArmorMaterial("SENSORGLASSES", 200, new int[] {0, 0, 0, 0}, 0);
@@ -81,10 +82,11 @@ public class GCItems
 	public static EnumArmorMaterial QUANDRIUMARMOR = EnumHelper.addArmorMaterial("QUANDRIUM", 42, new int[] {4, 9, 7, 4}, 12);
 	public static EnumArmorMaterial ARMORDESH = EnumHelper.addArmorMaterial("DESH", 42, new int[] {4, 9, 7, 4}, 12);
 	public static EnumArmorMaterial ARMORHEAVY = EnumHelper.addArmorMaterial("HEAVY", 200, new int[] {1, 1, 1, 1}, 0);
-	public static EnumToolMaterial TOOLPLANETSTONE = EnumHelper.addToolMaterial("DESH", 0, 0, 0F, 0, 0);
+	public static EnumArmorMaterial ARMORJETPACK = EnumHelper.addArmorMaterial("JETPACK", 200, new int[] {0, 0, 0, 0}, 0);
+	public static EnumToolMaterial TOOLPLANETSTONE = EnumHelper.addToolMaterial("PLANETSTONE", 0, 0, 0F, 0, 0);
 	public static EnumToolMaterial TOOLDESH = EnumHelper.addToolMaterial("DESH", 0, 0, 0F, 0, 0);
-	public static EnumToolMaterial TOOLTITANIUM = EnumHelper.addToolMaterial("DESH", 0, 0, 0F, 0, 0);
-	public static EnumToolMaterial TOOLQUANDRIUM = EnumHelper.addToolMaterial("DESH", 0, 0, 0F, 0, 0);
+	public static EnumToolMaterial TOOLTITANIUM = EnumHelper.addToolMaterial("TITANIUM", 0, 0, 0F, 0, 0);
+	public static EnumToolMaterial TOOLQUANDRIUM = EnumHelper.addToolMaterial("QUANDRIUM", 0, 0, 0F, 0, 0);
 	
 	public static void initItems() 
 	{
@@ -146,6 +148,7 @@ public class GCItems
 		ingotTitanium = new GCItem(GCConfigManager.idItemIngotTitanium).setIconIndex(56).setItemName("ingotTitanium");
 		ingotCopper = new GCItem(GCConfigManager.idItemIngotCopper).setIconIndex(57).setItemName("ingotCopper");
 		ingotAluminum = new GCItem(GCConfigManager.idItemIngotAluminum).setIconIndex(58).setItemName("ingotAluminum");
+		jetpack = new GCItemJetpack(GCConfigManager.idArmorJetpack, ARMORJETPACK, 11, 1).setIconIndex(59).setItemName("jetpack");
 	}
 
 	public static void addNames() 
@@ -208,5 +211,6 @@ public class GCItems
 		LanguageRegistry.instance().addNameForObject(ingotTitanium, "en_US", "Titanium Ingot");
 		LanguageRegistry.instance().addNameForObject(ingotCopper, "en_US", "Copper Ingot");
 		LanguageRegistry.instance().addNameForObject(ingotAluminum, "en_US", "Aluminum Ingot");
+		LanguageRegistry.instance().addNameForObject(jetpack, "en_US", "Jetpack");
 	}
 }

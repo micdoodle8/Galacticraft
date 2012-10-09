@@ -92,6 +92,7 @@ public class GCConfigManager
 	public static int idArmorTitaniumBoots;
 	public static int idArmorTitaniumHelmetBreathable;
 	public static int idArmorHeavyBoots;
+	public static int idArmorJetpack;
 
 	// TOOLS
 	public static int idToolDeshSword;
@@ -207,6 +208,7 @@ public class GCConfigManager
 			idArmorTitaniumBoots = configuration.getOrCreateIntProperty("idArmorTitaniumBoots", 								configuration.CATEGORY_ITEM, 	9910).getInt(9910);
 			idArmorTitaniumHelmetBreathable = configuration.getOrCreateIntProperty("idArmorTitaniumHelmetBreathable", 			configuration.CATEGORY_ITEM, 	9911).getInt(9911);
 			idArmorHeavyBoots = configuration.getOrCreateIntProperty("idArmorHeavyBoots", 										configuration.CATEGORY_ITEM, 	9912).getInt(9912);
+			idArmorJetpack = configuration.getOrCreateIntProperty("idArmorJetpack", 											configuration.CATEGORY_ITEM, 	9913).getInt(9913);
 	        
 	        idGuiTankRefill = configuration.getOrCreateIntProperty("GuiIdTankRefill", 											"GUI", 							128).getInt(128);
 	        idGuiAirDistributor = configuration.getOrCreateIntProperty("idGuiAirDistributor", 									"GUI", 							129).getInt(129);
