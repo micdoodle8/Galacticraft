@@ -142,6 +142,12 @@ public class ClientProxy extends CommonProxy
         RenderingRegistry.addNewArmourRendererPrefix("oxygen");
         RenderingRegistry.addNewArmourRendererPrefix("sensor");
         RenderingRegistry.addNewArmourRendererPrefix("sensorox");
+        RenderingRegistry.addNewArmourRendererPrefix("quandrium");
+        RenderingRegistry.addNewArmourRendererPrefix("quandriumox");
+        RenderingRegistry.addNewArmourRendererPrefix("desh");
+        RenderingRegistry.addNewArmourRendererPrefix("deshox");
+        RenderingRegistry.addNewArmourRendererPrefix("titanium");
+        RenderingRegistry.addNewArmourRendererPrefix("titaniumox");
         RenderingRegistry.registerEntityRenderingHandler(GCEntityArrow.class, new GCRenderArrow());
 		MinecraftForgeClient.preloadTexture("/micdoodle8/mods/galacticraft/client/blocks/core.png");
 		MinecraftForgeClient.preloadTexture("/micdoodle8/mods/galacticraft/client/blocks/mars.png");

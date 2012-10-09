@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
@@ -66,7 +67,7 @@ public class Galacticraft
 	@PreInit
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		new GCConfigManager(event.getSuggestedConfigurationFile());
+		new GCConfigManager(new File(event.getModConfigurationDirectory(), "Galacticraft/mars.conf"));
 		
 		GCBlocks.initBlocks();
 		GCBlocks.registerBlocks();
@@ -105,7 +106,7 @@ public class Galacticraft
 	public void registerTileEntities()
 	{
         GameRegistry.registerTileEntity(GCTileEntityTreasureChest.class, "Treasure Chest");
-        GameRegistry.registerTileEntity(GCTileEntityAirDistributor.class, "Air Distributor");
+        GameRegistry.registerTileEntity(GCTileEntityOxygenDistributor.class, "Air Distributor");
         LanguageRegistry.instance().addStringLocalization("container.airdistributor", "en_US", "Oxygen Distributor");
 	}
 	
