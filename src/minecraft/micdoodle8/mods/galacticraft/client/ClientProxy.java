@@ -148,6 +148,7 @@ public class ClientProxy extends CommonProxy
         RenderingRegistry.addNewArmourRendererPrefix("deshox");
         RenderingRegistry.addNewArmourRendererPrefix("titanium");
         RenderingRegistry.addNewArmourRendererPrefix("titaniumox");
+        RenderingRegistry.addNewArmourRendererPrefix("heavy");
         RenderingRegistry.registerEntityRenderingHandler(GCEntityArrow.class, new GCRenderArrow());
 		MinecraftForgeClient.preloadTexture("/micdoodle8/mods/galacticraft/client/blocks/core.png");
 		MinecraftForgeClient.preloadTexture("/micdoodle8/mods/galacticraft/client/blocks/mars.png");

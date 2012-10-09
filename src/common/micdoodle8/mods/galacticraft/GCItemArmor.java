@@ -23,7 +23,7 @@ public class GCItemArmor extends GCItemBreathableHelmet implements IArmorTexture
 
     public String getArmorTextureFile(ItemStack itemstack)
     {
-    	if (material == GCItems.QUANDRIUM)
+    	if (material == GCItems.QUANDRIUMARMOR)
     	{
     		if (itemstack.getItem().shiftedIndex == GCItems.quandriumHelmet.shiftedIndex)
     		{
@@ -42,6 +42,51 @@ public class GCItemArmor extends GCItemBreathableHelmet implements IArmorTexture
     			return "/micdoodle8/mods/galacticraft/client/armor/quandriumox_1.png";
     		}
     	}
+    	else if (material == GCItems.ARMORDESH)
+    	{
+    		if (itemstack.getItem().shiftedIndex == GCItems.deshHelmet.shiftedIndex)
+    		{
+    			return "/micdoodle8/mods/galacticraft/client/armor/desh_1.png";
+    		}
+    		else if (itemstack.getItem().shiftedIndex == GCItems.deshChestplate.shiftedIndex || itemstack.getItem().shiftedIndex == GCItems.deshBoots.shiftedIndex)
+    		{
+    			return "/micdoodle8/mods/galacticraft/client/armor/desh_2.png";
+    		}
+    		else if (itemstack.getItem().shiftedIndex == GCItems.deshLeggings.shiftedIndex)
+    		{
+    			return "/micdoodle8/mods/galacticraft/client/armor/desh_3.png";
+    		}
+    		else if (itemstack.getItem().shiftedIndex == GCItems.deshHelmetBreathable.shiftedIndex)
+    		{
+    			return "/micdoodle8/mods/galacticraft/client/armor/deshox_1.png";
+    		}
+    	}
+    	else if (material == GCItems.TITANIUMARMOR)
+    	{
+    		if (itemstack.getItem().shiftedIndex == GCItems.titaniumHelmet.shiftedIndex)
+    		{
+    			return "/micdoodle8/mods/galacticraft/client/armor/titanium_1.png";
+    		}
+    		else if (itemstack.getItem().shiftedIndex == GCItems.titaniumChestplate.shiftedIndex || itemstack.getItem().shiftedIndex == GCItems.titaniumBoots.shiftedIndex)
+    		{
+    			return "/micdoodle8/mods/galacticraft/client/armor/titanium_2.png";
+    		}
+    		else if (itemstack.getItem().shiftedIndex == GCItems.titaniumLeggings.shiftedIndex)
+    		{
+    			return "/micdoodle8/mods/galacticraft/client/armor/titanium_3.png";
+    		}
+    		else if (itemstack.getItem().shiftedIndex == GCItems.titaniumHelmetBreathable.shiftedIndex)
+    		{
+    			return "/micdoodle8/mods/galacticraft/client/armor/titaniumox_1.png";
+    		}
+    	}
+    	else if (material == GCItems.ARMORHEAVY)
+    	{
+    		if (itemstack.getItem().shiftedIndex == GCItems.heavyBoots.shiftedIndex)
+    		{
+    			return "/micdoodle8/mods/galacticraft/client/armor/heavy_1.png";
+    		}
+    	}
 
     	return null;
     }
@@ -55,7 +100,7 @@ public class GCItemArmor extends GCItemBreathableHelmet implements IArmorTexture
     @SideOnly(Side.CLIENT)
     public EnumRarity getRarity(ItemStack par1ItemStack)
     {
-		if (this.material == GCItems.QUANDRIUM)
+		if (this.material == GCItems.QUANDRIUMARMOR)
 		{
 	        return EnumRarity.epic;
 		}

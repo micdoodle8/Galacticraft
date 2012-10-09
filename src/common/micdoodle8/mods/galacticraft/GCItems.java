@@ -77,9 +77,10 @@ public class GCItems
 	
 	public static EnumArmorMaterial OXYGENMASK = EnumHelper.addArmorMaterial("OXYGENMASK", 200, new int[] {0, 0, 0, 0}, 0);
 	public static EnumArmorMaterial SENSORGLASSES = EnumHelper.addArmorMaterial("SENSORGLASSES", 200, new int[] {0, 0, 0, 0}, 0);
-	public static EnumArmorMaterial TITANIUM = EnumHelper.addArmorMaterial("TITANIUM", 42, new int[] {4, 9, 7, 4}, 12);
-	public static EnumArmorMaterial QUANDRIUM = EnumHelper.addArmorMaterial("QUANDRIUM", 42, new int[] {4, 9, 7, 4}, 12);
-	public static EnumArmorMaterial DESH = EnumHelper.addArmorMaterial("DESH", 42, new int[] {4, 9, 7, 4}, 12);
+	public static EnumArmorMaterial TITANIUMARMOR = EnumHelper.addArmorMaterial("TITANIUM", 42, new int[] {4, 9, 7, 4}, 12);
+	public static EnumArmorMaterial QUANDRIUMARMOR = EnumHelper.addArmorMaterial("QUANDRIUM", 42, new int[] {4, 9, 7, 4}, 12);
+	public static EnumArmorMaterial ARMORDESH = EnumHelper.addArmorMaterial("DESH", 42, new int[] {4, 9, 7, 4}, 12);
+	public static EnumArmorMaterial ARMORHEAVY = EnumHelper.addArmorMaterial("HEAVY", 200, new int[] {1, 1, 1, 1}, 0);
 	public static EnumToolMaterial TOOLPLANETSTONE = EnumHelper.addToolMaterial("DESH", 0, 0, 0F, 0, 0);
 	public static EnumToolMaterial TOOLDESH = EnumHelper.addToolMaterial("DESH", 0, 0, 0F, 0, 0);
 	public static EnumToolMaterial TOOLTITANIUM = EnumHelper.addToolMaterial("DESH", 0, 0, 0F, 0, 0);
@@ -123,21 +124,28 @@ public class GCItems
 		titaniumHoe = new GCItemHoe(GCConfigManager.idToolTitaniumHoe, TOOLTITANIUM).setIconIndex(34).setItemName("titaniumHoe");
 		titaniumSpade = new GCItemSpade(GCConfigManager.idToolTitaniumSpade, TOOLTITANIUM).setIconIndex(35).setItemName("titaniumSpade");
 		titaniumSword = new GCItemSword(GCConfigManager.idToolTitaniumSword, TOOLTITANIUM).setIconIndex(36).setItemName("titaniumSword");
-		deshHelmet = new GCItemArmor(GCConfigManager.idArmorDeshHelmet, DESH, 7, 0, false).setIconIndex(37).setItemName("deshHelmet");
-		deshChestplate = new GCItemArmor(GCConfigManager.idArmorDeshChestplate, DESH, 7, 1, false).setIconIndex(38).setItemName("deshChestplate");
-		deshLeggings = new GCItemArmor(GCConfigManager.idArmorDeshLeggings, DESH, 7, 2, false).setIconIndex(39).setItemName("deshLeggings");
-		deshBoots = new GCItemArmor(GCConfigManager.idArmorDeshBoots, DESH, 7, 3, false).setIconIndex(40).setItemName("deshBoots");
-		deshHelmetBreathable = new GCItemArmor(GCConfigManager.idArmorDeshHelmetBreathable, DESH, 7, 0, true).setIconIndex(41).setItemName("deshHelmetBreathable");
-		quandriumHelmet = new GCItemArmor(GCConfigManager.idArmorQuandriumHelmet, QUANDRIUM, 8, 0, false).setIconIndex(42).setItemName("quandriumHelmet");
-		quandriumChestplate = new GCItemArmor(GCConfigManager.idArmorQuandriumChestplate, QUANDRIUM, 8, 1, false).setIconIndex(43).setItemName("quandriumChestplate");
-		quandriumLeggings = new GCItemArmor(GCConfigManager.idArmorQuandriumLeggings, QUANDRIUM, 8, 2, false).setIconIndex(44).setItemName("quandriumLeggings");
-		quandriumBoots = new GCItemArmor(GCConfigManager.idArmorQuandriumBoots, QUANDRIUM, 8, 3, false).setIconIndex(45).setItemName("quandriumBoots");
-		quandriumHelmetBreathable = new GCItemArmor(GCConfigManager.idArmorQuandriumHelmetBreathable, QUANDRIUM, 8, 0, true).setIconIndex(46).setItemName("quandriumHelmetBreathable");
-		titaniumHelmet = new GCItemArmor(GCConfigManager.idArmorTitaniumHelmet, TITANIUM, 9, 0, false).setIconIndex(47).setItemName("titaniumHelmet");
-		titaniumChestplate = new GCItemArmor(GCConfigManager.idArmorTitaniumChestplate, TITANIUM, 9, 1, false).setIconIndex(48).setItemName("titaniumChestplate");
-		titaniumLeggings = new GCItemArmor(GCConfigManager.idArmorTitaniumLeggings, TITANIUM, 9, 2, false).setIconIndex(49).setItemName("titaniumLeggings");
-		titaniumBoots = new GCItemArmor(GCConfigManager.idArmorTitaniumBoots, TITANIUM, 9, 3, false).setIconIndex(50).setItemName("titaniumBoots");
-		titaniumHelmetBreathable = new GCItemArmor(GCConfigManager.idArmorTitaniumHelmetBreathable, TITANIUM, 9, 0, true).setIconIndex(51).setItemName("titaniumHelmetBreathable");
+		deshHelmet = new GCItemArmor(GCConfigManager.idArmorDeshHelmet, ARMORDESH, 7, 0, false).setIconIndex(37).setItemName("deshHelmet");
+		deshChestplate = new GCItemArmor(GCConfigManager.idArmorDeshChestplate, ARMORDESH, 7, 1, false).setIconIndex(38).setItemName("deshChestplate");
+		deshLeggings = new GCItemArmor(GCConfigManager.idArmorDeshLeggings, ARMORDESH, 7, 2, false).setIconIndex(39).setItemName("deshLeggings");
+		deshBoots = new GCItemArmor(GCConfigManager.idArmorDeshBoots, ARMORDESH, 7, 3, false).setIconIndex(40).setItemName("deshBoots");
+		deshHelmetBreathable = new GCItemArmor(GCConfigManager.idArmorDeshHelmetBreathable, ARMORDESH, 7, 0, true).setIconIndex(41).setItemName("deshHelmetBreathable");
+		quandriumHelmet = new GCItemArmor(GCConfigManager.idArmorQuandriumHelmet, QUANDRIUMARMOR, 8, 0, false).setIconIndex(42).setItemName("quandriumHelmet");
+		quandriumChestplate = new GCItemArmor(GCConfigManager.idArmorQuandriumChestplate, QUANDRIUMARMOR, 8, 1, false).setIconIndex(43).setItemName("quandriumChestplate");
+		quandriumLeggings = new GCItemArmor(GCConfigManager.idArmorQuandriumLeggings, QUANDRIUMARMOR, 8, 2, false).setIconIndex(44).setItemName("quandriumLeggings");
+		quandriumBoots = new GCItemArmor(GCConfigManager.idArmorQuandriumBoots, QUANDRIUMARMOR, 8, 3, false).setIconIndex(45).setItemName("quandriumBoots");
+		quandriumHelmetBreathable = new GCItemArmor(GCConfigManager.idArmorQuandriumHelmetBreathable, QUANDRIUMARMOR, 8, 0, true).setIconIndex(46).setItemName("quandriumHelmetBreathable");
+		titaniumHelmet = new GCItemArmor(GCConfigManager.idArmorTitaniumHelmet, TITANIUMARMOR, 9, 0, false).setIconIndex(47).setItemName("titaniumHelmet");
+		titaniumChestplate = new GCItemArmor(GCConfigManager.idArmorTitaniumChestplate, TITANIUMARMOR, 9, 1, false).setIconIndex(48).setItemName("titaniumChestplate");
+		titaniumLeggings = new GCItemArmor(GCConfigManager.idArmorTitaniumLeggings, TITANIUMARMOR, 9, 2, false).setIconIndex(49).setItemName("titaniumLeggings");
+		titaniumBoots = new GCItemArmor(GCConfigManager.idArmorTitaniumBoots, TITANIUMARMOR, 9, 3, false).setIconIndex(50).setItemName("titaniumBoots");
+		titaniumHelmetBreathable = new GCItemArmor(GCConfigManager.idArmorTitaniumHelmetBreathable, TITANIUMARMOR, 9, 0, true).setIconIndex(51).setItemName("titaniumHelmetBreathable");
+		deshStick = new GCItem(GCConfigManager.idItemDeshStick).setIconIndex(52).setItemName("deshStick");
+		heavyBoots = new GCItemArmor(GCConfigManager.idArmorHeavyBoots, ARMORHEAVY, 10, 3, false).setIconIndex(53).setItemName("heavyBoots");
+		ingotQuandrium = new GCItem(GCConfigManager.idItemIngotQuandrium).setIconIndex(54).setItemName("ingotQuandrium");
+		ingotDesh = new GCItem(GCConfigManager.idItemIngotDesh).setIconIndex(55).setItemName("ingotDesh");
+		ingotTitanium = new GCItem(GCConfigManager.idItemIngotTitanium).setIconIndex(56).setItemName("ingotTitanium");
+		ingotCopper = new GCItem(GCConfigManager.idItemIngotCopper).setIconIndex(57).setItemName("ingotCopper");
+		ingotAluminum = new GCItem(GCConfigManager.idItemIngotAluminum).setIconIndex(58).setItemName("ingotAluminum");
 	}
 
 	public static void addNames() 
@@ -178,23 +186,27 @@ public class GCItems
 		LanguageRegistry.instance().addNameForObject(titaniumSpade, "en_US", "Titanium Spade");
 		LanguageRegistry.instance().addNameForObject(titaniumHoe, "en_US", "Titanium Hoe");
 		LanguageRegistry.instance().addNameForObject(titaniumSword, "en_US", "Titanium Sword");
-
 		LanguageRegistry.instance().addNameForObject(deshHelmet, "en_US", "Desh Helmet");
 		LanguageRegistry.instance().addNameForObject(deshChestplate, "en_US", "Desh Chestplate");
 		LanguageRegistry.instance().addNameForObject(deshLeggings, "en_US", "Desh Leggings");
 		LanguageRegistry.instance().addNameForObject(deshBoots, "en_US", "Desh Boots");
 		LanguageRegistry.instance().addNameForObject(deshHelmetBreathable, "en_US", "Breathable Desh Helmet");
-
 		LanguageRegistry.instance().addNameForObject(quandriumHelmet, "en_US", "Quandrium Helmet");
 		LanguageRegistry.instance().addNameForObject(quandriumChestplate, "en_US", "Quandrium Chestplate");
 		LanguageRegistry.instance().addNameForObject(quandriumLeggings, "en_US", "Quandrium Leggings");
 		LanguageRegistry.instance().addNameForObject(quandriumBoots, "en_US", "Quandrium Boots");
 		LanguageRegistry.instance().addNameForObject(quandriumHelmetBreathable, "en_US", "Breathable Quandrium Helmet");
-
 		LanguageRegistry.instance().addNameForObject(titaniumHelmet, "en_US", "Titanium Helmet");
 		LanguageRegistry.instance().addNameForObject(titaniumChestplate, "en_US", "Titanium Chestplate");
 		LanguageRegistry.instance().addNameForObject(titaniumLeggings, "en_US", "Titanium Leggings");
 		LanguageRegistry.instance().addNameForObject(titaniumBoots, "en_US", "Titanium Boots");
 		LanguageRegistry.instance().addNameForObject(titaniumHelmetBreathable, "en_US", "Breathable Titanium Helmet");
+		LanguageRegistry.instance().addNameForObject(deshStick, "en_US", "Desh Stick");
+		LanguageRegistry.instance().addNameForObject(heavyBoots, "en_US", "Heavy Boots");
+		LanguageRegistry.instance().addNameForObject(ingotQuandrium, "en_US", "Quandrium Ingot");
+		LanguageRegistry.instance().addNameForObject(ingotDesh, "en_US", "Refined Desh");
+		LanguageRegistry.instance().addNameForObject(ingotTitanium, "en_US", "Titanium Ingot");
+		LanguageRegistry.instance().addNameForObject(ingotCopper, "en_US", "Copper Ingot");
+		LanguageRegistry.instance().addNameForObject(ingotAluminum, "en_US", "Aluminum Ingot");
 	}
 }
