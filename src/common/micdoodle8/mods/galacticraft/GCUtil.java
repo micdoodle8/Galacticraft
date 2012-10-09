@@ -334,7 +334,7 @@ public class GCUtil
 		
 		if (level <= 50.0D)
 		{
-			return 25.0D - (level / 2.0D);
+			return 12.5D - (level / 4.0D);
 		}
 		else
 		{
