@@ -334,6 +334,18 @@ public class ClientProxy extends CommonProxy
         			player.fallDistance = 0;
             		world.spawnParticle("largesmoke", player.posX, player.posY - 1D, player.posZ, 0, -0.1, 0);
         		}
+        		else
+        		{
+        			if (player != null && player.inventory.armorItemInSlot(0) != null && player.inventory.armorItemInSlot(0).getItem().shiftedIndex == GCItems.heavyBoots.shiftedIndex)
+        			{
+        				player.motionY = player.motionY - 0.062;
+        			}
+
+        			if (player != null && dimension == GCConfigManager.dimensionIDMars && !player.capabilities.isFlying && !minecraft.isGamePaused && !handleLiquidMovement(player)) 
+        			{
+        				player.motionY = player.motionY + 0.062;
+        			}
+        		}
     			
     			if (player != null && player.ridingEntity != null && minecraft.gameSettings.keyBindJump.pressed)
     			{
@@ -347,16 +359,6 @@ public class ClientProxy extends CommonProxy
                     {
     					world.provider.setSkyProvider(new GCSkyProvider());
                     }
-    			}
-    			
-    			if (player != null && player.inventory.armorItemInSlot(0) != null && player.inventory.armorItemInSlot(0).getItem().shiftedIndex == GCItems.heavyBoots.shiftedIndex)
-    			{
-    				player.motionY = player.motionY - 0.062;
-    			}
-
-    			if (player != null && dimension == GCConfigManager.dimensionIDMars && !player.capabilities.isFlying && !minecraft.isGamePaused && !handleLiquidMovement(player)) 
-    			{
-    				player.motionY = player.motionY + 0.062;
     			}
             }
         }
