@@ -44,7 +44,7 @@ public class GCChunkProvider extends ChunkProviderGenerate implements IChunkProv
 
 	public GCBiomeDecorator biomedecoratorplanet = new GCBiomeDecorator(GCBiomeGenBase.marsFlat);
 	
-//    private GCMapGenCreeperNest creeperNest = new GCMapGenCreeperNest();
+    private GCMapGenCreeperNest creeperNest = new GCMapGenCreeperNest();
 
 	private World worldObj;
 
@@ -278,7 +278,7 @@ public class GCChunkProvider extends ChunkProviderGenerate implements IChunkProv
 			var5[var6] = (byte) this.biomesForGeneration[var6].biomeID;
 		}
 
-//		this.creeperNest.generate(this, this.worldObj, par1, par2, var3);
+		this.creeperNest.generate(this, this.worldObj, par1, par2, var3);
 		var4.generateSkylightMap();
 		return var4;
 	}
@@ -459,7 +459,7 @@ public class GCChunkProvider extends ChunkProviderGenerate implements IChunkProv
 		int var14;
 
 		this.decoratePlanet(this.worldObj, this.rand, var4, var5);
-//		this.creeperNest.generateStructuresInChunk(this.worldObj, new Random(), par2, par3);
+		this.creeperNest.generateStructuresInChunk(this.worldObj, new Random(), par2, par3);
 		var4 += 8;
 		var5 += 8;
 

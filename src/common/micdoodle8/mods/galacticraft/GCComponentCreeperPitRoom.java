@@ -38,14 +38,14 @@ public class GCComponentCreeperPitRoom extends GCStructureComponent
     @Override
     public void buildComponent(StructureComponent par1StructureComponent, List par2List, Random par3Random) 
     {
-        int var4;
-        
-        for (var4 = 0; var4 < 4; ++var4)
-        {
-            int[] var5 = this.getValidOpening(par3Random, var4);
-            
-            this.makeCorridor(par2List, par3Random, 1, var5[0], var5[1], var5[2], this.width, 7, var4);
-        }
+//        int var4;
+//        
+//        for (var4 = 0; var4 < 4; ++var4)
+//        {
+//            int[] var5 = this.getValidOpening(par3Random, var4);
+//            
+//            this.makeCorridor(par2List, par3Random, 1, var5[0], var5[1], var5[2], this.width, 7, var4);
+//        }
     }
     
     public int[] getValidOpening(Random var1, int var2)
