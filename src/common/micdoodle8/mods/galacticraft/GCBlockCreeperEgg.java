@@ -5,6 +5,7 @@ import java.util.Random;
 import net.minecraft.src.BlockDragonEgg;
 import net.minecraft.src.BlockSand;
 import net.minecraft.src.EntityFallingSand;
+import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.Material;
 import net.minecraft.src.World;
 import cpw.mods.fml.common.Side;
@@ -36,6 +37,21 @@ public class GCBlockCreeperEgg extends BlockDragonEgg
     public int getRenderType()
     {
         return 27;
+    }
+    
+    public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
+    {
+    	
+    }
+    
+    public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
+    {
+        return false;
+    }
+    
+    public void onBlockClicked(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer)
+    {
+    	
     }
 
     @SideOnly(Side.CLIENT)
