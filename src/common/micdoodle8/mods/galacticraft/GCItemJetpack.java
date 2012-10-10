@@ -4,10 +4,10 @@ import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EnumArmorMaterial;
+import net.minecraft.src.Item;
 import net.minecraft.src.ItemArmor;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.World;
-import cpw.mods.fml.common.FMLLog;
 
 public class GCItemJetpack extends ItemArmor
 {
@@ -30,7 +30,10 @@ public class GCItemJetpack extends ItemArmor
     		
     		if (Galacticraft.instance.tick % 100 == 0)
     		{
-    			itemstack.damageItem(1, player);
+    			if (!player.capabilities.isCreativeMode)
+    			{
+        			player.inventory.consumeInventoryItem(Item.coal.shiftedIndex);
+    			}
     		}
     	}
     }
