@@ -33,11 +33,6 @@ public class GCItemJetpack extends ItemArmor
     			itemstack.damageItem(1, player);
     		}
     	}
-    	
-    	if (this.active)
-    	{
-    		FMLLog.info("sdasd");
-    	}
     }
 
 	@Override

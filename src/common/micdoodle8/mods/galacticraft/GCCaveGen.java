@@ -99,8 +99,6 @@ public class GCCaveGen
         }
 
         int var27 = var25.nextInt(par16 / 2) + par16 / 4;
-        
-        FMLLog.info("" + (origXChunkCoord + 20) + " " + (40 * heightMultiplier) + " " + (origZChunkCoord + 20));
 
         for (boolean var28 = var25.nextInt(6) == 0; par15 < par16; ++par15)
         {
