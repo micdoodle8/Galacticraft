@@ -51,8 +51,8 @@ public class GCBlocks
 		creeperDungeonWall = 								new GCBlockCreeperDungeonWall	(GCConfigManager.idBlockCreeperDungeonWall,     	22, Material.rock)		.setHardness(5.0F)      .setResistance(100F)    .setLightValue(0F)								.setCreativeTab(CreativeTabs.tabDecorations)       	.setStepSound(Block.soundStoneFootstep)					.setBlockName("creeperDungeonWall");
 		treasureChest = 									new GCBlockTreasureChest		(GCConfigManager.idBlockTreasureChest)										.setHardness(1.0F)      .setResistance(10.0F)   												.setCreativeTab(CreativeTabs.tabDecorations)       	.setStepSound(Block.soundStoneFootstep)                 .setBlockName("treasureChest");
 		landingPad = 										new GCBlockLandingPad			(GCConfigManager.idBlockLandingPad,					24)						.setHardness(1.0F)      .setResistance(10.0F)  	 												.setCreativeTab(CreativeTabs.tabDecorations)       	.setStepSound(Block.soundStoneFootstep)                 .setBlockName("landingPad");
-		bacterialSludgeStill = 								new GCBlockStationary 			(GCConfigManager.idBlockBacterialSludgeStill,  		237, bacterialSludge)	.setHardness(0.0F)								.setLightValue(0.2F)	.setLightOpacity(3)		.setCreativeTab(CreativeTabs.tabDecorations)																.setBlockName("bacterialSludgeStill");
-		bacterialSludgeMoving = 							new GCBlockFlowing 				(GCConfigManager.idBlockBacterialSludgeMoving, 		237, bacterialSludge)	.setHardness(0.0F)								.setLightValue(0.2F)	.setLightOpacity(3)		.setCreativeTab(CreativeTabs.tabDecorations)																.setBlockName("bacterialSludgeMoving");
+		bacterialSludgeStill = 								new GCBlockStationary 			(GCConfigManager.idBlockBacterialSludgeStill,  		237, bacterialSludge)	.setHardness(0.0F)								.setLightValue(0.2F)	.setLightOpacity(3)		.setCreativeTab((CreativeTabs)null)																			.setBlockName("bacterialSludgeStill");
+		bacterialSludgeMoving = 							new GCBlockFlowing 				(GCConfigManager.idBlockBacterialSludgeMoving, 		237, bacterialSludge)	.setHardness(0.0F)								.setLightValue(0.2F)	.setLightOpacity(3)		.setCreativeTab((CreativeTabs)null)																			.setBlockName("bacterialSludgeMoving");
 		unlitTorch = (GCBlockUnlitTorch) 					new GCBlockUnlitTorch 			(GCConfigManager.idBlockUnlitTorch,             	37, false)				.setHardness(0.0F)								.setLightValue(0.2F)							.setCreativeTab((CreativeTabs)null)					.setStepSound(Block.soundWoodFootstep)					.setBlockName("unlitTorch");
 		unlitTorchLit = (GCBlockUnlitTorch) 				new GCBlockUnlitTorch 			(GCConfigManager.idBlockUnlitTorchLit,             	37, true)				.setHardness(0.0F)								.setLightValue(0.9375F)							.setCreativeTab((CreativeTabs)null)					.setStepSound(Block.soundWoodFootstep)					.setBlockName("unlitTorchLit");
 		airDistributor = (GCBlockOxygenDistributor)			new GCBlockOxygenDistributor	(GCConfigManager.idBlockAirDistributor, false)								.setHardness(3.5F)																				.setCreativeTab(CreativeTabs.tabDecorations)		.setStepSound(Block.soundStoneFootstep)					.setBlockName("distributor");
@@ -96,29 +96,63 @@ public class GCBlocks
 
 	public static void addNames() 
 	{
-		LanguageRegistry.instance().addNameForObject(marsStone, 			"en_US", 				"Stone");
-		LanguageRegistry.instance().addNameForObject(marsDirt, 				"en_US", 				"Dirt");
-		LanguageRegistry.instance().addNameForObject(marsGrass, 			"en_US", 				"Grass");
-		LanguageRegistry.instance().addNameForObject(marsCobblestone, 		"en_US", 				"Cobblestone");
-		LanguageRegistry.instance().addNameForObject(creeperEgg, 			"en_US", 				"Creeper Egg");
-		LanguageRegistry.instance().addNameForObject(creeperDungeonWall,	"en_US", 				"Creeper Dungeon Wall");
-		LanguageRegistry.instance().addNameForObject(treasureChest,			"en_US", 				"Treasure Chest");
-		LanguageRegistry.instance().addNameForObject(landingPad,			"en_US", 				"Landing Pad");
-		LanguageRegistry.instance().addNameForObject(bacterialSludgeStill,	"en_US", 				"Bacterial Sludge Still");
-		LanguageRegistry.instance().addNameForObject(bacterialSludgeMoving,	"en_US", 				"Bacterial Sludge Moving");
-		LanguageRegistry.instance().addNameForObject(unlitTorch,			"en_US", 				"Torch");
-		LanguageRegistry.instance().addNameForObject(unlitTorchLit,			"en_US", 				"Torch");
-		LanguageRegistry.instance().addNameForObject(airDistributor,		"en_US", 				"Air Distributor");
-		LanguageRegistry.instance().addNameForObject(airDistributorActive,	"en_US", 				"Air Distributor Active");
-		LanguageRegistry.instance().addStringLocalization("tile.blockores.desh.name", 				"Desh Ore");
-		LanguageRegistry.instance().addStringLocalization("tile.blockores.electrum.name", 			"Electrum Ore");
-		LanguageRegistry.instance().addStringLocalization("tile.blockores.quandrium.name", 			"Quandrium Ore");
-		LanguageRegistry.instance().addStringLocalization("tile.blockores.aluminumearth.name", 		"Aluminum Ore");
-		LanguageRegistry.instance().addStringLocalization("tile.blockores.aluminummars.name", 		"Aluminum Ore");
-		LanguageRegistry.instance().addStringLocalization("tile.blockores.copperearth.name", 		"Copper Ore");
-		LanguageRegistry.instance().addStringLocalization("tile.blockores.coppermars.name", 		"Copper Ore");
-		LanguageRegistry.instance().addStringLocalization("tile.blockores.titaniumearth.name", 		"Titanium Ore");
-		LanguageRegistry.instance().addStringLocalization("tile.blockores.titaniummars.name", 		"Titanium Ore");
-		LanguageRegistry.instance().addNameForObject(blockAirCollector,	"en_US", 					"Air Collector");
+		addName(marsStone);
+		addName(marsDirt);
+		addName(marsGrass);
+		addName(marsCobblestone);
+		addName(creeperEgg);
+		addName(creeperDungeonWall);
+		addName(treasureChest);
+		addName(landingPad);
+		addName(unlitTorch);
+		addName(unlitTorchLit);
+		addName(airDistributor);
+		addName(airDistributorActive);
+		addName(oxygenPipe);
+		addNameWithMetadata("tile.blockores.desh.name");
+		addNameWithMetadata("tile.blockores.electrum.name");
+		addNameWithMetadata("tile.blockores.quandrium.name");
+		addNameWithMetadata("tile.blockores.aluminumearth.name");
+		addNameWithMetadata("tile.blockores.aluminummars.name");
+		addNameWithMetadata("tile.blockores.copperearth.name");
+		addNameWithMetadata("tile.blockores.coppermars.name");
+		addNameWithMetadata("tile.blockores.titaniumearth.name");
+		addNameWithMetadata("tile.blockores.titaniummars.name");
+		addName(blockAirCollector);
+		
+//		LanguageRegistry.instance().addNameForObject(marsStone, 			"en_US", 				"Stone");
+//		LanguageRegistry.instance().addNameForObject(marsDirt, 				"en_US", 				"Dirt");
+//		LanguageRegistry.instance().addNameForObject(marsGrass, 			"en_US", 				"Grass");
+//		LanguageRegistry.instance().addNameForObject(marsCobblestone, 		"en_US", 				"Cobblestone");
+//		LanguageRegistry.instance().addNameForObject(creeperEgg, 			"en_US", 				"Creeper Egg");
+//		LanguageRegistry.instance().addNameForObject(creeperDungeonWall,	"en_US", 				"Creeper Dungeon Wall");
+//		LanguageRegistry.instance().addNameForObject(treasureChest,			"en_US", 				"Treasure Chest");
+//		LanguageRegistry.instance().addNameForObject(landingPad,			"en_US", 				"Landing Pad");
+//		LanguageRegistry.instance().addNameForObject(bacterialSludgeStill,	"en_US", 				"Bacterial Sludge Still");
+//		LanguageRegistry.instance().addNameForObject(bacterialSludgeMoving,	"en_US", 				"Bacterial Sludge Moving");
+//		LanguageRegistry.instance().addNameForObject(unlitTorch,			"en_US", 				"Torch");
+//		LanguageRegistry.instance().addNameForObject(unlitTorchLit,			"en_US", 				"Torch");
+//		LanguageRegistry.instance().addNameForObject(airDistributor,		"en_US", 				"Air Distributor");
+//		LanguageRegistry.instance().addNameForObject(airDistributorActive,	"en_US", 				"Air Distributor Active");
+//		LanguageRegistry.instance().addStringLocalization("tile.blockores.desh.name", 				"Desh Ore");
+//		LanguageRegistry.instance().addStringLocalization("tile.blockores.electrum.name", 			"Electrum Ore");
+//		LanguageRegistry.instance().addStringLocalization("tile.blockores.quandrium.name", 			"Quandrium Ore");
+//		LanguageRegistry.instance().addStringLocalization("tile.blockores.aluminumearth.name", 		"Aluminum Ore");
+//		LanguageRegistry.instance().addStringLocalization("tile.blockores.aluminummars.name", 		"Aluminum Ore");
+//		LanguageRegistry.instance().addStringLocalization("tile.blockores.copperearth.name", 		"Copper Ore");
+//		LanguageRegistry.instance().addStringLocalization("tile.blockores.coppermars.name", 		"Copper Ore");
+//		LanguageRegistry.instance().addStringLocalization("tile.blockores.titaniumearth.name", 		"Titanium Ore");
+//		LanguageRegistry.instance().addStringLocalization("tile.blockores.titaniummars.name", 		"Titanium Ore");
+//		LanguageRegistry.instance().addNameForObject(blockAirCollector,	"en_US", 					"Air Collector");
+	}
+	
+	private static void addName(Block block)
+	{
+        LanguageRegistry.instance().addStringLocalization(block.getBlockName() + ".name", Galacticraft.lang.get(block.getBlockName() + ".name"));
+	}
+	
+	private static void addNameWithMetadata(String string)
+	{
+        LanguageRegistry.instance().addStringLocalization(string, Galacticraft.lang.get(string));
 	}
 }
