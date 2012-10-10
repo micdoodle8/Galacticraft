@@ -71,6 +71,10 @@ public class GCConfigManager
 	public static int idItemIngotTitanium;
 	public static int idItemIngotCopper;
 	public static int idItemIngotAluminum;
+	public static int idItemAluminumCanister;
+	public static int idItemAirVent;
+	public static int idItemOxygenConcentrator;
+	public static int idItemFan;
 	
 	// ARMOR
 	public static int idArmorOxygenMask;
@@ -170,6 +174,10 @@ public class GCConfigManager
 			idItemIngotTitanium = configuration.getOrCreateIntProperty("idItemIngotTitanium", 									configuration.CATEGORY_ITEM, 	9874).getInt(9874);
 			idItemIngotCopper = configuration.getOrCreateIntProperty("idItemIngotCopper", 										configuration.CATEGORY_ITEM, 	9875).getInt(9875);
 			idItemIngotAluminum = configuration.getOrCreateIntProperty("idItemIngotAluminum", 									configuration.CATEGORY_ITEM, 	9876).getInt(9876);
+			idItemAluminumCanister = configuration.getOrCreateIntProperty("idItemAluminumCanister", 							configuration.CATEGORY_ITEM, 	9914).getInt(9914);
+			idItemAirVent = configuration.getOrCreateIntProperty("idItemAirVent", 												configuration.CATEGORY_ITEM, 	9915).getInt(9915);
+			idItemOxygenConcentrator = configuration.getOrCreateIntProperty("idItemOxygenConcentrator", 						configuration.CATEGORY_ITEM, 	9916).getInt(9916);
+			idItemFan = configuration.getOrCreateIntProperty("idItemFan", 														configuration.CATEGORY_ITEM, 	9917).getInt(9917);
 
 			idToolPlanetStoneSword = configuration.getOrCreateIntProperty("idToolPlanetStoneSword", 							configuration.CATEGORY_ITEM, 	9877).getInt(9877);
 			idToolPlanetStonePickaxe = configuration.getOrCreateIntProperty("idToolPlanetStonePickaxe", 						configuration.CATEGORY_ITEM, 	9878).getInt(9878);

@@ -75,6 +75,10 @@ public class GCItems
 	public static Item ingotCopper;
 	public static Item ingotAluminum;
 	public static Item jetpack;
+	public static Item aluminumCanister;
+	public static Item airVent;
+	public static Item airFan;
+	public static Item oxygenConcentrator;
 	
 	public static EnumArmorMaterial OXYGENMASK = EnumHelper.addArmorMaterial("OXYGENMASK", 200, new int[] {0, 0, 0, 0}, 0);
 	public static EnumArmorMaterial SENSORGLASSES = EnumHelper.addArmorMaterial("SENSORGLASSES", 200, new int[] {0, 0, 0, 0}, 0);
@@ -149,6 +153,10 @@ public class GCItems
 		ingotCopper = new GCItem(GCConfigManager.idItemIngotCopper).setIconIndex(57).setItemName("ingotCopper");
 		ingotAluminum = new GCItem(GCConfigManager.idItemIngotAluminum).setIconIndex(58).setItemName("ingotAluminum");
 		jetpack = new GCItemJetpack(GCConfigManager.idArmorJetpack, ARMORJETPACK, 11, 1).setIconIndex(59).setItemName("jetpack");
+		aluminumCanister = new GCItem(GCConfigManager.idItemAluminumCanister).setIconIndex(60).setItemName("aluminumCanister");
+		airVent = new GCItem(GCConfigManager.idItemAirVent).setIconIndex(61).setItemName("airVent");
+		airFan = new GCItem(GCConfigManager.idItemFan).setIconIndex(62).setItemName("airFan");
+		oxygenConcentrator = new GCItem(GCConfigManager.idItemOxygenConcentrator).setIconIndex(63).setItemName("oxygenConcentrator");
 	}
 
 	public static void addNames() 
@@ -212,5 +220,9 @@ public class GCItems
 		LanguageRegistry.instance().addNameForObject(ingotCopper, "en_US", "Copper Ingot");
 		LanguageRegistry.instance().addNameForObject(ingotAluminum, "en_US", "Aluminum Ingot");
 		LanguageRegistry.instance().addNameForObject(jetpack, "en_US", "Jetpack");
+		LanguageRegistry.instance().addNameForObject(aluminumCanister, "en_US", "Aluminum Canister");
+		LanguageRegistry.instance().addNameForObject(airVent, "en_US", "Air Vent");
+		LanguageRegistry.instance().addNameForObject(airFan, "en_US", "Air Fan");
+		LanguageRegistry.instance().addNameForObject(oxygenConcentrator, "en_US", "Oxygen Concentrator");
 	}
 }

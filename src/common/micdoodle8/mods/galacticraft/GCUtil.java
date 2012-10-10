@@ -12,13 +12,14 @@ import java.util.Random;
 import net.minecraft.src.Block;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.Packet250CustomPayload;
-import net.minecraft.src.StructureBoundingBox;
 import net.minecraft.src.TileEntityChest;
 import net.minecraft.src.World;
 import net.minecraft.src.WorldProvider;
 import net.minecraftforge.common.DimensionManager;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 /**
  * Copyright 2012, micdoodle8
@@ -28,6 +29,67 @@ import net.minecraftforge.common.DimensionManager;
  */
 public class GCUtil 
 {
+	public static void addRecipes()
+	{
+		GameRegistry.addRecipe(new ItemStack(GCItems.aluminumCanister, 3), new Object[] {
+			"X X",
+			"X X",
+			"XXX",
+			'X', GCItems.ingotAluminum
+		});
+		GameRegistry.addRecipe(new ItemStack(GCItems.lightOxygenTankEmpty, 1), new Object[] {
+			"XYX",
+			"ZWZ",
+			"ZAZ",
+			'X', Item.ingotIron, 
+			'Y', Block.button, 
+			'Z', GCItems.ingotAluminum, 
+			'W', GCItems.aluminumCanister,
+			'A', GCItems.ingotTitanium
+		});
+		GameRegistry.addRecipe(new ItemStack(GCItems.medOxygenTankEmpty, 1), new Object[] {
+			"XXX",
+			"ZWZ",
+			"ZAZ",
+			'X', GCItems.ingotAluminum, 
+			'Z', GCItems.ingotDesh, 
+			'W', GCItems.lightOxygenTankEmpty,
+			'A', GCItems.ingotTitanium
+		});
+		GameRegistry.addRecipe(new ItemStack(GCItems.medOxygenTankFull, 1), new Object[] {
+			"XXX",
+			"ZWZ",
+			"ZAZ",
+			'X', GCItems.ingotAluminum, 
+			'Z', GCItems.ingotDesh, 
+			'W', GCItems.lightOxygenTankFull,
+			'A', GCItems.ingotTitanium
+		});
+		GameRegistry.addRecipe(new ItemStack(GCItems.heavyOxygenTankEmpty, 1), new Object[] {
+			"XXX",
+			"ZWZ",
+			"ZAZ",
+			'X', GCItems.ingotDesh, 
+			'Z', GCItems.ingotTitanium, 
+			'W', GCItems.medOxygenTankEmpty,
+			'A', GCItems.ingotQuandrium
+		});
+		GameRegistry.addRecipe(new ItemStack(GCItems.heavyOxygenTankFull, 1), new Object[] {
+			"XXX",
+			"ZWZ",
+			"ZAZ",
+			'X', GCItems.ingotDesh, 
+			'Z', GCItems.ingotTitanium, 
+			'W', GCItems.medOxygenTankFull,
+			'A', GCItems.ingotQuandrium
+		});
+		GameRegistry.addRecipe(new ItemStack(GCBlocks.blockAirCollector), new Object[] {
+			"", // TODO
+			"",
+			"",
+		});
+	}
+	
 	public static Packet250CustomPayload createPacket(String channel, int packetID, Object[] input)
     {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
