@@ -12,6 +12,7 @@ import net.minecraft.src.Potion;
 import net.minecraft.src.PotionEffect;
 import net.minecraft.src.ServerPlayerAPI;
 import net.minecraft.src.ServerPlayerBase;
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
 
@@ -123,6 +124,11 @@ public class GCPlayerBaseServer extends ServerPlayerBase
 		if (handleBacterialMovement(player) && !player.capabilities.isCreativeMode && !player.isPotionActive(Potion.poison))
 		{
 			player.addPotionEffect(new PotionEffect(Potion.poison.id, 40, 0));
+		}
+		
+		if (Galacticraft.instance.tick % 100 == 0 && player.inventory.armorItemInSlot(2) != null && player.inventory.armorItemInSlot(2).getItem().shiftedIndex == GCItems.jetpack.shiftedIndex)
+		{
+			player.inventory.armorItemInSlot(2).damageItem(1, player);
 		}
 
 		ItemStack tankInSlot = playerTankInventory.getStackInSlot(0);

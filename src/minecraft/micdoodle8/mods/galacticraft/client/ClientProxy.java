@@ -83,7 +83,6 @@ public class ClientProxy extends CommonProxy
 	private static int oxygenPipeRenderID;
 	public static long getFirstBootTime;
 	public static long getCurrentTime;
-	public static int jetpackCooldown = 0;
 	private Random rand = new Random();
 	
 	@Override
@@ -328,23 +327,12 @@ public class ClientProxy extends CommonProxy
     		
     		if (type.equals(EnumSet.of(TickType.CLIENT)))
             {
-    			if (jetpackCooldown > 0)
-    			{
-    				jetpackCooldown--;
-    			}
-    			
-    			FMLLog.info("" + (Math.abs((player.rotationYaw % 360)) / 360));
-        		
         		if (player != null && world != null && player.inventory.armorItemInSlot(2) != null && player.inventory.armorItemInSlot(2).getItem().shiftedIndex == GCItems.jetpack.shiftedIndex && FMLClientHandler.instance().getClient().gameSettings.keyBindJump.pressed && player.posY < 125)
         		{
-        			((GCItemJetpack)player.inventory.armorItemInSlot(2).getItem()).active = true;
-        			player.motionY += (0.05 - ((player.rotationPitch * 2) / 180) * 0.05);
+        			((GCItemJetpack)player.inventory.armorItemInSlot(2).getItem()).setActive();
+        			player.motionY += (0.05 + ((player.rotationPitch * 2) / 180) * 0.05);
         			player.fallDistance = 0;
-//            		world.spawnParticle("smoke", player.posX, player.posY, player.posZ, 0, (0.05 - ((player.rotationPitch * 2) / 180) * 0.05), 0);
-//            		world.spawnParticle("smoke", player.posX, player.posY, player.posZ, 0.2, (0.05 - ((player.rotationPitch * 2) / 180) * 0.05), 0);
-//            		world.spawnParticle("smoke", player.posX, player.posY, player.posZ, -0.2, (0.05 - ((player.rotationPitch * 2) / 180) * 0.05), 0);
-//            		world.spawnParticle("smoke", player.posX, player.posY, player.posZ, 0, (0.05 - ((player.rotationPitch * 2) / 180) * 0.05), 0.2);
-//            		world.spawnParticle("smoke", player.posX, player.posY, player.posZ, 0, (0.05 - ((player.rotationPitch * 2) / 180) * 0.05), -0.2);
+            		world.spawnParticle("largesmoke", player.posX, player.posY - 1D, player.posZ, 0, -0.1, 0);
         		}
     			
     			if (player != null && player.ridingEntity != null && minecraft.gameSettings.keyBindJump.pressed)

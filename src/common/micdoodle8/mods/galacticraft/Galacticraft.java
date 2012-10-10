@@ -11,11 +11,13 @@ import net.minecraft.src.Block;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EntityPlayerMP;
 import net.minecraft.src.ItemStack;
+import net.minecraft.src.ModLoader;
 import net.minecraft.src.NetworkManager;
 import net.minecraft.src.Packet250CustomPayload;
 import net.minecraft.src.Packet9Respawn;
 import net.minecraft.src.ServerPlayerAPI;
 import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.IScheduledTickHandler;
@@ -112,19 +114,19 @@ public class Galacticraft
 	
 	public void registerCreatures()
 	{
-		registerGalacticraftCreature(GCEntityCreeperBoss.class, "Creeper Boss", 202, 894731, 0);
-		registerGalacticraftCreature(GCEntitySpider.class, "Evolved Spider", 205, 3419431, 11013646);
-		registerGalacticraftCreature(GCEntityZombie.class, "Evolved Zombie", 206, 44975, 7969893);
-		registerGalacticraftCreature(GCEntityCreeper.class, "Evolved Creeper", 207, 894731, 0);
-		registerGalacticraftCreature(GCEntitySkeleton.class, "Evolved Skeleton", 208, 12698049, 4802889);
-		registerGalacticraftCreature(GCEntitySludgeling.class, "Sludgeling", 210, 12698049, 4802889);
+		registerGalacticraftCreature(GCEntityCreeperBoss.class, "Creeper Boss", 894731, 0);
+		registerGalacticraftCreature(GCEntitySpider.class, "Evolved Spider", 3419431, 11013646);
+		registerGalacticraftCreature(GCEntityZombie.class, "Evolved Zombie", 44975, 7969893);
+		registerGalacticraftCreature(GCEntityCreeper.class, "Evolved Creeper", 894731, 0);
+		registerGalacticraftCreature(GCEntitySkeleton.class, "Evolved Skeleton", 12698049, 4802889);
+		registerGalacticraftCreature(GCEntitySludgeling.class, "Sludgeling", 25600, 0);
 	}
 	
 	public void registerOtherEntities()
 	{
-        EntityRegistry.registerModEntity(GCEntityProjectileTNT.class, "Projectile TNT", 203, this, 150, 5, true);
-        EntityRegistry.registerModEntity(GCEntitySpaceship.class, "Spaceship", 204, this, 150, 5, true);
-        EntityRegistry.registerModEntity(GCEntityArrow.class, "Gravity Arrow", 209, this, 150, 5, true);
+		registerGalacticraftNonMobEntity(GCEntityProjectileTNT.class, "Projectile TNT", 150, 5, true);
+		registerGalacticraftNonMobEntity(GCEntitySpaceship.class, "Spaceship", 150, 5, true);
+		registerGalacticraftNonMobEntity(GCEntityArrow.class, "Gravity Arrow", 150, 5, true);
 	}
 	
 	@PostInit
@@ -142,11 +144,19 @@ public class Galacticraft
         NetworkRegistry.instance().registerChannel(new ServerPacketHandler(), "Galacticraft", Side.SERVER);
 	}
 
-    public void registerGalacticraftCreature(Class var0, String var1, int var2, int back, int fore)
+    public void registerGalacticraftCreature(Class var0, String var1, int back, int fore)
     {
-        EntityRegistry.registerGlobalEntityID(var0, var1, var2, back, fore);
-        EntityRegistry.registerModEntity(var0, var1, var2, instance, 80, 3, true);
+    	int id = EntityRegistry.findGlobalUniqueEntityId();
+        EntityRegistry.registerGlobalEntityID(var0, var1, id, back, fore);
+        EntityRegistry.registerModEntity(var0, var1, id, instance, 80, 3, true);
 		LanguageRegistry.instance().addStringLocalization("entity." + var1 + ".name", "en_US", var1);
+    }
+    
+    public void registerGalacticraftNonMobEntity(Class var0, String var1, int trackingDistance, int updateFreq, boolean sendVel)
+    {
+    	int id = EntityRegistry.findGlobalUniqueEntityId();
+        EntityRegistry.registerGlobalEntityID(var0, var1, id);
+        EntityRegistry.registerModEntity(var0, var1, id, this, trackingDistance, updateFreq, sendVel);
     }
 	
 	public class CommonTickHandler implements ITickHandler

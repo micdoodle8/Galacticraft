@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft;
 
-import micdoodle8.mods.galacticraft.client.ClientProxy;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityPlayer;
@@ -8,10 +7,7 @@ import net.minecraft.src.EnumArmorMaterial;
 import net.minecraft.src.ItemArmor;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.World;
-import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.common.Side;
-import cpw.mods.fml.common.asm.SideOnly;
 
 public class GCItemJetpack extends ItemArmor
 {
@@ -32,15 +28,15 @@ public class GCItemJetpack extends ItemArmor
     	{
     		EntityPlayer player = (EntityPlayer) entity;
     		
-    		if (ClientProxy.jetpackCooldown <= 0)
+    		if (Galacticraft.instance.tick % 100 == 0)
     		{
     			itemstack.damageItem(1, player);
-    			ClientProxy.jetpackCooldown = 100;
     		}
     	}
     	
     	if (this.active)
     	{
+    		FMLLog.info("sdasd");
     	}
     }
 
@@ -48,5 +44,10 @@ public class GCItemJetpack extends ItemArmor
 	public String getTextureFile()
 	{
 		return "/micdoodle8/mods/galacticraft/client/items/core.png";
+	}
+	
+	public void setActive()
+	{
+		this.active = true;
 	}
 }
