@@ -124,6 +124,9 @@ public class GCConfigManager
 	public static int idGuiTankRefill;
 	public static int idGuiAirDistributor;
 	
+	// ACHIEVEMENTS
+	public static int idAchievBase;
+	
 	private void setDefaultValues()
     {
 		try
@@ -220,6 +223,8 @@ public class GCConfigManager
 	        
 	        idGuiTankRefill = configuration.getOrCreateIntProperty("GuiIdTankRefill", 											"GUI", 							128).getInt(128);
 	        idGuiAirDistributor = configuration.getOrCreateIntProperty("idGuiAirDistributor", 									"GUI", 							129).getInt(129);
+	        
+	        idAchievBase = configuration.getOrCreateIntProperty("idAchievBase", 												"Achievements", 				1784).getInt(1784);
 		}
 		catch (Exception e)
 		{
