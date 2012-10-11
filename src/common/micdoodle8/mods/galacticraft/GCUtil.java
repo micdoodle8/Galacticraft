@@ -12,6 +12,7 @@ import java.util.Random;
 import net.minecraft.src.Block;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.FurnaceRecipes;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.Packet250CustomPayload;
@@ -29,7 +30,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
  */
 public class GCUtil 
 {
-	public static void addRecipes()
+	public static void addCraftingRecipes()
 	{
 		GameRegistry.addRecipe(new ItemStack(GCItems.aluminumCanister, 3), new Object[] {
 			"X X",
@@ -84,10 +85,31 @@ public class GCUtil
 			'A', GCItems.ingotQuandrium
 		});
 		GameRegistry.addRecipe(new ItemStack(GCBlocks.blockAirCollector), new Object[] {
-			"", // TODO
-			"",
-			"",
+			"aba",
+			"cdc",
+			"aea",
+			'a', GCItems.airFan, 
+			'b', GCItems.oxygenConcentrator, 
+			'c', GCItems.airVent,
+			'd', GCItems.aluminumCanister,
+			'e', GCItems.ingotTitanium
 		});
+		GameRegistry.addRecipe(new ItemStack(GCBlocks.airDistributor), new Object[] {
+			"aba",
+			"cdc",
+			"eee",
+			'a', GCItems.ingotDesh, 
+			'b', GCItems.airFan, 
+			'c', GCItems.airVent,
+			'd', GCItems.aluminumCanister,
+			'e', GCItems.ingotQuandrium
+		});
+	}
+	
+	public static void addSmeltingRecipes()
+	{
+		FurnaceRecipes.smelting().addSmelting(GCItems.rawDesh.shiftedIndex, new ItemStack(GCItems.ingotDesh, 1), 0.2F);
+		FurnaceRecipes.smelting().addSmelting(GCBlocks.blockOres.blockID, 2, new ItemStack(GCItems.ingotQuandrium, 1), 1F);
 	}
 	
 	public static Packet250CustomPayload createPacket(String channel, int packetID, Object[] input)

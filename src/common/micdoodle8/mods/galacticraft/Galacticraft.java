@@ -103,6 +103,7 @@ public class Galacticraft
 		DimensionManager.registerProviderType(GCConfigManager.dimensionIDMars, GCWorldProvider.class, true);
 		DimensionManager.registerDimension(GCConfigManager.dimensionIDMars, GCConfigManager.dimensionIDMars);
 		NetworkRegistry.instance().registerGuiHandler(this, proxy);
+		GCUtil.addSmeltingRecipes();
 		this.registerTileEntities();
 		this.registerCreatures();
 		this.registerOtherEntities();
