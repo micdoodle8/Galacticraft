@@ -283,7 +283,7 @@ public class ClientProxy extends CommonProxy
                 Class[] decodeAs = {Integer.class};
                 Object[] packetReadout = GCUtil.readPacketData(data, decodeAs);
 
-            	TickHandlerClient.dimension = (Integer) packetReadout[0];
+//            	TickHandlerClient.dimension = (Integer) packetReadout[0];
             }
         }
     }
@@ -310,8 +310,6 @@ public class ClientProxy extends CommonProxy
     
     public static class TickHandlerClient implements ITickHandler
     {
-    	public static int dimension;
-    	
     	public static int airRemaining;
     	
     	@Override
@@ -347,7 +345,7 @@ public class ClientProxy extends CommonProxy
         				player.motionY = player.motionY - 0.062;
         			}
 
-        			if (player != null && dimension == GCConfigManager.dimensionIDMars && !player.capabilities.isFlying && !minecraft.isGamePaused && !handleLiquidMovement(player)) 
+        			if (player != null && player.dimension == GCConfigManager.dimensionIDMars && !player.capabilities.isFlying && !minecraft.isGamePaused && !handleLiquidMovement(player)) 
         			{
         				player.motionY = player.motionY + 0.062;
         			}
@@ -421,7 +419,7 @@ public class ClientProxy extends CommonProxy
 					GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         		}
 
-        		if (dimension == GCConfigManager.dimensionIDMars)
+        		if (player != null && player.dimension == GCConfigManager.dimensionIDMars)
     			{
     				short var8 = 90;
     				int var6 = (airRemaining - 90) * -1;

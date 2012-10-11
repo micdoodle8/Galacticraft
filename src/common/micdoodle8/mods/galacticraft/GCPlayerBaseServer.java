@@ -15,6 +15,7 @@ import net.minecraft.src.ServerPlayerBase;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.common.ObfuscationReflectionHelper;
 
 /**
  * Copyright 2012, micdoodle8
@@ -116,8 +117,26 @@ public class GCPlayerBaseServer extends ServerPlayerBase
 	@Override
     public void onUpdate()
 	{
+		if (player.dimension == GCConfigManager.dimensionIDMars && player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem().shiftedIndex == Block.torchWood.blockID)
+        {
+        	int par1 = player.inventory.getCurrentItem().stackSize;
+        	ItemStack stack = new ItemStack(GCBlocks.unlitTorch, par1, 0);
+        	
+            player.inventory.mainInventory[player.inventory.currentItem] = stack;
+        }
+        else if (player.dimension != GCConfigManager.dimensionIDMars && player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem().shiftedIndex == GCBlocks.unlitTorch.blockID)
+        {
+        	int par1 = player.inventory.getCurrentItem().stackSize;
+        	ItemStack stack = new ItemStack(Block.torchWood, par1, 0);
+        	
+            player.inventory.mainInventory[player.inventory.currentItem] = stack;
+        }
+		
+//		FMLLog.info("" + Galacticraft.instance.tick % 10);
+        
 		if (Galacticraft.instance.tick % 10 == 0)
 		{
+			FMLLog.info("d");
 			sendAirRemainingPacket();
 		}
 		
@@ -226,10 +245,8 @@ public class GCPlayerBaseServer extends ServerPlayerBase
             
             this.inPortal = false;
         }
-        else
-        {
-            super.onUpdateEntity();
-        }
+
+		super.onUpdateEntity();
 	}
 	
 	@Override

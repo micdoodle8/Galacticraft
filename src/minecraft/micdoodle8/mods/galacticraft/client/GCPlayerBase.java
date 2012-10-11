@@ -2,13 +2,13 @@ package micdoodle8.mods.galacticraft.client;
 
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.GCAchievement;
 import micdoodle8.mods.galacticraft.GCBlocks;
-import micdoodle8.mods.galacticraft.GCEntitySpaceship;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.PlayerAPI;
 import net.minecraft.src.PlayerBase;
+import net.minecraft.src.StatBase;
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLLog;
 
 /**
  * Copyright 2012, micdoodle8
@@ -27,6 +27,49 @@ public class GCPlayerBase extends PlayerBase
 		super(var1);
 		this.heartbeatCooldown = this.rand.nextInt(2000);
 	}
+
+	@Override
+    public void addStat(StatBase par1StatBase, int par2)
+    {
+		if (par1StatBase != null)
+		{
+			if (par1StatBase instanceof GCAchievement)
+			{
+				GCAchievement achiev = (GCAchievement) par1StatBase;
+				
+				int amountOfCompletedAchievements = 0;
+				
+				if (achiev.parentAchievements != null)
+				{
+					for (int i = 0; i < achiev.parentAchievements.length; i++)
+					{
+						if (FMLClientHandler.instance().getClient().statFileWriter.hasAchievementUnlocked(achiev.parentAchievements[i]))
+						{
+							amountOfCompletedAchievements++;
+						}
+					}
+					
+					if (amountOfCompletedAchievements >= achiev.parentAchievements.length)
+					{
+	                    if (!FMLClientHandler.instance().getClient().statFileWriter.hasAchievementUnlocked(achiev))
+	                    {
+							FMLClientHandler.instance().getClient().guiAchievement.queueTakenAchievement(achiev);
+	                    }
+					}
+				}
+				else
+				{
+					super.addStat(par1StatBase, par2);
+				}
+
+				FMLClientHandler.instance().getClient().statFileWriter.readStat(par1StatBase, par2);
+			}
+			else
+			{
+				super.addStat(par1StatBase, par2);
+			}
+		}
+    }
 	
 	@Override
 	public void onLivingUpdate()

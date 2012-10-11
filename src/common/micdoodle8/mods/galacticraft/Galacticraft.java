@@ -7,20 +7,14 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
-import net.minecraft.src.Block;
-import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EntityPlayerMP;
-import net.minecraft.src.ItemStack;
-import net.minecraft.src.ModLoader;
 import net.minecraft.src.NetworkManager;
 import net.minecraft.src.Packet250CustomPayload;
 import net.minecraft.src.Packet9Respawn;
 import net.minecraft.src.ServerPlayerAPI;
+import net.minecraft.src.World;
 import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.common.MinecraftForge;
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.common.IScheduledTickHandler;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
@@ -28,7 +22,6 @@ import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.Mod.PostInit;
 import cpw.mods.fml.common.Mod.PreInit;
 import cpw.mods.fml.common.Mod.ServerStarted;
-import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.TickType;
@@ -61,7 +54,7 @@ public class Galacticraft
 	@Instance("Galacticraft")
 	public static Galacticraft instance;
 	
-	public long tick;
+	public static long tick;
 	
 	public static List serverPlayerBaseList = new ArrayList();
 	public static List serverPlayerAPIs = new ArrayList();
@@ -103,6 +96,7 @@ public class Galacticraft
 		DimensionManager.registerProviderType(GCConfigManager.dimensionIDMars, GCWorldProvider.class, true);
 		DimensionManager.registerDimension(GCConfigManager.dimensionIDMars, GCConfigManager.dimensionIDMars);
 		NetworkRegistry.instance().registerGuiHandler(this, proxy);
+		GCAchievementList.initAchievs();
 		GCUtil.addSmeltingRecipes();
 		this.registerTileEntities();
 		this.registerCreatures();
@@ -144,7 +138,6 @@ public class Galacticraft
 	@ServerStarted
 	public void serverInit(FMLServerStartedEvent event)
 	{
-        TickRegistry.registerScheduledTickHandler(new DimensionSyncServer(), Side.SERVER);
         TickRegistry.registerTickHandler(new CommonTickHandler(), Side.SERVER);
         NetworkRegistry.instance().registerChannel(new ServerPacketHandler(), "Galacticraft", Side.SERVER);
 	}
@@ -169,71 +162,14 @@ public class Galacticraft
 		@Override
 		public void tickStart(EnumSet<TickType> type, Object... tickData) 
 		{
-			if (type.equals(EnumSet.of(TickType.PLAYER)))
+			if (type.equals(EnumSet.of(TickType.WORLD)))
             {
-				tick++;
+				World world = (World) tickData[0];
 				
-				if (!GCConfigManager.loaded)
+				if (world.provider instanceof GCWorldProvider)
 				{
-					return;
+					tick++;
 				}
-				
-				if (FMLCommonHandler.instance().getMinecraftServerInstance() == null || FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager() == null || FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().playerEntityList == null)
-				{
-					return;
-				}
-				
-		        for (int i = 0; i < FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().playerEntityList.size(); ++i)
-		        {
-		            EntityPlayerMP entityplayermp = (EntityPlayerMP)  FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().playerEntityList.get(i);
-
-		            if (entityplayermp == null || entityplayermp.worldObj == null)
-		            {
-		            	break;
-		            }
-		            
-		            if (entityplayermp.dimension == GCConfigManager.dimensionIDMars && entityplayermp.inventory.getCurrentItem() != null && entityplayermp.inventory.getCurrentItem().getItem().shiftedIndex == Block.torchWood.blockID)
-		            {
-		            	int par1 = entityplayermp.inventory.getCurrentItem().stackSize;
-		            	ItemStack stack = new ItemStack(GCBlocks.unlitTorch, par1, 0);
-		            	
-		                entityplayermp.inventory.mainInventory[entityplayermp.inventory.currentItem] = stack;
-		            }
-		            else if (entityplayermp.dimension != GCConfigManager.dimensionIDMars && entityplayermp.inventory.getCurrentItem() != null && entityplayermp.inventory.getCurrentItem().getItem().shiftedIndex == GCBlocks.unlitTorch.blockID)
-		            {
-		            	int par1 = entityplayermp.inventory.getCurrentItem().stackSize;
-		            	ItemStack stack = new ItemStack(Block.torchWood, par1, 0);
-		            	
-		                entityplayermp.inventory.mainInventory[entityplayermp.inventory.currentItem] = stack;
-		            }
-		            
-		            if (entityplayermp.timeInPortal > 0.8F && entityplayermp.timeUntilPortal == 0)
-		            {
-		            	byte var5;
-		            	
-		                if (entityplayermp.dimension == GCConfigManager.dimensionIDMars)
-		                {
-		                    var5 = 0;
-		                }
-		                else
-		                {
-		                    var5 = (byte) GCConfigManager.dimensionIDMars;
-		                }
-
-		                entityplayermp.mcServer.getConfigurationManager().transferPlayerToDimension(entityplayermp, var5, new GCTeleporter());
-		                entityplayermp.timeUntilPortal = 10;
-		                entityplayermp.timeInPortal = 0.0F;
-		                
-		                try
-		                {
-		                	ObfuscationReflectionHelper.setPrivateValue(EntityPlayer.class, entityplayermp, false, 31);
-		                }
-		                catch (Exception e)
-		                {
-		                	e.printStackTrace();
-		                }
-		            }
-		        }
             }
 		}
 
@@ -243,7 +179,7 @@ public class Galacticraft
 		@Override
 		public EnumSet<TickType> ticks() 
 		{
-			return EnumSet.of(TickType.PLAYER);
+			return EnumSet.of(TickType.WORLD);
 		}
 
 		@Override
@@ -302,51 +238,5 @@ public class Galacticraft
                 }
             }
         }
-    }
-    
-    public class DimensionSyncServer implements IScheduledTickHandler
-    {
-    	@Override
-    	public void tickStart(EnumSet<TickType> type, Object... tickData) 
-    	{
-    		if (FMLCommonHandler.instance().getMinecraftServerInstance() == null || FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager() == null || FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().playerEntityList == null)
-    		{
-    			return;
-    		}
-    		
-            for (int var3 = 0; var3 < FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().playerEntityList.size(); ++var3)
-            {
-                EntityPlayerMP var4 = (EntityPlayerMP) FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().playerEntityList.get(var3);
-                
-                if (var4 == null)
-                {
-                	return;
-                }
-
-                Object[] toSend = {var4.dimension};
-                FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(var4.username).playerNetServerHandler.sendPacketToPlayer(GCUtil.createPacket("Galacticraft", 1, toSend));
-            }
-    	}
-
-    	@Override
-    	public void tickEnd(EnumSet<TickType> type, Object... tickData) { }
-
-    	@Override
-    	public EnumSet<TickType> ticks() 
-    	{
-    		return EnumSet.of(TickType.PLAYER);
-    	}
-
-    	@Override
-    	public String getLabel() 
-    	{
-    		return null;
-    	}
-
-    	@Override
-    	public int nextTickSpacing() 
-    	{
-    		return 20;
-    	}
     }
 }
