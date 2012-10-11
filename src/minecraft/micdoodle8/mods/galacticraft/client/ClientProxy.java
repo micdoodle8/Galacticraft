@@ -327,6 +327,12 @@ public class ClientProxy extends CommonProxy
     		
     		if (type.equals(EnumSet.of(TickType.CLIENT)))
             {
+    			if (world != null && world.provider instanceof GCWorldProvider)
+    			{
+    				world.getWorldInfo().setRaining(false);
+    				world.getWorldInfo().setRainTime(0);
+    			}
+    			
         		if (player != null && world != null && player.inventory.armorItemInSlot(2) != null && player.inventory.armorItemInSlot(2).getItem().shiftedIndex == GCItems.jetpack.shiftedIndex && FMLClientHandler.instance().getClient().gameSettings.keyBindJump.pressed && player.posY < 125)
         		{
         			((GCItemJetpack)player.inventory.armorItemInSlot(2).getItem()).setActive();

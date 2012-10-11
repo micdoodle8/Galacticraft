@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft;
 
 import micdoodle8.mods.galacticraft.client.GCSkyProvider;
 import net.minecraft.src.BiomeGenBase;
+import net.minecraft.src.Chunk;
 import net.minecraft.src.IChunkProvider;
 import net.minecraft.src.Vec3;
 import net.minecraft.src.WorldProvider;
@@ -99,6 +100,8 @@ public class GCWorldProvider extends WorldProvider
 	{
         worldObj.getWorldInfo().setRainTime(0);
         worldObj.getWorldInfo().setRaining(false);
+        worldObj.getWorldInfo().setThunderTime(0);
+        worldObj.getWorldInfo().setThundering(false);
 	}
 
     public boolean isSkyColored()
@@ -164,6 +167,16 @@ public class GCWorldProvider extends WorldProvider
 
 	@Override
     public boolean canBlockFreeze(int x, int y, int z, boolean byWater)
+    {
+        return false;
+    }
+    
+    public boolean canDoLightning(Chunk chunk)
+    {
+        return false;
+    }
+    
+    public boolean canDoRainSnowIce(Chunk chunk)
     {
         return false;
     }
