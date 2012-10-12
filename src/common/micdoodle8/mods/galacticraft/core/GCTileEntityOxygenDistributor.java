@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core;
 import micdoodle8.mods.galacticraft.mars.GCMarsBlocks;
 import micdoodle8.mods.galacticraft.mars.GCMarsItems;
 import micdoodle8.mods.galacticraft.mars.GCMarsUtil;
-import micdoodle8.mods.galacticraft.mars.Galacticraft;
+import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IInventory;
 import net.minecraft.src.Item;
@@ -62,7 +62,7 @@ public class GCTileEntityOxygenDistributor extends TileEntity implements IInvent
 		{
 			int drainSpacing = GCMarsUtil.getDrainSpacing(tankInSlot);
 			
-			if (drainSpacing > 0 && Galacticraft.instance.tick % (MathHelper.floor_double(drainSpacing / 4)) == 0) 
+			if (drainSpacing > 0 && GalacticraftMars.instance.tick % (MathHelper.floor_double(drainSpacing / 4)) == 0) 
 	    	{
 	            if (tankInSlot.getItemDamage() < tankInSlot.getMaxDamage() - 2)
 	            {

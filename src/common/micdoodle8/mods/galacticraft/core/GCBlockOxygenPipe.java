@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.mars.GCMarsBlocks;
-import micdoodle8.mods.galacticraft.mars.Galacticraft;
+import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.BlockContainer;
 import net.minecraft.src.Entity;
@@ -29,7 +29,7 @@ public class GCBlockOxygenPipe extends BlockContainer
 	@Override
 	public int getRenderType() 
 	{
-		return Galacticraft.proxy.getGCOxygenPipeRenderID();
+		return GalacticraftMars.proxy.getGCOxygenPipeRenderID();
 	}
 
 	@Override

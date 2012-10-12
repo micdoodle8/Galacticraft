@@ -182,7 +182,7 @@ public abstract class GCMarsBlockFluid extends Block
      */
     public int getRenderType()
     {
-        return Galacticraft.proxy.getGCFluidRenderID();
+        return GalacticraftMars.proxy.getGCFluidRenderID();
     }
 
     /**

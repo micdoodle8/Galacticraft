@@ -8,7 +8,7 @@ import static net.minecraftforge.common.ForgeDirection.WEST;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.mars.GCMarsBlock;
-import micdoodle8.mods.galacticraft.mars.Galacticraft;
+import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Block;
 import net.minecraft.src.CreativeTabs;
@@ -68,7 +68,7 @@ public class GCBlockUnlitTorch extends GCMarsBlock
      */
     public int getRenderType()
     {
-        return Galacticraft.proxy.getGCUnlitTorchRenderID();
+        return GalacticraftMars.proxy.getGCUnlitTorchRenderID();
     }
 
     /**

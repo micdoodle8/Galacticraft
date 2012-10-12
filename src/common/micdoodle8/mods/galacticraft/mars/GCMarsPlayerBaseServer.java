@@ -52,8 +52,8 @@ public class GCMarsPlayerBaseServer extends ServerPlayerBase
 		super(var1);
 		this.instance = this;
 		this.hasTank = false;
-		Galacticraft.instance.serverPlayerBaseList.add(player);
-		Galacticraft.instance.serverPlayerAPIs.add(this);
+		GalacticraftMars.instance.serverPlayerBaseList.add(player);
+		GalacticraftMars.instance.serverPlayerAPIs.add(this);
 	}
 	
 	public EntityPlayerMP getPlayer()
@@ -138,7 +138,7 @@ public class GCMarsPlayerBaseServer extends ServerPlayerBase
 		
 //		FMLLog.info("" + Galacticraft.instance.tick % 10);
         
-		if (Galacticraft.instance.tick % 10 == 0)
+		if (GalacticraftMars.instance.tick % 10 == 0)
 		{
 			FMLLog.info("d");
 			sendAirRemainingPacket();
@@ -149,7 +149,7 @@ public class GCMarsPlayerBaseServer extends ServerPlayerBase
 			player.addPotionEffect(new PotionEffect(Potion.poison.id, 40, 0));
 		}
 		
-		if (Galacticraft.instance.tick % 100 == 0 && player.inventory.armorItemInSlot(2) != null && player.inventory.armorItemInSlot(2).getItem().shiftedIndex == GCMarsItems.jetpack.shiftedIndex)
+		if (GalacticraftMars.instance.tick % 100 == 0 && player.inventory.armorItemInSlot(2) != null && player.inventory.armorItemInSlot(2).getItem().shiftedIndex == GCMarsItems.jetpack.shiftedIndex)
 		{
 			player.inventory.armorItemInSlot(2).damageItem(1, player);
 		}
@@ -172,22 +172,22 @@ public class GCMarsPlayerBaseServer extends ServerPlayerBase
 	    		this.airRemaining = 90 - tankInSlot.getItemDamage();
 			}
 			
-			if (drainSpacing > 0 && Galacticraft.instance.tick % drainSpacing == 0 && !isAABBInBreathableAirBlock()) 
+			if (drainSpacing > 0 && GalacticraftMars.instance.tick % drainSpacing == 0 && !isAABBInBreathableAirBlock()) 
 	    	{
 	    		tankInSlot.damageItem(1, player);
 	    	}
 			
-			if (drainSpacing == 0 && Galacticraft.instance.tick % 20 == 0 && !isAABBInBreathableAirBlock())
+			if (drainSpacing == 0 && GalacticraftMars.instance.tick % 20 == 0 && !isAABBInBreathableAirBlock())
 			{
 	    		this.airRemaining -= 1;
 			}
 			
-			if (Galacticraft.instance.tick % 20 == 0 && isAABBInBreathableAirBlock() && this.airRemaining < 90 && tankInSlot != null)
+			if (GalacticraftMars.instance.tick % 20 == 0 && isAABBInBreathableAirBlock() && this.airRemaining < 90 && tankInSlot != null)
 			{
 				this.airRemaining += 1;
 			}
 			
-        	if (Galacticraft.instance.tick % 100 == 0) 
+        	if (GalacticraftMars.instance.tick % 100 == 0) 
         	{
         		ItemStack helmetSlot = null;
         		
@@ -211,7 +211,7 @@ public class GCMarsPlayerBaseServer extends ServerPlayerBase
 				}
 			}
         }
-		else if (Galacticraft.instance.tick % 20 == 0 && !player.capabilities.isCreativeMode && this.airRemaining < 90)
+		else if (GalacticraftMars.instance.tick % 20 == 0 && !player.capabilities.isCreativeMode && this.airRemaining < 90)
 		{
 			this.airRemaining += 1;
 		}

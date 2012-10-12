@@ -296,6 +296,6 @@ public class GCMarsItems
 	
 	private static void addName(Item item)
 	{
-        LanguageRegistry.instance().addStringLocalization(item.getItemName() + ".name", Galacticraft.lang.get(item.getItemName() + ".name"));
+        LanguageRegistry.instance().addStringLocalization(item.getItemName() + ".name", GalacticraftMars.lang.get(item.getItemName() + ".name"));
 	}
 }

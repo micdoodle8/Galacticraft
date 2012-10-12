@@ -12,7 +12,7 @@ import micdoodle8.mods.galacticraft.core.GCEntitySpaceship;
 import micdoodle8.mods.galacticraft.core.GCEntitySpider;
 import micdoodle8.mods.galacticraft.core.GCEntityZombie;
 import micdoodle8.mods.galacticraft.core.GCItemSensorGlasses;
-import micdoodle8.mods.galacticraft.mars.CommonProxy;
+import micdoodle8.mods.galacticraft.mars.MarsCommonProxy;
 import micdoodle8.mods.galacticraft.mars.GCMarsBlocks;
 import micdoodle8.mods.galacticraft.mars.GCMarsChunkProvider;
 import micdoodle8.mods.galacticraft.mars.GCMarsConfigManager;
@@ -24,7 +24,7 @@ import micdoodle8.mods.galacticraft.mars.GCMarsItems;
 import micdoodle8.mods.galacticraft.mars.GCMarsTileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.mars.GCMarsUtil;
 import micdoodle8.mods.galacticraft.mars.GCMarsWorldProvider;
-import micdoodle8.mods.galacticraft.mars.Galacticraft;
+import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.EntityClientPlayerMP;
 import net.minecraft.src.EntityFX;
@@ -74,7 +74,7 @@ import cpw.mods.fml.common.registry.TickRegistry;
  *  All rights reserved.
  *
  */
-public class ClientProxy extends CommonProxy
+public class ClientProxy extends MarsCommonProxy
 {
 	private static int treasureChestRenderID;
 	private static int fluidRenderID;
@@ -500,7 +500,7 @@ public class ClientProxy extends CommonProxy
                 	
                     Object[] toSend = {player.username};
                     PacketDispatcher.sendPacketToServer(GCMarsUtil.createPacket("Galacticraft", 0, toSend));
-            	    player.openGui(Galacticraft.instance, GCMarsConfigManager.idGuiTankRefill, minecraft.theWorld, (int)player.posX, (int)player.posY, (int)player.posZ);
+            	    player.openGui(GalacticraftMars.instance, GCMarsConfigManager.idGuiTankRefill, minecraft.theWorld, (int)player.posX, (int)player.posY, (int)player.posZ);
             	}
         	}
         }

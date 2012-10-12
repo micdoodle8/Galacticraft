@@ -1,4 +1,4 @@
-package micdoodle8.mods.galacticraft.core;
+package micdoodle8.mods.galacticraft.API;
 
 import java.util.Random;
 
@@ -13,7 +13,7 @@ import net.minecraft.src.WorldGenMinable;
  *  All rights reserved.
  *
  */
-public class GCWorldGenMinable extends WorldGenMinable 
+public class WorldGenMinableMeta extends WorldGenMinable 
 {
 	private int minableBlockId;
 
@@ -23,7 +23,7 @@ public class GCWorldGenMinable extends WorldGenMinable
 
 	private boolean usingMetadata = false;
 
-	public GCWorldGenMinable(int par1, int par2, int par3, boolean par4)
+	public WorldGenMinableMeta(int par1, int par2, int par3, boolean par4)
 	{
 		super(par1, par2);
 		this.minableBlockId = par1;

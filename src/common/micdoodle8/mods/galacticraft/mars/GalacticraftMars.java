@@ -54,13 +54,13 @@ import cpw.mods.fml.common.registry.TickRegistry;
  */
 @Mod(name="Galacticraft", version="v1", useMetadata = true, modid = "Galacticraft")
 @NetworkMod(channels = {"Galacticraft"}, clientSideRequired = true, serverSideRequired = false)
-public class Galacticraft 
+public class GalacticraftMars 
 {
-	@SidedProxy(clientSide = "micdoodle8.mods.galacticraft.mars.client.ClientProxy", serverSide = "micdoodle8.mods.galacticraft.mars.CommonProxy")
-	public static CommonProxy proxy;
+	@SidedProxy(clientSide = "micdoodle8.mods.galacticraft.mars.client.ClientProxy", serverSide = "micdoodle8.mods.galacticraft.mars.MarsCommonProxy")
+	public static MarsCommonProxy proxy;
 	
 	@Instance("Galacticraft")
-	public static Galacticraft instance;
+	public static GalacticraftMars instance;
 	
 	public static long tick;
 	
@@ -225,9 +225,9 @@ public class Galacticraft
                 Class[] decodeAs = {Integer.class};
                 Object[] packetReadout = GCMarsUtil.readPacketData(data, decodeAs);
                 
-                for (int j = 0; j < Galacticraft.instance.serverPlayerAPIs.size(); ++j)
+                for (int j = 0; j < GalacticraftMars.instance.serverPlayerAPIs.size(); ++j)
 	            {
-	    			GCMarsPlayerBaseServer playerBase = (GCMarsPlayerBaseServer) Galacticraft.instance.serverPlayerAPIs.get(j);
+	    			GCMarsPlayerBaseServer playerBase = (GCMarsPlayerBaseServer) GalacticraftMars.instance.serverPlayerAPIs.get(j);
 	    			
 	    			if (player.username == playerBase.getPlayer().username)
 	    			{

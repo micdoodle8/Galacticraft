@@ -24,31 +24,30 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
  */
 public class GCMarsBlocks 
 {
-	public static Block marsStone;
-	public static Block marsDirt;
-	public static Block marsGrass;
-	public static Block marsCobblestone;
-	public static Block creeperEgg;
-	public static Block creeperDungeonWall;
-	public static Block bacterialSludgeStill;
-	public static Block bacterialSludgeMoving;
+	public static GCBlockBreathableAir breatheableAir;
+	public static Block treasureChest;
+	public static Block landingPad;
+	public static GCBlockUnlitTorch unlitTorch;
+	public static GCBlockUnlitTorch unlitTorchLit;
+	public static GCBlockOxygenDistributor airDistributor;
+	public static GCBlockOxygenDistributor airDistributorActive;
+	public static GCBlockOxygenPipe oxygenPipe;
 	public static Block blockOres;
 	public static Block blockAirCollector;
-
-    public static final Material bacterialSludge = (new MaterialLiquid(MapColor.waterColor));
 	
 	public static void initBlocks() 
 	{
 		blockOres = 										new GCMarsBlockOre					(GCMarsConfigManager.idBlockOre,  						9)						.setHardness(3.0F) 																				 																											.setBlockName("blockores");
-		marsCobblestone = 									new GCMarsBlock						(GCMarsConfigManager.idBlockMarsCobblestone, 			27, Material.rock)		.setHardness(2.2F)																				.setCreativeTab(CreativeTabs.tabDecorations)																.setBlockName("marsCobblestone");
-		marsStone = 										new GCMarsBlockStone				(GCMarsConfigManager.idBlockMarsStone, 					2)						.setHardness(1.7F)																				.setCreativeTab(CreativeTabs.tabDecorations)																.setBlockName("marsStone");
-		marsDirt = 											new GCMarsBlock						(GCMarsConfigManager.idBlockMarsDirt, 					5, Material.ground)		.setHardness(0.6F)																				.setCreativeTab(CreativeTabs.tabDecorations)																.setBlockName("marsDirt");
-		marsGrass = 										new GCMarsBlockGrass				(GCMarsConfigManager.idBlockMarsGrass,					4)						.setHardness(0.7F)																				.setCreativeTab(CreativeTabs.tabDecorations)																.setBlockName("marsGrass");
-		creeperEgg = 										new GCMarsBlockCreeperEgg			(GCMarsConfigManager.idBlockCreeperEgg, 				23)						.setHardness(3.0F)		.setResistance(15.0F)	.setLightValue(0.125F)							.setCreativeTab(CreativeTabs.tabDecorations)		.setStepSound(Block.soundStoneFootstep)					.setBlockName("creeperEgg");
-		creeperDungeonWall = 								new GCMarsBlockCreeperDungeonWall	(GCMarsConfigManager.idBlockCreeperDungeonWall,     	22, Material.rock)		.setHardness(5.0F)      .setResistance(100F)    .setLightValue(0F)								.setCreativeTab(CreativeTabs.tabDecorations)       	.setStepSound(Block.soundStoneFootstep)					.setBlockName("creeperDungeonWall");
-		bacterialSludgeStill = 								new GCMarsBlockStationary 			(GCMarsConfigManager.idBlockBacterialSludgeStill,  		237, bacterialSludge)	.setHardness(0.0F)								.setLightValue(0.2F)	.setLightOpacity(3)		.setCreativeTab((CreativeTabs)null)																			.setBlockName("bacterialSludgeStill");
-		bacterialSludgeMoving = 							new GCMarsBlockFlowing 				(GCMarsConfigManager.idBlockBacterialSludgeMoving, 		237, bacterialSludge)	.setHardness(0.0F)								.setLightValue(0.2F)	.setLightOpacity(3)		.setCreativeTab((CreativeTabs)null)																			.setBlockName("bacterialSludgeMoving");
-		Item.itemsList[blockOres.blockID] = 				new GCMarsItemBlockOre				(blockOres.blockID - 256)																																																																.setItemName("blockores");
+		breatheableAir = (GCBlockBreathableAir)				new GCBlockBreathableAir		(GCMarsConfigManager.idBlockBreatheableAir)										.setHardness(0.0F) 		.setResistance(1000F)													.setCreativeTab(CreativeTabs.tabDecorations)																.setBlockName("breatheableAir");
+		treasureChest = 									new GCMarsBlockTreasureChest		(GCMarsConfigManager.idBlockTreasureChest)										.setHardness(1.0F)      .setResistance(10.0F)   												.setCreativeTab(CreativeTabs.tabDecorations)       	.setStepSound(Block.soundStoneFootstep)                 .setBlockName("treasureChest");
+		landingPad = 										new GCBlockLandingPad			(GCMarsConfigManager.idBlockLandingPad,					24)						.setHardness(1.0F)      .setResistance(10.0F)  	 												.setCreativeTab(CreativeTabs.tabDecorations)       	.setStepSound(Block.soundStoneFootstep)                 .setBlockName("landingPad");
+		unlitTorch = (GCBlockUnlitTorch) 					new GCBlockUnlitTorch 			(GCMarsConfigManager.idBlockUnlitTorch,             	37, false)				.setHardness(0.0F)								.setLightValue(0.2F)							.setCreativeTab((CreativeTabs)null)					.setStepSound(Block.soundWoodFootstep)					.setBlockName("unlitTorch");
+		unlitTorchLit = (GCBlockUnlitTorch) 				new GCBlockUnlitTorch 			(GCMarsConfigManager.idBlockUnlitTorchLit,             	37, true)				.setHardness(0.0F)								.setLightValue(0.9375F)							.setCreativeTab((CreativeTabs)null)					.setStepSound(Block.soundWoodFootstep)					.setBlockName("unlitTorchLit");
+		airDistributor = (GCBlockOxygenDistributor)			new GCBlockOxygenDistributor	(GCMarsConfigManager.idBlockAirDistributor, false)								.setHardness(3.5F)																				.setCreativeTab(CreativeTabs.tabDecorations)		.setStepSound(Block.soundStoneFootstep)					.setBlockName("distributor");
+		airDistributorActive = (GCBlockOxygenDistributor)	new GCBlockOxygenDistributor	(GCMarsConfigManager.idBlockAirDistributorActive, true)							.setHardness(3.5F)																				.setCreativeTab((CreativeTabs)null)					.setStepSound(Block.soundStoneFootstep)					.setBlockName("distributorActive");
+		oxygenPipe = (GCBlockOxygenPipe)					new GCBlockOxygenPipe			(GCMarsConfigManager.idBlockAirPipe, 40)										.setHardness(0.3F)																				.setCreativeTab(CreativeTabs.tabDecorations)  		.setStepSound(Block.soundGlassFootstep)                 .setBlockName("oxygenPipe");
+		Item.itemsList[blockOres.blockID] = 				new GCMarsItemBlockOre				(blockOres.blockID - 256)																																																																.setItemName("blockores");	
+		blockAirCollector = 								new GCBlockOxygenCollector		(GCMarsConfigManager.idBlockAirCollector, 34)									.setHardness(3.5F)  	  																		.setCreativeTab(CreativeTabs.tabDecorations) 		.setStepSound(Block.soundStoneFootstep)					.setBlockName("oxygenCollector");
 	}
 
 	public static void setHarvestLevels() 
@@ -70,8 +69,16 @@ public class GCMarsBlocks
 		GameRegistry.registerBlock(marsCobblestone);
 		GameRegistry.registerBlock(creeperEgg);
 		GameRegistry.registerBlock(creeperDungeonWall);
+		GameRegistry.registerBlock(treasureChest);
+		GameRegistry.registerBlock(landingPad);
 		GameRegistry.registerBlock(bacterialSludgeStill);
 		GameRegistry.registerBlock(bacterialSludgeMoving);
+		GameRegistry.registerBlock(unlitTorch);
+		GameRegistry.registerBlock(unlitTorchLit);
+		GameRegistry.registerBlock(breatheableAir);
+		GameRegistry.registerBlock(airDistributor);
+		GameRegistry.registerBlock(airDistributorActive);
+		GameRegistry.registerBlock(oxygenPipe);
 		GameRegistry.registerBlock(blockAirCollector);
 	}
 
@@ -83,6 +90,13 @@ public class GCMarsBlocks
 		addName(marsCobblestone);
 		addName(creeperEgg);
 		addName(creeperDungeonWall);
+		addName(treasureChest);
+		addName(landingPad);
+		addName(unlitTorch);
+		addName(unlitTorchLit);
+		addName(airDistributor);
+		addName(airDistributorActive);
+		addName(oxygenPipe);
 		addNameWithMetadata("tile.blockores.desh.name");
 		addNameWithMetadata("tile.blockores.electrum.name");
 		addNameWithMetadata("tile.blockores.quandrium.name");

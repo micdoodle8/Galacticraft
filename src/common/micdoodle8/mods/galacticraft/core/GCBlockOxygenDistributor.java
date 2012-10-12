@@ -2,9 +2,10 @@ package micdoodle8.mods.galacticraft.core;
 
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.API.GCBlockBreathableAir;
 import micdoodle8.mods.galacticraft.mars.GCMarsConfigManager;
 import micdoodle8.mods.galacticraft.mars.GCMarsBlocks;
-import micdoodle8.mods.galacticraft.mars.Galacticraft;
+import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import net.minecraft.src.Block;
 import net.minecraft.src.BlockContainer;
 import net.minecraft.src.EntityItem;
@@ -124,7 +125,7 @@ public class GCBlockOxygenDistributor extends BlockContainer
 
     public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
     {
-        par5EntityPlayer.openGui(Galacticraft.instance, GCMarsConfigManager.idGuiAirDistributor, par1World, par2, par3, par4);
+        par5EntityPlayer.openGui(GalacticraftMars.instance, GCMarsConfigManager.idGuiAirDistributor, par1World, par2, par3, par4);
         return true;
     }
 

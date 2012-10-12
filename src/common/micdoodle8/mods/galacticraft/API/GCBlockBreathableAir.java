@@ -1,4 +1,4 @@
-package micdoodle8.mods.galacticraft.core;
+package micdoodle8.mods.galacticraft.API;
 
 import java.util.Random;
 
@@ -20,11 +20,10 @@ import cpw.mods.fml.common.FMLLog;
  */
 public class GCBlockBreathableAir extends GCMarsBlock
 {
-	public GCBlockBreathableAir(int par1) 
+	public GCBlockBreathableAir(int id, int texIndex) 
 	{
-		super(par1, 0, Material.air);
+		super(id, texIndex, Material.air);
         this.setTickRandomly(true);
-        this.blockIndexInTexture = 21;
 	}
 
 	@Override

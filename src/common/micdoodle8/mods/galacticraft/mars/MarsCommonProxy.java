@@ -25,7 +25,7 @@ import cpw.mods.fml.common.network.IGuiHandler;
  *  All rights reserved.
  *
  */
-public class CommonProxy implements IGuiHandler
+public class MarsCommonProxy implements IGuiHandler
 {
 	public void preInit(FMLPreInitializationEvent event)
 	{
@@ -90,9 +90,9 @@ public class CommonProxy implements IGuiHandler
 	{
 		if (ID == GCMarsConfigManager.idGuiTankRefill)
 		{
-			for (int i = 0; i < Galacticraft.serverPlayerAPIs.size(); ++i)
+			for (int i = 0; i < GalacticraftMars.serverPlayerAPIs.size(); ++i)
 	        {
-				GCMarsPlayerBaseServer playerBase = (GCMarsPlayerBaseServer) Galacticraft.serverPlayerAPIs.get(i);
+				GCMarsPlayerBaseServer playerBase = (GCMarsPlayerBaseServer) GalacticraftMars.serverPlayerAPIs.get(i);
 				
 				if (player.username == playerBase.getPlayer().username)
 				{

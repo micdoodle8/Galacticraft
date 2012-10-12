@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.mars;
 
 import java.util.Random;
 
-import micdoodle8.mods.galacticraft.core.GCWorldGenMinable;
+import micdoodle8.mods.galacticraft.API.WorldGenMinableMeta;
 import net.minecraft.src.BiomeDecorator;
 import net.minecraft.src.BiomeGenBase;
 import net.minecraft.src.World;
@@ -43,13 +43,13 @@ public class GCMarsBiomeDecorator
 
 	public GCMarsBiomeDecorator(BiomeGenBase par1BiomeGenBase) 
 	{
-		this.deshGen = new GCWorldGenMinable(GCMarsBlocks.blockOres.blockID, 12, 0, true);
-		this.copperGen = new GCWorldGenMinable(GCMarsBlocks.blockOres.blockID, 8, 6, true);
-		this.aluminumGen = new GCWorldGenMinable(GCMarsBlocks.blockOres.blockID, 7, 4, true);
-		this.titaniumGen = new GCWorldGenMinable(GCMarsBlocks.blockOres.blockID, 7, 8, true);
-		this.quandriumGen = new GCWorldGenMinable(GCMarsBlocks.blockOres.blockID, 7, 2, true);
-		this.dirtGen = new GCWorldGenMinable(GCMarsBlocks.marsDirt.blockID, 32, 0, false);
-		this.bacteriaGen = new GCWorldGenMinable(GCMarsBlocks.bacterialSludgeMoving.blockID, 5, 0, false);
+		this.deshGen = new WorldGenMinableMeta(GCMarsBlocks.blockOres.blockID, 12, 0, true);
+		this.copperGen = new WorldGenMinableMeta(GCMarsBlocks.blockOres.blockID, 8, 6, true);
+		this.aluminumGen = new WorldGenMinableMeta(GCMarsBlocks.blockOres.blockID, 7, 4, true);
+		this.titaniumGen = new WorldGenMinableMeta(GCMarsBlocks.blockOres.blockID, 7, 8, true);
+		this.quandriumGen = new WorldGenMinableMeta(GCMarsBlocks.blockOres.blockID, 7, 2, true);
+		this.dirtGen = new WorldGenMinableMeta(GCMarsBlocks.marsDirt.blockID, 32, 0, false);
+		this.bacteriaGen = new WorldGenMinableMeta(GCMarsBlocks.bacterialSludgeMoving.blockID, 5, 0, false);
 		this.biome = par1BiomeGenBase;
 	}
 

@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.mars.client;
 
 import java.util.Random;
 
-import micdoodle8.mods.galacticraft.core.GCAdvancedAchievement;
+import micdoodle8.mods.galacticraft.API.AdvancedAchievement;
 import micdoodle8.mods.galacticraft.mars.GCMarsBlocks;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.PlayerAPI;
@@ -33,9 +33,9 @@ public class GCPlayerBase extends PlayerBase
     {
 		if (par1StatBase != null)
 		{
-			if (par1StatBase instanceof GCAdvancedAchievement)
+			if (par1StatBase instanceof AdvancedAchievement)
 			{
-				GCAdvancedAchievement achiev = (GCAdvancedAchievement) par1StatBase;
+				AdvancedAchievement achiev = (AdvancedAchievement) par1StatBase;
 				
 				int amountOfCompletedAchievements = 0;
 				
