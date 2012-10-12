@@ -38,8 +38,8 @@ public class GCMarsBlocks
     public static final Material bacterialSludge = (new MaterialLiquid(MapColor.waterColor));
 	
 	public static void initBlocks() 
-	{
-		blockOres = 										new GCMarsBlockOre					(GCMarsConfigManager.idBlockOre,  						9)						.setHardness(3.0F) 																				 																											.setBlockName("blockores");
+	{	
+		blockOres = 										new GCMarsBlockOre					(GCMarsConfigManager.idBlockOre)												.setHardness(3.0F) 																				 																											.setBlockName("blockores");
 		marsCobblestone = 									new GCMarsBlock						(GCMarsConfigManager.idBlockMarsCobblestone, 			27, Material.rock)		.setHardness(2.2F)																				.setCreativeTab(CreativeTabs.tabDecorations)																.setBlockName("marsCobblestone");
 		marsStone = 										new GCMarsBlockStone				(GCMarsConfigManager.idBlockMarsStone, 					2)						.setHardness(1.7F)																				.setCreativeTab(CreativeTabs.tabDecorations)																.setBlockName("marsStone");
 		marsDirt = 											new GCMarsBlock						(GCMarsConfigManager.idBlockMarsDirt, 					5, Material.ground)		.setHardness(0.6F)																				.setCreativeTab(CreativeTabs.tabDecorations)																.setBlockName("marsDirt");

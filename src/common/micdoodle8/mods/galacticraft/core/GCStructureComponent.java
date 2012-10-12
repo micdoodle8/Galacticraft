@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core;
 
 import java.util.Random;
 
-import micdoodle8.mods.galacticraft.mars.GCMarsUtil;
 import net.minecraft.src.Block;
 import net.minecraft.src.StructureBoundingBox;
 import net.minecraft.src.StructureComponent;
@@ -69,7 +68,7 @@ public abstract class GCStructureComponent extends StructureComponent
 
         if (var7.isVecInside(var8, var9, var10) && var1.getBlockId(var8, var9, var10) != Block.chest.blockID)
         {
-            GCMarsUtil.generateChestContents(var1, var2, var8, var9, var10);
+            GCCoreUtil.generateChestContents(var1, var2, var8, var9, var10);
         }
     }
 

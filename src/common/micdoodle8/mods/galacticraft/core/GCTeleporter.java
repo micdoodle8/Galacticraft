@@ -101,7 +101,7 @@ public class GCTeleporter extends Teleporter
 
                 for (int var17 = world.getActualHeight() - 1; var17 >= 0; --var17)
                 {
-                    if (world.getBlockId(var11, var17, var14) == GCMarsBlocks.landingPad.blockID)
+                    if (world.getBlockId(var11, var17, var14) == GCCoreBlocks.landingPad.blockID)
                     {
                         var18 = (double)var17 + 0.5D - entity.posY;
                         double var20 = var12 * var12 + var18 * var18 + var15 * var15;
@@ -164,7 +164,7 @@ public class GCTeleporter extends Teleporter
         {
         	for (int z2 = z - 1; z2 < z + 2; z2++)
             {
-        		world.setBlockWithNotify(x2, y, z2, GCMarsBlocks.landingPad.blockID);
+        		world.setBlockWithNotify(x2, y, z2, GCCoreBlocks.landingPad.blockID);
             }
         }
         

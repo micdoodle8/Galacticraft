@@ -1,4 +1,4 @@
-package micdoodle8.mods.galacticraft.mars;
+package micdoodle8.mods.galacticraft.core;
 
 import java.util.List;
 
@@ -25,7 +25,7 @@ import cpw.mods.fml.common.network.IGuiHandler;
  *  All rights reserved.
  *
  */
-public class MarsCommonProxy implements IGuiHandler
+public class CommonProxyCore implements IGuiHandler
 {
 	public void preInit(FMLPreInitializationEvent event)
 	{
@@ -47,10 +47,6 @@ public class MarsCommonProxy implements IGuiHandler
 		
 	}
 	
-	public int getGCFluidRenderID()
-	{
-		return -1;
-	}
 	
 	public int getGCUnlitTorchRenderID()
 	{
@@ -88,11 +84,11 @@ public class MarsCommonProxy implements IGuiHandler
 	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) 
 	{
-		if (ID == GCMarsConfigManager.idGuiTankRefill)
+		if (ID == GCCoreConfigManager.idGuiTankRefill)
 		{
-			for (int i = 0; i < GalacticraftMars.serverPlayerAPIs.size(); ++i)
+			for (int i = 0; i < GalacticraftCore.serverPlayerAPIs.size(); ++i)
 	        {
-				GCMarsPlayerBaseServer playerBase = (GCMarsPlayerBaseServer) GalacticraftMars.serverPlayerAPIs.get(i);
+				GCCorePlayerBaseServer playerBase = (GCCorePlayerBaseServer) GalacticraftCore.serverPlayerAPIs.get(i);
 				
 				if (player.username == playerBase.getPlayer().username)
 				{
@@ -100,7 +96,7 @@ public class MarsCommonProxy implements IGuiHandler
 				}
 	        }
 		}
-		else if (ID == GCMarsConfigManager.idGuiAirDistributor)
+		else if (ID == GCCoreConfigManager.idGuiAirDistributor)
 		{
 			GCTileEntityOxygenDistributor distributor = (GCTileEntityOxygenDistributor) world.getBlockTileEntity(x, y, z);
 
@@ -113,11 +109,11 @@ public class MarsCommonProxy implements IGuiHandler
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
 	{
-		if (ID == GCMarsConfigManager.idGuiTankRefill)
+		if (ID == GCCoreConfigManager.idGuiTankRefill)
 		{
 			return new GCGuiTankRefill(player);
 		}
-		else if (ID == GCMarsConfigManager.idGuiAirDistributor)
+		else if (ID == GCCoreConfigManager.idGuiAirDistributor)
 		{
 			GCTileEntityOxygenDistributor distributor = (GCTileEntityOxygenDistributor) world.getBlockTileEntity(x, y, z);
 			

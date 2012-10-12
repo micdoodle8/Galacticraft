@@ -2,15 +2,14 @@ package micdoodle8.mods.galacticraft.core;
 
 import java.util.List;
 
-import micdoodle8.mods.galacticraft.mars.GCMarsItem;
 import micdoodle8.mods.galacticraft.mars.GCMarsBlocks;
+import micdoodle8.mods.galacticraft.mars.GCMarsItem;
 import micdoodle8.mods.galacticraft.mars.GCMarsUtil;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EnumRarity;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.World;
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
@@ -20,9 +19,9 @@ import cpw.mods.fml.common.asm.SideOnly;
  *  All rights reserved.
  *
  */
-public class GCItemSpaceship extends GCMarsItem
+public class GCCoreItemSpaceship extends GCMarsItem
 {
-	public GCItemSpaceship(int par1) 
+	public GCCoreItemSpaceship(int par1) 
 	{
 		super(par1);
 	}
@@ -42,7 +41,7 @@ public class GCItemSpaceship extends GCMarsItem
     		{
     			for (int j = -1; j < 2; j++)
         		{
-    				if (par3World.getBlockId(par4 + i, par5, par6 + j) == GCMarsBlocks.landingPad.blockID)
+    				if (par3World.getBlockId(par4 + i, par5, par6 + j) == GCCoreBlocks.landingPad.blockID)
     				{
     					amountOfCorrectBlocks++;
     				}
@@ -72,6 +71,6 @@ public class GCItemSpaceship extends GCMarsItem
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack par1ItemStack, List par2List) 
     {
-    	par2List.add("Failure chance: " + String.valueOf(GCMarsUtil.getSpaceshipFailChance(FMLClientHandler.instance().getClient().thePlayer)) + "%");
+    	par2List.add("Failure chance: " + String.valueOf(GCCoreUtil.getSpaceshipFailChance(FMLClientHandler.instance().getClient().thePlayer)) + "%");
     }
 }

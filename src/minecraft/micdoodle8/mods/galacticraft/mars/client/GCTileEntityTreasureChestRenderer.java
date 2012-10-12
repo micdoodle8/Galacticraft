@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.mars.client;
 
+import micdoodle8.mods.galacticraft.core.GCCoreBlockTreasureChest;
 import micdoodle8.mods.galacticraft.mars.*;
 import net.minecraft.src.Block;
 import net.minecraft.src.BlockChest;
@@ -47,7 +48,7 @@ public class GCTileEntityTreasureChestRenderer extends TileEntitySpecialRenderer
 
             if (var10 != null && var9 == 0)
             {
-                ((GCMarsBlockTreasureChest)var10).unifyAdjacentChests(par1GCTileEntityTreasureChest.getWorldObj(), par1GCTileEntityTreasureChest.xCoord, par1GCTileEntityTreasureChest.yCoord, par1GCTileEntityTreasureChest.zCoord);
+                ((GCCoreBlockTreasureChest)var10).unifyAdjacentChests(par1GCTileEntityTreasureChest.getWorldObj(), par1GCTileEntityTreasureChest.xCoord, par1GCTileEntityTreasureChest.yCoord, par1GCTileEntityTreasureChest.zCoord);
                 var9 = par1GCTileEntityTreasureChest.getBlockMetadata();
             }
 

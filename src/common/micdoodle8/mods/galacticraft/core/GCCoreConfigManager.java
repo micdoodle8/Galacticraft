@@ -85,16 +85,16 @@ public class GCCoreConfigManager
 		{
 	        configuration.load();
 	        
-			idBlockBreatheableAir = configuration.getOrCreateIntProperty("Breathable Air Block",								configuration.CATEGORY_BLOCK, 	202).getInt(202);
-	        idBlockTreasureChest = configuration.getOrCreateIntProperty("idBlockTreasureChest",		 							configuration.CATEGORY_BLOCK, 	209).getInt(209);
-	        idBlockLandingPad = configuration.getOrCreateIntProperty("idBlockLandingPad", 										configuration.CATEGORY_BLOCK, 	210).getInt(210);
-	        idBlockUnlitTorch = configuration.getOrCreateIntProperty("idBlockUnlitTorch", 										configuration.CATEGORY_BLOCK, 	213).getInt(213);
-	        idBlockUnlitTorchLit = configuration.getOrCreateIntProperty("idBlockUnlitTorchLit", 								configuration.CATEGORY_BLOCK, 	214).getInt(214);
-	        idBlockAirDistributor = configuration.getOrCreateIntProperty("idBlockAirDistributor", 								configuration.CATEGORY_BLOCK, 	215).getInt(215);
-	        idBlockAirDistributorActive = configuration.getOrCreateIntProperty("idBlockAirDistributorActive", 					configuration.CATEGORY_BLOCK, 	216).getInt(216);
-	        idBlockAirPipe = configuration.getOrCreateIntProperty("idBlockAirPipe", 											configuration.CATEGORY_BLOCK, 	217).getInt(217);
-	        idBlockAirCollector = configuration.getOrCreateIntProperty("idBlockAirCollector", 									configuration.CATEGORY_BLOCK, 	219).getInt(219);
-	        idBlockOre = configuration.getOrCreateIntProperty("idBlockOre", 													configuration.CATEGORY_BLOCK, 	218).getInt(218);
+			idBlockBreatheableAir = configuration.getOrCreateIntProperty("idBlockCoreBreatheableAir",								configuration.CATEGORY_BLOCK, 	3350).getInt(3350);
+	        idBlockTreasureChest = configuration.getOrCreateIntProperty("idBlockCoreTreasureChest",		 							configuration.CATEGORY_BLOCK, 	3351).getInt(3351);
+	        idBlockLandingPad = configuration.getOrCreateIntProperty("idBlockCoreLandingPad", 										configuration.CATEGORY_BLOCK, 	3352).getInt(3352);
+	        idBlockUnlitTorch = configuration.getOrCreateIntProperty("idBlockCoreUnlitTorch", 										configuration.CATEGORY_BLOCK, 	3353).getInt(3353);
+	        idBlockUnlitTorchLit = configuration.getOrCreateIntProperty("idBlockCoreUnlitTorchLit", 								configuration.CATEGORY_BLOCK, 	3354).getInt(3354);
+	        idBlockAirDistributor = configuration.getOrCreateIntProperty("idBlockCoreAirDistributor", 								configuration.CATEGORY_BLOCK, 	3355).getInt(3355);
+	        idBlockAirDistributorActive = configuration.getOrCreateIntProperty("idBlockCoreAirDistributorActive", 					configuration.CATEGORY_BLOCK, 	3356).getInt(3356);
+	        idBlockAirPipe = configuration.getOrCreateIntProperty("idBlockCoreAirPipe", 											configuration.CATEGORY_BLOCK, 	3357).getInt(3357);
+	        idBlockAirCollector = configuration.getOrCreateIntProperty("idBlockCoreAirCollector", 									configuration.CATEGORY_BLOCK, 	3358).getInt(3358);
+	        idBlockOre = configuration.getOrCreateIntProperty("idBlockCoreOre", 													configuration.CATEGORY_BLOCK, 	3359).getInt(3359);
 
 	        idItemLightOxygenTankEmpty = configuration.getOrCreateIntProperty("idItemLightOxygenTankEmpty", 					configuration.CATEGORY_ITEM, 	9854).getInt(9854);
 	        idItemLightOxygenTank = configuration.getOrCreateIntProperty("idItemLightOxygenTank", 								configuration.CATEGORY_ITEM, 	9855).getInt(9855);

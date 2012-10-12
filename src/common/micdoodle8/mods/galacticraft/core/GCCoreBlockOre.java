@@ -1,4 +1,4 @@
-package micdoodle8.mods.galacticraft.mars;
+package micdoodle8.mods.galacticraft.core;
 
 import java.util.List;
 import java.util.Random;
@@ -16,13 +16,13 @@ import cpw.mods.fml.common.asm.SideOnly;
  *  All rights reserved.
  *
  */
-public class GCMarsBlockOre extends Block
+public class GCCoreBlockOre extends Block
 {
-	// Desh: 0, Quandrium: 1, AluminumMars: 2, CopperMars: 3, TitaniumMars: 4;
+	// Copper: 0, Aluminum: 1, Titanium: 2.
 	
-	public GCMarsBlockOre(int i) 
+	public GCCoreBlockOre(int i, int j) 
 	{
-		super(i, 4, Material.rock);
+		super(i, j, Material.rock);
         this.setRequiresSelfNotify();
         this.setCreativeTab(CreativeTabs.tabBlock);
 	}
@@ -33,17 +33,13 @@ public class GCMarsBlockOre extends Block
 		switch (meta) 
 		{
 		case 0:
-			return 4;
+			return 1;
 		case 1:
-			return 5;
+			return 0;
 		case 2:
-			return 6;
-		case 3:
-			return 7;
-		case 4:
-			return 8;
+			return 2;
 		default:
-			return meta;
+			return -1;
 		}
 	}
 
@@ -52,8 +48,6 @@ public class GCMarsBlockOre extends Block
 	{
 		switch (meta)
 		{
-		case 0:
-			return this.blockID; // TODO Return desh item id
 		default:
 			return this.blockID;
 		}
@@ -74,8 +68,6 @@ public class GCMarsBlockOre extends Block
     {
 		switch (meta)
 		{
-		case 0:
-	        return random.nextInt(3) + 1;
 		default:
 			return 1;
 		}
@@ -85,7 +77,7 @@ public class GCMarsBlockOre extends Block
 	@Override
     public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
     {
-        for (int var4 = 0; var4 < 9; ++var4)
+        for (int var4 = 0; var4 < 3; ++var4)
         {
             par3List.add(new ItemStack(par1, 1, var4));
         }
@@ -94,6 +86,6 @@ public class GCMarsBlockOre extends Block
 	@Override
 	public String getTextureFile()
 	{
-		return "/micdoodle8/mods/galacticraft/mars/client/blocks/mars.png";
+		return "/micdoodle8/mods/galacticraft/core/client/blocks/core.png";
 	}
 }

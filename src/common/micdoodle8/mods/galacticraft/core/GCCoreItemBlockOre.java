@@ -1,4 +1,4 @@
-package micdoodle8.mods.galacticraft.mars;
+package micdoodle8.mods.galacticraft.core;
 
 import java.util.List;
 
@@ -7,9 +7,9 @@ import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.ItemBlock;
 import net.minecraft.src.ItemStack;
 
-public class GCMarsItemBlockOre extends ItemBlock
+public class GCCoreItemBlockOre extends ItemBlock
 {
-	public GCMarsItemBlockOre(int i)
+	public GCCoreItemBlockOre(int i)
 	{
 		super(i);
         this.setMaxDamage(0);
@@ -31,27 +31,17 @@ public class GCMarsItemBlockOre extends ItemBlock
 		{
 		case 0: 
 		{
-			name = "desh";
+			name = "copperearth";
 			break;
 		}
 		case 1: 
 		{
-			name = "quandrium";
+			name = "aluminumearth";
 			break;
 		}
 		case 2: 
 		{
-			name = "aluminummars";
-			break;
-		}
-		case 3: 
-		{
-			name = "coppermars";
-			break;
-		}
-		case 4: 
-		{
-			name = "titaniummars";
+			name = "titaniumearth";
 			break;
 		}
 		default: 

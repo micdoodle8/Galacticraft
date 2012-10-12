@@ -117,7 +117,7 @@ public class GCPlayerBase extends PlayerBase
 
 	public void moveEntityWithHeading(float par1, float par2)
     {
-		if (ClientProxy.handleBacterialMovement(player))
+		if (ClientProxyMars.handleBacterialMovement(player))
 		{
 			if (player.capabilities.isFlying)
 			{
@@ -162,7 +162,7 @@ public class GCPlayerBase extends PlayerBase
 	
 	public void jump()
     {
-		if (!ClientProxy.handleBacterialMovement(player))
+		if (!ClientProxyMars.handleBacterialMovement(player))
 		{
 			super.jump();
 		}

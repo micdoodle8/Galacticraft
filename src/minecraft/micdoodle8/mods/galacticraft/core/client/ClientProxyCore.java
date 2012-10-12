@@ -1,18 +1,19 @@
-package micdoodle8.mods.galacticraft.mars.client;
+package micdoodle8.mods.galacticraft.core.client;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.util.EnumSet;
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.core.CommonProxyCore;
+import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
+import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.GCEntityArrow;
 import micdoodle8.mods.galacticraft.core.GCEntityCreeper;
 import micdoodle8.mods.galacticraft.core.GCEntitySkeleton;
-import micdoodle8.mods.galacticraft.core.GCEntitySpaceship;
 import micdoodle8.mods.galacticraft.core.GCEntitySpider;
 import micdoodle8.mods.galacticraft.core.GCEntityZombie;
 import micdoodle8.mods.galacticraft.core.GCItemSensorGlasses;
-import micdoodle8.mods.galacticraft.mars.MarsCommonProxy;
 import micdoodle8.mods.galacticraft.mars.GCMarsBlocks;
 import micdoodle8.mods.galacticraft.mars.GCMarsChunkProvider;
 import micdoodle8.mods.galacticraft.mars.GCMarsConfigManager;
@@ -25,6 +26,30 @@ import micdoodle8.mods.galacticraft.mars.GCMarsTileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.mars.GCMarsUtil;
 import micdoodle8.mods.galacticraft.mars.GCMarsWorldProvider;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
+import micdoodle8.mods.galacticraft.mars.client.GCBlockRendererBacterialSludge;
+import micdoodle8.mods.galacticraft.mars.client.GCBlockRendererBreathableAir;
+import micdoodle8.mods.galacticraft.mars.client.GCBlockRendererOxygenPipe;
+import micdoodle8.mods.galacticraft.mars.client.GCBlockRendererUnlitTorch;
+import micdoodle8.mods.galacticraft.mars.client.GCEntityDropParticleFX;
+import micdoodle8.mods.galacticraft.mars.client.GCEntityLaunchSmokeFX;
+import micdoodle8.mods.galacticraft.mars.client.GCGuiChoosePlanet;
+import micdoodle8.mods.galacticraft.mars.client.GCItemRendererSpaceship;
+import micdoodle8.mods.galacticraft.mars.client.GCItemRendererUnlitTorch;
+import micdoodle8.mods.galacticraft.mars.client.GCModelCreeperBoss;
+import micdoodle8.mods.galacticraft.mars.client.GCModelSkeleton;
+import micdoodle8.mods.galacticraft.mars.client.GCModelZombie;
+import micdoodle8.mods.galacticraft.mars.client.GCPlayerBase;
+import micdoodle8.mods.galacticraft.mars.client.GCRenderArrow;
+import micdoodle8.mods.galacticraft.mars.client.GCRenderBlockTreasureChest;
+import micdoodle8.mods.galacticraft.mars.client.GCRenderCreeper;
+import micdoodle8.mods.galacticraft.mars.client.GCRenderCreeperBoss;
+import micdoodle8.mods.galacticraft.mars.client.GCRenderProjectileTNT;
+import micdoodle8.mods.galacticraft.mars.client.GCRenderSludgeling;
+import micdoodle8.mods.galacticraft.mars.client.GCRenderSpaceship;
+import micdoodle8.mods.galacticraft.mars.client.GCRenderSpider;
+import micdoodle8.mods.galacticraft.mars.client.GCSkyProvider;
+import micdoodle8.mods.galacticraft.mars.client.GCSounds;
+import micdoodle8.mods.galacticraft.mars.client.GCTileEntityTreasureChestRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.EntityClientPlayerMP;
 import net.minecraft.src.EntityFX;
@@ -74,7 +99,7 @@ import cpw.mods.fml.common.registry.TickRegistry;
  *  All rights reserved.
  *
  */
-public class ClientProxy extends MarsCommonProxy
+public class ClientProxyCore extends CommonProxyCore
 {
 	private static int treasureChestRenderID;
 	private static int fluidRenderID;
@@ -132,14 +157,12 @@ public class ClientProxy extends MarsCommonProxy
 	@Override
 	public void registerRenderInformation() 
 	{
-        RenderingRegistry.registerEntityRenderingHandler(GCMarsEntityCreeperBoss.class, new GCRenderCreeperBoss(new GCModelCreeperBoss(), 10.0F));
         RenderingRegistry.registerEntityRenderingHandler(GCMarsEntityProjectileTNT.class, new GCRenderProjectileTNT());
         RenderingRegistry.registerEntityRenderingHandler(GCEntitySpaceship.class, new GCRenderSpaceship());
         RenderingRegistry.registerEntityRenderingHandler(GCEntitySpider.class, new GCRenderSpider());
         RenderingRegistry.registerEntityRenderingHandler(GCEntityZombie.class, new RenderLiving(new GCModelZombie(), 1.0F));
         RenderingRegistry.registerEntityRenderingHandler(GCEntityCreeper.class, new GCRenderCreeper());
         RenderingRegistry.registerEntityRenderingHandler(GCEntitySkeleton.class, new RenderLiving(new GCModelSkeleton(), 1.0F));
-        RenderingRegistry.registerEntityRenderingHandler(GCMarsEntitySludgeling.class, new GCRenderSludgeling());
         RenderingRegistry.addNewArmourRendererPrefix("oxygen");
         RenderingRegistry.addNewArmourRendererPrefix("sensor");
         RenderingRegistry.addNewArmourRendererPrefix("sensorox");
@@ -172,12 +195,6 @@ public class ClientProxy extends MarsCommonProxy
     {
         return FMLClientHandler.instance().getClient().theWorld;
     }
-
-	@Override
-	public int getGCFluidRenderID()
-	{
-		return this.fluidRenderID;
-	}
 	
 	@Override
 	public int getGCUnlitTorchRenderID()
@@ -267,13 +284,13 @@ public class ClientProxy extends MarsCommonProxy
         public void onPacketData(NetworkManager manager, Packet250CustomPayload packet, Player p)
         {
             DataInputStream data = new DataInputStream(new ByteArrayInputStream(packet.data));
-            int packetType = GCMarsUtil.readPacketID(data);
+            int packetType = GCCoreUtil.readPacketID(data);
             EntityPlayer player = (EntityPlayer)p;
             
             if (packetType == 0)
             {
                 Class[] decodeAs = {Integer.class};
-                Object[] packetReadout = GCMarsUtil.readPacketData(data, decodeAs);
+                Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
 
                 TickHandlerClient.airRemaining = (Integer) packetReadout[0];
             }
@@ -307,7 +324,7 @@ public class ClientProxy extends MarsCommonProxy
     	@Override
     	public void tickStart(EnumSet<TickType> type, Object... tickData)
         {
-    		ClientProxy.getCurrentTime = System.currentTimeMillis();
+    		ClientProxyCore.getCurrentTime = System.currentTimeMillis();
     		
     		Minecraft minecraft = FMLClientHandler.instance().getClient();
     		
@@ -340,7 +357,7 @@ public class ClientProxy extends MarsCommonProxy
     			if (player != null && player.ridingEntity != null && minecraft.gameSettings.keyBindJump.pressed)
     			{
     	    		Object[] toSend = {0};
-    	            PacketDispatcher.sendPacketToServer(GCMarsUtil.createPacket("Galacticraft", 3, toSend));
+    	            PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 3, toSend));
     			}
     			
     			if (world != null && world.provider instanceof GCMarsWorldProvider)
@@ -468,7 +485,7 @@ public class ClientProxy extends MarsCommonProxy
     	public void requestRespawn(EntityPlayerSP player)
     	{
     		Object[] toSend = {player.username};
-            PacketDispatcher.sendPacketToServer(GCMarsUtil.createPacket("Galacticraft", 1, toSend));
+            PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 1, toSend));
     	}
     }
     
@@ -499,8 +516,8 @@ public class ClientProxy extends MarsCommonProxy
                 	EntityPlayerSP player = minecraft.thePlayer;
                 	
                     Object[] toSend = {player.username};
-                    PacketDispatcher.sendPacketToServer(GCMarsUtil.createPacket("Galacticraft", 0, toSend));
-            	    player.openGui(GalacticraftMars.instance, GCMarsConfigManager.idGuiTankRefill, minecraft.theWorld, (int)player.posX, (int)player.posY, (int)player.posZ);
+                    PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 0, toSend));
+            	    player.openGui(GalacticraftMars.instance, GCCoreConfigManager.idGuiTankRefill, minecraft.theWorld, (int)player.posX, (int)player.posY, (int)player.posZ);
             	}
         	}
         }

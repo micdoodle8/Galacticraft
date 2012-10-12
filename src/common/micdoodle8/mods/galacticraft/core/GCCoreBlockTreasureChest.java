@@ -1,10 +1,11 @@
-package micdoodle8.mods.galacticraft.mars;
+package micdoodle8.mods.galacticraft.core;
 
 import static net.minecraftforge.common.ForgeDirection.DOWN;
 
 import java.util.Iterator;
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.mars.GCMarsTileEntityTreasureChest;
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Block;
 import net.minecraft.src.BlockContainer;
@@ -31,11 +32,11 @@ import cpw.mods.fml.common.asm.SideOnly;
  *  All rights reserved.
  *
  */
-public class GCMarsBlockTreasureChest extends BlockContainer
+public class GCCoreBlockTreasureChest extends BlockContainer
 {
     private Random random = new Random();
 
-    protected GCMarsBlockTreasureChest(int par1)
+    protected GCCoreBlockTreasureChest(int par1)
     {
         super(par1, Material.rock);
         this.blockIndexInTexture = 14;

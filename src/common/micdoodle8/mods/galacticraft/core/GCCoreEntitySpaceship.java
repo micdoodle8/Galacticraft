@@ -1,8 +1,6 @@
 package micdoodle8.mods.galacticraft.core;
 
-import micdoodle8.mods.galacticraft.mars.GCMarsItems;
 import micdoodle8.mods.galacticraft.mars.GCMarsPlayerBaseServer;
-import micdoodle8.mods.galacticraft.mars.GCMarsUtil;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.BlockRail;
@@ -11,16 +9,12 @@ import net.minecraft.src.Entity;
 import net.minecraft.src.EntityItem;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EntityPlayerMP;
-import net.minecraft.src.EntitySmokeFX;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.World;
-import net.minecraftforge.common.IMinecartCollisionHandler;
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
@@ -30,7 +24,7 @@ import cpw.mods.fml.common.asm.SideOnly;
  *  All rights reserved.
  *
  */
-public class GCEntitySpaceship extends Entity
+public class GCCoreEntitySpaceship extends Entity
 {
     protected int fuel;
     
@@ -68,7 +62,7 @@ public class GCEntitySpaceship extends Entity
     
     protected boolean failedLaunch;
 
-    public GCEntitySpaceship(World par1World)
+    public GCCoreEntitySpaceship(World par1World)
     {
         super(par1World);
         this.fuel = 0;
@@ -107,7 +101,7 @@ public class GCEntitySpaceship extends Entity
         return false;
     }
 
-    public GCEntitySpaceship(World par1World, double par2, double par4, double par6, boolean reversed)
+    public GCCoreEntitySpaceship(World par1World, double par2, double par4, double par6, boolean reversed)
     {
         this(par1World);
         this.setPosition(par2, par4 + (double)this.yOffset, par6);
@@ -175,11 +169,11 @@ public class GCEntitySpaceship extends Entity
                     this.riddenByEntity.mountEntity(this);
                 }
 
-                GCMarsUtil.createNewExplosion(worldObj, this, this.posX, this.posY, this.posZ, 6, false);
+                GCCoreUtil.createNewExplosion(worldObj, this, this.posX, this.posY, this.posZ, 6, false);
                 
 				if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayer && !((EntityPlayer) this.riddenByEntity).capabilities.isCreativeMode)
 				{
-					EntityItem var14 = new EntityItem(this.worldObj, MathHelper.floor_double(this.riddenByEntity.posX + 0.5D), MathHelper.floor_double(this.riddenByEntity.posY + 1D), MathHelper.floor_double(this.riddenByEntity.posZ + 0.5D), new ItemStack(GCMarsItems.spaceship));
+					EntityItem var14 = new EntityItem(this.worldObj, MathHelper.floor_double(this.riddenByEntity.posX + 0.5D), MathHelper.floor_double(this.riddenByEntity.posY + 1D), MathHelper.floor_double(this.riddenByEntity.posZ + 0.5D), new ItemStack(GCCoreItems.spaceship));
 
 			        float var15 = 0.05F;
 			        var14.motionX = (double)((float)this.rand.nextGaussian() * var15);
@@ -189,7 +183,7 @@ public class GCEntitySpaceship extends Entity
 				}
 				else if (this.riddenByEntity == null)
 				{
-					EntityItem var14 = new EntityItem(this.worldObj, MathHelper.floor_double(this.posX + 0.5D), MathHelper.floor_double(this.posY + 1D), MathHelper.floor_double(this.posZ + 0.5D), new ItemStack(GCMarsItems.spaceship));
+					EntityItem var14 = new EntityItem(this.worldObj, MathHelper.floor_double(this.posX + 0.5D), MathHelper.floor_double(this.posY + 1D), MathHelper.floor_double(this.posZ + 0.5D), new ItemStack(GCCoreItems.spaceship));
 
 			        float var15 = 0.05F;
 			        var14.motionX = (double)((float)this.rand.nextGaussian() * var15);
@@ -534,7 +528,7 @@ public class GCEntitySpaceship extends Entity
     
     protected void updateFailChance(EntityPlayer player)
     {
-    	if (this.rand.nextInt(100) < GCMarsUtil.getSpaceshipFailChance(player))
+    	if (this.rand.nextInt(100) < GCCoreUtil.getSpaceshipFailChance(player))
     	{
     		this.failedLaunch = true;
     	}

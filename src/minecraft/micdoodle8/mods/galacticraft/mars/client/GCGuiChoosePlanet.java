@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
-import micdoodle8.mods.galacticraft.mars.GCMarsUtil;
+import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.FontRenderer;
 import net.minecraft.src.GuiButton;
@@ -22,7 +22,6 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 
 /**
@@ -63,7 +62,7 @@ public class GCGuiChoosePlanet extends GuiScreen
     	
     	Integer[] ids = DimensionManager.getIDs();
     	
-    	Set set = GCMarsUtil.getArrayOfPossibleDimensions(ids).entrySet();
+    	Set set = GCCoreUtil.getArrayOfPossibleDimensions(ids).entrySet();
     	Iterator i = set.iterator();
     	
     	this.destinations = new String[set.size()];
@@ -369,9 +368,9 @@ public class GCGuiChoosePlanet extends GuiScreen
     {
     	if (par1GuiButton.enabled)
     	{
-    		Integer dim = GCMarsUtil.getProviderForName(this.destinations[this.selectedSlot]).dimensionId;
+    		Integer dim = GCCoreUtil.getProviderForName(this.destinations[this.selectedSlot]).dimensionId;
             Object[] toSend = {dim};
-            PacketDispatcher.sendPacketToServer(GCMarsUtil.createPacket("Galacticraft", 2, toSend));
+            PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 2, toSend));
             FMLClientHandler.instance().getClient().displayGuiScreen(null);
     	}
     }

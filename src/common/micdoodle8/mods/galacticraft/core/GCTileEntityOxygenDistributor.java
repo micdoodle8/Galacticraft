@@ -1,9 +1,5 @@
 package micdoodle8.mods.galacticraft.core;
 
-import micdoodle8.mods.galacticraft.mars.GCMarsBlocks;
-import micdoodle8.mods.galacticraft.mars.GCMarsItems;
-import micdoodle8.mods.galacticraft.mars.GCMarsUtil;
-import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IInventory;
 import net.minecraft.src.Item;
@@ -36,7 +32,7 @@ public class GCTileEntityOxygenDistributor extends TileEntity implements IInvent
     	{
         	Item tank = this.distributorStacks[0].getItem();
         	
-        	if (tank == GCMarsItems.heavyOxygenTankFull || tank == GCMarsItems.medOxygenTankFull || tank == GCMarsItems.lightOxygenTankFull)
+        	if (tank == GCCoreItems.heavyOxygenTankFull || tank == GCMarsItems.medOxygenTankFull || tank == GCMarsItems.lightOxygenTankFull)
         	{
         		GCBlockOxygenDistributor.updateDistributorState(true, worldObj, xCoord, yCoord, zCoord);
         	}
@@ -76,36 +72,36 @@ public class GCTileEntityOxygenDistributor extends TileEntity implements IInvent
 		}
 		
 		
-		if (this.worldObj.getBlockId(xCoord, yCoord, zCoord) == GCMarsBlocks.airDistributorActive.blockID)
+		if (this.worldObj.getBlockId(xCoord, yCoord, zCoord) == GCCoreBlocks.airDistributorActive.blockID)
 		{
 			if (this.worldObj.getBlockId(this.xCoord + 1, this.yCoord, this.zCoord) == 0)
 			{
-				this.worldObj.setBlockWithNotify(this.xCoord + 1, this.yCoord, this.zCoord, GCMarsBlocks.breatheableAir.blockID);
+				this.worldObj.setBlockWithNotify(this.xCoord + 1, this.yCoord, this.zCoord, GCCoreBlocks.breatheableAir.blockID);
 			}
 
 			if (this.worldObj.getBlockId(this.xCoord - 1, this.yCoord, this.zCoord) == 0)
 			{
-				this.worldObj.setBlockWithNotify(this.xCoord - 1, this.yCoord, this.zCoord, GCMarsBlocks.breatheableAir.blockID);
+				this.worldObj.setBlockWithNotify(this.xCoord - 1, this.yCoord, this.zCoord, GCCoreBlocks.breatheableAir.blockID);
 			}
 
 			if (this.worldObj.getBlockId(this.xCoord, this.yCoord, this.zCoord + 1) == 0)
 			{
-				this.worldObj.setBlockWithNotify(this.xCoord, this.yCoord, this.zCoord + 1, GCMarsBlocks.breatheableAir.blockID);
+				this.worldObj.setBlockWithNotify(this.xCoord, this.yCoord, this.zCoord + 1, GCCoreBlocks.breatheableAir.blockID);
 			}
 
 			if (this.worldObj.getBlockId(this.xCoord, this.yCoord, this.zCoord - 1) == 0)
 			{
-				this.worldObj.setBlockWithNotify(this.xCoord, this.yCoord, this.zCoord - 1, GCMarsBlocks.breatheableAir.blockID);
+				this.worldObj.setBlockWithNotify(this.xCoord, this.yCoord, this.zCoord - 1, GCCoreBlocks.breatheableAir.blockID);
 			}
 
 			if (this.worldObj.getBlockId(this.xCoord, this.yCoord + 1, this.zCoord) == 0)
 			{
-				this.worldObj.setBlockWithNotify(this.xCoord, this.yCoord + 1, this.zCoord, GCMarsBlocks.breatheableAir.blockID);
+				this.worldObj.setBlockWithNotify(this.xCoord, this.yCoord + 1, this.zCoord, GCCoreBlocks.breatheableAir.blockID);
 			}
 
 			if (this.worldObj.getBlockId(this.xCoord, this.yCoord - 1, this.zCoord) == 0)
 			{
-				this.worldObj.setBlockWithNotify(this.xCoord, this.yCoord - 1, this.zCoord, GCMarsBlocks.breatheableAir.blockID);
+				this.worldObj.setBlockWithNotify(this.xCoord, this.yCoord - 1, this.zCoord, GCCoreBlocks.breatheableAir.blockID);
 			}
 			
 			for (int j = -5; j < 6; j++)
@@ -114,14 +110,14 @@ public class GCTileEntityOxygenDistributor extends TileEntity implements IInvent
 				{
 					for (int k = -5; k < 6; k++)
 					{
-						if (this.worldObj.getBlockId(this.xCoord + i, this.yCoord + j, this.zCoord + k) == GCMarsBlocks.breatheableAir.blockID)
+						if (this.worldObj.getBlockId(this.xCoord + i, this.yCoord + j, this.zCoord + k) == GCCoreBlocks.breatheableAir.blockID)
 						{
-							this.worldObj.scheduleBlockUpdate(this.xCoord + i, this.yCoord + j, this.zCoord + k, GCMarsBlocks.breatheableAir.blockID, GCMarsBlocks.breatheableAir.tickRate());
+							this.worldObj.scheduleBlockUpdate(this.xCoord + i, this.yCoord + j, this.zCoord + k, GCCoreBlocks.breatheableAir.blockID, GCCoreBlocks.breatheableAir.tickRate());
 						}
-						else if (this.worldObj.getBlockId(this.xCoord + i, this.yCoord + j, this.zCoord + k) == GCMarsBlocks.unlitTorch.blockID)
+						else if (this.worldObj.getBlockId(this.xCoord + i, this.yCoord + j, this.zCoord + k) == GCCoreBlocks.unlitTorch.blockID)
 						{
 							int meta = this.worldObj.getBlockMetadata(this.xCoord + i, this.yCoord + j, this.zCoord + k);
-							this.worldObj.setBlockAndMetadataWithNotify(this.xCoord + i, this.yCoord + j, this.zCoord + k, GCMarsBlocks.unlitTorchLit.blockID, meta);
+							this.worldObj.setBlockAndMetadataWithNotify(this.xCoord + i, this.yCoord + j, this.zCoord + k, GCCoreBlocks.unlitTorchLit.blockID, meta);
 						}
 					}
 				}

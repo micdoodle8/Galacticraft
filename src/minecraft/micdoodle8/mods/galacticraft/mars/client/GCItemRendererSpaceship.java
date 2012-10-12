@@ -47,7 +47,7 @@ public class GCItemRendererSpaceship implements IItemRenderer
         	GL11.glRotatef(20F, 1F, 0F, 0F);
         	GL11.glScalef(1.3F, 1.3F, 1.3F);
         	GL11.glTranslatef(0, -0.6F, 0);
-        	GL11.glRotatef((ClientProxy.getCurrentTime - ClientProxy.getFirstBootTime) / 20, 0F, 1F, 0F);
+        	GL11.glRotatef((ClientProxyMars.getCurrentTime - ClientProxyMars.getFirstBootTime) / 20, 0F, 1F, 0F);
         }
         FMLClientHandler.instance().getClient().renderEngine.bindTexture(FMLClientHandler.instance().getClient().renderEngine.getTexture("/micdoodle8/mods/galacticraft/mars/client/entities/spaceship1.png"));
         this.modelSpaceship.render(spaceship, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);

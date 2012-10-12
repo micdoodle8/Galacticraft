@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core;
 
-import micdoodle8.mods.galacticraft.mars.GCMarsUtil;
 import net.minecraft.src.IInventory;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.Slot;
@@ -21,7 +20,7 @@ public class GCSlotTankRefill extends Slot
 	@Override
 	public boolean isItemValid(ItemStack par1ItemStack)
 	{
-		return GCMarsUtil.getDrainSpacing(par1ItemStack) > 0;
+		return GCCoreUtil.getDrainSpacing(par1ItemStack) > 0;
 	}
 
 	@Override

@@ -19,16 +19,6 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
  */
 public class GCMarsItems 
 {
-	public static Item lightOxygenTankFull;
-	public static Item medOxygenTankFull;
-	public static Item heavyOxygenTankFull;
-	public static Item lightOxygenTankEmpty;
-	public static Item medOxygenTankEmpty;
-	public static Item heavyOxygenTankEmpty;
-	public static Item oxygenMask;
-	public static Item spaceship;
-	public static Item sensorGlasses;
-	public static Item sensorGlassesWithOxygenMask;
 	public static Item reinforcedBucketEmpty;
 	public static Item reinforcedBucketMilk;
 	public static Item reinforcedBucketWater;
@@ -56,33 +46,16 @@ public class GCMarsItems
 	public static Item quandriumHoe;
 	public static Item quandriumSpade;
 	public static Item quandriumSword;
-	public static Item titaniumPickaxe;
-	public static Item titaniumAxe;
-	public static Item titaniumHoe;
-	public static Item titaniumSpade;
-	public static Item titaniumSword;
 	public static Item deshHelmet;
 	public static Item deshChestplate;
 	public static Item deshLeggings;
 	public static Item deshBoots;
 	public static Item deshHelmetBreathable;
-	public static Item titaniumHelmet;
-	public static Item titaniumChestplate;
-	public static Item titaniumLeggings;
-	public static Item titaniumBoots;
-	public static Item titaniumHelmetBreathable;
 	public static Item deshStick;
 	public static Item heavyBoots;
 	public static Item ingotQuandrium;
 	public static Item ingotDesh;
-	public static Item ingotTitanium;
-	public static Item ingotCopper;
-	public static Item ingotAluminum;
 	public static Item jetpack;
-	public static Item aluminumCanister;
-	public static Item airVent;
-	public static Item airFan;
-	public static Item oxygenConcentrator;
 	
 	public static EnumArmorMaterial OXYGENMASK = EnumHelper.addArmorMaterial("OXYGENMASK", 200, new int[] {0, 0, 0, 0}, 0);
 	public static EnumArmorMaterial SENSORGLASSES = EnumHelper.addArmorMaterial("SENSORGLASSES", 200, new int[] {0, 0, 0, 0}, 0);
@@ -98,16 +71,6 @@ public class GCMarsItems
 	
 	public static void initItems() 
 	{
-		lightOxygenTankFull = new GCItemOxygenTank(GCMarsConfigManager.idItemLightOxygenTank).setMaxDamage(90).setIconIndex(0).setItemName("oxygenTankLightFull");
-		lightOxygenTankEmpty = new GCMarsItem(GCMarsConfigManager.idItemLightOxygenTankEmpty).setIconIndex(3).setItemName("oxygenTankLightEmpty");
-		medOxygenTankFull = new GCItemOxygenTank(GCMarsConfigManager.idItemMedOxygenTank).setMaxDamage(90).setIconIndex(1).setItemName("oxygenTankMedFull");
-		medOxygenTankEmpty = new GCMarsItem(GCMarsConfigManager.idItemMedOxygenTankEmpty).setIconIndex(4).setItemName("oxygenTankMedEmpty");
-		heavyOxygenTankFull = new GCItemOxygenTank(GCMarsConfigManager.idItemHeavyOxygenTank).setMaxDamage(90).setIconIndex(2).setItemName("oxygenTankHeavyFull");
-		heavyOxygenTankEmpty = new GCMarsItem(GCMarsConfigManager.idItemHeavyOxygenTankEmpty).setIconIndex(5).setItemName("oxygenTankHeavyEmpty");
-		oxygenMask = new GCItemOxygenMask(GCMarsConfigManager.idArmorOxygenMask, OXYGENMASK, 5, 0).setIconIndex(7).setItemName("oxygenMask");
-		spaceship = new GCItemSpaceship(GCMarsConfigManager.idItemSpaceship).setIconIndex(8).setItemName("spaceship");
-		sensorGlasses = new GCItemSensorGlasses(GCMarsConfigManager.idArmorSensorGlasses, SENSORGLASSES, 6, 0, false).setIconIndex(9).setItemName("sensorGlasses");
-		sensorGlassesWithOxygenMask = new GCItemSensorGlasses(GCMarsConfigManager.idArmorSensorGlassesWithOxygenMask, SENSORGLASSES, 7, 0, true).setIconIndex(10).setItemName("sensorGlassesWithOxygenMask");
 		reinforcedBucketEmpty = new GCMarsItemReinforcedBucket(GCMarsConfigManager.idItemReinforcedBucket, 0).setIconIndex(11).setItemName("reinfocedBucket");
 		reinforcedBucketMilk = new GCMarsItemReinforcedBucket(GCMarsConfigManager.idItemReinforcedBucketMilk, 1).setIconIndex(14).setItemName("reinfocedBucketMilk");
 		reinforcedBucketWater = new GCMarsItemReinforcedBucket(GCMarsConfigManager.idItemReinforcedBucketWater, Block.waterMoving.blockID).setIconIndex(12).setItemName("reinfocedBucketWater");
@@ -129,11 +92,6 @@ public class GCMarsItems
 		quandriumHoe = new GCMarsItemHoe(GCMarsConfigManager.idToolQuandriumHoe, TOOLQUANDRIUM).setIconIndex(29).setItemName("quandriumHoe");
 		quandriumSpade = new GCMarsItemSpade(GCMarsConfigManager.idToolQuandriumSpade, TOOLQUANDRIUM).setIconIndex(30).setItemName("quandriumSpade");
 		quandriumSword = new GCMarsItemSword(GCMarsConfigManager.idToolQuandriumSword, TOOLQUANDRIUM).setIconIndex(31).setItemName("quandriumSword");
-		titaniumPickaxe = new GCMarsItemPickaxe(GCMarsConfigManager.idToolTitaniumPickaxe, TOOLTITANIUM).setIconIndex(32).setItemName("titaniumPick");
-		titaniumAxe = new GCMarsItemAxe(GCMarsConfigManager.idToolTitaniumAxe, TOOLTITANIUM).setIconIndex(33).setItemName("titaniumAxe");
-		titaniumHoe = new GCMarsItemHoe(GCMarsConfigManager.idToolTitaniumHoe, TOOLTITANIUM).setIconIndex(34).setItemName("titaniumHoe");
-		titaniumSpade = new GCMarsItemSpade(GCMarsConfigManager.idToolTitaniumSpade, TOOLTITANIUM).setIconIndex(35).setItemName("titaniumSpade");
-		titaniumSword = new GCMarsItemSword(GCMarsConfigManager.idToolTitaniumSword, TOOLTITANIUM).setIconIndex(36).setItemName("titaniumSword");
 		deshHelmet = new GCMarsItemArmor(GCMarsConfigManager.idArmorDeshHelmet, ARMORDESH, 7, 0, false).setIconIndex(37).setItemName("deshHelmet");
 		deshChestplate = new GCMarsItemArmor(GCMarsConfigManager.idArmorDeshChestplate, ARMORDESH, 7, 1, false).setIconIndex(38).setItemName("deshChestplate");
 		deshLeggings = new GCMarsItemArmor(GCMarsConfigManager.idArmorDeshLeggings, ARMORDESH, 7, 2, false).setIconIndex(39).setItemName("deshLeggings");
@@ -144,37 +102,15 @@ public class GCMarsItems
 		quandriumLeggings = new GCMarsItemArmor(GCMarsConfigManager.idArmorQuandriumLeggings, QUANDRIUMARMOR, 8, 2, false).setIconIndex(44).setItemName("quandriumLeggings");
 		quandriumBoots = new GCMarsItemArmor(GCMarsConfigManager.idArmorQuandriumBoots, QUANDRIUMARMOR, 8, 3, false).setIconIndex(45).setItemName("quandriumBoots");
 		quandriumHelmetBreathable = new GCMarsItemArmor(GCMarsConfigManager.idArmorQuandriumHelmetBreathable, QUANDRIUMARMOR, 8, 0, true).setIconIndex(46).setItemName("quandriumHelmetBreathable");
-		titaniumHelmet = new GCMarsItemArmor(GCMarsConfigManager.idArmorTitaniumHelmet, TITANIUMARMOR, 9, 0, false).setIconIndex(47).setItemName("titaniumHelmet");
-		titaniumChestplate = new GCMarsItemArmor(GCMarsConfigManager.idArmorTitaniumChestplate, TITANIUMARMOR, 9, 1, false).setIconIndex(48).setItemName("titaniumChestplate");
-		titaniumLeggings = new GCMarsItemArmor(GCMarsConfigManager.idArmorTitaniumLeggings, TITANIUMARMOR, 9, 2, false).setIconIndex(49).setItemName("titaniumLeggings");
-		titaniumBoots = new GCMarsItemArmor(GCMarsConfigManager.idArmorTitaniumBoots, TITANIUMARMOR, 9, 3, false).setIconIndex(50).setItemName("titaniumBoots");
-		titaniumHelmetBreathable = new GCMarsItemArmor(GCMarsConfigManager.idArmorTitaniumHelmetBreathable, TITANIUMARMOR, 9, 0, true).setIconIndex(51).setItemName("titaniumHelmetBreathable");
 		deshStick = new GCMarsItem(GCMarsConfigManager.idItemDeshStick).setIconIndex(52).setItemName("deshStick");
 		heavyBoots = new GCMarsItemArmor(GCMarsConfigManager.idArmorHeavyBoots, ARMORHEAVY, 10, 3, false).setIconIndex(53).setItemName("heavyBoots");
 		ingotQuandrium = new GCMarsItem(GCMarsConfigManager.idItemIngotQuandrium).setIconIndex(54).setItemName("ingotQuandrium");
 		ingotDesh = new GCMarsItem(GCMarsConfigManager.idItemIngotDesh).setIconIndex(55).setItemName("ingotDesh");
-		ingotTitanium = new GCMarsItem(GCMarsConfigManager.idItemIngotTitanium).setIconIndex(56).setItemName("ingotTitanium");
-		ingotCopper = new GCMarsItem(GCMarsConfigManager.idItemIngotCopper).setIconIndex(57).setItemName("ingotCopper");
-		ingotAluminum = new GCMarsItem(GCMarsConfigManager.idItemIngotAluminum).setIconIndex(58).setItemName("ingotAluminum");
 		jetpack = new GCMarsItemJetpack(GCMarsConfigManager.idArmorJetpack, ARMORJETPACK, 11, 1).setIconIndex(59).setItemName("jetpack");
-		aluminumCanister = new GCMarsItem(GCMarsConfigManager.idItemAluminumCanister).setIconIndex(60).setItemName("aluminumCanister");
-		airVent = new GCMarsItem(GCMarsConfigManager.idItemAirVent).setIconIndex(61).setItemName("airVent");
-		airFan = new GCMarsItem(GCMarsConfigManager.idItemFan).setIconIndex(62).setItemName("airFan");
-		oxygenConcentrator = new GCMarsItem(GCMarsConfigManager.idItemOxygenConcentrator).setIconIndex(63).setItemName("oxygenConcentrator");
 	}
 
 	public static void addNames() 
 	{
-		addName(oxygenMask);
-		addName(spaceship);
-		addName(lightOxygenTankFull);
-		addName(lightOxygenTankEmpty);
-		addName(medOxygenTankFull);
-		addName(medOxygenTankEmpty);
-		addName(heavyOxygenTankFull);
-		addName(heavyOxygenTankEmpty);
-		addName(sensorGlasses);
-		addName(sensorGlassesWithOxygenMask);
 		addName(reinforcedBucketEmpty);
 		addName(reinforcedBucketMilk);
 		addName(reinforcedBucketWater);
@@ -196,11 +132,6 @@ public class GCMarsItems
 		addName(quandriumSpade);
 		addName(quandriumHoe);
 		addName(quandriumSword);
-		addName(titaniumPickaxe);
-		addName(titaniumAxe);
-		addName(titaniumSpade);
-		addName(titaniumHoe);
-		addName(titaniumSword);
 		addName(deshHelmet);
 		addName(deshChestplate);
 		addName(deshLeggings);
@@ -211,87 +142,11 @@ public class GCMarsItems
 		addName(quandriumLeggings);
 		addName(quandriumBoots);
 		addName(quandriumHelmetBreathable);
-		addName(titaniumHelmet);
-		addName(titaniumChestplate);
-		addName(titaniumLeggings);
-		addName(titaniumBoots);
-		addName(titaniumHelmetBreathable);
 		addName(deshStick);
 		addName(heavyBoots);
 		addName(ingotQuandrium);
 		addName(ingotDesh);
-		addName(ingotTitanium);
-		addName(ingotCopper);
-		addName(ingotAluminum);
 		addName(jetpack);
-		addName(aluminumCanister);
-		addName(airVent);
-		addName(airFan);
-		addName(oxygenConcentrator);
-		
-//		LanguageRegistry.instance().addNameForObject(oxygenMask, "en_US", "Oxygen Mask");
-//		LanguageRegistry.instance().addNameForObject(spaceship, "en_US", "Spaceship");
-//		LanguageRegistry.instance().addNameForObject(lightOxygenTankFull, "en_US", "Light Oxygen Tank");
-//		LanguageRegistry.instance().addNameForObject(lightOxygenTankEmpty, "en_US", "Empty Light Oxygen Tank");
-//		LanguageRegistry.instance().addNameForObject(medOxygenTankFull, "en_US", "Medium Oxygen Tank");
-//		LanguageRegistry.instance().addNameForObject(medOxygenTankEmpty, "en_US", "Empty Medium Oxygen Tank");
-//		LanguageRegistry.instance().addNameForObject(heavyOxygenTankFull, "en_US", "Heavy Oxygen Tank");
-//		LanguageRegistry.instance().addNameForObject(heavyOxygenTankEmpty, "en_US", "Empty Heavy Oxygen Tank");
-//		LanguageRegistry.instance().addNameForObject(sensorGlasses, "en_US", "Sensor Glasses");
-//		LanguageRegistry.instance().addNameForObject(sensorGlassesWithOxygenMask, "en_US", "Sensor Glasses with Oxygen Mask");
-//		LanguageRegistry.instance().addNameForObject(reinforcedBucketEmpty, "en_US", "Reinforced Bucket");
-//		LanguageRegistry.instance().addNameForObject(reinforcedBucketMilk, "en_US", "Reinforced Milk Bucket");
-//		LanguageRegistry.instance().addNameForObject(reinforcedBucketWater, "en_US", "Reinforced Water Bucket");
-//		LanguageRegistry.instance().addNameForObject(reinforcedBucketLava, "en_US", "Reinforced Lava Bucket");
-//		LanguageRegistry.instance().addNameForObject(reinforcedBucketBacteria, "en_US", "Reinforced Sludge Bucket");
-//		LanguageRegistry.instance().addNameForObject(rawDesh, "en_US", "Unrefined Desh");
-//		LanguageRegistry.instance().addNameForObject(deshPickaxe, "en_US", "Desh Pickaxe");
-//		LanguageRegistry.instance().addNameForObject(deshAxe, "en_US", "Desh Axe");
-//		LanguageRegistry.instance().addNameForObject(deshSpade, "en_US", "Desh Spade");
-//		LanguageRegistry.instance().addNameForObject(deshHoe, "en_US", "Desh Hoe");
-//		LanguageRegistry.instance().addNameForObject(deshSword, "en_US", "Desh Sword");
-//		LanguageRegistry.instance().addNameForObject(planetStonePickaxe, "en_US", "Stone Pickaxe");
-//		LanguageRegistry.instance().addNameForObject(planetStoneAxe, "en_US", "Stone Axe");
-//		LanguageRegistry.instance().addNameForObject(planetStoneSpade, "en_US", "Stone Spade");
-//		LanguageRegistry.instance().addNameForObject(planetStoneHoe, "en_US", "Stone Hoe");
-//		LanguageRegistry.instance().addNameForObject(planetStoneSword, "en_US", "Stone Sword");
-//		LanguageRegistry.instance().addNameForObject(quandriumPickaxe, "en_US", "Quandrium Pickaxe");
-//		LanguageRegistry.instance().addNameForObject(quandriumAxe, "en_US", "Quandrium Axe");
-//		LanguageRegistry.instance().addNameForObject(quandriumSpade, "en_US", "Quandrium Spade");
-//		LanguageRegistry.instance().addNameForObject(quandriumHoe, "en_US", "Quandrium Hoe");
-//		LanguageRegistry.instance().addNameForObject(quandriumSword, "en_US", "Quandrium Sword");
-//		LanguageRegistry.instance().addNameForObject(titaniumPickaxe, "en_US", "Titanium Pickaxe");
-//		LanguageRegistry.instance().addNameForObject(titaniumAxe, "en_US", "Titanium Axe");
-//		LanguageRegistry.instance().addNameForObject(titaniumSpade, "en_US", "Titanium Spade");
-//		LanguageRegistry.instance().addNameForObject(titaniumHoe, "en_US", "Titanium Hoe");
-//		LanguageRegistry.instance().addNameForObject(titaniumSword, "en_US", "Titanium Sword");
-//		LanguageRegistry.instance().addNameForObject(deshHelmet, "en_US", "Desh Helmet");
-//		LanguageRegistry.instance().addNameForObject(deshChestplate, "en_US", "Desh Chestplate");
-//		LanguageRegistry.instance().addNameForObject(deshLeggings, "en_US", "Desh Leggings");
-//		LanguageRegistry.instance().addNameForObject(deshBoots, "en_US", "Desh Boots");
-//		LanguageRegistry.instance().addNameForObject(deshHelmetBreathable, "en_US", "Breathable Desh Helmet");
-//		LanguageRegistry.instance().addNameForObject(quandriumHelmet, "en_US", "Quandrium Helmet");
-//		LanguageRegistry.instance().addNameForObject(quandriumChestplate, "en_US", "Quandrium Chestplate");
-//		LanguageRegistry.instance().addNameForObject(quandriumLeggings, "en_US", "Quandrium Leggings");
-//		LanguageRegistry.instance().addNameForObject(quandriumBoots, "en_US", "Quandrium Boots");
-//		LanguageRegistry.instance().addNameForObject(quandriumHelmetBreathable, "en_US", "Breathable Quandrium Helmet");
-//		LanguageRegistry.instance().addNameForObject(titaniumHelmet, "en_US", "Titanium Helmet");
-//		LanguageRegistry.instance().addNameForObject(titaniumChestplate, "en_US", "Titanium Chestplate");
-//		LanguageRegistry.instance().addNameForObject(titaniumLeggings, "en_US", "Titanium Leggings");
-//		LanguageRegistry.instance().addNameForObject(titaniumBoots, "en_US", "Titanium Boots");
-//		LanguageRegistry.instance().addNameForObject(titaniumHelmetBreathable, "en_US", "Breathable Titanium Helmet");
-//		LanguageRegistry.instance().addNameForObject(deshStick, "en_US", "Desh Stick");
-//		LanguageRegistry.instance().addNameForObject(heavyBoots, "en_US", "Heavy Boots");
-//		LanguageRegistry.instance().addNameForObject(ingotQuandrium, "en_US", "Quandrium Ingot");
-//		LanguageRegistry.instance().addNameForObject(ingotDesh, "en_US", "Refined Desh");
-//		LanguageRegistry.instance().addNameForObject(ingotTitanium, "en_US", "Titanium Ingot");
-//		LanguageRegistry.instance().addNameForObject(ingotCopper, "en_US", "Copper Ingot");
-//		LanguageRegistry.instance().addNameForObject(ingotAluminum, "en_US", "Aluminum Ingot");
-//		LanguageRegistry.instance().addNameForObject(jetpack, "en_US", "Jetpack");
-//		LanguageRegistry.instance().addNameForObject(aluminumCanister, "en_US", "Aluminum Canister");
-//		LanguageRegistry.instance().addNameForObject(airVent, "en_US", "Air Vent");
-//		LanguageRegistry.instance().addNameForObject(airFan, "en_US", "Air Fan");
-//		LanguageRegistry.instance().addNameForObject(oxygenConcentrator, "en_US", "Oxygen Concentrator");
 	}
 	
 	private static void addName(Item item)

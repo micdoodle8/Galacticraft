@@ -1,4 +1,4 @@
-package micdoodle8.mods.galacticraft.mars;
+package micdoodle8.mods.galacticraft.core;
 
 import micdoodle8.mods.galacticraft.core.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
@@ -26,11 +26,11 @@ import cpw.mods.fml.common.FMLCommonHandler;
  *  All rights reserved.
  *
  */
-public class GCMarsPlayerBaseServer extends ServerPlayerBase
+public class GCCorePlayerBaseServer extends ServerPlayerBase
 {
 	private int airRemaining;
 	
-	public static GCMarsPlayerBaseServer instance;
+	public static GCCorePlayerBaseServer instance;
 	
 	public boolean hasTank;
 	
@@ -46,7 +46,7 @@ public class GCMarsPlayerBaseServer extends ServerPlayerBase
 	
 	private int dimensionToSend = -2;
 	
-	public GCMarsPlayerBaseServer(ServerPlayerAPI var1) 
+	public GCCorePlayerBaseServer(ServerPlayerAPI var1) 
 	{
 		super(var1);
 		this.instance = this;
