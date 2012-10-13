@@ -1,11 +1,11 @@
 package micdoodle8.mods.galacticraft.mars;
 
 import micdoodle8.mods.galacticraft.API.GCBlockBreathableAir;
-import micdoodle8.mods.galacticraft.core.GCBlockLandingPad;
-import micdoodle8.mods.galacticraft.core.GCBlockOxygenCollector;
-import micdoodle8.mods.galacticraft.core.GCBlockOxygenDistributor;
-import micdoodle8.mods.galacticraft.core.GCBlockOxygenPipe;
-import micdoodle8.mods.galacticraft.core.GCBlockUnlitTorch;
+import micdoodle8.mods.galacticraft.core.GCCoreBlockLandingPad;
+import micdoodle8.mods.galacticraft.core.GCCoreBlockOxygenCollector;
+import micdoodle8.mods.galacticraft.core.GCCoreBlockOxygenDistributor;
+import micdoodle8.mods.galacticraft.core.GCCoreBlockOxygenPipe;
+import micdoodle8.mods.galacticraft.core.GCCoreBlockUnlitTorch;
 import net.minecraft.src.Block;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.Item;
@@ -33,7 +33,6 @@ public class GCMarsBlocks
 	public static Block bacterialSludgeStill;
 	public static Block bacterialSludgeMoving;
 	public static Block blockOres;
-	public static Block blockAirCollector;
 
     public static final Material bacterialSludge = (new MaterialLiquid(MapColor.waterColor));
 	
@@ -72,7 +71,6 @@ public class GCMarsBlocks
 		GameRegistry.registerBlock(creeperDungeonWall);
 		GameRegistry.registerBlock(bacterialSludgeStill);
 		GameRegistry.registerBlock(bacterialSludgeMoving);
-		GameRegistry.registerBlock(blockAirCollector);
 	}
 
 	public static void addNames() 
@@ -92,7 +90,6 @@ public class GCMarsBlocks
 		addNameWithMetadata("tile.blockores.coppermars.name");
 		addNameWithMetadata("tile.blockores.titaniumearth.name");
 		addNameWithMetadata("tile.blockores.titaniummars.name");
-		addName(blockAirCollector);
 		
 //		LanguageRegistry.instance().addNameForObject(marsStone, 			"en_US", 				"Stone");
 //		LanguageRegistry.instance().addNameForObject(marsDirt, 				"en_US", 				"Dirt");
@@ -122,11 +119,11 @@ public class GCMarsBlocks
 	
 	private static void addName(Block block)
 	{
-        LanguageRegistry.instance().addStringLocalization(block.getBlockName() + ".name", GalacticraftMars.lang.get(block.getBlockName() + ".name"));
+//       TODO LanguageRegistry.instance().addStringLocalization(block.getBlockName() + ".name", GalacticraftMars.lang.get(block.getBlockName() + ".name"));
 	}
 	
 	private static void addNameWithMetadata(String string)
 	{
-        LanguageRegistry.instance().addStringLocalization(string, GalacticraftMars.lang.get(string));
+//     TODO   LanguageRegistry.instance().addStringLocalization(string, GalacticraftMars.lang.get(string));
 	}
 }

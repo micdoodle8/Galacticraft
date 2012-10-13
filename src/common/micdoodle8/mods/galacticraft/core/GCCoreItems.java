@@ -1,9 +1,8 @@
 package micdoodle8.mods.galacticraft.core;
 
-import micdoodle8.mods.galacticraft.core.GCItemOxygenMask;
-import micdoodle8.mods.galacticraft.core.GCItemOxygenTank;
-import micdoodle8.mods.galacticraft.core.GCItemSensorGlasses;
-import micdoodle8.mods.galacticraft.core.GCItemSpaceship;
+import micdoodle8.mods.galacticraft.core.GCCoreItemOxygenMask;
+import micdoodle8.mods.galacticraft.core.GCCoreItemOxygenTank;
+import micdoodle8.mods.galacticraft.core.GCCoreItemSensorGlasses;
 import net.minecraft.src.Block;
 import net.minecraft.src.EnumArmorMaterial;
 import net.minecraft.src.EnumToolMaterial;
@@ -55,16 +54,16 @@ public class GCCoreItems
 	
 	public static void initItems() 
 	{
-		lightOxygenTankFull = new GCItemOxygenTank(GCCoreConfigManager.idItemLightOxygenTank).setMaxDamage(90).setIconIndex(0).setItemName("oxygenTankLightFull");
+		lightOxygenTankFull = new GCCoreItemOxygenTank(GCCoreConfigManager.idItemLightOxygenTank).setMaxDamage(90).setIconIndex(0).setItemName("oxygenTankLightFull");
 		lightOxygenTankEmpty = new GCCoreItem(GCCoreConfigManager.idItemLightOxygenTankEmpty).setIconIndex(3).setItemName("oxygenTankLightEmpty");
-		medOxygenTankFull = new GCItemOxygenTank(GCCoreConfigManager.idItemMedOxygenTank).setMaxDamage(90).setIconIndex(1).setItemName("oxygenTankMedFull");
+		medOxygenTankFull = new GCCoreItemOxygenTank(GCCoreConfigManager.idItemMedOxygenTank).setMaxDamage(90).setIconIndex(1).setItemName("oxygenTankMedFull");
 		medOxygenTankEmpty = new GCCoreItem(GCCoreConfigManager.idItemMedOxygenTankEmpty).setIconIndex(4).setItemName("oxygenTankMedEmpty");
-		heavyOxygenTankFull = new GCItemOxygenTank(GCCoreConfigManager.idItemHeavyOxygenTank).setMaxDamage(90).setIconIndex(2).setItemName("oxygenTankHeavyFull");
+		heavyOxygenTankFull = new GCCoreItemOxygenTank(GCCoreConfigManager.idItemHeavyOxygenTank).setMaxDamage(90).setIconIndex(2).setItemName("oxygenTankHeavyFull");
 		heavyOxygenTankEmpty = new GCCoreItem(GCCoreConfigManager.idItemHeavyOxygenTankEmpty).setIconIndex(5).setItemName("oxygenTankHeavyEmpty");
-		oxygenMask = new GCItemOxygenMask(GCCoreConfigManager.idArmorOxygenMask, OXYGENMASK, 5, 0).setIconIndex(7).setItemName("oxygenMask");
-		spaceship = new GCItemSpaceship(GCCoreConfigManager.idItemSpaceship).setIconIndex(8).setItemName("spaceship");
-		sensorGlasses = new GCItemSensorGlasses(GCCoreConfigManager.idArmorSensorGlasses, SENSORGLASSES, 6, 0, false).setIconIndex(9).setItemName("sensorGlasses");
-		sensorGlassesWithOxygenMask = new GCItemSensorGlasses(GCCoreConfigManager.idArmorSensorGlassesWithOxygenMask, SENSORGLASSES, 7, 0, true).setIconIndex(10).setItemName("sensorGlassesWithOxygenMask");
+		oxygenMask = new GCCoreItemOxygenMask(GCCoreConfigManager.idArmorOxygenMask, OXYGENMASK, 5, 0).setIconIndex(7).setItemName("oxygenMask");
+		spaceship = new GCCoreItemSpaceship(GCCoreConfigManager.idItemSpaceship).setIconIndex(8).setItemName("spaceship");
+		sensorGlasses = new GCCoreItemSensorGlasses(GCCoreConfigManager.idArmorSensorGlasses, SENSORGLASSES, 6, 0, false).setIconIndex(9).setItemName("sensorGlasses");
+		sensorGlassesWithOxygenMask = new GCCoreItemSensorGlasses(GCCoreConfigManager.idArmorSensorGlassesWithOxygenMask, SENSORGLASSES, 7, 0, true).setIconIndex(10).setItemName("sensorGlassesWithOxygenMask");
 		titaniumPickaxe = new GCCoreItemPickaxe(GCCoreConfigManager.idToolTitaniumPickaxe, TOOLTITANIUM).setIconIndex(32).setItemName("titaniumPick");
 		titaniumAxe = new GCCoreItemAxe(GCCoreConfigManager.idToolTitaniumAxe, TOOLTITANIUM).setIconIndex(33).setItemName("titaniumAxe");
 		titaniumHoe = new GCCoreItemHoe(GCCoreConfigManager.idToolTitaniumHoe, TOOLTITANIUM).setIconIndex(34).setItemName("titaniumHoe");
@@ -117,6 +116,6 @@ public class GCCoreItems
 	
 	private static void addName(Item item)
 	{
-        LanguageRegistry.instance().addStringLocalization(item.getItemName() + ".name", GalacticraftCore.lang.get(item.getItemName() + ".name"));
+//        LanguageRegistry.instance().addStringLocalization(item.getItemName() + ".name", GalacticraftCore.lang.get(item.getItemName() + ".name")); TODO
 	}
 }

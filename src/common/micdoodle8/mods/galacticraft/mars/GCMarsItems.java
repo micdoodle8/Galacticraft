@@ -1,9 +1,8 @@
 package micdoodle8.mods.galacticraft.mars;
 
-import micdoodle8.mods.galacticraft.core.GCItemOxygenMask;
-import micdoodle8.mods.galacticraft.core.GCItemOxygenTank;
-import micdoodle8.mods.galacticraft.core.GCItemSensorGlasses;
-import micdoodle8.mods.galacticraft.core.GCItemSpaceship;
+import micdoodle8.mods.galacticraft.core.GCCoreItemOxygenMask;
+import micdoodle8.mods.galacticraft.core.GCCoreItemOxygenTank;
+import micdoodle8.mods.galacticraft.core.GCCoreItemSensorGlasses;
 import net.minecraft.src.Block;
 import net.minecraft.src.EnumArmorMaterial;
 import net.minecraft.src.EnumToolMaterial;
@@ -151,6 +150,6 @@ public class GCMarsItems
 	
 	private static void addName(Item item)
 	{
-        LanguageRegistry.instance().addStringLocalization(item.getItemName() + ".name", GalacticraftMars.lang.get(item.getItemName() + ".name"));
+//        LanguageRegistry.instance().addStringLocalization(item.getItemName() + ".name", GalacticraftMars.lang.get(item.getItemName() + ".name")); TODO
 	}
 }

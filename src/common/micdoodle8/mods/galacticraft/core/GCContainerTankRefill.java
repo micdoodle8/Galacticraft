@@ -14,9 +14,9 @@ import net.minecraft.src.Slot;
  */
 public class GCContainerTankRefill extends Container
 {
-	public GCContainerTankRefill(InventoryPlayer par1InventoryPlayer, GCInventoryTankRefill inventorytankrefill) 
+	public GCContainerTankRefill(InventoryPlayer par1InventoryPlayer, GCCoreInventoryTankRefill inventorytankrefill) 
 	{
-        this.addSlotToContainer(new GCSlotTankRefill(inventorytankrefill, 0, 44, 47));
+        this.addSlotToContainer(new GCCoreSlotTankRefill(inventorytankrefill, 0, 44, 47));
 		int var6;
         int var7;
 

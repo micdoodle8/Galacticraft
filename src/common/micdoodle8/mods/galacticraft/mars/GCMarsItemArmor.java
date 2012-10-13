@@ -2,14 +2,14 @@ package micdoodle8.mods.galacticraft.mars;
 
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
-import micdoodle8.mods.galacticraft.core.GCItemBreathableHelmet;
+import micdoodle8.mods.galacticraft.core.GCCoreItemBreathableHelmet;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.EnumArmorMaterial;
 import net.minecraft.src.EnumRarity;
 import net.minecraft.src.ItemStack;
 import net.minecraftforge.common.IArmorTextureProvider;
 
-public class GCMarsItemArmor extends GCItemBreathableHelmet implements IArmorTextureProvider
+public class GCMarsItemArmor extends GCCoreItemBreathableHelmet implements IArmorTextureProvider
 {
 	public boolean attachedMask;
 	private EnumArmorMaterial material;
@@ -62,25 +62,6 @@ public class GCMarsItemArmor extends GCItemBreathableHelmet implements IArmorTex
     			return "/micdoodle8/mods/galacticraft/mars/client/armor/deshox_1.png";
     		}
     	}
-    	else if (material == GCMarsItems.TITANIUMARMOR)
-    	{
-    		if (itemstack.getItem().shiftedIndex == GCMarsItems.titaniumHelmet.shiftedIndex)
-    		{
-    			return "/micdoodle8/mods/galacticraft/mars/client/armor/titanium_1.png";
-    		}
-    		else if (itemstack.getItem().shiftedIndex == GCMarsItems.titaniumChestplate.shiftedIndex || itemstack.getItem().shiftedIndex == GCMarsItems.titaniumBoots.shiftedIndex)
-    		{
-    			return "/micdoodle8/mods/galacticraft/mars/client/armor/titanium_2.png";
-    		}
-    		else if (itemstack.getItem().shiftedIndex == GCMarsItems.titaniumLeggings.shiftedIndex)
-    		{
-    			return "/micdoodle8/mods/galacticraft/mars/client/armor/titanium_3.png";
-    		}
-    		else if (itemstack.getItem().shiftedIndex == GCMarsItems.titaniumHelmetBreathable.shiftedIndex)
-    		{
-    			return "/micdoodle8/mods/galacticraft/mars/client/armor/titaniumox_1.png";
-    		}
-    	}
     	else if (material == GCMarsItems.ARMORHEAVY)
     	{
     		if (itemstack.getItem().shiftedIndex == GCMarsItems.heavyBoots.shiftedIndex)
@@ -94,7 +75,7 @@ public class GCMarsItemArmor extends GCItemBreathableHelmet implements IArmorTex
 	
 	public String getTextureFile()
 	{
-		return "/micdoodle8/mods/galacticraft/mars/client/items/core.png";
+		return "/micdoodle8/mods/galacticraft/mars/client/items/mars.png";
 	}
 
 	@Override

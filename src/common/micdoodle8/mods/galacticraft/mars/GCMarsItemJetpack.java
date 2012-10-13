@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.mars;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityPlayer;
@@ -28,7 +29,7 @@ public class GCMarsItemJetpack extends ItemArmor
     	{
     		EntityPlayer player = (EntityPlayer) entity;
     		
-    		if (GalacticraftMars.instance.tick % 100 == 0)
+    		if (GalacticraftCore.instance.tick % 100 == 0)
     		{
     			if (!player.capabilities.isCreativeMode)
     			{

@@ -1,11 +1,6 @@
 package micdoodle8.mods.galacticraft.core;
 
-import micdoodle8.mods.galacticraft.core.GCCoreBlocks;
-import micdoodle8.mods.galacticraft.core.GCCoreUtil;
-import micdoodle8.mods.galacticraft.core.GCInventoryTankRefill;
-import micdoodle8.mods.galacticraft.core.GCItemBreathableHelmet;
-import micdoodle8.mods.galacticraft.core.GCItemSensorGlasses;
-import micdoodle8.mods.galacticraft.core.GCTeleporter;
+import micdoodle8.mods.galacticraft.API.GalacticraftWorldProvider;
 import net.minecraft.src.Block;
 import net.minecraft.src.DamageSource;
 import net.minecraft.src.EntityPlayer;
@@ -36,7 +31,7 @@ public class GCCorePlayerBaseServer extends ServerPlayerBase
 	
 	public ItemStack tankInSlot;
 	
-	public GCInventoryTankRefill playerTankInventory = new GCInventoryTankRefill();
+	public GCCoreInventoryTankRefill playerTankInventory = new GCCoreInventoryTankRefill();
 	
 	public boolean inPortal;
 	
@@ -51,8 +46,8 @@ public class GCCorePlayerBaseServer extends ServerPlayerBase
 		super(var1);
 		this.instance = this;
 		this.hasTank = false;
-		GalacticraftMars.instance.serverPlayerBaseList.add(player);
-		GalacticraftMars.instance.serverPlayerAPIs.add(this);
+		GalacticraftCore.instance.serverPlayerBaseList.add(player);
+		GalacticraftCore.instance.serverPlayerAPIs.add(this);
 	}
 	
 	public EntityPlayerMP getPlayer()
@@ -63,7 +58,7 @@ public class GCCorePlayerBaseServer extends ServerPlayerBase
 	@Override
     public void fall(float var1)
     {
-        if (player.dimension == GCMarsConfigManager.dimensionIDMars)
+        if (player.worldObj.provider instanceof GalacticraftWorldProvider)
         {
         	;
         }
@@ -71,11 +66,6 @@ public class GCCorePlayerBaseServer extends ServerPlayerBase
         {
         	super.fall(var1);
         }
-    }
-    
-    public static boolean handleBacterialMovement(EntityPlayer player)
-    {
-        return player.worldObj.isMaterialInBB(player.boundingBox.expand(-0.10000000149011612D, -0.4000000059604645D, -0.10000000149011612D), GCMarsBlocks.bacterialSludge);
     }
 
     public boolean isAABBInBreathableAirBlock()
@@ -120,14 +110,14 @@ public class GCCorePlayerBaseServer extends ServerPlayerBase
 	@Override
     public void onUpdate()
 	{
-		if (player.dimension == GCMarsConfigManager.dimensionIDMars && player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem().shiftedIndex == Block.torchWood.blockID)
+		if (player.worldObj.provider instanceof GalacticraftWorldProvider && player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem().shiftedIndex == Block.torchWood.blockID)
         {
         	int par1 = player.inventory.getCurrentItem().stackSize;
         	ItemStack stack = new ItemStack(GCCoreBlocks.unlitTorch, par1, 0);
         	
             player.inventory.mainInventory[player.inventory.currentItem] = stack;
         }
-        else if (player.dimension != GCMarsConfigManager.dimensionIDMars && player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem().shiftedIndex == GCCoreBlocks.unlitTorch.blockID)
+        else if (!(player.worldObj.provider instanceof GalacticraftWorldProvider) && player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem().shiftedIndex == GCCoreBlocks.unlitTorch.blockID)
         {
         	int par1 = player.inventory.getCurrentItem().stackSize;
         	ItemStack stack = new ItemStack(Block.torchWood, par1, 0);
@@ -135,19 +125,9 @@ public class GCCorePlayerBaseServer extends ServerPlayerBase
             player.inventory.mainInventory[player.inventory.currentItem] = stack;
         }
         
-		if (GalacticraftMars.instance.tick % 10 == 0)
+		if (GalacticraftCore.instance.tick % 10 == 0)
 		{
 			sendAirRemainingPacket();
-		}
-		
-		if (handleBacterialMovement(player) && !player.capabilities.isCreativeMode && !player.isPotionActive(Potion.poison))
-		{
-			player.addPotionEffect(new PotionEffect(Potion.poison.id, 40, 0));
-		}
-		
-		if (GalacticraftMars.instance.tick % 100 == 0 && player.inventory.armorItemInSlot(2) != null && player.inventory.armorItemInSlot(2).getItem().shiftedIndex == GCMarsItems.jetpack.shiftedIndex)
-		{
-			player.inventory.armorItemInSlot(2).damageItem(1, player);
 		}
 
 		ItemStack tankInSlot = playerTankInventory.getStackInSlot(0);
@@ -161,29 +141,29 @@ public class GCCorePlayerBaseServer extends ServerPlayerBase
 			this.airRemaining = 90;
 		}
 		
-		if (player.dimension == GCMarsConfigManager.dimensionIDMars && !player.capabilities.isCreativeMode)
+		if (player.worldObj.provider instanceof GalacticraftWorldProvider && !player.capabilities.isCreativeMode)
         {
 			if (drainSpacing > 0)
 			{
 	    		this.airRemaining = 90 - tankInSlot.getItemDamage();
 			}
 			
-			if (drainSpacing > 0 && GalacticraftMars.instance.tick % drainSpacing == 0 && !isAABBInBreathableAirBlock()) 
+			if (drainSpacing > 0 && GalacticraftCore.instance.tick % drainSpacing == 0 && !isAABBInBreathableAirBlock()) 
 	    	{
 	    		tankInSlot.damageItem(1, player);
 	    	}
 			
-			if (drainSpacing == 0 && GalacticraftMars.instance.tick % 20 == 0 && !isAABBInBreathableAirBlock())
+			if (drainSpacing == 0 && GalacticraftCore.instance.tick % 20 == 0 && !isAABBInBreathableAirBlock())
 			{
 	    		this.airRemaining -= 1;
 			}
 			
-			if (GalacticraftMars.instance.tick % 20 == 0 && isAABBInBreathableAirBlock() && this.airRemaining < 90 && tankInSlot != null)
+			if (GalacticraftCore.instance.tick % 20 == 0 && isAABBInBreathableAirBlock() && this.airRemaining < 90 && tankInSlot != null)
 			{
 				this.airRemaining += 1;
 			}
 			
-        	if (GalacticraftMars.instance.tick % 100 == 0) 
+        	if (GalacticraftCore.instance.tick % 100 == 0) 
         	{
         		ItemStack helmetSlot = null;
         		
@@ -193,9 +173,9 @@ public class GCCorePlayerBaseServer extends ServerPlayerBase
         		}
         		
         		boolean flag = helmetSlot == null;
-        		boolean flag2 = helmetSlot != null && !(helmetSlot.getItem() instanceof GCItemBreathableHelmet);
-        		boolean flag3 = helmetSlot != null && helmetSlot.getItem() instanceof GCItemSensorGlasses && !((GCItemSensorGlasses)helmetSlot.getItem()).attachedMask;
-        		boolean flag4 = helmetSlot != null && helmetSlot.getItem() instanceof GCMarsItemArmor && !((GCMarsItemArmor)helmetSlot.getItem()).attachedMask == true;
+        		boolean flag2 = helmetSlot != null && !(helmetSlot.getItem() instanceof GCCoreItemBreathableHelmet);
+        		boolean flag3 = helmetSlot != null && helmetSlot.getItem() instanceof GCCoreItemSensorGlasses && !((GCCoreItemSensorGlasses)helmetSlot.getItem()).attachedMask;
+        		boolean flag4 = helmetSlot != null && helmetSlot.getItem() instanceof GCCoreItemArmor && !((GCCoreItemArmor)helmetSlot.getItem()).attachedMask == true;
         		boolean flag5 = this.airRemaining <= 0;
         		boolean b = flag || flag2 || flag3 || flag4 || flag5;
         		
@@ -207,7 +187,7 @@ public class GCCorePlayerBaseServer extends ServerPlayerBase
 				}
 			}
         }
-		else if (GalacticraftMars.instance.tick % 20 == 0 && !player.capabilities.isCreativeMode && this.airRemaining < 90)
+		else if (GalacticraftCore.instance.tick % 20 == 0 && !player.capabilities.isCreativeMode && this.airRemaining < 90)
 		{
 			this.airRemaining += 1;
 		}
@@ -239,7 +219,7 @@ public class GCCorePlayerBaseServer extends ServerPlayerBase
             	var5 = 0;
             }
 
-            player.mcServer.getConfigurationManager().transferPlayerToDimension(player, var5, new GCTeleporter());
+            player.mcServer.getConfigurationManager().transferPlayerToDimension(player, var5, new GCCoreTeleporter());
             player.timeUntilPortal = 10;
             player.timeInPortal = 0.0F;
             

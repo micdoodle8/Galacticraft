@@ -264,9 +264,9 @@ public class GCCoreUtil
 		return 0;
     }
     
-    public static GCExplosion createNewExplosion(World world, Entity entity, double x, double y, double z, float size, boolean flaming)
+    public static GCCoreExplosion createNewExplosion(World world, Entity entity, double x, double y, double z, float size, boolean flaming)
     {
-        GCExplosion explosion = new GCExplosion(world, entity, x, y, z, size);
+        GCCoreExplosion explosion = new GCCoreExplosion(world, entity, x, y, z, size);
         explosion.isFlaming = flaming;
         explosion.doExplosionA();
         explosion.doExplosionB(true);

@@ -4,10 +4,10 @@ import java.util.List;
 
 import micdoodle8.mods.galacticraft.core.GCContainerAirDistributor;
 import micdoodle8.mods.galacticraft.core.GCContainerTankRefill;
-import micdoodle8.mods.galacticraft.core.GCInventoryTankRefill;
-import micdoodle8.mods.galacticraft.core.GCTileEntityOxygenDistributor;
-import micdoodle8.mods.galacticraft.mars.client.GCGuiAirDistributor;
-import micdoodle8.mods.galacticraft.mars.client.GCGuiTankRefill;
+import micdoodle8.mods.galacticraft.core.GCCoreInventoryTankRefill;
+import micdoodle8.mods.galacticraft.core.GCCoreTileEntityOxygenDistributor;
+import micdoodle8.mods.galacticraft.core.client.GCCoreGuiAirDistributor;
+import micdoodle8.mods.galacticraft.core.client.GCCoreGuiTankRefill;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.World;
 

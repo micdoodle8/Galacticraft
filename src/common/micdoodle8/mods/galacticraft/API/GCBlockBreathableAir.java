@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.API;
 
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.core.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.mars.GCMarsBlock;
 import micdoodle8.mods.galacticraft.mars.GCMarsBlocks;
 import net.minecraft.src.AxisAlignedBB;
@@ -130,7 +131,7 @@ public class GCBlockBreathableAir extends GCMarsBlock
 				{
 					for (int k = -4; k < 5; k++)
 					{
-						if (world.getBlockId(x + i, y + j, z + k) == GCMarsBlocks.airDistributorActive.blockID)
+						if (world.getBlockId(x + i, y + j, z + k) == GCCoreBlocks.airDistributorActive.blockID)
 						{
 							return true;
 						}
@@ -146,7 +147,7 @@ public class GCBlockBreathableAir extends GCMarsBlock
 				{
 					for (int k = -5; k < 6; k++)
 					{
-						if (world.getBlockId(x + i, y + j, z + k) == GCMarsBlocks.airDistributorActive.blockID)
+						if (world.getBlockId(x + i, y + j, z + k) == GCCoreBlocks.airDistributorActive.blockID)
 						{
 							return true;
 						}

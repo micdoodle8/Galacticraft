@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.mars;
 
 import java.util.Random;
 
-import micdoodle8.mods.galacticraft.mars.client.GCPointOfInterest;
 import net.minecraft.src.Block;
 import net.minecraft.src.IChunkProvider;
 import net.minecraft.src.MathHelper;

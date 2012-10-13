@@ -509,13 +509,13 @@ public class GCCoreEntitySpaceship extends Entity
             {
         		EntityPlayerMP entityplayermp = (EntityPlayerMP)this.riddenByEntity;
 
-	            for (int j = 0; j < GalacticraftMars.instance.serverPlayerAPIs.size(); ++j)
+	            for (int j = 0; j < GalacticraftCore.instance.serverPlayerAPIs.size(); ++j)
 	            {
-	    			GCMarsPlayerBaseServer playerBase = (GCMarsPlayerBaseServer) GalacticraftMars.instance.serverPlayerAPIs.get(j);
+	    			GCMarsPlayerBaseServer playerBase = (GCMarsPlayerBaseServer) GalacticraftCore.instance.serverPlayerAPIs.get(j);
 	    			
 	    			if (entityplayermp.username == playerBase.getPlayer().username)
 	    			{
-	    				GalacticraftMars.proxy.displayChoosePlanetGui();
+	    				GalacticraftCore.proxy.displayChoosePlanetGui();
 	    				if (this.riddenByEntity != null)
 	    				{
 		            		riddenByEntity.mountEntity(this);

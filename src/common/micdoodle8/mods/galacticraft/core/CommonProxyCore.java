@@ -4,10 +4,10 @@ import java.util.List;
 
 import micdoodle8.mods.galacticraft.core.GCContainerAirDistributor;
 import micdoodle8.mods.galacticraft.core.GCContainerTankRefill;
-import micdoodle8.mods.galacticraft.core.GCInventoryTankRefill;
-import micdoodle8.mods.galacticraft.core.GCTileEntityOxygenDistributor;
-import micdoodle8.mods.galacticraft.mars.client.GCGuiAirDistributor;
-import micdoodle8.mods.galacticraft.mars.client.GCGuiTankRefill;
+import micdoodle8.mods.galacticraft.core.GCCoreInventoryTankRefill;
+import micdoodle8.mods.galacticraft.core.GCCoreTileEntityOxygenDistributor;
+import micdoodle8.mods.galacticraft.core.client.GCCoreGuiAirDistributor;
+import micdoodle8.mods.galacticraft.core.client.GCCoreGuiTankRefill;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.World;
 
@@ -77,9 +77,9 @@ public class CommonProxyCore implements IGuiHandler
     
     // IGUIHANDLER IMPLEMENTATION:
     
-    GCInventoryTankRefill inv = null;
+    GCCoreInventoryTankRefill inv = null;
 
-    public static List<GCInventoryTankRefill> airTanks = Lists.newArrayList();
+    public static List<GCCoreInventoryTankRefill> airTanks = Lists.newArrayList();
 	
 	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) 
@@ -98,7 +98,7 @@ public class CommonProxyCore implements IGuiHandler
 		}
 		else if (ID == GCCoreConfigManager.idGuiAirDistributor)
 		{
-			GCTileEntityOxygenDistributor distributor = (GCTileEntityOxygenDistributor) world.getBlockTileEntity(x, y, z);
+			GCCoreTileEntityOxygenDistributor distributor = (GCCoreTileEntityOxygenDistributor) world.getBlockTileEntity(x, y, z);
 
 			return new GCContainerAirDistributor(player.inventory, distributor);
 		}
@@ -111,13 +111,13 @@ public class CommonProxyCore implements IGuiHandler
 	{
 		if (ID == GCCoreConfigManager.idGuiTankRefill)
 		{
-			return new GCGuiTankRefill(player);
+			return new GCCoreGuiTankRefill(player);
 		}
 		else if (ID == GCCoreConfigManager.idGuiAirDistributor)
 		{
-			GCTileEntityOxygenDistributor distributor = (GCTileEntityOxygenDistributor) world.getBlockTileEntity(x, y, z);
+			GCCoreTileEntityOxygenDistributor distributor = (GCCoreTileEntityOxygenDistributor) world.getBlockTileEntity(x, y, z);
 			
-			return new GCGuiAirDistributor(player.inventory, distributor);
+			return new GCCoreGuiAirDistributor(player.inventory, distributor);
 		}
 		else
 		{

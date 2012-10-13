@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.mars;
 import java.util.List;
 import java.util.Random;
 
-import micdoodle8.mods.galacticraft.core.GCStructureComponent;
+import micdoodle8.mods.galacticraft.core.GCCoreStructureComponent;
 import net.minecraft.src.Block;
 import net.minecraft.src.StructureBoundingBox;
 import net.minecraft.src.StructureComponent;
@@ -17,7 +17,7 @@ import cpw.mods.fml.common.FMLLog;
  *  All rights reserved.
  *
  */
-public class GCMarsComponentCreeperPitRoom extends GCStructureComponent
+public class GCMarsComponentCreeperPitRoom extends GCCoreStructureComponent
 {
 	public int corridorCount;
 	public int originalFourCorridorLength;

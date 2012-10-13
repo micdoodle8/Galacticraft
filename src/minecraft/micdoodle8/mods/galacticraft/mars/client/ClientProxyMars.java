@@ -6,11 +6,12 @@ import java.util.EnumSet;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
-import micdoodle8.mods.galacticraft.core.GCEntityArrow;
-import micdoodle8.mods.galacticraft.core.GCEntityCreeper;
-import micdoodle8.mods.galacticraft.core.GCEntitySkeleton;
-import micdoodle8.mods.galacticraft.core.GCEntitySpider;
-import micdoodle8.mods.galacticraft.core.GCEntityZombie;
+import micdoodle8.mods.galacticraft.core.GCCoreEntityArrow;
+import micdoodle8.mods.galacticraft.core.GCCoreEntityCreeper;
+import micdoodle8.mods.galacticraft.core.GCCoreEntitySkeleton;
+import micdoodle8.mods.galacticraft.core.GCCoreEntitySpider;
+import micdoodle8.mods.galacticraft.core.GCCoreEntityZombie;
+import micdoodle8.mods.galacticraft.core.client.GCCoreRenderArrow;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore.GCKeyHandler;
 import micdoodle8.mods.galacticraft.mars.CommonProxyMars;
 import micdoodle8.mods.galacticraft.mars.GCMarsBlocks;
@@ -68,12 +69,12 @@ public class ClientProxyMars extends CommonProxyMars
 	@Override
 	public void preInit(FMLPreInitializationEvent event) 
 	{
-		MinecraftForge.EVENT_BUS.register(new GCSounds());
+		MinecraftForge.EVENT_BUS.register(new GCMarsSounds());
 		getFirstBootTime = System.currentTimeMillis();
 				
 		try
 		{
-			PlayerAPI.register("Galacticraft Mars", GCPlayerBase.class);
+			PlayerAPI.register("Galacticraft Mars", GCMarsPlayerBase.class);
 		}
 		catch(Exception e)
 		{
@@ -90,7 +91,7 @@ public class ClientProxyMars extends CommonProxyMars
 		KeyBindingRegistry.registerKeyBinding(new GCKeyHandler());
         NetworkRegistry.instance().registerChannel(new ClientPacketHandler(), "GalacticraftMars", Side.CLIENT);
         this.fluidRenderID = RenderingRegistry.getNextAvailableRenderId();
-        RenderingRegistry.registerBlockHandler(new GCBlockRendererBacterialSludge(this.fluidRenderID));
+        RenderingRegistry.registerBlockHandler(new GCMarsBlockRendererBacterialSludge(this.fluidRenderID));
 	}
 
 	@Override
@@ -101,8 +102,8 @@ public class ClientProxyMars extends CommonProxyMars
 	@Override
 	public void registerRenderInformation() 
 	{
-        RenderingRegistry.registerEntityRenderingHandler(GCMarsEntityCreeperBoss.class, new GCRenderCreeperBoss(new GCModelCreeperBoss(), 10.0F));
-        RenderingRegistry.registerEntityRenderingHandler(GCMarsEntitySludgeling.class, new GCRenderSludgeling());
+        RenderingRegistry.registerEntityRenderingHandler(GCMarsEntityCreeperBoss.class, new GCMarsRenderCreeperBoss(new GCMarsModelCreeperBoss(), 10.0F));
+        RenderingRegistry.registerEntityRenderingHandler(GCMarsEntitySludgeling.class, new GCMarsRenderSludgeling());
         RenderingRegistry.addNewArmourRendererPrefix("sensor");
         RenderingRegistry.addNewArmourRendererPrefix("sensorox");
         RenderingRegistry.addNewArmourRendererPrefix("quandrium");
@@ -111,7 +112,7 @@ public class ClientProxyMars extends CommonProxyMars
         RenderingRegistry.addNewArmourRendererPrefix("deshox");
         RenderingRegistry.addNewArmourRendererPrefix("heavy");
         RenderingRegistry.addNewArmourRendererPrefix("jetpack");
-        RenderingRegistry.registerEntityRenderingHandler(GCEntityArrow.class, new GCRenderArrow());
+        RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityArrow.class, new GCCoreRenderArrow());
 		MinecraftForgeClient.preloadTexture("/micdoodle8/mods/galacticraft/mars/client/blocks/mars.png");
 		MinecraftForgeClient.preloadTexture("/micdoodle8/mods/galacticraft/mars/client/items/mars.png");
 	}
@@ -139,7 +140,7 @@ public class ClientProxyMars extends CommonProxyMars
             {
             	if (var1.equals("sludgeDrip"))
             	{
-            		var21 = new GCEntityDropParticleFX(var14.theWorld, var2, var4, var6, GCMarsBlocks.bacterialSludge);
+            		var21 = new GCMarsEntityDropParticleFX(var14.theWorld, var2, var4, var6, GCMarsBlocks.bacterialSludge);
             	}
             }
             
@@ -164,10 +165,7 @@ public class ClientProxyMars extends CommonProxyMars
             
             if (packetType == 0)
             {
-                Class[] decodeAs = {Integer.class};
-                Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
-
-                TickHandlerClient.airRemaining = (Integer) packetReadout[0];
+            	
             }
         }
     }
@@ -194,8 +192,6 @@ public class ClientProxyMars extends CommonProxyMars
     
     public static class TickHandlerClient implements ITickHandler
     {
-    	public static int airRemaining;
-    	
     	@Override
     	public void tickStart(EnumSet<TickType> type, Object... tickData)
         {
@@ -216,24 +212,12 @@ public class ClientProxyMars extends CommonProxyMars
         			player.fallDistance = 0;
             		world.spawnParticle("largesmoke", player.posX, player.posY - 1D, player.posZ, 0, -0.1, 0);
         		}
-        		else
-        		{
-        			if (player != null && player.inventory.armorItemInSlot(0) != null && player.inventory.armorItemInSlot(0).getItem().shiftedIndex == GCMarsItems.heavyBoots.shiftedIndex)
-        			{
-        				player.motionY = player.motionY - 0.062;
-        			}
-
-        			if (player != null && player.dimension == GCMarsConfigManager.dimensionIDMars && !player.capabilities.isFlying && !minecraft.isGamePaused && !handleLiquidMovement(player)) 
-        			{
-        				player.motionY = player.motionY + 0.062;
-        			}
-        		}
     			
     			if (world != null && world.provider instanceof GCMarsWorldProvider)
     			{
     				if (world.provider.getSkyProvider() == null)
                     {
-    					world.provider.setSkyProvider(new GCSkyProvider());
+    					world.provider.setSkyProvider(new GCMarsSkyProvider());
                     }
     			}
             }
@@ -246,13 +230,13 @@ public class ClientProxyMars extends CommonProxyMars
     	
         public String getLabel()
         {
-            return "Galacticraft Client";
+            return "Galacticraft Mars Client";
         }
 
     	@Override
     	public EnumSet<TickType> ticks() 
     	{
-    		return EnumSet.of(TickType.RENDER, TickType.CLIENT);
+    		return EnumSet.of(TickType.CLIENT);
     	}
     }
 }

@@ -15,15 +15,15 @@ import cpw.mods.fml.common.FMLLog;
  */
 public class GCContainerAirDistributor extends Container
 {
-    private GCTileEntityOxygenDistributor distributor;
+    private GCCoreTileEntityOxygenDistributor distributor;
     private int lastCookTime = 0;
     private int lastBurnTime = 0;
     private int lastItemBurnTime = 0;
 
-    public GCContainerAirDistributor(InventoryPlayer par1InventoryPlayer, GCTileEntityOxygenDistributor par2TileEntityAirDistributor)
+    public GCContainerAirDistributor(InventoryPlayer par1InventoryPlayer, GCCoreTileEntityOxygenDistributor par2TileEntityAirDistributor)
     {
         this.distributor = par2TileEntityAirDistributor;
-        this.addSlotToContainer(new GCSlotTankRefill(par2TileEntityAirDistributor, 0, 80, 41));
+        this.addSlotToContainer(new GCCoreSlotTankRefill(par2TileEntityAirDistributor, 0, 80, 41));
         this.addSlotToContainer(new Slot(par2TileEntityAirDistributor, 1, 148, 32));
         this.addSlotToContainer(new Slot(par2TileEntityAirDistributor, 2, 148, 51));
         int var3;

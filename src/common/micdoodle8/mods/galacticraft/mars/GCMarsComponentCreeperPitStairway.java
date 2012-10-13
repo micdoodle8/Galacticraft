@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.mars;
 import java.util.List;
 import java.util.Random;
 
-import micdoodle8.mods.galacticraft.core.GCStructureComponent;
+import micdoodle8.mods.galacticraft.core.GCCoreStructureComponent;
 import net.minecraft.src.StructureBoundingBox;
 import net.minecraft.src.StructureComponent;
 import net.minecraft.src.World;
@@ -14,7 +14,7 @@ import net.minecraft.src.World;
  *  All rights reserved.
  *
  */
-public class GCMarsComponentCreeperPitStairway extends GCStructureComponent
+public class GCMarsComponentCreeperPitStairway extends GCCoreStructureComponent
 {
     private int[] orig = new int[3];
     private GCMarsComponentCreeperPitRoom originalRoom;

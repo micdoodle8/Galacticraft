@@ -2,14 +2,14 @@ package micdoodle8.mods.galacticraft.core;
 
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
-import micdoodle8.mods.galacticraft.core.GCItemBreathableHelmet;
+import micdoodle8.mods.galacticraft.core.GCCoreItemBreathableHelmet;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.EnumArmorMaterial;
 import net.minecraft.src.EnumRarity;
 import net.minecraft.src.ItemStack;
 import net.minecraftforge.common.IArmorTextureProvider;
 
-public class GCCoreItemArmor extends GCItemBreathableHelmet implements IArmorTextureProvider
+public class GCCoreItemArmor extends GCCoreItemBreathableHelmet implements IArmorTextureProvider
 {
 	public boolean attachedMask;
 	private EnumArmorMaterial material;

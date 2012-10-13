@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import micdoodle8.mods.galacticraft.core.GCEntityCreeper;
-import micdoodle8.mods.galacticraft.core.GCEntitySkeleton;
-import micdoodle8.mods.galacticraft.core.GCEntitySpider;
-import micdoodle8.mods.galacticraft.core.GCEntityZombie;
+import micdoodle8.mods.galacticraft.core.GCCoreEntityCreeper;
+import micdoodle8.mods.galacticraft.core.GCCoreEntitySkeleton;
+import micdoodle8.mods.galacticraft.core.GCCoreEntitySpider;
+import micdoodle8.mods.galacticraft.core.GCCoreEntityZombie;
 import net.minecraft.src.BiomeGenBase;
 import net.minecraft.src.Block;
 import net.minecraft.src.BlockSand;
@@ -500,10 +500,10 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate implements IChunk
 		if (/*j < 39 && */par1EnumCreatureType == EnumCreatureType.monster)
 		{
 			List monsters = new ArrayList();
-			monsters.add(new SpawnListEntry(GCEntityZombie.class, 6, 4, 4));
-			monsters.add(new SpawnListEntry(GCEntitySpider.class, 6, 4, 4));
-			monsters.add(new SpawnListEntry(GCEntitySkeleton.class, 6, 4, 4));
-			monsters.add(new SpawnListEntry(GCEntityCreeper.class, 6, 4, 4));
+			monsters.add(new SpawnListEntry(GCCoreEntityZombie.class, 6, 4, 4));
+			monsters.add(new SpawnListEntry(GCCoreEntitySpider.class, 6, 4, 4));
+			monsters.add(new SpawnListEntry(GCCoreEntitySkeleton.class, 6, 4, 4));
+			monsters.add(new SpawnListEntry(GCCoreEntityCreeper.class, 6, 4, 4));
 			return monsters;
 		}
 		else

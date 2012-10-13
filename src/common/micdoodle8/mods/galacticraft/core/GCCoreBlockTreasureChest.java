@@ -5,7 +5,6 @@ import static net.minecraftforge.common.ForgeDirection.DOWN;
 import java.util.Iterator;
 import java.util.Random;
 
-import micdoodle8.mods.galacticraft.mars.GCMarsTileEntityTreasureChest;
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Block;
 import net.minecraft.src.BlockContainer;
@@ -315,7 +314,7 @@ public class GCCoreBlockTreasureChest extends BlockContainer
     public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
     {
         super.onNeighborBlockChange(par1World, par2, par3, par4, par5);
-        GCMarsTileEntityTreasureChest var6 = (GCMarsTileEntityTreasureChest)par1World.getBlockTileEntity(par2, par3, par4);
+        GCCoreTileEntityTreasureChest var6 = (GCCoreTileEntityTreasureChest)par1World.getBlockTileEntity(par2, par3, par4);
 
         if (var6 != null)
         {
@@ -328,7 +327,7 @@ public class GCCoreBlockTreasureChest extends BlockContainer
      */
     public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6)
     {
-        GCMarsTileEntityTreasureChest var7 = (GCMarsTileEntityTreasureChest)par1World.getBlockTileEntity(par2, par3, par4);
+        GCCoreTileEntityTreasureChest var7 = (GCCoreTileEntityTreasureChest)par1World.getBlockTileEntity(par2, par3, par4);
 
         if (var7 != null)
         {
@@ -375,7 +374,7 @@ public class GCCoreBlockTreasureChest extends BlockContainer
      */
     public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
     {
-        Object var10 = (GCMarsTileEntityTreasureChest)par1World.getBlockTileEntity(par2, par3, par4);
+        Object var10 = (GCCoreTileEntityTreasureChest)par1World.getBlockTileEntity(par2, par3, par4);
 
         if (var10 == null)
         {
@@ -409,22 +408,22 @@ public class GCCoreBlockTreasureChest extends BlockContainer
         {
             if (par1World.getBlockId(par2 - 1, par3, par4) == this.blockID)
             {
-                var10 = new InventoryLargeChest("container.chestDouble", (GCMarsTileEntityTreasureChest)par1World.getBlockTileEntity(par2 - 1, par3, par4), (IInventory)var10);
+                var10 = new InventoryLargeChest("container.chestDouble", (GCCoreTileEntityTreasureChest)par1World.getBlockTileEntity(par2 - 1, par3, par4), (IInventory)var10);
             }
 
             if (par1World.getBlockId(par2 + 1, par3, par4) == this.blockID)
             {
-                var10 = new InventoryLargeChest("container.chestDouble", (IInventory)var10, (GCMarsTileEntityTreasureChest)par1World.getBlockTileEntity(par2 + 1, par3, par4));
+                var10 = new InventoryLargeChest("container.chestDouble", (IInventory)var10, (GCCoreTileEntityTreasureChest)par1World.getBlockTileEntity(par2 + 1, par3, par4));
             }
 
             if (par1World.getBlockId(par2, par3, par4 - 1) == this.blockID)
             {
-                var10 = new InventoryLargeChest("container.chestDouble", (GCMarsTileEntityTreasureChest)par1World.getBlockTileEntity(par2, par3, par4 - 1), (IInventory)var10);
+                var10 = new InventoryLargeChest("container.chestDouble", (GCCoreTileEntityTreasureChest)par1World.getBlockTileEntity(par2, par3, par4 - 1), (IInventory)var10);
             }
 
             if (par1World.getBlockId(par2, par3, par4 + 1) == this.blockID)
             {
-                var10 = new InventoryLargeChest("container.chestDouble", (IInventory)var10, (GCMarsTileEntityTreasureChest)par1World.getBlockTileEntity(par2, par3, par4 + 1));
+                var10 = new InventoryLargeChest("container.chestDouble", (IInventory)var10, (GCCoreTileEntityTreasureChest)par1World.getBlockTileEntity(par2, par3, par4 + 1));
             }
 
             if (par1World.isRemote)
@@ -444,7 +443,7 @@ public class GCCoreBlockTreasureChest extends BlockContainer
      */
     public TileEntity createNewTileEntity(World par1World)
     {
-        return new GCMarsTileEntityTreasureChest();
+        return new GCCoreTileEntityTreasureChest();
     }
 
     /**

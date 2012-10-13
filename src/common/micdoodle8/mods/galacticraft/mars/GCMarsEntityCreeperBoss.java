@@ -1,19 +1,14 @@
 package micdoodle8.mods.galacticraft.mars;
 
+import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import net.minecraft.src.DamageSource;
 import net.minecraft.src.Entity;
-import net.minecraft.src.EntityAIArrowAttack;
-import net.minecraft.src.EntityAIAttackOnCollide;
 import net.minecraft.src.EntityAIAvoidEntity;
-import net.minecraft.src.EntityAICreeperSwell;
 import net.minecraft.src.EntityAIHurtByTarget;
 import net.minecraft.src.EntityAILookIdle;
 import net.minecraft.src.EntityAINearestAttackableTarget;
 import net.minecraft.src.EntityAISwimming;
-import net.minecraft.src.EntityAIWander;
 import net.minecraft.src.EntityAIWatchClosest;
-import net.minecraft.src.EntityCreeper;
-import net.minecraft.src.EntityFireball;
 import net.minecraft.src.EntityLightningBolt;
 import net.minecraft.src.EntityMob;
 import net.minecraft.src.EntityOcelot;
@@ -21,11 +16,8 @@ import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EntitySkeleton;
 import net.minecraft.src.EntityXPOrb;
 import net.minecraft.src.Item;
-import net.minecraft.src.MathHelper;
 import net.minecraft.src.NBTTagCompound;
-import net.minecraft.src.Vec3;
 import net.minecraft.src.World;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
@@ -143,7 +135,7 @@ public class GCMarsEntityCreeperBoss extends EntityMob
 
                     if ((5 < 0.0D || var14 < 5 * 5) && (var9 == -1.0D || var14 < var9))
                     {
-                        GCMarsUtil.createNewExplosion(worldObj, this, this.posX, this.posY, this.posZ, 12.0F, true);
+                        GCCoreUtil.createNewExplosion(worldObj, this, this.posX, this.posY, this.posZ, 12.0F, true);
                         this.timeSinceTNTFired = 100;
                     }
                 }

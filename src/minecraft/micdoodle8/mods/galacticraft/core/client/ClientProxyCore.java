@@ -5,51 +5,21 @@ import java.io.DataInputStream;
 import java.util.EnumSet;
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.API.GalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.CommonProxyCore;
+import micdoodle8.mods.galacticraft.core.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
+import micdoodle8.mods.galacticraft.core.GCCoreEntitySpaceship;
+import micdoodle8.mods.galacticraft.core.GCCoreItems;
+import micdoodle8.mods.galacticraft.core.GCCoreTileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
-import micdoodle8.mods.galacticraft.core.GCEntityArrow;
-import micdoodle8.mods.galacticraft.core.GCEntityCreeper;
-import micdoodle8.mods.galacticraft.core.GCEntitySkeleton;
-import micdoodle8.mods.galacticraft.core.GCEntitySpider;
-import micdoodle8.mods.galacticraft.core.GCEntityZombie;
-import micdoodle8.mods.galacticraft.core.GCItemSensorGlasses;
-import micdoodle8.mods.galacticraft.mars.GCMarsBlocks;
-import micdoodle8.mods.galacticraft.mars.GCMarsChunkProvider;
-import micdoodle8.mods.galacticraft.mars.GCMarsConfigManager;
-import micdoodle8.mods.galacticraft.mars.GCMarsEntityCreeperBoss;
-import micdoodle8.mods.galacticraft.mars.GCMarsEntityProjectileTNT;
-import micdoodle8.mods.galacticraft.mars.GCMarsEntitySludgeling;
-import micdoodle8.mods.galacticraft.mars.GCMarsItemJetpack;
-import micdoodle8.mods.galacticraft.mars.GCMarsItems;
-import micdoodle8.mods.galacticraft.mars.GCMarsTileEntityTreasureChest;
-import micdoodle8.mods.galacticraft.mars.GCMarsUtil;
-import micdoodle8.mods.galacticraft.mars.GCMarsWorldProvider;
-import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
-import micdoodle8.mods.galacticraft.mars.client.GCBlockRendererBacterialSludge;
-import micdoodle8.mods.galacticraft.mars.client.GCBlockRendererBreathableAir;
-import micdoodle8.mods.galacticraft.mars.client.GCBlockRendererOxygenPipe;
-import micdoodle8.mods.galacticraft.mars.client.GCBlockRendererUnlitTorch;
-import micdoodle8.mods.galacticraft.mars.client.GCEntityDropParticleFX;
-import micdoodle8.mods.galacticraft.mars.client.GCEntityLaunchSmokeFX;
-import micdoodle8.mods.galacticraft.mars.client.GCGuiChoosePlanet;
-import micdoodle8.mods.galacticraft.mars.client.GCItemRendererSpaceship;
-import micdoodle8.mods.galacticraft.mars.client.GCItemRendererUnlitTorch;
-import micdoodle8.mods.galacticraft.mars.client.GCModelCreeperBoss;
-import micdoodle8.mods.galacticraft.mars.client.GCModelSkeleton;
-import micdoodle8.mods.galacticraft.mars.client.GCModelZombie;
-import micdoodle8.mods.galacticraft.mars.client.GCPlayerBase;
-import micdoodle8.mods.galacticraft.mars.client.GCRenderArrow;
-import micdoodle8.mods.galacticraft.mars.client.GCRenderBlockTreasureChest;
-import micdoodle8.mods.galacticraft.mars.client.GCRenderCreeper;
-import micdoodle8.mods.galacticraft.mars.client.GCRenderCreeperBoss;
-import micdoodle8.mods.galacticraft.mars.client.GCRenderProjectileTNT;
-import micdoodle8.mods.galacticraft.mars.client.GCRenderSludgeling;
-import micdoodle8.mods.galacticraft.mars.client.GCRenderSpaceship;
-import micdoodle8.mods.galacticraft.mars.client.GCRenderSpider;
-import micdoodle8.mods.galacticraft.mars.client.GCSkyProvider;
-import micdoodle8.mods.galacticraft.mars.client.GCSounds;
-import micdoodle8.mods.galacticraft.mars.client.GCTileEntityTreasureChestRenderer;
+import micdoodle8.mods.galacticraft.core.GCCoreEntityArrow;
+import micdoodle8.mods.galacticraft.core.GCCoreEntityCreeper;
+import micdoodle8.mods.galacticraft.core.GCCoreEntitySkeleton;
+import micdoodle8.mods.galacticraft.core.GCCoreEntitySpider;
+import micdoodle8.mods.galacticraft.core.GCCoreEntityZombie;
+import micdoodle8.mods.galacticraft.core.GCCoreItemSensorGlasses;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.EntityClientPlayerMP;
 import net.minecraft.src.EntityFX;
@@ -102,7 +72,6 @@ import cpw.mods.fml.common.registry.TickRegistry;
 public class ClientProxyCore extends CommonProxyCore
 {
 	private static int treasureChestRenderID;
-	private static int fluidRenderID;
 	private static int torchRenderID;
 	private static int breathableAirRenderID;
 	private static int oxygenPipeRenderID;
@@ -113,12 +82,12 @@ public class ClientProxyCore extends CommonProxyCore
 	@Override
 	public void preInit(FMLPreInitializationEvent event) 
 	{
-		MinecraftForge.EVENT_BUS.register(new GCSounds());
+		MinecraftForge.EVENT_BUS.register(new GCCoreSounds());
 		getFirstBootTime = System.currentTimeMillis();
 				
 		try
 		{
-			PlayerAPI.register("Galacticraft", GCPlayerBase.class);
+			PlayerAPI.register("Galacticraft", GCCorePlayerBase.class);
 		}
 		catch(Exception e)
 		{
@@ -134,19 +103,15 @@ public class ClientProxyCore extends CommonProxyCore
 		TickRegistry.registerTickHandler(new TickHandlerClient(), Side.CLIENT);
 		KeyBindingRegistry.registerKeyBinding(new GCKeyHandler());
         NetworkRegistry.instance().registerChannel(new ClientPacketHandler(), "Galacticraft", Side.CLIENT);
-        ClientRegistry.bindTileEntitySpecialRenderer(GCMarsTileEntityTreasureChest.class, new GCTileEntityTreasureChestRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityTreasureChest.class, new GCCoreTileEntityTreasureChestRenderer());
         this.treasureChestRenderID = RenderingRegistry.getNextAvailableRenderId();
-        RenderingRegistry.registerBlockHandler(new GCRenderBlockTreasureChest(this.treasureChestRenderID));
-        this.fluidRenderID = RenderingRegistry.getNextAvailableRenderId();
-        RenderingRegistry.registerBlockHandler(new GCBlockRendererBacterialSludge(this.fluidRenderID));
+        RenderingRegistry.registerBlockHandler(new GCCoreRenderBlockTreasureChest(this.treasureChestRenderID));
         this.torchRenderID = RenderingRegistry.getNextAvailableRenderId();
-        RenderingRegistry.registerBlockHandler(new GCBlockRendererUnlitTorch(this.torchRenderID));
+        RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererUnlitTorch(this.torchRenderID));
         this.breathableAirRenderID = RenderingRegistry.getNextAvailableRenderId();
-        RenderingRegistry.registerBlockHandler(new GCBlockRendererBreathableAir(this.breathableAirRenderID));
+        RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererBreathableAir(this.breathableAirRenderID));
         this.oxygenPipeRenderID = RenderingRegistry.getNextAvailableRenderId();
-        RenderingRegistry.registerBlockHandler(new GCBlockRendererOxygenPipe(this.oxygenPipeRenderID));
-        MinecraftForgeClient.registerItemRenderer(GCMarsBlocks.unlitTorch.blockID, new GCItemRendererUnlitTorch());
-        MinecraftForgeClient.registerItemRenderer(GCMarsItems.spaceship.shiftedIndex, new GCItemRendererSpaceship());
+        RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererOxygenPipe(this.oxygenPipeRenderID));
 	}
 
 	@Override
@@ -157,36 +122,29 @@ public class ClientProxyCore extends CommonProxyCore
 	@Override
 	public void registerRenderInformation() 
 	{
-        RenderingRegistry.registerEntityRenderingHandler(GCMarsEntityProjectileTNT.class, new GCRenderProjectileTNT());
-        RenderingRegistry.registerEntityRenderingHandler(GCEntitySpaceship.class, new GCRenderSpaceship());
-        RenderingRegistry.registerEntityRenderingHandler(GCEntitySpider.class, new GCRenderSpider());
-        RenderingRegistry.registerEntityRenderingHandler(GCEntityZombie.class, new RenderLiving(new GCModelZombie(), 1.0F));
-        RenderingRegistry.registerEntityRenderingHandler(GCEntityCreeper.class, new GCRenderCreeper());
-        RenderingRegistry.registerEntityRenderingHandler(GCEntitySkeleton.class, new RenderLiving(new GCModelSkeleton(), 1.0F));
+        RenderingRegistry.registerEntityRenderingHandler(GCCoreEntitySpaceship.class, new GCCoreRenderSpaceship());
+        RenderingRegistry.registerEntityRenderingHandler(GCCoreEntitySpider.class, new GCCoreRenderSpider());
+        RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityZombie.class, new RenderLiving(new GCCoreModelZombie(), 1.0F));
+        RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityCreeper.class, new GCCoreRenderCreeper());
+        RenderingRegistry.registerEntityRenderingHandler(GCCoreEntitySkeleton.class, new RenderLiving(new GCCoreModelSkeleton(), 1.0F));
         RenderingRegistry.addNewArmourRendererPrefix("oxygen");
         RenderingRegistry.addNewArmourRendererPrefix("sensor");
         RenderingRegistry.addNewArmourRendererPrefix("sensorox");
-        RenderingRegistry.addNewArmourRendererPrefix("quandrium");
-        RenderingRegistry.addNewArmourRendererPrefix("quandriumox");
-        RenderingRegistry.addNewArmourRendererPrefix("desh");
-        RenderingRegistry.addNewArmourRendererPrefix("deshox");
         RenderingRegistry.addNewArmourRendererPrefix("titanium");
         RenderingRegistry.addNewArmourRendererPrefix("titaniumox");
-        RenderingRegistry.addNewArmourRendererPrefix("heavy");
-        RenderingRegistry.addNewArmourRendererPrefix("jetpack");
-        RenderingRegistry.registerEntityRenderingHandler(GCEntityArrow.class, new GCRenderArrow());
-		MinecraftForgeClient.preloadTexture("/micdoodle8/mods/galacticraft/mars/client/blocks/core.png");
-		MinecraftForgeClient.preloadTexture("/micdoodle8/mods/galacticraft/mars/client/blocks/mars.png");
-		MinecraftForgeClient.preloadTexture("/micdoodle8/mods/galacticraft/mars/client/items/core.png");
-		MinecraftForgeClient.preloadTexture("/micdoodle8/mods/galacticraft/mars/client/items/mars.png");
+        RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityArrow.class, new GCCoreRenderArrow());
+		MinecraftForgeClient.preloadTexture("/micdoodle8/mods/galacticraft/core/client/blocks/core.png");
+		MinecraftForgeClient.preloadTexture("/micdoodle8/mods/galacticraft/core/client/items/core.png");
+        MinecraftForgeClient.registerItemRenderer(GCCoreBlocks.unlitTorch.blockID, new GCCoreItemRendererUnlitTorch());
+        MinecraftForgeClient.registerItemRenderer(GCCoreItems.spaceship.shiftedIndex, new GCCoreItemRendererSpaceship());
 	}
 	
 	@Override
 	public void displayChoosePlanetGui()
 	{
-		if (FMLClientHandler.instance().getClient().theWorld != null && !(FMLClientHandler.instance().getClient().currentScreen instanceof GCGuiChoosePlanet))
+		if (FMLClientHandler.instance().getClient().theWorld != null && !(FMLClientHandler.instance().getClient().currentScreen instanceof GCCoreGuiChoosePlanet))
 		{
-			FMLClientHandler.instance().getClient().displayGuiScreen(new GCGuiChoosePlanet(FMLClientHandler.instance().getClient().thePlayer));
+			FMLClientHandler.instance().getClient().displayGuiScreen(new GCCoreGuiChoosePlanet(FMLClientHandler.instance().getClient().thePlayer));
 		}
 	}
 
@@ -229,7 +187,7 @@ public class ClientProxyCore extends CommonProxyCore
             
             if (var1.equals("whitesmoke"))
             {
-        		EntityFX fx = new GCEntityLaunchSmokeFX(var14.theWorld, var2, var4, var6, var8, var10, var12, 1.0F, b);
+        		EntityFX fx = new GCCoreEntityLaunchSmokeFX(var14.theWorld, var2, var4, var6, var8, var10, var12, 1.0F, b);
         		if (fx != null)
         		{
                 	var14.effectRenderer.addEffect(fx);
@@ -237,44 +195,28 @@ public class ClientProxyCore extends CommonProxyCore
             }
             else if (var1.equals("whitesmokelarge"))
             {
-        		EntityFX fx = new GCEntityLaunchSmokeFX(var14.theWorld, var2, var4, var6, var8, var10, var12, 2.5F, b);
+        		EntityFX fx = new GCCoreEntityLaunchSmokeFX(var14.theWorld, var2, var4, var6, var8, var10, var12, 2.5F, b);
         		if (fx != null)
         		{
         			var14.effectRenderer.addEffect(fx);
         		}
         	}
-            if (var1.equals("hugeexplosion2"))
-            {
-                EntityFX fx = new EntityHugeExplodeFX(var14.theWorld, var2, var4, var6, var8, var10, var12);
-        		if (fx != null)
-        		{
-        			var14.effectRenderer.addEffect(fx);
-        		}
-            }
-            else if (var1.equals("largeexplode2"))
-            {
-                EntityFX fx = new EntityLargeExplodeFX(var14.renderEngine, var14.theWorld, var2, var4, var6, var8, var10, var12);
-        		if (fx != null)
-        		{
-        			var14.effectRenderer.addEffect(fx);
-        		}
-            }
 
             if (var15 * var15 + var17 * var17 + var19 * var19 < var22 * var22)
             {
-            	if (var1.equals("sludgeDrip"))
-            	{
-            		var21 = new GCEntityDropParticleFX(var14.theWorld, var2, var4, var6, GCMarsBlocks.bacterialSludge);
-            	}
+//            	if (var1.equals("sludgeDrip"))
+//            	{
+//            		var21 = new GCMarsEntityDropParticleFX(var14.theWorld, var2, var4, var6, GCMarsBlocks.bacterialSludge);
+//            	}
             }
             
-            if (var21 != null)
-            {
-                ((EntityFX)var21).prevPosX = ((EntityFX)var21).posX;
-                ((EntityFX)var21).prevPosY = ((EntityFX)var21).posY;
-                ((EntityFX)var21).prevPosZ = ((EntityFX)var21).posZ;
-                var14.effectRenderer.addEffect((EntityFX)var21);
-            }
+//            if (var21 != null)
+//            {
+//                ((EntityFX)var21).prevPosX = ((EntityFX)var21).posX;
+//                ((EntityFX)var21).prevPosY = ((EntityFX)var21).posY;
+//                ((EntityFX)var21).prevPosZ = ((EntityFX)var21).posZ;
+//                var14.effectRenderer.addEffect((EntityFX)var21);
+//            }
         }
     }
 	
@@ -297,26 +239,6 @@ public class ClientProxyCore extends CommonProxyCore
         }
     }
     
-    public static boolean handleBacterialMovement(EntityPlayer player)
-    {
-        return player.worldObj.isMaterialInBB(player.boundingBox.expand(-0.10000000149011612D, -0.4000000059604645D, -0.10000000149011612D), GCMarsBlocks.bacterialSludge);
-    }
-    
-    public static boolean handleLavaMovement(EntityPlayer player)
-    {
-        return player.worldObj.isMaterialInBB(player.boundingBox.expand(-0.10000000149011612D, -0.4000000059604645D, -0.10000000149011612D), Material.lava);
-    }
-    
-    public static boolean handleWaterMovement(EntityPlayer player)
-    {
-        return player.worldObj.isMaterialInBB(player.boundingBox.expand(-0.10000000149011612D, -0.4000000059604645D, -0.10000000149011612D), Material.water);
-    }
-    
-    public static boolean handleLiquidMovement(EntityPlayer player)
-    {
-    	return (handleBacterialMovement(player) || handleLavaMovement(player) || handleWaterMovement(player));
-    }
-    
     public static class TickHandlerClient implements ITickHandler
     {
     	public static int airRemaining;
@@ -334,38 +256,15 @@ public class ClientProxyCore extends CommonProxyCore
     		
     		if (type.equals(EnumSet.of(TickType.CLIENT)))
             {
-        		if (player != null && world != null && player.inventory.armorItemInSlot(2) != null && player.inventory.armorItemInSlot(2).getItem().shiftedIndex == GCMarsItems.jetpack.shiftedIndex && FMLClientHandler.instance().getClient().gameSettings.keyBindJump.pressed && player.posY < 125)
-        		{
-        			((GCMarsItemJetpack)player.inventory.armorItemInSlot(2).getItem()).setActive();
-        			player.motionY += (0.05 + ((player.rotationPitch * 2) / 180) * 0.05);
-        			player.fallDistance = 0;
-            		world.spawnParticle("largesmoke", player.posX, player.posY - 1D, player.posZ, 0, -0.1, 0);
-        		}
-        		else
-        		{
-        			if (player != null && player.inventory.armorItemInSlot(0) != null && player.inventory.armorItemInSlot(0).getItem().shiftedIndex == GCMarsItems.heavyBoots.shiftedIndex)
-        			{
-        				player.motionY = player.motionY - 0.062;
-        			}
-
-        			if (player != null && player.dimension == GCMarsConfigManager.dimensionIDMars && !player.capabilities.isFlying && !minecraft.isGamePaused && !handleLiquidMovement(player)) 
-        			{
-        				player.motionY = player.motionY + 0.062;
-        			}
-        		}
+    			if (player != null && player.worldObj.provider instanceof GalacticraftWorldProvider && !player.capabilities.isFlying && !minecraft.isGamePaused) 
+    			{
+    				player.motionY = player.motionY + 0.062;
+    			}
     			
     			if (player != null && player.ridingEntity != null && minecraft.gameSettings.keyBindJump.pressed)
     			{
     	    		Object[] toSend = {0};
     	            PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 3, toSend));
-    			}
-    			
-    			if (world != null && world.provider instanceof GCMarsWorldProvider)
-    			{
-    				if (world.provider.getSkyProvider() == null)
-                    {
-    					world.provider.setSkyProvider(new GCSkyProvider());
-                    }
     			}
             }
         }
@@ -382,8 +281,6 @@ public class ClientProxyCore extends CommonProxyCore
             EntityPlayerSP player = minecraft.thePlayer;
             
             ItemStack helmetSlot = null;
-            
-            if (GCMarsChunkProvider.giantCaveLocations != null)
     		
     		if (player != null && player.inventory.armorItemInSlot(3) != null)
     		{
@@ -392,7 +289,7 @@ public class ClientProxyCore extends CommonProxyCore
             
     		if (type.equals(EnumSet.of(TickType.RENDER)))
             {
-        		if (helmetSlot != null && helmetSlot.getItem() instanceof GCItemSensorGlasses && minecraft.currentScreen == null)
+        		if (helmetSlot != null && helmetSlot.getItem() instanceof GCCoreItemSensorGlasses && minecraft.currentScreen == null)
         		{
         			i++;
         			
@@ -408,7 +305,7 @@ public class ClientProxyCore extends CommonProxyCore
 					GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 					GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 					GL11.glDisable(GL11.GL_ALPHA_TEST);
-    				GL11.glBindTexture(GL11.GL_TEXTURE_2D, minecraft.renderEngine.getTexture("/micdoodle8/mods/galacticraft/mars/client/gui/hud.png"));
+    				GL11.glBindTexture(GL11.GL_TEXTURE_2D, minecraft.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/gui/hud.png"));
 					Tessellator tessellator = Tessellator.instance;
 					tessellator.startDrawingQuads();
 					tessellator.addVertexWithUV(i / 2 - 2 * k - f * 80, k + f * 40, -90D, 0.0D, 1.0D);
@@ -422,7 +319,7 @@ public class ClientProxyCore extends CommonProxyCore
 					GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         		}
 
-        		if (player != null && player.dimension == GCMarsConfigManager.dimensionIDMars)
+        		if (player != null && player.worldObj.provider instanceof GalacticraftWorldProvider)
     			{
     				short var8 = 90;
     				int var6 = (airRemaining - 90) * -1;
@@ -444,7 +341,7 @@ public class ClientProxyCore extends CommonProxyCore
     				GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
     				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
     				GL11.glDisable(GL11.GL_ALPHA_TEST);
-    				GL11.glBindTexture(GL11.GL_TEXTURE_2D, minecraft.renderEngine.getTexture("/micdoodle8/mods/galacticraft/mars/client/gui/gui.png"));
+    				GL11.glBindTexture(GL11.GL_TEXTURE_2D, minecraft.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/gui/gui.png"));
     				Tessellator tessellator = Tessellator.instance;
     				tessellator.startDrawingQuads();
     				tessellator.addVertexWithUV(i - 20, k / 2 + 45, -90D, 0 * 0.00390625F, 90 * 0.00390625F);
@@ -481,17 +378,11 @@ public class ClientProxyCore extends CommonProxyCore
     	{
     		return EnumSet.of(TickType.RENDER, TickType.CLIENT);
     	}
-    	
-    	public void requestRespawn(EntityPlayerSP player)
-    	{
-    		Object[] toSend = {player.username};
-            PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 1, toSend));
-    	}
     }
     
     public static class GCKeyHandler extends KeyHandler
     {
-    	static KeyBinding tankRefill = new KeyBinding("Tank Refill", Keyboard.KEY_H);
+    	static KeyBinding tankRefill = new KeyBinding("Tank Refill", Keyboard.KEY_R);
 
         public GCKeyHandler() 
         {
@@ -517,7 +408,7 @@ public class ClientProxyCore extends CommonProxyCore
                 	
                     Object[] toSend = {player.username};
                     PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 0, toSend));
-            	    player.openGui(GalacticraftMars.instance, GCCoreConfigManager.idGuiTankRefill, minecraft.theWorld, (int)player.posX, (int)player.posY, (int)player.posZ);
+            	    player.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiTankRefill, minecraft.theWorld, (int)player.posX, (int)player.posY, (int)player.posZ);
             	}
         	}
         }
