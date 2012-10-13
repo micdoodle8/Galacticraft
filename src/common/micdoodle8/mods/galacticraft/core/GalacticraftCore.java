@@ -13,15 +13,21 @@ import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
+import cpw.mods.fml.common.Mod.PostInit;
 import cpw.mods.fml.common.Mod.PreInit;
+import cpw.mods.fml.common.Mod.ServerStarted;
+import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.common.registry.TickRegistry;
 
 /**
  * Copyright 2012, micdoodle8
@@ -39,7 +45,7 @@ public class GalacticraftCore
 	@Instance("GalacticraftCore")
 	public static GalacticraftCore instance;
 	
-//	public static GCCoreLocalization lang;
+	public static GCCoreLocalization lang;
 	
 	public static long tick;
 	
@@ -51,7 +57,7 @@ public class GalacticraftCore
 	{
 		new GCCoreConfigManager(new File(event.getModConfigurationDirectory(), "Galacticraft/core.conf"));
 		
-//		lang = new GCCoreLocalization("micdoodle8/mods/galacticraft/core/client");
+		lang = new GCCoreLocalization("micdoodle8/mods/galacticraft/core/client");
 		
 		GCCoreBlocks.initBlocks();
 		GCCoreBlocks.registerBlocks();
@@ -70,6 +76,19 @@ public class GalacticraftCore
 		this.registerCreatures();
 		this.registerOtherEntities();
 		proxy.init(event);
+	}
+	
+	@PostInit
+	public void postInit(FMLPostInitializationEvent event)
+	{
+		proxy.postInit(event);
+		proxy.registerRenderInformation();
+	}
+	
+	@ServerStarted
+	public void serverInit(FMLServerStartedEvent event)
+	{
+        TickRegistry.registerTickHandler(new CommonTickHandler(), Side.SERVER);
 	}
 	
 	public void registerTileEntities()

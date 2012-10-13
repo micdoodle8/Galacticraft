@@ -25,11 +25,11 @@ public class GCCoreItemSensorGlasses extends GCCoreItemBreathableHelmet implemen
 
     public String getArmorTextureFile(ItemStack itemstack)
     {
-    	return attachedMask ? "/micdoodle8/mods/galacticraft/mars/client/armor/sensorox_1.png" : "/micdoodle8/mods/galacticraft/mars/client/armor/sensor_1.png";
+    	return attachedMask ? "/micdoodle8/mods/galacticraft/core/client/armor/sensorox_1.png" : "/micdoodle8/mods/galacticraft/core/client/armor/sensor_1.png";
     }
 	
 	public String getTextureFile()
 	{
-		return "/micdoodle8/mods/galacticraft/mars/client/items/core.png";
+		return "/micdoodle8/mods/galacticraft/core/client/items/core.png";
 	}
 }

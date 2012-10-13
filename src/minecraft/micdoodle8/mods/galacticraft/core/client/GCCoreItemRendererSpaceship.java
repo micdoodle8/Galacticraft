@@ -1,18 +1,16 @@
 package micdoodle8.mods.galacticraft.core.client;
 
 import micdoodle8.mods.galacticraft.core.GCCoreEntitySpaceship;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.mars.client.ClientProxyMars;
-import net.minecraft.src.Block;
-import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
-import net.minecraft.src.MathHelper;
 import net.minecraft.src.RenderBlocks;
-import net.minecraft.src.Tessellator;
 import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLLog;
 
 /**
  * Copyright 2012, micdoodle8
@@ -48,9 +46,9 @@ public class GCCoreItemRendererSpaceship implements IItemRenderer
         	GL11.glRotatef(20F, 1F, 0F, 0F);
         	GL11.glScalef(1.3F, 1.3F, 1.3F);
         	GL11.glTranslatef(0, -0.6F, 0);
-        	GL11.glRotatef((ClientProxyMars.getCurrentTime - ClientProxyMars.getFirstBootTime) / 20, 0F, 1F, 0F);
+        	GL11.glRotatef((GalacticraftCore.tick) * 2, 0F, 1F, 0F);
         }
-        FMLClientHandler.instance().getClient().renderEngine.bindTexture(FMLClientHandler.instance().getClient().renderEngine.getTexture("/micdoodle8/mods/galacticraft/mars/client/entities/spaceship1.png"));
+        FMLClientHandler.instance().getClient().renderEngine.bindTexture(FMLClientHandler.instance().getClient().renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/entities/spaceship1.png"));
         this.modelSpaceship.render(spaceship, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
         GL11.glPopMatrix();
 	}

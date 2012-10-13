@@ -27,6 +27,6 @@ public class GCCoreItemOxygenMask extends GCCoreItemBreathableHelmet implements 
 	
 	public String getTextureFile()
 	{
-		return "/micdoodle8/mods/galacticraft/mars/client/items/core.png";
+		return "/micdoodle8/mods/galacticraft/core/client/items/core.png";
 	}
 }

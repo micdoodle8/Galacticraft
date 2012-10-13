@@ -5,7 +5,7 @@ import java.util.List;
 import micdoodle8.mods.galacticraft.mars.GCMarsItem;
 import net.minecraft.src.ItemStack;
 
-public class GCCoreItemOxygenTank extends GCMarsItem
+public class GCCoreItemOxygenTank extends GCCoreItem
 {
 	public GCCoreItemOxygenTank(int par1) 
 	{
