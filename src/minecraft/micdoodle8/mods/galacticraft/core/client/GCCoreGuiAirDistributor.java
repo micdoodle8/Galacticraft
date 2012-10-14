@@ -34,7 +34,7 @@ public class GCCoreGuiAirDistributor extends GuiContainer
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3) 
 	{
-		int texture = this.mc.renderEngine.getTexture("/micdoodle8/mods/galacticraft/mars/client/gui/distributor.png");
+		int texture = this.mc.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/gui/distributor.png");
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		this.mc.renderEngine.bindTexture(texture);
 		int var5 = (this.width - this.xSize) / 2;

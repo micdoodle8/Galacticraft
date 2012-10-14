@@ -83,6 +83,11 @@ public class GCMarsConfigManager
 	public static int idToolQuandriumSpade;
 	public static int idToolQuandriumHoe;
 	
+	// MOBS
+	public static int idEntityCreeperBoss;
+	public static int idEntitySludgeling;
+	public static int idEntityProjectileTNT;
+	
 	private void setDefaultValues()
     {
 		try
@@ -139,6 +144,10 @@ public class GCMarsConfigManager
 			idArmorDeshHelmetBreathable = configuration.getOrCreateIntProperty("idArmorDeshHelmetBreathable", 					configuration.CATEGORY_ITEM, 	9906).getInt(9906);
 			idArmorHeavyBoots = configuration.getOrCreateIntProperty("idArmorHeavyBoots", 										configuration.CATEGORY_ITEM, 	9912).getInt(9912);
 			idArmorJetpack = configuration.getOrCreateIntProperty("idArmorJetpack", 											configuration.CATEGORY_ITEM, 	9913).getInt(9913);
+
+			idEntityCreeperBoss = configuration.getOrCreateIntProperty("idEntityCreeperBoss", 									"ENTITIES", 					161).getInt(161); 	
+			idEntitySludgeling = configuration.getOrCreateIntProperty("idEntitySludgeling", 									"ENTITIES", 					162).getInt(162); 	
+			idEntityProjectileTNT = configuration.getOrCreateIntProperty("idEntityProjectileTNT", 								"ENTITIES", 					163).getInt(163); 	
 		}
 		catch (Exception e)
 		{

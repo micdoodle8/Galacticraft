@@ -25,7 +25,7 @@ import cpw.mods.fml.common.asm.SideOnly;
  *  All rights reserved.
  *
  */
-public class GCCoreBlockUnlitTorch extends GCMarsBlock
+public class GCCoreBlockUnlitTorch extends GCCoreBlock
 {
 	public boolean lit;
 	

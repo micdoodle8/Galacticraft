@@ -79,6 +79,13 @@ public class GCCoreConfigManager
 	// ACHIEVEMENTS
 	public static int idAchievBase;
 	
+	public static int idEntityEvolvedSpider;
+	public static int idEntityEvolvedCreeper;
+	public static int idEntityEvolvedZombie;
+	public static int idEntityEvolvedSkeleton;
+	public static int idEntitySpaceship;
+	public static int idEntityAntiGravityArrow;
+	
 	private void setDefaultValues()
     {
 		try
@@ -130,6 +137,13 @@ public class GCCoreConfigManager
 	        idGuiAirDistributor = configuration.getOrCreateIntProperty("idGuiAirDistributor", 									"GUI", 							129).getInt(129);
 	        
 	        idAchievBase = configuration.getOrCreateIntProperty("idAchievBase", 												"Achievements", 				1784).getInt(1784);
+
+	        idEntityEvolvedSpider = configuration.getOrCreateIntProperty("idEntityEvolvedSpider", 								"ENTITIES", 					155).getInt(155); 	
+	        idEntityEvolvedCreeper = configuration.getOrCreateIntProperty("idEntityEvolvedCreeper", 							"ENTITIES", 					156).getInt(156); 	
+	        idEntityEvolvedZombie = configuration.getOrCreateIntProperty("idEntityEvolvedZombie", 								"ENTITIES", 					157).getInt(157); 	
+	        idEntityEvolvedSkeleton = configuration.getOrCreateIntProperty("idEntityEvolvedSkeleton", 							"ENTITIES", 					158).getInt(158); 	
+	        idEntitySpaceship = configuration.getOrCreateIntProperty("idEntitySpaceship", 										"ENTITIES", 					159).getInt(159); 	
+	        idEntityAntiGravityArrow = configuration.getOrCreateIntProperty("idEntityAntiGravityArrow", 						"ENTITIES", 					160).getInt(160); 	
 		}
 		catch (Exception e)
 		{

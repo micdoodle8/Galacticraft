@@ -9,7 +9,7 @@ import net.minecraft.src.Material;
  *  All rights reserved.
  *
  */
-public class GCCoreBlockLandingPad extends GCMarsBlock
+public class GCCoreBlockLandingPad extends GCCoreBlock
 {
 	public GCCoreBlockLandingPad(int i, int j) 
 	{

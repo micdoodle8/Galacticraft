@@ -62,6 +62,11 @@ public class CommonProxyCore implements IGuiHandler
 	{
 		return -1;
 	}
+
+	public int getGCTreasureChestRenderID() 
+	{
+		return -1;
+	}
 	
 	public World getClientWorld()
 	{

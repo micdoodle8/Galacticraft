@@ -103,11 +103,13 @@ public class GalacticraftMars
 	
 	public void registerCreatures()
 	{
+		registerGalacticraftCreature(GCMarsEntityCreeperBoss.class, "Creeper Boss", GCMarsConfigManager.idEntityCreeperBoss, 894731, 0);
+		registerGalacticraftCreature(GCMarsEntitySludgeling.class, "Sludgeling", GCMarsConfigManager.idEntitySludgeling, 25600, 0);
 	}
 	
 	public void registerOtherEntities()
 	{
-		registerGalacticraftNonMobEntity(GCMarsEntityProjectileTNT.class, "Projectile TNT", 150, 5, true);
+		registerGalacticraftNonMobEntity(GCMarsEntityProjectileTNT.class, "Projectile TNT", GCMarsConfigManager.idEntityProjectileTNT, 150, 5, true);
 	}
 	
 	@PostInit
@@ -124,18 +126,15 @@ public class GalacticraftMars
         NetworkRegistry.instance().registerChannel(new ServerPacketHandler(), "GalacticraftMars", Side.SERVER);
 	}
 
-    public void registerGalacticraftCreature(Class var0, String var1, int back, int fore)
+    public void registerGalacticraftCreature(Class var0, String var1, int id, int back, int fore)
     {
-    	int id = EntityRegistry.findGlobalUniqueEntityId();
-        EntityRegistry.registerGlobalEntityID(var0, var1, id, back, fore);
+    	EntityRegistry.registerGlobalEntityID(var0, var1, id, back, fore);
         EntityRegistry.registerModEntity(var0, var1, id, instance, 80, 3, true);
 		LanguageRegistry.instance().addStringLocalization("entity." + var1 + ".name", "en_US", var1);
     }
     
-    public void registerGalacticraftNonMobEntity(Class var0, String var1, int trackingDistance, int updateFreq, boolean sendVel)
+    public void registerGalacticraftNonMobEntity(Class var0, String var1, int id, int trackingDistance, int updateFreq, boolean sendVel)
     {
-    	int id = EntityRegistry.findGlobalUniqueEntityId();
-        EntityRegistry.registerGlobalEntityID(var0, var1, id);
         EntityRegistry.registerModEntity(var0, var1, id, this, trackingDistance, updateFreq, sendVel);
     }
 	

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
+import micdoodle8.mods.galacticraft.mars.GCMarsConfigManager;
 import micdoodle8.mods.galacticraft.mars.GCMarsEntityCreeperBoss;
 import micdoodle8.mods.galacticraft.mars.GCMarsEntitySludgeling;
 import net.minecraft.src.World;
@@ -24,6 +25,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.network.NetworkMod;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
@@ -72,6 +74,7 @@ public class GalacticraftCore
 	public void init(FMLInitializationEvent event)
 	{
 //		GCCoreUtil.addSmeltingRecipes(); TODO
+		NetworkRegistry.instance().registerGuiHandler(this, proxy);
 		this.registerTileEntities();
 		this.registerCreatures();
 		this.registerOtherEntities();
@@ -100,32 +103,27 @@ public class GalacticraftCore
 	
 	public void registerCreatures()
 	{
-		registerGalacticraftCreature(GCCoreEntitySpider.class, "Evolved Spider", 3419431, 11013646);
-		registerGalacticraftCreature(GCCoreEntityZombie.class, "Evolved Zombie", 44975, 7969893);
-		registerGalacticraftCreature(GCCoreEntityCreeper.class, "Evolved Creeper", 894731, 0);
-		registerGalacticraftCreature(GCCoreEntitySkeleton.class, "Evolved Skeleton", 12698049, 4802889);
-		registerGalacticraftCreature(GCMarsEntityCreeperBoss.class, "Creeper Boss", 894731, 0);
-		registerGalacticraftCreature(GCMarsEntitySludgeling.class, "Sludgeling", 25600, 0);
+		registerGalacticraftCreature(GCCoreEntitySpider.class, "Evolved Spider", GCCoreConfigManager.idEntityEvolvedSpider, 3419431, 11013646);
+		registerGalacticraftCreature(GCCoreEntityZombie.class, "Evolved Zombie", GCCoreConfigManager.idEntityEvolvedZombie, 44975, 7969893);
+		registerGalacticraftCreature(GCCoreEntityCreeper.class, "Evolved Creeper", GCCoreConfigManager.idEntityEvolvedCreeper, 894731, 0);
+		registerGalacticraftCreature(GCCoreEntitySkeleton.class, "Evolved Skeleton", GCCoreConfigManager.idEntityEvolvedSkeleton, 12698049, 4802889);
 	}
 	
 	public void registerOtherEntities()
 	{
-		registerGalacticraftNonMobEntity(GCCoreEntitySpaceship.class, "Spaceship", 150, 5, true);
-		registerGalacticraftNonMobEntity(GCCoreEntityArrow.class, "Gravity Arrow", 150, 5, true);
+		registerGalacticraftNonMobEntity(GCCoreEntitySpaceship.class, "Spaceship", GCCoreConfigManager.idEntitySpaceship, 150, 5, true);
+		registerGalacticraftNonMobEntity(GCCoreEntityArrow.class, "Gravity Arrow", GCCoreConfigManager.idEntityAntiGravityArrow, 150, 5, true);
 	}
 
-    public void registerGalacticraftCreature(Class var0, String var1, int back, int fore)
+    public void registerGalacticraftCreature(Class var0, String var1, int id, int back, int fore)
     {
-    	int id = EntityRegistry.findGlobalUniqueEntityId();
-        EntityRegistry.registerGlobalEntityID(var0, var1, id, back, fore);
+    	EntityRegistry.registerGlobalEntityID(var0, var1, id, back, fore);
         EntityRegistry.registerModEntity(var0, var1, id, instance, 80, 3, true);
 		LanguageRegistry.instance().addStringLocalization("entity." + var1 + ".name", "en_US", var1);
     }
     
-    public void registerGalacticraftNonMobEntity(Class var0, String var1, int trackingDistance, int updateFreq, boolean sendVel)
+    public void registerGalacticraftNonMobEntity(Class var0, String var1, int id, int trackingDistance, int updateFreq, boolean sendVel)
     {
-    	int id = EntityRegistry.findGlobalUniqueEntityId();
-        EntityRegistry.registerGlobalEntityID(var0, var1, id);
         EntityRegistry.registerModEntity(var0, var1, id, this, trackingDistance, updateFreq, sendVel);
     }
 	

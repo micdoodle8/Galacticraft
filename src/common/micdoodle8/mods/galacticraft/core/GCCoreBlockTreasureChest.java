@@ -54,7 +54,7 @@ public class GCCoreBlockTreasureChest extends BlockContainer
 
     public int getRenderType()
     {
-        return 22;
+        return GalacticraftCore.proxy.getGCTreasureChestRenderID();
     }
 
     public void onBlockAdded(World par1World, int par2, int par3, int par4)

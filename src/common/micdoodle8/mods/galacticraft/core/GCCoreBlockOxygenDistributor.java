@@ -34,7 +34,7 @@ public class GCCoreBlockOxygenDistributor extends BlockContainer
 	public GCCoreBlockOxygenDistributor(int par1, boolean isActive) 
 	{
 		super(par1, Material.rock);
-		this.blockIndexInTexture = 34;
+		this.blockIndexInTexture = 8;
 		this.isActive = isActive;
 		this.setRequiresSelfNotify();
 	}

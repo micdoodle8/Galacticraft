@@ -280,7 +280,7 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
         }
 
         this.prevLidAngle = this.lidAngle;
-        float var1 = 0.1F;
+        float var1 = 0.05F;
         double var4;
 
         if (this.numUsingPlayers > 0 && this.lidAngle == 0.0F && this.adjacentChestZNeg == null && this.adjacentChestXNeg == null)
@@ -298,7 +298,7 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
                 var2 += 0.5D;
             }
 
-            this.worldObj.playSoundEffect(var2, (double)this.yCoord + 0.5D, var4, "random.chestopen", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
+            this.worldObj.playSoundEffect(var2, (double)this.yCoord + 0.5D, var4, "random.chestopen", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.6F);
         }
 
         if (this.numUsingPlayers == 0 && this.lidAngle > 0.0F || this.numUsingPlayers > 0 && this.lidAngle < 1.0F)
@@ -336,7 +336,7 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
                     var4 += 0.5D;
                 }
 
-                this.worldObj.playSoundEffect(var4, (double)this.yCoord + 0.5D, var6, "random.chestclosed", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
+                this.worldObj.playSoundEffect(var4, (double)this.yCoord + 0.5D, var6, "random.chestclosed", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.6F);
             }
 
             if (this.lidAngle < 0.0F)

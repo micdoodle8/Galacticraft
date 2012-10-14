@@ -2,9 +2,8 @@ package micdoodle8.mods.galacticraft.API;
 
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.core.GCCoreBlock;
 import micdoodle8.mods.galacticraft.core.GCCoreBlocks;
-import micdoodle8.mods.galacticraft.mars.GCMarsBlock;
-import micdoodle8.mods.galacticraft.mars.GCMarsBlocks;
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Block;
 import net.minecraft.src.EntityPlayer;
@@ -19,7 +18,7 @@ import cpw.mods.fml.common.FMLLog;
  *  All rights reserved.
  *
  */
-public class GCBlockBreathableAir extends GCMarsBlock
+public class GCBlockBreathableAir extends GCCoreBlock
 {
 	public GCBlockBreathableAir(int id, int texIndex) 
 	{
@@ -68,6 +67,7 @@ public class GCBlockBreathableAir extends GCMarsBlock
     {
 		if (!activeDistributorNearby(par1World, par2, par3, par4, false))
 		{
+			FMLLog.info("sdasd");
 			return;
 		}
 		

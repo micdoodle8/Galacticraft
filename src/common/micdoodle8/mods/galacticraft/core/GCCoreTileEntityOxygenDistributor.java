@@ -20,6 +20,8 @@ import cpw.mods.fml.common.FMLLog;
 public class GCCoreTileEntityOxygenDistributor extends TileEntity implements IInventory 
 {
     private ItemStack[] distributorStacks;
+    
+    public int currentPower;
 
     public GCCoreTileEntityOxygenDistributor()
     {
@@ -51,6 +53,35 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntity implements IIn
 	public void updateEntity() 
 	{
 		super.updateEntity();
+		
+		int[] idSet = new int[6];
+		int[] metaSet = new int[6];
+		
+		idSet[0] = this.worldObj.getBlockId(this.xCoord + 1, this.yCoord, this.zCoord);
+		idSet[1] = this.worldObj.getBlockId(this.xCoord - 1, this.yCoord, this.zCoord);
+		idSet[2] = this.worldObj.getBlockId(this.xCoord, this.yCoord, this.zCoord + 1);
+		idSet[3] = this.worldObj.getBlockId(this.xCoord, this.yCoord, this.zCoord - 1);
+		idSet[4] = this.worldObj.getBlockId(this.xCoord, this.yCoord + 1, this.zCoord);
+		idSet[5] = this.worldObj.getBlockId(this.xCoord, this.yCoord - 1, this.zCoord);
+		metaSet[0] = this.worldObj.getBlockMetadata(this.xCoord + 1, this.yCoord, this.zCoord);
+		metaSet[1] = this.worldObj.getBlockMetadata(this.xCoord - 1, this.yCoord, this.zCoord);
+		metaSet[2] = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord + 1);
+		metaSet[3] = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord - 1);
+		metaSet[4] = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord + 1, this.zCoord);
+		metaSet[5] = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord - 1, this.zCoord);
+
+		for (int i = 0; i < idSet.length; i++)
+		{
+			if (idSet[i] == GCCoreBlocks.oxygenPipe.blockID && metaSet[i] == 1)
+			{
+				this.currentPower = 10;
+			}
+		}
+		
+		if (this.currentPower > 0)
+		{
+			GCCoreBlockOxygenDistributor.updateDistributorState(true, worldObj, xCoord, yCoord, zCoord);
+		}
 
 		ItemStack tankInSlot = this.getStackInSlot(0);
 		

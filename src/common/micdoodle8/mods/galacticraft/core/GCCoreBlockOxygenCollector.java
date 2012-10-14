@@ -91,6 +91,6 @@ public class GCCoreBlockOxygenCollector extends BlockContainer
 	@Override
     public String getTextureFile()
     {
-    	return "/micdoodle8/mods/galacticraft/mars/client/blocks/mars.png";
+    	return "/micdoodle8/mods/galacticraft/core/client/blocks/core.png";
     }
 }

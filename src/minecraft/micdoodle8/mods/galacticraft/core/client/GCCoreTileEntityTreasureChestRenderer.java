@@ -63,12 +63,12 @@ public class GCCoreTileEntityTreasureChestRenderer extends TileEntitySpecialRend
             if (par1GCTileEntityTreasureChest.adjacentChestXPos == null && par1GCTileEntityTreasureChest.adjacentChestZPosition == null)
             {
                 var14 = this.chestModel;
-                this.bindTextureByName("/Galacticraft/Mars/Blocks/special/chest.png");
+                this.bindTextureByName("/micdoodle8/mods/galacticraft/core/client/entities/chest.png");
             }
             else
             {
                 var14 = this.largeChestModel;
-                this.bindTextureByName("/Galacticraft/Mars/Blocks/special/largechest.png");
+                this.bindTextureByName("/micdoodle8/mods/galacticraft/core/client/entities/largechest.png");
             }
 
             GL11.glPushMatrix();
@@ -136,7 +136,7 @@ public class GCCoreTileEntityTreasureChestRenderer extends TileEntitySpecialRend
 
             var12 = 1.0F - var12;
             var12 = 1.0F - var12 * var12 * var12;
-            var14.chestLid.rotateAngleX = -(var12 * (float)Math.PI / 2.0F);
+            var14.chestLid.rotateAngleX = -(var12 * (float)Math.PI / 4.0F);
             var14.renderAll();
             GL11.glDisable(GL12.GL_RESCALE_NORMAL);
             GL11.glPopMatrix();

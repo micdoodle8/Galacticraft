@@ -155,6 +155,12 @@ public class ClientProxyCore extends CommonProxyCore
     }
 	
 	@Override
+	public int getGCTreasureChestRenderID()
+	{
+		return this.treasureChestRenderID;
+	}
+	
+	@Override
 	public int getGCUnlitTorchRenderID()
 	{
 		return this.torchRenderID;
