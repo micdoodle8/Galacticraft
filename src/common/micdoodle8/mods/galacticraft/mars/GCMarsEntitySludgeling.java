@@ -1,15 +1,13 @@
 package micdoodle8.mods.galacticraft.mars;
 
-import net.minecraft.src.Block;
-import net.minecraft.src.BlockSilverfish;
+import micdoodle8.mods.galacticraft.core.GCCoreEntityMob;
 import net.minecraft.src.DamageSource;
 import net.minecraft.src.Entity;
-import net.minecraft.src.EntityDamageSource;
+import net.minecraft.src.EntityAIAttackOnCollide;
+import net.minecraft.src.EntityAINearestAttackableTarget;
 import net.minecraft.src.EntityMob;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EnumCreatureAttribute;
-import net.minecraft.src.Facing;
-import net.minecraft.src.MathHelper;
 import net.minecraft.src.World;
 
 public class GCMarsEntitySludgeling extends EntityMob
@@ -23,6 +21,9 @@ public class GCMarsEntitySludgeling extends EntityMob
         this.setSize(0.3F, 0.3F);
         this.moveSpeed = 0.6F;
         this.attackStrength = 1;
+        this.tasks.addTask(1, new EntityAIAttackOnCollide(this, 0.25F, true));
+        this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, GCCoreEntityMob.class, 16.0F, 0, false, true));
+        this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 16.0F, 0, false, true));
     }
 
     public int getMaxHealth()
@@ -30,6 +31,11 @@ public class GCMarsEntitySludgeling extends EntityMob
         return 4;
     }
 
+    public boolean isAIEnabled()
+    {
+        return true;
+    }
+    
     protected boolean canTriggerWalking()
     {
         return false;
@@ -54,6 +60,26 @@ public class GCMarsEntitySludgeling extends EntityMob
     protected String getDeathSound()
     {
         return "mob.silverfish.kill";
+    }
+    
+    public EntityPlayer getClosestEntityToAttack(double par1, double par3, double par5, double par7)
+    {
+        double var9 = -1.0D;
+        EntityPlayer var11 = null;
+
+        for (int var12 = 0; var12 < this.worldObj.loadedEntityList.size(); ++var12)
+        {
+            EntityPlayer var13 = (EntityPlayer)this.worldObj.loadedEntityList.get(var12);
+            double var14 = var13.getDistanceSq(par1, par3, par5);
+
+            if ((par7 < 0.0D || var14 < par7 * par7) && (var9 == -1.0D || var14 < var9))
+            {
+                var9 = var14;
+                var11 = var13;
+            }
+        }
+
+        return var11;
     }
 
     protected void attackEntity(Entity par1Entity, float par2)

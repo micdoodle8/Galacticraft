@@ -35,6 +35,11 @@ public abstract class GCCoreEntityMob extends EntityMob
 		{
 			this.addPotionEffect(new PotionEffect(Potion.poison.id, 40, 0));
 		}
+		
+		if (handleBacterialMovement() && !this.isPotionActive(Potion.weakness))
+		{
+			this.addPotionEffect(new PotionEffect(Potion.weakness.id, 40, 0));
+		}
     }
 
 	@Override
