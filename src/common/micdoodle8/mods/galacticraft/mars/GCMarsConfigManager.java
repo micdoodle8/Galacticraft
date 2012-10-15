@@ -94,17 +94,17 @@ public class GCMarsConfigManager
 		{
 	        configuration.load();
 	        
-			dimensionIDMars = configuration.getOrCreateIntProperty("dimensionIDMars", 										"Dimension", 					29).getInt(29);
+			dimensionIDMars = configuration.getOrCreateIntProperty("dimensionIDMars", 											"Dimension", 					29).getInt(29);
 
-			idBlockMarsStone = configuration.getOrCreateIntProperty("idBlockMarsStone", 										configuration.CATEGORY_BLOCK, 	3500).getInt(3500);
-			idBlockMarsGrass = configuration.getOrCreateIntProperty("idBlockMarsGrass", 										configuration.CATEGORY_BLOCK, 	3501).getInt(3501);
-			idBlockMarsDirt = configuration.getOrCreateIntProperty("idBlockMarsDirt", 											configuration.CATEGORY_BLOCK, 	3502).getInt(3502);
-			idBlockMarsCobblestone = configuration.getOrCreateIntProperty("idBlockMarsCobblestone", 							configuration.CATEGORY_BLOCK, 	3503).getInt(3503);
-	        idBlockCreeperEgg = configuration.getOrCreateIntProperty("idBlockMarsCreeperEgg", 									configuration.CATEGORY_BLOCK, 	3504).getInt(3504);
-	        idBlockCreeperDungeonWall = configuration.getOrCreateIntProperty("idBlockMarsCreeperDungeonWall", 					configuration.CATEGORY_BLOCK, 	3505).getInt(3505);
-	        idBlockBacterialSludgeMoving = configuration.getOrCreateIntProperty("idBlockMarsBacterialSludgeMoving", 			configuration.CATEGORY_BLOCK, 	3506).getInt(3506);
-	        idBlockBacterialSludgeStill = configuration.getOrCreateIntProperty("idBlockMarsBacterialSludgeStill",				configuration.CATEGORY_BLOCK, 	3507).getInt(3507);
-	        idBlockOre = configuration.getOrCreateIntProperty("idBlockMarsOre", 												configuration.CATEGORY_BLOCK, 	3508).getInt(3508);
+			idBlockMarsStone = configuration.getOrCreateIntProperty("idBlockMarsStone", 										configuration.CATEGORY_BLOCK, 	210).getInt(210);
+			idBlockMarsGrass = configuration.getOrCreateIntProperty("idBlockMarsGrass", 										configuration.CATEGORY_BLOCK, 	211).getInt(211);
+			idBlockMarsDirt = configuration.getOrCreateIntProperty("idBlockMarsDirt", 											configuration.CATEGORY_BLOCK, 	212).getInt(212);
+			idBlockMarsCobblestone = configuration.getOrCreateIntProperty("idBlockMarsCobblestone", 							configuration.CATEGORY_BLOCK, 	213).getInt(213);
+	        idBlockCreeperEgg = configuration.getOrCreateIntProperty("idBlockMarsCreeperEgg", 									configuration.CATEGORY_BLOCK, 	214).getInt(214);
+	        idBlockCreeperDungeonWall = configuration.getOrCreateIntProperty("idBlockMarsCreeperDungeonWall", 					configuration.CATEGORY_BLOCK, 	215).getInt(215);
+	        idBlockBacterialSludgeMoving = configuration.getOrCreateIntProperty("idBlockMarsBacterialSludgeMoving", 			configuration.CATEGORY_BLOCK, 	216).getInt(216);
+	        idBlockBacterialSludgeStill = configuration.getOrCreateIntProperty("idBlockMarsBacterialSludgeStill",				configuration.CATEGORY_BLOCK, 	217).getInt(217);
+	        idBlockOre = configuration.getOrCreateIntProperty("idBlockMarsOre", 												configuration.CATEGORY_BLOCK, 	218).getInt(218);
 
 			idItemReinforcedBucket = configuration.getOrCreateIntProperty("idItemReinforcedBucket", 							configuration.CATEGORY_ITEM, 	9865).getInt(9865);
 			idItemReinforcedBucketMilk = configuration.getOrCreateIntProperty("idItemReinforcedBucketMilk", 					configuration.CATEGORY_ITEM, 	9866).getInt(9866);

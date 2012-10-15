@@ -188,7 +188,7 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 
 					if (var16 <= 0 + this.rand.nextInt(5)) 
 					{
-						par3ArrayOfint[var17] = (int) GCMarsConfigManager.idBlockMarsStone;
+						par3ArrayOfint[var17] = (int) Block.bedrock.blockID;
 					} else 
 					{
 						int var18 = par3ArrayOfint[var17];
