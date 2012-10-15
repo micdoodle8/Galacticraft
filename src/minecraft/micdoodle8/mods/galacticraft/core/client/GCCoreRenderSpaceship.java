@@ -60,7 +60,7 @@ public class GCCoreRenderSpaceship extends Render
             GL11.glRotatef(MathHelper.sin(var28) * var28 * 3 / 10.0F * (float)par1GCEntitySpaceship.func_70493_k(), 1.0F, 0.0F, 0.0F);
         }
 
-        this.loadTexture("/micdoodle8/mods/galacticraft/mars/client/entities/spaceship1.png");
+        this.loadTexture("/micdoodle8/mods/galacticraft/core/client/entities/spaceship1.png");
         GL11.glScalef(-1.0F, -1.0F, 1.0F);
         this.modelSpaceship.render(par1GCEntitySpaceship, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
         GL11.glPopMatrix();

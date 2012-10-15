@@ -14,8 +14,6 @@ public class GCMarsBiomeGenFlat extends GCMarsBiomeGenBase
     public GCMarsBiomeGenFlat(int par1)
     {
         super(par1); 
-        this.topBlock = (byte)GCMarsConfigManager.idBlockMarsGrass;
-        this.fillerBlock = (byte)GCMarsConfigManager.idBlockMarsStone;
         this.rainfall = 0.0F;
         this.setBiomeName("marsFlat");
         this.setColor(16711680);

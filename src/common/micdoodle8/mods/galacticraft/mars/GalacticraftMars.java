@@ -40,14 +40,14 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
  *  All rights reserved.
  *
  */
-//@Mod(name="Galacticraft Mars", version="v1", useMetadata = false, modid = "GalacticraftMars")
-//@NetworkMod(channels = {"GalacticraftMars"}, clientSideRequired = true, serverSideRequired = false)
+@Mod(name="Galacticraft Mars", version="v1", useMetadata = false, modid = "GalacticraftMars")
+@NetworkMod(channels = {"GalacticraftMars"}, clientSideRequired = true, serverSideRequired = false)
 public class GalacticraftMars 
 {
 	@SidedProxy(clientSide = "micdoodle8.mods.galacticraft.mars.client.ClientProxyMars", serverSide = "micdoodle8.mods.galacticraft.mars.CommonProxyMars")
 	public static CommonProxyMars proxy;
 	
-	@Instance("Galacticraft")
+	@Instance("GalacticraftMars")
 	public static GalacticraftMars instance;
 	
 	public static List serverPlayerBaseList = new ArrayList();

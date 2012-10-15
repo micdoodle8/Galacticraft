@@ -67,7 +67,6 @@ public class GCBlockBreathableAir extends GCCoreBlock
     {
 		if (!activeDistributorNearby(par1World, par2, par3, par4, false))
 		{
-			FMLLog.info("sdasd");
 			return;
 		}
 		

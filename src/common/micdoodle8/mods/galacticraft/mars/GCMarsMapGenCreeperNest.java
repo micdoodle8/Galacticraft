@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.mars;
 
+import micdoodle8.mods.galacticraft.core.GCCoreMapGenStructure;
 import net.minecraft.src.MapGenStructure;
 import net.minecraft.src.StructureMineshaftStart;
 import net.minecraft.src.StructureStart;
@@ -10,7 +11,7 @@ import net.minecraft.src.StructureStart;
  *  All rights reserved.
  *
  */
-public class GCMarsMapGenCreeperNest extends MapGenStructure
+public class GCMarsMapGenCreeperNest extends GCCoreMapGenStructure
 {
     protected boolean canSpawnStructureAtCoords(int par1, int par2)
     {

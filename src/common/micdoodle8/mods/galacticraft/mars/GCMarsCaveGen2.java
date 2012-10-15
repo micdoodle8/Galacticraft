@@ -25,7 +25,7 @@ public class GCMarsCaveGen2
     /** This world object. */
     protected World worldObj;
 
-    public void generate(IChunkProvider par1IChunkProvider, World par2World, int par3, int par4, byte[] par5ArrayOfByte)
+    public void generate(IChunkProvider par1IChunkProvider, World par2World, int par3, int par4, int[] par5ArrayOfByte)
     {
         int var6 = this.range;
         this.worldObj = par2World;
@@ -45,7 +45,7 @@ public class GCMarsCaveGen2
         }
     }
     
-    protected void generateLargeCaveNode(long par1, int par3, int par4, byte[] par5ArrayOfByte, double par6, double par8, double par10)
+    protected void generateLargeCaveNode(long par1, int par3, int par4, int[] par5ArrayOfByte, double par6, double par8, double par10)
     {
         this.generateCaveNode(par1, par3, par4, par5ArrayOfByte, par6, par8, par10, 1.0F + this.rand.nextFloat() * 6.0F, 0.0F, 0.0F, -1, -1, 0.5D);
     }
@@ -53,7 +53,7 @@ public class GCMarsCaveGen2
     /**
      * Generates a node in the current cave system recursion tree.
      */
-    protected void generateCaveNode(long par1, int par3, int par4, byte[] par5ArrayOfByte, double par6, double par8, double par10, float par12, float par13, float par14, int par15, int par16, double par17)
+    protected void generateCaveNode(long par1, int par3, int par4, int[] par5ArrayOfByte, double par6, double par8, double par10, float par12, float par13, float par14, int par15, int par16, double par17)
     {
         double var19 = (double)(par3 * 16 + 8);
         double var21 = (double)(par4 * 16 + 8);
@@ -209,7 +209,7 @@ public class GCMarsCaveGen2
 
                                         if (var51 > -0.7D && var59 * var59 + var51 * var51 + var46 * var46 < 1.0D)
                                         {
-                                            byte var53 = par5ArrayOfByte[var48];
+                                            int var53 = par5ArrayOfByte[var48];
 
                                             if (var53 == (byte)GCMarsBlocks.marsGrass.blockID)
                                             {
@@ -253,7 +253,7 @@ public class GCMarsCaveGen2
     /**
      * Recursively called by generate() (generate) and optionally by itself.
      */
-    protected void recursiveGenerate(World par1World, int par2, int par3, int par4, int par5, byte[] par6ArrayOfByte)
+    protected void recursiveGenerate(World par1World, int par2, int par3, int par4, int par5, int[] par6ArrayOfByte)
     {
         int var7 = this.rand.nextInt(this.rand.nextInt(this.rand.nextInt(40) + 1) + 1);
 

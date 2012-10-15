@@ -3,17 +3,15 @@ package micdoodle8.mods.galacticraft.core;
 import micdoodle8.mods.galacticraft.API.GalacticraftWorldProvider;
 import net.minecraft.src.Block;
 import net.minecraft.src.DamageSource;
-import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EntityPlayerMP;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.NBTTagList;
-import net.minecraft.src.Potion;
-import net.minecraft.src.PotionEffect;
 import net.minecraft.src.ServerPlayerAPI;
 import net.minecraft.src.ServerPlayerBase;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
 
 /**
  * Copyright 2012, micdoodle8

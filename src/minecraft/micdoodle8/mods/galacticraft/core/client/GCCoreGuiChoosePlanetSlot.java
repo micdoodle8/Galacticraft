@@ -68,7 +68,7 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             GL11.glDisable(GL11.GL_ALPHA_TEST);
             String lowercase = this.languageGui.getDestinations(languageGui)[par1].toLowerCase();
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, FMLClientHandler.instance().getClient().renderEngine.getTexture("/micdoodle8/mods/galacticraft/mars/client/planets/" + lowercase + ".png"));
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, FMLClientHandler.instance().getClient().renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/planets/" + lowercase + ".png"));
             Tessellator var3 = Tessellator.instance;
             var3.startDrawingQuads();
             var3.addVertexWithUV(par2 - 10 - this.slotHeight * 0.9, 	par3 - 1 + this.slotHeight * 0.9, 	-90.0D, 0.35D, 0.65D);

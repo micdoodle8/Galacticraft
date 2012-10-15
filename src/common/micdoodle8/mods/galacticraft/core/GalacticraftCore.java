@@ -1,15 +1,20 @@
 package micdoodle8.mods.galacticraft.core;
 
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
-import micdoodle8.mods.galacticraft.mars.GCMarsConfigManager;
-import micdoodle8.mods.galacticraft.mars.GCMarsEntityCreeperBoss;
-import micdoodle8.mods.galacticraft.mars.GCMarsEntitySludgeling;
+import net.minecraft.src.EntityPlayerMP;
+import net.minecraft.src.NetworkManager;
+import net.minecraft.src.Packet250CustomPayload;
+import net.minecraft.src.Packet9Respawn;
+import net.minecraft.src.ServerPlayerAPI;
 import net.minecraft.src.World;
 import net.minecraft.src.WorldProviderSurface;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
@@ -24,8 +29,10 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
+import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
@@ -68,6 +75,17 @@ public class GalacticraftCore
 		
 		GCCoreItems.initItems();
 		GCCoreItems.addNames();
+		
+		try
+		{
+			ServerPlayerAPI.register("Galacticraft", GCCorePlayerBaseServer.class);
+		}
+		catch(Exception e)
+		{
+			FMLLog.severe("PLAYER API NOT INSTALLED.");
+			FMLLog.severe("Galacticraft will now fail to load.");
+			e.printStackTrace();
+		}
 	}
 	
 	@Init
@@ -92,6 +110,7 @@ public class GalacticraftCore
 	public void serverInit(FMLServerStartedEvent event)
 	{
         TickRegistry.registerTickHandler(new CommonTickHandler(), Side.SERVER);
+        NetworkRegistry.instance().registerChannel(new ServerPacketHandler(), "Galacticraft", Side.SERVER);
 	}
 	
 	public void registerTileEntities()
@@ -125,6 +144,57 @@ public class GalacticraftCore
     public void registerGalacticraftNonMobEntity(Class var0, String var1, int id, int trackingDistance, int updateFreq, boolean sendVel)
     {
         EntityRegistry.registerModEntity(var0, var1, id, this, trackingDistance, updateFreq, sendVel);
+    }
+    
+    public class ServerPacketHandler implements IPacketHandler
+    {
+        @Override
+        public void onPacketData(NetworkManager manager, Packet250CustomPayload packet, Player p)
+        {
+            DataInputStream data = new DataInputStream(new ByteArrayInputStream(packet.data));
+            int packetType = GCCoreUtil.readPacketID(data);
+            EntityPlayerMP player = (EntityPlayerMP)p;
+            
+            if (packetType == 0)
+            {
+                Class[] decodeAs = {String.class};
+                Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
+
+                player.openGui(instance, GCCoreConfigManager.idGuiTankRefill, player.worldObj, (int)player.posX, (int)player.posY, (int)player.posZ);
+            }
+            else if (packetType == 1)
+            {
+                Class[] decodeAs = {String.class};
+                Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
+                
+                player.playerNetServerHandler.sendPacketToPlayer(new Packet9Respawn(player.dimension, (byte)player.worldObj.difficultySetting, player.worldObj.getWorldInfo().getTerrainType(), player.worldObj.getHeight(), player.theItemInWorldManager.getGameType()));
+            }
+            else if (packetType == 2)
+            {
+                Class[] decodeAs = {Integer.class};
+                Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
+                
+                for (int j = 0; j < GalacticraftCore.instance.serverPlayerAPIs.size(); ++j)
+	            {
+	    			GCCorePlayerBaseServer playerBase = (GCCorePlayerBaseServer) GalacticraftCore.instance.serverPlayerAPIs.get(j);
+	    			
+	    			if (player.username == playerBase.getPlayer().username)
+	    			{
+	            		playerBase.timeUntilPortal = 15;
+	    				playerBase.setInPortal((Integer)packetReadout[0]);
+	    			}
+	            }
+            }
+            else if (packetType == 3)
+            {
+                if (!player.worldObj.isRemote && !player.isDead && player.ridingEntity != null && !player.ridingEntity.isDead && player.ridingEntity instanceof GCCoreEntitySpaceship)
+                {
+                	GCCoreEntitySpaceship ship = (GCCoreEntitySpaceship) player.ridingEntity;
+                	
+                	ship.ignite();
+                }
+            }
+        }
     }
 	
 	public class CommonTickHandler implements ITickHandler

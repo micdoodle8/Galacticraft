@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.core.GCCoreChunk;
 import micdoodle8.mods.galacticraft.core.GCCoreEntityCreeper;
 import micdoodle8.mods.galacticraft.core.GCCoreEntitySkeleton;
 import micdoodle8.mods.galacticraft.core.GCCoreEntitySpider;
@@ -16,14 +17,13 @@ import net.minecraft.src.ChunkProviderGenerate;
 import net.minecraft.src.EnumCreatureType;
 import net.minecraft.src.IChunkProvider;
 import net.minecraft.src.IProgressUpdate;
-import net.minecraft.src.MapGenBase;
 import net.minecraft.src.MapGenMineshaft;
-import net.minecraft.src.MapGenRavine;
 import net.minecraft.src.MapGenVillage;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.NoiseGeneratorOctaves;
 import net.minecraft.src.SpawnListEntry;
 import net.minecraft.src.World;
+import cpw.mods.fml.common.FMLLog;
 
 /**
  * Copyright 2012, micdoodle8
@@ -31,7 +31,7 @@ import net.minecraft.src.World;
  *  All rights reserved.
  *
  */
-public class GCMarsChunkProvider extends ChunkProviderGenerate implements IChunkProvider 
+public class GCMarsChunkProvider extends ChunkProviderGenerate
 {
 	public static List giantCaveLocations;
 	public static List creeperDungeonLocations;
@@ -64,8 +64,6 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate implements IChunk
 
 	private MapGenMineshaft mineshaftGenerator = new MapGenMineshaft();
 
-	private MapGenBase ravineGenerator = new MapGenRavine();
-
 	private BiomeGenBase[] biomesForGeneration = {GCMarsBiomeGenBase.marsFlat};
 
 	double[] noise1;
@@ -93,14 +91,13 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate implements IChunk
 		this.creeperDungeonLocations = new ArrayList();
 	}
 
-	@Override
-	public void generateTerrain(int par1, int par2, byte[] par3ArrayOfByte)
+	public void generateTerrain(int par1, int par2, int[] par3ArrayOfint)
 	{
-		byte var4 = 4;
-		byte var5 = 16;
-		byte var6 = 63;
+		int var4 = 4;
+		int var5 = 16;
+		int var6 = 63;
 		int var7 = var4 + 1;
-		byte var8 = 17;
+		int var8 = 17;
 		int var9 = var4 + 1;
 		this.biomesForGeneration = this.worldObj.getWorldChunkManager().getBiomesForGeneration(this.biomesForGeneration, par1 * 4 - 2, par2 * 4 - 2, var7 + 5, var9 + 5);
 		this.noiseArray = this.initializeNoiseField(this.noiseArray, par1 * var4, 0, par2 * var4, var7, var8, var9);
@@ -142,15 +139,15 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate implements IChunk
 							{
 								if ((var47 += var49) > 0.0D) 
 								{
-									par3ArrayOfByte[var43 += var44] = (byte) GCMarsConfigManager.idBlockMarsStone;
+									par3ArrayOfint[var43 += var44] = (int) GCMarsConfigManager.idBlockMarsStone;
 								}
 								else if (var12 * 8 + var31 < var6) 
 								{
-									par3ArrayOfByte[var43 += var44] = (byte) 0;
+									par3ArrayOfint[var43 += var44] = 0;
 								} 
 								else
 								{
-									par3ArrayOfByte[var43 += var44] = 0;
+									par3ArrayOfint[var43 += var44] = 0;
 								}
 							}
 
@@ -168,10 +165,9 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate implements IChunk
 		}
 	}
 
-	@Override
-	public void replaceBlocksForBiome(int par1, int par2, byte[] par3ArrayOfByte, BiomeGenBase[] par4ArrayOfBiomeGenBase)
+	public void replaceBlocksForBiome(int par1, int par2, int[] par3ArrayOfint, BiomeGenBase[] par4ArrayOfBiomeGenBase)
 	{
-		byte var5 = 20;
+		int var5 = 20;
 		double var6 = 0.03125D;
 		this.stoneNoise = this.noiseGen4.generateNoiseOctaves(this.stoneNoise, par1 * 16, par2 * 16, 0, 16, 16, 1, var6 * 2.0D, var6 * 2.0D, var6 * 2.0D);
 
@@ -183,8 +179,8 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate implements IChunk
 				float var11 = var10.getFloatTemperature();
 				int var12 = (int) (this.stoneNoise[var8 + var9 * 16] / 3.0D + 3.0D + this.rand.nextDouble() * 0.25D);
 				int var13 = -1;
-				byte var14 = (byte) GCMarsConfigManager.idBlockMarsGrass;
-				byte var15 = (byte) GCMarsConfigManager.idBlockMarsDirt;
+				int var14 = (int) GCMarsConfigManager.idBlockMarsGrass;
+				int var15 = (int) GCMarsConfigManager.idBlockMarsDirt;
 
 				for (int var16 = 127; var16 >= 0; --var16) 
 				{
@@ -192,39 +188,39 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate implements IChunk
 
 					if (var16 <= 0 + this.rand.nextInt(5)) 
 					{
-						par3ArrayOfByte[var17] = (byte) Block.bedrock.blockID;
+						par3ArrayOfint[var17] = (int) GCMarsConfigManager.idBlockMarsStone;
 					} else 
 					{
-						byte var18 = par3ArrayOfByte[var17];
+						int var18 = par3ArrayOfint[var17];
 
 						if (var18 == 0) 
 						{
 							var13 = -1;
 						} 
-						else if (var18 == (byte) GCMarsConfigManager.idBlockMarsStone)
+						else if (var18 == (int) GCMarsConfigManager.idBlockMarsStone)
 						{
 							if (var13 == -1)
 							{
 								if (var12 <= 0)
 								{
 									var14 = 0;
-									var15 = (byte) GCMarsConfigManager.idBlockMarsStone;
+									var15 = (int) GCMarsConfigManager.idBlockMarsStone;
 								} 
 								else if (var16 >= var5 - -16 && var16 <= var5 + 1)
 								{
-									var14 = (byte) GCMarsConfigManager.idBlockMarsGrass;
-									var15 = (byte) GCMarsConfigManager.idBlockMarsDirt;
+									var14 = GCMarsConfigManager.idBlockMarsGrass;
+									var15 = GCMarsConfigManager.idBlockMarsDirt;
 								}
 
 								if (var16 < var5 && var14 == 0) 
 								{
 									if (var11 < 0.15F)
 									{
-										var14 = (byte) Block.ice.blockID;
+										var14 = (int) Block.ice.blockID;
 									}
 									else 
 									{
-										var14 = (byte) 0;
+										var14 = (int) 0;
 									}
 								}
 
@@ -232,21 +228,21 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate implements IChunk
 
 								if (var16 >= var5 - 1) 
 								{
-									par3ArrayOfByte[var17] = var14;
+									par3ArrayOfint[var17] = var14;
 								} else
 								{
-									par3ArrayOfByte[var17] = var15;
+									par3ArrayOfint[var17] = var15;
 								}
 							} 
 							else if (var13 > 0)
 							{
 								--var13;
-								par3ArrayOfByte[var17] = var15;
+								par3ArrayOfint[var17] = var15;
 
 								if (var13 == 0 && var15 == Block.sand.blockID)
 								{
 									var13 = this.rand.nextInt(4);
-									var15 = (byte) Block.sandStone.blockID;
+									var15 = (int) Block.sandStone.blockID;
 								}
 							}
 						}
@@ -257,32 +253,25 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate implements IChunk
 	}
 
 	@Override
-	public Chunk loadChunk(int par1, int par2) 
-	{
-		return this.provideChunk(par1, par2);
-	}
-
-	@Override
 	public Chunk provideChunk(int par1, int par2)
 	{
 		this.rand.setSeed(par1 * 341873128712L + par2 * 132897987541L);
-		byte[] var3 = new byte[32768];
+		int[] var3 = new int[32768];
 		this.generateTerrain(par1, par2, var3);
 		this.biomesForGeneration = this.worldObj.getWorldChunkManager().loadBlockGeneratorData(this.biomesForGeneration, par1 * 16, par2 * 16, 16, 16);
 		this.replaceBlocksForBiome(par1, par2, var3, this.biomesForGeneration);
-		this.caveGenerator.generate(this, this.worldObj, par1, par2, var3);
-		this.caveGenerator2.generate(this, this.worldObj, par1, par2, var3);
-		this.ravineGenerator.generate(this, this.worldObj, par1, par2, var3);
+//		this.caveGenerator.generate(this, this.worldObj, par1, par2, var3);
+//		this.caveGenerator2.generate(this, this.worldObj, par1, par2, var3);
 
-		Chunk var4 = new Chunk(this.worldObj, var3, par1, par2);
+		Chunk var4 = new GCCoreChunk(this.worldObj, var3, par1, par2);
 		byte[] var5 = var4.getBiomeArray();
 
 		for (int var6 = 0; var6 < var5.length; ++var6) 
 		{
 			var5[var6] = (byte) this.biomesForGeneration[var6].biomeID;
 		}
-
-		this.creeperNest.generate(this, this.worldObj, par1, par2, var3);
+		
+//		this.creeperNest.generate(this, this.worldObj, par1, par2, var3);
 		var4.generateSkylightMap();
 		return var4;
 	}
@@ -327,7 +316,7 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate implements IChunk
 				float var16 = 0.0F;
 				float var17 = 0.0F;
 				float var18 = 0.0F;
-				byte var19 = 2;
+				int var19 = 2;
 				BiomeGenBase var20 = this.biomesForGeneration[var14 + 2 + (var15 + 2) * (par5 + 5)];
 
 				for (int var21 = -var19; var21 <= var19; ++var21)

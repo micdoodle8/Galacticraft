@@ -142,8 +142,10 @@ public class ClientProxyCore extends CommonProxyCore
 	@Override
 	public void displayChoosePlanetGui()
 	{
+		FMLLog.info("2");
 		if (FMLClientHandler.instance().getClient().theWorld != null && !(FMLClientHandler.instance().getClient().currentScreen instanceof GCCoreGuiChoosePlanet))
 		{
+			FMLLog.info("3");
 			FMLClientHandler.instance().getClient().displayGuiScreen(new GCCoreGuiChoosePlanet(FMLClientHandler.instance().getClient().thePlayer));
 		}
 	}

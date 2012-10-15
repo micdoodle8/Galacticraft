@@ -54,7 +54,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     
     private GuiSmallButton sendButton;
 
-    private static final String[] titlePanoramaPaths = new String[] {"/micdoodle8/mods/galacticraft/mars/client/backgrounds/bg3.png"};
+    private static final String[] titlePanoramaPaths = new String[] {"/micdoodle8/mods/galacticraft/core/client/backgrounds/bg3.png"};
     
     public GCCoreGuiChoosePlanet(EntityPlayer player)
     {
@@ -350,7 +350,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/micdoodle8/mods/galacticraft/mars/client/backgrounds/black.png"));
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/backgrounds/black.png"));
         Tessellator var3 = Tessellator.instance;
         var3.startDrawingQuads();
         var3.addVertexWithUV(0.0D, (double)var7, -90.0D, 0.0D, 1.0D);

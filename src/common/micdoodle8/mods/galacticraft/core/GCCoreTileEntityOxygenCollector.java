@@ -50,32 +50,26 @@ public class GCCoreTileEntityOxygenCollector extends TileEntity
 			{
 				if (idSet[0] == GCCoreBlocks.oxygenPipe.blockID)
 				{
-					FMLLog.info("0");
 					this.worldObj.setBlockMetadata(this.xCoord + 1, this.yCoord, this.zCoord, 1);
 				}
 				if (idSet[1] == GCCoreBlocks.oxygenPipe.blockID)
 				{
-					FMLLog.info("1");
 					this.worldObj.setBlockMetadata(this.xCoord - 1, this.yCoord, this.zCoord, 1);
 				}
 				if (idSet[2] == GCCoreBlocks.oxygenPipe.blockID)
 				{
-					FMLLog.info("2");
 					this.worldObj.setBlockMetadata(this.xCoord, this.yCoord, this.zCoord + 1, 1);
 				}
 				if (idSet[3] == GCCoreBlocks.oxygenPipe.blockID)
 				{
-//					FMLLog.info("3");
 					this.worldObj.setBlockMetadata(this.xCoord, this.yCoord, this.zCoord - 1, 1);
 				}
 				if (idSet[4] == GCCoreBlocks.oxygenPipe.blockID)
 				{
-					FMLLog.info("4");
 					this.worldObj.setBlockMetadata(this.xCoord, this.yCoord + 1, this.zCoord, 1);
 				}
 				if (idSet[5] == GCCoreBlocks.oxygenPipe.blockID)
 				{
-					FMLLog.info("5");
 					this.worldObj.setBlockMetadata(this.xCoord, this.yCoord - 1, this.zCoord, 1);
 				}
 			}

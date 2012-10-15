@@ -64,8 +64,6 @@ public class GCCoreBlockOxygenPipe extends BlockContainer
 	@Override
     public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {
-		FMLLog.info("" + par1World.getBlockMetadata(par2, par3, par4));
-		
 		int pipesActiveAndNearby = 0;
 		
 		int[] idSet = new int[6];
@@ -107,81 +105,82 @@ public class GCCoreBlockOxygenPipe extends BlockContainer
 	@Override
 	public int getBlockTexture(IBlockAccess world, int x, int y, int z, int side)
     {
-		if (world.getBlockId(x + 1, y, z) == this.blockID && world.getBlockId(x, y, z + 1) == this.blockID
-				|| world.getBlockId(x + 1, y, z) == this.blockID && world.getBlockId(x, y, z - 1) == this.blockID
-				|| world.getBlockId(x - 1, y, z) == this.blockID && world.getBlockId(x, y, z + 1) == this.blockID
-				|| world.getBlockId(x - 1, y, z) == this.blockID && world.getBlockId(x, y, z - 1) == this.blockID
-				|| world.getBlockId(x - 1, y, z) == this.blockID && world.getBlockId(x, y - 1, z) == this.blockID
-				|| world.getBlockId(x - 1, y, z) == this.blockID && world.getBlockId(x, y + 1, z) == this.blockID
-				|| world.getBlockId(x + 1, y, z) == this.blockID && world.getBlockId(x, y - 1, z) == this.blockID
-				|| world.getBlockId(x + 1, y, z) == this.blockID && world.getBlockId(x, y + 1, z) == this.blockID
-				|| world.getBlockId(x, y, z - 1) == this.blockID && world.getBlockId(x, y - 1, z) == this.blockID
-				|| world.getBlockId(x, y, z - 1) == this.blockID && world.getBlockId(x, y + 1, z) == this.blockID
-				|| world.getBlockId(x, y, z + 1) == this.blockID && world.getBlockId(x, y - 1, z) == this.blockID
-				|| world.getBlockId(x, y, z + 1) == this.blockID && world.getBlockId(x, y + 1, z) == this.blockID)
-		{
-			return this.blockIndexInTexture - 1;
-		}
-		else
-		{
-			if (side != 0 && side != 1 && (world.getBlockId(x, y + 1, z) == this.blockID) && (world.getBlockId(x, y - 1, z) == this.blockID))
-			{
-				return this.blockIndexInTexture + 1;
-			}
-			
-			if (side == 0 && (world.getBlockId(x, y - 1, z) == 0) && (world.getBlockId(x, y + 1, z) == this.blockID))
-			{
-				return this.blockIndexInTexture - 1;
-			}
-			
-			if (side == 1 && (world.getBlockId(x, y + 1, z) == 0) && (world.getBlockId(x, y - 1, z) == this.blockID))
-			{
-				return this.blockIndexInTexture - 1;
-			}
-			
-			if (side == 2 && world.getBlockId(x, y, z - 1) == this.blockID)
-			{
-				return 25;
-			}
-			else if (side == 2 && world.getBlockId(x, y, z - 1) == 0 && world.getBlockId(x + 1, y, z) == 0 && world.getBlockId(x - 1, y, z) == 0)
-			{
-				return this.blockIndexInTexture - 1;
-			}
-			
-			if (side == 3 && world.getBlockId(x, y, z + 1) == this.blockID)
-			{
-				return 25;
-			}
-			else if (side == 3 && world.getBlockId(x, y, z + 1) == 0 && world.getBlockId(x + 1, y, z) == 0 && world.getBlockId(x - 1, y, z) == 0)
-			{
-				return this.blockIndexInTexture - 1;
-			}
-			
-			if (side == 4 && world.getBlockId(x - 1, y, z) == this.blockID)
-			{
-				return 25;
-			}
-			else if (side == 4 && world.getBlockId(x - 1, y, z) == 0 && world.getBlockId(x, y, z + 1) == 0 && world.getBlockId(x, y, z - 1) == 0)
-			{
-				return this.blockIndexInTexture - 1;
-			}
-			
-			if (side == 5 && world.getBlockId(x + 1, y, z) == this.blockID)
-			{
-				return 25;
-			}
-			else if (side == 5 && world.getBlockId(x + 1, y, z) == 0 && world.getBlockId(x, y, z + 1) == 0 && world.getBlockId(x, y, z - 1) == 0)
-			{
-				return this.blockIndexInTexture - 1;
-			}
-			
-			if ((side == 0 || side == 1) && (world.getBlockId(x, y, z + 1) == this.blockID || world.getBlockId(x, y, z - 1) == this.blockID))
-			{
-				return this.blockIndexInTexture + 1;
-			}
-			
-			return this.blockIndexInTexture;
-		}
+		return this.blockIndexInTexture;
+//		if (world.getBlockId(x + 1, y, z) == this.blockID && world.getBlockId(x, y, z + 1) == this.blockID
+//				|| world.getBlockId(x + 1, y, z) == this.blockID && world.getBlockId(x, y, z - 1) == this.blockID
+//				|| world.getBlockId(x - 1, y, z) == this.blockID && world.getBlockId(x, y, z + 1) == this.blockID
+//				|| world.getBlockId(x - 1, y, z) == this.blockID && world.getBlockId(x, y, z - 1) == this.blockID
+//				|| world.getBlockId(x - 1, y, z) == this.blockID && world.getBlockId(x, y - 1, z) == this.blockID
+//				|| world.getBlockId(x - 1, y, z) == this.blockID && world.getBlockId(x, y + 1, z) == this.blockID
+//				|| world.getBlockId(x + 1, y, z) == this.blockID && world.getBlockId(x, y - 1, z) == this.blockID
+//				|| world.getBlockId(x + 1, y, z) == this.blockID && world.getBlockId(x, y + 1, z) == this.blockID
+//				|| world.getBlockId(x, y, z - 1) == this.blockID && world.getBlockId(x, y - 1, z) == this.blockID
+//				|| world.getBlockId(x, y, z - 1) == this.blockID && world.getBlockId(x, y + 1, z) == this.blockID
+//				|| world.getBlockId(x, y, z + 1) == this.blockID && world.getBlockId(x, y - 1, z) == this.blockID
+//				|| world.getBlockId(x, y, z + 1) == this.blockID && world.getBlockId(x, y + 1, z) == this.blockID)
+//		{
+//			return this.blockIndexInTexture - 1;
+//		}
+//		else
+//		{
+//			if (side != 0 && side != 1 && (world.getBlockId(x, y + 1, z) == this.blockID) && (world.getBlockId(x, y - 1, z) == this.blockID))
+//			{
+//				return this.blockIndexInTexture + 1;
+//			}
+//			
+//			if (side == 0 && (world.getBlockId(x, y - 1, z) == 0) && (world.getBlockId(x, y + 1, z) == this.blockID))
+//			{
+//				return this.blockIndexInTexture - 1;
+//			}
+//			
+//			if (side == 1 && (world.getBlockId(x, y + 1, z) == 0) && (world.getBlockId(x, y - 1, z) == this.blockID))
+//			{
+//				return this.blockIndexInTexture - 1;
+//			}
+//			
+//			if (side == 2 && world.getBlockId(x, y, z - 1) == this.blockID)
+//			{
+//				return 25;
+//			}
+//			else if (side == 2 && world.getBlockId(x, y, z - 1) == 0 && world.getBlockId(x + 1, y, z) == 0 && world.getBlockId(x - 1, y, z) == 0)
+//			{
+//				return this.blockIndexInTexture - 1;
+//			}
+//			
+//			if (side == 3 && world.getBlockId(x, y, z + 1) == this.blockID)
+//			{
+//				return 25;
+//			}
+//			else if (side == 3 && world.getBlockId(x, y, z + 1) == 0 && world.getBlockId(x + 1, y, z) == 0 && world.getBlockId(x - 1, y, z) == 0)
+//			{
+//				return this.blockIndexInTexture - 1;
+//			}
+//			
+//			if (side == 4 && world.getBlockId(x - 1, y, z) == this.blockID)
+//			{
+//				return 25;
+//			}
+//			else if (side == 4 && world.getBlockId(x - 1, y, z) == 0 && world.getBlockId(x, y, z + 1) == 0 && world.getBlockId(x, y, z - 1) == 0)
+//			{
+//				return this.blockIndexInTexture - 1;
+//			}
+//			
+//			if (side == 5 && world.getBlockId(x + 1, y, z) == this.blockID)
+//			{
+//				return 25;
+//			}
+//			else if (side == 5 && world.getBlockId(x + 1, y, z) == 0 && world.getBlockId(x, y, z + 1) == 0 && world.getBlockId(x, y, z - 1) == 0)
+//			{
+//				return this.blockIndexInTexture - 1;
+//			}
+//			
+//			if ((side == 0 || side == 1) && (world.getBlockId(x, y, z + 1) == this.blockID || world.getBlockId(x, y, z - 1) == this.blockID))
+//			{
+//				return this.blockIndexInTexture + 1;
+//			}
+//			
+//			return this.blockIndexInTexture;
+//		}
     }
 	
 	@Override
