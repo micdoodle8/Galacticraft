@@ -26,9 +26,15 @@ public class GCMarsBlockGrass extends Block
 	}
 
 	@Override
+    public int getBlockTextureFromSideAndMetadata(int side, int par2)
+    {
+		return side == 1 ? 2 : (side == 0 ? 3 : 1);
+    }
+    
+	@Override
 	public int getBlockTexture(IBlockAccess par1IBlockAccess, int x, int y, int z, int side) 
 	{
-		return side == 1 ? 4 : (side == 0 ? 5 : 3);
+		return side == 1 ? 2 : (side == 0 ? 3 : 1);
 	}
 
 	@Override
