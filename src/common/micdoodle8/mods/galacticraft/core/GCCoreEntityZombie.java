@@ -29,7 +29,7 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
     public GCCoreEntityZombie(World par1World)
     {
         super(par1World);
-        this.texture = "/micdoodle8/mods/galacticraft/mars/client/entities/zombie.png";
+        this.texture = "/micdoodle8/mods/galacticraft/core/client/entities/zombie.png";
         this.moveSpeed = 0.28F;
         this.attackStrength = 5;
         this.getNavigator().setBreakDoors(true);

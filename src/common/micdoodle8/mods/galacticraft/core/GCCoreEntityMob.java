@@ -51,11 +51,6 @@ public abstract class GCCoreEntityMob extends EntityMob
             this.motionY *= 0.5D;
             this.motionZ *= 0.5D;
             this.motionY -= 0.02D;
-
-            if (this.isCollidedHorizontally && this.isOffsetPositionInLiquid(this.motionX, this.motionY + 0.6000000238418579D - this.posY + var9, this.motionZ))
-            {
-                this.motionY = 0.30000001192092896D;
-            }
         }
     }
 

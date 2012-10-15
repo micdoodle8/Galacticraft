@@ -37,7 +37,7 @@ public class GCCoreEntitySkeleton extends GCCoreEntityMob
     public GCCoreEntitySkeleton(World par1World)
     {
         super(par1World);
-        this.texture = "/micdoodle8/mods/galacticraft/mars/client/entities/skeleton.png";
+        this.texture = "/micdoodle8/mods/galacticraft/core/client/entities/skeleton.png";
         this.moveSpeed = 0.25F;
         this.tasks.addTask(1, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityAIRestrictSun(this));

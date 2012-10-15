@@ -22,7 +22,7 @@ public class GCCoreEntitySpider extends GCCoreEntityMob
     public GCCoreEntitySpider(World par1World)
     {
         super(par1World);
-        this.texture = "/micdoodle8/mods/galacticraft/mars/client/entities/spider.png";
+        this.texture = "/micdoodle8/mods/galacticraft/core/client/entities/spider.png";
         this.setSize(1.4F, 0.9F);
         this.moveSpeed = 1F;
     }

@@ -404,7 +404,7 @@ public class GCCoreEntityArrow extends Entity
             this.rotationPitch = this.prevRotationPitch + (this.rotationPitch - this.prevRotationPitch) * 0.2F;
             this.rotationYaw = this.prevRotationYaw + (this.rotationYaw - this.prevRotationYaw) * 0.2F;
             float var23 = 0.99F;
-            var11 = 0.0002F;
+            var11 = 0.002F;
 
             if (this.isInWater())
             {

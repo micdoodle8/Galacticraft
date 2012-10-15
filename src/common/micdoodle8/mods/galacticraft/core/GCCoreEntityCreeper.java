@@ -44,7 +44,7 @@ public class GCCoreEntityCreeper extends GCCoreEntityMob
     public GCCoreEntityCreeper(World par1World)
     {
         super(par1World);
-        this.texture = "/micdoodle8/mods/galacticraft/mars/client/entities/creeper.png";
+        this.texture = "/micdoodle8/mods/galacticraft/core/client/entities/creeper.png";
         this.tasks.addTask(1, new EntityAISwimming(this));
         this.tasks.addTask(2, new GCCoreEntityAICreeperSwell(this));
         this.tasks.addTask(3, new EntityAIAvoidEntity(this, EntityOcelot.class, 6.0F, 0.25F, 0.3F));
