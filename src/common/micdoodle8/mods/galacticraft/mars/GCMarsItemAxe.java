@@ -22,7 +22,7 @@ public class GCMarsItemAxe extends ItemAxe
 	@Override
 	public String getTextureFile()
 	{
-		return "/micdoodle8/mods/galacticraft/mars/client/items/core.png";
+		return "/micdoodle8/mods/galacticraft/mars/client/items/mars.png";
 	}
 
 	@Override

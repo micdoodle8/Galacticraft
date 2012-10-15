@@ -53,14 +53,14 @@ public class GalacticraftMars
 	public static List serverPlayerBaseList = new ArrayList();
 	public static List serverPlayerAPIs = new ArrayList();
 	
-//	public static GCCoreLocalization lang;
+	public static GCCoreLocalization lang;
 	
 	@PreInit
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		new GCMarsConfigManager(new File(event.getModConfigurationDirectory(), "Galacticraft/mars.conf"));
 		
-//		lang = new GCCoreLocalization("micdoodle8/mods/galacticraft/mars/client");
+		lang = new GCCoreLocalization("micdoodle8/mods/galacticraft/mars/client");
 		
 		GCMarsBlocks.initBlocks();
 		GCMarsBlocks.registerBlocks();
