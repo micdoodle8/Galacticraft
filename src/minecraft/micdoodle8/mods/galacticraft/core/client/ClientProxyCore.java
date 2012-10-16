@@ -27,6 +27,7 @@ import net.minecraft.src.EntityHugeExplodeFX;
 import net.minecraft.src.EntityLargeExplodeFX;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EntityPlayerSP;
+import net.minecraft.src.EntitySpellParticleFX;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.KeyBinding;
 import net.minecraft.src.Material;
@@ -182,49 +183,56 @@ public class ClientProxyCore extends CommonProxyCore
 
 	@Override
     public void spawnParticle(String var1, double var2, double var4, double var6, double var8, double var10, double var12, boolean b)
-    {
-        Minecraft var14 = FMLClientHandler.instance().getClient();
+	{
+		this.spawnParticle(var1, var2, var4, var6, var8, var10, var12, 0.0D, 0.0D, 0.0D, b);
+	}
 
-        if (var14 != null && var14.renderViewEntity != null && var14.effectRenderer != null)
+	@Override
+    public void spawnParticle(String var1, double var2, double var4, double var6, double var8, double var10, double var12, double var13, double var14, double var15, boolean b)
+    {
+        Minecraft mc = FMLClientHandler.instance().getClient();
+
+        if (mc != null && mc.renderViewEntity != null && mc.effectRenderer != null)
         {
-            double var15 = var14.renderViewEntity.posX - var2;
-            double var17 = var14.renderViewEntity.posY - var4;
-            double var19 = var14.renderViewEntity.posZ - var6;
+            double var16 = mc.renderViewEntity.posX - var2;
+            double var17 = mc.renderViewEntity.posY - var4;
+            double var19 = mc.renderViewEntity.posZ - var6;
             Object var21 = null;
             double var22 = 64.0D;
             
             if (var1.equals("whitesmoke"))
             {
-        		EntityFX fx = new GCCoreEntityLaunchSmokeFX(var14.theWorld, var2, var4, var6, var8, var10, var12, 1.0F, b);
+        		EntityFX fx = new GCCoreEntityLaunchSmokeFX(mc.theWorld, var2, var4, var6, var8, var10, var12, 1.0F, b);
         		if (fx != null)
         		{
-                	var14.effectRenderer.addEffect(fx);
+                	mc.effectRenderer.addEffect(fx);
         		}
             }
             else if (var1.equals("whitesmokelarge"))
             {
-        		EntityFX fx = new GCCoreEntityLaunchSmokeFX(var14.theWorld, var2, var4, var6, var8, var10, var12, 2.5F, b);
+        		EntityFX fx = new GCCoreEntityLaunchSmokeFX(mc.theWorld, var2, var4, var6, var8, var10, var12, 2.5F, b);
         		if (fx != null)
         		{
-        			var14.effectRenderer.addEffect(fx);
+        			mc.effectRenderer.addEffect(fx);
         		}
         	}
 
-            if (var15 * var15 + var17 * var17 + var19 * var19 < var22 * var22)
+            if (var16 * var16 + var17 * var17 + var19 * var19 < var22 * var22)
             {
-//            	if (var1.equals("sludgeDrip"))
-//            	{
-//            		var21 = new GCMarsEntityDropParticleFX(var14.theWorld, var2, var4, var6, GCMarsBlocks.bacterialSludge);
-//            	}
+            	if (var1.equals("oxygen"))
+            	{
+                    var21 = new GCCoreEntityOxygenFX(mc.theWorld, var2, var4, var6, var8, var10, var12);
+                    ((EntityFX)var21).setRBGColorF((float)var13, (float)var14, (float)var15);
+            	}
             }
             
-//            if (var21 != null)
-//            {
-//                ((EntityFX)var21).prevPosX = ((EntityFX)var21).posX;
-//                ((EntityFX)var21).prevPosY = ((EntityFX)var21).posY;
-//                ((EntityFX)var21).prevPosZ = ((EntityFX)var21).posZ;
-//                var14.effectRenderer.addEffect((EntityFX)var21);
-//            }
+            if (var21 != null)
+            {
+                ((EntityFX)var21).prevPosX = ((EntityFX)var21).posX;
+                ((EntityFX)var21).prevPosY = ((EntityFX)var21).posY;
+                ((EntityFX)var21).prevPosZ = ((EntityFX)var21).posZ;
+                mc.effectRenderer.addEffect((EntityFX)var21);
+            }
         }
     }
 	

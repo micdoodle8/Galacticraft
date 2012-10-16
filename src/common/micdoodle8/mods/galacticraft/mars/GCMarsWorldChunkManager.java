@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.mars;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -25,6 +26,7 @@ public class GCMarsWorldChunkManager extends WorldChunkManager
     private GenLayer biomeIndexLayer;
     private BiomeCache biomeCache;
     private List biomesToSpawnIn;
+    private float rainfall;
 
     protected GCMarsWorldChunkManager()
     {
@@ -41,9 +43,10 @@ public class GCMarsWorldChunkManager extends WorldChunkManager
         this.biomeIndexLayer = var4[1];
     }
 
-    public GCMarsWorldChunkManager(World par1World)
+    public GCMarsWorldChunkManager(World par1World, float par2)
     {
         this(par1World.getSeed(), par1World.getWorldInfo().getTerrainType());
+        this.rainfall = par2;
     }
 
     @Override
@@ -61,27 +64,12 @@ public class GCMarsWorldChunkManager extends WorldChunkManager
     @Override
     public float[] getRainfall(float[] par1ArrayOfFloat, int par2, int par3, int par4, int par5)
     {
-        IntCache.resetIntCache();
-
         if (par1ArrayOfFloat == null || par1ArrayOfFloat.length < par4 * par5)
         {
             par1ArrayOfFloat = new float[par4 * par5];
         }
 
-        int[] var6 = this.biomeIndexLayer.getInts(par2, par3, par4, par5);
-
-        for (int var7 = 0; var7 < par4 * par5; ++var7)
-        {
-            float var8 = (float)BiomeGenBase.biomeList[var6[var7]].getIntRainfall() / 65536.0F;
-
-            if (var8 > 1.0F)
-            {
-                var8 = 1.0F;
-            }
-
-            par1ArrayOfFloat[var7] = var8;
-        }
-
+        Arrays.fill(par1ArrayOfFloat, 0, par4 * par5, this.rainfall);
         return par1ArrayOfFloat;
     }
 

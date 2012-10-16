@@ -260,8 +260,8 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 		this.generateTerrain(par1, par2, var3);
 		this.biomesForGeneration = this.worldObj.getWorldChunkManager().loadBlockGeneratorData(this.biomesForGeneration, par1 * 16, par2 * 16, 16, 16);
 		this.replaceBlocksForBiome(par1, par2, var3, this.biomesForGeneration);
-//		this.caveGenerator.generate(this, this.worldObj, par1, par2, var3);
-//		this.caveGenerator2.generate(this, this.worldObj, par1, par2, var3);
+		this.caveGenerator.generate(this, this.worldObj, par1, par2, var3);
+		this.caveGenerator2.generate(this, this.worldObj, par1, par2, var3);
 
 		Chunk var4 = new GCCoreChunk(this.worldObj, var3, par1, par2);
 		byte[] var5 = var4.getBiomeArray();
@@ -271,7 +271,7 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 			var5[var6] = (byte) this.biomesForGeneration[var6].biomeID;
 		}
 		
-//		this.creeperNest.generate(this, this.worldObj, par1, par2, var3);
+		this.creeperNest.generate(this, this.worldObj, par1, par2, var3);
 		var4.generateSkylightMap();
 		return var4;
 	}

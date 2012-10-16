@@ -122,8 +122,6 @@ public class GCMarsSkyProvider extends SkyProvider
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
         GL11.glPushMatrix();
-        var8 = 1.0F - world.getRainStrength(partialTicks);
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, var8);
         GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
         GL11.glRotatef(world.getCelestialAngle(partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
         var12 = 8.0F;
@@ -184,7 +182,7 @@ public class GCMarsSkyProvider extends SkyProvider
         }
         // DEIMOS:
         GL11.glDisable(GL11.GL_TEXTURE_2D);
-        float var20 = world.getStarBrightness(partialTicks) * var8 + 0.2F;
+        float var20 = world.getStarBrightness(partialTicks) + 0.2F;
 
         if (var20 > 0.0F)
         {

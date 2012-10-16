@@ -44,7 +44,7 @@ public class GCMarsWorldProvider extends GalacticraftWorldProvider
 	@Override
     public void registerWorldChunkManager()
     {
-        this.worldChunkMgr = new GCMarsWorldChunkManager(this.worldObj);
+        this.worldChunkMgr = new GCMarsWorldChunkManager(this.worldObj, 0F);
     }
 
 	@SideOnly(Side.CLIENT)

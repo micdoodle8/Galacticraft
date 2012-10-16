@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
+import micdoodle8.mods.galacticraft.core.client.GCCoreEvents;
 import net.minecraft.src.EntityPlayerMP;
 import net.minecraft.src.NetworkManager;
 import net.minecraft.src.Packet250CustomPayload;
@@ -14,6 +15,7 @@ import net.minecraft.src.Packet9Respawn;
 import net.minecraft.src.ServerPlayerAPI;
 import net.minecraft.src.World;
 import net.minecraft.src.WorldProviderSurface;
+import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.Mod;
@@ -96,6 +98,7 @@ public class GalacticraftCore
 		this.registerTileEntities();
 		this.registerCreatures();
 		this.registerOtherEntities();
+		MinecraftForge.EVENT_BUS.register(new GCCoreEvents());
 		proxy.init(event);
 	}
 	
@@ -117,6 +120,7 @@ public class GalacticraftCore
 	{
         GameRegistry.registerTileEntity(GCCoreTileEntityTreasureChest.class, "Treasure Chest");
         GameRegistry.registerTileEntity(GCCoreTileEntityOxygenDistributor.class, "Air Distributor");
+        GameRegistry.registerTileEntity(GCCoreTileEntityOxygenCollector.class, "Air Collector");
         LanguageRegistry.instance().addStringLocalization("container.airdistributor", "en_US", "Oxygen Distributor");
 	}
 	

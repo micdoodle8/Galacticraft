@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.API.GalacticraftWorldProvider;
 import net.minecraft.src.Block;
 import net.minecraft.src.DamageSource;
 import net.minecraft.src.EntityPlayerMP;
+import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.NBTTagCompound;
@@ -108,19 +109,46 @@ public class GCCorePlayerBaseServer extends ServerPlayerBase
 	@Override
     public void onUpdate()
 	{
-		if (player.worldObj.provider instanceof GalacticraftWorldProvider && player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem().shiftedIndex == Block.torchWood.blockID)
+		if (player.worldObj.provider instanceof GalacticraftWorldProvider && player.inventory.getCurrentItem() != null)
         {
-        	int par1 = player.inventory.getCurrentItem().stackSize;
-        	ItemStack stack = new ItemStack(GCCoreBlocks.unlitTorch, par1, 0);
+        	int var1 = player.inventory.getCurrentItem().stackSize;
+        	int var2 = player.inventory.getCurrentItem().getItemDamage();
         	
-            player.inventory.mainInventory[player.inventory.currentItem] = stack;
+			if (player.inventory.getCurrentItem().getItem().shiftedIndex == Block.torchWood.blockID)
+			{
+	        	ItemStack stack = new ItemStack(GCCoreBlocks.unlitTorch, var1, 0);
+	            player.inventory.mainInventory[player.inventory.currentItem] = stack;
+			}
+			else if (player.inventory.getCurrentItem().getItem().shiftedIndex == Item.bow.shiftedIndex)
+			{
+	        	ItemStack stack = new ItemStack(GCCoreItems.gravityBow, var1, var2);
+	            player.inventory.mainInventory[player.inventory.currentItem] = stack;
+			}
+			else if (player.inventory.getCurrentItem().getItem().shiftedIndex == Block.sapling.blockID)
+			{
+				// No jungle trees...
+				if (var2 != 3)
+				{
+		        	ItemStack stack = new ItemStack(GCCoreBlocks.sapling, var1, var2);
+		            player.inventory.mainInventory[player.inventory.currentItem] = stack;
+				}
+			}
         }
-        else if (!(player.worldObj.provider instanceof GalacticraftWorldProvider) && player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem().shiftedIndex == GCCoreBlocks.unlitTorch.blockID)
+        else if (!(player.worldObj.provider instanceof GalacticraftWorldProvider) && player.inventory.getCurrentItem() != null)
         {
-        	int par1 = player.inventory.getCurrentItem().stackSize;
-        	ItemStack stack = new ItemStack(Block.torchWood, par1, 0);
+        	int var1 = player.inventory.getCurrentItem().stackSize;
+        	int var2 = player.inventory.getCurrentItem().getItemDamage();
         	
-            player.inventory.mainInventory[player.inventory.currentItem] = stack;
+        	if (player.inventory.getCurrentItem().getItem().shiftedIndex == GCCoreBlocks.unlitTorch.blockID)
+        	{
+            	ItemStack stack = new ItemStack(Block.torchWood, var1, 0);
+                player.inventory.mainInventory[player.inventory.currentItem] = stack;
+        	}
+        	else if (player.inventory.getCurrentItem().getItem().shiftedIndex == GCCoreBlocks.sapling.blockID)
+        	{
+            	ItemStack stack = new ItemStack(Block.sapling, var1, var2);
+                player.inventory.mainInventory[player.inventory.currentItem] = stack;
+        	}
         }
         
 		if (GalacticraftCore.instance.tick % 10 == 0)

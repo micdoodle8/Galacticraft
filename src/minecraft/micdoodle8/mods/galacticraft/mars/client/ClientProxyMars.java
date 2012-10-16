@@ -208,6 +208,7 @@ public class ClientProxyMars extends CommonProxyMars
         		if (player != null && world != null && player.inventory.armorItemInSlot(2) != null && player.inventory.armorItemInSlot(2).getItem().shiftedIndex == GCMarsItems.jetpack.shiftedIndex && FMLClientHandler.instance().getClient().gameSettings.keyBindJump.pressed && player.posY < 125)
         		{
         			((GCMarsItemJetpack)player.inventory.armorItemInSlot(2).getItem()).setActive();
+        			player.motionY -= 0.062D;
         			player.motionY += (0.05 + ((player.rotationPitch * 2) / 180) * 0.05);
         			player.fallDistance = 0;
             		world.spawnParticle("largesmoke", player.posX, player.posY - 1D, player.posZ, 0, -0.1, 0);

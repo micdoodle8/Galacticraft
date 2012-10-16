@@ -1,17 +1,9 @@
 package micdoodle8.mods.galacticraft.core;
 
 import micdoodle8.mods.galacticraft.API.GCBlockBreathableAir;
-import micdoodle8.mods.galacticraft.core.GCCoreBlockLandingPad;
-import micdoodle8.mods.galacticraft.core.GCCoreBlockOxygenCollector;
-import micdoodle8.mods.galacticraft.core.GCCoreBlockOxygenDistributor;
-import micdoodle8.mods.galacticraft.core.GCCoreBlockOxygenPipe;
-import micdoodle8.mods.galacticraft.core.GCCoreBlockUnlitTorch;
 import net.minecraft.src.Block;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.Item;
-import net.minecraft.src.MapColor;
-import net.minecraft.src.Material;
-import net.minecraft.src.MaterialLiquid;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
@@ -34,11 +26,12 @@ public class GCCoreBlocks
 	public static GCCoreBlockOxygenPipe oxygenPipe;
 	public static Block blockOres;
 	public static Block blockAirCollector;
+	public static Block sapling;
 	
 	public static void initBlocks() 
 	{
 		blockOres = 											new GCCoreBlockOre					(GCCoreConfigManager.idBlockOre,  						0)						.setHardness(3.0F) 																				 																											.setBlockName("blockores");
-		breatheableAir = (GCBlockBreathableAir)					new GCBlockBreathableAir			(GCCoreConfigManager.idBlockBreatheableAir, 			16)						.setHardness(0.0F) 		.setResistance(1000F)													.setCreativeTab((CreativeTabs)null)																.setBlockName("breatheableAir");
+		breatheableAir = (GCBlockBreathableAir)					new GCBlockBreathableAir			(GCCoreConfigManager.idBlockBreatheableAir, 			16)						.setHardness(0.0F) 		.setResistance(1000F)													.setCreativeTab((CreativeTabs)null)																			.setBlockName("breatheableAir");
 		treasureChest = 										new GCCoreBlockTreasureChest		(GCCoreConfigManager.idBlockTreasureChest				)						.setHardness(1.0F)      .setResistance(10.0F)   												.setCreativeTab(CreativeTabs.tabDecorations)       	.setStepSound(Block.soundStoneFootstep)                 .setBlockName("treasureChest");
 		landingPad = 											new GCCoreBlockLandingPad			(GCCoreConfigManager.idBlockLandingPad,					6)						.setHardness(1.0F)      .setResistance(10.0F)  	 												.setCreativeTab(CreativeTabs.tabDecorations)       	.setStepSound(Block.soundStoneFootstep)                 .setBlockName("landingPad");
 		unlitTorch = (GCCoreBlockUnlitTorch) 					new GCCoreBlockUnlitTorch 			(GCCoreConfigManager.idBlockUnlitTorch,             	11, false)				.setHardness(0.0F)								.setLightValue(0.2F)							.setCreativeTab((CreativeTabs)null)					.setStepSound(Block.soundWoodFootstep)					.setBlockName("unlitTorch");
@@ -48,6 +41,8 @@ public class GCCoreBlocks
 		oxygenPipe = (GCCoreBlockOxygenPipe)					new GCCoreBlockOxygenPipe			(GCCoreConfigManager.idBlockAirPipe, 					17)						.setHardness(0.3F)																				.setCreativeTab(CreativeTabs.tabDecorations)  		.setStepSound(Block.soundGlassFootstep)                 .setBlockName("oxygenPipe");
 		Item.itemsList[blockOres.blockID] = 					new GCCoreItemBlockOre				(blockOres.blockID - 256)																																																																	.setItemName("blockores");	
 		blockAirCollector = 									new GCCoreBlockOxygenCollector		(GCCoreConfigManager.idBlockAirCollector, 				8)						.setHardness(3.5F)  	  																		.setCreativeTab(CreativeTabs.tabDecorations) 		.setStepSound(Block.soundStoneFootstep)					.setBlockName("oxygenCollector");
+		sapling =												new GCCoreBlockSapling				(GCCoreConfigManager.idBlockSapling2,                  	15)						.setHardness(0.0F)																																	.setStepSound(Block.soundGrassFootstep)					.setBlockName("sapling2");
+		Item.itemsList[sapling.blockID] = 						new GCCoreItemSapling				(sapling.blockID - 256)																																																																		.setItemName("sapling2");	
 	}
 
 	public static void setHarvestLevels() 
