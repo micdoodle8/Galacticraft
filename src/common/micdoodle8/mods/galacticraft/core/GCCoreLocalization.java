@@ -68,7 +68,7 @@ public class GCCoreLocalization {
             }
             defaultLangStream.close();
         } catch (Exception e) {
-        	e.printStackTrace();
+        	FMLLog.warning("COULD NOT LOAD GALACTICRAFT LANGUAGE FILE(S)");
             if (force){
                 load(DEFAULT_LANGUAGE, false);
             }
