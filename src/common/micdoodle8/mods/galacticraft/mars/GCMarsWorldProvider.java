@@ -46,6 +46,12 @@ public class GCMarsWorldProvider extends GalacticraftWorldProvider
     {
         this.worldChunkMgr = new GCMarsWorldChunkManager(this.worldObj, 0F);
     }
+    
+    @SideOnly(Side.CLIENT)
+    public boolean doesXZShowFog(int par1, int par2)
+    {
+        return true;
+    }
 
 	@SideOnly(Side.CLIENT)
 	@Override

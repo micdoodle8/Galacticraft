@@ -14,10 +14,8 @@ public class GCMarsBiomeGenFlat extends GCMarsBiomeGenBase
     public GCMarsBiomeGenFlat(int par1)
     {
         super(par1); 
-        this.rainfall = 0.0F;
         this.setBiomeName("marsFlat");
         this.setColor(16711680);
-        this.setTemperatureRainfall2(2.0F, 0.0F);
         this.minHeight = 2.5F;
         this.maxHeight = 0.4F;
     }

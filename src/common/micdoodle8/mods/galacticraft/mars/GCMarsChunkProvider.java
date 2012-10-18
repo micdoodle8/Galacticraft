@@ -22,7 +22,9 @@ import net.minecraft.src.MapGenVillage;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.NoiseGeneratorOctaves;
 import net.minecraft.src.SpawnListEntry;
+import net.minecraft.src.StructureBoundingBox;
 import net.minecraft.src.World;
+import net.minecraft.src.WorldGenLakes;
 import cpw.mods.fml.common.FMLLog;
 
 /**
@@ -455,6 +457,14 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 		this.creeperNest.generateStructuresInChunk(this.worldObj, new Random(), par2, par3);
 		var4 += 8;
 		var5 += 8;
+
+        if (!var11 && this.rand.nextInt(150) == 0)
+        {
+            var12 = var4 + this.rand.nextInt(16) + 8;
+            var13 = 10;
+            var14 = var5 + this.rand.nextInt(16) + 8;
+            (new GCMarsWorldGenCreeperNest()).generate(this.worldObj, this.rand, var12, var13, var14);
+        }
 
 		BlockSand.fallInstantly = false;
 	}

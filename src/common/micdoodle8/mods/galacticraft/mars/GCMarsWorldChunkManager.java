@@ -69,7 +69,7 @@ public class GCMarsWorldChunkManager extends WorldChunkManager
             par1ArrayOfFloat = new float[par4 * par5];
         }
 
-        Arrays.fill(par1ArrayOfFloat, 0, par4 * par5, this.rainfall);
+        Arrays.fill(par1ArrayOfFloat, 0, par4 * par5, 0);
         return par1ArrayOfFloat;
     }
 

@@ -11,7 +11,7 @@ import net.minecraft.src.World;
 
 public class GCMarsWorldGenCreeperNest extends WorldGenerator
 {
-	private int id = Block.stone.blockID;
+	private int id = GCMarsBlocks.creeperDungeonWall.blockID;
 
 	public boolean generate(World world, Random rand, int i, int j, int k) {
 		world.setBlock(i + 0, j + 19, k + 0, id);
