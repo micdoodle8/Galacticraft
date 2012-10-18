@@ -47,60 +47,8 @@ public class GCCoreBlockOxygenPipe extends BlockContainer
 	@Override
 	public TileEntity createNewTileEntity(World var1) 
 	{
-		return null;
+		return new GCCoreTileEntityOxygenPipe();
 	}
-	
-    public void onBlockAdded(World par1World, int par2, int par3, int par4) 
-    {
-    	par1World.scheduleBlockUpdate(par2, par3, par4, this.blockID, this.tickRate());
-    }
-	
-	@Override
-    public int tickRate()
-    {
-        return 5;
-    }
-	
-	@Override
-    public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
-    {
-		int pipesActiveAndNearby = 0;
-		
-		int[] idSet = new int[6];
-		int[] metaSet = new int[6];
-		
-		idSet[0] = par1World.getBlockId(par2 + 1, par3, par4);
-		idSet[1] = par1World.getBlockId(par2 - 1, par3, par4);
-		idSet[2] = par1World.getBlockId(par2, par3, par4 + 1);
-		idSet[3] = par1World.getBlockId(par2, par3, par4 - 1);
-		idSet[4] = par1World.getBlockId(par2, par3 + 1, par4);
-		idSet[5] = par1World.getBlockId(par2, par3 - 1, par4);
-		metaSet[0] = par1World.getBlockMetadata(par2 + 1, par3, par4);
-		metaSet[1] = par1World.getBlockMetadata(par2 - 1, par3, par4);
-		metaSet[2] = par1World.getBlockMetadata(par2, par3, par4 + 1);
-		metaSet[3] = par1World.getBlockMetadata(par2, par3, par4 - 1);
-		metaSet[4] = par1World.getBlockMetadata(par2, par3 + 1, par4);
-		metaSet[5] = par1World.getBlockMetadata(par2, par3 - 1, par4);
-		
-		for (int i = 0; i < idSet.length; i++)
-		{
-			if (idSet[i] == GCCoreBlocks.oxygenPipe.blockID && metaSet[i] == 1)
-			{
-				pipesActiveAndNearby += 1;
-			}
-		}
-		
-		if (pipesActiveAndNearby > 0)
-		{
-			par1World.setBlockMetadata(par2, par3, par4, 1);
-		}
-		else
-		{
-			par1World.setBlockMetadata(par2, par3, par4, 0);
-		}
-		
-		par1World.scheduleBlockUpdate(par2, par3, par4, this.blockID, 5);
-    }
 	
 	@Override
 	public int getBlockTexture(IBlockAccess world, int x, int y, int z, int side)

@@ -121,6 +121,7 @@ public class GalacticraftCore
         GameRegistry.registerTileEntity(GCCoreTileEntityTreasureChest.class, "Treasure Chest");
         GameRegistry.registerTileEntity(GCCoreTileEntityOxygenDistributor.class, "Air Distributor");
         GameRegistry.registerTileEntity(GCCoreTileEntityOxygenCollector.class, "Air Collector");
+        GameRegistry.registerTileEntity(GCCoreTileEntityOxygenPipe.class, "Oxygen Pipe");
         LanguageRegistry.instance().addStringLocalization("container.airdistributor", "en_US", "Oxygen Distributor");
 	}
 	

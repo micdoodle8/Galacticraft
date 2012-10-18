@@ -204,11 +204,11 @@ public class GCCoreBlockOxygenDistributor extends BlockContainer
     
     public void removeAirBlocks(World world, int x, int y, int z)
     {
-    	for (int j = -5; j < 6; j++)
+    	for (int j = -8; j <= 8; j++)
 		{
-			for (int i = -5; i < 6; i++)
+			for (int i = -8; i <= 8; i++)
 			{
-				for (int k = -5; k < 6; k++)
+				for (int k = -8; k <= 8; k++)
 				{
 					if (world.getBlockId(x + i, y + j, z + k) == GCCoreBlocks.breatheableAir.blockID)
 					{

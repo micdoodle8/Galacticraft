@@ -21,7 +21,7 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntity implements IIn
 {
     private ItemStack[] distributorStacks;
     
-    public int currentPower;
+    public double currentPower;
 
     public GCCoreTileEntityOxygenDistributor()
     {
@@ -43,7 +43,7 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntity implements IIn
         		GCCoreBlockOxygenDistributor.updateDistributorState(false, worldObj, xCoord, yCoord, zCoord);
         	}
     	}
-    	else if (this.distributorStacks[0] == null)
+    	else if (this.distributorStacks[0] == null || this.currentPower < 1.0D)
     	{
     		GCCoreBlockOxygenDistributor.updateDistributorState(false, worldObj, xCoord, yCoord, zCoord);
     	}
@@ -54,8 +54,12 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntity implements IIn
 	{
 		super.updateEntity();
 		
+		if (this.currentPower < 1.0D)
+		{
+    		GCCoreBlockOxygenDistributor.updateDistributorState(false, worldObj, xCoord, yCoord, zCoord);
+		}
+		
 		int[] idSet = new int[6];
-		int[] metaSet = new int[6];
 		
 		idSet[0] = this.worldObj.getBlockId(this.xCoord + 1, this.yCoord, this.zCoord);
 		idSet[1] = this.worldObj.getBlockId(this.xCoord - 1, this.yCoord, this.zCoord);
@@ -63,18 +67,58 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntity implements IIn
 		idSet[3] = this.worldObj.getBlockId(this.xCoord, this.yCoord, this.zCoord - 1);
 		idSet[4] = this.worldObj.getBlockId(this.xCoord, this.yCoord + 1, this.zCoord);
 		idSet[5] = this.worldObj.getBlockId(this.xCoord, this.yCoord - 1, this.zCoord);
-		metaSet[0] = this.worldObj.getBlockMetadata(this.xCoord + 1, this.yCoord, this.zCoord);
-		metaSet[1] = this.worldObj.getBlockMetadata(this.xCoord - 1, this.yCoord, this.zCoord);
-		metaSet[2] = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord + 1);
-		metaSet[3] = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord - 1);
-		metaSet[4] = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord + 1, this.zCoord);
-		metaSet[5] = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord - 1, this.zCoord);
+		
+		TileEntity tile;
 
 		for (int i = 0; i < idSet.length; i++)
 		{
-			if (idSet[i] == GCCoreBlocks.oxygenPipe.blockID && metaSet[i] == 1)
+			if (idSet[0] == GCCoreBlocks.oxygenPipe.blockID)
 			{
-				this.currentPower = 10;
+				tile = this.worldObj.getBlockTileEntity(this.xCoord + 1, this.yCoord, this.zCoord);
+				if (tile != null && tile instanceof GCCoreTileEntityOxygenPipe)
+				{
+					this.currentPower = ((GCCoreTileEntityOxygenPipe)tile).getOxygenInPipe();
+				}
+			}
+			if (idSet[1] == GCCoreBlocks.oxygenPipe.blockID)
+			{
+				tile = this.worldObj.getBlockTileEntity(this.xCoord - 1, this.yCoord, this.zCoord);
+				if (tile != null && tile instanceof GCCoreTileEntityOxygenPipe)
+				{
+					this.currentPower = ((GCCoreTileEntityOxygenPipe)tile).getOxygenInPipe();
+				}
+			}
+			if (idSet[2] == GCCoreBlocks.oxygenPipe.blockID)
+			{
+				tile = this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord + 1);
+				if (tile != null && tile instanceof GCCoreTileEntityOxygenPipe)
+				{
+					this.currentPower = ((GCCoreTileEntityOxygenPipe)tile).getOxygenInPipe();
+				}
+			}
+			if (idSet[3] == GCCoreBlocks.oxygenPipe.blockID)
+			{
+				tile = this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord - 1);
+				if (tile != null && tile instanceof GCCoreTileEntityOxygenPipe)
+				{
+					this.currentPower = ((GCCoreTileEntityOxygenPipe)tile).getOxygenInPipe();
+				}
+			}
+			if (idSet[4] == GCCoreBlocks.oxygenPipe.blockID)
+			{
+				tile = this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord + 1, this.zCoord);
+				if (tile != null && tile instanceof GCCoreTileEntityOxygenPipe)
+				{
+					this.currentPower = ((GCCoreTileEntityOxygenPipe)tile).getOxygenInPipe();
+				}
+			}
+			if (idSet[5] == GCCoreBlocks.oxygenPipe.blockID)
+			{
+				tile = this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord - 1, this.zCoord);
+				if (tile != null && tile instanceof GCCoreTileEntityOxygenPipe)
+				{
+					this.currentPower = ((GCCoreTileEntityOxygenPipe)tile).getOxygenInPipe();
+				}
 			}
 		}
 		
@@ -135,11 +179,13 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntity implements IIn
 				this.worldObj.setBlockWithNotify(this.xCoord, this.yCoord - 1, this.zCoord, GCCoreBlocks.breatheableAir.blockID);
 			}
 			
-			for (int j = -5; j < 6; j++)
+			int power = Math.min((int) Math.floor(this.currentPower / 3), 8);
+			
+			for (int j = -power; j <= power; j++)
 			{
-				for (int i = -5; i < 6; i++)
+				for (int i = -power; i <= power; i++)
 				{
-					for (int k = -5; k < 6; k++)
+					for (int k = -power; k <= power; k++)
 					{
 						if (this.worldObj.getBlockId(this.xCoord + i, this.yCoord + j, this.zCoord + k) == GCCoreBlocks.breatheableAir.blockID)
 						{

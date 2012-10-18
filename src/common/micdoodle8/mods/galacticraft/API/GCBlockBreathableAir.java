@@ -4,11 +4,13 @@ import java.util.Random;
 
 import micdoodle8.mods.galacticraft.core.GCCoreBlock;
 import micdoodle8.mods.galacticraft.core.GCCoreBlocks;
+import micdoodle8.mods.galacticraft.core.GCCoreTileEntityOxygenDistributor;
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Block;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.Material;
+import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 import cpw.mods.fml.common.FMLLog;
 
@@ -65,54 +67,59 @@ public class GCBlockBreathableAir extends GCCoreBlock
 	@Override
     public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {
+		FMLLog.info("" + activeDistributorNearby(par1World, par2, par3, par4, false));
+		
 		if (!activeDistributorNearby(par1World, par2, par3, par4, false))
 		{
 			return;
 		}
-		
-		for (int j = -1; j < 2; j++)
+		else
 		{
-			for (int i = -1; i < 2; i++)
+			for (int j = -1; j < 2; j++)
 			{
-				for (int k = -1; k < 2; k++)
+				for (int i = -1; i < 2; i++)
 				{
-					if (par1World.isAirBlock(par2 + i, par3 + j, par4 + k))
+					for (int k = -1; k < 2; k++)
 					{
-						par1World.setBlockWithNotify(par2 + i, par3 + j, par4 + k, this.blockID);
+						if (par1World.isAirBlock(par2 + i, par3 + j, par4 + k))
+						{
+							par1World.setBlockWithNotify(par2 + i, par3 + j, par4 + k, this.blockID);
+						}
 					}
 				}
 			}
 		}
-		
-		if (par1World.isAirBlock(par2 + 1, par3, par4))
-		{
-			par1World.setBlockWithNotify(par2 + 1, par3, par4, this.blockID);
-		}
-		
-		if (par1World.isAirBlock(par2 - 1, par3, par4))
-		{
-			par1World.setBlockWithNotify(par2 - 1, par3, par4, this.blockID);
-		}
-		
-		if (par1World.isAirBlock(par2, par3, par4 + 1))
-		{
-			par1World.setBlockWithNotify(par2, par3, par4 + 1, this.blockID);
-		}
-		
-		if (par1World.isAirBlock(par2, par3, par4 - 1))
-		{
-			par1World.setBlockWithNotify(par2, par3, par4 - 1, this.blockID);
-		}
-		
-		if (par1World.isAirBlock(par2, par3 + 1, par4))
-		{
-			par1World.setBlockWithNotify(par2, par3 + 1, par4, this.blockID);
-		}
-		
-		if (par1World.isAirBlock(par2, par3 - 1, par4))
-		{
-			par1World.setBlockWithNotify(par2, par3 - 1, par4, this.blockID);
-		}
+//		
+//		
+//		if (par1World.isAirBlock(par2 + 1, par3, par4))
+//		{
+//			par1World.setBlockWithNotify(par2 + 1, par3, par4, this.blockID);
+//		}
+//		
+//		if (par1World.isAirBlock(par2 - 1, par3, par4))
+//		{
+//			par1World.setBlockWithNotify(par2 - 1, par3, par4, this.blockID);
+//		}
+//		
+//		if (par1World.isAirBlock(par2, par3, par4 + 1))
+//		{
+//			par1World.setBlockWithNotify(par2, par3, par4 + 1, this.blockID);
+//		}
+//		
+//		if (par1World.isAirBlock(par2, par3, par4 - 1))
+//		{
+//			par1World.setBlockWithNotify(par2, par3, par4 - 1, this.blockID);
+//		}
+//		
+//		if (par1World.isAirBlock(par2, par3 + 1, par4))
+//		{
+//			par1World.setBlockWithNotify(par2, par3 + 1, par4, this.blockID);
+//		}
+//		
+//		if (par1World.isAirBlock(par2, par3 - 1, par4))
+//		{
+//			par1World.setBlockWithNotify(par2, par3 - 1, par4, this.blockID);
+//		}
     }
 
     public int getRenderBlockPass()
@@ -122,33 +129,33 @@ public class GCBlockBreathableAir extends GCCoreBlock
 	
 	public static boolean activeDistributorNearby(World world, int x, int y, int z, boolean extraBlock)
 	{
-		if (!extraBlock)
+//		if (!extraBlock)
 		{
-			for (int j = -4; j < 5; j++)
+			for (int j = -8; j <= 8; j++)
 			{
-				for (int i = -4; i < 5; i++)
+				for (int i = -8; i < 8; i++)
 				{
-					for (int k = -4; k < 5; k++)
+					for (int k = -8; k < 8; k++)
 					{
-						if (world.getBlockId(x + i, y + j, z + k) == GCCoreBlocks.airDistributorActive.blockID)
+						TileEntity tile = world.getBlockTileEntity(x + i, y + j, z + k);
+
+						if (tile != null && tile instanceof GCCoreTileEntityOxygenDistributor)
 						{
-							return true;
-						}
-					}
-				}
-			}
-		}
-		else
-		{
-			for (int j = -5; j < 6; j++)
-			{
-				for (int i = -5; i < 6; i++)
-				{
-					for (int k = -5; k < 6; k++)
-					{
-						if (world.getBlockId(x + i, y + j, z + k) == GCCoreBlocks.airDistributorActive.blockID)
-						{
-							return true;
+							int power = Math.min((int) Math.floor(((GCCoreTileEntityOxygenDistributor)tile).currentPower / 3), 8);
+							
+							for (int j2 = -power; j2 <= power; j2++)
+							{
+								for (int i2 = -power; i2 <= power; i2++)
+								{
+									for (int k2 = -power; k2 <= power; k2++)
+									{
+										if (world.getBlockId(x + i2, y + j2, z + k2) == GCCoreBlocks.airDistributorActive.blockID)
+										{
+											return true;
+										}
+									}
+								}
+							}
 						}
 					}
 				}
