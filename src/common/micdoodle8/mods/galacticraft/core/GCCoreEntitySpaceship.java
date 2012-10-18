@@ -306,7 +306,8 @@ public class GCCoreEntitySpaceship extends Entity
             
             if (this.launched && !reversed)
             {
-                this.motionY += 0.005D;
+            	if (Math.abs(Math.sin(timeSinceLaunch / 1000)) / 10 != 0.0)
+                this.motionY += Math.abs(Math.sin(timeSinceLaunch / 1000)) / 20;
             }
             
             if (this.failedLaunch)
@@ -314,8 +315,8 @@ public class GCCoreEntitySpaceship extends Entity
             	if (this.timeSinceLaunch > 100)
             	{
             		this.setFailedLaunch(1);
-            		this.motionX += 0.005D;
-            		this.motionZ += 0.005D;
+            		this.motionX += 0.004D;
+            		this.motionZ += 0.004D;
             	}
             	
             	if (this.timeSinceLaunch > 200)
