@@ -33,7 +33,7 @@ public class GCCoreTileEntityOxygenCollector extends TileEntity
 			}
 		}
 		
-		this.currentPower = power / 10.0D;
+		this.currentPower = power / 5.0D;
 
 		int[] idSet = new int[6];
 		

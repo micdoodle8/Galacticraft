@@ -122,7 +122,7 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntity implements IIn
 			}
 		}
 		
-		if (this.currentPower > 0)
+		if (this.currentPower > 1.0D)
 		{
 			GCCoreBlockOxygenDistributor.updateDistributorState(true, worldObj, xCoord, yCoord, zCoord);
 		}
@@ -149,34 +149,78 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntity implements IIn
 		
 		if (this.worldObj.getBlockId(xCoord, yCoord, zCoord) == GCCoreBlocks.airDistributorActive.blockID)
 		{
+			TileEntity tile2;
+			
 			if (this.worldObj.getBlockId(this.xCoord + 1, this.yCoord, this.zCoord) == 0)
 			{
 				this.worldObj.setBlockWithNotify(this.xCoord + 1, this.yCoord, this.zCoord, GCCoreBlocks.breatheableAir.blockID);
+				
+				tile2 = this.worldObj.getBlockTileEntity(this.xCoord + 1, this.yCoord, this.zCoord);
+				
+				if (tile2 != null && tile2 instanceof GCCoreTileEntityBreathableAir)
+				{
+					((GCCoreTileEntityBreathableAir)tile2).setDistributor(this);
+				}
 			}
 
 			if (this.worldObj.getBlockId(this.xCoord - 1, this.yCoord, this.zCoord) == 0)
 			{
 				this.worldObj.setBlockWithNotify(this.xCoord - 1, this.yCoord, this.zCoord, GCCoreBlocks.breatheableAir.blockID);
+				
+				tile2 = this.worldObj.getBlockTileEntity(this.xCoord - 1, this.yCoord, this.zCoord);
+				
+				if (tile2 != null && tile2 instanceof GCCoreTileEntityBreathableAir)
+				{
+					((GCCoreTileEntityBreathableAir)tile2).setDistributor(this);
+				}
 			}
 
 			if (this.worldObj.getBlockId(this.xCoord, this.yCoord, this.zCoord + 1) == 0)
 			{
 				this.worldObj.setBlockWithNotify(this.xCoord, this.yCoord, this.zCoord + 1, GCCoreBlocks.breatheableAir.blockID);
+				
+				tile2 = this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord + 1);
+				
+				if (tile2 != null && tile2 instanceof GCCoreTileEntityBreathableAir)
+				{
+					((GCCoreTileEntityBreathableAir)tile2).setDistributor(this);
+				}
 			}
 
 			if (this.worldObj.getBlockId(this.xCoord, this.yCoord, this.zCoord - 1) == 0)
 			{
 				this.worldObj.setBlockWithNotify(this.xCoord, this.yCoord, this.zCoord - 1, GCCoreBlocks.breatheableAir.blockID);
+				
+				tile2 = this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord - 1);
+				
+				if (tile2 != null && tile2 instanceof GCCoreTileEntityBreathableAir)
+				{
+					((GCCoreTileEntityBreathableAir)tile2).setDistributor(this);
+				}
 			}
 
 			if (this.worldObj.getBlockId(this.xCoord, this.yCoord + 1, this.zCoord) == 0)
 			{
 				this.worldObj.setBlockWithNotify(this.xCoord, this.yCoord + 1, this.zCoord, GCCoreBlocks.breatheableAir.blockID);
+				
+				tile2 = this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord + 1, this.zCoord);
+				
+				if (tile2 != null && tile2 instanceof GCCoreTileEntityBreathableAir)
+				{
+					((GCCoreTileEntityBreathableAir)tile2).setDistributor(this);
+				}
 			}
 
 			if (this.worldObj.getBlockId(this.xCoord, this.yCoord - 1, this.zCoord) == 0)
 			{
 				this.worldObj.setBlockWithNotify(this.xCoord, this.yCoord - 1, this.zCoord, GCCoreBlocks.breatheableAir.blockID);
+				
+				tile2 = this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord - 1, this.zCoord);
+				
+				if (tile2 != null && tile2 instanceof GCCoreTileEntityBreathableAir)
+				{
+					((GCCoreTileEntityBreathableAir)tile2).setDistributor(this);
+				}
 			}
 			
 			int power = Math.min((int) Math.floor(this.currentPower / 3), 8);

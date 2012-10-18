@@ -212,9 +212,9 @@ public class GCCoreBlockOxygenDistributor extends BlockContainer
 				{
 					if (world.getBlockId(x + i, y + j, z + k) == GCCoreBlocks.breatheableAir.blockID)
 					{
-						if (!GCBlockBreathableAir.activeDistributorNearby(world, x + i, y + j, z + k, true))
+//						if (!GCBlockBreathableAir.activeDistributorNearby(world, x + i, y + j, z + k, true)) TODO
 						{
-							world.setBlockWithNotify(x + i, y + j, z + k, 0);
+//							world.setBlockWithNotify(x + i, y + j, z + k, 0);
 						}
 					}
 					else if (world.getBlockId(x + i, y + j, z + k) == GCCoreBlocks.unlitTorchLit.blockID)
