@@ -8,6 +8,7 @@ import java.util.EnumSet;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.core.client.GCCoreEvents;
+import micdoodle8.mods.galacticraft.moon.GalacticraftMoon;
 import net.minecraft.src.EntityPlayerMP;
 import net.minecraft.src.NetworkManager;
 import net.minecraft.src.Packet250CustomPayload;
@@ -58,6 +59,8 @@ public class GalacticraftCore
 	
 	public static GCCoreLocalization lang;
 	
+	public static GalacticraftMoon moon = new GalacticraftMoon();
+	
 	public static long tick;
 	
 	public static List serverPlayerBaseList = new ArrayList();
@@ -66,6 +69,8 @@ public class GalacticraftCore
 	@PreInit
 	public void preInit(FMLPreInitializationEvent event)
 	{
+		moon.preInit(event);
+		
 		new GCCoreConfigManager(new File(event.getModConfigurationDirectory(), "Galacticraft/core.conf"));
 		
 		lang = new GCCoreLocalization("micdoodle8/mods/galacticraft/core/client");
@@ -93,6 +98,8 @@ public class GalacticraftCore
 	@Init
 	public void init(FMLInitializationEvent event)
 	{
+		moon.init(event);
+		
 //		GCCoreUtil.addSmeltingRecipes(); TODO
 		NetworkRegistry.instance().registerGuiHandler(this, proxy);
 		this.registerTileEntities();

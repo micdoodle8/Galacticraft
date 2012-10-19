@@ -1,12 +1,12 @@
 package micdoodle8.mods.galacticraft.venus.client;
 
-import micdoodle8.mods.galacticraft.venus.CommonProxy;
+import micdoodle8.mods.galacticraft.venus.CommonProxyVenus;
 import net.minecraft.src.World;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
-public class ClientProxy extends CommonProxy
+public class ClientProxyVenus extends CommonProxyVenus
 {
 	@Override
 	public void preInit(FMLPreInitializationEvent event)

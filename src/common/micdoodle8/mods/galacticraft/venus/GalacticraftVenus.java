@@ -1,3 +1,4 @@
+package micdoodle8.mods.galacticraft.venus;
 //package micdoodle8.mods.galacticraft.venus;
 //
 //import java.io.File;

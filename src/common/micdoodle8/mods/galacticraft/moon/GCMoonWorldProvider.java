@@ -1,4 +1,4 @@
-package micdoodle8.mods.galacticraft.mars;
+package micdoodle8.mods.galacticraft.moon;
 
 import micdoodle8.mods.galacticraft.API.GalacticraftWorldProvider;
 import net.minecraft.src.Chunk;
@@ -13,14 +13,14 @@ import cpw.mods.fml.common.asm.SideOnly;
  *  All rights reserved.
  *
  */
-public class GCMarsWorldProvider extends GalacticraftWorldProvider
+public class GCMoonWorldProvider extends GalacticraftWorldProvider
 {
     private float[] colorsSunriseSunset = new float[4];
     
-	public GCMarsWorldProvider()
+	public GCMoonWorldProvider()
     {
-        this.setDimension(GCMarsConfigManager.dimensionIDMars);
-        this.dimensionId = GCMarsConfigManager.dimensionIDMars;
+        this.setDimension(GCMoonConfigManager.dimensionIDMoon);
+        this.dimensionId = GCMoonConfigManager.dimensionIDMoon;
     }
 	
 	@Override
@@ -44,13 +44,7 @@ public class GCMarsWorldProvider extends GalacticraftWorldProvider
 	@Override
     public void registerWorldChunkManager()
     {
-        this.worldChunkMgr = new GCMarsWorldChunkManager(this.worldObj, 0F);
-    }
-    
-    @SideOnly(Side.CLIENT)
-    public boolean doesXZShowFog(int par1, int par2)
-    {
-        return false;
+        this.worldChunkMgr = new GCMoonWorldChunkManager(this.worldObj, 0F);
     }
 
 	@SideOnly(Side.CLIENT)
@@ -95,7 +89,7 @@ public class GCMarsWorldProvider extends GalacticraftWorldProvider
 	@Override
     public IChunkProvider getChunkProvider()
     {
-        return new GCMarsChunkProvider(this.worldObj, this.worldObj.getSeed(), this.worldObj.getWorldInfo().isMapFeaturesEnabled());
+        return new GCMoonChunkProvider(this.worldObj, this.worldObj.getSeed(), this.worldObj.getWorldInfo().isMapFeaturesEnabled());
     }
 	
 	@Override
@@ -130,8 +124,9 @@ public class GCMarsWorldProvider extends GalacticraftWorldProvider
     @Override
     public boolean canCoordinateBeSpawn(int var1, int var2)
     {
-        int var3 = this.worldObj.getFirstUncoveredBlock(var1, var2);
-        return var3 == GCMarsBlocks.marsGrass.blockID;
+//        int var3 = this.worldObj.getFirstUncoveredBlock(var1, var2);
+//        return var3 == GCBlocks.marsGrass.blockID;
+    	return true;
     }
     
     @Override
@@ -143,23 +138,23 @@ public class GCMarsWorldProvider extends GalacticraftWorldProvider
     @Override
     public String getSaveFolder()
     {
-    	return "DIM" + GCMarsConfigManager.dimensionIDMars;
+    	return "DIM" + GCMoonConfigManager.dimensionIDMoon;
     }
 
     public String getWelcomeMessage()
     {
-        return "Entering Mars";
+        return "Entering The Moon";
     }
 
     public String getDepartMessage()
     {
-        return "Leaving Mars";
+        return "Leaving The Moon";
     }
 
 	@Override
 	public String getDimensionName() 
 	{
-		return "Mars";
+		return "Moon";
 	}
 
 	@Override

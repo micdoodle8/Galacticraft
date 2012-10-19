@@ -1,4 +1,4 @@
-package micdoodle8.mods.galacticraft.venus;
+package micdoodle8.mods.galacticraft.moon;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ import cpw.mods.fml.common.network.IGuiHandler;
  *  All rights reserved.
  *
  */
-public class CommonProxy
+public class CommonProxyMoon
 {
 	public void preInit(FMLPreInitializationEvent event)
 	{

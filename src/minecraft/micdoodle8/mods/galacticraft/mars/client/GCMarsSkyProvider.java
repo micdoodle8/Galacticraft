@@ -123,6 +123,7 @@ public class GCMarsSkyProvider extends SkyProvider
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
         GL11.glPushMatrix();
         GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 5F);
         GL11.glRotatef(world.getCelestialAngle(partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
         var12 = 8.0F;
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/terrain/sun.png"));
@@ -136,7 +137,7 @@ public class GCMarsSkyProvider extends SkyProvider
         var12 = 3.0F;
         GL11.glScalef(0.6F, 0.6F, 0.6F);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 5F);
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/micdoodle8/mods/galacticraft/mars/client/planets/overworld.png"));
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/planets/overworld.png"));
         int var28 = world.getMoonPhase(partialTicks);
         int var30 = var28 % 4;
         int var29 = var28 / 4 % 2;
