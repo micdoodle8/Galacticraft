@@ -47,7 +47,6 @@ public class GCCoreTileEntityBreathableAir extends TileEntity
 	
 	public void setDistributor(GCCoreTileEntityOxygenDistributor distributor)
 	{
-		FMLLog.info("asdasd");
 		this.distributor = distributor;
 	}
 	

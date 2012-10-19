@@ -10,11 +10,6 @@ public class GCCoreTileEntityOxygenPipe extends TileEntity
 	
 	private GCCoreTileEntityOxygenCollector source;
 	
-	public GCCoreTileEntityOxygenPipe()
-	{
-		
-	}
-	
 	public void setOxygenInPipe(double d)
 	{
 		this.oxygenInPipe = d;
@@ -44,76 +39,78 @@ public class GCCoreTileEntityOxygenPipe extends TileEntity
 		}
 		else
 		{
-			
 			this.source = (GCCoreTileEntityOxygenCollector) this.worldObj.getBlockTileEntity(this.source.xCoord, this.source.yCoord, this.source.zCoord);
 			
-			int[] idSet = new int[6];
-			
-			idSet[0] = this.worldObj.getBlockId(this.xCoord + 1, this.yCoord, this.zCoord);
-			idSet[1] = this.worldObj.getBlockId(this.xCoord - 1, this.yCoord, this.zCoord);
-			idSet[2] = this.worldObj.getBlockId(this.xCoord, this.yCoord, this.zCoord + 1);
-			idSet[3] = this.worldObj.getBlockId(this.xCoord, this.yCoord, this.zCoord - 1);
-			idSet[4] = this.worldObj.getBlockId(this.xCoord, this.yCoord + 1, this.zCoord);
-			idSet[5] = this.worldObj.getBlockId(this.xCoord, this.yCoord - 1, this.zCoord);
-			
-			TileEntity tile;
-
-			for (int i = 0; i < idSet.length; i++)
+//			if (!this.worldObj.isRemote)
 			{
-				if (this.oxygenInPipe > 0)
+				int[] idSet = new int[6];
+				
+				idSet[0] = this.worldObj.getBlockId(this.xCoord + 1, this.yCoord, this.zCoord);
+				idSet[1] = this.worldObj.getBlockId(this.xCoord - 1, this.yCoord, this.zCoord);
+				idSet[2] = this.worldObj.getBlockId(this.xCoord, this.yCoord, this.zCoord + 1);
+				idSet[3] = this.worldObj.getBlockId(this.xCoord, this.yCoord, this.zCoord - 1);
+				idSet[4] = this.worldObj.getBlockId(this.xCoord, this.yCoord + 1, this.zCoord);
+				idSet[5] = this.worldObj.getBlockId(this.xCoord, this.yCoord - 1, this.zCoord);
+				
+				TileEntity tile;
+
+				for (int i = 0; i < idSet.length; i++)
 				{
-					if (idSet[0] == GCCoreBlocks.oxygenPipe.blockID)
+					if (this.oxygenInPipe > 0)
 					{
-						tile = this.worldObj.getBlockTileEntity(this.xCoord + 1, this.yCoord, this.zCoord);
-						if (tile != null && tile instanceof GCCoreTileEntityOxygenPipe)
+						if (idSet[0] == GCCoreBlocks.oxygenPipe.blockID)
 						{
-							((GCCoreTileEntityOxygenPipe)tile).setOxygenInPipe(this.oxygenInPipe);
-							((GCCoreTileEntityOxygenPipe)tile).setSourceCollector(this.source);
+							tile = this.worldObj.getBlockTileEntity(this.xCoord + 1, this.yCoord, this.zCoord);
+							if (tile != null && tile instanceof GCCoreTileEntityOxygenPipe)
+							{
+								((GCCoreTileEntityOxygenPipe)tile).setOxygenInPipe(this.oxygenInPipe);
+								((GCCoreTileEntityOxygenPipe)tile).setSourceCollector(this.source);
+							}
 						}
-					}
-					if (idSet[1] == GCCoreBlocks.oxygenPipe.blockID)
-					{
-						tile = this.worldObj.getBlockTileEntity(this.xCoord - 1, this.yCoord, this.zCoord);
-						if (tile != null && tile instanceof GCCoreTileEntityOxygenPipe)
+						if (idSet[1] == GCCoreBlocks.oxygenPipe.blockID)
 						{
-							((GCCoreTileEntityOxygenPipe)tile).setOxygenInPipe(this.oxygenInPipe);
-							((GCCoreTileEntityOxygenPipe)tile).setSourceCollector(this.source);
+							tile = this.worldObj.getBlockTileEntity(this.xCoord - 1, this.yCoord, this.zCoord);
+							if (tile != null && tile instanceof GCCoreTileEntityOxygenPipe)
+							{
+								((GCCoreTileEntityOxygenPipe)tile).setOxygenInPipe(this.oxygenInPipe);
+								((GCCoreTileEntityOxygenPipe)tile).setSourceCollector(this.source);
+							}
 						}
-					}
-					if (idSet[2] == GCCoreBlocks.oxygenPipe.blockID)
-					{
-						tile = this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord + 1);
-						if (tile != null && tile instanceof GCCoreTileEntityOxygenPipe)
+						if (idSet[2] == GCCoreBlocks.oxygenPipe.blockID)
 						{
-							((GCCoreTileEntityOxygenPipe)tile).setOxygenInPipe(this.oxygenInPipe);
-							((GCCoreTileEntityOxygenPipe)tile).setSourceCollector(this.source);
+							tile = this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord + 1);
+							if (tile != null && tile instanceof GCCoreTileEntityOxygenPipe)
+							{
+								((GCCoreTileEntityOxygenPipe)tile).setOxygenInPipe(this.oxygenInPipe);
+								((GCCoreTileEntityOxygenPipe)tile).setSourceCollector(this.source);
+							}
 						}
-					}
-					if (idSet[3] == GCCoreBlocks.oxygenPipe.blockID)
-					{
-						tile = this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord - 1);
-						if (tile != null && tile instanceof GCCoreTileEntityOxygenPipe)
+						if (idSet[3] == GCCoreBlocks.oxygenPipe.blockID)
 						{
-							((GCCoreTileEntityOxygenPipe)tile).setOxygenInPipe(this.oxygenInPipe);
-							((GCCoreTileEntityOxygenPipe)tile).setSourceCollector(this.source);
+							tile = this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord - 1);
+							if (tile != null && tile instanceof GCCoreTileEntityOxygenPipe)
+							{
+								((GCCoreTileEntityOxygenPipe)tile).setOxygenInPipe(this.oxygenInPipe);
+								((GCCoreTileEntityOxygenPipe)tile).setSourceCollector(this.source);
+							}
 						}
-					}
-					if (idSet[4] == GCCoreBlocks.oxygenPipe.blockID)
-					{
-						tile = this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord + 1, this.zCoord);
-						if (tile != null && tile instanceof GCCoreTileEntityOxygenPipe)
+						if (idSet[4] == GCCoreBlocks.oxygenPipe.blockID)
 						{
-							((GCCoreTileEntityOxygenPipe)tile).setOxygenInPipe(this.oxygenInPipe);
-							((GCCoreTileEntityOxygenPipe)tile).setSourceCollector(this.source);
+							tile = this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord + 1, this.zCoord);
+							if (tile != null && tile instanceof GCCoreTileEntityOxygenPipe)
+							{
+								((GCCoreTileEntityOxygenPipe)tile).setOxygenInPipe(this.oxygenInPipe);
+								((GCCoreTileEntityOxygenPipe)tile).setSourceCollector(this.source);
+							}
 						}
-					}
-					if (idSet[5] == GCCoreBlocks.oxygenPipe.blockID)
-					{
-						tile = this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord - 1, this.zCoord);
-						if (tile != null && tile instanceof GCCoreTileEntityOxygenPipe)
+						if (idSet[5] == GCCoreBlocks.oxygenPipe.blockID)
 						{
-							((GCCoreTileEntityOxygenPipe)tile).setOxygenInPipe(this.oxygenInPipe);
-							((GCCoreTileEntityOxygenPipe)tile).setSourceCollector(this.source);
+							tile = this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord - 1, this.zCoord);
+							if (tile != null && tile instanceof GCCoreTileEntityOxygenPipe)
+							{
+								((GCCoreTileEntityOxygenPipe)tile).setOxygenInPipe(this.oxygenInPipe);
+								((GCCoreTileEntityOxygenPipe)tile).setSourceCollector(this.source);
+							}
 						}
 					}
 				}
@@ -127,8 +124,6 @@ public class GCCoreTileEntityOxygenPipe extends TileEntity
 		super.readFromNBT(par1NBTTagCompound);
 		
 		this.oxygenInPipe = par1NBTTagCompound.getDouble("oxygenInPipe");
-		
-		this.source = (GCCoreTileEntityOxygenCollector) this.worldObj.getBlockTileEntity(par1NBTTagCompound.getInteger("SourceX"), par1NBTTagCompound.getInteger("SourceY"), par1NBTTagCompound.getInteger("SourceZ"));
 	}
 
 	@Override
@@ -137,8 +132,12 @@ public class GCCoreTileEntityOxygenPipe extends TileEntity
 		super.writeToNBT(par1NBTTagCompound);
 		
         par1NBTTagCompound.setDouble("oxygenInPipe", this.oxygenInPipe);
-        par1NBTTagCompound.setInteger("SourceX", this.source.xCoord);
-        par1NBTTagCompound.setInteger("SourceY", this.source.yCoord);
-        par1NBTTagCompound.setInteger("SourceZ", this.source.zCoord);
+        
+        if (this.source != null)
+        {
+            par1NBTTagCompound.setInteger("SourceX", this.source.xCoord);
+            par1NBTTagCompound.setInteger("SourceY", this.source.yCoord);
+            par1NBTTagCompound.setInteger("SourceZ", this.source.zCoord);
+        }
 	}
 }

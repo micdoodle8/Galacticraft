@@ -4,7 +4,8 @@ import net.minecraft.src.Block;
 import net.minecraft.src.BlockLeaves;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.TileEntity;
-import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.common.Side;
+import cpw.mods.fml.common.asm.SideOnly;
 
 public class GCCoreTileEntityOxygenCollector extends TileEntity
 {
@@ -35,20 +36,20 @@ public class GCCoreTileEntityOxygenCollector extends TileEntity
 		
 		this.currentPower = power / 5.0D;
 
-		int[] idSet = new int[6];
-		
-		idSet[0] = this.worldObj.getBlockId(this.xCoord + 1, this.yCoord, this.zCoord);
-		idSet[1] = this.worldObj.getBlockId(this.xCoord - 1, this.yCoord, this.zCoord);
-		idSet[2] = this.worldObj.getBlockId(this.xCoord, this.yCoord, this.zCoord + 1);
-		idSet[3] = this.worldObj.getBlockId(this.xCoord, this.yCoord, this.zCoord - 1);
-		idSet[4] = this.worldObj.getBlockId(this.xCoord, this.yCoord + 1, this.zCoord);
-		idSet[5] = this.worldObj.getBlockId(this.xCoord, this.yCoord - 1, this.zCoord);
-		
-		TileEntity tile;
-
-		for (int i = 0; i < idSet.length; i++)
+//		if (!this.worldObj.isRemote)
 		{
-			if (this.currentPower > 0)
+			int[] idSet = new int[6];
+			
+			idSet[0] = this.worldObj.getBlockId(this.xCoord + 1, this.yCoord, this.zCoord);
+			idSet[1] = this.worldObj.getBlockId(this.xCoord - 1, this.yCoord, this.zCoord);
+			idSet[2] = this.worldObj.getBlockId(this.xCoord, this.yCoord, this.zCoord + 1);
+			idSet[3] = this.worldObj.getBlockId(this.xCoord, this.yCoord, this.zCoord - 1);
+			idSet[4] = this.worldObj.getBlockId(this.xCoord, this.yCoord + 1, this.zCoord);
+			idSet[5] = this.worldObj.getBlockId(this.xCoord, this.yCoord - 1, this.zCoord);
+			
+			TileEntity tile;
+
+			for (int i = 0; i < idSet.length; i++)
 			{
 				if (idSet[0] == GCCoreBlocks.oxygenPipe.blockID)
 				{
@@ -106,6 +107,7 @@ public class GCCoreTileEntityOxygenCollector extends TileEntity
 				}
 			}
 		}
+		
 	}
 	
 	@Override

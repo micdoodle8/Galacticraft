@@ -244,6 +244,8 @@ public class GCCorePlayerBaseServer extends ServerPlayerBase
             {
             	var5 = 0;
             }
+            
+            FMLLog.info("" + var5);
 
             player.mcServer.getConfigurationManager().transferPlayerToDimension(player, var5, new GCCoreTeleporter());
             player.timeUntilPortal = 10;
