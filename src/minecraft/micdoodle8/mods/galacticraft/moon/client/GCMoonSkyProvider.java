@@ -154,11 +154,11 @@ public class GCMoonSkyProvider extends SkyProvider
         catch (ClassNotFoundException e)
         {
         }
-        
+
         GL11.glPopMatrix();
         
         GL11.glPushMatrix();
-        
+
         GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 5F);
         GL11.glRotatef(world.getCelestialAngle(partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
@@ -174,10 +174,12 @@ public class GCMoonSkyProvider extends SkyProvider
         GL11.glPopMatrix();
         
         GL11.glPushMatrix();
+
+        GL11.glDisable(GL11.GL_BLEND);
         
         // HOME:
-        var12 = 45.0F;
-        float earthRotation = (float) (world.getSpawnPoint().posX - mc.thePlayer.posX) * 0.1F;
+        var12 = 15.0F;
+        float earthRotation = (float) (world.getSpawnPoint().posZ - mc.thePlayer.posZ) * 0.01F;
         GL11.glScalef(0.6F, 0.6F, 0.6F);
         GL11.glRotatef(earthRotation, 1.0F, 0.0F, 0.0F);
         GL11.glRotatef(90F, 1.0F, 0.0F, 0.0F);
@@ -192,7 +194,7 @@ public class GCMoonSkyProvider extends SkyProvider
         var23.addVertexWithUV((double)var12, -100.0D, (double)(-var12), (double)1, (double)0);
         var23.addVertexWithUV((double)(-var12), -100.0D, (double)(-var12), (double)0, (double)0);
         var23.draw();
-
+        
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
