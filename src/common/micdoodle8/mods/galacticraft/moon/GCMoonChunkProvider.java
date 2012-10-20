@@ -72,6 +72,8 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 	double[] noise6;
 	float[] field_35388_l;
 	int[][] field_914_i = new int[32][32];
+	
+	private int chunkX, chunkZ;
 
 	public GCMoonChunkProvider(World par1World, long par2, boolean par4)
 	{
@@ -160,6 +162,8 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 				}
 			}
 		}
+		
+		computeCraters(par1, par2, par3ArrayOfint);
 	}
 
 	public void replaceBlocksForBiome(int par1, int par2, int[] par3ArrayOfint, BiomeGenBase[] par4ArrayOfBiomeGenBase)
@@ -424,6 +428,122 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 	public boolean chunkExists(int par1, int par2)
 	{
 		return true;
+	}
+	
+	private void computeCraters(int x, int z, int[] chunkArr) 
+	{
+		boolean evenX, evenZ;
+		evenX = x % 2 == 0 ? true : false;
+		evenZ = z % 2 == 0 ? true : false;
+		chunkX = x * 16;
+		chunkZ = z * 16;
+
+		if (evenX && evenZ) 
+		{
+			createCrater(x, z, chunkArr);
+		} 
+		else if (evenX) 
+		{
+			createCrater(x, z + 1, chunkArr);
+			createCrater(x, z - 1, chunkArr);
+			createCrater(x + 2, z + 1, chunkArr);
+			createCrater(x + 2, z - 1, chunkArr);
+			createCrater(x - 2, z + 1, chunkArr);
+			createCrater(x - 2, z - 1, chunkArr);
+		} 
+		else if (evenZ) 
+		{
+			createCrater(x + 1, z, chunkArr);
+			createCrater(x - 1, z, chunkArr);
+			createCrater(x + 1, z + 2, chunkArr);
+			createCrater(x - 1, z + 2, chunkArr);
+			createCrater(x + 1, z + 2, chunkArr);
+			createCrater(x - 1, z + 2, chunkArr);
+		} 
+		else 
+		{
+			createCrater(x + 1, z + 1, chunkArr);
+			createCrater(x - 1, z + 1, chunkArr);
+			createCrater(x + 1, z - 1, chunkArr);
+			createCrater(x - 1, z - 1, chunkArr);
+		}
+	}
+	
+	private void createCrater(int chnkX, int chnkZ, int[] chunkArr) 
+	{
+		double centerRand = randFromPoint(chnkX, chnkZ);
+		int maxCenterDelta = 6;
+		int centerX, centerZ, radius;
+
+		centerX = chnkX * 16 + 8 + (int) (maxCenterDelta * centerRand);
+		centerZ = chnkZ * 16 + 8 + (int) (maxCenterDelta * centerRand);
+		radius = (int) ((centerRand + 1) * 8) + 8;
+
+		int distance, sphereY = 0, index = 0;
+		boolean inSphere;
+		for (int z = 0; z < 16; z++) 
+		{
+			for (int x = 0; x < 16; x++) 
+			{
+				distance = -1 * centerX * centerX + 2 * (x + chunkX) * centerX - centerZ * centerZ + 2 * centerZ * (z + chunkZ) + radius * radius - (x + chunkX) * (x + chunkX) - (z + chunkZ) * (z + chunkZ);
+
+				if (distance > 0) 
+				{
+					sphereY = (int) (Math.sqrt(distance) / 2.5);
+				} 
+				else 
+				{
+					continue;
+				}
+
+				inSphere = false;
+
+				for (int y = 90; y > 0; y--) 
+				{
+					index = getIndex(x, y, z);
+
+					if (sphereY == 0) 
+					{
+						break;
+					}
+
+					if (inSphere) 
+					{
+						chunkArr[index] = 0;
+						sphereY--;
+						continue;
+					}
+
+					if (chunkArr[index] == 0) 
+					{
+						continue;
+					} 
+					else 
+					{
+						y++;
+						inSphere = true;
+					}
+				}
+
+				if (this.worldObj.rand.nextDouble() < 0.8 && inSphere) 
+				{
+					chunkArr[index] = GCMoonBlocks.moonGrass.blockID;
+				}
+			}
+		}
+	}
+	
+	private int getIndex(int x, int y, int z) 
+	{
+		return (x * 16 + z) * 128 + y;
+	}
+	
+	private double randFromPoint(int x, int z) 
+	{
+		int n;
+		n = x + z * 57;
+		n = (n << 13) ^ n;
+		return (1.0 - ((n * (n * n * 15731 + 789221) + 1376312589) & 0x7fffffff) / 1073741824.0);
 	}
 
 //	public void decoratePlanet(World par1World, Random par2Random, int par3, int par4)
