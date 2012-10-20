@@ -1,12 +1,23 @@
 package micdoodle8.mods.galacticraft.moon.client;
 
+import java.util.EnumSet;
+
+import micdoodle8.mods.galacticraft.mars.client.ClientProxyMars.TickHandlerClient;
 import micdoodle8.mods.galacticraft.moon.CommonProxyMoon;
-import net.minecraft.src.ColorizerGrass;
+import micdoodle8.mods.galacticraft.moon.GCMoonWorldProvider;
+import net.minecraft.client.Minecraft;
+import net.minecraft.src.EntityClientPlayerMP;
 import net.minecraft.src.World;
+import net.minecraft.src.WorldClient;
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.common.ITickHandler;
+import cpw.mods.fml.common.Side;
+import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.registry.TickRegistry;
 
 public class ClientProxyMoon extends CommonProxyMoon
 {
@@ -19,6 +30,7 @@ public class ClientProxyMoon extends CommonProxyMoon
 	@Override
 	public void init(FMLInitializationEvent event)
 	{
+		TickRegistry.registerTickHandler(new TickHandlerClient(), Side.CLIENT);
         GCMoonColorizerGrass.setGrassBiomeColorizer(FMLClientHandler.instance().getClient().renderEngine.getTextureContents("/micdoodle8/mods/galacticraft/moon/client/blocks/moonfoliagecolor.png"));
 	}
 
@@ -42,4 +54,44 @@ public class ClientProxyMoon extends CommonProxyMoon
 
 	@Override
     public void spawnParticle(String var1, double var2, double var4, double var6, double var8, double var10, double var12, boolean b) {}
+	
+    public static class TickHandlerClient implements ITickHandler
+    {
+    	@Override
+    	public void tickStart(EnumSet<TickType> type, Object... tickData)
+        {
+    		Minecraft minecraft = FMLClientHandler.instance().getClient();
+    		
+            WorldClient world = minecraft.theWorld;
+            
+            EntityClientPlayerMP player = minecraft.thePlayer;
+    		
+    		if (type.equals(EnumSet.of(TickType.CLIENT)))
+            {
+    			if (world != null && world.provider instanceof GCMoonWorldProvider)
+    			{
+    				if (world.provider.getSkyProvider() == null)
+                    {
+    					world.provider.setSkyProvider(new GCMoonSkyProvider());
+                    }
+    			}
+            }
+        }
+
+    	@Override
+    	public void tickEnd(EnumSet<TickType> type, Object... tickData) 
+    	{
+    	}
+    	
+        public String getLabel()
+        {
+            return "Galacticraft Moon Client";
+        }
+
+    	@Override
+    	public EnumSet<TickType> ticks() 
+    	{
+    		return EnumSet.of(TickType.CLIENT);
+    	}
+    }
 }

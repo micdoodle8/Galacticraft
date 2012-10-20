@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.moon;
 import micdoodle8.mods.galacticraft.API.GalacticraftWorldProvider;
 import net.minecraft.src.Chunk;
 import net.minecraft.src.IChunkProvider;
+import net.minecraft.src.MathHelper;
 import net.minecraft.src.Vec3;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
@@ -73,9 +74,28 @@ public class GCMoonWorldProvider extends GalacticraftWorldProvider
         float var6 = var5;
         var5 = 1.0F - (float)((Math.cos((double)var5 * Math.PI) + 1.0D) / 2.0D);
         var5 = var6 + (var5 - var6) / 3.0F;
-        return var5 * 0.8F;
+        return var5;
     }
-	
+
+    @SideOnly(Side.CLIENT)
+    public float getStarBrightness(float par1)
+    {
+        float var2 = this.worldObj.getCelestialAngle(par1);
+        float var3 = 1.0F - (MathHelper.cos(var2 * (float)Math.PI * 2.0F) * 2.0F + 0.25F);
+
+        if (var3 < 0.0F)
+        {
+            var3 = 0.0F;
+        }
+
+        if (var3 > 1.0F)
+        {
+            var3 = 1.0F;
+        }
+
+        return var3 * var3 * 0.5F + 0.3F;
+    }
+    
 	public float calculatePhobosAngle(long par1, float par3)
 	{
 		return this.calculateCelestialAngle(par1, par3) * 3000;
@@ -103,7 +123,7 @@ public class GCMoonWorldProvider extends GalacticraftWorldProvider
 
     public boolean isSkyColored()
     {
-        return true;
+        return false;
     }
     
     public double getHorizon()
