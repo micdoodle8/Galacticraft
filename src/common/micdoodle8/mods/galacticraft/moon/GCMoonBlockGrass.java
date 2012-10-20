@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.moon;
 
 import java.util.Random;
 
-import micdoodle8.mods.galacticraft.moon.client.ClientProxyMoon;
+import micdoodle8.mods.galacticraft.API.GCBlockGrass;
 import micdoodle8.mods.galacticraft.moon.client.GCMoonColorizerGrass;
 import net.minecraft.src.Block;
 import net.minecraft.src.BlockFlower;
@@ -13,7 +13,6 @@ import net.minecraft.src.Material;
 import net.minecraft.src.World;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.IPlantable;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
@@ -23,11 +22,11 @@ import cpw.mods.fml.common.asm.SideOnly;
  *  All rights reserved.
  *
  */
-public class GCMoonBlockGrass extends Block
+public class GCMoonBlockGrass extends GCBlockGrass
 {
 	public GCMoonBlockGrass(int par1, int par2) 
 	{
-		super(par1, par2, Material.grass);
+		super(par1, par2);
 		this.setTickRandomly(true);
 		this.setStepSound(Block.soundClothFootstep);
 		this.setCreativeTab(CreativeTabs.tabDecorations);

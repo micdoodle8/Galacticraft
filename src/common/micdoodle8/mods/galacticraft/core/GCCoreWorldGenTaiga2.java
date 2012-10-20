@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core;
 
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.API.GCBlockGrass;
 import micdoodle8.mods.galacticraft.mars.GCMarsBlocks;
 import net.minecraft.src.Block;
 import net.minecraft.src.World;
@@ -86,11 +87,9 @@ public class GCCoreWorldGenTaiga2 extends WorldGenerator
                         }
                     }
                 }
-                FMLLog.info("" + var8);
-
-                if (waterBlocksNearby > 4 && (var11 == GCMarsBlocks.marsGrass.blockID || var11 == GCMarsBlocks.marsDirt.blockID))
+                
+                if (waterBlocksNearby > 4 && (Block.blocksList[var11] != null && Block.blocksList[var11] instanceof GCBlockGrass))
                 {
-                    this.setBlock(par1World, par3, par4 - 1, par5, Block.dirt.blockID);
                     var21 = par2Random.nextInt(2);
                     var13 = 1;
                     byte var22 = 0;

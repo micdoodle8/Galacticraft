@@ -4,6 +4,7 @@ import java.util.Random;
 
 import cpw.mods.fml.common.FMLLog;
 
+import micdoodle8.mods.galacticraft.API.GCBlockGrass;
 import micdoodle8.mods.galacticraft.mars.GCMarsBlocks;
 import net.minecraft.src.Block;
 import net.minecraft.src.Direction;
@@ -112,9 +113,8 @@ public class GCCoreWorldGenTrees extends WorldGenerator
                     }
                 }
 
-                if (waterBlocksNearby > 4 && (var8 == GCMarsBlocks.marsGrass.blockID || var8 == GCMarsBlocks.marsDirt.blockID) && par4 < 256 - var6 - 1)
+                if (waterBlocksNearby > 4 && (Block.blocksList[var8] != null && Block.blocksList[var8] instanceof GCBlockGrass) && par4 < 256 - var6 - 1)
                 {
-                    this.setBlock(par1World, par3, par4 - 1, par5, GCMarsBlocks.marsDirt.blockID);
                     var9 = 3;
                     byte var18 = 0;
                     int var13;

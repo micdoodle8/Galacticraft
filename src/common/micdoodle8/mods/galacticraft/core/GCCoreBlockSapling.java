@@ -73,8 +73,6 @@ public class GCCoreBlockSapling extends BlockSapling
         int var8 = 0;
         int var9 = 0;
         boolean var10 = false;
-        
-        FMLLog.info("" + var6);
 		
 		if (var6 == 1)
         {

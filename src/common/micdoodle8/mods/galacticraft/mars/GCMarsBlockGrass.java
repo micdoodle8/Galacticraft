@@ -2,15 +2,14 @@ package micdoodle8.mods.galacticraft.mars;
 
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.API.GCBlockGrass;
 import net.minecraft.src.Block;
 import net.minecraft.src.BlockFlower;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.IBlockAccess;
-import net.minecraft.src.Material;
 import net.minecraft.src.World;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.IPlantable;
-import cpw.mods.fml.common.FMLLog;
 
 /**
  * Copyright 2012, micdoodle8
@@ -18,11 +17,11 @@ import cpw.mods.fml.common.FMLLog;
  *  All rights reserved.
  *
  */
-public class GCMarsBlockGrass extends Block
+public class GCMarsBlockGrass extends GCBlockGrass
 {
 	public GCMarsBlockGrass(int par1, int par2) 
 	{
-		super(par1, par2, Material.grass);
+		super(par1, par2);
 		this.setTickRandomly(true);
 		this.setStepSound(Block.soundGrassFootstep);
 		this.setCreativeTab(CreativeTabs.tabDecorations);
