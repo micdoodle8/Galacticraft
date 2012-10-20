@@ -226,7 +226,7 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 								if (var16 >= var5 - 1) 
 								{
 									par3ArrayOfint[var17] = var14;
-								} else
+								} else if (var16 < var5 - 1 && var16 >= var5 - 2)
 								{
 									par3ArrayOfint[var17] = var15;
 								}
