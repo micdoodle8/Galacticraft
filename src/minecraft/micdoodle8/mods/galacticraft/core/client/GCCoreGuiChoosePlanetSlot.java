@@ -1,15 +1,10 @@
 package micdoodle8.mods.galacticraft.core.client;
 
-import java.util.ArrayList;
+import net.minecraft.src.GuiSlot;
+import net.minecraft.src.Tessellator;
 
 import org.lwjgl.opengl.GL11;
 
-import micdoodle8.mods.galacticraft.mars.GCMarsUtil;
-import net.minecraft.src.GuiLanguage;
-import net.minecraft.src.GuiSlot;
-import net.minecraft.src.ScaledResolution;
-import net.minecraft.src.StringTranslate;
-import net.minecraft.src.Tessellator;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Side;
@@ -68,14 +63,38 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             GL11.glDisable(GL11.GL_ALPHA_TEST);
             String lowercase = this.languageGui.getDestinations(languageGui)[par1].toLowerCase();
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, FMLClientHandler.instance().getClient().renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/planets/" + lowercase + ".png"));
             Tessellator var3 = Tessellator.instance;
-            var3.startDrawingQuads();
-            var3.addVertexWithUV(par2 - 10 - this.slotHeight * 0.9, 	par3 - 1 + this.slotHeight * 0.9, 	-90.0D, 0.35D, 0.65D);
-            var3.addVertexWithUV(par2 - 10, 							par3 - 1 + this.slotHeight * 0.9, 	-90.0D, 0.65D, 0.65D);
-            var3.addVertexWithUV(par2 - 10, 							par3 - 1, 							-90.0D, 0.65D, 0.35D);
-            var3.addVertexWithUV(par2 - 10 - this.slotHeight * 0.9, 	par3 - 1, 							-90.0D, 0.35D, 0.35D);
-            var3.draw();
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, FMLClientHandler.instance().getClient().renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/planets/" + lowercase + ".png"));
+
+            if (this.languageGui.getDestinations(languageGui)[par1] == "Overworld")
+            {
+                var3.startDrawingQuads();
+                var3.addVertexWithUV(par2 - 10 - this.slotHeight * 0.9, 	par3 - 1 + this.slotHeight * 0.9, 	-90.0D, 0.0, 1.0);
+                var3.addVertexWithUV(par2 - 10, 							par3 - 1 + this.slotHeight * 0.9, 	-90.0D, 1.0, 1.0);
+                var3.addVertexWithUV(par2 - 10, 							par3 - 1, 							-90.0D, 1.0, 0.0);
+                var3.addVertexWithUV(par2 - 10 - this.slotHeight * 0.9, 	par3 - 1, 							-90.0D, 0.0, 0.0);
+                var3.draw();
+            }
+            else if (this.languageGui.getDestinations(languageGui)[par1] == "Moon")
+            {
+                GL11.glBindTexture(GL11.GL_TEXTURE_2D, FMLClientHandler.instance().getClient().renderEngine.getTexture("/terrain/moon.png"));
+                var3.startDrawingQuads();
+                var3.addVertexWithUV(par2 - 10 - this.slotHeight * 0.9, 	par3 - 1 + this.slotHeight * 0.9, 	-90.0D, 0.35D, 0.65D);
+                var3.addVertexWithUV(par2 - 10, 							par3 - 1 + this.slotHeight * 0.9, 	-90.0D, 0.65D, 0.65D);
+                var3.addVertexWithUV(par2 - 10, 							par3 - 1, 							-90.0D, 0.65D, 0.35D);
+                var3.addVertexWithUV(par2 - 10 - this.slotHeight * 0.9, 	par3 - 1, 							-90.0D, 0.35D, 0.35D);
+                var3.draw();
+            }
+            else
+            {
+                var3.startDrawingQuads();
+                var3.addVertexWithUV(par2 - 10 - this.slotHeight * 0.9, 	par3 - 1 + this.slotHeight * 0.9, 	-90.0D, 0.35D, 0.65D);
+                var3.addVertexWithUV(par2 - 10, 							par3 - 1 + this.slotHeight * 0.9, 	-90.0D, 0.65D, 0.65D);
+                var3.addVertexWithUV(par2 - 10, 							par3 - 1, 							-90.0D, 0.65D, 0.35D);
+                var3.addVertexWithUV(par2 - 10 - this.slotHeight * 0.9, 	par3 - 1, 							-90.0D, 0.35D, 0.35D);
+                var3.draw();
+            }
+            
             GL11.glDepthMask(true);
             GL11.glEnable(GL11.GL_DEPTH_TEST);
             GL11.glEnable(GL11.GL_ALPHA_TEST);
