@@ -14,6 +14,7 @@ import net.minecraft.src.NetworkManager;
 import net.minecraft.src.Packet250CustomPayload;
 import net.minecraft.src.Packet9Respawn;
 import net.minecraft.src.ServerPlayerAPI;
+import net.minecraft.src.StatCollector;
 import net.minecraft.src.World;
 import net.minecraft.src.WorldProviderSurface;
 import net.minecraftforge.common.MinecraftForge;
@@ -119,6 +120,8 @@ public class GalacticraftCore
 	@ServerStarted
 	public void serverInit(FMLServerStartedEvent event)
 	{
+		moon.serverInit(event);
+		
         TickRegistry.registerTickHandler(new CommonTickHandler(), Side.SERVER);
         NetworkRegistry.instance().registerChannel(new ServerPacketHandler(), "Galacticraft", Side.SERVER);
 	}
@@ -145,6 +148,7 @@ public class GalacticraftCore
 	{
 		registerGalacticraftNonMobEntity(GCCoreEntitySpaceship.class, "Spaceship", GCCoreConfigManager.idEntitySpaceship, 150, 5, true);
 		registerGalacticraftNonMobEntity(GCCoreEntityArrow.class, "Gravity Arrow", GCCoreConfigManager.idEntityAntiGravityArrow, 150, 5, true);
+		registerGalacticraftNonMobEntity(GCCoreEntityMeteor.class, "Meteor", GCCoreConfigManager.idEntityMeteor, 150, 5, true);
 	}
 
     public void registerGalacticraftCreature(Class var0, String var1, int id, int back, int fore)

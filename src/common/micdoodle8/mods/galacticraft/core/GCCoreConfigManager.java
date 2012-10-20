@@ -87,6 +87,7 @@ public class GCCoreConfigManager
 	public static int idEntityEvolvedSkeleton;
 	public static int idEntitySpaceship;
 	public static int idEntityAntiGravityArrow;
+	public static int idEntityMeteor;
 	
 	private void setDefaultValues()
     {
@@ -148,6 +149,7 @@ public class GCCoreConfigManager
 	        idEntityEvolvedSkeleton = configuration.getOrCreateIntProperty("idEntityEvolvedSkeleton", 							"ENTITIES", 					158).getInt(158); 	
 	        idEntitySpaceship = configuration.getOrCreateIntProperty("idEntitySpaceship", 										"ENTITIES", 					159).getInt(159); 	
 	        idEntityAntiGravityArrow = configuration.getOrCreateIntProperty("idEntityAntiGravityArrow", 						"ENTITIES", 					160).getInt(160); 	
+	        idEntityMeteor = configuration.getOrCreateIntProperty("idEntityMeteor", 											"ENTITIES", 					161).getInt(161); 	
 		}
 		catch (Exception e)
 		{

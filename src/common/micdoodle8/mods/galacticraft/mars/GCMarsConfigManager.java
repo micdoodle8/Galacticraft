@@ -145,9 +145,9 @@ public class GCMarsConfigManager
 			idArmorHeavyBoots = configuration.getOrCreateIntProperty("idArmorHeavyBoots", 										configuration.CATEGORY_ITEM, 	9912).getInt(9912);
 			idArmorJetpack = configuration.getOrCreateIntProperty("idArmorJetpack", 											configuration.CATEGORY_ITEM, 	9913).getInt(9913);
 
-			idEntityCreeperBoss = configuration.getOrCreateIntProperty("idEntityCreeperBoss", 									"ENTITIES", 					161).getInt(161); 	
-			idEntitySludgeling = configuration.getOrCreateIntProperty("idEntitySludgeling", 									"ENTITIES", 					162).getInt(162); 	
-			idEntityProjectileTNT = configuration.getOrCreateIntProperty("idEntityProjectileTNT", 								"ENTITIES", 					163).getInt(163); 	
+			idEntityCreeperBoss = configuration.getOrCreateIntProperty("idEntityCreeperBoss", 									"ENTITIES", 					162).getInt(162); 	
+			idEntitySludgeling = configuration.getOrCreateIntProperty("idEntitySludgeling", 									"ENTITIES", 					163).getInt(163); 	
+			idEntityProjectileTNT = configuration.getOrCreateIntProperty("idEntityProjectileTNT", 								"ENTITIES", 					164).getInt(164); 	
 		}
 		catch (Exception e)
 		{

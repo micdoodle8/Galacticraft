@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.mars.client;
 
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.mars.GCMarsWorldProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.GLAllocation;
@@ -133,22 +134,25 @@ public class GCMarsSkyProvider extends SkyProvider
         var23.addVertexWithUV((double)var12, 150.0D, (double)var12, 1.0D, 1.0D);
         var23.addVertexWithUV((double)(-var12), 150.0D, (double)var12, 0.0D, 1.0D);
         var23.draw();
+        GL11.glPopMatrix();
         // HOME:
-        var12 = 3.0F;
+        GL11.glPushMatrix();
+        var12 = 0.4F;
         GL11.glScalef(0.6F, 0.6F, 0.6F);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 5F);
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/planets/overworld.png"));
         int var28 = world.getMoonPhase(partialTicks);
         int var30 = var28 % 4;
         int var29 = var28 / 4 % 2;
-        GL11.glRotatef(world.getCelestialAngle(partialTicks) - 180, 1.0F, 0.0F, 0.0F);
-        GL11.glRotatef(-10F, 0.0F, 0.0F, 1.0F);
+        GL11.glRotatef(GCCoreUtil.calculateEarthAngleFromOtherPlanet(world.getWorldTime(), partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
+        GL11.glRotatef(-40F, 0.0F, 0.0F, 1.0F);
         var23.startDrawingQuads();
         var23.addVertexWithUV((double)(-var12), -100.0D, (double)var12, (double)0, (double)1);
         var23.addVertexWithUV((double)var12, -100.0D, (double)var12, (double)1, (double)1);
         var23.addVertexWithUV((double)var12, -100.0D, (double)(-var12), (double)1, (double)0);
         var23.addVertexWithUV((double)(-var12), -100.0D, (double)(-var12), (double)0, (double)0);
         var23.draw();
+        GL11.glPopMatrix();
         // PHOBOS:
         if (gcProvider != null)
         {
@@ -195,7 +199,6 @@ public class GCMarsSkyProvider extends SkyProvider
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
         GL11.glEnable(GL11.GL_FOG);
-        GL11.glPopMatrix();
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glColor3f(0.0F, 0.0F, 0.0F);
         double var25 = mc.thePlayer.getPosition(partialTicks).yCoord - world.getHorizon();

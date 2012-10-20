@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.moon;
 
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.moon.client.ClientProxyMoon;
 import micdoodle8.mods.galacticraft.moon.client.GCMoonColorizerGrass;
 import net.minecraft.src.Block;
 import net.minecraft.src.BlockFlower;
@@ -33,6 +34,12 @@ public class GCMoonBlockGrass extends Block
 		this.setRequiresSelfNotify();
 	}
 
+//	@Override
+//    public int getRenderType()
+//    {
+//        return ClientProxyMoon.getGCMoonTurfRenderID();
+//    }
+    
 	@Override
     public int getBlockTextureFromSideAndMetadata(int side, int meta)
     {
@@ -46,6 +53,10 @@ public class GCMoonBlockGrass extends Block
 			{
 				return 4;
 			}
+			else if (meta == 2)
+			{
+				return 5;
+			}
 		}
 		else if (side == 0)
 		{
@@ -58,19 +69,30 @@ public class GCMoonBlockGrass extends Block
 	@Override
 	public int getBlockTexture(IBlockAccess par1IBlockAccess, int x, int y, int z, int side) 
 	{
+		int meta = par1IBlockAccess.getBlockMetadata(x, y, z);
+		
         if (side == 1)
         {
-            return 0;
+			if (meta == 0)
+			{
+				return 0;
+			}
+			else if (meta == 1)
+			{
+				return 4;
+			}
+			else if (meta == 2)
+			{
+				return 5;
+			}
         }
         else if (side == 0)
         {
             return 2;
         }
-        else
-        {
-            Material var6 = par1IBlockAccess.getBlockMaterial(x, y + 1, z);
-            return var6 != Material.snow && var6 != Material.craftedSnow ? 3 : 68;
-        }
+        
+        Material var6 = par1IBlockAccess.getBlockMaterial(x, y + 1, z);
+        return var6 != Material.snow && var6 != Material.craftedSnow ? 3 : 68;
 	}
 
 	@Override
@@ -140,7 +162,6 @@ public class GCMoonBlockGrass extends Block
             for (int var9 = -1; var9 <= 1; ++var9)
             {
             	int var10 = getGrassColorAtYCoord(par3);
-//                int var10 = par1IBlockAccess.getBiomeGenForCoords(par2 + var9, par4 + var8).getBiomeGrassColor() / 200;
                 var5 += (var10 & 255);
                 var6 += (var10 & 255);
                 var7 += var10 & 255;

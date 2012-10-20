@@ -435,4 +435,25 @@ public class GCCoreUtil
         var5 = var6 + (var5 - var6) / 3.0F;
         return var5;
 	}
+	
+	public static float calculateEarthAngleFromOtherPlanet(long par1, float par3)
+	{
+        int var4 = (int)(par1 % 48000L);
+        float var5 = ((float)var4 + par3) / 48000.0F - 0.25F;
+
+        if (var5 < 0.0F)
+        {
+            ++var5;
+        }
+
+        if (var5 > 1.0F)
+        {
+            --var5;
+        }
+
+        float var6 = var5;
+        var5 = 1.0F - (float)((Math.cos((double)var5 * Math.PI) + 1.0D) / 2.0D);
+        var5 = var6 + (var5 - var6) / 3.0F;
+        return var5;
+	}
 }
