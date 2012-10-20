@@ -143,7 +143,7 @@ public class GCMoonSkyProvider extends SkyProvider
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 5F);
             GL11.glRotatef(GCCoreUtil.calculateMarsAngleFromOtherPlanet(world.getWorldTime(), partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
 //            FMLLog.info("" + GCCoreUtil.calculateMarsAngleFromOtherPlanet(world.getWorldTime(), partialTicks) * 360.0F);
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/micdoodle8/mods/galacticraft/mars/client/planets/mars.png"));
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/planets/mars.png"));
             var23.startDrawingQuads();
             var23.addVertexWithUV((double)(-var12), 150.0D, (double)(-var12), 0.0D, 0.0D);
             var23.addVertexWithUV((double)var12, 150.0D, (double)(-var12), 1.0D, 0.0D);
