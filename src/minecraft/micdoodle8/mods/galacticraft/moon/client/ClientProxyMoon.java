@@ -1,7 +1,9 @@
 package micdoodle8.mods.galacticraft.moon.client;
 
 import micdoodle8.mods.galacticraft.moon.CommonProxyMoon;
+import net.minecraft.src.ColorizerGrass;
 import net.minecraft.src.World;
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -17,7 +19,7 @@ public class ClientProxyMoon extends CommonProxyMoon
 	@Override
 	public void init(FMLInitializationEvent event)
 	{
-		
+        GCMoonColorizerGrass.setGrassBiomeColorizer(FMLClientHandler.instance().getClient().renderEngine.getTextureContents("/micdoodle8/mods/galacticraft/moon/client/blocks/moonfoliagecolor.png"));
 	}
 
 	@Override

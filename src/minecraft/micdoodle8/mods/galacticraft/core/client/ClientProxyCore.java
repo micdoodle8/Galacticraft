@@ -20,6 +20,7 @@ import micdoodle8.mods.galacticraft.core.GCCoreEntitySpider;
 import micdoodle8.mods.galacticraft.core.GCCoreEntityZombie;
 import micdoodle8.mods.galacticraft.core.GCCoreItemSensorGlasses;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.moon.client.ClientProxyMoon;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.EntityClientPlayerMP;
 import net.minecraft.src.EntityFX;
@@ -79,10 +80,13 @@ public class ClientProxyCore extends CommonProxyCore
 	public static long getFirstBootTime;
 	public static long getCurrentTime;
 	private Random rand = new Random();
+	public ClientProxyMoon moon = new ClientProxyMoon();
 	
 	@Override
 	public void preInit(FMLPreInitializationEvent event) 
 	{
+		moon.preInit(event);
+		
 		MinecraftForge.EVENT_BUS.register(new GCCoreSounds());
 		getFirstBootTime = System.currentTimeMillis();
 				
@@ -101,6 +105,8 @@ public class ClientProxyCore extends CommonProxyCore
 	@Override
 	public void init(FMLInitializationEvent event) 
 	{
+		moon.init(event);
+		
 		TickRegistry.registerTickHandler(new TickHandlerClient(), Side.CLIENT);
 		KeyBindingRegistry.registerKeyBinding(new GCKeyHandler());
         NetworkRegistry.instance().registerChannel(new ClientPacketHandler(), "Galacticraft", Side.CLIENT);
@@ -118,11 +124,14 @@ public class ClientProxyCore extends CommonProxyCore
 	@Override
 	public void postInit(FMLPostInitializationEvent event) 
 	{
+		moon.postInit(event);
 	}
 	
 	@Override
 	public void registerRenderInformation() 
 	{
+		moon.registerRenderInformation();
+		
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntitySpaceship.class, new GCCoreRenderSpaceship());
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntitySpider.class, new GCCoreRenderSpider());
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityZombie.class, new RenderLiving(new GCCoreModelZombie(), 1.0F));
@@ -143,10 +152,8 @@ public class ClientProxyCore extends CommonProxyCore
 	@Override
 	public void displayChoosePlanetGui()
 	{
-		FMLLog.info("2");
 		if (FMLClientHandler.instance().getClient().theWorld != null && !(FMLClientHandler.instance().getClient().currentScreen instanceof GCCoreGuiChoosePlanet))
 		{
-			FMLLog.info("3");
 			FMLClientHandler.instance().getClient().displayGuiScreen(new GCCoreGuiChoosePlanet(FMLClientHandler.instance().getClient().thePlayer));
 		}
 	}

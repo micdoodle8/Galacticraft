@@ -1,15 +1,13 @@
 package micdoodle8.mods.galacticraft.moon;
 
-import java.util.Random;
-
 import micdoodle8.mods.galacticraft.core.GCCoreEntitySpider;
 import micdoodle8.mods.galacticraft.core.GCCoreEntityZombie;
-import net.minecraft.src.BiomeDecorator;
+import micdoodle8.mods.galacticraft.moon.client.GCMoonColorizerGrass;
 import net.minecraft.src.BiomeGenBase;
-import net.minecraft.src.Block;
+import net.minecraft.src.MathHelper;
 import net.minecraft.src.SpawnListEntry;
-import net.minecraft.src.WorldGenTallGrass;
-import net.minecraft.src.WorldGenerator;
+import cpw.mods.fml.common.Side;
+import cpw.mods.fml.common.asm.SideOnly;
 
 /**
  * Copyright 2012, micdoodle8
@@ -40,5 +38,12 @@ public class GCMoonBiomeGenBase extends BiomeGenBase
     public float getSpawningChance()
     {
         return 0.01F;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public int getBiomeGrassColor()
+    {
+        double var3 = (double)MathHelper.clamp_float(this.maxHeight, 0.0F, 1.0F);
+        return GCMoonColorizerGrass.getGrassColor(var3, var3);
     }
 }

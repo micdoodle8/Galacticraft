@@ -2,6 +2,8 @@ package micdoodle8.mods.galacticraft.moon;
 
 import java.io.File;
 
+import micdoodle8.mods.galacticraft.core.GCCoreLocalization;
+import micdoodle8.mods.galacticraft.mars.GCMarsBlocks;
 import net.minecraft.src.ServerPlayerAPI;
 import net.minecraftforge.common.DimensionManager;
 
@@ -23,9 +25,18 @@ import cpw.mods.fml.common.network.NetworkMod;
  */
 public class GalacticraftMoon
 {
+	public static GCCoreLocalization lang;
+	
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		new GCMoonConfigManager(new File(event.getModConfigurationDirectory(), "Galacticraft/moon.conf"));
+		
+		lang = new GCCoreLocalization("micdoodle8/mods/galacticraft/moon/client");
+		
+		GCMoonBlocks.initBlocks();
+		GCMoonBlocks.registerBlocks();
+		GCMoonBlocks.setHarvestLevels();
+		GCMoonBlocks.addNames();
 		
 		try
 		{

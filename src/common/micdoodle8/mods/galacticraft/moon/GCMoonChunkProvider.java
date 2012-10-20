@@ -136,7 +136,7 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 							{
 								if ((var47 += var49) > 0.0D) 
 								{
-									par3ArrayOfint[var43 += var44] = (int) 1; // TODO
+									par3ArrayOfint[var43 += var44] = (int) GCMoonBlocks.moonStone.blockID;
 								}
 								else if (var12 * 8 + var31 < var6) 
 								{
@@ -176,8 +176,8 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 				float var11 = var10.getFloatTemperature();
 				int var12 = (int) (this.stoneNoise[var8 + var9 * 16] / 3.0D + 3.0D + this.rand.nextDouble() * 0.25D);
 				int var13 = -1;
-				int var14 = (int) Block.grass.blockID;
-				int var15 = (int) Block.dirt.blockID;
+				int var14 = (int) GCMoonBlocks.moonGrass.blockID;
+				int var15 = (int) GCMoonBlocks.moonDirt.blockID;
 
 				for (int var16 = 127; var16 >= 0; --var16) 
 				{
@@ -194,19 +194,19 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 						{
 							var13 = -1;
 						} 
-						else if (var18 == (int) 1) // TODO
+						else if (var18 == (int) GCMoonBlocks.moonStone.blockID)
 						{
 							if (var13 == -1)
 							{
 								if (var12 <= 0)
 								{
 									var14 = 0;
-									var15 = (int) 1; // TODO
+									var15 = (int) GCMoonBlocks.moonStone.blockID;
 								} 
 								else if (var16 >= var5 - -16 && var16 <= var5 + 1)
 								{
-									var14 = Block.grass.blockID;
-									var15 = Block.dirt.blockID;
+									var14 = GCMoonBlocks.moonGrass.blockID;
+									var15 = GCMoonBlocks.moonDirt.blockID;
 								}
 
 								if (var16 < var5 && var14 == 0) 
@@ -328,7 +328,7 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 							var24 /= 2.0F;
 						}
 
-						var16 += var23.maxHeight * var24 + 2;
+						var16 += var23.maxHeight * var24;
 						var17 += var23.minHeight * var24 * 0.5 + 2;
 						var18 += var24;
 					}
