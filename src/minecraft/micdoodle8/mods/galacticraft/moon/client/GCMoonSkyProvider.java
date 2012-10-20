@@ -178,11 +178,11 @@ public class GCMoonSkyProvider extends SkyProvider
         GL11.glDisable(GL11.GL_BLEND);
         
         // HOME:
-        var12 = 15.0F;
+        var12 = 10.0F;
         float earthRotation = (float) (world.getSpawnPoint().posZ - mc.thePlayer.posZ) * 0.01F;
         GL11.glScalef(0.6F, 0.6F, 0.6F);
         GL11.glRotatef(earthRotation, 1.0F, 0.0F, 0.0F);
-        GL11.glRotatef(90F, 1.0F, 0.0F, 0.0F);
+        GL11.glRotatef(200F, 1.0F, 0.0F, 0.0F);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1F);
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/planets/overworld.png"));
         int var28 = world.getMoonPhase(partialTicks);
