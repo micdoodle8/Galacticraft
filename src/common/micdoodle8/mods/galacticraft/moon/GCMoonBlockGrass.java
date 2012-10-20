@@ -28,14 +28,31 @@ public class GCMoonBlockGrass extends Block
 	{
 		super(par1, par2, Material.grass);
 		this.setTickRandomly(true);
-		this.setStepSound(Block.soundGrassFootstep);
+		this.setStepSound(Block.soundClothFootstep);
 		this.setCreativeTab(CreativeTabs.tabDecorations);
+		this.setRequiresSelfNotify();
 	}
 
 	@Override
-    public int getBlockTextureFromSideAndMetadata(int side, int par2)
+    public int getBlockTextureFromSideAndMetadata(int side, int meta)
     {
-        return side == 1 ? 0 : (side == 0 ? 2 : 3);
+		if (side == 1)
+		{
+			if (meta == 0)
+			{
+				return 0;
+			}
+			else if (meta == 1)
+			{
+				return 4;
+			}
+		}
+		else if (side == 0)
+		{
+			return 2;
+		}
+		
+		return 3;
     }
     
 	@Override
