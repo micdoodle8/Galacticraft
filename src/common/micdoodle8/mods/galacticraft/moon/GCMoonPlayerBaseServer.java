@@ -47,7 +47,7 @@ public class GCMoonPlayerBaseServer extends ServerPlayerBase
 		
 		if (player.worldObj.provider instanceof GCMoonWorldProvider)
 		{
-			if (player.worldObj.rand.nextInt(20) == 0)
+			if (player.worldObj.rand.nextInt(100) == 0)
 			{
 				int x, y, z;
 				double motX, motZ;
@@ -60,7 +60,7 @@ public class GCMoonPlayerBaseServer extends ServerPlayerBase
 				GCCoreEntityMeteor meteor = new GCCoreEntityMeteor(player.worldObj, player.posX + x, y, player.posZ + z, motX - 2.5D, 0, motZ - 2.5D, 1);
 				player.worldObj.spawnEntityInWorld(meteor);
 			}
-			if (player.worldObj.rand.nextInt(100) == 0)
+			if (player.worldObj.rand.nextInt(500) == 0)
 			{
 				int x, y, z;
 				double motX, motZ;
