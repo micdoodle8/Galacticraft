@@ -21,6 +21,9 @@ public class GCCoreEntityMeteor extends Entity
 {
     public EntityLiving shootingEntity;
     public int size;
+    private int xTile = -1;
+    private int yTile = -1;
+    private int zTile = -1;
     
 	public GCCoreEntityMeteor(World world)
 	{
@@ -31,7 +34,7 @@ public class GCCoreEntityMeteor extends Entity
     {
     	this(world);
         this.size = size;
-        this.setSize(10.0F, 10.0F);
+        this.setSize(1.0F, 1.0F);
         this.setLocationAndAngles(x, y, z, this.rotationYaw, this.rotationPitch);
         this.setPosition(x, y, z);
         this.motionX = motX;
@@ -48,7 +51,6 @@ public class GCCoreEntityMeteor extends Entity
         this.prevPosZ = this.posZ;
         this.motionY -= 0.03999999910593033D;
         this.moveEntity(this.motionX, this.motionY, this.motionZ);
-        this.motionY *= 0.9800000190734863D;
         
         if (this.worldObj.isRemote)
         {
@@ -57,7 +59,7 @@ public class GCCoreEntityMeteor extends Entity
 
         Vec3 var15 = Vec3.getVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
         Vec3 var2 = Vec3.getVec3Pool().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
-        MovingObjectPosition var3 = this.worldObj.rayTraceBlocks(var15, var2);
+        MovingObjectPosition var3 = this.worldObj.rayTraceBlocks_do_do(var15, var2, true, true);
         var15 = Vec3.getVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
         var2 = Vec3.getVec3Pool().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 
@@ -67,7 +69,7 @@ public class GCCoreEntityMeteor extends Entity
         }
 
         Entity var4 = null;
-        List var5 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
+        List var5 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(2.0D, 2.0D, 2.0D));
         double var6 = 0.0D;
         Iterator var8 = var5.iterator();
 
@@ -77,7 +79,7 @@ public class GCCoreEntityMeteor extends Entity
 
             if (var9.canBeCollidedWith() && (!var9.isEntityEqual(this.shootingEntity)))
             {
-                float var10 = 0.3F;
+                float var10 = 0.01F;
                 AxisAlignedBB var11 = var9.boundingBox.expand((double)var10, (double)var10, (double)var10);
                 MovingObjectPosition var12 = var11.calculateIntercept(var15, var2);
 
@@ -99,9 +101,16 @@ public class GCCoreEntityMeteor extends Entity
             var3 = new MovingObjectPosition(var4);
         }
 
-        if (var3 != null || this.motionY == 0)
+        if (var3 != null)
         {
-            this.onImpact(var3);
+            this.xTile = var3.blockX;
+            this.yTile = var3.blockY;
+            this.zTile = var3.blockZ;
+            
+            if (!(this.worldObj.getBlockId(this.xTile, this.yTile, this.zTile) == GCCoreBlocks.breatheableAir.blockID))
+            {
+                this.onImpact(var3);
+            }
         }
         
         if (this.posY <= -20 || this.posY >= 400)
@@ -149,6 +158,7 @@ public class GCCoreEntityMeteor extends Entity
 	protected void entityInit() 
 	{
         this.dataWatcher.addObject(16, (int) this.size);
+        this.noClip = true;
 	}
 	
     public int getSize()
