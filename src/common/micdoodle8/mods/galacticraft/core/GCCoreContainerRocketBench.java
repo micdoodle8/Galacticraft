@@ -19,35 +19,35 @@ public class GCCoreContainerRocketBench extends Container
         int var7;
         
         // Cone
-        this.addSlotToContainer(new Slot(this.craftMatrix, 1, 48, -8));
+        this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, 1, 48, -8));
 
         // Body
         for (var6 = 0; var6 < 4; ++var6)
         {
-            this.addSlotToContainer(new Slot(this.craftMatrix, 2 + var6, 39, -6 + (var6 * 18 + 16)));
+            this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, 2 + var6, 39, -6 + (var6 * 18 + 16)));
         }
         
         // Body Right
         for (var6 = 0; var6 < 4; ++var6)
         {
-            this.addSlotToContainer(new Slot(this.craftMatrix, 6 + var6, 57, -6 + (var6 * 18 + 16)));
+            this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, 6 + var6, 57, -6 + (var6 * 18 + 16)));
         }
 
         // Left fins
-        this.addSlotToContainer(new Slot(this.craftMatrix, 10, 21, 64));
-        this.addSlotToContainer(new Slot(this.craftMatrix, 11, 21, 82));
+        this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, 10, 21, 64));
+        this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, 11, 21, 82));
         
         // Engine
-        this.addSlotToContainer(new Slot(this.craftMatrix, 12, 48, 82));
+        this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, 12, 48, 82));
         
         // Right fins
-        this.addSlotToContainer(new Slot(this.craftMatrix, 13, 75, 64));
-        this.addSlotToContainer(new Slot(this.craftMatrix, 14, 75, 82));
+        this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, 13, 75, 64));
+        this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, 14, 75, 82));
 
         // Addons
         for (int var8 = 0; var8 < 3; var8++)
         {
-            this.addSlotToContainer(new Slot(this.craftMatrix, 15 + var8, 93 + (var8 * 26), -15));
+            this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, 15 + var8, 93 + (var8 * 26), -15));
         }
         
         // Player inv:
@@ -74,7 +74,7 @@ public class GCCoreContainerRocketBench extends Container
 
         if (!this.worldObj.isRemote)
         {
-            for (int var2 = 0; var2 < 9; ++var2)
+            for (int var2 = 1; var2 < 18; ++var2)
             {
                 ItemStack var3 = this.craftMatrix.getStackInSlotOnClosing(var2);
 

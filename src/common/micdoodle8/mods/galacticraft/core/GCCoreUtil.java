@@ -20,6 +20,7 @@ import net.minecraft.src.TileEntityChest;
 import net.minecraft.src.World;
 import net.minecraft.src.WorldProvider;
 import net.minecraftforge.common.DimensionManager;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class GCCoreUtil 
@@ -466,9 +467,34 @@ public class GCCoreUtil
 			slots[i] = inventoryRocketBench.getStackInSlot(i + 1);
 		}
 		
-		if (slots[0] != null && slots[1] != null && slots[2] != null && slots[3] != null && slots[4] != null && slots[5] != null && slots[6] != null && slots[7] != null && slots[8] != null && slots[9] != null && slots[10] != null && slots[11] != null && slots[12] != null && slots[13] != null && slots[14] != null)
+		if (slots[0] != null && slots[1] != null && slots[2] != null && slots[3] != null && slots[4] != null && slots[5] != null && slots[6] != null && slots[7] != null && slots[8] != null && slots[9] != null && slots[10] != null && slots[11] != null && slots[12] != null && slots[13] != null)
 		{
-			return new ItemStack(GCCoreItems.spaceship);
+			if (slots[0].getItem().shiftedIndex == GCCoreItems.rocketNoseCone.shiftedIndex)
+			{
+				int platesInPlace = 0;
+				
+				for (int i = 1; i < 9; i++)
+				{
+					if (slots[i].getItem().shiftedIndex == GCCoreItems.heavyPlating.shiftedIndex)
+					{
+						platesInPlace++;
+					}
+				}
+				
+				if (platesInPlace == 8)
+				{
+					if (slots[9].getItem().shiftedIndex == GCCoreItems.rocketFins.shiftedIndex && slots[10].getItem().shiftedIndex == GCCoreItems.rocketFins.shiftedIndex)
+					{
+						if (slots[12].getItem().shiftedIndex == GCCoreItems.rocketFins.shiftedIndex && slots[13].getItem().shiftedIndex == GCCoreItems.rocketFins.shiftedIndex)
+						{
+							if (slots[11].getItem().shiftedIndex == GCCoreItems.rocketEngine.shiftedIndex)
+							{
+								return new ItemStack(GCCoreItems.spaceship);
+							}
+						}
+					}
+				}
+			}
 		}
 		
 		return null;

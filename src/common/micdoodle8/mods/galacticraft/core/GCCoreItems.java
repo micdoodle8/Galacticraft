@@ -47,7 +47,6 @@ public class GCCoreItems
 	public static Item airFan;
 	public static Item oxygenConcentrator;
 	public static Item gravityBow;
-	
 	public static Item rocketEngine;
 	public static Item heavyPlating;
 	public static Item rocketNoseCone;
@@ -88,10 +87,10 @@ public class GCCoreItems
 		airFan = new GCCoreItem(GCCoreConfigManager.idItemFan).setIconIndex(24).setItemName("airFan");
 		oxygenConcentrator = new GCCoreItem(GCCoreConfigManager.idItemOxygenConcentrator).setIconIndex(25).setItemName("oxygenConcentrator");
 		gravityBow = new GCCoreItemBow(GCCoreConfigManager.idItemGravityBow).setIconCoord(5, 1).setItemName("bow");
-		rocketEngine = new GCCoreItem(GCCoreConfigManager.idItemRocketEngine).setIconIndex(25).setItemName("rocketEngine");
-		heavyPlating = new GCCoreItem(GCCoreConfigManager.idItemHeavyPlate).setIconIndex(25).setItemName("heavyPlating");
-		rocketNoseCone = new GCCoreItem(GCCoreConfigManager.idItemRocketNoseCone).setIconIndex(25).setItemName("noseCone");
-		rocketFins = new GCCoreItem(GCCoreConfigManager.idItemRocketFins).setIconIndex(25).setItemName("rocketFins");
+		heavyPlating = new GCCoreItem(GCCoreConfigManager.idItemHeavyPlate).setIconIndex(26).setItemName("heavyPlating");
+		rocketEngine = new GCCoreItem(GCCoreConfigManager.idItemRocketEngine).setIconIndex(27).setItemName("rocketEngine");
+		rocketFins = new GCCoreItem(GCCoreConfigManager.idItemRocketFins).setIconIndex(28).setItemName("rocketFins");
+		rocketNoseCone = new GCCoreItem(GCCoreConfigManager.idItemRocketNoseCone).setIconIndex(29).setItemName("noseCone");
 	}
 
 	public static void addNames() 
