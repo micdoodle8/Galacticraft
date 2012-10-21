@@ -10,6 +10,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.src.EntityClientPlayerMP;
 import net.minecraft.src.World;
 import net.minecraft.src.WorldClient;
+import net.minecraftforge.client.MinecraftForgeClient;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLLog;
@@ -45,13 +46,14 @@ public class ClientProxyMoon extends CommonProxyMoon
 	@Override
 	public void registerRenderInformation()
 	{
-		
+		MinecraftForgeClient.preloadTexture("/micdoodle8/mods/galacticraft/moon/client/blocks/moon.png");
+		MinecraftForgeClient.preloadTexture("/micdoodle8/mods/galacticraft/moon/client/items/moon.png");
 	}
 
 	@Override
 	public World getClientWorld()
 	{
-		return null;
+		return FMLClientHandler.instance().getClient().theWorld;
 	}
 
 	@Override
