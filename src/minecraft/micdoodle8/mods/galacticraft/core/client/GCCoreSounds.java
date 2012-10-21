@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client;
 
-import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraftforge.client.event.sound.SoundLoadEvent;
 import net.minecraftforge.event.ForgeSubscribe;
 
@@ -17,7 +17,7 @@ public class GCCoreSounds
     {
         try
         {
-            event.manager.soundPoolSounds.addSound("shuttle/sound.wav", GalacticraftMars.class.getResource("/micdoodle8/mods/galacticraft/core/client/sounds/shuttle/sound.wav"));                      
+            event.manager.soundPoolSounds.addSound("shuttle/sound.wav", GalacticraftCore.class.getResource("/micdoodle8/mods/galacticraft/core/client/sounds/shuttle/sound.wav"));                      
        
         }
         catch (Exception e)
