@@ -103,6 +103,14 @@ public class GCCoreModelMeteor extends ModelBase
 			shapes[i].render(f5);
 		}
 	}
+	
+	public void renderBlock(float f)
+	{
+		for (int i = 0; i < shapes.length; i++)
+		{
+			shapes[i].render(f);
+		}
+	}
 
 	private void setRotation(ModelRenderer model, float x, float y, float z)
 	{

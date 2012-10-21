@@ -79,6 +79,7 @@ public class ClientProxyCore extends CommonProxyCore
 	private static int torchRenderID;
 	private static int breathableAirRenderID;
 	private static int oxygenPipeRenderID;
+	private static int meteorRenderID;
 	public static long getFirstBootTime;
 	public static long getCurrentTime;
 	private Random rand = new Random();
@@ -121,6 +122,8 @@ public class ClientProxyCore extends CommonProxyCore
         RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererBreathableAir(this.breathableAirRenderID));
         this.oxygenPipeRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererOxygenPipe(this.oxygenPipeRenderID));
+        this.meteorRenderID = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererMeteor(this.meteorRenderID));
 	}
 
 	@Override
@@ -189,6 +192,12 @@ public class ClientProxyCore extends CommonProxyCore
 	public int getGCOxygenPipeRenderID()
 	{
 		return this.oxygenPipeRenderID;
+	}
+	
+	@Override
+	public int getGCMeteorRenderID()
+	{
+		return this.meteorRenderID;
 	}
 
 	@Override
@@ -289,6 +298,7 @@ public class ClientProxyCore extends CommonProxyCore
     			
     			if (player != null && player.ridingEntity != null && minecraft.gameSettings.keyBindJump.pressed)
     			{
+//    				player.worldObj.playSoundEffect(player.ridingEntity.posX, player.ridingEntity.posY, player.ridingEntity.posZ, "shuttle.sound", 1F, 2.0F);
     	    		Object[] toSend = {0};
     	            PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 3, toSend));
     			}

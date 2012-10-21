@@ -63,6 +63,11 @@ public class CommonProxyCore implements IGuiHandler
 	{
 		return -1;
 	}
+
+	public int getGCMeteorRenderID()
+	{
+		return -1;
+	}
 	
 	public World getClientWorld()
 	{

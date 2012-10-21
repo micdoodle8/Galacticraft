@@ -40,6 +40,7 @@ public class GCCoreConfigManager
 	public static int idBlockOre;
 	public static int idBlockSapling2;
 	public static int idBlockRocketBench;
+	public static int idBlockFallenMeteor;
 
 	// ITEMS
 	public static int idItemLightOxygenTank;
@@ -113,6 +114,7 @@ public class GCCoreConfigManager
 	        idBlockOre = configuration.getOrCreateIntProperty("idBlockCoreOre", 												configuration.CATEGORY_BLOCK, 	3359).getInt(3359);
 	        idBlockSapling2 = configuration.getOrCreateIntProperty("idBlockCoreSapling2", 										configuration.CATEGORY_BLOCK, 	3360).getInt(3360);
 	        idBlockRocketBench = configuration.getOrCreateIntProperty("idBlockRocketBench", 									configuration.CATEGORY_BLOCK, 	3361).getInt(3361);
+	        idBlockFallenMeteor = configuration.getOrCreateIntProperty("idBlockFallenMeteor", 									configuration.CATEGORY_BLOCK, 	3362).getInt(3362);
 
 	        idItemLightOxygenTankEmpty = configuration.getOrCreateIntProperty("idItemLightOxygenTankEmpty", 					configuration.CATEGORY_ITEM, 	9854).getInt(9854);
 	        idItemLightOxygenTank = configuration.getOrCreateIntProperty("idItemLightOxygenTank", 								configuration.CATEGORY_ITEM, 	9855).getInt(9855);
