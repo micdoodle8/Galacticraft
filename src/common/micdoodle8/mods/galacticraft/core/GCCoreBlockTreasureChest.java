@@ -469,9 +469,4 @@ public class GCCoreBlockTreasureChest extends BlockContainer
 
         return true;
     }
-    
-    public String getTextureFile()
-    {
-		return "/micdoodle8/mods/galacticraft/mars/client/blocks/mars.png";
-    }
 }

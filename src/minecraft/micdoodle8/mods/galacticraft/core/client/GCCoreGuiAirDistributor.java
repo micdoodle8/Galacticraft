@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client;
 
-import micdoodle8.mods.galacticraft.core.GCContainerAirDistributor;
+import micdoodle8.mods.galacticraft.core.GCCoreContainerAirDistributor;
 import micdoodle8.mods.galacticraft.core.GCCoreTileEntityOxygenDistributor;
 import net.minecraft.src.GuiContainer;
 import net.minecraft.src.InventoryPlayer;
@@ -20,7 +20,7 @@ public class GCCoreGuiAirDistributor extends GuiContainer
     
 	public GCCoreGuiAirDistributor(InventoryPlayer par1InventoryPlayer, GCCoreTileEntityOxygenDistributor par2TileEntityAirDistributor) 
 	{
-        super(new GCContainerAirDistributor(par1InventoryPlayer, par2TileEntityAirDistributor));
+        super(new GCCoreContainerAirDistributor(par1InventoryPlayer, par2TileEntityAirDistributor));
         this.distributorInv = par2TileEntityAirDistributor;
 	}
 

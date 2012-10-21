@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.client;
 import net.minecraft.src.Container;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.GuiContainer;
-import micdoodle8.mods.galacticraft.core.GCContainerTankRefill;
+import micdoodle8.mods.galacticraft.core.GCCoreContainerTankRefill;
 import micdoodle8.mods.galacticraft.core.GCCoreInventoryTankRefill;
 import micdoodle8.mods.galacticraft.mars.*;
 
@@ -19,7 +19,7 @@ import cpw.mods.fml.client.FMLClientHandler;
  */
 public class GCCoreGuiTankRefill extends GuiContainer 
 {
-	static Container tank = new GCContainerTankRefill(FMLClientHandler.instance().getClient().thePlayer.inventory, new GCCoreInventoryTankRefill());
+	static Container tank = new GCCoreContainerTankRefill(FMLClientHandler.instance().getClient().thePlayer.inventory, new GCCoreInventoryTankRefill());
 	
 	public GCCoreGuiTankRefill(EntityPlayer player)
     {
