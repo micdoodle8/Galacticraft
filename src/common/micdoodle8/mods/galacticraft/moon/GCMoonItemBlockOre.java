@@ -31,32 +31,23 @@ public class GCMoonItemBlockOre extends ItemBlock
 		{
 		case 0: 
 		{
-			name = "desh";
+			name = "aluminummon";
 			break;
 		}
 		case 1: 
 		{
-			name = "quandrium";
+			name = "ironmoon";
 			break;
 		}
 		case 2: 
 		{
-			name = "aluminummars";
-			break;
-		}
-		case 3: 
-		{
-			name = "coppermars";
-			break;
-		}
-		case 4: 
-		{
-			name = "titaniummars";
+			name = "cheesestone";
 			break;
 		}
 		default: 
 			name = "null";
 		}
+		
 		return getItemName() + "." + name;
 	}
 }

@@ -94,6 +94,8 @@ public class GalacticraftCore
 			FMLLog.severe("Galacticraft will now fail to load.");
 			e.printStackTrace();
 		}
+		
+		proxy.preInit(event);
 	}
 	
 	@Init
