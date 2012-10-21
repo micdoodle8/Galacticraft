@@ -39,6 +39,7 @@ public class GCCoreConfigManager
 	public static int idBlockAirCollector;
 	public static int idBlockOre;
 	public static int idBlockSapling2;
+	public static int idBlockRocketBench;
 
 	// ITEMS
 	public static int idItemLightOxygenTank;
@@ -56,6 +57,10 @@ public class GCCoreConfigManager
 	public static int idItemOxygenConcentrator;
 	public static int idItemFan;
 	public static int idItemGravityBow;
+	public static int idItemRocketEngine;
+	public static int idItemHeavyPlate;
+	public static int idItemRocketNoseCone;
+	public static int idItemRocketFins;
 	
 	// ARMOR
 	public static int idArmorOxygenMask;
@@ -77,6 +82,7 @@ public class GCCoreConfigManager
 	// GUI
 	public static int idGuiTankRefill;
 	public static int idGuiAirDistributor;
+	public static int idGuiRocketCraftingBench;
 	
 	// ACHIEVEMENTS
 	public static int idAchievBase;
@@ -105,7 +111,8 @@ public class GCCoreConfigManager
 	        idBlockAirPipe = configuration.getOrCreateIntProperty("idBlockCoreAirPipe", 										configuration.CATEGORY_BLOCK, 	3357).getInt(3357);
 	        idBlockAirCollector = configuration.getOrCreateIntProperty("idBlockCoreAirCollector", 								configuration.CATEGORY_BLOCK, 	3358).getInt(3358);
 	        idBlockOre = configuration.getOrCreateIntProperty("idBlockCoreOre", 												configuration.CATEGORY_BLOCK, 	3359).getInt(3359);
-	        idBlockSapling2 = configuration.getOrCreateIntProperty("idBlockCoreSapling2", 										configuration.CATEGORY_BLOCK, 	3360).getInt(3361);
+	        idBlockSapling2 = configuration.getOrCreateIntProperty("idBlockCoreSapling2", 										configuration.CATEGORY_BLOCK, 	3360).getInt(3360);
+	        idBlockRocketBench = configuration.getOrCreateIntProperty("idBlockRocketBench", 									configuration.CATEGORY_BLOCK, 	3361).getInt(3361);
 
 	        idItemLightOxygenTankEmpty = configuration.getOrCreateIntProperty("idItemLightOxygenTankEmpty", 					configuration.CATEGORY_ITEM, 	9854).getInt(9854);
 	        idItemLightOxygenTank = configuration.getOrCreateIntProperty("idItemLightOxygenTank", 								configuration.CATEGORY_ITEM, 	9855).getInt(9855);
@@ -125,6 +132,10 @@ public class GCCoreConfigManager
 			idItemOxygenConcentrator = configuration.getOrCreateIntProperty("idItemOxygenConcentrator", 						configuration.CATEGORY_ITEM, 	9916).getInt(9916);
 			idItemFan = configuration.getOrCreateIntProperty("idItemFan", 														configuration.CATEGORY_ITEM, 	9917).getInt(9917);
 			idItemGravityBow = configuration.getOrCreateIntProperty("idGravityBow", 											configuration.CATEGORY_ITEM, 	9918).getInt(9918);
+			idItemRocketEngine = configuration.getOrCreateIntProperty("idItemRocketEngine", 									configuration.CATEGORY_ITEM, 	9919).getInt(9919);
+			idItemHeavyPlate = configuration.getOrCreateIntProperty("idItemHeavyPlate", 										configuration.CATEGORY_ITEM, 	9920).getInt(9920);
+			idItemRocketNoseCone = configuration.getOrCreateIntProperty("idItemRocketNoseCone", 								configuration.CATEGORY_ITEM, 	9921).getInt(9921);
+			idItemRocketFins = configuration.getOrCreateIntProperty("idItemRocketFins", 										configuration.CATEGORY_ITEM, 	9922).getInt(9922);
 
 			idToolTitaniumSword = configuration.getOrCreateIntProperty("idToolTitaniumSword", 									configuration.CATEGORY_ITEM, 	9892).getInt(9892);
 			idToolTitaniumPickaxe = configuration.getOrCreateIntProperty("idToolTitaniumPickaxe", 								configuration.CATEGORY_ITEM, 	9893).getInt(9893);
@@ -140,6 +151,7 @@ public class GCCoreConfigManager
 			
 	        idGuiTankRefill = configuration.getOrCreateIntProperty("GuiIdTankRefill", 											"GUI", 							128).getInt(128);
 	        idGuiAirDistributor = configuration.getOrCreateIntProperty("idGuiAirDistributor", 									"GUI", 							129).getInt(129);
+	        idGuiRocketCraftingBench = configuration.getOrCreateIntProperty("idGuiRocketCraftingBench", 						"GUI", 							130).getInt(130);
 	        
 	        idAchievBase = configuration.getOrCreateIntProperty("idAchievBase", 												"Achievements", 				1784).getInt(1784);
 

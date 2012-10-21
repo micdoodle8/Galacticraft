@@ -48,6 +48,11 @@ public class GCCoreItems
 	public static Item oxygenConcentrator;
 	public static Item gravityBow;
 	
+	public static Item rocketEngine;
+	public static Item heavyPlating;
+	public static Item rocketNoseCone;
+	public static Item rocketFins;
+	
 	public static EnumArmorMaterial OXYGENMASK = EnumHelper.addArmorMaterial("OXYGENMASK", 200, new int[] {0, 0, 0, 0}, 0);
 	public static EnumArmorMaterial SENSORGLASSES = EnumHelper.addArmorMaterial("SENSORGLASSES", 200, new int[] {0, 0, 0, 0}, 0);
 	public static EnumArmorMaterial TITANIUMARMOR = EnumHelper.addArmorMaterial("TITANIUM", 42, new int[] {4, 9, 7, 4}, 12);
@@ -83,6 +88,10 @@ public class GCCoreItems
 		airFan = new GCCoreItem(GCCoreConfigManager.idItemFan).setIconIndex(24).setItemName("airFan");
 		oxygenConcentrator = new GCCoreItem(GCCoreConfigManager.idItemOxygenConcentrator).setIconIndex(25).setItemName("oxygenConcentrator");
 		gravityBow = new GCCoreItemBow(GCCoreConfigManager.idItemGravityBow).setIconCoord(5, 1).setItemName("bow");
+		rocketEngine = new GCCoreItem(GCCoreConfigManager.idItemRocketEngine).setIconIndex(25).setItemName("rocketEngine");
+		heavyPlating = new GCCoreItem(GCCoreConfigManager.idItemHeavyPlate).setIconIndex(25).setItemName("heavyPlating");
+		rocketNoseCone = new GCCoreItem(GCCoreConfigManager.idItemRocketNoseCone).setIconIndex(25).setItemName("noseCone");
+		rocketFins = new GCCoreItem(GCCoreConfigManager.idItemRocketFins).setIconIndex(25).setItemName("rocketFins");
 	}
 
 	public static void addNames() 
@@ -114,6 +123,10 @@ public class GCCoreItems
 		addName(airVent);
 		addName(airFan);
 		addName(oxygenConcentrator);
+		addName(rocketEngine);
+		addName(heavyPlating);
+		addName(rocketNoseCone);
+		addName(rocketFins);
 	}
 	
 	private static void addName(Item item)
