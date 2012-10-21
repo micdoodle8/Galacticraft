@@ -27,6 +27,7 @@ public class GCCoreBlocks
 	public static Block blockOres;
 	public static Block blockAirCollector;
 	public static Block sapling;
+	public static Block rocketBench;
 	
 	public static void initBlocks() 
 	{
@@ -41,7 +42,8 @@ public class GCCoreBlocks
 		oxygenPipe = (GCCoreBlockOxygenPipe)					new GCCoreBlockOxygenPipe			(GCCoreConfigManager.idBlockAirPipe, 					17)						.setHardness(0.3F)																				.setCreativeTab(CreativeTabs.tabDecorations)  		.setStepSound(Block.soundGlassFootstep)                 .setBlockName("oxygenPipe");
 		Item.itemsList[blockOres.blockID] = 					new GCCoreItemBlockOre				(blockOres.blockID - 256)																																																																	.setItemName("blockores");	
 		blockAirCollector = 									new GCCoreBlockOxygenCollector		(GCCoreConfigManager.idBlockAirCollector, 				8)						.setHardness(3.5F)  	  																		.setCreativeTab(CreativeTabs.tabDecorations) 		.setStepSound(Block.soundStoneFootstep)					.setBlockName("oxygenCollector");
-		sapling =												new GCCoreBlockSapling				(GCCoreConfigManager.idBlockSapling2,                  	15)						.setHardness(0.0F)																																	.setStepSound(Block.soundGrassFootstep)					.setBlockName("sapling2");
+		sapling =												new GCCoreBlockSapling				(GCCoreConfigManager.idBlockSapling2,                  	15)						.setHardness(0.0F)																				.setCreativeTab((CreativeTabs)null)					.setStepSound(Block.soundGrassFootstep)					.setBlockName("sapling2");
+		rocketBench = 											new GCCoreBlockRocketBench			(GCCoreConfigManager.idBlockRocketBench)										.setHardness(2.5F)																																	.setStepSound(Block.soundMetalFootstep)					.setBlockName("rocketWorkbench");	
 		Item.itemsList[sapling.blockID] = 						new GCCoreItemSapling				(sapling.blockID - 256)																																																																		.setItemName("sapling2");	
 	}
 
@@ -63,6 +65,7 @@ public class GCCoreBlocks
 		GameRegistry.registerBlock(airDistributorActive);
 		GameRegistry.registerBlock(oxygenPipe);
 		GameRegistry.registerBlock(blockAirCollector);
+		GameRegistry.registerBlock(rocketBench);
 	}
 
 	public static void addNames() 

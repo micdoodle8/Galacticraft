@@ -2,18 +2,14 @@ package micdoodle8.mods.galacticraft.core;
 
 import java.util.List;
 
-import micdoodle8.mods.galacticraft.core.GCContainerAirDistributor;
-import micdoodle8.mods.galacticraft.core.GCContainerTankRefill;
-import micdoodle8.mods.galacticraft.core.GCCoreInventoryTankRefill;
-import micdoodle8.mods.galacticraft.core.GCCoreTileEntityOxygenDistributor;
 import micdoodle8.mods.galacticraft.core.client.GCCoreGuiAirDistributor;
+import micdoodle8.mods.galacticraft.core.client.GCCoreGuiRocketBench;
 import micdoodle8.mods.galacticraft.core.client.GCCoreGuiTankRefill;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.World;
 
 import com.google.common.collect.Lists;
 
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -99,7 +95,7 @@ public class CommonProxyCore implements IGuiHandler
 				
 				if (player.username == playerBase.getPlayer().username)
 				{
-					return new GCContainerTankRefill(player.inventory, playerBase.playerTankInventory);
+					return new GCCoreContainerTankRefill(player.inventory, playerBase.playerTankInventory);
 				}
 	        }
 		}
@@ -107,7 +103,11 @@ public class CommonProxyCore implements IGuiHandler
 		{
 			GCCoreTileEntityOxygenDistributor distributor = (GCCoreTileEntityOxygenDistributor) world.getBlockTileEntity(x, y, z);
 
-			return new GCContainerAirDistributor(player.inventory, distributor);
+			return new GCCoreContainerAirDistributor(player.inventory, distributor);
+		}
+		else if (ID == GCCoreConfigManager.idGuiRocketCraftingBench)
+		{
+			return new GCCoreContainerRocketBench(player.inventory);
 		}
 		
 		return null;
@@ -125,6 +125,10 @@ public class CommonProxyCore implements IGuiHandler
 			GCCoreTileEntityOxygenDistributor distributor = (GCCoreTileEntityOxygenDistributor) world.getBlockTileEntity(x, y, z);
 			
 			return new GCCoreGuiAirDistributor(player.inventory, distributor);
+		}
+		else if (ID == GCCoreConfigManager.idGuiRocketCraftingBench)
+		{
+			return new GCCoreGuiRocketBench(player.inventory);
 		}
 		else
 		{

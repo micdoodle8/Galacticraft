@@ -456,4 +456,21 @@ public class GCCoreUtil
         var5 = var6 + (var5 - var6) / 3.0F;
         return var5;
 	}
+	
+	public static ItemStack findMatchingSpaceshipRecipe(GCCoreInventoryRocketBench inventoryRocketBench)
+	{
+		ItemStack[] slots = new ItemStack[18];
+		
+		for (int i = 0; i < 18; i++)
+		{
+			slots[i] = inventoryRocketBench.getStackInSlot(i + 1);
+		}
+		
+		if (slots[0] != null && slots[1] != null && slots[2] != null && slots[3] != null && slots[4] != null && slots[5] != null && slots[6] != null && slots[7] != null && slots[8] != null && slots[9] != null && slots[10] != null && slots[11] != null && slots[12] != null && slots[13] != null && slots[14] != null)
+		{
+			return new ItemStack(GCCoreItems.spaceship);
+		}
+		
+		return null;
+	}
 }
