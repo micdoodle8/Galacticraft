@@ -8,6 +8,7 @@ import java.util.EnumSet;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.core.client.GCCoreEvents;
+import micdoodle8.mods.galacticraft.moon.GCMoonConfigManager;
 import micdoodle8.mods.galacticraft.moon.GalacticraftMoon;
 import net.minecraft.src.EntityPlayerMP;
 import net.minecraft.src.NetworkManager;
@@ -225,7 +226,7 @@ public class GalacticraftCore
             {
 				World world = (World) tickData[0];
 				
-				if (world.provider instanceof WorldProviderSurface)
+				if (world.provider.getDimensionName() == "Overworld")
 				{
 					tick++;
 				}

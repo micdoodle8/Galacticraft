@@ -18,7 +18,7 @@ import cpw.mods.fml.common.asm.SideOnly;
  */
 public class GCMoonBlockOre extends Block
 {
-	// Desh: 0, Quandrium: 1, AluminumMars: 2, CopperMars: 3, TitaniumMars: 4;
+	// AluminumMoon: 0, IronMoon: 1, CheeseStone: 2;
 	
 	public GCMoonBlockOre(int i) 
 	{
@@ -33,14 +33,10 @@ public class GCMoonBlockOre extends Block
 		switch (meta) 
 		{
 		case 0:
-			return 4;
-		case 1:
-			return 5;
-		case 2:
 			return 6;
-		case 3:
+		case 1:
 			return 7;
-		case 4:
+		case 2:
 			return 8;
 		default:
 			return meta;
@@ -53,7 +49,7 @@ public class GCMoonBlockOre extends Block
 		switch (meta)
 		{
 		case 0:
-			return this.blockID; // TODO Return desh item id
+			return this.blockID; // TODO Return cheese item id
 		default:
 			return this.blockID;
 		}
@@ -85,7 +81,7 @@ public class GCMoonBlockOre extends Block
 	@Override
     public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
     {
-        for (int var4 = 0; var4 < 5; ++var4)
+        for (int var4 = 0; var4 < 3; ++var4)
         {
             par3List.add(new ItemStack(par1, 1, var4));
         }
@@ -94,6 +90,6 @@ public class GCMoonBlockOre extends Block
 	@Override
 	public String getTextureFile()
 	{
-		return "/micdoodle8/mods/galacticraft/mars/client/blocks/mars.png";
+		return "/micdoodle8/mods/galacticraft/moon/client/blocks/moon.png";
 	}
 }

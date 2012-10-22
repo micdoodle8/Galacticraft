@@ -46,7 +46,9 @@ public class GCMoonBlocks
 
 	public static void addNames() 
 	{
-		
+		addNameWithMetadata("tile.moonBlockOres.aluminummon.name");
+		addNameWithMetadata("tile.moonBlockOres.ironmoon.name");
+		addNameWithMetadata("tile.moonBlockOres.cheesestone.name");
 	}
 	
 	private static void addName(Block block)
