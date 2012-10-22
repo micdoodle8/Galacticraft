@@ -45,7 +45,7 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 	public NoiseGeneratorOctaves noiseGen6;
 	public NoiseGeneratorOctaves mobSpawnerNoise;
 
-//	public GCMoonBiomeDecorator biomedecoratorplanet = new GCMoonBiomeDecorator(GCMoonBiomeDecorator.moonFlat);
+	public GCMoonBiomeDecorator biomedecoratorplanet = new GCMoonBiomeDecorator(GCMoonBiomeGenBase.moonFlat);
 	
 //    private GCMarsMapGenCreeperNest creeperNest = new GCMarsMapGenCreeperNest();
 
@@ -546,9 +546,9 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 		return (1.0 - ((n * (n * n * 15731 + 789221) + 1376312589) & 0x7fffffff) / 1073741824.0);
 	}
 
-//	public void decoratePlanet(World par1World, Random par2Random, int par3, int par4)
+	public void decoratePlanet(World par1World, Random par2Random, int par3, int par4)
 	{
-//		this.biomedecoratorplanet.decorate(par1World, par2Random, par3, par4);
+		this.biomedecoratorplanet.decorate(par1World, par2Random, par3, par4);
 	}
 
 	@Override
@@ -568,18 +568,9 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 		int var13;
 		int var14;
 
-//		this.decoratePlanet(this.worldObj, this.rand, var4, var5); TODO
-//		this.creeperNest.generateStructuresInChunk(this.worldObj, new Random(), par2, par3);
+		this.decoratePlanet(this.worldObj, this.rand, var4, var5); 
 		var4 += 8;
 		var5 += 8;
-
-//        if (!var11 && this.rand.nextInt(150) == 0)
-//        {
-//            var12 = var4 + this.rand.nextInt(16) + 8;
-//            var13 = 10;
-//            var14 = var5 + this.rand.nextInt(16) + 8;
-//            (new GCMarsWorldGenCreeperNest()).generate(this.worldObj, this.rand, var12, var13, var14);
-//        }
 
 		BlockSand.fallInstantly = false;
 	}
