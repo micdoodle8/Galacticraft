@@ -57,7 +57,7 @@ public class GCMoonPlayerBaseServer extends ServerPlayerBase
 				motX = player.worldObj.rand.nextDouble() * 5;
 				motZ = player.worldObj.rand.nextDouble() * 5;
 				
-				GCCoreEntityMeteor meteor = new GCCoreEntityMeteor(player.worldObj, player.posX + x, y, player.posZ + z, motX - 2.5D, 0, motZ - 2.5D, 1);
+				GCCoreEntityMeteor meteor = new GCCoreEntityMeteor(player.worldObj, player.posX + x, player.posY + y, player.posZ + z, motX - 2.5D, 0, motZ - 2.5D, 1);
 				player.worldObj.spawnEntityInWorld(meteor);
 			}
 			if (player.worldObj.rand.nextInt(500) == 0)
@@ -70,7 +70,7 @@ public class GCMoonPlayerBaseServer extends ServerPlayerBase
 				motX = player.worldObj.rand.nextDouble() * 5;
 				motZ = player.worldObj.rand.nextDouble() * 5;
 				
-				GCCoreEntityMeteor meteor = new GCCoreEntityMeteor(player.worldObj, player.posX + x, y, player.posZ + z, motX - 2.5D, 0, motZ - 2.5D, 6);
+				GCCoreEntityMeteor meteor = new GCCoreEntityMeteor(player.worldObj, player.posX + x, player.posY + y, player.posZ + z, motX - 2.5D, 0, motZ - 2.5D, 6);
 				player.worldObj.spawnEntityInWorld(meteor);
 			}
 		}
