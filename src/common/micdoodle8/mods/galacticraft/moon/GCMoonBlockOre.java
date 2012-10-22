@@ -56,7 +56,7 @@ public class GCMoonBlockOre extends Block
 	}
 
 	@Override
-    protected int damageDropped(int meta)
+    public int damageDropped(int meta)
     {
 		switch (meta)
 		{

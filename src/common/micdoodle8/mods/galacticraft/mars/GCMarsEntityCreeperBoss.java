@@ -186,11 +186,11 @@ public class GCMarsEntityCreeperBoss extends EntityMob
                 {
                     if (this.getPowered())
                     {
-                        this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 6.0F);
+                        this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 6.0F, true);
                     }
                     else
                     {
-                        this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 3.0F);
+                        this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 3.0F, true);
                     }
 
                     this.setDead();

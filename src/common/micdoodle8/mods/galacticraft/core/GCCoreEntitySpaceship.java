@@ -321,7 +321,7 @@ public class GCCoreEntitySpaceship extends Entity
             	
             	if (this.timeSinceLaunch > 200)
             	{
-            		this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 20);
+            		this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 20, true);
             		
             		this.spawnParticlesExplosion();
             		
@@ -509,9 +509,9 @@ public class GCCoreEntitySpaceship extends Entity
             {
         		EntityPlayerMP entityplayermp = (EntityPlayerMP)this.riddenByEntity;
 
-	            for (int j = 0; j < GalacticraftCore.instance.serverPlayerAPIs.size(); ++j)
+	            for (int j = 0; j < GalacticraftCore.instance.gcPlayers.size(); ++j)
 	            {
-	    			GCCorePlayerBaseServer playerBase = (GCCorePlayerBaseServer) GalacticraftCore.instance.serverPlayerAPIs.get(j);
+	    			GCCoreEntityPlayer playerBase = (GCCoreEntityPlayer) GalacticraftCore.instance.gcPlayers.get(j);
 	    			
 	    			if (entityplayermp.username == playerBase.getPlayer().username)
 	    			{

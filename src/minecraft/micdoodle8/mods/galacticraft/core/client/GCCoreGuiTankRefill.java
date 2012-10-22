@@ -28,8 +28,8 @@ public class GCCoreGuiTankRefill extends GuiContainer
     }
 
 	@Override
-	protected void drawGuiContainerForegroundLayer() 
-	{
+    protected void drawGuiContainerForegroundLayer(int par1, int par2)
+    {
 		this.fontRenderer.drawString(("Oxygen Tank Refill"), 8, 10, 4210752);
 	}
 

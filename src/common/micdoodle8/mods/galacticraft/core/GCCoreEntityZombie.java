@@ -31,7 +31,6 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
         super(par1World);
         this.texture = "/micdoodle8/mods/galacticraft/core/client/entities/zombie.png";
         this.moveSpeed = 0.28F;
-        this.attackStrength = 5;
         this.getNavigator().setBreakDoors(true);
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIBreakDoor(this));

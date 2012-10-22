@@ -102,19 +102,19 @@ public class GCCoreConfigManager
 		{
 	        configuration.load();
 	        
-			idBlockBreatheableAir = configuration.getOrCreateIntProperty("idBlockCoreBreatheableAir",							configuration.CATEGORY_BLOCK, 	3350).getInt(3350);
-	        idBlockTreasureChest = configuration.getOrCreateIntProperty("idBlockCoreTreasureChest",		 						configuration.CATEGORY_BLOCK, 	3351).getInt(3351);
-	        idBlockLandingPad = configuration.getOrCreateIntProperty("idBlockCoreLandingPad", 									configuration.CATEGORY_BLOCK, 	3352).getInt(3352);
-	        idBlockUnlitTorch = configuration.getOrCreateIntProperty("idBlockCoreUnlitTorch", 									configuration.CATEGORY_BLOCK, 	3353).getInt(3353);
-	        idBlockUnlitTorchLit = configuration.getOrCreateIntProperty("idBlockCoreUnlitTorchLit", 							configuration.CATEGORY_BLOCK, 	3354).getInt(3354);
-	        idBlockAirDistributor = configuration.getOrCreateIntProperty("idBlockCoreAirDistributor", 							configuration.CATEGORY_BLOCK, 	3355).getInt(3355);
-	        idBlockAirDistributorActive = configuration.getOrCreateIntProperty("idBlockCoreAirDistributorActive", 				configuration.CATEGORY_BLOCK, 	3356).getInt(3356);
-	        idBlockAirPipe = configuration.getOrCreateIntProperty("idBlockCoreAirPipe", 										configuration.CATEGORY_BLOCK, 	3357).getInt(3357);
-	        idBlockAirCollector = configuration.getOrCreateIntProperty("idBlockCoreAirCollector", 								configuration.CATEGORY_BLOCK, 	3358).getInt(3358);
-	        idBlockOre = configuration.getOrCreateIntProperty("idBlockCoreOre", 												configuration.CATEGORY_BLOCK, 	3359).getInt(3359);
-	        idBlockSapling2 = configuration.getOrCreateIntProperty("idBlockCoreSapling2", 										configuration.CATEGORY_BLOCK, 	3360).getInt(3360);
-	        idBlockRocketBench = configuration.getOrCreateIntProperty("idBlockRocketBench", 									configuration.CATEGORY_BLOCK, 	3361).getInt(3361);
-	        idBlockFallenMeteor = configuration.getOrCreateIntProperty("idBlockFallenMeteor", 									configuration.CATEGORY_BLOCK, 	3362).getInt(3362);
+	        idBlockBreatheableAir = 		configuration.get(configuration.CATEGORY_BLOCK, "idBlockCoreBreatheableAir", 		3350)		.getInt(3350);
+	        idBlockTreasureChest = 			configuration.get(configuration.CATEGORY_BLOCK, "idBlockTreasureChest", 			3351)		.getInt(3351);
+	        idBlockLandingPad = 			configuration.get(configuration.CATEGORY_BLOCK, "idBlockLandingPad", 				3352)		.getInt(3352);
+	        idBlockUnlitTorch = 			configuration.get(configuration.CATEGORY_BLOCK, "idBlockUnlitTorch", 				3353)		.getInt(3353);
+	        idBlockUnlitTorchLit = 			configuration.get(configuration.CATEGORY_BLOCK, "idBlockUnlitTorchLit", 			3354)		.getInt(3354);
+	        idBlockAirDistributor = 		configuration.get(configuration.CATEGORY_BLOCK, "idBlockAirDistributor", 			3355)		.getInt(3355);
+	        idBlockAirDistributorActive = 	configuration.get(configuration.CATEGORY_BLOCK, "idBlockAirDistributorActive", 		3356)		.getInt(3356);
+	        idBlockAirPipe = 				configuration.get(configuration.CATEGORY_BLOCK, "idBlockAirPipe", 					3357)		.getInt(3357);
+	        idBlockAirCollector = 			configuration.get(configuration.CATEGORY_BLOCK, "idBlockAirCollector", 				3358)		.getInt(3358);
+	        idBlockOre = 					configuration.get(configuration.CATEGORY_BLOCK, "idBlockOre", 						3359)		.getInt(3359);
+	        idBlockSapling2 = 				configuration.get(configuration.CATEGORY_BLOCK, "idBlockSapling2", 					3360)		.getInt(3360);
+	        idBlockRocketBench = 			configuration.get(configuration.CATEGORY_BLOCK, "idBlockRocketBench", 				3361)		.getInt(3361);
+	        idBlockFallenMeteor = 			configuration.get(configuration.CATEGORY_BLOCK, "idBlockFallenMeteor", 				3362)		.getInt(3362);
 
 	        idItemLightOxygenTankEmpty = configuration.getOrCreateIntProperty("idItemLightOxygenTankEmpty", 					configuration.CATEGORY_ITEM, 	9854).getInt(9854);
 	        idItemLightOxygenTank = configuration.getOrCreateIntProperty("idItemLightOxygenTank", 								configuration.CATEGORY_ITEM, 	9855).getInt(9855);

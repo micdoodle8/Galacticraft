@@ -62,7 +62,7 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 	private GCMarsCaveGen caveGenerator = new GCMarsCaveGen();
 	private GCMarsCaveGen2 caveGenerator2 = new GCMarsCaveGen2();
 
-	private MapGenVillage villageGenerator = new MapGenVillage(0);
+	private MapGenVillage villageGenerator = new MapGenVillage();
 
 	private MapGenMineshaft mineshaftGenerator = new MapGenMineshaft();
 

@@ -20,7 +20,6 @@ public class GCMarsEntitySludgeling extends EntityMob
         this.texture = "/micdoodle8/mods/galacticraft/mars/client/entities/sludgeling.png";
         this.setSize(0.3F, 0.3F);
         this.moveSpeed = 0.6F;
-        this.attackStrength = 1;
         this.tasks.addTask(1, new EntityAIAttackOnCollide(this, 0.25F, true));
         this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, GCCoreEntityMob.class, 16.0F, 0, false, true));
         this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 16.0F, 0, false, true));
@@ -87,7 +86,7 @@ public class GCMarsEntitySludgeling extends EntityMob
         if (this.attackTime <= 0 && par2 < 1.2F && par1Entity.boundingBox.maxY > this.boundingBox.minY && par1Entity.boundingBox.minY < this.boundingBox.maxY)
         {
             this.attackTime = 20;
-            par1Entity.attackEntityFrom(DamageSource.causeMobDamage(this), this.attackStrength);
+            par1Entity.attackEntityFrom(DamageSource.causeMobDamage(this),  this.func_82193_c(par1Entity));
         }
     }
 

@@ -12,6 +12,7 @@ import net.minecraft.src.Material;
 import net.minecraft.src.MovingObjectPosition;
 import net.minecraft.src.World;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.Event;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 import cpw.mods.fml.common.FMLLog;
 
@@ -100,7 +101,7 @@ public class GCMarsItemReinforcedBucket extends GCMarsItem
                     return par1ItemStack;
                 }
 
-                if (event.isHandeled())
+                if (event.getResult() == Event.Result.ALLOW)
                 {
                     if (par3EntityPlayer.capabilities.isCreativeMode)
                     {
@@ -133,7 +134,7 @@ public class GCMarsItemReinforcedBucket extends GCMarsItem
 
                     if (this.isFull == 0)
                     {
-                        if (!par3EntityPlayer.canPlayerEdit(var13, var14, var15))
+                        if (!par3EntityPlayer.func_82247_a(var13, var14, var15, var12.sideHit, par1ItemStack))
                         {
                             return par1ItemStack;
                         }
@@ -241,7 +242,7 @@ public class GCMarsItemReinforcedBucket extends GCMarsItem
                             ++var13;
                         }
 
-                        if (!par3EntityPlayer.canPlayerEdit(var13, var14, var15))
+                        if (!par3EntityPlayer.func_82247_a(var13, var14, var15, var12.sideHit, par1ItemStack))
                         {
                             return par1ItemStack;
                         }

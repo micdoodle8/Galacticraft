@@ -36,7 +36,7 @@ public class GCVenusConfigManager
 		{
 	        configuration.load();
 	        
-			dimensionIDVenus = configuration.getOrCreateIntProperty("Venus Dimension ID", 										"Dimension", 					30).getInt(30);
+//			dimensionIDVenus = configuration.getOrCreateIntProperty("Venus Dimension ID", 										"Dimension", 					30).getInt(30);
 		}
 		catch (Exception e)
 		{

@@ -13,7 +13,7 @@ public class GCCoreGuiRocketBench extends GuiContainer
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer()
+    protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
         this.fontRenderer.drawString("Rocket Bench", 10, -20, 4210752);
         this.fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, 202 - 104 + 2, 4210752);

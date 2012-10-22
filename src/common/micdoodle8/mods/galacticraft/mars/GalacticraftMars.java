@@ -9,9 +9,8 @@ import java.util.List;
 import micdoodle8.mods.galacticraft.core.GCCoreLocalization;
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import net.minecraft.src.EntityPlayerMP;
-import net.minecraft.src.NetworkManager;
+import net.minecraft.src.INetworkManager;
 import net.minecraft.src.Packet250CustomPayload;
-import net.minecraft.src.ServerPlayerAPI;
 import net.minecraftforge.common.DimensionManager;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
@@ -31,7 +30,6 @@ import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.common.registry.EntityRegistry;
-import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 /**
@@ -71,17 +69,6 @@ public class GalacticraftMars
 		GCMarsItems.addNames();
 		
 		proxy.preInit(event);
-		
-		try
-		{
-			ServerPlayerAPI.register("Galacticraft Mars", GCMarsPlayerBaseServer.class);
-		}
-		catch(Exception e)
-		{
-			FMLLog.severe("PLAYER API NOT INSTALLED.");
-			FMLLog.severe("Galacticraft Mars will now fail to load.");
-			e.printStackTrace();
-		}
 	}
 	
 	@Init
@@ -141,7 +128,7 @@ public class GalacticraftMars
     public class ServerPacketHandler implements IPacketHandler
     {
         @Override
-        public void onPacketData(NetworkManager manager, Packet250CustomPayload packet, Player p)
+        public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player p)
         {
             DataInputStream data = new DataInputStream(new ByteArrayInputStream(packet.data));
             int packetType = GCCoreUtil.readPacketID(data);

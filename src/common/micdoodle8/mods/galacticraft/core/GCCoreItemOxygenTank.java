@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core;
 
 import java.util.List;
 
-import micdoodle8.mods.galacticraft.mars.GCMarsItem;
+import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ItemStack;
 
 public class GCCoreItemOxygenTank extends GCCoreItem
@@ -13,7 +13,7 @@ public class GCCoreItemOxygenTank extends GCCoreItem
 	}
 
 	@Override
-    public void addInformation(ItemStack par1ItemStack, List par2List) 
+    public void addInformation(ItemStack par1ItemStack, EntityPlayer player, List par2List, boolean b) 
 	{
 		par2List.add("Air Remaining: " + (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage()));
 	}

@@ -9,35 +9,29 @@ import micdoodle8.mods.galacticraft.API.GalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.CommonProxyCore;
 import micdoodle8.mods.galacticraft.core.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
-import micdoodle8.mods.galacticraft.core.GCCoreEntityMeteor;
-import micdoodle8.mods.galacticraft.core.GCCoreEntitySpaceship;
-import micdoodle8.mods.galacticraft.core.GCCoreItems;
-import micdoodle8.mods.galacticraft.core.GCCoreTileEntityTreasureChest;
-import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.GCCoreEntityArrow;
 import micdoodle8.mods.galacticraft.core.GCCoreEntityCreeper;
+import micdoodle8.mods.galacticraft.core.GCCoreEntityMeteor;
 import micdoodle8.mods.galacticraft.core.GCCoreEntitySkeleton;
+import micdoodle8.mods.galacticraft.core.GCCoreEntitySpaceship;
 import micdoodle8.mods.galacticraft.core.GCCoreEntitySpider;
 import micdoodle8.mods.galacticraft.core.GCCoreEntityZombie;
 import micdoodle8.mods.galacticraft.core.GCCoreItemSensorGlasses;
+import micdoodle8.mods.galacticraft.core.GCCoreItems;
+import micdoodle8.mods.galacticraft.core.GCCoreTileEntityTreasureChest;
+import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.moon.client.ClientProxyMoon;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.EntityClientPlayerMP;
 import net.minecraft.src.EntityFX;
-import net.minecraft.src.EntityHugeExplodeFX;
-import net.minecraft.src.EntityLargeExplodeFX;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EntityPlayerSP;
-import net.minecraft.src.EntitySpellParticleFX;
+import net.minecraft.src.INetworkManager;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.KeyBinding;
-import net.minecraft.src.Material;
 import net.minecraft.src.MathHelper;
-import net.minecraft.src.NetworkManager;
 import net.minecraft.src.Packet250CustomPayload;
-import net.minecraft.src.PlayerAPI;
-import net.minecraft.src.RenderFallingSand;
 import net.minecraft.src.RenderLiving;
 import net.minecraft.src.ScaledResolution;
 import net.minecraft.src.Tessellator;
@@ -54,7 +48,6 @@ import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry.KeyHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.TickType;
@@ -92,17 +85,6 @@ public class ClientProxyCore extends CommonProxyCore
 		
 		MinecraftForge.EVENT_BUS.register(new GCCoreSounds());
 		getFirstBootTime = System.currentTimeMillis();
-				
-		try
-		{
-			PlayerAPI.register("Galacticraft", GCCorePlayerBase.class);
-		}
-		catch(Exception e)
-		{
-			FMLLog.severe("PLAYER API NOT INSTALLED.");
-			FMLLog.severe("Galacticraft will now fail to load.");
-			e.printStackTrace();
-		}
 	}
 
 	@Override
@@ -257,9 +239,9 @@ public class ClientProxyCore extends CommonProxyCore
 	
     public class ClientPacketHandler implements IPacketHandler
     {
-        @Override
-        public void onPacketData(NetworkManager manager, Packet250CustomPayload packet, Player p)
-        {
+		@Override
+		public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player p) 
+		{
             DataInputStream data = new DataInputStream(new ByteArrayInputStream(packet.data));
             int packetType = GCCoreUtil.readPacketID(data);
             EntityPlayer player = (EntityPlayer)p;
@@ -271,7 +253,7 @@ public class ClientProxyCore extends CommonProxyCore
 
                 TickHandlerClient.airRemaining = (Integer) packetReadout[0];
             }
-        }
+		}
     }
     
     public static class TickHandlerClient implements ITickHandler

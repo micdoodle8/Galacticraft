@@ -60,7 +60,7 @@ public class GCMarsBlockOre extends Block
 	}
 
 	@Override
-    protected int damageDropped(int meta)
+    public int damageDropped(int meta)
     {
 		switch (meta)
 		{

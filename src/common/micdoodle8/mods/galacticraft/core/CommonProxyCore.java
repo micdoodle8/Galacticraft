@@ -94,13 +94,13 @@ public class CommonProxyCore implements IGuiHandler
 	{
 		if (ID == GCCoreConfigManager.idGuiTankRefill)
 		{
-			for (int i = 0; i < GalacticraftCore.serverPlayerAPIs.size(); ++i)
+			for (int i = 0; i < GalacticraftCore.gcPlayers.size(); ++i)
 	        {
-				GCCorePlayerBaseServer playerBase = (GCCorePlayerBaseServer) GalacticraftCore.serverPlayerAPIs.get(i);
+				GCCoreEntityPlayer gcPlayer = (GCCoreEntityPlayer) GalacticraftCore.gcPlayers.get(i);
 				
-				if (player.username == playerBase.getPlayer().username)
+				if (player.username == gcPlayer.getPlayer().username)
 				{
-					return new GCCoreContainerTankRefill(player.inventory, playerBase.playerTankInventory);
+					return new GCCoreContainerTankRefill(player.inventory, gcPlayer.playerTankInventory);
 				}
 	        }
 		}

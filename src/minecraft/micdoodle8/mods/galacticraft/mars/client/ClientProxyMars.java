@@ -5,36 +5,24 @@ import java.io.DataInputStream;
 import java.util.EnumSet;
 import java.util.Random;
 
-import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.GCCoreEntityArrow;
-import micdoodle8.mods.galacticraft.core.GCCoreEntityCreeper;
-import micdoodle8.mods.galacticraft.core.GCCoreEntitySkeleton;
-import micdoodle8.mods.galacticraft.core.GCCoreEntitySpider;
-import micdoodle8.mods.galacticraft.core.GCCoreEntityZombie;
-import micdoodle8.mods.galacticraft.core.client.GCCoreRenderArrow;
+import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore.GCKeyHandler;
+import micdoodle8.mods.galacticraft.core.client.GCCoreRenderArrow;
 import micdoodle8.mods.galacticraft.mars.CommonProxyMars;
 import micdoodle8.mods.galacticraft.mars.GCMarsBlocks;
-import micdoodle8.mods.galacticraft.mars.GCMarsConfigManager;
 import micdoodle8.mods.galacticraft.mars.GCMarsEntityCreeperBoss;
-import micdoodle8.mods.galacticraft.mars.GCMarsEntityProjectileTNT;
 import micdoodle8.mods.galacticraft.mars.GCMarsEntitySludgeling;
 import micdoodle8.mods.galacticraft.mars.GCMarsItemJetpack;
 import micdoodle8.mods.galacticraft.mars.GCMarsItems;
-import micdoodle8.mods.galacticraft.mars.GCMarsUtil;
 import micdoodle8.mods.galacticraft.mars.GCMarsWorldProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.EntityClientPlayerMP;
 import net.minecraft.src.EntityFX;
-import net.minecraft.src.EntityHugeExplodeFX;
-import net.minecraft.src.EntityLargeExplodeFX;
 import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.INetworkManager;
 import net.minecraft.src.Material;
-import net.minecraft.src.NetworkManager;
 import net.minecraft.src.Packet250CustomPayload;
-import net.minecraft.src.PlayerAPI;
-import net.minecraft.src.RenderLiving;
-import net.minecraft.src.World;
 import net.minecraft.src.WorldClient;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
@@ -71,17 +59,6 @@ public class ClientProxyMars extends CommonProxyMars
 	{
 		MinecraftForge.EVENT_BUS.register(new GCMarsSounds());
 		getFirstBootTime = System.currentTimeMillis();
-				
-		try
-		{
-			PlayerAPI.register("Galacticraft Mars", GCMarsPlayerBase.class);
-		}
-		catch(Exception e)
-		{
-			FMLLog.severe("PLAYER API NOT INSTALLED.");
-			FMLLog.severe("Galacticraft Mars will now fail to load.");
-			e.printStackTrace();
-		}
 	}
 
 	@Override
@@ -157,7 +134,7 @@ public class ClientProxyMars extends CommonProxyMars
     public class ClientPacketHandler implements IPacketHandler
     {
         @Override
-        public void onPacketData(NetworkManager manager, Packet250CustomPayload packet, Player p)
+        public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player p)
         {
             DataInputStream data = new DataInputStream(new ByteArrayInputStream(packet.data));
             int packetType = GCCoreUtil.readPacketID(data);

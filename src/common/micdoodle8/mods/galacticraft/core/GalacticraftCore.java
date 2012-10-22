@@ -8,18 +8,13 @@ import java.util.EnumSet;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.core.client.GCCoreEvents;
-import micdoodle8.mods.galacticraft.moon.GCMoonConfigManager;
 import micdoodle8.mods.galacticraft.moon.GalacticraftMoon;
 import net.minecraft.src.EntityPlayerMP;
-import net.minecraft.src.NetworkManager;
+import net.minecraft.src.INetworkManager;
 import net.minecraft.src.Packet250CustomPayload;
 import net.minecraft.src.Packet9Respawn;
-import net.minecraft.src.ServerPlayerAPI;
-import net.minecraft.src.StatCollector;
 import net.minecraft.src.World;
-import net.minecraft.src.WorldProviderSurface;
 import net.minecraftforge.common.MinecraftForge;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
@@ -65,8 +60,8 @@ public class GalacticraftCore
 	
 	public static long tick;
 	
-	public static List serverPlayerBaseList = new ArrayList();
-	public static List serverPlayerAPIs = new ArrayList();
+	public static List players = new ArrayList();
+	public static List gcPlayers = new ArrayList();
 	
 	@PreInit
 	public void preInit(FMLPreInitializationEvent event)
@@ -85,16 +80,16 @@ public class GalacticraftCore
 		GCCoreItems.initItems();
 		GCCoreItems.addNames();
 		
-		try
-		{
-			ServerPlayerAPI.register("Galacticraft", GCCorePlayerBaseServer.class);
-		}
-		catch(Exception e)
-		{
-			FMLLog.severe("PLAYER API NOT INSTALLED.");
-			FMLLog.severe("Galacticraft will now fail to load.");
-			e.printStackTrace();
-		}
+//		try
+//		{
+//			ServerPlayerAPI.register("Galacticraft", GCCorePlayerBaseServer.class);
+//		}
+//		catch(Exception e)
+//		{
+//			FMLLog.severe("PLAYER API NOT INSTALLED.");
+//			FMLLog.severe("Galacticraft will now fail to load.");
+//			e.printStackTrace();
+//		}
 		
 		proxy.preInit(event);
 	}
@@ -169,7 +164,7 @@ public class GalacticraftCore
     public class ServerPacketHandler implements IPacketHandler
     {
         @Override
-        public void onPacketData(NetworkManager manager, Packet250CustomPayload packet, Player p)
+        public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player p)
         {
             DataInputStream data = new DataInputStream(new ByteArrayInputStream(packet.data));
             int packetType = GCCoreUtil.readPacketID(data);
@@ -194,9 +189,9 @@ public class GalacticraftCore
                 Class[] decodeAs = {Integer.class};
                 Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
                 
-                for (int j = 0; j < GalacticraftCore.instance.serverPlayerAPIs.size(); ++j)
+                for (int j = 0; j < GalacticraftCore.instance.players.size(); ++j)
 	            {
-	    			GCCorePlayerBaseServer playerBase = (GCCorePlayerBaseServer) GalacticraftCore.instance.serverPlayerAPIs.get(j);
+                	GCCoreEntityPlayer playerBase = (GCCoreEntityPlayer) GalacticraftCore.instance.gcPlayers.get(j);
 	    			
 	    			if (player.username == playerBase.getPlayer().username)
 	    			{
