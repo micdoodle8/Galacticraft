@@ -120,7 +120,7 @@ public class GCCoreBlockRendererUnlitTorch implements ISimpleBlockRenderingHandl
     		if (block.lit)
     		{
     			Tessellator var12 = Tessellator.instance;
-    	        int var13 = 37;
+    	        int var13 = 11;
 
     	        if (renderBlocks.overrideBlockTexture >= 0)
     	        {
@@ -169,7 +169,7 @@ public class GCCoreBlockRendererUnlitTorch implements ISimpleBlockRenderingHandl
     		else
     		{
     			Tessellator var12 = Tessellator.instance;
-    	        int var13 = 38;
+    	        int var13 = 12;
 
     	        if (renderBlocks.overrideBlockTexture >= 0)
     	        {
