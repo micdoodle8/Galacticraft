@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core;
 
 import micdoodle8.mods.galacticraft.API.GalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.moon.GCMoonWorldProvider;
 import net.minecraft.src.AchievementList;
 import net.minecraft.src.Block;
 import net.minecraft.src.DamageSource;
@@ -17,6 +18,7 @@ import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
 
@@ -244,6 +246,45 @@ public class GCCoreEntityPlayer
 	            this.inPortal = false;
 			}
         }
+		
+//		if (this.currentPlayer.worldObj.provider instanceof GCMoonWorldProvider)
+		if (FMLCommonHandler.instance().getEffectiveSide() != Side.CLIENT)
+		{
+			if (this.currentPlayer.worldObj.rand.nextInt(50) == 0)
+			{
+				int x, y, z;
+				double motX, motZ;
+				x = this.currentPlayer.worldObj.rand.nextInt(20) - 10;
+				y = this.currentPlayer.worldObj.rand.nextInt(20) + 200;
+				z = this.currentPlayer.worldObj.rand.nextInt(20) - 10;
+				motX = this.currentPlayer.worldObj.rand.nextDouble() * 5;
+				motZ = this.currentPlayer.worldObj.rand.nextDouble() * 5;
+				
+				GCCoreEntityMeteor meteor = new GCCoreEntityMeteor(this.currentPlayer.worldObj, this.currentPlayer.posX + x, y, this.currentPlayer.posZ + z, motX - 2.5D, 0, motZ - 2.5D, 1);
+				
+				if (!this.currentPlayer.worldObj.isRemote)
+				{
+					this.currentPlayer.worldObj.spawnEntityInWorld(meteor);
+				}
+			}
+//			if (this.currentPlayer.worldObj.rand.nextInt(500) == 0)
+//			{
+//				int x, y, z;
+//				double motX, motZ;
+//				x = this.currentPlayer.worldObj.rand.nextInt(20) - 10;
+//				y = this.currentPlayer.worldObj.rand.nextInt(20) + 200;
+//				z = this.currentPlayer.worldObj.rand.nextInt(20) - 10;
+//				motX = this.currentPlayer.worldObj.rand.nextDouble() * 5;
+//				motZ = this.currentPlayer.worldObj.rand.nextDouble() * 5;
+//				
+//				GCCoreEntityMeteor meteor = new GCCoreEntityMeteor(this.currentPlayer.worldObj, this.currentPlayer.posX + x, this.currentPlayer.posY + y, this.currentPlayer.posZ + z, motX - 2.5D, 0, motZ - 2.5D, 6);
+//				
+//				if (!this.currentPlayer.worldObj.isRemote)
+//				{
+//					this.currentPlayer.worldObj.spawnEntityInWorld(meteor);
+//				}
+//			}
+		}
 	}
 
     public void travelToTheEnd(int par1)
@@ -251,37 +292,7 @@ public class GCCoreEntityPlayer
     	if (this.currentPlayer instanceof EntityPlayerMP)
     	{
     		EntityPlayerMP player = (EntityPlayerMP) this.currentPlayer;
-    		
-            if (player.dimension == 1 && par1 == 1)
-            {
-            	player.triggerAchievement(AchievementList.theEnd2);
-            	player.worldObj.setEntityDead(player);
-                player.playerConqueredTheEnd = true;
-                player.playerNetServerHandler.sendPacketToPlayer(new Packet70GameEvent(4, 0));
-            }
-            else
-            {
-//                if (player.dimension == 1 && par1 == 0)
-//                {
-//                	player.triggerAchievement(AchievementList.theEnd);
-//                    ChunkCoordinates var2 = player.mcServer.worldServerForDimension(par1).getEntrancePortalLocation();
-//
-//                    if (var2 != null)
-//                    {
-//                    	player.playerNetServerHandler.setPlayerLocation((double)var2.posX, (double)var2.posY, (double)var2.posZ, 0.0F, 0.0F);
-//                    }
-//
-//                    par1 = 1;
-//                }
-//                else
-//                {
-//                	player.triggerAchievement(AchievementList.portal);
-//                }
-            	
-            	FMLLog.info("" + par1);
-
-                player.mcServer.getConfigurationManager().transferPlayerToDimension(player, par1, new GCCoreTeleporter());
-            }
+            player.mcServer.getConfigurationManager().transferPlayerToDimension(player, par1, new GCCoreTeleporter());
     	}
     }
     
