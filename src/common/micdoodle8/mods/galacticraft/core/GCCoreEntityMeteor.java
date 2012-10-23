@@ -121,11 +121,11 @@ public class GCCoreEntityMeteor extends Entity
     
     protected void spawnParticles()
     {
-    	this.worldObj.spawnParticle("smoke", this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
-    	this.worldObj.spawnParticle("smoke", this.posX + 1D, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
-    	this.worldObj.spawnParticle("smoke", this.posX, this.posY, this.posZ + 1D, 0.0D, 0.0D, 0.0D);
-    	this.worldObj.spawnParticle("smoke", this.posX - 1D, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
-    	this.worldObj.spawnParticle("smoke", this.posX, this.posY, this.posZ - 1D, 0.0D, 0.0D, 0.0D);
+    	GalacticraftCore.proxy.spawnParticle("distancesmoke", this.posX, this.posY + 1D + Math.random(), this.posZ, 0.0D, 0.0D, 0.0D, false);
+    	GalacticraftCore.proxy.spawnParticle("distancesmoke", this.posX + Math.random() / 2, this.posY + 1D + Math.random() / 2, this.posZ, 0.0D, 0.0D, 0.0D, false);
+    	GalacticraftCore.proxy.spawnParticle("distancesmoke", this.posX, this.posY + 1D + Math.random(), this.posZ + Math.random(), 0.0D, 0.0D, 0.0D, false);
+    	GalacticraftCore.proxy.spawnParticle("distancesmoke", this.posX - Math.random() / 2, this.posY + 1D + Math.random() / 2, this.posZ, 0.0D, 0.0D, 0.0D, false);
+    	GalacticraftCore.proxy.spawnParticle("distancesmoke", this.posX, this.posY + 1D + Math.random(), this.posZ - Math.random(), 0.0D, 0.0D, 0.0D, false);
     }
 
     protected void onImpact(MovingObjectPosition par1MovingObjectPosition)
@@ -134,15 +134,21 @@ public class GCCoreEntityMeteor extends Entity
         {
         	if (par1MovingObjectPosition != null)
         	{
+        		if (this.worldObj.getBlockId(par1MovingObjectPosition.blockX, par1MovingObjectPosition.blockY + 1, par1MovingObjectPosition.blockZ) == 0)
+        		{
+            		this.worldObj.setBlock(par1MovingObjectPosition.blockX, par1MovingObjectPosition.blockY + 1, par1MovingObjectPosition.blockZ, GCCoreBlocks.fallenMeteor.blockID);
+        		}
+        		
                 if (par1MovingObjectPosition.entityHit != null)
                 {
                     par1MovingObjectPosition.entityHit.attackEntityFrom(this.causeMeteorDamage(this, this.shootingEntity), 6);
                 }
         	}
 
-            this.worldObj.newExplosion((Entity)null, this.posX, this.posY, this.posZ, this.size / 2, true, true);
-            this.setDead();
+            this.worldObj.newExplosion((Entity)null, this.posX, this.posY, this.posZ, (this.size / 3) + 2, false, true);
         }
+        
+        this.setDead();
     }
 
     public static DamageSource causeMeteorDamage(GCCoreEntityMeteor par0EntityMeteor, Entity par1Entity)
@@ -151,7 +157,7 @@ public class GCCoreEntityMeteor extends Entity
     	{
             StatCollector.translateToLocalFormatted("death." + "meteor", ((EntityPlayer)par1Entity).username + " was hit by a meteor! That's gotta hurt!");
     	}
-        return new EntityDamageSourceIndirect("meteor", par0EntityMeteor, par1Entity).setProjectile();
+        return new EntityDamageSourceIndirect("explosion", par0EntityMeteor, par1Entity).setProjectile();
     }
 
 	@Override
