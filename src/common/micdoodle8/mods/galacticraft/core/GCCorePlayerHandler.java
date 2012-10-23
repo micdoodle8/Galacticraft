@@ -33,6 +33,8 @@ public class GCCorePlayerHandler implements IPlayerTracker
 			if (player2.getPlayer().username == player.username)
 			{
 				player2.writeEntityToNBT();
+				
+				GalacticraftCore.instance.gcPlayers.remove(player2);
 			}
 		}
 	}

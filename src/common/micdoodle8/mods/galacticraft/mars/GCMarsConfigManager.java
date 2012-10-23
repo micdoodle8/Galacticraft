@@ -94,60 +94,61 @@ public class GCMarsConfigManager
 		{
 	        configuration.load();
 	        
-			dimensionIDMars = configuration.getOrCreateIntProperty("dimensionIDMars", 											"Dimension", 					29).getInt(29);
+	        dimensionIDMars = 					configuration.get("Dimensions", 												"Mars Dimension ID",				29)		.getInt(29);
+	        
+	        idBlockMarsStone = 					configuration.get(configuration.CATEGORY_BLOCK, 								"idBlockMarsStone", 				210)	.getInt(210);
+	        idBlockMarsGrass = 					configuration.get(configuration.CATEGORY_BLOCK, 								"idBlockMarsGrass", 				211)	.getInt(211);
+	        idBlockMarsDirt = 					configuration.get(configuration.CATEGORY_BLOCK, 								"idBlockMarsDirt", 					212)	.getInt(212);
+	        idBlockMarsCobblestone = 			configuration.get(configuration.CATEGORY_BLOCK, 								"idBlockMarsCobblestone", 			213)	.getInt(213);
+	        idBlockCreeperEgg = 				configuration.get(configuration.CATEGORY_BLOCK, 								"idBlockCreeperEgg", 				214)	.getInt(214);
+	        idBlockCreeperDungeonWall = 		configuration.get(configuration.CATEGORY_BLOCK, 								"idBlockCreeperDungeonWall", 		215)	.getInt(215);
+	        idBlockBacterialSludgeMoving = 		configuration.get(configuration.CATEGORY_BLOCK, 								"idBlockBacterialSludgeMoving", 	216)	.getInt(216);
+	        idBlockBacterialSludgeStill = 		configuration.get(configuration.CATEGORY_BLOCK, 								"idBlockBacterialSludgeStill", 		217)	.getInt(217);
+	        idBlockOre = 						configuration.get(configuration.CATEGORY_BLOCK, 								"idBlockOre", 						218)	.getInt(218);
 
-			idBlockMarsStone = configuration.getOrCreateIntProperty("idBlockMarsStone", 										configuration.CATEGORY_BLOCK, 	210).getInt(210);
-			idBlockMarsGrass = configuration.getOrCreateIntProperty("idBlockMarsGrass", 										configuration.CATEGORY_BLOCK, 	211).getInt(211);
-			idBlockMarsDirt = configuration.getOrCreateIntProperty("idBlockMarsDirt", 											configuration.CATEGORY_BLOCK, 	212).getInt(212);
-			idBlockMarsCobblestone = configuration.getOrCreateIntProperty("idBlockMarsCobblestone", 							configuration.CATEGORY_BLOCK, 	213).getInt(213);
-	        idBlockCreeperEgg = configuration.getOrCreateIntProperty("idBlockMarsCreeperEgg", 									configuration.CATEGORY_BLOCK, 	214).getInt(214);
-	        idBlockCreeperDungeonWall = configuration.getOrCreateIntProperty("idBlockMarsCreeperDungeonWall", 					configuration.CATEGORY_BLOCK, 	215).getInt(215);
-	        idBlockBacterialSludgeMoving = configuration.getOrCreateIntProperty("idBlockMarsBacterialSludgeMoving", 			configuration.CATEGORY_BLOCK, 	216).getInt(216);
-	        idBlockBacterialSludgeStill = configuration.getOrCreateIntProperty("idBlockMarsBacterialSludgeStill",				configuration.CATEGORY_BLOCK, 	217).getInt(217);
-	        idBlockOre = configuration.getOrCreateIntProperty("idBlockMarsOre", 												configuration.CATEGORY_BLOCK, 	218).getInt(218);
+	        idItemReinforcedBucket = 			configuration.get(configuration.CATEGORY_ITEM, 									"idItemReinforcedBucket", 			9865)	.getInt(9865);
+	        idItemReinforcedBucketMilk = 		configuration.get(configuration.CATEGORY_ITEM, 									"idItemReinforcedBucketMilk", 		9866)	.getInt(9866);
+	        idItemReinforcedBucketWater = 		configuration.get(configuration.CATEGORY_ITEM, 									"idItemReinforcedBucketWater", 		9867)	.getInt(9867);
+	        idItemReinforcedBucketLava = 		configuration.get(configuration.CATEGORY_ITEM, 									"idItemReinforcedBucketLava", 		9868)	.getInt(9868);
+	        idItemReinforcedBucketBacteria = 	configuration.get(configuration.CATEGORY_ITEM, 									"idItemReinforcedBucketBacteria", 	9869)	.getInt(9869);
+	        idItemRawDesh = 					configuration.get(configuration.CATEGORY_ITEM, 									"idItemRawDesh", 					9870)	.getInt(9870);
+	        idItemDeshStick = 					configuration.get(configuration.CATEGORY_ITEM, 									"idItemDeshStick", 					9871)	.getInt(9871);
+	        idItemIngotQuandrium = 				configuration.get(configuration.CATEGORY_ITEM, 									"idItemIngotQuandrium", 			9872)	.getInt(9872);
+	        idItemIngotDesh = 					configuration.get(configuration.CATEGORY_ITEM, 									"idItemIngotDesh", 					9873)	.getInt(9873);
 
-			idItemReinforcedBucket = configuration.getOrCreateIntProperty("idItemReinforcedBucket", 							configuration.CATEGORY_ITEM, 	9865).getInt(9865);
-			idItemReinforcedBucketMilk = configuration.getOrCreateIntProperty("idItemReinforcedBucketMilk", 					configuration.CATEGORY_ITEM, 	9866).getInt(9866);
-			idItemReinforcedBucketWater = configuration.getOrCreateIntProperty("idItemReinforcedBucketWater", 					configuration.CATEGORY_ITEM, 	9867).getInt(9867);
-			idItemReinforcedBucketLava = configuration.getOrCreateIntProperty("idItemReinforcedBucketLava", 					configuration.CATEGORY_ITEM, 	9868).getInt(9868);
-			idItemReinforcedBucketBacteria = configuration.getOrCreateIntProperty("idItemReinforcedBucketBacteria", 			configuration.CATEGORY_ITEM, 	9869).getInt(9869);
-			idItemRawDesh = configuration.getOrCreateIntProperty("idItemRawDesh", 												configuration.CATEGORY_ITEM, 	9870).getInt(9870);
-			idItemDeshStick = configuration.getOrCreateIntProperty("idItemDeshStick", 											configuration.CATEGORY_ITEM, 	9871).getInt(9871);
-			idItemIngotQuandrium = configuration.getOrCreateIntProperty("idItemIngotQuandrium",									configuration.CATEGORY_ITEM, 	9872).getInt(9872);
-			idItemIngotDesh = configuration.getOrCreateIntProperty("idItemIngotDesh", 											configuration.CATEGORY_ITEM, 	9873).getInt(9873);
+	        idToolPlanetStoneSword = 			configuration.get(configuration.CATEGORY_ITEM, 									"idToolPlanetStoneSword", 			9874)	.getInt(9874);
+	        idToolPlanetStonePickaxe = 			configuration.get(configuration.CATEGORY_ITEM, 									"idToolPlanetStonePickaxe", 		9875)	.getInt(9875);
+	        idToolPlanetStoneSpade = 			configuration.get(configuration.CATEGORY_ITEM, 									"idToolPlanetStoneSpade", 			9876)	.getInt(9876);
+	        idToolPlanetStoneHoe = 				configuration.get(configuration.CATEGORY_ITEM, 									"idToolPlanetStoneHoe", 			9877)	.getInt(9877);
+	        idToolPlanetStoneAxe = 				configuration.get(configuration.CATEGORY_ITEM, 									"idToolPlanetStoneAxe", 			9878)	.getInt(9878);
+	        idToolDeshSword = 					configuration.get(configuration.CATEGORY_ITEM, 									"idToolDeshSword", 					9879)	.getInt(9879);
+	        idToolDeshPickaxe = 				configuration.get(configuration.CATEGORY_ITEM, 									"idToolDeshPickaxe", 				9880)	.getInt(9880);
+	        idToolDeshSpade = 					configuration.get(configuration.CATEGORY_ITEM, 									"idToolDeshSpade", 					9881)	.getInt(9881);
+	        idToolDeshHoe = 					configuration.get(configuration.CATEGORY_ITEM, 									"idToolDeshHoe", 					9882)	.getInt(9882);
+	        idToolDeshAxe = 					configuration.get(configuration.CATEGORY_ITEM, 									"idToolDeshAxe", 					9883)	.getInt(9883);
+	        idToolQuandriumSword = 				configuration.get(configuration.CATEGORY_ITEM, 									"idToolQuandriumSword", 			9884)	.getInt(9884);
+	        idToolQuandriumPickaxe = 			configuration.get(configuration.CATEGORY_ITEM, 									"idToolQuandriumPickaxe", 			9885)	.getInt(9885);
+	        idToolQuandriumSpade = 				configuration.get(configuration.CATEGORY_ITEM, 									"idToolQuandriumSpade", 			9886)	.getInt(9886);
+	        idToolQuandriumHoe = 				configuration.get(configuration.CATEGORY_ITEM, 									"idToolQuandriumHoe", 				9887)	.getInt(9887);
+	        idToolQuandriumAxe = 				configuration.get(configuration.CATEGORY_ITEM, 									"idToolQuandriumAxe", 				9888)	.getInt(9888);
 
-			idToolPlanetStoneSword = configuration.getOrCreateIntProperty("idToolPlanetStoneSword", 							configuration.CATEGORY_ITEM, 	9877).getInt(9877);
-			idToolPlanetStonePickaxe = configuration.getOrCreateIntProperty("idToolPlanetStonePickaxe", 						configuration.CATEGORY_ITEM, 	9878).getInt(9878);
-			idToolPlanetStoneSpade = configuration.getOrCreateIntProperty("idToolPlanetStoneSpade", 							configuration.CATEGORY_ITEM, 	9879).getInt(9879);
-			idToolPlanetStoneHoe = configuration.getOrCreateIntProperty("idToolPlanetStoneHoe", 								configuration.CATEGORY_ITEM, 	9880).getInt(9880);
-			idToolPlanetStoneAxe = configuration.getOrCreateIntProperty("idToolPlanetStoneAxe", 								configuration.CATEGORY_ITEM, 	9881).getInt(9881);
-			idToolDeshSword = configuration.getOrCreateIntProperty("idToolDeshSword", 											configuration.CATEGORY_ITEM, 	9882).getInt(9882);
-			idToolDeshPickaxe = configuration.getOrCreateIntProperty("idToolDeshPickaxe", 										configuration.CATEGORY_ITEM, 	9883).getInt(9883);
-			idToolDeshSpade = configuration.getOrCreateIntProperty("idToolDeshSpade", 											configuration.CATEGORY_ITEM, 	9884).getInt(9884);
-			idToolDeshHoe = configuration.getOrCreateIntProperty("idToolDeshHoe", 												configuration.CATEGORY_ITEM, 	9885).getInt(9885);
-			idToolDeshAxe = configuration.getOrCreateIntProperty("idToolDeshAxe", 												configuration.CATEGORY_ITEM, 	9886).getInt(9886);
-			idToolQuandriumSword = configuration.getOrCreateIntProperty("idToolQuandriumSword", 								configuration.CATEGORY_ITEM, 	9887).getInt(9887);
-			idToolQuandriumPickaxe = configuration.getOrCreateIntProperty("idToolQuandriumPickaxe", 							configuration.CATEGORY_ITEM, 	9888).getInt(9888);
-			idToolQuandriumSpade = configuration.getOrCreateIntProperty("idToolQuandriumSpade", 								configuration.CATEGORY_ITEM, 	9889).getInt(9889);
-			idToolQuandriumHoe = configuration.getOrCreateIntProperty("idToolQuandriumHoe", 									configuration.CATEGORY_ITEM, 	9890).getInt(9890);
-			idToolQuandriumAxe = configuration.getOrCreateIntProperty("idToolQuandriumAxe", 									configuration.CATEGORY_ITEM, 	9891).getInt(9891);
-			
-			idArmorQuandriumHelmet = configuration.getOrCreateIntProperty("idArmorQuandriumHelmet", 							configuration.CATEGORY_ITEM, 	9897).getInt(9897);
-			idArmorQuandriumChestplate = configuration.getOrCreateIntProperty("idArmorQuandriumChestplate", 					configuration.CATEGORY_ITEM, 	9898).getInt(9898);
-			idArmorQuandriumLeggings = configuration.getOrCreateIntProperty("idArmorQuandriumLeggings", 						configuration.CATEGORY_ITEM, 	9899).getInt(9899);
-			idArmorQuandriumBoots = configuration.getOrCreateIntProperty("idArmorQuandriumBoots", 								configuration.CATEGORY_ITEM, 	9900).getInt(9900);
-			idArmorQuandriumHelmetBreathable = configuration.getOrCreateIntProperty("idArmorQuandriumHelmetBreathable", 		configuration.CATEGORY_ITEM, 	9901).getInt(9901);
-			idArmorDeshHelmet = configuration.getOrCreateIntProperty("idArmorDeshHelmet", 										configuration.CATEGORY_ITEM, 	9902).getInt(9902);
-			idArmorDeshChestplate = configuration.getOrCreateIntProperty("idArmorDeshChestplate", 								configuration.CATEGORY_ITEM, 	9903).getInt(9903);
-			idArmorDeshLeggings = configuration.getOrCreateIntProperty("idArmorDeshLeggings", 									configuration.CATEGORY_ITEM, 	9904).getInt(9904);
-			idArmorDeshBoots = configuration.getOrCreateIntProperty("idArmorDeshBoots", 										configuration.CATEGORY_ITEM, 	9905).getInt(9905);
-			idArmorDeshHelmetBreathable = configuration.getOrCreateIntProperty("idArmorDeshHelmetBreathable", 					configuration.CATEGORY_ITEM, 	9906).getInt(9906);
-			idArmorHeavyBoots = configuration.getOrCreateIntProperty("idArmorHeavyBoots", 										configuration.CATEGORY_ITEM, 	9912).getInt(9912);
-			idArmorJetpack = configuration.getOrCreateIntProperty("idArmorJetpack", 											configuration.CATEGORY_ITEM, 	9913).getInt(9913);
+	        idArmorQuandriumHelmet = 			configuration.get(configuration.CATEGORY_ITEM, 									"idArmorQuandriumHelmet", 			9889)	.getInt(9889);
+	        idArmorQuandriumChestplate = 		configuration.get(configuration.CATEGORY_ITEM, 									"idArmorQuandriumChestplate", 		9890)	.getInt(9890);
+	        idArmorQuandriumLeggings = 			configuration.get(configuration.CATEGORY_ITEM, 									"idArmorQuandriumLeggings", 		9891)	.getInt(9891);
+	        idArmorQuandriumBoots = 			configuration.get(configuration.CATEGORY_ITEM, 									"idArmorQuandriumBoots", 			9892)	.getInt(9892);
+	        idArmorQuandriumHelmetBreathable = 	configuration.get(configuration.CATEGORY_ITEM, 									"idArmorQuandriumHelmetBreathable", 9893)	.getInt(9893);
+	        idArmorDeshHelmet = 				configuration.get(configuration.CATEGORY_ITEM, 									"idArmorDeshHelmet", 				9894)	.getInt(9894);
+	        idArmorDeshChestplate = 			configuration.get(configuration.CATEGORY_ITEM, 									"idArmorDeshChestplate", 			9895)	.getInt(9895);
+	        idArmorDeshLeggings = 				configuration.get(configuration.CATEGORY_ITEM, 									"idArmorDeshLeggings", 				9896)	.getInt(9896);
+	        idArmorDeshBoots = 					configuration.get(configuration.CATEGORY_ITEM, 									"idArmorDeshBoots", 				9897)	.getInt(9897);
+	        idArmorDeshHelmetBreathable = 		configuration.get(configuration.CATEGORY_ITEM, 									"idArmorDeshHelmetBreathable",		9898)	.getInt(9898);
 
-			idEntityCreeperBoss = configuration.getOrCreateIntProperty("idEntityCreeperBoss", 									"ENTITIES", 					162).getInt(162); 	
-			idEntitySludgeling = configuration.getOrCreateIntProperty("idEntitySludgeling", 									"ENTITIES", 					163).getInt(163); 	
-			idEntityProjectileTNT = configuration.getOrCreateIntProperty("idEntityProjectileTNT", 								"ENTITIES", 					164).getInt(164); 	
+	        idArmorHeavyBoots = 				configuration.get(configuration.CATEGORY_ITEM, 									"idArmorHeavyBoots", 				9899)	.getInt(9899);
+	        idArmorJetpack = 					configuration.get(configuration.CATEGORY_ITEM, 									"idArmorJetpack",					9900)	.getInt(9900);
+	        
+	        idEntityCreeperBoss = 				configuration.get("Entities", 													"idEntityCreeperBoss", 				162)	.getInt(162);
+	        idEntitySludgeling = 				configuration.get("Entities", 													"idEntitySludgeling",				163)	.getInt(163);
+	        idEntityProjectileTNT = 			configuration.get("Entities", 													"idEntityProjectileTNT",			164)	.getInt(164);
 		}
 		catch (Exception e)
 		{

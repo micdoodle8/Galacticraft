@@ -101,6 +101,7 @@ public class GalacticraftCore
 		
 //		GCCoreUtil.addSmeltingRecipes(); TODO
 		NetworkRegistry.instance().registerGuiHandler(this, proxy);
+		GameRegistry.registerPlayerTracker(new GCCorePlayerHandler());
 		this.registerTileEntities();
 		this.registerCreatures();
 		this.registerOtherEntities();
@@ -189,14 +190,15 @@ public class GalacticraftCore
                 Class[] decodeAs = {Integer.class};
                 Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
                 
-                for (int j = 0; j < GalacticraftCore.instance.players.size(); ++j)
+                for (int j = 0; j < GalacticraftCore.instance.gcPlayers.size(); ++j)
 	            {
                 	GCCoreEntityPlayer playerBase = (GCCoreEntityPlayer) GalacticraftCore.instance.gcPlayers.get(j);
 	    			
 	    			if (player.username == playerBase.getPlayer().username)
 	    			{
-	            		playerBase.timeUntilPortal = 15;
-	    				playerBase.setInPortal((Integer)packetReadout[0]);
+	    				playerBase.travelToTheEnd((Integer)packetReadout[0]);
+//	            		playerBase.timeUntilPortal = 150;
+//	    				playerBase.setInPortal((Integer)packetReadout[0]);
 	    			}
 	            }
             }

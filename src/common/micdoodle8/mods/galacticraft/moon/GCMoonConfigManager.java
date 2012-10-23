@@ -41,14 +41,14 @@ public class GCMoonConfigManager
 		try
 		{
 	        configuration.load();
-	        
-	        dimensionIDMoon = configuration.getOrCreateIntProperty("Moon Dimension ID", 										"Dimension", 					28).getInt(28);
-	        
-			idBlockMoonStone = configuration.getOrCreateIntProperty("idBlockMoonStone", 										configuration.CATEGORY_BLOCK, 	219).getInt(219);
-			idBlockMoonGrass = configuration.getOrCreateIntProperty("idBlockMoonGrass", 										configuration.CATEGORY_BLOCK, 	220).getInt(220);
-			idBlockMoonDirt = configuration.getOrCreateIntProperty("idBlockMoonDirt", 											configuration.CATEGORY_BLOCK, 	221).getInt(221);
-			idBlockMoonCobblestone = configuration.getOrCreateIntProperty("idBlockMoonCobblestone", 							configuration.CATEGORY_BLOCK, 	222).getInt(222);
-	        idBlockOre = configuration.getOrCreateIntProperty("idBlockMarsOre", 												configuration.CATEGORY_BLOCK, 	223).getInt(223);
+
+	        dimensionIDMoon = 					configuration.get("Dimensions", 													"Moon Dimension ID", 			28)		.getInt(28);
+
+	        idBlockMoonStone = 					configuration.get(configuration.CATEGORY_BLOCK, 								"idBlockMoonStone", 				219)	.getInt(219);
+	        idBlockMoonGrass = 					configuration.get(configuration.CATEGORY_BLOCK, 								"idBlockMoonGrass", 				220)	.getInt(220);
+	        idBlockMoonDirt = 					configuration.get(configuration.CATEGORY_BLOCK, 								"idBlockMoonDirt", 					221)	.getInt(221);
+	        idBlockMoonCobblestone = 			configuration.get(configuration.CATEGORY_BLOCK, 								"idBlockMoonCobblestone", 			222)	.getInt(222);
+	        idBlockOre = 						configuration.get(configuration.CATEGORY_BLOCK, 								"idBlockMoonOre", 					223)	.getInt(223);
 		}
 		catch (Exception e)
 		{

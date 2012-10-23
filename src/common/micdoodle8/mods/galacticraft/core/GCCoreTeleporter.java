@@ -29,9 +29,10 @@ public class GCCoreTeleporter extends Teleporter
 		random = new Random();
 	}
 
-	public void placeInPortal(World world, Entity entity) 
-	{
-		if (placeInExistingPortal(world, entity))
+    @Override
+    public void placeInPortal(World world, Entity entity, double par3, double par5, double par7, float par9)
+    {
+		if (placeInExistingPortal(world, entity, par3, par5, par7, par9))
 		{
 			return;
 		} 
@@ -41,8 +42,9 @@ public class GCCoreTeleporter extends Teleporter
 		}
 	}
 
-	public boolean placeInExistingPortal(World world, Entity entity) 
-	{
+    @Override
+    public boolean placeInExistingPortal(World world, Entity entity, double par3, double par5, double par7, float par9)
+    {
 //		for (double i = 200; i > 10; i--)
 //		{
 //			if (world.getBlockMaterial(MathHelper.floor_double(entity.posX), MathHelper.floor_double(i), MathHelper.floor_double(entity.posZ)) != Material.air)

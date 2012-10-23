@@ -48,6 +48,7 @@ import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry.KeyHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.TickType;
@@ -217,6 +218,14 @@ public class ClientProxyCore extends CommonProxyCore
         			mc.effectRenderer.addEffect(fx);
         		}
         	}
+            else if (var1.equals("launchflame"))
+            {
+        		EntityFX fx = new GCCoreEntityLaunchFlameFX(mc.theWorld, var2, var4, var6, var8, var10, var12, 1F);
+        		if (fx != null)
+        		{
+        			mc.effectRenderer.addEffect(fx);
+        		}
+            }
 
             if (var16 * var16 + var17 * var17 + var19 * var19 < var22 * var22)
             {
@@ -253,6 +262,15 @@ public class ClientProxyCore extends CommonProxyCore
 
                 TickHandlerClient.airRemaining = (Integer) packetReadout[0];
             }
+            else if (packetType == 1)
+            {
+                Class[] decodeAs = {Float.class};
+                Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
+
+            	FMLLog.info("" + packetReadout[0]);
+            	
+                FMLClientHandler.instance().getClient().thePlayer.timeInPortal = (Float) packetReadout[0];
+            }
 		}
     }
     
@@ -276,6 +294,11 @@ public class ClientProxyCore extends CommonProxyCore
     			if (player != null && player.worldObj.provider instanceof GalacticraftWorldProvider && !player.capabilities.isFlying && !minecraft.isGamePaused) 
     			{
     				player.motionY = player.motionY + 0.062;
+    			}
+    			
+    			if (world != null)
+    			{
+    				world.setRainStrength(0.0F);
     			}
     			
     			if (player != null && player.ridingEntity != null && minecraft.gameSettings.keyBindJump.pressed)

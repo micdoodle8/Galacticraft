@@ -19,7 +19,7 @@ import net.minecraft.src.WorldGenerator;
  */
 public class GCMarsBiomeGenBase extends BiomeGenBase
 {
-    public static final BiomeGenBase marsFlat = (new GCMarsBiomeGenFlat(103)).setBiomeName("marsFlat").setDisableRain().setTemperatureRainfall(2.0F, 0.0F);
+    public static final BiomeGenBase marsFlat = (new GCMarsBiomeGenFlat(103)).setBiomeName("marsFlat");
 
     public GCMarsBiomeGenBase(int var1)
     {

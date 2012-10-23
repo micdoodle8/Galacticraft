@@ -17,7 +17,7 @@ import cpw.mods.fml.common.asm.SideOnly;
  */
 public class GCMoonBiomeGenBase extends BiomeGenBase
 {
-    public static final BiomeGenBase moonFlat = (new GCMoonBiomeGenFlat(102)).setBiomeName("moon").setDisableRain().setTemperatureRainfall(2.0F, 0.0F);
+    public static final BiomeGenBase moonFlat = (new GCMoonBiomeGenFlat(102)).setBiomeName("moon");
 
     public GCMoonBiomeGenBase(int var1)
     {

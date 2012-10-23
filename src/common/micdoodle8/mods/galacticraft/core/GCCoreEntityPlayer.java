@@ -1,8 +1,7 @@
 package micdoodle8.mods.galacticraft.core;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
 import micdoodle8.mods.galacticraft.API.GalacticraftWorldProvider;
+import net.minecraft.src.AchievementList;
 import net.minecraft.src.Block;
 import net.minecraft.src.DamageSource;
 import net.minecraft.src.EntityPlayer;
@@ -12,10 +11,14 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.NBTTagList;
+import net.minecraft.src.Packet70GameEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.world.WorldEvent.Save;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.common.network.Player;
 
 public class GCCoreEntityPlayer
 {
@@ -217,7 +220,7 @@ public class GCCoreEntityPlayer
 		
 		if (this.inPortal && timeUntilPortal == 0)
         {
-			if (this.currentPlayer instanceof EntityPlayerMP)
+			if (this.currentPlayer instanceof EntityPlayerMP && !this.currentPlayer.worldObj.isRemote)
 			{
 				EntityPlayerMP player = (EntityPlayerMP) this.currentPlayer;
 				
@@ -234,12 +237,53 @@ public class GCCoreEntityPlayer
 
 	            player.mcServer.getConfigurationManager().transferPlayerToDimension(player, var5, new GCCoreTeleporter());
 	            player.timeUntilPortal = 10;
-//	            player.timeInPortal = 0.0F;
+	            
+	            Object[] toSend = {0.0F};
+	            PacketDispatcher.sendPacketToPlayer(GCCoreUtil.createPacket("Galacticraft", 1, toSend), (Player)player);
 	            
 	            this.inPortal = false;
 			}
         }
 	}
+
+    public void travelToTheEnd(int par1)
+    {
+    	if (this.currentPlayer instanceof EntityPlayerMP)
+    	{
+    		EntityPlayerMP player = (EntityPlayerMP) this.currentPlayer;
+    		
+            if (player.dimension == 1 && par1 == 1)
+            {
+            	player.triggerAchievement(AchievementList.theEnd2);
+            	player.worldObj.setEntityDead(player);
+                player.playerConqueredTheEnd = true;
+                player.playerNetServerHandler.sendPacketToPlayer(new Packet70GameEvent(4, 0));
+            }
+            else
+            {
+//                if (player.dimension == 1 && par1 == 0)
+//                {
+//                	player.triggerAchievement(AchievementList.theEnd);
+//                    ChunkCoordinates var2 = player.mcServer.worldServerForDimension(par1).getEntrancePortalLocation();
+//
+//                    if (var2 != null)
+//                    {
+//                    	player.playerNetServerHandler.setPlayerLocation((double)var2.posX, (double)var2.posY, (double)var2.posZ, 0.0F, 0.0F);
+//                    }
+//
+//                    par1 = 1;
+//                }
+//                else
+//                {
+//                	player.triggerAchievement(AchievementList.portal);
+//                }
+            	
+            	FMLLog.info("" + par1);
+
+                player.mcServer.getConfigurationManager().transferPlayerToDimension(player, par1, new GCCoreTeleporter());
+            }
+    	}
+    }
     
     public void sendAirRemainingPacket()
     {

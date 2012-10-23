@@ -44,17 +44,17 @@ public class GCCoreContainerAirDistributor extends Container
 
 
 	@Override
-    public ItemStack transferStackInSlot(int slot)
+    public ItemStack func_82846_b(EntityPlayer par1EntityPlayer, int par1)
     {
         ItemStack stack = null;
-        Slot slotObj = (Slot)this.inventorySlots.get(slot);
+        Slot slotObj = (Slot)this.inventorySlots.get(par1);
 
         if (slotObj != null && slotObj.getHasStack())
         {
         	ItemStack stackInSlot = slotObj.getStack();
         	stack = stackInSlot.copy();
             
-            if (slot == 0)
+            if (par1 == 0)
             {
             	if (!mergeItemStack(stackInSlot, 1, inventorySlots.size(), true)) 
             	{

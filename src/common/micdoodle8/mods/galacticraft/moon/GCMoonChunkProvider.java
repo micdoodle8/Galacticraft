@@ -568,7 +568,7 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 		int var13;
 		int var14;
 
-		this.decoratePlanet(this.worldObj, this.rand, var4, var5); 
+//		this.decoratePlanet(this.worldObj, this.rand, var4, var5); 
 		var4 += 8;
 		var5 += 8;
 

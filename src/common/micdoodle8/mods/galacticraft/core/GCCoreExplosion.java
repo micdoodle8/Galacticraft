@@ -118,7 +118,7 @@ public class GCCoreExplosion
         int var7 = MathHelper.floor_double(this.explosionZ - (double)this.explosionSize - 1.0D);
         int var28 = MathHelper.floor_double(this.explosionZ + (double)this.explosionSize + 1.0D);
         List var9 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this.exploder, AxisAlignedBB.getAABBPool().addOrModifyAABBInPool((double)var3, (double)var5, (double)var7, (double)var4, (double)var27, (double)var28));
-        Vec3 var29 = Vec3.getVec3Pool().getVecFromPool(this.explosionX, this.explosionY, this.explosionZ);
+        Vec3 var29 = this.worldObj.func_82732_R().getVecFromPool(this.explosionX, this.explosionY, this.explosionZ);
 
         for (int var11 = 0; var11 < var9.size(); ++var11)
         {
@@ -146,7 +146,7 @@ public class GCCoreExplosion
 
                     if (var30 instanceof EntityPlayer)
                     {
-                        this.field_77288_k.put((EntityPlayer)var30, Vec3.getVec3Pool().getVecFromPool(var15 * var33, var17 * var33, var19 * var33));
+                        this.field_77288_k.put((EntityPlayer)var30, this.worldObj.func_82732_R().getVecFromPool(var15 * var33, var17 * var33, var19 * var33));
                     }
                 }
             }
