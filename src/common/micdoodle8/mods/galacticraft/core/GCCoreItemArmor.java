@@ -18,7 +18,7 @@ public class GCCoreItemArmor extends GCCoreItemBreathableHelmet implements IArmo
 	{
 		super(par1, par2EnumArmorMaterial, par3, par4);
 		this.material = par2EnumArmorMaterial;
-		this.setCreativeTab(CreativeTabs.tabCombat);
+		this.setCreativeTab(GalacticraftCore.galacticraftTab);
 		this.attachedMask = breathable;
 	}
 

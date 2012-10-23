@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.mars;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.Item;
 
@@ -14,7 +15,7 @@ public class GCMarsItem extends Item
 	public GCMarsItem(int par1) 
 	{
 		super(par1);
-		this.setCreativeTab(CreativeTabs.tabMisc);
+		this.setCreativeTab(GalacticraftCore.galacticraftTab);
 	}
 
 	@Override

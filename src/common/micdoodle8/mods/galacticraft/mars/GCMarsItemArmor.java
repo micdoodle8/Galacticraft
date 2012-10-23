@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.mars;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 import micdoodle8.mods.galacticraft.core.GCCoreItemBreathableHelmet;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.EnumArmorMaterial;
 import net.minecraft.src.EnumRarity;
@@ -18,7 +19,7 @@ public class GCMarsItemArmor extends GCCoreItemBreathableHelmet implements IArmo
 	{
 		super(par1, par2EnumArmorMaterial, par3, par4);
 		this.material = par2EnumArmorMaterial;
-		this.setCreativeTab(CreativeTabs.tabCombat);
+		this.setCreativeTab(GalacticraftCore.galacticraftTab);
 		this.attachedMask = breathable;
 	}
 

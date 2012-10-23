@@ -19,7 +19,7 @@ public class GCCoreItemSensorGlasses extends GCCoreItemBreathableHelmet implemen
 	public GCCoreItemSensorGlasses(int par1, EnumArmorMaterial material, int i, int j, boolean breathable) 
 	{
 		super(par1, material, i, j);
-		this.setCreativeTab(CreativeTabs.tabMisc);
+		this.setCreativeTab(GalacticraftCore.galacticraftTab);
 		this.attachedMask = breathable;
 	}
 

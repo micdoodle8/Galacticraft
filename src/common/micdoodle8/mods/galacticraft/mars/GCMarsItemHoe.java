@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.mars;
 
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.EnumRarity;
 import net.minecraft.src.EnumToolMaterial;
@@ -16,7 +17,7 @@ public class GCMarsItemHoe extends ItemHoe
 	{
 		super(par1, par2EnumToolMaterial);
 		this.material = par2EnumToolMaterial;
-		this.setCreativeTab(CreativeTabs.tabTools);
+		this.setCreativeTab(GalacticraftCore.galacticraftTab);
 	}
 
 	@Override

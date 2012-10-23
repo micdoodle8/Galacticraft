@@ -12,6 +12,7 @@ import net.minecraft.src.EntityPlayerMP;
 import net.minecraft.src.INetworkManager;
 import net.minecraft.src.Packet250CustomPayload;
 import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
@@ -76,6 +77,7 @@ public class GalacticraftMars
 	{
 		DimensionManager.registerProviderType(GCMarsConfigManager.dimensionIDMars, GCMarsWorldProvider.class, true);
 		DimensionManager.registerDimension(GCMarsConfigManager.dimensionIDMars, GCMarsConfigManager.dimensionIDMars);
+		MinecraftForge.EVENT_BUS.register(new GCMarsEvents());
 		GCMarsUtil.addSmeltingRecipes();
 		this.registerTileEntities();
 		this.registerCreatures();

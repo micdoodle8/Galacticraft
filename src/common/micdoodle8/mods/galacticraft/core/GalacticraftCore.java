@@ -9,6 +9,7 @@ import java.util.List;
 
 import micdoodle8.mods.galacticraft.core.client.GCCoreEvents;
 import micdoodle8.mods.galacticraft.moon.GalacticraftMoon;
+import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.EntityPlayerMP;
 import net.minecraft.src.INetworkManager;
 import net.minecraft.src.Packet250CustomPayload;
@@ -62,6 +63,8 @@ public class GalacticraftCore
 	
 	public static List players = new ArrayList();
 	public static List gcPlayers = new ArrayList();
+	
+	public static final CreativeTabs galacticraftTab = new GCCoreCreativeTab(12, "galacticraft");
 	
 	@PreInit
 	public void preInit(FMLPreInitializationEvent event)

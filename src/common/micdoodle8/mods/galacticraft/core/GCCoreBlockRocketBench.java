@@ -11,7 +11,7 @@ public class GCCoreBlockRocketBench extends Block
 	{
 		super(par1, Material.wood);
 		this.blockIndexInTexture = 19;
-        this.setCreativeTab(CreativeTabs.tabDecorations);
+        this.setCreativeTab(GalacticraftCore.galacticraftTab);
 	}
 
 	@Override

@@ -16,7 +16,7 @@ public class GCCoreItemSword extends ItemSword
 	{
 		super(par1, par2EnumToolMaterial);
 		this.material = par2EnumToolMaterial;
-		this.setCreativeTab(CreativeTabs.tabTools);
+		this.setCreativeTab(GalacticraftCore.galacticraftTab);
 	}
 
 	@Override

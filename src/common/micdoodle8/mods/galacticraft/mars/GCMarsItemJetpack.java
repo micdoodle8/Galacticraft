@@ -19,7 +19,7 @@ public class GCMarsItemJetpack extends ItemArmor
 		super(par1, material, par3, par4);
 		this.setMaxStackSize(1);
 		this.setMaxDamage(256);
-		this.setCreativeTab(CreativeTabs.tabMisc);
+		this.setCreativeTab(GalacticraftCore.galacticraftTab);
 	}
 	
 	@Override

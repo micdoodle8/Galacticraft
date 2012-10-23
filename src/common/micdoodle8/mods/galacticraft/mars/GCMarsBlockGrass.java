@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.mars;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.API.GCBlockGrass;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.src.Block;
 import net.minecraft.src.BlockFlower;
 import net.minecraft.src.CreativeTabs;
@@ -24,7 +25,7 @@ public class GCMarsBlockGrass extends GCBlockGrass
 		super(par1, par2);
 		this.setTickRandomly(true);
 		this.setStepSound(Block.soundGrassFootstep);
-		this.setCreativeTab(CreativeTabs.tabDecorations);
+		this.setCreativeTab(GalacticraftCore.galacticraftTab);
 	}
 
 	@Override

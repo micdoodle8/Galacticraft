@@ -14,7 +14,7 @@ public class GCCoreItem extends Item
 	public GCCoreItem(int par1) 
 	{
 		super(par1);
-		this.setCreativeTab(CreativeTabs.tabMisc);
+		this.setCreativeTab(GalacticraftCore.galacticraftTab);
 	}
 
 	@Override

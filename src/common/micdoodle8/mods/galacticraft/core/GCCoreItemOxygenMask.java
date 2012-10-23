@@ -17,7 +17,7 @@ public class GCCoreItemOxygenMask extends GCCoreItemBreathableHelmet implements 
 	protected GCCoreItemOxygenMask(int par1, EnumArmorMaterial material, int i, int j) 
 	{
 		super(par1, material, j, j);
-		this.setCreativeTab(CreativeTabs.tabCombat);
+		this.setCreativeTab(GalacticraftCore.galacticraftTab);
 	}
 
     public String getArmorTextureFile(ItemStack itemstack)

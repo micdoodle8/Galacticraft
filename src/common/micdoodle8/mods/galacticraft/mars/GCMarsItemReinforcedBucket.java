@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.mars;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.src.Block;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.EntityCow;
@@ -25,7 +26,7 @@ public class GCMarsItemReinforcedBucket extends GCMarsItem
         super(par1);
         this.maxStackSize = 1;
         this.isFull = par2;
-        this.setCreativeTab(CreativeTabs.tabMisc);
+        this.setCreativeTab(GalacticraftCore.galacticraftTab);
     }
 
     @Override

@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.mars;
 
 import java.util.ArrayList;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.src.Block;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.ItemStack;
@@ -18,6 +19,7 @@ public class GCMarsBlock extends Block
 	protected GCMarsBlock(int i, int j, Material material) 
 	{
 		super(i, j, material);
+		this.setCreativeTab(GalacticraftCore.galacticraftTab);
 	}
 
 	@Override

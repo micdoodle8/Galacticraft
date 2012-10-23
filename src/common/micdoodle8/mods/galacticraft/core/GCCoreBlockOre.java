@@ -24,7 +24,7 @@ public class GCCoreBlockOre extends Block
 	{
 		super(i, j, Material.rock);
         this.setRequiresSelfNotify();
-        this.setCreativeTab(CreativeTabs.tabBlock);
+        this.setCreativeTab(GalacticraftCore.galacticraftTab);
 	}
 
 	@Override

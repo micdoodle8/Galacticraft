@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.mars;
 import java.util.List;
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.src.Block;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.ItemStack;
@@ -24,7 +25,7 @@ public class GCMarsBlockOre extends Block
 	{
 		super(i, 4, Material.rock);
         this.setRequiresSelfNotify();
-        this.setCreativeTab(CreativeTabs.tabBlock);
+        this.setCreativeTab(GalacticraftCore.galacticraftTab);
 	}
 
 	@Override
