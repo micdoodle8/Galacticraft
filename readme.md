@@ -1,41 +1,83 @@
-h1. << Project Name >>
+h1. Galacticraft
 
-<< Project description >>
+An advanced space exploration mod for Minecraft 1.4
 
 h2. Branch structure for submodules
 
-There are two branches to this repository, *master* and *production*, these make it easier to use the same repository for developing as well as for sharing the code as a Git submodule. 
+h2. License
 
-h3. The master Branch
+Copyright (c) 2012 Micdoodle8 (Mitchell Petrie)
 
-The master branch contains the class files as well as the Xcode project for developing/testing/demonstrating the code. This is the branch to use to for further development, as well as to see examples of how to use the specific code. 
+Galacticraft License
+====================
 
-h3. The production Branch
+Version 1.0
 
-The production branch should be used if you want to add these extensions as a Git submodule in other projects and will only contain the class files themselves without the Xcode project or example classes. This is preferable as it will keep your directories clean of any code which is unnecessary to your working project, of course you can switch branches in the submodule to access the given samples. *Do not perform any development on this branch*.
+0. Definitions
+--------------
 
-Changes made to the master branch will be merged across to production, so it will always remain current with respect to master.
+Minecraft: Denotes a copy of the Minecraft game licensed by Mojang AB
 
-To add the production branch rather than master, simply use the -b flag as shown below.
+User: Anybody that interacts with the software in one of the following ways:
+   - play
+   - decompile
+   - recompile or compile
+   - modify
+   - distribute
 
-bc. git submodule add -b production << URL for repository >>
+Mod: The mod code designated by the present license, in source form, binary
+form, as obtained standalone, as part of a wider distribution or resulting from
+the compilation of the original or modified sources.
 
-To keep up to date with the latest changes `cd` into the directory that contains this submodule and pull the newest changes as usual
+Dependency: Code required for the mod to work properly. This includes
+dependencies required to compile the code as well as any file or modification
+that is explicitely or implicitely required for the mod to be working.
 
-bc. git pull origin
+1. Scope
+--------
 
-h3. Artefacts
+The present license is granted to any user of the mod. As a prerequisite,
+a user must own a legally acquired copy of Minecraft
 
-Sometimes, there may be artefacts left over when switching from master to production. These are files that are ignored by Git and are easily cleaned up by running
+2. Liability
+------------
 
-bc. git clean -dxf
+This mod is provided 'as is' with no warranties, implied or otherwise. The owner
+of this mod takes no responsibility for any damages incurred from the use of
+this mod. This mod alters fundamental parts of the Minecraft game, parts of
+Minecraft may not work with this mod installed. All damages caused from the use
+or misuse of this mad fall on the user.
 
-h2. License (MIT)
+3. Play rights
+--------------
 
-Copyright (c) 2012 Abizer Nasir
+The user is allowed to install this mod on a client or a server and to play
+without restriction.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+4. Modification rights
+----------------------
 
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+The user does not have the right to decompile the source code, look at either the
+decompiled version or the original source code, or to modify it, without written or electronic permission from the mod owner (micdoodle8).
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+5. Derivation rights
+--------------------
+
+The user has the rights to derive code from this mod, that is to say to
+write code that extends or instanciate the mod classes or interfaces, refer to
+its objects, or calls its functions. This code is known as "derived" code, and
+can be licensed under a license different from this mod.
+
+6. Distribution of original or modified copy rights
+---------------------------------------------------
+
+Is subject to distribution rights this entire mod in its various forms. This
+include:
+   - original binary or source forms of this mod files
+   - modified versions of these binaries or source files, as well as binaries
+resulting from source modifications
+   - patch to its source or binary files
+   - any copy of a portion of its binary source files
+
+The user is not allowed to redistribute this mod partially, in totality, nor
+included in a distribution.
