@@ -27,6 +27,7 @@ import net.minecraft.src.EntityClientPlayerMP;
 import net.minecraft.src.EntityFX;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EntityPlayerSP;
+import net.minecraft.src.EntitySmokeFX;
 import net.minecraft.src.INetworkManager;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.KeyBinding;
@@ -221,6 +222,14 @@ public class ClientProxyCore extends CommonProxyCore
             else if (var1.equals("launchflame"))
             {
         		EntityFX fx = new GCCoreEntityLaunchFlameFX(mc.theWorld, var2, var4, var6, var8, var10, var12, 1F);
+        		if (fx != null)
+        		{
+        			mc.effectRenderer.addEffect(fx);
+        		}
+            }
+            else if (var1.equals("distancesmoke") && var16 * var16 + var17 * var17 + var19 * var19 < var22 * var22 * 1.7)
+            {
+            	EntityFX fx = new EntitySmokeFX(mc.theWorld, var2, var4, var6, var8, var10, var12, 2.5F);
         		if (fx != null)
         		{
         			mc.effectRenderer.addEffect(fx);
