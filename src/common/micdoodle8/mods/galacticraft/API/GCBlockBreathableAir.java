@@ -25,6 +25,12 @@ public class GCBlockBreathableAir extends BlockContainer
 		super(id, texIndex, Material.air);
         this.setTickRandomly(true);
 	}
+	
+	public void setMinYMaxY(double minY, double maxY)
+	{
+		this.minY = minY;
+		this.maxY = maxY;
+	}
 
 	@Override
 	public boolean isOpaqueCube() 

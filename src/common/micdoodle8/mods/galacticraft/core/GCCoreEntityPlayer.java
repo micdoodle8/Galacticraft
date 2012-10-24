@@ -250,7 +250,7 @@ public class GCCoreEntityPlayer
 //		if (this.currentPlayer.worldObj.provider instanceof GCMoonWorldProvider)
 		if (FMLCommonHandler.instance().getEffectiveSide() != Side.CLIENT)
 		{
-			if (this.currentPlayer.worldObj.rand.nextInt(50) == 0)
+			if (this.currentPlayer.worldObj.rand.nextInt(7000) == 0)
 			{
 				int x, y, z;
 				double motX, motZ;
@@ -267,23 +267,23 @@ public class GCCoreEntityPlayer
 					this.currentPlayer.worldObj.spawnEntityInWorld(meteor);
 				}
 			}
-//			if (this.currentPlayer.worldObj.rand.nextInt(500) == 0)
-//			{
-//				int x, y, z;
-//				double motX, motZ;
-//				x = this.currentPlayer.worldObj.rand.nextInt(20) - 10;
-//				y = this.currentPlayer.worldObj.rand.nextInt(20) + 200;
-//				z = this.currentPlayer.worldObj.rand.nextInt(20) - 10;
-//				motX = this.currentPlayer.worldObj.rand.nextDouble() * 5;
-//				motZ = this.currentPlayer.worldObj.rand.nextDouble() * 5;
-//				
-//				GCCoreEntityMeteor meteor = new GCCoreEntityMeteor(this.currentPlayer.worldObj, this.currentPlayer.posX + x, this.currentPlayer.posY + y, this.currentPlayer.posZ + z, motX - 2.5D, 0, motZ - 2.5D, 6);
-//				
-//				if (!this.currentPlayer.worldObj.isRemote)
-//				{
-//					this.currentPlayer.worldObj.spawnEntityInWorld(meteor);
-//				}
-//			}
+			if (this.currentPlayer.worldObj.rand.nextInt(20000) == 0)
+			{
+				int x, y, z;
+				double motX, motZ;
+				x = this.currentPlayer.worldObj.rand.nextInt(20) - 10;
+				y = this.currentPlayer.worldObj.rand.nextInt(20) + 200;
+				z = this.currentPlayer.worldObj.rand.nextInt(20) - 10;
+				motX = this.currentPlayer.worldObj.rand.nextDouble() * 5;
+				motZ = this.currentPlayer.worldObj.rand.nextDouble() * 5;
+				
+				GCCoreEntityMeteor meteor = new GCCoreEntityMeteor(this.currentPlayer.worldObj, this.currentPlayer.posX + x, this.currentPlayer.posY + y, this.currentPlayer.posZ + z, motX - 2.5D, 0, motZ - 2.5D, 6);
+				
+				if (!this.currentPlayer.worldObj.isRemote)
+				{
+					this.currentPlayer.worldObj.spawnEntityInWorld(meteor);
+				}
+			}
 		}
 	}
 

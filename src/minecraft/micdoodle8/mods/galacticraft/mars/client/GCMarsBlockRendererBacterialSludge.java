@@ -53,7 +53,7 @@ public class GCMarsBlockRendererBacterialSludge implements ISimpleBlockRendering
         Tessellator var3 = Tessellator.instance;
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        var1.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+        var0.func_83020_a(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         var3.startDrawingQuads();
         var3.setNormal(0.0F, -1.0F, 0.0F);
         var0.renderBottomFace(var1, 0.0D, 0.0D, 0.0D, var1.getBlockTextureFromSideAndMetadata(0, var2));
@@ -265,8 +265,8 @@ public class GCMarsBlockRendererBacterialSludge implements ISimpleBlockRendering
                 }
             }
 
-            par1Block.minY = var18;
-            par1Block.maxY = var20;
+            renderBlocks.field_83027_i = var18;
+            renderBlocks.field_83024_j = var20;
             return;
         }
     }
