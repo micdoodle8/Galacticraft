@@ -2,18 +2,17 @@ package micdoodle8.mods.galacticraft.core;
 
 import java.util.Random;
 
-import cpw.mods.fml.common.Side;
-import cpw.mods.fml.common.asm.SideOnly;
-import micdoodle8.mods.galacticraft.core.client.GCCoreEntityOxygenFX;
 import net.minecraft.src.Block;
 import net.minecraft.src.BlockContainer;
 import net.minecraft.src.EntityLiving;
-import net.minecraft.src.EntitySpellParticleFX;
+import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.Material;
 import net.minecraft.src.MathHelper;
-import net.minecraft.src.ModLoader;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
+import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.common.Side;
+import cpw.mods.fml.common.asm.SideOnly;
 
 public class GCCoreBlockOxygenCollector extends BlockContainer
 {
@@ -27,6 +26,44 @@ public class GCCoreBlockOxygenCollector extends BlockContainer
 	{
 		return new GCCoreTileEntityOxygenCollector();
 	}
+
+
+	@Override
+    @SideOnly(Side.CLIENT)
+    public int getBlockTexture(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
+    {
+		boolean active = false;
+		
+		if (par1IBlockAccess.getBlockTileEntity(par2, par3, par4) instanceof GCCoreTileEntityOxygenCollector)
+		{
+			if (((GCCoreTileEntityOxygenCollector)par1IBlockAccess.getBlockTileEntity(par2, par3, par4)).currentPower > 1)
+			{
+				active = true;
+			}
+		}
+		
+		FMLLog.info("" + blockIndexInTexture);
+		
+        if (par5 == 1)
+        {
+            return this.blockIndexInTexture + 17;
+        }
+        else if (par5 == 0)
+        {
+            return this.blockIndexInTexture + 17;
+        }
+        else
+        {
+            int var6 = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
+            return (par5 != var6 && par5 != ((var6 == 5 || var6 == 3) ? var6 - 1 : var6 + 1)) ? this.blockIndexInTexture + 2 : (active ? this.blockIndexInTexture + 16 : this.blockIndexInTexture - 1);
+        }
+    }
+
+	@Override
+    public int getBlockTextureFromSide(int par1)
+    {
+        return par1 == 1 ? this.blockIndexInTexture + 17 : (par1 == 0 ? this.blockIndexInTexture + 2 : (par1 == 3 ? this.blockIndexInTexture - 1 : this.blockIndexInTexture + 2));
+    }
 
 	@Override
     public void onBlockAdded(World par1World, int par2, int par3, int par4)
@@ -140,7 +177,11 @@ public class GCCoreBlockOxygenCollector extends BlockContainer
             var15 = ((double)par5Random.nextFloat() - 0.5D) * 0.5D;
             var17 = ((double)par5Random.nextFloat() - 0.5D) * 0.5D;
 
-            if (par1World.getBlockId(par2 - 1, par3, par4) != this.blockID && par1World.getBlockId(par2 + 1, par3, par4) != this.blockID)
+            int var2 = par1World.getBlockMetadata(par2, par3, par4);
+            
+            FMLLog.info("" + var2);
+
+            if (var2 == 3 || var2 == 2)
             {
                 var7 = (double)par2 + 0.5D + 0.25D * (double)var19;
                 var13 = (double)(par5Random.nextFloat() * 2.0F * (float)var19);

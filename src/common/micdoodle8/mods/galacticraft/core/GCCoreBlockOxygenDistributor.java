@@ -45,6 +45,14 @@ public class GCCoreBlockOxygenDistributor extends BlockContainer
 		return new GCCoreTileEntityOxygenDistributor();
 	}
 
+	@Override
+    public int getBlockTextureFromSideAndMetadata(int par1, int par2)
+    {
+        int var3 = par2 & 12;
+        int var4 = par2 & 3;
+        return var3 == 0 && (par1 == 1 || par1 == 0) ? 21 : (var3 == 4 && (par1 == 5 || par1 == 4) ? 21 : (var3 == 8 && (par1 == 2 || par1 == 3) ? 21 : (var4 == 1 ? 116 : (var4 == 2 ? 117 : (var4 == 3 ? 153 : 20)))));
+    }
+
     public void onBlockAdded(World par1World, int par2, int par3, int par4)
     {
         super.onBlockAdded(par1World, par2, par3, par4);
