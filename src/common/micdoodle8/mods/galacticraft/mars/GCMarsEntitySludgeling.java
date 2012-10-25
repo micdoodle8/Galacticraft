@@ -18,7 +18,7 @@ public class GCMarsEntitySludgeling extends EntityMob
     {
         super(par1World);
         this.texture = "/micdoodle8/mods/galacticraft/mars/client/entities/sludgeling.png";
-        this.setSize(0.3F, 0.3F);
+        this.setSize(0.2F, 0.2F);
         this.moveSpeed = 0.6F;
         this.tasks.addTask(1, new EntityAIAttackOnCollide(this, 0.25F, true));
         this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, GCCoreEntityMob.class, 16.0F, 0, false, true));
