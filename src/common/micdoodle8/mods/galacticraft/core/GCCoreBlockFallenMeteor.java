@@ -3,14 +3,16 @@ package micdoodle8.mods.galacticraft.core;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.Material;
+import net.minecraft.src.MathHelper;
 import net.minecraft.src.World;
 
 public class GCCoreBlockFallenMeteor extends GCCoreBlock
 {
 	public GCCoreBlockFallenMeteor(int i) 
 	{
-		super(i, 0, Material.rock);
+		super(i, 21, Material.rock);
 		this.setCreativeTab(GalacticraftCore.galacticraftTab);
+		this.setBlockBounds(0.2F, 0.2F, 0.2F, 0.8F, 0.8F, 0.8F);
 	}
 	
 	@Override
@@ -41,8 +43,18 @@ public class GCCoreBlockFallenMeteor extends GCCoreBlock
 	        
 	        if (!livingEntity.isBurning())
 	        {
-		        livingEntity.setFire(5);
+		        livingEntity.setFire(2);
 	        }
+	        
+	        double var9 = livingEntity.posX - par2;
+            double var7;
+
+            for (var7 = livingEntity.posZ - par4; var9 * var9 + var7 * var7 < 1.0E-4D; var7 = (Math.random() - Math.random()) * 0.01D)
+            {
+                var9 = (Math.random() - Math.random()) * 0.01D;
+            }
+
+            livingEntity.knockBack(livingEntity, 1, var9 / 2, var7 / 2);
 		}
     }
 }
