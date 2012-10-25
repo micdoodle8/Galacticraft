@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core;
 
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityMob;
+import net.minecraft.src.EntitySkeleton;
 import net.minecraft.src.EnumCreatureAttribute;
 import net.minecraft.src.Item;
 import net.minecraft.src.MathHelper;
@@ -27,11 +28,6 @@ public class GCCoreEntitySpider extends GCCoreEntityMob
         this.moveSpeed = 1F;
     }
 
-    protected boolean isAIEnabled()
-    {
-        return true;
-    }
-    
     protected void entityInit()
     {
         super.entityInit();
@@ -65,15 +61,6 @@ public class GCCoreEntitySpider extends GCCoreEntityMob
     }
 
     /**
-     * returns if this entity triggers Block.onEntityWalking on the blocks they walk on. used for spiders and wolves to
-     * prevent them from trampling crops
-     */
-    protected boolean canTriggerWalking()
-    {
-        return false;
-    }
-
-    /**
      * Finds the closest player within 16 blocks to attack, or null if this Entity isn't interested in attacking
      * (Animals, Spiders at day, peaceful PigZombies).
      */
@@ -97,7 +84,7 @@ public class GCCoreEntitySpider extends GCCoreEntityMob
      */
     protected String getLivingSound()
     {
-        return "mob.spider";
+        return "mob.spider.say";
     }
 
     /**
@@ -105,7 +92,7 @@ public class GCCoreEntitySpider extends GCCoreEntityMob
      */
     protected String getHurtSound()
     {
-        return "mob.spider";
+        return "mob.spider.say";
     }
 
     /**
@@ -113,7 +100,15 @@ public class GCCoreEntitySpider extends GCCoreEntityMob
      */
     protected String getDeathSound()
     {
-        return "mob.spiderdeath";
+        return "mob.spider.death";
+    }
+
+    /**
+     * Plays step sound at given x, y, z for the entity
+     */
+    protected void playStepSound(int var1, int var2, int var3, int var4)
+    {
+        this.worldObj.playSoundAtEntity(this, "mob.spider.step", 0.15F, 1.0F);
     }
 
     /**
@@ -146,8 +141,6 @@ public class GCCoreEntitySpider extends GCCoreEntityMob
                 super.attackEntity(par1Entity, par2);
             }
         }
-        
-        this.motionY += 0.06F;
     }
 
     /**
@@ -234,5 +227,17 @@ public class GCCoreEntitySpider extends GCCoreEntityMob
         }
 
         this.dataWatcher.updateObject(16, Byte.valueOf(var2));
+    }
+
+    public void func_82163_bD()
+    {
+        if (this.worldObj.rand.nextInt(100) == 0)
+        {
+            EntitySkeleton var1 = new EntitySkeleton(this.worldObj);
+            var1.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
+            var1.func_82163_bD();
+            this.worldObj.spawnEntityInWorld(var1);
+            var1.mountEntity(this);
+        }
     }
 }
