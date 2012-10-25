@@ -21,12 +21,10 @@ import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 public class GCCoreBlockRendererMeteor implements ISimpleBlockRenderingHandler
 {
     final int renderID;
-    private GCCoreModelMeteor modelMeteor;
 
     public GCCoreBlockRendererMeteor(int var1)
     {
         this.renderID = var1;
-    	modelMeteor = new GCCoreModelMeteor();
     }
 
 	@Override
@@ -38,7 +36,7 @@ public class GCCoreBlockRendererMeteor implements ISimpleBlockRenderingHandler
 
     public boolean shouldRender3DInInventory()
     {
-        return false;
+        return true;
     }
 
     public int getRenderId()
@@ -46,9 +44,42 @@ public class GCCoreBlockRendererMeteor implements ISimpleBlockRenderingHandler
         return this.renderID;
     }
 
+    public static void renderInvNormalBlock(RenderBlocks var0, Block var1, int var2)
+    {
+        Tessellator var3 = Tessellator.instance;
+        GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        var0.func_83020_a(0.15F, 0.15F, 0.15F, 0.85F, 0.85F, 0.85F);
+        var3.startDrawingQuads();
+        var3.setNormal(0.0F, -0.8F, 0.0F);
+        var0.renderBottomFace(var1, 0.0D, 0.0D, 0.0D, var1.getBlockTextureFromSideAndMetadata(0, var2));
+        var3.draw();
+        var3.startDrawingQuads();
+        var3.setNormal(0.0F, 0.8F, 0.0F);
+        var0.renderTopFace(var1, 0.0D, 0.0D, 0.0D, var1.getBlockTextureFromSideAndMetadata(1, var2));
+        var3.draw();
+        var3.startDrawingQuads();
+        var3.setNormal(0.0F, 0.0F, -0.8F);
+        var0.renderEastFace(var1, 0.0D, 0.0D, 0.0D, var1.getBlockTextureFromSideAndMetadata(2, var2));
+        var3.draw();
+        var3.startDrawingQuads();
+        var3.setNormal(0.0F, 0.0F, 0.8F);
+        var0.renderWestFace(var1, 0.0D, 0.0D, 0.0D, var1.getBlockTextureFromSideAndMetadata(3, var2));
+        var3.draw();
+        var3.startDrawingQuads();
+        var3.setNormal(-0.8F, 0.0F, 0.0F);
+        var0.renderNorthFace(var1, 0.0D, 0.0D, 0.0D, var1.getBlockTextureFromSideAndMetadata(4, var2));
+        var3.draw();
+        var3.startDrawingQuads();
+        var3.setNormal(0.8F, 0.0F, 0.0F);
+        var0.renderSouthFace(var1, 0.0D, 0.0D, 0.0D, var1.getBlockTextureFromSideAndMetadata(5, var2));
+        var3.draw();
+    }
+
 	@Override
 	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) 
 	{
+    	this.renderInvNormalBlock(renderer, block, metadata);
 	}
 	
     public void renderBlockMeteor(RenderBlocks renderBlocks, Block par1Block, IBlockAccess var1, int par2, int par3, int par4)
