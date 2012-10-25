@@ -84,6 +84,8 @@ public class GCCoreBlocks
 		addNameWithMetadata("tile.blockores.copperearth.name");
 		addNameWithMetadata("tile.blockores.titaniumearth.name");
 		addName(blockAirCollector);
+		addName(rocketBench);
+		addName(fallenMeteor);
 	}
 	
 	private static void addName(Block block)
