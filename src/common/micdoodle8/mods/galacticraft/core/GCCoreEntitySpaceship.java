@@ -1,16 +1,22 @@
 package micdoodle8.mods.galacticraft.core;
 
 import net.minecraft.src.AxisAlignedBB;
+import net.minecraft.src.Block;
 import net.minecraft.src.BlockRail;
 import net.minecraft.src.DamageSource;
 import net.minecraft.src.Entity;
+import net.minecraft.src.EntityAIControlledByPlayer;
+import net.minecraft.src.EntityCreature;
 import net.minecraft.src.EntityItem;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EntityPlayerMP;
+import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.NBTTagCompound;
+import net.minecraft.src.PathFinder;
+import net.minecraft.src.PathPoint;
 import net.minecraft.src.World;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLLog;
@@ -129,7 +135,7 @@ public class GCCoreEntitySpaceship extends Entity
     public void performHurtAnimation()
     {
         this.func_70494_i(-this.func_70493_k());
-        this.func_70497_h(10);
+        this.func_70497_h(5);
         this.setDamage(this.getDamage() + this.getDamage() * 10);
     }
 
@@ -220,6 +226,11 @@ public class GCCoreEntitySpaceship extends Entity
         	}
         	
         	if (FMLClientHandler.instance().getClient().gameSettings.keyBindRight.pressed)
+        	{
+        		this.rotationYaw += 0.5F;
+        	}
+        	
+        	if (FMLClientHandler.instance().getClient().gameSettings.keyBindForward.pressed)
         	{
         		this.rotationYaw += 0.5F;
         	}
@@ -540,7 +551,7 @@ public class GCCoreEntitySpaceship extends Entity
     {
     	if (this.ignite == 0)
     	{
-        	this.worldObj.playSoundEffect(this.posX, this.posY, this.posZ, "shuttle.sound", 1F, 2.0F);
+        	this.worldObj.playSoundEffect(this.posX, this.posY, this.posZ, "shuttle.sound", 1F, 1.4F);
     	}
     	this.ignite = 1;
     }
@@ -565,7 +576,6 @@ public class GCCoreEntitySpaceship extends Entity
 	    			
 	    			if (entityplayermp.username == playerBase.getPlayer().username)
 	    			{
-	    				FMLLog.info("sdasd");
 	    				GalacticraftCore.proxy.displayChoosePlanetGui();
 	    				if (this.riddenByEntity != null)
 	    				{
