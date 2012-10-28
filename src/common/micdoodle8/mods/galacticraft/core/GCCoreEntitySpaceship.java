@@ -1,25 +1,21 @@
 package micdoodle8.mods.galacticraft.core;
 
+import micdoodle8.mods.galacticraft.core.client.GCCoreSoundUpdaterSpaceship;
 import net.minecraft.src.AxisAlignedBB;
-import net.minecraft.src.Block;
 import net.minecraft.src.BlockRail;
 import net.minecraft.src.DamageSource;
 import net.minecraft.src.Entity;
-import net.minecraft.src.EntityAIControlledByPlayer;
-import net.minecraft.src.EntityCreature;
 import net.minecraft.src.EntityItem;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EntityPlayerMP;
-import net.minecraft.src.Item;
+import net.minecraft.src.IUpdatePlayerListBox;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.NBTTagCompound;
-import net.minecraft.src.PathFinder;
-import net.minecraft.src.PathPoint;
 import net.minecraft.src.World;
+import net.minecraft.src.WorldClient;
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
@@ -55,7 +51,7 @@ public class GCCoreEntitySpaceship extends Entity
     protected double dragAir;
     
     protected int ignite;
-    protected int timeUntilLaunch;
+    public int timeUntilLaunch;
     protected boolean launched;
     
     protected float timeSinceEntityEntry;
@@ -66,6 +62,8 @@ public class GCCoreEntitySpaceship extends Entity
     protected boolean reversed;
     
     protected boolean failedLaunch;
+    
+    protected final IUpdatePlayerListBox field_82344_g;
 
     public GCCoreEntitySpaceship(World par1World)
     {
@@ -74,6 +72,7 @@ public class GCCoreEntitySpaceship extends Entity
         this.preventEntitySpawning = true;
         this.setSize(0.98F, 4F);
         this.yOffset = this.height / 2.0F;
+        this.field_82344_g = par1World != null ? par1World instanceof WorldClient ? new GCCoreSoundUpdaterSpaceship(FMLClientHandler.instance().getClient().sndManager, this, FMLClientHandler.instance().getClient().thePlayer) : null : null;
     }
 
     protected boolean canTriggerWalking()
@@ -90,6 +89,7 @@ public class GCCoreEntitySpaceship extends Entity
         this.dataWatcher.addObject(20, new Integer(0));
         this.dataWatcher.addObject(21, new Integer(0));
         this.dataWatcher.addObject(22, new Integer(0));
+        this.dataWatcher.addObject(23, new Integer(0));
     }
 
     public AxisAlignedBB getCollisionBox(Entity par1Entity)
@@ -148,9 +148,25 @@ public class GCCoreEntitySpaceship extends Entity
     {
         return false;
     }
+
+    @Override
+    public void setDead()
+    {
+    	super.setDead();
+
+        if (this.field_82344_g != null)
+        {
+            this.field_82344_g.update();
+        }
+    }
     
     public void onUpdate()
     {
+        if (this.field_82344_g != null)
+        {
+            this.field_82344_g.update();
+        }
+
     	if (this.rumble > 0)
     	{
     		this.rumble--;
@@ -274,6 +290,8 @@ public class GCCoreEntitySpaceship extends Entity
         {
         	this.timeUntilLaunch --;
         }
+        
+        this.setTimeUntilLaunch(this.timeUntilLaunch);
         
         if (this.timeUntilLaunch == 0 && ignite == 1)
         {
@@ -536,6 +554,11 @@ public class GCCoreEntitySpaceship extends Entity
     {
         return this.dataWatcher.getWatchableObjectInt(20);
     }
+
+    public int getReversed()
+    {
+        return this.dataWatcher.getWatchableObjectInt(21);
+    }
     
     public void setLaunched(int par1)
     {
@@ -547,11 +570,24 @@ public class GCCoreEntitySpaceship extends Entity
     	return this.dataWatcher.getWatchableObjectInt(22);
     }
     
+    public void setTimeUntilLaunch(int par1)
+    {
+    	if (!this.worldObj.isRemote)
+    	{
+        	this.dataWatcher.updateObject(23, par1);
+    	}
+    }
+    
+    public int getTimeUntilLaunch()
+    {
+    	return this.dataWatcher.getWatchableObjectInt(23);
+    }
+    
     public void ignite()
     {
     	if (this.ignite == 0)
     	{
-        	this.worldObj.playSoundEffect(this.posX, this.posY, this.posZ, "shuttle.sound", 1F, 1.4F);
+//        	this.worldObj.playSoundEffect(this.posX, this.posY, this.posZ, "shuttle.sound", 1F, 1.4F);
     	}
     	this.ignite = 1;
     }
