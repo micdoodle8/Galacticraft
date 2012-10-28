@@ -393,6 +393,8 @@ public class GCCoreUtil
 		
 		for (int i = 0; i < ids.length; i++)
 		{
+			FMLLog.info("" + DimensionManager.getProvider(ids[i]).getDimensionName());
+			
     		if (DimensionManager.getProvider(ids[i]) instanceof GalacticraftWorldProvider || DimensionManager.getProvider(ids[i]).dimensionId == 0)
     		{
     			map.put(DimensionManager.getProvider(ids[i]).getDimensionName(), DimensionManager.getProvider(ids[i]).dimensionId);
