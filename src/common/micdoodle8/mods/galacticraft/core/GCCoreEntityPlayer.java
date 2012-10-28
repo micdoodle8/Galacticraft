@@ -247,8 +247,7 @@ public class GCCoreEntityPlayer
 			}
         }
 		
-//		if (this.currentPlayer.worldObj.provider instanceof GCMoonWorldProvider)
-		if (FMLCommonHandler.instance().getEffectiveSide() != Side.CLIENT)
+		if (this.currentPlayer.worldObj.provider instanceof GCMoonWorldProvider && FMLCommonHandler.instance().getEffectiveSide() != Side.CLIENT)
 		{
 			if (this.currentPlayer.worldObj.rand.nextInt(7000) == 0)
 			{

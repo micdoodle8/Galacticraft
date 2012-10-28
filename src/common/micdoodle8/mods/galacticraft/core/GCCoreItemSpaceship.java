@@ -31,6 +31,8 @@ public class GCCoreItemSpaceship extends GCMarsItem
     {
     	int amountOfCorrectBlocks = 0;
     	
+    	GCCoreEntitySpaceship spaceship = new GCCoreEntitySpaceship(par3World, (double)((float)par4 + 0.5F), (double)((float)par5 - 1.5F), (double)((float)par6 + 0.5F), false);
+    	
     	if (par3World.isRemote)
     	{
     		return false;
@@ -50,7 +52,7 @@ public class GCCoreItemSpaceship extends GCMarsItem
     		
     		if (amountOfCorrectBlocks == 9)
     		{
-	    		par3World.spawnEntityInWorld(new GCCoreEntitySpaceship(par3World, (double)((float)par4 + 0.5F), (double)((float)par5 - 1.5F), (double)((float)par6 + 0.5F), false));
+	    		par3World.spawnEntityInWorld(spaceship);
 	    		if (!par2EntityPlayer.capabilities.isCreativeMode)
 	    		par2EntityPlayer.inventory.consumeInventoryItem(par1ItemStack.getItem().shiftedIndex);
     		}
