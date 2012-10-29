@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.mars;
 
-import micdoodle8.mods.galacticraft.API.GalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.core.GalacticraftWorldProvider;
 import net.minecraft.src.Chunk;
 import net.minecraft.src.IChunkProvider;
 import net.minecraft.src.Vec3;

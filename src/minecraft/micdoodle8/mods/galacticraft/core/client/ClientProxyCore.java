@@ -5,7 +5,6 @@ import java.io.DataInputStream;
 import java.util.EnumSet;
 import java.util.Random;
 
-import micdoodle8.mods.galacticraft.API.GalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.CommonProxyCore;
 import micdoodle8.mods.galacticraft.core.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
@@ -21,6 +20,7 @@ import micdoodle8.mods.galacticraft.core.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.GCCoreTileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.GalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.moon.client.ClientProxyMoon;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.EntityClientPlayerMP;
@@ -45,6 +45,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.client.TextureFXManager;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry.KeyHandler;
@@ -120,6 +121,19 @@ public class ClientProxyCore extends CommonProxyCore
 	public void registerRenderInformation() 
 	{
 		moon.registerRenderInformation();
+		
+		try
+		{
+			for (String string : GalacticraftCore.loader.spriteSheets)
+			{
+				FMLLog.info(string);
+				TextureFXManager.instance().addNewTextureOverride("/micdoodle8/mods/galacticraft/core/client/override/1.png.png", string, 0);
+			}
+		} 
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
 		
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntitySpaceship.class, new GCCoreRenderSpaceship());
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntitySpider.class, new GCCoreRenderSpider());

@@ -30,7 +30,7 @@ public class GCMoonBiomeGenBase extends BiomeGenBase
         this.rainfall = 0F;
     }
     
-    protected GCMoonBiomeGenBase setColor(int var1)
+    public GCMoonBiomeGenBase setColor(int var1)
     {
         return (GCMoonBiomeGenBase)super.setColor(var1);
     }

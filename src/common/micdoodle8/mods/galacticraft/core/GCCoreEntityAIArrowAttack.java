@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core;
 
-import micdoodle8.mods.galacticraft.API.GalacticraftWorldProvider;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityAIBase;
 import net.minecraft.src.EntityArrow;

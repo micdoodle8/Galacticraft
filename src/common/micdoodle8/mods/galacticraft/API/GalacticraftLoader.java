@@ -7,6 +7,7 @@ import java.util.List;
 
 import net.minecraft.src.Block;
 import net.minecraftforge.common.DimensionManager;
+import cpw.mods.fml.client.TextureFXManager;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
@@ -16,11 +17,12 @@ public class GalacticraftLoader
 	public File baseDirectory;
 	public File clientDirectory;
 	public int numberOfPlugins;
-	public List<CoreFile> coreFiles = new ArrayList<CoreFile>();
 	public List<ProviderFile> providerFiles = new ArrayList<ProviderFile>();
 	public List<ChunkProviderFile> chunkProviderFiles = new ArrayList<ChunkProviderFile>();
 	public List<BlockFile> blockFiles = new ArrayList<BlockFile>();
+	public List<String> spriteSheets = new ArrayList<String>();
 
+	public Hashtable<Integer, CoreFile> coreFiles = new Hashtable<Integer, CoreFile>();
     public Hashtable<Integer, ProviderFile> dimensions = new Hashtable<Integer, ProviderFile>();
     public Hashtable<Integer, ChunkProviderFile> chunkProviders = new Hashtable<Integer, ChunkProviderFile>();
     
@@ -73,8 +75,25 @@ public class GalacticraftLoader
 						try
 						{
 							CoreFile coreFile = new CoreFile(coreDirectory.listFiles()[i]);
-							coreFiles.add(coreFile);
-							FMLLog.info("	Successfully loaded plugin with name " + coreFile.getPluginName() + " and ID " + coreFile.getDimensionID());
+							
+							if (coreFile.getPluginID() <= 20 && coreFile.getPluginID() >= 1)
+							{
+								if (!this.coreFiles.containsKey(coreFile.getPluginID()))
+								{
+									coreFiles.put(coreFile.getPluginID(), coreFile);
+									FMLLog.info("	Successfully loaded plugin with name " + coreFile.getPluginName() + " and ID " + coreFile.getPluginID());
+								}
+								else
+								{
+									FMLLog.severe("    Could not load plugin with name " + coreFile.getPluginName() + " and ID " + coreFile.getPluginID());
+									FMLLog.severe("    Plugin ID is already taken!");
+								}
+							}
+							else
+							{
+								FMLLog.severe("    Could not load plugin with name " + coreFile.getPluginName() + " and ID " + coreFile.getPluginID());
+								FMLLog.severe("    Not enough sprite sheets to load plugin!");
+							}
 						}
 						catch (Exception e)
 						{
@@ -175,17 +194,6 @@ public class GalacticraftLoader
 			blocksDirectory.mkdir();
 		}
 		
-		File blockTextureDirectory = new File(blocksDirectory, "/spritesheets/");
-
-		if (blockTextureDirectory.exists())
-		{
-		}
-		else
-		{
-			blockTextureDirectory.mkdirs();
-			blockTextureDirectory.mkdir();
-		}
-		
 		for (File files : this.listOfPlugins)
 		{
 			if (blocksDirectory.listFiles() != null)
@@ -220,6 +228,38 @@ public class GalacticraftLoader
 			// TODO harvest levels
 		}
 		
+		File spritesDirectory = new File(this.baseDirectory, "/spritesheets/");
+
+		if (spritesDirectory.exists())
+		{
+		}
+		else
+		{
+			spritesDirectory.mkdirs();
+			spritesDirectory.mkdir();
+		}
 		
+		for (File files : this.listOfPlugins)
+		{
+			if (spritesDirectory.listFiles() != null)
+			{
+				for (int i = 0; i < spritesDirectory.listFiles().length; i++)
+				{
+					if (!spritesDirectory.listFiles()[i].isDirectory())
+					{
+						try
+						{
+							FMLLog.info(spritesDirectory.listFiles()[i].getPath());
+							this.spriteSheets.add(spritesDirectory.listFiles()[i].getAbsolutePath());
+						}
+						catch (Exception e)
+						{
+							FMLLog.info("		Failed to load plugin block file with name " + spritesDirectory.listFiles()[i].getName());
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+		}
 	}
 }

@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.API;
 import java.io.File;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.GalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.mars.GCMarsChunkProvider;
 import micdoodle8.mods.galacticraft.mars.GCMarsConfigManager;
 import net.minecraft.src.IChunkProvider;

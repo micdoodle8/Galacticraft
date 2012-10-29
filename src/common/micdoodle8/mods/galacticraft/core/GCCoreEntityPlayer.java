@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core;
 
-import micdoodle8.mods.galacticraft.API.GalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.moon.GCMoonWorldProvider;
 import net.minecraft.src.AchievementList;
 import net.minecraft.src.Block;

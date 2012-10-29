@@ -74,7 +74,7 @@ public class GalacticraftCore
 	@PreInit
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		loader.load(event.getModConfigurationDirectory().getParentFile());
+//		loader.load(event.getModConfigurationDirectory().getParentFile());
 		
 		moon.preInit(event);
 		
@@ -89,17 +89,6 @@ public class GalacticraftCore
 		
 		GCCoreItems.initItems();
 		GCCoreItems.addNames();
-		
-//		try
-//		{
-//			ServerPlayerAPI.register("Galacticraft", GCCorePlayerBaseServer.class);
-//		}
-//		catch(Exception e)
-//		{
-//			FMLLog.severe("PLAYER API NOT INSTALLED.");
-//			FMLLog.severe("Galacticraft will now fail to load.");
-//			e.printStackTrace();
-//		}
 		
 		proxy.preInit(event);
 	}

@@ -32,7 +32,7 @@ public class GCMarsBiomeGenBase extends BiomeGenBase
         this.rainfall = 0F;
     }
     
-    protected GCMarsBiomeGenBase setColor(int var1)
+    public GCMarsBiomeGenBase setColor(int var1)
     {
         return (GCMarsBiomeGenBase)super.setColor(var1);
     }

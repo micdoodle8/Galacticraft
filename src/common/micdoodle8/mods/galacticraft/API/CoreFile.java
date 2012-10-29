@@ -8,6 +8,7 @@ public class CoreFile
 {
 	public File file;
 	private String pluginName;
+	private int pluginID;
 	private int dimensionID;
 	private String[] readFile;
 	
@@ -33,6 +34,13 @@ public class CoreFile
 					temp = temp.replaceAll(" ", "");
 					this.pluginName = temp;
 				}
+				else if (this.readFile[i].contains("PluginID:"))
+				{
+					temp = this.readFile[i].replaceAll("PluginID:", "");
+					temp = temp.replaceAll("\"", "");
+					temp = temp.replaceAll(" ", "");
+					this.pluginID = Integer.valueOf(temp);
+				}
 				else if (this.readFile[i].contains("DimensionID:"))
 				{
 					temp = this.readFile[i].replaceAll("DimensionID:", "");
@@ -52,5 +60,10 @@ public class CoreFile
 	public int getDimensionID()
 	{
 		return this.dimensionID;
+	}
+	
+	public int getPluginID()
+	{
+		return this.pluginID;
 	}
 }

@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
-import micdoodle8.mods.galacticraft.API.GalacticraftWorldProvider;
 import net.minecraft.src.Block;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityPlayer;
