@@ -28,7 +28,8 @@ public class GCMarsBlockStationary extends GCMarsBlockFluid
         }
     }
 
-    public boolean getBlocksMovement(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
+    @Override
+	public boolean getBlocksMovement(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
         return this.blockMaterial != Material.lava;
     }
@@ -37,7 +38,8 @@ public class GCMarsBlockStationary extends GCMarsBlockFluid
      * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
      * their own) Args: x, y, z, neighbor blockID
      */
-    public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
+    @Override
+	public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
     {
         super.onNeighborBlockChange(par1World, par2, par3, par4, par5);
 
@@ -63,7 +65,8 @@ public class GCMarsBlockStationary extends GCMarsBlockFluid
     /**
      * Ticks the block if it's been scheduled
      */
-    public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
+    @Override
+	public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {
         if (this.blockMaterial == Material.lava)
         {

@@ -8,7 +8,6 @@ import java.util.Random;
 
 import net.minecraft.src.ChunkCoordIntPair;
 import net.minecraft.src.ChunkPosition;
-import net.minecraft.src.MapGenBase;
 import net.minecraft.src.StructureBoundingBox;
 import net.minecraft.src.StructureComponent;
 import net.minecraft.src.StructureStart;
@@ -26,7 +25,8 @@ public abstract class GCCoreMapGenStructure extends GCCoreMapGenBase
     /**
      * Recursively called by generate() (generate) and optionally by itself.
      */
-    protected void recursiveGenerate(World par1World, int par2, int par3, int par4, int par5, int[] par6ArrayOfByte)
+    @Override
+	protected void recursiveGenerate(World par1World, int par2, int par3, int par4, int par5, int[] par6ArrayOfByte)
     {
         if (!this.structureMap.containsKey(Long.valueOf(ChunkCoordIntPair.chunkXZ2Int(par2, par3))))
         {
@@ -100,8 +100,8 @@ public abstract class GCCoreMapGenStructure extends GCCoreMapGenBase
         this.rand.setSeed(par1World.getSeed());
         long var5 = this.rand.nextLong();
         long var7 = this.rand.nextLong();
-        long var9 = (long)(par2 >> 4) * var5;
-        long var11 = (long)(par4 >> 4) * var7;
+        long var9 = (par2 >> 4) * var5;
+        long var11 = (par4 >> 4) * var7;
         this.rand.setSeed(var9 ^ var11 ^ par1World.getSeed());
         this.recursiveGenerate(par1World, par2 >> 4, par4 >> 4, 0, 0, (int[])null);
         double var13 = Double.MAX_VALUE;
@@ -124,7 +124,7 @@ public abstract class GCCoreMapGenStructure extends GCCoreMapGenBase
                 var20 = var19.x - par2;
                 var21 = var19.y - par3;
                 var22 = var19.z - par4;
-                var23 = (double)(var20 + var20 * var21 * var21 + var22 * var22);
+                var23 = var20 + var20 * var21 * var21 + var22 * var22;
 
                 if (var23 < var13)
                 {
@@ -153,7 +153,7 @@ public abstract class GCCoreMapGenStructure extends GCCoreMapGenBase
                     var20 = var19.x - par2;
                     var21 = var19.y - par3;
                     var22 = var19.z - par4;
-                    var23 = (double)(var20 + var20 * var21 * var21 + var22 * var22);
+                    var23 = var20 + var20 * var21 * var21 + var22 * var22;
 
                     if (var23 < var13)
                     {

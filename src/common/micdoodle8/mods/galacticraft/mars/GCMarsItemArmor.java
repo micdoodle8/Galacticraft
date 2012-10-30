@@ -1,14 +1,13 @@
 package micdoodle8.mods.galacticraft.mars;
 
-import cpw.mods.fml.common.Side;
-import cpw.mods.fml.common.asm.SideOnly;
 import micdoodle8.mods.galacticraft.core.GCCoreItemBreathableHelmet;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.EnumArmorMaterial;
 import net.minecraft.src.EnumRarity;
 import net.minecraft.src.ItemStack;
 import net.minecraftforge.common.IArmorTextureProvider;
+import cpw.mods.fml.common.Side;
+import cpw.mods.fml.common.asm.SideOnly;
 
 public class GCMarsItemArmor extends GCCoreItemBreathableHelmet implements IArmorTextureProvider
 {
@@ -74,6 +73,7 @@ public class GCMarsItemArmor extends GCCoreItemBreathableHelmet implements IArmo
     	return null;
     }
 	
+	@Override
 	public String getTextureFile()
 	{
 		return "/micdoodle8/mods/galacticraft/mars/client/items/mars.png";

@@ -6,13 +6,7 @@ import net.minecraft.src.Block;
 import net.minecraft.src.BlockSapling;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.World;
-import net.minecraft.src.WorldGenBigTree;
-import net.minecraft.src.WorldGenForest;
-import net.minecraft.src.WorldGenHugeTrees;
-import net.minecraft.src.WorldGenTaiga2;
-import net.minecraft.src.WorldGenTrees;
 import net.minecraft.src.WorldGenerator;
-import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreBlockSapling extends BlockSapling
 {

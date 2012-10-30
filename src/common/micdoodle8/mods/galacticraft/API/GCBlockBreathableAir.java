@@ -68,12 +68,14 @@ public class GCBlockBreathableAir extends BlockContainer
         return 0;
     }
 
-    public int getRenderBlockPass()
+    @Override
+	public int getRenderBlockPass()
     {
         return 1;
     }
 	
-    public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
+    @Override
+	public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {
         if (par1IBlockAccess.getBlockId(par2, par3, par4) == this.blockID)
         {

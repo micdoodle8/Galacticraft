@@ -29,18 +29,21 @@ public abstract class GCMarsBlockFluid extends Block
         this.setTickRandomly(true);
     }
 
-    public boolean getBlocksMovement(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
+    @Override
+	public boolean getBlocksMovement(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
         return this.blockMaterial != Material.lava;
     }
 
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public int getBlockColor()
     {
         return 16777215;
     }
 
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public int colorMultiplier(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
         if (this.blockMaterial != Material.water)
@@ -78,13 +81,14 @@ public abstract class GCMarsBlockFluid extends Block
             par0 = 0;
         }
 
-        return (float)(par0 + 1) / 9.0F;
+        return (par0 + 1) / 9.0F;
     }
 
     /**
      * Returns the block texture based on the side being looked at.  Args: side
      */
-    public int getBlockTextureFromSide(int par1)
+    @Override
+	public int getBlockTextureFromSide(int par1)
     {
         return par1 != 0 && par1 != 1 ? this.blockIndexInTexture + 1 : this.blockIndexInTexture;
     }
@@ -124,7 +128,8 @@ public abstract class GCMarsBlockFluid extends Block
     /**
      * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
      */
-    public boolean renderAsNormalBlock()
+    @Override
+	public boolean renderAsNormalBlock()
     {
         return false;
     }
@@ -133,7 +138,8 @@ public abstract class GCMarsBlockFluid extends Block
      * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
      * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
      */
-    public boolean isOpaqueCube()
+    @Override
+	public boolean isOpaqueCube()
     {
         return false;
     }
@@ -141,7 +147,8 @@ public abstract class GCMarsBlockFluid extends Block
     /**
      * Returns whether this block is collideable based on the arguments passed in Args: blockMetaData, unknownFlag
      */
-    public boolean canCollideCheck(int par1, boolean par2)
+    @Override
+	public boolean canCollideCheck(int par1, boolean par2)
     {
         return par2 && par1 == 0;
     }
@@ -150,13 +157,15 @@ public abstract class GCMarsBlockFluid extends Block
      * Returns Returns true if the given side of this block type should be rendered (if it's solid or not), if the
      * adjacent block is at the given coordinates. Args: blockAccess, x, y, z, side
      */
-    public boolean isBlockSolid(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
+    @Override
+	public boolean isBlockSolid(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {
         Material var6 = par1IBlockAccess.getBlockMaterial(par2, par3, par4);
         return var6 == this.blockMaterial ? false : (par5 == 1 ? true : (var6 == Material.ice ? false : super.isBlockSolid(par1IBlockAccess, par2, par3, par4, par5)));
     }
 
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
 
     /**
      * Returns true if the given side of this block type should be rendered, if the adjacent block is at the given
@@ -172,7 +181,8 @@ public abstract class GCMarsBlockFluid extends Block
      * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been
      * cleared to be reused)
      */
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
+    @Override
+	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
     {
         return null;
     }
@@ -180,7 +190,8 @@ public abstract class GCMarsBlockFluid extends Block
     /**
      * The type of render function that is called for this block
      */
-    public int getRenderType()
+    @Override
+	public int getRenderType()
     {
         return GalacticraftMars.proxy.getGCFluidRenderID();
     }
@@ -188,7 +199,8 @@ public abstract class GCMarsBlockFluid extends Block
     /**
      * Returns the ID of the items to drop on destruction.
      */
-    public int idDropped(int par1, Random par2Random, int par3)
+    @Override
+	public int idDropped(int par1, Random par2Random, int par3)
     {
         return 0;
     }
@@ -196,7 +208,8 @@ public abstract class GCMarsBlockFluid extends Block
     /**
      * Returns the quantity of items to drop on block destruction.
      */
-    public int quantityDropped(Random par1Random)
+    @Override
+	public int quantityDropped(Random par1Random)
     {
         return 0;
     }
@@ -246,14 +259,14 @@ public abstract class GCMarsBlockFluid extends Block
                     if (var11 >= 0)
                     {
                         var12 = var11 - (var6 - 8);
-                        var5 = var5.addVector((double)((var8 - par2) * var12), (double)((par3 - par3) * var12), (double)((var10 - par4) * var12));
+                        var5 = var5.addVector((var8 - par2) * var12, (par3 - par3) * var12, (var10 - par4) * var12);
                     }
                 }
             }
             else if (var11 >= 0)
             {
                 var12 = var11 - var6;
-                var5 = var5.addVector((double)((var8 - par2) * var12), (double)((par3 - par3) * var12), (double)((var10 - par4) * var12));
+                var5 = var5.addVector((var8 - par2) * var12, (par3 - par3) * var12, (var10 - par4) * var12);
             }
         }
 
@@ -314,7 +327,8 @@ public abstract class GCMarsBlockFluid extends Block
     /**
      * Can add to the passed in vector for a movement vector to be applied to the entity. Args: x, y, z, entity, vec3d
      */
-    public void velocityToAddToEntity(World par1World, int par2, int par3, int par4, Entity par5Entity, Vec3 par6Vec3)
+    @Override
+	public void velocityToAddToEntity(World par1World, int par2, int par3, int par4, Entity par5Entity, Vec3 par6Vec3)
     {
         Vec3 var7 = this.getFlowVector(par1World, par2, par3, par4);
         par6Vec3.xCoord += var7.xCoord;
@@ -325,12 +339,14 @@ public abstract class GCMarsBlockFluid extends Block
     /**
      * How many world ticks before ticking
      */
-    public int tickRate()
+    @Override
+	public int tickRate()
     {
         return 15;
     }
 
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
 
     /**
      * Goes straight to getLightBrightnessForSkyBlocks for Blocks, does some fancy computing for Fluids
@@ -346,7 +362,8 @@ public abstract class GCMarsBlockFluid extends Block
         return (var7 > var8 ? var7 : var8) | (var9 > var10 ? var9 : var10) << 16;
     }
 
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
 
     /**
      * How bright to render this block based on the light its receiving. Args: iBlockAccess, x, y, z
@@ -358,7 +375,8 @@ public abstract class GCMarsBlockFluid extends Block
         return var5 > var6 ? var5 : var6;
     }
 
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
 
     /**
      * Returns which pass should this block be rendered on. 0 for solids and 1 for alpha
@@ -368,7 +386,8 @@ public abstract class GCMarsBlockFluid extends Block
         return 1;
     }
 
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
 
     /**
      * A randomly called display update to be able to add particles or other items for display
@@ -379,9 +398,9 @@ public abstract class GCMarsBlockFluid extends Block
         
         if (par5Random.nextInt(10) == 0)
         {
-            double var10 = (double)0 / 255.0D;
-            double var5 = (double)128 / 255.0D;
-            double var7 = (double)0 / 255.0D;
+            double var10 = 0 / 255.0D;
+            double var5 = 128 / 255.0D;
+            double var7 = 0 / 255.0D;
             par1World.spawnParticle("mobSpell", par2 + 0.5, par3 + 0.9, par4 + 0.5, 0, 0, 0);
         }
 
@@ -393,7 +412,7 @@ public abstract class GCMarsBlockFluid extends Block
 
                 if (var6 <= 0 || var6 >= 8)
                 {
-                    par1World.spawnParticle("suspended", (double)((float)par2 + par5Random.nextFloat()), (double)((float)par3 + par5Random.nextFloat()), (double)((float)par4 + par5Random.nextFloat()), 0.0D, 0.0D, 0.0D);
+                    par1World.spawnParticle("suspended", par2 + par5Random.nextFloat(), par3 + par5Random.nextFloat(), par4 + par5Random.nextFloat(), 0.0D, 0.0D, 0.0D);
                 }
             }
 
@@ -426,28 +445,28 @@ public abstract class GCMarsBlockFluid extends Block
                 if (par1World.getBlockMaterial(var8, par3, var9) == Material.air && (par1World.getBlockMaterial(var8, par3 - 1, var9).blocksMovement() || par1World.getBlockMaterial(var8, par3 - 1, var9).isLiquid()))
                 {
                     float var10 = 0.0625F;
-                    double var11 = (double)((float)par2 + par5Random.nextFloat());
-                    double var13 = (double)((float)par3 + par5Random.nextFloat());
-                    double var15 = (double)((float)par4 + par5Random.nextFloat());
+                    double var11 = par2 + par5Random.nextFloat();
+                    double var13 = par3 + par5Random.nextFloat();
+                    double var15 = par4 + par5Random.nextFloat();
 
                     if (var7 == 0)
                     {
-                        var11 = (double)((float)par2 - var10);
+                        var11 = par2 - var10;
                     }
 
                     if (var7 == 1)
                     {
-                        var11 = (double)((float)(par2 + 1) + var10);
+                        var11 = par2 + 1 + var10;
                     }
 
                     if (var7 == 2)
                     {
-                        var15 = (double)((float)par4 - var10);
+                        var15 = par4 - var10;
                     }
 
                     if (var7 == 3)
                     {
-                        var15 = (double)((float)(par4 + 1) + var10);
+                        var15 = par4 + 1 + var10;
                     }
 
                     double var17 = 0.0D;
@@ -455,22 +474,22 @@ public abstract class GCMarsBlockFluid extends Block
 
                     if (var7 == 0)
                     {
-                        var17 = (double)(-var10);
+                        var17 = (-var10);
                     }
 
                     if (var7 == 1)
                     {
-                        var17 = (double)var10;
+                        var17 = var10;
                     }
 
                     if (var7 == 2)
                     {
-                        var19 = (double)(-var10);
+                        var19 = (-var10);
                     }
 
                     if (var7 == 3)
                     {
-                        var19 = (double)var10;
+                        var19 = var10;
                     }
 
                     par1World.spawnParticle("splash", var11, var13, var15, var17, 0.0D, var19);
@@ -484,7 +503,7 @@ public abstract class GCMarsBlockFluid extends Block
 
             if (var6 > 0 && var6 < 8)
             {
-                par1World.playSound((double)((float)par2 + 0.5F), (double)((float)par3 + 0.5F), (double)((float)par4 + 0.5F), "liquid.water", par5Random.nextFloat() * 0.25F + 0.75F, par5Random.nextFloat() * 1.0F + 0.5F);
+                par1World.playSound(par2 + 0.5F, par3 + 0.5F, par4 + 0.5F, "liquid.water", par5Random.nextFloat() * 0.25F + 0.75F, par5Random.nextFloat() * 1.0F + 0.5F);
             }
         }
 
@@ -496,24 +515,24 @@ public abstract class GCMarsBlockFluid extends Block
         {
             if (par5Random.nextInt(100) == 0)
             {
-                var21 = (double)((float)par2 + par5Random.nextFloat());
-                var22 = (double)par3 + this.maxY;
-                var23 = (double)((float)par4 + par5Random.nextFloat());
+                var21 = par2 + par5Random.nextFloat();
+                var22 = par3 + this.maxY;
+                var23 = par4 + par5Random.nextFloat();
                 par1World.spawnParticle("lava", var21, var22, var23, 0.0D, 0.0D, 0.0D);
                 par1World.playSound(var21, var22, var23, "liquid.lavapop", 0.2F + par5Random.nextFloat() * 0.2F, 0.9F + par5Random.nextFloat() * 0.15F);
             }
 
             if (par5Random.nextInt(200) == 0)
             {
-                par1World.playSound((double)par2, (double)par3, (double)par4, "liquid.lava", 0.2F + par5Random.nextFloat() * 0.2F, 0.9F + par5Random.nextFloat() * 0.15F);
+                par1World.playSound(par2, par3, par4, "liquid.lava", 0.2F + par5Random.nextFloat() * 0.2F, 0.9F + par5Random.nextFloat() * 0.15F);
             }
         }
 
         if (par5Random.nextInt(10) == 0 && par1World.doesBlockHaveSolidTopSurface(par2, par3 - 1, par4) && !par1World.getBlockMaterial(par2, par3 - 2, par4).blocksMovement())
         {
-            var21 = (double)((float)par2 + par5Random.nextFloat());
-            var22 = (double)par3 - 1.05D;
-            var23 = (double)((float)par4 + par5Random.nextFloat());
+            var21 = par2 + par5Random.nextFloat();
+            var22 = par3 - 1.05D;
+            var23 = par4 + par5Random.nextFloat();
 
             if (this.blockMaterial == Material.water)
             {
@@ -546,7 +565,8 @@ public abstract class GCMarsBlockFluid extends Block
     /**
      * Called whenever the block is added into the world. Args: world, x, y, z
      */
-    public void onBlockAdded(World par1World, int par2, int par3, int par4)
+    @Override
+	public void onBlockAdded(World par1World, int par2, int par3, int par4)
     {
         this.checkForHarden(par1World, par2, par3, par4);
     }
@@ -555,7 +575,8 @@ public abstract class GCMarsBlockFluid extends Block
      * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
      * their own) Args: x, y, z, neighbor blockID
      */
-    public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
+    @Override
+	public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
     {
         this.checkForHarden(par1World, par2, par3, par4);
     }
@@ -655,15 +676,16 @@ public abstract class GCMarsBlockFluid extends Block
      */
     protected void triggerLavaMixEffects(World par1World, int par2, int par3, int par4)
     {
-        par1World.playSoundEffect((double)((float)par2 + 0.5F), (double)((float)par3 + 0.5F), (double)((float)par4 + 0.5F), "random.fizz", 0.5F, 2.6F + (par1World.rand.nextFloat() - par1World.rand.nextFloat()) * 0.8F);
+        par1World.playSoundEffect(par2 + 0.5F, par3 + 0.5F, par4 + 0.5F, "random.fizz", 0.5F, 2.6F + (par1World.rand.nextFloat() - par1World.rand.nextFloat()) * 0.8F);
 
         for (int var5 = 0; var5 < 8; ++var5)
         {
-            par1World.spawnParticle("largesmoke", (double)par2 + Math.random(), (double)par3 + 1.2D, (double)par4 + Math.random(), 0.0D, 0.0D, 0.0D);
+            par1World.spawnParticle("largesmoke", par2 + Math.random(), par3 + 1.2D, par4 + Math.random(), 0.0D, 0.0D, 0.0D);
         }
     }
     
-    public String getTextureFile()
+    @Override
+	public String getTextureFile()
     {
 		return "/micdoodle8/mods/galacticraft/mars/client/blocks/mars.png";
     }

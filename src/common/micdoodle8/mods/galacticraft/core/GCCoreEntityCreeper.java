@@ -4,7 +4,6 @@ import net.minecraft.src.DamageSource;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityAIAttackOnCollide;
 import net.minecraft.src.EntityAIAvoidEntity;
-import net.minecraft.src.EntityAICreeperSwell;
 import net.minecraft.src.EntityAIHurtByTarget;
 import net.minecraft.src.EntityAILookIdle;
 import net.minecraft.src.EntityAINearestAttackableTarget;
@@ -12,7 +11,6 @@ import net.minecraft.src.EntityAISwimming;
 import net.minecraft.src.EntityAIWander;
 import net.minecraft.src.EntityAIWatchClosest;
 import net.minecraft.src.EntityLightningBolt;
-import net.minecraft.src.EntityMob;
 import net.minecraft.src.EntityOcelot;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EntitySkeleton;
@@ -60,17 +58,20 @@ public class GCCoreEntityCreeper extends GCCoreEntityMob
     /**
      * Returns true if the newer Entity AI code should be run
      */
-    public boolean isAIEnabled()
+    @Override
+	public boolean isAIEnabled()
     {
         return true;
     }
 
-    public int getMaxHealth()
+    @Override
+	public int getMaxHealth()
     {
         return 20;
     }
 
-    protected void entityInit()
+    @Override
+	protected void entityInit()
     {
         super.entityInit();
         this.dataWatcher.addObject(16, Byte.valueOf((byte) - 1));
@@ -80,7 +81,8 @@ public class GCCoreEntityCreeper extends GCCoreEntityMob
     /**
      * (abstract) Protected helper method to write subclass entity data to NBT.
      */
-    public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
+    @Override
+	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeEntityToNBT(par1NBTTagCompound);
 
@@ -93,7 +95,8 @@ public class GCCoreEntityCreeper extends GCCoreEntityMob
     /**
      * (abstract) Protected helper method to read subclass entity data from NBT.
      */
-    public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
+    @Override
+	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readEntityFromNBT(par1NBTTagCompound);
         this.dataWatcher.updateObject(17, Byte.valueOf((byte)(par1NBTTagCompound.getBoolean("powered") ? 1 : 0)));
@@ -102,7 +105,8 @@ public class GCCoreEntityCreeper extends GCCoreEntityMob
     /**
      * Called to update the entity's position/logic.
      */
-    public void onUpdate()
+    @Override
+	public void onUpdate()
     {
         if (this.isEntityAlive())
         {
@@ -149,7 +153,8 @@ public class GCCoreEntityCreeper extends GCCoreEntityMob
     /**
      * Returns the sound this mob makes when it is hurt.
      */
-    protected String getHurtSound()
+    @Override
+	protected String getHurtSound()
     {
         return "mob.creeper";
     }
@@ -157,7 +162,8 @@ public class GCCoreEntityCreeper extends GCCoreEntityMob
     /**
      * Returns the sound this mob makes on death.
      */
-    protected String getDeathSound()
+    @Override
+	protected String getDeathSound()
     {
         return "mob.creeperdeath";
     }
@@ -165,7 +171,8 @@ public class GCCoreEntityCreeper extends GCCoreEntityMob
     /**
      * Called when the mob's health reaches 0.
      */
-    public void onDeath(DamageSource par1DamageSource)
+    @Override
+	public void onDeath(DamageSource par1DamageSource)
     {
         super.onDeath(par1DamageSource);
 
@@ -175,7 +182,8 @@ public class GCCoreEntityCreeper extends GCCoreEntityMob
         }
     }
 
-    public boolean attackEntityAsMob(Entity par1Entity)
+    @Override
+	public boolean attackEntityAsMob(Entity par1Entity)
     {
         return true;
     }
@@ -195,13 +203,14 @@ public class GCCoreEntityCreeper extends GCCoreEntityMob
      */
     public float setCreeperFlashTime(float par1)
     {
-        return ((float)this.lastActiveTime + (float)(this.timeSinceIgnited - this.lastActiveTime) * par1) / 28.0F;
+        return (this.lastActiveTime + (this.timeSinceIgnited - this.lastActiveTime) * par1) / 28.0F;
     }
 
     /**
      * Returns the item ID for the item the mob drops on death.
      */
-    protected int getDropItemId()
+    @Override
+	protected int getDropItemId()
     {
         return Item.gunpowder.shiftedIndex;
     }
@@ -225,7 +234,8 @@ public class GCCoreEntityCreeper extends GCCoreEntityMob
     /**
      * Called when a lightning bolt hits the entity.
      */
-    public void onStruckByLightning(EntityLightningBolt par1EntityLightningBolt)
+    @Override
+	public void onStruckByLightning(EntityLightningBolt par1EntityLightningBolt)
     {
         super.onStruckByLightning(par1EntityLightningBolt);
         this.dataWatcher.updateObject(17, Byte.valueOf((byte)1));

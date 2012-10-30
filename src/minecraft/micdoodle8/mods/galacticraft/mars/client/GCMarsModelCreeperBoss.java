@@ -5,7 +5,6 @@ import net.minecraft.src.Entity;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.ModelBase;
 import net.minecraft.src.ModelRenderer;
-import cpw.mods.fml.common.FMLLog;
 
 /**
  * Copyright 2012, micdoodle8

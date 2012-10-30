@@ -1,12 +1,11 @@
 package micdoodle8.mods.galacticraft.core;
 
-import cpw.mods.fml.common.Side;
-import cpw.mods.fml.common.asm.SideOnly;
-import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.EnumRarity;
 import net.minecraft.src.EnumToolMaterial;
 import net.minecraft.src.ItemAxe;
 import net.minecraft.src.ItemStack;
+import cpw.mods.fml.common.Side;
+import cpw.mods.fml.common.asm.SideOnly;
 
 public class GCCoreItemAxe extends ItemAxe
 {

@@ -1,9 +1,5 @@
 package micdoodle8.mods.galacticraft.mars;
 
-import java.util.List;
-
-import net.minecraft.src.Block;
-import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.ItemBlock;
 import net.minecraft.src.ItemStack;
 

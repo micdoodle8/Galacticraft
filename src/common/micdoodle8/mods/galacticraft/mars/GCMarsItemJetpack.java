@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.mars;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EnumArmorMaterial;

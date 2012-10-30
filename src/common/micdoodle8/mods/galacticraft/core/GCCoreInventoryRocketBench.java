@@ -1,6 +1,9 @@
 package micdoodle8.mods.galacticraft.core;
 
-import net.minecraft.src.*;
+import net.minecraft.src.Container;
+import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.IInventory;
+import net.minecraft.src.ItemStack;
 
 public class GCCoreInventoryRocketBench implements IInventory
 {

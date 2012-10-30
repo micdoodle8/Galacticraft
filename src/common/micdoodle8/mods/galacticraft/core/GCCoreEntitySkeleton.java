@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core;
 import net.minecraft.src.AchievementList;
 import net.minecraft.src.DamageSource;
 import net.minecraft.src.EnchantmentHelper;
-import net.minecraft.src.EntityAIArrowAttack;
 import net.minecraft.src.EntityAIFleeSun;
 import net.minecraft.src.EntityAIHurtByTarget;
 import net.minecraft.src.EntityAILookIdle;
@@ -13,7 +12,6 @@ import net.minecraft.src.EntityAISwimming;
 import net.minecraft.src.EntityAIWander;
 import net.minecraft.src.EntityAIWatchClosest;
 import net.minecraft.src.EntityArrow;
-import net.minecraft.src.EntityMob;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EnumCreatureAttribute;
 import net.minecraft.src.Item;
@@ -53,12 +51,14 @@ public class GCCoreEntitySkeleton extends GCCoreEntityMob
     /**
      * Returns true if the newer Entity AI code should be run
      */
-    public boolean isAIEnabled()
+    @Override
+	public boolean isAIEnabled()
     {
         return true;
     }
 
-    public int getMaxHealth()
+    @Override
+	public int getMaxHealth()
     {
         return 20;
     }
@@ -66,7 +66,8 @@ public class GCCoreEntitySkeleton extends GCCoreEntityMob
     /**
      * Returns the sound this mob makes while it's alive.
      */
-    protected String getLivingSound()
+    @Override
+	protected String getLivingSound()
     {
         return "mob.skeleton";
     }
@@ -74,7 +75,8 @@ public class GCCoreEntitySkeleton extends GCCoreEntityMob
     /**
      * Returns the sound this mob makes when it is hurt.
      */
-    protected String getHurtSound()
+    @Override
+	protected String getHurtSound()
     {
         return "mob.skeletonhurt";
     }
@@ -82,12 +84,14 @@ public class GCCoreEntitySkeleton extends GCCoreEntityMob
     /**
      * Returns the sound this mob makes on death.
      */
-    protected String getDeathSound()
+    @Override
+	protected String getDeathSound()
     {
         return "mob.skeletonhurt";
     }
 
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
 
     /**
      * Returns the item that this EntityLiving is holding, if any.
@@ -100,7 +104,8 @@ public class GCCoreEntitySkeleton extends GCCoreEntityMob
     /**
      * Get this Entity's EnumCreatureAttribute
      */
-    public EnumCreatureAttribute getCreatureAttribute()
+    @Override
+	public EnumCreatureAttribute getCreatureAttribute()
     {
         return EnumCreatureAttribute.UNDEAD;
     }
@@ -109,7 +114,8 @@ public class GCCoreEntitySkeleton extends GCCoreEntityMob
      * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
      * use this to react to sunlight and start to burn.
      */
-    public void onLivingUpdate()
+    @Override
+	public void onLivingUpdate()
     {
         if (this.worldObj.isDaytime() && !this.worldObj.isRemote)
         {
@@ -129,7 +135,8 @@ public class GCCoreEntitySkeleton extends GCCoreEntityMob
     /**
      * Called when the mob's health reaches 0.
      */
-    public void onDeath(DamageSource par1DamageSource)
+    @Override
+	public void onDeath(DamageSource par1DamageSource)
     {
         super.onDeath(par1DamageSource);
 
@@ -149,7 +156,8 @@ public class GCCoreEntitySkeleton extends GCCoreEntityMob
     /**
      * Returns the item ID for the item the mob drops on death.
      */
-    protected int getDropItemId()
+    @Override
+	protected int getDropItemId()
     {
         return Item.arrow.shiftedIndex;
     }
@@ -157,7 +165,8 @@ public class GCCoreEntitySkeleton extends GCCoreEntityMob
     /**
      * Drop 0-2 items of this living's type
      */
-    protected void dropFewItems(boolean par1, int par2)
+    @Override
+	protected void dropFewItems(boolean par1, int par2)
     {
         int var3 = this.rand.nextInt(3 + par2);
         int var4;
@@ -175,7 +184,8 @@ public class GCCoreEntitySkeleton extends GCCoreEntityMob
         }
     }
 
-    protected void dropRareDrop(int par1)
+    @Override
+	protected void dropRareDrop(int par1)
     {
         if (par1 > 0)
         {

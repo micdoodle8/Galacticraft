@@ -1,8 +1,6 @@
 package micdoodle8.mods.galacticraft.core;
 
-import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.EnumArmorMaterial;
-import net.minecraft.src.ItemArmor;
 import net.minecraft.src.ItemStack;
 import net.minecraftforge.common.IArmorTextureProvider;
 
@@ -28,6 +26,7 @@ public class GCCoreItemSensorGlasses extends GCCoreItemBreathableHelmet implemen
     	return attachedMask ? "/micdoodle8/mods/galacticraft/core/client/armor/sensorox_1.png" : "/micdoodle8/mods/galacticraft/core/client/armor/sensor_1.png";
     }
 	
+	@Override
 	public String getTextureFile()
 	{
 		return "/micdoodle8/mods/galacticraft/core/client/items/core.png";

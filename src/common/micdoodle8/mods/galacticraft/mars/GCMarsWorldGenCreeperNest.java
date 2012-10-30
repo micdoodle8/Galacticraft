@@ -5,14 +5,16 @@
 package micdoodle8.mods.galacticraft.mars;
 
 import java.util.Random;
+
 import net.minecraft.src.Block;
-import net.minecraft.src.WorldGenerator;
 import net.minecraft.src.World;
+import net.minecraft.src.WorldGenerator;
 
 public class GCMarsWorldGenCreeperNest extends WorldGenerator
 {
 	private int id = GCMarsBlocks.creeperDungeonWall.blockID;
 
+	@Override
 	public boolean generate(World world, Random rand, int i, int j, int k) {
 		world.setBlock(i + 0, j + 19, k + 0, id);
 		world.setBlock(i + 0, j + 19, k + 1, id);

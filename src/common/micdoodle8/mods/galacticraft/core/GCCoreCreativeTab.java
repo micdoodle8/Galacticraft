@@ -9,7 +9,8 @@ public class GCCoreCreativeTab extends CreativeTabs
 		super(par1, par2Str);
 	}
 	
-    public int getTabIconItemIndex()
+    @Override
+	public int getTabIconItemIndex()
     {
         return GCCoreItems.spaceship.shiftedIndex;
     }

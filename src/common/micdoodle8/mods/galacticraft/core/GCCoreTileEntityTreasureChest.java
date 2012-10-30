@@ -1,14 +1,11 @@
 package micdoodle8.mods.galacticraft.core;
 
-import micdoodle8.mods.galacticraft.mars.GCMarsBlocks;
-import net.minecraft.src.Block;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IInventory;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.NBTTagList;
 import net.minecraft.src.TileEntity;
-import net.minecraft.src.TileEntityChest;
 
 /**
  * Copyright 2012, micdoodle8
@@ -143,7 +140,8 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
     /**
      * Reads a tile entity from NBT.
      */
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound)
+    @Override
+	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readFromNBT(par1NBTTagCompound);
         NBTTagList var2 = par1NBTTagCompound.getTagList("Items");
@@ -164,7 +162,8 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
     /**
      * Writes a tile entity to NBT.
      */
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound)
+    @Override
+	public void writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeToNBT(par1NBTTagCompound);
         NBTTagList var2 = new NBTTagList();
@@ -197,14 +196,15 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
      */
     public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
     {
-        return this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : par1EntityPlayer.getDistanceSq((double)this.xCoord + 0.5D, (double)this.yCoord + 0.5D, (double)this.zCoord + 0.5D) <= 64.0D;
+        return this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : par1EntityPlayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
     }
 
     /**
      * Causes the TileEntity to reset all it's cached values for it's container block, blockID, metaData and in the case
      * of chests, the adjcacent chest check
      */
-    public void updateContainingBlockInfo()
+    @Override
+	public void updateContainingBlockInfo()
     {
         super.updateContainingBlockInfo();
         this.adjacentChestChecked = false;
@@ -269,7 +269,8 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
      * Allows the entity to update its state. Overridden in most subclasses, e.g. the mob spawner uses this to count
      * ticks and creates a new spawn inside its implementation.
      */
-    public void updateEntity()
+    @Override
+	public void updateEntity()
     {
         super.updateEntity();
         this.checkForAdjacentChests();
@@ -285,8 +286,8 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
 
         if (this.numUsingPlayers > 0 && this.lidAngle == 0.0F && this.adjacentChestZNeg == null && this.adjacentChestXNeg == null)
         {
-            double var2 = (double)this.xCoord + 0.5D;
-            var4 = (double)this.zCoord + 0.5D;
+            double var2 = this.xCoord + 0.5D;
+            var4 = this.zCoord + 0.5D;
 
             if (this.adjacentChestZPosition != null)
             {
@@ -298,7 +299,7 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
                 var2 += 0.5D;
             }
 
-            this.worldObj.playSoundEffect(var2, (double)this.yCoord + 0.5D, var4, "random.chestopen", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.6F);
+            this.worldObj.playSoundEffect(var2, this.yCoord + 0.5D, var4, "random.chestopen", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.6F);
         }
 
         if (this.numUsingPlayers == 0 && this.lidAngle > 0.0F || this.numUsingPlayers > 0 && this.lidAngle < 1.0F)
@@ -323,8 +324,8 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
 
             if (this.lidAngle < var3 && var8 >= var3 && this.adjacentChestZNeg == null && this.adjacentChestXNeg == null)
             {
-                var4 = (double)this.xCoord + 0.5D;
-                double var6 = (double)this.zCoord + 0.5D;
+                var4 = this.xCoord + 0.5D;
+                double var6 = this.zCoord + 0.5D;
 
                 if (this.adjacentChestZPosition != null)
                 {
@@ -336,7 +337,7 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
                     var4 += 0.5D;
                 }
 
-                this.worldObj.playSoundEffect(var4, (double)this.yCoord + 0.5D, var6, "random.chestclosed", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.6F);
+                this.worldObj.playSoundEffect(var4, this.yCoord + 0.5D, var6, "random.chestclosed", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.6F);
             }
 
             if (this.lidAngle < 0.0F)
@@ -349,7 +350,8 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
     /**
      * Called when a client event is received with the event number and argument, see World.sendClientEvent
      */
-    public void receiveClientEvent(int par1, int par2)
+    @Override
+	public void receiveClientEvent(int par1, int par2)
     {
         if (par1 == 1)
         {
@@ -372,7 +374,8 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
     /**
      * invalidates a tile entity
      */
-    public void invalidate()
+    @Override
+	public void invalidate()
     {
         this.updateContainingBlockInfo();
         this.checkForAdjacentChests();

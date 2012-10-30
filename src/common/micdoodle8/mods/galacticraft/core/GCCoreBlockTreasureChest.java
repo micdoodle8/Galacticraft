@@ -42,22 +42,26 @@ public class GCCoreBlockTreasureChest extends BlockContainer
         this.setCreativeTab(CreativeTabs.tabDecorations);
     }
 
-    public boolean isOpaqueCube()
+    @Override
+	public boolean isOpaqueCube()
     {
         return false;
     }
 
-    public boolean renderAsNormalBlock()
+    @Override
+	public boolean renderAsNormalBlock()
     {
         return false;
     }
 
-    public int getRenderType()
+    @Override
+	public int getRenderType()
     {
         return GalacticraftCore.proxy.getGCTreasureChestRenderID();
     }
 
-    public void onBlockAdded(World par1World, int par2, int par3, int par4)
+    @Override
+	public void onBlockAdded(World par1World, int par2, int par3, int par4)
     {
         super.onBlockAdded(par1World, par2, par3, par4);
         this.unifyAdjacentChests(par1World, par2, par3, par4);
@@ -87,14 +91,15 @@ public class GCCoreBlockTreasureChest extends BlockContainer
         }
     }
 
-    public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLiving par5EntityLiving)
+    @Override
+	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLiving par5EntityLiving)
     {
         int var6 = par1World.getBlockId(par2, par3, par4 - 1);
         int var7 = par1World.getBlockId(par2, par3, par4 + 1);
         int var8 = par1World.getBlockId(par2 - 1, par3, par4);
         int var9 = par1World.getBlockId(par2 + 1, par3, par4);
         byte var10 = 0;
-        int var11 = MathHelper.floor_double((double)(par5EntityLiving.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+        int var11 = MathHelper.floor_double(par5EntityLiving.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
 
         if (var11 == 0)
         {
@@ -261,18 +266,21 @@ public class GCCoreBlockTreasureChest extends BlockContainer
         }
     }
 
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public int getBlockTexture(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {
         return 4;
     }
 
-    public int getBlockTextureFromSide(int par1)
+    @Override
+	public int getBlockTextureFromSide(int par1)
     {
         return 4;
     }
 
-    public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4)
+    @Override
+	public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4)
     {
         int var5 = 0;
 
@@ -311,7 +319,8 @@ public class GCCoreBlockTreasureChest extends BlockContainer
      * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
      * their own) Args: x, y, z, neighbor blockID
      */
-    public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
+    @Override
+	public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
     {
         super.onNeighborBlockChange(par1World, par2, par3, par4, par5);
         GCCoreTileEntityTreasureChest var6 = (GCCoreTileEntityTreasureChest)par1World.getBlockTileEntity(par2, par3, par4);
@@ -325,7 +334,8 @@ public class GCCoreBlockTreasureChest extends BlockContainer
     /**
      * ejects contained items into the world, and notifies neighbours of an update, as appropriate
      */
-    public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6)
+    @Override
+	public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6)
     {
         GCCoreTileEntityTreasureChest var7 = (GCCoreTileEntityTreasureChest)par1World.getBlockTileEntity(par2, par3, par4);
 
@@ -351,11 +361,11 @@ public class GCCoreBlockTreasureChest extends BlockContainer
                         }
 
                         var9.stackSize -= var13;
-                        var14 = new EntityItem(par1World, (double)((float)par2 + var10), (double)((float)par3 + var11), (double)((float)par4 + var12), new ItemStack(var9.itemID, var13, var9.getItemDamage()));
+                        var14 = new EntityItem(par1World, par2 + var10, par3 + var11, par4 + var12, new ItemStack(var9.itemID, var13, var9.getItemDamage()));
                         float var15 = 0.05F;
-                        var14.motionX = (double)((float)this.random.nextGaussian() * var15);
-                        var14.motionY = (double)((float)this.random.nextGaussian() * var15 + 0.2F);
-                        var14.motionZ = (double)((float)this.random.nextGaussian() * var15);
+                        var14.motionX = (float)this.random.nextGaussian() * var15;
+                        var14.motionY = (float)this.random.nextGaussian() * var15 + 0.2F;
+                        var14.motionZ = (float)this.random.nextGaussian() * var15;
 
                         if (var9.hasTagCompound())
                         {
@@ -372,9 +382,10 @@ public class GCCoreBlockTreasureChest extends BlockContainer
     /**
      * Called upon block activation (right click on the block.)
      */
-    public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
+    @Override
+	public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
     {
-        Object var10 = (GCCoreTileEntityTreasureChest)par1World.getBlockTileEntity(par2, par3, par4);
+        Object var10 = par1World.getBlockTileEntity(par2, par3, par4);
 
         if (var10 == null)
         {
@@ -441,7 +452,8 @@ public class GCCoreBlockTreasureChest extends BlockContainer
     /**
      * each class overrdies this to return a new <className>
      */
-    public TileEntity createNewTileEntity(World par1World)
+    @Override
+	public TileEntity createNewTileEntity(World par1World)
     {
         return new GCCoreTileEntityTreasureChest();
     }
@@ -452,7 +464,7 @@ public class GCCoreBlockTreasureChest extends BlockContainer
      */
     public static boolean isOcelotBlockingChest(World par0World, int par1, int par2, int par3)
     {
-        Iterator var4 = par0World.getEntitiesWithinAABB(EntityOcelot.class, AxisAlignedBB.getAABBPool().addOrModifyAABBInPool((double)par1, (double)(par2 + 1), (double)par3, (double)(par1 + 1), (double)(par2 + 2), (double)(par3 + 1))).iterator();
+        Iterator var4 = par0World.getEntitiesWithinAABB(EntityOcelot.class, AxisAlignedBB.getAABBPool().addOrModifyAABBInPool(par1, par2 + 1, par3, par1 + 1, par2 + 2, par3 + 1)).iterator();
         EntityOcelot var6;
 
         do
@@ -463,7 +475,7 @@ public class GCCoreBlockTreasureChest extends BlockContainer
             }
 
             EntityOcelot var5 = (EntityOcelot)var4.next();
-            var6 = (EntityOcelot)var5;
+            var6 = var5;
         }
         while (!var6.isSitting());
 

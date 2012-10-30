@@ -14,8 +14,6 @@ import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.StatCollector;
 import net.minecraft.src.Vec3;
 import net.minecraft.src.World;
-import cpw.mods.fml.common.Side;
-import cpw.mods.fml.common.asm.SideOnly;
 
 public class GCCoreEntityMeteor extends Entity
 {
@@ -43,7 +41,8 @@ public class GCCoreEntityMeteor extends Entity
         this.setSize(size);
     }
 
-    public void onUpdate()
+    @Override
+	public void onUpdate()
     {
     	this.setRotation(this.rotationYaw + 2F, this.rotationPitch + 2F);
         this.prevPosX = this.posX;
@@ -80,7 +79,7 @@ public class GCCoreEntityMeteor extends Entity
             if (var9.canBeCollidedWith() && (!var9.isEntityEqual(this.shootingEntity)))
             {
                 float var10 = 0.01F;
-                AxisAlignedBB var11 = var9.boundingBox.expand((double)var10, (double)var10, (double)var10);
+                AxisAlignedBB var11 = var9.boundingBox.expand(var10, var10, var10);
                 MovingObjectPosition var12 = var11.calculateIntercept(var15, var2);
 
                 if (var12 != null)
@@ -163,7 +162,7 @@ public class GCCoreEntityMeteor extends Entity
 	@Override
 	protected void entityInit() 
 	{
-        this.dataWatcher.addObject(16, (int) this.size);
+        this.dataWatcher.addObject(16, this.size);
         this.noClip = true;
 	}
 	

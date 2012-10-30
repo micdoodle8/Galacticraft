@@ -1,11 +1,10 @@
 package micdoodle8.mods.galacticraft.core.client;
 
+import micdoodle8.mods.galacticraft.core.GCCoreContainerTankRefill;
+import micdoodle8.mods.galacticraft.core.GCCoreInventoryTankRefill;
 import net.minecraft.src.Container;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.GuiContainer;
-import micdoodle8.mods.galacticraft.core.GCCoreContainerTankRefill;
-import micdoodle8.mods.galacticraft.core.GCCoreInventoryTankRefill;
-import micdoodle8.mods.galacticraft.mars.*;
 
 import org.lwjgl.opengl.GL11;
 

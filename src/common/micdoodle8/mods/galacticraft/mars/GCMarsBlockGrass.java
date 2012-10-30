@@ -6,7 +6,6 @@ import micdoodle8.mods.galacticraft.API.GCBlockGrass;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.src.Block;
 import net.minecraft.src.BlockFlower;
-import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.World;
 import net.minecraftforge.common.ForgeDirection;

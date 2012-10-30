@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.client;
 
-import micdoodle8.mods.galacticraft.API.GCBlockBreathableAir;
 import net.minecraft.src.Block;
 import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.Material;
@@ -84,9 +83,9 @@ public class GCCoreBlockRendererBreathableAir implements ISimpleBlockRenderingHa
     {
     	Tessellator var5 = Tessellator.instance;
         int var6 = par1Block.colorMultiplier(var1, par2, par3, par4);
-        float var7 = (float)(var6 >> 16 & 255) / 255.0F;
-        float var8 = (float)(var6 >> 8 & 255) / 255.0F;
-        float var9 = (float)(var6 & 255) / 255.0F;
+        float var7 = (var6 >> 16 & 255) / 255.0F;
+        float var8 = (var6 >> 8 & 255) / 255.0F;
+        float var9 = (var6 & 255) / 255.0F;
         boolean var10 = par1Block.shouldSideBeRendered(var1, par2, par3 + 1, par4, 1);
         boolean var11 = par1Block.shouldSideBeRendered(var1, par2, par3 - 1, par4, 0);
         boolean[] var12 = new boolean[] {par1Block.shouldSideBeRendered(var1, par2, par3, par4 - 1, 2), par1Block.shouldSideBeRendered(var1, par2, par3, par4 + 1, 3), par1Block.shouldSideBeRendered(var1, par2 - 1, par3, par4, 4), par1Block.shouldSideBeRendered(var1, par2 + 1, par3, par4, 5)};
@@ -160,7 +159,7 @@ public class GCCoreBlockRendererBreathableAir implements ISimpleBlockRenderingHa
                 var5.setBrightness(par1Block.getMixedBrightnessForBlock(var1, par2, par3 - 1, par4));
                 float var65 = 1.0F;
                 var5.setColorOpaque_F(var14 * var65, var14 * var65, var14 * var65);
-                renderBlocks.renderBottomFace(par1Block, (double)par2, (double)par3 + var32, (double)par4, par1Block.getBlockTextureFromSide(0));
+                renderBlocks.renderBottomFace(par1Block, par2, par3 + var32, par4, par1Block.getBlockTextureFromSide(0));
                 var13 = true;
             }
 
@@ -206,45 +205,45 @@ public class GCCoreBlockRendererBreathableAir implements ISimpleBlockRenderingHa
                     {
                         var41 = var24;
                         var43 = var30;
-                        var45 = (double)par2;
-                        var49 = (double)(par2 + 1);
-                        var47 = (double)par4 + var32;
-                        var51 = (double)par4 + var32;
+                        var45 = par2;
+                        var49 = par2 + 1;
+                        var47 = par4 + var32;
+                        var51 = par4 + var32;
                     }
                     else if (var34 == 1)
                     {
                         var41 = var28;
                         var43 = var26;
-                        var45 = (double)(par2 + 1);
-                        var49 = (double)par2;
-                        var47 = (double)(par4 + 1) - var32;
-                        var51 = (double)(par4 + 1) - var32;
+                        var45 = par2 + 1;
+                        var49 = par2;
+                        var47 = par4 + 1 - var32;
+                        var51 = par4 + 1 - var32;
                     }
                     else if (var34 == 2)
                     {
                         var41 = var26;
                         var43 = var24;
-                        var45 = (double)par2 + var32;
-                        var49 = (double)par2 + var32;
-                        var47 = (double)(par4 + 1);
-                        var51 = (double)par4;
+                        var45 = par2 + var32;
+                        var49 = par2 + var32;
+                        var47 = par4 + 1;
+                        var51 = par4;
                     }
                     else
                     {
                         var41 = var30;
                         var43 = var28;
-                        var45 = (double)(par2 + 1) - var32;
-                        var49 = (double)(par2 + 1) - var32;
-                        var47 = (double)par4;
-                        var51 = (double)(par4 + 1);
+                        var45 = par2 + 1 - var32;
+                        var49 = par2 + 1 - var32;
+                        var47 = par4;
+                        var51 = par4 + 1;
                     }
 
                     var13 = true;
-                    double var53 = (double)((float)(var39 + 0) / 256.0F);
-                    double var55 = ((double)(var39 + 16) - 0.01D) / 256.0D;
-                    double var57 = ((double)var67 + (1.0D - var41) * 16.0D) / 256.0D;
-                    double var59 = ((double)var67 + (1.0D - var43) * 16.0D) / 256.0D;
-                    double var61 = ((double)(var67 + 16) - 0.01D) / 256.0D;
+                    double var53 = (var39 + 0) / 256.0F;
+                    double var55 = (var39 + 16 - 0.01D) / 256.0D;
+                    double var57 = (var67 + (1.0D - var41) * 16.0D) / 256.0D;
+                    double var59 = (var67 + (1.0D - var43) * 16.0D) / 256.0D;
+                    double var61 = (var67 + 16 - 0.01D) / 256.0D;
                     var5.setBrightness(par1Block.getMixedBrightnessForBlock(var1, var64, par3, var37));
                     float var63 = 1.0F;
 
@@ -258,10 +257,10 @@ public class GCCoreBlockRendererBreathableAir implements ISimpleBlockRenderingHa
                     }
 
                     var5.setColorOpaque_F(var15 * var63 * var7, var15 * var63 * var8, var15 * var63 * var9);
-                    var5.addVertexWithUV(var45, (double)par3 + var41, var47, var53, var57);
-                    var5.addVertexWithUV(var49, (double)par3 + var43, var51, var55, var59);
-                    var5.addVertexWithUV(var49, (double)(par3 + 0), var51, var55, var61);
-                    var5.addVertexWithUV(var45, (double)(par3 + 0), var47, var53, var61);
+                    var5.addVertexWithUV(var45, par3 + var41, var47, var53, var57);
+                    var5.addVertexWithUV(var49, par3 + var43, var51, var55, var59);
+                    var5.addVertexWithUV(var49, par3 + 0, var51, var55, var61);
+                    var5.addVertexWithUV(var45, par3 + 0, var47, var53, var61);
                 }
             }
 

@@ -2,8 +2,6 @@ package micdoodle8.mods.galacticraft.moon.client;
 
 import java.util.EnumSet;
 
-import micdoodle8.mods.galacticraft.core.client.GCCoreBlockRendererUnlitTorch;
-import micdoodle8.mods.galacticraft.mars.client.ClientProxyMars.TickHandlerClient;
 import micdoodle8.mods.galacticraft.moon.CommonProxyMoon;
 import micdoodle8.mods.galacticraft.moon.GCMoonWorldProvider;
 import net.minecraft.client.Minecraft;
@@ -12,8 +10,6 @@ import net.minecraft.src.World;
 import net.minecraft.src.WorldClient;
 import net.minecraftforge.client.MinecraftForgeClient;
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.TickType;

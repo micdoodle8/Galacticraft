@@ -3,11 +3,9 @@ package micdoodle8.mods.galacticraft.core;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.API.GCBlockGrass;
-import micdoodle8.mods.galacticraft.mars.GCMarsBlocks;
 import net.minecraft.src.Block;
 import net.minecraft.src.World;
 import net.minecraft.src.WorldGenerator;
-import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreWorldGenTaiga2 extends WorldGenerator
 {
@@ -16,7 +14,8 @@ public class GCCoreWorldGenTaiga2 extends WorldGenerator
         super(par1);
     }
 
-    public boolean generate(World par1World, Random par2Random, int par3, int par4, int par5)
+    @Override
+	public boolean generate(World par1World, Random par2Random, int par3, int par4, int par5)
     {
         int var6 = par2Random.nextInt(4) + 6;
         int var7 = 1 + par2Random.nextInt(2);

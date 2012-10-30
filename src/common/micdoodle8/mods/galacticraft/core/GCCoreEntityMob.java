@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core;
 
 import micdoodle8.mods.galacticraft.mars.GCMarsBlocks;
 import net.minecraft.src.EntityMob;
-import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.Potion;
 import net.minecraft.src.PotionEffect;
 import net.minecraft.src.World;

@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core;
 
-import micdoodle8.mods.galacticraft.mars.GCMarsBlock;
 import net.minecraft.src.Material;
 
 /**
@@ -17,12 +16,14 @@ public class GCCoreBlockLandingPad extends GCCoreBlock
         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.2F, 1.0F);
 	}
 	
-    public boolean isOpaqueCube()
+    @Override
+	public boolean isOpaqueCube()
     {
         return false;
     }
 
-    public boolean renderAsNormalBlock()
+    @Override
+	public boolean renderAsNormalBlock()
     {
         return false;
     }

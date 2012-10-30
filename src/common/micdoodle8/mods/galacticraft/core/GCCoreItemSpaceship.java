@@ -2,9 +2,7 @@ package micdoodle8.mods.galacticraft.core;
 
 import java.util.List;
 
-import micdoodle8.mods.galacticraft.mars.GCMarsBlocks;
 import micdoodle8.mods.galacticraft.mars.GCMarsItem;
-import micdoodle8.mods.galacticraft.mars.GCMarsUtil;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EnumRarity;
 import net.minecraft.src.ItemStack;
@@ -31,7 +29,7 @@ public class GCCoreItemSpaceship extends GCMarsItem
     {
     	int amountOfCorrectBlocks = 0;
     	
-    	GCCoreEntitySpaceship spaceship = new GCCoreEntitySpaceship(par3World, (double)((float)par4 + 0.5F), (double)((float)par5 - 1.5F), (double)((float)par6 + 0.5F), false);
+    	GCCoreEntitySpaceship spaceship = new GCCoreEntitySpaceship(par3World, par4 + 0.5F, par5 - 1.5F, par6 + 0.5F, false);
     	
     	if (par3World.isRemote)
     	{
@@ -64,7 +62,8 @@ public class GCCoreItemSpaceship extends GCMarsItem
         return true;
     }
 
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public EnumRarity getRarity(ItemStack par1ItemStack)
     {
         return EnumRarity.epic;

@@ -33,9 +33,10 @@ public class GCCoreEntityOxygenFX extends EntityFX
         this.setParticleTextureIndex((int)(Math.random() * 8.0D));
     }
 
-    public void renderParticle(Tessellator par1Tessellator, float par2, float par3, float par4, float par5, float par6, float par7)
+    @Override
+	public void renderParticle(Tessellator par1Tessellator, float par2, float par3, float par4, float par5, float par6, float par7)
     {
-        float var8 = ((float)this.particleAge + par2) / (float)this.particleMaxAge;
+        float var8 = (this.particleAge + par2) / this.particleMaxAge;
         var8 = 1.0F - var8;
         var8 *= var8;
         var8 = 1.0F - var8;
@@ -43,7 +44,8 @@ public class GCCoreEntityOxygenFX extends EntityFX
         super.renderParticle(par1Tessellator, par2, par3, par4, par5, par6, par7);
     }
 
-    public int getBrightnessForRender(float par1)
+    @Override
+	public int getBrightnessForRender(float par1)
     {
         int var2 = super.getBrightnessForRender(par1);
         float var3 = (float)this.particleAge / (float)this.particleMaxAge;
@@ -64,7 +66,8 @@ public class GCCoreEntityOxygenFX extends EntityFX
     /**
      * Gets how bright this entity is.
      */
-    public float getBrightness(float par1)
+    @Override
+	public float getBrightness(float par1)
     {
         float var2 = super.getBrightness(par1);
         float var3 = (float)this.particleAge / (float)this.particleMaxAge;
@@ -75,7 +78,8 @@ public class GCCoreEntityOxygenFX extends EntityFX
     /**
      * Called to update the entity's position/logic.
      */
-    public void onUpdate()
+    @Override
+	public void onUpdate()
     {
         this.prevPosX = this.posX;
         this.prevPosY = this.posY;
@@ -84,9 +88,9 @@ public class GCCoreEntityOxygenFX extends EntityFX
         float var2 = var1;
         var1 = -var1 + var1 * var1 * 2.0F;
         var1 = 1.0F - var1;
-        this.posX = this.portalPosX + this.motionX * (double)var1;
-        this.posY = this.portalPosY + this.motionY * (double)var1 + (double)(1.0F - var2);
-        this.posZ = this.portalPosZ + this.motionZ * (double)var1;
+        this.posX = this.portalPosX + this.motionX * var1;
+        this.posY = this.portalPosY + this.motionY * var1 + (1.0F - var2);
+        this.posZ = this.portalPosZ + this.motionZ * var1;
 
         if (this.particleAge++ >= this.particleMaxAge)
         {

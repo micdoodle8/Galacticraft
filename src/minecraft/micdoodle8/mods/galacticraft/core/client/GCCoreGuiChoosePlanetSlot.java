@@ -6,7 +6,6 @@ import net.minecraft.src.Tessellator;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
@@ -27,12 +26,14 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
         this.languageGui = par1GCGuiChoosePlanet;
     }
 
-    protected int getSize()
+    @Override
+	protected int getSize()
     {
         return this.languageGui.getDestinations(languageGui).length;
     }
 
-    protected void elementClicked(int par1, boolean par2)
+    @Override
+	protected void elementClicked(int par1, boolean par2)
     {
     	if (par1 < this.languageGui.getDestinations(languageGui).length)
     	{
@@ -43,17 +44,20 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
         GCCoreGuiChoosePlanet.getSendButton(this.languageGui).enabled = true;
     }
 
-    protected boolean isSelected(int par1)
+    @Override
+	protected boolean isSelected(int par1)
     {
         return par1 == GCCoreGuiChoosePlanet.getSelectedDimension(languageGui);
     }
 
-    protected int getContentHeight()
+    @Override
+	protected int getContentHeight()
     {
         return this.getSize() * 20;
     }
 
-    protected void drawSlot(int par1, int par2, int par3, int par4, Tessellator par5Tessellator)
+    @Override
+	protected void drawSlot(int par1, int par2, int par3, int par4, Tessellator par5Tessellator)
     {
     	if (this.isSelected(par1))
     	{

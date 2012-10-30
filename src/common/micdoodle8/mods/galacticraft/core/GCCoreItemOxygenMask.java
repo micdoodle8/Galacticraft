@@ -1,8 +1,6 @@
 package micdoodle8.mods.galacticraft.core;
 
-import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.EnumArmorMaterial;
-import net.minecraft.src.ItemArmor;
 import net.minecraft.src.ItemStack;
 import net.minecraftforge.common.IArmorTextureProvider;
 
@@ -25,6 +23,7 @@ public class GCCoreItemOxygenMask extends GCCoreItemBreathableHelmet implements 
     	return "/micdoodle8/mods/galacticraft/mars/client/armor/oxygen_1.png";
     }
 	
+	@Override
 	public String getTextureFile()
 	{
 		return "/micdoodle8/mods/galacticraft/core/client/items/core.png";

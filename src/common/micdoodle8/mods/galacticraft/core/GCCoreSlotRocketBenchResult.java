@@ -1,6 +1,9 @@
 package micdoodle8.mods.galacticraft.core;
 
-import net.minecraft.src.*;
+import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.IInventory;
+import net.minecraft.src.ItemStack;
+import net.minecraft.src.Slot;
 
 public class GCCoreSlotRocketBenchResult extends Slot
 {
@@ -15,12 +18,14 @@ public class GCCoreSlotRocketBenchResult extends Slot
         this.craftMatrix = par2IInventory;
     }
 
-    public boolean isItemValid(ItemStack par1ItemStack)
+    @Override
+	public boolean isItemValid(ItemStack par1ItemStack)
     {
         return false;
     }
     
-    public ItemStack decrStackSize(int par1)
+    @Override
+	public ItemStack decrStackSize(int par1)
     {
         if (this.getHasStack())
         {

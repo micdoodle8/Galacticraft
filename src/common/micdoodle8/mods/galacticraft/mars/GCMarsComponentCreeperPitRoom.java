@@ -9,7 +9,6 @@ import net.minecraft.src.StructureBoundingBox;
 import net.minecraft.src.StructureComponent;
 import net.minecraft.src.TileEntityMobSpawner;
 import net.minecraft.src.World;
-import cpw.mods.fml.common.FMLLog;
 
 /**
  * Copyright 2012, micdoodle8

@@ -50,6 +50,7 @@ public class GCMarsModelSludgeling extends ModelBase
 		setRotation(tail3, 0F, 0F, 0F);
 	}
 
+	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
 	{
 		super.render(entity, f, f1, f2, f3, f4, f5);
@@ -72,9 +73,9 @@ public class GCMarsModelSludgeling extends ModelBase
 	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity)
 	{
 		super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);	
-        this.tail1.rotateAngleY = MathHelper.cos(f2 * 0.3F + (float)0 * 0.15F * (float)Math.PI) * (float)Math.PI * 0.025F * (float)(1 + Math.abs(0 - 2));
-        this.tail2.rotateAngleY = MathHelper.cos(f2 * 0.3F + (float)1 * 0.15F * (float)Math.PI) * (float)Math.PI * 0.025F * (float)(1 + Math.abs(1 - 2));
-        this.tail3.rotateAngleY = MathHelper.cos(f2 * 0.3F + (float)2 * 0.15F * (float)Math.PI) * (float)Math.PI * 0.025F * (float)(1 + Math.abs(1 - 2));
-        this.tail4.rotateAngleY = MathHelper.cos(f2 * 0.3F + (float)3 * 0.15F * (float)Math.PI) * (float)Math.PI * 0.025F * (float)(1 + Math.abs(1 - 2));
+        this.tail1.rotateAngleY = MathHelper.cos(f2 * 0.3F + 0 * 0.15F * (float)Math.PI) * (float)Math.PI * 0.025F * (1 + Math.abs(0 - 2));
+        this.tail2.rotateAngleY = MathHelper.cos(f2 * 0.3F + 1 * 0.15F * (float)Math.PI) * (float)Math.PI * 0.025F * (1 + Math.abs(1 - 2));
+        this.tail3.rotateAngleY = MathHelper.cos(f2 * 0.3F + 2 * 0.15F * (float)Math.PI) * (float)Math.PI * 0.025F * (1 + Math.abs(1 - 2));
+        this.tail4.rotateAngleY = MathHelper.cos(f2 * 0.3F + 3 * 0.15F * (float)Math.PI) * (float)Math.PI * 0.025F * (1 + Math.abs(1 - 2));
 	}
 }

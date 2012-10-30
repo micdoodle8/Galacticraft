@@ -74,7 +74,8 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     	}
     }
     
-    public void initGui()
+    @Override
+	public void initGui()
     {
     	if (!this.initialized)
     	{
@@ -91,12 +92,14 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
         this.planetSlots.registerScrollButtons(this.controlList, 2, 3);
     }
     
-    public void updateScreen()
+    @Override
+	public void updateScreen()
     {
         ++this.spaceTimer;
     }
     
-    public boolean doesGuiPauseGame()
+    @Override
+	public boolean doesGuiPauseGame()
     {
         return false;
     }
@@ -177,10 +180,10 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
                 GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture(titlePanoramaPaths[var10 - var10]));
                 var4.startDrawingQuads();
                 var4.setColorRGBA_I(16777215, 255 / (var6 + 1));
-                var4.addVertexWithUV(-1.0D, -1.0D, 1.0D, (double)(0.0F + 1), (double)(0.0F + 1));
-                var4.addVertexWithUV(1.0D, -1.0D, 1.0D, (double)(1.0F - 1), (double)(0.0F + 1));
-                var4.addVertexWithUV(1.0D, 1.0D, 1.0D, (double)(1.0F - 1), (double)(1.0F - 1));
-                var4.addVertexWithUV(-1.0D, 1.0D, 1.0D, (double)(0.0F + 1), (double)(1.0F - 1));
+                var4.addVertexWithUV(-1.0D, -1.0D, 1.0D, 0.0F + 1, 0.0F + 1);
+                var4.addVertexWithUV(1.0D, -1.0D, 1.0D, 1.0F - 1, 0.0F + 1);
+                var4.addVertexWithUV(1.0D, 1.0D, 1.0D, 1.0F - 1, 1.0F - 1);
+                var4.addVertexWithUV(-1.0D, 1.0D, 1.0D, 0.0F + 1, 1.0F - 1);
                 var4.draw();
                 GL11.glPopMatrix();
             }
@@ -226,8 +229,8 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
             float var8 = ((float)(var6 / var5) / (float)var5 - 0.5F) / 64.0F;
             float var9 = 0.0F;
             GL11.glTranslatef(var7, var8, var9);
-            GL11.glRotatef(MathHelper.sin(((float)this.spaceTimer + par1) / 1000.0F) * 25.0F + 20.0F, 1.0F, 0.0F, 0.0F);
-            GL11.glRotatef(-((float)this.spaceTimer + par1) * 0.005F, 0.0F, 1.0F, 0.0F);
+            GL11.glRotatef(MathHelper.sin((this.spaceTimer + par1) / 1000.0F) * 25.0F + 20.0F, 1.0F, 0.0F, 0.0F);
+            GL11.glRotatef(-(this.spaceTimer + par1) * 0.005F, 0.0F, 1.0F, 0.0F);
             GL11.glRotatef(41, 0, 0, 1);
 
             for (int var10 = 0; var10 < 6; ++var10)
@@ -263,10 +266,10 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
                 GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture(titlePanoramaPaths[0]));
                 var4.startDrawingQuads();
                 var4.setColorRGBA_I(16777215, 255 / (var6 + 1));
-                var4.addVertexWithUV(-1.0D, -1.0D, 1.0D, (double)(0.0F + 1), (double)(0.0F + 1));
-                var4.addVertexWithUV(1.0D, -1.0D, 1.0D, (double)(1.0F - 1), (double)(0.0F + 1));
-                var4.addVertexWithUV(1.0D, 1.0D, 1.0D, (double)(1.0F - 1), (double)(1.0F - 1));
-                var4.addVertexWithUV(-1.0D, 1.0D, 1.0D, (double)(0.0F + 1), (double)(1.0F - 1));
+                var4.addVertexWithUV(-1.0D, -1.0D, 1.0D, 0.0F + 1, 0.0F + 1);
+                var4.addVertexWithUV(1.0D, -1.0D, 1.0D, 1.0F - 1, 0.0F + 1);
+                var4.addVertexWithUV(1.0D, 1.0D, 1.0D, 1.0F - 1, 1.0F - 1);
+                var4.addVertexWithUV(-1.0D, 1.0D, 1.0D, 0.0F + 1, 1.0F - 1);
                 var4.draw();
                 GL11.glPopMatrix();
             }
@@ -315,23 +318,24 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
         GL11.glViewport(0, 0, this.mc.displayWidth, this.mc.displayHeight);
         Tessellator var4 = Tessellator.instance;
         var4.startDrawingQuads();
-        float var5 = this.width > this.height ? 120.0F / (float)this.width : 120.0F / (float)this.height;
-        float var6 = (float)this.height * var5 / 256.0F;
-        float var7 = (float)this.width * var5 / 256.0F;
+        float var5 = this.width > this.height ? 120.0F / this.width : 120.0F / this.height;
+        float var6 = this.height * var5 / 256.0F;
+        float var7 = this.width * var5 / 256.0F;
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
         var4.setColorRGBA_F(1.0F, 1.0F, 1.0F, 1.0F);
         int var8 = this.width;
         int var9 = this.height;
-        var4.addVertexWithUV(0.0D, (double)var9, (double)this.zLevel, (double)(0.5F - var6), (double)(0.5F + var7));
-        var4.addVertexWithUV((double)var8, (double)var9, (double)this.zLevel, (double)(0.5F - var6), (double)(0.5F - var7));
-        var4.addVertexWithUV((double)var8, 0.0D, (double)this.zLevel, (double)(0.5F + var6), (double)(0.5F - var7));
-        var4.addVertexWithUV(0.0D, 0.0D, (double)this.zLevel, (double)(0.5F + var6), (double)(0.5F + var7));
+        var4.addVertexWithUV(0.0D, var9, this.zLevel, 0.5F - var6, 0.5F + var7);
+        var4.addVertexWithUV(var8, var9, this.zLevel, 0.5F - var6, 0.5F - var7);
+        var4.addVertexWithUV(var8, 0.0D, this.zLevel, 0.5F + var6, 0.5F - var7);
+        var4.addVertexWithUV(0.0D, 0.0D, this.zLevel, 0.5F + var6, 0.5F + var7);
         var4.draw();
         GL11.glPopMatrix();
     }
     
-    public void drawScreen(int par1, int par2, float par3)
+    @Override
+	public void drawScreen(int par1, int par2, float par3)
     {
     	if (this.initialized)
     	{
@@ -353,9 +357,9 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/backgrounds/black.png"));
         Tessellator var3 = Tessellator.instance;
         var3.startDrawingQuads();
-        var3.addVertexWithUV(0.0D, (double)var7, -90.0D, 0.0D, 1.0D);
-        var3.addVertexWithUV((double)var6, (double)var7, -90.0D, 1.0D, 1.0D);
-        var3.addVertexWithUV((double)var6, 0.0D, -90.0D, 1.0D, 0.0D);
+        var3.addVertexWithUV(0.0D, var7, -90.0D, 0.0D, 1.0D);
+        var3.addVertexWithUV(var6, var7, -90.0D, 1.0D, 1.0D);
+        var3.addVertexWithUV(var6, 0.0D, -90.0D, 1.0D, 0.0D);
         var3.addVertexWithUV(0.0D, 0.0D, -90.0D, 0.0D, 0.0D);
         var3.draw();
         GL11.glDepthMask(true);
@@ -364,7 +368,8 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
     }
     
-    protected void actionPerformed(GuiButton par1GuiButton)
+    @Override
+	protected void actionPerformed(GuiButton par1GuiButton)
     {
     	if (par1GuiButton.enabled)
     	{

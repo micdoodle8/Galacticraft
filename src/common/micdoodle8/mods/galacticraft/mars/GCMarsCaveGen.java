@@ -2,13 +2,9 @@ package micdoodle8.mods.galacticraft.mars;
 
 import java.util.Random;
 
-import net.minecraft.src.Block;
 import net.minecraft.src.IChunkProvider;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.World;
-import net.minecraftforge.common.DimensionManager;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
 
 /**
  * Copyright 2012, micdoodle8
@@ -36,8 +32,8 @@ public class GCMarsCaveGen
         {
             for (int var12 = par4 - var6; var12 <= par4 + var6; ++var12)
             {
-                long var13 = (long)var11 * var7;
-                long var15 = (long)var12 * var9;
+                long var13 = var11 * var7;
+                long var15 = var12 * var9;
                 this.rand.setSeed(var13 ^ var15 ^ par2World.getSeed());
                 this.recursiveGenerate(par2World, var11, var12, par3, par4, par5ArrayOfByte);
             }
@@ -55,9 +51,9 @@ public class GCMarsCaveGen
 
         for (int var8 = 0; var8 < 1; ++var8)
         {
-            double xPos = (double)(xChunkCoord * 16 + this.rand.nextInt(16));
+            double xPos = xChunkCoord * 16 + this.rand.nextInt(16);
             double yPos = (double)this.rand.nextInt(10) + 20;
-            double zPos = (double)(zChunkCoord * 16 + this.rand.nextInt(16));
+            double zPos = zChunkCoord * 16 + this.rand.nextInt(16);
             
             int var15 = 1;
 
@@ -77,8 +73,8 @@ public class GCMarsCaveGen
 
     protected void generateCaveNode(long par1, int origXChunkCoord, int origZChunkCoord, int[] par5ArrayOfByte, double xPos, double yPos, double zPos, float par12, float par13, float par14, int par15, int par16, double heightMultiplier)
     {
-        double var19 = (double)(origXChunkCoord * 16 + 8);
-        double var21 = (double)(origZChunkCoord * 16 + 8);
+        double var19 = origXChunkCoord * 16 + 8;
+        double var21 = origZChunkCoord * 16 + 8;
         float var23 = 0.0F;
         float var24 = 0.0F;
         Random var25 = new Random(par1);
@@ -129,8 +125,8 @@ public class GCMarsCaveGen
             {
                 double var35 = xPos - var19;
                 double var37 = zPos - var21;
-                double var39 = (double)(par16 - par15);
-                double var41 = (double)(par12 + 2.0F + 16.0F);
+                double var39 = par16 - par15;
+                double var41 = par12 + 2.0F + 16.0F;
 
                 if (var35 * var35 + var37 * var37 - var39 * var39 > var41 * var41)
                 {
@@ -210,11 +206,11 @@ public class GCMarsCaveGen
                     }
                     for (var42 = caveMinX; var42 < caveMaxX; ++var42)
                     {
-                        double var59 = ((double)(var42 + origXChunkCoord * 16) + 0.5D - xPos) / caveWidth;
+                        double var59 = (var42 + origXChunkCoord * 16 + 0.5D - xPos) / caveWidth;
 
                         for (var45 = caveMinZ; var45 < caveMaxZ; ++var45)
                         {
-                            double var46 = ((double)(var45 + origZChunkCoord * 16) + 0.5D - zPos) / caveWidth;
+                            double var46 = (var45 + origZChunkCoord * 16 + 0.5D - zPos) / caveWidth;
                             int var48 = (var42 * 16 + var45) * 128 + caveMaxY;
                             
                             boolean var49 = false;
@@ -223,7 +219,7 @@ public class GCMarsCaveGen
                             {
                                 for (int var50 = caveMaxY - 1; var50 >= caveMinY; --var50)
                                 {
-                                    double var51 = ((double)var50 + 0.5D - yPos) / caveHeight;
+                                    double var51 = (var50 + 0.5D - yPos) / caveHeight;
 
                                     if (var51 > -0.7D && var59 * var59 + var51 * var51 + var46 * var46 < 1.0D)
                                     {

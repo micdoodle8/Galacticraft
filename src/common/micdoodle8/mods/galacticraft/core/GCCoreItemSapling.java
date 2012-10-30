@@ -19,12 +19,14 @@ public class GCCoreItemSapling extends ItemBlock
     /**
      * Returns the metadata of the block which this Item (ItemBlock) can place
      */
-    public int getMetadata(int par1)
+    @Override
+	public int getMetadata(int par1)
     {
         return par1;
     }
 
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
 
     /**
      * Gets an icon index based on an item's damage value
@@ -34,7 +36,8 @@ public class GCCoreItemSapling extends ItemBlock
         return Block.sapling.getBlockTextureFromSideAndMetadata(0, par1);
     }
 
-    public String getItemNameIS(ItemStack par1ItemStack)
+    @Override
+	public String getItemNameIS(ItemStack par1ItemStack)
     {
         int var2 = par1ItemStack.getItemDamage();
 

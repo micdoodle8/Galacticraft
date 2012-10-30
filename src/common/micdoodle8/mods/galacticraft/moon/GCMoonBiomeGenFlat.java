@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.moon;
 
 import net.minecraft.src.BiomeGenBase;
-import net.minecraft.src.ModLoader;
 
 /**
  * Copyright 2012, micdoodle8

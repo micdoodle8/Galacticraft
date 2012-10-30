@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core;
 
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.TileEntity;
-import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreTileEntityOxygenPipe extends TileEntity
 {

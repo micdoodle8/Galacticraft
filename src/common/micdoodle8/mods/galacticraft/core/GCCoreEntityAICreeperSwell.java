@@ -28,7 +28,8 @@ public class GCCoreEntityAICreeperSwell extends EntityAIBase
     /**
      * Returns whether the EntityAIBase should begin execution.
      */
-    public boolean shouldExecute()
+    @Override
+	public boolean shouldExecute()
     {
         EntityLiving var1 = this.swellingCreeper.getAttackTarget();
         return this.swellingCreeper.getCreeperState() > 0 || var1 != null && this.swellingCreeper.getDistanceSqToEntity(var1) < 9.0D;
@@ -37,7 +38,8 @@ public class GCCoreEntityAICreeperSwell extends EntityAIBase
     /**
      * Execute a one shot task or start executing a continuous task
      */
-    public void startExecuting()
+    @Override
+	public void startExecuting()
     {
         this.swellingCreeper.getNavigator().clearPathEntity();
         this.creeperAttackTarget = this.swellingCreeper.getAttackTarget();
@@ -46,7 +48,8 @@ public class GCCoreEntityAICreeperSwell extends EntityAIBase
     /**
      * Resets the task
      */
-    public void resetTask()
+    @Override
+	public void resetTask()
     {
         this.creeperAttackTarget = null;
     }
@@ -54,7 +57,8 @@ public class GCCoreEntityAICreeperSwell extends EntityAIBase
     /**
      * Updates the task
      */
-    public void updateTask()
+    @Override
+	public void updateTask()
     {
         if (this.creeperAttackTarget == null)
         {

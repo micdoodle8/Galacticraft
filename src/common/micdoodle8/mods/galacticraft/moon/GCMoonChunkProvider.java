@@ -22,10 +22,7 @@ import net.minecraft.src.MapGenVillage;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.NoiseGeneratorOctaves;
 import net.minecraft.src.SpawnListEntry;
-import net.minecraft.src.StructureBoundingBox;
 import net.minecraft.src.World;
-import net.minecraft.src.WorldGenLakes;
-import cpw.mods.fml.common.FMLLog;
 
 /**
  * Copyright 2012, micdoodle8
@@ -138,7 +135,7 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 							{
 								if ((var47 += var49) > 0.0D) 
 								{
-									par3ArrayOfint[var43 += var44] = (int) GCMoonBlocks.moonStone.blockID;
+									par3ArrayOfint[var43 += var44] = GCMoonBlocks.moonStone.blockID;
 								}
 								else if (var12 * 8 + var31 < var6) 
 								{
@@ -180,8 +177,8 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 				float var11 = var10.getFloatTemperature();
 				int var12 = (int) (this.stoneNoise[var8 + var9 * 16] / 3.0D + 3.0D + this.rand.nextDouble() * 0.25D);
 				int var13 = -1;
-				int var14 = (int) GCMoonBlocks.moonGrass.blockID;
-				int var15 = (int) GCMoonBlocks.moonDirt.blockID;
+				int var14 = GCMoonBlocks.moonGrass.blockID;
+				int var15 = GCMoonBlocks.moonDirt.blockID;
 
 				for (int var16 = 127; var16 >= 0; --var16) 
 				{
@@ -189,7 +186,7 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 
 					if (var16 <= 0 + this.rand.nextInt(5)) 
 					{
-						par3ArrayOfint[var17] = (int) Block.bedrock.blockID;
+						par3ArrayOfint[var17] = Block.bedrock.blockID;
 					} else 
 					{
 						int var18 = par3ArrayOfint[var17];
@@ -198,14 +195,14 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 						{
 							var13 = -1;
 						} 
-						else if (var18 == (int) GCMoonBlocks.moonStone.blockID)
+						else if (var18 == GCMoonBlocks.moonStone.blockID)
 						{
 							if (var13 == -1)
 							{
 								if (var12 <= 0)
 								{
 									var14 = 0;
-									var15 = (int) GCMoonBlocks.moonStone.blockID;
+									var15 = GCMoonBlocks.moonStone.blockID;
 								} 
 								else if (var16 >= var5 - -16 && var16 <= var5 + 1)
 								{
@@ -217,11 +214,11 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 								{
 									if (var11 < 0.15F)
 									{
-										var14 = (int) Block.ice.blockID;
+										var14 = Block.ice.blockID;
 									}
 									else 
 									{
-										var14 = (int) 0;
+										var14 = 0;
 									}
 								}
 
@@ -243,7 +240,7 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 								if (var13 == 0 && var15 == Block.sand.blockID)
 								{
 									var13 = this.rand.nextInt(4);
-									var15 = (int) Block.sandStone.blockID;
+									var15 = Block.sandStone.blockID;
 								}
 							}
 						}

@@ -2,9 +2,7 @@ package micdoodle8.mods.galacticraft.core.client;
 
 import micdoodle8.mods.galacticraft.core.GCCoreBlockTreasureChest;
 import micdoodle8.mods.galacticraft.core.GCCoreTileEntityTreasureChest;
-import micdoodle8.mods.galacticraft.mars.*;
 import net.minecraft.src.Block;
-import net.minecraft.src.BlockChest;
 import net.minecraft.src.ModelChest;
 import net.minecraft.src.ModelLargeChest;
 import net.minecraft.src.TileEntity;
@@ -109,7 +107,7 @@ public class GCCoreTileEntityTreasureChestRenderer extends TileEntitySpecialRend
                 GL11.glTranslatef(0.0F, 0.0F, -1.0F);
             }
 
-            GL11.glRotatef((float)var11, 0.0F, 1.0F, 0.0F);
+            GL11.glRotatef(var11, 0.0F, 1.0F, 0.0F);
             GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
             float var12 = par1GCTileEntityTreasureChest.prevLidAngle + (par1GCTileEntityTreasureChest.lidAngle - par1GCTileEntityTreasureChest.prevLidAngle) * par8;
             float var13;
@@ -144,7 +142,8 @@ public class GCCoreTileEntityTreasureChestRenderer extends TileEntitySpecialRend
         }
     }
 
-    public void renderTileEntityAt(TileEntity par1TileEntity, double par2, double par4, double par6, float par8)
+    @Override
+	public void renderTileEntityAt(TileEntity par1TileEntity, double par2, double par4, double par6, float par8)
     {
         this.renderGCTileEntityTreasureChestAt((GCCoreTileEntityTreasureChest)par1TileEntity, par2, par4, par6, par8);
     }

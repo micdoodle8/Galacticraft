@@ -48,7 +48,8 @@ public class GCMarsBlockFlowing extends GCMarsBlockFluid
         par1World.markBlocksDirty(par2, par3, par4, par2, par3, par4);
     }
 
-    public boolean getBlocksMovement(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
+    @Override
+	public boolean getBlocksMovement(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
         return this.blockMaterial != Material.lava;
     }
@@ -56,7 +57,8 @@ public class GCMarsBlockFlowing extends GCMarsBlockFluid
     /**
      * Ticks the block if it's been scheduled
      */
-    public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
+    @Override
+	public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {
         par1World.scheduleBlockUpdate(par2, par3, par4, this.blockID, this.tickRate() / 10);
         
@@ -427,7 +429,8 @@ public class GCMarsBlockFlowing extends GCMarsBlockFluid
     /**
      * Called whenever the block is added into the world. Args: world, x, y, z
      */
-    public void onBlockAdded(World par1World, int par2, int par3, int par4)
+    @Override
+	public void onBlockAdded(World par1World, int par2, int par3, int par4)
     {
         super.onBlockAdded(par1World, par2, par3, par4);
 

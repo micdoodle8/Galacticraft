@@ -3,11 +3,9 @@ package micdoodle8.mods.galacticraft.moon;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.API.WorldGenMinableMeta;
-import net.minecraft.src.BiomeDecorator;
 import net.minecraft.src.BiomeGenBase;
 import net.minecraft.src.World;
 import net.minecraft.src.WorldGenerator;
-import cpw.mods.fml.common.FMLLog;
 
 /**
  * Copyright 2012, micdoodle8

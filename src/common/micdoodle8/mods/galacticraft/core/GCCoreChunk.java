@@ -1,11 +1,8 @@
 package micdoodle8.mods.galacticraft.core;
 
-import micdoodle8.mods.galacticraft.mars.GCMarsBlocks;
-import micdoodle8.mods.galacticraft.mars.GCMarsConfigManager;
 import net.minecraft.src.Chunk;
 import net.minecraft.src.ExtendedBlockStorage;
 import net.minecraft.src.World;
-import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreChunk extends Chunk
 {

@@ -109,7 +109,7 @@ public class GCCoreBlockOxygenCollector extends BlockContainer
 	@Override
     public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLiving par5EntityLiving)
     {
-        int var6 = MathHelper.floor_double((double)(par5EntityLiving.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+        int var6 = MathHelper.floor_double(par5EntityLiving.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
 
         if (var6 == 0)
         {
@@ -166,16 +166,16 @@ public class GCCoreBlockOxygenCollector extends BlockContainer
 
         for (int var6 = 0; var6 < 10; ++var6)
         {
-            double var7 = (double)((float)par2 + par5Random.nextFloat());
-            double var9 = (double)((float)par3 + par5Random.nextFloat());
-            double var11 = (double)((float)par4 + par5Random.nextFloat());
+            double var7 = par2 + par5Random.nextFloat();
+            double var9 = par3 + par5Random.nextFloat();
+            double var11 = par4 + par5Random.nextFloat();
             double var13 = 0.0D;
             double var15 = 0.0D;
             double var17 = 0.0D;
             int var19 = par5Random.nextInt(2) * 2 - 1;
-            var13 = ((double)par5Random.nextFloat() - 0.5D) * 0.5D;
-            var15 = ((double)par5Random.nextFloat() - 0.5D) * 0.5D;
-            var17 = ((double)par5Random.nextFloat() - 0.5D) * 0.5D;
+            var13 = (par5Random.nextFloat() - 0.5D) * 0.5D;
+            var15 = (par5Random.nextFloat() - 0.5D) * 0.5D;
+            var17 = (par5Random.nextFloat() - 0.5D) * 0.5D;
 
             int var2 = par1World.getBlockMetadata(par2, par3, par4);
             
@@ -183,13 +183,13 @@ public class GCCoreBlockOxygenCollector extends BlockContainer
 
             if (var2 == 3 || var2 == 2)
             {
-                var7 = (double)par2 + 0.5D + 0.25D * (double)var19;
-                var13 = (double)(par5Random.nextFloat() * 2.0F * (float)var19);
+                var7 = par2 + 0.5D + 0.25D * var19;
+                var13 = par5Random.nextFloat() * 2.0F * var19;
             }
             else
             {
-                var11 = (double)par4 + 0.5D + 0.25D * (double)var19;
-                var17 = (double)(par5Random.nextFloat() * 2.0F * (float)var19);
+                var11 = par4 + 0.5D + 0.25D * var19;
+                var17 = par5Random.nextFloat() * 2.0F * var19;
             }
 
            	GalacticraftCore.proxy.spawnParticle("oxygen", var7, var9, var11, var13, var15, var17, 0.7D, 0.7D, 1.0D, false);

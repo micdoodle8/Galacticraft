@@ -30,7 +30,7 @@ public class GCMarsWorldProvider extends GalacticraftWorldProvider
 
         for (int var2 = 0; var2 <= 15; ++var2)
         {
-            float var3 = 1.0F - (float)var2 / 15.0F;
+            float var3 = 1.0F - var2 / 15.0F;
             this.lightBrightnessTable[var2] = (1.0F - var3) / (var3 * 3.0F + 1.0F) * (1.0F - var1) + var1;
         }
     }
@@ -47,7 +47,8 @@ public class GCMarsWorldProvider extends GalacticraftWorldProvider
         this.worldChunkMgr = new GCMarsWorldChunkManager(this.worldObj, 0F);
     }
     
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public boolean doesXZShowFog(int par1, int par2)
     {
         return false;
@@ -64,7 +65,7 @@ public class GCMarsWorldProvider extends GalacticraftWorldProvider
     public float calculateCelestialAngle(long par1, float par3)
     {
         int var4 = (int)(par1 % 24000L);
-        float var5 = ((float)var4 + par3) / 24000.0F - 0.25F;
+        float var5 = (var4 + par3) / 24000.0F - 0.25F;
 
         if (var5 < 0.0F)
         {
@@ -77,7 +78,7 @@ public class GCMarsWorldProvider extends GalacticraftWorldProvider
         }
 
         float var6 = var5;
-        var5 = 1.0F - (float)((Math.cos((double)var5 * Math.PI) + 1.0D) / 2.0D);
+        var5 = 1.0F - (float)((Math.cos(var5 * Math.PI) + 1.0D) / 2.0D);
         var5 = var6 + (var5 - var6) / 3.0F;
         return var5 * 0.8F;
     }
@@ -107,22 +108,26 @@ public class GCMarsWorldProvider extends GalacticraftWorldProvider
         worldObj.getWorldInfo().setThundering(false);
 	}
 
-    public boolean isSkyColored()
+    @Override
+	public boolean isSkyColored()
     {
         return true;
     }
     
-    public double getHorizon()
+    @Override
+	public double getHorizon()
     {
     	return 44.0D;
     }
 
-    public int getAverageGroundLevel()
+    @Override
+	public int getAverageGroundLevel()
     {
         return 44;
     }
     
-    public boolean isSurfaceWorld()
+    @Override
+	public boolean isSurfaceWorld()
     {
         return false;
     }
@@ -146,12 +151,14 @@ public class GCMarsWorldProvider extends GalacticraftWorldProvider
     	return "DIM" + GCMarsConfigManager.dimensionIDMars;
     }
 
-    public String getWelcomeMessage()
+    @Override
+	public String getWelcomeMessage()
     {
         return "Entering Mars";
     }
 
-    public String getDepartMessage()
+    @Override
+	public String getDepartMessage()
     {
         return "Leaving Mars";
     }
@@ -174,12 +181,14 @@ public class GCMarsWorldProvider extends GalacticraftWorldProvider
         return false;
     }
     
-    public boolean canDoLightning(Chunk chunk)
+    @Override
+	public boolean canDoLightning(Chunk chunk)
     {
         return false;
     }
     
-    public boolean canDoRainSnowIce(Chunk chunk)
+    @Override
+	public boolean canDoRainSnowIce(Chunk chunk)
     {
         return false;
     }

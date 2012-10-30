@@ -2,12 +2,10 @@ package micdoodle8.mods.galacticraft.mars;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.src.Block;
-import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.EntityCow;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EnumAction;
 import net.minecraft.src.EnumMovingObjectType;
-import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
 import net.minecraft.src.MovingObjectPosition;
@@ -15,7 +13,6 @@ import net.minecraft.src.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.Event;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
-import cpw.mods.fml.common.FMLLog;
 
 public class GCMarsItemReinforcedBucket extends GCMarsItem
 {
@@ -84,9 +81,9 @@ public class GCMarsItemReinforcedBucket extends GCMarsItem
     	if (this.shiftedIndex != GCMarsItems.reinforcedBucketMilk.shiftedIndex)
     	{
     		float var4 = 1.0F;
-            double var5 = par3EntityPlayer.prevPosX + (par3EntityPlayer.posX - par3EntityPlayer.prevPosX) * (double)var4;
-            double var7 = par3EntityPlayer.prevPosY + (par3EntityPlayer.posY - par3EntityPlayer.prevPosY) * (double)var4 + 1.62D - (double)par3EntityPlayer.yOffset;
-            double var9 = par3EntityPlayer.prevPosZ + (par3EntityPlayer.posZ - par3EntityPlayer.prevPosZ) * (double)var4;
+            double var5 = par3EntityPlayer.prevPosX + (par3EntityPlayer.posX - par3EntityPlayer.prevPosX) * var4;
+            double var7 = par3EntityPlayer.prevPosY + (par3EntityPlayer.posY - par3EntityPlayer.prevPosY) * var4 + 1.62D - par3EntityPlayer.yOffset;
+            double var9 = par3EntityPlayer.prevPosZ + (par3EntityPlayer.posZ - par3EntityPlayer.prevPosZ) * var4;
             boolean var11 = this.isFull == 0;
             MovingObjectPosition var12 = this.getMovingObjectPositionFromPlayer(par2World, par3EntityPlayer, var11);
 
@@ -287,7 +284,7 @@ public class GCMarsItemReinforcedBucket extends GCMarsItem
 
                 for (int var11 = 0; var11 < 8; ++var11)
                 {
-                    par1World.spawnParticle("largesmoke", (double)par8 + Math.random(), (double)par9 + Math.random(), (double)par10 + Math.random(), 0.0D, 0.0D, 0.0D);
+                    par1World.spawnParticle("largesmoke", par8 + Math.random(), par9 + Math.random(), par10 + Math.random(), 0.0D, 0.0D, 0.0D);
                 }
             }
             else

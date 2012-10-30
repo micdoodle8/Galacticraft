@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.moon;
 
-import cpw.mods.fml.common.Side;
-import cpw.mods.fml.common.asm.SideOnly;
 import micdoodle8.mods.galacticraft.moon.client.GCMoonColorizerGrass;
 import net.minecraft.src.BlockFlower;
 import net.minecraft.src.ColorizerGrass;
@@ -10,6 +8,8 @@ import net.minecraft.src.Material;
 import net.minecraft.src.World;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.IPlantable;
+import cpw.mods.fml.common.Side;
+import cpw.mods.fml.common.asm.SideOnly;
 
 public class GCMoonBlockDirt extends GCMoonBlock
 {
@@ -31,7 +31,8 @@ public class GCMoonBlockDirt extends GCMoonBlock
         return false;
     }
 
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public int getBlockColor()
     {
         double var1 = 0.5D;
@@ -39,13 +40,15 @@ public class GCMoonBlockDirt extends GCMoonBlock
         return ColorizerGrass.getGrassColor(var1, var3);
     }
 
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public int getRenderColor(int par1)
     {
         return this.getBlockColor();
     }
 
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public int colorMultiplier(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
         int var5 = 0;

@@ -44,7 +44,7 @@ public class GCCoreBlockRendererUnlitTorch implements ISimpleBlockRenderingHandl
 	@Override
 	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) 
 	{
-        renderTorchAtAngle(renderer, block, (double)0, (double)0, (double)0, 0.0D, 0.0D);
+        renderTorchAtAngle(renderer, block, 0, 0, 0, 0.0D, 0.0D);
 	}
 
     public static void renderInvNormalBlock(RenderBlocks var0, Block var1, int var2)
@@ -91,23 +91,23 @@ public class GCCoreBlockRendererUnlitTorch implements ISimpleBlockRenderingHandl
 
         if (var5 == 1)
         {
-            renderTorchAtAngle(renderBlocks, par1Block, (double)par2 - var9, (double)par3 + var11, (double)par4, -var7, 0.0D);
+            renderTorchAtAngle(renderBlocks, par1Block, par2 - var9, par3 + var11, par4, -var7, 0.0D);
         }
         else if (var5 == 2)
         {
-            renderTorchAtAngle(renderBlocks, par1Block, (double)par2 + var9, (double)par3 + var11, (double)par4, var7, 0.0D);
+            renderTorchAtAngle(renderBlocks, par1Block, par2 + var9, par3 + var11, par4, var7, 0.0D);
         }
         else if (var5 == 3)
         {
-            renderTorchAtAngle(renderBlocks, par1Block, (double)par2, (double)par3 + var11, (double)par4 - var9, 0.0D, -var7);
+            renderTorchAtAngle(renderBlocks, par1Block, par2, par3 + var11, par4 - var9, 0.0D, -var7);
         }
         else if (var5 == 4)
         {
-            renderTorchAtAngle(renderBlocks, par1Block, (double)par2, (double)par3 + var11, (double)par4 + var9, 0.0D, var7);
+            renderTorchAtAngle(renderBlocks, par1Block, par2, par3 + var11, par4 + var9, 0.0D, var7);
         }
         else
         {
-            renderTorchAtAngle(renderBlocks, par1Block, (double)par2, (double)par3, (double)par4, 0.0D, 0.0D);
+            renderTorchAtAngle(renderBlocks, par1Block, par2, par3, par4, 0.0D, 0.0D);
         }
     }
     
@@ -129,14 +129,14 @@ public class GCCoreBlockRendererUnlitTorch implements ISimpleBlockRenderingHandl
 
     	        int var14 = (var13 & 15) << 4;
     	        int var15 = var13 & 240;
-    	        float var16 = (float)var14 / 256.0F;
-    	        float var17 = ((float)var14 + 15.99F) / 256.0F;
-    	        float var18 = (float)var15 / 256.0F;
-    	        float var19 = ((float)var15 + 15.99F) / 256.0F;
-    	        double var20 = (double)var16 + 0.02734375D;
-    	        double var22 = (double)var18 + 0.0234375D;
-    	        double var24 = (double)var16 + 0.03515625D;
-    	        double var26 = (double)var18 + 0.03125D;
+    	        float var16 = var14 / 256.0F;
+    	        float var17 = (var14 + 15.99F) / 256.0F;
+    	        float var18 = var15 / 256.0F;
+    	        float var19 = (var15 + 15.99F) / 256.0F;
+    	        double var20 = var16 + 0.02734375D;
+    	        double var22 = var18 + 0.0234375D;
+    	        double var24 = var16 + 0.03515625D;
+    	        double var26 = var18 + 0.03125D;
     	        par2 += 0.5D;
     	        par6 += 0.5D;
     	        double var28 = par2 - 0.5D;
@@ -149,22 +149,22 @@ public class GCCoreBlockRendererUnlitTorch implements ISimpleBlockRenderingHandl
     	        var12.addVertexWithUV(par2 + par8 * (1.0D - var38) - var36, par4 + var38, par6 + par10 * (1.0D - var38) + var36, var20, var26);
     	        var12.addVertexWithUV(par2 + par8 * (1.0D - var38) + var36, par4 + var38, par6 + par10 * (1.0D - var38) + var36, var24, var26);
     	        var12.addVertexWithUV(par2 + par8 * (1.0D - var38) + var36, par4 + var38, par6 + par10 * (1.0D - var38) - var36, var24, var22);
-    	        var12.addVertexWithUV(par2 - var36, par4 + 1.0D, var32, (double)var16, (double)var18);
-    	        var12.addVertexWithUV(par2 - var36 + par8, par4 + 0.0D, var32 + par10, (double)var16, (double)var19);
-    	        var12.addVertexWithUV(par2 - var36 + par8, par4 + 0.0D, var34 + par10, (double)var17, (double)var19);
-    	        var12.addVertexWithUV(par2 - var36, par4 + 1.0D, var34, (double)var17, (double)var18);
-    	        var12.addVertexWithUV(par2 + var36, par4 + 1.0D, var34, (double)var16, (double)var18);
-    	        var12.addVertexWithUV(par2 + par8 + var36, par4 + 0.0D, var34 + par10, (double)var16, (double)var19);
-    	        var12.addVertexWithUV(par2 + par8 + var36, par4 + 0.0D, var32 + par10, (double)var17, (double)var19);
-    	        var12.addVertexWithUV(par2 + var36, par4 + 1.0D, var32, (double)var17, (double)var18);
-    	        var12.addVertexWithUV(var28, par4 + 1.0D, par6 + var36, (double)var16, (double)var18);
-    	        var12.addVertexWithUV(var28 + par8, par4 + 0.0D, par6 + var36 + par10, (double)var16, (double)var19);
-    	        var12.addVertexWithUV(var30 + par8, par4 + 0.0D, par6 + var36 + par10, (double)var17, (double)var19);
-    	        var12.addVertexWithUV(var30, par4 + 1.0D, par6 + var36, (double)var17, (double)var18);
-    	        var12.addVertexWithUV(var30, par4 + 1.0D, par6 - var36, (double)var16, (double)var18);
-    	        var12.addVertexWithUV(var30 + par8, par4 + 0.0D, par6 - var36 + par10, (double)var16, (double)var19);
-    	        var12.addVertexWithUV(var28 + par8, par4 + 0.0D, par6 - var36 + par10, (double)var17, (double)var19);
-    	        var12.addVertexWithUV(var28, par4 + 1.0D, par6 - var36, (double)var17, (double)var18);
+    	        var12.addVertexWithUV(par2 - var36, par4 + 1.0D, var32, var16, var18);
+    	        var12.addVertexWithUV(par2 - var36 + par8, par4 + 0.0D, var32 + par10, var16, var19);
+    	        var12.addVertexWithUV(par2 - var36 + par8, par4 + 0.0D, var34 + par10, var17, var19);
+    	        var12.addVertexWithUV(par2 - var36, par4 + 1.0D, var34, var17, var18);
+    	        var12.addVertexWithUV(par2 + var36, par4 + 1.0D, var34, var16, var18);
+    	        var12.addVertexWithUV(par2 + par8 + var36, par4 + 0.0D, var34 + par10, var16, var19);
+    	        var12.addVertexWithUV(par2 + par8 + var36, par4 + 0.0D, var32 + par10, var17, var19);
+    	        var12.addVertexWithUV(par2 + var36, par4 + 1.0D, var32, var17, var18);
+    	        var12.addVertexWithUV(var28, par4 + 1.0D, par6 + var36, var16, var18);
+    	        var12.addVertexWithUV(var28 + par8, par4 + 0.0D, par6 + var36 + par10, var16, var19);
+    	        var12.addVertexWithUV(var30 + par8, par4 + 0.0D, par6 + var36 + par10, var17, var19);
+    	        var12.addVertexWithUV(var30, par4 + 1.0D, par6 + var36, var17, var18);
+    	        var12.addVertexWithUV(var30, par4 + 1.0D, par6 - var36, var16, var18);
+    	        var12.addVertexWithUV(var30 + par8, par4 + 0.0D, par6 - var36 + par10, var16, var19);
+    	        var12.addVertexWithUV(var28 + par8, par4 + 0.0D, par6 - var36 + par10, var17, var19);
+    	        var12.addVertexWithUV(var28, par4 + 1.0D, par6 - var36, var17, var18);
     		}
     		else
     		{
@@ -178,14 +178,14 @@ public class GCCoreBlockRendererUnlitTorch implements ISimpleBlockRenderingHandl
 
     	        int var14 = (var13 & 15) << 4;
     	        int var15 = var13 & 240;
-    	        float var16 = (float)var14 / 256.0F;
-    	        float var17 = ((float)var14 + 15.99F) / 256.0F;
-    	        float var18 = (float)var15 / 256.0F;
-    	        float var19 = ((float)var15 + 15.99F) / 256.0F;
-    	        double var20 = (double)var16 + 0.02734375D;
-    	        double var22 = (double)var18 + 0.0234375D;
-    	        double var24 = (double)var16 + 0.03515625D;
-    	        double var26 = (double)var18 + 0.03125D;
+    	        float var16 = var14 / 256.0F;
+    	        float var17 = (var14 + 15.99F) / 256.0F;
+    	        float var18 = var15 / 256.0F;
+    	        float var19 = (var15 + 15.99F) / 256.0F;
+    	        double var20 = var16 + 0.02734375D;
+    	        double var22 = var18 + 0.0234375D;
+    	        double var24 = var16 + 0.03515625D;
+    	        double var26 = var18 + 0.03125D;
     	        par2 += 0.5D;
     	        par6 += 0.5D;
     	        double var28 = par2 - 0.5D;
@@ -198,22 +198,22 @@ public class GCCoreBlockRendererUnlitTorch implements ISimpleBlockRenderingHandl
     	        var12.addVertexWithUV(par2 + par8 * (1.0D - var38) - var36, par4 + var38, par6 + par10 * (1.0D - var38) + var36, var20, var26);
     	        var12.addVertexWithUV(par2 + par8 * (1.0D - var38) + var36, par4 + var38, par6 + par10 * (1.0D - var38) + var36, var24, var26);
     	        var12.addVertexWithUV(par2 + par8 * (1.0D - var38) + var36, par4 + var38, par6 + par10 * (1.0D - var38) - var36, var24, var22);
-    	        var12.addVertexWithUV(par2 - var36, par4 + 1.0D, var32, (double)var16, (double)var18);
-    	        var12.addVertexWithUV(par2 - var36 + par8, par4 + 0.0D, var32 + par10, (double)var16, (double)var19);
-    	        var12.addVertexWithUV(par2 - var36 + par8, par4 + 0.0D, var34 + par10, (double)var17, (double)var19);
-    	        var12.addVertexWithUV(par2 - var36, par4 + 1.0D, var34, (double)var17, (double)var18);
-    	        var12.addVertexWithUV(par2 + var36, par4 + 1.0D, var34, (double)var16, (double)var18);
-    	        var12.addVertexWithUV(par2 + par8 + var36, par4 + 0.0D, var34 + par10, (double)var16, (double)var19);
-    	        var12.addVertexWithUV(par2 + par8 + var36, par4 + 0.0D, var32 + par10, (double)var17, (double)var19);
-    	        var12.addVertexWithUV(par2 + var36, par4 + 1.0D, var32, (double)var17, (double)var18);
-    	        var12.addVertexWithUV(var28, par4 + 1.0D, par6 + var36, (double)var16, (double)var18);
-    	        var12.addVertexWithUV(var28 + par8, par4 + 0.0D, par6 + var36 + par10, (double)var16, (double)var19);
-    	        var12.addVertexWithUV(var30 + par8, par4 + 0.0D, par6 + var36 + par10, (double)var17, (double)var19);
-    	        var12.addVertexWithUV(var30, par4 + 1.0D, par6 + var36, (double)var17, (double)var18);
-    	        var12.addVertexWithUV(var30, par4 + 1.0D, par6 - var36, (double)var16, (double)var18);
-    	        var12.addVertexWithUV(var30 + par8, par4 + 0.0D, par6 - var36 + par10, (double)var16, (double)var19);
-    	        var12.addVertexWithUV(var28 + par8, par4 + 0.0D, par6 - var36 + par10, (double)var17, (double)var19);
-    	        var12.addVertexWithUV(var28, par4 + 1.0D, par6 - var36, (double)var17, (double)var18);
+    	        var12.addVertexWithUV(par2 - var36, par4 + 1.0D, var32, var16, var18);
+    	        var12.addVertexWithUV(par2 - var36 + par8, par4 + 0.0D, var32 + par10, var16, var19);
+    	        var12.addVertexWithUV(par2 - var36 + par8, par4 + 0.0D, var34 + par10, var17, var19);
+    	        var12.addVertexWithUV(par2 - var36, par4 + 1.0D, var34, var17, var18);
+    	        var12.addVertexWithUV(par2 + var36, par4 + 1.0D, var34, var16, var18);
+    	        var12.addVertexWithUV(par2 + par8 + var36, par4 + 0.0D, var34 + par10, var16, var19);
+    	        var12.addVertexWithUV(par2 + par8 + var36, par4 + 0.0D, var32 + par10, var17, var19);
+    	        var12.addVertexWithUV(par2 + var36, par4 + 1.0D, var32, var17, var18);
+    	        var12.addVertexWithUV(var28, par4 + 1.0D, par6 + var36, var16, var18);
+    	        var12.addVertexWithUV(var28 + par8, par4 + 0.0D, par6 + var36 + par10, var16, var19);
+    	        var12.addVertexWithUV(var30 + par8, par4 + 0.0D, par6 + var36 + par10, var17, var19);
+    	        var12.addVertexWithUV(var30, par4 + 1.0D, par6 + var36, var17, var18);
+    	        var12.addVertexWithUV(var30, par4 + 1.0D, par6 - var36, var16, var18);
+    	        var12.addVertexWithUV(var30 + par8, par4 + 0.0D, par6 - var36 + par10, var16, var19);
+    	        var12.addVertexWithUV(var28 + par8, par4 + 0.0D, par6 - var36 + par10, var17, var19);
+    	        var12.addVertexWithUV(var28, par4 + 1.0D, par6 - var36, var17, var18);
     		}
     	}
         

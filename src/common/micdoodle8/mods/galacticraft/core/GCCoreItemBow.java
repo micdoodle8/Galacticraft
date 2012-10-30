@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core;
 
 import net.minecraft.src.Enchantment;
 import net.minecraft.src.EnchantmentHelper;
-import net.minecraft.src.EntityArrow;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemBow;
@@ -35,10 +34,10 @@ public class GCCoreItemBow extends ItemBow
 
         if (var5 || par3EntityPlayer.inventory.hasItem(Item.arrow.shiftedIndex))
         {
-            float var7 = (float)var6 / 20.0F;
+            float var7 = var6 / 20.0F;
             var7 = (var7 * var7 + var7 * 2.0F) / 3.0F;
 
-            if ((double)var7 < 0.1D)
+            if (var7 < 0.1D)
             {
                 return;
             }
@@ -59,7 +58,7 @@ public class GCCoreItemBow extends ItemBow
 
             if (var9 > 0)
             {
-                var8.setDamage(var8.getDamage() + (double)var9 * 0.5D + 0.5D);
+                var8.setDamage(var8.getDamage() + var9 * 0.5D + 0.5D);
             }
 
             int var10 = EnchantmentHelper.getEnchantmentLevel(Enchantment.punch.effectId, par1ItemStack);

@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.moon.client;
 
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 

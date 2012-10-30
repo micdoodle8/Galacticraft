@@ -4,7 +4,6 @@ import net.minecraft.src.EntityAIBase;
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.Vec3;
 import net.minecraft.src.World;
-import cpw.mods.fml.common.FMLLog;
 
 /**
  * Copyright 2012, micdoodle8
@@ -51,7 +50,8 @@ public class GCMarsEntityAIProjectileTNTAttack extends EntityAIBase
     /**
      * Returns whether the EntityAIBase should begin execution.
      */
-    public boolean shouldExecute()
+    @Override
+	public boolean shouldExecute()
     {
         EntityLiving var1 = this.worldObj.getClosestVulnerablePlayerToEntity(this.entityHost, 50.0D);
 
@@ -69,7 +69,8 @@ public class GCMarsEntityAIProjectileTNTAttack extends EntityAIBase
     /**
      * Returns whether an in-progress EntityAIBase should continue executing
      */
-    public boolean continueExecuting()
+    @Override
+	public boolean continueExecuting()
     {
         return true;
     }
@@ -77,7 +78,8 @@ public class GCMarsEntityAIProjectileTNTAttack extends EntityAIBase
     /**
      * Resets the task
      */
-    public void resetTask()
+    @Override
+	public void resetTask()
     {
         this.attackTarget = null;
     }
@@ -85,7 +87,8 @@ public class GCMarsEntityAIProjectileTNTAttack extends EntityAIBase
     /**
      * Updates the task
      */
-    public void updateTask()
+    @Override
+	public void updateTask()
     {
         this.entityHost.getLookHelper().setLookPositionWithEntity(this.attackTarget, 30.0F, 30.0F);
         this.rangedAttackTime = Math.max(this.rangedAttackTime - 1, 0);
@@ -107,13 +110,13 @@ public class GCMarsEntityAIProjectileTNTAttack extends EntityAIBase
         if (this.rangedAttackID == 1)
         {
         	double var11 = this.attackTarget.posX - this.entityHost.posX;
-            double var13 = this.attackTarget.boundingBox.minY + (double)(this.attackTarget.height / 2.0F) - (this.entityHost.posY + (double)(this.entityHost.height / 2.0F));
+            double var13 = this.attackTarget.boundingBox.minY + this.attackTarget.height / 2.0F - (this.entityHost.posY + this.entityHost.height / 2.0F);
             double var15 = this.attackTarget.posZ - this.entityHost.posZ;
         	GCMarsEntityProjectileTNT var17 = new GCMarsEntityProjectileTNT(this.entityHost.worldObj, this.entityHost, var11, var13, var15);
             double var18 = 4.0D;
             Vec3 var20 = this.entityHost.getLook(1.0F);
             var17.posX = this.entityHost.posX + var20.xCoord * 1;
-            var17.posY = this.entityHost.posY + (double)(this.entityHost.height / 2.0F) + 0.5D;
+            var17.posY = this.entityHost.posY + this.entityHost.height / 2.0F + 0.5D;
             var17.posZ = this.entityHost.posZ + var20.zCoord * 1;
             this.worldObj.spawnEntityInWorld(var17);
         }

@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
-import micdoodle8.mods.galacticraft.API.GalacticraftLoader;
-import micdoodle8.mods.galacticraft.API.ProviderFile;
 import micdoodle8.mods.galacticraft.core.client.GCCoreEvents;
 import micdoodle8.mods.galacticraft.moon.GalacticraftMoon;
 import net.minecraft.src.CreativeTabs;
@@ -17,7 +15,6 @@ import net.minecraft.src.INetworkManager;
 import net.minecraft.src.Packet250CustomPayload;
 import net.minecraft.src.Packet9Respawn;
 import net.minecraft.src.World;
-import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.Mod;
@@ -58,7 +55,7 @@ public class GalacticraftCore
 	@Instance("GalacticraftCore")
 	public static GalacticraftCore instance;
 	
-	public static GalacticraftLoader loader = new GalacticraftLoader();
+//	public static GalacticraftLoader loader = new GalacticraftLoader();
 	
 	public static GCCoreLocalization lang;
 	
@@ -98,10 +95,10 @@ public class GalacticraftCore
 	{
 		moon.init(event);
 		
-		for (int i = 0; i < this.loader.providerFiles.size(); i++)
-		{
-			ProviderFile file = this.loader.providerFiles.get(i);
-		}
+//		for (int i = 0; i < this.loader.providerFiles.size(); i++)
+//		{
+//			ProviderFile file = this.loader.providerFiles.get(i);
+//		}
 		
 //		GCCoreUtil.addSmeltingRecipes(); TODO
 		NetworkRegistry.instance().registerGuiHandler(this, proxy);

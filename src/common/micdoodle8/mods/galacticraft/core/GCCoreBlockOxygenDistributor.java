@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core;
 
 import java.util.Random;
 
-import micdoodle8.mods.galacticraft.API.GCBlockBreathableAir;
 import net.minecraft.src.Block;
 import net.minecraft.src.BlockContainer;
 import net.minecraft.src.EntityItem;
@@ -53,7 +52,8 @@ public class GCCoreBlockOxygenDistributor extends BlockContainer
         return var3 == 0 && (par1 == 1 || par1 == 0) ? 21 : (var3 == 4 && (par1 == 5 || par1 == 4) ? 21 : (var3 == 8 && (par1 == 2 || par1 == 3) ? 21 : (var4 == 1 ? 116 : (var4 == 2 ? 117 : (var4 == 3 ? 153 : 20)))));
     }
 
-    public void onBlockAdded(World par1World, int par2, int par3, int par4)
+    @Override
+	public void onBlockAdded(World par1World, int par2, int par3, int par4)
     {
         super.onBlockAdded(par1World, par2, par3, par4);
         this.setDefaultDirection(par1World, par2, par3, par4);
@@ -93,50 +93,53 @@ public class GCCoreBlockOxygenDistributor extends BlockContainer
         }
     }
     
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {
         if (this.isActive)
         {
             int var6 = par1World.getBlockMetadata(par2, par3, par4);
-            float var7 = (float)par2 + 0.5F;
-            float var8 = (float)par3 + 0.0F + par5Random.nextFloat() * 6.0F / 16.0F;
-            float var9 = (float)par4 + 0.5F;
+            float var7 = par2 + 0.5F;
+            float var8 = par3 + 0.0F + par5Random.nextFloat() * 6.0F / 16.0F;
+            float var9 = par4 + 0.5F;
             float var10 = 0.52F;
             float var11 = par5Random.nextFloat() * 0.6F - 0.3F;
 
             if (var6 == 4)
             {
-                par1World.spawnParticle("smoke", (double)(var7 - var10), (double)var8, (double)(var9 + var11), 0.0D, 0.0D, 0.0D);
-                par1World.spawnParticle("flame", (double)(var7 - var10), (double)var8, (double)(var9 + var11), 0.0D, 0.0D, 0.0D);
+                par1World.spawnParticle("smoke", var7 - var10, var8, var9 + var11, 0.0D, 0.0D, 0.0D);
+                par1World.spawnParticle("flame", var7 - var10, var8, var9 + var11, 0.0D, 0.0D, 0.0D);
             }
             else if (var6 == 5)
             {
-                par1World.spawnParticle("smoke", (double)(var7 + var10), (double)var8, (double)(var9 + var11), 0.0D, 0.0D, 0.0D);
-                par1World.spawnParticle("flame", (double)(var7 + var10), (double)var8, (double)(var9 + var11), 0.0D, 0.0D, 0.0D);
+                par1World.spawnParticle("smoke", var7 + var10, var8, var9 + var11, 0.0D, 0.0D, 0.0D);
+                par1World.spawnParticle("flame", var7 + var10, var8, var9 + var11, 0.0D, 0.0D, 0.0D);
             }
             else if (var6 == 2)
             {
-                par1World.spawnParticle("smoke", (double)(var7 + var11), (double)var8, (double)(var9 - var10), 0.0D, 0.0D, 0.0D);
-                par1World.spawnParticle("flame", (double)(var7 + var11), (double)var8, (double)(var9 - var10), 0.0D, 0.0D, 0.0D);
+                par1World.spawnParticle("smoke", var7 + var11, var8, var9 - var10, 0.0D, 0.0D, 0.0D);
+                par1World.spawnParticle("flame", var7 + var11, var8, var9 - var10, 0.0D, 0.0D, 0.0D);
             }
             else if (var6 == 3)
             {
-                par1World.spawnParticle("smoke", (double)(var7 + var11), (double)var8, (double)(var9 + var10), 0.0D, 0.0D, 0.0D);
-                par1World.spawnParticle("flame", (double)(var7 + var11), (double)var8, (double)(var9 + var10), 0.0D, 0.0D, 0.0D);
+                par1World.spawnParticle("smoke", var7 + var11, var8, var9 + var10, 0.0D, 0.0D, 0.0D);
+                par1World.spawnParticle("flame", var7 + var11, var8, var9 + var10, 0.0D, 0.0D, 0.0D);
             }
         }
     }
 
-    public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
+    @Override
+	public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
     {
         par5EntityPlayer.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiAirDistributor, par1World, par2, par3, par4);
         return true;
     }
 
-    public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLiving par5EntityLiving)
+    @Override
+	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLiving par5EntityLiving)
     {
-        int var6 = MathHelper.floor_double((double)(par5EntityLiving.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+        int var6 = MathHelper.floor_double(par5EntityLiving.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
 
         if (var6 == 0)
         {
@@ -159,7 +162,8 @@ public class GCCoreBlockOxygenDistributor extends BlockContainer
         }
     }
 
-    public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6)
+    @Override
+	public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6)
     {
     	removeAirBlocks(par1World, par2, par3, par4);
     	
@@ -189,7 +193,7 @@ public class GCCoreBlockOxygenDistributor extends BlockContainer
                             }
 
                             var9.stackSize -= var13;
-                            EntityItem var14 = new EntityItem(par1World, (double)((float)par2 + var10), (double)((float)par3 + var11), (double)((float)par4 + var12), new ItemStack(var9.itemID, var13, var9.getItemDamage()));
+                            EntityItem var14 = new EntityItem(par1World, par2 + var10, par3 + var11, par4 + var12, new ItemStack(var9.itemID, var13, var9.getItemDamage()));
 
                             if (var9.hasTagCompound())
                             {
@@ -197,9 +201,9 @@ public class GCCoreBlockOxygenDistributor extends BlockContainer
                             }
 
                             float var15 = 0.05F;
-                            var14.motionX = (double)((float)this.distributorRand.nextGaussian() * var15);
-                            var14.motionY = (double)((float)this.distributorRand.nextGaussian() * var15 + 0.2F);
-                            var14.motionZ = (double)((float)this.distributorRand.nextGaussian() * var15);
+                            var14.motionX = (float)this.distributorRand.nextGaussian() * var15;
+                            var14.motionY = (float)this.distributorRand.nextGaussian() * var15 + 0.2F;
+                            var14.motionZ = (float)this.distributorRand.nextGaussian() * var15;
                             par1World.spawnEntityInWorld(var14);
                         }
                     }

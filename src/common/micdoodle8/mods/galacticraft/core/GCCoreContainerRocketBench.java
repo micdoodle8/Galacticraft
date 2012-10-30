@@ -1,9 +1,13 @@
 package micdoodle8.mods.galacticraft.core;
 
-import cpw.mods.fml.common.Side;
-import cpw.mods.fml.common.asm.SideOnly;
-import net.minecraft.src.*;
-import net.minecraft.src.*;
+import net.minecraft.src.Container;
+import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.IInventory;
+import net.minecraft.src.InventoryCraftResult;
+import net.minecraft.src.InventoryPlayer;
+import net.minecraft.src.ItemStack;
+import net.minecraft.src.Slot;
+import net.minecraft.src.World;
 
 public class GCCoreContainerRocketBench extends Container
 {
@@ -68,7 +72,8 @@ public class GCCoreContainerRocketBench extends Container
         this.onCraftMatrixChanged(this.craftMatrix);
     }
 
-    public void onCraftGuiClosed(EntityPlayer par1EntityPlayer)
+    @Override
+	public void onCraftGuiClosed(EntityPlayer par1EntityPlayer)
     {
         super.onCraftGuiClosed(par1EntityPlayer);
 
@@ -86,12 +91,14 @@ public class GCCoreContainerRocketBench extends Container
         }
     }
     
-    public void onCraftMatrixChanged(IInventory par1IInventory)
+    @Override
+	public void onCraftMatrixChanged(IInventory par1IInventory)
     {
         this.craftResult.setInventorySlotContents(0, GCCoreUtil.findMatchingSpaceshipRecipe(craftMatrix));
     }
 
-    public boolean canInteractWith(EntityPlayer par1EntityPlayer)
+    @Override
+	public boolean canInteractWith(EntityPlayer par1EntityPlayer)
     {
         return true;
     }
@@ -99,7 +106,8 @@ public class GCCoreContainerRocketBench extends Container
     /**
      * Called to transfer a stack from one inventory to the other eg. when shift clicking.
      */
-    public ItemStack func_82846_b(EntityPlayer par1EntityPlayer, int par1)
+    @Override
+	public ItemStack func_82846_b(EntityPlayer par1EntityPlayer, int par1)
     {
         ItemStack var2 = null;
         Slot var3 = (Slot)this.inventorySlots.get(par1);

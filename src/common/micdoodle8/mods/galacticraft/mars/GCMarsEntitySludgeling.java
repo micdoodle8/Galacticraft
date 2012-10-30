@@ -25,38 +25,45 @@ public class GCMarsEntitySludgeling extends EntityMob
         this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 16.0F, 0, false, true));
     }
 
-    public int getMaxHealth()
+    @Override
+	public int getMaxHealth()
     {
         return 4;
     }
 
-    public boolean isAIEnabled()
+    @Override
+	public boolean isAIEnabled()
     {
         return true;
     }
     
-    protected boolean canTriggerWalking()
+    @Override
+	protected boolean canTriggerWalking()
     {
         return false;
     }
     
-    protected Entity findPlayerToAttack()
+    @Override
+	protected Entity findPlayerToAttack()
     {
         double var1 = 8.0D;
         return this.worldObj.getClosestVulnerablePlayerToEntity(this, var1);
     }
 
-    protected String getLivingSound()
+    @Override
+	protected String getLivingSound()
     {
         return "mob.silverfish.say";
     }
 
-    protected String getHurtSound()
+    @Override
+	protected String getHurtSound()
     {
         return "mob.silverfish.hit";
     }
 
-    protected String getDeathSound()
+    @Override
+	protected String getDeathSound()
     {
         return "mob.silverfish.kill";
     }
@@ -81,7 +88,8 @@ public class GCMarsEntitySludgeling extends EntityMob
         return var11;
     }
 
-    protected void attackEntity(Entity par1Entity, float par2)
+    @Override
+	protected void attackEntity(Entity par1Entity, float par2)
     {
         if (this.attackTime <= 0 && par2 < 1.2F && par1Entity.boundingBox.maxY > this.boundingBox.minY && par1Entity.boundingBox.minY < this.boundingBox.maxY)
         {
@@ -90,28 +98,33 @@ public class GCMarsEntitySludgeling extends EntityMob
         }
     }
 
-    protected void playStepSound(int par1, int par2, int par3, int par4)
+    @Override
+	protected void playStepSound(int par1, int par2, int par3, int par4)
     {
         this.worldObj.playSoundAtEntity(this, "mob.silverfish.step", 1.0F, 1.0F);
     }
 
-    protected int getDropItemId()
+    @Override
+	protected int getDropItemId()
     {
         return 0;
     }
     
-    public void onUpdate()
+    @Override
+	public void onUpdate()
     {
         this.renderYawOffset = this.rotationYaw;
         super.onUpdate();
     }
 
-    protected boolean isValidLightLevel()
+    @Override
+	protected boolean isValidLightLevel()
     {
         return true;
     }
 
-    public boolean getCanSpawnHere()
+    @Override
+	public boolean getCanSpawnHere()
     {
         if (super.getCanSpawnHere())
         {
@@ -124,7 +137,8 @@ public class GCMarsEntitySludgeling extends EntityMob
         }
     }
 
-    public EnumCreatureAttribute getCreatureAttribute()
+    @Override
+	public EnumCreatureAttribute getCreatureAttribute()
     {
         return EnumCreatureAttribute.ARTHROPOD;
     }

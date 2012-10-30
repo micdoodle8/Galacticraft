@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core;
 
 import micdoodle8.mods.galacticraft.moon.GCMoonWorldProvider;
-import net.minecraft.src.AchievementList;
 import net.minecraft.src.Block;
 import net.minecraft.src.DamageSource;
 import net.minecraft.src.EntityPlayer;
@@ -11,12 +10,10 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.NBTTagList;
-import net.minecraft.src.Packet70GameEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
@@ -74,11 +71,11 @@ public class GCCoreEntityPlayer
                     if (var12 != null && var12.blockID == GCCoreBlocks.breatheableAir.blockID)
                     {
                         int var13 = this.currentPlayer.worldObj.getBlockMetadata(var9, var10, var11);
-                        double var14 = (double)(var10 + 1);
+                        double var14 = var10 + 1;
 
                         if (var13 < 8)
                         {
-                            var14 = (double)(var10 + 1) - (double)var13 / 8.0D;
+                            var14 = var10 + 1 - var13 / 8.0D;
                         }
 
                         if (var14 >= this.currentPlayer.boundingBox.minY)

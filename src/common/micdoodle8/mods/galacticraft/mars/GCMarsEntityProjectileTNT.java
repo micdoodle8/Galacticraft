@@ -7,7 +7,6 @@ import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.DamageSource;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityDamageSourceIndirect;
-import net.minecraft.src.EntityFireball;
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.MovingObjectPosition;
@@ -45,9 +44,11 @@ public class GCMarsEntityProjectileTNT extends Entity
         this.setSize(1.0F, 1.0F);
     }
 
-    protected void entityInit() {}
+    @Override
+	protected void entityInit() {}
 
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
 
     /**
      * Checks if the entity is in range to render by using the past in distance and comparing it to its average edge
@@ -66,7 +67,7 @@ public class GCMarsEntityProjectileTNT extends Entity
         this.setSize(1.0F, 1.0F);
         this.setLocationAndAngles(par2, par4, par6, this.rotationYaw, this.rotationPitch);
         this.setPosition(par2, par4, par6);
-        double var14 = (double)MathHelper.sqrt_double(par8 * par8 + par10 * par10 + par12 * par12);
+        double var14 = MathHelper.sqrt_double(par8 * par8 + par10 * par10 + par12 * par12);
         this.accelerationX = par8 / var14 * 0.001D;
         this.accelerationY = par10 / var14 * 0.001D;
         this.accelerationZ = par12 / var14 * 0.001D;
@@ -84,7 +85,7 @@ public class GCMarsEntityProjectileTNT extends Entity
         par3 += this.rand.nextGaussian() * 0.4D;
         par5 += this.rand.nextGaussian() * 0.4D;
         par7 += this.rand.nextGaussian() * 0.4D;
-        double var9 = (double)MathHelper.sqrt_double(par3 * par3 + par5 * par5 + par7 * par7);
+        double var9 = MathHelper.sqrt_double(par3 * par3 + par5 * par5 + par7 * par7);
         this.accelerationX = par3 / var9 * 0.1D;
         this.accelerationY = par5 / var9 * 0.1D;
         this.accelerationZ = par7 / var9 * 0.1D;
@@ -93,7 +94,8 @@ public class GCMarsEntityProjectileTNT extends Entity
     /**
      * Called to update the entity's position/logic.
      */
-    public void onUpdate()
+    @Override
+	public void onUpdate()
     {
         if (!this.worldObj.isRemote && (this.shootingEntity != null && this.shootingEntity.isDead || !this.worldObj.blockExists((int)this.posX, (int)this.posY, (int)this.posZ)))
         {
@@ -121,9 +123,9 @@ public class GCMarsEntityProjectileTNT extends Entity
                 }
 
                 this.inGround = false;
-                this.motionX *= (double)(this.rand.nextFloat() * 0.2F);
-                this.motionY *= (double)(this.rand.nextFloat() * 0.2F);
-                this.motionZ *= (double)(this.rand.nextFloat() * 0.2F);
+                this.motionX *= this.rand.nextFloat() * 0.2F;
+                this.motionY *= this.rand.nextFloat() * 0.2F;
+                this.motionZ *= this.rand.nextFloat() * 0.2F;
                 this.ticksAlive = 0;
                 this.ticksInAir = 0;
             }
@@ -155,7 +157,7 @@ public class GCMarsEntityProjectileTNT extends Entity
                 if (var9.canBeCollidedWith() && (!var9.isEntityEqual(this.shootingEntity) || this.ticksInAir >= 25))
                 {
                     float var10 = 0.3F;
-                    AxisAlignedBB var11 = var9.boundingBox.expand((double)var10, (double)var10, (double)var10);
+                    AxisAlignedBB var11 = var9.boundingBox.expand(var10, var10, var10);
                     MovingObjectPosition var12 = var11.calculateIntercept(var15, var2);
 
                     if (var12 != null)
@@ -187,7 +189,7 @@ public class GCMarsEntityProjectileTNT extends Entity
             float var16 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
             this.rotationYaw = (float)(Math.atan2(this.motionX, this.motionZ) * 180.0D / Math.PI);
 
-            for (this.rotationPitch = (float)(Math.atan2(this.motionY, (double)var16) * 180.0D / Math.PI); this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F)
+            for (this.rotationPitch = (float)(Math.atan2(this.motionY, var16) * 180.0D / Math.PI); this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F)
             {
                 ;
             }
@@ -216,7 +218,7 @@ public class GCMarsEntityProjectileTNT extends Entity
                 for (int var19 = 0; var19 < 4; ++var19)
                 {
                     float var18 = 0.25F;
-                    this.worldObj.spawnParticle("bubble", this.posX - this.motionX * (double)var18, this.posY - this.motionY * (double)var18, this.posZ - this.motionZ * (double)var18, this.motionX, this.motionY, this.motionZ);
+                    this.worldObj.spawnParticle("bubble", this.posX - this.motionX * var18, this.posY - this.motionY * var18, this.posZ - this.motionZ * var18, this.motionX, this.motionY, this.motionZ);
                 }
 
                 var17 = 0.8F;
@@ -225,9 +227,9 @@ public class GCMarsEntityProjectileTNT extends Entity
             this.motionX += this.accelerationX;
             this.motionY += this.accelerationY;
             this.motionZ += this.accelerationZ;
-            this.motionX *= (double)var17;
-            this.motionY *= (double)var17;
-            this.motionZ *= (double)var17;
+            this.motionX *= var17;
+            this.motionY *= var17;
+            this.motionZ *= var17;
             this.worldObj.spawnParticle("smoke", this.posX, this.posY + 0.5D, this.posZ, 0.0D, 0.0D, 0.0D);
             this.setPosition(this.posX, this.posY, this.posZ);
         }
@@ -258,7 +260,8 @@ public class GCMarsEntityProjectileTNT extends Entity
     /**
      * (abstract) Protected helper method to write subclass entity data to NBT.
      */
-    public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
+    @Override
+	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
         par1NBTTagCompound.setShort("xTile", (short)this.xTile);
         par1NBTTagCompound.setShort("yTile", (short)this.yTile);
@@ -271,7 +274,8 @@ public class GCMarsEntityProjectileTNT extends Entity
     /**
      * (abstract) Protected helper method to read subclass entity data from NBT.
      */
-    public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
+    @Override
+	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         this.xTile = par1NBTTagCompound.getShort("xTile");
         this.yTile = par1NBTTagCompound.getShort("yTile");
@@ -295,12 +299,14 @@ public class GCMarsEntityProjectileTNT extends Entity
     /**
      * Returns true if other Entities should be prevented from moving through this Entity.
      */
-    public boolean canBeCollidedWith()
+    @Override
+	public boolean canBeCollidedWith()
     {
         return true;
     }
 
-    public float getCollisionBorderSize()
+    @Override
+	public float getCollisionBorderSize()
     {
         return 1.0F;
     }
@@ -308,7 +314,8 @@ public class GCMarsEntityProjectileTNT extends Entity
     /**
      * Called when the entity is attacked.
      */
-    public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
+    @Override
+	public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
     {
         this.setBeenAttacked();
 
@@ -339,7 +346,8 @@ public class GCMarsEntityProjectileTNT extends Entity
         }
     }
 
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public float getShadowSize()
     {
         return 0.0F;
@@ -348,12 +356,14 @@ public class GCMarsEntityProjectileTNT extends Entity
     /**
      * Gets how bright this entity is.
      */
-    public float getBrightness(float par1)
+    @Override
+	public float getBrightness(float par1)
     {
         return 1.0F;
     }
 
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public int getBrightnessForRender(float par1)
     {
         return 15728880;

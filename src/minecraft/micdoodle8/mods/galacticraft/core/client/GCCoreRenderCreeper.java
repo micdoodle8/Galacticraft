@@ -93,7 +93,7 @@ public class GCCoreRenderCreeper extends RenderLiving
         {
             if (par2 == 1)
             {
-                float var4 = (float)par1GCEntityCreeper.ticksExisted + par3;
+                float var4 = par1GCEntityCreeper.ticksExisted + par3;
                 this.loadTexture("/armor/power.png");
                 GL11.glMatrixMode(GL11.GL_TEXTURE);
                 GL11.glLoadIdentity();
@@ -132,7 +132,8 @@ public class GCCoreRenderCreeper extends RenderLiving
      * Allows the render to do any OpenGL state modifications necessary before the model is rendered. Args:
      * entityLiving, partialTickTime
      */
-    protected void preRenderCallback(EntityLiving par1EntityLiving, float par2)
+    @Override
+	protected void preRenderCallback(EntityLiving par1EntityLiving, float par2)
     {
         this.updateCreeperScale((GCCoreEntityCreeper)par1EntityLiving, par2);
     }
@@ -140,7 +141,8 @@ public class GCCoreRenderCreeper extends RenderLiving
     /**
      * Returns an ARGB int color back. Args: entityLiving, lightBrightness, partialTickTime
      */
-    protected int getColorMultiplier(EntityLiving par1EntityLiving, float par2, float par3)
+    @Override
+	protected int getColorMultiplier(EntityLiving par1EntityLiving, float par2, float par3)
     {
         return this.updateCreeperColorMultiplier((GCCoreEntityCreeper)par1EntityLiving, par2, par3);
     }
@@ -148,12 +150,14 @@ public class GCCoreRenderCreeper extends RenderLiving
     /**
      * Queries whether should render the specified pass or not.
      */
-    protected int shouldRenderPass(EntityLiving par1EntityLiving, int par2, float par3)
+    @Override
+	protected int shouldRenderPass(EntityLiving par1EntityLiving, int par2, float par3)
     {
         return this.renderCreeperPassModel((GCCoreEntityCreeper)par1EntityLiving, par2, par3);
     }
 
-    protected int inheritRenderPass(EntityLiving par1EntityLiving, int par2, float par3)
+    @Override
+	protected int inheritRenderPass(EntityLiving par1EntityLiving, int par2, float par3)
     {
         return this.func_77061_b((GCCoreEntityCreeper)par1EntityLiving, par2, par3);
     }

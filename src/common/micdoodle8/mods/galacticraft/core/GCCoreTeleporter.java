@@ -2,17 +2,11 @@ package micdoodle8.mods.galacticraft.core;
 
 import java.util.Random;
 
-import micdoodle8.mods.galacticraft.mars.GCMarsBlocks;
-import net.minecraft.src.Block;
 import net.minecraft.src.Entity;
-import net.minecraft.src.EntityItem;
 import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.ItemStack;
-import net.minecraft.src.Material;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.Teleporter;
 import net.minecraft.src.World;
-import cpw.mods.fml.common.FMLLog;
 
 /**
  * Copyright 2012, micdoodle8
@@ -95,17 +89,17 @@ public class GCCoreTeleporter extends Teleporter
 
         for (int var11 = var9 - var3; var11 <= var9 + var3; ++var11)
         {
-            double var12 = (double)var11 + 0.5D - entity.posX;
+            double var12 = var11 + 0.5D - entity.posX;
 
             for (int var14 = var10 - var3; var14 <= var10 + var3; ++var14)
             {
-                double var15 = (double)var14 + 0.5D - entity.posZ;
+                double var15 = var14 + 0.5D - entity.posZ;
 
                 for (int var17 = world.getActualHeight() - 1; var17 >= 0; --var17)
                 {
                     if (world.getBlockId(var11, var17, var14) == GCCoreBlocks.landingPad.blockID)
                     {
-                        var18 = (double)var17 + 0.5D - entity.posY;
+                        var18 = var17 + 0.5D - entity.posY;
                         double var20 = var12 * var12 + var18 * var18 + var15 * var15;
 
                         if (var4 < 0.0D || var20 < var4)
@@ -122,9 +116,9 @@ public class GCCoreTeleporter extends Teleporter
 
         if (var4 >= 0.0D)
         {
-            double var22 = (double)var6 + 0.5D;
-            double var16 = (double)var7 + 0.5D;
-            var18 = (double)var8 + 0.5D;
+            double var22 = var6 + 0.5D;
+            double var16 = var7 + 0.5D;
+            var18 = var8 + 0.5D;
 
             if (world.getBlockId(var6 - 1, var7, var8) == 0)
             {

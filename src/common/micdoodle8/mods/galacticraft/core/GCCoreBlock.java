@@ -1,10 +1,6 @@
 package micdoodle8.mods.galacticraft.core;
 
-import java.util.ArrayList;
-
 import net.minecraft.src.Block;
-import net.minecraft.src.CreativeTabs;
-import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
 
 /**

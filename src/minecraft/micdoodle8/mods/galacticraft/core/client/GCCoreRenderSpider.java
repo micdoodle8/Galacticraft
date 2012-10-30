@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.client;
 
 import micdoodle8.mods.galacticraft.core.GCCoreEntitySpider;
 import net.minecraft.src.EntityLiving;
-import net.minecraft.src.EntitySpider;
 import net.minecraft.src.OpenGlHelper;
 import net.minecraft.src.RenderLiving;
 
@@ -47,7 +46,7 @@ public class GCCoreRenderSpider extends RenderLiving
             char var5 = 61680;
             int var6 = var5 % 65536;
             int var7 = var5 / 65536;
-            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)var6 / 1.0F, (float)var7 / 1.0F);
+            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, var6 / 1.0F, var7 / 1.0F);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, var4);
             return 1;
@@ -60,17 +59,20 @@ public class GCCoreRenderSpider extends RenderLiving
         GL11.glScalef(var3, var3, var3);
     }
 
-    protected void preRenderCallback(EntityLiving par1EntityLiving, float par2)
+    @Override
+	protected void preRenderCallback(EntityLiving par1EntityLiving, float par2)
     {
         this.scaleSpider((GCCoreEntitySpider)par1EntityLiving, par2);
     }
 
-    protected float getDeathMaxRotation(EntityLiving par1EntityLiving)
+    @Override
+	protected float getDeathMaxRotation(EntityLiving par1EntityLiving)
     {
         return this.setSpiderDeathMaxRotation((GCCoreEntitySpider)par1EntityLiving);
     }
 
-    protected int shouldRenderPass(EntityLiving par1EntityLiving, int par2, float par3)
+    @Override
+	protected int shouldRenderPass(EntityLiving par1EntityLiving, int par2, float par3)
     {
         return this.setSpiderEyeBrightness((GCCoreEntitySpider)par1EntityLiving, par2, par3);
     }

@@ -4,7 +4,6 @@ import java.util.Random;
 
 import net.minecraft.src.StructureStart;
 import net.minecraft.src.World;
-import cpw.mods.fml.common.FMLLog;
 
 /**
  * Copyright 2012, micdoodle8

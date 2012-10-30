@@ -31,7 +31,7 @@ public class GCMoonWorldProvider extends GalacticraftWorldProvider
 
         for (int var2 = 0; var2 <= 15; ++var2)
         {
-            float var3 = 1.0F - (float)var2 / 15.0F;
+            float var3 = 1.0F - var2 / 15.0F;
             this.lightBrightnessTable[var2] = (1.0F - var3) / (var3 * 3.0F + 1.0F) * (1.0F - var1) + var1;
         }
     }
@@ -59,7 +59,7 @@ public class GCMoonWorldProvider extends GalacticraftWorldProvider
     public float calculateCelestialAngle(long par1, float par3)
     {
         int var4 = (int)(par1 % 24000L);
-        float var5 = ((float)var4 + par3) / 24000.0F - 0.25F;
+        float var5 = (var4 + par3) / 24000.0F - 0.25F;
 
         if (var5 < 0.0F)
         {
@@ -72,12 +72,13 @@ public class GCMoonWorldProvider extends GalacticraftWorldProvider
         }
 
         float var6 = var5;
-        var5 = 1.0F - (float)((Math.cos((double)var5 * Math.PI) + 1.0D) / 2.0D);
+        var5 = 1.0F - (float)((Math.cos(var5 * Math.PI) + 1.0D) / 2.0D);
         var5 = var6 + (var5 - var6) / 3.0F;
         return var5;
     }
 
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public float getStarBrightness(float par1)
     {
         float var2 = this.worldObj.getCelestialAngle(par1);
@@ -121,22 +122,26 @@ public class GCMoonWorldProvider extends GalacticraftWorldProvider
         worldObj.getWorldInfo().setThundering(false);
 	}
 
-    public boolean isSkyColored()
+    @Override
+	public boolean isSkyColored()
     {
         return false;
     }
     
-    public double getHorizon()
+    @Override
+	public double getHorizon()
     {
     	return 44.0D;
     }
 
-    public int getAverageGroundLevel()
+    @Override
+	public int getAverageGroundLevel()
     {
         return 44;
     }
     
-    public boolean isSurfaceWorld()
+    @Override
+	public boolean isSurfaceWorld()
     {
         return false;
     }
@@ -161,12 +166,14 @@ public class GCMoonWorldProvider extends GalacticraftWorldProvider
     	return "DIM" + GCMoonConfigManager.dimensionIDMoon;
     }
 
-    public String getWelcomeMessage()
+    @Override
+	public String getWelcomeMessage()
     {
         return "Entering The Moon";
     }
 
-    public String getDepartMessage()
+    @Override
+	public String getDepartMessage()
     {
         return "Leaving The Moon";
     }
@@ -189,12 +196,14 @@ public class GCMoonWorldProvider extends GalacticraftWorldProvider
         return false;
     }
     
-    public boolean canDoLightning(Chunk chunk)
+    @Override
+	public boolean canDoLightning(Chunk chunk)
     {
         return false;
     }
     
-    public boolean canDoRainSnowIce(Chunk chunk)
+    @Override
+	public boolean canDoRainSnowIce(Chunk chunk)
     {
         return false;
     }

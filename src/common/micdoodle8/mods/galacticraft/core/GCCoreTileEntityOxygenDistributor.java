@@ -7,9 +7,7 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.NBTTagList;
-import net.minecraft.src.StatList;
 import net.minecraft.src.TileEntity;
-import cpw.mods.fml.common.FMLLog;
 
 /**
  * Copyright 2012, micdoodle8
@@ -28,7 +26,8 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntity implements IIn
     	distributorStacks = new ItemStack[3];
     }
     
-    public void onInventoryChanged()
+    @Override
+	public void onInventoryChanged()
     {
     	if (this.distributorStacks[0] != null)
     	{

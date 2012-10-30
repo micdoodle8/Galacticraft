@@ -92,7 +92,8 @@ public abstract class GCCoreStructureComponent extends StructureComponent
         return var4;
     }
 
-    protected int getXWithOffset(int var1, int var2)
+    @Override
+	protected int getXWithOffset(int var1, int var2)
     {
         switch (this.getCoordBaseMode())
         {
@@ -113,7 +114,8 @@ public abstract class GCCoreStructureComponent extends StructureComponent
         }
     }
 
-    protected int getZWithOffset(int var1, int var2)
+    @Override
+	protected int getZWithOffset(int var1, int var2)
     {
         switch (this.getCoordBaseMode())
         {
@@ -134,7 +136,8 @@ public abstract class GCCoreStructureComponent extends StructureComponent
         }
     }
 
-    protected int getYWithOffset(int var1)
+    @Override
+	protected int getYWithOffset(int var1)
     {
         return super.getYWithOffset(var1);
     }
@@ -149,12 +152,14 @@ public abstract class GCCoreStructureComponent extends StructureComponent
         this.coordBaseMode = var1;
     }
 
-    protected int getBlockIdAtCurrentPosition(World var1, int var2, int var3, int var4, StructureBoundingBox var5)
+    @Override
+	protected int getBlockIdAtCurrentPosition(World var1, int var2, int var3, int var4, StructureBoundingBox var5)
     {
         return super.getBlockIdAtCurrentPosition(var1, var2, var3, var4, var5);
     }
 
-    protected void placeBlockAtCurrentPosition(World world, int blockID, int meta, int x, int y, int z, StructureBoundingBox bb)
+    @Override
+	protected void placeBlockAtCurrentPosition(World world, int blockID, int meta, int x, int y, int z, StructureBoundingBox bb)
     {
         super.placeBlockAtCurrentPosition(world, blockID, meta, x, y, z, bb);
     }

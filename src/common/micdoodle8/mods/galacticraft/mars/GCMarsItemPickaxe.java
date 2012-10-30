@@ -1,13 +1,12 @@
 package micdoodle8.mods.galacticraft.mars;
 
-import cpw.mods.fml.common.Side;
-import cpw.mods.fml.common.asm.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.EnumRarity;
 import net.minecraft.src.EnumToolMaterial;
 import net.minecraft.src.ItemPickaxe;
 import net.minecraft.src.ItemStack;
+import cpw.mods.fml.common.Side;
+import cpw.mods.fml.common.asm.SideOnly;
 
 public class GCMarsItemPickaxe extends ItemPickaxe
 {

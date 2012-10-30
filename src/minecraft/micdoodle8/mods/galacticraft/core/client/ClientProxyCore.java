@@ -45,7 +45,6 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.client.TextureFXManager;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry.KeyHandler;
@@ -122,18 +121,18 @@ public class ClientProxyCore extends CommonProxyCore
 	{
 		moon.registerRenderInformation();
 		
-		try
-		{
-			for (String string : GalacticraftCore.loader.spriteSheets)
-			{
-				FMLLog.info(string);
-				TextureFXManager.instance().addNewTextureOverride("/micdoodle8/mods/galacticraft/core/client/override/1.png.png", string, 0);
-			}
-		} 
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
+//		try
+//		{
+//			for (String string : GalacticraftCore.loader.spriteSheets)
+//			{
+//				FMLLog.info(string);
+//				TextureFXManager.instance().addNewTextureOverride("/micdoodle8/mods/galacticraft/core/client/override/1.png.png", string, 0);
+//			}
+//		} 
+//		catch (Exception e)
+//		{
+//			e.printStackTrace();
+//		}
 		
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntitySpaceship.class, new GCCoreRenderSpaceship());
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntitySpider.class, new GCCoreRenderSpider());
@@ -357,7 +356,7 @@ public class ClientProxyCore extends CommonProxyCore
         		{
         			i++;
         			
-        	        float f = MathHelper.sin(((float)i) / 80.0F) * 0.1F + 0.1F;
+        	        float f = MathHelper.sin((i) / 80.0F) * 0.1F + 0.1F;
         			
 					ScaledResolution scaledresolution = new ScaledResolution(minecraft.gameSettings, minecraft.displayWidth, minecraft.displayHeight);
 			        int i = scaledresolution.getScaledWidth();

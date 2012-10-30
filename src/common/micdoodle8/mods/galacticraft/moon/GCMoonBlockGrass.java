@@ -6,7 +6,6 @@ import micdoodle8.mods.galacticraft.API.GCBlockGrass;
 import micdoodle8.mods.galacticraft.moon.client.GCMoonColorizerGrass;
 import net.minecraft.src.Block;
 import net.minecraft.src.BlockFlower;
-import net.minecraft.src.ColorizerGrass;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.Material;
@@ -135,7 +134,8 @@ public class GCMoonBlockGrass extends GCBlockGrass
 		}
 	}
 
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public int getBlockColor()
     {
         int var5 = 0;
@@ -156,13 +156,15 @@ public class GCMoonBlockGrass extends GCBlockGrass
         return (var5 / 9 & 255) << 16 | (var6 / 9 & 255) << 8 | var7 / 9 & 255;
     }
 
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public int getRenderColor(int par1)
     {
         return this.getBlockColor();
     }
 
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public int colorMultiplier(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
         int var5 = 0;

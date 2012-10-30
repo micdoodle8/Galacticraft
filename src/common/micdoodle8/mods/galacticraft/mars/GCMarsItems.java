@@ -1,8 +1,5 @@
 package micdoodle8.mods.galacticraft.mars;
 
-import micdoodle8.mods.galacticraft.core.GCCoreItemOxygenMask;
-import micdoodle8.mods.galacticraft.core.GCCoreItemOxygenTank;
-import micdoodle8.mods.galacticraft.core.GCCoreItemSensorGlasses;
 import net.minecraft.src.Block;
 import net.minecraft.src.EnumArmorMaterial;
 import net.minecraft.src.EnumToolMaterial;

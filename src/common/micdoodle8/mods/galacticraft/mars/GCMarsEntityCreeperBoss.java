@@ -201,7 +201,8 @@ public class GCMarsEntityCreeperBoss extends EntityMob
         super.onUpdate();
     }
     
-    protected void onDeathUpdate()
+    @Override
+	protected void onDeathUpdate()
     {
         ++this.deathTicks;
 
@@ -210,7 +211,7 @@ public class GCMarsEntityCreeperBoss extends EntityMob
             float var1 = (this.rand.nextFloat() - 0.5F) * 8.0F;
             float var2 = (this.rand.nextFloat() - 0.5F) * 4.0F;
             float var3 = (this.rand.nextFloat() - 0.5F) * 8.0F;
-            this.worldObj.spawnParticle("hugeexplosion", this.posX + (double)var1, this.posY + 2.0D + (double)var2, this.posZ + (double)var3, 0.0D, 0.0D, 0.0D);
+            this.worldObj.spawnParticle("hugeexplosion", this.posX + var1, this.posY + 2.0D + var2, this.posZ + var3, 0.0D, 0.0D, 0.0D);
         }
 
         int var4;
@@ -283,10 +284,11 @@ public class GCMarsEntityCreeperBoss extends EntityMob
     @SideOnly(Side.CLIENT)
     public float setCreeperFlashTime(float par1)
     {
-        return ((float)this.lastActiveTime + (float)(this.timeSinceIgnited - this.lastActiveTime) * par1) / 28.0F;
+        return (this.lastActiveTime + (this.timeSinceIgnited - this.lastActiveTime) * par1) / 28.0F;
     }
 
-    protected int getDropItemId()
+    @Override
+	protected int getDropItemId()
     {
         return Item.gunpowder.shiftedIndex;
     }

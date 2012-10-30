@@ -1,13 +1,11 @@
 package micdoodle8.mods.galacticraft.core;
 
-import cpw.mods.fml.common.Side;
-import cpw.mods.fml.common.asm.SideOnly;
-import micdoodle8.mods.galacticraft.core.GCCoreItemBreathableHelmet;
-import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.EnumArmorMaterial;
 import net.minecraft.src.EnumRarity;
 import net.minecraft.src.ItemStack;
 import net.minecraftforge.common.IArmorTextureProvider;
+import cpw.mods.fml.common.Side;
+import cpw.mods.fml.common.asm.SideOnly;
 
 public class GCCoreItemArmor extends GCCoreItemBreathableHelmet implements IArmorTextureProvider
 {
@@ -22,6 +20,7 @@ public class GCCoreItemArmor extends GCCoreItemBreathableHelmet implements IArmo
 		this.attachedMask = breathable;
 	}
 
+	@Override
     public String getArmorTextureFile(ItemStack itemstack)
     {
     	if (material == GCCoreItems.TITANIUMARMOR)
@@ -46,7 +45,8 @@ public class GCCoreItemArmor extends GCCoreItemBreathableHelmet implements IArmo
 
     	return null;
     }
-	
+
+	@Override
 	public String getTextureFile()
 	{
 		return "/micdoodle8/mods/galacticraft/core/client/items/core.png";

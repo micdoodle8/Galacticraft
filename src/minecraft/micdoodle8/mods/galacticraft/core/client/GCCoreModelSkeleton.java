@@ -196,6 +196,7 @@ public class GCCoreModelSkeleton extends ModelBase
         bipedLeftLeg.setTextureSize(128, 64);
 	}
 
+	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
 	{
 		super.render(entity, f, f1, f2, f3, f4, f5);
@@ -283,7 +284,7 @@ public class GCCoreModelSkeleton extends ModelBase
             var7 = 1.0F - var7;
             var8 = MathHelper.sin(var7 * (float)Math.PI);
             float var9 = MathHelper.sin(this.onGround * (float)Math.PI) * -(this.bipedHead.rotateAngleX - 0.7F) * 0.75F;
-            this.bipedRightArm.rotateAngleX = (float)((double)this.bipedRightArm.rotateAngleX - ((double)var8 * 1.2D + (double)var9));
+            this.bipedRightArm.rotateAngleX = (float)(this.bipedRightArm.rotateAngleX - (var8 * 1.2D + var9));
             this.bipedRightArm.rotateAngleY += this.bipedBody.rotateAngleY * 2.0F;
             this.bipedRightArm.rotateAngleZ = MathHelper.sin(this.onGround * (float)Math.PI) * -0.4F;
         }

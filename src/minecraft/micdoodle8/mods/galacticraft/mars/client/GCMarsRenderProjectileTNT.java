@@ -44,7 +44,7 @@ public class GCMarsRenderProjectileTNT extends Render
             this.renderBlocks.blockAccess = var11;
             Tessellator var12 = Tessellator.instance;
             var12.startDrawingQuads();
-            var12.setTranslation((double)((float)(-MathHelper.floor_double(par1EntityFallingSand.posX)) - 0.5F), (double)((float)(-MathHelper.floor_double(par1EntityFallingSand.posY)) - 0.5F), (double)((float)(-MathHelper.floor_double(par1EntityFallingSand.posZ)) - 0.5F));
+            var12.setTranslation((-MathHelper.floor_double(par1EntityFallingSand.posX)) - 0.5F, (-MathHelper.floor_double(par1EntityFallingSand.posY)) - 0.5F, (-MathHelper.floor_double(par1EntityFallingSand.posZ)) - 0.5F);
             this.renderBlocks.renderBlockByRenderType(var10, MathHelper.floor_double(par1EntityFallingSand.posX), MathHelper.floor_double(par1EntityFallingSand.posY), MathHelper.floor_double(par1EntityFallingSand.posZ));
             var12.setTranslation(0.0D, 0.0D, 0.0D);
             var12.draw();
@@ -58,7 +58,8 @@ public class GCMarsRenderProjectileTNT extends Render
         GL11.glPopMatrix();
     }
 
-    public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
+    @Override
+	public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
     {
         this.doRenderFallingSand((GCMarsEntityProjectileTNT)par1Entity, par2, par4, par6, par8, par9);
     }

@@ -1,10 +1,9 @@
 package micdoodle8.mods.galacticraft.core.client;
 
 import micdoodle8.mods.galacticraft.core.GCCoreBlocks;
-import net.minecraft.src.Block;
 import net.minecraft.src.BlockSapling;
-import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.Event.Result;
+import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.player.BonemealEvent;
 
 public class GCCoreEvents 

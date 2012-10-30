@@ -75,12 +75,14 @@ public class GCCoreEntitySpaceship extends Entity
         this.field_82344_g = par1World != null ? par1World instanceof WorldClient ? new GCCoreSoundUpdaterSpaceship(FMLClientHandler.instance().getClient().sndManager, this, FMLClientHandler.instance().getClient().thePlayer) : null : null;
     }
 
-    protected boolean canTriggerWalking()
+    @Override
+	protected boolean canTriggerWalking()
     {
         return false;
     }
 
-    protected void entityInit()
+    @Override
+	protected void entityInit()
     {
         this.dataWatcher.addObject(16, new Byte((byte)0));
         this.dataWatcher.addObject(17, new Integer(0));
@@ -92,17 +94,20 @@ public class GCCoreEntitySpaceship extends Entity
         this.dataWatcher.addObject(23, new Integer(0));
     }
 
-    public AxisAlignedBB getCollisionBox(Entity par1Entity)
+    @Override
+	public AxisAlignedBB getCollisionBox(Entity par1Entity)
     {
         return par1Entity.boundingBox;
     }
 
-    public AxisAlignedBB getBoundingBox()
+    @Override
+	public AxisAlignedBB getBoundingBox()
     {
         return boundingBox;
     }
 
-    public boolean canBePushed()
+    @Override
+	public boolean canBePushed()
     {
         return false;
     }
@@ -110,7 +115,7 @@ public class GCCoreEntitySpaceship extends Entity
     public GCCoreEntitySpaceship(World par1World, double par2, double par4, double par6, boolean reversed)
     {
         this(par1World);
-        this.setPosition(par2, par4 + (double)this.yOffset, par6);
+        this.setPosition(par2, par4 + this.yOffset, par6);
         this.motionX = 0.0D;
         this.motionY = 0.0D;
         this.motionZ = 0.0D;
@@ -126,12 +131,14 @@ public class GCCoreEntitySpaceship extends Entity
         }
     }
 
-    public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
+    @Override
+	public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
     {
         return true;
     }
 
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public void performHurtAnimation()
     {
         this.func_70494_i(-this.func_70493_k());
@@ -139,12 +146,14 @@ public class GCCoreEntitySpaceship extends Entity
         this.setDamage(this.getDamage() + this.getDamage() * 10);
     }
 
-    public boolean canBeCollidedWith()
+    @Override
+	public boolean canBeCollidedWith()
     {
         return !this.isDead;
     }
     
-    public boolean shouldRiderSit()
+    @Override
+	public boolean shouldRiderSit()
     {
         return false;
     }
@@ -160,7 +169,8 @@ public class GCCoreEntitySpaceship extends Entity
         }
     }
     
-    public void onUpdate()
+    @Override
+	public void onUpdate()
     {
         if (this.field_82344_g != null)
         {
@@ -203,9 +213,9 @@ public class GCCoreEntitySpaceship extends Entity
 					EntityItem var14 = new EntityItem(this.worldObj, MathHelper.floor_double(this.riddenByEntity.posX + 0.5D), MathHelper.floor_double(this.riddenByEntity.posY + 1D), MathHelper.floor_double(this.riddenByEntity.posZ + 0.5D), new ItemStack(GCCoreItems.spaceship));
 
 			        float var15 = 0.05F;
-			        var14.motionX = (double)((float)this.rand.nextGaussian() * var15);
-			        var14.motionY = (double)((float)this.rand.nextGaussian() * var15 + 0.2F);
-			        var14.motionZ = (double)((float)this.rand.nextGaussian() * var15);
+			        var14.motionX = (float)this.rand.nextGaussian() * var15;
+			        var14.motionY = (float)this.rand.nextGaussian() * var15 + 0.2F;
+			        var14.motionZ = (float)this.rand.nextGaussian() * var15;
 			        this.worldObj.spawnEntityInWorld(var14);
 				}
 				else if (this.riddenByEntity == null)
@@ -213,9 +223,9 @@ public class GCCoreEntitySpaceship extends Entity
 					EntityItem var14 = new EntityItem(this.worldObj, MathHelper.floor_double(this.posX + 0.5D), MathHelper.floor_double(this.posY + 1D), MathHelper.floor_double(this.posZ + 0.5D), new ItemStack(GCCoreItems.spaceship));
 
 			        float var15 = 0.05F;
-			        var14.motionX = (double)((float)this.rand.nextGaussian() * var15);
-			        var14.motionY = (double)((float)this.rand.nextGaussian() * var15 + 0.2F);
-			        var14.motionZ = (double)((float)this.rand.nextGaussian() * var15);
+			        var14.motionX = (float)this.rand.nextGaussian() * var15;
+			        var14.motionY = (float)this.rand.nextGaussian() * var15 + 0.2F;
+			        var14.motionZ = (float)this.rand.nextGaussian() * var15;
 			        this.worldObj.spawnEntityInWorld(var14);
 				}
                 
@@ -306,7 +316,7 @@ public class GCCoreEntitySpaceship extends Entity
         
         if (this.timeUntilLaunch >= 100)
         {
-            i = Math.abs((int)this.timeUntilLaunch / 100);
+            i = Math.abs(this.timeUntilLaunch / 100);
         }
         else
         {
@@ -382,20 +392,22 @@ public class GCCoreEntitySpaceship extends Entity
         this.setRotation(this.rotationYaw, this.rotationPitch);
     }
 
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public void setPositionAndRotation2(double par1, double par3, double par5, float par7, float par8, int par9)
     {
         this.minecartX = par1;
         this.minecartY = par3;
         this.minecartZ = par5;
-        this.minecartYaw = (double)par7;
-        this.minecartPitch = (double)par8;
+        this.minecartYaw = par7;
+        this.minecartPitch = par8;
         this.motionX = this.velocityX;
         this.motionY = this.velocityY;
         this.motionZ = this.velocityZ;
     }
 
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public void setVelocity(double par1, double par3, double par5)
     {
         this.velocityX = this.motionX = par1;
@@ -467,7 +479,8 @@ public class GCCoreEntitySpaceship extends Entity
         GalacticraftCore.proxy.spawnParticle("hugeexplosion2", this.posX, this.posY, this.posZ, 0D, 0D, 0D, false);
     }
     
-    protected void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
+    @Override
+	protected void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
     	par1NBTTagCompound.setBoolean("launched", this.launched);
     	par1NBTTagCompound.setInteger("timeUntilLaunch", this.timeUntilLaunch);
@@ -476,10 +489,11 @@ public class GCCoreEntitySpaceship extends Entity
     	par1NBTTagCompound.setBoolean("failedlaunch", this.failedLaunch);
     }
 
-    protected void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
+    @Override
+	protected void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
-		this.launched = (Boolean)par1NBTTagCompound.getBoolean("launched");
-		if ((Boolean)par1NBTTagCompound.getBoolean("launched"))
+		this.launched = par1NBTTagCompound.getBoolean("launched");
+		if (par1NBTTagCompound.getBoolean("launched"))
 		{
 			this.setLaunched(1);
 		}
@@ -493,7 +507,8 @@ public class GCCoreEntitySpaceship extends Entity
 		this.failedLaunch = par1NBTTagCompound.getBoolean("failedlaunch");
     }
 
-    public boolean interact(EntityPlayer par1EntityPlayer)
+    @Override
+	public boolean interact(EntityPlayer par1EntityPlayer)
     {
     	if (!this.worldObj.isRemote)
     	{
@@ -592,7 +607,8 @@ public class GCCoreEntitySpaceship extends Entity
     	this.ignite = 1;
     }
     
-    public double getMountedYOffset()
+    @Override
+	public double getMountedYOffset()
     {
         return -1D;
     }

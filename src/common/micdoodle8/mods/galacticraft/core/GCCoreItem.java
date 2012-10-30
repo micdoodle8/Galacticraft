@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core;
 
-import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.Item;
 
 /**

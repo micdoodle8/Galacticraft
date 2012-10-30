@@ -7,11 +7,8 @@ import static net.minecraftforge.common.ForgeDirection.WEST;
 
 import java.util.Random;
 
-import micdoodle8.mods.galacticraft.mars.GCMarsBlock;
-import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Block;
-import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.Material;
 import net.minecraft.src.MovingObjectPosition;
 import net.minecraft.src.Vec3;
@@ -41,7 +38,8 @@ public class GCCoreBlockUnlitTorch extends GCCoreBlock
      * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been
      * cleared to be reused)
      */
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
+    @Override
+	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
     {
         return null;
     }
@@ -50,7 +48,8 @@ public class GCCoreBlockUnlitTorch extends GCCoreBlock
      * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
      * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
      */
-    public boolean isOpaqueCube()
+    @Override
+	public boolean isOpaqueCube()
     {
         return false;
     }
@@ -58,7 +57,8 @@ public class GCCoreBlockUnlitTorch extends GCCoreBlock
     /**
      * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
      */
-    public boolean renderAsNormalBlock()
+    @Override
+	public boolean renderAsNormalBlock()
     {
         return false;
     }
@@ -66,7 +66,8 @@ public class GCCoreBlockUnlitTorch extends GCCoreBlock
     /**
      * The type of render function that is called for this block
      */
-    public int getRenderType()
+    @Override
+	public int getRenderType()
     {
         return GalacticraftCore.proxy.getGCUnlitTorchRenderID();
     }
@@ -90,7 +91,8 @@ public class GCCoreBlockUnlitTorch extends GCCoreBlock
     /**
      * Checks to see if its valid to put this block at the specified coordinates. Args: world, x, y, z
      */
-    public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4)
+    @Override
+	public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4)
     {
         return par1World.isBlockSolidOnSide(par2 - 1, par3, par4, EAST,  true) ||
                par1World.isBlockSolidOnSide(par2 + 1, par3, par4, WEST,  true) ||
@@ -102,7 +104,8 @@ public class GCCoreBlockUnlitTorch extends GCCoreBlock
     /**
      * called before onBlockPlacedBy by ItemBlock and ItemReed
      */
-    public void updateBlockMetadata(World par1World, int par2, int par3, int par4, int par5, float par6, float par7, float par8)
+    @Override
+	public void updateBlockMetadata(World par1World, int par2, int par3, int par4, int par5, float par6, float par7, float par8)
     {
         int var9 = par1World.getBlockMetadata(par2, par3, par4);
 
@@ -137,7 +140,8 @@ public class GCCoreBlockUnlitTorch extends GCCoreBlock
     /**
      * Ticks the block if it's been scheduled
      */
-    public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
+    @Override
+	public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {
         super.updateTick(par1World, par2, par3, par4, par5Random);
 
@@ -150,7 +154,8 @@ public class GCCoreBlockUnlitTorch extends GCCoreBlock
     /**
      * Called whenever the block is added into the world. Args: world, x, y, z
      */
-    public void onBlockAdded(World par1World, int par2, int par3, int par4)
+    @Override
+	public void onBlockAdded(World par1World, int par2, int par3, int par4)
     {
         if (par1World.isBlockSolidOnSide(par2 - 1, par3, par4, EAST, true))
         {
@@ -180,7 +185,8 @@ public class GCCoreBlockUnlitTorch extends GCCoreBlock
      * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
      * their own) Args: x, y, z, neighbor blockID
      */
-    public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
+    @Override
+	public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
     {
         if (this.dropTorchIfCantStay(par1World, par2, par3, par4))
         {
@@ -246,7 +252,8 @@ public class GCCoreBlockUnlitTorch extends GCCoreBlock
      * Ray traces through the blocks collision from start vector to end vector returning a ray trace hit. Args: world,
      * x, y, z, startVec, endVec
      */
-    public MovingObjectPosition collisionRayTrace(World par1World, int par2, int par3, int par4, Vec3 par5Vec3, Vec3 par6Vec3)
+    @Override
+	public MovingObjectPosition collisionRayTrace(World par1World, int par2, int par3, int par4, Vec3 par5Vec3, Vec3 par6Vec3)
     {
         int var7 = par1World.getBlockMetadata(par2, par3, par4) & 7;
         float var8 = 0.15F;
@@ -276,7 +283,8 @@ public class GCCoreBlockUnlitTorch extends GCCoreBlock
         return super.collisionRayTrace(par1World, par2, par3, par4, par5Vec3, par6Vec3);
     }
 
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
 
     /**
      * A randomly called display update to be able to add particles or other items for display
@@ -286,9 +294,9 @@ public class GCCoreBlockUnlitTorch extends GCCoreBlock
     	if (par5Random.nextInt(5) == 0)
     	{
     		int var6 = par1World.getBlockMetadata(par2, par3, par4);
-            double var7 = (double)((float)par2 + 0.5F);
-            double var9 = (double)((float)par3 + 0.7F);
-            double var11 = (double)((float)par4 + 0.5F);
+            double var7 = par2 + 0.5F;
+            double var9 = par3 + 0.7F;
+            double var11 = par4 + 0.5F;
             double var13 = 0.2199999988079071D;
             double var15 = 0.27000001072883606D;
 

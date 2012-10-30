@@ -30,20 +30,23 @@ public class GCMoonBiomeGenBase extends BiomeGenBase
         this.rainfall = 0F;
     }
     
-    public GCMoonBiomeGenBase setColor(int var1)
+    @Override
+	public GCMoonBiomeGenBase setColor(int var1)
     {
         return (GCMoonBiomeGenBase)super.setColor(var1);
     }
 
-    public float getSpawningChance()
+    @Override
+	public float getSpawningChance()
     {
         return 0.01F;
     }
 
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public int getBiomeGrassColor()
     {
-        double var3 = (double)MathHelper.clamp_float(this.maxHeight, 0.0F, 1.0F);
+        double var3 = MathHelper.clamp_float(this.maxHeight, 0.0F, 1.0F);
         return GCMoonColorizerGrass.getGrassColor(var3, var3);
     }
 }

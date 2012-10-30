@@ -2,10 +2,7 @@ package micdoodle8.mods.galacticraft.core;
 
 import java.util.Random;
 
-import cpw.mods.fml.common.FMLLog;
-
 import micdoodle8.mods.galacticraft.API.GCBlockGrass;
-import micdoodle8.mods.galacticraft.mars.GCMarsBlocks;
 import net.minecraft.src.Block;
 import net.minecraft.src.Direction;
 import net.minecraft.src.World;
@@ -39,7 +36,8 @@ public class GCCoreWorldGenTrees extends WorldGenerator
         this.vinesGrow = par5;
     }
 
-    public boolean generate(World par1World, Random par2Random, int par3, int par4, int par5)
+    @Override
+	public boolean generate(World par1World, Random par2Random, int par3, int par4, int par5)
     {
         int var6 = par2Random.nextInt(3) + this.minTreeHeight;
         boolean var7 = true;

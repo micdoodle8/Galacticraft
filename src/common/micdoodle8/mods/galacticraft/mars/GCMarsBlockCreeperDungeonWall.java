@@ -2,10 +2,8 @@ package micdoodle8.mods.galacticraft.mars;
 
 import java.util.Random;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.src.Material;
 import net.minecraft.src.World;
-import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
@@ -34,7 +32,7 @@ public class GCMarsBlockCreeperDungeonWall extends GCMarsBlock
     	
         if (par5Random.nextInt(2000) == 0)
         {
-            par1World.playSound((double)par2 + 0.5D, (double)par3 + 0.5D, (double)par4 + 0.5D, "creepernest.singledrip", 0.5F, par5Random.nextFloat() * 0.4F + 0.8F);
+            par1World.playSound(par2 + 0.5D, par3 + 0.5D, par4 + 0.5D, "creepernest.singledrip", 0.5F, par5Random.nextFloat() * 0.4F + 0.8F);
         }
     }
 }

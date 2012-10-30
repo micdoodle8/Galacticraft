@@ -10,7 +10,6 @@ import net.minecraft.src.EntityAINearestAttackableTarget;
 import net.minecraft.src.EntityAISwimming;
 import net.minecraft.src.EntityAIWander;
 import net.minecraft.src.EntityAIWatchClosest;
-import net.minecraft.src.EntityMob;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EntityVillager;
 import net.minecraft.src.EnumCreatureAttribute;
@@ -46,7 +45,8 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityVillager.class, 16.0F, 0, false));
     }
 
-    public int getMaxHealth()
+    @Override
+	public int getMaxHealth()
     {
         return 20;
     }
@@ -54,7 +54,8 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
     /**
      * Returns the current armor value as determined by a call to InventoryPlayer.getTotalArmorValue
      */
-    public int getTotalArmorValue()
+    @Override
+	public int getTotalArmorValue()
     {
         return 2;
     }
@@ -62,7 +63,8 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
     /**
      * Returns true if the newer Entity AI code should be run
      */
-    protected boolean isAIEnabled()
+    @Override
+	protected boolean isAIEnabled()
     {
         return true;
     }
@@ -71,7 +73,8 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
      * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
      * use this to react to sunlight and start to burn.
      */
-    public void onLivingUpdate()
+    @Override
+	public void onLivingUpdate()
     {
         if (this.worldObj.isDaytime() && !this.worldObj.isRemote)
         {
@@ -91,7 +94,8 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
     /**
      * Returns the sound this mob makes while it's alive.
      */
-    protected String getLivingSound()
+    @Override
+	protected String getLivingSound()
     {
         return "mob.zombie";
     }
@@ -99,7 +103,8 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
     /**
      * Returns the sound this mob makes when it is hurt.
      */
-    protected String getHurtSound()
+    @Override
+	protected String getHurtSound()
     {
         return "mob.zombiehurt";
     }
@@ -107,7 +112,8 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
     /**
      * Returns the sound this mob makes on death.
      */
-    protected String getDeathSound()
+    @Override
+	protected String getDeathSound()
     {
         return "mob.zombiedeath";
     }
@@ -115,7 +121,8 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
     /**
      * Returns the item ID for the item the mob drops on death.
      */
-    protected int getDropItemId()
+    @Override
+	protected int getDropItemId()
     {
         return Item.rottenFlesh.shiftedIndex;
     }
@@ -123,12 +130,14 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
     /**
      * Get this Entity's EnumCreatureAttribute
      */
-    public EnumCreatureAttribute getCreatureAttribute()
+    @Override
+	public EnumCreatureAttribute getCreatureAttribute()
     {
         return EnumCreatureAttribute.UNDEAD;
     }
 
-    protected void dropRareDrop(int par1)
+    @Override
+	protected void dropRareDrop(int par1)
     {
         switch (this.rand.nextInt(4))
         {

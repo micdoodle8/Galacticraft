@@ -1,9 +1,9 @@
 package micdoodle8.mods.galacticraft.core;
 
-import java.util.ArrayList;
-import net.minecraft.src.*;
-
-import cpw.mods.fml.common.ICraftingHandler;
+import net.minecraft.src.Block;
+import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.Material;
+import net.minecraft.src.World;
 
 public class GCCoreBlockRocketBench extends Block
 {

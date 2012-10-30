@@ -1,16 +1,9 @@
 package micdoodle8.mods.galacticraft.core.client;
 
-import static net.minecraftforge.client.IItemRenderer.ItemRenderType.INVENTORY;
-
-import org.lwjgl.opengl.GL11;
-
-import cpw.mods.fml.client.FMLClientHandler;
-
-import micdoodle8.mods.galacticraft.mars.GCMarsBlocks;
-import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.client.IItemRenderer.ItemRenderType;
+
+import org.lwjgl.opengl.GL11;
 
 /**
  * Copyright 2012, micdoodle8

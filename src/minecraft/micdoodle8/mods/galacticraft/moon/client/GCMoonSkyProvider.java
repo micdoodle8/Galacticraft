@@ -16,7 +16,6 @@ import net.minecraftforge.client.SkyProvider;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLLog;
 
 /**
  * Copyright 2012, micdoodle8
@@ -145,10 +144,10 @@ public class GCMoonSkyProvider extends SkyProvider
 //            FMLLog.info("" + GCCoreUtil.calculateMarsAngleFromOtherPlanet(world.getWorldTime(), partialTicks) * 360.0F);
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/planets/mars.png"));
             var23.startDrawingQuads();
-            var23.addVertexWithUV((double)(-var12), 150.0D, (double)(-var12), 0.0D, 0.0D);
-            var23.addVertexWithUV((double)var12, 150.0D, (double)(-var12), 1.0D, 0.0D);
-            var23.addVertexWithUV((double)var12, 150.0D, (double)var12, 1.0D, 1.0D);
-            var23.addVertexWithUV((double)(-var12), 150.0D, (double)var12, 0.0D, 1.0D);
+            var23.addVertexWithUV((-var12), 150.0D, (-var12), 0.0D, 0.0D);
+            var23.addVertexWithUV(var12, 150.0D, (-var12), 1.0D, 0.0D);
+            var23.addVertexWithUV(var12, 150.0D, var12, 1.0D, 1.0D);
+            var23.addVertexWithUV((-var12), 150.0D, var12, 0.0D, 1.0D);
             var23.draw();
         }
         catch (ClassNotFoundException e)
@@ -165,10 +164,10 @@ public class GCMoonSkyProvider extends SkyProvider
         var12 = 30.0F;
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/terrain/sun.png"));
         var23.startDrawingQuads();
-        var23.addVertexWithUV((double)(-var12), 150.0D, (double)(-var12), 0.0D, 0.0D);
-        var23.addVertexWithUV((double)var12, 150.0D, (double)(-var12), 1.0D, 0.0D);
-        var23.addVertexWithUV((double)var12, 150.0D, (double)var12, 1.0D, 1.0D);
-        var23.addVertexWithUV((double)(-var12), 150.0D, (double)var12, 0.0D, 1.0D);
+        var23.addVertexWithUV((-var12), 150.0D, (-var12), 0.0D, 0.0D);
+        var23.addVertexWithUV(var12, 150.0D, (-var12), 1.0D, 0.0D);
+        var23.addVertexWithUV(var12, 150.0D, var12, 1.0D, 1.0D);
+        var23.addVertexWithUV((-var12), 150.0D, var12, 0.0D, 1.0D);
         var23.draw();
         
         GL11.glPopMatrix();
@@ -189,10 +188,10 @@ public class GCMoonSkyProvider extends SkyProvider
         int var30 = var28 % 4;
         int var29 = var28 / 4 % 2;
         var23.startDrawingQuads();
-        var23.addVertexWithUV((double)(-var12), -100.0D, (double)var12, (double)0, (double)1);
-        var23.addVertexWithUV((double)var12, -100.0D, (double)var12, (double)1, (double)1);
-        var23.addVertexWithUV((double)var12, -100.0D, (double)(-var12), (double)1, (double)0);
-        var23.addVertexWithUV((double)(-var12), -100.0D, (double)(-var12), (double)0, (double)0);
+        var23.addVertexWithUV((-var12), -100.0D, var12, 0, 1);
+        var23.addVertexWithUV(var12, -100.0D, var12, 1, 1);
+        var23.addVertexWithUV(var12, -100.0D, (-var12), 1, 0);
+        var23.addVertexWithUV((-var12), -100.0D, (-var12), 0, 0);
         var23.draw();
         
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -215,26 +214,26 @@ public class GCMoonSkyProvider extends SkyProvider
             var12 = -var10;
             var23.startDrawingQuads();
             var23.setColorRGBA_I(0, 255);
-            var23.addVertex((double)(-var10), (double)var11, (double)var10);
-            var23.addVertex((double)var10, (double)var11, (double)var10);
-            var23.addVertex((double)var10, (double)var12, (double)var10);
-            var23.addVertex((double)(-var10), (double)var12, (double)var10);
-            var23.addVertex((double)(-var10), (double)var12, (double)(-var10));
-            var23.addVertex((double)var10, (double)var12, (double)(-var10));
-            var23.addVertex((double)var10, (double)var11, (double)(-var10));
-            var23.addVertex((double)(-var10), (double)var11, (double)(-var10));
-            var23.addVertex((double)var10, (double)var12, (double)(-var10));
-            var23.addVertex((double)var10, (double)var12, (double)var10);
-            var23.addVertex((double)var10, (double)var11, (double)var10);
-            var23.addVertex((double)var10, (double)var11, (double)(-var10));
-            var23.addVertex((double)(-var10), (double)var11, (double)(-var10));
-            var23.addVertex((double)(-var10), (double)var11, (double)var10);
-            var23.addVertex((double)(-var10), (double)var12, (double)var10);
-            var23.addVertex((double)(-var10), (double)var12, (double)(-var10));
-            var23.addVertex((double)(-var10), (double)var12, (double)(-var10));
-            var23.addVertex((double)(-var10), (double)var12, (double)var10);
-            var23.addVertex((double)var10, (double)var12, (double)var10);
-            var23.addVertex((double)var10, (double)var12, (double)(-var10));
+            var23.addVertex((-var10), var11, var10);
+            var23.addVertex(var10, var11, var10);
+            var23.addVertex(var10, var12, var10);
+            var23.addVertex((-var10), var12, var10);
+            var23.addVertex((-var10), var12, (-var10));
+            var23.addVertex(var10, var12, (-var10));
+            var23.addVertex(var10, var11, (-var10));
+            var23.addVertex((-var10), var11, (-var10));
+            var23.addVertex(var10, var12, (-var10));
+            var23.addVertex(var10, var12, var10);
+            var23.addVertex(var10, var11, var10);
+            var23.addVertex(var10, var11, (-var10));
+            var23.addVertex((-var10), var11, (-var10));
+            var23.addVertex((-var10), var11, var10);
+            var23.addVertex((-var10), var12, var10);
+            var23.addVertex((-var10), var12, (-var10));
+            var23.addVertex((-var10), var12, (-var10));
+            var23.addVertex((-var10), var12, var10);
+            var23.addVertex(var10, var12, var10);
+            var23.addVertex(var10, var12, (-var10));
             var23.draw();
         }
 
@@ -256,10 +255,10 @@ public class GCMoonSkyProvider extends SkyProvider
 
         for (int var3 = 0; var3 < 6000; ++var3)
         {
-            double var4 = (double)(var1.nextFloat() * 2.0F - 1.0F);
-            double var6 = (double)(var1.nextFloat() * 2.0F - 1.0F);
-            double var8 = (double)(var1.nextFloat() * 2.0F - 1.0F);
-            double var10 = (double)(0.15F + var1.nextFloat() * 0.1F);
+            double var4 = var1.nextFloat() * 2.0F - 1.0F;
+            double var6 = var1.nextFloat() * 2.0F - 1.0F;
+            double var8 = var1.nextFloat() * 2.0F - 1.0F;
+            double var10 = 0.15F + var1.nextFloat() * 0.1F;
             double var12 = var4 * var4 + var6 * var6 + var8 * var8;
 
             if (var12 < 1.0D && var12 > 0.01D)
@@ -284,8 +283,8 @@ public class GCMoonSkyProvider extends SkyProvider
                 for (int var38 = 0; var38 < 4; ++var38)
                 {
                     double var39 = 0.0D;
-                    double var41 = (double)((var38 & 2) - 1) * var10;
-                    double var43 = (double)((var38 + 1 & 2) - 1) * var10;
+                    double var41 = ((var38 & 2) - 1) * var10;
+                    double var43 = ((var38 + 1 & 2) - 1) * var10;
                     double var47 = var41 * var36 - var43 * var34;
                     double var49 = var43 * var36 + var41 * var34;
                     double var53 = var47 * var28 + var39 * var30;

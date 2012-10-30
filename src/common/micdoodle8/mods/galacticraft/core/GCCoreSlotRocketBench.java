@@ -1,8 +1,6 @@
 package micdoodle8.mods.galacticraft.core;
 
-import net.minecraft.src.ContainerBrewingStand;
 import net.minecraft.src.IInventory;
-import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.Slot;
 
@@ -19,7 +17,8 @@ public class GCCoreSlotRocketBench extends Slot
     /**
      * Check if the stack is a valid item for this slot. Always true beside for the armor slots.
      */
-    public boolean isItemValid(ItemStack par1ItemStack)
+    @Override
+	public boolean isItemValid(ItemStack par1ItemStack)
     {
     	switch (this.index)
     	{
@@ -66,7 +65,8 @@ public class GCCoreSlotRocketBench extends Slot
      * Returns the maximum stack size for a given slot (usually the same as getInventoryStackLimit(), but 1 in the case
      * of armor slots)
      */
-    public int getSlotStackLimit()
+    @Override
+	public int getSlotStackLimit()
     {
         return 64;
     }

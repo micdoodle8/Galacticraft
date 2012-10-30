@@ -5,7 +5,6 @@ import net.minecraft.src.EntityPlayerSP;
 import net.minecraft.src.IUpdatePlayerListBox;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.SoundManager;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
@@ -46,7 +45,7 @@ public class GCCoreSoundUpdaterSpaceship implements IUpdatePlayerListBox
         double var8 = this.field_82479_k;
         this.field_82473_d = this.field_82476_c != null && this.field_82475_b.riddenByEntity == this.field_82476_c;
         this.field_82474_e = this.field_82475_b.isDead;
-        this.field_82479_k = (double)20;
+        this.field_82479_k = 20;
         this.field_82471_f = this.field_82479_k >= 0.01D;
 
         if (var2 && !this.field_82473_d)
