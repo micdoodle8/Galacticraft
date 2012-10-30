@@ -86,6 +86,7 @@ public class GalacticraftCore
 		
 		GCCoreItems.initItems();
 		GCCoreItems.addNames();
+		GCCoreItems.registerHarvestLevels();
 		
 		proxy.preInit(event);
 	}

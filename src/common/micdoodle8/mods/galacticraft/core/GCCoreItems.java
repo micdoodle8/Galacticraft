@@ -4,6 +4,7 @@ import net.minecraft.src.EnumArmorMaterial;
 import net.minecraft.src.EnumToolMaterial;
 import net.minecraft.src.Item;
 import net.minecraftforge.common.EnumHelper;
+import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 /**
@@ -51,7 +52,7 @@ public class GCCoreItems
 	public static EnumArmorMaterial OXYGENMASK = EnumHelper.addArmorMaterial("OXYGENMASK", 200, new int[] {0, 0, 0, 0}, 0);
 	public static EnumArmorMaterial SENSORGLASSES = EnumHelper.addArmorMaterial("SENSORGLASSES", 200, new int[] {0, 0, 0, 0}, 0);
 	public static EnumArmorMaterial TITANIUMARMOR = EnumHelper.addArmorMaterial("TITANIUM", 42, new int[] {4, 9, 7, 4}, 12);
-	public static EnumToolMaterial TOOLTITANIUM = EnumHelper.addToolMaterial("TITANIUM", 0, 0, 0F, 0, 0);
+	public static EnumToolMaterial TOOLTITANIUM = EnumHelper.addToolMaterial("TITANIUM", 4, 768, 7.0F, 3, 8);
 	
 	public static void initItems() 
 	{
@@ -87,6 +88,13 @@ public class GCCoreItems
 		rocketEngine = new GCCoreItem(GCCoreConfigManager.idItemRocketEngine).setIconIndex(27).setItemName("rocketEngine");
 		rocketFins = new GCCoreItem(GCCoreConfigManager.idItemRocketFins).setIconIndex(28).setItemName("rocketFins");
 		rocketNoseCone = new GCCoreItem(GCCoreConfigManager.idItemRocketNoseCone).setIconIndex(29).setItemName("noseCone");
+	}
+	
+	public static void registerHarvestLevels()
+	{
+		MinecraftForge.setToolClass(titaniumPickaxe, "pickaxe", 4);
+		MinecraftForge.setToolClass(titaniumAxe, "axe", 4);
+		MinecraftForge.setToolClass(titaniumSpade, "shovel", 4);
 	}
 
 	public static void addNames() 
