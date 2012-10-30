@@ -1,8 +1,14 @@
 package micdoodle8.mods.galacticraft.core;
 
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import micdoodle8.mods.galacticraft.moon.GCMoonWorldProvider;
 import net.minecraft.src.Block;
 import net.minecraft.src.DamageSource;
+import net.minecraft.src.Enchantment;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EntityPlayerMP;
 import net.minecraft.src.Item;
@@ -109,7 +115,37 @@ public class GCCoreEntityPlayer
 				}
 				else if (player.inventory.getCurrentItem().getItem().shiftedIndex == Item.bow.shiftedIndex)
 				{
+		        	Hashtable<Integer, Enchantment> enchants = new Hashtable<Integer, Enchantment>();
+		        	
+		        	NBTTagList list = player.inventory.getCurrentItem().getEnchantmentTagList();
+
+		        	if (list != null)
+		            {
+		                for (int var7 = 0; var7 < list.tagCount(); ++var7)
+		                {
+		                    int enchID = Integer.valueOf(((NBTTagCompound)list.tagAt(var7)).getShort("id"));
+		                    int enchLvl = Integer.valueOf(((NBTTagCompound)list.tagAt(var7)).getShort("lvl"));
+		                    
+		                    Enchantment e = Enchantment.enchantmentsList[enchID];
+		                    
+		                    enchants.put(enchLvl, e);
+		                }
+		            }
+		        	
 		        	ItemStack stack = new ItemStack(GCCoreItems.gravityBow, var1, var2);
+		        	
+		        	Iterator<Entry<Integer, Enchantment>> it = enchants.entrySet().iterator();
+		        	
+		        	while (it.hasNext())
+		        	{
+		        		Entry<Integer, Enchantment> entry = it.next();
+		        		
+		        		if (entry.getKey() != null && entry.getValue() != null)
+		        		{
+			        		stack.addEnchantment((Enchantment)entry.getValue(), entry.getKey());
+		        		}
+		        	}
+		        	
 		            player.inventory.mainInventory[player.inventory.currentItem] = stack;
 				}
 				else if (player.inventory.getCurrentItem().getItem().shiftedIndex == Block.sapling.blockID)
@@ -135,6 +171,41 @@ public class GCCoreEntityPlayer
 	        	else if (player.inventory.getCurrentItem().getItem().shiftedIndex == GCCoreBlocks.sapling.blockID)
 	        	{
 	            	ItemStack stack = new ItemStack(Block.sapling, var1, var2);
+	                player.inventory.mainInventory[player.inventory.currentItem] = stack;
+	        	}
+	        	else if (player.inventory.getCurrentItem().getItem().shiftedIndex == GCCoreItems.gravityBow.shiftedIndex)
+	        	{
+		        	Hashtable<Integer, Enchantment> enchants = new Hashtable<Integer, Enchantment>();
+		        	
+		        	NBTTagList list = player.inventory.getCurrentItem().getEnchantmentTagList();
+
+		        	if (list != null)
+		            {
+		                for (int var7 = 0; var7 < list.tagCount(); ++var7)
+		                {
+		                    int enchID = Integer.valueOf(((NBTTagCompound)list.tagAt(var7)).getShort("id"));
+		                    int enchLvl = Integer.valueOf(((NBTTagCompound)list.tagAt(var7)).getShort("lvl"));
+		                    
+		                    Enchantment e = Enchantment.enchantmentsList[enchID];
+		                    
+		                    enchants.put(enchLvl, e);
+		                }
+		            }
+		        	
+	            	ItemStack stack = new ItemStack(Item.bow, var1, var2);
+		        	
+		        	Iterator<Entry<Integer, Enchantment>> it = enchants.entrySet().iterator();
+		        	
+		        	while (it.hasNext())
+		        	{
+		        		Entry<Integer, Enchantment> entry = it.next();
+		        		
+		        		if (entry.getKey() != null && entry.getValue() != null)
+		        		{
+			        		stack.addEnchantment((Enchantment)entry.getValue(), entry.getKey());
+		        		}
+		        	}
+		        	
 	                player.inventory.mainInventory[player.inventory.currentItem] = stack;
 	        	}
 	        }
