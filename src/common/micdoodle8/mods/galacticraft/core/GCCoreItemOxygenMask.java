@@ -20,7 +20,7 @@ public class GCCoreItemOxygenMask extends GCCoreItemBreathableHelmet implements 
 
     public String getArmorTextureFile(ItemStack itemstack)
     {
-    	return "/micdoodle8/mods/galacticraft/mars/client/armor/oxygen_1.png";
+    	return "/micdoodle8/mods/galacticraft/core/client/armor/oxygen_1.png";
     }
 	
 	@Override
