@@ -352,6 +352,46 @@ public class ClientProxyCore extends CommonProxyCore
             
     		if (type.equals(EnumSet.of(TickType.RENDER)))
             {
+    			if (player != null && player.ridingEntity != null && player.ridingEntity instanceof GCCoreEntitySpaceship)
+        		{
+    				float f = (((GCCoreEntitySpaceship)player.ridingEntity).getTimeSinceLaunch() - 200F) / 90F;
+    				
+    				FMLLog.info("" + (((GCCoreEntitySpaceship)player.ridingEntity).getTimeSinceLaunch() - 200F) / 90F);
+    				
+    				if (f < 0)
+    				{
+    					f = 0F;
+    				}
+    				
+    				if (f > 1)
+    				{
+    					f = 1F;
+    				}
+    				
+					ScaledResolution scaledresolution = new ScaledResolution(minecraft.gameSettings, minecraft.displayWidth, minecraft.displayHeight);
+			        int i = scaledresolution.getScaledWidth();
+			        int k = scaledresolution.getScaledHeight();
+			        minecraft.entityRenderer.setupOverlayRendering();
+			        GL11.glEnable(GL11.GL_BLEND);
+			        GL11.glDisable(GL11.GL_DEPTH_TEST);
+			        GL11.glDepthMask(false);
+					GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+					GL11.glColor4f(1.0F, 1.0F, 1.0F, f);
+					GL11.glDisable(GL11.GL_ALPHA_TEST);
+    				GL11.glBindTexture(GL11.GL_TEXTURE_2D, minecraft.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/backgrounds/black.png"));
+					Tessellator tessellator = Tessellator.instance;
+					tessellator.startDrawingQuads();
+					tessellator.addVertexWithUV(i / 2 - 2 * k * 80, k * 40, -90D, 0.0D, 1.0D);
+					tessellator.addVertexWithUV(i / 2 + 2 * k * 80, k * 40, -90D, 1.0D, 1.0D);
+					tessellator.addVertexWithUV(i / 2 + 2 * k * 80, 0.0D * 40, -90D, 1.0D, 0.0D);
+					tessellator.addVertexWithUV(i / 2 - 2 * k * 80, 0.0D * 40, -90D, 0.0D, 0.0D);
+					tessellator.draw();
+					GL11.glDepthMask(true);
+					GL11.glEnable(GL11.GL_DEPTH_TEST);
+					GL11.glEnable(GL11.GL_ALPHA_TEST);
+					GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        		}
+    			
         		if (helmetSlot != null && helmetSlot.getItem() instanceof GCCoreItemSensorGlasses && minecraft.currentScreen == null)
         		{
         			i++;

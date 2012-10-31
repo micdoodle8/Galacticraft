@@ -55,7 +55,7 @@ public class GCCoreEntitySpaceship extends Entity
     protected boolean launched;
     
     protected float timeSinceEntityEntry;
-    protected float timeSinceLaunch;
+    public float timeSinceLaunch;
     
     public float rumble;
     
@@ -92,6 +92,7 @@ public class GCCoreEntitySpaceship extends Entity
         this.dataWatcher.addObject(21, new Integer(0));
         this.dataWatcher.addObject(22, new Integer(0));
         this.dataWatcher.addObject(23, new Integer(0));
+        this.dataWatcher.addObject(24, new Integer(0));
     }
 
     @Override
@@ -294,6 +295,11 @@ public class GCCoreEntitySpaceship extends Entity
         else
         {
         	this.timeSinceLaunch = 0;
+        }
+        
+        if (!this.worldObj.isRemote)
+        {
+            this.setTimeSinceLaunch((int)this.timeSinceLaunch);
         }
         
         if (this.timeUntilLaunch > 0 && ignite == 1)
@@ -596,6 +602,16 @@ public class GCCoreEntitySpaceship extends Entity
     public int getTimeUntilLaunch()
     {
     	return this.dataWatcher.getWatchableObjectInt(23);
+    }
+    
+    public void setTimeSinceLaunch(int par1)
+    {
+    	this.dataWatcher.updateObject(24, par1);
+    }
+    
+    public int getTimeSinceLaunch()
+    {
+    	return this.dataWatcher.getWatchableObjectInt(24);
     }
     
     public void ignite()
