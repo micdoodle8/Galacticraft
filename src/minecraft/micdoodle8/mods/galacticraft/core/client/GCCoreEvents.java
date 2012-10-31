@@ -21,6 +21,6 @@ public class GCCoreEvents
 			}
 		}
 		
-		event.setResult(Result.ALLOW);
+		event.setResult(Result.DENY);
 	}
 }
