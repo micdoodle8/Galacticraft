@@ -1,11 +1,14 @@
 package micdoodle8.mods.galacticraft.core;
 
+import cpw.mods.fml.common.FMLLog;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.TileEntity;
+import net.minecraftforge.common.ForgeDirection;
 
 public class GCCoreTileEntityOxygenPipe extends TileEntity
 {
 	private double oxygenInPipe;
+	private int indexFromCollector;
 	
 	private GCCoreTileEntityOxygenCollector source;
 	
@@ -27,6 +30,16 @@ public class GCCoreTileEntityOxygenPipe extends TileEntity
 	public GCCoreTileEntityOxygenCollector getSourceCollector()
 	{
 		return this.source;
+	}
+	
+	public void setIndexFromCollector(int i)
+	{
+		this.indexFromCollector = i;
+	}
+	
+	public int getIndexFromCollector()
+	{
+		return this.indexFromCollector;
 	}
 	
 	@Override
@@ -62,8 +75,14 @@ public class GCCoreTileEntityOxygenPipe extends TileEntity
 							tile = this.worldObj.getBlockTileEntity(this.xCoord + 1, this.yCoord, this.zCoord);
 							if (tile != null && tile instanceof GCCoreTileEntityOxygenPipe)
 							{
-								((GCCoreTileEntityOxygenPipe)tile).setOxygenInPipe(this.oxygenInPipe);
-								((GCCoreTileEntityOxygenPipe)tile).setSourceCollector(this.source);
+								if (((GCCoreTileEntityOxygenPipe)tile).getIndexFromCollector() == 0 || ((GCCoreTileEntityOxygenPipe)tile).getIndexFromCollector() > this.getIndexFromCollector())
+								{
+									((GCCoreTileEntityOxygenPipe)tile).setOxygenInPipe(this.oxygenInPipe);
+									((GCCoreTileEntityOxygenPipe)tile).setSourceCollector(this.source);
+									
+									if (((GCCoreTileEntityOxygenPipe)tile).getIndexFromCollector() == 0)
+										((GCCoreTileEntityOxygenPipe)tile).setIndexFromCollector(this.indexFromCollector + 1);
+								}
 							}
 						}
 						if (idSet[1] == GCCoreBlocks.oxygenPipe.blockID)
@@ -71,8 +90,14 @@ public class GCCoreTileEntityOxygenPipe extends TileEntity
 							tile = this.worldObj.getBlockTileEntity(this.xCoord - 1, this.yCoord, this.zCoord);
 							if (tile != null && tile instanceof GCCoreTileEntityOxygenPipe)
 							{
-								((GCCoreTileEntityOxygenPipe)tile).setOxygenInPipe(this.oxygenInPipe);
-								((GCCoreTileEntityOxygenPipe)tile).setSourceCollector(this.source);
+								if (((GCCoreTileEntityOxygenPipe)tile).getIndexFromCollector() == 0 || ((GCCoreTileEntityOxygenPipe)tile).getIndexFromCollector() > this.getIndexFromCollector())
+								{
+									((GCCoreTileEntityOxygenPipe)tile).setOxygenInPipe(this.oxygenInPipe);
+									((GCCoreTileEntityOxygenPipe)tile).setSourceCollector(this.source);
+									
+									if (((GCCoreTileEntityOxygenPipe)tile).getIndexFromCollector() == 0)
+										((GCCoreTileEntityOxygenPipe)tile).setIndexFromCollector(this.indexFromCollector + 1);
+								}
 							}
 						}
 						if (idSet[2] == GCCoreBlocks.oxygenPipe.blockID)
@@ -80,8 +105,14 @@ public class GCCoreTileEntityOxygenPipe extends TileEntity
 							tile = this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord + 1);
 							if (tile != null && tile instanceof GCCoreTileEntityOxygenPipe)
 							{
-								((GCCoreTileEntityOxygenPipe)tile).setOxygenInPipe(this.oxygenInPipe);
-								((GCCoreTileEntityOxygenPipe)tile).setSourceCollector(this.source);
+								if (((GCCoreTileEntityOxygenPipe)tile).getIndexFromCollector() == 0 || ((GCCoreTileEntityOxygenPipe)tile).getIndexFromCollector() > this.getIndexFromCollector())
+								{
+									((GCCoreTileEntityOxygenPipe)tile).setOxygenInPipe(this.oxygenInPipe);
+									((GCCoreTileEntityOxygenPipe)tile).setSourceCollector(this.source);
+									
+									if (((GCCoreTileEntityOxygenPipe)tile).getIndexFromCollector() == 0)
+										((GCCoreTileEntityOxygenPipe)tile).setIndexFromCollector(this.indexFromCollector + 1);
+								}
 							}
 						}
 						if (idSet[3] == GCCoreBlocks.oxygenPipe.blockID)
@@ -89,8 +120,14 @@ public class GCCoreTileEntityOxygenPipe extends TileEntity
 							tile = this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord - 1);
 							if (tile != null && tile instanceof GCCoreTileEntityOxygenPipe)
 							{
-								((GCCoreTileEntityOxygenPipe)tile).setOxygenInPipe(this.oxygenInPipe);
-								((GCCoreTileEntityOxygenPipe)tile).setSourceCollector(this.source);
+								if (((GCCoreTileEntityOxygenPipe)tile).getIndexFromCollector() == 0 || ((GCCoreTileEntityOxygenPipe)tile).getIndexFromCollector() > this.getIndexFromCollector())
+								{
+									((GCCoreTileEntityOxygenPipe)tile).setOxygenInPipe(this.oxygenInPipe);
+									((GCCoreTileEntityOxygenPipe)tile).setSourceCollector(this.source);
+									
+									if (((GCCoreTileEntityOxygenPipe)tile).getIndexFromCollector() == 0)
+										((GCCoreTileEntityOxygenPipe)tile).setIndexFromCollector(this.indexFromCollector + 1);
+								}
 							}
 						}
 						if (idSet[4] == GCCoreBlocks.oxygenPipe.blockID)
@@ -98,8 +135,14 @@ public class GCCoreTileEntityOxygenPipe extends TileEntity
 							tile = this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord + 1, this.zCoord);
 							if (tile != null && tile instanceof GCCoreTileEntityOxygenPipe)
 							{
-								((GCCoreTileEntityOxygenPipe)tile).setOxygenInPipe(this.oxygenInPipe);
-								((GCCoreTileEntityOxygenPipe)tile).setSourceCollector(this.source);
+								if (((GCCoreTileEntityOxygenPipe)tile).getIndexFromCollector() == 0 || ((GCCoreTileEntityOxygenPipe)tile).getIndexFromCollector() > this.getIndexFromCollector())
+								{
+									((GCCoreTileEntityOxygenPipe)tile).setOxygenInPipe(this.oxygenInPipe);
+									((GCCoreTileEntityOxygenPipe)tile).setSourceCollector(this.source);
+									
+									if (((GCCoreTileEntityOxygenPipe)tile).getIndexFromCollector() == 0)
+										((GCCoreTileEntityOxygenPipe)tile).setIndexFromCollector(this.indexFromCollector + 1);
+								}
 							}
 						}
 						if (idSet[5] == GCCoreBlocks.oxygenPipe.blockID)
@@ -107,14 +150,48 @@ public class GCCoreTileEntityOxygenPipe extends TileEntity
 							tile = this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord - 1, this.zCoord);
 							if (tile != null && tile instanceof GCCoreTileEntityOxygenPipe)
 							{
-								((GCCoreTileEntityOxygenPipe)tile).setOxygenInPipe(this.oxygenInPipe);
-								((GCCoreTileEntityOxygenPipe)tile).setSourceCollector(this.source);
+								if (((GCCoreTileEntityOxygenPipe)tile).getIndexFromCollector() == 0 || ((GCCoreTileEntityOxygenPipe)tile).getIndexFromCollector() > this.getIndexFromCollector())
+								{
+									((GCCoreTileEntityOxygenPipe)tile).setOxygenInPipe(this.oxygenInPipe);
+									((GCCoreTileEntityOxygenPipe)tile).setSourceCollector(this.source);
+									
+									if (((GCCoreTileEntityOxygenPipe)tile).getIndexFromCollector() == 0)
+										((GCCoreTileEntityOxygenPipe)tile).setIndexFromCollector(this.indexFromCollector + 1);
+								}
 							}
 						}
 					}
 				}
 			}
 		}
+	}
+	
+	public void setZeroOxygen()
+	{
+		this.setIndexFromCollector(0);
+		
+		this.setOxygenInPipe(0D);
+		
+		for (int i = 0; i < ForgeDirection.values().length; i++)
+    	{
+    		TileEntity tile = this.worldObj.getBlockTileEntity(this.xCoord + ForgeDirection.getOrientation(i).offsetX, this.yCoord + ForgeDirection.getOrientation(i).offsetY, this.zCoord + ForgeDirection.getOrientation(i).offsetZ);
+    		
+    		if (tile != null && tile instanceof GCCoreTileEntityOxygenPipe)
+    		{
+    			GCCoreTileEntityOxygenPipe pipe = (GCCoreTileEntityOxygenPipe)tile;
+    			
+    			if (pipe.getIndexFromCollector() > this.getIndexFromCollector())
+    			{
+    				pipe.setZeroOxygen();
+    			}
+    		}
+    		else if (tile != null && tile instanceof GCCoreTileEntityOxygenDistributor)
+    		{
+    			GCCoreTileEntityOxygenDistributor distributor = (GCCoreTileEntityOxygenDistributor)tile;
+    			distributor.currentPower = 0D;
+    			GCCoreBlockOxygenDistributor.updateDistributorState(false, this.worldObj, distributor.xCoord, distributor.yCoord, distributor.zCoord);
+    		}
+    	}
 	}
 	
 	@Override

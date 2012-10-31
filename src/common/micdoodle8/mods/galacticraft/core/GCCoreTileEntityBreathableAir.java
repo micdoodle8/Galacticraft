@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core;
 
 import net.minecraft.src.TileEntity;
+import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreTileEntityBreathableAir extends TileEntity
 {
@@ -9,10 +10,23 @@ public class GCCoreTileEntityBreathableAir extends TileEntity
 	@Override
 	public void updateEntity() 
 	{
+		if (this.distributor != null)
+		{
+			TileEntity distributorTile = this.worldObj.getBlockTileEntity(distributor.xCoord, distributor.yCoord, distributor.zCoord);
+			
+			if (distributorTile == null || ((GCCoreTileEntityOxygenDistributor)distributorTile).currentPower < 1.0D)
+			{
+				distributor = null;
+			}
+		}
+		
 		if (this.distributor == null || this.distributor.currentPower < 1.0D)
 		{
-			this.worldObj.setBlock(xCoord, yCoord, zCoord, 0);
-			this.invalidate();
+			if (!this.worldObj.isRemote)
+			{
+				this.worldObj.setBlock(xCoord, yCoord, zCoord, 0);
+				this.invalidate();
+			}
 		}
 		else
 		{

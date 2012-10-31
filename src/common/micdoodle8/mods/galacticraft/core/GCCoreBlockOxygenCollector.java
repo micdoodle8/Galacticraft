@@ -10,7 +10,6 @@ import net.minecraft.src.Material;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
@@ -41,8 +40,6 @@ public class GCCoreBlockOxygenCollector extends BlockContainer
 				active = true;
 			}
 		}
-		
-		FMLLog.info("" + blockIndexInTexture);
 		
         if (par5 == 1)
         {
@@ -136,34 +133,6 @@ public class GCCoreBlockOxygenCollector extends BlockContainer
     @Override
     public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {
-
-//        for (int var6 = 0; var6 < 4; ++var6)
-//        {
-////            double var7 = (double)((float)par2 + par5Random.nextFloat());
-////            double var9 = (double)((float)par3 + par5Random.nextFloat());
-////            double var11 = (double)((float)par4 + par5Random.nextFloat());
-////            double var13 = 0.0D;
-////            double var15 = 0.0D;
-////            double var17 = 0.0D;
-////            int var19 = par5Random.nextInt(2) * 2 - 1;
-////            var13 = ((double)par5Random.nextFloat() - 0.5D) * 0.5D;
-////            var15 = ((double)par5Random.nextFloat() - 0.5D) * 0.5D;
-////            var17 = ((double)par5Random.nextFloat() - 0.5D) * 0.5D;
-////
-////            if (par1World.getBlockId(par2 - 1, par3, par4) != this.blockID && par1World.getBlockId(par2 + 1, par3, par4) != this.blockID)
-////            {
-////                var7 = (double)par2 + 0.5D + 0.25D * (double)var19;
-////                var13 = (double)(par5Random.nextFloat() * 2.0F * (float)var19);
-////            }
-////            else
-////            {
-////                var11 = (double)par4 + 0.5D + 0.25D * (double)var19;
-////                var17 = (double)(par5Random.nextFloat() * 2.0F * (float)var19);
-////            }
-//            
-//            GalacticraftCore.proxy.spawnParticle("oxygen", par2 + 0.5D, par3 + 0.7D, par4 + 0.5D, var6 - par2 + par5Random.nextFloat() - 0.5D, par3 - par5Random.nextFloat() - 1.0F, var7 - par4 + par5Random.nextFloat() - 0.5D, 1D, 1D, 1D, false);
-//        }
-
         for (int var6 = 0; var6 < 10; ++var6)
         {
             double var7 = par2 + par5Random.nextFloat();
@@ -178,8 +147,6 @@ public class GCCoreBlockOxygenCollector extends BlockContainer
             var17 = (par5Random.nextFloat() - 0.5D) * 0.5D;
 
             int var2 = par1World.getBlockMetadata(par2, par3, par4);
-            
-            FMLLog.info("" + var2);
 
             if (var2 == 3 || var2 == 2)
             {

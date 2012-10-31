@@ -13,6 +13,7 @@ import net.minecraft.src.MathHelper;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
@@ -165,8 +166,6 @@ public class GCCoreBlockOxygenDistributor extends BlockContainer
     @Override
 	public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6)
     {
-    	removeAirBlocks(par1World, par2, par3, par4);
-    	
     	if (!keepDistributorInventory)
     	{
     		GCCoreTileEntityOxygenDistributor var7 = (GCCoreTileEntityOxygenDistributor)par1World.getBlockTileEntity(par2, par3, par4);
@@ -222,14 +221,7 @@ public class GCCoreBlockOxygenDistributor extends BlockContainer
 			{
 				for (int k = -8; k <= 8; k++)
 				{
-					if (world.getBlockId(x + i, y + j, z + k) == GCCoreBlocks.breatheableAir.blockID)
-					{
-//						if (!GCBlockBreathableAir.activeDistributorNearby(world, x + i, y + j, z + k, true)) TODO
-						{
-//							world.setBlockWithNotify(x + i, y + j, z + k, 0);
-						}
-					}
-					else if (world.getBlockId(x + i, y + j, z + k) == GCCoreBlocks.unlitTorchLit.blockID)
+					if (world.getBlockId(x + i, y + j, z + k) == GCCoreBlocks.unlitTorchLit.blockID)
 					{
 						int meta = world.getBlockMetadata(x + i, y + j, z + k);
 						world.setBlockAndMetadataWithNotify(x + i, y + j, z + k, GCCoreBlocks.unlitTorch.blockID, meta);
@@ -241,28 +233,31 @@ public class GCCoreBlockOxygenDistributor extends BlockContainer
 
     public static void updateDistributorState(boolean activate, World par1World, int x, int y, int z)
     {
-        int var5 = par1World.getBlockMetadata(x, y, z);
-        TileEntity var6 = par1World.getBlockTileEntity(x, y, z);
-        keepDistributorInventory = true;
+    	if (!par1World.isRemote)
+    	{
+    		int var5 = par1World.getBlockMetadata(x, y, z);
+            TileEntity var6 = par1World.getBlockTileEntity(x, y, z);
+            keepDistributorInventory = true;
 
-        if (activate)
-        {
-            par1World.setBlockWithNotify(x, y, z, GCCoreBlocks.airDistributorActive.blockID);
-        }
-        else
-        {
-            par1World.setBlockWithNotify(x, y, z, GCCoreBlocks.airDistributor.blockID);
-            GCCoreBlocks.airDistributor.removeAirBlocks(par1World, x, y, z);
-        }
+            if (activate)
+            {
+                par1World.setBlockWithNotify(x, y, z, GCCoreBlocks.airDistributorActive.blockID);
+            }
+            else
+            {
+                par1World.setBlockWithNotify(x, y, z, GCCoreBlocks.airDistributor.blockID);
+                GCCoreBlocks.airDistributor.removeAirBlocks(par1World, x, y, z);
+            }
 
-        keepDistributorInventory = false;
-        par1World.setBlockMetadataWithNotify(x, y, z, var5);
+            keepDistributorInventory = false;
+            par1World.setBlockMetadataWithNotify(x, y, z, var5);
 
-        if (var6 != null)
-        {
-            var6.validate();
-            par1World.setBlockTileEntity(x, y, z, var6);
-        }
+            if (var6 != null)
+            {
+                var6.validate();
+                par1World.setBlockTileEntity(x, y, z, var6);
+            }
+    	}
     }
     
 	@Override

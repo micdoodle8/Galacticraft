@@ -4,6 +4,7 @@ import net.minecraft.src.Block;
 import net.minecraft.src.BlockLeaves;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.TileEntity;
+import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreTileEntityOxygenCollector extends TileEntity
 {
@@ -56,6 +57,7 @@ public class GCCoreTileEntityOxygenCollector extends TileEntity
 					{
 						((GCCoreTileEntityOxygenPipe)tile).setOxygenInPipe(this.currentPower);
 						((GCCoreTileEntityOxygenPipe)tile).setSourceCollector(this);
+						((GCCoreTileEntityOxygenPipe)tile).setIndexFromCollector(1);
 					}
 				}
 				if (idSet[1] == GCCoreBlocks.oxygenPipe.blockID)
@@ -65,6 +67,7 @@ public class GCCoreTileEntityOxygenCollector extends TileEntity
 					{
 						((GCCoreTileEntityOxygenPipe)tile).setOxygenInPipe(this.currentPower);
 						((GCCoreTileEntityOxygenPipe)tile).setSourceCollector(this);
+						((GCCoreTileEntityOxygenPipe)tile).setIndexFromCollector(1);
 					}
 				}
 				if (idSet[2] == GCCoreBlocks.oxygenPipe.blockID)
@@ -74,6 +77,7 @@ public class GCCoreTileEntityOxygenCollector extends TileEntity
 					{
 						((GCCoreTileEntityOxygenPipe)tile).setOxygenInPipe(this.currentPower);
 						((GCCoreTileEntityOxygenPipe)tile).setSourceCollector(this);
+						((GCCoreTileEntityOxygenPipe)tile).setIndexFromCollector(1);
 					}
 				}
 				if (idSet[3] == GCCoreBlocks.oxygenPipe.blockID)
@@ -83,6 +87,7 @@ public class GCCoreTileEntityOxygenCollector extends TileEntity
 					{
 						((GCCoreTileEntityOxygenPipe)tile).setOxygenInPipe(this.currentPower);
 						((GCCoreTileEntityOxygenPipe)tile).setSourceCollector(this);
+						((GCCoreTileEntityOxygenPipe)tile).setIndexFromCollector(1);
 					}
 				}
 				if (idSet[4] == GCCoreBlocks.oxygenPipe.blockID)
@@ -92,6 +97,7 @@ public class GCCoreTileEntityOxygenCollector extends TileEntity
 					{
 						((GCCoreTileEntityOxygenPipe)tile).setOxygenInPipe(this.currentPower);
 						((GCCoreTileEntityOxygenPipe)tile).setSourceCollector(this);
+						((GCCoreTileEntityOxygenPipe)tile).setIndexFromCollector(1);
 					}
 				}
 				if (idSet[5] == GCCoreBlocks.oxygenPipe.blockID)
@@ -101,6 +107,7 @@ public class GCCoreTileEntityOxygenCollector extends TileEntity
 					{
 						((GCCoreTileEntityOxygenPipe)tile).setOxygenInPipe(this.currentPower);
 						((GCCoreTileEntityOxygenPipe)tile).setSourceCollector(this);
+						((GCCoreTileEntityOxygenPipe)tile).setIndexFromCollector(1);
 					}
 				}
 			}

@@ -11,6 +11,8 @@ import net.minecraft.src.MovingObjectPosition;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.Vec3;
 import net.minecraft.src.World;
+import net.minecraftforge.common.ForgeDirection;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
@@ -208,6 +210,32 @@ public class GCCoreBlockOxygenPipe extends BlockContainer
 	{
 		return getCollisionBoundingBoxFromPool(world, i, j, k);
 	}
+	
+
+    @Override
+	public void breakBlock(World world, int x, int y, int z, int par5, int par6)
+    {
+    	for (int i = 0; i < ForgeDirection.values().length - 1; i++)
+    	{
+    		TileEntity tile = world.getBlockTileEntity(x + ForgeDirection.getOrientation(i).offsetX, y + ForgeDirection.getOrientation(i).offsetY, z + ForgeDirection.getOrientation(i).offsetZ);
+    		GCCoreTileEntityOxygenPipe thisPipe = (GCCoreTileEntityOxygenPipe)world.getBlockTileEntity(x, y, z);
+    		
+    		if (tile != null && thisPipe != null && tile instanceof GCCoreTileEntityOxygenPipe)
+    		{
+    			GCCoreTileEntityOxygenPipe pipe = (GCCoreTileEntityOxygenPipe)tile;
+    			
+    			FMLLog.info("" + pipe.getIndexFromCollector());
+    			
+//    			if (pipe.getIndexFromCollector() > thisPipe.getIndexFromCollector())
+    			{
+    				pipe.setOxygenInPipe(0D);
+    				pipe.setZeroOxygen();
+    			}
+    		}
+    	}
+    	
+    	super.breakBlock(world, x, y, z, par5, par6);
+    }
 	
 	@Override
 	public MovingObjectPosition collisionRayTrace(World world, int i, int j, int k, Vec3 vec3d, Vec3 vec3d1) 

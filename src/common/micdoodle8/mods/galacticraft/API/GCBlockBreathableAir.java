@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.API;
 
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GCCoreTileEntityBreathableAir;
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Block;
@@ -23,7 +24,6 @@ public class GCBlockBreathableAir extends BlockContainer
 	public GCBlockBreathableAir(int id, int texIndex) 
 	{
 		super(id, texIndex, Material.air);
-        this.setTickRandomly(true);
 	}
 	
 	public void setMinYMaxY(double minY, double maxY)
@@ -57,12 +57,6 @@ public class GCBlockBreathableAir extends BlockContainer
 	}
 
 	@Override
-    public int tickRate()
-    {
-        return 30;
-    }
-
-	@Override
     public int quantityDropped(Random par1Random)
     {
         return 0;
@@ -71,7 +65,7 @@ public class GCBlockBreathableAir extends BlockContainer
     @Override
 	public int getRenderBlockPass()
     {
-        return 1;
+        return GCCoreConfigManager.transparentBreathableAir ? 1 : 0;
     }
 	
     @Override
