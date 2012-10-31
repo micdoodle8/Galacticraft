@@ -96,6 +96,9 @@ public class GCCoreConfigManager
 	public static int idEntityAntiGravityArrow;
 	public static int idEntityMeteor;
 	
+	// GENERAL
+	public static boolean transparentBreathableAir;
+	
 	private void setDefaultValues()
     {
 		try
@@ -164,6 +167,8 @@ public class GCCoreConfigManager
 	        idEntitySpaceship = 					configuration.get("Entities", "idEntitySpaceship", 										159)		.getInt(159);
 	        idEntityAntiGravityArrow = 				configuration.get("Entities", "idEntityAntiGravityArrow", 								160)		.getInt(160);
 	        idEntityMeteor = 						configuration.get("Entities", "idEntityMeteor", 										161)		.getInt(161);
+		
+	        transparentBreathableAir = 				configuration.get(configuration.CATEGORY_GENERAL, "transparentBreathableAir", 			true)		.getBoolean(true);
 		}
 		catch (Exception e)
 		{
