@@ -2,8 +2,10 @@ package micdoodle8.mods.galacticraft.moon;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.src.Block;
+import net.minecraft.src.BlockCake;
 import net.minecraft.src.Item;
 import net.minecraft.src.Material;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
@@ -14,15 +16,17 @@ public class GCMoonBlocks
 	public static Block moonGrass;
 	public static Block moonCobblestone;
 	public static Block blockMoonOres;
+    public static Block cheeseBlock;
 
 	public static void initBlocks() 
 	{	
 		blockMoonOres = 									new GCMoonBlockOre					(GCMoonConfigManager.idBlockOre)												.setHardness(3.0F) 																				 																											.setBlockName("moonBlockOres");
-		moonCobblestone = 									new GCMoonBlock						(GCMoonConfigManager.idBlockMoonCobblestone, 			13, Material.rock)		.setHardness(2.2F)																				.setCreativeTab(GalacticraftCore.galacticraftTab)															.setBlockName("moonCobblestone");
+		moonCobblestone = 									new GCMoonBlock						(GCMoonConfigManager.idBlockMoonCobblestone, 			9, Material.rock)		.setHardness(2.2F)																				.setCreativeTab(GalacticraftCore.galacticraftTab)															.setBlockName("moonCobblestone");
 		moonStone = 										new GCMoonBlockStone				(GCMoonConfigManager.idBlockMoonStone, 					1)						.setHardness(1.7F)																				.setCreativeTab(GalacticraftCore.galacticraftTab)															.setBlockName("moonStone");
 		moonDirt = 											new GCMoonBlockDirt					(GCMoonConfigManager.idBlockMoonDirt, 					2)						.setHardness(0.6F)																				.setCreativeTab(GalacticraftCore.galacticraftTab)															.setBlockName("moonDirt");
 		moonGrass = 										new GCMoonBlockGrass				(GCMoonConfigManager.idBlockMoonGrass,					2)						.setHardness(0.7F)																				.setCreativeTab(GalacticraftCore.galacticraftTab)															.setBlockName("moonGrass");
 		Item.itemsList[blockMoonOres.blockID] = 			new GCMoonItemBlockOre				(blockMoonOres.blockID - 256)																																																																.setItemName("moonBlockOres");
+		cheeseBlock = 										new GCMoonBlockCheese				(GCMoonConfigManager.idBlockCheese, 					10)						.setHardness(0.5F)		.setStepSound(Block.soundClothFootstep)																																				.setBlockName("cheeseBlock");
 	}
 
 	public static void setHarvestLevels() 
@@ -36,6 +40,7 @@ public class GCMoonBlocks
 		GameRegistry.registerBlock(moonDirt);
 		GameRegistry.registerBlock(moonGrass);
 		GameRegistry.registerBlock(moonCobblestone);
+		GameRegistry.registerBlock(cheeseBlock);
 	}
 
 	public static void addNames() 
@@ -56,6 +61,7 @@ public class GCMoonBlocks
 	
 	private static void addNameWithMetadata(String string)
 	{
+		FMLLog.info("" + GalacticraftMoon.lang.get(string));
 		LanguageRegistry.instance().addStringLocalization(string, GalacticraftMoon.lang.get(string));
 	}
 }
