@@ -76,11 +76,8 @@ public class GCMarsBlocks
 		addNameWithMetadata("tile.blockores.desh.name");
 		addNameWithMetadata("tile.blockores.electrum.name");
 		addNameWithMetadata("tile.blockores.quandrium.name");
-		addNameWithMetadata("tile.blockores.aluminumearth.name");
 		addNameWithMetadata("tile.blockores.aluminummars.name");
-		addNameWithMetadata("tile.blockores.copperearth.name");
 		addNameWithMetadata("tile.blockores.coppermars.name");
-		addNameWithMetadata("tile.blockores.titaniumearth.name");
 		addNameWithMetadata("tile.blockores.titaniummars.name");
 	}
 	
