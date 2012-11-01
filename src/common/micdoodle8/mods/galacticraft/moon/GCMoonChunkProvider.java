@@ -602,10 +602,10 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 		if (/*j < 39 && */par1EnumCreatureType == EnumCreatureType.monster)
 		{
 			List monsters = new ArrayList();
-			monsters.add(new SpawnListEntry(GCCoreEntityZombie.class, 6, 4, 4));
-			monsters.add(new SpawnListEntry(GCCoreEntitySpider.class, 6, 4, 4));
-			monsters.add(new SpawnListEntry(GCCoreEntitySkeleton.class, 6, 4, 4));
-			monsters.add(new SpawnListEntry(GCCoreEntityCreeper.class, 6, 4, 4));
+			monsters.add(new SpawnListEntry(GCCoreEntityZombie.class, 1, 1, 3));
+			monsters.add(new SpawnListEntry(GCCoreEntitySpider.class, 1, 1, 3));
+			monsters.add(new SpawnListEntry(GCCoreEntitySkeleton.class, 1, 1, 3));
+			monsters.add(new SpawnListEntry(GCCoreEntityCreeper.class, 1, 1, 3));
 			return monsters;
 		}
 		else
