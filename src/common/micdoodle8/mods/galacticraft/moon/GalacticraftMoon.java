@@ -34,6 +34,9 @@ public class GalacticraftMoon
 		GCMoonBlocks.registerBlocks();
 		GCMoonBlocks.setHarvestLevels();
 		GCMoonBlocks.addNames();
+		
+		GCMoonItems.initItems();
+		GCMoonItems.addNames();
 	}
 	
 	public void init(FMLInitializationEvent event)
