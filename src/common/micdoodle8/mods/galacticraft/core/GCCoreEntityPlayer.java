@@ -9,6 +9,7 @@ import micdoodle8.mods.galacticraft.moon.GCMoonWorldProvider;
 import net.minecraft.src.Block;
 import net.minecraft.src.DamageSource;
 import net.minecraft.src.Enchantment;
+import net.minecraft.src.EntityDamageSource;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EntityPlayerMP;
 import net.minecraft.src.Item;
@@ -20,6 +21,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
@@ -43,6 +45,8 @@ public class GCCoreEntityPlayer
 	public int timeUntilPortal;
 	
 	private int dimensionToSend = -2;
+	
+	private int damageCounter;
 	
 	public GCCoreEntityPlayer(EntityPlayer player) 
 	{
@@ -102,6 +106,11 @@ public class GCCoreEntityPlayer
 		if (event.entityLiving instanceof EntityPlayerMP)
 		{
 			EntityPlayerMP player = (EntityPlayerMP) event.entityLiving;
+			
+			if (player != null)
+			{
+				player.fallDistance = 0;
+			}
 			
 			if (player.worldObj.provider instanceof GalacticraftWorldProvider && player.inventory.getCurrentItem() != null)
 	        {
@@ -209,6 +218,11 @@ public class GCCoreEntityPlayer
 	                player.inventory.mainInventory[player.inventory.currentItem] = stack;
 	        	}
 	        }
+			
+			if (this.damageCounter > 0)
+			{
+				this.damageCounter--;
+			}
 	        
 			if (GalacticraftCore.instance.tick % 10 == 0)
 			{
@@ -238,9 +252,14 @@ public class GCCoreEntityPlayer
 		    		tankInSlot.damageItem(1, player);
 		    	}
 				
-				if (drainSpacing == 0 && GalacticraftCore.instance.tick % 20 == 0 && !isAABBInBreathableAirBlock())
+				if (drainSpacing == 0 && GalacticraftCore.instance.tick % 20 == 0 && !isAABBInBreathableAirBlock() && this.airRemaining > 0)
 				{
 		    		this.airRemaining -= 1;
+				}
+				
+				if (this.airRemaining < 0)
+				{
+					this.airRemaining = 0;
 				}
 				
 				if (GalacticraftCore.instance.tick % 20 == 0 && isAABBInBreathableAirBlock() && this.airRemaining < 90 && tankInSlot != null)
@@ -248,7 +267,7 @@ public class GCCoreEntityPlayer
 					this.airRemaining += 1;
 				}
 				
-	        	if (GalacticraftCore.instance.tick % 100 == 0) 
+	        	if (damageCounter == 0) 
 	        	{
 	        		ItemStack helmetSlot = null;
 	        		
@@ -266,9 +285,14 @@ public class GCCoreEntityPlayer
 	        		
 	        		if (b && !isAABBInBreathableAirBlock()) 
 					{
-						player.attackEntityFrom(DamageSource.inWall, 2);
-						player.worldObj.playSoundAtEntity(player, "", 1.0f, 1.0F);
-						player.performHurtAnimation();
+	        			if (!player.worldObj.isRemote && player.isEntityAlive())
+	        			{
+	        				if (this.damageCounter == 0) 
+	        	        	{
+		        				this.damageCounter = 100;
+	        		            this.getPlayer().attackEntityFrom(DamageSource.inWall, 2);
+	        	        	}
+	        			}
 					}
 				}
 	        }
@@ -326,7 +350,7 @@ public class GCCoreEntityPlayer
 				motX = this.currentPlayer.worldObj.rand.nextDouble() * 5;
 				motZ = this.currentPlayer.worldObj.rand.nextDouble() * 5;
 				
-				GCCoreEntityMeteor meteor = new GCCoreEntityMeteor(this.currentPlayer.worldObj, this.currentPlayer.posX + x, y, this.currentPlayer.posZ + z, motX - 2.5D, 0, motZ - 2.5D, 1);
+				GCCoreEntityMeteor meteor = new GCCoreEntityMeteor(this.currentPlayer.worldObj, this.currentPlayer.posX + x, this.currentPlayer.posY + y, this.currentPlayer.posZ + z, motX - 2.5D, 0, motZ - 2.5D, 1);
 				
 				if (!this.currentPlayer.worldObj.isRemote)
 				{
@@ -385,6 +409,7 @@ public class GCCoreEntityPlayer
     {
     	NBTTagCompound par1NBTTagCompound = this.currentPlayer.getEntityData();
 		this.airRemaining = par1NBTTagCompound.getInteger("playerAirRemaining");
+		this.damageCounter = par1NBTTagCompound.getInteger("damageCounter");
         NBTTagList var2 = par1NBTTagCompound.getTagList("InventoryTankRefill");
         this.playerTankInventory.readFromNBT2(var2);
     }
@@ -393,6 +418,7 @@ public class GCCoreEntityPlayer
     {
     	NBTTagCompound par1NBTTagCompound = this.currentPlayer.getEntityData();
     	par1NBTTagCompound.setInteger("playerAirRemaining", this.airRemaining);
+    	par1NBTTagCompound.setInteger("damageCounter", this.damageCounter);
         par1NBTTagCompound.setTag("InventoryTankRefill", this.playerTankInventory.writeToNBT2(new NBTTagList()));
     }
 }
