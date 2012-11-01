@@ -38,10 +38,19 @@ public class GCCoreItemRendererSpaceship implements IItemRenderer
         
         GL11.glTranslatef(var12, var13 - 0.1F, var14);
         GL11.glScalef(-0.4F, -0.4F, 0.4F);
-        if (type == ItemRenderType.INVENTORY)
+        if (type == ItemRenderType.INVENTORY || type == ItemRenderType.ENTITY)
         {
-        	GL11.glRotatef(80F, 1F, 0F, 1F);
-        	GL11.glRotatef(20F, 1F, 0F, 0F);
+        	if (type == ItemRenderType.INVENTORY)
+        	{
+            	GL11.glRotatef(80F, 1F, 0F, 1F);
+            	GL11.glRotatef(20F, 1F, 0F, 0F);
+        	}
+        	else
+        	{
+            	GL11.glTranslatef(0, -0.9F, 0);
+            	GL11.glScalef(0.5F, 0.5F, 0.5F);
+        	}
+        	
         	GL11.glScalef(1.3F, 1.3F, 1.3F);
         	GL11.glTranslatef(0, -0.6F, 0);
         	GL11.glRotatef((GalacticraftCore.tick) * 2, 0F, 1F, 0F);
@@ -59,7 +68,7 @@ public class GCCoreItemRendererSpaceship implements IItemRenderer
 	{
 		switch (type) {
 		case ENTITY:
-			return false;
+			return true;
 		case EQUIPPED:
 			return true;
 		case INVENTORY:
@@ -84,6 +93,9 @@ public class GCCoreItemRendererSpaceship implements IItemRenderer
 			renderPipeItem(type, (RenderBlocks) data[0], item, -0.5f, -0.5f, -0.5f);
 			break;
 		case INVENTORY:
+			renderPipeItem(type, (RenderBlocks) data[0], item, -0.5f, -0.5f, -0.5f);
+			break;
+		case ENTITY:
 			renderPipeItem(type, (RenderBlocks) data[0], item, -0.5f, -0.5f, -0.5f);
 			break;
 		default:
