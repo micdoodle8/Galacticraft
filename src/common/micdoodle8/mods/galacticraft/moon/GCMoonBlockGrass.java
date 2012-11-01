@@ -12,6 +12,8 @@ import net.minecraft.src.Material;
 import net.minecraft.src.World;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.IPlantable;
+import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
@@ -31,12 +33,6 @@ public class GCMoonBlockGrass extends GCBlockGrass
 		this.setCreativeTab(CreativeTabs.tabDecorations);
 		this.setRequiresSelfNotify();
 	}
-
-//	@Override
-//    public int getRenderType()
-//    {
-//        return ClientProxyMoon.getGCMoonTurfRenderID();
-//    }
     
 	@Override
     public int getBlockTextureFromSideAndMetadata(int side, int meta)
@@ -152,7 +148,7 @@ public class GCMoonBlockGrass extends GCBlockGrass
                 var7 += var10 & 255;
             }
         }
-
+        
         return (var5 / 9 & 255) << 16 | (var6 / 9 & 255) << 8 | var7 / 9 & 255;
     }
 
@@ -175,19 +171,43 @@ public class GCMoonBlockGrass extends GCBlockGrass
         {
             for (int var9 = -1; var9 <= 1; ++var9)
             {
-            	int var10 = getGrassColorAtYCoord(par3);
+            	// TODO config boolean to disable this...
+            	
+            	int var10 = (int) (getGrassColorAtYCoord(par3));
+            	
                 var5 += (var10 & 255);
                 var6 += (var10 & 255);
-                var7 += var10 & 255;
+                var7 += (var10 & 255);
+                
+            	float i = 0;
+            	
+            	if (FMLClientHandler.instance().getClient().theWorld != null && FMLClientHandler.instance().getClient().thePlayer != null)
+                {
+                    float var3 = FMLClientHandler.instance().getClient().theWorld.getCelestialAngle(1.0F);
+                    i = var3;
+                }
+            	
+            	var5 -= (i * 1.5) - 0.5;
+            	var6 -= (i * 1.5) - 0.5;
+            	var7 -= (i * 1.5) - 0.5;
             }
         }
+
 
         return (var5 / 9 & 255) << 16 | (var6 / 9 & 255) << 8 | var7 / 9 & 255;
     }
     
     private int getGrassColorAtYCoord(int y)
     {
-    	return GCMoonColorizerGrass.getGrassColor((y + 100) / 1.7D, (y + 100) / 1.7D);
+    	float i = 0;
+    	
+    	if (FMLClientHandler.instance().getClient().theWorld != null && FMLClientHandler.instance().getClient().thePlayer != null)
+        {
+            float var3 = FMLClientHandler.instance().getClient().theWorld.getCelestialAngle(1.0F);
+            i = var3;
+        }
+    	
+    	return GCMoonColorizerGrass.getGrassColor(((y + 90) + (i * 50)) / 1.7D, ((y + 90) + (i * 50)) / 1.7D);
     }
 
 	@Override
