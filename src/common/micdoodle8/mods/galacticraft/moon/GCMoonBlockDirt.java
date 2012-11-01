@@ -35,9 +35,22 @@ public class GCMoonBlockDirt extends GCMoonBlock
 	@SideOnly(Side.CLIENT)
     public int getBlockColor()
     {
-        double var1 = 0.5D;
-        double var3 = 1.0D;
-        return ColorizerGrass.getGrassColor(var1, var3);
+        int var5 = 0;
+        int var6 = 0;
+        int var7 = 0;
+
+        for (int var8 = -1; var8 <= 1; ++var8)
+        {
+            for (int var9 = -1; var9 <= 1; ++var9)
+            {
+            	int var10 = getGrassColorAtYCoord(50);
+                var5 += (var10 & 255);
+                var6 += (var10 & 255);
+                var7 += var10 & 255;
+            }
+        }
+        
+        return (var5 / 9 & 255) << 16 | (var6 / 9 & 255) << 8 | var7 / 9 & 255;
     }
 
     @Override
