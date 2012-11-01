@@ -16,6 +16,7 @@ import net.minecraft.src.Packet250CustomPayload;
 import net.minecraft.src.Packet9Respawn;
 import net.minecraft.src.World;
 import net.minecraftforge.common.MinecraftForge;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
@@ -95,11 +96,8 @@ public class GalacticraftCore
 	public void init(FMLInitializationEvent event)
 	{
 		moon.init(event);
-		
-//		for (int i = 0; i < this.loader.providerFiles.size(); i++)
-//		{
-//			ProviderFile file = this.loader.providerFiles.get(i);
-//		}
+
+        LanguageRegistry.instance().addStringLocalization("itemGroup.galacticraft", lang.get("itemGroup.galacticraft"));
 		
 //		GCCoreUtil.addSmeltingRecipes(); TODO
 		NetworkRegistry.instance().registerGuiHandler(this, proxy);
@@ -225,7 +223,7 @@ public class GalacticraftCore
             {
 				World world = (World) tickData[0];
 				
-				if (world.provider.getDimensionName() == "Overworld")
+				if (world.provider.getDimensionName() == "Overworld" && !world.isRemote)
 				{
 					tick++;
 				}
