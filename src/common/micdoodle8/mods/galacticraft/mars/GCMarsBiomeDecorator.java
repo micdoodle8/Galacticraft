@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.mars;
 
 import java.util.Random;
 
-import micdoodle8.mods.galacticraft.API.WorldGenMinableMeta;
+import micdoodle8.mods.galacticraft.core.GCCoreWorldGenMinableMeta;
 import net.minecraft.src.BiomeGenBase;
 import net.minecraft.src.World;
 import net.minecraft.src.WorldGenerator;
@@ -41,13 +41,13 @@ public class GCMarsBiomeDecorator
 
 	public GCMarsBiomeDecorator(BiomeGenBase par1BiomeGenBase) 
 	{
-		this.deshGen = new WorldGenMinableMeta(GCMarsBlocks.blockOres.blockID, 12, 0, true);
-		this.copperGen = new WorldGenMinableMeta(GCMarsBlocks.blockOres.blockID, 8, 6, true);
-		this.aluminumGen = new WorldGenMinableMeta(GCMarsBlocks.blockOres.blockID, 7, 4, true);
-		this.titaniumGen = new WorldGenMinableMeta(GCMarsBlocks.blockOres.blockID, 7, 8, true);
-		this.quandriumGen = new WorldGenMinableMeta(GCMarsBlocks.blockOres.blockID, 7, 2, true);
-		this.dirtGen = new WorldGenMinableMeta(GCMarsBlocks.marsDirt.blockID, 32, 0, false);
-		this.bacteriaGen = new WorldGenMinableMeta(GCMarsBlocks.bacterialSludgeMoving.blockID, 5, 0, false);
+		this.deshGen = new GCCoreWorldGenMinableMeta(GCMarsBlocks.blockOres.blockID, 12, 0, true, GCMarsBlocks.marsStone.blockID);
+		this.copperGen = new GCCoreWorldGenMinableMeta(GCMarsBlocks.blockOres.blockID, 8, 6, true, GCMarsBlocks.marsStone.blockID);
+		this.aluminumGen = new GCCoreWorldGenMinableMeta(GCMarsBlocks.blockOres.blockID, 7, 4, true, GCMarsBlocks.marsStone.blockID);
+		this.titaniumGen = new GCCoreWorldGenMinableMeta(GCMarsBlocks.blockOres.blockID, 7, 8, true, GCMarsBlocks.marsStone.blockID);
+		this.quandriumGen = new GCCoreWorldGenMinableMeta(GCMarsBlocks.blockOres.blockID, 7, 2, true, GCMarsBlocks.marsStone.blockID);
+		this.dirtGen = new GCCoreWorldGenMinableMeta(GCMarsBlocks.marsDirt.blockID, 32, 0, false, GCMarsBlocks.marsStone.blockID);
+		this.bacteriaGen = new GCCoreWorldGenMinableMeta(GCMarsBlocks.bacterialSludgeMoving.blockID, 5, 0, false, GCMarsBlocks.marsStone.blockID);
 		this.biome = par1BiomeGenBase;
 	}
 

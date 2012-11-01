@@ -1,8 +1,7 @@
-package micdoodle8.mods.galacticraft.API;
+package micdoodle8.mods.galacticraft.core;
 
 import java.util.Random;
 
-import micdoodle8.mods.galacticraft.mars.GCMarsBlocks;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.World;
 import net.minecraft.src.WorldGenMinable;
@@ -13,7 +12,7 @@ import net.minecraft.src.WorldGenMinable;
  *  All rights reserved.
  *
  */
-public class WorldGenMinableMeta extends WorldGenMinable 
+public class GCCoreWorldGenMinableMeta extends WorldGenMinable 
 {
 	private int minableBlockId;
 
@@ -22,14 +21,17 @@ public class WorldGenMinableMeta extends WorldGenMinable
 	private int metadata;
 
 	private boolean usingMetadata = false;
+	
+	private int fillerID;
 
-	public WorldGenMinableMeta(int par1, int par2, int par3, boolean par4)
+	public GCCoreWorldGenMinableMeta(int par1, int par2, int par3, boolean par4, int id)
 	{
 		super(par1, par2);
 		this.minableBlockId = par1;
 		this.numberOfBlocks = par2;
 		this.metadata = par3;
 		this.usingMetadata = par4;
+		this.fillerID = id;
 	}
 
 	@Override
@@ -74,11 +76,11 @@ public class WorldGenMinableMeta extends WorldGenMinable
 							{
 								double var45 = (var44 + 0.5D - var24) / (var28 / 2.0D);
 
-								if (var39 * var39 + var42 * var42 + var45 * var45 < 1.0D && par1World.getBlockId(var38, var41, var44) == GCMarsBlocks.marsStone.blockID && usingMetadata == false) 
+								if (var39 * var39 + var42 * var42 + var45 * var45 < 1.0D && par1World.getBlockId(var38, var41, var44) == fillerID && usingMetadata == false) 
 								{
 									par1World.setBlock(var38, var41, var44, this.minableBlockId);
 								} 
-								else if (var39 * var39 + var42 * var42 + var45 * var45 < 1.0D && par1World.getBlockId(var38, var41, var44) == GCMarsBlocks.marsStone.blockID && usingMetadata == true) 
+								else if (var39 * var39 + var42 * var42 + var45 * var45 < 1.0D && par1World.getBlockId(var38, var41, var44) == fillerID && usingMetadata == true) 
 								{
 									par1World.setBlockAndMetadata(var38, var41,	var44, this.minableBlockId, this.metadata);
 								}
