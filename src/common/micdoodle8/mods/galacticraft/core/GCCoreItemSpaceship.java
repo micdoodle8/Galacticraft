@@ -17,7 +17,7 @@ import cpw.mods.fml.common.asm.SideOnly;
  *  All rights reserved.
  *
  */
-public class GCCoreItemSpaceship extends GCMarsItem
+public class GCCoreItemSpaceship extends GCCoreItem
 {
 	public GCCoreItemSpaceship(int par1) 
 	{
@@ -69,8 +69,9 @@ public class GCCoreItemSpaceship extends GCMarsItem
         return EnumRarity.epic;
     }
 	
+    @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack par1ItemStack, List par2List) 
+    public void addInformation(ItemStack par1ItemStack, EntityPlayer player, List par2List, boolean b) 
     {
     	par2List.add("Failure chance: " + String.valueOf(GCCoreUtil.getSpaceshipFailChance(FMLClientHandler.instance().getClient().thePlayer)) + "%");
     }
