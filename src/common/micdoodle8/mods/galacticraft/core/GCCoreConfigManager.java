@@ -62,6 +62,7 @@ public class GCCoreConfigManager
 	public static int idItemHeavyPlate;
 	public static int idItemRocketNoseCone;
 	public static int idItemRocketFins;
+	public static int idItemSensorLens;
 	
 	// ARMOR
 	public static int idArmorOxygenMask;
@@ -141,6 +142,7 @@ public class GCCoreConfigManager
 	        idItemHeavyPlate = 						configuration.get(configuration.CATEGORY_BLOCK, "idItemHeavyPlate", 					9873)		.getInt(9873);
 	        idItemRocketNoseCone = 					configuration.get(configuration.CATEGORY_BLOCK, "idItemRocketNoseCone", 				9874)		.getInt(9874);
 	        idItemRocketFins = 						configuration.get(configuration.CATEGORY_BLOCK, "idItemRocketFins", 					9875)		.getInt(9875);
+	        idItemSensorLens = 						configuration.get(configuration.CATEGORY_BLOCK, "idItemSensorLens", 					9886)		.getInt(9886);
 
 	        idToolTitaniumSword = 					configuration.get(configuration.CATEGORY_BLOCK, "idToolTitaniumSword", 					9876)		.getInt(9876);
 	        idToolTitaniumPickaxe = 				configuration.get(configuration.CATEGORY_BLOCK, "idToolTitaniumPickaxe", 				9877)		.getInt(9877);

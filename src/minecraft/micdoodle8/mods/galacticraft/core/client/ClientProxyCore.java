@@ -288,8 +288,6 @@ public class ClientProxyCore extends CommonProxyCore
             {
                 Class[] decodeAs = {Float.class};
                 Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
-
-            	FMLLog.info("" + packetReadout[0]);
             	
                 FMLClientHandler.instance().getClient().thePlayer.timeInPortal = (Float) packetReadout[0];
             }
@@ -354,9 +352,7 @@ public class ClientProxyCore extends CommonProxyCore
             {
     			if (player != null && player.ridingEntity != null && player.ridingEntity instanceof GCCoreEntitySpaceship)
         		{
-    				float f = (((GCCoreEntitySpaceship)player.ridingEntity).getTimeSinceLaunch() - 200F) / 90F;
-    				
-    				FMLLog.info("" + (((GCCoreEntitySpaceship)player.ridingEntity).getTimeSinceLaunch() - 200F) / 90F);
+    				float f = (((GCCoreEntitySpaceship)player.ridingEntity).getTimeSinceLaunch() - 250F) / 50F;
     				
     				if (f < 0)
     				{

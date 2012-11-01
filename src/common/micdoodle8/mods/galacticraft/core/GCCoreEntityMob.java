@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core;
 
-import micdoodle8.mods.galacticraft.mars.GCMarsBlocks;
 import net.minecraft.src.EntityMob;
 import net.minecraft.src.Potion;
 import net.minecraft.src.PotionEffect;
@@ -15,7 +14,8 @@ public abstract class GCCoreEntityMob extends EntityMob
     
     private boolean handleBacterialMovement()
     {
-        return this.worldObj.isMaterialInBB(this.boundingBox.expand(-0.10000000149011612D, -0.4000000059604645D, -0.10000000149011612D), GCMarsBlocks.bacterialSludge);
+    	return false; // TODO
+//        return this.worldObj.isMaterialInBB(this.boundingBox.expand(-0.10000000149011612D, -0.4000000059604645D, -0.10000000149011612D), GCMarsBlocks.bacterialSludge);
     }
 
 	@Override

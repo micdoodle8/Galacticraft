@@ -9,9 +9,6 @@
 //import micdoodle8.mods.galacticraft.core.GCCoreEntitySkeleton;
 //import micdoodle8.mods.galacticraft.core.GCCoreEntitySpider;
 //import micdoodle8.mods.galacticraft.core.GCCoreEntityZombie;
-//import micdoodle8.mods.galacticraft.mars.GCMarsBiomeDecorator;
-//import micdoodle8.mods.galacticraft.mars.GCMarsBiomeGenBase;
-//import micdoodle8.mods.galacticraft.mars.GCMarsWorldGenCreeperNest;
 //import net.minecraft.src.BiomeGenBase;
 //import net.minecraft.src.Block;
 //import net.minecraft.src.BlockSand;
