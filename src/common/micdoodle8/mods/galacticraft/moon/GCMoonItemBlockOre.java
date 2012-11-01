@@ -27,7 +27,7 @@ public class GCMoonItemBlockOre extends ItemBlock
 		{
 		case 0: 
 		{
-			name = "aluminummon";
+			name = "aluminummoon";
 			break;
 		}
 		case 1: 
