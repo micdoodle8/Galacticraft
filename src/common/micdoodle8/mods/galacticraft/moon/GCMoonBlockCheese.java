@@ -128,7 +128,7 @@ public class GCMoonBlockCheese extends GCMoonBlock
     {
         if (par5EntityPlayer.canEat(false))
         {
-            par5EntityPlayer.getFoodStats().addStats(2, 0.1F);
+            par5EntityPlayer.getFoodStats().addStats(3, 0.1F);
             int var6 = par1World.getBlockMetadata(par2, par3, par4) + 1;
 
             if (var6 >= 6)
