@@ -586,40 +586,40 @@ public abstract class GCMarsBlockFluid extends Block
      */
     private void checkForHarden(World par1World, int par2, int par3, int par4)
     {
-    	if (par1World.getBlockMaterial(par2, par3, par4 - 1) == Material.water)
-    	{
-            int var6 = par1World.getBlockMetadata(par2, par3, par4 - 1);
-            
-            par1World.setBlockAndMetadataWithNotify(par2, par3, par4 - 1, GCMarsBlocks.bacterialSludgeMoving.blockID, var6);
-    	}
-
-    	if (par1World.getBlockMaterial(par2, par3, par4 + 1) == Material.water)
-    	{
-            int var6 = par1World.getBlockMetadata(par2, par3, par4 + 1);
-            
-            par1World.setBlockAndMetadataWithNotify(par2, par3, par4 + 1, GCMarsBlocks.bacterialSludgeMoving.blockID, var6);
-    	}
-
-    	if (par1World.getBlockMaterial(par2 - 1, par3, par4) == Material.water)
-    	{
-            int var6 = par1World.getBlockMetadata(par2 - 1, par3, par4);
-            
-            par1World.setBlockAndMetadataWithNotify(par2 - 1, par3, par4, GCMarsBlocks.bacterialSludgeMoving.blockID, var6);
-    	}
-
-    	if (par1World.getBlockMaterial(par2 + 1, par3, par4) == Material.water)
-    	{
-            int var6 = par1World.getBlockMetadata(par2 + 1, par3, par4);
-            
-            par1World.setBlockAndMetadataWithNotify(par2 + 1, par3, par4, GCMarsBlocks.bacterialSludgeMoving.blockID, var6);
-    	}
-
-    	if (par1World.getBlockMaterial(par2, par3 - 1, par4) == Material.water)
-    	{
-            int var6 = par1World.getBlockMetadata(par2, par3 - 1, par4);
-            
-            par1World.setBlockAndMetadataWithNotify(par2, par3 - 1, par4, GCMarsBlocks.bacterialSludgeMoving.blockID, var6);
-    	}
+//    	if (par1World.getBlockMaterial(par2, par3, par4 - 1) == Material.water)
+//    	{
+//            int var6 = par1World.getBlockMetadata(par2, par3, par4 - 1);
+//            
+//            par1World.setBlockAndMetadataWithNotify(par2, par3, par4 - 1, GCMarsBlocks.bacterialSludgeMoving.blockID, var6);
+//    	}
+//
+//    	if (par1World.getBlockMaterial(par2, par3, par4 + 1) == Material.water)
+//    	{
+//            int var6 = par1World.getBlockMetadata(par2, par3, par4 + 1);
+//            
+//            par1World.setBlockAndMetadataWithNotify(par2, par3, par4 + 1, GCMarsBlocks.bacterialSludgeMoving.blockID, var6);
+//    	}
+//
+//    	if (par1World.getBlockMaterial(par2 - 1, par3, par4) == Material.water)
+//    	{
+//            int var6 = par1World.getBlockMetadata(par2 - 1, par3, par4);
+//            
+//            par1World.setBlockAndMetadataWithNotify(par2 - 1, par3, par4, GCMarsBlocks.bacterialSludgeMoving.blockID, var6);
+//    	}
+//
+//    	if (par1World.getBlockMaterial(par2 + 1, par3, par4) == Material.water)
+//    	{
+//            int var6 = par1World.getBlockMetadata(par2 + 1, par3, par4);
+//            
+//            par1World.setBlockAndMetadataWithNotify(par2 + 1, par3, par4, GCMarsBlocks.bacterialSludgeMoving.blockID, var6);
+//    	}
+//
+//    	if (par1World.getBlockMaterial(par2, par3 - 1, par4) == Material.water)
+//    	{
+//            int var6 = par1World.getBlockMetadata(par2, par3 - 1, par4);
+//            
+//            par1World.setBlockAndMetadataWithNotify(par2, par3 - 1, par4, GCMarsBlocks.bacterialSludgeMoving.blockID, var6);
+//    	}
     	
 //        if (par1World.getBlockId(par2, par3, par4) == this.blockID)
 //        {
