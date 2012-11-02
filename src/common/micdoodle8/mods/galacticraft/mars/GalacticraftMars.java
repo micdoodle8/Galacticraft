@@ -8,6 +8,7 @@ import java.util.List;
 
 import micdoodle8.mods.galacticraft.core.GCCoreLocalization;
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
+import micdoodle8.mods.galacticraft.moon.GCMoonPlayerHandler;
 import net.minecraft.src.EntityPlayerMP;
 import net.minecraft.src.INetworkManager;
 import net.minecraft.src.Packet250CustomPayload;
@@ -30,6 +31,7 @@ import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.common.registry.EntityRegistry;
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 /**
@@ -48,8 +50,8 @@ public class GalacticraftMars
 	@Instance("GalacticraftMars")
 	public static GalacticraftMars instance;
 	
-	public static List serverPlayerBaseList = new ArrayList();
-	public static List serverPlayerAPIs = new ArrayList();
+	public static List marsPlayers = new ArrayList();
+	public static List gcMarsPlayers = new ArrayList();
 	
 	public static GCCoreLocalization lang;
 	
@@ -77,6 +79,7 @@ public class GalacticraftMars
 		DimensionManager.registerProviderType(GCMarsConfigManager.dimensionIDMars, GCMarsWorldProvider.class, true);
 		DimensionManager.registerDimension(GCMarsConfigManager.dimensionIDMars, GCMarsConfigManager.dimensionIDMars);
 		MinecraftForge.EVENT_BUS.register(new GCMarsEvents());
+		GameRegistry.registerPlayerTracker(new GCMarsPlayerHandler());
 		GCMarsUtil.addSmeltingRecipes();
 		this.registerTileEntities();
 		this.registerCreatures();
@@ -106,6 +109,7 @@ public class GalacticraftMars
 //		GCMarsAchievementList.initAchievs();
 		proxy.postInit(event);
 		proxy.registerRenderInformation();
+		GCMarsUtil.addCraftingRecipes();
 	}
 	
 	@ServerStarted
