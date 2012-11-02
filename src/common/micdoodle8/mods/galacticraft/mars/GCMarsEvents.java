@@ -40,6 +40,11 @@ public class GCMarsEvents
                         
                         return;
                     }
+                    else
+                    {
+                    	event.setResult(Result.ALLOW);
+                    	return;
+                    }
                 }
             }
         }
