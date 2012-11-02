@@ -5,6 +5,7 @@ import net.minecraft.src.EnumArmorMaterial;
 import net.minecraft.src.EnumToolMaterial;
 import net.minecraft.src.Item;
 import net.minecraftforge.common.EnumHelper;
+import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 /**
@@ -103,6 +104,16 @@ public class GCMarsItems
 		ingotQuandrium = new GCMarsItem(GCMarsConfigManager.idItemIngotQuandrium).setIconIndex(32).setItemName("ingotQuandrium");
 		ingotDesh = new GCMarsItem(GCMarsConfigManager.idItemIngotDesh).setIconIndex(33).setItemName("ingotDesh");
 		jetpack = new GCMarsItemJetpack(GCMarsConfigManager.idArmorJetpack, ARMORJETPACK, 11, 1).setIconIndex(34).setItemName("jetpack");
+	}
+	
+	public static void registerHarvestLevels()
+	{
+		MinecraftForge.setToolClass(deshPickaxe, "pickaxe", 4);
+		MinecraftForge.setToolClass(deshAxe, "axe", 4);
+		MinecraftForge.setToolClass(deshSpade, "shovel", 4);
+		MinecraftForge.setToolClass(quandriumPickaxe, "pickaxe", 5);
+		MinecraftForge.setToolClass(quandriumAxe, "axe", 5);
+		MinecraftForge.setToolClass(quandriumSpade, "shovel", 5);
 	}
 
 	public static void addNames() 
