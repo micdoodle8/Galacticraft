@@ -32,6 +32,7 @@ public class GCMoonConfigManager
 	public static int idItemCheeseCurd;
 	public static int idItemMeteoricIronRaw;
 	public static int idItemBlockCheese;
+	public static int idItemMeteoricIronIngot;
 	
 	public GCMoonConfigManager(File file)
 	{
@@ -53,6 +54,7 @@ public class GCMoonConfigManager
 	        idItemCheeseCurd = 					configuration.get(configuration.CATEGORY_ITEM, 									"idItemCheeseCurd", 				10000)	.getInt(10000);
 	        idItemMeteoricIronRaw =				configuration.get(configuration.CATEGORY_ITEM, 									"idItemMeteoricIronRaw", 			10001)	.getInt(10001);
 	        idItemBlockCheese =					configuration.get(configuration.CATEGORY_ITEM, 									"idItemBlockCheese", 				10002)	.getInt(10002);
+	        idItemMeteoricIronIngot =			configuration.get(configuration.CATEGORY_ITEM, 									"idItemMeteoricIronIngot", 			10003)	.getInt(10003);
 	        
 	        idBlockMoonStone = 					configuration.get(configuration.CATEGORY_BLOCK, 								"idBlockMoonStone", 				219)	.getInt(219);
 	        idBlockMoonGrass = 					configuration.get(configuration.CATEGORY_BLOCK, 								"idBlockMoonGrass", 				220)	.getInt(220);
