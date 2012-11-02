@@ -1,9 +1,12 @@
 package micdoodle8.mods.galacticraft.moon;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.List;
 
 import micdoodle8.mods.galacticraft.core.GCCoreLocalization;
+import micdoodle8.mods.galacticraft.core.GCCorePlayerHandler;
 import net.minecraft.src.World;
 import net.minecraftforge.common.DimensionManager;
 import cpw.mods.fml.common.ITickHandler;
@@ -12,6 +15,7 @@ import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 
 /**
@@ -23,6 +27,9 @@ import cpw.mods.fml.common.registry.TickRegistry;
 public class GalacticraftMoon
 {
 	public static GCCoreLocalization lang;
+	
+	public static List moonPlayers = new ArrayList();
+	public static List gcMoonPlayers = new ArrayList();
 	
 	public void preInit(FMLPreInitializationEvent event)
 	{
@@ -43,6 +50,7 @@ public class GalacticraftMoon
 	{
 		DimensionManager.registerProviderType(GCMoonConfigManager.dimensionIDMoon, GCMoonWorldProvider.class, true);
 		DimensionManager.registerDimension(GCMoonConfigManager.dimensionIDMoon, GCMoonConfigManager.dimensionIDMoon);
+		GameRegistry.registerPlayerTracker(new GCMoonPlayerHandler());
 	}
 	
 	public void serverInit(FMLServerStartedEvent event)
