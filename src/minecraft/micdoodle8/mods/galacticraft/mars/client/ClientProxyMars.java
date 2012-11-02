@@ -185,7 +185,7 @@ public class ClientProxyMars extends CommonProxyMars
         		{
         			((GCMarsItemJetpack)player.inventory.armorItemInSlot(2).getItem()).setActive();
         			player.motionY -= 0.062D;
-        			player.motionY += (0.05 + ((player.rotationPitch * 2) / 180) * 0.05);
+        			player.motionY += (0.07 + ((player.rotationPitch * 2) / 180) * 0.07);
         			player.fallDistance = 0;
             		world.spawnParticle("largesmoke", player.posX, player.posY - 1D, player.posZ, 0, -0.1, 0);
         		}
