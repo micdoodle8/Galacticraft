@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core;
 
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.moon.GCMoonItems;
 import net.minecraft.src.Block;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityFallingSand;
@@ -28,6 +29,18 @@ public class GCCoreBlockFallenMeteor extends GCCoreBlock
     public boolean isOpaqueCube()
     {
         return false;
+    }
+	
+	@Override
+    public int quantityDroppedWithBonus(int par1, Random par2Random)
+    {
+        return par2Random.nextInt(5) == 0 ? 1 : 0;
+    }
+
+	@Override
+    public int idDropped(int par1, Random par2Random, int par3)
+    {
+        return GCMoonItems.meteoricIronRaw.shiftedIndex;
     }
 
 	@Override
