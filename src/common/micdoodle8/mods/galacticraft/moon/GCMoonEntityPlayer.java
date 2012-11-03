@@ -52,7 +52,7 @@ public class GCMoonEntityPlayer
 		{
 			EntityPlayerMP player = (EntityPlayerMP) event.entityLiving;
 			
-			if (this.currentPlayer.worldObj != null && this.currentPlayer.worldObj.provider instanceof GCMoonWorldProvider)
+			if (this.currentPlayer.worldObj != null && this.currentPlayer.worldObj.provider instanceof GCMoonWorldProvider && !this.currentPlayer.isAirBorne)
 			{
 				if (this.currentPlayer.worldObj.getBlockId(MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posY - 1), MathHelper.floor_double(player.posZ)) == GCMoonBlocks.moonGrass.blockID)
 				{
