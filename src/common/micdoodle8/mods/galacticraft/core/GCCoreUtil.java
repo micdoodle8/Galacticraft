@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.moon.GCMoonItems;
 import net.minecraft.src.Block;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityPlayer;
@@ -26,79 +27,148 @@ public class GCCoreUtil
 {
 	public static void addCraftingRecipes()
 	{
-		// TODO
-		GameRegistry.addRecipe(new ItemStack(GCCoreItems.aluminumCanister, 3), new Object[] {
+		GameRegistry.addRecipe(new ItemStack(GCCoreItems.rocketEngine, 1), new Object[] {
+			" YV",
+			"XWX",
+			"XZX",
+			'V', Block.button,
+			'W', GCCoreItems.aluminumCanister,
+			'X', GCCoreItems.heavyPlating,
+			'Y', Item.flintAndSteel,
+			'Z', GCCoreItems.airVent
+		});
+		GameRegistry.addRecipe(new ItemStack(GCCoreItems.rocketEngine, 1), new Object[] {
+			"VY ",
+			"XWX",
+			"XZX",
+			'V', Block.button,
+			'W', GCCoreItems.aluminumCanister,
+			'X', GCCoreItems.heavyPlating,
+			'Y', Item.flintAndSteel,
+			'Z', GCCoreItems.airVent
+		});
+		GameRegistry.addRecipe(new ItemStack(GCCoreItems.heavyPlating, 1), new Object[] {
+			"XYZ",
+			"XYZ",
+			"XYZ",
+			'X', GCCoreItems.ingotTitanium,
+			'Y', GCCoreItems.ingotCopper,
+			'Z', GCCoreItems.ingotAluminum
+		});
+		GameRegistry.addRecipe(new ItemStack(GCCoreItems.rocketNoseCone, 1), new Object[] {
+			" Y ",
+			" X ",
+			"X X",
+			'X', GCCoreItems.heavyPlating,
+			'Y', Block.torchRedstoneActive
+		});
+		GameRegistry.addRecipe(new ItemStack(GCCoreItems.rocketFins, 1), new Object[] {
+			" Y ",
+			"XYX",
+			"X X",
+			'X', GCCoreItems.heavyPlating,
+			'Y', GCCoreItems.ingotAluminum
+		});
+		GameRegistry.addRecipe(new ItemStack(GCCoreBlocks.landingPad, 1), new Object[] {
+			"YYY",
+			"XXX",
+			'X', Block.blockSteel,
+			'Y', GCCoreItems.ingotAluminum
+		});
+		GameRegistry.addRecipe(new ItemStack(GCCoreBlocks.airDistributor, 1), new Object[] {
+			"WXW",
+			"YZY",
+			"WXW",
+			'W', GCCoreItems.ingotAluminum,
+			'X', GCCoreItems.airFan,
+			'Y', GCCoreItems.airVent,
+			'Z', GCCoreItems.ingotTitanium
+		});
+		GameRegistry.addRecipe(new ItemStack(GCCoreBlocks.blockAirCollector, 1), new Object[] {
+			"WWW",
+			"YXZ",
+			"WVW",
+			'W', GCCoreItems.oxygenConcentrator,
+			'W', GCCoreItems.ingotTitanium,
+			'X', GCCoreItems.aluminumCanister,
+			'Y', GCCoreItems.airFan,
+			'Z', GCCoreItems.airVent
+		});
+		GameRegistry.addRecipe(new ItemStack(GCCoreBlocks.oxygenPipe, 1), new Object[] {
+			"XXX",
+			"   ",
+			"XXX",
+			'X', Block.thinGlass
+		});
+		GameRegistry.addRecipe(new ItemStack(GCCoreItems.lightOxygenTankFull, 1), new Object[] {
+			"Z",
+			"X",
+			"Y",
+			'X', GCCoreItems.aluminumCanister,
+			'Y', GCCoreItems.ingotCopper,
+			'Z', new ItemStack(Block.cloth, 1, 5)
+		});
+		GameRegistry.addRecipe(new ItemStack(GCCoreItems.medOxygenTankFull, 1), new Object[] {
+			"ZZ",
+			"XX",
+			"YY",
+			'X', GCCoreItems.aluminumCanister,
+			'Y', GCCoreItems.ingotAluminum,
+			'Z', new ItemStack(Block.cloth, 1, 1)
+		});
+		GameRegistry.addRecipe(new ItemStack(GCCoreItems.heavyOxygenTankFull, 1), new Object[] {
+			"ZZZ",
+			"XXX",
+			"YYY",
+			'X', GCCoreItems.aluminumCanister,
+			'Y', GCCoreItems.ingotTitanium,
+			'Z', new ItemStack(Block.cloth, 1, 14)
+		});
+		// TODO sensor lens...
+		GameRegistry.addRecipe(new ItemStack(GCCoreItems.sensorGlasses, 1), new Object[] {
+			"ZYZ",
+			"YXY",
+			"ZYZ",
+			'X', GCCoreItems.aluminumCanister,
+			'Y', GCCoreItems.ingotTitanium,
+			'Z', new ItemStack(Block.cloth, 1, 14)
+		});
+		GameRegistry.addRecipe(new ItemStack(GCCoreItems.aluminumCanister, 1), new Object[] {
 			"X X",
 			"X X",
 			"XXX",
 			'X', GCCoreItems.ingotAluminum
 		});
-		GameRegistry.addRecipe(new ItemStack(GCCoreItems.lightOxygenTankEmpty, 1), new Object[] {
-			"XYX",
+		GameRegistry.addRecipe(new ItemStack(GCCoreItems.airVent, 1), new Object[] {
+			"XX",
+			"XX",
+			'X', GCCoreItems.ingotAluminum
+		});
+		GameRegistry.addRecipe(new ItemStack(GCCoreItems.airFan, 1), new Object[] {
+			"Z Z",
+			" Y ",
+			"ZXZ",
+			'X', Item.redstone,
+			'Y', GCCoreItems.ingotTitanium,
+			'Z', GCCoreItems.ingotAluminum
+		});
+		GameRegistry.addRecipe(new ItemStack(GCCoreItems.airFan, 1), new Object[] {
+			"Z Z",
+			" Y ",
+			"ZXZ",
+			'X', Item.redstone,
+			'Y', GCCoreItems.ingotTitanium,
+			'Z', GCCoreItems.ingotAluminum
+		});
+		GameRegistry.addRecipe(new ItemStack(GCCoreItems.oxygenConcentrator, 1), new Object[] {
 			"ZWZ",
-			"ZAZ",
-			'X', Item.ingotIron, 
-			'Y', Block.button, 
-			'Z', GCCoreItems.ingotAluminum, 
-			'W', GCCoreItems.aluminumCanister,
-			'A', GCCoreItems.ingotTitanium
+			"WYW",
+			"ZXZ",
+			'W', GCCoreItems.ingotAluminum,
+			'X', GCCoreItems.airVent,
+			'Y', GCCoreItems.aluminumCanister,
+			'Z', GCCoreItems.ingotTitanium
 		});
-//		GameRegistry.addRecipe(new ItemStack(GCCoreItems.medOxygenTankEmpty, 1), new Object[] {
-//			"xxx",
-//			"ZWZ",
-//			"ZAZ",
-//			'x', GCCoreItems.ingotAluminum, 
-//			'Z', GCCoreItems.ingotDesh, 
-//			'W', GCCoreItems.lightOxygenTankEmpty,
-//			'A', GCCoreItems.ingotTitanium
-//		});
-//		GameRegistry.addRecipe(new ItemStack(GCCoreItems.medOxygenTankFull, 1), new Object[] {
-//			"xxx",
-//			"ZWZ",
-//			"ZAZ",
-//			'x', GCCoreItems.ingotAluminum, 
-//			'Z', GCCoreItems.ingotDesh, 
-//			'W', GCCoreItems.lightOxygenTankFull,
-//			'A', GCCoreItems.ingotTitanium
-//		});
-//		GameRegistry.addRecipe(new ItemStack(GCCoreItems.heavyOxygenTankEmpty, 1), new Object[] {
-//			"xxx",
-//			"ZWZ",
-//			"ZAZ",
-//			'x', GCCoreItems.ingotDesh, 
-//			'Z', GCCoreItems.ingotTitanium, 
-//			'W', GCCoreItems.medOxygenTankEmpty,
-//			'A', GCCoreItems.ingotQuandrium
-//		});
-//		GameRegistry.addRecipe(new ItemStack(GCCoreItems.heavyOxygenTankFull, 1), new Object[] {
-//			"xxx",
-//			"ZWZ",
-//			"ZAZ",
-//			'x', GCCoreItems.ingotDesh, 
-//			'Z', GCCoreItems.ingotTitanium, 
-//			'W', GCCoreItems.medOxygenTankFull,
-//			'A', GCCoreItems.ingotQuandrium
-//		});
-		GameRegistry.addRecipe(new ItemStack(GCCoreBlocks.blockAirCollector), new Object[] {
-			"aba",
-			"cdc",
-			"aea",
-			'a', GCCoreItems.airFan, 
-			'b', GCCoreItems.oxygenConcentrator, 
-			'c', GCCoreItems.airVent,
-			'd', GCCoreItems.aluminumCanister,
-			'e', GCCoreItems.ingotTitanium
-		});
-//		GameRegistry.addRecipe(new ItemStack(GCCoreBlocks.airDistributor), new Object[] {
-//			"aba",
-//			"cdc",
-//			"eee",
-//			'a', GCCoreItems.ingotDesh, 
-//			'b', GCCoreItems.airFan, 
-//			'c', GCCoreItems.airVent,
-//			'd', GCCoreItems.aluminumCanister,
-//			'e', GCCoreItems.ingotQuandrium
-//		});
 	}
 	
 	public static Packet250CustomPayload createPacket(String channel, int packetID, Object[] input)
