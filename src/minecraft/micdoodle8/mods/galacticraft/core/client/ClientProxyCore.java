@@ -352,7 +352,7 @@ public class ClientProxyCore extends CommonProxyCore
             {
     			if (player != null && player.ridingEntity != null && player.ridingEntity instanceof GCCoreEntitySpaceship)
         		{
-    				float f = (((GCCoreEntitySpaceship)player.ridingEntity).getTimeSinceLaunch() - 250F) / 50F;
+    				float f = (((GCCoreEntitySpaceship)player.ridingEntity).getTimeSinceLaunch() - 250F) / 175F;
     				
     				if (f < 0)
     				{
