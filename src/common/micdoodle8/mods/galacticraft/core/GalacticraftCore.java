@@ -99,8 +99,9 @@ public class GalacticraftCore
 
         LanguageRegistry.instance().addStringLocalization("itemGroup.galacticraft", lang.get("itemGroup.galacticraft"));
 		
+        GameRegistry.registerWorldGenerator(new GCCoreWorldGenVanilla());
         GCCoreUtil.addCraftingRecipes();
-//		GCCoreUtil.addSmeltingRecipes(); TODO
+		GCCoreUtil.addSmeltingRecipes();
 		NetworkRegistry.instance().registerGuiHandler(this, proxy);
 		GameRegistry.registerPlayerTracker(new GCCorePlayerHandler());
 		this.registerTileEntities();
