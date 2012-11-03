@@ -49,8 +49,8 @@ public class GCMoonBlockOre extends Block
 	{
 		switch (meta)
 		{
-		case 0:
-			return this.blockID; // TODO Return cheese item id
+		case 2:
+			return GCMoonItems.cheeseCurd.shiftedIndex;
 		default:
 			return this.blockID;
 		}
