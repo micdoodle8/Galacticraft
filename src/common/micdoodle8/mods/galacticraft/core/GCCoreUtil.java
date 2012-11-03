@@ -13,6 +13,7 @@ import micdoodle8.mods.galacticraft.moon.GCMoonItems;
 import net.minecraft.src.Block;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.FurnaceRecipes;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.Packet250CustomPayload;
@@ -47,7 +48,7 @@ public class GCCoreUtil
 			'Y', Item.flintAndSteel,
 			'Z', GCCoreItems.airVent
 		});
-		GameRegistry.addRecipe(new ItemStack(GCCoreItems.heavyPlating, 1), new Object[] {
+		GameRegistry.addRecipe(new ItemStack(GCCoreItems.heavyPlating, 2), new Object[] {
 			"XYZ",
 			"XYZ",
 			"XYZ",
@@ -169,6 +170,13 @@ public class GCCoreUtil
 			'Y', GCCoreItems.aluminumCanister,
 			'Z', GCCoreItems.ingotTitanium
 		});
+	}
+	
+	public static void addSmeltingRecipes()
+	{
+		FurnaceRecipes.smelting().addSmelting(GCCoreBlocks.blockOres.blockID, 0, new ItemStack(GCCoreItems.ingotCopper), 0.1F);
+		FurnaceRecipes.smelting().addSmelting(GCCoreBlocks.blockOres.blockID, 1, new ItemStack(GCCoreItems.ingotAluminum), 0.3F);
+		FurnaceRecipes.smelting().addSmelting(GCCoreBlocks.blockOres.blockID, 2, new ItemStack(GCCoreItems.ingotTitanium), 1.0F);
 	}
 	
 	public static Packet250CustomPayload createPacket(String channel, int packetID, Object[] input)
