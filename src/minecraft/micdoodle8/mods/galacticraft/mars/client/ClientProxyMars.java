@@ -64,7 +64,6 @@ public class ClientProxyMars extends CommonProxyMars
 	public void init(FMLInitializationEvent event) 
 	{
 		TickRegistry.registerTickHandler(new TickHandlerClient(), Side.CLIENT);
-		KeyBindingRegistry.registerKeyBinding(new GCKeyHandler());
         NetworkRegistry.instance().registerChannel(new ClientPacketHandler(), "GalacticraftMars", Side.CLIENT);
         this.fluidRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new GCMarsBlockRendererBacterialSludge(this.fluidRenderID));
