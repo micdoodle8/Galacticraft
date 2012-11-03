@@ -18,13 +18,11 @@ public class GCCoreItems
 	public static Item lightOxygenTankFull;
 	public static Item medOxygenTankFull;
 	public static Item heavyOxygenTankFull;
-	public static Item lightOxygenTankEmpty;
-	public static Item medOxygenTankEmpty;
-	public static Item heavyOxygenTankEmpty;
 	public static Item oxygenMask;
 	public static Item spaceship;
 	public static Item sensorGlasses;
 	public static Item sensorGlassesWithOxygenMask;
+	public static Item sensorLens;
 	
 	public static Item titaniumPickaxe;
 	public static Item titaniumAxe;
@@ -57,11 +55,8 @@ public class GCCoreItems
 	public static void initItems() 
 	{
 		lightOxygenTankFull = new GCCoreItemOxygenTank(GCCoreConfigManager.idItemLightOxygenTank).setMaxDamage(90).setIconIndex(0).setItemName("oxygenTankLightFull");
-		lightOxygenTankEmpty = new GCCoreItem(GCCoreConfigManager.idItemLightOxygenTankEmpty).setIconIndex(3).setItemName("oxygenTankLightEmpty");
 		medOxygenTankFull = new GCCoreItemOxygenTank(GCCoreConfigManager.idItemMedOxygenTank).setMaxDamage(90).setIconIndex(1).setItemName("oxygenTankMedFull");
-		medOxygenTankEmpty = new GCCoreItem(GCCoreConfigManager.idItemMedOxygenTankEmpty).setIconIndex(4).setItemName("oxygenTankMedEmpty");
 		heavyOxygenTankFull = new GCCoreItemOxygenTank(GCCoreConfigManager.idItemHeavyOxygenTank).setMaxDamage(90).setIconIndex(2).setItemName("oxygenTankHeavyFull");
-		heavyOxygenTankEmpty = new GCCoreItem(GCCoreConfigManager.idItemHeavyOxygenTankEmpty).setIconIndex(5).setItemName("oxygenTankHeavyEmpty");
 		oxygenMask = new GCCoreItemOxygenMask(GCCoreConfigManager.idArmorOxygenMask, OXYGENMASK, 5, 0).setIconIndex(6).setItemName("oxygenMask");
 		spaceship = new GCCoreItemSpaceship(GCCoreConfigManager.idItemSpaceship).setItemName("spaceship");
 		sensorGlasses = new GCCoreItemSensorGlasses(GCCoreConfigManager.idArmorSensorGlasses, SENSORGLASSES, 6, 0, false).setIconIndex(7).setItemName("sensorGlasses");
@@ -88,6 +83,7 @@ public class GCCoreItems
 		rocketEngine = new GCCoreItem(GCCoreConfigManager.idItemRocketEngine).setIconIndex(27).setItemName("rocketEngine");
 		rocketFins = new GCCoreItem(GCCoreConfigManager.idItemRocketFins).setIconIndex(28).setItemName("rocketFins");
 		rocketNoseCone = new GCCoreItem(GCCoreConfigManager.idItemRocketNoseCone).setIconIndex(29).setItemName("noseCone");
+		sensorLens = new GCCoreItem(GCCoreConfigManager.idItemSensorLens).setIconIndex(30).setItemName("sensorLens");
 	}
 	
 	public static void registerHarvestLevels()
@@ -102,11 +98,8 @@ public class GCCoreItems
 		addName(oxygenMask);
 		addName(spaceship);
 		addName(lightOxygenTankFull);
-		addName(lightOxygenTankEmpty);
 		addName(medOxygenTankFull);
-		addName(medOxygenTankEmpty);
 		addName(heavyOxygenTankFull);
-		addName(heavyOxygenTankEmpty);
 		addName(sensorGlasses);
 		addName(sensorGlassesWithOxygenMask);
 		addName(titaniumPickaxe);
@@ -130,6 +123,7 @@ public class GCCoreItems
 		addName(heavyPlating);
 		addName(rocketNoseCone);
 		addName(rocketFins);
+		addName(sensorLens);
 	}
 	
 	private static void addName(Item item)

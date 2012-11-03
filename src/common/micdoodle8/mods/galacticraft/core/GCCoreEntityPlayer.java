@@ -232,22 +232,20 @@ public class GCCoreEntityPlayer
 			ItemStack tankInSlot = playerTankInventory.getStackInSlot(0);
 			
 			int drainSpacing = GCCoreUtil.getDrainSpacing(tankInSlot);
-			
-			if (playerTankInventory.getStackInSlot(0) != null && this.airRemaining <= 0)
-			{
-				this.airRemaining = 0;
-				playerTankInventory.consumeTankInSlot(0);
-				this.airRemaining = 90;
-			}
-			
+						
 			if (player.worldObj.provider instanceof GalacticraftWorldProvider && !player.capabilities.isCreativeMode)
 	        {
+				if (tankInSlot == null)
+				{
+					this.airRemaining = 0;
+				}
+				
 				if (drainSpacing > 0)
 				{
 		    		this.airRemaining = 90 - tankInSlot.getItemDamage();
 				}
 				
-				if (drainSpacing > 0 && GalacticraftCore.instance.tick % drainSpacing == 0 && !isAABBInBreathableAirBlock()) 
+				if (drainSpacing > 0 && GalacticraftCore.instance.tick % drainSpacing == 0 && !isAABBInBreathableAirBlock() && (90 - tankInSlot.getItemDamage()) > 0) 
 		    	{
 		    		tankInSlot.damageItem(1, player);
 		    	}
@@ -305,6 +303,18 @@ public class GCCoreEntityPlayer
 				this.airRemaining = 90;
 			}
 		}
+		
+		if (!this.inSpaceship && this.currentPlayer.ridingEntity != null && this.currentPlayer.ridingEntity instanceof GCCoreEntitySpaceship)
+		{
+			this.currentPlayer.getEntityData().setBoolean("inSpaceship", true);
+		}
+		
+//		if (inSpaceship)
+//		{
+//			FMLLog.info("in");
+//			GalacticraftCore.proxy.displayChoosePlanetGui();
+//			this.inSpaceship = false;
+//		}
 		
 		if (this.timeUntilPortal > 0)
 		{
@@ -412,6 +422,7 @@ public class GCCoreEntityPlayer
 		this.damageCounter = par1NBTTagCompound.getInteger("damageCounter");
         NBTTagList var2 = par1NBTTagCompound.getTagList("InventoryTankRefill");
         this.playerTankInventory.readFromNBT2(var2);
+        this.inSpaceship = par1NBTTagCompound.getBoolean("inSpaceship");
     }
 
     public void writeEntityToNBT()
