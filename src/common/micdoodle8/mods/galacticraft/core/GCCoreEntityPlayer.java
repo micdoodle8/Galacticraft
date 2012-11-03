@@ -311,7 +311,6 @@ public class GCCoreEntityPlayer
 		
 //		if (inSpaceship)
 //		{
-//			FMLLog.info("in");
 //			GalacticraftCore.proxy.displayChoosePlanetGui();
 //			this.inSpaceship = false;
 //		}
@@ -422,7 +421,7 @@ public class GCCoreEntityPlayer
 		this.damageCounter = par1NBTTagCompound.getInteger("damageCounter");
         NBTTagList var2 = par1NBTTagCompound.getTagList("InventoryTankRefill");
         this.playerTankInventory.readFromNBT2(var2);
-        this.inSpaceship = par1NBTTagCompound.getBoolean("inSpaceship");
+//        this.inSpaceship = par1NBTTagCompound.getBoolean("inSpaceship");
     }
 
     public void writeEntityToNBT()
