@@ -151,15 +151,6 @@ public class ClientProxyCore extends CommonProxyCore
         MinecraftForgeClient.registerItemRenderer(GCCoreBlocks.unlitTorch.blockID, new GCCoreItemRendererUnlitTorch());
         MinecraftForgeClient.registerItemRenderer(GCCoreItems.spaceship.shiftedIndex, new GCCoreItemRendererSpaceship());
 	}
-	
-	@Override
-	public void displayChoosePlanetGui()
-	{
-		if (FMLClientHandler.instance().getClient().theWorld != null && !(FMLClientHandler.instance().getClient().currentScreen instanceof GCCoreGuiChoosePlanet))
-		{
-			FMLClientHandler.instance().getClient().displayGuiScreen(new GCCoreGuiChoosePlanet(FMLClientHandler.instance().getClient().thePlayer));
-		}
-	}
 
 	@Override
     public World getClientWorld()
@@ -279,10 +270,13 @@ public class ClientProxyCore extends CommonProxyCore
             
             if (packetType == 0)
             {
-                Class[] decodeAs = {Integer.class};
+                Class[] decodeAs = {Integer.class, String.class};
                 Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
-
-                TickHandlerClient.airRemaining = (Integer) packetReadout[0];
+                
+                if (String.valueOf(packetReadout[1]).equals(String.valueOf(FMLClientHandler.instance().getClient().thePlayer.username)))
+                {
+                    TickHandlerClient.airRemaining = (Integer) packetReadout[0];
+                }
             }
             else if (packetType == 1)
             {
@@ -290,6 +284,19 @@ public class ClientProxyCore extends CommonProxyCore
                 Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
             	
                 FMLClientHandler.instance().getClient().thePlayer.timeInPortal = (Float) packetReadout[0];
+            }
+            else if (packetType == 2)
+            {
+                Class[] decodeAs = {String.class};
+                Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
+            	
+                if (String.valueOf(packetReadout).equals(FMLClientHandler.instance().getClient().thePlayer.username))
+                {
+            		if (FMLClientHandler.instance().getClient().theWorld != null && !(FMLClientHandler.instance().getClient().currentScreen instanceof GCCoreGuiChoosePlanet))
+            		{
+            			FMLClientHandler.instance().getClient().displayGuiScreen(new GCCoreGuiChoosePlanet(FMLClientHandler.instance().getClient().thePlayer));
+            		}
+                }
             }
 		}
     }

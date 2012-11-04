@@ -16,6 +16,7 @@ import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.World;
 import net.minecraft.src.WorldClient;
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
@@ -644,7 +645,9 @@ public class GCCoreEntitySpaceship extends Entity
 	    			
 	    			if (entityplayermp.username == playerBase.getPlayer().username)
 	    			{
-	    				GalacticraftCore.proxy.displayChoosePlanetGui();
+	    		    	Object[] toSend = {entityplayermp.username};
+	    		        FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(entityplayermp.username).playerNetServerHandler.sendPacketToPlayer(GCCoreUtil.createPacket("Galacticraft", 2, toSend));
+	    				
 	    				if (this.riddenByEntity != null)
 	    				{
 		            		riddenByEntity.mountEntity(this);

@@ -337,7 +337,7 @@ public class GCCoreEntityPlayer
 	            	var5 = 0;
 	            }
 
-	            player.mcServer.getConfigurationManager().transferPlayerToDimension(player, var5, new GCCoreTeleporter());
+	            player.mcServer.getConfigurationManager().transferPlayerToDimension(player, var5, new GCCoreTeleporter(player.mcServer.worldServerForDimension(var5)));
 	            player.timeUntilPortal = 10;
 	            
 	            Object[] toSend = {0.0F};
@@ -391,14 +391,18 @@ public class GCCoreEntityPlayer
     	if (this.currentPlayer instanceof EntityPlayerMP)
     	{
     		EntityPlayerMP player = (EntityPlayerMP) this.currentPlayer;
-            player.mcServer.getConfigurationManager().transferPlayerToDimension(player, par1, new GCCoreTeleporter());
+            player.mcServer.getConfigurationManager().transferPlayerToDimension(player, par1, new GCCoreTeleporter(player.mcServer.worldServerForDimension(par1)));
     	}
     }
     
     public void sendAirRemainingPacket()
     {
-    	Object[] toSend = {this.airRemaining};
-        FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.currentPlayer.username).playerNetServerHandler.sendPacketToPlayer(GCCoreUtil.createPacket("Galacticraft", 0, toSend));
+    	Object[] toSend = {this.airRemaining, this.currentPlayer.username};
+    	
+    	if (FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.currentPlayer.username) != null)
+    	{
+            FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.currentPlayer.username).playerNetServerHandler.sendPacketToPlayer(GCCoreUtil.createPacket("Galacticraft", 0, toSend));
+    	}
     }
     
     public void setInPortal(int par1)
