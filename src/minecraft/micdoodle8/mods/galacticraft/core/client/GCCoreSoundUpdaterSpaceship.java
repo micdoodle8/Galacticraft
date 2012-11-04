@@ -50,18 +50,18 @@ public class GCCoreSoundUpdaterSpaceship implements IUpdatePlayerListBox
 
         if (var2 && !this.field_82473_d)
         {
-            this.field_82477_a.func_82469_c(this.field_82476_c);
+            this.field_82477_a.stopEntitySound(this.field_82476_c);
         }
 
         if (this.field_82474_e || !this.field_82472_g && this.field_82481_i == 0.0F && this.field_82478_j == 0.0F)
         {
             if (!var3)
             {
-                this.field_82477_a.func_82469_c(this.field_82475_b);
+                this.field_82477_a.stopEntitySound(this.field_82475_b);
 
                 if (var2 || this.field_82473_d)
                 {
-                    this.field_82477_a.func_82469_c(this.field_82476_c);
+                    this.field_82477_a.stopEntitySound(this.field_82476_c);
                 }
             }
 
@@ -73,15 +73,15 @@ public class GCCoreSoundUpdaterSpaceship implements IUpdatePlayerListBox
             }
         }
 
-        if (this.field_82475_b.getReversed() == 0 && !this.field_82477_a.func_82465_b(this.field_82475_b) && this.field_82481_i > 0.0F)
+        if (this.field_82475_b.getReversed() == 0 && !this.field_82477_a.isEntitySoundPlaying(this.field_82475_b) && this.field_82481_i > 0.0F)
         {
-            this.field_82477_a.func_82467_a("shuttle.sound", this.field_82475_b, this.field_82481_i, this.field_82480_h, false);
+            this.field_82477_a.playEntitySound("shuttle.sound", this.field_82475_b, this.field_82481_i, this.field_82480_h, false);
             this.field_82472_g = false;
             var1 = true;
         }
-        else if (this.field_82475_b.getReversed() == 1 && !this.field_82477_a.func_82465_b(this.field_82475_b) && this.field_82481_i > 0.0F)
+        else if (this.field_82475_b.getReversed() == 1 && !this.field_82477_a.isEntitySoundPlaying(this.field_82475_b) && this.field_82481_i > 0.0F)
         {
-            this.field_82477_a.func_82467_a("shuttle.sound", this.field_82475_b, this.field_82481_i, 1.0F, false);
+            this.field_82477_a.playEntitySound("shuttle.sound", this.field_82475_b, this.field_82481_i, 1.0F, false);
             this.field_82472_g = false;
             var1 = true;
         }
@@ -124,27 +124,27 @@ public class GCCoreSoundUpdaterSpaceship implements IUpdatePlayerListBox
         {
             if (this.field_82480_h != var6)
             {
-                this.field_82477_a.func_82463_b(this.field_82475_b, this.field_82480_h);
+                this.field_82477_a.setEntitySoundPitch(this.field_82475_b, this.field_82480_h);
             }
 
             if (this.field_82481_i != var5)
             {
-                this.field_82477_a.func_82468_a(this.field_82475_b, this.field_82481_i);
+                this.field_82477_a.setEntitySoundVolume(this.field_82475_b, this.field_82481_i);
             }
 
             if (this.field_82478_j != var7)
             {
-                this.field_82477_a.func_82468_a(this.field_82476_c, this.field_82478_j);
+                this.field_82477_a.setEntitySoundVolume(this.field_82476_c, this.field_82478_j);
             }
         }
 
         if (!var1)
         {
-            this.field_82477_a.func_82460_a(this.field_82475_b);
+            this.field_82477_a.updateSoundLocation(this.field_82475_b);
 
             if (this.field_82473_d)
             {
-                this.field_82477_a.func_82462_a(this.field_82476_c, this.field_82475_b);
+                this.field_82477_a.updateSoundLocation(this.field_82476_c, this.field_82475_b);
             }
         }
     }

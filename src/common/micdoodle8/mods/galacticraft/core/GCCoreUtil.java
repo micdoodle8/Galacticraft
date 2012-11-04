@@ -32,7 +32,7 @@ public class GCCoreUtil
 			" YV",
 			"XWX",
 			"XZX",
-			'V', Block.button,
+			'V', Block.stoneButton,
 			'W', GCCoreItems.aluminumCanister,
 			'X', GCCoreItems.heavyPlating,
 			'Y', Item.flintAndSteel,
@@ -42,7 +42,7 @@ public class GCCoreUtil
 			"VY ",
 			"XWX",
 			"XZX",
-			'V', Block.button,
+			'V', Block.stoneButton,
 			'W', GCCoreItems.aluminumCanister,
 			'X', GCCoreItems.heavyPlating,
 			'Y', Item.flintAndSteel,
@@ -70,7 +70,7 @@ public class GCCoreUtil
 			'X', GCCoreItems.heavyPlating,
 			'Y', GCCoreItems.ingotAluminum
 		});
-		GameRegistry.addRecipe(new ItemStack(GCCoreBlocks.landingPad, 1), new Object[] {
+		GameRegistry.addRecipe(new ItemStack(GCCoreBlocks.landingPad, 9), new Object[] {
 			"YYY",
 			"XXX",
 			'X', Block.blockSteel,
@@ -94,6 +94,14 @@ public class GCCoreUtil
 			'X', GCCoreItems.aluminumCanister,
 			'Y', GCCoreItems.airFan,
 			'Z', GCCoreItems.airVent
+		});
+		GameRegistry.addRecipe(new ItemStack(GCCoreBlocks.rocketBench, 1), new Object[] {
+			"XXX",
+			"YZY",
+			"YYY",
+			'X', GCCoreItems.ingotAluminum,
+			'Y', Block.planks,
+			'Z', Block.workbench
 		});
 		GameRegistry.addRecipe(new ItemStack(GCCoreBlocks.oxygenPipe, 1), new Object[] {
 			"XXX",
@@ -153,13 +161,12 @@ public class GCCoreUtil
 			'Y', GCCoreItems.ingotTitanium,
 			'Z', GCCoreItems.ingotAluminum
 		});
-		GameRegistry.addRecipe(new ItemStack(GCCoreItems.airFan, 1), new Object[] {
-			"Z Z",
-			" Y ",
-			"ZXZ",
-			'X', Item.redstone,
-			'Y', GCCoreItems.ingotTitanium,
-			'Z', GCCoreItems.ingotAluminum
+		GameRegistry.addRecipe(new ItemStack(GCCoreItems.oxygenMask, 1), new Object[] {
+			"XXX",
+			"XYX",
+			"XXX",
+			'X', Block.thinGlass,
+			'Y', Item.helmetSteel
 		});
 		GameRegistry.addRecipe(new ItemStack(GCCoreItems.oxygenConcentrator, 1), new Object[] {
 			"ZWZ",

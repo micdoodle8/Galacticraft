@@ -52,7 +52,7 @@ public class GCMoonWorldProvider extends GalacticraftWorldProvider
 	@Override
     public Vec3 getFogColor(float var1, float var2)
     {
-        return this.worldObj.func_82732_R().getVecFromPool((double)100F / 255F, (double)107F / 255F, (double)125F / 255F);
+        return this.worldObj.getWorldVec3Pool().getVecFromPool((double)100F / 255F, (double)107F / 255F, (double)125F / 255F);
     }
 	
 	@Override

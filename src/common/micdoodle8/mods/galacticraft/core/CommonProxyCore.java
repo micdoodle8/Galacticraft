@@ -74,10 +74,6 @@ public class CommonProxyCore implements IGuiHandler
 		return null;
 	}
 	
-	public void displayChoosePlanetGui()
-	{
-	}
-	
     public void spawnParticle(String var1, double var2, double var4, double var6, double var8, double var10, double var12, boolean b) {}
 	
     public void spawnParticle(String var1, double var2, double var4, double var6, double var8, double var10, double var12, double var13, double var14, double var15, boolean b) {}

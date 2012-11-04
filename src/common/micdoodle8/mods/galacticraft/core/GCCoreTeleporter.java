@@ -7,6 +7,7 @@ import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.Teleporter;
 import net.minecraft.src.World;
+import net.minecraft.src.WorldServer;
 
 /**
  * Copyright 2012, micdoodle8
@@ -18,15 +19,16 @@ public class GCCoreTeleporter extends Teleporter
 {
 	private Random random;
 
-	public GCCoreTeleporter()
+	public GCCoreTeleporter(WorldServer par1WorldServer)
 	{
+		super(par1WorldServer);
 		random = new Random();
 	}
 
     @Override
-    public void placeInPortal(World world, Entity entity, double par3, double par5, double par7, float par9)
+    public void placeInPortal(Entity par1Entity, double par2, double par4, double par6, float par8)
     {
-		if (placeInExistingPortal(world, entity, par3, par5, par7, par9))
+		if (placeInExistingPortal(par1Entity, par2, par4, par6, par8))
 		{
 			return;
 		} 
@@ -37,7 +39,7 @@ public class GCCoreTeleporter extends Teleporter
 	}
 
     @Override
-    public boolean placeInExistingPortal(World world, Entity entity, double par3, double par5, double par7, float par9)
+    public boolean placeInExistingPortal(Entity par1Entity, double par2, double par4, double par6, float par8)
     {
 //		for (double i = 200; i > 10; i--)
 //		{
@@ -61,12 +63,12 @@ public class GCCoreTeleporter extends Teleporter
 //			}
 //		}
 		
-		if (!world.isRemote && entity instanceof EntityPlayer)
+		if (par1Entity instanceof EntityPlayer)
 		{
-			GCCoreEntitySpaceship ship = new GCCoreEntitySpaceship(world, entity.posX, 300, entity.posZ, true);
-			EntityPlayer player = (EntityPlayer) entity;
+			GCCoreEntitySpaceship ship = new GCCoreEntitySpaceship(par1Entity.worldObj, par1Entity.posX, 300, par1Entity.posZ, true);
+			EntityPlayer player = (EntityPlayer) par1Entity;
 			
-			world.spawnEntityInWorld(ship);
+			par1Entity.worldObj.spawnEntityInWorld(ship);
 			
 			player.mountEntity(ship);
 			ship.timeSinceEntityEntry = 20;

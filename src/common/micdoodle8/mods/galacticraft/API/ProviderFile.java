@@ -172,7 +172,7 @@
 //	@Override
 //    public Vec3 getFogColor(float var1, float var2)
 //    {
-//        return this.worldObj.func_82732_R().getVecFromPool((double)GalacticraftCore.loader.dimensions.get(this.dimensionId).fogRed / 255F, (double)GalacticraftCore.loader.dimensions.get(this.dimensionId).fogGreen / 255F, (double)GalacticraftCore.loader.dimensions.get(this.dimensionId).fogBlue / 255F);
+//        return this.worldObj.getWorldVec3Pool().getVecFromPool((double)GalacticraftCore.loader.dimensions.get(this.dimensionId).fogRed / 255F, (double)GalacticraftCore.loader.dimensions.get(this.dimensionId).fogGreen / 255F, (double)GalacticraftCore.loader.dimensions.get(this.dimensionId).fogBlue / 255F);
 //    }
 //	
 //	@Override

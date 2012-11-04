@@ -43,7 +43,7 @@ public class GCCoreContainerAirDistributor extends Container
 
 
 	@Override
-    public ItemStack func_82846_b(EntityPlayer par1EntityPlayer, int par1)
+    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par1)
     {
         ItemStack stack = null;
         Slot slotObj = (Slot)this.inventorySlots.get(par1);

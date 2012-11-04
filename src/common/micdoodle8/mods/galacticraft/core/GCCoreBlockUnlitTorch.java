@@ -105,36 +105,36 @@ public class GCCoreBlockUnlitTorch extends GCCoreBlock
      * called before onBlockPlacedBy by ItemBlock and ItemReed
      */
     @Override
-	public void updateBlockMetadata(World par1World, int par2, int par3, int par4, int par5, float par6, float par7, float par8)
+    public int func_85104_a(World par1World, int par2, int par3, int par4, int par5, float par6, float par7, float par8, int par9)
     {
-        int var9 = par1World.getBlockMetadata(par2, par3, par4);
+        int var10 = par9;
 
         if (par5 == 1 && this.canPlaceTorchOn(par1World, par2, par3 - 1, par4))
         {
-            var9 = 5;
+            var10 = 5;
         }
 
         if (par5 == 2 && par1World.isBlockSolidOnSide(par2, par3, par4 + 1, NORTH, true))
         {
-            var9 = 4;
+            var10 = 4;
         }
 
         if (par5 == 3 && par1World.isBlockSolidOnSide(par2, par3, par4 - 1, SOUTH, true))
         {
-            var9 = 3;
+            var10 = 3;
         }
 
         if (par5 == 4 && par1World.isBlockSolidOnSide(par2 + 1, par3, par4, WEST, true))
         {
-            var9 = 2;
+            var10 = 2;
         }
 
         if (par5 == 5 && par1World.isBlockSolidOnSide(par2 - 1, par3, par4, EAST, true))
         {
-            var9 = 1;
+            var10 = 1;
         }
 
-        par1World.setBlockMetadataWithNotify(par2, par3, par4, var9);
+        return var10;
     }
 
     /**

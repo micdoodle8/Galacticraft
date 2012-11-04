@@ -17,6 +17,7 @@ import net.minecraft.src.EntityAIWatchClosest;
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EntityVillager;
+import net.minecraft.src.EntityZombie;
 import net.minecraft.src.EnumCreatureAttribute;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
@@ -30,7 +31,7 @@ import cpw.mods.fml.common.asm.SideOnly;
 
 public class GCCoreEntityZombie extends GCCoreEntityMob
 {
-    private int field_82234_d = 0;
+    private int conversionTime = 0;
 
     public GCCoreEntityZombie(World par1World)
     {
@@ -52,10 +53,6 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityVillager.class, 16.0F, 0, false));
     }
 
-    /**
-     * This method returns a value to be applied directly to entity speed, this factor is less than 1 when a slowdown
-     * potion effect is applied, more than 1 when a haste potion effect is applied and 2 for fleeing entities.
-     */
     public float getSpeedModifier()
     {
         return super.getSpeedModifier() * (this.isChild() ? 1.5F : 1.0F);
@@ -115,17 +112,26 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
         return this.getDataWatcher().getWatchableObjectByte(12) == 1;
     }
 
-    public void func_82227_f(boolean par1)
+    /**
+     * Set whether this zombie is a child.
+     */
+    public void setChild(boolean par1)
     {
         this.getDataWatcher().updateObject(12, Byte.valueOf((byte)1));
     }
 
-    public boolean func_82231_m()
+    /**
+     * Return whether this zombie is a villager.
+     */
+    public boolean isVillager()
     {
         return this.getDataWatcher().getWatchableObjectByte(13) == 1;
     }
 
-    public void func_82229_g(boolean par1)
+    /**
+     * Set whether this zombie is a villager.
+     */
+    public void setVillager(boolean par1)
     {
         this.getDataWatcher().updateObject(13, Byte.valueOf((byte)(par1 ? 1 : 0)));
     }
@@ -154,7 +160,7 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
                         if (var3.getItemDamageForDisplay() >= var3.getMaxDamage())
                         {
                             this.renderBrokenItemStack(var3);
-                            this.func_70062_b(4, (ItemStack)null);
+                            this.setCurrentItemOrArmor(4, (ItemStack)null);
                         }
                     }
 
@@ -178,19 +184,22 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
     {
         if (!this.worldObj.isRemote && this.func_82230_o())
         {
-            int var1 = this.func_82233_q();
-            this.field_82234_d -= var1;
+            int var1 = this.getConversionTimeBoost();
+            this.conversionTime -= var1;
 
-            if (this.field_82234_d <= 0)
+            if (this.conversionTime <= 0)
             {
-                this.func_82232_p();
+                this.convertToVillager();
             }
         }
 
         super.onUpdate();
     }
 
-    public int func_82193_c(Entity par1Entity)
+    /**
+     * Returns the amount of damage a mob should deal.
+     */
+    public int getAttackStrength(Entity par1Entity)
     {
         ItemStack var2 = this.getHeldItem();
         int var3 = 4;
@@ -232,7 +241,7 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
      */
     protected void playStepSound(int par1, int par2, int par3, int par4)
     {
-        this.worldObj.playSoundAtEntity(this, "mob.zombie.step", 0.15F, 1.0F);
+        this.func_85030_a("mob.zombie.step", 0.15F, 1.0F);
     }
 
     /**
@@ -259,10 +268,10 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
                 this.dropItem(Item.ingotIron.shiftedIndex, 1);
                 break;
             case 1:
-                this.dropItem(Item.field_82797_bK.shiftedIndex, 1);
+                this.dropItem(Item.carrot.shiftedIndex, 1);
                 break;
             case 2:
-                this.dropItem(Item.field_82794_bL.shiftedIndex, 1);
+                this.dropItem(Item.potatoe.shiftedIndex, 1);
         }
     }
 
@@ -276,11 +285,11 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
 
             if (var1 == 0)
             {
-                this.func_70062_b(0, new ItemStack(Item.swordSteel));
+                this.setCurrentItemOrArmor(0, new ItemStack(Item.swordSteel));
             }
             else
             {
-                this.func_70062_b(0, new ItemStack(Item.shovelSteel));
+                this.setCurrentItemOrArmor(0, new ItemStack(Item.shovelSteel));
             }
         }
     }
@@ -297,12 +306,12 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
             par1NBTTagCompound.setBoolean("IsBaby", true);
         }
 
-        if (this.func_82231_m())
+        if (this.isVillager())
         {
             par1NBTTagCompound.setBoolean("IsVillager", true);
         }
 
-        par1NBTTagCompound.setInteger("ConversionTime", this.func_82230_o() ? this.field_82234_d : -1);
+        par1NBTTagCompound.setInteger("ConversionTime", this.func_82230_o() ? this.conversionTime : -1);
     }
 
     /**
@@ -314,17 +323,17 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
 
         if (par1NBTTagCompound.getBoolean("IsBaby"))
         {
-            this.func_82227_f(true);
+            this.setChild(true);
         }
 
         if (par1NBTTagCompound.getBoolean("IsVillager"))
         {
-            this.func_82229_g(true);
+            this.setVillager(true);
         }
 
         if (par1NBTTagCompound.hasKey("ConversionTime") && par1NBTTagCompound.getInteger("ConversionTime") > -1)
         {
-            this.func_82228_a(par1NBTTagCompound.getInteger("ConversionTime"));
+            this.startConversion(par1NBTTagCompound.getInteger("ConversionTime"));
         }
     }
 
@@ -342,15 +351,15 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
                 return;
             }
 
-            GCCoreEntityZombie var2 = new GCCoreEntityZombie(this.worldObj);
+            EntityZombie var2 = new EntityZombie(this.worldObj);
             var2.func_82149_j(par1EntityLiving);
             this.worldObj.setEntityDead(par1EntityLiving);
-            var2.func_82163_bD();
-            var2.func_82229_g(true);
+            var2.initCreature();
+            var2.setVillager(true);
 
             if (par1EntityLiving.isChild())
             {
-                var2.func_82227_f(true);
+                var2.setChild(true);
             }
 
             this.worldObj.spawnEntityInWorld(var2);
@@ -358,13 +367,16 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
         }
     }
 
-    public void func_82163_bD()
+    /**
+     * Initialize this creature.
+     */
+    public void initCreature()
     {
-        this.field_82172_bs = this.rand.nextFloat() < field_82181_as[this.worldObj.difficultySetting];
+        this.canPickUpLoot = this.rand.nextFloat() < field_82181_as[this.worldObj.difficultySetting];
 
         if (this.worldObj.rand.nextFloat() < 0.05F)
         {
-            this.func_82229_g(true);
+            this.setVillager(true);
         }
 
         this.func_82164_bB();
@@ -372,12 +384,12 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
 
         if (this.getCurrentItemOrArmor(4) == null)
         {
-            Calendar var1 = this.worldObj.func_83015_S();
+            Calendar var1 = this.worldObj.getCurrentDate();
 
             if (var1.get(2) + 1 == 10 && var1.get(5) == 31 && this.rand.nextFloat() < 0.25F)
             {
-                this.func_70062_b(4, new ItemStack(this.rand.nextFloat() < 0.1F ? Block.pumpkinLantern : Block.pumpkin));
-                this.field_82174_bp[4] = 0.0F;
+                this.setCurrentItemOrArmor(4, new ItemStack(this.rand.nextFloat() < 0.1F ? Block.pumpkinLantern : Block.pumpkin));
+                this.equipmentDropChances[4] = 0.0F;
             }
         }
     }
@@ -389,7 +401,7 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
     {
         ItemStack var2 = par1EntityPlayer.getCurrentEquippedItem();
 
-        if (var2 != null && var2.getItem() == Item.appleGold && var2.getItemDamage() == 0 && this.func_82231_m() && this.isPotionActive(Potion.weakness))
+        if (var2 != null && var2.getItem() == Item.appleGold && var2.getItemDamage() == 0 && this.isVillager() && this.isPotionActive(Potion.weakness))
         {
             if (!par1EntityPlayer.capabilities.isCreativeMode)
             {
@@ -403,7 +415,7 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
 
             if (!this.worldObj.isRemote)
             {
-                this.func_82228_a(this.rand.nextInt(2401) + 3600);
+                this.startConversion(this.rand.nextInt(2401) + 3600);
             }
 
             return true;
@@ -414,11 +426,15 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
         }
     }
 
-    protected void func_82228_a(int par1)
+    /**
+     * Starts converting this zombie into a villager. The zombie converts into a villager after the specified time in
+     * ticks.
+     */
+    protected void startConversion(int par1)
     {
-        this.field_82234_d = par1;
+        this.conversionTime = par1;
         this.getDataWatcher().updateObject(14, Byte.valueOf((byte)1));
-        this.func_82170_o(Potion.weakness.id);
+        this.removePotionEffect(Potion.weakness.id);
         this.addPotionEffect(new PotionEffect(Potion.damageBoost.id, par1, Math.min(this.worldObj.difficultySetting - 1, 0)));
         this.worldObj.setEntityState(this, (byte)16);
     }
@@ -441,11 +457,14 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
         return this.getDataWatcher().getWatchableObjectByte(14) == 1;
     }
 
-    protected void func_82232_p()
+    /**
+     * Convert this zombie into a villager.
+     */
+    protected void convertToVillager()
     {
         EntityVillager var1 = new EntityVillager(this.worldObj);
         var1.func_82149_j(this);
-        var1.func_82163_bD();
+        var1.initCreature();
         var1.func_82187_q();
 
         if (this.isChild())
@@ -459,7 +478,10 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
         this.worldObj.playAuxSFXAtEntity((EntityPlayer)null, 1017, (int)this.posX, (int)this.posY, (int)this.posZ, 0);
     }
 
-    protected int func_82233_q()
+    /**
+     * Return the amount of time decremented from conversionTime every tick.
+     */
+    protected int getConversionTimeBoost()
     {
         int var1 = 1;
 
