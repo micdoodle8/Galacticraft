@@ -16,7 +16,7 @@ public class GCCoreWorldGenVanilla implements IWorldGenerator
 		{
 			this.generateSurface(10, GCCoreBlocks.blockOres.blockID, 8, random, 0, chunkX, chunkZ, world, 120);
 			this.generateSurface(5, GCCoreBlocks.blockOres.blockID, 12, random, 1, chunkX, chunkZ, world, 30);
-			this.generateSurface(1, GCCoreBlocks.blockOres.blockID, 6, random, 2, chunkX, chunkZ, world, 10);
+			this.generateSurface(3, GCCoreBlocks.blockOres.blockID, 7, random, 2, chunkX, chunkZ, world, 20);
 		}
 	}
 	
