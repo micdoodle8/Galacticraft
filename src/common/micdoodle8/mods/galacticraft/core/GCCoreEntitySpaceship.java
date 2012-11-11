@@ -1,5 +1,9 @@
 package micdoodle8.mods.galacticraft.core;
 
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
 import micdoodle8.mods.galacticraft.core.client.GCCoreSoundUpdaterSpaceship;
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.BlockRail;
@@ -15,8 +19,10 @@ import net.minecraft.src.MathHelper;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.World;
 import net.minecraft.src.WorldClient;
+import net.minecraftforge.common.DimensionManager;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
@@ -65,11 +71,14 @@ public class GCCoreEntitySpaceship extends Entity
     protected boolean failedLaunch;
     
     protected final IUpdatePlayerListBox field_82344_g;
+	
+	private boolean hasDroppedItem;
 
     public GCCoreEntitySpaceship(World par1World)
     {
         super(par1World);
         this.fuel = 0;
+        this.hasDroppedItem = false;
         this.preventEntitySpawning = true;
         this.setSize(0.98F, 4F);
         this.yOffset = this.height / 2.0F;
@@ -210,7 +219,7 @@ public class GCCoreEntitySpaceship extends Entity
 
                 GCCoreUtil.createNewExplosion(worldObj, this, this.posX, this.posY, this.posZ, 6, false);
                 
-				if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayer && !((EntityPlayer) this.riddenByEntity).capabilities.isCreativeMode)
+				if (this.worldObj.isRemote && !this.hasDroppedItem && this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayer && !((EntityPlayer) this.riddenByEntity).capabilities.isCreativeMode)
 				{
 					EntityItem var14 = new EntityItem(this.worldObj, MathHelper.floor_double(this.riddenByEntity.posX + 0.5D), MathHelper.floor_double(this.riddenByEntity.posY + 1D), MathHelper.floor_double(this.riddenByEntity.posZ + 0.5D), new ItemStack(GCCoreItems.spaceship));
 
@@ -219,6 +228,7 @@ public class GCCoreEntitySpaceship extends Entity
 			        var14.motionY = (float)this.rand.nextGaussian() * var15 + 0.2F;
 			        var14.motionZ = (float)this.rand.nextGaussian() * var15;
 			        this.worldObj.spawnEntityInWorld(var14);
+			        this.hasDroppedItem = true;
 				}
 				else if (this.riddenByEntity == null)
 				{
@@ -617,10 +627,6 @@ public class GCCoreEntitySpaceship extends Entity
     
     public void ignite()
     {
-    	if (this.ignite == 0)
-    	{
-//        	this.worldObj.playSoundEffect(this.posX, this.posY, this.posZ, "shuttle.sound", 1F, 1.4F);
-    	}
     	this.ignite = 1;
     }
     
@@ -638,14 +644,26 @@ public class GCCoreEntitySpaceship extends Entity
             {
         		EntityPlayerMP entityplayermp = (EntityPlayerMP)this.riddenByEntity;
         		
-
 	            for (int j = 0; j < GalacticraftCore.instance.gcPlayers.size(); ++j)
 	            {
 	    			GCCoreEntityPlayer playerBase = (GCCoreEntityPlayer) GalacticraftCore.instance.gcPlayers.get(j);
 	    			
-	    			if (entityplayermp.username == playerBase.getPlayer().username)
+	    			if (entityplayermp.username.equals(playerBase.getPlayer().username))
 	    			{
-	    		    	Object[] toSend = {entityplayermp.username};
+	    				Integer[] ids = DimensionManager.getIDs();
+	    		    	
+	    		    	Set set = GCCoreUtil.getArrayOfPossibleDimensions(ids).entrySet();
+	    		    	Iterator i = set.iterator();
+	    		    	
+	    		    	String temp = "";
+	    		    	
+	    		    	for (int k = 0; i.hasNext(); k++)
+	    		    	{
+	    		    		Map.Entry entry = (Map.Entry)i.next();
+	    		    		temp = (k == 0 ? temp.concat(String.valueOf(entry.getKey())) : temp.concat("." + String.valueOf(entry.getKey())));
+	    		    	}
+	    		    	
+	    		    	Object[] toSend = {entityplayermp.username, temp};
 	    		        FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(entityplayermp.username).playerNetServerHandler.sendPacketToPlayer(GCCoreUtil.createPacket("Galacticraft", 2, toSend));
 	    				
 	    				if (this.riddenByEntity != null)

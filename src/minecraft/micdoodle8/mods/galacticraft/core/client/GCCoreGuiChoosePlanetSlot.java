@@ -1,11 +1,15 @@
 package micdoodle8.mods.galacticraft.core.client;
 
+import micdoodle8.mods.galacticraft.API.IGalacticraftSubMod;
+import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.src.GuiSlot;
 import net.minecraft.src.Tessellator;
 
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
@@ -68,10 +72,33 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
             GL11.glDisable(GL11.GL_ALPHA_TEST);
             String lowercase = this.languageGui.getDestinations(languageGui)[par1].toLowerCase();
             Tessellator var3 = Tessellator.instance;
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, FMLClientHandler.instance().getClient().renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/planets/" + lowercase + ".png"));
+            
+    		for (IGalacticraftSubModClient mod : GalacticraftCore.clientSubMods)
+    		{
+    			String str = this.languageGui.getDestinations(languageGui)[par1].toLowerCase();
+    			
+    			if (str.contains("*"))
+    			{
+    				str = str.replace("*", "");
+    			}
+    			
+    			if (mod.getDimensionName().toLowerCase().equals(str))
+    			{
+    	            GL11.glBindTexture(GL11.GL_TEXTURE_2D, FMLClientHandler.instance().getClient().renderEngine.getTexture(mod.getPlanetSpriteDirectory() + mod.getDimensionName().toLowerCase() + ".png"));
 
-            if (this.languageGui.getDestinations(languageGui)[par1] == "Overworld")
+                    var3.startDrawingQuads();
+                    var3.addVertexWithUV(par2 - 10 - this.slotHeight * 0.9, 	par3 - 1 + this.slotHeight * 0.9, 	-90.0D, 0.35D, 0.65D);
+                    var3.addVertexWithUV(par2 - 10, 							par3 - 1 + this.slotHeight * 0.9, 	-90.0D, 0.65D, 0.65D);
+                    var3.addVertexWithUV(par2 - 10, 							par3 - 1, 							-90.0D, 0.65D, 0.35D);
+                    var3.addVertexWithUV(par2 - 10 - this.slotHeight * 0.9, 	par3 - 1, 							-90.0D, 0.35D, 0.35D);
+                    var3.draw();
+    			}
+    		}
+    		
+    		if (this.languageGui.getDestinations(languageGui)[par1].equals("Overworld"))
             {
+                GL11.glBindTexture(GL11.GL_TEXTURE_2D, FMLClientHandler.instance().getClient().renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/planets/overworld.png"));
+
                 var3.startDrawingQuads();
                 var3.addVertexWithUV(par2 - 10 - this.slotHeight * 0.9, 	par3 - 1 + this.slotHeight * 0.9, 	-90.0D, 0.0, 1.0);
                 var3.addVertexWithUV(par2 - 10, 							par3 - 1 + this.slotHeight * 0.9, 	-90.0D, 1.0, 1.0);
@@ -79,18 +106,9 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
                 var3.addVertexWithUV(par2 - 10 - this.slotHeight * 0.9, 	par3 - 1, 							-90.0D, 0.0, 0.0);
                 var3.draw();
             }
-            else if (this.languageGui.getDestinations(languageGui)[par1] == "Moon")
+            else if (this.languageGui.getDestinations(languageGui)[par1].equals("Moon"))
             {
                 GL11.glBindTexture(GL11.GL_TEXTURE_2D, FMLClientHandler.instance().getClient().renderEngine.getTexture("/terrain/moon.png"));
-                var3.startDrawingQuads();
-                var3.addVertexWithUV(par2 - 10 - this.slotHeight * 0.9, 	par3 - 1 + this.slotHeight * 0.9, 	-90.0D, 0.35D, 0.65D);
-                var3.addVertexWithUV(par2 - 10, 							par3 - 1 + this.slotHeight * 0.9, 	-90.0D, 0.65D, 0.65D);
-                var3.addVertexWithUV(par2 - 10, 							par3 - 1, 							-90.0D, 0.65D, 0.35D);
-                var3.addVertexWithUV(par2 - 10 - this.slotHeight * 0.9, 	par3 - 1, 							-90.0D, 0.35D, 0.35D);
-                var3.draw();
-            }
-            else
-            {
                 var3.startDrawingQuads();
                 var3.addVertexWithUV(par2 - 10 - this.slotHeight * 0.9, 	par3 - 1 + this.slotHeight * 0.9, 	-90.0D, 0.35D, 0.65D);
                 var3.addVertexWithUV(par2 - 10, 							par3 - 1 + this.slotHeight * 0.9, 	-90.0D, 0.65D, 0.65D);
@@ -104,7 +122,17 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
             GL11.glEnable(GL11.GL_ALPHA_TEST);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
     	}
-        this.languageGui.drawCenteredString(this.languageGui.fontRenderer, this.languageGui.getDestinations(languageGui)[par1], this.languageGui.width / 2, par3 + 3, 16777215);
+    	
+    	if (this.languageGui.isValidDestination(par1))
+    	{
+            this.languageGui.drawCenteredString(this.languageGui.fontRenderer, this.languageGui.getDestinations(languageGui)[par1], this.languageGui.width / 2, par3 + 3, 16777215);
+    	}
+    	else
+    	{
+    		String str = this.languageGui.getDestinations(languageGui)[par1];
+    		str = str.replace("*", "");
+            this.languageGui.drawCenteredString(this.languageGui.fontRenderer, str, this.languageGui.width / 2, par3 + 3, 16716305);
+    	}
     }
 
 	@Override

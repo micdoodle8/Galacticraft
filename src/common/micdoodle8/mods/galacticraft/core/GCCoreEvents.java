@@ -1,10 +1,12 @@
-package micdoodle8.mods.galacticraft.core.client;
+package micdoodle8.mods.galacticraft.core;
 
-import micdoodle8.mods.galacticraft.core.GCCoreBlocks;
 import net.minecraft.src.BlockSapling;
+import net.minecraft.src.WorldServer;
 import net.minecraftforge.event.Event.Result;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.player.BonemealEvent;
+import net.minecraftforge.event.world.WorldEvent;
+import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreEvents 
 {
@@ -22,5 +24,14 @@ public class GCCoreEvents
 		}
 		
 		event.setResult(Result.DENY);
+	}
+	
+	@ForgeSubscribe
+	public void onWorldLoad(WorldEvent.Load event)
+	{
+		if (event.world instanceof WorldServer)
+		{
+			((WorldServer)event.world).customTeleporters.add(new GCCoreTeleporter((WorldServer)event.world));
+		}
 	}
 }

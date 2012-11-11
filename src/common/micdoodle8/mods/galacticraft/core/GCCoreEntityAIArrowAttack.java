@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core;
 
+import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityAIBase;
 import net.minecraft.src.EntityArrow;
@@ -46,7 +47,7 @@ public class GCCoreEntityAIArrowAttack extends EntityAIBase
         this.worldObj = par1EntityLiving.worldObj;
         this.entityMoveSpeed = par2;
         this.rangedAttackID = par3;
-        if (par4 == 20 && this.worldObj.provider instanceof GalacticraftWorldProvider)
+        if (par4 == 20 && this.worldObj.provider instanceof IGalacticraftWorldProvider)
         {
             this.maxRangedAttackTime = par4;
         }
@@ -144,7 +145,7 @@ public class GCCoreEntityAIArrowAttack extends EntityAIBase
         {
         	Entity var1;
         	
-        	if (this.worldObj.provider instanceof GalacticraftWorldProvider)
+        	if (this.worldObj.provider instanceof IGalacticraftWorldProvider)
         	{
         		var1 = new GCCoreEntityArrow(this.worldObj, this.entityHost, this.attackTarget, 0.3F, 12.0F);
         	}

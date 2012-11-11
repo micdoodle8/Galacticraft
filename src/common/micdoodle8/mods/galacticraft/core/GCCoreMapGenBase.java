@@ -28,8 +28,8 @@ public class GCCoreMapGenBase
         {
             for (int var12 = par4 - var6; var12 <= par4 + var6; ++var12)
             {
-                long var13 = var11 * var7;
-                long var15 = var12 * var9;
+                long var13 = (long)var11 * var7;
+                long var15 = (long)var12 * var9;
                 this.rand.setSeed(var13 ^ var15 ^ par2World.getSeed());
                 this.recursiveGenerate(par2World, var11, var12, par3, par4, par5ArrayOfByte);
             }

@@ -38,14 +38,14 @@ public class GCMarsComponentCreeperPitRoom extends GCCoreStructureComponent
     @Override
     public void buildComponent(StructureComponent par1StructureComponent, List par2List, Random par3Random) 
     {
-//        int var4;
-//        
-//        for (var4 = 0; var4 < 4; ++var4)
-//        {
-//            int[] var5 = this.getValidOpening(par3Random, var4);
-//            
-//            this.makeCorridor(par2List, par3Random, 1, var5[0], var5[1], var5[2], this.width, 7, var4);
-//        }
+        int var4;
+        
+        for (var4 = 0; var4 < 4; ++var4)
+        {
+            int[] var5 = this.getValidOpening(par3Random, var4);
+            
+            this.makeCorridor(par2List, par3Random, 1, var5[0], var5[1], var5[2], this.width, 7, var4);
+        }
     }
     
     public int[] getValidOpening(Random var1, int var2)
@@ -75,7 +75,7 @@ public class GCMarsComponentCreeperPitRoom extends GCCoreStructureComponent
     	int var10 = (this.getCoordBaseMode() + cbm) % 4;
         int[] var11 = this.offsetCorridorCoords(x, y, z, width, var10);
         
-    	GCMarsComponentCreeperPitCorridor var12 = new GCMarsComponentCreeperPitCorridor(0 + var10, var11[0], var11[1], var11[2], height, 7, 30, var10);//new GCComponentCreeperPitCorridor(var3, var11[0], var11[1], var11[2], var7, var8, var10);
+    	GCMarsComponentCreeperPitCorridor var12 = new GCMarsComponentCreeperPitCorridor(10 + var10, var11[0], var11[1], var11[2], height, 7, 30, var10);//new GCComponentCreeperPitCorridor(var3, var11[0], var11[1], var11[2], var7, var8, var10);
 
     	if (var12 != null)
     	{
@@ -122,7 +122,7 @@ public class GCMarsComponentCreeperPitRoom extends GCCoreStructureComponent
     		{
     			for (int z = 0; z < 7; z++)
     			{
-    				if (x == 0 || x == 6 || z == 0 || z == 6 || y == 0)
+    				if ((x == 0 || x == 6 || z == 0 || z == 6) && (y == 0 || y > 7))
     				{
     					this.placeBlockAtCurrentPosition(world, GCMarsBlocks.creeperDungeonWall.blockID, 0, x, y, z, getBoundingBox());
     				}

@@ -1,11 +1,11 @@
 package micdoodle8.mods.galacticraft.core.client;
 
-import java.util.Iterator;
-import java.util.Map;
 import java.util.Random;
-import java.util.Set;
 
+import micdoodle8.mods.galacticraft.API.IGalacticraftSubMod;
+import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.FontRenderer;
 import net.minecraft.src.GuiButton;
@@ -16,7 +16,6 @@ import net.minecraft.src.ScaledResolution;
 import net.minecraft.src.StringTranslate;
 import net.minecraft.src.Tessellator;
 import net.minecraft.src.WorldProvider;
-import net.minecraftforge.common.DimensionManager;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
@@ -56,35 +55,26 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
 
     private static final String[] titlePanoramaPaths = new String[] {"/micdoodle8/mods/galacticraft/core/client/backgrounds/bg3.png"};
     
-    public GCCoreGuiChoosePlanet(EntityPlayer player)
+    public GCCoreGuiChoosePlanet(EntityPlayer player, String[] listOfDestinations)
     {
     	this.playerToSend = player;
-    	
-    	Integer[] ids = DimensionManager.getIDs();
-    	
-    	Set set = GCCoreUtil.getArrayOfPossibleDimensions(ids).entrySet();
-    	Iterator i = set.iterator();
-    	
-    	this.destinations = new String[set.size()];
-    	
-    	for (int k = 0; i.hasNext(); k++)
-    	{
-    		Map.Entry entry = (Map.Entry)i.next();
-    		destinations[k] = (String) entry.getKey();
-    	}
+    	this.destinations = listOfDestinations;
     }
     
     @Override
 	public void initGui()
     {
+    	if (!(this.planetSlots == null))
+            this.planetSlots.func_77207_a(2, 10, 10, 10);
+    	
+        this.planetSlots = new GCCoreGuiChoosePlanetSlot(this);
+        
     	if (!this.initialized)
     	{
-            this.planetSlots = new GCCoreGuiChoosePlanetSlot(this);
             this.initialized = true;
     	}
     	else
     	{
-            this.planetSlots.func_77207_a(2, 10, 10, 10);
     	}
 
         StringTranslate var1 = StringTranslate.getInstance();
@@ -315,7 +305,6 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         this.rotateAndBlurSkybox();
-        GL11.glViewport(0, 0, this.mc.displayWidth, this.mc.displayHeight);
         Tessellator var4 = Tessellator.instance;
         var4.startDrawingQuads();
         float var5 = this.width > this.height ? 120.0F / this.width : 120.0F / this.height;
@@ -337,10 +326,47 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     @Override
 	public void drawScreen(int par1, int par2, float par3)
     {
+    	String str = null;
+    	
     	if (this.initialized)
     	{
             this.planetSlots.drawScreen(par1, par2, par3);
             super.drawScreen(par1, par2, par3);
+    	}
+    	
+		for (IGalacticraftSubModClient mod : GalacticraftCore.clientSubMods)
+		{
+    		String dest = this.destinations[this.selectedSlot].toLowerCase();
+    		
+    		if (dest.contains("*"))
+    		{
+    			dest = dest.replace("*", "");
+    		}
+    		
+    		if (mod.getDimensionName().toLowerCase().equals(dest))
+    		{
+    			if (mod.getLanguageFile() != null)
+    			{
+    				str = mod.getLanguageFile().get("gui.choosePlanet.desc." + dest);
+    			}
+    		}
+    	}
+    	
+    	if (this.destinations[this.selectedSlot].toLowerCase().equals("overworld"))
+    	{
+    		str = GalacticraftCore.lang.get("gui.choosePlanet.desc.overworld");
+    	}
+    	
+    	if (str != null)
+    	{
+	    	String[] strArray = str.split("#");
+	    	
+	    	int j = 260 / strArray.length + 1;
+	    	
+	    	for (int i = 0; i < strArray.length; i++)
+	    	{
+	            this.drawCenteredString(this.fontRenderer, strArray[i], 50 + (i * j), this.height - 20, 16777215);
+	    	}
     	}
     }
     
@@ -373,10 +399,27 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     {
     	if (par1GuiButton.enabled)
     	{
-    		Integer dim = GCCoreUtil.getProviderForName(this.destinations[this.selectedSlot]).dimensionId;
-            Object[] toSend = {dim};
-            PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 2, toSend));
-            FMLClientHandler.instance().getClient().displayGuiScreen(null);
+    		if (isValidDestination(this.selectedSlot))
+    		{
+                Object[] toSend = {this.destinations[this.selectedSlot]};
+                PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 2, toSend));
+                FMLClientHandler.instance().getClient().displayGuiScreen(null);
+                ClientProxyCore.teleportCooldown = 300;
+    		}
+    	}
+    }
+    
+    public boolean isValidDestination(int i)
+    {
+    	String str = this.destinations[i];
+    	
+    	if (str.contains("*"))
+    	{
+    		return false;
+    	}
+    	else
+    	{
+    		return true;
     	}
     }
 

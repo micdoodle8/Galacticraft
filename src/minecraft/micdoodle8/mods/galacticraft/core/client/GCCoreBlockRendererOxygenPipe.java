@@ -1,9 +1,12 @@
 package micdoodle8.mods.galacticraft.core.client;
 
+import org.lwjgl.opengl.GL11;
+
 import micdoodle8.mods.galacticraft.core.GCCoreBlocks;
 import net.minecraft.src.Block;
 import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.RenderBlocks;
+import net.minecraft.src.Tessellator;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 public class GCCoreBlockRendererOxygenPipe implements ISimpleBlockRenderingHandler 
@@ -61,7 +64,40 @@ public class GCCoreBlockRendererOxygenPipe implements ISimpleBlockRenderingHandl
 	}
 
 	@Override
-	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) { }
+	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) 
+	{ 
+		float minSize = 0.4F;
+		float maxSize = 0.6F;
+		
+        Tessellator var3 = Tessellator.instance;
+        GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        renderer.setRenderMinMax(minSize, minSize, 0.0F, maxSize, maxSize, 1.0F);
+        var3.startDrawingQuads();
+        var3.setNormal(0.0F, -1.0F, 0.0F);
+        renderer.renderBottomFace(block, 0.0D, 0.0D, 0.0D, block.getBlockTextureFromSideAndMetadata(0, metadata));
+        var3.draw();
+        var3.startDrawingQuads();
+        var3.setNormal(0.0F, 1.0F, 0.0F);
+        renderer.renderTopFace(block, 0.0D, 0.0D, 0.0D, block.getBlockTextureFromSideAndMetadata(1, metadata));
+        var3.draw();
+        var3.startDrawingQuads();
+        var3.setNormal(0.0F, 0.0F, -1.0F);
+        renderer.renderEastFace(block, 0.0D, 0.0D, 0.0D, block.getBlockTextureFromSideAndMetadata(2, metadata));
+        var3.draw();
+        var3.startDrawingQuads();
+        var3.setNormal(0.0F, 0.0F, 1.0F);
+        renderer.renderWestFace(block, 0.0D, 0.0D, 0.0D, block.getBlockTextureFromSideAndMetadata(3, metadata));
+        var3.draw();
+        var3.startDrawingQuads();
+        var3.setNormal(-1.0F, 0.0F, 0.0F);
+        renderer.renderNorthFace(block, 0.0D, 0.0D, 0.0D, block.getBlockTextureFromSideAndMetadata(4, metadata));
+        var3.draw();
+        var3.startDrawingQuads();
+        var3.setNormal(1.0F, 0.0F, 0.0F);
+        renderer.renderSouthFace(block, 0.0D, 0.0D, 0.0D, block.getBlockTextureFromSideAndMetadata(5, metadata));
+        var3.draw();
+	}
 
 	@Override
 	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) 
@@ -73,7 +109,7 @@ public class GCCoreBlockRendererOxygenPipe implements ISimpleBlockRenderingHandl
 	@Override
 	public boolean shouldRender3DInInventory() 
 	{
-		return false;
+		return true;
 	}
 
 	@Override

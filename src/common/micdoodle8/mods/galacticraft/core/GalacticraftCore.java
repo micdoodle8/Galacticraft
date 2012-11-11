@@ -7,7 +7,8 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
-import micdoodle8.mods.galacticraft.core.client.GCCoreEvents;
+import micdoodle8.mods.galacticraft.API.IGalacticraftSubMod;
+import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
 import micdoodle8.mods.galacticraft.moon.GalacticraftMoon;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.EntityPlayerMP;
@@ -16,7 +17,6 @@ import net.minecraft.src.Packet250CustomPayload;
 import net.minecraft.src.Packet9Respawn;
 import net.minecraft.src.World;
 import net.minecraftforge.common.MinecraftForge;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
@@ -27,6 +27,7 @@ import cpw.mods.fml.common.Mod.ServerStarted;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.TickType;
+import cpw.mods.fml.common.asm.SideOnly;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -56,8 +57,6 @@ public class GalacticraftCore
 	@Instance("GalacticraftCore")
 	public static GalacticraftCore instance;
 	
-//	public static GalacticraftLoader loader = new GalacticraftLoader();
-	
 	public static GCCoreLocalization lang;
 	
 	public static GalacticraftMoon moon = new GalacticraftMoon();
@@ -67,14 +66,23 @@ public class GalacticraftCore
 	public static List players = new ArrayList();
 	public static List gcPlayers = new ArrayList();
 	
+	public static List<IGalacticraftSubMod> subMods = new ArrayList<IGalacticraftSubMod>();
+	@SideOnly(Side.CLIENT)
+	public static List<IGalacticraftSubModClient> clientSubMods = new ArrayList<IGalacticraftSubModClient>();
+	
 	public static final CreativeTabs galacticraftTab = new GCCoreCreativeTab(12, "galacticraft");
 	
 	@PreInit
 	public void preInit(FMLPreInitializationEvent event)
 	{
-//		loader.load(event.getModConfigurationDirectory().getParentFile());
+		moon.preLoad(event);
 		
-		moon.preInit(event);
+		this.registerSubMod(moon);
+		
+		for (IGalacticraftSubModClient mod : this.clientSubMods)
+		{
+			mod.preLoad();
+		}
 		
 		new GCCoreConfigManager(new File(event.getModConfigurationDirectory(), "Galacticraft/core.conf"));
 		
@@ -95,7 +103,15 @@ public class GalacticraftCore
 	@Init
 	public void init(FMLInitializationEvent event)
 	{
-		moon.init(event);
+		for (IGalacticraftSubMod mod : this.subMods)
+		{
+			mod.load(event);
+		}
+		
+		for (IGalacticraftSubModClient mod : this.clientSubMods)
+		{
+			mod.load();
+		}
 
         LanguageRegistry.instance().addStringLocalization("itemGroup.galacticraft", lang.get("itemGroup.galacticraft"));
 		
@@ -114,6 +130,16 @@ public class GalacticraftCore
 	@PostInit
 	public void postInit(FMLPostInitializationEvent event)
 	{
+		for (IGalacticraftSubMod mod : this.subMods)
+		{
+			mod.postLoad(event);
+		}
+		
+		for (IGalacticraftSubModClient mod : this.clientSubMods)
+		{
+			mod.postLoad();
+		}
+		
 		proxy.postInit(event);
 		proxy.registerRenderInformation();
 	}
@@ -125,6 +151,16 @@ public class GalacticraftCore
 		
         TickRegistry.registerTickHandler(new CommonTickHandler(), Side.SERVER);
         NetworkRegistry.instance().registerChannel(new ServerPacketHandler(), "Galacticraft", Side.SERVER);
+	}
+	
+	public static void registerSubMod(IGalacticraftSubMod mod)
+	{
+		subMods.add(mod);
+	}
+	
+	public static void registerClientSubMod(IGalacticraftSubModClient mod)
+	{
+		clientSubMods.add(mod);
 	}
 	
 	public void registerTileEntities()
@@ -189,7 +225,7 @@ public class GalacticraftCore
             }
             else if (packetType == 2)
             {
-                Class[] decodeAs = {Integer.class};
+                Class[] decodeAs = {String.class};
                 Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
                 
                 for (int j = 0; j < GalacticraftCore.instance.gcPlayers.size(); ++j)
@@ -198,9 +234,8 @@ public class GalacticraftCore
 	    			
 	    			if (player.username == playerBase.getPlayer().username)
 	    			{
-	    				playerBase.travelToTheEnd((Integer)packetReadout[0]);
-//	            		playerBase.timeUntilPortal = 150;
-//	    				playerBase.setInPortal((Integer)packetReadout[0]);
+	    	    		Integer dim = GCCoreUtil.getProviderForName((String)packetReadout[0]).dimensionId;
+	    				playerBase.travelToTheEnd(dim);
 	    			}
 	            }
             }

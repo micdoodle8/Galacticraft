@@ -8,6 +8,7 @@ import net.minecraft.src.MathHelper;
 import net.minecraft.src.Teleporter;
 import net.minecraft.src.World;
 import net.minecraft.src.WorldServer;
+import cpw.mods.fml.common.FMLLog;
 
 /**
  * Copyright 2012, micdoodle8
@@ -18,10 +19,12 @@ import net.minecraft.src.WorldServer;
 public class GCCoreTeleporter extends Teleporter 
 {
 	private Random random;
+    private final WorldServer worldServer;
 
 	public GCCoreTeleporter(WorldServer par1WorldServer)
 	{
 		super(par1WorldServer);
+		worldServer = par1WorldServer;
 		random = new Random();
 	}
 
@@ -37,6 +40,12 @@ public class GCCoreTeleporter extends Teleporter
 			return;
 		}
 	}
+    
+    @Override
+    public boolean func_85188_a(Entity par1Entity)
+    {
+    	return false;
+    }
 
     @Override
     public boolean placeInExistingPortal(Entity par1Entity, double par2, double par4, double par6, float par8)
@@ -62,13 +71,20 @@ public class GCCoreTeleporter extends Teleporter
 //		        return true;
 //			}
 //		}
+
+        int var9 = MathHelper.floor_double(par1Entity.posX);
+        int var10 = MathHelper.floor_double(par1Entity.posY) - 1;
+        int var11 = MathHelper.floor_double(par1Entity.posZ);
+        
+        par1Entity.setLocationAndAngles((double)var9, (double)300, (double)var11, par1Entity.rotationYaw, 0.0F);
+        par1Entity.motionX = par1Entity.motionY = par1Entity.motionZ = 0.0D;
 		
-		if (par1Entity instanceof EntityPlayer)
+		if (!this.worldServer.isRemote && par1Entity instanceof EntityPlayer)
 		{
-			GCCoreEntitySpaceship ship = new GCCoreEntitySpaceship(par1Entity.worldObj, par1Entity.posX, 300, par1Entity.posZ, true);
+			GCCoreEntitySpaceship ship = new GCCoreEntitySpaceship(worldServer, par1Entity.posX, 300, par1Entity.posZ, true);
 			EntityPlayer player = (EntityPlayer) par1Entity;
 			
-			par1Entity.worldObj.spawnEntityInWorld(ship);
+			worldServer.spawnEntityInWorld(ship);
 			
 			player.mountEntity(ship);
 			ship.timeSinceEntityEntry = 20;

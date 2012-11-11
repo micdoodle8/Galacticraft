@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.mars;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.mars.client.ClientProxyMars;
 import net.minecraft.src.Block;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.Item;
@@ -8,6 +9,8 @@ import net.minecraft.src.MapColor;
 import net.minecraft.src.Material;
 import net.minecraft.src.MaterialLiquid;
 import net.minecraftforge.common.MinecraftForge;
+import cpw.mods.fml.common.Side;
+import cpw.mods.fml.common.asm.SideOnly;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
@@ -65,6 +68,7 @@ public class GCMarsBlocks
 		GameRegistry.registerBlock(bacterialSludgeMoving);
 	}
 
+	@SideOnly(Side.CLIENT)
 	public static void addNames() 
 	{
 		addName(marsStone);
@@ -83,11 +87,11 @@ public class GCMarsBlocks
 	
 	private static void addName(Block block)
 	{
-		LanguageRegistry.instance().addStringLocalization(block.getBlockName() + ".name", GalacticraftMars.lang.get(block.getBlockName() + ".name"));
+		LanguageRegistry.instance().addStringLocalization(block.getBlockName() + ".name", ClientProxyMars.lang.get(block.getBlockName() + ".name"));
 	}
 	
 	private static void addNameWithMetadata(String string)
 	{
-		LanguageRegistry.instance().addStringLocalization(string, GalacticraftMars.lang.get(string));
+		LanguageRegistry.instance().addStringLocalization(string, ClientProxyMars.lang.get(string));
 	}
 }

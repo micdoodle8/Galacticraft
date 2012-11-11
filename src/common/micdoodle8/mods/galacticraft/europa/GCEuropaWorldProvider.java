@@ -1,4 +1,4 @@
-package micdoodle8.mods.galacticraft.mars;
+package micdoodle8.mods.galacticraft.europa;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
 import net.minecraft.src.Chunk;
@@ -14,14 +14,14 @@ import cpw.mods.fml.common.asm.SideOnly;
  *  All rights reserved.
  *
  */
-public class GCMarsWorldProvider extends WorldProvider implements IGalacticraftWorldProvider
+public class GCEuropaWorldProvider extends WorldProvider implements IGalacticraftWorldProvider
 {
     private float[] colorsSunriseSunset = new float[4];
     
-	public GCMarsWorldProvider()
+	public GCEuropaWorldProvider()
     {
-        this.setDimension(GCMarsConfigManager.dimensionIDMars);
-        this.dimensionId = GCMarsConfigManager.dimensionIDMars;
+        this.setDimension(GCEuropaConfigManager.dimensionIDEuropa);
+        this.dimensionId = GCEuropaConfigManager.dimensionIDEuropa;
     }
 	
 	@Override
@@ -45,7 +45,7 @@ public class GCMarsWorldProvider extends WorldProvider implements IGalacticraftW
 	@Override
     public void registerWorldChunkManager()
     {
-        this.worldChunkMgr = new GCMarsWorldChunkManager(this.worldObj, 0F);
+        this.worldChunkMgr = new GCEuropaWorldChunkManager(this.worldObj, 0F);
     }
     
     @Override
@@ -59,7 +59,7 @@ public class GCMarsWorldProvider extends WorldProvider implements IGalacticraftW
 	@Override
     public Vec3 getFogColor(float var1, float var2)
     {
-        return this.worldObj.getWorldVec3Pool().getVecFromPool((double)255F / 255F, (double)193F / 255F, (double)37F / 255F);
+        return this.worldObj.getWorldVec3Pool().getVecFromPool((double)100F / 255F, (double)100F / 255F, (double)100F / 255F);
     }
 	
 	@Override
@@ -97,7 +97,7 @@ public class GCMarsWorldProvider extends WorldProvider implements IGalacticraftW
 	@Override
     public IChunkProvider getChunkProvider()
     {
-        return new GCMarsChunkProvider(this.worldObj, this.worldObj.getSeed(), this.worldObj.getWorldInfo().isMapFeaturesEnabled());
+        return new GCEuropaChunkProvider(this.worldObj, this.worldObj.getSeed(), this.worldObj.getWorldInfo().isMapFeaturesEnabled());
     }
 	
 	@Override
@@ -136,8 +136,9 @@ public class GCMarsWorldProvider extends WorldProvider implements IGalacticraftW
     @Override
     public boolean canCoordinateBeSpawn(int var1, int var2)
     {
-        int var3 = this.worldObj.getFirstUncoveredBlock(var1, var2);
-        return var3 == GCMarsBlocks.marsGrass.blockID;
+    	return true;
+//        int var3 = this.worldObj.getFirstUncoveredBlock(var1, var2);
+//        return var3 == GCMarsBlocks.marsGrass.blockID;
     }
     
     @Override
@@ -149,25 +150,25 @@ public class GCMarsWorldProvider extends WorldProvider implements IGalacticraftW
     @Override
     public String getSaveFolder()
     {
-    	return "DIM" + GCMarsConfigManager.dimensionIDMars;
+    	return "DIM" + GCEuropaConfigManager.dimensionIDEuropa;
     }
 
     @Override
 	public String getWelcomeMessage()
     {
-        return "Entering Mars";
+        return "Entering Europa";
     }
 
     @Override
 	public String getDepartMessage()
     {
-        return "Leaving Mars";
+        return "Leaving Europa";
     }
 
 	@Override
 	public String getDimensionName() 
 	{
-		return "Mars";
+		return "Europa";
 	}
 
 	@Override
@@ -197,6 +198,6 @@ public class GCMarsWorldProvider extends WorldProvider implements IGalacticraftW
 	@Override
 	public float getGravity() 
 	{
-		return 0.005F;
+		return 0.069F;
 	}
 }

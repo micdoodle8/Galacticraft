@@ -2,7 +2,12 @@ package micdoodle8.mods.galacticraft.moon.client;
 
 import java.util.EnumSet;
 
+import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
+import micdoodle8.mods.galacticraft.core.GCCoreLocalization;
+import micdoodle8.mods.galacticraft.mars.GCMarsWorldProvider;
 import micdoodle8.mods.galacticraft.moon.CommonProxyMoon;
+import micdoodle8.mods.galacticraft.moon.GCMoonBlocks;
+import micdoodle8.mods.galacticraft.moon.GCMoonItems;
 import micdoodle8.mods.galacticraft.moon.GCMoonWorldProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.EntityClientPlayerMP;
@@ -18,25 +23,28 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.TickRegistry;
 
-public class ClientProxyMoon extends CommonProxyMoon
+public class ClientProxyMoon extends CommonProxyMoon implements IGalacticraftSubModClient
 {
+	public static GCCoreLocalization lang;
+	
 	@Override
-	public void preInit(FMLPreInitializationEvent event)
+	public void preLoad()
 	{
-		
+		lang = new GCCoreLocalization("micdoodle8/mods/galacticraft/moon/client");
 	}
 
 	@Override
-	public void init(FMLInitializationEvent event)
+	public void load()
 	{
 		TickRegistry.registerTickHandler(new TickHandlerClient(), Side.CLIENT);
         GCMoonColorizerGrass.setGrassBiomeColorizer(FMLClientHandler.instance().getClient().renderEngine.getTextureContents("/micdoodle8/mods/galacticraft/moon/client/blocks/moonfoliagecolor.png"));
 	}
 
 	@Override
-	public void postInit(FMLPostInitializationEvent event)
+	public void postLoad()
 	{
-		
+		GCMoonBlocks.addNames();
+		GCMoonItems.addNames();
 	}
 
 	@Override
@@ -94,4 +102,22 @@ public class ClientProxyMoon extends CommonProxyMoon
     		return EnumSet.of(TickType.CLIENT);
     	}
     }
+
+	@Override
+	public String getDimensionName() 
+	{
+		return "Moon";
+	}
+
+	@Override
+	public GCCoreLocalization getLanguageFile() 
+	{
+		return this.lang;
+	}
+
+	@Override
+	public String getPlanetSpriteDirectory() 
+	{
+		return "/micdoodle8/mods/galacticraft/moon/client/planets/";
+	}
 }

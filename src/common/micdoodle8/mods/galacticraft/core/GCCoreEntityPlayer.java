@@ -2,18 +2,19 @@ package micdoodle8.mods.galacticraft.core;
 
 import java.util.Hashtable;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Map.Entry;
 
+import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.mars.GCMarsBlocks;
 import micdoodle8.mods.galacticraft.moon.GCMoonWorldProvider;
 import net.minecraft.src.Block;
 import net.minecraft.src.DamageSource;
 import net.minecraft.src.Enchantment;
-import net.minecraft.src.EntityDamageSource;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EntityPlayerMP;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
+import net.minecraft.src.Material;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.NBTTagList;
@@ -21,7 +22,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
@@ -39,8 +39,6 @@ public class GCCoreEntityPlayer
 	public GCCoreInventoryTankRefill playerTankInventory = new GCCoreInventoryTankRefill();
 	
 	public boolean inPortal;
-	
-	public boolean inSpaceship;
 	
 	public int timeUntilPortal;
 	
@@ -103,16 +101,11 @@ public class GCCoreEntityPlayer
 	@ForgeSubscribe
 	public void onUpdate(LivingEvent event)
 	{
-		if (event.entityLiving instanceof EntityPlayerMP)
+		if (event.entityLiving instanceof EntityPlayer)
 		{
-			EntityPlayerMP player = (EntityPlayerMP) event.entityLiving;
+			EntityPlayer player = (EntityPlayer) event.entityLiving;
 			
-			if (player != null)
-			{
-				player.fallDistance = 0;
-			}
-			
-			if (player.worldObj.provider instanceof GalacticraftWorldProvider && player.inventory.getCurrentItem() != null)
+			if (player.worldObj.provider instanceof IGalacticraftWorldProvider && player.inventory.getCurrentItem() != null)
 	        {
 	        	int var1 = player.inventory.getCurrentItem().stackSize;
 	        	int var2 = player.inventory.getCurrentItem().getItemDamage();
@@ -167,7 +160,7 @@ public class GCCoreEntityPlayer
 					}
 				}
 	        }
-	        else if (!(player.worldObj.provider instanceof GalacticraftWorldProvider) && player.inventory.getCurrentItem() != null)
+	        else if (!(player.worldObj.provider instanceof IGalacticraftWorldProvider) && player.inventory.getCurrentItem() != null)
 	        {
 	        	int var1 = player.inventory.getCurrentItem().stackSize;
 	        	int var2 = player.inventory.getCurrentItem().getItemDamage();
@@ -233,7 +226,7 @@ public class GCCoreEntityPlayer
 			
 			int drainSpacing = GCCoreUtil.getDrainSpacing(tankInSlot);
 						
-			if (player.worldObj.provider instanceof GalacticraftWorldProvider && !player.capabilities.isCreativeMode)
+			if (player.worldObj.provider instanceof IGalacticraftWorldProvider && !player.capabilities.isCreativeMode)
 	        {
 				if (tankInSlot == null)
 				{
@@ -304,17 +297,6 @@ public class GCCoreEntityPlayer
 			}
 		}
 		
-		if (!this.inSpaceship && this.currentPlayer.ridingEntity != null && this.currentPlayer.ridingEntity instanceof GCCoreEntitySpaceship)
-		{
-			this.currentPlayer.getEntityData().setBoolean("inSpaceship", true);
-		}
-		
-//		if (inSpaceship)
-//		{
-//			GalacticraftCore.proxy.displayChoosePlanetGui();
-//			this.inSpaceship = false;
-//		}
-		
 		if (this.timeUntilPortal > 0)
 		{
 			this.timeUntilPortal--;
@@ -337,7 +319,14 @@ public class GCCoreEntityPlayer
 	            	var5 = 0;
 	            }
 
-	            player.mcServer.getConfigurationManager().transferPlayerToDimension(player, var5, new GCCoreTeleporter(player.mcServer.worldServerForDimension(var5)));
+	    		for (int i = 0; i < player.mcServer.worldServerForDimension(var5).customTeleporters.size(); i++)
+	    		{
+	    			if (player.mcServer.worldServerForDimension(var5).customTeleporters.get(i) instanceof GCCoreTeleporter)
+	    			{
+	        			player.mcServer.getConfigurationManager().transferPlayerToDimension(player, var5, player.mcServer.worldServerForDimension(var5).customTeleporters.get(i));
+	    			}
+	    		}
+	    		
 	            player.timeUntilPortal = 10;
 	            
 	            Object[] toSend = {0.0F};
@@ -391,7 +380,14 @@ public class GCCoreEntityPlayer
     	if (this.currentPlayer instanceof EntityPlayerMP)
     	{
     		EntityPlayerMP player = (EntityPlayerMP) this.currentPlayer;
-            player.mcServer.getConfigurationManager().transferPlayerToDimension(player, par1, new GCCoreTeleporter(player.mcServer.worldServerForDimension(par1)));
+    		for (int i = 0; i < player.mcServer.worldServerForDimension(par1).customTeleporters.size(); i++)
+    		{
+    			if (player.mcServer.worldServerForDimension(par1).customTeleporters.get(i) instanceof GCCoreTeleporter)
+    			{
+        			player.mcServer.getConfigurationManager().transferPlayerToDimension(player, par1, player.mcServer.worldServerForDimension(par1).customTeleporters.get(i));
+    			}
+    		}
+            
     	}
     }
     

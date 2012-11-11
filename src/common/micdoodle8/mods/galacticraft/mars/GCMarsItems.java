@@ -1,11 +1,14 @@
 package micdoodle8.mods.galacticraft.mars;
 
+import micdoodle8.mods.galacticraft.mars.client.ClientProxyMars;
 import net.minecraft.src.Block;
 import net.minecraft.src.EnumArmorMaterial;
 import net.minecraft.src.EnumToolMaterial;
 import net.minecraft.src.Item;
 import net.minecraftforge.common.EnumHelper;
 import net.minecraftforge.common.MinecraftForge;
+import cpw.mods.fml.common.Side;
+import cpw.mods.fml.common.asm.SideOnly;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 /**
@@ -116,6 +119,7 @@ public class GCMarsItems
 		MinecraftForge.setToolClass(quandriumSpade, "shovel", 5);
 	}
 
+	@SideOnly(Side.CLIENT)
 	public static void addNames() 
 	{
 		addName(reinforcedBucketEmpty);
@@ -158,6 +162,6 @@ public class GCMarsItems
 	
 	private static void addName(Item item)
 	{
-        LanguageRegistry.instance().addStringLocalization(item.getItemName() + ".name", GalacticraftMars.lang.get(item.getItemName() + ".name"));
+        LanguageRegistry.instance().addStringLocalization(item.getItemName() + ".name", ClientProxyMars.lang.get(item.getItemName() + ".name"));
 	}
 }

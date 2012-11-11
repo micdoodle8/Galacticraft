@@ -5,14 +5,16 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
+import micdoodle8.mods.galacticraft.API.IGalacticraftSubMod;
 import micdoodle8.mods.galacticraft.core.GCCoreLocalization;
-import micdoodle8.mods.galacticraft.core.GCCorePlayerHandler;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.src.World;
 import net.minecraftforge.common.DimensionManager;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -24,33 +26,34 @@ import cpw.mods.fml.common.registry.TickRegistry;
  *  All rights reserved.
  *
  */
-public class GalacticraftMoon
+public class GalacticraftMoon implements IGalacticraftSubMod
 {
-	public static GCCoreLocalization lang;
-	
 	public static List moonPlayers = new ArrayList();
 	public static List gcMoonPlayers = new ArrayList();
 	
-	public void preInit(FMLPreInitializationEvent event)
+	public void preLoad(FMLPreInitializationEvent event)
 	{
 		new GCMoonConfigManager(new File(event.getModConfigurationDirectory(), "Galacticraft/moon.conf"));
-		
-		lang = new GCCoreLocalization("micdoodle8/mods/galacticraft/moon/client");
 		
 		GCMoonBlocks.initBlocks();
 		GCMoonBlocks.registerBlocks();
 		GCMoonBlocks.setHarvestLevels();
-		GCMoonBlocks.addNames();
 		
 		GCMoonItems.initItems();
-		GCMoonItems.addNames();
 	}
 	
-	public void init(FMLInitializationEvent event)
+	@Override
+	public void load(FMLInitializationEvent event)
 	{
 		DimensionManager.registerProviderType(GCMoonConfigManager.dimensionIDMoon, GCMoonWorldProvider.class, true);
 		DimensionManager.registerDimension(GCMoonConfigManager.dimensionIDMoon, GCMoonConfigManager.dimensionIDMoon);
 		GameRegistry.registerPlayerTracker(new GCMoonPlayerHandler());
+	}
+
+	@Override
+	public void postLoad(FMLPostInitializationEvent event) 
+	{
+		
 	}
 	
 	public void serverInit(FMLServerStartedEvent event)
@@ -83,5 +86,11 @@ public class GalacticraftMoon
 		{
 			return "Galacticraft Moon Common";
 		}
+	}
+
+	@Override
+	public String getDimensionName() 
+	{
+		return "Moon";
 	}
 }

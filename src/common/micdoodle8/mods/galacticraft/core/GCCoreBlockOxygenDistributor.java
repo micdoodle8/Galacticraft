@@ -7,6 +7,7 @@ import net.minecraft.src.BlockContainer;
 import net.minecraft.src.EntityItem;
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
 import net.minecraft.src.MathHelper;
@@ -34,7 +35,7 @@ public class GCCoreBlockOxygenDistributor extends BlockContainer
 	public GCCoreBlockOxygenDistributor(int par1, boolean isActive) 
 	{
 		super(par1, Material.rock);
-		this.blockIndexInTexture = 8;
+		this.blockIndexInTexture = 22;
 		this.isActive = isActive;
 		this.setRequiresSelfNotify();
 	}
@@ -44,14 +45,6 @@ public class GCCoreBlockOxygenDistributor extends BlockContainer
 	{
 		return new GCCoreTileEntityOxygenDistributor();
 	}
-
-	@Override
-    public int getBlockTextureFromSideAndMetadata(int par1, int par2)
-    {
-        int var3 = par2 & 12;
-        int var4 = par2 & 3;
-        return var3 == 0 && (par1 == 1 || par1 == 0) ? 21 : (var3 == 4 && (par1 == 5 || par1 == 4) ? 21 : (var3 == 8 && (par1 == 2 || par1 == 3) ? 21 : (var4 == 1 ? 116 : (var4 == 2 ? 117 : (var4 == 3 ? 153 : 20)))));
-    }
 
     @Override
 	public void onBlockAdded(World par1World, int par2, int par3, int par4)

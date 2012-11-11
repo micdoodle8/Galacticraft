@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.moon.GCMoonItems;
 import net.minecraft.src.Block;
 import net.minecraft.src.Entity;
@@ -135,12 +136,19 @@ public class GCCoreUtil
 		});
 		// TODO sensor lens...
 		GameRegistry.addRecipe(new ItemStack(GCCoreItems.sensorGlasses, 1), new Object[] {
+			"YYY",
+			"Y Y",
+			"XYX",
+			'X', GCCoreItems.sensorLens,
+			'Y', GCMoonItems.meteoricIronIngot
+		});
+		GameRegistry.addRecipe(new ItemStack(GCCoreItems.sensorLens, 1), new Object[] {
 			"ZYZ",
 			"YXY",
 			"ZYZ",
-			'X', GCCoreItems.aluminumCanister,
-			'Y', GCCoreItems.ingotTitanium,
-			'Z', new ItemStack(Block.cloth, 1, 14)
+			'X', Block.thinGlass,
+			'Y', GCMoonItems.meteoricIronIngot,
+			'Z', Item.redstone
 		});
 		GameRegistry.addRecipe(new ItemStack(GCCoreItems.aluminumCanister, 1), new Object[] {
 			"X X",
@@ -176,6 +184,83 @@ public class GCCoreUtil
 			'X', GCCoreItems.airVent,
 			'Y', GCCoreItems.aluminumCanister,
 			'Z', GCCoreItems.ingotTitanium
+		});
+		GameRegistry.addRecipe(new ItemStack(GCCoreItems.titaniumPickaxe, 1), new Object[] {
+			"YYY",
+			" X ",
+			" X ",
+			'Y', GCCoreItems.ingotTitanium,
+			'X', Item.stick
+		});
+		GameRegistry.addRecipe(new ItemStack(GCCoreItems.titaniumAxe, 1), new Object[] {
+			"YY ",
+			"YX ",
+			" X ",
+			'Y', GCCoreItems.ingotTitanium,
+			'X', Item.stick
+		});
+		GameRegistry.addRecipe(new ItemStack(GCCoreItems.titaniumAxe, 1), new Object[] {
+			" YY",
+			" XY",
+			" X ",
+			'Y', GCCoreItems.ingotTitanium,
+			'X', Item.stick
+		});
+		GameRegistry.addRecipe(new ItemStack(GCCoreItems.titaniumHoe, 1), new Object[] {
+			" YY",
+			" X ",
+			" X ",
+			'Y', GCCoreItems.ingotTitanium,
+			'X', Item.stick
+		});
+		GameRegistry.addRecipe(new ItemStack(GCCoreItems.titaniumHoe, 1), new Object[] {
+			"YY ",
+			" X ",
+			" X ",
+			'Y', GCCoreItems.ingotTitanium,
+			'X', Item.stick
+		});
+		GameRegistry.addRecipe(new ItemStack(GCCoreItems.titaniumSpade, 1), new Object[] {
+			" Y ",
+			" X ",
+			" X ",
+			'Y', GCCoreItems.ingotTitanium,
+			'X', Item.stick
+		});
+		GameRegistry.addRecipe(new ItemStack(GCCoreItems.titaniumSword, 1), new Object[] {
+			" Y ",
+			" Y ",
+			" X ",
+			'Y', GCCoreItems.ingotTitanium,
+			'X', Item.stick
+		});
+		GameRegistry.addRecipe(new ItemStack(GCCoreItems.titaniumBoots, 1), new Object[] {
+			"X X",
+			"X X",
+			'X', GCCoreItems.ingotTitanium
+		});
+		GameRegistry.addRecipe(new ItemStack(GCCoreItems.titaniumChestplate, 1), new Object[] {
+			"X X",
+			"XXX",
+			"XXX",
+			'X', GCCoreItems.ingotTitanium
+		});
+		GameRegistry.addRecipe(new ItemStack(GCCoreItems.titaniumLeggings, 1), new Object[] {
+			"XXX",
+			"X X",
+			"X X",
+			'X', GCCoreItems.ingotTitanium
+		});
+		GameRegistry.addRecipe(new ItemStack(GCCoreItems.titaniumHelmet, 1), new Object[] {
+			"XXX",
+			"X X",
+			'X', GCCoreItems.ingotTitanium
+		});
+		GameRegistry.addShapelessRecipe(new ItemStack(GCCoreItems.titaniumHelmetBreathable, 1), new Object[] {
+			GCCoreItems.titaniumHelmet, GCCoreItems.oxygenMask
+		});
+		GameRegistry.addShapelessRecipe(new ItemStack(GCCoreItems.sensorGlassesWithOxygenMask, 1), new Object[] {
+			GCCoreItems.sensorGlasses, GCCoreItems.oxygenMask
 		});
 	}
 	
@@ -447,7 +532,7 @@ public class GCCoreUtil
 		
 		for (int i = 0; i < var1.length; i++)
 		{
-			if (DimensionManager.getProvider(var1[i]).getDimensionName() != null && DimensionManager.getProvider(var1[i]).getDimensionName() == par1String)
+			if (DimensionManager.getProvider(var1[i]).getDimensionName() != null && DimensionManager.getProvider(var1[i]).getDimensionName().equals(par1String))
 			{
 				return DimensionManager.getProvider(var1[i]);
 			}
@@ -462,7 +547,7 @@ public class GCCoreUtil
 		
 		for (int i = 0; i < ids.length; i++)
 		{
-    		if (DimensionManager.getProvider(ids[i]) instanceof GalacticraftWorldProvider || DimensionManager.getProvider(ids[i]).dimensionId == 0)
+    		if (DimensionManager.getProvider(ids[i]) instanceof IGalacticraftWorldProvider || DimensionManager.getProvider(ids[i]).dimensionId == 0)
     		{
     			amount++;
     		}
@@ -475,15 +560,17 @@ public class GCCoreUtil
 	{
 		HashMap map = new HashMap();
 		
+		FMLLog.info("" + ids.length);
+		
 		for (int i = 0; i < ids.length; i++)
 		{
-			FMLLog.info("" + DimensionManager.getProvider(ids[i]).getDimensionName());
-			
-    		if (DimensionManager.getProvider(ids[i]) instanceof GalacticraftWorldProvider || DimensionManager.getProvider(ids[i]).dimensionId == 0)
+    		if (DimensionManager.getProvider(ids[i]) != null && (DimensionManager.getProvider(ids[i]) instanceof IGalacticraftWorldProvider || DimensionManager.getProvider(ids[i]).dimensionId == 0))
     		{
     			map.put(DimensionManager.getProvider(ids[i]).getDimensionName(), DimensionManager.getProvider(ids[i]).dimensionId);
     		}
 		}
+		
+		map.put("Jupiter*", 0); // TODO add option so this isn't manual
 		
 		return map;
 	}

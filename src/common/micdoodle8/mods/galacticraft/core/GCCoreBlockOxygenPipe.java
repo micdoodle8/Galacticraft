@@ -224,8 +224,6 @@ public class GCCoreBlockOxygenPipe extends BlockContainer
     		{
     			GCCoreTileEntityOxygenPipe pipe = (GCCoreTileEntityOxygenPipe)tile;
     			
-    			FMLLog.info("" + pipe.getIndexFromCollector());
-    			
 //    			if (pipe.getIndexFromCollector() > thisPipe.getIndexFromCollector())
     			{
     				pipe.setOxygenInPipe(0D);

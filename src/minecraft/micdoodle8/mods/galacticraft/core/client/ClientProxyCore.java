@@ -5,6 +5,7 @@ import java.io.DataInputStream;
 import java.util.EnumSet;
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.CommonProxyCore;
 import micdoodle8.mods.galacticraft.core.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
@@ -20,7 +21,7 @@ import micdoodle8.mods.galacticraft.core.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.GCCoreTileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.GalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.mars.GCMarsWorldProvider;
 import micdoodle8.mods.galacticraft.moon.client.ClientProxyMoon;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.EntityClientPlayerMP;
@@ -31,6 +32,7 @@ import net.minecraft.src.EntitySmokeFX;
 import net.minecraft.src.INetworkManager;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.KeyBinding;
+import net.minecraft.src.Material;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.Packet250CustomPayload;
 import net.minecraft.src.RenderLiving;
@@ -79,6 +81,7 @@ public class ClientProxyCore extends CommonProxyCore
 	public static long getCurrentTime;
 	private Random rand = new Random();
 	public ClientProxyMoon moon = new ClientProxyMoon();
+	public static int teleportCooldown;
 	
 	@Override
 	public void preInit(FMLPreInitializationEvent event) 
@@ -120,19 +123,6 @@ public class ClientProxyCore extends CommonProxyCore
 	public void registerRenderInformation() 
 	{
 		moon.registerRenderInformation();
-		
-//		try
-//		{
-//			for (String string : GalacticraftCore.loader.spriteSheets)
-//			{
-//				FMLLog.info(string);
-//				TextureFXManager.instance().addNewTextureOverride("/micdoodle8/mods/galacticraft/core/client/override/1.png.png", string, 0);
-//			}
-//		} 
-//		catch (Exception e)
-//		{
-//			e.printStackTrace();
-//		}
 		
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntitySpaceship.class, new GCCoreRenderSpaceship());
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntitySpider.class, new GCCoreRenderSpider());
@@ -287,19 +277,29 @@ public class ClientProxyCore extends CommonProxyCore
             }
             else if (packetType == 2)
             {
-                Class[] decodeAs = {String.class};
+            	Class[] decodeAs = {String.class, String.class};
                 Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
             	
-                if (String.valueOf(packetReadout).equals(FMLClientHandler.instance().getClient().thePlayer.username))
+                if (String.valueOf(packetReadout[0]).equals(FMLClientHandler.instance().getClient().thePlayer.username))
                 {
+                	FMLLog.info((String)packetReadout[1]);
+                	
+                	String[] destinations = ((String)packetReadout[1]).split("\\.");
+                	
             		if (FMLClientHandler.instance().getClient().theWorld != null && !(FMLClientHandler.instance().getClient().currentScreen instanceof GCCoreGuiChoosePlanet))
             		{
-            			FMLClientHandler.instance().getClient().displayGuiScreen(new GCCoreGuiChoosePlanet(FMLClientHandler.instance().getClient().thePlayer));
+            			FMLClientHandler.instance().getClient().displayGuiScreen(new GCCoreGuiChoosePlanet(FMLClientHandler.instance().getClient().thePlayer, destinations));
+            			FMLClientHandler.instance().getClient().setIngameNotInFocus();
             		}
                 }
             }
 		}
     }
+	
+	public static boolean handleWaterMovement(EntityPlayer player)
+	{
+		return player.worldObj.isMaterialInBB(player.boundingBox.expand(-0.10000000149011612D, -0.4000000059604645D, -0.10000000149011612D), Material.water);
+	}
     
     public static class TickHandlerClient implements ITickHandler
     {
@@ -318,20 +318,30 @@ public class ClientProxyCore extends CommonProxyCore
     		
     		if (type.equals(EnumSet.of(TickType.CLIENT)))
             {
-    			if (player != null && player.worldObj.provider instanceof GalacticraftWorldProvider && !player.capabilities.isFlying && !minecraft.isGamePaused) 
+    			if (player != null && player.worldObj.provider instanceof IGalacticraftWorldProvider && !player.capabilities.isFlying && !minecraft.isGamePaused && !player.handleWaterMovement()) 
     			{
-    				player.motionY = player.motionY + 0.062;
+    				IGalacticraftWorldProvider wp = (IGalacticraftWorldProvider) player.worldObj.provider;
+    				player.motionY = player.motionY + wp.getGravity();
     			}
     			
-    			if (world != null)
+    			if (teleportCooldown > 0)
+    			{
+    				teleportCooldown--;
+    			}
+    			
+    			if (FMLClientHandler.instance().getClient().currentScreen instanceof GCCoreGuiChoosePlanet)
+    			{
+    				player.motionY = 0;
+    			}
+    			
+    			if (world != null && world.provider instanceof IGalacticraftWorldProvider)
     			{
     				world.setRainStrength(0.0F);
     			}
     			
     			if (player != null && player.ridingEntity != null && minecraft.gameSettings.keyBindJump.pressed)
     			{
-//    				player.worldObj.playSoundEffect(player.ridingEntity.posX, player.ridingEntity.posY, player.ridingEntity.posZ, "shuttle.sound", 1F, 2.0F);
-    	    		Object[] toSend = {0};
+    				Object[] toSend = {0};
     	            PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 3, toSend));
     			}
             }
@@ -425,7 +435,7 @@ public class ClientProxyCore extends CommonProxyCore
 					GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         		}
 
-        		if (player != null && player.worldObj.provider instanceof GalacticraftWorldProvider)
+        		if (player != null && player.worldObj.provider instanceof IGalacticraftWorldProvider)
     			{
     				short var8 = 90;
     				int var6 = (airRemaining - 90) * -1;

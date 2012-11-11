@@ -5,9 +5,10 @@ import java.io.DataInputStream;
 import java.util.EnumSet;
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
 import micdoodle8.mods.galacticraft.core.GCCoreEntityArrow;
+import micdoodle8.mods.galacticraft.core.GCCoreLocalization;
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
-import micdoodle8.mods.galacticraft.core.client.ClientProxyCore.GCKeyHandler;
 import micdoodle8.mods.galacticraft.core.client.GCCoreRenderArrow;
 import micdoodle8.mods.galacticraft.mars.CommonProxyMars;
 import micdoodle8.mods.galacticraft.mars.GCMarsBlocks;
@@ -27,7 +28,6 @@ import net.minecraft.src.WorldClient;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.Side;
@@ -46,22 +46,25 @@ import cpw.mods.fml.common.registry.TickRegistry;
  *  All rights reserved.
  *
  */
-public class ClientProxyMars extends CommonProxyMars
+public class ClientProxyMars extends CommonProxyMars implements IGalacticraftSubModClient
 {
 	private static int fluidRenderID;
 	public static long getFirstBootTime;
 	public static long getCurrentTime;
 	private Random rand = new Random();
 	
+	public static GCCoreLocalization lang;
+	
 	@Override
-	public void preInit(FMLPreInitializationEvent event) 
+	public void preLoad()
 	{
+		lang = new GCCoreLocalization("micdoodle8/mods/galacticraft/mars/client");
 		MinecraftForge.EVENT_BUS.register(new GCMarsSounds());
 		getFirstBootTime = System.currentTimeMillis();
 	}
 
 	@Override
-	public void init(FMLInitializationEvent event) 
+	public void load()
 	{
 		TickRegistry.registerTickHandler(new TickHandlerClient(), Side.CLIENT);
         NetworkRegistry.instance().registerChannel(new ClientPacketHandler(), "GalacticraftMars", Side.CLIENT);
@@ -70,8 +73,10 @@ public class ClientProxyMars extends CommonProxyMars
 	}
 
 	@Override
-	public void postInit(FMLPostInitializationEvent event) 
+	public void postLoad()
 	{
+		GCMarsBlocks.addNames();
+		GCMarsItems.addNames();
 	}
 	
 	@Override
@@ -180,6 +185,11 @@ public class ClientProxyMars extends CommonProxyMars
     		
     		if (type.equals(EnumSet.of(TickType.CLIENT)))
             {
+    			if (player != null && player.worldObj.provider instanceof GCMarsWorldProvider && !player.capabilities.isFlying && !minecraft.isGamePaused) 
+    			{
+    				player.motionY = player.motionY + 0.042;
+    			}
+    			
         		if (player != null && world != null && player.inventory.armorItemInSlot(2) != null && player.inventory.armorItemInSlot(2).getItem().shiftedIndex == GCMarsItems.jetpack.shiftedIndex && FMLClientHandler.instance().getClient().gameSettings.keyBindJump.pressed && player.posY < 125)
         		{
         			((GCMarsItemJetpack)player.inventory.armorItemInSlot(2).getItem()).setActive();
@@ -215,4 +225,22 @@ public class ClientProxyMars extends CommonProxyMars
     		return EnumSet.of(TickType.CLIENT);
     	}
     }
+
+	@Override
+	public String getDimensionName() 
+	{
+		return "Mars";
+	}
+
+	@Override
+	public GCCoreLocalization getLanguageFile() 
+	{
+		return this.lang;
+	}
+
+	@Override
+	public String getPlanetSpriteDirectory() 
+	{
+		return "/micdoodle8/mods/galacticraft/mars/client/planets/";
+	}
 }

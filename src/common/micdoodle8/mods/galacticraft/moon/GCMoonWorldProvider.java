@@ -1,10 +1,11 @@
 package micdoodle8.mods.galacticraft.moon;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
 import net.minecraft.src.Chunk;
 import net.minecraft.src.IChunkProvider;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.Vec3;
+import net.minecraft.src.WorldProvider;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
@@ -14,7 +15,7 @@ import cpw.mods.fml.common.asm.SideOnly;
  *  All rights reserved.
  *
  */
-public class GCMoonWorldProvider extends GalacticraftWorldProvider
+public class GCMoonWorldProvider extends WorldProvider implements IGalacticraftWorldProvider
 {
     private float[] colorsSunriseSunset = new float[4];
     
@@ -207,4 +208,10 @@ public class GCMoonWorldProvider extends GalacticraftWorldProvider
     {
         return false;
     }
+
+	@Override
+	public float getGravity() 
+	{
+		return 0.062F;
+	}
 }

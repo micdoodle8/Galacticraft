@@ -1,6 +1,12 @@
 package micdoodle8.mods.galacticraft.core;
 
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
 import net.minecraft.src.EntityPlayer;
+import net.minecraftforge.common.DimensionManager;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.IPlayerTracker;
 
 public class GCCorePlayerHandler implements IPlayerTracker
@@ -17,6 +23,25 @@ public class GCCorePlayerHandler implements IPlayerTracker
 			if (player2.getPlayer().username == player.username)
 			{
 				player2.readEntityFromNBT();
+				
+				if (player.posY > 420D)
+				{
+					Integer[] ids = DimensionManager.getIDs();
+			    	
+			    	Set set = GCCoreUtil.getArrayOfPossibleDimensions(ids).entrySet();
+			    	Iterator iter = set.iterator();
+			    	
+			    	String temp = "";
+			    	
+			    	for (int k = 0; iter.hasNext(); k++)
+			    	{
+			    		Map.Entry entry = (Map.Entry)iter.next();
+			    		temp = (k == 0 ? temp.concat(String.valueOf(entry.getKey())) : temp.concat("." + String.valueOf(entry.getKey())));
+			    	}
+			    	
+			    	Object[] toSend = {player.username, temp};
+			        FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(player.username).playerNetServerHandler.sendPacketToPlayer(GCCoreUtil.createPacket("Galacticraft", 2, toSend));
+				}
 			}
 		}
 	}

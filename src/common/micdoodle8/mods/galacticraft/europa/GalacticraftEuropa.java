@@ -1,4 +1,4 @@
-package micdoodle8.mods.galacticraft.mars;
+package micdoodle8.mods.galacticraft.europa;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
@@ -7,16 +7,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubMod;
+import micdoodle8.mods.galacticraft.core.GCCoreLocalization;
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.jupiter.GalacticraftJupiter;
 import net.minecraft.src.EntityPlayerMP;
 import net.minecraft.src.INetworkManager;
 import net.minecraft.src.Packet250CustomPayload;
 import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.common.MinecraftForge;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
+import cpw.mods.fml.common.Mod.PostInit;
 import cpw.mods.fml.common.Mod.PreInit;
 import cpw.mods.fml.common.Mod.ServerStarted;
 import cpw.mods.fml.common.Side;
@@ -30,7 +32,6 @@ import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.common.registry.EntityRegistry;
-import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 /**
@@ -39,49 +40,37 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
  *  All rights reserved.
  *
  */
-@Mod(name="Galacticraft Mars", version="v1", useMetadata = false, modid = "GalacticraftMars")
-@NetworkMod(channels = {"GalacticraftMars"}, clientSideRequired = true, serverSideRequired = false)
-public class GalacticraftMars implements IGalacticraftSubMod
+public class GalacticraftEuropa implements IGalacticraftSubMod
 {
-	@SidedProxy(clientSide = "micdoodle8.mods.galacticraft.mars.client.ClientProxyMars", serverSide = "micdoodle8.mods.galacticraft.mars.CommonProxyMars")
-	public static CommonProxyMars proxy;
-	
-	@Instance("GalacticraftMars")
-	public static GalacticraftMars instance;
-	
-	public static List marsPlayers = new ArrayList();
-	public static List gcMarsPlayers = new ArrayList();
+	public static List europaPlayers = new ArrayList();
+	public static List gcEuropaPlayers = new ArrayList();
 
 	@PreInit
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		GalacticraftCore.registerSubMod(this);
 
-		FMLLog.info(event.getModConfigurationDirectory().toString());
+		new GCEuropaConfigManager(new File(event.getModConfigurationDirectory(), "Galacticraft/europa.conf"));
 		
-		new GCMarsConfigManager(new File(event.getModConfigurationDirectory(), "Galacticraft/mars.conf"));
-		
-		GCMarsBlocks.initBlocks();
-		GCMarsBlocks.registerBlocks();
-		GCMarsBlocks.setHarvestLevels();
-		
-		GCMarsItems.initItems();
-		
-		proxy.preInit(event);
+		GCEuropaBlocks.initBlocks();
+		GCEuropaBlocks.registerBlocks();
+		GCEuropaBlocks.setHarvestLevels();
+		GCEuropaBlocks.addNames();
+//		
+//		GCMarsItems.initItems();
+//		GCMarsItems.addNames(); TODO
 	}
-
+	
 	@Override
 	public void load(FMLInitializationEvent event)
 	{
-		DimensionManager.registerProviderType(GCMarsConfigManager.dimensionIDMars, GCMarsWorldProvider.class, true);
-		DimensionManager.registerDimension(GCMarsConfigManager.dimensionIDMars, GCMarsConfigManager.dimensionIDMars);
-		MinecraftForge.EVENT_BUS.register(new GCMarsEvents());
-		GameRegistry.registerPlayerTracker(new GCMarsPlayerHandler());
-		GCMarsUtil.addSmeltingRecipes();
+		DimensionManager.registerProviderType(GCEuropaConfigManager.dimensionIDEuropa, GCEuropaWorldProvider.class, true);
+		DimensionManager.registerDimension(GCEuropaConfigManager.dimensionIDEuropa, GCEuropaConfigManager.dimensionIDEuropa);
+//		MinecraftForge.EVENT_BUS.register(new GCMarsEvents());
+//		GameRegistry.registerPlayerTracker(new GCMarsPlayerHandler());
 		this.registerTileEntities();
 		this.registerCreatures();
 		this.registerOtherEntities();
-		proxy.init(event);
 	}
 	
 	public void registerTileEntities()
@@ -91,34 +80,27 @@ public class GalacticraftMars implements IGalacticraftSubMod
 	
 	public void registerCreatures()
 	{
-		registerGalacticraftCreature(GCMarsEntityCreeperBoss.class, "Creeper Boss", GCMarsConfigManager.idEntityCreeperBoss, 894731, 0);
-		registerGalacticraftCreature(GCMarsEntitySludgeling.class, "Sludgeling", GCMarsConfigManager.idEntitySludgeling, 25600, 0);
 	}
 	
 	public void registerOtherEntities()
 	{
-		registerGalacticraftNonMobEntity(GCMarsEntityProjectileTNT.class, "Projectile TNT", GCMarsConfigManager.idEntityProjectileTNT, 150, 5, true);
 	}
-
+	
 	@Override
 	public void postLoad(FMLPostInitializationEvent event)
 	{
 //		GCMarsAchievementList.initAchievs();
-		proxy.postInit(event);
-		proxy.registerRenderInformation();
-		GCMarsUtil.addCraftingRecipes();
 	}
 	
-	@ServerStarted
 	public void serverInit(FMLServerStartedEvent event)
 	{
-        NetworkRegistry.instance().registerChannel(new ServerPacketHandler(), "GalacticraftMars", Side.SERVER);
+        NetworkRegistry.instance().registerChannel(new ServerPacketHandler(), "GalacticraftEuropa", Side.SERVER);
 	}
 
     public void registerGalacticraftCreature(Class var0, String var1, int id, int back, int fore)
     {
     	EntityRegistry.registerGlobalEntityID(var0, var1, id, back, fore);
-        EntityRegistry.registerModEntity(var0, var1, id, instance, 80, 3, true);
+        EntityRegistry.registerModEntity(var0, var1, id, GalacticraftJupiter.moonEuropa, 80, 3, true);
 		LanguageRegistry.instance().addStringLocalization("entity." + var1 + ".name", "en_US", var1);
     }
     
@@ -146,6 +128,6 @@ public class GalacticraftMars implements IGalacticraftSubMod
 	@Override
 	public String getDimensionName() 
 	{
-		return "Mars";
+		return "Europa";
 	}
 }

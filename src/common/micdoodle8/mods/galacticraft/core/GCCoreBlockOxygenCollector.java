@@ -10,6 +10,7 @@ import net.minecraft.src.Material;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
@@ -25,7 +26,6 @@ public class GCCoreBlockOxygenCollector extends BlockContainer
 	{
 		return new GCCoreTileEntityOxygenCollector();
 	}
-
 
 	@Override
     @SideOnly(Side.CLIENT)
@@ -43,23 +43,23 @@ public class GCCoreBlockOxygenCollector extends BlockContainer
 		
         if (par5 == 1)
         {
-            return this.blockIndexInTexture + 17;
+            return this.blockIndexInTexture;
         }
         else if (par5 == 0)
         {
-            return this.blockIndexInTexture + 17;
+            return this.blockIndexInTexture + 1;
         }
         else
         {
             int var6 = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
-            return (par5 != var6 && par5 != ((var6 == 5 || var6 == 3) ? var6 - 1 : var6 + 1)) ? this.blockIndexInTexture + 2 : (active ? this.blockIndexInTexture + 16 : this.blockIndexInTexture - 1);
+            return (par5 != var6 && par5 != ((var6 == 5 || var6 == 3) ? var6 - 1 : var6 + 1)) ? this.blockIndexInTexture + 2 : (active ? this.blockIndexInTexture - 1 : this.blockIndexInTexture - 2);
         }
     }
 
 	@Override
     public int getBlockTextureFromSide(int par1)
     {
-        return par1 == 1 ? this.blockIndexInTexture + 17 : (par1 == 0 ? this.blockIndexInTexture + 2 : (par1 == 3 ? this.blockIndexInTexture - 1 : this.blockIndexInTexture + 2));
+        return par1 == 1 ? this.blockIndexInTexture : (par1 == 0 ? this.blockIndexInTexture + 2 : (par1 == 3 ? this.blockIndexInTexture - 1 : this.blockIndexInTexture + 2));
     }
 
 	@Override
@@ -133,34 +133,40 @@ public class GCCoreBlockOxygenCollector extends BlockContainer
     @Override
     public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {
-        for (int var6 = 0; var6 < 10; ++var6)
-        {
-            double var7 = par2 + par5Random.nextFloat();
-            double var9 = par3 + par5Random.nextFloat();
-            double var11 = par4 + par5Random.nextFloat();
-            double var13 = 0.0D;
-            double var15 = 0.0D;
-            double var17 = 0.0D;
-            int var19 = par5Random.nextInt(2) * 2 - 1;
-            var13 = (par5Random.nextFloat() - 0.5D) * 0.5D;
-            var15 = (par5Random.nextFloat() - 0.5D) * 0.5D;
-            var17 = (par5Random.nextFloat() - 0.5D) * 0.5D;
+		if (par1World.getBlockTileEntity(par2, par3, par4) instanceof GCCoreTileEntityOxygenCollector)
+		{
+			if (((GCCoreTileEntityOxygenCollector)par1World.getBlockTileEntity(par2, par3, par4)).currentPower > 1)
+			{
+				for (int var6 = 0; var6 < 10; ++var6)
+		        {
+		            double var7 = par2 + par5Random.nextFloat();
+		            double var9 = par3 + par5Random.nextFloat();
+		            double var11 = par4 + par5Random.nextFloat();
+		            double var13 = 0.0D;
+		            double var15 = 0.0D;
+		            double var17 = 0.0D;
+		            int var19 = par5Random.nextInt(2) * 2 - 1;
+		            var13 = (par5Random.nextFloat() - 0.5D) * 0.5D;
+		            var15 = (par5Random.nextFloat() - 0.5D) * 0.5D;
+		            var17 = (par5Random.nextFloat() - 0.5D) * 0.5D;
 
-            int var2 = par1World.getBlockMetadata(par2, par3, par4);
+		            int var2 = par1World.getBlockMetadata(par2, par3, par4);
 
-            if (var2 == 3 || var2 == 2)
-            {
-                var7 = par2 + 0.5D + 0.25D * var19;
-                var13 = par5Random.nextFloat() * 2.0F * var19;
-            }
-            else
-            {
-                var11 = par4 + 0.5D + 0.25D * var19;
-                var17 = par5Random.nextFloat() * 2.0F * var19;
-            }
+		            if (var2 == 3 || var2 == 2)
+		            {
+		                var7 = par2 + 0.5D + 0.25D * var19;
+		                var13 = par5Random.nextFloat() * 2.0F * var19;
+		            }
+		            else
+		            {
+		                var11 = par4 + 0.5D + 0.25D * var19;
+		                var17 = par5Random.nextFloat() * 2.0F * var19;
+		            }
 
-           	GalacticraftCore.proxy.spawnParticle("oxygen", var7, var9, var11, var13, var15, var17, 0.7D, 0.7D, 1.0D, false);
-        }
+		           	GalacticraftCore.proxy.spawnParticle("oxygen", var7, var9, var11, var13, var15, var17, 0.7D, 0.7D, 1.0D, false);
+		        }
+			}
+		}
 	}
     
 	@Override

@@ -1,4 +1,4 @@
-package micdoodle8.mods.galacticraft.mars;
+package micdoodle8.mods.galacticraft.europa;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +23,7 @@ import net.minecraft.src.MathHelper;
 import net.minecraft.src.NoiseGeneratorOctaves;
 import net.minecraft.src.SpawnListEntry;
 import net.minecraft.src.World;
+import net.minecraft.src.WorldGenLakes;
 
 /**
  * Copyright 2012, micdoodle8
@@ -30,7 +31,7 @@ import net.minecraft.src.World;
  *  All rights reserved.
  *
  */
-public class GCMarsChunkProvider extends ChunkProviderGenerate
+public class GCEuropaChunkProvider extends ChunkProviderGenerate
 {
 	public static List giantCaveLocations;
 	public static List creeperDungeonLocations;
@@ -45,9 +46,7 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 	public NoiseGeneratorOctaves noiseGen6;
 	public NoiseGeneratorOctaves mobSpawnerNoise;
 
-	public GCMarsBiomeDecorator biomedecoratorplanet = new GCMarsBiomeDecorator(GCMarsBiomeGenBase.marsFlat);
-	
-    private GCMarsMapGenCreeperNest creeperNest = new GCMarsMapGenCreeperNest();
+	public GCEuropaBiomeDecorator biomedecoratorplanet = new GCEuropaBiomeDecorator(GCEuropaBiomeGenBase.europaFlat);
 
 	private World worldObj;
 
@@ -55,15 +54,12 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 
 	private double[] noiseArray;
 	private double[] stoneNoise = new double[256];
-	
-	private GCMarsCaveGen caveGenerator = new GCMarsCaveGen();
-	private GCMarsCaveGen2 caveGenerator2 = new GCMarsCaveGen2();
 
 	private MapGenVillage villageGenerator = new MapGenVillage();
 
 	private MapGenMineshaft mineshaftGenerator = new MapGenMineshaft();
 
-	private BiomeGenBase[] biomesForGeneration = {GCMarsBiomeGenBase.marsFlat};
+	private BiomeGenBase[] biomesForGeneration = {GCEuropaBiomeGenBase.europaFlat};
 
 	double[] noise1;
 	double[] noise2;
@@ -73,7 +69,7 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 	float[] field_35388_l;
 	int[][] field_914_i = new int[32][32];
 
-	public GCMarsChunkProvider(World par1World, long par2, boolean par4)
+	public GCEuropaChunkProvider(World par1World, long par2, boolean par4)
 	{
 		super(par1World, par2, par4);
 		this.worldObj = par1World;
@@ -138,7 +134,7 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 							{
 								if ((var47 += var49) > 0.0D) 
 								{
-									par3ArrayOfint[var43 += var44] = GCMarsConfigManager.idBlockMarsStone;
+									par3ArrayOfint[var43 += var44] = Block.waterStill.blockID;
 								}
 								else if (var12 * 8 + var31 < var6) 
 								{
@@ -166,6 +162,7 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 
 	public void replaceBlocksForBiome(int par1, int par2, int[] par3ArrayOfint, BiomeGenBase[] par4ArrayOfBiomeGenBase)
 	{
+		double var4 = 20;
 		int var5 = 20;
 		double var6 = 0.03125D;
 		this.stoneNoise = this.noiseGen4.generateNoiseOctaves(this.stoneNoise, par1 * 16, par2 * 16, 0, 16, 16, 1, var6 * 2.0D, var6 * 2.0D, var6 * 2.0D);
@@ -176,10 +173,10 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 			{
 				BiomeGenBase var10 = par4ArrayOfBiomeGenBase[var9 + var8 * 16];
 				float var11 = var10.getFloatTemperature();
-				int var12 = (int) (this.stoneNoise[var8 + var9 * 16] / 3.0D + 3.0D + this.rand.nextDouble() * 0.25D);
+				int var12 = (int) (this.stoneNoise[var8 + var9 * 16] / var4 + var4 + this.rand.nextDouble() * 0.25D);
 				int var13 = -1;
-				int var14 = GCMarsConfigManager.idBlockMarsGrass;
-				int var15 = GCMarsConfigManager.idBlockMarsDirt;
+				int var14 = GCEuropaBlocks.brittleIce.blockID;
+				int var15 = Block.ice.blockID;
 
 				for (int var16 = 127; var16 >= 0; --var16) 
 				{
@@ -196,26 +193,26 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 						{
 							var13 = -1;
 						} 
-						else if (var18 == GCMarsConfigManager.idBlockMarsStone)
+						else if (var18 == Block.waterStill.blockID)
 						{
 							if (var13 == -1)
 							{
 								if (var12 <= 0)
 								{
 									var14 = 0;
-									var15 = GCMarsConfigManager.idBlockMarsStone;
+									var15 = Block.waterStill.blockID;
 								} 
 								else if (var16 >= var5 - -16 && var16 <= var5 + 1)
 								{
-									var14 = GCMarsConfigManager.idBlockMarsGrass;
-									var15 = GCMarsConfigManager.idBlockMarsDirt;
+									var14 = GCEuropaBlocks.brittleIce.blockID;
+									var15 = Block.ice.blockID;
 								}
 
 								if (var16 < var5 && var14 == 0) 
 								{
 									if (var11 < 0.15F)
 									{
-										var14 = Block.ice.blockID;
+										var14 = GCEuropaBlocks.brittleIce.blockID;
 									}
 									else 
 									{
@@ -228,21 +225,21 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 								if (var16 >= var5 - 1) 
 								{
 									par3ArrayOfint[var17] = var14;
-								} else
+								} 
+								else
 								{
 									par3ArrayOfint[var17] = var15;
 								}
 							} 
-							else if (var13 > 0)
+							else if (var13 > 6)
 							{
 								--var13;
 								par3ArrayOfint[var17] = var15;
-
-								if (var13 == 0 && var15 == Block.sand.blockID)
-								{
-									var13 = this.rand.nextInt(4);
-									var15 = Block.sandStone.blockID;
-								}
+							}
+							else if (var13 <= 6 && var13 > 0)
+							{
+								--var13;
+								par3ArrayOfint[var17] = Block.stone.blockID;
 							}
 						}
 					}
@@ -259,8 +256,6 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 		this.generateTerrain(par1, par2, var3);
 		this.biomesForGeneration = this.worldObj.getWorldChunkManager().loadBlockGeneratorData(this.biomesForGeneration, par1 * 16, par2 * 16, 16, 16);
 		this.replaceBlocksForBiome(par1, par2, var3, this.biomesForGeneration);
-		this.caveGenerator.generate(this, this.worldObj, par1, par2, var3);
-		this.caveGenerator2.generate(this, this.worldObj, par1, par2, var3);
 
 		Chunk var4 = new GCCoreChunk(this.worldObj, var3, par1, par2);
 		byte[] var5 = var4.getBiomeArray();
@@ -270,7 +265,6 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 			var5[var6] = (byte) this.biomesForGeneration[var6].biomeID;
 		}
 		
-		this.creeperNest.generate(this, this.worldObj, par1, par2, var3);
 		var4.generateSkylightMap();
 		return var4;
 	}
@@ -330,8 +324,8 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 							var24 /= 2.0F;
 						}
 
-						var16 += var23.maxHeight * var24 + 2;
-						var17 += var23.minHeight * var24 * 0.5 + 2;
+						var16 += var23.maxHeight * var24;
+						var17 += var23.minHeight * var24 * 0.5;
 						var18 += var24;
 					}
 				}
@@ -446,12 +440,19 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 		this.rand.setSeed(par2 * var7 + par3 * var9 ^ this.worldObj.getSeed());
 		boolean var11 = false;
 
-		int var12;
-		int var13;
-		int var14;
+        int var12;
+        int var13;
+        int var14;
+		
+        if (!var11 && this.rand.nextInt(2) == 0)
+        {
+            var12 = var4 + this.rand.nextInt(16) + 8;
+            var13 = this.rand.nextInt(128);
+            var14 = var5 + this.rand.nextInt(16) + 8;
+            (new GCEuropaWorldGenLakes(Block.stone.blockID)).generate(this.worldObj, this.rand, var12, var13, var14);
+        }
 
 		this.decoratePlanet(this.worldObj, this.rand, var4, var5);
-		this.creeperNest.generateStructuresInChunk(this.worldObj, new Random(), par2, par3);
 		var4 += 8;
 		var5 += 8;
 

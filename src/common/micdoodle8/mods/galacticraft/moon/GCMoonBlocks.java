@@ -1,11 +1,12 @@
 package micdoodle8.mods.galacticraft.moon;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.moon.client.ClientProxyMoon;
 import net.minecraft.src.Block;
-import net.minecraft.src.BlockCake;
 import net.minecraft.src.Item;
 import net.minecraft.src.Material;
-import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.common.Side;
+import cpw.mods.fml.common.asm.SideOnly;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
@@ -43,6 +44,7 @@ public class GCMoonBlocks
 		GameRegistry.registerBlock(cheeseBlock);
 	}
 
+	@SideOnly(Side.CLIENT)
 	public static void addNames() 
 	{
 		addName(moonStone);
@@ -56,12 +58,11 @@ public class GCMoonBlocks
 	
 	private static void addName(Block block)
 	{
-		LanguageRegistry.instance().addStringLocalization(block.getBlockName() + ".name", GalacticraftMoon.lang.get(block.getBlockName() + ".name"));
+		LanguageRegistry.instance().addStringLocalization(block.getBlockName() + ".name", ClientProxyMoon.lang.get(block.getBlockName() + ".name"));
 	}
 	
 	private static void addNameWithMetadata(String string)
 	{
-		FMLLog.info("" + GalacticraftMoon.lang.get(string));
-		LanguageRegistry.instance().addStringLocalization(string, GalacticraftMoon.lang.get(string));
+		LanguageRegistry.instance().addStringLocalization(string, ClientProxyMoon.lang.get(string));
 	}
 }

@@ -31,18 +31,22 @@ public class GCMarsComponentCreeperPitCorridor extends GCCoreStructureComponent
 	@Override
 	public boolean addComponentParts(World var1, Random var2, StructureBoundingBox var3) 
 	{
-		int cbm = this.getCoordBaseMode();
-		
-		for (int y = 0; y < this.height; y++)
-		{
-			for (int x = 0; x < this.width; x++)
-			{
-				for (int z = 0; z < this.width; z++)
-				{
-					this.placeBlockAtCurrentPosition(var1, cbm == 0 ? 0 : (cbm == 1 ? 1 : (cbm == 2 ? 2 : (cbm == 3 ? 3 : Block.obsidian.blockID))), 0, x, y, z, getBoundingBox());
-				}
-			}
-		}
+        this.fillWithMetadataBlocks(var1, var3, 0, 0, 0, 10, 10, 10, Block.fence.blockID, 0, 0, 0, false);
+        this.fillWithAir(var1, var3, 0, 0, 0, 10, 10, 10);
+        this.fillWithMetadataBlocks(var1, var3, 0, 0, 0, 0, 0, 0, this.coordBaseMode, 0, 0, 0, false);
+        
+//		int cbm = this.getCoordBaseMode();
+//		
+//		for (int y = 0; y < this.height; y++)
+//		{
+//			for (int x = 0; x < this.width; x++)
+//			{
+//				for (int z = 0; z < this.width; z++)
+//				{
+//					this.placeBlockAtCurrentPosition(var1, cbm == 0 ? 0 : (cbm == 1 ? 1 : (cbm == 2 ? 2 : (cbm == 3 ? 3 : Block.obsidian.blockID))), 0, x, y, z, getBoundingBox());
+//				}
+//			}
+//		}
 		
 		return true;
 	}

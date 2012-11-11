@@ -14,7 +14,7 @@ public class GCMarsMapGenCreeperNest extends GCCoreMapGenStructure
     @Override
 	protected boolean canSpawnStructureAtCoords(int par1, int par2)
     {
-    	if (this.rand.nextInt(100) != 0)
+    	if (this.rand.nextInt(50) != 0)
     	{
     		return false;
     	}
