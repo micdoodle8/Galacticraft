@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubMod;
-import micdoodle8.mods.galacticraft.core.GCCoreLocalization;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.europa.GCEuropaConfigManager;
 import micdoodle8.mods.galacticraft.europa.GalacticraftEuropa;
@@ -58,13 +57,13 @@ public class GalacticraftJupiter implements IGalacticraftSubMod
 		proxy.preInit(event);
 	}
 
-	@Override
+	@Init
 	public void load(FMLInitializationEvent event)
 	{
 		proxy.init(event);
 	}
 
-	@Override
+	@PostInit
 	public void postLoad(FMLPostInitializationEvent event)
 	{
 		proxy.postInit(event);

@@ -4,11 +4,10 @@ import java.util.EnumSet;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
 import micdoodle8.mods.galacticraft.core.GCCoreLocalization;
-import micdoodle8.mods.galacticraft.mars.GCMarsWorldProvider;
 import micdoodle8.mods.galacticraft.moon.CommonProxyMoon;
-import micdoodle8.mods.galacticraft.moon.GCMoonBlocks;
-import micdoodle8.mods.galacticraft.moon.GCMoonItems;
-import micdoodle8.mods.galacticraft.moon.GCMoonWorldProvider;
+import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
+import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;
+import micdoodle8.mods.galacticraft.moon.items.GCMoonItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.EntityClientPlayerMP;
 import net.minecraft.src.World;
@@ -28,20 +27,20 @@ public class ClientProxyMoon extends CommonProxyMoon implements IGalacticraftSub
 	public static GCCoreLocalization lang;
 	
 	@Override
-	public void preLoad()
+	public void preInit(FMLPreInitializationEvent event)
 	{
 		lang = new GCCoreLocalization("micdoodle8/mods/galacticraft/moon/client");
 	}
 
 	@Override
-	public void load()
+	public void init(FMLInitializationEvent event)
 	{
 		TickRegistry.registerTickHandler(new TickHandlerClient(), Side.CLIENT);
         GCMoonColorizerGrass.setGrassBiomeColorizer(FMLClientHandler.instance().getClient().renderEngine.getTextureContents("/micdoodle8/mods/galacticraft/moon/client/blocks/moonfoliagecolor.png"));
 	}
 
 	@Override
-	public void postLoad()
+	public void postInit(FMLPostInitializationEvent event)
 	{
 		GCMoonBlocks.addNames();
 		GCMoonItems.addNames();

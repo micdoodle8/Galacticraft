@@ -1,6 +1,8 @@
 package micdoodle8.mods.galacticraft.mars;
 
-import micdoodle8.mods.galacticraft.core.GCCoreItems;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
+import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
+import micdoodle8.mods.galacticraft.mars.items.GCMarsItems;
 import net.minecraft.src.Block;
 import net.minecraft.src.FurnaceRecipes;
 import net.minecraft.src.Item;

@@ -9,10 +9,4 @@ public interface IGalacticraftSubModClient
 	public GCCoreLocalization getLanguageFile();
 	
 	public String getPlanetSpriteDirectory();
-
-	public void preLoad();
-	
-	public void load();
-	
-	public void postLoad();
 }

@@ -6,17 +6,17 @@ import java.util.EnumSet;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
-import micdoodle8.mods.galacticraft.core.GCCoreEntityArrow;
 import micdoodle8.mods.galacticraft.core.GCCoreLocalization;
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
-import micdoodle8.mods.galacticraft.core.client.GCCoreRenderArrow;
+import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderArrow;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityArrow;
 import micdoodle8.mods.galacticraft.mars.CommonProxyMars;
-import micdoodle8.mods.galacticraft.mars.GCMarsBlocks;
-import micdoodle8.mods.galacticraft.mars.GCMarsEntityCreeperBoss;
-import micdoodle8.mods.galacticraft.mars.GCMarsEntitySludgeling;
-import micdoodle8.mods.galacticraft.mars.GCMarsItemJetpack;
-import micdoodle8.mods.galacticraft.mars.GCMarsItems;
-import micdoodle8.mods.galacticraft.mars.GCMarsWorldProvider;
+import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
+import micdoodle8.mods.galacticraft.mars.dimension.GCMarsWorldProvider;
+import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityCreeperBoss;
+import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntitySludgeling;
+import micdoodle8.mods.galacticraft.mars.items.GCMarsItemJetpack;
+import micdoodle8.mods.galacticraft.mars.items.GCMarsItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.EntityClientPlayerMP;
 import net.minecraft.src.EntityFX;
@@ -30,6 +30,9 @@ import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.ITickHandler;
+import cpw.mods.fml.common.Mod.Init;
+import cpw.mods.fml.common.Mod.PostInit;
+import cpw.mods.fml.common.Mod.PreInit;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -56,7 +59,7 @@ public class ClientProxyMars extends CommonProxyMars implements IGalacticraftSub
 	public static GCCoreLocalization lang;
 	
 	@Override
-	public void preLoad()
+	public void preInit(FMLPreInitializationEvent event)
 	{
 		lang = new GCCoreLocalization("micdoodle8/mods/galacticraft/mars/client");
 		MinecraftForge.EVENT_BUS.register(new GCMarsSounds());
@@ -64,7 +67,7 @@ public class ClientProxyMars extends CommonProxyMars implements IGalacticraftSub
 	}
 
 	@Override
-	public void load()
+	public void init(FMLInitializationEvent event)
 	{
 		TickRegistry.registerTickHandler(new TickHandlerClient(), Side.CLIENT);
         NetworkRegistry.instance().registerChannel(new ClientPacketHandler(), "GalacticraftMars", Side.CLIENT);
@@ -73,7 +76,7 @@ public class ClientProxyMars extends CommonProxyMars implements IGalacticraftSub
 	}
 
 	@Override
-	public void postLoad()
+	public void postInit(FMLPostInitializationEvent event)
 	{
 		GCMarsBlocks.addNames();
 		GCMarsItems.addNames();

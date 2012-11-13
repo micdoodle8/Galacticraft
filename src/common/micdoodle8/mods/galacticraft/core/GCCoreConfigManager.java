@@ -28,6 +28,8 @@ public class GCCoreConfigManager
 	}
 
 	// BLOCKS
+	public static int idBlockID;
+	
 	public static int idBlockBreatheableAir;
 	public static int idBlockTreasureChest;
 	public static int idBlockLandingPad;
@@ -105,6 +107,8 @@ public class GCCoreConfigManager
 		try
 		{
 	        configuration.load();
+	        
+	        idBlockID = 							configuration.get(configuration.CATEGORY_BLOCK, "idBlock", 								3349)		.getInt(3349);
 	        
 	        idBlockBreatheableAir = 				configuration.get(configuration.CATEGORY_BLOCK, "idBlockCoreBreatheableAir", 			3350)		.getInt(3350);
 	        idBlockTreasureChest = 					configuration.get(configuration.CATEGORY_BLOCK, "idBlockTreasureChest", 				3351)		.getInt(3351);

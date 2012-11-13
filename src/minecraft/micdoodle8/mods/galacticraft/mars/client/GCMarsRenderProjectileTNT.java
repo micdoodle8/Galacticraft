@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.mars.client;
 
-import micdoodle8.mods.galacticraft.mars.GCMarsEntityProjectileTNT;
+import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityProjectileTNT;
 import net.minecraft.src.Block;
 import net.minecraft.src.Entity;
 import net.minecraft.src.MathHelper;

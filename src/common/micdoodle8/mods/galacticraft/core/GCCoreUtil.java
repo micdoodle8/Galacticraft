@@ -10,7 +10,10 @@ import java.util.List;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
-import micdoodle8.mods.galacticraft.moon.GCMoonItems;
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreInventoryRocketBench;
+import micdoodle8.mods.galacticraft.moon.items.GCMoonItems;
 import net.minecraft.src.Block;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityPlayer;

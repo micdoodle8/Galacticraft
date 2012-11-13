@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core;
 
+import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import net.minecraft.src.CreativeTabs;
 
 public class GCCoreCreativeTab extends CreativeTabs

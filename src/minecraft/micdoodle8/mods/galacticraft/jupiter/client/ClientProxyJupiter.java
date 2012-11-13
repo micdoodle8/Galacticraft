@@ -103,22 +103,4 @@ public class ClientProxyJupiter extends CommonProxyJupiter implements IGalacticr
 	{
 		return "/micdoodle8/mods/galacticraft/jupiter/client/planets/";
 	}
-
-	@Override
-	public void load() 
-	{
-		
-	}
-
-	@Override
-	public void preLoad() 
-	{
-		
-	}
-
-	@Override
-	public void postLoad() 
-	{
-		
-	}
 }

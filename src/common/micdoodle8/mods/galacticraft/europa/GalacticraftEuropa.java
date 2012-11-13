@@ -10,6 +10,8 @@ import micdoodle8.mods.galacticraft.API.IGalacticraftSubMod;
 import micdoodle8.mods.galacticraft.core.GCCoreLocalization;
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.europa.blocks.GCEuropaBlocks;
+import micdoodle8.mods.galacticraft.europa.dimension.GCEuropaWorldProvider;
 import micdoodle8.mods.galacticraft.jupiter.GalacticraftJupiter;
 import net.minecraft.src.EntityPlayerMP;
 import net.minecraft.src.INetworkManager;
@@ -61,7 +63,7 @@ public class GalacticraftEuropa implements IGalacticraftSubMod
 //		GCMarsItems.addNames(); TODO
 	}
 	
-	@Override
+	@Init
 	public void load(FMLInitializationEvent event)
 	{
 		DimensionManager.registerProviderType(GCEuropaConfigManager.dimensionIDEuropa, GCEuropaWorldProvider.class, true);
@@ -86,7 +88,7 @@ public class GalacticraftEuropa implements IGalacticraftSubMod
 	{
 	}
 	
-	@Override
+	@PostInit
 	public void postLoad(FMLPostInitializationEvent event)
 	{
 //		GCMarsAchievementList.initAchievs();

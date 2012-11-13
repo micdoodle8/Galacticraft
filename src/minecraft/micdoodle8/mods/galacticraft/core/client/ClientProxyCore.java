@@ -7,21 +7,40 @@ import java.util.Random;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.CommonProxyCore;
-import micdoodle8.mods.galacticraft.core.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
-import micdoodle8.mods.galacticraft.core.GCCoreEntityArrow;
-import micdoodle8.mods.galacticraft.core.GCCoreEntityCreeper;
-import micdoodle8.mods.galacticraft.core.GCCoreEntityMeteor;
-import micdoodle8.mods.galacticraft.core.GCCoreEntitySkeleton;
-import micdoodle8.mods.galacticraft.core.GCCoreEntitySpaceship;
-import micdoodle8.mods.galacticraft.core.GCCoreEntitySpider;
-import micdoodle8.mods.galacticraft.core.GCCoreEntityZombie;
-import micdoodle8.mods.galacticraft.core.GCCoreItemSensorGlasses;
-import micdoodle8.mods.galacticraft.core.GCCoreItems;
-import micdoodle8.mods.galacticraft.core.GCCoreTileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.mars.GCMarsWorldProvider;
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
+import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLaunchFlameFX;
+import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLaunchSmokeFX;
+import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityOxygenFX;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiChoosePlanet;
+import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelSkeleton;
+import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelZombie;
+import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererBreathableAir;
+import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererMeteor;
+import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererOxygenPipe;
+import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererUnlitTorch;
+import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderArrow;
+import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderBlockTreasureChest;
+import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderCreeper;
+import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderMeteor;
+import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderSpaceship;
+import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderSpider;
+import micdoodle8.mods.galacticraft.core.client.render.item.GCCoreItemRendererSpaceship;
+import micdoodle8.mods.galacticraft.core.client.render.item.GCCoreItemRendererUnlitTorch;
+import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntityTreasureChestRenderer;
+import micdoodle8.mods.galacticraft.core.client.sounds.GCCoreSounds;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityArrow;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityCreeper;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityMeteor;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySkeleton;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpaceship;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpider;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityZombie;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItemSensorGlasses;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.moon.client.ClientProxyMoon;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.EntityClientPlayerMP;
@@ -37,6 +56,7 @@ import net.minecraft.src.MathHelper;
 import net.minecraft.src.Packet250CustomPayload;
 import net.minecraft.src.RenderLiving;
 import net.minecraft.src.ScaledResolution;
+import net.minecraft.src.StatBase;
 import net.minecraft.src.Tessellator;
 import net.minecraft.src.World;
 import net.minecraft.src.WorldClient;
@@ -295,6 +315,11 @@ public class ClientProxyCore extends CommonProxyCore
             }
 		}
     }
+	
+	public static void addStat(EntityPlayer player, StatBase stat, int i)
+	{
+		
+	}
 	
 	public static boolean handleWaterMovement(EntityPlayer player)
 	{

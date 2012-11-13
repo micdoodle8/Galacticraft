@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.mars;
 
+import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
 import net.minecraft.src.EnumMovingObjectType;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemBucket;

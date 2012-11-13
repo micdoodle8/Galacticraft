@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.moon.client;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
-import micdoodle8.mods.galacticraft.moon.GCMoonWorldProvider;
+import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.GLAllocation;
 import net.minecraft.src.MathHelper;

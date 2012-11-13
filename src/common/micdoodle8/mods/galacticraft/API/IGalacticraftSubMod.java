@@ -7,8 +7,4 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 public interface IGalacticraftSubMod 
 {
 	public String getDimensionName();
-	
-	public void load(FMLInitializationEvent event);
-	
-	public void postLoad(FMLPostInitializationEvent event);
 }

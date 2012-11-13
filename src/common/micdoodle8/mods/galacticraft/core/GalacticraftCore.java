@@ -9,6 +9,23 @@ import java.util.List;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubMod;
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityArrow;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityCreeper;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityMeteor;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityPlayer;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySkeleton;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpaceship;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpider;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityZombie;
+import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerHandler;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityBreathableAir;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCollector;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenDistributor;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenPipe;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
+import micdoodle8.mods.galacticraft.core.wgen.GCCoreWorldGenVanilla;
 import micdoodle8.mods.galacticraft.moon.GalacticraftMoon;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.EntityPlayerMP;
@@ -79,11 +96,6 @@ public class GalacticraftCore
 		
 		this.registerSubMod(moon);
 		
-		for (IGalacticraftSubModClient mod : this.clientSubMods)
-		{
-			mod.preLoad();
-		}
-		
 		new GCCoreConfigManager(new File(event.getModConfigurationDirectory(), "Galacticraft/core.conf"));
 		
 		lang = new GCCoreLocalization("micdoodle8/mods/galacticraft/core/client");
@@ -103,16 +115,6 @@ public class GalacticraftCore
 	@Init
 	public void init(FMLInitializationEvent event)
 	{
-		for (IGalacticraftSubMod mod : this.subMods)
-		{
-			mod.load(event);
-		}
-		
-		for (IGalacticraftSubModClient mod : this.clientSubMods)
-		{
-			mod.load();
-		}
-
         LanguageRegistry.instance().addStringLocalization("itemGroup.galacticraft", lang.get("itemGroup.galacticraft"));
 		
         GameRegistry.registerWorldGenerator(new GCCoreWorldGenVanilla());
@@ -130,16 +132,6 @@ public class GalacticraftCore
 	@PostInit
 	public void postInit(FMLPostInitializationEvent event)
 	{
-		for (IGalacticraftSubMod mod : this.subMods)
-		{
-			mod.postLoad(event);
-		}
-		
-		for (IGalacticraftSubModClient mod : this.clientSubMods)
-		{
-			mod.postLoad();
-		}
-		
 		proxy.postInit(event);
 		proxy.registerRenderInformation();
 	}

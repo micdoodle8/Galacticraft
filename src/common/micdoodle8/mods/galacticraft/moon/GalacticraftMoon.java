@@ -6,11 +6,15 @@ import java.util.EnumSet;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubMod;
-import micdoodle8.mods.galacticraft.core.GCCoreLocalization;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
+import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;
+import micdoodle8.mods.galacticraft.moon.entities.GCMoonPlayerHandler;
+import micdoodle8.mods.galacticraft.moon.items.GCMoonItems;
 import net.minecraft.src.World;
 import net.minecraftforge.common.DimensionManager;
 import cpw.mods.fml.common.ITickHandler;
+import cpw.mods.fml.common.Mod.Init;
+import cpw.mods.fml.common.Mod.PostInit;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -42,7 +46,7 @@ public class GalacticraftMoon implements IGalacticraftSubMod
 		GCMoonItems.initItems();
 	}
 	
-	@Override
+	@Init
 	public void load(FMLInitializationEvent event)
 	{
 		DimensionManager.registerProviderType(GCMoonConfigManager.dimensionIDMoon, GCMoonWorldProvider.class, true);
@@ -50,7 +54,7 @@ public class GalacticraftMoon implements IGalacticraftSubMod
 		GameRegistry.registerPlayerTracker(new GCMoonPlayerHandler());
 	}
 
-	@Override
+	@PostInit
 	public void postLoad(FMLPostInitializationEvent event) 
 	{
 		

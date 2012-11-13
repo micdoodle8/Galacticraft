@@ -24,22 +24,4 @@ public class ClientProxyEuropa implements IGalacticraftSubModClient
 	{
 		return "/micdoodle8/mods/galacticraft/europa/client/planets/";
 	}
-
-	@Override
-	public void load() 
-	{
-		
-	}
-
-	@Override
-	public void preLoad() 
-	{
-		
-	}
-
-	@Override
-	public void postLoad() 
-	{
-		
-	}
 }

@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.mars;
 
 import micdoodle8.mods.galacticraft.API.AdvancedAchievement;
-import micdoodle8.mods.galacticraft.core.GCCoreItems;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import net.minecraft.src.Achievement;
 import net.minecraft.src.Block;
 import net.minecraft.src.ItemStack;

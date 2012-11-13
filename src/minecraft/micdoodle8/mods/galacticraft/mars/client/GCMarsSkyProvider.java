@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.mars.client;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
-import micdoodle8.mods.galacticraft.mars.GCMarsWorldProvider;
+import micdoodle8.mods.galacticraft.mars.dimension.GCMarsWorldProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.GLAllocation;
 import net.minecraft.src.MathHelper;

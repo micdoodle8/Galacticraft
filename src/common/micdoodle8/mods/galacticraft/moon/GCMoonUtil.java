@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.moon;
 
+import micdoodle8.mods.galacticraft.moon.items.GCMoonItems;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import cpw.mods.fml.common.registry.GameRegistry;

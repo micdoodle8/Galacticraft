@@ -9,6 +9,13 @@ import java.util.List;
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubMod;
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
+import micdoodle8.mods.galacticraft.mars.dimension.GCMarsWorldProvider;
+import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityCreeperBoss;
+import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityProjectileTNT;
+import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntitySludgeling;
+import micdoodle8.mods.galacticraft.mars.entities.GCMarsPlayerHandler;
+import micdoodle8.mods.galacticraft.mars.items.GCMarsItems;
 import net.minecraft.src.EntityPlayerMP;
 import net.minecraft.src.INetworkManager;
 import net.minecraft.src.Packet250CustomPayload;
@@ -16,7 +23,9 @@ import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
+import cpw.mods.fml.common.Mod.PostInit;
 import cpw.mods.fml.common.Mod.PreInit;
 import cpw.mods.fml.common.Mod.ServerStarted;
 import cpw.mods.fml.common.Side;
@@ -70,7 +79,7 @@ public class GalacticraftMars implements IGalacticraftSubMod
 		proxy.preInit(event);
 	}
 
-	@Override
+	@Init
 	public void load(FMLInitializationEvent event)
 	{
 		DimensionManager.registerProviderType(GCMarsConfigManager.dimensionIDMars, GCMarsWorldProvider.class, true);
@@ -100,7 +109,7 @@ public class GalacticraftMars implements IGalacticraftSubMod
 		registerGalacticraftNonMobEntity(GCMarsEntityProjectileTNT.class, "Projectile TNT", GCMarsConfigManager.idEntityProjectileTNT, 150, 5, true);
 	}
 
-	@Override
+	@PostInit
 	public void postLoad(FMLPostInitializationEvent event)
 	{
 //		GCMarsAchievementList.initAchievs();

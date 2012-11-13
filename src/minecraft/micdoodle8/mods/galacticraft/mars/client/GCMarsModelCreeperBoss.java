@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.mars.client;
 
-import micdoodle8.mods.galacticraft.mars.GCMarsEntityCreeperBoss;
+import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityCreeperBoss;
 import net.minecraft.src.Entity;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.ModelBase;

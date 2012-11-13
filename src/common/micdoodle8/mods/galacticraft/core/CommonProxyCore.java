@@ -2,10 +2,17 @@ package micdoodle8.mods.galacticraft.core;
 
 import java.util.List;
 
-import micdoodle8.mods.galacticraft.core.client.GCCoreGuiAirDistributor;
-import micdoodle8.mods.galacticraft.core.client.GCCoreGuiRocketBench;
-import micdoodle8.mods.galacticraft.core.client.GCCoreGuiTankRefill;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiAirDistributor;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiRocketBench;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiTankRefill;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityPlayer;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreContainerAirDistributor;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreContainerRocketBench;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreContainerTankRefill;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreInventoryTankRefill;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenDistributor;
 import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.StatBase;
 import net.minecraft.src.World;
 
 import com.google.common.collect.Lists;
@@ -42,7 +49,11 @@ public class CommonProxyCore implements IGuiHandler
 	{
 		
 	}
-	
+
+	public static void addStat(EntityPlayer player, StatBase stat, int i)
+	{
+		
+	}
 	
 	public int getGCUnlitTorchRenderID()
 	{

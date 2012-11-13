@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.API;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
-import micdoodle8.mods.galacticraft.core.GCCoreTileEntityBreathableAir;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityBreathableAir;
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Block;
 import net.minecraft.src.BlockContainer;

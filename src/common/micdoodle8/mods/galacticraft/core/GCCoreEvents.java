@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core;
 
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
+import micdoodle8.mods.galacticraft.core.dimension.GCCoreTeleporter;
 import net.minecraft.src.BlockSapling;
 import net.minecraft.src.WorldServer;
 import net.minecraftforge.event.Event.Result;
