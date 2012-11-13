@@ -8,6 +8,7 @@ import java.util.Random;
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
 import micdoodle8.mods.galacticraft.core.GCCoreLocalization;
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderArrow;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityArrow;
 import micdoodle8.mods.galacticraft.mars.CommonProxyMars;
@@ -69,6 +70,7 @@ public class ClientProxyMars extends CommonProxyMars implements IGalacticraftSub
 	@Override
 	public void init(FMLInitializationEvent event)
 	{
+		GalacticraftCore.registerClientSubMod(this);
 		TickRegistry.registerTickHandler(new TickHandlerClient(), Side.CLIENT);
         NetworkRegistry.instance().registerChannel(new ClientPacketHandler(), "GalacticraftMars", Side.CLIENT);
         this.fluidRenderID = RenderingRegistry.getNextAvailableRenderId();

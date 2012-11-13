@@ -5,6 +5,7 @@ import java.io.DataInputStream;
 import java.util.EnumSet;
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.API.AdvancedAchievement;
 import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.CommonProxyCore;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
@@ -316,9 +317,47 @@ public class ClientProxyCore extends CommonProxyCore
 		}
     }
 	
-	public static void addStat(EntityPlayer player, StatBase stat, int i)
+    @Override
+	public void addStat(EntityPlayer player, StatBase stat, int i)
 	{
-		
+    	if (stat != null)
+		{
+			if (stat instanceof AdvancedAchievement)
+			{
+				AdvancedAchievement achiev = (AdvancedAchievement) stat;
+				
+				int amountOfCompletedAchievements = 0;
+				
+				if (achiev.parentAchievements != null)
+				{
+					for (int j = 0; i < achiev.parentAchievements.length; j++)
+					{
+						if (FMLClientHandler.instance().getClient().statFileWriter.hasAchievementUnlocked(achiev.parentAchievements[j]))
+						{
+							amountOfCompletedAchievements++;
+						}
+					}
+					
+					if (amountOfCompletedAchievements >= achiev.parentAchievements.length)
+					{
+	                    if (!FMLClientHandler.instance().getClient().statFileWriter.hasAchievementUnlocked(achiev))
+	                    {
+							FMLClientHandler.instance().getClient().guiAchievement.queueTakenAchievement(achiev);
+	                    }
+					}
+				}
+				else
+				{
+					player.addStat(stat, i);
+				}
+
+				FMLClientHandler.instance().getClient().statFileWriter.readStat(stat, i);
+			}
+			else
+			{
+				player.addStat(stat, i);
+			}
+		}
 	}
 	
 	public static boolean handleWaterMovement(EntityPlayer player)

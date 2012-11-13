@@ -263,7 +263,7 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 		this.caveGenerator.generate(this, this.worldObj, par1, par2, var3);
 		this.caveGenerator2.generate(this, this.worldObj, par1, par2, var3);
 
-		Chunk var4 = new GCCoreChunk(this.worldObj, var3, par1, par2);
+		Chunk var4 = new GCCoreChunk(this.worldObj, var3, null, par1, par2);
 		byte[] var5 = var4.getBiomeArray();
 
 		for (int var6 = 0; var6 < var5.length; ++var6) 

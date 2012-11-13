@@ -50,7 +50,7 @@ public class CommonProxyCore implements IGuiHandler
 		
 	}
 
-	public static void addStat(EntityPlayer player, StatBase stat, int i)
+	public void addStat(EntityPlayer player, StatBase stat, int i)
 	{
 		
 	}

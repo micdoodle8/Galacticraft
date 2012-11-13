@@ -8,16 +8,19 @@ import micdoodle8.mods.galacticraft.API.IGalacticraftSubMod;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.europa.GCEuropaConfigManager;
 import micdoodle8.mods.galacticraft.europa.GalacticraftEuropa;
+import micdoodle8.mods.galacticraft.io.GalacticraftIo;
 import micdoodle8.mods.galacticraft.jupiter.client.ClientProxyJupiter;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.Mod.PostInit;
 import cpw.mods.fml.common.Mod.PreInit;
+import cpw.mods.fml.common.Mod.ServerStarted;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 
 /**
@@ -37,8 +40,7 @@ public class GalacticraftJupiter implements IGalacticraftSubMod
 	public static GalacticraftJupiter instance;
 	
 	public static GalacticraftEuropa moonEuropa = new GalacticraftEuropa();
-	
-	public static ClientProxyJupiter client = new ClientProxyJupiter();
+	public static GalacticraftIo moonIo = new GalacticraftIo();
 	
 	public static List jupiterPlayers = new ArrayList();
 	public static List gcJupiterPlayers = new ArrayList();
@@ -47,8 +49,7 @@ public class GalacticraftJupiter implements IGalacticraftSubMod
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		moonEuropa.preInit(event);
-		
-		GalacticraftCore.registerClientSubMod(client);
+		moonIo.preInit(event);
 		
 		GalacticraftCore.registerSubMod(this);
 		
@@ -60,14 +61,25 @@ public class GalacticraftJupiter implements IGalacticraftSubMod
 	@Init
 	public void load(FMLInitializationEvent event)
 	{
+		moonEuropa.init(event);
+		moonIo.init(event);
 		proxy.init(event);
 	}
 
 	@PostInit
 	public void postLoad(FMLPostInitializationEvent event)
 	{
+		moonEuropa.postInit(event);
+		moonIo.postInit(event);
 		proxy.postInit(event);
 		proxy.registerRenderInformation();
+	}
+	
+	@ServerStarted
+	public void serverStarted(FMLServerStartedEvent event)
+	{
+		moonEuropa.serverInit(event);
+		moonIo.serverInit(event);
 	}
 
 	@Override

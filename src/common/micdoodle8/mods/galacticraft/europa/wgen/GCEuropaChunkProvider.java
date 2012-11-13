@@ -258,7 +258,7 @@ public class GCEuropaChunkProvider extends ChunkProviderGenerate
 		this.biomesForGeneration = this.worldObj.getWorldChunkManager().loadBlockGeneratorData(this.biomesForGeneration, par1 * 16, par2 * 16, 16, 16);
 		this.replaceBlocksForBiome(par1, par2, var3, this.biomesForGeneration);
 
-		Chunk var4 = new GCCoreChunk(this.worldObj, var3, par1, par2);
+		Chunk var4 = new GCCoreChunk(this.worldObj, var3, null, par1, par2);
 		byte[] var5 = var4.getBiomeArray();
 
 		for (int var6 = 0; var6 < var5.length; ++var6) 

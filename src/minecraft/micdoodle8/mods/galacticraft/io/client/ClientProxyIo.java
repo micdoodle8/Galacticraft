@@ -1,4 +1,4 @@
-package micdoodle8.mods.galacticraft.europa.client;
+package micdoodle8.mods.galacticraft.io.client;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -7,14 +7,14 @@ import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
 import micdoodle8.mods.galacticraft.core.GCCoreLocalization;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 
-public class ClientProxyEuropa implements IGalacticraftSubModClient
+public class ClientProxyIo implements IGalacticraftSubModClient
 {
-	public static GCCoreLocalization lang = new GCCoreLocalization("micdoodle8/mods/galacticraft/europa/client");
+	public static GCCoreLocalization lang = new GCCoreLocalization("micdoodle8/mods/galacticraft/io/client");
 
 	@Override
 	public String getDimensionName() 
 	{
-		return "Europa";
+		return "Io";
 	}
 	
 	public void preInit(FMLPreInitializationEvent event) 
@@ -39,6 +39,6 @@ public class ClientProxyEuropa implements IGalacticraftSubModClient
 	@Override
 	public String getPlanetSpriteDirectory() 
 	{
-		return "/micdoodle8/mods/galacticraft/europa/client/planets/";
+		return "/micdoodle8/mods/galacticraft/io/client/planets/";
 	}
 }

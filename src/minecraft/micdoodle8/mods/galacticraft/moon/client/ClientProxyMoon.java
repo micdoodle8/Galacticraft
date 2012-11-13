@@ -4,6 +4,7 @@ import java.util.EnumSet;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
 import micdoodle8.mods.galacticraft.core.GCCoreLocalization;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.moon.CommonProxyMoon;
 import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
 import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;
@@ -35,6 +36,7 @@ public class ClientProxyMoon extends CommonProxyMoon implements IGalacticraftSub
 	@Override
 	public void init(FMLInitializationEvent event)
 	{
+		GalacticraftCore.registerClientSubMod(this);
 		TickRegistry.registerTickHandler(new TickHandlerClient(), Side.CLIENT);
         GCMoonColorizerGrass.setGrassBiomeColorizer(FMLClientHandler.instance().getClient().renderEngine.getTextureContents("/micdoodle8/mods/galacticraft/moon/client/blocks/moonfoliagecolor.png"));
 	}

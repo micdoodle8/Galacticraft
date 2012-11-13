@@ -1,4 +1,4 @@
-package micdoodle8.mods.galacticraft.europa;
+package micdoodle8.mods.galacticraft.io;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
@@ -7,30 +7,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubMod;
-import micdoodle8.mods.galacticraft.core.GCCoreLocalization;
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.europa.blocks.GCEuropaBlocks;
-import micdoodle8.mods.galacticraft.europa.dimension.GCEuropaWorldProvider;
+import micdoodle8.mods.galacticraft.io.blocks.GCIoBlocks;
+import micdoodle8.mods.galacticraft.io.dimension.GCIoWorldProvider;
 import micdoodle8.mods.galacticraft.jupiter.GalacticraftJupiter;
 import net.minecraft.src.EntityPlayerMP;
 import net.minecraft.src.INetworkManager;
 import net.minecraft.src.Packet250CustomPayload;
 import net.minecraftforge.common.DimensionManager;
-import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
-import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.Mod.PostInit;
 import cpw.mods.fml.common.Mod.PreInit;
-import cpw.mods.fml.common.Mod.ServerStarted;
 import cpw.mods.fml.common.Side;
-import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.network.IPacketHandler;
-import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.common.registry.EntityRegistry;
@@ -42,21 +36,21 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
  *  All rights reserved.
  *
  */
-public class GalacticraftEuropa implements IGalacticraftSubMod
+public class GalacticraftIo implements IGalacticraftSubMod
 {
-	public static List europaPlayers = new ArrayList();
-	public static List gcEuropaPlayers = new ArrayList();
+	public static List ioPlayers = new ArrayList();
+	public static List gcIoPlayers = new ArrayList();
 
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		GalacticraftCore.registerSubMod(this);
 
-		new GCEuropaConfigManager(new File(event.getModConfigurationDirectory(), "Galacticraft/europa.conf"));
+		new GCIoConfigManager(new File(event.getModConfigurationDirectory(), "Galacticraft/io.conf"));
 		
-		GCEuropaBlocks.initBlocks();
-		GCEuropaBlocks.registerBlocks();
-		GCEuropaBlocks.setHarvestLevels();
-		GCEuropaBlocks.addNames();
+		GCIoBlocks.initBlocks();
+		GCIoBlocks.registerBlocks();
+		GCIoBlocks.setHarvestLevels();
+		GCIoBlocks.addNames();
 //		
 //		GCMarsItems.initItems();
 //		GCMarsItems.addNames(); TODO
@@ -64,8 +58,8 @@ public class GalacticraftEuropa implements IGalacticraftSubMod
 	
 	public void init(FMLInitializationEvent event)
 	{
-		DimensionManager.registerProviderType(GCEuropaConfigManager.dimensionIDEuropa, GCEuropaWorldProvider.class, true);
-		DimensionManager.registerDimension(GCEuropaConfigManager.dimensionIDEuropa, GCEuropaConfigManager.dimensionIDEuropa);
+		DimensionManager.registerProviderType(GCIoConfigManager.dimensionIDIo, GCIoWorldProvider.class, true);
+		DimensionManager.registerDimension(GCIoConfigManager.dimensionIDIo, GCIoConfigManager.dimensionIDIo);
 //		MinecraftForge.EVENT_BUS.register(new GCMarsEvents());
 //		GameRegistry.registerPlayerTracker(new GCMarsPlayerHandler());
 		this.registerTileEntities();
@@ -93,13 +87,13 @@ public class GalacticraftEuropa implements IGalacticraftSubMod
 	
 	public void serverInit(FMLServerStartedEvent event)
 	{
-        NetworkRegistry.instance().registerChannel(new ServerPacketHandler(), "GcEu", Side.SERVER);
+        NetworkRegistry.instance().registerChannel(new ServerPacketHandler(), "GcIo", Side.SERVER);
 	}
 
     public void registerGalacticraftCreature(Class var0, String var1, int id, int back, int fore)
     {
     	EntityRegistry.registerGlobalEntityID(var0, var1, id, back, fore);
-        EntityRegistry.registerModEntity(var0, var1, id, GalacticraftJupiter.moonEuropa, 80, 3, true);
+        EntityRegistry.registerModEntity(var0, var1, id, GalacticraftJupiter.moonIo, 80, 3, true);
 		LanguageRegistry.instance().addStringLocalization("entity." + var1 + ".name", "en_US", var1);
     }
     
@@ -127,6 +121,6 @@ public class GalacticraftEuropa implements IGalacticraftSubMod
 	@Override
 	public String getDimensionName() 
 	{
-		return "Europa";
+		return "Io";
 	}
 }
