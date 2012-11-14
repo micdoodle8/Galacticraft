@@ -451,6 +451,14 @@ public class GCIoChunkProvider extends ChunkProviderGenerate
             var14 = var5 + this.rand.nextInt(16) + 8;
             (new GCIoWorldGenLakes(GCIoBlocks.block.blockID)).generate(this.worldObj, this.rand, var12, var13, var14);
         }
+		
+        if (!var11 && this.rand.nextInt(700) == 0)
+        {
+            var12 = var4 + this.rand.nextInt(16) + 8;
+            var13 = 58;
+            var14 = var5 + this.rand.nextInt(16) + 8;
+            (new GCIoWorldGenVolcano()).generate(this.worldObj, this.rand, var12, var13, var14);
+        }
 
 		this.decoratePlanet(this.worldObj, this.rand, var4, var5);
 		var4 += 8;
