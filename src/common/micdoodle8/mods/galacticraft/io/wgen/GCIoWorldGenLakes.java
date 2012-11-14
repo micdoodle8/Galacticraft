@@ -29,7 +29,7 @@ public class GCIoWorldGenLakes extends WorldGenerator
         else
         {
             par4 -= 4;
-            boolean[] var6 = new boolean[2048];
+            boolean[] var6 = new boolean[5000];
             int var7 = par2Random.nextInt(4) + 4;
             int var8;
 
@@ -42,9 +42,9 @@ public class GCIoWorldGenLakes extends WorldGenerator
                 double var17 = par2Random.nextDouble() * (8.0D - var11 - 4.0D) + 2.0D + var11 / 2.0D;
                 double var19 = par2Random.nextDouble() * (16.0D - var13 - 2.0D) + 1.0D + var13 / 2.0D;
 
-                for (int var21 = 1; var21 < 15; ++var21)
+                for (int var21 = 1; var21 < 31; ++var21)
                 {
-                    for (int var22 = 1; var22 < 15; ++var22)
+                    for (int var22 = 1; var22 < 31; ++var22)
                     {
                         for (int var23 = 1; var23 < 7; ++var23)
                         {
@@ -65,9 +65,9 @@ public class GCIoWorldGenLakes extends WorldGenerator
             int var10;
             int var32;
 
-            for (var8 = 0; var8 < 16; ++var8)
+            for (var8 = 0; var8 < 32; ++var8)
             {
-                for (var32 = 0; var32 < 16; ++var32)
+                for (var32 = 0; var32 < 32; ++var32)
                 {
                     for (var10 = 0; var10 < 8; ++var10)
                     {
