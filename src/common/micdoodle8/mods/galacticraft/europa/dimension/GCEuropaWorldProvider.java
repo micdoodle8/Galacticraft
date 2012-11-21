@@ -98,7 +98,7 @@ public class GCEuropaWorldProvider extends WorldProvider implements IGalacticraf
 	}
 
 	@Override
-    public IChunkProvider getChunkProvider()
+    public IChunkProvider createChunkGenerator()
     {
         return new GCEuropaChunkProvider(this.worldObj, this.worldObj.getSeed(), this.worldObj.getWorldInfo().isMapFeaturesEnabled());
     }

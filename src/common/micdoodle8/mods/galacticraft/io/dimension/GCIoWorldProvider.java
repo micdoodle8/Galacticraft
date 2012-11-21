@@ -92,7 +92,7 @@ public class GCIoWorldProvider extends WorldProvider implements IGalacticraftWor
 	}
 
 	@Override
-    public IChunkProvider getChunkProvider()
+    public IChunkProvider createChunkGenerator()
     {
         return new GCIoChunkProvider(this.worldObj, this.worldObj.getSeed(), this.worldObj.getWorldInfo().isMapFeaturesEnabled());
     }

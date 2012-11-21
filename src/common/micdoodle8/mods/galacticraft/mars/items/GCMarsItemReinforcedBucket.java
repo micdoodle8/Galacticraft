@@ -129,7 +129,7 @@ public class GCMarsItemReinforcedBucket extends GCMarsItem
 
                     if (this.isFull == 0)
                     {
-                        if (!par3EntityPlayer.func_82247_a(var13, var14, var15, var12.sideHit, par1ItemStack))
+                        if (!par3EntityPlayer.canPlayerEdit(var13, var14, var15, var12.sideHit, par1ItemStack))
                         {
                         	if (par1ItemStack != null)
                             	return par1ItemStack;
@@ -266,7 +266,7 @@ public class GCMarsItemReinforcedBucket extends GCMarsItem
                             ++var13;
                         }
 
-                        if (!par3EntityPlayer.func_82247_a(var13, var14, var15, var12.sideHit, par1ItemStack))
+                        if (!par3EntityPlayer.canPlayerEdit(var13, var14, var15, var12.sideHit, par1ItemStack))
                         {
                             return par1ItemStack;
                         }

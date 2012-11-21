@@ -112,7 +112,7 @@ public class GCMoonWorldProvider extends WorldProvider implements IGalacticraftW
 	}
 
 	@Override
-    public IChunkProvider getChunkProvider()
+    public IChunkProvider createChunkGenerator()
     {
         return new GCMoonChunkProvider(this.worldObj, this.worldObj.getSeed(), this.worldObj.getWorldInfo().isMapFeaturesEnabled());
     }

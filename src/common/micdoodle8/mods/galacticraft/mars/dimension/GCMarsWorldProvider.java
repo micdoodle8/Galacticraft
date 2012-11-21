@@ -99,7 +99,7 @@ public class GCMarsWorldProvider extends WorldProvider implements IGalacticraftW
 	}
 
 	@Override
-    public IChunkProvider getChunkProvider()
+    public IChunkProvider createChunkGenerator()
     {
         return new GCMarsChunkProvider(this.worldObj, this.worldObj.getSeed(), this.worldObj.getWorldInfo().isMapFeaturesEnabled());
     }

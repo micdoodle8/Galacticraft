@@ -57,7 +57,7 @@ public class GCMarsBlockStationary extends GCMarsBlockFluid
         int var5 = par1World.getBlockMetadata(par2, par3, par4);
         par1World.editingBlocks = true;
         par1World.setBlockAndMetadata(par2, par3, par4, this.blockID - 1, var5);
-        par1World.markBlocksDirty(par2, par3, par4, par2, par3, par4);
+        par1World.markBlockRangeForRenderUpdate(par2, par3, par4, par2, par3, par4);
         par1World.scheduleBlockUpdate(par2, par3, par4, this.blockID - 1, this.tickRate());
         par1World.editingBlocks = false;
     }

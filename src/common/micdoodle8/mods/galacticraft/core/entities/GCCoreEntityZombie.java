@@ -271,7 +271,7 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
                 this.dropItem(Item.carrot.shiftedIndex, 1);
                 break;
             case 2:
-                this.dropItem(Item.potatoe.shiftedIndex, 1);
+                this.dropItem(Item.potato.shiftedIndex, 1);
         }
     }
 
@@ -355,7 +355,7 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
             var2.func_82149_j(par1EntityLiving);
             this.worldObj.setEntityDead(par1EntityLiving);
             var2.initCreature();
-            var2.setVillager(true);
+            var2.setIsVillager(true);
 
             if (par1EntityLiving.isChild())
             {

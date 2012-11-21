@@ -300,7 +300,7 @@ public class GCMoonSkyProvider extends SkyProvider
 
     private Vec3 getCustomSkyColor()
     {
-        return Vec3.field_82592_a.getVecFromPool(0.26796875D, 0.1796875D, 0.0D);
+        return Vec3.vec3dPool.getVecFromPool(0.26796875D, 0.1796875D, 0.0D);
     }
     
     public float getSkyBrightness(float par1)
