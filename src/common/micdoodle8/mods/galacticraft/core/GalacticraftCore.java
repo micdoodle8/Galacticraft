@@ -115,6 +115,8 @@ public class GalacticraftCore
 	@Init
 	public void init(FMLInitializationEvent event)
 	{
+		moon.load(event);
+		
         LanguageRegistry.instance().addStringLocalization("itemGroup.galacticraft", lang.get("itemGroup.galacticraft"));
 		
         GameRegistry.registerWorldGenerator(new GCCoreWorldGenVanilla());
@@ -132,6 +134,8 @@ public class GalacticraftCore
 	@PostInit
 	public void postInit(FMLPostInitializationEvent event)
 	{
+		moon.postLoad(event);
+		
 		proxy.postInit(event);
 		proxy.registerRenderInformation();
 	}
