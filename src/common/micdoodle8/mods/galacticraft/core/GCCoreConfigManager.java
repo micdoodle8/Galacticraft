@@ -65,6 +65,7 @@ public class GCCoreConfigManager
 	public static int idItemRocketNoseCone;
 	public static int idItemRocketFins;
 	public static int idItemSensorLens;
+	public static int idItemBuggy;
 	
 	// ARMOR
 	public static int idArmorOxygenMask;
@@ -98,6 +99,7 @@ public class GCCoreConfigManager
 	public static int idEntitySpaceship;
 	public static int idEntityAntiGravityArrow;
 	public static int idEntityMeteor;
+	public static int idEntityBuggy;
 	
 	// GENERAL
 	public static boolean transparentBreathableAir;
@@ -147,7 +149,8 @@ public class GCCoreConfigManager
 	        idItemRocketNoseCone = 					configuration.get(configuration.CATEGORY_BLOCK, "idItemRocketNoseCone", 				9874)		.getInt(9874);
 	        idItemRocketFins = 						configuration.get(configuration.CATEGORY_BLOCK, "idItemRocketFins", 					9875)		.getInt(9875);
 	        idItemSensorLens = 						configuration.get(configuration.CATEGORY_BLOCK, "idItemSensorLens", 					9886)		.getInt(9886);
-
+	        idItemBuggy = 							configuration.get(configuration.CATEGORY_BLOCK, "idItemBuggyPlacer", 					9887)		.getInt(9887);
+	        
 	        idToolTitaniumSword = 					configuration.get(configuration.CATEGORY_BLOCK, "idToolTitaniumSword", 					9876)		.getInt(9876);
 	        idToolTitaniumPickaxe = 				configuration.get(configuration.CATEGORY_BLOCK, "idToolTitaniumPickaxe", 				9877)		.getInt(9877);
 	        idToolTitaniumSpade = 					configuration.get(configuration.CATEGORY_BLOCK, "idToolTitaniumSpade", 					9878)		.getInt(9878);
@@ -173,7 +176,8 @@ public class GCCoreConfigManager
 	        idEntitySpaceship = 					configuration.get("Entities", "idEntitySpaceship", 										159)		.getInt(159);
 	        idEntityAntiGravityArrow = 				configuration.get("Entities", "idEntityAntiGravityArrow", 								160)		.getInt(160);
 	        idEntityMeteor = 						configuration.get("Entities", "idEntityMeteor", 										161)		.getInt(161);
-		
+	        idEntityBuggy = 						configuration.get("Entities", "idEntityBuggy", 											162)		.getInt(162);
+	        
 	        transparentBreathableAir = 				configuration.get(configuration.CATEGORY_GENERAL, "transparentBreathableAir", 			true)		.getBoolean(true);
 		}
 		catch (Exception e)
