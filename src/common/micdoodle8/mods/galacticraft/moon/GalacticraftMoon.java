@@ -46,7 +46,6 @@ public class GalacticraftMoon implements IGalacticraftSubMod
 		GCMoonItems.initItems();
 	}
 	
-	@Init
 	public void load(FMLInitializationEvent event)
 	{
 		DimensionManager.registerProviderType(GCMoonConfigManager.dimensionIDMoon, GCMoonWorldProvider.class, true);
@@ -54,7 +53,6 @@ public class GalacticraftMoon implements IGalacticraftSubMod
 		GameRegistry.registerPlayerTracker(new GCMoonPlayerHandler());
 	}
 
-	@PostInit
 	public void postLoad(FMLPostInitializationEvent event) 
 	{
 		
