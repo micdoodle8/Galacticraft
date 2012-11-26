@@ -2,31 +2,25 @@ package micdoodle8.mods.galacticraft.core.entities;
 
 import java.util.List;
 
-import org.lwjgl.util.vector.Vector3f;
-
 import net.minecraft.src.AxisAlignedBB;
-import net.minecraft.src.Block;
 import net.minecraft.src.BlockRail;
 import net.minecraft.src.DamageSource;
 import net.minecraft.src.Entity;
-import net.minecraft.src.EntityIronGolem;
 import net.minecraft.src.EntityItem;
-import net.minecraft.src.EntityLiving;
+import net.minecraft.src.EntityMinecart;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IInventory;
-import net.minecraft.src.IUpdatePlayerListBox;
-import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.MathHelper;
+import net.minecraft.src.ModLoader;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.NBTTagList;
-import net.minecraft.src.Vec3;
 import net.minecraft.src.World;
+import net.minecraft.src.WorldServer;
 import net.minecraftforge.common.IMinecartCollisionHandler;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.minecart.MinecartCollisionEvent;
-import net.minecraftforge.event.entity.minecart.MinecartInteractEvent;
-import net.minecraftforge.event.entity.minecart.MinecartUpdateEvent;
+
+import org.lwjgl.input.Keyboard;
+
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
@@ -78,7 +72,7 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
     protected float maxSpeedAirVertical;
     protected double dragAir;
     
-    private float forwardAcceleration;
+    public float forwardAcceleration;
 
     public GCCoreEntityBuggy(World par1World)
     {
@@ -88,7 +82,7 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
         this.field_70499_f = false;
         this.field_82345_h = true;
         this.preventEntitySpawning = true;
-        this.setSize(3F, 0.7F);
+        this.setSize(3F, 3F);
         this.yOffset = this.height / 2.0F;
 //        this.field_82344_g = par1World != null ? par1World.func_82735_a(this) : null; TODO
 
@@ -156,7 +150,8 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
      */
     public double getMountedYOffset()
     {
-        return (double)this.height - 1.5D;
+        return (double)this.height - 4.0D;
+//        return (double)this.height - 1.5D;
     }
 
     /**
@@ -266,30 +261,25 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
 
     public void onUpdate()
     {
-    	this.forwardAcceleration = 1F;
+    	super.onUpdate();
     	
-    	double actualMotionX = motionX;//posX - prevPosX;
-		double actualMotionY = motionY;//posY - prevPosY;
-		double actualMotionZ = motionZ;//posZ - prevPosZ;
-		
-        super.onUpdate();
+        if (ModLoader.getMinecraftInstance() != null && ModLoader.getMinecraftInstance().theWorld != null)
+        {
+            if (this.worldObj instanceof WorldServer && ModLoader.getMinecraftInstance().theWorld.getEntityByID(this.entityId) == null)
+            {
+                GCCoreEntityBuggy var1 = new GCCoreEntityBuggy(ModLoader.getMinecraftInstance().theWorld);
+                var1.setPosition(this.posX, this.posY, this.posZ);
+                ModLoader.getMinecraftInstance().theWorld.addEntityToWorld(this.entityId, var1);
+            }
 
-		double oldSpeed = Math.sqrt(actualMotionX * actualMotionX + actualMotionY * actualMotionY + actualMotionZ * actualMotionZ);
-		
-		double lastMotionX = motionX;
-		double lastMotionY = motionY;
-		double lastMotionZ = motionZ;
-		
-		double newSpeed = oldSpeed * 0.5D + this.forwardAcceleration / 50D;
-		
-		double split = Math.abs(this.forwardAcceleration) / (1D);
-		if(newSpeed > (1D) / 5D)
-			newSpeed = (1D) / 5D;
-
-		motionX = newSpeed * split + actualMotionX * (1D - split); //X component of local Z axis
-		motionY = 0; //X component of local Z axis
-		motionZ = newSpeed * split + actualMotionZ * (1D - split); //Z component of local Z axis
-		
+            if (this.worldObj instanceof WorldServer)
+            {
+            	GCCoreEntityBuggy var19 = (GCCoreEntityBuggy)ModLoader.getMinecraftInstance().theWorld.getEntityByID(this.entityId);
+                var19.setPositionAndRotation(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
+                var19.setVelocity(this.motionX, this.motionY, this.motionZ);
+                var19.forwardAcceleration = this.forwardAcceleration;
+            }
+        }
 //        if (this.field_82344_g != null)
 //        {
 //            this.field_82344_g.update();
@@ -314,6 +304,84 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
         {
             this.worldObj.spawnParticle("largesmoke", this.posX, this.posY + 0.8D, this.posZ, 0.0D, 0.0D, 0.0D);
         }
+        
+        this.rotationYaw %= 360.0F;
+        this.rotationPitch %= 360.0F;
+
+        AxisAlignedBB box = null;
+        box = boundingBox.expand(2D, 1.0D, 2D);
+
+        List var15 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, box);
+
+        if (var15 != null && !var15.isEmpty())
+        {
+            for (int var50 = 0; var50 < var15.size(); ++var50)
+            {
+                Entity var17 = (Entity)var15.get(var50);
+
+                if (var17 != this.riddenByEntity && var17.canBePushed() && var17 instanceof EntityMinecart)
+                {
+                    var17.applyEntityCollision(this);
+                }
+            }
+        }
+        
+        if (this.riddenByEntity != null )
+        {
+        	this.riddenByEntity.rotationPitch = this.rotationPitch;
+        	
+        	this.riddenByEntity.rotationYaw = this.rotationYaw;
+        	
+            if (Keyboard.isKeyDown(30))
+            {
+                this.rotationYaw = (float)((double)this.rotationYaw - 1.0D * (1.0D + this.forwardAcceleration / 2.0D));
+            }
+
+            if (Keyboard.isKeyDown(32))
+            {
+                this.rotationYaw = (float)((double)this.rotationYaw + 1.0D * (1.0D + this.forwardAcceleration / 2.0D));
+            }
+
+            if (Keyboard.isKeyDown(17))
+            {
+                this.forwardAcceleration += 0.02D;
+            }
+
+            if (Keyboard.isKeyDown(31))
+            {
+                this.forwardAcceleration -= 0.01D;
+            }
+
+            if (Keyboard.isKeyDown(42))
+            {
+                this.forwardAcceleration *= 0.75D;
+            }
+
+            this.fuel = (int)((double)this.fuel - this.forwardAcceleration);
+        }
+        else
+        {
+            this.forwardAcceleration *= 0.9D;
+        }
+
+        this.forwardAcceleration *= 0.98D;
+
+        if (this.forwardAcceleration > 2.0F)
+        {
+            this.forwardAcceleration = 2.0F;
+        }
+
+        if (this.isCollidedHorizontally)
+        {
+            this.forwardAcceleration = 0.0F;
+            
+            this.motionY += 0.1D;
+        }
+        
+        this.motionX = -(this.forwardAcceleration * Math.cos((double)(this.rotationYaw - 90) * Math.PI / 180.0D));
+        this.motionZ = -(this.forwardAcceleration * Math.sin((double)(this.rotationYaw - 90) * Math.PI / 180.0D));
+        
+        this.motionY -= 0.04D;
         
         moveEntity(motionX, motionY, motionZ);
 
@@ -342,7 +410,6 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
             this.prevPosX = this.posX;
             this.prevPosY = this.posY;
             this.prevPosZ = this.posZ;
-            this.motionY -= 0.03999999910593033D;
             int var1 = MathHelper.floor_double(this.posX);
             int var2 = MathHelper.floor_double(this.posY);
             int var3 = MathHelper.floor_double(this.posZ);
@@ -355,245 +422,6 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
             double var4 = 0.4D;
             double var6 = 0.0078125D;
             int var8 = this.worldObj.getBlockId(var1, var2, var3);
-
-//            if (canUseRail() && BlockRail.isRailBlock(var8))
-//            {
-//                this.fallDistance = 0.0F;
-//                Vec3 var9 = this.func_70489_a(this.posX, this.posY, this.posZ);
-//                int var10 = ((BlockRail)Block.blocksList[var8]).getBasicRailMetadata(worldObj, this, var1, var2, var3);
-//                this.posY = (double)var2;
-//                boolean var11 = false;
-//                boolean var12 = false;
-//
-//                if (var8 == Block.railPowered.blockID)
-//                {
-//                    var11 = (worldObj.getBlockMetadata(var1, var2, var3) & 8) != 0;
-//                    var12 = !var11;
-//                }
-//
-//                if (((BlockRail)Block.blocksList[var8]).isPowered())
-//                {
-//                    var10 &= 7;
-//                }
-//
-//                if (var10 >= 2 && var10 <= 5)
-//                {
-//                    this.posY = (double)(var2 + 1);
-//                }
-//
-//                adjustSlopeVelocities(var10);
-//
-//                int[][] var13 = field_70500_g[var10];
-//                double var14 = (double)(var13[1][0] - var13[0][0]);
-//                double var16 = (double)(var13[1][2] - var13[0][2]);
-//                double var18 = Math.sqrt(var14 * var14 + var16 * var16);
-//                double var20 = this.motionX * var14 + this.motionZ * var16;
-//
-//                if (var20 < 0.0D)
-//                {
-//                    var14 = -var14;
-//                    var16 = -var16;
-//                }
-//
-//                double var22 = Math.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
-//                this.motionX = var22 * var14 / var18;
-//                this.motionZ = var22 * var16 / var18;
-//                double var24;
-//                double var26;
-//
-//                if (this.riddenByEntity != null)
-//                {
-//                    var24 = this.riddenByEntity.motionX * this.riddenByEntity.motionX + this.riddenByEntity.motionZ * this.riddenByEntity.motionZ;
-//                    var26 = this.motionX * this.motionX + this.motionZ * this.motionZ;
-//
-//                    if (var24 > 1.0E-4D && var26 < 0.01D)
-//                    {
-//                        this.motionX += this.riddenByEntity.motionX * 0.1D;
-//                        this.motionZ += this.riddenByEntity.motionZ * 0.1D;
-//                        var12 = false;
-//                    }
-//                }
-//
-//                var24 = 0.0D;
-//                var26 = (double)var1 + 0.5D + (double)var13[0][0] * 0.5D;
-//                double var28 = (double)var3 + 0.5D + (double)var13[0][2] * 0.5D;
-//                double var30 = (double)var1 + 0.5D + (double)var13[1][0] * 0.5D;
-//                double var32 = (double)var3 + 0.5D + (double)var13[1][2] * 0.5D;
-//                var14 = var30 - var26;
-//                var16 = var32 - var28;
-//                double var34;
-//                double var36;
-//
-//                if (var14 == 0.0D)
-//                {
-//                    this.posX = (double)var1 + 0.5D;
-//                    var24 = this.posZ - (double)var3;
-//                }
-//                else if (var16 == 0.0D)
-//                {
-//                    this.posZ = (double)var3 + 0.5D;
-//                    var24 = this.posX - (double)var1;
-//                }
-//                else
-//                {
-//                    var34 = this.posX - var26;
-//                    var36 = this.posZ - var28;
-//                    var24 = (var34 * var14 + var36 * var16) * 2.0D;
-//                }
-//
-//                this.posX = var26 + var14 * var24;
-//                this.posZ = var28 + var16 * var24;
-//                this.setPosition(this.posX, this.posY + (double)this.yOffset, this.posZ);
-//
-//                moveMinecartOnRail(var1, var2, var3);
-//
-//                if (var13[0][1] != 0 && MathHelper.floor_double(this.posX) - var1 == var13[0][0] && MathHelper.floor_double(this.posZ) - var3 == var13[0][2])
-//                {
-//                    this.setPosition(this.posX, this.posY + (double)var13[0][1], this.posZ);
-//                }
-//                else if (var13[1][1] != 0 && MathHelper.floor_double(this.posX) - var1 == var13[1][0] && MathHelper.floor_double(this.posZ) - var3 == var13[1][2])
-//                {
-//                    this.setPosition(this.posX, this.posY + (double)var13[1][1], this.posZ);
-//                }
-//
-//                applyDragAndPushForces();
-//
-//                Vec3 var52 = this.func_70489_a(this.posX, this.posY, this.posZ);
-//
-//                if (var52 != null && var9 != null)
-//                {
-//                    double var39 = (var9.yCoord - var52.yCoord) * 0.05D;
-//                    var22 = Math.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
-//
-//                    if (var22 > 0.0D)
-//                    {
-//                        this.motionX = this.motionX / var22 * (var22 + var39);
-//                        this.motionZ = this.motionZ / var22 * (var22 + var39);
-//                    }
-//
-//                    this.setPosition(this.posX, var52.yCoord, this.posZ);
-//                }
-//
-//                int var51 = MathHelper.floor_double(this.posX);
-//                int var53 = MathHelper.floor_double(this.posZ);
-//
-//                if (var51 != var1 || var53 != var3)
-//                {
-//                    var22 = Math.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
-//                    this.motionX = var22 * (double)(var51 - var1);
-//                    this.motionZ = var22 * (double)(var53 - var3);
-//                }
-//
-//                double var41;
-//
-//                updatePushForces();
-//
-//                if(shouldDoRailFunctions())
-//                {
-//                    ((BlockRail)Block.blocksList[var8]).onMinecartPass(worldObj, this, var1, var2, var3);
-//                }
-//
-//                if (var11 && shouldDoRailFunctions())
-//                {
-//                    var41 = Math.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
-//
-//                    if (var41 > 0.01D)
-//                    {
-//                        double var43 = 0.06D;
-//                        this.motionX += this.motionX / var41 * var43;
-//                        this.motionZ += this.motionZ / var41 * var43;
-//                    }
-//                    else if (var10 == 1)
-//                    {
-//                        if (this.worldObj.isBlockNormalCube(var1 - 1, var2, var3))
-//                        {
-//                            this.motionX = 0.02D;
-//                        }
-//                        else if (this.worldObj.isBlockNormalCube(var1 + 1, var2, var3))
-//                        {
-//                            this.motionX = -0.02D;
-//                        }
-//                    }
-//                    else if (var10 == 0)
-//                    {
-//                        if (this.worldObj.isBlockNormalCube(var1, var2, var3 - 1))
-//                        {
-//                            this.motionZ = 0.02D;
-//                        }
-//                        else if (this.worldObj.isBlockNormalCube(var1, var2, var3 + 1))
-//                        {
-//                            this.motionZ = -0.02D;
-//                        }
-//                    }
-//                }
-//            }
-//            else
-//            {
-//                moveMinecartOffRail(var1, var2, var3);
-//            }
-//
-//            this.doBlockCollisions();
-//            this.rotationPitch = 0.0F;
-//            double var47 = this.prevPosX - this.posX;
-//            double var48 = this.prevPosZ - this.posZ;
-//
-//            if (var47 * var47 + var48 * var48 > 0.001D)
-//            {
-//                this.rotationYaw = (float)(Math.atan2(var48, var47) * 180.0D / Math.PI);
-//
-//                if (this.field_70499_f)
-//                {
-//                    this.rotationYaw += 180.0F;
-//                }
-//            }
-//
-//            double var49 = (double)MathHelper.wrapAngleTo180_float(this.rotationYaw - this.prevRotationYaw);
-//
-//            if (var49 < -170.0D || var49 >= 170.0D)
-//            {
-//                this.rotationYaw += 180.0F;
-//                this.field_70499_f = !this.field_70499_f;
-//            }
-//
-//            this.setRotation(this.rotationYaw, this.rotationPitch);
-//
-//            AxisAlignedBB box = null;
-//            if (getCollisionHandler() != null)
-//            {
-//                box = getCollisionHandler().getMinecartCollisionBox(this);
-//            }
-//            else
-//            {
-//                box = boundingBox.expand(0.2D, 0.0D, 0.2D);
-//            }
-//
-//            List var15 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, box);
-//
-//            if (var15 != null && !var15.isEmpty())
-//            {
-//                for (int var50 = 0; var50 < var15.size(); ++var50)
-//                {
-//                    Entity var17 = (Entity)var15.get(var50);
-//
-//                    if (var17 != this.riddenByEntity && var17.canBePushed() && var17 instanceof GCCoreEntityBuggy)
-//                    {
-//                        var17.applyEntityCollision(this);
-//                    }
-//                }
-//            }
-//
-//            if (this.riddenByEntity != null && this.riddenByEntity.isDead)
-//            {
-//                if (this.riddenByEntity.ridingEntity == this)
-//                {
-//                    this.riddenByEntity.ridingEntity = null;
-//                }
-//
-//                this.riddenByEntity = null;
-//            }
-//
-//            updateFuel();
-//            MinecraftForge.EVENT_BUS.post(new MinecartUpdateEvent(this, var1, var2, var3));
         }
     }
     

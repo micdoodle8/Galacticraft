@@ -366,9 +366,9 @@ public class GCCoreEntitySpaceship extends Entity
         }
         else
         {
-        	this.prevPosX = this.posX;
-            this.prevPosY = this.posY;
-            this.prevPosZ = this.posZ;
+        	this.prevPosX = lastTickPosX = this.posX;
+            this.prevPosY = lastTickPosY = this.posY;
+            this.prevPosZ = lastTickPosZ = this.posZ;
             
             if (this.launched && !reversed)
             {

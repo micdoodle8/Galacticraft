@@ -302,45 +302,5 @@ public class GCCoreModelBuggy extends ModelBase
 	public void setRotationAngles(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
 	{
 		super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);	
-		this.wheel1a.rotateAngleY = 0F;
-		this.wheel1a.rotateAngleZ = 0F;
-		this.wheel1b.rotateAngleY = 0F;
-		this.wheel1b.rotateAngleZ = 0F;
-		this.wheel1c.rotateAngleY = 0F;
-		this.wheel1c.rotateAngleZ = 0F;
-		this.wheel1d.rotateAngleY = 0F;
-		this.wheel1d.rotateAngleZ = 0F;
-		this.wheel1e.rotateAngleY = 0F;
-		this.wheel1e.rotateAngleZ = 0F;
-		this.wheel2a.rotateAngleY = 0F;
-		this.wheel2a.rotateAngleZ = 0F;
-		this.wheel2b.rotateAngleY = 0F;
-		this.wheel2b.rotateAngleZ = 0F;
-		this.wheel2c.rotateAngleY = 0F;
-		this.wheel2c.rotateAngleZ = 0F;
-		this.wheel2d.rotateAngleY = 0F;
-		this.wheel2d.rotateAngleZ = 0F;
-		this.wheel2e.rotateAngleY = 0F;
-		this.wheel2e.rotateAngleZ = 0F;
-		this.wheel3a.rotateAngleY = 0F;
-		this.wheel3a.rotateAngleZ = 0F;
-		this.wheel3b.rotateAngleY = 0F;
-		this.wheel3b.rotateAngleZ = 0F;
-		this.wheel3c.rotateAngleY = 0F;
-		this.wheel3c.rotateAngleZ = 0F;
-		this.wheel3d.rotateAngleY = 0F;
-		this.wheel3d.rotateAngleZ = 0F;
-		this.wheel3e.rotateAngleY = 0F;
-		this.wheel3e.rotateAngleZ = 0F;
-		this.wheel4a.rotateAngleY = 0F;
-		this.wheel4a.rotateAngleZ = 0F;
-		this.wheel4b.rotateAngleY = 0F;
-		this.wheel4b.rotateAngleZ = 0F;
-		this.wheel4c.rotateAngleY = 0F;
-		this.wheel4c.rotateAngleZ = 0F;
-		this.wheel4d.rotateAngleY = 0F;
-		this.wheel4d.rotateAngleZ = 0F;
-		this.wheel4e.rotateAngleY = 0F;
-		this.wheel4e.rotateAngleZ = 0F;
 	}
 }
