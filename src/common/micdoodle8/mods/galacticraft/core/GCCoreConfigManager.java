@@ -66,6 +66,7 @@ public class GCCoreConfigManager
 	public static int idItemRocketFins;
 	public static int idItemSensorLens;
 	public static int idItemBuggy;
+	public static int idItemFlag;
 	
 	// ARMOR
 	public static int idArmorOxygenMask;
@@ -100,6 +101,7 @@ public class GCCoreConfigManager
 	public static int idEntityAntiGravityArrow;
 	public static int idEntityMeteor;
 	public static int idEntityBuggy;
+	public static int idEntityFlag;
 	
 	// GENERAL
 	public static boolean transparentBreathableAir;
@@ -150,6 +152,7 @@ public class GCCoreConfigManager
 	        idItemRocketFins = 						configuration.get(configuration.CATEGORY_BLOCK, "idItemRocketFins", 					9875)		.getInt(9875);
 	        idItemSensorLens = 						configuration.get(configuration.CATEGORY_BLOCK, "idItemSensorLens", 					9886)		.getInt(9886);
 	        idItemBuggy = 							configuration.get(configuration.CATEGORY_BLOCK, "idItemBuggyPlacer", 					9887)		.getInt(9887);
+	        idItemFlag = 							configuration.get(configuration.CATEGORY_BLOCK, "idItemFlagPlacer", 					9888)		.getInt(9888);
 	        
 	        idToolTitaniumSword = 					configuration.get(configuration.CATEGORY_BLOCK, "idToolTitaniumSword", 					9876)		.getInt(9876);
 	        idToolTitaniumPickaxe = 				configuration.get(configuration.CATEGORY_BLOCK, "idToolTitaniumPickaxe", 				9877)		.getInt(9877);
@@ -177,6 +180,7 @@ public class GCCoreConfigManager
 	        idEntityAntiGravityArrow = 				configuration.get("Entities", "idEntityAntiGravityArrow", 								160)		.getInt(160);
 	        idEntityMeteor = 						configuration.get("Entities", "idEntityMeteor", 										161)		.getInt(161);
 	        idEntityBuggy = 						configuration.get("Entities", "idEntityBuggy", 											162)		.getInt(162);
+	        idEntityFlag = 							configuration.get("Entities", "idEntityFlag", 											163)		.getInt(163);
 	        
 	        transparentBreathableAir = 				configuration.get(configuration.CATEGORY_GENERAL, "transparentBreathableAir", 			true)		.getBoolean(true);
 		}

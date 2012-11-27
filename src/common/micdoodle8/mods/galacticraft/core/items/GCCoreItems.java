@@ -49,6 +49,7 @@ public class GCCoreItems
 	public static Item rocketNoseCone;
 	public static Item rocketFins;
 	public static Item buggy;
+	public static Item flag;
 	
 	public static EnumArmorMaterial OXYGENMASK = EnumHelper.addArmorMaterial("OXYGENMASK", 200, new int[] {0, 0, 0, 0}, 0);
 	public static EnumArmorMaterial SENSORGLASSES = EnumHelper.addArmorMaterial("SENSORGLASSES", 200, new int[] {0, 0, 0, 0}, 0);
@@ -88,6 +89,7 @@ public class GCCoreItems
 		rocketNoseCone = new GCCoreItem(GCCoreConfigManager.idItemRocketNoseCone).setIconIndex(29).setItemName("noseCone");
 		sensorLens = new GCCoreItem(GCCoreConfigManager.idItemSensorLens).setIconIndex(30).setItemName("sensorLens");
 		buggy = new GCCoreItemBuggy(GCCoreConfigManager.idItemBuggy).setIconIndex(200).setItemName("buggy");
+		flag = new GCCoreItemFlag(GCCoreConfigManager.idItemFlag).setIconIndex(201).setItemName("flag");
 	}
 	
 	public static void registerHarvestLevels()
