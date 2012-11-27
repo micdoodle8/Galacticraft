@@ -39,9 +39,6 @@ public class GCCoreRenderSpaceship extends Render
         float var13 = (((var10 >> 20 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
         float var14 = (((var10 >> 24 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
         GL11.glTranslatef(var12, var13, var14);
-        double var15 = par1GCEntitySpaceship.lastTickPosX + (par1GCEntitySpaceship.posX - par1GCEntitySpaceship.lastTickPosX) * par9;
-        double var17 = par1GCEntitySpaceship.lastTickPosY + (par1GCEntitySpaceship.posY - par1GCEntitySpaceship.lastTickPosY) * par9;
-        double var19 = par1GCEntitySpaceship.lastTickPosZ + (par1GCEntitySpaceship.posZ - par1GCEntitySpaceship.lastTickPosZ) * par9;
         double var21 = 0.30000001192092896D;
         float var24 = par1GCEntitySpaceship.prevRotationPitch + (par1GCEntitySpaceship.rotationPitch - par1GCEntitySpaceship.prevRotationPitch) * par9;
 

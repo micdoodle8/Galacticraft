@@ -186,6 +186,8 @@ public class GCCoreEntitySpaceship extends Entity
     @Override
 	public void onUpdate()
     {
+    	super.onUpdate();
+    	
         if (this.field_82344_g != null)
         {
             this.field_82344_g.update();
@@ -270,11 +272,6 @@ public class GCCoreEntitySpaceship extends Entity
         	{
         		this.rotationYaw += 0.5F;
         	}
-        	
-        	if (FMLClientHandler.instance().getClient().gameSettings.keyBindForward.pressed)
-        	{
-        		this.rotationYaw += 0.5F;
-        	}
     	}
     	
     	if (this.posY > 450D && !this.reversed)
@@ -330,8 +327,6 @@ public class GCCoreEntitySpaceship extends Entity
         	this.ignite = 0;
         }
         
-        this.moveEntity(this.motionX, this.motionY, this.motionZ);
-        
         int i;
         
         if (this.timeUntilLaunch >= 100)
@@ -354,62 +349,45 @@ public class GCCoreEntitySpaceship extends Entity
         {
         	this.spawnParticles(this.launched);
         }
+        
+        if (this.launched && !reversed)
+        {
+        	if (Math.abs(Math.sin(timeSinceLaunch / 1000)) / 10 != 0.0)
+            this.motionY += Math.abs(Math.sin(timeSinceLaunch / 1000)) / 20;
+        }
+        
+        moveEntity(motionX, motionY, motionZ);
+        
+        if (this.failedLaunch)
+      	{
+	      	if (this.timeSinceLaunch > 100)
+	      	{
+	      		this.setFailedLaunch(1);
+	      		this.motionX += 0.004D;
+	      		this.motionZ += 0.004D;
+	      	}
+	      	
+	      	if (this.timeSinceLaunch > 200)
+	      	{
+	      		this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 20, true);
+	      		
+	      		this.spawnParticlesExplosion();
+	      		
+	      		this.setDead();
+	      	}
+      	}
 
         if (this.worldObj.isRemote)
         {
-        	this.rotationPitch -= Float.valueOf(this.getFailedLaunch()) / 2;
-        	
-        	this.rotationYaw += Float.valueOf(this.getFailedLaunch()) * 2.0F;
-        	
             this.setPosition(this.posX, this.posY, this.posZ);
             this.setRotation(this.rotationYaw, this.rotationPitch);
         }
         else
         {
-        	this.prevPosX = lastTickPosX = this.posX;
-            this.prevPosY = lastTickPosY = this.posY;
-            this.prevPosZ = lastTickPosZ = this.posZ;
-            
-            if (this.launched && !reversed)
-            {
-            	if (Math.abs(Math.sin(timeSinceLaunch / 1000)) / 10 != 0.0)
-                this.motionY += Math.abs(Math.sin(timeSinceLaunch / 1000)) / 20;
-            }
-            
-            if (this.failedLaunch)
-            {
-            	if (this.timeSinceLaunch > 100)
-            	{
-            		this.setFailedLaunch(1);
-            		this.motionX += 0.004D;
-            		this.motionZ += 0.004D;
-            	}
-            	
-            	if (this.timeSinceLaunch > 200)
-            	{
-            		this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 20, true);
-            		
-            		this.spawnParticlesExplosion();
-            		
-            		this.setDead();
-            	}
-            }
-            
-            int var1 = MathHelper.floor_double(this.posX);
-            int var2 = MathHelper.floor_double(this.posY);
-            int var3 = MathHelper.floor_double(this.posZ);
-
-            if (BlockRail.isRailBlockAt(this.worldObj, var1, var2 - 1, var3))
-            {
-                --var2;
-            }
-
-            double var4 = 0.4D;
-            double var6 = 0.0078125D;
-            int var8 = this.worldObj.getBlockId(var1, var2, var3);
+            this.prevPosX = this.posX;
+            this.prevPosY = this.posY;
+            this.prevPosZ = this.posZ;
         }
-
-        this.setRotation(this.rotationYaw, this.rotationPitch);
     }
 
     @Override
