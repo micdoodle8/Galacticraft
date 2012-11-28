@@ -1,11 +1,24 @@
 package micdoodle8.mods.galacticraft.core.items;
 
+import java.util.List;
+
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityFlag;
 import net.minecraft.src.Block;
+import net.minecraft.src.BlockRail;
+import net.minecraft.src.CreativeTabs;
+import net.minecraft.src.EntityMinecart;
 import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.EnumAction;
+import net.minecraft.src.EnumMovingObjectType;
 import net.minecraft.src.EnumRarity;
+import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
+import net.minecraft.src.MathHelper;
+import net.minecraft.src.MovingObjectPosition;
 import net.minecraft.src.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.player.ArrowNockEvent;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
@@ -17,58 +30,127 @@ import cpw.mods.fml.common.asm.SideOnly;
  */
 public class GCCoreItemFlag extends GCCoreItem
 {
+	public static final String[] names = {
+			"american", // 0
+			"black", // 1
+			"blue", // 2
+			"green", // 3
+			"brown", // 4
+			"darkblue", // 5
+			"darkgray", // 6
+			"darkgreen", // 7
+			"gray", // 8
+			"green", // 9
+			"magenta", // 10
+			"orange", // 11
+			"pink", // 12
+			"purple", // 13
+			"red", // 14
+			"teal", // 15
+			"yellow"}; // 16
+	public int placeProgress;
+	
 	public GCCoreItemFlag(int par1) 
 	{
 		super(par1);
+		this.setMaxDamage(0);
+		this.setHasSubtypes(true);
+		this.setMaxStackSize(1);
 	}
 
-	@Override
-    public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10)
+    @Override
+    public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
     {
-    	GCCoreEntityFlag spaceship = new GCCoreEntityFlag(par3World, par4, par5, par6, 0, par2EntityPlayer);
+    	for (int i = 0; i < 17; i++)
+    	{
+            par3List.add(new ItemStack(par1, 1, i));
+    	}
+    }
 
-        if (!par3World.isRemote)
+    @Override
+    public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4)
+    {
+        int useTime = this.getMaxItemUseDuration(par1ItemStack) - par4;
+        
+        MovingObjectPosition var12 = this.getMovingObjectPositionFromPlayer(par2World, par3EntityPlayer, true);
+
+        float var7 = (float)useTime / 20.0F;
+        var7 = (var7 * var7 + var7 * 2.0F) / 3.0F;
+
+        if (var7 > 1.0F)
         {
-            int var5 = par3World.getBlockId(par4, par5, par6 - 1);
-            int var6 = par3World.getBlockId(par4, par5, par6 + 1);
-            int var7 = par3World.getBlockId(par4 - 1, par5, par6);
-            int var8 = par3World.getBlockId(par4 + 1, par5, par6);
-            byte var9 = 3;
-
-            if (Block.opaqueCubeLookup[var5] && !Block.opaqueCubeLookup[var6])
-            {
-                var9 = 3;
-            }
-
-            if (Block.opaqueCubeLookup[var6] && !Block.opaqueCubeLookup[var5])
-            {
-                var9 = 2;
-            }
-
-            if (Block.opaqueCubeLookup[var7] && !Block.opaqueCubeLookup[var8])
-            {
-                var9 = 5;
-            }
-
-            if (Block.opaqueCubeLookup[var8] && !Block.opaqueCubeLookup[var7])
-            {
-                var9 = 4;
-            }
-            
-            spaceship.setDirection(var9);
+            var7 = 1.0F;
         }
         
-    	if (par3World.isRemote)
-    	{
-    		return false;
-    	}
-    	else
-    	{
-    		par3World.spawnEntityInWorld(spaceship);
-    		if (!par2EntityPlayer.capabilities.isCreativeMode)
-    		par2EntityPlayer.inventory.consumeInventoryItem(par1ItemStack.getItem().shiftedIndex);
-    	}
-        return true;
+        if (var7 == 1.0F && var12 != null && var12.typeOfHit == EnumMovingObjectType.TILE)
+        {
+            int x = var12.blockX;
+            int y = var12.blockY;
+            int z = var12.blockZ;
+            
+            if (!par2World.isRemote)
+            {
+            	GCCoreEntityFlag flag = new GCCoreEntityFlag(par2World, x + 0.5F, y + 1.0F, z + 0.5F, par3EntityPlayer.rotationYaw - 90F);
+            	par2World.spawnEntityInWorld(flag);
+                flag.setType(par1ItemStack.getItemDamage());
+                flag.setOwner(par3EntityPlayer.username);
+            }
+            
+            int var2 = this.getInventorySlotContainItem(par3EntityPlayer, this.shiftedIndex);
+
+            if (var2 >= 0)
+            {
+                if (--par3EntityPlayer.inventory.mainInventory[var2].stackSize <= 0)
+                {
+                	par3EntityPlayer.inventory.mainInventory[var2] = null;
+                }
+            }
+        }
+    }
+    
+    private int getInventorySlotContainItem(EntityPlayer player, int par1)
+    {
+        for (int var2 = 0; var2 < player.inventory.mainInventory.length; ++var2)
+        {
+            if (player.inventory.mainInventory[var2] != null && player.inventory.mainInventory[var2].itemID == par1)
+            {
+                return var2;
+            }
+        }
+
+        return -1;
+    }
+
+    @Override
+    public int getMetadata(int par1)
+    {
+        return par1;
+    }
+
+    @Override
+    public ItemStack onFoodEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
+    {
+        return par1ItemStack;
+    }
+
+    @Override
+    public int getMaxItemUseDuration(ItemStack par1ItemStack)
+    {
+        return 72000;
+    }
+
+    @Override
+    public EnumAction getItemUseAction(ItemStack par1ItemStack)
+    {
+        return EnumAction.none;
+    }
+
+    @Override
+    public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
+    {
+        par3EntityPlayer.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
+
+        return par1ItemStack;
     }
 
     @Override

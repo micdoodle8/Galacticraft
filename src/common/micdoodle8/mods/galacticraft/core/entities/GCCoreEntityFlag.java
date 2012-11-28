@@ -4,10 +4,12 @@ import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Direction;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityLiving;
+import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.World;
+import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreEntityFlag extends Entity
 {
@@ -21,10 +23,10 @@ public class GCCoreEntityFlag extends Entity
     {
     	super(world);
         this.yOffset = 1.5F;
-        this.setSize(1F, 3F);
+        this.setSize(0.4F, 3F);
     }
     
-    public GCCoreEntityFlag(World par1World, double x, double y, double z, int dir, EntityLiving entityPlacedBy)
+    public GCCoreEntityFlag(World par1World, double x, double y, double z, float dir)
     {
         this(par1World);
         this.setDirection(dir);
@@ -32,39 +34,11 @@ public class GCCoreEntityFlag extends Entity
         this.xPosition = x;
         this.yPosition = y;
         this.zPosition = z;
-        this.entityPlacedBy = entityPlacedBy;
     }
     
-    public void setDirection(int par1)
+    public void setDirection(float par1)
     {
-        this.facingDirection = par1;
-        this.prevRotationYaw = this.rotationYaw = (float)(par1 * 90);
-        float var2 = (float)this.getWidth();
-        float var3 = (float)this.getHeight();
-        float var4 = (float)this.getWidth();
-
-        if (par1 != 2 && par1 != 0)
-        {
-            var2 = 0.5F;
-        }
-        else
-        {
-            var4 = 0.5F;
-            this.rotationYaw = this.prevRotationYaw = (float)(Direction.footInvisibleFaceRemap[par1] * 90);
-        }
-
-        var2 /= 32.0F;
-        var3 /= 32.0F;
-        var4 /= 32.0F;
-        float var5 = (float)this.xPosition + 0.5F;
-        float var6 = (float)this.yPosition + 0.5F;
-        float var7 = (float)this.zPosition + 0.5F;
-        float var8 = 0.5625F;
-
-        var6 += 0.5F;
-        this.setPosition((double)var5, (double)var6, (double)var7);
-        float var9 = -0.03125F;
-        this.boundingBox.setBounds((double)(var5 - var2 - var9), (double)(var6 - var3 - var9), (double)(var7 - var4 - var9), (double)(var5 + var2 + var9), (double)(var6 + var3 + var9), (double)(var7 + var4 + var9));
+        this.prevRotationYaw = this.rotationYaw = (float)(par1);
     }
 
     public int getWidth()
@@ -130,34 +104,16 @@ public class GCCoreEntityFlag extends Entity
 	@Override
 	protected void entityInit() 
 	{
-		
+        this.dataWatcher.addObject(16, new Integer(-1));
+        this.dataWatcher.addObject(17, new String(""));
 	}
 
 	@Override
     public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
-        if (par1NBTTagCompound.hasKey("Direction"))
-        {
-            this.facingDirection = par1NBTTagCompound.getByte("Direction");
-        }
-        else
-        {
-            switch (par1NBTTagCompound.getByte("Dir"))
-            {
-                case 0:
-                    this.facingDirection = 2;
-                    break;
-                case 1:
-                    this.facingDirection = 1;
-                    break;
-                case 2:
-                    this.facingDirection = 0;
-                    break;
-                case 3:
-                    this.facingDirection = 3;
-            }
-        }
-
+		this.setOwner(par1NBTTagCompound.getString("Owner"));
+		this.setType(par1NBTTagCompound.getInteger("Type"));
+		
         this.xPosition = par1NBTTagCompound.getDouble("TileX");
         this.yPosition = par1NBTTagCompound.getDouble("TileY");
         this.zPosition = par1NBTTagCompound.getDouble("TileZ");
@@ -167,29 +123,44 @@ public class GCCoreEntityFlag extends Entity
 	@Override
 	protected void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) 
 	{
+        par1NBTTagCompound.setString("Owner", String.valueOf(this.getOwner()));
+        par1NBTTagCompound.setInteger("Type", Integer.valueOf(this.getType()));
         par1NBTTagCompound.setByte("Direction", (byte)this.facingDirection);
         par1NBTTagCompound.setDouble("TileX", this.xPosition);
         par1NBTTagCompound.setDouble("TileY", this.yPosition);
         par1NBTTagCompound.setDouble("TileZ", this.zPosition);
-
-        switch (this.facingDirection)
-        {
-            case 0:
-                par1NBTTagCompound.setByte("Dir", (byte)2);
-                break;
-            case 1:
-                par1NBTTagCompound.setByte("Dir", (byte)1);
-                break;
-            case 2:
-                par1NBTTagCompound.setByte("Dir", (byte)0);
-                break;
-            case 3:
-                par1NBTTagCompound.setByte("Dir", (byte)3);
-        }
 	}
 	
     public void dropItemStack()
     {
         this.entityDropItem(new ItemStack(Item.painting), 0.0F); // TODO
+    }
+
+    @Override
+    public boolean interact(EntityPlayer par1EntityPlayer)
+    {
+    	this.setDirection(this.rotationYaw + 3F);
+    	
+        return true;
+    }
+    
+    public void setType(int par1)
+    {
+        this.dataWatcher.updateObject(16, Integer.valueOf(par1));
+    }
+
+    public int getType()
+    {
+        return this.dataWatcher.getWatchableObjectInt(16);
+    }
+    
+    public void setOwner(String par1)
+    {
+        this.dataWatcher.updateObject(17, String.valueOf(par1));
+    }
+    
+    public String getOwner()
+    {
+        return this.dataWatcher.getWatchableObjectString(17);
     }
 }

@@ -31,6 +31,7 @@ import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderMete
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderSpaceship;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderSpider;
 import micdoodle8.mods.galacticraft.core.client.render.item.GCCoreItemRendererBuggy;
+import micdoodle8.mods.galacticraft.core.client.render.item.GCCoreItemRendererFlag;
 import micdoodle8.mods.galacticraft.core.client.render.item.GCCoreItemRendererSpaceship;
 import micdoodle8.mods.galacticraft.core.client.render.item.GCCoreItemRendererUnlitTorch;
 import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntityTreasureChestRenderer;
@@ -169,6 +170,7 @@ public class ClientProxyCore extends CommonProxyCore
         MinecraftForgeClient.registerItemRenderer(GCCoreBlocks.unlitTorch.blockID, new GCCoreItemRendererUnlitTorch());
         MinecraftForgeClient.registerItemRenderer(GCCoreItems.spaceship.shiftedIndex, new GCCoreItemRendererSpaceship());
         MinecraftForgeClient.registerItemRenderer(GCCoreItems.buggy.shiftedIndex, new GCCoreItemRendererBuggy());
+        MinecraftForgeClient.registerItemRenderer(GCCoreItems.flag.shiftedIndex, new GCCoreItemRendererFlag());
 	}
 
 	@Override
