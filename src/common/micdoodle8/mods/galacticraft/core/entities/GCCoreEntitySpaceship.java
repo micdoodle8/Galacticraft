@@ -73,7 +73,7 @@ public class GCCoreEntitySpaceship extends Entity
     
     protected boolean failedLaunch;
     
-    protected final IUpdatePlayerListBox field_82344_g;
+    protected final IUpdatePlayerListBox rocketSoundUpdater;
 	
 	private boolean hasDroppedItem;
 
@@ -85,7 +85,7 @@ public class GCCoreEntitySpaceship extends Entity
         this.preventEntitySpawning = true;
         this.setSize(0.98F, 4F);
         this.yOffset = this.height / 2.0F;
-        this.field_82344_g = par1World != null ? par1World instanceof WorldClient ? new GCCoreSoundUpdaterSpaceship(FMLClientHandler.instance().getClient().sndManager, this, FMLClientHandler.instance().getClient().thePlayer) : null : null;
+        this.rocketSoundUpdater = par1World != null ? par1World instanceof WorldClient ? new GCCoreSoundUpdaterSpaceship(FMLClientHandler.instance().getClient().sndManager, this, FMLClientHandler.instance().getClient().thePlayer) : null : null;
     }
 
     @Override
@@ -177,9 +177,9 @@ public class GCCoreEntitySpaceship extends Entity
     {
     	super.setDead();
 
-        if (this.field_82344_g != null)
+        if (this.rocketSoundUpdater != null)
         {
-            this.field_82344_g.update();
+            this.rocketSoundUpdater.update();
         }
     }
     
@@ -188,9 +188,9 @@ public class GCCoreEntitySpaceship extends Entity
     {
     	super.onUpdate();
     	
-        if (this.field_82344_g != null)
+        if (this.rocketSoundUpdater != null)
         {
-            this.field_82344_g.update();
+            this.rocketSoundUpdater.update();
         }
 
     	if (this.rumble > 0)

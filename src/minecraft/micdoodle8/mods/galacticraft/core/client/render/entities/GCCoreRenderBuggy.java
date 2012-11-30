@@ -51,12 +51,12 @@ public class GCCoreRenderBuggy extends Render
         GL11.glTranslatef((float)par2, (float)par4, (float)par6);
         GL11.glRotatef(180.0F - par8, 0.0F, 1.0F, 0.0F);
         GL11.glRotatef(-var24, 0.0F, 0.0F, 1.0F);
-        float var28 = par1GCEntitySpaceship.func_70496_j() - par9;
-        float var30 = par1GCEntitySpaceship.getDamage() - par9;
+//        float var28 = par1GCEntitySpaceship.func_70496_j() - par9;
+//        float var30 = par1GCEntitySpaceship.getDamage() - par9;
         
         this.modelSpaceship.radarCenter.rotateAngleY += 0.01F;
         
-        double d = par1GCEntitySpaceship.forwardAcceleration;
+        double d = 0;
         
 //        if (d > 0.0D)
         {
@@ -171,16 +171,16 @@ public class GCCoreRenderBuggy extends Render
             }
         }
 
-        if (var30 < 0.0F)
-        {
-            var30 = 0.0F;
-        }
-
-        if (var28 > 0.0F)
-        {
-            GL11.glRotatef(MathHelper.sin(var28) * var28 * 3 / 10.0F * par1GCEntitySpaceship.func_70493_k(), 1.0F, 0.0F, 0.0F);
-            GL11.glRotatef(MathHelper.sin(var28) * var28 * 3 / 10.0F * par1GCEntitySpaceship.func_70493_k(), 1.0F, 0.0F, 1.0F);
-        }
+//        if (var30 < 0.0F)
+//        {
+//            var30 = 0.0F;
+//        }
+//
+//        if (var28 > 0.0F)
+//        {
+//            GL11.glRotatef(MathHelper.sin(var28) * var28 * 3 / 10.0F * par1GCEntitySpaceship.func_70493_k(), 1.0F, 0.0F, 0.0F);
+//            GL11.glRotatef(MathHelper.sin(var28) * var28 * 3 / 10.0F * par1GCEntitySpaceship.func_70493_k(), 1.0F, 0.0F, 1.0F);
+//        }
 
         this.loadTexture("/micdoodle8/mods/galacticraft/core/client/entities/buggy.png");
         GL11.glScalef(-1.0F, -1.0F, 1.0F);

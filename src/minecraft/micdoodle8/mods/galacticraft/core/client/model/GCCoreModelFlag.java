@@ -82,7 +82,6 @@ public class GCCoreModelFlag extends ModelBase
 		{
 			GL11.glScalef(0.5F, 0.5F, 0.5F);
 			loadDownloadableImageTexture("http://skins.minecraft.net/MinecraftSkins/" + StringUtils.stripControlCodes(((GCCoreEntityFlag)entity).getOwner()) + ".png", FMLClientHandler.instance().getClient().thePlayer.getTexture());
-//			FMLClientHandler.instance().getClient().renderEngine.bindTexture(FMLClientHandler.instance().getClient().renderEngine.getTexture(FMLClientHandler.instance().getClient().thePlayer.getTexture()));
 			picSide1.render(f5);
 			picSide2.render(f5);
 		}

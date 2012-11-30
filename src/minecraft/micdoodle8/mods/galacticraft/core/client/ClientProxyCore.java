@@ -50,6 +50,7 @@ import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.moon.client.ClientProxyMoon;
 import net.minecraft.client.Minecraft;
+import net.minecraft.src.Entity;
 import net.minecraft.src.EntityClientPlayerMP;
 import net.minecraft.src.EntityFX;
 import net.minecraft.src.EntityPlayer;
@@ -418,6 +419,37 @@ public class ClientProxyCore extends CommonProxyCore
     				Object[] toSend = {0};
     	            PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 3, toSend));
     			}
+    			
+            	if (Keyboard.isKeyDown(Keyboard.KEY_W))
+            	{
+            		if (minecraft.currentScreen == null)
+                	{
+                    	EntityPlayerSP player2 = minecraft.thePlayer;
+                    	
+                        Object[] toSend = {player.username, 0};
+                        PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 5, toSend));
+                	}
+            	}
+            	if (Keyboard.isKeyDown(Keyboard.KEY_A))
+            	{
+            		if (minecraft.currentScreen == null)
+                	{
+                    	EntityPlayerSP player2 = minecraft.thePlayer;
+                    	
+                        Object[] toSend = {player.username, 1};
+                        PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 5, toSend));
+                	}
+            	}
+            	if (Keyboard.isKeyDown(Keyboard.KEY_D))
+            	{
+            		if (minecraft.currentScreen == null)
+                	{
+                    	EntityPlayerSP player2 = minecraft.thePlayer;
+                    	
+                        Object[] toSend = {player.username, 2};
+                        PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 5, toSend));
+                	}
+            	}
             }
         }
     	
@@ -590,7 +622,14 @@ public class ClientProxyCore extends CommonProxyCore
         {
         	Minecraft minecraft = FMLClientHandler.instance().getClient();
         	
-        	if (kb == this.tankRefill)
+        	boolean handled = true;
+        	
+        	if(minecraft.currentScreen != null || tickEnd)
+        	{
+    			return;
+        	}
+        	
+        	if (kb.keyCode == this.tankRefill.keyCode)
         	{
         		if (minecraft.currentScreen == null)
             	{
@@ -601,11 +640,70 @@ public class ClientProxyCore extends CommonProxyCore
             	    player.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiTankRefill, minecraft.theWorld, (int)player.posX, (int)player.posY, (int)player.posZ);
             	}
         	}
+        	
+//        	int key = -1;
+//        	
+//        	switch (kb.keyCode)
+//        	{
+//        	case Keyboard.KEY_W:
+//        		key = 2;
+//        	case Keyboard.KEY_A:
+//        		key = 0;
+//        	case Keyboard.KEY_D:
+//        		key = 1;
+//        	default:
+//        		handled = false;
+//        	}
+//        	
+//        	EntityPlayer player = minecraft.thePlayer;
+//    		Entity entityTest  = player.ridingEntity;
+//
+//    		if (entityTest != null && entityTest instanceof GCCoreEntityBuggy && handled == true)
+//    		{
+//    			GCCoreEntityBuggy entity = (GCCoreEntityBuggy)entityTest;
+//    			if (kb.keyCode == minecraft.gameSettings.keyBindInventory.keyCode)
+//    			{
+//    				minecraft.gameSettings.keyBindInventory.pressed = false;
+//    				minecraft.gameSettings.keyBindInventory.pressTime = 0;
+//    			}
+//    			entity.onKeyPressed(key);
+//    			handled = true;
+//
+//    			if (handled)
+//    			{
+//                    Object[] toSend = {player.username, 2};
+//                    PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 5, toSend));
+//    			}
+//    		}
+//    		else
+//    			handled = false;
+//
+//
+//    		if (handled == true)
+//    			return;
+//
+//    		for (KeyBinding keybind : minecraft.gameSettings.keyBindings)
+//    		{
+//    			if (kb.keyCode == keybind.keyCode && keybind != kb)
+//    			{
+//    				keybind.pressed = true;
+//    				keybind.pressTime = 1;
+//    				break;
+//    			}
+//    		}
         }
 
         @Override
         public void keyUp(EnumSet<TickType> types, KeyBinding kb, boolean tickEnd) 
         {
+        	if (tickEnd)
+    			return;
+
+    		for (KeyBinding key : FMLClientHandler.instance().getClient().gameSettings.keyBindings)
+    		{
+    			if (kb.keyCode == key.keyCode && key != kb)
+    				key.pressed = false;
+    		}
         }
 
         @Override
