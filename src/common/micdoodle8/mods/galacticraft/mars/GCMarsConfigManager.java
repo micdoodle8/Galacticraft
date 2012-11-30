@@ -94,7 +94,7 @@ public class GCMarsConfigManager
 		{
 	        configuration.load();
 	        
-	        dimensionIDMars = 					configuration.get("Dimensions", 												"Mars Dimension ID",				29)		.getInt(29);
+	        dimensionIDMars = 					configuration.get("Dimensions", 												"Mars Dimension ID",				-29)		.getInt(-29);
 	        
 	        idBlockMarsStone = 					configuration.get(configuration.CATEGORY_BLOCK, 								"idBlockMarsStone", 				210)	.getInt(210);
 	        idBlockMarsGrass = 					configuration.get(configuration.CATEGORY_BLOCK, 								"idBlockMarsGrass", 				211)	.getInt(211);

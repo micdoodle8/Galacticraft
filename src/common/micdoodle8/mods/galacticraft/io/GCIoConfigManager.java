@@ -39,7 +39,7 @@ public class GCIoConfigManager
 		{
 	        configuration.load();
 	        
-	        dimensionIDIo = 				configuration.get("Dimensions", 										"Io Dimension ID",				26)		.getInt(26);
+	        dimensionIDIo = 				configuration.get("Dimensions", 										"Io Dimension ID",				-26)		.getInt(-26);
 	    
 	        idBlock = 						configuration.get(configuration.CATEGORY_BLOCK, 						"idBlockIo", 					199)	.getInt(199);
 		}

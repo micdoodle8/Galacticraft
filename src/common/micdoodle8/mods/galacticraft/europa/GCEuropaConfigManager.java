@@ -39,7 +39,7 @@ public class GCEuropaConfigManager
 		{
 	        configuration.load();
 	        
-	        dimensionIDEuropa = 				configuration.get("Dimensions", 										"Europa Dimension ID",				27)		.getInt(27);
+	        dimensionIDEuropa = 				configuration.get("Dimensions", 										"Europa Dimension ID",				-27)		.getInt(-27);
 	    
 	        idBlockBrittleIce = 				configuration.get(configuration.CATEGORY_BLOCK, 						"idBlockBrittleIce", 				225)	.getInt(220);
 		}

@@ -49,7 +49,7 @@ public class GCMoonConfigManager
 		{
 	        configuration.load();
 
-	        dimensionIDMoon = 					configuration.get("Dimensions", 												"Moon Dimension ID", 				28)		.getInt(28);
+	        dimensionIDMoon = 					configuration.get("Dimensions", 												"Moon Dimension ID", 				-28)		.getInt(-28);
 
 	        idItemCheeseCurd = 					configuration.get(configuration.CATEGORY_ITEM, 									"idItemCheeseCurd", 				10000)	.getInt(10000);
 	        idItemMeteoricIronRaw =				configuration.get(configuration.CATEGORY_ITEM, 									"idItemMeteoricIronRaw", 			10001)	.getInt(10001);
