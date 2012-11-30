@@ -12,11 +12,7 @@ import net.minecraft.src.ModelBase;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.NBTTagList;
 import net.minecraft.src.World;
-import net.minecraft.src.WorldClient;
-
 import org.lwjgl.input.Keyboard;
-
-import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreEntityBuggy extends Entity implements IInventory
 {
@@ -59,13 +55,15 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
         return null;
     }
 
-    protected void entityInit() {}
+    @Override
+	protected void entityInit() {}
 
     /**
      * returns if this entity triggers Block.onEntityWalking on the blocks they walk on. used for spiders and wolves to
      * prevent them from trampling crops
      */
-    protected boolean canTriggerWalking()
+    @Override
+	protected boolean canTriggerWalking()
     {
         return false;
     }
@@ -74,7 +72,8 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
      * Returns a boundingBox used to collide the entity with other entities and blocks. This enables the entity to be
      * pushable on contact, like boats or minecarts.
      */
-    public AxisAlignedBB getCollisionBox(Entity var1)
+    @Override
+	public AxisAlignedBB getCollisionBox(Entity var1)
     {
         return var1.boundingBox;
     }
@@ -82,7 +81,8 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
     /**
      * returns the bounding box for this entity
      */
-    public AxisAlignedBB getBoundingBox()
+    @Override
+	public AxisAlignedBB getBoundingBox()
     {
         return this.boundingBox;
     }
@@ -90,7 +90,8 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
     /**
      * Returns true if this entity should push and be pushed by other entities when colliding.
      */
-    public boolean canBePushed()
+    @Override
+	public boolean canBePushed()
     {
         return false;
     }
@@ -98,25 +99,28 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
     /**
      * Returns the Y offset from the entity's position for any entity riding this one.
      */
-    public double getMountedYOffset()
+    @Override
+	public double getMountedYOffset()
     {
-        return (double)this.height - 3.0D;
+        return this.height - 3.0D;
     }
 
     /**
      * Returns true if other Entities should be prevented from moving through this Entity.
      */
-    public boolean canBeCollidedWith()
+    @Override
+	public boolean canBeCollidedWith()
     {
         return !this.isDead;
     }
 
-    public void updateRiderPosition()
+    @Override
+	public void updateRiderPosition()
     {
         if (this.riddenByEntity != null)
         {
-            double var1 = Math.cos((double)this.rotationYaw * Math.PI / 180.0D + 114.8) * -0.5D;
-            double var3 = Math.sin((double)this.rotationYaw * Math.PI / 180.0D + 114.8) * -0.5D;
+            double var1 = Math.cos(this.rotationYaw * Math.PI / 180.0D + 114.8) * -0.5D;
+            double var3 = Math.sin(this.rotationYaw * Math.PI / 180.0D + 114.8) * -0.5D;
             this.riddenByEntity.setPosition(this.posX + var1, this.posY - 1 + this.riddenByEntity.getYOffset(), this.posZ + var3);
         }
     }
@@ -124,7 +128,8 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
     /**
      * Setups the entity to do the hurt animation. Only used by packets in multiplayer.
      */
-    public void performHurtAnimation()
+    @Override
+	public void performHurtAnimation()
     {
         this.dataWatcher.updateObject(this.rockDirection, Integer.valueOf(-this.dataWatcher.getWatchableObjectInt(this.rockDirection)));
         this.dataWatcher.updateObject(this.timeSinceHit, Integer.valueOf(10));
@@ -134,7 +139,8 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
     /**
      * Called when the entity is attacked.
      */
-    public boolean attackEntityFrom(DamageSource var1, int var2)
+    @Override
+	public boolean attackEntityFrom(DamageSource var1, int var2)
     {
         boolean var3 = false;
 
@@ -186,7 +192,8 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
     /**
      * Called to update the entity's position/logic.
      */
-    public void onUpdate()
+    @Override
+	public void onUpdate()
     {
         super.onUpdate();
 
@@ -229,8 +236,8 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
 
         for (var4 = 0; var4 < var20; ++var4)
         {
-            double var5 = this.boundingBox.minY + (this.boundingBox.maxY - this.boundingBox.minY) * (double)(var4 + 0) / (double)var20 - 0.125D;
-            double var7 = this.boundingBox.minY + (this.boundingBox.maxY - this.boundingBox.minY) * (double)(var4 + 1) / (double)var20 - 0.125D;
+            double var5 = this.boundingBox.minY + (this.boundingBox.maxY - this.boundingBox.minY) * (var4 + 0) / var20 - 0.125D;
+            double var7 = this.boundingBox.minY + (this.boundingBox.maxY - this.boundingBox.minY) * (var4 + 1) / var20 - 0.125D;
         }
 
         double var21;
@@ -275,12 +282,12 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
         {
             if (Keyboard.isKeyDown(30))
             {
-                this.rotationYaw = (float)((double)this.rotationYaw - (double)this.turn * (1.0D + this.speed / 2.0D));
+                this.rotationYaw = (float)(this.rotationYaw - this.turn * (1.0D + this.speed / 2.0D));
             }
 
             if (Keyboard.isKeyDown(32))
             {
-                this.rotationYaw = (float)((double)this.rotationYaw + (double)this.turn * (1.0D + this.speed / 2.0D));
+                this.rotationYaw = (float)(this.rotationYaw + this.turn * (1.0D + this.speed / 2.0D));
             }
 
             if (Keyboard.isKeyDown(17))
@@ -298,7 +305,7 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
                 this.speed *= 0.75D;
             }
 
-            this.fuel = (int)((double)this.fuel - this.speed);
+            this.fuel = (int)(this.fuel - this.speed);
         }
         else
         {
@@ -307,14 +314,14 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
 
         if (this.inWater && this.speed > 0.2D)
         {
-            this.worldObj.playSoundEffect((double)((float)this.posX), (double)((float)this.posY), (double)((float)this.posZ), "random.fizz", 0.5F, 2.6F + (this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.8F);
+            this.worldObj.playSoundEffect(((float)this.posX), ((float)this.posY), ((float)this.posZ), "random.fizz", 0.5F, 2.6F + (this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.8F);
         }
 
         this.speed *= 0.98D;
 
-        if (this.speed > (double)this.maxSpeed)
+        if (this.speed > this.maxSpeed)
         {
-            this.speed = (double)this.maxSpeed;
+            this.speed = this.maxSpeed;
         }
     	
         if (this.isCollidedHorizontally)
@@ -337,8 +344,8 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
             }
         }
 
-        this.motionX = -(this.speed * Math.cos((double)(this.rotationYaw - 90F) * Math.PI / 180.0D));
-        this.motionZ = -(this.speed * Math.sin((double)(this.rotationYaw - 90F) * Math.PI / 180.0D));
+        this.motionX = -(this.speed * Math.cos((this.rotationYaw - 90F) * Math.PI / 180.0D));
+        this.motionZ = -(this.speed * Math.sin((this.rotationYaw - 90F) * Math.PI / 180.0D));
         var21 = Math.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
 
         this.moveEntity(this.motionX, this.motionY, this.motionZ);
@@ -347,7 +354,8 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
     /**
      * (abstract) Protected helper method to read subclass entity data from NBT.
      */
-    protected void readEntityFromNBT(NBTTagCompound var1)
+    @Override
+	protected void readEntityFromNBT(NBTTagCompound var1)
     {
         this.fuel = var1.getInteger("Fuel");
         NBTTagList var2 = var1.getTagList("Items");
@@ -368,7 +376,8 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
     /**
      * (abstract) Protected helper method to write subclass entity data to NBT.
      */
-    protected void writeEntityToNBT(NBTTagCompound var1)
+    @Override
+	protected void writeEntityToNBT(NBTTagCompound var1)
     {
         var1.setInteger("fuel", this.fuel);
         NBTTagList var2 = new NBTTagList();
@@ -390,7 +399,8 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
     /**
      * Returns the number of slots in the inventory.
      */
-    public int getSizeInventory()
+    @Override
+	public int getSizeInventory()
     {
         return 27;
     }
@@ -398,12 +408,14 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
     /**
      * Returns the stack in slot i
      */
-    public ItemStack getStackInSlot(int var1)
+    @Override
+	public ItemStack getStackInSlot(int var1)
     {
         return this.cargoItems[var1];
     }
     
-    public void applyEntityCollision(Entity par1Entity)
+    @Override
+	public void applyEntityCollision(Entity par1Entity)
     {
     	
     }
@@ -412,7 +424,8 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
      * Removes from an inventory slot (first arg) up to a specified number (second arg) of items and returns them in a
      * new stack.
      */
-    public ItemStack decrStackSize(int var1, int var2)
+    @Override
+	public ItemStack decrStackSize(int var1, int var2)
     {
         if (this.cargoItems[var1] != null)
         {
@@ -446,7 +459,8 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
      * When some containers are closed they call this on each slot, then drop whatever it returns as an EntityItem -
      * like when you close a workbench GUI.
      */
-    public ItemStack getStackInSlotOnClosing(int var1)
+    @Override
+	public ItemStack getStackInSlotOnClosing(int var1)
     {
         if (this.cargoItems[var1] != null)
         {
@@ -463,7 +477,8 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
     /**
      * Sets the given item stack to the specified slot in the inventory (can be crafting or armor sections).
      */
-    public void setInventorySlotContents(int var1, ItemStack var2)
+    @Override
+	public void setInventorySlotContents(int var1, ItemStack var2)
     {
         this.cargoItems[var1] = var2;
 
@@ -476,7 +491,8 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
     /**
      * Returns the name of the inventory.
      */
-    public String getInvName()
+    @Override
+	public String getInvName()
     {
         return "Car";
     }
@@ -485,7 +501,8 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
      * Returns the maximum stack size for a inventory slot. Seems to always be 64, possibly will be extended. *Isn't
      * this more of a set than a get?*
      */
-    public int getInventoryStackLimit()
+    @Override
+	public int getInventoryStackLimit()
     {
         return 64;
     }
@@ -493,24 +510,29 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
     /**
      * Called when an the contents of an Inventory change, usually
      */
-    public void onInventoryChanged() {}
+    @Override
+	public void onInventoryChanged() {}
 
     /**
      * Do not make give this method the name canInteractWith because it clashes with Container
      */
-    public boolean isUseableByPlayer(EntityPlayer var1)
+    @Override
+	public boolean isUseableByPlayer(EntityPlayer var1)
     {
         return true;
     }
 
-    public void openChest() {}
+    @Override
+	public void openChest() {}
 
-    public void closeChest() {}
+    @Override
+	public void closeChest() {}
 
     /**
      * Called when a player interacts with a mob. e.g. gets milk from a cow, gets into the saddle on a pig.
      */
-    public boolean interact(EntityPlayer var1)
+    @Override
+	public boolean interact(EntityPlayer var1)
     {
         ItemStack var2 = var1.inventory.getCurrentItem();
 

@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import net.minecraft.src.Material;
-
 /**
  * Copyright 2012, micdoodle8
  * 

@@ -31,9 +31,6 @@ import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.ITickHandler;
-import cpw.mods.fml.common.Mod.Init;
-import cpw.mods.fml.common.Mod.PostInit;
-import cpw.mods.fml.common.Mod.PreInit;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -219,7 +216,8 @@ public class ClientProxyMars extends CommonProxyMars implements IGalacticraftSub
     	{
     	}
     	
-        public String getLabel()
+        @Override
+		public String getLabel()
         {
             return "Galacticraft Mars Client";
         }

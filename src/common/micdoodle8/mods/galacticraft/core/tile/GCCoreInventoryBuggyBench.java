@@ -19,12 +19,14 @@ public class GCCoreInventoryBuggyBench implements IInventory
         this.inventoryWidth = 5;
     }
 
-    public int getSizeInventory()
+    @Override
+	public int getSizeInventory()
     {
         return this.stackList.length;
     }
 
-    public ItemStack getStackInSlot(int par1)
+    @Override
+	public ItemStack getStackInSlot(int par1)
     {
         return par1 >= this.getSizeInventory() ? null : this.stackList[par1];
     }
@@ -42,12 +44,14 @@ public class GCCoreInventoryBuggyBench implements IInventory
         }
     }
 
-    public String getInvName()
+    @Override
+	public String getInvName()
     {
         return "container.crafting";
     }
 
-    public ItemStack getStackInSlotOnClosing(int par1)
+    @Override
+	public ItemStack getStackInSlotOnClosing(int par1)
     {
         if (this.stackList[par1] != null)
         {
@@ -61,7 +65,8 @@ public class GCCoreInventoryBuggyBench implements IInventory
         }
     }
 
-    public ItemStack decrStackSize(int par1, int par2)
+    @Override
+	public ItemStack decrStackSize(int par1, int par2)
     {
         if (this.stackList[par1] != null)
         {
@@ -93,25 +98,31 @@ public class GCCoreInventoryBuggyBench implements IInventory
         }
     }
 
-    public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
+    @Override
+	public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
     {
         this.stackList[par1] = par2ItemStack;
         this.eventHandler.onCraftMatrixChanged(this);
     }
 
-    public int getInventoryStackLimit()
+    @Override
+	public int getInventoryStackLimit()
     {
         return 64;
     }
 
-    public void onInventoryChanged() {}
+    @Override
+	public void onInventoryChanged() {}
 
-    public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
+    @Override
+	public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
     {
         return true;
     }
 
-    public void openChest() {}
+    @Override
+	public void openChest() {}
 
-    public void closeChest() {}
+    @Override
+	public void closeChest() {}
 }

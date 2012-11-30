@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.europa.wgen;
 
 import java.util.Random;
 
-import micdoodle8.mods.galacticraft.core.wgen.GCCoreWorldGenMinableMeta;
 import net.minecraft.src.BiomeGenBase;
 import net.minecraft.src.Block;
 import net.minecraft.src.World;

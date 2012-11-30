@@ -172,7 +172,7 @@ public class GCMoonBlockGrass extends Block implements IGalacticraftBlockGrass
             {
             	// TODO config boolean to disable this...
             	
-            	int var10 = (int) (getGrassColorAtYCoord(par3));
+            	int var10 = (getGrassColorAtYCoord(par3));
             	
                 var5 += (var10 & 255);
                 var6 += (var10 & 255);

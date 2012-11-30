@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import cpw.mods.fml.common.FMLLog;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockOxygenDistributor;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import net.minecraft.src.NBTTagCompound;

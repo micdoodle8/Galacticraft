@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.client.gui;
 
 import java.util.Random;
 
-import micdoodle8.mods.galacticraft.API.IGalacticraftSubMod;
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;

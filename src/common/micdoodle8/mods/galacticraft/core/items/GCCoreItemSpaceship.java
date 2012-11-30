@@ -5,7 +5,6 @@ import java.util.List;
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpaceship;
-import micdoodle8.mods.galacticraft.mars.items.GCMarsItem;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EnumRarity;
 import net.minecraft.src.ItemStack;

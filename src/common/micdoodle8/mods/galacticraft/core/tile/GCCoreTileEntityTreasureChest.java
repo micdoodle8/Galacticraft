@@ -48,7 +48,8 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
     /**
      * Returns the number of slots in the inventory.
      */
-    public int getSizeInventory()
+    @Override
+	public int getSizeInventory()
     {
         return 27;
     }
@@ -56,7 +57,8 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
     /**
      * Returns the stack in slot i
      */
-    public ItemStack getStackInSlot(int par1)
+    @Override
+	public ItemStack getStackInSlot(int par1)
     {
         return this.chestContents[par1];
     }
@@ -65,7 +67,8 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
      * Removes from an inventory slot (first arg) up to a specified number (second arg) of items and returns them in a
      * new stack.
      */
-    public ItemStack decrStackSize(int par1, int par2)
+    @Override
+	public ItemStack decrStackSize(int par1, int par2)
     {
         if (this.chestContents[par1] != null)
         {
@@ -101,7 +104,8 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
      * When some containers are closed they call this on each slot, then drop whatever it returns as an EntityItem -
      * like when you close a workbench GUI.
      */
-    public ItemStack getStackInSlotOnClosing(int par1)
+    @Override
+	public ItemStack getStackInSlotOnClosing(int par1)
     {
         if (this.chestContents[par1] != null)
         {
@@ -118,7 +122,8 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
     /**
      * Sets the given item stack to the specified slot in the inventory (can be crafting or armor sections).
      */
-    public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
+    @Override
+	public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
     {
         this.chestContents[par1] = par2ItemStack;
 
@@ -133,7 +138,8 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
     /**
      * Returns the name of the inventory.
      */
-    public String getInvName()
+    @Override
+	public String getInvName()
     {
         return "container.chest";
     }
@@ -187,7 +193,8 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
      * Returns the maximum stack size for a inventory slot. Seems to always be 64, possibly will be extended. *Isn't
      * this more of a set than a get?*
      */
-    public int getInventoryStackLimit()
+    @Override
+	public int getInventoryStackLimit()
     {
         return 64;
     }
@@ -195,7 +202,8 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
     /**
      * Do not make give this method the name canInteractWith because it clashes with Container
      */
-    public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
+    @Override
+	public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
     {
         return this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : par1EntityPlayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
     }
@@ -360,13 +368,15 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
         }
     }
 
-    public void openChest()
+    @Override
+	public void openChest()
     {
         ++this.numUsingPlayers;
         this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, GCCoreBlocks.treasureChest.blockID, 1, this.numUsingPlayers);
     }
 
-    public void closeChest()
+    @Override
+	public void closeChest()
     {
         --this.numUsingPlayers;
         this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, GCCoreBlocks.treasureChest.blockID, 1, this.numUsingPlayers);

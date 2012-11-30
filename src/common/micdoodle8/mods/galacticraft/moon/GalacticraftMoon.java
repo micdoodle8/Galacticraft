@@ -13,8 +13,6 @@ import micdoodle8.mods.galacticraft.moon.items.GCMoonItems;
 import net.minecraft.src.World;
 import net.minecraftforge.common.DimensionManager;
 import cpw.mods.fml.common.ITickHandler;
-import cpw.mods.fml.common.Mod.Init;
-import cpw.mods.fml.common.Mod.PostInit;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.event.FMLInitializationEvent;

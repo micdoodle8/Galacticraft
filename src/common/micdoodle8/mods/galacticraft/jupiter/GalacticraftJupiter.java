@@ -9,7 +9,6 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.europa.GCEuropaConfigManager;
 import micdoodle8.mods.galacticraft.europa.GalacticraftEuropa;
 import micdoodle8.mods.galacticraft.io.GalacticraftIo;
-import micdoodle8.mods.galacticraft.jupiter.client.ClientProxyJupiter;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;

@@ -24,7 +24,6 @@ import net.minecraft.src.MathHelper;
 import net.minecraft.src.NoiseGeneratorOctaves;
 import net.minecraft.src.SpawnListEntry;
 import net.minecraft.src.World;
-import net.minecraft.src.WorldGenLakes;
 
 /**
  * Copyright 2012, micdoodle8

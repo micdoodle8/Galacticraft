@@ -7,11 +7,9 @@ import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.moon.items.GCMoonItems;
 import net.minecraft.src.Block;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.Entity;
-import net.minecraft.src.EntityLiving;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
 import net.minecraft.src.World;
@@ -120,7 +118,8 @@ public class GCCoreBlock extends Block
 		}
 	}
 	
-    public float getBlockHardness(World par1World, int par2, int par3, int par4)
+    @Override
+	public float getBlockHardness(World par1World, int par2, int par3, int par4)
     {
     	int meta = par1World.getBlockMetadata(par2, par3, par4);
     	

@@ -19,7 +19,8 @@ public class GCCoreItemOxygenMask extends GCCoreItemBreathableHelmet implements 
 		this.setCreativeTab(GalacticraftCore.galacticraftTab);
 	}
 
-    public String getArmorTextureFile(ItemStack itemstack)
+    @Override
+	public String getArmorTextureFile(ItemStack itemstack)
     {
     	return "/micdoodle8/mods/galacticraft/core/client/armor/oxygen_1.png";
     }

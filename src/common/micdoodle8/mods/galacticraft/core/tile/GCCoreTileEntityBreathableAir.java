@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import net.minecraft.src.TileEntity;
-import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreTileEntityBreathableAir extends TileEntity
 {

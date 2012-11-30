@@ -50,7 +50,6 @@ import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.moon.client.ClientProxyMoon;
 import net.minecraft.client.Minecraft;
-import net.minecraft.src.Entity;
 import net.minecraft.src.EntityClientPlayerMP;
 import net.minecraft.src.EntityFX;
 import net.minecraft.src.EntityPlayer;
@@ -590,7 +589,8 @@ public class ClientProxyCore extends CommonProxyCore
             }
     	}
     	
-        public String getLabel()
+        @Override
+		public String getLabel()
         {
             return "Galacticraft Client";
         }

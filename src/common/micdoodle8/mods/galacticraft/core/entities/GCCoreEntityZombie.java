@@ -53,12 +53,14 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityVillager.class, 16.0F, 0, false));
     }
 
-    public float getSpeedModifier()
+    @Override
+	public float getSpeedModifier()
     {
         return super.getSpeedModifier() * (this.isChild() ? 1.5F : 1.0F);
     }
 
-    protected void entityInit()
+    @Override
+	protected void entityInit()
     {
         super.entityInit();
         this.getDataWatcher().addObject(12, Byte.valueOf((byte)0));
@@ -66,7 +68,8 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
         this.getDataWatcher().addObject(14, Byte.valueOf((byte)0));
     }
 
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
 
     /**
      * Returns the texture's file path as a String.
@@ -76,7 +79,8 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
         return "/micdoodle8/mods/galacticraft/core/client/entities/zombie.png";
     }
 
-    public int getMaxHealth()
+    @Override
+	public int getMaxHealth()
     {
         return 20;
     }
@@ -84,7 +88,8 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
     /**
      * Returns the current armor value as determined by a call to InventoryPlayer.getTotalArmorValue
      */
-    public int getTotalArmorValue()
+    @Override
+	public int getTotalArmorValue()
     {
         int var1 = super.getTotalArmorValue() + 2;
 
@@ -99,7 +104,8 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
     /**
      * Returns true if the newer Entity AI code should be run
      */
-    protected boolean isAIEnabled()
+    @Override
+	protected boolean isAIEnabled()
     {
         return true;
     }
@@ -107,7 +113,8 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
     /**
      * If Animal, checks if the age timer is negative
      */
-    public boolean isChild()
+    @Override
+	public boolean isChild()
     {
         return this.getDataWatcher().getWatchableObjectByte(12) == 1;
     }
@@ -140,7 +147,8 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
      * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
      * use this to react to sunlight and start to burn.
      */
-    public void onLivingUpdate()
+    @Override
+	public void onLivingUpdate()
     {
         if (this.worldObj.isDaytime() && !this.worldObj.isRemote && !this.isChild())
         {
@@ -180,7 +188,8 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
     /**
      * Called to update the entity's position/logic.
      */
-    public void onUpdate()
+    @Override
+	public void onUpdate()
     {
         if (!this.worldObj.isRemote && this.func_82230_o())
         {
@@ -199,7 +208,8 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
     /**
      * Returns the amount of damage a mob should deal.
      */
-    public int getAttackStrength(Entity par1Entity)
+    @Override
+	public int getAttackStrength(Entity par1Entity)
     {
         ItemStack var2 = this.getHeldItem();
         int var3 = 4;
@@ -215,7 +225,8 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
     /**
      * Returns the sound this mob makes while it's alive.
      */
-    protected String getLivingSound()
+    @Override
+	protected String getLivingSound()
     {
         return "mob.zombie.say";
     }
@@ -223,7 +234,8 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
     /**
      * Returns the sound this mob makes when it is hurt.
      */
-    protected String getHurtSound()
+    @Override
+	protected String getHurtSound()
     {
         return "mob.zombie.hurt";
     }
@@ -231,7 +243,8 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
     /**
      * Returns the sound this mob makes on death.
      */
-    protected String getDeathSound()
+    @Override
+	protected String getDeathSound()
     {
         return "mob.zombie.death";
     }
@@ -239,7 +252,8 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
     /**
      * Plays step sound at given x, y, z for the entity
      */
-    protected void playStepSound(int par1, int par2, int par3, int par4)
+    @Override
+	protected void playStepSound(int par1, int par2, int par3, int par4)
     {
         this.func_85030_a("mob.zombie.step", 0.15F, 1.0F);
     }
@@ -247,7 +261,8 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
     /**
      * Returns the item ID for the item the mob drops on death.
      */
-    protected int getDropItemId()
+    @Override
+	protected int getDropItemId()
     {
         return Item.rottenFlesh.shiftedIndex;
     }
@@ -255,12 +270,14 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
     /**
      * Get this Entity's EnumCreatureAttribute
      */
-    public EnumCreatureAttribute getCreatureAttribute()
+    @Override
+	public EnumCreatureAttribute getCreatureAttribute()
     {
         return EnumCreatureAttribute.UNDEAD;
     }
 
-    protected void dropRareDrop(int par1)
+    @Override
+	protected void dropRareDrop(int par1)
     {
         switch (this.rand.nextInt(3))
         {
@@ -275,7 +292,8 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
         }
     }
 
-    protected void func_82164_bB()
+    @Override
+	protected void func_82164_bB()
     {
         super.func_82164_bB();
 
@@ -297,7 +315,8 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
     /**
      * (abstract) Protected helper method to write subclass entity data to NBT.
      */
-    public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
+    @Override
+	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeEntityToNBT(par1NBTTagCompound);
 
@@ -317,7 +336,8 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
     /**
      * (abstract) Protected helper method to read subclass entity data from NBT.
      */
-    public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
+    @Override
+	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readEntityFromNBT(par1NBTTagCompound);
 
@@ -340,7 +360,8 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
     /**
      * This method gets called when the entity kills another one.
      */
-    public void onKillEntity(EntityLiving par1EntityLiving)
+    @Override
+	public void onKillEntity(EntityLiving par1EntityLiving)
     {
         super.onKillEntity(par1EntityLiving);
 
@@ -370,7 +391,8 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
     /**
      * Initialize this creature.
      */
-    public void initCreature()
+    @Override
+	public void initCreature()
     {
         this.canPickUpLoot = this.rand.nextFloat() < field_82181_as[this.worldObj.difficultySetting];
 
@@ -397,7 +419,8 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
     /**
      * Called when a player interacts with a mob. e.g. gets milk from a cow, gets into the saddle on a pig.
      */
-    public boolean interact(EntityPlayer par1EntityPlayer)
+    @Override
+	public boolean interact(EntityPlayer par1EntityPlayer)
     {
         ItemStack var2 = par1EntityPlayer.getCurrentEquippedItem();
 
@@ -439,7 +462,8 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
         this.worldObj.setEntityState(this, (byte)16);
     }
 
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public void handleHealthUpdate(byte par1)
     {
         if (par1 == 16)

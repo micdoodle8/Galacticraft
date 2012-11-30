@@ -1,12 +1,13 @@
 package micdoodle8.mods.galacticraft.core.client.render.block;
 
-import org.lwjgl.opengl.GL11;
-
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import net.minecraft.src.Block;
 import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.RenderBlocks;
 import net.minecraft.src.Tessellator;
+
+import org.lwjgl.opengl.GL11;
+
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 public class GCCoreBlockRendererOxygenPipe implements ISimpleBlockRenderingHandler 

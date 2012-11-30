@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
 import net.minecraft.src.AxisAlignedBB;
-import net.minecraft.src.Direction;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayer;
@@ -9,7 +8,6 @@ import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.World;
-import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreEntityFlag extends Entity
 {
@@ -38,7 +36,7 @@ public class GCCoreEntityFlag extends Entity
     
     public void setDirection(float par1)
     {
-        this.prevRotationYaw = this.rotationYaw = (float)(par1);
+        this.prevRotationYaw = this.rotationYaw = (par1);
     }
 
     public int getWidth()

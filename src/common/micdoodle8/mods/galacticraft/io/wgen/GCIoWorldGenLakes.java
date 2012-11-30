@@ -2,10 +2,7 @@ package micdoodle8.mods.galacticraft.io.wgen;
 
 import java.util.Random;
 
-import net.minecraft.src.BiomeGenBase;
 import net.minecraft.src.Block;
-import net.minecraft.src.EnumSkyBlock;
-import net.minecraft.src.Material;
 import net.minecraft.src.World;
 import net.minecraft.src.WorldGenerator;
 
@@ -18,7 +15,8 @@ public class GCIoWorldGenLakes extends WorldGenerator
         this.blockIndex = par1;
     }
 
-    public boolean generate(World par1World, Random par2Random, int par3, int par4, int par5)
+    @Override
+	public boolean generate(World par1World, Random par2Random, int par3, int par4, int par5)
     {
         par3 -= 8;
 
@@ -48,9 +46,9 @@ public class GCIoWorldGenLakes extends WorldGenerator
                     {
                         for (int var23 = 1; var23 < 7; ++var23)
                         {
-                            double var24 = ((double)var21 - var15) / (var9 / 2.0D);
-                            double var26 = ((double)var23 - var17) / (var11 / 2.0D);
-                            double var28 = ((double)var22 - var19) / (var13 / 2.0D);
+                            double var24 = (var21 - var15) / (var9 / 2.0D);
+                            double var26 = (var23 - var17) / (var11 / 2.0D);
+                            double var28 = (var22 - var19) / (var13 / 2.0D);
                             double var30 = var24 * var24 + var26 * var26 + var28 * var28;
 
                             if (var30 < 1.0D)

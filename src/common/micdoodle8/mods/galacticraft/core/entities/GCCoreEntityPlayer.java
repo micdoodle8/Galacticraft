@@ -14,7 +14,6 @@ import micdoodle8.mods.galacticraft.core.items.GCCoreItemBreathableHelmet;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemSensorGlasses;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreInventoryTankRefill;
-import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
 import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;
 import net.minecraft.src.Block;
 import net.minecraft.src.DamageSource;
@@ -23,7 +22,6 @@ import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EntityPlayerMP;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
-import net.minecraft.src.Material;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.NBTTagList;
@@ -153,7 +151,7 @@ public class GCCoreEntityPlayer
 		        		
 		        		if (entry.getKey() != null && entry.getValue() != null)
 		        		{
-			        		stack.addEnchantment((Enchantment)entry.getValue(), entry.getKey());
+			        		stack.addEnchantment(entry.getValue(), entry.getKey());
 		        		}
 		        	}
 		        	
@@ -213,7 +211,7 @@ public class GCCoreEntityPlayer
 		        		
 		        		if (entry.getKey() != null && entry.getValue() != null)
 		        		{
-			        		stack.addEnchantment((Enchantment)entry.getValue(), entry.getKey());
+			        		stack.addEnchantment(entry.getValue(), entry.getKey());
 		        		}
 		        	}
 		        	

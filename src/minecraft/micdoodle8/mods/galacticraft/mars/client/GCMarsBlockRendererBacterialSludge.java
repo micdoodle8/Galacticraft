@@ -27,18 +27,21 @@ public class GCMarsBlockRendererBacterialSludge implements ISimpleBlockRendering
         this.renderID = var1;
     }
 
-    public boolean renderWorldBlock(IBlockAccess var1, int var2, int var3, int var4, Block var5, int var6, RenderBlocks var7)
+    @Override
+	public boolean renderWorldBlock(IBlockAccess var1, int var2, int var3, int var4, Block var5, int var6, RenderBlocks var7)
     {
     	this.renderGCFluid(var7, var5, var1, var2, var3, var4);
         return true;
     }
 
-    public boolean shouldRender3DInInventory()
+    @Override
+	public boolean shouldRender3DInInventory()
     {
         return true;
     }
 
-    public int getRenderId()
+    @Override
+	public int getRenderId()
     {
         return this.renderID;
     }

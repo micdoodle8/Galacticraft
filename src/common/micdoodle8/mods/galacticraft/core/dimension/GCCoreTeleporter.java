@@ -10,7 +10,6 @@ import net.minecraft.src.MathHelper;
 import net.minecraft.src.Teleporter;
 import net.minecraft.src.World;
 import net.minecraft.src.WorldServer;
-import cpw.mods.fml.common.FMLLog;
 
 /**
  * Copyright 2012, micdoodle8
@@ -78,7 +77,7 @@ public class GCCoreTeleporter extends Teleporter
         int var10 = MathHelper.floor_double(par1Entity.posY) - 1;
         int var11 = MathHelper.floor_double(par1Entity.posZ);
         
-        par1Entity.setLocationAndAngles((double)var9, (double)300, (double)var11, par1Entity.rotationYaw, 0.0F);
+        par1Entity.setLocationAndAngles(var9, 300, var11, par1Entity.rotationYaw, 0.0F);
         par1Entity.motionX = par1Entity.motionY = par1Entity.motionZ = 0.0D;
 		
 		if (!this.worldServer.isRemote && par1Entity instanceof EntityPlayer)

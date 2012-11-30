@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.moon.blocks;
 
 import micdoodle8.mods.galacticraft.moon.client.GCMoonColorizerGrass;
 import net.minecraft.src.BlockFlower;
-import net.minecraft.src.ColorizerGrass;
 import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.Material;
 import net.minecraft.src.World;

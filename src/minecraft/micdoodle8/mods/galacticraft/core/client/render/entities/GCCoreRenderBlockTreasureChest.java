@@ -27,7 +27,8 @@ public class GCCoreRenderBlockTreasureChest implements ISimpleBlockRenderingHand
         this.renderID = var1;
     }
 
-    public void renderInventoryBlock(Block var1, int var2, int var3, RenderBlocks var4) 
+    @Override
+	public void renderInventoryBlock(Block var1, int var2, int var3, RenderBlocks var4) 
     {
         GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
@@ -35,17 +36,20 @@ public class GCCoreRenderBlockTreasureChest implements ISimpleBlockRenderingHand
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
     }
 
-    public boolean renderWorldBlock(IBlockAccess var1, int var2, int var3, int var4, Block var5, int var6, RenderBlocks var7)
+    @Override
+	public boolean renderWorldBlock(IBlockAccess var1, int var2, int var3, int var4, Block var5, int var6, RenderBlocks var7)
     {
     	return false;
     }
 
-    public boolean shouldRender3DInInventory()
+    @Override
+	public boolean shouldRender3DInInventory()
     {
         return true;
     }
 
-    public int getRenderId()
+    @Override
+	public int getRenderId()
     {
         return this.renderID;
     }

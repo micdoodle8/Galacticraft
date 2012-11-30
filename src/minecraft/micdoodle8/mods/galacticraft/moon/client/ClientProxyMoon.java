@@ -92,7 +92,8 @@ public class ClientProxyMoon extends CommonProxyMoon implements IGalacticraftSub
     	{
     	}
     	
-        public String getLabel()
+        @Override
+		public String getLabel()
         {
             return "Galacticraft Moon Client";
         }

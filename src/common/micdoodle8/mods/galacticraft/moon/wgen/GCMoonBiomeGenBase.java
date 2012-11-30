@@ -1,11 +1,8 @@
 package micdoodle8.mods.galacticraft.moon.wgen;
 
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpider;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityZombie;
 import micdoodle8.mods.galacticraft.moon.client.GCMoonColorizerGrass;
 import net.minecraft.src.BiomeGenBase;
 import net.minecraft.src.MathHelper;
-import net.minecraft.src.SpawnListEntry;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 

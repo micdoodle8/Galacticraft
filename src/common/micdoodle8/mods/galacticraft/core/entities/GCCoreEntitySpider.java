@@ -27,7 +27,8 @@ public class GCCoreEntitySpider extends GCCoreEntityMob
         this.moveSpeed = 1F;
     }
 
-    protected void entityInit()
+    @Override
+	protected void entityInit()
     {
         super.entityInit();
         this.dataWatcher.addObject(16, new Byte((byte)0));
@@ -36,7 +37,8 @@ public class GCCoreEntitySpider extends GCCoreEntityMob
     /**
      * Called to update the entity's position/logic.
      */
-    public void onUpdate()
+    @Override
+	public void onUpdate()
     {
         super.onUpdate();
 
@@ -46,7 +48,8 @@ public class GCCoreEntitySpider extends GCCoreEntityMob
         }
     }
 
-    public int getMaxHealth()
+    @Override
+	public int getMaxHealth()
     {
         return 16;
     }
@@ -54,16 +57,18 @@ public class GCCoreEntitySpider extends GCCoreEntityMob
     /**
      * Returns the Y offset from the entity's position for any entity riding this one.
      */
-    public double getMountedYOffset()
+    @Override
+	public double getMountedYOffset()
     {
-        return (double)this.height * 0.75D - 0.5D;
+        return this.height * 0.75D - 0.5D;
     }
 
     /**
      * Finds the closest player within 16 blocks to attack, or null if this Entity isn't interested in attacking
      * (Animals, Spiders at day, peaceful PigZombies).
      */
-    protected Entity findPlayerToAttack()
+    @Override
+	protected Entity findPlayerToAttack()
     {
         float var1 = this.getBrightness(1.0F);
 
@@ -81,7 +86,8 @@ public class GCCoreEntitySpider extends GCCoreEntityMob
     /**
      * Returns the sound this mob makes while it's alive.
      */
-    protected String getLivingSound()
+    @Override
+	protected String getLivingSound()
     {
         return "mob.spider.say";
     }
@@ -89,7 +95,8 @@ public class GCCoreEntitySpider extends GCCoreEntityMob
     /**
      * Returns the sound this mob makes when it is hurt.
      */
-    protected String getHurtSound()
+    @Override
+	protected String getHurtSound()
     {
         return "mob.spider.say";
     }
@@ -97,7 +104,8 @@ public class GCCoreEntitySpider extends GCCoreEntityMob
     /**
      * Returns the sound this mob makes on death.
      */
-    protected String getDeathSound()
+    @Override
+	protected String getDeathSound()
     {
         return "mob.spider.death";
     }
@@ -105,7 +113,8 @@ public class GCCoreEntitySpider extends GCCoreEntityMob
     /**
      * Plays step sound at given x, y, z for the entity
      */
-    protected void playStepSound(int par1, int par2, int par3, int par4)
+    @Override
+	protected void playStepSound(int par1, int par2, int par3, int par4)
     {
         this.func_85030_a("mob.spider.step", 0.15F, 1.0F);
     }
@@ -113,7 +122,8 @@ public class GCCoreEntitySpider extends GCCoreEntityMob
     /**
      * Basic mob attack. Default to touch of death in EntityCreature. Overridden by each mob to define their attack.
      */
-    protected void attackEntity(Entity par1Entity, float par2)
+    @Override
+	protected void attackEntity(Entity par1Entity, float par2)
     {
         float var3 = this.getBrightness(1.0F);
 
@@ -130,8 +140,8 @@ public class GCCoreEntitySpider extends GCCoreEntityMob
                     double var4 = par1Entity.posX - this.posX;
                     double var6 = par1Entity.posZ - this.posZ;
                     float var8 = MathHelper.sqrt_double(var4 * var4 + var6 * var6);
-                    this.motionX = var4 / (double)var8 * 0.5D * 0.800000011920929D + this.motionX * 0.20000000298023224D;
-                    this.motionZ = var6 / (double)var8 * 0.5D * 0.800000011920929D + this.motionZ * 0.20000000298023224D;
+                    this.motionX = var4 / var8 * 0.5D * 0.800000011920929D + this.motionX * 0.20000000298023224D;
+                    this.motionZ = var6 / var8 * 0.5D * 0.800000011920929D + this.motionZ * 0.20000000298023224D;
                     this.motionY = 0.4000000059604645D;
                 }
             }
@@ -145,7 +155,8 @@ public class GCCoreEntitySpider extends GCCoreEntityMob
     /**
      * Returns the item ID for the item the mob drops on death.
      */
-    protected int getDropItemId()
+    @Override
+	protected int getDropItemId()
     {
         return Item.silk.shiftedIndex;
     }
@@ -153,7 +164,8 @@ public class GCCoreEntitySpider extends GCCoreEntityMob
     /**
      * Drop 0-2 items of this living's type
      */
-    protected void dropFewItems(boolean par1, int par2)
+    @Override
+	protected void dropFewItems(boolean par1, int par2)
     {
         super.dropFewItems(par1, par2);
 
@@ -166,7 +178,8 @@ public class GCCoreEntitySpider extends GCCoreEntityMob
     /**
      * returns true if this entity is by a ladder, false otherwise
      */
-    public boolean isOnLadder()
+    @Override
+	public boolean isOnLadder()
     {
         return this.isBesideClimbableBlock();
     }
@@ -174,7 +187,8 @@ public class GCCoreEntitySpider extends GCCoreEntityMob
     /**
      * Sets the Entity inside a web block.
      */
-    public void setInWeb() {}
+    @Override
+	public void setInWeb() {}
 
     @SideOnly(Side.CLIENT)
 
@@ -189,12 +203,14 @@ public class GCCoreEntitySpider extends GCCoreEntityMob
     /**
      * Get this Entity's EnumCreatureAttribute
      */
-    public EnumCreatureAttribute getCreatureAttribute()
+    @Override
+	public EnumCreatureAttribute getCreatureAttribute()
     {
         return EnumCreatureAttribute.ARTHROPOD;
     }
 
-    public boolean isPotionApplicable(PotionEffect par1PotionEffect)
+    @Override
+	public boolean isPotionApplicable(PotionEffect par1PotionEffect)
     {
         return par1PotionEffect.getPotionID() == Potion.poison.id ? false : super.isPotionApplicable(par1PotionEffect);
     }
@@ -231,7 +247,8 @@ public class GCCoreEntitySpider extends GCCoreEntityMob
     /**
      * Initialize this creature.
      */
-    public void initCreature()
+    @Override
+	public void initCreature()
     {
         if (this.worldObj.rand.nextInt(100) == 0)
         {

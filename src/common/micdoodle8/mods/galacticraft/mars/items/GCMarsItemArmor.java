@@ -22,7 +22,8 @@ public class GCMarsItemArmor extends GCCoreItemBreathableHelmet implements IArmo
 		this.attachedMask = breathable;
 	}
 
-    public String getArmorTextureFile(ItemStack itemstack)
+    @Override
+	public String getArmorTextureFile(ItemStack itemstack)
     {
     	if (material == GCMarsItems.QUANDRIUMARMOR)
     	{

@@ -33,7 +33,8 @@ public class GCCoreSoundUpdaterSpaceship implements IUpdatePlayerListBox
     /**
      * Updates the JList with a new model.
      */
-    public void update()
+    @Override
+	public void update()
     {
         boolean var1 = false;
         boolean var2 = this.field_82473_d;

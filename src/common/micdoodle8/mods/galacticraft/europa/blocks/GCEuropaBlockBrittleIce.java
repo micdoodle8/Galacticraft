@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.europa.blocks;
 
 import java.util.Random;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.src.Block;
 import net.minecraft.src.BlockBreakable;
 import net.minecraft.src.EnchantmentHelper;
@@ -25,7 +24,8 @@ public class GCEuropaBlockBrittleIce extends BlockBreakable
         this.setTickRandomly(true);
     }
 
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public int getRenderBlockPass()
     {
         return 1;
@@ -43,13 +43,15 @@ public class GCEuropaBlockBrittleIce extends BlockBreakable
 		return side == 1 ? 1 : (side == 0 ? 3 : 0);
 	}
 
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {
         return super.shouldSideBeRendered(par1IBlockAccess, par2, par3, par4, 1 - par5);
     }
 
-    public void harvestBlock(World par1World, EntityPlayer par2EntityPlayer, int par3, int par4, int par5, int par6)
+    @Override
+	public void harvestBlock(World par1World, EntityPlayer par2EntityPlayer, int par3, int par4, int par5, int par6)
     {
         par2EntityPlayer.addStat(StatList.mineBlockStatArray[this.blockID], 1);
         par2EntityPlayer.addExhaustion(0.025F);
@@ -82,12 +84,14 @@ public class GCEuropaBlockBrittleIce extends BlockBreakable
         }
     }
 
-    public int quantityDropped(Random par1Random)
+    @Override
+	public int quantityDropped(Random par1Random)
     {
         return 0;
     }
 
-    public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
+    @Override
+	public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {
         if (par1World.getSavedLightValue(EnumSkyBlock.Block, par2, par3, par4) > 20 - Block.lightOpacity[this.blockID])
         {
@@ -102,7 +106,8 @@ public class GCEuropaBlockBrittleIce extends BlockBreakable
         }
     }
     
-    public int getMobilityFlag()
+    @Override
+	public int getMobilityFlag()
     {
         return 0;
     }

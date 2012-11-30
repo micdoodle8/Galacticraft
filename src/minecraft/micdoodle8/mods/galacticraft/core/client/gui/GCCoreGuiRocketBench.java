@@ -6,7 +6,6 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreContainerRocketBench;
 import net.minecraft.src.GuiButton;
 import net.minecraft.src.GuiContainer;
-import net.minecraft.src.GuiScreen;
 import net.minecraft.src.InventoryPlayer;
 import net.minecraft.src.StatCollector;
 

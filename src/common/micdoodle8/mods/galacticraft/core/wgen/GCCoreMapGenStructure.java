@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.wgen;
 
-import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -8,15 +7,9 @@ import java.util.Map;
 import java.util.Random;
 
 import net.minecraft.src.ChunkCoordIntPair;
-import net.minecraft.src.ChunkPosition;
-import net.minecraft.src.CrashReport;
-import net.minecraft.src.CrashReportCategory;
-import net.minecraft.src.ReportedException;
 import net.minecraft.src.StructureBoundingBox;
-import net.minecraft.src.StructureComponent;
 import net.minecraft.src.StructureStart;
 import net.minecraft.src.World;
-import cpw.mods.fml.common.FMLLog;
 
 public abstract class GCCoreMapGenStructure extends GCCoreMapGenBase
 {

@@ -9,7 +9,6 @@ import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySkeleton;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpider;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityZombie;
 import micdoodle8.mods.galacticraft.core.wgen.GCCoreChunk;
-import micdoodle8.mods.galacticraft.europa.wgen.GCEuropaWorldGenLakes;
 import micdoodle8.mods.galacticraft.io.blocks.GCIoBlocks;
 import micdoodle8.mods.galacticraft.mars.GCMarsConfigManager;
 import net.minecraft.src.BiomeGenBase;

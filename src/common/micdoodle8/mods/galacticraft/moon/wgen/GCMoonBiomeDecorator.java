@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.moon.wgen;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.core.wgen.GCCoreWorldGenMinableMeta;
-import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
 import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
 import net.minecraft.src.BiomeGenBase;
 import net.minecraft.src.World;

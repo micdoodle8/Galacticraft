@@ -8,7 +8,6 @@ import net.minecraftforge.event.Event.Result;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.player.BonemealEvent;
 import net.minecraftforge.event.world.WorldEvent;
-import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreEvents 
 {

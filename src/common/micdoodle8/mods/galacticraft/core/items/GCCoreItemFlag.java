@@ -3,22 +3,14 @@ package micdoodle8.mods.galacticraft.core.items;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityFlag;
-import net.minecraft.src.Block;
-import net.minecraft.src.BlockRail;
 import net.minecraft.src.CreativeTabs;
-import net.minecraft.src.EntityMinecart;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EnumAction;
 import net.minecraft.src.EnumMovingObjectType;
 import net.minecraft.src.EnumRarity;
-import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
-import net.minecraft.src.MathHelper;
 import net.minecraft.src.MovingObjectPosition;
 import net.minecraft.src.World;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.player.ArrowNockEvent;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
@@ -74,7 +66,7 @@ public class GCCoreItemFlag extends GCCoreItem
         
         MovingObjectPosition var12 = this.getMovingObjectPositionFromPlayer(par2World, par3EntityPlayer, true);
 
-        float var7 = (float)useTime / 20.0F;
+        float var7 = useTime / 20.0F;
         var7 = (var7 * var7 + var7 * 2.0F) / 3.0F;
 
         if (var7 > 1.0F)

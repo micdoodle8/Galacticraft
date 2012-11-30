@@ -31,12 +31,14 @@ public class GCCoreBlockRendererMeteor implements ISimpleBlockRenderingHandler
         return true;
     }
 
-    public boolean shouldRender3DInInventory()
+    @Override
+	public boolean shouldRender3DInInventory()
     {
         return true;
     }
 
-    public int getRenderId()
+    @Override
+	public int getRenderId()
     {
         return this.renderID;
     }

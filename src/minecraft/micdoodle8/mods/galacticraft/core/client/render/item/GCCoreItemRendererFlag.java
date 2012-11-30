@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.client.render.item;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelFlag;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityFlag;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemFlag;
@@ -51,7 +50,7 @@ public class GCCoreItemRendererFlag implements IItemRenderer
 //                GL11.glRotatef(-12.0F, 0.0F, 1.0F, 0.0F);
 //                GL11.glRotatef(-8.0F, 1.0F, 0.0F, 0.0F);
 //                GL11.glTranslatef(-0.9F, 0.2F, 0.0F);
-                var13b = (float)item.getMaxItemUseDuration() - ((float)FMLClientHandler.instance().getClient().thePlayer.getItemInUseCount() + 1.0F);
+                var13b = item.getMaxItemUseDuration() - (FMLClientHandler.instance().getClient().thePlayer.getItemInUseCount() + 1.0F);
                 var14b = var13b / 20.0F;
                 var14b = (var14b * var14b + var14b * 2.0F) / 3.0F;
 

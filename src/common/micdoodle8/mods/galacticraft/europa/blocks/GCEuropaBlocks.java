@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.europa.blocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.europa.GCEuropaConfigManager;
 import micdoodle8.mods.galacticraft.europa.client.ClientProxyEuropa;
-import micdoodle8.mods.galacticraft.jupiter.GalacticraftJupiter;
 import net.minecraft.src.Block;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;

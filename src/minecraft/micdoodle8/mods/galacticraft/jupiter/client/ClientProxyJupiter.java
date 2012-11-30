@@ -86,7 +86,8 @@ public class ClientProxyJupiter extends CommonProxyJupiter implements IGalacticr
     	{
     	}
     	
-        public String getLabel()
+        @Override
+		public String getLabel()
         {
             return "Galacticraft Jupiter Client";
         }

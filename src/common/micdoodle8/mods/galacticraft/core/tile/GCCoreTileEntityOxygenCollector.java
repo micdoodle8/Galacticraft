@@ -5,7 +5,6 @@ import net.minecraft.src.Block;
 import net.minecraft.src.BlockLeaves;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.TileEntity;
-import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreTileEntityOxygenCollector extends TileEntity
 {
