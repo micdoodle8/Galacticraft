@@ -89,6 +89,7 @@ public class GCCoreConfigManager
 	public static int idGuiTankRefill;
 	public static int idGuiAirDistributor;
 	public static int idGuiRocketCraftingBench;
+	public static int idGuiBuggyCraftingBench;
 	
 	// ACHIEVEMENTS
 	public static int idAchievBase;
@@ -167,9 +168,10 @@ public class GCCoreConfigManager
 	        idArmorTitaniumHelmetBreathable = 		configuration.get(configuration.CATEGORY_BLOCK, "idArmorTitaniumHelmetBreathable", 		9885)		.getInt(9885);
 
 	        idGuiTankRefill = 						configuration.get("GUI", "idGuiTankRefill", 											128)		.getInt(128);
-	        idGuiAirDistributor = 					configuration.get("GUI", "idGuiAirDistributor", 										128)		.getInt(128);
+	        idGuiAirDistributor = 					configuration.get("GUI", "idGuiAirDistributor", 										129)		.getInt(129);
 	        idGuiRocketCraftingBench = 				configuration.get("GUI", "idGuiRocketCraftingBench", 									130)		.getInt(130);
-
+	        idGuiBuggyCraftingBench = 				configuration.get("GUI", "idGuiBuggyCraftingBench", 									131)		.getInt(131);
+	        
 	        idAchievBase = 							configuration.get("Achievements", "idAchievBase", 										1784)		.getInt(1784);
 
 	        idEntityEvolvedSpider = 				configuration.get("Entities", "idEntityEvolvedSpider", 									155)		.getInt(155);

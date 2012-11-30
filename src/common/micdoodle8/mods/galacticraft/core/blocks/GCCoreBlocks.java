@@ -49,7 +49,7 @@ public class GCCoreBlocks
 		Item.itemsList[blockOres.blockID] = 					new GCCoreItemBlockOre				(blockOres.blockID - 256)																																																																	.setItemName("blockores");	
 		blockAirCollector = 									new GCCoreBlockOxygenCollector		(GCCoreConfigManager.idBlockAirCollector, 				8)						.setHardness(3.5F)  	  																		.setCreativeTab(GalacticraftCore.galacticraftTab) 		.setStepSound(Block.soundStoneFootstep)					.setBlockName("oxygenCollector");
 		sapling =												new GCCoreBlockSapling				(GCCoreConfigManager.idBlockSapling2,                  	15)						.setHardness(0.0F)																				.setCreativeTab((CreativeTabs)null)					.setStepSound(Block.soundGrassFootstep)					.setBlockName("sapling2");
-		rocketBench = 											new GCCoreBlockRocketBench			(GCCoreConfigManager.idBlockRocketBench)										.setHardness(2.5F)																																	.setStepSound(Block.soundMetalFootstep)					.setBlockName("rocketWorkbench");	
+		rocketBench = 											new GCCoreBlockAdvancedCraftingTable			(GCCoreConfigManager.idBlockRocketBench)										.setHardness(2.5F)																																	.setStepSound(Block.soundMetalFootstep)					.setBlockName("rocketWorkbench");	
 //		fallenMeteor = 											new GCCoreBlockFallenMeteor			(GCCoreConfigManager.idBlockFallenMeteor)										.setHardness(50.0F)																																	.setStepSound(Block.soundStoneFootstep)					.setBlockName("fallenMeteor");	
 		Item.itemsList[sapling.blockID] = 						new GCCoreItemSapling				(sapling.blockID - 256)																																																																		.setItemName("sapling2");	
 	}

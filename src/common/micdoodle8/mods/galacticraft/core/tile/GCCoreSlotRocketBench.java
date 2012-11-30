@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import net.minecraft.src.IInventory;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.Slot;
+import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreSlotRocketBench extends Slot
 {
@@ -21,6 +22,7 @@ public class GCCoreSlotRocketBench extends Slot
     @Override
 	public boolean isItemValid(ItemStack par1ItemStack)
     {
+    	FMLLog.info("" + this.index);
     	switch (this.index)
     	{
     	case 1:

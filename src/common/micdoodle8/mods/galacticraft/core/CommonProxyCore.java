@@ -3,10 +3,12 @@ package micdoodle8.mods.galacticraft.core;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiAirDistributor;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiBuggyBench;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiRocketBench;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiTankRefill;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityPlayer;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreContainerAirDistributor;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreContainerBuggyBench;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreContainerRocketBench;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreContainerTankRefill;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreInventoryTankRefill;
@@ -17,6 +19,7 @@ import net.minecraft.src.World;
 
 import com.google.common.collect.Lists;
 
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -121,6 +124,10 @@ public class CommonProxyCore implements IGuiHandler
 		{
 			return new GCCoreContainerRocketBench(player.inventory);
 		}
+		else if (ID == GCCoreConfigManager.idGuiBuggyCraftingBench)
+		{
+			return new GCCoreContainerBuggyBench(player.inventory);
+		}
 		
 		return null;
 	}
@@ -141,6 +148,10 @@ public class CommonProxyCore implements IGuiHandler
 		else if (ID == GCCoreConfigManager.idGuiRocketCraftingBench)
 		{
 			return new GCCoreGuiRocketBench(player.inventory);
+		}
+		else if (ID == GCCoreConfigManager.idGuiBuggyCraftingBench)
+		{
+			return new GCCoreGuiBuggyBench(player.inventory);
 		}
 		else
 		{

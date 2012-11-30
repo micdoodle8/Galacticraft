@@ -7,9 +7,9 @@ import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.Material;
 import net.minecraft.src.World;
 
-public class GCCoreBlockRocketBench extends Block
+public class GCCoreBlockAdvancedCraftingTable extends Block
 {
-	public GCCoreBlockRocketBench(int par1)
+	public GCCoreBlockAdvancedCraftingTable(int par1)
 	{
 		super(par1, Material.wood);
 		this.blockIndexInTexture = 19;

@@ -36,6 +36,7 @@ import net.minecraft.src.Packet250CustomPayload;
 import net.minecraft.src.Packet9Respawn;
 import net.minecraft.src.World;
 import net.minecraftforge.common.MinecraftForge;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
@@ -247,6 +248,29 @@ public class GalacticraftCore
                 	
                 	ship.ignite();
                 }
+            }
+            else if (packetType == 4)
+            {
+                Class[] decodeAs = {Integer.class};
+                Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
+                
+            	if (player != null)
+            	{
+            		
+            		switch ((Integer)packetReadout[0])
+            		{
+            		case 0:
+            			player.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiRocketCraftingBench, player.worldObj, (int)player.posX, (int)player.posY, (int)player.posZ);
+            			break;
+            		case 1:
+                		FMLLog.info("" + packetReadout[0]);
+            			player.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiBuggyCraftingBench, player.worldObj, (int)player.posX, (int)player.posY, (int)player.posZ);
+            			
+            			break;
+            		case 2:
+            			break;
+            		}
+            	}
             }
         }
     }
