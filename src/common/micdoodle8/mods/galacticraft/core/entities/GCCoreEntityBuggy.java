@@ -1,103 +1,65 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
-import java.util.List;
-
 import net.minecraft.src.AxisAlignedBB;
-import net.minecraft.src.BlockRail;
 import net.minecraft.src.DamageSource;
 import net.minecraft.src.Entity;
-import net.minecraft.src.EntityItem;
-import net.minecraft.src.EntityMinecart;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IInventory;
+import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
-import net.minecraft.src.MathHelper;
 import net.minecraft.src.ModLoader;
+import net.minecraft.src.ModelBase;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.NBTTagList;
 import net.minecraft.src.World;
-import net.minecraft.src.WorldServer;
-import net.minecraftforge.common.IMinecartCollisionHandler;
+import net.minecraft.src.WorldClient;
 
 import org.lwjgl.input.Keyboard;
 
-import cpw.mods.fml.common.Side;
-import cpw.mods.fml.common.asm.SideOnly;
+import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreEntityBuggy extends Entity implements IInventory
 {
-    /** Array of item stacks stored in minecart (for storage minecarts). */
-    protected ItemStack[] cargoItems;
-    protected int fuel;
-    protected boolean field_70499_f;
+    public int fuel;
+    public int currentDamage;
+    public int timeSinceHit;
+    public int rockDirection;
+    public double speed;
+    float maxSpeed = 1.0F;
+    float accel = 0.2F;
+    float turn = 3.0F;
+    public String texture;
+    ItemStack[] cargoItems;
 
-    /** The type of minecart, 2 for powered, 1 for storage. */
-    public int minecartType;
-    public double pushX;
-    public double pushZ;
-//    protected final IUpdatePlayerListBox field_82344_g;
-    protected boolean field_82345_h;
-    protected static final int[][][] field_70500_g = new int[][][] {{{0, 0, -1}, {0, 0, 1}}, {{ -1, 0, 0}, {1, 0, 0}}, {{ -1, -1, 0}, {1, 0, 0}}, {{ -1, 0, 0}, {1, -1, 0}}, {{0, 0, -1}, {0, -1, 1}}, {{0, -1, -1}, {0, 0, 1}}, {{0, 0, 1}, {1, 0, 0}}, {{0, 0, 1}, { -1, 0, 0}}, {{0, 0, -1}, { -1, 0, 0}}, {{0, 0, -1}, {1, 0, 0}}};
-
-    /** appears to be the progress of the turn */
-    protected int turnProgress;
-    protected double minecartX;
-    protected double minecartY;
-    protected double minecartZ;
-    protected double minecartYaw;
-    protected double minecartPitch;
-    @SideOnly(Side.CLIENT)
-    protected double velocityX;
-    @SideOnly(Side.CLIENT)
-    protected double velocityY;
-    @SideOnly(Side.CLIENT)
-    protected double velocityZ;
-
-    /* Forge: Minecart Compatibility Layer Integration. */
-    public static float defaultMaxSpeedRail = 0.4f;
-    public static float defaultMaxSpeedGround = 0.4f;
-    public static float defaultMaxSpeedAirLateral = 0.4f;
-    public static float defaultMaxSpeedAirVertical = -1f;
-    public static double defaultDragRidden = 0.996999979019165D;
-    public static double defaultDragEmpty = 0.9599999785423279D;
-    public static double defaultDragAir = 0.94999998807907104D;
-    protected boolean canUseRail = true;
-    protected boolean canBePushed = true;
-    private static IMinecartCollisionHandler collisionHandler = null;
-
-    /* Instance versions of the above physics properties */
-    protected float maxSpeedRail;
-    protected float maxSpeedGround;
-    protected float maxSpeedAirLateral;
-    protected float maxSpeedAirVertical;
-    protected double dragAir;
-    
-    public float forwardAcceleration;
-
-    public GCCoreEntityBuggy(World par1World)
+    public GCCoreEntityBuggy(World var1)
     {
-        super(par1World);
+        super(var1);
+        this.setSize(0.98F, 0.7F);
+        this.yOffset = 2.5F;
         this.cargoItems = new ItemStack[36];
         this.fuel = 0;
-        this.field_70499_f = false;
-        this.field_82345_h = true;
+        this.currentDamage = 18;
+        this.timeSinceHit = 19;
+        this.rockDirection = 20;
+        this.speed = 0.0D;
         this.preventEntitySpawning = true;
-        this.setSize(1.0F, 2.0F);
-        this.yOffset = this.height - 0.5F;
-//        this.field_82344_g = par1World != null ? par1World.func_82735_a(this) : null; TODO
-
-        maxSpeedRail = defaultMaxSpeedRail;
-        maxSpeedGround = defaultMaxSpeedGround;
-        maxSpeedAirLateral = defaultMaxSpeedAirLateral;
-        maxSpeedAirVertical = defaultMaxSpeedAirVertical;
-        dragAir = defaultDragAir;
+        this.dataWatcher.addObject(this.currentDamage, new Integer(0));
+        this.dataWatcher.addObject(this.timeSinceHit, new Integer(0));
+        this.dataWatcher.addObject(this.rockDirection, new Integer(1));
     }
 
-    public GCCoreEntityBuggy(World world, int type)
+    public GCCoreEntityBuggy(World var1, double var2, double var4, double var6)
     {
-        this(world);
-        minecartType = type;
+        this(var1);
+        this.setPosition(var2, var4 + this.yOffset, var6);
     }
+
+    public ModelBase getModel()
+    {
+        return null;
+    }
+
+    protected void entityInit() {}
 
     /**
      * returns if this entity triggers Block.onEntityWalking on the blocks they walk on. used for spiders and wolves to
@@ -108,41 +70,29 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
         return false;
     }
 
-    protected void entityInit()
+    /**
+     * Returns a boundingBox used to collide the entity with other entities and blocks. This enables the entity to be
+     * pushable on contact, like boats or minecarts.
+     */
+    public AxisAlignedBB getCollisionBox(Entity var1)
     {
-        this.dataWatcher.addObject(16, new Byte((byte)0));
-        this.dataWatcher.addObject(17, new Integer(0));
-        this.dataWatcher.addObject(18, new Integer(1));
-        this.dataWatcher.addObject(19, new Integer(0));
+        return var1.boundingBox;
     }
 
-    @Override
-	public AxisAlignedBB getCollisionBox(Entity par1Entity)
+    /**
+     * returns the bounding box for this entity
+     */
+    public AxisAlignedBB getBoundingBox()
     {
-        return par1Entity.boundingBox;
+        return this.boundingBox;
     }
 
-    @Override
-	public AxisAlignedBB getBoundingBox()
-    {
-        return boundingBox;
-    }
-    
+    /**
+     * Returns true if this entity should push and be pushed by other entities when colliding.
+     */
     public boolean canBePushed()
     {
-        return canBePushed;
-    }
-
-    public GCCoreEntityBuggy(World par1World, double par2, double par4, double par6)
-    {
-        this(par1World);
-        this.setPosition(par2, par4 + (double)this.yOffset, par6);
-        this.motionX = 0.0D;
-        this.motionY = 0.0D;
-        this.motionZ = 0.0D;
-        this.prevPosX = par2;
-        this.prevPosY = par4;
-        this.prevPosZ = par6;
+        return false;
     }
 
     /**
@@ -154,275 +104,287 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
     }
 
     /**
-     * Called when the entity is attacked.
+     * Returns true if other Entities should be prevented from moving through this Entity.
      */
-    public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
-    {
-        if (!this.worldObj.isRemote && !this.isDead)
-        {
-            if (this.func_85032_ar())
-            {
-                return false;
-            }
-            else
-            {
-                this.func_70494_i(-this.func_70493_k());
-                this.func_70497_h(10);
-                this.setBeenAttacked();
-                this.setDamage(this.getDamage() + par2 * 10);
-
-                if (this.getDamage() > 40)
-                {
-                    if (this.riddenByEntity != null)
-                    {
-                        this.riddenByEntity.mountEntity(this);
-                    }
-
-                    this.setDead();
-//                    dropCartAsItem(); TODO
-                }
-
-                return true;
-            }
-        }
-        else
-        {
-            return true;
-        }
-    }
-
-    @SideOnly(Side.CLIENT)
-    public void performHurtAnimation()
-    {
-        this.func_70494_i(-this.func_70493_k());
-        this.func_70497_h(10);
-        this.setDamage(this.getDamage() + this.getDamage() * 10);
-    }
-
     public boolean canBeCollidedWith()
     {
         return !this.isDead;
     }
 
-    public void setDead()
+    public void updateRiderPosition()
     {
-        if (this.field_82345_h)
+        if (this.riddenByEntity != null)
         {
-            for (int var1 = 0; var1 < this.getSizeInventory(); ++var1)
+            double var1 = Math.cos((double)this.rotationYaw * Math.PI / 180.0D + 114.8) * -0.5D;
+            double var3 = Math.sin((double)this.rotationYaw * Math.PI / 180.0D + 114.8) * -0.5D;
+            this.riddenByEntity.setPosition(this.posX + var1, this.posY - 1 + this.riddenByEntity.getYOffset(), this.posZ + var3);
+        }
+    }
+
+    /**
+     * Setups the entity to do the hurt animation. Only used by packets in multiplayer.
+     */
+    public void performHurtAnimation()
+    {
+        this.dataWatcher.updateObject(this.rockDirection, Integer.valueOf(-this.dataWatcher.getWatchableObjectInt(this.rockDirection)));
+        this.dataWatcher.updateObject(this.timeSinceHit, Integer.valueOf(10));
+        this.dataWatcher.updateObject(this.currentDamage, Integer.valueOf(this.dataWatcher.getWatchableObjectInt(this.currentDamage) * 5));
+    }
+
+    /**
+     * Called when the entity is attacked.
+     */
+    public boolean attackEntityFrom(DamageSource var1, int var2)
+    {
+        boolean var3 = false;
+
+        if (this.isDead)
+        {
+            return true;
+        }
+        else
+        {
+            this.dataWatcher.updateObject(this.rockDirection, Integer.valueOf(-this.dataWatcher.getWatchableObjectInt(this.rockDirection)));
+            this.dataWatcher.updateObject(this.timeSinceHit, Integer.valueOf(10));
+            this.dataWatcher.updateObject(this.currentDamage, Integer.valueOf(this.dataWatcher.getWatchableObjectInt(this.currentDamage) + var2 * 5));
+            this.setBeenAttacked();
+
+            if (var1.getEntity() instanceof EntityPlayer)
             {
-                ItemStack var2 = this.getStackInSlot(var1);
+                ;
+            }
 
-                if (var2 != null)
+            if (this.dataWatcher.getWatchableObjectInt(this.currentDamage) > 40 || var3)
+            {
+                if (this.riddenByEntity != null)
                 {
-                    float var3 = this.rand.nextFloat() * 0.8F + 0.1F;
-                    float var4 = this.rand.nextFloat() * 0.8F + 0.1F;
-                    float var5 = this.rand.nextFloat() * 0.8F + 0.1F;
+                    this.riddenByEntity.mountEntity(this);
+                }
 
-                    while (var2.stackSize > 0)
+                if (!this.worldObj.isRemote)
+                {
+//                    this.dropItem(mod_cars.car.shiftedIndex, 1);
+//
+//                    for (int var4 = 0; var4 < this.getSizeInventory(); ++var4)
+//                    {
+//                        ItemStack var5 = this.getStackInSlot(var4);
+//
+//                        if (var5 != null)
+//                        {
+//                            this.entityDropItem(var5, 0.0F);
+//                        }
+//                    }
+                }
+
+                this.setDead();
+            }
+
+            return true;
+        }
+    }
+
+    /**
+     * Called to update the entity's position/logic.
+     */
+    public void onUpdate()
+    {
+        super.onUpdate();
+
+//        if (ModLoader.getMinecraftInstance() != null && ModLoader.getMinecraftInstance().theWorld != null)
+//        {
+//            if (this.worldObj instanceof WorldServer && ModLoader.getMinecraftInstance().theWorld.getEntityByID(this.entityId) == null)
+//            {
+//            	GCCoreEntityBuggy var1 = new GCCoreEntityBuggy(ModLoader.getMinecraftInstance().theWorld);
+//                var1.setPosition(this.posX, this.posY, this.posZ);
+//                ModLoader.getMinecraftInstance().theWorld.addEntityToWorld(this.entityId, var1);
+//            }
+//
+//            if (this.worldObj instanceof WorldServer)
+//            {
+//                GCCoreEntityBuggy var19 = (GCCoreEntityBuggy)ModLoader.getMinecraftInstance().theWorld.getEntityByID(this.entityId);
+//                var19.setPositionAndRotation(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
+//                var19.setVelocity(this.motionX, this.motionY, this.motionZ);
+//                var19.speed = this.speed;
+//            }
+//        }
+
+        if (this.dataWatcher.getWatchableObjectInt(this.timeSinceHit) > 0)
+        {
+            this.dataWatcher.updateObject(this.timeSinceHit, Integer.valueOf(this.dataWatcher.getWatchableObjectInt(this.timeSinceHit) - 1));
+        }
+
+        if (this.dataWatcher.getWatchableObjectInt(this.currentDamage) > 0)
+        {
+            this.dataWatcher.updateObject(this.currentDamage, Integer.valueOf(this.dataWatcher.getWatchableObjectInt(this.currentDamage) - 1));
+        }
+
+        this.rotationYaw %= 360.0F;
+        this.rotationPitch %= 360.0F;
+        this.prevPosX = this.posX;
+        this.prevPosY = this.posY;
+        this.prevPosZ = this.posZ;
+        byte var20 = 5;
+        double var2 = 0.0D;
+        int var4;
+
+        for (var4 = 0; var4 < var20; ++var4)
+        {
+            double var5 = this.boundingBox.minY + (this.boundingBox.maxY - this.boundingBox.minY) * (double)(var4 + 0) / (double)var20 - 0.125D;
+            double var7 = this.boundingBox.minY + (this.boundingBox.maxY - this.boundingBox.minY) * (double)(var4 + 1) / (double)var20 - 0.125D;
+        }
+
+        double var21;
+
+        if (var2 < 1.0D)
+        {
+            var21 = var2 * 2.0D - 1.0D;
+            this.motionY += 0.04D * var21;
+        }
+        else
+        {
+            if (this.motionY < 0.0D)
+            {
+                this.motionY /= 2.0D;
+            }
+
+            this.motionY += 0.007D;
+        }
+
+        if (this.fuel <= 0)
+        {
+            for (var4 = 0; var4 < this.getSizeInventory(); ++var4)
+            {
+                ItemStack var22 = this.getStackInSlot(var4);
+
+                if (var22 != null && var22.itemID == Item.coal.shiftedIndex)
+                {
+                    this.decrStackSize(var4, 1);
+                    this.fuel += 1500;
+
+                    if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayer)
                     {
-                        int var6 = this.rand.nextInt(21) + 10;
-
-                        if (var6 > var2.stackSize)
-                        {
-                            var6 = var2.stackSize;
-                        }
-
-                        var2.stackSize -= var6;
-                        EntityItem var7 = new EntityItem(this.worldObj, this.posX + (double)var3, this.posY + (double)var4, this.posZ + (double)var5, new ItemStack(var2.itemID, var6, var2.getItemDamage()));
-
-                        if (var2.hasTagCompound())
-                        {
-                            var7.item.setTagCompound((NBTTagCompound)var2.getTagCompound().copy());
-                        }
-
-                        float var8 = 0.05F;
-                        var7.motionX = (double)((float)this.rand.nextGaussian() * var8);
-                        var7.motionY = (double)((float)this.rand.nextGaussian() * var8 + 0.2F);
-                        var7.motionZ = (double)((float)this.rand.nextGaussian() * var8);
-                        this.worldObj.spawnEntityInWorld(var7);
+                        EntityPlayer var6 = (EntityPlayer)this.riddenByEntity;
+                        var6.addChatMessage("Added Fuel");
+                        break;
                     }
                 }
             }
         }
 
-        super.setDead();
-
-//        if (this.field_82344_g != null)
-//        {
-//            this.field_82344_g.update();
-//        } TODO
-    }
-
-    public void onUpdate()
-    {
-    	super.onUpdate();
-    	
-//        if (this.field_82344_g != null)
-//        {
-//            this.field_82344_g.update();
-//        } TODO
-
-        if (this.func_70496_j() > 0)
-        {
-            this.func_70497_h(this.func_70496_j() - 1);
-        }
-
-        if (this.getDamage() > 0)
-        {
-            this.setDamage(this.getDamage() - 1);
-        }
-
-        if (this.posY < -64.0D)
-        {
-            this.kill();
-        }
-
-        if (this.isMinecartPowered() && this.rand.nextInt(4) == 0 && minecartType == 2 && getClass() == GCCoreEntityBuggy.class)
-        {
-            this.worldObj.spawnParticle("largesmoke", this.posX, this.posY + 0.8D, this.posZ, 0.0D, 0.0D, 0.0D);
-        }
-        
-        this.rotationYaw %= 360.0F;
-        this.rotationPitch %= 360.0F;
-
-        AxisAlignedBB box = null;
-        box = boundingBox.expand(2D, 1.0D, 2D);
-
-        List var15 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, box);
-
-        if (var15 != null && !var15.isEmpty())
-        {
-            for (int var50 = 0; var50 < var15.size(); ++var50)
-            {
-                Entity var17 = (Entity)var15.get(var50);
-
-                if (var17 != this.riddenByEntity && var17.canBePushed() && var17 instanceof EntityMinecart)
-                {
-                    var17.applyEntityCollision(this);
-                }
-            }
-        }
-        
-        if (this.riddenByEntity != null && this.worldObj.isRemote)
+        if (this.riddenByEntity != null)
         {
             if (Keyboard.isKeyDown(30))
             {
-                this.rotationYaw = (float)((double)this.rotationYaw - 1.0D * (1.0D + this.forwardAcceleration / 2.0D));
+                this.rotationYaw = (float)((double)this.rotationYaw - (double)this.turn * (1.0D + this.speed / 2.0D));
             }
 
             if (Keyboard.isKeyDown(32))
             {
-                this.rotationYaw = (float)((double)this.rotationYaw + 1.0D * (1.0D + this.forwardAcceleration / 2.0D));
+                this.rotationYaw = (float)((double)this.rotationYaw + (double)this.turn * (1.0D + this.speed / 2.0D));
             }
 
             if (Keyboard.isKeyDown(17))
             {
-                this.forwardAcceleration += 0.02D;
+                this.speed += 0.02D;
             }
 
             if (Keyboard.isKeyDown(31))
             {
-                this.forwardAcceleration -= 0.01D;
+                this.speed -= 0.01D;
             }
 
             if (Keyboard.isKeyDown(42))
             {
-                this.forwardAcceleration *= 0.75D;
+                this.speed *= 0.75D;
             }
 
-            this.fuel = (int)((double)this.fuel - this.forwardAcceleration);
-        }
-        else if (this.riddenByEntity == null)
-        {
-            this.forwardAcceleration *= 0.9D;
-        }
-
-        this.forwardAcceleration *= 0.95D;
-
-        if (this.forwardAcceleration > 2.0F)
-        {
-            this.forwardAcceleration = 2.0F;
-        }
-
-        if (this.isCollidedHorizontally)
-        {
-            this.forwardAcceleration = 0.0F;
-            
-            this.motionY += 0.1D;
-        }
-        
-        this.motionX = -(this.forwardAcceleration * Math.cos((double)(this.rotationYaw - 90) * Math.PI / 180.0D));
-        this.motionZ = -(this.forwardAcceleration * Math.sin((double)(this.rotationYaw - 90) * Math.PI / 180.0D));
-        
-        this.motionY -= 0.04D;
-        
-        moveEntity(motionX, motionY, motionZ);
-
-        if (this.worldObj.isRemote)
-        {
-            this.setPosition(this.posX, this.posY, this.posZ);
-            this.setRotation(this.rotationYaw, this.rotationPitch);
+            this.fuel = (int)((double)this.fuel - this.speed);
         }
         else
         {
-            this.prevPosX = this.posX;
-            this.prevPosY = this.posY;
-            this.prevPosZ = this.posZ;
+            this.speed *= 0.9D;
         }
-    }
-    
-    protected void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
-    {
-        par1NBTTagCompound.setInteger("Type", this.minecartType);
 
-        if (getSizeInventory() > 0)
+        if (this.inWater && this.speed > 0.2D)
         {
-            NBTTagList var2 = new NBTTagList();
-
-            for (int var3 = 0; var3 < this.cargoItems.length; ++var3)
-            {
-                if (this.cargoItems[var3] != null)
-                {
-                    NBTTagCompound var4 = new NBTTagCompound();
-                    var4.setByte("Slot", (byte)var3);
-                    this.cargoItems[var3].writeToNBT(var4);
-                    var2.appendTag(var4);
-                }
-            }
-
-            par1NBTTagCompound.setTag("Items", var2);
+            this.worldObj.playSoundEffect((double)((float)this.posX), (double)((float)this.posY), (double)((float)this.posZ), "random.fizz", 0.5F, 2.6F + (this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.8F);
         }
+
+        this.speed *= 0.98D;
+
+        if (this.speed > (double)this.maxSpeed)
+        {
+            this.speed = (double)this.maxSpeed;
+        }
+    	
+        if (this.isCollidedHorizontally)
+        {
+            this.speed *= 0.9;
+            this.motionY = 0.1D;
+        }
+
+        if (ModLoader.isGUIOpen((Class)null) && this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayer && Keyboard.isKeyDown(46))
+        {
+            EntityPlayer var23 = (EntityPlayer)this.riddenByEntity;
+
+            if (!this.worldObj.isRemote)
+            {
+                var23.displayGUIChest(this);
+            }
+            else
+            {
+                System.out.println("sending packet");
+            }
+        }
+
+        this.motionX = -(this.speed * Math.cos((double)(this.rotationYaw - 90F) * Math.PI / 180.0D));
+        this.motionZ = -(this.speed * Math.sin((double)(this.rotationYaw - 90F) * Math.PI / 180.0D));
+        var21 = Math.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
+
+        this.moveEntity(this.motionX, this.motionY, this.motionZ);
     }
 
     /**
      * (abstract) Protected helper method to read subclass entity data from NBT.
      */
-    protected void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
+    protected void readEntityFromNBT(NBTTagCompound var1)
     {
-        this.minecartType = par1NBTTagCompound.getInteger("Type");
+        this.fuel = var1.getInteger("Fuel");
+        NBTTagList var2 = var1.getTagList("Items");
+        this.cargoItems = new ItemStack[this.getSizeInventory()];
 
-        if (getSizeInventory() > 0)
+        for (int var3 = 0; var3 < var2.tagCount(); ++var3)
         {
-            NBTTagList var2 = par1NBTTagCompound.getTagList("Items");
-            this.cargoItems = new ItemStack[this.getSizeInventory()];
+            NBTTagCompound var4 = (NBTTagCompound)var2.tagAt(var3);
+            int var5 = var4.getByte("Slot") & 255;
 
-            for (int var3 = 0; var3 < var2.tagCount(); ++var3)
+            if (var5 >= 0 && var5 < this.cargoItems.length)
             {
-                NBTTagCompound var4 = (NBTTagCompound)var2.tagAt(var3);
-                int var5 = var4.getByte("Slot") & 255;
-
-                if (var5 >= 0 && var5 < this.cargoItems.length)
-                {
-                    this.cargoItems[var5] = ItemStack.loadItemStackFromNBT(var4);
-                }
+                this.cargoItems[var5] = ItemStack.loadItemStackFromNBT(var4);
             }
         }
     }
 
-    @SideOnly(Side.CLIENT)
-    public float getShadowSize()
+    /**
+     * (abstract) Protected helper method to write subclass entity data to NBT.
+     */
+    protected void writeEntityToNBT(NBTTagCompound var1)
     {
-        return 0.0F;
+        var1.setInteger("fuel", this.fuel);
+        NBTTagList var2 = new NBTTagList();
+
+        for (int var3 = 0; var3 < this.cargoItems.length; ++var3)
+        {
+            if (this.cargoItems[var3] != null)
+            {
+                NBTTagCompound var4 = new NBTTagCompound();
+                var4.setByte("Slot", (byte)var3);
+                this.cargoItems[var3].writeToNBT(var4);
+                var2.appendTag(var4);
+            }
+        }
+
+        var1.setTag("Items", var2);
     }
 
     /**
@@ -430,40 +392,45 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
      */
     public int getSizeInventory()
     {
-        return (minecartType == 1 && getClass() == GCCoreEntityBuggy.class ? 27 : 0);
+        return 27;
     }
 
     /**
      * Returns the stack in slot i
      */
-    public ItemStack getStackInSlot(int par1)
+    public ItemStack getStackInSlot(int var1)
     {
-        return this.cargoItems[par1];
+        return this.cargoItems[var1];
+    }
+    
+    public void applyEntityCollision(Entity par1Entity)
+    {
+    	
     }
 
     /**
      * Removes from an inventory slot (first arg) up to a specified number (second arg) of items and returns them in a
      * new stack.
      */
-    public ItemStack decrStackSize(int par1, int par2)
+    public ItemStack decrStackSize(int var1, int var2)
     {
-        if (this.cargoItems[par1] != null)
+        if (this.cargoItems[var1] != null)
         {
             ItemStack var3;
 
-            if (this.cargoItems[par1].stackSize <= par2)
+            if (this.cargoItems[var1].stackSize <= var2)
             {
-                var3 = this.cargoItems[par1];
-                this.cargoItems[par1] = null;
+                var3 = this.cargoItems[var1];
+                this.cargoItems[var1] = null;
                 return var3;
             }
             else
             {
-                var3 = this.cargoItems[par1].splitStack(par2);
+                var3 = this.cargoItems[var1].splitStack(var2);
 
-                if (this.cargoItems[par1].stackSize == 0)
+                if (this.cargoItems[var1].stackSize == 0)
                 {
-                    this.cargoItems[par1] = null;
+                    this.cargoItems[var1] = null;
                 }
 
                 return var3;
@@ -479,12 +446,12 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
      * When some containers are closed they call this on each slot, then drop whatever it returns as an EntityItem -
      * like when you close a workbench GUI.
      */
-    public ItemStack getStackInSlotOnClosing(int par1)
+    public ItemStack getStackInSlotOnClosing(int var1)
     {
-        if (this.cargoItems[par1] != null)
+        if (this.cargoItems[var1] != null)
         {
-            ItemStack var2 = this.cargoItems[par1];
-            this.cargoItems[par1] = null;
+            ItemStack var2 = this.cargoItems[var1];
+            this.cargoItems[var1] = null;
             return var2;
         }
         else
@@ -496,13 +463,13 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
     /**
      * Sets the given item stack to the specified slot in the inventory (can be crafting or armor sections).
      */
-    public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
+    public void setInventorySlotContents(int var1, ItemStack var2)
     {
-        this.cargoItems[par1] = par2ItemStack;
+        this.cargoItems[var1] = var2;
 
-        if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit())
+        if (var2 != null && var2.stackSize > this.getInventoryStackLimit())
         {
-            par2ItemStack.stackSize = this.getInventoryStackLimit();
+            var2.stackSize = this.getInventoryStackLimit();
         }
     }
 
@@ -511,7 +478,7 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
      */
     public String getInvName()
     {
-        return "container.minecart";
+        return "Car";
     }
 
     /**
@@ -529,110 +496,11 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
     public void onInventoryChanged() {}
 
     /**
-     * Called when a player interacts with a mob. e.g. gets milk from a cow, gets into the saddle on a pig.
-     */
-    public boolean interact(EntityPlayer par1EntityPlayer)
-    {
-//        if (canBeRidden())
-//        {
-            if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayer && this.riddenByEntity != par1EntityPlayer)
-            {
-                return true;
-            }
-
-            if (!this.worldObj.isRemote)
-            {
-                par1EntityPlayer.mountEntity(this);
-            }
-//        }
-//        else if (getSizeInventory() > 0)
-//        {
-//            if (!this.worldObj.isRemote)
-//            {
-//                par1EntityPlayer.displayGUIChest(this);
-//            }
-//        }
-//        else if (this.minecartType == 2 && getClass() == GCCoreEntityBuggy.class)
-//        {
-//            ItemStack var2 = par1EntityPlayer.inventory.getCurrentItem();
-//
-//            if (var2 != null && var2.itemID == Item.coal.shiftedIndex)
-//            {
-//                if (--var2.stackSize == 0)
-//                {
-//                    par1EntityPlayer.inventory.setInventorySlotContents(par1EntityPlayer.inventory.currentItem, (ItemStack)null);
-//                }
-//
-//                this.fuel += 3600;
-//            }
-//
-//            this.pushX = this.posX - par1EntityPlayer.posX;
-//            this.pushZ = this.posZ - par1EntityPlayer.posZ;
-//        }
-
-        return true;
-    }
-
-    @SideOnly(Side.CLIENT)
-
-    /**
-     * Sets the position and rotation. Only difference from the other one is no bounding on the rotation. Args: posX,
-     * posY, posZ, yaw, pitch
-     */
-    public void setPositionAndRotation2(double par1, double par3, double par5, float par7, float par8, int par9)
-    {
-        this.minecartX = par1;
-        this.minecartY = par3;
-        this.minecartZ = par5;
-        this.minecartYaw = (double)par7;
-        this.minecartPitch = (double)par8;
-        this.turnProgress = par9 + 2;
-        this.motionX = this.velocityX;
-        this.motionY = this.velocityY;
-        this.motionZ = this.velocityZ;
-    }
-
-    @SideOnly(Side.CLIENT)
-
-    /**
-     * Sets the velocity to the args. Args: x, y, z
-     */
-    public void setVelocity(double par1, double par3, double par5)
-    {
-        this.velocityX = this.motionX = par1;
-        this.velocityY = this.motionY = par3;
-        this.velocityZ = this.motionZ = par5;
-    }
-
-    /**
      * Do not make give this method the name canInteractWith because it clashes with Container
      */
-    public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
+    public boolean isUseableByPlayer(EntityPlayer var1)
     {
-        return this.isDead ? false : par1EntityPlayer.getDistanceSqToEntity(this) <= 64.0D;
-    }
-
-    /**
-     * Is this minecart powered (Fuel > 0)
-     */
-    public boolean isMinecartPowered()
-    {
-        return (this.dataWatcher.getWatchableObjectByte(16) & 1) != 0;
-    }
-
-    /**
-     * Set if this minecart is powered (Fuel > 0)
-     */
-    protected void setMinecartPowered(boolean par1)
-    {
-        if (par1)
-        {
-            this.dataWatcher.updateObject(16, Byte.valueOf((byte)(this.dataWatcher.getWatchableObjectByte(16) | 1)));
-        }
-        else
-        {
-            this.dataWatcher.updateObject(16, Byte.valueOf((byte)(this.dataWatcher.getWatchableObjectByte(16) & -2)));
-        }
+        return true;
     }
 
     public void openChest() {}
@@ -640,40 +508,24 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
     public void closeChest() {}
 
     /**
-     * Sets the current amount of damage the minecart has taken. Decreases over time. The cart breaks when this is over
-     * 40.
+     * Called when a player interacts with a mob. e.g. gets milk from a cow, gets into the saddle on a pig.
      */
-    public void setDamage(int par1)
+    public boolean interact(EntityPlayer var1)
     {
-        this.dataWatcher.updateObject(19, Integer.valueOf(par1));
-    }
+        ItemStack var2 = var1.inventory.getCurrentItem();
 
-    /**
-     * Gets the current amount of damage the minecart has taken. Decreases over time. The cart breaks when this is over
-     * 40.
-     */
-    public int getDamage()
-    {
-        return this.dataWatcher.getWatchableObjectInt(19);
-    }
-
-    public void func_70497_h(int par1)
-    {
-        this.dataWatcher.updateObject(17, Integer.valueOf(par1));
-    }
-
-    public int func_70496_j()
-    {
-        return this.dataWatcher.getWatchableObjectInt(17);
-    }
-
-    public void func_70494_i(int par1)
-    {
-        this.dataWatcher.updateObject(18, Integer.valueOf(par1));
-    }
-
-    public int func_70493_k()
-    {
-        return this.dataWatcher.getWatchableObjectInt(18);
+        if (this.worldObj.isRemote)
+        {
+            return true;
+        }
+        else if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayer && this.riddenByEntity != var1)
+        {
+            return true;
+        }
+        else
+        {
+            var1.mountEntity(this);
+            return true;
+        }
     }
 }
