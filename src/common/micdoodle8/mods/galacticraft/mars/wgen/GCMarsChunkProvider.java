@@ -57,8 +57,8 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 	private double[] noiseArray;
 	private double[] stoneNoise = new double[256];
 	
-	private GCMarsCaveGen caveGenerator = new GCMarsCaveGen();
-	private GCMarsCaveGen2 caveGenerator2 = new GCMarsCaveGen2();
+	private GCMarsCavern caveGenerator = new GCMarsCavern();
+	private GCMarsCaveGen caveGenerator2 = new GCMarsCaveGen();
 
 	private MapGenVillage villageGenerator = new MapGenVillage();
 

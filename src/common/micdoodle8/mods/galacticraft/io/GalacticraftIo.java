@@ -120,4 +120,10 @@ public class GalacticraftIo implements IGalacticraftSubMod
 	{
 		return "Io";
 	}
+
+	@Override
+	public boolean reachableDestination() 
+	{
+		return true;
+	}
 }

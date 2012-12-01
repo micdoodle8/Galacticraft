@@ -93,4 +93,10 @@ public class GalacticraftMoon implements IGalacticraftSubMod
 	{
 		return "Moon";
 	}
+
+	@Override
+	public boolean reachableDestination() 
+	{
+		return true;
+	}
 }

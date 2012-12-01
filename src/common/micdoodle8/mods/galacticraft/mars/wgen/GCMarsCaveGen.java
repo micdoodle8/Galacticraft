@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.mars.wgen;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
+import net.minecraft.src.Block;
 import net.minecraft.src.IChunkProvider;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.World;
@@ -15,10 +16,13 @@ import net.minecraft.src.World;
  */
 public class GCMarsCaveGen
 {
+    /** The number of Chunks to gen-check in any given direction. */
     protected int range = 8;
 
+    /** The RNG used by the MapGen classes. */
     protected Random rand = new Random();
 
+    /** This world object. */
     protected World worldObj;
 
     public void generate(IChunkProvider par1IChunkProvider, World par2World, int par3, int par4, int[] par5ArrayOfByte)
@@ -40,42 +44,19 @@ public class GCMarsCaveGen
             }
         }
     }
-
-    protected void recursiveGenerate(World par1World, int xChunkCoord, int zChunkCoord, int origXChunkCoord, int origZChunkCoord, int[] par6ArrayOfByte)
-    {
-        int var7 = this.rand.nextInt(this.rand.nextInt(this.rand.nextInt(40) + 1) + 1);
-
-        if (this.rand.nextInt(15) != 0)
-        {
-            var7 = 0;
-        }
-
-        for (int var8 = 0; var8 < 1; ++var8)
-        {
-            double xPos = xChunkCoord * 16 + this.rand.nextInt(16);
-            double yPos = (double)this.rand.nextInt(10) + 20;
-            double zPos = zChunkCoord * 16 + this.rand.nextInt(16);
-            
-            int var15 = 1;
-
-            if (this.rand.nextInt(22) == 0)
-            {
-//                GCChunkProvider.giantCaveLocations.add(new GCPointOfInterest((origXChunkCoord + 20), MathHelper.floor_double((40 * 0.2D)), (origZChunkCoord + 20), true, 0, 1, 1, 1));
-                this.generateLargeCaveNode(this.rand.nextLong(), origXChunkCoord, origZChunkCoord, par6ArrayOfByte, xPos, yPos, zPos);
-                var15 += this.rand.nextInt(4);
-            }
-        }
-    }
     
-    protected void generateLargeCaveNode(long par1, int origXChunkCoord, int origZChunkCoord, int[] par5ArrayOfByte, double xPos, double yPos, double zPos)
+    protected void generateLargeCaveNode(long par1, int par3, int par4, int[] par5ArrayOfByte, double par6, double par8, double par10)
     {
-        this.generateCaveNode(par1, origXChunkCoord, origZChunkCoord, par5ArrayOfByte, xPos, yPos, zPos, 1.0F + this.rand.nextFloat() * 6.0F, 10.0F, 10.0F, -1, -1, 0.2D);
+        this.generateCaveNode(par1, par3, par4, par5ArrayOfByte, par6, par8, par10, 1.0F + this.rand.nextFloat() * 6.0F, 0.0F, 0.0F, -1, -1, 0.5D);
     }
 
-    protected void generateCaveNode(long par1, int origXChunkCoord, int origZChunkCoord, int[] par5ArrayOfByte, double xPos, double yPos, double zPos, float par12, float par13, float par14, int par15, int par16, double heightMultiplier)
+    /**
+     * Generates a node in the current cave system recursion tree.
+     */
+    protected void generateCaveNode(long par1, int par3, int par4, int[] par5ArrayOfByte, double par6, double par8, double par10, float par12, float par13, float par14, int par15, int par16, double par17)
     {
-        double var19 = origXChunkCoord * 16 + 8;
-        double var21 = origZChunkCoord * 16 + 8;
+        double var19 = par3 * 16 + 8;
+        double var21 = par4 * 16 + 8;
         float var23 = 0.0F;
         float var24 = 0.0F;
         Random var25 = new Random(par1);
@@ -98,8 +79,13 @@ public class GCMarsCaveGen
 
         for (boolean var28 = var25.nextInt(6) == 0; par15 < par16; ++par15)
         {
-            double caveWidth = 40;
-            double caveHeight = caveWidth * heightMultiplier;
+            double var29 = 1.5D + MathHelper.sin(par15 * (float)Math.PI / par16) * par12 * 1.0F;
+            double var31 = var29 * par17;
+            float var33 = MathHelper.cos(par14);
+            float var34 = MathHelper.sin(par14);
+            par6 += MathHelper.cos(par13) * var33;
+            par8 += var34;
+            par10 += MathHelper.sin(par13) * var33;
 
             if (var28)
             {
@@ -119,13 +105,15 @@ public class GCMarsCaveGen
 
             if (!var54 && par15 == var27 && par12 > 1.0F && par16 > 0)
             {
+                this.generateCaveNode(var25.nextLong(), par3, par4, par5ArrayOfByte, par6, par8, par10, var25.nextFloat() * 0.5F + 0.5F, par13 - ((float)Math.PI / 2F), par14 / 3.0F, par15, par16, 1.0D);
+                this.generateCaveNode(var25.nextLong(), par3, par4, par5ArrayOfByte, par6, par8, par10, var25.nextFloat() * 0.5F + 0.5F, par13 + ((float)Math.PI / 2F), par14 / 3.0F, par15, par16, 1.0D);
                 return;
             }
 
             if (var54 || var25.nextInt(4) != 0)
             {
-                double var35 = xPos - var19;
-                double var37 = zPos - var21;
+                double var35 = par6 - var19;
+                double var37 = par10 - var21;
                 double var39 = par16 - par15;
                 double var41 = par12 + 2.0F + 16.0F;
 
@@ -134,127 +122,171 @@ public class GCMarsCaveGen
                     return;
                 }
 
-                if (xPos >= var19 - 16.0D - caveWidth * 2.0D && zPos >= var21 - 16.0D - caveWidth * 2.0D && xPos <= var19 + 16.0D + caveWidth * 2.0D && zPos <= var21 + 16.0D + caveWidth * 2.0D) //CHECKED
+                if (par6 >= var19 - 16.0D - var29 * 2.0D && par10 >= var21 - 16.0D - var29 * 2.0D && par6 <= var19 + 16.0D + var29 * 2.0D && par10 <= var21 + 16.0D + var29 * 2.0D)
                 {
-                    int caveMinX = MathHelper.floor_double(xPos - caveWidth) - origXChunkCoord * 16 - 1;
-                    int caveMaxX = MathHelper.floor_double(xPos + caveWidth) - origXChunkCoord * 16 + 1;
-                    int caveMinY = MathHelper.floor_double(yPos - caveHeight) - 1;
-                    int caveMaxY = MathHelper.floor_double(yPos + caveHeight) + 1;
-                    int caveMinZ = MathHelper.floor_double(zPos - caveWidth) - origZChunkCoord * 16 - 1;
-                    int caveMaxZ = MathHelper.floor_double(zPos + caveWidth) - origZChunkCoord * 16 + 1;
+                    int var55 = MathHelper.floor_double(par6 - var29) - par3 * 16 - 1;
+                    int var36 = MathHelper.floor_double(par6 + var29) - par3 * 16 + 1;
+                    int var57 = MathHelper.floor_double(par8 - var31) - 1;
+                    int var38 = MathHelper.floor_double(par8 + var31) + 1;
+                    int var56 = MathHelper.floor_double(par10 - var29) - par4 * 16 - 1;
+                    int var40 = MathHelper.floor_double(par10 + var29) - par4 * 16 + 1;
 
-                    if (caveMinX < 0)
+                    if (var55 < 0)
                     {
-                    	caveMinX = 0;
+                        var55 = 0;
                     }
 
-                    if (caveMaxX > 16)
+                    if (var36 > 16)
                     {
-                    	caveMaxX = 16;
+                        var36 = 16;
                     }
 
-                    if (caveMinY < 1)
+                    if (var57 < 1)
                     {
-                    	caveMinY = 1;
+                        var57 = 1;
                     }
 
-                    if (caveMaxY > 65)
+                    if (var38 > 120)
                     {
-                    	caveMaxY = 65;
+                        var38 = 120;
                     }
 
-                    if (caveMinZ < 0)
+                    if (var56 < 0)
                     {
-                    	caveMinZ = 0;
+                        var56 = 0;
                     }
 
-                    if (caveMaxZ > 16)
+                    if (var40 > 16)
                     {
-                    	caveMaxZ = 16;
+                        var40 = 16;
                     }
 
-                    boolean isBlockWater = false;
+                    boolean var58 = false;
                     int var42;
                     int var45;
 
-                    for (var42 = caveMinX; !isBlockWater && var42 < caveMaxX; ++var42)
+                    for (var42 = var55; !var58 && var42 < var36; ++var42)
                     {
-                        for (int var43 = caveMinZ; !isBlockWater && var43 < caveMaxZ; ++var43)
+                        for (int var43 = var56; !var58 && var43 < var40; ++var43)
                         {
-                            for (int var44 = caveMaxY + 1; !isBlockWater && var44 >= caveMinY - 1; --var44)
+                            for (int var44 = var38 + 1; !var58 && var44 >= var57 - 1; --var44)
                             {
                                 var45 = (var42 * 16 + var43) * 128 + var44;
 
                                 if (var44 >= 0 && var44 < 128)
                                 {
-                                    if (par5ArrayOfByte[var45] == (byte)GCMarsBlocks.bacterialSludgeMoving.blockID || par5ArrayOfByte[var45] == (byte)GCMarsBlocks.bacterialSludgeStill.blockID)
+                                    if (par5ArrayOfByte[var45] == Block.waterMoving.blockID || par5ArrayOfByte[var45] == Block.waterStill.blockID)
                                     {
-                                        isBlockWater = true;
+                                        var58 = true;
                                     }
 
-                                    if (var44 != caveMinY - 1 && var42 != caveMinX && var42 != caveMaxX - 1 && var43 != caveMinZ && var43 != caveMaxZ - 1)
+                                    if (var44 != var57 - 1 && var42 != var55 && var42 != var36 - 1 && var43 != var56 && var43 != var40 - 1)
                                     {
-                                        var44 = caveMinY;
+                                        var44 = var57;
                                     }
                                 }
                             }
                         }
                     }
 
-                    if (!isBlockWater)
+                    if (!var58)
                     {
-                    	
-                    }
-                    for (var42 = caveMinX; var42 < caveMaxX; ++var42)
-                    {
-                        double var59 = (var42 + origXChunkCoord * 16 + 0.5D - xPos) / caveWidth;
-
-                        for (var45 = caveMinZ; var45 < caveMaxZ; ++var45)
+                        for (var42 = var55; var42 < var36; ++var42)
                         {
-                            double var46 = (var45 + origZChunkCoord * 16 + 0.5D - zPos) / caveWidth;
-                            int var48 = (var42 * 16 + var45) * 128 + caveMaxY;
-                            
-                            boolean var49 = false;
+                            double var59 = (var42 + par3 * 16 + 0.5D - par6) / var29;
 
-                            if (var59 * var59 + var46 * var46 < 1.0D)
+                            for (var45 = var56; var45 < var40; ++var45)
                             {
-                                for (int var50 = caveMaxY - 1; var50 >= caveMinY; --var50)
+                                double var46 = (var45 + par4 * 16 + 0.5D - par10) / var29;
+                                int var48 = (var42 * 16 + var45) * 128 + var38;
+                                boolean var49 = false;
+
+                                if (var59 * var59 + var46 * var46 < 1.0D)
                                 {
-                                    double var51 = (var50 + 0.5D - yPos) / caveHeight;
-
-                                    if (var51 > -0.7D && var59 * var59 + var51 * var51 + var46 * var46 < 1.0D)
+                                    for (int var50 = var38 - 1; var50 >= var57; --var50)
                                     {
-                                        int var53 = par5ArrayOfByte[var48];
+                                        double var51 = (var50 + 0.5D - par8) / var31;
 
-                                        if (var53 == (byte) GCMarsBlocks.marsGrass.blockID)
+                                        if (var51 > -0.7D && var59 * var59 + var51 * var51 + var46 * var46 < 1.0D)
                                         {
-                                            var49 = true;
-                                        }
+                                            int var53 = par5ArrayOfByte[var48];
 
-                                        if (var53 == (byte)GCMarsBlocks.marsStone.blockID || var53 == (byte)GCMarsBlocks.marsDirt.blockID || var53 == (byte)GCMarsBlocks.marsGrass.blockID)
-                                        {
-                                            if (isBlockWater)
+                                            if (var53 == (byte)GCMarsBlocks.marsGrass.blockID)
                                             {
-                                                par5ArrayOfByte[var48] = (byte) GCMarsBlocks.bacterialSludgeStill.blockID;
+                                                var49 = true;
                                             }
-                                            else
-                                            {
-                                                par5ArrayOfByte[var48] = 0;
 
-                                                if (var49 && par5ArrayOfByte[var48 - 1] == (byte) GCMarsBlocks.marsDirt.blockID)
+                                            if (var53 == (byte)GCMarsBlocks.marsStone.blockID || var53 == (byte)GCMarsBlocks.marsDirt.blockID || var53 == (byte)GCMarsBlocks.marsGrass.blockID)
+                                            {
+                                                if (var50 < 10)
                                                 {
-                                                    par5ArrayOfByte[var48 - 1] = (byte) GCMarsBlocks.marsGrass.blockID;
+                                                    par5ArrayOfByte[var48] = (byte)Block.lavaMoving.blockID;
+                                                }
+                                                else
+                                                {
+                                                    par5ArrayOfByte[var48] = 0;
+
+                                                    if (var49 && par5ArrayOfByte[var48 - 1] == (byte)GCMarsBlocks.marsDirt.blockID)
+                                                    {
+                                                        par5ArrayOfByte[var48 - 1] = (byte)GCMarsBlocks.marsGrass.blockID;
+                                                    }
                                                 }
                                             }
                                         }
-                                    }
 
-                                    --var48;
+                                        --var48;
+                                    }
                                 }
                             }
                         }
+
+                        if (var54)
+                        {
+                            break;
+                        }
                     }
                 }
+            }
+        }
+    }
+
+    /**
+     * Recursively called by generate() (generate) and optionally by itself.
+     */
+    protected void recursiveGenerate(World par1World, int par2, int par3, int par4, int par5, int[] par6ArrayOfByte)
+    {
+        int var7 = this.rand.nextInt(this.rand.nextInt(this.rand.nextInt(40) + 1) + 1);
+
+        if (this.rand.nextInt(15) != 0)
+        {
+            var7 = 0;
+        }
+
+        for (int var8 = 0; var8 < var7; ++var8)
+        {
+            double var9 = par2 * 16 + this.rand.nextInt(16);
+            double var11 = this.rand.nextInt(this.rand.nextInt(120) + 8);
+            double var13 = par3 * 16 + this.rand.nextInt(16);
+            int var15 = 1;
+
+            if (this.rand.nextInt(4) == 0)
+            {
+                this.generateLargeCaveNode(this.rand.nextLong(), par4, par5, par6ArrayOfByte, var9, var11, var13);
+                var15 += this.rand.nextInt(4);
+            }
+
+            for (int var16 = 0; var16 < var15; ++var16)
+            {
+                float var17 = this.rand.nextFloat() * (float)Math.PI * 2.0F;
+                float var18 = (this.rand.nextFloat() - 0.5F) * 2.0F / 8.0F;
+                float var19 = this.rand.nextFloat() * 2.0F + this.rand.nextFloat();
+
+                if (this.rand.nextInt(10) == 0)
+                {
+                    var19 *= this.rand.nextFloat() * this.rand.nextFloat() * 3.0F + 1.0F;
+                }
+
+                this.generateCaveNode(this.rand.nextLong(), par4, par5, par6ArrayOfByte, var9, var11, var13, var19, var17, var18, 0, 0, 1.0D);
             }
         }
     }

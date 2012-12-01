@@ -263,7 +263,6 @@ public class GalacticraftCore
             			break;
             		case 1:
             			player.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiBuggyCraftingBench, player.worldObj, (int)player.posX, (int)player.posY, (int)player.posZ);
-            			
             			break;
             		case 2:
             			break;

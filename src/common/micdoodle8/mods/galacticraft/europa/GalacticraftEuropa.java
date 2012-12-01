@@ -120,4 +120,10 @@ public class GalacticraftEuropa implements IGalacticraftSubMod
 	{
 		return "Europa";
 	}
+
+	@Override
+	public boolean reachableDestination() 
+	{
+		return true;
+	}
 }

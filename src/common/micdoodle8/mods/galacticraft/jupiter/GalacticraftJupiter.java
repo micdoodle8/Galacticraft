@@ -86,4 +86,10 @@ public class GalacticraftJupiter implements IGalacticraftSubMod
 	{
 		return "Jupiter";
 	}
+
+	@Override
+	public boolean reachableDestination() 
+	{
+		return false;
+	}
 }

@@ -157,4 +157,10 @@ public class GalacticraftMars implements IGalacticraftSubMod
 	{
 		return "Mars";
 	}
+
+	@Override
+	public boolean reachableDestination() 
+	{
+		return true;
+	}
 }
