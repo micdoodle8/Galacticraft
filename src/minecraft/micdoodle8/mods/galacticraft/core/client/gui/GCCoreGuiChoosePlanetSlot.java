@@ -8,6 +8,7 @@ import net.minecraft.src.Tessellator;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
@@ -43,7 +44,7 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
     	}
     	
         GCCoreGuiChoosePlanet.getSendButton(this.languageGui).displayString = "Send To Dimension";
-        GCCoreGuiChoosePlanet.getSendButton(this.languageGui).enabled = true;
+        GCCoreGuiChoosePlanet.getSendButton(this.languageGui).enabled = this.languageGui.isValidDestination(this.languageGui.selectedSlot);
     }
 
     @Override
@@ -102,6 +103,17 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
                 var3.addVertexWithUV(par2 - 10, 							par3 - 1 + this.slotHeight * 0.9, 	-90.0D, 1.0, 1.0);
                 var3.addVertexWithUV(par2 - 10, 							par3 - 1, 							-90.0D, 1.0, 0.0);
                 var3.addVertexWithUV(par2 - 10 - this.slotHeight * 0.9, 	par3 - 1, 							-90.0D, 0.0, 0.0);
+                var3.draw();
+            }
+    		else if (this.languageGui.getDestinations(languageGui)[par1].equals("Saturn*"))
+            {
+                GL11.glBindTexture(GL11.GL_TEXTURE_2D, FMLClientHandler.instance().getClient().renderEngine.getTexture("/micdoodle8/mods/galacticraft/saturn/client/planets/saturn.png"));
+
+                var3.startDrawingQuads();
+                var3.addVertexWithUV(par2 - 7 - this.slotHeight * 1.22, 	par3 - 5 + this.slotHeight * 1.22, 	-90.0D, 0.0, 1.0);
+                var3.addVertexWithUV(par2 - 7, 							par3 - 5 + this.slotHeight * 1.22, 	-90.0D, 1.0, 1.0);
+                var3.addVertexWithUV(par2 - 7, 							par3 - 5, 							-90.0D, 1.0, 0.0);
+                var3.addVertexWithUV(par2 - 7 - this.slotHeight * 1.22, 	par3 - 5, 							-90.0D, 0.0, 0.0);
                 var3.draw();
             }
             else if (this.languageGui.getDestinations(languageGui)[par1].equals("Moon"))
