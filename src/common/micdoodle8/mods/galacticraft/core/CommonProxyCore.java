@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core;
 
 import java.util.List;
 
+import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiAirDistributor;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiBuggyBench;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiRocketBench;
@@ -85,6 +86,11 @@ public class CommonProxyCore implements IGuiHandler
 	public World getClientWorld()
 	{
 		return null;
+	}
+	
+	public void addSlotRenderer(IPlanetSlotRenderer slotRenderer)
+	{
+		;
 	}
 	
     public void spawnParticle(String var1, double var2, double var4, double var6, double var8, double var10, double var12, boolean b) {}

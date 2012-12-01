@@ -2,11 +2,15 @@ package micdoodle8.mods.galacticraft.core.client;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
+import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.API.AdvancedAchievement;
+import micdoodle8.mods.galacticraft.API.IGalacticraftSubMod;
 import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
 import micdoodle8.mods.galacticraft.core.CommonProxyCore;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
@@ -109,6 +113,7 @@ public class ClientProxyCore extends CommonProxyCore
 	private Random rand = new Random();
 	public ClientProxyMoon moon = new ClientProxyMoon();
 	public static int teleportCooldown;
+	public static List<IPlanetSlotRenderer> slotRenderers = new ArrayList<IPlanetSlotRenderer>();
 	
 	@Override
 	public void preInit(FMLPreInitializationEvent event) 
@@ -171,6 +176,12 @@ public class ClientProxyCore extends CommonProxyCore
         MinecraftForgeClient.registerItemRenderer(GCCoreItems.spaceship.shiftedIndex, new GCCoreItemRendererSpaceship());
         MinecraftForgeClient.registerItemRenderer(GCCoreItems.buggy.shiftedIndex, new GCCoreItemRendererBuggy());
         MinecraftForgeClient.registerItemRenderer(GCCoreItems.flag.shiftedIndex, new GCCoreItemRendererFlag());
+	}
+
+	@Override
+	public void addSlotRenderer(IPlanetSlotRenderer slotRenderer)
+	{
+		this.slotRenderers.add(slotRenderer);
 	}
 
 	@Override

@@ -1,14 +1,15 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
+import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import net.minecraft.src.GuiSlot;
 import net.minecraft.src.Tessellator;
 
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
@@ -71,6 +72,21 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
             GL11.glDisable(GL11.GL_ALPHA_TEST);
             String lowercase = this.languageGui.getDestinations(languageGui)[par1].toLowerCase();
             Tessellator var3 = Tessellator.instance;
+            
+            for (IPlanetSlotRenderer renderer : ClientProxyCore.slotRenderers)
+            {
+    			String str = this.languageGui.getDestinations(languageGui)[par1].toLowerCase();
+    			
+    			if (str.contains("*"))
+    			{
+    				str = str.replace("*", "");
+    			}
+    			
+    			if (renderer.getPlanetName().toLowerCase().equals(str))
+    			{
+    				renderer.renderSlot(par1, par2, par3, par4, par5Tessellator);
+    			}
+            }
             
     		for (IGalacticraftSubModClient mod : GalacticraftCore.clientSubMods)
     		{

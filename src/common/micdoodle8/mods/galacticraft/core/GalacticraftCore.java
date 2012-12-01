@@ -9,6 +9,7 @@ import java.util.List;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubMod;
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
+import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityArrow;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityBuggy;
@@ -149,6 +150,11 @@ public class GalacticraftCore
 		
         TickRegistry.registerTickHandler(new CommonTickHandler(), Side.SERVER);
         NetworkRegistry.instance().registerChannel(new ServerPacketHandler(), "Galacticraft", Side.SERVER);
+	}
+	
+	public static void registerSlotRenderer(IPlanetSlotRenderer renderer)
+	{
+		proxy.addSlotRenderer(renderer);
 	}
 	
 	public static void registerSubMod(IGalacticraftSubMod mod)
