@@ -563,8 +563,6 @@ public class GCCoreUtil
 	{
 		HashMap map = new HashMap();
 		
-		FMLLog.info("" + ids.length);
-		
 		for (int i = 0; i < ids.length; i++)
 		{
     		if (DimensionManager.getProvider(ids[i]) != null && (DimensionManager.getProvider(ids[i]) instanceof IGalacticraftWorldProvider || DimensionManager.getProvider(ids[i]).dimensionId == 0))
@@ -573,7 +571,13 @@ public class GCCoreUtil
     		}
 		}
 		
-		map.put("Jupiter*", 0); // TODO add option so this isn't manual
+		for (int j = 0; j < GalacticraftCore.subMods.size(); j++)
+		{
+			if (!GalacticraftCore.subMods.get(j).reachableDestination())
+			{
+				map.put(GalacticraftCore.subMods.get(j).getDimensionName() + "*", 0);
+			}
+		}
 		
 		return map;
 	}

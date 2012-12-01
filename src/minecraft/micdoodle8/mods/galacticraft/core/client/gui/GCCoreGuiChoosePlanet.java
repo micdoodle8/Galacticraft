@@ -21,6 +21,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 
 /**
@@ -51,7 +52,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     
     private boolean initialized;
     
-    private GuiSmallButton sendButton;
+    public GuiSmallButton sendButton;
 
     private static final String[] titlePanoramaPaths = new String[] {"/micdoodle8/mods/galacticraft/core/client/backgrounds/bg3.png"};
     
@@ -365,7 +366,15 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
 	    	
 	    	for (int i = 0; i < strArray.length; i++)
 	    	{
-	            this.drawCenteredString(this.fontRenderer, strArray[i], 50 + (i * j), this.height - 20, 16777215);
+	    		if (strArray[i].contains("*"))
+	    		{
+	    			strArray[i] = strArray[i].replace("*", "");
+		            this.drawCenteredString(this.fontRenderer, strArray[i], 50 + (i * j), this.height - 20, 16716305);
+	    		}
+	    		else
+	    		{
+		            this.drawCenteredString(this.fontRenderer, strArray[i], 50 + (i * j), this.height - 20, 16777215);
+	    		}
 	    	}
     	}
     }
@@ -399,13 +408,10 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     {
     	if (par1GuiButton.enabled)
     	{
-    		if (isValidDestination(this.selectedSlot))
-    		{
-                Object[] toSend = {this.destinations[this.selectedSlot]};
-                PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 2, toSend));
-                FMLClientHandler.instance().getClient().displayGuiScreen(null);
-                ClientProxyCore.teleportCooldown = 300;
-    		}
+            Object[] toSend = {this.destinations[this.selectedSlot]};
+            PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 2, toSend));
+            FMLClientHandler.instance().getClient().displayGuiScreen(null);
+            ClientProxyCore.teleportCooldown = 300;
     	}
     }
     
