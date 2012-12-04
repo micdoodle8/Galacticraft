@@ -7,8 +7,7 @@ import java.util.List;
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubMod;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.europa.GCEuropaConfigManager;
-import micdoodle8.mods.galacticraft.europa.GalacticraftEuropa;
-import micdoodle8.mods.galacticraft.io.GalacticraftIo;
+import micdoodle8.mods.galacticraft.titan.GalacticraftTitan;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
@@ -38,7 +37,7 @@ public class GalacticraftSaturn implements IGalacticraftSubMod
 	@Instance("GalacticraftSaturn")
 	public static GalacticraftSaturn instance;
 	
-//	public static GalacticraftEuropa moonEuropa = new GalacticraftEuropa();
+	public static GalacticraftTitan moonTitan = new GalacticraftTitan();
 //	public static GalacticraftIo moonIo = new GalacticraftIo();
 	
 	public static List saturnPlayers = new ArrayList();
@@ -47,7 +46,7 @@ public class GalacticraftSaturn implements IGalacticraftSubMod
 	@PreInit
 	public void preInit(FMLPreInitializationEvent event)
 	{
-//		moonEuropa.preInit(event);
+		moonTitan.preInit(event);
 //		moonIo.preInit(event);
 		
 		GalacticraftCore.registerSubMod(this);
@@ -60,7 +59,7 @@ public class GalacticraftSaturn implements IGalacticraftSubMod
 	@Init
 	public void load(FMLInitializationEvent event)
 	{
-//		moonEuropa.init(event);
+		moonTitan.init(event);
 //		moonIo.init(event);
 		proxy.init(event);
 	}
@@ -68,7 +67,7 @@ public class GalacticraftSaturn implements IGalacticraftSubMod
 	@PostInit
 	public void postLoad(FMLPostInitializationEvent event)
 	{
-//		moonEuropa.postInit(event);
+		moonTitan.postInit(event);
 //		moonIo.postInit(event);
 		proxy.postInit(event);
 		proxy.registerRenderInformation();
@@ -77,7 +76,7 @@ public class GalacticraftSaturn implements IGalacticraftSubMod
 	@ServerStarted
 	public void serverStarted(FMLServerStartedEvent event)
 	{
-//		moonEuropa.serverInit(event);
+		moonTitan.serverInit(event);
 //		moonIo.serverInit(event);
 	}
 
