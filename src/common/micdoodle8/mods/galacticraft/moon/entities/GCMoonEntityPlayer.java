@@ -10,6 +10,7 @@ import net.minecraft.src.NBTTagCompound;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import cpw.mods.fml.common.FMLLog;
 
 public class GCMoonEntityPlayer
 {
@@ -33,9 +34,11 @@ public class GCMoonEntityPlayer
 	@ForgeSubscribe
 	public void onUpdate(LivingEvent event)
 	{
-		if (event.entityLiving instanceof EntityPlayerMP)
+		if (event.entityLiving instanceof EntityPlayer)
 		{
-			EntityPlayerMP player = (EntityPlayerMP) event.entityLiving;
+			EntityPlayer player = (EntityPlayer) event.entityLiving;
+			
+			double j = Math.sqrt(player.motionX * player.motionX + player.motionZ * player.motionZ);
 			
 			if (this.currentPlayer.worldObj != null && this.currentPlayer.worldObj.provider instanceof GCMoonWorldProvider && !this.currentPlayer.isAirBorne)
 			{
@@ -43,21 +46,75 @@ public class GCMoonEntityPlayer
 				{
 					if (this.currentPlayer.worldObj.getBlockMetadata(MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posY - 1), MathHelper.floor_double(player.posZ)) == 0)
 					{
+						int meta = -1;
+						
+						int i = 1 + MathHelper.floor_double((double)(currentPlayer.rotationYaw * 8.0F / 360.0F) + 0.5D) & 7;
+						
 						switch (this.lastStep)
 						{
 						case 1:
-							this.currentPlayer.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posY - 1), MathHelper.floor_double(player.posZ), 2);
+							switch (i)
+							{
+							case 1:
+								meta = 4;
+								break;
+							case 2:
+								meta = 2;
+								break;
+							case 3:
+								meta = 2;
+								break;
+							case 4:
+								meta = 2;
+								break;
+							case 5:
+								meta = 2;
+								break;
+							case 6:
+								meta = 2;
+								break;
+							case 7:
+								meta = 2;
+								break;
+							case 8:
+								meta = 2;
+								break;
+							}
 							this.lastStep = 2;
 							break;
 						case 2:
-							this.currentPlayer.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posY - 1), MathHelper.floor_double(player.posZ), 1);
-							this.lastStep = 1;
-							break;
-						default:
-							this.currentPlayer.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posY - 1), MathHelper.floor_double(player.posZ), 1);
+							switch (i)
+							{
+							case 1:
+								meta = 1;
+								break;
+							case 2:
+								meta = 4;
+								break;
+							case 3:
+								meta = 4;
+								break;
+							case 4:
+								meta = 1;
+								break;
+							case 5:
+								meta = 3;
+								break;
+							case 6:
+								meta = 1;
+								break;
+							case 7:
+								meta = 4;
+								break;
+							case 8:
+								meta = 1;
+								break;
+							}
 							this.lastStep = 1;
 							break;
 						}
+						
+						this.currentPlayer.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posY - 1), MathHelper.floor_double(player.posZ), meta);
 					}
 				}
 			}

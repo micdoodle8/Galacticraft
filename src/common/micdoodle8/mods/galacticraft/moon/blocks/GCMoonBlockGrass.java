@@ -38,18 +38,39 @@ public class GCMoonBlockGrass extends Block implements IGalacticraftBlockGrass
     {
 		if (side == 1)
 		{
-			if (meta == 0)
+			switch (meta)
 			{
+			case 0:
 				return 0;
-			}
-			else if (meta == 1)
-			{
-				return 4;
-			}
-			else if (meta == 2)
-			{
+			case 1:
 				return 5;
+			case 2:
+				return 6;
+			case 3:
+				return 20;
+			case 4:
+				return 21;
+			case 5:
+				return 22;
+			case 6:
+				return 23;
+			case 7:
+				return 24;
+			case 8:
+				return 25;
 			}
+//			if (meta == 0)
+//			{
+//				return 0;
+//			}
+//			else if (meta == 1)
+//			{
+//				return 4;
+//			}
+//			else if (meta == 2)
+//			{
+//				return 5;
+//			}
 		}
 		else if (side == 0)
 		{
@@ -66,18 +87,39 @@ public class GCMoonBlockGrass extends Block implements IGalacticraftBlockGrass
 		
         if (side == 1)
         {
-			if (meta == 0)
+			switch (meta)
 			{
+			case 0:
 				return 0;
-			}
-			else if (meta == 1)
-			{
+			case 1:
 				return 4;
-			}
-			else if (meta == 2)
-			{
+			case 2:
 				return 5;
+			case 3:
+				return 20;
+			case 4:
+				return 21;
+			case 5:
+				return 22;
+			case 6:
+				return 23;
+			case 7:
+				return 24;
+			case 8:
+				return 25;
 			}
+//			if (meta == 0)
+//			{
+//				return 0;
+//			}
+//			else if (meta == 1)
+//			{
+//				return 4;
+//			}
+//			else if (meta == 2)
+//			{
+//				return 5;
+//			}
         }
         else if (side == 0)
         {
