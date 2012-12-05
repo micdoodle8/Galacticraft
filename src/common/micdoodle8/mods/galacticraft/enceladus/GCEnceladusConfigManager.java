@@ -1,4 +1,4 @@
-package micdoodle8.mods.galacticraft.titan;
+package micdoodle8.mods.galacticraft.enceladus;
 
 import java.io.File;
 import java.util.logging.Level;
@@ -12,16 +12,16 @@ import cpw.mods.fml.common.FMLLog;
  *  All rights reserved.
  *
  */
-public class GCTitanConfigManager 
+public class GCEnceladusConfigManager 
 {
 	public static boolean loaded;
 	
 	static Configuration configuration;
 	
 	// DIMENSIONS
-	public static int dimensionIDTitan;
+	public static int dimensionIDEnceladus;
 	
-	public GCTitanConfigManager(File file)
+	public GCEnceladusConfigManager(File file)
 	{
 		if (!loaded)
 		{
@@ -36,11 +36,11 @@ public class GCTitanConfigManager
 		{
 	        configuration.load();
 	        
-	        dimensionIDTitan = 				configuration.get("Dimensions", 										"Titan Dimension ID",				-25)		.getInt(-25);
+	        dimensionIDEnceladus = 				configuration.get("Dimensions", 										"Enceladus Dimension ID",				-24)		.getInt(-24);
 	    }
 		catch (Exception e)
 		{
-			FMLLog.log(Level.SEVERE, e, "Galacticraft Titan has a problem loading it's configuration");
+			FMLLog.log(Level.SEVERE, e, "Galacticraft Enceladus has a problem loading it's configuration");
 		}
 		finally 
 		{

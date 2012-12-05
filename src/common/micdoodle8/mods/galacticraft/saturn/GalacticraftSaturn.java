@@ -6,6 +6,7 @@ import java.util.List;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubMod;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.enceladus.GalacticraftEnceladus;
 import micdoodle8.mods.galacticraft.europa.GCEuropaConfigManager;
 import micdoodle8.mods.galacticraft.titan.GalacticraftTitan;
 import cpw.mods.fml.common.Mod;
@@ -38,7 +39,7 @@ public class GalacticraftSaturn implements IGalacticraftSubMod
 	public static GalacticraftSaturn instance;
 	
 	public static GalacticraftTitan moonTitan = new GalacticraftTitan();
-//	public static GalacticraftIo moonIo = new GalacticraftIo();
+	public static GalacticraftEnceladus moonEnceladus = new GalacticraftEnceladus();
 	
 	public static List saturnPlayers = new ArrayList();
 	public static List gcSaturnPlayers = new ArrayList();
@@ -47,7 +48,7 @@ public class GalacticraftSaturn implements IGalacticraftSubMod
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		moonTitan.preInit(event);
-//		moonIo.preInit(event);
+		moonEnceladus.preInit(event);
 		
 		GalacticraftCore.registerSubMod(this);
 		
@@ -60,7 +61,7 @@ public class GalacticraftSaturn implements IGalacticraftSubMod
 	public void load(FMLInitializationEvent event)
 	{
 		moonTitan.init(event);
-//		moonIo.init(event);
+		moonEnceladus.init(event);
 		proxy.init(event);
 	}
 
@@ -68,7 +69,7 @@ public class GalacticraftSaturn implements IGalacticraftSubMod
 	public void postLoad(FMLPostInitializationEvent event)
 	{
 		moonTitan.postInit(event);
-//		moonIo.postInit(event);
+		moonEnceladus.postInit(event);
 		proxy.postInit(event);
 		proxy.registerRenderInformation();
 	}
@@ -77,7 +78,7 @@ public class GalacticraftSaturn implements IGalacticraftSubMod
 	public void serverStarted(FMLServerStartedEvent event)
 	{
 		moonTitan.serverInit(event);
-//		moonIo.serverInit(event);
+		moonEnceladus.serverInit(event);
 	}
 
 	@Override
