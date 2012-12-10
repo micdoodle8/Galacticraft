@@ -1,13 +1,22 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
+import java.util.Iterator;
+import java.util.List;
+
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
+import net.minecraft.src.MathHelper;
+import net.minecraft.src.MovingObjectPosition;
 import net.minecraft.src.NBTTagCompound;
+import net.minecraft.src.Vec3;
 import net.minecraft.src.World;
+import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreEntityFlag extends Entity
 {
@@ -80,26 +89,6 @@ public class GCCoreEntityFlag extends Entity
     }
 
 	@Override
-    public void moveEntity(double par1, double par3, double par5)
-    {
-        if (!this.worldObj.isRemote && !this.isDead && par1 * par1 + par3 * par3 + par5 * par5 > 0.0D)
-        {
-            this.setDead();
-            this.dropItemStack();
-        }
-    }
-
-	@Override
-    public void addVelocity(double par1, double par3, double par5)
-    {
-        if (!this.worldObj.isRemote && !this.isDead && par1 * par1 + par3 * par3 + par5 * par5 > 0.0D)
-        {
-            this.setDead();
-            this.dropItemStack();
-        }
-    }
-
-	@Override
 	protected void entityInit() 
 	{
         this.dataWatcher.addObject(16, new Integer(-1));
@@ -131,9 +120,23 @@ public class GCCoreEntityFlag extends Entity
 	
     public void dropItemStack()
     {
-        this.entityDropItem(new ItemStack(Item.painting), 0.0F); // TODO
+        this.entityDropItem(new ItemStack(GCCoreItems.flag, 1, this.getType()), 0.0F); // TODO
     }
 
+    @Override
+	public void onUpdate()
+    {
+    	if (this.worldObj.getBlockId(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 1), MathHelper.floor_double(this.posZ)) == 0)
+    	{
+        	this.motionY -= 0.02F;
+    	}
+    	else
+    	{
+    	}
+    	
+    	this.moveEntity(this.motionX, this.motionY, this.motionZ);
+    }
+    
     @Override
     public boolean interact(EntityPlayer par1EntityPlayer)
     {
