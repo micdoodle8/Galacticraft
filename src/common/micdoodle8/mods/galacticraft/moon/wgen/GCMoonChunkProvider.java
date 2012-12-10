@@ -5,16 +5,19 @@ import java.util.List;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityCreeper;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityFlag;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySkeleton;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpider;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityZombie;
 import micdoodle8.mods.galacticraft.core.wgen.GCCoreChunk;
 import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
+import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.BiomeGenBase;
 import net.minecraft.src.Block;
 import net.minecraft.src.BlockSand;
 import net.minecraft.src.Chunk;
 import net.minecraft.src.ChunkProviderGenerate;
+import net.minecraft.src.Entity;
 import net.minecraft.src.EnumCreatureType;
 import net.minecraft.src.IChunkProvider;
 import net.minecraft.src.IProgressUpdate;
@@ -24,6 +27,7 @@ import net.minecraft.src.MathHelper;
 import net.minecraft.src.NoiseGeneratorOctaves;
 import net.minecraft.src.SpawnListEntry;
 import net.minecraft.src.World;
+import cpw.mods.fml.common.FMLLog;
 
 /**
  * Copyright 2012, micdoodle8
@@ -90,12 +94,14 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 
 	public void generateTerrain(int par1, int par2, int[] par3ArrayOfint)
 	{
+		
 		int var4 = 4;
 		int var5 = 16;
 		int var6 = 63;
 		int var7 = var4 + 1;
 		int var8 = 17;
 		int var9 = var4 + 1;
+		
 		this.biomesForGeneration = this.worldObj.getWorldChunkManager().getBiomesForGeneration(this.biomesForGeneration, par1 * 4 - 2, par2 * 4 - 2, var7 + 5, var9 + 5);
 		this.noiseArray = this.initializeNoiseField(this.noiseArray, par1 * var4, 0, par2 * var4, var7, var8, var9);
 
@@ -188,7 +194,8 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 					if (var16 <= 0 + this.rand.nextInt(5)) 
 					{
 						par3ArrayOfint[var17] = Block.bedrock.blockID;
-					} else 
+					} 
+					else 
 					{
 						int var18 = par3ArrayOfint[var17];
 
@@ -269,6 +276,29 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 		{
 			var5[var6] = (byte) this.biomesForGeneration[var6].biomeID;
 		}
+		
+		List list = this.worldObj.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getAABBPool().addOrModifyAABBInPool(0 - 5, 0, 0 - 5, 5, 140, 5));
+		boolean flag = false;
+		
+		for (int i = 0; i < list.size(); i++)
+		{
+			if (list.get(i) != null)
+			{
+				Entity e = (Entity) list.get(i);
+				
+				if (e != null && e instanceof GCCoreEntityFlag)
+				{
+					flag = true;
+				}
+			}
+		}
+        
+        if (!flag)
+        {
+        	GCCoreEntityFlag entity = new GCCoreEntityFlag(this.worldObj, 0, 130, 0, 0F);
+        	entity.setType(0);
+			this.worldObj.spawnEntityInWorld(entity);
+        }
 		
 //		this.creeperNest.generate(this, this.worldObj, par1, par2, var3);
 		var4.generateSkylightMap();
