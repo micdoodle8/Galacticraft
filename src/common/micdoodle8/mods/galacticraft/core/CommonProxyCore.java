@@ -5,6 +5,7 @@ import java.util.List;
 import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiAirDistributor;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiBuggyBench;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiGalaxyMap;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiRocketBench;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiTankRefill;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityPlayer;
@@ -157,6 +158,10 @@ public class CommonProxyCore implements IGuiHandler
 		else if (ID == GCCoreConfigManager.idGuiBuggyCraftingBench)
 		{
 			return new GCCoreGuiBuggyBench(player.inventory);
+		}
+		else if (ID == GCCoreConfigManager.idGuiGalaxyMap)
+		{
+			return new GCCoreGuiGalaxyMap(player);
 		}
 		else
 		{

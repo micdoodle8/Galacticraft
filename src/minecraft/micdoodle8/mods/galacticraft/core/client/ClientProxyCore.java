@@ -616,10 +616,11 @@ public class ClientProxyCore extends CommonProxyCore
     public static class GCKeyHandler extends KeyHandler
     {
     	static KeyBinding tankRefill = new KeyBinding("Tank Refill", Keyboard.KEY_R);
+    	static KeyBinding galaxyMap = new KeyBinding("Galaxy Map", Keyboard.KEY_M);
 
         public GCKeyHandler() 
         {
-            super(new KeyBinding[] {tankRefill}, new boolean[] {false});
+            super(new KeyBinding[] {tankRefill, galaxyMap}, new boolean[] {false, false});
         }
 
         @Override
@@ -650,6 +651,14 @@ public class ClientProxyCore extends CommonProxyCore
                     PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 0, toSend));
             	    player.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiTankRefill, minecraft.theWorld, (int)player.posX, (int)player.posY, (int)player.posZ);
             	}
+        	}
+        	else if (kb.keyCode == this.galaxyMap.keyCode)
+        	{
+        		if (minecraft.currentScreen == null)
+        		{
+                	EntityPlayerSP player = minecraft.thePlayer;
+        			player.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiGalaxyMap, minecraft.theWorld, (int)player.posX, (int)player.posY, (int)player.posZ);
+        		}
         	}
         	
 //        	int key = -1;

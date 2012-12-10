@@ -90,6 +90,7 @@ public class GCCoreConfigManager
 	public static int idGuiAirDistributor;
 	public static int idGuiRocketCraftingBench;
 	public static int idGuiBuggyCraftingBench;
+	public static int idGuiGalaxyMap;
 	
 	// ACHIEVEMENTS
 	public static int idAchievBase;
@@ -171,6 +172,7 @@ public class GCCoreConfigManager
 	        idGuiAirDistributor = 					configuration.get("GUI", "idGuiAirDistributor", 										129)		.getInt(129);
 	        idGuiRocketCraftingBench = 				configuration.get("GUI", "idGuiRocketCraftingBench", 									130)		.getInt(130);
 	        idGuiBuggyCraftingBench = 				configuration.get("GUI", "idGuiBuggyCraftingBench", 									131)		.getInt(131);
+	        idGuiGalaxyMap = 						configuration.get("GUI", "idGuiGalaxyMap",			 									132)		.getInt(132);
 	        
 	        idAchievBase = 							configuration.get("Achievements", "idAchievBase", 										1784)		.getInt(1784);
 
