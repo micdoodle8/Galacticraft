@@ -24,11 +24,31 @@ public class GCIoBlock extends Block
 		switch (meta) 
 		{
 		case 0:
-			return 0;
+			switch (side)
+			{
+			case 0:
+				return 6;
+			case 1:
+				return 0;
+			default:
+				return 1;
+			}
 		case 1:
-			return 1;
+			switch (side)
+			{
+			case 0:
+				return 2;
+			case 1:
+				return 6;
+			default:
+				return 3;
+			}
 		case 2:
 			return 2;
+		case 3:
+			return 4;
+		case 4:
+			return 5;
 		default:
 			return -1;
 		}
@@ -68,7 +88,7 @@ public class GCIoBlock extends Block
 	@Override
     public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
     {
-        for (int var4 = 0; var4 < 3; ++var4)
+        for (int var4 = 0; var4 < 5; ++var4)
         {
             par3List.add(new ItemStack(par1, 1, var4));
         }

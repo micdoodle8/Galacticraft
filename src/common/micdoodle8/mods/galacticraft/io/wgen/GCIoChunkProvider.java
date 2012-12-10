@@ -205,7 +205,7 @@ public class GCIoChunkProvider extends ChunkProviderGenerate
 						} 
 						else if (var18 == GCIoBlocks.block.blockID)
 						{
-							arrayOfMeta[index] = 1;
+							arrayOfMeta[index] = 2;
 							
 							if (var13 == -1)
 							{
