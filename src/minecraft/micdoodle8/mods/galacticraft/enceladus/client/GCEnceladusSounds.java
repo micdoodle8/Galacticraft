@@ -10,7 +10,7 @@ import net.minecraftforge.event.ForgeSubscribe;
  *  All rights reserved.
  *
  */
-public class GCEnceledusSounds
+public class GCEnceladusSounds
 {
     @ForgeSubscribe
     public void onSound(SoundLoadEvent event)
@@ -20,7 +20,7 @@ public class GCEnceledusSounds
         }
         catch (Exception e)
         {
-            System.err.println("[GCTitan] Failed to register one or more sounds.");
+            System.err.println("[GCEnceladus] Failed to register one or more sounds.");
         }
     }
 }

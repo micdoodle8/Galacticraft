@@ -23,13 +23,13 @@ import cpw.mods.fml.client.FMLClientHandler;
  *  All rights reserved.
  *
  */
-public class GCEnceledusSkyProvider extends SkyProvider 
+public class GCEnceladusSkyProvider extends SkyProvider 
 {
 	public int starGLCallList = GLAllocation.generateDisplayLists(3); 
 	public int glSkyList;
 	public int glSkyList2;
 	
-	public GCEnceledusSkyProvider() 
+	public GCEnceladusSkyProvider() 
 	{
 		GL11.glPushMatrix();
 		GL11.glNewList(starGLCallList, GL11.GL_COMPILE);

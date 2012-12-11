@@ -6,11 +6,14 @@ import java.util.EnumSet;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
+import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
 import micdoodle8.mods.galacticraft.core.GCCoreLocalization;
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.enceladus.blocks.GCEnceladusBlocks;
 import micdoodle8.mods.galacticraft.enceladus.dimension.GCEnceladusWorldProvider;
+import micdoodle8.mods.galacticraft.europa.client.GCEuropaSlotRenderer;
 import micdoodle8.mods.galacticraft.titan.CommonProxyTitan;
 import micdoodle8.mods.galacticraft.titan.blocks.GCTitanBlocks;
 import micdoodle8.mods.galacticraft.titan.dimension.GCTitanWorldProvider;
@@ -41,7 +44,7 @@ import cpw.mods.fml.common.registry.TickRegistry;
  *  All rights reserved.
  *
  */
-public class ClientProxyEnceledus extends CommonProxyTitan implements IGalacticraftSubModClient
+public class ClientProxyEnceladus extends CommonProxyTitan implements IGalacticraftSubModClient
 {
 	public static long getFirstBootTime;
 	public static long getCurrentTime;
@@ -52,8 +55,8 @@ public class ClientProxyEnceledus extends CommonProxyTitan implements IGalacticr
 	@Override
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		lang = new GCCoreLocalization("micdoodle8/mods/galacticraft/enceledus/client");
-		MinecraftForge.EVENT_BUS.register(new GCEnceledusSounds());
+		lang = new GCCoreLocalization("micdoodle8/mods/galacticraft/enceladus/client");
+		MinecraftForge.EVENT_BUS.register(new GCEnceladusSounds());
 		getFirstBootTime = System.currentTimeMillis();
 	}
 
@@ -63,6 +66,7 @@ public class ClientProxyEnceledus extends CommonProxyTitan implements IGalacticr
 		GalacticraftCore.registerClientSubMod(this);
 		TickRegistry.registerTickHandler(new TickHandlerClient(), Side.CLIENT);
         NetworkRegistry.instance().registerChannel(new ClientPacketHandler(), "GcEn", Side.CLIENT);
+        GalacticraftCore.proxy.addSlotRenderer(new GCEnceladusSlotRenderer());
 	}
 
 	@Override
@@ -75,8 +79,8 @@ public class ClientProxyEnceledus extends CommonProxyTitan implements IGalacticr
 	@Override
 	public void registerRenderInformation() 
 	{
-		MinecraftForgeClient.preloadTexture("/micdoodle8/mods/galacticraft/enceledus/client/blocks/enceledus.png");
-		MinecraftForgeClient.preloadTexture("/micdoodle8/mods/galacticraft/enceledus/client/items/enceledus.png");
+		MinecraftForgeClient.preloadTexture("/micdoodle8/mods/galacticraft/enceladus/client/blocks/enceladus.png");
+		MinecraftForgeClient.preloadTexture("/micdoodle8/mods/galacticraft/enceladus/client/items/enceladus.png");
 	}
 
 	@SuppressWarnings("unused")
@@ -132,7 +136,7 @@ public class ClientProxyEnceledus extends CommonProxyTitan implements IGalacticr
     	@Override
     	public void tickStart(EnumSet<TickType> type, Object... tickData)
         {
-    		ClientProxyEnceledus.getCurrentTime = System.currentTimeMillis();
+    		ClientProxyEnceladus.getCurrentTime = System.currentTimeMillis();
     		
     		Minecraft minecraft = FMLClientHandler.instance().getClient();
     		
@@ -146,7 +150,7 @@ public class ClientProxyEnceledus extends CommonProxyTitan implements IGalacticr
     			{
     				if (world.provider.getSkyProvider() == null)
                     {
-    					world.provider.setSkyProvider(new GCEnceledusSkyProvider());
+    					world.provider.setSkyProvider(new GCEnceladusSkyProvider());
                     }
     			}
             }
@@ -160,7 +164,7 @@ public class ClientProxyEnceledus extends CommonProxyTitan implements IGalacticr
         @Override
 		public String getLabel()
         {
-            return "Galacticraft Enceledus Client";
+            return "Galacticraft Enceladus Client";
         }
 
     	@Override
@@ -173,7 +177,7 @@ public class ClientProxyEnceledus extends CommonProxyTitan implements IGalacticr
 	@Override
 	public String getDimensionName() 
 	{
-		return "Enceledus";
+		return "Enceladus";
 	}
 
 	@Override
@@ -185,6 +189,12 @@ public class ClientProxyEnceledus extends CommonProxyTitan implements IGalacticr
 	@Override
 	public String getPlanetSpriteDirectory() 
 	{
-		return "/micdoodle8/mods/galacticraft/enceledus/client/planets/";
+		return "/micdoodle8/mods/galacticraft/enceladus/client/planets/";
+	}
+
+	@Override
+	public IPlanetSlotRenderer getSlotRenderer() 
+	{
+		return new GCEnceladusSlotRenderer();
 	}
 }
