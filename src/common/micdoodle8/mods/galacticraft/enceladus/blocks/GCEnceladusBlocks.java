@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.enceladus.blocks;
 
-import micdoodle8.mods.galacticraft.enceladus.client.ClientProxyEnceledus;
+import micdoodle8.mods.galacticraft.enceladus.client.ClientProxyEnceladus;
 import net.minecraft.src.Block;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
@@ -30,11 +30,11 @@ public class GCEnceladusBlocks
 	
 	private static void addName(Block block)
 	{
-		LanguageRegistry.instance().addStringLocalization(block.getBlockName() + ".name", ClientProxyEnceledus.lang.get(block.getBlockName() + ".name"));
+		LanguageRegistry.instance().addStringLocalization(block.getBlockName() + ".name", ClientProxyEnceladus.lang.get(block.getBlockName() + ".name"));
 	}
 	
 	private static void addNameWithMetadata(String string)
 	{
-		LanguageRegistry.instance().addStringLocalization(string, ClientProxyEnceledus.lang.get(string));
+		LanguageRegistry.instance().addStringLocalization(string, ClientProxyEnceladus.lang.get(string));
 	}
 }

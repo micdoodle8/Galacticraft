@@ -32,7 +32,7 @@ public class GCCoreBlocks
 	public static Block blockAirCollector;
 	public static Block sapling;
 	public static Block rocketBench;
-//	public static Block fallenMeteor; TODO
+	public static Block fallenMeteor;
 	
 	public static void initBlocks() 
 	{
@@ -48,8 +48,8 @@ public class GCCoreBlocks
 		Item.itemsList[blockOres.blockID] = 					new GCCoreItemBlockOre				(blockOres.blockID - 256)																																																																	.setItemName("blockores");	
 		blockAirCollector = 									new GCCoreBlockOxygenCollector		(GCCoreConfigManager.idBlockAirCollector, 				8)						.setHardness(3.5F)  	  																		.setCreativeTab(GalacticraftCore.galacticraftTab) 		.setStepSound(Block.soundStoneFootstep)					.setBlockName("oxygenCollector");
 		sapling =												new GCCoreBlockSapling				(GCCoreConfigManager.idBlockSapling2,                  	15)						.setHardness(0.0F)																				.setCreativeTab((CreativeTabs)null)					.setStepSound(Block.soundGrassFootstep)					.setBlockName("sapling2");
-		rocketBench = 											new GCCoreBlockAdvancedCraftingTable			(GCCoreConfigManager.idBlockRocketBench)										.setHardness(2.5F)																																	.setStepSound(Block.soundMetalFootstep)					.setBlockName("rocketWorkbench");	
-//		fallenMeteor = 											new GCCoreBlockFallenMeteor			(GCCoreConfigManager.idBlockFallenMeteor)										.setHardness(50.0F)																																	.setStepSound(Block.soundStoneFootstep)					.setBlockName("fallenMeteor");	
+		rocketBench = 											new GCCoreBlockAdvancedCraftingTable(GCCoreConfigManager.idBlockRocketBench)										.setHardness(2.5F)																																	.setStepSound(Block.soundMetalFootstep)					.setBlockName("rocketWorkbench");	
+		fallenMeteor = 											new GCCoreBlockFallenMeteor			(GCCoreConfigManager.idBlockFallenMeteor)										.setHardness(50.0F)																																	.setStepSound(Block.soundStoneFootstep)					.setBlockName("fallenMeteor");	
 		Item.itemsList[sapling.blockID] = 						new GCCoreItemSapling				(sapling.blockID - 256)																																																																		.setItemName("sapling2");	
 	}
 
@@ -58,7 +58,7 @@ public class GCCoreBlocks
 		MinecraftForge.setBlockHarvestLevel(blockOres, 0, "pickaxe", 1);
 		MinecraftForge.setBlockHarvestLevel(blockOres, 1, "pickaxe", 2);
 		MinecraftForge.setBlockHarvestLevel(blockOres, 2, "pickaxe", 3);
-//		MinecraftForge.setBlockHarvestLevel(fallenMeteor, "pickaxe", 4);
+		MinecraftForge.setBlockHarvestLevel(fallenMeteor, "pickaxe", 4);
 	}
 	
 	public static void registerBlocks() 
@@ -73,7 +73,7 @@ public class GCCoreBlocks
 		GameRegistry.registerBlock(oxygenPipe);
 		GameRegistry.registerBlock(blockAirCollector);
 		GameRegistry.registerBlock(rocketBench);
-//		GameRegistry.registerBlock(fallenMeteor);
+		GameRegistry.registerBlock(fallenMeteor);
 	}
 
 	public static void addNames() 
@@ -90,7 +90,7 @@ public class GCCoreBlocks
 		addNameWithMetadata("tile.blockores.titaniumearth.name");
 		addName(blockAirCollector);
 		addName(rocketBench);
-//		addName(fallenMeteor);
+		addName(fallenMeteor);
 	}
 	
 	private static void addName(Block block)

@@ -137,7 +137,7 @@ public class GCCoreEntityMeteor extends Entity
         	{
         		if (this.worldObj.getBlockId(par1MovingObjectPosition.blockX, par1MovingObjectPosition.blockY + 1, par1MovingObjectPosition.blockZ) == 0)
         		{
-//            		TODO this.worldObj.setBlock(par1MovingObjectPosition.blockX, par1MovingObjectPosition.blockY + 1, par1MovingObjectPosition.blockZ, GCCoreBlocks.fallenMeteor.blockID);
+            		this.worldObj.setBlock(par1MovingObjectPosition.blockX, par1MovingObjectPosition.blockY + 1, par1MovingObjectPosition.blockZ, GCCoreBlocks.fallenMeteor.blockID);
         		}
         		
                 if (par1MovingObjectPosition.entityHit != null)

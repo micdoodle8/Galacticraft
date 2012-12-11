@@ -49,7 +49,6 @@ public class GCMoonEntityPlayer
 						int meta = -1;
 						
 						int i = 1 + MathHelper.floor_double((double)(currentPlayer.rotationYaw * 8.0F / 360.0F) + 0.5D) & 7;
-						FMLLog.info("" + i + " " + this.lastStep);
 						switch (this.lastStep)
 						{
 						case 1:
