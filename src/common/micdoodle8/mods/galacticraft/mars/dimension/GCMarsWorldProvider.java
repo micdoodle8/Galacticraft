@@ -224,4 +224,10 @@ public class GCMarsWorldProvider extends WorldProvider implements IGalacticraftW
 	{
 		return 0.005F;
 	}
+
+	@Override
+	public float getMeteorFrequency() 
+	{
+		return 0F;
+	}
 }

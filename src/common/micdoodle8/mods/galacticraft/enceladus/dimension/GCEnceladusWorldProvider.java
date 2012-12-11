@@ -206,4 +206,10 @@ public class GCEnceladusWorldProvider extends WorldProvider implements IGalactic
 	{
 		return 0.049F;
 	}
+
+	@Override
+	public float getMeteorFrequency() 
+	{
+		return 0F;
+	}
 }

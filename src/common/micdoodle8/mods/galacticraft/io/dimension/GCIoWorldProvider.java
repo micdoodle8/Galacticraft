@@ -197,4 +197,10 @@ public class GCIoWorldProvider extends WorldProvider implements IGalacticraftWor
 	{
 		return 0.069F; // TODO
 	}
+
+	@Override
+	public float getMeteorFrequency() 
+	{
+		return 0F;
+	}
 }

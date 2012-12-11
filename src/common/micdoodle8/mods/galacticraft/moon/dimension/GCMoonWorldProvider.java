@@ -217,4 +217,10 @@ public class GCMoonWorldProvider extends WorldProvider implements IGalacticraftW
 	{
 		return 0.062F;
 	}
+
+	@Override
+	public float getMeteorFrequency() 
+	{
+		return 7;
+	}
 }

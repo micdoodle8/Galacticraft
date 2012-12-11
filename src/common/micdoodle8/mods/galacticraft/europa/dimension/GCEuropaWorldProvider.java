@@ -203,4 +203,10 @@ public class GCEuropaWorldProvider extends WorldProvider implements IGalacticraf
 	{
 		return 0.069F;
 	}
+
+	@Override
+	public float getMeteorFrequency() 
+	{
+		return 0F;
+	}
 }

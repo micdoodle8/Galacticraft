@@ -224,4 +224,10 @@ public class GCTitanWorldProvider extends WorldProvider implements IGalacticraft
 	{
 		return 0.049F;
 	}
+
+	@Override
+	public float getMeteorFrequency() 
+	{
+		return 0F;
+	}
 }

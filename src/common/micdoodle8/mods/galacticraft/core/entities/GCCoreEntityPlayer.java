@@ -343,9 +343,11 @@ public class GCCoreEntityPlayer
 			}
         }
 		
-		if (this.currentPlayer.worldObj.provider instanceof GCMoonWorldProvider && FMLCommonHandler.instance().getEffectiveSide() != Side.CLIENT)
+		if (this.currentPlayer.worldObj.provider instanceof IGalacticraftWorldProvider && FMLCommonHandler.instance().getEffectiveSide() != Side.CLIENT)
 		{
-			if (this.currentPlayer.worldObj.rand.nextInt(7000) == 0)
+			float f = ((IGalacticraftWorldProvider)this.currentPlayer.worldObj.provider).getMeteorFrequency();
+			
+			if (this.currentPlayer.worldObj.rand.nextInt(MathHelper.floor_float(f * 1000)) == 0)
 			{
 				int x, y, z;
 				double motX, motZ;
@@ -362,7 +364,7 @@ public class GCCoreEntityPlayer
 					this.currentPlayer.worldObj.spawnEntityInWorld(meteor);
 				}
 			}
-			if (this.currentPlayer.worldObj.rand.nextInt(20000) == 0)
+			if (this.currentPlayer.worldObj.rand.nextInt(MathHelper.floor_float(f * 3000)) == 0)
 			{
 				int x, y, z;
 				double motX, motZ;
