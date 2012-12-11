@@ -3,9 +3,11 @@ package micdoodle8.mods.galacticraft.jupiter.client;
 import java.util.EnumSet;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
+import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
 import micdoodle8.mods.galacticraft.core.GCCoreLocalization;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.europa.client.ClientProxyEuropa;
+import micdoodle8.mods.galacticraft.europa.client.GCEuropaSlotRenderer;
 import micdoodle8.mods.galacticraft.io.client.ClientProxyIo;
 import micdoodle8.mods.galacticraft.jupiter.CommonProxyJupiter;
 import net.minecraft.src.INetworkManager;
@@ -115,5 +117,11 @@ public class ClientProxyJupiter extends CommonProxyJupiter implements IGalacticr
 	public String getPlanetSpriteDirectory() 
 	{
 		return "/micdoodle8/mods/galacticraft/jupiter/client/planets/";
+	}
+
+	@Override
+	public IPlanetSlotRenderer getSlotRenderer() 
+	{
+		return new GCJupiterSlotRenderer();
 	}
 }

@@ -6,11 +6,13 @@ import java.util.EnumSet;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
+import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
 import micdoodle8.mods.galacticraft.core.GCCoreLocalization;
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderArrow;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityArrow;
+import micdoodle8.mods.galacticraft.europa.client.GCEuropaSlotRenderer;
 import micdoodle8.mods.galacticraft.mars.CommonProxyMars;
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
 import micdoodle8.mods.galacticraft.mars.dimension.GCMarsWorldProvider;
@@ -245,5 +247,11 @@ public class ClientProxyMars extends CommonProxyMars implements IGalacticraftSub
 	public String getPlanetSpriteDirectory() 
 	{
 		return "/micdoodle8/mods/galacticraft/mars/client/planets/";
+	}
+
+	@Override
+	public IPlanetSlotRenderer getSlotRenderer() 
+	{
+		return new GCMarsSlotRenderer();
 	}
 }

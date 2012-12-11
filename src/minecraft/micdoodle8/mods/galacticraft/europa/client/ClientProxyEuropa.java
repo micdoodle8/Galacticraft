@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.europa.client;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
+import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
 import micdoodle8.mods.galacticraft.core.GCCoreLocalization;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -40,5 +41,11 @@ public class ClientProxyEuropa implements IGalacticraftSubModClient
 	public String getPlanetSpriteDirectory() 
 	{
 		return "/micdoodle8/mods/galacticraft/europa/client/planets/";
+	}
+
+	@Override
+	public IPlanetSlotRenderer getSlotRenderer() 
+	{
+		return new GCEuropaSlotRenderer();
 	}
 }

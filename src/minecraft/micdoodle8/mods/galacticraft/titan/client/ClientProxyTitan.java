@@ -6,9 +6,11 @@ import java.util.EnumSet;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
+import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
 import micdoodle8.mods.galacticraft.core.GCCoreLocalization;
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.europa.client.GCEuropaSlotRenderer;
 import micdoodle8.mods.galacticraft.titan.CommonProxyTitan;
 import micdoodle8.mods.galacticraft.titan.blocks.GCTitanBlocks;
 import micdoodle8.mods.galacticraft.titan.dimension.GCTitanWorldProvider;
@@ -185,5 +187,11 @@ public class ClientProxyTitan extends CommonProxyTitan implements IGalacticraftS
 	public String getPlanetSpriteDirectory() 
 	{
 		return "/micdoodle8/mods/galacticraft/titan/client/planets/";
+	}
+
+	@Override
+	public IPlanetSlotRenderer getSlotRenderer() 
+	{
+		return new GCTitanSlotRenderer();
 	}
 }

@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
-import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
 import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
@@ -10,6 +9,7 @@ import net.minecraft.src.Tessellator;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
@@ -73,42 +73,49 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
             String lowercase = this.languageGui.getDestinations(languageGui)[par1].toLowerCase();
             Tessellator var3 = Tessellator.instance;
             
-            for (IPlanetSlotRenderer renderer : ClientProxyCore.slotRenderers)
+            for (int i = 0; i < GalacticraftCore.clientSubMods.size(); i++)
             {
-    			String str = this.languageGui.getDestinations(languageGui)[par1].toLowerCase();
-    			
-    			if (str.contains("*"))
-    			{
-    				str = str.replace("*", "");
-    			}
-    			
-    			if (renderer.getPlanetName().toLowerCase().equals(str))
-    			{
-    				renderer.renderSlot(par1, par2, par3, par4, par5Tessellator);
-    			}
+            	if (GalacticraftCore.clientSubMods.get(i) != null && GalacticraftCore.clientSubMods.get(i).getSlotRenderer() != null)
+            	{
+            		IPlanetSlotRenderer renderer = GalacticraftCore.clientSubMods.get(i).getSlotRenderer();
+            		
+        			String str = this.languageGui.getDestinations(languageGui)[par1].toLowerCase();
+        			
+        			if (str.contains("*"))
+        			{
+        				str = str.replace("*", "");
+        			}
+        			
+        			if (renderer.getPlanetName().toLowerCase().equals(str))
+        			{
+            			GL11.glBindTexture(GL11.GL_TEXTURE_2D, FMLClientHandler.instance().getClient().renderEngine.getTexture(renderer.getPlanetSprite()));
+
+        				renderer.renderSlot(par1, par2, par3, par4, par5Tessellator);
+        			}
+            	}
             }
             
-    		for (IGalacticraftSubModClient mod : GalacticraftCore.clientSubMods)
-    		{
-    			String str = this.languageGui.getDestinations(languageGui)[par1].toLowerCase();
-    			
-    			if (str.contains("*"))
-    			{
-    				str = str.replace("*", "");
-    			}
-    			
-    			if (mod.getDimensionName().toLowerCase().equals(str))
-    			{
-    	            GL11.glBindTexture(GL11.GL_TEXTURE_2D, FMLClientHandler.instance().getClient().renderEngine.getTexture(mod.getPlanetSpriteDirectory() + mod.getDimensionName().toLowerCase() + ".png"));
-
-                    var3.startDrawingQuads();
-                    var3.addVertexWithUV(par2 - 10 - this.slotHeight * 0.9, 	par3 - 1 + this.slotHeight * 0.9, 	-90.0D, 0.35D, 0.65D);
-                    var3.addVertexWithUV(par2 - 10, 							par3 - 1 + this.slotHeight * 0.9, 	-90.0D, 0.65D, 0.65D);
-                    var3.addVertexWithUV(par2 - 10, 							par3 - 1, 							-90.0D, 0.65D, 0.35D);
-                    var3.addVertexWithUV(par2 - 10 - this.slotHeight * 0.9, 	par3 - 1, 							-90.0D, 0.35D, 0.35D);
-                    var3.draw();
-    			}
-    		}
+//    		for (IGalacticraftSubModClient mod : GalacticraftCore.clientSubMods)
+//    		{
+//    			String str = this.languageGui.getDestinations(languageGui)[par1].toLowerCase();
+//    			
+//    			if (str.contains("*"))
+//    			{
+//    				str = str.replace("*", "");
+//    			}
+//    			
+//    			if (mod.getDimensionName().toLowerCase().equals(str))
+//    			{
+//    	            GL11.glBindTexture(GL11.GL_TEXTURE_2D, FMLClientHandler.instance().getClient().renderEngine.getTexture(mod.getPlanetSpriteDirectory() + mod.getDimensionName().toLowerCase() + ".png"));
+//
+//                    var3.startDrawingQuads();
+//                    var3.addVertexWithUV(par2 - 10 - this.slotHeight * 0.9, 	par3 - 1 + this.slotHeight * 0.9, 	-90.0D, 0.35D, 0.65D);
+//                    var3.addVertexWithUV(par2 - 10, 							par3 - 1 + this.slotHeight * 0.9, 	-90.0D, 0.65D, 0.65D);
+//                    var3.addVertexWithUV(par2 - 10, 							par3 - 1, 							-90.0D, 0.65D, 0.35D);
+//                    var3.addVertexWithUV(par2 - 10 - this.slotHeight * 0.9, 	par3 - 1, 							-90.0D, 0.35D, 0.35D);
+//                    var3.draw();
+//    			}
+//    		}
     		
     		if (this.languageGui.getDestinations(languageGui)[par1].equals("Overworld"))
             {
@@ -119,27 +126,6 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
                 var3.addVertexWithUV(par2 - 10, 							par3 - 1 + this.slotHeight * 0.9, 	-90.0D, 1.0, 1.0);
                 var3.addVertexWithUV(par2 - 10, 							par3 - 1, 							-90.0D, 1.0, 0.0);
                 var3.addVertexWithUV(par2 - 10 - this.slotHeight * 0.9, 	par3 - 1, 							-90.0D, 0.0, 0.0);
-                var3.draw();
-            }
-    		else if (this.languageGui.getDestinations(languageGui)[par1].equals("Saturn*"))
-            {
-                GL11.glBindTexture(GL11.GL_TEXTURE_2D, FMLClientHandler.instance().getClient().renderEngine.getTexture("/micdoodle8/mods/galacticraft/saturn/client/planets/saturn.png"));
-
-                var3.startDrawingQuads();
-                var3.addVertexWithUV(par2 - 7 - this.slotHeight * 1.22, 	par3 - 5 + this.slotHeight * 1.22, 	-90.0D, 0.0, 1.0);
-                var3.addVertexWithUV(par2 - 7, 							par3 - 5 + this.slotHeight * 1.22, 	-90.0D, 1.0, 1.0);
-                var3.addVertexWithUV(par2 - 7, 							par3 - 5, 							-90.0D, 1.0, 0.0);
-                var3.addVertexWithUV(par2 - 7 - this.slotHeight * 1.22, 	par3 - 5, 							-90.0D, 0.0, 0.0);
-                var3.draw();
-            }
-            else if (this.languageGui.getDestinations(languageGui)[par1].equals("Moon"))
-            {
-                GL11.glBindTexture(GL11.GL_TEXTURE_2D, FMLClientHandler.instance().getClient().renderEngine.getTexture("/terrain/moon.png"));
-                var3.startDrawingQuads();
-                var3.addVertexWithUV(par2 - 10 - this.slotHeight * 0.9, 	par3 - 1 + this.slotHeight * 0.9, 	-90.0D, 0.35D, 0.65D);
-                var3.addVertexWithUV(par2 - 10, 							par3 - 1 + this.slotHeight * 0.9, 	-90.0D, 0.65D, 0.65D);
-                var3.addVertexWithUV(par2 - 10, 							par3 - 1, 							-90.0D, 0.65D, 0.35D);
-                var3.addVertexWithUV(par2 - 10 - this.slotHeight * 0.9, 	par3 - 1, 							-90.0D, 0.35D, 0.35D);
                 var3.draw();
             }
             

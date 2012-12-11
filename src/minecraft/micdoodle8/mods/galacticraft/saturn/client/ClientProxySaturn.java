@@ -3,9 +3,11 @@ package micdoodle8.mods.galacticraft.saturn.client;
 import java.util.EnumSet;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
+import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
 import micdoodle8.mods.galacticraft.core.GCCoreLocalization;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.enceladus.client.ClientProxyEnceledus;
+import micdoodle8.mods.galacticraft.enceladus.client.ClientProxyEnceladus;
+import micdoodle8.mods.galacticraft.europa.client.GCEuropaSlotRenderer;
 import micdoodle8.mods.galacticraft.saturn.CommonProxySaturn;
 import micdoodle8.mods.galacticraft.titan.client.ClientProxyTitan;
 import net.minecraft.src.INetworkManager;
@@ -29,7 +31,7 @@ public class ClientProxySaturn extends CommonProxySaturn implements IGalacticraf
 	public static GCCoreLocalization lang;
 	
 	public static ClientProxyTitan moonClientTitan = new ClientProxyTitan();
-	public static ClientProxyEnceledus moonClientEnceladus = new ClientProxyEnceledus();
+	public static ClientProxyEnceladus moonClientEnceladus = new ClientProxyEnceladus();
 	
 	@Override
 	public void preInit(FMLPreInitializationEvent event) 
@@ -115,5 +117,11 @@ public class ClientProxySaturn extends CommonProxySaturn implements IGalacticraf
 	public String getPlanetSpriteDirectory() 
 	{
 		return "/micdoodle8/mods/galacticraft/saturn/client/planets/";
+	}
+
+	@Override
+	public IPlanetSlotRenderer getSlotRenderer() 
+	{
+		return new GCSaturnSlotRenderer();
 	}
 }
