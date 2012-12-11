@@ -49,35 +49,43 @@ public class GCMoonEntityPlayer
 						int meta = -1;
 						
 						int i = 1 + MathHelper.floor_double((double)(currentPlayer.rotationYaw * 8.0F / 360.0F) + 0.5D) & 7;
-						
+						FMLLog.info("" + i + " " + this.lastStep);
 						switch (this.lastStep)
 						{
 						case 1:
 							switch (i)
 							{
+							case 0:
+								meta = 2;
+								this.currentPlayer.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posY - 1), MathHelper.floor_double(player.posZ), meta);
+								break;
 							case 1:
 								meta = 4;
+								this.currentPlayer.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posY - 1), MathHelper.floor_double(player.posZ), meta);
 								break;
 							case 2:
 								meta = 2;
+								this.currentPlayer.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posY - 1), MathHelper.floor_double(player.posZ), meta);
 								break;
 							case 3:
 								meta = 2;
+								this.currentPlayer.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posY - 1), MathHelper.floor_double(player.posZ), meta);
 								break;
 							case 4:
 								meta = 2;
+								this.currentPlayer.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posY - 1), MathHelper.floor_double(player.posZ), meta);
 								break;
 							case 5:
 								meta = 2;
+								this.currentPlayer.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posY - 1), MathHelper.floor_double(player.posZ), meta);
 								break;
 							case 6:
 								meta = 2;
+								this.currentPlayer.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posY - 1), MathHelper.floor_double(player.posZ), meta);
 								break;
 							case 7:
 								meta = 2;
-								break;
-							case 8:
-								meta = 2;
+								this.currentPlayer.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posY - 1), MathHelper.floor_double(player.posZ), meta);
 								break;
 							}
 							this.lastStep = 2;
@@ -85,36 +93,46 @@ public class GCMoonEntityPlayer
 						case 2:
 							switch (i)
 							{
+							case 0:
+								meta = 1;
+								this.currentPlayer.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posY - 1), MathHelper.floor_double(player.posZ), meta);
+								break;
 							case 1:
 								meta = 1;
+								this.currentPlayer.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posY - 1), MathHelper.floor_double(player.posZ), meta);
 								break;
 							case 2:
 								meta = 4;
+								this.currentPlayer.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posY - 1), MathHelper.floor_double(player.posZ), meta);
 								break;
 							case 3:
 								meta = 4;
+								this.currentPlayer.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posY - 1), MathHelper.floor_double(player.posZ), meta);
 								break;
 							case 4:
 								meta = 1;
+								this.currentPlayer.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posY - 1), MathHelper.floor_double(player.posZ), meta);
 								break;
 							case 5:
 								meta = 3;
+								this.currentPlayer.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posY - 1), MathHelper.floor_double(player.posZ), meta);
 								break;
 							case 6:
-								meta = 1;
+								meta = 2;
+								this.currentPlayer.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posY - 1), MathHelper.floor_double(player.posZ), meta);
 								break;
 							case 7:
 								meta = 4;
-								break;
-							case 8:
-								meta = 1;
+								this.currentPlayer.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posY - 1), MathHelper.floor_double(player.posZ), meta);
 								break;
 							}
 							this.lastStep = 1;
+							this.currentPlayer.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posY - 1), MathHelper.floor_double(player.posZ), meta);
+							break;
+						default:
+							this.lastStep = 1;
 							break;
 						}
-						
-						this.currentPlayer.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posY - 1), MathHelper.floor_double(player.posZ), meta);
 					}
 				}
 			}

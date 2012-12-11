@@ -13,6 +13,7 @@ import net.minecraft.src.World;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.IPlantable;
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
@@ -85,8 +86,8 @@ public class GCMoonBlockGrass extends Block implements IGalacticraftBlockGrass
 	{
 		int meta = par1IBlockAccess.getBlockMetadata(x, y, z);
 		
-        if (side == 1)
-        {
+		if (side == 1)
+		{
 			switch (meta)
 			{
 			case 0:
@@ -120,14 +121,13 @@ public class GCMoonBlockGrass extends Block implements IGalacticraftBlockGrass
 //			{
 //				return 5;
 //			}
-        }
-        else if (side == 0)
-        {
-            return 2;
-        }
-        
-        Material var6 = par1IBlockAccess.getBlockMaterial(x, y + 1, z);
-        return var6 != Material.snow && var6 != Material.craftedSnow ? 3 : 68;
+		}
+		else if (side == 0)
+		{
+			return 2;
+		}
+		
+		return 3;
 	}
 
 	@Override
