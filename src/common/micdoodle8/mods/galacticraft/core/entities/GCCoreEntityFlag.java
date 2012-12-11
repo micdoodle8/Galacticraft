@@ -6,6 +6,7 @@ import java.util.List;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import net.minecraft.src.AxisAlignedBB;
+import net.minecraft.src.DamageSource;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayer;
@@ -25,6 +26,7 @@ public class GCCoreEntityFlag extends Entity
     public double xPosition;
     public double yPosition;
     public double zPosition;
+    public boolean indestructable = false;
     
     public GCCoreEntityFlag(World world)
     {
@@ -43,9 +45,52 @@ public class GCCoreEntityFlag extends Entity
         this.zPosition = z;
     }
     
+    public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
+    {
+        if (!this.worldObj.isRemote && !this.isDead && !indestructable)
+        {
+            if (this.func_85032_ar())
+            {
+                return false;
+            }
+            else
+            {
+                this.setBeenAttacked();
+                this.setDamage(this.getDamage() + par2 * 10);
+
+                if (par1DamageSource.getEntity() instanceof EntityPlayer && ((EntityPlayer)par1DamageSource.getEntity()).capabilities.isCreativeMode)
+                {
+                    this.setDamage(100);
+                }
+
+                if (this.getDamage() > 40)
+                {
+                    if (this.riddenByEntity != null)
+                    {
+                        this.riddenByEntity.mountEntity(this);
+                    }
+
+                    this.setDead();
+                    this.dropItemStack();
+                }
+
+                return true;
+            }
+        }
+        else
+        {
+            return true;
+        }
+    }
+    
     public void setDirection(float par1)
     {
         this.prevRotationYaw = this.rotationYaw = (par1);
+    }
+    
+    public void setIndestructable()
+    {
+    	this.indestructable = true;
     }
 
     public int getWidth()
@@ -93,6 +138,7 @@ public class GCCoreEntityFlag extends Entity
 	{
         this.dataWatcher.addObject(16, new Integer(-1));
         this.dataWatcher.addObject(17, new String(""));
+        this.dataWatcher.addObject(18, new Integer(0));
 	}
 
 	@Override
@@ -100,6 +146,7 @@ public class GCCoreEntityFlag extends Entity
     {
 		this.setOwner(par1NBTTagCompound.getString("Owner"));
 		this.setType(par1NBTTagCompound.getInteger("Type"));
+		this.indestructable = par1NBTTagCompound.getBoolean("Indestructable");
 		
         this.xPosition = par1NBTTagCompound.getDouble("TileX");
         this.yPosition = par1NBTTagCompound.getDouble("TileY");
@@ -112,6 +159,7 @@ public class GCCoreEntityFlag extends Entity
 	{
         par1NBTTagCompound.setString("Owner", String.valueOf(this.getOwner()));
         par1NBTTagCompound.setInteger("Type", Integer.valueOf(this.getType()));
+        par1NBTTagCompound.setBoolean("Indestructable", this.indestructable);
         par1NBTTagCompound.setByte("Direction", (byte)this.facingDirection);
         par1NBTTagCompound.setDouble("TileX", this.xPosition);
         par1NBTTagCompound.setDouble("TileY", this.yPosition);
@@ -163,5 +211,15 @@ public class GCCoreEntityFlag extends Entity
     public String getOwner()
     {
         return this.dataWatcher.getWatchableObjectString(17);
+    }
+    
+    public void setDamage(int par1)
+    {
+        this.dataWatcher.updateObject(18, Integer.valueOf(par1));
+    }
+
+    public int getDamage()
+    {
+        return this.dataWatcher.getWatchableObjectInt(18);
     }
 }
