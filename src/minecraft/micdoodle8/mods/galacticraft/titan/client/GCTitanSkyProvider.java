@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.titan.client;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
-import micdoodle8.mods.galacticraft.mars.dimension.GCMarsWorldProvider;
+import micdoodle8.mods.galacticraft.titan.dimension.GCTitanWorldProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.GLAllocation;
 import net.minecraft.src.MathHelper;
@@ -73,18 +73,14 @@ public class GCTitanSkyProvider extends SkyProvider
 		GL11.glEndList();
 	}
 
-	/*
-	 * public void changeWorld(World world) { theWorld = world; renderStars();
-	 * super.changeWorld(world); }
-	 */
 	@Override
 	public void render(float partialTicks, WorldClient world, Minecraft mc)
 	{
-		GCMarsWorldProvider gcProvider = null;
+		GCTitanWorldProvider gcProvider = null;
 		
-		if (world.provider instanceof GCMarsWorldProvider)
+		if (world.provider instanceof GCTitanWorldProvider)
 		{
-			gcProvider = (GCMarsWorldProvider)world.provider;
+			gcProvider = (GCTitanWorldProvider)world.provider;
 		}
 		
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
@@ -104,11 +100,11 @@ public class GCTitanSkyProvider extends SkyProvider
             var5 = var8;
         }
 
-        GL11.glColor3f(var3, var4, var5);
+        GL11.glColor3f(1, 1, 1);
         Tessellator var23 = Tessellator.instance;
         GL11.glDepthMask(false);
         GL11.glEnable(GL11.GL_FOG);
-        GL11.glColor3f(var3, var4, var5);
+        GL11.glColor3f(0, 0, 0);
         GL11.glCallList(glSkyList);
         GL11.glDisable(GL11.GL_FOG);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
@@ -119,14 +115,29 @@ public class GCTitanSkyProvider extends SkyProvider
         float var10;
         float var11;
         float var12;
+        
+        float var20 = 0;
+        
+        if (gcProvider != null)
+        {
+            var20 = gcProvider.getStarBrightness(partialTicks);
+        }
+
+        if (var20 > 0.0F)
+        {
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, var20);
+            GL11.glCallList(this.starGLCallList);
+        }
 
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+        
         GL11.glPushMatrix();
+
         GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 5F);
         GL11.glRotatef(world.getCelestialAngle(partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
-        var12 = 8.0F;
+        var12 = 30.0F;
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/terrain/sun.png"));
         var23.startDrawingQuads();
         var23.addVertexWithUV((-var12), 150.0D, (-var12), 0.0D, 0.0D);
@@ -134,71 +145,36 @@ public class GCTitanSkyProvider extends SkyProvider
         var23.addVertexWithUV(var12, 150.0D, var12, 1.0D, 1.0D);
         var23.addVertexWithUV((-var12), 150.0D, var12, 0.0D, 1.0D);
         var23.draw();
+        
         GL11.glPopMatrix();
-        // HOME:
+        
         GL11.glPushMatrix();
-        var12 = 0.4F;
+
+        GL11.glDisable(GL11.GL_BLEND);
+        
+        // HOME:
+        var12 = 10.0F;
+        float earthRotation = (float) (world.getSpawnPoint().posZ - mc.thePlayer.posZ) * 0.01F;
         GL11.glScalef(0.6F, 0.6F, 0.6F);
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 5F);
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/planets/overworld.png"));
+        GL11.glRotatef(earthRotation, 1.0F, 0.0F, 0.0F);
+        GL11.glRotatef(200F, 1.0F, 0.0F, 0.0F);
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1F);
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/micdoodle8/mods/galacticraft/saturn/client/planets/saturn.png"));
         int var28 = world.getMoonPhase(partialTicks);
         int var30 = var28 % 4;
         int var29 = var28 / 4 % 2;
-        GL11.glRotatef(GCCoreUtil.calculateEarthAngleFromOtherPlanet(world.getWorldTime(), partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
-        GL11.glRotatef(-40F, 0.0F, 0.0F, 1.0F);
         var23.startDrawingQuads();
         var23.addVertexWithUV((-var12), -100.0D, var12, 0, 1);
         var23.addVertexWithUV(var12, -100.0D, var12, 1, 1);
         var23.addVertexWithUV(var12, -100.0D, (-var12), 1, 0);
         var23.addVertexWithUV((-var12), -100.0D, (-var12), 0, 0);
         var23.draw();
-        GL11.glPopMatrix();
-        // PHOBOS:
-        if (gcProvider != null)
-        {
-            GL11.glPushMatrix();
-            var12 = 5F;
-            GL11.glScalef(0.6F, 0.6F, 0.6F);
-            GL11.glColor4f(1.0F, 1.0F, 1.0F, 5F);
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/micdoodle8/mods/galacticraft/mars/client/planets/phobos.png"));
-            GL11.glRotatef(gcProvider.calculatePhobosAngle(world.getWorldTime(), partialTicks), 1.0F, 1.0F, 0.0F);
-            GL11.glRotatef(-70F, 0.0F, 0.0F, 1.0F);
-            var23.startDrawingQuads();
-            var23.addVertexWithUV((-var12), -100.0D, var12, 0, 1);
-            var23.addVertexWithUV(var12, -100.0D, var12, 1, 1);
-            var23.addVertexWithUV(var12, -100.0D, (-var12), 1, 0);
-            var23.addVertexWithUV((-var12), -100.0D, (-var12), 0, 0);
-            var23.draw();
-            GL11.glPopMatrix();
-            
-            GL11.glPushMatrix();
-	        var12 = 2.0F;
-	        GL11.glScalef(0.6F, 0.6F, 0.6F);
-	        GL11.glColor4f(1.0F, 1.0F, 1.0F, 5F);
-	        GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/micdoodle8/mods/galacticraft/mars/client/planets/deimos.png"));
-	        GL11.glRotatef(-(gcProvider.calculateDeimosAngle(world.getWorldTime(), partialTicks)) - 100F, 1.0F, 1.0F, 0.0F);
-	        var23.startDrawingQuads();
-	        var23.addVertexWithUV((-var12), -100.0D, var12, 0, 1);
-	        var23.addVertexWithUV(var12, -100.0D, var12, 1, 1);
-	        var23.addVertexWithUV(var12, -100.0D, (-var12), 1, 0);
-	        var23.addVertexWithUV((-var12), -100.0D, (-var12), 0, 0);
-	        var23.draw();
-	        GL11.glPopMatrix();
-        }
-        // DEIMOS:
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        float var20 = world.getStarBrightness(partialTicks) + 0.2F;
-
-        if (var20 > 0.0F)
-        {
-            GL11.glColor4f(var20, var20, var20, var20);
-            GL11.glCallList(this.starGLCallList);
-        }
-
+        
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
         GL11.glEnable(GL11.GL_FOG);
+        GL11.glPopMatrix();
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glColor3f(0.0F, 0.0F, 0.0F);
         double var25 = mc.thePlayer.getPosition(partialTicks).yCoord - world.getHorizon();
@@ -237,7 +213,7 @@ public class GCTitanSkyProvider extends SkyProvider
             var23.draw();
         }
 
-        GL11.glColor3f(70F / 256F, 0F / 256F, 0F / 256F);
+        GL11.glColor3f(70F / 256F, 70F / 256F, 70F / 256F);
 
         GL11.glPushMatrix();
         GL11.glTranslatef(0.0F, -((float)(var25 - 16.0D)), 0.0F);
@@ -301,7 +277,7 @@ public class GCTitanSkyProvider extends SkyProvider
 
     private Vec3 getCustomSkyColor()
     {
-        return Vec3.vec3dPool.getVecFromPool(0.26796875D, 0.1796875D, 0.0D);
+        return Vec3.vec3dPool.getVecFromPool(1D, 1D, 1D);
     }
     
     public float getSkyBrightness(float par1)

@@ -111,7 +111,7 @@ public class ClientProxyCore extends CommonProxyCore
 	public static long getFirstBootTime;
 	public static long getCurrentTime;
 	private Random rand = new Random();
-	public ClientProxyMoon moon = new ClientProxyMoon();
+	public static ClientProxyMoon moon = new ClientProxyMoon();
 	public static int teleportCooldown;
 	public static List<IPlanetSlotRenderer> slotRenderers = new ArrayList<IPlanetSlotRenderer>();
 	
