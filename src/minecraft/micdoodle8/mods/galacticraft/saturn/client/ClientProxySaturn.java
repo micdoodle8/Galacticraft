@@ -5,7 +5,9 @@ import java.util.EnumSet;
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
 import micdoodle8.mods.galacticraft.core.GCCoreLocalization;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.enceladus.client.ClientProxyEnceledus;
 import micdoodle8.mods.galacticraft.saturn.CommonProxySaturn;
+import micdoodle8.mods.galacticraft.titan.client.ClientProxyTitan;
 import net.minecraft.src.INetworkManager;
 import net.minecraft.src.Packet250CustomPayload;
 import cpw.mods.fml.common.ITickHandler;
@@ -26,30 +28,30 @@ public class ClientProxySaturn extends CommonProxySaturn implements IGalacticraf
 {
 	public static GCCoreLocalization lang;
 	
-//	public static ClientProxyIo moonClientIo = new ClientProxyIo();
-//	public static ClientProxyEuropa moonClientEuropa = new ClientProxyEuropa();
+	public static ClientProxyTitan moonClientTitan = new ClientProxyTitan();
+	public static ClientProxyEnceledus moonClientEnceladus = new ClientProxyEnceledus();
 	
 	@Override
 	public void preInit(FMLPreInitializationEvent event) 
 	{
-//		moonClientIo.preInit(event);
-//		moonClientEuropa.preInit(event);
+		moonClientTitan.preInit(event);
+		moonClientEnceladus.preInit(event);
 		this.lang = new GCCoreLocalization("micdoodle8/mods/galacticraft/saturn/client");
 	}
 
 	@Override
 	public void init(FMLInitializationEvent event) 
 	{
-//		moonClientIo.init(event);
-//		moonClientEuropa.init(event);
+		moonClientTitan.init(event);
+		moonClientEnceladus.init(event);
 		GalacticraftCore.registerClientSubMod(this);
 	}
 
 	@Override
 	public void postInit(FMLPostInitializationEvent event) 
 	{
-//		moonClientIo.postInit(event);
-//		moonClientEuropa.postInit(event);
+		moonClientTitan.postInit(event);
+		moonClientEnceladus.postInit(event);
 	}
 	
 	@Override

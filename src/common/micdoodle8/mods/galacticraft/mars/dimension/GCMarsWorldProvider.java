@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.mars.wgen.GCMarsChunkProvider;
 import micdoodle8.mods.galacticraft.mars.wgen.GCMarsWorldChunkManager;
 import net.minecraft.src.Chunk;
 import net.minecraft.src.IChunkProvider;
+import net.minecraft.src.MathHelper;
 import net.minecraft.src.Vec3;
 import net.minecraft.src.WorldProvider;
 import cpw.mods.fml.common.Side;
@@ -63,7 +64,27 @@ public class GCMarsWorldProvider extends WorldProvider implements IGalacticraftW
 	@Override
     public Vec3 getFogColor(float var1, float var2)
     {
-        return this.worldObj.getWorldVec3Pool().getVecFromPool((double)255F / 255F, (double)193F / 255F, (double)37F / 255F);
+		return this.worldObj.getWorldVec3Pool().getVecFromPool((double)115F / 255F, (double)0F / 255F, (double)0F / 255F);
+    }
+    
+    @Override
+	@SideOnly(Side.CLIENT)
+    public float getStarBrightness(float par1)
+    {
+        float var2 = this.worldObj.getCelestialAngle(par1);
+        float var3 = 1.0F - (MathHelper.cos(var2 * (float)Math.PI * 2.0F) * 2.0F + 0.25F);
+
+        if (var3 < 0.0F)
+        {
+            var3 = 0.0F;
+        }
+
+        if (var3 > 1.0F)
+        {
+            var3 = 1.0F;
+        }
+
+        return var3 * var3 * 0.5F + 0.3F;
     }
 	
 	@Override

@@ -65,7 +65,7 @@ public class GCEnceladusWorldProvider extends WorldProvider implements IGalactic
 	@Override
     public Vec3 getFogColor(float var1, float var2)
     {
-        return this.worldObj.getWorldVec3Pool().getVecFromPool((double)100F / 255F, (double)100F / 255F, (double)100F / 255F);
+        return this.worldObj.getWorldVec3Pool().getVecFromPool((double)132F / 255F, (double)112F / 255F, (double)255F / 255F);
     }
 	
 	@Override

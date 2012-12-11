@@ -297,6 +297,7 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
         {
         	GCCoreEntityFlag entity = new GCCoreEntityFlag(this.worldObj, 0, 130, 0, 0F);
         	entity.setType(0);
+        	entity.setIndestructable();
 			this.worldObj.spawnEntityInWorld(entity);
         }
 		
