@@ -66,8 +66,8 @@ public class GCCoreEntityLaunchFlameFX extends EntityFX
 
         if (this.particleAge++ >= this.particleMaxAge)
         {
-        	GalacticraftCore.proxy.spawnParticle("whitesmoke", 			this.posX, 		this.posY + this.rand.nextDouble() * 2, this.posZ, 0D, -1D, 0D, true);
-        	GalacticraftCore.proxy.spawnParticle("whitesmokelarge", 			this.posX, 		this.posY + this.rand.nextDouble() * 2, this.posZ, 0D, -1D, 0D, true);
+        	GalacticraftCore.proxy.spawnParticle("whitesmoke", 			this.posX, 		this.posY + this.rand.nextDouble() * 2, this.posZ, this.motionX, this.motionY, this.motionZ, true);
+        	GalacticraftCore.proxy.spawnParticle("whitesmokelarge", 			this.posX, 		this.posY + this.rand.nextDouble() * 2, this.posZ, this.motionX, this.motionY, this.motionZ, true);
             this.setDead();
         }
 
