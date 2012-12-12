@@ -23,8 +23,11 @@ import net.minecraft.src.EntityPlayerMP;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.MathHelper;
+import net.minecraft.src.MovingObjectPosition;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.NBTTagList;
+import net.minecraft.src.Vec3;
+import net.minecraft.src.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -345,40 +348,43 @@ public class GCCoreEntityPlayer
 		
 		if (this.currentPlayer.worldObj.provider instanceof IGalacticraftWorldProvider && FMLCommonHandler.instance().getEffectiveSide() != Side.CLIENT)
 		{
-			float f = ((IGalacticraftWorldProvider)this.currentPlayer.worldObj.provider).getMeteorFrequency();
-			
-			if (this.currentPlayer.worldObj.rand.nextInt(MathHelper.floor_float(f * 1000)) == 0)
+			if (((IGalacticraftWorldProvider)this.currentPlayer.worldObj.provider).getMeteorFrequency() > 0)
 			{
-				int x, y, z;
-				double motX, motZ;
-				x = this.currentPlayer.worldObj.rand.nextInt(20) - 10;
-				y = this.currentPlayer.worldObj.rand.nextInt(20) + 200;
-				z = this.currentPlayer.worldObj.rand.nextInt(20) - 10;
-				motX = this.currentPlayer.worldObj.rand.nextDouble() * 5;
-				motZ = this.currentPlayer.worldObj.rand.nextDouble() * 5;
+				float f = ((IGalacticraftWorldProvider)this.currentPlayer.worldObj.provider).getMeteorFrequency();
 				
-				GCCoreEntityMeteor meteor = new GCCoreEntityMeteor(this.currentPlayer.worldObj, this.currentPlayer.posX + x, this.currentPlayer.posY + y, this.currentPlayer.posZ + z, motX - 2.5D, 0, motZ - 2.5D, 1);
-				
-				if (!this.currentPlayer.worldObj.isRemote)
+				if (this.currentPlayer.worldObj.rand.nextInt(MathHelper.floor_float(f * 1000)) == 0)
 				{
-					this.currentPlayer.worldObj.spawnEntityInWorld(meteor);
+					int x, y, z;
+					double motX, motZ;
+					x = this.currentPlayer.worldObj.rand.nextInt(20) - 10;
+					y = this.currentPlayer.worldObj.rand.nextInt(20) + 200;
+					z = this.currentPlayer.worldObj.rand.nextInt(20) - 10;
+					motX = this.currentPlayer.worldObj.rand.nextDouble() * 5;
+					motZ = this.currentPlayer.worldObj.rand.nextDouble() * 5;
+					
+					GCCoreEntityMeteor meteor = new GCCoreEntityMeteor(this.currentPlayer.worldObj, this.currentPlayer.posX + x, this.currentPlayer.posY + y, this.currentPlayer.posZ + z, motX - 2.5D, 0, motZ - 2.5D, 1);
+					
+					if (!this.currentPlayer.worldObj.isRemote)
+					{
+						this.currentPlayer.worldObj.spawnEntityInWorld(meteor);
+					}
 				}
-			}
-			if (this.currentPlayer.worldObj.rand.nextInt(MathHelper.floor_float(f * 3000)) == 0)
-			{
-				int x, y, z;
-				double motX, motZ;
-				x = this.currentPlayer.worldObj.rand.nextInt(20) - 10;
-				y = this.currentPlayer.worldObj.rand.nextInt(20) + 200;
-				z = this.currentPlayer.worldObj.rand.nextInt(20) - 10;
-				motX = this.currentPlayer.worldObj.rand.nextDouble() * 5;
-				motZ = this.currentPlayer.worldObj.rand.nextDouble() * 5;
-				
-				GCCoreEntityMeteor meteor = new GCCoreEntityMeteor(this.currentPlayer.worldObj, this.currentPlayer.posX + x, this.currentPlayer.posY + y, this.currentPlayer.posZ + z, motX - 2.5D, 0, motZ - 2.5D, 6);
-				
-				if (!this.currentPlayer.worldObj.isRemote)
+				if (this.currentPlayer.worldObj.rand.nextInt(MathHelper.floor_float(f * 3000)) == 0)
 				{
-					this.currentPlayer.worldObj.spawnEntityInWorld(meteor);
+					int x, y, z;
+					double motX, motZ;
+					x = this.currentPlayer.worldObj.rand.nextInt(20) - 10;
+					y = this.currentPlayer.worldObj.rand.nextInt(20) + 200;
+					z = this.currentPlayer.worldObj.rand.nextInt(20) - 10;
+					motX = this.currentPlayer.worldObj.rand.nextDouble() * 5;
+					motZ = this.currentPlayer.worldObj.rand.nextDouble() * 5;
+					
+					GCCoreEntityMeteor meteor = new GCCoreEntityMeteor(this.currentPlayer.worldObj, this.currentPlayer.posX + x, this.currentPlayer.posY + y, this.currentPlayer.posZ + z, motX - 2.5D, 0, motZ - 2.5D, 6);
+					
+					if (!this.currentPlayer.worldObj.isRemote)
+					{
+						this.currentPlayer.worldObj.spawnEntityInWorld(meteor);
+					}
 				}
 			}
 		}
@@ -396,7 +402,6 @@ public class GCCoreEntityPlayer
         			player.mcServer.getConfigurationManager().transferPlayerToDimension(player, par1, player.mcServer.worldServerForDimension(par1).customTeleporters.get(i));
     			}
     		}
-            
     	}
     }
     
