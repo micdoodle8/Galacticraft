@@ -25,7 +25,7 @@ public class GCMoonBlocks
 	{	
 		blockMoonOres = 									new GCMoonBlockOre					(GCMoonConfigManager.idBlockOre)												.setHardness(3.0F) 																				 																											.setBlockName("moonBlockOres");
 		moonCobblestone = 									new GCMoonBlock						(GCMoonConfigManager.idBlockMoonCobblestone, 			9, Material.rock)		.setHardness(2.2F)																				.setCreativeTab(GalacticraftCore.galacticraftTab)															.setBlockName("moonCobblestone");
-		moonStone = 										new GCMoonBlockStone				(GCMoonConfigManager.idBlockMoonStone, 					1)						.setHardness(1.7F)																				.setCreativeTab(GalacticraftCore.galacticraftTab)															.setBlockName("moonStone");
+		moonStone = 										new GCMoonBlockStone				(GCMoonConfigManager.idBlockMoonStone, 					9)						.setHardness(1.7F)																				.setCreativeTab(GalacticraftCore.galacticraftTab)															.setBlockName("moonStone");
 		moonDirt = 											new GCMoonBlockDirt					(GCMoonConfigManager.idBlockMoonDirt, 					2)						.setHardness(0.6F)																				.setCreativeTab(GalacticraftCore.galacticraftTab)															.setBlockName("moonDirt");
 		moonGrass = 										new GCMoonBlockGrass				(GCMoonConfigManager.idBlockMoonGrass,					2)						.setHardness(0.7F)																				.setCreativeTab(GalacticraftCore.galacticraftTab)															.setBlockName("moonGrass");
 		Item.itemsList[blockMoonOres.blockID] = 			new GCMoonItemBlockOre				(blockMoonOres.blockID - 256)																																																																.setItemName("moonBlockOres");

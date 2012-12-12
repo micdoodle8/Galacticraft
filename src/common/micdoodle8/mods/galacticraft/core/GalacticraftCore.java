@@ -31,12 +31,15 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.core.wgen.GCCoreWorldGenVanilla;
 import micdoodle8.mods.galacticraft.moon.GalacticraftMoon;
 import net.minecraft.src.CreativeTabs;
+import net.minecraft.src.Entity;
+import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayerMP;
 import net.minecraft.src.INetworkManager;
 import net.minecraft.src.Packet250CustomPayload;
 import net.minecraft.src.Packet9Respawn;
 import net.minecraft.src.World;
 import net.minecraftforge.common.MinecraftForge;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
@@ -55,6 +58,7 @@ import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -274,6 +278,26 @@ public class GalacticraftCore
             			break;
             		}
             	}
+            }
+            else if (packetType == 5)
+            {
+                Class[] decodeAs = {Integer.class};
+                Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
+                
+                for(int i = 0; i < player.worldObj.getLoadedEntityList().size(); i++)
+                {
+	                if(((Entity)player.worldObj.getLoadedEntityList().get(i)).entityId == (Integer)packetReadout[0])
+	                {
+	                    
+	                    FMLLog.info("" + packetReadout[0]);
+	                	if (player.worldObj.getLoadedEntityList().get(i) instanceof EntityLiving)
+	                	{
+	                        Object[] toSend = {((EntityLiving)player.worldObj.getLoadedEntityList().get(i)).getHealth(), (Integer)packetReadout[0]};
+	                        
+	                        player.playerNetServerHandler.sendPacketToPlayer(GCCoreUtil.createPacket("Galacticraft", 3, toSend));
+	                	}
+	                }
+                }
             }
         }
     }

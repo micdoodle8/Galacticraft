@@ -1,14 +1,22 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
+import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelCreeper;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityCreeper;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItemSensorGlasses;
+import net.minecraft.client.Minecraft;
 import net.minecraft.src.EntityLiving;
+import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.EntityPlayerSP;
+import net.minecraft.src.ItemStack;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.ModelBase;
 import net.minecraft.src.RenderLiving;
+import net.minecraft.src.WorldClient;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
@@ -21,11 +29,16 @@ import cpw.mods.fml.common.asm.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GCCoreRenderCreeper extends RenderLiving
 {
-    private ModelBase creeperModel = new GCCoreModelCreeper(2.0F);
+    private ModelBase creeperModel = new GCCoreModelCreeper(0.2F);
 
     public GCCoreRenderCreeper()
     {
         super(new GCCoreModelCreeper(), 0.5F);
+    }
+
+    protected void passSpecialRender(EntityLiving par1EntityLiving, double par2, double par4, double par6)
+    {
+        ClientProxyCore.TickHandlerClient.renderName(par1EntityLiving, par2, par4, par6);
     }
 
     /**
@@ -90,12 +103,25 @@ public class GCCoreRenderCreeper extends RenderLiving
      */
     protected int renderCreeperPassModel(GCCoreEntityCreeper par1GCEntityCreeper, int par2, float par3)
     {
-        if (par1GCEntityCreeper.getPowered())
+		Minecraft minecraft = FMLClientHandler.instance().getClient();
+		
+        WorldClient world = minecraft.theWorld;
+        
+        EntityPlayerSP player = minecraft.thePlayer;
+        
+        ItemStack helmetSlot = null;
+		
+		if (player != null && player.inventory.armorItemInSlot(3) != null)
+		{
+			helmetSlot = player.inventory.armorItemInSlot(3);
+		}
+		
+        if (helmetSlot != null && helmetSlot.getItem() instanceof GCCoreItemSensorGlasses && minecraft.currentScreen == null)
         {
             if (par2 == 1)
             {
-                float var4 = par1GCEntityCreeper.ticksExisted + par3;
-                this.loadTexture("/armor/power.png");
+                float var4 = par1GCEntityCreeper.ticksExisted * 2 + par3;
+                this.loadTexture("/micdoodle8/mods/galacticraft/core/client/entities/power.png");
                 GL11.glMatrixMode(GL11.GL_TEXTURE);
                 GL11.glLoadIdentity();
                 float var5 = var4 * 0.01F;

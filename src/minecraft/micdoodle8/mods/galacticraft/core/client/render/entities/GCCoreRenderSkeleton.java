@@ -1,20 +1,23 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
-import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelZombie;
+import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelSkeleton;
+import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelSpider;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpider;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemSensorGlasses;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayerSP;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.ModelBase;
-import net.minecraft.src.ModelBiped;
+import net.minecraft.src.OpenGlHelper;
 import net.minecraft.src.RenderLiving;
 import net.minecraft.src.WorldClient;
 
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
@@ -25,19 +28,20 @@ import cpw.mods.fml.common.asm.SideOnly;
  *
  */
 @SideOnly(Side.CLIENT)
-public class GCCoreRenderZombie extends RenderLiving
+public class GCCoreRenderSkeleton extends RenderLiving
 {
-    private ModelBase model = new GCCoreModelZombie(0.2F);
+    private ModelBase model = new GCCoreModelSkeleton(0.2F);
+    
+    public GCCoreRenderSkeleton()
+    {
+        super(new GCCoreModelSkeleton(), 1.0F);
+        this.setRenderPassModel(new GCCoreModelSpider());
+    }
 
     @Override
     protected void passSpecialRender(EntityLiving par1EntityLiving, double par2, double par4, double par6)
     {
         ClientProxyCore.TickHandlerClient.renderName(par1EntityLiving, par2, par4, par6);
-    }
-
-    public GCCoreRenderZombie()
-    {
-        super(new GCCoreModelZombie(), 1.0F);
     }
     
     @Override
@@ -85,6 +89,22 @@ public class GCCoreRenderZombie extends RenderLiving
                 GL11.glEnable(GL11.GL_LIGHTING);
                 GL11.glDisable(GL11.GL_BLEND);
             }
+        }
+        
+        if (par2 == 0)
+        {
+            this.loadTexture("/mob/spider_eyes.png");
+            float var4 = 1.0F;
+            GL11.glEnable(GL11.GL_BLEND);
+            GL11.glDisable(GL11.GL_ALPHA_TEST);
+            GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
+            char var5 = 61680;
+            int var6 = var5 % 65536;
+            int var7 = var5 / 65536;
+            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, var6 / 1.0F, var7 / 1.0F);
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, var4);
+            return 1;
         }
 
         return -1;

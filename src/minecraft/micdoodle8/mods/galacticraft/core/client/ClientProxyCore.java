@@ -4,11 +4,12 @@ import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.API.AdvancedAchievement;
-import micdoodle8.mods.galacticraft.API.IGalacticraftSubMod;
 import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
 import micdoodle8.mods.galacticraft.core.CommonProxyCore;
@@ -21,7 +22,6 @@ import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLaunchSmokeFX;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityOxygenFX;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiChoosePlanet;
 import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelSkeleton;
-import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelZombie;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererBreathableAir;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererMeteor;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererOxygenPipe;
@@ -32,8 +32,10 @@ import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderBugg
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderCreeper;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderFlag;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderMeteor;
+import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderSkeleton;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderSpaceship;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderSpider;
+import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderZombie;
 import micdoodle8.mods.galacticraft.core.client.render.item.GCCoreItemRendererBuggy;
 import micdoodle8.mods.galacticraft.core.client.render.item.GCCoreItemRendererFlag;
 import micdoodle8.mods.galacticraft.core.client.render.item.GCCoreItemRendererSpaceship;
@@ -56,19 +58,24 @@ import micdoodle8.mods.galacticraft.moon.client.ClientProxyMoon;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.EntityClientPlayerMP;
 import net.minecraft.src.EntityFX;
+import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EntityPlayerSP;
 import net.minecraft.src.EntitySmokeFX;
+import net.minecraft.src.FontRenderer;
 import net.minecraft.src.INetworkManager;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.KeyBinding;
 import net.minecraft.src.Material;
 import net.minecraft.src.MathHelper;
+import net.minecraft.src.MovingObjectPosition;
 import net.minecraft.src.Packet250CustomPayload;
 import net.minecraft.src.RenderLiving;
+import net.minecraft.src.RenderManager;
 import net.minecraft.src.ScaledResolution;
 import net.minecraft.src.StatBase;
 import net.minecraft.src.Tessellator;
+import net.minecraft.src.Vec3;
 import net.minecraft.src.World;
 import net.minecraft.src.WorldClient;
 import net.minecraftforge.client.MinecraftForgeClient;
@@ -82,7 +89,6 @@ import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry.KeyHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.TickType;
@@ -158,9 +164,9 @@ public class ClientProxyCore extends CommonProxyCore
 		
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntitySpaceship.class, new GCCoreRenderSpaceship());
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntitySpider.class, new GCCoreRenderSpider());
-        RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityZombie.class, new RenderLiving(new GCCoreModelZombie(), 1.0F));
+        RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityZombie.class, new GCCoreRenderZombie());
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityCreeper.class, new GCCoreRenderCreeper());
-        RenderingRegistry.registerEntityRenderingHandler(GCCoreEntitySkeleton.class, new RenderLiving(new GCCoreModelSkeleton(), 1.0F));
+        RenderingRegistry.registerEntityRenderingHandler(GCCoreEntitySkeleton.class, new GCCoreRenderSkeleton());
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityMeteor.class, new GCCoreRenderMeteor());
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityBuggy.class, new GCCoreRenderBuggy());
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityFlag.class, new GCCoreRenderFlag());
@@ -290,6 +296,8 @@ public class ClientProxyCore extends CommonProxyCore
             }
         }
     }
+    
+    public static Map healthMap = new HashMap();
 	
     public class ClientPacketHandler implements IPacketHandler
     {
@@ -324,8 +332,6 @@ public class ClientProxyCore extends CommonProxyCore
             	
                 if (String.valueOf(packetReadout[0]).equals(FMLClientHandler.instance().getClient().thePlayer.username))
                 {
-                	FMLLog.info((String)packetReadout[1]);
-                	
                 	String[] destinations = ((String)packetReadout[1]).split("\\.");
                 	
             		if (FMLClientHandler.instance().getClient().theWorld != null && !(FMLClientHandler.instance().getClient().currentScreen instanceof GCCoreGuiChoosePlanet))
@@ -333,6 +339,27 @@ public class ClientProxyCore extends CommonProxyCore
             			FMLClientHandler.instance().getClient().displayGuiScreen(new GCCoreGuiChoosePlanet(FMLClientHandler.instance().getClient().thePlayer, destinations));
             			FMLClientHandler.instance().getClient().setIngameNotInFocus();
             		}
+                }
+            }
+            else if (packetType == 3)
+            {
+            	Class[] decodeAs = {Integer.class, Integer.class};
+                Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
+                
+                for(int i = 0; i < player.worldObj.getLoadedEntityList().size(); i++)
+                {
+	                if(player.worldObj.getLoadedEntityList().get(i) instanceof EntityLiving && ((EntityLiving)player.worldObj.getLoadedEntityList().get(i)).entityId == (Integer)packetReadout[1])
+	                {
+	                	if (healthMap.containsKey(packetReadout[1]))
+	                	{
+	                		healthMap.remove(packetReadout[1]);
+	                		healthMap.put(packetReadout[1], packetReadout[0]);
+	                	}
+	                	else
+	                	{
+	                		healthMap.put(packetReadout[1], packetReadout[0]);
+	                	}
+	                }
                 }
             }
 		}
@@ -599,6 +626,385 @@ public class ClientProxyCore extends CommonProxyCore
     			}
             }
     	}
+    	
+        @SuppressWarnings("unused")
+		public static void renderName(EntityLiving par1EntityPlayer, double par2, double par4, double par6)
+        {
+        	// TODO
+    		Minecraft minecraft = FMLClientHandler.instance().getClient();
+    		
+            WorldClient world = minecraft.theWorld;
+            
+            EntityPlayerSP player = minecraft.thePlayer;
+            
+            ItemStack helmetSlot = null;
+    		
+    		if (player != null && player.inventory.armorItemInSlot(3) != null)
+    		{
+    			helmetSlot = player.inventory.armorItemInSlot(3);
+    		}
+    		
+            if (false && helmetSlot != null && helmetSlot.getItem() instanceof GCCoreItemSensorGlasses && minecraft.currentScreen == null && Minecraft.isGuiEnabled() && par1EntityPlayer != RenderManager.instance.livingPlayer && !par1EntityPlayer.getHasActivePotion())
+            {
+            	int health = 100 / par1EntityPlayer.getMaxHealth()
+    					* par1EntityPlayer.getHealth();
+    			int sizeX = 24;
+    			int sizeY = 24;
+    			int offsetX = 48;
+    			int offsetY = 0;
+    			float var6 = (-sizeX) / 2.0F;
+    			float var7 = (-sizeY) / 2.0F;
+    			float var8 = -0.5F;
+    			float var9 = 0.5F;
+
+    			for (int var10 = 0; var10 < sizeX / 24; ++var10) {
+    				for (int var11 = 0; var11 < sizeY / 24; ++var11) {
+    					float var12 = var6 + (var10 + 1) * 24;
+    					float var13 = var6 + var10 * 24;
+    					float var14 = var7 + (var11 + 1) * 48;
+    					float var15 = var7 + var11 * 24;
+    					hooblah(par2, par4, par6);
+    					float var16 = (72) / 256.0F;
+    					float var17 = (48) / 256.0F;
+    					float var18 = (0) / 256.0F;
+    					float var19 = (48) / 256.0F;
+    					float var20 = 0.75F;
+    					float var21 = 0.8125F;
+    					float var22 = 0.0F;
+    					float var23 = 0.0625F;
+    					float var24 = 0.75F;
+    					float var25 = 0.8125F;
+    					float var26 = 0.001953125F;
+    					float var27 = 0.001953125F;
+    					float var28 = 0.7519531F;
+    					float var29 = 0.7519531F;
+    					float var30 = 0.0F;
+    					float var31 = 0.0625F;
+    					Tessellator var32 = Tessellator.instance;
+    					var32.startDrawingQuads();
+    					var32.setNormal(0.0F, 0.0F, -1.0F);
+    					var32.addVertexWithUV(var12, var15, var8, var17, var18);
+    					var32.addVertexWithUV(var13, var15, var8, var16, var18);
+    					var32.addVertexWithUV(var13, var14, var8, var16, var19);
+    					var32.addVertexWithUV(var12, var14, var8, var17, var19);
+    					var32.setNormal(0.0F, 0.0F, 1.0F);
+    					var32.addVertexWithUV(var12, var14, var9, var20, var22);
+    					var32.addVertexWithUV(var13, var14, var9, var21, var22);
+    					var32.addVertexWithUV(var13, var15, var9, var21, var23);
+    					var32.addVertexWithUV(var12, var15, var9, var20, var23);
+    					var32.setNormal(0.0F, 1.0F, 0.0F);
+    					var32.addVertexWithUV(var12, var14, var8, var24, var26);
+    					var32.addVertexWithUV(var13, var14, var8, var25, var26);
+    					var32.addVertexWithUV(var13, var14, var9, var25, var27);
+    					var32.addVertexWithUV(var12, var14, var9, var24, var27);
+    					var32.setNormal(0.0F, -1.0F, 0.0F);
+    					var32.addVertexWithUV(var12, var15, var9, var24, var26);
+    					var32.addVertexWithUV(var13, var15, var9, var25, var26);
+    					var32.addVertexWithUV(var13, var15, var8, var25, var27);
+    					var32.addVertexWithUV(var12, var15, var8, var24, var27);
+    					var32.setNormal(-1.0F, 0.0F, 0.0F);
+    					var32.addVertexWithUV(var12, var14, var9, var29, var30);
+    					var32.addVertexWithUV(var12, var15, var9, var29, var31);
+    					var32.addVertexWithUV(var12, var15, var8, var28, var31);
+    					var32.addVertexWithUV(var12, var14, var8, var28, var30);
+    					var32.setNormal(1.0F, 0.0F, 0.0F);
+    					var32.addVertexWithUV(var13, var14, var8, var29, var30);
+    					var32.addVertexWithUV(var13, var15, var8, var29, var31);
+    					var32.addVertexWithUV(var13, var15, var9, var28, var31);
+    					var32.addVertexWithUV(var13, var14, var9, var28, var30);
+    					var32.draw();
+    					GL11.glDepthMask(true);
+    					GL11.glEnable(GL11.GL_LIGHTING);
+    					GL11.glDisable(GL11.GL_BLEND);
+    					GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+    					GL11.glPopMatrix();
+    				}
+    			}
+
+    			for (int var10 = 0; var10 < sizeX / 13; ++var10) {
+    				for (int var11 = 0; var11 < sizeY / 13; ++var11) {
+    					float var12 = var6 + (var10 + 1) * 102;
+    					float var13 = var6 + var10 * 102;
+    					float var14 = var7 + (var11 + 1) * 14;
+    					float var15 = var7 + var11 * 14;
+    					hooblah2(par2, par4, par6);
+    					float var16 = (256) / 256.0F;
+    					float var17 = (154) / 256.0F;
+    					float var18 = (14) / 256.0F;
+    					float var19 = (0) / 256.0F;
+    					float var20 = 0.75F;
+    					float var21 = 0.8125F;
+    					float var22 = 0.0F;
+    					float var23 = 0.0625F;
+    					float var24 = 0.75F;
+    					float var25 = 0.8125F;
+    					float var26 = 0.001953125F;
+    					float var27 = 0.001953125F;
+    					float var28 = 0.7519531F;
+    					float var29 = 0.7519531F;
+    					float var30 = 0.0F;
+    					float var31 = 0.0625F;
+    					Tessellator var32 = Tessellator.instance;
+    					var32.startDrawingQuads();
+    					var32.setNormal(0.0F, 0.0F, -1.0F);
+    					var32.addVertexWithUV(var12, var15, var8, var17, var18);
+    					var32.addVertexWithUV(var13, var15, var8, var16, var18);
+    					var32.addVertexWithUV(var13, var14, var8, var16, var19);
+    					var32.addVertexWithUV(var12, var14, var8, var17, var19);
+    					var32.setNormal(0.0F, 0.0F, 1.0F);
+    					var32.addVertexWithUV(var12, var14, var9, var20, var22);
+    					var32.addVertexWithUV(var13, var14, var9, var21, var22);
+    					var32.addVertexWithUV(var13, var15, var9, var21, var23);
+    					var32.addVertexWithUV(var12, var15, var9, var20, var23);
+    					var32.setNormal(0.0F, 1.0F, 0.0F);
+    					var32.addVertexWithUV(var12, var14, var8, var24, var26);
+    					var32.addVertexWithUV(var13, var14, var8, var25, var26);
+    					var32.addVertexWithUV(var13, var14, var9, var25, var27);
+    					var32.addVertexWithUV(var12, var14, var9, var24, var27);
+    					var32.setNormal(0.0F, -1.0F, 0.0F);
+    					var32.addVertexWithUV(var12, var15, var9, var24, var26);
+    					var32.addVertexWithUV(var13, var15, var9, var25, var26);
+    					var32.addVertexWithUV(var13, var15, var8, var25, var27);
+    					var32.addVertexWithUV(var12, var15, var8, var24, var27);
+    					var32.setNormal(-1.0F, 0.0F, 0.0F);
+    					var32.addVertexWithUV(var12, var14, var9, var29, var30);
+    					var32.addVertexWithUV(var12, var15, var9, var29, var31);
+    					var32.addVertexWithUV(var12, var15, var8, var28, var31);
+    					var32.addVertexWithUV(var12, var14, var8, var28, var30);
+    					var32.setNormal(1.0F, 0.0F, 0.0F);
+    					var32.addVertexWithUV(var13, var14, var8, var29, var30);
+    					var32.addVertexWithUV(var13, var15, var8, var29, var31);
+    					var32.addVertexWithUV(var13, var15, var9, var28, var31);
+    					var32.addVertexWithUV(var13, var14, var9, var28, var30);
+    					var32.draw();
+    					GL11.glDepthMask(true);
+    					GL11.glEnable(GL11.GL_LIGHTING);
+    					GL11.glDisable(GL11.GL_BLEND);
+    					GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+    					GL11.glPopMatrix();
+    				}
+    			}
+
+    			for (int var10 = 0; var10 < sizeX / 13; ++var10) {
+    				for (int var11 = 0; var11 < sizeY / 13; ++var11) {
+    					float var12 = var6 + (var10 + 1) * health + 1;
+    					float var13 = var6 + var10 * health + 1;
+    					float var14 = var7 + (var11 + 1) * 14 - 1;
+    					float var15 = var7 + var11 * 14 - 1;
+    					hooblah2(par2, par4, par6);
+    					float var16 = (154 + health) / 256.0F;
+    					float var17 = (154) / 256.0F;
+    					float var18 = (28) / 256.0F;
+    					float var19 = (14) / 256.0F;
+    					float var20 = 0.75F;
+    					float var21 = 0.8125F;
+    					float var22 = 0.0F;
+    					float var23 = 0.0625F;
+    					float var24 = 0.75F;
+    					float var25 = 0.8125F;
+    					float var26 = 0.001953125F;
+    					float var27 = 0.001953125F;
+    					float var28 = 0.7519531F;
+    					float var29 = 0.7519531F;
+    					float var30 = 0.0F;
+    					float var31 = 0.0625F;
+    					Tessellator var32 = Tessellator.instance;
+    					var32.startDrawingQuads();
+    					var32.setNormal(0.0F, 0.0F, -1.0F);
+    					var32.addVertexWithUV(var12, var15, var8, var17, var18);
+    					var32.addVertexWithUV(var13, var15, var8, var16, var18);
+    					var32.addVertexWithUV(var13, var14, var8, var16, var19);
+    					var32.addVertexWithUV(var12, var14, var8, var17, var19);
+    					var32.setNormal(0.0F, 0.0F, 1.0F);
+    					var32.addVertexWithUV(var12, var14, var9, var20, var22);
+    					var32.addVertexWithUV(var13, var14, var9, var21, var22);
+    					var32.addVertexWithUV(var13, var15, var9, var21, var23);
+    					var32.addVertexWithUV(var12, var15, var9, var20, var23);
+    					var32.setNormal(0.0F, 1.0F, 0.0F);
+    					var32.addVertexWithUV(var12, var14, var8, var24, var26);
+    					var32.addVertexWithUV(var13, var14, var8, var25, var26);
+    					var32.addVertexWithUV(var13, var14, var9, var25, var27);
+    					var32.addVertexWithUV(var12, var14, var9, var24, var27);
+    					var32.setNormal(0.0F, -1.0F, 0.0F);
+    					var32.addVertexWithUV(var12, var15, var9, var24, var26);
+    					var32.addVertexWithUV(var13, var15, var9, var25, var26);
+    					var32.addVertexWithUV(var13, var15, var8, var25, var27);
+    					var32.addVertexWithUV(var12, var15, var8, var24, var27);
+    					var32.setNormal(-1.0F, 0.0F, 0.0F);
+    					var32.addVertexWithUV(var12, var14, var9, var29, var30);
+    					var32.addVertexWithUV(var12, var15, var9, var29, var31);
+    					var32.addVertexWithUV(var12, var15, var8, var28, var31);
+    					var32.addVertexWithUV(var12, var14, var8, var28, var30);
+    					var32.setNormal(1.0F, 0.0F, 0.0F);
+    					var32.addVertexWithUV(var13, var14, var8, var29, var30);
+    					var32.addVertexWithUV(var13, var15, var8, var29, var31);
+    					var32.addVertexWithUV(var13, var15, var9, var28, var31);
+    					var32.addVertexWithUV(var13, var14, var9, var28, var30);
+    					var32.draw();
+    					GL11.glDepthMask(true);
+    					GL11.glEnable(GL11.GL_LIGHTING);
+    					GL11.glDisable(GL11.GL_BLEND);
+    					GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+    					GL11.glPopMatrix();
+    				}
+    			}
+//                float var8 = 1.6F;
+//                float var9 = 0.016666668F * var8;
+//                double var10 = par1EntityPlayer.getDistanceSqToEntity(RenderManager.instance.livingPlayer);
+//                float var12 = par1EntityPlayer.isSneaking() ? 34F : 64F;
+//
+//                if (var10 < (double)(var12 * var12))
+//                {
+//                    String var13 = "TESTNO1";
+//
+//                    if (par1EntityPlayer.isSneaking())
+//                    {
+//                        FontRenderer var14 = RenderManager.instance.getFontRenderer();
+//                        GL11.glPushMatrix();
+//                        GL11.glTranslatef((float)par2 + 0.0F, (float)par4 + 2.3F, (float)par6);
+//                        GL11.glNormal3f(0.0F, 1.0F, 0.0F);
+//                        GL11.glRotatef(-RenderManager.instance.playerViewY, 0.0F, 1.0F, 0.0F);
+//                        GL11.glRotatef(RenderManager.instance.playerViewX, 1.0F, 0.0F, 0.0F);
+//                        GL11.glScalef(-var9, -var9, var9);
+//                        GL11.glDisable(GL11.GL_LIGHTING);
+//                        GL11.glTranslatef(0.0F, 0.25F / var9, 0.0F);
+//                        GL11.glDepthMask(false);
+//                        GL11.glEnable(GL11.GL_BLEND);
+//                        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+//                        Tessellator var15 = Tessellator.instance;
+//                        GL11.glDisable(GL11.GL_TEXTURE_2D);
+//                        var15.startDrawingQuads();
+//                        int var16 = var14.getStringWidth(var13) / 2;
+//                        var15.setColorRGBA_F(0.0F, 0.0F, 0.0F, 0.25F);
+//                        var15.addVertex((double)(-var16 - 1), -1.0D, 0.0D);
+//                        var15.addVertex((double)(-var16 - 1), 8.0D, 0.0D);
+//                        var15.addVertex((double)(var16 + 1), 8.0D, 0.0D);
+//                        var15.addVertex((double)(var16 + 1), -1.0D, 0.0D);
+//                        var15.draw();
+//                        GL11.glEnable(GL11.GL_TEXTURE_2D);
+//                        GL11.glDepthMask(true);
+//                        var14.drawString(var13, -var14.getStringWidth(var13) / 2, 0, 553648127);
+//                        GL11.glEnable(GL11.GL_LIGHTING);
+//                        GL11.glDisable(GL11.GL_BLEND);
+//                        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+//                        GL11.glPopMatrix();
+//                    }
+//                    else if (par1EntityPlayer.isPlayerSleeping())
+//                    {
+//                        renderLivingLabel(par1EntityPlayer, var13, par2, par4 - 1.5D, par6, 64);
+//                    }
+//                    else
+//                    {
+//                        renderLivingLabel(par1EntityPlayer, var13, par2, par4, par6, 64);
+//                    }
+//                }
+            }
+        }
+
+    	public static void hooblah(double par2, double par4, double par6) 
+    	{
+    		float var8 = 0.5F;
+    		float var9 = 0.016666668F * var8;
+    		GL11.glPushMatrix();
+    		GL11.glTranslatef((float) par2 + 0.0F, (float) par4 + 2.7F, (float) par6);
+    		GL11.glNormal3f(0.0F, 1.0F, 0.0F);
+    		GL11.glRotatef(-RenderManager.instance.playerViewY, 0.0F, 1.0F, 0.0F);
+    		GL11.glRotatef(RenderManager.instance.playerViewX, 1.0F, 0.0F, 0.0F);
+    		GL11.glScalef(-var9, -var9, var9);
+    		GL11.glDisable(GL11.GL_LIGHTING);
+    		GL11.glTranslatef(0.0F, 0.25F / var9, 0.0F);
+    		GL11.glDepthMask(false);
+    		GL11.glEnable(GL11.GL_BLEND);
+    		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+    		GL11.glBindTexture(GL11.GL_TEXTURE_2D, FMLClientHandler.instance().getClient().renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/entities/overhead.png"));
+    	}
+
+    	public static void hooblah2(double par2, double par4, double par6) 
+    	{
+    		float var8 = 0.5F;
+    		float var9 = 0.016666668F * var8;
+    		GL11.glPushMatrix();
+    		GL11.glTranslatef((float) par2 + 0.0F, (float) par4 + 2.47F, (float) par6);
+    		GL11.glNormal3f(0.0F, 1.0F, 0.0F);
+    		GL11.glRotatef(-RenderManager.instance.playerViewY, 0.0F, 1.0F, 0.0F);
+    		GL11.glRotatef(RenderManager.instance.playerViewX, 1.0F, 0.0F, 0.0F);
+    		GL11.glScalef(-var9, -var9, var9);
+    		GL11.glDisable(GL11.GL_LIGHTING);
+    		GL11.glTranslatef(-39.0F, 0.25F / var9, 0.0F);
+    		GL11.glDepthMask(false);
+    		GL11.glEnable(GL11.GL_BLEND);
+    		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+    		GL11.glBindTexture(GL11.GL_TEXTURE_2D, FMLClientHandler.instance().getClient().renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/entities/overhead.png"));
+    	}
+        
+        private static void renderLivingLabel(EntityLiving par1EntityLiving, String par2Str, double par3, double par5, double par7, int par9)
+        {
+            double var10 = par1EntityLiving.getDistanceSqToEntity(RenderManager.instance.livingPlayer);
+
+            if (var10 <= (double)(par9 * par9))
+            {
+                FontRenderer var12 = RenderManager.instance.getFontRenderer();
+                float var13 = 1.6F;
+                float var14 = 0.016666668F * var13;
+                GL11.glPushMatrix();
+                GL11.glTranslatef((float)par3 + 0.0F, (float)par5 + 2.3F, (float)par7);
+                GL11.glNormal3f(0.0F, 1.0F, 0.0F);
+                GL11.glRotatef(-RenderManager.instance.playerViewY, 0.0F, 1.0F, 0.0F);
+                GL11.glRotatef(RenderManager.instance.playerViewX, 1.0F, 0.0F, 0.0F);
+                GL11.glScalef(-var14, -var14, var14);
+                GL11.glDisable(GL11.GL_LIGHTING);
+                GL11.glDepthMask(false);
+                GL11.glDisable(GL11.GL_DEPTH_TEST);
+                GL11.glEnable(GL11.GL_BLEND);
+                GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+                Tessellator var15 = Tessellator.instance;
+                byte var16 = 0;
+
+                if (par2Str.equals("deadmau5"))
+                {
+                    var16 = -10;
+                }
+
+                GL11.glDisable(GL11.GL_TEXTURE_2D);
+                var15.startDrawingQuads();
+                int var17 = var12.getStringWidth(par2Str) / 2;
+                var15.setColorRGBA_F(0.0F, 0.0F, 0.0F, 0.25F);
+                var15.addVertex((double)(-var17 - 1), (double)(-1 + var16), 0.0D);
+                var15.addVertex((double)(-var17 - 1), (double)(8 + var16), 0.0D);
+                var15.addVertex((double)(var17 + 1), (double)(8 + var16), 0.0D);
+                var15.addVertex((double)(var17 + 1), (double)(-1 + var16), 0.0D);
+                var15.draw();
+                GL11.glEnable(GL11.GL_TEXTURE_2D);
+                var12.drawString(par2Str, -var12.getStringWidth(par2Str) / 2, var16, 553648127);
+                GL11.glEnable(GL11.GL_DEPTH_TEST);
+                GL11.glDepthMask(true);
+                var12.drawString(par2Str, -var12.getStringWidth(par2Str) / 2, var16, -1);
+                GL11.glEnable(GL11.GL_LIGHTING);
+                GL11.glDisable(GL11.GL_BLEND);
+                GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+                GL11.glPopMatrix();
+            }
+        }
+    	
+        protected MovingObjectPosition getMovingObjectPositionFromPlayer(World par1World, EntityPlayer par2EntityPlayer, boolean par3)
+        {
+            float var4 = 1.0F;
+            float var5 = par2EntityPlayer.prevRotationPitch + (par2EntityPlayer.rotationPitch - par2EntityPlayer.prevRotationPitch) * var4;
+            float var6 = par2EntityPlayer.prevRotationYaw + (par2EntityPlayer.rotationYaw - par2EntityPlayer.prevRotationYaw) * var4;
+            double var7 = par2EntityPlayer.prevPosX + (par2EntityPlayer.posX - par2EntityPlayer.prevPosX) * (double)var4;
+            double var9 = par2EntityPlayer.prevPosY + (par2EntityPlayer.posY - par2EntityPlayer.prevPosY) * (double)var4 + 1.62D - (double)par2EntityPlayer.yOffset;
+            double var11 = par2EntityPlayer.prevPosZ + (par2EntityPlayer.posZ - par2EntityPlayer.prevPosZ) * (double)var4;
+            Vec3 var13 = par1World.getWorldVec3Pool().getVecFromPool(var7, var9, var11);
+            float var14 = MathHelper.cos(-var6 * 0.017453292F - (float)Math.PI);
+            float var15 = MathHelper.sin(-var6 * 0.017453292F - (float)Math.PI);
+            float var16 = -MathHelper.cos(-var5 * 0.017453292F);
+            float var17 = MathHelper.sin(-var5 * 0.017453292F);
+            float var18 = var15 * var16;
+            float var20 = var14 * var16;
+            double var21 = 100.0D;
+            Vec3 var23 = var13.addVector((double)var18 * var21, (double)var17 * var21, (double)var20 * var21);
+            return par1World.rayTraceBlocks_do_do(var13, var23, par3, !par3);
+        }
     	
         @Override
 		public String getLabel()
