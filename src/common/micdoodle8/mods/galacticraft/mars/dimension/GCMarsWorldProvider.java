@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
 import micdoodle8.mods.galacticraft.mars.wgen.GCMarsChunkProvider;
 import micdoodle8.mods.galacticraft.mars.wgen.GCMarsWorldChunkManager;
 import net.minecraft.src.Chunk;
+import net.minecraft.src.Entity;
 import net.minecraft.src.IChunkProvider;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.Vec3;
@@ -65,6 +66,12 @@ public class GCMarsWorldProvider extends WorldProvider implements IGalacticraftW
     public Vec3 getFogColor(float var1, float var2)
     {
 		return this.worldObj.getWorldVec3Pool().getVecFromPool((double)115F / 255F, (double)0F / 255F, (double)0F / 255F);
+    }
+
+	@Override
+    public Vec3 getSkyColor(Entity cameraEntity, float partialTicks)
+    {
+        return this.worldObj.getWorldVec3Pool().getVecFromPool((double)0, (double)0, (double)0);
     }
     
     @Override

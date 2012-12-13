@@ -5,7 +5,9 @@ import micdoodle8.mods.galacticraft.europa.GCEuropaConfigManager;
 import micdoodle8.mods.galacticraft.europa.wgen.GCEuropaChunkProvider;
 import micdoodle8.mods.galacticraft.europa.wgen.GCEuropaWorldChunkManager;
 import net.minecraft.src.Chunk;
+import net.minecraft.src.Entity;
 import net.minecraft.src.IChunkProvider;
+import net.minecraft.src.MathHelper;
 import net.minecraft.src.Vec3;
 import net.minecraft.src.WorldProvider;
 import cpw.mods.fml.common.Side;
@@ -63,6 +65,12 @@ public class GCEuropaWorldProvider extends WorldProvider implements IGalacticraf
     public Vec3 getFogColor(float var1, float var2)
     {
         return this.worldObj.getWorldVec3Pool().getVecFromPool((double)100F / 255F, (double)100F / 255F, (double)100F / 255F);
+    }
+
+	@Override
+    public Vec3 getSkyColor(Entity cameraEntity, float partialTicks)
+    {
+        return this.worldObj.getWorldVec3Pool().getVecFromPool((double)0, (double)0, (double)0);
     }
 	
 	@Override
@@ -142,6 +150,26 @@ public class GCEuropaWorldProvider extends WorldProvider implements IGalacticraf
     	return true;
 //        int var3 = this.worldObj.getFirstUncoveredBlock(var1, var2);
 //        return var3 == GCMarsBlocks.marsGrass.blockID;
+    }
+
+    @Override
+	@SideOnly(Side.CLIENT)
+    public float getStarBrightness(float par1)
+    {
+        float var2 = this.worldObj.getCelestialAngle(par1);
+        float var3 = 1.0F - (MathHelper.cos(var2 * (float)Math.PI * 2.0F) * 2.0F + 0.25F);
+
+        if (var3 < 0.0F)
+        {
+            var3 = 0.0F;
+        }
+
+        if (var3 > 1.0F)
+        {
+            var3 = 1.0F;
+        }
+
+        return var3 * var3 * 0.5F + 0.3F;
     }
     
     @Override

@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.titan.GCTitanConfigManager;
 import micdoodle8.mods.galacticraft.titan.wgen.GCTitanChunkProvider;
 import micdoodle8.mods.galacticraft.titan.wgen.GCTitanWorldChunkManager;
 import net.minecraft.src.Chunk;
+import net.minecraft.src.Entity;
 import net.minecraft.src.IChunkProvider;
 import net.minecraft.src.Vec3;
 import net.minecraft.src.WorldProvider;
@@ -66,6 +67,12 @@ public class GCEnceladusWorldProvider extends WorldProvider implements IGalactic
     public Vec3 getFogColor(float var1, float var2)
     {
         return this.worldObj.getWorldVec3Pool().getVecFromPool((double)132F / 255F, (double)112F / 255F, (double)255F / 255F);
+    }
+
+	@Override
+    public Vec3 getSkyColor(Entity cameraEntity, float partialTicks)
+    {
+        return this.worldObj.getWorldVec3Pool().getVecFromPool((double)0, (double)0, (double)0);
     }
 	
 	@Override
