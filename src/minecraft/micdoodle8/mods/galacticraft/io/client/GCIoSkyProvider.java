@@ -1,10 +1,9 @@
-package micdoodle8.mods.galacticraft.moon.client;
+package micdoodle8.mods.galacticraft.io.client;
 
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
-import micdoodle8.mods.galacticraft.core.GCCoreUtil;
-import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;
+import micdoodle8.mods.galacticraft.io.dimension.GCIoWorldProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.GLAllocation;
 import net.minecraft.src.MathHelper;
@@ -24,13 +23,13 @@ import cpw.mods.fml.client.FMLClientHandler;
  *  All rights reserved.
  *
  */
-public class GCMoonSkyProvider extends SkyProvider 
+public class GCIoSkyProvider extends SkyProvider 
 {
 	public int starGLCallList = GLAllocation.generateDisplayLists(3); 
 	public int glSkyList;
 	public int glSkyList2;
 	
-	public GCMoonSkyProvider() 
+	public GCIoSkyProvider() 
 	{
 		GL11.glPushMatrix();
 		GL11.glNewList(starGLCallList, GL11.GL_COMPILE);
@@ -77,11 +76,11 @@ public class GCMoonSkyProvider extends SkyProvider
 	@Override
 	public void render(float partialTicks, WorldClient world, Minecraft mc)
 	{
-		GCMoonWorldProvider gcProvider = null;
+		GCIoWorldProvider gcProvider = null;
 		
-		if (world.provider instanceof GCMoonWorldProvider)
+		if (world.provider instanceof GCIoWorldProvider)
 		{
-			gcProvider = (GCMoonWorldProvider)world.provider;
+			gcProvider = (GCIoWorldProvider)world.provider;
 		}
 		
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
@@ -132,29 +131,6 @@ public class GCMoonSkyProvider extends SkyProvider
 
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
-        GL11.glPushMatrix();
-        
-        try
-        {
-        	Class.forName("micdoodle8.mods.galacticraft.mars.GCMarsWorldProvider");
-        	
-            var12 = 3F;
-            GL11.glRotatef(40F, 0.0F, 1.0F, 0.0F);
-            GL11.glColor4f(1.0F, 1.0F, 1.0F, 5F);
-            GL11.glRotatef(GCCoreUtil.calculateMarsAngleFromOtherPlanet(world.getWorldTime(), partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/planets/mars.png"));
-            var23.startDrawingQuads();
-            var23.addVertexWithUV((-var12), 150.0D, (-var12), 0.0D, 0.0D);
-            var23.addVertexWithUV(var12, 150.0D, (-var12), 1.0D, 0.0D);
-            var23.addVertexWithUV(var12, 150.0D, var12, 1.0D, 1.0D);
-            var23.addVertexWithUV((-var12), 150.0D, var12, 0.0D, 1.0D);
-            var23.draw();
-        }
-        catch (ClassNotFoundException e)
-        {
-        }
-
-        GL11.glPopMatrix();
         
         GL11.glPushMatrix();
 
@@ -183,7 +159,7 @@ public class GCMoonSkyProvider extends SkyProvider
         GL11.glRotatef(earthRotation, 1.0F, 0.0F, 0.0F);
         GL11.glRotatef(200F, 1.0F, 0.0F, 0.0F);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1F);
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/planets/overworld.png"));
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/micdoodle8/mods/galacticraft/saturn/client/planets/saturn.png"));
         int var28 = world.getMoonPhase(partialTicks);
         int var30 = var28 % 4;
         int var29 = var28 / 4 % 2;
@@ -249,7 +225,7 @@ public class GCMoonSkyProvider extends SkyProvider
 
     private void renderStars()
     {
-    	Random var1 = new Random(10842L);
+        Random var1 = new Random(10842L);
         Tessellator var2 = Tessellator.instance;
         var2.startDrawingQuads();
 
@@ -301,7 +277,7 @@ public class GCMoonSkyProvider extends SkyProvider
 
     private Vec3 getCustomSkyColor()
     {
-        return Vec3.vec3dPool.getVecFromPool(0.26796875D, 0.1796875D, 0.0D);
+        return Vec3.vec3dPool.getVecFromPool(1D, 1D, 1D);
     }
     
     public float getSkyBrightness(float par1)

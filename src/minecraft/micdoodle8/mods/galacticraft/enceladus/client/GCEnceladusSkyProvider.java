@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.enceladus.client;
 
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.mars.dimension.GCMarsWorldProvider;
 import net.minecraft.client.Minecraft;
@@ -249,11 +250,11 @@ public class GCEnceladusSkyProvider extends SkyProvider
 
     private void renderStars()
     {
-        Random var1 = new Random(10842L);
+    	Random var1 = new Random(10842L);
         Tessellator var2 = Tessellator.instance;
         var2.startDrawingQuads();
 
-        for (int var3 = 0; var3 < 6000; ++var3)
+        for (int var3 = 0; var3 < (GCCoreConfigManager.moreStars ? 20000 : 6000); ++var3)
         {
             double var4 = var1.nextFloat() * 2.0F - 1.0F;
             double var6 = var1.nextFloat() * 2.0F - 1.0F;
@@ -267,9 +268,9 @@ public class GCEnceladusSkyProvider extends SkyProvider
                 var4 *= var12;
                 var6 *= var12;
                 var8 *= var12;
-                double var14 = var4 * 100.0D;
-                double var16 = var6 * 100.0D;
-                double var18 = var8 * 100.0D;
+                double var14 = var4 * (GCCoreConfigManager.moreStars ? (var1.nextDouble() * 100D + 150D) : 100.0D);
+                double var16 = var6 * (GCCoreConfigManager.moreStars ? (var1.nextDouble() * 100D + 150D) : 100.0D);
+                double var18 = var8 * (GCCoreConfigManager.moreStars ? (var1.nextDouble() * 100D + 150D) : 100.0D);
                 double var20 = Math.atan2(var4, var8);
                 double var22 = Math.sin(var20);
                 double var24 = Math.cos(var20);

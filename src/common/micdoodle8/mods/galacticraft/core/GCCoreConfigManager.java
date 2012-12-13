@@ -107,6 +107,7 @@ public class GCCoreConfigManager
 	
 	// GENERAL
 	public static boolean transparentBreathableAir;
+	public static boolean moreStars;
 	
 	private void setDefaultValues()
     {
@@ -187,6 +188,7 @@ public class GCCoreConfigManager
 	        idEntityFlag = 							configuration.get("Entities", "idEntityFlag", 											163)		.getInt(163);
 	        
 	        transparentBreathableAir = 				configuration.get(configuration.CATEGORY_GENERAL, "transparentBreathableAir", 			true)		.getBoolean(true);
+	        moreStars = 							configuration.get(configuration.CATEGORY_GENERAL, "moreStars", 							true)		.getBoolean(true);
 		}
 		catch (Exception e)
 		{
