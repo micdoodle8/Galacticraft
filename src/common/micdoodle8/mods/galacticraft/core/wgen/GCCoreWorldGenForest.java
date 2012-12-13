@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.wgen;
 
 import java.util.Random;
 
-import micdoodle8.mods.galacticraft.API.IGalacticraftBlockGrass;
+import micdoodle8.mods.galacticraft.API.IPlantableBlock;
 import net.minecraft.src.Block;
 import net.minecraft.src.World;
 import net.minecraft.src.WorldGenerator;
@@ -85,7 +85,7 @@ public class GCCoreWorldGenForest extends WorldGenerator
                     }
                 }
 
-                if (waterBlocksNearby > 4 && (Block.blocksList[var8] != null && Block.blocksList[var8] instanceof IGalacticraftBlockGrass) && par4 < 256 - var6 - 1)
+                if (Block.blocksList[var8] != null && Block.blocksList[var8] instanceof IPlantableBlock && waterBlocksNearby >= ((IPlantableBlock)Block.blocksList[var8]).requiredLiquidBlocksNearby() && par4 < 256 - var6 - 1)
                 {
                     int var16;
 
