@@ -2,18 +2,18 @@ package micdoodle8.mods.galacticraft.moon.blocks;
 
 import java.util.Random;
 
-import micdoodle8.mods.galacticraft.API.IGalacticraftBlockGrass;
+import micdoodle8.mods.galacticraft.API.IPlantableBlock;
 import micdoodle8.mods.galacticraft.moon.client.GCMoonColorizerGrass;
 import net.minecraft.src.Block;
 import net.minecraft.src.BlockFlower;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.Material;
+import net.minecraft.src.MathHelper;
 import net.minecraft.src.World;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.IPlantable;
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
@@ -23,7 +23,7 @@ import cpw.mods.fml.common.asm.SideOnly;
  *  All rights reserved.
  *
  */
-public class GCMoonBlockGrass extends Block implements IGalacticraftBlockGrass
+public class GCMoonBlockGrass extends Block implements IPlantableBlock
 {
 	public GCMoonBlockGrass(int par1, int par2) 
 	{
@@ -204,9 +204,9 @@ public class GCMoonBlockGrass extends Block implements IGalacticraftBlockGrass
 	@SideOnly(Side.CLIENT)
     public int colorMultiplier(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
-        int var5 = 0;
-        int var6 = 0;
-        int var7 = 0;
+        float var5 = 0;
+        float var6 = 0;
+        float var7 = 0;
 
         for (int var8 = -1; var8 <= 1; ++var8)
         {
@@ -235,7 +235,7 @@ public class GCMoonBlockGrass extends Block implements IGalacticraftBlockGrass
         }
 
 
-        return (var5 / 9 & 255) << 16 | (var6 / 9 & 255) << 8 | var7 / 9 & 255;
+        return (MathHelper.floor_float(var5) / 9 & 255) << 16 | (MathHelper.floor_float(var6) / 9 & 255) << 8 | MathHelper.floor_float(var7) / 9 & 255;
     }
     
     private int getGrassColorAtYCoord(int y)
@@ -262,4 +262,10 @@ public class GCMoonBlockGrass extends Block implements IGalacticraftBlockGrass
     {
 		return "/micdoodle8/mods/galacticraft/moon/client/blocks/moon.png";
     }
+
+	@Override
+	public int requiredLiquidBlocksNearby() 
+	{
+		return 4;
+	}
 }

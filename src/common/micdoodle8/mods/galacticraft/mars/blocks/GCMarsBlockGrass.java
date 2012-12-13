@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.mars.blocks;
 
 import java.util.Random;
 
-import micdoodle8.mods.galacticraft.API.IGalacticraftBlockGrass;
+import micdoodle8.mods.galacticraft.API.IPlantableBlock;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.src.Block;
 import net.minecraft.src.BlockFlower;
@@ -18,7 +18,7 @@ import net.minecraftforge.common.IPlantable;
  *  All rights reserved.
  *
  */
-public class GCMarsBlockGrass extends Block implements IGalacticraftBlockGrass
+public class GCMarsBlockGrass extends Block implements IPlantableBlock
 {
 	public GCMarsBlockGrass(int par1, int par2) 
 	{
@@ -92,4 +92,10 @@ public class GCMarsBlockGrass extends Block implements IGalacticraftBlockGrass
     {
 		return "/micdoodle8/mods/galacticraft/mars/client/blocks/mars.png";
     }
+
+	@Override
+	public int requiredLiquidBlocksNearby() 
+	{
+		return 4;
+	}
 }
