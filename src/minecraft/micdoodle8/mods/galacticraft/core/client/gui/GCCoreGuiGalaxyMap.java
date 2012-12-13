@@ -15,7 +15,6 @@ import net.minecraft.src.GuiSmallButton;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.RenderHelper;
 import net.minecraft.src.RenderItem;
-import net.minecraft.src.ScaledResolution;
 import net.minecraft.src.StatCollector;
 import net.minecraft.src.StatFileWriter;
 import net.minecraftforge.common.AchievementPage;
@@ -43,8 +42,8 @@ public class GCCoreGuiGalaxyMap extends GuiScreen
 
     /** The right y coordinate of the achievement map */
     private static final int guiMapRight = AchievementList.maxDisplayRow * 24 - 77;
-    protected int achievementsPaneWidth = FMLClientHandler.instance().getClient().displayHeight;
-    protected int achievementsPaneHeight = 300;
+    protected int achievementsPaneWidth;
+    protected int achievementsPaneHeight = 202;
 
     /** The current mouse x coordinate */
     protected int mouseX = 0;
@@ -92,6 +91,8 @@ public class GCCoreGuiGalaxyMap extends GuiScreen
      */
     public void initGui()
     {
+    	this.achievementsPaneWidth = this.width;
+        this.achievementsPaneHeight = this.height;
         this.controlList.clear();
         this.controlList.add(new GuiSmallButton(1, this.width / 2 + 24, this.height / 2 + 74, 80, 20, StatCollector.translateToLocal("gui.done")));
         this.controlList.add(button = new GuiSmallButton(2, (width - achievementsPaneWidth) / 2 + 24, height / 2 + 74, 125, 20, AchievementPage.getTitle(currentPage)));
@@ -142,14 +143,10 @@ public class GCCoreGuiGalaxyMap extends GuiScreen
      */
     public void drawScreen(int par1, int par2, float par3)
     {
-        ScaledResolution var2 = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
-        int var3 = var2.getScaledWidth();
-        short var4b = 182;
-        int var5b = var3 / 2 - var4b / 2;
-        int var7b = var2.getScaledHeight();
-        this.drawTexturedModalRect(var5b, var7b, 0, 74, var4b, 5);
-        this.drawTexturedModalRect(var5b, var7b, 0, 74, var4b, 5);
-        
+//    	FMLLog.info("" + this.width);
+    	this.achievementsPaneWidth = this.width;
+        this.achievementsPaneHeight = this.height;
+    	
         if (Mouse.isButtonDown(0))
         {
             int var4 = (this.width - this.achievementsPaneWidth) / 2;
@@ -157,7 +154,9 @@ public class GCCoreGuiGalaxyMap extends GuiScreen
             int var6 = var4 + 8;
             int var7 = var5 + 17;
 
-            if ((this.isMouseButtonDown == 0 || this.isMouseButtonDown == 1) && par1 >= var6 && par1 < var6 + 224 && par2 >= var7 && par2 < var7 + 155)
+            FMLLog.info("" + var6);
+            
+            if (this.isMouseButtonDown == 0 || this.isMouseButtonDown == 1)
             {
                 if (this.isMouseButtonDown == 0)
                 {
@@ -214,9 +213,6 @@ public class GCCoreGuiGalaxyMap extends GuiScreen
      */
     public void updateScreen()
     {
-    	this.achievementsPaneHeight = FMLClientHandler.instance().getClient().displayHeight;
-    	this.achievementsPaneWidth = FMLClientHandler.instance().getClient().displayWidth;
-    	
         this.field_74117_m = this.guiMapX;
         this.field_74115_n = this.guiMapY;
         double var1 = this.field_74124_q - this.guiMapX;
@@ -270,7 +266,7 @@ public class GCCoreGuiGalaxyMap extends GuiScreen
         }
 
         int var6 = this.mc.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/gui/mapbg.png");
-        int var7 = this.mc.renderEngine.getTexture("/achievement/bg.png");
+//        int var7 = this.mc.renderEngine.getTexture("/achievement/bg.png");
         int var8 = (this.width - this.achievementsPaneWidth) / 2;
         int var9 = (this.height - this.achievementsPaneHeight) / 2;
         int var10 = var8 + 16;
@@ -294,12 +290,12 @@ public class GCCoreGuiGalaxyMap extends GuiScreen
         int var24;
         int var26;
 
-        for (var22 = 0; var22 * 16 - var15 < 155; ++var22)
+        for (var22 = 0; var22 * 16 - var15 < this.height - 24; ++var22)
         {
             float var23 = 0.6F - (float)(var13 + var22) / 25.0F * 0.3F;
             GL11.glColor4f(var23, var23, var23, 1.0F);
 
-            for (var24 = 0; var24 * 16 - var14 < 224; ++var24)
+            for (var24 = 0; var24 * 16 - var14 < this.width - 24; ++var24)
             {
                 var21.setSeed((long)(1234 + var12 + var24));
                 var21.nextInt();
@@ -341,7 +337,7 @@ public class GCCoreGuiGalaxyMap extends GuiScreen
                     var26 = Block.bedrock.blockIndexInTexture;
                 }
 
-                this.drawTexturedModalRect(var10 + var24 * 256 - var14, var11 + var22 * 256 - var15, var26 % 256 << 4, var26 >> 4 << 4, 16, 16);
+                this.drawTexturedModalRect(var10 + var24 * 16 - var14, var11 + var22 * 16 - var15, var26 % 16 << 4, var26 >> 4 << 4, 16, 16);
             }
         }
 
@@ -365,7 +361,7 @@ public class GCCoreGuiGalaxyMap extends GuiScreen
                 boolean var28 = this.statFileWriter.hasAchievementUnlocked(var33);
                 boolean var29 = this.statFileWriter.canUnlockAchievement(var33);
                 var30 = Math.sin((double)(Minecraft.getSystemTime() % 600L) / 600.0D * Math.PI * 2.0D) > 0.6D ? 255 : 130;
-                int var31 = -16777216;
+                int var31 = -16777226;
 
                 if (var28)
                 {
@@ -396,7 +392,7 @@ public class GCCoreGuiGalaxyMap extends GuiScreen
             var26 = var35.displayColumn * 24 - var4;
             var27 = var35.displayRow * 24 - var5;
 
-            if (var26 >= -24 && var27 >= -24 && var26 <= 224 && var27 <= 155)
+            if (var26 >= -24 && var27 >= -24 && var26 <= this.width - 24 && var27 <= this.height - 24)
             {
                 float var38;
 
@@ -416,17 +412,16 @@ public class GCCoreGuiGalaxyMap extends GuiScreen
                     GL11.glColor4f(var38, var38, var38, 1.0F);
                 }
 
-                this.mc.renderEngine.bindTexture(var7);
                 var42 = var10 + var26;
                 var41 = var11 + var27;
 
                 if (var35.getSpecial())
                 {
-                    this.drawTexturedModalRect(var42 - 2, var41 - 2, 26, 202, 26, 26);
+//                    this.drawTexturedModalRect(var42 - 2, var41 - 2, 26, 202, 26, 26);
                 }
                 else
                 {
-                    this.drawTexturedModalRect(var42 - 2, var41 - 2, 0, 202, 26, 26);
+//                    this.drawTexturedModalRect(var42 - 2, var41 - 2, 0, 202, 26, 26);
                 }
 
                 if (!this.statFileWriter.canUnlockAchievement(var35))
@@ -458,18 +453,10 @@ public class GCCoreGuiGalaxyMap extends GuiScreen
         GL11.glDisable(GL11.GL_DEPTH_TEST);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        
-        for (int i = 0; i < 10; i++)
-        {
-            for (int j = 0; j < 10; j++)
-            {
-                this.mc.renderEngine.bindTexture(var6);
-                this.drawTexturedModalRect(256 * i - var8, 256 * j - var9, 0, 0, 256, 256);
-            }
-        }
-        
-        this.mc.renderEngine.bindTexture(var7);
-        this.drawTexturedModalRect(this.achievementsPaneWidth, this.achievementsPaneHeight, 0, 0, 256, 256);
+        this.drawRect(0, 				0, 					this.width, 	20, 			-16777226);
+        this.drawRect(0,	 			this.height - 20, 	this.width, 	this.height,	-16777226);
+        this.drawRect(0, 				0, 					10, 			this.height, 	-16777226);
+        this.drawRect(this.width - 10, 	0, 					this.width, 	this.height, 	-16777226);
         GL11.glPopMatrix();
         this.zLevel = 0.0F;
         GL11.glDepthFunc(GL11.GL_LEQUAL);
