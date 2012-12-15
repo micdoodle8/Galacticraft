@@ -380,7 +380,7 @@ public class GCCoreEntitySpaceship extends Entity
         if (this.launched && !reversed)
         {
         	if (Math.abs(Math.sin(timeSinceLaunch / 1000)) / 10 != 0.0)
-            this.motionY += Math.abs(Math.sin(timeSinceLaunch / 1000)) / 20;
+        		this.motionY += Math.abs(Math.sin(timeSinceLaunch / 1000)) / 20;
         }
         
         this.motionX = -(this.motionY * (Math.sin((this.rotationPitch) * Math.PI / 180.0D)) * (Math.cos((this.rotationYaw) * Math.PI / 180.0D)));
@@ -466,9 +466,9 @@ public class GCCoreEntitySpaceship extends Entity
     @SideOnly(Side.CLIENT)
     protected void spawnParticles(boolean launched)
     {
-    	double x1 = (this.motionY * (Math.sin((this.rotationPitch) * Math.PI / 180.0D)) * (Math.cos((this.rotationYaw) * Math.PI / 180.0D))) * 3;
-    	double z1 = (this.motionY * (Math.sin((this.rotationPitch) * Math.PI / 180.0D)) * (Math.sin((this.rotationYaw) * Math.PI / 180.0D))) * 3;
-    	double y1 = (this.motionY * (Math.sin((this.rotationPitch) * Math.PI / 180.0D))) * 3 + (this.getReversed() == 1 ? 10D : 0D);
+    	double x1 = 2D * (Math.sin((this.rotationPitch * 1.5D) * Math.PI / 180.0D)) * (Math.cos((this.rotationYaw) * Math.PI / 180.0D));
+    	double z1 = 2D * (Math.sin((this.rotationPitch * 1.5D) * Math.PI / 180.0D)) * (Math.sin((this.rotationYaw) * Math.PI / 180.0D));
+    	double y1 = 4D * (Math.sin((this.rotationPitch) * Math.PI / 180.0D)) + (this.getReversed() == 1 ? 10D : 0D);
     	
     	if (!this.worldObj.isRemote && !this.isDead)
     	{
