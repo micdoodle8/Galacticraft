@@ -124,4 +124,34 @@ public class ClientProxyJupiter extends CommonProxyJupiter implements IGalacticr
 	{
 		return new GCJupiterSlotRenderer();
 	}
+
+	@Override
+	public float getPlanetSize() 
+	{
+		return 24;
+	}
+
+	@Override
+	public float getDistanceFromCenter() 
+	{
+		return 130;
+	}
+
+	@Override
+	public float getPhaseShift() 
+	{
+		return 0;
+	}
+
+	@Override
+	public float getStretchValue() 
+	{
+		return 1 / 11.86F;
+	}
+	
+	@Override
+	public boolean isMoon()
+	{
+		return false;
+	}
 }

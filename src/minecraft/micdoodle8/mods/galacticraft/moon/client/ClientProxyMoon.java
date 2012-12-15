@@ -129,4 +129,34 @@ public class ClientProxyMoon extends CommonProxyMoon implements IGalacticraftSub
 	{
 		return new GCMoonSlotRenderer();
 	}
+
+	@Override
+	public float getPlanetSize() 
+	{
+		return 0;
+	}
+
+	@Override
+	public float getDistanceFromCenter() 
+	{
+		return 0;
+	}
+
+	@Override
+	public boolean isMoon() 
+	{
+		return true;
+	}
+
+	@Override
+	public float getPhaseShift() 
+	{
+		return 0;
+	}
+
+	@Override
+	public float getStretchValue() 
+	{
+		return 0;
+	}
 }

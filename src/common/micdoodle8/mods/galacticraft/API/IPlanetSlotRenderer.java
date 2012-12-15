@@ -8,5 +8,5 @@ public interface IPlanetSlotRenderer
 	
 	public String getPlanetName();
 	
-	public void renderSlot(int index, int x, int y, int slotHeight, Tessellator tessellator);
+	public void renderSlot(int index, int x, int y, float slotHeight, Tessellator tessellator);
 }

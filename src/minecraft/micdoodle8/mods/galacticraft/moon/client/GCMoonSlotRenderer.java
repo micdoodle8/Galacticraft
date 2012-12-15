@@ -19,7 +19,7 @@ public class GCMoonSlotRenderer implements IPlanetSlotRenderer
 	}
 
 	@Override
-	public void renderSlot(int index, int x, int y, int slotHeight, Tessellator tessellator) 
+	public void renderSlot(int index, int x, int y, float slotHeight, Tessellator tessellator) 
 	{
 		tessellator.startDrawingQuads();
 		tessellator.addVertexWithUV(x - 10 - slotHeight * 0.9, 	y - 1 + slotHeight * 0.9, 		-90.0D, 0.35D, 0.65D);

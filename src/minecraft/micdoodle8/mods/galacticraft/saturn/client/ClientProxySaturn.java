@@ -124,4 +124,34 @@ public class ClientProxySaturn extends CommonProxySaturn implements IGalacticraf
 	{
 		return new GCSaturnSlotRenderer();
 	}
+
+	@Override
+	public float getPlanetSize() 
+	{
+		return 20;
+	}
+
+	@Override
+	public float getDistanceFromCenter() 
+	{
+		return 170;
+	}
+
+	@Override
+	public boolean isMoon() 
+	{
+		return false;
+	}
+
+	@Override
+	public float getPhaseShift() 
+	{
+		return 0;
+	}
+
+	@Override
+	public float getStretchValue() 
+	{
+		return 1 / 29.7F;
+	}
 }

@@ -254,4 +254,34 @@ public class ClientProxyMars extends CommonProxyMars implements IGalacticraftSub
 	{
 		return new GCMarsSlotRenderer();
 	}
+
+	@Override
+	public float getPlanetSize() 
+	{
+		return 12;
+	}
+
+	@Override
+	public float getDistanceFromCenter() 
+	{
+		return 99;
+	}
+	
+	@Override
+	public float getPhaseShift()
+	{
+		return 0;
+	}
+
+	@Override
+	public float getStretchValue() 
+	{
+		return 1 / 1.88F;
+	}
+	
+	@Override
+	public boolean isMoon()
+	{
+		return false;
+	}
 }

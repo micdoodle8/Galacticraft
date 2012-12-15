@@ -22,13 +22,13 @@ public class GCSaturnSlotRenderer implements IPlanetSlotRenderer
 	}
 
 	@Override
-	public void renderSlot(int index, int x, int y, int slotHeight, Tessellator tessellator) 
+	public void renderSlot(int index, int x, int y, float slotHeight, Tessellator tessellator) 
 	{
 		tessellator.startDrawingQuads();
-		tessellator.addVertexWithUV(x - 7 - slotHeight * 1.6, 	y - 5 + slotHeight * 1.6, 	-90.0D, 0.0, 1.0);
-        tessellator.addVertexWithUV(x - 7, 						y - 5 + slotHeight * 1.6, 	-90.0D, 1.0, 1.0);
-        tessellator.addVertexWithUV(x - 7, 						y - 5, 						-90.0D, 1.0, 0.0);
-        tessellator.addVertexWithUV(x - 7 - slotHeight * 1.6, 	y - 5, 						-90.0D, 0.0, 0.0);
+		tessellator.addVertexWithUV(x - (slotHeight / 2) * 1.6, 	y + (slotHeight / 2) * 1.6, 	-90.0D, 0.0, 1.0);
+        tessellator.addVertexWithUV(x + (slotHeight / 2) * 1.6, 	y + (slotHeight / 2) * 1.6, 	-90.0D, 1.0, 1.0);
+        tessellator.addVertexWithUV(x + (slotHeight / 2) * 1.6, 	y - (slotHeight / 2) * 1.6, 	-90.0D, 1.0, 0.0);
+        tessellator.addVertexWithUV(x - (slotHeight / 2) * 1.6, 	y - (slotHeight / 2) * 1.6, 	-90.0D, 0.0, 0.0);
 	    tessellator.draw();
 	}
 }
