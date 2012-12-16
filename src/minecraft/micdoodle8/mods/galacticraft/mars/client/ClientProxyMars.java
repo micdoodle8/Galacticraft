@@ -13,6 +13,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderArrow;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityArrow;
 import micdoodle8.mods.galacticraft.europa.client.GCEuropaSlotRenderer;
+import micdoodle8.mods.galacticraft.jupiter.client.GCJupiterMapPlanet;
 import micdoodle8.mods.galacticraft.mars.CommonProxyMars;
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
 import micdoodle8.mods.galacticraft.mars.dimension.GCMarsWorldProvider;
@@ -74,6 +75,7 @@ public class ClientProxyMars extends CommonProxyMars implements IGalacticraftSub
         NetworkRegistry.instance().registerChannel(new ClientPacketHandler(), "GalacticraftMars", Side.CLIENT);
         this.fluidRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new GCMarsBlockRendererBacterialSludge(this.fluidRenderID));
+		GalacticraftCore.addMapPlanet(new GCMarsMapPlanet());
 	}
 
 	@Override
@@ -253,35 +255,5 @@ public class ClientProxyMars extends CommonProxyMars implements IGalacticraftSub
 	public IPlanetSlotRenderer getSlotRenderer() 
 	{
 		return new GCMarsSlotRenderer();
-	}
-
-	@Override
-	public float getPlanetSize() 
-	{
-		return 12;
-	}
-
-	@Override
-	public float getDistanceFromCenter() 
-	{
-		return 99;
-	}
-	
-	@Override
-	public float getPhaseShift()
-	{
-		return 0;
-	}
-
-	@Override
-	public float getStretchValue() 
-	{
-		return 1 / 1.88F;
-	}
-	
-	@Override
-	public boolean isMoon()
-	{
-		return false;
 	}
 }

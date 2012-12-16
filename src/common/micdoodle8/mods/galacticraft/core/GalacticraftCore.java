@@ -9,6 +9,7 @@ import java.util.List;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubMod;
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
+import micdoodle8.mods.galacticraft.API.IMapPlanet;
 import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityArrow;
@@ -58,7 +59,6 @@ import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -93,6 +93,8 @@ public class GalacticraftCore
 	public static List<IGalacticraftSubMod> subMods = new ArrayList<IGalacticraftSubMod>();
 	@SideOnly(Side.CLIENT)
 	public static List<IGalacticraftSubModClient> clientSubMods = new ArrayList<IGalacticraftSubModClient>();
+	
+	public static List<IMapPlanet> mapPlanets = new ArrayList<IMapPlanet>();
 	
 	public static final CreativeTabs galacticraftTab = new GCCoreCreativeTab(12, "galacticraft");
 	
@@ -169,6 +171,11 @@ public class GalacticraftCore
 	public static void registerClientSubMod(IGalacticraftSubModClient mod)
 	{
 		clientSubMods.add(mod);
+	}
+	
+	public static void addMapPlanet(IMapPlanet planet)
+	{
+		mapPlanets.add(planet);
 	}
 	
 	public void registerTileEntities()

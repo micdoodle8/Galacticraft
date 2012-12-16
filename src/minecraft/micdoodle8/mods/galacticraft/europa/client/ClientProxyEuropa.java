@@ -48,34 +48,4 @@ public class ClientProxyEuropa implements IGalacticraftSubModClient
 	{
 		return new GCEuropaSlotRenderer();
 	}
-
-	@Override
-	public float getPlanetSize() 
-	{
-		return 0;
-	}
-
-	@Override
-	public float getDistanceFromCenter() 
-	{
-		return 0;
-	}
-
-	@Override
-	public float getPhaseShift() 
-	{
-		return 0;
-	}
-
-	@Override
-	public float getStretchValue() 
-	{
-		return 0;
-	}
-	
-	@Override
-	public boolean isMoon()
-	{
-		return true;
-	}
 }

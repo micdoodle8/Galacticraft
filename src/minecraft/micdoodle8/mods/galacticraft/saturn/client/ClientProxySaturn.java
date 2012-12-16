@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.core.GCCoreLocalization;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.enceladus.client.ClientProxyEnceladus;
 import micdoodle8.mods.galacticraft.europa.client.GCEuropaSlotRenderer;
+import micdoodle8.mods.galacticraft.jupiter.client.GCJupiterMapPlanet;
 import micdoodle8.mods.galacticraft.saturn.CommonProxySaturn;
 import micdoodle8.mods.galacticraft.titan.client.ClientProxyTitan;
 import net.minecraft.src.INetworkManager;
@@ -47,6 +48,7 @@ public class ClientProxySaturn extends CommonProxySaturn implements IGalacticraf
 		moonClientTitan.init(event);
 		moonClientEnceladus.init(event);
 		GalacticraftCore.registerClientSubMod(this);
+		GalacticraftCore.addMapPlanet(new GCSaturnMapPlanet());
 	}
 
 	@Override
@@ -123,35 +125,5 @@ public class ClientProxySaturn extends CommonProxySaturn implements IGalacticraf
 	public IPlanetSlotRenderer getSlotRenderer() 
 	{
 		return new GCSaturnSlotRenderer();
-	}
-
-	@Override
-	public float getPlanetSize() 
-	{
-		return 20;
-	}
-
-	@Override
-	public float getDistanceFromCenter() 
-	{
-		return 170;
-	}
-
-	@Override
-	public boolean isMoon() 
-	{
-		return false;
-	}
-
-	@Override
-	public float getPhaseShift() 
-	{
-		return 0;
-	}
-
-	@Override
-	public float getStretchValue() 
-	{
-		return 1 / 29.7F;
 	}
 }

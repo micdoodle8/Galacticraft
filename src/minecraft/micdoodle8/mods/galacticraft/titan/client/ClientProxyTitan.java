@@ -11,6 +11,7 @@ import micdoodle8.mods.galacticraft.core.GCCoreLocalization;
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.europa.client.GCEuropaSlotRenderer;
+import micdoodle8.mods.galacticraft.jupiter.client.GCJupiterMapPlanet;
 import micdoodle8.mods.galacticraft.titan.CommonProxyTitan;
 import micdoodle8.mods.galacticraft.titan.blocks.GCTitanBlocks;
 import micdoodle8.mods.galacticraft.titan.dimension.GCTitanWorldProvider;
@@ -193,35 +194,5 @@ public class ClientProxyTitan extends CommonProxyTitan implements IGalacticraftS
 	public IPlanetSlotRenderer getSlotRenderer() 
 	{
 		return new GCTitanSlotRenderer();
-	}
-
-	@Override
-	public float getPlanetSize() 
-	{
-		return 0;
-	}
-
-	@Override
-	public float getDistanceFromCenter() 
-	{
-		return 0;
-	}
-
-	@Override
-	public boolean isMoon() 
-	{
-		return true;
-	}
-
-	@Override
-	public float getPhaseShift() 
-	{
-		return 0;
-	}
-
-	@Override
-	public float getStretchValue() 
-	{
-		return 0;
 	}
 }

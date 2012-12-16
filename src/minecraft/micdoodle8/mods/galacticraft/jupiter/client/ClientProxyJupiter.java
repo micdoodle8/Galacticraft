@@ -47,6 +47,7 @@ public class ClientProxyJupiter extends CommonProxyJupiter implements IGalacticr
 		moonClientIo.init(event);
 		moonClientEuropa.init(event);
 		GalacticraftCore.registerClientSubMod(this);
+		GalacticraftCore.addMapPlanet(new GCJupiterMapPlanet());
 	}
 
 	@Override
@@ -123,35 +124,5 @@ public class ClientProxyJupiter extends CommonProxyJupiter implements IGalacticr
 	public IPlanetSlotRenderer getSlotRenderer() 
 	{
 		return new GCJupiterSlotRenderer();
-	}
-
-	@Override
-	public float getPlanetSize() 
-	{
-		return 24;
-	}
-
-	@Override
-	public float getDistanceFromCenter() 
-	{
-		return 130;
-	}
-
-	@Override
-	public float getPhaseShift() 
-	{
-		return 0;
-	}
-
-	@Override
-	public float getStretchValue() 
-	{
-		return 1 / 11.86F;
-	}
-	
-	@Override
-	public boolean isMoon()
-	{
-		return false;
 	}
 }
