@@ -7,6 +7,7 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.RenderBlocks;
 import net.minecraftforge.client.IItemRenderer;
 
+import org.lwjgl.Sys;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
@@ -56,7 +57,7 @@ public class GCCoreItemRendererBuggy implements IItemRenderer
         	
         	GL11.glScalef(1.3F, 1.3F, 1.3F);
         	GL11.glTranslatef(0, -0.6F, 0);
-        	GL11.glRotatef(GalacticraftCore.tick * 2, 0F, 1F, 0F);
+        	GL11.glRotatef(Sys.getTime() / 90F % 360F, 0F, 1F, 0F);
         }
         FMLClientHandler.instance().getClient().renderEngine.bindTexture(FMLClientHandler.instance().getClient().renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/entities/buggy.png"));
         this.modelSpaceship.render(this.spaceship, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
