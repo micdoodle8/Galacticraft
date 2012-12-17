@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.API.IMapPlanet;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreInventoryRocketBench;
@@ -25,7 +26,7 @@ import net.minecraft.src.TileEntityChest;
 import net.minecraft.src.World;
 import net.minecraft.src.WorldProvider;
 import net.minecraftforge.common.DimensionManager;
-import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class GCCoreUtil 
@@ -687,5 +688,31 @@ public class GCCoreUtil
         g = g << 8;
         
         return (a | r | g | b);
+	}
+	
+	public static List getPlayersOnPlanet(IMapPlanet planet)
+	{
+		List list = new ArrayList();
+		
+		for (int i = 0; i < FMLCommonHandler.instance().getMinecraftServerInstance().worldServers.length; i++)
+		{
+			World world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServers[i];
+			
+			if (world != null && world.provider instanceof IGalacticraftWorldProvider)
+			{
+				if (planet.getSlotRenderer().getPlanetName().toLowerCase().equals(world.provider.getDimensionName().toLowerCase()))
+				{
+					for (int j = 0; j < world.getLoadedEntityList().size(); j++)
+					{
+						if (world.getLoadedEntityList().get(j) != null && world.getLoadedEntityList().get(j) instanceof EntityPlayer)
+						{
+							list.add(((EntityPlayer)world.getLoadedEntityList().get(j)).username);
+						}
+					}
+				}
+			}
+		}
+		
+		return list;
 	}
 }
