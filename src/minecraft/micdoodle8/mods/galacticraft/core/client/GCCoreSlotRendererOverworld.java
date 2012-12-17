@@ -21,10 +21,10 @@ public class GCCoreSlotRendererOverworld implements IPlanetSlotRenderer
 	public void renderSlot(int index, int x, int y, float slotHeight, Tessellator tessellator) 
 	{
 		tessellator.startDrawingQuads();
-		tessellator.addVertexWithUV(x - 9 * 0.9, 	y + 9 * 0.9, 	-90.0D, 0.0, 1.0);
-		tessellator.addVertexWithUV(x + 9 * 0.9, 	y + 9 * 0.9, 	-90.0D, 1.0, 1.0);
-		tessellator.addVertexWithUV(x + 9 * 0.9, 	y - 9 * 0.9, 	-90.0D, 1.0, 0.0);
-		tessellator.addVertexWithUV(x - 9 * 0.9, 	y - 9 * 0.9, 	-90.0D, 0.0, 0.0);
+		tessellator.addVertexWithUV(x - slotHeight * 0.9, 	y + slotHeight * 0.9, 	-90.0D, 0.0, 1.0);
+		tessellator.addVertexWithUV(x + slotHeight * 0.9, 	y + slotHeight * 0.9, 	-90.0D, 1.0, 1.0);
+		tessellator.addVertexWithUV(x + slotHeight * 0.9, 	y - slotHeight * 0.9, 	-90.0D, 1.0, 0.0);
+		tessellator.addVertexWithUV(x - slotHeight * 0.9, 	y - slotHeight * 0.9, 	-90.0D, 0.0, 0.0);
 		tessellator.draw();
 	}
 }

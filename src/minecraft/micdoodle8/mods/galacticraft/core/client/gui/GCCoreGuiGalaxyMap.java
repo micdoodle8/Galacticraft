@@ -2,6 +2,8 @@ package micdoodle8.mods.galacticraft.core.client.gui;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
+
 import micdoodle8.mods.galacticraft.API.IMapPlanet;
 import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
@@ -15,12 +17,14 @@ import net.minecraft.src.RenderHelper;
 import net.minecraft.src.ScaledResolution;
 import net.minecraft.src.StatCollector;
 import net.minecraft.src.Tessellator;
+
 import org.lwjgl.Sys;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.lwjgl.util.glu.GLU;
 
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
@@ -107,23 +111,14 @@ public class GCCoreGuiGalaxyMap extends GuiScreen
             
             if (Mouse.hasWheel() && wheel != 0)
             {
-            	wheel /= 5000F;
+            	wheel /= 7500F;
             	
-            	this.zoom = this.zoom + wheel;
-
-            	if (this.zoom >= 2)
-            	{
-            		this.zoom = 2;
-            	}
-            	else if (this.zoom <= -0.01F)
-            	{
-            		this.zoom = 0.01F;
-            	}
+            	this.zoom = MathHelper.clamp_float(this.zoom + wheel, 0.011000001F, 2);
             }
         }
         
-		this.mouseY = (-(this.mc.displayHeight / 2) + Mouse.getY()) / 100F;
-        this.mouseX = (this.mc.displayWidth / 2 - Mouse.getX()) / 100F;
+		this.mouseY = ((-(this.mc.displayHeight / 2) + Mouse.getY()) / 100F) * (1 / (this.zoom * 5));
+        this.mouseX = ((this.mc.displayWidth / 2 - Mouse.getX()) / 100F) * (1 / (this.zoom * 5));
     	
     	if (Mouse.getX() > this.mc.displayWidth / 2 - 90 && Mouse.getX() < this.mc.displayWidth / 2 + 90 && Mouse.getY() > this.mc.displayHeight / 2 - 90 && Mouse.getY() < this.mc.displayHeight / 2 + 90)
     	{
@@ -251,7 +246,7 @@ public class GCCoreGuiGalaxyMap extends GuiScreen
 		this.drawBlackBackground();
 		this.renderSkybox(1);
         
-        this.zoom();
+        this.zoom(this.zoom);
 
         int var27;
         final int var30;
@@ -307,16 +302,18 @@ public class GCCoreGuiGalaxyMap extends GuiScreen
             if (renderer != null)
             {
                 this.mc.renderEngine.bindTexture(this.mc.renderEngine.getTexture(renderer.getPlanetSprite()));
-                renderer.renderSlot(0, var42, var41, planet.getPlanetSize(), var3);
+                renderer.renderSlot(0, var42, var41, planet.getPlanetSize() + (1 / this.zoom * 3F), var3);
             }
             
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
             this.drawCircles(var10 + var10, var11 + var11);
+            
+            this.drawAsteroidBelt(var10 + var10, var11 + var11);
 
-            if (mX2 > var42 - size && mX2 < var42 + size && mY2 > var41 - size && mY2 < var41 + size && !planet.getSlotRenderer().getPlanetName().equals("Sun"))
+            if (!planet.getSlotRenderer().getPlanetName().equals("Sun"))
             {
-//            	this.drawInfoBox(var42, var41);
+            	this.drawInfoBox(var42, var41, planet);
             }
 
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -384,9 +381,54 @@ public class GCCoreGuiGalaxyMap extends GuiScreen
     	}
     }
     
-    private void drawInfoBox(int cx, int cy)
+    public void drawAsteroidBelt(float cx, float cy) 
     {
-    	for (final IMapPlanet planet : GalacticraftCore.mapPlanets)
+        Random rand = new Random();
+        rand.setSeed((long)(1234));
+    	
+    	GL11.glColor4f(139 / 255F, 69 / 255F, 19 / 255F, 1.0F);
+        
+        for (int i = 1; i < 15; i++)
+        {
+        	final float theta = (float) (2 * Math.PI / (15 * i)); 
+        	final float c = (float) Math.cos(theta);
+        	final float s = (float) Math.sin(theta);
+        	float t;
+
+        	float x;
+        	
+        	if (i < 8)
+        	{
+        		x = (float) (4400F + Math.pow(2.5, i));
+        	}
+        	else
+        	{
+        		x = (float) (4400F - Math.pow(2.5, 15 - i));
+        	}
+        	
+        	float y = 0; 
+        	
+        	for(int ii = 0; ii < (15 * i); ii++) 
+        	{
+        		Tessellator var0 = Tessellator.instance;
+        		
+        		var0.startDrawingQuads();
+        		var0.addVertex(x + cx - 2 + rand.nextInt(50), y + cy + 2 + rand.nextInt(50), -90.0D);
+        		var0.addVertex(x + cx + 2 + rand.nextInt(50), y + cy + 2 + rand.nextInt(50), -90.0D);
+        		var0.addVertex(x + cx + 2 + rand.nextInt(50), y + cy - 2 + rand.nextInt(50), -90.0D);
+        		var0.addVertex(x + cx - 2 + rand.nextInt(50), y + cy - 2 + rand.nextInt(50), -90.0D);
+                var0.draw();
+        		
+        		t = x;
+        		x = c * x - s * y;
+        		y = s * t + c * y;
+        	} 
+        }
+    }
+    
+    private void drawInfoBox(int cx, int cy, IMapPlanet planet)
+    {
+//    	for (final IMapPlanet planet : GalacticraftCore.mapPlanets)
     	{
             final float size = planet.getPlanetSize() / 2F * 1.3F * (this.zoom * 2F);
             
@@ -434,13 +476,13 @@ public class GCCoreGuiGalaxyMap extends GuiScreen
         return true;
     }
     
-    private void zoom()
+    private void zoom(float f)
     {
         final ScaledResolution var5 = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
         final int x = var5.getScaledWidth();
         final int y = var5.getScaledHeight();
         GL11.glTranslatef(x / 2, y / 2, 0);
-        GL11.glScalef(this.zoom, this.zoom, 0);
+        GL11.glScalef(f, f, 0);
         GL11.glTranslatef(-(x / 2), -(y / 2), 0);
     }
 
