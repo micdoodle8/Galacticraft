@@ -205,24 +205,6 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
     {
         super.onUpdate();
 
-//        if (ModLoader.getMinecraftInstance() != null && ModLoader.getMinecraftInstance().theWorld != null)
-//        {
-//            if (this.worldObj instanceof WorldServer && ModLoader.getMinecraftInstance().theWorld.getEntityByID(this.entityId) == null)
-//            {
-//            	GCCoreEntityBuggy var1 = new GCCoreEntityBuggy(ModLoader.getMinecraftInstance().theWorld);
-//                var1.setPosition(this.posX, this.posY, this.posZ);
-//                ModLoader.getMinecraftInstance().theWorld.addEntityToWorld(this.entityId, var1);
-//            }
-//
-//            if (this.worldObj instanceof WorldServer)
-//            {
-//                GCCoreEntityBuggy var19 = (GCCoreEntityBuggy)ModLoader.getMinecraftInstance().theWorld.getEntityByID(this.entityId);
-//                var19.setPositionAndRotation(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
-//                var19.setVelocity(this.motionX, this.motionY, this.motionZ);
-//                var19.speed = this.speed;
-//            }
-//        }
-
         if (this.dataWatcher.getWatchableObjectInt(this.timeSinceHit) > 0)
         {
             this.dataWatcher.updateObject(this.timeSinceHit, Integer.valueOf(this.dataWatcher.getWatchableObjectInt(this.timeSinceHit) - 1));
