@@ -61,7 +61,7 @@ public class GCCoreGuiGalaxyMap extends GuiScreen
     
     private GuiSmallButton button;
     
-    private float zoom = 1.0F;
+    private float zoom = 0.2F;
     
     EntityPlayer player;
 
@@ -103,10 +103,10 @@ public class GCCoreGuiGalaxyMap extends GuiScreen
 
     public void drawScreen(int par1, int par2, float par3)
     {
-    	guiMapMinX = -1200 - this.width;
-    	guiMapMaxX = 1200 + this.width;
-    	guiMapMinY = -1200 - this.height;
-    	guiMapMaxY = 1200 + this.height;
+    	guiMapMinX = -25000 - this.width;
+    	guiMapMaxX = 25000 + this.width;
+    	guiMapMinY = -25000 - this.height;
+    	guiMapMaxY = 25000 + this.height;
     	
         while (!Mouse.isButtonDown(0) && Mouse.next())
         {
@@ -114,7 +114,7 @@ public class GCCoreGuiGalaxyMap extends GuiScreen
             
             if (Mouse.hasWheel() && wheel != 0)
             {
-            	wheel /= 1000F;
+            	wheel /= 5000F;
             	
             	this.zoom = this.zoom + wheel;
 
@@ -122,9 +122,9 @@ public class GCCoreGuiGalaxyMap extends GuiScreen
             	{
             		this.zoom = 2;
             	}
-            	else if (this.zoom <= 0.1F)
+            	else if (this.zoom <= -0.01F)
             	{
-            		this.zoom = 0.1F;
+            		this.zoom = 0.01F;
             	}
             }
         }
@@ -203,7 +203,7 @@ public class GCCoreGuiGalaxyMap extends GuiScreen
 
     protected void drawTitle()
     {
-        this.fontRenderer.drawString("Galaxy Map", 15, 15, 4210752);
+        this.fontRenderer.drawString("Galaxy Map", 15, 5, 4210752);
     }
 
     protected void genAchievementBackground(int par1, int par2, float par3)
@@ -277,7 +277,7 @@ public class GCCoreGuiGalaxyMap extends GuiScreen
             var26 = 0;
             var27 = 0;
             
-            Map[] posMaps = this.computePlanetPos(var10, var11, planet.getDistanceFromCenter() / 15F, 2880);
+            Map[] posMaps = this.computePlanetPos(var10, var11, planet.getDistanceFromCenter() / 2, 2880);
             
             if (posMaps[0] != null && posMaps[1] != null)
             {
@@ -370,7 +370,7 @@ public class GCCoreGuiGalaxyMap extends GuiScreen
     	
     	for (IMapPlanet planet : GalacticraftCore.mapPlanets)
     	{
-        	float x = planet.getDistanceFromCenter() / 15F; 
+        	float x = planet.getDistanceFromCenter() / 2F; 
         	float y = 0; 
             
         	GL11.glColor4f(0.0F, 0.0F, 1.0F, 1.0F);
@@ -515,8 +515,8 @@ public class GCCoreGuiGalaxyMap extends GuiScreen
       		mX = (this.width - Mouse.getX()) / 100F;
       		
             GL11.glTranslatef(var7 - (mX / (50F / this.zoom)), var8 - (mY / (50F / this.zoom)), var9 + 0.5F);
-            
-            float i = Math.min(9F, 7 * (this.zoom / 1.1F));
+
+            float i = MathHelper.clamp_float(7 * (this.zoom / 1.1F), 3F, 9F);
             
             GL11.glScalef(i, i, i);
 
