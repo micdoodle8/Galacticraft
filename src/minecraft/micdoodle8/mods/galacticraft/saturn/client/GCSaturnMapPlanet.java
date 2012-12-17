@@ -26,7 +26,7 @@ public class GCSaturnMapPlanet implements IMapPlanet
 	@Override
 	public float getPhaseShift() 
 	{
-		return 5F;
+		return 2880F / 3F;
 	}
 
 	@Override

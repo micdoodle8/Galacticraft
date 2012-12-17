@@ -26,7 +26,7 @@ public class GCMarsMapPlanet implements IMapPlanet
 	@Override
 	public float getPhaseShift() 
 	{
-		return 0;
+		return 2880F / 6F;
 	}
 
 	@Override

@@ -26,7 +26,7 @@ public class GCJupiterMapPlanet implements IMapPlanet
 	@Override
 	public float getPhaseShift() 
 	{
-		return 0;
+		return 2350F;
 	}
 
 	@Override

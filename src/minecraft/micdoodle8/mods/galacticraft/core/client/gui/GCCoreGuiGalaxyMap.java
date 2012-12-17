@@ -62,9 +62,12 @@ public class GCCoreGuiGalaxyMap extends GuiScreen
     private GuiSmallButton button;
     
     private float zoom = 1.0F;
+    
+    EntityPlayer player;
 
     public GCCoreGuiGalaxyMap(EntityPlayer player)
     {
+    	this.player = player;
     }
 
     public void initGui()
@@ -100,10 +103,10 @@ public class GCCoreGuiGalaxyMap extends GuiScreen
 
     public void drawScreen(int par1, int par2, float par3)
     {
-    	guiMapMinX = -900 - this.width;
-    	guiMapMaxX = 900 + this.width;
-    	guiMapMinY = -900 - this.height;
-    	guiMapMaxY = 900 + this.height;
+    	guiMapMinX = -1200 - this.width;
+    	guiMapMaxX = 1200 + this.width;
+    	guiMapMinY = -1200 - this.height;
+    	guiMapMaxY = 1200 + this.height;
     	
         while (!Mouse.isButtonDown(0) && Mouse.next())
         {
@@ -205,6 +208,12 @@ public class GCCoreGuiGalaxyMap extends GuiScreen
 
     protected void genAchievementBackground(int par1, int par2, float par3)
     {
+        ScaledResolution var13 = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
+        int mX = var13.getScaledWidth();
+        int mY = var13.getScaledHeight();
+        int mX2 = Mouse.getX() * mX / this.mc.displayWidth;
+        int mY2 = mY - Mouse.getY() * mY / this.mc.displayHeight - 1;
+        
         int var4 = MathHelper.floor_double(this.field_74117_m + (this.guiMapX - this.field_74117_m) * (double)par3);
         int var5 = MathHelper.floor_double(this.field_74115_n + (this.guiMapY - this.field_74115_n) * (double)par3);
 
@@ -228,7 +237,6 @@ public class GCCoreGuiGalaxyMap extends GuiScreen
             var5 = guiMapMaxY - 1;
         }
 
-        int var6 = this.mc.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/gui/mapbg.png");
         int var10 = -var4;
         int var11 = -var5;
         this.zLevel = 0.0F;
@@ -238,11 +246,8 @@ public class GCCoreGuiGalaxyMap extends GuiScreen
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         GL11.glEnable(GL11.GL_COLOR_MATERIAL);
-        this.mc.renderEngine.bindTexture(var6);
         int var14 = (var4 + 288) % 256;
         int var15 = (var5 + 288) % 256;
-    	
-        Random var21 = new Random();
         
         int var22;
         int var25;
@@ -252,37 +257,7 @@ public class GCCoreGuiGalaxyMap extends GuiScreen
 		this.drawBlackBackground();
 		this.renderSkybox(1);
         
-        zoom();
-
-//        for (var22 = -20; var22 * 16 - var15 < this.height * 2; ++var22)
-//        {
-//            float var23 = 0.6F - (float)(0) / 25.0F * 0.3F;
-//            GL11.glColor4f(var23, var23, var23, 1.0F);
-//
-//            for (var24 = -20; var24 * 16 - var14 < this.width * 2; ++var24)
-//            {
-//                var21.setSeed((long)1);
-//                var21.nextInt();
-//                var25 = var21.nextInt(16);
-//                var26 = var21.nextInt(16);
-//                
-//                float mY;
-//                float mX;
-//
-//            	if (Mouse.getY() < this.height)
-//            	{
-//            		mY = ((-this.height + Mouse.getY()) / 100F);
-//            	}
-//            	else
-//            	{
-//            		mY = ((-this.height + Mouse.getY()) / 100F);
-//            	}
-//                
-//            	mX = (this.width - Mouse.getX()) / 100F;
-//
-//                this.drawTexturedModalRect(var10 + var24 * 256 - (int)(mX / (2F * this.zoom)), var11 * 2 + var22 * 256 - (int)(mY / (2F * this.zoom)), (var25 % 16) * 16, 0, 256, 256);
-//            }
-//        }
+        this.zoom();
 
         int var27;
         int var30;
@@ -291,11 +266,11 @@ public class GCCoreGuiGalaxyMap extends GuiScreen
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         GL11.glEnable(GL11.GL_COLOR_MATERIAL);
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
         
         int var42;
         int var41;
+        
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         for (IMapPlanet planet : GalacticraftCore.mapPlanets)
         {
@@ -308,8 +283,8 @@ public class GCCoreGuiGalaxyMap extends GuiScreen
             {
             	if (posMaps[0].get(MathHelper.floor_float((Sys.getTime() / (720F * planet.getStretchValue())) % 2880)) != null && posMaps[1].get(MathHelper.floor_float((Sys.getTime() / 720F) % 2880)) != null)
             	{
-                	int x = MathHelper.floor_float((Float) posMaps[0].get(MathHelper.floor_float((Sys.getTime() / (720F * planet.getStretchValue())) % 2880)));
-                	int y = MathHelper.floor_float((Float) posMaps[1].get(MathHelper.floor_float((Sys.getTime() / (720F * planet.getStretchValue())) % 2880)));
+                	int x = MathHelper.floor_float((Float) posMaps[0].get(MathHelper.floor_float(((planet.getPhaseShift()) + (Sys.getTime() / (720F * planet.getStretchValue()))) % 2880)));
+                	int y = MathHelper.floor_float((Float) posMaps[1].get(MathHelper.floor_float(((planet.getPhaseShift()) + (Sys.getTime() / (720F * planet.getStretchValue()))) % 2880)));
                 	
                 	var26 = x;
                 	var27 = y;
@@ -323,7 +298,15 @@ public class GCCoreGuiGalaxyMap extends GuiScreen
             
             IPlanetSlotRenderer renderer = planet.getSlotRenderer();
             
+            GL11.glDisable(GL11.GL_BLEND);
+            
+            float size = ((planet.getPlanetSize() / 2F) * 1.3F) * (this.zoom * 2F);
+            
+            GL11.glEnable(GL11.GL_DEPTH_TEST);
+            
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            GL11.glEnable(GL11.GL_BLEND);
+            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
             
             Tessellator var3 = Tessellator.instance;
 
@@ -332,17 +315,20 @@ public class GCCoreGuiGalaxyMap extends GuiScreen
                 this.mc.renderEngine.bindTexture(this.mc.renderEngine.getTexture(renderer.getPlanetSprite()));
                 renderer.renderSlot(0, var42, var41, planet.getPlanetSize(), var3);
             }
+            
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
             this.drawCircles(var10 + var10, var11 + var11);
-            
-            GL11.glDepthMask(true);
-            GL11.glEnable(GL11.GL_DEPTH_TEST);
-            GL11.glEnable(GL11.GL_ALPHA_TEST);
+
+            if (mX2 > var42 - size && mX2 < var42 + size && mY2 > var41 - size && mY2 < var41 + size && !planet.getSlotRenderer().getPlanetName().equals("Sun"))
+            {
+//            	this.drawInfoBox(var42, var41);
+            }
+
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             
-            int size = -1;
-            
-        	size = MathHelper.floor_float(planet.getPlanetSize() / 2) + 2;
+            GL11.glDepthMask(true);
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         }
         
         GL11.glPopMatrix();
@@ -404,6 +390,24 @@ public class GCCoreGuiGalaxyMap extends GuiScreen
     	}
     }
     
+    private void drawInfoBox(int cx, int cy)
+    {
+    	for (IMapPlanet planet : GalacticraftCore.mapPlanets)
+    	{
+            float size = ((planet.getPlanetSize() / 2F) * 1.3F) * (this.zoom * 2F);
+            
+        	this.drawGradientRect(cx + MathHelper.floor_float(planet.getPlanetSize()), cy - 3, cx + MathHelper.floor_float(planet.getPlanetSize()) + (8 * 10), cy + 10, GCCoreUtil.convertTo32BitColor(100, 50, 50, 50), GCCoreUtil.convertTo32BitColor(100, 50, 50, 50));
+        	this.fontRenderer.drawStringWithShadow(planet.getSlotRenderer().getPlanetName(), cx + MathHelper.floor_float(planet.getPlanetSize()) + 3, cy - 1, GCCoreUtil.convertTo32BitColor(255, 200, 200, 200));
+        	
+        	for (int i = 0; i < GCCoreUtil.getPlayersOnPlanet(planet).size(); i++)
+        	{
+                this.drawGradientRect(cx + MathHelper.floor_float(planet.getPlanetSize()), cy + (10 * (i + 1)), cx + MathHelper.floor_float(planet.getPlanetSize()) + (80), cy + (10 * (i + 1)) + 10, GCCoreUtil.convertTo32BitColor(255, 50, 50, 50), GCCoreUtil.convertTo32BitColor(255, 50, 50, 50));
+            	this.fontRenderer.drawStringWithShadow(String.valueOf(GCCoreUtil.getPlayersOnPlanet(planet).get(i)), cx + MathHelper.floor_float(planet.getPlanetSize() * 2), cy + 1 + (10 * (i + 1)), GCCoreUtil.convertTo32BitColor(255, 220, 220, 220));
+            	width = Math.max(width, String.valueOf(GCCoreUtil.getPlayersOnPlanet(planet).get(i)).length());
+        	}
+    	}
+    }
+    
     public Map[] computePlanetPos(float cx, float cy, float r, float stretch)
     {
     	Map mapX = new HashMap();
@@ -444,36 +448,6 @@ public class GCCoreGuiGalaxyMap extends GuiScreen
         GL11.glScalef(this.zoom, this.zoom, 0);
         GL11.glTranslatef(-(x / 2), -(y / 2), 0);
     }
-    
-//    public void renderSkybox(float par1)
-//    {
-//        GL11.glViewport(0, 0, this.mc.displayWidth, this.mc.displayHeight);
-//        GL11.glPushMatrix();
-//        GL11.glScalef(1.0F, 0.0F, 1.0F);
-//        this.drawPanorama(par1);
-//        this.drawPanorama2(par1);
-//        GL11.glDisable(GL11.GL_TEXTURE_2D);
-//        GL11.glEnable(GL11.GL_TEXTURE_2D);
-//        this.rotateAndBlurSkybox();
-//        Tessellator var4 = Tessellator.instance;
-//        var4.startDrawingQuads();
-//        float var5 = this.width > this.height ? 120.0F / this.width : 120.0F / this.height;
-//        float var6 = this.height * var5 / 256.0F;
-//        float var7 = this.width * var5 / 256.0F;
-//        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
-//        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
-//        var4.setColorRGBA_F(1.0F, 1.0F, 1.0F, 1.0F);
-//        int var8 = this.width;
-//        int var9 = this.height;
-//        var4.addVertexWithUV(0.0D, var9, this.zLevel, 0.5F - var6, 0.5F + var7);
-//        var4.addVertexWithUV(var8, var9, this.zLevel, 0.5F - var6, 0.5F - var7);
-//        var4.addVertexWithUV(var8, 0.0D, this.zLevel, 0.5F + var6, 0.5F - var7);
-//        var4.addVertexWithUV(0.0D, 0.0D, this.zLevel, 0.5F + var6, 0.5F + var7);
-//        var4.draw();
-//        GL11.glPopMatrix();
-//    }
-    
-    private static final String[] titlePanoramaPaths = new String[] {"/micdoodle8/mods/galacticraft/core/client/backgrounds/bg3.png"};
 
     public void drawBlackBackground()
     {
@@ -590,7 +564,7 @@ public class GCCoreGuiGalaxyMap extends GuiScreen
                 	GL11.glTranslatef(1.96F, 1.96F, 0.0F);
                 }
 
-                GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture(titlePanoramaPaths[var10 - var10]));
+                GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/backgrounds/bg3.png"));
                 var4.startDrawingQuads();
                 var4.setColorRGBA_I(16777215, 255 / (var6 + 1));
                 var4.addVertexWithUV(-1.0D, -1.0D, 1.0D, 0.0F + 1, 0.0F + 1);
@@ -696,7 +670,7 @@ public class GCCoreGuiGalaxyMap extends GuiScreen
                     GL11.glRotatef(-90.0F, 1.0F, 0.0F, 0.0F);
                 }
 
-                GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture(titlePanoramaPaths[0]));
+                GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/backgrounds/bg3.png"));
                 var4.startDrawingQuads();
                 var4.setColorRGBA_I(16777215, 255 / (var6 + 1));
                 var4.addVertexWithUV(-1.0D, -1.0D, 1.0D, 0.0F + 1, 0.0F + 1);
@@ -723,7 +697,7 @@ public class GCCoreGuiGalaxyMap extends GuiScreen
 
     private void rotateAndBlurSkybox()
     {
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture(titlePanoramaPaths[0]));
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/backgrounds/bg3.png"));
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glColorMask(true, true, true, false);

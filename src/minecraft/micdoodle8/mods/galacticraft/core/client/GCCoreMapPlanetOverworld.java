@@ -26,7 +26,7 @@ public class GCCoreMapPlanetOverworld implements IMapPlanet
 	@Override
 	public float getPhaseShift() 
 	{
-		return 0;
+		return 2160F;
 	}
 
 	@Override
