@@ -23,9 +23,10 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
     public double speed;
     float maxSpeed = 1.0F;
     float accel = 0.2F;
-    float turn = 3.0F;
+    float turnFactor = 3.0F;
     public String texture;
     ItemStack[] cargoItems;
+	public float turnProgress = 0;
 
     public GCCoreEntityBuggy(World var1)
     {
@@ -75,7 +76,14 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
     @Override
 	public AxisAlignedBB getCollisionBox(Entity var1)
     {
-        return var1.boundingBox;
+    	if (!var1.equals(this.riddenByEntity))
+    	{
+    		return var1.boundingBox;
+    	}
+    	else
+    	{
+            return null;
+    	}
     }
 
     /**
@@ -121,7 +129,7 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
         {
             final double var1 = Math.cos(this.rotationYaw * Math.PI / 180.0D + 114.8) * -0.5D;
             final double var3 = Math.sin(this.rotationYaw * Math.PI / 180.0D + 114.8) * -0.5D;
-            this.riddenByEntity.setPosition(this.posX + var1, this.posY - 1 + this.riddenByEntity.getYOffset(), this.posZ + var3);
+            this.riddenByEntity.setPosition(this.posX + var1, this.posY - 2 + this.riddenByEntity.getYOffset(), this.posZ + var3);
         }
     }
 
@@ -244,17 +252,7 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
 
         if (var2 < 1.0D)
         {
-            var21 = var2 * 2.0D - 1.0D;
-            this.motionY += 0.04D * var21;
-        }
-        else
-        {
-            if (this.motionY < 0.0D)
-            {
-                this.motionY /= 2.0D;
-            }
-
-            this.motionY += 0.007D;
+            this.motionY -= 0.04D;
         }
 
         if (this.fuel <= 0)
@@ -282,12 +280,26 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
         {
             if (Keyboard.isKeyDown(30))
             {
-                this.rotationYaw = (float)(this.rotationYaw - this.turn * (1.0D + this.speed / 2.0D));
+                this.rotationYaw = (float)(this.rotationYaw - this.turnFactor * (1.0D + this.speed / 2.0D));
+                
+        		this.turnProgress -= 0.1F;
+        		
+        		if (this.turnProgress <= -0.3F)
+        		{
+        			this.turnProgress = -0.3F;
+        		}
             }
 
             if (Keyboard.isKeyDown(32))
             {
-                this.rotationYaw = (float)(this.rotationYaw + this.turn * (1.0D + this.speed / 2.0D));
+                this.rotationYaw = (float)(this.rotationYaw + this.turnFactor * (1.0D + this.speed / 2.0D));
+                
+        		this.turnProgress += 0.1F;
+        		
+        		if (this.turnProgress >= 0.3F)
+        		{
+        			this.turnProgress = 0.3F;
+        		}
             }
 
             if (Keyboard.isKeyDown(17))
@@ -303,6 +315,11 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
             if (Keyboard.isKeyDown(42))
             {
                 this.speed *= 0.75D;
+            }
+            
+            if (!Keyboard.isKeyDown(30) && !Keyboard.isKeyDown(32))
+            {
+        		this.turnProgress = 0.0F;
             }
 
             this.fuel = (int)(this.fuel - this.speed);

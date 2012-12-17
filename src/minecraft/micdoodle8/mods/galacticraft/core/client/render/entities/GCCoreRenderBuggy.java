@@ -31,158 +31,52 @@ public class GCCoreRenderBuggy extends Render
         this.modelSpaceship = new GCCoreModelBuggy();
     }
 
-    public void renderSpaceship(GCCoreEntityBuggy par1GCEntitySpaceship, double par2, double par4, double par6, float par8, float par9)
+    public void renderSpaceship(GCCoreEntityBuggy entity, double par2, double par4, double par6, float par8, float par9)
     {
         GL11.glPushMatrix();
-        long var10 = par1GCEntitySpaceship.entityId * 493286711L;
-        var10 = var10 * var10 * 4392167121L + var10 * 98761L;
-        final float var12 = (((var10 >> 16 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
-        final float var13 = (((var10 >> 20 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
-        final float var14 = (((var10 >> 24 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
-        GL11.glTranslatef(var12, var13, var14);
-        final double var15 = par1GCEntitySpaceship.prevPosX + (par1GCEntitySpaceship.posX - par1GCEntitySpaceship.prevPosX) * par9;
-        final double var17 = par1GCEntitySpaceship.prevPosY + (par1GCEntitySpaceship.posY - par1GCEntitySpaceship.prevPosY) * par9;
-        final double var19 = par1GCEntitySpaceship.prevPosZ + (par1GCEntitySpaceship.posZ - par1GCEntitySpaceship.prevPosZ) * par9;
+        final double var15 = entity.prevPosX + (entity.posX - entity.prevPosX) * par9;
+        final double var17 = entity.prevPosY + (entity.posY - entity.prevPosY) * par9;
+        final double var19 = entity.prevPosZ + (entity.posZ - entity.prevPosZ) * par9;
         final double var21 = 0.30000001192092896D;
-        final float var24 = par1GCEntitySpaceship.prevRotationPitch + (par1GCEntitySpaceship.rotationPitch - par1GCEntitySpaceship.prevRotationPitch) * par9;
+        final float var24 = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * par9;
 
-        GL11.glTranslatef((float)par2, (float)par4, (float)par6);
+        GL11.glTranslatef((float)par2, (float)par4 - 1, (float)par6);
         GL11.glRotatef(180.0F - par8, 0.0F, 1.0F, 0.0F);
         GL11.glRotatef(-var24, 0.0F, 0.0F, 1.0F);
-//        float var28 = par1GCEntitySpaceship.func_70496_j() - par9;
-//        float var30 = par1GCEntitySpaceship.getDamage() - par9;
         
         this.modelSpaceship.radarCenter.rotateAngleY += 0.01F;
         
-        final double d = 0;
-        
-//        if (d > 0.0D)
+        if (entity instanceof GCCoreEntityBuggy && entity.riddenByEntity != null)
         {
-        	this.modelSpaceship.wheel1a.rotateAngleX += d / 10;
-        	this.modelSpaceship.wheel2a.rotateAngleX += d / 10;
-        	this.modelSpaceship.wheel3a.rotateAngleX += d / 10;
-        	this.modelSpaceship.wheel4a.rotateAngleX += d / 10;
-        	this.modelSpaceship.wheel1b.rotateAngleX += d / 10;
-        	this.modelSpaceship.wheel2b.rotateAngleX += d / 10;
-        	this.modelSpaceship.wheel3b.rotateAngleX += d / 10;
-        	this.modelSpaceship.wheel4b.rotateAngleX += d / 10;
-        	this.modelSpaceship.wheel1c.rotateAngleX += d / 10;
-        	this.modelSpaceship.wheel2c.rotateAngleX += d / 10;
-        	this.modelSpaceship.wheel3c.rotateAngleX += d / 10;
-        	this.modelSpaceship.wheel4c.rotateAngleX += d / 10;
-        	this.modelSpaceship.wheel1d.rotateAngleX += d / 10;
-        	this.modelSpaceship.wheel2d.rotateAngleX += d / 10;
-        	this.modelSpaceship.wheel3d.rotateAngleX += d / 10;
-        	this.modelSpaceship.wheel4d.rotateAngleX += d / 10;
-        	this.modelSpaceship.wheel1e.rotateAngleX += d / 10;
-        	this.modelSpaceship.wheel2e.rotateAngleX += d / 10;
-        	this.modelSpaceship.wheel3e.rotateAngleX += d / 10;
-        	this.modelSpaceship.wheel4e.rotateAngleX += d / 10;
+        	GCCoreEntityBuggy buggy = (GCCoreEntityBuggy)entity;
+        	
+        	GL11.glPushMatrix();
+        	this.modelSpaceship.wheel1a.rotateAngleY = buggy.turnProgress;
+        	this.modelSpaceship.wheel2a.rotateAngleY = buggy.turnProgress;
+        	this.modelSpaceship.wheel3a.rotateAngleY = buggy.turnProgress;
+        	this.modelSpaceship.wheel4a.rotateAngleY = buggy.turnProgress;
+        	this.modelSpaceship.wheel1b.rotateAngleY = buggy.turnProgress;
+        	this.modelSpaceship.wheel2b.rotateAngleY = buggy.turnProgress;
+        	this.modelSpaceship.wheel3b.rotateAngleY = buggy.turnProgress;
+        	this.modelSpaceship.wheel4b.rotateAngleY = buggy.turnProgress;
+        	this.modelSpaceship.wheel1c.rotateAngleY = buggy.turnProgress;
+        	this.modelSpaceship.wheel2c.rotateAngleY = buggy.turnProgress;
+        	this.modelSpaceship.wheel3c.rotateAngleY = buggy.turnProgress;
+        	this.modelSpaceship.wheel4c.rotateAngleY = buggy.turnProgress;
+        	this.modelSpaceship.wheel1d.rotateAngleY = buggy.turnProgress;
+        	this.modelSpaceship.wheel2d.rotateAngleY = buggy.turnProgress;
+        	this.modelSpaceship.wheel3d.rotateAngleY = buggy.turnProgress;
+        	this.modelSpaceship.wheel4d.rotateAngleY = buggy.turnProgress;
+        	this.modelSpaceship.wheel1e.rotateAngleY = buggy.turnProgress;
+        	this.modelSpaceship.wheel2e.rotateAngleY = buggy.turnProgress;
+        	this.modelSpaceship.wheel3e.rotateAngleY = buggy.turnProgress;
+        	this.modelSpaceship.wheel4e.rotateAngleY = buggy.turnProgress;
+            GL11.glPopMatrix();
         }
-
-        if (par1GCEntitySpaceship.riddenByEntity != null)
-        {
-            if (Keyboard.isKeyDown(30))
-            {
-        		this.turn -= 0.1F;
-        		
-        		if (this.turn <= -0.3F)
-        		{
-        			this.turn = -0.3F;
-        		}
-            	
-            	this.modelSpaceship.wheel1a.rotateAngleY = this.turn;
-            	this.modelSpaceship.wheel2a.rotateAngleY = this.turn;
-            	this.modelSpaceship.wheel3a.rotateAngleY = this.turn;
-            	this.modelSpaceship.wheel4a.rotateAngleY = this.turn;
-            	this.modelSpaceship.wheel1b.rotateAngleY = this.turn;
-            	this.modelSpaceship.wheel2b.rotateAngleY = this.turn;
-            	this.modelSpaceship.wheel3b.rotateAngleY = this.turn;
-            	this.modelSpaceship.wheel4b.rotateAngleY = this.turn;
-            	this.modelSpaceship.wheel1c.rotateAngleY = this.turn;
-            	this.modelSpaceship.wheel2c.rotateAngleY = this.turn;
-            	this.modelSpaceship.wheel3c.rotateAngleY = this.turn;
-            	this.modelSpaceship.wheel4c.rotateAngleY = this.turn;
-            	this.modelSpaceship.wheel1d.rotateAngleY = this.turn;
-            	this.modelSpaceship.wheel2d.rotateAngleY = this.turn;
-            	this.modelSpaceship.wheel3d.rotateAngleY = this.turn;
-            	this.modelSpaceship.wheel4d.rotateAngleY = this.turn;
-            	this.modelSpaceship.wheel1e.rotateAngleY = this.turn;
-            	this.modelSpaceship.wheel2e.rotateAngleY = this.turn;
-            	this.modelSpaceship.wheel3e.rotateAngleY = this.turn;
-            	this.modelSpaceship.wheel4e.rotateAngleY = this.turn;
-            }
-            else if (Keyboard.isKeyDown(32))
-            {
-        		this.turn += 0.1F;
-        		
-        		if (this.turn >= 0.3F)
-        		{
-        			this.turn = 0.3F;
-        		}
-        		
-            	this.modelSpaceship.wheel1a.rotateAngleY = this.turn;
-            	this.modelSpaceship.wheel2a.rotateAngleY = this.turn;
-            	this.modelSpaceship.wheel3a.rotateAngleY = this.turn;
-            	this.modelSpaceship.wheel4a.rotateAngleY = this.turn;
-            	this.modelSpaceship.wheel1b.rotateAngleY = this.turn;
-            	this.modelSpaceship.wheel2b.rotateAngleY = this.turn;
-            	this.modelSpaceship.wheel3b.rotateAngleY = this.turn;
-            	this.modelSpaceship.wheel4b.rotateAngleY = this.turn;
-            	this.modelSpaceship.wheel1c.rotateAngleY = this.turn;
-            	this.modelSpaceship.wheel2c.rotateAngleY = this.turn;
-            	this.modelSpaceship.wheel3c.rotateAngleY = this.turn;
-            	this.modelSpaceship.wheel4c.rotateAngleY = this.turn;
-            	this.modelSpaceship.wheel1d.rotateAngleY = this.turn;
-            	this.modelSpaceship.wheel2d.rotateAngleY = this.turn;
-            	this.modelSpaceship.wheel3d.rotateAngleY = this.turn;
-            	this.modelSpaceship.wheel4d.rotateAngleY = this.turn;
-            	this.modelSpaceship.wheel1e.rotateAngleY = this.turn;
-            	this.modelSpaceship.wheel2e.rotateAngleY = this.turn;
-            	this.modelSpaceship.wheel3e.rotateAngleY = this.turn;
-            	this.modelSpaceship.wheel4e.rotateAngleY = this.turn;
-            }
-            else
-            {
-        		this.turn = 0.0F;
-        		
-            	this.modelSpaceship.wheel1a.rotateAngleY = 0F;
-            	this.modelSpaceship.wheel2a.rotateAngleY = 0F;
-            	this.modelSpaceship.wheel3a.rotateAngleY = 0F;
-            	this.modelSpaceship.wheel4a.rotateAngleY = 0F;
-            	this.modelSpaceship.wheel1b.rotateAngleY = 0F;
-            	this.modelSpaceship.wheel2b.rotateAngleY = 0F;
-            	this.modelSpaceship.wheel3b.rotateAngleY = 0F;
-            	this.modelSpaceship.wheel4b.rotateAngleY = 0F;
-            	this.modelSpaceship.wheel1c.rotateAngleY = 0F;
-            	this.modelSpaceship.wheel2c.rotateAngleY = 0F;
-            	this.modelSpaceship.wheel3c.rotateAngleY = 0F;
-            	this.modelSpaceship.wheel4c.rotateAngleY = 0F;
-            	this.modelSpaceship.wheel1d.rotateAngleY = 0F;
-            	this.modelSpaceship.wheel2d.rotateAngleY = 0F;
-            	this.modelSpaceship.wheel3d.rotateAngleY = 0F;
-            	this.modelSpaceship.wheel4d.rotateAngleY = 0F;
-            	this.modelSpaceship.wheel1e.rotateAngleY = 0F;
-            	this.modelSpaceship.wheel2e.rotateAngleY = 0F;
-            	this.modelSpaceship.wheel3e.rotateAngleY = 0F;
-            	this.modelSpaceship.wheel4e.rotateAngleY = 0F;
-            }
-        }
-
-//        if (var30 < 0.0F)
-//        {
-//            var30 = 0.0F;
-//        }
-//
-//        if (var28 > 0.0F)
-//        {
-//            GL11.glRotatef(MathHelper.sin(var28) * var28 * 3 / 10.0F * par1GCEntitySpaceship.func_70493_k(), 1.0F, 0.0F, 0.0F);
-//            GL11.glRotatef(MathHelper.sin(var28) * var28 * 3 / 10.0F * par1GCEntitySpaceship.func_70493_k(), 1.0F, 0.0F, 1.0F);
-//        }
 
         this.loadTexture("/micdoodle8/mods/galacticraft/core/client/entities/buggy.png");
         GL11.glScalef(-1.0F, -1.0F, 1.0F);
-        this.modelSpaceship.render(par1GCEntitySpaceship, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+        this.modelSpaceship.render(entity, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
         GL11.glPopMatrix();
     }
 

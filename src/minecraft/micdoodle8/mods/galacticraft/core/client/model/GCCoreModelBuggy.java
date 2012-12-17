@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.model;
 
+import org.lwjgl.input.Keyboard;
+
 import net.minecraft.src.Entity;
 import net.minecraft.src.ModelBase;
 import net.minecraft.src.ModelRenderer;
@@ -40,6 +42,8 @@ public class GCCoreModelBuggy extends ModelBase
 	public ModelRenderer seatArmRight2;
 	public ModelRenderer seatArmLeft2;
 	public ModelRenderer backBottom;
+    
+	float turn = 0;
 	
 	public GCCoreModelBuggy()
 	{
@@ -303,5 +307,7 @@ public class GCCoreModelBuggy extends ModelBase
 	public void setRotationAngles(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
 	{
 		super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);	
+        
+//        this.radarCenter.rotateAngleY += 0.01F;
 	}
 }
