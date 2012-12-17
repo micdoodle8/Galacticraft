@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.moon.client;
 import java.util.EnumSet;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
+import micdoodle8.mods.galacticraft.API.IMapPlanet;
 import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
 import micdoodle8.mods.galacticraft.core.GCCoreLocalization;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -128,5 +129,11 @@ public class ClientProxyMoon extends CommonProxyMoon implements IGalacticraftSub
 	public IPlanetSlotRenderer getSlotRenderer() 
 	{
 		return new GCMoonSlotRenderer();
+	}
+
+	@Override
+	public IMapPlanet getPlanetForMap() 
+	{
+		return null;
 	}
 }

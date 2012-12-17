@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.jupiter.client;
 import java.util.EnumSet;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
+import micdoodle8.mods.galacticraft.API.IMapPlanet;
 import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
 import micdoodle8.mods.galacticraft.core.GCCoreLocalization;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -47,7 +48,6 @@ public class ClientProxyJupiter extends CommonProxyJupiter implements IGalacticr
 		moonClientIo.init(event);
 		moonClientEuropa.init(event);
 		GalacticraftCore.registerClientSubMod(this);
-		GalacticraftCore.addMapPlanet(new GCJupiterMapPlanet());
 	}
 
 	@Override
@@ -124,5 +124,11 @@ public class ClientProxyJupiter extends CommonProxyJupiter implements IGalacticr
 	public IPlanetSlotRenderer getSlotRenderer() 
 	{
 		return new GCJupiterSlotRenderer();
+	}
+
+	@Override
+	public IMapPlanet getPlanetForMap() 
+	{
+		return new GCJupiterMapPlanet();
 	}
 }

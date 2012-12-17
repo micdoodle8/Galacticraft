@@ -6,6 +6,7 @@ import java.util.EnumSet;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
+import micdoodle8.mods.galacticraft.API.IMapPlanet;
 import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
 import micdoodle8.mods.galacticraft.core.GCCoreLocalization;
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
@@ -75,7 +76,6 @@ public class ClientProxyMars extends CommonProxyMars implements IGalacticraftSub
         NetworkRegistry.instance().registerChannel(new ClientPacketHandler(), "GalacticraftMars", Side.CLIENT);
         this.fluidRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new GCMarsBlockRendererBacterialSludge(this.fluidRenderID));
-		GalacticraftCore.addMapPlanet(new GCMarsMapPlanet());
 	}
 
 	@Override
@@ -255,5 +255,11 @@ public class ClientProxyMars extends CommonProxyMars implements IGalacticraftSub
 	public IPlanetSlotRenderer getSlotRenderer() 
 	{
 		return new GCMarsSlotRenderer();
+	}
+
+	@Override
+	public IMapPlanet getPlanetForMap() 
+	{
+		return new GCMarsMapPlanet();
 	}
 }

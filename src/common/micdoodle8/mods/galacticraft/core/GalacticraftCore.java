@@ -173,7 +173,7 @@ public class GalacticraftCore
 		clientSubMods.add(mod);
 	}
 	
-	public static void addMapPlanet(IMapPlanet planet)
+	public static void addAdditionalMapPlanet(IMapPlanet planet)
 	{
 		mapPlanets.add(planet);
 	}

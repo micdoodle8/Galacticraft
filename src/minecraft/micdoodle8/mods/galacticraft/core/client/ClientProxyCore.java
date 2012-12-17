@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.API.AdvancedAchievement;
+import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
 import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
 import micdoodle8.mods.galacticraft.core.CommonProxyCore;
@@ -21,7 +22,6 @@ import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLaunchFlameFX;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLaunchSmokeFX;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityOxygenFX;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiChoosePlanet;
-import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelSkeleton;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererBreathableAir;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererMeteor;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererOxygenPipe;
@@ -54,7 +54,6 @@ import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityZombie;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemSensorGlasses;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
-import micdoodle8.mods.galacticraft.jupiter.client.GCJupiterMapPlanet;
 import micdoodle8.mods.galacticraft.moon.client.ClientProxyMoon;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.EntityClientPlayerMP;
@@ -71,7 +70,6 @@ import net.minecraft.src.Material;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.MovingObjectPosition;
 import net.minecraft.src.Packet250CustomPayload;
-import net.minecraft.src.RenderLiving;
 import net.minecraft.src.RenderManager;
 import net.minecraft.src.ScaledResolution;
 import net.minecraft.src.StatBase;
@@ -90,6 +88,7 @@ import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry.KeyHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.TickType;
@@ -150,14 +149,26 @@ public class ClientProxyCore extends CommonProxyCore
         RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererOxygenPipe(this.oxygenPipeRenderID));
         this.meteorRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererMeteor(this.meteorRenderID));
-		GalacticraftCore.addMapPlanet(new GCCoreMapPlanetOverworld());
-		GalacticraftCore.addMapPlanet(new GCCoreMapSun());
+		GalacticraftCore.addAdditionalMapPlanet(new GCCoreMapPlanetOverworld());
+		GalacticraftCore.addAdditionalMapPlanet(new GCCoreMapSun());
 	}
 
 	@Override
 	public void postInit(FMLPostInitializationEvent event) 
 	{
 		moon.postInit(event);
+		
+		for (IGalacticraftSubModClient client : GalacticraftCore.clientSubMods)
+		{
+			if (client.getPlanetForMap() != null)
+			{
+				GalacticraftCore.mapPlanets.add(client.getPlanetForMap());
+			}
+			else
+			{
+				FMLLog.severe("Galacticraft " + client.getDimensionName() + " failed to load: No Planet Map provided");
+			}
+		}
 	}
 	
 	@Override

@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.saturn.client;
 import java.util.EnumSet;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
+import micdoodle8.mods.galacticraft.API.IMapPlanet;
 import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
 import micdoodle8.mods.galacticraft.core.GCCoreLocalization;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -48,7 +49,6 @@ public class ClientProxySaturn extends CommonProxySaturn implements IGalacticraf
 		moonClientTitan.init(event);
 		moonClientEnceladus.init(event);
 		GalacticraftCore.registerClientSubMod(this);
-		GalacticraftCore.addMapPlanet(new GCSaturnMapPlanet());
 	}
 
 	@Override
@@ -125,5 +125,11 @@ public class ClientProxySaturn extends CommonProxySaturn implements IGalacticraf
 	public IPlanetSlotRenderer getSlotRenderer() 
 	{
 		return new GCSaturnSlotRenderer();
+	}
+
+	@Override
+	public IMapPlanet getPlanetForMap() 
+	{
+		return new GCSaturnMapPlanet();
 	}
 }

@@ -5,6 +5,7 @@ import java.io.DataInputStream;
 import java.util.EnumSet;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
+import micdoodle8.mods.galacticraft.API.IMapPlanet;
 import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
 import micdoodle8.mods.galacticraft.core.GCCoreLocalization;
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
@@ -136,4 +137,10 @@ public class ClientProxyIo implements IGalacticraftSubModClient
     		return EnumSet.of(TickType.CLIENT);
     	}
     }
+
+	@Override
+	public IMapPlanet getPlanetForMap() 
+	{
+		return null;
+	}
 }

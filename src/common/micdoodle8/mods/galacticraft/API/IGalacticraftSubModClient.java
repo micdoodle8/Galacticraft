@@ -11,4 +11,6 @@ public interface IGalacticraftSubModClient
 	public String getPlanetSpriteDirectory();
 	
 	public IPlanetSlotRenderer getSlotRenderer();
+	
+	public IMapPlanet getPlanetForMap();
 }

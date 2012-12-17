@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.europa.client;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
+import micdoodle8.mods.galacticraft.API.IMapPlanet;
 import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
 import micdoodle8.mods.galacticraft.core.GCCoreLocalization;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -47,5 +48,11 @@ public class ClientProxyEuropa implements IGalacticraftSubModClient
 	public IPlanetSlotRenderer getSlotRenderer() 
 	{
 		return new GCEuropaSlotRenderer();
+	}
+
+	@Override
+	public IMapPlanet getPlanetForMap() 
+	{
+		return null;
 	}
 }

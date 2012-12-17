@@ -6,6 +6,7 @@ import java.util.EnumSet;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
+import micdoodle8.mods.galacticraft.API.IMapPlanet;
 import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
 import micdoodle8.mods.galacticraft.core.GCCoreLocalization;
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
@@ -194,5 +195,11 @@ public class ClientProxyTitan extends CommonProxyTitan implements IGalacticraftS
 	public IPlanetSlotRenderer getSlotRenderer() 
 	{
 		return new GCTitanSlotRenderer();
+	}
+
+	@Override
+	public IMapPlanet getPlanetForMap() 
+	{
+		return null;
 	}
 }
