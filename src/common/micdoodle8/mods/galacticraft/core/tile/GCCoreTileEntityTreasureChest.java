@@ -109,7 +109,7 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
     {
         if (this.chestContents[par1] != null)
         {
-            ItemStack var2 = this.chestContents[par1];
+            final ItemStack var2 = this.chestContents[par1];
             this.chestContents[par1] = null;
             return var2;
         }
@@ -151,13 +151,13 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
 	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readFromNBT(par1NBTTagCompound);
-        NBTTagList var2 = par1NBTTagCompound.getTagList("Items");
+        final NBTTagList var2 = par1NBTTagCompound.getTagList("Items");
         this.chestContents = new ItemStack[this.getSizeInventory()];
 
         for (int var3 = 0; var3 < var2.tagCount(); ++var3)
         {
-            NBTTagCompound var4 = (NBTTagCompound)var2.tagAt(var3);
-            int var5 = var4.getByte("Slot") & 255;
+            final NBTTagCompound var4 = (NBTTagCompound)var2.tagAt(var3);
+            final int var5 = var4.getByte("Slot") & 255;
 
             if (var5 >= 0 && var5 < this.chestContents.length)
             {
@@ -173,13 +173,13 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
 	public void writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeToNBT(par1NBTTagCompound);
-        NBTTagList var2 = new NBTTagList();
+        final NBTTagList var2 = new NBTTagList();
 
         for (int var3 = 0; var3 < this.chestContents.length; ++var3)
         {
             if (this.chestContents[var3] != null)
             {
-                NBTTagCompound var4 = new NBTTagCompound();
+                final NBTTagCompound var4 = new NBTTagCompound();
                 var4.setByte("Slot", (byte)var3);
                 this.chestContents[var3].writeToNBT(var4);
                 var2.appendTag(var4);
@@ -290,7 +290,7 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
         }
 
         this.prevLidAngle = this.lidAngle;
-        float var1 = 0.05F;
+        final float var1 = 0.05F;
         double var4;
 
         if (this.numUsingPlayers > 0 && this.lidAngle == 0.0F && this.adjacentChestZNeg == null && this.adjacentChestXNeg == null)
@@ -313,7 +313,7 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
 
         if (this.numUsingPlayers == 0 && this.lidAngle > 0.0F || this.numUsingPlayers > 0 && this.lidAngle < 1.0F)
         {
-            float var8 = this.lidAngle;
+            final float var8 = this.lidAngle;
 
             if (this.numUsingPlayers > 0)
             {
@@ -329,7 +329,7 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
                 this.lidAngle = 1.0F;
             }
 
-            float var3 = 0.5F;
+            final float var3 = 0.5F;
 
             if (this.lidAngle < var3 && var8 >= var3 && this.adjacentChestZNeg == null && this.adjacentChestXNeg == null)
             {

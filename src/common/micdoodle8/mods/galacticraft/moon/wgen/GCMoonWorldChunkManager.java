@@ -24,8 +24,8 @@ public class GCMoonWorldChunkManager extends WorldChunkManager
 {
     private GenLayer genBiomes;
     private GenLayer biomeIndexLayer;
-    private BiomeCache biomeCache;
-    private List biomesToSpawnIn;
+    private final BiomeCache biomeCache;
+    private final List biomesToSpawnIn;
     private float rainfall;
 
     protected GCMoonWorldChunkManager()
@@ -38,7 +38,7 @@ public class GCMoonWorldChunkManager extends WorldChunkManager
     public GCMoonWorldChunkManager(long par1, WorldType par3WorldType)
     {
         this();
-        GenLayer[] var4 = GenLayer.initializeAllBiomeGenerators(par1, par3WorldType);
+        final GenLayer[] var4 = GenLayer.initializeAllBiomeGenerators(par1, par3WorldType);
         this.genBiomes = var4[0];
         this.biomeIndexLayer = var4[1];
     }
@@ -89,7 +89,7 @@ public class GCMoonWorldChunkManager extends WorldChunkManager
             par1ArrayOfFloat = new float[par4 * par5];
         }
 
-        int[] var6 = this.biomeIndexLayer.getInts(par2, par3, par4, par5);
+        final int[] var6 = this.biomeIndexLayer.getInts(par2, par3, par4, par5);
 
         for (int var7 = 0; var7 < par4 * par5; ++var7)
         {
@@ -116,7 +116,7 @@ public class GCMoonWorldChunkManager extends WorldChunkManager
             par1ArrayOfBiomeGenBase = new BiomeGenBase[par4 * par5];
         }
 
-        int[] var6 = this.genBiomes.getInts(par2, par3, par4, par5);
+        final int[] var6 = this.genBiomes.getInts(par2, par3, par4, par5);
 
         for (int var7 = 0; var7 < par4 * par5; ++var7)
         {
@@ -144,13 +144,13 @@ public class GCMoonWorldChunkManager extends WorldChunkManager
 
         if (par6 && par4 == 16 && par5 == 16 && (par2 & 15) == 0 && (par3 & 15) == 0)
         {
-            BiomeGenBase[] var9 = this.biomeCache.getCachedBiomes(par2, par3);
+            final BiomeGenBase[] var9 = this.biomeCache.getCachedBiomes(par2, par3);
             System.arraycopy(var9, 0, par1ArrayOfBiomeGenBase, 0, par4 * par5);
             return par1ArrayOfBiomeGenBase;
         }
         else
         {
-            int[] var7 = this.biomeIndexLayer.getInts(par2, par3, par4, par5);
+            final int[] var7 = this.biomeIndexLayer.getInts(par2, par3, par4, par5);
 
             for (int var8 = 0; var8 < par4 * par5; ++var8)
             {
@@ -164,17 +164,17 @@ public class GCMoonWorldChunkManager extends WorldChunkManager
     @Override
     public boolean areBiomesViable(int par1, int par2, int par3, List par4List)
     {
-        int var5 = par1 - par3 >> 2;
-        int var6 = par2 - par3 >> 2;
-        int var7 = par1 + par3 >> 2;
-        int var8 = par2 + par3 >> 2;
-        int var9 = var7 - var5 + 1;
-        int var10 = var8 - var6 + 1;
-        int[] var11 = this.genBiomes.getInts(var5, var6, var9, var10);
+        final int var5 = par1 - par3 >> 2;
+        final int var6 = par2 - par3 >> 2;
+        final int var7 = par1 + par3 >> 2;
+        final int var8 = par2 + par3 >> 2;
+        final int var9 = var7 - var5 + 1;
+        final int var10 = var8 - var6 + 1;
+        final int[] var11 = this.genBiomes.getInts(var5, var6, var9, var10);
 
         for (int var12 = 0; var12 < var9 * var10; ++var12)
         {
-            BiomeGenBase var13 = BiomeGenBase.biomeList[var11[var12]];
+            final BiomeGenBase var13 = BiomeGenBase.biomeList[var11[var12]];
 
             if (!par4List.contains(var13))
             {
@@ -188,21 +188,21 @@ public class GCMoonWorldChunkManager extends WorldChunkManager
     @Override
     public ChunkPosition findBiomePosition(int par1, int par2, int par3, List par4List, Random par5Random)
     {
-        int var6 = par1 - par3 >> 2;
-        int var7 = par2 - par3 >> 2;
-        int var8 = par1 + par3 >> 2;
-        int var9 = par2 + par3 >> 2;
-        int var10 = var8 - var6 + 1;
-        int var11 = var9 - var7 + 1;
-        int[] var12 = this.genBiomes.getInts(var6, var7, var10, var11);
+        final int var6 = par1 - par3 >> 2;
+        final int var7 = par2 - par3 >> 2;
+        final int var8 = par1 + par3 >> 2;
+        final int var9 = par2 + par3 >> 2;
+        final int var10 = var8 - var6 + 1;
+        final int var11 = var9 - var7 + 1;
+        final int[] var12 = this.genBiomes.getInts(var6, var7, var10, var11);
         ChunkPosition var13 = null;
         int var14 = 0;
 
         for (int var15 = 0; var15 < var12.length; ++var15)
         {
-            int var16 = var6 + var15 % var10 << 2;
-            int var17 = var7 + var15 / var10 << 2;
-            BiomeGenBase var18 = BiomeGenBase.biomeList[var12[var15]];
+            final int var16 = var6 + var15 % var10 << 2;
+            final int var17 = var7 + var15 / var10 << 2;
+            final BiomeGenBase var18 = BiomeGenBase.biomeList[var12[var15]];
 
             if (par4List.contains(var18) && (var13 == null || par5Random.nextInt(var14 + 1) == 0))
             {

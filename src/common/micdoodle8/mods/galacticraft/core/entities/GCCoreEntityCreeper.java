@@ -111,7 +111,7 @@ public class GCCoreEntityCreeper extends GCCoreEntityMob
         if (this.isEntityAlive())
         {
             this.lastActiveTime = this.timeSinceIgnited;
-            int var1 = this.getCreeperState();
+            final int var1 = this.getCreeperState();
 
             if (var1 > 0 && this.timeSinceIgnited == 0)
             {

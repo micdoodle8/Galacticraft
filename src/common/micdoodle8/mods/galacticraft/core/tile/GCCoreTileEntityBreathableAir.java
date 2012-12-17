@@ -12,11 +12,11 @@ public class GCCoreTileEntityBreathableAir extends TileEntity
 	{
 		if (this.distributor != null)
 		{
-			TileEntity distributorTile = this.worldObj.getBlockTileEntity(distributor.xCoord, distributor.yCoord, distributor.zCoord);
+			final TileEntity distributorTile = this.worldObj.getBlockTileEntity(this.distributor.xCoord, this.distributor.yCoord, this.distributor.zCoord);
 			
 			if (distributorTile == null || ((GCCoreTileEntityOxygenDistributor)distributorTile).currentPower < 1.0D)
 			{
-				distributor = null;
+				this.distributor = null;
 			}
 		}
 		
@@ -24,15 +24,15 @@ public class GCCoreTileEntityBreathableAir extends TileEntity
 		{
 			if (!this.worldObj.isRemote)
 			{
-				this.worldObj.setBlock(xCoord, yCoord, zCoord, 0);
+				this.worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, 0);
 				this.invalidate();
 			}
 		}
 		else
 		{
-			double distanceFromDistributor = distributor.getDistanceFrom(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D);
+			final double distanceFromDistributor = this.distributor.getDistanceFrom(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D);
 			
-			if (distanceFromDistributor < distributor.currentPower)
+			if (distanceFromDistributor < this.distributor.currentPower)
 			{
 				for (int j = -1; j <= 1; j++)
 				{
@@ -40,11 +40,11 @@ public class GCCoreTileEntityBreathableAir extends TileEntity
 					{
 						for (int k = -1; k <= 1; k++)
 						{
-							if (this.worldObj.isAirBlock(xCoord + i, yCoord + j, zCoord + k))
+							if (this.worldObj.isAirBlock(this.xCoord + i, this.yCoord + j, this.zCoord + k))
 							{
-								this.worldObj.setBlockWithNotify(xCoord + i, yCoord + j, zCoord + k, GCCoreBlocks.breatheableAir.blockID);
+								this.worldObj.setBlockWithNotify(this.xCoord + i, this.yCoord + j, this.zCoord + k, GCCoreBlocks.breatheableAir.blockID);
 								
-								TileEntity tile = this.worldObj.getBlockTileEntity(xCoord + i, yCoord + j, zCoord + k);
+								final TileEntity tile = this.worldObj.getBlockTileEntity(this.xCoord + i, this.yCoord + j, this.zCoord + k);
 								
 								if (tile != null && tile instanceof GCCoreTileEntityBreathableAir)
 								{

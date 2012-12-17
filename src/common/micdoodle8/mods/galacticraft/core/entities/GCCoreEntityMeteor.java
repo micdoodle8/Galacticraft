@@ -55,7 +55,7 @@ public class GCCoreEntityMeteor extends Entity
         
         if (this.worldObj.isRemote)
         {
-        	spawnParticles();
+        	this.spawnParticles();
         }
 
         Vec3 var15 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
@@ -70,23 +70,23 @@ public class GCCoreEntityMeteor extends Entity
         }
 
         Entity var4 = null;
-        List var5 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(2.0D, 2.0D, 2.0D));
+        final List var5 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(2.0D, 2.0D, 2.0D));
         double var6 = 0.0D;
-        Iterator var8 = var5.iterator();
+        final Iterator var8 = var5.iterator();
 
         while (var8.hasNext())
         {
-            Entity var9 = (Entity)var8.next();
+            final Entity var9 = (Entity)var8.next();
 
-            if (var9.canBeCollidedWith() && (!var9.isEntityEqual(this.shootingEntity)))
+            if (var9.canBeCollidedWith() && !var9.isEntityEqual(this.shootingEntity))
             {
-                float var10 = 0.01F;
-                AxisAlignedBB var11 = var9.boundingBox.expand(var10, var10, var10);
-                MovingObjectPosition var12 = var11.calculateIntercept(var15, var2);
+                final float var10 = 0.01F;
+                final AxisAlignedBB var11 = var9.boundingBox.expand(var10, var10, var10);
+                final MovingObjectPosition var12 = var11.calculateIntercept(var15, var2);
 
                 if (var12 != null)
                 {
-                    double var13 = var15.distanceTo(var12.hitVec);
+                    final double var13 = var15.distanceTo(var12.hitVec);
 
                     if (var13 < var6 || var6 == 0.0D)
                     {
@@ -146,7 +146,7 @@ public class GCCoreEntityMeteor extends Entity
                 }
         	}
 
-            this.worldObj.newExplosion((Entity)null, this.posX, this.posY, this.posZ, (this.size / 3) + 2, false, true);
+            this.worldObj.newExplosion((Entity)null, this.posX, this.posY, this.posZ, this.size / 3 + 2, false, true);
         }
         
         this.setDead();

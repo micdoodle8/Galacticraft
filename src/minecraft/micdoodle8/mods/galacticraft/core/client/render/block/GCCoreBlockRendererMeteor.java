@@ -45,7 +45,7 @@ public class GCCoreBlockRendererMeteor implements ISimpleBlockRenderingHandler
 
     public static void renderInvNormalBlock(RenderBlocks var0, Block var1, int var2)
     {
-        Tessellator var3 = Tessellator.instance;
+        final Tessellator var3 = Tessellator.instance;
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         var0.setRenderMinMax(0.15F, 0.15F, 0.15F, 0.85F, 0.85F, 0.85F);
@@ -83,8 +83,8 @@ public class GCCoreBlockRendererMeteor implements ISimpleBlockRenderingHandler
 	
     public void renderBlockMeteor(RenderBlocks renderBlocks, Block par1Block, IBlockAccess var1, int par2, int par3, int par4)
     {
-        int var5 = var1.getBlockMetadata(par2, par3, par4);
-        int var6 = var5 & 3;
+        final int var5 = var1.getBlockMetadata(par2, par3, par4);
+        final int var6 = var5 & 3;
 
         if (var6 == 0)
         {

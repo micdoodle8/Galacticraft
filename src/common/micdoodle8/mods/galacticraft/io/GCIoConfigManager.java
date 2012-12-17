@@ -29,7 +29,7 @@ public class GCIoConfigManager
 		if (!loaded)
 		{
 			configuration = new Configuration(file);
-			setDefaultValues();
+			this.setDefaultValues();
 		}
 	}
 	
@@ -43,7 +43,7 @@ public class GCIoConfigManager
 	    
 	        idBlock = 						configuration.get(configuration.CATEGORY_BLOCK, 						"idBlockIo", 					199)	.getInt(199);
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			FMLLog.log(Level.SEVERE, e, "Galacticraft Io has a problem loading it's configuration");
 		}

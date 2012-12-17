@@ -13,7 +13,6 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.io.blocks.GCIoBlocks;
 import micdoodle8.mods.galacticraft.io.dimension.GCIoWorldProvider;
 import micdoodle8.mods.galacticraft.titan.client.ClientProxyTitan;
-import micdoodle8.mods.galacticraft.titan.client.ClientProxyTitan.ClientPacketHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.EntityClientPlayerMP;
 import net.minecraft.src.EntityPlayer;
@@ -84,9 +83,9 @@ public class ClientProxyIo implements IGalacticraftSubModClient
         @Override
         public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player p)
         {
-            DataInputStream data = new DataInputStream(new ByteArrayInputStream(packet.data));
-            int packetType = GCCoreUtil.readPacketID(data);
-            EntityPlayer player = (EntityPlayer)p;
+            final DataInputStream data = new DataInputStream(new ByteArrayInputStream(packet.data));
+            final int packetType = GCCoreUtil.readPacketID(data);
+            final EntityPlayer player = (EntityPlayer)p;
             
             if (packetType == 0)
             {
@@ -102,11 +101,11 @@ public class ClientProxyIo implements IGalacticraftSubModClient
         {
     		ClientProxyTitan.getCurrentTime = System.currentTimeMillis();
     		
-    		Minecraft minecraft = FMLClientHandler.instance().getClient();
+    		final Minecraft minecraft = FMLClientHandler.instance().getClient();
     		
-            WorldClient world = minecraft.theWorld;
+            final WorldClient world = minecraft.theWorld;
             
-            EntityClientPlayerMP player = minecraft.thePlayer;
+            final EntityClientPlayerMP player = minecraft.thePlayer;
     		
     		if (type.equals(EnumSet.of(TickType.CLIENT)))
             {

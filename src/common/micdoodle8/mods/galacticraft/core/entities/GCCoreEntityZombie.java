@@ -152,12 +152,12 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
     {
         if (this.worldObj.isDaytime() && !this.worldObj.isRemote && !this.isChild())
         {
-            float var1 = this.getBrightness(1.0F);
+            final float var1 = this.getBrightness(1.0F);
 
             if (var1 > 0.5F && this.rand.nextFloat() * 30.0F < (var1 - 0.4F) * 2.0F && this.worldObj.canBlockSeeTheSky(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ)))
             {
                 boolean var2 = true;
-                ItemStack var3 = this.getCurrentItemOrArmor(4);
+                final ItemStack var3 = this.getCurrentItemOrArmor(4);
 
                 if (var3 != null)
                 {
@@ -193,7 +193,7 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
     {
         if (!this.worldObj.isRemote && this.func_82230_o())
         {
-            int var1 = this.getConversionTimeBoost();
+            final int var1 = this.getConversionTimeBoost();
             this.conversionTime -= var1;
 
             if (this.conversionTime <= 0)
@@ -211,7 +211,7 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
     @Override
 	public int getAttackStrength(Entity par1Entity)
     {
-        ItemStack var2 = this.getHeldItem();
+        final ItemStack var2 = this.getHeldItem();
         int var3 = 4;
 
         if (var2 != null)
@@ -299,7 +299,7 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
 
         if (this.rand.nextFloat() < (this.worldObj.difficultySetting == 3 ? 0.05F : 0.01F))
         {
-            int var1 = this.rand.nextInt(3);
+            final int var1 = this.rand.nextInt(3);
 
             if (var1 == 0)
             {
@@ -372,7 +372,7 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
                 return;
             }
 
-            EntityZombie var2 = new EntityZombie(this.worldObj);
+            final EntityZombie var2 = new EntityZombie(this.worldObj);
             var2.func_82149_j(par1EntityLiving);
             this.worldObj.setEntityDead(par1EntityLiving);
             var2.initCreature();
@@ -406,7 +406,7 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
 
         if (this.getCurrentItemOrArmor(4) == null)
         {
-            Calendar var1 = this.worldObj.getCurrentDate();
+            final Calendar var1 = this.worldObj.getCurrentDate();
 
             if (var1.get(2) + 1 == 10 && var1.get(5) == 31 && this.rand.nextFloat() < 0.25F)
             {
@@ -422,7 +422,7 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
     @Override
 	public boolean interact(EntityPlayer par1EntityPlayer)
     {
-        ItemStack var2 = par1EntityPlayer.getCurrentEquippedItem();
+        final ItemStack var2 = par1EntityPlayer.getCurrentEquippedItem();
 
         if (var2 != null && var2.getItem() == Item.appleGold && var2.getItemDamage() == 0 && this.isVillager() && this.isPotionActive(Potion.weakness))
         {
@@ -486,7 +486,7 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
      */
     protected void convertToVillager()
     {
-        EntityVillager var1 = new EntityVillager(this.worldObj);
+        final EntityVillager var1 = new EntityVillager(this.worldObj);
         var1.func_82149_j(this);
         var1.initCreature();
         var1.func_82187_q();
@@ -519,7 +519,7 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
                 {
                     for (int var5 = (int)this.posZ - 4; var5 < (int)this.posZ + 4 && var2 < 14; ++var5)
                     {
-                        int var6 = this.worldObj.getBlockId(var3, var4, var5);
+                        final int var6 = this.worldObj.getBlockId(var3, var4, var5);
 
                         if (var6 == Block.fenceIron.blockID || var6 == Block.bed.blockID)
                         {

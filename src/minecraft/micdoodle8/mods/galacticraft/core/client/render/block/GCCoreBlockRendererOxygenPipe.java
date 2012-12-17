@@ -21,8 +21,8 @@ public class GCCoreBlockRendererOxygenPipe implements ISimpleBlockRenderingHandl
     
 	public void renderPipe(RenderBlocks renderblocks, IBlockAccess iblockaccess, Block block, int x, int y, int z) 
 	{
-		float minSize = 0.4F;
-		float maxSize = 0.6F;
+		final float minSize = 0.4F;
+		final float maxSize = 0.6F;
 
 		renderblocks.setRenderMinMax(minSize, minSize, minSize, maxSize, maxSize, maxSize);
 		renderblocks.renderStandardBlock(block, x, y, z);
@@ -67,10 +67,10 @@ public class GCCoreBlockRendererOxygenPipe implements ISimpleBlockRenderingHandl
 	@Override
 	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) 
 	{ 
-		float minSize = 0.4F;
-		float maxSize = 0.6F;
+		final float minSize = 0.4F;
+		final float maxSize = 0.6F;
 		
-        Tessellator var3 = Tessellator.instance;
+        final Tessellator var3 = Tessellator.instance;
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         renderer.setRenderMinMax(minSize, minSize, 0.0F, maxSize, maxSize, 1.0F);
@@ -103,7 +103,7 @@ public class GCCoreBlockRendererOxygenPipe implements ISimpleBlockRenderingHandl
 	@Override
 	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) 
 	{
-		renderPipe(renderer, world, block, x, y, z);
+		this.renderPipe(renderer, world, block, x, y, z);
 		return true;
 	}
 

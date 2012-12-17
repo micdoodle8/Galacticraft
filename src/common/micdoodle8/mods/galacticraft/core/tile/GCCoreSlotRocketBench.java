@@ -8,7 +8,7 @@ import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreSlotRocketBench extends Slot
 {
-    private int index;
+    private final int index;
 
     public GCCoreSlotRocketBench(IInventory par2IInventory, int par3, int par4, int par5)
     {
@@ -26,33 +26,33 @@ public class GCCoreSlotRocketBench extends Slot
     	switch (this.index)
     	{
     	case 1:
-    		return (par1ItemStack.getItem().shiftedIndex == GCCoreItems.rocketNoseCone.shiftedIndex) ? true : false;
+    		return par1ItemStack.getItem().shiftedIndex == GCCoreItems.rocketNoseCone.shiftedIndex ? true : false;
     	case 2:
-    		return (par1ItemStack.getItem().shiftedIndex == GCCoreItems.heavyPlating.shiftedIndex) ? true : false;
+    		return par1ItemStack.getItem().shiftedIndex == GCCoreItems.heavyPlating.shiftedIndex ? true : false;
     	case 3:
-    		return (par1ItemStack.getItem().shiftedIndex == GCCoreItems.heavyPlating.shiftedIndex) ? true : false;
+    		return par1ItemStack.getItem().shiftedIndex == GCCoreItems.heavyPlating.shiftedIndex ? true : false;
     	case 4:
-    		return (par1ItemStack.getItem().shiftedIndex == GCCoreItems.heavyPlating.shiftedIndex) ? true : false;
+    		return par1ItemStack.getItem().shiftedIndex == GCCoreItems.heavyPlating.shiftedIndex ? true : false;
     	case 5:
-    		return (par1ItemStack.getItem().shiftedIndex == GCCoreItems.heavyPlating.shiftedIndex) ? true : false;
+    		return par1ItemStack.getItem().shiftedIndex == GCCoreItems.heavyPlating.shiftedIndex ? true : false;
     	case 6:
-    		return (par1ItemStack.getItem().shiftedIndex == GCCoreItems.heavyPlating.shiftedIndex) ? true : false;
+    		return par1ItemStack.getItem().shiftedIndex == GCCoreItems.heavyPlating.shiftedIndex ? true : false;
     	case 7:
-    		return (par1ItemStack.getItem().shiftedIndex == GCCoreItems.heavyPlating.shiftedIndex) ? true : false;
+    		return par1ItemStack.getItem().shiftedIndex == GCCoreItems.heavyPlating.shiftedIndex ? true : false;
     	case 8:
-    		return (par1ItemStack.getItem().shiftedIndex == GCCoreItems.heavyPlating.shiftedIndex) ? true : false;
+    		return par1ItemStack.getItem().shiftedIndex == GCCoreItems.heavyPlating.shiftedIndex ? true : false;
     	case 9:
-    		return (par1ItemStack.getItem().shiftedIndex == GCCoreItems.heavyPlating.shiftedIndex) ? true : false;
+    		return par1ItemStack.getItem().shiftedIndex == GCCoreItems.heavyPlating.shiftedIndex ? true : false;
     	case 10:
-    		return (par1ItemStack.getItem().shiftedIndex == GCCoreItems.rocketFins.shiftedIndex) ? true : false;
+    		return par1ItemStack.getItem().shiftedIndex == GCCoreItems.rocketFins.shiftedIndex ? true : false;
     	case 11:
-    		return (par1ItemStack.getItem().shiftedIndex == GCCoreItems.rocketFins.shiftedIndex) ? true : false;
+    		return par1ItemStack.getItem().shiftedIndex == GCCoreItems.rocketFins.shiftedIndex ? true : false;
     	case 12:
-    		return (par1ItemStack.getItem().shiftedIndex == GCCoreItems.rocketEngine.shiftedIndex) ? true : false;
+    		return par1ItemStack.getItem().shiftedIndex == GCCoreItems.rocketEngine.shiftedIndex ? true : false;
     	case 13:
-    		return (par1ItemStack.getItem().shiftedIndex == GCCoreItems.rocketFins.shiftedIndex) ? true : false;
+    		return par1ItemStack.getItem().shiftedIndex == GCCoreItems.rocketFins.shiftedIndex ? true : false;
     	case 14:
-    		return (par1ItemStack.getItem().shiftedIndex == GCCoreItems.rocketFins.shiftedIndex) ? true : false;
+    		return par1ItemStack.getItem().shiftedIndex == GCCoreItems.rocketFins.shiftedIndex ? true : false;
     	case 15:
     		return true;
     	case 16:

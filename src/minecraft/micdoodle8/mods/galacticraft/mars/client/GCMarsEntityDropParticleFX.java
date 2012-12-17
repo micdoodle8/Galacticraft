@@ -19,7 +19,7 @@ import cpw.mods.fml.common.asm.SideOnly;
 public class GCMarsEntityDropParticleFX extends EntityFX
 {
     /** the material type for dropped items/blocks */
-    private Material materialType;
+    private final Material materialType;
 
     /** The height of the current bob */
     private int bobTimer;
@@ -129,11 +129,11 @@ public class GCMarsEntityDropParticleFX extends EntityFX
             this.motionZ *= 0.699999988079071D;
         }
 
-        Material var1 = this.worldObj.getBlockMaterial(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ));
+        final Material var1 = this.worldObj.getBlockMaterial(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ));
 
         if (var1.isLiquid() || var1.isSolid())
         {
-            double var2 = MathHelper.floor_double(this.posY) + 1 - BlockFluid.getFluidHeightPercent(this.worldObj.getBlockMetadata(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ)));
+            final double var2 = MathHelper.floor_double(this.posY) + 1 - BlockFluid.getFluidHeightPercent(this.worldObj.getBlockMetadata(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ)));
 
             if (this.posY < var2)
             {

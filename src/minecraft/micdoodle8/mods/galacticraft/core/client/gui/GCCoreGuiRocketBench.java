@@ -28,8 +28,8 @@ public class GCCoreGuiRocketBench extends GuiContainer
     	FMLLog.info("rocket");
     	super.initGui();
         this.controlList.clear();
-        byte var1 = -16;
-        GuiButton button = new GuiButton(0, this.width / 2 - 130, this.height / 2 - 30, 40, 20, "Back");
+        final byte var1 = -16;
+        final GuiButton button = new GuiButton(0, this.width / 2 - 130, this.height / 2 - 30, 40, 20, "Back");
         button.enabled = false;
         this.controlList.add(button);
         this.controlList.add(new GuiButton(1, this.width / 2 + 90, this.height / 2 - 30, 40, 20, "Next"));
@@ -43,7 +43,7 @@ public class GCCoreGuiRocketBench extends GuiContainer
             switch (par1GuiButton.id)
             {
             case 1:
-                Object[] toSend = {1};
+                final Object[] toSend = {1};
                 FMLClientHandler.instance().getClient().displayGuiScreen(null);
                 
                 FMLLog.info("" + FMLClientHandler.instance().getClient().currentScreen);
@@ -70,11 +70,11 @@ public class GCCoreGuiRocketBench extends GuiContainer
     @Override
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
-        int var4 = this.mc.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/gui/rocketbench.png");
+        final int var4 = this.mc.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/gui/rocketbench.png");
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.renderEngine.bindTexture(var4);
-        int var5 = (this.width - this.xSize) / 2;
-        int var6 = (this.height - 220) / 2;
+        final int var5 = (this.width - this.xSize) / 2;
+        final int var6 = (this.height - 220) / 2;
         this.drawTexturedModalRect(var5, var6, 0, 0, this.xSize, 220);
     }
 }

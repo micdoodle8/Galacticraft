@@ -23,7 +23,7 @@ import cpw.mods.fml.common.asm.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GCMarsRenderProjectileTNT extends Render
 {
-    private RenderBlocks renderBlocks = new RenderBlocks();
+    private final RenderBlocks renderBlocks = new RenderBlocks();
 
     public GCMarsRenderProjectileTNT()
     {
@@ -35,16 +35,16 @@ public class GCMarsRenderProjectileTNT extends Render
         GL11.glPushMatrix();
         GL11.glTranslatef((float)par2, (float)par4, (float)par6);
         this.loadTexture("/terrain.png");
-        Block var10 = Block.blocksList[Block.tnt.blockID];
-        World var11 = par1EntityFallingSand.getWorld();
+        final Block var10 = Block.blocksList[Block.tnt.blockID];
+        final World var11 = par1EntityFallingSand.getWorld();
         GL11.glDisable(GL11.GL_LIGHTING);
 
         if (var10 == Block.dragonEgg)
         {
             this.renderBlocks.blockAccess = var11;
-            Tessellator var12 = Tessellator.instance;
+            final Tessellator var12 = Tessellator.instance;
             var12.startDrawingQuads();
-            var12.setTranslation((-MathHelper.floor_double(par1EntityFallingSand.posX)) - 0.5F, (-MathHelper.floor_double(par1EntityFallingSand.posY)) - 0.5F, (-MathHelper.floor_double(par1EntityFallingSand.posZ)) - 0.5F);
+            var12.setTranslation(-MathHelper.floor_double(par1EntityFallingSand.posX) - 0.5F, -MathHelper.floor_double(par1EntityFallingSand.posY) - 0.5F, -MathHelper.floor_double(par1EntityFallingSand.posZ) - 0.5F);
             this.renderBlocks.renderBlockByRenderType(var10, MathHelper.floor_double(par1EntityFallingSand.posX), MathHelper.floor_double(par1EntityFallingSand.posY), MathHelper.floor_double(par1EntityFallingSand.posZ));
             var12.setTranslation(0.0D, 0.0D, 0.0D);
             var12.draw();

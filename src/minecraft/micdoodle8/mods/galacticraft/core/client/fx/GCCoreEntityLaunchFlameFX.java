@@ -33,7 +33,7 @@ public class GCCoreEntityLaunchFlameFX extends EntityFX
         this.particleScale *= 2F;
         this.particleScale *= par14 * 2;
         this.smokeParticleScale = this.particleScale;
-        this.particleMaxAge = (int)(5.0D);
+        this.particleMaxAge = (int)5.0D;
         this.particleMaxAge = (int)(this.particleMaxAge * par14);
         this.noClip = false;
     }

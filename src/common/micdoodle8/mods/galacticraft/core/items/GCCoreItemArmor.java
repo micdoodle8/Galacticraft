@@ -11,7 +11,7 @@ import cpw.mods.fml.common.asm.SideOnly;
 public class GCCoreItemArmor extends GCCoreItemBreathableHelmet implements IArmorTextureProvider
 {
 	public boolean attachedMask;
-	private EnumArmorMaterial material;
+	private final EnumArmorMaterial material;
 	
 	public GCCoreItemArmor(int par1, EnumArmorMaterial par2EnumArmorMaterial, int par3, int par4, boolean breathable) 
 	{
@@ -24,7 +24,7 @@ public class GCCoreItemArmor extends GCCoreItemBreathableHelmet implements IArmo
 	@Override
     public String getArmorTextureFile(ItemStack itemstack)
     {
-    	if (material == GCCoreItems.TITANIUMARMOR)
+    	if (this.material == GCCoreItems.TITANIUMARMOR)
     	{
     		if (itemstack.getItem().shiftedIndex == GCCoreItems.titaniumHelmet.shiftedIndex)
     		{

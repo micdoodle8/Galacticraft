@@ -14,10 +14,10 @@ import net.minecraft.src.Slot;
  */
 public class GCCoreContainerAirDistributor extends Container
 {
-    private GCCoreTileEntityOxygenDistributor distributor;
-    private int lastCookTime = 0;
-    private int lastBurnTime = 0;
-    private int lastItemBurnTime = 0;
+    private final GCCoreTileEntityOxygenDistributor distributor;
+    private final int lastCookTime = 0;
+    private final int lastBurnTime = 0;
+    private final int lastItemBurnTime = 0;
 
     public GCCoreContainerAirDistributor(InventoryPlayer par1InventoryPlayer, GCCoreTileEntityOxygenDistributor par2TileEntityAirDistributor)
     {
@@ -46,21 +46,21 @@ public class GCCoreContainerAirDistributor extends Container
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par1)
     {
         ItemStack stack = null;
-        Slot slotObj = (Slot)this.inventorySlots.get(par1);
+        final Slot slotObj = (Slot)this.inventorySlots.get(par1);
 
         if (slotObj != null && slotObj.getHasStack())
         {
-        	ItemStack stackInSlot = slotObj.getStack();
+        	final ItemStack stackInSlot = slotObj.getStack();
         	stack = stackInSlot.copy();
             
             if (par1 == 0)
             {
-            	if (!mergeItemStack(stackInSlot, 1, inventorySlots.size(), true)) 
+            	if (!this.mergeItemStack(stackInSlot, 1, this.inventorySlots.size(), true)) 
             	{
             		return null;
             	}
             }
-            else if (!mergeItemStack(stackInSlot, 0, 1, false))
+            else if (!this.mergeItemStack(stackInSlot, 0, 1, false))
             {
             	return null;
             }

@@ -13,7 +13,7 @@ public class GCCoreContainerBuggyBench extends Container
 {
     public GCCoreInventoryBuggyBench craftMatrix = new GCCoreInventoryBuggyBench(this);
     public IInventory craftResult = new InventoryCraftResult();
-    private World worldObj;
+    private final World worldObj;
 
     public GCCoreContainerBuggyBench(InventoryPlayer par1InventoryPlayer)
     {
@@ -42,7 +42,7 @@ public class GCCoreContainerBuggyBench extends Container
         // Addons
         for (int var8 = 0; var8 < 3; var8++)
         {
-            this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, 17 + var8, 93 + (var8 * 26), -15));
+            this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, 17 + var8, 93 + var8 * 26, -15));
         }
         
         // Player inv:
@@ -72,7 +72,7 @@ public class GCCoreContainerBuggyBench extends Container
         {
             for (int var2 = 1; var2 < 18; ++var2)
             {
-                ItemStack var3 = this.craftMatrix.getStackInSlotOnClosing(var2);
+                final ItemStack var3 = this.craftMatrix.getStackInSlotOnClosing(var2);
 
                 if (var3 != null)
                 {
@@ -101,11 +101,11 @@ public class GCCoreContainerBuggyBench extends Container
 	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par1)
     {
         ItemStack var2 = null;
-        Slot var3 = (Slot)this.inventorySlots.get(par1);
+        final Slot var3 = (Slot)this.inventorySlots.get(par1);
 
         if (var3 != null && var3.getHasStack())
         {
-            ItemStack var4 = var3.getStack();
+            final ItemStack var4 = var3.getStack();
             var2 = var4.copy();
 
             if (par1 == 0)

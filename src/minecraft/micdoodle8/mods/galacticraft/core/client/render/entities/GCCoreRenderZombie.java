@@ -8,7 +8,6 @@ import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayerSP;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.ModelBase;
-import net.minecraft.src.ModelBiped;
 import net.minecraft.src.RenderLiving;
 import net.minecraft.src.WorldClient;
 
@@ -27,7 +26,7 @@ import cpw.mods.fml.common.asm.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GCCoreRenderZombie extends RenderLiving
 {
-    private ModelBase model = new GCCoreModelZombie(0.2F);
+    private final ModelBase model = new GCCoreModelZombie(0.2F);
 
     @Override
     protected void passSpecialRender(EntityLiving par1EntityLiving, double par2, double par4, double par6)
@@ -43,11 +42,11 @@ public class GCCoreRenderZombie extends RenderLiving
     @Override
 	protected int shouldRenderPass(EntityLiving par1EntityLiving, int par2, float par3)
     {
-    	Minecraft minecraft = FMLClientHandler.instance().getClient();
+    	final Minecraft minecraft = FMLClientHandler.instance().getClient();
 		
-        WorldClient world = minecraft.theWorld;
+        final WorldClient world = minecraft.theWorld;
         
-        EntityPlayerSP player = minecraft.thePlayer;
+        final EntityPlayerSP player = minecraft.thePlayer;
         
         ItemStack helmetSlot = null;
 		
@@ -60,17 +59,17 @@ public class GCCoreRenderZombie extends RenderLiving
         {
             if (par2 == 1)
             {
-                float var4 = par1EntityLiving.ticksExisted * 2 + par3;
+                final float var4 = par1EntityLiving.ticksExisted * 2 + par3;
                 this.loadTexture("/micdoodle8/mods/galacticraft/core/client/entities/power.png");
                 GL11.glMatrixMode(GL11.GL_TEXTURE);
                 GL11.glLoadIdentity();
-                float var5 = var4 * 0.01F;
-                float var6 = var4 * 0.01F;
+                final float var5 = var4 * 0.01F;
+                final float var6 = var4 * 0.01F;
                 GL11.glTranslatef(var5, var6, 0.0F);
                 this.setRenderPassModel(this.model);
                 GL11.glMatrixMode(GL11.GL_MODELVIEW);
                 GL11.glEnable(GL11.GL_BLEND);
-                float var7 = 0.5F;
+                final float var7 = 0.5F;
                 GL11.glColor4f(var7, var7, var7, 1.0F);
                 GL11.glDisable(GL11.GL_LIGHTING);
                 GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);

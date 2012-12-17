@@ -29,7 +29,7 @@ public class GCEuropaConfigManager
 		if (!loaded)
 		{
 			configuration = new Configuration(file);
-			setDefaultValues();
+			this.setDefaultValues();
 		}
 	}
 	
@@ -43,7 +43,7 @@ public class GCEuropaConfigManager
 	    
 	        idBlockBrittleIce = 				configuration.get(configuration.CATEGORY_BLOCK, 						"idBlockBrittleIce", 				225)	.getInt(220);
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			FMLLog.log(Level.SEVERE, e, "Galacticraft Europa has a problem loading it's configuration");
 		}

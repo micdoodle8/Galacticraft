@@ -18,7 +18,7 @@ import net.minecraft.src.World;
 public class GCMarsComponentCreeperPitStairway extends GCCoreStructureComponent
 {
     private int[] orig = new int[3];
-    private GCMarsComponentCreeperPitRoom originalRoom;
+    private final GCMarsComponentCreeperPitRoom originalRoom;
     
 	protected GCMarsComponentCreeperPitStairway(GCMarsComponentCreeperPitRoom origRoom, int type, Random rand, int x, int y, int z) 
 	{
@@ -37,12 +37,12 @@ public class GCMarsComponentCreeperPitStairway extends GCCoreStructureComponent
 	@Override
 	public boolean addComponentParts(World par1World, Random var2, StructureBoundingBox var3) 
 	{
-		int x1 = this.getBoundingBox().minX;
-		int y1 = this.getBoundingBox().minY;
-		int z1 = this.getBoundingBox().minZ;
-		int x2 = this.getBoundingBox().maxX;
-		int y2 = this.getBoundingBox().maxY;
-		int z2 = this.getBoundingBox().maxZ;
+		final int x1 = this.getBoundingBox().minX;
+		final int y1 = this.getBoundingBox().minY;
+		final int z1 = this.getBoundingBox().minZ;
+		final int x2 = this.getBoundingBox().maxX;
+		final int y2 = this.getBoundingBox().maxY;
+		final int z2 = this.getBoundingBox().maxZ;
 		
 //		this.fillBlocks2(par1World, this.getBoundingBox(), x1, y1, z1, x2, y2, z2, GCBlocks.creeperDungeonWall.blockID, 0);
 //		this.fillBlocks2(par1World, this.getBoundingBox(), x1 + 1, y1, z1 + 1, x2 - 1, y2, z2 - 1, 0, 0);

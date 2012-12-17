@@ -10,7 +10,7 @@ import cpw.mods.fml.common.asm.SideOnly;
 
 public class GCCoreItemHoe extends ItemHoe
 {
-	private EnumToolMaterial material;
+	private final EnumToolMaterial material;
 	
 	public GCCoreItemHoe(int par1, EnumToolMaterial par2EnumToolMaterial) 
 	{

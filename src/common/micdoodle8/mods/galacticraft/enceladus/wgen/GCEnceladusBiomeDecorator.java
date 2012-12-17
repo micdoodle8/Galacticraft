@@ -67,9 +67,9 @@ public class GCEnceladusBiomeDecorator
 	{
 		for (int var5 = 0; var5 < par1; ++var5) 
 		{
-			int var6 = this.chunk_X + this.randomGenerator.nextInt(16);
-			int var7 = this.randomGenerator.nextInt(par4 - par3) + par3;
-			int var8 = this.chunk_Z + this.randomGenerator.nextInt(16);
+			final int var6 = this.chunk_X + this.randomGenerator.nextInt(16);
+			final int var7 = this.randomGenerator.nextInt(par4 - par3) + par3;
+			final int var8 = this.chunk_Z + this.randomGenerator.nextInt(16);
 			par2WorldGenerator.generate(this.currentWorld, this.randomGenerator, var6, var7, var8);
 		}
 	}

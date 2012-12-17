@@ -54,7 +54,7 @@ public class GCMarsBlockStationary extends GCMarsBlockFluid
      */
     private void setNotStationary(World par1World, int par2, int par3, int par4)
     {
-        int var5 = par1World.getBlockMetadata(par2, par3, par4);
+        final int var5 = par1World.getBlockMetadata(par2, par3, par4);
         par1World.editingBlocks = true;
         par1World.setBlockAndMetadata(par2, par3, par4, this.blockID - 1, var5);
         par1World.markBlockRangeForRenderUpdate(par2, par3, par4, par2, par3, par4);
@@ -70,7 +70,7 @@ public class GCMarsBlockStationary extends GCMarsBlockFluid
     {
         if (this.blockMaterial == Material.lava)
         {
-            int var6 = par5Random.nextInt(3);
+            final int var6 = par5Random.nextInt(3);
             int var7;
             int var8;
 

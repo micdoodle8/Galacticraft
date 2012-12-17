@@ -10,7 +10,7 @@ import cpw.mods.fml.common.asm.SideOnly;
 
 public class GCCoreItemSword extends ItemSword
 {
-	private EnumToolMaterial material;
+	private final EnumToolMaterial material;
 	
 	public GCCoreItemSword(int par1, EnumToolMaterial par2EnumToolMaterial) 
 	{

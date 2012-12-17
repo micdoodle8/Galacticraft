@@ -71,11 +71,11 @@ public class ClientProxyMoon extends CommonProxyMoon implements IGalacticraftSub
     	@Override
     	public void tickStart(EnumSet<TickType> type, Object... tickData)
         {
-    		Minecraft minecraft = FMLClientHandler.instance().getClient();
+    		final Minecraft minecraft = FMLClientHandler.instance().getClient();
     		
-            WorldClient world = minecraft.theWorld;
+            final WorldClient world = minecraft.theWorld;
             
-            EntityClientPlayerMP player = minecraft.thePlayer;
+            final EntityClientPlayerMP player = minecraft.thePlayer;
     		
     		if (type.equals(EnumSet.of(TickType.CLIENT)))
             {

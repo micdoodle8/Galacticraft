@@ -52,7 +52,7 @@ public class GCCoreBlockRendererUnlitTorch implements ISimpleBlockRenderingHandl
 
     public static void renderInvNormalBlock(RenderBlocks var0, Block var1, int var2)
     {
-        Tessellator var3 = Tessellator.instance;
+        final Tessellator var3 = Tessellator.instance;
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         var0.setRenderMinMax(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
@@ -84,13 +84,13 @@ public class GCCoreBlockRendererUnlitTorch implements ISimpleBlockRenderingHandl
     
     public static void renderGCUnlitTorch(RenderBlocks renderBlocks, Block par1Block, IBlockAccess var1, int par2, int par3, int par4)
     {
-    	int var5 = var1.getBlockMetadata(par2, par3, par4);
-        Tessellator var6 = Tessellator.instance;
+    	final int var5 = var1.getBlockMetadata(par2, par3, par4);
+        final Tessellator var6 = Tessellator.instance;
         var6.setBrightness(par1Block.getMixedBrightnessForBlock(var1, par2, par3, par4));
         var6.setColorOpaque_F(1.0F, 1.0F, 1.0F);
-        double var7 = 0.4000000059604645D;
-        double var9 = 0.5D - var7;
-        double var11 = 0.20000000298023224D;
+        final double var7 = 0.4000000059604645D;
+        final double var9 = 0.5D - var7;
+        final double var11 = 0.20000000298023224D;
 
         if (var5 == 1)
         {
@@ -118,11 +118,11 @@ public class GCCoreBlockRendererUnlitTorch implements ISimpleBlockRenderingHandl
     {
     	if (par1Block instanceof GCCoreBlockUnlitTorch)
     	{
-    		GCCoreBlockUnlitTorch block = (GCCoreBlockUnlitTorch) par1Block;
+    		final GCCoreBlockUnlitTorch block = (GCCoreBlockUnlitTorch) par1Block;
     		
     		if (block.lit)
     		{
-    			Tessellator var12 = Tessellator.instance;
+    			final Tessellator var12 = Tessellator.instance;
     	        int var13 = 11;
 
     	        if (renderBlocks.overrideBlockTexture >= 0)
@@ -130,24 +130,24 @@ public class GCCoreBlockRendererUnlitTorch implements ISimpleBlockRenderingHandl
     	            var13 = renderBlocks.overrideBlockTexture;
     	        }
 
-    	        int var14 = (var13 & 15) << 4;
-    	        int var15 = var13 & 240;
-    	        float var16 = var14 / 256.0F;
-    	        float var17 = (var14 + 15.99F) / 256.0F;
-    	        float var18 = var15 / 256.0F;
-    	        float var19 = (var15 + 15.99F) / 256.0F;
-    	        double var20 = var16 + 0.02734375D;
-    	        double var22 = var18 + 0.0234375D;
-    	        double var24 = var16 + 0.03515625D;
-    	        double var26 = var18 + 0.03125D;
+    	        final int var14 = (var13 & 15) << 4;
+    	        final int var15 = var13 & 240;
+    	        final float var16 = var14 / 256.0F;
+    	        final float var17 = (var14 + 15.99F) / 256.0F;
+    	        final float var18 = var15 / 256.0F;
+    	        final float var19 = (var15 + 15.99F) / 256.0F;
+    	        final double var20 = var16 + 0.02734375D;
+    	        final double var22 = var18 + 0.0234375D;
+    	        final double var24 = var16 + 0.03515625D;
+    	        final double var26 = var18 + 0.03125D;
     	        par2 += 0.5D;
     	        par6 += 0.5D;
-    	        double var28 = par2 - 0.5D;
-    	        double var30 = par2 + 0.5D;
-    	        double var32 = par6 - 0.5D;
-    	        double var34 = par6 + 0.5D;
-    	        double var36 = 0.0625D;
-    	        double var38 = 0.625D;
+    	        final double var28 = par2 - 0.5D;
+    	        final double var30 = par2 + 0.5D;
+    	        final double var32 = par6 - 0.5D;
+    	        final double var34 = par6 + 0.5D;
+    	        final double var36 = 0.0625D;
+    	        final double var38 = 0.625D;
     	        var12.addVertexWithUV(par2 + par8 * (1.0D - var38) - var36, par4 + var38, par6 + par10 * (1.0D - var38) - var36, var20, var22);
     	        var12.addVertexWithUV(par2 + par8 * (1.0D - var38) - var36, par4 + var38, par6 + par10 * (1.0D - var38) + var36, var20, var26);
     	        var12.addVertexWithUV(par2 + par8 * (1.0D - var38) + var36, par4 + var38, par6 + par10 * (1.0D - var38) + var36, var24, var26);
@@ -171,7 +171,7 @@ public class GCCoreBlockRendererUnlitTorch implements ISimpleBlockRenderingHandl
     		}
     		else
     		{
-    			Tessellator var12 = Tessellator.instance;
+    			final Tessellator var12 = Tessellator.instance;
     	        int var13 = 12;
 
     	        if (renderBlocks.overrideBlockTexture >= 0)
@@ -179,24 +179,24 @@ public class GCCoreBlockRendererUnlitTorch implements ISimpleBlockRenderingHandl
     	            var13 = renderBlocks.overrideBlockTexture;
     	        }
 
-    	        int var14 = (var13 & 15) << 4;
-    	        int var15 = var13 & 240;
-    	        float var16 = var14 / 256.0F;
-    	        float var17 = (var14 + 15.99F) / 256.0F;
-    	        float var18 = var15 / 256.0F;
-    	        float var19 = (var15 + 15.99F) / 256.0F;
-    	        double var20 = var16 + 0.02734375D;
-    	        double var22 = var18 + 0.0234375D;
-    	        double var24 = var16 + 0.03515625D;
-    	        double var26 = var18 + 0.03125D;
+    	        final int var14 = (var13 & 15) << 4;
+    	        final int var15 = var13 & 240;
+    	        final float var16 = var14 / 256.0F;
+    	        final float var17 = (var14 + 15.99F) / 256.0F;
+    	        final float var18 = var15 / 256.0F;
+    	        final float var19 = (var15 + 15.99F) / 256.0F;
+    	        final double var20 = var16 + 0.02734375D;
+    	        final double var22 = var18 + 0.0234375D;
+    	        final double var24 = var16 + 0.03515625D;
+    	        final double var26 = var18 + 0.03125D;
     	        par2 += 0.5D;
     	        par6 += 0.5D;
-    	        double var28 = par2 - 0.5D;
-    	        double var30 = par2 + 0.5D;
-    	        double var32 = par6 - 0.5D;
-    	        double var34 = par6 + 0.5D;
-    	        double var36 = 0.0625D;
-    	        double var38 = 0.625D;
+    	        final double var28 = par2 - 0.5D;
+    	        final double var30 = par2 + 0.5D;
+    	        final double var32 = par6 - 0.5D;
+    	        final double var34 = par6 + 0.5D;
+    	        final double var36 = 0.0625D;
+    	        final double var38 = 0.625D;
     	        var12.addVertexWithUV(par2 + par8 * (1.0D - var38) - var36, par4 + var38, par6 + par10 * (1.0D - var38) - var36, var20, var22);
     	        var12.addVertexWithUV(par2 + par8 * (1.0D - var38) - var36, par4 + var38, par6 + par10 * (1.0D - var38) + var36, var20, var26);
     	        var12.addVertexWithUV(par2 + par8 * (1.0D - var38) + var36, par4 + var38, par6 + par10 * (1.0D - var38) + var36, var24, var26);

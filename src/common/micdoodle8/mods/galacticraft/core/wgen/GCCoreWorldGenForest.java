@@ -17,7 +17,7 @@ public class GCCoreWorldGenForest extends WorldGenerator
     @Override
 	public boolean generate(World par1World, Random par2Random, int par3, int par4, int par5)
     {
-        int var6 = par2Random.nextInt(3) + 5;
+        final int var6 = par2Random.nextInt(3) + 5;
         boolean var7 = true;
 
         if (par4 >= 1 && par4 + var6 + 1 <= 256)
@@ -49,9 +49,9 @@ public class GCCoreWorldGenForest extends WorldGenerator
                         {
                             var12 = par1World.getBlockId(var10, var8, var11);
 
-                            Block block = Block.blocksList[var12];
+                            final Block block = Block.blocksList[var12];
 
-                            if (var12 != 0 && (block != null && !block.isLeaves(par1World, var10,  var8, var11)))
+                            if (var12 != 0 && block != null && !block.isLeaves(par1World, var10,  var8, var11))
                             {
                                 var7 = false;
                             }
@@ -96,13 +96,13 @@ public class GCCoreWorldGenForest extends WorldGenerator
 
                         for (var12 = par3 - var11; var12 <= par3 + var11; ++var12)
                         {
-                            int var13 = var12 - par3;
+                            final int var13 = var12 - par3;
 
                             for (int var14 = par5 - var11; var14 <= par5 + var11; ++var14)
                             {
-                                int var15 = var14 - par5;
+                                final int var15 = var14 - par5;
 
-                                Block block = Block.blocksList[par1World.getBlockId(var12, var16, var14)];
+                                final Block block = Block.blocksList[par1World.getBlockId(var12, var16, var14)];
                                 
                                 if ((Math.abs(var13) != var11 || Math.abs(var15) != var11 || par2Random.nextInt(2) != 0 && var10 != 0) && 
                                     (block == null || block.canBeReplacedByLeaves(par1World, var12, var16, var14)))
@@ -117,7 +117,7 @@ public class GCCoreWorldGenForest extends WorldGenerator
                     {
                         var10 = par1World.getBlockId(par3, par4 + var16, par5);
 
-                        Block block = Block.blocksList[var10];
+                        final Block block = Block.blocksList[var10];
 
                         if (var10 == 0 || block == null || block.isLeaves(par1World, par3, par4 + var16, par5))
                         {

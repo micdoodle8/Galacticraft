@@ -44,6 +44,6 @@ public class GCMoonItemBlockOre extends ItemBlock
 			name = "null";
 		}
 		
-		return getItemName() + "." + name;
+		return this.getItemName() + "." + name;
 	}
 }

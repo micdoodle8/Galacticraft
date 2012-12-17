@@ -24,8 +24,8 @@ public abstract class GCMarsBlockFluid extends Block
     protected GCMarsBlockFluid(int par1, int par2, Material par2Material)
     {
         super(par1, par2, par2Material);
-        float var3 = 0.0F;
-        float var4 = 0.0F;
+        final float var3 = 0.0F;
+        final float var4 = 0.0F;
         this.setBlockBounds(0.0F + var4, 0.0F + var3, 0.0F + var4, 1.0F + var4, 1.0F + var3, 1.0F + var4);
         this.setTickRandomly(true);
     }
@@ -61,7 +61,7 @@ public abstract class GCMarsBlockFluid extends Block
             {
                 for (int var9 = -1; var9 <= 1; ++var9)
                 {
-                    int var10 = par1IBlockAccess.getBiomeGenForCoords(par2 + var9, par4 + var8).waterColorMultiplier;
+                    final int var10 = par1IBlockAccess.getBiomeGenForCoords(par2 + var9, par4 + var8).waterColorMultiplier;
                     var5 += (var10 & 16711680) >> 16;
                     var6 += (var10 & 65280) >> 8;
                     var7 += var10 & 255;
@@ -161,8 +161,8 @@ public abstract class GCMarsBlockFluid extends Block
     @Override
 	public boolean isBlockSolid(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {
-        Material var6 = par1IBlockAccess.getBlockMaterial(par2, par3, par4);
-        return var6 == this.blockMaterial ? false : (par5 == 1 ? true : (var6 == Material.ice ? false : super.isBlockSolid(par1IBlockAccess, par2, par3, par4, par5)));
+        final Material var6 = par1IBlockAccess.getBlockMaterial(par2, par3, par4);
+        return var6 == this.blockMaterial ? false : par5 == 1 ? true : var6 == Material.ice ? false : super.isBlockSolid(par1IBlockAccess, par2, par3, par4, par5);
     }
 
     @Override
@@ -174,8 +174,8 @@ public abstract class GCMarsBlockFluid extends Block
      */
     public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {
-        Material var6 = par1IBlockAccess.getBlockMaterial(par2, par3, par4);
-        return var6 == this.blockMaterial ? false : (par5 == 1 ? true : (var6 == Material.ice ? false : super.shouldSideBeRendered(par1IBlockAccess, par2, par3, par4, par5)));
+        final Material var6 = par1IBlockAccess.getBlockMaterial(par2, par3, par4);
+        return var6 == this.blockMaterial ? false : par5 == 1 ? true : var6 == Material.ice ? false : super.shouldSideBeRendered(par1IBlockAccess, par2, par3, par4, par5);
     }
 
     /**
@@ -221,7 +221,7 @@ public abstract class GCMarsBlockFluid extends Block
     private Vec3 getFlowVector(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
         Vec3 var5 = par1IBlockAccess.getWorldVec3Pool().getVecFromPool(0.0D, 0.0D, 0.0D);
-        int var6 = this.getEffectiveFlowDecay(par1IBlockAccess, par2, par3, par4);
+        final int var6 = this.getEffectiveFlowDecay(par1IBlockAccess, par2, par3, par4);
 
         for (int var7 = 0; var7 < 4; ++var7)
         {
@@ -331,7 +331,7 @@ public abstract class GCMarsBlockFluid extends Block
     @Override
 	public void velocityToAddToEntity(World par1World, int par2, int par3, int par4, Entity par5Entity, Vec3 par6Vec3)
     {
-        Vec3 var7 = this.getFlowVector(par1World, par2, par3, par4);
+        final Vec3 var7 = this.getFlowVector(par1World, par2, par3, par4);
         par6Vec3.xCoord += var7.xCoord;
         par6Vec3.yCoord += var7.yCoord;
         par6Vec3.zCoord += var7.zCoord;
@@ -354,12 +354,12 @@ public abstract class GCMarsBlockFluid extends Block
      */
     public int getMixedBrightnessForBlock(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
-        int var5 = par1IBlockAccess.getLightBrightnessForSkyBlocks(par2, par3, par4, 0);
-        int var6 = par1IBlockAccess.getLightBrightnessForSkyBlocks(par2, par3 + 1, par4, 0);
-        int var7 = var5 & 255;
-        int var8 = var6 & 255;
-        int var9 = var5 >> 16 & 255;
-        int var10 = var6 >> 16 & 255;
+        final int var5 = par1IBlockAccess.getLightBrightnessForSkyBlocks(par2, par3, par4, 0);
+        final int var6 = par1IBlockAccess.getLightBrightnessForSkyBlocks(par2, par3 + 1, par4, 0);
+        final int var7 = var5 & 255;
+        final int var8 = var6 & 255;
+        final int var9 = var5 >> 16 & 255;
+        final int var10 = var6 >> 16 & 255;
         return (var7 > var8 ? var7 : var8) | (var9 > var10 ? var9 : var10) << 16;
     }
 
@@ -371,8 +371,8 @@ public abstract class GCMarsBlockFluid extends Block
      */
     public float getBlockBrightness(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
-        float var5 = par1IBlockAccess.getLightBrightness(par2, par3, par4);
-        float var6 = par1IBlockAccess.getLightBrightness(par2, par3 + 1, par4);
+        final float var5 = par1IBlockAccess.getLightBrightness(par2, par3, par4);
+        final float var6 = par1IBlockAccess.getLightBrightness(par2, par3 + 1, par4);
         return var5 > var6 ? var5 : var6;
     }
 
@@ -399,9 +399,9 @@ public abstract class GCMarsBlockFluid extends Block
         
         if (par5Random.nextInt(10) == 0)
         {
-            double var10 = 0 / 255.0D;
-            double var5 = 128 / 255.0D;
-            double var7 = 0 / 255.0D;
+            final double var10 = 0 / 255.0D;
+            final double var5 = 128 / 255.0D;
+            final double var7 = 0 / 255.0D;
             par1World.spawnParticle("mobSpell", par2 + 0.5, par3 + 0.9, par4 + 0.5, 0, 0, 0);
         }
 
@@ -419,7 +419,7 @@ public abstract class GCMarsBlockFluid extends Block
 
             for (var6 = 0; var6 < 0; ++var6)
             {
-                int var7 = par5Random.nextInt(4);
+                final int var7 = par5Random.nextInt(4);
                 int var8 = par2;
                 int var9 = par4;
 
@@ -445,9 +445,9 @@ public abstract class GCMarsBlockFluid extends Block
 
                 if (par1World.getBlockMaterial(var8, par3, var9) == Material.air && (par1World.getBlockMaterial(var8, par3 - 1, var9).blocksMovement() || par1World.getBlockMaterial(var8, par3 - 1, var9).isLiquid()))
                 {
-                    float var10 = 0.0625F;
+                    final float var10 = 0.0625F;
                     double var11 = par2 + par5Random.nextFloat();
-                    double var13 = par3 + par5Random.nextFloat();
+                    final double var13 = par3 + par5Random.nextFloat();
                     double var15 = par4 + par5Random.nextFloat();
 
                     if (var7 == 0)
@@ -475,7 +475,7 @@ public abstract class GCMarsBlockFluid extends Block
 
                     if (var7 == 0)
                     {
-                        var17 = (-var10);
+                        var17 = -var10;
                     }
 
                     if (var7 == 1)
@@ -485,7 +485,7 @@ public abstract class GCMarsBlockFluid extends Block
 
                     if (var7 == 2)
                     {
-                        var19 = (-var10);
+                        var19 = -var10;
                     }
 
                     if (var7 == 3)
@@ -560,7 +560,7 @@ public abstract class GCMarsBlockFluid extends Block
             var5 = ((GCMarsBlockFluid)GCMarsBlocks.bacterialSludgeMoving).getFlowVector(par0IBlockAccess, par1, par2, par3);
         }
 
-        return var5.xCoord == 0.0D && var5.zCoord == 0.0D ? -1000.0D : Math.atan2(var5.zCoord, var5.xCoord) - (Math.PI / 2D);
+        return var5.xCoord == 0.0D && var5.zCoord == 0.0D ? -1000.0D : Math.atan2(var5.zCoord, var5.xCoord) - Math.PI / 2D;
     }
 
     /**

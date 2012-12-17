@@ -77,13 +77,13 @@ public class GCBlockBreathableAir extends BlockContainer
         }
         else
         {
-        	int i = par1IBlockAccess.getBlockId(par2, par3, par4);
+        	final int i = par1IBlockAccess.getBlockId(par2, par3, par4);
         	boolean var6 = false;
         	if (Block.blocksList[i] != null)
         	{
                 var6 = !Block.blocksList[i].isOpaqueCube();
         	}
-        	boolean var7 = i == 0;
+        	final boolean var7 = i == 0;
 
             if ((var6 || var7) && par5 == 3 && !var6)
             {

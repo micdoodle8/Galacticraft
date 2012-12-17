@@ -277,27 +277,27 @@ public class GCCoreUtil
 	
 	public static Packet250CustomPayload createPacket(String channel, int packetID, Object[] input)
     {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        DataOutputStream data = new DataOutputStream(bytes);
+        final ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        final DataOutputStream data = new DataOutputStream(bytes);
         try
         {
             data.write(packetID);
 
             if (input != null)
             {
-                for (Object obj : input)
+                for (final Object obj : input)
                 {
                     writeObjectToStream(obj, data);
                 }
             }
 
         }
-        catch (IOException e)
+        catch (final IOException e)
         {
             e.printStackTrace();
         }
 
-        Packet250CustomPayload packet = new Packet250CustomPayload();
+        final Packet250CustomPayload packet = new Packet250CustomPayload();
         packet.channel = channel;
         packet.data = bytes.toByteArray();
         packet.length = packet.data.length;
@@ -307,16 +307,16 @@ public class GCCoreUtil
 
     public static Object[] readPacketData(DataInputStream data, Class[] packetDataTypes)
     {
-        List result = new ArrayList<Object>();
+        final List result = new ArrayList<Object>();
 
         try
         {
-            for (Class curClass : packetDataTypes)
+            for (final Class curClass : packetDataTypes)
             {
                 result.add(readObjectFromStream(data, curClass));
             }
         }
-        catch (IOException e)
+        catch (final IOException e)
         {
             e.printStackTrace();
         }
@@ -326,7 +326,7 @@ public class GCCoreUtil
     
     private static void writeObjectToStream(Object obj, DataOutputStream data) throws IOException
     {
-        Class objClass = obj.getClass();
+        final Class objClass = obj.getClass();
 
         if (objClass.equals(Boolean.class))
         {
@@ -408,7 +408,7 @@ public class GCCoreUtil
         {
             result = data.read();
         }
-        catch (IOException e)
+        catch (final IOException e)
         {
             e.printStackTrace();
         }
@@ -440,7 +440,7 @@ public class GCCoreUtil
     
     public static GCCoreExplosion createNewExplosion(World world, Entity entity, double x, double y, double z, float size, boolean flaming)
     {
-        GCCoreExplosion explosion = new GCCoreExplosion(world, entity, x, y, z, size);
+        final GCCoreExplosion explosion = new GCCoreExplosion(world, entity, x, y, z, size);
         explosion.isFlaming = flaming;
         explosion.doExplosionA();
         explosion.doExplosionB(true);
@@ -499,11 +499,11 @@ public class GCCoreUtil
 
     protected static boolean addItemToChest(World var1, Random var2, int var3, int var4, int var5, ItemStack var6)
     {
-        TileEntityChest var7 = (TileEntityChest)var1.getBlockTileEntity(var3, var4, var5);
+        final TileEntityChest var7 = (TileEntityChest)var1.getBlockTileEntity(var3, var4, var5);
 
         if (var7 != null)
         {
-            int var8 = findRandomInventorySlot(var7, var2);
+            final int var8 = findRandomInventorySlot(var7, var2);
 
             if (var8 != -1)
             {
@@ -519,7 +519,7 @@ public class GCCoreUtil
     {
         for (int var3 = 0; var3 < 100; ++var3)
         {
-            int var4 = var2.nextInt(var1.getSizeInventory());
+            final int var4 = var2.nextInt(var1.getSizeInventory());
 
             if (var1.getStackInSlot(var4) == null)
             {
@@ -532,7 +532,7 @@ public class GCCoreUtil
 	
 	public static WorldProvider getProviderForName(String par1String)
 	{
-		Integer[] var1 = DimensionManager.getIDs();
+		final Integer[] var1 = DimensionManager.getIDs();
 		
 		for (int i = 0; i < var1.length; i++)
 		{
@@ -562,7 +562,7 @@ public class GCCoreUtil
 	
 	public static HashMap getArrayOfPossibleDimensions(Integer[] ids)
 	{
-		HashMap map = new HashMap();
+		final HashMap map = new HashMap();
 		
 		for (int i = 0; i < ids.length; i++)
 		{
@@ -585,11 +585,11 @@ public class GCCoreUtil
 	
 	public static double getSpaceshipFailChance(EntityPlayer player)
 	{
-		Double level = Double.valueOf(player.experienceLevel);
+		final Double level = Double.valueOf(player.experienceLevel);
 		
 		if (level <= 50.0D)
 		{
-			return 12.5D - (level / 4.0D);
+			return 12.5D - level / 4.0D;
 		}
 		else
 		{
@@ -599,7 +599,7 @@ public class GCCoreUtil
 	
 	public static float calculateMarsAngleFromOtherPlanet(long par1, float par3)
 	{
-        int var4 = (int)(par1 % 48000L);
+        final int var4 = (int)(par1 % 48000L);
         float var5 = (var4 + par3) / 48000.0F - 0.25F;
 
         if (var5 < 0.0F)
@@ -612,7 +612,7 @@ public class GCCoreUtil
             --var5;
         }
 
-        float var6 = var5;
+        final float var6 = var5;
         var5 = 1.0F - (float)((Math.cos(var5 * Math.PI) + 1.0D) / 2.0D);
         var5 = var6 + (var5 - var6) / 3.0F;
         return var5;
@@ -620,7 +620,7 @@ public class GCCoreUtil
 	
 	public static float calculateEarthAngleFromOtherPlanet(long par1, float par3)
 	{
-        int var4 = (int)(par1 % 48000L);
+        final int var4 = (int)(par1 % 48000L);
         float var5 = (var4 + par3) / 48000.0F - 0.25F;
 
         if (var5 < 0.0F)
@@ -633,7 +633,7 @@ public class GCCoreUtil
             --var5;
         }
 
-        float var6 = var5;
+        final float var6 = var5;
         var5 = 1.0F - (float)((Math.cos(var5 * Math.PI) + 1.0D) / 2.0D);
         var5 = var6 + (var5 - var6) / 3.0F;
         return var5;
@@ -641,7 +641,7 @@ public class GCCoreUtil
 	
 	public static ItemStack findMatchingSpaceshipRecipe(GCCoreInventoryRocketBench inventoryRocketBench)
 	{
-		ItemStack[] slots = new ItemStack[18];
+		final ItemStack[] slots = new ItemStack[18];
 		
 		for (int i = 0; i < 18; i++)
 		{
@@ -687,16 +687,16 @@ public class GCCoreUtil
         r = r << 16;
         g = g << 8;
         
-        return (a | r | g | b);
+        return a | r | g | b;
 	}
 	
 	public static List getPlayersOnPlanet(IMapPlanet planet)
 	{
-		List list = new ArrayList();
+		final List list = new ArrayList();
 		
 		for (int i = 0; i < FMLCommonHandler.instance().getMinecraftServerInstance().worldServers.length; i++)
 		{
-			World world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServers[i];
+			final World world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServers[i];
 			
 			if (world != null && world.provider instanceof IGalacticraftWorldProvider)
 			{

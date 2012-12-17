@@ -19,20 +19,20 @@ import net.minecraft.src.WorldServer;
  */
 public class GCCoreTeleporter extends Teleporter 
 {
-	private Random random;
+	private final Random random;
     private final WorldServer worldServer;
 
 	public GCCoreTeleporter(WorldServer par1WorldServer)
 	{
 		super(par1WorldServer);
-		worldServer = par1WorldServer;
-		random = new Random();
+		this.worldServer = par1WorldServer;
+		this.random = new Random();
 	}
 
     @Override
     public void placeInPortal(Entity par1Entity, double par2, double par4, double par6, float par8)
     {
-		if (placeInExistingPortal(par1Entity, par2, par4, par6, par8))
+		if (this.placeInExistingPortal(par1Entity, par2, par4, par6, par8))
 		{
 			return;
 		} 
@@ -73,19 +73,19 @@ public class GCCoreTeleporter extends Teleporter
 //			}
 //		}
 
-        int var9 = MathHelper.floor_double(par1Entity.posX);
-        int var10 = MathHelper.floor_double(par1Entity.posY) - 1;
-        int var11 = MathHelper.floor_double(par1Entity.posZ);
+        final int var9 = MathHelper.floor_double(par1Entity.posX);
+        final int var10 = MathHelper.floor_double(par1Entity.posY) - 1;
+        final int var11 = MathHelper.floor_double(par1Entity.posZ);
         
         par1Entity.setLocationAndAngles(var9, 300, var11, par1Entity.rotationYaw, 0.0F);
         par1Entity.motionX = par1Entity.motionY = par1Entity.motionZ = 0.0D;
 		
 		if (!this.worldServer.isRemote && par1Entity instanceof EntityPlayer)
 		{
-			GCCoreEntitySpaceship ship = new GCCoreEntitySpaceship(worldServer, par1Entity.posX, 300, par1Entity.posZ, true);
-			EntityPlayer player = (EntityPlayer) par1Entity;
+			final GCCoreEntitySpaceship ship = new GCCoreEntitySpaceship(this.worldServer, par1Entity.posX, 300, par1Entity.posZ, true);
+			final EntityPlayer player = (EntityPlayer) par1Entity;
 			
-			worldServer.spawnEntityInWorld(ship);
+			this.worldServer.spawnEntityInWorld(ship);
 			
 			player.mountEntity(ship);
 			ship.timeSinceEntityEntry = 20;
@@ -97,29 +97,29 @@ public class GCCoreTeleporter extends Teleporter
 	
 	public boolean test(World world, Entity entity)
 	{
-		short var3 = 128;
+		final short var3 = 128;
         double var4 = -1.0D;
         int var6 = 0;
         int var7 = 0;
         int var8 = 0;
-        int var9 = MathHelper.floor_double(entity.posX);
-        int var10 = MathHelper.floor_double(entity.posZ);
+        final int var9 = MathHelper.floor_double(entity.posX);
+        final int var10 = MathHelper.floor_double(entity.posZ);
         double var18;
 
         for (int var11 = var9 - var3; var11 <= var9 + var3; ++var11)
         {
-            double var12 = var11 + 0.5D - entity.posX;
+            final double var12 = var11 + 0.5D - entity.posX;
 
             for (int var14 = var10 - var3; var14 <= var10 + var3; ++var14)
             {
-                double var15 = var14 + 0.5D - entity.posZ;
+                final double var15 = var14 + 0.5D - entity.posZ;
 
                 for (int var17 = world.getActualHeight() - 1; var17 >= 0; --var17)
                 {
                     if (world.getBlockId(var11, var17, var14) == GCCoreBlocks.landingPad.blockID)
                     {
                         var18 = var17 + 0.5D - entity.posY;
-                        double var20 = var12 * var12 + var18 * var18 + var15 * var15;
+                        final double var20 = var12 * var12 + var18 * var18 + var15 * var15;
 
                         if (var4 < 0.0D || var20 < var4)
                         {
@@ -136,7 +136,7 @@ public class GCCoreTeleporter extends Teleporter
         if (var4 >= 0.0D)
         {
             double var22 = var6 + 0.5D;
-            double var16 = var7 + 0.5D;
+            final double var16 = var7 + 0.5D;
             var18 = var8 + 0.5D;
 
             if (world.getBlockId(var6 - 1, var7, var8) == 0)
@@ -171,9 +171,9 @@ public class GCCoreTeleporter extends Teleporter
 	
 	public boolean createLandingPad(World world, Entity entity)
 	{
-        int x = getFirstUncoveredBlock(world, (int)Math.floor(entity.posX), (int)Math.floor(entity.posY))[0];
-        int y = getFirstUncoveredBlock(world, (int)Math.floor(entity.posX), (int)Math.floor(entity.posY))[1];
-        int z = getFirstUncoveredBlock(world, (int)Math.floor(entity.posX), (int)Math.floor(entity.posY))[2];
+        final int x = this.getFirstUncoveredBlock(world, (int)Math.floor(entity.posX), (int)Math.floor(entity.posY))[0];
+        final int y = this.getFirstUncoveredBlock(world, (int)Math.floor(entity.posX), (int)Math.floor(entity.posY))[1];
+        final int z = this.getFirstUncoveredBlock(world, (int)Math.floor(entity.posX), (int)Math.floor(entity.posY))[2];
         
         for (int x2 = x - 1; x2 < x + 2; x2++)
         {

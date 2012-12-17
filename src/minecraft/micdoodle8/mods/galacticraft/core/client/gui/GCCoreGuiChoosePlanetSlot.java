@@ -2,14 +2,12 @@ package micdoodle8.mods.galacticraft.core.client.gui;
 
 import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import net.minecraft.src.GuiSlot;
 import net.minecraft.src.Tessellator;
 
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
@@ -33,15 +31,15 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
     @Override
 	protected int getSize()
     {
-        return this.languageGui.getDestinations(languageGui).length;
+        return this.languageGui.getDestinations(this.languageGui).length;
     }
 
     @Override
 	protected void elementClicked(int par1, boolean par2)
     {
-    	if (par1 < this.languageGui.getDestinations(languageGui).length)
+    	if (par1 < this.languageGui.getDestinations(this.languageGui).length)
     	{
-    		GCCoreGuiChoosePlanet.setSelectedDimension(languageGui, par1);
+    		GCCoreGuiChoosePlanet.setSelectedDimension(this.languageGui, par1);
     	}
     	
         GCCoreGuiChoosePlanet.getSendButton(this.languageGui).displayString = "Send To Dimension";
@@ -51,7 +49,7 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
     @Override
 	protected boolean isSelected(int par1)
     {
-        return par1 == GCCoreGuiChoosePlanet.getSelectedDimension(languageGui);
+        return par1 == GCCoreGuiChoosePlanet.getSelectedDimension(this.languageGui);
     }
 
     @Override
@@ -70,16 +68,16 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             GL11.glDisable(GL11.GL_ALPHA_TEST);
-            String lowercase = this.languageGui.getDestinations(languageGui)[par1].toLowerCase();
-            Tessellator var3 = Tessellator.instance;
+            final String lowercase = this.languageGui.getDestinations(this.languageGui)[par1].toLowerCase();
+            final Tessellator var3 = Tessellator.instance;
             
             for (int i = 0; i < GalacticraftCore.clientSubMods.size(); i++)
             {
             	if (GalacticraftCore.clientSubMods.get(i) != null && GalacticraftCore.clientSubMods.get(i).getSlotRenderer() != null)
             	{
-            		IPlanetSlotRenderer renderer = GalacticraftCore.clientSubMods.get(i).getSlotRenderer();
+            		final IPlanetSlotRenderer renderer = GalacticraftCore.clientSubMods.get(i).getSlotRenderer();
             		
-        			String str = this.languageGui.getDestinations(languageGui)[par1].toLowerCase();
+        			String str = this.languageGui.getDestinations(this.languageGui)[par1].toLowerCase();
         			
         			if (str.contains("*"))
         			{
@@ -117,7 +115,7 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
 //    			}
 //    		}
     		
-    		if (this.languageGui.getDestinations(languageGui)[par1].equals("Overworld"))
+    		if (this.languageGui.getDestinations(this.languageGui)[par1].equals("Overworld"))
             {
                 GL11.glBindTexture(GL11.GL_TEXTURE_2D, FMLClientHandler.instance().getClient().renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/planets/overworld.png"));
 
@@ -137,11 +135,11 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
     	
     	if (this.languageGui.isValidDestination(par1))
     	{
-            this.languageGui.drawCenteredString(this.languageGui.fontRenderer, this.languageGui.getDestinations(languageGui)[par1], this.languageGui.width / 2, par3 + 3, 16777215);
+            this.languageGui.drawCenteredString(this.languageGui.fontRenderer, this.languageGui.getDestinations(this.languageGui)[par1], this.languageGui.width / 2, par3 + 3, 16777215);
     	}
     	else
     	{
-    		String str = this.languageGui.getDestinations(languageGui)[par1];
+    		String str = this.languageGui.getDestinations(this.languageGui)[par1];
     		str = str.replace("*", "");
             this.languageGui.drawCenteredString(this.languageGui.fontRenderer, str, this.languageGui.width / 2, par3 + 3, 16716305);
     	}

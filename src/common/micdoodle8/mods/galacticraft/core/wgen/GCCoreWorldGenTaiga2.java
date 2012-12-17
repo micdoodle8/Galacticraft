@@ -17,10 +17,10 @@ public class GCCoreWorldGenTaiga2 extends WorldGenerator
     @Override
 	public boolean generate(World par1World, Random par2Random, int par3, int par4, int par5)
     {
-        int var6 = par2Random.nextInt(4) + 6;
-        int var7 = 1 + par2Random.nextInt(2);
-        int var8 = var6 - var7;
-        int var9 = 2 + par2Random.nextInt(2);
+        final int var6 = par2Random.nextInt(4) + 6;
+        final int var7 = 1 + par2Random.nextInt(2);
+        final int var8 = var6 - var7;
+        final int var9 = 2 + par2Random.nextInt(2);
         boolean var10 = true;
 
         if (par4 >= 1 && par4 + var6 + 1 <= 256)
@@ -32,7 +32,7 @@ public class GCCoreWorldGenTaiga2 extends WorldGenerator
 
             for (var11 = par4; var11 <= par4 + 1 + var6 && var10; ++var11)
             {
-                boolean var12 = true;
+                final boolean var12 = true;
 
                 if (var11 - par4 < var7)
                 {
@@ -51,7 +51,7 @@ public class GCCoreWorldGenTaiga2 extends WorldGenerator
                         {
                             var15 = par1World.getBlockId(var13, var11, var14);
 
-                            Block block = Block.blocksList[var15];
+                            final Block block = Block.blocksList[var15];
 
                             if (var15 != 0 && block != null && !block.isLeaves(par1World, var13, var11, var14))
                             {
@@ -101,13 +101,13 @@ public class GCCoreWorldGenTaiga2 extends WorldGenerator
 
                         for (var17 = par3 - var21; var17 <= par3 + var21; ++var17)
                         {
-                            int var18 = var17 - par3;
+                            final int var18 = var17 - par3;
 
                             for (int var19 = par5 - var21; var19 <= par5 + var21; ++var19)
                             {
-                                int var20 = var19 - par5;
+                                final int var20 = var19 - par5;
 
-                                Block block = Block.blocksList[par1World.getBlockId(var17, var16, var19)];
+                                final Block block = Block.blocksList[par1World.getBlockId(var17, var16, var19)];
 
                                 if ((Math.abs(var18) != var21 || Math.abs(var20) != var21 || var21 <= 0) && 
                                     (block == null || block.canBeReplacedByLeaves(par1World, var17, var16, var19)))
@@ -140,7 +140,7 @@ public class GCCoreWorldGenTaiga2 extends WorldGenerator
                     {
                         var17 = par1World.getBlockId(par3, par4 + var16, par5);
 
-                        Block block = Block.blocksList[var17];
+                        final Block block = Block.blocksList[var17];
 
                         if (var17 == 0 || block == null || block.isLeaves(par1World, par3, par4 + var16, par5))
                         {

@@ -20,7 +20,7 @@ public class GCMoonBlockDirt extends GCMoonBlock
 	@Override
     public boolean canSustainPlant(World world, int x, int y, int z, ForgeDirection direction, IPlantable plant)
     {
-        int plantID = plant.getPlantID(world, x, y + 1, z);
+        final int plantID = plant.getPlantID(world, x, y + 1, z);
         
         if (plant instanceof BlockFlower)
         {
@@ -42,9 +42,9 @@ public class GCMoonBlockDirt extends GCMoonBlock
         {
             for (int var9 = -1; var9 <= 1; ++var9)
             {
-            	int var10 = getGrassColorAtYCoord(50);
-                var5 += (var10 & 255);
-                var6 += (var10 & 255);
+            	final int var10 = this.getGrassColorAtYCoord(50);
+                var5 += var10 & 255;
+                var6 += var10 & 255;
                 var7 += var10 & 255;
             }
         }
@@ -71,9 +71,9 @@ public class GCMoonBlockDirt extends GCMoonBlock
         {
             for (int var9 = -1; var9 <= 1; ++var9)
             {
-            	int var10 = getGrassColorAtYCoord(par3);
-                var5 += (var10 & 255);
-                var6 += (var10 & 255);
+            	final int var10 = this.getGrassColorAtYCoord(par3);
+                var5 += var10 & 255;
+                var6 += var10 & 255;
                 var7 += var10 & 255;
             }
         }

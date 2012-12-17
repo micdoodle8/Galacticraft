@@ -7,13 +7,13 @@ import net.minecraft.src.ItemStack;
 
 public class GCCoreInventoryRocketBench implements IInventory
 {
-    private ItemStack[] stackList;
-    private int inventoryWidth;
-    private Container eventHandler;
+    private final ItemStack[] stackList;
+    private final int inventoryWidth;
+    private final Container eventHandler;
 
     public GCCoreInventoryRocketBench(Container par1Container)
     {
-        int var4 = 20;
+        final int var4 = 20;
         this.stackList = new ItemStack[var4];
         this.eventHandler = par1Container;
         this.inventoryWidth = 5;
@@ -35,7 +35,7 @@ public class GCCoreInventoryRocketBench implements IInventory
     {
         if (par1 >= 0 && par1 < this.inventoryWidth)
         {
-            int var3 = par1 + par2 * this.inventoryWidth;
+            final int var3 = par1 + par2 * this.inventoryWidth;
             return this.getStackInSlot(var3);
         }
         else
@@ -55,7 +55,7 @@ public class GCCoreInventoryRocketBench implements IInventory
     {
         if (this.stackList[par1] != null)
         {
-            ItemStack var2 = this.stackList[par1];
+            final ItemStack var2 = this.stackList[par1];
             this.stackList[par1] = null;
             return var2;
         }

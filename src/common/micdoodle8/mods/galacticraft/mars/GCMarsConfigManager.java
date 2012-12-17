@@ -23,7 +23,7 @@ public class GCMarsConfigManager
 		if (!loaded)
 		{
 			configuration = new Configuration(file);
-			setDefaultValues();
+			this.setDefaultValues();
 		}
 	}
 	
@@ -150,7 +150,7 @@ public class GCMarsConfigManager
 	        idEntitySludgeling = 				configuration.get("Entities", 													"idEntitySludgeling",				163)	.getInt(163);
 	        idEntityProjectileTNT = 			configuration.get("Entities", 													"idEntityProjectileTNT",			164)	.getInt(164);
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			FMLLog.log(Level.SEVERE, e, "Galacticraft has a problem loading it's configuration");
 		}

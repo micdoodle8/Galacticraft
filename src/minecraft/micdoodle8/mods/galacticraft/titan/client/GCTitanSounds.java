@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.titan.client;
 
-import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import net.minecraftforge.client.event.sound.SoundLoadEvent;
 import net.minecraftforge.event.ForgeSubscribe;
 
@@ -18,7 +17,7 @@ public class GCTitanSounds
         try
         {
         }
-        catch (Exception e)
+        catch (final Exception e)
         {
             System.err.println("[GCTitan] Failed to register one or more sounds.");
         }

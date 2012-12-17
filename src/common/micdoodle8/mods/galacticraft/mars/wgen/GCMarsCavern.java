@@ -23,18 +23,18 @@ public class GCMarsCavern
 
     public void generate(IChunkProvider par1IChunkProvider, World par2World, int par3, int par4, int[] par5ArrayOfByte)
     {
-        int var6 = this.range;
+        final int var6 = this.range;
         this.worldObj = par2World;
         this.rand.setSeed(par2World.getSeed());
-        long var7 = this.rand.nextLong();
-        long var9 = this.rand.nextLong();
+        final long var7 = this.rand.nextLong();
+        final long var9 = this.rand.nextLong();
 
         for (int var11 = par3 - var6; var11 <= par3 + var6; ++var11)
         {
             for (int var12 = par4 - var6; var12 <= par4 + var6; ++var12)
             {
-                long var13 = var11 * var7;
-                long var15 = var12 * var9;
+                final long var13 = var11 * var7;
+                final long var15 = var12 * var9;
                 this.rand.setSeed(var13 ^ var15 ^ par2World.getSeed());
                 this.recursiveGenerate(par2World, var11, var12, par3, par4, par5ArrayOfByte);
             }
@@ -52,9 +52,9 @@ public class GCMarsCavern
 
         for (int var8 = 0; var8 < 1; ++var8)
         {
-            double xPos = xChunkCoord * 16 + this.rand.nextInt(16);
-            double yPos = (double)this.rand.nextInt(10) + 20;
-            double zPos = zChunkCoord * 16 + this.rand.nextInt(16);
+            final double xPos = xChunkCoord * 16 + this.rand.nextInt(16);
+            final double yPos = (double)this.rand.nextInt(10) + 20;
+            final double zPos = zChunkCoord * 16 + this.rand.nextInt(16);
             
             int var15 = 1;
 
@@ -73,15 +73,15 @@ public class GCMarsCavern
 
     protected void generateCaveNode(long par1, int origXChunkCoord, int origZChunkCoord, int[] par5ArrayOfByte, double xPos, double yPos, double zPos, float par12, float par13, float par14, int par15, int par16, double heightMultiplier)
     {
-        double var19 = origXChunkCoord * 16 + 8;
-        double var21 = origZChunkCoord * 16 + 8;
+        final double var19 = origXChunkCoord * 16 + 8;
+        final double var21 = origZChunkCoord * 16 + 8;
         float var23 = 0.0F;
         float var24 = 0.0F;
-        Random var25 = new Random(par1);
+        final Random var25 = new Random(par1);
 
         if (par16 <= 0)
         {
-            int var26 = this.range * 16 - 16;
+            final int var26 = this.range * 16 - 16;
             par16 = var26 - var25.nextInt(var26 / 4);
         }
 
@@ -93,12 +93,12 @@ public class GCMarsCavern
             var54 = true;
         }
 
-        int var27 = var25.nextInt(par16 / 2) + par16 / 4;
+        final int var27 = var25.nextInt(par16 / 2) + par16 / 4;
 
-        for (boolean var28 = var25.nextInt(6) == 0; par15 < par16; ++par15)
+        for (final boolean var28 = var25.nextInt(6) == 0; par15 < par16; ++par15)
         {
-            double caveWidth = 40;
-            double caveHeight = caveWidth * heightMultiplier;
+            final double caveWidth = 40;
+            final double caveHeight = caveWidth * heightMultiplier;
 
             if (var28)
             {
@@ -123,10 +123,10 @@ public class GCMarsCavern
 
             if (var54 || var25.nextInt(4) != 0)
             {
-                double var35 = xPos - var19;
-                double var37 = zPos - var21;
-                double var39 = par16 - par15;
-                double var41 = par12 + 2.0F + 16.0F;
+                final double var35 = xPos - var19;
+                final double var37 = zPos - var21;
+                final double var39 = par16 - par15;
+                final double var41 = par12 + 2.0F + 16.0F;
 
                 if (var35 * var35 + var37 * var37 - var39 * var39 > var41 * var41)
                 {
@@ -206,11 +206,11 @@ public class GCMarsCavern
                     }
                     for (var42 = caveMinX; var42 < caveMaxX; ++var42)
                     {
-                        double var59 = (var42 + origXChunkCoord * 16 + 0.5D - xPos) / caveWidth;
+                        final double var59 = (var42 + origXChunkCoord * 16 + 0.5D - xPos) / caveWidth;
 
                         for (var45 = caveMinZ; var45 < caveMaxZ; ++var45)
                         {
-                            double var46 = (var45 + origZChunkCoord * 16 + 0.5D - zPos) / caveWidth;
+                            final double var46 = (var45 + origZChunkCoord * 16 + 0.5D - zPos) / caveWidth;
                             int var48 = (var42 * 16 + var45) * 128 + caveMaxY;
                             
                             boolean var49 = false;
@@ -219,11 +219,11 @@ public class GCMarsCavern
                             {
                                 for (int var50 = caveMaxY - 1; var50 >= caveMinY; --var50)
                                 {
-                                    double var51 = (var50 + 0.5D - yPos) / caveHeight;
+                                    final double var51 = (var50 + 0.5D - yPos) / caveHeight;
 
                                     if (var51 > -0.7D && var59 * var59 + var51 * var51 + var46 * var46 < 1.0D)
                                     {
-                                        int var53 = par5ArrayOfByte[var48];
+                                        final int var53 = par5ArrayOfByte[var48];
 
                                         if (var53 == (byte) GCMarsBlocks.marsGrass.blockID)
                                         {

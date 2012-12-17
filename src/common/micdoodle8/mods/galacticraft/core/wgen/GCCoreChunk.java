@@ -9,7 +9,7 @@ public class GCCoreChunk extends Chunk
     public GCCoreChunk(World par1World, int[] idArray, int[] metadataArray, int par3, int par4)
     {
         super(par1World, par3, par4);
-        int var5 = idArray.length / 256;
+        final int var5 = idArray.length / 256;
 
         for (int var6 = 0; var6 < 16; ++var6)
         {
@@ -17,7 +17,7 @@ public class GCCoreChunk extends Chunk
             {
                 for (int var8 = 0; var8 < var5; ++var8)
                 {
-                    int idAtCoord = idArray[var6 << 11 | var7 << 7 | var8] & 0xFF;
+                    final int idAtCoord = idArray[var6 << 11 | var7 << 7 | var8] & 0xFF;
                     
                     int metaAtCoord = -1;
                     
@@ -28,7 +28,7 @@ public class GCCoreChunk extends Chunk
 
                     if (idAtCoord != 0)
                     {
-                        int var10 = var8 >> 4;
+                        final int var10 = var8 >> 4;
 
                         if (this.getBlockStorageArray()[var10] == null)
                         {

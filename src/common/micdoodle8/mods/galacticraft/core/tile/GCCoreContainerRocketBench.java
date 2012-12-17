@@ -14,7 +14,7 @@ public class GCCoreContainerRocketBench extends Container
 {
     public GCCoreInventoryRocketBench craftMatrix = new GCCoreInventoryRocketBench(this);
     public IInventory craftResult = new InventoryCraftResult();
-    private World worldObj;
+    private final World worldObj;
 
     public GCCoreContainerRocketBench(InventoryPlayer par1InventoryPlayer)
     {
@@ -29,13 +29,13 @@ public class GCCoreContainerRocketBench extends Container
         // Body
         for (var6 = 0; var6 < 4; ++var6)
         {
-            this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, 2 + var6, 39, -6 + (var6 * 18 + 16)));
+            this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, 2 + var6, 39, -6 + var6 * 18 + 16));
         }
         
         // Body Right
         for (var6 = 0; var6 < 4; ++var6)
         {
-            this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, 6 + var6, 57, -6 + (var6 * 18 + 16)));
+            this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, 6 + var6, 57, -6 + var6 * 18 + 16));
         }
 
         // Left fins
@@ -52,7 +52,7 @@ public class GCCoreContainerRocketBench extends Container
         // Addons
         for (int var8 = 0; var8 < 3; var8++)
         {
-            this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, 15 + var8, 93 + (var8 * 26), -15));
+            this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, 15 + var8, 93 + var8 * 26, -15));
         }
         
         // Player inv:
@@ -82,7 +82,7 @@ public class GCCoreContainerRocketBench extends Container
         {
             for (int var2 = 1; var2 < 18; ++var2)
             {
-                ItemStack var3 = this.craftMatrix.getStackInSlotOnClosing(var2);
+                final ItemStack var3 = this.craftMatrix.getStackInSlotOnClosing(var2);
 
                 if (var3 != null)
                 {
@@ -95,7 +95,7 @@ public class GCCoreContainerRocketBench extends Container
     @Override
 	public void onCraftMatrixChanged(IInventory par1IInventory)
     {
-        this.craftResult.setInventorySlotContents(0, GCCoreUtil.findMatchingSpaceshipRecipe(craftMatrix));
+        this.craftResult.setInventorySlotContents(0, GCCoreUtil.findMatchingSpaceshipRecipe(this.craftMatrix));
     }
 
     @Override
@@ -111,11 +111,11 @@ public class GCCoreContainerRocketBench extends Container
 	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par1)
     {
         ItemStack var2 = null;
-        Slot var3 = (Slot)this.inventorySlots.get(par1);
+        final Slot var3 = (Slot)this.inventorySlots.get(par1);
 
         if (var3 != null && var3.getHasStack())
         {
-            ItemStack var4 = var3.getStack();
+            final ItemStack var4 = var3.getStack();
             var2 = var4.copy();
 
             if (par1 == 0)

@@ -27,16 +27,16 @@ public class GCCoreExplosion
 {
     /** whether or not the explosion sets fire to blocks around it */
     public boolean isFlaming = false;
-    private int field_77289_h = 16;
-    private Random explosionRNG = new Random();
-    private World worldObj;
+    private final int field_77289_h = 16;
+    private final Random explosionRNG = new Random();
+    private final World worldObj;
     public double explosionX;
     public double explosionY;
     public double explosionZ;
     public Entity exploder;
     public float explosionSize;
     public List field_77281_g = new ArrayList();
-    private Map field_77288_k = new HashMap();
+    private final Map field_77288_k = new HashMap();
 
     public GCCoreExplosion(World par1World, Entity par2Entity, double par3, double par5, double par7, float par9)
     {
@@ -53,8 +53,8 @@ public class GCCoreExplosion
      */
     public void doExplosionA()
     {
-        float var1 = this.explosionSize;
-        HashSet var2 = new HashSet();
+        final float var1 = this.explosionSize;
+        final HashSet var2 = new HashSet();
         int var3;
         int var4;
         int var5;
@@ -73,7 +73,7 @@ public class GCCoreExplosion
                         double var6 = var3 / (this.field_77289_h - 1.0F) * 2.0F - 1.0F;
                         double var8 = var4 / (this.field_77289_h - 1.0F) * 2.0F - 1.0F;
                         double var10 = var5 / (this.field_77289_h - 1.0F) * 2.0F - 1.0F;
-                        double var12 = Math.sqrt(var6 * var6 + var8 * var8 + var10 * var10);
+                        final double var12 = Math.sqrt(var6 * var6 + var8 * var8 + var10 * var10);
                         var6 /= var12;
                         var8 /= var12;
                         var10 /= var12;
@@ -82,16 +82,16 @@ public class GCCoreExplosion
                         var17 = this.explosionY;
                         var19 = this.explosionZ;
 
-                        for (float var21 = 0.3F; var14 > 0.0F; var14 -= var21 * 0.75F)
+                        for (final float var21 = 0.3F; var14 > 0.0F; var14 -= var21 * 0.75F)
                         {
-                            int var22 = MathHelper.floor_double(var15);
-                            int var23 = MathHelper.floor_double(var17);
-                            int var24 = MathHelper.floor_double(var19);
-                            int var25 = this.worldObj.getBlockId(var22, var23, var24);
+                            final int var22 = MathHelper.floor_double(var15);
+                            final int var23 = MathHelper.floor_double(var17);
+                            final int var24 = MathHelper.floor_double(var19);
+                            final int var25 = this.worldObj.getBlockId(var22, var23, var24);
 
                             if (var25 > 0)
                             {
-                                var14 -= (Block.blocksList[var25].getExplosionResistance(this.exploder, worldObj, var22, var23, var24, explosionX, explosionY, explosionZ) + 0.3F) * var21;
+                                var14 -= (Block.blocksList[var25].getExplosionResistance(this.exploder, this.worldObj, var22, var23, var24, this.explosionX, this.explosionY, this.explosionZ) + 0.3F) * var21;
                             }
 
                             if (var14 > 0.0F)
@@ -113,31 +113,31 @@ public class GCCoreExplosion
         var3 = MathHelper.floor_double(this.explosionX - this.explosionSize - 1.0D);
         var4 = MathHelper.floor_double(this.explosionX + this.explosionSize + 1.0D);
         var5 = MathHelper.floor_double(this.explosionY - this.explosionSize - 1.0D);
-        int var27 = MathHelper.floor_double(this.explosionY + this.explosionSize + 1.0D);
-        int var7 = MathHelper.floor_double(this.explosionZ - this.explosionSize - 1.0D);
-        int var28 = MathHelper.floor_double(this.explosionZ + this.explosionSize + 1.0D);
-        List var9 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this.exploder, AxisAlignedBB.getAABBPool().addOrModifyAABBInPool(var3, var5, var7, var4, var27, var28));
-        Vec3 var29 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.explosionX, this.explosionY, this.explosionZ);
+        final int var27 = MathHelper.floor_double(this.explosionY + this.explosionSize + 1.0D);
+        final int var7 = MathHelper.floor_double(this.explosionZ - this.explosionSize - 1.0D);
+        final int var28 = MathHelper.floor_double(this.explosionZ + this.explosionSize + 1.0D);
+        final List var9 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this.exploder, AxisAlignedBB.getAABBPool().addOrModifyAABBInPool(var3, var5, var7, var4, var27, var28));
+        final Vec3 var29 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.explosionX, this.explosionY, this.explosionZ);
 
         for (int var11 = 0; var11 < var9.size(); ++var11)
         {
-            Entity var30 = (Entity)var9.get(var11);
-            double var13 = var30.getDistance(this.explosionX, this.explosionY, this.explosionZ) / this.explosionSize;
+            final Entity var30 = (Entity)var9.get(var11);
+            final double var13 = var30.getDistance(this.explosionX, this.explosionY, this.explosionZ) / this.explosionSize;
 
             if (var13 <= 1.0D)
             {
                 var15 = var30.posX - this.explosionX;
                 var17 = var30.posY + var30.getEyeHeight() - this.explosionY;
                 var19 = var30.posZ - this.explosionZ;
-                double var32 = MathHelper.sqrt_double(var15 * var15 + var17 * var17 + var19 * var19);
+                final double var32 = MathHelper.sqrt_double(var15 * var15 + var17 * var17 + var19 * var19);
 
                 if (var32 != 0.0D)
                 {
                     var15 /= var32;
                     var17 /= var32;
                     var19 /= var32;
-                    double var31 = this.worldObj.getBlockDensity(var29, var30.boundingBox);
-                    double var33 = (1.0D - var13) * var31;
+                    final double var31 = this.worldObj.getBlockDensity(var29, var30.boundingBox);
+                    final double var33 = (1.0D - var13) * var31;
 //                    var30.attackEntityFrom(DamageSource.explosion, (int)((var33 * var33 + var33) / 2.0D * 8.0D * (double)this.explosionSize + 1.0D));
                     var30.motionX += var15 * var33 * 5;
                     var30.motionY += var17 * var33 * 1.5;
@@ -178,13 +178,13 @@ public class GCCoreExplosion
 
             if (par1)
             {
-                double var8 = var4 + this.worldObj.rand.nextFloat();
-                double var10 = var5 + this.worldObj.rand.nextFloat();
-                double var12 = var6 + this.worldObj.rand.nextFloat();
+                final double var8 = var4 + this.worldObj.rand.nextFloat();
+                final double var10 = var5 + this.worldObj.rand.nextFloat();
+                final double var12 = var6 + this.worldObj.rand.nextFloat();
                 double var14 = var8 - this.explosionX;
                 double var16 = var10 - this.explosionY;
                 double var18 = var12 - this.explosionZ;
-                double var20 = MathHelper.sqrt_double(var14 * var14 + var16 * var16 + var18 * var18);
+                final double var20 = MathHelper.sqrt_double(var14 * var14 + var16 * var16 + var18 * var18);
                 var14 /= var20;
                 var16 /= var20;
                 var18 /= var20;
@@ -221,7 +221,7 @@ public class GCCoreExplosion
                 var5 = var3.y;
                 var6 = var3.z;
                 var7 = this.worldObj.getBlockId(var4, var5, var6);
-                int var24 = this.worldObj.getBlockId(var4, var5 - 1, var6);
+                final int var24 = this.worldObj.getBlockId(var4, var5 - 1, var6);
 
                 if (var7 == 0 && Block.opaqueCubeLookup[var24] && this.explosionRNG.nextInt(3) == 0)
                 {

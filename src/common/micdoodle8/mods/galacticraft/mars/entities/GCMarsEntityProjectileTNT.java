@@ -67,7 +67,7 @@ public class GCMarsEntityProjectileTNT extends Entity
         this.setSize(1.0F, 1.0F);
         this.setLocationAndAngles(par2, par4, par6, this.rotationYaw, this.rotationPitch);
         this.setPosition(par2, par4, par6);
-        double var14 = MathHelper.sqrt_double(par8 * par8 + par10 * par10 + par12 * par12);
+        final double var14 = MathHelper.sqrt_double(par8 * par8 + par10 * par10 + par12 * par12);
         this.accelerationX = par8 / var14 * 0.001D;
         this.accelerationY = par10 / var14 * 0.001D;
         this.accelerationZ = par12 / var14 * 0.001D;
@@ -85,7 +85,7 @@ public class GCMarsEntityProjectileTNT extends Entity
         par3 += this.rand.nextGaussian() * 0.4D;
         par5 += this.rand.nextGaussian() * 0.4D;
         par7 += this.rand.nextGaussian() * 0.4D;
-        double var9 = MathHelper.sqrt_double(par3 * par3 + par5 * par5 + par7 * par7);
+        final double var9 = MathHelper.sqrt_double(par3 * par3 + par5 * par5 + par7 * par7);
         this.accelerationX = par3 / var9 * 0.1D;
         this.accelerationY = par5 / var9 * 0.1D;
         this.accelerationZ = par7 / var9 * 0.1D;
@@ -108,7 +108,7 @@ public class GCMarsEntityProjectileTNT extends Entity
 
             if (this.inGround)
             {
-                int var1 = this.worldObj.getBlockId(this.xTile, this.yTile, this.zTile);
+                final int var1 = this.worldObj.getBlockId(this.xTile, this.yTile, this.zTile);
 
                 if (var1 == this.inTile)
                 {
@@ -146,23 +146,23 @@ public class GCMarsEntityProjectileTNT extends Entity
             }
 
             Entity var4 = null;
-            List var5 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
+            final List var5 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
             double var6 = 0.0D;
-            Iterator var8 = var5.iterator();
+            final Iterator var8 = var5.iterator();
 
             while (var8.hasNext())
             {
-                Entity var9 = (Entity)var8.next();
+                final Entity var9 = (Entity)var8.next();
 
                 if (var9.canBeCollidedWith() && (!var9.isEntityEqual(this.shootingEntity) || this.ticksInAir >= 25))
                 {
-                    float var10 = 0.3F;
-                    AxisAlignedBB var11 = var9.boundingBox.expand(var10, var10, var10);
-                    MovingObjectPosition var12 = var11.calculateIntercept(var15, var2);
+                    final float var10 = 0.3F;
+                    final AxisAlignedBB var11 = var9.boundingBox.expand(var10, var10, var10);
+                    final MovingObjectPosition var12 = var11.calculateIntercept(var15, var2);
 
                     if (var12 != null)
                     {
-                        double var13 = var15.distanceTo(var12.hitVec);
+                        final double var13 = var15.distanceTo(var12.hitVec);
 
                         if (var13 < var6 || var6 == 0.0D)
                         {
@@ -186,7 +186,7 @@ public class GCMarsEntityProjectileTNT extends Entity
             this.posX += this.motionX;
             this.posY += this.motionY;
             this.posZ += this.motionZ;
-            float var16 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
+            final float var16 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
             this.rotationYaw = (float)(Math.atan2(this.motionX, this.motionZ) * 180.0D / Math.PI);
 
             for (this.rotationPitch = (float)(Math.atan2(this.motionY, var16) * 180.0D / Math.PI); this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F)
@@ -217,7 +217,7 @@ public class GCMarsEntityProjectileTNT extends Entity
             {
                 for (int var19 = 0; var19 < 4; ++var19)
                 {
-                    float var18 = 0.25F;
+                    final float var18 = 0.25F;
                     this.worldObj.spawnParticle("bubble", this.posX - this.motionX * var18, this.posY - this.motionY * var18, this.posZ - this.motionZ * var18, this.motionX, this.motionY, this.motionZ);
                 }
 
@@ -242,7 +242,7 @@ public class GCMarsEntityProjectileTNT extends Entity
     {
         if (!this.worldObj.isRemote)
         {
-            if (par1MovingObjectPosition.entityHit != null && par1MovingObjectPosition.entityHit != shootingEntity)
+            if (par1MovingObjectPosition.entityHit != null && par1MovingObjectPosition.entityHit != this.shootingEntity)
             {
                 par1MovingObjectPosition.entityHit.attackEntityFrom(causeTNTImpactDamage(this, this.shootingEntity), 7);
             }
@@ -285,7 +285,7 @@ public class GCMarsEntityProjectileTNT extends Entity
 
         if (par1NBTTagCompound.hasKey("direction"))
         {
-            NBTTagList var2 = par1NBTTagCompound.getTagList("direction");
+            final NBTTagList var2 = par1NBTTagCompound.getTagList("direction");
             this.motionX = ((NBTTagDouble)var2.tagAt(0)).data;
             this.motionY = ((NBTTagDouble)var2.tagAt(1)).data;
             this.motionZ = ((NBTTagDouble)var2.tagAt(2)).data;
@@ -321,7 +321,7 @@ public class GCMarsEntityProjectileTNT extends Entity
 
         if (par1DamageSource.getEntity() != null)
         {
-            Vec3 var3 = par1DamageSource.getEntity().getLookVec();
+            final Vec3 var3 = par1DamageSource.getEntity().getLookVec();
 
             if (var3 != null)
             {

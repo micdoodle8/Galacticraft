@@ -15,8 +15,8 @@ import net.minecraft.src.World;
  */
 public class GCMarsComponentCreeperPitCorridor extends GCCoreStructureComponent
 {
-    private int height;
-    private int width;
+    private final int height;
+    private final int width;
     private int length;
     
 	public GCMarsComponentCreeperPitCorridor(int type, int x, int y, int z, int height, int width, int length, int cbm)

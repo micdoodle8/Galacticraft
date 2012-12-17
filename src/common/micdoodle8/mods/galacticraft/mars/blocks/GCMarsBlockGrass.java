@@ -31,19 +31,19 @@ public class GCMarsBlockGrass extends Block implements IPlantableBlock
 	@Override
     public int getBlockTextureFromSideAndMetadata(int side, int par2)
     {
-		return side == 1 ? 2 : (side == 0 ? 3 : 1);
+		return side == 1 ? 2 : side == 0 ? 3 : 1;
     }
     
 	@Override
 	public int getBlockTexture(IBlockAccess par1IBlockAccess, int x, int y, int z, int side) 
 	{
-		return side == 1 ? 2 : (side == 0 ? 3 : 1);
+		return side == 1 ? 2 : side == 0 ? 3 : 1;
 	}
 
 	@Override
     public boolean canSustainPlant(World world, int x, int y, int z, ForgeDirection direction, IPlantable plant)
     {
-        int plantID = plant.getPlantID(world, x, y + 1, z);
+        final int plantID = plant.getPlantID(world, x, y + 1, z);
         
         if (plant instanceof BlockFlower)
         {
@@ -66,11 +66,11 @@ public class GCMarsBlockGrass extends Block implements IPlantableBlock
 			{
 				for (int var6 = 0; var6 < 4; ++var6) 
 				{
-					int var7 = par2 + par5Random.nextInt(3) - 1;
-					int var8 = par3 + par5Random.nextInt(5) - 3;
-					int var9 = par4 + par5Random.nextInt(3) - 1;
+					final int var7 = par2 + par5Random.nextInt(3) - 1;
+					final int var8 = par3 + par5Random.nextInt(5) - 3;
+					final int var9 = par4 + par5Random.nextInt(3) - 1;
 					
-					int var10 = par1World.getBlockId(var7, var8 + 1, var9);
+					final int var10 = par1World.getBlockId(var7, var8 + 1, var9);
 
 					if (par1World.getBlockId(var7, var8, var9) == GCMarsBlocks.marsDirt.blockID	&& par1World.getBlockLightValue(var7, var8 + 1, var9) >= 4 && Block.lightOpacity[var10] <= 2) 
 					{

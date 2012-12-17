@@ -21,8 +21,8 @@ public class GCCoreLocalization {
 
     private String modName = null;
     private String loadedLanguage = null;
-    private Properties defaultMappings = new Properties();
-    private Properties mappings = new Properties();
+    private final Properties defaultMappings = new Properties();
+    private final Properties mappings = new Properties();
 
     /**
      * Loads the mod's localization files. All language files must be stored in
@@ -36,7 +36,7 @@ public class GCCoreLocalization {
             throw new InvalidParameterException("Mod name can't be null");
         }
         this.modName = modName;
-        load(getCurrentLanguage(), true);
+        this.load(getCurrentLanguage(), true);
     }
 
     /**
@@ -46,35 +46,35 @@ public class GCCoreLocalization {
      * @return
      */
     public synchronized String get(String key) {
-        String currentLanguage = getCurrentLanguage();
-        if (!currentLanguage.equals(loadedLanguage)) {
-            load(currentLanguage, true);
+        final String currentLanguage = getCurrentLanguage();
+        if (!currentLanguage.equals(this.loadedLanguage)) {
+            this.load(currentLanguage, true);
         }
-        return mappings.getProperty(key, defaultMappings.getProperty(key, key));
+        return this.mappings.getProperty(key, this.defaultMappings.getProperty(key, key));
     }
 
     private void load(String newLanguage, boolean force) {
-        defaultMappings.clear();
-        mappings.clear();
+        this.defaultMappings.clear();
+        this.mappings.clear();
         try {
-            BufferedReader langStream = new BufferedReader(new InputStreamReader((net.minecraft.src.Enchantment.class).getResourceAsStream(
-                            "/" + modName + "/lang/" + newLanguage + ".properties"), "UTF-8"));
-            BufferedReader defaultLangStream = new BufferedReader(new InputStreamReader((net.minecraft.src.Enchantment.class).getResourceAsStream(
-                            "/" + modName + "/lang/" + DEFAULT_LANGUAGE + ".properties"), "UTF-8"));
-            loadMappings((langStream == null) ? defaultLangStream : langStream, mappings);
-            loadMappings(defaultLangStream, defaultMappings);
+            final BufferedReader langStream = new BufferedReader(new InputStreamReader(net.minecraft.src.Enchantment.class.getResourceAsStream(
+                            "/" + this.modName + "/lang/" + newLanguage + ".properties"), "UTF-8"));
+            final BufferedReader defaultLangStream = new BufferedReader(new InputStreamReader(net.minecraft.src.Enchantment.class.getResourceAsStream(
+                            "/" + this.modName + "/lang/" + DEFAULT_LANGUAGE + ".properties"), "UTF-8"));
+            this.loadMappings(langStream == null ? defaultLangStream : langStream, this.mappings);
+            this.loadMappings(defaultLangStream, this.defaultMappings);
             if (langStream != null) {
                 langStream.close();
             }
             defaultLangStream.close();
-        } catch (Exception e) {
+        } catch (final Exception e) {
         	FMLLog.warning("COULD NOT LOAD GALACTICRAFT LANGUAGE FILE(S)");
             if (force){
-                load(DEFAULT_LANGUAGE, false);
+                this.load(DEFAULT_LANGUAGE, false);
             }
             return;
         }
-        loadedLanguage = newLanguage;
+        this.loadedLanguage = newLanguage;
     }
 
     private static String getCurrentLanguage() {
@@ -93,7 +93,7 @@ public class GCCoreLocalization {
 
                 if (!var4.startsWith("#"))
                 {
-                    String[] var5 = var4.split("=");
+                    final String[] var5 = var4.split("=");
 
                     if (var5 != null && var5.length == 2)
                     {
@@ -102,7 +102,7 @@ public class GCCoreLocalization {
                 }
             }
     	}
-    	catch (Exception e)
+    	catch (final Exception e)
     	{
     		e.printStackTrace();
     	}

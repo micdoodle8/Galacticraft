@@ -16,7 +16,7 @@ import org.lwjgl.opengl.GL11;
  */
 public class GCCoreGuiAirDistributor extends GuiContainer
 {
-    private GCCoreTileEntityOxygenDistributor distributorInv;
+    private final GCCoreTileEntityOxygenDistributor distributorInv;
     
 	public GCCoreGuiAirDistributor(InventoryPlayer par1InventoryPlayer, GCCoreTileEntityOxygenDistributor par2TileEntityAirDistributor) 
 	{
@@ -34,11 +34,11 @@ public class GCCoreGuiAirDistributor extends GuiContainer
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3) 
 	{
-		int texture = this.mc.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/gui/distributor.png");
+		final int texture = this.mc.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/gui/distributor.png");
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		this.mc.renderEngine.bindTexture(texture);
-		int var5 = (this.width - this.xSize) / 2;
-		int var6 = (this.height - this.ySize) / 2;
+		final int var5 = (this.width - this.xSize) / 2;
+		final int var6 = (this.height - this.ySize) / 2;
 		this.drawTexturedModalRect(var5, var6 + 5, 0, 0, this.xSize, this.ySize);
 	}
 }

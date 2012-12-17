@@ -84,7 +84,7 @@ public class GCMoonBlockGrass extends Block implements IPlantableBlock
 	@Override
 	public int getBlockTexture(IBlockAccess par1IBlockAccess, int x, int y, int z, int side) 
 	{
-		int meta = par1IBlockAccess.getBlockMetadata(x, y, z);
+		final int meta = par1IBlockAccess.getBlockMetadata(x, y, z);
 		
 		if (side == 1)
 		{
@@ -133,7 +133,7 @@ public class GCMoonBlockGrass extends Block implements IPlantableBlock
 	@Override
     public boolean canSustainPlant(World world, int x, int y, int z, ForgeDirection direction, IPlantable plant)
     {
-        int plantID = plant.getPlantID(world, x, y + 1, z);
+        final int plantID = plant.getPlantID(world, x, y + 1, z);
         
         if (plant instanceof BlockFlower)
         {
@@ -156,11 +156,11 @@ public class GCMoonBlockGrass extends Block implements IPlantableBlock
 			{
 				for (int var6 = 0; var6 < 4; ++var6) 
 				{
-					int var7 = par2 + par5Random.nextInt(3) - 1;
-					int var8 = par3 + par5Random.nextInt(5) - 3;
-					int var9 = par4 + par5Random.nextInt(3) - 1;
+					final int var7 = par2 + par5Random.nextInt(3) - 1;
+					final int var8 = par3 + par5Random.nextInt(5) - 3;
+					final int var9 = par4 + par5Random.nextInt(3) - 1;
 					
-					int var10 = par1World.getBlockId(var7, var8 + 1, var9);
+					final int var10 = par1World.getBlockId(var7, var8 + 1, var9);
 
 					if (par1World.getBlockId(var7, var8, var9) == GCMoonBlocks.moonDirt.blockID	&& par1World.getBlockLightValue(var7, var8 + 1, var9) >= 4 && Block.lightOpacity[var10] <= 2) 
 					{
@@ -183,9 +183,9 @@ public class GCMoonBlockGrass extends Block implements IPlantableBlock
         {
             for (int var9 = -1; var9 <= 1; ++var9)
             {
-            	int var10 = getGrassColorAtYCoord(50);
-                var5 += (var10 & 255);
-                var6 += (var10 & 255);
+            	final int var10 = this.getGrassColorAtYCoord(50);
+                var5 += var10 & 255;
+                var6 += var10 & 255;
                 var7 += var10 & 255;
             }
         }
@@ -214,23 +214,23 @@ public class GCMoonBlockGrass extends Block implements IPlantableBlock
             {
             	// TODO config boolean to disable this...
             	
-            	int var10 = (getGrassColorAtYCoord(par3));
+            	final int var10 = this.getGrassColorAtYCoord(par3);
             	
-                var5 += (var10 & 255);
-                var6 += (var10 & 255);
-                var7 += (var10 & 255);
+                var5 += var10 & 255;
+                var6 += var10 & 255;
+                var7 += var10 & 255;
                 
             	float i = 0;
             	
             	if (FMLClientHandler.instance().getClient().theWorld != null && FMLClientHandler.instance().getClient().thePlayer != null)
                 {
-                    float var3 = FMLClientHandler.instance().getClient().theWorld.getCelestialAngle(1.0F);
+                    final float var3 = FMLClientHandler.instance().getClient().theWorld.getCelestialAngle(1.0F);
                     i = var3;
                 }
             	
-            	var5 -= (i * 1.5) - 0.5;
-            	var6 -= (i * 1.5) - 0.5;
-            	var7 -= (i * 1.5) - 0.5;
+            	var5 -= i * 1.5 - 0.5;
+            	var6 -= i * 1.5 - 0.5;
+            	var7 -= i * 1.5 - 0.5;
             }
         }
 
@@ -244,11 +244,11 @@ public class GCMoonBlockGrass extends Block implements IPlantableBlock
     	
     	if (FMLClientHandler.instance().getClient().theWorld != null && FMLClientHandler.instance().getClient().thePlayer != null)
         {
-            float var3 = FMLClientHandler.instance().getClient().theWorld.getCelestialAngle(1.0F);
+            final float var3 = FMLClientHandler.instance().getClient().theWorld.getCelestialAngle(1.0F);
             i = var3;
         }
     	
-    	return GCMoonColorizerGrass.getGrassColor(((y + 90) + (i * 50)) / 1.7D, ((y + 90) + (i * 50)) / 1.7D);
+    	return GCMoonColorizerGrass.getGrassColor((y + 90 + i * 50) / 1.7D, (y + 90 + i * 50) / 1.7D);
     }
 
 	@Override

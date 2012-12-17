@@ -44,7 +44,7 @@ public class GCMarsBlockFlowing extends GCMarsBlockFluid
      */
     private void updateFlow(World par1World, int par2, int par3, int par4)
     {
-        int var5 = par1World.getBlockMetadata(par2, par3, par4);
+        final int var5 = par1World.getBlockMetadata(par2, par3, par4);
         par1World.setBlockAndMetadata(par2, par3, par4, this.blockID + 1, var5);
         par1World.markBlockRangeForRenderUpdate(par2, par3, par4, par2, par3, par4);
     }
@@ -65,7 +65,7 @@ public class GCMarsBlockFlowing extends GCMarsBlockFluid
         
     	if (par5Random.nextInt(40) == 0)
     	{
-    		GCMarsEntitySludgeling sludgeling = new GCMarsEntitySludgeling(par1World);
+    		final GCMarsEntitySludgeling sludgeling = new GCMarsEntitySludgeling(par1World);
     		sludgeling.setLocationAndAngles(par2, par3, par4, 0F, 0F);
     		par1World.spawnEntityInWorld(sludgeling);
     	}
@@ -83,7 +83,7 @@ public class GCMarsBlockFlowing extends GCMarsBlockFluid
 
         if (var6 > 0)
         {
-            byte var9 = -100;
+            final byte var9 = -100;
             this.numAdjacentSources = 0;
             int var12 = this.getSmallestFlowDecay(par1World, par2 - 1, par3, par4, var9);
             var12 = this.getSmallestFlowDecay(par1World, par2 + 1, par3, par4, var12);
@@ -98,7 +98,7 @@ public class GCMarsBlockFlowing extends GCMarsBlockFluid
 
             if (this.getFlowDecay(par1World, par2, par3 + 1, par4) >= 0)
             {
-                int var11 = this.getFlowDecay(par1World, par2, par3 + 1, par4);
+                final int var11 = this.getFlowDecay(par1World, par2, par3 + 1, par4);
 
                 if (var11 >= 8)
                 {
@@ -176,7 +176,7 @@ public class GCMarsBlockFlowing extends GCMarsBlockFluid
         }
         else if (var6 >= 0 && (var6 == 0 || this.blockBlocksFlow(par1World, par2, par3 - 1, par4)))
         {
-            boolean[] var13 = this.getOptimalFlowDirections(par1World, par2, par3, par4);
+            final boolean[] var13 = this.getOptimalFlowDirections(par1World, par2, par3, par4);
             var10 = var6 + var7;
 
             if (var6 >= 8)
@@ -219,7 +219,7 @@ public class GCMarsBlockFlowing extends GCMarsBlockFluid
     {
         if (this.liquidCanDisplaceBlock(par1World, par2, par3, par4))
         {
-            int var6 = par1World.getBlockId(par2, par3, par4);
+            final int var6 = par1World.getBlockId(par2, par3, par4);
 
             if (var6 > 0)
             {
@@ -282,7 +282,7 @@ public class GCMarsBlockFlowing extends GCMarsBlockFluid
 
                     if (par5 < 4)
                     {
-                        int var12 = this.calculateFlowCost(par1World, var9, par3, var11, par5 + 1, var8);
+                        final int var12 = this.calculateFlowCost(par1World, var9, par3, var11, par5 + 1, var8);
 
                         if (var12 < var7)
                         {
@@ -368,7 +368,7 @@ public class GCMarsBlockFlowing extends GCMarsBlockFluid
      */
     private boolean blockBlocksFlow(World par1World, int par2, int par3, int par4)
     {
-        int var5 = par1World.getBlockId(par2, par3, par4);
+        final int var5 = par1World.getBlockId(par2, par3, par4);
 
         if (var5 != Block.doorWood.blockID && var5 != Block.doorSteel.blockID && var5 != Block.signPost.blockID && var5 != Block.ladder.blockID && var5 != Block.reed.blockID)
         {
@@ -378,7 +378,7 @@ public class GCMarsBlockFlowing extends GCMarsBlockFluid
             }
             else
             {
-                Material var6 = Block.blocksList[var5].blockMaterial;
+                final Material var6 = Block.blocksList[var5].blockMaterial;
                 return var6 == Material.portal ? true : var6.blocksMovement();
             }
         }
@@ -423,8 +423,8 @@ public class GCMarsBlockFlowing extends GCMarsBlockFluid
      */
     private boolean liquidCanDisplaceBlock(World par1World, int par2, int par3, int par4)
     {
-        Material var5 = par1World.getBlockMaterial(par2, par3, par4);
-        return var5 == this.blockMaterial ? false : (var5 == Material.lava ? false : !this.blockBlocksFlow(par1World, par2, par3, par4));
+        final Material var5 = par1World.getBlockMaterial(par2, par3, par4);
+        return var5 == this.blockMaterial ? false : var5 == Material.lava ? false : !this.blockBlocksFlow(par1World, par2, par3, par4);
     }
 
     /**

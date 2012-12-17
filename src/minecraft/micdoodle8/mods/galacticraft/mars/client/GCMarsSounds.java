@@ -29,7 +29,7 @@ public class GCMarsSounds
             event.manager.soundPoolSounds.addSound("creepernest/scaryscape.wav", GalacticraftMars.class.getResource("/micdoodle8/mods/galacticraft/mars/client/sounds/creepernest/scaryscape.wav"));                 
        
         }
-        catch (Exception e)
+        catch (final Exception e)
         {
             System.err.println("[GCMars] Failed to register one or more sounds.");
         }

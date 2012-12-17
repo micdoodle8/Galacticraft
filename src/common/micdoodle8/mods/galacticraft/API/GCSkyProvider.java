@@ -1,14 +1,12 @@
 package micdoodle8.mods.galacticraft.API;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.src.RenderHelper;
 import net.minecraft.src.Tessellator;
 import net.minecraft.src.WorldClient;
 import net.minecraftforge.client.SkyProvider;
 
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
@@ -55,24 +53,24 @@ public abstract class GCSkyProvider extends SkyProvider
     	{
     		if (this.getSpritesForRender()[i] != null && this.getXRotation(partialTicks, world, mc)[i] != null && this.getYRotation(partialTicks, world, mc)[i] != null && this.getZRotation(partialTicks, world, mc)[i] != null && this.getSizes()[i] != null && this.getSpritesForRender()[i] != null)
     		{
-        		float rotateX = this.getXRotation(partialTicks, world, mc)[i];
-        		float rotateY = this.getYRotation(partialTicks, world, mc)[i];
-        		float rotateZ = this.getZRotation(partialTicks, world, mc)[i];
-        		float size = this.getSizes()[i];
+        		final float rotateX = this.getXRotation(partialTicks, world, mc)[i];
+        		final float rotateY = this.getYRotation(partialTicks, world, mc)[i];
+        		final float rotateZ = this.getZRotation(partialTicks, world, mc)[i];
+        		final float size = this.getSizes()[i];
         		
-                Tessellator var23 = Tessellator.instance;
+                final Tessellator var23 = Tessellator.instance;
                 
                 GL11.glPushMatrix();
                 
                 GL11.glRotatef(rotateX, 1.0F, 0.0F, 0.0F);
                 GL11.glRotatef(rotateY, 0.0F, 1.0F, 0.0F);
                 GL11.glRotatef(rotateZ, 0.0F, 0.0F, 1.0F);
-                GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture(getSpritesForRender()[i]));
+                GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture(this.getSpritesForRender()[i]));
                 var23.startDrawingQuads();
-                var23.addVertexWithUV((-size), 150.0D, (-size), 0.0D, 0.0D);
-                var23.addVertexWithUV(size, 150.0D, (-size), 1.0D, 0.0D);
+                var23.addVertexWithUV(-size, 150.0D, -size, 0.0D, 0.0D);
+                var23.addVertexWithUV(size, 150.0D, -size, 1.0D, 0.0D);
                 var23.addVertexWithUV(size, 150.0D, size, 1.0D, 1.0D);
-                var23.addVertexWithUV((-size), 150.0D, size, 0.0D, 1.0D);
+                var23.addVertexWithUV(-size, 150.0D, size, 0.0D, 1.0D);
                 var23.draw();
                 
                 GL11.glPopMatrix();

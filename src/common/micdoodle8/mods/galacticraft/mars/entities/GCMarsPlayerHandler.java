@@ -13,7 +13,7 @@ public class GCMarsPlayerHandler implements IPlayerTracker
 		
 		for (int i = 0; i < GalacticraftMars.gcMarsPlayers.size(); i++)
 		{
-			GCMarsEntityPlayer player2 = (GCMarsEntityPlayer) GalacticraftMars.gcMarsPlayers.get(i);
+			final GCMarsEntityPlayer player2 = (GCMarsEntityPlayer) GalacticraftMars.gcMarsPlayers.get(i);
 			
 			if (player2.getPlayer().username == player.username)
 			{
@@ -29,7 +29,7 @@ public class GCMarsPlayerHandler implements IPlayerTracker
 		
 		for (int i = 0; i < GalacticraftMars.gcMarsPlayers.size(); i++)
 		{
-			GCMarsEntityPlayer player2 = (GCMarsEntityPlayer) GalacticraftMars.gcMarsPlayers.get(i);
+			final GCMarsEntityPlayer player2 = (GCMarsEntityPlayer) GalacticraftMars.gcMarsPlayers.get(i);
 			
 			if (player2.getPlayer().username == player.username)
 			{

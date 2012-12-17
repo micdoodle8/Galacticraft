@@ -27,10 +27,10 @@ public class GCMoonBlockCheese extends GCMoonBlock
     @Override
 	public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
-        int var5 = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
-        float var6 = 0.0625F;
-        float var7 = (1 + var5 * 2) / 16.0F;
-        float var8 = 0.5F;
+        final int var5 = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
+        final float var6 = 0.0625F;
+        final float var7 = (1 + var5 * 2) / 16.0F;
+        final float var8 = 0.5F;
         this.setBlockBounds(var7, 0.0F, var6, 1.0F - var6, var8, 1.0F - var6);
     }
 
@@ -40,8 +40,8 @@ public class GCMoonBlockCheese extends GCMoonBlock
     @Override
 	public void setBlockBoundsForItemRender()
     {
-        float var1 = 0.0625F;
-        float var2 = 0.5F;
+        final float var1 = 0.0625F;
+        final float var2 = 0.5F;
         this.setBlockBounds(var1, 0.0F, var1, 1.0F - var1, var2, 1.0F - var1);
     }
 
@@ -52,11 +52,11 @@ public class GCMoonBlockCheese extends GCMoonBlock
     @Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
     {
-        int var5 = par1World.getBlockMetadata(par2, par3, par4);
-        float var6 = 0.0625F;
-        float var7 = (1 + var5 * 2) / 16.0F;
-        float var8 = 0.5F;
-        return AxisAlignedBB.getAABBPool().addOrModifyAABBInPool((par2 + var7), par3, (par4 + var6), ((par2 + 1) - var6), (par3 + var8 - var6), ((par4 + 1) - var6));
+        final int var5 = par1World.getBlockMetadata(par2, par3, par4);
+        final float var6 = 0.0625F;
+        final float var7 = (1 + var5 * 2) / 16.0F;
+        final float var8 = 0.5F;
+        return AxisAlignedBB.getAABBPool().addOrModifyAABBInPool(par2 + var7, par3, par4 + var6, par2 + 1 - var6, par3 + var8 - var6, par4 + 1 - var6);
     }
 
     @Override
@@ -67,11 +67,11 @@ public class GCMoonBlockCheese extends GCMoonBlock
      */
     public AxisAlignedBB getSelectedBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
     {
-        int var5 = par1World.getBlockMetadata(par2, par3, par4);
-        float var6 = 0.0625F;
-        float var7 = (1 + var5 * 2) / 16.0F;
-        float var8 = 0.5F;
-        return AxisAlignedBB.getAABBPool().addOrModifyAABBInPool((par2 + var7), par3, (par4 + var6), ((par2 + 1) - var6), (par3 + var8), ((par4 + 1) - var6));
+        final int var5 = par1World.getBlockMetadata(par2, par3, par4);
+        final float var6 = 0.0625F;
+        final float var7 = (1 + var5 * 2) / 16.0F;
+        final float var8 = 0.5F;
+        return AxisAlignedBB.getAABBPool().addOrModifyAABBInPool(par2 + var7, par3, par4 + var6, par2 + 1 - var6, par3 + var8, par4 + 1 - var6);
     }
 
     /**
@@ -80,7 +80,7 @@ public class GCMoonBlockCheese extends GCMoonBlock
     @Override
 	public int getBlockTextureFromSideAndMetadata(int par1, int par2)
     {
-        return par1 == 1 ? this.blockIndexInTexture : (par1 == 0 ? this.blockIndexInTexture + 3 : (par2 > 0 && par1 == 4 ? this.blockIndexInTexture + 2 : this.blockIndexInTexture + 1));
+        return par1 == 1 ? this.blockIndexInTexture : par1 == 0 ? this.blockIndexInTexture + 3 : par2 > 0 && par1 == 4 ? this.blockIndexInTexture + 2 : this.blockIndexInTexture + 1;
     }
 
     /**
@@ -89,7 +89,7 @@ public class GCMoonBlockCheese extends GCMoonBlock
     @Override
 	public int getBlockTextureFromSide(int par1)
     {
-        return par1 == 1 ? this.blockIndexInTexture : (par1 == 0 ? this.blockIndexInTexture + 3 : this.blockIndexInTexture + 1);
+        return par1 == 1 ? this.blockIndexInTexture : par1 == 0 ? this.blockIndexInTexture + 3 : this.blockIndexInTexture + 1;
     }
 
     /**
@@ -138,7 +138,7 @@ public class GCMoonBlockCheese extends GCMoonBlock
         if (par5EntityPlayer.canEat(false))
         {
             par5EntityPlayer.getFoodStats().addStats(3, 0.1F);
-            int var6 = par1World.getBlockMetadata(par2, par3, par4) + 1;
+            final int var6 = par1World.getBlockMetadata(par2, par3, par4) + 1;
 
             if (var6 >= 6)
             {

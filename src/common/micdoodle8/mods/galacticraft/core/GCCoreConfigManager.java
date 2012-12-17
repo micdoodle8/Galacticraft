@@ -23,7 +23,7 @@ public class GCCoreConfigManager
 		if (!loaded)
 		{
 			configuration = new Configuration(file);
-			setDefaultValues();
+			this.setDefaultValues();
 		}
 	}
 
@@ -190,7 +190,7 @@ public class GCCoreConfigManager
 	        transparentBreathableAir = 				configuration.get(configuration.CATEGORY_GENERAL, "transparentBreathableAir", 			true)		.getBoolean(true);
 	        moreStars = 							configuration.get(configuration.CATEGORY_GENERAL, "moreStars", 							true)		.getBoolean(true);
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			FMLLog.log(Level.SEVERE, e, "Galacticraft Core has a problem loading it's configuration");
 		}

@@ -26,11 +26,11 @@ public class GCCoreWorldGenVanilla implements IWorldGenerator
 
         for (int var5 = 0; var5 < amount; ++var5)
         {
-    		int Xcoord = (chunkX * 16) + random.nextInt(16);
-    		int Ycoord = random.nextInt(maxYCoord);
-    		int Zcoord = (chunkZ * 16) + random.nextInt(16);
+    		final int Xcoord = chunkX * 16 + random.nextInt(16);
+    		final int Ycoord = random.nextInt(maxYCoord);
+    		final int Zcoord = chunkZ * 16 + random.nextInt(16);
     		  
-    		(new GCCoreWorldGenMinableMeta(blockID, amountOfBlocks, metadata, true, Block.stone.blockID)).generate(world, random, Xcoord, Ycoord, Zcoord);
+    		new GCCoreWorldGenMinableMeta(blockID, amountOfBlocks, metadata, true, Block.stone.blockID).generate(world, random, Xcoord, Ycoord, Zcoord);
         }
 	}
 }

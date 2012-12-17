@@ -13,7 +13,7 @@ public class GCMoonPlayerHandler implements IPlayerTracker
 		
 		for (int i = 0; i < GalacticraftMoon.gcMoonPlayers.size(); i++)
 		{
-			GCMoonEntityPlayer player2 = (GCMoonEntityPlayer) GalacticraftMoon.gcMoonPlayers.get(i);
+			final GCMoonEntityPlayer player2 = (GCMoonEntityPlayer) GalacticraftMoon.gcMoonPlayers.get(i);
 			
 			if (player2.getPlayer().username == player.username)
 			{
@@ -29,7 +29,7 @@ public class GCMoonPlayerHandler implements IPlayerTracker
 		
 		for (int i = 0; i < GalacticraftMoon.gcMoonPlayers.size(); i++)
 		{
-			GCMoonEntityPlayer player2 = (GCMoonEntityPlayer) GalacticraftMoon.gcMoonPlayers.get(i);
+			final GCMoonEntityPlayer player2 = (GCMoonEntityPlayer) GalacticraftMoon.gcMoonPlayers.get(i);
 			
 			if (player2.getPlayer().username == player.username)
 			{

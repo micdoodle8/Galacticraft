@@ -9,10 +9,10 @@ import cpw.mods.fml.common.asm.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GCCoreEntityOxygenFX extends EntityFX
 {
-    private float portalParticleScale;
-    private double portalPosX;
-    private double portalPosY;
-    private double portalPosZ;
+    private final float portalParticleScale;
+    private final double portalPosX;
+    private final double portalPosY;
+    private final double portalPosZ;
 
     public GCCoreEntityOxygenFX(World par1World, double par2, double par4, double par6, double par8, double par10, double par12)
     {
@@ -23,7 +23,7 @@ public class GCCoreEntityOxygenFX extends EntityFX
         this.portalPosX = this.posX = par2;
         this.portalPosY = this.posY = par4;
         this.portalPosZ = this.posZ = par6;
-        float var14 = this.rand.nextFloat() * 0.6F + 0.4F;
+        final float var14 = this.rand.nextFloat() * 0.6F + 0.4F;
         this.portalParticleScale = this.particleScale = 0.1F;
         this.particleRed = this.particleGreen = this.particleBlue = 1.0F * var14;
         this.particleGreen *= 0.3F;
@@ -47,11 +47,11 @@ public class GCCoreEntityOxygenFX extends EntityFX
     @Override
 	public int getBrightnessForRender(float par1)
     {
-        int var2 = super.getBrightnessForRender(par1);
+        final int var2 = super.getBrightnessForRender(par1);
         float var3 = (float)this.particleAge / (float)this.particleMaxAge;
         var3 *= var3;
         var3 *= var3;
-        int var4 = var2 & 255;
+        final int var4 = var2 & 255;
         int var5 = var2 >> 16 & 255;
         var5 += (int)(var3 * 15.0F * 16.0F);
 
@@ -69,7 +69,7 @@ public class GCCoreEntityOxygenFX extends EntityFX
     @Override
 	public float getBrightness(float par1)
     {
-        float var2 = super.getBrightness(par1);
+        final float var2 = super.getBrightness(par1);
         float var3 = (float)this.particleAge / (float)this.particleMaxAge;
         var3 = var3 * var3 * var3 * var3;
         return var2 * (1.0F - var3) + var3;
@@ -85,7 +85,7 @@ public class GCCoreEntityOxygenFX extends EntityFX
         this.prevPosY = this.posY;
         this.prevPosZ = this.posZ;
         float var1 = (float)this.particleAge / (float)this.particleMaxAge;
-        float var2 = var1;
+        final float var2 = var1;
         var1 = -var1 + var1 * var1 * 2.0F;
         var1 = 1.0F - var1;
         this.posX = this.portalPosX + this.motionX * var1;

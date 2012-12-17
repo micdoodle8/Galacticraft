@@ -97,12 +97,12 @@ public class GCMarsItemReinforcedBucket extends GCMarsItem
 		
     	if (this.shiftedIndex != GCMarsItems.reinforcedBucketMilk.shiftedIndex)
     	{
-    		float var4 = 1.0F;
-            double var5 = par3EntityPlayer.prevPosX + (par3EntityPlayer.posX - par3EntityPlayer.prevPosX) * var4;
-            double var7 = par3EntityPlayer.prevPosY + (par3EntityPlayer.posY - par3EntityPlayer.prevPosY) * var4 + 1.62D - par3EntityPlayer.yOffset;
-            double var9 = par3EntityPlayer.prevPosZ + (par3EntityPlayer.posZ - par3EntityPlayer.prevPosZ) * var4;
-            boolean var11 = this.isFull == 0;
-            MovingObjectPosition var12 = this.getMovingObjectPositionFromPlayer(par2World, par3EntityPlayer, var11);
+    		final float var4 = 1.0F;
+            final double var5 = par3EntityPlayer.prevPosX + (par3EntityPlayer.posX - par3EntityPlayer.prevPosX) * var4;
+            final double var7 = par3EntityPlayer.prevPosY + (par3EntityPlayer.posY - par3EntityPlayer.prevPosY) * var4 + 1.62D - par3EntityPlayer.yOffset;
+            final double var9 = par3EntityPlayer.prevPosZ + (par3EntityPlayer.posZ - par3EntityPlayer.prevPosZ) * var4;
+            final boolean var11 = this.isFull == 0;
+            final MovingObjectPosition var12 = this.getMovingObjectPositionFromPlayer(par2World, par3EntityPlayer, var11);
 
             if (var12 == null)
             {
@@ -143,7 +143,7 @@ public class GCMarsItemReinforcedBucket extends GCMarsItem
 
                             if (--par1ItemStack.stackSize <= 0)
                             {
-                            	ItemStack bucket = new ItemStack(GCMarsItems.reinforcedBucketWater);
+                            	final ItemStack bucket = new ItemStack(GCMarsItems.reinforcedBucketWater);
                             	bucket.setTagCompound(new NBTTagCompound());
                             	bucket.getTagCompound().setInteger("bucketUses", 2);
                                 return bucket;
@@ -151,7 +151,7 @@ public class GCMarsItemReinforcedBucket extends GCMarsItem
 
                             if (!par3EntityPlayer.inventory.addItemStackToInventory(new ItemStack(Item.bucketWater)))
                             {
-                            	ItemStack bucket = new ItemStack(GCMarsItems.reinforcedBucketWater);
+                            	final ItemStack bucket = new ItemStack(GCMarsItems.reinforcedBucketWater);
                             	bucket.setTagCompound(new NBTTagCompound());
                             	bucket.getTagCompound().setInteger("bucketUses", 2);
                                 par3EntityPlayer.dropPlayerItem(bucket);
@@ -173,7 +173,7 @@ public class GCMarsItemReinforcedBucket extends GCMarsItem
 
                             if (--par1ItemStack.stackSize <= 0)
                             {
-                            	ItemStack bucket = new ItemStack(GCMarsItems.reinforcedBucketLava);
+                            	final ItemStack bucket = new ItemStack(GCMarsItems.reinforcedBucketLava);
                             	bucket.setTagCompound(new NBTTagCompound());
                             	bucket.getTagCompound().setInteger("bucketUses", 2);
                                 return bucket;
@@ -181,7 +181,7 @@ public class GCMarsItemReinforcedBucket extends GCMarsItem
 
                             if (!par3EntityPlayer.inventory.addItemStackToInventory(new ItemStack(Item.bucketLava)))
                             {
-                            	ItemStack bucket = new ItemStack(GCMarsItems.reinforcedBucketLava);
+                            	final ItemStack bucket = new ItemStack(GCMarsItems.reinforcedBucketLava);
                             	bucket.setTagCompound(new NBTTagCompound());
                             	bucket.getTagCompound().setInteger("bucketUses", 2);
                                 par3EntityPlayer.dropPlayerItem(bucket);
@@ -203,7 +203,7 @@ public class GCMarsItemReinforcedBucket extends GCMarsItem
 
                             if (--par1ItemStack.stackSize <= 0)
                             {
-                            	ItemStack bucket = new ItemStack(GCMarsItems.reinforcedBucketBacteria);
+                            	final ItemStack bucket = new ItemStack(GCMarsItems.reinforcedBucketBacteria);
                             	bucket.setTagCompound(new NBTTagCompound());
                             	bucket.getTagCompound().setInteger("bucketUses", 2);
                                 return bucket;
@@ -211,7 +211,7 @@ public class GCMarsItemReinforcedBucket extends GCMarsItem
 
                             if (!par3EntityPlayer.inventory.addItemStackToInventory(new ItemStack(GCMarsItems.reinforcedBucketBacteria)))
                             {
-                            	ItemStack bucket = new ItemStack(GCMarsItems.reinforcedBucketBacteria);
+                            	final ItemStack bucket = new ItemStack(GCMarsItems.reinforcedBucketBacteria);
                             	bucket.setTagCompound(new NBTTagCompound());
                             	bucket.getTagCompound().setInteger("bucketUses", 2);
                                 par3EntityPlayer.dropPlayerItem(bucket);

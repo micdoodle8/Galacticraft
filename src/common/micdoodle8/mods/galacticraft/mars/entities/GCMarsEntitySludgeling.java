@@ -46,7 +46,7 @@ public class GCMarsEntitySludgeling extends EntityMob
     @Override
 	protected Entity findPlayerToAttack()
     {
-        double var1 = 8.0D;
+        final double var1 = 8.0D;
         return this.worldObj.getClosestVulnerablePlayerToEntity(this, var1);
     }
 
@@ -75,8 +75,8 @@ public class GCMarsEntitySludgeling extends EntityMob
 
         for (int var12 = 0; var12 < this.worldObj.loadedEntityList.size(); ++var12)
         {
-            EntityPlayer var13 = (EntityPlayer)this.worldObj.loadedEntityList.get(var12);
-            double var14 = var13.getDistanceSq(par1, par3, par5);
+            final EntityPlayer var13 = (EntityPlayer)this.worldObj.loadedEntityList.get(var12);
+            final double var14 = var13.getDistanceSq(par1, par3, par5);
 
             if ((par7 < 0.0D || var14 < par7 * par7) && (var9 == -1.0D || var14 < var9))
             {
@@ -128,7 +128,7 @@ public class GCMarsEntitySludgeling extends EntityMob
     {
         if (super.getCanSpawnHere())
         {
-            EntityPlayer var1 = this.worldObj.getClosestPlayerToEntity(this, 5.0D);
+            final EntityPlayer var1 = this.worldObj.getClosestPlayerToEntity(this, 5.0D);
             return var1 == null;
         }
         else

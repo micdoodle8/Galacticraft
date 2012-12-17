@@ -1,8 +1,5 @@
 package micdoodle8.mods.galacticraft.API;
 
-import net.minecraft.src.Block;
-import net.minecraft.src.Material;
-
 /**
  * Extend this block to allow planting of saplings on it. Requires 
  */

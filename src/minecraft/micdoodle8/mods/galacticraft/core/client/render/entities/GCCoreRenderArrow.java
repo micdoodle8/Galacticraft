@@ -28,23 +28,23 @@ public class GCCoreRenderArrow extends Render
         GL11.glTranslatef((float)par2, (float)par4, (float)par6);
         GL11.glRotatef(par1EntityArrow.prevRotationYaw + (par1EntityArrow.rotationYaw - par1EntityArrow.prevRotationYaw) * par9 - 90.0F, 0.0F, 1.0F, 0.0F);
         GL11.glRotatef(par1EntityArrow.prevRotationPitch + (par1EntityArrow.rotationPitch - par1EntityArrow.prevRotationPitch) * par9, 0.0F, 0.0F, 1.0F);
-        Tessellator var10 = Tessellator.instance;
-        byte var11 = 0;
-        float var12 = 0.0F;
-        float var13 = 0.5F;
-        float var14 = (0 + var11 * 10) / 32.0F;
-        float var15 = (5 + var11 * 10) / 32.0F;
-        float var16 = 0.0F;
-        float var17 = 0.15625F;
-        float var18 = (5 + var11 * 10) / 32.0F;
-        float var19 = (10 + var11 * 10) / 32.0F;
-        float var20 = 0.05625F;
+        final Tessellator var10 = Tessellator.instance;
+        final byte var11 = 0;
+        final float var12 = 0.0F;
+        final float var13 = 0.5F;
+        final float var14 = (0 + var11 * 10) / 32.0F;
+        final float var15 = (5 + var11 * 10) / 32.0F;
+        final float var16 = 0.0F;
+        final float var17 = 0.15625F;
+        final float var18 = (5 + var11 * 10) / 32.0F;
+        final float var19 = (10 + var11 * 10) / 32.0F;
+        final float var20 = 0.05625F;
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-        float var21 = par1EntityArrow.arrowShake - par9;
+        final float var21 = par1EntityArrow.arrowShake - par9;
 
         if (var21 > 0.0F)
         {
-            float var22 = -MathHelper.sin(var21 * 3.0F) * var21;
+            final float var22 = -MathHelper.sin(var21 * 3.0F) * var21;
             GL11.glRotatef(var22, 0.0F, 0.0F, 1.0F);
         }
 

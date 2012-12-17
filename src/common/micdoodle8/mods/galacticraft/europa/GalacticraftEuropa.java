@@ -104,9 +104,9 @@ public class GalacticraftEuropa implements IGalacticraftSubMod
         @Override
         public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player p)
         {
-            DataInputStream data = new DataInputStream(new ByteArrayInputStream(packet.data));
-            int packetType = GCCoreUtil.readPacketID(data);
-            EntityPlayerMP player = (EntityPlayerMP)p;
+            final DataInputStream data = new DataInputStream(new ByteArrayInputStream(packet.data));
+            final int packetType = GCCoreUtil.readPacketID(data);
+            final EntityPlayerMP player = (EntityPlayerMP)p;
             
             if (packetType == 0)
             {

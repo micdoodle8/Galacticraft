@@ -48,7 +48,7 @@ public class GCCoreBlockSapling extends BlockSapling
             if (par1World.getBlockLightValue(par2, par3 + 1, par4) >= 9 && par5Random.nextInt(7) == 0)
             {
             	
-                int var6 = par1World.getBlockMetadata(par2, par3, par4);
+                final int var6 = par1World.getBlockMetadata(par2, par3, par4);
 
                 if ((var6 & 8) == 0)
                 {
@@ -65,11 +65,11 @@ public class GCCoreBlockSapling extends BlockSapling
 	@Override
     public void growTree(World par1World, int par2, int par3, int par4, Random par5Random)
     {
-        int var6 = par1World.getBlockMetadata(par2, par3, par4) & 3;
+        final int var6 = par1World.getBlockMetadata(par2, par3, par4) & 3;
         Object var7 = null;
-        int var8 = 0;
-        int var9 = 0;
-        boolean var10 = false;
+        final int var8 = 0;
+        final int var9 = 0;
+        final boolean var10 = false;
 		
 		if (var6 == 1)
         {

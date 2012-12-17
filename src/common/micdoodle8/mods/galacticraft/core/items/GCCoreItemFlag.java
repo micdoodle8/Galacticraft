@@ -62,9 +62,9 @@ public class GCCoreItemFlag extends GCCoreItem
     @Override
     public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4)
     {
-        int useTime = this.getMaxItemUseDuration(par1ItemStack) - par4;
+        final int useTime = this.getMaxItemUseDuration(par1ItemStack) - par4;
         
-        MovingObjectPosition var12 = this.getMovingObjectPositionFromPlayer(par2World, par3EntityPlayer, true);
+        final MovingObjectPosition var12 = this.getMovingObjectPositionFromPlayer(par2World, par3EntityPlayer, true);
 
         float var7 = useTime / 20.0F;
         var7 = (var7 * var7 + var7 * 2.0F) / 3.0F;
@@ -76,19 +76,19 @@ public class GCCoreItemFlag extends GCCoreItem
         
         if (var7 == 1.0F && var12 != null && var12.typeOfHit == EnumMovingObjectType.TILE)
         {
-            int x = var12.blockX;
-            int y = var12.blockY;
-            int z = var12.blockZ;
+            final int x = var12.blockX;
+            final int y = var12.blockY;
+            final int z = var12.blockZ;
             
             if (!par2World.isRemote)
             {
-            	GCCoreEntityFlag flag = new GCCoreEntityFlag(par2World, x + 0.5F, y + 1.0F, z + 0.5F, par3EntityPlayer.rotationYaw - 90F);
+            	final GCCoreEntityFlag flag = new GCCoreEntityFlag(par2World, x + 0.5F, y + 1.0F, z + 0.5F, par3EntityPlayer.rotationYaw - 90F);
             	par2World.spawnEntityInWorld(flag);
                 flag.setType(par1ItemStack.getItemDamage());
                 flag.setOwner(par3EntityPlayer.username);
             }
             
-            int var2 = this.getInventorySlotContainItem(par3EntityPlayer, this.shiftedIndex);
+            final int var2 = this.getInventorySlotContainItem(par3EntityPlayer, this.shiftedIndex);
 
             if (var2 >= 0)
             {

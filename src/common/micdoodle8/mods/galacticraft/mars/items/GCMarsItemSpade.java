@@ -10,7 +10,7 @@ import cpw.mods.fml.common.asm.SideOnly;
 
 public class GCMarsItemSpade extends ItemSpade
 {
-	private EnumToolMaterial material;
+	private final EnumToolMaterial material;
 	
 	public GCMarsItemSpade(int par1, EnumToolMaterial par2EnumToolMaterial) 
 	{

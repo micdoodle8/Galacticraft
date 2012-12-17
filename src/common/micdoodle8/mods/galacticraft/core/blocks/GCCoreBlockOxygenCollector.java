@@ -52,15 +52,15 @@ public class GCCoreBlockOxygenCollector extends BlockContainer
         }
         else
         {
-            int var6 = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
-            return (par5 != var6 && par5 != ((var6 == 5 || var6 == 3) ? var6 - 1 : var6 + 1)) ? this.blockIndexInTexture + 2 : (active ? this.blockIndexInTexture - 1 : this.blockIndexInTexture - 2);
+            final int var6 = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
+            return par5 != var6 && par5 != (var6 == 5 || var6 == 3 ? var6 - 1 : var6 + 1) ? this.blockIndexInTexture + 2 : active ? this.blockIndexInTexture - 1 : this.blockIndexInTexture - 2;
         }
     }
 
 	@Override
     public int getBlockTextureFromSide(int par1)
     {
-        return par1 == 1 ? this.blockIndexInTexture : (par1 == 0 ? this.blockIndexInTexture + 2 : (par1 == 3 ? this.blockIndexInTexture - 1 : this.blockIndexInTexture + 2));
+        return par1 == 1 ? this.blockIndexInTexture : par1 == 0 ? this.blockIndexInTexture + 2 : par1 == 3 ? this.blockIndexInTexture - 1 : this.blockIndexInTexture + 2;
     }
 
 	@Override
@@ -74,10 +74,10 @@ public class GCCoreBlockOxygenCollector extends BlockContainer
     {
         if (!par1World.isRemote)
         {
-            int var5 = par1World.getBlockId(par2, par3, par4 - 1);
-            int var6 = par1World.getBlockId(par2, par3, par4 + 1);
-            int var7 = par1World.getBlockId(par2 - 1, par3, par4);
-            int var8 = par1World.getBlockId(par2 + 1, par3, par4);
+            final int var5 = par1World.getBlockId(par2, par3, par4 - 1);
+            final int var6 = par1World.getBlockId(par2, par3, par4 + 1);
+            final int var7 = par1World.getBlockId(par2 - 1, par3, par4);
+            final int var8 = par1World.getBlockId(par2 + 1, par3, par4);
             byte var9 = 3;
 
             if (Block.opaqueCubeLookup[var5] && !Block.opaqueCubeLookup[var6])
@@ -107,7 +107,7 @@ public class GCCoreBlockOxygenCollector extends BlockContainer
 	@Override
     public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLiving par5EntityLiving)
     {
-        int var6 = MathHelper.floor_double(par5EntityLiving.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+        final int var6 = MathHelper.floor_double(par5EntityLiving.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
 
         if (var6 == 0)
         {
@@ -141,17 +141,17 @@ public class GCCoreBlockOxygenCollector extends BlockContainer
 				for (int var6 = 0; var6 < 10; ++var6)
 		        {
 		            double var7 = par2 + par5Random.nextFloat();
-		            double var9 = par3 + par5Random.nextFloat();
+		            final double var9 = par3 + par5Random.nextFloat();
 		            double var11 = par4 + par5Random.nextFloat();
 		            double var13 = 0.0D;
 		            double var15 = 0.0D;
 		            double var17 = 0.0D;
-		            int var19 = par5Random.nextInt(2) * 2 - 1;
+		            final int var19 = par5Random.nextInt(2) * 2 - 1;
 		            var13 = (par5Random.nextFloat() - 0.5D) * 0.5D;
 		            var15 = (par5Random.nextFloat() - 0.5D) * 0.5D;
 		            var17 = (par5Random.nextFloat() - 0.5D) * 0.5D;
 
-		            int var2 = par1World.getBlockMetadata(par2, par3, par4);
+		            final int var2 = par1World.getBlockMetadata(par2, par3, par4);
 
 		            if (var2 == 3 || var2 == 2)
 		            {

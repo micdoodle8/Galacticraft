@@ -26,7 +26,7 @@ public class GCCorePlayerHandler implements IPlayerTracker
 		
 		for (int i = 0; i < GalacticraftCore.instance.gcPlayers.size(); i++)
 		{
-			GCCoreEntityPlayer player2 = (GCCoreEntityPlayer) GalacticraftCore.instance.gcPlayers.get(i);
+			final GCCoreEntityPlayer player2 = (GCCoreEntityPlayer) GalacticraftCore.instance.gcPlayers.get(i);
 			
 			if (player2.getPlayer().username == player.username)
 			{
@@ -34,20 +34,20 @@ public class GCCorePlayerHandler implements IPlayerTracker
 				
 				if (player.posY > 420D)
 				{
-					Integer[] ids = DimensionManager.getIDs();
+					final Integer[] ids = DimensionManager.getIDs();
 			    	
-			    	Set set = GCCoreUtil.getArrayOfPossibleDimensions(ids).entrySet();
-			    	Iterator iter = set.iterator();
+			    	final Set set = GCCoreUtil.getArrayOfPossibleDimensions(ids).entrySet();
+			    	final Iterator iter = set.iterator();
 			    	
 			    	String temp = "";
 			    	
 			    	for (int k = 0; iter.hasNext(); k++)
 			    	{
-			    		Map.Entry entry = (Map.Entry)iter.next();
-			    		temp = (k == 0 ? temp.concat(String.valueOf(entry.getKey())) : temp.concat("." + String.valueOf(entry.getKey())));
+			    		final Map.Entry entry = (Map.Entry)iter.next();
+			    		temp = k == 0 ? temp.concat(String.valueOf(entry.getKey())) : temp.concat("." + String.valueOf(entry.getKey()));
 			    	}
 			    	
-			    	Object[] toSend = {player.username, temp};
+			    	final Object[] toSend = {player.username, temp};
 			        FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(player.username).playerNetServerHandler.sendPacketToPlayer(GCCoreUtil.createPacket("Galacticraft", 2, toSend));
 				}
 			}
@@ -56,8 +56,8 @@ public class GCCorePlayerHandler implements IPlayerTracker
 	
     protected boolean loadDownloadableImageTexture(String par1Str, String par2Str)
     {
-        RenderEngine var3 = FMLClientHandler.instance().getClient().renderEngine;
-        int var4 = var3.getTextureForDownloadableImage(par1Str, par2Str);
+        final RenderEngine var3 = FMLClientHandler.instance().getClient().renderEngine;
+        final int var4 = var3.getTextureForDownloadableImage(par1Str, par2Str);
 
         if (var4 >= 0)
         {
@@ -77,7 +77,7 @@ public class GCCorePlayerHandler implements IPlayerTracker
 		
 		for (int i = 0; i < GalacticraftCore.instance.gcPlayers.size(); i++)
 		{
-			GCCoreEntityPlayer player2 = (GCCoreEntityPlayer) GalacticraftCore.instance.gcPlayers.get(i);
+			final GCCoreEntityPlayer player2 = (GCCoreEntityPlayer) GalacticraftCore.instance.gcPlayers.get(i);
 			
 			if (player2.getPlayer().username == player.username)
 			{

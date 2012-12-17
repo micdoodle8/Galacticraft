@@ -54,7 +54,7 @@ public class GCCoreRenderBlockTreasureChest implements ISimpleBlockRenderingHand
         return this.renderID;
     }
     
-    private GCCoreTileEntityTreasureChest chest = new GCCoreTileEntityTreasureChest();
+    private final GCCoreTileEntityTreasureChest chest = new GCCoreTileEntityTreasureChest();
     
     public void renderChest(Block par1Block, int par2, float par3)
     {

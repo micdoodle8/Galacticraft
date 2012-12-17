@@ -26,7 +26,7 @@ public class GCEnceladusConfigManager
 		if (!loaded)
 		{
 			configuration = new Configuration(file);
-			setDefaultValues();
+			this.setDefaultValues();
 		}
 	}
 	
@@ -38,7 +38,7 @@ public class GCEnceladusConfigManager
 	        
 	        dimensionIDEnceladus = 				configuration.get("Dimensions", 										"Enceladus Dimension ID",				-24)		.getInt(-24);
 	    }
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			FMLLog.log(Level.SEVERE, e, "Galacticraft Enceladus has a problem loading it's configuration");
 		}

@@ -83,8 +83,8 @@ public class GCCoreBlockUnlitTorch extends GCCoreBlock
         }
         else
         {
-            int var5 = par1World.getBlockId(par2, par3, par4);
-            return (Block.blocksList[var5] != null && Block.blocksList[var5].canPlaceTorchOnTop(par1World, par2, par3, par4));
+            final int var5 = par1World.getBlockId(par2, par3, par4);
+            return Block.blocksList[var5] != null && Block.blocksList[var5].canPlaceTorchOnTop(par1World, par2, par3, par4);
         }
     }
 
@@ -98,7 +98,7 @@ public class GCCoreBlockUnlitTorch extends GCCoreBlock
                par1World.isBlockSolidOnSide(par2 + 1, par3, par4, WEST,  true) ||
                par1World.isBlockSolidOnSide(par2, par3, par4 - 1, SOUTH, true) ||
                par1World.isBlockSolidOnSide(par2, par3, par4 + 1, NORTH, true) ||
-               canPlaceTorchOn(par1World, par2, par3 - 1, par4);
+               this.canPlaceTorchOn(par1World, par2, par3 - 1, par4);
     }
 
     /**
@@ -190,7 +190,7 @@ public class GCCoreBlockUnlitTorch extends GCCoreBlock
     {
         if (this.dropTorchIfCantStay(par1World, par2, par3, par4))
         {
-            int var6 = par1World.getBlockMetadata(par2, par3, par4);
+            final int var6 = par1World.getBlockMetadata(par2, par3, par4);
             boolean var7 = false;
 
             if (!par1World.isBlockSolidOnSide(par2 - 1, par3, par4, EAST, true) && var6 == 1)
@@ -255,7 +255,7 @@ public class GCCoreBlockUnlitTorch extends GCCoreBlock
     @Override
 	public MovingObjectPosition collisionRayTrace(World par1World, int par2, int par3, int par4, Vec3 par5Vec3, Vec3 par6Vec3)
     {
-        int var7 = par1World.getBlockMetadata(par2, par3, par4) & 7;
+        final int var7 = par1World.getBlockMetadata(par2, par3, par4) & 7;
         float var8 = 0.15F;
 
         if (var7 == 1)
@@ -293,12 +293,12 @@ public class GCCoreBlockUnlitTorch extends GCCoreBlock
     {
     	if (par5Random.nextInt(5) == 0)
     	{
-    		int var6 = par1World.getBlockMetadata(par2, par3, par4);
-            double var7 = par2 + 0.5F;
-            double var9 = par3 + 0.7F;
-            double var11 = par4 + 0.5F;
-            double var13 = 0.2199999988079071D;
-            double var15 = 0.27000001072883606D;
+    		final int var6 = par1World.getBlockMetadata(par2, par3, par4);
+            final double var7 = par2 + 0.5F;
+            final double var9 = par3 + 0.7F;
+            final double var11 = par4 + 0.5F;
+            final double var13 = 0.2199999988079071D;
+            final double var15 = 0.27000001072883606D;
 
             if (var6 == 1)
             {

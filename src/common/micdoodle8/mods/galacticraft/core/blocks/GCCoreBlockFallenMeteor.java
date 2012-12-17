@@ -48,7 +48,7 @@ public class GCCoreBlockFallenMeteor extends Block
     {
 		if (par5Entity instanceof EntityLiving)
 		{
-			EntityLiving livingEntity = (EntityLiving) par5Entity;
+			final EntityLiving livingEntity = (EntityLiving) par5Entity;
 			
 	        par1World.playSoundEffect(par2 + 0.5F, par3 + 0.5F, par4 + 0.5F, "random.fizz", 0.5F, 2.6F + (par1World.rand.nextFloat() - par1World.rand.nextFloat()) * 0.8F);
 
@@ -99,7 +99,7 @@ public class GCCoreBlockFallenMeteor extends Block
     {
         if (canFallBelow(par1World, par2, par3 - 1, par4) && par3 >= 0)
         {
-            byte var8 = 32;
+            final byte var8 = 32;
             
             par1World.setBlockWithNotify(par2, par3, par4, 0);
 
@@ -117,7 +117,7 @@ public class GCCoreBlockFallenMeteor extends Block
 
     public static boolean canFallBelow(World par0World, int par1, int par2, int par3)
     {
-        int var4 = par0World.getBlockId(par1, par2, par3);
+        final int var4 = par0World.getBlockId(par1, par2, par3);
 
         if (var4 == 0)
         {
@@ -129,7 +129,7 @@ public class GCCoreBlockFallenMeteor extends Block
         }
         else
         {
-            Material var5 = Block.blocksList[var4].blockMaterial;
+            final Material var5 = Block.blocksList[var4].blockMaterial;
             return var5 == Material.water ? true : var5 == Material.lava;
         }
     }

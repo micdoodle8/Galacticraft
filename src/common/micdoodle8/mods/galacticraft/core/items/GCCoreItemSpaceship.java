@@ -31,7 +31,7 @@ public class GCCoreItemSpaceship extends GCCoreItem
     {
     	int amountOfCorrectBlocks = 0;
     	
-    	GCCoreEntitySpaceship spaceship = new GCCoreEntitySpaceship(par3World, par4 + 0.5F, par5 - 1.5F, par6 + 0.5F, false);
+    	final GCCoreEntitySpaceship spaceship = new GCCoreEntitySpaceship(par3World, par4 + 0.5F, par5 - 1.5F, par6 + 0.5F, false);
     	
     	if (par3World.isRemote)
     	{

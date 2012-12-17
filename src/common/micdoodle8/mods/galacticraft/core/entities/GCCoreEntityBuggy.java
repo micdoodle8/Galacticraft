@@ -119,8 +119,8 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
     {
         if (this.riddenByEntity != null)
         {
-            double var1 = Math.cos(this.rotationYaw * Math.PI / 180.0D + 114.8) * -0.5D;
-            double var3 = Math.sin(this.rotationYaw * Math.PI / 180.0D + 114.8) * -0.5D;
+            final double var1 = Math.cos(this.rotationYaw * Math.PI / 180.0D + 114.8) * -0.5D;
+            final double var3 = Math.sin(this.rotationYaw * Math.PI / 180.0D + 114.8) * -0.5D;
             this.riddenByEntity.setPosition(this.posX + var1, this.posY - 1 + this.riddenByEntity.getYOffset(), this.posZ + var3);
         }
     }
@@ -142,7 +142,7 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
     @Override
 	public boolean attackEntityFrom(DamageSource var1, int var2)
     {
-        boolean var3 = false;
+        final boolean var3 = false;
 
         if (this.isDead)
         {
@@ -230,14 +230,14 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
         this.prevPosX = this.posX;
         this.prevPosY = this.posY;
         this.prevPosZ = this.posZ;
-        byte var20 = 5;
-        double var2 = 0.0D;
+        final byte var20 = 5;
+        final double var2 = 0.0D;
         int var4;
 
         for (var4 = 0; var4 < var20; ++var4)
         {
-            double var5 = this.boundingBox.minY + (this.boundingBox.maxY - this.boundingBox.minY) * (var4 + 0) / var20 - 0.125D;
-            double var7 = this.boundingBox.minY + (this.boundingBox.maxY - this.boundingBox.minY) * (var4 + 1) / var20 - 0.125D;
+            final double var5 = this.boundingBox.minY + (this.boundingBox.maxY - this.boundingBox.minY) * (var4 + 0) / var20 - 0.125D;
+            final double var7 = this.boundingBox.minY + (this.boundingBox.maxY - this.boundingBox.minY) * (var4 + 1) / var20 - 0.125D;
         }
 
         double var21;
@@ -261,7 +261,7 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
         {
             for (var4 = 0; var4 < this.getSizeInventory(); ++var4)
             {
-                ItemStack var22 = this.getStackInSlot(var4);
+                final ItemStack var22 = this.getStackInSlot(var4);
 
                 if (var22 != null && var22.itemID == Item.coal.shiftedIndex)
                 {
@@ -270,7 +270,7 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
 
                     if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayer)
                     {
-                        EntityPlayer var6 = (EntityPlayer)this.riddenByEntity;
+                        final EntityPlayer var6 = (EntityPlayer)this.riddenByEntity;
                         var6.addChatMessage("Added Fuel");
                         break;
                     }
@@ -314,7 +314,7 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
 
         if (this.inWater && this.speed > 0.2D)
         {
-            this.worldObj.playSoundEffect(((float)this.posX), ((float)this.posY), ((float)this.posZ), "random.fizz", 0.5F, 2.6F + (this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.8F);
+            this.worldObj.playSoundEffect((float)this.posX, (float)this.posY, (float)this.posZ, "random.fizz", 0.5F, 2.6F + (this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.8F);
         }
 
         this.speed *= 0.98D;
@@ -332,7 +332,7 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
 
         if (ModLoader.isGUIOpen((Class)null) && this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayer && Keyboard.isKeyDown(46))
         {
-            EntityPlayer var23 = (EntityPlayer)this.riddenByEntity;
+            final EntityPlayer var23 = (EntityPlayer)this.riddenByEntity;
 
             if (!this.worldObj.isRemote)
             {
@@ -358,13 +358,13 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
 	protected void readEntityFromNBT(NBTTagCompound var1)
     {
         this.fuel = var1.getInteger("Fuel");
-        NBTTagList var2 = var1.getTagList("Items");
+        final NBTTagList var2 = var1.getTagList("Items");
         this.cargoItems = new ItemStack[this.getSizeInventory()];
 
         for (int var3 = 0; var3 < var2.tagCount(); ++var3)
         {
-            NBTTagCompound var4 = (NBTTagCompound)var2.tagAt(var3);
-            int var5 = var4.getByte("Slot") & 255;
+            final NBTTagCompound var4 = (NBTTagCompound)var2.tagAt(var3);
+            final int var5 = var4.getByte("Slot") & 255;
 
             if (var5 >= 0 && var5 < this.cargoItems.length)
             {
@@ -380,13 +380,13 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
 	protected void writeEntityToNBT(NBTTagCompound var1)
     {
         var1.setInteger("fuel", this.fuel);
-        NBTTagList var2 = new NBTTagList();
+        final NBTTagList var2 = new NBTTagList();
 
         for (int var3 = 0; var3 < this.cargoItems.length; ++var3)
         {
             if (this.cargoItems[var3] != null)
             {
-                NBTTagCompound var4 = new NBTTagCompound();
+                final NBTTagCompound var4 = new NBTTagCompound();
                 var4.setByte("Slot", (byte)var3);
                 this.cargoItems[var3].writeToNBT(var4);
                 var2.appendTag(var4);
@@ -464,7 +464,7 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
     {
         if (this.cargoItems[var1] != null)
         {
-            ItemStack var2 = this.cargoItems[var1];
+            final ItemStack var2 = this.cargoItems[var1];
             this.cargoItems[var1] = null;
             return var2;
         }
@@ -534,7 +534,7 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
     @Override
 	public boolean interact(EntityPlayer var1)
     {
-        ItemStack var2 = var1.inventory.getCurrentItem();
+        final ItemStack var2 = var1.inventory.getCurrentItem();
 
         if (this.worldObj.isRemote)
         {

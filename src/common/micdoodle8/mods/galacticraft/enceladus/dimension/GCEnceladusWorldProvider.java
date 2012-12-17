@@ -4,9 +4,6 @@ import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.enceladus.GCEnceladusConfigManager;
 import micdoodle8.mods.galacticraft.enceladus.wgen.GCEnceladusChunkProvider;
 import micdoodle8.mods.galacticraft.enceladus.wgen.GCEnceladusWorldChunkManager;
-import micdoodle8.mods.galacticraft.titan.GCTitanConfigManager;
-import micdoodle8.mods.galacticraft.titan.wgen.GCTitanChunkProvider;
-import micdoodle8.mods.galacticraft.titan.wgen.GCTitanWorldChunkManager;
 import net.minecraft.src.Chunk;
 import net.minecraft.src.Entity;
 import net.minecraft.src.IChunkProvider;
@@ -23,7 +20,7 @@ import cpw.mods.fml.common.asm.SideOnly;
  */
 public class GCEnceladusWorldProvider extends WorldProvider implements IGalacticraftWorldProvider
 {
-    private float[] colorsSunriseSunset = new float[4];
+    private final float[] colorsSunriseSunset = new float[4];
     
 	public GCEnceladusWorldProvider()
     {
@@ -34,11 +31,11 @@ public class GCEnceladusWorldProvider extends WorldProvider implements IGalactic
 	@Override
     protected void generateLightBrightnessTable()
     {
-        float var1 = 0.0F;
+        final float var1 = 0.0F;
 
         for (int var2 = 0; var2 <= 15; ++var2)
         {
-            float var3 = 1.0F - var2 / 15.0F;
+            final float var3 = 1.0F - var2 / 15.0F;
             this.lightBrightnessTable[var2] = (1.0F - var3) / (var3 * 3.0F + 1.0F) * (1.0F - var1) + var1;
         }
     }
@@ -78,7 +75,7 @@ public class GCEnceladusWorldProvider extends WorldProvider implements IGalactic
 	@Override
     public float calculateCelestialAngle(long par1, float par3)
     {
-        int var4 = (int)(par1 % 48000L);
+        final int var4 = (int)(par1 % 48000L);
         float var5 = (var4 + par3) / 48000.0F - 0.25F;
 
         if (var5 < 0.0F)
@@ -91,7 +88,7 @@ public class GCEnceladusWorldProvider extends WorldProvider implements IGalactic
             --var5;
         }
 
-        float var6 = var5;
+        final float var6 = var5;
         var5 = 1.0F - (float)((Math.cos(var5 * Math.PI) + 1.0D) / 2.0D);
         var5 = var6 + (var5 - var6) / 3.0F;
         return var5;
@@ -104,7 +101,7 @@ public class GCEnceladusWorldProvider extends WorldProvider implements IGalactic
 	
 	public float calculateDeimosAngle(long par1, float par3)
 	{
-		return calculatePhobosAngle(par1, par3) * 0.0000000001F;
+		return this.calculatePhobosAngle(par1, par3) * 0.0000000001F;
 	}
 
 	@Override
@@ -116,10 +113,10 @@ public class GCEnceladusWorldProvider extends WorldProvider implements IGalactic
 	@Override
 	public void updateWeather()
 	{
-        worldObj.getWorldInfo().setRainTime(0);
-        worldObj.getWorldInfo().setRaining(false);
-        worldObj.getWorldInfo().setThunderTime(0);
-        worldObj.getWorldInfo().setThundering(false);
+        this.worldObj.getWorldInfo().setRainTime(0);
+        this.worldObj.getWorldInfo().setRaining(false);
+        this.worldObj.getWorldInfo().setThunderTime(0);
+        this.worldObj.getWorldInfo().setThundering(false);
 	}
 
     @Override

@@ -64,7 +64,7 @@ public class GCCoreEntityAIArrowAttack extends EntityAIBase
     @Override
 	public boolean shouldExecute()
     {
-        EntityLiving var1 = this.entityHost.getAttackTarget();
+        final EntityLiving var1 = this.entityHost.getAttackTarget();
 
         if (var1 == null)
         {
@@ -101,9 +101,9 @@ public class GCCoreEntityAIArrowAttack extends EntityAIBase
     @Override
 	public void updateTask()
     {
-        double var1 = 100.0D;
-        double var3 = this.entityHost.getDistanceSq(this.attackTarget.posX, this.attackTarget.boundingBox.minY, this.attackTarget.posZ);
-        boolean var5 = this.entityHost.getEntitySenses().canSee(this.attackTarget);
+        final double var1 = 100.0D;
+        final double var3 = this.entityHost.getDistanceSq(this.attackTarget.posX, this.attackTarget.boundingBox.minY, this.attackTarget.posZ);
+        final boolean var5 = this.entityHost.getEntitySenses().canSee(this.attackTarget);
 
         if (var5)
         {
@@ -159,11 +159,11 @@ public class GCCoreEntityAIArrowAttack extends EntityAIBase
         }
         else if (this.rangedAttackID == 2)
         {
-            EntitySnowball var9 = new EntitySnowball(this.worldObj, this.entityHost);
-            double var2 = this.attackTarget.posX - this.entityHost.posX;
-            double var4 = this.attackTarget.posY + this.attackTarget.getEyeHeight() - 1.100000023841858D - var9.posY;
-            double var6 = this.attackTarget.posZ - this.entityHost.posZ;
-            float var8 = MathHelper.sqrt_double(var2 * var2 + var6 * var6) * 0.2F;
+            final EntitySnowball var9 = new EntitySnowball(this.worldObj, this.entityHost);
+            final double var2 = this.attackTarget.posX - this.entityHost.posX;
+            final double var4 = this.attackTarget.posY + this.attackTarget.getEyeHeight() - 1.100000023841858D - var9.posY;
+            final double var6 = this.attackTarget.posZ - this.entityHost.posZ;
+            final float var8 = MathHelper.sqrt_double(var2 * var2 + var6 * var6) * 0.2F;
             var9.setThrowableHeading(var2, var4 + var8, var6, 1.6F, 12.0F);
             this.worldObj.playSoundAtEntity(this.entityHost, "random.bow", 1.0F, 1.0F / (this.entityHost.getRNG().nextFloat() * 0.4F + 0.8F));
             this.worldObj.spawnEntityInWorld(var9);

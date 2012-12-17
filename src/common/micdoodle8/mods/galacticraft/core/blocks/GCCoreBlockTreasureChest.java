@@ -35,7 +35,7 @@ import cpw.mods.fml.common.asm.SideOnly;
  */
 public class GCCoreBlockTreasureChest extends BlockContainer
 {
-    private Random random = new Random();
+    private final Random random = new Random();
 
     protected GCCoreBlockTreasureChest(int par1)
     {
@@ -67,10 +67,10 @@ public class GCCoreBlockTreasureChest extends BlockContainer
     {
         super.onBlockAdded(par1World, par2, par3, par4);
         this.unifyAdjacentChests(par1World, par2, par3, par4);
-        int var5 = par1World.getBlockId(par2, par3, par4 - 1);
-        int var6 = par1World.getBlockId(par2, par3, par4 + 1);
-        int var7 = par1World.getBlockId(par2 - 1, par3, par4);
-        int var8 = par1World.getBlockId(par2 + 1, par3, par4);
+        final int var5 = par1World.getBlockId(par2, par3, par4 - 1);
+        final int var6 = par1World.getBlockId(par2, par3, par4 + 1);
+        final int var7 = par1World.getBlockId(par2 - 1, par3, par4);
+        final int var8 = par1World.getBlockId(par2 + 1, par3, par4);
 
         if (var5 == this.blockID)
         {
@@ -96,12 +96,12 @@ public class GCCoreBlockTreasureChest extends BlockContainer
     @Override
 	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLiving par5EntityLiving)
     {
-        int var6 = par1World.getBlockId(par2, par3, par4 - 1);
-        int var7 = par1World.getBlockId(par2, par3, par4 + 1);
-        int var8 = par1World.getBlockId(par2 - 1, par3, par4);
-        int var9 = par1World.getBlockId(par2 + 1, par3, par4);
+        final int var6 = par1World.getBlockId(par2, par3, par4 - 1);
+        final int var7 = par1World.getBlockId(par2, par3, par4 + 1);
+        final int var8 = par1World.getBlockId(par2 - 1, par3, par4);
+        final int var9 = par1World.getBlockId(par2 + 1, par3, par4);
         byte var10 = 0;
-        int var11 = MathHelper.floor_double(par5EntityLiving.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+        final int var11 = MathHelper.floor_double(par5EntityLiving.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
 
         if (var11 == 0)
         {
@@ -163,11 +163,11 @@ public class GCCoreBlockTreasureChest extends BlockContainer
     {
         if (!par1World.isRemote)
         {
-            int var5 = par1World.getBlockId(par2, par3, par4 - 1);
-            int var6 = par1World.getBlockId(par2, par3, par4 + 1);
-            int var7 = par1World.getBlockId(par2 - 1, par3, par4);
-            int var8 = par1World.getBlockId(par2 + 1, par3, par4);
-            boolean var9 = true;
+            final int var5 = par1World.getBlockId(par2, par3, par4 - 1);
+            final int var6 = par1World.getBlockId(par2, par3, par4 + 1);
+            final int var7 = par1World.getBlockId(par2 - 1, par3, par4);
+            final int var8 = par1World.getBlockId(par2 + 1, par3, par4);
+            final boolean var9 = true;
             int var10;
             int var11;
             boolean var12;
@@ -306,7 +306,7 @@ public class GCCoreBlockTreasureChest extends BlockContainer
             ++var5;
         }
 
-        return var5 > 1 ? false : (this.isThereANeighborChest(par1World, par2 - 1, par3, par4) ? false : (this.isThereANeighborChest(par1World, par2 + 1, par3, par4) ? false : (this.isThereANeighborChest(par1World, par2, par3, par4 - 1) ? false : !this.isThereANeighborChest(par1World, par2, par3, par4 + 1))));
+        return var5 > 1 ? false : this.isThereANeighborChest(par1World, par2 - 1, par3, par4) ? false : this.isThereANeighborChest(par1World, par2 + 1, par3, par4) ? false : this.isThereANeighborChest(par1World, par2, par3, par4 - 1) ? false : !this.isThereANeighborChest(par1World, par2, par3, par4 + 1);
     }
 
     /**
@@ -314,7 +314,7 @@ public class GCCoreBlockTreasureChest extends BlockContainer
      */
     private boolean isThereANeighborChest(World par1World, int par2, int par3, int par4)
     {
-        return par1World.getBlockId(par2, par3, par4) != this.blockID ? false : (par1World.getBlockId(par2 - 1, par3, par4) == this.blockID ? true : (par1World.getBlockId(par2 + 1, par3, par4) == this.blockID ? true : (par1World.getBlockId(par2, par3, par4 - 1) == this.blockID ? true : par1World.getBlockId(par2, par3, par4 + 1) == this.blockID)));
+        return par1World.getBlockId(par2, par3, par4) != this.blockID ? false : par1World.getBlockId(par2 - 1, par3, par4) == this.blockID ? true : par1World.getBlockId(par2 + 1, par3, par4) == this.blockID ? true : par1World.getBlockId(par2, par3, par4 - 1) == this.blockID ? true : par1World.getBlockId(par2, par3, par4 + 1) == this.blockID;
     }
 
     /**
@@ -325,7 +325,7 @@ public class GCCoreBlockTreasureChest extends BlockContainer
 	public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
     {
         super.onNeighborBlockChange(par1World, par2, par3, par4, par5);
-        GCCoreTileEntityTreasureChest var6 = (GCCoreTileEntityTreasureChest)par1World.getBlockTileEntity(par2, par3, par4);
+        final GCCoreTileEntityTreasureChest var6 = (GCCoreTileEntityTreasureChest)par1World.getBlockTileEntity(par2, par3, par4);
 
         if (var6 != null)
         {
@@ -339,21 +339,21 @@ public class GCCoreBlockTreasureChest extends BlockContainer
     @Override
 	public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6)
     {
-        GCCoreTileEntityTreasureChest var7 = (GCCoreTileEntityTreasureChest)par1World.getBlockTileEntity(par2, par3, par4);
+        final GCCoreTileEntityTreasureChest var7 = (GCCoreTileEntityTreasureChest)par1World.getBlockTileEntity(par2, par3, par4);
 
         if (var7 != null)
         {
             for (int var8 = 0; var8 < var7.getSizeInventory(); ++var8)
             {
-                ItemStack var9 = var7.getStackInSlot(var8);
+                final ItemStack var9 = var7.getStackInSlot(var8);
 
                 if (var9 != null)
                 {
-                    float var10 = this.random.nextFloat() * 0.8F + 0.1F;
-                    float var11 = this.random.nextFloat() * 0.8F + 0.1F;
+                    final float var10 = this.random.nextFloat() * 0.8F + 0.1F;
+                    final float var11 = this.random.nextFloat() * 0.8F + 0.1F;
                     EntityItem var14;
 
-                    for (float var12 = this.random.nextFloat() * 0.8F + 0.1F; var9.stackSize > 0; par1World.spawnEntityInWorld(var14))
+                    for (final float var12 = this.random.nextFloat() * 0.8F + 0.1F; var9.stackSize > 0; par1World.spawnEntityInWorld(var14))
                     {
                         int var13 = this.random.nextInt(21) + 10;
 
@@ -364,7 +364,7 @@ public class GCCoreBlockTreasureChest extends BlockContainer
 
                         var9.stackSize -= var13;
                         var14 = new EntityItem(par1World, par2 + var10, par3 + var11, par4 + var12, new ItemStack(var9.itemID, var13, var9.getItemDamage()));
-                        float var15 = 0.05F;
+                        final float var15 = 0.05F;
                         var14.motionX = (float)this.random.nextGaussian() * var15;
                         var14.motionY = (float)this.random.nextGaussian() * var15 + 0.2F;
                         var14.motionZ = (float)this.random.nextGaussian() * var15;
@@ -466,7 +466,7 @@ public class GCCoreBlockTreasureChest extends BlockContainer
      */
     public static boolean isOcelotBlockingChest(World par0World, int par1, int par2, int par3)
     {
-        Iterator var4 = par0World.getEntitiesWithinAABB(EntityOcelot.class, AxisAlignedBB.getAABBPool().addOrModifyAABBInPool(par1, par2 + 1, par3, par1 + 1, par2 + 2, par3 + 1)).iterator();
+        final Iterator var4 = par0World.getEntitiesWithinAABB(EntityOcelot.class, AxisAlignedBB.getAABBPool().addOrModifyAABBInPool(par1, par2 + 1, par3, par1 + 1, par2 + 2, par3 + 1)).iterator();
         EntityOcelot var6;
 
         do
@@ -476,7 +476,7 @@ public class GCCoreBlockTreasureChest extends BlockContainer
                 return false;
             }
 
-            EntityOcelot var5 = (EntityOcelot)var4.next();
+            final EntityOcelot var5 = (EntityOcelot)var4.next();
             var6 = var5;
         }
         while (!var6.isSitting());

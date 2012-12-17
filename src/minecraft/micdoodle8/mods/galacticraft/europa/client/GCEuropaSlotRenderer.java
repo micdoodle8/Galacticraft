@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.europa.client;
 
 import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
 import net.minecraft.src.Tessellator;
-import cpw.mods.fml.common.FMLLog;
 
 public class GCEuropaSlotRenderer implements IPlanetSlotRenderer
 {

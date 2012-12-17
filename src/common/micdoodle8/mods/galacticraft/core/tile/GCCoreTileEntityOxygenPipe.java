@@ -56,7 +56,7 @@ public class GCCoreTileEntityOxygenPipe extends TileEntity
 			
 //			if (!this.worldObj.isRemote)
 			{
-				int[] idSet = new int[6];
+				final int[] idSet = new int[6];
 				
 				idSet[0] = this.worldObj.getBlockId(this.xCoord + 1, this.yCoord, this.zCoord);
 				idSet[1] = this.worldObj.getBlockId(this.xCoord - 1, this.yCoord, this.zCoord);
@@ -175,11 +175,11 @@ public class GCCoreTileEntityOxygenPipe extends TileEntity
 		
 		for (int i = 0; i < ForgeDirection.values().length; i++)
     	{
-    		TileEntity tile = this.worldObj.getBlockTileEntity(this.xCoord + ForgeDirection.getOrientation(i).offsetX, this.yCoord + ForgeDirection.getOrientation(i).offsetY, this.zCoord + ForgeDirection.getOrientation(i).offsetZ);
+    		final TileEntity tile = this.worldObj.getBlockTileEntity(this.xCoord + ForgeDirection.getOrientation(i).offsetX, this.yCoord + ForgeDirection.getOrientation(i).offsetY, this.zCoord + ForgeDirection.getOrientation(i).offsetZ);
     		
     		if (tile != null && tile instanceof GCCoreTileEntityOxygenPipe)
     		{
-    			GCCoreTileEntityOxygenPipe pipe = (GCCoreTileEntityOxygenPipe)tile;
+    			final GCCoreTileEntityOxygenPipe pipe = (GCCoreTileEntityOxygenPipe)tile;
     			
     			if (pipe.getIndexFromCollector() > this.getIndexFromCollector())
     			{
@@ -188,7 +188,7 @@ public class GCCoreTileEntityOxygenPipe extends TileEntity
     		}
     		else if (tile != null && tile instanceof GCCoreTileEntityOxygenDistributor)
     		{
-    			GCCoreTileEntityOxygenDistributor distributor = (GCCoreTileEntityOxygenDistributor)tile;
+    			final GCCoreTileEntityOxygenDistributor distributor = (GCCoreTileEntityOxygenDistributor)tile;
     			distributor.currentPower = 0D;
     			GCCoreBlockOxygenDistributor.updateDistributorState(false, this.worldObj, distributor.xCoord, distributor.yCoord, distributor.zCoord);
     		}

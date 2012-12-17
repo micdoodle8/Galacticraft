@@ -19,7 +19,7 @@ public class GCCoreBlockAdvancedCraftingTable extends Block
 	@Override
 	public int getBlockTextureFromSide(int par1)
     {
-        return par1 == 1 ? this.blockIndexInTexture + 1 : (par1 == 0 ? this.blockIndexInTexture - 1 : this.blockIndexInTexture);
+        return par1 == 1 ? this.blockIndexInTexture + 1 : par1 == 0 ? this.blockIndexInTexture - 1 : this.blockIndexInTexture;
     }
 	
 	@Override

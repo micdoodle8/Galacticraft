@@ -82,7 +82,7 @@ public class GCCoreBlockLandingPad extends Block
     @Override
     public boolean canPlaceBlockOnSide(World par1World, int par2, int par3, int par4, int par5)
     {
-    	int id = GCCoreBlocks.landingPad.blockID;
+    	final int id = GCCoreBlocks.landingPad.blockID;
 
 		if (par1World.getBlockId(par2 + 1, par3, par4) == id && par1World.getBlockId(par2 + 2, par3, par4) == id && par1World.getBlockId(par2 + 3, par3, par4) == id)
 		{

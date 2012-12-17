@@ -20,7 +20,7 @@ public class GCCoreSounds
             event.manager.soundPoolSounds.addSound("shuttle/sound.wav", GalacticraftCore.class.getResource("/micdoodle8/mods/galacticraft/core/client/sounds/shuttle/sound.wav"));                      
        
         }
-        catch (Exception e)
+        catch (final Exception e)
         {
             System.err.println("[GCCore] Failed to register one or more sounds.");
         }

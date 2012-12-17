@@ -19,8 +19,8 @@ import cpw.mods.fml.common.asm.SideOnly;
 
 public class GCCoreBlockOxygenPipe extends BlockContainer
 {
-	private float oxygenPipeMin = 0.4F;
-	private float oxygenPipeMax = 0.6F;
+	private final float oxygenPipeMin = 0.4F;
+	private final float oxygenPipeMax = 0.6F;
 	
 	public GCCoreBlockOxygenPipe(int i, int j) 
 	{
@@ -135,48 +135,48 @@ public class GCCoreBlockOxygenPipe extends BlockContainer
 	@Override
 	public void addCollidingBlockToList(World world, int i, int j, int k, AxisAlignedBB axisalignedbb, List arraylist, Entity par7Entity) 
 	{
-		setBlockBounds(this.oxygenPipeMin, this.oxygenPipeMin, this.oxygenPipeMin, this.oxygenPipeMax, this.oxygenPipeMax, this.oxygenPipeMax);
+		this.setBlockBounds(this.oxygenPipeMin, this.oxygenPipeMin, this.oxygenPipeMin, this.oxygenPipeMax, this.oxygenPipeMax, this.oxygenPipeMax);
 		super.addCollidingBlockToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
 
-		TileEntity tile1 = world.getBlockTileEntity(i, j, k);
+		final TileEntity tile1 = world.getBlockTileEntity(i, j, k);
 
 		if (world.getBlockId(i - 1, j, k) == this.blockID || world.getBlockId(i - 1, j, k) == GCCoreBlocks.airDistributor.blockID || world.getBlockId(i - 1, j, k) == GCCoreBlocks.airDistributorActive.blockID || world.getBlockId(i - 1, j, k) == GCCoreBlocks.blockAirCollector.blockID)
 		{
-			setBlockBounds(0.0F, this.oxygenPipeMin, this.oxygenPipeMin, this.oxygenPipeMax, this.oxygenPipeMax, this.oxygenPipeMax);
+			this.setBlockBounds(0.0F, this.oxygenPipeMin, this.oxygenPipeMin, this.oxygenPipeMax, this.oxygenPipeMax, this.oxygenPipeMax);
 			super.addCollidingBlockToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
 		}
 
 		if (world.getBlockId(i + 1, j, k) == this.blockID || world.getBlockId(i + 1, j, k) == GCCoreBlocks.airDistributor.blockID || world.getBlockId(i + 1, j, k) == GCCoreBlocks.airDistributorActive.blockID || world.getBlockId(i + 1, j, k) == GCCoreBlocks.blockAirCollector.blockID)
 		{
-			setBlockBounds(this.oxygenPipeMin, this.oxygenPipeMin, this.oxygenPipeMin, 1.0F, this.oxygenPipeMax, this.oxygenPipeMax);
+			this.setBlockBounds(this.oxygenPipeMin, this.oxygenPipeMin, this.oxygenPipeMin, 1.0F, this.oxygenPipeMax, this.oxygenPipeMax);
 			super.addCollidingBlockToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
 		}
 
 		if (world.getBlockId(i, j - 1, k) == this.blockID || world.getBlockId(i, j - 1, k) == GCCoreBlocks.airDistributor.blockID || world.getBlockId(i, j - 1, k) == GCCoreBlocks.airDistributorActive.blockID || world.getBlockId(i, j - 1, k) == GCCoreBlocks.blockAirCollector.blockID)
 		{
-			setBlockBounds(this.oxygenPipeMin, 0.0F, this.oxygenPipeMin, this.oxygenPipeMax, this.oxygenPipeMax, this.oxygenPipeMax);
+			this.setBlockBounds(this.oxygenPipeMin, 0.0F, this.oxygenPipeMin, this.oxygenPipeMax, this.oxygenPipeMax, this.oxygenPipeMax);
 			super.addCollidingBlockToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
 		}
 
 		if (world.getBlockId(i, j + 1, k) == this.blockID || world.getBlockId(i, j + 1, k) == GCCoreBlocks.airDistributor.blockID || world.getBlockId(i, j + 1, k) == GCCoreBlocks.airDistributorActive.blockID || world.getBlockId(i, j + 1, k) == GCCoreBlocks.blockAirCollector.blockID)
 		{
-			setBlockBounds(this.oxygenPipeMin, this.oxygenPipeMin, this.oxygenPipeMin, this.oxygenPipeMax, 1.0F, this.oxygenPipeMax);
+			this.setBlockBounds(this.oxygenPipeMin, this.oxygenPipeMin, this.oxygenPipeMin, this.oxygenPipeMax, 1.0F, this.oxygenPipeMax);
 			super.addCollidingBlockToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
 		}
 
 		if (world.getBlockId(i, j, k - 1) == this.blockID || world.getBlockId(i, j, k - 1) == GCCoreBlocks.airDistributor.blockID || world.getBlockId(i, j, k - 1) == GCCoreBlocks.airDistributorActive.blockID || world.getBlockId(i, j, k - 1) == GCCoreBlocks.blockAirCollector.blockID)
 		{
-			setBlockBounds(this.oxygenPipeMin, this.oxygenPipeMin, 0.0F, this.oxygenPipeMax, this.oxygenPipeMax, this.oxygenPipeMax);
+			this.setBlockBounds(this.oxygenPipeMin, this.oxygenPipeMin, 0.0F, this.oxygenPipeMax, this.oxygenPipeMax, this.oxygenPipeMax);
 			super.addCollidingBlockToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
 		}
 
 		if (world.getBlockId(i, j, k + 1) == this.blockID || world.getBlockId(i, j, k + 1) == GCCoreBlocks.airDistributor.blockID || world.getBlockId(i, j, k + 1) == GCCoreBlocks.airDistributorActive.blockID || world.getBlockId(i, j, k + 1) == GCCoreBlocks.blockAirCollector.blockID)
 		{
-			setBlockBounds(this.oxygenPipeMin, this.oxygenPipeMin, this.oxygenPipeMin, this.oxygenPipeMax, this.oxygenPipeMax, 1.0F);
+			this.setBlockBounds(this.oxygenPipeMin, this.oxygenPipeMin, this.oxygenPipeMin, this.oxygenPipeMax, this.oxygenPipeMax, 1.0F);
 			super.addCollidingBlockToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
 		}
 
-		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+		this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 	}
 	
 	@Override
@@ -209,7 +209,7 @@ public class GCCoreBlockOxygenPipe extends BlockContainer
 	@Override
 	public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int i, int j, int k) 
 	{
-		return getCollisionBoundingBoxFromPool(world, i, j, k);
+		return this.getCollisionBoundingBoxFromPool(world, i, j, k);
 	}
 	
 
@@ -218,12 +218,12 @@ public class GCCoreBlockOxygenPipe extends BlockContainer
     {
     	for (int i = 0; i < ForgeDirection.values().length - 1; i++)
     	{
-    		TileEntity tile = world.getBlockTileEntity(x + ForgeDirection.getOrientation(i).offsetX, y + ForgeDirection.getOrientation(i).offsetY, z + ForgeDirection.getOrientation(i).offsetZ);
-    		GCCoreTileEntityOxygenPipe thisPipe = (GCCoreTileEntityOxygenPipe)world.getBlockTileEntity(x, y, z);
+    		final TileEntity tile = world.getBlockTileEntity(x + ForgeDirection.getOrientation(i).offsetX, y + ForgeDirection.getOrientation(i).offsetY, z + ForgeDirection.getOrientation(i).offsetZ);
+    		final GCCoreTileEntityOxygenPipe thisPipe = (GCCoreTileEntityOxygenPipe)world.getBlockTileEntity(x, y, z);
     		
     		if (tile != null && thisPipe != null && tile instanceof GCCoreTileEntityOxygenPipe)
     		{
-    			GCCoreTileEntityOxygenPipe pipe = (GCCoreTileEntityOxygenPipe)tile;
+    			final GCCoreTileEntityOxygenPipe pipe = (GCCoreTileEntityOxygenPipe)tile;
     			
 //    			if (pipe.getIndexFromCollector() > thisPipe.getIndexFromCollector())
     			{
@@ -259,11 +259,11 @@ public class GCCoreBlockOxygenPipe extends BlockContainer
 		if (world.getBlockId(i, j, k + 1) == this.blockID || world.getBlockId(i, j, k + 1) == GCCoreBlocks.airDistributor.blockID || world.getBlockId(i, j, k + 1) == GCCoreBlocks.airDistributorActive.blockID)
 			zMax = 1.0F;
 
-		setBlockBounds(xMin, yMin, zMin, xMax, yMax, zMax);
+		this.setBlockBounds(xMin, yMin, zMin, xMax, yMax, zMax);
 
-		MovingObjectPosition r = super.collisionRayTrace(world, i, j, k, vec3d, vec3d1);
+		final MovingObjectPosition r = super.collisionRayTrace(world, i, j, k, vec3d, vec3d1);
 
-		setBlockBounds(0, 0, 0, 1, 1, 1);
+		this.setBlockBounds(0, 0, 0, 1, 1, 1);
 
 		return r;
 	}

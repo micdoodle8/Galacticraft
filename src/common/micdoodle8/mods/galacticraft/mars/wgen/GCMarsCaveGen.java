@@ -27,18 +27,18 @@ public class GCMarsCaveGen
 
     public void generate(IChunkProvider par1IChunkProvider, World par2World, int par3, int par4, int[] par5ArrayOfByte)
     {
-        int var6 = this.range;
+        final int var6 = this.range;
         this.worldObj = par2World;
         this.rand.setSeed(par2World.getSeed());
-        long var7 = this.rand.nextLong();
-        long var9 = this.rand.nextLong();
+        final long var7 = this.rand.nextLong();
+        final long var9 = this.rand.nextLong();
 
         for (int var11 = par3 - var6; var11 <= par3 + var6; ++var11)
         {
             for (int var12 = par4 - var6; var12 <= par4 + var6; ++var12)
             {
-                long var13 = var11 * var7;
-                long var15 = var12 * var9;
+                final long var13 = var11 * var7;
+                final long var15 = var12 * var9;
                 this.rand.setSeed(var13 ^ var15 ^ par2World.getSeed());
                 this.recursiveGenerate(par2World, var11, var12, par3, par4, par5ArrayOfByte);
             }
@@ -55,15 +55,15 @@ public class GCMarsCaveGen
      */
     protected void generateCaveNode(long par1, int par3, int par4, int[] par5ArrayOfByte, double par6, double par8, double par10, float par12, float par13, float par14, int par15, int par16, double par17)
     {
-        double var19 = par3 * 16 + 8;
-        double var21 = par4 * 16 + 8;
+        final double var19 = par3 * 16 + 8;
+        final double var21 = par4 * 16 + 8;
         float var23 = 0.0F;
         float var24 = 0.0F;
-        Random var25 = new Random(par1);
+        final Random var25 = new Random(par1);
 
         if (par16 <= 0)
         {
-            int var26 = this.range * 16 - 16;
+            final int var26 = this.range * 16 - 16;
             par16 = var26 - var25.nextInt(var26 / 4);
         }
 
@@ -75,14 +75,14 @@ public class GCMarsCaveGen
             var54 = true;
         }
 
-        int var27 = var25.nextInt(par16 / 2) + par16 / 4;
+        final int var27 = var25.nextInt(par16 / 2) + par16 / 4;
 
-        for (boolean var28 = var25.nextInt(6) == 0; par15 < par16; ++par15)
+        for (final boolean var28 = var25.nextInt(6) == 0; par15 < par16; ++par15)
         {
-            double var29 = 1.5D + MathHelper.sin(par15 * (float)Math.PI / par16) * par12 * 1.0F;
-            double var31 = var29 * par17;
-            float var33 = MathHelper.cos(par14);
-            float var34 = MathHelper.sin(par14);
+            final double var29 = 1.5D + MathHelper.sin(par15 * (float)Math.PI / par16) * par12 * 1.0F;
+            final double var31 = var29 * par17;
+            final float var33 = MathHelper.cos(par14);
+            final float var34 = MathHelper.sin(par14);
             par6 += MathHelper.cos(par13) * var33;
             par8 += var34;
             par10 += MathHelper.sin(par13) * var33;
@@ -105,17 +105,17 @@ public class GCMarsCaveGen
 
             if (!var54 && par15 == var27 && par12 > 1.0F && par16 > 0)
             {
-                this.generateCaveNode(var25.nextLong(), par3, par4, par5ArrayOfByte, par6, par8, par10, var25.nextFloat() * 0.5F + 0.5F, par13 - ((float)Math.PI / 2F), par14 / 3.0F, par15, par16, 1.0D);
-                this.generateCaveNode(var25.nextLong(), par3, par4, par5ArrayOfByte, par6, par8, par10, var25.nextFloat() * 0.5F + 0.5F, par13 + ((float)Math.PI / 2F), par14 / 3.0F, par15, par16, 1.0D);
+                this.generateCaveNode(var25.nextLong(), par3, par4, par5ArrayOfByte, par6, par8, par10, var25.nextFloat() * 0.5F + 0.5F, par13 - (float)Math.PI / 2F, par14 / 3.0F, par15, par16, 1.0D);
+                this.generateCaveNode(var25.nextLong(), par3, par4, par5ArrayOfByte, par6, par8, par10, var25.nextFloat() * 0.5F + 0.5F, par13 + (float)Math.PI / 2F, par14 / 3.0F, par15, par16, 1.0D);
                 return;
             }
 
             if (var54 || var25.nextInt(4) != 0)
             {
-                double var35 = par6 - var19;
-                double var37 = par10 - var21;
-                double var39 = par16 - par15;
-                double var41 = par12 + 2.0F + 16.0F;
+                final double var35 = par6 - var19;
+                final double var37 = par10 - var21;
+                final double var39 = par16 - par15;
+                final double var41 = par12 + 2.0F + 16.0F;
 
                 if (var35 * var35 + var37 * var37 - var39 * var39 > var41 * var41)
                 {
@@ -193,11 +193,11 @@ public class GCMarsCaveGen
                     {
                         for (var42 = var55; var42 < var36; ++var42)
                         {
-                            double var59 = (var42 + par3 * 16 + 0.5D - par6) / var29;
+                            final double var59 = (var42 + par3 * 16 + 0.5D - par6) / var29;
 
                             for (var45 = var56; var45 < var40; ++var45)
                             {
-                                double var46 = (var45 + par4 * 16 + 0.5D - par10) / var29;
+                                final double var46 = (var45 + par4 * 16 + 0.5D - par10) / var29;
                                 int var48 = (var42 * 16 + var45) * 128 + var38;
                                 boolean var49 = false;
 
@@ -205,11 +205,11 @@ public class GCMarsCaveGen
                                 {
                                     for (int var50 = var38 - 1; var50 >= var57; --var50)
                                     {
-                                        double var51 = (var50 + 0.5D - par8) / var31;
+                                        final double var51 = (var50 + 0.5D - par8) / var31;
 
                                         if (var51 > -0.7D && var59 * var59 + var51 * var51 + var46 * var46 < 1.0D)
                                         {
-                                            int var53 = par5ArrayOfByte[var48];
+                                            final int var53 = par5ArrayOfByte[var48];
 
                                             if (var53 == (byte)GCMarsBlocks.marsGrass.blockID)
                                             {
@@ -264,9 +264,9 @@ public class GCMarsCaveGen
 
         for (int var8 = 0; var8 < var7; ++var8)
         {
-            double var9 = par2 * 16 + this.rand.nextInt(16);
-            double var11 = this.rand.nextInt(this.rand.nextInt(120) + 8);
-            double var13 = par3 * 16 + this.rand.nextInt(16);
+            final double var9 = par2 * 16 + this.rand.nextInt(16);
+            final double var11 = this.rand.nextInt(this.rand.nextInt(120) + 8);
+            final double var13 = par3 * 16 + this.rand.nextInt(16);
             int var15 = 1;
 
             if (this.rand.nextInt(4) == 0)
@@ -277,8 +277,8 @@ public class GCMarsCaveGen
 
             for (int var16 = 0; var16 < var15; ++var16)
             {
-                float var17 = this.rand.nextFloat() * (float)Math.PI * 2.0F;
-                float var18 = (this.rand.nextFloat() - 0.5F) * 2.0F / 8.0F;
+                final float var17 = this.rand.nextFloat() * (float)Math.PI * 2.0F;
+                final float var18 = (this.rand.nextFloat() - 0.5F) * 2.0F / 8.0F;
                 float var19 = this.rand.nextFloat() * 2.0F + this.rand.nextFloat();
 
                 if (this.rand.nextInt(10) == 0)

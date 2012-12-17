@@ -21,7 +21,6 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 
 /**
@@ -38,7 +37,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     
     private static final Random rand = new Random();
 
-    private float updateCounter = 0.0F;
+    private final float updateCounter = 0.0F;
     
     public int selectedSlot;
     
@@ -46,7 +45,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     
     protected FontRenderer fontRenderer = FMLClientHandler.instance().getClient().fontRenderer;
     
-    private String[] destinations;
+    private final String[] destinations;
     
     public EntityPlayer playerToSend;
     
@@ -78,7 +77,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     	{
     	}
 
-        StringTranslate var1 = StringTranslate.getInstance();
+        final StringTranslate var1 = StringTranslate.getInstance();
         this.controlList.add(this.sendButton = new GuiSmallButton(1, this.width - 110, this.height - 26, 105, 20, "Send To Dimension"));
         this.planetSlots.registerScrollButtons(this.controlList, 2, 3);
     }
@@ -97,7 +96,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     
     private void drawPanorama2(float par1)
     {
-        Tessellator var4 = Tessellator.instance;
+        final Tessellator var4 = Tessellator.instance;
         GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glPushMatrix();
         GL11.glLoadIdentity();
@@ -112,15 +111,15 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
         GL11.glDisable(GL11.GL_CULL_FACE);
         GL11.glDepthMask(false);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
-        byte var5 = 1;
+        final byte var5 = 1;
         
 
         for (int var6 = 0; var6 < var5 * var5; ++var6)
         {
             GL11.glPushMatrix();
-            float var7 = ((float)(var6 % var5) / (float)var5 - 0.5F) / 128.0F;
-            float var8 = ((float)(var6 / var5) / (float)var5 - 0.5F) / 128.0F;
-            float var9 = 0.0F;
+            final float var7 = ((float)(var6 % var5) / (float)var5 - 0.5F) / 128.0F;
+            final float var8 = ((float)(var6 / var5) / (float)var5 - 0.5F) / 128.0F;
+            final float var9 = 0.0F;
             GL11.glTranslatef(var7, var8, var9 + 0.5F);
             GL11.glScalef(7F, 7F, 7F);
 
@@ -195,7 +194,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
 
     private void drawPanorama(float par1)
     {
-        Tessellator var4 = Tessellator.instance;
+        final Tessellator var4 = Tessellator.instance;
         GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glPushMatrix();
         GL11.glLoadIdentity();
@@ -210,15 +209,15 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
         GL11.glDisable(GL11.GL_CULL_FACE);
         GL11.glDepthMask(false);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
-        byte var5 = 1;
+        final byte var5 = 1;
         
 
         for (int var6 = 0; var6 < var5 * var5; ++var6)
         {
             GL11.glPushMatrix();
-            float var7 = ((float)(var6 % var5) / (float)var5 - 0.5F) / 64.0F;
-            float var8 = ((float)(var6 / var5) / (float)var5 - 0.5F) / 64.0F;
-            float var9 = 0.0F;
+            final float var7 = ((float)(var6 % var5) / (float)var5 - 0.5F) / 64.0F;
+            final float var8 = ((float)(var6 / var5) / (float)var5 - 0.5F) / 64.0F;
+            final float var9 = 0.0F;
             GL11.glTranslatef(var7, var8, var9);
             GL11.glRotatef(MathHelper.sin((this.spaceTimer + par1) / 1000.0F) * 25.0F + 20.0F, 1.0F, 0.0F, 0.0F);
             GL11.glRotatef(-(this.spaceTimer + par1) * 0.005F, 0.0F, 1.0F, 0.0F);
@@ -306,16 +305,16 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         this.rotateAndBlurSkybox();
-        Tessellator var4 = Tessellator.instance;
+        final Tessellator var4 = Tessellator.instance;
         var4.startDrawingQuads();
-        float var5 = this.width > this.height ? 120.0F / this.width : 120.0F / this.height;
-        float var6 = this.height * var5 / 256.0F;
-        float var7 = this.width * var5 / 256.0F;
+        final float var5 = this.width > this.height ? 120.0F / this.width : 120.0F / this.height;
+        final float var6 = this.height * var5 / 256.0F;
+        final float var7 = this.width * var5 / 256.0F;
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
         var4.setColorRGBA_F(1.0F, 1.0F, 1.0F, 1.0F);
-        int var8 = this.width;
-        int var9 = this.height;
+        final int var8 = this.width;
+        final int var9 = this.height;
         var4.addVertexWithUV(0.0D, var9, this.zLevel, 0.5F - var6, 0.5F + var7);
         var4.addVertexWithUV(var8, var9, this.zLevel, 0.5F - var6, 0.5F - var7);
         var4.addVertexWithUV(var8, 0.0D, this.zLevel, 0.5F + var6, 0.5F - var7);
@@ -335,7 +334,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
             super.drawScreen(par1, par2, par3);
     	}
     	
-		for (IGalacticraftSubModClient mod : GalacticraftCore.clientSubMods)
+		for (final IGalacticraftSubModClient mod : GalacticraftCore.clientSubMods)
 		{
     		String dest = this.destinations[this.selectedSlot].toLowerCase();
     		
@@ -360,20 +359,20 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     	
     	if (str != null)
     	{
-	    	String[] strArray = str.split("#");
+	    	final String[] strArray = str.split("#");
 	    	
-	    	int j = 260 / strArray.length + 1;
+	    	final int j = 260 / strArray.length + 1;
 	    	
 	    	for (int i = 0; i < strArray.length; i++)
 	    	{
 	    		if (strArray[i].contains("*"))
 	    		{
 	    			strArray[i] = strArray[i].replace("*", "");
-		            this.drawCenteredString(this.fontRenderer, strArray[i], 50 + (i * j), this.height - 20, 16716305);
+		            this.drawCenteredString(this.fontRenderer, strArray[i], 50 + i * j, this.height - 20, 16716305);
 	    		}
 	    		else
 	    		{
-		            this.drawCenteredString(this.fontRenderer, strArray[i], 50 + (i * j), this.height - 20, 16777215);
+		            this.drawCenteredString(this.fontRenderer, strArray[i], 50 + i * j, this.height - 20, 16777215);
 	    		}
 	    	}
     	}
@@ -381,16 +380,16 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     
     public void drawBlackBackground()
     {
-        ScaledResolution var5 = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
-        int var6 = var5.getScaledWidth();
-        int var7 = var5.getScaledHeight();
+        final ScaledResolution var5 = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
+        final int var6 = var5.getScaledWidth();
+        final int var7 = var5.getScaledHeight();
         GL11.glDisable(GL11.GL_DEPTH_TEST);
         GL11.glDepthMask(false);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/backgrounds/black.png"));
-        Tessellator var3 = Tessellator.instance;
+        final Tessellator var3 = Tessellator.instance;
         var3.startDrawingQuads();
         var3.addVertexWithUV(0.0D, var7, -90.0D, 0.0D, 1.0D);
         var3.addVertexWithUV(var6, var7, -90.0D, 1.0D, 1.0D);
@@ -408,7 +407,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     {
     	if (par1GuiButton.enabled)
     	{
-            Object[] toSend = {this.destinations[this.selectedSlot]};
+            final Object[] toSend = {this.destinations[this.selectedSlot]};
             PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 2, toSend));
             FMLClientHandler.instance().getClient().displayGuiScreen(null);
             ClientProxyCore.teleportCooldown = 300;
@@ -417,7 +416,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     
     public boolean isValidDestination(int i)
     {
-    	String str = this.destinations[i];
+    	final String str = this.destinations[i];
     	
     	if (str.contains("*"))
     	{

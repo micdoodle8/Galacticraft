@@ -112,7 +112,7 @@ public class CommonProxyCore implements IGuiHandler
 		{
 			for (int i = 0; i < GalacticraftCore.gcPlayers.size(); ++i)
 	        {
-				GCCoreEntityPlayer gcPlayer = (GCCoreEntityPlayer) GalacticraftCore.gcPlayers.get(i);
+				final GCCoreEntityPlayer gcPlayer = (GCCoreEntityPlayer) GalacticraftCore.gcPlayers.get(i);
 				
 				if (player.username == gcPlayer.getPlayer().username)
 				{
@@ -122,7 +122,7 @@ public class CommonProxyCore implements IGuiHandler
 		}
 		else if (ID == GCCoreConfigManager.idGuiAirDistributor)
 		{
-			GCCoreTileEntityOxygenDistributor distributor = (GCCoreTileEntityOxygenDistributor) world.getBlockTileEntity(x, y, z);
+			final GCCoreTileEntityOxygenDistributor distributor = (GCCoreTileEntityOxygenDistributor) world.getBlockTileEntity(x, y, z);
 
 			return new GCCoreContainerAirDistributor(player.inventory, distributor);
 		}
@@ -147,7 +147,7 @@ public class CommonProxyCore implements IGuiHandler
 		}
 		else if (ID == GCCoreConfigManager.idGuiAirDistributor)
 		{
-			GCCoreTileEntityOxygenDistributor distributor = (GCCoreTileEntityOxygenDistributor) world.getBlockTileEntity(x, y, z);
+			final GCCoreTileEntityOxygenDistributor distributor = (GCCoreTileEntityOxygenDistributor) world.getBlockTileEntity(x, y, z);
 			
 			return new GCCoreGuiAirDistributor(player.inventory, distributor);
 		}

@@ -16,7 +16,6 @@ import net.minecraft.src.WorldClient;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
@@ -29,7 +28,7 @@ import cpw.mods.fml.common.asm.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GCCoreRenderSpider extends RenderLiving
 {
-    private ModelBase model = new GCCoreModelSpider(0.2F);
+    private final ModelBase model = new GCCoreModelSpider(0.2F);
     
     public GCCoreRenderSpider()
     {
@@ -51,11 +50,11 @@ public class GCCoreRenderSpider extends RenderLiving
     @Override
 	protected int shouldRenderPass(EntityLiving par1EntityLiving, int par2, float par3)
     {
-    	Minecraft minecraft = FMLClientHandler.instance().getClient();
+    	final Minecraft minecraft = FMLClientHandler.instance().getClient();
 		
-        WorldClient world = minecraft.theWorld;
+        final WorldClient world = minecraft.theWorld;
         
-        EntityPlayerSP player = minecraft.thePlayer;
+        final EntityPlayerSP player = minecraft.thePlayer;
         
         ItemStack helmetSlot = null;
 		
@@ -68,17 +67,17 @@ public class GCCoreRenderSpider extends RenderLiving
         {
             if (par2 == 1)
             {
-                float var4 = par1EntityLiving.ticksExisted * 2 + par3;
+                final float var4 = par1EntityLiving.ticksExisted * 2 + par3;
                 this.loadTexture("/micdoodle8/mods/galacticraft/core/client/entities/power.png");
                 GL11.glMatrixMode(GL11.GL_TEXTURE);
                 GL11.glLoadIdentity();
-                float var5 = var4 * 0.01F;
-                float var6 = var4 * 0.01F;
+                final float var5 = var4 * 0.01F;
+                final float var6 = var4 * 0.01F;
                 GL11.glTranslatef(var5, var6, 0.0F);
                 this.setRenderPassModel(this.model);
                 GL11.glMatrixMode(GL11.GL_MODELVIEW);
                 GL11.glEnable(GL11.GL_BLEND);
-                float var7 = 0.5F;
+                final float var7 = 0.5F;
                 GL11.glColor4f(var7, var7, var7, 1.0F);
                 GL11.glDisable(GL11.GL_LIGHTING);
                 GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
@@ -98,13 +97,13 @@ public class GCCoreRenderSpider extends RenderLiving
         if (par2 == 0)
         {
             this.loadTexture("/mob/spider_eyes.png");
-            float var4 = 1.0F;
+            final float var4 = 1.0F;
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glDisable(GL11.GL_ALPHA_TEST);
             GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
-            char var5 = 61680;
-            int var6 = var5 % 65536;
-            int var7 = var5 / 65536;
+            final char var5 = 61680;
+            final int var6 = var5 % 65536;
+            final int var7 = var5 / 65536;
             OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, var6 / 1.0F, var7 / 1.0F);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, var4);
@@ -116,7 +115,7 @@ public class GCCoreRenderSpider extends RenderLiving
 
     protected void scaleSpider(GCCoreEntitySpider par1EntitySpider, float par2)
     {
-        float var3 = par1EntitySpider.spiderScaleAmount();
+        final float var3 = par1EntitySpider.spiderScaleAmount();
         GL11.glScalef(var3, var3, var3);
     }
 

@@ -37,7 +37,7 @@ public class GCCoreItemRendererUnlitTorch implements IItemRenderer
 		switch (type)
 		{
 		case INVENTORY:
-			renderTorchInInv();
+			this.renderTorchInInv();
 		default:
 		}
 	}

@@ -16,13 +16,13 @@ public class GCMarsEvents
 	{
         if (event.target.typeOfHit == EnumMovingObjectType.TILE)
         {
-            int x = event.target.blockX;
-            int y = event.target.blockY;
-            int z = event.target.blockZ;
+            final int x = event.target.blockX;
+            final int y = event.target.blockY;
+            final int z = event.target.blockZ;
             
             if (event.current.getItem() instanceof ItemBucket)
             {
-                ItemBucket bucket = (ItemBucket) event.current.getItem();
+                final ItemBucket bucket = (ItemBucket) event.current.getItem();
 
                 if (!event.world.canMineBlock(event.entityPlayer, x, y, z))
                 {	

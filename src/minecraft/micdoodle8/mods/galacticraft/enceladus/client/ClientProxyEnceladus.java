@@ -11,13 +11,9 @@ import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
 import micdoodle8.mods.galacticraft.core.GCCoreLocalization;
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.enceladus.blocks.GCEnceladusBlocks;
 import micdoodle8.mods.galacticraft.enceladus.dimension.GCEnceladusWorldProvider;
-import micdoodle8.mods.galacticraft.europa.client.GCEuropaSlotRenderer;
 import micdoodle8.mods.galacticraft.titan.CommonProxyTitan;
-import micdoodle8.mods.galacticraft.titan.blocks.GCTitanBlocks;
-import micdoodle8.mods.galacticraft.titan.dimension.GCTitanWorldProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.EntityClientPlayerMP;
 import net.minecraft.src.EntityFX;
@@ -49,7 +45,7 @@ public class ClientProxyEnceladus extends CommonProxyTitan implements IGalacticr
 {
 	public static long getFirstBootTime;
 	public static long getCurrentTime;
-	private Random rand = new Random();
+	private final Random rand = new Random();
 	
 	public static GCCoreLocalization lang;
 	
@@ -88,15 +84,15 @@ public class ClientProxyEnceladus extends CommonProxyTitan implements IGalacticr
 	@Override
     public void spawnParticle(String var1, double var2, double var4, double var6, double var8, double var10, double var12, boolean b)
     {
-        Minecraft var14 = FMLClientHandler.instance().getClient();
+        final Minecraft var14 = FMLClientHandler.instance().getClient();
 
         if (var14 != null && var14.renderViewEntity != null && var14.effectRenderer != null)
         {
-            double var15 = var14.renderViewEntity.posX - var2;
-            double var17 = var14.renderViewEntity.posY - var4;
-            double var19 = var14.renderViewEntity.posZ - var6;
-            Object var21 = null;
-            double var22 = 64.0D;
+            final double var15 = var14.renderViewEntity.posX - var2;
+            final double var17 = var14.renderViewEntity.posY - var4;
+            final double var19 = var14.renderViewEntity.posZ - var6;
+            final Object var21 = null;
+            final double var22 = 64.0D;
 
             if (var15 * var15 + var17 * var17 + var19 * var19 < var22 * var22)
             {
@@ -121,9 +117,9 @@ public class ClientProxyEnceladus extends CommonProxyTitan implements IGalacticr
         @Override
         public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player p)
         {
-            DataInputStream data = new DataInputStream(new ByteArrayInputStream(packet.data));
-            int packetType = GCCoreUtil.readPacketID(data);
-            EntityPlayer player = (EntityPlayer)p;
+            final DataInputStream data = new DataInputStream(new ByteArrayInputStream(packet.data));
+            final int packetType = GCCoreUtil.readPacketID(data);
+            final EntityPlayer player = (EntityPlayer)p;
             
             if (packetType == 0)
             {
@@ -139,11 +135,11 @@ public class ClientProxyEnceladus extends CommonProxyTitan implements IGalacticr
         {
     		ClientProxyEnceladus.getCurrentTime = System.currentTimeMillis();
     		
-    		Minecraft minecraft = FMLClientHandler.instance().getClient();
+    		final Minecraft minecraft = FMLClientHandler.instance().getClient();
     		
-            WorldClient world = minecraft.theWorld;
+            final WorldClient world = minecraft.theWorld;
             
-            EntityClientPlayerMP player = minecraft.thePlayer;
+            final EntityClientPlayerMP player = minecraft.thePlayer;
     		
     		if (type.equals(EnumSet.of(TickType.CLIENT)))
             {

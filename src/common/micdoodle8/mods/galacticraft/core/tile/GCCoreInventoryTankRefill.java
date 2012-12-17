@@ -33,7 +33,7 @@ public class GCCoreInventoryTankRefill implements IInventory
 	{
 		if (this.tankSlotContents[par1] != null) 
 		{
-			ItemStack var2 = this.tankSlotContents[par1];
+			final ItemStack var2 = this.tankSlotContents[par1];
 			return var2;
 		} 
 		else
@@ -46,7 +46,7 @@ public class GCCoreInventoryTankRefill implements IInventory
 	{
 		if (this.tankSlotContents[par1] != null)
 		{
-			tankSlotContents[par1] = null;
+			this.tankSlotContents[par1] = null;
 		}
 	}
 
@@ -133,9 +133,9 @@ public class GCCoreInventoryTankRefill implements IInventory
 
         for (int var2 = 0; var2 < par1NBTTagList.tagCount(); ++var2)
         {
-            NBTTagCompound var3 = (NBTTagCompound)par1NBTTagList.tagAt(var2);
-            int var4 = var3.getByte("Slot") & 255;
-            ItemStack var5 = ItemStack.loadItemStackFromNBT(var3);
+            final NBTTagCompound var3 = (NBTTagCompound)par1NBTTagList.tagAt(var2);
+            final int var4 = var3.getByte("Slot") & 255;
+            final ItemStack var5 = ItemStack.loadItemStackFromNBT(var3);
 
             if (var5 != null)
             {

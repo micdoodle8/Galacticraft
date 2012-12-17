@@ -4,17 +4,15 @@ import micdoodle8.mods.galacticraft.moon.GalacticraftMoon;
 import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
 import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;
 import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.EntityPlayerMP;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.living.LivingEvent;
-import cpw.mods.fml.common.FMLLog;
 
 public class GCMoonEntityPlayer
 {
-	private EntityPlayer currentPlayer;
+	private final EntityPlayer currentPlayer;
 	
 	private int lastStep;
 	
@@ -36,9 +34,9 @@ public class GCMoonEntityPlayer
 	{
 		if (event.entityLiving instanceof EntityPlayer)
 		{
-			EntityPlayer player = (EntityPlayer) event.entityLiving;
+			final EntityPlayer player = (EntityPlayer) event.entityLiving;
 			
-			double j = Math.sqrt(player.motionX * player.motionX + player.motionZ * player.motionZ);
+			final double j = Math.sqrt(player.motionX * player.motionX + player.motionZ * player.motionZ);
 			
 			if (this.currentPlayer.worldObj != null && this.currentPlayer.worldObj.provider instanceof GCMoonWorldProvider && !this.currentPlayer.isAirBorne)
 			{
@@ -48,7 +46,7 @@ public class GCMoonEntityPlayer
 					{
 						int meta = -1;
 						
-						int i = 1 + MathHelper.floor_double((double)(currentPlayer.rotationYaw * 8.0F / 360.0F) + 0.5D) & 7;
+						final int i = 1 + MathHelper.floor_double((double)(this.currentPlayer.rotationYaw * 8.0F / 360.0F) + 0.5D) & 7;
 						switch (this.lastStep)
 						{
 						case 1:
@@ -140,11 +138,11 @@ public class GCMoonEntityPlayer
 	
     public void readEntityFromNBT()
     {
-    	NBTTagCompound par1NBTTagCompound = this.currentPlayer.getEntityData();
+    	final NBTTagCompound par1NBTTagCompound = this.currentPlayer.getEntityData();
     }
 
     public void writeEntityToNBT()
     {
-    	NBTTagCompound par1NBTTagCompound = this.currentPlayer.getEntityData();
+    	final NBTTagCompound par1NBTTagCompound = this.currentPlayer.getEntityData();
     }
 }

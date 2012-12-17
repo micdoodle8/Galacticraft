@@ -25,7 +25,7 @@ public class GCCoreItemSensorGlasses extends GCCoreItemBreathableHelmet implemen
     @Override
 	public String getArmorTextureFile(ItemStack itemstack)
     {
-    	return attachedMask ? "/micdoodle8/mods/galacticraft/core/client/armor/sensorox_1.png" : "/micdoodle8/mods/galacticraft/core/client/armor/sensor_1.png";
+    	return this.attachedMask ? "/micdoodle8/mods/galacticraft/core/client/armor/sensorox_1.png" : "/micdoodle8/mods/galacticraft/core/client/armor/sensor_1.png";
     }
 	
 	@Override

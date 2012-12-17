@@ -10,7 +10,7 @@ import cpw.mods.fml.common.asm.SideOnly;
 
 public class GCMarsItemHoe extends ItemHoe
 {
-	private EnumToolMaterial material;
+	private final EnumToolMaterial material;
 	
 	public GCMarsItemHoe(int par1, EnumToolMaterial par2EnumToolMaterial) 
 	{

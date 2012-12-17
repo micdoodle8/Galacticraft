@@ -34,7 +34,7 @@ public class GCMarsBlocks
 	public static Block bacterialSludgeMoving;
 	public static Block blockOres;
 
-    public static final Material bacterialSludge = (new MaterialLiquid(MapColor.waterColor));
+    public static final Material bacterialSludge = new MaterialLiquid(MapColor.waterColor);
 	
 	public static void initBlocks() 
 	{	

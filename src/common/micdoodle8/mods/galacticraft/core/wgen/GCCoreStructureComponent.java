@@ -45,14 +45,14 @@ public abstract class GCCoreStructureComponent extends StructureComponent
 
     protected void placeSpawnerAtCurrentPosition(World var1, Random var2, int var3, int var4, int var5, String var6, StructureBoundingBox var7)
     {
-        int var8 = this.getXWithOffset(var3, var5);
-        int var9 = this.getYWithOffset(var4);
-        int var10 = this.getZWithOffset(var3, var5);
+        final int var8 = this.getXWithOffset(var3, var5);
+        final int var9 = this.getYWithOffset(var4);
+        final int var10 = this.getZWithOffset(var3, var5);
 
         if (var7.isVecInside(var8, var9, var10) && var1.getBlockId(var8, var9, var10) != Block.mobSpawner.blockID)
         {
             var1.setBlockWithNotify(var8, var9, var10, Block.mobSpawner.blockID);
-            TileEntityMobSpawner var11 = (TileEntityMobSpawner)var1.getBlockTileEntity(var8, var9, var10);
+            final TileEntityMobSpawner var11 = (TileEntityMobSpawner)var1.getBlockTileEntity(var8, var9, var10);
 
             if (var11 != null)
             {
@@ -63,9 +63,9 @@ public abstract class GCCoreStructureComponent extends StructureComponent
 
     protected void placeTreasureAtCurrentPosition(World var1, Random var2, int var3, int var4, int var5, StructureBoundingBox var7)
     {
-        int var8 = this.getXWithOffset(var3, var5);
-        int var9 = this.getYWithOffset(var4);
-        int var10 = this.getZWithOffset(var3, var5);
+        final int var8 = this.getXWithOffset(var3, var5);
+        final int var9 = this.getYWithOffset(var4);
+        final int var10 = this.getZWithOffset(var3, var5);
 
         if (var7.isVecInside(var8, var9, var10) && var1.getBlockId(var8, var9, var10) != Block.chest.blockID)
         {
@@ -75,16 +75,16 @@ public abstract class GCCoreStructureComponent extends StructureComponent
 
     protected int[] offsetTowerCoords(int var1, int var2, int var3, int var4, int var5)
     {
-        int var6 = this.getXWithOffset(var1, var3);
-        int var7 = this.getYWithOffset(var2);
-        int var8 = this.getZWithOffset(var1, var3);
-        return var5 == 0 ? new int[] {var6 + 1, var7 - 1, var8 - var4 / 2}: (var5 == 1 ? new int[] {var6 + var4 / 2, var7 - 1, var8 + 1}: (var5 == 2 ? new int[] {var6 - 1, var7 - 1, var8 + var4 / 2}: (var5 == 3 ? new int[] {var6 - var4 / 2, var7 - 1, var8 - 1}: new int[] {var1, var2, var3})));
+        final int var6 = this.getXWithOffset(var1, var3);
+        final int var7 = this.getYWithOffset(var2);
+        final int var8 = this.getZWithOffset(var1, var3);
+        return var5 == 0 ? new int[] {var6 + 1, var7 - 1, var8 - var4 / 2}: var5 == 1 ? new int[] {var6 + var4 / 2, var7 - 1, var8 + 1}: var5 == 2 ? new int[] {var6 - 1, var7 - 1, var8 + var4 / 2}: var5 == 3 ? new int[] {var6 - var4 / 2, var7 - 1, var8 - 1}: new int[] {var1, var2, var3};
     }
 
     public int[] getOffsetAsIfRotated(int[] var1, int var2)
     {
-        int var3 = this.getCoordBaseMode();
-        int[] var4 = new int[3];
+        final int var3 = this.getCoordBaseMode();
+        final int[] var4 = new int[3];
         this.setCoordBaseMode(var2);
         var4[0] = this.getXWithOffset(var1[0], var1[2]);
         var4[1] = this.getYWithOffset(var1[1]);

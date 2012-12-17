@@ -15,7 +15,7 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 
 public class GCMarsEntityPlayer
 {
-	private EntityPlayer currentPlayer;
+	private final EntityPlayer currentPlayer;
 	
 	private int lastStep;
 	
@@ -42,7 +42,7 @@ public class GCMarsEntityPlayer
 	{
 		if (event.entityLiving instanceof EntityPlayerMP)
 		{
-			EntityPlayerMP player = (EntityPlayerMP) event.entityLiving;
+			final EntityPlayerMP player = (EntityPlayerMP) event.entityLiving;
 			
 			if (handleBacterialMovement(player) && !player.capabilities.isCreativeMode && !player.isPotionActive(Potion.poison))
 			{
@@ -58,11 +58,11 @@ public class GCMarsEntityPlayer
 	
     public void readEntityFromNBT()
     {
-    	NBTTagCompound par1NBTTagCompound = this.currentPlayer.getEntityData();
+    	final NBTTagCompound par1NBTTagCompound = this.currentPlayer.getEntityData();
     }
 
     public void writeEntityToNBT()
     {
-    	NBTTagCompound par1NBTTagCompound = this.currentPlayer.getEntityData();
+    	final NBTTagCompound par1NBTTagCompound = this.currentPlayer.getEntityData();
     }
 }

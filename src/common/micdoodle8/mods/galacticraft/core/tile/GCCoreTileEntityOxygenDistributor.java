@@ -30,7 +30,7 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntity implements IIn
 
     public GCCoreTileEntityOxygenDistributor()
     {
-    	distributorStacks = new ItemStack[3];
+    	this.distributorStacks = new ItemStack[3];
     }
     
     @Override
@@ -38,20 +38,20 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntity implements IIn
     {
     	if (this.distributorStacks[0] != null)
     	{
-        	Item tank = this.distributorStacks[0].getItem();
+        	final Item tank = this.distributorStacks[0].getItem();
         	
         	if (tank == GCCoreItems.heavyOxygenTankFull || tank == GCCoreItems.medOxygenTankFull || tank == GCCoreItems.lightOxygenTankFull)
         	{
-        		GCCoreBlockOxygenDistributor.updateDistributorState(true, worldObj, xCoord, yCoord, zCoord);
+        		GCCoreBlockOxygenDistributor.updateDistributorState(true, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
         	}
         	else
         	{
-        		GCCoreBlockOxygenDistributor.updateDistributorState(false, worldObj, xCoord, yCoord, zCoord);
+        		GCCoreBlockOxygenDistributor.updateDistributorState(false, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
         	}
     	}
     	else if (this.distributorStacks[0] == null || this.currentPower < 1.0D)
     	{
-    		GCCoreBlockOxygenDistributor.updateDistributorState(false, worldObj, xCoord, yCoord, zCoord);
+    		GCCoreBlockOxygenDistributor.updateDistributorState(false, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
     	}
     }
     
@@ -64,10 +64,10 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntity implements IIn
 		
 		if (this.currentPower < 1.0D)
 		{
-    		GCCoreBlockOxygenDistributor.updateDistributorState(false, worldObj, xCoord, yCoord, zCoord);
+    		GCCoreBlockOxygenDistributor.updateDistributorState(false, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
 		}
 		
-		int[] idSet = new int[6];
+		final int[] idSet = new int[6];
 		
 		idSet[0] = this.worldObj.getBlockId(this.xCoord + 1, this.yCoord, this.zCoord);
 		idSet[1] = this.worldObj.getBlockId(this.xCoord - 1, this.yCoord, this.zCoord);
@@ -150,16 +150,16 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntity implements IIn
 		
 		if (this.currentPower > 1.0D)
 		{
-			GCCoreBlockOxygenDistributor.updateDistributorState(true, worldObj, xCoord, yCoord, zCoord);
+			GCCoreBlockOxygenDistributor.updateDistributorState(true, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
 		}
 
-		ItemStack tankInSlot = this.getStackInSlot(0);
+		final ItemStack tankInSlot = this.getStackInSlot(0);
 		
 		if (tankInSlot != null)
 		{
-			int drainSpacing = GCCoreUtil.getDrainSpacing(tankInSlot);
+			final int drainSpacing = GCCoreUtil.getDrainSpacing(tankInSlot);
 			
-			if (drainSpacing > 0 && GalacticraftCore.instance.tick % (MathHelper.floor_double(drainSpacing / 4)) == 0) 
+			if (drainSpacing > 0 && GalacticraftCore.instance.tick % MathHelper.floor_double(drainSpacing / 4) == 0) 
 	    	{
 	            if (tankInSlot.getItemDamage() < tankInSlot.getMaxDamage() - 2)
 	            {
@@ -173,7 +173,7 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntity implements IIn
 		}
 		
 		
-		if (this.worldObj.getBlockId(xCoord, yCoord, zCoord) == GCCoreBlocks.airDistributorActive.blockID)
+		if (this.worldObj.getBlockId(this.xCoord, this.yCoord, this.zCoord) == GCCoreBlocks.airDistributorActive.blockID)
 		{
 			TileEntity tile2;
 			
@@ -252,7 +252,7 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntity implements IIn
 				}
 			}
 			
-			int power = Math.min((int) Math.floor(this.currentPower / 3), 8);
+			final int power = Math.min((int) Math.floor(this.currentPower / 3), 8);
 			
 			for (int j = -power; j <= power; j++)
 			{
@@ -266,7 +266,7 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntity implements IIn
 						}
 						else if (this.worldObj.getBlockId(this.xCoord + i, this.yCoord + j, this.zCoord + k) == GCCoreBlocks.unlitTorch.blockID)
 						{
-							int meta = this.worldObj.getBlockMetadata(this.xCoord + i, this.yCoord + j, this.zCoord + k);
+							final int meta = this.worldObj.getBlockMetadata(this.xCoord + i, this.yCoord + j, this.zCoord + k);
 							this.worldObj.setBlockAndMetadataWithNotify(this.xCoord + i, this.yCoord + j, this.zCoord + k, GCCoreBlocks.unlitTorchLit.blockID, meta);
 						}
 					}
@@ -280,13 +280,13 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntity implements IIn
 	{
 		super.readFromNBT(par1NBTTagCompound);
 		
-        NBTTagList var2 = par1NBTTagCompound.getTagList("Items");
+        final NBTTagList var2 = par1NBTTagCompound.getTagList("Items");
         this.distributorStacks = new ItemStack[this.getSizeInventory()];
 
         for (int var3 = 0; var3 < var2.tagCount(); ++var3)
         {
-            NBTTagCompound var4 = (NBTTagCompound)var2.tagAt(var3);
-            byte var5 = var4.getByte("Slot");
+            final NBTTagCompound var4 = (NBTTagCompound)var2.tagAt(var3);
+            final byte var5 = var4.getByte("Slot");
 
             if (var5 >= 0 && var5 < this.distributorStacks.length)
             {
@@ -300,13 +300,13 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntity implements IIn
 	{
 		super.writeToNBT(par1NBTTagCompound);
 
-        NBTTagList var2 = new NBTTagList();
+        final NBTTagList var2 = new NBTTagList();
 
         for (int var3 = 0; var3 < this.distributorStacks.length; ++var3)
         {
             if (this.distributorStacks[var3] != null)
             {
-                NBTTagCompound var4 = new NBTTagCompound();
+                final NBTTagCompound var4 = new NBTTagCompound();
                 var4.setByte("Slot", (byte)var3);
                 this.distributorStacks[var3].writeToNBT(var4);
                 var2.appendTag(var4);
@@ -319,23 +319,23 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntity implements IIn
     @Override
     public int getSizeInventory() 
     {
-    	return distributorStacks.length;
+    	return this.distributorStacks.length;
     }
 
     @Override
     public ItemStack getStackInSlot(int slot) 
     {
-    	return distributorStacks[slot];
+    	return this.distributorStacks[slot];
     }
    
     @Override
     public void setInventorySlotContents(int slot, ItemStack stack) 
     {
-    	distributorStacks[slot] = stack;
+    	this.distributorStacks[slot] = stack;
     	
-        if (stack != null && stack.stackSize > getInventoryStackLimit()) 
+        if (stack != null && stack.stackSize > this.getInventoryStackLimit()) 
         {
-            stack.stackSize = getInventoryStackLimit();
+            stack.stackSize = this.getInventoryStackLimit();
         }              
 
         this.onInventoryChanged();
@@ -344,19 +344,19 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntity implements IIn
     @Override
     public ItemStack decrStackSize(int slot, int amount) 
     {
-        ItemStack stack = getStackInSlot(slot);
+        ItemStack stack = this.getStackInSlot(slot);
         if (stack != null) 
         {
             if (stack.stackSize <= amount)
             {
-                setInventorySlotContents(slot, null);
+                this.setInventorySlotContents(slot, null);
             } 
             else 
             {
                 stack = stack.splitStack(amount);
                 if (stack.stackSize == 0) 
                 {
-                    setInventorySlotContents(slot, null);
+                    this.setInventorySlotContents(slot, null);
                 }
             }
         }
@@ -369,10 +369,10 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntity implements IIn
     @Override
     public ItemStack getStackInSlotOnClosing(int slot)
     {
-        ItemStack stack = getStackInSlot(slot);
+        final ItemStack stack = this.getStackInSlot(slot);
         if (stack != null) 
         {
-            setInventorySlotContents(slot, null);
+            this.setInventorySlotContents(slot, null);
         }
         return stack;
     }
@@ -386,7 +386,7 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntity implements IIn
     @Override
     public boolean isUseableByPlayer(EntityPlayer player) 
     {
-        return worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) == this && player.getDistanceSq(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5) < 64;
+        return this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && player.getDistanceSq(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5) < 64;
     }
 
     @Override

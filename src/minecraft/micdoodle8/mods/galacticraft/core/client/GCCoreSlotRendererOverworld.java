@@ -3,10 +3,6 @@ package micdoodle8.mods.galacticraft.core.client;
 import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
 import net.minecraft.src.Tessellator;
 
-import org.lwjgl.opengl.GL11;
-
-import cpw.mods.fml.client.FMLClientHandler;
-
 public class GCCoreSlotRendererOverworld implements IPlanetSlotRenderer
 {
 	@Override

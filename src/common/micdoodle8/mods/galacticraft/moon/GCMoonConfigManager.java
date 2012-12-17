@@ -39,7 +39,7 @@ public class GCMoonConfigManager
 		if (!loaded)
 		{
 			configuration = new Configuration(file);
-			setDefaultValues();
+			this.setDefaultValues();
 		}
 	}
 	
@@ -63,7 +63,7 @@ public class GCMoonConfigManager
 	        idBlockOre = 						configuration.get(configuration.CATEGORY_BLOCK, 								"idBlockMoonOre", 					223)	.getInt(223);
 	        idBlockCheese = 					configuration.get(configuration.CATEGORY_BLOCK, 								"idBlockCheese", 					224)	.getInt(224);
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			FMLLog.log(Level.SEVERE, e, "Galacticraft Moon (core) has a problem loading it's configuration");
 		}

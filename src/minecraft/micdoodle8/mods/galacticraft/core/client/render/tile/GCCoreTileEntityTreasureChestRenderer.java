@@ -24,10 +24,10 @@ import cpw.mods.fml.common.asm.SideOnly;
 public class GCCoreTileEntityTreasureChestRenderer extends TileEntitySpecialRenderer
 {
     /** The normal small chest model. */
-    private ModelChest chestModel = new ModelChest();
+    private final ModelChest chestModel = new ModelChest();
 
     /** The large double chest model. */
-    private ModelChest largeChestModel = new ModelLargeChest();
+    private final ModelChest largeChestModel = new ModelLargeChest();
 
     /**
      * Renders the TileEntity for the chest at a position.
@@ -42,7 +42,7 @@ public class GCCoreTileEntityTreasureChestRenderer extends TileEntitySpecialRend
         }
         else
         {
-            Block var10 = par1GCTileEntityTreasureChest.getBlockType();
+            final Block var10 = par1GCTileEntityTreasureChest.getBlockType();
             var9 = par1GCTileEntityTreasureChest.getBlockMetadata();
 
             if (var10 != null && var9 == 0)

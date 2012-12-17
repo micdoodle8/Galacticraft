@@ -14,7 +14,6 @@ import micdoodle8.mods.galacticraft.core.items.GCCoreItemBreathableHelmet;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemSensorGlasses;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreInventoryTankRefill;
-import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;
 import net.minecraft.src.Block;
 import net.minecraft.src.DamageSource;
 import net.minecraft.src.Enchantment;
@@ -23,11 +22,8 @@ import net.minecraft.src.EntityPlayerMP;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.MathHelper;
-import net.minecraft.src.MovingObjectPosition;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.NBTTagList;
-import net.minecraft.src.Vec3;
-import net.minecraft.src.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -38,7 +34,7 @@ import cpw.mods.fml.common.network.Player;
 
 public class GCCoreEntityPlayer
 {
-	private EntityPlayer currentPlayer;
+	private final EntityPlayer currentPlayer;
 	
 	private int airRemaining;
 	
@@ -71,12 +67,12 @@ public class GCCoreEntityPlayer
 
     public boolean isAABBInBreathableAirBlock()
     {
-        int var3 = MathHelper.floor_double(this.currentPlayer.boundingBox.minX);
-        int var4 = MathHelper.floor_double(this.currentPlayer.boundingBox.maxX + 1.0D);
-        int var5 = MathHelper.floor_double(this.currentPlayer.boundingBox.minY);
-        int var6 = MathHelper.floor_double(this.currentPlayer.boundingBox.maxY + 1.0D);
-        int var7 = MathHelper.floor_double(this.currentPlayer.boundingBox.minZ);
-        int var8 = MathHelper.floor_double(this.currentPlayer.boundingBox.maxZ + 1.0D);
+        final int var3 = MathHelper.floor_double(this.currentPlayer.boundingBox.minX);
+        final int var4 = MathHelper.floor_double(this.currentPlayer.boundingBox.maxX + 1.0D);
+        final int var5 = MathHelper.floor_double(this.currentPlayer.boundingBox.minY);
+        final int var6 = MathHelper.floor_double(this.currentPlayer.boundingBox.maxY + 1.0D);
+        final int var7 = MathHelper.floor_double(this.currentPlayer.boundingBox.minZ);
+        final int var8 = MathHelper.floor_double(this.currentPlayer.boundingBox.maxZ + 1.0D);
 
         for (int var9 = var3; var9 < var4; ++var9)
         {
@@ -84,11 +80,11 @@ public class GCCoreEntityPlayer
             {
                 for (int var11 = var7; var11 < var8; ++var11)
                 {
-                    Block var12 = Block.blocksList[this.currentPlayer.worldObj.getBlockId(var9, var10, var11)];
+                    final Block var12 = Block.blocksList[this.currentPlayer.worldObj.getBlockId(var9, var10, var11)];
 
                     if (var12 != null && var12.blockID == GCCoreBlocks.breatheableAir.blockID)
                     {
-                        int var13 = this.currentPlayer.worldObj.getBlockMetadata(var9, var10, var11);
+                        final int var13 = this.currentPlayer.worldObj.getBlockMetadata(var9, var10, var11);
                         double var14 = var10 + 1;
 
                         if (var13 < 8)
@@ -113,44 +109,44 @@ public class GCCoreEntityPlayer
 	{
 		if (event.entityLiving instanceof EntityPlayer)
 		{
-			EntityPlayer player = (EntityPlayer) event.entityLiving;
+			final EntityPlayer player = (EntityPlayer) event.entityLiving;
 			
 			if (player.worldObj.provider instanceof IGalacticraftWorldProvider && player.inventory.getCurrentItem() != null)
 	        {
-	        	int var1 = player.inventory.getCurrentItem().stackSize;
-	        	int var2 = player.inventory.getCurrentItem().getItemDamage();
+	        	final int var1 = player.inventory.getCurrentItem().stackSize;
+	        	final int var2 = player.inventory.getCurrentItem().getItemDamage();
 	        	
 				if (player.inventory.getCurrentItem().getItem().shiftedIndex == Block.torchWood.blockID)
 				{
-		        	ItemStack stack = new ItemStack(GCCoreBlocks.unlitTorch, var1, 0);
+		        	final ItemStack stack = new ItemStack(GCCoreBlocks.unlitTorch, var1, 0);
 		            player.inventory.mainInventory[player.inventory.currentItem] = stack;
 				}
 				else if (player.inventory.getCurrentItem().getItem().shiftedIndex == Item.bow.shiftedIndex)
 				{
-		        	Hashtable<Integer, Enchantment> enchants = new Hashtable<Integer, Enchantment>();
+		        	final Hashtable<Integer, Enchantment> enchants = new Hashtable<Integer, Enchantment>();
 		        	
-		        	NBTTagList list = player.inventory.getCurrentItem().getEnchantmentTagList();
+		        	final NBTTagList list = player.inventory.getCurrentItem().getEnchantmentTagList();
 
 		        	if (list != null)
 		            {
 		                for (int var7 = 0; var7 < list.tagCount(); ++var7)
 		                {
-		                    int enchID = Integer.valueOf(((NBTTagCompound)list.tagAt(var7)).getShort("id"));
-		                    int enchLvl = Integer.valueOf(((NBTTagCompound)list.tagAt(var7)).getShort("lvl"));
+		                    final int enchID = Integer.valueOf(((NBTTagCompound)list.tagAt(var7)).getShort("id"));
+		                    final int enchLvl = Integer.valueOf(((NBTTagCompound)list.tagAt(var7)).getShort("lvl"));
 		                    
-		                    Enchantment e = Enchantment.enchantmentsList[enchID];
+		                    final Enchantment e = Enchantment.enchantmentsList[enchID];
 		                    
 		                    enchants.put(enchLvl, e);
 		                }
 		            }
 		        	
-		        	ItemStack stack = new ItemStack(GCCoreItems.gravityBow, var1, var2);
+		        	final ItemStack stack = new ItemStack(GCCoreItems.gravityBow, var1, var2);
 		        	
-		        	Iterator<Entry<Integer, Enchantment>> it = enchants.entrySet().iterator();
+		        	final Iterator<Entry<Integer, Enchantment>> it = enchants.entrySet().iterator();
 		        	
 		        	while (it.hasNext())
 		        	{
-		        		Entry<Integer, Enchantment> entry = it.next();
+		        		final Entry<Integer, Enchantment> entry = it.next();
 		        		
 		        		if (entry.getKey() != null && entry.getValue() != null)
 		        		{
@@ -165,52 +161,52 @@ public class GCCoreEntityPlayer
 					// No jungle trees...
 					if (var2 != 3)
 					{
-			        	ItemStack stack = new ItemStack(GCCoreBlocks.sapling, var1, var2);
+			        	final ItemStack stack = new ItemStack(GCCoreBlocks.sapling, var1, var2);
 			            player.inventory.mainInventory[player.inventory.currentItem] = stack;
 					}
 				}
 	        }
 	        else if (!(player.worldObj.provider instanceof IGalacticraftWorldProvider) && player.inventory.getCurrentItem() != null)
 	        {
-	        	int var1 = player.inventory.getCurrentItem().stackSize;
-	        	int var2 = player.inventory.getCurrentItem().getItemDamage();
+	        	final int var1 = player.inventory.getCurrentItem().stackSize;
+	        	final int var2 = player.inventory.getCurrentItem().getItemDamage();
 	        	
 	        	if (player.inventory.getCurrentItem().getItem().shiftedIndex == GCCoreBlocks.unlitTorch.blockID)
 	        	{
-	            	ItemStack stack = new ItemStack(Block.torchWood, var1, 0);
+	            	final ItemStack stack = new ItemStack(Block.torchWood, var1, 0);
 	                player.inventory.mainInventory[player.inventory.currentItem] = stack;
 	        	}
 	        	else if (player.inventory.getCurrentItem().getItem().shiftedIndex == GCCoreBlocks.sapling.blockID)
 	        	{
-	            	ItemStack stack = new ItemStack(Block.sapling, var1, var2);
+	            	final ItemStack stack = new ItemStack(Block.sapling, var1, var2);
 	                player.inventory.mainInventory[player.inventory.currentItem] = stack;
 	        	}
 	        	else if (player.inventory.getCurrentItem().getItem().shiftedIndex == GCCoreItems.gravityBow.shiftedIndex)
 	        	{
-		        	Hashtable<Integer, Enchantment> enchants = new Hashtable<Integer, Enchantment>();
+		        	final Hashtable<Integer, Enchantment> enchants = new Hashtable<Integer, Enchantment>();
 		        	
-		        	NBTTagList list = player.inventory.getCurrentItem().getEnchantmentTagList();
+		        	final NBTTagList list = player.inventory.getCurrentItem().getEnchantmentTagList();
 
 		        	if (list != null)
 		            {
 		                for (int var7 = 0; var7 < list.tagCount(); ++var7)
 		                {
-		                    int enchID = Integer.valueOf(((NBTTagCompound)list.tagAt(var7)).getShort("id"));
-		                    int enchLvl = Integer.valueOf(((NBTTagCompound)list.tagAt(var7)).getShort("lvl"));
+		                    final int enchID = Integer.valueOf(((NBTTagCompound)list.tagAt(var7)).getShort("id"));
+		                    final int enchLvl = Integer.valueOf(((NBTTagCompound)list.tagAt(var7)).getShort("lvl"));
 		                    
-		                    Enchantment e = Enchantment.enchantmentsList[enchID];
+		                    final Enchantment e = Enchantment.enchantmentsList[enchID];
 		                    
 		                    enchants.put(enchLvl, e);
 		                }
 		            }
 		        	
-	            	ItemStack stack = new ItemStack(Item.bow, var1, var2);
+	            	final ItemStack stack = new ItemStack(Item.bow, var1, var2);
 		        	
-		        	Iterator<Entry<Integer, Enchantment>> it = enchants.entrySet().iterator();
+		        	final Iterator<Entry<Integer, Enchantment>> it = enchants.entrySet().iterator();
 		        	
 		        	while (it.hasNext())
 		        	{
-		        		Entry<Integer, Enchantment> entry = it.next();
+		        		final Entry<Integer, Enchantment> entry = it.next();
 		        		
 		        		if (entry.getKey() != null && entry.getValue() != null)
 		        		{
@@ -229,12 +225,12 @@ public class GCCoreEntityPlayer
 	        
 			if (GalacticraftCore.instance.tick % 10 == 0)
 			{
-				sendAirRemainingPacket();
+				this.sendAirRemainingPacket();
 			}
 
-			ItemStack tankInSlot = playerTankInventory.getStackInSlot(0);
+			final ItemStack tankInSlot = this.playerTankInventory.getStackInSlot(0);
 			
-			int drainSpacing = GCCoreUtil.getDrainSpacing(tankInSlot);
+			final int drainSpacing = GCCoreUtil.getDrainSpacing(tankInSlot);
 						
 			if (player.worldObj.provider instanceof IGalacticraftWorldProvider && !player.capabilities.isCreativeMode)
 	        {
@@ -248,12 +244,12 @@ public class GCCoreEntityPlayer
 		    		this.airRemaining = 90 - tankInSlot.getItemDamage();
 				}
 				
-				if (drainSpacing > 0 && GalacticraftCore.instance.tick % drainSpacing == 0 && !isAABBInBreathableAirBlock() && (90 - tankInSlot.getItemDamage()) > 0) 
+				if (drainSpacing > 0 && GalacticraftCore.instance.tick % drainSpacing == 0 && !this.isAABBInBreathableAirBlock() && 90 - tankInSlot.getItemDamage() > 0) 
 		    	{
 		    		tankInSlot.damageItem(1, player);
 		    	}
 				
-				if (drainSpacing == 0 && GalacticraftCore.instance.tick % 20 == 0 && !isAABBInBreathableAirBlock() && this.airRemaining > 0)
+				if (drainSpacing == 0 && GalacticraftCore.instance.tick % 20 == 0 && !this.isAABBInBreathableAirBlock() && this.airRemaining > 0)
 				{
 		    		this.airRemaining -= 1;
 				}
@@ -263,12 +259,12 @@ public class GCCoreEntityPlayer
 					this.airRemaining = 0;
 				}
 				
-				if (GalacticraftCore.instance.tick % 20 == 0 && isAABBInBreathableAirBlock() && this.airRemaining < 90 && tankInSlot != null)
+				if (GalacticraftCore.instance.tick % 20 == 0 && this.isAABBInBreathableAirBlock() && this.airRemaining < 90 && tankInSlot != null)
 				{
 					this.airRemaining += 1;
 				}
 				
-	        	if (damageCounter == 0) 
+	        	if (this.damageCounter == 0) 
 	        	{
 	        		ItemStack helmetSlot = null;
 	        		
@@ -277,14 +273,14 @@ public class GCCoreEntityPlayer
 	        			helmetSlot = player.inventory.armorItemInSlot(3);
 	        		}
 	        		
-	        		boolean flag = helmetSlot == null;
-	        		boolean flag2 = helmetSlot != null && !(helmetSlot.getItem() instanceof GCCoreItemBreathableHelmet);
-	        		boolean flag3 = helmetSlot != null && helmetSlot.getItem() instanceof GCCoreItemSensorGlasses && !((GCCoreItemSensorGlasses)helmetSlot.getItem()).attachedMask;
-	        		boolean flag4 = helmetSlot != null && helmetSlot.getItem() instanceof GCCoreItemArmor && !((GCCoreItemArmor)helmetSlot.getItem()).attachedMask == true;
-	        		boolean flag5 = this.airRemaining <= 0;
-	        		boolean b = flag || flag2 || flag3 || flag4 || flag5;
+	        		final boolean flag = helmetSlot == null;
+	        		final boolean flag2 = helmetSlot != null && !(helmetSlot.getItem() instanceof GCCoreItemBreathableHelmet);
+	        		final boolean flag3 = helmetSlot != null && helmetSlot.getItem() instanceof GCCoreItemSensorGlasses && !((GCCoreItemSensorGlasses)helmetSlot.getItem()).attachedMask;
+	        		final boolean flag4 = helmetSlot != null && helmetSlot.getItem() instanceof GCCoreItemArmor && !((GCCoreItemArmor)helmetSlot.getItem()).attachedMask == true;
+	        		final boolean flag5 = this.airRemaining <= 0;
+	        		final boolean b = flag || flag2 || flag3 || flag4 || flag5;
 	        		
-	        		if (b && !isAABBInBreathableAirBlock()) 
+	        		if (b && !this.isAABBInBreathableAirBlock()) 
 					{
 	        			if (!player.worldObj.isRemote && player.isEntityAlive())
 	        			{
@@ -312,11 +308,11 @@ public class GCCoreEntityPlayer
 			this.timeUntilPortal--;
 		}
 		
-		if (this.inPortal && timeUntilPortal == 0)
+		if (this.inPortal && this.timeUntilPortal == 0)
         {
 			if (this.currentPlayer instanceof EntityPlayerMP && !this.currentPlayer.worldObj.isRemote)
 			{
-				EntityPlayerMP player = (EntityPlayerMP) this.currentPlayer;
+				final EntityPlayerMP player = (EntityPlayerMP) this.currentPlayer;
 				
 	        	byte var5;
 	        	
@@ -339,7 +335,7 @@ public class GCCoreEntityPlayer
 	    		
 	            player.timeUntilPortal = 10;
 	            
-	            Object[] toSend = {0.0F};
+	            final Object[] toSend = {0.0F};
 	            PacketDispatcher.sendPacketToPlayer(GCCoreUtil.createPacket("Galacticraft", 1, toSend), (Player)player);
 	            
 	            this.inPortal = false;
@@ -350,7 +346,7 @@ public class GCCoreEntityPlayer
 		{
 			if (((IGalacticraftWorldProvider)this.currentPlayer.worldObj.provider).getMeteorFrequency() > 0)
 			{
-				float f = ((IGalacticraftWorldProvider)this.currentPlayer.worldObj.provider).getMeteorFrequency();
+				final float f = ((IGalacticraftWorldProvider)this.currentPlayer.worldObj.provider).getMeteorFrequency();
 				
 				if (this.currentPlayer.worldObj.rand.nextInt(MathHelper.floor_float(f * 1000)) == 0)
 				{
@@ -362,7 +358,7 @@ public class GCCoreEntityPlayer
 					motX = this.currentPlayer.worldObj.rand.nextDouble() * 5;
 					motZ = this.currentPlayer.worldObj.rand.nextDouble() * 5;
 					
-					GCCoreEntityMeteor meteor = new GCCoreEntityMeteor(this.currentPlayer.worldObj, this.currentPlayer.posX + x, this.currentPlayer.posY + y, this.currentPlayer.posZ + z, motX - 2.5D, 0, motZ - 2.5D, 1);
+					final GCCoreEntityMeteor meteor = new GCCoreEntityMeteor(this.currentPlayer.worldObj, this.currentPlayer.posX + x, this.currentPlayer.posY + y, this.currentPlayer.posZ + z, motX - 2.5D, 0, motZ - 2.5D, 1);
 					
 					if (!this.currentPlayer.worldObj.isRemote)
 					{
@@ -379,7 +375,7 @@ public class GCCoreEntityPlayer
 					motX = this.currentPlayer.worldObj.rand.nextDouble() * 5;
 					motZ = this.currentPlayer.worldObj.rand.nextDouble() * 5;
 					
-					GCCoreEntityMeteor meteor = new GCCoreEntityMeteor(this.currentPlayer.worldObj, this.currentPlayer.posX + x, this.currentPlayer.posY + y, this.currentPlayer.posZ + z, motX - 2.5D, 0, motZ - 2.5D, 6);
+					final GCCoreEntityMeteor meteor = new GCCoreEntityMeteor(this.currentPlayer.worldObj, this.currentPlayer.posX + x, this.currentPlayer.posY + y, this.currentPlayer.posZ + z, motX - 2.5D, 0, motZ - 2.5D, 6);
 					
 					if (!this.currentPlayer.worldObj.isRemote)
 					{
@@ -394,7 +390,7 @@ public class GCCoreEntityPlayer
     {
     	if (this.currentPlayer instanceof EntityPlayerMP)
     	{
-    		EntityPlayerMP player = (EntityPlayerMP) this.currentPlayer;
+    		final EntityPlayerMP player = (EntityPlayerMP) this.currentPlayer;
     		for (int i = 0; i < player.mcServer.worldServerForDimension(par1).customTeleporters.size(); i++)
     		{
     			if (player.mcServer.worldServerForDimension(par1).customTeleporters.get(i) instanceof GCCoreTeleporter)
@@ -407,7 +403,7 @@ public class GCCoreEntityPlayer
     
     public void sendAirRemainingPacket()
     {
-    	Object[] toSend = {this.airRemaining, this.currentPlayer.username};
+    	final Object[] toSend = {this.airRemaining, this.currentPlayer.username};
     	
     	if (FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.currentPlayer.username) != null)
     	{
@@ -430,17 +426,17 @@ public class GCCoreEntityPlayer
 	
     public void readEntityFromNBT()
     {
-    	NBTTagCompound par1NBTTagCompound = this.currentPlayer.getEntityData();
+    	final NBTTagCompound par1NBTTagCompound = this.currentPlayer.getEntityData();
 		this.airRemaining = par1NBTTagCompound.getInteger("playerAirRemaining");
 		this.damageCounter = par1NBTTagCompound.getInteger("damageCounter");
-        NBTTagList var2 = par1NBTTagCompound.getTagList("InventoryTankRefill");
+        final NBTTagList var2 = par1NBTTagCompound.getTagList("InventoryTankRefill");
         this.playerTankInventory.readFromNBT2(var2);
 //        this.inSpaceship = par1NBTTagCompound.getBoolean("inSpaceship");
     }
 
     public void writeEntityToNBT()
     {
-    	NBTTagCompound par1NBTTagCompound = this.currentPlayer.getEntityData();
+    	final NBTTagCompound par1NBTTagCompound = this.currentPlayer.getEntityData();
     	par1NBTTagCompound.setInteger("playerAirRemaining", this.airRemaining);
     	par1NBTTagCompound.setInteger("damageCounter", this.damageCounter);
         par1NBTTagCompound.setTag("InventoryTankRefill", this.playerTankInventory.writeToNBT2(new NBTTagList()));

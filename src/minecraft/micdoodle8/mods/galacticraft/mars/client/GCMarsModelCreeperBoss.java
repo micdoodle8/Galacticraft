@@ -28,76 +28,76 @@ public class GCMarsModelCreeperBoss extends ModelBase
 
 	public GCMarsModelCreeperBoss() 
 	{
-		textureWidth = 128;
-		textureHeight = 64;
-		neckRight = new ModelRenderer(this, 16, 20);
-		neckRight.mirror = true;
-		neckRight.addBox(-2.5F, -9F, -1.5F, 5, 9, 3);
-		neckRight.setRotationPoint(-3F, 10F, 0F);
-		neckRight.setTextureSize(128, 64);
-		neckRight.mirror = true;
-		setRotation(neckRight, 0F, 0F, -1.169371F);
-		neckRight.mirror = false;
-		neckLeft = new ModelRenderer(this, 16, 20);
-		neckLeft.addBox(-2.5F, -9F, -1.5F, 5, 9, 3);
-		neckLeft.setRotationPoint(3F, 10F, 0F);
-		neckLeft.setTextureSize(128, 64);
-		neckLeft.mirror = true;
-		setRotation(neckLeft, 0F, 0F, 1.169371F);
-		headMain = new ModelRenderer(this, 0, 0);
-		headMain.addBox(-4F, -8F, -4F, 8, 8, 8);
-		headMain.setRotationPoint(0F, 6F, 0F);
-		headMain.setTextureSize(128, 64);
-		headMain.mirror = true;
-		setRotation(headMain, 0F, 0F, 0F);
-		bodyMain = new ModelRenderer(this, 16, 16);
-		bodyMain.addBox(-4F, 0F, -2F, 8, 12, 4);
-		bodyMain.setRotationPoint(0F, 6F, 0F);
-		bodyMain.setTextureSize(128, 64);
-		bodyMain.mirror = true;
-		setRotation(bodyMain, 0F, 0F, 0F);
-		rightLegFront = new ModelRenderer(this, 0, 16);
-		rightLegFront.addBox(-2F, 0F, -2F, 4, 6, 4);
-		rightLegFront.setRotationPoint(-2F, 18F, -4F);
-		rightLegFront.setTextureSize(128, 64);
-		rightLegFront.mirror = true;
-		setRotation(rightLegFront, 0F, 0F, 0F);
-		leftLegFront = new ModelRenderer(this, 0, 16);
-		leftLegFront.addBox(-2F, 0F, -2F, 4, 6, 4);
-		leftLegFront.setRotationPoint(2F, 18F, -4F);
-		leftLegFront.setTextureSize(128, 64);
-		leftLegFront.mirror = true;
-		setRotation(leftLegFront, 0F, 0F, 0F);
-		rightLeg = new ModelRenderer(this, 0, 16);
-		rightLeg.addBox(0F, 0F, -2F, 4, 6, 4);
-		rightLeg.setRotationPoint(-4F, 18F, 4F);
-		rightLeg.setTextureSize(128, 64);
-		rightLeg.mirror = true;
-		setRotation(rightLeg, 0F, 0F, 0F);
-		leftLeg = new ModelRenderer(this, 0, 16);
-		leftLeg.addBox(-2F, 0F, -2F, 4, 6, 4);
-		leftLeg.setRotationPoint(2F, 18F, 4F);
-		leftLeg.setTextureSize(128, 64);
-		leftLeg.mirror = true;
-		setRotation(leftLeg, 0F, 0F, 0F);
-		oxygenTank = new ModelRenderer(this, 40, 0);
-		oxygenTank.addBox(-5F, -9F, -5F, 10, 10, 10);
-		oxygenTank.setRotationPoint(0F, 6F, 0F);
-		oxygenTank.setTextureSize(128, 64);
-		oxygenTank.mirror = true;
-		setRotation(oxygenTank, 0F, 0F, 0F);
-		headLeft = new ModelRenderer(this, 0, 0);
-		headLeft.addBox(1F, -9F, -4F, 8, 8, 8);
-		headLeft.setRotationPoint(3F, 6F, 0.1F);
-		headLeft.setTextureSize(128, 64);
-		headLeft.mirror = true;
-		setRotation(headLeft, 0F, 0F, 0.7853982F);
-		headRight = new ModelRenderer(this, 0, 0);
-		headRight.addBox(-9F, -9F, -4F, 8, 8, 8);
-		headRight.setRotationPoint(-3F, 6F, -0.1F);
-		headRight.setTextureSize(128, 64);
-		headRight.mirror = true;
-		setRotation(headRight, 0F, 0F, -0.7853982F);
+		this.textureWidth = 128;
+		this.textureHeight = 64;
+		this.neckRight = new ModelRenderer(this, 16, 20);
+		this.neckRight.mirror = true;
+		this.neckRight.addBox(-2.5F, -9F, -1.5F, 5, 9, 3);
+		this.neckRight.setRotationPoint(-3F, 10F, 0F);
+		this.neckRight.setTextureSize(128, 64);
+		this.neckRight.mirror = true;
+		this.setRotation(this.neckRight, 0F, 0F, -1.169371F);
+		this.neckRight.mirror = false;
+		this.neckLeft = new ModelRenderer(this, 16, 20);
+		this.neckLeft.addBox(-2.5F, -9F, -1.5F, 5, 9, 3);
+		this.neckLeft.setRotationPoint(3F, 10F, 0F);
+		this.neckLeft.setTextureSize(128, 64);
+		this.neckLeft.mirror = true;
+		this.setRotation(this.neckLeft, 0F, 0F, 1.169371F);
+		this.headMain = new ModelRenderer(this, 0, 0);
+		this.headMain.addBox(-4F, -8F, -4F, 8, 8, 8);
+		this.headMain.setRotationPoint(0F, 6F, 0F);
+		this.headMain.setTextureSize(128, 64);
+		this.headMain.mirror = true;
+		this.setRotation(this.headMain, 0F, 0F, 0F);
+		this.bodyMain = new ModelRenderer(this, 16, 16);
+		this.bodyMain.addBox(-4F, 0F, -2F, 8, 12, 4);
+		this.bodyMain.setRotationPoint(0F, 6F, 0F);
+		this.bodyMain.setTextureSize(128, 64);
+		this.bodyMain.mirror = true;
+		this.setRotation(this.bodyMain, 0F, 0F, 0F);
+		this.rightLegFront = new ModelRenderer(this, 0, 16);
+		this.rightLegFront.addBox(-2F, 0F, -2F, 4, 6, 4);
+		this.rightLegFront.setRotationPoint(-2F, 18F, -4F);
+		this.rightLegFront.setTextureSize(128, 64);
+		this.rightLegFront.mirror = true;
+		this.setRotation(this.rightLegFront, 0F, 0F, 0F);
+		this.leftLegFront = new ModelRenderer(this, 0, 16);
+		this.leftLegFront.addBox(-2F, 0F, -2F, 4, 6, 4);
+		this.leftLegFront.setRotationPoint(2F, 18F, -4F);
+		this.leftLegFront.setTextureSize(128, 64);
+		this.leftLegFront.mirror = true;
+		this.setRotation(this.leftLegFront, 0F, 0F, 0F);
+		this.rightLeg = new ModelRenderer(this, 0, 16);
+		this.rightLeg.addBox(0F, 0F, -2F, 4, 6, 4);
+		this.rightLeg.setRotationPoint(-4F, 18F, 4F);
+		this.rightLeg.setTextureSize(128, 64);
+		this.rightLeg.mirror = true;
+		this.setRotation(this.rightLeg, 0F, 0F, 0F);
+		this.leftLeg = new ModelRenderer(this, 0, 16);
+		this.leftLeg.addBox(-2F, 0F, -2F, 4, 6, 4);
+		this.leftLeg.setRotationPoint(2F, 18F, 4F);
+		this.leftLeg.setTextureSize(128, 64);
+		this.leftLeg.mirror = true;
+		this.setRotation(this.leftLeg, 0F, 0F, 0F);
+		this.oxygenTank = new ModelRenderer(this, 40, 0);
+		this.oxygenTank.addBox(-5F, -9F, -5F, 10, 10, 10);
+		this.oxygenTank.setRotationPoint(0F, 6F, 0F);
+		this.oxygenTank.setTextureSize(128, 64);
+		this.oxygenTank.mirror = true;
+		this.setRotation(this.oxygenTank, 0F, 0F, 0F);
+		this.headLeft = new ModelRenderer(this, 0, 0);
+		this.headLeft.addBox(1F, -9F, -4F, 8, 8, 8);
+		this.headLeft.setRotationPoint(3F, 6F, 0.1F);
+		this.headLeft.setTextureSize(128, 64);
+		this.headLeft.mirror = true;
+		this.setRotation(this.headLeft, 0F, 0F, 0.7853982F);
+		this.headRight = new ModelRenderer(this, 0, 0);
+		this.headRight.addBox(-9F, -9F, -4F, 8, 8, 8);
+		this.headRight.setRotationPoint(-3F, 6F, -0.1F);
+		this.headRight.setTextureSize(128, 64);
+		this.headRight.mirror = true;
+		this.setRotation(this.headRight, 0F, 0F, -0.7853982F);
 
 	}
 
@@ -106,28 +106,28 @@ public class GCMarsModelCreeperBoss extends ModelBase
 	{
 		super.render(entity, f, f1, f2, f3, f4, f5);
 		
-		GCMarsEntityCreeperBoss creeper = (GCMarsEntityCreeperBoss) entity;
+		final GCMarsEntityCreeperBoss creeper = (GCMarsEntityCreeperBoss) entity;
 		
 		if (creeper.headsRemaining == 3)
 		{
-			headLeft.render(f5);
-			neckLeft.render(f5);
+			this.headLeft.render(f5);
+			this.neckLeft.render(f5);
 		}
 		
 		if (creeper.headsRemaining >= 2)
 		{
-			headRight.render(f5);
-			neckRight.render(f5);
+			this.headRight.render(f5);
+			this.neckRight.render(f5);
 		}
 
 		this.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-		headMain.render(f5);
-		bodyMain.render(f5);
-		rightLegFront.render(f5);
-		leftLegFront.render(f5);
-		rightLeg.render(f5);
-		leftLeg.render(f5);
-		oxygenTank.render(f5);
+		this.headMain.render(f5);
+		this.bodyMain.render(f5);
+		this.rightLegFront.render(f5);
+		this.leftLegFront.render(f5);
+		this.rightLeg.render(f5);
+		this.leftLeg.render(f5);
+		this.oxygenTank.render(f5);
 	}
 
 	private void setRotation(ModelRenderer model, float x, float y, float z) 

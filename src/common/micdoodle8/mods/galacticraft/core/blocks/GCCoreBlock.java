@@ -121,7 +121,7 @@ public class GCCoreBlock extends Block
     @Override
 	public float getBlockHardness(World par1World, int par2, int par3, int par4)
     {
-    	int meta = par1World.getBlockMetadata(par2, par3, par4);
+    	final int meta = par1World.getBlockMetadata(par2, par3, par4);
     	
     	switch (meta)
     	{
@@ -300,7 +300,7 @@ public class GCCoreBlock extends Block
     {
         if (canFallBelow(par1World, par2, par3 - 1, par4) && par3 >= 0)
         {
-            byte var8 = 32;
+            final byte var8 = 32;
             
             par1World.setBlockWithNotify(par2, par3, par4, 0);
 
@@ -318,7 +318,7 @@ public class GCCoreBlock extends Block
 
     public static boolean canFallBelow(World par0World, int par1, int par2, int par3)
     {
-        int var4 = par0World.getBlockId(par1, par2, par3);
+        final int var4 = par0World.getBlockId(par1, par2, par3);
 
         if (var4 == 0)
         {
@@ -330,7 +330,7 @@ public class GCCoreBlock extends Block
         }
         else
         {
-            Material var5 = Block.blocksList[var4].blockMaterial;
+            final Material var5 = Block.blocksList[var4].blockMaterial;
             return var5 == Material.water ? true : var5 == Material.lava;
         }
     }

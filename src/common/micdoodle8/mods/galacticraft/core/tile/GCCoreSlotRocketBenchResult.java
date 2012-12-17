@@ -8,7 +8,7 @@ import net.minecraft.src.Slot;
 public class GCCoreSlotRocketBenchResult extends Slot
 {
     private final IInventory craftMatrix;
-    private EntityPlayer thePlayer;
+    private final EntityPlayer thePlayer;
     private int field_48436_g;
 
     public GCCoreSlotRocketBenchResult(EntityPlayer par1EntityPlayer, IInventory par2IInventory, IInventory par3IInventory, int par4, int par5, int par6)
@@ -52,7 +52,7 @@ public class GCCoreSlotRocketBenchResult extends Slot
 
         for (int var2 = 0; var2 < this.craftMatrix.getSizeInventory(); ++var2)
         {
-            ItemStack var3 = this.craftMatrix.getStackInSlot(var2);
+            final ItemStack var3 = this.craftMatrix.getStackInSlot(var2);
 
             if (var3 != null)
             {
@@ -60,7 +60,7 @@ public class GCCoreSlotRocketBenchResult extends Slot
 
                 if (var3.getItem().hasContainerItem())
                 {
-                    ItemStack var4 = new ItemStack(var3.getItem().getContainerItem());
+                    final ItemStack var4 = new ItemStack(var3.getItem().getContainerItem());
 
                     if (!var3.getItem().doesContainerItemLeaveCraftingGrid(var3) || !this.thePlayer.inventory.addItemStackToInventory(var4))
                     {

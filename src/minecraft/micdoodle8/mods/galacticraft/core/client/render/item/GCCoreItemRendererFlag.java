@@ -26,14 +26,14 @@ public class GCCoreItemRendererFlag implements IItemRenderer
 	private void renderPipeItem(ItemRenderType type, RenderBlocks render, ItemStack item, float translateX, float translateY, float translateZ) 
 	{
         GL11.glPushMatrix();
-        long var10 = spaceship.entityId * 493286711L;
+        long var10 = this.spaceship.entityId * 493286711L;
         var10 = var10 * var10 * 4392167121L + var10 * 98761L;
-        float var12 = (((var10 >> 16 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
-        float var13 = (((var10 >> 20 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
-        float var14 = (((var10 >> 24 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
+        final float var12 = (((var10 >> 16 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
+        final float var13 = (((var10 >> 20 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
+        final float var14 = (((var10 >> 24 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
         
-        spaceship.setType(item.getItemDamage());
-        spaceship.setOwner(FMLClientHandler.instance().getClient().thePlayer.username);
+        this.spaceship.setType(item.getItemDamage());
+        this.spaceship.setOwner(FMLClientHandler.instance().getClient().thePlayer.username);
         
         if (type == ItemRenderType.EQUIPPED)
         {
@@ -44,7 +44,7 @@ public class GCCoreItemRendererFlag implements IItemRenderer
             {
                 float var13b;
                 float var14b;
-                float var15;
+                final float var15;
                 
 //                GL11.glRotatef(-18.0F, 0.0F, 0.0F, 1.0F);
 //                GL11.glRotatef(-12.0F, 0.0F, 1.0F, 0.0F);
@@ -61,10 +61,10 @@ public class GCCoreItemRendererFlag implements IItemRenderer
 
 //                if (var14b > 0.1F)
                 {
-                    GL11.glRotatef((MathHelper.sin((var13b - 0.1F) * 0.3F) * 0.01F * (var14b - 0.1F)) * 60, 1F, 0F, 0F);
+                    GL11.glRotatef(MathHelper.sin((var13b - 0.1F) * 0.3F) * 0.01F * (var14b - 0.1F) * 60, 1F, 0F, 0F);
                 }
 
-                GL11.glRotatef((var14b * 30F), 1F, 0F, 1F);
+                GL11.glRotatef(var14b * 30F, 1F, 0F, 1F);
                 GL11.glTranslatef(0F, -(var14b * 0.2F), 0F);
 //                GL11.glRotatef(-335.0F, 0.0F, 0.0F, 1.0F);
 //                GL11.glRotatef(-50.0F, 0.0F, 1.0F, 0.0F);
@@ -107,7 +107,7 @@ public class GCCoreItemRendererFlag implements IItemRenderer
     		break;
     	}
     	
-        this.modelSpaceship.render(spaceship, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+        this.modelSpaceship.render(this.spaceship, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
         GL11.glPopMatrix();
 	}
 
@@ -141,13 +141,13 @@ public class GCCoreItemRendererFlag implements IItemRenderer
 		switch (type) 
 		{
 		case EQUIPPED:
-			renderPipeItem(type, (RenderBlocks) data[0], item, -0.5f, -0.5f, -0.5f);
+			this.renderPipeItem(type, (RenderBlocks) data[0], item, -0.5f, -0.5f, -0.5f);
 			break;
 		case INVENTORY:
-			renderPipeItem(type, (RenderBlocks) data[0], item, -0.5f, -0.5f, -0.5f);
+			this.renderPipeItem(type, (RenderBlocks) data[0], item, -0.5f, -0.5f, -0.5f);
 			break;
 		case ENTITY:
-			renderPipeItem(type, (RenderBlocks) data[0], item, -0.5f, -0.5f, -0.5f);
+			this.renderPipeItem(type, (RenderBlocks) data[0], item, -0.5f, -0.5f, -0.5f);
 			break;
 		default:
 		}

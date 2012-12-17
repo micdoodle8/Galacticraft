@@ -10,7 +10,7 @@ import cpw.mods.fml.common.asm.SideOnly;
 
 public class GCCoreItemPickaxe extends ItemPickaxe
 {
-	private EnumToolMaterial material;
+	private final EnumToolMaterial material;
 	
 	public GCCoreItemPickaxe(int par1, EnumToolMaterial par2EnumToolMaterial) 
 	{

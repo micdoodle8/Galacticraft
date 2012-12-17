@@ -68,7 +68,7 @@ public class GalacticraftMoon implements IGalacticraftSubMod
 		{
 			if (type.equals(EnumSet.of(TickType.WORLD)))
             {
-				World world = (World) tickData[0];
+				final World world = (World) tickData[0];
             }
 		}
 

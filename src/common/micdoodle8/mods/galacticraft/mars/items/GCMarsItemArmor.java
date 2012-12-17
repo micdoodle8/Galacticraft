@@ -12,7 +12,7 @@ import cpw.mods.fml.common.asm.SideOnly;
 public class GCMarsItemArmor extends GCCoreItemBreathableHelmet implements IArmorTextureProvider
 {
 	public boolean attachedMask;
-	private EnumArmorMaterial material;
+	private final EnumArmorMaterial material;
 	
 	public GCMarsItemArmor(int par1, EnumArmorMaterial par2EnumArmorMaterial, int par3, int par4, boolean breathable) 
 	{
@@ -25,7 +25,7 @@ public class GCMarsItemArmor extends GCCoreItemBreathableHelmet implements IArmo
     @Override
 	public String getArmorTextureFile(ItemStack itemstack)
     {
-    	if (material == GCMarsItems.QUANDRIUMARMOR)
+    	if (this.material == GCMarsItems.QUANDRIUMARMOR)
     	{
     		if (itemstack.getItem().shiftedIndex == GCMarsItems.quandriumHelmet.shiftedIndex)
     		{
@@ -44,7 +44,7 @@ public class GCMarsItemArmor extends GCCoreItemBreathableHelmet implements IArmo
     			return "/micdoodle8/mods/galacticraft/mars/client/armor/quandriumox_1.png";
     		}
     	}
-    	else if (material == GCMarsItems.ARMORDESH)
+    	else if (this.material == GCMarsItems.ARMORDESH)
     	{
     		if (itemstack.getItem().shiftedIndex == GCMarsItems.deshHelmet.shiftedIndex)
     		{
@@ -63,7 +63,7 @@ public class GCMarsItemArmor extends GCCoreItemBreathableHelmet implements IArmo
     			return "/micdoodle8/mods/galacticraft/mars/client/armor/deshox_1.png";
     		}
     	}
-    	else if (material == GCMarsItems.ARMORHEAVY)
+    	else if (this.material == GCMarsItems.ARMORHEAVY)
     	{
     		if (itemstack.getItem().shiftedIndex == GCMarsItems.heavyBoots.shiftedIndex)
     		{

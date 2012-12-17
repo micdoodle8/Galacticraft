@@ -29,17 +29,17 @@ public class GCCoreGuiTankRefill extends GuiContainer
 	@Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-		this.fontRenderer.drawString(("Oxygen Tank Refill"), 8, 10, 4210752);
+		this.fontRenderer.drawString("Oxygen Tank Refill", 8, 10, 4210752);
 	}
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3) 
 	{
-		int texture = this.mc.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/gui/airtank.png");
+		final int texture = this.mc.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/gui/airtank.png");
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		this.mc.renderEngine.bindTexture(texture);
-		int var5 = (this.width - this.xSize) / 2;
-		int var6 = (this.height - this.ySize) / 2;
+		final int var5 = (this.width - this.xSize) / 2;
+		final int var6 = (this.height - this.ySize) / 2;
 		this.drawTexturedModalRect(var5, var6 + 5, 0, 0, this.xSize, this.ySize);
 	}
 }

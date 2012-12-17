@@ -26,7 +26,7 @@ public class GCTitanConfigManager
 		if (!loaded)
 		{
 			configuration = new Configuration(file);
-			setDefaultValues();
+			this.setDefaultValues();
 		}
 	}
 	
@@ -38,7 +38,7 @@ public class GCTitanConfigManager
 	        
 	        dimensionIDTitan = 				configuration.get("Dimensions", 										"Titan Dimension ID",				-25)		.getInt(-25);
 	    }
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			FMLLog.log(Level.SEVERE, e, "Galacticraft Titan has a problem loading it's configuration");
 		}

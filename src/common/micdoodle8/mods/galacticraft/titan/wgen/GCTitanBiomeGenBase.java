@@ -13,7 +13,7 @@ import net.minecraft.src.SpawnListEntry;
  */
 public class GCTitanBiomeGenBase extends BiomeGenBase
 {
-    public static final BiomeGenBase titanFlat = (new GCTitanBiomeGenFlat(103)).setBiomeName("titanFlat");
+    public static final BiomeGenBase titanFlat = new GCTitanBiomeGenFlat(103).setBiomeName("titanFlat");
 
     public GCTitanBiomeGenBase(int var1)
     {

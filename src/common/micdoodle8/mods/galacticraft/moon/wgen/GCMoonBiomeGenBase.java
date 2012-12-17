@@ -14,7 +14,7 @@ import cpw.mods.fml.common.asm.SideOnly;
  */
 public class GCMoonBiomeGenBase extends BiomeGenBase
 {
-    public static final BiomeGenBase moonFlat = (new GCMoonBiomeGenFlat(102)).setBiomeName("moon");
+    public static final BiomeGenBase moonFlat = new GCMoonBiomeGenFlat(102).setBiomeName("moon");
 
     public GCMoonBiomeGenBase(int var1)
     {
@@ -41,7 +41,7 @@ public class GCMoonBiomeGenBase extends BiomeGenBase
 	@SideOnly(Side.CLIENT)
     public int getBiomeGrassColor()
     {
-        double var3 = MathHelper.clamp_float(this.maxHeight, 0.0F, 1.0F);
+        final double var3 = MathHelper.clamp_float(this.maxHeight, 0.0F, 1.0F);
         return GCMoonColorizerGrass.getGrassColor(var3, var3);
     }
 }

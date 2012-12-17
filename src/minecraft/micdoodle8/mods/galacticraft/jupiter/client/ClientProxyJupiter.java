@@ -8,7 +8,6 @@ import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
 import micdoodle8.mods.galacticraft.core.GCCoreLocalization;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.europa.client.ClientProxyEuropa;
-import micdoodle8.mods.galacticraft.europa.client.GCEuropaSlotRenderer;
 import micdoodle8.mods.galacticraft.io.client.ClientProxyIo;
 import micdoodle8.mods.galacticraft.jupiter.CommonProxyJupiter;
 import net.minecraft.src.INetworkManager;

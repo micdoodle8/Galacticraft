@@ -13,7 +13,7 @@ import net.minecraft.src.SpawnListEntry;
  */
 public class GCEnceladusBiomeGenBase extends BiomeGenBase
 {
-    public static final BiomeGenBase enceladusFlat = (new GCEnceladusBiomeGenFlat(103)).setBiomeName("enceladusFlat");
+    public static final BiomeGenBase enceladusFlat = new GCEnceladusBiomeGenFlat(103).setBiomeName("enceladusFlat");
 
     public GCEnceladusBiomeGenBase(int var1)
     {

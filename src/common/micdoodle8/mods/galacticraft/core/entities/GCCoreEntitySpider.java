@@ -70,11 +70,11 @@ public class GCCoreEntitySpider extends GCCoreEntityMob
     @Override
 	protected Entity findPlayerToAttack()
     {
-        float var1 = this.getBrightness(1.0F);
+        final float var1 = this.getBrightness(1.0F);
 
         if (var1 < 0.5F)
         {
-            double var2 = 16.0D;
+            final double var2 = 16.0D;
             return this.worldObj.getClosestVulnerablePlayerToEntity(this, var2);
         }
         else
@@ -125,7 +125,7 @@ public class GCCoreEntitySpider extends GCCoreEntityMob
     @Override
 	protected void attackEntity(Entity par1Entity, float par2)
     {
-        float var3 = this.getBrightness(1.0F);
+        final float var3 = this.getBrightness(1.0F);
 
         if (var3 > 0.5F && this.rand.nextInt(100) == 0)
         {
@@ -137,9 +137,9 @@ public class GCCoreEntitySpider extends GCCoreEntityMob
             {
                 if (this.onGround)
                 {
-                    double var4 = par1Entity.posX - this.posX;
-                    double var6 = par1Entity.posZ - this.posZ;
-                    float var8 = MathHelper.sqrt_double(var4 * var4 + var6 * var6);
+                    final double var4 = par1Entity.posX - this.posX;
+                    final double var6 = par1Entity.posZ - this.posZ;
+                    final float var8 = MathHelper.sqrt_double(var4 * var4 + var6 * var6);
                     this.motionX = var4 / var8 * 0.5D * 0.800000011920929D + this.motionX * 0.20000000298023224D;
                     this.motionZ = var6 / var8 * 0.5D * 0.800000011920929D + this.motionZ * 0.20000000298023224D;
                     this.motionY = 0.4000000059604645D;
@@ -252,7 +252,7 @@ public class GCCoreEntitySpider extends GCCoreEntityMob
     {
         if (this.worldObj.rand.nextInt(100) == 0)
         {
-            EntitySkeleton var1 = new EntitySkeleton(this.worldObj);
+            final EntitySkeleton var1 = new EntitySkeleton(this.worldObj);
             var1.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
             var1.initCreature();
             this.worldObj.spawnEntityInWorld(var1);

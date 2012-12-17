@@ -1,23 +1,15 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
-import java.util.Iterator;
-import java.util.List;
-
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.DamageSource;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.MathHelper;
-import net.minecraft.src.MovingObjectPosition;
 import net.minecraft.src.NBTTagCompound;
-import net.minecraft.src.Vec3;
 import net.minecraft.src.World;
-import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreEntityFlag extends Entity
 {
@@ -45,9 +37,10 @@ public class GCCoreEntityFlag extends Entity
         this.zPosition = z;
     }
     
-    public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
+    @Override
+	public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
     {
-        if (!this.worldObj.isRemote && !this.isDead && !indestructable)
+        if (!this.worldObj.isRemote && !this.isDead && !this.indestructable)
         {
             if (this.func_85032_ar())
             {
@@ -85,7 +78,7 @@ public class GCCoreEntityFlag extends Entity
     
     public void setDirection(float par1)
     {
-        this.prevRotationYaw = this.rotationYaw = (par1);
+        this.prevRotationYaw = this.rotationYaw = par1;
     }
     
     public void setIndestructable()
@@ -124,7 +117,7 @@ public class GCCoreEntityFlag extends Entity
     @Override
 	public AxisAlignedBB getBoundingBox()
     {
-        return boundingBox;
+        return this.boundingBox;
     }
 
     @Override

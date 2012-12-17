@@ -34,13 +34,13 @@ public class GCEuropaBlockBrittleIce extends BlockBreakable
 	@Override
     public int getBlockTextureFromSideAndMetadata(int side, int par2)
     {
-		return side == 1 ? 1 : (side == 0 ? 3 : 0);
+		return side == 1 ? 1 : side == 0 ? 3 : 0;
     }
     
 	@Override
 	public int getBlockTexture(IBlockAccess par1IBlockAccess, int x, int y, int z, int side) 
 	{
-		return side == 1 ? 1 : (side == 0 ? 3 : 0);
+		return side == 1 ? 1 : side == 0 ? 3 : 0;
 	}
 
     @Override
@@ -58,7 +58,7 @@ public class GCEuropaBlockBrittleIce extends BlockBreakable
 
         if (this.canSilkHarvest() && EnchantmentHelper.getSilkTouchModifier(par2EntityPlayer))
         {
-            ItemStack var9 = this.createStackedBlock(par6);
+            final ItemStack var9 = this.createStackedBlock(par6);
 
             if (var9 != null)
             {
@@ -73,9 +73,9 @@ public class GCEuropaBlockBrittleIce extends BlockBreakable
                 return;
             }
 
-            int var7 = EnchantmentHelper.getFortuneModifier(par2EntityPlayer);
+            final int var7 = EnchantmentHelper.getFortuneModifier(par2EntityPlayer);
             this.dropBlockAsItem(par1World, par3, par4, par5, par6, var7);
-            Material var8 = par1World.getBlockMaterial(par3, par4 - 1, par5);
+            final Material var8 = par1World.getBlockMaterial(par3, par4 - 1, par5);
 
             if (var8.blocksMovement() || var8.isLiquid())
             {

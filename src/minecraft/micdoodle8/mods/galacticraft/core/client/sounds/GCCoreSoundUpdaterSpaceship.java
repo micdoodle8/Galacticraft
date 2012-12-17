@@ -37,13 +37,13 @@ public class GCCoreSoundUpdaterSpaceship implements IUpdatePlayerListBox
 	public void update()
     {
         boolean var1 = false;
-        boolean var2 = this.field_82473_d;
-        boolean var3 = this.field_82474_e;
-        boolean var4 = this.field_82471_f;
-        float var5 = this.field_82481_i;
-        float var6 = this.field_82480_h;
-        float var7 = this.field_82478_j;
-        double var8 = this.field_82479_k;
+        final boolean var2 = this.field_82473_d;
+        final boolean var3 = this.field_82474_e;
+        final boolean var4 = this.field_82471_f;
+        final float var5 = this.field_82481_i;
+        final float var6 = this.field_82480_h;
+        final float var7 = this.field_82478_j;
+        final double var8 = this.field_82479_k;
         this.field_82473_d = this.field_82476_c != null && this.field_82475_b.riddenByEntity == this.field_82476_c;
         this.field_82474_e = this.field_82475_b.isDead;
         this.field_82479_k = 20;
@@ -74,13 +74,13 @@ public class GCCoreSoundUpdaterSpaceship implements IUpdatePlayerListBox
             }
         }
 
-        if (field_82477_a != null && field_82475_b != null && this.field_82475_b.getReversed() == 0 && this.field_82481_i > 0.0F)
+        if (this.field_82477_a != null && this.field_82475_b != null && this.field_82475_b.getReversed() == 0 && this.field_82481_i > 0.0F)
         {
             this.field_82477_a.playEntitySound("shuttle.sound", this.field_82475_b, this.field_82481_i, this.field_82480_h, false);
             this.field_82472_g = false;
             var1 = true;
         }
-        else if (field_82477_a != null && field_82475_b != null && this.field_82475_b.getReversed() == 1 && this.field_82481_i > 0.0F)
+        else if (this.field_82477_a != null && this.field_82475_b != null && this.field_82475_b.getReversed() == 1 && this.field_82481_i > 0.0F)
         {
             this.field_82477_a.playEntitySound("shuttle.sound", this.field_82475_b, this.field_82481_i, 1.0F, false);
             this.field_82472_g = false;

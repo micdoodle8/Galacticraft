@@ -119,7 +119,7 @@ public class GCCoreEntitySkeleton extends GCCoreEntityMob
     {
         if (this.worldObj.isDaytime() && !this.worldObj.isRemote)
         {
-            float var1 = this.getBrightness(1.0F);
+            final float var1 = this.getBrightness(1.0F);
 
             if (var1 > 0.5F && this.worldObj.canBlockSeeTheSky(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ)) && this.rand.nextFloat() * 30.0F < (var1 - 0.4F) * 2.0F)
             {
@@ -142,9 +142,9 @@ public class GCCoreEntitySkeleton extends GCCoreEntityMob
 
         if (par1DamageSource.getSourceOfDamage() instanceof EntityArrow && par1DamageSource.getEntity() instanceof EntityPlayer)
         {
-            EntityPlayer var2 = (EntityPlayer)par1DamageSource.getEntity();
-            double var3 = var2.posX - this.posX;
-            double var5 = var2.posZ - this.posZ;
+            final EntityPlayer var2 = (EntityPlayer)par1DamageSource.getEntity();
+            final double var3 = var2.posX - this.posX;
+            final double var5 = var2.posZ - this.posZ;
 
             if (var3 * var3 + var5 * var5 >= 2500.0D)
             {
@@ -189,7 +189,7 @@ public class GCCoreEntitySkeleton extends GCCoreEntityMob
     {
         if (par1 > 0)
         {
-            ItemStack var2 = new ItemStack(Item.bow);
+            final ItemStack var2 = new ItemStack(Item.bow);
             EnchantmentHelper.addRandomEnchantment(this.rand, var2, 5);
             this.entityDropItem(var2, 0.0F);
         }

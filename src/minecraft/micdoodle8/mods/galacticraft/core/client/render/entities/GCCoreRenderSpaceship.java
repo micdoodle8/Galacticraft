@@ -35,17 +35,17 @@ public class GCCoreRenderSpaceship extends Render
         GL11.glPushMatrix();
         long var10 = par1GCEntitySpaceship.entityId * 493286711L;
         var10 = var10 * var10 * 4392167121L + var10 * 98761L;
-        float var12 = (((var10 >> 16 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
-        float var13 = (((var10 >> 20 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
-        float var14 = (((var10 >> 24 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
+        final float var12 = (((var10 >> 16 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
+        final float var13 = (((var10 >> 20 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
+        final float var14 = (((var10 >> 24 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
         GL11.glTranslatef(var12, var13, var14);
-        double var21 = 0.30000001192092896D;
-        float var24 = par1GCEntitySpaceship.prevRotationPitch + (par1GCEntitySpaceship.rotationPitch - par1GCEntitySpaceship.prevRotationPitch) * par9;
+        final double var21 = 0.30000001192092896D;
+        final float var24 = par1GCEntitySpaceship.prevRotationPitch + (par1GCEntitySpaceship.rotationPitch - par1GCEntitySpaceship.prevRotationPitch) * par9;
 
         GL11.glTranslatef((float)par2, (float)par4, (float)par6);
         GL11.glRotatef(180.0F - par8, 0.0F, 1.0F, 0.0F);
         GL11.glRotatef(-var24, 0.0F, 0.0F, 1.0F);
-        float var28 = par1GCEntitySpaceship.func_70496_j() - par9;
+        final float var28 = par1GCEntitySpaceship.func_70496_j() - par9;
         float var30 = par1GCEntitySpaceship.getDamage() - par9;
 
         if (var30 < 0.0F)
@@ -55,7 +55,7 @@ public class GCCoreRenderSpaceship extends Render
 
         if (var28 > 0.0F)
         {
-        	float i = par1GCEntitySpaceship.getLaunched() == 0 ? (5 - MathHelper.floor_double(par1GCEntitySpaceship.getTimeUntilLaunch() / 85)) / 10F : 0.3F;
+        	final float i = par1GCEntitySpaceship.getLaunched() == 0 ? (5 - MathHelper.floor_double(par1GCEntitySpaceship.getTimeUntilLaunch() / 85)) / 10F : 0.3F;
             GL11.glRotatef(MathHelper.sin(var28) * var28 * i * par1GCEntitySpaceship.func_70493_k() * par9, 1.0F, 0.0F, 0.0F);
             GL11.glRotatef(MathHelper.sin(var28) * var28 * i * par1GCEntitySpaceship.func_70493_k() * par9, 1.0F, 0.0F, 1.0F);
         }

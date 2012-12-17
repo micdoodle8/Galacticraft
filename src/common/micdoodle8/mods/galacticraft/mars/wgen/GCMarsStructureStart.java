@@ -15,9 +15,9 @@ public class GCMarsStructureStart extends StructureStart
 {
 	public GCMarsStructureStart(World world, Random random, int x, int z)
 	{
-        int var5 = (x << 4) + 8;
-        int var6 = (z << 4) + 8;
-        GCMarsComponentCreeperPitRoom room = new GCMarsComponentCreeperPitRoom(0, world, random, var5, 90, var6, 40, 7, 0);
+        final int var5 = (x << 4) + 8;
+        final int var6 = (z << 4) + 8;
+        final GCMarsComponentCreeperPitRoom room = new GCMarsComponentCreeperPitRoom(0, world, random, var5, 90, var6, 40, 7, 0);
         
         if (room != null)
         {

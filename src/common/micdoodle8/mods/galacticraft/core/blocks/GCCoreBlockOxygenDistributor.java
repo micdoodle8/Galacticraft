@@ -27,7 +27,7 @@ import cpw.mods.fml.common.asm.SideOnly;
  */
 public class GCCoreBlockOxygenDistributor extends BlockContainer
 {
-    private Random distributorRand = new Random();
+    private final Random distributorRand = new Random();
     
 	protected boolean isActive;
     
@@ -58,10 +58,10 @@ public class GCCoreBlockOxygenDistributor extends BlockContainer
     {
         if (!par1World.isRemote)
         {
-            int var5 = par1World.getBlockId(par2, par3, par4 - 1);
-            int var6 = par1World.getBlockId(par2, par3, par4 + 1);
-            int var7 = par1World.getBlockId(par2 - 1, par3, par4);
-            int var8 = par1World.getBlockId(par2 + 1, par3, par4);
+            final int var5 = par1World.getBlockId(par2, par3, par4 - 1);
+            final int var6 = par1World.getBlockId(par2, par3, par4 + 1);
+            final int var7 = par1World.getBlockId(par2 - 1, par3, par4);
+            final int var8 = par1World.getBlockId(par2 + 1, par3, par4);
             byte var9 = 3;
 
             if (Block.opaqueCubeLookup[var5] && !Block.opaqueCubeLookup[var6])
@@ -94,12 +94,12 @@ public class GCCoreBlockOxygenDistributor extends BlockContainer
     {
         if (this.isActive)
         {
-            int var6 = par1World.getBlockMetadata(par2, par3, par4);
-            float var7 = par2 + 0.5F;
-            float var8 = par3 + 0.0F + par5Random.nextFloat() * 6.0F / 16.0F;
-            float var9 = par4 + 0.5F;
-            float var10 = 0.52F;
-            float var11 = par5Random.nextFloat() * 0.6F - 0.3F;
+            final int var6 = par1World.getBlockMetadata(par2, par3, par4);
+            final float var7 = par2 + 0.5F;
+            final float var8 = par3 + 0.0F + par5Random.nextFloat() * 6.0F / 16.0F;
+            final float var9 = par4 + 0.5F;
+            final float var10 = 0.52F;
+            final float var11 = par5Random.nextFloat() * 0.6F - 0.3F;
 
             if (var6 == 4)
             {
@@ -134,7 +134,7 @@ public class GCCoreBlockOxygenDistributor extends BlockContainer
     @Override
 	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLiving par5EntityLiving)
     {
-        int var6 = MathHelper.floor_double(par5EntityLiving.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+        final int var6 = MathHelper.floor_double(par5EntityLiving.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
 
         if (var6 == 0)
         {
@@ -162,19 +162,19 @@ public class GCCoreBlockOxygenDistributor extends BlockContainer
     {
     	if (!keepDistributorInventory)
     	{
-    		GCCoreTileEntityOxygenDistributor var7 = (GCCoreTileEntityOxygenDistributor)par1World.getBlockTileEntity(par2, par3, par4);
+    		final GCCoreTileEntityOxygenDistributor var7 = (GCCoreTileEntityOxygenDistributor)par1World.getBlockTileEntity(par2, par3, par4);
 
             if (var7 != null)
             {
                 for (int var8 = 0; var8 < var7.getSizeInventory(); ++var8)
                 {
-                    ItemStack var9 = var7.getStackInSlot(var8);
+                    final ItemStack var9 = var7.getStackInSlot(var8);
 
                     if (var9 != null)
                     {
-                        float var10 = this.distributorRand.nextFloat() * 0.8F + 0.1F;
-                        float var11 = this.distributorRand.nextFloat() * 0.8F + 0.1F;
-                        float var12 = this.distributorRand.nextFloat() * 0.8F + 0.1F;
+                        final float var10 = this.distributorRand.nextFloat() * 0.8F + 0.1F;
+                        final float var11 = this.distributorRand.nextFloat() * 0.8F + 0.1F;
+                        final float var12 = this.distributorRand.nextFloat() * 0.8F + 0.1F;
 
                         while (var9.stackSize > 0)
                         {
@@ -186,14 +186,14 @@ public class GCCoreBlockOxygenDistributor extends BlockContainer
                             }
 
                             var9.stackSize -= var13;
-                            EntityItem var14 = new EntityItem(par1World, par2 + var10, par3 + var11, par4 + var12, new ItemStack(var9.itemID, var13, var9.getItemDamage()));
+                            final EntityItem var14 = new EntityItem(par1World, par2 + var10, par3 + var11, par4 + var12, new ItemStack(var9.itemID, var13, var9.getItemDamage()));
 
                             if (var9.hasTagCompound())
                             {
                                 var14.item.setTagCompound((NBTTagCompound)var9.getTagCompound().copy());
                             }
 
-                            float var15 = 0.05F;
+                            final float var15 = 0.05F;
                             var14.motionX = (float)this.distributorRand.nextGaussian() * var15;
                             var14.motionY = (float)this.distributorRand.nextGaussian() * var15 + 0.2F;
                             var14.motionZ = (float)this.distributorRand.nextGaussian() * var15;
@@ -217,7 +217,7 @@ public class GCCoreBlockOxygenDistributor extends BlockContainer
 				{
 					if (world.getBlockId(x + i, y + j, z + k) == GCCoreBlocks.unlitTorchLit.blockID)
 					{
-						int meta = world.getBlockMetadata(x + i, y + j, z + k);
+						final int meta = world.getBlockMetadata(x + i, y + j, z + k);
 						world.setBlockAndMetadataWithNotify(x + i, y + j, z + k, GCCoreBlocks.unlitTorch.blockID, meta);
 					}
 				}
@@ -229,8 +229,8 @@ public class GCCoreBlockOxygenDistributor extends BlockContainer
     {
     	if (!par1World.isRemote)
     	{
-    		int var5 = par1World.getBlockMetadata(x, y, z);
-            TileEntity var6 = par1World.getBlockTileEntity(x, y, z);
+    		final int var5 = par1World.getBlockMetadata(x, y, z);
+            final TileEntity var6 = par1World.getBlockTileEntity(x, y, z);
             keepDistributorInventory = true;
 
             if (activate)

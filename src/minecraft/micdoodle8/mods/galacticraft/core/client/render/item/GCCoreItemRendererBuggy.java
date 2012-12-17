@@ -25,11 +25,11 @@ public class GCCoreItemRendererBuggy implements IItemRenderer
 	private void renderPipeItem(ItemRenderType type, RenderBlocks render, ItemStack item, float translateX, float translateY, float translateZ) 
 	{
         GL11.glPushMatrix();
-        long var10 = spaceship.entityId * 493286711L;
+        long var10 = this.spaceship.entityId * 493286711L;
         var10 = var10 * var10 * 4392167121L + var10 * 98761L;
-        float var12 = (((var10 >> 16 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
-        float var13 = (((var10 >> 20 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
-        float var14 = (((var10 >> 24 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
+        final float var12 = (((var10 >> 16 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
+        final float var13 = (((var10 >> 20 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
+        final float var14 = (((var10 >> 24 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
         
         if (type == ItemRenderType.EQUIPPED)
         {
@@ -56,10 +56,10 @@ public class GCCoreItemRendererBuggy implements IItemRenderer
         	
         	GL11.glScalef(1.3F, 1.3F, 1.3F);
         	GL11.glTranslatef(0, -0.6F, 0);
-        	GL11.glRotatef((GalacticraftCore.tick) * 2, 0F, 1F, 0F);
+        	GL11.glRotatef(GalacticraftCore.tick * 2, 0F, 1F, 0F);
         }
         FMLClientHandler.instance().getClient().renderEngine.bindTexture(FMLClientHandler.instance().getClient().renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/entities/buggy.png"));
-        this.modelSpaceship.render(spaceship, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+        this.modelSpaceship.render(this.spaceship, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
         GL11.glPopMatrix();
 	}
 
@@ -93,13 +93,13 @@ public class GCCoreItemRendererBuggy implements IItemRenderer
 		switch (type) 
 		{
 		case EQUIPPED:
-			renderPipeItem(type, (RenderBlocks) data[0], item, -0.5f, -0.5f, -0.5f);
+			this.renderPipeItem(type, (RenderBlocks) data[0], item, -0.5f, -0.5f, -0.5f);
 			break;
 		case INVENTORY:
-			renderPipeItem(type, (RenderBlocks) data[0], item, -0.5f, -0.5f, -0.5f);
+			this.renderPipeItem(type, (RenderBlocks) data[0], item, -0.5f, -0.5f, -0.5f);
 			break;
 		case ENTITY:
-			renderPipeItem(type, (RenderBlocks) data[0], item, -0.5f, -0.5f, -0.5f);
+			this.renderPipeItem(type, (RenderBlocks) data[0], item, -0.5f, -0.5f, -0.5f);
 			break;
 		default:
 		}

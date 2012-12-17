@@ -10,7 +10,7 @@ import cpw.mods.fml.common.asm.SideOnly;
 
 public class GCCoreItemAxe extends ItemAxe
 {
-	private EnumToolMaterial material;
+	private final EnumToolMaterial material;
 	
 	public GCCoreItemAxe(int par1, EnumToolMaterial par2EnumToolMaterial) 
 	{

@@ -39,7 +39,7 @@ public class GCCoreWorldGenTrees extends WorldGenerator
     @Override
 	public boolean generate(World par1World, Random par2Random, int par3, int par4, int par5)
     {
-        int var6 = par2Random.nextInt(3) + this.minTreeHeight;
+        final int var6 = par2Random.nextInt(3) + this.minTreeHeight;
         boolean var7 = true;
 
         if (par4 >= 1 && par4 + var6 + 1 <= 256)
@@ -71,7 +71,7 @@ public class GCCoreWorldGenTrees extends WorldGenerator
                         {
                             var12 = par1World.getBlockId(var10, var8, var11);
 
-                            Block block = Block.blocksList[var12];
+                            final Block block = Block.blocksList[var12];
 
                             if (var12 != 0 && 
                                !block.isLeaves(par1World, var10, var8, var11) && 
@@ -114,7 +114,7 @@ public class GCCoreWorldGenTrees extends WorldGenerator
                 if (Block.blocksList[var8] != null && Block.blocksList[var8] instanceof IPlantableBlock && waterBlocksNearby >= ((IPlantableBlock)Block.blocksList[var8]).requiredLiquidBlocksNearby() && par4 < 256 - var6 - 1)
                 {
                     var9 = 3;
-                    byte var18 = 0;
+                    final byte var18 = 0;
                     int var13;
                     int var14;
                     int var15;
@@ -130,9 +130,9 @@ public class GCCoreWorldGenTrees extends WorldGenerator
 
                             for (int var16 = par5 - var13; var16 <= par5 + var13; ++var16)
                             {
-                                int var17 = var16 - par5;
+                                final int var17 = var16 - par5;
 
-                                Block block = Block.blocksList[par1World.getBlockId(var14, var11, var16)];
+                                final Block block = Block.blocksList[par1World.getBlockId(var14, var11, var16)];
 
                                 if ((Math.abs(var15) != var13 || Math.abs(var17) != var13 || par2Random.nextInt(2) != 0 && var12 != 0) && 
                                     (block == null || block.canBeReplacedByLeaves(par1World, var14, var11, var16)))
@@ -147,7 +147,7 @@ public class GCCoreWorldGenTrees extends WorldGenerator
                     {
                         var12 = par1World.getBlockId(par3, par4 + var11, par5);
 
-                        Block block = Block.blocksList[var12];
+                        final Block block = Block.blocksList[var12];
 
                         if (var12 == 0 || block == null || block.isLeaves(par1World, par3, par4 + var11, par5))
                         {
@@ -189,7 +189,7 @@ public class GCCoreWorldGenTrees extends WorldGenerator
                             {
                                 for (var15 = par5 - var13; var15 <= par5 + var13; ++var15)
                                 {
-                                    Block block = Block.blocksList[par1World.getBlockId(var14, var11, var15)];
+                                    final Block block = Block.blocksList[par1World.getBlockId(var14, var11, var15)];
                                     if (block != null && block.isLeaves(par1World, var14, var11, var15))
                                     {
                                         if (par2Random.nextInt(4) == 0 && par1World.getBlockId(var14 - 1, var11, var15) == 0)

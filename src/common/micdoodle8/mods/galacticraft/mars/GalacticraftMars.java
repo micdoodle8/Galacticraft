@@ -100,13 +100,13 @@ public class GalacticraftMars implements IGalacticraftSubMod
 	
 	public void registerCreatures()
 	{
-		registerGalacticraftCreature(GCMarsEntityCreeperBoss.class, "Creeper Boss", GCMarsConfigManager.idEntityCreeperBoss, 894731, 0);
-		registerGalacticraftCreature(GCMarsEntitySludgeling.class, "Sludgeling", GCMarsConfigManager.idEntitySludgeling, 25600, 0);
+		this.registerGalacticraftCreature(GCMarsEntityCreeperBoss.class, "Creeper Boss", GCMarsConfigManager.idEntityCreeperBoss, 894731, 0);
+		this.registerGalacticraftCreature(GCMarsEntitySludgeling.class, "Sludgeling", GCMarsConfigManager.idEntitySludgeling, 25600, 0);
 	}
 	
 	public void registerOtherEntities()
 	{
-		registerGalacticraftNonMobEntity(GCMarsEntityProjectileTNT.class, "Projectile TNT", GCMarsConfigManager.idEntityProjectileTNT, 150, 5, true);
+		this.registerGalacticraftNonMobEntity(GCMarsEntityProjectileTNT.class, "Projectile TNT", GCMarsConfigManager.idEntityProjectileTNT, 150, 5, true);
 	}
 
 	@PostInit
@@ -141,9 +141,9 @@ public class GalacticraftMars implements IGalacticraftSubMod
         @Override
         public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player p)
         {
-            DataInputStream data = new DataInputStream(new ByteArrayInputStream(packet.data));
-            int packetType = GCCoreUtil.readPacketID(data);
-            EntityPlayerMP player = (EntityPlayerMP)p;
+            final DataInputStream data = new DataInputStream(new ByteArrayInputStream(packet.data));
+            final int packetType = GCCoreUtil.readPacketID(data);
+            final EntityPlayerMP player = (EntityPlayerMP)p;
             
             if (packetType == 0)
             {

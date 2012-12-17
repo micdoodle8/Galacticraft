@@ -96,15 +96,15 @@ public class GCMarsEntityCreeperBoss extends EntityMob
             this.dataWatcher.updateObject(16, Integer.valueOf(this.health));
         }
 		
-		if (this.getBossHealth() >= (2 * (this.getMaxHealth() / 3)))
+		if (this.getBossHealth() >= 2 * (this.getMaxHealth() / 3))
 		{
         	this.headsRemaining = 3;
 		}
-		else if (this.getBossHealth() >= (this.getMaxHealth() / 3))
+		else if (this.getBossHealth() >= this.getMaxHealth() / 3)
 		{
 			this.headsRemaining = 2;
 		}
-		else if (this.getBossHealth() <= (this.getMaxHealth() / 3))
+		else if (this.getBossHealth() <= this.getMaxHealth() / 3)
 		{
 			this.headsRemaining = 1;
 		}
@@ -122,20 +122,20 @@ public class GCMarsEntityCreeperBoss extends EntityMob
         
         if (!this.worldObj.isRemote && this.timeSinceTNTFired == 0)
     	{
-    		double var9 = -1.0D;
-            EntityPlayer var11 = null;
+    		final double var9 = -1.0D;
+            final EntityPlayer var11 = null;
 
             for (int var12 = 0; var12 < this.worldObj.playerEntities.size(); ++var12)
             {
-                EntityPlayer var13 = (EntityPlayer)this.worldObj.playerEntities.get(var12);
+                final EntityPlayer var13 = (EntityPlayer)this.worldObj.playerEntities.get(var12);
 
                 if (!var13.capabilities.isCreativeMode)
                 {
-                    double var14 = var13.getDistanceSq(this.posX, this.posY, this.posZ);
+                    final double var14 = var13.getDistanceSq(this.posX, this.posY, this.posZ);
 
                     if ((5 < 0.0D || var14 < 5 * 5) && (var9 == -1.0D || var14 < var9))
                     {
-                        GCCoreUtil.createNewExplosion(worldObj, this, this.posX, this.posY, this.posZ, 12.0F, true);
+                        GCCoreUtil.createNewExplosion(this.worldObj, this, this.posX, this.posY, this.posZ, 12.0F, true);
                         this.timeSinceTNTFired = 100;
                     }
                 }
@@ -164,7 +164,7 @@ public class GCMarsEntityCreeperBoss extends EntityMob
         if (this.isEntityAlive())
         {
             this.lastActiveTime = this.timeSinceIgnited;
-            int var1 = this.getCreeperState();
+            final int var1 = this.getCreeperState();
 
             if (var1 > 0 && this.timeSinceIgnited == 0)
             {
@@ -208,9 +208,9 @@ public class GCMarsEntityCreeperBoss extends EntityMob
 
         if (this.deathTicks >= 180 && this.deathTicks <= 200)
         {
-            float var1 = (this.rand.nextFloat() - 0.5F) * 8.0F;
-            float var2 = (this.rand.nextFloat() - 0.5F) * 4.0F;
-            float var3 = (this.rand.nextFloat() - 0.5F) * 8.0F;
+            final float var1 = (this.rand.nextFloat() - 0.5F) * 8.0F;
+            final float var2 = (this.rand.nextFloat() - 0.5F) * 4.0F;
+            final float var3 = (this.rand.nextFloat() - 0.5F) * 8.0F;
             this.worldObj.spawnParticle("hugeexplosion", this.posX + var1, this.posY + 2.0D + var2, this.posZ + var3, 0.0D, 0.0D, 0.0D);
         }
 
@@ -229,7 +229,7 @@ public class GCMarsEntityCreeperBoss extends EntityMob
             }
         }
 
-        this.moveEntity(0.0D, (this.deathTicks / 375D), 0.0D);
+        this.moveEntity(0.0D, this.deathTicks / 375D, 0.0D);
 
         if (this.deathTicks == 200 && !this.worldObj.isRemote)
         {

@@ -25,17 +25,17 @@ public abstract class GCCoreEntityMob extends EntityMob
     	
     	this.fallDistance = 0;
 
-        if (this.rand.nextFloat() < 0.8F && handleBacterialMovement())
+        if (this.rand.nextFloat() < 0.8F && this.handleBacterialMovement())
         {
             this.isJumping = true;
         }
 		
-		if (handleBacterialMovement() && !this.isPotionActive(Potion.poison))
+		if (this.handleBacterialMovement() && !this.isPotionActive(Potion.poison))
 		{
 			this.addPotionEffect(new PotionEffect(Potion.poison.id, 40, 0));
 		}
 		
-		if (handleBacterialMovement() && !this.isPotionActive(Potion.weakness))
+		if (this.handleBacterialMovement() && !this.isPotionActive(Potion.weakness))
 		{
 			this.addPotionEffect(new PotionEffect(Potion.weakness.id, 40, 0));
 		}
@@ -48,7 +48,7 @@ public abstract class GCCoreEntityMob extends EntityMob
 		
         if (this.handleBacterialMovement())
         {
-            double var9 = this.posY;
+            final double var9 = this.posY;
             this.moveFlying(par1, par2, 0.02F);
             this.moveEntity(this.motionX, this.motionY, this.motionZ);
             this.motionX *= 0.5D;

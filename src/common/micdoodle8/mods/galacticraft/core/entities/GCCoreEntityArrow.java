@@ -75,20 +75,20 @@ public class GCCoreEntityArrow extends Entity
         }
 
         this.posY = par2EntityLiving.posY + par2EntityLiving.getEyeHeight() - 0.10000000149011612D;
-        double var6 = par3EntityLiving.posX - par2EntityLiving.posX;
-        double var8 = par3EntityLiving.posY + par3EntityLiving.getEyeHeight() - 0.699999988079071D - this.posY;
-        double var10 = par3EntityLiving.posZ - par2EntityLiving.posZ;
-        double var12 = MathHelper.sqrt_double(var6 * var6 + var10 * var10);
+        final double var6 = par3EntityLiving.posX - par2EntityLiving.posX;
+        final double var8 = par3EntityLiving.posY + par3EntityLiving.getEyeHeight() - 0.699999988079071D - this.posY;
+        final double var10 = par3EntityLiving.posZ - par2EntityLiving.posZ;
+        final double var12 = MathHelper.sqrt_double(var6 * var6 + var10 * var10);
 
         if (var12 >= 1.0E-7D)
         {
-            float var14 = (float)(Math.atan2(var10, var6) * 180.0D / Math.PI) - 90.0F;
-            float var15 = (float)(-(Math.atan2(var8, var12) * 180.0D / Math.PI));
-            double var16 = var6 / var12;
-            double var18 = var10 / var12;
+            final float var14 = (float)(Math.atan2(var10, var6) * 180.0D / Math.PI) - 90.0F;
+            final float var15 = (float)-(Math.atan2(var8, var12) * 180.0D / Math.PI);
+            final double var16 = var6 / var12;
+            final double var18 = var10 / var12;
             this.setLocationAndAngles(par2EntityLiving.posX + var16, this.posY, par2EntityLiving.posZ + var18, var14, var15);
             this.yOffset = 0.0F;
-            float var20 = (float)var12 * 0.2F;
+            final float var20 = (float)var12 * 0.2F;
             this.setArrowHeading(var6, var8 + var20, var10, par4, par5);
         }
     }
@@ -112,7 +112,7 @@ public class GCCoreEntityArrow extends Entity
         this.yOffset = 0.0F;
         this.motionX = -MathHelper.sin(this.rotationYaw / 180.0F * (float)Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float)Math.PI);
         this.motionZ = MathHelper.cos(this.rotationYaw / 180.0F * (float)Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float)Math.PI);
-        this.motionY = (-MathHelper.sin(this.rotationPitch / 180.0F * (float)Math.PI));
+        this.motionY = -MathHelper.sin(this.rotationPitch / 180.0F * (float)Math.PI);
         this.setArrowHeading(this.motionX, this.motionY, this.motionZ, par3 * 1.5F, 1.0F);
     }
 
@@ -128,7 +128,7 @@ public class GCCoreEntityArrow extends Entity
      */
     public void setArrowHeading(double par1, double par3, double par5, float par7, float par8)
     {
-        float var9 = MathHelper.sqrt_double(par1 * par1 + par3 * par3 + par5 * par5);
+        final float var9 = MathHelper.sqrt_double(par1 * par1 + par3 * par3 + par5 * par5);
         par1 /= var9;
         par3 /= var9;
         par5 /= var9;
@@ -141,7 +141,7 @@ public class GCCoreEntityArrow extends Entity
         this.motionX = par1;
         this.motionY = par3;
         this.motionZ = par5;
-        float var10 = MathHelper.sqrt_double(par1 * par1 + par5 * par5);
+        final float var10 = MathHelper.sqrt_double(par1 * par1 + par5 * par5);
         this.prevRotationYaw = this.rotationYaw = (float)(Math.atan2(par1, par5) * 180.0D / Math.PI);
         this.prevRotationPitch = this.rotationPitch = (float)(Math.atan2(par3, var10) * 180.0D / Math.PI);
         this.ticksInGround = 0;
@@ -174,7 +174,7 @@ public class GCCoreEntityArrow extends Entity
 
         if (this.prevRotationPitch == 0.0F && this.prevRotationYaw == 0.0F)
         {
-            float var7 = MathHelper.sqrt_double(par1 * par1 + par5 * par5);
+            final float var7 = MathHelper.sqrt_double(par1 * par1 + par5 * par5);
             this.prevRotationYaw = this.rotationYaw = (float)(Math.atan2(par1, par5) * 180.0D / Math.PI);
             this.prevRotationPitch = this.rotationPitch = (float)(Math.atan2(par3, var7) * 180.0D / Math.PI);
             this.prevRotationPitch = this.rotationPitch;
@@ -194,17 +194,17 @@ public class GCCoreEntityArrow extends Entity
 
         if (this.prevRotationPitch == 0.0F && this.prevRotationYaw == 0.0F)
         {
-            float var1 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
+            final float var1 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
             this.prevRotationYaw = this.rotationYaw = (float)(Math.atan2(this.motionX, this.motionZ) * 180.0D / Math.PI);
             this.prevRotationPitch = this.rotationPitch = (float)(Math.atan2(this.motionY, var1) * 180.0D / Math.PI);
         }
 
-        int var16 = this.worldObj.getBlockId(this.xTile, this.yTile, this.zTile);
+        final int var16 = this.worldObj.getBlockId(this.xTile, this.yTile, this.zTile);
 
         if (var16 > 0)
         {
             Block.blocksList[var16].setBlockBoundsBasedOnState(this.worldObj, this.xTile, this.yTile, this.zTile);
-            AxisAlignedBB var2 = Block.blocksList[var16].getCollisionBoundingBoxFromPool(this.worldObj, this.xTile, this.yTile, this.zTile);
+            final AxisAlignedBB var2 = Block.blocksList[var16].getCollisionBoundingBoxFromPool(this.worldObj, this.xTile, this.yTile, this.zTile);
 
             if (var2 != null && var2.isVecInside(this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ)))
             {
@@ -219,8 +219,8 @@ public class GCCoreEntityArrow extends Entity
 
         if (this.inGround)
         {
-            int var18 = this.worldObj.getBlockId(this.xTile, this.yTile, this.zTile);
-            int var19 = this.worldObj.getBlockMetadata(this.xTile, this.yTile, this.zTile);
+            final int var18 = this.worldObj.getBlockId(this.xTile, this.yTile, this.zTile);
+            final int var19 = this.worldObj.getBlockMetadata(this.xTile, this.yTile, this.zTile);
 
             if (var18 == this.inTile && var19 == this.inData)
             {
@@ -256,24 +256,24 @@ public class GCCoreEntityArrow extends Entity
             }
 
             Entity var5 = null;
-            List var6 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
+            final List var6 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
             double var7 = 0.0D;
-            Iterator var9 = var6.iterator();
+            final Iterator var9 = var6.iterator();
             float var11;
 
             while (var9.hasNext())
             {
-                Entity var10 = (Entity)var9.next();
+                final Entity var10 = (Entity)var9.next();
 
                 if (var10.canBeCollidedWith() && (var10 != this.shootingEntity || this.ticksInAir >= 5))
                 {
                     var11 = 0.3F;
-                    AxisAlignedBB var12 = var10.boundingBox.expand(var11, var11, var11);
-                    MovingObjectPosition var13 = var12.calculateIntercept(var17, var3);
+                    final AxisAlignedBB var12 = var10.boundingBox.expand(var11, var11, var11);
+                    final MovingObjectPosition var13 = var12.calculateIntercept(var17, var3);
 
                     if (var13 != null)
                     {
-                        double var14 = var17.distanceTo(var13.hitVec);
+                        final double var14 = var17.distanceTo(var13.hitVec);
 
                         if (var14 < var7 || var7 == 0.0D)
                         {
@@ -327,7 +327,7 @@ public class GCCoreEntityArrow extends Entity
 
                             if (this.knockbackStrength > 0)
                             {
-                                float var25 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
+                                final float var25 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
 
                                 if (var25 > 0.0F)
                                 {
@@ -356,9 +356,9 @@ public class GCCoreEntityArrow extends Entity
                     this.zTile = var4.blockZ;
                     this.inTile = this.worldObj.getBlockId(this.xTile, this.yTile, this.zTile);
                     this.inData = this.worldObj.getBlockMetadata(this.xTile, this.yTile, this.zTile);
-                    this.motionX = ((float)(var4.hitVec.xCoord - this.posX));
-                    this.motionY = ((float)(var4.hitVec.yCoord - this.posY));
-                    this.motionZ = ((float)(var4.hitVec.zCoord - this.posZ));
+                    this.motionX = (float)(var4.hitVec.xCoord - this.posX);
+                    this.motionY = (float)(var4.hitVec.yCoord - this.posY);
+                    this.motionZ = (float)(var4.hitVec.zCoord - this.posZ);
                     var20 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
                     this.posX -= this.motionX / var20 * 0.05000000074505806D;
                     this.posY -= this.motionY / var20 * 0.05000000074505806D;
@@ -413,7 +413,7 @@ public class GCCoreEntityArrow extends Entity
             {
                 for (int var26 = 0; var26 < 4; ++var26)
                 {
-                    float var27 = 0.25F;
+                    final float var27 = 0.25F;
                     this.worldObj.spawnParticle("bubble", this.posX - this.motionX * var27, this.posY - this.motionY * var27, this.posZ - this.motionZ * var27, this.motionX, this.motionY, this.motionZ);
                 }
 
@@ -431,7 +431,7 @@ public class GCCoreEntityArrow extends Entity
     
     public static DamageSource causeArrowDamage(GCCoreEntityArrow par0EntityArrow, Entity par1Entity)
     {
-        return (new EntityDamageSourceIndirect("arrow", par0EntityArrow, par1Entity)).setProjectile();
+        return new EntityDamageSourceIndirect("arrow", par0EntityArrow, par1Entity).setProjectile();
     }
 
     /**
@@ -540,7 +540,7 @@ public class GCCoreEntityArrow extends Entity
 
     public void func_70243_d(boolean par1)
     {
-        byte var2 = this.dataWatcher.getWatchableObjectByte(16);
+        final byte var2 = this.dataWatcher.getWatchableObjectByte(16);
 
         if (par1)
         {
@@ -554,7 +554,7 @@ public class GCCoreEntityArrow extends Entity
 
     public boolean func_70241_g()
     {
-        byte var1 = this.dataWatcher.getWatchableObjectByte(16);
+        final byte var1 = this.dataWatcher.getWatchableObjectByte(16);
         return (var1 & 1) != 0;
     }
 }

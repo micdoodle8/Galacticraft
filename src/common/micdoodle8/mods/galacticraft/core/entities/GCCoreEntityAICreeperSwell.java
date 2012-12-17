@@ -31,7 +31,7 @@ public class GCCoreEntityAICreeperSwell extends EntityAIBase
     @Override
 	public boolean shouldExecute()
     {
-        EntityLiving var1 = this.swellingCreeper.getAttackTarget();
+        final EntityLiving var1 = this.swellingCreeper.getAttackTarget();
         return this.swellingCreeper.getCreeperState() > 0 || var1 != null && this.swellingCreeper.getDistanceSqToEntity(var1) < 9.0D;
     }
 

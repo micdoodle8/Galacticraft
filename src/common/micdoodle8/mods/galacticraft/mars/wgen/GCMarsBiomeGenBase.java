@@ -13,7 +13,7 @@ import net.minecraft.src.SpawnListEntry;
  */
 public class GCMarsBiomeGenBase extends BiomeGenBase
 {
-    public static final BiomeGenBase marsFlat = (new GCMarsBiomeGenFlat(103)).setBiomeName("marsFlat");
+    public static final BiomeGenBase marsFlat = new GCMarsBiomeGenFlat(103).setBiomeName("marsFlat");
 
     public GCMarsBiomeGenBase(int var1)
     {

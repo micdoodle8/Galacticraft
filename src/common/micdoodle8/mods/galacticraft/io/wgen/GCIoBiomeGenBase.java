@@ -13,7 +13,7 @@ import net.minecraft.src.SpawnListEntry;
  */
 public class GCIoBiomeGenBase extends BiomeGenBase
 {
-    public static final BiomeGenBase europaFlat = (new GCIoBiomeGenFlat(103)).setBiomeName("europaFlat");
+    public static final BiomeGenBase europaFlat = new GCIoBiomeGenFlat(103).setBiomeName("europaFlat");
 
     public GCIoBiomeGenBase(int var1)
     {

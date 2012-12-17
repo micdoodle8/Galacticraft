@@ -190,19 +190,19 @@ public class GalacticraftCore
 	
 	public void registerCreatures()
 	{
-		registerGalacticraftCreature(GCCoreEntitySpider.class, "Evolved Spider", GCCoreConfigManager.idEntityEvolvedSpider, 3419431, 11013646);
-		registerGalacticraftCreature(GCCoreEntityZombie.class, "Evolved Zombie", GCCoreConfigManager.idEntityEvolvedZombie, 44975, 7969893);
-		registerGalacticraftCreature(GCCoreEntityCreeper.class, "Evolved Creeper", GCCoreConfigManager.idEntityEvolvedCreeper, 894731, 0);
-		registerGalacticraftCreature(GCCoreEntitySkeleton.class, "Evolved Skeleton", GCCoreConfigManager.idEntityEvolvedSkeleton, 12698049, 4802889);
+		this.registerGalacticraftCreature(GCCoreEntitySpider.class, "Evolved Spider", GCCoreConfigManager.idEntityEvolvedSpider, 3419431, 11013646);
+		this.registerGalacticraftCreature(GCCoreEntityZombie.class, "Evolved Zombie", GCCoreConfigManager.idEntityEvolvedZombie, 44975, 7969893);
+		this.registerGalacticraftCreature(GCCoreEntityCreeper.class, "Evolved Creeper", GCCoreConfigManager.idEntityEvolvedCreeper, 894731, 0);
+		this.registerGalacticraftCreature(GCCoreEntitySkeleton.class, "Evolved Skeleton", GCCoreConfigManager.idEntityEvolvedSkeleton, 12698049, 4802889);
 	}
 	
 	public void registerOtherEntities()
 	{
-		registerGalacticraftNonMobEntity(GCCoreEntitySpaceship.class, "Spaceship", GCCoreConfigManager.idEntitySpaceship, 150, 1, true);
-		registerGalacticraftNonMobEntity(GCCoreEntityArrow.class, "Gravity Arrow", GCCoreConfigManager.idEntityAntiGravityArrow, 150, 5, true);
-		registerGalacticraftNonMobEntity(GCCoreEntityMeteor.class, "Meteor", GCCoreConfigManager.idEntityMeteor, 150, 5, true);
-		registerGalacticraftNonMobEntity(GCCoreEntityBuggy.class, "Buggy", GCCoreConfigManager.idEntityBuggy, 150, 5, true);
-		registerGalacticraftNonMobEntity(GCCoreEntityFlag.class, "Flag", GCCoreConfigManager.idEntityFlag, 150, 5, true);
+		this.registerGalacticraftNonMobEntity(GCCoreEntitySpaceship.class, "Spaceship", GCCoreConfigManager.idEntitySpaceship, 150, 1, true);
+		this.registerGalacticraftNonMobEntity(GCCoreEntityArrow.class, "Gravity Arrow", GCCoreConfigManager.idEntityAntiGravityArrow, 150, 5, true);
+		this.registerGalacticraftNonMobEntity(GCCoreEntityMeteor.class, "Meteor", GCCoreConfigManager.idEntityMeteor, 150, 5, true);
+		this.registerGalacticraftNonMobEntity(GCCoreEntityBuggy.class, "Buggy", GCCoreConfigManager.idEntityBuggy, 150, 5, true);
+		this.registerGalacticraftNonMobEntity(GCCoreEntityFlag.class, "Flag", GCCoreConfigManager.idEntityFlag, 150, 5, true);
 	}
 
     public void registerGalacticraftCreature(Class var0, String var1, int id, int back, int fore)
@@ -222,36 +222,36 @@ public class GalacticraftCore
         @Override
         public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player p)
         {
-            DataInputStream data = new DataInputStream(new ByteArrayInputStream(packet.data));
-            int packetType = GCCoreUtil.readPacketID(data);
-            EntityPlayerMP player = (EntityPlayerMP)p;
+            final DataInputStream data = new DataInputStream(new ByteArrayInputStream(packet.data));
+            final int packetType = GCCoreUtil.readPacketID(data);
+            final EntityPlayerMP player = (EntityPlayerMP)p;
             
             if (packetType == 0)
             {
-                Class[] decodeAs = {String.class};
-                Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
+                final Class[] decodeAs = {String.class};
+                final Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
 
                 player.openGui(instance, GCCoreConfigManager.idGuiTankRefill, player.worldObj, (int)player.posX, (int)player.posY, (int)player.posZ);
             }
             else if (packetType == 1)
             {
-                Class[] decodeAs = {String.class};
-                Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
+                final Class[] decodeAs = {String.class};
+                final Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
                 
                 player.playerNetServerHandler.sendPacketToPlayer(new Packet9Respawn(player.dimension, (byte)player.worldObj.difficultySetting, player.worldObj.getWorldInfo().getTerrainType(), player.worldObj.getHeight(), player.theItemInWorldManager.getGameType()));
             }
             else if (packetType == 2)
             {
-                Class[] decodeAs = {String.class};
-                Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
+                final Class[] decodeAs = {String.class};
+                final Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
                 
                 for (int j = 0; j < GalacticraftCore.instance.gcPlayers.size(); ++j)
 	            {
-                	GCCoreEntityPlayer playerBase = (GCCoreEntityPlayer) GalacticraftCore.instance.gcPlayers.get(j);
+                	final GCCoreEntityPlayer playerBase = (GCCoreEntityPlayer) GalacticraftCore.instance.gcPlayers.get(j);
 	    			
 	    			if (player.username == playerBase.getPlayer().username)
 	    			{
-	    	    		Integer dim = GCCoreUtil.getProviderForName((String)packetReadout[0]).dimensionId;
+	    	    		final Integer dim = GCCoreUtil.getProviderForName((String)packetReadout[0]).dimensionId;
 	    				playerBase.travelToTheEnd(dim);
 	    			}
 	            }
@@ -260,15 +260,15 @@ public class GalacticraftCore
             {
                 if (!player.worldObj.isRemote && !player.isDead && player.ridingEntity != null && !player.ridingEntity.isDead && player.ridingEntity instanceof GCCoreEntitySpaceship)
                 {
-                	GCCoreEntitySpaceship ship = (GCCoreEntitySpaceship) player.ridingEntity;
+                	final GCCoreEntitySpaceship ship = (GCCoreEntitySpaceship) player.ridingEntity;
                 	
                 	ship.ignite();
                 }
             }
             else if (packetType == 4)
             {
-                Class[] decodeAs = {Integer.class};
-                Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
+                final Class[] decodeAs = {Integer.class};
+                final Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
                 
             	if (player != null)
             	{
@@ -288,8 +288,8 @@ public class GalacticraftCore
             }
             else if (packetType == 5)
             {
-                Class[] decodeAs = {Integer.class};
-                Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
+                final Class[] decodeAs = {Integer.class};
+                final Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
                 
                 for(int i = 0; i < player.worldObj.getLoadedEntityList().size(); i++)
                 {
@@ -299,7 +299,7 @@ public class GalacticraftCore
 	                    FMLLog.info("" + packetReadout[0]);
 	                	if (player.worldObj.getLoadedEntityList().get(i) instanceof EntityLiving)
 	                	{
-	                        Object[] toSend = {((EntityLiving)player.worldObj.getLoadedEntityList().get(i)).getHealth(), (Integer)packetReadout[0]};
+	                        final Object[] toSend = {((EntityLiving)player.worldObj.getLoadedEntityList().get(i)).getHealth(), (Integer)packetReadout[0]};
 	                        
 	                        player.playerNetServerHandler.sendPacketToPlayer(GCCoreUtil.createPacket("Galacticraft", 3, toSend));
 	                	}
@@ -316,7 +316,7 @@ public class GalacticraftCore
 		{
 			if (type.equals(EnumSet.of(TickType.WORLD)))
             {
-				World world = (World) tickData[0];
+				final World world = (World) tickData[0];
 				
 				if (world.provider.getDimensionName() == "Overworld" && !world.isRemote)
 				{

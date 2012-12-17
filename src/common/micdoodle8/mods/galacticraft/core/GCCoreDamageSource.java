@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core;
 
 import net.minecraft.src.DamageSource;
 import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.StatCollector;
 
 public class GCCoreDamageSource extends DamageSource
 {

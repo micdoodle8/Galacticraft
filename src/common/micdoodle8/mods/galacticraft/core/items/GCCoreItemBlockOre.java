@@ -43,6 +43,6 @@ public class GCCoreItemBlockOre extends ItemBlock
 		default: 
 			name = "null";
 		}
-		return getItemName() + "." + name;
+		return this.getItemName() + "." + name;
 	}
 }

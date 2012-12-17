@@ -23,7 +23,7 @@ public class GCCoreTileEntityOxygenCollector extends TileEntity
 			{
 				for (int z = this.zCoord - 10; z <= this.zCoord + 10; z++)
 				{
-					Block block = Block.blocksList[this.worldObj.getBlockId(x, y, z)];
+					final Block block = Block.blocksList[this.worldObj.getBlockId(x, y, z)];
 
 					if (block != null && block instanceof BlockLeaves)
 					{
@@ -37,7 +37,7 @@ public class GCCoreTileEntityOxygenCollector extends TileEntity
 
 //		if (!this.worldObj.isRemote)
 		{
-			int[] idSet = new int[6];
+			final int[] idSet = new int[6];
 			
 			idSet[0] = this.worldObj.getBlockId(this.xCoord + 1, this.yCoord, this.zCoord);
 			idSet[1] = this.worldObj.getBlockId(this.xCoord - 1, this.yCoord, this.zCoord);

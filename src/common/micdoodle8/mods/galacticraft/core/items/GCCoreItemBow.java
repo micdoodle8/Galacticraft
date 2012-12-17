@@ -23,7 +23,7 @@ public class GCCoreItemBow extends ItemBow
     {
         int var6 = this.getMaxItemUseDuration(par1ItemStack) - par4;
         
-        ArrowLooseEvent event = new ArrowLooseEvent(par3EntityPlayer, par1ItemStack, var6);
+        final ArrowLooseEvent event = new ArrowLooseEvent(par3EntityPlayer, par1ItemStack, var6);
         MinecraftForge.EVENT_BUS.post(event);
         if (event.isCanceled())
         {
@@ -31,7 +31,7 @@ public class GCCoreItemBow extends ItemBow
         }
         var6 = event.charge;
         
-        boolean var5 = par3EntityPlayer.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantment.infinity.effectId, par1ItemStack) > 0;
+        final boolean var5 = par3EntityPlayer.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantment.infinity.effectId, par1ItemStack) > 0;
 
         if (var5 || par3EntityPlayer.inventory.hasItem(Item.arrow.shiftedIndex))
         {
@@ -48,21 +48,21 @@ public class GCCoreItemBow extends ItemBow
                 var7 = 1.0F;
             }
 
-            GCCoreEntityArrow var8 = new GCCoreEntityArrow(par2World, par3EntityPlayer, var7 * 2.0F);
+            final GCCoreEntityArrow var8 = new GCCoreEntityArrow(par2World, par3EntityPlayer, var7 * 2.0F);
 
             if (var7 == 1.0F)
             {
                 var8.func_70243_d(true);
             }
 
-            int var9 = EnchantmentHelper.getEnchantmentLevel(Enchantment.power.effectId, par1ItemStack);
+            final int var9 = EnchantmentHelper.getEnchantmentLevel(Enchantment.power.effectId, par1ItemStack);
 
             if (var9 > 0)
             {
                 var8.setDamage(var8.getDamage() + var9 * 0.5D + 0.5D);
             }
 
-            int var10 = EnchantmentHelper.getEnchantmentLevel(Enchantment.punch.effectId, par1ItemStack);
+            final int var10 = EnchantmentHelper.getEnchantmentLevel(Enchantment.punch.effectId, par1ItemStack);
 
             if (var10 > 0)
             {
