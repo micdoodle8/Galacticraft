@@ -14,7 +14,7 @@ public class GCCoreMapSun implements IMapPlanet
 	@Override
 	public float getPlanetSize() 
 	{
-		return 100F;
+		return 15F * 108F;
 	}
 
 	@Override

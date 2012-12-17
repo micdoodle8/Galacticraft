@@ -14,7 +14,7 @@ public class GCJupiterMapPlanet implements IMapPlanet
 	@Override
 	public float getPlanetSize() 
 	{
-		return 15;
+		return 15F * 11.1F;
 	}
 
 	@Override

@@ -14,7 +14,7 @@ public class GCSaturnMapPlanet implements IMapPlanet
 	@Override
 	public float getPlanetSize() 
 	{
-		return 20;
+		return 15F * 9.41F;
 	}
 
 	@Override

@@ -14,7 +14,7 @@ public class GCNeptuneMapPlanet implements IMapPlanet
 	@Override
 	public float getPlanetSize() 
 	{
-		return 15;
+		return 15F * 3.88F;
 	}
 
 	@Override

@@ -14,7 +14,7 @@ public class GCMarsMapPlanet implements IMapPlanet
 	@Override
 	public float getPlanetSize() 
 	{
-		return 15;
+		return 15F / 1.88F;
 	}
 
 	@Override

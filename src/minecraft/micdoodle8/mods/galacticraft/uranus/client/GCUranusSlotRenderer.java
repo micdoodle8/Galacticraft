@@ -9,13 +9,13 @@ public class GCUranusSlotRenderer implements IPlanetSlotRenderer
 	@Override
 	public String getPlanetSprite() 
 	{
-		return "/micdoodle8/mods/galacticraft/jupiter/client/planets/jupiter.png";
+		return "/micdoodle8/mods/galacticraft/uranus/client/planets/uranus.png";
 	}
 
 	@Override
 	public String getPlanetName() 
 	{
-		return "Jupiter";
+		return "Uranus";
 	}
 
 	@Override

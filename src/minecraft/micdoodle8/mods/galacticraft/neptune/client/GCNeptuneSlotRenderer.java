@@ -10,13 +10,13 @@ public class GCNeptuneSlotRenderer implements IPlanetSlotRenderer
 	@Override
 	public String getPlanetSprite() 
 	{
-		return "/micdoodle8/mods/galacticraft/jupiter/client/planets/jupiter.png";
+		return "/micdoodle8/mods/galacticraft/neptune/client/planets/neptune.png";
 	}
 
 	@Override
 	public String getPlanetName() 
 	{
-		return "Jupiter";
+		return "Neptune";
 	}
 
 	@Override

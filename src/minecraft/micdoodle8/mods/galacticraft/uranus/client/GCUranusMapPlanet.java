@@ -14,7 +14,7 @@ public class GCUranusMapPlanet implements IMapPlanet
 	@Override
 	public float getPlanetSize() 
 	{
-		return 15;
+		return 60F;
 	}
 
 	@Override
