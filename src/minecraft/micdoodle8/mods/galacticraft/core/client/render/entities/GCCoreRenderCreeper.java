@@ -5,13 +5,13 @@ import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelCreeper;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityCreeper;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemSensorGlasses;
 import net.minecraft.client.Minecraft;
-import net.minecraft.src.EntityLiving;
-import net.minecraft.src.EntityPlayerSP;
-import net.minecraft.src.ItemStack;
-import net.minecraft.src.MathHelper;
-import net.minecraft.src.ModelBase;
-import net.minecraft.src.RenderLiving;
-import net.minecraft.src.WorldClient;
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.multiplayer.WorldClient;
+import net.minecraft.client.renderer.entity.RenderLiving;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.MathHelper;
 
 import org.lwjgl.opengl.GL11;
 

@@ -5,12 +5,12 @@ import java.util.Random;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.io.dimension.GCIoWorldProvider;
 import net.minecraft.client.Minecraft;
-import net.minecraft.src.GLAllocation;
-import net.minecraft.src.MathHelper;
-import net.minecraft.src.RenderHelper;
-import net.minecraft.src.Tessellator;
-import net.minecraft.src.Vec3;
-import net.minecraft.src.WorldClient;
+import net.minecraft.client.multiplayer.WorldClient;
+import net.minecraft.client.renderer.GLAllocation;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.util.MathHelper;
+import net.minecraft.util.Vec3;
 import net.minecraftforge.client.SkyProvider;
 
 import org.lwjgl.opengl.GL11;

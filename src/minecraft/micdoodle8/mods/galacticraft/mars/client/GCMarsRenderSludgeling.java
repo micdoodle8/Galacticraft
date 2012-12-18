@@ -1,9 +1,9 @@
 package micdoodle8.mods.galacticraft.mars.client;
 
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntitySludgeling;
-import net.minecraft.src.Entity;
-import net.minecraft.src.EntityLiving;
-import net.minecraft.src.RenderLiving;
+import net.minecraft.client.renderer.entity.RenderLiving;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 

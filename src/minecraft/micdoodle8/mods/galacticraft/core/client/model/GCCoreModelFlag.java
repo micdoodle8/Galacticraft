@@ -1,11 +1,11 @@
 package micdoodle8.mods.galacticraft.core.client.model;
 
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityFlag;
-import net.minecraft.src.Entity;
-import net.minecraft.src.ModelBase;
-import net.minecraft.src.ModelRenderer;
-import net.minecraft.src.RenderEngine;
-import net.minecraft.src.StringUtils;
+import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.RenderEngine;
+import net.minecraft.entity.Entity;
+import net.minecraft.util.StringUtils;
 
 import org.lwjgl.opengl.GL11;
 

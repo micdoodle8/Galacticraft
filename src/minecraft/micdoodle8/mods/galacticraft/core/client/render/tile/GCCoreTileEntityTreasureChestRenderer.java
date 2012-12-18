@@ -2,11 +2,11 @@ package micdoodle8.mods.galacticraft.core.client.render.tile;
 
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockTreasureChest;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
-import net.minecraft.src.Block;
-import net.minecraft.src.ModelChest;
-import net.minecraft.src.ModelLargeChest;
-import net.minecraft.src.TileEntity;
-import net.minecraft.src.TileEntitySpecialRenderer;
+import net.minecraft.block.Block;
+import net.minecraft.client.model.ModelChest;
+import net.minecraft.client.model.ModelLargeChest;
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.tileentity.TileEntity;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;

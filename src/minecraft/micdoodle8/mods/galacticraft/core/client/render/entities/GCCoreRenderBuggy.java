@@ -2,10 +2,9 @@ package micdoodle8.mods.galacticraft.core.client.render.entities;
 
 import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelBuggy;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityBuggy;
-import net.minecraft.src.Entity;
-import net.minecraft.src.Render;
+import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.entity.Entity;
 
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.common.Side;

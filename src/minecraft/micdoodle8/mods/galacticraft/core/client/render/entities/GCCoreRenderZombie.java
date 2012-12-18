@@ -4,12 +4,12 @@ import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelZombie;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemSensorGlasses;
 import net.minecraft.client.Minecraft;
-import net.minecraft.src.EntityLiving;
-import net.minecraft.src.EntityPlayerSP;
-import net.minecraft.src.ItemStack;
-import net.minecraft.src.ModelBase;
-import net.minecraft.src.RenderLiving;
-import net.minecraft.src.WorldClient;
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.multiplayer.WorldClient;
+import net.minecraft.client.renderer.entity.RenderLiving;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.item.ItemStack;
 
 import org.lwjgl.opengl.GL11;
 

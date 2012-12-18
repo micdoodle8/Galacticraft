@@ -1,11 +1,11 @@
 package micdoodle8.mods.galacticraft.mars.client;
 
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
-import net.minecraft.src.BlockFluid;
-import net.minecraft.src.EntityFX;
-import net.minecraft.src.Material;
-import net.minecraft.src.MathHelper;
-import net.minecraft.src.World;
+import net.minecraft.block.BlockFluid;
+import net.minecraft.block.material.Material;
+import net.minecraft.client.particle.EntityFX;
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.World;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 

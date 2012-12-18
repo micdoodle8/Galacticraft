@@ -1,10 +1,10 @@
 package micdoodle8.mods.galacticraft.core.client.sounds;
 
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpaceship;
-import net.minecraft.src.EntityPlayerSP;
-import net.minecraft.src.IUpdatePlayerListBox;
-import net.minecraft.src.MathHelper;
-import net.minecraft.src.SoundManager;
+import net.minecraft.client.audio.SoundManager;
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.server.gui.IUpdatePlayerListBox;
+import net.minecraft.util.MathHelper;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 

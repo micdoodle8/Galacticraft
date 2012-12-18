@@ -2,8 +2,8 @@ package micdoodle8.mods.galacticraft.core.client.gui;
 
 import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import net.minecraft.src.GuiSlot;
-import net.minecraft.src.Tessellator;
+import net.minecraft.client.gui.GuiSlot;
+import net.minecraft.client.renderer.Tessellator;
 
 import org.lwjgl.opengl.GL11;
 

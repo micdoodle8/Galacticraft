@@ -3,9 +3,9 @@ package micdoodle8.mods.galacticraft.core.client.render.item;
 import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelFlag;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityFlag;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemFlag;
-import net.minecraft.src.ItemStack;
-import net.minecraft.src.MathHelper;
-import net.minecraft.src.RenderBlocks;
+import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.MathHelper;
 import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;

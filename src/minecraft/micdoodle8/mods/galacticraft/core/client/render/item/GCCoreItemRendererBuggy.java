@@ -1,10 +1,9 @@
 package micdoodle8.mods.galacticraft.core.client.render.item;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelBuggy;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityBuggy;
-import net.minecraft.src.ItemStack;
-import net.minecraft.src.RenderBlocks;
+import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.Sys;

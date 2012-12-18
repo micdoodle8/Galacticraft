@@ -2,9 +2,9 @@ package micdoodle8.mods.galacticraft.core.client.render.entities;
 
 import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelMeteor;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityMeteor;
-import net.minecraft.src.Entity;
-import net.minecraft.src.Render;
-import net.minecraft.src.RenderBlocks;
+import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.entity.Entity;
 
 import org.lwjgl.opengl.GL11;
 

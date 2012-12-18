@@ -3,8 +3,8 @@ package micdoodle8.mods.galacticraft.core.client.render.entities;
 import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelFlag;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityFlag;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemFlag;
-import net.minecraft.src.Entity;
-import net.minecraft.src.Render;
+import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.entity.Entity;
 
 import org.lwjgl.opengl.GL11;
 

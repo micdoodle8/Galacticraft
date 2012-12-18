@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.moon.client;
 
-import net.minecraft.src.MathHelper;
+import net.minecraft.util.MathHelper;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
