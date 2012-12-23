@@ -4,8 +4,8 @@ import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntitySludgeling;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-import cpw.mods.fml.common.Side;
-import cpw.mods.fml.common.asm.SideOnly;
+import cpw.mods.fml.relauncher.SideOnly;
+import cpw.mods.fml.relauncher.Side;
 
 @SideOnly(Side.CLIENT)
 public class GCMarsRenderSludgeling extends RenderLiving

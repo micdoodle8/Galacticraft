@@ -32,7 +32,7 @@ public class GCCoreChunk extends Chunk
 
                         if (this.getBlockStorageArray()[var10] == null)
                         {
-                            this.getBlockStorageArray()[var10] = new ExtendedBlockStorage(var10 << 4);
+                            this.getBlockStorageArray()[var10] = new ExtendedBlockStorage(var10 << 4, !par1World.provider.hasNoSky);
                         }
 
                         this.getBlockStorageArray()[var10].setExtBlockID(var6, var8 & 15, var7, idAtCoord);

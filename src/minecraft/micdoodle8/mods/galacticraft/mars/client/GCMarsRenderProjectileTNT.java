@@ -11,8 +11,8 @@ import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.common.Side;
-import cpw.mods.fml.common.asm.SideOnly;
+import cpw.mods.fml.relauncher.SideOnly;
+import cpw.mods.fml.relauncher.Side;
 
 /**
  * Copyright 2012, micdoodle8
@@ -51,7 +51,7 @@ public class GCMarsRenderProjectileTNT extends Render
         }
         else if (var10 != null)
         {
-            this.renderBlocks.func_78588_a(var10, var11, MathHelper.floor_double(par1EntityFallingSand.posX), MathHelper.floor_double(par1EntityFallingSand.posY), MathHelper.floor_double(par1EntityFallingSand.posZ), 0);
+            this.renderBlocks.renderBlockSandFalling(var10, var11, MathHelper.floor_double(par1EntityFallingSand.posX), MathHelper.floor_double(par1EntityFallingSand.posY), MathHelper.floor_double(par1EntityFallingSand.posZ), 0);
         }
 
         GL11.glEnable(GL11.GL_LIGHTING);

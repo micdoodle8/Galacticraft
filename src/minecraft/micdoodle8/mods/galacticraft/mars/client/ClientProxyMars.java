@@ -33,7 +33,7 @@ import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.ITickHandler;
-import cpw.mods.fml.common.Side;
+import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -205,9 +205,9 @@ public class ClientProxyMars extends CommonProxyMars implements IGalacticraftSub
     			
     			if (world != null && world.provider instanceof GCMarsWorldProvider)
     			{
-    				if (world.provider.getSkyProvider() == null)
+    				if (world.provider.getSkyRenderer() == null)
                     {
-    					world.provider.setSkyProvider(new GCMarsSkyProvider());
+    					world.provider.setSkyRenderer(new GCMarsSkyProvider());
                     }
     			}
             }

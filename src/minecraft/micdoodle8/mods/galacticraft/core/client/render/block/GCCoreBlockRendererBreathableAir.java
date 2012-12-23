@@ -267,8 +267,8 @@ public class GCCoreBlockRendererBreathableAir implements ISimpleBlockRenderingHa
                 }
             }
 
-            renderBlocks.field_83027_i = var18;
-            renderBlocks.field_83024_j = var20;
+            renderBlocks.customMinY = var18;
+            renderBlocks.customMaxY = var20;
         }
     }
 }

@@ -16,8 +16,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.Side;
-import cpw.mods.fml.common.asm.SideOnly;
+import cpw.mods.fml.relauncher.SideOnly;
+import cpw.mods.fml.relauncher.Side;
 
 /**
  * Copyright 2012, micdoodle8
@@ -190,7 +190,7 @@ public class GCCoreBlockOxygenDistributor extends BlockContainer
 
                             if (var9.hasTagCompound())
                             {
-                                var14.item.setTagCompound((NBTTagCompound)var9.getTagCompound().copy());
+                                var14.func_92014_d().setTagCompound((NBTTagCompound)var9.getTagCompound().copy());
                             }
 
                             final float var15 = 0.05F;

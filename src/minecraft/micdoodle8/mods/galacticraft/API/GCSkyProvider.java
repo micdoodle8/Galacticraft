@@ -3,17 +3,16 @@ package micdoodle8.mods.galacticraft.API;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraftforge.client.SkyProvider;
+import net.minecraftforge.client.IRenderHandler;
+import cpw.mods.fml.relauncher.SideOnly;
+import cpw.mods.fml.relauncher.Side;
 
 import org.lwjgl.opengl.GL11;
-
-import cpw.mods.fml.common.Side;
-import cpw.mods.fml.common.asm.SideOnly;
 
 /**
  * SEE GITHUB REPO FOR EXAMPLE USAGE!
  */
-public abstract class GCSkyProvider extends SkyProvider
+public abstract class GCSkyProvider extends IRenderHandler
 {
 	/**
 	 * @return The X rotation for this planet, for example, the sun's rotation would be 
@@ -45,7 +44,6 @@ public abstract class GCSkyProvider extends SkyProvider
      */
     public abstract String[] getSpritesForRender();
 
-    @Override
     @SideOnly(Side.CLIENT)
     public void render(float partialTicks, WorldClient world, Minecraft mc)
     {

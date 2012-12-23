@@ -25,7 +25,7 @@ import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.ITickHandler;
-import cpw.mods.fml.common.Side;
+import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -145,9 +145,9 @@ public class ClientProxyEnceladus extends CommonProxyTitan implements IGalacticr
             {
     			if (world != null && world.provider instanceof GCEnceladusWorldProvider)
     			{
-    				if (world.provider.getSkyProvider() == null)
+    				if (world.provider.getSkyRenderer() == null)
                     {
-    					world.provider.setSkyProvider(new GCEnceladusSkyProvider());
+    					world.provider.setSkyRenderer(new GCEnceladusSkyProvider());
                     }
     			}
             }

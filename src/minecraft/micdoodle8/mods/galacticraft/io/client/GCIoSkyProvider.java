@@ -11,7 +11,7 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
-import net.minecraftforge.client.SkyProvider;
+import net.minecraftforge.client.IRenderHandler;
 
 import org.lwjgl.opengl.GL11;
 
@@ -23,7 +23,7 @@ import cpw.mods.fml.client.FMLClientHandler;
  *  All rights reserved.
  *
  */
-public class GCIoSkyProvider extends SkyProvider 
+public class GCIoSkyProvider extends IRenderHandler
 {
 	public int starGLCallList = GLAllocation.generateDisplayLists(3); 
 	public int glSkyList;
