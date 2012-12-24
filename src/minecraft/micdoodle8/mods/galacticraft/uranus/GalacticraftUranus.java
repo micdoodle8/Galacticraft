@@ -76,6 +76,6 @@ public class GalacticraftUranus implements IGalacticraftSubMod
 	@Override
 	public boolean reachableDestination() 
 	{
-		return true;
+		return false;
 	}
 }

@@ -49,8 +49,8 @@ public class GCCoreRenderSpaceship extends Render
         if (var28 > 0.0F)
         {
         	final float i = par1GCEntitySpaceship.getLaunched() == 0 ? (5 - MathHelper.floor_double(par1GCEntitySpaceship.getTimeUntilLaunch() / 85)) / 10F : 0.3F;
-//            GL11.glRotatef(MathHelper.sin(var28) * var28 * i * par1GCEntitySpaceship.func_70493_k() * par9, 1.0F, 0.0F, 0.0F);
-//            GL11.glRotatef(MathHelper.sin(var28) * var28 * i * par1GCEntitySpaceship.func_70493_k() * par9, 1.0F, 0.0F, 1.0F);
+            GL11.glRotatef(MathHelper.sin(var28) * var28 * i * par1GCEntitySpaceship.func_70493_k() * par9, 1.0F, 0.0F, 0.0F);
+            GL11.glRotatef(MathHelper.sin(var28) * var28 * i * par1GCEntitySpaceship.func_70493_k() * par9, 1.0F, 0.0F, 1.0F);
         }
 
         this.loadTexture("/micdoodle8/mods/galacticraft/core/client/entities/spaceship1.png");

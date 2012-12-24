@@ -76,6 +76,6 @@ public class GalacticraftNeptune implements IGalacticraftSubMod
 	@Override
 	public boolean reachableDestination() 
 	{
-		return true;
+		return false;
 	}
 }

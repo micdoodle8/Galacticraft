@@ -21,10 +21,10 @@ public class GCMoonSlotRenderer implements IPlanetSlotRenderer
 	public void renderSlot(int index, int x, int y, float slotHeight, Tessellator tessellator) 
 	{
 		tessellator.startDrawingQuads();
-		tessellator.addVertexWithUV(x - 10 - slotHeight * 0.9, 	y - 1 + slotHeight * 0.9, 		-90.0D, 0.35D, 0.65D);
-		tessellator.addVertexWithUV(x - 10, 					y - 1 + slotHeight * 0.9, 		-90.0D, 0.65D, 0.65D);
-		tessellator.addVertexWithUV(x - 10, 					y - 1, 							-90.0D, 0.65D, 0.35D);
-		tessellator.addVertexWithUV(x - 10 - slotHeight * 0.9, 	y - 1, 							-90.0D, 0.35D, 0.35D);
+		tessellator.addVertexWithUV(x - slotHeight / 2 * 1.25, 	y + slotHeight / 2 * 1.25, 		-90.0D, 0.35D, 0.65D);
+		tessellator.addVertexWithUV(x + slotHeight / 2 * 1.25, 	y + slotHeight / 2 * 1.25, 		-90.0D, 0.65D, 0.65D);
+		tessellator.addVertexWithUV(x + slotHeight / 2 * 1.25, 	y - slotHeight / 2 * 1.25, 		-90.0D, 0.65D, 0.35D);
+		tessellator.addVertexWithUV(x - slotHeight / 2 * 1.25, 	y - slotHeight / 2 * 1.25, 		-90.0D, 0.35D, 0.35D);
 	    tessellator.draw();
 	}
 }

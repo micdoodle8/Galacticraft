@@ -88,32 +88,10 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
         			{
             			GL11.glBindTexture(GL11.GL_TEXTURE_2D, FMLClientHandler.instance().getClient().renderEngine.getTexture(renderer.getPlanetSprite()));
 
-        				renderer.renderSlot(par1, par2, par3, par4, par5Tessellator);
+        				renderer.renderSlot(par1, par2 - 18, par3 + 7, par4, par5Tessellator);
         			}
             	}
             }
-            
-//    		for (IGalacticraftSubModClient mod : GalacticraftCore.clientSubMods)
-//    		{
-//    			String str = this.languageGui.getDestinations(languageGui)[par1].toLowerCase();
-//    			
-//    			if (str.contains("*"))
-//    			{
-//    				str = str.replace("*", "");
-//    			}
-//    			
-//    			if (mod.getDimensionName().toLowerCase().equals(str))
-//    			{
-//    	            GL11.glBindTexture(GL11.GL_TEXTURE_2D, FMLClientHandler.instance().getClient().renderEngine.getTexture(mod.getPlanetSpriteDirectory() + mod.getDimensionName().toLowerCase() + ".png"));
-//
-//                    var3.startDrawingQuads();
-//                    var3.addVertexWithUV(par2 - 10 - this.slotHeight * 0.9, 	par3 - 1 + this.slotHeight * 0.9, 	-90.0D, 0.35D, 0.65D);
-//                    var3.addVertexWithUV(par2 - 10, 							par3 - 1 + this.slotHeight * 0.9, 	-90.0D, 0.65D, 0.65D);
-//                    var3.addVertexWithUV(par2 - 10, 							par3 - 1, 							-90.0D, 0.65D, 0.35D);
-//                    var3.addVertexWithUV(par2 - 10 - this.slotHeight * 0.9, 	par3 - 1, 							-90.0D, 0.35D, 0.35D);
-//                    var3.draw();
-//    			}
-//    		}
     		
     		if (this.languageGui.getDestinations(this.languageGui)[par1].equals("Overworld"))
             {
