@@ -36,6 +36,47 @@ import net.minecraft.world.gen.structure.MapGenVillage;
  */
 public class GCMoonChunkProvider extends ChunkProviderGenerate
 {
+	
+	private enum CraterSize
+	{
+		SMALL(8, 12, 14),
+		MEDIUM(13, 17, 8),
+		LARGE(18, 25, 2),
+		EXTREME(26, 30, 1);
+		
+		public final int MIN_SIZE;
+		public final int MAX_SIZE;
+		private final int PROBABILITY;
+		
+		private static CraterSize[] sizeArray;
+		
+		private CraterSize(int min, int max, int prob)
+		{
+			MIN_SIZE = min;
+			MAX_SIZE = max;
+			PROBABILITY = prob;
+		}
+		
+		static
+		{
+			int amount = 0;
+			for(CraterSize c : CraterSize.values())
+			{
+				amount += c.PROBABILITY;
+			}
+			sizeArray = new CraterSize[amount];
+			int pointer = 0;
+			for(CraterSize c : CraterSize.values())
+			{
+				for(int i = 0; i < c.PROBABILITY; i++)
+				{
+					sizeArray[pointer] = c;
+					pointer++;
+				}
+			}
+		}
+	}
+	
 	private final Random rand;
 
 	private final NoiseGeneratorOctaves noiseGen1;
@@ -69,10 +110,21 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 	double[] noise1;
 	double[] noise2;
 	double[] noise3;
+	double[] noise4;
 	double[] noise5;
-	double[] noise6;
 	float[] field_35388_l;
 	int[][] field_914_i = new int[32][32];
+	
+	private static final double TERRAIN_HEIGHT_MOD = 2.7;
+	private static final double HILL_HEIGHT_MOD = 0.8;
+	private static final int CRATER_PROB = 300;
+	
+	//DO NOT CHANGE
+	private static final int MID_HEIGHT = 63;
+	private static final int CHUNK_SIZE_X = 16;
+	private static final int CHUNK_SIZE_Y = 128;
+	private static final int CHUNK_SIZE_Z = 16;
+	private static final double HILL_FILTER_MOD = 2.5;
 	
 	private int chunkX, chunkZ;
 
@@ -82,91 +134,50 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 		this.worldObj = par1World;
 		this.mapFeaturesEnabled = par4;
 		this.rand = new Random(par2);
-		this.noiseGen1 = new NoiseGeneratorOctaves(this.rand, 16);
-		this.noiseGen2 = new NoiseGeneratorOctaves(this.rand, 16);
-		this.noiseGen3 = new NoiseGeneratorOctaves(this.rand, 8);
-		this.noiseGen4 = new NoiseGeneratorOctaves(this.rand, 4);
-		this.noiseGen5 = new NoiseGeneratorOctaves(this.rand, 10);
-		this.noiseGen6 = new NoiseGeneratorOctaves(this.rand, 16);
-		this.mobSpawnerNoise = new NoiseGeneratorOctaves(this.rand, 8);
+		this.noiseGen1 = new NoiseGeneratorOctaves(this.rand, 4);
+		this.noiseGen2 = new NoiseGeneratorOctaves(new Random(rand.nextLong()), 6);
+		this.noiseGen3 = new NoiseGeneratorOctaves(new Random(rand.nextLong()), 1);
+		this.noiseGen4 = new NoiseGeneratorOctaves(new Random(rand.nextLong()), 1);
 	}
 
-	public void generateTerrain(int par1, int par2, int[] par3ArrayOfint)
+	public void generateTerrain(int chunkX, int chunkZ, int[] chunkArray)
 	{
+		noise1 = noiseGen1.generateNoiseOctaves(noise1, chunkX * CHUNK_SIZE_X, chunkZ * CHUNK_SIZE_Z, CHUNK_SIZE_X, CHUNK_SIZE_Z, 0.025D, 0.025D, 0.025D);
+		noise2 = noiseGen2.generateNoiseOctaves(noise2, chunkX * CHUNK_SIZE_X, chunkZ * CHUNK_SIZE_Z, CHUNK_SIZE_X, CHUNK_SIZE_Z, 0.07D, 0.07D, 0.07D);
+		noise3 = noiseGen3.generateNoiseOctaves(noise3, chunkX * CHUNK_SIZE_X, chunkZ * CHUNK_SIZE_Z, CHUNK_SIZE_X, CHUNK_SIZE_Z, 0.015D, 0.015D, 0.015D);
 		
-		final int var4 = 4;
-		final int var5 = 16;
-		final int var6 = 63;
-		final int var7 = var4 + 1;
-		final int var8 = 17;
-		final int var9 = var4 + 1;
-		
-		this.biomesForGeneration = this.worldObj.getWorldChunkManager().getBiomesForGeneration(this.biomesForGeneration, par1 * 4 - 2, par2 * 4 - 2, var7 + 5, var9 + 5);
-		this.noiseArray = this.initializeNoiseField(this.noiseArray, par1 * var4, 0, par2 * var4, var7, var8, var9);
-
-		for (int var10 = 0; var10 < var4; ++var10) 
+		for(int x = 0; x < CHUNK_SIZE_X; x++)
 		{
-			for (int var11 = 0; var11 < var4; ++var11)
+			for(int z = 0; z < CHUNK_SIZE_Z; z++)
 			{
-				for (int var12 = 0; var12 < var5; ++var12) 
+				double d = noise1[z + x * 16] * TERRAIN_HEIGHT_MOD;
+				double d2 = Math.abs(noise2[z + x * 16] * HILL_HEIGHT_MOD);
+				double d3 = noise3[z + x * 16] * HILL_FILTER_MOD;
+				
+				double yDev = 0;
+				
+				if (d3 < 0.0D)
+                {
+                    yDev = d;
+                }
+                else if (d3 > 1.0D)
+                {
+                    yDev = d2;
+                }
+                else
+                {
+                    yDev = d + (d2 - d) * d3;
+                }
+				
+				for(int y = 0; y < CHUNK_SIZE_Y; y++)
 				{
-					final double var13 = 0.125D;
-					double var15 = this.noiseArray[((var10 + 0) * var9 + var11 + 0) * var8 + var12 + 0];
-					double var17 = this.noiseArray[((var10 + 0) * var9 + var11 + 1) * var8 + var12 + 0];
-					double var19 = this.noiseArray[((var10 + 1) * var9 + var11 + 0) * var8 + var12 + 0];
-					double var21 = this.noiseArray[((var10 + 1) * var9 + var11 + 1) * var8 + var12 + 0];
-					final double var23 = (this.noiseArray[((var10 + 0) * var9 + var11 + 0) * var8 + var12 + 1] - var15) * var13;
-					final double var25 = (this.noiseArray[((var10 + 0) * var9 + var11 + 1) * var8 + var12 + 1] - var17) * var13;
-					final double var27 = (this.noiseArray[((var10 + 1) * var9 + var11 + 0) * var8 + var12 + 1] - var19) * var13;
-					final double var29 = (this.noiseArray[((var10 + 1) * var9 + var11 + 1) * var8 + var12 + 1] - var21) * var13;
-
-					for (int var31 = 0; var31 < 8; ++var31) 
+					if(y < MID_HEIGHT + yDev)
 					{
-						final double var32 = 0.25D;
-						double var34 = var15;
-						double var36 = var17;
-						final double var38 = (var19 - var15) * var32;
-						final double var40 = (var21 - var17) * var32;
-
-						for (int var42 = 0; var42 < 4; ++var42) 
-						{
-							int var43 = var42 + var10 * 4 << 11 | 0 + var11 * 4 << 7 | var12 * 8 + var31;
-							final short var44 = 128;
-							var43 -= var44;
-							final double var45 = 0.25D;
-							final double var49 = (var36 - var34) * var45;
-							double var47 = var34 - var49;
-
-							for (int var51 = 0; var51 < 4; ++var51)
-							{
-								if ((var47 += var49) > 0.0D) 
-								{
-									par3ArrayOfint[var43 += var44] = GCMoonBlocks.moonStone.blockID;
-								}
-								else if (var12 * 8 + var31 < var6) 
-								{
-									par3ArrayOfint[var43 += var44] = 0;
-								} 
-								else
-								{
-									par3ArrayOfint[var43 += var44] = 0;
-								}
-							}
-
-							var34 += var38;
-							var36 += var40;
-						}
-
-						var15 += var23;
-						var17 += var25;
-						var19 += var27;
-						var21 += var29;
+						chunkArray[getIndex(x, y, z)] = GCMoonBlocks.moonStone.blockID;
 					}
 				}
 			}
 		}
-		
-		this.computeCraters(par1, par2, par3ArrayOfint);
 	}
 
 	public void replaceBlocksForBiome(int par1, int par2, int[] par3ArrayOfint, BiomeGenBase[] par4ArrayOfBiomeGenBase)
@@ -265,6 +276,7 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 		this.generateTerrain(par1, par2, var3);
 		this.biomesForGeneration = this.worldObj.getWorldChunkManager().loadBlockGeneratorData(this.biomesForGeneration, par1 * 16, par2 * 16, 16, 16);
 		this.replaceBlocksForBiome(par1, par2, var3, this.biomesForGeneration);
+		createCraters(par1, par2, var3);
 //		this.caveGenerator.generate(this, this.worldObj, par1, par2, var3);
 //		this.caveGenerator2.generate(this, this.worldObj, par1, par2, var3);
 
@@ -305,7 +317,65 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 		return var4;
 	}
 
-	private double[] initializeNoiseField(double[] par1ArrayOfDouble, int par2, int par3, int par4, int par5, int par6, int par7)
+	public void createCraters(int chunkX, int chunkZ, int[] chunkArray)
+	{
+		for(int cx = chunkX - 2; cx <= chunkX + 2; cx++)
+		{
+			for(int cz = chunkZ - 2; cz <= chunkZ + 2; cz++)
+			{
+				for(int x = 0; x < CHUNK_SIZE_X; x++)
+				{
+					for(int z = 0; z < CHUNK_SIZE_Z; z++)
+					{
+						noise4 = noiseGen4.generateNoiseOctaves(noise4, cx * CHUNK_SIZE_X + x, cz * CHUNK_SIZE_Z + z, 1, 1, 0.015D, 0.015D, 0.015D);
+						if(Math.abs(randFromPoint(cx * 16 + x, (cz * 16 + z) * 1000)) < noise4[0] / CRATER_PROB)
+						{
+							Random random = new Random((cx * 16 + x) + (cz * 16 + z) * 5000);
+							CraterSize cSize = CraterSize.sizeArray[random.nextInt(CraterSize.sizeArray.length)];
+							int size = random.nextInt(cSize.MAX_SIZE - cSize.MIN_SIZE) + cSize.MIN_SIZE;
+							makeCrater(cx * 16 + x, cz * 16 + z, chunkX * 16, chunkZ * 16, size, chunkArray);
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	public void makeCrater(int craterX, int craterZ, int chunkX, int chunkZ, int size, int[] chunkArray)
+	{
+		for(int x = 0; x < CHUNK_SIZE_X; x++)
+		{
+			for(int z = 0; z < CHUNK_SIZE_Z; z++)
+			{
+				double xDev = craterX - (chunkX + x);
+				double zDev = craterZ - (chunkZ + z);
+				if(xDev * xDev + zDev * zDev < size * size)
+				{
+					xDev /= size;
+					zDev /= size;
+					double sqrtY = (xDev * xDev + zDev * zDev);
+					double yDev = sqrtY * sqrtY * 6;
+					yDev = 5 - yDev;
+					System.out.println(yDev + ", " + xDev + ", " + zDev);
+					int helper = 0;
+					for(int y = 127; y > 0; y--)
+					{
+						if(chunkArray[getIndex(x, y, z)] != 0 && helper <= yDev)
+						{
+							chunkArray[getIndex(x, y, z)] = 0;
+							helper++;
+						}
+						if(helper > yDev)
+						{
+							break;
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	/*private double[] initializeNoiseField(double[] par1ArrayOfDouble, int par2, int par3, int par4, int par5, int par6, int par7)
 	{
 		if (par1ArrayOfDouble == null)
 		{
@@ -450,7 +520,7 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 		}
 
 		return par1ArrayOfDouble;
-	}
+	}*/
 
 	@Override
 	public boolean chunkExists(int par1, int par2)
@@ -458,7 +528,7 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 		return true;
 	}
 	
-	private void computeCraters(int x, int z, int[] chunkArr) 
+	/*private void computeCraters(int x, int z, int[] chunkArr) 
 	{
 		boolean evenX, evenZ;
 		evenX = x % 2 == 0 ? true : false;
@@ -559,7 +629,7 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 				}
 			}
 		}
-	}
+	}*/
 	
 	private int getIndex(int x, int y, int z) 
 	{
