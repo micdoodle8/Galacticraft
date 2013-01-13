@@ -104,6 +104,7 @@ public class GCCoreConfigManager
 	public static int idEntityMeteor;
 	public static int idEntityBuggy;
 	public static int idEntityFlag;
+	public static int idEntityAstroOrb;
 	
 	// GENERAL
 	public static boolean transparentBreathableAir;
@@ -186,6 +187,7 @@ public class GCCoreConfigManager
 	        idEntityMeteor = 						configuration.get("Entities", "idEntityMeteor", 										161)		.getInt(161);
 	        idEntityBuggy = 						configuration.get("Entities", "idEntityBuggy", 											162)		.getInt(162);
 	        idEntityFlag = 							configuration.get("Entities", "idEntityFlag", 											163)		.getInt(163);
+	        idEntityAstroOrb = 						configuration.get("Entities", "idEntityAstroOrb", 										164)		.getInt(164);
 	        
 	        transparentBreathableAir = 				configuration.get(configuration.CATEGORY_GENERAL, "transparentBreathableAir", 			true)		.getBoolean(true);
 	        moreStars = 							configuration.get(configuration.CATEGORY_GENERAL, "moreStars", 							true)		.getBoolean(true);

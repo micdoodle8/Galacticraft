@@ -51,6 +51,12 @@ public class GCCoreEntityPlayer
 	private int dimensionToSend = -2;
 	
 	private int damageCounter;
+
+    public int astronomyPointsLevel;
+
+    public int astronomyPointsTotal;
+
+    public float astronomyPoints;
 	
 	public GCCoreEntityPlayer(EntityPlayer player) 
 	{
@@ -423,6 +429,43 @@ public class GCCoreEntityPlayer
             this.inPortal = true;
         }
     }
+
+    public void addExperience(int par1)
+    {
+        int var2 = Integer.MAX_VALUE - this.astronomyPointsTotal;
+
+        if (par1 > var2)
+        {
+            par1 = var2;
+        }
+        
+        par1 /= 10;
+
+        this.astronomyPoints += (float)par1 / (float)this.astrBarCap();
+
+        for (this.astronomyPointsTotal += par1; this.astronomyPoints >= 1.0F; this.astronomyPoints /= (float)this.astrBarCap())
+        {
+            this.astronomyPoints = (this.astronomyPoints - 1.0F) * (float)this.astrBarCap();
+            this.addAstronomyLevel(1);
+        }
+    }
+
+    public void addAstronomyLevel(int par1)
+    {
+        this.astronomyPointsLevel += par1;
+
+        if (this.astronomyPointsLevel < 0)
+        {
+            this.astronomyPointsLevel = 0;
+            this.astronomyPoints = 0.0F;
+            this.astronomyPointsTotal = 0;
+        }
+    }
+
+    public int astrBarCap()
+    {
+        return this.astronomyPointsLevel >= 30 ? 62 + (this.astronomyPointsLevel - 30) * 7 : (this.astronomyPointsLevel >= 15 ? 17 + (this.astronomyPointsLevel - 15) * 3 : 17);
+    }
 	
     public void readEntityFromNBT()
     {
@@ -431,7 +474,9 @@ public class GCCoreEntityPlayer
 		this.damageCounter = par1NBTTagCompound.getInteger("damageCounter");
         final NBTTagList var2 = par1NBTTagCompound.getTagList("InventoryTankRefill");
         this.playerTankInventory.readFromNBT2(var2);
-//        this.inSpaceship = par1NBTTagCompound.getBoolean("inSpaceship");
+        this.astronomyPoints = par1NBTTagCompound.getFloat("AstronomyPointsNum");
+        this.astronomyPointsLevel = par1NBTTagCompound.getInteger("AstronomyPointsLevel");
+        this.astronomyPointsTotal = par1NBTTagCompound.getInteger("AstronomyPointsTotal");
     }
 
     public void writeEntityToNBT()
@@ -440,5 +485,8 @@ public class GCCoreEntityPlayer
     	par1NBTTagCompound.setInteger("playerAirRemaining", this.airRemaining);
     	par1NBTTagCompound.setInteger("damageCounter", this.damageCounter);
         par1NBTTagCompound.setTag("InventoryTankRefill", this.playerTankInventory.writeToNBT2(new NBTTagList()));
+        par1NBTTagCompound.setFloat("AstronomyPointsNum", this.astronomyPoints);
+        par1NBTTagCompound.setInteger("AstronomyPointsLevel", this.astronomyPointsLevel);
+        par1NBTTagCompound.setInteger("AstronomyPointsTotal", this.astronomyPointsTotal);
     }
 }
