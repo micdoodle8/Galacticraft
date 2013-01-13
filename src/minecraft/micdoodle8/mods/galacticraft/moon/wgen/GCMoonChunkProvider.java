@@ -275,8 +275,8 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 		final int[] var3 = new int[32768];
 		this.generateTerrain(par1, par2, var3);
 		this.biomesForGeneration = this.worldObj.getWorldChunkManager().loadBlockGeneratorData(this.biomesForGeneration, par1 * 16, par2 * 16, 16, 16);
-		this.replaceBlocksForBiome(par1, par2, var3, this.biomesForGeneration);
 		createCraters(par1, par2, var3);
+		this.replaceBlocksForBiome(par1, par2, var3, this.biomesForGeneration);
 //		this.caveGenerator.generate(this, this.worldObj, par1, par2, var3);
 //		this.caveGenerator2.generate(this, this.worldObj, par1, par2, var3);
 
