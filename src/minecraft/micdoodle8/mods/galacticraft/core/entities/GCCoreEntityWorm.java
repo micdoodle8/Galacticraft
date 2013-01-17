@@ -1,16 +1,18 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
+import java.util.List;
+
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockSilverfish;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
+import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
-import net.minecraft.util.Facing;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 
@@ -20,6 +22,10 @@ public class GCCoreEntityWorm extends EntityMob
      * A cooldown before this entity will search for another Silverfish to join them in battle.
      */
     private int allySummonCooldown;
+    
+    private Vec3 directionVec;
+    
+    private int rotationIndex;
 
     public GCCoreEntityWorm(World par1World)
     {
@@ -28,13 +34,13 @@ public class GCCoreEntityWorm extends EntityMob
         this.setSize(2F, 2F);
         this.moveSpeed = 1F;
         this.noClip = true;
+        this.tasks.addTask(0, new EntityAIAttackOnCollide(this, EntityPlayer.class, this.moveSpeed, false));
     }
     
     protected void entityInit()
     {
     	super.entityInit();
-    	
-        this.rotationYaw = (float) Math.PI;
+        this.dataWatcher.addObject(16, Integer.valueOf(this.rand.nextInt(4)));
     }
     
     @Override
@@ -52,25 +58,6 @@ public class GCCoreEntityWorm extends EntityMob
     public int getMaxHealth()
     {
         return 80;
-    }
-
-    /**
-     * returns if this entity triggers Block.onEntityWalking on the blocks they walk on. used for spiders and wolves to
-     * prevent them from trampling crops
-     */
-    protected boolean canTriggerWalking()
-    {
-        return false;
-    }
-
-    /**
-     * Finds the closest player within 16 blocks to attack, or null if this Entity isn't interested in attacking
-     * (Animals, Spiders at day, peaceful PigZombies).
-     */
-    protected Entity findPlayerToAttack()
-    {
-        double var1 = 8.0D;
-        return this.worldObj.getClosestVulnerablePlayerToEntity(this, var1);
     }
 
     /**
@@ -96,39 +83,6 @@ public class GCCoreEntityWorm extends EntityMob
     {
         return "mob.silverfish.kill";
     }
-
-    /**
-     * Called when the entity is attacked.
-     */
-    public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
-    {
-        if (this.func_85032_ar())
-        {
-            return false;
-        }
-        else
-        {
-            if (this.allySummonCooldown <= 0 && (par1DamageSource instanceof EntityDamageSource || par1DamageSource == DamageSource.magic))
-            {
-                this.allySummonCooldown = 20;
-            }
-
-            return super.attackEntityFrom(par1DamageSource, par2);
-        }
-    }
-
-    /**
-     * Basic mob attack. Default to touch of death in EntityCreature. Overridden by each mob to define their attack.
-     */
-    protected void attackEntity(Entity par1Entity, float par2)
-    {
-        if (this.attackTime <= 0 && par2 < 1.2F && par1Entity.boundingBox.maxY > this.boundingBox.minY && par1Entity.boundingBox.minY < this.boundingBox.maxY)
-        {
-            this.attackTime = 20;
-            this.attackEntityAsMob(par1Entity);
-        }
-    }
-
     /**
      * Plays step sound at given x, y, z for the entity
      */
@@ -157,97 +111,63 @@ public class GCCoreEntityWorm extends EntityMob
     public void onUpdate()
     {
         super.onUpdate();
+        
+        Vec3 vector1 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
+        Vec3 vector2;
+        
+        switch (this.getRotationIndex())
+        {
+        case 0:
+        	vector2 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
+        case 1:
+        	vector2 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
+        case 2:
+        	vector2 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
+        case 3:
+        	vector2 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
+        }
     }
 
     protected void updateEntityActionState()
     {
         super.updateEntityActionState();
-
-//        if (!this.worldObj.isRemote)
-//        {
-//            int var1;
-//            int var2;
-//            int var3;
-//            int var5;
-//
-//            if (this.allySummonCooldown > 0)
-//            {
-//                --this.allySummonCooldown;
-//
-//                if (this.allySummonCooldown == 0)
-//                {
-//                    var1 = MathHelper.floor_double(this.posX);
-//                    var2 = MathHelper.floor_double(this.posY);
-//                    var3 = MathHelper.floor_double(this.posZ);
-//                    boolean var4 = false;
-//
-//                    for (var5 = 0; !var4 && var5 <= 5 && var5 >= -5; var5 = var5 <= 0 ? 1 - var5 : 0 - var5)
-//                    {
-//                        for (int var6 = 0; !var4 && var6 <= 10 && var6 >= -10; var6 = var6 <= 0 ? 1 - var6 : 0 - var6)
-//                        {
-//                            for (int var7 = 0; !var4 && var7 <= 10 && var7 >= -10; var7 = var7 <= 0 ? 1 - var7 : 0 - var7)
-//                            {
-//                                int var8 = this.worldObj.getBlockId(var1 + var6, var2 + var5, var3 + var7);
-//
-//                                if (var8 == Block.silverfish.blockID)
-//                                {
-//                                    this.worldObj.playAuxSFX(2001, var1 + var6, var2 + var5, var3 + var7, Block.silverfish.blockID + (this.worldObj.getBlockMetadata(var1 + var6, var2 + var5, var3 + var7) << 12));
-//                                    this.worldObj.setBlockWithNotify(var1 + var6, var2 + var5, var3 + var7, 0);
-//                                    Block.silverfish.onBlockDestroyedByPlayer(this.worldObj, var1 + var6, var2 + var5, var3 + var7, 0);
-//
-//                                    if (this.rand.nextBoolean())
-//                                    {
-//                                        var4 = true;
-//                                        break;
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//
-//            if (this.entityToAttack == null && !this.hasPath())
-//            {
-//                var1 = MathHelper.floor_double(this.posX);
-//                var2 = MathHelper.floor_double(this.posY + 0.5D);
-//                var3 = MathHelper.floor_double(this.posZ);
-//                int var9 = this.rand.nextInt(6);
-//                var5 = this.worldObj.getBlockId(var1 + Facing.offsetsXForSide[var9], var2 + Facing.offsetsYForSide[var9], var3 + Facing.offsetsZForSide[var9]);
-//
-//                if (BlockSilverfish.getPosingIdByMetadata(var5))
-//                {
-//                    this.worldObj.setBlockAndMetadataWithNotify(var1 + Facing.offsetsXForSide[var9], var2 + Facing.offsetsYForSide[var9], var3 + Facing.offsetsZForSide[var9], Block.silverfish.blockID, BlockSilverfish.getMetadataForBlockType(var5));
-//                    this.spawnExplosionParticle();
-//                    this.setDead();
-//                }
-//                else
-//                {
-//                    this.updateWanderPath();
-//                }
-//            }
-//            else if (this.entityToAttack != null && !this.hasPath())
-//            {
-//                this.entityToAttack = null;
-//            }
-//        }
     }
 
     public void onLivingUpdate()
     {
-    	if (this.rand.nextInt(150) == 0)
+    	if (!this.worldObj.isRemote && this.rand.nextInt(150) == 0)
     	{
-    		this.rotationYaw += (float) 90F;
+    		this.setRotationIndex(this.getRotationIndex() + 1);
     	}
+
+		this.rotationYaw = (float) (this.getRotationIndex() % 4) * 90F + 45F;
     	
-    	if (this.worldObj.isBlockSolidOnSide((int)this.posX, (int)this.posY - 3, (int)this.posZ, ForgeDirection.UP))
-    	{
-    		
-    	}
-    	else
-    	{
-    		this.motionY -= 0.0062D;
-    	}
+//    	if (this.worldObj.isBlockSolidOnSide((int)this.posX, (int)this.posY - 3, (int)this.posZ, ForgeDirection.UP))
+//    	{
+//    		
+//    	}
+//    	else
+//    	{
+//    	}
+		
+		int xOffset = 0;
+		int zOffset = 0;
+		
+		switch (this.getRotationIndex() % 4)
+		{
+		case 0:
+			xOffset = -5;
+			break;
+		case 1:
+			zOffset = -5;
+			break;
+		case 2:
+			xOffset = 5;
+			break;
+		case 3:
+			zOffset = 5;
+			break;
+		}
     	
     	for (int i = -1; i < 2; i++)
     	{
@@ -255,16 +175,28 @@ public class GCCoreEntityWorm extends EntityMob
     		{
             	for (int k = -1; k < 2; k++)
             	{
-            		if (Block.blocksList[this.worldObj.getBlockId((int)this.posX, (int)this.posY, (int)this.posZ)] != null && Block.blocksList[this.worldObj.getBlockId((int)this.posX, (int)this.posY, (int)this.posZ)].isBlockSolid(this.worldObj, (int)this.posX, (int)this.posY, (int)this.posZ, 0))
+            		if (Block.blocksList[this.worldObj.getBlockId(MathHelper.floor_double(this.posX + xOffset), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ + zOffset))] != null && Block.blocksList[this.worldObj.getBlockId((int)this.posX + xOffset, (int)this.posY, (int)this.posZ + zOffset)].isBlockSolid(this.worldObj, (int)this.posX + xOffset, (int)this.posY, (int)this.posZ + zOffset, 0))
             		{
-                		this.worldObj.setBlock(MathHelper.floor_double(this.posX + i), MathHelper.floor_double(this.posY + j), MathHelper.floor_double(this.posZ + k), 0);
+                		this.worldObj.setBlockWithNotify(MathHelper.floor_double(this.posX + xOffset + i), MathHelper.floor_double(this.posY + j), MathHelper.floor_double(this.posZ + zOffset + k), 0);
             		}
             	}
     		}
     	}
 
-        this.motionX = -(0.2 * Math.cos((this.rotationYaw - 90F) * Math.PI / 180.0D));
-        this.motionZ = -(0.2 * Math.sin((this.rotationYaw - 90F) * Math.PI / 180.0D));
+        List var9 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, AxisAlignedBB.getAABBPool().addOrModifyAABBInPool((double)MathHelper.floor_double(this.posX) - 2 + xOffset, (double)MathHelper.floor_double(this.posY) - 2, (double)MathHelper.floor_double(this.posZ) - 2 + zOffset, (double)MathHelper.floor_double(this.posX) + 2 + xOffset, (double)MathHelper.floor_double(this.posY) + 2, (double)MathHelper.floor_double(this.posZ) + 2 + zOffset));
+
+        for (int var11 = 0; var11 < var9.size(); ++var11)
+        {
+            Entity var32 = (Entity)var9.get(var11);
+            
+            if (var32 != null)
+            {
+            	var32.attackEntityFrom(DamageSource.cactus, 1);
+            }
+        }
+
+        this.motionX = -(0.075 * Math.cos((((this.getRotationIndex() % 4) + 1) * (90F) - 90F) * Math.PI / 180.0D));
+        this.motionZ = -(0.075 * Math.sin((((this.getRotationIndex() % 4) + 1) * (90F) - 90F) * Math.PI / 180.0D));
         
         this.moveEntity(this.motionX, this.motionY, this.motionZ);
     }
@@ -307,5 +239,15 @@ public class GCCoreEntityWorm extends EntityMob
     public EnumCreatureAttribute getCreatureAttribute()
     {
         return EnumCreatureAttribute.ARTHROPOD;
+    }
+    
+    public int getRotationIndex()
+    {
+    	return this.dataWatcher.getWatchableObjectInt(16);
+    }
+    
+    public void setRotationIndex(int i)
+    {
+    	this.dataWatcher.updateObject(16, Integer.valueOf(i));
     }
 }
