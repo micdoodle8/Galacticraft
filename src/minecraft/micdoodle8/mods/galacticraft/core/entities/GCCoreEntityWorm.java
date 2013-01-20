@@ -18,15 +18,6 @@ import net.minecraftforge.common.ForgeDirection;
 
 public class GCCoreEntityWorm extends EntityMob
 {
-    /**
-     * A cooldown before this entity will search for another Silverfish to join them in battle.
-     */
-    private int allySummonCooldown;
-    
-    private Vec3 directionVec;
-    
-    private int rotationIndex;
-
     public GCCoreEntityWorm(World par1World)
     {
         super(par1World);
@@ -34,7 +25,6 @@ public class GCCoreEntityWorm extends EntityMob
         this.setSize(2F, 2F);
         this.moveSpeed = 1F;
         this.noClip = true;
-        this.tasks.addTask(0, new EntityAIAttackOnCollide(this, EntityPlayer.class, this.moveSpeed, false));
     }
     
     protected void entityInit()
@@ -60,40 +50,26 @@ public class GCCoreEntityWorm extends EntityMob
         return 80;
     }
 
-    /**
-     * Returns the sound this mob makes while it's alive.
-     */
     protected String getLivingSound()
     {
         return "mob.silverfish.say";
     }
 
-    /**
-     * Returns the sound this mob makes when it is hurt.
-     */
     protected String getHurtSound()
     {
         return "mob.silverfish.hit";
     }
 
-    /**
-     * Returns the sound this mob makes on death.
-     */
     protected String getDeathSound()
     {
         return "mob.silverfish.kill";
     }
-    /**
-     * Plays step sound at given x, y, z for the entity
-     */
+
     protected void playStepSound(int par1, int par2, int par3, int par4)
     {
         this.func_85030_a("mob.silverfish.step", 0.15F, 1.0F);
     }
 
-    /**
-     * Returns the item ID for the item the mob drops on death.
-     */
     protected int getDropItemId()
     {
         return 0;
@@ -105,27 +81,9 @@ public class GCCoreEntityWorm extends EntityMob
         return true;
     }
 
-    /**
-     * Called to update the entity's position/logic.
-     */
     public void onUpdate()
     {
         super.onUpdate();
-        
-        Vec3 vector1 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
-        Vec3 vector2;
-        
-        switch (this.getRotationIndex())
-        {
-        case 0:
-        	vector2 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
-        case 1:
-        	vector2 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
-        case 2:
-        	vector2 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
-        case 3:
-        	vector2 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
-        }
     }
 
     protected void updateEntityActionState()
@@ -200,18 +158,12 @@ public class GCCoreEntityWorm extends EntityMob
         
         this.moveEntity(this.motionX, this.motionY, this.motionZ);
     }
-
-    /**
-     * Checks to make sure the light is not too bright where the mob is spawning
-     */
+    
     protected boolean isValidLightLevel()
     {
         return true;
     }
 
-    /**
-     * Checks if the entity's current position is a valid location to spawn this entity.
-     */
     public boolean getCanSpawnHere()
     {
         if (super.getCanSpawnHere())
@@ -224,21 +176,10 @@ public class GCCoreEntityWorm extends EntityMob
             return false;
         }
     }
-
-    /**
-     * Returns the amount of damage a mob should deal.
-     */
+    
     public int getAttackStrength(Entity par1Entity)
     {
         return 1;
-    }
-
-    /**
-     * Get this Entity's EnumCreatureAttribute
-     */
-    public EnumCreatureAttribute getCreatureAttribute()
-    {
-        return EnumCreatureAttribute.ARTHROPOD;
     }
     
     public int getRotationIndex()
