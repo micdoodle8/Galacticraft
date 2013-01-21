@@ -24,7 +24,9 @@ public class GCCoreEntityAstroOrb extends Entity
     private int xpValue;
 
     private EntityPlayer closestPlayer;
-    private int field_80002_g;
+
+    /** Threshold color for tracking players */
+    private int xpTargetColor;
 
     public GCCoreEntityAstroOrb(World par1World, double par2, double par4, double par6, int par8)
     {
@@ -100,20 +102,20 @@ public class GCCoreEntityAstroOrb extends Entity
             this.motionY = 0.20000000298023224D;
             this.motionX = (double)((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F);
             this.motionZ = (double)((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F);
-            this.func_85030_a("random.fizz", 0.4F, 2.0F + this.rand.nextFloat() * 0.4F);
+            this.playSound("random.fizz", 0.4F, 2.0F + this.rand.nextFloat() * 0.4F);
         }
 
         this.pushOutOfBlocks(this.posX, (this.boundingBox.minY + this.boundingBox.maxY) / 2.0D, this.posZ);
         double var1 = 8.0D;
 
-        if (this.field_80002_g < this.xpColor - 20 + this.entityId % 100)
+        if (this.xpTargetColor < this.xpColor - 20 + this.entityId % 100)
         {
             if (this.closestPlayer == null || this.closestPlayer.getDistanceSqToEntity(this) > var1 * var1)
             {
                 this.closestPlayer = this.worldObj.getClosestPlayerToEntity(this, var1);
             }
 
-            this.field_80002_g = this.xpColor;
+            this.xpTargetColor = this.xpColor;
         }
 
         if (this.closestPlayer != null)
@@ -177,7 +179,7 @@ public class GCCoreEntityAstroOrb extends Entity
 
     public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
     {
-        if (this.func_85032_ar())
+        if (this.isEntityInvulnerable())
         {
             return false;
         }
@@ -216,7 +218,7 @@ public class GCCoreEntityAstroOrb extends Entity
             if (this.field_70532_c == 0 && par1EntityPlayer.xpCooldown == 0)
             {
                 par1EntityPlayer.xpCooldown = 2;
-                this.func_85030_a("random.orb", 0.1F, 0.5F * ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.8F));
+                this.playSound("random.orb", 0.1F, 0.5F * ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.8F));
                 par1EntityPlayer.onItemPickup(this, 1);
                 par1EntityPlayer.addExperience(this.xpValue);
                 

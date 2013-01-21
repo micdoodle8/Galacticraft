@@ -116,7 +116,7 @@ public class GCCoreEntitySpider extends GCCoreEntityMob
     @Override
 	protected void playStepSound(int par1, int par2, int par3, int par4)
     {
-        this.func_85030_a("mob.spider.step", 0.15F, 1.0F);
+        this.playSound("mob.spider.step", 0.15F, 1.0F);
     }
 
     /**
@@ -158,7 +158,7 @@ public class GCCoreEntitySpider extends GCCoreEntityMob
     @Override
 	protected int getDropItemId()
     {
-        return Item.silk.shiftedIndex;
+        return Item.silk.itemID;
     }
 
     /**
@@ -171,7 +171,7 @@ public class GCCoreEntitySpider extends GCCoreEntityMob
 
         if (par1 && (this.rand.nextInt(3) == 0 || this.rand.nextInt(1 + par2) > 0))
         {
-            this.dropItem(Item.spiderEye.shiftedIndex, 1);
+            this.dropItem(Item.spiderEye.itemID, 1);
         }
     }
 

@@ -40,7 +40,7 @@ public class GCCoreBlockFallenMeteor extends Block
 	@Override
     public int idDropped(int par1, Random par2Random, int par3)
     {
-        return GCMoonItems.meteoricIronRaw.shiftedIndex;
+        return GCMoonItems.meteoricIronRaw.itemID;
     }
 
 	@Override

@@ -191,7 +191,7 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
     @Override
 	public void onUpdate()
     {
-        if (!this.worldObj.isRemote && this.func_82230_o())
+        if (!this.worldObj.isRemote && this.isConverting())
         {
             final int var1 = this.getConversionTimeBoost();
             this.conversionTime -= var1;
@@ -255,7 +255,7 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
     @Override
 	protected void playStepSound(int par1, int par2, int par3, int par4)
     {
-        this.func_85030_a("mob.zombie.step", 0.15F, 1.0F);
+        this.playSound("mob.zombie.step", 0.15F, 1.0F);
     }
 
     /**
@@ -264,7 +264,7 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
     @Override
 	protected int getDropItemId()
     {
-        return Item.rottenFlesh.shiftedIndex;
+        return Item.rottenFlesh.itemID;
     }
 
     /**
@@ -282,13 +282,13 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
         switch (this.rand.nextInt(3))
         {
             case 0:
-                this.dropItem(Item.ingotIron.shiftedIndex, 1);
+                this.dropItem(Item.ingotIron.itemID, 1);
                 break;
             case 1:
-                this.dropItem(Item.carrot.shiftedIndex, 1);
+                this.dropItem(Item.carrot.itemID, 1);
                 break;
             case 2:
-                this.dropItem(Item.potato.shiftedIndex, 1);
+                this.dropItem(Item.potato.itemID, 1);
         }
     }
 
@@ -330,7 +330,7 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
             par1NBTTagCompound.setBoolean("IsVillager", true);
         }
 
-        par1NBTTagCompound.setInteger("ConversionTime", this.func_82230_o() ? this.conversionTime : -1);
+        par1NBTTagCompound.setInteger("ConversionTime", this.isConverting() ? this.conversionTime : -1);
     }
 
     /**
@@ -374,9 +374,9 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
 
             final EntityZombie var2 = new EntityZombie(this.worldObj);
             var2.func_82149_j(par1EntityLiving);
-            this.worldObj.setEntityDead(par1EntityLiving);
+            this.worldObj.removeEntity(par1EntityLiving);
             var2.initCreature();
-            var2.setIsVillager(true);
+            var2.setVillager(true);
 
             if (par1EntityLiving.isChild())
             {
@@ -476,7 +476,10 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
         }
     }
 
-    public boolean func_82230_o()
+    /**
+     * Returns whether this zombie is in the process of converting to a villager
+     */
+    public boolean isConverting()
     {
         return this.getDataWatcher().getWatchableObjectByte(14) == 1;
     }
@@ -496,7 +499,7 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
             var1.setGrowingAge(-24000);
         }
 
-        this.worldObj.setEntityDead(this);
+        this.worldObj.removeEntity(this);
         this.worldObj.spawnEntityInWorld(var1);
         var1.addPotionEffect(new PotionEffect(Potion.confusion.id, 200, 0));
         this.worldObj.playAuxSFXAtEntity((EntityPlayer)null, 1017, (int)this.posX, (int)this.posY, (int)this.posZ, 0);

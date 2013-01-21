@@ -159,7 +159,7 @@ public class GCCoreEntitySkeleton extends GCCoreEntityMob
     @Override
 	protected int getDropItemId()
     {
-        return Item.arrow.shiftedIndex;
+        return Item.arrow.itemID;
     }
 
     /**
@@ -173,14 +173,14 @@ public class GCCoreEntitySkeleton extends GCCoreEntityMob
 
         for (var4 = 0; var4 < var3; ++var4)
         {
-            this.dropItem(Item.arrow.shiftedIndex, 1);
+            this.dropItem(Item.arrow.itemID, 1);
         }
 
         var3 = this.rand.nextInt(3 + par2);
 
         for (var4 = 0; var4 < var3; ++var4)
         {
-            this.dropItem(Item.bone.shiftedIndex, 1);
+            this.dropItem(Item.bone.itemID, 1);
         }
     }
 
@@ -195,7 +195,7 @@ public class GCCoreEntitySkeleton extends GCCoreEntityMob
         }
         else
         {
-            this.dropItem(Item.bow.shiftedIndex, 1);
+            this.dropItem(Item.bow.itemID, 1);
         }
     }
 }

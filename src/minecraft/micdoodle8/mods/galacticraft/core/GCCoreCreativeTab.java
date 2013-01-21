@@ -13,6 +13,6 @@ public class GCCoreCreativeTab extends CreativeTabs
     @Override
 	public int getTabIconItemIndex()
     {
-        return GCCoreItems.spaceship.shiftedIndex;
+        return GCCoreItems.spaceship.itemID;
     }
 }

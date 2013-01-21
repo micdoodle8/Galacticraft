@@ -24,42 +24,42 @@ public class GCCoreBlockRendererOxygenPipe implements ISimpleBlockRenderingHandl
 		final float minSize = 0.4F;
 		final float maxSize = 0.6F;
 
-		renderblocks.setRenderMinMax(minSize, minSize, minSize, maxSize, maxSize, maxSize);
+		renderblocks.setRenderBounds(minSize, minSize, minSize, maxSize, maxSize, maxSize);
 		renderblocks.renderStandardBlock(block, x, y, z);
 		
 		if (iblockaccess.getBlockId(x - 1, y, z) == GCCoreBlocks.oxygenPipe.blockID || iblockaccess.getBlockId(x - 1, y, z) == GCCoreBlocks.airDistributor.blockID || iblockaccess.getBlockId(x - 1, y, z) == GCCoreBlocks.airDistributorActive.blockID || iblockaccess.getBlockId(x - 1, y, z) == GCCoreBlocks.blockAirCollector.blockID) 
 		{
-			renderblocks.setRenderMinMax(0.0F, minSize, minSize, minSize, maxSize, maxSize);
+			renderblocks.setRenderBounds(0.0F, minSize, minSize, minSize, maxSize, maxSize);
 			renderblocks.renderStandardBlock(block, x, y, z);
 		}
 
 		if (iblockaccess.getBlockId(x + 1, y, z) == GCCoreBlocks.oxygenPipe.blockID || iblockaccess.getBlockId(x + 1, y, z) == GCCoreBlocks.airDistributor.blockID || iblockaccess.getBlockId(x + 1, y, z) == GCCoreBlocks.airDistributorActive.blockID || iblockaccess.getBlockId(x + 1, y, z) == GCCoreBlocks.blockAirCollector.blockID) 
 		{
-			renderblocks.setRenderMinMax(maxSize, minSize, minSize, 1.0F, maxSize, maxSize);
+			renderblocks.setRenderBounds(maxSize, minSize, minSize, 1.0F, maxSize, maxSize);
 			renderblocks.renderStandardBlock(block, x, y, z);
 		}
 
 		if (iblockaccess.getBlockId(x, y - 1, z) == GCCoreBlocks.oxygenPipe.blockID || iblockaccess.getBlockId(x, y - 1, z) == GCCoreBlocks.airDistributor.blockID || iblockaccess.getBlockId(x, y - 1, z) == GCCoreBlocks.airDistributorActive.blockID || iblockaccess.getBlockId(x, y - 1, z) == GCCoreBlocks.blockAirCollector.blockID) 
 		{
-			renderblocks.setRenderMinMax(minSize, 0.0F, minSize, maxSize, minSize, maxSize);
+			renderblocks.setRenderBounds(minSize, 0.0F, minSize, maxSize, minSize, maxSize);
 			renderblocks.renderStandardBlock(block, x, y, z);
 		}
 
 		if (iblockaccess.getBlockId(x, y + 1, z) == GCCoreBlocks.oxygenPipe.blockID || iblockaccess.getBlockId(x, y + 1, z) == GCCoreBlocks.airDistributor.blockID || iblockaccess.getBlockId(x, y + 1, z) == GCCoreBlocks.airDistributorActive.blockID || iblockaccess.getBlockId(x, y + 1, z) == GCCoreBlocks.blockAirCollector.blockID) 
 		{
-			renderblocks.setRenderMinMax(minSize, maxSize, minSize, maxSize, 1.0F, maxSize);
+			renderblocks.setRenderBounds(minSize, maxSize, minSize, maxSize, 1.0F, maxSize);
 			renderblocks.renderStandardBlock(block, x, y, z);
 		}
 
 		if (iblockaccess.getBlockId(x, y, z - 1) == GCCoreBlocks.oxygenPipe.blockID || iblockaccess.getBlockId(x, y, z - 1) == GCCoreBlocks.airDistributor.blockID || iblockaccess.getBlockId(x, y, z - 1) == GCCoreBlocks.airDistributorActive.blockID || iblockaccess.getBlockId(x, y, z - 1) == GCCoreBlocks.blockAirCollector.blockID) 
 		{
-			renderblocks.setRenderMinMax(minSize, minSize, 0.0F, maxSize, maxSize, minSize);
+			renderblocks.setRenderBounds(minSize, minSize, 0.0F, maxSize, maxSize, minSize);
 			renderblocks.renderStandardBlock(block, x, y, z);
 		}
 
 		if (iblockaccess.getBlockId(x, y, z + 1) == GCCoreBlocks.oxygenPipe.blockID || iblockaccess.getBlockId(x, y, z + 1) == GCCoreBlocks.airDistributor.blockID || iblockaccess.getBlockId(x, y, z + 1) == GCCoreBlocks.airDistributorActive.blockID || iblockaccess.getBlockId(x, y, z + 1) == GCCoreBlocks.blockAirCollector.blockID) 
 		{
-			renderblocks.setRenderMinMax(minSize, minSize, maxSize, maxSize, maxSize, 1.0F);
+			renderblocks.setRenderBounds(minSize, minSize, maxSize, maxSize, maxSize, 1.0F);
 			renderblocks.renderStandardBlock(block, x, y, z);
 		}
 	}
@@ -73,7 +73,7 @@ public class GCCoreBlockRendererOxygenPipe implements ISimpleBlockRenderingHandl
         final Tessellator var3 = Tessellator.instance;
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        renderer.setRenderMinMax(minSize, minSize, 0.0F, maxSize, maxSize, 1.0F);
+        renderer.setRenderBounds(minSize, minSize, 0.0F, maxSize, maxSize, 1.0F);
         var3.startDrawingQuads();
         var3.setNormal(0.0F, -1.0F, 0.0F);
         renderer.renderBottomFace(block, 0.0D, 0.0D, 0.0D, block.getBlockTextureFromSideAndMetadata(0, metadata));

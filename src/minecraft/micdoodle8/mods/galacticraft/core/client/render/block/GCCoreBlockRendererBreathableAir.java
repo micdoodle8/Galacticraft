@@ -55,7 +55,7 @@ public class GCCoreBlockRendererBreathableAir implements ISimpleBlockRenderingHa
         final Tessellator var3 = Tessellator.instance;
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        var0.setRenderMinMax(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+        var0.setRenderBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         var3.startDrawingQuads();
         var3.setNormal(0.0F, -1.0F, 0.0F);
         var0.renderBottomFace(var1, 0.0D, 0.0D, 0.0D, var1.getBlockTextureFromSideAndMetadata(0, var2));
@@ -267,8 +267,8 @@ public class GCCoreBlockRendererBreathableAir implements ISimpleBlockRenderingHa
                 }
             }
 
-            renderBlocks.customMinY = var18;
-            renderBlocks.customMaxY = var20;
+//            renderBlocks.customMinY = var18;
+//            renderBlocks.customMaxY = var20;
         }
     }
 }

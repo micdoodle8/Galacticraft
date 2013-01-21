@@ -194,7 +194,7 @@ public class ClientProxyMars extends CommonProxyMars implements IGalacticraftSub
     				player.motionY = player.motionY + 0.042;
     			}
     			
-        		if (player != null && world != null && player.inventory.armorItemInSlot(2) != null && player.inventory.armorItemInSlot(2).getItem().shiftedIndex == GCMarsItems.jetpack.shiftedIndex && FMLClientHandler.instance().getClient().gameSettings.keyBindJump.pressed && player.posY < 125)
+        		if (player != null && world != null && player.inventory.armorItemInSlot(2) != null && player.inventory.armorItemInSlot(2).getItem().itemID == GCMarsItems.jetpack.itemID && FMLClientHandler.instance().getClient().gameSettings.keyBindJump.pressed && player.posY < 125)
         		{
         			((GCMarsItemJetpack)player.inventory.armorItemInSlot(2).getItem()).setActive();
         			player.motionY -= 0.062D;

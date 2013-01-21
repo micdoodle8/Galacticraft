@@ -32,7 +32,7 @@ public class GCMarsItemJetpack extends ItemArmor
     		{
     			if (!player.capabilities.isCreativeMode)
     			{
-        			player.inventory.consumeInventoryItem(Item.coal.shiftedIndex);
+        			player.inventory.consumeInventoryItem(Item.coal.itemID);
     			}
     		}
     	}

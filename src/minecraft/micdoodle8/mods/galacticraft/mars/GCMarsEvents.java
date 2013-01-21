@@ -29,7 +29,7 @@ public class GCMarsEvents
                 	event.setResult(Result.ALLOW);
                 }
 
-                if (bucket.shiftedIndex == Item.bucketEmpty.shiftedIndex)
+                if (bucket.itemID == Item.bucketEmpty.itemID)
                 {
                     if (event.world.getBlockMaterial(x, y, z) == GCMarsBlocks.bacterialSludge && event.world.getBlockMetadata(x, y, z) == 0)
                     {

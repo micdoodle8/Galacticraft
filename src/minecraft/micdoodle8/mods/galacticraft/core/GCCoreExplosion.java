@@ -35,7 +35,9 @@ public class GCCoreExplosion
     public double explosionZ;
     public Entity exploder;
     public float explosionSize;
-    public List field_77281_g = new ArrayList();
+
+    /** A list of ChunkPositions of blocks affected by this explosion */
+    public List affectedBlockPositions = new ArrayList();
     private final Map field_77288_k = new HashMap();
 
     public GCCoreExplosion(World par1World, Entity par2Entity, double par3, double par5, double par7, float par9)
@@ -108,7 +110,7 @@ public class GCCoreExplosion
             }
         }
 
-        this.field_77281_g.addAll(var2);
+        this.affectedBlockPositions.addAll(var2);
         this.explosionSize *= 2.0F;
         var3 = MathHelper.floor_double(this.explosionX - this.explosionSize - 1.0D);
         var4 = MathHelper.floor_double(this.explosionX + this.explosionSize + 1.0D);
@@ -161,7 +163,7 @@ public class GCCoreExplosion
     {
         this.worldObj.playSoundEffect(this.explosionX, this.explosionY, this.explosionZ, "random.explode", 4.0F, (1.0F + (this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.2F) * 0.7F);
         this.worldObj.spawnParticle("hugeexplosion", this.explosionX, this.explosionY, this.explosionZ, 0.0D, 0.0D, 0.0D);
-        Iterator var2 = this.field_77281_g.iterator();
+        Iterator var2 = this.affectedBlockPositions.iterator();
         ChunkPosition var3;
         int var4;
         int var5;
@@ -212,7 +214,7 @@ public class GCCoreExplosion
 
         if (this.isFlaming)
         {
-            var2 = this.field_77281_g.iterator();
+            var2 = this.affectedBlockPositions.iterator();
 
             while (var2.hasNext())
             {

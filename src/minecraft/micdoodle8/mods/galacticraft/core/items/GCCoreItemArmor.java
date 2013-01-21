@@ -26,19 +26,19 @@ public class GCCoreItemArmor extends GCCoreItemBreathableHelmet implements IArmo
     {
     	if (this.material == GCCoreItems.TITANIUMARMOR)
     	{
-    		if (itemstack.getItem().shiftedIndex == GCCoreItems.titaniumHelmet.shiftedIndex)
+    		if (itemstack.getItem().itemID == GCCoreItems.titaniumHelmet.itemID)
     		{
     			return "/micdoodle8/mods/galacticraft/core/client/armor/titanium_1.png";
     		}
-    		else if (itemstack.getItem().shiftedIndex == GCCoreItems.titaniumChestplate.shiftedIndex || itemstack.getItem().shiftedIndex == GCCoreItems.titaniumBoots.shiftedIndex)
+    		else if (itemstack.getItem().itemID == GCCoreItems.titaniumChestplate.itemID || itemstack.getItem().itemID == GCCoreItems.titaniumBoots.itemID)
     		{
     			return "/micdoodle8/mods/galacticraft/core/client/armor/titanium_2.png";
     		}
-    		else if (itemstack.getItem().shiftedIndex == GCCoreItems.titaniumLeggings.shiftedIndex)
+    		else if (itemstack.getItem().itemID == GCCoreItems.titaniumLeggings.itemID)
     		{
     			return "/micdoodle8/mods/galacticraft/core/client/armor/titanium_3.png";
     		}
-    		else if (itemstack.getItem().shiftedIndex == GCCoreItems.titaniumHelmetBreathable.shiftedIndex)
+    		else if (itemstack.getItem().itemID == GCCoreItems.titaniumHelmetBreathable.itemID)
     		{
     			return "/micdoodle8/mods/galacticraft/core/client/armor/titaniumox_1.png";
     		}

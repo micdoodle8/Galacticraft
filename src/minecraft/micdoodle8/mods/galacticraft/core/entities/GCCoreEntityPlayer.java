@@ -122,12 +122,12 @@ public class GCCoreEntityPlayer
 	        	final int var1 = player.inventory.getCurrentItem().stackSize;
 	        	final int var2 = player.inventory.getCurrentItem().getItemDamage();
 	        	
-				if (player.inventory.getCurrentItem().getItem().shiftedIndex == Block.torchWood.blockID)
+				if (player.inventory.getCurrentItem().getItem().itemID == Block.torchWood.blockID)
 				{
 		        	final ItemStack stack = new ItemStack(GCCoreBlocks.unlitTorch, var1, 0);
 		            player.inventory.mainInventory[player.inventory.currentItem] = stack;
 				}
-				else if (player.inventory.getCurrentItem().getItem().shiftedIndex == Item.bow.shiftedIndex)
+				else if (player.inventory.getCurrentItem().getItem().itemID == Item.bow.itemID)
 				{
 		        	final Hashtable<Integer, Enchantment> enchants = new Hashtable<Integer, Enchantment>();
 		        	
@@ -162,7 +162,7 @@ public class GCCoreEntityPlayer
 		        	
 		            player.inventory.mainInventory[player.inventory.currentItem] = stack;
 				}
-				else if (player.inventory.getCurrentItem().getItem().shiftedIndex == Block.sapling.blockID)
+				else if (player.inventory.getCurrentItem().getItem().itemID == Block.sapling.blockID)
 				{
 					// No jungle trees...
 					if (var2 != 3)
@@ -177,17 +177,17 @@ public class GCCoreEntityPlayer
 	        	final int var1 = player.inventory.getCurrentItem().stackSize;
 	        	final int var2 = player.inventory.getCurrentItem().getItemDamage();
 	        	
-	        	if (player.inventory.getCurrentItem().getItem().shiftedIndex == GCCoreBlocks.unlitTorch.blockID)
+	        	if (player.inventory.getCurrentItem().getItem().itemID == GCCoreBlocks.unlitTorch.blockID)
 	        	{
 	            	final ItemStack stack = new ItemStack(Block.torchWood, var1, 0);
 	                player.inventory.mainInventory[player.inventory.currentItem] = stack;
 	        	}
-	        	else if (player.inventory.getCurrentItem().getItem().shiftedIndex == GCCoreBlocks.sapling.blockID)
+	        	else if (player.inventory.getCurrentItem().getItem().itemID == GCCoreBlocks.sapling.blockID)
 	        	{
 	            	final ItemStack stack = new ItemStack(Block.sapling, var1, var2);
 	                player.inventory.mainInventory[player.inventory.currentItem] = stack;
 	        	}
-	        	else if (player.inventory.getCurrentItem().getItem().shiftedIndex == GCCoreItems.gravityBow.shiftedIndex)
+	        	else if (player.inventory.getCurrentItem().getItem().itemID == GCCoreItems.gravityBow.itemID)
 	        	{
 		        	final Hashtable<Integer, Enchantment> enchants = new Hashtable<Integer, Enchantment>();
 		        	

@@ -51,7 +51,7 @@ public class GCMoonBlockOre extends Block
 		switch (meta)
 		{
 		case 2:
-			return GCMoonItems.cheeseCurd.shiftedIndex;
+			return GCMoonItems.cheeseCurd.itemID;
 		default:
 			return this.blockID;
 		}

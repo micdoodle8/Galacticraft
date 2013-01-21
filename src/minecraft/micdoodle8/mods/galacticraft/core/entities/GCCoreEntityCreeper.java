@@ -178,7 +178,7 @@ public class GCCoreEntityCreeper extends GCCoreEntityMob
 
         if (par1DamageSource.getEntity() instanceof EntitySkeleton)
         {
-            this.dropItem(Item.record13.shiftedIndex + this.rand.nextInt(10), 1);
+            this.dropItem(Item.record13.itemID + this.rand.nextInt(10), 1);
         }
     }
 
@@ -212,7 +212,7 @@ public class GCCoreEntityCreeper extends GCCoreEntityMob
     @Override
 	protected int getDropItemId()
     {
-        return Item.gunpowder.shiftedIndex;
+        return Item.gunpowder.itemID;
     }
 
     /**

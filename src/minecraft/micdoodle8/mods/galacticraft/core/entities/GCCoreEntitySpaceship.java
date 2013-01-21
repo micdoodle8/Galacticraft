@@ -154,8 +154,8 @@ public class GCCoreEntitySpaceship extends Entity
 	@SideOnly(Side.CLIENT)
     public void performHurtAnimation()
     {
-        this.func_70494_i(-this.func_70493_k());
-        this.func_70497_h(5);
+        this.setRollingDirection(-this.getRollingDirection());
+        this.setRollingAmplitude(5);
         this.setDamage(this.getDamage() + this.getDamage() * 10);
     }
 
@@ -304,9 +304,9 @@ public class GCCoreEntitySpaceship extends Entity
     		this.teleport();
     	}
     	
-    	if (this.func_70496_j() > 0)
+    	if (this.getRollingAmplitude() > 0)
         {
-            this.func_70497_h(this.func_70496_j() - 1);
+            this.setRollingAmplitude(this.getRollingAmplitude() - 1);
         }
 
         if (this.getDamage() > 0)
@@ -589,22 +589,34 @@ public class GCCoreEntitySpaceship extends Entity
         return this.dataWatcher.getWatchableObjectInt(19);
     }
 
-    public void func_70497_h(int par1)
+    /**
+     * Sets the rolling amplitude the cart rolls while being attacked.
+     */
+    public void setRollingAmplitude(int par1)
     {
         this.dataWatcher.updateObject(17, Integer.valueOf(par1));
     }
 
-    public int func_70496_j()
+    /**
+     * Gets the rolling amplitude the cart rolls while being attacked.
+     */
+    public int getRollingAmplitude()
     {
         return this.dataWatcher.getWatchableObjectInt(17);
     }
 
-    public void func_70494_i(int par1)
+    /**
+     * Sets the rolling direction the cart rolls while being attacked. Can be 1 or -1.
+     */
+    public void setRollingDirection(int par1)
     {
         this.dataWatcher.updateObject(18, Integer.valueOf(par1));
     }
 
-    public int func_70493_k()
+    /**
+     * Gets the rolling direction the cart rolls while being attacked. Can be 1 or -1.
+     */
+    public int getRollingDirection()
     {
         return this.dataWatcher.getWatchableObjectInt(18);
     }

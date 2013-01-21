@@ -207,7 +207,7 @@ public class GCCoreBlock extends Block
     {
 //		if (this.blockID == GCCoreBlocks.fallenMeteor.blockID)
 //		{
-//	        return GCMoonItems.meteoricIronRaw.shiftedIndex;
+//	        return GCMoonItems.meteoricIronRaw.itemID;
 //		}
 //		else
 		{

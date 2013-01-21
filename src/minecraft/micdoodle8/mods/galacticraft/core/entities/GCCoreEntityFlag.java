@@ -42,7 +42,7 @@ public class GCCoreEntityFlag extends Entity
     {
         if (!this.worldObj.isRemote && !this.isDead && !this.indestructable)
         {
-            if (this.func_85032_ar())
+            if (this.isEntityInvulnerable())
             {
                 return false;
             }

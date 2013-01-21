@@ -264,7 +264,7 @@ public class GCMarsEntityCreeperBoss extends EntityMob
 
         if (par1DamageSource.getEntity() instanceof EntitySkeleton)
         {
-            this.dropItem(Item.record13.shiftedIndex + this.rand.nextInt(10), 1);
+            this.dropItem(Item.record13.itemID + this.rand.nextInt(10), 1);
         }
     }
 
@@ -289,7 +289,7 @@ public class GCMarsEntityCreeperBoss extends EntityMob
     @Override
 	protected int getDropItemId()
     {
-        return Item.gunpowder.shiftedIndex;
+        return Item.gunpowder.itemID;
     }
 
     public int getCreeperState()

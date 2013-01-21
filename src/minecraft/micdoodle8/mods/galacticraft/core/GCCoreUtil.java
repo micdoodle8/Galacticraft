@@ -423,15 +423,15 @@ public class GCCoreUtil
 			return 0;
 		}
 		
-		if (tank.getItem().shiftedIndex == GCCoreItems.lightOxygenTankFull.shiftedIndex)
+		if (tank.getItem().itemID == GCCoreItems.lightOxygenTankFull.itemID)
 		{
 			return 60;
 		}
-		else if (tank.getItem().shiftedIndex == GCCoreItems.medOxygenTankFull.shiftedIndex)
+		else if (tank.getItem().itemID == GCCoreItems.medOxygenTankFull.itemID)
 		{
 			return 120;
 		}
-		else if (tank.getItem().shiftedIndex == GCCoreItems.heavyOxygenTankFull.shiftedIndex)
+		else if (tank.getItem().itemID == GCCoreItems.heavyOxygenTankFull.itemID)
 		{
 			return 2000;
 		}
@@ -650,13 +650,13 @@ public class GCCoreUtil
 		
 		if (slots[0] != null && slots[1] != null && slots[2] != null && slots[3] != null && slots[4] != null && slots[5] != null && slots[6] != null && slots[7] != null && slots[8] != null && slots[9] != null && slots[10] != null && slots[11] != null && slots[12] != null && slots[13] != null)
 		{
-			if (slots[0].getItem().shiftedIndex == GCCoreItems.rocketNoseCone.shiftedIndex)
+			if (slots[0].getItem().itemID == GCCoreItems.rocketNoseCone.itemID)
 			{
 				int platesInPlace = 0;
 				
 				for (int i = 1; i < 9; i++)
 				{
-					if (slots[i].getItem().shiftedIndex == GCCoreItems.heavyPlating.shiftedIndex)
+					if (slots[i].getItem().itemID == GCCoreItems.heavyPlating.itemID)
 					{
 						platesInPlace++;
 					}
@@ -664,11 +664,11 @@ public class GCCoreUtil
 				
 				if (platesInPlace == 8)
 				{
-					if (slots[9].getItem().shiftedIndex == GCCoreItems.rocketFins.shiftedIndex && slots[10].getItem().shiftedIndex == GCCoreItems.rocketFins.shiftedIndex)
+					if (slots[9].getItem().itemID == GCCoreItems.rocketFins.itemID && slots[10].getItem().itemID == GCCoreItems.rocketFins.itemID)
 					{
-						if (slots[12].getItem().shiftedIndex == GCCoreItems.rocketFins.shiftedIndex && slots[13].getItem().shiftedIndex == GCCoreItems.rocketFins.shiftedIndex)
+						if (slots[12].getItem().itemID == GCCoreItems.rocketFins.itemID && slots[13].getItem().itemID == GCCoreItems.rocketFins.itemID)
 						{
-							if (slots[11].getItem().shiftedIndex == GCCoreItems.rocketEngine.shiftedIndex)
+							if (slots[11].getItem().itemID == GCCoreItems.rocketEngine.itemID)
 							{
 								return new ItemStack(GCCoreItems.spaceship);
 							}

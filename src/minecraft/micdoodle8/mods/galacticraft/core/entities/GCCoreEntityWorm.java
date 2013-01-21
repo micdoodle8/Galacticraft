@@ -4,17 +4,15 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EnumCreatureAttribute;
-import net.minecraft.entity.ai.EntityAIAttackOnCollide;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreEntityWorm extends EntityMob
 {
@@ -23,7 +21,7 @@ public class GCCoreEntityWorm extends EntityMob
         super(par1World);
         this.texture = "/micdoodle8/mods/galacticraft/core/client/entities/worm.png";
         this.setSize(2F, 2F);
-        this.moveSpeed = 1F;
+        this.moveSpeed = 1F / 15F;
         this.noClip = true;
     }
     
@@ -67,7 +65,7 @@ public class GCCoreEntityWorm extends EntityMob
 
     protected void playStepSound(int par1, int par2, int par3, int par4)
     {
-        this.func_85030_a("mob.silverfish.step", 0.15F, 1.0F);
+        this.playSound("mob.silverfish.step", 0.15F, 1.0F);
     }
 
     protected int getDropItemId()
@@ -133,12 +131,57 @@ public class GCCoreEntityWorm extends EntityMob
     		{
             	for (int k = -1; k < 2; k++)
             	{
-            		if (Block.blocksList[this.worldObj.getBlockId(MathHelper.floor_double(this.posX + xOffset), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ + zOffset))] != null && Block.blocksList[this.worldObj.getBlockId((int)this.posX + xOffset, (int)this.posY, (int)this.posZ + zOffset)].isBlockSolid(this.worldObj, (int)this.posX + xOffset, (int)this.posY, (int)this.posZ + zOffset, 0))
+            		int id = this.worldObj.getBlockId(MathHelper.floor_double(this.posX + xOffset + i), MathHelper.floor_double(this.posY + j), MathHelper.floor_double(this.posZ + zOffset + k));
+            		
+            		if (id > 0 && id != Block.waterMoving.blockID && id != Block.waterStill.blockID)
             		{
-                		this.worldObj.setBlockWithNotify(MathHelper.floor_double(this.posX + xOffset + i), MathHelper.floor_double(this.posY + j), MathHelper.floor_double(this.posZ + zOffset + k), 0);
+                		Block block = Block.blocksList[id];
+                		
+                		if (block != null)
+                		{
+                    		block.dropBlockAsItemWithChance(worldObj, MathHelper.floor_double(this.posX + xOffset + i), MathHelper.floor_double(this.posY + j), MathHelper.floor_double(this.posZ + zOffset + k), worldObj.getBlockMetadata(MathHelper.floor_double(this.posX + xOffset + i), MathHelper.floor_double(this.posY + j), MathHelper.floor_double(this.posZ + zOffset + k)), 1F, 0);
+                		}
+
+                        if (this.worldObj.setBlockAndMetadataWithUpdate(MathHelper.floor_double(this.posX + xOffset + i), MathHelper.floor_double(this.posY + j), MathHelper.floor_double(this.posZ + zOffset + k), 0, 0, this.worldObj.isRemote))
+                        {
+                            this.worldObj.notifyBlocksOfNeighborChange(MathHelper.floor_double(this.posX + xOffset + i), MathHelper.floor_double(this.posY + j), MathHelper.floor_double(this.posZ + zOffset + k), 0);
+                        }
             		}
             	}
     		}
+    	}
+    	
+    	for (int i = -1; i < 2; i++)
+    	{
+    		for (int j = -1; j < 2; j++)
+    		{
+            	for (int k = -1; k < 2; k++)
+            	{
+            		int id = this.worldObj.getBlockId(MathHelper.floor_double(this.posX - (xOffset / 6) + i), MathHelper.floor_double(this.posY + j), MathHelper.floor_double(this.posZ - (zOffset / 6) + k));
+
+            		if (id > 0 && id != Block.waterMoving.blockID && id != Block.waterStill.blockID)
+            		{
+                		Block block = Block.blocksList[id];
+                		
+                		if (block != null)
+                		{
+                    		block.dropBlockAsItemWithChance(worldObj, MathHelper.floor_double(this.posX - (xOffset / 6) + i), MathHelper.floor_double(this.posY + j), MathHelper.floor_double(this.posZ - (zOffset / 6) + k), worldObj.getBlockMetadata(MathHelper.floor_double(this.posX - (xOffset / 6) + i), MathHelper.floor_double(this.posY + j), MathHelper.floor_double(this.posZ - (zOffset / 6) + k)), 1F, 0);
+                		}
+
+                        if (this.worldObj.setBlockAndMetadataWithUpdate(MathHelper.floor_double(this.posX - (xOffset / 6) + i), MathHelper.floor_double(this.posY + j), MathHelper.floor_double(this.posZ - (zOffset / 6) + k), 0, 0, this.worldObj.isRemote))
+                        {
+                            this.worldObj.notifyBlocksOfNeighborChange(MathHelper.floor_double(this.posX - (xOffset / 6) + i), MathHelper.floor_double(this.posY + j), MathHelper.floor_double(this.posZ - (zOffset / 6) + k), 0);
+                        }
+            		}
+            	}
+    		}
+    	}
+    	
+    	int id = this.worldObj.getBlockId(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 3), MathHelper.floor_double(this.posZ));
+
+    	if (id == Block.waterMoving.blockID || id == Block.waterStill.blockID || id == 0)
+    	{
+    		this.motionY -= 0.062D;
     	}
 
         List var9 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, AxisAlignedBB.getAABBPool().addOrModifyAABBInPool((double)MathHelper.floor_double(this.posX) - 2 + xOffset, (double)MathHelper.floor_double(this.posY) - 2, (double)MathHelper.floor_double(this.posZ) - 2 + zOffset, (double)MathHelper.floor_double(this.posX) + 2 + xOffset, (double)MathHelper.floor_double(this.posY) + 2, (double)MathHelper.floor_double(this.posZ) + 2 + zOffset));
@@ -147,14 +190,16 @@ public class GCCoreEntityWorm extends EntityMob
         {
             Entity var32 = (Entity)var9.get(var11);
             
-            if (var32 != null)
+            if (var32 != null && !(var32 instanceof EntityItem))
             {
             	var32.attackEntityFrom(DamageSource.cactus, 1);
             }
         }
+        
+        this.motionY *= 0.95;
 
-        this.motionX = -(0.075 * Math.cos((((this.getRotationIndex() % 4) + 1) * (90F) - 90F) * Math.PI / 180.0D));
-        this.motionZ = -(0.075 * Math.sin((((this.getRotationIndex() % 4) + 1) * (90F) - 90F) * Math.PI / 180.0D));
+        this.motionX = -(this.moveSpeed * Math.cos((((this.getRotationIndex() % 4) + 1) * (90F) - 90F) * Math.PI / 180.0D));
+        this.motionZ = -(this.moveSpeed * Math.sin((((this.getRotationIndex() % 4) + 1) * (90F) - 90F) * Math.PI / 180.0D));
         
         this.moveEntity(this.motionX, this.motionY, this.motionZ);
     }

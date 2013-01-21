@@ -88,7 +88,7 @@ public class GCCoreItemFlag extends GCCoreItem
                 flag.setOwner(par3EntityPlayer.username);
             }
             
-            final int var2 = this.getInventorySlotContainItem(par3EntityPlayer, this.shiftedIndex);
+            final int var2 = this.getInventorySlotContainItem(par3EntityPlayer, this.itemID);
 
             if (var2 >= 0)
             {

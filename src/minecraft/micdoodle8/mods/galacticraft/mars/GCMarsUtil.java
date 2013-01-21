@@ -49,7 +49,7 @@ public class GCMarsUtil
 	
 	public static void addSmeltingRecipes()
 	{
-		FurnaceRecipes.smelting().addSmelting(GCMarsItems.rawDesh.shiftedIndex, new ItemStack(GCMarsItems.ingotDesh, 1), 0.2F);
+		FurnaceRecipes.smelting().addSmelting(GCMarsItems.rawDesh.itemID, new ItemStack(GCMarsItems.ingotDesh, 1), 0.2F);
 		FurnaceRecipes.smelting().addSmelting(GCMarsBlocks.blockOres.blockID, 1, new ItemStack(GCMarsItems.ingotQuandrium, 1), 0.2F);
 		FurnaceRecipes.smelting().addSmelting(GCMarsBlocks.blockOres.blockID, 2, new ItemStack(GCCoreItems.ingotAluminum, 1), 0.2F);
 		FurnaceRecipes.smelting().addSmelting(GCMarsBlocks.blockOres.blockID, 3, new ItemStack(GCCoreItems.ingotCopper, 1), 0.2F);

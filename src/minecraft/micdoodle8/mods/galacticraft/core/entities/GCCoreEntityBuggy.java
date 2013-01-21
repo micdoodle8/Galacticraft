@@ -178,7 +178,7 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
 
                 if (!this.worldObj.isRemote)
                 {
-//                    this.dropItem(mod_cars.car.shiftedIndex, 1);
+//                    this.dropItem(mod_cars.car.itemID, 1);
 //
 //                    for (int var4 = 0; var4 < this.getSizeInventory(); ++var4)
 //                    {
@@ -244,7 +244,7 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
             {
                 final ItemStack var22 = this.getStackInSlot(var4);
 
-                if (var22 != null && var22.itemID == Item.coal.shiftedIndex)
+                if (var22 != null && var22.itemID == Item.coal.itemID)
                 {
                     this.decrStackSize(var4, 1);
                     this.fuel += 1500;
