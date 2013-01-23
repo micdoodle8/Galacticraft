@@ -334,12 +334,13 @@ public class ClientProxyCore extends CommonProxyCore
             
             if (packetType == 0)
             {
-                final Class[] decodeAs = {Integer.class, String.class};
+                final Class[] decodeAs = {Integer.class, Integer.class, String.class};
                 final Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
                 
-                if (String.valueOf(packetReadout[1]).equals(String.valueOf(FMLClientHandler.instance().getClient().thePlayer.username)))
+                if (String.valueOf(packetReadout[2]).equals(String.valueOf(FMLClientHandler.instance().getClient().thePlayer.username)))
                 {
                     TickHandlerClient.airRemaining = (Integer) packetReadout[0];
+                    TickHandlerClient.airRemaining2 = (Integer) packetReadout[1];
                 }
             }
             else if (packetType == 1)
@@ -440,6 +441,7 @@ public class ClientProxyCore extends CommonProxyCore
     public static class TickHandlerClient implements ITickHandler
     {
     	public static int airRemaining;
+    	public static int airRemaining2;
     	
     	@Override
     	public void tickStart(EnumSet<TickType> type, Object... tickData)
@@ -604,11 +606,16 @@ public class ClientProxyCore extends CommonProxyCore
 
         		if (player != null && player.worldObj.provider instanceof IGalacticraftWorldProvider)
     			{
-    				final short var8 = 90;
     				int var6 = (airRemaining - 90) * -1;
     				if (airRemaining <= 0) 
     				{
     					var6 = 90;
+    				}
+    				
+    				int var7 = (airRemaining2 - 90) * -1;
+    				if (airRemaining2 <= 0) 
+    				{
+    					var7 = 90;
     				}
     				
     				final float var9 = 0.00390625F;
@@ -627,10 +634,16 @@ public class ClientProxyCore extends CommonProxyCore
     				GL11.glBindTexture(GL11.GL_TEXTURE_2D, minecraft.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/gui/gui.png"));
     				final Tessellator tessellator = Tessellator.instance;
     				tessellator.startDrawingQuads();
-    				tessellator.addVertexWithUV(i - 20, k / 2 + 45, -90D, 0 * 0.00390625F, 90 * 0.00390625F);
-    				tessellator.addVertexWithUV(i - 10, k / 2 + 45, -90D, 10 * 0.00390625F, 90 * 0.00390625F);
-    				tessellator.addVertexWithUV(i - 10, k / 2 - 45, -90D, 10 * 0.00390625F, 0 * 0.00390625F);
-    				tessellator.addVertexWithUV(i - 20, k / 2 - 45, -90D, 0 * 0.00390625F, 0 * 0.00390625F);
+    				tessellator.addVertexWithUV(i - 29, 33.5 + 23.5, -90D, (85) * 0.00390625F, 		47 * 0.00390625F);
+    				tessellator.addVertexWithUV(i - 10, 33.5 + 23.5, -90D, (85 + 19) * 0.00390625F, 	47 * 0.00390625F);
+    				tessellator.addVertexWithUV(i - 10, 33.5 - 23.5, -90D, (85 + 19) * 0.00390625F, 	0 * 0.00390625F);
+    				tessellator.addVertexWithUV(i - 29, 33.5 - 23.5, -90D, (85) * 0.00390625F, 		0 * 0.00390625F);
+    				tessellator.draw();
+    				tessellator.startDrawingQuads();
+    				tessellator.addVertexWithUV(i - 49, 33.5 + 23.5, -90D, (85) * 0.00390625F, 		47 * 0.00390625F);
+    				tessellator.addVertexWithUV(i - 30, 33.5 + 23.5, -90D, (85 + 19) * 0.00390625F, 	47 * 0.00390625F);
+    				tessellator.addVertexWithUV(i - 30, 33.5 - 23.5, -90D, (85 + 19) * 0.00390625F, 	0 * 0.00390625F);
+    				tessellator.addVertexWithUV(i - 49, 33.5 - 23.5, -90D, (85) * 0.00390625F, 		0 * 0.00390625F);
     				tessellator.draw();
     				GL11.glDepthMask(true);
     				GL11.glEnable(GL11.GL_DEPTH_TEST);
@@ -640,11 +653,38 @@ public class ClientProxyCore extends CommonProxyCore
     				if (var6 > 0 || var6 <= 0) 
     				{
     					final Tessellator tessellator2 = Tessellator.instance;
+
     					tessellator2.startDrawingQuads();
-    					tessellator2.addVertexWithUV(i - 20, k / 2 - 45 + var6, 0, 10 * 0.00390625F, var6 * 0.00390625F);
-    					tessellator2.addVertexWithUV(i - 10, k / 2 - 45 + var6, 0, 20 * 0.00390625F, var6 * 0.00390625F);
-    					tessellator2.addVertexWithUV(i - 10, k / 2 - 45, 0, 20 * 0.00390625F, 0 * 0.00390625F);
-    					tessellator2.addVertexWithUV(i - 20, k / 2 - 45, 0, 10 * 0.00390625F, 0 * 0.00390625F);
+        				tessellator.addVertexWithUV(i - 48, 34.5 - 23.5 + (var6 / 2), 	0, (105) * 0.00390625F, 		(var6 / 2) * 0.00390625F);
+        				tessellator.addVertexWithUV(i - 31, 34.5 - 23.5 + (var6 / 2), 	0, (105 + 17) * 0.00390625F, 	(var6 / 2) * 0.00390625F);
+        				tessellator.addVertexWithUV(i - 31, 34.5 - 23.5,	 			0, (105 + 17) * 0.00390625F, 	1 * 0.00390625F);
+        				tessellator.addVertexWithUV(i - 48, 34.5 - 23.5, 				0, (105) * 0.00390625F, 		1 * 0.00390625F);
+    					tessellator2.draw();
+
+    					tessellator2.startDrawingQuads();
+        				tessellator.addVertexWithUV(i - 49, 34.5 - 23.5 + (var6 / 2), 		0, (66) * 0.00390625F, 		(var6 / 2) * 0.00390625F);
+        				tessellator.addVertexWithUV(i - 31, 34.5 - 23.5 + (var6 / 2), 		0, (66 + 17) * 0.00390625F, (var6 / 2) * 0.00390625F);
+        				tessellator.addVertexWithUV(i - 31, 34.5 - 23.5 + (var6 / 2) - 1,	0, (66 + 17) * 0.00390625F, ((var6 / 2) - 1) * 0.00390625F);
+        				tessellator.addVertexWithUV(i - 49, 34.5 - 23.5 + (var6 / 2) - 1, 	0, (66) * 0.00390625F, 		((var6 / 2) - 1) * 0.00390625F);
+    					tessellator2.draw();
+    				}
+    				
+    				if (var7 > 0 || var7 <= 0) 
+    				{
+    					final Tessellator tessellator2 = Tessellator.instance;
+
+    					tessellator2.startDrawingQuads();
+        				tessellator.addVertexWithUV(i - 28, 34.5 - 23.5 + (var7 / 2), 	0, (105) * 0.00390625F, 		(var7 / 2) * 0.00390625F);
+        				tessellator.addVertexWithUV(i - 11, 34.5 - 23.5 + (var7 / 2), 	0, (105 + 17) * 0.00390625F, 	(var7 / 2) * 0.00390625F);
+        				tessellator.addVertexWithUV(i - 11, 34.5 - 23.5,	 			0, (105 + 17) * 0.00390625F, 	1 * 0.00390625F);
+        				tessellator.addVertexWithUV(i - 28, 34.5 - 23.5, 				0, (105) * 0.00390625F, 		1 * 0.00390625F);
+    					tessellator2.draw();
+
+    					tessellator2.startDrawingQuads();
+        				tessellator.addVertexWithUV(i - 29, 34.5 - 23.5 + (var7 / 2), 	0, (66) * 0.00390625F, 		(var7 / 2) * 0.00390625F);
+        				tessellator.addVertexWithUV(i - 11, 34.5 - 23.5 + (var7 / 2), 	0, (66 + 17) * 0.00390625F, (var7 / 2) * 0.00390625F);
+        				tessellator.addVertexWithUV(i - 11, 34.5 - 23.5 + (var7 / 2) - 1,	 			0, (66 + 17) * 0.00390625F, ((var7 / 2) - 1) * 0.00390625F);
+        				tessellator.addVertexWithUV(i - 29, 34.5 - 23.5 + (var7 / 2) - 1, 				0, (66) * 0.00390625F, 		((var7 / 2) - 1) * 0.00390625F);
     					tessellator2.draw();
     				}
     			}
