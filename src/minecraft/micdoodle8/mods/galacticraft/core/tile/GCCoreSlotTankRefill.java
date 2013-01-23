@@ -1,6 +1,8 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItemBreathableHelmet;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenGear;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -21,7 +23,18 @@ public class GCCoreSlotTankRefill extends Slot
 	@Override
 	public boolean isItemValid(ItemStack par1ItemStack)
 	{
-		return GCCoreUtil.getDrainSpacing(par1ItemStack) > 0;
+		switch (this.slotNumber - 45)
+		{
+		case 0:
+			return par1ItemStack.getItem() instanceof GCCoreItemBreathableHelmet;
+		case 1:
+			return par1ItemStack.getItem() instanceof GCCoreItemOxygenGear;
+		case 2:
+			return GCCoreUtil.getDrainSpacing(par1ItemStack) > 0;
+		case 3:
+			return GCCoreUtil.getDrainSpacing(par1ItemStack) > 0;
+		}
+		return false;
 	}
 
 	@Override

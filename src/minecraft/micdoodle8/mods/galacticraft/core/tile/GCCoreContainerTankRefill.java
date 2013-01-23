@@ -1,9 +1,10 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.ContainerPlayer;
 import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.ItemStack;
 
 /**
@@ -14,28 +15,47 @@ import net.minecraft.item.ItemStack;
  */
 public class GCCoreContainerTankRefill extends Container
 {
-	public GCCoreContainerTankRefill(InventoryPlayer par1InventoryPlayer, GCCoreInventoryTankRefill inventorytankrefill) 
+	public GCCoreContainerTankRefill(EntityPlayer par1EntityPlayer, GCCoreInventoryTankRefill inventorytankrefill) 
 	{
-        this.addSlotToContainer(new GCCoreSlotTankRefill(inventorytankrefill, 0, 79, 43));
-		int var6;
-        int var7;
+		this.addSlotToContainer(new SlotCrafting(par1EntityPlayer, ((ContainerPlayer)par1EntityPlayer.inventoryContainer).craftMatrix, ((ContainerPlayer)par1EntityPlayer.inventoryContainer).craftResult, 0, 128, 62));
+        int var4;
+        int var5;
 
-        for (var6 = 0; var6 < 3; ++var6)
+        for (var4 = 0; var4 < 2; ++var4)
         {
-            for (var7 = 0; var7 < 9; ++var7)
+            for (var5 = 0; var5 < 2; ++var5)
             {
-                this.addSlotToContainer(new Slot(par1InventoryPlayer, var7 + var6 * 9 + 9, 8 + var7 * 18, 84 + var6 * 18 - 18));
+                this.addSlotToContainer(new Slot(((ContainerPlayer)par1EntityPlayer.inventoryContainer).craftMatrix, var5 + var4 * 2, 120 + var5 * 18, 6 + var4 * 18));
             }
         }
 
-        for (var6 = 0; var6 < 9; ++var6)
+        for (var4 = 0; var4 < 4; ++var4)
         {
-            this.addSlotToContainer(new Slot(par1InventoryPlayer, var6, 8 + var6 * 18, 142 - 18));
+            this.addSlotToContainer(new GCCoreSlotArmor((ContainerPlayer)par1EntityPlayer.inventoryContainer, par1EntityPlayer.inventory, par1EntityPlayer.inventory.getSizeInventory() - 1 - var4, 8, 8 + var4 * 18, var4));
+        }
+
+        for (var4 = 0; var4 < 3; ++var4)
+        {
+            for (var5 = 0; var5 < 9; ++var5)
+            {
+                this.addSlotToContainer(new Slot(par1EntityPlayer.inventory, var5 + (var4 + 1) * 9, 8 + var5 * 18, 84 + var4 * 18));
+            }
+        }
+
+        for (var4 = 0; var4 < 9; ++var4)
+        {
+            this.addSlotToContainer(new Slot(par1EntityPlayer.inventory, var4, 8 + var4 * 18, 142));
+        }
+
+
+        for (var4 = 0; var4 < 4; ++var4)
+        {
+            this.addSlotToContainer(new GCCoreSlotTankRefill(inventorytankrefill, var4, 80, 8 + var4 * 18));
         }
 	}
 
 	@Override
-	public boolean canInteractWith(EntityPlayer var1)
+	public boolean canInteractWith(EntityPlayer par1EntityPlayer)
 	{
 		return true;
 	}

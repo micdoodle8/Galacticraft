@@ -116,7 +116,7 @@ public class CommonProxyCore implements IGuiHandler
 				
 				if (player.username == gcPlayer.getPlayer().username)
 				{
-					return new GCCoreContainerTankRefill(player.inventory, gcPlayer.playerTankInventory);
+					return new GCCoreContainerTankRefill(player, gcPlayer.playerTankInventory);
 				}
 	        }
 		}

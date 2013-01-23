@@ -37,6 +37,7 @@ public class GCCoreEntityPlayer
 	private final EntityPlayer currentPlayer;
 	
 	private int airRemaining;
+	private int airRemaining2;
 	
 	public boolean hasTank;
 	
@@ -234,9 +235,11 @@ public class GCCoreEntityPlayer
 				this.sendAirRemainingPacket();
 			}
 
-			final ItemStack tankInSlot = this.playerTankInventory.getStackInSlot(0);
+			final ItemStack tankInSlot = this.playerTankInventory.getStackInSlot(2);
+			final ItemStack tankInSlot2 = this.playerTankInventory.getStackInSlot(3);
 			
 			final int drainSpacing = GCCoreUtil.getDrainSpacing(tankInSlot);
+			final int drainSpacing2 = GCCoreUtil.getDrainSpacing(tankInSlot2);
 						
 			if (player.worldObj.provider instanceof IGalacticraftWorldProvider && !player.capabilities.isCreativeMode)
 	        {
@@ -245,9 +248,19 @@ public class GCCoreEntityPlayer
 					this.airRemaining = 0;
 				}
 				
+				if (tankInSlot2 == null)
+				{
+					this.airRemaining2 = 0;
+				}
+				
 				if (drainSpacing > 0)
 				{
 		    		this.airRemaining = 90 - tankInSlot.getItemDamage();
+				}
+				
+				if (drainSpacing2 > 0)
+				{
+		    		this.airRemaining2 = 90 - tankInSlot2.getItemDamage();
 				}
 				
 				if (drainSpacing > 0 && GalacticraftCore.instance.tick % drainSpacing == 0 && !this.isAABBInBreathableAirBlock() && 90 - tankInSlot.getItemDamage() > 0) 
@@ -255,9 +268,19 @@ public class GCCoreEntityPlayer
 		    		tankInSlot.damageItem(1, player);
 		    	}
 				
+				if (drainSpacing2 > 0 && GalacticraftCore.instance.tick % drainSpacing2 == 0 && !this.isAABBInBreathableAirBlock() && 90 - tankInSlot2.getItemDamage() > 0) 
+		    	{
+		    		tankInSlot2.damageItem(1, player);
+		    	}
+				
 				if (drainSpacing == 0 && GalacticraftCore.instance.tick % 20 == 0 && !this.isAABBInBreathableAirBlock() && this.airRemaining > 0)
 				{
 		    		this.airRemaining -= 1;
+				}
+				
+				if (drainSpacing2 == 0 && GalacticraftCore.instance.tick % 20 == 0 && !this.isAABBInBreathableAirBlock() && this.airRemaining2 > 0)
+				{
+		    		this.airRemaining2 -= 1;
 				}
 				
 				if (this.airRemaining < 0)
@@ -265,9 +288,19 @@ public class GCCoreEntityPlayer
 					this.airRemaining = 0;
 				}
 				
+				if (this.airRemaining2 < 0)
+				{
+					this.airRemaining2 = 0;
+				}
+				
 				if (GalacticraftCore.instance.tick % 20 == 0 && this.isAABBInBreathableAirBlock() && this.airRemaining < 90 && tankInSlot != null)
 				{
 					this.airRemaining += 1;
+				}
+				
+				if (GalacticraftCore.instance.tick % 20 == 0 && this.isAABBInBreathableAirBlock() && this.airRemaining2 < 90 && tankInSlot2 != null)
+				{
+					this.airRemaining2 += 1;
 				}
 				
 	        	if (this.damageCounter == 0) 
@@ -279,21 +312,17 @@ public class GCCoreEntityPlayer
 	        			helmetSlot = player.inventory.armorItemInSlot(3);
 	        		}
 	        		
-	        		final boolean flag = helmetSlot == null;
-	        		final boolean flag2 = helmetSlot != null && !(helmetSlot.getItem() instanceof GCCoreItemBreathableHelmet);
-	        		final boolean flag3 = helmetSlot != null && helmetSlot.getItem() instanceof GCCoreItemSensorGlasses && !((GCCoreItemSensorGlasses)helmetSlot.getItem()).attachedMask;
-	        		final boolean flag4 = helmetSlot != null && helmetSlot.getItem() instanceof GCCoreItemArmor && !((GCCoreItemArmor)helmetSlot.getItem()).attachedMask == true;
-	        		final boolean flag5 = this.airRemaining <= 0;
-	        		final boolean b = flag || flag2 || flag3 || flag4 || flag5;
+	        		final boolean flag5 = (this.airRemaining <= 0 || this.airRemaining2 <= 0);
+	        		final boolean invalid = !GCCoreUtil.hasValidOxygenSetup(player) || flag5;
 	        		
-	        		if (b && !this.isAABBInBreathableAirBlock()) 
+	        		if (invalid && !this.isAABBInBreathableAirBlock()) 
 					{
 	        			if (!player.worldObj.isRemote && player.isEntityAlive())
 	        			{
 	        				if (this.damageCounter == 0) 
 	        	        	{
 		        				this.damageCounter = 100;
-	        		            this.getPlayer().attackEntityFrom(DamageSource.inWall, 2);
+	        		            player.attackEntityFrom(DamageSource.inWall, 2);
 	        	        	}
 	        			}
 					}
@@ -302,10 +331,12 @@ public class GCCoreEntityPlayer
 			else if (GalacticraftCore.instance.tick % 20 == 0 && !player.capabilities.isCreativeMode && this.airRemaining < 90)
 			{
 				this.airRemaining += 1;
+				this.airRemaining2 += 1;
 			}
 			else if (player.capabilities.isCreativeMode)
 			{
 				this.airRemaining = 90;
+				this.airRemaining2 = 90;
 			}
 		}
 		
@@ -409,7 +440,7 @@ public class GCCoreEntityPlayer
     
     public void sendAirRemainingPacket()
     {
-    	final Object[] toSend = {this.airRemaining, this.currentPlayer.username};
+    	final Object[] toSend = {this.airRemaining, this.airRemaining2, this.currentPlayer.username};
     	
     	if (FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.currentPlayer.username) != null)
     	{

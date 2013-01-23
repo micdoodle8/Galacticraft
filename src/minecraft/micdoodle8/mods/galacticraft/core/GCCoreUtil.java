@@ -12,8 +12,12 @@ import java.util.Random;
 import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.API.IMapPlanet;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityPlayer;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItemBreathableHelmet;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenGear;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreInventoryRocketBench;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreInventoryTankRefill;
 import micdoodle8.mods.galacticraft.moon.items.GCMoonItems;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -714,5 +718,92 @@ public class GCCoreUtil
 		}
 		
 		return list;
+	}
+	
+	public static boolean hasValidOxygenSetup(EntityPlayer player)
+	{
+		boolean missingComponent = false;
+		
+        for (int j = 0; j < GalacticraftCore.instance.gcPlayers.size(); ++j)
+        {
+			final GCCoreEntityPlayer playerBase = (GCCoreEntityPlayer) GalacticraftCore.instance.gcPlayers.get(j);
+			
+			if (player.username.equals(playerBase.getPlayer().username))
+			{
+				GCCoreInventoryTankRefill inventory = playerBase.playerTankInventory;
+				
+				if (inventory.getStackInSlot(0) == null || !isItemValid(0, inventory.getStackInSlot(0)))
+				{
+					missingComponent = true;
+				}
+				
+				if (inventory.getStackInSlot(1) == null || !isItemValid(1, inventory.getStackInSlot(1)))
+				{
+					missingComponent = true;
+				}
+				
+				if ((inventory.getStackInSlot(2) == null || !isItemValid(2, inventory.getStackInSlot(2))) && (inventory.getStackInSlot(3) == null || !isItemValid(3, inventory.getStackInSlot(3))))
+				{
+					missingComponent = true;
+				}
+			}
+        }
+		
+        if (missingComponent)
+        {
+    		return false;
+        }
+        else
+        {
+        	return true;
+        }
+	}
+	
+	public static boolean hasValidOxygenSetup(GCCoreEntityPlayer player)
+	{
+		boolean missingComponent = false;
+		
+		GCCoreInventoryTankRefill inventory = player.playerTankInventory;
+		
+		if (inventory.getStackInSlot(0) == null || !isItemValid(0, inventory.getStackInSlot(0)))
+		{
+			missingComponent = true;
+		}
+		
+		if (inventory.getStackInSlot(1) == null || !isItemValid(1, inventory.getStackInSlot(1)))
+		{
+			missingComponent = true;
+		}
+
+		if ((inventory.getStackInSlot(2) == null || !isItemValid(2, inventory.getStackInSlot(2))) && (inventory.getStackInSlot(3) == null || !isItemValid(3, inventory.getStackInSlot(3))))
+		{
+			missingComponent = true;
+		}
+		
+		if (missingComponent)
+        {
+    		return false;
+        }
+        else
+        {
+        	return true;
+        }
+	}
+	
+	public static boolean isItemValid(int slotIndex, ItemStack stack)
+	{
+		switch (slotIndex)
+		{
+		case 0:
+			return stack.getItem() instanceof GCCoreItemBreathableHelmet;
+		case 1:
+			return stack.getItem() instanceof GCCoreItemOxygenGear;
+		case 2:
+			return getDrainSpacing(stack) > 0;
+		case 3:
+			return getDrainSpacing(stack) > 0;
+		}
+		
+		return false;
 	}
 }

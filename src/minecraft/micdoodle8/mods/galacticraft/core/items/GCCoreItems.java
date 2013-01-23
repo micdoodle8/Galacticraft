@@ -17,9 +17,9 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
  */
 public class GCCoreItems 
 {
-	public static Item lightOxygenTankFull;
-	public static Item medOxygenTankFull;
-	public static Item heavyOxygenTankFull;
+	public static GCCoreItemOxygenTank lightOxygenTankFull;
+	public static GCCoreItemOxygenTank medOxygenTankFull;
+	public static GCCoreItemOxygenTank heavyOxygenTankFull;
 	public static Item oxygenMask;
 	public static Item spaceship;
 	public static Item sensorGlasses;
@@ -50,6 +50,7 @@ public class GCCoreItems
 	public static Item rocketFins;
 	public static Item buggy;
 	public static Item flag;
+	public static Item oxygenGear;
 	
 	public static EnumArmorMaterial OXYGENMASK = EnumHelper.addArmorMaterial("OXYGENMASK", 200, new int[] {0, 0, 0, 0}, 0);
 	public static EnumArmorMaterial SENSORGLASSES = EnumHelper.addArmorMaterial("SENSORGLASSES", 200, new int[] {0, 0, 0, 0}, 0);
@@ -58,9 +59,9 @@ public class GCCoreItems
 	
 	public static void initItems() 
 	{
-		lightOxygenTankFull = new GCCoreItemOxygenTank(GCCoreConfigManager.idItemLightOxygenTank).setMaxDamage(90).setIconIndex(0).setItemName("oxygenTankLightFull");
-		medOxygenTankFull = new GCCoreItemOxygenTank(GCCoreConfigManager.idItemMedOxygenTank).setMaxDamage(90).setIconIndex(1).setItemName("oxygenTankMedFull");
-		heavyOxygenTankFull = new GCCoreItemOxygenTank(GCCoreConfigManager.idItemHeavyOxygenTank).setMaxDamage(90).setIconIndex(2).setItemName("oxygenTankHeavyFull");
+		lightOxygenTankFull = (GCCoreItemOxygenTank) new GCCoreItemOxygenTank(GCCoreConfigManager.idItemLightOxygenTank).setTankTier(EnumOxygenTankTier.light).setMaxDamage(90).setIconIndex(0).setItemName("oxygenTankLightFull");
+		medOxygenTankFull = (GCCoreItemOxygenTank) new GCCoreItemOxygenTank(GCCoreConfigManager.idItemMedOxygenTank).setTankTier(EnumOxygenTankTier.medium).setMaxDamage(90).setIconIndex(1).setItemName("oxygenTankMedFull");
+		heavyOxygenTankFull = (GCCoreItemOxygenTank) new GCCoreItemOxygenTank(GCCoreConfigManager.idItemHeavyOxygenTank).setTankTier(EnumOxygenTankTier.heavy).setMaxDamage(90).setIconIndex(2).setItemName("oxygenTankHeavyFull");
 		oxygenMask = new GCCoreItemOxygenMask(GCCoreConfigManager.idArmorOxygenMask, OXYGENMASK, 5, 0).setIconIndex(6).setItemName("oxygenMask");
 		spaceship = new GCCoreItemSpaceship(GCCoreConfigManager.idItemSpaceship).setItemName("spaceship");
 		sensorGlasses = new GCCoreItemSensorGlasses(GCCoreConfigManager.idArmorSensorGlasses, SENSORGLASSES, 6, 0, false).setIconIndex(7).setItemName("sensorGlasses");
@@ -87,9 +88,10 @@ public class GCCoreItems
 		rocketEngine = new GCCoreItem(GCCoreConfigManager.idItemRocketEngine).setIconIndex(27).setItemName("rocketEngine");
 		rocketFins = new GCCoreItem(GCCoreConfigManager.idItemRocketFins).setIconIndex(28).setItemName("rocketFins");
 		rocketNoseCone = new GCCoreItem(GCCoreConfigManager.idItemRocketNoseCone).setIconIndex(29).setItemName("noseCone");
-		sensorLens = new GCCoreItem(GCCoreConfigManager.idItemSensorLens).setIconIndex(30).setItemName("sensorLens");
+		sensorLens = new GCCoreItem(GCCoreConfigManager.idItemSensorLens).setIconIndex(31).setItemName("sensorLens");
 		buggy = new GCCoreItemBuggy(GCCoreConfigManager.idItemBuggy).setIconIndex(200).setItemName("buggy");
 		flag = new GCCoreItemFlag(GCCoreConfigManager.idItemFlag).setIconIndex(201).setItemName("flag");
+		oxygenGear = new GCCoreItemOxygenGear(GCCoreConfigManager.idItemOxygenGear).setIconIndex(32).setItemName("oxygenGear");
 	}
 	
 	public static void registerHarvestLevels()

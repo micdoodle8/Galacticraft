@@ -5,6 +5,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import cpw.mods.fml.common.FMLLog;
 
 /**
  * Copyright 2012, micdoodle8
@@ -14,18 +15,21 @@ import net.minecraft.nbt.NBTTagList;
  */
 public class GCCoreInventoryTankRefill implements IInventory
 {
-	public ItemStack[] tankSlotContents = new ItemStack[1];
+	public ItemStack[] tankSlotContents = new ItemStack[4];
 
 	@Override
 	public int getInventoryStackLimit() 
 	{
-		return 1;
+		return 4;
 	}
 
 	@Override
 	public ItemStack getStackInSlot(int par1) 
 	{
-		return this.tankSlotContents[par1];
+		if (par1 < 4)
+			return this.tankSlotContents[par1];
+		else
+			return null;
 	}
 
 	@Override
@@ -113,28 +117,19 @@ public class GCCoreInventoryTankRefill implements IInventory
             }
         }
 
-        for (var2 = 0; var2 < this.tankSlotContents.length; ++var2)
-        {
-            if (this.tankSlotContents[var2] != null)
-            {
-                var3 = new NBTTagCompound();
-                var3.setByte("TankSlot", (byte)(var2 + 100));
-                this.tankSlotContents[var2].writeToNBT(var3);
-                par1NBTTagList.appendTag(var3);
-            }
-        }
-
         return par1NBTTagList;
     }
 
     public void readFromNBT2(NBTTagList par1NBTTagList)
     {
-        this.tankSlotContents = new ItemStack[1];
+        this.tankSlotContents = new ItemStack[4];
+        
+        FMLLog.info("" + par1NBTTagList.tagCount());
 
         for (int var2 = 0; var2 < par1NBTTagList.tagCount(); ++var2)
         {
             final NBTTagCompound var3 = (NBTTagCompound)par1NBTTagList.tagAt(var2);
-            final int var4 = var3.getByte("Slot") & 255;
+            final int var4 = var3.getByte("TankSlot") & 255;
             final ItemStack var5 = ItemStack.loadItemStackFromNBT(var3);
 
             if (var5 != null)
@@ -166,7 +161,7 @@ public class GCCoreInventoryTankRefill implements IInventory
 	@Override
 	public int getSizeInventory() 
 	{
-		return 1;
+		return this.tankSlotContents.length;
 	}
 
 	@Override

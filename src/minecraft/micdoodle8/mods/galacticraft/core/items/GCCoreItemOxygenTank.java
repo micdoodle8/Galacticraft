@@ -7,9 +7,17 @@ import net.minecraft.item.ItemStack;
 
 public class GCCoreItemOxygenTank extends GCCoreItem
 {
+	public EnumOxygenTankTier tier;
+	
 	public GCCoreItemOxygenTank(int par1) 
 	{
 		super(par1);
+	}
+	
+	public GCCoreItemOxygenTank setTankTier(EnumOxygenTankTier tier)
+	{
+		this.tier = tier;
+		return this;
 	}
 
 	@Override
