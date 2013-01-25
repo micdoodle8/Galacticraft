@@ -82,7 +82,7 @@ public class GCCoreTeleporter extends Teleporter
 		
 		if (!this.worldServer.isRemote && par1Entity instanceof EntityPlayer)
 		{
-			final GCCoreEntitySpaceship ship = new GCCoreEntitySpaceship(this.worldServer, par1Entity.posX, 300, par1Entity.posZ, true);
+			final GCCoreEntitySpaceship ship = new GCCoreEntitySpaceship(this.worldServer, par1Entity.posX, 300, par1Entity.posZ, true, 0); // TODO make this return proper spaceship type
 			final EntityPlayer player = (EntityPlayer) par1Entity;
 			
 			this.worldServer.spawnEntityInWorld(ship);

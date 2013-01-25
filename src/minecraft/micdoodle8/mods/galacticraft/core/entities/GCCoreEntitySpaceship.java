@@ -7,6 +7,7 @@ import java.util.Set;
 import micdoodle8.mods.galacticraft.core.GCCoreDamageSource;
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.client.sounds.GCCoreSoundUpdaterSpaceship;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import net.minecraft.block.material.Material;
@@ -15,8 +16,10 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
@@ -25,8 +28,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.SideOnly;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012, micdoodle8
@@ -34,8 +38,11 @@ import cpw.mods.fml.relauncher.Side;
  *  All rights reserved.
  *
  */
-public class GCCoreEntitySpaceship extends Entity
+public class GCCoreEntitySpaceship extends Entity implements IInventory
 {
+	protected int spaceshipType;
+    protected ItemStack[] cargoItems;
+	
     protected int fuel;
     
     public double pushX;
@@ -79,12 +86,19 @@ public class GCCoreEntitySpaceship extends Entity
     public GCCoreEntitySpaceship(World par1World)
     {
         super(par1World);
+        this.cargoItems = new ItemStack[36];
         this.fuel = 0;
         this.hasDroppedItem = false;
         this.preventEntitySpawning = true;
         this.setSize(0.98F, 4F);
         this.yOffset = this.height / 2.0F;
         this.rocketSoundUpdater = par1World != null ? par1World instanceof WorldClient ? new GCCoreSoundUpdaterSpaceship(FMLClientHandler.instance().getClient().sndManager, this, FMLClientHandler.instance().getClient().thePlayer) : null : null;
+    }
+    
+    public GCCoreEntitySpaceship(World world, int type)
+    {
+    	this(world);
+    	this.spaceshipType = type;
     }
 
     @Override
@@ -125,9 +139,9 @@ public class GCCoreEntitySpaceship extends Entity
         return false;
     }
 
-    public GCCoreEntitySpaceship(World par1World, double par2, double par4, double par6, boolean reversed)
+    public GCCoreEntitySpaceship(World par1World, double par2, double par4, double par6, boolean reversed, int type)
     {
-        this(par1World);
+        this(par1World, type);
         this.setPosition(par2, par4 + this.yOffset, par6);
         this.motionX = 0.0D;
         this.motionY = 0.0D;
@@ -260,6 +274,22 @@ public class GCCoreEntitySpaceship extends Entity
     		{
         		this.riddenByEntity.posX += this.rumble / 30F;
         		this.riddenByEntity.posZ += this.rumble / 30F;
+    		}
+    		
+    		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT && ClientProxyCore.GCKeyHandler.openSpaceshipInv.pressed)
+    		{
+
+    			FMLLog.info("pandansds " + this.);
+    			if (getSizeInventory() > 0)
+    	        {
+    	            if (!this.worldObj.isRemote)
+    	            {
+    	            	if (FMLClientHandler.instance().getClient().currentScreen == null)
+    	            	{
+        	                ((EntityPlayer) this.riddenByEntity).displayGUIChest(this);
+    	            	}
+    	            }
+    	        }
     		}
 
         	if (FMLClientHandler.instance().getClient().gameSettings.keyBindRight.pressed)
@@ -523,16 +553,36 @@ public class GCCoreEntitySpaceship extends Entity
     @Override
 	protected void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
+        par1NBTTagCompound.setInteger("Type", this.spaceshipType);
     	par1NBTTagCompound.setBoolean("launched", this.launched);
     	par1NBTTagCompound.setInteger("timeUntilLaunch", this.timeUntilLaunch);
     	par1NBTTagCompound.setInteger("ignite", this.ignite);
     	par1NBTTagCompound.setBoolean("reversed", this.reversed);
     	par1NBTTagCompound.setBoolean("failedlaunch", this.failedLaunch);
+
+        if (getSizeInventory() > 0)
+        {
+            NBTTagList var2 = new NBTTagList();
+
+            for (int var3 = 0; var3 < this.cargoItems.length; ++var3)
+            {
+                if (this.cargoItems[var3] != null)
+                {
+                    NBTTagCompound var4 = new NBTTagCompound();
+                    var4.setByte("Slot", (byte)var3);
+                    this.cargoItems[var3].writeToNBT(var4);
+                    var2.appendTag(var4);
+                }
+            }
+
+            par1NBTTagCompound.setTag("Items", var2);
+        }
     }
 
     @Override
 	protected void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
+        this.spaceshipType = par1NBTTagCompound.getInteger("Type");
 		this.launched = par1NBTTagCompound.getBoolean("launched");
 		if (par1NBTTagCompound.getBoolean("launched"))
 		{
@@ -546,6 +596,23 @@ public class GCCoreEntitySpaceship extends Entity
 		this.ignite = par1NBTTagCompound.getInteger("ignite");
 		this.reversed = par1NBTTagCompound.getBoolean("reversed");
 		this.failedLaunch = par1NBTTagCompound.getBoolean("failedlaunch");
+
+        if (getSizeInventory() > 0)
+        {
+            NBTTagList var2 = par1NBTTagCompound.getTagList("Items");
+            this.cargoItems = new ItemStack[this.getSizeInventory()];
+
+            for (int var3 = 0; var3 < var2.tagCount(); ++var3)
+            {
+                NBTTagCompound var4 = (NBTTagCompound)var2.tagAt(var3);
+                int var5 = var4.getByte("Slot") & 255;
+
+                if (var5 >= 0 && var5 < this.cargoItems.length)
+                {
+                    this.cargoItems[var5] = ItemStack.loadItemStackFromNBT(var4);
+                }
+            }
+        }
     }
 
     @Override
@@ -731,4 +798,94 @@ public class GCCoreEntitySpaceship extends Entity
     		this.failedLaunch = false;
     	}
     }
+
+	@Override
+	public int getSizeInventory() 
+	{
+		return this.spaceshipType == 0 ? 0 : 27;
+	}
+
+	@Override
+	public ItemStack getStackInSlot(int par1)
+    {
+        return this.cargoItems[par1];
+    }
+
+	@Override
+    public ItemStack decrStackSize(int par1, int par2)
+    {
+        if (this.cargoItems[par1] != null)
+        {
+            ItemStack var3;
+
+            if (this.cargoItems[par1].stackSize <= par2)
+            {
+                var3 = this.cargoItems[par1];
+                this.cargoItems[par1] = null;
+                return var3;
+            }
+            else
+            {
+                var3 = this.cargoItems[par1].splitStack(par2);
+
+                if (this.cargoItems[par1].stackSize == 0)
+                {
+                    this.cargoItems[par1] = null;
+                }
+
+                return var3;
+            }
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+	@Override
+    public ItemStack getStackInSlotOnClosing(int par1)
+    {
+        if (this.cargoItems[par1] != null)
+        {
+            ItemStack var2 = this.cargoItems[par1];
+            this.cargoItems[par1] = null;
+            return var2;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+	@Override
+    public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
+    {
+        this.cargoItems[par1] = par2ItemStack;
+
+        if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit())
+        {
+            par2ItemStack.stackSize = this.getInventoryStackLimit();
+        }
+    }
+
+	@Override
+    public String getInvName()
+    {
+        return "container.spaceship";
+    }
+
+	@Override
+    public int getInventoryStackLimit()
+    {
+        return 64;
+    }
+
+	@Override
+    public void onInventoryChanged() {}
+
+	@Override
+	public void openChest() { }
+
+	@Override
+	public void closeChest() { }
 }

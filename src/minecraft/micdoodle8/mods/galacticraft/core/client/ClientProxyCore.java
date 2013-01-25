@@ -1087,10 +1087,11 @@ public class ClientProxyCore extends CommonProxyCore
     {
     	static KeyBinding tankRefill = new KeyBinding("Tank Refill", Keyboard.KEY_R);
     	static KeyBinding galaxyMap = new KeyBinding("Galaxy Map", Keyboard.KEY_M);
+    	public static KeyBinding openSpaceshipInv = new KeyBinding("Open Spaceship Inventory", Keyboard.KEY_T);
 
         public GCKeyHandler() 
         {
-            super(new KeyBinding[] {tankRefill, galaxyMap}, new boolean[] {false, false});
+            super(new KeyBinding[] {tankRefill, galaxyMap, openSpaceshipInv}, new boolean[] {false, false, false});
         }
 
         @Override
