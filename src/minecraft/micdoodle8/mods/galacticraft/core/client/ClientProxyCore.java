@@ -34,6 +34,7 @@ import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderBugg
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderCreeper;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderFlag;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderMeteor;
+import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderParaChest;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderSkeleton;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderSpaceship;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderSpider;
@@ -51,6 +52,8 @@ import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityBuggy;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityCreeper;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityFlag;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityMeteor;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityParaChest;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityPlayer;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySkeleton;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpaceship;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpider;
@@ -194,6 +197,7 @@ public class ClientProxyCore extends CommonProxyCore
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityFlag.class, new GCCoreRenderFlag());
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityAstroOrb.class, new GCCoreRenderAstroOrb());
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityWorm.class, new GCCoreRenderWorm());
+        RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityParaChest.class, new GCCoreRenderParaChest());
         RenderingRegistry.addNewArmourRendererPrefix("oxygen");
         RenderingRegistry.addNewArmourRendererPrefix("sensor");
         RenderingRegistry.addNewArmourRendererPrefix("sensorox");
@@ -461,6 +465,27 @@ public class ClientProxyCore extends CommonProxyCore
     				final IGalacticraftWorldProvider wp = (IGalacticraftWorldProvider) player.worldObj.provider;
     				player.motionY = player.motionY + wp.getGravity();
     			}
+
+    	        for (int j = 0; j < GalacticraftCore.instance.gcPlayers.size(); ++j)
+    	        {
+    				final GCCoreEntityPlayer playerBase = (GCCoreEntityPlayer) GalacticraftCore.instance.gcPlayers.get(j);
+    				
+    				if (player.username.equals(playerBase.getPlayer().username))
+    				{
+    					if (playerBase != null && playerBase.getPlayer() != null && playerBase.getPlayer().getDataWatcher() != null && playerBase.getPlayer().getDataWatcher().getWatchableObjectInt(23) == 1)
+    					{
+    	    				player.motionY = -0.3;
+    	    				player.motionX *= 0.1;
+    	    				player.motionZ *= 0.1;
+    	    				
+    	    				if (player.onGround)
+    	    				{
+    	    					playerBase.getPlayer().getDataWatcher().updateObject(23, Integer.valueOf(0));
+    	    					minecraft.gameSettings.thirdPersonView = 0;
+    	    				}
+    					}
+    				}
+    	        }
     			
     			if (teleportCooldown > 0)
     			{
@@ -560,14 +585,6 @@ public class ClientProxyCore extends CommonProxyCore
 					GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 					GL11.glColor4f(1.0F, 1.0F, 1.0F, f);
 					GL11.glDisable(GL11.GL_ALPHA_TEST);
-//    				GL11.glBindTexture(GL11.GL_TEXTURE_2D, minecraft.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/backgrounds/black.png"));
-//					Tessellator tessellator = Tessellator.instance;
-//					tessellator.startDrawingQuads();
-//					tessellator.addVertexWithUV(i / 2 - 2 * k * 80, k * 40, -90D, 0.0D, 1.0D);
-//					tessellator.addVertexWithUV(i / 2 + 2 * k * 80, k * 40, -90D, 1.0D, 1.0D);
-//					tessellator.addVertexWithUV(i / 2 + 2 * k * 80, 0.0D * 40, -90D, 1.0D, 0.0D);
-//					tessellator.addVertexWithUV(i / 2 - 2 * k * 80, 0.0D * 40, -90D, 0.0D, 0.0D);
-//					tessellator.draw();
 					GL11.glDepthMask(true);
 					GL11.glEnable(GL11.GL_DEPTH_TEST);
 					GL11.glEnable(GL11.GL_ALPHA_TEST);
@@ -604,7 +621,7 @@ public class ClientProxyCore extends CommonProxyCore
 					GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         		}
 
-        		if (player != null && player.worldObj.provider instanceof IGalacticraftWorldProvider)
+        		if (player != null && player.worldObj.provider instanceof IGalacticraftWorldProvider && GCCoreUtil.shouldDisplayTankGui(minecraft.currentScreen))
     			{
     				int var6 = (airRemaining - 90) * -1;
     				if (airRemaining <= 0) 

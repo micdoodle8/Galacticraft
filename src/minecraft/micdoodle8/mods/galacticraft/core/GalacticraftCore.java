@@ -18,6 +18,7 @@ import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityBuggy;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityCreeper;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityFlag;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityMeteor;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityParaChest;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityPlayer;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySkeleton;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpaceship;
@@ -42,7 +43,6 @@ import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.network.packet.Packet9Respawn;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
@@ -207,6 +207,7 @@ public class GalacticraftCore
 		this.registerGalacticraftNonMobEntity(GCCoreEntityBuggy.class, "Buggy", GCCoreConfigManager.idEntityBuggy, 150, 10, false);
 		this.registerGalacticraftNonMobEntity(GCCoreEntityFlag.class, "Flag", GCCoreConfigManager.idEntityFlag, 150, 5, true);
 		this.registerGalacticraftNonMobEntity(GCCoreEntityAstroOrb.class, "AstroOrb", GCCoreConfigManager.idEntityAstroOrb, 150, 5, true);
+		this.registerGalacticraftNonMobEntity(GCCoreEntityParaChest.class, "ParaChest", GCCoreConfigManager.idEntityParaChest, 150, 5, true);
 	}
 
     public void registerGalacticraftCreature(Class var0, String var1, int id, int back, int fore)
@@ -299,8 +300,6 @@ public class GalacticraftCore
                 {
 	                if(((Entity)player.worldObj.getLoadedEntityList().get(i)).entityId == (Integer)packetReadout[0])
 	                {
-	                    
-	                    FMLLog.info("" + packetReadout[0]);
 	                	if (player.worldObj.getLoadedEntityList().get(i) instanceof EntityLiving)
 	                	{
 	                        final Object[] toSend = {((EntityLiving)player.worldObj.getLoadedEntityList().get(i)).getHealth(), (Integer)packetReadout[0]};
@@ -308,6 +307,16 @@ public class GalacticraftCore
 	                        player.playerNetServerHandler.sendPacketToPlayer(GCCoreUtil.createPacket("Galacticraft", 3, toSend));
 	                	}
 	                }
+                }
+            }
+            else if (packetType == 6)
+            {
+                final Class[] decodeAs = {Integer.class};
+                final Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
+                
+                if (player.ridingEntity instanceof GCCoreEntitySpaceship)
+                {
+                    player.displayGUIChest((GCCoreEntitySpaceship)player.ridingEntity);
                 }
             }
         }
