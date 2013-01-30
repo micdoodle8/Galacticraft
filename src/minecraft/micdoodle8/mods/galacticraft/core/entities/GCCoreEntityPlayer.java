@@ -16,21 +16,31 @@ import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreInventoryTankRefill;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.packet.Packet41EntityEffect;
+import net.minecraft.network.packet.Packet9Respawn;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
+import net.minecraft.world.Teleporter;
+import net.minecraft.world.WorldProvider;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 public class GCCoreEntityPlayer
 {
@@ -58,6 +68,9 @@ public class GCCoreEntityPlayer
     public int astronomyPointsTotal;
 
     public float astronomyPoints;
+    
+    public ItemStack[] rocketStacks;
+    public int rocketType;
 	
 	public GCCoreEntityPlayer(EntityPlayer player) 
 	{
@@ -65,6 +78,7 @@ public class GCCoreEntityPlayer
 		GalacticraftCore.instance.players.add(player);
 		GalacticraftCore.instance.gcPlayers.add(this);
 		MinecraftForge.EVENT_BUS.register(this);
+		player.getDataWatcher().addObject(23, new Integer(0));
 	}
 	
 	public EntityPlayer getPlayer()
@@ -234,6 +248,11 @@ public class GCCoreEntityPlayer
 			{
 				this.sendAirRemainingPacket();
 			}
+			
+			if (player != null && player.worldObj.provider instanceof IGalacticraftWorldProvider)
+			{
+				player.fallDistance = 0.0F;
+			}
 
 			final ItemStack tankInSlot = this.playerTankInventory.getStackInSlot(2);
 			final ItemStack tankInSlot2 = this.playerTankInventory.getStackInSlot(3);
@@ -340,6 +359,16 @@ public class GCCoreEntityPlayer
 			}
 		}
 		
+		if (this.getParachute())
+		{
+//			if (!this.getPlayer().isAirBorne || this.getPlayer().isDead)
+//			{
+//				this.usingParachute = false;
+//			}
+			
+			this.getPlayer().motionY += 1;
+		}
+		
 		if (this.timeUntilPortal > 0)
 		{
 			this.timeUntilPortal--;
@@ -366,7 +395,7 @@ public class GCCoreEntityPlayer
 	    		{
 	    			if (player.mcServer.worldServerForDimension(var5).customTeleporters.get(i) instanceof GCCoreTeleporter)
 	    			{
-	        			player.mcServer.getConfigurationManager().transferPlayerToDimension(player, var5, player.mcServer.worldServerForDimension(var5).customTeleporters.get(i));
+	        			this.transferPlayerToDimension(player, var5, player.mcServer.worldServerForDimension(var5).customTeleporters.get(i));
 	    			}
 	    		}
 	    		
@@ -432,10 +461,112 @@ public class GCCoreEntityPlayer
     		{
     			if (player.mcServer.worldServerForDimension(par1).customTeleporters.get(i) instanceof GCCoreTeleporter)
     			{
-        			player.mcServer.getConfigurationManager().transferPlayerToDimension(player, par1, player.mcServer.worldServerForDimension(par1).customTeleporters.get(i));
+        			this.transferPlayerToDimension(player, par1, player.mcServer.worldServerForDimension(par1).customTeleporters.get(i));
     			}
     		}
     	}
+    }
+
+    public void transferPlayerToDimension(EntityPlayerMP player, int par2, Teleporter teleporter)
+    {
+        int var3 = player.dimension;
+        WorldServer var4 = player.mcServer.getConfigurationManager().getServerInstance().worldServerForDimension(player.dimension);
+        player.dimension = par2;
+        WorldServer var5 = player.mcServer.getConfigurationManager().getServerInstance().worldServerForDimension(player.dimension);
+
+        player.playerNetServerHandler.sendPacketToPlayer(new Packet9Respawn(player.dimension, (byte)player.worldObj.difficultySetting, var5.getWorldInfo().getTerrainType(), var5.getHeight(), player.theItemInWorldManager.getGameType()));
+        var4.removePlayerEntityDangerously(player);
+        player.isDead = false;
+        this.transferEntityToWorld(player, var3, var4, var5, teleporter);
+        player.mcServer.getConfigurationManager().func_72375_a(player, var4);
+        player.playerNetServerHandler.setPlayerLocation(player.posX, player.posY, player.posZ, player.rotationYaw, player.rotationPitch);
+        player.theItemInWorldManager.setWorld(var5);
+        player.mcServer.getConfigurationManager().updateTimeAndWeatherForPlayer(player, var5);
+        player.mcServer.getConfigurationManager().syncPlayerInventory(player);
+        Iterator var6 = player.getActivePotionEffects().iterator();
+
+        while (var6.hasNext())
+        {
+            PotionEffect var7 = (PotionEffect)var6.next();
+            player.playerNetServerHandler.sendPacketToPlayer(new Packet41EntityEffect(player.entityId, var7));
+        }
+
+        GameRegistry.onPlayerChangedDimension(player);
+    }
+
+    public void transferEntityToWorld(Entity par1Entity, int par2, WorldServer par3WorldServer, WorldServer par4WorldServer, Teleporter teleporter)
+    {
+        WorldProvider pOld = par3WorldServer.provider;
+        WorldProvider pNew = par4WorldServer.provider;
+        double moveFactor = pOld.getMovementFactor() / pNew.getMovementFactor();
+        double var5 = par1Entity.posX * moveFactor;
+        double var7 = par1Entity.posZ * moveFactor;
+        double var11 = par1Entity.posX;
+        double var13 = par1Entity.posY;
+        double var15 = par1Entity.posZ;
+        float var17 = par1Entity.rotationYaw;
+        par3WorldServer.theProfiler.startSection("moving");
+
+        if (par1Entity.dimension == 1)
+        {
+            ChunkCoordinates var18;
+
+            if (par2 == 1)
+            {
+                var18 = par4WorldServer.getSpawnPoint();
+            }
+            else
+            {
+                var18 = par4WorldServer.getEntrancePortalLocation();
+            }
+
+            var5 = (double)var18.posX;
+            par1Entity.posY = (double)var18.posY;
+            var7 = (double)var18.posZ;
+            par1Entity.setLocationAndAngles(var5, par1Entity.posY, var7, 90.0F, 0.0F);
+
+            if (par1Entity.isEntityAlive())
+            {
+                par3WorldServer.updateEntityWithOptionalForce(par1Entity, false);
+            }
+        }
+
+        par3WorldServer.theProfiler.endSection();
+
+        if (par2 != 1)
+        {
+            par3WorldServer.theProfiler.startSection("placing");
+            var5 = (double)MathHelper.clamp_int((int)var5, -29999872, 29999872);
+            var7 = (double)MathHelper.clamp_int((int)var7, -29999872, 29999872);
+
+            if (par1Entity.isEntityAlive())
+            {
+                par4WorldServer.spawnEntityInWorld(par1Entity);
+                par1Entity.setLocationAndAngles(var5, par1Entity.posY, var7, par1Entity.rotationYaw, par1Entity.rotationPitch);
+                par4WorldServer.updateEntityWithOptionalForce(par1Entity, false);
+                
+                if (teleporter instanceof GCCoreTeleporter)
+                {
+                    ((GCCoreTeleporter) teleporter).placeInPortal(par1Entity, var11, var13, var15, var17);
+                }
+            }
+
+            par3WorldServer.theProfiler.endSection();
+        }
+
+        par1Entity.setWorld(par4WorldServer);
+        
+        final int var9b = MathHelper.floor_double(par1Entity.posX);
+        final int var11b = MathHelper.floor_double(par1Entity.posZ);
+        
+        GCCoreEntityParaChest chest = new GCCoreEntityParaChest(par1Entity.worldObj, this.rocketStacks);
+
+    	chest.setPosition(var9b, 260, var11b);
+    	
+        if (!par4WorldServer.isRemote)
+        {
+        	par4WorldServer.spawnEntityInWorld(chest);
+        }
     }
     
     public void sendAirRemainingPacket()
@@ -508,6 +639,7 @@ public class GCCoreEntityPlayer
         this.astronomyPoints = par1NBTTagCompound.getFloat("AstronomyPointsNum");
         this.astronomyPointsLevel = par1NBTTagCompound.getInteger("AstronomyPointsLevel");
         this.astronomyPointsTotal = par1NBTTagCompound.getInteger("AstronomyPointsTotal");
+        this.setParachute(par1NBTTagCompound.getBoolean("usingParachute"));
     }
 
     public void writeEntityToNBT()
@@ -519,5 +651,16 @@ public class GCCoreEntityPlayer
         par1NBTTagCompound.setFloat("AstronomyPointsNum", this.astronomyPoints);
         par1NBTTagCompound.setInteger("AstronomyPointsLevel", this.astronomyPointsLevel);
         par1NBTTagCompound.setInteger("AstronomyPointsTotal", this.astronomyPointsTotal);
+        par1NBTTagCompound.setBoolean("usingParachute", this.getParachute());
+    }
+    
+    public void setParachute(boolean tf)
+    {
+    	this.getPlayer().getDataWatcher().updateObject(23, tf ? 1 : 0);
+    }
+    
+    public boolean getParachute()
+    {
+    	return this.getPlayer().getDataWatcher().getWatchableObjectInt(23) == 1;
     }
 }

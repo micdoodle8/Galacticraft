@@ -29,6 +29,7 @@ import net.minecraftforge.common.DimensionManager;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -40,7 +41,6 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GCCoreEntitySpaceship extends Entity implements IInventory
 {
-	protected int spaceshipType;
     protected ItemStack[] cargoItems;
 	
     protected int fuel;
@@ -94,12 +94,6 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
         this.yOffset = this.height / 2.0F;
         this.rocketSoundUpdater = par1World != null ? par1World instanceof WorldClient ? new GCCoreSoundUpdaterSpaceship(FMLClientHandler.instance().getClient().sndManager, this, FMLClientHandler.instance().getClient().thePlayer) : null : null;
     }
-    
-    public GCCoreEntitySpaceship(World world, int type)
-    {
-    	this(world);
-    	this.spaceshipType = type;
-    }
 
     @Override
 	protected boolean canTriggerWalking()
@@ -119,6 +113,7 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
         this.dataWatcher.addObject(22, new Integer(0));
         this.dataWatcher.addObject(23, new Integer(0));
         this.dataWatcher.addObject(24, new Integer(0));
+        this.dataWatcher.addObject(25, new Integer(0));
     }
 
     @Override
@@ -141,7 +136,7 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
 
     public GCCoreEntitySpaceship(World par1World, double par2, double par4, double par6, boolean reversed, int type)
     {
-        this(par1World, type);
+        this(par1World);
         this.setPosition(par2, par4 + this.yOffset, par6);
         this.motionX = 0.0D;
         this.motionY = 0.0D;
@@ -156,6 +151,12 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
         	this.rotationPitch += 0F;
         	this.motionY = -1.0D;
         }
+    }
+
+    public GCCoreEntitySpaceship(World par1World, double par2, double par4, double par6, boolean reversed, int type, ItemStack[] inv)
+    {
+        this(par1World, par2, par4, par6, reversed, type);
+        this.cargoItems = inv;
     }
 
     @Override
@@ -278,17 +279,14 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
     		
     		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT && ClientProxyCore.GCKeyHandler.openSpaceshipInv.pressed)
     		{
-
-    			FMLLog.info("pandansds " + this.);
     			if (getSizeInventory() > 0)
     	        {
-    	            if (!this.worldObj.isRemote)
-    	            {
-    	            	if (FMLClientHandler.instance().getClient().currentScreen == null)
-    	            	{
-        	                ((EntityPlayer) this.riddenByEntity).displayGUIChest(this);
-    	            	}
-    	            }
+	            	if (FMLClientHandler.instance().getClient().currentScreen == null)
+	            	{
+    	                ((EntityPlayer) this.riddenByEntity).displayGUIChest(this);
+                        final Object[] toSend = {0};
+    	                PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 6, toSend));
+	            	}
     	        }
     		}
 
@@ -553,7 +551,7 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
     @Override
 	protected void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
-        par1NBTTagCompound.setInteger("Type", this.spaceshipType);
+        par1NBTTagCompound.setInteger("Type", this.getSpaceshipType());
     	par1NBTTagCompound.setBoolean("launched", this.launched);
     	par1NBTTagCompound.setInteger("timeUntilLaunch", this.timeUntilLaunch);
     	par1NBTTagCompound.setInteger("ignite", this.ignite);
@@ -582,7 +580,7 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
     @Override
 	protected void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
-        this.spaceshipType = par1NBTTagCompound.getInteger("Type");
+        this.setSpaceshipType(par1NBTTagCompound.getInteger("Type"));
 		this.launched = par1NBTTagCompound.getBoolean("launched");
 		if (par1NBTTagCompound.getBoolean("launched"))
 		{
@@ -736,6 +734,16 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
     	return this.dataWatcher.getWatchableObjectInt(24);
     }
     
+    public void setSpaceshipType(int par1)
+    {
+    	this.dataWatcher.updateObject(25, par1);
+    }
+    
+    public int getSpaceshipType()
+    {
+    	return this.dataWatcher.getWatchableObjectInt(25);
+    }
+    
     public void ignite()
     {
     	this.ignite = 1;
@@ -777,6 +785,9 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
 	    		    	final Object[] toSend = {entityplayermp.username, temp};
 	    		        FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(entityplayermp.username).playerNetServerHandler.sendPacketToPlayer(GCCoreUtil.createPacket("Galacticraft", 2, toSend));
 	    				
+	    		        playerBase.rocketStacks = this.cargoItems;
+	    		        playerBase.rocketType = this.getSpaceshipType();
+	    		        
 	    				if (this.riddenByEntity != null)
 	    				{
 		            		this.riddenByEntity.mountEntity(this);
@@ -802,7 +813,7 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
 	@Override
 	public int getSizeInventory() 
 	{
-		return this.spaceshipType == 0 ? 0 : 27;
+		return this.getSpaceshipType() == 0 ? 0 : 27;
 	}
 
 	@Override
