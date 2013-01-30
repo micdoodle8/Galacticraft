@@ -21,6 +21,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 
 /**
@@ -406,7 +407,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     @Override
 	protected void actionPerformed(GuiButton par1GuiButton)
     {
-    	if (par1GuiButton.enabled)
+    	if (par1GuiButton.enabled && ClientProxyCore.teleportCooldown <= 0)
     	{
             final Object[] toSend = {this.destinations[this.selectedSlot]};
             PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 2, toSend));
