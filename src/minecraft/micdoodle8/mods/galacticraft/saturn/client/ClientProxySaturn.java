@@ -59,6 +59,8 @@ public class ClientProxySaturn extends CommonProxySaturn implements IGalacticraf
 	@Override
 	public void registerRenderInformation() 
 	{
+		moonClientTitan.registerRenderInformation();
+		moonClientEnceladus.registerRenderInformation();
 	}
 
 	@Override

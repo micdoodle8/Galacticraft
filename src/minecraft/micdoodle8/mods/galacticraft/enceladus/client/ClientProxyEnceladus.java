@@ -11,9 +11,9 @@ import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
 import micdoodle8.mods.galacticraft.core.GCCoreLocalization;
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.enceladus.CommonProxyEnceladus;
 import micdoodle8.mods.galacticraft.enceladus.blocks.GCEnceladusBlocks;
 import micdoodle8.mods.galacticraft.enceladus.dimension.GCEnceladusWorldProvider;
-import micdoodle8.mods.galacticraft.titan.CommonProxyTitan;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.multiplayer.WorldClient;
@@ -25,7 +25,6 @@ import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.ITickHandler;
-import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -34,6 +33,7 @@ import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.common.registry.TickRegistry;
+import cpw.mods.fml.relauncher.Side;
 
 /**
  * Copyright 2012, micdoodle8
@@ -41,7 +41,7 @@ import cpw.mods.fml.common.registry.TickRegistry;
  *  All rights reserved.
  *
  */
-public class ClientProxyEnceladus extends CommonProxyTitan implements IGalacticraftSubModClient
+public class ClientProxyEnceladus extends CommonProxyEnceladus implements IGalacticraftSubModClient
 {
 	public static long getFirstBootTime;
 	public static long getCurrentTime;
