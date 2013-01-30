@@ -3,10 +3,12 @@ package micdoodle8.mods.galacticraft.core.client.model;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiTankRefill;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityPlayer;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpaceship;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenTank;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreInventoryTankRefill;
+import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.RenderEngine;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -17,7 +19,6 @@ import net.minecraft.src.ModelPlayerBase;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreModelPlayer extends ModelPlayerBase
 {
@@ -181,6 +182,8 @@ public class GCCoreModelPlayer extends ModelPlayerBase
     			if (player.username.equals(playerBase.getPlayer().username))
     			{
     				GCCoreInventoryTankRefill inventory = playerBase.playerTankInventory;
+    				
+    				this.usingParachute = playerBase.getParachute();
 
     	    		FMLClientHandler.instance().getClient().renderEngine.bindTexture(FMLClientHandler.instance().getClient().renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/entities/player.png"));
     	    		
@@ -317,9 +320,15 @@ public class GCCoreModelPlayer extends ModelPlayerBase
     	this.redOxygenTanks[1].rotateAngleY = this.modelPlayer.bipedBody.rotateAngleY;
     	this.redOxygenTanks[1].rotateAngleZ = this.modelPlayer.bipedBody.rotateAngleZ;
     	
-    	this.oxygenMask.rotateAngleX = this.modelPlayer.bipedHead.rotateAngleX;
-    	this.oxygenMask.rotateAngleY = this.modelPlayer.bipedHead.rotateAngleY;
-    	this.oxygenMask.rotateAngleZ = this.modelPlayer.bipedHead.rotateAngleZ;
+    	if (!(FMLClientHandler.instance().getClient().currentScreen instanceof GuiInventory) && !(FMLClientHandler.instance().getClient().currentScreen instanceof GCCoreGuiTankRefill))
+    	{
+            this.oxygenMask.rotationPointX = this.modelPlayer.bipedHeadwear.rotationPointX;
+            this.oxygenMask.rotationPointY = this.modelPlayer.bipedHeadwear.rotationPointY;
+            this.oxygenMask.rotationPointZ = this.modelPlayer.bipedHeadwear.rotationPointZ;
+            this.oxygenMask.rotateAngleX = this.modelPlayer.bipedHeadwear.rotateAngleX;
+            this.oxygenMask.rotateAngleY = this.modelPlayer.bipedHeadwear.rotateAngleY;
+            this.oxygenMask.rotateAngleZ = this.modelPlayer.bipedHeadwear.rotateAngleZ;
+    	}
 
     	EntityPlayer player = (EntityPlayer)var7;
 		
@@ -339,7 +348,7 @@ public class GCCoreModelPlayer extends ModelPlayerBase
 					{
 						GCCoreEntitySpaceship ship = (GCCoreEntitySpaceship)e;
 						
-						if (ship.getLaunched() == 1 || ship.getTimeUntilLaunch() < 390)
+						if (ship.riddenByEntity != null && !((EntityPlayer)ship.riddenByEntity).username.equals(player.username) && (ship.getLaunched() == 1 || ship.getTimeUntilLaunch() < 390))
 						{
 					    	this.modelPlayer.bipedRightArm.rotateAngleZ -= (float) ((Math.PI) / 8) + MathHelper.sin(var3 * 0.9F) * 0.2F;
 					    	this.modelPlayer.bipedRightArm.rotateAngleX = (float) (Math.PI);
