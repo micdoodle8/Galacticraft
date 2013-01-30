@@ -25,7 +25,6 @@ public class GCCoreGuiBuggyBench extends GuiContainer
     @Override
     public void initGui()
     {
-    	FMLLog.info("buggy");
     	super.initGui();
         this.controlList.clear();
         this.controlList.add(new GuiButton(0, this.width / 2 - 130, this.height / 2 - 30, 40, 20, "Back"));

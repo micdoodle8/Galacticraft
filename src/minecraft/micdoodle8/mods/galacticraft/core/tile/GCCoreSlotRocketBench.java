@@ -22,7 +22,6 @@ public class GCCoreSlotRocketBench extends Slot
     @Override
 	public boolean isItemValid(ItemStack par1ItemStack)
     {
-    	FMLLog.info("" + this.index);
     	switch (this.index)
     	{
     	case 1:

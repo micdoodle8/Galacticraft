@@ -123,8 +123,6 @@ public class GCCoreInventoryTankRefill implements IInventory
     public void readFromNBT2(NBTTagList par1NBTTagList)
     {
         this.tankSlotContents = new ItemStack[4];
-        
-        FMLLog.info("" + par1NBTTagList.tagCount());
 
         for (int var2 = 0; var2 < par1NBTTagList.tagCount(); ++var2)
         {

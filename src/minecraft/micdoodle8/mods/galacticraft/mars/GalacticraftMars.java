@@ -66,8 +66,6 @@ public class GalacticraftMars implements IGalacticraftSubMod
 	{
 		GalacticraftCore.registerSubMod(this);
 
-		FMLLog.info(event.getModConfigurationDirectory().toString());
-		
 		new GCMarsConfigManager(new File(event.getModConfigurationDirectory(), "Galacticraft/mars.conf"));
 		
 		GCMarsBlocks.initBlocks();

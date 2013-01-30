@@ -38,7 +38,6 @@ public class GCMarsItemReinforcedBucket extends GCMarsItem
     	{
             if (!par3EntityPlayer.capabilities.isCreativeMode && par1ItemStack.getTagCompound().getInteger("bucketUses") > 1)
             {
-            	FMLLog.info("" + par1ItemStack.getTagCompound().getInteger("bucketUses"));
             	par1ItemStack.getTagCompound().setInteger("bucketUses", par1ItemStack.getTagCompound().getInteger("bucketUses") - 1);
             	return par1ItemStack;
             }

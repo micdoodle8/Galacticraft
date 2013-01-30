@@ -25,7 +25,6 @@ public class GCCoreGuiRocketBench extends GuiContainer
     @Override
     public void initGui()
     {
-    	FMLLog.info("rocket");
     	super.initGui();
         this.controlList.clear();
         final byte var1 = -16;
@@ -45,9 +44,7 @@ public class GCCoreGuiRocketBench extends GuiContainer
             case 1:
                 final Object[] toSend = {1};
                 FMLClientHandler.instance().getClient().displayGuiScreen(null);
-                
-                FMLLog.info("" + FMLClientHandler.instance().getClient().currentScreen);
-                
+
                 while (FMLClientHandler.instance().getClient().currentScreen != null)
                 {
                 	

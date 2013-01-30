@@ -12,6 +12,7 @@ import java.util.Random;
 import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.API.IMapPlanet;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiTankRefill;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityPlayer;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemBreathableHelmet;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenGear;
@@ -20,6 +21,8 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreInventoryRocketBench;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreInventoryTankRefill;
 import micdoodle8.mods.galacticraft.moon.items.GCMoonItems;
 import net.minecraft.block.Block;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -802,6 +805,26 @@ public class GCCoreUtil
 			return getDrainSpacing(stack) > 0;
 		case 3:
 			return getDrainSpacing(stack) > 0;
+		}
+		
+		return false;
+	}
+	
+	public static boolean shouldDisplayTankGui(GuiScreen gui)
+	{
+		if (gui == null)
+		{
+			return true;
+		}
+		
+		if (gui instanceof GCCoreGuiTankRefill)
+		{
+			return true;
+		}
+		
+		if (gui instanceof GuiInventory)
+		{
+			return true;
 		}
 		
 		return false;

@@ -68,6 +68,7 @@ public class GCCoreItemSpaceship extends GCCoreItem
 	    		par3World.spawnEntityInWorld(spaceship);
 	    		if (!par2EntityPlayer.capabilities.isCreativeMode)
 	    		par2EntityPlayer.inventory.consumeInventoryItem(par1ItemStack.getItem().itemID);
+	    		spaceship.setSpaceshipType(par1ItemStack.getItemDamage());
     		}
     		else
     		{
