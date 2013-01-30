@@ -6,11 +6,11 @@ An advanced space exploration mod for Minecraft 1.4
 Galacticraft License
 =======
 
-Copyright (c) 2012 Micdoodle8 (Mitchell Petrie)
+Copyright (c) 2012-2013 Micdoodle8 (Mitchell Petrie)
 
 Galacticraft License
 
-Version 1.0
+Version 1.0b
 
 Definitions
 ====
