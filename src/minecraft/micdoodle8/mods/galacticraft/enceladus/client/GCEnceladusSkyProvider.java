@@ -40,9 +40,9 @@ public class GCEnceladusSkyProvider extends IRenderHandler
 		final Tessellator tessellator = Tessellator.instance;
 		this.glSkyList = this.starGLCallList + 1;
 		GL11.glNewList(this.glSkyList, GL11.GL_COMPILE);
-		final byte byte2 = 64;
+		final byte byte2 = 10;
 		final int i = 256 / byte2 + 2;
-		float f = 16F;
+		float f = 3F;
 
 		for (int j = -byte2 * i; j <= byte2 * i; j += byte2) {
 			for (int l = -byte2 * i; l <= byte2 * i; l += byte2) {
@@ -302,7 +302,7 @@ public class GCEnceladusSkyProvider extends IRenderHandler
 
     private Vec3 getCustomSkyColor()
     {
-        return Vec3.vec3dPool.getVecFromPool(0.26796875D, 0.1796875D, 0.0D);
+        return Vec3.vec3dPool.getVecFromPool(0D, 0D, 0.0D);
     }
     
     public float getSkyBrightness(float par1)
