@@ -24,9 +24,9 @@ public class GCCorePlayerHandler implements IPlayerTracker
 		if (player.worldObj.isRemote)
 			this.loadDownloadableImageTexture("https://minotar.net/helm/" + StringUtils.stripControlCodes(player.username) + "/32.png", player.getTexture());
 		
-		for (int i = 0; i < GalacticraftCore.instance.gcPlayers.size(); i++)
+		for (int i = 0; i < GalacticraftCore.gcPlayers.size(); i++)
 		{
-			final GCCoreEntityPlayer player2 = (GCCoreEntityPlayer) GalacticraftCore.instance.gcPlayers.get(i);
+			final GCCoreEntityPlayer player2 = (GCCoreEntityPlayer) GalacticraftCore.gcPlayers.get(i);
 			
 			if (player2.getPlayer().username == player.username)
 			{
@@ -73,17 +73,17 @@ public class GCCorePlayerHandler implements IPlayerTracker
 	@Override
 	public void onPlayerLogout(EntityPlayer player) 
 	{
-		GalacticraftCore.instance.players.remove(player);
+		GalacticraftCore.players.remove(player);
 		
-		for (int i = 0; i < GalacticraftCore.instance.gcPlayers.size(); i++)
+		for (int i = 0; i < GalacticraftCore.gcPlayers.size(); i++)
 		{
-			final GCCoreEntityPlayer player2 = (GCCoreEntityPlayer) GalacticraftCore.instance.gcPlayers.get(i);
+			final GCCoreEntityPlayer player2 = (GCCoreEntityPlayer) GalacticraftCore.gcPlayers.get(i);
 			
 			if (player2.getPlayer().username == player.username)
 			{
 				player2.writeEntityToNBT();
 				
-				GalacticraftCore.instance.gcPlayers.remove(player2);
+				GalacticraftCore.gcPlayers.remove(player2);
 			}
 		}
 	}

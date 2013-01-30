@@ -15,7 +15,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
@@ -159,7 +159,7 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntity implements IIn
 		{
 			final int drainSpacing = GCCoreUtil.getDrainSpacing(tankInSlot);
 			
-			if (drainSpacing > 0 && GalacticraftCore.instance.tick % MathHelper.floor_double(drainSpacing / 4) == 0) 
+			if (drainSpacing > 0 && GalacticraftCore.tick % MathHelper.floor_double(drainSpacing / 4) == 0) 
 	    	{
 	            if (tankInSlot.getItemDamage() < tankInSlot.getMaxDamage() - 2)
 	            {

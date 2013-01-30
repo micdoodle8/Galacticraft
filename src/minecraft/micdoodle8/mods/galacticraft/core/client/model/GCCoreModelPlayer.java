@@ -169,15 +169,16 @@ public class GCCoreModelPlayer extends ModelPlayerBase
     	super.afterLocalConstructing(var1);
     }
 
-    public void render(Entity var1, float var2, float var3, float var4, float var5, float var6, float var7)
+    @Override
+	public void render(Entity var1, float var2, float var3, float var4, float var5, float var6, float var7)
     {
     	if (var1 instanceof EntityPlayer)
     	{
         	EntityPlayer player = (EntityPlayer)var1;
     		
-            for (int j = 0; j < GalacticraftCore.instance.gcPlayers.size(); ++j)
+            for (int j = 0; j < GalacticraftCore.gcPlayers.size(); ++j)
             {
-    			final GCCoreEntityPlayer playerBase = (GCCoreEntityPlayer) GalacticraftCore.instance.gcPlayers.get(j);
+    			final GCCoreEntityPlayer playerBase = (GCCoreEntityPlayer) GalacticraftCore.gcPlayers.get(j);
     			
     			if (player.username.equals(playerBase.getPlayer().username))
     			{
@@ -277,7 +278,8 @@ public class GCCoreModelPlayer extends ModelPlayerBase
         }
     }
 
-    public void afterSetRotationAngles(float var1, float var2, float var3, float var4, float var5, float var6, Entity var7) 
+    @Override
+	public void afterSetRotationAngles(float var1, float var2, float var3, float var4, float var5, float var6, Entity var7) 
     {
     	if (this.usingParachute)
     	{
@@ -332,9 +334,9 @@ public class GCCoreModelPlayer extends ModelPlayerBase
 
     	EntityPlayer player = (EntityPlayer)var7;
 		
-        for (int j = 0; j < GalacticraftCore.instance.gcPlayers.size(); ++j)
+        for (int j = 0; j < GalacticraftCore.gcPlayers.size(); ++j)
         {
-			final GCCoreEntityPlayer playerBase = (GCCoreEntityPlayer) GalacticraftCore.instance.gcPlayers.get(j);
+			final GCCoreEntityPlayer playerBase = (GCCoreEntityPlayer) GalacticraftCore.gcPlayers.get(j);
 			
 			if (player.username.equals(playerBase.getPlayer().username))
 			{

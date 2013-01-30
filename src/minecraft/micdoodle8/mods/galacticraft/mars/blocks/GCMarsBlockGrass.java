@@ -13,7 +13,7 @@ import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.IPlantable;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *

@@ -84,7 +84,7 @@ public class GCIoWorldProvider extends WorldProvider implements IGalacticraftWor
 	@Override
     public Vec3 getSkyColor(Entity cameraEntity, float partialTicks)
     {
-        return this.worldObj.getWorldVec3Pool().getVecFromPool((double)0, (double)0, (double)0);
+        return this.worldObj.getWorldVec3Pool().getVecFromPool(0, 0, 0);
     }
 	
 	@Override

@@ -7,7 +7,7 @@ import net.minecraftforge.common.Configuration;
 import cpw.mods.fml.common.FMLLog;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
@@ -41,7 +41,7 @@ public class GCEuropaConfigManager
 	        
 	        dimensionIDEuropa = 				configuration.get("Dimensions", 										"Europa Dimension ID",				-27)		.getInt(-27);
 	    
-	        idBlockBrittleIce = 				configuration.get(configuration.CATEGORY_BLOCK, 						"idBlockBrittleIce", 				225)	.getInt(220);
+	        idBlockBrittleIce = 				configuration.get(Configuration.CATEGORY_BLOCK, 						"idBlockBrittleIce", 				225)	.getInt(220);
 		}
 		catch (final Exception e)
 		{

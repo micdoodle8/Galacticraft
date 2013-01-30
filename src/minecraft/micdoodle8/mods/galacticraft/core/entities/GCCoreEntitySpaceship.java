@@ -28,13 +28,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
@@ -456,8 +455,8 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
     {
     	if (this.riddenByEntity != null)
     	{
-            final double var13 = this.riddenByEntity.getDistance(this.posX, this.posY, this.posZ) / (double)20;
-    		this.riddenByEntity.attackEntityFrom(GCCoreDamageSource.spaceshipExplosion, (int)(4.0D * (double)20 + 1.0D));
+            final double var13 = this.riddenByEntity.getDistance(this.posX, this.posY, this.posZ) / 20;
+    		this.riddenByEntity.attackEntityFrom(GCCoreDamageSource.spaceshipExplosion, (int)(4.0D * 20 + 1.0D));
     	}
         
   		this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 20, true);
@@ -639,7 +638,8 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
         return false;
     }
 
-    public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
+    @Override
+	public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
     {
         return this.isDead ? false : par1EntityPlayer.getDistanceSqToEntity(this) <= 64.0D;
     }
@@ -763,9 +763,9 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
             {
         		final EntityPlayerMP entityplayermp = (EntityPlayerMP)this.riddenByEntity;
         		
-	            for (int j = 0; j < GalacticraftCore.instance.gcPlayers.size(); ++j)
+	            for (int j = 0; j < GalacticraftCore.gcPlayers.size(); ++j)
 	            {
-	    			final GCCoreEntityPlayer playerBase = (GCCoreEntityPlayer) GalacticraftCore.instance.gcPlayers.get(j);
+	    			final GCCoreEntityPlayer playerBase = (GCCoreEntityPlayer) GalacticraftCore.gcPlayers.get(j);
 	    			
 	    			if (entityplayermp.username.equals(playerBase.getPlayer().username))
 	    			{

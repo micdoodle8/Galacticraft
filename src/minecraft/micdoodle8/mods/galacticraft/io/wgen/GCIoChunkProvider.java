@@ -27,7 +27,7 @@ import net.minecraft.world.gen.structure.MapGenMineshaft;
 import net.minecraft.world.gen.structure.MapGenVillage;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
@@ -83,8 +83,8 @@ public class GCIoChunkProvider extends ChunkProviderGenerate
 		this.noiseGen5 = new NoiseGeneratorOctaves(this.rand, 10);
 		this.noiseGen6 = new NoiseGeneratorOctaves(this.rand, 16);
 		this.mobSpawnerNoise = new NoiseGeneratorOctaves(this.rand, 8);
-		this.giantCaveLocations = new ArrayList();
-		this.creeperDungeonLocations = new ArrayList();
+		GCIoChunkProvider.giantCaveLocations = new ArrayList();
+		GCIoChunkProvider.creeperDungeonLocations = new ArrayList();
 	}
 
 	public void generateTerrain(int par1, int par2, int[] idArray, int[] metaArray)

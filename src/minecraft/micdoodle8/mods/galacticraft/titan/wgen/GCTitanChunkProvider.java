@@ -25,7 +25,7 @@ import net.minecraft.world.gen.structure.MapGenMineshaft;
 import net.minecraft.world.gen.structure.MapGenVillage;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
@@ -84,8 +84,8 @@ public class GCTitanChunkProvider extends ChunkProviderGenerate
 		this.noiseGen5 = new NoiseGeneratorOctaves(this.rand, 10);
 		this.noiseGen6 = new NoiseGeneratorOctaves(this.rand, 16);
 		this.mobSpawnerNoise = new NoiseGeneratorOctaves(this.rand, 8);
-		this.giantCaveLocations = new ArrayList();
-		this.creeperDungeonLocations = new ArrayList();
+		GCTitanChunkProvider.giantCaveLocations = new ArrayList();
+		GCTitanChunkProvider.creeperDungeonLocations = new ArrayList();
 	}
 
 	public void replaceBlocksForBiome(int par1, int par2, int[] arrayOfIDs, int[] arrayOfMeta, BiomeGenBase[] par4ArrayOfBiomeGenBase)
@@ -183,7 +183,7 @@ public class GCTitanChunkProvider extends ChunkProviderGenerate
 		this.biomesForGeneration = this.worldObj.getWorldChunkManager().loadBlockGeneratorData(this.biomesForGeneration, par1 * 16, par2 * 16, 16, 16);
 		this.replaceBlocksForBiome(par1, par2, ids, meta, this.biomesForGeneration);
 
-		final Chunk var4 = new GCCoreChunk(this.worldObj, (int[])ids, (int[])meta, par1, par2);
+		final Chunk var4 = new GCCoreChunk(this.worldObj, ids, meta, par1, par2);
 		final byte[] var5 = var4.getBiomeArray();
 
 		for (int var6 = 0; var6 < var5.length; ++var6) 

@@ -13,7 +13,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import cpw.mods.fml.relauncher.Side;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
@@ -69,7 +69,7 @@ public class GCEnceladusWorldProvider extends WorldProvider implements IGalactic
 	@Override
     public Vec3 getSkyColor(Entity cameraEntity, float partialTicks)
     {
-        return this.worldObj.getWorldVec3Pool().getVecFromPool((double)0, (double)0, (double)0);
+        return this.worldObj.getWorldVec3Pool().getVecFromPool(0, 0, 0);
     }
 	
 	@Override

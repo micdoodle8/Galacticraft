@@ -5,7 +5,7 @@ import micdoodle8.mods.galacticraft.titan.client.ClientProxyTitan;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *

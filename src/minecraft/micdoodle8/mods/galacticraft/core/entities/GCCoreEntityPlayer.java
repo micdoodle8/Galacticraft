@@ -9,9 +9,6 @@ import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreTeleporter;
-import micdoodle8.mods.galacticraft.core.items.GCCoreItemArmor;
-import micdoodle8.mods.galacticraft.core.items.GCCoreItemBreathableHelmet;
-import micdoodle8.mods.galacticraft.core.items.GCCoreItemSensorGlasses;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreInventoryTankRefill;
 import net.minecraft.block.Block;
@@ -36,7 +33,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
@@ -75,8 +71,8 @@ public class GCCoreEntityPlayer
 	public GCCoreEntityPlayer(EntityPlayer player) 
 	{
 		this.currentPlayer = player;
-		GalacticraftCore.instance.players.add(player);
-		GalacticraftCore.instance.gcPlayers.add(this);
+		GalacticraftCore.players.add(player);
+		GalacticraftCore.gcPlayers.add(this);
 		MinecraftForge.EVENT_BUS.register(this);
 		player.getDataWatcher().addObject(23, new Integer(0));
 	}
@@ -244,7 +240,7 @@ public class GCCoreEntityPlayer
 				this.damageCounter--;
 			}
 	        
-			if (GalacticraftCore.instance.tick % 10 == 0)
+			if (GalacticraftCore.tick % 10 == 0)
 			{
 				this.sendAirRemainingPacket();
 			}
@@ -282,22 +278,22 @@ public class GCCoreEntityPlayer
 		    		this.airRemaining2 = 90 - tankInSlot2.getItemDamage();
 				}
 				
-				if (drainSpacing > 0 && GalacticraftCore.instance.tick % drainSpacing == 0 && !this.isAABBInBreathableAirBlock() && 90 - tankInSlot.getItemDamage() > 0) 
+				if (drainSpacing > 0 && GalacticraftCore.tick % drainSpacing == 0 && !this.isAABBInBreathableAirBlock() && 90 - tankInSlot.getItemDamage() > 0) 
 		    	{
 		    		tankInSlot.damageItem(1, player);
 		    	}
 				
-				if (drainSpacing2 > 0 && GalacticraftCore.instance.tick % drainSpacing2 == 0 && !this.isAABBInBreathableAirBlock() && 90 - tankInSlot2.getItemDamage() > 0) 
+				if (drainSpacing2 > 0 && GalacticraftCore.tick % drainSpacing2 == 0 && !this.isAABBInBreathableAirBlock() && 90 - tankInSlot2.getItemDamage() > 0) 
 		    	{
 		    		tankInSlot2.damageItem(1, player);
 		    	}
 				
-				if (drainSpacing == 0 && GalacticraftCore.instance.tick % 20 == 0 && !this.isAABBInBreathableAirBlock() && this.airRemaining > 0)
+				if (drainSpacing == 0 && GalacticraftCore.tick % 20 == 0 && !this.isAABBInBreathableAirBlock() && this.airRemaining > 0)
 				{
 		    		this.airRemaining -= 1;
 				}
 				
-				if (drainSpacing2 == 0 && GalacticraftCore.instance.tick % 20 == 0 && !this.isAABBInBreathableAirBlock() && this.airRemaining2 > 0)
+				if (drainSpacing2 == 0 && GalacticraftCore.tick % 20 == 0 && !this.isAABBInBreathableAirBlock() && this.airRemaining2 > 0)
 				{
 		    		this.airRemaining2 -= 1;
 				}
@@ -312,12 +308,12 @@ public class GCCoreEntityPlayer
 					this.airRemaining2 = 0;
 				}
 				
-				if (GalacticraftCore.instance.tick % 20 == 0 && this.isAABBInBreathableAirBlock() && this.airRemaining < 90 && tankInSlot != null)
+				if (GalacticraftCore.tick % 20 == 0 && this.isAABBInBreathableAirBlock() && this.airRemaining < 90 && tankInSlot != null)
 				{
 					this.airRemaining += 1;
 				}
 				
-				if (GalacticraftCore.instance.tick % 20 == 0 && this.isAABBInBreathableAirBlock() && this.airRemaining2 < 90 && tankInSlot2 != null)
+				if (GalacticraftCore.tick % 20 == 0 && this.isAABBInBreathableAirBlock() && this.airRemaining2 < 90 && tankInSlot2 != null)
 				{
 					this.airRemaining2 += 1;
 				}
@@ -347,7 +343,7 @@ public class GCCoreEntityPlayer
 					}
 				}
 	        }
-			else if (GalacticraftCore.instance.tick % 20 == 0 && !player.capabilities.isCreativeMode && this.airRemaining < 90)
+			else if (GalacticraftCore.tick % 20 == 0 && !player.capabilities.isCreativeMode && this.airRemaining < 90)
 			{
 				this.airRemaining += 1;
 				this.airRemaining2 += 1;
@@ -520,9 +516,9 @@ public class GCCoreEntityPlayer
                 var18 = par4WorldServer.getEntrancePortalLocation();
             }
 
-            var5 = (double)var18.posX;
-            par1Entity.posY = (double)var18.posY;
-            var7 = (double)var18.posZ;
+            var5 = var18.posX;
+            par1Entity.posY = var18.posY;
+            var7 = var18.posZ;
             par1Entity.setLocationAndAngles(var5, par1Entity.posY, var7, 90.0F, 0.0F);
 
             if (par1Entity.isEntityAlive())
@@ -536,8 +532,8 @@ public class GCCoreEntityPlayer
         if (par2 != 1)
         {
             par3WorldServer.theProfiler.startSection("placing");
-            var5 = (double)MathHelper.clamp_int((int)var5, -29999872, 29999872);
-            var7 = (double)MathHelper.clamp_int((int)var7, -29999872, 29999872);
+            var5 = MathHelper.clamp_int((int)var5, -29999872, 29999872);
+            var7 = MathHelper.clamp_int((int)var7, -29999872, 29999872);
 
             if (par1Entity.isEntityAlive())
             {
@@ -605,9 +601,9 @@ public class GCCoreEntityPlayer
 
         this.astronomyPoints += (float)par1 / (float)this.astrBarCap();
 
-        for (this.astronomyPointsTotal += par1; this.astronomyPoints >= 1.0F; this.astronomyPoints /= (float)this.astrBarCap())
+        for (this.astronomyPointsTotal += par1; this.astronomyPoints >= 1.0F; this.astronomyPoints /= this.astrBarCap())
         {
-            this.astronomyPoints = (this.astronomyPoints - 1.0F) * (float)this.astrBarCap();
+            this.astronomyPoints = (this.astronomyPoints - 1.0F) * this.astrBarCap();
             this.addAstronomyLevel(1);
         }
     }

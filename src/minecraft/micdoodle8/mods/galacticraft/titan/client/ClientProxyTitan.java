@@ -36,7 +36,7 @@ import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.common.registry.TickRegistry;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
@@ -179,7 +179,7 @@ public class ClientProxyTitan extends CommonProxyTitan implements IGalacticraftS
 	@Override
 	public GCCoreLocalization getLanguageFile() 
 	{
-		return this.lang;
+		return ClientProxyTitan.lang;
 	}
 
 	@Override

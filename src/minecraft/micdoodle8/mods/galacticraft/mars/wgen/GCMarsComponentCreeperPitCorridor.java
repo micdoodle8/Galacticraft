@@ -8,7 +8,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
@@ -25,7 +25,7 @@ public class GCMarsComponentCreeperPitCorridor extends GCCoreStructureComponent
         this.setCoordBaseMode(cbm);
         this.height = height;
         this.width = width;
-        this.boundingBox = this.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, length, this.height, width, cbm);
+        this.boundingBox = GCCoreStructureComponent.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, length, this.height, width, cbm);
 	}
 
 	@Override

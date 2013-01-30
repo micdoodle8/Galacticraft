@@ -10,7 +10,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreEntityParaChest extends Entity
 {
@@ -75,6 +74,7 @@ public class GCCoreEntityParaChest extends Entity
         par1NBTTagCompound.setBoolean("placedChest", this.placedChest);
 	}
 	
+	@Override
 	public void onUpdate()
 	{
 		if (!placedChest)

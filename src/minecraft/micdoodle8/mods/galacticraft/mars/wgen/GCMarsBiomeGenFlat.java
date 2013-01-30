@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.mars.wgen;
 import net.minecraft.world.biome.BiomeGenBase;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *

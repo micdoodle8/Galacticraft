@@ -21,7 +21,7 @@ import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.Player;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
@@ -38,7 +38,7 @@ public class ClientProxyJupiter extends CommonProxyJupiter implements IGalacticr
 	{
 		moonClientIo.preInit(event);
 		moonClientEuropa.preInit(event);
-		this.lang = new GCCoreLocalization("micdoodle8/mods/galacticraft/jupiter/client");
+		ClientProxyJupiter.lang = new GCCoreLocalization("micdoodle8/mods/galacticraft/jupiter/client");
 	}
 
 	@Override
@@ -110,7 +110,7 @@ public class ClientProxyJupiter extends CommonProxyJupiter implements IGalacticr
 	@Override
 	public GCCoreLocalization getLanguageFile() 
 	{
-		return this.lang;
+		return ClientProxyJupiter.lang;
 	}
 
 	@Override

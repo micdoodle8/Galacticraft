@@ -46,7 +46,7 @@ public class GCMoonEntityPlayer
 					{
 						int meta = -1;
 						
-						final int i = 1 + MathHelper.floor_double((double)(this.currentPlayer.rotationYaw * 8.0F / 360.0F) + 0.5D) & 7;
+						final int i = 1 + MathHelper.floor_double((this.currentPlayer.rotationYaw * 8.0F / 360.0F) + 0.5D) & 7;
 						switch (this.lastStep)
 						{
 						case 1:

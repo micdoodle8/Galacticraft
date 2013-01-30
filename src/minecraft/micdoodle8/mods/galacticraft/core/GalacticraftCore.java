@@ -68,7 +68,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
@@ -105,7 +105,7 @@ public class GalacticraftCore
 	{
 		moon.preLoad(event);
 		
-		this.registerSubMod(moon);
+		GalacticraftCore.registerSubMod(moon);
 		
 		new GCCoreConfigManager(new File(event.getModConfigurationDirectory(), "Galacticraft/core.conf"));
 		
@@ -250,9 +250,9 @@ public class GalacticraftCore
                 final Class[] decodeAs = {String.class};
                 final Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
                 
-                for (int j = 0; j < GalacticraftCore.instance.gcPlayers.size(); ++j)
+                for (int j = 0; j < GalacticraftCore.gcPlayers.size(); ++j)
 	            {
-                	final GCCoreEntityPlayer playerBase = (GCCoreEntityPlayer) GalacticraftCore.instance.gcPlayers.get(j);
+                	final GCCoreEntityPlayer playerBase = (GCCoreEntityPlayer) GalacticraftCore.gcPlayers.get(j);
 	    			
 	    			if (player.username == playerBase.getPlayer().username)
 	    			{

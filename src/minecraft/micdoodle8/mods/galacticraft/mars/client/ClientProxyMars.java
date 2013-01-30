@@ -44,7 +44,7 @@ import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.common.registry.TickRegistry;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
@@ -72,8 +72,8 @@ public class ClientProxyMars extends CommonProxyMars implements IGalacticraftSub
 		GalacticraftCore.registerClientSubMod(this);
 		TickRegistry.registerTickHandler(new TickHandlerClient(), Side.CLIENT);
         NetworkRegistry.instance().registerChannel(new ClientPacketHandler(), "GalacticraftMars", Side.CLIENT);
-        this.fluidRenderID = RenderingRegistry.getNextAvailableRenderId();
-        RenderingRegistry.registerBlockHandler(new GCMarsBlockRendererBacterialSludge(this.fluidRenderID));
+        ClientProxyMars.fluidRenderID = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(new GCMarsBlockRendererBacterialSludge(ClientProxyMars.fluidRenderID));
 	}
 
 	@Override
@@ -104,7 +104,7 @@ public class ClientProxyMars extends CommonProxyMars implements IGalacticraftSub
 	@Override
 	public int getGCFluidRenderID()
 	{
-		return this.fluidRenderID;
+		return ClientProxyMars.fluidRenderID;
 	}
 
 	@Override
@@ -240,7 +240,7 @@ public class ClientProxyMars extends CommonProxyMars implements IGalacticraftSub
 	@Override
 	public GCCoreLocalization getLanguageFile() 
 	{
-		return this.lang;
+		return ClientProxyMars.lang;
 	}
 
 	@Override

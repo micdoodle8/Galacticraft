@@ -19,7 +19,7 @@ import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.Player;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
@@ -31,7 +31,7 @@ public class ClientProxyNeptune extends CommonProxyNeptune implements IGalacticr
 	@Override
 	public void preInit(FMLPreInitializationEvent event) 
 	{
-		this.lang = new GCCoreLocalization("micdoodle8/mods/galacticraft/neptune/client");
+		ClientProxyNeptune.lang = new GCCoreLocalization("micdoodle8/mods/galacticraft/neptune/client");
 	}
 
 	@Override
@@ -99,7 +99,7 @@ public class ClientProxyNeptune extends CommonProxyNeptune implements IGalacticr
 	@Override
 	public GCCoreLocalization getLanguageFile() 
 	{
-		return this.lang;
+		return ClientProxyNeptune.lang;
 	}
 
 	@Override

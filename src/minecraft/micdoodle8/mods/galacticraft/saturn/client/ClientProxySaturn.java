@@ -21,7 +21,7 @@ import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.Player;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
@@ -38,7 +38,7 @@ public class ClientProxySaturn extends CommonProxySaturn implements IGalacticraf
 	{
 		moonClientTitan.preInit(event);
 		moonClientEnceladus.preInit(event);
-		this.lang = new GCCoreLocalization("micdoodle8/mods/galacticraft/saturn/client");
+		ClientProxySaturn.lang = new GCCoreLocalization("micdoodle8/mods/galacticraft/saturn/client");
 	}
 
 	@Override
@@ -112,7 +112,7 @@ public class ClientProxySaturn extends CommonProxySaturn implements IGalacticraf
 	@Override
 	public GCCoreLocalization getLanguageFile() 
 	{
-		return this.lang;
+		return ClientProxySaturn.lang;
 	}
 
 	@Override

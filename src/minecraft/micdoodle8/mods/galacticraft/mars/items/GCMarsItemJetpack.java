@@ -28,7 +28,7 @@ public class GCMarsItemJetpack extends ItemArmor
     	{
     		final EntityPlayer player = (EntityPlayer) entity;
     		
-    		if (GalacticraftCore.instance.tick % 100 == 0)
+    		if (GalacticraftCore.tick % 100 == 0)
     		{
     			if (!player.capabilities.isCreativeMode)
     			{

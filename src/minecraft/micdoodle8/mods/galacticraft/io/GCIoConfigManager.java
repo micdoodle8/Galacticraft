@@ -7,7 +7,7 @@ import net.minecraftforge.common.Configuration;
 import cpw.mods.fml.common.FMLLog;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
@@ -41,7 +41,7 @@ public class GCIoConfigManager
 	        
 	        dimensionIDIo = 				configuration.get("Dimensions", 										"Io Dimension ID",				-26)		.getInt(-26);
 	    
-	        idBlock = 						configuration.get(configuration.CATEGORY_BLOCK, 						"idBlockIo", 					199)	.getInt(199);
+	        idBlock = 						configuration.get(Configuration.CATEGORY_BLOCK, 						"idBlockIo", 					199)	.getInt(199);
 		}
 		catch (final Exception e)
 		{

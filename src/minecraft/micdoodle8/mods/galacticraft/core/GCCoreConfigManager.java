@@ -7,7 +7,7 @@ import net.minecraftforge.common.Configuration;
 import cpw.mods.fml.common.FMLLog;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
@@ -119,60 +119,60 @@ public class GCCoreConfigManager
 		{
 	        configuration.load();
 	        
-	        idBlockID = 							configuration.get(configuration.CATEGORY_BLOCK, "idBlock", 								3349)		.getInt(3349);
+	        idBlockID = 							configuration.get(Configuration.CATEGORY_BLOCK, "idBlock", 								3349)		.getInt(3349);
 	        
-	        idBlockBreatheableAir = 				configuration.get(configuration.CATEGORY_BLOCK, "idBlockCoreBreatheableAir", 			3350)		.getInt(3350);
-	        idBlockTreasureChest = 					configuration.get(configuration.CATEGORY_BLOCK, "idBlockTreasureChest", 				3351)		.getInt(3351);
-	        idBlockLandingPad = 					configuration.get(configuration.CATEGORY_BLOCK, "idBlockLandingPad", 					3352)		.getInt(3352);
-	        idBlockUnlitTorch = 					configuration.get(configuration.CATEGORY_BLOCK, "idBlockUnlitTorch", 					3353)		.getInt(3353);
-	        idBlockUnlitTorchLit = 					configuration.get(configuration.CATEGORY_BLOCK, "idBlockUnlitTorchLit", 				3354)		.getInt(3354);
-	        idBlockAirDistributor = 				configuration.get(configuration.CATEGORY_BLOCK, "idBlockAirDistributor", 				3355)		.getInt(3355);
-	        idBlockAirDistributorActive = 			configuration.get(configuration.CATEGORY_BLOCK, "idBlockAirDistributorActive", 			3356)		.getInt(3356);
-	        idBlockAirPipe = 						configuration.get(configuration.CATEGORY_BLOCK, "idBlockAirPipe", 						3357)		.getInt(3357);
-	        idBlockAirCollector = 					configuration.get(configuration.CATEGORY_BLOCK, "idBlockAirCollector", 					3358)		.getInt(3358);
-	        idBlockOre = 							configuration.get(configuration.CATEGORY_BLOCK, "idBlockOre", 							3359)		.getInt(3359);
-	        idBlockSapling2 = 						configuration.get(configuration.CATEGORY_BLOCK, "idBlockSapling2", 						3360)		.getInt(3360);
-	        idBlockRocketBench = 					configuration.get(configuration.CATEGORY_BLOCK, "idBlockRocketBench", 					3361)		.getInt(3361);
-	        idBlockFallenMeteor = 					configuration.get(configuration.CATEGORY_BLOCK, "idBlockFallenMeteor", 					3362)		.getInt(3362);
+	        idBlockBreatheableAir = 				configuration.get(Configuration.CATEGORY_BLOCK, "idBlockCoreBreatheableAir", 			3350)		.getInt(3350);
+	        idBlockTreasureChest = 					configuration.get(Configuration.CATEGORY_BLOCK, "idBlockTreasureChest", 				3351)		.getInt(3351);
+	        idBlockLandingPad = 					configuration.get(Configuration.CATEGORY_BLOCK, "idBlockLandingPad", 					3352)		.getInt(3352);
+	        idBlockUnlitTorch = 					configuration.get(Configuration.CATEGORY_BLOCK, "idBlockUnlitTorch", 					3353)		.getInt(3353);
+	        idBlockUnlitTorchLit = 					configuration.get(Configuration.CATEGORY_BLOCK, "idBlockUnlitTorchLit", 				3354)		.getInt(3354);
+	        idBlockAirDistributor = 				configuration.get(Configuration.CATEGORY_BLOCK, "idBlockAirDistributor", 				3355)		.getInt(3355);
+	        idBlockAirDistributorActive = 			configuration.get(Configuration.CATEGORY_BLOCK, "idBlockAirDistributorActive", 			3356)		.getInt(3356);
+	        idBlockAirPipe = 						configuration.get(Configuration.CATEGORY_BLOCK, "idBlockAirPipe", 						3357)		.getInt(3357);
+	        idBlockAirCollector = 					configuration.get(Configuration.CATEGORY_BLOCK, "idBlockAirCollector", 					3358)		.getInt(3358);
+	        idBlockOre = 							configuration.get(Configuration.CATEGORY_BLOCK, "idBlockOre", 							3359)		.getInt(3359);
+	        idBlockSapling2 = 						configuration.get(Configuration.CATEGORY_BLOCK, "idBlockSapling2", 						3360)		.getInt(3360);
+	        idBlockRocketBench = 					configuration.get(Configuration.CATEGORY_BLOCK, "idBlockRocketBench", 					3361)		.getInt(3361);
+	        idBlockFallenMeteor = 					configuration.get(Configuration.CATEGORY_BLOCK, "idBlockFallenMeteor", 					3362)		.getInt(3362);
 
-	        idItemLightOxygenTankEmpty = 			configuration.get(configuration.CATEGORY_ITEM, "idItemLightOxygenTankEmpty", 			9854)		.getInt(9854);
-	        idItemLightOxygenTank = 				configuration.get(configuration.CATEGORY_ITEM, "idItemLightOxygenTank", 				9855)		.getInt(9855);
-	        idItemMedOxygenTankEmpty = 				configuration.get(configuration.CATEGORY_ITEM, "idItemMedOxygenTankEmpty", 			9856)		.getInt(9856);
-	        idItemMedOxygenTank = 					configuration.get(configuration.CATEGORY_ITEM, "idItemMedOxygenTank", 					9857)		.getInt(9857);
-	        idItemHeavyOxygenTank = 				configuration.get(configuration.CATEGORY_ITEM, "idItemHeavyOxygenTank", 				9858)		.getInt(9858);
-	        idItemHeavyOxygenTankEmpty = 			configuration.get(configuration.CATEGORY_ITEM, "idItemHeavyOxygenTankEmpty",			9859)		.getInt(9859);
-	        idArmorOxygenMask = 					configuration.get(configuration.CATEGORY_ITEM, "idArmorOxygenMask", 					9860)		.getInt(9860);
-	        idItemSpaceship = 						configuration.get(configuration.CATEGORY_ITEM, "idItemSpaceship", 						9861)		.getInt(9861);
-	        idArmorSensorGlasses = 					configuration.get(configuration.CATEGORY_ITEM, "idArmorSensorGlasses", 				9862)		.getInt(9862);
-	        idArmorSensorGlassesWithOxygenMask = 	configuration.get(configuration.CATEGORY_ITEM, "idArmorSensorGlassesWithOxygenMask", 	9863)		.getInt(9863);
-	        idItemIngotTitanium = 					configuration.get(configuration.CATEGORY_ITEM, "idItemIngotTitanium", 					9864)		.getInt(9864);
-	        idItemIngotCopper = 					configuration.get(configuration.CATEGORY_ITEM, "idItemIngotCopper", 					9865)		.getInt(9865);
-	        idItemIngotAluminum = 					configuration.get(configuration.CATEGORY_ITEM, "idItemIngotAluminum", 					9866)		.getInt(9866);
-	        idItemAluminumCanister = 				configuration.get(configuration.CATEGORY_ITEM, "idItemAluminumCanister", 				9867)		.getInt(9867);
-	        idItemAirVent = 						configuration.get(configuration.CATEGORY_ITEM, "idItemAirVent", 						9868)		.getInt(9868);
-	        idItemOxygenConcentrator = 				configuration.get(configuration.CATEGORY_ITEM, "idItemOxygenConcentrator", 			9869)		.getInt(9869);
-	        idItemFan = 							configuration.get(configuration.CATEGORY_ITEM, "idItemFan", 							9870)		.getInt(9870);
-	        idItemGravityBow = 						configuration.get(configuration.CATEGORY_ITEM, "idItemGravityBow", 					9871)		.getInt(9871);
-	        idItemRocketEngine = 					configuration.get(configuration.CATEGORY_ITEM, "idItemRocketEngine", 					9872)		.getInt(9872);
-	        idItemHeavyPlate = 						configuration.get(configuration.CATEGORY_ITEM, "idItemHeavyPlate", 					9873)		.getInt(9873);
-	        idItemRocketNoseCone = 					configuration.get(configuration.CATEGORY_ITEM, "idItemRocketNoseCone", 				9874)		.getInt(9874);
-	        idItemRocketFins = 						configuration.get(configuration.CATEGORY_ITEM, "idItemRocketFins", 					9875)		.getInt(9875);
-	        idItemSensorLens = 						configuration.get(configuration.CATEGORY_ITEM, "idItemSensorLens", 					9886)		.getInt(9886);
-	        idItemBuggy = 							configuration.get(configuration.CATEGORY_ITEM, "idItemBuggyPlacer", 					9887)		.getInt(9887);
-	        idItemFlag = 							configuration.get(configuration.CATEGORY_ITEM, "idItemFlagPlacer", 					9888)		.getInt(9888);
-	        idItemOxygenGear = 						configuration.get(configuration.CATEGORY_ITEM, "idItemOxygenGear", 					9889)		.getInt(9889);
+	        idItemLightOxygenTankEmpty = 			configuration.get(Configuration.CATEGORY_ITEM, "idItemLightOxygenTankEmpty", 			9854)		.getInt(9854);
+	        idItemLightOxygenTank = 				configuration.get(Configuration.CATEGORY_ITEM, "idItemLightOxygenTank", 				9855)		.getInt(9855);
+	        idItemMedOxygenTankEmpty = 				configuration.get(Configuration.CATEGORY_ITEM, "idItemMedOxygenTankEmpty", 			9856)		.getInt(9856);
+	        idItemMedOxygenTank = 					configuration.get(Configuration.CATEGORY_ITEM, "idItemMedOxygenTank", 					9857)		.getInt(9857);
+	        idItemHeavyOxygenTank = 				configuration.get(Configuration.CATEGORY_ITEM, "idItemHeavyOxygenTank", 				9858)		.getInt(9858);
+	        idItemHeavyOxygenTankEmpty = 			configuration.get(Configuration.CATEGORY_ITEM, "idItemHeavyOxygenTankEmpty",			9859)		.getInt(9859);
+	        idArmorOxygenMask = 					configuration.get(Configuration.CATEGORY_ITEM, "idArmorOxygenMask", 					9860)		.getInt(9860);
+	        idItemSpaceship = 						configuration.get(Configuration.CATEGORY_ITEM, "idItemSpaceship", 						9861)		.getInt(9861);
+	        idArmorSensorGlasses = 					configuration.get(Configuration.CATEGORY_ITEM, "idArmorSensorGlasses", 				9862)		.getInt(9862);
+	        idArmorSensorGlassesWithOxygenMask = 	configuration.get(Configuration.CATEGORY_ITEM, "idArmorSensorGlassesWithOxygenMask", 	9863)		.getInt(9863);
+	        idItemIngotTitanium = 					configuration.get(Configuration.CATEGORY_ITEM, "idItemIngotTitanium", 					9864)		.getInt(9864);
+	        idItemIngotCopper = 					configuration.get(Configuration.CATEGORY_ITEM, "idItemIngotCopper", 					9865)		.getInt(9865);
+	        idItemIngotAluminum = 					configuration.get(Configuration.CATEGORY_ITEM, "idItemIngotAluminum", 					9866)		.getInt(9866);
+	        idItemAluminumCanister = 				configuration.get(Configuration.CATEGORY_ITEM, "idItemAluminumCanister", 				9867)		.getInt(9867);
+	        idItemAirVent = 						configuration.get(Configuration.CATEGORY_ITEM, "idItemAirVent", 						9868)		.getInt(9868);
+	        idItemOxygenConcentrator = 				configuration.get(Configuration.CATEGORY_ITEM, "idItemOxygenConcentrator", 			9869)		.getInt(9869);
+	        idItemFan = 							configuration.get(Configuration.CATEGORY_ITEM, "idItemFan", 							9870)		.getInt(9870);
+	        idItemGravityBow = 						configuration.get(Configuration.CATEGORY_ITEM, "idItemGravityBow", 					9871)		.getInt(9871);
+	        idItemRocketEngine = 					configuration.get(Configuration.CATEGORY_ITEM, "idItemRocketEngine", 					9872)		.getInt(9872);
+	        idItemHeavyPlate = 						configuration.get(Configuration.CATEGORY_ITEM, "idItemHeavyPlate", 					9873)		.getInt(9873);
+	        idItemRocketNoseCone = 					configuration.get(Configuration.CATEGORY_ITEM, "idItemRocketNoseCone", 				9874)		.getInt(9874);
+	        idItemRocketFins = 						configuration.get(Configuration.CATEGORY_ITEM, "idItemRocketFins", 					9875)		.getInt(9875);
+	        idItemSensorLens = 						configuration.get(Configuration.CATEGORY_ITEM, "idItemSensorLens", 					9886)		.getInt(9886);
+	        idItemBuggy = 							configuration.get(Configuration.CATEGORY_ITEM, "idItemBuggyPlacer", 					9887)		.getInt(9887);
+	        idItemFlag = 							configuration.get(Configuration.CATEGORY_ITEM, "idItemFlagPlacer", 					9888)		.getInt(9888);
+	        idItemOxygenGear = 						configuration.get(Configuration.CATEGORY_ITEM, "idItemOxygenGear", 					9889)		.getInt(9889);
 	        
-	        idToolTitaniumSword = 					configuration.get(configuration.CATEGORY_BLOCK, "idToolTitaniumSword", 					9876)		.getInt(9876);
-	        idToolTitaniumPickaxe = 				configuration.get(configuration.CATEGORY_BLOCK, "idToolTitaniumPickaxe", 				9877)		.getInt(9877);
-	        idToolTitaniumSpade = 					configuration.get(configuration.CATEGORY_BLOCK, "idToolTitaniumSpade", 					9878)		.getInt(9878);
-	        idToolTitaniumHoe = 					configuration.get(configuration.CATEGORY_BLOCK, "idToolTitaniumHoe", 					9879)		.getInt(9879);
-	        idToolTitaniumAxe = 					configuration.get(configuration.CATEGORY_BLOCK, "idToolTitaniumAxe", 					9880)		.getInt(9880);
+	        idToolTitaniumSword = 					configuration.get(Configuration.CATEGORY_BLOCK, "idToolTitaniumSword", 					9876)		.getInt(9876);
+	        idToolTitaniumPickaxe = 				configuration.get(Configuration.CATEGORY_BLOCK, "idToolTitaniumPickaxe", 				9877)		.getInt(9877);
+	        idToolTitaniumSpade = 					configuration.get(Configuration.CATEGORY_BLOCK, "idToolTitaniumSpade", 					9878)		.getInt(9878);
+	        idToolTitaniumHoe = 					configuration.get(Configuration.CATEGORY_BLOCK, "idToolTitaniumHoe", 					9879)		.getInt(9879);
+	        idToolTitaniumAxe = 					configuration.get(Configuration.CATEGORY_BLOCK, "idToolTitaniumAxe", 					9880)		.getInt(9880);
 
-	        idArmorTitaniumHelmet = 				configuration.get(configuration.CATEGORY_BLOCK, "idArmorTitaniumHelmet", 				9881)		.getInt(9881);
-	        idArmorTitaniumChestplate = 			configuration.get(configuration.CATEGORY_BLOCK, "idArmorTitaniumChestplate", 			9882)		.getInt(9882);
-	        idArmorTitaniumLeggings = 				configuration.get(configuration.CATEGORY_BLOCK, "idArmorTitaniumLeggings", 				9883)		.getInt(9883);
-	        idArmorTitaniumBoots = 					configuration.get(configuration.CATEGORY_BLOCK, "idArmorTitaniumBoots", 				9884)		.getInt(9884);
-	        idArmorTitaniumHelmetBreathable = 		configuration.get(configuration.CATEGORY_BLOCK, "idArmorTitaniumHelmetBreathable", 		9885)		.getInt(9885);
+	        idArmorTitaniumHelmet = 				configuration.get(Configuration.CATEGORY_BLOCK, "idArmorTitaniumHelmet", 				9881)		.getInt(9881);
+	        idArmorTitaniumChestplate = 			configuration.get(Configuration.CATEGORY_BLOCK, "idArmorTitaniumChestplate", 			9882)		.getInt(9882);
+	        idArmorTitaniumLeggings = 				configuration.get(Configuration.CATEGORY_BLOCK, "idArmorTitaniumLeggings", 				9883)		.getInt(9883);
+	        idArmorTitaniumBoots = 					configuration.get(Configuration.CATEGORY_BLOCK, "idArmorTitaniumBoots", 				9884)		.getInt(9884);
+	        idArmorTitaniumHelmetBreathable = 		configuration.get(Configuration.CATEGORY_BLOCK, "idArmorTitaniumHelmetBreathable", 		9885)		.getInt(9885);
 
 	        idGuiTankRefill = 						configuration.get("GUI", "idGuiTankRefill", 											128)		.getInt(128);
 	        idGuiAirDistributor = 					configuration.get("GUI", "idGuiAirDistributor", 										129)		.getInt(129);
@@ -195,8 +195,8 @@ public class GCCoreConfigManager
 	        idEntityGiantWorm = 					configuration.get("Entities", "idEntityGiantWorm", 										165)		.getInt(165);
 	        idEntityParaChest = 					configuration.get("Entities", "idEntityParaChest", 										166)		.getInt(166);
 	        
-	        transparentBreathableAir = 				configuration.get(configuration.CATEGORY_GENERAL, "transparentBreathableAir", 			true)		.getBoolean(true);
-	        moreStars = 							configuration.get(configuration.CATEGORY_GENERAL, "moreStars", 							true)		.getBoolean(true);
+	        transparentBreathableAir = 				configuration.get(Configuration.CATEGORY_GENERAL, "transparentBreathableAir", 			true)		.getBoolean(true);
+	        moreStars = 							configuration.get(Configuration.CATEGORY_GENERAL, "moreStars", 							true)		.getBoolean(true);
 		}
 		catch (final Exception e)
 		{

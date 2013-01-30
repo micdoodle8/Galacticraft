@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
@@ -30,7 +30,7 @@ public class GCMarsBlockRendererBacterialSludge implements ISimpleBlockRendering
     @Override
 	public boolean renderWorldBlock(IBlockAccess var1, int var2, int var3, int var4, Block var5, int var6, RenderBlocks var7)
     {
-    	this.renderGCFluid(var7, var5, var1, var2, var3, var4);
+    	GCMarsBlockRendererBacterialSludge.renderGCFluid(var7, var5, var1, var2, var3, var4);
         return true;
     }
 

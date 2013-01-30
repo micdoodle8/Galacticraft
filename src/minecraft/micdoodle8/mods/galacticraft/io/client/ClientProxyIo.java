@@ -63,7 +63,7 @@ public class ClientProxyIo implements IGalacticraftSubModClient
 	@Override
 	public GCCoreLocalization getLanguageFile() 
 	{
-		return this.lang;
+		return ClientProxyIo.lang;
 	}
 
 	@Override

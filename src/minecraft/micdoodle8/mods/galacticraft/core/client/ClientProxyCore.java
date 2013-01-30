@@ -111,7 +111,7 @@ import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
@@ -150,16 +150,16 @@ public class ClientProxyCore extends CommonProxyCore
 		KeyBindingRegistry.registerKeyBinding(new GCKeyHandler());
         NetworkRegistry.instance().registerChannel(new ClientPacketHandler(), "Galacticraft", Side.CLIENT);
         ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityTreasureChest.class, new GCCoreTileEntityTreasureChestRenderer());
-        this.treasureChestRenderID = RenderingRegistry.getNextAvailableRenderId();
-        RenderingRegistry.registerBlockHandler(new GCCoreRenderBlockTreasureChest(this.treasureChestRenderID));
-        this.torchRenderID = RenderingRegistry.getNextAvailableRenderId();
-        RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererUnlitTorch(this.torchRenderID));
-        this.breathableAirRenderID = RenderingRegistry.getNextAvailableRenderId();
-        RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererBreathableAir(this.breathableAirRenderID));
-        this.oxygenPipeRenderID = RenderingRegistry.getNextAvailableRenderId();
-        RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererOxygenPipe(this.oxygenPipeRenderID));
-        this.meteorRenderID = RenderingRegistry.getNextAvailableRenderId();
-        RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererMeteor(this.meteorRenderID));
+        ClientProxyCore.treasureChestRenderID = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(new GCCoreRenderBlockTreasureChest(ClientProxyCore.treasureChestRenderID));
+        ClientProxyCore.torchRenderID = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererUnlitTorch(ClientProxyCore.torchRenderID));
+        ClientProxyCore.breathableAirRenderID = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererBreathableAir(ClientProxyCore.breathableAirRenderID));
+        ClientProxyCore.oxygenPipeRenderID = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererOxygenPipe(ClientProxyCore.oxygenPipeRenderID));
+        ClientProxyCore.meteorRenderID = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererMeteor(ClientProxyCore.meteorRenderID));
 		GalacticraftCore.addAdditionalMapPlanet(new GCCoreMapPlanetOverworld());
 		GalacticraftCore.addAdditionalMapPlanet(new GCCoreMapSun());
 	}
@@ -215,7 +215,7 @@ public class ClientProxyCore extends CommonProxyCore
 	@Override
 	public void addSlotRenderer(IPlanetSlotRenderer slotRenderer)
 	{
-		this.slotRenderers.add(slotRenderer);
+		ClientProxyCore.slotRenderers.add(slotRenderer);
 	}
 
 	@Override
@@ -227,31 +227,31 @@ public class ClientProxyCore extends CommonProxyCore
 	@Override
 	public int getGCTreasureChestRenderID()
 	{
-		return this.treasureChestRenderID;
+		return ClientProxyCore.treasureChestRenderID;
 	}
 	
 	@Override
 	public int getGCUnlitTorchRenderID()
 	{
-		return this.torchRenderID;
+		return ClientProxyCore.torchRenderID;
 	}
 	
 	@Override
 	public int getGCBreathableAirRenderID()
 	{
-		return this.breathableAirRenderID;
+		return ClientProxyCore.breathableAirRenderID;
 	}
 	
 	@Override
 	public int getGCOxygenPipeRenderID()
 	{
-		return this.oxygenPipeRenderID;
+		return ClientProxyCore.oxygenPipeRenderID;
 	}
 	
 	@Override
 	public int getGCMeteorRenderID()
 	{
-		return this.meteorRenderID;
+		return ClientProxyCore.meteorRenderID;
 	}
 
 	@Override
@@ -466,9 +466,9 @@ public class ClientProxyCore extends CommonProxyCore
     				player.motionY = player.motionY + wp.getGravity();
     			}
 
-    	        for (int j = 0; j < GalacticraftCore.instance.gcPlayers.size(); ++j)
+    	        for (int j = 0; j < GalacticraftCore.gcPlayers.size(); ++j)
     	        {
-    				final GCCoreEntityPlayer playerBase = (GCCoreEntityPlayer) GalacticraftCore.instance.gcPlayers.get(j);
+    				final GCCoreEntityPlayer playerBase = (GCCoreEntityPlayer) GalacticraftCore.gcPlayers.get(j);
     				
     				if (player.username.equals(playerBase.getPlayer().username))
     				{
@@ -1022,7 +1022,7 @@ public class ClientProxyCore extends CommonProxyCore
         {
             final double var10 = par1EntityLiving.getDistanceSqToEntity(RenderManager.instance.livingPlayer);
 
-            if (var10 <= (double)(par9 * par9))
+            if (var10 <= (par9 * par9))
             {
                 final FontRenderer var12 = RenderManager.instance.getFontRenderer();
                 final float var13 = 1.6F;
@@ -1050,10 +1050,10 @@ public class ClientProxyCore extends CommonProxyCore
                 var15.startDrawingQuads();
                 final int var17 = var12.getStringWidth(par2Str) / 2;
                 var15.setColorRGBA_F(0.0F, 0.0F, 0.0F, 0.25F);
-                var15.addVertex((double)(-var17 - 1), (double)(-1 + var16), 0.0D);
-                var15.addVertex((double)(-var17 - 1), (double)(8 + var16), 0.0D);
-                var15.addVertex((double)(var17 + 1), (double)(8 + var16), 0.0D);
-                var15.addVertex((double)(var17 + 1), (double)(-1 + var16), 0.0D);
+                var15.addVertex((-var17 - 1), (-1 + var16), 0.0D);
+                var15.addVertex((-var17 - 1), (8 + var16), 0.0D);
+                var15.addVertex((var17 + 1), (8 + var16), 0.0D);
+                var15.addVertex((var17 + 1), (-1 + var16), 0.0D);
                 var15.draw();
                 GL11.glEnable(GL11.GL_TEXTURE_2D);
                 var12.drawString(par2Str, -var12.getStringWidth(par2Str) / 2, var16, 553648127);
@@ -1072,9 +1072,9 @@ public class ClientProxyCore extends CommonProxyCore
             final float var4 = 1.0F;
             final float var5 = par2EntityPlayer.prevRotationPitch + (par2EntityPlayer.rotationPitch - par2EntityPlayer.prevRotationPitch) * var4;
             final float var6 = par2EntityPlayer.prevRotationYaw + (par2EntityPlayer.rotationYaw - par2EntityPlayer.prevRotationYaw) * var4;
-            final double var7 = par2EntityPlayer.prevPosX + (par2EntityPlayer.posX - par2EntityPlayer.prevPosX) * (double)var4;
-            final double var9 = par2EntityPlayer.prevPosY + (par2EntityPlayer.posY - par2EntityPlayer.prevPosY) * (double)var4 + 1.62D - (double)par2EntityPlayer.yOffset;
-            final double var11 = par2EntityPlayer.prevPosZ + (par2EntityPlayer.posZ - par2EntityPlayer.prevPosZ) * (double)var4;
+            final double var7 = par2EntityPlayer.prevPosX + (par2EntityPlayer.posX - par2EntityPlayer.prevPosX) * var4;
+            final double var9 = par2EntityPlayer.prevPosY + (par2EntityPlayer.posY - par2EntityPlayer.prevPosY) * var4 + 1.62D - par2EntityPlayer.yOffset;
+            final double var11 = par2EntityPlayer.prevPosZ + (par2EntityPlayer.posZ - par2EntityPlayer.prevPosZ) * var4;
             final Vec3 var13 = par1World.getWorldVec3Pool().getVecFromPool(var7, var9, var11);
             final float var14 = MathHelper.cos(-var6 * 0.017453292F - (float)Math.PI);
             final float var15 = MathHelper.sin(-var6 * 0.017453292F - (float)Math.PI);
@@ -1083,7 +1083,7 @@ public class ClientProxyCore extends CommonProxyCore
             final float var18 = var15 * var16;
             final float var20 = var14 * var16;
             final double var21 = 100.0D;
-            final Vec3 var23 = var13.addVector((double)var18 * var21, (double)var17 * var21, (double)var20 * var21);
+            final Vec3 var23 = var13.addVector(var18 * var21, var17 * var21, var20 * var21);
             return par1World.rayTraceBlocks_do_do(var13, var23, par3, !par3);
         }
     	
@@ -1129,7 +1129,7 @@ public class ClientProxyCore extends CommonProxyCore
     			return;
         	}
         	
-        	if (kb.keyCode == this.tankRefill.keyCode)
+        	if (kb.keyCode == GCKeyHandler.tankRefill.keyCode)
         	{
         		if (minecraft.currentScreen == null)
             	{
@@ -1140,7 +1140,7 @@ public class ClientProxyCore extends CommonProxyCore
             	    player.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiTankRefill, minecraft.theWorld, (int)player.posX, (int)player.posY, (int)player.posZ);
             	}
         	}
-        	else if (kb.keyCode == this.galaxyMap.keyCode)
+        	else if (kb.keyCode == GCKeyHandler.galaxyMap.keyCode)
         	{
         		if (minecraft.currentScreen == null)
         		{

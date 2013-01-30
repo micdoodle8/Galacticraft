@@ -35,7 +35,7 @@ public class ClientProxyEuropa implements IGalacticraftSubModClient
 	@Override
 	public GCCoreLocalization getLanguageFile() 
 	{
-		return this.lang;
+		return ClientProxyEuropa.lang;
 	}
 
 	@Override

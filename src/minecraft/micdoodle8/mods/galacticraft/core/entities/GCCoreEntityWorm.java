@@ -11,8 +11,6 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
-import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreEntityWorm extends EntityMob
 {
@@ -25,7 +23,8 @@ public class GCCoreEntityWorm extends EntityMob
         this.noClip = true;
     }
     
-    protected void entityInit()
+    @Override
+	protected void entityInit()
     {
     	super.entityInit();
         this.dataWatcher.addObject(16, Integer.valueOf(this.rand.nextInt(4)));
@@ -43,32 +42,38 @@ public class GCCoreEntityWorm extends EntityMob
         return this.boundingBox;
     }
 
-    public int getMaxHealth()
+    @Override
+	public int getMaxHealth()
     {
         return 80;
     }
 
-    protected String getLivingSound()
+    @Override
+	protected String getLivingSound()
     {
         return "mob.silverfish.say";
     }
 
-    protected String getHurtSound()
+    @Override
+	protected String getHurtSound()
     {
         return "mob.silverfish.hit";
     }
 
-    protected String getDeathSound()
+    @Override
+	protected String getDeathSound()
     {
         return "mob.silverfish.kill";
     }
 
-    protected void playStepSound(int par1, int par2, int par3, int par4)
+    @Override
+	protected void playStepSound(int par1, int par2, int par3, int par4)
     {
         this.playSound("mob.silverfish.step", 0.15F, 1.0F);
     }
 
-    protected int getDropItemId()
+    @Override
+	protected int getDropItemId()
     {
         return 0;
     }
@@ -79,24 +84,27 @@ public class GCCoreEntityWorm extends EntityMob
         return true;
     }
 
-    public void onUpdate()
+    @Override
+	public void onUpdate()
     {
         super.onUpdate();
     }
 
-    protected void updateEntityActionState()
+    @Override
+	protected void updateEntityActionState()
     {
         super.updateEntityActionState();
     }
 
-    public void onLivingUpdate()
+    @Override
+	public void onLivingUpdate()
     {
     	if (!this.worldObj.isRemote && this.rand.nextInt(150) == 0)
     	{
     		this.setRotationIndex(this.getRotationIndex() + 1);
     	}
 
-		this.rotationYaw = (float) (this.getRotationIndex() % 4) * 90F + 45F;
+		this.rotationYaw = (this.getRotationIndex() % 4) * 90F + 45F;
     	
 //    	if (this.worldObj.isBlockSolidOnSide((int)this.posX, (int)this.posY - 3, (int)this.posZ, ForgeDirection.UP))
 //    	{
@@ -204,12 +212,14 @@ public class GCCoreEntityWorm extends EntityMob
         this.moveEntity(this.motionX, this.motionY, this.motionZ);
     }
     
-    protected boolean isValidLightLevel()
+    @Override
+	protected boolean isValidLightLevel()
     {
         return true;
     }
 
-    public boolean getCanSpawnHere()
+    @Override
+	public boolean getCanSpawnHere()
     {
         if (super.getCanSpawnHere())
         {
@@ -222,7 +232,8 @@ public class GCCoreEntityWorm extends EntityMob
         }
     }
     
-    public int getAttackStrength(Entity par1Entity)
+    @Override
+	public int getAttackStrength(Entity par1Entity)
     {
         return 1;
     }

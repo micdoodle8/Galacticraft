@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core.client.model;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.MathHelper;
 
 public class GCCoreModelWorm extends ModelBase
@@ -332,6 +331,7 @@ public class GCCoreModelWorm extends ModelBase
 //		setRotation(body[7], 0F, 0F, -1.047198F);
 	}
 
+	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
 	{
 		super.render(entity, f, f1, f2, f3, f4, f5);
@@ -362,6 +362,7 @@ public class GCCoreModelWorm extends ModelBase
 		model.rotateAngleZ = z;
 	}
 
+	@Override
 	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity)
 	{
 		super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
@@ -369,39 +370,39 @@ public class GCCoreModelWorm extends ModelBase
 	
 	private void updateBodyRotation(Entity e, float f)
 	{
-        float var8 = 0.03F * (float)(e.entityId % 10) + 0.05F;
+        float var8 = 0.03F * (e.entityId % 10) + 0.05F;
 		
 		for (int i = 0; i < this.body.length; i++)
 		{
 			if (i != this.body.length - 1)
 			{
 //				body[i].rotateAngleY = MathHelper.cos(f * 0.9F + (float)i * 0.15F * (float)Math.PI) * (float)Math.PI * 0.005F * (float)(1 + Math.abs(i - 2));
-	            body[i].rotationPointX = MathHelper.sin(f * 0.9F + (float)i * 0.15F * (float)Math.PI) * (float)Math.PI * 1F * (float)Math.abs(i - 2);
+	            body[i].rotationPointX = MathHelper.sin(f * 0.9F + i * 0.15F * (float)Math.PI) * (float)Math.PI * 1F * Math.abs(i - 2);
 			}
 			else
 			{
 //				body[i].rotateAngleY = MathHelper.cos(f * 0.9F + (float)i * 0.15F * (float)Math.PI) * (float)Math.PI * 0.005F * (float)(1 + Math.abs(i - 2));
-	            body[i].rotationPointX = MathHelper.sin(f * 0.9F + (float)i * 0.15F * (float)Math.PI) * (float)Math.PI * 0.7F * (float)Math.abs(i - 2);
+	            body[i].rotationPointX = MathHelper.sin(f * 0.9F + i * 0.15F * (float)Math.PI) * (float)Math.PI * 0.7F * Math.abs(i - 2);
 			}
-			body[i].rotateAngleZ = (float)e.ticksExisted * var8 - ((float)(Math.PI / 15) * i);
+			body[i].rotateAngleZ = e.ticksExisted * var8 - ((float)(Math.PI / 15) * i);
 		}
 		
-		head.rotateAngleZ = (float)e.ticksExisted * var8 + ((float)(Math.PI / 8) * 1);
+		head.rotateAngleZ = e.ticksExisted * var8 + ((float)(Math.PI / 8) * 1);
 		
 		for (int i = 0; i < 4; i++)
 		{
 			for (int j = 0; j < 4; j++)
 			{
-				pincers[i][j].rotateAngleZ = (float)e.ticksExisted * var8 + ((float)(Math.PI / 2) * j);
+				pincers[i][j].rotateAngleZ = e.ticksExisted * var8 + ((float)(Math.PI / 2) * j);
 			}
 		}
 		
 		for (int i = 0; i < 4; i++)
 		{
-			pincers[i][0].rotateAngleX = MathHelper.sin((float)e.ticksExisted * var8) * 4.5F * (float)Math.PI / 180.0F - (float)Math.PI;
-			pincers[i][1].rotateAngleX = MathHelper.sin((float)e.ticksExisted * var8) * 4.5F * (float)Math.PI / 180.0F - (float)Math.PI;
-			pincers[i][2].rotateAngleX = MathHelper.sin((float)e.ticksExisted * var8) * 4.5F * (float)Math.PI / 180.0F - (float)Math.PI;
-			pincers[i][3].rotateAngleX = MathHelper.sin((float)e.ticksExisted * var8) * 4.5F * (float)Math.PI / 180.0F - (float)Math.PI;
+			pincers[i][0].rotateAngleX = MathHelper.sin(e.ticksExisted * var8) * 4.5F * (float)Math.PI / 180.0F - (float)Math.PI;
+			pincers[i][1].rotateAngleX = MathHelper.sin(e.ticksExisted * var8) * 4.5F * (float)Math.PI / 180.0F - (float)Math.PI;
+			pincers[i][2].rotateAngleX = MathHelper.sin(e.ticksExisted * var8) * 4.5F * (float)Math.PI / 180.0F - (float)Math.PI;
+			pincers[i][3].rotateAngleX = MathHelper.sin(e.ticksExisted * var8) * 4.5F * (float)Math.PI / 180.0F - (float)Math.PI;
 		}
 	}
 }

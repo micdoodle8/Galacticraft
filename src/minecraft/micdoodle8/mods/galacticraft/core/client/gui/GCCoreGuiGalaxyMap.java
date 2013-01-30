@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.API.IMapPlanet;
 import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiSmallButton;
@@ -125,9 +126,9 @@ public class GCCoreGuiGalaxyMap extends GuiScreen
     		this.mouseY = 0;
     	}
 
-        if (this.field_74124_q < (double)guiMapMinX)
+        if (this.field_74124_q < guiMapMinX)
         {
-            this.field_74124_q = (double)guiMapMinX;
+            this.field_74124_q = guiMapMinX;
             
             if (this.mouseX > 0)
             {
@@ -135,9 +136,9 @@ public class GCCoreGuiGalaxyMap extends GuiScreen
             }
         }
 
-        if (this.field_74123_r < (double)guiMapMinY)
+        if (this.field_74123_r < guiMapMinY)
         {
-            this.field_74123_r = (double)guiMapMinY;
+            this.field_74123_r = guiMapMinY;
             
             if (this.mouseY > 0)
             {
@@ -145,9 +146,9 @@ public class GCCoreGuiGalaxyMap extends GuiScreen
             }
         }
 
-        if (this.field_74124_q >= (double)guiMapMaxX)
+        if (this.field_74124_q >= guiMapMaxX)
         {
-            this.field_74124_q = (double)(guiMapMaxX - 1);
+            this.field_74124_q = (guiMapMaxX - 1);
             
             if (this.mouseX < 0)
             {
@@ -155,9 +156,9 @@ public class GCCoreGuiGalaxyMap extends GuiScreen
             }
         }
 
-        if (this.field_74123_r >= (double)guiMapMaxY)
+        if (this.field_74123_r >= guiMapMaxY)
         {
-            this.field_74123_r = (double)(guiMapMaxY - 1);
+            this.field_74123_r = (guiMapMaxY - 1);
             
             if (this.mouseY < 0)
             {
@@ -165,8 +166,8 @@ public class GCCoreGuiGalaxyMap extends GuiScreen
             }
         }
         
-        this.guiMapX -= (double)this.mouseX;
-        this.guiMapY -= (double)this.mouseY;
+        this.guiMapX -= this.mouseX;
+        this.guiMapY -= this.mouseY;
         
         this.field_74124_q = this.field_74117_m = this.guiMapX;
         this.field_74123_r = this.field_74115_n = this.guiMapY;
@@ -202,8 +203,8 @@ public class GCCoreGuiGalaxyMap extends GuiScreen
         final int mX2 = Mouse.getX() * mX / this.mc.displayWidth;
         final int mY2 = mY - Mouse.getY() * mY / this.mc.displayHeight - 1;
         
-        int var4 = MathHelper.floor_double(this.field_74117_m + (this.guiMapX - this.field_74117_m) * (double)par3);
-        int var5 = MathHelper.floor_double(this.field_74115_n + (this.guiMapY - this.field_74115_n) * (double)par3);
+        int var4 = MathHelper.floor_double(this.field_74117_m + (this.guiMapX - this.field_74117_m) * par3);
+        int var5 = MathHelper.floor_double(this.field_74115_n + (this.guiMapY - this.field_74115_n) * par3);
 
         if (var4 < guiMapMinX)
         {
@@ -334,15 +335,15 @@ public class GCCoreGuiGalaxyMap extends GuiScreen
         final int col2 = GCCoreUtil.convertTo32BitColor(255, 145, 145, 145);
         final int col3 = GCCoreUtil.convertTo32BitColor(255, 33, 33, 33);
         
-        this.drawRect(0, 					0, 					this.width, 		20, 				col);
-        this.drawRect(0,	 				this.height - 24, 	this.width, 		this.height,    	col);
-        this.drawRect(0, 					0, 					10, 				this.height,    	col);
-        this.drawRect(this.width - 10, 		0, 					this.width, 		this.height, 		col);
+        Gui.drawRect(0, 					0, 					this.width, 		20, 				col);
+        Gui.drawRect(0,	 				this.height - 24, 	this.width, 		this.height,    	col);
+        Gui.drawRect(0, 					0, 					10, 				this.height,    	col);
+        Gui.drawRect(this.width - 10, 		0, 					this.width, 		this.height, 		col);
 
-        this.drawRect(10, 					20, 				this.width - 10, 	22, 				col3);
-        this.drawRect(10,	 				this.height - 26, 	this.width - 10, 	this.height - 24,   col2);
-        this.drawRect(10, 					20, 				12, 				this.height - 24,   col3);
-        this.drawRect(this.width - 12, 		0 + 20, 			this.width - 10, 	this.height - 24, 	col2);
+        Gui.drawRect(10, 					20, 				this.width - 10, 	22, 				col3);
+        Gui.drawRect(10,	 				this.height - 26, 	this.width - 10, 	this.height - 24,   col2);
+        Gui.drawRect(10, 					20, 				12, 				this.height - 24,   col3);
+        Gui.drawRect(this.width - 12, 		0 + 20, 			this.width - 10, 	this.height - 24, 	col2);
         
         super.drawScreen(par1, par2, par3);
 
@@ -383,7 +384,7 @@ public class GCCoreGuiGalaxyMap extends GuiScreen
     public void drawAsteroidBelt(float cx, float cy) 
     {
         Random rand = new Random();
-        rand.setSeed((long)(1234));
+        rand.setSeed((1234));
     	
     	GL11.glColor4f(139 / 255F, 69 / 255F, 19 / 255F, 1.0F);
         

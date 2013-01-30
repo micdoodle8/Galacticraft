@@ -42,7 +42,7 @@ public class GCCoreItemSapling extends ItemBlock
     {
         int var2 = par1ItemStack.getItemDamage();
 
-        if (var2 < 0 || var2 >= GCCoreBlockSapling.WOOD_TYPES.length)
+        if (var2 < 0 || var2 >= BlockSapling.WOOD_TYPES.length)
         {
             var2 = 0;
         }

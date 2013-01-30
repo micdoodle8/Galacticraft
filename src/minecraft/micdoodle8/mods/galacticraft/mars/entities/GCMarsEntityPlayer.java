@@ -49,7 +49,7 @@ public class GCMarsEntityPlayer
 				player.addPotionEffect(new PotionEffect(Potion.poison.id, 40, 0));
 			}
 			
-			if (GalacticraftCore.instance.tick % 100 == 0 && player.inventory.armorItemInSlot(2) != null && player.inventory.armorItemInSlot(2).getItem().itemID == GCMarsItems.jetpack.itemID)
+			if (GalacticraftCore.tick % 100 == 0 && player.inventory.armorItemInSlot(2) != null && player.inventory.armorItemInSlot(2).getItem().itemID == GCMarsItems.jetpack.itemID)
 			{
 				player.inventory.armorItemInSlot(2).damageItem(1, player);
 			}

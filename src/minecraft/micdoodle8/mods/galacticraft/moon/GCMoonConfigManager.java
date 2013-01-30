@@ -7,7 +7,7 @@ import net.minecraftforge.common.Configuration;
 import cpw.mods.fml.common.FMLLog;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
@@ -51,17 +51,17 @@ public class GCMoonConfigManager
 
 	        dimensionIDMoon = 					configuration.get("Dimensions", 												"Moon Dimension ID", 				-28)		.getInt(-28);
 
-	        idItemCheeseCurd = 					configuration.get(configuration.CATEGORY_ITEM, 									"idItemCheeseCurd", 				10000)	.getInt(10000);
-	        idItemMeteoricIronRaw =				configuration.get(configuration.CATEGORY_ITEM, 									"idItemMeteoricIronRaw", 			10001)	.getInt(10001);
-	        idItemBlockCheese =					configuration.get(configuration.CATEGORY_ITEM, 									"idItemBlockCheese", 				10002)	.getInt(10002);
-	        idItemMeteoricIronIngot =			configuration.get(configuration.CATEGORY_ITEM, 									"idItemMeteoricIronIngot", 			10003)	.getInt(10003);
+	        idItemCheeseCurd = 					configuration.get(Configuration.CATEGORY_ITEM, 									"idItemCheeseCurd", 				10000)	.getInt(10000);
+	        idItemMeteoricIronRaw =				configuration.get(Configuration.CATEGORY_ITEM, 									"idItemMeteoricIronRaw", 			10001)	.getInt(10001);
+	        idItemBlockCheese =					configuration.get(Configuration.CATEGORY_ITEM, 									"idItemBlockCheese", 				10002)	.getInt(10002);
+	        idItemMeteoricIronIngot =			configuration.get(Configuration.CATEGORY_ITEM, 									"idItemMeteoricIronIngot", 			10003)	.getInt(10003);
 	        
-	        idBlockMoonStone = 					configuration.get(configuration.CATEGORY_BLOCK, 								"idBlockMoonStone", 				219)	.getInt(219);
-	        idBlockMoonGrass = 					configuration.get(configuration.CATEGORY_BLOCK, 								"idBlockMoonGrass", 				220)	.getInt(220);
-	        idBlockMoonDirt = 					configuration.get(configuration.CATEGORY_BLOCK, 								"idBlockMoonDirt", 					221)	.getInt(221);
-	        idBlockMoonCobblestone = 			configuration.get(configuration.CATEGORY_BLOCK, 								"idBlockMoonCobblestone", 			222)	.getInt(222);
-	        idBlockOre = 						configuration.get(configuration.CATEGORY_BLOCK, 								"idBlockMoonOre", 					223)	.getInt(223);
-	        idBlockCheese = 					configuration.get(configuration.CATEGORY_BLOCK, 								"idBlockCheese", 					224)	.getInt(224);
+	        idBlockMoonStone = 					configuration.get(Configuration.CATEGORY_BLOCK, 								"idBlockMoonStone", 				219)	.getInt(219);
+	        idBlockMoonGrass = 					configuration.get(Configuration.CATEGORY_BLOCK, 								"idBlockMoonGrass", 				220)	.getInt(220);
+	        idBlockMoonDirt = 					configuration.get(Configuration.CATEGORY_BLOCK, 								"idBlockMoonDirt", 					221)	.getInt(221);
+	        idBlockMoonCobblestone = 			configuration.get(Configuration.CATEGORY_BLOCK, 								"idBlockMoonCobblestone", 			222)	.getInt(222);
+	        idBlockOre = 						configuration.get(Configuration.CATEGORY_BLOCK, 								"idBlockMoonOre", 					223)	.getInt(223);
+	        idBlockCheese = 					configuration.get(Configuration.CATEGORY_BLOCK, 								"idBlockCheese", 					224)	.getInt(224);
 		}
 		catch (final Exception e)
 		{

@@ -116,7 +116,7 @@ public class ClientProxyMoon extends CommonProxyMoon implements IGalacticraftSub
 	@Override
 	public GCCoreLocalization getLanguageFile() 
 	{
-		return this.lang;
+		return ClientProxyMoon.lang;
 	}
 
 	@Override

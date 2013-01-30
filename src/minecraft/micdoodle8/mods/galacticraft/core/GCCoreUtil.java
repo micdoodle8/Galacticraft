@@ -727,9 +727,9 @@ public class GCCoreUtil
 	{
 		boolean missingComponent = false;
 		
-        for (int j = 0; j < GalacticraftCore.instance.gcPlayers.size(); ++j)
+        for (int j = 0; j < GalacticraftCore.gcPlayers.size(); ++j)
         {
-			final GCCoreEntityPlayer playerBase = (GCCoreEntityPlayer) GalacticraftCore.instance.gcPlayers.get(j);
+			final GCCoreEntityPlayer playerBase = (GCCoreEntityPlayer) GalacticraftCore.gcPlayers.get(j);
 			
 			if (player.username.equals(playerBase.getPlayer().username))
 			{

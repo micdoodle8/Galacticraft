@@ -44,7 +44,8 @@ public abstract class GCSkyProvider extends IRenderHandler
      */
     public abstract String[] getSpritesForRender();
 
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public void render(float partialTicks, WorldClient world, Minecraft mc)
     {
     	for (int i = 0; i < this.getSpritesForRender().length; i++)

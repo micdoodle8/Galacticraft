@@ -142,7 +142,7 @@ public class GCCoreEntityMeteor extends Entity
         		
                 if (par1MovingObjectPosition.entityHit != null)
                 {
-                    par1MovingObjectPosition.entityHit.attackEntityFrom(this.causeMeteorDamage(this, this.shootingEntity), 6);
+                    par1MovingObjectPosition.entityHit.attackEntityFrom(GCCoreEntityMeteor.causeMeteorDamage(this, this.shootingEntity), 6);
                 }
         	}
 

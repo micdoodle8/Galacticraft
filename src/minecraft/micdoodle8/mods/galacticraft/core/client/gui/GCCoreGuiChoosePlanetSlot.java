@@ -12,7 +12,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import cpw.mods.fml.relauncher.Side;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
@@ -31,13 +31,13 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
     @Override
 	protected int getSize()
     {
-        return this.languageGui.getDestinations(this.languageGui).length;
+        return GCCoreGuiChoosePlanet.getDestinations(this.languageGui).length;
     }
 
     @Override
 	protected void elementClicked(int par1, boolean par2)
     {
-    	if (par1 < this.languageGui.getDestinations(this.languageGui).length)
+    	if (par1 < GCCoreGuiChoosePlanet.getDestinations(this.languageGui).length)
     	{
     		GCCoreGuiChoosePlanet.setSelectedDimension(this.languageGui, par1);
     	}
@@ -68,7 +68,7 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             GL11.glDisable(GL11.GL_ALPHA_TEST);
-            final String lowercase = this.languageGui.getDestinations(this.languageGui)[par1].toLowerCase();
+            final String lowercase = GCCoreGuiChoosePlanet.getDestinations(this.languageGui)[par1].toLowerCase();
             final Tessellator var3 = Tessellator.instance;
             
             for (int i = 0; i < GalacticraftCore.clientSubMods.size(); i++)
@@ -77,7 +77,7 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
             	{
             		final IPlanetSlotRenderer renderer = GalacticraftCore.clientSubMods.get(i).getSlotRenderer();
             		
-        			String str = this.languageGui.getDestinations(this.languageGui)[par1].toLowerCase();
+        			String str = GCCoreGuiChoosePlanet.getDestinations(this.languageGui)[par1].toLowerCase();
         			
         			if (str.contains("*"))
         			{
@@ -93,7 +93,7 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
             	}
             }
     		
-    		if (this.languageGui.getDestinations(this.languageGui)[par1].equals("Overworld"))
+    		if (GCCoreGuiChoosePlanet.getDestinations(this.languageGui)[par1].equals("Overworld"))
             {
                 GL11.glBindTexture(GL11.GL_TEXTURE_2D, FMLClientHandler.instance().getClient().renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/planets/overworld.png"));
 
@@ -113,11 +113,11 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
     	
     	if (this.languageGui.isValidDestination(par1))
     	{
-            this.languageGui.drawCenteredString(this.languageGui.fontRenderer, this.languageGui.getDestinations(this.languageGui)[par1], this.languageGui.width / 2, par3 + 3, 16777215);
+            this.languageGui.drawCenteredString(this.languageGui.fontRenderer, GCCoreGuiChoosePlanet.getDestinations(this.languageGui)[par1], this.languageGui.width / 2, par3 + 3, 16777215);
     	}
     	else
     	{
-    		String str = this.languageGui.getDestinations(this.languageGui)[par1];
+    		String str = GCCoreGuiChoosePlanet.getDestinations(this.languageGui)[par1];
     		str = str.replace("*", "");
             this.languageGui.drawCenteredString(this.languageGui.fontRenderer, str, this.languageGui.width / 2, par3 + 3, 16716305);
     	}

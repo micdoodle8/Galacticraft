@@ -4,7 +4,6 @@ import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreSlotRocketBench extends Slot
 {
