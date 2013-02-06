@@ -47,7 +47,6 @@ public class GalacticraftEnceladus implements IGalacticraftSubMod
 		GCEnceladusBlocks.initBlocks();
 		GCEnceladusBlocks.registerBlocks();
 		GCEnceladusBlocks.setHarvestLevels();
-		GCEnceladusBlocks.addNames();
 //		
 //		GCMarsItems.initItems();
 //		GCMarsItems.addNames(); TODO

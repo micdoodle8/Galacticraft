@@ -21,6 +21,9 @@ public class GCEnceladusConfigManager
 	// DIMENSIONS
 	public static int dimensionIDEnceladus;
 	
+	// BLOCKS
+	public static int idBlock;
+	
 	public GCEnceladusConfigManager(File file)
 	{
 		if (!loaded)
@@ -37,6 +40,8 @@ public class GCEnceladusConfigManager
 	        configuration.load();
 	        
 	        dimensionIDEnceladus = 				configuration.get("Dimensions", 										"Enceladus Dimension ID",				-24)		.getInt(-24);
+	        
+	        idBlock = 							configuration.get(Configuration.CATEGORY_BLOCK, 						"idBlockEnceladus", 					196)	.getInt(196);
 	    }
 		catch (final Exception e)
 		{

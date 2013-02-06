@@ -5,8 +5,11 @@ import java.util.EnumSet;
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
 import micdoodle8.mods.galacticraft.API.IMapPlanet;
 import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
+import micdoodle8.mods.galacticraft.callisto.client.GCCallistoMapPlanet;
 import micdoodle8.mods.galacticraft.core.GCCoreLocalization;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.europa.client.GCEuropaMapPlanet;
+import micdoodle8.mods.galacticraft.io.client.GCIoMapPlanet;
 import micdoodle8.mods.galacticraft.uranus.CommonProxyUranus;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
@@ -118,5 +121,13 @@ public class ClientProxyUranus extends CommonProxyUranus implements IGalacticraf
 	public IMapPlanet getPlanetForMap() 
 	{
 		return new GCUranusMapPlanet();
+	}
+
+	@Override
+	public IMapPlanet[] getChildMapPlanets() 
+	{
+//		IMapPlanet[] moonMapPlanet = {new GCCallistoMapPlanet(), new GCEuropaMapPlanet(), new GCIoMapPlanet()};
+//		TODO
+		return null;
 	}
 }

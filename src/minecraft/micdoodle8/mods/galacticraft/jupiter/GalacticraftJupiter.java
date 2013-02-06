@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubMod;
+import micdoodle8.mods.galacticraft.callisto.GalacticraftCallisto;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.europa.GCEuropaConfigManager;
 import micdoodle8.mods.galacticraft.europa.GalacticraftEuropa;
@@ -40,6 +41,7 @@ public class GalacticraftJupiter implements IGalacticraftSubMod
 	
 	public static GalacticraftEuropa moonEuropa = new GalacticraftEuropa();
 	public static GalacticraftIo moonIo = new GalacticraftIo();
+	public static GalacticraftCallisto moonCallisto = new GalacticraftCallisto();
 	
 	public static List jupiterPlayers = new ArrayList();
 	public static List gcJupiterPlayers = new ArrayList();
@@ -49,6 +51,7 @@ public class GalacticraftJupiter implements IGalacticraftSubMod
 	{
 		moonEuropa.preInit(event);
 		moonIo.preInit(event);
+		moonCallisto.preInit(event);
 		
 		GalacticraftCore.registerSubMod(this);
 		
@@ -62,6 +65,7 @@ public class GalacticraftJupiter implements IGalacticraftSubMod
 	{
 		moonEuropa.init(event);
 		moonIo.init(event);
+		moonCallisto.init(event);
 		proxy.init(event);
 	}
 
@@ -70,6 +74,7 @@ public class GalacticraftJupiter implements IGalacticraftSubMod
 	{
 		moonEuropa.postInit(event);
 		moonIo.postInit(event);
+		moonCallisto.postInit(event);
 		proxy.postInit(event);
 		proxy.registerRenderInformation();
 	}
@@ -79,6 +84,7 @@ public class GalacticraftJupiter implements IGalacticraftSubMod
 	{
 		moonEuropa.serverInit(event);
 		moonIo.serverInit(event);
+		moonCallisto.serverInit(event);
 	}
 
 	@Override

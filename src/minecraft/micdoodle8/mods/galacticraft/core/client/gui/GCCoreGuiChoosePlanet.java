@@ -78,7 +78,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     	}
 
         final StringTranslate var1 = StringTranslate.getInstance();
-        this.controlList.add(new GCCoreGuiTexturedButton(0, this.width - 110, this.height - 26, 105, 20, "Send To Dimension", "" /* TODO */));
+//        this.controlList.add(new GCCoreGuiTexturedButton(0, this.width - 110, this.height - 26, 105, 20, "Send To Dimension", "" /* TODO */));
         this.controlList.add(this.sendButton = new GuiSmallButton(1, this.width - 110, this.height - 26, 105, 20, "Send To Dimension"));
         this.planetSlots.registerScrollButtons(this.controlList, 2, 3);
     }

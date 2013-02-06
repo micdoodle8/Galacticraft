@@ -5,6 +5,7 @@ import java.io.DataInputStream;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubMod;
@@ -97,6 +98,7 @@ public class GalacticraftCore
 	public static List<IGalacticraftSubModClient> clientSubMods = new ArrayList<IGalacticraftSubModClient>();
 	
 	public static List<IMapPlanet> mapPlanets = new ArrayList<IMapPlanet>();
+	public static HashMap<String, IMapPlanet> mapMoons = new HashMap<String, IMapPlanet>();
 	
 	public static final CreativeTabs galacticraftTab = new GCCoreCreativeTab(12, "galacticraft");
 	
@@ -178,6 +180,11 @@ public class GalacticraftCore
 	public static void addAdditionalMapPlanet(IMapPlanet planet)
 	{
 		mapPlanets.add(planet);
+	}
+	
+	public static void addAdditionalMapMoon(String planet, IMapPlanet moon)
+	{
+		mapMoons.put(planet, moon);
 	}
 	
 	public void registerTileEntities()

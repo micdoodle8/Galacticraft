@@ -55,4 +55,10 @@ public class ClientProxyEuropa implements IGalacticraftSubModClient
 	{
 		return null;
 	}
+
+	@Override
+	public IMapPlanet[] getChildMapPlanets() 
+	{
+		return null;
+	}
 }

@@ -1,11 +1,13 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.API.IMapPlanet;
 import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
+import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.client.gui.Gui;
@@ -20,13 +22,16 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
 
 import org.lwjgl.Sys;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.lwjgl.util.glu.GLU;
 
-import cpw.mods.fml.relauncher.SideOnly;
+import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class GCCoreGuiGalaxyMap extends GuiScreen
@@ -57,6 +62,8 @@ public class GCCoreGuiGalaxyMap extends GuiScreen
     private float zoom = 0.2F;
     
     EntityPlayer player;
+    
+    private IMapPlanet selectedPlanet = null;
 
     public GCCoreGuiGalaxyMap(EntityPlayer player)
     {
@@ -66,6 +73,7 @@ public class GCCoreGuiGalaxyMap extends GuiScreen
     @Override
 	public void initGui()
     {
+        this.mc.mouseHelper.grabMouseCursor();
         this.field_74117_m = this.guiMapX = this.field_74124_q = 0 - this.width / 4;
         this.field_74115_n = this.guiMapY = this.field_74123_r = 0 - this.height / 4;
         this.controlList.add(new GuiSmallButton(0, this.width - 82, this.height - 22, 80, 20, StatCollector.translateToLocal("gui.done")));
@@ -77,7 +85,6 @@ public class GCCoreGuiGalaxyMap extends GuiScreen
         if (par1GuiButton.id == 0)
         {
             this.mc.displayGuiScreen((GuiScreen)null);
-            this.mc.setIngameFocus();
         }
 
         super.actionPerformed(par1GuiButton);
@@ -95,6 +102,12 @@ public class GCCoreGuiGalaxyMap extends GuiScreen
         {
             super.keyTyped(par1, par2);
         }
+    }
+    
+    @Override
+    protected void mouseClicked(int par1, int par2, int par3)
+    {
+    	super.mouseClicked(par1, par2, par3);
     }
 
     @Override
@@ -117,14 +130,42 @@ public class GCCoreGuiGalaxyMap extends GuiScreen
             }
         }
         
-		this.mouseY = ((-(this.mc.displayHeight / 2) + Mouse.getY()) / 100F) * (1 / (this.zoom * 5));
-        this.mouseX = ((this.mc.displayWidth / 2 - Mouse.getX()) / 100F) * (1 / (this.zoom * 5));
-    	
-    	if (Mouse.getX() > this.mc.displayWidth / 2 - 90 && Mouse.getX() < this.mc.displayWidth / 2 + 90 && Mouse.getY() > this.mc.displayHeight / 2 - 90 && Mouse.getY() < this.mc.displayHeight / 2 + 90)
-    	{
-    		this.mouseX = 0;
-    		this.mouseY = 0;
-    	}
+        if (GCCoreConfigManager.wasdMapMovement)
+        {
+        	if (Keyboard.isKeyDown(Keyboard.KEY_W))
+        	{
+        		this.mouseY = 1 * (1 / (this.zoom * 2));
+        	}
+        	
+        	if (Keyboard.isKeyDown(Keyboard.KEY_S))
+        	{
+        		this.mouseY = -1 * (1 / (this.zoom * 2));
+        	}
+        	
+        	if (Keyboard.isKeyDown(Keyboard.KEY_D))
+        	{
+        		this.mouseX = -1 * (1 / (this.zoom * 2));
+        	}
+        	
+        	if (Keyboard.isKeyDown(Keyboard.KEY_A))
+        	{
+        		this.mouseX = 1 * (1 / (this.zoom * 2));
+        	}
+        	
+        	this.mouseY *= 0.9;
+        	this.mouseX *= 0.9;
+        }
+        else
+        {
+    		this.mouseY = ((-(this.mc.displayHeight / 2) + Mouse.getY()) / 100F) * (1 / (this.zoom * 5));
+            this.mouseX = ((this.mc.displayWidth / 2 - Mouse.getX()) / 100F) * (1 / (this.zoom * 5));
+        	
+        	if (Mouse.getX() > this.mc.displayWidth / 2 - 90 && Mouse.getX() < this.mc.displayWidth / 2 + 90 && Mouse.getY() > this.mc.displayHeight / 2 - 90 && Mouse.getY() < this.mc.displayHeight / 2 + 90)
+        	{
+        		this.mouseX = 0;
+        		this.mouseY = 0;
+        	}
+        }
 
         if (this.field_74124_q < guiMapMinX)
         {
@@ -285,6 +326,7 @@ public class GCCoreGuiGalaxyMap extends GuiScreen
             var42 = var10 + var26;
             var41 = var11 + var27;
             
+            
             final IPlanetSlotRenderer renderer = planet.getSlotRenderer();
             
             GL11.glDisable(GL11.GL_BLEND);
@@ -297,21 +339,124 @@ public class GCCoreGuiGalaxyMap extends GuiScreen
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
             
+            int width = (int) (planet.getPlanetSize() + (1 / this.zoom * 3F));
+
+            if (Mouse.isButtonDown(0))
+            {
+            	int pointerMinX = this.width / 2 - 5;
+            	int pointerMaxX = this.width / 2 + 5;
+            	int pointerMinY = this.height / 2 - 5;
+            	int pointerMaxY = this.height / 2 + 5;
+            	int planetMinX = var42 - width;
+            	int planetMaxX = var42 + width;
+            	int planetMinY = var41 - width;
+            	int planetMaxY = var41 + width;
+            	
+            	if (((pointerMaxX >= planetMinX && pointerMinX <= planetMinX) || (pointerMinX <= planetMinX && pointerMaxY >= planetMaxX) || (pointerMinX >= planetMinX && pointerMinX <= planetMaxX))
+            			&& ((pointerMaxY >= planetMinY && pointerMinY <= planetMinY) || (pointerMinY <= planetMinY && pointerMaxY >= planetMaxY) || (pointerMinY >= planetMinY && pointerMinY <= planetMaxY)))
+                {
+            		if (!planet.getSlotRenderer().getPlanetName().equals("Sun"))
+            		{
+                    	this.selectedPlanet = planet;
+            		}
+                }
+            }
+            
             final Tessellator var3 = Tessellator.instance;
 
             if (renderer != null)
             {
                 this.mc.renderEngine.bindTexture(this.mc.renderEngine.getTexture(renderer.getPlanetSprite()));
                 renderer.renderSlot(0, var42, var41, planet.getPlanetSize() + (1 / this.zoom * 3F), var3);
+                
+                if (selectedPlanet != null && planet.getSlotRenderer().getPlanetName().equals(selectedPlanet.getSlotRenderer().getPlanetName()))
+                {
+                    renderer.renderSlot(0, var42, var41, planet.getPlanetSize() + (1 / this.zoom * 3F), var3);
+                }
             }
             
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            
+        	for (int i = 0; i < GalacticraftCore.mapMoons.size(); i++)
+            {
+        		IMapPlanet moon = (IMapPlanet) GalacticraftCore.mapMoons.get(String.valueOf(planet) + i);
+        		
+
+                int var26b = 0;
+                int var27b = 0;
+                
+                int var42b = 0;
+                int var41b = 0;
+                
+        		if (moon != null)
+        		{
+    				FMLLog.info("" + moon.getSlotRenderer().getPlanetName());
+                    final Map[] posMaps2 = this.computePlanetPos(var42, var41, moon.getDistanceFromCenter() / 2, 2880);
+                    
+                    if (posMaps2[0] != null && posMaps2[1] != null)
+                    {
+                    	if (posMaps2[0].get(MathHelper.floor_float(Sys.getTime() / (720F * moon.getStretchValue()) % 2880)) != null && posMaps2[1].get(MathHelper.floor_float(Sys.getTime() / 720F % 2880)) != null)
+                    	{
+                        	final int x = MathHelper.floor_float((Float) posMaps2[0].get(MathHelper.floor_float((moon.getPhaseShift() + Sys.getTime() / (720F * moon.getStretchValue())) % 2880)));
+                        	final int y = MathHelper.floor_float((Float) posMaps2[1].get(MathHelper.floor_float((moon.getPhaseShift() + Sys.getTime() / (720F * moon.getStretchValue())) % 2880)));
+                        	
+                        	var26b = x;
+                        	var27b = y;
+                    	}
+                    }
+                    
+                    var42b = var26b;
+                    var41b = var27b;
+
+                    width = (int) (moon.getPlanetSize() + (1 / this.zoom * 3F));
+                    
+                    if (Mouse.isButtonDown(0))
+                    {
+                    	int pointerMinX = this.width / 2 - 5;
+                    	int pointerMaxX = this.width / 2 + 5;
+                    	int pointerMinY = this.height / 2 - 5;
+                    	int pointerMaxY = this.height / 2 + 5;
+                    	int planetMinX = var42b - width;
+                    	int planetMaxX = var42b + width;
+                    	int planetMinY = var41b - width;
+                    	int planetMaxY = var41b + width;
+                    	
+                    	if (((pointerMaxX >= planetMinX && pointerMinX <= planetMinX) || (pointerMinX <= planetMinX && pointerMaxY >= planetMaxX) || (pointerMinX >= planetMinX && pointerMinX <= planetMaxX))
+                    			&& ((pointerMaxY >= planetMinY && pointerMinY <= planetMinY) || (pointerMinY <= planetMinY && pointerMaxY >= planetMaxY) || (pointerMinY >= planetMinY && pointerMinY <= planetMaxY)))
+                        {
+                        	this.selectedPlanet = moon;
+                        }
+                    }
+                    
+                    final IPlanetSlotRenderer moonRenderer = moon.getSlotRenderer();
+
+                    if (moonRenderer != null)
+                    {
+                        this.mc.renderEngine.bindTexture(this.mc.renderEngine.getTexture(moonRenderer.getPlanetSprite()));
+                        moonRenderer.renderSlot(0, var42b, var41b, (float) (moon.getPlanetSize() + (1 / Math.pow(this.zoom, -2))), var3);
+                        
+                        if (selectedPlanet != null && moon.getSlotRenderer().getPlanetName().equals(selectedPlanet.getSlotRenderer().getPlanetName()))
+                        {
+                            moonRenderer.renderSlot(0, var42b, var41b, (float) (moon.getPlanetSize() + (1 / Math.pow(this.zoom, -2))), var3);
+                        }
+                    }
+
+                    if (selectedPlanet != null && moon.getSlotRenderer().getPlanetName().equals(selectedPlanet.getSlotRenderer().getPlanetName()))
+                    {
+                    	this.drawInfoBox(var42b, var41b, moon);
+                    }
+        		}
+            }
 
             this.drawCircles(var10 + var10, var11 + var11);
             
             this.drawAsteroidBelt(var10 + var10, var11 + var11);
 
             if (!planet.getSlotRenderer().getPlanetName().equals("Sun"))
+            {
+            }
+
+            if (selectedPlanet != null && planet.getSlotRenderer().getPlanetName().equals(selectedPlanet.getSlotRenderer().getPlanetName()))
             {
             	this.drawInfoBox(var42, var41, planet);
             }
@@ -330,6 +475,12 @@ public class GCCoreGuiGalaxyMap extends GuiScreen
         GL11.glDepthFunc(GL11.GL_LEQUAL);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
+
+//    	this.mc.renderEngine.bindTexture(this.mc.renderEngine.getTexture());
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/gui/gui.png"));
+        int var5b = (this.width - this.mc.displayWidth) / 2;
+        int var6b = (this.height - this.mc.displayHeight) / 2;
+        this.drawTexturedModalRect(this.width / 2 - 5, this.height / 2 - 5, 123, 0, 10, 10);
 
         final int col = GCCoreUtil.convertTo32BitColor(255, 198, 198, 198);
         final int col2 = GCCoreUtil.convertTo32BitColor(255, 145, 145, 145);
@@ -481,6 +632,7 @@ public class GCCoreGuiGalaxyMap extends GuiScreen
         final ScaledResolution var5 = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
         final int x = var5.getScaledWidth();
         final int y = var5.getScaledHeight();
+        
         GL11.glTranslatef(x / 2, y / 2, 0);
         GL11.glScalef(f, f, 0);
         GL11.glTranslatef(-(x / 2), -(y / 2), 0);

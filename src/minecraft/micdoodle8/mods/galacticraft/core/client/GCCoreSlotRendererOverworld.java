@@ -1,7 +1,9 @@
 package micdoodle8.mods.galacticraft.core.client;
 
 import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiGalaxyMap;
 import net.minecraft.client.renderer.Tessellator;
+import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreSlotRendererOverworld implements IPlanetSlotRenderer
 {

@@ -9,6 +9,9 @@ import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySkeleton;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpider;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityZombie;
 import micdoodle8.mods.galacticraft.core.wgen.GCCoreChunk;
+import micdoodle8.mods.galacticraft.io.blocks.GCIoBlocks;
+import micdoodle8.mods.galacticraft.enceladus.blocks.GCEnceladusBlock;
+import micdoodle8.mods.galacticraft.enceladus.blocks.GCEnceladusBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSand;
 import net.minecraft.entity.EnumCreatureType;
@@ -32,9 +35,6 @@ import net.minecraft.world.gen.structure.MapGenVillage;
  */
 public class GCEnceladusChunkProvider extends ChunkProviderGenerate
 {
-	public static List giantCaveLocations;
-	public static List creeperDungeonLocations;
-	
 	private final Random rand;
 
 	private final NoiseGeneratorOctaves noiseGen1;
@@ -84,16 +84,16 @@ public class GCEnceladusChunkProvider extends ChunkProviderGenerate
 		this.noiseGen5 = new NoiseGeneratorOctaves(this.rand, 10);
 		this.noiseGen6 = new NoiseGeneratorOctaves(this.rand, 16);
 		this.mobSpawnerNoise = new NoiseGeneratorOctaves(this.rand, 8);
-		GCEnceladusChunkProvider.giantCaveLocations = new ArrayList();
-		GCEnceladusChunkProvider.creeperDungeonLocations = new ArrayList();
 	}
 
 	public void replaceBlocksForBiome(int par1, int par2, int[] arrayOfIDs, int[] arrayOfMeta, BiomeGenBase[] par4ArrayOfBiomeGenBase)
 	{
-		final short topBlockID = (short) Block.stone.blockID;
-		final byte topBlockMeta = 0;
-		final short fillBlockID = (short) Block.dirt.blockID;
-		final byte fillBlockMeta = 1;
+		final int topBlockID = GCEnceladusBlocks.block.blockID;
+		final int topBlockMeta = 0;
+		final int fillBlockID = GCEnceladusBlocks.block.blockID;
+		final int fillBlockMeta = 1;
+		final int lowerBlockID = GCEnceladusBlocks.block.blockID;
+		final int lowerBlockMeta = 2;
 		
 		final int var5 = 20;
 		final double var6 = 0.03125D;
@@ -107,10 +107,10 @@ public class GCEnceladusChunkProvider extends ChunkProviderGenerate
 				final float var11 = var10.getFloatTemperature();
 				final int var12 = (int) (this.stoneNoise[var8 + var9 * 16] / 3.0D + 3.0D + this.rand.nextDouble() * 0.25D);
 				int var13 = -1;
-				short var14 = topBlockID;
-				final byte var14m = topBlockMeta;
-				short var15 = fillBlockID;
-				final byte var15m = fillBlockMeta;
+				int var14 = topBlockID;
+				final int var14m = topBlockMeta;
+				int var15 = fillBlockID;
+				final int var15m = fillBlockMeta;
 
 				for (int var16 = 127; var16 >= 0; --var16) 
 				{
@@ -130,23 +130,12 @@ public class GCEnceladusChunkProvider extends ChunkProviderGenerate
 						{
 							var13 = -1;
 						} 
-						else if (var18 == Block.stone.blockID)
+						else if (var18 == GCEnceladusBlocks.block.blockID)
 						{
-							arrayOfMeta[index] = 1;
+							arrayOfMeta[index] = 2;
 							
 							if (var13 == -1)
 							{
-								if (var12 <= 0)
-								{
-									var14 = 0;
-									var15 = (short) Block.stone.blockID;
-								} 
-								else if (var16 >= var5 - -16 && var16 <= var5 + 1)
-								{
-									var14 = topBlockID;
-									var15 = (short) Block.stone.blockID;
-								}
-
 								var13 = var12;
 
 								if (var16 >= var5 - 1) 
@@ -249,7 +238,8 @@ public class GCEnceladusChunkProvider extends ChunkProviderGenerate
                             {
                                 if ((var47 += var49) > 0.0D)
                                 {
-                                	idArray[var43 += var44] = (short)Block.stone.blockID;
+                                	idArray[var43 += var44] = GCEnceladusBlocks.block.blockID;
+                                	metaArray[var43] = 2;
                                 }
                                 else if (var12 * 8 + var31 < var6)
                                 {

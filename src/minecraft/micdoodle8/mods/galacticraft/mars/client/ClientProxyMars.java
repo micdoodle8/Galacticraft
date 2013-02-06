@@ -8,11 +8,14 @@ import java.util.Random;
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
 import micdoodle8.mods.galacticraft.API.IMapPlanet;
 import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
+import micdoodle8.mods.galacticraft.callisto.client.GCCallistoMapPlanet;
 import micdoodle8.mods.galacticraft.core.GCCoreLocalization;
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderArrow;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityArrow;
+import micdoodle8.mods.galacticraft.europa.client.GCEuropaMapPlanet;
+import micdoodle8.mods.galacticraft.io.client.GCIoMapPlanet;
 import micdoodle8.mods.galacticraft.mars.CommonProxyMars;
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
 import micdoodle8.mods.galacticraft.mars.dimension.GCMarsWorldProvider;
@@ -259,5 +262,13 @@ public class ClientProxyMars extends CommonProxyMars implements IGalacticraftSub
 	public IMapPlanet getPlanetForMap() 
 	{
 		return new GCMarsMapPlanet();
+	}
+
+	@Override
+	public IMapPlanet[] getChildMapPlanets() 
+	{
+//		IMapPlanet[] moonMapPlanet = {new GCCallistoMapPlanet(), new GCEuropaMapPlanet(), new GCIoMapPlanet()};
+//		TODO
+		return null;
 	}
 }

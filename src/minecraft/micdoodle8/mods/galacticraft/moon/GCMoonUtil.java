@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.moon;
 import micdoodle8.mods.galacticraft.moon.items.GCMoonItems;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.item.crafting.CraftingManager;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -15,7 +15,7 @@ public class GCMoonUtil
 {
 	public static void addCraftingRecipes()
 	{
-		GameRegistry.addRecipe(new ItemStack(GCMoonItems.cheeseBlock, 1), new Object[] {
+		CraftingManager.getInstance().addRecipe(new ItemStack(GCMoonItems.cheeseBlock, 1), new Object[] {
 			"YYY",
 			"YXY",
 			"YYY",

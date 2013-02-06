@@ -3,11 +3,6 @@ package micdoodle8.mods.galacticraft.API;
 public interface IMapPlanet 
 {
 	/**
-	 * @return false if this submod extends another planet, true if this is a planet itself.
-	 */
-	public boolean isMoon();
-	
-	/**
 	 * Used for rendering planet on map.
 	 * 
 	 * @return Size of the planet. Generally around 15.

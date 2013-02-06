@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.io.items;
 
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.IBlockAccess;
 
 public class GCIoItemBlock extends ItemBlock
 {
@@ -27,17 +28,22 @@ public class GCIoItemBlock extends ItemBlock
 		{
 		case 0: 
 		{
-			name = "pyroxene";
+			name = "basalt";
 			break;
 		}
 		case 1: 
 		{
-			name = "iostone";
+			name = "stone";
 			break;
 		}
 		case 2: 
 		{
 			name = "sulfur";
+			break;
+		}
+		case 3: 
+		{
+			name = "other";
 			break;
 		}
 		default: 

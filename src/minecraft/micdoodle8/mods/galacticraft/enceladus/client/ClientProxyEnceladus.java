@@ -200,4 +200,10 @@ public class ClientProxyEnceladus extends CommonProxyEnceladus implements IGalac
 	{
 		return null;
 	}
+
+	@Override
+	public IMapPlanet[] getChildMapPlanets() 
+	{
+		return null;
+	}
 }

@@ -8,8 +8,12 @@ import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
 import micdoodle8.mods.galacticraft.core.GCCoreLocalization;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.enceladus.client.ClientProxyEnceladus;
+import micdoodle8.mods.galacticraft.enceladus.client.GCEnceladusMapPlanet;
+import micdoodle8.mods.galacticraft.mimas.client.ClientProxyMimas;
+import micdoodle8.mods.galacticraft.mimas.client.GCMimasMapPlanet;
 import micdoodle8.mods.galacticraft.saturn.CommonProxySaturn;
 import micdoodle8.mods.galacticraft.titan.client.ClientProxyTitan;
+import micdoodle8.mods.galacticraft.titan.client.GCTitanMapPlanet;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import cpw.mods.fml.common.ITickHandler;
@@ -32,12 +36,14 @@ public class ClientProxySaturn extends CommonProxySaturn implements IGalacticraf
 	
 	public static ClientProxyTitan moonClientTitan = new ClientProxyTitan();
 	public static ClientProxyEnceladus moonClientEnceladus = new ClientProxyEnceladus();
+	public static ClientProxyMimas moonClientMimas = new ClientProxyMimas();
 	
 	@Override
 	public void preInit(FMLPreInitializationEvent event) 
 	{
 		moonClientTitan.preInit(event);
 		moonClientEnceladus.preInit(event);
+		moonClientMimas.preInit(event);
 		ClientProxySaturn.lang = new GCCoreLocalization("micdoodle8/mods/galacticraft/saturn/client");
 	}
 
@@ -46,6 +52,7 @@ public class ClientProxySaturn extends CommonProxySaturn implements IGalacticraf
 	{
 		moonClientTitan.init(event);
 		moonClientEnceladus.init(event);
+		moonClientMimas.init(event);
 		GalacticraftCore.registerClientSubMod(this);
 	}
 
@@ -54,6 +61,7 @@ public class ClientProxySaturn extends CommonProxySaturn implements IGalacticraf
 	{
 		moonClientTitan.postInit(event);
 		moonClientEnceladus.postInit(event);
+		moonClientMimas.postInit(event);
 	}
 	
 	@Override
@@ -61,6 +69,7 @@ public class ClientProxySaturn extends CommonProxySaturn implements IGalacticraf
 	{
 		moonClientTitan.registerRenderInformation();
 		moonClientEnceladus.registerRenderInformation();
+		moonClientMimas.registerRenderInformation();
 	}
 
 	@Override
@@ -126,10 +135,20 @@ public class ClientProxySaturn extends CommonProxySaturn implements IGalacticraf
 	{
 		return new GCSaturnSlotRenderer();
 	}
+	
+	private IMapPlanet saturn = new GCSaturnMapPlanet();
 
 	@Override
 	public IMapPlanet getPlanetForMap() 
 	{
-		return new GCSaturnMapPlanet();
+		return saturn;
+	}
+
+	@Override
+	public IMapPlanet[] getChildMapPlanets() 
+	{
+		IMapPlanet[] moonMapPlanet = {new GCTitanMapPlanet(), new GCEnceladusMapPlanet(), new GCMimasMapPlanet()};
+		
+		return moonMapPlanet;
 	}
 }

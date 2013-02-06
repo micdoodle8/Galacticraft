@@ -21,18 +21,21 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreInventoryRocketBench;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreInventoryTankRefill;
 import micdoodle8.mods.galacticraft.moon.items.GCMoonItems;
 import net.minecraft.block.Block;
+import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.common.DimensionManager;
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -40,7 +43,7 @@ public class GCCoreUtil
 {
 	public static void addCraftingRecipes()
 	{
-		GameRegistry.addRecipe(new ItemStack(GCCoreItems.rocketEngine, 1), new Object[] {
+		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.rocketEngine, 1), new Object[] {
 			" YV",
 			"XWX",
 			"XZX",
@@ -50,7 +53,7 @@ public class GCCoreUtil
 			'Y', Item.flintAndSteel,
 			'Z', GCCoreItems.airVent
 		});
-		GameRegistry.addRecipe(new ItemStack(GCCoreItems.rocketEngine, 1), new Object[] {
+		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.rocketEngine, 1), new Object[] {
 			"VY ",
 			"XWX",
 			"XZX",
@@ -60,7 +63,7 @@ public class GCCoreUtil
 			'Y', Item.flintAndSteel,
 			'Z', GCCoreItems.airVent
 		});
-		GameRegistry.addRecipe(new ItemStack(GCCoreItems.heavyPlating, 2), new Object[] {
+		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.heavyPlating, 2), new Object[] {
 			"XYZ",
 			"XYZ",
 			"XYZ",
@@ -68,27 +71,27 @@ public class GCCoreUtil
 			'Y', GCCoreItems.ingotCopper,
 			'Z', GCCoreItems.ingotAluminum
 		});
-		GameRegistry.addRecipe(new ItemStack(GCCoreItems.rocketNoseCone, 1), new Object[] {
+		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.rocketNoseCone, 1), new Object[] {
 			" Y ",
 			" X ",
 			"X X",
 			'X', GCCoreItems.heavyPlating,
 			'Y', Block.torchRedstoneActive
 		});
-		GameRegistry.addRecipe(new ItemStack(GCCoreItems.rocketFins, 1), new Object[] {
+		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.rocketFins, 1), new Object[] {
 			" Y ",
 			"XYX",
 			"X X",
 			'X', GCCoreItems.heavyPlating,
 			'Y', GCCoreItems.ingotAluminum
 		});
-		GameRegistry.addRecipe(new ItemStack(GCCoreBlocks.landingPad, 9), new Object[] {
+		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreBlocks.landingPad, 9), new Object[] {
 			"YYY",
 			"XXX",
 			'X', Block.blockSteel,
 			'Y', GCCoreItems.ingotAluminum
 		});
-		GameRegistry.addRecipe(new ItemStack(GCCoreBlocks.airDistributor, 1), new Object[] {
+		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreBlocks.airDistributor, 1), new Object[] {
 			"WXW",
 			"YZY",
 			"WXW",
@@ -97,7 +100,7 @@ public class GCCoreUtil
 			'Y', GCCoreItems.airVent,
 			'Z', GCCoreItems.ingotTitanium
 		});
-		GameRegistry.addRecipe(new ItemStack(GCCoreBlocks.blockAirCollector, 1), new Object[] {
+		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreBlocks.blockAirCollector, 1), new Object[] {
 			"WWW",
 			"YXZ",
 			"WVW",
@@ -107,7 +110,7 @@ public class GCCoreUtil
 			'Y', GCCoreItems.airFan,
 			'Z', GCCoreItems.airVent
 		});
-		GameRegistry.addRecipe(new ItemStack(GCCoreBlocks.rocketBench, 1), new Object[] {
+		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreBlocks.rocketBench, 1), new Object[] {
 			"XXX",
 			"YZY",
 			"YYY",
@@ -115,13 +118,13 @@ public class GCCoreUtil
 			'Y', Block.planks,
 			'Z', Block.workbench
 		});
-		GameRegistry.addRecipe(new ItemStack(GCCoreBlocks.oxygenPipe, 1), new Object[] {
+		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreBlocks.oxygenPipe, 1), new Object[] {
 			"XXX",
 			"   ",
 			"XXX",
 			'X', Block.thinGlass
 		});
-		GameRegistry.addRecipe(new ItemStack(GCCoreItems.lightOxygenTankFull, 1), new Object[] {
+		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.lightOxygenTankFull, 1), new Object[] {
 			"Z",
 			"X",
 			"Y",
@@ -129,7 +132,7 @@ public class GCCoreUtil
 			'Y', GCCoreItems.ingotCopper,
 			'Z', new ItemStack(Block.cloth, 1, 5)
 		});
-		GameRegistry.addRecipe(new ItemStack(GCCoreItems.medOxygenTankFull, 1), new Object[] {
+		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.medOxygenTankFull, 1), new Object[] {
 			"ZZ",
 			"XX",
 			"YY",
@@ -137,7 +140,7 @@ public class GCCoreUtil
 			'Y', GCCoreItems.ingotAluminum,
 			'Z', new ItemStack(Block.cloth, 1, 1)
 		});
-		GameRegistry.addRecipe(new ItemStack(GCCoreItems.heavyOxygenTankFull, 1), new Object[] {
+		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.heavyOxygenTankFull, 1), new Object[] {
 			"ZZZ",
 			"XXX",
 			"YYY",
@@ -146,14 +149,14 @@ public class GCCoreUtil
 			'Z', new ItemStack(Block.cloth, 1, 14)
 		});
 		// TODO sensor lens...
-		GameRegistry.addRecipe(new ItemStack(GCCoreItems.sensorGlasses, 1), new Object[] {
+		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.sensorGlasses, 1), new Object[] {
 			"YYY",
 			"Y Y",
 			"XYX",
 			'X', GCCoreItems.sensorLens,
 			'Y', GCMoonItems.meteoricIronIngot
 		});
-		GameRegistry.addRecipe(new ItemStack(GCCoreItems.sensorLens, 1), new Object[] {
+		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.sensorLens, 1), new Object[] {
 			"ZYZ",
 			"YXY",
 			"ZYZ",
@@ -161,18 +164,18 @@ public class GCCoreUtil
 			'Y', GCMoonItems.meteoricIronIngot,
 			'Z', Item.redstone
 		});
-		GameRegistry.addRecipe(new ItemStack(GCCoreItems.aluminumCanister, 1), new Object[] {
+		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.aluminumCanister, 1), new Object[] {
 			"X X",
 			"X X",
 			"XXX",
 			'X', GCCoreItems.ingotAluminum
 		});
-		GameRegistry.addRecipe(new ItemStack(GCCoreItems.airVent, 1), new Object[] {
+		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.airVent, 1), new Object[] {
 			"XX",
 			"XX",
 			'X', GCCoreItems.ingotAluminum
 		});
-		GameRegistry.addRecipe(new ItemStack(GCCoreItems.airFan, 1), new Object[] {
+		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.airFan, 1), new Object[] {
 			"Z Z",
 			" Y ",
 			"ZXZ",
@@ -180,14 +183,14 @@ public class GCCoreUtil
 			'Y', GCCoreItems.ingotTitanium,
 			'Z', GCCoreItems.ingotAluminum
 		});
-		GameRegistry.addRecipe(new ItemStack(GCCoreItems.oxygenMask, 1), new Object[] {
+		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.oxygenMask, 1), new Object[] {
 			"XXX",
 			"XYX",
 			"XXX",
 			'X', Block.thinGlass,
 			'Y', Item.helmetSteel
 		});
-		GameRegistry.addRecipe(new ItemStack(GCCoreItems.oxygenConcentrator, 1), new Object[] {
+		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.oxygenConcentrator, 1), new Object[] {
 			"ZWZ",
 			"WYW",
 			"ZXZ",
@@ -196,73 +199,73 @@ public class GCCoreUtil
 			'Y', GCCoreItems.aluminumCanister,
 			'Z', GCCoreItems.ingotTitanium
 		});
-		GameRegistry.addRecipe(new ItemStack(GCCoreItems.titaniumPickaxe, 1), new Object[] {
+		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.titaniumPickaxe, 1), new Object[] {
 			"YYY",
 			" X ",
 			" X ",
 			'Y', GCCoreItems.ingotTitanium,
 			'X', Item.stick
 		});
-		GameRegistry.addRecipe(new ItemStack(GCCoreItems.titaniumAxe, 1), new Object[] {
+		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.titaniumAxe, 1), new Object[] {
 			"YY ",
 			"YX ",
 			" X ",
 			'Y', GCCoreItems.ingotTitanium,
 			'X', Item.stick
 		});
-		GameRegistry.addRecipe(new ItemStack(GCCoreItems.titaniumAxe, 1), new Object[] {
+		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.titaniumAxe, 1), new Object[] {
 			" YY",
 			" XY",
 			" X ",
 			'Y', GCCoreItems.ingotTitanium,
 			'X', Item.stick
 		});
-		GameRegistry.addRecipe(new ItemStack(GCCoreItems.titaniumHoe, 1), new Object[] {
+		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.titaniumHoe, 1), new Object[] {
 			" YY",
 			" X ",
 			" X ",
 			'Y', GCCoreItems.ingotTitanium,
 			'X', Item.stick
 		});
-		GameRegistry.addRecipe(new ItemStack(GCCoreItems.titaniumHoe, 1), new Object[] {
+		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.titaniumHoe, 1), new Object[] {
 			"YY ",
 			" X ",
 			" X ",
 			'Y', GCCoreItems.ingotTitanium,
 			'X', Item.stick
 		});
-		GameRegistry.addRecipe(new ItemStack(GCCoreItems.titaniumSpade, 1), new Object[] {
+		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.titaniumSpade, 1), new Object[] {
 			" Y ",
 			" X ",
 			" X ",
 			'Y', GCCoreItems.ingotTitanium,
 			'X', Item.stick
 		});
-		GameRegistry.addRecipe(new ItemStack(GCCoreItems.titaniumSword, 1), new Object[] {
+		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.titaniumSword, 1), new Object[] {
 			" Y ",
 			" Y ",
 			" X ",
 			'Y', GCCoreItems.ingotTitanium,
 			'X', Item.stick
 		});
-		GameRegistry.addRecipe(new ItemStack(GCCoreItems.titaniumBoots, 1), new Object[] {
+		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.titaniumBoots, 1), new Object[] {
 			"X X",
 			"X X",
 			'X', GCCoreItems.ingotTitanium
 		});
-		GameRegistry.addRecipe(new ItemStack(GCCoreItems.titaniumChestplate, 1), new Object[] {
+		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.titaniumChestplate, 1), new Object[] {
 			"X X",
 			"XXX",
 			"XXX",
 			'X', GCCoreItems.ingotTitanium
 		});
-		GameRegistry.addRecipe(new ItemStack(GCCoreItems.titaniumLeggings, 1), new Object[] {
+		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.titaniumLeggings, 1), new Object[] {
 			"XXX",
 			"X X",
 			"X X",
 			'X', GCCoreItems.ingotTitanium
 		});
-		GameRegistry.addRecipe(new ItemStack(GCCoreItems.titaniumHelmet, 1), new Object[] {
+		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.titaniumHelmet, 1), new Object[] {
 			"XXX",
 			"X X",
 			'X', GCCoreItems.ingotTitanium
@@ -812,6 +815,11 @@ public class GCCoreUtil
 	
 	public static boolean shouldDisplayTankGui(GuiScreen gui)
 	{
+		if (FMLClientHandler.instance().getClient().gameSettings.hideGUI)
+		{
+			return false;
+		}
+		
 		if (gui == null)
 		{
 			return true;
@@ -823,6 +831,11 @@ public class GCCoreUtil
 		}
 		
 		if (gui instanceof GuiInventory)
+		{
+			return true;
+		}
+		
+		if (gui instanceof GuiChat)
 		{
 			return true;
 		}

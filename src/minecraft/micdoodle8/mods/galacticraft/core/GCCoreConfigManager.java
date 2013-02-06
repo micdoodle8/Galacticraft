@@ -112,6 +112,7 @@ public class GCCoreConfigManager
 	// GENERAL
 	public static boolean transparentBreathableAir;
 	public static boolean moreStars;
+	public static boolean wasdMapMovement;
 	
 	private void setDefaultValues()
     {
@@ -197,6 +198,7 @@ public class GCCoreConfigManager
 	        
 	        transparentBreathableAir = 				configuration.get(Configuration.CATEGORY_GENERAL, "transparentBreathableAir", 			true)		.getBoolean(true);
 	        moreStars = 							configuration.get(Configuration.CATEGORY_GENERAL, "moreStars", 							true)		.getBoolean(true);
+	        wasdMapMovement = 						configuration.get(Configuration.CATEGORY_GENERAL, "WASD Map Movement", 					true)		.getBoolean(true);
 		}
 		catch (final Exception e)
 		{

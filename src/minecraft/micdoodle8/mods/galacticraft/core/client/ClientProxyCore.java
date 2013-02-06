@@ -12,6 +12,7 @@ import java.util.Random;
 import micdoodle8.mods.galacticraft.API.AdvancedAchievement;
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
 import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.API.IMapPlanet;
 import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
 import micdoodle8.mods.galacticraft.core.CommonProxyCore;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
@@ -63,6 +64,7 @@ import micdoodle8.mods.galacticraft.core.items.GCCoreItemSensorGlasses;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.moon.client.ClientProxyMoon;
+import micdoodle8.mods.galacticraft.moon.client.GCMoonMapPlanet;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
@@ -160,7 +162,10 @@ public class ClientProxyCore extends CommonProxyCore
         RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererOxygenPipe(ClientProxyCore.oxygenPipeRenderID));
         ClientProxyCore.meteorRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererMeteor(ClientProxyCore.meteorRenderID));
-		GalacticraftCore.addAdditionalMapPlanet(new GCCoreMapPlanetOverworld());
+        IMapPlanet earth = new GCCoreMapPlanetOverworld();
+        IMapPlanet moon = new GCMoonMapPlanet();
+		GalacticraftCore.addAdditionalMapPlanet(earth);
+		GalacticraftCore.addAdditionalMapMoon(String.valueOf(earth) + "0", moon);
 		GalacticraftCore.addAdditionalMapPlanet(new GCCoreMapSun());
 	}
 
@@ -178,6 +183,16 @@ public class ClientProxyCore extends CommonProxyCore
 			else
 			{
 				FMLLog.severe("Galacticraft " + client.getDimensionName() + " failed to load: No Planet Map provided");
+			}
+			
+			if (client.getChildMapPlanets() != null && client.getPlanetForMap() != null)
+			{
+				for (int i = 0; i < client.getChildMapPlanets().length; i++)
+				{
+					IMapPlanet planet = client.getChildMapPlanets()[i];
+
+					GalacticraftCore.mapMoons.put(String.valueOf(client.getPlanetForMap()) + GalacticraftCore.mapMoons.size(), planet);
+				}
 			}
 		}
 	}
@@ -366,7 +381,6 @@ public class ClientProxyCore extends CommonProxyCore
             		if (FMLClientHandler.instance().getClient().theWorld != null && !(FMLClientHandler.instance().getClient().currentScreen instanceof GCCoreGuiChoosePlanet))
             		{
             			FMLClientHandler.instance().getClient().displayGuiScreen(new GCCoreGuiChoosePlanet(FMLClientHandler.instance().getClient().thePlayer, destinations));
-            			FMLClientHandler.instance().getClient().setIngameNotInFocus();
             		}
                 }
             }
@@ -472,17 +486,24 @@ public class ClientProxyCore extends CommonProxyCore
     				
     				if (player.username.equals(playerBase.getPlayer().username))
     				{
-    					if (playerBase != null && playerBase.getPlayer() != null && playerBase.getPlayer().getDataWatcher() != null && playerBase.getPlayer().getDataWatcher().getWatchableObjectInt(23) == 1)
+    					try
     					{
-    	    				player.motionY = -0.3;
-    	    				player.motionX *= 0.1;
-    	    				player.motionZ *= 0.1;
-    	    				
-    	    				if (player.onGround)
-    	    				{
-    	    					playerBase.getPlayer().getDataWatcher().updateObject(23, Integer.valueOf(0));
-    	    					minecraft.gameSettings.thirdPersonView = 0;
-    	    				}
+        					if (playerBase != null && playerBase.getPlayer() != null && playerBase.getPlayer().getDataWatcher() != null && playerBase.getPlayer().getDataWatcher().getWatchableObjectInt(23) == 1)
+        					{
+        	    				player.motionY = -0.3;
+        	    				player.motionX *= 0.1;
+        	    				player.motionZ *= 0.1;
+        	    				
+        	    				if (player.onGround)
+        	    				{
+        	    					playerBase.getPlayer().getDataWatcher().updateObject(23, Integer.valueOf(0));
+        	    					minecraft.gameSettings.thirdPersonView = 0;
+        	    				}
+        					}
+    					}
+    					catch (NullPointerException npe)
+    					{
+    						;
     					}
     				}
     	        }

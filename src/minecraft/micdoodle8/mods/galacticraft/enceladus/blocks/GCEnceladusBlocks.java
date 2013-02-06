@@ -1,7 +1,12 @@
 package micdoodle8.mods.galacticraft.enceladus.blocks;
 
+import micdoodle8.mods.galacticraft.callisto.client.ClientProxyCallisto;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.enceladus.GCEnceladusConfigManager;
 import micdoodle8.mods.galacticraft.enceladus.client.ClientProxyEnceladus;
+import micdoodle8.mods.galacticraft.enceladus.items.GCEnceladusItemBlock;
 import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 /**
@@ -12,8 +17,12 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
  */
 public class GCEnceladusBlocks 
 {
+	public static Block block;
+	
 	public static void initBlocks() 
 	{	
+		block = 										new GCEnceladusBlock			(GCEnceladusConfigManager.idBlock, 					0)						.setHardness(1.7F)																				.setCreativeTab(GalacticraftCore.galacticraftTab)																.setBlockName("BlockEnceladus");
+		Item.itemsList[block.blockID] = 				new GCEnceladusItemBlock		(block.blockID - 256)																																																																		.setItemName("BlockEnceladus");	
 	}
 
 	public static void setHarvestLevels() 
@@ -26,11 +35,14 @@ public class GCEnceladusBlocks
 
 	public static void addNames() 
 	{
+		addNameWithMetadata("tile.BlockEnceladus.grass.name");
+		addNameWithMetadata("tile.BlockEnceladus.dirt.name");
+		addNameWithMetadata("tile.BlockEnceladus.stone.name");
 	}
 	
 	private static void addName(Block block)
 	{
-		LanguageRegistry.instance().addStringLocalization(block.getBlockName() + ".name", ClientProxyEnceladus.lang.get(block.getBlockName() + ".name"));
+		LanguageRegistry.instance().addStringLocalization(block.getBlockName() + ".name", ClientProxyCallisto.lang.get(block.getBlockName() + ".name"));
 	}
 	
 	private static void addNameWithMetadata(String string)

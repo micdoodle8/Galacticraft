@@ -13,4 +13,6 @@ public interface IGalacticraftSubModClient
 	public IPlanetSlotRenderer getSlotRenderer();
 	
 	public IMapPlanet getPlanetForMap();
+	
+	public IMapPlanet[] getChildMapPlanets();
 }

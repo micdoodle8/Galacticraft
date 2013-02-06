@@ -9,8 +9,8 @@ import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySkeleton;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpider;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityZombie;
 import micdoodle8.mods.galacticraft.core.wgen.GCCoreChunk;
+import micdoodle8.mods.galacticraft.enceladus.blocks.GCEnceladusBlocks;
 import micdoodle8.mods.galacticraft.io.blocks.GCIoBlocks;
-import micdoodle8.mods.galacticraft.mars.GCMarsConfigManager;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSand;
 import net.minecraft.entity.EnumCreatureType;
@@ -136,6 +136,7 @@ public class GCIoChunkProvider extends ChunkProviderGenerate
 								if ((var47 += var49) > 0.0D) 
 								{
 									idArray[var43 += var44] = GCIoBlocks.block.blockID;
+                                	metaArray[var43] = 2;
 								}
 								else if (var12 * 8 + var31 < var6) 
 								{
@@ -163,10 +164,12 @@ public class GCIoChunkProvider extends ChunkProviderGenerate
 
 	public void replaceBlocksForBiome(int par1, int par2, int[] arrayOfIDs, int[] arrayOfMeta, BiomeGenBase[] par4ArrayOfBiomeGenBase)
 	{
-		final int topBlockID = GCIoBlocks.block.blockID;
+		final int topBlockID = GCIoBlocks.blockPyroxene.blockID;
 		final int topBlockMeta = 0;
 		final int fillBlockID = GCIoBlocks.block.blockID;
-		final int fillBlockMeta = 1;
+		final int fillBlockMeta = 0;
+		final int lowerBlockID = GCIoBlocks.block.blockID;
+		final int lowerBlockMeta = 1;
 		
 		final int var5 = 20;
 		final double var6 = 0.03125D;
@@ -192,7 +195,7 @@ public class GCIoChunkProvider extends ChunkProviderGenerate
 
 					if (var16 <= 0 + this.rand.nextInt(5)) 
 					{
-						arrayOfIDs[index] = Block.bedrock.blockID;
+						arrayOfIDs[index] = (short) Block.bedrock.blockID;
 						arrayOfMeta[index] = 0;
 					} 
 					else 
@@ -203,23 +206,12 @@ public class GCIoChunkProvider extends ChunkProviderGenerate
 						{
 							var13 = -1;
 						} 
-						else if (var18 == GCIoBlocks.block.blockID)
+						else if (var18 == lowerBlockID)
 						{
-							arrayOfMeta[index] = 2;
+							arrayOfMeta[index] = lowerBlockMeta;
 							
 							if (var13 == -1)
 							{
-								if (var12 <= 0)
-								{
-									var14 = 0;
-									var15 = GCMarsConfigManager.idBlockMarsStone;
-								} 
-								else if (var16 >= var5 - -16 && var16 <= var5 + 1)
-								{
-									var14 = topBlockID;
-									var15 = GCMarsConfigManager.idBlockMarsDirt;
-								}
-
 								var13 = var12;
 
 								if (var16 >= var5 - 1) 

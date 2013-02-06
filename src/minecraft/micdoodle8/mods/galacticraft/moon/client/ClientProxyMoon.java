@@ -5,8 +5,11 @@ import java.util.EnumSet;
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
 import micdoodle8.mods.galacticraft.API.IMapPlanet;
 import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
+import micdoodle8.mods.galacticraft.callisto.client.GCCallistoMapPlanet;
 import micdoodle8.mods.galacticraft.core.GCCoreLocalization;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.europa.client.GCEuropaMapPlanet;
+import micdoodle8.mods.galacticraft.io.client.GCIoMapPlanet;
 import micdoodle8.mods.galacticraft.moon.CommonProxyMoon;
 import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
 import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;
@@ -133,6 +136,12 @@ public class ClientProxyMoon extends CommonProxyMoon implements IGalacticraftSub
 
 	@Override
 	public IMapPlanet getPlanetForMap() 
+	{
+		return null;
+	}
+
+	@Override
+	public IMapPlanet[] getChildMapPlanets() 
 	{
 		return null;
 	}

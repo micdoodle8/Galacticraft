@@ -6,15 +6,9 @@ import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
 public class GCMoonMapPlanet implements IMapPlanet
 {
 	@Override
-	public boolean isMoon()
-	{
-		return true;
-	}
-
-	@Override
 	public float getPlanetSize() 
 	{
-		return 15;
+		return 4;
 	}
 
 	@Override
@@ -32,7 +26,7 @@ public class GCMoonMapPlanet implements IMapPlanet
 	@Override
 	public float getStretchValue() 
 	{
-		return 0;
+		return 0.01F;
 	}
 
 	@Override

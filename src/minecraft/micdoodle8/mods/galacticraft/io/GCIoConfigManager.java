@@ -23,6 +23,7 @@ public class GCIoConfigManager
 	
 	// BLOCKS
 	public static int idBlock;
+	public static int idBlockPyroxene;
 	
 	public GCIoConfigManager(File file)
 	{
@@ -42,6 +43,7 @@ public class GCIoConfigManager
 	        dimensionIDIo = 				configuration.get("Dimensions", 										"Io Dimension ID",				-26)		.getInt(-26);
 	    
 	        idBlock = 						configuration.get(Configuration.CATEGORY_BLOCK, 						"idBlockIo", 					199)	.getInt(199);
+	        idBlockPyroxene =  				configuration.get(Configuration.CATEGORY_BLOCK, 						"idBlockPyroxene", 				195)	.getInt(195);
 		}
 		catch (final Exception e)
 		{

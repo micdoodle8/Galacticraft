@@ -5,7 +5,9 @@ import micdoodle8.mods.galacticraft.io.GCIoConfigManager;
 import micdoodle8.mods.galacticraft.io.client.ClientProxyIo;
 import micdoodle8.mods.galacticraft.io.items.GCIoItemBlock;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 /**
@@ -17,10 +19,12 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 public class GCIoBlocks 
 {
 	public static Block block;
+	public static Block blockPyroxene;
 	
 	public static void initBlocks() 
 	{	
 		block = 										new GCIoBlock				(GCIoConfigManager.idBlock, 					0)						.setHardness(1.7F)																				.setCreativeTab(GalacticraftCore.galacticraftTab)																.setBlockName("BlockIo");
+		blockPyroxene = 								new GCIoBlockPyroxene		(GCIoConfigManager.idBlockPyroxene,				Material.rock)			.setHardness(1.7F)																				.setCreativeTab(GalacticraftCore.galacticraftTab)																.setBlockName("BlockPyroxene");
 		Item.itemsList[block.blockID] = 				new GCIoItemBlock			(block.blockID - 256)																																																																	.setItemName("BlockIo");	
 	}
 
@@ -30,13 +34,16 @@ public class GCIoBlocks
 	
 	public static void registerBlocks() 
 	{
+		GameRegistry.registerBlock(blockPyroxene);
 	}
 
 	public static void addNames() 
 	{
-		addNameWithMetadata("tile.BlockIo.pyroxene.name");
-		addNameWithMetadata("tile.BlockIo.iostone.name");
+		addName(blockPyroxene);
+		addNameWithMetadata("tile.BlockIo.basalt.name");
+		addNameWithMetadata("tile.BlockIo.stone.name");
 		addNameWithMetadata("tile.BlockIo.sulfur.name");
+		addNameWithMetadata("tile.BlockIo.other.name");
 	}
 	
 	private static void addName(Block block)

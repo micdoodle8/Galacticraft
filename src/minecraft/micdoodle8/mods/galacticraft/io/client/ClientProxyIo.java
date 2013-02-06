@@ -142,4 +142,10 @@ public class ClientProxyIo implements IGalacticraftSubModClient
 	{
 		return null;
 	}
+
+	@Override
+	public IMapPlanet[] getChildMapPlanets() 
+	{
+		return null;
+	}
 }
