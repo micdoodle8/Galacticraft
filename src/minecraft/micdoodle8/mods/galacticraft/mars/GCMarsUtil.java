@@ -19,7 +19,7 @@ public class GCMarsUtil
 {
 	public static void addCraftingRecipes()
 	{
-		CraftingManager.getInstance().addRecipe(new ItemStack(GCMarsItems.reinforcedBucketEmpty, 1), new Object[] {
+		CraftingManager.getInstance().func_92051_a(new ItemStack(GCMarsItems.reinforcedBucketEmpty, 1), new Object[] {
 			" Y ",
 			"ZXZ",
 			" Z ",
@@ -27,7 +27,7 @@ public class GCMarsUtil
 			'X', Item.bucketEmpty,
 			'Z', GCMarsItems.ingotQuandrium
 		});
-		CraftingManager.getInstance().addRecipe(new ItemStack(GCMarsItems.heavyBoots, 1), new Object[] {
+		CraftingManager.getInstance().func_92051_a(new ItemStack(GCMarsItems.heavyBoots, 1), new Object[] {
 			" Z ",
 			"ZXZ",
 			" Y ",
@@ -35,7 +35,7 @@ public class GCMarsUtil
 			'X', GCMarsItems.deshBoots,
 			'Y', Block.blockSteel // TODO : Desh block
 		});
-		CraftingManager.getInstance().addRecipe(new ItemStack(GCMarsItems.jetpack, 1), new Object[] {
+		CraftingManager.getInstance().func_92051_a(new ItemStack(GCMarsItems.jetpack, 1), new Object[] {
 			"WYW",
 			"YXY",
 			"ZVZ",

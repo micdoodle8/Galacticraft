@@ -15,7 +15,7 @@ public class GCMoonUtil
 {
 	public static void addCraftingRecipes()
 	{
-		CraftingManager.getInstance().addRecipe(new ItemStack(GCMoonItems.cheeseBlock, 1), new Object[] {
+		CraftingManager.getInstance().func_92051_a(new ItemStack(GCMoonItems.cheeseBlock, 1), new Object[] {
 			"YYY",
 			"YXY",
 			"YYY",

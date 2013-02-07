@@ -471,7 +471,7 @@ public class GCCoreEntityPlayer
         WorldServer var5 = player.mcServer.getConfigurationManager().getServerInstance().worldServerForDimension(player.dimension);
 
         player.playerNetServerHandler.sendPacketToPlayer(new Packet9Respawn(player.dimension, (byte)player.worldObj.difficultySetting, var5.getWorldInfo().getTerrainType(), var5.getHeight(), player.theItemInWorldManager.getGameType()));
-        var4.removePlayerEntityDangerously(player);
+        var4.removeEntity(player);
         player.isDead = false;
         this.transferEntityToWorld(player, var3, var4, var5, teleporter);
         player.mcServer.getConfigurationManager().func_72375_a(player, var4);
