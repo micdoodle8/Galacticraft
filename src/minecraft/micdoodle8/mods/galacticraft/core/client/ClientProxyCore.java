@@ -180,17 +180,12 @@ public class ClientProxyCore extends CommonProxyCore
 			{
 				GalacticraftCore.mapPlanets.add(client.getPlanetForMap());
 			}
-			else
-			{
-				FMLLog.severe("Galacticraft " + client.getDimensionName() + " failed to load: No Planet Map provided");
-			}
 			
 			if (client.getChildMapPlanets() != null && client.getPlanetForMap() != null)
 			{
 				for (int i = 0; i < client.getChildMapPlanets().length; i++)
 				{
 					IMapPlanet planet = client.getChildMapPlanets()[i];
-
 					GalacticraftCore.mapMoons.put(String.valueOf(client.getPlanetForMap()) + GalacticraftCore.mapMoons.size(), planet);
 				}
 			}
@@ -484,26 +479,19 @@ public class ClientProxyCore extends CommonProxyCore
     	        {
     				final GCCoreEntityPlayer playerBase = (GCCoreEntityPlayer) GalacticraftCore.gcPlayers.get(j);
     				
-    				if (player.username.equals(playerBase.getPlayer().username))
+    				if (playerBase != null && player != null && player.username.equals(playerBase.getPlayer().username))
     				{
-    					try
+    					if (playerBase.getPlayer() != null && playerBase.getPlayer().getDataWatcher() != null && playerBase.getPlayer().getDataWatcher().getWatchableObjectInt(23) == 1)
     					{
-        					if (playerBase != null && playerBase.getPlayer() != null && playerBase.getPlayer().getDataWatcher() != null && playerBase.getPlayer().getDataWatcher().getWatchableObjectInt(23) == 1)
-        					{
-        	    				player.motionY = -0.3;
-        	    				player.motionX *= 0.1;
-        	    				player.motionZ *= 0.1;
-        	    				
-        	    				if (player.onGround)
-        	    				{
-        	    					playerBase.getPlayer().getDataWatcher().updateObject(23, Integer.valueOf(0));
-        	    					minecraft.gameSettings.thirdPersonView = 0;
-        	    				}
-        					}
-    					}
-    					catch (NullPointerException npe)
-    					{
-    						;
+    	    				player.motionY = -0.3;
+    	    				player.motionX *= 0.1;
+    	    				player.motionZ *= 0.1;
+    	    				
+    	    				if (player.onGround)
+    	    				{
+    	    					playerBase.getPlayer().getDataWatcher().updateObject(23, Integer.valueOf(0));
+    	    					minecraft.gameSettings.thirdPersonView = 0;
+    	    				}
     					}
     				}
     	        }
