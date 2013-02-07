@@ -1,7 +1,9 @@
 package micdoodle8.mods.galacticraft.core.client;
 
+import micdoodle8.mods.galacticraft.API.IGalaxy;
 import micdoodle8.mods.galacticraft.API.IMapPlanet;
 import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 
 public class GCCoreMapPlanetOverworld implements IMapPlanet
 {
@@ -33,5 +35,11 @@ public class GCCoreMapPlanetOverworld implements IMapPlanet
 	public IPlanetSlotRenderer getSlotRenderer() 
 	{
 		return new GCCoreSlotRendererOverworld();
+	}
+
+	@Override
+	public IGalaxy getParentGalaxy() 
+	{
+		return GalacticraftCore.galaxyMilkyWay;
 	}
 }

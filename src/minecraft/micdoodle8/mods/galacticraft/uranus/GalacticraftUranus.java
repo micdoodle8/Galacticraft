@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubMod;
+import micdoodle8.mods.galacticraft.API.IGalaxy;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.europa.GCEuropaConfigManager;
 import cpw.mods.fml.common.Mod;
@@ -77,5 +78,11 @@ public class GalacticraftUranus implements IGalacticraftSubMod
 	public boolean reachableDestination() 
 	{
 		return false;
+	}
+
+	@Override
+	public IGalaxy getParentGalaxy() 
+	{
+		return GalacticraftCore.galaxyMilkyWay;
 	}
 }

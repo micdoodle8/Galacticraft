@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubMod;
+import micdoodle8.mods.galacticraft.API.IGalaxy;
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.enceladus.blocks.GCEnceladusBlocks;
@@ -124,5 +125,11 @@ public class GalacticraftEnceladus implements IGalacticraftSubMod
 	public boolean reachableDestination() 
 	{
 		return true;
+	}
+
+	@Override
+	public IGalaxy getParentGalaxy() 
+	{
+		return GalacticraftCore.galaxyMilkyWay;
 	}
 }
