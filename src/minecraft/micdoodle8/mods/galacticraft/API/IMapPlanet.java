@@ -33,4 +33,11 @@ public interface IMapPlanet
 	public float getStretchValue();
 	
 	public IPlanetSlotRenderer getSlotRenderer();
+	
+	/**
+	 * @return IGalaxy object for the parent Galaxy
+	 * 
+	 * @see IGalaxy
+	 */
+	public IGalaxy getParentGalaxy();
 }
