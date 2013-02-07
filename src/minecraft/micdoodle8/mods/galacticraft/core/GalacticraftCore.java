@@ -10,6 +10,7 @@ import java.util.List;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubMod;
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
+import micdoodle8.mods.galacticraft.API.IGalaxy;
 import micdoodle8.mods.galacticraft.API.IMapPlanet;
 import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
@@ -44,6 +45,7 @@ import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.network.packet.Packet9Respawn;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
@@ -96,11 +98,15 @@ public class GalacticraftCore
 	public static List<IGalacticraftSubMod> subMods = new ArrayList<IGalacticraftSubMod>();
 	@SideOnly(Side.CLIENT)
 	public static List<IGalacticraftSubModClient> clientSubMods = new ArrayList<IGalacticraftSubModClient>();
+
+	public static List<IGalaxy> galaxies = new ArrayList<IGalaxy>();
 	
 	public static List<IMapPlanet> mapPlanets = new ArrayList<IMapPlanet>();
 	public static HashMap<String, IMapPlanet> mapMoons = new HashMap<String, IMapPlanet>();
 	
 	public static final CreativeTabs galacticraftTab = new GCCoreCreativeTab(12, "galacticraft");
+	
+	public static final IGalaxy galaxyMilkyWay = new GCCoreGalaxyBlockyWay();
 	
 	@PreInit
 	public void preInit(FMLPreInitializationEvent event)
@@ -128,6 +134,18 @@ public class GalacticraftCore
 	@Init
 	public void init(FMLInitializationEvent event)
 	{
+		for (final IGalacticraftSubMod mod : GalacticraftCore.subMods)
+		{
+			if (mod.getParentGalaxy() != null && !galaxies.contains(mod.getParentGalaxy()))
+			{
+				this.galaxies.add(mod.getParentGalaxy());
+			}
+			else
+			{
+				FMLLog.severe("Galacticraft " + mod.getDimensionName() + " error! NO GALAXY OBJECT PROVIDED");
+			}
+		}
+		
 		moon.load(event);
 		
         LanguageRegistry.instance().addStringLocalization("itemGroup.galacticraft", lang.get("itemGroup.galacticraft"));
