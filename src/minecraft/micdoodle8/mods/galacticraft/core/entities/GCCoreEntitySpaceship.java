@@ -626,6 +626,7 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
             	((EntityPlayer)this.riddenByEntity).sendChatToPlayer("SPACE - Launch");
             	((EntityPlayer)this.riddenByEntity).sendChatToPlayer("A / D  - Turn left-right");
             	((EntityPlayer)this.riddenByEntity).sendChatToPlayer("W / S  - Turn up-down");
+            	((EntityPlayer)this.riddenByEntity).sendChatToPlayer("T       - Inventory / Fuel");
             }
             
         	return true;
