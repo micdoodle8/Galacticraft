@@ -18,6 +18,8 @@ public class GCCoreModelFlag extends ModelBase
 	ModelRenderer flag;
 	ModelRenderer picSide1;
 	ModelRenderer picSide2;
+	ModelRenderer picSide3;
+	ModelRenderer picSide4;
 
 	public GCCoreModelFlag()
 	{
@@ -53,6 +55,18 @@ public class GCCoreModelFlag extends ModelBase
 	    this.picSide2.setTextureSize(128, 64);
 	    this.picSide2.mirror = false;
 	    this.setRotation(this.picSide2, 0F, 0F, 0F);
+		this.picSide3 = new ModelRenderer(this, 80, 16);
+		this.picSide3.addBox(0F, 0F, 0F, 16, 16, 0);
+		this.picSide3.setRotationPoint(29F, -28F, 1.11F);
+		this.picSide3.setTextureSize(128, 64);
+		this.picSide3.mirror = true;
+	    this.setRotation(this.picSide3, 0F, 0F, 0F);
+	    this.picSide4 = new ModelRenderer(this, 80, 16);
+	    this.picSide4.addBox(0F, 0F, 0F, 16, 16, 0);
+	    this.picSide4.setRotationPoint(13F, -28F, -1.11F);
+	    this.picSide4.setTextureSize(128, 64);
+	    this.picSide4.mirror = false;
+	    this.setRotation(this.picSide4, 0F, 0F, 0F);
 	}
 
 	@Override
@@ -70,6 +84,9 @@ public class GCCoreModelFlag extends ModelBase
 			this.loadDownloadableImageTexture("http://skins.minecraft.net/MinecraftSkins/" + StringUtils.stripControlCodes(((GCCoreEntityFlag)entity).getOwner()) + ".png", FMLClientHandler.instance().getClient().thePlayer.getTexture());
 			this.picSide1.render(f5);
 			this.picSide2.render(f5);
+			this.loadDownloadableImageTexture("http://skins.minecraft.net/MinecraftSkins/" + StringUtils.stripControlCodes(((GCCoreEntityFlag)entity).getOwner()) + ".png", FMLClientHandler.instance().getClient().thePlayer.getTexture());
+			this.picSide3.render(f5);
+			this.picSide4.render(f5);
 		}
 	}
 
@@ -114,5 +131,6 @@ public class GCCoreModelFlag extends ModelBase
 	{
 		super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
 		this.picSide1.rotateAngleY = (float) Math.PI;
+		this.picSide3.rotateAngleY = (float) Math.PI;
 	}
 }
