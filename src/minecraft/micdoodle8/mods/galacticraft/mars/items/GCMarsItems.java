@@ -30,7 +30,7 @@ public class GCMarsItems
 	public static Item quandriumChestplate;
 	public static Item quandriumLeggings;
 	public static Item quandriumBoots;
-	public static Item quandriumHelmetBreathable;
+//	public static Item quandriumHelmetBreathable;
 	
 	public static Item rawDesh;
 	public static Item deshPickaxe;
@@ -52,7 +52,7 @@ public class GCMarsItems
 	public static Item deshChestplate;
 	public static Item deshLeggings;
 	public static Item deshBoots;
-	public static Item deshHelmetBreathable;
+//	public static Item deshHelmetBreathable;
 	public static Item deshStick;
 	public static Item heavyBoots;
 	public static Item ingotQuandrium;
@@ -98,12 +98,12 @@ public class GCMarsItems
 		deshChestplate = new GCMarsItemArmor(GCMarsConfigManager.idArmorDeshChestplate, ARMORDESH, 7, 1, false).setIconIndex(22).setItemName("deshChestplate");
 		deshLeggings = new GCMarsItemArmor(GCMarsConfigManager.idArmorDeshLeggings, ARMORDESH, 7, 2, false).setIconIndex(23).setItemName("deshLeggings");
 		deshBoots = new GCMarsItemArmor(GCMarsConfigManager.idArmorDeshBoots, ARMORDESH, 7, 3, false).setIconIndex(24).setItemName("deshBoots");
-		deshHelmetBreathable = new GCMarsItemArmor(GCMarsConfigManager.idArmorDeshHelmetBreathable, ARMORDESH, 7, 0, true).setIconIndex(25).setItemName("deshHelmetBreathable");
+//		deshHelmetBreathable = new GCMarsItemArmor(GCMarsConfigManager.idArmorDeshHelmetBreathable, ARMORDESH, 7, 0, true).setIconIndex(25).setItemName("deshHelmetBreathable");
 		quandriumHelmet = new GCMarsItemArmor(GCMarsConfigManager.idArmorQuandriumHelmet, QUANDRIUMARMOR, 8, 0, false).setIconIndex(26).setItemName("quandriumHelmet");
 		quandriumChestplate = new GCMarsItemArmor(GCMarsConfigManager.idArmorQuandriumChestplate, QUANDRIUMARMOR, 8, 1, false).setIconIndex(27).setItemName("quandriumChestplate");
 		quandriumLeggings = new GCMarsItemArmor(GCMarsConfigManager.idArmorQuandriumLeggings, QUANDRIUMARMOR, 8, 2, false).setIconIndex(28).setItemName("quandriumLeggings");
 		quandriumBoots = new GCMarsItemArmor(GCMarsConfigManager.idArmorQuandriumBoots, QUANDRIUMARMOR, 8, 3, false).setIconIndex(29).setItemName("quandriumBoots");
-		quandriumHelmetBreathable = new GCMarsItemArmor(GCMarsConfigManager.idArmorQuandriumHelmetBreathable, QUANDRIUMARMOR, 8, 0, true).setIconIndex(30).setItemName("quandriumHelmetBreathable");
+//		quandriumHelmetBreathable = new GCMarsItemArmor(GCMarsConfigManager.idArmorQuandriumHelmetBreathable, QUANDRIUMARMOR, 8, 0, true).setIconIndex(30).setItemName("quandriumHelmetBreathable");
 		deshStick = new GCMarsItem(GCMarsConfigManager.idItemDeshStick).setIconIndex(31).setItemName("deshStick");
 		heavyBoots = new GCMarsItemArmor(GCMarsConfigManager.idArmorHeavyBoots, ARMORHEAVY, 10, 3, false).setIconIndex(35).setItemName("heavyBoots");
 		ingotQuandrium = new GCMarsItem(GCMarsConfigManager.idItemIngotQuandrium).setIconIndex(32).setItemName("ingotQuandrium");
@@ -149,12 +149,12 @@ public class GCMarsItems
 		addName(deshChestplate);
 		addName(deshLeggings);
 		addName(deshBoots);
-		addName(deshHelmetBreathable);
+//		addName(deshHelmetBreathable);
 		addName(quandriumHelmet);
 		addName(quandriumChestplate);
 		addName(quandriumLeggings);
 		addName(quandriumBoots);
-		addName(quandriumHelmetBreathable);
+//		addName(quandriumHelmetBreathable);
 		addName(deshStick);
 		addName(heavyBoots);
 		addName(ingotQuandrium);

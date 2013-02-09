@@ -38,10 +38,10 @@ public class GCCoreItemArmor extends GCCoreItemBreathableHelmet implements IArmo
     		{
     			return "/micdoodle8/mods/galacticraft/core/client/armor/titanium_3.png";
     		}
-    		else if (itemstack.getItem().itemID == GCCoreItems.titaniumHelmetBreathable.itemID)
-    		{
-    			return "/micdoodle8/mods/galacticraft/core/client/armor/titaniumox_1.png";
-    		}
+//    		else if (itemstack.getItem().itemID == GCCoreItems.titaniumHelmetBreathable.itemID)
+//    		{
+//    			return "/micdoodle8/mods/galacticraft/core/client/armor/titaniumox_1.png";
+//    		}
     	}
 
     	return null;

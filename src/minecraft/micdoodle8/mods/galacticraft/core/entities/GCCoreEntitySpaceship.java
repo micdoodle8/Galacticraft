@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.core.GCCoreDamageSource;
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiRocketRefill;
 import micdoodle8.mods.galacticraft.core.client.sounds.GCCoreSoundUpdaterSpaceship;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import net.minecraft.block.material.Material;
@@ -40,7 +41,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GCCoreEntitySpaceship extends Entity implements IInventory
 {
-    protected ItemStack[] cargoItems;
+    protected ItemStack[] cargoItems = new ItemStack[36];
 	
     protected int fuel;
     
@@ -85,7 +86,6 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
     public GCCoreEntitySpaceship(World par1World)
     {
         super(par1World);
-        this.cargoItems = new ItemStack[36];
         this.fuel = 0;
         this.hasDroppedItem = false;
         this.preventEntitySpawning = true;
@@ -282,7 +282,7 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
     	        {
 	            	if (FMLClientHandler.instance().getClient().currentScreen == null)
 	            	{
-    	                ((EntityPlayer) this.riddenByEntity).displayGUIChest(this);
+	            		FMLClientHandler.instance().getClient().displayGuiScreen(new GCCoreGuiRocketRefill(((EntityPlayer) this.riddenByEntity).inventory, this, this.getSpaceshipType()));
                         final Object[] toSend = {0};
     	                PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 6, toSend));
 	            	}
@@ -814,7 +814,7 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
 	@Override
 	public int getSizeInventory() 
 	{
-		return this.getSpaceshipType() == 0 ? 0 : 27;
+		return this.getSpaceshipType() == 0 ? 1 : 28;
 	}
 
 	@Override

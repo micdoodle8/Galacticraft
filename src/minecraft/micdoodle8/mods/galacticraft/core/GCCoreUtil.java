@@ -270,12 +270,12 @@ public class GCCoreUtil
 			"X X",
 			'X', GCCoreItems.ingotTitanium
 		});
-		GameRegistry.addShapelessRecipe(new ItemStack(GCCoreItems.titaniumHelmetBreathable, 1), new Object[] {
-			GCCoreItems.titaniumHelmet, GCCoreItems.oxygenMask
-		});
-		GameRegistry.addShapelessRecipe(new ItemStack(GCCoreItems.sensorGlassesWithOxygenMask, 1), new Object[] {
-			GCCoreItems.sensorGlasses, GCCoreItems.oxygenMask
-		});
+//		GameRegistry.addShapelessRecipe(new ItemStack(GCCoreItems.titaniumHelmetBreathable, 1), new Object[] {
+//			GCCoreItems.titaniumHelmet, GCCoreItems.oxygenMask
+//		});
+//		GameRegistry.addShapelessRecipe(new ItemStack(GCCoreItems.sensorGlassesWithOxygenMask, 1), new Object[] {
+//			GCCoreItems.sensorGlasses, GCCoreItems.oxygenMask
+//		});
 	}
 	
 	public static void addSmeltingRecipes()

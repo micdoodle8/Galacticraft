@@ -39,10 +39,10 @@ public class GCMarsItemArmor extends GCCoreItemBreathableHelmet implements IArmo
     		{
     			return "/micdoodle8/mods/galacticraft/mars/client/armor/quandrium_3.png";
     		}
-    		else if (itemstack.getItem().itemID == GCMarsItems.quandriumHelmetBreathable.itemID)
-    		{
-    			return "/micdoodle8/mods/galacticraft/mars/client/armor/quandriumox_1.png";
-    		}
+//    		else if (itemstack.getItem().itemID == GCMarsItems.quandriumHelmetBreathable.itemID)
+//    		{
+//    			return "/micdoodle8/mods/galacticraft/mars/client/armor/quandriumox_1.png";
+//    		}
     	}
     	else if (this.material == GCMarsItems.ARMORDESH)
     	{
@@ -58,10 +58,10 @@ public class GCMarsItemArmor extends GCCoreItemBreathableHelmet implements IArmo
     		{
     			return "/micdoodle8/mods/galacticraft/mars/client/armor/desh_3.png";
     		}
-    		else if (itemstack.getItem().itemID == GCMarsItems.deshHelmetBreathable.itemID)
-    		{
-    			return "/micdoodle8/mods/galacticraft/mars/client/armor/deshox_1.png";
-    		}
+//    		else if (itemstack.getItem().itemID == GCMarsItems.deshHelmetBreathable.itemID)
+//    		{
+//    			return "/micdoodle8/mods/galacticraft/mars/client/armor/deshox_1.png";
+//    		}
     	}
     	else if (this.material == GCMarsItems.ARMORHEAVY)
     	{

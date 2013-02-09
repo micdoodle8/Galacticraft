@@ -14,6 +14,7 @@ import micdoodle8.mods.galacticraft.API.IGalaxy;
 import micdoodle8.mods.galacticraft.API.IMapPlanet;
 import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiRocketRefill;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityArrow;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityAstroOrb;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityBuggy;
@@ -45,6 +46,7 @@ import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.network.packet.Packet9Respawn;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.Mod;
@@ -341,7 +343,8 @@ public class GalacticraftCore
                 
                 if (player.ridingEntity instanceof GCCoreEntitySpaceship)
                 {
-                    player.displayGUIChest((GCCoreEntitySpaceship)player.ridingEntity);
+                	GCCoreEntitySpaceship spaceship = (GCCoreEntitySpaceship)player.ridingEntity;
+            		FMLClientHandler.instance().getClient().displayGuiScreen(new GCCoreGuiRocketRefill(player.inventory, spaceship, spaceship.getSpaceshipType()));
                 }
             }
         }

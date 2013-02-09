@@ -23,7 +23,7 @@ public class GCCoreItems
 	public static Item oxygenMask;
 	public static Item spaceship;
 	public static Item sensorGlasses;
-	public static Item sensorGlassesWithOxygenMask;
+//	public static Item sensorGlassesWithOxygenMask;
 	public static Item sensorLens;
 	
 	public static Item titaniumPickaxe;
@@ -35,7 +35,7 @@ public class GCCoreItems
 	public static Item titaniumChestplate;
 	public static Item titaniumLeggings;
 	public static Item titaniumBoots;
-	public static Item titaniumHelmetBreathable;
+//	public static Item titaniumHelmetBreathable;
 	public static Item ingotTitanium;
 	public static Item ingotCopper;
 	public static Item ingotAluminum;
@@ -65,7 +65,7 @@ public class GCCoreItems
 		oxygenMask = new GCCoreItemOxygenMask(GCCoreConfigManager.idArmorOxygenMask, OXYGENMASK, 5, 0).setIconIndex(6).setItemName("oxygenMask");
 		spaceship = new GCCoreItemSpaceship(GCCoreConfigManager.idItemSpaceship).setItemName("spaceship");
 		sensorGlasses = new GCCoreItemSensorGlasses(GCCoreConfigManager.idArmorSensorGlasses, SENSORGLASSES, 6, 0, false).setIconIndex(7).setItemName("sensorGlasses");
-		sensorGlassesWithOxygenMask = new GCCoreItemSensorGlasses(GCCoreConfigManager.idArmorSensorGlassesWithOxygenMask, SENSORGLASSES, 7, 0, true).setIconIndex(8).setItemName("sensorGlassesWithOxygenMask");
+//		sensorGlassesWithOxygenMask = new GCCoreItemSensorGlasses(GCCoreConfigManager.idArmorSensorGlassesWithOxygenMask, SENSORGLASSES, 7, 0, true).setIconIndex(8).setItemName("sensorGlassesWithOxygenMask");
 		titaniumPickaxe = new GCCoreItemPickaxe(GCCoreConfigManager.idToolTitaniumPickaxe, TOOLTITANIUM).setIconIndex(11).setItemName("titaniumPick");
 		titaniumAxe = new GCCoreItemAxe(GCCoreConfigManager.idToolTitaniumAxe, TOOLTITANIUM).setIconIndex(10).setItemName("titaniumAxe");
 		titaniumHoe = new GCCoreItemHoe(GCCoreConfigManager.idToolTitaniumHoe, TOOLTITANIUM).setIconIndex(9).setItemName("titaniumHoe");
@@ -75,7 +75,7 @@ public class GCCoreItems
 		titaniumChestplate = new GCCoreItemArmor(GCCoreConfigManager.idArmorTitaniumChestplate, TITANIUMARMOR, 9, 1, false).setIconIndex(15).setItemName("titaniumChestplate");
 		titaniumLeggings = new GCCoreItemArmor(GCCoreConfigManager.idArmorTitaniumLeggings, TITANIUMARMOR, 9, 2, false).setIconIndex(16).setItemName("titaniumLeggings");
 		titaniumBoots = new GCCoreItemArmor(GCCoreConfigManager.idArmorTitaniumBoots, TITANIUMARMOR, 9, 3, false).setIconIndex(17).setItemName("titaniumBoots");
-		titaniumHelmetBreathable = new GCCoreItemArmor(GCCoreConfigManager.idArmorTitaniumHelmetBreathable, TITANIUMARMOR, 9, 0, true).setIconIndex(18).setItemName("titaniumHelmetBreathable");
+//		titaniumHelmetBreathable = new GCCoreItemArmor(GCCoreConfigManager.idArmorTitaniumHelmetBreathable, TITANIUMARMOR, 9, 0, true).setIconIndex(18).setItemName("titaniumHelmetBreathable");
 		ingotTitanium = new GCCoreItem(GCCoreConfigManager.idItemIngotTitanium).setIconIndex(19).setItemName("ingotTitanium");
 		ingotCopper = new GCCoreItem(GCCoreConfigManager.idItemIngotCopper).setIconIndex(20).setItemName("ingotCopper");
 		ingotAluminum = new GCCoreItem(GCCoreConfigManager.idItemIngotAluminum).setIconIndex(21).setItemName("ingotAluminum");
@@ -109,7 +109,7 @@ public class GCCoreItems
 		addName(medOxygenTankFull);
 		addName(heavyOxygenTankFull);
 		addName(sensorGlasses);
-		addName(sensorGlassesWithOxygenMask);
+//		addName(sensorGlassesWithOxygenMask);
 		addName(titaniumPickaxe);
 		addName(titaniumAxe);
 		addName(titaniumSpade);
@@ -119,7 +119,7 @@ public class GCCoreItems
 		addName(titaniumChestplate);
 		addName(titaniumLeggings);
 		addName(titaniumBoots);
-		addName(titaniumHelmetBreathable);
+//		addName(titaniumHelmetBreathable);
 		addName(ingotTitanium);
 		addName(ingotCopper);
 		addName(ingotAluminum);
