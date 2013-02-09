@@ -22,12 +22,12 @@ import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityCreeper;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityFlag;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityMeteor;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityParaChest;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityPlayer;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySkeleton;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpaceship;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpider;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityWorm;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityZombie;
+import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerBase;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerHandler;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityBreathableAir;
@@ -95,7 +95,7 @@ public class GalacticraftCore
 	public static long tick;
 	
 	public static List players = new ArrayList();
-	public static List gcPlayers = new ArrayList();
+	public static List<GCCorePlayerBase> gcPlayers = new ArrayList<GCCorePlayerBase>();
 	
 	public static List<IGalacticraftSubMod> subMods = new ArrayList<IGalacticraftSubMod>();
 	@SideOnly(Side.CLIENT)
@@ -279,7 +279,7 @@ public class GalacticraftCore
                 
                 for (int j = 0; j < GalacticraftCore.gcPlayers.size(); ++j)
 	            {
-                	final GCCoreEntityPlayer playerBase = (GCCoreEntityPlayer) GalacticraftCore.gcPlayers.get(j);
+                	final GCCorePlayerBase playerBase = (GCCorePlayerBase) GalacticraftCore.gcPlayers.get(j);
 	    			
 	    			if (player.username == playerBase.getPlayer().username)
 	    			{

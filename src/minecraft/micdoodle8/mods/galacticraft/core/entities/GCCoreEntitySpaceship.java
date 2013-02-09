@@ -766,7 +766,7 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
         		
 	            for (int j = 0; j < GalacticraftCore.gcPlayers.size(); ++j)
 	            {
-	    			final GCCoreEntityPlayer playerBase = (GCCoreEntityPlayer) GalacticraftCore.gcPlayers.get(j);
+	    			final GCCorePlayerBase playerBase = (GCCorePlayerBase) GalacticraftCore.gcPlayers.get(j);
 	    			
 	    			if (entityplayermp.username.equals(playerBase.getPlayer().username))
 	    			{

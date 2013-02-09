@@ -4,8 +4,8 @@ import java.util.List;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiTankRefill;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityPlayer;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpaceship;
+import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerBase;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenTank;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreInventoryTankRefill;
 import net.minecraft.client.gui.inventory.GuiInventory;
@@ -178,7 +178,7 @@ public class GCCoreModelPlayer extends ModelPlayerBase
     		
             for (int j = 0; j < GalacticraftCore.gcPlayers.size(); ++j)
             {
-    			final GCCoreEntityPlayer playerBase = (GCCoreEntityPlayer) GalacticraftCore.gcPlayers.get(j);
+    			final GCCorePlayerBase playerBase = (GCCorePlayerBase) GalacticraftCore.gcPlayers.get(j);
     			
     			if (player.username.equals(playerBase.getPlayer().username))
     			{
@@ -336,7 +336,7 @@ public class GCCoreModelPlayer extends ModelPlayerBase
 		
         for (int j = 0; j < GalacticraftCore.gcPlayers.size(); ++j)
         {
-			final GCCoreEntityPlayer playerBase = (GCCoreEntityPlayer) GalacticraftCore.gcPlayers.get(j);
+			final GCCorePlayerBase playerBase = (GCCorePlayerBase) GalacticraftCore.gcPlayers.get(j);
 			
 			if (player.username.equals(playerBase.getPlayer().username))
 			{

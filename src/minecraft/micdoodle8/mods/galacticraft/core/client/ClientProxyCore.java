@@ -54,7 +54,6 @@ import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityCreeper;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityFlag;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityMeteor;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityParaChest;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityPlayer;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySkeleton;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpaceship;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpider;
@@ -99,7 +98,6 @@ import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry.KeyHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -477,23 +475,23 @@ public class ClientProxyCore extends CommonProxyCore
 
     	        for (int j = 0; j < GalacticraftCore.gcPlayers.size(); ++j)
     	        {
-    				final GCCoreEntityPlayer playerBase = (GCCoreEntityPlayer) GalacticraftCore.gcPlayers.get(j);
-    				
-    				if (playerBase != null && player != null && player.username.equals(playerBase.getPlayer().username))
-    				{
-    					if (playerBase.getPlayer() != null && playerBase.getPlayer().getDataWatcher() != null && playerBase.getPlayer().getDataWatcher().getWatchableObjectInt(23) == 1)
-    					{
-    	    				player.motionY = -0.3;
-    	    				player.motionX *= 0.1;
-    	    				player.motionZ *= 0.1;
-    	    				
-    	    				if (player.onGround)
-    	    				{
-    	    					playerBase.getPlayer().getDataWatcher().updateObject(23, Integer.valueOf(0));
-    	    					minecraft.gameSettings.thirdPersonView = 0;
-    	    				}
-    					}
-    				}
+//    				final GCCoreEntityPlayer playerBase = (GCCoreEntityPlayer) GalacticraftCore.gcPlayers.get(j);
+//    				
+//    				if (playerBase != null && player != null && player.username.equals(playerBase.getPlayer().username))
+//    				{
+//    					if (playerBase.getPlayer() != null && playerBase.getPlayer().getDataWatcher() != null && playerBase.getPlayer().getDataWatcher().getWatchableObjectInt(23) == 1)
+//    					{
+//    	    				player.motionY = -0.3;
+//    	    				player.motionX *= 0.1;
+//    	    				player.motionZ *= 0.1;
+//    	    				
+//    	    				if (player.onGround)
+//    	    				{
+//    	    					playerBase.getPlayer().getDataWatcher().updateObject(23, Integer.valueOf(0));
+//    	    					minecraft.gameSettings.thirdPersonView = 0;
+//    	    				}
+//    					}
+//    				} TODO
     	        }
     			
     			if (teleportCooldown > 0)

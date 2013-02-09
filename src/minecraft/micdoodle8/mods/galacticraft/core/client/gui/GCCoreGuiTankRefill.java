@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityPlayer;
+import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerBase;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreContainerTankRefill;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreInventoryTankRefill;
 import net.minecraft.client.Minecraft;
@@ -78,7 +78,7 @@ public class GCCoreGuiTankRefill extends GuiContainer
     	
     	for (int i = 0; i < GalacticraftCore.gcPlayers.size(); i++)
     	{
-    		GCCoreEntityPlayer player = (GCCoreEntityPlayer) GalacticraftCore.gcPlayers.get(i);
+    		GCCorePlayerBase player = (GCCorePlayerBase) GalacticraftCore.gcPlayers.get(i);
     		
     		if (FMLClientHandler.instance().getClient().thePlayer.username == player.getPlayer().username)
     		{

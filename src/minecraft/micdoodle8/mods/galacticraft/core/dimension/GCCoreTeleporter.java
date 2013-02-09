@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.dimension;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityPlayer;
+import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerBase;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MathHelper;
@@ -60,7 +60,7 @@ public class GCCoreTeleporter extends Teleporter
 
         for (int j = 0; j < GalacticraftCore.gcPlayers.size(); ++j)
         {
-			final GCCoreEntityPlayer playerBase = (GCCoreEntityPlayer) GalacticraftCore.gcPlayers.get(j);
+			final GCCorePlayerBase playerBase = (GCCorePlayerBase) GalacticraftCore.gcPlayers.get(j);
 			
 			if (((EntityPlayer) par1Entity).username.equals(playerBase.getPlayer().username))
 			{

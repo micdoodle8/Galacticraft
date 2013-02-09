@@ -234,11 +234,11 @@ public class GCCoreEntityAstroOrb extends Entity
                 
                 for (int i = 0; i < GalacticraftCore.gcPlayers.size(); i++)
                 {
-                	GCCoreEntityPlayer player = (GCCoreEntityPlayer) GalacticraftCore.gcPlayers.get(i);
+                	GCCorePlayerBase player = (GCCorePlayerBase) GalacticraftCore.gcPlayers.get(i);
                 	
                 	if (player.getPlayer().username == par1EntityPlayer.username)
                 	{
-                		player.addExperience(this.xpValue);
+                		player.addExperience2(this.xpValue);
                 	}
                 }
                 
