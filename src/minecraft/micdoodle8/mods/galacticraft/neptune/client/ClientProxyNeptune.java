@@ -130,4 +130,10 @@ public class ClientProxyNeptune extends CommonProxyNeptune implements IGalacticr
 //		TODO
 		return null;
 	}
+
+	@Override
+	public String getPathToMusicFile() 
+	{
+		return null;
+	}
 }

@@ -143,4 +143,10 @@ public class ClientProxyJupiter extends CommonProxyJupiter implements IGalacticr
 		
 		return moonMapPlanet;
 	}
+
+	@Override
+	public String getPathToMusicFile() 
+	{
+		return null;
+	}
 }

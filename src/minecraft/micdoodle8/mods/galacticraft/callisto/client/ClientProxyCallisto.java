@@ -206,4 +206,10 @@ public class ClientProxyCallisto extends CommonProxyCallisto implements IGalacti
 	{
 		return null;
 	}
+
+	@Override
+	public String getPathToMusicFile() 
+	{
+		return null;
+	}
 }

@@ -271,4 +271,10 @@ public class ClientProxyMars extends CommonProxyMars implements IGalacticraftSub
 //		TODO
 		return null;
 	}
+
+	@Override
+	public String getPathToMusicFile() 
+	{
+		return null;
+	}
 }

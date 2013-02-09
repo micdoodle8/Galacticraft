@@ -130,4 +130,10 @@ public class ClientProxyUranus extends CommonProxyUranus implements IGalacticraf
 //		TODO
 		return null;
 	}
+
+	@Override
+	public String getPathToMusicFile() 
+	{
+		return null;
+	}
 }

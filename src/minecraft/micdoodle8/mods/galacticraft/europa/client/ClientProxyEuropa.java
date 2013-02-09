@@ -61,4 +61,10 @@ public class ClientProxyEuropa implements IGalacticraftSubModClient
 	{
 		return null;
 	}
+
+	@Override
+	public String getPathToMusicFile() 
+	{
+		return null;
+	}
 }

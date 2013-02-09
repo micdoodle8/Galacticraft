@@ -208,4 +208,10 @@ public class ClientProxyTitan extends CommonProxyTitan implements IGalacticraftS
 	{
 		return null;
 	}
+
+	@Override
+	public String getPathToMusicFile() 
+	{
+		return null;
+	}
 }

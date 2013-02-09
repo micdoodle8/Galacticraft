@@ -130,4 +130,10 @@ public class ClientProxyPluto extends CommonProxyPluto implements IGalacticraftS
 //		TODO
 		return null;
 	}
+
+	@Override
+	public String getPathToMusicFile() 
+	{
+		return null;
+	}
 }

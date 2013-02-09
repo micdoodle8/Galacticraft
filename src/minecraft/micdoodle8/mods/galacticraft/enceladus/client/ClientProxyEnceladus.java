@@ -206,4 +206,10 @@ public class ClientProxyEnceladus extends CommonProxyEnceladus implements IGalac
 	{
 		return null;
 	}
+
+	@Override
+	public String getPathToMusicFile() 
+	{
+		return null;
+	}
 }

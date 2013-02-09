@@ -148,4 +148,10 @@ public class ClientProxyIo implements IGalacticraftSubModClient
 	{
 		return null;
 	}
+
+	@Override
+	public String getPathToMusicFile() 
+	{
+		return null;
+	}
 }

@@ -151,4 +151,10 @@ public class ClientProxySaturn extends CommonProxySaturn implements IGalacticraf
 		
 		return moonMapPlanet;
 	}
+
+	@Override
+	public String getPathToMusicFile() 
+	{
+		return null;
+	}
 }

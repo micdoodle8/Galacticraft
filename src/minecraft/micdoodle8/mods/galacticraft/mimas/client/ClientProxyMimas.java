@@ -209,4 +209,10 @@ public class ClientProxyMimas extends CommonProxyMimas implements IGalacticraftS
 	{
 		return null;
 	}
+
+	@Override
+	public String getPathToMusicFile() 
+	{
+		return null;
+	}
 }

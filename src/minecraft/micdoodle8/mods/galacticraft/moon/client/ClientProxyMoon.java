@@ -145,4 +145,10 @@ public class ClientProxyMoon extends CommonProxyMoon implements IGalacticraftSub
 	{
 		return null;
 	}
+
+	@Override
+	public String getPathToMusicFile() 
+	{
+		return null;
+	}
 }
