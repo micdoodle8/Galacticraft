@@ -275,6 +275,6 @@ public class ClientProxyMars extends CommonProxyMars implements IGalacticraftSub
 	@Override
 	public String getPathToMusicFile() 
 	{
-		return null;
+		return "/micdoodle8/mods/galacticraft/mars/client/sounds/music";
 	}
 }

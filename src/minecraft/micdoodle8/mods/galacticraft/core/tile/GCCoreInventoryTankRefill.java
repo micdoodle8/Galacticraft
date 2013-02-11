@@ -14,18 +14,18 @@ import net.minecraft.nbt.NBTTagList;
  */
 public class GCCoreInventoryTankRefill implements IInventory
 {
-	public ItemStack[] tankSlotContents = new ItemStack[4];
+	public ItemStack[] tankSlotContents = new ItemStack[5];
 
 	@Override
 	public int getInventoryStackLimit() 
 	{
-		return 4;
+		return 5;
 	}
 
 	@Override
 	public ItemStack getStackInSlot(int par1) 
 	{
-		if (par1 < 4)
+		if (par1 < 5)
 			return this.tankSlotContents[par1];
 		else
 			return null;
@@ -121,7 +121,7 @@ public class GCCoreInventoryTankRefill implements IInventory
 
     public void readFromNBT2(NBTTagList par1NBTTagList)
     {
-        this.tankSlotContents = new ItemStack[4];
+        this.tankSlotContents = new ItemStack[5];
 
         for (int var2 = 0; var2 < par1NBTTagList.tagCount(); ++var2)
         {

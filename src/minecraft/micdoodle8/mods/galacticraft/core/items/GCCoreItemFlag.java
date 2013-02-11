@@ -32,14 +32,13 @@ public class GCCoreItemFlag extends GCCoreItem
 			"darkgray", // 6
 			"darkgreen", // 7
 			"gray", // 8
-			"green", // 9
-			"magenta", // 10
-			"orange", // 11
-			"pink", // 12
-			"purple", // 13
-			"red", // 14
-			"teal", // 15
-			"yellow"}; // 16
+			"magenta", // 9
+			"orange", // 10
+			"pink", // 11
+			"purple", // 12
+			"red", // 13
+			"teal", // 14
+			"yellow"}; // 15
 	public int placeProgress;
 	
 	public GCCoreItemFlag(int par1) 
@@ -53,7 +52,7 @@ public class GCCoreItemFlag extends GCCoreItem
     @Override
     public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
     {
-    	for (int i = 0; i < 17; i++)
+    	for (int i = 0; i < 16; i++)
     	{
             par3List.add(new ItemStack(par1, 1, i));
     	}
@@ -150,5 +149,17 @@ public class GCCoreItemFlag extends GCCoreItem
     public EnumRarity getRarity(ItemStack par1ItemStack)
     {
         return EnumRarity.epic;
+    }
+
+    public String getItemNameIS(ItemStack par1ItemStack)
+    {
+        int var2 = par1ItemStack.getItemDamage();
+
+        if (var2 < 0 || var2 >= names.length)
+        {
+            var2 = 0;
+        }
+
+        return super.getItemName() + "." + names[var2];
     }
 }

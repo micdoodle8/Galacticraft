@@ -2,16 +2,23 @@ package micdoodle8.mods.galacticraft.core.client.model;
 
 import java.util.List;
 
+import org.lwjgl.opengl.GL11;
+
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiTankRefill;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpaceship;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerBase;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenTank;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreInventoryTankRefill;
+import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.gui.inventory.GuiInventory;
+import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.RenderEngine;
+import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.src.ModelPlayerAPI;
@@ -19,6 +26,7 @@ import net.minecraft.src.ModelPlayerBase;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreModelPlayer extends ModelPlayerBase
 {
@@ -44,26 +52,26 @@ public class GCCoreModelPlayer extends ModelPlayerBase
         this.oxygenMask.addBox(-4.0F, -8.0F, -4.0F, 8, 8, 8, 1);
         this.oxygenMask.setRotationPoint(0.0F, 0.0F + 0.0F, 0.0F);
 		
-        this.parachute[0] = new ModelRenderer(this.modelPlayer, 0, 0);
+        this.parachute[0] = new ModelRenderer(this.modelPlayer, 0, 0).setTextureSize(512, 256);
         this.parachute[0].addBox(-20.0F, -45.0F, -20.0F, 10, 2, 40, var1);
         this.parachute[0].setRotationPoint(15.0F, 4.0F, 0.0F);
-        this.parachute[1] = new ModelRenderer(this.modelPlayer, 0, 0);
+        this.parachute[1] = new ModelRenderer(this.modelPlayer, 0, 42).setTextureSize(512, 256);
         this.parachute[1].addBox(-20.0F, -45.0F, -20.0F, 40, 2, 40, var1);
         this.parachute[1].setRotationPoint(0.0F, 0.0F, 0.0F);
-        this.parachute[2] = new ModelRenderer(this.modelPlayer, 0, 0);
+        this.parachute[2] = new ModelRenderer(this.modelPlayer, 0, 0).setTextureSize(512, 256);
         this.parachute[2].addBox(-20.0F, -45.0F, -20.0F, 10, 2, 40, var1);
         this.parachute[2].setRotationPoint(11F, -11, 0.0F);
 
-        this.parachuteStrings[0] = new ModelRenderer(this.modelPlayer, 0, 0);
+        this.parachuteStrings[0] = new ModelRenderer(this.modelPlayer, 100, 0).setTextureSize(512, 256);
         this.parachuteStrings[0].addBox(-0.5F, 0.0F, -0.5F, 1, 40, 1, var1);
         this.parachuteStrings[0].setRotationPoint(0.0F, 0.0F, 0.0F);
-        this.parachuteStrings[1] = new ModelRenderer(this.modelPlayer, 0, 0);
+        this.parachuteStrings[1] = new ModelRenderer(this.modelPlayer, 100, 0).setTextureSize(512, 256);
         this.parachuteStrings[1].addBox(-0.5F, 0.0F, -0.5F, 1, 40, 1, var1);
         this.parachuteStrings[1].setRotationPoint(0.0F, 0.0F, 0.0F);
-        this.parachuteStrings[2] = new ModelRenderer(this.modelPlayer, 0, 0);
+        this.parachuteStrings[2] = new ModelRenderer(this.modelPlayer, 100, 0).setTextureSize(512, 256);
         this.parachuteStrings[2].addBox(-0.5F, 0.0F, -0.5F, 1, 40, 1, var1);
         this.parachuteStrings[2].setRotationPoint(0.0F, 0.0F, 0.0F);
-        this.parachuteStrings[3] = new ModelRenderer(this.modelPlayer, 0, 0);
+        this.parachuteStrings[3] = new ModelRenderer(this.modelPlayer, 100, 0).setTextureSize(512, 256);
         this.parachuteStrings[3].addBox(-0.5F, 0.0F, -0.5F, 1, 40, 1, var1);
         this.parachuteStrings[3].setRotationPoint(0.0F, 0.0F, 0.0F);
 
@@ -170,11 +178,33 @@ public class GCCoreModelPlayer extends ModelPlayerBase
     }
 
     @Override
-	public void render(Entity var1, float var2, float var3, float var4, float var5, float var6, float var7)
+	public void afterRender(Entity var1, float var2, float var3, float var4, float var5, float var6, float var7)
     {
-    	if (var1 instanceof EntityPlayer)
+    	Class<?> entityClass = EntityClientPlayerMP.class;
+    	Render render = RenderManager.instance.getEntityClassRenderObject(entityClass);
+    	ModelBiped modelBipedMain = ((RenderPlayer)render).getModelBipedMainField();
+    	
+    	if (var1 instanceof EntityPlayer && this.modelPlayer == modelBipedMain)
     	{
         	EntityPlayer player = (EntityPlayer)var1;
+        	
+        	boolean changed = false;
+    		
+            for (int j = 0; j < ClientProxyCore.playersUsingParachutes.size(); ++j)
+            {
+    			final String username = (String) ClientProxyCore.playersUsingParachutes.get(j);
+    			
+    			if (player.username.equals(username))
+    			{
+    				this.usingParachute = true;
+    				changed = true;
+    			}
+            }
+            
+            if (!changed || ClientProxyCore.parachuteTextures.get(player.username).equals("none"))
+            {
+            	this.usingParachute = false;
+            }
     		
             for (int j = 0; j < GalacticraftCore.gcPlayers.size(); ++j)
             {
@@ -183,8 +213,6 @@ public class GCCoreModelPlayer extends ModelPlayerBase
     			if (player.username.equals(playerBase.getPlayer().username))
     			{
     				GCCoreInventoryTankRefill inventory = playerBase.playerTankInventory;
-    				
-    				this.usingParachute = playerBase.getParachute();
 
     	    		FMLClientHandler.instance().getClient().renderEngine.bindTexture(FMLClientHandler.instance().getClient().renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/entities/player.png"));
     	    		
@@ -244,12 +272,12 @@ public class GCCoreModelPlayer extends ModelPlayerBase
         	
         	if (usingParachute)
         	{
-        		FMLClientHandler.instance().getClient().renderEngine.bindTexture(FMLClientHandler.instance().getClient().renderEngine.getTexture("/terrain.png"));
-        		
+        		FMLClientHandler.instance().getClient().renderEngine.bindTexture(FMLClientHandler.instance().getClient().renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/entities/parachute/" + ClientProxyCore.parachuteTextures.get(player.username) + ".png"));
+
             	this.parachute[0].render(var7);
             	this.parachute[1].render(var7);
             	this.parachute[2].render(var7);
-            	
+
             	this.parachuteStrings[0].render(var7);
             	this.parachuteStrings[1].render(var7);
             	this.parachuteStrings[2].render(var7);
@@ -258,7 +286,11 @@ public class GCCoreModelPlayer extends ModelPlayerBase
 
         	this.loadDownloadableImageTexture(var1.skinUrl, var1.getTexture());
         	
-        	super.render(var1, var2, var3, var4, var5, var6, var7);
+        	super.afterRender(var1, var2, var3, var4, var5, var6, var7);
+    	}
+    	else
+    	{
+        	super.afterRender(var1, var2, var3, var4, var5, var6, var7);
     	}
     }
 

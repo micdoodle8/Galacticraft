@@ -55,6 +55,14 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntity implements IIn
     	}
     }
     
+    public double getDistanceFrom2(double par1, double par3, double par5)
+    {
+        double var7 = (double)this.xCoord + 0.5D - par1;
+        double var9 = (double)this.yCoord + 0.5D - par3;
+        double var11 = (double)this.zCoord + 0.5D - par5;
+        return var7 * var7 + var9 * var9 + var11 * var11;
+    }
+    
 	@Override
 	public void updateEntity() 
 	{

@@ -14,7 +14,7 @@ import micdoodle8.mods.galacticraft.API.IGalaxy;
 import micdoodle8.mods.galacticraft.API.IMapPlanet;
 import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
-import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiRocketRefill;
+import micdoodle8.mods.galacticraft.core.client.GCCorePlayerBaseClient;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityArrow;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityAstroOrb;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityBuggy;
@@ -28,7 +28,6 @@ import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpider;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityWorm;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityZombie;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerBase;
-import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerHandler;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityBreathableAir;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCollector;
@@ -44,9 +43,9 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.network.packet.Packet9Respawn;
+import net.minecraft.src.ServerPlayerAPI;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.Mod;
@@ -64,13 +63,13 @@ import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -94,11 +93,10 @@ public class GalacticraftCore
 	
 	public static long tick;
 	
-	public static List players = new ArrayList();
+	public static List<GCCorePlayerBaseClient> players = new ArrayList<GCCorePlayerBaseClient>();
 	public static List<GCCorePlayerBase> gcPlayers = new ArrayList<GCCorePlayerBase>();
 	
 	public static List<IGalacticraftSubMod> subMods = new ArrayList<IGalacticraftSubMod>();
-	@SideOnly(Side.CLIENT)
 	public static List<IGalacticraftSubModClient> clientSubMods = new ArrayList<IGalacticraftSubModClient>();
 
 	public static List<IGalaxy> galaxies = new ArrayList<IGalaxy>();
@@ -120,6 +118,8 @@ public class GalacticraftCore
 		new GCCoreConfigManager(new File(event.getModConfigurationDirectory(), "Galacticraft/core.conf"));
 		
 		lang = new GCCoreLocalization("micdoodle8/mods/galacticraft/core/client");
+		
+		ServerPlayerAPI.register("GalacticraftCore", GCCorePlayerBase.class);
 		
 		GCCoreBlocks.initBlocks();
 		GCCoreBlocks.registerBlocks();
@@ -156,7 +156,6 @@ public class GalacticraftCore
         GCCoreUtil.addCraftingRecipes();
 		GCCoreUtil.addSmeltingRecipes();
 		NetworkRegistry.instance().registerGuiHandler(this, proxy);
-		GameRegistry.registerPlayerTracker(new GCCorePlayerHandler());
 		this.registerTileEntities();
 		this.registerCreatures();
 		this.registerOtherEntities();
@@ -281,7 +280,7 @@ public class GalacticraftCore
 	            {
                 	final GCCorePlayerBase playerBase = (GCCorePlayerBase) GalacticraftCore.gcPlayers.get(j);
 	    			
-	    			if (player.username == playerBase.getPlayer().username)
+	    			if (player.username.equals(playerBase.getPlayer().username))
 	    			{
 	    	    		final Integer dim = GCCoreUtil.getProviderForName((String)packetReadout[0]).dimensionId;
 	    				playerBase.travelToTheEnd(dim);
@@ -323,13 +322,13 @@ public class GalacticraftCore
                 final Class[] decodeAs = {Integer.class};
                 final Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
                 
-                for(int i = 0; i < player.worldObj.getLoadedEntityList().size(); i++)
+                for(int i = 0; i < player.worldObj.loadedEntityList.size(); i++)
                 {
-	                if(((Entity)player.worldObj.getLoadedEntityList().get(i)).entityId == (Integer)packetReadout[0])
+	                if(((Entity)player.worldObj.loadedEntityList.get(i)).entityId == (Integer)packetReadout[0])
 	                {
-	                	if (player.worldObj.getLoadedEntityList().get(i) instanceof EntityLiving)
+	                	if (player.worldObj.loadedEntityList.get(i) instanceof EntityLiving)
 	                	{
-	                        final Object[] toSend = {((EntityLiving)player.worldObj.getLoadedEntityList().get(i)).getHealth(), (Integer)packetReadout[0]};
+	                        final Object[] toSend = {((EntityLiving)player.worldObj.loadedEntityList.get(i)).getHealth(), (Integer)packetReadout[0]};
 	                        
 	                        player.playerNetServerHandler.sendPacketToPlayer(GCCoreUtil.createPacket("Galacticraft", 3, toSend));
 	                	}
@@ -343,8 +342,7 @@ public class GalacticraftCore
                 
                 if (player.ridingEntity instanceof GCCoreEntitySpaceship)
                 {
-                	GCCoreEntitySpaceship spaceship = (GCCoreEntitySpaceship)player.ridingEntity;
-            		FMLClientHandler.instance().getClient().displayGuiScreen(new GCCoreGuiRocketRefill(player.inventory, spaceship, spaceship.getSpaceshipType()));
+                	player.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiSpaceshipInventory, player.worldObj, (int)player.posX, (int)player.posY, (int)player.posZ);
                 }
             }
         }

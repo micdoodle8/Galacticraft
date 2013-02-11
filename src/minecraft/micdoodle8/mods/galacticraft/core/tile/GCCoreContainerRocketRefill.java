@@ -9,11 +9,13 @@ import net.minecraft.item.ItemStack;
 public class GCCoreContainerRocketRefill extends Container
 {
     private IInventory lowerChestInventory;
+    private IInventory spaceshipInv;
     private int type;
 
     public GCCoreContainerRocketRefill(IInventory par1IInventory, IInventory par2IInventory, int type)
     {
-        this.lowerChestInventory = par2IInventory;
+        this.lowerChestInventory = par1IInventory;
+        this.spaceshipInv = par2IInventory;
         this.type = type;
         par2IInventory.openChest();
         
@@ -32,27 +34,21 @@ public class GCCoreContainerRocketRefill extends Container
     {
         int var4;
         int var5;
-        
-        for (var4 = 0; var4 < 3; ++var4)
-        {
-            for (var5 = 0; var5 < 9; ++var5)
-            {
-                this.addSlotToContainer(new Slot(this.lowerChestInventory, var5 + var4 * 9, 8 + var5 * 18, (18 + 18 + 13) + var4 * 18));
-            }
-        }
 
         for (var4 = 0; var4 < 3; ++var4)
         {
             for (var5 = 0; var5 < 9; ++var5)
             {
-                this.addSlotToContainer(new Slot(this.lowerChestInventory, var5 + var4 * 9 + 9, 8 + var5 * 18, (103 + 18 + 13) + var4 * 18 - 18));
+                this.addSlotToContainer(new Slot(lowerChestInventory, var5 + (var4 + 1) * 9, 8 + var5 * 18, 84 + var4 * 18 - 34));
             }
         }
 
         for (var4 = 0; var4 < 9; ++var4)
         {
-            this.addSlotToContainer(new Slot(this.lowerChestInventory, var4, 8 + var4 * 18, 161 - (18 + 18 + 13)));
+            this.addSlotToContainer(new Slot(lowerChestInventory, var4, 8 + var4 * 18, 142 - 34));
         }
+
+        this.addSlotToContainer(new Slot(this.spaceshipInv, 27, 80, 18));
     }
     
     private void addSlotsForType2()
@@ -64,7 +60,7 @@ public class GCCoreContainerRocketRefill extends Container
         {
             for (var5 = 0; var5 < 9; ++var5)
             {
-                this.addSlotToContainer(new Slot(this.lowerChestInventory, var5 + var4 * 9, 8 + var5 * 18, 18 + var4 * 18));
+                this.addSlotToContainer(new Slot(this.spaceshipInv, var5 + var4 * 9, 8 + var5 * 18, 50 + var4 * 18));
             }
         }
 
@@ -72,14 +68,16 @@ public class GCCoreContainerRocketRefill extends Container
         {
             for (var5 = 0; var5 < 9; ++var5)
             {
-                this.addSlotToContainer(new Slot(this.lowerChestInventory, var5 + var4 * 9 + 9, 8 + var5 * 18, 103 + var4 * 18 - 18));
+                this.addSlotToContainer(new Slot(this.lowerChestInventory, var5 + var4 * 9 + 9, 8 + var5 * 18, 103 + var4 * 18 + 14));
             }
         }
 
         for (var4 = 0; var4 < 9; ++var4)
         {
-            this.addSlotToContainer(new Slot(this.lowerChestInventory, var4, 8 + var4 * 18, 161 - 18));
+            this.addSlotToContainer(new Slot(this.lowerChestInventory, var4, 8 + var4 * 18, 161 + 14));
         }
+
+        this.addSlotToContainer(new Slot(this.spaceshipInv, 27, 80, 18));
     }
 
     public boolean canInteractWith(EntityPlayer par1EntityPlayer)

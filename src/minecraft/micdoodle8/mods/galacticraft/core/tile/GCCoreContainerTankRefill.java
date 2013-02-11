@@ -17,15 +17,17 @@ public class GCCoreContainerTankRefill extends Container
 {
 	public GCCoreContainerTankRefill(EntityPlayer par1EntityPlayer, GCCoreInventoryTankRefill inventorytankrefill) 
 	{
-		this.addSlotToContainer(new SlotCrafting(par1EntityPlayer, ((ContainerPlayer)par1EntityPlayer.inventoryContainer).craftMatrix, ((ContainerPlayer)par1EntityPlayer.inventoryContainer).craftResult, 0, 128, 62));
+		this.addSlotToContainer(new SlotCrafting(par1EntityPlayer, ((ContainerPlayer)par1EntityPlayer.inventoryContainer).craftMatrix, ((ContainerPlayer)par1EntityPlayer.inventoryContainer).craftResult, 0, 116, 62));
         int var4;
         int var5;
+        
+        this.addSlotToContainer(new GCCoreSlotTankRefill(inventorytankrefill, 4, 154, 6));
 
         for (var4 = 0; var4 < 2; ++var4)
         {
             for (var5 = 0; var5 < 2; ++var5)
             {
-                this.addSlotToContainer(new Slot(((ContainerPlayer)par1EntityPlayer.inventoryContainer).craftMatrix, var5 + var4 * 2, 120 + var5 * 18, 6 + var4 * 18));
+                this.addSlotToContainer(new Slot(((ContainerPlayer)par1EntityPlayer.inventoryContainer).craftMatrix, var5 + var4 * 2, 108 + var5 * 18, 6 + var4 * 18));
             }
         }
 

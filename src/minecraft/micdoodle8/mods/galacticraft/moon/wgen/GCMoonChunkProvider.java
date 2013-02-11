@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import cpw.mods.fml.common.FMLLog;
+
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityCreeper;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityFlag;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySkeleton;
@@ -25,7 +27,6 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.ChunkProviderGenerate;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import net.minecraft.world.gen.structure.MapGenMineshaft;
-import net.minecraft.world.gen.structure.MapGenVillage;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -87,8 +88,6 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 	public NoiseGeneratorOctaves mobSpawnerNoise;
 
 	public GCMoonBiomeDecorator biomedecoratorplanet = new GCMoonBiomeDecorator(GCMoonBiomeGenBase.moonFlat);
-	
-//    private GCMarsMapGenCreeperNest creeperNest = new GCMarsMapGenCreeperNest();
 
 	private final World worldObj;
 
@@ -96,11 +95,8 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 
 	private double[] noiseArray;
 	private double[] stoneNoise = new double[256];
-	
-//	private GCMarsCaveGen caveGenerator = new GCMarsCaveGen();
-//	private GCMarsCaveGen2 caveGenerator2 = new GCMarsCaveGen2();
 
-	private final MapGenVillage villageGenerator = new MapGenVillage();
+	private final GCMoonMapGenVillage villageGenerator = new GCMoonMapGenVillage();
 
 	private final MapGenMineshaft mineshaftGenerator = new MapGenMineshaft();
 
@@ -355,7 +351,6 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 					double sqrtY = (xDev * xDev + zDev * zDev);
 					double yDev = sqrtY * sqrtY * 6;
 					yDev = 5 - yDev;
-					System.out.println(yDev + ", " + xDev + ", " + zDev);
 					int helper = 0;
 					for(int y = 127; y > 0; y--)
 					{
@@ -659,7 +654,9 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 		final long var7 = this.rand.nextLong() / 2L * 2L + 1L;
 		final long var9 = this.rand.nextLong() / 2L * 2L + 1L;
 		this.rand.setSeed(par2 * var7 + par3 * var9 ^ this.worldObj.getSeed());
-		final boolean var11 = false;
+		boolean var11 = false;
+
+        this.villageGenerator.generateStructuresInChunk(this.worldObj, this.rand, par2, par3);
 
 		final int var12;
 		final int var13;
@@ -713,4 +710,9 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 			return null;
 		}
 	}
+
+    public void recreateStructures(int par1, int par2)
+    {
+        this.villageGenerator.generate(this, this.worldObj, par1, par2, (byte[])null);
+    }
 }

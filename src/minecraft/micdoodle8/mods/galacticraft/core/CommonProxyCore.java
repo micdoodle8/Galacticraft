@@ -7,11 +7,14 @@ import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiAirDistributor;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiBuggyBench;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiGalaxyMap;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiRocketBench;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiRocketRefill;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiTankRefill;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpaceship;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerBase;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreContainerAirDistributor;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreContainerBuggyBench;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreContainerRocketBench;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreContainerRocketRefill;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreContainerTankRefill;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreInventoryTankRefill;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenDistributor;
@@ -134,6 +137,10 @@ public class CommonProxyCore implements IGuiHandler
 		{
 			return new GCCoreContainerBuggyBench(player.inventory);
 		}
+		else if (ID == GCCoreConfigManager.idGuiSpaceshipInventory && player.ridingEntity instanceof GCCoreEntitySpaceship)
+		{
+			return new GCCoreContainerRocketRefill(player.inventory, ((GCCoreEntitySpaceship) player.ridingEntity), ((GCCoreEntitySpaceship) player.ridingEntity).getSpaceshipType());
+		}
 		
 		return null;
 	}
@@ -162,6 +169,10 @@ public class CommonProxyCore implements IGuiHandler
 		else if (ID == GCCoreConfigManager.idGuiGalaxyMap)
 		{
 			return new GCCoreGuiGalaxyMap(player);
+		}
+		else if (ID == GCCoreConfigManager.idGuiSpaceshipInventory)
+		{
+			return new GCCoreGuiRocketRefill(player.inventory, ((GCCoreEntitySpaceship) player.ridingEntity), ((GCCoreEntitySpaceship) player.ridingEntity).getSpaceshipType());
 		}
 		else
 		{

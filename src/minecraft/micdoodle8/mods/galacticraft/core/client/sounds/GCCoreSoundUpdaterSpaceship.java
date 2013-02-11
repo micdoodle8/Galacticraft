@@ -5,10 +5,10 @@ import net.minecraft.client.audio.SoundManager;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.util.MathHelper;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.SideOnly;
 import cpw.mods.fml.relauncher.Side;
 
-@SideOnly(Side.CLIENT)
 public class GCCoreSoundUpdaterSpaceship implements IUpdatePlayerListBox
 {
     private final SoundManager theSoundManager;
@@ -80,23 +80,16 @@ public class GCCoreSoundUpdaterSpaceship implements IUpdatePlayerListBox
 
         if (this.theSoundManager != null && this.theMinecart != null && this.theMinecart.getReversed() == 0 && this.minecartMoveSoundVolume > 0.0F)
         {
-            this.theSoundManager.playEntitySound("shuttle.sound", this.theMinecart, this.minecartMoveSoundVolume, this.minecartSoundPitch, false);
+            this.theSoundManager.playEntitySound("shuttle.shuttle", this.theMinecart, this.minecartMoveSoundVolume, this.minecartSoundPitch, false);
             this.silent = false;
             var1 = true;
         }
         else if (this.theSoundManager != null && this.theMinecart != null && this.theMinecart.getReversed() == 1 && this.minecartMoveSoundVolume > 0.0F)
         {
-            this.theSoundManager.playEntitySound("shuttle.sound", this.theMinecart, this.minecartMoveSoundVolume, 1.0F, false);
+            this.theSoundManager.playEntitySound("shuttle.shuttle", this.theMinecart, this.minecartMoveSoundVolume, 1.0F, false);
             this.silent = false;
             var1 = true;
         }
-
-//        if (this.playerSPRidingMinecart && !this.theSoundManager.isEntitySoundPlaying(this.thePlayer) && this.minecartRideSoundVolume > 0.0F)
-//        {
-//            this.theSoundManager.playEntitySound("shuttle.sound", this.thePlayer, this.minecartRideSoundVolume, 1.0F, true);
-//            this.silent = false;
-//            var1 = true;
-//        }
         
         if (this.theMinecart.getTimeUntilLaunch() <= 400)
         {

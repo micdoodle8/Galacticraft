@@ -4,12 +4,16 @@ import java.util.Random;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerBase;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItemParachute;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.Teleporter;
 import net.minecraft.world.WorldServer;
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.Side;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -57,18 +61,30 @@ public class GCCoreTeleporter extends Teleporter
         
         par1Entity.setLocationAndAngles(var9, 250, var11, par1Entity.rotationYaw, 0.0F);
         par1Entity.motionX = par1Entity.motionY = par1Entity.motionZ = 0.0D;
-
-        for (int j = 0; j < GalacticraftCore.gcPlayers.size(); ++j)
+        
+        for (int i = 0; i < GalacticraftCore.gcPlayers.size(); i++)
         {
-			final GCCorePlayerBase playerBase = (GCCorePlayerBase) GalacticraftCore.gcPlayers.get(j);
-			
-			if (((EntityPlayer) par1Entity).username.equals(playerBase.getPlayer().username))
-			{
-				playerBase.setParachute(true);
-			}
+        	GCCorePlayerBase player = GalacticraftCore.gcPlayers.get(i);
+        	
+        	if (player.getPlayer().username.equals(((EntityPlayer) par1Entity).username))
+        	{
+        		ItemStack stack = player.playerTankInventory.getStackInSlot(4);
+        		
+        		if (stack != null && stack.getItem() instanceof GCCoreItemParachute)
+        		{
+            		player.setParachute(true);
+        		}
+        		else
+        		{
+            		player.setParachute(false);
+        		}
+        	}
         }
 
-		FMLClientHandler.instance().getClient().gameSettings.thirdPersonView = 1;
+        if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+        {
+    		FMLClientHandler.instance().getClient().gameSettings.thirdPersonView = 1;
+        }
 		
 		return true;
 	}

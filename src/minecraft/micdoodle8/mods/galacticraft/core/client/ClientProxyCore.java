@@ -23,6 +23,7 @@ import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLaunchFlameFX;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLaunchSmokeFX;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityOxygenFX;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiChoosePlanet;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiRocketRefill;
 import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelPlayer;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererBreathableAir;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererMeteor;
@@ -36,6 +37,7 @@ import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderCree
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderFlag;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderMeteor;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderParaChest;
+import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderPlayer;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderSkeleton;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderSpaceship;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderSpider;
@@ -46,6 +48,7 @@ import micdoodle8.mods.galacticraft.core.client.render.item.GCCoreItemRendererFl
 import micdoodle8.mods.galacticraft.core.client.render.item.GCCoreItemRendererSpaceship;
 import micdoodle8.mods.galacticraft.core.client.render.item.GCCoreItemRendererUnlitTorch;
 import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntityTreasureChestRenderer;
+import micdoodle8.mods.galacticraft.core.client.sounds.GCCoreSoundUpdaterSpaceship;
 import micdoodle8.mods.galacticraft.core.client.sounds.GCCoreSounds;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityArrow;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityAstroOrb;
@@ -76,12 +79,15 @@ import net.minecraft.client.particle.EntitySmokeFX;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.src.ModelPlayerAPI;
+import net.minecraft.src.PlayerAPI;
+import net.minecraft.src.RenderPlayerAPI;
 import net.minecraft.stats.StatBase;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
@@ -98,6 +104,7 @@ import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry.KeyHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -130,12 +137,17 @@ public class ClientProxyCore extends CommonProxyCore
 	public static int teleportCooldown;
 	public static List<IPlanetSlotRenderer> slotRenderers = new ArrayList<IPlanetSlotRenderer>();
 	
+	public static ArrayList<String> playersUsingParachutes = new ArrayList<String>();
+	public static HashMap<String, String> parachuteTextures = new HashMap<String, String>();
+	
 	@Override
 	public void preInit(FMLPreInitializationEvent event) 
 	{
 		moon.preInit(event);
 		
 		ModelPlayerAPI.register("GalacticraftCore", GCCoreModelPlayer.class);
+		RenderPlayerAPI.register("GalacticraftCore", GCCoreRenderPlayer.class);
+		PlayerAPI.register("GalacticraftCore", GCCorePlayerBaseClient.class);
 		
 		MinecraftForge.EVENT_BUS.register(new GCCoreSounds());
 		getFirstBootTime = System.currentTimeMillis();
@@ -398,6 +410,45 @@ public class ClientProxyCore extends CommonProxyCore
 	                }
                 }
             }
+            else if (packetType == 4)
+            {
+            	final Class[] decodeAs = {String.class};
+                final Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
+                
+                playersUsingParachutes.add((String) packetReadout[0]);
+            }
+            else if (packetType == 5)
+            {
+    			FMLLog.info("Client1");
+            	final Class[] decodeAs = {String.class};
+                final Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
+                
+                playersUsingParachutes.remove((String) packetReadout[0]);
+            }
+            else if (packetType == 6)
+            {
+            	final Class[] decodeAs = {String.class, String.class};
+                final Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
+                
+                parachuteTextures.put((String)packetReadout[0], (String)packetReadout[1]);
+            }
+            else if (packetType == 7)
+            {
+            	final Class[] decodeAs = {String.class, String.class};
+                final Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
+                
+                parachuteTextures.remove((String) packetReadout[0]);
+            }
+            else if (packetType == 8)
+            {
+            	final Class[] decodeAs = {String.class};
+                final Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
+
+            	player.sendChatToPlayer("SPACE - Launch");
+            	player.sendChatToPlayer("A / D  - Turn left-right");
+            	player.sendChatToPlayer("W / S  - Turn up-down");
+            	player.sendChatToPlayer(Keyboard.getKeyName(GCKeyHandler.openSpaceshipInv.keyCode) + "       - Inventory / Fuel");
+            }
 		}
     }
 	
@@ -467,11 +518,6 @@ public class ClientProxyCore extends CommonProxyCore
     		
     		if (type.equals(EnumSet.of(TickType.CLIENT)))
             {
-    			if (player != null && player.worldObj.provider instanceof IGalacticraftWorldProvider && !player.capabilities.isFlying && !minecraft.isGamePaused && !player.handleWaterMovement()) 
-    			{
-    				final IGalacticraftWorldProvider wp = (IGalacticraftWorldProvider) player.worldObj.provider;
-    				player.motionY = player.motionY + wp.getGravity();
-    			}
 
     	        for (int j = 0; j < GalacticraftCore.gcPlayers.size(); ++j)
     	        {
@@ -491,8 +537,29 @@ public class ClientProxyCore extends CommonProxyCore
 //    	    					minecraft.gameSettings.thirdPersonView = 0;
 //    	    				}
 //    					}
-//    				} TODO
+//    				}
     	        }
+
+	        	if (world != null)
+	        	{
+	    	        for (int i = 0; i < world.loadedEntityList.size(); i++)
+	    	        {
+    	        		Entity e = (Entity) world.loadedEntityList.get(i);
+    	        		
+    	        		if (e != null)
+    	        		{
+    	        			if (e instanceof GCCoreEntitySpaceship)
+    	        			{
+    	        				GCCoreEntitySpaceship eship = (GCCoreEntitySpaceship) e;
+    	        				
+    	        				if (eship.rocketSoundUpdater == null)
+    	        				{
+    	        					eship.rocketSoundUpdater = new GCCoreSoundUpdaterSpaceship(FMLClientHandler.instance().getClient().sndManager, eship, FMLClientHandler.instance().getClient().thePlayer);
+    	        				}
+    	        			}
+    	        		}
+	    	        }
+	        	}
     			
     			if (teleportCooldown > 0)
     			{
@@ -1109,9 +1176,9 @@ public class ClientProxyCore extends CommonProxyCore
     
     public static class GCKeyHandler extends KeyHandler
     {
-    	static KeyBinding tankRefill = new KeyBinding("Tank Refill", Keyboard.KEY_R);
+    	static KeyBinding tankRefill = new KeyBinding("Galacticraft Player Inventory", Keyboard.KEY_R);
     	static KeyBinding galaxyMap = new KeyBinding("Galaxy Map", Keyboard.KEY_M);
-    	public static KeyBinding openSpaceshipInv = new KeyBinding("Open Spaceship Inventory", Keyboard.KEY_T);
+    	public static KeyBinding openSpaceshipInv = new KeyBinding("Open Spaceship Inventory", Keyboard.KEY_F);
 
         public GCKeyHandler() 
         {
@@ -1154,6 +1221,14 @@ public class ClientProxyCore extends CommonProxyCore
                 	final EntityPlayerSP player = minecraft.thePlayer;
         			player.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiGalaxyMap, minecraft.theWorld, (int)player.posX, (int)player.posY, (int)player.posZ);
         		}
+        	}
+        	else if (kb.keyCode == GCKeyHandler.openSpaceshipInv.keyCode)
+        	{
+            	final EntityPlayerSP player = minecraft.thePlayer;
+            	
+                final Object[] toSend = {player.username};
+                PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 6, toSend));
+        	    player.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiSpaceshipInventory, minecraft.theWorld, (int)player.posX, (int)player.posY, (int)player.posZ);
         	}
         	
 //        	int key = -1;

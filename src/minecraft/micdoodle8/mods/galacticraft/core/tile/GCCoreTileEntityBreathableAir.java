@@ -30,7 +30,7 @@ public class GCCoreTileEntityBreathableAir extends TileEntity
 		}
 		else
 		{
-			final double distanceFromDistributor = this.distributor.getDistanceFrom(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D);
+			final double distanceFromDistributor = this.distributor.getDistanceFrom2(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D);
 			
 			if (distanceFromDistributor < this.distributor.currentPower)
 			{

@@ -51,6 +51,9 @@ public class GCCoreItems
 	public static Item buggy;
 	public static Item flag;
 	public static Item oxygenGear;
+	public static Item parachute;
+	public static Item canvas;
+	public static Item rocketFuelBucket;
 	
 	public static EnumArmorMaterial OXYGENMASK = EnumHelper.addArmorMaterial("OXYGENMASK", 200, new int[] {0, 0, 0, 0}, 0);
 	public static EnumArmorMaterial SENSORGLASSES = EnumHelper.addArmorMaterial("SENSORGLASSES", 200, new int[] {0, 0, 0, 0}, 0);
@@ -92,6 +95,9 @@ public class GCCoreItems
 		buggy = new GCCoreItemBuggy(GCCoreConfigManager.idItemBuggy).setIconIndex(200).setItemName("buggy");
 		flag = new GCCoreItemFlag(GCCoreConfigManager.idItemFlag).setIconIndex(201).setItemName("flag");
 		oxygenGear = new GCCoreItemOxygenGear(GCCoreConfigManager.idItemOxygenGear).setIconIndex(32).setItemName("oxygenGear");
+		parachute = new GCCoreItemParachute(GCCoreConfigManager.idItemParachute).setItemName("parachute");
+		canvas = new GCCoreItem(GCCoreConfigManager.idItemCanvas).setIconIndex(33).setItemName("canvas");
+		rocketFuelBucket = new GCCoreItem(GCCoreConfigManager.idItemRocketFuelBucket).setIconIndex(34).setItemName("rocketFuel");
 	}
 	
 	public static void registerHarvestLevels()
@@ -132,10 +138,35 @@ public class GCCoreItems
 		addName(rocketNoseCone);
 		addName(rocketFins);
 		addName(sensorLens);
+		addName(oxygenGear);
+		addName(flag);
+		addName(canvas);
+		addName(rocketFuelBucket);
+		
+		int i = 0;
+
+		for (i = 0; i < GCCoreItemFlag.names.length; i++)
+		{
+			String s = GCCoreItemFlag.names[i];
+			
+	        addNameWithMetadata("item.flag." + s + ".name");
+		}
+
+		for (i = 0; i < GCCoreItemParachute.names.length; i++)
+		{
+			String s = GCCoreItemParachute.names[i];
+			
+	        addNameWithMetadata("item.parachute." + s + ".name");
+		}
 	}
 	
 	private static void addName(Item item)
 	{
         LanguageRegistry.instance().addStringLocalization(item.getItemName() + ".name", GalacticraftCore.lang.get(item.getItemName() + ".name"));
+	}
+
+	private static void addNameWithMetadata(String string)
+	{
+        LanguageRegistry.instance().addStringLocalization(string, GalacticraftCore.lang.get(string));
 	}
 }

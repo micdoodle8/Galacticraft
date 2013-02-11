@@ -33,6 +33,7 @@ public class GCCoreBlocks
 	public static Block sapling;
 	public static Block rocketBench;
 	public static Block fallenMeteor;
+	public static GCCoreBlockOxygenDistributor decorationBlock;
 	
 	public static void initBlocks() 
 	{

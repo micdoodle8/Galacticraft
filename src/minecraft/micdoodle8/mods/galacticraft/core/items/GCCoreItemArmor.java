@@ -5,8 +5,9 @@ import net.minecraft.item.EnumArmorMaterial;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.IArmorTextureProvider;
-import cpw.mods.fml.relauncher.SideOnly;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreItemArmor extends GCCoreItemBreathableHelmet implements IArmorTextureProvider
 {
@@ -24,6 +25,8 @@ public class GCCoreItemArmor extends GCCoreItemBreathableHelmet implements IArmo
 	@Override
     public String getArmorTextureFile(ItemStack itemstack)
     {
+		
+		
     	if (this.material == GCCoreItems.TITANIUMARMOR)
     	{
     		if (itemstack.getItem().itemID == GCCoreItems.titaniumHelmet.itemID)

@@ -3,9 +3,11 @@ package micdoodle8.mods.galacticraft.core.tile;
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemBreathableHelmet;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenGear;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItemParachute;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import cpw.mods.fml.common.FMLLog;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -23,7 +25,7 @@ public class GCCoreSlotTankRefill extends Slot
 	@Override
 	public boolean isItemValid(ItemStack par1ItemStack)
 	{
-		switch (this.slotNumber - 45)
+		switch (this.slotNumber - 46)
 		{
 		case 0:
 			return par1ItemStack.getItem() instanceof GCCoreItemBreathableHelmet;
@@ -34,6 +36,12 @@ public class GCCoreSlotTankRefill extends Slot
 		case 3:
 			return GCCoreUtil.getDrainSpacing(par1ItemStack) > 0;
 		}
+		
+		if (slotNumber == 1)
+		{
+			return par1ItemStack.getItem() instanceof GCCoreItemParachute;
+		}
+		
 		return false;
 	}
 

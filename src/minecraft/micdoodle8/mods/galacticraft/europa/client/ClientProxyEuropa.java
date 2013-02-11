@@ -65,6 +65,6 @@ public class ClientProxyEuropa implements IGalacticraftSubModClient
 	@Override
 	public String getPathToMusicFile() 
 	{
-		return null;
+		return "/micdoodle8/mods/galacticraft/europa/client/sounds/music/europa.ogg";
 	}
 }

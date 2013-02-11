@@ -2,24 +2,21 @@ package micdoodle8.mods.galacticraft.core.entities;
 
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.network.PacketDispatcher;
-import cpw.mods.fml.common.network.Player;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreTeleporter;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItemParachute;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreInventoryTankRefill;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -36,6 +33,13 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.Teleporter;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.DimensionManager;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.common.network.Player;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
 
 public class GCCorePlayerBase extends ServerPlayerBase
 {
@@ -64,11 +68,34 @@ public class GCCorePlayerBase extends ServerPlayerBase
     
     public ItemStack[] rocketStacks;
     public int rocketType;
+	
+	private boolean usingParachute;
+	
+	private boolean lastOnGround;
 
 	public GCCorePlayerBase(ServerPlayerAPI var1) 
 	{
 		super(var1);
-		player.getDataWatcher().addObject(23, new Integer(0));
+		GalacticraftCore.gcPlayers.add(this);
+		
+		if (player.posY > 420D)
+		{
+			final Integer[] ids = DimensionManager.getIDs();
+	    	
+	    	final Set set = GCCoreUtil.getArrayOfPossibleDimensions(ids).entrySet();
+	    	final Iterator iter = set.iterator();
+	    	
+	    	String temp = "";
+	    	
+	    	for (int k = 0; iter.hasNext(); k++)
+	    	{
+	    		final Map.Entry entry = (Map.Entry)iter.next();
+	    		temp = k == 0 ? temp.concat(String.valueOf(entry.getKey())) : temp.concat("." + String.valueOf(entry.getKey()));
+	    	}
+	    	
+	    	final Object[] toSend = {player.username, temp};
+	        FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(player.username).playerNetServerHandler.sendPacketToPlayer(GCCoreUtil.createPacket("Galacticraft", 2, toSend));
+		}
 	}
 	
 	public EntityPlayerMP getPlayer()
@@ -235,6 +262,23 @@ public class GCCorePlayerBase extends ServerPlayerBase
 		if (GalacticraftCore.tick % 10 == 0)
 		{
 			this.sendAirRemainingPacket();
+			
+			if (this.player.onGround)
+			{
+				this.sendParachuteRemovalPacket();
+				this.setParachute(false);
+			}
+		}
+		
+		if (this.player.onGround && this.getParachute())
+		{
+			this.sendParachuteRemovalPacket();
+			this.setParachute(false);
+		}
+
+		if (GalacticraftCore.tick % 5 == 0)
+		{
+			this.sendPlayerParachuteTexturePacket(this);
 		}
 		
 		if (player != null && player.worldObj.provider instanceof IGalacticraftWorldProvider)
@@ -345,15 +389,18 @@ public class GCCorePlayerBase extends ServerPlayerBase
 			this.airRemaining = 90;
 			this.airRemaining2 = 90;
 		}
-	
-		if (this.getParachute())
-		{
-			this.getPlayer().motionY += 1;
-		}
 		
 		if (this.timeUntilPortal > 0)
 		{
 			this.timeUntilPortal--;
+		}
+		
+		if (this.getParachute())
+		{
+			if (this.getPlayer().onGround)
+			{
+				this.setParachute(false);
+			}
 		}
 		
 		if (this.inPortal && this.timeUntilPortal == 0)
@@ -432,6 +479,8 @@ public class GCCorePlayerBase extends ServerPlayerBase
 				}
 			}
 		}
+    	
+    	lastOnGround = this.player.onGround;
 	}
 
     public void transferPlayerToDimension(EntityPlayerMP player, int par2, Teleporter teleporter)
@@ -506,7 +555,7 @@ public class GCCorePlayerBase extends ServerPlayerBase
             var5 = MathHelper.clamp_int((int)var5, -29999872, 29999872);
             var7 = MathHelper.clamp_int((int)var7, -29999872, 29999872);
 
-            if (par1Entity.isEntityAlive())
+            if (!par1Entity.worldObj.isRemote && par1Entity.isEntityAlive())
             {
                 par4WorldServer.spawnEntityInWorld(par1Entity);
                 par1Entity.setLocationAndAngles(var5, par1Entity.posY, var7, par1Entity.rotationYaw, par1Entity.rotationPitch);
@@ -546,7 +595,7 @@ public class GCCorePlayerBase extends ServerPlayerBase
         this.astronomyPoints = par1NBTTagCompound.getFloat("AstronomyPointsNum");
         this.astronomyPointsLevel = par1NBTTagCompound.getInteger("AstronomyPointsLevel");
         this.astronomyPointsTotal = par1NBTTagCompound.getInteger("AstronomyPointsTotal");
-        this.setParachute(par1NBTTagCompound.getBoolean("usingParachute"));
+        this.setParachute(par1NBTTagCompound.getBoolean("usingParachute2"));
     }
 
     @Override
@@ -558,17 +607,7 @@ public class GCCorePlayerBase extends ServerPlayerBase
         par1NBTTagCompound.setFloat("AstronomyPointsNum", this.astronomyPoints);
         par1NBTTagCompound.setInteger("AstronomyPointsLevel", this.astronomyPointsLevel);
         par1NBTTagCompound.setInteger("AstronomyPointsTotal", this.astronomyPointsTotal);
-        par1NBTTagCompound.setBoolean("usingParachute", this.getParachute());
-    }
-    
-    public void setParachute(boolean tf)
-    {
-    	this.player.getDataWatcher().updateObject(23, tf ? 1 : 0);
-    }
-    
-    public boolean getParachute()
-    {
-    	return this.player.getDataWatcher().getWatchableObjectInt(23) == 1;
+        par1NBTTagCompound.setBoolean("usingParachute2", this.getParachute());
     }
 
     public void addExperience2(int par1)
@@ -617,6 +656,46 @@ public class GCCorePlayerBase extends ServerPlayerBase
 	          FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.player.username).playerNetServerHandler.sendPacketToPlayer(GCCoreUtil.createPacket("Galacticraft", 0, toSend));
 	  	}
 	}
+	  
+	public void sendParachuteRemovalPacket()
+	{
+	  	final Object[] toSend = {this.player.username};
+	  	
+	  	if (FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.player.username) != null)
+	  	{
+	          PacketDispatcher.sendPacketToAllPlayers(GCCoreUtil.createPacket("Galacticraft", 5, toSend));
+	  	}
+	}
+	  
+	public void sendParachuteAddPacket()
+	{
+	  	final Object[] toSend = {this.player.username};
+	  	
+	  	if (FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.player.username) != null)
+	  	{
+	          PacketDispatcher.sendPacketToAllPlayers(GCCoreUtil.createPacket("Galacticraft", 4, toSend));
+	  	}
+	}
+	  
+	public void sendPlayerParachuteTexturePacket(GCCorePlayerBase player)
+	{
+		ItemStack stack = player.playerTankInventory.getStackInSlot(4);
+		String s;
+		String s2 = null;
+		if (stack != null && stack.getItem() instanceof GCCoreItemParachute)
+		{
+			s = stack.getItem().getItemNameIS(stack);
+
+			s2 = s.replace("item.parachute.", "");
+		}
+		
+	  	final Object[] toSend = {this.player.username, stack == null ? "none" : String.valueOf(s2)};
+	  	
+	  	if (FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.player.username) != null)
+	  	{
+	          PacketDispatcher.sendPacketToAllPlayers(GCCoreUtil.createPacket("Galacticraft", 6, toSend));
+	  	}
+	}
 
     public void travelToTheEnd(int par1)
     {
@@ -631,5 +710,24 @@ public class GCCorePlayerBase extends ServerPlayerBase
     			}
     		}
     	}
+    }
+    
+    public void setParachute(boolean tf)
+    {
+    	this.usingParachute = tf;
+    	
+    	if (tf)
+    	{
+        	this.sendParachuteAddPacket();
+    	}
+    	else
+    	{
+    		this.sendParachuteRemovalPacket();
+    	}
+    }
+    
+    public boolean getParachute()
+    {
+    	return this.usingParachute;
     }
 }

@@ -15,6 +15,9 @@ import net.minecraft.world.World;
 
 import org.lwjgl.input.Keyboard;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.Side;
+
 public class GCCoreEntityBuggy extends Entity implements IInventory
 {
     public int fuel;
@@ -259,7 +262,7 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
             }
         }
 
-        if (this.riddenByEntity != null)
+        if (this.riddenByEntity != null && FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
         {
             if (Keyboard.isKeyDown(30))
             {
@@ -330,7 +333,7 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
             this.motionY = 0.1D;
         }
 
-        if (ModLoader.isGUIOpen((Class)null) && this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayer && Keyboard.isKeyDown(46))
+        if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT && ModLoader.isGUIOpen((Class)null) && this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayer && Keyboard.isKeyDown(46))
         {
             final EntityPlayer var23 = (EntityPlayer)this.riddenByEntity;
 

@@ -43,6 +43,7 @@ public class GCCoreConfigManager
 	public static int idBlockSapling2;
 	public static int idBlockRocketBench;
 	public static int idBlockFallenMeteor;
+	public static int idBlockDecorationBlock;
 
 	// ITEMS
 	public static int idItemLightOxygenTank;
@@ -68,6 +69,9 @@ public class GCCoreConfigManager
 	public static int idItemBuggy;
 	public static int idItemFlag;
 	public static int idItemOxygenGear;
+	public static int idItemCanvas;
+	public static int idItemParachute;
+	public static int idItemRocketFuelBucket;
 	
 	// ARMOR
 	public static int idArmorOxygenMask;
@@ -92,6 +96,7 @@ public class GCCoreConfigManager
 	public static int idGuiRocketCraftingBench;
 	public static int idGuiBuggyCraftingBench;
 	public static int idGuiGalaxyMap;
+	public static int idGuiSpaceshipInventory;
 	
 	// ACHIEVEMENTS
 	public static int idAchievBase;
@@ -136,6 +141,8 @@ public class GCCoreConfigManager
 	        idBlockRocketBench = 					configuration.get(Configuration.CATEGORY_BLOCK, "idBlockRocketBench", 					3361)		.getInt(3361);
 	        idBlockFallenMeteor = 					configuration.get(Configuration.CATEGORY_BLOCK, "idBlockFallenMeteor", 					3362)		.getInt(3362);
 
+	        idBlockDecorationBlock = 				configuration.get(Configuration.CATEGORY_BLOCK, "idBlockDecorationBlock",				2362)		.getInt(2362);
+
 	        idItemLightOxygenTankEmpty = 			configuration.get(Configuration.CATEGORY_ITEM, "idItemLightOxygenTankEmpty", 			9854)		.getInt(9854);
 	        idItemLightOxygenTank = 				configuration.get(Configuration.CATEGORY_ITEM, "idItemLightOxygenTank", 				9855)		.getInt(9855);
 	        idItemMedOxygenTankEmpty = 				configuration.get(Configuration.CATEGORY_ITEM, "idItemMedOxygenTankEmpty", 			9856)		.getInt(9856);
@@ -162,6 +169,9 @@ public class GCCoreConfigManager
 	        idItemBuggy = 							configuration.get(Configuration.CATEGORY_ITEM, "idItemBuggyPlacer", 					9887)		.getInt(9887);
 	        idItemFlag = 							configuration.get(Configuration.CATEGORY_ITEM, "idItemFlagPlacer", 					9888)		.getInt(9888);
 	        idItemOxygenGear = 						configuration.get(Configuration.CATEGORY_ITEM, "idItemOxygenGear", 					9889)		.getInt(9889);
+	        idItemCanvas = 							configuration.get(Configuration.CATEGORY_ITEM, "idItemCanvas", 						9890)		.getInt(9890);
+	        idItemParachute = 						configuration.get(Configuration.CATEGORY_ITEM, "idItemParachute", 					9891)		.getInt(9891);
+	        idItemRocketFuelBucket = 				configuration.get(Configuration.CATEGORY_ITEM, "idItemRocketFuelBucket", 			9892)		.getInt(9892);
 	        
 	        idToolTitaniumSword = 					configuration.get(Configuration.CATEGORY_BLOCK, "idToolTitaniumSword", 					9876)		.getInt(9876);
 	        idToolTitaniumPickaxe = 				configuration.get(Configuration.CATEGORY_BLOCK, "idToolTitaniumPickaxe", 				9877)		.getInt(9877);
@@ -180,6 +190,7 @@ public class GCCoreConfigManager
 	        idGuiRocketCraftingBench = 				configuration.get("GUI", "idGuiRocketCraftingBench", 									130)		.getInt(130);
 	        idGuiBuggyCraftingBench = 				configuration.get("GUI", "idGuiBuggyCraftingBench", 									131)		.getInt(131);
 	        idGuiGalaxyMap = 						configuration.get("GUI", "idGuiGalaxyMap",			 									132)		.getInt(132);
+	        idGuiSpaceshipInventory = 				configuration.get("GUI", "idGuiSpaceshipInventory",			 							133)		.getInt(133);
 	        
 	        idAchievBase = 							configuration.get("Achievements", "idAchievBase", 										1784)		.getInt(1784);
 
