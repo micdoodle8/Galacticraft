@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.mars.entities;
 
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityAIAvoidEntity;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
@@ -18,8 +19,9 @@ import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.SideOnly;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -124,17 +126,17 @@ public class GCMarsEntityCreeperBoss extends EntityMob
     	{
             final EntityPlayer var11 = null;
 
-            for (int var12 = 0; var12 < this.worldObj.playerEntities.size(); ++var12)
+            for (int var12 = 0; var12 < GalacticraftCore.gcPlayers.size(); ++var12)
             {
-                final EntityPlayer var13 = (EntityPlayer)this.worldObj.playerEntities.get(var12);
+                final EntityPlayer var13 = (EntityPlayer)GalacticraftCore.gcPlayers.get(var12).getPlayer();
 
                 if (!var13.capabilities.isCreativeMode)
                 {
                     final double var14 = var13.getDistanceSq(this.posX, this.posY, this.posZ);
 
-                    if ((5 < 0.0D || var14 < 5 * 5))
+                    if (var14 < 25)
                     {
-                        GCCoreUtil.createNewExplosion(this.worldObj, this, this.posX, this.posY, this.posZ, 12.0F, true);
+                        GCCoreUtil.createNewExplosion(this.worldObj, this, this.posX, this.posY, this.posZ, 12.0F, false);
                         this.timeSinceTNTFired = 100;
                     }
                 }

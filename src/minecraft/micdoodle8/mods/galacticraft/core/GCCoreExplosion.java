@@ -12,6 +12,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.ChunkPosition;
@@ -140,7 +141,7 @@ public class GCCoreExplosion
                     var19 /= var32;
                     final double var31 = this.worldObj.getBlockDensity(var29, var30.boundingBox);
                     final double var33 = (1.0D - var13) * var31;
-//                    var30.attackEntityFrom(DamageSource.explosion, (int)((var33 * var33 + var33) / 2.0D * 8.0D * (double)this.explosionSize + 1.0D));
+                    var30.attackEntityFrom(DamageSource.explosion, (int)((var33 * var33 + var33) / 10.0D * 1.0D * (double)this.explosionSize + 1.0D));
                     var30.motionX += var15 * var33 * 5;
                     var30.motionY += var17 * var33 * 1.5;
                     var30.motionZ += var19 * var33 * 5;
@@ -227,7 +228,7 @@ public class GCCoreExplosion
 
                 if (var7 == 0 && Block.opaqueCubeLookup[var24] && this.explosionRNG.nextInt(3) == 0)
                 {
-//                    this.worldObj.setBlockWithNotify(var4, var5, var6, Block.fire.blockID);
+                    this.worldObj.setBlockWithNotify(var4, var5, var6, Block.fire.blockID);
                 }
             }
         }

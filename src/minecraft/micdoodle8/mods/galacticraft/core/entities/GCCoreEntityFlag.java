@@ -1,6 +1,8 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockFence;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
@@ -167,12 +169,23 @@ public class GCCoreEntityFlag extends Entity
     @Override
 	public void onUpdate()
     {
-    	if (this.worldObj.getBlockId(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 1), MathHelper.floor_double(this.posZ)) == 0)
+    	int id = this.worldObj.getBlockId(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 1), MathHelper.floor_double(this.posZ));
+    	Block block = Block.blocksList[id];
+    	
+    	if (block != null)
     	{
-        	this.motionY -= 0.02F;
-    	}
-    	else
-    	{
+    		if (block instanceof BlockFence)
+    		{
+    			
+    		}
+    		else if (block.blockID == 0)
+    		{
+    			
+    		}
+    		else
+    		{
+            	this.motionY -= 0.02F;
+    		}
     	}
     	
     	this.moveEntity(this.motionX, this.motionY, this.motionZ);

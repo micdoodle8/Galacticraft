@@ -142,8 +142,10 @@ public class GCCoreItems
 		addName(sensorLens);
 		addName(oxygenGear);
 		addName(flag);
+		addName(flagPole);
 		addName(canvas);
 		addName(rocketFuelBucket);
+		addName(buggy);
 		
 		int i = 0;
 

@@ -12,15 +12,42 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-public class GCCoreEntityWorm extends EntityMob
+public class GCCoreEntityWorm extends EntityMob implements IEntityMultiPart
 {
+    public GCCoreEntityWormPart[] wormPartArray;
+    
+    public GCCoreEntityWormPart wormPartHead;
+    public GCCoreEntityWormPart wormPartBody1;
+    public GCCoreEntityWormPart wormPartBody2;
+    public GCCoreEntityWormPart wormPartBody3;
+    public GCCoreEntityWormPart wormPartBody4;
+    public GCCoreEntityWormPart wormPartBody5;
+    public GCCoreEntityWormPart wormPartBody6;
+    public GCCoreEntityWormPart wormPartBody7;
+    public GCCoreEntityWormPart wormPartBody8;
+    public GCCoreEntityWormPart wormPartBody9;
+    
     public GCCoreEntityWorm(World par1World)
     {
         super(par1World);
+        this.wormPartArray = new GCCoreEntityWormPart[] 
+        {
+        		this.wormPartHead = new GCCoreEntityWormPart(this, "head", 2.0F, 2.0F), 
+				this.wormPartBody1 = new GCCoreEntityWormPart(this, "body", 8.0F, 8.0F), 
+				this.wormPartBody2 = new GCCoreEntityWormPart(this, "body", 4.0F, 4.0F), 
+				this.wormPartBody3 = new GCCoreEntityWormPart(this, "body", 4.0F, 4.0F), 
+				this.wormPartBody4 = new GCCoreEntityWormPart(this, "body", 4.0F, 4.0F), 
+				this.wormPartBody5 = new GCCoreEntityWormPart(this, "body", 4.0F, 4.0F), 
+				this.wormPartBody6 = new GCCoreEntityWormPart(this, "body", 4.0F, 4.0F), 
+				this.wormPartBody7 = new GCCoreEntityWormPart(this, "body", 4.0F, 4.0F), 
+				this.wormPartBody8 = new GCCoreEntityWormPart(this, "body", 4.0F, 4.0F), 
+				this.wormPartBody9 = new GCCoreEntityWormPart(this, "body", 4.0F, 4.0F)
+        };
         this.texture = "/micdoodle8/mods/galacticraft/core/client/entities/worm.png";
         this.setSize(2F, 2F);
         this.moveSpeed = 1F / 15F;
         this.noClip = true;
+        this.ignoreFrustumCheck = true;
     }
     
     @Override
@@ -28,6 +55,7 @@ public class GCCoreEntityWorm extends EntityMob
     {
     	super.entityInit();
         this.dataWatcher.addObject(16, Integer.valueOf(this.rand.nextInt(4)));
+        this.dataWatcher.addObject(17, Integer.valueOf(0));
     }
     
     @Override
@@ -73,15 +101,20 @@ public class GCCoreEntityWorm extends EntityMob
     }
 
     @Override
-	protected int getDropItemId()
+    public void setPosition(double par1, double par3, double par5)
     {
-        return 0;
+        this.posX = par1;
+        this.posY = par3;
+        this.posZ = par5;
+        float var7 = this.width / 2.0F;
+        float var8 = this.height;
+        this.boundingBox.setBounds(par1 - (double)var7, par3 - (double)this.yOffset + (double)this.ySize, par5 - (double)var7, par1 + (double)var7, par3 - (double)this.yOffset + (double)this.ySize + (double)var8, par5 + (double)var7);
     }
 
     @Override
-	public boolean canBeCollidedWith()
+	protected int getDropItemId()
     {
-        return true;
+        return 0;
     }
 
     @Override
@@ -120,75 +153,82 @@ public class GCCoreEntityWorm extends EntityMob
 		switch (this.getRotationIndex() % 4)
 		{
 		case 0:
-			xOffset = -5;
+			xOffset = -4;
 			break;
 		case 1:
-			zOffset = -5;
+			zOffset = -4;
 			break;
 		case 2:
-			xOffset = 5;
+			xOffset = 4;
 			break;
 		case 3:
-			zOffset = 5;
+			zOffset = 4;
 			break;
 		}
     	
-    	for (int i = -1; i < 2; i++)
-    	{
-    		for (int j = -1; j < 2; j++)
-    		{
-            	for (int k = -1; k < 2; k++)
-            	{
-            		int id = this.worldObj.getBlockId(MathHelper.floor_double(this.posX + xOffset + i), MathHelper.floor_double(this.posY + j), MathHelper.floor_double(this.posZ + zOffset + k));
-            		
-            		if (id > 0 && id != Block.waterMoving.blockID && id != Block.waterStill.blockID && id != Block.bedrock.blockID)
-            		{
-                		Block block = Block.blocksList[id];
-                		
-                		if (block != null)
-                		{
-                    		block.dropBlockAsItemWithChance(worldObj, MathHelper.floor_double(this.posX + xOffset + i), MathHelper.floor_double(this.posY + j), MathHelper.floor_double(this.posZ + zOffset + k), worldObj.getBlockMetadata(MathHelper.floor_double(this.posX + xOffset + i), MathHelper.floor_double(this.posY + j), MathHelper.floor_double(this.posZ + zOffset + k)), 1F, 0);
-                		}
-
-                        if (this.worldObj.setBlockAndMetadataWithUpdate(MathHelper.floor_double(this.posX + xOffset + i), MathHelper.floor_double(this.posY + j), MathHelper.floor_double(this.posZ + zOffset + k), 0, 0, this.worldObj.isRemote))
-                        {
-                            this.worldObj.notifyBlocksOfNeighborChange(MathHelper.floor_double(this.posX + xOffset + i), MathHelper.floor_double(this.posY + j), MathHelper.floor_double(this.posZ + zOffset + k), 0);
-                        }
-            		}
-            		
-            		if (id == Block.bedrock.blockID)
-            		{
-            			turn();
-            		}
-            	}
-    		}
-    	}
-    	
-    	for (int i = -1; i < 2; i++)
-    	{
-    		for (int j = -1; j < 2; j++)
-    		{
-            	for (int k = -1; k < 2; k++)
-            	{
-            		int id = this.worldObj.getBlockId(MathHelper.floor_double(this.posX - (xOffset / 6) + i), MathHelper.floor_double(this.posY + j), MathHelper.floor_double(this.posZ - (zOffset / 6) + k));
-
-            		if (id > 0 && id != Block.waterMoving.blockID && id != Block.waterStill.blockID && id != Block.bedrock.blockID)
-            		{
-                		Block block = Block.blocksList[id];
-                		
-                		if (block != null)
-                		{
-                    		block.dropBlockAsItemWithChance(worldObj, MathHelper.floor_double(this.posX - (xOffset / 6) + i), MathHelper.floor_double(this.posY + j), MathHelper.floor_double(this.posZ - (zOffset / 6) + k), worldObj.getBlockMetadata(MathHelper.floor_double(this.posX - (xOffset / 6) + i), MathHelper.floor_double(this.posY + j), MathHelper.floor_double(this.posZ - (zOffset / 6) + k)), 1F, 0);
-                		}
-
-                        if (this.worldObj.setBlockAndMetadataWithUpdate(MathHelper.floor_double(this.posX - (xOffset / 6) + i), MathHelper.floor_double(this.posY + j), MathHelper.floor_double(this.posZ - (zOffset / 6) + k), 0, 0, this.worldObj.isRemote))
-                        {
-                            this.worldObj.notifyBlocksOfNeighborChange(MathHelper.floor_double(this.posX - (xOffset / 6) + i), MathHelper.floor_double(this.posY + j), MathHelper.floor_double(this.posZ - (zOffset / 6) + k), 0);
-                        }
-            		}
-            	}
-    		}
-    	}
+//    	for (int i = -1; i < 2; i++)
+//    	{
+//    		for (int j = -1; j < 2; j++)
+//    		{
+//            	for (int k = -1; k < 2; k++)
+//            	{
+//            		int id = this.worldObj.getBlockId(MathHelper.floor_double(this.posX + xOffset + i), MathHelper.floor_double(this.posY + j), MathHelper.floor_double(this.posZ + zOffset + k));
+//            		
+//            		if (id > 0 && id != Block.waterMoving.blockID && id != Block.waterStill.blockID && id != Block.bedrock.blockID)
+//            		{
+//                		Block block = Block.blocksList[id];
+//                		
+//                		if (block != null)
+//                		{
+//                    		block.dropBlockAsItemWithChance(worldObj, MathHelper.floor_double(this.posX + xOffset + i), MathHelper.floor_double(this.posY + j), MathHelper.floor_double(this.posZ + zOffset + k), worldObj.getBlockMetadata(MathHelper.floor_double(this.posX + xOffset + i), MathHelper.floor_double(this.posY + j), MathHelper.floor_double(this.posZ + zOffset + k)), 1F, 0);
+//                		}
+//
+//                        if (this.worldObj.setBlockAndMetadataWithUpdate(MathHelper.floor_double(this.posX + xOffset + i), MathHelper.floor_double(this.posY + j), MathHelper.floor_double(this.posZ + zOffset + k), 0, 0, this.worldObj.isRemote))
+//                        {
+//                            this.worldObj.notifyBlocksOfNeighborChange(MathHelper.floor_double(this.posX + xOffset + i), MathHelper.floor_double(this.posY + j), MathHelper.floor_double(this.posZ + zOffset + k), 0);
+//                        }
+//            		}
+//            		
+//            		if (id == Block.bedrock.blockID)
+//            		{
+//            			turn();
+//            		}
+//            	}
+//    		}
+//    	}
+//    	
+//    	for (int i = -1; i < 2; i++)
+//    	{
+//    		for (int j = -1; j < 2; j++)
+//    		{
+//            	for (int k = -1; k < 2; k++)
+//            	{
+//            		int id = this.worldObj.getBlockId(MathHelper.floor_double(this.posX - (xOffset / 6) + i), MathHelper.floor_double(this.posY + j), MathHelper.floor_double(this.posZ - (zOffset / 6) + k));
+//
+//            		if (id > 0 && id != Block.waterMoving.blockID && id != Block.waterStill.blockID && id != Block.bedrock.blockID)
+//            		{
+//                		Block block = Block.blocksList[id];
+//                		
+//                		if (block != null)
+//                		{
+//                    		block.dropBlockAsItemWithChance(worldObj, MathHelper.floor_double(this.posX - (xOffset / 6) + i), MathHelper.floor_double(this.posY + j), MathHelper.floor_double(this.posZ - (zOffset / 6) + k), worldObj.getBlockMetadata(MathHelper.floor_double(this.posX - (xOffset / 6) + i), MathHelper.floor_double(this.posY + j), MathHelper.floor_double(this.posZ - (zOffset / 6) + k)), 1F, 0);
+//                		}
+//
+//                        if (this.worldObj.setBlockAndMetadataWithUpdate(MathHelper.floor_double(this.posX - (xOffset / 6) + i), MathHelper.floor_double(this.posY + j), MathHelper.floor_double(this.posZ - (zOffset / 6) + k), 0, 0, this.worldObj.isRemote))
+//                        {
+//                            this.worldObj.notifyBlocksOfNeighborChange(MathHelper.floor_double(this.posX - (xOffset / 6) + i), MathHelper.floor_double(this.posY + j), MathHelper.floor_double(this.posZ - (zOffset / 6) + k), 0);
+//                        }
+//            		}
+//            	}
+//    		}
+		
+		
+        float var5 = this.rotationYaw * (float)Math.PI / 180.0F;
+        float var27 = MathHelper.sin(var5);
+        float var7 = MathHelper.cos(var5);
+		
+		this.wormPartHead.onUpdate();
+        this.wormPartHead.setLocationAndAngles(this.posX + xOffset, this.posY - 0.5, this.posZ + zOffset, 0.0F, 0.0F);
     	
     	int id = this.worldObj.getBlockId(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 3), MathHelper.floor_double(this.posZ));
 
@@ -213,8 +253,20 @@ public class GCCoreEntityWorm extends EntityMob
 
         this.motionX = -(this.moveSpeed * Math.cos((((this.getRotationIndex() % 4) + 1) * (90F) - 90F) * Math.PI / 180.0D));
         this.motionZ = -(this.moveSpeed * Math.sin((((this.getRotationIndex() % 4) + 1) * (90F) - 90F) * Math.PI / 180.0D));
-        
-        this.moveEntity(this.motionX, this.motionY, this.motionZ);
+
+        if (this.getSlowed() == 1)
+        {
+            this.moveEntity(this.motionX * 0.800000011920929D, this.motionY * 0.800000011920929D, this.motionZ * 0.800000011920929D);
+        }
+        else
+        {
+            this.moveEntity(this.motionX, this.motionY, this.motionZ);
+        }
+
+        if (!this.worldObj.isRemote)
+        {
+            this.setSlowed(this.destroyBlocksInAABB(this.wormPartHead.boundingBox) | this.destroyBlocksInAABB(this.wormPartBody1.boundingBox));
+        }
     }
     
     @Override
@@ -253,8 +305,117 @@ public class GCCoreEntityWorm extends EntityMob
     	this.dataWatcher.updateObject(16, Integer.valueOf(i));
     }
     
+    public int getSlowed()
+    {
+    	return this.dataWatcher.getWatchableObjectInt(17);
+    }
+    
+    public void setSlowed(boolean b)
+    {
+    	if (b)
+    	{
+    		this.setSlowed(1);
+    	}
+    	else
+    	{
+    		this.setSlowed(0);
+    	}
+    }
+    
+    public void setSlowed(int i)
+    {
+    	this.dataWatcher.updateObject(17, Integer.valueOf(i));
+    }
+    
     private void turn()
     {
 		this.setRotationIndex(this.getRotationIndex() + 1);
+    }
+
+	@Override
+	public World getWorld() 
+	{
+        return this.worldObj;
+	}
+
+	@Override
+    public Entity[] getParts()
+    {
+        return this.wormPartArray;
+    }
+
+	@Override
+    public boolean canBeCollidedWith()
+    {
+        return false;
+    }
+
+	@Override
+    public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
+    {
+        return false;
+    }
+
+	@Override
+	public boolean attackEntityFromPart(GCCoreEntityWormPart var1, DamageSource par2DamageSource, int par3) 
+	{
+        if (var1 != this.wormPartHead)
+        {
+            par3 = par3 / 4 + 1;
+        }
+
+        if (par2DamageSource.getEntity() instanceof EntityPlayer || par2DamageSource == DamageSource.explosion)
+        {
+        	super.attackEntityFrom(par2DamageSource, par3);
+        }
+
+        return true;
+	}
+
+    private boolean destroyBlocksInAABB(AxisAlignedBB par1AxisAlignedBB)
+    {
+        int var2 = MathHelper.floor_double(par1AxisAlignedBB.minX);
+        int var3 = MathHelper.floor_double(par1AxisAlignedBB.minY);
+        int var4 = MathHelper.floor_double(par1AxisAlignedBB.minZ);
+        int var5 = MathHelper.floor_double(par1AxisAlignedBB.maxX);
+        int var6 = MathHelper.floor_double(par1AxisAlignedBB.maxY);
+        int var7 = MathHelper.floor_double(par1AxisAlignedBB.maxZ);
+        boolean var8 = false;
+        boolean var9 = false;
+
+        for (int var10 = var2; var10 <= var5; ++var10)
+        {
+            for (int var11 = var3; var11 <= var6; ++var11)
+            {
+                for (int var12 = var4; var12 <= var7; ++var12)
+                {
+                    int var13 = this.worldObj.getBlockId(var10, var11, var12);
+                    Block block = Block.blocksList[var13];
+
+                    if (block != null)
+                    {
+                        if (block.canDragonDestroy(worldObj, var10, var11, var12))
+                        {
+                            var9 = true;
+                            this.worldObj.setBlockWithNotify(var10, var11, var12, 0);
+                        }
+                        else
+                        {
+                            var8 = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (var9)
+        {
+            double var16 = par1AxisAlignedBB.minX + (par1AxisAlignedBB.maxX - par1AxisAlignedBB.minX) * (double)this.rand.nextFloat();
+            double var17 = par1AxisAlignedBB.minY + (par1AxisAlignedBB.maxY - par1AxisAlignedBB.minY) * (double)this.rand.nextFloat();
+            double var14 = par1AxisAlignedBB.minZ + (par1AxisAlignedBB.maxZ - par1AxisAlignedBB.minZ) * (double)this.rand.nextFloat();
+            this.worldObj.spawnParticle("largeexplode", var16, var17, var14, 0.0D, 0.0D, 0.0D);
+        }
+
+        return var8;
     }
 }
