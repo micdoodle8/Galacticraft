@@ -28,6 +28,7 @@ import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpider;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityWorm;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityZombie;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerBase;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItemParachute;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityBreathableAir;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCollector;
@@ -40,6 +41,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.network.packet.Packet9Respawn;
@@ -63,7 +65,6 @@ import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -248,6 +249,8 @@ public class GalacticraftCore
         EntityRegistry.registerModEntity(var0, var1, id, this, trackingDistance, updateFreq, sendVel);
     }
     
+	public int chatCooldown;
+    
     public class ServerPacketHandler implements IPacketHandler
     {
         @Override
@@ -293,7 +296,37 @@ public class GalacticraftCore
                 {
                 	final GCCoreEntitySpaceship ship = (GCCoreEntitySpaceship) player.ridingEntity;
                 	
-                	ship.ignite();
+                	ItemStack stack = ship.getStackInSlot(27);
+                	
+                	if (stack != null && stack.getItem().itemID == GCCoreItems.rocketFuelBucket.itemID)
+                	{
+                        for (int j = 0; j < GalacticraftCore.gcPlayers.size(); ++j)
+        	            {
+                        	final GCCorePlayerBase playerBase = (GCCorePlayerBase) GalacticraftCore.gcPlayers.get(j);
+        	    			
+        	    			if (player.username.equals(playerBase.getPlayer().username))
+        	    			{
+        	    				ItemStack stack2 = playerBase.playerTankInventory.getStackInSlot(4);
+        	    				
+        	    				if ((stack2 != null && stack2.getItem() instanceof GCCoreItemParachute) || playerBase.launchAttempts > 0)
+        	    				{
+        	                    	ship.ignite();
+        	                    	playerBase.launchAttempts = 0;
+        	    				}
+        	                	else if (chatCooldown == 0 && playerBase.launchAttempts == 0)
+        	                	{
+        	                		player.sendChatToPlayer("I don't have a parachute! If I press launch again, there's no going back!");
+        	                		chatCooldown = 250;
+        	                		playerBase.launchAttempts = 1;
+        	                	}
+        	    			}
+        	            }
+                	}
+                	else if (chatCooldown == 0)
+                	{
+                		player.sendChatToPlayer("I'll probably need some Rocket Fuel before this will fly!");
+                		chatCooldown = 250;
+                	}
                 }
             }
             else if (packetType == 4)
@@ -360,6 +393,11 @@ public class GalacticraftCore
 				if (world.provider.getDimensionName() == "Overworld" && !world.isRemote)
 				{
 					tick++;
+				}
+				
+				if (chatCooldown > 0)
+				{
+					chatCooldown--;
 				}
             }
 		}

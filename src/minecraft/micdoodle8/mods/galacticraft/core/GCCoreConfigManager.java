@@ -72,6 +72,7 @@ public class GCCoreConfigManager
 	public static int idItemCanvas;
 	public static int idItemParachute;
 	public static int idItemRocketFuelBucket;
+	public static int idItemFlagPole;
 	
 	// ARMOR
 	public static int idArmorOxygenMask;
@@ -172,6 +173,7 @@ public class GCCoreConfigManager
 	        idItemCanvas = 							configuration.get(Configuration.CATEGORY_ITEM, "idItemCanvas", 						9890)		.getInt(9890);
 	        idItemParachute = 						configuration.get(Configuration.CATEGORY_ITEM, "idItemParachute", 					9891)		.getInt(9891);
 	        idItemRocketFuelBucket = 				configuration.get(Configuration.CATEGORY_ITEM, "idItemRocketFuelBucket", 			9892)		.getInt(9892);
+	        idItemFlagPole = 						configuration.get(Configuration.CATEGORY_ITEM, "idItemFlagPole", 					9893)		.getInt(9893);
 	        
 	        idToolTitaniumSword = 					configuration.get(Configuration.CATEGORY_BLOCK, "idToolTitaniumSword", 					9876)		.getInt(9876);
 	        idToolTitaniumPickaxe = 				configuration.get(Configuration.CATEGORY_BLOCK, "idToolTitaniumPickaxe", 				9877)		.getInt(9877);

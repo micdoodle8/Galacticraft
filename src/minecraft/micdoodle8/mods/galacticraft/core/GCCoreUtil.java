@@ -15,12 +15,15 @@ import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiTankRefill;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerBase;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemBreathableHelmet;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItemFlag;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenGear;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItemParachute;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreInventoryRocketBench;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreInventoryTankRefill;
 import micdoodle8.mods.galacticraft.moon.items.GCMoonItems;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockCloth;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiInventory;
@@ -269,12 +272,41 @@ public class GCCoreUtil
 			"X X",
 			'X', GCCoreItems.ingotTitanium
 		});
-//		GameRegistry.addShapelessRecipe(new ItemStack(GCCoreItems.titaniumHelmetBreathable, 1), new Object[] {
-//			GCCoreItems.titaniumHelmet, GCCoreItems.oxygenMask
-//		});
-//		GameRegistry.addShapelessRecipe(new ItemStack(GCCoreItems.sensorGlassesWithOxygenMask, 1), new Object[] {
-//			GCCoreItems.sensorGlasses, GCCoreItems.oxygenMask
-//		});
+		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.canvas, 1), new Object[] {
+			" XY",
+			"XXX",
+			"YX ",
+			'Y', Item.stick, 'X', Item.silk
+		});
+		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.parachute, 1, 0), new Object[] {
+			"XXX",
+			"Y Y",
+			" Y ",
+			'X', GCCoreItems.canvas, 'Y', Item.silk
+		});
+		
+        for (int var2 = 0; var2 < 16; ++var2)
+        {
+        	CraftingManager.getInstance().addShapelessRecipe(new ItemStack(GCCoreItems.parachute, 1, GCCoreItemParachute.getParachuteDamageValueFromDye(var2)), new Object[] {new ItemStack(Item.dyePowder, 1, var2), new ItemStack(GCCoreItems.parachute, 1, 0)});
+        }
+        
+		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.flagPole, 2, 0), new Object[] {
+			"X",
+			"X",
+			"X",
+			'X', GCCoreItems.ingotAluminum
+		});
+		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.flag, 1, 16), new Object[] {
+			"XYY",
+			"XYY",
+			"X  ",
+			'X', GCCoreItems.flagPole, 'Y', GCCoreItems.canvas
+		});
+		
+        for (int var2 = 0; var2 < 16; ++var2)
+        {
+        	CraftingManager.getInstance().addShapelessRecipe(new ItemStack(GCCoreItems.flag, 1, GCCoreItemFlag.getFlagDamageValueFromDye(var2)), new Object[] {new ItemStack(Item.dyePowder, 1, var2), new ItemStack(GCCoreItems.flag, 1, 16)});
+        }
 	}
 	
 	public static void addSmeltingRecipes()

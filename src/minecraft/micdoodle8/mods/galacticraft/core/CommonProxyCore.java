@@ -137,7 +137,7 @@ public class CommonProxyCore implements IGuiHandler
 		{
 			return new GCCoreContainerBuggyBench(player.inventory);
 		}
-		else if (ID == GCCoreConfigManager.idGuiSpaceshipInventory && player.ridingEntity instanceof GCCoreEntitySpaceship)
+		else if (ID == GCCoreConfigManager.idGuiSpaceshipInventory && player.ridingEntity != null && player.ridingEntity instanceof GCCoreEntitySpaceship)
 		{
 			return new GCCoreContainerRocketRefill(player.inventory, ((GCCoreEntitySpaceship) player.ridingEntity), ((GCCoreEntitySpaceship) player.ridingEntity).getSpaceshipType());
 		}
@@ -170,7 +170,7 @@ public class CommonProxyCore implements IGuiHandler
 		{
 			return new GCCoreGuiGalaxyMap(player);
 		}
-		else if (ID == GCCoreConfigManager.idGuiSpaceshipInventory)
+		else if (ID == GCCoreConfigManager.idGuiSpaceshipInventory && player.ridingEntity != null && player.ridingEntity instanceof GCCoreEntitySpaceship)
 		{
 			return new GCCoreGuiRocketRefill(player.inventory, ((GCCoreEntitySpaceship) player.ridingEntity), ((GCCoreEntitySpaceship) player.ridingEntity).getSpaceshipType());
 		}

@@ -54,6 +54,7 @@ public class GCCoreItems
 	public static Item parachute;
 	public static Item canvas;
 	public static Item rocketFuelBucket;
+	public static Item flagPole;
 	
 	public static EnumArmorMaterial OXYGENMASK = EnumHelper.addArmorMaterial("OXYGENMASK", 200, new int[] {0, 0, 0, 0}, 0);
 	public static EnumArmorMaterial SENSORGLASSES = EnumHelper.addArmorMaterial("SENSORGLASSES", 200, new int[] {0, 0, 0, 0}, 0);
@@ -97,7 +98,8 @@ public class GCCoreItems
 		oxygenGear = new GCCoreItemOxygenGear(GCCoreConfigManager.idItemOxygenGear).setIconIndex(32).setItemName("oxygenGear");
 		parachute = new GCCoreItemParachute(GCCoreConfigManager.idItemParachute).setItemName("parachute");
 		canvas = new GCCoreItem(GCCoreConfigManager.idItemCanvas).setIconIndex(33).setItemName("canvas");
-		rocketFuelBucket = new GCCoreItem(GCCoreConfigManager.idItemRocketFuelBucket).setIconIndex(34).setItemName("rocketFuel");
+		rocketFuelBucket = new GCCoreItem(GCCoreConfigManager.idItemRocketFuelBucket).setIconIndex(50).setItemName("rocketFuel");
+		flagPole = new GCCoreItem(GCCoreConfigManager.idItemFlagPole).setIconIndex(51).setItemName("flagPole");
 	}
 	
 	public static void registerHarvestLevels()

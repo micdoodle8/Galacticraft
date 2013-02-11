@@ -71,7 +71,10 @@ public class GCCorePlayerBase extends ServerPlayerBase
 	
 	private boolean usingParachute;
 	
-	private boolean lastOnGround;
+	private ItemStack parachuteInSlot;
+	private ItemStack lastParachuteInSlot;
+	
+	public int launchAttempts = 0;
 
 	public GCCorePlayerBase(ServerPlayerAPI var1) 
 	{
@@ -146,6 +149,8 @@ public class GCCorePlayerBase extends ServerPlayerBase
     public void onUpdate()
     {
     	super.onUpdate();
+    	
+    	this.parachuteInSlot = this.playerTankInventory.getStackInSlot(4);
     	
 		if (player.worldObj.provider instanceof IGalacticraftWorldProvider && player.inventory.getCurrentItem() != null)
 	    {
@@ -275,10 +280,38 @@ public class GCCorePlayerBase extends ServerPlayerBase
 			this.sendParachuteRemovalPacket();
 			this.setParachute(false);
 		}
+		
+		if (this.getParachute() && parachuteInSlot == null && this.lastParachuteInSlot != null)
+		{
+			this.sendParachuteRemovalPacket();
+		}
+		
+		if (this.getParachute() && parachuteInSlot != null && this.lastParachuteInSlot == null)
+		{
+			this.sendParachuteAddPacket();
+		}
+		
+		if (parachuteInSlot != null && this.lastParachuteInSlot == null)
+		{
+			this.sendPlayerParachuteTexturePacket(this);
+		}
+		
+		if (parachuteInSlot != null && this.lastParachuteInSlot != null)
+		{
+			if (parachuteInSlot.getItemDamage() != this.lastParachuteInSlot.getItemDamage())
+			{
+				this.sendPlayerParachuteTexturePacket(this);
+			}
+		}
 
 		if (GalacticraftCore.tick % 5 == 0)
 		{
 			this.sendPlayerParachuteTexturePacket(this);
+		}
+		
+		if (this.launchAttempts > 0 && player.ridingEntity == null)
+		{
+			this.launchAttempts = 0;
 		}
 		
 		if (player != null && player.worldObj.provider instanceof IGalacticraftWorldProvider)
@@ -480,7 +513,7 @@ public class GCCorePlayerBase extends ServerPlayerBase
 			}
 		}
     	
-    	lastOnGround = this.player.onGround;
+    	this.lastParachuteInSlot = this.playerTankInventory.getStackInSlot(4);
 	}
 
     public void transferPlayerToDimension(EntityPlayerMP player, int par2, Teleporter teleporter)
@@ -491,7 +524,7 @@ public class GCCorePlayerBase extends ServerPlayerBase
         WorldServer var5 = player.mcServer.getConfigurationManager().getServerInstance().worldServerForDimension(player.dimension);
 
         player.playerNetServerHandler.sendPacketToPlayer(new Packet9Respawn(player.dimension, (byte)player.worldObj.difficultySetting, var5.getWorldInfo().getTerrainType(), var5.getHeight(), player.theItemInWorldManager.getGameType()));
-        var4.removeEntity(player);
+        var4.removePlayerEntityDangerously(player);
         player.isDead = false;
         this.transferEntityToWorld(player, var3, var4, var5, teleporter);
         player.mcServer.getConfigurationManager().func_72375_a(player, var4);

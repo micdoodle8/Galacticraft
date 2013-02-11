@@ -499,6 +499,8 @@ public class ClientProxyCore extends CommonProxyCore
 	{
 		return player.worldObj.isMaterialInBB(player.boundingBox.expand(-0.10000000149011612D, -0.4000000059604645D, -0.10000000149011612D), Material.water);
 	}
+	
+	private static boolean lastSpacebarDown;
     
     public static class TickHandlerClient implements ITickHandler
     {
@@ -575,11 +577,17 @@ public class ClientProxyCore extends CommonProxyCore
     			{
     				world.setRainStrength(0.0F);
     			}
+
+    			if (!minecraft.gameSettings.keyBindJump.pressed)
+    			{
+    				lastSpacebarDown = false;
+    			}
     			
-    			if (player != null && player.ridingEntity != null && minecraft.gameSettings.keyBindJump.pressed)
+    			if (player != null && player.ridingEntity != null && minecraft.gameSettings.keyBindJump.pressed && !lastSpacebarDown)
     			{
     				final Object[] toSend = {0};
     	            PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 3, toSend));
+    	            lastSpacebarDown = true;
     			}
     			
             	if (Keyboard.isKeyDown(Keyboard.KEY_W))

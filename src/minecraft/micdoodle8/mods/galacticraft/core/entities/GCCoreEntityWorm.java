@@ -101,7 +101,7 @@ public class GCCoreEntityWorm extends EntityMob
     {
     	if (!this.worldObj.isRemote && this.rand.nextInt(150) == 0)
     	{
-    		this.setRotationIndex(this.getRotationIndex() + 1);
+    		turn();
     	}
 
 		this.rotationYaw = (this.getRotationIndex() % 4) * 90F + 45F;
@@ -141,7 +141,7 @@ public class GCCoreEntityWorm extends EntityMob
             	{
             		int id = this.worldObj.getBlockId(MathHelper.floor_double(this.posX + xOffset + i), MathHelper.floor_double(this.posY + j), MathHelper.floor_double(this.posZ + zOffset + k));
             		
-            		if (id > 0 && id != Block.waterMoving.blockID && id != Block.waterStill.blockID)
+            		if (id > 0 && id != Block.waterMoving.blockID && id != Block.waterStill.blockID && id != Block.bedrock.blockID)
             		{
                 		Block block = Block.blocksList[id];
                 		
@@ -155,6 +155,11 @@ public class GCCoreEntityWorm extends EntityMob
                             this.worldObj.notifyBlocksOfNeighborChange(MathHelper.floor_double(this.posX + xOffset + i), MathHelper.floor_double(this.posY + j), MathHelper.floor_double(this.posZ + zOffset + k), 0);
                         }
             		}
+            		
+            		if (id == Block.bedrock.blockID)
+            		{
+            			turn();
+            		}
             	}
     		}
     	}
@@ -167,7 +172,7 @@ public class GCCoreEntityWorm extends EntityMob
             	{
             		int id = this.worldObj.getBlockId(MathHelper.floor_double(this.posX - (xOffset / 6) + i), MathHelper.floor_double(this.posY + j), MathHelper.floor_double(this.posZ - (zOffset / 6) + k));
 
-            		if (id > 0 && id != Block.waterMoving.blockID && id != Block.waterStill.blockID)
+            		if (id > 0 && id != Block.waterMoving.blockID && id != Block.waterStill.blockID && id != Block.bedrock.blockID)
             		{
                 		Block block = Block.blocksList[id];
                 		
@@ -246,5 +251,10 @@ public class GCCoreEntityWorm extends EntityMob
     public void setRotationIndex(int i)
     {
     	this.dataWatcher.updateObject(16, Integer.valueOf(i));
+    }
+    
+    private void turn()
+    {
+		this.setRotationIndex(this.getRotationIndex() + 1);
     }
 }

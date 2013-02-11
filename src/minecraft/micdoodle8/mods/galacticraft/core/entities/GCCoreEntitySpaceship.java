@@ -297,32 +297,26 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
         		this.riddenByEntity.posZ += this.rumble / 30F;
     		}
     		
-    		if (riddenByEntity instanceof EntityPlayerMP)
-    		{
-    			if (getSizeInventory() > 0)
-    	        {
-    				
-    	        }
-    		}
+    		EntityPlayer player = (EntityPlayer) this.riddenByEntity;
 
-        	if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT && FMLClientHandler.instance().getClient().gameSettings.keyBindRight.pressed)
+        	if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT && player.username.equals(FMLClientHandler.instance().getClient().thePlayer.username) && FMLClientHandler.instance().getClient().gameSettings.keyBindRight.pressed)
         	{
         		this.rotationYaw -= 0.9F;
         	}
         	
-        	if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT && FMLClientHandler.instance().getClient().gameSettings.keyBindLeft.pressed)
+        	if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT && player.username.equals(FMLClientHandler.instance().getClient().thePlayer.username)  && FMLClientHandler.instance().getClient().gameSettings.keyBindLeft.pressed)
         	{
         		this.rotationYaw += 0.9F;
         	}
     		
-    		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT && this.getLaunched() == 1)
+    		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT && player.username.equals(FMLClientHandler.instance().getClient().thePlayer.username) && this.getLaunched() == 1)
     		{
-            	if (FMLClientHandler.instance().getClient().gameSettings.keyBindForward.pressed)
+            	if (FMLClientHandler.instance().getClient().gameSettings.keyBindForward.pressed && this.rotationPitch >= -70F)
             	{
             		this.rotationPitch -= 0.4F;
             	}
             	
-            	if (FMLClientHandler.instance().getClient().gameSettings.keyBindBack.pressed)
+            	if (FMLClientHandler.instance().getClient().gameSettings.keyBindBack.pressed && this.rotationPitch <= 70F)
             	{
             		this.rotationPitch += 0.4F;
             	}
@@ -402,10 +396,16 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
         	this.rumble = (float) this.rand.nextInt(3) - 3;
         }
         
-        if (this.launched && !this.reversed)
+        if (this.launched && !this.reversed && this.getStackInSlot(27) != null && this.getStackInSlot(27).getItem().itemID == GCCoreItems.rocketFuelBucket.itemID)
         {
         	if (Math.abs(Math.sin(this.timeSinceLaunch / 1000)) / 10 != 0.0)
         		this.motionY += Math.abs(Math.sin(this.timeSinceLaunch / 1000)) / 20;
+        }
+        else if ((this.getStackInSlot(27) == null || this.getStackInSlot(27).getItem().itemID != GCCoreItems.rocketFuelBucket.itemID) && this.getLaunched() == 1)
+        {
+      		this.rotationPitch = -180;
+        	if (Math.abs(Math.sin(this.timeSinceLaunch / 1000)) / 10 != 0.0)
+        		this.motionY -= Math.abs(Math.sin(this.timeSinceLaunch / 1000)) / 20;
         }
         
         this.motionX = -(this.motionY * Math.sin(this.rotationPitch * Math.PI / 180.0D) * Math.cos(this.rotationYaw * Math.PI / 180.0D));
@@ -414,6 +414,11 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
         if (this.getReversed() == 0 && (this.rotationPitch > 70F || this.rotationPitch < -70F))
         {
 //        	this.failRocket(); TODO
+        }
+        
+        if (this.timeSinceLaunch > 50 && this.onGround)
+        {
+        	this.failRocket();
         }
         
         this.moveEntity(this.motionX, this.motionY, this.motionZ);
@@ -431,10 +436,9 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
 	      	}
       	}
         
-        if (this.getFailedLaunch() == 1)
+        if ((this.getFailedLaunch() == 1 || (this.getStackInSlot(27) == null || this.getStackInSlot(27).getItem().itemID != GCCoreItems.rocketFuelBucket.itemID)) && this.getLaunched() == 1)
         {
-      		this.rotationYaw += (-100 + this.getTimeSinceLaunch()) / 5;
-      		this.rotationPitch += (-100 + this.getTimeSinceLaunch()) / 50;
+      		this.rotationYaw += 2;
         }
 
         if (this.worldObj.isRemote)
@@ -460,8 +464,6 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
         
   		this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 20, true);
   		
-  		this.spawnParticlesExplosion();
-  		
   		this.setDead();
     }
 
@@ -472,8 +474,8 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
         this.minecartX = par1;
         this.minecartY = par3;
         this.minecartZ = par5;
-        this.rotationYaw = par7;
-        this.rotationPitch = par8;
+        this.minecartYaw = par7;
+        this.minecartPitch = par8;
         this.motionX = this.velocityX;
         this.motionY = this.velocityY;
         this.motionZ = this.velocityZ;
@@ -494,7 +496,7 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
     	final double z1 = 2D * Math.sin(this.rotationPitch * 1.5D * Math.PI / 180.0D) * Math.sin(this.rotationYaw * Math.PI / 180.0D);
     	final double y1 = 4D * Math.sin(this.rotationPitch * Math.PI / 180.0D) + (this.getReversed() == 1 ? 10D : 0D);
     	
-//    	if (!this.worldObj.isRemote && !this.isDead)
+    	if (this.getStackInSlot(27) != null && this.getStackInSlot(27).getItem().itemID == GCCoreItems.rocketFuelBucket.itemID && !this.isDead)
     	{
     		if (this.getLaunched() == 1)
     		{

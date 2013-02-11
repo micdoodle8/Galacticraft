@@ -38,7 +38,8 @@ public class GCCoreItemFlag extends GCCoreItem
 			"purple", // 12
 			"red", // 13
 			"teal", // 14
-			"yellow"}; // 15
+			"yellow", // 15
+			"white"}; // 16
 	public int placeProgress;
 	
 	public GCCoreItemFlag(int par1) 
@@ -52,7 +53,7 @@ public class GCCoreItemFlag extends GCCoreItem
     @Override
     public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
     {
-    	for (int i = 0; i < 16; i++)
+    	for (int i = 0; i < 17; i++)
     	{
             par3List.add(new ItemStack(par1, 1, i));
     	}
@@ -161,5 +162,46 @@ public class GCCoreItemFlag extends GCCoreItem
         }
 
         return super.getItemName() + "." + names[var2];
+    }
+    
+    public static int getFlagDamageValueFromDye(int meta)
+    {
+    	switch (meta)
+    	{
+    	case 0:
+    		return 1;
+    	case 1:
+    		return 13;
+    	case 2:
+    		return 7;
+    	case 3:
+    		return 4;
+    	case 4:
+    		return 5;
+    	case 5:
+    		return 12;
+    	case 6:
+    		return 14;
+    	case 7:
+    		return 8;
+    	case 8:
+    		return 6;
+    	case 9:
+    		return 11;
+    	case 10:
+    		return 3;
+    	case 11:
+    		return 15;
+    	case 12:
+    		return 2;
+    	case 13:
+    		return 9;
+    	case 14:
+    		return 10;
+    	case 15:
+    		return 16;
+    	}
+    	
+    	return -1;
     }
 }

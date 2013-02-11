@@ -103,7 +103,6 @@ public class GCCorePlayerBaseClient extends PlayerBase
 
 		if (!this.getParachute() && player.worldObj.provider instanceof IGalacticraftWorldProvider && !player.capabilities.isFlying && !FMLClientHandler.instance().getClient().isGamePaused && !player.handleWaterMovement()) 
 		{
-			FMLLog.info("1a");
 			final IGalacticraftWorldProvider wp = (IGalacticraftWorldProvider) player.worldObj.provider;
 			player.motionY = player.motionY + wp.getGravity();
 		}
@@ -120,8 +119,9 @@ public class GCCorePlayerBaseClient extends PlayerBase
 	{
 		if (this.getParachute() && !player.capabilities.isFlying && !FMLClientHandler.instance().getClient().isGamePaused && !player.handleWaterMovement())
 		{
-			FMLLog.info("2a");
 			player.motionY = player.motionY + 0.07F;
+			player.motionX *= 0.5F;
+			player.motionZ *= 0.5F;
 		}
 		
 		super.onUpdate();
