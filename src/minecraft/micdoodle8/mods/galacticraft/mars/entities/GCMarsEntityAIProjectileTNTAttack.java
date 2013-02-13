@@ -55,7 +55,7 @@ public class GCMarsEntityAIProjectileTNTAttack extends EntityAIBase
     {
         final EntityLiving var1 = this.worldObj.getClosestVulnerablePlayerToEntity(this.entityHost, 50.0D);
         
-        if (var1.isDead)
+        if (var1 != null && var1.isDead)
         {
         	this.resetTask();
         }
