@@ -35,20 +35,24 @@ public class GCCoreSlotRocketBenchResult extends Slot
         return super.decrStackSize(par1);
     }
 
-    protected void func_48435_a(ItemStack par1ItemStack, int par2)
+    @Override
+    protected void onCrafting(ItemStack par1ItemStack, int par2)
     {
         this.field_48436_g += par2;
-        this.func_48434_c(par1ItemStack);
+        this.onCrafting(par1ItemStack);
     }
 
-    protected void func_48434_c(ItemStack par1ItemStack)
+    @Override
+    protected void onCrafting(ItemStack par1ItemStack)
     {
         par1ItemStack.onCrafting(this.thePlayer.worldObj, this.thePlayer, this.field_48436_g);
         this.field_48436_g = 0;
     }
-    public void onPickupFromSlot(ItemStack par1ItemStack)
+    
+    @Override
+    public void onPickupFromSlot(EntityPlayer par1EntityPlayer, ItemStack par1ItemStack)
     {
-        this.func_48434_c(par1ItemStack);
+        this.onCrafting(par1ItemStack);
 
         for (int var2 = 0; var2 < this.craftMatrix.getSizeInventory(); ++var2)
         {

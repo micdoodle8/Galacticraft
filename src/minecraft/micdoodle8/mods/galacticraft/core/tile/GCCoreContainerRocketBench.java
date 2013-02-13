@@ -1,7 +1,9 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import cpw.mods.fml.common.FMLLog;
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
@@ -16,7 +18,7 @@ public class GCCoreContainerRocketBench extends Container
     public IInventory craftResult = new InventoryCraftResult();
     private final World worldObj;
 
-    public GCCoreContainerRocketBench(InventoryPlayer par1InventoryPlayer)
+    public GCCoreContainerRocketBench(InventoryPlayer par1InventoryPlayer, int x, int y, int z)
     {
     	this.worldObj = par1InventoryPlayer.player.worldObj;
         this.addSlotToContainer(new GCCoreSlotRocketBenchResult(par1InventoryPlayer.player, this.craftMatrix, this.craftResult, 0, 142, 69));
@@ -24,35 +26,35 @@ public class GCCoreContainerRocketBench extends Container
         int var7;
         
         // Cone
-        this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, 1, 48, -8));
+        this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, 1, 48, -8, x, y, z, par1InventoryPlayer.player));
 
         // Body
         for (var6 = 0; var6 < 4; ++var6)
         {
-            this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, 2 + var6, 39, -6 + var6 * 18 + 16));
+            this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, 2 + var6, 39, -6 + var6 * 18 + 16, x, y, z, par1InventoryPlayer.player));
         }
         
         // Body Right
         for (var6 = 0; var6 < 4; ++var6)
         {
-            this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, 6 + var6, 57, -6 + var6 * 18 + 16));
+            this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, 6 + var6, 57, -6 + var6 * 18 + 16, x, y, z, par1InventoryPlayer.player));
         }
 
         // Left fins
-        this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, 10, 21, 64));
-        this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, 11, 21, 82));
+        this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, 10, 21, 64, x, y, z, par1InventoryPlayer.player));
+        this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, 11, 21, 82, x, y, z, par1InventoryPlayer.player));
         
         // Engine
-        this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, 12, 48, 82));
+        this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, 12, 48, 82, x, y, z, par1InventoryPlayer.player));
         
         // Right fins
-        this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, 13, 75, 64));
-        this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, 14, 75, 82));
+        this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, 13, 75, 64, x, y, z, par1InventoryPlayer.player));
+        this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, 14, 75, 82, x, y, z, par1InventoryPlayer.player));
 
         // Addons
         for (int var8 = 0; var8 < 3; var8++)
         {
-            this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, 15 + var8, 93 + var8 * 26, -15));
+            this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, 15 + var8, 93 + var8 * 26, -15, x, y, z, par1InventoryPlayer.player));
         }
         
         // Player inv:

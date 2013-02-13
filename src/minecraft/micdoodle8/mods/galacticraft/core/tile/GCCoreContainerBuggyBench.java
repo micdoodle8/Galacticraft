@@ -15,7 +15,7 @@ public class GCCoreContainerBuggyBench extends Container
     public IInventory craftResult = new InventoryCraftResult();
     private final World worldObj;
 
-    public GCCoreContainerBuggyBench(InventoryPlayer par1InventoryPlayer)
+    public GCCoreContainerBuggyBench(InventoryPlayer par1InventoryPlayer, int x, int y, int z)
     {
     	this.worldObj = par1InventoryPlayer.player.worldObj;
         this.addSlotToContainer(new GCCoreSlotRocketBenchResult(par1InventoryPlayer.player, this.craftMatrix, this.craftResult, 0, 142, 79));
@@ -27,7 +27,7 @@ public class GCCoreContainerBuggyBench extends Container
         {
             for (var7 = 0; var7 < 3; ++var7)
             {
-                this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, var7 * 4 + var6 + 1, 39 + var7 * 18, 14 + var6 * 18));
+                this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, var7 * 4 + var6 + 1, 39 + var7 * 18, 14 + var6 * 18, x, y, z, par1InventoryPlayer.player));
             }
         }
 
@@ -35,14 +35,14 @@ public class GCCoreContainerBuggyBench extends Container
         {
             for (var7 = 0; var7 < 2; ++var7)
             {
-                this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, var7 * 2 + var6 + 13, 21 + var7 * 72, 14 + var6 * 54));
+                this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, var7 * 2 + var6 + 13, 21 + var7 * 72, 14 + var6 * 54, x, y, z, par1InventoryPlayer.player));
             }
         }
 
         // Addons
         for (int var8 = 0; var8 < 3; var8++)
         {
-            this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, 17 + var8, 93 + var8 * 26, -15));
+            this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, 17 + var8, 93 + var8 * 26, -15, x, y, z, par1InventoryPlayer.player));
         }
         
         // Player inv:

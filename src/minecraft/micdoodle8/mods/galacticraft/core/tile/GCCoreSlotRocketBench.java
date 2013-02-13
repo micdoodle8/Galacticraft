@@ -1,6 +1,9 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -8,16 +11,29 @@ import net.minecraft.item.ItemStack;
 public class GCCoreSlotRocketBench extends Slot
 {
     private final int index;
+    private final int x, y, z;
+    private final EntityPlayer player;
 
-    public GCCoreSlotRocketBench(IInventory par2IInventory, int par3, int par4, int par5)
+    public GCCoreSlotRocketBench(IInventory par2IInventory, int par3, int par4, int par5, int x, int y, int z, EntityPlayer player)
     {
         super(par2IInventory, par3, par4, par5);
         this.index = par3;
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.player = player;
     }
 
-    /**
-     * Check if the stack is a valid item for this slot. Always true beside for the armor slots.
-     */
+    @Override
+    public void onSlotChanged()
+    {
+    	if (this.player instanceof EntityPlayerMP)
+    	{
+    		Object[] toSend = {x, y, z};
+    		((EntityPlayerMP) this.player).playerNetServerHandler.sendPacketToPlayer(GCCoreUtil.createPacket("Galacticraft", 9, toSend));
+    	}
+    }
+
     @Override
 	public boolean isItemValid(ItemStack par1ItemStack)
     {
