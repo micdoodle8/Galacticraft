@@ -307,6 +307,8 @@ public class GCCoreUtil
         {
         	CraftingManager.getInstance().addShapelessRecipe(new ItemStack(GCCoreItems.flag, 1, GCCoreItemFlag.getFlagDamageValueFromDye(var2)), new Object[] {new ItemStack(Item.dyePowder, 1, var2), new ItemStack(GCCoreItems.flag, 1, 16)});
         }
+        
+        CraftingManager.getInstance().addShapelessRecipe(new ItemStack(GCCoreItems.rocketFuelBucket, 1), new Object[] {new ItemStack(Item.fireballCharge, 1), new ItemStack(Item.gunpowder, 1), new ItemStack(Item.bucketEmpty, 1)});
 	}
 	
 	public static void addSmeltingRecipes()
