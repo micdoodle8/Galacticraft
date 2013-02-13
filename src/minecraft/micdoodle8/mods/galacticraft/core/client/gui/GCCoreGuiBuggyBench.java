@@ -18,7 +18,7 @@ public class GCCoreGuiBuggyBench extends GuiContainer
 {
     public GCCoreGuiBuggyBench(InventoryPlayer par1InventoryPlayer)
     {
-        super(new GCCoreContainerBuggyBench(par1InventoryPlayer));
+        super(new GCCoreContainerBuggyBench(par1InventoryPlayer, 0, 0, 0));
     }
     
     @Override

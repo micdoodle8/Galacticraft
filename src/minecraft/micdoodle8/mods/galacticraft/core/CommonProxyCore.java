@@ -19,11 +19,13 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreContainerTankRefill;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreInventoryTankRefill;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenDistributor;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.stats.StatBase;
 import net.minecraft.world.World;
 
 import com.google.common.collect.Lists;
 
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -86,6 +88,11 @@ public class CommonProxyCore implements IGuiHandler
 	{
 		return -1;
 	}
+
+	public int getGCCraftingTableRenderID()
+	{
+		return -1;
+	}
 	
 	public World getClientWorld()
 	{
@@ -131,11 +138,11 @@ public class CommonProxyCore implements IGuiHandler
 		}
 		else if (ID == GCCoreConfigManager.idGuiRocketCraftingBench)
 		{
-			return new GCCoreContainerRocketBench(player.inventory);
+			return new GCCoreContainerRocketBench(player.inventory, x, y, z);
 		}
 		else if (ID == GCCoreConfigManager.idGuiBuggyCraftingBench)
 		{
-			return new GCCoreContainerBuggyBench(player.inventory);
+			return new GCCoreContainerBuggyBench(player.inventory, x, y, z);
 		}
 		else if (ID == GCCoreConfigManager.idGuiSpaceshipInventory && player.ridingEntity != null && player.ridingEntity instanceof GCCoreEntitySpaceship)
 		{
@@ -160,7 +167,7 @@ public class CommonProxyCore implements IGuiHandler
 		}
 		else if (ID == GCCoreConfigManager.idGuiRocketCraftingBench)
 		{
-			return new GCCoreGuiRocketBench(player.inventory);
+			return new GCCoreGuiRocketBench(player.inventory, x, y, z);
 		}
 		else if (ID == GCCoreConfigManager.idGuiBuggyCraftingBench)
 		{

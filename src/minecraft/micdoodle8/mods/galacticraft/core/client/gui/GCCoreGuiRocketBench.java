@@ -16,9 +16,9 @@ import cpw.mods.fml.common.network.PacketDispatcher;
 
 public class GCCoreGuiRocketBench extends GuiContainer
 {
-    public GCCoreGuiRocketBench(InventoryPlayer par1InventoryPlayer)
+    public GCCoreGuiRocketBench(InventoryPlayer par1InventoryPlayer, int x, int y, int z)
     {
-        super(new GCCoreContainerRocketBench(par1InventoryPlayer));
+        super(new GCCoreContainerRocketBench(par1InventoryPlayer, x, y, z));
     }
     
     @Override
