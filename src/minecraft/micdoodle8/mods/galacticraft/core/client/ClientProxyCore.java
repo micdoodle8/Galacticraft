@@ -5,6 +5,7 @@ import java.io.DataInputStream;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -18,14 +19,16 @@ import micdoodle8.mods.galacticraft.core.CommonProxyCore;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockAdvancedCraftingTable;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLaunchFlameFX;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLaunchSmokeFX;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityOxygenFX;
+import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityWeldingSmoke;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiChoosePlanet;
-import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiRocketRefill;
 import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelPlayer;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererBreathableAir;
+import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererCraftingTable;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererMeteor;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererOxygenPipe;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererUnlitTorch;
@@ -67,6 +70,8 @@ import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.moon.client.ClientProxyMoon;
 import micdoodle8.mods.galacticraft.moon.client.GCMoonMapPlanet;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockOre;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
@@ -104,7 +109,9 @@ import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry.KeyHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.common.IScheduledTickHandler;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -130,15 +137,24 @@ public class ClientProxyCore extends CommonProxyCore
 	private static int breathableAirRenderID;
 	private static int oxygenPipeRenderID;
 	private static int meteorRenderID;
+	private static int craftingTableID;
 	public static long getFirstBootTime;
 	public static long getCurrentTime;
+	public static long slowTick;
 	private final Random rand = new Random();
 	public static ClientProxyMoon moon = new ClientProxyMoon();
 	public static int teleportCooldown;
 	public static List<IPlanetSlotRenderer> slotRenderers = new ArrayList<IPlanetSlotRenderer>();
+	public static List<int[]> valueableBlocks = new ArrayList<int[]>();
 	
 	public static ArrayList<String> playersUsingParachutes = new ArrayList<String>();
 	public static HashMap<String, String> parachuteTextures = new HashMap<String, String>();
+	
+    private static double playerPosX;
+    private static double playerPosY;
+    private static double playerPosZ;
+    private static float playerRotationYaw;
+    private static float playerRotationPitch;
 	
 	@Override
 	public void preInit(FMLPreInitializationEvent event) 
@@ -159,6 +175,7 @@ public class ClientProxyCore extends CommonProxyCore
 		moon.init(event);
 		
 		TickRegistry.registerTickHandler(new TickHandlerClient(), Side.CLIENT);
+		TickRegistry.registerScheduledTickHandler(new TickHandlerClientSlow(), Side.CLIENT);
 		KeyBindingRegistry.registerKeyBinding(new GCKeyHandler());
         NetworkRegistry.instance().registerChannel(new ClientPacketHandler(), "Galacticraft", Side.CLIENT);
         ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityTreasureChest.class, new GCCoreTileEntityTreasureChestRenderer());
@@ -172,6 +189,8 @@ public class ClientProxyCore extends CommonProxyCore
         RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererOxygenPipe(ClientProxyCore.oxygenPipeRenderID));
         ClientProxyCore.meteorRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererMeteor(ClientProxyCore.meteorRenderID));
+        ClientProxyCore.craftingTableID = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererCraftingTable(ClientProxyCore.craftingTableID));
         IMapPlanet earth = new GCCoreMapPlanetOverworld();
         IMapPlanet moon = new GCMoonMapPlanet();
 		GalacticraftCore.addAdditionalMapPlanet(earth);
@@ -275,6 +294,12 @@ public class ClientProxyCore extends CommonProxyCore
 	}
 
 	@Override
+	public int getGCCraftingTableRenderID()
+	{
+		return ClientProxyCore.craftingTableID;
+	}
+
+	@Override
     public void spawnParticle(String var1, double var2, double var4, double var6, double var8, double var10, double var12, boolean b)
 	{
 		this.spawnParticle(var1, var2, var4, var6, var8, var10, var12, 0.0D, 0.0D, 0.0D, b);
@@ -349,6 +374,8 @@ public class ClientProxyCore extends CommonProxyCore
 	
     public class ClientPacketHandler implements IPacketHandler
     {
+    	Minecraft mc = FMLClientHandler.instance().getClient();
+    	
 		@Override
 		public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player p) 
 		{
@@ -419,7 +446,6 @@ public class ClientProxyCore extends CommonProxyCore
             }
             else if (packetType == 5)
             {
-    			FMLLog.info("Client1");
             	final Class[] decodeAs = {String.class};
                 final Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
                 
@@ -448,6 +474,28 @@ public class ClientProxyCore extends CommonProxyCore
             	player.sendChatToPlayer("A / D  - Turn left-right");
             	player.sendChatToPlayer("W / S  - Turn up-down");
             	player.sendChatToPlayer(Keyboard.getKeyName(GCKeyHandler.openSpaceshipInv.keyCode) + "       - Inventory / Fuel");
+            }
+            else if (packetType == 9)
+            {
+            	final Class[] decodeAs = {Integer.class, Integer.class, Integer.class};
+                final Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
+                
+                int x, y, z;
+                x = (Integer) packetReadout[0];
+                y = (Integer) packetReadout[1];
+                z = (Integer) packetReadout[2];
+
+            	for (int i = 0; i < 4; i++)
+            	{
+                    if (mc != null && mc.renderViewEntity != null && mc.effectRenderer != null && mc.theWorld != null)
+                    {
+                		final EntityFX fx = new GCCoreEntityWeldingSmoke(mc.theWorld, x - 0.15 + 0.5, y + 1.2, z + 0.15 + 0.5, (mc.theWorld.rand.nextDouble() / 20) - (mc.theWorld.rand.nextDouble() / 20), 0.06, (mc.theWorld.rand.nextDouble() / 20) - (mc.theWorld.rand.nextDouble() / 20), 1.0F);
+                		if (fx != null)
+                		{
+                        	mc.effectRenderer.addEffect(fx);
+                		}
+                    }
+            	}
             }
 		}
     }
@@ -501,6 +549,90 @@ public class ClientProxyCore extends CommonProxyCore
 	}
 	
 	private static boolean lastSpacebarDown;
+	
+	public static class TickHandlerClientSlow implements IScheduledTickHandler
+	{
+		@Override
+		public void tickStart(EnumSet<TickType> type, Object... tickData) 
+		{
+			EntityPlayer player = FMLClientHandler.instance().getClient().thePlayer;
+			
+			if (player != null)
+			{
+				for (int i = -5; i < 6; i++)
+				{
+					for (int j = -5; j < 6; j++)
+					{
+						for (int k = -5; k < 6; k++)
+						{
+							int x, y, z;
+							
+							x = MathHelper.floor_double(player.posX + i);
+							y = MathHelper.floor_double(player.posY + j);
+							z = MathHelper.floor_double(player.posZ + k);
+							
+							int id = player.worldObj.getBlockId(x, y, z);
+							
+							if (id != 0)
+							{
+								Block block = Block.blocksList[id];
+								
+								if (block != null && block instanceof BlockOre)
+								{
+									int[] blockPos = {x, y, z};
+									
+									if (!alreadyContainsBlock(x, y, z))
+									{
+										ClientProxyCore.valueableBlocks.add(blockPos);
+										FMLLog.info("" + ClientProxyCore.valueableBlocks.size());
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		private boolean alreadyContainsBlock(int x1, int y1, int z1)
+		{
+			for (int[] coordArray : ClientProxyCore.valueableBlocks)
+			{
+				int x = coordArray[0];
+				int y = coordArray[1];
+				int z = coordArray[2];
+				
+				if (x1 == x && y1 == y && z1 == z)
+				{
+					return true;
+				}
+			}
+			
+			return false;
+		}
+
+		@Override
+		public void tickEnd(EnumSet<TickType> type, Object... tickData){}
+
+    	@Override
+    	public EnumSet<TickType> ticks() 
+    	{
+    		return EnumSet.of(TickType.CLIENT);
+    	}
+
+		@Override
+		public String getLabel() 
+		{
+			return "GalacticraftSlowClient";
+		}
+
+		@Override
+		public int nextTickSpacing()
+		{
+			return 20;
+		}
+		
+	}
     
     public static class TickHandlerClient implements ITickHandler
     {
@@ -520,9 +652,8 @@ public class ClientProxyCore extends CommonProxyCore
     		
     		if (type.equals(EnumSet.of(TickType.CLIENT)))
             {
-
-    	        for (int j = 0; j < GalacticraftCore.gcPlayers.size(); ++j)
-    	        {
+//    	        for (int j = 0; j < GalacticraftCore.gcPlayers.size(); ++j)
+//    	        {
 //    				final GCCoreEntityPlayer playerBase = (GCCoreEntityPlayer) GalacticraftCore.gcPlayers.get(j);
 //    				
 //    				if (playerBase != null && player != null && player.username.equals(playerBase.getPlayer().username))
@@ -540,7 +671,7 @@ public class ClientProxyCore extends CommonProxyCore
 //    	    				}
 //    					}
 //    				}
-    	        }
+//    	        }
 
 	        	if (world != null)
 	        	{
@@ -643,6 +774,17 @@ public class ClientProxyCore extends CommonProxyCore
             
     		if (type.equals(EnumSet.of(TickType.RENDER)))
             {
+        		float partialTickTime = (Float) tickData[0];
+        		
+    			if (player != null)
+    			{
+        			ClientProxyCore.playerPosX = player.prevPosX + (player.posX - player.prevPosX) * (double)partialTickTime;
+        			ClientProxyCore.playerPosY = player.prevPosY + (player.posY - player.prevPosY) * (double)partialTickTime;
+        			ClientProxyCore.playerPosZ = player.prevPosZ + (player.posZ - player.prevPosZ) * (double)partialTickTime;
+        			ClientProxyCore.playerRotationYaw = player.prevRotationYaw + (player.rotationYaw - player.prevRotationYaw) * partialTickTime;
+        			ClientProxyCore.playerRotationPitch = player.prevRotationPitch + (player.rotationPitch - player.prevRotationPitch) * partialTickTime;
+    			}
+    			
     			if (player != null && player.ridingEntity != null && player.ridingEntity instanceof GCCoreEntitySpaceship)
         		{
     				float f = (((GCCoreEntitySpaceship)player.ridingEntity).getTimeSinceLaunch() - 250F) / 175F;
@@ -701,6 +843,67 @@ public class ClientProxyCore extends CommonProxyCore
 					GL11.glEnable(GL11.GL_DEPTH_TEST);
 					GL11.glEnable(GL11.GL_ALPHA_TEST);
 					GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+
+			        Iterator var51 = ClientProxyCore.valueableBlocks.iterator();
+			        double var52;
+			        double var58;
+			        double var59;
+			        double var20;
+			        double var21;
+			        float var60;
+
+		            while (var51.hasNext())
+		            {
+		                int[] coords = (int[]) var51.next();
+		                
+		                int x = coords[0];
+		                int y = coords[1];
+		                int z = coords[2];
+
+	                    var52 = ClientProxyCore.playerPosX - (double)x - 0.5D;
+	                    var58 = ClientProxyCore.playerPosY - (double)y - 0.5D;
+	                    var59 = ClientProxyCore.playerPosZ - (double)z - 0.5D;
+	                    var60 = (float)Math.toDegrees(Math.atan2(var52, var59));
+	                    var20 = Math.sqrt(var52 * var52 + var58 * var58 + var59 * var59) * 0.5D;
+	                    var21 = Math.sqrt(var52 * var52 + var59 * var59) * 0.5D;
+
+	                    ScaledResolution var5 = new ScaledResolution(minecraft.gameSettings, minecraft.displayWidth, minecraft.displayHeight);
+	                    int var6 = var5.getScaledWidth();
+	                    int var7 = var5.getScaledHeight();
+	                    
+	                    boolean var2 = false;
+
+	        	        for (int j = 0; j < GalacticraftCore.gcPlayers.size(); ++j)
+	        	        {
+	        				final GCCorePlayerBaseClient playerBase = (GCCorePlayerBaseClient) GalacticraftCore.players.get(j);
+	        				
+	        				if (playerBase != null && player != null && player.username.equals(playerBase.getPlayer().username))
+	        				{
+	        					var2 = playerBase.getUsingGoggles();
+	        				}
+	        	        }
+
+                    	minecraft.fontRenderer.drawString("Advanced Mode: " + (var2 ? "ON" : "OFF"), var6 / 2 - 50, 4, 0x03b88f);
+
+	                    try
+	                    {
+	                        GL11.glPushMatrix();
+
+	                        if (var20 < 4.0D)
+	                        {
+	                            GL11.glColor4f(0.0F, 255F / 255F, 198F / 255F, (float)Math.min(1.0D, Math.max(0.2D, (var20 - 1.0D) * 0.1D)));
+	            				GL11.glBindTexture(GL11.GL_TEXTURE_2D, minecraft.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/gui/indicator.png"));
+	                            GL11.glRotatef(-var60 - ClientProxyCore.playerRotationYaw + 180.0F, 0.0F, 0.0F, 1.0F);
+	                            GL11.glTranslated(0.0D, var2 ? -var20 * 16 : -var21 * 16, 0.0D);
+	                            GL11.glRotatef(-(-var60 - ClientProxyCore.playerRotationYaw + 180.0F), 0.0F, 0.0F, 1.0F);
+	                            this.drawCenteringRectangle(var6 / 2, var7 / 2, 1.0D, 8.0D, 8.0D);
+	                        }
+	                    }
+	                    finally
+	                    {
+	                        GL11.glPopMatrix();
+	                    }
+		            }
         		}
 
         		if (player != null && player.worldObj.provider instanceof IGalacticraftWorldProvider && GCCoreUtil.shouldDisplayTankGui(minecraft.currentScreen))
@@ -789,6 +992,19 @@ public class ClientProxyCore extends CommonProxyCore
     			}
             }
     	}
+
+        private void drawCenteringRectangle(double var1, double var3, double var5, double var7, double var9)
+        {
+            var7 *= 0.5D;
+            var9 *= 0.5D;
+            Tessellator t = Tessellator.instance;
+            t.startDrawingQuads();
+            t.addVertexWithUV(var1 - var7, var3 + var9, var5, 0.0D, 1.0D);
+            t.addVertexWithUV(var1 + var7, var3 + var9, var5, 1.0D, 1.0D);
+            t.addVertexWithUV(var1 + var7, var3 - var9, var5, 1.0D, 0.0D);
+            t.addVertexWithUV(var1 - var7, var3 - var9, var5, 0.0D, 0.0D);
+            t.draw();
+        }
     	
         @SuppressWarnings("unused")
 		public static void renderName(EntityLiving par1EntityPlayer, double par2, double par4, double par6)
@@ -1187,10 +1403,11 @@ public class ClientProxyCore extends CommonProxyCore
     	static KeyBinding tankRefill = new KeyBinding("Galacticraft Player Inventory", Keyboard.KEY_R);
     	static KeyBinding galaxyMap = new KeyBinding("Galaxy Map", Keyboard.KEY_M);
     	public static KeyBinding openSpaceshipInv = new KeyBinding("Open Spaceship Inventory", Keyboard.KEY_F);
+    	public static KeyBinding toggleAdvGoggles = new KeyBinding("Toggle Advanced Sensor Goggles", Keyboard.KEY_K);
 
         public GCKeyHandler() 
         {
-            super(new KeyBinding[] {tankRefill, galaxyMap, openSpaceshipInv}, new boolean[] {false, false, false});
+            super(new KeyBinding[] {tankRefill, galaxyMap, openSpaceshipInv, toggleAdvGoggles}, new boolean[] {false, false, false, false});
         }
 
         @Override
@@ -1238,6 +1455,20 @@ public class ClientProxyCore extends CommonProxyCore
                 PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 6, toSend));
         	    player.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiSpaceshipInventory, minecraft.theWorld, (int)player.posX, (int)player.posY, (int)player.posZ);
         	}
+        	else if (kb.keyCode == GCKeyHandler.toggleAdvGoggles.keyCode)
+        	{
+            	final EntityPlayerSP player = minecraft.thePlayer;
+            	
+    	        for (int j = 0; j < GalacticraftCore.gcPlayers.size(); ++j)
+    	        {
+    				final GCCorePlayerBaseClient playerBase = (GCCorePlayerBaseClient) GalacticraftCore.players.get(j);
+    				
+    				if (playerBase != null && player != null && player.username.equals(playerBase.getPlayer().username))
+    				{
+    					playerBase.toggleGoggles();
+    				}
+    	        }
+            }
         	
 //        	int key = -1;
 //        	

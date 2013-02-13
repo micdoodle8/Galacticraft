@@ -4,13 +4,11 @@ import java.util.Random;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerBase;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.src.PlayerAPI;
 import net.minecraft.src.PlayerBase;
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLLog;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -23,6 +21,8 @@ public class GCCorePlayerBaseClient extends PlayerBase
 	private Random rand = new Random();
 	
 	private boolean usingParachute;
+	
+	public boolean usingAdvancedGoggles;
 	
 	public GCCorePlayerBaseClient(PlayerAPI var1) 
 	{
@@ -126,6 +126,28 @@ public class GCCorePlayerBaseClient extends PlayerBase
 		
 		super.onUpdate();
 	}
+	
+	public void setUsingGoggles(boolean b)
+	{
+		this.usingAdvancedGoggles = b;
+	}
+	
+	public boolean getUsingGoggles()
+	{
+		return this.usingAdvancedGoggles;
+	}
+	
+	public void toggleGoggles()
+	{
+		if (this.usingAdvancedGoggles)
+		{
+			this.usingAdvancedGoggles = false;
+		}
+		else
+		{
+			this.usingAdvancedGoggles = true;
+		}
+	}
     
     public void setParachute(boolean tf)
     {
@@ -141,11 +163,17 @@ public class GCCorePlayerBaseClient extends PlayerBase
     public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         this.setParachute(par1NBTTagCompound.getBoolean("usingParachute"));
+        this.setUsingGoggles(par1NBTTagCompound.getBoolean("usingAdvGoggles"));
+        
+        super.readEntityFromNBT(par1NBTTagCompound);
     }
 
     @Override
     public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
         par1NBTTagCompound.setBoolean("usingParachute", this.getParachute());
+        par1NBTTagCompound.setBoolean("usingAdvGoggles", this.getUsingGoggles());
+        
+        super.writeEntityToNBT(par1NBTTagCompound);
     }
 }
