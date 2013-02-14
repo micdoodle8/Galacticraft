@@ -62,6 +62,8 @@ public class GCCoreTeleporter extends Teleporter
         par1Entity.setLocationAndAngles(var9, 250, var11, par1Entity.rotationYaw, 0.0F);
         par1Entity.motionX = par1Entity.motionY = par1Entity.motionZ = 0.0D;
         
+        par1Entity.worldObj.markBlockForUpdate(var9, 30, var11);
+        
         for (int i = 0; i < GalacticraftCore.gcPlayers.size(); i++)
         {
         	GCCorePlayerBase player = GalacticraftCore.gcPlayers.get(i);

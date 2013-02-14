@@ -60,7 +60,13 @@ public class GCCoreContainerRocketRefill extends Container
         {
             for (var5 = 0; var5 < 9; ++var5)
             {
-                this.addSlotToContainer(new Slot(this.spaceshipInv, var5 + var4 * 9, 8 + var5 * 18, 50 + var4 * 18));
+            	if ((var4 == 2 && var5 == 8) || (var4 == 2  && var5 == 7) || (var4 == 2  && var5 == 6))
+            	{
+            	}
+            	else
+            	{
+                    this.addSlotToContainer(new Slot(this.spaceshipInv, var5 + var4 * 9, 8 + var5 * 18, 50 + var4 * 18));
+            	}
             }
         }
 

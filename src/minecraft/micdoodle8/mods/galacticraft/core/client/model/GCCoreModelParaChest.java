@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.model;
 
 import cpw.mods.fml.client.FMLClientHandler;
+import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import net.minecraft.client.model.ModelChest;
 import net.minecraft.client.model.ModelRenderer;
 
@@ -18,28 +19,28 @@ public class GCCoreModelParaChest extends ModelChest
 	{
 		super();
 		
-        this.parachute[0] = new ModelRenderer(this, 0, 0);
+        this.parachute[0] = new ModelRenderer(this, 0, 0).setTextureSize(512, 256);
         this.parachute[0].addBox(-20.0F, -45.0F, -20.0F, 10, 2, 40, par1);
-    	this.parachute[0].setRotationPoint(9.0F, -7.0F, 2.0F);
-        this.parachute[1] = new ModelRenderer(this, 0, 0);
+        this.parachute[0].setRotationPoint(15.0F, 4.0F, 0.0F);
+        this.parachute[1] = new ModelRenderer(this, 0, 42).setTextureSize(512, 256);
         this.parachute[1].addBox(-20.0F, -45.0F, -20.0F, 40, 2, 40, par1);
-    	this.parachute[1].setRotationPoint(9.0F, -7.0F, 2.0F);
-        this.parachute[2] = new ModelRenderer(this, 0, 0);
+        this.parachute[1].setRotationPoint(0.0F, 0.0F, 0.0F);
+        this.parachute[2] = new ModelRenderer(this, 0, 0).setTextureSize(512, 256);
         this.parachute[2].addBox(-20.0F, -45.0F, -20.0F, 10, 2, 40, par1);
-    	this.parachute[2].setRotationPoint(9.0F, -7.0F, 2.0F);
+        this.parachute[2].setRotationPoint(11F, -11, 0.0F);
 
-        this.parachuteStrings[0] = new ModelRenderer(this, 0, 0);
+        this.parachuteStrings[0] = new ModelRenderer(this, 100, 0).setTextureSize(512, 256);
         this.parachuteStrings[0].addBox(-0.5F, 0.0F, -0.5F, 1, 40, 1, par1);
-    	this.parachuteStrings[0].setRotationPoint(9.0F, -7.0F, 2.0F);
-        this.parachuteStrings[1] = new ModelRenderer(this, 0, 0);
+        this.parachuteStrings[0].setRotationPoint(0.0F, 0.0F, 0.0F);
+        this.parachuteStrings[1] = new ModelRenderer(this, 100, 0).setTextureSize(512, 256);
         this.parachuteStrings[1].addBox(-0.5F, 0.0F, -0.5F, 1, 40, 1, par1);
-    	this.parachuteStrings[1].setRotationPoint(9.0F, -7.0F, 2.0F);
-        this.parachuteStrings[2] = new ModelRenderer(this, 0, 0);
+        this.parachuteStrings[1].setRotationPoint(0.0F, 0.0F, 0.0F);
+        this.parachuteStrings[2] = new ModelRenderer(this, 100, 0).setTextureSize(512, 256);
         this.parachuteStrings[2].addBox(-0.5F, 0.0F, -0.5F, 1, 40, 1, par1);
-    	this.parachuteStrings[2].setRotationPoint(9.0F, -7.0F, 2.0F);
-        this.parachuteStrings[3] = new ModelRenderer(this, 0, 0);
+        this.parachuteStrings[2].setRotationPoint(0.0F, 0.0F, 0.0F);
+        this.parachuteStrings[3] = new ModelRenderer(this, 100, 0).setTextureSize(512, 256);
         this.parachuteStrings[3].addBox(-0.5F, 0.0F, -0.5F, 1, 40, 1, par1);
-    	this.parachuteStrings[3].setRotationPoint(9.0F, -7.0F, 2.0F);
+        this.parachuteStrings[3].setRotationPoint(0.0F, 0.0F, 0.0F);
 	}
 
 	@Override
@@ -47,8 +48,8 @@ public class GCCoreModelParaChest extends ModelChest
     {
     	super.renderAll();
     	
-    	FMLClientHandler.instance().getClient().renderEngine.bindTexture(FMLClientHandler.instance().getClient().renderEngine.getTexture("/terrain.png"));
-    	
+		FMLClientHandler.instance().getClient().renderEngine.bindTexture(FMLClientHandler.instance().getClient().renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/entities/parachute/gray.png"));
+
     	int i;
     	
     	for (i = 0; i < this.parachute.length; i++)
@@ -83,6 +84,7 @@ public class GCCoreModelParaChest extends ModelChest
     	this.parachuteStrings[3].rotateAngleY = (float) -(0 * (Math.PI / 180F));
 
     	this.parachute[0].setRotationPoint(-5.85F, -11.0F, 2.0F);
+    	this.parachute[1].setRotationPoint(9F, -7F, 2.0F);
     	this.parachute[2].setRotationPoint(-2.15F, 4.0F, 2.0F);
     	this.parachute[0].rotateAngleZ = (float) ((210F) * (Math.PI / 180F));
     	this.parachute[1].rotateAngleZ = (float) ((180F) * (Math.PI / 180F));
