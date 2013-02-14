@@ -33,9 +33,9 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.Teleporter;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
+import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.common.DimensionManager;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -556,6 +556,16 @@ public class GCCorePlayerBase extends ServerPlayerBase
         float var17 = par1Entity.rotationYaw;
         par3WorldServer.theProfiler.startSection("moving");
 
+        final int x = MathHelper.floor_double(par1Entity.posX);
+        final int z = MathHelper.floor_double(par1Entity.posZ);
+        
+        IChunkProvider var3 = par4WorldServer.getChunkProvider();
+        
+        var3.loadChunk(x - 3 >> 4, z - 3 >> 4);
+        var3.loadChunk(x + 3 >> 4, z - 3 >> 4);
+        var3.loadChunk(x - 3 >> 4, z + 3 >> 4);
+        var3.loadChunk(x + 3 >> 4, z + 3 >> 4);
+
         if (par1Entity.dimension == 1)
         {
             ChunkCoordinates var18;
@@ -608,6 +618,12 @@ public class GCCorePlayerBase extends ServerPlayerBase
         final int var9b = MathHelper.floor_double(par1Entity.posX);
         final int var11b = MathHelper.floor_double(par1Entity.posZ);
         
+        boolean changed = false;
+        
+        this.rocketStacks[26] = new ItemStack(GCCoreItems.spaceship, 1, this.rocketType);
+        this.rocketStacks[25] = new ItemStack(GCCoreItems.rocketFuelBucket, 1, 0);
+        this.rocketStacks[24] = new ItemStack(GCCoreBlocks.landingPad, 9, 0);
+        
         GCCoreEntityParaChest chest = new GCCoreEntityParaChest(par1Entity.worldObj, this.rocketStacks);
 
     	chest.setPosition(var9b, 260, var11b);
@@ -629,6 +645,8 @@ public class GCCorePlayerBase extends ServerPlayerBase
         this.astronomyPointsLevel = par1NBTTagCompound.getInteger("AstronomyPointsLevel");
         this.astronomyPointsTotal = par1NBTTagCompound.getInteger("AstronomyPointsTotal");
         this.setParachute(par1NBTTagCompound.getBoolean("usingParachute2"));
+        
+        super.readEntityFromNBT(par1NBTTagCompound);
     }
 
     @Override
@@ -641,6 +659,8 @@ public class GCCorePlayerBase extends ServerPlayerBase
         par1NBTTagCompound.setInteger("AstronomyPointsLevel", this.astronomyPointsLevel);
         par1NBTTagCompound.setInteger("AstronomyPointsTotal", this.astronomyPointsTotal);
         par1NBTTagCompound.setBoolean("usingParachute2", this.getParachute());
+        
+        super.writeEntityToNBT(par1NBTTagCompound);
     }
 
     public void addExperience2(int par1)
