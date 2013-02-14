@@ -119,7 +119,7 @@ public class GCCorePlayerBaseClient extends PlayerBase
 	{
 		if (this.getParachute() && !player.capabilities.isFlying && !FMLClientHandler.instance().getClient().isGamePaused && !player.handleWaterMovement())
 		{
-			player.motionY = player.motionY + 0.07F;
+			player.motionY = -0.5D;
 			player.motionX *= 0.5F;
 			player.motionZ *= 0.5F;
 		}
