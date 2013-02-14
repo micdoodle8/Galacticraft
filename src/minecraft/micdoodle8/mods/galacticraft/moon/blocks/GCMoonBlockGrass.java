@@ -252,6 +252,15 @@ public class GCMoonBlockGrass extends Block implements IPlantableBlock
     }
 
 	@Override
+    public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random) 
+    {
+    	if (par2 % 16 == 0 && par4 % 16 == 0)
+    	{
+        	par1World.markBlockForRenderUpdate(par2, par3, par4);
+    	}
+    }
+
+	@Override
 	public int idDropped(int par1, Random par2Random, int par3) 
 	{
 		return GCMoonBlocks.moonDirt.blockID;
