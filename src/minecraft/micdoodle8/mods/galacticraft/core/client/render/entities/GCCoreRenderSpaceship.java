@@ -9,8 +9,9 @@ import net.minecraft.util.MathHelper;
 
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.relauncher.SideOnly;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -34,10 +35,12 @@ public class GCCoreRenderSpaceship extends Render
     {
         GL11.glPushMatrix();
         final float var24 = par1GCEntitySpaceship.prevRotationPitch + (par1GCEntitySpaceship.rotationPitch - par1GCEntitySpaceship.prevRotationPitch) * par9;
+        final float var25 = par1GCEntitySpaceship.prevRotationYaw + (par1GCEntitySpaceship.rotationYaw - par1GCEntitySpaceship.prevRotationYaw) * par9;
 
         GL11.glTranslatef((float)par2, (float)par4, (float)par6);
         GL11.glRotatef(180.0F - par8, 0.0F, 1.0F, 0.0F);
         GL11.glRotatef(-var24, 0.0F, 0.0F, 1.0F);
+        GL11.glRotatef(-var25, 0.0F, 1.0F, 0.0F);
         final float var28 = par1GCEntitySpaceship.getRollingAmplitude() - par9;
         float var30 = par1GCEntitySpaceship.getDamage() - par9;
 

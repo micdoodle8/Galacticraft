@@ -7,12 +7,12 @@ import java.util.Set;
 import micdoodle8.mods.galacticraft.core.GCCoreDamageSource;
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLandingPad;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLaunchFlameFX;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLaunchSmokeFX;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityOxygenFX;
-import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiRocketRefill;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
@@ -33,7 +33,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -298,37 +298,6 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
     		}
     		
     		EntityPlayer player = (EntityPlayer) this.riddenByEntity;
-
-        	if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT && player.username.equals(FMLClientHandler.instance().getClient().thePlayer.username) && FMLClientHandler.instance().getClient().gameSettings.keyBindRight.pressed)
-        	{
-        		this.rotationYaw -= 0.9F;
-        	}
-        	
-        	if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT && player.username.equals(FMLClientHandler.instance().getClient().thePlayer.username)  && FMLClientHandler.instance().getClient().gameSettings.keyBindLeft.pressed)
-        	{
-        		this.rotationYaw += 0.9F;
-        	}
-    		
-    		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT && player.username.equals(FMLClientHandler.instance().getClient().thePlayer.username) && this.getLaunched() == 1)
-    		{
-            	if (FMLClientHandler.instance().getClient().gameSettings.keyBindForward.pressed && this.rotationPitch >= -70F)
-            	{
-            		this.rotationPitch -= 0.4F;
-            	}
-            	
-            	if (FMLClientHandler.instance().getClient().gameSettings.keyBindBack.pressed && this.rotationPitch <= 70F)
-            	{
-            		this.rotationPitch += 0.4F;
-            	}
-    		}
-    		else if (this.getReversed() == 0)
-    		{
-    			this.rotationPitch = 0F;
-    		}
-    	}
-    	else if (this.getReversed() == 0)
-    	{
-    		this.rotationPitch = 0F;
     	}
     	
     	if (this.getReversed() == 1)
@@ -358,7 +327,7 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
         
         if (this.ignite == 0)
         {
-        	this.timeUntilLaunch = 400;
+        	this.timeUntilLaunch = 20;
         }
         
         if (this.launched)
@@ -387,6 +356,34 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
         	this.launched = true;
         	this.setLaunched(1);
         	this.ignite = 0;
+        	
+        	if (!this.worldObj.isRemote)
+        	{
+        		int amountRemoved = 0;
+        		
+        		for (int x = MathHelper.floor_double(this.posX) - 1; x <= MathHelper.floor_double(this.posX) + 1; x++)
+        		{
+            		for (int y = MathHelper.floor_double(this.posY) - 3; y <= MathHelper.floor_double(this.posY) + 1; y++)
+            		{
+                		for (int z = MathHelper.floor_double(this.posZ) - 1; z <= MathHelper.floor_double(this.posZ) + 1; z++)
+                		{
+                			int id = this.worldObj.getBlockId(x, y, z);
+                			Block block = Block.blocksList[id];
+                			
+                			if (block != null && block instanceof GCCoreBlockLandingPad)
+                			{
+                    			if (amountRemoved < 9);
+                    			{
+                    				this.worldObj.setBlock(x, y, z, 0);
+                    				amountRemoved++;
+                    			}
+                			}
+                		}
+            		}
+        		}
+        		
+                this.playSound("random.pop", 0.2F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+        	}
         }
         
         if (this.ignite == 1 || this.launched)
@@ -398,18 +395,22 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
         
         if (this.launched && !this.reversed && this.getStackInSlot(27) != null && this.getStackInSlot(27).getItem().itemID == GCCoreItems.rocketFuelBucket.itemID)
         {
-        	if (Math.abs(Math.sin(this.timeSinceLaunch / 1000)) / 10 != 0.0)
-        		this.motionY += Math.abs(Math.sin(this.timeSinceLaunch / 1000)) / 20;
+        	double d = Math.abs(Math.sin(this.timeSinceLaunch));
+        	
+        	if (d != 0.0)
+        	{
+        		this.motionY = -d * Math.cos((this.rotationPitch - 180) * Math.PI / 180.0D);
+        	}
         }
         else if ((this.getStackInSlot(27) == null || this.getStackInSlot(27).getItem().itemID != GCCoreItems.rocketFuelBucket.itemID) && this.getLaunched() == 1)
         {
-      		this.rotationPitch = -180;
+//      		this.rotationPitch = -180;
         	if (Math.abs(Math.sin(this.timeSinceLaunch / 1000)) / 10 != 0.0)
         		this.motionY -= Math.abs(Math.sin(this.timeSinceLaunch / 1000)) / 20;
         }
         
-        this.motionX = -(this.motionY * Math.sin(this.rotationPitch * Math.PI / 180.0D) * Math.cos(this.rotationYaw * Math.PI / 180.0D));
-        this.motionZ = -(this.motionY * Math.sin(this.rotationPitch * Math.PI / 180.0D) * Math.sin(this.rotationYaw * Math.PI / 180.0D));
+        this.motionX = -(1.3 * Math.cos(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D));
+        this.motionZ = -(1.3 * Math.sin(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D));
         
         if (this.getReversed() == 0 && (this.rotationPitch > 70F || this.rotationPitch < -70F))
         {
@@ -436,22 +437,31 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
 	      	}
       	}
         
-        if ((this.getFailedLaunch() == 1 || (this.getStackInSlot(27) == null || this.getStackInSlot(27).getItem().itemID != GCCoreItems.rocketFuelBucket.itemID)) && this.getLaunched() == 1)
-        {
-      		this.rotationYaw += 2;
-        }
+//        if ((this.getFailedLaunch() == 1 || (this.getStackInSlot(27) == null || this.getStackInSlot(27).getItem().itemID != GCCoreItems.rocketFuelBucket.itemID)) && this.getLaunched() == 1)
+//        {
+//      		this.rotationYaw += 2;
+//        }
+        
+        this.setRotation(this.rotationYaw, this.rotationPitch);
 
         if (this.worldObj.isRemote)
         {
             this.setPosition(this.posX, this.posY, this.posZ);
-            this.setRotation(this.rotationYaw, this.rotationPitch);
         }
-        else
-        {
-            this.prevPosX = this.posX;
-            this.prevPosY = this.posY;
-            this.prevPosZ = this.posZ;
-        }
+        
+        this.prevPosX = this.posX;
+        this.prevPosY = this.posY;
+        this.prevPosZ = this.posZ;
+    }
+    
+    public void turnYaw (float f)
+    {
+		this.rotationYaw += f;
+    }
+    
+    public void turnPitch (float f)
+    {
+		this.rotationPitch += f;
     }
     
     private void failRocket()
@@ -471,14 +481,17 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
 	@SideOnly(Side.CLIENT)
     public void setPositionAndRotation2(double par1, double par3, double par5, float par7, float par8, int par9)
     {
-        this.minecartX = par1;
-        this.minecartY = par3;
-        this.minecartZ = par5;
-        this.minecartYaw = par7;
-        this.minecartPitch = par8;
-        this.motionX = this.velocityX;
-        this.motionY = this.velocityY;
-        this.motionZ = this.velocityZ;
+    	this.setRotation(par7, par8);
+//        this.minecartX = par1;
+//        this.minecartY = par3;
+//        this.minecartZ = par5;
+//        this.minecartYaw = par7;
+//        this.minecartPitch = par8;
+//        this.motionX = this.velocityX;
+//        this.motionY = this.velocityY;
+//        this.motionZ = this.velocityZ;
+//
+//        this.rotationYaw = par7;
     }
 
     @Override
@@ -492,52 +505,38 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
     
     protected void spawnParticles(boolean launched)
     {
-    	final double x1 = 2D * Math.sin(this.rotationPitch * 1.5D * Math.PI / 180.0D) * Math.cos(this.rotationYaw * Math.PI / 180.0D);
-    	final double z1 = 2D * Math.sin(this.rotationPitch * 1.5D * Math.PI / 180.0D) * Math.sin(this.rotationYaw * Math.PI / 180.0D);
-    	final double y1 = 4D * Math.sin(this.rotationPitch * Math.PI / 180.0D) + (this.getReversed() == 1 ? 10D : 0D);
+    	final double x1 = 2 * Math.cos(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D);
+    	final double z1 = 2 * Math.sin(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D);
+    	final double y1 = 2 * Math.cos((this.rotationPitch - 180) * Math.PI / 180.0D) + (this.getReversed() == 1 ? 10D : 0D);
     	
-    	if (this.getStackInSlot(27) != null && this.getStackInSlot(27).getItem().itemID == GCCoreItems.rocketFuelBucket.itemID && !this.isDead)
+    	final double y = this.prevPosY + (this.posY - this.prevPosY);
+    	
+    	if (!this.isDead)
     	{
-    		if (this.getLaunched() == 1)
-    		{
-    			if (this.riddenByEntity != null)
-            	{
-                	this.spawnParticle("launchflame", 	this.posX + 0.4 - this.rand.nextDouble() / 10 + x1, 					this.riddenByEntity.prevPosY - 0.0D - this.timeSinceLaunch / 50 + y1, 	this.posZ + 0.4 - this.rand.nextDouble() / 10 + z1, 	-this.motionX, this.getReversed() == 1 ? 1D : -1D, -this.motionZ, true);
-                	this.spawnParticle("launchflame", 	this.posX - 0.4 + this.rand.nextDouble() / 10 + x1, 					this.riddenByEntity.prevPosY - 0.0D - this.timeSinceLaunch / 50 + y1, 	this.posZ + 0.4 - this.rand.nextDouble() / 10 + z1, 	-this.motionX, this.getReversed() == 1 ? 1D : -1D, -this.motionZ, true);
-                	this.spawnParticle("launchflame", 	this.posX - 0.4 + this.rand.nextDouble() / 10 + x1, 					this.riddenByEntity.prevPosY - 0.0D - this.timeSinceLaunch / 50 + y1, 	this.posZ - 0.4 + this.rand.nextDouble() / 10 + z1, 	-this.motionX, this.getReversed() == 1 ? 1D : -1D, -this.motionZ, true);
-                	this.spawnParticle("launchflame", 	this.posX + 0.4 - this.rand.nextDouble() / 10 + x1, 					this.riddenByEntity.prevPosY - 0.0D - this.timeSinceLaunch / 50 + y1,	this.posZ - 0.4 + this.rand.nextDouble() / 10 + z1, 	-this.motionX, this.getReversed() == 1 ? 1D : -1D, -this.motionZ, true);
-                	this.spawnParticle("launchflame", 	this.posX + x1, 														this.riddenByEntity.prevPosY - 0.0D - this.timeSinceLaunch / 50 + y1, 	this.posZ + z1, 										-this.motionX, this.getReversed() == 1 ? 1D : -1D, -this.motionZ, true);
-                	this.spawnParticle("launchflame", 	this.posX + 0.4 + x1, 													this.riddenByEntity.prevPosY - 0.0D - this.timeSinceLaunch / 50 + y1, 	this.posZ + z1, 										-this.motionX, this.getReversed() == 1 ? 1D : -1D, -this.motionZ, true);
-                	this.spawnParticle("launchflame", 	this.posX - 0.4 + x1, 													this.riddenByEntity.prevPosY - 0.0D - this.timeSinceLaunch / 50 + y1, 	this.posZ + z1, 										-this.motionX, this.getReversed() == 1 ? 1D : -1D, -this.motionZ, true);
-                	this.spawnParticle("launchflame", 	this.posX + x1, 														this.riddenByEntity.prevPosY - 0.0D - this.timeSinceLaunch / 50 + y1, 	this.posZ + 0.4D + z1, 									-this.motionX, this.getReversed() == 1 ? 1D : -1D, -this.motionZ, true);
-                	this.spawnParticle("launchflame", 	this.posX + Math.sin(this.rotationPitch * Math.PI / 180.0D) + x1, 	this.riddenByEntity.prevPosY - 0.0D - this.timeSinceLaunch / 50 + y1, 	this.posZ - 0.4D + z1, 									-this.motionX, this.getReversed() == 1 ? 1D : -1D, -this.motionZ, true);
-            	}
-            	else
-            	{
-                	this.spawnParticle("launchflame", 	this.posX, 											this.posY - 0.8D + y1, 													this.posZ, 											-this.motionX, this.getReversed() == 1 ? 1D : -1D, -this.motionZ, true);
-                	this.spawnParticle("launchflame", 	this.posX + 0.4 - this.rand.nextDouble() / 10, 	this.posY - 0.8D + y1, 													this.posZ + 0.4 - this.rand.nextDouble() / 10, 	-this.motionX, this.getReversed() == 1 ? 1D : -1D, -this.motionZ, true);
-                	this.spawnParticle("launchflame", 	this.posX - 0.4 + this.rand.nextDouble() / 10, 	this.posY - 0.8D + y1, 													this.posZ + 0.4 - this.rand.nextDouble() / 10, 	-this.motionX, this.getReversed() == 1 ? 1D : -1D, -this.motionZ, true);
-                	this.spawnParticle("launchflame", 	this.posX - 0.4 + this.rand.nextDouble() / 10, 	this.posY - 0.8D + y1, 													this.posZ - 0.4 + this.rand.nextDouble() / 10, 	-this.motionX, this.getReversed() == 1 ? 1D : -1D, -this.motionZ, true);
-                	this.spawnParticle("launchflame", 	this.posX + 0.4 - this.rand.nextDouble() / 10, 	this.posY - 0.8D + y1, 													this.posZ - 0.4 + this.rand.nextDouble() / 10, 	-this.motionX, this.getReversed() == 1 ? 1D : -1D, -this.motionZ, true);
-                    this.spawnParticle("launchflame", 	this.posX + 0.4, 									this.posY - 0.8D + y1, 													this.posZ, 											-this.motionX, this.getReversed() == 1 ? 1D : -1D, -this.motionZ, true);
-                    this.spawnParticle("launchflame", 	this.posX - 0.4, 									this.posY - 0.8D + y1, 													this.posZ, 											-this.motionX, this.getReversed() == 1 ? 1D : -1D, -this.motionZ, true);
-                    this.spawnParticle("launchflame", 	this.posX, 											this.posY - 0.8D + y1, 													this.posZ + 0.4D, 									-this.motionX, this.getReversed() == 1 ? 1D : -1D, -this.motionZ, true);
-                    this.spawnParticle("launchflame", 	this.posX, 											this.posY - 0.8D + y1, 													this.posZ - 0.4D, 									-this.motionX, this.getReversed() == 1 ? 1D : -1D, -this.motionZ, true);
-            	}
-    		}
-    		else if (this.getLaunched() == 0)
-    		{
-            	this.spawnParticle("whitesmokelarge", 	this.posX, 											this.posY - 2.0D + y1, 													this.posZ, 											-this.motionX, this.getReversed() == 1 ? 1D : -1D, -this.motionZ, false);
-            	this.spawnParticle("whitesmoke", 		this.posX, 											this.posY - 2.0D + y1, 													this.posZ, 											-this.motionX, this.getReversed() == 1 ? 1D : -1D, -this.motionZ, false);
-                this.spawnParticle("whitesmokelarge", 	this.posX + 0.5, 									this.posY - 2.0D + y1, 													this.posZ, 											-this.motionX, this.getReversed() == 1 ? 1D : -1D, -this.motionZ, false);
-                this.spawnParticle("whitesmoke", 		this.posX + 0.5, 									this.posY - 2.0D + y1, 													this.posZ, 											-this.motionX, this.getReversed() == 1 ? 1D : -1D, -this.motionZ, false);
-                this.spawnParticle("whitesmokelarge", 	this.posX - 0.5, 									this.posY - 2.0D + y1, 													this.posZ, 											-this.motionX, this.getReversed() == 1 ? 1D : -1D, -this.motionZ, false);
-                this.spawnParticle("whitesmoke", 		this.posX - 0.5, 									this.posY - 2.0D + y1, 													this.posZ,											-this.motionX, this.getReversed() == 1 ? 1D : -1D, -this.motionZ, false);
-                this.spawnParticle("whitesmokelarge", 	this.posX, 											this.posY - 2.0D + y1, 													this.posZ + 0.5D, 									-this.motionX, this.getReversed() == 1 ? 1D : -1D, -this.motionZ, false);
-                this.spawnParticle("whitesmoke", 		this.posX, 											this.posY - 2.0D + y1, 													this.posZ + 0.5D, 									-this.motionX, this.getReversed() == 1 ? 1D : -1D, -this.motionZ, false);
-                this.spawnParticle("whitesmokelarge", 	this.posX, 											this.posY - 2.0D + y1, 													this.posZ - 0.5D, 									-this.motionX, this.getReversed() == 1 ? 1D : -1D, -this.motionZ, false);
-                this.spawnParticle("whitesmoke", 		this.posX, 											this.posY - 2.0D + y1, 													this.posZ - 0.5D, 									-this.motionX, this.getReversed() == 1 ? 1D : -1D, -this.motionZ, false);
-    		}
+			if (this.riddenByEntity != null)
+        	{
+            	this.spawnParticle("launchflame", 	this.posX + 0.4 - this.rand.nextDouble() / 10 + x1, 					y - 0.0D + y1, 	this.posZ + 0.4 - this.rand.nextDouble() / 10 + z1, 	x1, y1, z1, true);
+            	this.spawnParticle("launchflame", 	this.posX - 0.4 + this.rand.nextDouble() / 10 + x1, 					y - 0.0D + y1, 	this.posZ + 0.4 - this.rand.nextDouble() / 10 + z1, 	x1, y1, z1, true);
+            	this.spawnParticle("launchflame", 	this.posX - 0.4 + this.rand.nextDouble() / 10 + x1, 					y - 0.0D + y1, 	this.posZ - 0.4 + this.rand.nextDouble() / 10 + z1, 	x1, y1, z1, true);
+            	this.spawnParticle("launchflame", 	this.posX + 0.4 - this.rand.nextDouble() / 10 + x1, 					y - 0.0D + y1,	this.posZ - 0.4 + this.rand.nextDouble() / 10 + z1, 	x1, y1, z1, true);
+            	this.spawnParticle("launchflame", 	this.posX + x1, 														y - 0.0D + y1, 	this.posZ + z1, 										x1, y1, z1, true);
+            	this.spawnParticle("launchflame", 	this.posX + 0.4 + x1, 													y - 0.0D + y1, 	this.posZ + z1, 										x1, y1, z1, true);
+            	this.spawnParticle("launchflame", 	this.posX - 0.4 + x1, 													y - 0.0D + y1, 	this.posZ + z1, 										x1, y1, z1, true);
+            	this.spawnParticle("launchflame", 	this.posX + x1, 														y - 0.0D + y1, 	this.posZ + 0.4D + z1, 									x1, y1, z1, true);
+            	this.spawnParticle("launchflame", 	this.posX + x1, 														y - 0.0D + y1, 	this.posZ - 0.4D + z1, 									x1, y1, z1, true);
+        	}
+        	else
+        	{
+            	this.spawnParticle("launchflame", 	this.posX, 											this.posY - 0.8D + y1, 													this.posZ, 											-this.motionX, this.getReversed() == 1 ? 1D : -1D, -this.motionZ, true);
+            	this.spawnParticle("launchflame", 	this.posX + 0.4 - this.rand.nextDouble() / 10, 	this.posY - 0.8D + y1, 													this.posZ + 0.4 - this.rand.nextDouble() / 10, 	-this.motionX, this.getReversed() == 1 ? 1D : -1D, -this.motionZ, true);
+            	this.spawnParticle("launchflame", 	this.posX - 0.4 + this.rand.nextDouble() / 10, 	this.posY - 0.8D + y1, 													this.posZ + 0.4 - this.rand.nextDouble() / 10, 	-this.motionX, this.getReversed() == 1 ? 1D : -1D, -this.motionZ, true);
+            	this.spawnParticle("launchflame", 	this.posX - 0.4 + this.rand.nextDouble() / 10, 	this.posY - 0.8D + y1, 													this.posZ - 0.4 + this.rand.nextDouble() / 10, 	-this.motionX, this.getReversed() == 1 ? 1D : -1D, -this.motionZ, true);
+            	this.spawnParticle("launchflame", 	this.posX + 0.4 - this.rand.nextDouble() / 10, 	this.posY - 0.8D + y1, 													this.posZ - 0.4 + this.rand.nextDouble() / 10, 	-this.motionX, this.getReversed() == 1 ? 1D : -1D, -this.motionZ, true);
+                this.spawnParticle("launchflame", 	this.posX + 0.4, 									this.posY - 0.8D + y1, 													this.posZ, 											-this.motionX, this.getReversed() == 1 ? 1D : -1D, -this.motionZ, true);
+                this.spawnParticle("launchflame", 	this.posX - 0.4, 									this.posY - 0.8D + y1, 													this.posZ, 											-this.motionX, this.getReversed() == 1 ? 1D : -1D, -this.motionZ, true);
+                this.spawnParticle("launchflame", 	this.posX, 											this.posY - 0.8D + y1, 													this.posZ + 0.4D, 									-this.motionX, this.getReversed() == 1 ? 1D : -1D, -this.motionZ, true);
+                this.spawnParticle("launchflame", 	this.posX, 											this.posY - 0.8D + y1, 													this.posZ - 0.4D, 									-this.motionX, this.getReversed() == 1 ? 1D : -1D, -this.motionZ, true);
+        	}
     	}
     }
     

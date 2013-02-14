@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.API.AdvancedAchievement;
+import micdoodle8.mods.galacticraft.API.IDetectableResource;
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
 import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.API.IMapPlanet;
@@ -19,7 +20,6 @@ import micdoodle8.mods.galacticraft.core.CommonProxyCore;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockAdvancedCraftingTable;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLaunchFlameFX;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLaunchSmokeFX;
@@ -109,8 +109,6 @@ import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry.KeyHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.IScheduledTickHandler;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
@@ -559,11 +557,13 @@ public class ClientProxyCore extends CommonProxyCore
 			
 			if (player != null)
 			{
-				for (int i = -5; i < 6; i++)
+				ClientProxyCore.valueableBlocks.clear();
+				
+				for (int i = -4; i < 5; i++)
 				{
-					for (int j = -5; j < 6; j++)
+					for (int j = -4; j < 5; j++)
 					{
-						for (int k = -5; k < 6; k++)
+						for (int k = -4; k < 5; k++)
 						{
 							int x, y, z;
 							
@@ -577,14 +577,13 @@ public class ClientProxyCore extends CommonProxyCore
 							{
 								Block block = Block.blocksList[id];
 								
-								if (block != null && block instanceof BlockOre)
+								if (block != null && (block instanceof BlockOre || block instanceof IDetectableResource))
 								{
 									int[] blockPos = {x, y, z};
 									
 									if (!alreadyContainsBlock(x, y, z))
 									{
 										ClientProxyCore.valueableBlocks.add(blockPos);
-										FMLLog.info("" + ClientProxyCore.valueableBlocks.size());
 									}
 								}
 							}
@@ -672,6 +671,45 @@ public class ClientProxyCore extends CommonProxyCore
 //    					}
 //    				}
 //    	        }
+    			
+    			if (player != null && player.ridingEntity != null && player.ridingEntity instanceof GCCoreEntitySpaceship)
+    			{
+    				GCCoreEntitySpaceship ship = (GCCoreEntitySpaceship) player.ridingEntity;
+    				
+    				if (minecraft.gameSettings.keyBindLeft.pressed)
+    				{
+        				Object[] toSend = {-1F};
+        	            PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 7, toSend));
+        	            ship.turnYaw(-1);
+    				}
+    				
+    				if (minecraft.gameSettings.keyBindRight.pressed)
+    				{
+        				Object[] toSend = {1F};
+        	            PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 7, toSend));
+        	            ship.turnYaw(1);
+    				}
+
+    				if (minecraft.gameSettings.keyBindForward.pressed)
+    				{
+    					if (ship.getLaunched() == 1)
+    					{
+            				Object[] toSend = {-1F};
+            	            PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 8, toSend));
+            	            ship.turnPitch(-1);
+    					}
+    				}
+    				
+    				if (minecraft.gameSettings.keyBindBack.pressed)
+    				{
+    					if (ship.getLaunched() == 1)
+    					{
+            				Object[] toSend = {1F};
+            	            PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 8, toSend));
+            	            ship.turnPitch(1);
+    					}
+    				}
+    			}
 
 	        	if (world != null)
 	        	{

@@ -378,6 +378,36 @@ public class GalacticraftCore
                 	player.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiSpaceshipInventory, player.worldObj, (int)player.posX, (int)player.posY, (int)player.posZ);
                 }
             }
+            else if (packetType == 7)
+            {
+                final Class[] decodeAs = {Float.class};
+                final Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
+                
+                if (player.ridingEntity instanceof GCCoreEntitySpaceship)
+                {
+                	GCCoreEntitySpaceship ship = ((GCCoreEntitySpaceship) player.ridingEntity);
+                	
+                	if (ship != null)
+                	{
+                		ship.turnYaw((Float) packetReadout[0]);
+                	}
+                }
+            }
+            else if (packetType == 8)
+            {
+                final Class[] decodeAs = {Float.class};
+                final Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
+                
+                if (player.ridingEntity instanceof GCCoreEntitySpaceship)
+                {
+                	GCCoreEntitySpaceship ship = ((GCCoreEntitySpaceship) player.ridingEntity);
+                	
+                	if (ship != null)
+                	{
+                		ship.turnPitch((Float) packetReadout[0]);
+                	}
+                }
+            }
         }
     }
 	
