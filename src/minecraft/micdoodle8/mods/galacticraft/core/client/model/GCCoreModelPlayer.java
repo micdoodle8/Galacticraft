@@ -2,8 +2,7 @@ package micdoodle8.mods.galacticraft.core.client.model;
 
 import java.util.List;
 
-import org.lwjgl.opengl.GL11;
-
+import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiTankRefill;
@@ -26,7 +25,6 @@ import net.minecraft.src.ModelPlayerBase;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreModelPlayer extends ModelPlayerBase
 {
@@ -313,6 +311,29 @@ public class GCCoreModelPlayer extends ModelPlayerBase
     @Override
 	public void afterSetRotationAngles(float var1, float var2, float var3, float var4, float var5, float var6, Entity var7) 
     {
+    	float speedModifier = 0.0F;
+    	
+    	if (var7.onGround)
+    	{
+    		speedModifier = 0.1162F;
+    	}
+    	else
+    	{
+    		speedModifier = 0.1162F * 2;
+    	}
+    	
+    	if (!var7.onGround && var7.worldObj.provider instanceof IGalacticraftWorldProvider)
+    	{
+            this.modelPlayer.bipedLeftLeg.rotateAngleX = MathHelper.cos(var1 * speedModifier + (float)Math.PI) * 1.45F * var2;
+            this.modelPlayer.bipedRightLeg.rotateAngleX = MathHelper.cos(var1 * speedModifier) * 1.45F * var2;
+            this.modelPlayer.bipedRightArm.rotateAngleX = MathHelper.cos(var1 * (speedModifier / 2) + (float)Math.PI) * 4.0F * var2 * 0.5F;
+            this.modelPlayer.bipedLeftArm.rotateAngleX = MathHelper.cos(var1 * (speedModifier / 2)) * 4.0F * var2 * 0.5F;
+            this.modelPlayer.bipedRightArm.rotateAngleY = -MathHelper.cos(var1 * 0.1162F) * 0.2F;
+            this.modelPlayer.bipedLeftArm.rotateAngleY = -MathHelper.cos(var1 * 0.1162F) * 0.2F;
+            this.modelPlayer.bipedRightArm.rotateAngleZ = ((float) (5 * (Math.PI / 180)));
+            this.modelPlayer.bipedLeftArm.rotateAngleZ = ((float) (-5 * (Math.PI / 180)));
+    	}
+    	
     	if (this.usingParachute)
     	{
         	this.parachute[0].rotateAngleZ = (float) (30F * (Math.PI / 180F));
