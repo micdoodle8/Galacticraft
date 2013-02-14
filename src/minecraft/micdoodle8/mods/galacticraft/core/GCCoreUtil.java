@@ -17,13 +17,13 @@ import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerBase;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemBreathableHelmet;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemFlag;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenGear;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenTank;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemParachute;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreInventoryRocketBench;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreInventoryTankRefill;
 import micdoodle8.mods.galacticraft.moon.items.GCMoonItems;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockCloth;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiInventory;
@@ -466,18 +466,11 @@ public class GCCoreUtil
 			return 0;
 		}
 		
-		if (tank.getItem().itemID == GCCoreItems.lightOxygenTankFull.itemID)
+		if (tank.getItem() instanceof GCCoreItemOxygenTank)
 		{
 			return 60;
 		}
-		else if (tank.getItem().itemID == GCCoreItems.medOxygenTankFull.itemID)
-		{
-			return 120;
-		}
-		else if (tank.getItem().itemID == GCCoreItems.heavyOxygenTankFull.itemID)
-		{
-			return 2000;
-		}
+
 		return 0;
     }
     
