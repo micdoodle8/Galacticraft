@@ -64,7 +64,7 @@ public class GCMarsRenderCreeperBoss extends RenderLiving
 			if (par2 == 1)
 			{
 				final float var4 = par1EntityCreeper.ticksExisted + par3;
-				this.loadTexture("/Galacticraft/Mars/Mobs/power1.png");
+				this.loadTexture("/micdoodle8/mods/galacticraft/core/client/entities/power.png");
                 GL11.glMatrixMode(GL11.GL_TEXTURE);
                 GL11.glLoadIdentity();
                 final float var5 = var4 * 0.01F;
