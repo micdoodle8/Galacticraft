@@ -7,6 +7,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreSlotRocketBench extends Slot
 {
@@ -30,7 +31,23 @@ public class GCCoreSlotRocketBench extends Slot
     	if (this.player instanceof EntityPlayerMP)
     	{
     		Object[] toSend = {x, y, z};
-    		((EntityPlayerMP) this.player).playerNetServerHandler.sendPacketToPlayer(GCCoreUtil.createPacket("Galacticraft", 9, toSend));
+    		
+            for (int var12 = 0; var12 < player.worldObj.playerEntities.size(); ++var12)
+            {
+                EntityPlayerMP var13 = (EntityPlayerMP) player.worldObj.playerEntities.get(var12);
+
+                if (var13.dimension == player.worldObj.provider.dimensionId)
+                {
+                    double var14 = x - var13.posX;
+                    double var16 = y - var13.posY;
+                    double var18 = z - var13.posZ;
+
+                    if (var14 * var14 + var16 * var16 + var18 * var18 < 20 * 20)
+                    {
+                    	var13.playerNetServerHandler.sendPacketToPlayer(GCCoreUtil.createPacket("Galacticraft", 9, toSend));
+                    }
+                }
+            }
     	}
     }
 
