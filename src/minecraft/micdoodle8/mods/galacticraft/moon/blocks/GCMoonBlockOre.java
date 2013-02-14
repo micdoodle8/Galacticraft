@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.moon.blocks;
 import java.util.List;
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.API.IDetectableResource;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.moon.items.GCMoonItems;
 import net.minecraft.block.Block;
@@ -18,7 +19,7 @@ import cpw.mods.fml.relauncher.Side;
  *  All rights reserved.
  *
  */
-public class GCMoonBlockOre extends Block
+public class GCMoonBlockOre extends Block implements IDetectableResource
 {
 	// AluminumMoon: 0, IronMoon: 1, CheeseStone: 2;
 	
