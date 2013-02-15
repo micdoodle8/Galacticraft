@@ -22,6 +22,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
+import net.minecraft.util.Vec3;
 
 import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
@@ -29,7 +30,6 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -222,7 +222,6 @@ public class GCCoreGuiGalaxyMap extends GCCoreGuiStarBackground
         this.genAchievementBackground(par1, par2, par3);
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
-        this.drawTitle();
         GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glEnable(GL11.GL_DEPTH_TEST);
     }
@@ -236,10 +235,10 @@ public class GCCoreGuiGalaxyMap extends GCCoreGuiStarBackground
         final double var3 = this.field_74123_r - this.guiMapY;
     }
 
-    protected void drawTitle()
-    {
-        this.fontRenderer.drawString("Galaxy Map", 15, 5, 4210752);
-    }
+//    protected void drawTitle()
+//    {
+//        this.fontRenderer.drawString("Galaxy Map", 15, 5, 4210752);
+//    }
 
     protected void genAchievementBackground(int par1, int par2, float par3)
     {
@@ -405,7 +404,6 @@ public class GCCoreGuiGalaxyMap extends GCCoreGuiStarBackground
 		            {
 		        		IMapPlanet moon = (IMapPlanet) GalacticraftCore.mapMoons.get(String.valueOf(planet) + i);
 		        		
-		
 		                int var26b = 0;
 		                int var27b = 0;
 		                
@@ -508,9 +506,10 @@ public class GCCoreGuiGalaxyMap extends GCCoreGuiStarBackground
         final int col = GCCoreUtil.convertTo32BitColor(255, 198, 198, 198);
         final int col2 = GCCoreUtil.convertTo32BitColor(255, 145, 145, 145);
         final int col3 = GCCoreUtil.convertTo32BitColor(255, 33, 33, 33);
+        final int textCol1 = GCCoreUtil.convertTo32BitColor(255, 133, 133, 133);
         
         Gui.drawRect(0, 					0, 					this.width, 		20, 				col);
-        Gui.drawRect(0,	 				this.height - 24, 	this.width, 		this.height,    	col);
+        Gui.drawRect(0,	 					this.height - 24, 	this.width, 		this.height,    	col);
         Gui.drawRect(0, 					0, 					10, 				this.height,    	col);
         Gui.drawRect(this.width - 10, 		0, 					this.width, 		this.height, 		col);
 
@@ -518,6 +517,42 @@ public class GCCoreGuiGalaxyMap extends GCCoreGuiStarBackground
         Gui.drawRect(10,	 				this.height - 26, 	this.width - 10, 	this.height - 24,   col2);
         Gui.drawRect(10, 					20, 				12, 				this.height - 24,   col3);
         Gui.drawRect(this.width - 12, 		0 + 20, 			this.width - 10, 	this.height - 24, 	col2);
+        
+        int i = this.width / 4;
+        
+        this.fontRenderer.drawString("ASWD - Move Map", 5, 1, textCol1, false);
+        this.fontRenderer.drawString("Mouse Wheel - Zoom", 5, 10, textCol1, false);
+        this.fontRenderer.drawString("Mouse 1 - Select Planet", this.width - this.fontRenderer.getStringWidth("Mouse 1 - Select Planet") - 5, 1, textCol1, false);
+        this.fontRenderer.drawString("Esc - Exit Map", this.width - this.fontRenderer.getStringWidth("Esc - Exit Map") - 5, 10, textCol1, false);
+        
+        if (this.selectedPlanet != null)
+        {
+        	final Vec3 vecCol = this.selectedPlanet.getParentGalaxy().getRGBRingColors();
+            final int textCol2 = GCCoreUtil.convertTo32BitColor(255, MathHelper.floor_double(vecCol.xCoord) * 255, MathHelper.floor_double(vecCol.zCoord) * 255, MathHelper.floor_double(vecCol.yCoord) * 255);
+        	int width = this.fontRenderer.getStringWidth(this.selectedPlanet.getSlotRenderer().getPlanetName());
+            this.drawRect(this.width / 2 - width / 2 - 4, 4, this.width / 2 + width / 2 + 4, 15, textCol1);
+            this.fontRenderer.drawString(this.selectedPlanet.getSlotRenderer().getPlanetName(), this.width / 2 - (width / 2), 6, textCol2, false);
+            
+            boolean changed = false;
+            
+            for (int j = 0; j < GalacticraftCore.mapPlanets.size(); j++)
+            {
+            	IMapPlanet planet = GalacticraftCore.mapPlanets.get(j);
+            	
+            	if (planet != null)
+            	{
+            		for (int k = 0; k < GalacticraftCore.mapMoons.size(); k++)
+            		{
+            			IMapPlanet moon = GalacticraftCore.mapMoons.get(String.valueOf(planet) + k);
+            			
+            			if (this.selectedPlanet.equals(moon))
+            			{
+            	            this.fontRenderer.drawString("Moon of " + planet.getSlotRenderer().getPlanetName(), this.width / 2 - (width / 2) + width + 10, 6, textCol2, false);
+            			}
+            		}
+            	}
+            }
+        }
         
         super.drawScreen(par1, par2, par3);
 
@@ -536,7 +571,6 @@ public class GCCoreGuiGalaxyMap extends GCCoreGuiStarBackground
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-//        GL11.glDisable(GL11.GL_COLOR_MATERIAL);
     	
     	for (final IMapPlanet planet : GalacticraftCore.mapPlanets)
     	{
