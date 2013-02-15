@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
+import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,24 +14,27 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
-import org.lwjgl.input.Keyboard;
-
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
-public class GCCoreEntityBuggy extends Entity implements IInventory
+public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInventory
 {
     public int fuel;
     public int currentDamage;
     public int timeSinceHit;
     public int rockDirection;
     public double speed;
-    float maxSpeed = 1.0F;
+    float maxSpeed = 0.5F;
     float accel = 0.2F;
-    float turnFactor = 3.0F;
+    float turnFactor = 0.4F;
     public String texture;
     ItemStack[] cargoItems;
 	public float turnProgress = 0;
+	private boolean firstPacketSent = false;
+	public float rotationYawBuggy;
 
     public GCCoreEntityBuggy(World var1)
     {
@@ -201,9 +205,13 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
         }
     }
 
-    /**
-     * Called to update the entity's position/logic.
-     */
+    @Override
+	@SideOnly(Side.CLIENT)
+    public void setPositionAndRotation2(double par1, double par3, double par5, float par7, float par8, int par9)
+    {
+    	this.setRotation(par7, par8);
+    }
+
     @Override
 	public void onUpdate()
     {
@@ -262,58 +270,41 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
             }
         }
 
-        if (this.riddenByEntity != null && FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
-        {
-            if (Keyboard.isKeyDown(30))
-            {
-                this.rotationYaw = (float)(this.rotationYaw - this.turnFactor * (1.0D + this.speed / 2.0D));
-                
-        		this.turnProgress -= 0.1F;
-        		
-        		if (this.turnProgress <= -0.3F)
-        		{
-        			this.turnProgress = -0.3F;
-        		}
-            }
-
-            if (Keyboard.isKeyDown(32))
-            {
-                this.rotationYaw = (float)(this.rotationYaw + this.turnFactor * (1.0D + this.speed / 2.0D));
-                
-        		this.turnProgress += 0.1F;
-        		
-        		if (this.turnProgress >= 0.3F)
-        		{
-        			this.turnProgress = 0.3F;
-        		}
-            }
-
-            if (Keyboard.isKeyDown(17))
-            {
-                this.speed += 0.02D;
-            }
-
-            if (Keyboard.isKeyDown(31))
-            {
-                this.speed -= 0.01D;
-            }
-
-            if (Keyboard.isKeyDown(42))
-            {
-                this.speed *= 0.75D;
-            }
-            
-            if (!Keyboard.isKeyDown(30) && !Keyboard.isKeyDown(32))
-            {
-        		this.turnProgress = 0.0F;
-            }
-
-            this.fuel = (int)(this.fuel - this.speed);
-        }
-        else
-        {
-            this.speed *= 0.9D;
-        }
+//        if (this.riddenByEntity != null && FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+//        {
+//            if (Keyboard.isKeyDown(30))
+//            {
+//            }
+//
+//            if (Keyboard.isKeyDown(32))
+//            {
+//            }
+//
+//            if (Keyboard.isKeyDown(17))
+//            {
+//            }
+//
+//            if (Keyboard.isKeyDown(31))
+//            {
+//                this.speed -= 0.01D;
+//            }
+//
+//            if (Keyboard.isKeyDown(42))
+//            {
+//                this.speed *= 0.75D;
+//            }
+//            
+//            if (!Keyboard.isKeyDown(30) && !Keyboard.isKeyDown(32))
+//            {
+//        		this.turnProgress = 0.0F;
+//            }
+//
+//            this.fuel = (int)(this.fuel - this.speed);
+//        }
+//        else
+//        {
+//            this.speed *= 0.9D;
+//        }
 
         if (this.inWater && this.speed > 0.2D)
         {
@@ -327,31 +318,37 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
             this.speed = this.maxSpeed;
         }
     	
-        if (this.isCollidedHorizontally)
-        {
-            this.speed *= 0.9;
-            this.motionY = 0.1D;
-        }
+//        if (this.isCollidedHorizontally)
+//        {
+//            this.speed *= 0.9;
+//            this.motionY = 0.1D;
+//        }
 
-        if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT && ModLoader.isGUIOpen((Class)null) && this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayer && Keyboard.isKeyDown(46))
-        {
-            final EntityPlayer var23 = (EntityPlayer)this.riddenByEntity;
+//        if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT && ModLoader.isGUIOpen((Class)null) && this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayer && Keyboard.isKeyDown(46))
+//        {
+//            final EntityPlayer var23 = (EntityPlayer)this.riddenByEntity;
+//
+//            if (!this.worldObj.isRemote)
+//            {
+//                var23.displayGUIChest(this);
+//            }
+//        }
 
-            if (!this.worldObj.isRemote)
-            {
-                var23.displayGUIChest(this);
-            }
-            else
-            {
-                System.out.println("sending packet");
-            }
-        }
-
-        this.motionX = -(this.speed * Math.cos((this.rotationYaw - 90F) * Math.PI / 180.0D));
-        this.motionZ = -(this.speed * Math.sin((this.rotationYaw - 90F) * Math.PI / 180.0D));
-        var21 = Math.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
-
+        this.motionX = -(this.speed * Math.cos(((this.rotationYaw - 90F) * Math.PI / 180.0D) ));
+        this.motionZ = -(this.speed * Math.sin(((this.rotationYaw - 90F) * Math.PI / 180.0D) ));
+        
         this.moveEntity(this.motionX, this.motionY, this.motionZ);
+        
+        this.setRotation(this.rotationYaw, this.rotationPitch);
+
+        if (this.worldObj.isRemote)
+        {
+            this.setPosition(this.posX, this.posY, this.posZ);
+        }
+        
+        this.prevPosX = this.posX;
+        this.prevPosY = this.posY;
+        this.prevPosZ = this.posZ;
     }
 
     /**
@@ -553,4 +550,56 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
             return true;
         }
     }
+
+	@Override
+	public void keyPressed(int par1, EntityPlayer par2EntityPlayer) 
+	{
+		if (this.worldObj.isRemote)
+		{
+		}
+		
+		// 0 (accelerate), 1 (decelerate), 2 (turnLeft), 3 (turnRight)
+		
+		FMLLog.info("" + this.worldObj.isRemote);
+		
+		switch (par1)
+		{
+		case 0:
+            this.speed += 0.02D;
+			break;
+		case 1:
+            this.speed -= 0.02D;
+			break;
+		case 2:
+			if (this.worldObj.isRemote)
+			{
+	    		this.turnProgress -= 0.1F;
+	    		if (this.turnProgress <= -0.3F)
+	    		{
+	    			this.turnProgress = -0.3F;
+	    		}
+			}
+			else
+			{
+	            this.rotationYaw = (float)(this.rotationYaw - this.turnFactor * (1.0D + this.speed / 2.0D));
+			}
+			
+			break;
+		case 3:
+			if (this.worldObj.isRemote)
+			{
+	    		this.turnProgress += 0.1F;
+	    		if (this.turnProgress >= 0.3F)
+	    		{
+	    			this.turnProgress = 0.3F;
+	    		}
+			}
+			else
+			{
+	            this.rotationYaw = (float)(this.rotationYaw + this.turnFactor * (1.0D + this.speed / 2.0D));
+			}
+			
+			break;
+		}
+	}
 }
