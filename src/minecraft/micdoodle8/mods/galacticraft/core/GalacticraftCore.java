@@ -18,6 +18,7 @@ import micdoodle8.mods.galacticraft.core.client.GCCorePlayerBaseClient;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityArrow;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityAstroOrb;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityBuggy;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityControllable;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityCreeper;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityFlag;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityMeteor;
@@ -257,7 +258,9 @@ public class GalacticraftCore
         public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player p)
         {
             final DataInputStream data = new DataInputStream(new ByteArrayInputStream(packet.data));
+            
             final int packetType = GCCoreUtil.readPacketID(data);
+            
             final EntityPlayerMP player = (EntityPlayerMP)p;
             
             if (packetType == 0)
@@ -405,6 +408,21 @@ public class GalacticraftCore
                 	if (ship != null)
                 	{
                 		ship.turnPitch((Float) packetReadout[0]);
+                	}
+                }
+            }
+            else if (packetType == 9)
+            {
+                final Class[] decodeAs = {Integer.class};
+                final Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
+
+                if (player.ridingEntity instanceof GCCoreEntityControllable)
+                {
+                	GCCoreEntityControllable controllableEntity = ((GCCoreEntityControllable) player.ridingEntity);
+                	
+                	if (controllableEntity != null)
+                	{
+                		controllableEntity.keyPressed((Integer) packetReadout[0], player);
                 	}
                 }
             }
