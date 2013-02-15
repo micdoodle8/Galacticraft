@@ -56,6 +56,7 @@ import micdoodle8.mods.galacticraft.core.client.sounds.GCCoreSounds;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityArrow;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityAstroOrb;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityBuggy;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityControllable;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityCreeper;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityFlag;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityMeteor;
@@ -147,6 +148,14 @@ public class ClientProxyCore extends CommonProxyCore
 	
 	public static ArrayList<String> playersUsingParachutes = new ArrayList<String>();
 	public static HashMap<String, String> parachuteTextures = new HashMap<String, String>();
+	public static ArrayList<String> playersWithOxygenMask = new ArrayList<String>();
+	public static ArrayList<String> playersWithOxygenGear = new ArrayList<String>();
+	public static ArrayList<String> playersWithOxygenTankLeftRed = new ArrayList<String>();
+	public static ArrayList<String> playersWithOxygenTankLeftOrange = new ArrayList<String>();
+	public static ArrayList<String> playersWithOxygenTankLeftGreen = new ArrayList<String>();
+	public static ArrayList<String> playersWithOxygenTankRightRed = new ArrayList<String>();
+	public static ArrayList<String> playersWithOxygenTankRightOrange = new ArrayList<String>();
+	public static ArrayList<String> playersWithOxygenTankRightGreen = new ArrayList<String>();
 	
     private static double playerPosX;
     private static double playerPosY;
@@ -378,7 +387,9 @@ public class ClientProxyCore extends CommonProxyCore
 		public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player p) 
 		{
             final DataInputStream data = new DataInputStream(new ByteArrayInputStream(packet.data));
+            
             final int packetType = GCCoreUtil.readPacketID(data);
+            
             final EntityPlayer player = (EntityPlayer)p;
             
             if (packetType == 0)
@@ -494,6 +505,65 @@ public class ClientProxyCore extends CommonProxyCore
                 		}
                     }
             	}
+            }
+            else if (packetType == 10)
+            {
+            	final Class[] decodeAs = {String.class, Integer.class};
+                final Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
+                
+                int type = (Integer) packetReadout[1];
+                
+                switch (type)
+                {
+                case 0:
+                	playersWithOxygenMask.add((String) packetReadout[0]);
+                	break;
+                case 1:
+                	playersWithOxygenMask.remove((String) packetReadout[0]);
+                	break;
+                case 2:
+                	playersWithOxygenGear.add((String) packetReadout[0]);
+                	break;
+                case 3:
+                	playersWithOxygenGear.remove((String) packetReadout[0]);
+                	break;
+                case 4:
+                	playersWithOxygenTankLeftRed.add((String) packetReadout[0]);
+                	break;
+                case 5:
+                	playersWithOxygenTankLeftRed.remove((String) packetReadout[0]);
+                	break;
+                case 6:
+                	playersWithOxygenTankLeftOrange.add((String) packetReadout[0]);
+                	break;
+                case 7:
+                	playersWithOxygenTankLeftOrange.remove((String) packetReadout[0]);
+                	break;
+                case 8:
+                	playersWithOxygenTankLeftGreen.add((String) packetReadout[0]);
+                	break;
+                case 9:
+                	playersWithOxygenTankLeftGreen.remove((String) packetReadout[0]);
+                	break;
+                case 10:
+                	playersWithOxygenTankRightRed.add((String) packetReadout[0]);
+                	break;
+                case 11:
+                	playersWithOxygenTankRightRed.remove((String) packetReadout[0]);
+                	break;
+                case 12:
+                	playersWithOxygenTankRightOrange.add((String) packetReadout[0]);
+                	break;
+                case 13:
+                	playersWithOxygenTankRightOrange.remove((String) packetReadout[0]);
+                	break;
+                case 14:
+                	playersWithOxygenTankRightGreen.add((String) packetReadout[0]);
+                	break;
+                case 15:
+                	playersWithOxygenTankRightGreen.remove((String) packetReadout[0]);
+                	break;
+                }
             }
 		}
     }
@@ -671,6 +741,39 @@ public class ClientProxyCore extends CommonProxyCore
 //    					}
 //    				}
 //    	        }
+    			
+    			if (player != null && player.ridingEntity != null && player.ridingEntity instanceof GCCoreEntityControllable)
+    			{
+    				GCCoreEntityControllable entityControllable = (GCCoreEntityControllable) player.ridingEntity;
+    				
+    				if (minecraft.gameSettings.keyBindLeft.pressed)
+    				{
+    					entityControllable.keyPressed(2, player);
+    					Object[] toSend = {2};
+    					PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 9, toSend));
+    				}
+    				
+    				if (minecraft.gameSettings.keyBindRight.pressed)
+    				{
+    					entityControllable.keyPressed(3, player);
+    					Object[] toSend = {3};
+    					PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 9, toSend));
+    				}
+
+    				if (minecraft.gameSettings.keyBindForward.pressed)
+    				{
+    					entityControllable.keyPressed(0, player);
+    					Object[] toSend = {0};
+    					PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 9, toSend));
+    				}
+    				
+    				if (minecraft.gameSettings.keyBindBack.pressed)
+    				{
+    					entityControllable.keyPressed(1, player);
+    					Object[] toSend = {1};
+    					PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 9, toSend));
+    				}
+    			}
     			
     			if (player != null && player.ridingEntity != null && player.ridingEntity instanceof GCCoreEntitySpaceship)
     			{

@@ -37,6 +37,14 @@ public class GCCoreModelPlayer extends ModelPlayerBase
     public ModelRenderer oxygenMask;
     
 	boolean usingParachute = false;
+	boolean wearingMask = false;
+	boolean wearingGear = false;
+	boolean wearingLeftTankRed = false;
+	boolean wearingLeftTankOrange = false;
+	boolean wearingLeftTankGreen = false;
+	boolean wearingRightTankRed = false;
+	boolean wearingRightTankOrange = false;
+	boolean wearingRightTankGreen = false;
     
 	public GCCoreModelPlayer(ModelPlayerAPI mpapi) 
 	{
@@ -185,10 +193,11 @@ public class GCCoreModelPlayer extends ModelPlayerBase
     	if (var1 instanceof EntityPlayer && this.modelPlayer == modelBipedMain)
     	{
         	EntityPlayer player = (EntityPlayer)var1;
+        	int j;
         	
         	boolean changed = false;
     		
-            for (int j = 0; j < ClientProxyCore.playersUsingParachutes.size(); ++j)
+            for (j = 0; j < ClientProxyCore.playersUsingParachutes.size(); ++j)
             {
     			final String username = (String) ClientProxyCore.playersUsingParachutes.get(j);
     			
@@ -203,71 +212,217 @@ public class GCCoreModelPlayer extends ModelPlayerBase
             {
             	this.usingParachute = false;
             }
+            
+            //
+
+    		FMLClientHandler.instance().getClient().renderEngine.bindTexture(FMLClientHandler.instance().getClient().renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/entities/player.png"));
     		
-            for (int j = 0; j < GalacticraftCore.gcPlayers.size(); ++j)
+            changed = false;
+    		
+            for (j = 0; j < ClientProxyCore.playersWithOxygenMask.size(); ++j)
             {
-    			final GCCorePlayerBase playerBase = (GCCorePlayerBase) GalacticraftCore.gcPlayers.get(j);
+    			final String username = (String) ClientProxyCore.playersWithOxygenMask.get(j);
     			
-    			if (player.username.equals(playerBase.getPlayer().username))
+    			if (player.username.equals(username))
     			{
-    				GCCoreInventoryTankRefill inventory = playerBase.playerTankInventory;
-
-    	    		FMLClientHandler.instance().getClient().renderEngine.bindTexture(FMLClientHandler.instance().getClient().renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/entities/player.png"));
-    	    		
-    				if (inventory.getStackInSlot(0) != null)
-    				{
-    					this.oxygenMask.render(var7);
-    				}
-    				
-    				if (inventory.getStackInSlot(1) != null)
-    				{
-    					for (int i = 0; i < 7; i++)
-    		        	{
-    		        		for (int k = 0; k < 2; k++)
-    		        		{
-    		                	this.tubes[k][i].render(var7);
-    		        		}
-    		        	}
-    				}
-    				
-    				if (inventory.getStackInSlot(2) != null && inventory.getStackInSlot(2).getItem() instanceof GCCoreItemOxygenTank)
-    				{
-    					GCCoreItemOxygenTank tank = (GCCoreItemOxygenTank) inventory.getStackInSlot(2).getItem();
-    					
-    					switch (tank.tier)
-    					{
-    					case light:
-        		        	this.greenOxygenTanks[0].render(var7);
-    						break;
-    					case medium:
-    						this.orangeOxygenTanks[0].render(var7);
-    						break;
-    					case heavy:
-    						this.redOxygenTanks[0].render(var7);
-    						break;
-	    				}
-    				}
-    				
-    				if (inventory.getStackInSlot(3) != null && inventory.getStackInSlot(3).getItem() instanceof GCCoreItemOxygenTank)
-    				{
-    					GCCoreItemOxygenTank tank = (GCCoreItemOxygenTank) inventory.getStackInSlot(3).getItem();
-
-    					switch (tank.tier)
-    					{
-    					case light:
-        		        	this.greenOxygenTanks[1].render(var7);
-    						break;
-    					case medium:
-    						this.orangeOxygenTanks[1].render(var7);
-    						break;
-    					case heavy:
-    						this.redOxygenTanks[1].render(var7);
-    						break;
-	    				}
-    				}
+    				this.wearingMask = true;
+    				changed = true;
     			}
             }
-        	
+            
+            if (!changed)
+            {
+            	this.wearingMask = false;
+            }
+            
+			if (this.wearingMask)
+			{
+				this.oxygenMask.render(var7);
+			}
+			
+			//
+    		
+            changed = false;
+    		
+            for (j = 0; j < ClientProxyCore.playersWithOxygenGear.size(); ++j)
+            {
+    			final String username = (String) ClientProxyCore.playersWithOxygenGear.get(j);
+    			
+    			if (player.username.equals(username))
+    			{
+    				this.wearingGear = true;
+    				changed = true;
+    			}
+            }
+            
+            if (!changed)
+            {
+            	this.wearingGear = false;
+            }
+            
+			if (this.wearingGear)
+			{
+				for (int i = 0; i < 7; i++)
+	        	{
+	        		for (int k = 0; k < 2; k++)
+	        		{
+	                	this.tubes[k][i].render(var7);
+	        		}
+	        	}
+			}
+			
+			//
+    		
+            changed = false;
+    		
+            for (j = 0; j < ClientProxyCore.playersWithOxygenTankLeftRed.size(); ++j)
+            {
+    			final String username = (String) ClientProxyCore.playersWithOxygenTankLeftRed.get(j);
+    			
+    			if (player.username.equals(username))
+    			{
+    				this.wearingLeftTankRed = true;
+    				changed = true;
+    			}
+            }
+            
+            if (!changed)
+            {
+            	this.wearingLeftTankRed = false;
+            }
+            
+			if (this.wearingLeftTankRed)
+			{
+				this.redOxygenTanks[0].render(var7);
+			}
+			
+			//
+    		
+            changed = false;
+    		
+            for (j = 0; j < ClientProxyCore.playersWithOxygenTankLeftOrange.size(); ++j)
+            {
+    			final String username = (String) ClientProxyCore.playersWithOxygenTankLeftOrange.get(j);
+    			
+    			if (player.username.equals(username))
+    			{
+    				this.wearingLeftTankOrange = true;
+    				changed = true;
+    			}
+            }
+            
+            if (!changed)
+            {
+            	this.wearingLeftTankOrange = false;
+            }
+            
+			if (this.wearingLeftTankOrange)
+			{
+				this.orangeOxygenTanks[0].render(var7);
+			}
+			
+			//
+    		
+            changed = false;
+    		
+            for (j = 0; j < ClientProxyCore.playersWithOxygenTankLeftGreen.size(); ++j)
+            {
+    			final String username = (String) ClientProxyCore.playersWithOxygenTankLeftGreen.get(j);
+    			
+    			if (player.username.equals(username))
+    			{
+    				this.wearingLeftTankGreen = true;
+    				changed = true;
+    			}
+            }
+            
+            if (!changed)
+            {
+            	this.wearingLeftTankGreen = false;
+            }
+            
+			if (this.wearingLeftTankGreen)
+			{
+				this.greenOxygenTanks[0].render(var7);
+			}
+			
+			//
+    		
+            changed = false;
+    		
+            for (j = 0; j < ClientProxyCore.playersWithOxygenTankRightRed.size(); ++j)
+            {
+    			final String username = (String) ClientProxyCore.playersWithOxygenTankRightRed.get(j);
+    			
+    			if (player.username.equals(username))
+    			{
+    				this.wearingRightTankRed = true;
+    				changed = true;
+    			}
+            }
+            
+            if (!changed)
+            {
+            	this.wearingRightTankRed = false;
+            }
+            
+			if (this.wearingRightTankRed)
+			{
+				this.redOxygenTanks[1].render(var7);
+			}
+			
+			//
+    		
+            changed = false;
+    		
+            for (j = 0; j < ClientProxyCore.playersWithOxygenTankRightOrange.size(); ++j)
+            {
+    			final String username = (String) ClientProxyCore.playersWithOxygenTankRightOrange.get(j);
+    			
+    			if (player.username.equals(username))
+    			{
+    				this.wearingRightTankOrange = true;
+    				changed = true;
+    			}
+            }
+            
+            if (!changed)
+            {
+            	this.wearingRightTankOrange = false;
+            }
+            
+			if (this.wearingRightTankOrange)
+			{
+				this.orangeOxygenTanks[1].render(var7);
+			}
+			
+			//
+    		
+            changed = false;
+    		
+            for (j = 0; j < ClientProxyCore.playersWithOxygenTankRightGreen.size(); ++j)
+            {
+    			final String username = (String) ClientProxyCore.playersWithOxygenTankRightGreen.get(j);
+    			
+    			if (player.username.equals(username))
+    			{
+    				this.wearingRightTankGreen = true;
+    				changed = true;
+    			}
+            }
+            
+            if (!changed)
+            {
+            	this.wearingRightTankGreen = false;
+            }
+            
+			if (this.wearingRightTankGreen)
+			{
+				this.greenOxygenTanks[1].render(var7);
+			}
+			
+			//
+			
         	if (usingParachute)
         	{
         		FMLClientHandler.instance().getClient().renderEngine.bindTexture(FMLClientHandler.instance().getClient().renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/entities/parachute/" + ClientProxyCore.parachuteTextures.get(player.username) + ".png"));

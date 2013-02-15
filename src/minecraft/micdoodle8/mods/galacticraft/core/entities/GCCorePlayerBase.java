@@ -74,6 +74,18 @@ public class GCCorePlayerBase extends ServerPlayerBase
 	private ItemStack parachuteInSlot;
 	private ItemStack lastParachuteInSlot;
 	
+	private ItemStack maskInSlot;
+	private ItemStack lastMaskInSlot;
+	
+	private ItemStack gearInSlot;
+	private ItemStack lastGearInSlot;
+	
+	private ItemStack tankInSlot1;
+	private ItemStack lastTankInSlot1;
+	
+	private ItemStack tankInSlot2;
+	private ItemStack lastTankInSlot2;
+	
 	public int launchAttempts = 0;
 
 	public GCCorePlayerBase(ServerPlayerAPI var1) 
@@ -150,6 +162,10 @@ public class GCCorePlayerBase extends ServerPlayerBase
     {
     	super.onUpdate();
     	
+    	this.maskInSlot = this.playerTankInventory.getStackInSlot(0);
+    	this.gearInSlot = this.playerTankInventory.getStackInSlot(1);
+    	this.tankInSlot1 = this.playerTankInventory.getStackInSlot(2);
+    	this.tankInSlot2 = this.playerTankInventory.getStackInSlot(3);
     	this.parachuteInSlot = this.playerTankInventory.getStackInSlot(4);
     	
 		if (player.worldObj.provider instanceof IGalacticraftWorldProvider && player.inventory.getCurrentItem() != null)
@@ -280,6 +296,190 @@ public class GCCorePlayerBase extends ServerPlayerBase
 			this.sendParachuteRemovalPacket();
 			this.setParachute(false);
 		}
+		
+		if (this.maskInSlot != null && this.lastMaskInSlot == null)
+		{
+			this.sendGearUpdatePacket(modelUpdatePacketTypes.ADDMASK.getIndex());
+		}
+		
+		if (this.maskInSlot == null && this.lastMaskInSlot != null)
+		{
+			this.sendGearUpdatePacket(modelUpdatePacketTypes.REMOVEMASK.getIndex());
+		}
+		
+		//
+		
+		if (this.gearInSlot != null && this.lastGearInSlot == null)
+		{
+			this.sendGearUpdatePacket(modelUpdatePacketTypes.ADDGEAR.getIndex());
+		}
+		
+		if (this.gearInSlot == null && this.lastGearInSlot != null)
+		{
+			this.sendGearUpdatePacket(modelUpdatePacketTypes.REMOVEGEAR.getIndex());
+		}
+		
+		//
+		
+		if (this.tankInSlot1 != null && this.lastTankInSlot1 == null)
+		{
+			if (tankInSlot1.getItem().itemID == GCCoreItems.lightOxygenTankFull.itemID)
+			{
+				this.sendGearUpdatePacket(modelUpdatePacketTypes.ADDLEFTGREENTANK.getIndex());
+			}
+			else if (tankInSlot1.getItem().itemID == GCCoreItems.medOxygenTankFull.itemID)
+			{
+				this.sendGearUpdatePacket(modelUpdatePacketTypes.ADDLEFTORANGETANK.getIndex());
+			}
+			else if (tankInSlot1.getItem().itemID == GCCoreItems.heavyOxygenTankFull.itemID)
+			{
+				this.sendGearUpdatePacket(modelUpdatePacketTypes.ADDLEFTREDTANK.getIndex());
+			}
+		}
+		
+		if (this.tankInSlot1 == null && this.lastTankInSlot1 != null)
+		{
+			if (lastTankInSlot1.getItem().itemID == GCCoreItems.lightOxygenTankFull.itemID)
+			{
+				this.sendGearUpdatePacket(modelUpdatePacketTypes.REMOVELEFTGREENTANK.getIndex());
+			}
+			else if (lastTankInSlot1.getItem().itemID == GCCoreItems.medOxygenTankFull.itemID)
+			{
+				this.sendGearUpdatePacket(modelUpdatePacketTypes.REMOVELEFTORANGETANK.getIndex());
+			}
+			else if (lastTankInSlot1.getItem().itemID == GCCoreItems.heavyOxygenTankFull.itemID)
+			{
+				this.sendGearUpdatePacket(modelUpdatePacketTypes.REMOVELEFTREDTANK.getIndex());
+			}
+		}
+		
+		if (this.tankInSlot1 != null && this.lastTankInSlot1 != null)
+		{
+			if (tankInSlot1.getItem().itemID != this.lastTankInSlot1.getItem().itemID)
+			{
+				if (tankInSlot1.getItem().itemID == GCCoreItems.lightOxygenTankFull.itemID)
+				{
+					if (lastTankInSlot1.getItem().itemID == GCCoreItems.medOxygenTankFull.itemID)
+					{
+						this.sendGearUpdatePacket(modelUpdatePacketTypes.REMOVELEFTORANGETANK.getIndex());
+					}
+					else if (lastTankInSlot1.getItem().itemID == GCCoreItems.heavyOxygenTankFull.itemID)
+					{
+						this.sendGearUpdatePacket(modelUpdatePacketTypes.REMOVELEFTREDTANK.getIndex());
+					}
+					
+					this.sendGearUpdatePacket(modelUpdatePacketTypes.ADDLEFTGREENTANK.getIndex());
+				}
+				else if (tankInSlot1.getItem().itemID == GCCoreItems.medOxygenTankFull.itemID)
+				{
+					if (lastTankInSlot1.getItem().itemID == GCCoreItems.lightOxygenTankFull.itemID)
+					{
+						this.sendGearUpdatePacket(modelUpdatePacketTypes.REMOVELEFTGREENTANK.getIndex());
+					}
+					else if (lastTankInSlot1.getItem().itemID == GCCoreItems.heavyOxygenTankFull.itemID)
+					{
+						this.sendGearUpdatePacket(modelUpdatePacketTypes.REMOVELEFTREDTANK.getIndex());
+					}
+					
+					this.sendGearUpdatePacket(modelUpdatePacketTypes.ADDLEFTORANGETANK.getIndex());
+				}
+				else if (tankInSlot1.getItem().itemID == GCCoreItems.heavyOxygenTankFull.itemID)
+				{
+					if (lastTankInSlot1.getItem().itemID == GCCoreItems.lightOxygenTankFull.itemID)
+					{
+						this.sendGearUpdatePacket(modelUpdatePacketTypes.REMOVELEFTGREENTANK.getIndex());
+					}
+					else if (lastTankInSlot1.getItem().itemID == GCCoreItems.medOxygenTankFull.itemID)
+					{
+						this.sendGearUpdatePacket(modelUpdatePacketTypes.REMOVELEFTORANGETANK.getIndex());
+					}
+					
+					this.sendGearUpdatePacket(modelUpdatePacketTypes.ADDLEFTREDTANK.getIndex());
+				}
+			}
+		}
+		
+		//
+		
+		if (this.tankInSlot2 != null && this.lastTankInSlot2 == null)
+		{
+			if (tankInSlot2.getItem().itemID == GCCoreItems.lightOxygenTankFull.itemID)
+			{
+				this.sendGearUpdatePacket(modelUpdatePacketTypes.ADDRIGHTGREENTANK.getIndex());
+			}
+			else if (tankInSlot2.getItem().itemID == GCCoreItems.medOxygenTankFull.itemID)
+			{
+				this.sendGearUpdatePacket(modelUpdatePacketTypes.ADDRIGHTORANGETANK.getIndex());
+			}
+			else if (tankInSlot2.getItem().itemID == GCCoreItems.heavyOxygenTankFull.itemID)
+			{
+				this.sendGearUpdatePacket(modelUpdatePacketTypes.ADDRIGHTREDTANK.getIndex());
+			}
+		}
+		
+		if (this.tankInSlot2 == null && this.lastTankInSlot2 != null)
+		{
+			if (lastTankInSlot2.getItem().itemID == GCCoreItems.lightOxygenTankFull.itemID)
+			{
+				this.sendGearUpdatePacket(modelUpdatePacketTypes.REMOVERIGHTGREENTANK.getIndex());
+			}
+			else if (lastTankInSlot2.getItem().itemID == GCCoreItems.medOxygenTankFull.itemID)
+			{
+				this.sendGearUpdatePacket(modelUpdatePacketTypes.REMOVERIGHTORANGETANK.getIndex());
+			}
+			else if (lastTankInSlot2.getItem().itemID == GCCoreItems.heavyOxygenTankFull.itemID)
+			{
+				this.sendGearUpdatePacket(modelUpdatePacketTypes.REMOVERIGHTREDTANK.getIndex());
+			}
+		}
+		
+		if (this.tankInSlot2 != null && this.lastTankInSlot2 != null)
+		{
+			if (tankInSlot2.getItem().itemID != this.lastTankInSlot2.getItem().itemID)
+			{
+				if (tankInSlot2.getItem().itemID == GCCoreItems.lightOxygenTankFull.itemID)
+				{
+					if (lastTankInSlot2.getItem().itemID == GCCoreItems.medOxygenTankFull.itemID)
+					{
+						this.sendGearUpdatePacket(modelUpdatePacketTypes.REMOVERIGHTORANGETANK.getIndex());
+					}
+					else if (lastTankInSlot2.getItem().itemID == GCCoreItems.heavyOxygenTankFull.itemID)
+					{
+						this.sendGearUpdatePacket(modelUpdatePacketTypes.REMOVERIGHTREDTANK.getIndex());
+					}
+					
+					this.sendGearUpdatePacket(modelUpdatePacketTypes.ADDRIGHTGREENTANK.getIndex());
+				}
+				else if (tankInSlot2.getItem().itemID == GCCoreItems.medOxygenTankFull.itemID)
+				{
+					if (lastTankInSlot2.getItem().itemID == GCCoreItems.lightOxygenTankFull.itemID)
+					{
+						this.sendGearUpdatePacket(modelUpdatePacketTypes.REMOVERIGHTGREENTANK.getIndex());
+					}
+					else if (lastTankInSlot2.getItem().itemID == GCCoreItems.heavyOxygenTankFull.itemID)
+					{
+						this.sendGearUpdatePacket(modelUpdatePacketTypes.REMOVERIGHTREDTANK.getIndex());
+					}
+					
+					this.sendGearUpdatePacket(modelUpdatePacketTypes.ADDRIGHTORANGETANK.getIndex());
+				}
+				else if (tankInSlot2.getItem().itemID == GCCoreItems.heavyOxygenTankFull.itemID)
+				{
+					if (lastTankInSlot2.getItem().itemID == GCCoreItems.lightOxygenTankFull.itemID)
+					{
+						this.sendGearUpdatePacket(modelUpdatePacketTypes.REMOVERIGHTGREENTANK.getIndex());
+					}
+					else if (lastTankInSlot2.getItem().itemID == GCCoreItems.medOxygenTankFull.itemID)
+					{
+						this.sendGearUpdatePacket(modelUpdatePacketTypes.REMOVERIGHTORANGETANK.getIndex());
+					}
+					
+					this.sendGearUpdatePacket(modelUpdatePacketTypes.ADDRIGHTREDTANK.getIndex());
+				}
+			}
+		}
+		
+		//
 		
 		if (this.getParachute() && parachuteInSlot == null && this.lastParachuteInSlot != null)
 		{
@@ -512,7 +712,11 @@ public class GCCorePlayerBase extends ServerPlayerBase
 				}
 			}
 		}
-    	
+
+    	this.lastMaskInSlot = this.playerTankInventory.getStackInSlot(0);
+    	this.lastGearInSlot = this.playerTankInventory.getStackInSlot(1);
+    	this.lastTankInSlot1 = this.playerTankInventory.getStackInSlot(2);
+    	this.lastTankInSlot2 = this.playerTankInventory.getStackInSlot(3);
     	this.lastParachuteInSlot = this.playerTankInventory.getStackInSlot(4);
 	}
 
@@ -710,6 +914,16 @@ public class GCCorePlayerBase extends ServerPlayerBase
 	  	}
 	}
 	  
+	public void sendGearUpdatePacket(int i)
+	{
+	  	final Object[] toSend = {this.player.username, i};
+	  	
+	  	if (FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.player.username) != null)
+	  	{
+	          PacketDispatcher.sendPacketToAllPlayers(GCCoreUtil.createPacket("Galacticraft", 10, toSend));
+	  	}
+	}
+	  
 	public void sendParachuteRemovalPacket()
 	{
 	  	final Object[] toSend = {this.player.username};
@@ -782,5 +996,37 @@ public class GCCorePlayerBase extends ServerPlayerBase
     public boolean getParachute()
     {
     	return this.usingParachute;
+    }
+    
+    public static enum modelUpdatePacketTypes
+    {
+    	ADDMASK(0),
+    	REMOVEMASK(1),
+    	ADDGEAR(2),
+    	REMOVEGEAR(3),
+    	ADDLEFTREDTANK(4),
+    	REMOVELEFTREDTANK(5),
+    	ADDLEFTORANGETANK(6),
+    	REMOVELEFTORANGETANK(7),
+    	ADDLEFTGREENTANK(8),
+    	REMOVELEFTGREENTANK(9),
+    	ADDRIGHTREDTANK(10),
+    	REMOVERIGHTREDTANK(11),
+    	ADDRIGHTORANGETANK(12),
+    	REMOVERIGHTORANGETANK(13),
+    	ADDRIGHTGREENTANK(14),
+    	REMOVERIGHTGREENTANK(15);
+    	
+    	private int index;
+    	
+    	private modelUpdatePacketTypes(int index)
+    	{
+    		this.index = index;
+    	}
+    	
+    	public int getIndex()
+    	{
+    		return this.index;
+    	}
     }
 }
