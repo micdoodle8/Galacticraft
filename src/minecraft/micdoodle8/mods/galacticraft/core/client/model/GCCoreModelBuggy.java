@@ -1,8 +1,10 @@
 package micdoodle8.mods.galacticraft.core.client.model;
 
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityBuggy;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
+import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreModelBuggy extends ModelBase
 {
@@ -305,6 +307,56 @@ public class GCCoreModelBuggy extends ModelBase
 	public void setRotationAngles(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
 	{
 		super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);	
+        
+        this.radarCenter.rotateAngleY += 0.01F;
+
+        if (entity instanceof GCCoreEntityBuggy && entity.riddenByEntity != null)
+        {
+        	GCCoreEntityBuggy buggy = (GCCoreEntityBuggy) entity;
+
+        	this.wheel1a.rotateAngleY = buggy.turnProgress;
+        	this.wheel2a.rotateAngleY = buggy.turnProgress;
+        	this.wheel3a.rotateAngleY = buggy.turnProgress;
+        	this.wheel4a.rotateAngleY = buggy.turnProgress;
+        	this.wheel1b.rotateAngleY = buggy.turnProgress;
+        	this.wheel2b.rotateAngleY = buggy.turnProgress;
+        	this.wheel3b.rotateAngleY = buggy.turnProgress;
+        	this.wheel4b.rotateAngleY = buggy.turnProgress;
+        	this.wheel1c.rotateAngleY = buggy.turnProgress;
+        	this.wheel2c.rotateAngleY = buggy.turnProgress;
+        	this.wheel3c.rotateAngleY = buggy.turnProgress;
+        	this.wheel4c.rotateAngleY = buggy.turnProgress;
+        	this.wheel1d.rotateAngleY = buggy.turnProgress;
+        	this.wheel2d.rotateAngleY = buggy.turnProgress;
+        	this.wheel3d.rotateAngleY = buggy.turnProgress;
+        	this.wheel4d.rotateAngleY = buggy.turnProgress;
+        	this.wheel1e.rotateAngleY = buggy.turnProgress;
+        	this.wheel2e.rotateAngleY = buggy.turnProgress;
+        	this.wheel3e.rotateAngleY = buggy.turnProgress;
+        	this.wheel4e.rotateAngleY = buggy.turnProgress;
+
+        	
+        	this.wheel1a.rotateAngleX += (float) buggy.speed / 20F;
+        	this.wheel2a.rotateAngleX += (float) buggy.speed / 20F;
+        	this.wheel3a.rotateAngleX += (float) buggy.speed / 20F;
+        	this.wheel4a.rotateAngleX += (float) buggy.speed / 20F;
+        	this.wheel1b.rotateAngleX += (float) buggy.speed / 20F;
+        	this.wheel2b.rotateAngleX += (float) buggy.speed / 20F;
+        	this.wheel3b.rotateAngleX += (float) buggy.speed / 20F;
+        	this.wheel4b.rotateAngleX += (float) buggy.speed / 20F;
+        	this.wheel1c.rotateAngleX += (float) buggy.speed / 20F;
+        	this.wheel2c.rotateAngleX += (float) buggy.speed / 20F;
+        	this.wheel3c.rotateAngleX += (float) buggy.speed / 20F;
+        	this.wheel4c.rotateAngleX += (float) buggy.speed / 20F;
+        	this.wheel1d.rotateAngleX += (float) buggy.speed / 20F;
+        	this.wheel2d.rotateAngleX += (float) buggy.speed / 20F;
+        	this.wheel3d.rotateAngleX += (float) buggy.speed / 20F;
+        	this.wheel4d.rotateAngleX += (float) buggy.speed / 20F;
+        	this.wheel1e.rotateAngleX += (float) buggy.speed / 20F;
+        	this.wheel2e.rotateAngleX += (float) buggy.speed / 20F;
+        	this.wheel3e.rotateAngleX += (float) buggy.speed / 20F;
+        	this.wheel4e.rotateAngleX += (float) buggy.speed / 20F;
+        }
         
 //        this.radarCenter.rotateAngleY += 0.01F;
 	}
