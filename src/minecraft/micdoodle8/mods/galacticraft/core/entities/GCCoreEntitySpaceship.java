@@ -46,28 +46,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GCCoreEntitySpaceship extends Entity implements IInventory
 {
     protected ItemStack[] cargoItems = new ItemStack[36];
-	
-    protected int fuel;
-    
-    public double pushX;
-    public double pushZ;
-    
-    protected double minecartX;
-    protected double minecartY;
-    protected double minecartZ;
-    protected double minecartYaw;
-    protected double minecartPitch;
-    @SideOnly(Side.CLIENT)
-    protected double velocityX;
-    @SideOnly(Side.CLIENT)
-    protected double velocityY;
-    @SideOnly(Side.CLIENT)
-    protected double velocityZ;
 
-    protected float maxSpeedRail;
-    protected float maxSpeedGround;
-    protected float maxSpeedAirLateral;
-    protected float maxSpeedAirVertical;
     protected double dragAir;
     
     protected int ignite;
@@ -78,20 +57,12 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
     public float timeSinceLaunch;
     
     public float rumble;
-    
-    protected boolean reversed;
-    
-    protected boolean failedLaunch;
 	
     public IUpdatePlayerListBox rocketSoundUpdater;
-    
-	private boolean hasDroppedItem;
 
     public GCCoreEntitySpaceship(World par1World)
     {
         super(par1World);
-        this.fuel = 0;
-        this.hasDroppedItem = false;
         this.preventEntitySpawning = true;
         this.setSize(0.98F, 4F);
         this.yOffset = this.height / 2.0F;
@@ -146,7 +117,6 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
         this.prevPosX = par2;
         this.prevPosY = par4;
         this.prevPosZ = par6;
-        this.reversed = reversed;
         
         if (reversed)
         {
@@ -242,60 +212,10 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
     		this.timeSinceEntityEntry--;
     	}
     	
-    	if (this.reversed)
-    	{
-    		this.dataWatcher.updateObject(21, Integer.valueOf(1));
-    	}
-		
-    	if (this.reversed)
-    	{
-    		if (this.worldObj.getBlockMaterial((int)this.posX, (int)this.posY - 5, (int)this.posZ) != Material.air || this.motionY == 0)
-    		{
-                if (this.riddenByEntity != null)
-                {
-                    this.riddenByEntity.mountEntity(this);
-                }
-
-                GCCoreUtil.createNewExplosion(this.worldObj, this, this.posX, this.posY, this.posZ, 6, false);
-                
-				if (this.worldObj.isRemote && !this.hasDroppedItem && this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayer && !((EntityPlayer) this.riddenByEntity).capabilities.isCreativeMode)
-				{
-					final EntityItem var14 = new EntityItem(this.worldObj, MathHelper.floor_double(this.riddenByEntity.posX + 0.5D), MathHelper.floor_double(this.riddenByEntity.posY + 1D), MathHelper.floor_double(this.riddenByEntity.posZ + 0.5D), new ItemStack(GCCoreItems.spaceship));
-
-			        final float var15 = 0.05F;
-			        var14.motionX = (float)this.rand.nextGaussian() * var15;
-			        var14.motionY = (float)this.rand.nextGaussian() * var15 + 0.2F;
-			        var14.motionZ = (float)this.rand.nextGaussian() * var15;
-			        this.worldObj.spawnEntityInWorld(var14);
-			        this.hasDroppedItem = true;
-				}
-				else if (this.riddenByEntity == null)
-				{
-					final EntityItem var14 = new EntityItem(this.worldObj, MathHelper.floor_double(this.posX + 0.5D), MathHelper.floor_double(this.posY + 1D), MathHelper.floor_double(this.posZ + 0.5D), new ItemStack(GCCoreItems.spaceship));
-
-			        final float var15 = 0.05F;
-			        var14.motionX = (float)this.rand.nextGaussian() * var15;
-			        var14.motionY = (float)this.rand.nextGaussian() * var15 + 0.2F;
-			        var14.motionZ = (float)this.rand.nextGaussian() * var15;
-			        this.worldObj.spawnEntityInWorld(var14);
-				}
-                
-    			this.setDead();
-    		}
-    	}
-    	
     	if (this.riddenByEntity != null)
     	{
-    		if (this.failedLaunch && this.timeSinceLaunch >= 100)
-    		{
-        		this.riddenByEntity.posX += this.rumble / 20F;
-        		this.riddenByEntity.posZ += this.rumble / 20F;
-    		}
-    		else
-    		{
-        		this.riddenByEntity.posX += this.rumble / 30F;
-        		this.riddenByEntity.posZ += this.rumble / 30F;
-    		}
+    		this.riddenByEntity.posX += this.rumble / 30F;
+    		this.riddenByEntity.posZ += this.rumble / 30F;
     		
     		EntityPlayer player = (EntityPlayer) this.riddenByEntity;
     	}
@@ -305,7 +225,7 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
     		this.rotationPitch = 180F;
     	}
     	
-    	if (this.posY > 450D && !this.reversed)
+    	if (this.posY > 450D)
     	{
     		this.teleport();
     	}
@@ -393,9 +313,11 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
         	this.rumble = (float) this.rand.nextInt(3) - 3;
         }
         
-        if (this.launched && !this.reversed && this.getStackInSlot(27) != null && this.getStackInSlot(27).getItem().itemID == GCCoreItems.rocketFuelBucket.itemID)
+        if (this.launched && this.getStackInSlot(27) != null && this.getStackInSlot(27).getItem().itemID == GCCoreItems.rocketFuelBucket.itemID)
         {
-        	double d = Math.abs(Math.sin(this.timeSinceLaunch));
+        	double d = this.timeSinceLaunch / 250;
+        	
+        	d = Math.min(d, 3);
         	
         	if (d != 0.0)
         	{
@@ -404,18 +326,12 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
         }
         else if ((this.getStackInSlot(27) == null || this.getStackInSlot(27).getItem().itemID != GCCoreItems.rocketFuelBucket.itemID) && this.getLaunched() == 1)
         {
-//      		this.rotationPitch = -180;
         	if (Math.abs(Math.sin(this.timeSinceLaunch / 1000)) / 10 != 0.0)
         		this.motionY -= Math.abs(Math.sin(this.timeSinceLaunch / 1000)) / 20;
         }
         
-        this.motionX = -(1.3 * Math.cos(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D));
-        this.motionZ = -(1.3 * Math.sin(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D));
-        
-        if (this.getReversed() == 0 && (this.rotationPitch > 70F || this.rotationPitch < -70F))
-        {
-//        	this.failRocket(); TODO
-        }
+        this.motionX = -(50 * Math.cos(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * 0.01 * Math.PI / 180.0D));
+        this.motionZ = -(50 * Math.sin(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * 0.01 * Math.PI / 180.0D));
         
         if (this.timeSinceLaunch > 50 && this.onGround)
         {
@@ -423,24 +339,6 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
         }
         
         this.moveEntity(this.motionX, this.motionY, this.motionZ);
-        
-        if (this.failedLaunch)
-      	{
-	      	if (this.timeSinceLaunch > 100)
-	      	{
-	      		this.setFailedLaunch(1);
-	      	}
-	      	
-	      	if (this.timeSinceLaunch > 200)
-	      	{
-//	      		this.failRocket();
-	      	}
-      	}
-        
-//        if ((this.getFailedLaunch() == 1 || (this.getStackInSlot(27) == null || this.getStackInSlot(27).getItem().itemID != GCCoreItems.rocketFuelBucket.itemID)) && this.getLaunched() == 1)
-//        {
-//      		this.rotationYaw += 2;
-//        }
         
         this.setRotation(this.rotationYaw, this.rotationPitch);
 
@@ -472,7 +370,7 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
     		this.riddenByEntity.attackEntityFrom(GCCoreDamageSource.spaceshipExplosion, (int)(4.0D * 20 + 1.0D));
     	}
         
-  		this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 20, true);
+  		this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 5, true);
   		
   		this.setDead();
     }
@@ -482,25 +380,6 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
     public void setPositionAndRotation2(double par1, double par3, double par5, float par7, float par8, int par9)
     {
     	this.setRotation(par7, par8);
-//        this.minecartX = par1;
-//        this.minecartY = par3;
-//        this.minecartZ = par5;
-//        this.minecartYaw = par7;
-//        this.minecartPitch = par8;
-//        this.motionX = this.velocityX;
-//        this.motionY = this.velocityY;
-//        this.motionZ = this.velocityZ;
-//
-//        this.rotationYaw = par7;
-    }
-
-    @Override
-	@SideOnly(Side.CLIENT)
-    public void setVelocity(double par1, double par3, double par5)
-    {
-        this.velocityX = this.motionX = par1;
-        this.velocityY = this.motionY = par3;
-        this.velocityZ = this.motionZ = par5;
     }
     
     protected void spawnParticles(boolean launched)
@@ -513,31 +392,16 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
     	
     	if (!this.isDead)
     	{
-			if (this.riddenByEntity != null)
-        	{
-            	this.spawnParticle("launchflame", 	this.posX + 0.4 - this.rand.nextDouble() / 10 + x1, 					y - 0.0D + y1, 	this.posZ + 0.4 - this.rand.nextDouble() / 10 + z1, 	x1, y1, z1, true);
-            	this.spawnParticle("launchflame", 	this.posX - 0.4 + this.rand.nextDouble() / 10 + x1, 					y - 0.0D + y1, 	this.posZ + 0.4 - this.rand.nextDouble() / 10 + z1, 	x1, y1, z1, true);
-            	this.spawnParticle("launchflame", 	this.posX - 0.4 + this.rand.nextDouble() / 10 + x1, 					y - 0.0D + y1, 	this.posZ - 0.4 + this.rand.nextDouble() / 10 + z1, 	x1, y1, z1, true);
-            	this.spawnParticle("launchflame", 	this.posX + 0.4 - this.rand.nextDouble() / 10 + x1, 					y - 0.0D + y1,	this.posZ - 0.4 + this.rand.nextDouble() / 10 + z1, 	x1, y1, z1, true);
-            	this.spawnParticle("launchflame", 	this.posX + x1, 														y - 0.0D + y1, 	this.posZ + z1, 										x1, y1, z1, true);
-            	this.spawnParticle("launchflame", 	this.posX + 0.4 + x1, 													y - 0.0D + y1, 	this.posZ + z1, 										x1, y1, z1, true);
-            	this.spawnParticle("launchflame", 	this.posX - 0.4 + x1, 													y - 0.0D + y1, 	this.posZ + z1, 										x1, y1, z1, true);
-            	this.spawnParticle("launchflame", 	this.posX + x1, 														y - 0.0D + y1, 	this.posZ + 0.4D + z1, 									x1, y1, z1, true);
-            	this.spawnParticle("launchflame", 	this.posX + x1, 														y - 0.0D + y1, 	this.posZ - 0.4D + z1, 									x1, y1, z1, true);
-        	}
-        	else
-        	{
-            	this.spawnParticle("launchflame", 	this.posX, 											this.posY - 0.8D + y1, 													this.posZ, 											-this.motionX, this.getReversed() == 1 ? 1D : -1D, -this.motionZ, true);
-            	this.spawnParticle("launchflame", 	this.posX + 0.4 - this.rand.nextDouble() / 10, 	this.posY - 0.8D + y1, 													this.posZ + 0.4 - this.rand.nextDouble() / 10, 	-this.motionX, this.getReversed() == 1 ? 1D : -1D, -this.motionZ, true);
-            	this.spawnParticle("launchflame", 	this.posX - 0.4 + this.rand.nextDouble() / 10, 	this.posY - 0.8D + y1, 													this.posZ + 0.4 - this.rand.nextDouble() / 10, 	-this.motionX, this.getReversed() == 1 ? 1D : -1D, -this.motionZ, true);
-            	this.spawnParticle("launchflame", 	this.posX - 0.4 + this.rand.nextDouble() / 10, 	this.posY - 0.8D + y1, 													this.posZ - 0.4 + this.rand.nextDouble() / 10, 	-this.motionX, this.getReversed() == 1 ? 1D : -1D, -this.motionZ, true);
-            	this.spawnParticle("launchflame", 	this.posX + 0.4 - this.rand.nextDouble() / 10, 	this.posY - 0.8D + y1, 													this.posZ - 0.4 + this.rand.nextDouble() / 10, 	-this.motionX, this.getReversed() == 1 ? 1D : -1D, -this.motionZ, true);
-                this.spawnParticle("launchflame", 	this.posX + 0.4, 									this.posY - 0.8D + y1, 													this.posZ, 											-this.motionX, this.getReversed() == 1 ? 1D : -1D, -this.motionZ, true);
-                this.spawnParticle("launchflame", 	this.posX - 0.4, 									this.posY - 0.8D + y1, 													this.posZ, 											-this.motionX, this.getReversed() == 1 ? 1D : -1D, -this.motionZ, true);
-                this.spawnParticle("launchflame", 	this.posX, 											this.posY - 0.8D + y1, 													this.posZ + 0.4D, 									-this.motionX, this.getReversed() == 1 ? 1D : -1D, -this.motionZ, true);
-                this.spawnParticle("launchflame", 	this.posX, 											this.posY - 0.8D + y1, 													this.posZ - 0.4D, 									-this.motionX, this.getReversed() == 1 ? 1D : -1D, -this.motionZ, true);
-        	}
-    	}
+        	this.spawnParticle("launchflame", 	this.posX + 0.4 - this.rand.nextDouble() / 10 + x1, 					y - 0.0D + y1, 	this.posZ + 0.4 - this.rand.nextDouble() / 10 + z1, 	x1, y1, z1, true);
+        	this.spawnParticle("launchflame", 	this.posX - 0.4 + this.rand.nextDouble() / 10 + x1, 					y - 0.0D + y1, 	this.posZ + 0.4 - this.rand.nextDouble() / 10 + z1, 	x1, y1, z1, true);
+        	this.spawnParticle("launchflame", 	this.posX - 0.4 + this.rand.nextDouble() / 10 + x1, 					y - 0.0D + y1, 	this.posZ - 0.4 + this.rand.nextDouble() / 10 + z1, 	x1, y1, z1, true);
+        	this.spawnParticle("launchflame", 	this.posX + 0.4 - this.rand.nextDouble() / 10 + x1, 					y - 0.0D + y1,	this.posZ - 0.4 + this.rand.nextDouble() / 10 + z1, 	x1, y1, z1, true);
+        	this.spawnParticle("launchflame", 	this.posX + x1, 														y - 0.0D + y1, 	this.posZ + z1, 										x1, y1, z1, true);
+        	this.spawnParticle("launchflame", 	this.posX + 0.4 + x1, 													y - 0.0D + y1, 	this.posZ + z1, 										x1, y1, z1, true);
+        	this.spawnParticle("launchflame", 	this.posX - 0.4 + x1, 													y - 0.0D + y1, 	this.posZ + z1, 										x1, y1, z1, true);
+        	this.spawnParticle("launchflame", 	this.posX + x1, 														y - 0.0D + y1, 	this.posZ + 0.4D + z1, 									x1, y1, z1, true);
+        	this.spawnParticle("launchflame", 	this.posX + x1, 														y - 0.0D + y1, 	this.posZ - 0.4D + z1, 									x1, y1, z1, true);
+        }
     }
     
     protected void spawnParticlesExplosion()
@@ -552,8 +416,6 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
     	par1NBTTagCompound.setBoolean("launched", this.launched);
     	par1NBTTagCompound.setInteger("timeUntilLaunch", this.timeUntilLaunch);
     	par1NBTTagCompound.setInteger("ignite", this.ignite);
-    	par1NBTTagCompound.setBoolean("reversed", this.reversed);
-    	par1NBTTagCompound.setBoolean("failedlaunch", this.failedLaunch);
 
         if (getSizeInventory() > 0)
         {
@@ -589,8 +451,6 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
 		}
 		this.timeUntilLaunch = par1NBTTagCompound.getInteger("timeUntilLaunch");
 		this.ignite = par1NBTTagCompound.getInteger("ignite");
-		this.reversed = par1NBTTagCompound.getBoolean("reversed");
-		this.failedLaunch = par1NBTTagCompound.getBoolean("failedlaunch");
 
         if (getSizeInventory() > 0)
         {
@@ -617,7 +477,6 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
     	{
         	par1EntityPlayer.mountEntity(this);
             this.timeSinceEntityEntry = 20;
-            this.updateFailChance(par1EntityPlayer);
             
             if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayerMP)
             {
@@ -792,18 +651,6 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
 	    			}
 	            }
             }
-    	}
-    }
-    
-    protected void updateFailChance(EntityPlayer player)
-    {
-    	if (this.rand.nextInt(100) < GCCoreUtil.getSpaceshipFailChance(player))
-    	{
-    		this.failedLaunch = false; // TODO
-    	}
-    	else
-    	{
-    		this.failedLaunch = false;
     	}
     }
 
