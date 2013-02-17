@@ -5,7 +5,6 @@ import java.io.DataInputStream;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubMod;
@@ -49,7 +48,9 @@ import net.minecraft.network.packet.Packet9Respawn;
 import net.minecraft.src.ServerPlayerAPI;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.common.IScheduledTickHandler;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
@@ -95,8 +96,8 @@ public class GalacticraftCore
 	
 	public static long tick;
 	
-	public static List<GCCorePlayerBaseClient> players = new ArrayList<GCCorePlayerBaseClient>();
-	public static List<GCCorePlayerBase> gcPlayers = new ArrayList<GCCorePlayerBase>();
+	public static List<GCCorePlayerBaseClient> playersClient = new ArrayList<GCCorePlayerBaseClient>();
+	public static List<GCCorePlayerBase> playersServer = new ArrayList<GCCorePlayerBase>();
 	
 	public static List<IGalacticraftSubMod> subMods = new ArrayList<IGalacticraftSubMod>();
 	public static List<IGalacticraftSubModClient> clientSubMods = new ArrayList<IGalacticraftSubModClient>();
@@ -104,7 +105,7 @@ public class GalacticraftCore
 	public static List<IGalaxy> galaxies = new ArrayList<IGalaxy>();
 	
 	public static List<IMapPlanet> mapPlanets = new ArrayList<IMapPlanet>();
-	public static HashMap<String, IMapPlanet> mapMoons = new HashMap<String, IMapPlanet>();
+	public static DupKeyHashMap mapMoons = new DupKeyHashMap();
 	
 	public static final CreativeTabs galacticraftTab = new GCCoreCreativeTab(12, "galacticraft");
 	
@@ -131,6 +132,14 @@ public class GalacticraftCore
 		GCCoreItems.initItems();
 		GCCoreItems.addNames();
 		GCCoreItems.registerHarvestLevels();
+		
+		OreDictionary.registerOre("oreCopper", new ItemStack(GCCoreBlocks.blockOres, 1, 0));
+		OreDictionary.registerOre("oreAluminium", new ItemStack(GCCoreBlocks.blockOres, 1, 1));
+		OreDictionary.registerOre("oreTitanium", new ItemStack(GCCoreBlocks.blockOres, 1, 2));
+
+		OreDictionary.registerOre("ingotCopper", new ItemStack(GCCoreItems.ingotCopper));
+		OreDictionary.registerOre("ingotAluminium", new ItemStack(GCCoreItems.ingotAluminum));
+		OreDictionary.registerOre("ingotTitanium", new ItemStack(GCCoreItems.ingotTitanium));
 		
 		proxy.preInit(event);
 	}
@@ -180,6 +189,7 @@ public class GalacticraftCore
 		moon.serverInit(event);
 		
         TickRegistry.registerTickHandler(new CommonTickHandler(), Side.SERVER);
+        TickRegistry.registerScheduledTickHandler(new CommonTickHandlerSlow(), Side.SERVER);
         NetworkRegistry.instance().registerChannel(new ServerPacketHandler(), "Galacticraft", Side.SERVER);
 	}
 	
@@ -203,7 +213,7 @@ public class GalacticraftCore
 		mapPlanets.add(planet);
 	}
 	
-	public static void addAdditionalMapMoon(String planet, IMapPlanet moon)
+	public static void addAdditionalMapMoon(IMapPlanet planet, IMapPlanet moon)
 	{
 		mapMoons.put(planet, moon);
 	}
@@ -282,16 +292,8 @@ public class GalacticraftCore
                 final Class[] decodeAs = {String.class};
                 final Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
                 
-                for (int j = 0; j < GalacticraftCore.gcPlayers.size(); ++j)
-	            {
-                	final GCCorePlayerBase playerBase = (GCCorePlayerBase) GalacticraftCore.gcPlayers.get(j);
-	    			
-	    			if (player.username.equals(playerBase.getPlayer().username))
-	    			{
-	    	    		final Integer dim = GCCoreUtil.getProviderForName((String)packetReadout[0]).dimensionId;
-	    				playerBase.travelToTheEnd(dim);
-	    			}
-	            }
+	    		final Integer dim = GCCoreUtil.getProviderForName((String)packetReadout[0]).dimensionId;
+	    		GCCoreUtil.getPlayerBaseServerFromPlayer(player).travelToTheEnd(dim);
             }
             else if (packetType == 3)
             {
@@ -303,28 +305,20 @@ public class GalacticraftCore
                 	
                 	if (stack != null && stack.getItem().itemID == GCCoreItems.rocketFuelBucket.itemID)
                 	{
-                        for (int j = 0; j < GalacticraftCore.gcPlayers.size(); ++j)
-        	            {
-                        	final GCCorePlayerBase playerBase = (GCCorePlayerBase) GalacticraftCore.gcPlayers.get(j);
-        	    			
-        	    			if (player.username.equals(playerBase.getPlayer().username))
-        	    			{
-        	    				ItemStack stack2 = playerBase.playerTankInventory.getStackInSlot(4);
-        	    				
-        	    				if ((stack2 != null && stack2.getItem() instanceof GCCoreItemParachute) || playerBase.launchAttempts > 0)
-        	    				{
-        	                    	ship.ignite();
-        	                    	playerBase.launchAttempts = 0;
-        	    				}
-        	                	else if (chatCooldown == 0 && playerBase.launchAttempts == 0)
-        	                	{
-        	                		player.sendChatToPlayer("I don't have a parachute! If I press launch again, there's no going back!");
-        	                		chatCooldown = 250;
-        	                		playerBase.launchAttempts = 1;
-        	                	}
-        	    			}
-        	            }
-                	}
+	    				ItemStack stack2 = GCCoreUtil.getPlayerBaseServerFromPlayer(player).playerTankInventory.getStackInSlot(4);
+	    				
+	    				if ((stack2 != null && stack2.getItem() instanceof GCCoreItemParachute) || GCCoreUtil.getPlayerBaseServerFromPlayer(player).launchAttempts > 0)
+	    				{
+	                    	ship.ignite();
+	                    	GCCoreUtil.getPlayerBaseServerFromPlayer(player).launchAttempts = 0;
+	    				}
+	                	else if (chatCooldown == 0 && GCCoreUtil.getPlayerBaseServerFromPlayer(player).launchAttempts == 0)
+	                	{
+	                		player.sendChatToPlayer("I don't have a parachute! If I press launch again, there's no going back!");
+	                		chatCooldown = 250;
+	                		GCCoreUtil.getPlayerBaseServerFromPlayer(player).launchAttempts = 1;
+	                	}
+	    			}
                 	else if (chatCooldown == 0)
                 	{
                 		player.sendChatToPlayer("I'll probably need some Rocket Fuel before this will fly!");
@@ -429,6 +423,37 @@ public class GalacticraftCore
         }
     }
 	
+	public class CommonTickHandlerSlow implements IScheduledTickHandler
+	{
+		@Override
+		public void tickStart(EnumSet<TickType> type, Object... tickData) 
+		{
+			tick++;
+		}
+
+		@Override
+		public void tickEnd(EnumSet<TickType> type, Object... tickData) { }
+
+		@Override
+		public EnumSet<TickType> ticks() 
+		{
+			return EnumSet.of(TickType.SERVER);
+		}
+
+		@Override
+		public String getLabel() 
+		{
+			return "Galacticraft Core Common Slow";
+		}
+
+		@Override
+		public int nextTickSpacing() 
+		{
+			return 1;
+		}
+		
+	}
+	
 	public class CommonTickHandler implements ITickHandler
 	{
 		@Override
@@ -436,13 +461,6 @@ public class GalacticraftCore
 		{
 			if (type.equals(EnumSet.of(TickType.WORLD)))
             {
-				final World world = (World) tickData[0];
-				
-				if (world.provider.getDimensionName() == "Overworld" && !world.isRemote)
-				{
-					tick++;
-				}
-				
 				if (chatCooldown > 0)
 				{
 					chatCooldown--;
