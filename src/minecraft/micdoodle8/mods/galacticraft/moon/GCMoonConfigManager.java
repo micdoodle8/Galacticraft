@@ -24,7 +24,6 @@ public class GCMoonConfigManager
 	public static int idBlockMoonStone;
 	public static int idBlockMoonGrass;
 	public static int idBlockMoonDirt;
-	public static int idBlockMoonCobblestone;
 	public static int idBlockOre;
 	public static int idBlockCheese;
 	
@@ -33,6 +32,11 @@ public class GCMoonConfigManager
 	public static int idItemMeteoricIronRaw;
 	public static int idItemBlockCheese;
 	public static int idItemMeteoricIronIngot;
+	
+	// GENERAL
+	public static boolean disableCheeseMoon;
+	public static boolean disableAluminiumMoon;
+	public static boolean disableIronMoon;
 	
 	public GCMoonConfigManager(File file)
 	{
@@ -59,9 +63,14 @@ public class GCMoonConfigManager
 	        idBlockMoonStone = 					configuration.get(Configuration.CATEGORY_BLOCK, 								"idBlockMoonStone", 				219)	.getInt(219);
 	        idBlockMoonGrass = 					configuration.get(Configuration.CATEGORY_BLOCK, 								"idBlockMoonGrass", 				220)	.getInt(220);
 	        idBlockMoonDirt = 					configuration.get(Configuration.CATEGORY_BLOCK, 								"idBlockMoonDirt", 					221)	.getInt(221);
-	        idBlockMoonCobblestone = 			configuration.get(Configuration.CATEGORY_BLOCK, 								"idBlockMoonCobblestone", 			222)	.getInt(222);
 	        idBlockOre = 						configuration.get(Configuration.CATEGORY_BLOCK, 								"idBlockMoonOre", 					223)	.getInt(223);
 	        idBlockCheese = 					configuration.get(Configuration.CATEGORY_BLOCK, 								"idBlockCheese", 					224)	.getInt(224);
+	        
+	        disableCheeseMoon = 				configuration.get(Configuration.CATEGORY_GENERAL, "Disable Cheese Ore Gen on Moon",		false)		.getBoolean(false);
+	        disableAluminiumMoon = 				configuration.get(Configuration.CATEGORY_GENERAL, "Disable Aluminium Ore Gen on Moon",	false)		.getBoolean(false);
+	        disableIronMoon = 					configuration.get(Configuration.CATEGORY_GENERAL, "Disable Iron Ore Gen on Moon",		false)		.getBoolean(false);
+		
+		
 		}
 		catch (final Exception e)
 		{
