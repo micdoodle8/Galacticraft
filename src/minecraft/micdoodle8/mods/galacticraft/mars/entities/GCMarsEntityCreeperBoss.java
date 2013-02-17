@@ -125,21 +125,21 @@ public class GCMarsEntityCreeperBoss extends EntityMob
     	{
             final EntityPlayer var11 = null;
 
-            for (int var12 = 0; var12 < GalacticraftCore.playersServer.size(); ++var12)
-            {
-                final EntityPlayer var13 = GalacticraftCore.playersServer.get(var12).getPlayer();
-
-                if (!var13.capabilities.isCreativeMode)
-                {
-                    final double var14 = var13.getDistanceSq(this.posX, this.posY, this.posZ);
-
-                    if (var14 < 25)
-                    {
-                        GCCoreUtil.createNewExplosion(this.worldObj, this, this.posX, this.posY, this.posZ, 12.0F, false);
-                        this.timeSinceTNTFired = 100;
-                    }
-                }
-            }
+//            for (int var12 = 0; var12 < GalacticraftCore.playersServer.size(); ++var12)
+//            {
+//                final EntityPlayer var13 = GalacticraftCore.playersServer.get(var12).getPlayer();
+//
+//                if (!var13.capabilities.isCreativeMode)
+//                {
+//                    final double var14 = var13.getDistanceSq(this.posX, this.posY, this.posZ);
+//
+//                    if (var14 < 25)
+//                    {
+//                        GCCoreUtil.createNewExplosion(this.worldObj, this, this.posX, this.posY, this.posZ, 12.0F, false);
+//                        this.timeSinceTNTFired = 100;
+//                    }
+//                }
+//            } TODO
     	}
         
 //        if (this.targetedEntity != null && !this.worldObj.isRemote)

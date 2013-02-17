@@ -5,7 +5,9 @@ import java.io.DataInputStream;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubMod;
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
@@ -95,8 +97,8 @@ public class GalacticraftCore
 	
 	public static long tick;
 	
-	public static List<GCCorePlayerBaseClient> playersClient = new ArrayList<GCCorePlayerBaseClient>();
-	public static List<GCCorePlayerBase> playersServer = new ArrayList<GCCorePlayerBase>();
+	public static Map<String, GCCorePlayerBaseClient> playersClient = new HashMap<String, GCCorePlayerBaseClient>();
+	public static Map<String, GCCorePlayerBase> playersServer = new HashMap<String, GCCorePlayerBase>();
 	
 	public static List<IGalacticraftSubMod> subMods = new ArrayList<IGalacticraftSubMod>();
 	public static List<IGalacticraftSubModClient> clientSubMods = new ArrayList<IGalacticraftSubModClient>();
@@ -458,7 +460,7 @@ public class GalacticraftCore
 		@Override
 		public void tickStart(EnumSet<TickType> type, Object... tickData)
 		{
-			if (type.equals(EnumSet.of(TickType.WORLD)))
+			if (type.equals(EnumSet.of(TickType.SERVER)))
             {
 				if (GalacticraftCore.this.chatCooldown > 0)
 				{
@@ -473,7 +475,7 @@ public class GalacticraftCore
 		@Override
 		public EnumSet<TickType> ticks()
 		{
-			return EnumSet.of(TickType.WORLD);
+			return EnumSet.of(TickType.SERVER);
 		}
 
 		@Override

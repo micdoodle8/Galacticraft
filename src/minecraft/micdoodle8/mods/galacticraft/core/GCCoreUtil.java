@@ -9,7 +9,9 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.EmptyStackException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
@@ -978,13 +980,19 @@ public class GCCoreUtil
 			new EmptyStackException().printStackTrace();
 		}
 		
-        for (final GCCorePlayerBase playerBase : GalacticraftCore.playersServer)
-        {
-			if (player.username.equals(playerBase.getPlayer().username))
-			{
-				return playerBase;
-			}
-        }
+	    Iterator it = GalacticraftCore.playersServer.entrySet().iterator();
+	    
+	    while (it.hasNext()) 
+	    {
+	        Map.Entry entry = (Map.Entry)it.next();
+
+	        if (entry.getKey().equals(player.username))
+	        {
+	        	return (GCCorePlayerBase) entry.getValue();
+	        }
+
+	        it.remove();
+	    }
         
         return null;
 	}
@@ -996,13 +1004,19 @@ public class GCCoreUtil
 			new EmptyStackException().printStackTrace();
 		}
 		
-        for (final GCCorePlayerBaseClient playerBaseClient : GalacticraftCore.playersClient)
-        {
-			if (player.username.equals(playerBaseClient.getPlayer().username))
-			{
-				return playerBaseClient;
-			}
-        }
+	    Iterator it = GalacticraftCore.playersClient.entrySet().iterator();
+	    
+	    while (it.hasNext()) 
+	    {
+	        Map.Entry entry = (Map.Entry)it.next();
+
+	        if (entry.getKey().equals(player.username))
+	        {
+	        	return (GCCorePlayerBaseClient) entry.getValue();
+	        }
+
+	        it.remove();
+	    }
         
         return null;
 	}
