@@ -3,13 +3,9 @@ package micdoodle8.mods.galacticraft.core.client.model;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiTankRefill;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpaceship;
-import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerBase;
-import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenTank;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreInventoryTankRefill;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.model.ModelBiped;
@@ -196,12 +192,10 @@ public class GCCoreModelPlayer extends ModelPlayerBase
         	int j;
         	
         	boolean changed = false;
-    		
-            for (j = 0; j < ClientProxyCore.playersUsingParachutes.size(); ++j)
+
+            for (String name : ClientProxyCore.playersUsingParachutes)
             {
-    			final String username = (String) ClientProxyCore.playersUsingParachutes.get(j);
-    			
-    			if (player.username.equals(username))
+    			if (player.username.equals(name))
     			{
     				this.usingParachute = true;
     				changed = true;
@@ -218,12 +212,10 @@ public class GCCoreModelPlayer extends ModelPlayerBase
     		FMLClientHandler.instance().getClient().renderEngine.bindTexture(FMLClientHandler.instance().getClient().renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/entities/player.png"));
     		
             changed = false;
-    		
-            for (j = 0; j < ClientProxyCore.playersWithOxygenMask.size(); ++j)
+
+            for (String name : ClientProxyCore.playersWithOxygenMask)
             {
-    			final String username = (String) ClientProxyCore.playersWithOxygenMask.get(j);
-    			
-    			if (player.username.equals(username))
+    			if (player.username.equals(name))
     			{
     				this.wearingMask = true;
     				changed = true;
@@ -243,12 +235,10 @@ public class GCCoreModelPlayer extends ModelPlayerBase
 			//
     		
             changed = false;
-    		
-            for (j = 0; j < ClientProxyCore.playersWithOxygenGear.size(); ++j)
+
+            for (String name : ClientProxyCore.playersWithOxygenGear)
             {
-    			final String username = (String) ClientProxyCore.playersWithOxygenGear.get(j);
-    			
-    			if (player.username.equals(username))
+    			if (player.username.equals(name))
     			{
     				this.wearingGear = true;
     				changed = true;
@@ -274,12 +264,10 @@ public class GCCoreModelPlayer extends ModelPlayerBase
 			//
     		
             changed = false;
-    		
-            for (j = 0; j < ClientProxyCore.playersWithOxygenTankLeftRed.size(); ++j)
+
+            for (String name : ClientProxyCore.playersWithOxygenTankLeftRed)
             {
-    			final String username = (String) ClientProxyCore.playersWithOxygenTankLeftRed.get(j);
-    			
-    			if (player.username.equals(username))
+    			if (player.username.equals(name))
     			{
     				this.wearingLeftTankRed = true;
     				changed = true;
@@ -299,12 +287,10 @@ public class GCCoreModelPlayer extends ModelPlayerBase
 			//
     		
             changed = false;
-    		
-            for (j = 0; j < ClientProxyCore.playersWithOxygenTankLeftOrange.size(); ++j)
+
+            for (String name : ClientProxyCore.playersWithOxygenTankLeftOrange)
             {
-    			final String username = (String) ClientProxyCore.playersWithOxygenTankLeftOrange.get(j);
-    			
-    			if (player.username.equals(username))
+    			if (player.username.equals(name))
     			{
     				this.wearingLeftTankOrange = true;
     				changed = true;
@@ -324,12 +310,10 @@ public class GCCoreModelPlayer extends ModelPlayerBase
 			//
     		
             changed = false;
-    		
-            for (j = 0; j < ClientProxyCore.playersWithOxygenTankLeftGreen.size(); ++j)
+
+            for (String name : ClientProxyCore.playersWithOxygenTankLeftGreen)
             {
-    			final String username = (String) ClientProxyCore.playersWithOxygenTankLeftGreen.get(j);
-    			
-    			if (player.username.equals(username))
+    			if (player.username.equals(name))
     			{
     				this.wearingLeftTankGreen = true;
     				changed = true;
@@ -349,12 +333,10 @@ public class GCCoreModelPlayer extends ModelPlayerBase
 			//
     		
             changed = false;
-    		
-            for (j = 0; j < ClientProxyCore.playersWithOxygenTankRightRed.size(); ++j)
+
+            for (String name : ClientProxyCore.playersWithOxygenTankRightRed)
             {
-    			final String username = (String) ClientProxyCore.playersWithOxygenTankRightRed.get(j);
-    			
-    			if (player.username.equals(username))
+    			if (player.username.equals(name))
     			{
     				this.wearingRightTankRed = true;
     				changed = true;
@@ -374,12 +356,10 @@ public class GCCoreModelPlayer extends ModelPlayerBase
 			//
     		
             changed = false;
-    		
-            for (j = 0; j < ClientProxyCore.playersWithOxygenTankRightOrange.size(); ++j)
+
+            for (String name : ClientProxyCore.playersWithOxygenTankRightOrange)
             {
-    			final String username = (String) ClientProxyCore.playersWithOxygenTankRightOrange.get(j);
-    			
-    			if (player.username.equals(username))
+    			if (player.username.equals(name))
     			{
     				this.wearingRightTankOrange = true;
     				changed = true;
@@ -399,12 +379,10 @@ public class GCCoreModelPlayer extends ModelPlayerBase
 			//
     		
             changed = false;
-    		
-            for (j = 0; j < ClientProxyCore.playersWithOxygenTankRightGreen.size(); ++j)
+
+            for (String name : ClientProxyCore.playersWithOxygenTankRightGreen)
             {
-    			final String username = (String) ClientProxyCore.playersWithOxygenTankRightGreen.get(j);
-    			
-    			if (player.username.equals(username))
+    			if (player.username.equals(name))
     			{
     				this.wearingRightTankGreen = true;
     				changed = true;
@@ -510,6 +488,27 @@ public class GCCoreModelPlayer extends ModelPlayerBase
         	this.modelPlayer.bipedRightArm.rotateAngleX += (float) (Math.PI);
         	this.modelPlayer.bipedRightArm.rotateAngleZ -= (float) (Math.PI) / 10;
     	}
+
+    	EntityPlayer player = (EntityPlayer)var7;
+//    	
+//    	if (player.ridingEntity != null && player.ridingEntity instanceof GCCoreEntitySpaceship)
+//    	{
+//    		GCCoreEntitySpaceship ship = (GCCoreEntitySpaceship) player.ridingEntity;
+//    		
+////        	this.modelPlayer.bipedBody.rotateAngleX = ship.rotationYaw % 360;
+//        	this.modelPlayer.bipedBody.rotateAngleX = (float) (ship.rotationYaw * (Math.PI / 180F));
+//        	this.modelPlayer.bipedBody.rotateAngleZ = (float) (ship.rotationPitch * (Math.PI / 180F));
+//        	this.modelPlayer.bipedHead.rotateAngleX = (float) (ship.rotationYaw * (Math.PI / 180F));
+//        	this.modelPlayer.bipedHead.rotateAngleZ = (float) (ship.rotationPitch * (Math.PI / 180F));
+//        	this.modelPlayer.bipedLeftArm.rotateAngleX = (float) (ship.rotationYaw * (Math.PI / 180F));
+//        	this.modelPlayer.bipedLeftArm.rotateAngleZ = (float) (ship.rotationPitch * (Math.PI / 180F));
+//        	this.modelPlayer.bipedRightArm.rotateAngleX = (float) (ship.rotationYaw * (Math.PI / 180F));
+//        	this.modelPlayer.bipedRightArm.rotateAngleZ = (float) (ship.rotationPitch * (Math.PI / 180F));
+//        	this.modelPlayer.bipedRightLeg.rotateAngleX = (float) (ship.rotationYaw * (Math.PI / 180F));
+//        	this.modelPlayer.bipedRightLeg.rotateAngleZ = (float) (ship.rotationPitch * (Math.PI / 180F));
+//        	this.modelPlayer.bipedLeftLeg.rotateAngleX = (float) (ship.rotationYaw * (Math.PI / 180F));
+//        	this.modelPlayer.bipedLeftLeg.rotateAngleZ = (float) (ship.rotationPitch * (Math.PI / 180F));
+//    	}
     	
     	this.greenOxygenTanks[0].rotateAngleX = this.modelPlayer.bipedBody.rotateAngleX;
     	this.greenOxygenTanks[0].rotateAngleY = this.modelPlayer.bipedBody.rotateAngleY;
@@ -539,33 +538,23 @@ public class GCCoreModelPlayer extends ModelPlayerBase
             this.oxygenMask.rotateAngleY = this.modelPlayer.bipedHeadwear.rotateAngleY;
             this.oxygenMask.rotateAngleZ = this.modelPlayer.bipedHeadwear.rotateAngleZ;
     	}
-
-    	EntityPlayer player = (EntityPlayer)var7;
-		
-        for (int j = 0; j < GalacticraftCore.gcPlayers.size(); ++j)
-        {
-			final GCCorePlayerBase playerBase = (GCCorePlayerBase) GalacticraftCore.gcPlayers.get(j);
+    	
+		List l = player.worldObj.getEntitiesWithinAABBExcludingEntity(player, AxisAlignedBB.getAABBPool().addOrModifyAABBInPool(player.posX - 20, 0, player.posZ - 20, player.posX + 20, 200, player.posZ + 20));
+	
+		for (int i = 0; i < l.size(); i++)
+		{
+			Entity e = (Entity) l.get(i);
 			
-			if (player.username.equals(playerBase.getPlayer().username))
+			if (e instanceof GCCoreEntitySpaceship)
 			{
-				List l = player.worldObj.getEntitiesWithinAABBExcludingEntity(player, AxisAlignedBB.getAABBPool().addOrModifyAABBInPool(player.posX - 20, 0, player.posZ - 20, player.posX + 20, 200, player.posZ + 20));
-			
-				for (int i = 0; i < l.size(); i++)
+				GCCoreEntitySpaceship ship = (GCCoreEntitySpaceship)e;
+				
+				if (ship.riddenByEntity != null && !((EntityPlayer)ship.riddenByEntity).username.equals(player.username) && (ship.getLaunched() == 1 || ship.getTimeUntilLaunch() < 390))
 				{
-					Entity e = (Entity) l.get(i);
-					
-					if (e instanceof GCCoreEntitySpaceship)
-					{
-						GCCoreEntitySpaceship ship = (GCCoreEntitySpaceship)e;
-						
-						if (ship.riddenByEntity != null && !((EntityPlayer)ship.riddenByEntity).username.equals(player.username) && (ship.getLaunched() == 1 || ship.getTimeUntilLaunch() < 390))
-						{
-					    	this.modelPlayer.bipedRightArm.rotateAngleZ -= (float) ((Math.PI) / 8) + MathHelper.sin(var3 * 0.9F) * 0.2F;
-					    	this.modelPlayer.bipedRightArm.rotateAngleX = (float) (Math.PI);
-						}
-					}
+			    	this.modelPlayer.bipedRightArm.rotateAngleZ -= (float) ((Math.PI) / 8) + MathHelper.sin(var3 * 0.9F) * 0.2F;
+			    	this.modelPlayer.bipedRightArm.rotateAngleX = (float) (Math.PI);
 				}
 			}
-        }
+		}
     }
 }
