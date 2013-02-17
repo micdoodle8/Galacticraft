@@ -12,6 +12,7 @@ public class GCCoreItemOxygenTank extends GCCoreItem
 	public GCCoreItemOxygenTank(int par1) 
 	{
 		super(par1);
+		this.setMaxStackSize(1);
 	}
 	
 	public GCCoreItemOxygenTank setTankTier(EnumOxygenTankTier tier)
