@@ -17,12 +17,6 @@ public class GCMoonBlockStone extends Block
 	{
 		super(par1, par2, Material.rock);
 	}
-
-	@Override
-	public int idDropped(int i, Random random, int par3) 
-	{
-		return GCMoonBlocks.moonCobblestone.blockID;
-	}
 	
 	@Override
 	public String getTextureFile()
