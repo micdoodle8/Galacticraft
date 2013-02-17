@@ -176,7 +176,7 @@ public class GCMimasWorldProvider extends WorldProvider implements IGalacticraft
     }
 
 	@Override
-	public String getDimensionName() 
+	public String getDimensionName()
 	{
 		return "Mimas";
 	}
@@ -206,13 +206,13 @@ public class GCMimasWorldProvider extends WorldProvider implements IGalacticraft
     }
 
 	@Override
-	public float getGravity() 
+	public float getGravity()
 	{
 		return 0.049F;
 	}
 
 	@Override
-	public float getMeteorFrequency() 
+	public float getMeteorFrequency()
 	{
 		return 0F;
 	}

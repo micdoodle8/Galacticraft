@@ -25,11 +25,11 @@ import cpw.mods.fml.client.FMLClientHandler;
  */
 public class GCIoSkyProvider extends IRenderHandler
 {
-	public int starGLCallList = GLAllocation.generateDisplayLists(3); 
+	public int starGLCallList = GLAllocation.generateDisplayLists(3);
 	public int glSkyList;
 	public int glSkyList2;
 	
-	public GCIoSkyProvider() 
+	public GCIoSkyProvider()
 	{
 		GL11.glPushMatrix();
 		GL11.glNewList(this.starGLCallList, GL11.GL_COMPILE);

@@ -2,8 +2,6 @@ package micdoodle8.mods.galacticraft.mars.client;
 
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityProjectileTNT;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockAnvil;
-import net.minecraft.block.BlockDragonEgg;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
@@ -13,8 +11,8 @@ import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.relauncher.SideOnly;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -37,10 +35,10 @@ public class GCMarsRenderProjectileTNT extends Render
         GL11.glPushMatrix();
         GL11.glTranslatef((float)par2, (float)par4, (float)par6);
         this.loadTexture("/terrain.png");
-        Block var10 = Block.tnt;
-        World var11 = par1EntityFallingSand.getWorld();
+        final Block var10 = Block.tnt;
+        final World var11 = par1EntityFallingSand.getWorld();
         GL11.glDisable(GL11.GL_LIGHTING);
-        Tessellator var12;
+        final Tessellator var12;
 
         if (var10 != null)
         {

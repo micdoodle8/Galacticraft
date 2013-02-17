@@ -21,7 +21,7 @@ import net.minecraft.util.MathHelper;
  *  All rights reserved.
  *
  */
-public class GCCoreTileEntityOxygenDistributor extends TileEntity implements IInventory 
+public class GCCoreTileEntityOxygenDistributor extends TileEntity implements IInventory
 {
     private ItemStack[] distributorStacks;
     
@@ -44,12 +44,12 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntity implements IIn
   	{
    		super.validate();
 
-   		if (!isInvalid() && worldObj != null)
+   		if (!this.isInvalid() && this.worldObj != null)
       	{
-   		   	fanModel1 = new GCCoreModelFan();
-   		    fanModel2 = new GCCoreModelFan();
-   		    fanModel3 = new GCCoreModelFan();
-   		   	fanModel4 = new GCCoreModelFan();
+   		   	this.fanModel1 = new GCCoreModelFan();
+   		    this.fanModel2 = new GCCoreModelFan();
+   		    this.fanModel3 = new GCCoreModelFan();
+   		   	this.fanModel4 = new GCCoreModelFan();
       	}
   	}
     
@@ -77,14 +77,14 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntity implements IIn
     
     public double getDistanceFrom2(double par1, double par3, double par5)
     {
-        double var7 = (double)this.xCoord + 0.5D - par1;
-        double var9 = (double)this.yCoord + 0.5D - par3;
-        double var11 = (double)this.zCoord + 0.5D - par5;
+        final double var7 = this.xCoord + 0.5D - par1;
+        final double var9 = this.yCoord + 0.5D - par3;
+        final double var11 = this.zCoord + 0.5D - par5;
         return var7 * var7 + var9 * var9 + var11 * var11;
     }
     
 	@Override
-	public void updateEntity() 
+	public void updateEntity()
 	{
 		this.lastPower = this.currentPower;
 		
@@ -106,8 +106,7 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntity implements IIn
 		
 		TileEntity tile;
 
-		for (int i = 0; i < idSet.length; i++)
-		{
+		for (final int element : idSet) {
 			if (idSet[0] == GCCoreBlocks.oxygenPipe.blockID)
 			{
 				tile = this.worldObj.getBlockTileEntity(this.xCoord + 1, this.yCoord, this.zCoord);
@@ -187,7 +186,7 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntity implements IIn
 		{
 			final int drainSpacing = GCCoreUtil.getDrainSpacing(tankInSlot);
 			
-			if (drainSpacing > 0 && GalacticraftCore.tick % MathHelper.floor_double(drainSpacing / 4) == 0) 
+			if (drainSpacing > 0 && GalacticraftCore.tick % MathHelper.floor_double(drainSpacing / 4) == 0)
 	    	{
 	            if (tankInSlot.getItemDamage() < tankInSlot.getMaxDamage() - 2)
 	            {
@@ -304,7 +303,7 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntity implements IIn
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound par1NBTTagCompound) 
+	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
 	{
 		super.readFromNBT(par1NBTTagCompound);
 		
@@ -324,7 +323,7 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntity implements IIn
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound par1NBTTagCompound) 
+	public void writeToNBT(NBTTagCompound par1NBTTagCompound)
 	{
 		super.writeToNBT(par1NBTTagCompound);
 
@@ -345,44 +344,44 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntity implements IIn
 	}
    
     @Override
-    public int getSizeInventory() 
+    public int getSizeInventory()
     {
     	return this.distributorStacks.length;
     }
 
     @Override
-    public ItemStack getStackInSlot(int slot) 
+    public ItemStack getStackInSlot(int slot)
     {
     	return this.distributorStacks[slot];
     }
    
     @Override
-    public void setInventorySlotContents(int slot, ItemStack stack) 
+    public void setInventorySlotContents(int slot, ItemStack stack)
     {
     	this.distributorStacks[slot] = stack;
     	
-        if (stack != null && stack.stackSize > this.getInventoryStackLimit()) 
+        if (stack != null && stack.stackSize > this.getInventoryStackLimit())
         {
             stack.stackSize = this.getInventoryStackLimit();
-        }              
+        }
 
         this.onInventoryChanged();
     }
 
     @Override
-    public ItemStack decrStackSize(int slot, int amount) 
+    public ItemStack decrStackSize(int slot, int amount)
     {
         ItemStack stack = this.getStackInSlot(slot);
-        if (stack != null) 
+        if (stack != null)
         {
             if (stack.stackSize <= amount)
             {
                 this.setInventorySlotContents(slot, null);
-            } 
-            else 
+            }
+            else
             {
                 stack = stack.splitStack(amount);
-                if (stack.stackSize == 0) 
+                if (stack.stackSize == 0)
                 {
                     this.setInventorySlotContents(slot, null);
                 }
@@ -398,7 +397,7 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntity implements IIn
     public ItemStack getStackInSlotOnClosing(int slot)
     {
         final ItemStack stack = this.getStackInSlot(slot);
-        if (stack != null) 
+        if (stack != null)
         {
             this.setInventorySlotContents(slot, null);
         }
@@ -412,7 +411,7 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntity implements IIn
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer player) 
+    public boolean isUseableByPlayer(EntityPlayer player)
     {
         return this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && player.getDistanceSq(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5) < 64;
     }
@@ -424,7 +423,7 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntity implements IIn
     public void closeChest() {}
 
 	@Override
-	public String getInvName() 
+	public String getInvName()
 	{
 		return "container.airdistributor";
 	}

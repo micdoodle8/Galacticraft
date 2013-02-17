@@ -5,9 +5,6 @@ import net.minecraft.client.audio.SoundManager;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.util.MathHelper;
-import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.relauncher.SideOnly;
-import cpw.mods.fml.relauncher.Side;
 
 public class GCCoreSoundUpdaterSpaceship implements IUpdatePlayerListBox
 {

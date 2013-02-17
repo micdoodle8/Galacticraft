@@ -23,13 +23,13 @@ import cpw.mods.fml.client.FMLClientHandler;
  *  All rights reserved.
  *
  */
-public class GCTitanSkyProvider extends IRenderHandler 
+public class GCTitanSkyProvider extends IRenderHandler
 {
-	public int starGLCallList = GLAllocation.generateDisplayLists(3); 
+	public int starGLCallList = GLAllocation.generateDisplayLists(3);
 	public int glSkyList;
 	public int glSkyList2;
 	
-	public GCTitanSkyProvider() 
+	public GCTitanSkyProvider()
 	{
 		GL11.glPushMatrix();
 		GL11.glNewList(this.starGLCallList, GL11.GL_COMPILE);

@@ -3,17 +3,17 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import java.util.List;
 import java.util.Random;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreBlockDecoration extends Block
 {
-	public GCCoreBlockDecoration(int par1, int par2) 
+	public GCCoreBlockDecoration(int par1, int par2)
 	{
 		super(par1, par2, Material.rock);
         this.setRequiresSelfNotify();
@@ -21,9 +21,9 @@ public class GCCoreBlockDecoration extends Block
 	}
 
 	@Override
-	public int getBlockTextureFromSideAndMetadata(int side, int meta) 
+	public int getBlockTextureFromSideAndMetadata(int side, int meta)
 	{
-		switch (meta) 
+		switch (meta)
 		{
 		case 0:
 			return 1;
@@ -37,7 +37,7 @@ public class GCCoreBlockDecoration extends Block
 	}
 
 	@Override
-	public int idDropped(int meta, Random random, int par3) 
+	public int idDropped(int meta, Random random, int par3)
 	{
 		switch (meta)
 		{

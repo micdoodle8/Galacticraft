@@ -6,14 +6,14 @@
 //
 //import net.minecraft.tileentity.TileEntity;
 //
-//public class GCCoreOxygenBase 
+//public class GCCoreOxygenBase
 //{
 //    private List findNewOxygenTileEntity(TileEntity tileentity, boolean flag, int i)
 //    {
 //        HashMap hashmap = new HashMap();
 //        LinkedList linkedlist = new LinkedList();
 //        linkedlist.add(tileentity);
-//        
+//
 //		return null;
 //    }
 //}

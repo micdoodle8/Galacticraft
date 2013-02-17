@@ -1,9 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import cpw.mods.fml.common.FMLLog;
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;

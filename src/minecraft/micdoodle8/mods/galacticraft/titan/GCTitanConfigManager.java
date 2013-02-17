@@ -12,7 +12,7 @@ import cpw.mods.fml.common.FMLLog;
  *  All rights reserved.
  *
  */
-public class GCTitanConfigManager 
+public class GCTitanConfigManager
 {
 	public static boolean loaded;
 	
@@ -23,9 +23,9 @@ public class GCTitanConfigManager
 	
 	public GCTitanConfigManager(File file)
 	{
-		if (!loaded)
+		if (!GCTitanConfigManager.loaded)
 		{
-			configuration = new Configuration(file);
+			GCTitanConfigManager.configuration = new Configuration(file);
 			this.setDefaultValues();
 		}
 	}
@@ -34,18 +34,18 @@ public class GCTitanConfigManager
     {
 		try
 		{
-	        configuration.load();
+	        GCTitanConfigManager.configuration.load();
 	        
-	        dimensionIDTitan = 				configuration.get("Dimensions", 										"Titan Dimension ID",				-25)		.getInt(-25);
+	        GCTitanConfigManager.dimensionIDTitan = 				GCTitanConfigManager.configuration.get("Dimensions", 										"Titan Dimension ID",				-25)		.getInt(-25);
 	    }
 		catch (final Exception e)
 		{
 			FMLLog.log(Level.SEVERE, e, "Galacticraft Titan has a problem loading it's configuration");
 		}
-		finally 
+		finally
 		{
-			configuration.save();
-			loaded = true;
+			GCTitanConfigManager.configuration.save();
+			GCTitanConfigManager.loaded = true;
 		}
     }
 }

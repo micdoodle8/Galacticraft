@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -22,13 +21,13 @@ public class GCCoreInventoryTankRefill implements IInventory
 	}
 
 	@Override
-	public int getInventoryStackLimit() 
+	public int getInventoryStackLimit()
 	{
 		return 5;
 	}
 
 	@Override
-	public ItemStack getStackInSlot(int par1) 
+	public ItemStack getStackInSlot(int par1)
 	{
 		if (par1 < 5)
 			return this.tankSlotContents[par1];
@@ -37,13 +36,13 @@ public class GCCoreInventoryTankRefill implements IInventory
 	}
 
 	@Override
-	public ItemStack getStackInSlotOnClosing(int par1) 
+	public ItemStack getStackInSlotOnClosing(int par1)
 	{
-		if (this.tankSlotContents[par1] != null) 
+		if (this.tankSlotContents[par1] != null)
 		{
 			final ItemStack var2 = this.tankSlotContents[par1];
 			return var2;
-		} 
+		}
 		else
 		{
 			return null;
@@ -63,7 +62,7 @@ public class GCCoreInventoryTankRefill implements IInventory
 	{
 		this.tankSlotContents[par1] = par2ItemStack;
 
-		if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit()) 
+		if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit())
 		{
 			par2ItemStack.stackSize = this.getInventoryStackLimit();
 		}
@@ -78,18 +77,18 @@ public class GCCoreInventoryTankRefill implements IInventory
 		{
 			ItemStack var3;
 
-			if (this.tankSlotContents[par1].stackSize <= par2) 
+			if (this.tankSlotContents[par1].stackSize <= par2)
 			{
 				var3 = this.tankSlotContents[par1];
 				this.tankSlotContents[par1] = null;
 				this.onInventoryChanged();
 				return var3;
 			}
-			else 
+			else
 			{
 				var3 = this.tankSlotContents[par1].splitStack(par2);
 
-				if (this.tankSlotContents[par1].stackSize == 0) 
+				if (this.tankSlotContents[par1].stackSize == 0)
 				{
 					this.tankSlotContents[par1] = null;
 				}
@@ -97,8 +96,8 @@ public class GCCoreInventoryTankRefill implements IInventory
 				this.onInventoryChanged();
 				return var3;
 			}
-		} 
-		else 
+		}
+		else
 		{
 			return null;
 		}
@@ -145,7 +144,7 @@ public class GCCoreInventoryTankRefill implements IInventory
     }
 
 	@Override
-	public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer) 
+	public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
 	{
 		return true;
 	}
@@ -156,24 +155,24 @@ public class GCCoreInventoryTankRefill implements IInventory
 	}
 
 	@Override
-	public void closeChest() 
+	public void closeChest()
 	{
 	}
 
 	@Override
-	public int getSizeInventory() 
+	public int getSizeInventory()
 	{
 		return this.tankSlotContents.length;
 	}
 
 	@Override
-	public String getInvName() 
+	public String getInvName()
 	{
 		return "Tank Holder";
 	}
 
 	@Override
-	public void onInventoryChanged() 
+	public void onInventoryChanged()
 	{
 	}
 }

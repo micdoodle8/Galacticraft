@@ -48,7 +48,7 @@ public class GalacticraftCallisto implements IGalacticraftSubMod
 		GCCallistoBlocks.initBlocks();
 		GCCallistoBlocks.registerBlocks();
 		GCCallistoBlocks.setHarvestLevels();
-//		
+//
 //		GCMarsItems.initItems();
 //		GCMarsItems.addNames(); TODO
 	}
@@ -116,19 +116,19 @@ public class GalacticraftCallisto implements IGalacticraftSubMod
     }
 
 	@Override
-	public String getDimensionName() 
+	public String getDimensionName()
 	{
 		return "Callisto";
 	}
 
 	@Override
-	public boolean reachableDestination() 
+	public boolean reachableDestination()
 	{
 		return true;
 	}
 
 	@Override
-	public IGalaxy getParentGalaxy() 
+	public IGalaxy getParentGalaxy()
 	{
 		return GalacticraftCore.galaxyMilkyWay;
 	}

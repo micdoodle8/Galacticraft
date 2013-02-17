@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.items;
 
-public enum EnumOxygenTankTier 
+public enum EnumOxygenTankTier
 {
 	light,
 	medium,

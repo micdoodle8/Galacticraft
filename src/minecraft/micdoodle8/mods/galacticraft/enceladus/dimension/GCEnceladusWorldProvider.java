@@ -9,8 +9,8 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
-import cpw.mods.fml.relauncher.SideOnly;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -176,7 +176,7 @@ public class GCEnceladusWorldProvider extends WorldProvider implements IGalactic
     }
 
 	@Override
-	public String getDimensionName() 
+	public String getDimensionName()
 	{
 		return "Enceladus";
 	}
@@ -206,13 +206,13 @@ public class GCEnceladusWorldProvider extends WorldProvider implements IGalactic
     }
 
 	@Override
-	public float getGravity() 
+	public float getGravity()
 	{
 		return 0.049F;
 	}
 
 	@Override
-	public float getMeteorFrequency() 
+	public float getMeteorFrequency()
 	{
 		return 0F;
 	}

@@ -11,7 +11,7 @@ import net.minecraft.world.gen.structure.StructureComponent;
 
 public class GCMoonComponentVillagePathGen extends GCMoonComponentVillageRoadPiece
 {
-    private int averageGroundLevel;
+    private final int averageGroundLevel;
 
     public GCMoonComponentVillagePathGen(GCMoonComponentVillageStartPiece par1ComponentVillageStartPiece, int par2, Random par3Random, StructureBoundingBox par4StructureBoundingBox, int par5)
     {
@@ -24,7 +24,8 @@ public class GCMoonComponentVillagePathGen extends GCMoonComponentVillageRoadPie
     /**
      * Initiates construction of the Structure Component picked, at the current Location of StructGen
      */
-    public void buildComponent(StructureComponent par1StructureComponent, List par2List, Random par3Random)
+    @Override
+	public void buildComponent(StructureComponent par1StructureComponent, List par2List, Random par3Random)
     {
         boolean var4 = false;
         int var5;
@@ -93,7 +94,7 @@ public class GCMoonComponentVillagePathGen extends GCMoonComponentVillageRoadPie
     {
         for (int var7 = 7 * MathHelper.getRandomIntegerInRange(par2Random, 3, 5); var7 >= 7; var7 -= 7)
         {
-            StructureBoundingBox var8 = StructureBoundingBox.getComponentToAddBoundingBox(par3, par4, par5, 0, 0, 0, 3, 3, var7, par6);
+            final StructureBoundingBox var8 = StructureBoundingBox.getComponentToAddBoundingBox(par3, par4, par5, 0, 0, 0, 3, 3, var7, par6);
 
             if (StructureComponent.findIntersecting(par1List, var8) == null)
             {
@@ -108,9 +109,10 @@ public class GCMoonComponentVillagePathGen extends GCMoonComponentVillageRoadPie
      * second Part of Structure generating, this for example places Spiderwebs, Mob Spawners, it closes Mineshafts at
      * the end, it adds Fences...
      */
-    public boolean addComponentParts(World par1World, Random par2Random, StructureBoundingBox par3StructureBoundingBox)
+    @Override
+	public boolean addComponentParts(World par1World, Random par2Random, StructureBoundingBox par3StructureBoundingBox)
     {
-        int var4 = this.getBiomeSpecificBlock(Block.gravel.blockID, 0);
+        final int var4 = this.getBiomeSpecificBlock(Block.gravel.blockID, 0);
 
         for (int var5 = this.boundingBox.minX; var5 <= this.boundingBox.maxX; ++var5)
         {
@@ -118,7 +120,7 @@ public class GCMoonComponentVillagePathGen extends GCMoonComponentVillageRoadPie
             {
                 if (par3StructureBoundingBox.isVecInside(var5, 64, var6))
                 {
-                    int var7 = par1World.getTopSolidOrLiquidBlock(var5, var6) - 1;
+                    final int var7 = par1World.getTopSolidOrLiquidBlock(var5, var6) - 1;
                     par1World.setBlock(var5, var7, var6, var4);
                 }
             }

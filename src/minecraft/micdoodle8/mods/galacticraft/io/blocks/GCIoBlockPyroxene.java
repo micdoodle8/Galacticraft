@@ -1,13 +1,11 @@
 package micdoodle8.mods.galacticraft.io.blocks;
 
 import java.util.List;
-import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.Facing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
@@ -48,7 +46,7 @@ public class GCIoBlockPyroxene extends Block
     }
 
 	@Override
-	public int getBlockTextureFromSideAndMetadata(int side, int meta) 
+	public int getBlockTextureFromSideAndMetadata(int side, int meta)
 	{
 		switch (side)
 		{

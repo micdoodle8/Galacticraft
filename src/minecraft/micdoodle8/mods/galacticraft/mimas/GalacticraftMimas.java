@@ -48,7 +48,7 @@ public class GalacticraftMimas implements IGalacticraftSubMod
 		GCMimasBlocks.initBlocks();
 		GCMimasBlocks.registerBlocks();
 		GCMimasBlocks.setHarvestLevels();
-//		
+//
 //		GCMarsItems.initItems();
 //		GCMarsItems.addNames(); TODO
 	}
@@ -116,19 +116,19 @@ public class GalacticraftMimas implements IGalacticraftSubMod
     }
 
 	@Override
-	public String getDimensionName() 
+	public String getDimensionName()
 	{
 		return "Mimas";
 	}
 
 	@Override
-	public boolean reachableDestination() 
+	public boolean reachableDestination()
 	{
 		return true;
 	}
 
 	@Override
-	public IGalaxy getParentGalaxy() 
+	public IGalaxy getParentGalaxy()
 	{
 		return GalacticraftCore.galaxyMilkyWay;
 	}

@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.moon.wgen;
 
-import static net.minecraftforge.common.ChestGenHooks.VILLAGE_BLACKSMITH;
-
 import java.util.List;
 import java.util.Random;
 
@@ -29,15 +27,16 @@ public class GCMoonComponentVillageHouse2 extends GCMoonComponentVillage
 
     public static GCMoonComponentVillageHouse2 func_74915_a(GCMoonComponentVillageStartPiece par0ComponentVillageStartPiece, List par1List, Random par2Random, int par3, int par4, int par5, int par6, int par7)
     {
-        StructureBoundingBox var8 = StructureBoundingBox.getComponentToAddBoundingBox(par3, par4, par5, 0, 0, 0, 10, 6, 7, par6);
-        return canVillageGoDeeper(var8) && StructureComponent.findIntersecting(par1List, var8) == null ? new GCMoonComponentVillageHouse2(par0ComponentVillageStartPiece, par7, par2Random, var8, par6) : null;
+        final StructureBoundingBox var8 = StructureBoundingBox.getComponentToAddBoundingBox(par3, par4, par5, 0, 0, 0, 10, 6, 7, par6);
+        return GCMoonComponentVillage.canVillageGoDeeper(var8) && StructureComponent.findIntersecting(par1List, var8) == null ? new GCMoonComponentVillageHouse2(par0ComponentVillageStartPiece, par7, par2Random, var8, par6) : null;
     }
 
     /**
      * second Part of Structure generating, this for example places Spiderwebs, Mob Spawners, it closes Mineshafts at
      * the end, it adds Fences...
      */
-    public boolean addComponentParts(World par1World, Random par2Random, StructureBoundingBox par3StructureBoundingBox)
+    @Override
+	public boolean addComponentParts(World par1World, Random par2Random, StructureBoundingBox par3StructureBoundingBox)
     {
         if (this.averageGroundLevel < 0)
         {
@@ -93,12 +92,12 @@ public class GCMoonComponentVillageHouse2 extends GCMoonComponentVillage
         {
             var4 = this.getYWithOffset(1);
             var5 = this.getXWithOffset(5, 5);
-            int var6 = this.getZWithOffset(5, 5);
+            final int var6 = this.getZWithOffset(5, 5);
 
             if (par3StructureBoundingBox.isVecInside(var5, var4, var6))
             {
                 this.hasMadeChest = true;
-                this.generateStructureChestContents(par1World, par3StructureBoundingBox, par2Random, 5, 1, 5, ChestGenHooks.getItems(VILLAGE_BLACKSMITH, par2Random), ChestGenHooks.getCount(VILLAGE_BLACKSMITH, par2Random));
+                this.generateStructureChestContents(par1World, par3StructureBoundingBox, par2Random, 5, 1, 5, ChestGenHooks.getItems(ChestGenHooks.VILLAGE_BLACKSMITH, par2Random), ChestGenHooks.getCount(ChestGenHooks.VILLAGE_BLACKSMITH, par2Random));
             }
         }
 
@@ -126,7 +125,8 @@ public class GCMoonComponentVillageHouse2 extends GCMoonComponentVillage
     /**
      * Returns the villager type to spawn in this component, based on the number of villagers already spawned.
      */
-    protected int getVillagerType(int par1)
+    @Override
+	protected int getVillagerType(int par1)
     {
         return 3;
     }

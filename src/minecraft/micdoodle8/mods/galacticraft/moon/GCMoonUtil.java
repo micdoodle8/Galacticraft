@@ -11,7 +11,7 @@ import net.minecraft.item.crafting.CraftingManager;
  *  All rights reserved.
  *
  */
-public class GCMoonUtil 
+public class GCMoonUtil
 {
 	public static void addCraftingRecipes()
 	{

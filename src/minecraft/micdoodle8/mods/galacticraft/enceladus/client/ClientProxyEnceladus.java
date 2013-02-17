@@ -52,9 +52,9 @@ public class ClientProxyEnceladus extends CommonProxyEnceladus implements IGalac
 	@Override
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		lang = new GCCoreLocalization("micdoodle8/mods/galacticraft/enceladus/client");
+		ClientProxyEnceladus.lang = new GCCoreLocalization("micdoodle8/mods/galacticraft/enceladus/client");
 		MinecraftForge.EVENT_BUS.register(new GCEnceladusSounds());
-		getFirstBootTime = System.currentTimeMillis();
+		ClientProxyEnceladus.getFirstBootTime = System.currentTimeMillis();
 	}
 
 	@Override
@@ -74,7 +74,7 @@ public class ClientProxyEnceladus extends CommonProxyEnceladus implements IGalac
 	}
 	
 	@Override
-	public void registerRenderInformation() 
+	public void registerRenderInformation()
 	{
 		MinecraftForgeClient.preloadTexture("/micdoodle8/mods/galacticraft/enceladus/client/blocks/enceladus.png");
 		MinecraftForgeClient.preloadTexture("/micdoodle8/mods/galacticraft/enceladus/client/items/enceladus.png");
@@ -154,7 +154,7 @@ public class ClientProxyEnceladus extends CommonProxyEnceladus implements IGalac
         }
 
     	@Override
-    	public void tickEnd(EnumSet<TickType> type, Object... tickData) 
+    	public void tickEnd(EnumSet<TickType> type, Object... tickData)
     	{
     	}
     	
@@ -165,50 +165,50 @@ public class ClientProxyEnceladus extends CommonProxyEnceladus implements IGalac
         }
 
     	@Override
-    	public EnumSet<TickType> ticks() 
+    	public EnumSet<TickType> ticks()
     	{
     		return EnumSet.of(TickType.CLIENT);
     	}
     }
 
 	@Override
-	public String getDimensionName() 
+	public String getDimensionName()
 	{
 		return "Enceladus";
 	}
 
 	@Override
-	public GCCoreLocalization getLanguageFile() 
+	public GCCoreLocalization getLanguageFile()
 	{
 		return ClientProxyEnceladus.lang;
 	}
 
 	@Override
-	public String getPlanetSpriteDirectory() 
+	public String getPlanetSpriteDirectory()
 	{
 		return "/micdoodle8/mods/galacticraft/enceladus/client/planets/";
 	}
 
 	@Override
-	public IPlanetSlotRenderer getSlotRenderer() 
+	public IPlanetSlotRenderer getSlotRenderer()
 	{
 		return new GCEnceladusSlotRenderer();
 	}
 
 	@Override
-	public IMapPlanet getPlanetForMap() 
+	public IMapPlanet getPlanetForMap()
 	{
 		return null;
 	}
 
 	@Override
-	public IMapPlanet[] getChildMapPlanets() 
+	public IMapPlanet[] getChildMapPlanets()
 	{
 		return null;
 	}
 
 	@Override
-	public String getPathToMusicFile() 
+	public String getPathToMusicFile()
 	{
 		return null;
 	}

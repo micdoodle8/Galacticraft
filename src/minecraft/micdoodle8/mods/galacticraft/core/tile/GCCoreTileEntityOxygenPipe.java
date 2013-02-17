@@ -44,7 +44,7 @@ public class GCCoreTileEntityOxygenPipe extends TileEntity
 	}
 	
 	@Override
-	public void updateEntity() 
+	public void updateEntity()
 	{
 		if (this.source == null)
 		{
@@ -67,8 +67,7 @@ public class GCCoreTileEntityOxygenPipe extends TileEntity
 				
 				TileEntity tile;
 
-				for (int i = 0; i < idSet.length; i++)
-				{
+				for (final int element : idSet) {
 					if (this.oxygenInPipe > 0)
 					{
 						if (idSet[0] == GCCoreBlocks.oxygenPipe.blockID)
@@ -196,7 +195,7 @@ public class GCCoreTileEntityOxygenPipe extends TileEntity
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound par1NBTTagCompound) 
+	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
 	{
 		super.readFromNBT(par1NBTTagCompound);
 		
@@ -204,7 +203,7 @@ public class GCCoreTileEntityOxygenPipe extends TileEntity
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound par1NBTTagCompound) 
+	public void writeToNBT(NBTTagCompound par1NBTTagCompound)
 	{
 		super.writeToNBT(par1NBTTagCompound);
 		

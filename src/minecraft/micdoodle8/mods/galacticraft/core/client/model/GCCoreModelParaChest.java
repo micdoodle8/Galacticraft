@@ -1,9 +1,8 @@
 package micdoodle8.mods.galacticraft.core.client.model;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import net.minecraft.client.model.ModelChest;
 import net.minecraft.client.model.ModelRenderer;
+import cpw.mods.fml.client.FMLClientHandler;
 
 public class GCCoreModelParaChest extends ModelChest
 {
@@ -86,9 +85,9 @@ public class GCCoreModelParaChest extends ModelChest
     	this.parachute[0].setRotationPoint(-5.85F, -11.0F, 2.0F);
     	this.parachute[1].setRotationPoint(9F, -7F, 2.0F);
     	this.parachute[2].setRotationPoint(-2.15F, 4.0F, 2.0F);
-    	this.parachute[0].rotateAngleZ = (float) ((210F) * (Math.PI / 180F));
-    	this.parachute[1].rotateAngleZ = (float) ((180F) * (Math.PI / 180F));
-    	this.parachute[2].rotateAngleZ = (float) -((210F) * (Math.PI / 180F));
+    	this.parachute[0].rotateAngleZ = (float) (210F * (Math.PI / 180F));
+    	this.parachute[1].rotateAngleZ = (float) (180F * (Math.PI / 180F));
+    	this.parachute[2].rotateAngleZ = (float) -(210F * (Math.PI / 180F));
     	this.parachuteStrings[0].rotateAngleZ = (float) ((155F + 180F) * (Math.PI / 180F));
     	this.parachuteStrings[0].rotateAngleX = (float) (23F * (Math.PI / 180F));
     	this.parachuteStrings[0].setRotationPoint(9.0F, 3.0F, 2.0F);
@@ -107,7 +106,7 @@ public class GCCoreModelParaChest extends ModelChest
 //    	{
 //    		this.parachute[i].rotateAngleY = (float) (180 * (Math.PI / 180F));
 //    	}
-//    	
+//
 //    	for (i = 0; i < this.parachuteStrings.length; i++)
 //    	{
 //    		this.parachuteStrings[i].rotateAngleY = (float) (180 * (Math.PI / 180F));

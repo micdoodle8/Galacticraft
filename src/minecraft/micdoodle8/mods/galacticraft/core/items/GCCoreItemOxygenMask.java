@@ -1,10 +1,7 @@
 package micdoodle8.mods.galacticraft.core.items;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import net.minecraft.item.EnumArmorMaterial;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.IArmorTextureProvider;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -14,7 +11,7 @@ import net.minecraftforge.common.IArmorTextureProvider;
  */
 public class GCCoreItemOxygenMask extends Item
 {
-	protected GCCoreItemOxygenMask(int par1) 
+	protected GCCoreItemOxygenMask(int par1)
 	{
 		super(par1);
 		this.setCreativeTab(GalacticraftCore.galacticraftTab);

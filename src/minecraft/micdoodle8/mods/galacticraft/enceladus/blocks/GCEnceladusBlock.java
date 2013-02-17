@@ -18,9 +18,9 @@ public class GCEnceladusBlock extends Block
 	}
 
 	@Override
-	public int getBlockTextureFromSideAndMetadata(int side, int meta) 
+	public int getBlockTextureFromSideAndMetadata(int side, int meta)
 	{
-		switch (meta) 
+		switch (meta)
 		{
 		case 0:
 			switch (side)
@@ -42,7 +42,7 @@ public class GCEnceladusBlock extends Block
 	}
 
 	@Override
-	public int idDropped(int meta, Random random, int par3) 
+	public int idDropped(int meta, Random random, int par3)
 	{
 		switch (meta)
 		{

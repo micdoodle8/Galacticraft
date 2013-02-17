@@ -47,20 +47,20 @@ public class GalacticraftNeptune implements IGalacticraftSubMod
 		
 		new GCEuropaConfigManager(new File(event.getModConfigurationDirectory(), "Galacticraft/neptune.conf"));
 		
-		proxy.preInit(event);
+		GalacticraftNeptune.proxy.preInit(event);
 	}
 
 	@Init
 	public void load(FMLInitializationEvent event)
 	{
-		proxy.init(event);
+		GalacticraftNeptune.proxy.init(event);
 	}
 
 	@PostInit
 	public void postLoad(FMLPostInitializationEvent event)
 	{
-		proxy.postInit(event);
-		proxy.registerRenderInformation();
+		GalacticraftNeptune.proxy.postInit(event);
+		GalacticraftNeptune.proxy.registerRenderInformation();
 	}
 	
 	@ServerStarted
@@ -69,19 +69,19 @@ public class GalacticraftNeptune implements IGalacticraftSubMod
 	}
 
 	@Override
-	public String getDimensionName() 
+	public String getDimensionName()
 	{
 		return "Neptune";
 	}
 
 	@Override
-	public boolean reachableDestination() 
+	public boolean reachableDestination()
 	{
 		return false;
 	}
 
 	@Override
-	public IGalaxy getParentGalaxy() 
+	public IGalaxy getParentGalaxy()
 	{
 		return GalacticraftCore.galaxyMilkyWay;
 	}

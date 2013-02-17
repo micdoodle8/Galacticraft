@@ -14,7 +14,7 @@ public class GCMoonStructureVillagePieces
 {
     public static ArrayList getStructureVillageWeightedPieceList(Random par0Random, int par1)
     {
-        ArrayList var2 = new ArrayList();
+        final ArrayList var2 = new ArrayList();
         var2.add(new GCMoonStructureVillagePieceWeight(GCMoonComponentVillageHouse4_Garden.class, 4, MathHelper.getRandomIntegerInRange(par0Random, 2 + par1, 4 + par1 * 2)));
         var2.add(new GCMoonStructureVillagePieceWeight(GCMoonComponentVillageChurch.class, 20, MathHelper.getRandomIntegerInRange(par0Random, 0 + par1, 1 + par1)));
         var2.add(new GCMoonStructureVillagePieceWeight(GCMoonComponentVillageHouse1.class, 20, MathHelper.getRandomIntegerInRange(par0Random, 0 + par1, 2 + par1)));
@@ -26,7 +26,7 @@ public class GCMoonStructureVillagePieces
         var2.add(new GCMoonStructureVillagePieceWeight(GCMoonComponentVillageHouse3.class, 8, MathHelper.getRandomIntegerInRange(par0Random, 0 + par1, 3 + par1 * 2)));
         VillagerRegistry.addExtraVillageComponents(var2, par0Random, par1);
 
-        Iterator var3 = var2.iterator();
+        final Iterator var3 = var2.iterator();
 
         while (var3.hasNext())
         {
@@ -45,7 +45,7 @@ public class GCMoonStructureVillagePieces
         int var2 = 0;
         GCMoonStructureVillagePieceWeight var4;
 
-        for (Iterator var3 = par0List.iterator(); var3.hasNext(); var2 += var4.villagePieceWeight)
+        for (final Iterator var3 = par0List.iterator(); var3.hasNext(); var2 += var4.villagePieceWeight)
         {
             var4 = (GCMoonStructureVillagePieceWeight)var3.next();
 
@@ -60,7 +60,7 @@ public class GCMoonStructureVillagePieces
 
     private static GCMoonComponentVillage func_75083_a(GCMoonComponentVillageStartPiece par0ComponentVillageStartPiece, GCMoonStructureVillagePieceWeight par1StructureVillagePieceWeight, List par2List, Random par3Random, int par4, int par5, int par6, int par7, int par8)
     {
-        Class var9 = par1StructureVillagePieceWeight.villagePieceClass;
+        final Class var9 = par1StructureVillagePieceWeight.villagePieceClass;
         Object var10 = null;
 
         if (var9 == GCMoonComponentVillageHouse4_Garden.class)
@@ -108,7 +108,7 @@ public class GCMoonStructureVillagePieces
      */
     private static GCMoonComponentVillage getNextVillageComponent(GCMoonComponentVillageStartPiece par0ComponentVillageStartPiece, List par1List, Random par2Random, int par3, int par4, int par5, int par6, int par7)
     {
-        int var8 = func_75079_a(par0ComponentVillageStartPiece.structureVillageWeightedPieceList);
+        final int var8 = GCMoonStructureVillagePieces.func_75079_a(par0ComponentVillageStartPiece.structureVillageWeightedPieceList);
 
         if (var8 <= 0)
         {
@@ -122,11 +122,11 @@ public class GCMoonStructureVillagePieces
             {
                 ++var9;
                 int var10 = par2Random.nextInt(var8);
-                Iterator var11 = par0ComponentVillageStartPiece.structureVillageWeightedPieceList.iterator();
+                final Iterator var11 = par0ComponentVillageStartPiece.structureVillageWeightedPieceList.iterator();
 
                 while (var11.hasNext())
                 {
-                    GCMoonStructureVillagePieceWeight var12 = (GCMoonStructureVillagePieceWeight)var11.next();
+                    final GCMoonStructureVillagePieceWeight var12 = (GCMoonStructureVillagePieceWeight)var11.next();
                     var10 -= var12.villagePieceWeight;
 
                     if (var10 < 0)
@@ -136,7 +136,7 @@ public class GCMoonStructureVillagePieces
                             break;
                         }
 
-                        GCMoonComponentVillage var13 = func_75083_a(par0ComponentVillageStartPiece, var12, par1List, par2Random, par3, par4, par5, par6, par7);
+                        final GCMoonComponentVillage var13 = GCMoonStructureVillagePieces.func_75083_a(par0ComponentVillageStartPiece, var12, par1List, par2Random, par3, par4, par5, par6, par7);
 
                         if (var13 != null)
                         {
@@ -154,7 +154,7 @@ public class GCMoonStructureVillagePieces
                 }
             }
 
-            StructureBoundingBox var14 = GCMoonComponentVillageTorch.func_74904_a(par0ComponentVillageStartPiece, par1List, par2Random, par3, par4, par5, par6);
+            final StructureBoundingBox var14 = GCMoonComponentVillageTorch.func_74904_a(par0ComponentVillageStartPiece, par1List, par2Random, par3, par4, par5, par6);
 
             if (var14 != null)
             {
@@ -178,15 +178,15 @@ public class GCMoonStructureVillagePieces
         }
         else if (Math.abs(par3 - par0ComponentVillageStartPiece.getBoundingBox().minX) <= 112 && Math.abs(par5 - par0ComponentVillageStartPiece.getBoundingBox().minZ) <= 112)
         {
-            GCMoonComponentVillage var8 = getNextVillageComponent(par0ComponentVillageStartPiece, par1List, par2Random, par3, par4, par5, par6, par7 + 1);
+            final GCMoonComponentVillage var8 = GCMoonStructureVillagePieces.getNextVillageComponent(par0ComponentVillageStartPiece, par1List, par2Random, par3, par4, par5, par6, par7 + 1);
 
             if (var8 != null)
             {
-                int var9 = (var8.getBoundingBox().minX + var8.getBoundingBox().maxX) / 2;
-                int var10 = (var8.getBoundingBox().minZ + var8.getBoundingBox().maxZ) / 2;
-                int var11 = var8.getBoundingBox().maxX - var8.getBoundingBox().minX;
-                int var12 = var8.getBoundingBox().maxZ - var8.getBoundingBox().minZ;
-                int var13 = var11 > var12 ? var11 : var12;
+                final int var9 = (var8.getBoundingBox().minX + var8.getBoundingBox().maxX) / 2;
+                final int var10 = (var8.getBoundingBox().minZ + var8.getBoundingBox().maxZ) / 2;
+                final int var11 = var8.getBoundingBox().maxX - var8.getBoundingBox().minX;
+                final int var12 = var8.getBoundingBox().maxZ - var8.getBoundingBox().minZ;
+                final int var13 = var11 > var12 ? var11 : var12;
 
 //                if (par0ComponentVillageStartPiece.getWorldChunkManager().areBiomesViable(var9, var10, var13 / 2 + 4, GCMoonMapGenVillage.villageSpawnBiomes))
                 {
@@ -212,16 +212,16 @@ public class GCMoonStructureVillagePieces
         }
         else if (Math.abs(par3 - par0ComponentVillageStartPiece.getBoundingBox().minX) <= 112 && Math.abs(par5 - par0ComponentVillageStartPiece.getBoundingBox().minZ) <= 112)
         {
-            StructureBoundingBox var8 = GCMoonComponentVillagePathGen.func_74933_a(par0ComponentVillageStartPiece, par1List, par2Random, par3, par4, par5, par6);
+            final StructureBoundingBox var8 = GCMoonComponentVillagePathGen.func_74933_a(par0ComponentVillageStartPiece, par1List, par2Random, par3, par4, par5, par6);
 
             if (var8 != null && var8.minY > 10)
             {
-                GCMoonComponentVillagePathGen var9 = new GCMoonComponentVillagePathGen(par0ComponentVillageStartPiece, par7, par2Random, var8, par6);
-                int var10 = (var9.getBoundingBox().minX + var9.getBoundingBox().maxX) / 2;
-                int var11 = (var9.getBoundingBox().minZ + var9.getBoundingBox().maxZ) / 2;
-                int var12 = var9.getBoundingBox().maxX - var9.getBoundingBox().minX;
-                int var13 = var9.getBoundingBox().maxZ - var9.getBoundingBox().minZ;
-                int var14 = var12 > var13 ? var12 : var13;
+                final GCMoonComponentVillagePathGen var9 = new GCMoonComponentVillagePathGen(par0ComponentVillageStartPiece, par7, par2Random, var8, par6);
+                final int var10 = (var9.getBoundingBox().minX + var9.getBoundingBox().maxX) / 2;
+                final int var11 = (var9.getBoundingBox().minZ + var9.getBoundingBox().maxZ) / 2;
+                final int var12 = var9.getBoundingBox().maxX - var9.getBoundingBox().minX;
+                final int var13 = var9.getBoundingBox().maxZ - var9.getBoundingBox().minZ;
+                final int var14 = var12 > var13 ? var12 : var13;
 
 //                if (par0ComponentVillageStartPiece.getWorldChunkManager().areBiomesViable(var10, var11, var14 / 2 + 4, GCMoonMapGenVillage.villageSpawnBiomes))
                 {
@@ -244,11 +244,11 @@ public class GCMoonStructureVillagePieces
      */
     static StructureComponent getNextStructureComponent(GCMoonComponentVillageStartPiece par0ComponentVillageStartPiece, List par1List, Random par2Random, int par3, int par4, int par5, int par6, int par7)
     {
-        return getNextVillageStructureComponent(par0ComponentVillageStartPiece, par1List, par2Random, par3, par4, par5, par6, par7);
+        return GCMoonStructureVillagePieces.getNextVillageStructureComponent(par0ComponentVillageStartPiece, par1List, par2Random, par3, par4, par5, par6, par7);
     }
 
     static StructureComponent getNextStructureComponentVillagePath(GCMoonComponentVillageStartPiece par0ComponentVillageStartPiece, List par1List, Random par2Random, int par3, int par4, int par5, int par6, int par7)
     {
-        return getNextComponentVillagePath(par0ComponentVillageStartPiece, par1List, par2Random, par3, par4, par5, par6, par7);
+        return GCMoonStructureVillagePieces.getNextComponentVillagePath(par0ComponentVillageStartPiece, par1List, par2Random, par3, par4, par5, par6, par7);
     }
 }

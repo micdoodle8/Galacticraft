@@ -15,7 +15,7 @@ import net.minecraft.item.crafting.FurnaceRecipes;
  *  All rights reserved.
  *
  */
-public class GCMarsUtil 
+public class GCMarsUtil
 {
 	public static void addCraftingRecipes()
 	{

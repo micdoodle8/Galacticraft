@@ -15,10 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.SideOnly;
-import cpw.mods.fml.relauncher.Side;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -34,7 +31,7 @@ public class GCCoreBlockOxygenDistributor extends BlockContainer
     
     private static boolean keepDistributorInventory = false;
 	
-	public GCCoreBlockOxygenDistributor(int par1, boolean isActive) 
+	public GCCoreBlockOxygenDistributor(int par1, boolean isActive)
 	{
 		super(par1, Material.rock);
 		this.blockIndexInTexture = 22;
@@ -61,7 +58,7 @@ public class GCCoreBlockOxygenDistributor extends BlockContainer
    	}
 
 	@Override
-	public TileEntity createNewTileEntity(World var1) 
+	public TileEntity createNewTileEntity(World var1)
 	{
 		return new GCCoreTileEntityOxygenDistributor();
 	}
@@ -143,7 +140,7 @@ public class GCCoreBlockOxygenDistributor extends BlockContainer
     @Override
 	public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6)
     {
-    	if (!keepDistributorInventory)
+    	if (!GCCoreBlockOxygenDistributor.keepDistributorInventory)
     	{
     		final GCCoreTileEntityOxygenDistributor var7 = (GCCoreTileEntityOxygenDistributor)par1World.getBlockTileEntity(par2, par3, par4);
 
@@ -214,7 +211,7 @@ public class GCCoreBlockOxygenDistributor extends BlockContainer
     	{
     		final int var5 = par1World.getBlockMetadata(x, y, z);
             final TileEntity var6 = par1World.getBlockTileEntity(x, y, z);
-            keepDistributorInventory = true;
+            GCCoreBlockOxygenDistributor.keepDistributorInventory = true;
 
             if (activate)
             {
@@ -226,7 +223,7 @@ public class GCCoreBlockOxygenDistributor extends BlockContainer
                 GCCoreBlocks.airDistributor.removeAirBlocks(par1World, x, y, z);
             }
 
-            keepDistributorInventory = false;
+            GCCoreBlockOxygenDistributor.keepDistributorInventory = false;
             par1World.setBlockMetadataWithNotify(x, y, z, var5);
 
             if (var6 != null)

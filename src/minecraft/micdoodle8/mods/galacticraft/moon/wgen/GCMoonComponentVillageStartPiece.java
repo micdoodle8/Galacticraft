@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.moon.wgen;
 
 import java.util.ArrayList;
 import java.util.Random;
+
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.WorldChunkManager;
 
@@ -31,7 +32,7 @@ public class GCMoonComponentVillageStartPiece extends GCMoonComponentVillageWell
         this.worldChunkMngr = par1WorldChunkManager;
         this.structureVillageWeightedPieceList = par6ArrayList;
         this.terrainType = par7;
-        BiomeGenBase var8 = par1WorldChunkManager.getBiomeGenAt(par4, par5);
+        final BiomeGenBase var8 = par1WorldChunkManager.getBiomeGenAt(par4, par5);
         this.inDesert = var8 == BiomeGenBase.desert || var8 == BiomeGenBase.desertHills;
         this.biome = var8;
         this.startPiece = this;

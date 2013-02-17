@@ -21,15 +21,16 @@ public class GCMoonComponentVillageChurch extends GCMoonComponentVillage
 
     public static GCMoonComponentVillageChurch func_74919_a(GCMoonComponentVillageStartPiece par0ComponentVillageStartPiece, List par1List, Random par2Random, int par3, int par4, int par5, int par6, int par7)
     {
-        StructureBoundingBox var8 = StructureBoundingBox.getComponentToAddBoundingBox(par3, par4, par5, 0, 0, 0, 5, 12, 9, par6);
-        return canVillageGoDeeper(var8) && StructureComponent.findIntersecting(par1List, var8) == null ? new GCMoonComponentVillageChurch(par0ComponentVillageStartPiece, par7, par2Random, var8, par6) : null;
+        final StructureBoundingBox var8 = StructureBoundingBox.getComponentToAddBoundingBox(par3, par4, par5, 0, 0, 0, 5, 12, 9, par6);
+        return GCMoonComponentVillage.canVillageGoDeeper(var8) && StructureComponent.findIntersecting(par1List, var8) == null ? new GCMoonComponentVillageChurch(par0ComponentVillageStartPiece, par7, par2Random, var8, par6) : null;
     }
 
     /**
      * second Part of Structure generating, this for example places Spiderwebs, Mob Spawners, it closes Mineshafts at
      * the end, it adds Fences...
      */
-    public boolean addComponentParts(World par1World, Random par2Random, StructureBoundingBox par3StructureBoundingBox)
+    @Override
+	public boolean addComponentParts(World par1World, Random par2Random, StructureBoundingBox par3StructureBoundingBox)
     {
         if (this.averageGroundLevel < 0)
         {
@@ -89,7 +90,7 @@ public class GCMoonComponentVillageChurch extends GCMoonComponentVillage
         this.placeBlockAtCurrentPosition(par1World, Block.torchWood.blockID, 0, 1, 4, 6, par3StructureBoundingBox);
         this.placeBlockAtCurrentPosition(par1World, Block.torchWood.blockID, 0, 3, 4, 6, par3StructureBoundingBox);
         this.placeBlockAtCurrentPosition(par1World, Block.torchWood.blockID, 0, 2, 4, 5, par3StructureBoundingBox);
-        int var4 = this.getMetadataWithOffset(Block.ladder.blockID, 4);
+        final int var4 = this.getMetadataWithOffset(Block.ladder.blockID, 4);
         int var5;
 
         for (var5 = 1; var5 <= 9; ++var5)
@@ -122,7 +123,8 @@ public class GCMoonComponentVillageChurch extends GCMoonComponentVillage
     /**
      * Returns the villager type to spawn in this component, based on the number of villagers already spawned.
      */
-    protected int getVillagerType(int par1)
+    @Override
+	protected int getVillagerType(int par1)
     {
         return 2;
     }

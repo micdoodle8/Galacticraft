@@ -5,8 +5,8 @@ import java.util.Random;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import net.minecraft.block.material.Material;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.SideOnly;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -16,7 +16,7 @@ import cpw.mods.fml.relauncher.Side;
  */
 public class GCMarsBlockCreeperDungeonWall extends GCMarsBlock
 {
-	public GCMarsBlockCreeperDungeonWall(int i, int j, Material material) 
+	public GCMarsBlockCreeperDungeonWall(int i, int j, Material material)
 	{
 		super(i, j, material);
         this.setTickRandomly(true);

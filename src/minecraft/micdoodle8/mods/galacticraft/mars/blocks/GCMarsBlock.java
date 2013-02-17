@@ -12,7 +12,7 @@ import net.minecraft.block.material.Material;
  */
 public class GCMarsBlock extends Block
 {
-	protected GCMarsBlock(int i, int j, Material material) 
+	protected GCMarsBlock(int i, int j, Material material)
 	{
 		super(i, j, material);
 		this.setCreativeTab(GalacticraftCore.galacticraftTab);

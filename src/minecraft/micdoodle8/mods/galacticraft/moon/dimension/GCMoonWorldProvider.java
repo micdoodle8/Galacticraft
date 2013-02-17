@@ -10,8 +10,8 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
-import cpw.mods.fml.relauncher.SideOnly;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -191,7 +191,7 @@ public class GCMoonWorldProvider extends WorldProvider implements IGalacticraftW
     }
 
 	@Override
-	public String getDimensionName() 
+	public String getDimensionName()
 	{
 		return "Moon";
 	}
@@ -221,13 +221,13 @@ public class GCMoonWorldProvider extends WorldProvider implements IGalacticraftW
     }
 
 	@Override
-	public float getGravity() 
+	public float getGravity()
 	{
 		return 0.062F;
 	}
 
 	@Override
-	public float getMeteorFrequency() 
+	public float getMeteorFrequency()
 	{
 		return 7;
 	}

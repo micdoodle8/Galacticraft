@@ -141,7 +141,7 @@ public class GCCoreExplosion
                     var19 /= var32;
                     final double var31 = this.worldObj.getBlockDensity(var29, var30.boundingBox);
                     final double var33 = (1.0D - var13) * var31;
-                    var30.attackEntityFrom(DamageSource.explosion, (int)((var33 * var33 + var33) / 10.0D * 1.0D * (double)this.explosionSize + 1.0D));
+                    var30.attackEntityFrom(DamageSource.explosion, (int)((var33 * var33 + var33) / 10.0D * 1.0D * this.explosionSize + 1.0D));
                     var30.motionX += var15 * var33 * 5;
                     var30.motionY += var17 * var33 * 1.5;
                     var30.motionZ += var19 * var33 * 5;

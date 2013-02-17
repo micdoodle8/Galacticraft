@@ -17,7 +17,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraftforge.common.DimensionManager;
-import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -27,6 +26,7 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.relauncher.Side;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -49,7 +49,7 @@ public class GalacticraftTitan implements IGalacticraftSubMod
 		GCTitanBlocks.registerBlocks();
 		GCTitanBlocks.setHarvestLevels();
 		GCTitanBlocks.addNames();
-//		
+//
 //		GCMarsItems.initItems();
 //		GCMarsItems.addNames(); TODO
 	}
@@ -117,19 +117,19 @@ public class GalacticraftTitan implements IGalacticraftSubMod
     }
 
 	@Override
-	public String getDimensionName() 
+	public String getDimensionName()
 	{
 		return "Titan";
 	}
 
 	@Override
-	public boolean reachableDestination() 
+	public boolean reachableDestination()
 	{
 		return true;
 	}
 
 	@Override
-	public IGalaxy getParentGalaxy() 
+	public IGalaxy getParentGalaxy()
 	{
 		return GalacticraftCore.galaxyMilkyWay;
 	}

@@ -1,26 +1,24 @@
 package micdoodle8.mods.galacticraft.core.client;
 
 import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
-import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiGalaxyMap;
 import net.minecraft.client.renderer.Tessellator;
-import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreSlotRendererOverworld implements IPlanetSlotRenderer
 {
 	@Override
-	public String getPlanetSprite() 
+	public String getPlanetSprite()
 	{
 		return "/micdoodle8/mods/galacticraft/core/client/planets/overworld.png";
 	}
 
 	@Override
-	public String getPlanetName() 
+	public String getPlanetName()
 	{
 		return "Overworld";
 	}
 
 	@Override
-	public void renderSlot(int index, int x, int y, float slotHeight, Tessellator tessellator) 
+	public void renderSlot(int index, int x, int y, float slotHeight, Tessellator tessellator)
 	{
 		tessellator.startDrawingQuads();
 		tessellator.addVertexWithUV(x - slotHeight * 0.9, 	y + slotHeight * 0.9, 	-90.0D, 0.0, 1.0);

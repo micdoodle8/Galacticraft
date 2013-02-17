@@ -12,7 +12,7 @@ import cpw.mods.fml.common.FMLLog;
  *  All rights reserved.
  *
  */
-public class GCMimasConfigManager 
+public class GCMimasConfigManager
 {
 	public static boolean loaded;
 	
@@ -26,9 +26,9 @@ public class GCMimasConfigManager
 	
 	public GCMimasConfigManager(File file)
 	{
-		if (!loaded)
+		if (!GCMimasConfigManager.loaded)
 		{
-			configuration = new Configuration(file);
+			GCMimasConfigManager.configuration = new Configuration(file);
 			this.setDefaultValues();
 		}
 	}
@@ -37,20 +37,20 @@ public class GCMimasConfigManager
     {
 		try
 		{
-	        configuration.load();
+	        GCMimasConfigManager.configuration.load();
 	        
-	        dimensionIDMimas = 				configuration.get("Dimensions", 										"Mimas Dimension ID",				-23)		.getInt(-23);
+	        GCMimasConfigManager.dimensionIDMimas = 				GCMimasConfigManager.configuration.get("Dimensions", 										"Mimas Dimension ID",				-23)		.getInt(-23);
 	        
-	        idBlock = 						configuration.get(Configuration.CATEGORY_BLOCK, 						"idBlockMimas", 					198)	.getInt(198);
+	        GCMimasConfigManager.idBlock = 						GCMimasConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, 						"idBlockMimas", 					198)	.getInt(198);
 		}
 		catch (final Exception e)
 		{
 			FMLLog.log(Level.SEVERE, e, "Galacticraft Mimas has a problem loading it's configuration");
 		}
-		finally 
+		finally
 		{
-			configuration.save();
-			loaded = true;
+			GCMimasConfigManager.configuration.save();
+			GCMimasConfigManager.loaded = true;
 		}
     }
 }

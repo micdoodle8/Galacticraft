@@ -17,8 +17,8 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.SideOnly;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -307,11 +307,11 @@ public class GCCoreEntityArrow extends Entity
 
                     if (this.shootingEntity == null)
                     {
-                        var22 = causeArrowDamage(this, this);
+                        var22 = GCCoreEntityArrow.causeArrowDamage(this, this);
                     }
                     else
                     {
-                        var22 = causeArrowDamage(this, this.shootingEntity);
+                        var22 = GCCoreEntityArrow.causeArrowDamage(this, this.shootingEntity);
                     }
 
                     if (this.isBurning())

@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.API;
 
-public interface IGalacticraftSubMod 
+public interface IGalacticraftSubMod
 {
 	/**
 	 * @return Dimension name, must be the same as all other getDimensionName methods in your mod

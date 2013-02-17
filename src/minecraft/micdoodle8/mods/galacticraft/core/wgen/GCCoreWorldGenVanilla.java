@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.wgen;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -15,16 +14,16 @@ import cpw.mods.fml.common.IWorldGenerator;
 public class GCCoreWorldGenVanilla implements IWorldGenerator
 {
 	@Override
-	public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) 
+	public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider)
 	{
-		List<Integer> wordList = new ArrayList<Integer>();
+		final List<Integer> wordList = new ArrayList<Integer>();
 		
-		for (Integer i : GCCoreConfigManager.oreGenDimensions)
+		for (final Integer i : GCCoreConfigManager.oreGenDimensions)
 		{
 			wordList.add(i);
 		}
 		
-		for (int dimID : wordList)
+		for (final int dimID : wordList)
 		{
 			if (world.provider.dimensionId == dimID)
 			{

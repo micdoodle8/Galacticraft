@@ -3,8 +3,8 @@ package micdoodle8.mods.galacticraft.moon.wgen;
 import micdoodle8.mods.galacticraft.moon.client.GCMoonColorizerGrass;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.biome.BiomeGenBase;
-import cpw.mods.fml.relauncher.SideOnly;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8

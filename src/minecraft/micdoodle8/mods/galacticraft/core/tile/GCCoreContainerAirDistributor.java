@@ -55,7 +55,7 @@ public class GCCoreContainerAirDistributor extends Container
             
             if (par1 == 0)
             {
-            	if (!this.mergeItemStack(stackInSlot, 1, this.inventorySlots.size(), true)) 
+            	if (!this.mergeItemStack(stackInSlot, 1, this.inventorySlots.size(), true))
             	{
             		return null;
             	}

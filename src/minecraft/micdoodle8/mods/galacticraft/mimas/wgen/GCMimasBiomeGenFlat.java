@@ -12,7 +12,7 @@ public class GCMimasBiomeGenFlat extends GCMimasBiomeGenBase
 {
     public GCMimasBiomeGenFlat(int par1)
     {
-        super(par1); 
+        super(par1);
         this.setBiomeName("mimasFlat");
         this.setColor(16711680);
         this.minHeight = 2.5F;

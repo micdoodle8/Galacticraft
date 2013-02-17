@@ -5,11 +5,8 @@ import java.util.EnumSet;
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
 import micdoodle8.mods.galacticraft.API.IMapPlanet;
 import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
-import micdoodle8.mods.galacticraft.callisto.client.GCCallistoMapPlanet;
 import micdoodle8.mods.galacticraft.core.GCCoreLocalization;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.europa.client.GCEuropaMapPlanet;
-import micdoodle8.mods.galacticraft.io.client.GCIoMapPlanet;
 import micdoodle8.mods.galacticraft.moon.CommonProxyMoon;
 import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
 import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;
@@ -21,12 +18,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.ITickHandler;
-import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.TickRegistry;
+import cpw.mods.fml.relauncher.Side;
 
 public class ClientProxyMoon extends CommonProxyMoon implements IGalacticraftSubModClient
 {
@@ -35,7 +32,7 @@ public class ClientProxyMoon extends CommonProxyMoon implements IGalacticraftSub
 	@Override
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		lang = new GCCoreLocalization("micdoodle8/mods/galacticraft/moon/client");
+		ClientProxyMoon.lang = new GCCoreLocalization("micdoodle8/mods/galacticraft/moon/client");
 	}
 
 	@Override
@@ -93,7 +90,7 @@ public class ClientProxyMoon extends CommonProxyMoon implements IGalacticraftSub
         }
 
     	@Override
-    	public void tickEnd(EnumSet<TickType> type, Object... tickData) 
+    	public void tickEnd(EnumSet<TickType> type, Object... tickData)
     	{
     	}
     	
@@ -104,50 +101,50 @@ public class ClientProxyMoon extends CommonProxyMoon implements IGalacticraftSub
         }
 
     	@Override
-    	public EnumSet<TickType> ticks() 
+    	public EnumSet<TickType> ticks()
     	{
     		return EnumSet.of(TickType.CLIENT);
     	}
     }
 
 	@Override
-	public String getDimensionName() 
+	public String getDimensionName()
 	{
 		return "Moon";
 	}
 
 	@Override
-	public GCCoreLocalization getLanguageFile() 
+	public GCCoreLocalization getLanguageFile()
 	{
 		return ClientProxyMoon.lang;
 	}
 
 	@Override
-	public String getPlanetSpriteDirectory() 
+	public String getPlanetSpriteDirectory()
 	{
 		return "/micdoodle8/mods/galacticraft/moon/client/planets/";
 	}
 
 	@Override
-	public IPlanetSlotRenderer getSlotRenderer() 
+	public IPlanetSlotRenderer getSlotRenderer()
 	{
 		return new GCMoonSlotRenderer();
 	}
 
 	@Override
-	public IMapPlanet getPlanetForMap() 
+	public IMapPlanet getPlanetForMap()
 	{
 		return null;
 	}
 
 	@Override
-	public IMapPlanet[] getChildMapPlanets() 
+	public IMapPlanet[] getChildMapPlanets()
 	{
 		return null;
 	}
 
 	@Override
-	public String getPathToMusicFile() 
+	public String getPathToMusicFile()
 	{
 		return null;
 	}

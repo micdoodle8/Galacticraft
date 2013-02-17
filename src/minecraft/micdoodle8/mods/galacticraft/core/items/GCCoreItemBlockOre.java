@@ -19,28 +19,28 @@ public class GCCoreItemBlockOre extends ItemBlock
     }
 
 	@Override
-	public String getItemNameIS(ItemStack itemstack) 
+	public String getItemNameIS(ItemStack itemstack)
 	{
 		String name = "";
 		
-		switch(itemstack.getItemDamage()) 
+		switch(itemstack.getItemDamage())
 		{
-		case 0: 
+		case 0:
 		{
 			name = "copperearth";
 			break;
 		}
-		case 1: 
+		case 1:
 		{
 			name = "aluminiumearth";
 			break;
 		}
-		case 2: 
+		case 2:
 		{
 			name = "titaniumearth";
 			break;
 		}
-		default: 
+		default:
 			name = "null";
 		}
 		return this.getItemName() + "." + name;

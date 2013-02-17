@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core.entities;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
-import net.minecraft.world.World;
 
 public class GCCoreEntityWormPart extends Entity
 {

@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.moon.blocks;
 
-import java.util.Random;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 
@@ -13,7 +11,7 @@ import net.minecraft.block.material.Material;
  */
 public class GCMoonBlockStone extends Block
 {
-	public GCMoonBlockStone(int par1, int par2) 
+	public GCMoonBlockStone(int par1, int par2)
 	{
 		super(par1, par2, Material.rock);
 	}

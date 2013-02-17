@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
-import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -9,14 +8,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.src.ModLoader;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
-
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -33,7 +27,7 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
     public String texture;
     ItemStack[] cargoItems;
 	public float turnProgress = 0;
-	private boolean firstPacketSent = false;
+	private final boolean firstPacketSent = false;
 	public float rotationYawBuggy;
 
     public GCCoreEntityBuggy(World var1)
@@ -242,7 +236,7 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
             final double var7 = this.boundingBox.minY + (this.boundingBox.maxY - this.boundingBox.minY) * (var4 + 1) / var20 - 0.125D;
         }
 
-        double var21;
+        final double var21;
 
         if (var2 < 1.0D)
         {
@@ -293,7 +287,7 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
 //            {
 //                this.speed *= 0.75D;
 //            }
-//            
+//
 //            if (!Keyboard.isKeyDown(30) && !Keyboard.isKeyDown(32))
 //            {
 //        		this.turnProgress = 0.0F;
@@ -324,8 +318,8 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
             this.motionY = 0.1D;
         }
 
-        this.motionX = -(this.speed * Math.cos(((this.rotationYaw - 90F) * Math.PI / 180.0D) ));
-        this.motionZ = -(this.speed * Math.sin(((this.rotationYaw - 90F) * Math.PI / 180.0D) ));
+        this.motionX = -(this.speed * Math.cos((this.rotationYaw - 90F) * Math.PI / 180.0D ));
+        this.motionZ = -(this.speed * Math.sin((this.rotationYaw - 90F) * Math.PI / 180.0D ));
         
         this.moveEntity(this.motionX, this.motionY, this.motionZ);
         
@@ -542,7 +536,7 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
     }
 
 	@Override
-	public void keyPressed(int par1, EntityPlayer par2EntityPlayer) 
+	public void keyPressed(int par1, EntityPlayer par2EntityPlayer)
 	{
 		if (this.worldObj.isRemote)
 		{

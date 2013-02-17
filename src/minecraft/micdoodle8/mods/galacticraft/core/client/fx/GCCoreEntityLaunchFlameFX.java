@@ -4,8 +4,8 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.SideOnly;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -89,9 +89,9 @@ public class GCCoreEntityLaunchFlameFX extends EntityFX
 
 //        if (this.onGround)
 //        {
-//        	this.motionX = ((double)(this.rand.nextFloat() * 2.0F * (float) this.rand.nextInt(2) * 2 - 1)) / 4.0; 
-//        	this.motionZ = ((double)(this.rand.nextFloat() * 2.0F * (float) this.rand.nextInt(2) * 2 - 1)) / 4.0; 
-//        	
+//        	this.motionX = ((double)(this.rand.nextFloat() * 2.0F * (float) this.rand.nextInt(2) * 2 - 1)) / 4.0;
+//        	this.motionZ = ((double)(this.rand.nextFloat() * 2.0F * (float) this.rand.nextInt(2) * 2 - 1)) / 4.0;
+//
 //        	this.motionX *= 0.699999988079071D;
 //            this.motionZ *= 0.699999988079071D;
 //        }

@@ -45,9 +45,9 @@ public class GCCoreBlockRendererBreathableAir implements ISimpleBlockRenderingHa
     }
 
 	@Override
-	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) 
+	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer)
 	{
-		renderInvNormalBlock(renderer, block, metadata);
+		GCCoreBlockRendererBreathableAir.renderInvNormalBlock(renderer, block, metadata);
 	}
 
     public static void renderInvNormalBlock(RenderBlocks var0, Block var1, int var2)

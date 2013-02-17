@@ -12,7 +12,7 @@ public class GCMoonBiomeGenFlat extends GCMoonBiomeGenBase
 {
     public GCMoonBiomeGenFlat(int par1)
     {
-        super(par1); 
+        super(par1);
         this.setBiomeName("moonFlat");
         this.setColor(11111111);
         this.minHeight = 1.5F;

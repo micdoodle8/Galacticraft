@@ -76,7 +76,7 @@ public class GCCoreBlockRendererMeteor implements ISimpleBlockRenderingHandler
     }
 
 	@Override
-	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) 
+	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer)
 	{
     	GCCoreBlockRendererMeteor.renderInvNormalBlock(renderer, block, metadata);
 	}

@@ -13,7 +13,7 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 
 public class GCCoreBlockSapling extends BlockSapling
 {
-	protected GCCoreBlockSapling(int par1, int par2) 
+	protected GCCoreBlockSapling(int par1, int par2)
 	{
 		super(par1, par2);
 		this.setRequiresSelfNotify();

@@ -11,7 +11,7 @@ import net.minecraft.item.Item;
  */
 public class GCMoonItem extends Item
 {
-	public GCMoonItem(int par1) 
+	public GCMoonItem(int par1)
 	{
 		super(par1);
 		this.setCreativeTab(GalacticraftCore.galacticraftTab);

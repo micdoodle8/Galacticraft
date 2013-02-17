@@ -6,19 +6,16 @@ import java.util.Set;
 
 import micdoodle8.mods.galacticraft.core.GCCoreDamageSource;
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLandingPad;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLaunchFlameFX;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLaunchSmokeFX;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityOxygenFX;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.particle.EntitySmokeFX;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
@@ -33,7 +30,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -217,7 +213,7 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
     		this.riddenByEntity.posX += this.rumble / 30F;
     		this.riddenByEntity.posZ += this.rumble / 30F;
     		
-    		EntityPlayer player = (EntityPlayer) this.riddenByEntity;
+    		final EntityPlayer player = (EntityPlayer) this.riddenByEntity;
     	}
     	
     	if (this.getReversed() == 1)
@@ -287,8 +283,8 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
             		{
                 		for (int z = MathHelper.floor_double(this.posZ) - 1; z <= MathHelper.floor_double(this.posZ) + 1; z++)
                 		{
-                			int id = this.worldObj.getBlockId(x, y, z);
-                			Block block = Block.blocksList[id];
+                			final int id = this.worldObj.getBlockId(x, y, z);
+                			final Block block = Block.blocksList[id];
                 			
                 			if (block != null && block instanceof GCCoreBlockLandingPad)
                 			{
@@ -384,8 +380,8 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
     
     protected void spawnParticles(boolean launched)
     {
-    	double x1 = 2 * Math.cos(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D);
-    	double z1 = 2 * Math.sin(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D);
+    	final double x1 = 2 * Math.cos(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D);
+    	final double z1 = 2 * Math.sin(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D);
     	double y1 = 2 * Math.cos((this.rotationPitch - 180) * Math.PI / 180.0D) + (this.getReversed() == 1 ? 10D : 0D);
     	
     	if (this.getLaunched() == 0)
@@ -422,15 +418,15 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
     	par1NBTTagCompound.setInteger("timeUntilLaunch", this.timeUntilLaunch);
     	par1NBTTagCompound.setInteger("ignite", this.ignite);
 
-        if (getSizeInventory() > 0)
+        if (this.getSizeInventory() > 0)
         {
-            NBTTagList var2 = new NBTTagList();
+            final NBTTagList var2 = new NBTTagList();
 
             for (int var3 = 0; var3 < this.cargoItems.length; ++var3)
             {
                 if (this.cargoItems[var3] != null)
                 {
-                    NBTTagCompound var4 = new NBTTagCompound();
+                    final NBTTagCompound var4 = new NBTTagCompound();
                     var4.setByte("Slot", (byte)var3);
                     this.cargoItems[var3].writeToNBT(var4);
                     var2.appendTag(var4);
@@ -457,15 +453,15 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
 		this.timeUntilLaunch = par1NBTTagCompound.getInteger("timeUntilLaunch");
 		this.ignite = par1NBTTagCompound.getInteger("ignite");
 
-        if (getSizeInventory() > 0)
+        if (this.getSizeInventory() > 0)
         {
-            NBTTagList var2 = par1NBTTagCompound.getTagList("Items");
+            final NBTTagList var2 = par1NBTTagCompound.getTagList("Items");
             this.cargoItems = new ItemStack[this.getSizeInventory()];
 
             for (int var3 = 0; var3 < var2.tagCount(); ++var3)
             {
-                NBTTagCompound var4 = (NBTTagCompound)var2.tagAt(var3);
-                int var5 = var4.getByte("Slot") & 255;
+                final NBTTagCompound var4 = (NBTTagCompound)var2.tagAt(var3);
+                final int var5 = var4.getByte("Slot") & 255;
 
                 if (var5 >= 0 && var5 < this.cargoItems.length)
                 {
@@ -654,7 +650,7 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
     }
 
 	@Override
-	public int getSizeInventory() 
+	public int getSizeInventory()
 	{
 		return 28;
 	}
@@ -701,7 +697,7 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
     {
         if (this.cargoItems[par1] != null)
         {
-            ItemStack var2 = this.cargoItems[par1];
+            final ItemStack var2 = this.cargoItems[par1];
             this.cargoItems[par1] = null;
             return var2;
         }

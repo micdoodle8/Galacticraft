@@ -12,7 +12,7 @@ public class GCCallistoBiomeGenFlat extends GCCallistoBiomeGenBase
 {
     public GCCallistoBiomeGenFlat(int par1)
     {
-        super(par1); 
+        super(par1);
         this.setBiomeName("callistoFlat");
         this.setColor(16711680);
         this.minHeight = 2.5F;

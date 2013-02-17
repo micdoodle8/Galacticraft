@@ -73,10 +73,10 @@ public class GCCoreWorldGenTrees extends WorldGenerator
 
                             final Block block = Block.blocksList[var12];
 
-                            if (var12 != 0 && 
-                               !block.isLeaves(par1World, var10, var8, var11) && 
-                                var12 != Block.grass.blockID && 
-                                var12 != Block.dirt.blockID && 
+                            if (var12 != 0 &&
+                               !block.isLeaves(par1World, var10, var8, var11) &&
+                                var12 != Block.grass.blockID &&
+                                var12 != Block.dirt.blockID &&
                                !block.isWood(par1World, var10, var8, var11))
                             {
                                 var7 = false;
@@ -134,7 +134,7 @@ public class GCCoreWorldGenTrees extends WorldGenerator
 
                                 final Block block = Block.blocksList[par1World.getBlockId(var14, var11, var16)];
 
-                                if ((Math.abs(var15) != var13 || Math.abs(var17) != var13 || par2Random.nextInt(2) != 0 && var12 != 0) && 
+                                if ((Math.abs(var15) != var13 || Math.abs(var17) != var13 || par2Random.nextInt(2) != 0 && var12 != 0) &&
                                     (block == null || block.canBeReplacedByLeaves(par1World, var14, var11, var16)))
                                 {
                                     this.setBlockAndMetadata(par1World, var14, var11, var16, Block.leaves.blockID, this.metaLeaves);

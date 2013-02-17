@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.stats.Achievement;
 import net.minecraftforge.common.AchievementPage;
 
-public class GCMarsAchievementList 
+public class GCMarsAchievementList
 {
 	// galacticraft page achievs:
 	public static AdvancedAchievement buildSpaceship;
@@ -19,12 +19,12 @@ public class GCMarsAchievementList
 	
 	public static void initAchievs()
 	{
-		baseID = 2853;
-		buildSpaceship = (AdvancedAchievement) new AdvancedAchievement(baseID + 1, "BuildSpaceship", 0, 0, new ItemStack(Block.workbench), new Achievement[] {null}).registerAchievement();
-		travelToMars = (AdvancedAchievement) new AdvancedAchievement(baseID + 2, "TravelToMars", 2, 1, new ItemStack(GCCoreItems.spaceship), new Achievement[] {buildSpaceship}).registerAchievement().setSpecial();
+		GCMarsAchievementList.baseID = 2853;
+		GCMarsAchievementList.buildSpaceship = (AdvancedAchievement) new AdvancedAchievement(GCMarsAchievementList.baseID + 1, "BuildSpaceship", 0, 0, new ItemStack(Block.workbench), new Achievement[] {null}).registerAchievement();
+		GCMarsAchievementList.travelToMars = (AdvancedAchievement) new AdvancedAchievement(GCMarsAchievementList.baseID + 2, "TravelToMars", 2, 1, new ItemStack(GCCoreItems.spaceship), new Achievement[] {GCMarsAchievementList.buildSpaceship}).registerAchievement().setSpecial();
 		
-		achievmentPage = new AchievementPage("Galacticraft Mars", buildSpaceship, travelToMars);
+		GCMarsAchievementList.achievmentPage = new AchievementPage("Galacticraft Mars", GCMarsAchievementList.buildSpaceship, GCMarsAchievementList.travelToMars);
 		
-		AchievementPage.registerAchievementPage(achievmentPage);
+		AchievementPage.registerAchievementPage(GCMarsAchievementList.achievmentPage);
 	}
 }

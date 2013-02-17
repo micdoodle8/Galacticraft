@@ -5,11 +5,8 @@ import java.util.EnumSet;
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
 import micdoodle8.mods.galacticraft.API.IMapPlanet;
 import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
-import micdoodle8.mods.galacticraft.callisto.client.GCCallistoMapPlanet;
 import micdoodle8.mods.galacticraft.core.GCCoreLocalization;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.europa.client.GCEuropaMapPlanet;
-import micdoodle8.mods.galacticraft.io.client.GCIoMapPlanet;
 import micdoodle8.mods.galacticraft.neptune.CommonProxyNeptune;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
@@ -32,24 +29,24 @@ public class ClientProxyNeptune extends CommonProxyNeptune implements IGalacticr
 	public static GCCoreLocalization lang;
 	
 	@Override
-	public void preInit(FMLPreInitializationEvent event) 
+	public void preInit(FMLPreInitializationEvent event)
 	{
 		ClientProxyNeptune.lang = new GCCoreLocalization("micdoodle8/mods/galacticraft/neptune/client");
 	}
 
 	@Override
-	public void init(FMLInitializationEvent event) 
+	public void init(FMLInitializationEvent event)
 	{
 		GalacticraftCore.registerClientSubMod(this);
 	}
 
 	@Override
-	public void postInit(FMLPostInitializationEvent event) 
+	public void postInit(FMLPostInitializationEvent event)
 	{
 	}
 	
 	@Override
-	public void registerRenderInformation() 
+	public void registerRenderInformation()
 	{
 	}
 
@@ -61,7 +58,7 @@ public class ClientProxyNeptune extends CommonProxyNeptune implements IGalacticr
     public class ClientPacketHandler implements IPacketHandler
     {
 		@Override
-		public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player) 
+		public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player)
 		{
 			
 		}
@@ -76,7 +73,7 @@ public class ClientProxyNeptune extends CommonProxyNeptune implements IGalacticr
         }
 
     	@Override
-    	public void tickEnd(EnumSet<TickType> type, Object... tickData) 
+    	public void tickEnd(EnumSet<TickType> type, Object... tickData)
     	{
     	}
     	
@@ -87,44 +84,44 @@ public class ClientProxyNeptune extends CommonProxyNeptune implements IGalacticr
         }
 
     	@Override
-    	public EnumSet<TickType> ticks() 
+    	public EnumSet<TickType> ticks()
     	{
     		return EnumSet.of(TickType.CLIENT);
     	}
     }
 
 	@Override
-	public String getDimensionName() 
+	public String getDimensionName()
 	{
 		return "Neptune";
 	}
 
 	@Override
-	public GCCoreLocalization getLanguageFile() 
+	public GCCoreLocalization getLanguageFile()
 	{
 		return ClientProxyNeptune.lang;
 	}
 
 	@Override
-	public String getPlanetSpriteDirectory() 
+	public String getPlanetSpriteDirectory()
 	{
 		return "/micdoodle8/mods/galacticraft/neptune/client/planets/";
 	}
 
 	@Override
-	public IPlanetSlotRenderer getSlotRenderer() 
+	public IPlanetSlotRenderer getSlotRenderer()
 	{
 		return new GCNeptuneSlotRenderer();
 	}
 
 	@Override
-	public IMapPlanet getPlanetForMap() 
+	public IMapPlanet getPlanetForMap()
 	{
 		return new GCNeptuneMapPlanet();
 	}
 
 	@Override
-	public IMapPlanet[] getChildMapPlanets() 
+	public IMapPlanet[] getChildMapPlanets()
 	{
 //		IMapPlanet[] moonMapPlanet = {new GCCallistoMapPlanet(), new GCEuropaMapPlanet(), new GCIoMapPlanet()};
 //		TODO
@@ -132,7 +129,7 @@ public class ClientProxyNeptune extends CommonProxyNeptune implements IGalacticr
 	}
 
 	@Override
-	public String getPathToMusicFile() 
+	public String getPathToMusicFile()
 	{
 		return null;
 	}

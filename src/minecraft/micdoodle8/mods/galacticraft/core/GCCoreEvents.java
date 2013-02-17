@@ -9,7 +9,7 @@ import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.player.BonemealEvent;
 import net.minecraftforge.event.world.WorldEvent;
 
-public class GCCoreEvents 
+public class GCCoreEvents
 {
 	@ForgeSubscribe
 	public void growTreeBonemeal(BonemealEvent event)

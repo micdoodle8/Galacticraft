@@ -9,7 +9,6 @@ import net.minecraftforge.client.event.sound.PlayBackgroundMusicEvent;
 import net.minecraftforge.client.event.sound.SoundLoadEvent;
 import net.minecraftforge.event.ForgeSubscribe;
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLLog;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -24,10 +23,10 @@ public class GCCoreSounds
     {
         try
         {
-            event.manager.soundPoolSounds.addSound("music/orbit_JC.ogg", GalacticraftCore.class.getResource("/micdoodle8/mods/galacticraft/core/client/sounds/music/orbit_JC.ogg"));     
-            event.manager.soundPoolSounds.addSound("shuttle/shuttle.wav", GalacticraftCore.class.getResource("/micdoodle8/mods/galacticraft/core/client/sounds/shuttle/shuttle.wav"));      
-            event.manager.soundPoolSounds.addSound("player/parachute.wav", GalacticraftCore.class.getResource("/micdoodle8/mods/galacticraft/core/client/sounds/player/parachute.wav"));    
-            event.manager.soundPoolSounds.addSound("music/scary-ambience.ogg", GalacticraftCore.class.getResource("/micdoodle8/mods/galacticraft/core/client/sounds/music/scary-ambience.ogg"));                 
+            event.manager.soundPoolSounds.addSound("music/orbit_JC.ogg", GalacticraftCore.class.getResource("/micdoodle8/mods/galacticraft/core/client/sounds/music/orbit_JC.ogg"));
+            event.manager.soundPoolSounds.addSound("shuttle/shuttle.wav", GalacticraftCore.class.getResource("/micdoodle8/mods/galacticraft/core/client/sounds/shuttle/shuttle.wav"));
+            event.manager.soundPoolSounds.addSound("player/parachute.wav", GalacticraftCore.class.getResource("/micdoodle8/mods/galacticraft/core/client/sounds/player/parachute.wav"));
+            event.manager.soundPoolSounds.addSound("music/scary-ambience.ogg", GalacticraftCore.class.getResource("/micdoodle8/mods/galacticraft/core/client/sounds/music/scary-ambience.ogg"));
         }
         catch (final Exception e)
         {
@@ -38,13 +37,13 @@ public class GCCoreSounds
     @ForgeSubscribe
     public void onMusicSound(PlayBackgroundMusicEvent event)
     {
-    	Minecraft mc = FMLClientHandler.instance().getClient();
+    	final Minecraft mc = FMLClientHandler.instance().getClient();
     	
     	if (mc.thePlayer.worldObj.provider instanceof IGalacticraftWorldProvider)
     	{
     		for (int i = 0; i < GalacticraftCore.clientSubMods.size(); i++)
     		{
-    			IGalacticraftSubModClient client = (IGalacticraftSubModClient) GalacticraftCore.clientSubMods.get(i);
+    			final IGalacticraftSubModClient client = GalacticraftCore.clientSubMods.get(i);
     			
     			if (client != null && client.getDimensionName() != null)
     			{
@@ -52,9 +51,9 @@ public class GCCoreSounds
     	    		{
     	    			if (client.getPathToMusicFile() != null)
     	    			{
-    	    				String[] strings = client.getPathToMusicFile().split("//");
+    	    				final String[] strings = client.getPathToMusicFile().split("//");
     	    				
-    	    				for (String string : strings)
+    	    				for (final String string : strings)
     	    				{
     	    					if (string.toLowerCase().contains(".ogg"))
     	    					{
@@ -67,7 +66,7 @@ public class GCCoreSounds
     			}
     		}
     		
-    		int randInt = FMLClientHandler.instance().getClient().thePlayer.worldObj.rand.nextInt(3);
+    		final int randInt = FMLClientHandler.instance().getClient().thePlayer.worldObj.rand.nextInt(3);
     		
     		if (randInt == 0)
     		{

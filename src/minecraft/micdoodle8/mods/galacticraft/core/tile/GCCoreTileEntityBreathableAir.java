@@ -8,7 +8,7 @@ public class GCCoreTileEntityBreathableAir extends TileEntity
 	GCCoreTileEntityOxygenDistributor distributor;
 	
 	@Override
-	public void updateEntity() 
+	public void updateEntity()
 	{
 		if (this.distributor != null)
 		{

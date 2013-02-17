@@ -10,7 +10,6 @@ import micdoodle8.mods.galacticraft.API.IGalacticraftSubMod;
 import micdoodle8.mods.galacticraft.API.IGalaxy;
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.europa.dimension.GCEuropaWorldProvider;
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
 import micdoodle8.mods.galacticraft.mars.dimension.GCMarsWorldProvider;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityCreeperBoss;
@@ -29,7 +28,6 @@ import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.Mod.PostInit;
 import cpw.mods.fml.common.Mod.PreInit;
 import cpw.mods.fml.common.Mod.ServerStarted;
-import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -42,6 +40,7 @@ import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.relauncher.Side;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -75,7 +74,7 @@ public class GalacticraftMars implements IGalacticraftSubMod
 		
 		GCMarsItems.initItems();
 		
-		proxy.preInit(event);
+		GalacticraftMars.proxy.preInit(event);
 	}
 
 	@Init
@@ -89,7 +88,7 @@ public class GalacticraftMars implements IGalacticraftSubMod
 		this.registerTileEntities();
 		this.registerCreatures();
 		this.registerOtherEntities();
-		proxy.init(event);
+		GalacticraftMars.proxy.init(event);
 	}
 	
 	public void registerTileEntities()
@@ -112,8 +111,8 @@ public class GalacticraftMars implements IGalacticraftSubMod
 	public void postLoad(FMLPostInitializationEvent event)
 	{
 //		GCMarsAchievementList.initAchievs();
-		proxy.postInit(event);
-		proxy.registerRenderInformation();
+		GalacticraftMars.proxy.postInit(event);
+		GalacticraftMars.proxy.registerRenderInformation();
 		GCMarsUtil.addCraftingRecipes();
 	}
 	
@@ -126,7 +125,7 @@ public class GalacticraftMars implements IGalacticraftSubMod
     public void registerGalacticraftCreature(Class var0, String var1, int id, int back, int fore)
     {
     	EntityRegistry.registerGlobalEntityID(var0, var1, id, back, fore);
-        EntityRegistry.registerModEntity(var0, var1, id, instance, 80, 3, true);
+        EntityRegistry.registerModEntity(var0, var1, id, GalacticraftMars.instance, 80, 3, true);
 		LanguageRegistry.instance().addStringLocalization("entity." + var1 + ".name", "en_US", var1);
     }
     
@@ -152,19 +151,19 @@ public class GalacticraftMars implements IGalacticraftSubMod
     }
 
 	@Override
-	public String getDimensionName() 
+	public String getDimensionName()
 	{
 		return "Mars";
 	}
 
 	@Override
-	public boolean reachableDestination() 
+	public boolean reachableDestination()
 	{
 		return true;
 	}
 
 	@Override
-	public IGalaxy getParentGalaxy() 
+	public IGalaxy getParentGalaxy()
 	{
 		return GalacticraftCore.galaxyMilkyWay;
 	}

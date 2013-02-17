@@ -8,16 +8,16 @@
 //
 //public class GCCoreBlockOxygenMachine extends Block
 //{
-//	public GCCoreBlockOxygenMachine(int par1, int par2, Material par3Material) 
+//	public GCCoreBlockOxygenMachine(int par1, int par2, Material par3Material)
 //	{
 //		super(par1, par2, par3Material);
 //	}
-//	
+//
 //	@Override
 //    public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLiving par5EntityLiving)
 //    {
 //        GCCoreTileEntity tentity = (GCCoreTileEntity)par1World.getBlockTileEntity(par2, par3, par4);
-//        
+//
 //        if (tentity != null)
 //        {
 //        	int yaw = MathHelper.floor_double((double)((par5EntityLiving.rotationYaw * 4F) / 360F) + 0.5D) & 3;

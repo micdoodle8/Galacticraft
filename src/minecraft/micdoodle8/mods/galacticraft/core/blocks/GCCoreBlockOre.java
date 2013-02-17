@@ -22,7 +22,7 @@ public class GCCoreBlockOre extends Block implements IDetectableResource
 {
 	// Copper: 0, Aluminum: 1, Titanium: 2.
 	
-	public GCCoreBlockOre(int i, int j) 
+	public GCCoreBlockOre(int i, int j)
 	{
 		super(i, j, Material.rock);
         this.setRequiresSelfNotify();
@@ -30,9 +30,9 @@ public class GCCoreBlockOre extends Block implements IDetectableResource
 	}
 
 	@Override
-	public int getBlockTextureFromSideAndMetadata(int side, int meta) 
+	public int getBlockTextureFromSideAndMetadata(int side, int meta)
 	{
-		switch (meta) 
+		switch (meta)
 		{
 		case 0:
 			return 1;
@@ -46,7 +46,7 @@ public class GCCoreBlockOre extends Block implements IDetectableResource
 	}
 
 	@Override
-	public int idDropped(int meta, Random random, int par3) 
+	public int idDropped(int meta, Random random, int par3)
 	{
 		switch (meta)
 		{

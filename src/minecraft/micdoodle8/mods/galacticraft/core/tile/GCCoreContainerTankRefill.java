@@ -21,7 +21,7 @@ import cpw.mods.fml.common.FMLLog;
  */
 public class GCCoreContainerTankRefill extends Container
 {
-	public GCCoreContainerTankRefill(EntityPlayer par1EntityPlayer, GCCoreInventoryTankRefill inventorytankrefill) 
+	public GCCoreContainerTankRefill(EntityPlayer par1EntityPlayer, GCCoreInventoryTankRefill inventorytankrefill)
 	{
 		this.addSlotToContainer(new SlotCrafting(par1EntityPlayer, ((ContainerPlayer)par1EntityPlayer.inventoryContainer).craftMatrix, ((ContainerPlayer)par1EntityPlayer.inventoryContainer).craftResult, 0, 116, 62));
         int var4;
@@ -72,13 +72,13 @@ public class GCCoreContainerTankRefill extends Container
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotIndex)
     {
         ItemStack var3 = null;
-        Slot var4 = (Slot)this.inventorySlots.get(slotIndex);
+        final Slot var4 = (Slot)this.inventorySlots.get(slotIndex);
         
         FMLLog.info("b" + slotIndex);
 
         if (var4 != null && var4.getHasStack())
         {
-            ItemStack var5 = var4.getStack();
+            final ItemStack var5 = var4.getStack();
             var3 = var5.copy();
 
             if (slotIndex == 0)
@@ -100,7 +100,7 @@ public class GCCoreContainerTankRefill extends Container
                 }
             }
             // GC
-            else if ((slotIndex >= 46 && slotIndex < 49) || slotIndex == 1)
+            else if (slotIndex >= 46 && slotIndex < 49 || slotIndex == 1)
             {
                 FMLLog.info("7");
                 if (!this.mergeItemStack(var5, 10, 46, false))
@@ -108,7 +108,7 @@ public class GCCoreContainerTankRefill extends Container
                     return null;
                 }
             }
-            else if (var3.getItem() instanceof GCCoreItemOxygenMask && !(((Slot) this.inventorySlots.get(46)).getHasStack()))
+            else if (var3.getItem() instanceof GCCoreItemOxygenMask && !((Slot) this.inventorySlots.get(46)).getHasStack())
             {
                 FMLLog.info("8");
                 if (!this.mergeItemStack(var5, 46, 46 + 1, false))
@@ -116,7 +116,7 @@ public class GCCoreContainerTankRefill extends Container
                     return null;
                 }
             }
-            else if (var3.getItem() instanceof GCCoreItemOxygenGear && !(((Slot) this.inventorySlots.get(47)).getHasStack()))
+            else if (var3.getItem() instanceof GCCoreItemOxygenGear && !((Slot) this.inventorySlots.get(47)).getHasStack())
             {
                 FMLLog.info("8");
                 if (!this.mergeItemStack(var5, 47, 47 + 1, false))
@@ -124,7 +124,7 @@ public class GCCoreContainerTankRefill extends Container
                     return null;
                 }
             }
-            else if (var3.getItem() instanceof GCCoreItemOxygenTank && !(((Slot) this.inventorySlots.get(48)).getHasStack()))
+            else if (var3.getItem() instanceof GCCoreItemOxygenTank && !((Slot) this.inventorySlots.get(48)).getHasStack())
             {
                 FMLLog.info("8");
                 if (!this.mergeItemStack(var5, 48, 48 + 1, false))
@@ -132,7 +132,7 @@ public class GCCoreContainerTankRefill extends Container
                     return null;
                 }
             }
-            else if (var3.getItem() instanceof GCCoreItemOxygenTank && !(((Slot) this.inventorySlots.get(49)).getHasStack()))
+            else if (var3.getItem() instanceof GCCoreItemOxygenTank && !((Slot) this.inventorySlots.get(49)).getHasStack())
             {
                 FMLLog.info("8");
                 if (!this.mergeItemStack(var5, 49, 49 + 1, false))
@@ -140,7 +140,7 @@ public class GCCoreContainerTankRefill extends Container
                     return null;
                 }
             }
-            else if (var3.getItem() instanceof GCCoreItemParachute && !(((Slot) this.inventorySlots.get(1)).getHasStack()))
+            else if (var3.getItem() instanceof GCCoreItemParachute && !((Slot) this.inventorySlots.get(1)).getHasStack())
             {
                 FMLLog.info("8");
                 if (!this.mergeItemStack(var5, 1, 1 + 1, false))
@@ -160,7 +160,7 @@ public class GCCoreContainerTankRefill extends Container
             else if (var3.getItem() instanceof ItemArmor && !((Slot)this.inventorySlots.get(6 + ((ItemArmor)var3.getItem()).armorType)).getHasStack())
             {
                 FMLLog.info("4");
-                int var6 = 6 + ((ItemArmor)var3.getItem()).armorType;
+                final int var6 = 6 + ((ItemArmor)var3.getItem()).armorType;
 
                 if (!this.mergeItemStack(var5, var6, var6 + 1, false))
                 {

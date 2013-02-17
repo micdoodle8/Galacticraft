@@ -62,9 +62,9 @@ public class ClientProxyMars extends CommonProxyMars implements IGalacticraftSub
 	@Override
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		lang = new GCCoreLocalization("micdoodle8/mods/galacticraft/mars/client");
+		ClientProxyMars.lang = new GCCoreLocalization("micdoodle8/mods/galacticraft/mars/client");
 		MinecraftForge.EVENT_BUS.register(new GCMarsSounds());
-		getFirstBootTime = System.currentTimeMillis();
+		ClientProxyMars.getFirstBootTime = System.currentTimeMillis();
 	}
 
 	@Override
@@ -85,7 +85,7 @@ public class ClientProxyMars extends CommonProxyMars implements IGalacticraftSub
 	}
 	
 	@Override
-	public void registerRenderInformation() 
+	public void registerRenderInformation()
 	{
         RenderingRegistry.registerEntityRenderingHandler(GCMarsEntityCreeperBoss.class, new GCMarsRenderCreeperBoss(new GCMarsModelCreeperBoss(), 10.0F));
         RenderingRegistry.registerEntityRenderingHandler(GCMarsEntitySludgeling.class, new GCMarsRenderSludgeling());
@@ -173,7 +173,7 @@ public class ClientProxyMars extends CommonProxyMars implements IGalacticraftSub
     
     public static boolean handleLiquidMovement(EntityPlayer player)
     {
-    	return handleBacterialMovement(player) || handleLavaMovement(player) || handleWaterMovement(player);
+    	return ClientProxyMars.handleBacterialMovement(player) || ClientProxyMars.handleLavaMovement(player) || ClientProxyMars.handleWaterMovement(player);
     }
     
     public static class TickHandlerClient implements ITickHandler
@@ -191,7 +191,7 @@ public class ClientProxyMars extends CommonProxyMars implements IGalacticraftSub
     		
     		if (type.equals(EnumSet.of(TickType.CLIENT)))
             {
-    			if (player != null && player.worldObj.provider instanceof GCMarsWorldProvider && !player.capabilities.isFlying && !minecraft.isGamePaused) 
+    			if (player != null && player.worldObj.provider instanceof GCMarsWorldProvider && !player.capabilities.isFlying && !minecraft.isGamePaused)
     			{
     				player.motionY = player.motionY + 0.042;
     			}
@@ -216,7 +216,7 @@ public class ClientProxyMars extends CommonProxyMars implements IGalacticraftSub
         }
 
     	@Override
-    	public void tickEnd(EnumSet<TickType> type, Object... tickData) 
+    	public void tickEnd(EnumSet<TickType> type, Object... tickData)
     	{
     	}
     	
@@ -227,44 +227,44 @@ public class ClientProxyMars extends CommonProxyMars implements IGalacticraftSub
         }
 
     	@Override
-    	public EnumSet<TickType> ticks() 
+    	public EnumSet<TickType> ticks()
     	{
     		return EnumSet.of(TickType.CLIENT);
     	}
     }
 
 	@Override
-	public String getDimensionName() 
+	public String getDimensionName()
 	{
 		return "Mars";
 	}
 
 	@Override
-	public GCCoreLocalization getLanguageFile() 
+	public GCCoreLocalization getLanguageFile()
 	{
 		return ClientProxyMars.lang;
 	}
 
 	@Override
-	public String getPlanetSpriteDirectory() 
+	public String getPlanetSpriteDirectory()
 	{
 		return "/micdoodle8/mods/galacticraft/mars/client/planets/";
 	}
 
 	@Override
-	public IPlanetSlotRenderer getSlotRenderer() 
+	public IPlanetSlotRenderer getSlotRenderer()
 	{
 		return new GCMarsSlotRenderer();
 	}
 
 	@Override
-	public IMapPlanet getPlanetForMap() 
+	public IMapPlanet getPlanetForMap()
 	{
 		return new GCMarsMapPlanet();
 	}
 
 	@Override
-	public IMapPlanet[] getChildMapPlanets() 
+	public IMapPlanet[] getChildMapPlanets()
 	{
 //		IMapPlanet[] moonMapPlanet = {new GCCallistoMapPlanet(), new GCEuropaMapPlanet(), new GCIoMapPlanet()};
 //		TODO
@@ -272,7 +272,7 @@ public class ClientProxyMars extends CommonProxyMars implements IGalacticraftSub
 	}
 
 	@Override
-	public String getPathToMusicFile() 
+	public String getPathToMusicFile()
 	{
 		return "/micdoodle8/mods/galacticraft/mars/client/sounds/music";
 	}

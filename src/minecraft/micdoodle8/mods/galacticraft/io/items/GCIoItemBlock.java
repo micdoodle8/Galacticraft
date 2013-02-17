@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.io.items;
 
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.IBlockAccess;
 
 public class GCIoItemBlock extends ItemBlock
 {
@@ -20,33 +19,33 @@ public class GCIoItemBlock extends ItemBlock
     }
 
 	@Override
-	public String getItemNameIS(ItemStack itemstack) 
+	public String getItemNameIS(ItemStack itemstack)
 	{
 		String name = "";
 		
-		switch(itemstack.getItemDamage()) 
+		switch(itemstack.getItemDamage())
 		{
-		case 0: 
+		case 0:
 		{
 			name = "basalt";
 			break;
 		}
-		case 1: 
+		case 1:
 		{
 			name = "stone";
 			break;
 		}
-		case 2: 
+		case 2:
 		{
 			name = "sulfur";
 			break;
 		}
-		case 3: 
+		case 3:
 		{
 			name = "other";
 			break;
 		}
-		default: 
+		default:
 			name = "null";
 		}
 		return this.getItemName() + "." + name;

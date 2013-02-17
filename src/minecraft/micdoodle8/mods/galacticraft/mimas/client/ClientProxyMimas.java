@@ -8,12 +8,9 @@ import java.util.Random;
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
 import micdoodle8.mods.galacticraft.API.IMapPlanet;
 import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
-import micdoodle8.mods.galacticraft.callisto.client.GCCallistoMapPlanet;
 import micdoodle8.mods.galacticraft.core.GCCoreLocalization;
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.europa.client.GCEuropaMapPlanet;
-import micdoodle8.mods.galacticraft.io.client.GCIoMapPlanet;
 import micdoodle8.mods.galacticraft.mimas.CommonProxyMimas;
 import micdoodle8.mods.galacticraft.mimas.blocks.GCMimasBlocks;
 import micdoodle8.mods.galacticraft.mimas.dimension.GCMimasWorldProvider;
@@ -55,9 +52,9 @@ public class ClientProxyMimas extends CommonProxyMimas implements IGalacticraftS
 	@Override
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		lang = new GCCoreLocalization("micdoodle8/mods/galacticraft/mimas/client");
+		ClientProxyMimas.lang = new GCCoreLocalization("micdoodle8/mods/galacticraft/mimas/client");
 		MinecraftForge.EVENT_BUS.register(new GCMimasSounds());
-		getFirstBootTime = System.currentTimeMillis();
+		ClientProxyMimas.getFirstBootTime = System.currentTimeMillis();
 	}
 
 	@Override
@@ -77,7 +74,7 @@ public class ClientProxyMimas extends CommonProxyMimas implements IGalacticraftS
 	}
 	
 	@Override
-	public void registerRenderInformation() 
+	public void registerRenderInformation()
 	{
 		MinecraftForgeClient.preloadTexture("/micdoodle8/mods/galacticraft/mimas/client/blocks/mimas.png");
 		MinecraftForgeClient.preloadTexture("/micdoodle8/mods/galacticraft/mimas/client/items/mimas.png");
@@ -157,7 +154,7 @@ public class ClientProxyMimas extends CommonProxyMimas implements IGalacticraftS
         }
 
     	@Override
-    	public void tickEnd(EnumSet<TickType> type, Object... tickData) 
+    	public void tickEnd(EnumSet<TickType> type, Object... tickData)
     	{
     	}
     	
@@ -168,50 +165,50 @@ public class ClientProxyMimas extends CommonProxyMimas implements IGalacticraftS
         }
 
     	@Override
-    	public EnumSet<TickType> ticks() 
+    	public EnumSet<TickType> ticks()
     	{
     		return EnumSet.of(TickType.CLIENT);
     	}
     }
 
 	@Override
-	public String getDimensionName() 
+	public String getDimensionName()
 	{
 		return "Mimas";
 	}
 
 	@Override
-	public GCCoreLocalization getLanguageFile() 
+	public GCCoreLocalization getLanguageFile()
 	{
 		return ClientProxyMimas.lang;
 	}
 
 	@Override
-	public String getPlanetSpriteDirectory() 
+	public String getPlanetSpriteDirectory()
 	{
 		return "/micdoodle8/mods/galacticraft/mimas/client/planets/";
 	}
 
 	@Override
-	public IPlanetSlotRenderer getSlotRenderer() 
+	public IPlanetSlotRenderer getSlotRenderer()
 	{
 		return new GCMimasSlotRenderer();
 	}
 
 	@Override
-	public IMapPlanet getPlanetForMap() 
+	public IMapPlanet getPlanetForMap()
 	{
 		return null;
 	}
 
 	@Override
-	public IMapPlanet[] getChildMapPlanets() 
+	public IMapPlanet[] getChildMapPlanets()
 	{
 		return null;
 	}
 
 	@Override
-	public String getPathToMusicFile() 
+	public String getPathToMusicFile()
 	{
 		return null;
 	}

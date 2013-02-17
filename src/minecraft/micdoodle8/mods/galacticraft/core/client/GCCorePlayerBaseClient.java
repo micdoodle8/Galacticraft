@@ -18,13 +18,13 @@ import cpw.mods.fml.client.FMLClientHandler;
  */
 public class GCCorePlayerBaseClient extends PlayerBase
 {
-	private Random rand = new Random();
+	private final Random rand = new Random();
 	
 	private boolean usingParachute;
 	
 	public boolean usingAdvancedGoggles;
 	
-	public GCCorePlayerBaseClient(PlayerAPI var1) 
+	public GCCorePlayerBaseClient(PlayerAPI var1)
 	{
 		super(var1);
 		GalacticraftCore.playersClient.add(this);
@@ -43,9 +43,9 @@ public class GCCorePlayerBaseClient extends PlayerBase
 //			if (par1StatBase instanceof AdvancedAchievement)
 //			{
 //				AdvancedAchievement achiev = (AdvancedAchievement) par1StatBase;
-//				
+//
 //				int amountOfCompletedAchievements = 0;
-//				
+//
 //				if (achiev.parentAchievements != null)
 //				{
 //					for (int i = 0; i < achiev.parentAchievements.length; i++)
@@ -55,7 +55,7 @@ public class GCCorePlayerBaseClient extends PlayerBase
 //							amountOfCompletedAchievements++;
 //						}
 //					}
-//					
+//
 //					if (amountOfCompletedAchievements >= achiev.parentAchievements.length)
 //					{
 //	                    if (!FMLClientHandler.instance().getClient().statFileWriter.hasAchievementUnlocked(achiev))
@@ -85,9 +85,9 @@ public class GCCorePlayerBaseClient extends PlayerBase
 
     	boolean changed = false;
 		
-        for (String name : ClientProxyCore.playersUsingParachutes)
+        for (final String name : ClientProxyCore.playersUsingParachutes)
         {
-			if (player.username.equals(name))
+			if (this.player.username.equals(name))
 			{
 				this.usingParachute = true;
 				changed = true;
@@ -99,13 +99,13 @@ public class GCCorePlayerBaseClient extends PlayerBase
         	this.usingParachute = false;
         }
 
-		if (!this.getParachute() && player.worldObj.provider instanceof IGalacticraftWorldProvider && !player.capabilities.isFlying && !FMLClientHandler.instance().getClient().isGamePaused && !player.handleWaterMovement()) 
+		if (!this.getParachute() && this.player.worldObj.provider instanceof IGalacticraftWorldProvider && !this.player.capabilities.isFlying && !FMLClientHandler.instance().getClient().isGamePaused && !this.player.handleWaterMovement())
 		{
-			final IGalacticraftWorldProvider wp = (IGalacticraftWorldProvider) player.worldObj.provider;
-			player.motionY = player.motionY + wp.getGravity();
+			final IGalacticraftWorldProvider wp = (IGalacticraftWorldProvider) this.player.worldObj.provider;
+			this.player.motionY = this.player.motionY + wp.getGravity();
 		}
 		
-		if (this.getParachute() && player.onGround)
+		if (this.getParachute() && this.player.onGround)
 		{
 			this.setParachute(false);
 			FMLClientHandler.instance().getClient().gameSettings.thirdPersonView = 0;
@@ -115,11 +115,11 @@ public class GCCorePlayerBaseClient extends PlayerBase
 	@Override
 	public void onUpdate()
 	{
-		if (player != null && this.getParachute() && !player.capabilities.isFlying && !FMLClientHandler.instance().getClient().isGamePaused && !player.handleWaterMovement())
+		if (this.player != null && this.getParachute() && !this.player.capabilities.isFlying && !FMLClientHandler.instance().getClient().isGamePaused && !this.player.handleWaterMovement())
 		{
-			player.motionY = -0.5D;
-			player.motionX *= 0.5F;
-			player.motionZ *= 0.5F;
+			this.player.motionY = -0.5D;
+			this.player.motionX *= 0.5F;
+			this.player.motionZ *= 0.5F;
 		}
 		
 		super.onUpdate();

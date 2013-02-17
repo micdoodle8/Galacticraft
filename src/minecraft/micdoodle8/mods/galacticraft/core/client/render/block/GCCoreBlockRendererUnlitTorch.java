@@ -45,9 +45,9 @@ public class GCCoreBlockRendererUnlitTorch implements ISimpleBlockRenderingHandl
     }
 
 	@Override
-	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) 
+	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer)
 	{
-        renderTorchAtAngle(renderer, block, 0, 0, 0, 0.0D, 0.0D);
+        GCCoreBlockRendererUnlitTorch.renderTorchAtAngle(renderer, block, 0, 0, 0, 0.0D, 0.0D);
 	}
 
     public static void renderInvNormalBlock(RenderBlocks var0, Block var1, int var2)
@@ -94,23 +94,23 @@ public class GCCoreBlockRendererUnlitTorch implements ISimpleBlockRenderingHandl
 
         if (var5 == 1)
         {
-            renderTorchAtAngle(renderBlocks, par1Block, par2 - var9, par3 + var11, par4, -var7, 0.0D);
+            GCCoreBlockRendererUnlitTorch.renderTorchAtAngle(renderBlocks, par1Block, par2 - var9, par3 + var11, par4, -var7, 0.0D);
         }
         else if (var5 == 2)
         {
-            renderTorchAtAngle(renderBlocks, par1Block, par2 + var9, par3 + var11, par4, var7, 0.0D);
+            GCCoreBlockRendererUnlitTorch.renderTorchAtAngle(renderBlocks, par1Block, par2 + var9, par3 + var11, par4, var7, 0.0D);
         }
         else if (var5 == 3)
         {
-            renderTorchAtAngle(renderBlocks, par1Block, par2, par3 + var11, par4 - var9, 0.0D, -var7);
+            GCCoreBlockRendererUnlitTorch.renderTorchAtAngle(renderBlocks, par1Block, par2, par3 + var11, par4 - var9, 0.0D, -var7);
         }
         else if (var5 == 4)
         {
-            renderTorchAtAngle(renderBlocks, par1Block, par2, par3 + var11, par4 + var9, 0.0D, var7);
+            GCCoreBlockRendererUnlitTorch.renderTorchAtAngle(renderBlocks, par1Block, par2, par3 + var11, par4 + var9, 0.0D, var7);
         }
         else
         {
-            renderTorchAtAngle(renderBlocks, par1Block, par2, par3, par4, 0.0D, 0.0D);
+            GCCoreBlockRendererUnlitTorch.renderTorchAtAngle(renderBlocks, par1Block, par2, par3, par4, 0.0D, 0.0D);
         }
     }
     

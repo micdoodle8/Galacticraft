@@ -21,7 +21,7 @@ import net.minecraft.world.World;
  */
 public class GCBlockBreathableAir extends BlockContainer
 {
-	public GCBlockBreathableAir(int id, int texIndex) 
+	public GCBlockBreathableAir(int id, int texIndex)
 	{
 		super(id, texIndex, Material.air);
 	}
@@ -33,25 +33,25 @@ public class GCBlockBreathableAir extends BlockContainer
 	}
 
 	@Override
-	public boolean isOpaqueCube() 
+	public boolean isOpaqueCube()
 	{
 		return false;
 	}
 
 	@Override
-	public boolean isCollidable() 
+	public boolean isCollidable()
 	{
 		return false;
 	}
 
 	@Override
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4) 
+	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
 	{
 		return null;
 	}
 
 	@Override
-	public boolean canHarvestBlock(EntityPlayer player, int meta) 
+	public boolean canHarvestBlock(EntityPlayer player, int meta)
 	{
 		return false;
 	}
@@ -117,7 +117,7 @@ public class GCBlockBreathableAir extends BlockContainer
     }
 
 	@Override
-	public TileEntity createNewTileEntity(World var1) 
+	public TileEntity createNewTileEntity(World var1)
 	{
 		return new GCCoreTileEntityBreathableAir();
 	}

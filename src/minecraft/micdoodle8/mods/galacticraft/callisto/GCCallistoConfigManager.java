@@ -12,7 +12,7 @@ import cpw.mods.fml.common.FMLLog;
  *  All rights reserved.
  *
  */
-public class GCCallistoConfigManager 
+public class GCCallistoConfigManager
 {
 	public static boolean loaded;
 	
@@ -26,9 +26,9 @@ public class GCCallistoConfigManager
 	
 	public GCCallistoConfigManager(File file)
 	{
-		if (!loaded)
+		if (!GCCallistoConfigManager.loaded)
 		{
-			configuration = new Configuration(file);
+			GCCallistoConfigManager.configuration = new Configuration(file);
 			this.setDefaultValues();
 		}
 	}
@@ -37,20 +37,20 @@ public class GCCallistoConfigManager
     {
 		try
 		{
-	        configuration.load();
+	        GCCallistoConfigManager.configuration.load();
 	        
-	        dimensionIDCallisto = 				configuration.get("Dimensions", 										"Callisto Dimension ID",				-22)		.getInt(-22);
+	        GCCallistoConfigManager.dimensionIDCallisto = 				GCCallistoConfigManager.configuration.get("Dimensions", 										"Callisto Dimension ID",				-22)		.getInt(-22);
 	        
-	        idBlock = 							configuration.get(Configuration.CATEGORY_BLOCK, 						"idBlockCallisto", 					197)	.getInt(197);
+	        GCCallistoConfigManager.idBlock = 							GCCallistoConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, 						"idBlockCallisto", 					197)	.getInt(197);
 		}
 		catch (final Exception e)
 		{
 			FMLLog.log(Level.SEVERE, e, "Galacticraft Callisto has a problem loading it's configuration");
 		}
-		finally 
+		finally
 		{
-			configuration.save();
-			loaded = true;
+			GCCallistoConfigManager.configuration.save();
+			GCCallistoConfigManager.loaded = true;
 		}
     }
 }

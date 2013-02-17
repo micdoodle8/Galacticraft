@@ -17,9 +17,9 @@ public class GCCoreEntityWeldingSmoke extends EntityFX
         this.motionX += par8;
         this.motionY += par10;
         this.motionZ += par12;
-        this.particleRed = (255F / 255F);
-        this.particleGreen = (255F / 255F);
-        this.particleBlue = (0F / 255F) + this.rand.nextFloat() / 6;
+        this.particleRed = 255F / 255F;
+        this.particleGreen = 255F / 255F;
+        this.particleBlue = 0F / 255F + this.rand.nextFloat() / 6;
         this.particleScale *= 0.15F;
         this.particleScale *= par14 * 3;
         this.smokeParticleScale = this.particleScale;
@@ -68,7 +68,7 @@ public class GCCoreEntityWeldingSmoke extends EntityFX
             this.motionZ *= 1.1D;
         }
 
-        this.setParticleTextureIndex(160 + (7 - this.particleAge * 8 / this.particleMaxAge));
+        this.setParticleTextureIndex(160 + 7 - this.particleAge * 8 / this.particleMaxAge);
         this.motionY -= 0.01D;
         this.moveEntity(this.motionX, this.motionY, this.motionZ);
         this.motionX *= 0.9100000262260437D;

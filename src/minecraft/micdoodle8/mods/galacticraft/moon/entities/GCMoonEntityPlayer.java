@@ -13,30 +13,30 @@
 //public class GCMoonEntityPlayer
 //{
 //	private final EntityPlayer currentPlayer;
-//	
-//	public GCMoonEntityPlayer(EntityPlayer player) 
+//
+//	public GCMoonEntityPlayer(EntityPlayer player)
 //	{
 //		this.currentPlayer = player;
 //		GalacticraftMoon.moonPlayers.add(player);
 //		MinecraftForge.EVENT_BUS.register(this);
 //	}
-//	
+//
 //	public EntityPlayer getPlayer()
 //	{
 //		return this.currentPlayer;
 //	}
-//	
+//
 //	@ForgeSubscribe
 //	public void onUpdate(LivingEvent event)
 //	{
 //		if (event.entityLiving instanceof EntityPlayer)
 //		{
 //			final EntityPlayer player = (EntityPlayer) event.entityLiving;
-//			
-//			
+//
+//
 //		}
 //	}
-//	
+//
 //    public void readEntityFromNBT()
 //    {
 //    	final NBTTagCompound par1NBTTagCompound = this.currentPlayer.getEntityData();

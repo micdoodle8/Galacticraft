@@ -18,8 +18,8 @@ import net.minecraft.stats.AchievementList;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.SideOnly;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -98,7 +98,7 @@ public class GCCoreEntitySkeleton extends GCCoreEntityMob
      */
     public ItemStack getHeldItem()
     {
-        return defaultHeldItem;
+        return GCCoreEntitySkeleton.defaultHeldItem;
     }
 
     /**
@@ -130,7 +130,7 @@ public class GCCoreEntitySkeleton extends GCCoreEntityMob
         this.motionY += 0.06F;
 
         super.onLivingUpdate();
-    }    
+    }
 
     /**
      * Called when the mob's health reaches 0.

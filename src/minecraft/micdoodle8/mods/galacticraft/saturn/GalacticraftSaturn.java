@@ -50,58 +50,58 @@ public class GalacticraftSaturn implements IGalacticraftSubMod
 	@PreInit
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		moonTitan.preInit(event);
-		moonEnceladus.preInit(event);
-		moonMimas.preInit(event);
+		GalacticraftSaturn.moonTitan.preInit(event);
+		GalacticraftSaturn.moonEnceladus.preInit(event);
+		GalacticraftSaturn.moonMimas.preInit(event);
 		
 		GalacticraftCore.registerSubMod(this);
 		
 		new GCEuropaConfigManager(new File(event.getModConfigurationDirectory(), "Galacticraft/saturn.conf"));
 		
-		proxy.preInit(event);
+		GalacticraftSaturn.proxy.preInit(event);
 	}
 
 	@Init
 	public void load(FMLInitializationEvent event)
 	{
-		moonTitan.init(event);
-		moonEnceladus.init(event);
-		moonMimas.init(event);
-		proxy.init(event);
+		GalacticraftSaturn.moonTitan.init(event);
+		GalacticraftSaturn.moonEnceladus.init(event);
+		GalacticraftSaturn.moonMimas.init(event);
+		GalacticraftSaturn.proxy.init(event);
 	}
 
 	@PostInit
 	public void postLoad(FMLPostInitializationEvent event)
 	{
-		moonTitan.postInit(event);
-		moonEnceladus.postInit(event);
-		moonMimas.postInit(event);
-		proxy.postInit(event);
-		proxy.registerRenderInformation();
+		GalacticraftSaturn.moonTitan.postInit(event);
+		GalacticraftSaturn.moonEnceladus.postInit(event);
+		GalacticraftSaturn.moonMimas.postInit(event);
+		GalacticraftSaturn.proxy.postInit(event);
+		GalacticraftSaturn.proxy.registerRenderInformation();
 	}
 	
 	@ServerStarted
 	public void serverStarted(FMLServerStartedEvent event)
 	{
-		moonTitan.serverInit(event);
-		moonEnceladus.serverInit(event);
-		moonMimas.serverInit(event);
+		GalacticraftSaturn.moonTitan.serverInit(event);
+		GalacticraftSaturn.moonEnceladus.serverInit(event);
+		GalacticraftSaturn.moonMimas.serverInit(event);
 	}
 
 	@Override
-	public String getDimensionName() 
+	public String getDimensionName()
 	{
 		return "Saturn";
 	}
 
 	@Override
-	public boolean reachableDestination() 
+	public boolean reachableDestination()
 	{
 		return false;
 	}
 
 	@Override
-	public IGalaxy getParentGalaxy() 
+	public IGalaxy getParentGalaxy()
 	{
 		return GalacticraftCore.galaxyMilkyWay;
 	}

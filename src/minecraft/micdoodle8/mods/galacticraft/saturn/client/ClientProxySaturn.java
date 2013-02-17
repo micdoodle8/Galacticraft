@@ -39,37 +39,37 @@ public class ClientProxySaturn extends CommonProxySaturn implements IGalacticraf
 	public static ClientProxyMimas moonClientMimas = new ClientProxyMimas();
 	
 	@Override
-	public void preInit(FMLPreInitializationEvent event) 
+	public void preInit(FMLPreInitializationEvent event)
 	{
-		moonClientTitan.preInit(event);
-		moonClientEnceladus.preInit(event);
-		moonClientMimas.preInit(event);
+		ClientProxySaturn.moonClientTitan.preInit(event);
+		ClientProxySaturn.moonClientEnceladus.preInit(event);
+		ClientProxySaturn.moonClientMimas.preInit(event);
 		ClientProxySaturn.lang = new GCCoreLocalization("micdoodle8/mods/galacticraft/saturn/client");
 	}
 
 	@Override
-	public void init(FMLInitializationEvent event) 
+	public void init(FMLInitializationEvent event)
 	{
-		moonClientTitan.init(event);
-		moonClientEnceladus.init(event);
-		moonClientMimas.init(event);
+		ClientProxySaturn.moonClientTitan.init(event);
+		ClientProxySaturn.moonClientEnceladus.init(event);
+		ClientProxySaturn.moonClientMimas.init(event);
 		GalacticraftCore.registerClientSubMod(this);
 	}
 
 	@Override
-	public void postInit(FMLPostInitializationEvent event) 
+	public void postInit(FMLPostInitializationEvent event)
 	{
-		moonClientTitan.postInit(event);
-		moonClientEnceladus.postInit(event);
-		moonClientMimas.postInit(event);
+		ClientProxySaturn.moonClientTitan.postInit(event);
+		ClientProxySaturn.moonClientEnceladus.postInit(event);
+		ClientProxySaturn.moonClientMimas.postInit(event);
 	}
 	
 	@Override
-	public void registerRenderInformation() 
+	public void registerRenderInformation()
 	{
-		moonClientTitan.registerRenderInformation();
-		moonClientEnceladus.registerRenderInformation();
-		moonClientMimas.registerRenderInformation();
+		ClientProxySaturn.moonClientTitan.registerRenderInformation();
+		ClientProxySaturn.moonClientEnceladus.registerRenderInformation();
+		ClientProxySaturn.moonClientMimas.registerRenderInformation();
 	}
 
 	@Override
@@ -80,7 +80,7 @@ public class ClientProxySaturn extends CommonProxySaturn implements IGalacticraf
     public class ClientPacketHandler implements IPacketHandler
     {
 		@Override
-		public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player) 
+		public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player)
 		{
 			
 		}
@@ -95,7 +95,7 @@ public class ClientProxySaturn extends CommonProxySaturn implements IGalacticraf
         }
 
     	@Override
-    	public void tickEnd(EnumSet<TickType> type, Object... tickData) 
+    	public void tickEnd(EnumSet<TickType> type, Object... tickData)
     	{
     	}
     	
@@ -106,54 +106,54 @@ public class ClientProxySaturn extends CommonProxySaturn implements IGalacticraf
         }
 
     	@Override
-    	public EnumSet<TickType> ticks() 
+    	public EnumSet<TickType> ticks()
     	{
     		return EnumSet.of(TickType.CLIENT);
     	}
     }
 
 	@Override
-	public String getDimensionName() 
+	public String getDimensionName()
 	{
 		return "Saturn";
 	}
 
 	@Override
-	public GCCoreLocalization getLanguageFile() 
+	public GCCoreLocalization getLanguageFile()
 	{
 		return ClientProxySaturn.lang;
 	}
 
 	@Override
-	public String getPlanetSpriteDirectory() 
+	public String getPlanetSpriteDirectory()
 	{
 		return "/micdoodle8/mods/galacticraft/saturn/client/planets/";
 	}
 
 	@Override
-	public IPlanetSlotRenderer getSlotRenderer() 
+	public IPlanetSlotRenderer getSlotRenderer()
 	{
 		return new GCSaturnSlotRenderer();
 	}
 	
-	private IMapPlanet saturn = new GCSaturnMapPlanet();
+	private final IMapPlanet saturn = new GCSaturnMapPlanet();
 
 	@Override
-	public IMapPlanet getPlanetForMap() 
+	public IMapPlanet getPlanetForMap()
 	{
-		return saturn;
+		return this.saturn;
 	}
 
 	@Override
-	public IMapPlanet[] getChildMapPlanets() 
+	public IMapPlanet[] getChildMapPlanets()
 	{
-		IMapPlanet[] moonMapPlanet = {new GCTitanMapPlanet(), new GCEnceladusMapPlanet(), new GCMimasMapPlanet()};
+		final IMapPlanet[] moonMapPlanet = {new GCTitanMapPlanet(), new GCEnceladusMapPlanet(), new GCMimasMapPlanet()};
 		
 		return moonMapPlanet;
 	}
 
 	@Override
-	public String getPathToMusicFile() 
+	public String getPathToMusicFile()
 	{
 		return null;
 	}

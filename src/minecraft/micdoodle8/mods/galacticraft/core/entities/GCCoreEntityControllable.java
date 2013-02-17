@@ -6,7 +6,7 @@ import net.minecraft.world.World;
 
 public abstract class GCCoreEntityControllable extends Entity
 {
-	public GCCoreEntityControllable(World par1World) 
+	public GCCoreEntityControllable(World par1World)
 	{
 		super(par1World);
 	}

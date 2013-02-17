@@ -104,7 +104,7 @@ public class GCCoreWorldGenForest extends WorldGenerator
 
                                 final Block block = Block.blocksList[par1World.getBlockId(var12, var16, var14)];
                                 
-                                if ((Math.abs(var13) != var11 || Math.abs(var15) != var11 || par2Random.nextInt(2) != 0 && var10 != 0) && 
+                                if ((Math.abs(var13) != var11 || Math.abs(var15) != var11 || par2Random.nextInt(2) != 0 && var10 != 0) &&
                                     (block == null || block.canBeReplacedByLeaves(par1World, var12, var16, var14)))
                                 {
                                     this.setBlockAndMetadata(par1World, var12, var16, var14, Block.leaves.blockID, 2);

@@ -14,7 +14,7 @@ import net.minecraft.world.gen.feature.WorldGenerator;
  *  All rights reserved.
  *
  */
-public class GCMarsBiomeDecorator 
+public class GCMarsBiomeDecorator
 {
 	protected World currentWorld;
 
@@ -40,7 +40,7 @@ public class GCMarsBiomeDecorator
 	
 	protected WorldGenerator bacteriaGen;
 
-	public GCMarsBiomeDecorator(BiomeGenBase par1BiomeGenBase) 
+	public GCMarsBiomeDecorator(BiomeGenBase par1BiomeGenBase)
 	{
 		this.deshGen = new GCCoreWorldGenMinableMeta(GCMarsBlocks.blockOres.blockID, 12, 0, true, GCMarsBlocks.marsStone.blockID);
 		this.copperGen = new GCCoreWorldGenMinableMeta(GCMarsBlocks.blockOres.blockID, 8, 6, true, GCMarsBlocks.marsStone.blockID);
@@ -52,13 +52,13 @@ public class GCMarsBiomeDecorator
 		this.biome = par1BiomeGenBase;
 	}
 
-	public void decorate(World par1World, Random par2Random, int par3, int par4) 
+	public void decorate(World par1World, Random par2Random, int par3, int par4)
 	{
-		if (this.currentWorld != null) 
+		if (this.currentWorld != null)
 		{
 			throw new RuntimeException("Already decorating!!");
-		} 
-		else 
+		}
+		else
 		{
 			this.currentWorld = par1World;
 			this.randomGenerator = par2Random;
@@ -70,9 +70,9 @@ public class GCMarsBiomeDecorator
 		}
 	}
 
-	protected void genStandardOre1(int par1, WorldGenerator par2WorldGenerator, int par3, int par4) 
+	protected void genStandardOre1(int par1, WorldGenerator par2WorldGenerator, int par3, int par4)
 	{
-		for (int var5 = 0; var5 < par1; ++var5) 
+		for (int var5 = 0; var5 < par1; ++var5)
 		{
 			final int var6 = this.chunk_X + this.randomGenerator.nextInt(16);
 			final int var7 = this.randomGenerator.nextInt(par4 - par3) + par3;

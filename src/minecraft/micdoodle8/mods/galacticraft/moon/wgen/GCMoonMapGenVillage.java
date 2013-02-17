@@ -11,7 +11,6 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.gen.structure.MapGenStructure;
 import net.minecraft.world.gen.structure.StructureStart;
-import cpw.mods.fml.common.FMLLog;
 
 public class GCMoonMapGenVillage extends MapGenStructure
 {
@@ -21,7 +20,7 @@ public class GCMoonMapGenVillage extends MapGenStructure
     /** World terrain type, 0 for normal, 1 for flat map */
     private int terrainType;
     private int field_82665_g;
-    private int field_82666_h;
+    private final int field_82666_h;
 
     public GCMoonMapGenVillage()
     {
@@ -33,11 +32,11 @@ public class GCMoonMapGenVillage extends MapGenStructure
     public GCMoonMapGenVillage(Map par1Map)
     {
         this();
-        Iterator var2 = par1Map.entrySet().iterator();
+        final Iterator var2 = par1Map.entrySet().iterator();
 
         while (var2.hasNext())
         {
-            Entry var3 = (Entry)var2.next();
+            final Entry var3 = (Entry)var2.next();
 
             if (((String)var3.getKey()).equals("size"))
             {
@@ -50,10 +49,11 @@ public class GCMoonMapGenVillage extends MapGenStructure
         }
     }
 
-    protected boolean canSpawnStructureAtCoords(int par1, int par2)
+    @Override
+	protected boolean canSpawnStructureAtCoords(int par1, int par2)
     {
-        int var3 = par1;
-        int var4 = par2;
+        final int var3 = par1;
+        final int var4 = par2;
 
         if (par1 < 0)
         {
@@ -67,7 +67,7 @@ public class GCMoonMapGenVillage extends MapGenStructure
 
         int var5 = par1 / this.field_82665_g;
         int var6 = par2 / this.field_82665_g;
-        Random var7 = this.worldObj.setRandomSeed(var5, var6, 10387312);
+        final Random var7 = this.worldObj.setRandomSeed(var5, var6, 10387312);
         var5 *= this.field_82665_g;
         var6 *= this.field_82665_g;
         var5 += var7.nextInt(this.field_82665_g - this.field_82666_h);
@@ -81,7 +81,8 @@ public class GCMoonMapGenVillage extends MapGenStructure
         return false;
     }
 
-    protected StructureStart getStructureStart(int par1, int par2)
+    @Override
+	protected StructureStart getStructureStart(int par1, int par2)
     {
         return new GCMoonStructureVillageStart(this.worldObj, this.rand, par1, par2, this.terrainType);
     }

@@ -3,8 +3,6 @@ package micdoodle8.mods.galacticraft.core.dimension;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerBase;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemParachute;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,7 +20,7 @@ import cpw.mods.fml.relauncher.Side;
  *  All rights reserved.
  *
  */
-public class GCCoreTeleporter extends Teleporter 
+public class GCCoreTeleporter extends Teleporter
 {
 	private final Random random;
     private final WorldServer worldServer;
@@ -40,7 +38,7 @@ public class GCCoreTeleporter extends Teleporter
 		if (this.placeInExistingPortal(par1Entity, par2, par4, par6, par8))
 		{
 			return;
-		} 
+		}
 		else
 		{
 			return;
@@ -65,7 +63,7 @@ public class GCCoreTeleporter extends Teleporter
         
         par1Entity.worldObj.markBlockForUpdate(var9, 30, var11);
         
-		ItemStack stack = GCCoreUtil.getPlayerBaseServerFromPlayer((EntityPlayer) par1Entity).playerTankInventory.getStackInSlot(4);
+		final ItemStack stack = GCCoreUtil.getPlayerBaseServerFromPlayer((EntityPlayer) par1Entity).playerTankInventory.getStackInSlot(4);
 		
 		if (stack != null && stack.getItem() instanceof GCCoreItemParachute)
 		{

@@ -102,11 +102,11 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 		this.biomesForGeneration = this.worldObj.getWorldChunkManager().getBiomesForGeneration(this.biomesForGeneration, par1 * 4 - 2, par2 * 4 - 2, var7 + 5, var9 + 5);
 		this.noiseArray = this.initializeNoiseField(this.noiseArray, par1 * var4, 0, par2 * var4, var7, var8, var9);
 
-		for (int var10 = 0; var10 < var4; ++var10) 
+		for (int var10 = 0; var10 < var4; ++var10)
 		{
 			for (int var11 = 0; var11 < var4; ++var11)
 			{
-				for (int var12 = 0; var12 < var5; ++var12) 
+				for (int var12 = 0; var12 < var5; ++var12)
 				{
 					final double var13 = 0.125D;
 					double var15 = this.noiseArray[((var10 + 0) * var9 + var11 + 0) * var8 + var12 + 0];
@@ -118,7 +118,7 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 					final double var27 = (this.noiseArray[((var10 + 1) * var9 + var11 + 0) * var8 + var12 + 1] - var19) * var13;
 					final double var29 = (this.noiseArray[((var10 + 1) * var9 + var11 + 1) * var8 + var12 + 1] - var21) * var13;
 
-					for (int var31 = 0; var31 < 8; ++var31) 
+					for (int var31 = 0; var31 < 8; ++var31)
 					{
 						final double var32 = 0.25D;
 						double var34 = var15;
@@ -126,7 +126,7 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 						final double var38 = (var19 - var15) * var32;
 						final double var40 = (var21 - var17) * var32;
 
-						for (int var42 = 0; var42 < 4; ++var42) 
+						for (int var42 = 0; var42 < 4; ++var42)
 						{
 							int var43 = var42 + var10 * 4 << 11 | 0 + var11 * 4 << 7 | var12 * 8 + var31;
 							final short var44 = 128;
@@ -137,14 +137,14 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 
 							for (int var51 = 0; var51 < 4; ++var51)
 							{
-								if ((var47 += var49) > 0.0D) 
+								if ((var47 += var49) > 0.0D)
 								{
 									par3ArrayOfint[var43 += var44] = GCMarsConfigManager.idBlockMarsStone;
 								}
-								else if (var12 * 8 + var31 < var6) 
+								else if (var12 * 8 + var31 < var6)
 								{
 									par3ArrayOfint[var43 += var44] = 0;
-								} 
+								}
 								else
 								{
 									par3ArrayOfint[var43 += var44] = 0;
@@ -173,7 +173,7 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 
 		for (int var8 = 0; var8 < 16; ++var8)
 		{
-			for (int var9 = 0; var9 < 16; ++var9) 
+			for (int var9 = 0; var9 < 16; ++var9)
 			{
 				final BiomeGenBase var10 = par4ArrayOfBiomeGenBase[var9 + var8 * 16];
 				final float var11 = var10.getFloatTemperature();
@@ -182,21 +182,21 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 				int var14 = GCMarsConfigManager.idBlockMarsGrass;
 				int var15 = GCMarsConfigManager.idBlockMarsDirt;
 
-				for (int var16 = 127; var16 >= 0; --var16) 
+				for (int var16 = 127; var16 >= 0; --var16)
 				{
 					final int var17 = (var9 * 16 + var8) * 128 + var16;
 
-					if (var16 <= 0 + this.rand.nextInt(5)) 
+					if (var16 <= 0 + this.rand.nextInt(5))
 					{
 						par3ArrayOfint[var17] = Block.bedrock.blockID;
-					} else 
+					} else
 					{
 						final int var18 = par3ArrayOfint[var17];
 
-						if (var18 == 0) 
+						if (var18 == 0)
 						{
 							var13 = -1;
-						} 
+						}
 						else if (var18 == GCMarsConfigManager.idBlockMarsStone)
 						{
 							if (var13 == -1)
@@ -205,20 +205,20 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 								{
 									var14 = 0;
 									var15 = GCMarsConfigManager.idBlockMarsStone;
-								} 
+								}
 								else if (var16 >= var5 - -16 && var16 <= var5 + 1)
 								{
 									var14 = GCMarsConfigManager.idBlockMarsGrass;
 									var15 = GCMarsConfigManager.idBlockMarsDirt;
 								}
 
-								if (var16 < var5 && var14 == 0) 
+								if (var16 < var5 && var14 == 0)
 								{
 									if (var11 < 0.15F)
 									{
 										var14 = Block.ice.blockID;
 									}
-									else 
+									else
 									{
 										var14 = 0;
 									}
@@ -226,14 +226,14 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 
 								var13 = var12;
 
-								if (var16 >= var5 - 1) 
+								if (var16 >= var5 - 1)
 								{
 									par3ArrayOfint[var17] = var14;
 								} else
 								{
 									par3ArrayOfint[var17] = var15;
 								}
-							} 
+							}
 							else if (var13 > 0)
 							{
 								--var13;
@@ -266,7 +266,7 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 		final Chunk var4 = new GCCoreChunk(this.worldObj, var3, null, par1, par2);
 		final byte[] var5 = var4.getBiomeArray();
 
-		for (int var6 = 0; var6 < var5.length; ++var6) 
+		for (int var6 = 0; var6 < var5.length; ++var6)
 		{
 			var5[var6] = (byte) this.biomesForGeneration[var6].biomeID;
 		}
@@ -283,13 +283,13 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 			par1ArrayOfDouble = new double[par5 * par6 * par7];
 		}
 
-		if (this.field_35388_l == null) 
+		if (this.field_35388_l == null)
 		{
 			this.field_35388_l = new float[25];
 
 			for (int var8 = -2; var8 <= 2; ++var8)
 			{
-				for (int var9 = -2; var9 <= 2; ++var9) 
+				for (int var9 = -2; var9 <= 2; ++var9)
 				{
 					final float var10 = 10.0F / MathHelper.sqrt_float(var8 * var8 + var9 * var9 + 0.2F);
 					this.field_35388_l[var8 + 2 + (var9 + 2) * 5] = var10;
@@ -309,9 +309,9 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 		int var12 = 0;
 		int var13 = 0;
 
-		for (int var14 = 0; var14 < par5; ++var14) 
+		for (int var14 = 0; var14 < par5; ++var14)
 		{
-			for (int var15 = 0; var15 < par7; ++var15) 
+			for (int var15 = 0; var15 < par7; ++var15)
 			{
 				float var16 = 0.0F;
 				float var17 = 0.0F;
@@ -326,7 +326,7 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 						final BiomeGenBase var23 = this.biomesForGeneration[var14 + var21 + 2 + (var15 + var22 + 2) * (par5 + 5)];
 						float var24 = this.field_35388_l[var21 + 2 + (var22 + 2) * 5] / (var23.minHeight + 2.0F);
 
-						if (var23.minHeight > var20.minHeight) 
+						if (var23.minHeight > var20.minHeight)
 						{
 							var24 /= 2.0F;
 						}
@@ -350,7 +350,7 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 
 				var47 = var47 * 3.0D - 2.0D;
 
-				if (var47 < 0.0D) 
+				if (var47 < 0.0D)
 				{
 					var47 /= 2.0D;
 
@@ -362,7 +362,7 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 					var47 /= 1.4D;
 					var47 /= 2.0D;
 				}
-				else 
+				else
 				{
 					if (var47 > 1.0D)
 					{
@@ -393,15 +393,15 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 					final double var36 = this.noise2[var12] / 512.0D;
 					final double var38 = (this.noise3[var12] / 10.0D + 1.0D) / 2.0D;
 
-					if (var38 < 0.0D) 
+					if (var38 < 0.0D)
 					{
 						var30 = var34;
-					} 
+					}
 					else if (var38 > 1.0D)
 					{
 						var30 = var36;
-					} 
-					else 
+					}
+					else
 					{
 						var30 = var34 + (var36 - var34) * var38;
 					}
@@ -460,7 +460,7 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 	}
 
 	@Override
-	public boolean saveChunks(boolean par1, IProgressUpdate par2IProgressUpdate) 
+	public boolean saveChunks(boolean par1, IProgressUpdate par2IProgressUpdate)
 	{
 		return true;
 	}
@@ -484,7 +484,7 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 	}
 
 	@Override
-	public List getPossibleCreatures(EnumCreatureType par1EnumCreatureType,	int i, int j, int k) 
+	public List getPossibleCreatures(EnumCreatureType par1EnumCreatureType,	int i, int j, int k)
 	{
 		if (/*j < 39 && */par1EnumCreatureType == EnumCreatureType.monster)
 		{

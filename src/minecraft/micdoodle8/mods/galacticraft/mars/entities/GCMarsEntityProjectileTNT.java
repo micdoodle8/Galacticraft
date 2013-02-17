@@ -15,8 +15,8 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.SideOnly;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -244,7 +244,7 @@ public class GCMarsEntityProjectileTNT extends Entity
         {
             if (par1MovingObjectPosition.entityHit != null && par1MovingObjectPosition.entityHit != this.shootingEntity)
             {
-                par1MovingObjectPosition.entityHit.attackEntityFrom(causeTNTImpactDamage(this, this.shootingEntity), 7);
+                par1MovingObjectPosition.entityHit.attackEntityFrom(GCMarsEntityProjectileTNT.causeTNTImpactDamage(this, this.shootingEntity), 7);
             }
 
             this.worldObj.newExplosion((Entity)null, this.posX, this.posY, this.posZ, 1.0F, true, true);

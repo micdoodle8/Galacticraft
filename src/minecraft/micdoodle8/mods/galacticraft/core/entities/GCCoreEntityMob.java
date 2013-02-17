@@ -7,7 +7,7 @@ import net.minecraft.world.World;
 
 public abstract class GCCoreEntityMob extends EntityMob
 {
-	public GCCoreEntityMob(World par1World) 
+	public GCCoreEntityMob(World par1World)
 	{
 		super(par1World);
 	}

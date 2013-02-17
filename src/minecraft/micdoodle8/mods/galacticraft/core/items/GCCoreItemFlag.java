@@ -11,8 +11,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumMovingObjectType;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.SideOnly;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -42,7 +42,7 @@ public class GCCoreItemFlag extends GCCoreItem
 			"white"}; // 16
 	public int placeProgress;
 	
-	public GCCoreItemFlag(int par1) 
+	public GCCoreItemFlag(int par1)
 	{
 		super(par1);
 		this.setMaxDamage(0);
@@ -152,16 +152,17 @@ public class GCCoreItemFlag extends GCCoreItem
         return EnumRarity.epic;
     }
 
-    public String getItemNameIS(ItemStack par1ItemStack)
+    @Override
+	public String getItemNameIS(ItemStack par1ItemStack)
     {
         int var2 = par1ItemStack.getItemDamage();
 
-        if (var2 < 0 || var2 >= names.length)
+        if (var2 < 0 || var2 >= GCCoreItemFlag.names.length)
         {
             var2 = 0;
         }
 
-        return super.getItemName() + "." + names[var2];
+        return super.getItemName() + "." + GCCoreItemFlag.names[var2];
     }
     
     public static int getFlagDamageValueFromDye(int meta)

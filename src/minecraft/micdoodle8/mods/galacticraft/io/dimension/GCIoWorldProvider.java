@@ -10,8 +10,8 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
-import cpw.mods.fml.relauncher.SideOnly;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCIoWorldProvider extends WorldProvider implements IGalacticraftWorldProvider
 {
@@ -191,7 +191,7 @@ public class GCIoWorldProvider extends WorldProvider implements IGalacticraftWor
     }
 
 	@Override
-	public String getDimensionName() 
+	public String getDimensionName()
 	{
 		return "Io";
 	}
@@ -221,13 +221,13 @@ public class GCIoWorldProvider extends WorldProvider implements IGalacticraftWor
     }
 
 	@Override
-	public float getGravity() 
+	public float getGravity()
 	{
 		return 0.069F; // TODO
 	}
 
 	@Override
-	public float getMeteorFrequency() 
+	public float getMeteorFrequency()
 	{
 		return 0F;
 	}

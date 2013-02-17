@@ -15,7 +15,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
  *  All rights reserved.
  *
  */
-public class GCCoreItems 
+public class GCCoreItems
 {
 	public static GCCoreItemOxygenTank lightOxygenTankFull;
 	public static GCCoreItemOxygenTank medOxygenTankFull;
@@ -61,106 +61,106 @@ public class GCCoreItems
 	public static EnumArmorMaterial TITANIUMARMOR = EnumHelper.addArmorMaterial("TITANIUM", 42, new int[] {4, 9, 7, 4}, 12);
 	public static EnumToolMaterial TOOLTITANIUM = EnumHelper.addToolMaterial("TITANIUM", 4, 768, 7.0F, 3, 8);
 	
-	public static void initItems() 
+	public static void initItems()
 	{
-		lightOxygenTankFull = (GCCoreItemOxygenTank) new GCCoreItemOxygenTank(GCCoreConfigManager.idItemLightOxygenTank).setTankTier(EnumOxygenTankTier.light).setMaxDamage(90).setIconIndex(0).setItemName("oxygenTankLightFull");
-		medOxygenTankFull = (GCCoreItemOxygenTank) new GCCoreItemOxygenTank(GCCoreConfigManager.idItemMedOxygenTank).setTankTier(EnumOxygenTankTier.medium).setMaxDamage(180).setIconIndex(1).setItemName("oxygenTankMedFull");
-		heavyOxygenTankFull = (GCCoreItemOxygenTank) new GCCoreItemOxygenTank(GCCoreConfigManager.idItemHeavyOxygenTank).setTankTier(EnumOxygenTankTier.heavy).setMaxDamage(270).setIconIndex(2).setItemName("oxygenTankHeavyFull");
-		oxygenMask = new GCCoreItemOxygenMask(GCCoreConfigManager.idArmorOxygenMask).setIconIndex(6).setItemName("oxygenMask");
-		spaceship = new GCCoreItemSpaceship(GCCoreConfigManager.idItemSpaceship).setItemName("spaceship");
-		sensorGlasses = new GCCoreItemSensorGlasses(GCCoreConfigManager.idArmorSensorGlasses, SENSORGLASSES, 6, 0, false).setIconIndex(7).setItemName("sensorGlasses");
+		GCCoreItems.lightOxygenTankFull = (GCCoreItemOxygenTank) new GCCoreItemOxygenTank(GCCoreConfigManager.idItemLightOxygenTank).setTankTier(EnumOxygenTankTier.light).setMaxDamage(90).setIconIndex(0).setItemName("oxygenTankLightFull");
+		GCCoreItems.medOxygenTankFull = (GCCoreItemOxygenTank) new GCCoreItemOxygenTank(GCCoreConfigManager.idItemMedOxygenTank).setTankTier(EnumOxygenTankTier.medium).setMaxDamage(180).setIconIndex(1).setItemName("oxygenTankMedFull");
+		GCCoreItems.heavyOxygenTankFull = (GCCoreItemOxygenTank) new GCCoreItemOxygenTank(GCCoreConfigManager.idItemHeavyOxygenTank).setTankTier(EnumOxygenTankTier.heavy).setMaxDamage(270).setIconIndex(2).setItemName("oxygenTankHeavyFull");
+		GCCoreItems.oxygenMask = new GCCoreItemOxygenMask(GCCoreConfigManager.idArmorOxygenMask).setIconIndex(6).setItemName("oxygenMask");
+		GCCoreItems.spaceship = new GCCoreItemSpaceship(GCCoreConfigManager.idItemSpaceship).setItemName("spaceship");
+		GCCoreItems.sensorGlasses = new GCCoreItemSensorGlasses(GCCoreConfigManager.idArmorSensorGlasses, GCCoreItems.SENSORGLASSES, 6, 0, false).setIconIndex(7).setItemName("sensorGlasses");
 //		sensorGlassesWithOxygenMask = new GCCoreItemSensorGlasses(GCCoreConfigManager.idArmorSensorGlassesWithOxygenMask, SENSORGLASSES, 7, 0, true).setIconIndex(8).setItemName("sensorGlassesWithOxygenMask");
-		titaniumPickaxe = new GCCoreItemPickaxe(GCCoreConfigManager.idToolTitaniumPickaxe, TOOLTITANIUM).setIconIndex(11).setItemName("titaniumPick");
-		titaniumAxe = new GCCoreItemAxe(GCCoreConfigManager.idToolTitaniumAxe, TOOLTITANIUM).setIconIndex(10).setItemName("titaniumAxe");
-		titaniumHoe = new GCCoreItemHoe(GCCoreConfigManager.idToolTitaniumHoe, TOOLTITANIUM).setIconIndex(9).setItemName("titaniumHoe");
-		titaniumSpade = new GCCoreItemSpade(GCCoreConfigManager.idToolTitaniumSpade, TOOLTITANIUM).setIconIndex(12).setItemName("titaniumSpade");
-		titaniumSword = new GCCoreItemSword(GCCoreConfigManager.idToolTitaniumSword, TOOLTITANIUM).setIconIndex(13).setItemName("titaniumSword");
-		titaniumHelmet = new GCCoreItemArmor(GCCoreConfigManager.idArmorTitaniumHelmet, TITANIUMARMOR, 9, 0, false).setIconIndex(14).setItemName("titaniumHelmet");
-		titaniumChestplate = new GCCoreItemArmor(GCCoreConfigManager.idArmorTitaniumChestplate, TITANIUMARMOR, 9, 1, false).setIconIndex(15).setItemName("titaniumChestplate");
-		titaniumLeggings = new GCCoreItemArmor(GCCoreConfigManager.idArmorTitaniumLeggings, TITANIUMARMOR, 9, 2, false).setIconIndex(16).setItemName("titaniumLeggings");
-		titaniumBoots = new GCCoreItemArmor(GCCoreConfigManager.idArmorTitaniumBoots, TITANIUMARMOR, 9, 3, false).setIconIndex(17).setItemName("titaniumBoots");
+		GCCoreItems.titaniumPickaxe = new GCCoreItemPickaxe(GCCoreConfigManager.idToolTitaniumPickaxe, GCCoreItems.TOOLTITANIUM).setIconIndex(11).setItemName("titaniumPick");
+		GCCoreItems.titaniumAxe = new GCCoreItemAxe(GCCoreConfigManager.idToolTitaniumAxe, GCCoreItems.TOOLTITANIUM).setIconIndex(10).setItemName("titaniumAxe");
+		GCCoreItems.titaniumHoe = new GCCoreItemHoe(GCCoreConfigManager.idToolTitaniumHoe, GCCoreItems.TOOLTITANIUM).setIconIndex(9).setItemName("titaniumHoe");
+		GCCoreItems.titaniumSpade = new GCCoreItemSpade(GCCoreConfigManager.idToolTitaniumSpade, GCCoreItems.TOOLTITANIUM).setIconIndex(12).setItemName("titaniumSpade");
+		GCCoreItems.titaniumSword = new GCCoreItemSword(GCCoreConfigManager.idToolTitaniumSword, GCCoreItems.TOOLTITANIUM).setIconIndex(13).setItemName("titaniumSword");
+		GCCoreItems.titaniumHelmet = new GCCoreItemArmor(GCCoreConfigManager.idArmorTitaniumHelmet, GCCoreItems.TITANIUMARMOR, 9, 0, false).setIconIndex(14).setItemName("titaniumHelmet");
+		GCCoreItems.titaniumChestplate = new GCCoreItemArmor(GCCoreConfigManager.idArmorTitaniumChestplate, GCCoreItems.TITANIUMARMOR, 9, 1, false).setIconIndex(15).setItemName("titaniumChestplate");
+		GCCoreItems.titaniumLeggings = new GCCoreItemArmor(GCCoreConfigManager.idArmorTitaniumLeggings, GCCoreItems.TITANIUMARMOR, 9, 2, false).setIconIndex(16).setItemName("titaniumLeggings");
+		GCCoreItems.titaniumBoots = new GCCoreItemArmor(GCCoreConfigManager.idArmorTitaniumBoots, GCCoreItems.TITANIUMARMOR, 9, 3, false).setIconIndex(17).setItemName("titaniumBoots");
 //		titaniumHelmetBreathable = new GCCoreItemArmor(GCCoreConfigManager.idArmorTitaniumHelmetBreathable, TITANIUMARMOR, 9, 0, true).setIconIndex(18).setItemName("titaniumHelmetBreathable");
-		ingotTitanium = new GCCoreItem(GCCoreConfigManager.idItemIngotTitanium).setIconIndex(19).setItemName("ingotTitanium");
-		ingotCopper = new GCCoreItem(GCCoreConfigManager.idItemIngotCopper).setIconIndex(20).setItemName("ingotCopper");
-		ingotAluminum = new GCCoreItem(GCCoreConfigManager.idItemIngotAluminum).setIconIndex(21).setItemName("ingotAluminium");
-		aluminumCanister = new GCCoreItem(GCCoreConfigManager.idItemAluminumCanister).setIconIndex(22).setItemName("aluminumCanister");
-		airVent = new GCCoreItem(GCCoreConfigManager.idItemAirVent).setIconIndex(23).setItemName("airVent");
-		airFan = new GCCoreItem(GCCoreConfigManager.idItemFan).setIconIndex(24).setItemName("airFan");
-		oxygenConcentrator = new GCCoreItem(GCCoreConfigManager.idItemOxygenConcentrator).setIconIndex(25).setItemName("oxygenConcentrator");
-		gravityBow = new GCCoreItemBow(GCCoreConfigManager.idItemGravityBow).setIconCoord(5, 1).setItemName("bow");
-		heavyPlating = new GCCoreItem(GCCoreConfigManager.idItemHeavyPlate).setIconIndex(26).setItemName("heavyPlating");
-		rocketEngine = new GCCoreItem(GCCoreConfigManager.idItemRocketEngine).setIconIndex(27).setItemName("rocketEngine");
-		rocketFins = new GCCoreItem(GCCoreConfigManager.idItemRocketFins).setIconIndex(28).setItemName("rocketFins");
-		rocketNoseCone = new GCCoreItem(GCCoreConfigManager.idItemRocketNoseCone).setIconIndex(29).setItemName("noseCone");
-		sensorLens = new GCCoreItem(GCCoreConfigManager.idItemSensorLens).setIconIndex(31).setItemName("sensorLens");
-		buggy = new GCCoreItemBuggy(GCCoreConfigManager.idItemBuggy).setIconIndex(200).setItemName("buggy");
-		flag = new GCCoreItemFlag(GCCoreConfigManager.idItemFlag).setIconIndex(201).setItemName("flag");
-		oxygenGear = new GCCoreItemOxygenGear(GCCoreConfigManager.idItemOxygenGear).setIconIndex(32).setItemName("oxygenGear");
-		parachute = new GCCoreItemParachute(GCCoreConfigManager.idItemParachute).setItemName("parachute");
-		canvas = new GCCoreItem(GCCoreConfigManager.idItemCanvas).setIconIndex(33).setItemName("canvas");
-		rocketFuelBucket = new GCCoreItem(GCCoreConfigManager.idItemRocketFuelBucket).setIconIndex(50).setItemName("rocketFuel");
-		flagPole = new GCCoreItem(GCCoreConfigManager.idItemFlagPole).setIconIndex(51).setItemName("flagPole");
+		GCCoreItems.ingotTitanium = new GCCoreItem(GCCoreConfigManager.idItemIngotTitanium).setIconIndex(19).setItemName("ingotTitanium");
+		GCCoreItems.ingotCopper = new GCCoreItem(GCCoreConfigManager.idItemIngotCopper).setIconIndex(20).setItemName("ingotCopper");
+		GCCoreItems.ingotAluminum = new GCCoreItem(GCCoreConfigManager.idItemIngotAluminum).setIconIndex(21).setItemName("ingotAluminium");
+		GCCoreItems.aluminumCanister = new GCCoreItem(GCCoreConfigManager.idItemAluminumCanister).setIconIndex(22).setItemName("aluminumCanister");
+		GCCoreItems.airVent = new GCCoreItem(GCCoreConfigManager.idItemAirVent).setIconIndex(23).setItemName("airVent");
+		GCCoreItems.airFan = new GCCoreItem(GCCoreConfigManager.idItemFan).setIconIndex(24).setItemName("airFan");
+		GCCoreItems.oxygenConcentrator = new GCCoreItem(GCCoreConfigManager.idItemOxygenConcentrator).setIconIndex(25).setItemName("oxygenConcentrator");
+		GCCoreItems.gravityBow = new GCCoreItemBow(GCCoreConfigManager.idItemGravityBow).setIconCoord(5, 1).setItemName("bow");
+		GCCoreItems.heavyPlating = new GCCoreItem(GCCoreConfigManager.idItemHeavyPlate).setIconIndex(26).setItemName("heavyPlating");
+		GCCoreItems.rocketEngine = new GCCoreItem(GCCoreConfigManager.idItemRocketEngine).setIconIndex(27).setItemName("rocketEngine");
+		GCCoreItems.rocketFins = new GCCoreItem(GCCoreConfigManager.idItemRocketFins).setIconIndex(28).setItemName("rocketFins");
+		GCCoreItems.rocketNoseCone = new GCCoreItem(GCCoreConfigManager.idItemRocketNoseCone).setIconIndex(29).setItemName("noseCone");
+		GCCoreItems.sensorLens = new GCCoreItem(GCCoreConfigManager.idItemSensorLens).setIconIndex(31).setItemName("sensorLens");
+		GCCoreItems.buggy = new GCCoreItemBuggy(GCCoreConfigManager.idItemBuggy).setIconIndex(200).setItemName("buggy");
+		GCCoreItems.flag = new GCCoreItemFlag(GCCoreConfigManager.idItemFlag).setIconIndex(201).setItemName("flag");
+		GCCoreItems.oxygenGear = new GCCoreItemOxygenGear(GCCoreConfigManager.idItemOxygenGear).setIconIndex(32).setItemName("oxygenGear");
+		GCCoreItems.parachute = new GCCoreItemParachute(GCCoreConfigManager.idItemParachute).setItemName("parachute");
+		GCCoreItems.canvas = new GCCoreItem(GCCoreConfigManager.idItemCanvas).setIconIndex(33).setItemName("canvas");
+		GCCoreItems.rocketFuelBucket = new GCCoreItem(GCCoreConfigManager.idItemRocketFuelBucket).setIconIndex(50).setItemName("rocketFuel");
+		GCCoreItems.flagPole = new GCCoreItem(GCCoreConfigManager.idItemFlagPole).setIconIndex(51).setItemName("flagPole");
 	}
 	
 	public static void registerHarvestLevels()
 	{
-		MinecraftForge.setToolClass(titaniumPickaxe, "pickaxe", 4);
-		MinecraftForge.setToolClass(titaniumAxe, "axe", 4);
-		MinecraftForge.setToolClass(titaniumSpade, "shovel", 4);
+		MinecraftForge.setToolClass(GCCoreItems.titaniumPickaxe, "pickaxe", 4);
+		MinecraftForge.setToolClass(GCCoreItems.titaniumAxe, "axe", 4);
+		MinecraftForge.setToolClass(GCCoreItems.titaniumSpade, "shovel", 4);
 	}
 
-	public static void addNames() 
+	public static void addNames()
 	{
-		addName(oxygenMask);
-		addName(spaceship);
-		addName(lightOxygenTankFull);
-		addName(medOxygenTankFull);
-		addName(heavyOxygenTankFull);
-		addName(sensorGlasses);
+		GCCoreItems.addName(GCCoreItems.oxygenMask);
+		GCCoreItems.addName(GCCoreItems.spaceship);
+		GCCoreItems.addName(GCCoreItems.lightOxygenTankFull);
+		GCCoreItems.addName(GCCoreItems.medOxygenTankFull);
+		GCCoreItems.addName(GCCoreItems.heavyOxygenTankFull);
+		GCCoreItems.addName(GCCoreItems.sensorGlasses);
 //		addName(sensorGlassesWithOxygenMask);
-		addName(titaniumPickaxe);
-		addName(titaniumAxe);
-		addName(titaniumSpade);
-		addName(titaniumHoe);
-		addName(titaniumSword);
-		addName(titaniumHelmet);
-		addName(titaniumChestplate);
-		addName(titaniumLeggings);
-		addName(titaniumBoots);
+		GCCoreItems.addName(GCCoreItems.titaniumPickaxe);
+		GCCoreItems.addName(GCCoreItems.titaniumAxe);
+		GCCoreItems.addName(GCCoreItems.titaniumSpade);
+		GCCoreItems.addName(GCCoreItems.titaniumHoe);
+		GCCoreItems.addName(GCCoreItems.titaniumSword);
+		GCCoreItems.addName(GCCoreItems.titaniumHelmet);
+		GCCoreItems.addName(GCCoreItems.titaniumChestplate);
+		GCCoreItems.addName(GCCoreItems.titaniumLeggings);
+		GCCoreItems.addName(GCCoreItems.titaniumBoots);
 //		addName(titaniumHelmetBreathable);
-		addName(ingotTitanium);
-		addName(ingotCopper);
-		addName(ingotAluminum);
-		addName(aluminumCanister);
-		addName(airVent);
-		addName(airFan);
-		addName(oxygenConcentrator);
-		addName(rocketEngine);
-		addName(heavyPlating);
-		addName(rocketNoseCone);
-		addName(rocketFins);
-		addName(sensorLens);
-		addName(oxygenGear);
-		addName(flag);
-		addName(flagPole);
-		addName(canvas);
-		addName(rocketFuelBucket);
-		addName(buggy);
+		GCCoreItems.addName(GCCoreItems.ingotTitanium);
+		GCCoreItems.addName(GCCoreItems.ingotCopper);
+		GCCoreItems.addName(GCCoreItems.ingotAluminum);
+		GCCoreItems.addName(GCCoreItems.aluminumCanister);
+		GCCoreItems.addName(GCCoreItems.airVent);
+		GCCoreItems.addName(GCCoreItems.airFan);
+		GCCoreItems.addName(GCCoreItems.oxygenConcentrator);
+		GCCoreItems.addName(GCCoreItems.rocketEngine);
+		GCCoreItems.addName(GCCoreItems.heavyPlating);
+		GCCoreItems.addName(GCCoreItems.rocketNoseCone);
+		GCCoreItems.addName(GCCoreItems.rocketFins);
+		GCCoreItems.addName(GCCoreItems.sensorLens);
+		GCCoreItems.addName(GCCoreItems.oxygenGear);
+		GCCoreItems.addName(GCCoreItems.flag);
+		GCCoreItems.addName(GCCoreItems.flagPole);
+		GCCoreItems.addName(GCCoreItems.canvas);
+		GCCoreItems.addName(GCCoreItems.rocketFuelBucket);
+		GCCoreItems.addName(GCCoreItems.buggy);
 		
 		int i = 0;
 
 		for (i = 0; i < GCCoreItemFlag.names.length; i++)
 		{
-			String s = GCCoreItemFlag.names[i];
+			final String s = GCCoreItemFlag.names[i];
 			
-	        addNameWithMetadata("item.flag." + s + ".name");
+	        GCCoreItems.addNameWithMetadata("item.flag." + s + ".name");
 		}
 
 		for (i = 0; i < GCCoreItemParachute.names.length; i++)
 		{
-			String s = GCCoreItemParachute.names[i];
+			final String s = GCCoreItemParachute.names[i];
 			
-	        addNameWithMetadata("item.parachute." + s + ".name");
+	        GCCoreItems.addNameWithMetadata("item.parachute." + s + ".name");
 		}
 	}
 	

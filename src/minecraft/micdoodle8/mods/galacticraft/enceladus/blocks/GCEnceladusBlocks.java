@@ -15,29 +15,29 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
  *  All rights reserved.
  *
  */
-public class GCEnceladusBlocks 
+public class GCEnceladusBlocks
 {
 	public static Block block;
 	
-	public static void initBlocks() 
-	{	
-		block = 										new GCEnceladusBlock			(GCEnceladusConfigManager.idBlock, 					0)						.setHardness(1.7F)																				.setCreativeTab(GalacticraftCore.galacticraftTab)																.setBlockName("BlockEnceladus");
-		Item.itemsList[block.blockID] = 				new GCEnceladusItemBlock		(block.blockID - 256)																																																																		.setItemName("BlockEnceladus");	
+	public static void initBlocks()
+	{
+		GCEnceladusBlocks.block = 										new GCEnceladusBlock			(GCEnceladusConfigManager.idBlock, 					0)						.setHardness(1.7F)																				.setCreativeTab(GalacticraftCore.galacticraftTab)																.setBlockName("BlockEnceladus");
+		Item.itemsList[GCEnceladusBlocks.block.blockID] = 				new GCEnceladusItemBlock		(GCEnceladusBlocks.block.blockID - 256)																																																																		.setItemName("BlockEnceladus");
 	}
 
-	public static void setHarvestLevels() 
+	public static void setHarvestLevels()
 	{
 	}
 	
-	public static void registerBlocks() 
+	public static void registerBlocks()
 	{
 	}
 
-	public static void addNames() 
+	public static void addNames()
 	{
-		addNameWithMetadata("tile.BlockEnceladus.grass.name");
-		addNameWithMetadata("tile.BlockEnceladus.dirt.name");
-		addNameWithMetadata("tile.BlockEnceladus.stone.name");
+		GCEnceladusBlocks.addNameWithMetadata("tile.BlockEnceladus.grass.name");
+		GCEnceladusBlocks.addNameWithMetadata("tile.BlockEnceladus.dirt.name");
+		GCEnceladusBlocks.addNameWithMetadata("tile.BlockEnceladus.stone.name");
 	}
 	
 	private static void addName(Block block)

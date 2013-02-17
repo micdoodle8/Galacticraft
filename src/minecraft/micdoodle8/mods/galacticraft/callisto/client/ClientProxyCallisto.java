@@ -8,12 +8,12 @@ import java.util.Random;
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
 import micdoodle8.mods.galacticraft.API.IMapPlanet;
 import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
-import micdoodle8.mods.galacticraft.core.GCCoreLocalization;
-import micdoodle8.mods.galacticraft.core.GCCoreUtil;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.callisto.CommonProxyCallisto;
 import micdoodle8.mods.galacticraft.callisto.blocks.GCCallistoBlocks;
 import micdoodle8.mods.galacticraft.callisto.dimension.GCCallistoWorldProvider;
+import micdoodle8.mods.galacticraft.core.GCCoreLocalization;
+import micdoodle8.mods.galacticraft.core.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.multiplayer.WorldClient;
@@ -52,9 +52,9 @@ public class ClientProxyCallisto extends CommonProxyCallisto implements IGalacti
 	@Override
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		lang = new GCCoreLocalization("micdoodle8/mods/galacticraft/callisto/client");
+		ClientProxyCallisto.lang = new GCCoreLocalization("micdoodle8/mods/galacticraft/callisto/client");
 		MinecraftForge.EVENT_BUS.register(new GCCallistoSounds());
-		getFirstBootTime = System.currentTimeMillis();
+		ClientProxyCallisto.getFirstBootTime = System.currentTimeMillis();
 	}
 
 	@Override
@@ -74,7 +74,7 @@ public class ClientProxyCallisto extends CommonProxyCallisto implements IGalacti
 	}
 	
 	@Override
-	public void registerRenderInformation() 
+	public void registerRenderInformation()
 	{
 		MinecraftForgeClient.preloadTexture("/micdoodle8/mods/galacticraft/callisto/client/blocks/callisto.png");
 		MinecraftForgeClient.preloadTexture("/micdoodle8/mods/galacticraft/callisto/client/items/callisto.png");
@@ -154,7 +154,7 @@ public class ClientProxyCallisto extends CommonProxyCallisto implements IGalacti
         }
 
     	@Override
-    	public void tickEnd(EnumSet<TickType> type, Object... tickData) 
+    	public void tickEnd(EnumSet<TickType> type, Object... tickData)
     	{
     	}
     	
@@ -165,50 +165,50 @@ public class ClientProxyCallisto extends CommonProxyCallisto implements IGalacti
         }
 
     	@Override
-    	public EnumSet<TickType> ticks() 
+    	public EnumSet<TickType> ticks()
     	{
     		return EnumSet.of(TickType.CLIENT);
     	}
     }
 
 	@Override
-	public String getDimensionName() 
+	public String getDimensionName()
 	{
 		return "Callisto";
 	}
 
 	@Override
-	public GCCoreLocalization getLanguageFile() 
+	public GCCoreLocalization getLanguageFile()
 	{
 		return ClientProxyCallisto.lang;
 	}
 
 	@Override
-	public String getPlanetSpriteDirectory() 
+	public String getPlanetSpriteDirectory()
 	{
 		return "/micdoodle8/mods/galacticraft/callisto/client/planets/";
 	}
 
 	@Override
-	public IPlanetSlotRenderer getSlotRenderer() 
+	public IPlanetSlotRenderer getSlotRenderer()
 	{
 		return new GCCallistoSlotRenderer();
 	}
 
 	@Override
-	public IMapPlanet getPlanetForMap() 
+	public IMapPlanet getPlanetForMap()
 	{
 		return null;
 	}
 
 	@Override
-	public IMapPlanet[] getChildMapPlanets() 
+	public IMapPlanet[] getChildMapPlanets()
 	{
 		return null;
 	}
 
 	@Override
-	public String getPathToMusicFile() 
+	public String getPathToMusicFile()
 	{
 		return null;
 	}

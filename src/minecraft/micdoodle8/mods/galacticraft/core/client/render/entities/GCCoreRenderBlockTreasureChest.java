@@ -28,7 +28,7 @@ public class GCCoreRenderBlockTreasureChest implements ISimpleBlockRenderingHand
     }
 
     @Override
-	public void renderInventoryBlock(Block var1, int var2, int var3, RenderBlocks var4) 
+	public void renderInventoryBlock(Block var1, int var2, int var3, RenderBlocks var4)
     {
         GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);

@@ -170,22 +170,22 @@ public class ClientProxyCore extends CommonProxyCore
     private static float playerRotationPitch;
 	
 	@Override
-	public void preInit(FMLPreInitializationEvent event) 
+	public void preInit(FMLPreInitializationEvent event)
 	{
-		moon.preInit(event);
+		ClientProxyCore.moon.preInit(event);
 		
 		ModelPlayerAPI.register("GalacticraftCore", GCCoreModelPlayer.class);
 		RenderPlayerAPI.register("GalacticraftCore", GCCoreRenderPlayer.class);
 		PlayerAPI.register("GalacticraftCore", GCCorePlayerBaseClient.class);
 		
 		MinecraftForge.EVENT_BUS.register(new GCCoreSounds());
-		getFirstBootTime = System.currentTimeMillis();
+		ClientProxyCore.getFirstBootTime = System.currentTimeMillis();
 	}
 
 	@Override
-	public void init(FMLInitializationEvent event) 
+	public void init(FMLInitializationEvent event)
 	{
-		moon.init(event);
+		ClientProxyCore.moon.init(event);
 		
 		TickRegistry.registerTickHandler(new TickHandlerClient(), Side.CLIENT);
 		TickRegistry.registerScheduledTickHandler(new TickHandlerClientSlow(), Side.CLIENT);
@@ -207,17 +207,17 @@ public class ClientProxyCore extends CommonProxyCore
         RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererCraftingTable(ClientProxyCore.craftingTableID));
         ClientProxyCore.oxygenDistributorRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererOxygenDistributor(ClientProxyCore.oxygenDistributorRenderID));
-        IMapPlanet earth = new GCCoreMapPlanetOverworld();
-        IMapPlanet moon = new GCMoonMapPlanet();
+        final IMapPlanet earth = new GCCoreMapPlanetOverworld();
+        final IMapPlanet moon = new GCMoonMapPlanet();
 		GalacticraftCore.addAdditionalMapPlanet(earth);
 		GalacticraftCore.addAdditionalMapMoon(earth, moon);
 		GalacticraftCore.addAdditionalMapPlanet(new GCCoreMapSun());
 	}
 
 	@Override
-	public void postInit(FMLPostInitializationEvent event) 
+	public void postInit(FMLPostInitializationEvent event)
 	{
-		moon.postInit(event);
+		ClientProxyCore.moon.postInit(event);
 		
 		for (final IGalacticraftSubModClient client : GalacticraftCore.clientSubMods)
 		{
@@ -228,7 +228,7 @@ public class ClientProxyCore extends CommonProxyCore
 			
 			if (client.getChildMapPlanets() != null && client.getPlanetForMap() != null)
 			{
-				for (IMapPlanet planet : client.getChildMapPlanets())
+				for (final IMapPlanet planet : client.getChildMapPlanets())
 				{
 					GalacticraftCore.mapMoons.put(client.getPlanetForMap(), planet);
 				}
@@ -237,9 +237,9 @@ public class ClientProxyCore extends CommonProxyCore
 	}
 	
 	@Override
-	public void registerRenderInformation() 
+	public void registerRenderInformation()
 	{
-		moon.registerRenderInformation();
+		ClientProxyCore.moon.registerRenderInformation();
 		
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntitySpaceship.class, new GCCoreRenderSpaceship());
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntitySpider.class, new GCCoreRenderSpider());
@@ -398,7 +398,7 @@ public class ClientProxyCore extends CommonProxyCore
     	Minecraft mc = FMLClientHandler.instance().getClient();
     	
 		@Override
-		public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player p) 
+		public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player p)
 		{
             final DataInputStream data = new DataInputStream(new ByteArrayInputStream(packet.data));
             
@@ -448,14 +448,14 @@ public class ClientProxyCore extends CommonProxyCore
                 {
 	                if(player.worldObj.getLoadedEntityList().get(i) instanceof EntityLiving && ((EntityLiving)player.worldObj.getLoadedEntityList().get(i)).entityId == (Integer)packetReadout[1])
 	                {
-	                	if (healthMap.containsKey(packetReadout[1]))
+	                	if (ClientProxyCore.healthMap.containsKey(packetReadout[1]))
 	                	{
-	                		healthMap.remove(packetReadout[1]);
-	                		healthMap.put(packetReadout[1], packetReadout[0]);
+	                		ClientProxyCore.healthMap.remove(packetReadout[1]);
+	                		ClientProxyCore.healthMap.put(packetReadout[1], packetReadout[0]);
 	                	}
 	                	else
 	                	{
-	                		healthMap.put(packetReadout[1], packetReadout[0]);
+	                		ClientProxyCore.healthMap.put(packetReadout[1], packetReadout[0]);
 	                	}
 	                }
                 }
@@ -465,28 +465,28 @@ public class ClientProxyCore extends CommonProxyCore
             	final Class[] decodeAs = {String.class};
                 final Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
                 
-                playersUsingParachutes.add((String) packetReadout[0]);
+                ClientProxyCore.playersUsingParachutes.add((String) packetReadout[0]);
             }
             else if (packetType == 5)
             {
             	final Class[] decodeAs = {String.class};
                 final Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
                 
-                playersUsingParachutes.remove((String) packetReadout[0]);
+                ClientProxyCore.playersUsingParachutes.remove(packetReadout[0]);
             }
             else if (packetType == 6)
             {
             	final Class[] decodeAs = {String.class, String.class};
                 final Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
                 
-                parachuteTextures.put((String)packetReadout[0], (String)packetReadout[1]);
+                ClientProxyCore.parachuteTextures.put((String)packetReadout[0], (String)packetReadout[1]);
             }
             else if (packetType == 7)
             {
             	final Class[] decodeAs = {String.class, String.class};
                 final Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
                 
-                parachuteTextures.remove((String) packetReadout[0]);
+                ClientProxyCore.parachuteTextures.remove(packetReadout[0]);
             }
             else if (packetType == 8)
             {
@@ -510,12 +510,12 @@ public class ClientProxyCore extends CommonProxyCore
 
             	for (int i = 0; i < 4; i++)
             	{
-                    if (mc != null && mc.renderViewEntity != null && mc.effectRenderer != null && mc.theWorld != null)
+                    if (this.mc != null && this.mc.renderViewEntity != null && this.mc.effectRenderer != null && this.mc.theWorld != null)
                     {
-                		final EntityFX fx = new GCCoreEntityWeldingSmoke(mc.theWorld, x - 0.15 + 0.5, y + 1.2, z + 0.15 + 0.5, (mc.theWorld.rand.nextDouble() / 20) - (mc.theWorld.rand.nextDouble() / 20), 0.06, (mc.theWorld.rand.nextDouble() / 20) - (mc.theWorld.rand.nextDouble() / 20), 1.0F);
+                		final EntityFX fx = new GCCoreEntityWeldingSmoke(this.mc.theWorld, x - 0.15 + 0.5, y + 1.2, z + 0.15 + 0.5, this.mc.theWorld.rand.nextDouble() / 20 - this.mc.theWorld.rand.nextDouble() / 20, 0.06, this.mc.theWorld.rand.nextDouble() / 20 - this.mc.theWorld.rand.nextDouble() / 20, 1.0F);
                 		if (fx != null)
                 		{
-                        	mc.effectRenderer.addEffect(fx);
+                        	this.mc.effectRenderer.addEffect(fx);
                 		}
                     }
             	}
@@ -525,57 +525,57 @@ public class ClientProxyCore extends CommonProxyCore
             	final Class[] decodeAs = {String.class, Integer.class};
                 final Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
                 
-                int type = (Integer) packetReadout[1];
+                final int type = (Integer) packetReadout[1];
                 
                 switch (type)
                 {
                 case 0:
-                	playersWithOxygenMask.add((String) packetReadout[0]);
+                	ClientProxyCore.playersWithOxygenMask.add((String) packetReadout[0]);
                 	break;
                 case 1:
-                	playersWithOxygenMask.remove((String) packetReadout[0]);
+                	ClientProxyCore.playersWithOxygenMask.remove(packetReadout[0]);
                 	break;
                 case 2:
-                	playersWithOxygenGear.add((String) packetReadout[0]);
+                	ClientProxyCore.playersWithOxygenGear.add((String) packetReadout[0]);
                 	break;
                 case 3:
-                	playersWithOxygenGear.remove((String) packetReadout[0]);
+                	ClientProxyCore.playersWithOxygenGear.remove(packetReadout[0]);
                 	break;
                 case 4:
-                	playersWithOxygenTankLeftRed.add((String) packetReadout[0]);
+                	ClientProxyCore.playersWithOxygenTankLeftRed.add((String) packetReadout[0]);
                 	break;
                 case 5:
-                	playersWithOxygenTankLeftRed.remove((String) packetReadout[0]);
+                	ClientProxyCore.playersWithOxygenTankLeftRed.remove(packetReadout[0]);
                 	break;
                 case 6:
-                	playersWithOxygenTankLeftOrange.add((String) packetReadout[0]);
+                	ClientProxyCore.playersWithOxygenTankLeftOrange.add((String) packetReadout[0]);
                 	break;
                 case 7:
-                	playersWithOxygenTankLeftOrange.remove((String) packetReadout[0]);
+                	ClientProxyCore.playersWithOxygenTankLeftOrange.remove(packetReadout[0]);
                 	break;
                 case 8:
-                	playersWithOxygenTankLeftGreen.add((String) packetReadout[0]);
+                	ClientProxyCore.playersWithOxygenTankLeftGreen.add((String) packetReadout[0]);
                 	break;
                 case 9:
-                	playersWithOxygenTankLeftGreen.remove((String) packetReadout[0]);
+                	ClientProxyCore.playersWithOxygenTankLeftGreen.remove(packetReadout[0]);
                 	break;
                 case 10:
-                	playersWithOxygenTankRightRed.add((String) packetReadout[0]);
+                	ClientProxyCore.playersWithOxygenTankRightRed.add((String) packetReadout[0]);
                 	break;
                 case 11:
-                	playersWithOxygenTankRightRed.remove((String) packetReadout[0]);
+                	ClientProxyCore.playersWithOxygenTankRightRed.remove(packetReadout[0]);
                 	break;
                 case 12:
-                	playersWithOxygenTankRightOrange.add((String) packetReadout[0]);
+                	ClientProxyCore.playersWithOxygenTankRightOrange.add((String) packetReadout[0]);
                 	break;
                 case 13:
-                	playersWithOxygenTankRightOrange.remove((String) packetReadout[0]);
+                	ClientProxyCore.playersWithOxygenTankRightOrange.remove(packetReadout[0]);
                 	break;
                 case 14:
-                	playersWithOxygenTankRightGreen.add((String) packetReadout[0]);
+                	ClientProxyCore.playersWithOxygenTankRightGreen.add((String) packetReadout[0]);
                 	break;
                 case 15:
-                	playersWithOxygenTankRightGreen.remove((String) packetReadout[0]);
+                	ClientProxyCore.playersWithOxygenTankRightGreen.remove(packetReadout[0]);
                 	break;
                 }
             }
@@ -635,9 +635,9 @@ public class ClientProxyCore extends CommonProxyCore
 	public static class TickHandlerClientSlow implements IScheduledTickHandler
 	{
 		@Override
-		public void tickStart(EnumSet<TickType> type, Object... tickData) 
+		public void tickStart(EnumSet<TickType> type, Object... tickData)
 		{
-			EntityPlayer player = FMLClientHandler.instance().getClient().thePlayer;
+			final EntityPlayer player = FMLClientHandler.instance().getClient().thePlayer;
 			
 			if (player != null)
 			{
@@ -655,17 +655,17 @@ public class ClientProxyCore extends CommonProxyCore
 							y = MathHelper.floor_double(player.posY + j);
 							z = MathHelper.floor_double(player.posZ + k);
 							
-							int id = player.worldObj.getBlockId(x, y, z);
+							final int id = player.worldObj.getBlockId(x, y, z);
 							
 							if (id != 0)
 							{
-								Block block = Block.blocksList[id];
+								final Block block = Block.blocksList[id];
 								
 								if (block != null && (block instanceof BlockOre || block instanceof IDetectableResource))
 								{
-									int[] blockPos = {x, y, z};
+									final int[] blockPos = {x, y, z};
 									
-									if (!alreadyContainsBlock(x, y, z))
+									if (!this.alreadyContainsBlock(x, y, z))
 									{
 										ClientProxyCore.valueableBlocks.add(blockPos);
 									}
@@ -679,11 +679,11 @@ public class ClientProxyCore extends CommonProxyCore
 		
 		private boolean alreadyContainsBlock(int x1, int y1, int z1)
 		{
-			for (int[] coordArray : ClientProxyCore.valueableBlocks)
+			for (final int[] coordArray : ClientProxyCore.valueableBlocks)
 			{
-				int x = coordArray[0];
-				int y = coordArray[1];
-				int z = coordArray[2];
+				final int x = coordArray[0];
+				final int y = coordArray[1];
+				final int z = coordArray[2];
 				
 				if (x1 == x && y1 == y && z1 == z)
 				{
@@ -698,13 +698,13 @@ public class ClientProxyCore extends CommonProxyCore
 		public void tickEnd(EnumSet<TickType> type, Object... tickData){}
 
     	@Override
-    	public EnumSet<TickType> ticks() 
+    	public EnumSet<TickType> ticks()
     	{
     		return EnumSet.of(TickType.CLIENT);
     	}
 
 		@Override
-		public String getLabel() 
+		public String getLabel()
 		{
 			return "GalacticraftSlowClient";
 		}
@@ -738,7 +738,7 @@ public class ClientProxyCore extends CommonProxyCore
 //    	        for (int j = 0; j < GalacticraftCore.gcPlayers.size(); ++j)
 //    	        {
 //    				final GCCoreEntityPlayer playerBase = (GCCoreEntityPlayer) GalacticraftCore.gcPlayers.get(j);
-//    				
+//
 //    				if (playerBase != null && player != null && player.username.equals(playerBase.getPlayer().username))
 //    				{
 //    					if (playerBase.getPlayer() != null && playerBase.getPlayer().getDataWatcher() != null && playerBase.getPlayer().getDataWatcher().getWatchableObjectInt(23) == 1)
@@ -746,7 +746,7 @@ public class ClientProxyCore extends CommonProxyCore
 //    	    				player.motionY = -0.3;
 //    	    				player.motionX *= 0.1;
 //    	    				player.motionZ *= 0.1;
-//    	    				
+//
 //    	    				if (player.onGround)
 //    	    				{
 //    	    					playerBase.getPlayer().getDataWatcher().updateObject(23, Integer.valueOf(0));
@@ -758,51 +758,51 @@ public class ClientProxyCore extends CommonProxyCore
     			
     			if (player != null && player.ridingEntity != null && player.ridingEntity instanceof GCCoreEntityControllable)
     			{
-    				GCCoreEntityControllable entityControllable = (GCCoreEntityControllable) player.ridingEntity;
+    				final GCCoreEntityControllable entityControllable = (GCCoreEntityControllable) player.ridingEntity;
     				
     				if (minecraft.gameSettings.keyBindLeft.pressed)
     				{
     					entityControllable.keyPressed(2, player);
-    					Object[] toSend = {2};
+    					final Object[] toSend = {2};
     					PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 9, toSend));
     				}
     				
     				if (minecraft.gameSettings.keyBindRight.pressed)
     				{
     					entityControllable.keyPressed(3, player);
-    					Object[] toSend = {3};
+    					final Object[] toSend = {3};
     					PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 9, toSend));
     				}
 
     				if (minecraft.gameSettings.keyBindForward.pressed)
     				{
     					entityControllable.keyPressed(0, player);
-    					Object[] toSend = {0};
+    					final Object[] toSend = {0};
     					PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 9, toSend));
     				}
     				
     				if (minecraft.gameSettings.keyBindBack.pressed)
     				{
     					entityControllable.keyPressed(1, player);
-    					Object[] toSend = {1};
+    					final Object[] toSend = {1};
     					PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 9, toSend));
     				}
     			}
     			
     			if (player != null && player.ridingEntity != null && player.ridingEntity instanceof GCCoreEntitySpaceship)
     			{
-    				GCCoreEntitySpaceship ship = (GCCoreEntitySpaceship) player.ridingEntity;
+    				final GCCoreEntitySpaceship ship = (GCCoreEntitySpaceship) player.ridingEntity;
     				
     				if (minecraft.gameSettings.keyBindLeft.pressed)
     				{
-        				Object[] toSend = {-1F};
+        				final Object[] toSend = {-1F};
         	            PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 7, toSend));
         	            ship.turnYaw(-1);
     				}
     				
     				if (minecraft.gameSettings.keyBindRight.pressed)
     				{
-        				Object[] toSend = {1F};
+        				final Object[] toSend = {1F};
         	            PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 7, toSend));
         	            ship.turnYaw(1);
     				}
@@ -811,7 +811,7 @@ public class ClientProxyCore extends CommonProxyCore
     				{
     					if (ship.getLaunched() == 1)
     					{
-            				Object[] toSend = {-1F};
+            				final Object[] toSend = {-1F};
             	            PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 8, toSend));
             	            ship.turnPitch(-1);
     					}
@@ -821,7 +821,7 @@ public class ClientProxyCore extends CommonProxyCore
     				{
     					if (ship.getLaunched() == 1)
     					{
-            				Object[] toSend = {1F};
+            				final Object[] toSend = {1F};
             	            PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 8, toSend));
             	            ship.turnPitch(1);
     					}
@@ -832,13 +832,13 @@ public class ClientProxyCore extends CommonProxyCore
 	        	{
 	    	        for (int i = 0; i < world.loadedEntityList.size(); i++)
 	    	        {
-    	        		Entity e = (Entity) world.loadedEntityList.get(i);
+    	        		final Entity e = (Entity) world.loadedEntityList.get(i);
     	        		
     	        		if (e != null)
     	        		{
     	        			if (e instanceof GCCoreEntitySpaceship)
     	        			{
-    	        				GCCoreEntitySpaceship eship = (GCCoreEntitySpaceship) e;
+    	        				final GCCoreEntitySpaceship eship = (GCCoreEntitySpaceship) e;
     	        				
     	        				if (eship.rocketSoundUpdater == null)
     	        				{
@@ -849,9 +849,9 @@ public class ClientProxyCore extends CommonProxyCore
 	    	        }
 	        	}
     			
-    			if (teleportCooldown > 0)
+    			if (ClientProxyCore.teleportCooldown > 0)
     			{
-    				teleportCooldown--;
+    				ClientProxyCore.teleportCooldown--;
     			}
     			
     			if (FMLClientHandler.instance().getClient().currentScreen instanceof GCCoreGuiChoosePlanet)
@@ -866,14 +866,14 @@ public class ClientProxyCore extends CommonProxyCore
 
     			if (!minecraft.gameSettings.keyBindJump.pressed)
     			{
-    				lastSpacebarDown = false;
+    				ClientProxyCore.lastSpacebarDown = false;
     			}
     			
-    			if (player != null && player.ridingEntity != null && minecraft.gameSettings.keyBindJump.pressed && !lastSpacebarDown)
+    			if (player != null && player.ridingEntity != null && minecraft.gameSettings.keyBindJump.pressed && !ClientProxyCore.lastSpacebarDown)
     			{
     				final Object[] toSend = {0};
     	            PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 3, toSend));
-    	            lastSpacebarDown = true;
+    	            ClientProxyCore.lastSpacebarDown = true;
     			}
     			
             	if (Keyboard.isKeyDown(Keyboard.KEY_W))
@@ -912,7 +912,7 @@ public class ClientProxyCore extends CommonProxyCore
 		int i = 0;
 
     	@Override
-    	public void tickEnd(EnumSet<TickType> type, Object... tickData) 
+    	public void tickEnd(EnumSet<TickType> type, Object... tickData)
     	{
     		final Minecraft minecraft = FMLClientHandler.instance().getClient();
     		
@@ -929,13 +929,13 @@ public class ClientProxyCore extends CommonProxyCore
             
     		if (type.equals(EnumSet.of(TickType.RENDER)))
             {
-        		float partialTickTime = (Float) tickData[0];
+        		final float partialTickTime = (Float) tickData[0];
         		
     			if (player != null)
     			{
-        			ClientProxyCore.playerPosX = player.prevPosX + (player.posX - player.prevPosX) * (double)partialTickTime;
-        			ClientProxyCore.playerPosY = player.prevPosY + (player.posY - player.prevPosY) * (double)partialTickTime;
-        			ClientProxyCore.playerPosZ = player.prevPosZ + (player.posZ - player.prevPosZ) * (double)partialTickTime;
+        			ClientProxyCore.playerPosX = player.prevPosX + (player.posX - player.prevPosX) * partialTickTime;
+        			ClientProxyCore.playerPosY = player.prevPosY + (player.posY - player.prevPosY) * partialTickTime;
+        			ClientProxyCore.playerPosZ = player.prevPosZ + (player.posZ - player.prevPosZ) * partialTickTime;
         			ClientProxyCore.playerRotationYaw = player.prevRotationYaw + (player.rotationYaw - player.prevRotationYaw) * partialTickTime;
         			ClientProxyCore.playerRotationPitch = player.prevRotationPitch + (player.rotationPitch - player.prevRotationPitch) * partialTickTime;
     			}
@@ -999,7 +999,7 @@ public class ClientProxyCore extends CommonProxyCore
 					GL11.glEnable(GL11.GL_ALPHA_TEST);
 					GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-			        Iterator var51 = ClientProxyCore.valueableBlocks.iterator();
+			        final Iterator var51 = ClientProxyCore.valueableBlocks.iterator();
 			        double var52;
 			        double var58;
 			        double var59;
@@ -1009,22 +1009,22 @@ public class ClientProxyCore extends CommonProxyCore
 
 		            while (var51.hasNext())
 		            {
-		                int[] coords = (int[]) var51.next();
+		                final int[] coords = (int[]) var51.next();
 		                
-		                int x = coords[0];
-		                int y = coords[1];
-		                int z = coords[2];
+		                final int x = coords[0];
+		                final int y = coords[1];
+		                final int z = coords[2];
 
-	                    var52 = ClientProxyCore.playerPosX - (double)x - 0.5D;
-	                    var58 = ClientProxyCore.playerPosY - (double)y - 0.5D;
-	                    var59 = ClientProxyCore.playerPosZ - (double)z - 0.5D;
+	                    var52 = ClientProxyCore.playerPosX - x - 0.5D;
+	                    var58 = ClientProxyCore.playerPosY - y - 0.5D;
+	                    var59 = ClientProxyCore.playerPosZ - z - 0.5D;
 	                    var60 = (float)Math.toDegrees(Math.atan2(var52, var59));
 	                    var20 = Math.sqrt(var52 * var52 + var58 * var58 + var59 * var59) * 0.5D;
 	                    var21 = Math.sqrt(var52 * var52 + var59 * var59) * 0.5D;
 
-	                    ScaledResolution var5 = new ScaledResolution(minecraft.gameSettings, minecraft.displayWidth, minecraft.displayHeight);
-	                    int var6 = var5.getScaledWidth();
-	                    int var7 = var5.getScaledHeight();
+	                    final ScaledResolution var5 = new ScaledResolution(minecraft.gameSettings, minecraft.displayWidth, minecraft.displayHeight);
+	                    final int var6 = var5.getScaledWidth();
+	                    final int var7 = var5.getScaledHeight();
 	                    
 	                    boolean var2 = false;
 
@@ -1055,14 +1055,14 @@ public class ClientProxyCore extends CommonProxyCore
 
         		if (player != null && player.worldObj.provider instanceof IGalacticraftWorldProvider && GCCoreUtil.shouldDisplayTankGui(minecraft.currentScreen))
     			{
-    				int var6 = (airRemaining - 90) * -1;
-    				if (airRemaining <= 0) 
+    				int var6 = (TickHandlerClient.airRemaining - 90) * -1;
+    				if (TickHandlerClient.airRemaining <= 0)
     				{
     					var6 = 90;
     				}
     				
-    				int var7 = (airRemaining2 - 90) * -1;
-    				if (airRemaining2 <= 0) 
+    				int var7 = (TickHandlerClient.airRemaining2 - 90) * -1;
+    				if (TickHandlerClient.airRemaining2 <= 0)
     				{
     					var7 = 90;
     				}
@@ -1083,57 +1083,57 @@ public class ClientProxyCore extends CommonProxyCore
     				GL11.glBindTexture(GL11.GL_TEXTURE_2D, minecraft.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/gui/gui.png"));
     				final Tessellator tessellator = Tessellator.instance;
     				tessellator.startDrawingQuads();
-    				tessellator.addVertexWithUV(i - 29, 33.5 + 23.5, -90D, (85) * 0.00390625F, 		47 * 0.00390625F);
+    				tessellator.addVertexWithUV(i - 29, 33.5 + 23.5, -90D, 85 * 0.00390625F, 		47 * 0.00390625F);
     				tessellator.addVertexWithUV(i - 10, 33.5 + 23.5, -90D, (85 + 19) * 0.00390625F, 	47 * 0.00390625F);
     				tessellator.addVertexWithUV(i - 10, 33.5 - 23.5, -90D, (85 + 19) * 0.00390625F, 	0 * 0.00390625F);
-    				tessellator.addVertexWithUV(i - 29, 33.5 - 23.5, -90D, (85) * 0.00390625F, 		0 * 0.00390625F);
+    				tessellator.addVertexWithUV(i - 29, 33.5 - 23.5, -90D, 85 * 0.00390625F, 		0 * 0.00390625F);
     				tessellator.draw();
     				tessellator.startDrawingQuads();
-    				tessellator.addVertexWithUV(i - 49, 33.5 + 23.5, -90D, (85) * 0.00390625F, 		47 * 0.00390625F);
+    				tessellator.addVertexWithUV(i - 49, 33.5 + 23.5, -90D, 85 * 0.00390625F, 		47 * 0.00390625F);
     				tessellator.addVertexWithUV(i - 30, 33.5 + 23.5, -90D, (85 + 19) * 0.00390625F, 	47 * 0.00390625F);
     				tessellator.addVertexWithUV(i - 30, 33.5 - 23.5, -90D, (85 + 19) * 0.00390625F, 	0 * 0.00390625F);
-    				tessellator.addVertexWithUV(i - 49, 33.5 - 23.5, -90D, (85) * 0.00390625F, 		0 * 0.00390625F);
+    				tessellator.addVertexWithUV(i - 49, 33.5 - 23.5, -90D, 85 * 0.00390625F, 		0 * 0.00390625F);
     				tessellator.draw();
     				GL11.glDepthMask(true);
     				GL11.glEnable(GL11.GL_DEPTH_TEST);
     				GL11.glEnable(GL11.GL_ALPHA_TEST);
     				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
     				
-    				if (var6 > 0 || var6 <= 0) 
+    				if (var6 > 0 || var6 <= 0)
     				{
     					final Tessellator tessellator2 = Tessellator.instance;
 
     					tessellator2.startDrawingQuads();
-        				tessellator.addVertexWithUV(i - 48, 34.5 - 23.5 + (var6 / 2), 	0, (105) * 0.00390625F, 		(var6 / 2) * 0.00390625F);
-        				tessellator.addVertexWithUV(i - 31, 34.5 - 23.5 + (var6 / 2), 	0, (105 + 17) * 0.00390625F, 	(var6 / 2) * 0.00390625F);
+        				tessellator.addVertexWithUV(i - 48, 34.5 - 23.5 + var6 / 2, 	0, 105 * 0.00390625F, 		var6 / 2 * 0.00390625F);
+        				tessellator.addVertexWithUV(i - 31, 34.5 - 23.5 + var6 / 2, 	0, (105 + 17) * 0.00390625F, 	var6 / 2 * 0.00390625F);
         				tessellator.addVertexWithUV(i - 31, 34.5 - 23.5,	 			0, (105 + 17) * 0.00390625F, 	1 * 0.00390625F);
-        				tessellator.addVertexWithUV(i - 48, 34.5 - 23.5, 				0, (105) * 0.00390625F, 		1 * 0.00390625F);
+        				tessellator.addVertexWithUV(i - 48, 34.5 - 23.5, 				0, 105 * 0.00390625F, 		1 * 0.00390625F);
     					tessellator2.draw();
 
     					tessellator2.startDrawingQuads();
-        				tessellator.addVertexWithUV(i - 49, 34.5 - 23.5 + (var6 / 2), 		0, (66) * 0.00390625F, 		(var6 / 2) * 0.00390625F);
-        				tessellator.addVertexWithUV(i - 31, 34.5 - 23.5 + (var6 / 2), 		0, (66 + 17) * 0.00390625F, (var6 / 2) * 0.00390625F);
-        				tessellator.addVertexWithUV(i - 31, 34.5 - 23.5 + (var6 / 2) - 1,	0, (66 + 17) * 0.00390625F, ((var6 / 2) - 1) * 0.00390625F);
-        				tessellator.addVertexWithUV(i - 49, 34.5 - 23.5 + (var6 / 2) - 1, 	0, (66) * 0.00390625F, 		((var6 / 2) - 1) * 0.00390625F);
+        				tessellator.addVertexWithUV(i - 49, 34.5 - 23.5 + var6 / 2, 		0, 66 * 0.00390625F, 		var6 / 2 * 0.00390625F);
+        				tessellator.addVertexWithUV(i - 31, 34.5 - 23.5 + var6 / 2, 		0, (66 + 17) * 0.00390625F, var6 / 2 * 0.00390625F);
+        				tessellator.addVertexWithUV(i - 31, 34.5 - 23.5 + var6 / 2 - 1,	0, (66 + 17) * 0.00390625F, (var6 / 2 - 1) * 0.00390625F);
+        				tessellator.addVertexWithUV(i - 49, 34.5 - 23.5 + var6 / 2 - 1, 	0, 66 * 0.00390625F, 		(var6 / 2 - 1) * 0.00390625F);
     					tessellator2.draw();
     				}
     				
-    				if (var7 > 0 || var7 <= 0) 
+    				if (var7 > 0 || var7 <= 0)
     				{
     					final Tessellator tessellator2 = Tessellator.instance;
 
     					tessellator2.startDrawingQuads();
-        				tessellator.addVertexWithUV(i - 28, 34.5 - 23.5 + (var7 / 2), 	0, (105) * 0.00390625F, 		(var7 / 2) * 0.00390625F);
-        				tessellator.addVertexWithUV(i - 11, 34.5 - 23.5 + (var7 / 2), 	0, (105 + 17) * 0.00390625F, 	(var7 / 2) * 0.00390625F);
+        				tessellator.addVertexWithUV(i - 28, 34.5 - 23.5 + var7 / 2, 	0, 105 * 0.00390625F, 		var7 / 2 * 0.00390625F);
+        				tessellator.addVertexWithUV(i - 11, 34.5 - 23.5 + var7 / 2, 	0, (105 + 17) * 0.00390625F, 	var7 / 2 * 0.00390625F);
         				tessellator.addVertexWithUV(i - 11, 34.5 - 23.5,	 			0, (105 + 17) * 0.00390625F, 	1 * 0.00390625F);
-        				tessellator.addVertexWithUV(i - 28, 34.5 - 23.5, 				0, (105) * 0.00390625F, 		1 * 0.00390625F);
+        				tessellator.addVertexWithUV(i - 28, 34.5 - 23.5, 				0, 105 * 0.00390625F, 		1 * 0.00390625F);
     					tessellator2.draw();
 
     					tessellator2.startDrawingQuads();
-        				tessellator.addVertexWithUV(i - 29, 34.5 - 23.5 + (var7 / 2), 	0, (66) * 0.00390625F, 		(var7 / 2) * 0.00390625F);
-        				tessellator.addVertexWithUV(i - 11, 34.5 - 23.5 + (var7 / 2), 	0, (66 + 17) * 0.00390625F, (var7 / 2) * 0.00390625F);
-        				tessellator.addVertexWithUV(i - 11, 34.5 - 23.5 + (var7 / 2) - 1,	 			0, (66 + 17) * 0.00390625F, ((var7 / 2) - 1) * 0.00390625F);
-        				tessellator.addVertexWithUV(i - 29, 34.5 - 23.5 + (var7 / 2) - 1, 				0, (66) * 0.00390625F, 		((var7 / 2) - 1) * 0.00390625F);
+        				tessellator.addVertexWithUV(i - 29, 34.5 - 23.5 + var7 / 2, 	0, 66 * 0.00390625F, 		var7 / 2 * 0.00390625F);
+        				tessellator.addVertexWithUV(i - 11, 34.5 - 23.5 + var7 / 2, 	0, (66 + 17) * 0.00390625F, var7 / 2 * 0.00390625F);
+        				tessellator.addVertexWithUV(i - 11, 34.5 - 23.5 + var7 / 2 - 1,	 			0, (66 + 17) * 0.00390625F, (var7 / 2 - 1) * 0.00390625F);
+        				tessellator.addVertexWithUV(i - 29, 34.5 - 23.5 + var7 / 2 - 1, 				0, 66 * 0.00390625F, 		(var7 / 2 - 1) * 0.00390625F);
     					tessellator2.draw();
     				}
     			}
@@ -1144,7 +1144,7 @@ public class ClientProxyCore extends CommonProxyCore
         {
             var7 *= 0.5D;
             var9 *= 0.5D;
-            Tessellator t = Tessellator.instance;
+            final Tessellator t = Tessellator.instance;
             t.startDrawingQuads();
             t.addVertexWithUV(var1 - var7, var3 + var9, var5, 0.0D, 1.0D);
             t.addVertexWithUV(var1 + var7, var3 + var9, var5, 1.0D, 1.0D);
@@ -1189,7 +1189,7 @@ public class ClientProxyCore extends CommonProxyCore
     					final float var13 = var6 + var10 * 24;
     					final float var14 = var7 + (var11 + 1) * 48;
     					final float var15 = var7 + var11 * 24;
-    					hooblah(par2, par4, par6);
+    					TickHandlerClient.hooblah(par2, par4, par6);
     					final float var16 = 72 / 256.0F;
     					final float var17 = 48 / 256.0F;
     					final float var18 = 0 / 256.0F;
@@ -1253,7 +1253,7 @@ public class ClientProxyCore extends CommonProxyCore
     					final float var13 = var6 + var10 * 102;
     					final float var14 = var7 + (var11 + 1) * 14;
     					final float var15 = var7 + var11 * 14;
-    					hooblah2(par2, par4, par6);
+    					TickHandlerClient.hooblah2(par2, par4, par6);
     					final float var16 = 256 / 256.0F;
     					final float var17 = 154 / 256.0F;
     					final float var18 = 14 / 256.0F;
@@ -1317,7 +1317,7 @@ public class ClientProxyCore extends CommonProxyCore
     					final float var13 = var6 + var10 * health + 1;
     					final float var14 = var7 + (var11 + 1) * 14 - 1;
     					final float var15 = var7 + var11 * 14 - 1;
-    					hooblah2(par2, par4, par6);
+    					TickHandlerClient.hooblah2(par2, par4, par6);
     					final float var16 = (154 + health) / 256.0F;
     					final float var17 = 154 / 256.0F;
     					final float var18 = 28 / 256.0F;
@@ -1427,7 +1427,7 @@ public class ClientProxyCore extends CommonProxyCore
             }
         }
 
-    	public static void hooblah(double par2, double par4, double par6) 
+    	public static void hooblah(double par2, double par4, double par6)
     	{
     		final float var8 = 0.5F;
     		final float var9 = 0.016666668F * var8;
@@ -1445,7 +1445,7 @@ public class ClientProxyCore extends CommonProxyCore
     		GL11.glBindTexture(GL11.GL_TEXTURE_2D, FMLClientHandler.instance().getClient().renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/entities/overhead.png"));
     	}
 
-    	public static void hooblah2(double par2, double par4, double par6) 
+    	public static void hooblah2(double par2, double par4, double par6)
     	{
     		final float var8 = 0.5F;
     		final float var9 = 0.016666668F * var8;
@@ -1467,7 +1467,7 @@ public class ClientProxyCore extends CommonProxyCore
         {
             final double var10 = par1EntityLiving.getDistanceSqToEntity(RenderManager.instance.livingPlayer);
 
-            if (var10 <= (par9 * par9))
+            if (var10 <= par9 * par9)
             {
                 final FontRenderer var12 = RenderManager.instance.getFontRenderer();
                 final float var13 = 1.6F;
@@ -1495,10 +1495,10 @@ public class ClientProxyCore extends CommonProxyCore
                 var15.startDrawingQuads();
                 final int var17 = var12.getStringWidth(par2Str) / 2;
                 var15.setColorRGBA_F(0.0F, 0.0F, 0.0F, 0.25F);
-                var15.addVertex((-var17 - 1), (-1 + var16), 0.0D);
-                var15.addVertex((-var17 - 1), (8 + var16), 0.0D);
-                var15.addVertex((var17 + 1), (8 + var16), 0.0D);
-                var15.addVertex((var17 + 1), (-1 + var16), 0.0D);
+                var15.addVertex(-var17 - 1, -1 + var16, 0.0D);
+                var15.addVertex(-var17 - 1, 8 + var16, 0.0D);
+                var15.addVertex(var17 + 1, 8 + var16, 0.0D);
+                var15.addVertex(var17 + 1, -1 + var16, 0.0D);
                 var15.draw();
                 GL11.glEnable(GL11.GL_TEXTURE_2D);
                 var12.drawString(par2Str, -var12.getStringWidth(par2Str) / 2, var16, 553648127);
@@ -1539,7 +1539,7 @@ public class ClientProxyCore extends CommonProxyCore
         }
 
     	@Override
-    	public EnumSet<TickType> ticks() 
+    	public EnumSet<TickType> ticks()
     	{
     		return EnumSet.of(TickType.RENDER, TickType.CLIENT);
     	}
@@ -1552,19 +1552,19 @@ public class ClientProxyCore extends CommonProxyCore
     	public static KeyBinding openSpaceshipInv = new KeyBinding("Open Spaceship Inventory", Keyboard.KEY_F);
     	public static KeyBinding toggleAdvGoggles = new KeyBinding("Toggle Advanced Sensor Goggles", Keyboard.KEY_K);
 
-        public GCKeyHandler() 
+        public GCKeyHandler()
         {
-            super(new KeyBinding[] {tankRefill, galaxyMap, openSpaceshipInv, toggleAdvGoggles}, new boolean[] {false, false, false, false});
+            super(new KeyBinding[] {GCKeyHandler.tankRefill, GCKeyHandler.galaxyMap, GCKeyHandler.openSpaceshipInv, GCKeyHandler.toggleAdvGoggles}, new boolean[] {false, false, false, false});
         }
 
         @Override
-        public String getLabel() 
+        public String getLabel()
         {
             return "Galacticraft Keybinds";
         }
 
         @Override
-        public void keyDown(EnumSet<TickType> types, KeyBinding kb, boolean tickEnd, boolean isRepeat) 
+        public void keyDown(EnumSet<TickType> types, KeyBinding kb, boolean tickEnd, boolean isRepeat)
         {
         	final Minecraft minecraft = FMLClientHandler.instance().getClient();
         	
@@ -1610,7 +1610,7 @@ public class ClientProxyCore extends CommonProxyCore
             }
         	
 //        	int key = -1;
-//        	
+//
 //        	switch (kb.keyCode)
 //        	{
 //        	case Keyboard.KEY_W:
@@ -1622,7 +1622,7 @@ public class ClientProxyCore extends CommonProxyCore
 //        	default:
 //        		handled = false;
 //        	}
-//        	
+//
 //        	EntityPlayer player = minecraft.thePlayer;
 //    		Entity entityTest  = player.ridingEntity;
 //
@@ -1662,7 +1662,7 @@ public class ClientProxyCore extends CommonProxyCore
         }
 
         @Override
-        public void keyUp(EnumSet<TickType> types, KeyBinding kb, boolean tickEnd) 
+        public void keyUp(EnumSet<TickType> types, KeyBinding kb, boolean tickEnd)
         {
         	if (tickEnd)
     			return;
@@ -1675,7 +1675,7 @@ public class ClientProxyCore extends CommonProxyCore
         }
 
         @Override
-        public EnumSet<TickType> ticks() 
+        public EnumSet<TickType> ticks()
         {
             return EnumSet.of(TickType.CLIENT);
         }

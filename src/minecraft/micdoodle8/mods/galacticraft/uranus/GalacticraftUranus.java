@@ -47,20 +47,20 @@ public class GalacticraftUranus implements IGalacticraftSubMod
 		
 		new GCEuropaConfigManager(new File(event.getModConfigurationDirectory(), "Galacticraft/uranus.conf"));
 		
-		proxy.preInit(event);
+		GalacticraftUranus.proxy.preInit(event);
 	}
 
 	@Init
 	public void load(FMLInitializationEvent event)
 	{
-		proxy.init(event);
+		GalacticraftUranus.proxy.init(event);
 	}
 
 	@PostInit
 	public void postLoad(FMLPostInitializationEvent event)
 	{
-		proxy.postInit(event);
-		proxy.registerRenderInformation();
+		GalacticraftUranus.proxy.postInit(event);
+		GalacticraftUranus.proxy.registerRenderInformation();
 	}
 	
 	@ServerStarted
@@ -69,19 +69,19 @@ public class GalacticraftUranus implements IGalacticraftSubMod
 	}
 
 	@Override
-	public String getDimensionName() 
+	public String getDimensionName()
 	{
 		return "Uranus";
 	}
 
 	@Override
-	public boolean reachableDestination() 
+	public boolean reachableDestination()
 	{
 		return false;
 	}
 
 	@Override
-	public IGalaxy getParentGalaxy() 
+	public IGalaxy getParentGalaxy()
 	{
 		return GalacticraftCore.galaxyMilkyWay;
 	}

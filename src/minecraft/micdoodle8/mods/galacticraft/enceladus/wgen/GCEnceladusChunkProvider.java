@@ -9,8 +9,6 @@ import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySkeleton;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpider;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityZombie;
 import micdoodle8.mods.galacticraft.core.wgen.GCCoreChunk;
-import micdoodle8.mods.galacticraft.io.blocks.GCIoBlocks;
-import micdoodle8.mods.galacticraft.enceladus.blocks.GCEnceladusBlock;
 import micdoodle8.mods.galacticraft.enceladus.blocks.GCEnceladusBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSand;
@@ -101,35 +99,35 @@ public class GCEnceladusChunkProvider extends ChunkProviderGenerate
 
 		for (int var8 = 0; var8 < 16; ++var8)
 		{
-			for (int var9 = 0; var9 < 16; ++var9) 
+			for (int var9 = 0; var9 < 16; ++var9)
 			{
 				final BiomeGenBase var10 = par4ArrayOfBiomeGenBase[var9 + var8 * 16];
 				final float var11 = var10.getFloatTemperature();
 				final int var12 = (int) (this.stoneNoise[var8 + var9 * 16] / 3.0D + 3.0D + this.rand.nextDouble() * 0.25D);
 				int var13 = -1;
-				int var14 = topBlockID;
+				final int var14 = topBlockID;
 				final int var14m = topBlockMeta;
-				int var15 = fillBlockID;
+				final int var15 = fillBlockID;
 				final int var15m = fillBlockMeta;
 
-				for (int var16 = 127; var16 >= 0; --var16) 
+				for (int var16 = 127; var16 >= 0; --var16)
 				{
 					final int index = (var9 * 16 + var8) * 128 + var16;
 					arrayOfMeta[index] = 0;
 
-					if (var16 <= 0 + this.rand.nextInt(5)) 
+					if (var16 <= 0 + this.rand.nextInt(5))
 					{
 						arrayOfIDs[index] = (short) Block.bedrock.blockID;
 						arrayOfMeta[index] = 0;
-					} 
-					else 
+					}
+					else
 					{
 						final int var18 = arrayOfIDs[index];
 
-						if (var18 == 0) 
+						if (var18 == 0)
 						{
 							var13 = -1;
-						} 
+						}
 						else if (var18 == GCEnceladusBlocks.block.blockID)
 						{
 							arrayOfMeta[index] = 2;
@@ -138,17 +136,17 @@ public class GCEnceladusChunkProvider extends ChunkProviderGenerate
 							{
 								var13 = var12;
 
-								if (var16 >= var5 - 1) 
+								if (var16 >= var5 - 1)
 								{
 									arrayOfIDs[index] = var14;
 									arrayOfMeta[index] = var14m;
-								} 
+								}
 								else
 								{
 									arrayOfIDs[index] = var15;
 									arrayOfMeta[index] = var15m;
 								}
-							} 
+							}
 							else if (var13 > 0)
 							{
 								--var13;
@@ -175,7 +173,7 @@ public class GCEnceladusChunkProvider extends ChunkProviderGenerate
 		final Chunk var4 = new GCCoreChunk(this.worldObj, ids, meta, par1, par2);
 		final byte[] var5 = var4.getBiomeArray();
 
-		for (int var6 = 0; var6 < var5.length; ++var6) 
+		for (int var6 = 0; var6 < var5.length; ++var6)
 		{
 			var5[var6] = (byte) this.biomesForGeneration[var6].biomeID;
 		}
@@ -272,13 +270,13 @@ public class GCEnceladusChunkProvider extends ChunkProviderGenerate
 			par1ArrayOfDouble = new double[par5 * par6 * par7];
 		}
 
-		if (this.field_35388_l == null) 
+		if (this.field_35388_l == null)
 		{
 			this.field_35388_l = new float[25];
 
 			for (int var8 = -2; var8 <= 2; ++var8)
 			{
-				for (int var9 = -2; var9 <= 2; ++var9) 
+				for (int var9 = -2; var9 <= 2; ++var9)
 				{
 					final float var10 = 10.0F / MathHelper.sqrt_float(var8 * var8 + var9 * var9 + 0.2F);
 					this.field_35388_l[var8 + 2 + (var9 + 2) * 5] = var10;
@@ -298,9 +296,9 @@ public class GCEnceladusChunkProvider extends ChunkProviderGenerate
 		int var12 = 0;
 		int var13 = 0;
 
-		for (int var14 = 0; var14 < par5; ++var14) 
+		for (int var14 = 0; var14 < par5; ++var14)
 		{
-			for (int var15 = 0; var15 < par7; ++var15) 
+			for (int var15 = 0; var15 < par7; ++var15)
 			{
 				float var16 = 0.0F;
 				float var17 = 0.0F;
@@ -315,7 +313,7 @@ public class GCEnceladusChunkProvider extends ChunkProviderGenerate
 						final BiomeGenBase var23 = this.biomesForGeneration[var14 + var21 + 2 + (var15 + var22 + 2) * (par5 + 5)];
 						float var24 = this.field_35388_l[var21 + 2 + (var22 + 2) * 5] / (var23.minHeight + 2.0F);
 
-						if (var23.minHeight > var20.minHeight) 
+						if (var23.minHeight > var20.minHeight)
 						{
 							var24 /= 2.0F;
 						}
@@ -339,7 +337,7 @@ public class GCEnceladusChunkProvider extends ChunkProviderGenerate
 
 				var47 = var47 * 3.0D - 2.0D;
 
-				if (var47 < 0.0D) 
+				if (var47 < 0.0D)
 				{
 					var47 /= 2.0D;
 
@@ -351,7 +349,7 @@ public class GCEnceladusChunkProvider extends ChunkProviderGenerate
 					var47 /= 1.4D;
 					var47 /= 2.0D;
 				}
-				else 
+				else
 				{
 					if (var47 > 1.0D)
 					{
@@ -382,15 +380,15 @@ public class GCEnceladusChunkProvider extends ChunkProviderGenerate
 					final double var36 = this.noise2[var12] / 512.0D;
 					final double var38 = (this.noise3[var12] / 10.0D + 1.0D) / 2.0D;
 
-					if (var38 < 0.0D) 
+					if (var38 < 0.0D)
 					{
 						var30 = var34;
-					} 
+					}
 					else if (var38 > 1.0D)
 					{
 						var30 = var36;
-					} 
-					else 
+					}
+					else
 					{
 						var30 = var34 + (var36 - var34) * var38;
 					}
@@ -448,7 +446,7 @@ public class GCEnceladusChunkProvider extends ChunkProviderGenerate
 	}
 
 	@Override
-	public boolean saveChunks(boolean par1, IProgressUpdate par2IProgressUpdate) 
+	public boolean saveChunks(boolean par1, IProgressUpdate par2IProgressUpdate)
 	{
 		return true;
 	}
@@ -472,7 +470,7 @@ public class GCEnceladusChunkProvider extends ChunkProviderGenerate
 	}
 
 	@Override
-	public List getPossibleCreatures(EnumCreatureType par1EnumCreatureType,	int i, int j, int k) 
+	public List getPossibleCreatures(EnumCreatureType par1EnumCreatureType,	int i, int j, int k)
 	{
 		if (/*j < 39 && */par1EnumCreatureType == EnumCreatureType.monster)
 		{

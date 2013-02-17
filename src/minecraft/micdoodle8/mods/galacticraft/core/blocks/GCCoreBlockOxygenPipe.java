@@ -14,21 +14,21 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import cpw.mods.fml.relauncher.SideOnly;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreBlockOxygenPipe extends BlockContainer
 {
 	private final float oxygenPipeMin = 0.4F;
 	private final float oxygenPipeMax = 0.6F;
 	
-	public GCCoreBlockOxygenPipe(int i, int j) 
+	public GCCoreBlockOxygenPipe(int i, int j)
 	{
 		super(i, j, Material.glass);
 	}
 
 	@Override
-	public int getRenderType() 
+	public int getRenderType()
 	{
 		return GalacticraftCore.proxy.getGCOxygenPipeRenderID();
 	}
@@ -40,13 +40,13 @@ public class GCCoreBlockOxygenPipe extends BlockContainer
 	}
 
 	@Override
-	public boolean renderAsNormalBlock() 
+	public boolean renderAsNormalBlock()
 	{
 		return false;
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World var1) 
+	public TileEntity createNewTileEntity(World var1)
 	{
 		return new GCCoreTileEntityOxygenPipe();
 	}
@@ -76,17 +76,17 @@ public class GCCoreBlockOxygenPipe extends BlockContainer
 //			{
 //				return this.blockIndexInTexture + 1;
 //			}
-//			
+//
 //			if (side == 0 && (world.getBlockId(x, y - 1, z) == 0) && (world.getBlockId(x, y + 1, z) == this.blockID))
 //			{
 //				return this.blockIndexInTexture - 1;
 //			}
-//			
+//
 //			if (side == 1 && (world.getBlockId(x, y + 1, z) == 0) && (world.getBlockId(x, y - 1, z) == this.blockID))
 //			{
 //				return this.blockIndexInTexture - 1;
 //			}
-//			
+//
 //			if (side == 2 && world.getBlockId(x, y, z - 1) == this.blockID)
 //			{
 //				return 25;
@@ -95,7 +95,7 @@ public class GCCoreBlockOxygenPipe extends BlockContainer
 //			{
 //				return this.blockIndexInTexture - 1;
 //			}
-//			
+//
 //			if (side == 3 && world.getBlockId(x, y, z + 1) == this.blockID)
 //			{
 //				return 25;
@@ -104,7 +104,7 @@ public class GCCoreBlockOxygenPipe extends BlockContainer
 //			{
 //				return this.blockIndexInTexture - 1;
 //			}
-//			
+//
 //			if (side == 4 && world.getBlockId(x - 1, y, z) == this.blockID)
 //			{
 //				return 25;
@@ -113,7 +113,7 @@ public class GCCoreBlockOxygenPipe extends BlockContainer
 //			{
 //				return this.blockIndexInTexture - 1;
 //			}
-//			
+//
 //			if (side == 5 && world.getBlockId(x + 1, y, z) == this.blockID)
 //			{
 //				return 25;
@@ -122,18 +122,18 @@ public class GCCoreBlockOxygenPipe extends BlockContainer
 //			{
 //				return this.blockIndexInTexture - 1;
 //			}
-//			
+//
 //			if ((side == 0 || side == 1) && (world.getBlockId(x, y, z + 1) == this.blockID || world.getBlockId(x, y, z - 1) == this.blockID))
 //			{
 //				return this.blockIndexInTexture + 1;
 //			}
-//			
+//
 //			return this.blockIndexInTexture;
 //		}
     }
 	
 	@Override
-	public void addCollidingBlockToList(World world, int i, int j, int k, AxisAlignedBB axisalignedbb, List arraylist, Entity par7Entity) 
+	public void addCollidingBlockToList(World world, int i, int j, int k, AxisAlignedBB axisalignedbb, List arraylist, Entity par7Entity)
 	{
 		this.setBlockBounds(this.oxygenPipeMin, this.oxygenPipeMin, this.oxygenPipeMin, this.oxygenPipeMax, this.oxygenPipeMax, this.oxygenPipeMax);
 		super.addCollidingBlockToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
@@ -180,7 +180,7 @@ public class GCCoreBlockOxygenPipe extends BlockContainer
 	}
 	
 	@Override
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int i, int j, int k) 
+	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int i, int j, int k)
 	{
 		float xMin = this.oxygenPipeMin, xMax = this.oxygenPipeMax, yMin = this.oxygenPipeMin, yMax = this.oxygenPipeMax, zMin = this.oxygenPipeMin, zMax = this.oxygenPipeMax;
 
@@ -207,7 +207,7 @@ public class GCCoreBlockOxygenPipe extends BlockContainer
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int i, int j, int k) 
+	public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int i, int j, int k)
 	{
 		return this.getCollisionBoundingBoxFromPool(world, i, j, k);
 	}
@@ -237,7 +237,7 @@ public class GCCoreBlockOxygenPipe extends BlockContainer
     }
 	
 	@Override
-	public MovingObjectPosition collisionRayTrace(World world, int i, int j, int k, Vec3 vec3d, Vec3 vec3d1) 
+	public MovingObjectPosition collisionRayTrace(World world, int i, int j, int k, Vec3 vec3d, Vec3 vec3d1)
 	{
 		float xMin = this.oxygenPipeMin, xMax = this.oxygenPipeMax, yMin = this.oxygenPipeMin, yMax = this.oxygenPipeMax, zMin = this.oxygenPipeMin, zMax = this.oxygenPipeMax;
 

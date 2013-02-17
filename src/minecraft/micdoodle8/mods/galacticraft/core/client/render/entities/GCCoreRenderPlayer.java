@@ -1,12 +1,10 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
 import micdoodle8.mods.galacticraft.API.GCBlockBreathableAir;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpaceship;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.src.RenderPlayerAPI;
 import net.minecraft.src.RenderPlayerBase;
 import net.minecraft.util.MathHelper;
@@ -17,7 +15,7 @@ import cpw.mods.fml.client.FMLClientHandler;
 
 public class GCCoreRenderPlayer extends RenderPlayerBase
 {
-	public GCCoreRenderPlayer(RenderPlayerAPI var1) 
+	public GCCoreRenderPlayer(RenderPlayerAPI var1)
 	{
 		super(var1);
 	}
@@ -25,7 +23,7 @@ public class GCCoreRenderPlayer extends RenderPlayerBase
 	@Override
     public void doRenderShadowAndFire(Entity var1, double var2, double var4, double var6, float var8, float var9)
     {
-    	if (isAABBInBreathableAirBlock())
+    	if (this.isAABBInBreathableAirBlock())
     	{
             if (var1.canRenderOnFire())
             {
@@ -41,25 +39,25 @@ public class GCCoreRenderPlayer extends RenderPlayerBase
     private void renderEntityOnFire(Entity par1Entity, double par2, double par4, double par6, float par8)
     {
         GL11.glDisable(GL11.GL_LIGHTING);
-        int var9 = Block.fire.blockIndexInTexture;
-        int var10 = (var9 & 15) << 4;
-        int var11 = var9 & 240;
-        float var12 = (float)var10 / 256.0F;
-        float var13 = ((float)var10 + 15.99F) / 256.0F;
-        float var14 = (float)var11 / 256.0F;
-        float var15 = ((float)var11 + 15.99F) / 256.0F;
+        final int var9 = Block.fire.blockIndexInTexture;
+        final int var10 = (var9 & 15) << 4;
+        final int var11 = var9 & 240;
+        float var12 = var10 / 256.0F;
+        float var13 = (var10 + 15.99F) / 256.0F;
+        float var14 = var11 / 256.0F;
+        float var15 = (var11 + 15.99F) / 256.0F;
         GL11.glPushMatrix();
         GL11.glTranslatef((float)par2, (float)par4, (float)par6);
-        float var16 = par1Entity.width * 1.4F;
+        final float var16 = par1Entity.width * 1.4F;
         GL11.glScalef(var16, var16, var16);
         this.loadTexture("/terrain.png");
-        Tessellator var17 = Tessellator.instance;
+        final Tessellator var17 = Tessellator.instance;
         float var18 = 0.5F;
-        float var19 = 0.0F;
+        final float var19 = 0.0F;
         float var20 = par1Entity.height / var16;
         float var21 = (float)(par1Entity.posY - par1Entity.boundingBox.minY);
         GL11.glRotatef(-RenderManager.instance.playerViewY, 0.0F, 1.0F, 0.0F);
-        GL11.glTranslatef(0.0F, 0.0F, -0.3F + (float)((int)var20) * 0.02F);
+        GL11.glTranslatef(0.0F, 0.0F, -0.3F + (int)var20 * 0.02F);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         float var22 = 0.0F;
         int var23 = 0;
@@ -69,30 +67,30 @@ public class GCCoreRenderPlayer extends RenderPlayerBase
         {
             if (var23 % 2 == 0)
             {
-                var12 = (float)var10 / 256.0F;
-                var13 = ((float)var10 + 15.99F) / 256.0F;
-                var14 = (float)var11 / 256.0F;
-                var15 = ((float)var11 + 15.99F) / 256.0F;
+                var12 = var10 / 256.0F;
+                var13 = (var10 + 15.99F) / 256.0F;
+                var14 = var11 / 256.0F;
+                var15 = (var11 + 15.99F) / 256.0F;
             }
             else
             {
-                var12 = (float)var10 / 256.0F;
-                var13 = ((float)var10 + 15.99F) / 256.0F;
-                var14 = (float)(var11 + 16) / 256.0F;
-                var15 = ((float)(var11 + 16) + 15.99F) / 256.0F;
+                var12 = var10 / 256.0F;
+                var13 = (var10 + 15.99F) / 256.0F;
+                var14 = (var11 + 16) / 256.0F;
+                var15 = ((var11 + 16) + 15.99F) / 256.0F;
             }
 
             if (var23 / 2 % 2 == 0)
             {
-                float var24 = var13;
+                final float var24 = var13;
                 var13 = var12;
                 var12 = var24;
             }
 
-            var17.addVertexWithUV((double)(var18 - var19), (double)(0.0F - var21), (double)var22, (double)var13, (double)var15);
-            var17.addVertexWithUV((double)(-var18 - var19), (double)(0.0F - var21), (double)var22, (double)var12, (double)var15);
-            var17.addVertexWithUV((double)(-var18 - var19), (double)(1.4F - var21), (double)var22, (double)var12, (double)var14);
-            var17.addVertexWithUV((double)(var18 - var19), (double)(1.4F - var21), (double)var22, (double)var13, (double)var14);
+            var17.addVertexWithUV((var18 - var19), (0.0F - var21), var22, var13, var15);
+            var17.addVertexWithUV((-var18 - var19), (0.0F - var21), var22, var12, var15);
+            var17.addVertexWithUV((-var18 - var19), (1.4F - var21), var22, var12, var14);
+            var17.addVertexWithUV((var18 - var19), (1.4F - var21), var22, var13, var14);
             var20 -= 0.45F;
             var21 -= 0.45F;
             var18 *= 0.9F;

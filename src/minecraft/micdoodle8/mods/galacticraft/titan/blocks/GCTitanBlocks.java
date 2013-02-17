@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.titan.blocks;
 
-import net.minecraft.block.Block;
 import micdoodle8.mods.galacticraft.titan.client.ClientProxyTitan;
+import net.minecraft.block.Block;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 /**
@@ -10,21 +10,21 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
  *  All rights reserved.
  *
  */
-public class GCTitanBlocks 
+public class GCTitanBlocks
 {
-	public static void initBlocks() 
-	{	
+	public static void initBlocks()
+	{
 	}
 
-	public static void setHarvestLevels() 
+	public static void setHarvestLevels()
 	{
 	}
 	
-	public static void registerBlocks() 
+	public static void registerBlocks()
 	{
 	}
 
-	public static void addNames() 
+	public static void addNames()
 	{
 	}
 	

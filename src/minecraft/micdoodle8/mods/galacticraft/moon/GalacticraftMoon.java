@@ -54,7 +54,7 @@ public class GalacticraftMoon implements IGalacticraftSubMod
         GCMoonUtil.addCraftingRecipes();
 	}
 
-	public void postLoad(FMLPostInitializationEvent event) 
+	public void postLoad(FMLPostInitializationEvent event)
 	{
 		
 	}
@@ -67,7 +67,7 @@ public class GalacticraftMoon implements IGalacticraftSubMod
 	public class CommonTickHandler implements ITickHandler
 	{
 		@Override
-		public void tickStart(EnumSet<TickType> type, Object... tickData) 
+		public void tickStart(EnumSet<TickType> type, Object... tickData)
 		{
 			if (type.equals(EnumSet.of(TickType.WORLD)))
             {
@@ -79,32 +79,32 @@ public class GalacticraftMoon implements IGalacticraftSubMod
 		public void tickEnd(EnumSet<TickType> type, Object... tickData) { }
 
 		@Override
-		public EnumSet<TickType> ticks() 
+		public EnumSet<TickType> ticks()
 		{
 			return EnumSet.of(TickType.WORLD);
 		}
 
 		@Override
-		public String getLabel() 
+		public String getLabel()
 		{
 			return "Galacticraft Moon Common";
 		}
 	}
 
 	@Override
-	public String getDimensionName() 
+	public String getDimensionName()
 	{
 		return "Moon";
 	}
 
 	@Override
-	public boolean reachableDestination() 
+	public boolean reachableDestination()
 	{
 		return true;
 	}
 
 	@Override
-	public IGalaxy getParentGalaxy() 
+	public IGalaxy getParentGalaxy()
 	{
 		return GalacticraftCore.galaxyMilkyWay;
 	}

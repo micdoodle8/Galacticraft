@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.API;
 
-public interface IMapPlanet 
+public interface IMapPlanet
 {
 	/**
 	 * Used for rendering planet on map.
@@ -17,7 +17,7 @@ public interface IMapPlanet
 	public float getDistanceFromCenter();
 	
 	/**
-	 * Get the sinusoidal phase shift (offset from default planet revolution) when rendering the 
+	 * Get the sinusoidal phase shift (offset from default planet revolution) when rendering the
 	 * planet on the map.
 	 * 
 	 * @return Phase shift of planet for planet's revolution around the sun.

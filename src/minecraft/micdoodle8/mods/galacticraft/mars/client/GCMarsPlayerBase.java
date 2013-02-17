@@ -13,34 +13,34 @@
 //
 ///**
 // * Copyright 2012-2013, micdoodle8
-// * 
+// *
 // *  All rights reserved.
 // *
 // */
 //public class GCMarsPlayerBase extends PlayerBase
 //{
 //	private Random rand = new Random();
-//	
+//
 //	private int heartbeatCooldown;
-//	
-//	public GCMarsPlayerBase(PlayerAPI var1) 
+//
+//	public GCMarsPlayerBase(PlayerAPI var1)
 //	{
 //		super(var1);
 //		this.heartbeatCooldown = this.rand.nextInt(2000);
 //	}
-//	
+//
 //	@Override
 //	public void onLivingUpdate()
 //    {
 //		super.onLivingUpdate();
-//		
+//
 //		if (isNearCreeperDungeon())
 //		{
 //			if (this.heartbeatCooldown > 0)
 //			{
 //				this.heartbeatCooldown--;
 //			}
-//			
+//
 //			if (this.heartbeatCooldown == 0)
 //			{
 //				FMLClientHandler.instance().getClient().sndManager.playSoundFX("creepernest.heartbeat", 1F, 1F);
@@ -48,7 +48,7 @@
 //			}
 //		}
 //    }
-//	
+//
 //	private boolean isNearCreeperDungeon()
 //	{
 //		for (int i = MathHelper.floor_double(this.player.posX) - 5; i < this.player.posX + 6; i++)
@@ -64,7 +64,7 @@
 //				}
 //			}
 //		}
-//		
+//
 //		return false;
 //	}
 //
@@ -91,7 +91,7 @@
 //			super.moveEntityWithHeading(par1, par2);
 //		}
 //    }
-//	
+//
 //	public void moveEntityWithHeading2(float par1, float par2)
 //	{
 //        double var9 = player.posY;
@@ -101,7 +101,7 @@
 //        player.motionY *= 0.5D;
 //        player.motionZ *= 0.5D;
 //        player.motionY -= 0.02D;
-//        
+//
 //        if (FMLClientHandler.instance().getClient().gameSettings.keyBindJump.pressed)
 //        {
 //            player.motionY += 0.035D;
@@ -112,7 +112,7 @@
 //        	player.motionY = 0.30000001192092896D;
 //        }
 //	}
-//	
+//
 //	public void jump()
 //    {
 //		if (!ClientProxyMars.handleBacterialMovement(player))

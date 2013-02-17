@@ -7,9 +7,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.IBlockAccess;
-import cpw.mods.fml.relauncher.SideOnly;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCIoBlock extends Block
 {
@@ -19,9 +18,9 @@ public class GCIoBlock extends Block
 	}
 
 	@Override
-	public int getBlockTextureFromSideAndMetadata(int side, int meta) 
+	public int getBlockTextureFromSideAndMetadata(int side, int meta)
 	{
-		switch (meta) 
+		switch (meta)
 		{
 		case 0:
 			return 3;
@@ -37,7 +36,7 @@ public class GCIoBlock extends Block
 	}
 
 	@Override
-	public int idDropped(int meta, Random random, int par3) 
+	public int idDropped(int meta, Random random, int par3)
 	{
 		switch (meta)
 		{

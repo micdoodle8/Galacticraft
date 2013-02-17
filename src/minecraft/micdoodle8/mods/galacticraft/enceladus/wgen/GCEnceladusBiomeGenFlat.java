@@ -12,7 +12,7 @@ public class GCEnceladusBiomeGenFlat extends GCEnceladusBiomeGenBase
 {
     public GCEnceladusBiomeGenFlat(int par1)
     {
-        super(par1); 
+        super(par1);
         this.setBiomeName("enceladusFlat");
         this.setColor(16711680);
         this.minHeight = 2.5F;

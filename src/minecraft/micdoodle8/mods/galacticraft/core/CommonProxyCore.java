@@ -10,7 +10,6 @@ import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiRocketBench;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiRocketRefill;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiTankRefill;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpaceship;
-import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerBase;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreContainerAirDistributor;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreContainerBuggyBench;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreContainerRocketBench;
@@ -19,13 +18,11 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreContainerTankRefill;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreInventoryTankRefill;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenDistributor;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.stats.StatBase;
 import net.minecraft.world.World;
 
 import com.google.common.collect.Lists;
 
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -79,7 +76,7 @@ public class CommonProxyCore implements IGuiHandler
 		return -1;
 	}
 
-	public int getGCTreasureChestRenderID() 
+	public int getGCTreasureChestRenderID()
 	{
 		return -1;
 	}
@@ -121,7 +118,7 @@ public class CommonProxyCore implements IGuiHandler
     public static List<GCCoreInventoryTankRefill> airTanks = Lists.newArrayList();
 	
 	@Override
-	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) 
+	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
 	{
 		if (ID == GCCoreConfigManager.idGuiTankRefill)
 		{
@@ -143,7 +140,7 @@ public class CommonProxyCore implements IGuiHandler
 		}
 		else if (ID == GCCoreConfigManager.idGuiSpaceshipInventory && player.ridingEntity != null && player.ridingEntity instanceof GCCoreEntitySpaceship)
 		{
-			return new GCCoreContainerRocketRefill(player.inventory, ((GCCoreEntitySpaceship) player.ridingEntity), ((GCCoreEntitySpaceship) player.ridingEntity).getSpaceshipType());
+			return new GCCoreContainerRocketRefill(player.inventory, (GCCoreEntitySpaceship) player.ridingEntity, ((GCCoreEntitySpaceship) player.ridingEntity).getSpaceshipType());
 		}
 		
 		return null;
@@ -176,7 +173,7 @@ public class CommonProxyCore implements IGuiHandler
 		}
 		else if (ID == GCCoreConfigManager.idGuiSpaceshipInventory && player.ridingEntity != null && player.ridingEntity instanceof GCCoreEntitySpaceship)
 		{
-			return new GCCoreGuiRocketRefill(player.inventory, ((GCCoreEntitySpaceship) player.ridingEntity), ((GCCoreEntitySpaceship) player.ridingEntity).getSpaceshipType());
+			return new GCCoreGuiRocketRefill(player.inventory, (GCCoreEntitySpaceship) player.ridingEntity, ((GCCoreEntitySpaceship) player.ridingEntity).getSpaceshipType());
 		}
 		else
 		{

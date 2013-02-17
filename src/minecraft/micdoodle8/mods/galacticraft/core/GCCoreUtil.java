@@ -41,12 +41,13 @@ import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 
-public class GCCoreUtil 
+public class GCCoreUtil
 {
 	public static void addCraftingRecipes()
 	{
@@ -334,11 +335,11 @@ public class GCCoreUtil
         final ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         ObjectOutputStream data = null;
         
-		try 
+		try
 		{
 			data = new ObjectOutputStream(bytes);
-		} 
-		catch (IOException e1) 
+		}
+		catch (final IOException e1)
 		{
 			e1.printStackTrace();
 		}
@@ -353,7 +354,7 @@ public class GCCoreUtil
                 {
                     for (final Object obj : input)
                     {
-                        writeObjectToStream(obj, data);
+                        GCCoreUtil.writeObjectToStream(obj, data);
                     }
                 }
         	}
@@ -383,7 +384,7 @@ public class GCCoreUtil
             {
                 for (final Object obj : input)
                 {
-                    writeObjectToStream(obj, data);
+                    GCCoreUtil.writeObjectToStream(obj, data);
                 }
             }
 
@@ -409,7 +410,7 @@ public class GCCoreUtil
         {
             for (final Class curClass : packetDataTypes)
             {
-                result.add(readObjectFromStream(data, curClass));
+                result.add(GCCoreUtil.readObjectFromStream(data, curClass));
             }
         }
         catch (final IOException e)
@@ -428,7 +429,7 @@ public class GCCoreUtil
         {
             for (final Class curClass : packetDataTypes)
             {
-                result.add(readObjectFromStream(data, curClass));
+                result.add(GCCoreUtil.readObjectFromStream(data, curClass));
             }
         }
         catch (final IOException e)
@@ -529,11 +530,11 @@ public class GCCoreUtil
     {
     	if (curClass.equals(GCCorePlayerBase.class))
         {
-        	try 
+        	try
         	{
 				return data.readObject();
-			} 
-        	catch (ClassNotFoundException e) 
+			}
+        	catch (final ClassNotFoundException e)
         	{
 				e.printStackTrace();
 			}
@@ -612,17 +613,17 @@ public class GCCoreUtil
 
         for (var7 = 0; var7 < 4; ++var7)
         {
-            var6 &= addItemToChest(var1, var2, var3, var4, var5, getCommonItem(var2));
+            var6 &= GCCoreUtil.addItemToChest(var1, var2, var3, var4, var5, GCCoreUtil.getCommonItem(var2));
         }
 
         for (var7 = 0; var7 < 2; ++var7)
         {
-            var6 &= addItemToChest(var1, var2, var3, var4, var5, getUncommonItem(var2));
+            var6 &= GCCoreUtil.addItemToChest(var1, var2, var3, var4, var5, GCCoreUtil.getUncommonItem(var2));
         }
 
         for (var7 = 0; var7 < 1; ++var7)
         {
-            var6 &= addItemToChest(var1, var2, var3, var4, var5, getRareItem(var2));
+            var6 &= GCCoreUtil.addItemToChest(var1, var2, var3, var4, var5, GCCoreUtil.getRareItem(var2));
         }
 
         return var6;
@@ -630,17 +631,17 @@ public class GCCoreUtil
 
     public static ItemStack getCommonItem(Random var1)
     {
-        return var1.nextInt(4) == 0 ? getRandomItemFromList(useless, var1) : getRandomItemFromList(common, var1);
+        return var1.nextInt(4) == 0 ? GCCoreUtil.getRandomItemFromList(GCCoreUtil.useless, var1) : GCCoreUtil.getRandomItemFromList(GCCoreUtil.common, var1);
     }
 
     public static ItemStack getUncommonItem(Random var1)
     {
-        return getRandomItemFromList(uncommon, var1);
+        return GCCoreUtil.getRandomItemFromList(GCCoreUtil.uncommon, var1);
     }
 
     public static ItemStack getRareItem(Random var1)
     {
-        return var1.nextInt(4) == 0 ? getRandomItemFromList(ultrarare, var1) : getRandomItemFromList(rare, var1);
+        return var1.nextInt(4) == 0 ? GCCoreUtil.getRandomItemFromList(GCCoreUtil.ultrarare, var1) : GCCoreUtil.getRandomItemFromList(GCCoreUtil.rare, var1);
     }
     
     public static ItemStack getRandomItemFromList(List list, Random rand)
@@ -654,7 +655,7 @@ public class GCCoreUtil
 
         if (var7 != null)
         {
-            final int var8 = findRandomInventorySlot(var7, var2);
+            final int var8 = GCCoreUtil.findRandomInventorySlot(var7, var2);
 
             if (var8 != -1)
             {
@@ -685,11 +686,10 @@ public class GCCoreUtil
 	{
 		final Integer[] var1 = DimensionManager.getStaticDimensionIDs();
 		
-		for (int i = 0; i < var1.length; i++)
-		{
-			if (WorldProvider.getProviderForDimension(var1[i]).getDimensionName() != null && WorldProvider.getProviderForDimension(var1[i]).getDimensionName().equals(par1String))
+		for (final Integer element : var1) {
+			if (WorldProvider.getProviderForDimension(element).getDimensionName() != null && WorldProvider.getProviderForDimension(element).getDimensionName().equals(par1String))
 			{
-				return WorldProvider.getProviderForDimension(var1[i]);
+				return WorldProvider.getProviderForDimension(element);
 			}
 		}
 		
@@ -700,9 +700,8 @@ public class GCCoreUtil
 	{
 		int amount = 0;
 		
-		for (int i = 0; i < ids.length; i++)
-		{
-    		if (WorldProvider.getProviderForDimension(ids[i]) instanceof IGalacticraftWorldProvider || WorldProvider.getProviderForDimension(ids[i]).dimensionId == 0)
+		for (final Integer id : ids) {
+    		if (WorldProvider.getProviderForDimension(id) instanceof IGalacticraftWorldProvider || WorldProvider.getProviderForDimension(id).dimensionId == 0)
     		{
     			amount++;
     		}
@@ -715,11 +714,10 @@ public class GCCoreUtil
 	{
 		final HashMap map = new HashMap();
 		
-		for (int i = 0; i < ids.length; i++)
-		{
-    		if (WorldProvider.getProviderForDimension(ids[i]) != null && (WorldProvider.getProviderForDimension(ids[i]) instanceof IGalacticraftWorldProvider || WorldProvider.getProviderForDimension(ids[i]).dimensionId == 0))
+		for (final Integer id : ids) {
+    		if (WorldProvider.getProviderForDimension(id) != null && (WorldProvider.getProviderForDimension(id) instanceof IGalacticraftWorldProvider || WorldProvider.getProviderForDimension(id).dimensionId == 0))
     		{
-    			map.put(WorldProvider.getProviderForDimension(ids[i]).getDimensionName(), WorldProvider.getProviderForDimension(ids[i]).dimensionId);
+    			map.put(WorldProvider.getProviderForDimension(id).getDimensionName(), WorldProvider.getProviderForDimension(id).dimensionId);
     		}
 		}
 		
@@ -845,10 +843,7 @@ public class GCCoreUtil
 	{
 		final List list = new ArrayList();
 		
-		for (int i = 0; i < FMLCommonHandler.instance().getMinecraftServerInstance().worldServers.length; i++)
-		{
-			final World world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServers[i];
-			
+		for (final WorldServer world : FMLCommonHandler.instance().getMinecraftServerInstance().worldServers) {
 			if (world != null && world.provider instanceof IGalacticraftWorldProvider)
 			{
 				if (planet.getSlotRenderer().getPlanetName().toLowerCase().equals(world.provider.getDimensionName().toLowerCase()))
@@ -871,19 +866,19 @@ public class GCCoreUtil
 	{
 		boolean missingComponent = false;
 		
-		GCCoreInventoryTankRefill inventory = GCCoreUtil.getPlayerBaseServerFromPlayer(player).playerTankInventory;
+		final GCCoreInventoryTankRefill inventory = GCCoreUtil.getPlayerBaseServerFromPlayer(player).playerTankInventory;
 		
-		if (inventory.getStackInSlot(0) == null || !isItemValid(0, inventory.getStackInSlot(0)))
+		if (inventory.getStackInSlot(0) == null || !GCCoreUtil.isItemValid(0, inventory.getStackInSlot(0)))
 		{
 			missingComponent = true;
 		}
 		
-		if (inventory.getStackInSlot(1) == null || !isItemValid(1, inventory.getStackInSlot(1)))
+		if (inventory.getStackInSlot(1) == null || !GCCoreUtil.isItemValid(1, inventory.getStackInSlot(1)))
 		{
 			missingComponent = true;
 		}
 		
-		if ((inventory.getStackInSlot(2) == null || !isItemValid(2, inventory.getStackInSlot(2))) && (inventory.getStackInSlot(3) == null || !isItemValid(3, inventory.getStackInSlot(3))))
+		if ((inventory.getStackInSlot(2) == null || !GCCoreUtil.isItemValid(2, inventory.getStackInSlot(2))) && (inventory.getStackInSlot(3) == null || !GCCoreUtil.isItemValid(3, inventory.getStackInSlot(3))))
 		{
 			missingComponent = true;
 		}
@@ -902,19 +897,19 @@ public class GCCoreUtil
 	{
 		boolean missingComponent = false;
 		
-		GCCoreInventoryTankRefill inventory = player.playerTankInventory;
+		final GCCoreInventoryTankRefill inventory = player.playerTankInventory;
 		
-		if (inventory.getStackInSlot(0) == null || !isItemValid(0, inventory.getStackInSlot(0)))
+		if (inventory.getStackInSlot(0) == null || !GCCoreUtil.isItemValid(0, inventory.getStackInSlot(0)))
 		{
 			missingComponent = true;
 		}
 		
-		if (inventory.getStackInSlot(1) == null || !isItemValid(1, inventory.getStackInSlot(1)))
+		if (inventory.getStackInSlot(1) == null || !GCCoreUtil.isItemValid(1, inventory.getStackInSlot(1)))
 		{
 			missingComponent = true;
 		}
 
-		if ((inventory.getStackInSlot(2) == null || !isItemValid(2, inventory.getStackInSlot(2))) && (inventory.getStackInSlot(3) == null || !isItemValid(3, inventory.getStackInSlot(3))))
+		if ((inventory.getStackInSlot(2) == null || !GCCoreUtil.isItemValid(2, inventory.getStackInSlot(2))) && (inventory.getStackInSlot(3) == null || !GCCoreUtil.isItemValid(3, inventory.getStackInSlot(3))))
 		{
 			missingComponent = true;
 		}
@@ -938,9 +933,9 @@ public class GCCoreUtil
 		case 1:
 			return stack.getItem() instanceof GCCoreItemOxygenGear;
 		case 2:
-			return getDrainSpacing(stack) > 0;
+			return GCCoreUtil.getDrainSpacing(stack) > 0;
 		case 3:
-			return getDrainSpacing(stack) > 0;
+			return GCCoreUtil.getDrainSpacing(stack) > 0;
 		}
 		
 		return false;
@@ -983,7 +978,7 @@ public class GCCoreUtil
 			new EmptyStackException().printStackTrace();
 		}
 		
-        for (GCCorePlayerBase playerBase : GalacticraftCore.playersServer)
+        for (final GCCorePlayerBase playerBase : GalacticraftCore.playersServer)
         {
 			if (player.username.equals(playerBase.getPlayer().username))
 			{
@@ -1001,7 +996,7 @@ public class GCCoreUtil
 			new EmptyStackException().printStackTrace();
 		}
 		
-        for (GCCorePlayerBaseClient playerBaseClient : GalacticraftCore.playersClient)
+        for (final GCCorePlayerBaseClient playerBaseClient : GalacticraftCore.playersClient)
         {
 			if (player.username.equals(playerBaseClient.getPlayer().username))
 			{

@@ -8,37 +8,37 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 public class GCNeptuneMapPlanet implements IMapPlanet
 {
 	@Override
-	public float getPlanetSize() 
+	public float getPlanetSize()
 	{
 		return 15F * 3.88F;
 	}
 
 	@Override
-	public float getDistanceFromCenter() 
+	public float getDistanceFromCenter()
 	{
 		return 44880F;
 	}
 
 	@Override
-	public float getPhaseShift() 
+	public float getPhaseShift()
 	{
 		return 720F;
 	}
 
 	@Override
-	public float getStretchValue() 
+	public float getStretchValue()
 	{
 		return 164.79F;
 	}
 
 	@Override
-	public IPlanetSlotRenderer getSlotRenderer() 
+	public IPlanetSlotRenderer getSlotRenderer()
 	{
 		return new GCNeptuneSlotRenderer();
 	}
 
 	@Override
-	public IGalaxy getParentGalaxy() 
+	public IGalaxy getParentGalaxy()
 	{
 		return GalacticraftCore.galaxyMilkyWay;
 	}

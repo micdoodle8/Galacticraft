@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerBase;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreContainerTankRefill;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreInventoryTankRefill;
 import net.minecraft.client.Minecraft;
@@ -29,7 +27,7 @@ import cpw.mods.fml.client.FMLClientHandler;
  *  All rights reserved.
  *
  */
-public class GCCoreGuiTankRefill extends GuiContainer 
+public class GCCoreGuiTankRefill extends GuiContainer
 {
 	static Container tank = new GCCoreContainerTankRefill(FMLClientHandler.instance().getClient().thePlayer, new GCCoreInventoryTankRefill());
 
@@ -40,7 +38,7 @@ public class GCCoreGuiTankRefill extends GuiContainer
     
 	public GCCoreGuiTankRefill(EntityPlayer player)
     {
-        super(tank);
+        super(GCCoreGuiTankRefill.tank);
         this.allowUserInput = true;
     }
 
@@ -50,21 +48,21 @@ public class GCCoreGuiTankRefill extends GuiContainer
     	super.initGui();
 		final int var5 = (this.width - this.xSize) / 2;
 		final int var6 = (this.height - this.ySize) / 2;
-		rotation = 0;
+		this.rotation = 0;
     	this.controlList.add(new GuiButton(0, var5 + 36, var6 + 71, 7, 7, ""));
     	this.controlList.add(new GuiButton(1, var5 + 60, var6 + 71, 7, 7, ""));
     }
 
 	@Override
-    protected void actionPerformed(GuiButton par1GuiButton) 
+    protected void actionPerformed(GuiButton par1GuiButton)
     {
     	switch (par1GuiButton.id)
     	{
     	case 0:
-    		rotation -= 10;
+    		this.rotation -= 10;
     		break;
     	case 1:
-    		rotation += 10;
+    		this.rotation += 10;
     		break;
     	}
     }
@@ -77,9 +75,9 @@ public class GCCoreGuiTankRefill extends GuiContainer
         this.xSize_lo = par1;
         this.ySize_lo = par2;
 
-        ScaledResolution var5 = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
-        int var6 = var5.getScaledWidth();
-        int var7 = var5.getScaledHeight();
+        final ScaledResolution var5 = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
+        final int var6 = var5.getScaledWidth();
+        final int var7 = var5.getScaledHeight();
         this.mc.entityRenderer.setupOverlayRendering();
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
@@ -87,10 +85,10 @@ public class GCCoreGuiTankRefill extends GuiContainer
         
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/gui/gui.png"));
         
-        short var21 = 248;
-        int var22 = (int)(this.mc.thePlayer.experience * (var21 + 1));
-        int var23 = (this.height - this.ySize) / 2 - 5;
-        int var18 = (this.width - this.xSize) / 2 + 2 - 50;
+        final short var21 = 248;
+        final int var22 = (int)(this.mc.thePlayer.experience * (var21 + 1));
+        final int var23 = (this.height - this.ySize) / 2 - 5;
+        final int var18 = (this.width - this.xSize) / 2 + 2 - 50;
         this.drawTexturedModalRect(var18 - 2, var23 - 10 - 5, 0, 226, 256, 15);
         this.drawTexturedModalRect(var18 + 2, var23 - 5 - 5, 0, 242, var21, 7);
 
@@ -99,12 +97,12 @@ public class GCCoreGuiTankRefill extends GuiContainer
             this.drawTexturedModalRect(var18 + 2, var23 - 5 - 5, 0, 249, var22, 7);
         }
 
-        int var19b = par1 - (var18 - 2);
-        int var20b = (par2 - (var23 - 10));
+        final int var19b = par1 - (var18 - 2);
+        final int var20b = par2 - (var23 - 10);
 
         if (var19b >= 0 && var20b >= 0 && var19b < 256 && var20b < 15)
         {
-        	List list = new ArrayList();
+        	final List list = new ArrayList();
         	list.add(String.valueOf("Galactic Level " + GCCoreUtil.getPlayerBaseServerFromPlayer(this.mc.thePlayer).astronomyPointsLevel));
         	list.add(String.valueOf(Math.round(var22 / 2.56) + "%"));
         	this.drawInfoText(list, par1, par2);
@@ -149,15 +147,15 @@ public class GCCoreGuiTankRefill extends GuiContainer
             }
 
             this.zLevel = 300.0F;
-            itemRenderer.zLevel = 300.0F;
-            int var10 = -267386864;
+            GuiContainer.itemRenderer.zLevel = 300.0F;
+            final int var10 = -267386864;
             this.drawGradientRect(var6 - 3, var7 - 4, var6 + var5 + 3, var7 - 3, var10, var10);
             this.drawGradientRect(var6 - 3, var7 + var9 + 3, var6 + var5 + 3, var7 + var9 + 4, var10, var10);
             this.drawGradientRect(var6 - 3, var7 - 3, var6 + var5 + 3, var7 + var9 + 3, var10, var10);
             this.drawGradientRect(var6 - 4, var7 - 3, var6 - 3, var7 + var9 + 3, var10, var10);
             this.drawGradientRect(var6 + var5 + 3, var7 - 3, var6 + var5 + 4, var7 + var9 + 3, var10, var10);
-            int var11 = 1347420415;
-            int var12 = (var11 & 16711422) >> 1 | var11 & -16777216;
+            final int var11 = 1347420415;
+            final int var12 = (var11 & 16711422) >> 1 | var11 & -16777216;
             this.drawGradientRect(var6 - 3, var7 - 3 + 1, var6 - 3 + 1, var7 + var9 + 3 - 1, var11, var12);
             this.drawGradientRect(var6 + var5 + 2, var7 - 3 + 1, var6 + var5 + 3, var7 + var9 + 3 - 1, var11, var12);
             this.drawGradientRect(var6 - 3, var7 - 3, var6 + var5 + 3, var7 - 3 + 1, var11, var11);
@@ -187,14 +185,14 @@ public class GCCoreGuiTankRefill extends GuiContainer
             }
 
             this.zLevel = 0.0F;
-            itemRenderer.zLevel = 0.0F;
+            GuiContainer.itemRenderer.zLevel = 0.0F;
         }
     }
 	
     protected boolean isMouseOverBox(int par1, int par2, int par3, int par4, int par5, int par6)
     {
-        int var7 = this.guiLeft;
-        int var8 = this.guiTop;
+        final int var7 = this.guiLeft;
+        final int var8 = this.guiTop;
         par5 -= var7;
         par6 -= var8;
         return par5 >= par1 - 1 && par5 < par1 + par3 + 1 && par6 >= par2 - 1 && par6 < par2 + par4 + 1;
@@ -206,36 +204,36 @@ public class GCCoreGuiTankRefill extends GuiContainer
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3) 
+	protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3)
 	{
 		final int texture = this.mc.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/gui/airtank.png");
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		this.mc.renderEngine.bindTexture(texture);
 		final int var5 = (this.width - this.xSize) / 2;
 		final int var6 = (this.height - this.ySize) / 2;
-        int var5b = this.guiLeft;
-        int var6b = this.guiTop;
+        final int var5b = this.guiLeft;
+        final int var6b = this.guiTop;
 		this.drawTexturedModalRect(var5, var6, 0, 0, this.xSize, this.ySize);
-		this.drawPlayerOnGui(mc, var5 + 51, var6 + 75 + 1, 34, (var5 + 51) - this.xSize_lo, (var6 + 75 - 50) - this.ySize_lo);
+		this.drawPlayerOnGui(this.mc, var5 + 51, var6 + 75 + 1, 34, var5 + 51 - this.xSize_lo, var6 + 75 - 50 - this.ySize_lo);
 	}
 
     public void drawPlayerOnGui(Minecraft par0Minecraft, int par1, int par2, int par3, float par4, float par5)
     {
-    	float pitchBefore = par0Minecraft.thePlayer.rotationPitch;
+    	final float pitchBefore = par0Minecraft.thePlayer.rotationPitch;
         GL11.glEnable(GL11.GL_COLOR_MATERIAL);
         GL11.glPushMatrix();
         GL11.glTranslatef(par1, par2, 50.0F);
-        GL11.glScalef((-par3), par3, par3);
+        GL11.glScalef(-par3, par3, par3);
         GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
-        float var6 = par0Minecraft.thePlayer.renderYawOffset;
-        float var7 = par0Minecraft.thePlayer.rotationYaw;
-        float var8 = par0Minecraft.thePlayer.rotationPitch;
+        final float var6 = par0Minecraft.thePlayer.renderYawOffset;
+        final float var7 = par0Minecraft.thePlayer.rotationYaw;
+        final float var8 = par0Minecraft.thePlayer.rotationPitch;
         GL11.glRotatef(135.0F, 0.0F, 1.0F, 0.0F);
         RenderHelper.enableStandardItemLighting();
         GL11.glRotatef(-135.0F, 0.0F, 1.0F, 0.0F);
-        GL11.glRotatef(-((float)Math.atan((rotation / 40.0F))) * 00.0F, 1.0F, 0.0F, 0.0F);
-        par0Minecraft.thePlayer.renderYawOffset = rotation;
-        par0Minecraft.thePlayer.rotationYaw = rotation;
+        GL11.glRotatef(-((float)Math.atan(this.rotation / 40.0F)) * 00.0F, 1.0F, 0.0F, 0.0F);
+        par0Minecraft.thePlayer.renderYawOffset = this.rotation;
+        par0Minecraft.thePlayer.rotationYaw = this.rotation;
         par0Minecraft.thePlayer.rotationPitch = 0;
         par0Minecraft.thePlayer.rotationYawHead = par0Minecraft.thePlayer.rotationYaw;
         GL11.glTranslatef(0.0F, par0Minecraft.thePlayer.yOffset, 0.0F);

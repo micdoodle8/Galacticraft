@@ -1,9 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.render.block;
 
-import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLaunchSmokeFX;
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.MathHelper;
@@ -14,10 +11,8 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
-public class GCCoreBlockRendererCraftingTable implements ISimpleBlockRenderingHandler 
+public class GCCoreBlockRendererCraftingTable implements ISimpleBlockRenderingHandler
 {
     final int renderID;
 
@@ -26,7 +21,7 @@ public class GCCoreBlockRendererCraftingTable implements ISimpleBlockRenderingHa
         this.renderID = var1;
     }
     
-	public void renderNasaBench(RenderBlocks renderBlocks, IBlockAccess iblockaccess, Block par1Block, int par2, int par3, int par4) 
+	public void renderNasaBench(RenderBlocks renderBlocks, IBlockAccess iblockaccess, Block par1Block, int par2, int par3, int par4)
 	{
     	renderBlocks.overrideBlockTexture = par1Block.blockIndexInTexture;
     	
@@ -50,11 +45,11 @@ public class GCCoreBlockRendererCraftingTable implements ISimpleBlockRenderingHa
         renderBlocks.setRenderBounds(0.3F, 1.0F, 0.3F, 0.7F, 1.05F, 0.7F);
         renderBlocks.renderStandardBlock(par1Block, par2, par3, par4);
         
-        int var5 = renderBlocks.blockAccess.getBlockMetadata(par2, par3, par4);
-        int var6 = 0;
-        boolean var7 = (var5 & 8) > 0;
-        Tessellator var8 = Tessellator.instance;
-        boolean var9 = renderBlocks.overrideBlockTexture >= 0;
+        final int var5 = renderBlocks.blockAccess.getBlockMetadata(par2, par3, par4);
+        final int var6 = 0;
+        final boolean var7 = (var5 & 8) > 0;
+        final Tessellator var8 = Tessellator.instance;
+        final boolean var9 = renderBlocks.overrideBlockTexture >= 0;
 
 //        if (!var9)
         {
@@ -101,49 +96,49 @@ public class GCCoreBlockRendererCraftingTable implements ISimpleBlockRenderingHa
         
         var15 = (var14 & 15) << 4;
         var16 = var14 & 240;
-        var17 = (float)var15 / 256.0F;
-        var18 = ((float)var15 + 15.99F) / 256.0F;
-        var19 = (float)var16 / 256.0F;
-        var20 = ((float)var16 + 15.99F) / 256.0F;
+        var17 = var15 / 256.0F;
+        var18 = (var15 + 15.99F) / 256.0F;
+        var19 = var16 / 256.0F;
+        var20 = (var16 + 15.99F) / 256.0F;
         var21 = new Vec3[8];
         var22 = 0.0225F;
         var23 = 0.0225F;
         var24 = 0.625F;
-        var21[0] = renderBlocks.blockAccess.getWorldVec3Pool().getVecFromPool((double)(-var22), 0.0D, (double)(-var23));
-        var21[1] = renderBlocks.blockAccess.getWorldVec3Pool().getVecFromPool((double)var22, 0.0D, (double)(-var23));
-        var21[2] = renderBlocks.blockAccess.getWorldVec3Pool().getVecFromPool((double)var22, 0.0D, (double)var23);
-        var21[3] = renderBlocks.blockAccess.getWorldVec3Pool().getVecFromPool((double)(-var22), 0.0D, (double)var23);
-        var21[4] = renderBlocks.blockAccess.getWorldVec3Pool().getVecFromPool((double)(-var22), (double)var24, (double)(-var23));
-        var21[5] = renderBlocks.blockAccess.getWorldVec3Pool().getVecFromPool((double)var22, (double)var24, (double)(-var23));
-        var21[6] = renderBlocks.blockAccess.getWorldVec3Pool().getVecFromPool((double)var22, (double)var24, (double)var23);
-        var21[7] = renderBlocks.blockAccess.getWorldVec3Pool().getVecFromPool((double)(-var22), (double)var24, (double)var23);
+        var21[0] = renderBlocks.blockAccess.getWorldVec3Pool().getVecFromPool(-var22, 0.0D, -var23);
+        var21[1] = renderBlocks.blockAccess.getWorldVec3Pool().getVecFromPool(var22, 0.0D, -var23);
+        var21[2] = renderBlocks.blockAccess.getWorldVec3Pool().getVecFromPool(var22, 0.0D, var23);
+        var21[3] = renderBlocks.blockAccess.getWorldVec3Pool().getVecFromPool(-var22, 0.0D, var23);
+        var21[4] = renderBlocks.blockAccess.getWorldVec3Pool().getVecFromPool(-var22, var24, -var23);
+        var21[5] = renderBlocks.blockAccess.getWorldVec3Pool().getVecFromPool(var22, var24, -var23);
+        var21[6] = renderBlocks.blockAccess.getWorldVec3Pool().getVecFromPool(var22, var24, var23);
+        var21[7] = renderBlocks.blockAccess.getWorldVec3Pool().getVecFromPool(-var22, var24, var23);
 
         for (int var25 = 0; var25 < 8; ++var25)
         {
             var21[var25].zCoord -= 0.0625D;
 
-            var21[var25].rotateAroundY(((float)Math.PI / 4F));
+            var21[var25].rotateAroundY((float)Math.PI / 4F);
             
-            var21[var25].xCoord += (double)par2 + 0.9D;
-            var21[var25].yCoord += (double)((float)par3 + 0.8F);
-            var21[var25].zCoord += (double)par4 + 0.2D;
+            var21[var25].xCoord += par2 + 0.9D;
+            var21[var25].yCoord += (par3 + 0.8F);
+            var21[var25].zCoord += par4 + 0.2D;
         }
 
         for (int var29 = 0; var29 < 6; ++var29)
         {
             if (var29 == 0)
             {
-                var17 = (float)(var15 + 7) / 256.0F;
-                var18 = ((float)(var15 + 9) - 0.01F) / 256.0F;
-                var19 = (float)(var16 + 6) / 256.0F;
-                var20 = ((float)(var16 + 8) - 0.01F) / 256.0F;
+                var17 = (var15 + 7) / 256.0F;
+                var18 = ((var15 + 9) - 0.01F) / 256.0F;
+                var19 = (var16 + 6) / 256.0F;
+                var20 = ((var16 + 8) - 0.01F) / 256.0F;
             }
             else if (var29 == 2)
             {
-                var17 = (float)(var15 + 7) / 256.0F;
-                var18 = ((float)(var15 + 9) - 0.01F) / 256.0F;
-                var19 = (float)(var16 + 6) / 256.0F;
-                var20 = ((float)(var16 + 16) - 0.01F) / 256.0F;
+                var17 = (var15 + 7) / 256.0F;
+                var18 = ((var15 + 9) - 0.01F) / 256.0F;
+                var19 = (var16 + 6) / 256.0F;
+                var20 = ((var16 + 16) - 0.01F) / 256.0F;
             }
 
             if (var29 == 0)
@@ -189,45 +184,45 @@ public class GCCoreBlockRendererCraftingTable implements ISimpleBlockRenderingHa
                 var28 = var21[4];
             }
 
-            var8.addVertexWithUV(var30.xCoord, var30.yCoord, var30.zCoord, (double)var17, (double)var20);
-            var8.addVertexWithUV(var26.xCoord, var26.yCoord, var26.zCoord, (double)var18, (double)var20);
-            var8.addVertexWithUV(var27.xCoord, var27.yCoord, var27.zCoord, (double)var18, (double)var19);
-            var8.addVertexWithUV(var28.xCoord, var28.yCoord, var28.zCoord, (double)var17, (double)var19);
+            var8.addVertexWithUV(var30.xCoord, var30.yCoord, var30.zCoord, var17, var20);
+            var8.addVertexWithUV(var26.xCoord, var26.yCoord, var26.zCoord, var18, var20);
+            var8.addVertexWithUV(var27.xCoord, var27.yCoord, var27.zCoord, var18, var19);
+            var8.addVertexWithUV(var28.xCoord, var28.yCoord, var28.zCoord, var17, var19);
         }
         
         // Pole Arm Across
 
         var15 = (var14 & 15) << 4;
         var16 = var14 & 240;
-        var17 = (float)var15 / 256.0F;
-        var18 = ((float)var15 + 15.99F) / 256.0F;
-        var19 = (float)var16 / 256.0F;
-        var20 = ((float)var16 + 15.99F) / 256.0F;
+        var17 = var15 / 256.0F;
+        var18 = (var15 + 15.99F) / 256.0F;
+        var19 = var16 / 256.0F;
+        var20 = (var16 + 15.99F) / 256.0F;
         var21 = new Vec3[8];
         var22 = 0.0225F;
         var23 = 0.0225F;
         var24 = 0.625F;
-        var21[0] = renderBlocks.blockAccess.getWorldVec3Pool().getVecFromPool((double)(-var22), 0.0D, (double)(-var23));
-        var21[1] = renderBlocks.blockAccess.getWorldVec3Pool().getVecFromPool((double)var22, 0.0D, (double)(-var23));
-        var21[2] = renderBlocks.blockAccess.getWorldVec3Pool().getVecFromPool((double)var22, 0.0D, (double)var23);
-        var21[3] = renderBlocks.blockAccess.getWorldVec3Pool().getVecFromPool((double)(-var22), 0.0D, (double)var23);
-        var21[4] = renderBlocks.blockAccess.getWorldVec3Pool().getVecFromPool((double)(-var22), (double)var24, (double)(-var23));
-        var21[5] = renderBlocks.blockAccess.getWorldVec3Pool().getVecFromPool((double)var22, (double)var24, (double)(-var23));
-        var21[6] = renderBlocks.blockAccess.getWorldVec3Pool().getVecFromPool((double)var22, (double)var24, (double)var23);
-        var21[7] = renderBlocks.blockAccess.getWorldVec3Pool().getVecFromPool((double)(-var22), (double)var24, (double)var23);
+        var21[0] = renderBlocks.blockAccess.getWorldVec3Pool().getVecFromPool(-var22, 0.0D, -var23);
+        var21[1] = renderBlocks.blockAccess.getWorldVec3Pool().getVecFromPool(var22, 0.0D, -var23);
+        var21[2] = renderBlocks.blockAccess.getWorldVec3Pool().getVecFromPool(var22, 0.0D, var23);
+        var21[3] = renderBlocks.blockAccess.getWorldVec3Pool().getVecFromPool(-var22, 0.0D, var23);
+        var21[4] = renderBlocks.blockAccess.getWorldVec3Pool().getVecFromPool(-var22, var24, -var23);
+        var21[5] = renderBlocks.blockAccess.getWorldVec3Pool().getVecFromPool(var22, var24, -var23);
+        var21[6] = renderBlocks.blockAccess.getWorldVec3Pool().getVecFromPool(var22, var24, var23);
+        var21[7] = renderBlocks.blockAccess.getWorldVec3Pool().getVecFromPool(-var22, var24, var23);
 
         for (int var25 = 0; var25 < 8; ++var25)
         {
             var21[var25].zCoord -= 0.0625D;
-            var21[var25].rotateAroundX(((float)Math.PI * 5 / 4F));
+            var21[var25].rotateAroundX((float)Math.PI * 5 / 4F);
 
-            var21[var25].rotateAroundZ(((float)Math.PI / 2F));
+            var21[var25].rotateAroundZ((float)Math.PI / 2F);
 
-            var21[var25].rotateAroundY(MathHelper.cos((float)FMLClientHandler.instance().getClient().thePlayer.ticksExisted) / 10.0F);
+            var21[var25].rotateAroundY(MathHelper.cos(FMLClientHandler.instance().getClient().thePlayer.ticksExisted) / 10.0F);
             
-            var21[var25].xCoord += (double)par2 + 0.8D;
-            var21[var25].yCoord += (double)((float)par3 + 1.375F);
-            var21[var25].zCoord += (double)par4 + 0.12D;
+            var21[var25].xCoord += par2 + 0.8D;
+            var21[var25].yCoord += (par3 + 1.375F);
+            var21[var25].zCoord += par4 + 0.12D;
         }
 
         var30 = null;
@@ -239,17 +234,17 @@ public class GCCoreBlockRendererCraftingTable implements ISimpleBlockRenderingHa
         {
             if (var29 == 0)
             {
-                var17 = (float)(var15 + 7) / 256.0F;
-                var18 = ((float)(var15 + 9) - 0.01F) / 256.0F;
-                var19 = (float)(var16 + 6) / 256.0F;
-                var20 = ((float)(var16 + 8) - 0.01F) / 256.0F;
+                var17 = (var15 + 7) / 256.0F;
+                var18 = ((var15 + 9) - 0.01F) / 256.0F;
+                var19 = (var16 + 6) / 256.0F;
+                var20 = ((var16 + 8) - 0.01F) / 256.0F;
             }
             else if (var29 == 2)
             {
-                var17 = (float)(var15 + 7) / 256.0F;
-                var18 = ((float)(var15 + 9) - 0.01F) / 256.0F;
-                var19 = (float)(var16 + 6) / 256.0F;
-                var20 = ((float)(var16 + 16) - 0.01F) / 256.0F;
+                var17 = (var15 + 7) / 256.0F;
+                var18 = ((var15 + 9) - 0.01F) / 256.0F;
+                var19 = (var16 + 6) / 256.0F;
+                var20 = ((var16 + 16) - 0.01F) / 256.0F;
             }
 
             if (var29 == 0)
@@ -295,16 +290,16 @@ public class GCCoreBlockRendererCraftingTable implements ISimpleBlockRenderingHa
                 var28 = var21[4];
             }
 
-            var8.addVertexWithUV(var30.xCoord, var30.yCoord, var30.zCoord, (double)var17, (double)var20);
-            var8.addVertexWithUV(var26.xCoord, var26.yCoord, var26.zCoord, (double)var18, (double)var20);
-            var8.addVertexWithUV(var27.xCoord, var27.yCoord, var27.zCoord, (double)var18, (double)var19);
-            var8.addVertexWithUV(var28.xCoord, var28.yCoord, var28.zCoord, (double)var17, (double)var19);
+            var8.addVertexWithUV(var30.xCoord, var30.yCoord, var30.zCoord, var17, var20);
+            var8.addVertexWithUV(var26.xCoord, var26.yCoord, var26.zCoord, var18, var20);
+            var8.addVertexWithUV(var27.xCoord, var27.yCoord, var27.zCoord, var18, var19);
+            var8.addVertexWithUV(var28.xCoord, var28.yCoord, var28.zCoord, var17, var19);
         }
 	}
 
 	@Override
-	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) 
-	{ 
+	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer)
+	{
 		final float minSize = 0.0F;
 		final float maxSize = 1.0F;
 		
@@ -339,20 +334,20 @@ public class GCCoreBlockRendererCraftingTable implements ISimpleBlockRenderingHa
 	}
 
 	@Override
-	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) 
+	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer)
 	{
 		this.renderNasaBench(renderer, world, block, x, y, z);
 		return true;
 	}
 
 	@Override
-	public boolean shouldRender3DInInventory() 
+	public boolean shouldRender3DInInventory()
 	{
 		return true;
 	}
 
 	@Override
-	public int getRenderId() 
+	public int getRenderId()
 	{
 		return this.renderID;
 	}

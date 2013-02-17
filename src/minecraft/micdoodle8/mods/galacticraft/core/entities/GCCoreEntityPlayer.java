@@ -41,22 +41,22 @@
 //public class GCCoreEntityPlayer
 //{
 //	private final EntityPlayer currentPlayer;
-//	
+//
 //	private int airRemaining;
 //	private int airRemaining2;
-//	
+//
 //	public boolean hasTank;
-//	
+//
 //	public ItemStack tankInSlot;
-//	
+//
 //	public GCCoreInventoryTankRefill playerTankInventory = new GCCoreInventoryTankRefill();
-//	
+//
 //	public boolean inPortal;
-//	
+//
 //	public int timeUntilPortal;
-//	
+//
 //	private int dimensionToSend = -2;
-//	
+//
 //	private int damageCounter;
 //
 //    public int astronomyPointsLevel;
@@ -64,11 +64,11 @@
 //    public int astronomyPointsTotal;
 //
 //    public float astronomyPoints;
-//    
+//
 //    public ItemStack[] rocketStacks;
 //    public int rocketType;
-//	
-//	public GCCoreEntityPlayer(EntityPlayer player) 
+//
+//	public GCCoreEntityPlayer(EntityPlayer player)
 //	{
 //		this.currentPlayer = player;
 //		GalacticraftCore.players.add(player);
@@ -76,7 +76,7 @@
 //		MinecraftForge.EVENT_BUS.register(this);
 //		player.getDataWatcher().addObject(23, new Integer(0));
 //	}
-//	
+//
 //	public EntityPlayer getPlayer()
 //	{
 //		return this.currentPlayer;
@@ -120,7 +120,7 @@
 //
 //        return false;
 //    }
-//	
+//
 //	@ForgeSubscribe
 //	public void onUpdate(LivingEvent event)
 //	{
@@ -218,7 +218,7 @@
 //                par4WorldServer.spawnEntityInWorld(par1Entity);
 //                par1Entity.setLocationAndAngles(var5, par1Entity.posY, var7, par1Entity.rotationYaw, par1Entity.rotationPitch);
 //                par4WorldServer.updateEntityWithOptionalForce(par1Entity, false);
-//                
+//
 //                if (teleporter instanceof GCCoreTeleporter)
 //                {
 //                    ((GCCoreTeleporter) teleporter).placeInPortal(par1Entity, var11, var13, var15, var17);
@@ -229,30 +229,30 @@
 //        }
 //
 //        par1Entity.setWorld(par4WorldServer);
-//        
+//
 //        final int var9b = MathHelper.floor_double(par1Entity.posX);
 //        final int var11b = MathHelper.floor_double(par1Entity.posZ);
-//        
+//
 //        GCCoreEntityParaChest chest = new GCCoreEntityParaChest(par1Entity.worldObj, this.rocketStacks);
 //
 //    	chest.setPosition(var9b, 260, var11b);
-//    	
+//
 //        if (!par4WorldServer.isRemote)
 //        {
 //        	par4WorldServer.spawnEntityInWorld(chest);
 //        }
 //    }
-//    
+//
 //    public void sendAirRemainingPacket()
 //    {
 //    	final Object[] toSend = {this.airRemaining, this.airRemaining2, this.currentPlayer.username};
-//    	
+//
 //    	if (FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.currentPlayer.username) != null)
 //    	{
 //            FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.currentPlayer.username).playerNetServerHandler.sendPacketToPlayer(GCCoreUtil.createPacket("Galacticraft", 0, toSend));
 //    	}
 //    }
-//    
+//
 //    public void setInPortal(int par1)
 //    {
 //        if (this.currentPlayer.timeUntilPortal > 0)
@@ -274,7 +274,7 @@
 //        {
 //            par1 = var2;
 //        }
-//        
+//
 //        par1 /= 10;
 //
 //        this.astronomyPoints += (float)par1 / (float)this.astrBarCap();
@@ -302,7 +302,7 @@
 //    {
 //        return this.astronomyPointsLevel >= 30 ? 62 + (this.astronomyPointsLevel - 30) * 7 : (this.astronomyPointsLevel >= 15 ? 17 + (this.astronomyPointsLevel - 15) * 3 : 17);
 //    }
-//	
+//
 //    public void readEntityFromNBT()
 //    {
 //    	final NBTTagCompound par1NBTTagCompound = this.currentPlayer.getEntityData();
@@ -327,12 +327,12 @@
 //        par1NBTTagCompound.setInteger("AstronomyPointsTotal", this.astronomyPointsTotal);
 //        par1NBTTagCompound.setBoolean("usingParachute", this.getParachute());
 //    }
-//    
+//
 //    public void setParachute(boolean tf)
 //    {
 //    	this.getPlayer().getDataWatcher().updateObject(23, tf ? 1 : 0);
 //    }
-//    
+//
 //    public boolean getParachute()
 //    {
 //    	return this.getPlayer().getDataWatcher().getWatchableObjectInt(23) == 1;

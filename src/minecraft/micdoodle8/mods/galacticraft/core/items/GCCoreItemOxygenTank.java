@@ -9,7 +9,7 @@ public class GCCoreItemOxygenTank extends GCCoreItem
 {
 	public EnumOxygenTankTier tier;
 	
-	public GCCoreItemOxygenTank(int par1) 
+	public GCCoreItemOxygenTank(int par1)
 	{
 		super(par1);
 		this.setMaxStackSize(1);
@@ -22,7 +22,7 @@ public class GCCoreItemOxygenTank extends GCCoreItem
 	}
 
 	@Override
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer player, List par2List, boolean b) 
+    public void addInformation(ItemStack par1ItemStack, EntityPlayer player, List par2List, boolean b)
 	{
 		par2List.add("Air Remaining: " + (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage()));
 	}

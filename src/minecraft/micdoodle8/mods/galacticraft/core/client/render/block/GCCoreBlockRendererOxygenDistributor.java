@@ -4,7 +4,6 @@ import micdoodle8.mods.galacticraft.core.client.model.block.GCCoreModelFan;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 
 import org.lwjgl.opengl.GL11;
@@ -145,106 +144,106 @@ public class GCCoreBlockRendererOxygenDistributor implements ISimpleBlockRenderi
     }
 
 	@Override
-	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) 
+	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer)
 	{
-		renderInvNormalBlock(renderer, block, 0);
+		GCCoreBlockRendererOxygenDistributor.renderInvNormalBlock(renderer, block, 0);
 	}
 
     public static void renderInvNormalBlock(RenderBlocks var7, Block var5, int var2)
     {
     	var7.setRenderBounds(0.0F, 0.1F, 0.0F, 0.1F, 0.9F, 0.1F);
-    	renderStandardBlock(var7, var5, var2);
+    	GCCoreBlockRendererOxygenDistributor.renderStandardBlock(var7, var5, var2);
 
     	var7.setRenderBounds(0.9F, 0.1F, 0.0F, 1.0F, 0.9F, 0.1F);
-    	renderStandardBlock(var7, var5, var2);
+    	GCCoreBlockRendererOxygenDistributor.renderStandardBlock(var7, var5, var2);
     	
     	var7.setRenderBounds(0.0F, 0.1F, 0.9F, 0.1F, 0.9F, 1.0F);
-    	renderStandardBlock(var7, var5, var2);
+    	GCCoreBlockRendererOxygenDistributor.renderStandardBlock(var7, var5, var2);
 
     	var7.setRenderBounds(0.9F, 0.1F, 0.9F, 1.0F, 0.9F, 1.0F);
-    	renderStandardBlock(var7, var5, var2);
+    	GCCoreBlockRendererOxygenDistributor.renderStandardBlock(var7, var5, var2);
     	
     	var7.overrideBlockTexture = 35;
     	
     	// Base
     	var7.setRenderBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.1F, 1.0F);
-    	renderStandardBlock(var7, var5, var2);
+    	GCCoreBlockRendererOxygenDistributor.renderStandardBlock(var7, var5, var2);
 
     	// Top
     	var7.setRenderBounds(0.0F, 0.9F, 0.0F, 1.0F, 1.0F, 1.0F);
-    	renderStandardBlock(var7, var5, var2);
+    	GCCoreBlockRendererOxygenDistributor.renderStandardBlock(var7, var5, var2);
     	
     	var7.overrideBlockTexture = 33;
 
     	// Axles
     	var7.setRenderBounds(0.0F, 0.42F, 0.42F, 1.0F, 0.58F, 0.58F);
-    	renderStandardBlock(var7, var5, var2);
+    	GCCoreBlockRendererOxygenDistributor.renderStandardBlock(var7, var5, var2);
 
     	var7.setRenderBounds(0.42F, 0.42F, 0.0F, 0.58F, 0.58F, 1.0F);
-    	renderStandardBlock(var7, var5, var2);
+    	GCCoreBlockRendererOxygenDistributor.renderStandardBlock(var7, var5, var2);
     	
     	var7.overrideBlockTexture = 36;
     	
     	// Tanks
     	var7.setRenderBounds(0.35F, 0.35F, 0.35F, 0.65F, 0.85F, 0.65F);
-    	renderStandardBlock(var7, var5, var2);
+    	GCCoreBlockRendererOxygenDistributor.renderStandardBlock(var7, var5, var2);
     	
     	var7.overrideBlockTexture = 34;
     	
     	// Grate
     	var7.setRenderBounds(0.3F, 0.1F, 0.002F, 0.4F, 0.9F, 0.02F);
-    	renderStandardBlock(var7, var5, var2);
+    	GCCoreBlockRendererOxygenDistributor.renderStandardBlock(var7, var5, var2);
 
     	var7.setRenderBounds(0.6F, 0.1F, 0.002F, 0.7F, 0.9F, 0.02F);
-    	renderStandardBlock(var7, var5, var2);
+    	GCCoreBlockRendererOxygenDistributor.renderStandardBlock(var7, var5, var2);
 
     	var7.setRenderBounds(0.1F, 0.6F, 0.001F, 0.9F, 0.7F, 0.02F);
-    	renderStandardBlock(var7, var5, var2);
+    	GCCoreBlockRendererOxygenDistributor.renderStandardBlock(var7, var5, var2);
 
     	var7.setRenderBounds(0.1F, 0.3F, 0.001F, 0.9F, 0.4F, 0.02F);
-    	renderStandardBlock(var7, var5, var2);
+    	GCCoreBlockRendererOxygenDistributor.renderStandardBlock(var7, var5, var2);
     	
     	//
 
     	var7.setRenderBounds(0.3F, 0.1F, 1.0F - 0.02F, 0.4F, 0.9F, 1.0F - 0.002);
-    	renderStandardBlock(var7, var5, var2);
+    	GCCoreBlockRendererOxygenDistributor.renderStandardBlock(var7, var5, var2);
 
     	var7.setRenderBounds(0.6F, 0.1F, 1.0F - 0.02F, 0.7F, 0.9F, 1.0F - 0.002);
-    	renderStandardBlock(var7, var5, var2);
+    	GCCoreBlockRendererOxygenDistributor.renderStandardBlock(var7, var5, var2);
 
     	var7.setRenderBounds(0.1F, 0.6F, 1.0F - 0.02F, 0.9F, 0.7F, 1.0F - 0.001);
-    	renderStandardBlock(var7, var5, var2);
+    	GCCoreBlockRendererOxygenDistributor.renderStandardBlock(var7, var5, var2);
 
     	var7.setRenderBounds(0.1F, 0.3F, 1.0F - 0.02F, 0.9F, 0.4F, 1.0F - 0.001);
-    	renderStandardBlock(var7, var5, var2);
+    	GCCoreBlockRendererOxygenDistributor.renderStandardBlock(var7, var5, var2);
 
     	//
 
     	var7.setRenderBounds(0.002F, 0.1F, 0.3F, 0.02F, 0.9F, 0.4F);
-    	renderStandardBlock(var7, var5, var2);
+    	GCCoreBlockRendererOxygenDistributor.renderStandardBlock(var7, var5, var2);
 
     	var7.setRenderBounds(0.002F, 0.1F, 0.6F, 0.02F, 0.9F, 0.7F);
-    	renderStandardBlock(var7, var5, var2);
+    	GCCoreBlockRendererOxygenDistributor.renderStandardBlock(var7, var5, var2);
 
     	var7.setRenderBounds(0.002F, 0.6F, 0.1F, 0.02F, 0.7F, 0.9F);
-    	renderStandardBlock(var7, var5, var2);
+    	GCCoreBlockRendererOxygenDistributor.renderStandardBlock(var7, var5, var2);
 
     	var7.setRenderBounds(0.002F, 0.3F, 0.1F, 0.02F, 0.4F, 0.9F);
-    	renderStandardBlock(var7, var5, var2);
+    	GCCoreBlockRendererOxygenDistributor.renderStandardBlock(var7, var5, var2);
     	
     	//
 
     	var7.setRenderBounds(1.0F - 0.02F, 0.1F, 0.3F, 1.0F - 0.002, 0.9F, 0.4F);
-    	renderStandardBlock(var7, var5, var2);
+    	GCCoreBlockRendererOxygenDistributor.renderStandardBlock(var7, var5, var2);
 
     	var7.setRenderBounds(1.0F - 0.02F, 0.1F, 0.6F, 1.0F - 0.002, 0.9F, 0.7F);
-    	renderStandardBlock(var7, var5, var2);
+    	GCCoreBlockRendererOxygenDistributor.renderStandardBlock(var7, var5, var2);
 
     	var7.setRenderBounds(1.0F - 0.02F, 0.6F, 0.1F, 1.0F - 0.002, 0.7F, 0.9F);
-    	renderStandardBlock(var7, var5, var2);
+    	GCCoreBlockRendererOxygenDistributor.renderStandardBlock(var7, var5, var2);
 
     	var7.setRenderBounds(1.0F - 0.02F, 0.3F, 0.1F, 1.0F - 0.002, 0.4F, 0.9F);
-    	renderStandardBlock(var7, var5, var2);
+    	GCCoreBlockRendererOxygenDistributor.renderStandardBlock(var7, var5, var2);
     	
     	var7.overrideBlockTexture = -1;
     }

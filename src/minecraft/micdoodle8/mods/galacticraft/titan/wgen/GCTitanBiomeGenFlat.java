@@ -12,7 +12,7 @@ public class GCTitanBiomeGenFlat extends GCTitanBiomeGenBase
 {
     public GCTitanBiomeGenFlat(int par1)
     {
-        super(par1); 
+        super(par1);
         this.setBiomeName("titanFlat");
         this.setColor(16711680);
         this.minHeight = 2.5F;

@@ -47,20 +47,20 @@ public class GalacticraftPluto implements IGalacticraftSubMod
 		
 		new GCEuropaConfigManager(new File(event.getModConfigurationDirectory(), "Galacticraft/pluto.conf"));
 		
-		proxy.preInit(event);
+		GalacticraftPluto.proxy.preInit(event);
 	}
 
 	@Init
 	public void load(FMLInitializationEvent event)
 	{
-		proxy.init(event);
+		GalacticraftPluto.proxy.init(event);
 	}
 
 	@PostInit
 	public void postLoad(FMLPostInitializationEvent event)
 	{
-		proxy.postInit(event);
-		proxy.registerRenderInformation();
+		GalacticraftPluto.proxy.postInit(event);
+		GalacticraftPluto.proxy.registerRenderInformation();
 	}
 	
 	@ServerStarted
@@ -69,19 +69,19 @@ public class GalacticraftPluto implements IGalacticraftSubMod
 	}
 
 	@Override
-	public String getDimensionName() 
+	public String getDimensionName()
 	{
 		return "Pluto";
 	}
 
 	@Override
-	public boolean reachableDestination() 
+	public boolean reachableDestination()
 	{
 		return true;
 	}
 
 	@Override
-	public IGalaxy getParentGalaxy() 
+	public IGalaxy getParentGalaxy()
 	{
 		return GalacticraftCore.galaxyMilkyWay;
 	}

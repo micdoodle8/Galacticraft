@@ -11,7 +11,7 @@ public class GCCoreTileEntityOxygenCollector extends TileEntity
 	public double currentPower;
     
 	@Override
-	public void updateEntity() 
+	public void updateEntity()
 	{
 		super.updateEntity();
 		
@@ -48,8 +48,7 @@ public class GCCoreTileEntityOxygenCollector extends TileEntity
 			
 			TileEntity tile;
 
-			for (int i = 0; i < idSet.length; i++)
-			{
+			for (final int element : idSet) {
 				if (idSet[0] == GCCoreBlocks.oxygenPipe.blockID)
 				{
 					tile = this.worldObj.getBlockTileEntity(this.xCoord + 1, this.yCoord, this.zCoord);
@@ -116,7 +115,7 @@ public class GCCoreTileEntityOxygenCollector extends TileEntity
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound par1NBTTagCompound) 
+	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
 	{
 		super.readFromNBT(par1NBTTagCompound);
 		
@@ -124,7 +123,7 @@ public class GCCoreTileEntityOxygenCollector extends TileEntity
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound par1NBTTagCompound) 
+	public void writeToNBT(NBTTagCompound par1NBTTagCompound)
 	{
 		super.writeToNBT(par1NBTTagCompound);
 		

@@ -129,7 +129,7 @@ public class GCCoreEntityFlag extends Entity
     }
 
 	@Override
-	protected void entityInit() 
+	protected void entityInit()
 	{
         this.dataWatcher.addObject(16, new Integer(-1));
         this.dataWatcher.addObject(17, new String(""));
@@ -150,7 +150,7 @@ public class GCCoreEntityFlag extends Entity
     }
 
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) 
+	protected void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
 	{
         par1NBTTagCompound.setString("Owner", String.valueOf(this.getOwner()));
         par1NBTTagCompound.setInteger("Type", Integer.valueOf(this.getType()));
@@ -169,8 +169,8 @@ public class GCCoreEntityFlag extends Entity
     @Override
 	public void onUpdate()
     {
-    	int id = this.worldObj.getBlockId(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 1), MathHelper.floor_double(this.posZ));
-    	Block block = Block.blocksList[id];
+    	final int id = this.worldObj.getBlockId(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 1), MathHelper.floor_double(this.posZ));
+    	final Block block = Block.blocksList[id];
     	
     	if (block != null)
     	{

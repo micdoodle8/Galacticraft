@@ -112,9 +112,9 @@ public abstract class GCMoonComponentVillage extends StructureComponent
         {
             for (int var7 = this.villagersSpawned; var7 < par6; ++var7)
             {
-                int var8 = this.getXWithOffset(par3 + var7, par5);
-                int var9 = this.getYWithOffset(par4);
-                int var10 = this.getZWithOffset(par3 + var7, par5);
+                final int var8 = this.getXWithOffset(par3 + var7, par5);
+                final int var9 = this.getYWithOffset(par4);
+                final int var10 = this.getZWithOffset(par3 + var7, par5);
 
                 if (!par2StructureBoundingBox.isVecInside(var8, var9, var10))
                 {
@@ -122,8 +122,8 @@ public abstract class GCMoonComponentVillage extends StructureComponent
                 }
 
                 ++this.villagersSpawned;
-                EntityVillager var11 = new EntityVillager(par1World, this.getVillagerType(var7));
-                var11.setLocationAndAngles((double)var8 + 0.5D, (double)var9, (double)var10 + 0.5D, 0.0F, 0.0F);
+                final EntityVillager var11 = new EntityVillager(par1World, this.getVillagerType(var7));
+                var11.setLocationAndAngles(var8 + 0.5D, var9, var10 + 0.5D, 0.0F, 0.0F);
                 par1World.spawnEntityInWorld(var11);
             }
         }
@@ -142,7 +142,7 @@ public abstract class GCMoonComponentVillage extends StructureComponent
      */
     protected int getBiomeSpecificBlock(int par1, int par2)
     {
-        BiomeEvent.GetVillageBlockID event = new BiomeEvent.GetVillageBlockID(startPiece.biome, par1, par2);
+        final BiomeEvent.GetVillageBlockID event = new BiomeEvent.GetVillageBlockID(this.startPiece.biome, par1, par2);
         MinecraftForge.TERRAIN_GEN_BUS.post(event);
         if (event.getResult() == Result.DENY) return event.replacement;
 
@@ -187,7 +187,7 @@ public abstract class GCMoonComponentVillage extends StructureComponent
      */
     protected int getBiomeSpecificBlockMetadata(int par1, int par2)
     {
-        BiomeEvent.GetVillageBlockMeta event = new BiomeEvent.GetVillageBlockMeta(startPiece.biome, par1, par2);
+        final BiomeEvent.GetVillageBlockMeta event = new BiomeEvent.GetVillageBlockMeta(this.startPiece.biome, par1, par2);
         MinecraftForge.TERRAIN_GEN_BUS.post(event);
         if (event.getResult() == Result.DENY) return event.replacement;
 
@@ -215,10 +215,11 @@ public abstract class GCMoonComponentVillage extends StructureComponent
     /**
      * current Position depends on currently set Coordinates mode, is computed here
      */
-    protected void placeBlockAtCurrentPosition(World par1World, int par2, int par3, int par4, int par5, int par6, StructureBoundingBox par7StructureBoundingBox)
+    @Override
+	protected void placeBlockAtCurrentPosition(World par1World, int par2, int par3, int par4, int par5, int par6, StructureBoundingBox par7StructureBoundingBox)
     {
-        int var8 = this.getBiomeSpecificBlock(par2, par3);
-        int var9 = this.getBiomeSpecificBlockMetadata(par2, par3);
+        final int var8 = this.getBiomeSpecificBlock(par2, par3);
+        final int var9 = this.getBiomeSpecificBlockMetadata(par2, par3);
         super.placeBlockAtCurrentPosition(par1World, var8, var9, par4, par5, par6, par7StructureBoundingBox);
     }
 
@@ -226,22 +227,24 @@ public abstract class GCMoonComponentVillage extends StructureComponent
      * arguments: (World worldObj, StructureBoundingBox structBB, int minX, int minY, int minZ, int maxX, int maxY, int
      * maxZ, int placeBlockId, int replaceBlockId, boolean alwaysreplace)
      */
-    protected void fillWithBlocks(World par1World, StructureBoundingBox par2StructureBoundingBox, int par3, int par4, int par5, int par6, int par7, int par8, int par9, int par10, boolean par11)
+    @Override
+	protected void fillWithBlocks(World par1World, StructureBoundingBox par2StructureBoundingBox, int par3, int par4, int par5, int par6, int par7, int par8, int par9, int par10, boolean par11)
     {
-        int var12 = this.getBiomeSpecificBlock(par9, 0);
-        int var13 = this.getBiomeSpecificBlockMetadata(par9, 0);
-        int var14 = this.getBiomeSpecificBlock(par10, 0);
-        int var15 = this.getBiomeSpecificBlockMetadata(par10, 0);
+        final int var12 = this.getBiomeSpecificBlock(par9, 0);
+        final int var13 = this.getBiomeSpecificBlockMetadata(par9, 0);
+        final int var14 = this.getBiomeSpecificBlock(par10, 0);
+        final int var15 = this.getBiomeSpecificBlockMetadata(par10, 0);
         super.fillWithMetadataBlocks(par1World, par2StructureBoundingBox, par3, par4, par5, par6, par7, par8, var12, var13, var14, var15, par11);
     }
 
     /**
      * Overwrites air and liquids from selected position downwards, stops at hitting anything else.
      */
-    protected void fillCurrentPositionBlocksDownwards(World par1World, int par2, int par3, int par4, int par5, int par6, StructureBoundingBox par7StructureBoundingBox)
+    @Override
+	protected void fillCurrentPositionBlocksDownwards(World par1World, int par2, int par3, int par4, int par5, int par6, StructureBoundingBox par7StructureBoundingBox)
     {
-        int var8 = this.getBiomeSpecificBlock(par2, par3);
-        int var9 = this.getBiomeSpecificBlockMetadata(par2, par3);
+        final int var8 = this.getBiomeSpecificBlock(par2, par3);
+        final int var9 = this.getBiomeSpecificBlockMetadata(par2, par3);
         super.fillCurrentPositionBlocksDownwards(par1World, var8, var9, par4, par5, par6, par7StructureBoundingBox);
     }
 }

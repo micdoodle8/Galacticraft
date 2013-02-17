@@ -12,7 +12,7 @@ public class GCIoBiomeGenFlat extends GCIoBiomeGenBase
 {
     public GCIoBiomeGenFlat(int par1)
     {
-        super(par1); 
+        super(par1);
         this.setBiomeName("marsFlat");
         this.setColor(16711680);
         this.minHeight = 2.5F;

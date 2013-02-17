@@ -9,7 +9,7 @@ import net.minecraftforge.event.Event.Result;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 
-public class GCMarsEvents 
+public class GCMarsEvents
 {
 	@ForgeSubscribe
 	public void fillBucketEvent(FillBucketEvent event)
@@ -25,7 +25,7 @@ public class GCMarsEvents
                 final ItemBucket bucket = (ItemBucket) event.current.getItem();
 
                 if (!event.world.canMineBlock(event.entityPlayer, x, y, z))
-                {	
+                {
                 	event.setResult(Result.ALLOW);
                 }
 

@@ -12,18 +12,18 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.SideOnly;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreBlockOxygenCollector extends BlockContainer
 {
-	public GCCoreBlockOxygenCollector(int par1, int par2) 
+	public GCCoreBlockOxygenCollector(int par1, int par2)
 	{
 		super(par1, par2, Material.rock);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World var1) 
+	public TileEntity createNewTileEntity(World var1)
 	{
 		return new GCCoreTileEntityOxygenCollector();
 	}

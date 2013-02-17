@@ -10,8 +10,8 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.SideOnly;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -33,7 +33,7 @@ public class GCCoreBlock extends Block
 	 *  8: OXYGEN PIPE
 	 *  9: ROCKET BENCH
 	 */
-	protected GCCoreBlock(int i, int j) 
+	protected GCCoreBlock(int i, int j)
 	{
 		super(i, j, Material.rock);
         this.setCreativeTab(GalacticraftCore.galacticraftTab);
@@ -56,9 +56,9 @@ public class GCCoreBlock extends Block
 //		switch (world.getBlockMetadata(x, y, z))
 //		{
 //    	case 0:
-//    		
+//
 //    	case 1:
-//    		
+//
 //    	case 2:
 //
 //    	case 3:
@@ -88,9 +88,9 @@ public class GCCoreBlock extends Block
     }
 
 	@Override
-	public int getBlockTextureFromSideAndMetadata(int side, int meta) 
+	public int getBlockTextureFromSideAndMetadata(int side, int meta)
 	{
-		switch (meta) 
+		switch (meta)
 		{
 		case 0:
 			return 1;
@@ -170,7 +170,7 @@ public class GCCoreBlock extends Block
 //		{
 //	        return GalacticraftCore.proxy.getGCMeteorRenderID();
 //		}
-//		else 
+//		else
 		{
 			return super.getRenderType();
 		}
@@ -223,19 +223,19 @@ public class GCCoreBlock extends Block
 //			if (par5Entity instanceof EntityLiving)
 //			{
 //				EntityLiving livingEntity = (EntityLiving) par5Entity;
-//				
+//
 //		        par1World.playSoundEffect(par2 + 0.5F, par3 + 0.5F, par4 + 0.5F, "random.fizz", 0.5F, 2.6F + (par1World.rand.nextFloat() - par1World.rand.nextFloat()) * 0.8F);
 //
 //		        for (int var5 = 0; var5 < 8; ++var5)
 //		        {
 //		            par1World.spawnParticle("largesmoke", par2 + Math.random(), par3 + 0.2D + Math.random(), par4 + Math.random(), 0.0D, 0.0D, 0.0D);
 //		        }
-//		        
+//
 //		        if (!livingEntity.isBurning())
 //		        {
 //			        livingEntity.setFire(2);
 //		        }
-//		        
+//
 //		        double var9 = livingEntity.posX - par2;
 //	            double var7;
 //
@@ -297,13 +297,13 @@ public class GCCoreBlock extends Block
 	
     private void tryToFall(World par1World, int par2, int par3, int par4)
     {
-        if (canFallBelow(par1World, par2, par3 - 1, par4) && par3 >= 0)
+        if (GCCoreBlock.canFallBelow(par1World, par2, par3 - 1, par4) && par3 >= 0)
         {
             final byte var8 = 32;
             
             par1World.setBlockWithNotify(par2, par3, par4, 0);
 
-            while (canFallBelow(par1World, par2, par3 - 1, par4) && par3 > 0)
+            while (GCCoreBlock.canFallBelow(par1World, par2, par3 - 1, par4) && par3 > 0)
             {
                 --par3;
             }

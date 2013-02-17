@@ -1,20 +1,12 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import java.util.Random;
-
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityWeldingSmoke;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreBlockAdvancedCraftingTable extends Block
 {
@@ -46,13 +38,13 @@ public class GCCoreBlockAdvancedCraftingTable extends Block
     }
 
 	@Override
-    public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) 
+    public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
     	this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.1F, 1.0F);
     }
 
 	@Override
-	public String getTextureFile() 
+	public String getTextureFile()
 	{
 		return "/micdoodle8/mods/galacticraft/core/client/blocks/core.png";
 	}

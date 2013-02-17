@@ -47,9 +47,9 @@ public class GCMarsBlockRendererBacterialSludge implements ISimpleBlockRendering
     }
 
 	@Override
-	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) 
+	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer)
 	{
-        renderInvNormalBlock(renderer, block, metadata);
+        GCMarsBlockRendererBacterialSludge.renderInvNormalBlock(renderer, block, metadata);
 	}
 
     public static void renderInvNormalBlock(RenderBlocks var0, Block var1, int var2)
@@ -110,10 +110,10 @@ public class GCMarsBlockRendererBacterialSludge implements ISimpleBlockRendering
             final double var20 = 1.0D;
             final Material var22 = par1Block.blockMaterial;
             final int var23 = var1.getBlockMetadata(par2, par3, par4);
-            double var24 = getFluidHeight(var1, par2, par3, par4, var22);
-            double var26 = getFluidHeight(var1, par2, par3, par4 + 1, var22);
-            double var28 = getFluidHeight(var1, par2 + 1, par3, par4 + 1, var22);
-            double var30 = getFluidHeight(var1, par2 + 1, par3, par4, var22);
+            double var24 = GCMarsBlockRendererBacterialSludge.getFluidHeight(var1, par2, par3, par4, var22);
+            double var26 = GCMarsBlockRendererBacterialSludge.getFluidHeight(var1, par2, par3, par4 + 1, var22);
+            double var28 = GCMarsBlockRendererBacterialSludge.getFluidHeight(var1, par2 + 1, par3, par4 + 1, var22);
+            double var30 = GCMarsBlockRendererBacterialSludge.getFluidHeight(var1, par2 + 1, par3, par4, var22);
             final double var32 = 0.0010000000474974513D;
             int var34;
             int var37;

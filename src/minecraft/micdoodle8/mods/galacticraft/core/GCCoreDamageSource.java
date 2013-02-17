@@ -7,7 +7,7 @@ public class GCCoreDamageSource extends DamageSource
 {
     public static DamageSource spaceshipExplosion = new GCCoreDamageSource("spaceshipExplosion");
     
-	public GCCoreDamageSource(String par1Str) 
+	public GCCoreDamageSource(String par1Str)
 	{
 		super(par1Str);
 	}

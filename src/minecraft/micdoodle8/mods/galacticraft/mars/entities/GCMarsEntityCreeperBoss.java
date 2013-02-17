@@ -19,7 +19,6 @@ import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -128,7 +127,7 @@ public class GCMarsEntityCreeperBoss extends EntityMob
 
             for (int var12 = 0; var12 < GalacticraftCore.playersServer.size(); ++var12)
             {
-                final EntityPlayer var13 = (EntityPlayer)GalacticraftCore.playersServer.get(var12).getPlayer();
+                final EntityPlayer var13 = GalacticraftCore.playersServer.get(var12).getPlayer();
 
                 if (!var13.capabilities.isCreativeMode)
                 {
@@ -157,7 +156,7 @@ public class GCMarsEntityCreeperBoss extends EntityMob
 //                var17.posY = this.posY + (double)(this.height / 2.0F) + 0.5D;
 //                var17.posZ = this.posZ + var20.zCoord * var18;
 //                this.worldObj.spawnEntityInWorld(var17);
-//                
+//
 //                this.timeSinceTNTFired = 80;
 //        	}
 //        }

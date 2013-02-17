@@ -21,15 +21,16 @@ public class GCMoonComponentVillageHall extends GCMoonComponentVillage
 
     public static GCMoonComponentVillageHall func_74906_a(GCMoonComponentVillageStartPiece par0ComponentVillageStartPiece, List par1List, Random par2Random, int par3, int par4, int par5, int par6, int par7)
     {
-        StructureBoundingBox var8 = StructureBoundingBox.getComponentToAddBoundingBox(par3, par4, par5, 0, 0, 0, 9, 7, 11, par6);
-        return canVillageGoDeeper(var8) && StructureComponent.findIntersecting(par1List, var8) == null ? new GCMoonComponentVillageHall(par0ComponentVillageStartPiece, par7, par2Random, var8, par6) : null;
+        final StructureBoundingBox var8 = StructureBoundingBox.getComponentToAddBoundingBox(par3, par4, par5, 0, 0, 0, 9, 7, 11, par6);
+        return GCMoonComponentVillage.canVillageGoDeeper(var8) && StructureComponent.findIntersecting(par1List, var8) == null ? new GCMoonComponentVillageHall(par0ComponentVillageStartPiece, par7, par2Random, var8, par6) : null;
     }
 
     /**
      * second Part of Structure generating, this for example places Spiderwebs, Mob Spawners, it closes Mineshafts at
      * the end, it adds Fences...
      */
-    public boolean addComponentParts(World par1World, Random par2Random, StructureBoundingBox par3StructureBoundingBox)
+    @Override
+	public boolean addComponentParts(World par1World, Random par2Random, StructureBoundingBox par3StructureBoundingBox)
     {
         if (this.averageGroundLevel < 0)
         {
@@ -64,8 +65,8 @@ public class GCMoonComponentVillageHall extends GCMoonComponentVillage
         this.placeBlockAtCurrentPosition(par1World, Block.planks.blockID, 0, 0, 4, 3, par3StructureBoundingBox);
         this.placeBlockAtCurrentPosition(par1World, Block.planks.blockID, 0, 8, 4, 2, par3StructureBoundingBox);
         this.placeBlockAtCurrentPosition(par1World, Block.planks.blockID, 0, 8, 4, 3, par3StructureBoundingBox);
-        int var4 = this.getMetadataWithOffset(Block.stairCompactPlanks.blockID, 3);
-        int var5 = this.getMetadataWithOffset(Block.stairCompactPlanks.blockID, 2);
+        final int var4 = this.getMetadataWithOffset(Block.stairCompactPlanks.blockID, 3);
+        final int var5 = this.getMetadataWithOffset(Block.stairCompactPlanks.blockID, 2);
         int var6;
         int var7;
 
@@ -129,7 +130,8 @@ public class GCMoonComponentVillageHall extends GCMoonComponentVillage
     /**
      * Returns the villager type to spawn in this component, based on the number of villagers already spawned.
      */
-    protected int getVillagerType(int par1)
+    @Override
+	protected int getVillagerType(int par1)
     {
         return par1 == 0 ? 4 : 0;
     }

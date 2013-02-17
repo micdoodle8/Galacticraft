@@ -26,8 +26,8 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.SideOnly;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreEntityZombie extends GCCoreEntityMob
 {
@@ -394,7 +394,7 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
     @Override
 	public void initCreature()
     {
-        this.canPickUpLoot = this.rand.nextFloat() < pickUpLootProability[this.worldObj.difficultySetting];
+        this.canPickUpLoot = this.rand.nextFloat() < EntityLiving.pickUpLootProability[this.worldObj.difficultySetting];
 
         if (this.worldObj.rand.nextFloat() < 0.05F)
         {

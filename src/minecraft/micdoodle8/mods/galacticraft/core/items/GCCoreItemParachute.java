@@ -2,11 +2,10 @@ package micdoodle8.mods.galacticraft.core.items;
 
 import java.util.List;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreItemParachute extends GCCoreItem
 {
@@ -28,7 +27,7 @@ public class GCCoreItemParachute extends GCCoreItem
 		"teal", // 14
 		"yellow"}; // 15
 	
-	public GCCoreItemParachute(int par1) 
+	public GCCoreItemParachute(int par1)
 	{
 		super(par1);
 		this.setMaxDamage(0);
@@ -39,7 +38,7 @@ public class GCCoreItemParachute extends GCCoreItem
     @Override
     public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
     {
-    	for (int i = 0; i < names.length; i++)
+    	for (int i = 0; i < GCCoreItemParachute.names.length; i++)
     	{
             par3List.add(new ItemStack(par1, 1, i));
     	}
@@ -51,19 +50,21 @@ public class GCCoreItemParachute extends GCCoreItem
         return par1;
     }
 
-    public String getItemNameIS(ItemStack par1ItemStack)
+    @Override
+	public String getItemNameIS(ItemStack par1ItemStack)
     {
         int var2 = par1ItemStack.getItemDamage();
 
-        if (var2 < 0 || var2 >= names.length)
+        if (var2 < 0 || var2 >= GCCoreItemParachute.names.length)
         {
             var2 = 0;
         }
 
-        return super.getItemName() + "." + names[var2];
+        return super.getItemName() + "." + GCCoreItemParachute.names[var2];
     }
 
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public int getIconFromDamage(int par1)
     {
     	switch (par1)

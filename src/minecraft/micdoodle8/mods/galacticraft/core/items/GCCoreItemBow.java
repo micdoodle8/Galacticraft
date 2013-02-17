@@ -13,7 +13,7 @@ import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 
 public class GCCoreItemBow extends ItemBow
 {
-	public GCCoreItemBow(int par1) 
+	public GCCoreItemBow(int par1)
 	{
 		super(par1);
 		this.setCreativeTab(null);
@@ -76,7 +76,7 @@ public class GCCoreItemBow extends ItemBow
             }
 
             par1ItemStack.damageItem(1, par3EntityPlayer);
-            par2World.playSoundAtEntity(par3EntityPlayer, "random.bow", 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + var7 * 0.5F);
+            par2World.playSoundAtEntity(par3EntityPlayer, "random.bow", 1.0F, 1.0F / (Item.itemRand.nextFloat() * 0.4F + 1.2F) + var7 * 0.5F);
 
             if (var5)
             {

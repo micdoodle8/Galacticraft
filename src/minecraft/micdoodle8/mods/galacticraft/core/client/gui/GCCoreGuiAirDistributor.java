@@ -18,7 +18,7 @@ public class GCCoreGuiAirDistributor extends GuiContainer
 {
     private final GCCoreTileEntityOxygenDistributor distributorInv;
     
-	public GCCoreGuiAirDistributor(InventoryPlayer par1InventoryPlayer, GCCoreTileEntityOxygenDistributor par2TileEntityAirDistributor) 
+	public GCCoreGuiAirDistributor(InventoryPlayer par1InventoryPlayer, GCCoreTileEntityOxygenDistributor par2TileEntityAirDistributor)
 	{
         super(new GCCoreContainerAirDistributor(par1InventoryPlayer, par2TileEntityAirDistributor));
         this.distributorInv = par2TileEntityAirDistributor;
@@ -32,7 +32,7 @@ public class GCCoreGuiAirDistributor extends GuiContainer
     }
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3) 
+	protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3)
 	{
 		final int texture = this.mc.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/gui/distributor.png");
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

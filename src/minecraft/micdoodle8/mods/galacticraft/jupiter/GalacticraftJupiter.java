@@ -50,58 +50,58 @@ public class GalacticraftJupiter implements IGalacticraftSubMod
 	@PreInit
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		moonEuropa.preInit(event);
-		moonIo.preInit(event);
-		moonCallisto.preInit(event);
+		GalacticraftJupiter.moonEuropa.preInit(event);
+		GalacticraftJupiter.moonIo.preInit(event);
+		GalacticraftJupiter.moonCallisto.preInit(event);
 		
 		GalacticraftCore.registerSubMod(this);
 		
 		new GCEuropaConfigManager(new File(event.getModConfigurationDirectory(), "Galacticraft/jupiter.conf"));
 		
-		proxy.preInit(event);
+		GalacticraftJupiter.proxy.preInit(event);
 	}
 
 	@Init
 	public void load(FMLInitializationEvent event)
 	{
-		moonEuropa.init(event);
-		moonIo.init(event);
-		moonCallisto.init(event);
-		proxy.init(event);
+		GalacticraftJupiter.moonEuropa.init(event);
+		GalacticraftJupiter.moonIo.init(event);
+		GalacticraftJupiter.moonCallisto.init(event);
+		GalacticraftJupiter.proxy.init(event);
 	}
 
 	@PostInit
 	public void postLoad(FMLPostInitializationEvent event)
 	{
-		moonEuropa.postInit(event);
-		moonIo.postInit(event);
-		moonCallisto.postInit(event);
-		proxy.postInit(event);
-		proxy.registerRenderInformation();
+		GalacticraftJupiter.moonEuropa.postInit(event);
+		GalacticraftJupiter.moonIo.postInit(event);
+		GalacticraftJupiter.moonCallisto.postInit(event);
+		GalacticraftJupiter.proxy.postInit(event);
+		GalacticraftJupiter.proxy.registerRenderInformation();
 	}
 	
 	@ServerStarted
 	public void serverStarted(FMLServerStartedEvent event)
 	{
-		moonEuropa.serverInit(event);
-		moonIo.serverInit(event);
-		moonCallisto.serverInit(event);
+		GalacticraftJupiter.moonEuropa.serverInit(event);
+		GalacticraftJupiter.moonIo.serverInit(event);
+		GalacticraftJupiter.moonCallisto.serverInit(event);
 	}
 
 	@Override
-	public String getDimensionName() 
+	public String getDimensionName()
 	{
 		return "Jupiter";
 	}
 
 	@Override
-	public boolean reachableDestination() 
+	public boolean reachableDestination()
 	{
 		return false;
 	}
 
 	@Override
-	public IGalaxy getParentGalaxy() 
+	public IGalaxy getParentGalaxy()
 	{
 		return GalacticraftCore.galaxyMilkyWay;
 	}

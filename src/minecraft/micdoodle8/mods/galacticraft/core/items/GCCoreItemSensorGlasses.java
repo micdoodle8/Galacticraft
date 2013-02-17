@@ -16,7 +16,7 @@ public class GCCoreItemSensorGlasses extends ItemArmor implements IArmorTextureP
 {
 	public boolean attachedMask;
 	
-	public GCCoreItemSensorGlasses(int par1, EnumArmorMaterial material, int i, int j, boolean breathable) 
+	public GCCoreItemSensorGlasses(int par1, EnumArmorMaterial material, int i, int j, boolean breathable)
 	{
 		super(par1, material, i, j);
 		this.setCreativeTab(GalacticraftCore.galacticraftTab);

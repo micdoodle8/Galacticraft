@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -36,9 +35,9 @@ public class GCCoreEntityAstroOrb extends Entity
         this.yOffset = this.height / 2.0F;
         this.setPosition(par2, par4, par6);
         this.rotationYaw = (float)(Math.random() * 360.0D);
-        this.motionX = ((float)(Math.random() * 0.20000000298023224D - 0.10000000149011612D) * 2.0F);
-        this.motionY = ((float)(Math.random() * 0.2D) * 2.0F);
-        this.motionZ = ((float)(Math.random() * 0.20000000298023224D - 0.10000000149011612D) * 2.0F);
+        this.motionX = (float)(Math.random() * 0.20000000298023224D - 0.10000000149011612D) * 2.0F;
+        this.motionY = (float)(Math.random() * 0.2D) * 2.0F;
+        this.motionZ = (float)(Math.random() * 0.20000000298023224D - 0.10000000149011612D) * 2.0F;
         this.xpValue = 1;
     }
 
@@ -74,9 +73,9 @@ public class GCCoreEntityAstroOrb extends Entity
             var2 = 1.0F;
         }
 
-        int var3 = super.getBrightnessForRender(par1);
+        final int var3 = super.getBrightnessForRender(par1);
         int var4 = var3 & 255;
-        int var5 = var3 >> 16 & 255;
+        final int var5 = var3 >> 16 & 255;
         var4 += (int)(var2 * 15.0F * 16.0F);
 
         if (var4 > 240)
@@ -105,13 +104,13 @@ public class GCCoreEntityAstroOrb extends Entity
         if (this.worldObj.getBlockMaterial(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ)) == Material.lava)
         {
             this.motionY = 0.20000000298023224D;
-            this.motionX = ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F);
-            this.motionZ = ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F);
+            this.motionX = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F;
+            this.motionZ = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F;
             this.playSound("random.fizz", 0.4F, 2.0F + this.rand.nextFloat() * 0.4F);
         }
 
         this.pushOutOfBlocks(this.posX, (this.boundingBox.minY + this.boundingBox.maxY) / 2.0D, this.posZ);
-        double var1 = 8.0D;
+        final double var1 = 8.0D;
 
         if (this.xpTargetColor < this.xpColor - 20 + this.entityId % 100)
         {
@@ -125,10 +124,10 @@ public class GCCoreEntityAstroOrb extends Entity
 
         if (this.closestPlayer != null)
         {
-            double var3 = (this.closestPlayer.posX - this.posX) / var1;
-            double var5 = (this.closestPlayer.posY + this.closestPlayer.getEyeHeight() - this.posY) / var1;
-            double var7 = (this.closestPlayer.posZ - this.posZ) / var1;
-            double var9 = Math.sqrt(var3 * var3 + var5 * var5 + var7 * var7);
+            final double var3 = (this.closestPlayer.posX - this.posX) / var1;
+            final double var5 = (this.closestPlayer.posY + this.closestPlayer.getEyeHeight() - this.posY) / var1;
+            final double var7 = (this.closestPlayer.posZ - this.posZ) / var1;
+            final double var9 = Math.sqrt(var3 * var3 + var5 * var5 + var7 * var7);
             double var11 = 1.0D - var9;
 
             if (var11 > 0.0D)
@@ -146,7 +145,7 @@ public class GCCoreEntityAstroOrb extends Entity
         if (this.onGround)
         {
             var13 = 0.58800006F;
-            int var4 = this.worldObj.getBlockId(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.boundingBox.minY) - 1, MathHelper.floor_double(this.posZ));
+            final int var4 = this.worldObj.getBlockId(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.boundingBox.minY) - 1, MathHelper.floor_double(this.posZ));
 
             if (var4 > 0)
             {
@@ -208,7 +207,7 @@ public class GCCoreEntityAstroOrb extends Entity
     @Override
 	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
-        par1NBTTagCompound.setShort("Health", ((byte)this.xpOrbHealth));
+        par1NBTTagCompound.setShort("Health", (byte)this.xpOrbHealth);
         par1NBTTagCompound.setShort("Age", (short)this.xpOrbAge);
         par1NBTTagCompound.setShort("Value", (short)this.xpValue);
     }
@@ -248,12 +247,12 @@ public class GCCoreEntityAstroOrb extends Entity
     @SideOnly(Side.CLIENT)
     public int getTextureByXP()
     {
-        return this.xpValue >= 2477 ? 10 : (this.xpValue >= 1237 ? 9 : (this.xpValue >= 617 ? 8 : (this.xpValue >= 307 ? 7 : (this.xpValue >= 149 ? 6 : (this.xpValue >= 73 ? 5 : (this.xpValue >= 37 ? 4 : (this.xpValue >= 17 ? 3 : (this.xpValue >= 7 ? 2 : (this.xpValue >= 3 ? 1 : 0)))))))));
+        return this.xpValue >= 2477 ? 10 : this.xpValue >= 1237 ? 9 : this.xpValue >= 617 ? 8 : this.xpValue >= 307 ? 7 : this.xpValue >= 149 ? 6 : this.xpValue >= 73 ? 5 : this.xpValue >= 37 ? 4 : this.xpValue >= 17 ? 3 : this.xpValue >= 7 ? 2 : this.xpValue >= 3 ? 1 : 0;
     }
 
     public static int getXPSplit(int par0)
     {
-        return par0 >= 2477 ? 2477 : (par0 >= 1237 ? 1237 : (par0 >= 617 ? 617 : (par0 >= 307 ? 307 : (par0 >= 149 ? 149 : (par0 >= 73 ? 73 : (par0 >= 37 ? 37 : (par0 >= 17 ? 17 : (par0 >= 7 ? 7 : (par0 >= 3 ? 3 : 1)))))))));
+        return par0 >= 2477 ? 2477 : par0 >= 1237 ? 1237 : par0 >= 617 ? 617 : par0 >= 307 ? 307 : par0 >= 149 ? 149 : par0 >= 73 ? 73 : par0 >= 37 ? 37 : par0 >= 17 ? 17 : par0 >= 7 ? 7 : par0 >= 3 ? 3 : 1;
     }
 
     @Override

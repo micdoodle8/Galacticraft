@@ -109,7 +109,7 @@ public class GCCoreWorldGenTaiga2 extends WorldGenerator
 
                                 final Block block = Block.blocksList[par1World.getBlockId(var17, var16, var19)];
 
-                                if ((Math.abs(var18) != var21 || Math.abs(var20) != var21 || var21 <= 0) && 
+                                if ((Math.abs(var18) != var21 || Math.abs(var20) != var21 || var21 <= 0) &&
                                     (block == null || block.canBeReplacedByLeaves(par1World, var17, var16, var19)))
                                 {
                                     this.setBlockAndMetadata(par1World, var17, var16, var19, Block.leaves.blockID, 1);

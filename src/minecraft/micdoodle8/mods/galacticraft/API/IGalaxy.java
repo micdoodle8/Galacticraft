@@ -7,7 +7,7 @@ import net.minecraft.util.Vec3;
  * 
  * @see IGalacticraftSubMod.getParentGalaxy();
  */
-public interface IGalaxy 
+public interface IGalaxy
 {
 	/**
 	 * @return Galaxy name, will be displayed above galaxy on map
@@ -15,12 +15,12 @@ public interface IGalaxy
 	public String getGalaxyName();
 
 	/**
-	 * @return X-Coordinate from center of map. 
+	 * @return X-Coordinate from center of map.
 	 */
 	public int getXCoord();
 
 	/**
-	 * @return Y-Coordinate from center of map. 
+	 * @return Y-Coordinate from center of map.
 	 */
 	public int getYCoord();
 	

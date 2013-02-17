@@ -6,7 +6,7 @@
 //public class GCCoreTileEntity extends TileEntity
 //{
 //	public int direction;
-//	
+//
 //    @Override
 //    public void validate()
 //    {
@@ -17,10 +17,10 @@
 //        	this.onTileEntityCreation();
 //        }
 //    }
-//    
+//
 //    public void onTileEntityCreation()
 //    {
-//    	
+//
 //    }
 //
 //    @Override
@@ -36,12 +36,12 @@
 //    	super.writeToNBT(par1NBTTagCompound);
 //    	par1NBTTagCompound.setInteger("direction", direction);
 //    }
-//    
+//
 //    public int getDirection (int dir)
 //    {
 //    	return this.direction;
 //    }
-//    
+//
 //    public void setDirection (int dir)
 //    {
 //    	this.direction = dir;

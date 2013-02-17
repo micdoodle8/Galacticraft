@@ -37,7 +37,7 @@ public class GCMarsComponentCreeperPitRoom extends GCCoreStructureComponent
     }
     
     @Override
-    public void buildComponent(StructureComponent par1StructureComponent, List par2List, Random par3Random) 
+    public void buildComponent(StructureComponent par1StructureComponent, List par2List, Random par3Random)
     {
         int var4;
         

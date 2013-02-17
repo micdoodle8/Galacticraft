@@ -30,17 +30,17 @@ public class GCCoreEntityWorm extends EntityMob implements IEntityMultiPart
     public GCCoreEntityWorm(World par1World)
     {
         super(par1World);
-        this.wormPartArray = new GCCoreEntityWormPart[] 
+        this.wormPartArray = new GCCoreEntityWormPart[]
         {
-        		this.wormPartHead = new GCCoreEntityWormPart(this, "head", 2.0F, 2.0F), 
-				this.wormPartBody1 = new GCCoreEntityWormPart(this, "body", 8.0F, 8.0F), 
-				this.wormPartBody2 = new GCCoreEntityWormPart(this, "body", 4.0F, 4.0F), 
-				this.wormPartBody3 = new GCCoreEntityWormPart(this, "body", 4.0F, 4.0F), 
-				this.wormPartBody4 = new GCCoreEntityWormPart(this, "body", 4.0F, 4.0F), 
-				this.wormPartBody5 = new GCCoreEntityWormPart(this, "body", 4.0F, 4.0F), 
-				this.wormPartBody6 = new GCCoreEntityWormPart(this, "body", 4.0F, 4.0F), 
-				this.wormPartBody7 = new GCCoreEntityWormPart(this, "body", 4.0F, 4.0F), 
-				this.wormPartBody8 = new GCCoreEntityWormPart(this, "body", 4.0F, 4.0F), 
+        		this.wormPartHead = new GCCoreEntityWormPart(this, "head", 2.0F, 2.0F),
+				this.wormPartBody1 = new GCCoreEntityWormPart(this, "body", 8.0F, 8.0F),
+				this.wormPartBody2 = new GCCoreEntityWormPart(this, "body", 4.0F, 4.0F),
+				this.wormPartBody3 = new GCCoreEntityWormPart(this, "body", 4.0F, 4.0F),
+				this.wormPartBody4 = new GCCoreEntityWormPart(this, "body", 4.0F, 4.0F),
+				this.wormPartBody5 = new GCCoreEntityWormPart(this, "body", 4.0F, 4.0F),
+				this.wormPartBody6 = new GCCoreEntityWormPart(this, "body", 4.0F, 4.0F),
+				this.wormPartBody7 = new GCCoreEntityWormPart(this, "body", 4.0F, 4.0F),
+				this.wormPartBody8 = new GCCoreEntityWormPart(this, "body", 4.0F, 4.0F),
 				this.wormPartBody9 = new GCCoreEntityWormPart(this, "body", 4.0F, 4.0F)
         };
         this.texture = "/micdoodle8/mods/galacticraft/core/client/entities/worm.png";
@@ -106,9 +106,9 @@ public class GCCoreEntityWorm extends EntityMob implements IEntityMultiPart
         this.posX = par1;
         this.posY = par3;
         this.posZ = par5;
-        float var7 = this.width / 2.0F;
-        float var8 = this.height;
-        this.boundingBox.setBounds(par1 - (double)var7, par3 - (double)this.yOffset + (double)this.ySize, par5 - (double)var7, par1 + (double)var7, par3 - (double)this.yOffset + (double)this.ySize + (double)var8, par5 + (double)var7);
+        final float var7 = this.width / 2.0F;
+        final float var8 = this.height;
+        this.boundingBox.setBounds(par1 - var7, par3 - this.yOffset + this.ySize, par5 - var7, par1 + var7, par3 - this.yOffset + this.ySize + var8, par5 + var7);
     }
 
     @Override
@@ -134,14 +134,14 @@ public class GCCoreEntityWorm extends EntityMob implements IEntityMultiPart
     {
     	if (!this.worldObj.isRemote && this.rand.nextInt(150) == 0)
     	{
-    		turn();
+    		this.turn();
     	}
 
-		this.rotationYaw = (this.getRotationIndex() % 4) * 90F + 45F;
+		this.rotationYaw = this.getRotationIndex() % 4 * 90F + 45F;
     	
 //    	if (this.worldObj.isBlockSolidOnSide((int)this.posX, (int)this.posY - 3, (int)this.posZ, ForgeDirection.UP))
 //    	{
-//    		
+//
 //    	}
 //    	else
 //    	{
@@ -173,11 +173,11 @@ public class GCCoreEntityWorm extends EntityMob implements IEntityMultiPart
 //            	for (int k = -1; k < 2; k++)
 //            	{
 //            		int id = this.worldObj.getBlockId(MathHelper.floor_double(this.posX + xOffset + i), MathHelper.floor_double(this.posY + j), MathHelper.floor_double(this.posZ + zOffset + k));
-//            		
+//
 //            		if (id > 0 && id != Block.waterMoving.blockID && id != Block.waterStill.blockID && id != Block.bedrock.blockID)
 //            		{
 //                		Block block = Block.blocksList[id];
-//                		
+//
 //                		if (block != null)
 //                		{
 //                    		block.dropBlockAsItemWithChance(worldObj, MathHelper.floor_double(this.posX + xOffset + i), MathHelper.floor_double(this.posY + j), MathHelper.floor_double(this.posZ + zOffset + k), worldObj.getBlockMetadata(MathHelper.floor_double(this.posX + xOffset + i), MathHelper.floor_double(this.posY + j), MathHelper.floor_double(this.posZ + zOffset + k)), 1F, 0);
@@ -188,7 +188,7 @@ public class GCCoreEntityWorm extends EntityMob implements IEntityMultiPart
 //                            this.worldObj.notifyBlocksOfNeighborChange(MathHelper.floor_double(this.posX + xOffset + i), MathHelper.floor_double(this.posY + j), MathHelper.floor_double(this.posZ + zOffset + k), 0);
 //                        }
 //            		}
-//            		
+//
 //            		if (id == Block.bedrock.blockID)
 //            		{
 //            			turn();
@@ -196,7 +196,7 @@ public class GCCoreEntityWorm extends EntityMob implements IEntityMultiPart
 //            	}
 //    		}
 //    	}
-//    	
+//
 //    	for (int i = -1; i < 2; i++)
 //    	{
 //    		for (int j = -1; j < 2; j++)
@@ -208,7 +208,7 @@ public class GCCoreEntityWorm extends EntityMob implements IEntityMultiPart
 //            		if (id > 0 && id != Block.waterMoving.blockID && id != Block.waterStill.blockID && id != Block.bedrock.blockID)
 //            		{
 //                		Block block = Block.blocksList[id];
-//                		
+//
 //                		if (block != null)
 //                		{
 //                    		block.dropBlockAsItemWithChance(worldObj, MathHelper.floor_double(this.posX - (xOffset / 6) + i), MathHelper.floor_double(this.posY + j), MathHelper.floor_double(this.posZ - (zOffset / 6) + k), worldObj.getBlockMetadata(MathHelper.floor_double(this.posX - (xOffset / 6) + i), MathHelper.floor_double(this.posY + j), MathHelper.floor_double(this.posZ - (zOffset / 6) + k)), 1F, 0);
@@ -223,25 +223,25 @@ public class GCCoreEntityWorm extends EntityMob implements IEntityMultiPart
 //    		}
 		
 		
-        float var5 = this.rotationYaw * (float)Math.PI / 180.0F;
-        float var27 = MathHelper.sin(var5);
-        float var7 = MathHelper.cos(var5);
+        final float var5 = this.rotationYaw * (float)Math.PI / 180.0F;
+        final float var27 = MathHelper.sin(var5);
+        final float var7 = MathHelper.cos(var5);
 		
 		this.wormPartHead.onUpdate();
         this.wormPartHead.setLocationAndAngles(this.posX + xOffset, this.posY - 0.5, this.posZ + zOffset, 0.0F, 0.0F);
     	
-    	int id = this.worldObj.getBlockId(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 3), MathHelper.floor_double(this.posZ));
+    	final int id = this.worldObj.getBlockId(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 3), MathHelper.floor_double(this.posZ));
 
     	if (id == Block.waterMoving.blockID || id == Block.waterStill.blockID || id == 0)
     	{
     		this.motionY -= 0.062D;
     	}
 
-        List var9 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, AxisAlignedBB.getAABBPool().addOrModifyAABBInPool((double)MathHelper.floor_double(this.posX) - 2 + xOffset, (double)MathHelper.floor_double(this.posY) - 2, (double)MathHelper.floor_double(this.posZ) - 2 + zOffset, (double)MathHelper.floor_double(this.posX) + 2 + xOffset, (double)MathHelper.floor_double(this.posY) + 2, (double)MathHelper.floor_double(this.posZ) + 2 + zOffset));
+        final List var9 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, AxisAlignedBB.getAABBPool().addOrModifyAABBInPool((double)MathHelper.floor_double(this.posX) - 2 + xOffset, (double)MathHelper.floor_double(this.posY) - 2, (double)MathHelper.floor_double(this.posZ) - 2 + zOffset, (double)MathHelper.floor_double(this.posX) + 2 + xOffset, (double)MathHelper.floor_double(this.posY) + 2, (double)MathHelper.floor_double(this.posZ) + 2 + zOffset));
 
         for (int var11 = 0; var11 < var9.size(); ++var11)
         {
-            Entity var32 = (Entity)var9.get(var11);
+            final Entity var32 = (Entity)var9.get(var11);
             
             if (var32 != null && !(var32 instanceof EntityItem))
             {
@@ -251,8 +251,8 @@ public class GCCoreEntityWorm extends EntityMob implements IEntityMultiPart
         
         this.motionY *= 0.95;
 
-        this.motionX = -(this.moveSpeed * Math.cos((((this.getRotationIndex() % 4) + 1) * (90F) - 90F) * Math.PI / 180.0D));
-        this.motionZ = -(this.moveSpeed * Math.sin((((this.getRotationIndex() % 4) + 1) * (90F) - 90F) * Math.PI / 180.0D));
+        this.motionX = -(this.moveSpeed * Math.cos(((this.getRotationIndex() % 4 + 1) * 90F - 90F) * Math.PI / 180.0D));
+        this.motionZ = -(this.moveSpeed * Math.sin(((this.getRotationIndex() % 4 + 1) * 90F - 90F) * Math.PI / 180.0D));
 
         if (this.getSlowed() == 1)
         {
@@ -280,7 +280,7 @@ public class GCCoreEntityWorm extends EntityMob implements IEntityMultiPart
     {
         if (super.getCanSpawnHere())
         {
-            EntityPlayer var1 = this.worldObj.getClosestPlayerToEntity(this, 5.0D);
+            final EntityPlayer var1 = this.worldObj.getClosestPlayerToEntity(this, 5.0D);
             return var1 == null;
         }
         else
@@ -333,7 +333,7 @@ public class GCCoreEntityWorm extends EntityMob implements IEntityMultiPart
     }
 
 	@Override
-	public World getWorld() 
+	public World getWorld()
 	{
         return this.worldObj;
 	}
@@ -357,7 +357,7 @@ public class GCCoreEntityWorm extends EntityMob implements IEntityMultiPart
     }
 
 	@Override
-	public boolean attackEntityFromPart(GCCoreEntityWormPart var1, DamageSource par2DamageSource, int par3) 
+	public boolean attackEntityFromPart(GCCoreEntityWormPart var1, DamageSource par2DamageSource, int par3)
 	{
         if (var1 != this.wormPartHead)
         {
@@ -374,12 +374,12 @@ public class GCCoreEntityWorm extends EntityMob implements IEntityMultiPart
 
     private boolean destroyBlocksInAABB(AxisAlignedBB par1AxisAlignedBB)
     {
-        int var2 = MathHelper.floor_double(par1AxisAlignedBB.minX);
-        int var3 = MathHelper.floor_double(par1AxisAlignedBB.minY);
-        int var4 = MathHelper.floor_double(par1AxisAlignedBB.minZ);
-        int var5 = MathHelper.floor_double(par1AxisAlignedBB.maxX);
-        int var6 = MathHelper.floor_double(par1AxisAlignedBB.maxY);
-        int var7 = MathHelper.floor_double(par1AxisAlignedBB.maxZ);
+        final int var2 = MathHelper.floor_double(par1AxisAlignedBB.minX);
+        final int var3 = MathHelper.floor_double(par1AxisAlignedBB.minY);
+        final int var4 = MathHelper.floor_double(par1AxisAlignedBB.minZ);
+        final int var5 = MathHelper.floor_double(par1AxisAlignedBB.maxX);
+        final int var6 = MathHelper.floor_double(par1AxisAlignedBB.maxY);
+        final int var7 = MathHelper.floor_double(par1AxisAlignedBB.maxZ);
         boolean var8 = false;
         boolean var9 = false;
 
@@ -389,12 +389,12 @@ public class GCCoreEntityWorm extends EntityMob implements IEntityMultiPart
             {
                 for (int var12 = var4; var12 <= var7; ++var12)
                 {
-                    int var13 = this.worldObj.getBlockId(var10, var11, var12);
-                    Block block = Block.blocksList[var13];
+                    final int var13 = this.worldObj.getBlockId(var10, var11, var12);
+                    final Block block = Block.blocksList[var13];
 
                     if (block != null)
                     {
-                        if (block.canDragonDestroy(worldObj, var10, var11, var12))
+                        if (block.canDragonDestroy(this.worldObj, var10, var11, var12))
                         {
                             var9 = true;
                             this.worldObj.setBlockWithNotify(var10, var11, var12, 0);
@@ -410,9 +410,9 @@ public class GCCoreEntityWorm extends EntityMob implements IEntityMultiPart
 
         if (var9)
         {
-            double var16 = par1AxisAlignedBB.minX + (par1AxisAlignedBB.maxX - par1AxisAlignedBB.minX) * (double)this.rand.nextFloat();
-            double var17 = par1AxisAlignedBB.minY + (par1AxisAlignedBB.maxY - par1AxisAlignedBB.minY) * (double)this.rand.nextFloat();
-            double var14 = par1AxisAlignedBB.minZ + (par1AxisAlignedBB.maxZ - par1AxisAlignedBB.minZ) * (double)this.rand.nextFloat();
+            final double var16 = par1AxisAlignedBB.minX + (par1AxisAlignedBB.maxX - par1AxisAlignedBB.minX) * this.rand.nextFloat();
+            final double var17 = par1AxisAlignedBB.minY + (par1AxisAlignedBB.maxY - par1AxisAlignedBB.minY) * this.rand.nextFloat();
+            final double var14 = par1AxisAlignedBB.minZ + (par1AxisAlignedBB.maxZ - par1AxisAlignedBB.minZ) * this.rand.nextFloat();
             this.worldObj.spawnParticle("largeexplode", var16, var17, var14, 0.0D, 0.0D, 0.0D);
         }
 

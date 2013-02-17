@@ -10,8 +10,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
-import cpw.mods.fml.relauncher.SideOnly;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -23,7 +23,7 @@ public class GCMoonBlockOre extends Block implements IDetectableResource
 {
 	// AluminumMoon: 0, IronMoon: 1, CheeseStone: 2;
 	
-	public GCMoonBlockOre(int i) 
+	public GCMoonBlockOre(int i)
 	{
 		super(i, 4, Material.rock);
         this.setRequiresSelfNotify();
@@ -31,9 +31,9 @@ public class GCMoonBlockOre extends Block implements IDetectableResource
 	}
 
 	@Override
-	public int getBlockTextureFromSideAndMetadata(int side, int meta) 
+	public int getBlockTextureFromSideAndMetadata(int side, int meta)
 	{
-		switch (meta) 
+		switch (meta)
 		{
 		case 0:
 			return 6;
@@ -47,7 +47,7 @@ public class GCMoonBlockOre extends Block implements IDetectableResource
 	}
 
 	@Override
-	public int idDropped(int meta, Random random, int par3) 
+	public int idDropped(int meta, Random random, int par3)
 	{
 		switch (meta)
 		{

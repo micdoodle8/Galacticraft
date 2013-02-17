@@ -4,7 +4,6 @@ import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityBuggy;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
-import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreModelBuggy extends ModelBase
 {
@@ -306,13 +305,13 @@ public class GCCoreModelBuggy extends ModelBase
 	
 	public void setRotationAngles(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
 	{
-		super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);	
+		super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
         
         this.radarCenter.rotateAngleY += 0.01F;
 
         if (entity instanceof GCCoreEntityBuggy && entity.riddenByEntity != null)
         {
-        	GCCoreEntityBuggy buggy = (GCCoreEntityBuggy) entity;
+        	final GCCoreEntityBuggy buggy = (GCCoreEntityBuggy) entity;
 
         	this.wheel1a.rotateAngleY = buggy.turnProgress;
         	this.wheel2a.rotateAngleY = buggy.turnProgress;

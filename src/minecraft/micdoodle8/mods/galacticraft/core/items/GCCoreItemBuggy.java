@@ -14,8 +14,8 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.SideOnly;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -25,7 +25,7 @@ import cpw.mods.fml.relauncher.Side;
  */
 public class GCCoreItemBuggy extends GCCoreItem
 {
-	public GCCoreItemBuggy(int par1) 
+	public GCCoreItemBuggy(int par1)
 	{
 		super(par1);
 	}

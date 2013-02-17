@@ -14,9 +14,9 @@ import net.minecraft.item.ItemStack;
  *  All rights reserved.
  *
  */
-public class GCCoreSlotTankRefill extends Slot 
+public class GCCoreSlotTankRefill extends Slot
 {
-	public GCCoreSlotTankRefill(IInventory par3IInventory, int par4, int par5, int par6) 
+	public GCCoreSlotTankRefill(IInventory par3IInventory, int par4, int par5, int par6)
 	{
 		super(par3IInventory, par4, par5, par6);
 	}
@@ -36,7 +36,7 @@ public class GCCoreSlotTankRefill extends Slot
 			return GCCoreUtil.getDrainSpacing(par1ItemStack) > 0;
 		}
 		
-		if (slotNumber == 1)
+		if (this.slotNumber == 1)
 		{
 			return par1ItemStack.getItem() instanceof GCCoreItemParachute;
 		}
@@ -45,7 +45,7 @@ public class GCCoreSlotTankRefill extends Slot
 	}
 
 	@Override
-	public int getSlotStackLimit() 
+	public int getSlotStackLimit()
 	{
 		return 1;
 	}

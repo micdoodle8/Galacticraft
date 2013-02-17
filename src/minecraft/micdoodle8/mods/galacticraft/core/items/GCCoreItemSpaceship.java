@@ -20,7 +20,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GCCoreItemSpaceship extends GCCoreItem
 {
-	public GCCoreItemSpaceship(int par1) 
+	public GCCoreItemSpaceship(int par1)
 	{
 		super(par1);
 		this.setMaxDamage(0);
@@ -85,7 +85,7 @@ public class GCCoreItemSpaceship extends GCCoreItem
 	
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer player, List par2List, boolean b) 
+    public void addInformation(ItemStack par1ItemStack, EntityPlayer player, List par2List, boolean b)
     {
     	if (par1ItemStack.getItemDamage() != 0)
     	{
