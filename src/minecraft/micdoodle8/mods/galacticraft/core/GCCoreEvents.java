@@ -35,4 +35,13 @@ public class GCCoreEvents
 			((WorldServer)event.world).customTeleporters.add(new GCCoreTeleporter((WorldServer)event.world));
 		}
 	}
+	
+	@ForgeSubscribe
+	public void onWorldUnload(WorldEvent.Unload event)
+	{
+		if (event.world.provider.dimensionId == 0)
+		{
+			GalacticraftCore.playersServer.clear();
+		}
+	}
 }

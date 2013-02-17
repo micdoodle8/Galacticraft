@@ -60,6 +60,10 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     	this.playerToSend = player;
     	this.destinations = listOfDestinations;
     }
+
+    // Override keyTyped so you don't accidently hit Escape and fall to your death!
+    @Override
+	protected void keyTyped(char par1, int par2) {}
     
     @Override
 	public void initGui()
@@ -79,6 +83,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
 
         final StringTranslate var1 = StringTranslate.getInstance();
 //        this.controlList.add(new GCCoreGuiTexturedButton(0, this.width - 110, this.height - 26, 105, 20, "Send To Dimension", "" /* TODO */));
+        this.controlList.add(new GCCoreGuiTexturedButton(0, this.width - 28, 5, 22, 22, "/micdoodle8/mods/galacticraft/core/client/gui/button1.png", 22, 22));
         this.controlList.add(this.sendButton = new GuiSmallButton(1, this.width - 110, this.height - 26, 105, 20, "Send To Dimension"));
         this.planetSlots.registerScrollButtons(this.controlList, 2, 3);
     }
@@ -406,13 +411,21 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     @Override
 	protected void actionPerformed(GuiButton par1GuiButton)
     {
-    	if (par1GuiButton.enabled && ClientProxyCore.teleportCooldown <= 0)
-    	{
-            final Object[] toSend = {this.destinations[this.selectedSlot]};
-            PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 2, toSend));
-            FMLClientHandler.instance().getClient().displayGuiScreen(null);
-            ClientProxyCore.teleportCooldown = 300;
-    	}
+        switch (par1GuiButton.id)
+        {
+        case 0:
+        	FMLClientHandler.instance().getClient().displayGuiScreen(new GCCoreGuiGalaxyMap(this.playerToSend, this.destinations));
+        	break;
+        case 1:
+        	if (par1GuiButton.enabled && ClientProxyCore.teleportCooldown <= 0)
+        	{
+                final Object[] toSend = {this.destinations[this.selectedSlot]};
+                PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 2, toSend));
+                FMLClientHandler.instance().getClient().displayGuiScreen(null);
+                ClientProxyCore.teleportCooldown = 300;
+        	}
+        	break;
+        }
     }
     
     public boolean isValidDestination(int i)

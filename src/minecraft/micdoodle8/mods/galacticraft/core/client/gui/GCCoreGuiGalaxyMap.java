@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -30,6 +31,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -64,10 +66,18 @@ public class GCCoreGuiGalaxyMap extends GCCoreGuiStarBackground
     EntityPlayer player;
     
     private IMapPlanet selectedPlanet = null;
+    
+    private String[] listOfDimensions;
 
     public GCCoreGuiGalaxyMap(EntityPlayer player)
     {
     	this.player = player;
+    }
+
+    public GCCoreGuiGalaxyMap(EntityPlayer player, String[] listOfDimensions)
+    {
+    	this.player = player;
+    	this.listOfDimensions = listOfDimensions;
     }
 
     @Override
@@ -97,6 +107,20 @@ public class GCCoreGuiGalaxyMap extends GCCoreGuiStarBackground
         {
             this.mc.displayGuiScreen((GuiScreen)null);
             this.mc.setIngameFocus();
+        }
+        else if (par2 == Keyboard.KEY_ESCAPE)
+        {
+        	if (this.listOfDimensions != null)
+        	{
+        		FMLClientHandler.instance().getClient().currentScreen = null;
+        		FMLClientHandler.instance().getClient().displayGuiScreen(new GCCoreGuiChoosePlanet(this.player, this.listOfDimensions));
+                this.mc.inGameHasFocus = true;
+                this.mc.mouseHelper.grabMouseCursor();
+        	}
+        	else
+        	{
+        		super.keyTyped(par1, par2);
+        	}
         }
         else
         {
@@ -400,72 +424,78 @@ public class GCCoreGuiGalaxyMap extends GCCoreGuiStarBackground
 		            
 		            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		            
-		        	for (int i = 0; i < GalacticraftCore.mapMoons.size(); i++)
+		        	for (Map.Entry e : GalacticraftCore.mapMoons.entrySet())
 		            {
-		        		IMapPlanet moon = (IMapPlanet) GalacticraftCore.mapMoons.get(String.valueOf(planet) + i);
-		        		
-		                int var26b = 0;
-		                int var27b = 0;
-		                
-		                int var42b = 0;
-		                int var41b = 0;
-		                
-		        		if (moon != null)
+		        		if (e.getKey().equals(planet))
 		        		{
-		                    final Map[] posMaps2 = this.computePlanetPos(var42, var41, moon.getDistanceFromCenter() / 2, 2880);
-		                    
-		                    if (posMaps2[0] != null && posMaps2[1] != null)
-		                    {
-		                    	if (posMaps2[0].get(MathHelper.floor_float(Sys.getTime() / (720F * moon.getStretchValue()) % 2880)) != null && posMaps2[1].get(MathHelper.floor_float(Sys.getTime() / 720F % 2880)) != null)
-		                    	{
-		                        	final int x = MathHelper.floor_float((Float) posMaps2[0].get(MathHelper.floor_float((moon.getPhaseShift() + Sys.getTime() / (720F * moon.getStretchValue())) % 2880)));
-		                        	final int y = MathHelper.floor_float((Float) posMaps2[1].get(MathHelper.floor_float((moon.getPhaseShift() + Sys.getTime() / (720F * moon.getStretchValue())) % 2880)));
-		                        	
-		                        	var26b = x;
-		                        	var27b = y;
-		                    	}
-		                    }
-		                    
-		                    var42b = var26b;
-		                    var41b = var27b;
-		
-		                    width = (int) (moon.getPlanetSize() + (1 / this.zoom * 3F));
-		                    
-		                    if (Mouse.isButtonDown(0))
-		                    {
-		                    	int pointerMinX = this.width / 2 - 5;
-		                    	int pointerMaxX = this.width / 2 + 5;
-		                    	int pointerMinY = this.height / 2 - 5;
-		                    	int pointerMaxY = this.height / 2 + 5;
-		                    	int planetMinX = var42b - width;
-		                    	int planetMaxX = var42b + width;
-		                    	int planetMinY = var41b - width;
-		                    	int planetMaxY = var41b + width;
-		                    	
-		                    	if (((pointerMaxX >= planetMinX && pointerMinX <= planetMinX) || (pointerMinX <= planetMinX && pointerMaxY >= planetMaxX) || (pointerMinX >= planetMinX && pointerMinX <= planetMaxX))
-		                    			&& ((pointerMaxY >= planetMinY && pointerMinY <= planetMinY) || (pointerMinY <= planetMinY && pointerMaxY >= planetMaxY) || (pointerMinY >= planetMinY && pointerMinY <= planetMaxY)))
-		                        {
-		                        	this.selectedPlanet = moon;
-		                        }
-		                    }
-		                    
-		                    final IPlanetSlotRenderer moonRenderer = moon.getSlotRenderer();
-		
-		                    if (moonRenderer != null)
-		                    {
-		                        this.mc.renderEngine.bindTexture(this.mc.renderEngine.getTexture(moonRenderer.getPlanetSprite()));
-		                        moonRenderer.renderSlot(0, var42b, var41b, (float) (moon.getPlanetSize() + (1 / Math.pow(this.zoom, -2))), var3);
-		                        
-		                        if (selectedPlanet != null && moon.getSlotRenderer().getPlanetName().equals(selectedPlanet.getSlotRenderer().getPlanetName()))
-		                        {
-		                            moonRenderer.renderSlot(0, var42b, var41b, (float) (moon.getPlanetSize() + (1 / Math.pow(this.zoom, -2))), var3);
-		                        }
-		                    }
-		
-		                    if (selectedPlanet != null && moon.getSlotRenderer().getPlanetName().equals(selectedPlanet.getSlotRenderer().getPlanetName()))
-		                    {
-		                    	this.drawInfoBox(var42b, var41b, moon);
-		                    }
+		        			List<IMapPlanet> moonList = (List<IMapPlanet>) e.getValue();
+		        			
+		        			for (IMapPlanet moon : moonList)
+		        			{
+		        				int var26b = 0;
+				                int var27b = 0;
+				                
+				                int var42b = 0;
+				                int var41b = 0;
+				                
+				        		if (moon != null)
+				        		{
+				                    final Map[] posMaps2 = this.computePlanetPos(var42, var41, moon.getDistanceFromCenter() / 2, 2880);
+				                    
+				                    if (posMaps2[0] != null && posMaps2[1] != null)
+				                    {
+				                    	if (posMaps2[0].get(MathHelper.floor_float(Sys.getTime() / (720F * moon.getStretchValue()) % 2880)) != null && posMaps2[1].get(MathHelper.floor_float(Sys.getTime() / 720F % 2880)) != null)
+				                    	{
+				                        	final int x = MathHelper.floor_float((Float) posMaps2[0].get(MathHelper.floor_float((moon.getPhaseShift() + Sys.getTime() / (720F * moon.getStretchValue())) % 2880)));
+				                        	final int y = MathHelper.floor_float((Float) posMaps2[1].get(MathHelper.floor_float((moon.getPhaseShift() + Sys.getTime() / (720F * moon.getStretchValue())) % 2880)));
+				                        	
+				                        	var26b = x;
+				                        	var27b = y;
+				                    	}
+				                    }
+				                    
+				                    var42b = var26b;
+				                    var41b = var27b;
+				
+				                    width = (int) (moon.getPlanetSize() + (1 / this.zoom * 3F));
+				                    
+				                    if (Mouse.isButtonDown(0))
+				                    {
+				                    	int pointerMinX = this.width / 2 - 5;
+				                    	int pointerMaxX = this.width / 2 + 5;
+				                    	int pointerMinY = this.height / 2 - 5;
+				                    	int pointerMaxY = this.height / 2 + 5;
+				                    	int planetMinX = var42b - width;
+				                    	int planetMaxX = var42b + width;
+				                    	int planetMinY = var41b - width;
+				                    	int planetMaxY = var41b + width;
+				                    	
+				                    	if (((pointerMaxX >= planetMinX && pointerMinX <= planetMinX) || (pointerMinX <= planetMinX && pointerMaxY >= planetMaxX) || (pointerMinX >= planetMinX && pointerMinX <= planetMaxX))
+				                    			&& ((pointerMaxY >= planetMinY && pointerMinY <= planetMinY) || (pointerMinY <= planetMinY && pointerMaxY >= planetMaxY) || (pointerMinY >= planetMinY && pointerMinY <= planetMaxY)))
+				                        {
+				                        	this.selectedPlanet = moon;
+				                        }
+				                    }
+				                    
+				                    final IPlanetSlotRenderer moonRenderer = moon.getSlotRenderer();
+				
+				                    if (moonRenderer != null)
+				                    {
+				                        this.mc.renderEngine.bindTexture(this.mc.renderEngine.getTexture(moonRenderer.getPlanetSprite()));
+				                        moonRenderer.renderSlot(0, var42b, var41b, (float) (moon.getPlanetSize() + (1 / Math.pow(this.zoom, -2))), var3);
+				                        
+				                        if (selectedPlanet != null && moon.getSlotRenderer().getPlanetName().equals(selectedPlanet.getSlotRenderer().getPlanetName()))
+				                        {
+				                            moonRenderer.renderSlot(0, var42b, var41b, (float) (moon.getPlanetSize() + (1 / Math.pow(this.zoom, -2))), var3);
+				                        }
+				                    }
+				
+				                    if (selectedPlanet != null && moon.getSlotRenderer().getPlanetName().equals(selectedPlanet.getSlotRenderer().getPlanetName()))
+				                    {
+				                    	this.drawInfoBox(var42b, var41b, moon);
+				                    }
+				        		}
+		        			}
 		        		}
 		            }
 		            
@@ -541,13 +571,16 @@ public class GCCoreGuiGalaxyMap extends GCCoreGuiStarBackground
             	
             	if (planet != null)
             	{
-            		for (int k = 0; k < GalacticraftCore.mapMoons.size(); k++)
+            		for (Map.Entry e : GalacticraftCore.mapMoons.entrySet())
             		{
-            			IMapPlanet moon = GalacticraftCore.mapMoons.get(String.valueOf(planet) + k);
+            			List<IMapPlanet> moonList = (List<IMapPlanet>) e.getValue();
             			
-            			if (this.selectedPlanet.equals(moon))
+            			for (IMapPlanet moon : moonList)
             			{
-            	            this.fontRenderer.drawString("Moon of " + planet.getSlotRenderer().getPlanetName(), this.width / 2 - (width / 2) + width + 10, 6, textCol2, false);
+                			if (this.selectedPlanet.equals(moon) && e.getKey().equals(planet))
+                			{
+                	            this.fontRenderer.drawString("Moon of " + planet.getSlotRenderer().getPlanetName(), this.width / 2 - (width / 2) + width + 10, 6, textCol2, false);
+                			}
             			}
             		}
             	}

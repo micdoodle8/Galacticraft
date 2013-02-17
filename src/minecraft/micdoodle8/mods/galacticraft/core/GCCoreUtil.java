@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.EmptyStackException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -14,11 +15,12 @@ import java.util.Random;
 import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.API.IMapPlanet;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
+import micdoodle8.mods.galacticraft.core.client.GCCorePlayerBaseClient;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiTankRefill;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerBase;
-import micdoodle8.mods.galacticraft.core.items.GCCoreItemBreathableHelmet;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemFlag;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenGear;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenMask;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenTank;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemParachute;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
@@ -40,6 +42,7 @@ import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 
@@ -47,7 +50,7 @@ public class GCCoreUtil
 {
 	public static void addCraftingRecipes()
 	{
-		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.rocketEngine, 1), new Object[] {
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.rocketEngine, 1), new Object[] {
 			" YV",
 			"XWX",
 			"XZX",
@@ -56,8 +59,8 @@ public class GCCoreUtil
 			'X', GCCoreItems.heavyPlating,
 			'Y', Item.flintAndSteel,
 			'Z', GCCoreItems.airVent
-		});
-		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.rocketEngine, 1), new Object[] {
+		}));
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.rocketEngine, 1), new Object[] {
 			"VY ",
 			"XWX",
 			"XZX",
@@ -66,244 +69,243 @@ public class GCCoreUtil
 			'X', GCCoreItems.heavyPlating,
 			'Y', Item.flintAndSteel,
 			'Z', GCCoreItems.airVent
-		});
-		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.heavyPlating, 2), new Object[] {
+		}));
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.heavyPlating, 2), new Object[] {
 			"XYZ",
 			"XYZ",
 			"XYZ",
-			'X', GCCoreItems.ingotTitanium,
-			'Y', GCCoreItems.ingotCopper,
-			'Z', GCCoreItems.ingotAluminum
-		});
-		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.rocketNoseCone, 1), new Object[] {
+			'X', "ingotTitanium",
+			'Y', "ingotCopper",
+			'Z', "ingotAluminium"
+		}));
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.rocketNoseCone, 1), new Object[] {
 			" Y ",
 			" X ",
 			"X X",
 			'X', GCCoreItems.heavyPlating,
 			'Y', Block.torchRedstoneActive
-		});
-		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.rocketFins, 1), new Object[] {
+		}));
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.rocketFins, 1), new Object[] {
 			" Y ",
 			"XYX",
 			"X X",
 			'X', GCCoreItems.heavyPlating,
-			'Y', GCCoreItems.ingotAluminum
-		});
-		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreBlocks.landingPad, 9), new Object[] {
+			'Y', "ingotAluminium"
+		}));
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreBlocks.landingPad, 9), new Object[] {
 			"YYY",
 			"XXX",
 			'X', Block.blockSteel,
-			'Y', GCCoreItems.ingotAluminum
-		});
-		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreBlocks.airDistributor, 1), new Object[] {
+			'Y', "ingotAluminium"
+		}));
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreBlocks.airDistributor, 1), new Object[] {
 			"WXW",
 			"YZY",
 			"WXW",
-			'W', GCCoreItems.ingotAluminum,
+			'W', "ingotAluminium",
 			'X', GCCoreItems.airFan,
 			'Y', GCCoreItems.airVent,
-			'Z', GCCoreItems.ingotTitanium
-		});
-		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreBlocks.blockAirCollector, 1), new Object[] {
+			'Z', "ingotTitanium"
+		}));
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreBlocks.blockAirCollector, 1), new Object[] {
 			"WWW",
 			"YXZ",
 			"WVW",
 			'W', GCCoreItems.oxygenConcentrator,
-			'W', GCCoreItems.ingotTitanium,
+			'W', "ingotTitanium",
 			'X', GCCoreItems.aluminumCanister,
 			'Y', GCCoreItems.airFan,
 			'Z', GCCoreItems.airVent
-		});
-		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreBlocks.rocketBench, 1), new Object[] {
+		}));
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreBlocks.rocketBench, 1), new Object[] {
 			"XXX",
 			"YZY",
 			"YYY",
-			'X', GCCoreItems.ingotAluminum,
+			'X', "ingotAluminium",
 			'Y', Block.planks,
 			'Z', Block.workbench
-		});
-		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreBlocks.oxygenPipe, 1), new Object[] {
+		}));
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreBlocks.oxygenPipe, 1), new Object[] {
 			"XXX",
 			"   ",
 			"XXX",
 			'X', Block.thinGlass
-		});
-		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.lightOxygenTankFull, 1), new Object[] {
+		}));
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.lightOxygenTankFull, 1), new Object[] {
 			"Z",
 			"X",
 			"Y",
 			'X', GCCoreItems.aluminumCanister,
-			'Y', GCCoreItems.ingotCopper,
+			'Y', "ingotCopper",
 			'Z', new ItemStack(Block.cloth, 1, 5)
-		});
-		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.medOxygenTankFull, 1), new Object[] {
+		}));
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.medOxygenTankFull, 1), new Object[] {
 			"ZZ",
 			"XX",
 			"YY",
 			'X', GCCoreItems.aluminumCanister,
-			'Y', GCCoreItems.ingotAluminum,
+			'Y', "ingotAluminium",
 			'Z', new ItemStack(Block.cloth, 1, 1)
-		});
-		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.heavyOxygenTankFull, 1), new Object[] {
+		}));
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.heavyOxygenTankFull, 1), new Object[] {
 			"ZZZ",
 			"XXX",
 			"YYY",
 			'X', GCCoreItems.aluminumCanister,
-			'Y', GCCoreItems.ingotTitanium,
+			'Y', "ingotTitanium",
 			'Z', new ItemStack(Block.cloth, 1, 14)
-		});
-		// TODO sensor lens...
-		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.sensorGlasses, 1), new Object[] {
+		}));
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.sensorGlasses, 1), new Object[] {
 			"YYY",
 			"Y Y",
 			"XYX",
 			'X', GCCoreItems.sensorLens,
 			'Y', GCMoonItems.meteoricIronIngot
-		});
-		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.sensorLens, 1), new Object[] {
+		}));
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.sensorLens, 1), new Object[] {
 			"ZYZ",
 			"YXY",
 			"ZYZ",
 			'X', Block.thinGlass,
 			'Y', GCMoonItems.meteoricIronIngot,
 			'Z', Item.redstone
-		});
-		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.aluminumCanister, 1), new Object[] {
+		}));
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.aluminumCanister, 1), new Object[] {
 			"X X",
 			"X X",
 			"XXX",
-			'X', GCCoreItems.ingotAluminum
-		});
-		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.airVent, 1), new Object[] {
+			'X', "ingotAluminium"
+		}));
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.airVent, 1), new Object[] {
 			"XX",
 			"XX",
-			'X', GCCoreItems.ingotAluminum
-		});
-		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.airFan, 1), new Object[] {
+			'X', "ingotAluminium"
+		}));
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.airFan, 1), new Object[] {
 			"Z Z",
 			" Y ",
 			"ZXZ",
 			'X', Item.redstone,
-			'Y', GCCoreItems.ingotTitanium,
-			'Z', GCCoreItems.ingotAluminum
-		});
-		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.oxygenMask, 1), new Object[] {
+			'Y', "ingotTitanium",
+			'Z', "ingotAluminium"
+		}));
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.oxygenMask, 1), new Object[] {
 			"XXX",
 			"XYX",
 			"XXX",
 			'X', Block.thinGlass,
 			'Y', Item.helmetSteel
-		});
-		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.oxygenConcentrator, 1), new Object[] {
+		}));
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.oxygenConcentrator, 1), new Object[] {
 			"ZWZ",
 			"WYW",
 			"ZXZ",
-			'W', GCCoreItems.ingotAluminum,
+			'W', "ingotAluminium",
 			'X', GCCoreItems.airVent,
 			'Y', GCCoreItems.aluminumCanister,
-			'Z', GCCoreItems.ingotTitanium
-		});
-		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.titaniumPickaxe, 1), new Object[] {
+			'Z', "ingotTitanium"
+		}));
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.titaniumPickaxe, 1), new Object[] {
 			"YYY",
 			" X ",
 			" X ",
-			'Y', GCCoreItems.ingotTitanium,
+			'Y', "ingotTitanium",
 			'X', Item.stick
-		});
-		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.titaniumAxe, 1), new Object[] {
+		}));
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.titaniumAxe, 1), new Object[] {
 			"YY ",
 			"YX ",
 			" X ",
-			'Y', GCCoreItems.ingotTitanium,
+			'Y', "ingotTitanium",
 			'X', Item.stick
-		});
-		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.titaniumAxe, 1), new Object[] {
+		}));
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.titaniumAxe, 1), new Object[] {
 			" YY",
 			" XY",
 			" X ",
-			'Y', GCCoreItems.ingotTitanium,
+			'Y', "ingotTitanium",
 			'X', Item.stick
-		});
-		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.titaniumHoe, 1), new Object[] {
+		}));
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.titaniumHoe, 1), new Object[] {
 			" YY",
 			" X ",
 			" X ",
-			'Y', GCCoreItems.ingotTitanium,
+			'Y', "ingotTitanium",
 			'X', Item.stick
-		});
-		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.titaniumHoe, 1), new Object[] {
+		}));
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.titaniumHoe, 1), new Object[] {
 			"YY ",
 			" X ",
 			" X ",
-			'Y', GCCoreItems.ingotTitanium,
+			'Y', "ingotTitanium",
 			'X', Item.stick
-		});
-		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.titaniumSpade, 1), new Object[] {
+		}));
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.titaniumSpade, 1), new Object[] {
 			" Y ",
 			" X ",
 			" X ",
-			'Y', GCCoreItems.ingotTitanium,
+			'Y', "ingotTitanium",
 			'X', Item.stick
-		});
-		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.titaniumSword, 1), new Object[] {
+		}));
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.titaniumSword, 1), new Object[] {
 			" Y ",
 			" Y ",
 			" X ",
-			'Y', GCCoreItems.ingotTitanium,
+			'Y', "ingotTitanium",
 			'X', Item.stick
-		});
-		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.titaniumBoots, 1), new Object[] {
+		}));
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.titaniumBoots, 1), new Object[] {
 			"X X",
 			"X X",
-			'X', GCCoreItems.ingotTitanium
-		});
-		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.titaniumChestplate, 1), new Object[] {
+			'X', "ingotTitanium"
+		}));
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.titaniumChestplate, 1), new Object[] {
 			"X X",
 			"XXX",
 			"XXX",
-			'X', GCCoreItems.ingotTitanium
-		});
-		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.titaniumLeggings, 1), new Object[] {
+			'X', "ingotTitanium"
+		}));
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.titaniumLeggings, 1), new Object[] {
 			"XXX",
 			"X X",
 			"X X",
-			'X', GCCoreItems.ingotTitanium
-		});
-		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.titaniumHelmet, 1), new Object[] {
+			'X', "ingotTitanium"
+		}));
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.titaniumHelmet, 1), new Object[] {
 			"XXX",
 			"X X",
-			'X', GCCoreItems.ingotTitanium
-		});
-		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.canvas, 1), new Object[] {
+			'X', "ingotTitanium"
+		}));
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.canvas, 1), new Object[] {
 			" XY",
 			"XXX",
 			"YX ",
 			'Y', Item.stick, 'X', Item.silk
-		});
-		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.parachute, 1, 0), new Object[] {
+		}));
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.parachute, 1, 0), new Object[] {
 			"XXX",
 			"Y Y",
 			" Y ",
 			'X', GCCoreItems.canvas, 'Y', Item.silk
-		});
+		}));
 		
         for (int var2 = 0; var2 < 16; ++var2)
         {
         	CraftingManager.getInstance().addShapelessRecipe(new ItemStack(GCCoreItems.parachute, 1, GCCoreItemParachute.getParachuteDamageValueFromDye(var2)), new Object[] {new ItemStack(Item.dyePowder, 1, var2), new ItemStack(GCCoreItems.parachute, 1, 0)});
         }
         
-		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.flagPole, 2, 0), new Object[] {
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.flagPole, 2, 0), new Object[] {
 			"X",
 			"X",
 			"X",
-			'X', GCCoreItems.ingotAluminum
-		});
-		CraftingManager.getInstance().addRecipe(new ItemStack(GCCoreItems.flag, 1, 16), new Object[] {
+			'X', "ingotAluminium"
+		}));
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.flag, 1, 16), new Object[] {
 			"XYY",
 			"XYY",
 			"X  ",
 			'X', GCCoreItems.flagPole, 'Y', GCCoreItems.canvas
-		});
+		}));
 		
         for (int var2 = 0; var2 < 16; ++var2)
         {
@@ -311,6 +313,13 @@ public class GCCoreUtil
         }
         
         CraftingManager.getInstance().addShapelessRecipe(new ItemStack(GCCoreItems.rocketFuelBucket, 1), new Object[] {new ItemStack(Item.fireballCharge, 1), new ItemStack(Item.gunpowder, 1), new ItemStack(Item.bucketEmpty, 1)});
+
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.oxygenGear), new Object[] {
+			" Y ",
+			"YXY",
+			"Y Y",
+			'X', GCCoreItems.oxygenConcentrator, 'Y', GCCoreBlocks.oxygenPipe
+		}));
 	}
 	
 	public static void addSmeltingRecipes()
@@ -574,7 +583,7 @@ public class GCCoreUtil
 		
 		if (tank.getItem() instanceof GCCoreItemOxygenTank)
 		{
-			return 60;
+			return 180;
 		}
 
 		return 0;
@@ -674,13 +683,13 @@ public class GCCoreUtil
 	
 	public static WorldProvider getProviderForName(String par1String)
 	{
-		final Integer[] var1 = DimensionManager.getIDs();
+		final Integer[] var1 = DimensionManager.getStaticDimensionIDs();
 		
 		for (int i = 0; i < var1.length; i++)
 		{
-			if (DimensionManager.getProvider(var1[i]).getDimensionName() != null && DimensionManager.getProvider(var1[i]).getDimensionName().equals(par1String))
+			if (WorldProvider.getProviderForDimension(var1[i]).getDimensionName() != null && WorldProvider.getProviderForDimension(var1[i]).getDimensionName().equals(par1String))
 			{
-				return DimensionManager.getProvider(var1[i]);
+				return WorldProvider.getProviderForDimension(var1[i]);
 			}
 		}
 		
@@ -693,7 +702,7 @@ public class GCCoreUtil
 		
 		for (int i = 0; i < ids.length; i++)
 		{
-    		if (DimensionManager.getProvider(ids[i]) instanceof IGalacticraftWorldProvider || DimensionManager.getProvider(ids[i]).dimensionId == 0)
+    		if (WorldProvider.getProviderForDimension(ids[i]) instanceof IGalacticraftWorldProvider || WorldProvider.getProviderForDimension(ids[i]).dimensionId == 0)
     		{
     			amount++;
     		}
@@ -708,9 +717,9 @@ public class GCCoreUtil
 		
 		for (int i = 0; i < ids.length; i++)
 		{
-    		if (DimensionManager.getProvider(ids[i]) != null && (DimensionManager.getProvider(ids[i]) instanceof IGalacticraftWorldProvider || DimensionManager.getProvider(ids[i]).dimensionId == 0))
+    		if (WorldProvider.getProviderForDimension(ids[i]) != null && (WorldProvider.getProviderForDimension(ids[i]) instanceof IGalacticraftWorldProvider || WorldProvider.getProviderForDimension(ids[i]).dimensionId == 0))
     		{
-    			map.put(DimensionManager.getProvider(ids[i]).getDimensionName(), DimensionManager.getProvider(ids[i]).dimensionId);
+    			map.put(WorldProvider.getProviderForDimension(ids[i]).getDimensionName(), WorldProvider.getProviderForDimension(ids[i]).dimensionId);
     		}
 		}
 		
@@ -862,30 +871,22 @@ public class GCCoreUtil
 	{
 		boolean missingComponent = false;
 		
-        for (int j = 0; j < GalacticraftCore.gcPlayers.size(); ++j)
-        {
-			final GCCorePlayerBase playerBase = (GCCorePlayerBase) GalacticraftCore.gcPlayers.get(j);
-			
-			if (player.username.equals(playerBase.getPlayer().username))
-			{
-				GCCoreInventoryTankRefill inventory = playerBase.playerTankInventory;
-				
-				if (inventory.getStackInSlot(0) == null || !isItemValid(0, inventory.getStackInSlot(0)))
-				{
-					missingComponent = true;
-				}
-				
-				if (inventory.getStackInSlot(1) == null || !isItemValid(1, inventory.getStackInSlot(1)))
-				{
-					missingComponent = true;
-				}
-				
-				if ((inventory.getStackInSlot(2) == null || !isItemValid(2, inventory.getStackInSlot(2))) && (inventory.getStackInSlot(3) == null || !isItemValid(3, inventory.getStackInSlot(3))))
-				{
-					missingComponent = true;
-				}
-			}
-        }
+		GCCoreInventoryTankRefill inventory = GCCoreUtil.getPlayerBaseServerFromPlayer(player).playerTankInventory;
+		
+		if (inventory.getStackInSlot(0) == null || !isItemValid(0, inventory.getStackInSlot(0)))
+		{
+			missingComponent = true;
+		}
+		
+		if (inventory.getStackInSlot(1) == null || !isItemValid(1, inventory.getStackInSlot(1)))
+		{
+			missingComponent = true;
+		}
+		
+		if ((inventory.getStackInSlot(2) == null || !isItemValid(2, inventory.getStackInSlot(2))) && (inventory.getStackInSlot(3) == null || !isItemValid(3, inventory.getStackInSlot(3))))
+		{
+			missingComponent = true;
+		}
 		
         if (missingComponent)
         {
@@ -933,7 +934,7 @@ public class GCCoreUtil
 		switch (slotIndex)
 		{
 		case 0:
-			return stack.getItem() instanceof GCCoreItemBreathableHelmet;
+			return stack.getItem() instanceof GCCoreItemOxygenMask;
 		case 1:
 			return stack.getItem() instanceof GCCoreItemOxygenGear;
 		case 2:
@@ -973,5 +974,41 @@ public class GCCoreUtil
 		}
 		
 		return false;
+	}
+	
+	public static GCCorePlayerBase getPlayerBaseServerFromPlayer(EntityPlayer player)
+	{
+		if (GalacticraftCore.playersServer.size() == 0)
+		{
+			new EmptyStackException().printStackTrace();
+		}
+		
+        for (GCCorePlayerBase playerBase : GalacticraftCore.playersServer)
+        {
+			if (player.username.equals(playerBase.getPlayer().username))
+			{
+				return playerBase;
+			}
+        }
+        
+        return null;
+	}
+	
+	public static GCCorePlayerBaseClient getPlayerBaseClientFromPlayer(EntityPlayer player)
+	{
+		if (GalacticraftCore.playersClient.size() == 0)
+		{
+			new EmptyStackException().printStackTrace();
+		}
+		
+        for (GCCorePlayerBaseClient playerBaseClient : GalacticraftCore.playersClient)
+        {
+			if (player.username.equals(playerBaseClient.getPlayer().username))
+			{
+				return playerBaseClient;
+			}
+        }
+        
+        return null;
 	}
 }

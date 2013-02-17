@@ -32,7 +32,7 @@ public class GCCoreItemBlockOre extends ItemBlock
 		}
 		case 1: 
 		{
-			name = "aluminumearth";
+			name = "aluminiumearth";
 			break;
 		}
 		case 2: 

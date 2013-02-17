@@ -5,10 +5,13 @@ import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockOre;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemSapling;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
@@ -86,7 +89,7 @@ public class GCCoreBlocks
 		addName(airDistributor);
 		addName(airDistributorActive);
 		addName(oxygenPipe);
-		addNameWithMetadata("tile.blockores.aluminumearth.name");
+		addNameWithMetadata("tile.blockores.aluminiumearth.name");
 		addNameWithMetadata("tile.blockores.copperearth.name");
 		addNameWithMetadata("tile.blockores.titaniumearth.name");
 		addName(blockAirCollector);
