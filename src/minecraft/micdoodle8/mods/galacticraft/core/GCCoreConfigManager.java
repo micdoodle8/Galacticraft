@@ -119,6 +119,11 @@ public class GCCoreConfigManager
 	public static boolean transparentBreathableAir;
 	public static boolean moreStars;
 	public static boolean wasdMapMovement;
+	public static boolean disableAluminiumEarth;
+	public static boolean disableCopperEarth;
+	public static boolean disableTitaniumEarth;
+	public static int oreGenFactor;
+	public static int[] oreGenDimensions;
 	
 	private void setDefaultValues()
     {
@@ -212,6 +217,12 @@ public class GCCoreConfigManager
 	        transparentBreathableAir = 				configuration.get(Configuration.CATEGORY_GENERAL, "transparentBreathableAir", 			true)		.getBoolean(true);
 	        moreStars = 							configuration.get(Configuration.CATEGORY_GENERAL, "moreStars", 							true)		.getBoolean(true);
 	        wasdMapMovement = 						configuration.get(Configuration.CATEGORY_GENERAL, "WASD Map Movement", 					true)		.getBoolean(true);
+	        disableAluminiumEarth = 				configuration.get(Configuration.CATEGORY_GENERAL, "Disable aluminium ore Gen on Overworld",	false)		.getBoolean(false);
+	        disableCopperEarth = 					configuration.get(Configuration.CATEGORY_GENERAL, "Disable copper ore Gen on Overworld",	false)		.getBoolean(false);
+	        disableTitaniumEarth = 					configuration.get(Configuration.CATEGORY_GENERAL, "Disable titanium ore Gen on Overworld",	false)		.getBoolean(false);
+	        oreGenFactor = 							configuration.get(Configuration.CATEGORY_GENERAL, "Ore Generation Factor", 				1)			.getInt(1);
+	        int[] dimensions = {1};
+	        oreGenDimensions =						configuration.get(Configuration.CATEGORY_GENERAL, "Dimensions to generate GC ores in", 	dimensions)	.getIntList();
 		}
 		catch (final Exception e)
 		{
