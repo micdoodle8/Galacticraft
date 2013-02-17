@@ -247,7 +247,7 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
         
         if (this.ignite == 0)
         {
-        	this.timeUntilLaunch = 20;
+        	this.timeUntilLaunch = 400;
         }
         
         if (this.launched)
@@ -384,23 +384,28 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
     
     protected void spawnParticles(boolean launched)
     {
-    	final double x1 = 2 * Math.cos(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D);
-    	final double z1 = 2 * Math.sin(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D);
-    	final double y1 = 2 * Math.cos((this.rotationPitch - 180) * Math.PI / 180.0D) + (this.getReversed() == 1 ? 10D : 0D);
+    	double x1 = 2 * Math.cos(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D);
+    	double z1 = 2 * Math.sin(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D);
+    	double y1 = 2 * Math.cos((this.rotationPitch - 180) * Math.PI / 180.0D) + (this.getReversed() == 1 ? 10D : 0D);
+    	
+    	if (this.getLaunched() == 0)
+    	{
+    		y1 -= 2D;
+    	}
     	
     	final double y = this.prevPosY + (this.posY - this.prevPosY);
     	
     	if (!this.isDead)
     	{
-        	this.spawnParticle("launchflame", 	this.posX + 0.4 - this.rand.nextDouble() / 10 + x1, 					y - 0.0D + y1, 	this.posZ + 0.4 - this.rand.nextDouble() / 10 + z1, 	x1, y1, z1, true);
-        	this.spawnParticle("launchflame", 	this.posX - 0.4 + this.rand.nextDouble() / 10 + x1, 					y - 0.0D + y1, 	this.posZ + 0.4 - this.rand.nextDouble() / 10 + z1, 	x1, y1, z1, true);
-        	this.spawnParticle("launchflame", 	this.posX - 0.4 + this.rand.nextDouble() / 10 + x1, 					y - 0.0D + y1, 	this.posZ - 0.4 + this.rand.nextDouble() / 10 + z1, 	x1, y1, z1, true);
-        	this.spawnParticle("launchflame", 	this.posX + 0.4 - this.rand.nextDouble() / 10 + x1, 					y - 0.0D + y1,	this.posZ - 0.4 + this.rand.nextDouble() / 10 + z1, 	x1, y1, z1, true);
-        	this.spawnParticle("launchflame", 	this.posX + x1, 														y - 0.0D + y1, 	this.posZ + z1, 										x1, y1, z1, true);
-        	this.spawnParticle("launchflame", 	this.posX + 0.4 + x1, 													y - 0.0D + y1, 	this.posZ + z1, 										x1, y1, z1, true);
-        	this.spawnParticle("launchflame", 	this.posX - 0.4 + x1, 													y - 0.0D + y1, 	this.posZ + z1, 										x1, y1, z1, true);
-        	this.spawnParticle("launchflame", 	this.posX + x1, 														y - 0.0D + y1, 	this.posZ + 0.4D + z1, 									x1, y1, z1, true);
-        	this.spawnParticle("launchflame", 	this.posX + x1, 														y - 0.0D + y1, 	this.posZ - 0.4D + z1, 									x1, y1, z1, true);
+        	this.spawnParticle("launchflame", 	this.posX + 0.4 - this.rand.nextDouble() / 10 + x1, 					y - 0.0D + y1, 	this.posZ + 0.4 - this.rand.nextDouble() / 10 + z1, 	x1, y1, z1, this.getLaunched() == 1);
+        	this.spawnParticle("launchflame", 	this.posX - 0.4 + this.rand.nextDouble() / 10 + x1, 					y - 0.0D + y1, 	this.posZ + 0.4 - this.rand.nextDouble() / 10 + z1, 	x1, y1, z1, this.getLaunched() == 1);
+        	this.spawnParticle("launchflame", 	this.posX - 0.4 + this.rand.nextDouble() / 10 + x1, 					y - 0.0D + y1, 	this.posZ - 0.4 + this.rand.nextDouble() / 10 + z1, 	x1, y1, z1, this.getLaunched() == 1);
+        	this.spawnParticle("launchflame", 	this.posX + 0.4 - this.rand.nextDouble() / 10 + x1, 					y - 0.0D + y1,	this.posZ - 0.4 + this.rand.nextDouble() / 10 + z1, 	x1, y1, z1, this.getLaunched() == 1);
+        	this.spawnParticle("launchflame", 	this.posX + x1, 														y - 0.0D + y1, 	this.posZ + z1, 										x1, y1, z1, this.getLaunched() == 1);
+        	this.spawnParticle("launchflame", 	this.posX + 0.4 + x1, 													y - 0.0D + y1, 	this.posZ + z1, 										x1, y1, z1, this.getLaunched() == 1);
+        	this.spawnParticle("launchflame", 	this.posX - 0.4 + x1, 													y - 0.0D + y1, 	this.posZ + z1, 										x1, y1, z1, this.getLaunched() == 1);
+        	this.spawnParticle("launchflame", 	this.posX + x1, 														y - 0.0D + y1, 	this.posZ + 0.4D + z1, 									x1, y1, z1, this.getLaunched() == 1);
+        	this.spawnParticle("launchflame", 	this.posX + x1, 														y - 0.0D + y1, 	this.posZ - 0.4D + z1, 									x1, y1, z1, this.getLaunched() == 1);
         }
     }
     
@@ -619,37 +624,31 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
             {
         		final EntityPlayerMP entityplayermp = (EntityPlayerMP)this.riddenByEntity;
         		
-	            for (int j = 0; j < GalacticraftCore.gcPlayers.size(); ++j)
-	            {
-	    			final GCCorePlayerBase playerBase = (GCCorePlayerBase) GalacticraftCore.gcPlayers.get(j);
-	    			
-	    			if (entityplayermp.username.equals(playerBase.getPlayer().username))
-	    			{
-	    				final Integer[] ids = DimensionManager.getIDs();
-	    		    	
-	    		    	final Set set = GCCoreUtil.getArrayOfPossibleDimensions(ids).entrySet();
-	    		    	final Iterator i = set.iterator();
-	    		    	
-	    		    	String temp = "";
-	    		    	
-	    		    	for (int k = 0; i.hasNext(); k++)
-	    		    	{
-	    		    		final Map.Entry entry = (Map.Entry)i.next();
-	    		    		temp = k == 0 ? temp.concat(String.valueOf(entry.getKey())) : temp.concat("." + String.valueOf(entry.getKey()));
-	    		    	}
-	    		    	
-	    		    	final Object[] toSend = {entityplayermp.username, temp};
-	    		        FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(entityplayermp.username).playerNetServerHandler.sendPacketToPlayer(GCCoreUtil.createPacket("Galacticraft", 2, toSend));
-	    				
-	    		        playerBase.rocketStacks = this.cargoItems;
-	    		        playerBase.rocketType = this.getSpaceshipType();
-	    		        
-	    				if (this.riddenByEntity != null)
-	    				{
-		            		this.riddenByEntity.mountEntity(this);
-	    				}
-	    			}
-	            }
+				final Integer[] ids = DimensionManager.getStaticDimensionIDs();
+		    	
+		    	final Set set = GCCoreUtil.getArrayOfPossibleDimensions(ids).entrySet();
+		    	final Iterator i = set.iterator();
+		    	
+		    	String temp = "";
+		    	
+		    	for (int k = 0; i.hasNext(); k++)
+		    	{
+		    		final Map.Entry entry = (Map.Entry)i.next();
+		    		temp = k == 0 ? temp.concat(String.valueOf(entry.getKey())) : temp.concat("." + String.valueOf(entry.getKey()));
+		    	}
+		    	
+		    	final Object[] toSend = {entityplayermp.username, temp};
+		        FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(entityplayermp.username).playerNetServerHandler.sendPacketToPlayer(GCCoreUtil.createPacket("Galacticraft", 2, toSend));
+				
+		        GCCoreUtil.getPlayerBaseServerFromPlayer(entityplayermp).setUsingPlanetGui();
+		        
+		        GCCoreUtil.getPlayerBaseServerFromPlayer(entityplayermp).rocketStacks = this.cargoItems;
+		        GCCoreUtil.getPlayerBaseServerFromPlayer(entityplayermp).rocketType = this.getSpaceshipType();
+		        
+				if (this.riddenByEntity != null)
+				{
+            		this.riddenByEntity.mountEntity(this);
+				}
             }
     	}
     }
