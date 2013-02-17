@@ -1,11 +1,17 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenGear;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenMask;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenTank;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItemParachute;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ContainerPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotCrafting;
+import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
+import cpw.mods.fml.common.FMLLog;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -63,38 +69,143 @@ public class GCCoreContainerTankRefill extends Container
 	}
 
 	@Override
-    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par1)
+    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotIndex)
     {
-        ItemStack stack = null;
-        final Slot slotObj = (Slot)this.inventorySlots.get(par1);
+        ItemStack var3 = null;
+        Slot var4 = (Slot)this.inventorySlots.get(slotIndex);
+        
+        FMLLog.info("b" + slotIndex);
 
-        if (slotObj != null && slotObj.getHasStack())
+        if (var4 != null && var4.getHasStack())
         {
-        	final ItemStack stackInSlot = slotObj.getStack();
-        	stack = stackInSlot.copy();
-            
-            if (par1 == 0)
+            ItemStack var5 = var4.getStack();
+            var3 = var5.copy();
+
+            if (slotIndex == 0)
             {
-            	if (!this.mergeItemStack(stackInSlot, 1, this.inventorySlots.size(), true)) 
-            	{
-            		return null;
-            	}
+                FMLLog.info("1");
+                if (!this.mergeItemStack(var5, 10, 46, true))
+                {
+                    return null;
+                }
+
+                var4.onSlotChange(var5, var3);
             }
-            else if (!this.mergeItemStack(stackInSlot, 0, 1, false))
+            else if (slotIndex >= 2 && slotIndex < 6)
             {
-            	return null;
+                FMLLog.info("2");
+                if (!this.mergeItemStack(var5, 10, 46, false))
+                {
+                    return null;
+                }
             }
-            
-            if (stackInSlot.stackSize == 0)
+            // GC
+            else if ((slotIndex >= 46 && slotIndex < 49) || slotIndex == 1)
             {
-            	slotObj.putStack(null);
+                FMLLog.info("7");
+                if (!this.mergeItemStack(var5, 10, 46, false))
+                {
+                    return null;
+                }
+            }
+            else if (var3.getItem() instanceof GCCoreItemOxygenMask && !(((Slot) this.inventorySlots.get(46)).getHasStack()))
+            {
+                FMLLog.info("8");
+                if (!this.mergeItemStack(var5, 46, 46 + 1, false))
+                {
+                    return null;
+                }
+            }
+            else if (var3.getItem() instanceof GCCoreItemOxygenGear && !(((Slot) this.inventorySlots.get(47)).getHasStack()))
+            {
+                FMLLog.info("8");
+                if (!this.mergeItemStack(var5, 47, 47 + 1, false))
+                {
+                    return null;
+                }
+            }
+            else if (var3.getItem() instanceof GCCoreItemOxygenTank && !(((Slot) this.inventorySlots.get(48)).getHasStack()))
+            {
+                FMLLog.info("8");
+                if (!this.mergeItemStack(var5, 48, 48 + 1, false))
+                {
+                    return null;
+                }
+            }
+            else if (var3.getItem() instanceof GCCoreItemOxygenTank && !(((Slot) this.inventorySlots.get(49)).getHasStack()))
+            {
+                FMLLog.info("8");
+                if (!this.mergeItemStack(var5, 49, 49 + 1, false))
+                {
+                    return null;
+                }
+            }
+            else if (var3.getItem() instanceof GCCoreItemParachute && !(((Slot) this.inventorySlots.get(1)).getHasStack()))
+            {
+                FMLLog.info("8");
+                if (!this.mergeItemStack(var5, 1, 1 + 1, false))
+                {
+                    return null;
+                }
+            }
+            // GC
+            else if (slotIndex >= 6 && slotIndex < 10)
+            {
+                FMLLog.info("3");
+                if (!this.mergeItemStack(var5, 10, 46, false))
+                {
+                    return null;
+                }
+            }
+            else if (var3.getItem() instanceof ItemArmor && !((Slot)this.inventorySlots.get(6 + ((ItemArmor)var3.getItem()).armorType)).getHasStack())
+            {
+                FMLLog.info("4");
+                int var6 = 6 + ((ItemArmor)var3.getItem()).armorType;
+
+                if (!this.mergeItemStack(var5, var6, var6 + 1, false))
+                {
+                    return null;
+                }
+            }
+            else if (slotIndex >= 10 && slotIndex < 37)
+            {
+                FMLLog.info("5");
+                if (!this.mergeItemStack(var5, 37, 46, false))
+                {
+                    return null;
+                }
+            }
+            else if (slotIndex >= 37 && slotIndex < 46)
+            {
+                FMLLog.info("6");
+                if (!this.mergeItemStack(var5, 10, 37, false))
+                {
+                    return null;
+                }
+            }
+            else if (!this.mergeItemStack(var5, 10, 46, false))
+            {
+                FMLLog.info("9");
+                return null;
+            }
+
+            if (var5.stackSize == 0)
+            {
+                var4.putStack((ItemStack)null);
             }
             else
             {
-            	slotObj.onSlotChanged();
+                var4.onSlotChanged();
             }
+
+            if (var5.stackSize == var3.stackSize)
+            {
+                return null;
+            }
+
+            var4.onPickupFromSlot(par1EntityPlayer, var5);
         }
-        
-    	return null;
+
+        return var3;
     }
 }
