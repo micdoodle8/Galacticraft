@@ -579,6 +579,13 @@ public class ClientProxyCore extends CommonProxyCore
                 	break;
                 }
             }
+            else if (packetType == 11)
+            {
+                final Class[] decodeAs = {String.class};
+                final Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
+                
+                this.mc.thePlayer.playerCloakUrl = (String) packetReadout[0];
+            }
 		}
     }
 	

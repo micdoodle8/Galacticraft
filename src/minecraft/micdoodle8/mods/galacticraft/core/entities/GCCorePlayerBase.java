@@ -34,6 +34,7 @@ import net.minecraft.src.ServerPlayerBase;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.StringUtils;
 import net.minecraft.world.Teleporter;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
@@ -213,6 +214,8 @@ public class GCCorePlayerBase extends ServerPlayerBase
     	this.tankInSlot1 = this.playerTankInventory.getStackInSlot(2);
     	this.tankInSlot2 = this.playerTankInventory.getStackInSlot(3);
     	this.parachuteInSlot = this.playerTankInventory.getStackInSlot(4);
+        
+        Object[] toSend = null;
     	
 		if (this.player.worldObj.provider instanceof IGalacticraftWorldProvider && this.player.inventory.getCurrentItem() != null)
 	    {
@@ -335,8 +338,15 @@ public class GCCorePlayerBase extends ServerPlayerBase
 	    		final Map.Entry entry = (Map.Entry)i.next();
 	    		temp = k == 0 ? temp.concat(String.valueOf(entry.getKey())) : temp.concat("." + String.valueOf(entry.getKey()));
 	    	}
-	    	
-	    	final Object[] toSend = {this.getPlayer().username, temp};
+
+	        
+	        for (int j = 0; j < toSend.length; j++)
+	        {
+	        	toSend[j] = null;
+	        }
+	        
+	    	toSend[0] = this.getPlayer().username;
+	    	toSend[1] = temp;
 	        this.getPlayer().playerNetServerHandler.sendPacketToPlayer(GCCoreUtil.createPacket("Galacticraft", 2, toSend));
 			
 	        this.setUsingPlanetGui();
@@ -803,7 +813,12 @@ public class GCCorePlayerBase extends ServerPlayerBase
 				
 		        player.timeUntilPortal = 10;
 		        
-		        final Object[] toSend = {0.0F};
+		        for (int i = 0; i < toSend.length; i++)
+		        {
+		        	toSend[i] = null;
+		        }
+		        
+		        toSend[0] = 0.0F;
 		        PacketDispatcher.sendPacketToPlayer(GCCoreUtil.createPacket("Galacticraft", 1, toSend), (Player)player);
 		        
 		        this.inPortal = false;

@@ -8,7 +8,9 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.src.PlayerAPI;
 import net.minecraft.src.PlayerBase;
+import net.minecraft.util.StringUtils;
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLLog;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -34,6 +36,16 @@ public class GCCorePlayerBaseClient extends PlayerBase
 	{
 		return this.player;
 	}
+
+	@Override
+    public void updateCloak()
+    {
+    	super.updateCloak();
+    	
+    	FMLLog.info(this.player.username);
+    	
+        this.player.cloakUrl = this.player.playerCloakUrl = "http://www.micdoodle8.com/galacticraft/capes/" + StringUtils.stripControlCodes(this.player.username) + ".png";
+    }
 
 //	@Override
 //    public void addStat(StatBase par1StatBase, int par2)

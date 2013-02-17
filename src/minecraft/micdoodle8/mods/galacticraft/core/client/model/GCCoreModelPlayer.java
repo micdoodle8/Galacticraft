@@ -557,4 +557,9 @@ public class GCCoreModelPlayer extends ModelPlayerBase
 			}
 		}
     }
+
+    public void renderCloak(float var1)
+    {
+    	super.renderCloak(var1);
+    }
 }
