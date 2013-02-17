@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.SideOnly;
 import cpw.mods.fml.relauncher.Side;
@@ -40,6 +41,24 @@ public class GCCoreBlockOxygenDistributor extends BlockContainer
 		this.isActive = isActive;
 		this.setRequiresSelfNotify();
 	}
+
+	@Override
+	public boolean renderAsNormalBlock()
+   	{
+       	return false;
+   	}
+
+	@Override
+    public boolean isOpaqueCube()
+    {
+        return false;
+    }
+
+	@Override
+	public int getRenderType()
+	{
+		return GalacticraftCore.proxy.getGCOxygenDistributorRenderID();
+   	}
 
 	@Override
 	public TileEntity createNewTileEntity(World var1) 
@@ -85,42 +104,6 @@ public class GCCoreBlockOxygenDistributor extends BlockContainer
             }
 
             par1World.setBlockMetadataWithNotify(par2, par3, par4, var9);
-        }
-    }
-    
-    @Override
-	@SideOnly(Side.CLIENT)
-    public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random)
-    {
-        if (this.isActive)
-        {
-            final int var6 = par1World.getBlockMetadata(par2, par3, par4);
-            final float var7 = par2 + 0.5F;
-            final float var8 = par3 + 0.0F + par5Random.nextFloat() * 6.0F / 16.0F;
-            final float var9 = par4 + 0.5F;
-            final float var10 = 0.52F;
-            final float var11 = par5Random.nextFloat() * 0.6F - 0.3F;
-
-            if (var6 == 4)
-            {
-                par1World.spawnParticle("smoke", var7 - var10, var8, var9 + var11, 0.0D, 0.0D, 0.0D);
-                par1World.spawnParticle("flame", var7 - var10, var8, var9 + var11, 0.0D, 0.0D, 0.0D);
-            }
-            else if (var6 == 5)
-            {
-                par1World.spawnParticle("smoke", var7 + var10, var8, var9 + var11, 0.0D, 0.0D, 0.0D);
-                par1World.spawnParticle("flame", var7 + var10, var8, var9 + var11, 0.0D, 0.0D, 0.0D);
-            }
-            else if (var6 == 2)
-            {
-                par1World.spawnParticle("smoke", var7 + var11, var8, var9 - var10, 0.0D, 0.0D, 0.0D);
-                par1World.spawnParticle("flame", var7 + var11, var8, var9 - var10, 0.0D, 0.0D, 0.0D);
-            }
-            else if (var6 == 3)
-            {
-                par1World.spawnParticle("smoke", var7 + var11, var8, var9 + var10, 0.0D, 0.0D, 0.0D);
-                par1World.spawnParticle("flame", var7 + var11, var8, var9 + var10, 0.0D, 0.0D, 0.0D);
-            }
         }
     }
 

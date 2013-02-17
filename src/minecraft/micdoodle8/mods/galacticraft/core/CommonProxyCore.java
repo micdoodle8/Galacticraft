@@ -93,6 +93,11 @@ public class CommonProxyCore implements IGuiHandler
 	{
 		return -1;
 	}
+
+	public int getGCOxygenDistributorRenderID()
+	{
+		return -1;
+	}
 	
 	public World getClientWorld()
 	{
@@ -120,15 +125,7 @@ public class CommonProxyCore implements IGuiHandler
 	{
 		if (ID == GCCoreConfigManager.idGuiTankRefill)
 		{
-			for (int i = 0; i < GalacticraftCore.gcPlayers.size(); ++i)
-	        {
-				final GCCorePlayerBase gcPlayer = (GCCorePlayerBase) GalacticraftCore.gcPlayers.get(i);
-				
-				if (player.username.equals(gcPlayer.getPlayer().username))
-				{
-					return new GCCoreContainerTankRefill(player, gcPlayer.playerTankInventory);
-				}
-	        }
+			return new GCCoreContainerTankRefill(player, GCCoreUtil.getPlayerBaseServerFromPlayer(player).playerTankInventory);
 		}
 		else if (ID == GCCoreConfigManager.idGuiAirDistributor)
 		{
