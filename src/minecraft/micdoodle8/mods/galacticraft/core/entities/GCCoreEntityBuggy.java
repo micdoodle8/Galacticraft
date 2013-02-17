@@ -318,21 +318,11 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
             this.speed = this.maxSpeed;
         }
     	
-//        if (this.isCollidedHorizontally)
-//        {
-//            this.speed *= 0.9;
-//            this.motionY = 0.1D;
-//        }
-
-//        if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT && ModLoader.isGUIOpen((Class)null) && this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayer && Keyboard.isKeyDown(46))
-//        {
-//            final EntityPlayer var23 = (EntityPlayer)this.riddenByEntity;
-//
-//            if (!this.worldObj.isRemote)
-//            {
-//                var23.displayGUIChest(this);
-//            }
-//        }
+        if (this.isCollidedHorizontally)
+        {
+            this.speed *= 0.9;
+            this.motionY = 0.1D;
+        }
 
         this.motionX = -(this.speed * Math.cos(((this.rotationYaw - 90F) * Math.PI / 180.0D) ));
         this.motionZ = -(this.speed * Math.sin(((this.rotationYaw - 90F) * Math.PI / 180.0D) ));
@@ -559,8 +549,6 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
 		}
 		
 		// 0 (accelerate), 1 (decelerate), 2 (turnLeft), 3 (turnRight)
-		
-		FMLLog.info("" + this.worldObj.isRemote);
 		
 		switch (par1)
 		{
