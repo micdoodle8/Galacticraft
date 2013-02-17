@@ -8,6 +8,7 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.src.PlayerAPI;
 import net.minecraft.src.PlayerBase;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.StringUtils;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLLog;
@@ -29,7 +30,7 @@ public class GCCorePlayerBaseClient extends PlayerBase
 	public GCCorePlayerBaseClient(PlayerAPI var1)
 	{
 		super(var1);
-		GalacticraftCore.playersClient.add(this);
+		GalacticraftCore.playersClient.put(this.player.username, this);
 	}
 	
 	public EntityPlayerSP getPlayer()
@@ -41,8 +42,6 @@ public class GCCorePlayerBaseClient extends PlayerBase
     public void updateCloak()
     {
     	super.updateCloak();
-    	
-    	FMLLog.info(this.player.username);
     	
         this.player.cloakUrl = this.player.playerCloakUrl = "http://www.micdoodle8.com/galacticraft/capes/" + StringUtils.stripControlCodes(this.player.username) + ".png";
     }
@@ -89,6 +88,14 @@ public class GCCorePlayerBaseClient extends PlayerBase
 //			}
 //		}
 //    }
+
+	@Override
+    public void onDeath(DamageSource var1)
+    {
+		GalacticraftCore.playersClient.remove(this);
+		
+    	super.onDeath(var1);
+    }
 	
 	@Override
 	public void onLivingUpdate()
@@ -96,6 +103,11 @@ public class GCCorePlayerBaseClient extends PlayerBase
 		super.onLivingUpdate();
 
     	boolean changed = false;
+    	
+    	if (this.getParachute())
+    	{
+    		this.player.fallDistance = 0.0F;
+    	}
 		
         for (final String name : ClientProxyCore.playersUsingParachutes)
         {
