@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockOxygenDistributor;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
+import micdoodle8.mods.galacticraft.core.client.model.block.GCCoreModelFan;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -28,10 +29,29 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntity implements IIn
     
     public double lastPower;
 
+    public GCCoreModelFan fanModel1 = new GCCoreModelFan();
+    public GCCoreModelFan fanModel2 = new GCCoreModelFan();
+    public GCCoreModelFan fanModel3 = new GCCoreModelFan();
+   	public GCCoreModelFan fanModel4 = new GCCoreModelFan();
+
     public GCCoreTileEntityOxygenDistributor()
     {
     	this.distributorStacks = new ItemStack[3];
     }
+
+    @Override
+  	public void validate()
+  	{
+   		super.validate();
+
+   		if (!isInvalid() && worldObj != null)
+      	{
+   		   	fanModel1 = new GCCoreModelFan();
+   		    fanModel2 = new GCCoreModelFan();
+   		    fanModel3 = new GCCoreModelFan();
+   		   	fanModel4 = new GCCoreModelFan();
+      	}
+  	}
     
     @Override
 	public void onInventoryChanged()
