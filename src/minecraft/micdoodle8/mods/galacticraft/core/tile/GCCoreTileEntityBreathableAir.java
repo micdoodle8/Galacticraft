@@ -14,7 +14,7 @@ public class GCCoreTileEntityBreathableAir extends TileEntity
 		{
 			final TileEntity distributorTile = this.worldObj.getBlockTileEntity(this.distributor.xCoord, this.distributor.yCoord, this.distributor.zCoord);
 			
-			if (distributorTile == null || ((GCCoreTileEntityOxygenDistributor)distributorTile).currentPower < 1.0D)
+			if (distributorTile == null || !(distributorTile instanceof GCCoreTileEntityOxygenDistributor) || ((GCCoreTileEntityOxygenDistributor)distributorTile).currentPower < 1.0D)
 			{
 				this.distributor = null;
 			}
