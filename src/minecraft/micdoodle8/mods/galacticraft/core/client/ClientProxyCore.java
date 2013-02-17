@@ -5,10 +5,12 @@ import java.io.DataInputStream;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 import micdoodle8.mods.galacticraft.API.AdvancedAchievement;
 import micdoodle8.mods.galacticraft.API.IDetectableResource;
@@ -30,6 +32,7 @@ import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelPlayer;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererBreathableAir;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererCraftingTable;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererMeteor;
+import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererOxygenDistributor;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererOxygenPipe;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererUnlitTorch;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderArrow;
@@ -50,6 +53,7 @@ import micdoodle8.mods.galacticraft.core.client.render.item.GCCoreItemRendererBu
 import micdoodle8.mods.galacticraft.core.client.render.item.GCCoreItemRendererFlag;
 import micdoodle8.mods.galacticraft.core.client.render.item.GCCoreItemRendererSpaceship;
 import micdoodle8.mods.galacticraft.core.client.render.item.GCCoreItemRendererUnlitTorch;
+import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntityOxygenDistributorRenderer;
 import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntityTreasureChestRenderer;
 import micdoodle8.mods.galacticraft.core.client.sounds.GCCoreSoundUpdaterSpaceship;
 import micdoodle8.mods.galacticraft.core.client.sounds.GCCoreSounds;
@@ -68,6 +72,7 @@ import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityWorm;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityZombie;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemSensorGlasses;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenDistributor;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.moon.client.ClientProxyMoon;
 import micdoodle8.mods.galacticraft.moon.client.GCMoonMapPlanet;
@@ -137,6 +142,7 @@ public class ClientProxyCore extends CommonProxyCore
 	private static int oxygenPipeRenderID;
 	private static int meteorRenderID;
 	private static int craftingTableID;
+	private static int oxygenDistributorRenderID;
 	public static long getFirstBootTime;
 	public static long getCurrentTime;
 	public static long slowTick;
@@ -146,16 +152,16 @@ public class ClientProxyCore extends CommonProxyCore
 	public static List<IPlanetSlotRenderer> slotRenderers = new ArrayList<IPlanetSlotRenderer>();
 	public static List<int[]> valueableBlocks = new ArrayList<int[]>();
 	
-	public static ArrayList<String> playersUsingParachutes = new ArrayList<String>();
+	public static Set<String> playersUsingParachutes = new HashSet<String>();
 	public static HashMap<String, String> parachuteTextures = new HashMap<String, String>();
-	public static ArrayList<String> playersWithOxygenMask = new ArrayList<String>();
-	public static ArrayList<String> playersWithOxygenGear = new ArrayList<String>();
-	public static ArrayList<String> playersWithOxygenTankLeftRed = new ArrayList<String>();
-	public static ArrayList<String> playersWithOxygenTankLeftOrange = new ArrayList<String>();
-	public static ArrayList<String> playersWithOxygenTankLeftGreen = new ArrayList<String>();
-	public static ArrayList<String> playersWithOxygenTankRightRed = new ArrayList<String>();
-	public static ArrayList<String> playersWithOxygenTankRightOrange = new ArrayList<String>();
-	public static ArrayList<String> playersWithOxygenTankRightGreen = new ArrayList<String>();
+	public static Set<String> playersWithOxygenMask = new HashSet<String>();
+	public static Set<String> playersWithOxygenGear = new HashSet<String>();
+	public static Set<String> playersWithOxygenTankLeftRed = new HashSet<String>();
+	public static Set<String> playersWithOxygenTankLeftOrange = new HashSet<String>();
+	public static Set<String> playersWithOxygenTankLeftGreen = new HashSet<String>();
+	public static Set<String> playersWithOxygenTankRightRed = new HashSet<String>();
+	public static Set<String> playersWithOxygenTankRightOrange = new HashSet<String>();
+	public static Set<String> playersWithOxygenTankRightGreen = new HashSet<String>();
 	
     private static double playerPosX;
     private static double playerPosY;
@@ -186,6 +192,7 @@ public class ClientProxyCore extends CommonProxyCore
 		KeyBindingRegistry.registerKeyBinding(new GCKeyHandler());
         NetworkRegistry.instance().registerChannel(new ClientPacketHandler(), "Galacticraft", Side.CLIENT);
         ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityTreasureChest.class, new GCCoreTileEntityTreasureChestRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityOxygenDistributor.class, new GCCoreTileEntityOxygenDistributorRenderer());
         ClientProxyCore.treasureChestRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new GCCoreRenderBlockTreasureChest(ClientProxyCore.treasureChestRenderID));
         ClientProxyCore.torchRenderID = RenderingRegistry.getNextAvailableRenderId();
@@ -198,10 +205,12 @@ public class ClientProxyCore extends CommonProxyCore
         RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererMeteor(ClientProxyCore.meteorRenderID));
         ClientProxyCore.craftingTableID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererCraftingTable(ClientProxyCore.craftingTableID));
+        ClientProxyCore.oxygenDistributorRenderID = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererOxygenDistributor(ClientProxyCore.oxygenDistributorRenderID));
         IMapPlanet earth = new GCCoreMapPlanetOverworld();
         IMapPlanet moon = new GCMoonMapPlanet();
 		GalacticraftCore.addAdditionalMapPlanet(earth);
-		GalacticraftCore.addAdditionalMapMoon(String.valueOf(earth) + "0", moon);
+		GalacticraftCore.addAdditionalMapMoon(earth, moon);
 		GalacticraftCore.addAdditionalMapPlanet(new GCCoreMapSun());
 	}
 
@@ -219,10 +228,9 @@ public class ClientProxyCore extends CommonProxyCore
 			
 			if (client.getChildMapPlanets() != null && client.getPlanetForMap() != null)
 			{
-				for (int i = 0; i < client.getChildMapPlanets().length; i++)
+				for (IMapPlanet planet : client.getChildMapPlanets())
 				{
-					IMapPlanet planet = client.getChildMapPlanets()[i];
-					GalacticraftCore.mapMoons.put(String.valueOf(client.getPlanetForMap()) + GalacticraftCore.mapMoons.size(), planet);
+					GalacticraftCore.mapMoons.put(client.getPlanetForMap(), planet);
 				}
 			}
 		}
@@ -304,6 +312,12 @@ public class ClientProxyCore extends CommonProxyCore
 	public int getGCCraftingTableRenderID()
 	{
 		return ClientProxyCore.craftingTableID;
+	}
+
+	@Override
+	public int getGCOxygenDistributorRenderID()
+	{
+		return ClientProxyCore.oxygenDistributorRenderID;
 	}
 
 	@Override
@@ -1014,15 +1028,7 @@ public class ClientProxyCore extends CommonProxyCore
 	                    
 	                    boolean var2 = false;
 
-	        	        for (int j = 0; j < GalacticraftCore.gcPlayers.size(); ++j)
-	        	        {
-	        				final GCCorePlayerBaseClient playerBase = (GCCorePlayerBaseClient) GalacticraftCore.players.get(j);
-	        				
-	        				if (playerBase != null && player != null && player.username.equals(playerBase.getPlayer().username))
-	        				{
-	        					var2 = playerBase.getUsingGoggles();
-	        				}
-	        	        }
+    					var2 = GCCoreUtil.getPlayerBaseClientFromPlayer(player).getUsingGoggles();
 
                     	minecraft.fontRenderer.drawString("Advanced Mode: " + (var2 ? "ON" : "OFF"), var6 / 2 - 50, 4, 0x03b88f);
 
@@ -1600,15 +1606,7 @@ public class ClientProxyCore extends CommonProxyCore
         	{
             	final EntityPlayerSP player = minecraft.thePlayer;
             	
-    	        for (int j = 0; j < GalacticraftCore.gcPlayers.size(); ++j)
-    	        {
-    				final GCCorePlayerBaseClient playerBase = (GCCorePlayerBaseClient) GalacticraftCore.players.get(j);
-    				
-    				if (playerBase != null && player != null && player.username.equals(playerBase.getPlayer().username))
-    				{
-    					playerBase.toggleGoggles();
-    				}
-    	        }
+				GCCoreUtil.getPlayerBaseClientFromPlayer(player).toggleGoggles();
             }
         	
 //        	int key = -1;
