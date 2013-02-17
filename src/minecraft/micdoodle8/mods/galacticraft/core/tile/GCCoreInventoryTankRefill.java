@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -15,9 +16,16 @@ import net.minecraft.nbt.NBTTagList;
 public class GCCoreInventoryTankRefill implements IInventory
 {
 	public ItemStack[] tankSlotContents = new ItemStack[5];
-	
+	private GCCorePlayerBase player;
+
 	public GCCoreInventoryTankRefill()
 	{
+		this(null);
+	}
+	
+	public GCCoreInventoryTankRefill(GCCorePlayerBase player)
+	{
+		this.player = player;
 	}
 
 	@Override
@@ -103,7 +111,18 @@ public class GCCoreInventoryTankRefill implements IInventory
 		}
 	}
 	
-
+    public void dropAllItems()
+    {
+        for (int var1 = 0; var1 < this.tankSlotContents.length; ++var1)
+        {
+            if (this.tankSlotContents[var1] != null)
+            {
+                this.player.getPlayer().dropPlayerItemWithRandomChoice(this.tankSlotContents[var1], true);
+                this.tankSlotContents[var1] = null;
+            }
+        }
+    }
+    
     public NBTTagList writeToNBT(NBTTagList par1NBTTagList)
     {
         int var2;
