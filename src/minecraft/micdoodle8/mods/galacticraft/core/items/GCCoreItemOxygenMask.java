@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.items;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.item.EnumArmorMaterial;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.IArmorTextureProvider;
 
@@ -11,20 +12,14 @@ import net.minecraftforge.common.IArmorTextureProvider;
  *  All rights reserved.
  *
  */
-public class GCCoreItemOxygenMask extends GCCoreItemBreathableHelmet implements IArmorTextureProvider
+public class GCCoreItemOxygenMask extends Item
 {
-	protected GCCoreItemOxygenMask(int par1, EnumArmorMaterial material, int i, int j) 
+	protected GCCoreItemOxygenMask(int par1) 
 	{
-		super(par1, material, j, j);
+		super(par1);
 		this.setCreativeTab(GalacticraftCore.galacticraftTab);
 	}
 
-    @Override
-	public String getArmorTextureFile(ItemStack itemstack)
-    {
-    	return "/micdoodle8/mods/galacticraft/core/client/armor/oxygen_1.png";
-    }
-	
 	@Override
 	public String getTextureFile()
 	{
