@@ -37,8 +37,8 @@ public class GCCoreEntityLaunchSmokeFX extends EntityFX
         }
         else
         {
-            this.particleMaxAge = (int)10.0D;
-            this.particleMaxAge = (int)(this.particleMaxAge * par14);
+            this.particleMaxAge = (int)2.0D;
+            this.particleMaxAge = (int)(1);
         }
         this.noClip = false;
     }

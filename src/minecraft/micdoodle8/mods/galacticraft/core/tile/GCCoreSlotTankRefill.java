@@ -1,13 +1,12 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
-import micdoodle8.mods.galacticraft.core.items.GCCoreItemBreathableHelmet;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenGear;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenMask;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemParachute;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import cpw.mods.fml.common.FMLLog;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -28,7 +27,7 @@ public class GCCoreSlotTankRefill extends Slot
 		switch (this.slotNumber - 46)
 		{
 		case 0:
-			return par1ItemStack.getItem() instanceof GCCoreItemBreathableHelmet;
+			return par1ItemStack.getItem() instanceof GCCoreItemOxygenMask;
 		case 1:
 			return par1ItemStack.getItem() instanceof GCCoreItemOxygenGear;
 		case 2:

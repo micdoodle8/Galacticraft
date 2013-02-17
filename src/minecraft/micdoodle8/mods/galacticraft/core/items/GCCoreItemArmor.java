@@ -3,13 +3,13 @@ package micdoodle8.mods.galacticraft.core.items;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.item.EnumArmorMaterial;
 import net.minecraft.item.EnumRarity;
+import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.IArmorTextureProvider;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class GCCoreItemArmor extends GCCoreItemBreathableHelmet implements IArmorTextureProvider
+public class GCCoreItemArmor extends ItemArmor implements IArmorTextureProvider
 {
 	public boolean attachedMask;
 	private final EnumArmorMaterial material;

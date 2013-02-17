@@ -27,7 +27,7 @@ public class GCCorePlayerBaseClient extends PlayerBase
 	public GCCorePlayerBaseClient(PlayerAPI var1) 
 	{
 		super(var1);
-		GalacticraftCore.players.add(this);
+		GalacticraftCore.playersClient.add(this);
 	}
 	
 	public EntityPlayerSP getPlayer()
@@ -85,11 +85,9 @@ public class GCCorePlayerBaseClient extends PlayerBase
 
     	boolean changed = false;
 		
-        for (int j = 0; j < ClientProxyCore.playersUsingParachutes.size(); ++j)
+        for (String name : ClientProxyCore.playersUsingParachutes)
         {
-			final String username = (String) ClientProxyCore.playersUsingParachutes.get(j);
-			
-			if (player.username.equals(username))
+			if (player.username.equals(name))
 			{
 				this.usingParachute = true;
 				changed = true;
@@ -117,7 +115,7 @@ public class GCCorePlayerBaseClient extends PlayerBase
 	@Override
 	public void onUpdate()
 	{
-		if (this.getParachute() && !player.capabilities.isFlying && !FMLClientHandler.instance().getClient().isGamePaused && !player.handleWaterMovement())
+		if (player != null && this.getParachute() && !player.capabilities.isFlying && !FMLClientHandler.instance().getClient().isGamePaused && !player.handleWaterMovement())
 		{
 			player.motionY = -0.5D;
 			player.motionX *= 0.5F;

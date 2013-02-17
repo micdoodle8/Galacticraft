@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
+import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -232,15 +233,7 @@ public class GCCoreEntityAstroOrb extends Entity
                 par1EntityPlayer.onItemPickup(this, 1);
                 par1EntityPlayer.addExperience(this.xpValue);
                 
-                for (int i = 0; i < GalacticraftCore.gcPlayers.size(); i++)
-                {
-                	GCCorePlayerBase player = (GCCorePlayerBase) GalacticraftCore.gcPlayers.get(i);
-                	
-                	if (player.getPlayer().username == par1EntityPlayer.username)
-                	{
-                		player.addExperience2(this.xpValue);
-                	}
-                }
+        		GCCoreUtil.getPlayerBaseServerFromPlayer(par1EntityPlayer).addExperience2(this.xpValue);
                 
                 this.setDead();
             }

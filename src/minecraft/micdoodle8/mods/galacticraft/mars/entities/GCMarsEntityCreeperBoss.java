@@ -126,9 +126,9 @@ public class GCMarsEntityCreeperBoss extends EntityMob
     	{
             final EntityPlayer var11 = null;
 
-            for (int var12 = 0; var12 < GalacticraftCore.gcPlayers.size(); ++var12)
+            for (int var12 = 0; var12 < GalacticraftCore.playersServer.size(); ++var12)
             {
-                final EntityPlayer var13 = (EntityPlayer)GalacticraftCore.gcPlayers.get(var12).getPlayer();
+                final EntityPlayer var13 = (EntityPlayer)GalacticraftCore.playersServer.get(var12).getPlayer();
 
                 if (!var13.capabilities.isCreativeMode)
                 {

@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -15,6 +16,10 @@ import net.minecraft.nbt.NBTTagList;
 public class GCCoreInventoryTankRefill implements IInventory
 {
 	public ItemStack[] tankSlotContents = new ItemStack[5];
+	
+	public GCCoreInventoryTankRefill()
+	{
+	}
 
 	@Override
 	public int getInventoryStackLimit() 
@@ -100,7 +105,7 @@ public class GCCoreInventoryTankRefill implements IInventory
 	}
 	
 
-    public NBTTagList writeToNBT2(NBTTagList par1NBTTagList)
+    public NBTTagList writeToNBT(NBTTagList par1NBTTagList)
     {
         int var2;
         NBTTagCompound var3;
@@ -110,7 +115,7 @@ public class GCCoreInventoryTankRefill implements IInventory
             if (this.tankSlotContents[var2] != null)
             {
                 var3 = new NBTTagCompound();
-                var3.setByte("TankSlot", (byte)var2);
+                var3.setByte("Slot", (byte)var2);
                 this.tankSlotContents[var2].writeToNBT(var3);
                 par1NBTTagList.appendTag(var3);
             }
@@ -119,14 +124,14 @@ public class GCCoreInventoryTankRefill implements IInventory
         return par1NBTTagList;
     }
 
-    public void readFromNBT2(NBTTagList par1NBTTagList)
+    public void readFromNBT(NBTTagList par1NBTTagList)
     {
         this.tankSlotContents = new ItemStack[5];
 
         for (int var2 = 0; var2 < par1NBTTagList.tagCount(); ++var2)
         {
             final NBTTagCompound var3 = (NBTTagCompound)par1NBTTagList.tagAt(var2);
-            final int var4 = var3.getByte("TankSlot") & 255;
+            final int var4 = var3.getByte("Slot") & 255;
             final ItemStack var5 = ItemStack.loadItemStackFromNBT(var3);
 
             if (var5 != null)

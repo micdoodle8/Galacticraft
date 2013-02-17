@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.client.gui;
 import java.util.ArrayList;
 import java.util.List;
 
+import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerBase;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreContainerTankRefill;
@@ -75,49 +76,39 @@ public class GCCoreGuiTankRefill extends GuiContainer
     	
         this.xSize_lo = par1;
         this.ySize_lo = par2;
-    	
-    	for (int i = 0; i < GalacticraftCore.gcPlayers.size(); i++)
-    	{
-    		GCCorePlayerBase player = (GCCorePlayerBase) GalacticraftCore.gcPlayers.get(i);
-    		
-    		if (FMLClientHandler.instance().getClient().thePlayer.username == player.getPlayer().username)
-    		{
-    			float var20 = player.astrBarCap();
 
-    	        ScaledResolution var5 = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
-    	        int var6 = var5.getScaledWidth();
-    	        int var7 = var5.getScaledHeight();
-    	        this.mc.entityRenderer.setupOverlayRendering();
-    	        GL11.glDisable(GL11.GL_LIGHTING);
-    	        GL11.glDisable(GL11.GL_DEPTH_TEST);
-                GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    	        
-                GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/gui/gui.png"));
-    	        
-                short var21 = 248;
-                int var22 = (int)(this.mc.thePlayer.experience * (var21 + 1));
-                int var23 = (this.height - this.ySize) / 2 - 5;
-                int var18 = (this.width - this.xSize) / 2 + 2 - 50;
-                this.drawTexturedModalRect(var18 - 2, var23 - 10 - 5, 0, 226, 256, 15);
-                this.drawTexturedModalRect(var18 + 2, var23 - 5 - 5, 0, 242, var21, 7);
+        ScaledResolution var5 = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
+        int var6 = var5.getScaledWidth();
+        int var7 = var5.getScaledHeight();
+        this.mc.entityRenderer.setupOverlayRendering();
+        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glDisable(GL11.GL_DEPTH_TEST);
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/gui/gui.png"));
+        
+        short var21 = 248;
+        int var22 = (int)(this.mc.thePlayer.experience * (var21 + 1));
+        int var23 = (this.height - this.ySize) / 2 - 5;
+        int var18 = (this.width - this.xSize) / 2 + 2 - 50;
+        this.drawTexturedModalRect(var18 - 2, var23 - 10 - 5, 0, 226, 256, 15);
+        this.drawTexturedModalRect(var18 + 2, var23 - 5 - 5, 0, 242, var21, 7);
 
-                if (var22 > 0)
-                {
-                    this.drawTexturedModalRect(var18 + 2, var23 - 5 - 5, 0, 249, var22, 7);
-                }
+        if (var22 > 0)
+        {
+            this.drawTexturedModalRect(var18 + 2, var23 - 5 - 5, 0, 249, var22, 7);
+        }
 
-                int var19b = par1 - (var18 - 2);
-                int var20b = (par2 - (var23 - 10));
+        int var19b = par1 - (var18 - 2);
+        int var20b = (par2 - (var23 - 10));
 
-                if (var19b >= 0 && var20b >= 0 && var19b < 256 && var20b < 15)
-                {
-                	List list = new ArrayList();
-                	list.add(String.valueOf("Galactic Level " + player.astronomyPointsLevel));
-                	list.add(String.valueOf(Math.round(var22 / 2.56) + "%"));
-                	this.drawInfoText(list, par1, par2);
-                }
-    		}
-    	}
+        if (var19b >= 0 && var20b >= 0 && var19b < 256 && var20b < 15)
+        {
+        	List list = new ArrayList();
+        	list.add(String.valueOf("Galactic Level " + GCCoreUtil.getPlayerBaseServerFromPlayer(this.mc.thePlayer).astronomyPointsLevel));
+        	list.add(String.valueOf(Math.round(var22 / 2.56) + "%"));
+        	this.drawInfoText(list, par1, par2);
+        }
     }
 
     protected void drawInfoText(List list, int par2, int par3)
@@ -230,6 +221,7 @@ public class GCCoreGuiTankRefill extends GuiContainer
 
     public void drawPlayerOnGui(Minecraft par0Minecraft, int par1, int par2, int par3, float par4, float par5)
     {
+    	float pitchBefore = par0Minecraft.thePlayer.rotationPitch;
         GL11.glEnable(GL11.GL_COLOR_MATERIAL);
         GL11.glPushMatrix();
         GL11.glTranslatef(par1, par2, 50.0F);
@@ -244,7 +236,7 @@ public class GCCoreGuiTankRefill extends GuiContainer
         GL11.glRotatef(-((float)Math.atan((rotation / 40.0F))) * 00.0F, 1.0F, 0.0F, 0.0F);
         par0Minecraft.thePlayer.renderYawOffset = rotation;
         par0Minecraft.thePlayer.rotationYaw = rotation;
-//        par0Minecraft.thePlayer.rotationPitch = -((float)Math.atan((double)(par5 / 40.0F))) * 80.0F;
+        par0Minecraft.thePlayer.rotationPitch = 0;
         par0Minecraft.thePlayer.rotationYawHead = par0Minecraft.thePlayer.rotationYaw;
         GL11.glTranslatef(0.0F, par0Minecraft.thePlayer.yOffset, 0.0F);
         RenderManager.instance.playerViewY = 180.0F;
@@ -258,5 +250,6 @@ public class GCCoreGuiTankRefill extends GuiContainer
         OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
+        par0Minecraft.thePlayer.rotationPitch = pitchBefore;
     }
 }

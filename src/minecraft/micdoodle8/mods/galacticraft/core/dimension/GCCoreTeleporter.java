@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.dimension;
 
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerBase;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemParachute;
@@ -64,24 +65,16 @@ public class GCCoreTeleporter extends Teleporter
         
         par1Entity.worldObj.markBlockForUpdate(var9, 30, var11);
         
-        for (int i = 0; i < GalacticraftCore.gcPlayers.size(); i++)
-        {
-        	GCCorePlayerBase player = GalacticraftCore.gcPlayers.get(i);
-        	
-        	if (player.getPlayer().username.equals(((EntityPlayer) par1Entity).username))
-        	{
-        		ItemStack stack = player.playerTankInventory.getStackInSlot(4);
-        		
-        		if (stack != null && stack.getItem() instanceof GCCoreItemParachute)
-        		{
-            		player.setParachute(true);
-        		}
-        		else
-        		{
-            		player.setParachute(false);
-        		}
-        	}
-        }
+		ItemStack stack = GCCoreUtil.getPlayerBaseServerFromPlayer((EntityPlayer) par1Entity).playerTankInventory.getStackInSlot(4);
+		
+		if (stack != null && stack.getItem() instanceof GCCoreItemParachute)
+		{
+			GCCoreUtil.getPlayerBaseServerFromPlayer((EntityPlayer) par1Entity).setParachute(true);
+		}
+		else
+		{
+			GCCoreUtil.getPlayerBaseServerFromPlayer((EntityPlayer) par1Entity).setParachute(false);
+		}
 
         if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
         {
