@@ -50,7 +50,7 @@ public class GCCoreTileEntityOxygenPipe extends TileEntity
 		{
 			this.oxygenInPipe = 0.0D;
 		}
-		else
+		else if (this.worldObj.getBlockTileEntity(this.source.xCoord, this.source.yCoord, this.source.zCoord) instanceof GCCoreTileEntityOxygenCollector)
 		{
 			this.source = (GCCoreTileEntityOxygenCollector) this.worldObj.getBlockTileEntity(this.source.xCoord, this.source.yCoord, this.source.zCoord);
 			
