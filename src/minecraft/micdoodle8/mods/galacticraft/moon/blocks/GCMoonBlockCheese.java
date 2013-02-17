@@ -181,7 +181,14 @@ public class GCMoonBlockCheese extends GCMoonBlock
     @Override
 	public boolean canBlockStay(World par1World, int par2, int par3, int par4)
     {
-        return par1World.getBlockMaterial(par2, par3 - 1, par4).isSolid();
+    	if (par1World.blockExists(par2, par3 - 1, par4))
+    	{
+            return par1World.getBlockMaterial(par2, par3 - 1, par4).isSolid();
+    	}
+    	else
+    	{
+    		return false;
+    	}
     }
 
     /**
