@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.API.IGalacticraftSubMod;
 import micdoodle8.mods.galacticraft.API.IGalaxy;
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.europa.dimension.GCEuropaWorldProvider;
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
 import micdoodle8.mods.galacticraft.mars.dimension.GCMarsWorldProvider;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityCreeperBoss;
@@ -80,7 +81,7 @@ public class GalacticraftMars implements IGalacticraftSubMod
 	@Init
 	public void load(FMLInitializationEvent event)
 	{
-		DimensionManager.registerProviderType(GCMarsConfigManager.dimensionIDMars, GCMarsWorldProvider.class, true);
+		DimensionManager.registerProviderType(GCMarsConfigManager.dimensionIDMars, GCMarsWorldProvider.class, false);
 		DimensionManager.registerDimension(GCMarsConfigManager.dimensionIDMars, GCMarsConfigManager.dimensionIDMars);
 		MinecraftForge.EVENT_BUS.register(new GCMarsEvents());
 		GameRegistry.registerPlayerTracker(new GCMarsPlayerHandler());

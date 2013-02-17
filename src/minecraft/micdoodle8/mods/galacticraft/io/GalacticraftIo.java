@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.API.IGalacticraftSubMod;
 import micdoodle8.mods.galacticraft.API.IGalaxy;
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.europa.dimension.GCEuropaWorldProvider;
 import micdoodle8.mods.galacticraft.io.blocks.GCIoBlocks;
 import micdoodle8.mods.galacticraft.io.dimension.GCIoWorldProvider;
 import micdoodle8.mods.galacticraft.jupiter.GalacticraftJupiter;
@@ -56,7 +57,7 @@ public class GalacticraftIo implements IGalacticraftSubMod
 	
 	public void init(FMLInitializationEvent event)
 	{
-		DimensionManager.registerProviderType(GCIoConfigManager.dimensionIDIo, GCIoWorldProvider.class, true);
+		DimensionManager.registerProviderType(GCIoConfigManager.dimensionIDIo, GCIoWorldProvider.class, false);
 		DimensionManager.registerDimension(GCIoConfigManager.dimensionIDIo, GCIoConfigManager.dimensionIDIo);
 //		MinecraftForge.EVENT_BUS.register(new GCMarsEvents());
 //		GameRegistry.registerPlayerTracker(new GCMarsPlayerHandler());

@@ -56,7 +56,7 @@ public class GalacticraftEuropa implements IGalacticraftSubMod
 	
 	public void init(FMLInitializationEvent event)
 	{
-		DimensionManager.registerProviderType(GCEuropaConfigManager.dimensionIDEuropa, GCEuropaWorldProvider.class, true);
+		DimensionManager.registerProviderType(GCEuropaConfigManager.dimensionIDEuropa, GCEuropaWorldProvider.class, false);
 		DimensionManager.registerDimension(GCEuropaConfigManager.dimensionIDEuropa, GCEuropaConfigManager.dimensionIDEuropa);
 //		MinecraftForge.EVENT_BUS.register(new GCMarsEvents());
 //		GameRegistry.registerPlayerTracker(new GCMarsPlayerHandler());
