@@ -55,7 +55,7 @@ public class GCCorePlayerBase extends ServerPlayerBase
 	
 	public ItemStack tankInSlot;
 	
-	public GCCoreInventoryTankRefill playerTankInventory = new GCCoreInventoryTankRefill();
+	public GCCoreInventoryTankRefill playerTankInventory = new GCCoreInventoryTankRefill(this);
 	
 	public boolean inPortal;
 	
@@ -103,13 +103,26 @@ public class GCCorePlayerBase extends ServerPlayerBase
 	public GCCorePlayerBase(ServerPlayerAPI var1)
 	{
 		super(var1);
-		GalacticraftCore.playersServer.add(this);
+		GalacticraftCore.playersServer.put(this.player.username, this);
 	}
 	
 	public EntityPlayerMP getPlayer()
 	{
 		return this.player;
 	}
+
+	@Override
+    public void onDeath(DamageSource var1)
+    {
+		GalacticraftCore.playersServer.remove(this);
+
+        if (!this.player.worldObj.getGameRules().getGameRuleBooleanValue("keepInventory"))
+        {
+            this.playerTankInventory.dropAllItems();
+        }
+		
+    	super.onDeath(var1);
+    }
 
     public boolean isAABBInBreathableAirBlock()
     {
@@ -214,8 +227,11 @@ public class GCCorePlayerBase extends ServerPlayerBase
     	this.tankInSlot1 = this.playerTankInventory.getStackInSlot(2);
     	this.tankInSlot2 = this.playerTankInventory.getStackInSlot(3);
     	this.parachuteInSlot = this.playerTankInventory.getStackInSlot(4);
-        
-        Object[] toSend = null;
+    	
+    	if (this.getParachute())
+    	{
+    		this.player.fallDistance = 0.0F;
+    	}
     	
 		if (this.player.worldObj.provider instanceof IGalacticraftWorldProvider && this.player.inventory.getCurrentItem() != null)
 	    {
@@ -339,14 +355,8 @@ public class GCCorePlayerBase extends ServerPlayerBase
 	    		temp = k == 0 ? temp.concat(String.valueOf(entry.getKey())) : temp.concat("." + String.valueOf(entry.getKey()));
 	    	}
 
+	        Object[] toSend = {this.getPlayer().username, temp};
 	        
-	        for (int j = 0; j < toSend.length; j++)
-	        {
-	        	toSend[j] = null;
-	        }
-	        
-	    	toSend[0] = this.getPlayer().username;
-	    	toSend[1] = temp;
 	        this.getPlayer().playerNetServerHandler.sendPacketToPlayer(GCCoreUtil.createPacket("Galacticraft", 2, toSend));
 			
 	        this.setUsingPlanetGui();
@@ -812,13 +822,9 @@ public class GCCorePlayerBase extends ServerPlayerBase
 				}
 				
 		        player.timeUntilPortal = 10;
+
+		        Object[] toSend = {0.0F};
 		        
-		        for (int i = 0; i < toSend.length; i++)
-		        {
-		        	toSend[i] = null;
-		        }
-		        
-		        toSend[0] = 0.0F;
 		        PacketDispatcher.sendPacketToPlayer(GCCoreUtil.createPacket("Galacticraft", 1, toSend), (Player)player);
 		        
 		        this.inPortal = false;
