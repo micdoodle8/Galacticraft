@@ -52,6 +52,7 @@ public class GalacticraftMoon implements IGalacticraftSubMod
 		DimensionManager.registerProviderType(GCMoonConfigManager.dimensionIDMoon, GCMoonWorldProvider.class, false);
 		DimensionManager.registerDimension(GCMoonConfigManager.dimensionIDMoon, GCMoonConfigManager.dimensionIDMoon);
         GCMoonUtil.addCraftingRecipes();
+        GCMoonUtil.addSmeltingRecipes();
 	}
 
 	public void postLoad(FMLPostInitializationEvent event)

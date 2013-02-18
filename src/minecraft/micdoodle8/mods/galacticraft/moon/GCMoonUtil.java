@@ -1,9 +1,12 @@
 package micdoodle8.mods.galacticraft.moon;
 
+import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
+import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
 import micdoodle8.mods.galacticraft.moon.items.GCMoonItems;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.FurnaceRecipes;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -26,5 +29,6 @@ public class GCMoonUtil
 	
 	public static void addSmeltingRecipes()
 	{
+		FurnaceRecipes.smelting().addSmelting(GCMoonItems.meteoricIronRaw.itemID, new ItemStack(GCMoonItems.meteoricIronIngot), 1.0F);
 	}
 }
