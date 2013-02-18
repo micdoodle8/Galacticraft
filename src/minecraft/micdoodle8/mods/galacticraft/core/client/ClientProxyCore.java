@@ -32,6 +32,7 @@ import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelPlayer;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererBreathableAir;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererCraftingTable;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererMeteor;
+import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererOxygenCollector;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererOxygenDistributor;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererOxygenPipe;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererUnlitTorch;
@@ -53,6 +54,7 @@ import micdoodle8.mods.galacticraft.core.client.render.item.GCCoreItemRendererBu
 import micdoodle8.mods.galacticraft.core.client.render.item.GCCoreItemRendererFlag;
 import micdoodle8.mods.galacticraft.core.client.render.item.GCCoreItemRendererSpaceship;
 import micdoodle8.mods.galacticraft.core.client.render.item.GCCoreItemRendererUnlitTorch;
+import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntityOxygenCollectorRenderer;
 import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntityOxygenDistributorRenderer;
 import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntityTreasureChestRenderer;
 import micdoodle8.mods.galacticraft.core.client.sounds.GCCoreSoundUpdaterSpaceship;
@@ -72,6 +74,7 @@ import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityWorm;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityZombie;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemSensorGlasses;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCollector;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenDistributor;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.moon.client.ClientProxyMoon;
@@ -143,6 +146,7 @@ public class ClientProxyCore extends CommonProxyCore
 	private static int meteorRenderID;
 	private static int craftingTableID;
 	private static int oxygenDistributorRenderID;
+	private static int oxygenCollectorRenderID;
 	public static long getFirstBootTime;
 	public static long getCurrentTime;
 	public static long slowTick;
@@ -193,6 +197,7 @@ public class ClientProxyCore extends CommonProxyCore
         NetworkRegistry.instance().registerChannel(new ClientPacketHandler(), "Galacticraft", Side.CLIENT);
         ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityTreasureChest.class, new GCCoreTileEntityTreasureChestRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityOxygenDistributor.class, new GCCoreTileEntityOxygenDistributorRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityOxygenCollector.class, new GCCoreTileEntityOxygenCollectorRenderer());
         ClientProxyCore.treasureChestRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new GCCoreRenderBlockTreasureChest(ClientProxyCore.treasureChestRenderID));
         ClientProxyCore.torchRenderID = RenderingRegistry.getNextAvailableRenderId();
@@ -207,6 +212,8 @@ public class ClientProxyCore extends CommonProxyCore
         RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererCraftingTable(ClientProxyCore.craftingTableID));
         ClientProxyCore.oxygenDistributorRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererOxygenDistributor(ClientProxyCore.oxygenDistributorRenderID));
+        ClientProxyCore.oxygenCollectorRenderID = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererOxygenCollector(ClientProxyCore.oxygenCollectorRenderID));
         final IMapPlanet earth = new GCCoreMapPlanetOverworld();
         final IMapPlanet moon = new GCMoonMapPlanet();
 		GalacticraftCore.addAdditionalMapPlanet(earth);
@@ -318,6 +325,12 @@ public class ClientProxyCore extends CommonProxyCore
 	public int getGCOxygenDistributorRenderID()
 	{
 		return ClientProxyCore.oxygenDistributorRenderID;
+	}
+
+	@Override
+	public int getGCOxygenCollectorRenderID()
+	{
+		return ClientProxyCore.oxygenCollectorRenderID;
 	}
 
 	@Override
