@@ -56,8 +56,8 @@ public class GCCoreBlocks
 		Item.itemsList[GCCoreBlocks.sapling.blockID] = 						new GCCoreItemSapling				(GCCoreBlocks.sapling.blockID - 256)																																																														.setItemName("sapling2");
 		GCCoreBlocks.decorationBlocks = 									new GCCoreBlock						(GCCoreConfigManager.idBlockDecorationBlock,  			3)						.setHardness(3.0F) 																				 																											.setBlockName("decorationblock");
 		Item.itemsList[GCCoreBlocks.decorationBlocks.blockID] = 			new GCCoreItemBlockBase				(GCCoreBlocks.decorationBlocks.blockID - 256)																																																												.setItemName("decorationblock");
-		GCCoreBlocks.airLockFrame = 										new GCCoreBlockAirLockFrame			(GCCoreConfigManager.idBlockAirLockFrame, 				29)						.setHardness(3.0F)                        														.setCreativeTab(GalacticraftCore.galacticraftTab)	.setStepSound(Block.soundAnvilFootstep)	   				.setBlockName("airLockFrame");
-		GCCoreBlocks.airLockSeal = 											new GCCoreBlockAirLockWall			(GCCoreConfigManager.idBlockAirLockSeal, 				26)						                        																		.setCreativeTab(GalacticraftCore.galacticraftTab)	.setStepSound(Block.soundAnvilFootstep)	   				.setBlockName("airLockSeal");
+		GCCoreBlocks.airLockFrame = 										new GCCoreBlockAirLockFrame			(GCCoreConfigManager.idBlockAirLockFrame, 				29)						.setHardness(3.0F)                        														.setCreativeTab(GalacticraftCore.galacticraftTab)	.setStepSound(Block.soundMetalFootstep)	   				.setBlockName("airLockFrame");
+		GCCoreBlocks.airLockSeal = 											new GCCoreBlockAirLockWall			(GCCoreConfigManager.idBlockAirLockSeal, 				26)						                        																		.setCreativeTab(GalacticraftCore.galacticraftTab)	.setStepSound(Block.soundMetalFootstep)	   				.setBlockName("airLockSeal");
 	}
 
 	public static void setHarvestLevels()
@@ -109,6 +109,7 @@ public class GCCoreBlocks
 		GCCoreBlocks.addNameWithMetadata("tile.decorationblock.decoblock1.name");
 		GCCoreBlocks.addNameWithMetadata("tile.decorationblock.decoblock2.name");
 		GCCoreBlocks.addName(GCCoreBlocks.airLockFrame);
+		GCCoreBlocks.addName(GCCoreBlocks.airLockSeal);
 	}
 	
 	private static void addName(Block block)
