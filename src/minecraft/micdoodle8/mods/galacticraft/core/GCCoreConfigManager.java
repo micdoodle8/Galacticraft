@@ -124,6 +124,7 @@ public class GCCoreConfigManager
 	public static boolean disableTitaniumEarth;
 	public static int oreGenFactor;
 	public static int[] oreGenDimensions;
+	public static boolean disableSpaceshipParticles;
 	
 	private void setDefaultValues()
     {
@@ -223,6 +224,7 @@ public class GCCoreConfigManager
 	        GCCoreConfigManager.oreGenFactor = 							GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Ore Generation Factor", 				1)			.getInt(1);
 	        final int[] dimensions = {1};
 	        GCCoreConfigManager.oreGenDimensions =						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Dimensions to generate GC ores in", 	dimensions)	.getIntList();
+	        GCCoreConfigManager.disableSpaceshipParticles = 			GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Spaceship Particles",		false)		.getBoolean(false);
 		}
 		catch (final Exception e)
 		{
