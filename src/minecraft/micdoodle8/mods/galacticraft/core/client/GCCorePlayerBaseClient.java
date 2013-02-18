@@ -24,6 +24,7 @@ public class GCCorePlayerBaseClient extends PlayerBase
 	private final Random rand = new Random();
 	
 	private boolean usingParachute;
+	private boolean lastUsingParachute;
 	
 	public boolean usingAdvancedGoggles;
 	
@@ -133,6 +134,13 @@ public class GCCorePlayerBaseClient extends PlayerBase
 			this.setParachute(false);
 			FMLClientHandler.instance().getClient().gameSettings.thirdPersonView = 0;
 		}
+        
+        if (!this.lastUsingParachute && this.usingParachute)
+        {
+            FMLClientHandler.instance().getClient().sndManager.playSound("player.parachute", (float)this.getPlayer().posX, (float)this.getPlayer().posY, (float)this.getPlayer().posZ, 0.95F + this.rand.nextFloat() * 0.1F, 1.0F);
+        }
+		
+		this.lastUsingParachute = this.usingParachute;
 	}
 	
 	@Override
@@ -178,6 +186,11 @@ public class GCCorePlayerBaseClient extends PlayerBase
     public void setParachute(boolean tf)
     {
     	this.usingParachute = tf;
+    	
+    	if (!tf)
+    	{
+    		this.lastUsingParachute = false;
+    	}
     }
     
     public boolean getParachute()
