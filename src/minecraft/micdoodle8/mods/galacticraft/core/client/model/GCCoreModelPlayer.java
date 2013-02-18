@@ -444,6 +444,7 @@ public class GCCoreModelPlayer extends ModelPlayerBase
     @Override
 	public void afterSetRotationAngles(float var1, float var2, float var3, float var4, float var5, float var6, Entity var7)
     {
+    	
     	float speedModifier = 0.0F;
     	
     	if (var7.onGround)
@@ -459,12 +460,12 @@ public class GCCoreModelPlayer extends ModelPlayerBase
     	{
             this.modelPlayer.bipedLeftLeg.rotateAngleX = MathHelper.cos(var1 * speedModifier + (float)Math.PI) * 1.45F * var2;
             this.modelPlayer.bipedRightLeg.rotateAngleX = MathHelper.cos(var1 * speedModifier) * 1.45F * var2;
-            this.modelPlayer.bipedRightArm.rotateAngleX = MathHelper.cos(var1 * (speedModifier / 2) + (float)Math.PI) * 4.0F * var2 * 0.5F;
-            this.modelPlayer.bipedLeftArm.rotateAngleX = MathHelper.cos(var1 * (speedModifier / 2)) * 4.0F * var2 * 0.5F;
-            this.modelPlayer.bipedRightArm.rotateAngleY = -MathHelper.cos(var1 * 0.1162F) * 0.2F;
-            this.modelPlayer.bipedLeftArm.rotateAngleY = -MathHelper.cos(var1 * 0.1162F) * 0.2F;
-            this.modelPlayer.bipedRightArm.rotateAngleZ = (float) (5 * (Math.PI / 180));
-            this.modelPlayer.bipedLeftArm.rotateAngleZ = (float) (-5 * (Math.PI / 180));
+            this.modelPlayer.bipedRightArm.rotateAngleX += MathHelper.cos(var1 * (speedModifier / 2) + (float)Math.PI) * 4.0F * var2 * 0.5F;
+            this.modelPlayer.bipedLeftArm.rotateAngleX += MathHelper.cos(var1 * (speedModifier / 2)) * 4.0F * var2 * 0.5F;
+            this.modelPlayer.bipedRightArm.rotateAngleY += -MathHelper.cos(var1 * 0.1162F) * 0.2F;
+            this.modelPlayer.bipedLeftArm.rotateAngleY += -MathHelper.cos(var1 * 0.1162F) * 0.2F;
+            this.modelPlayer.bipedRightArm.rotateAngleZ += (float) (5 * (Math.PI / 180));
+            this.modelPlayer.bipedLeftArm.rotateAngleZ += (float) (-5 * (Math.PI / 180));
     	}
     	
     	if (this.usingParachute)
@@ -488,6 +489,31 @@ public class GCCoreModelPlayer extends ModelPlayerBase
         	this.modelPlayer.bipedRightArm.rotateAngleX += (float) Math.PI;
         	this.modelPlayer.bipedRightArm.rotateAngleZ -= (float) Math.PI / 10;
     	}
+    	
+        float var8;
+        float var9;
+
+        if (this.modelPlayer.onGround > -9990.0F)
+        {
+            var8 = this.modelPlayer.onGround;
+            this.modelPlayer.bipedBody.rotateAngleY = MathHelper.sin(MathHelper.sqrt_float(var8) * (float)Math.PI * 2.0F) * 0.2F;
+            this.modelPlayer.bipedRightArm.rotationPointZ = MathHelper.sin(this.modelPlayer.bipedBody.rotateAngleY) * 5.0F;
+            this.modelPlayer.bipedRightArm.rotationPointX = -MathHelper.cos(this.modelPlayer.bipedBody.rotateAngleY) * 5.0F;
+            this.modelPlayer.bipedLeftArm.rotationPointZ = -MathHelper.sin(this.modelPlayer.bipedBody.rotateAngleY) * 5.0F;
+            this.modelPlayer.bipedLeftArm.rotationPointX = MathHelper.cos(this.modelPlayer.bipedBody.rotateAngleY) * 5.0F;
+            this.modelPlayer.bipedRightArm.rotateAngleY += this.modelPlayer.bipedBody.rotateAngleY;
+            this.modelPlayer.bipedLeftArm.rotateAngleY += this.modelPlayer.bipedBody.rotateAngleY;
+            this.modelPlayer.bipedLeftArm.rotateAngleX += this.modelPlayer.bipedBody.rotateAngleY;
+            var8 = 1.0F - this.modelPlayer.onGround;
+            var8 *= var8;
+            var8 *= var8;
+            var8 = 1.0F - var8;
+            var9 = MathHelper.sin(var8 * (float)Math.PI);
+            float var10 = MathHelper.sin(this.modelPlayer.onGround * (float)Math.PI) * -(this.modelPlayer.bipedHead.rotateAngleX - 0.7F) * 0.75F;
+            this.modelPlayer.bipedRightArm.rotateAngleX = (float)((double)this.modelPlayer.bipedRightArm.rotateAngleX - ((double)var9 * 1.2D + (double)var10));
+            this.modelPlayer.bipedRightArm.rotateAngleY += this.modelPlayer.bipedBody.rotateAngleY * 2.0F;
+            this.modelPlayer.bipedRightArm.rotateAngleZ = MathHelper.sin(this.modelPlayer.onGround * (float)Math.PI) * -0.4F;
+        }
 
     	final EntityPlayer player = (EntityPlayer)var7;
 //
@@ -556,6 +582,8 @@ public class GCCoreModelPlayer extends ModelPlayerBase
 				}
 			}
 		}
+		
+    	super.afterSetRotationAngles(var1, var2, var3, var4, var5, var6, var7);
     }
 
     public void renderCloak(float var1)
