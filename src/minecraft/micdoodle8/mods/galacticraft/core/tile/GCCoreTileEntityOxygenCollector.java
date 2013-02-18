@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
+import micdoodle8.mods.galacticraft.core.client.model.block.GCCoreModelFan;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.nbt.NBTTagCompound;
@@ -9,6 +10,19 @@ import net.minecraft.tileentity.TileEntity;
 public class GCCoreTileEntityOxygenCollector extends TileEntity
 {
 	public double currentPower;
+
+    public GCCoreModelFan fanModel = new GCCoreModelFan();
+
+    @Override
+  	public void validate()
+  	{
+   		super.validate();
+
+   		if (!this.isInvalid() && this.worldObj != null)
+      	{
+   		   	this.fanModel = new GCCoreModelFan();
+      	}
+  	}
     
 	@Override
 	public void updateEntity()

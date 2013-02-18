@@ -20,7 +20,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GCCoreTileEntityOxygenDistributorRenderer extends TileEntitySpecialRenderer
 {
-
     public void renderGCTileEntityTreasureChestAt(GCCoreTileEntityOxygenDistributor par1GCTileEntityTreasureChest, double par2, double par4, double par6, float par8)
     {
     	int x, y, z;

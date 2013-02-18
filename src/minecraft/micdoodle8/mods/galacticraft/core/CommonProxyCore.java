@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
+import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiAirDistributor;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiBuggyBench;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiGalaxyMap;
@@ -92,6 +93,11 @@ public class CommonProxyCore implements IGuiHandler
 	}
 
 	public int getGCOxygenDistributorRenderID()
+	{
+		return -1;
+	}
+
+	public int getGCOxygenCollectorRenderID()
 	{
 		return -1;
 	}

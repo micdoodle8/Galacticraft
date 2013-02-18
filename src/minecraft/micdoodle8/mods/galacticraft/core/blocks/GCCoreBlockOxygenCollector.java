@@ -23,6 +23,24 @@ public class GCCoreBlockOxygenCollector extends BlockContainer
 	}
 
 	@Override
+	public boolean renderAsNormalBlock()
+   	{
+       	return false;
+   	}
+
+	@Override
+    public boolean isOpaqueCube()
+    {
+        return false;
+    }
+
+	@Override
+	public int getRenderType()
+	{
+		return GalacticraftCore.proxy.getGCOxygenCollectorRenderID();
+   	}
+
+	@Override
 	public TileEntity createNewTileEntity(World var1)
 	{
 		return new GCCoreTileEntityOxygenCollector();
