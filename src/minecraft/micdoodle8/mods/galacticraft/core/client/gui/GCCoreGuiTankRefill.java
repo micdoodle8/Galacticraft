@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerBase;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreContainerTankRefill;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreInventoryTankRefill;
 import net.minecraft.client.Minecraft;
@@ -102,10 +103,15 @@ public class GCCoreGuiTankRefill extends GuiContainer
 
         if (var19b >= 0 && var20b >= 0 && var19b < 256 && var20b < 15)
         {
-        	final List list = new ArrayList();
-        	list.add(String.valueOf("Galactic Level " + GCCoreUtil.getPlayerBaseServerFromPlayer(this.mc.thePlayer).astronomyPointsLevel));
-        	list.add(String.valueOf(Math.round(var22 / 2.56) + "%"));
-        	this.drawInfoText(list, par1, par2);
+        	GCCorePlayerBase playerBase = GCCoreUtil.getPlayerBaseServerFromPlayer(this.mc.thePlayer);
+        	
+        	if (playerBase != null)
+        	{
+            	final List list = new ArrayList();
+            	list.add(String.valueOf("Galactic Level " + playerBase.astronomyPointsLevel));
+            	list.add(String.valueOf(Math.round(var22 / 2.56) + "%"));
+            	this.drawInfoText(list, par1, par2);
+        	}
         }
     }
 
