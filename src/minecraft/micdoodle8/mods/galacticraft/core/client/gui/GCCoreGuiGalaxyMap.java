@@ -86,18 +86,6 @@ public class GCCoreGuiGalaxyMap extends GCCoreGuiStarBackground
         this.mc.mouseHelper.grabMouseCursor();
         this.field_74117_m = this.guiMapX = this.field_74124_q = 0 - this.width / 4;
         this.field_74115_n = this.guiMapY = this.field_74123_r = 0 - this.height / 4;
-        this.controlList.add(new GuiSmallButton(0, this.width - 82, this.height - 22, 80, 20, StatCollector.translateToLocal("gui.done")));
-    }
-
-    @Override
-	protected void actionPerformed(GuiButton par1GuiButton)
-    {
-        if (par1GuiButton.id == 0)
-        {
-            this.mc.displayGuiScreen((GuiScreen)null);
-        }
-
-        super.actionPerformed(par1GuiButton);
     }
 
     @Override
