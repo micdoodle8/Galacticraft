@@ -1,3 +1,4 @@
+package micdoodle8.mods.galacticraft.core.tile;
 //package micdoodle8.mods.galacticraft.core.blocks.pipe;
 //
 //import java.util.HashMap;
