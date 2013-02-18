@@ -1,9 +1,11 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GCCoreDamageSource;
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLandingPad;
@@ -62,6 +64,7 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
         this.preventEntitySpawning = true;
         this.setSize(0.98F, 4F);
         this.yOffset = this.height / 2.0F;
+        this.ignoreFrustumCheck = true;
     }
 
     @Override
@@ -88,13 +91,14 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
     @Override
 	public AxisAlignedBB getCollisionBox(Entity par1Entity)
     {
-        return par1Entity.boundingBox;
+        return null;
     }
 
     @Override
 	public AxisAlignedBB getBoundingBox()
     {
-        return this.boundingBox;
+//        return this.boundingBox;
+    	return null;
     }
 
     @Override
@@ -180,7 +184,7 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
         	i = 1;
         }
     	
-        if (this.getLaunched() == 1 || this.rand.nextInt(i) == 0)
+        if ((this.getLaunched() == 1 || this.rand.nextInt(i) == 0) && !GCCoreConfigManager.disableSpaceshipParticles)
         {
         	if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
         	{
@@ -263,6 +267,25 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
         if (this.timeUntilLaunch > 0 && this.ignite == 1)
         {
         	this.timeUntilLaunch --;
+        }
+
+        AxisAlignedBB box = null;
+        
+        box = boundingBox.expand(0.2D, 0.2D, 0.2D);
+
+        List var15 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, box);
+
+        if (var15 != null && !var15.isEmpty())
+        {
+            for (int var52 = 0; var52 < var15.size(); ++var52)
+            {
+                Entity var17 = (Entity)var15.get(var52);
+
+                if (var17 != this.riddenByEntity)
+                {
+                    var17.applyEntityCollision(this);
+                }
+            }
         }
         
         this.setTimeUntilLaunch(this.timeUntilLaunch);
