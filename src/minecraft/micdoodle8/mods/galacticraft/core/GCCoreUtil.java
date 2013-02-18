@@ -28,6 +28,7 @@ import micdoodle8.mods.galacticraft.core.items.GCCoreItemParachute;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreInventoryRocketBench;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreInventoryTankRefill;
+import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
 import micdoodle8.mods.galacticraft.moon.items.GCMoonItems;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiChat;
@@ -322,6 +323,48 @@ public class GCCoreUtil
 			"YXY",
 			"Y Y",
 			'X', GCCoreItems.oxygenConcentrator, 'Y', GCCoreBlocks.oxygenPipe
+		}));
+		
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreBlocks.decorationBlocks, 1, 0), new Object[] {
+			"XXX",
+			"XXX",
+			"XXX",
+			'X', "ingotCopper"
+		}));
+		
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreBlocks.decorationBlocks, 1, 1), new Object[] {
+			"XXX",
+			"XXX",
+			"XXX",
+			'X', "ingotAluminium"
+		}));
+		
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreBlocks.decorationBlocks, 1, 2), new Object[] {
+			"XXX",
+			"XXX",
+			"XXX",
+			'X', "ingotTitanium"
+		}));
+		
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreBlocks.decorationBlocks, 1, 3), new Object[] {
+			"   ",
+			" XY",
+			"   ",
+			'X', Block.stone, 'Y', "ingotAluminium"
+		}));
+		
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4), new Object[] {
+			"   ",
+			" X ",
+			" Y ",
+			'X', Block.stone, 'Y', "ingotAluminium"
+		}));
+		
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreBlocks.airLockFrame, 2), new Object[] {
+			"XXX",
+			"YVY",
+			"ZWZ",
+			'V', GCCoreBlocks.oxygenPipe, 'W', Item.redstone, 'X', GCMoonItems.meteoricIronIngot, 'Y', "ingotTitanium", 'Z', GCCoreItems.oxygenConcentrator
 		}));
 	}
 	
