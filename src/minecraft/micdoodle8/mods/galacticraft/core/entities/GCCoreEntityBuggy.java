@@ -1,7 +1,10 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
+import java.util.List;
+
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
@@ -10,7 +13,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -45,6 +50,7 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
         this.dataWatcher.addObject(this.currentDamage, new Integer(0));
         this.dataWatcher.addObject(this.timeSinceHit, new Integer(0));
         this.dataWatcher.addObject(this.rockDirection, new Integer(1));
+        this.ignoreFrustumCheck = true;
     }
 
     public GCCoreEntityBuggy(World var1, double var2, double var4, double var6)
@@ -75,18 +81,18 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
      * Returns a boundingBox used to collide the entity with other entities and blocks. This enables the entity to be
      * pushable on contact, like boats or minecarts.
      */
-    @Override
-	public AxisAlignedBB getCollisionBox(Entity var1)
-    {
-    	if (!var1.equals(this.riddenByEntity))
-    	{
-    		return var1.boundingBox;
-    	}
-    	else
-    	{
-            return null;
-    	}
-    }
+//    @Override
+//	public AxisAlignedBB getCollisionBox(Entity var1)
+//    {
+//    	if (!var1.equals(this.riddenByEntity))
+//    	{
+//    		return var1.boundingBox;
+//    	}
+//    	else
+//    	{
+//            return null;
+//    	}
+//    }
 
     /**
      * returns the bounding box for this entity
@@ -210,7 +216,7 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
 	public void onUpdate()
     {
         super.onUpdate();
-
+        
         if (this.dataWatcher.getWatchableObjectInt(this.timeSinceHit) > 0)
         {
             this.dataWatcher.updateObject(this.timeSinceHit, Integer.valueOf(this.dataWatcher.getWatchableObjectInt(this.timeSinceHit) - 1));
@@ -220,12 +226,7 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
         {
             this.dataWatcher.updateObject(this.currentDamage, Integer.valueOf(this.dataWatcher.getWatchableObjectInt(this.currentDamage) - 1));
         }
-
-        this.rotationYaw %= 360.0F;
-        this.rotationPitch %= 360.0F;
-        this.prevPosX = this.posX;
-        this.prevPosY = this.posY;
-        this.prevPosZ = this.posZ;
+        
         final byte var20 = 5;
         final double var2 = 0.0D;
         int var4;
@@ -263,42 +264,6 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
                 }
             }
         }
-
-//        if (this.riddenByEntity != null && FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
-//        {
-//            if (Keyboard.isKeyDown(30))
-//            {
-//            }
-//
-//            if (Keyboard.isKeyDown(32))
-//            {
-//            }
-//
-//            if (Keyboard.isKeyDown(17))
-//            {
-//            }
-//
-//            if (Keyboard.isKeyDown(31))
-//            {
-//                this.speed -= 0.01D;
-//            }
-//
-//            if (Keyboard.isKeyDown(42))
-//            {
-//                this.speed *= 0.75D;
-//            }
-//
-//            if (!Keyboard.isKeyDown(30) && !Keyboard.isKeyDown(32))
-//            {
-//        		this.turnProgress = 0.0F;
-//            }
-//
-//            this.fuel = (int)(this.fuel - this.speed);
-//        }
-//        else
-//        {
-//            this.speed *= 0.9D;
-//        }
 
         if (this.inWater && this.speed > 0.2D)
         {
@@ -398,12 +363,6 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
         return this.cargoItems[var1];
     }
     
-    @Override
-	public void applyEntityCollision(Entity par1Entity)
-    {
-    	
-    }
-
     /**
      * Removes from an inventory slot (first arg) up to a specified number (second arg) of items and returns them in a
      * new stack.
@@ -555,6 +514,7 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
 		case 2:
 			if (this.worldObj.isRemote)
 			{
+	            this.rotationYaw = (float)(this.rotationYaw - this.turnFactor * (1.0D + this.speed / 2.0D));
 	    		this.turnProgress -= 0.1F;
 	    		if (this.turnProgress <= -0.3F)
 	    		{
@@ -570,6 +530,7 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
 		case 3:
 			if (this.worldObj.isRemote)
 			{
+	            this.rotationYaw = (float)(this.rotationYaw + this.turnFactor * (1.0D + this.speed / 2.0D));
 	    		this.turnProgress += 0.1F;
 	    		if (this.turnProgress >= 0.3F)
 	    		{

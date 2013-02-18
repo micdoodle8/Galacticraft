@@ -243,7 +243,7 @@ public class GalacticraftCore
 		this.registerGalacticraftNonMobEntity(GCCoreEntitySpaceship.class, "Spaceship", GCCoreConfigManager.idEntitySpaceship, 150, 1, true);
 		this.registerGalacticraftNonMobEntity(GCCoreEntityArrow.class, "Gravity Arrow", GCCoreConfigManager.idEntityAntiGravityArrow, 150, 5, true);
 		this.registerGalacticraftNonMobEntity(GCCoreEntityMeteor.class, "Meteor", GCCoreConfigManager.idEntityMeteor, 150, 5, true);
-		this.registerGalacticraftNonMobEntity(GCCoreEntityBuggy.class, "Buggy", GCCoreConfigManager.idEntityBuggy, 150, 10, false);
+		this.registerGalacticraftNonMobEntity(GCCoreEntityBuggy.class, "Buggy", GCCoreConfigManager.idEntityBuggy, 150, 5, true);
 		this.registerGalacticraftNonMobEntity(GCCoreEntityFlag.class, "Flag", GCCoreConfigManager.idEntityFlag, 150, 5, true);
 		this.registerGalacticraftNonMobEntity(GCCoreEntityAstroOrb.class, "AstroOrb", GCCoreConfigManager.idEntityAstroOrb, 150, 5, true);
 		this.registerGalacticraftNonMobEntity(GCCoreEntityParaChest.class, "ParaChest", GCCoreConfigManager.idEntityParaChest, 150, 5, true);
@@ -418,6 +418,24 @@ public class GalacticraftCore
                 	if (controllableEntity != null)
                 	{
                 		controllableEntity.keyPressed((Integer) packetReadout[0], player);
+                	}
+                }
+            }
+            else if (packetType == 10)
+            {
+                final Class[] decodeAs = {Integer.class};
+                final Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
+                
+                for (Object object : player.worldObj.loadedEntityList)
+                {
+                	if (object instanceof EntityLiving)
+                	{
+                		EntityLiving entity = (EntityLiving) object;
+                		
+                		if (entity.entityId == (Integer) packetReadout[0])
+                		{
+                			entity.setFire(3);
+                		}
                 	}
                 }
             }
