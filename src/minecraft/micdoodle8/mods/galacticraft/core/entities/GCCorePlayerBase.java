@@ -6,10 +6,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import micdoodle8.mods.galacticraft.API.GCBlockBreathableAir;
 import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.blocks.GCBlockBreathableAir;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreTeleporter;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemParachute;
@@ -701,14 +701,14 @@ public class GCCorePlayerBase extends ServerPlayerBase
 				this.airRemaining2 = 0;
 			}
 			
-			if (drainSpacing > 0)
+			if (drainSpacing > 0 && tankInSlot != null)
 			{
 	    		this.airRemaining = tankInSlot.getMaxDamage() - tankInSlot.getItemDamage() % 90;
 			}
 			
-			if (drainSpacing2 > 0)
+			if (drainSpacing2 > 0 && tankInSlot2 != null)
 			{
-	    		this.airRemaining2 = tankInSlot.getMaxDamage() - tankInSlot2.getItemDamage() % 90;
+	    		this.airRemaining2 = tankInSlot2.getMaxDamage() - tankInSlot2.getItemDamage() % 90;
 			}
 			
 			if (drainSpacing > 0 && GalacticraftCore.tick % drainSpacing == 0 && !this.isAABBInPartialBlockWithOxygenNearby() && !this.isAABBInBreathableAirBlock() && tankInSlot.getMaxDamage() - tankInSlot.getItemDamage() % 90 > 0)
