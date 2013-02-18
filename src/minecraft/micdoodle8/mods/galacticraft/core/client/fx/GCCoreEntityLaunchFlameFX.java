@@ -1,9 +1,16 @@
 package micdoodle8.mods.galacticraft.core.client.fx;
 
+import java.util.List;
+
+import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
+import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -86,6 +93,24 @@ public class GCCoreEntityLaunchFlameFX extends EntityFX
         this.motionX *= 0.9599999785423279D;
         this.motionY *= 0.9599999785423279D;
         this.motionZ *= 0.9599999785423279D;
+        
+
+        List var3 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(1.0D, 0.5D, 1.0D));
+
+        if (var3 != null)
+        {
+            for (int var4 = 0; var4 < var3.size(); ++var4)
+            {
+                Entity var5 = (Entity)var3.get(var4);
+
+                if (!var5.isDead && !var5.isBurning())
+                {
+                	var5.setFire(3);
+                	Object[] toSend = {var5.entityId};
+                	PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 10, toSend));
+                }
+            }
+        }
 
 //        if (this.onGround)
 //        {
