@@ -34,13 +34,13 @@ import net.minecraft.src.ServerPlayerBase;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
-import net.minecraft.util.StringUtils;
 import net.minecraft.world.Teleporter;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.common.DimensionManager;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -103,7 +103,6 @@ public class GCCorePlayerBase extends ServerPlayerBase
 	public GCCorePlayerBase(ServerPlayerAPI var1)
 	{
 		super(var1);
-		GalacticraftCore.playersServer.put(this.player.username, this);
 	}
 	
 	public EntityPlayerMP getPlayer()
@@ -216,6 +215,11 @@ public class GCCorePlayerBase extends ServerPlayerBase
     public void onUpdate()
     {
     	super.onUpdate();
+    	
+    	if (!GalacticraftCore.playersServer.containsKey(this.player.username))
+    	{
+    		GalacticraftCore.playersServer.put(this.player.username, this);
+    	}
     	
     	if (this.openPlanetSelectionGuiCooldown > 0)
     	{

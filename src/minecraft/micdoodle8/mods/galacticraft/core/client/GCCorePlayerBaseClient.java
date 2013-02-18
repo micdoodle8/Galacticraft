@@ -30,7 +30,6 @@ public class GCCorePlayerBaseClient extends PlayerBase
 	public GCCorePlayerBaseClient(PlayerAPI var1)
 	{
 		super(var1);
-		GalacticraftCore.playersClient.put(this.player.username, this);
 	}
 	
 	public EntityPlayerSP getPlayer()
@@ -139,6 +138,11 @@ public class GCCorePlayerBaseClient extends PlayerBase
 	@Override
 	public void onUpdate()
 	{
+		if (!GalacticraftCore.playersClient.containsKey(this.player.username))
+		{
+			GalacticraftCore.playersClient.put(this.player.username, this);
+		}
+		
 		if (this.player != null && this.getParachute() && !this.player.capabilities.isFlying && !FMLClientHandler.instance().getClient().isGamePaused && !this.player.handleWaterMovement())
 		{
 			this.player.motionY = -0.5D;
