@@ -38,6 +38,12 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvanced
     }
 
 	@Override
+    public int getBlockTextureFromSideAndMetadata(int par1, int par2)
+    {
+		return 38;
+    }
+
+	@Override
     public void onBlockAdded(World par1World, int par2, int par3, int par4)
     {
         if (!par1World.isRemote)
