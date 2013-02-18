@@ -3,6 +3,8 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import java.util.Random;
 
 import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 import micdoodle8.mods.galacticraft.core.tile.GCCoreBlockAdvanced;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAirLock;
@@ -18,6 +20,22 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvanced
 	{
 		super(par1, par2, Material.rock);
 	}
+
+	@Override
+    @SideOnly(Side.CLIENT)
+    public int getBlockTexture(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
+    {
+		TileEntity te = par1IBlockAccess.getBlockTileEntity(par2, par3, par4);
+
+		if (par1IBlockAccess.getBlockId(par2 - 1, par3, par4) == GCCoreBlocks.airLockSeal.blockID || par1IBlockAccess.getBlockId(par2 + 1, par3, par4) == GCCoreBlocks.airLockSeal.blockID || par1IBlockAccess.getBlockId(par2, par3 - 1, par4) == GCCoreBlocks.airLockSeal.blockID || par1IBlockAccess.getBlockId(par2, par3 + 1, par4) == GCCoreBlocks.airLockSeal.blockID || par1IBlockAccess.getBlockId(par2, par3, par4 - 1) == GCCoreBlocks.airLockSeal.blockID || par1IBlockAccess.getBlockId(par2, par3, par4 + 1) == GCCoreBlocks.airLockSeal.blockID)
+		{
+			return 39;
+		}
+		else
+		{
+			return 38;
+		}
+    }
 
 	@Override
     public void onBlockAdded(World par1World, int par2, int par3, int par4)
@@ -57,7 +75,6 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvanced
                 }
                 else
                 {
-        			FMLLog.info("d");
             		((GCCoreTileEntityAirLock) te).active = true;
                 }
         	}
@@ -79,28 +96,6 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvanced
                 }
         	}
         }
-    }
-
-	@Override
-    public int getBlockTexture(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int side)
-    {
-    	TileEntity te = par1IBlockAccess.getBlockTileEntity(par2, par3, par4);
-    	
-    	if (te instanceof GCCoreTileEntityAirLock)
-    	{
-    		if (((GCCoreTileEntityAirLock) te).getDirection() == side)
-    		{
-    			return 0;
-    		}
-    		else
-    		{
-    			return 1;
-    		}
-    	}
-    	else
-    	{
-    		return 1;
-    	}
     }
 
 	@Override
@@ -126,5 +121,11 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvanced
     public boolean canConnectRedstone(IBlockAccess world, int x, int y, int z, int side)
     {
     	return true;
+    }
+    
+	@Override
+    public String getTextureFile()
+    {
+    	return "/micdoodle8/mods/galacticraft/core/client/blocks/core.png";
     }
 }
