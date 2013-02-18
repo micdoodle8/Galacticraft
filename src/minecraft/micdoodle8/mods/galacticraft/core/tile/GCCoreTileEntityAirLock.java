@@ -5,6 +5,7 @@ import java.util.Set;
 
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import net.minecraft.block.Block;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.ForgeDirection;
@@ -28,7 +29,10 @@ public class GCCoreTileEntityAirLock extends GCCoreTileEntityAdvanced
     	
     	if (this.otherAirLockBlocks.size() == 8)
     	{
-    		
+    		for (GCCoreTileEntityAirLock tile : otherAirLockBlocks)
+    		{
+    			
+    		}
     	}
     }
     
@@ -198,7 +202,7 @@ public class GCCoreTileEntityAirLock extends GCCoreTileEntityAdvanced
 		return false;
 	}
 	
-	private boolean areAnyInSetActive()
+	public boolean areAnyInSetActive()
 	{
 		int numberActive = 0;
 		
@@ -230,4 +234,18 @@ public class GCCoreTileEntityAirLock extends GCCoreTileEntityAdvanced
 			return false;
 		}
 	}
+
+    @Override
+    public void readFromNBT(NBTTagCompound par1NBTTagCompound)
+    {
+    	super.readFromNBT(par1NBTTagCompound);
+    	active = par1NBTTagCompound.getBoolean("active");
+    }
+
+    @Override
+    public void writeToNBT(NBTTagCompound par1NBTTagCompound)
+    {
+    	super.writeToNBT(par1NBTTagCompound);
+    	par1NBTTagCompound.setBoolean("active", active);
+    }
 }
