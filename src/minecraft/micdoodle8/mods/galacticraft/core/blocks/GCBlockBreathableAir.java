@@ -1,4 +1,4 @@
-package micdoodle8.mods.galacticraft.API;
+package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.Random;
 
