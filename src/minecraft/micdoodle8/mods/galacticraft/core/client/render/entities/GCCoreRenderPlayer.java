@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
-import micdoodle8.mods.galacticraft.API.GCBlockBreathableAir;
+import micdoodle8.mods.galacticraft.core.blocks.GCBlockBreathableAir;
 import net.minecraft.block.Block;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.ImageBufferDownload;

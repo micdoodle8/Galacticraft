@@ -27,12 +27,10 @@ public abstract class GCCoreBlockAdvanced extends BlockContainer
             if (pitch >= 65)
             {
             	tentity.setDirection(1);
-            	FMLLog.info("1");
             }
             else if (pitch <= -65)
             {
             	tentity.setDirection(0);
-            	FMLLog.info("0");
             }
             else
             {
@@ -40,22 +38,18 @@ public abstract class GCCoreBlockAdvanced extends BlockContainer
                 {
                     case 0:
                     	tentity.setDirection(2);
-                    	FMLLog.info("y2");
                         break;
 
                     case 1:
                     	tentity.setDirection(5);
-                    	FMLLog.info("y5");
                         break;
 
                     case 2:
                     	tentity.setDirection(3);
-                    	FMLLog.info("y3");
                         break;
 
                     case 3:
                     	tentity.setDirection(4);
-                    	FMLLog.info("y4");
                         break;
                 }
             }
