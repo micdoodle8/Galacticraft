@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import micdoodle8.mods.galacticraft.API.GCBlockBreathableAir;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockBase;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockOre;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemSapling;
 import net.minecraft.block.Block;
@@ -33,25 +34,31 @@ public class GCCoreBlocks
 	public static Block sapling;
 	public static Block rocketBench;
 	public static Block fallenMeteor;
-	public static GCCoreBlockOxygenDistributor decorationBlock;
+	public static Block decorationBlocks;
+	public static Block airLockFrame;
+	public static Block airLockSeal;
 	
 	public static void initBlocks()
 	{
 		GCCoreBlocks.blockOres = 											new GCCoreBlockOre					(GCCoreConfigManager.idBlockOre,  						0)						.setHardness(3.0F) 																				 																											.setBlockName("blockores");
-		GCCoreBlocks.breatheableAir = (GCBlockBreathableAir)					new GCBlockBreathableAir			(GCCoreConfigManager.idBlockBreatheableAir, 			16)						.setHardness(0.0F) 		.setResistance(1000F)													.setCreativeTab((CreativeTabs)null)																			.setBlockName("breatheableAir");
-		GCCoreBlocks.treasureChest = 										new GCCoreBlockTreasureChest		(GCCoreConfigManager.idBlockTreasureChest				)						.setHardness(1.0F)      .setResistance(10.0F)   												.setCreativeTab(GalacticraftCore.galacticraftTab)       	.setStepSound(Block.soundStoneFootstep)                 .setBlockName("treasureChest");
-		GCCoreBlocks.landingPad = 											new GCCoreBlockLandingPad			(GCCoreConfigManager.idBlockLandingPad,					26)						.setHardness(1.0F)      .setResistance(10.0F)  	 												.setCreativeTab(GalacticraftCore.galacticraftTab)       	.setStepSound(Block.soundStoneFootstep)                 .setBlockName("landingPad");
+		GCCoreBlocks.breatheableAir = (GCBlockBreathableAir)				new GCBlockBreathableAir			(GCCoreConfigManager.idBlockBreatheableAir, 			16)						.setHardness(0.0F) 		.setResistance(1000F)													.setCreativeTab((CreativeTabs)null)																			.setBlockName("breatheableAir");
+		GCCoreBlocks.treasureChest = 										new GCCoreBlockTreasureChest		(GCCoreConfigManager.idBlockTreasureChest				)						.setHardness(1.0F)      .setResistance(10.0F)   												.setCreativeTab(GalacticraftCore.galacticraftTab)   .setStepSound(Block.soundStoneFootstep)                 .setBlockName("treasureChest");
+		GCCoreBlocks.landingPad = 											new GCCoreBlockLandingPad			(GCCoreConfigManager.idBlockLandingPad,					27)						.setHardness(1.0F)      .setResistance(10.0F)  	 												.setCreativeTab(GalacticraftCore.galacticraftTab)   .setStepSound(Block.soundStoneFootstep)                 .setBlockName("landingPad");
 		GCCoreBlocks.unlitTorch = (GCCoreBlockUnlitTorch) 					new GCCoreBlockUnlitTorch 			(GCCoreConfigManager.idBlockUnlitTorch,             	11, false)				.setHardness(0.0F)								.setLightValue(0.2F)							.setCreativeTab((CreativeTabs)null)					.setStepSound(Block.soundWoodFootstep)					.setBlockName("unlitTorch");
 		GCCoreBlocks.unlitTorchLit = (GCCoreBlockUnlitTorch) 				new GCCoreBlockUnlitTorch 			(GCCoreConfigManager.idBlockUnlitTorchLit,             	11, true)				.setHardness(0.0F)								.setLightValue(0.9375F)							.setCreativeTab((CreativeTabs)null)					.setStepSound(Block.soundWoodFootstep)					.setBlockName("unlitTorchLit");
-		GCCoreBlocks.airDistributor = (GCCoreBlockOxygenDistributor)			new GCCoreBlockOxygenDistributor	(GCCoreConfigManager.idBlockAirDistributor, 			false)					.setHardness(3.5F)																				.setCreativeTab(GalacticraftCore.galacticraftTab)		.setStepSound(Block.soundStoneFootstep)					.setBlockName("distributor");
+		GCCoreBlocks.airDistributor = (GCCoreBlockOxygenDistributor)		new GCCoreBlockOxygenDistributor	(GCCoreConfigManager.idBlockAirDistributor, 			false)					.setHardness(3.5F)																				.setCreativeTab(GalacticraftCore.galacticraftTab)	.setStepSound(Block.soundStoneFootstep)					.setBlockName("distributor");
 		GCCoreBlocks.airDistributorActive = (GCCoreBlockOxygenDistributor)	new GCCoreBlockOxygenDistributor	(GCCoreConfigManager.idBlockAirDistributorActive, 		true)					.setHardness(3.5F)																				.setCreativeTab((CreativeTabs)null)					.setStepSound(Block.soundStoneFootstep)					.setBlockName("distributorActive");
-		GCCoreBlocks.oxygenPipe = (GCCoreBlockOxygenPipe)					new GCCoreBlockOxygenPipe			(GCCoreConfigManager.idBlockAirPipe, 					17)						.setHardness(0.3F)																				.setCreativeTab(GalacticraftCore.galacticraftTab)  		.setStepSound(Block.soundGlassFootstep)                 .setBlockName("oxygenPipe");
-		Item.itemsList[GCCoreBlocks.blockOres.blockID] = 					new GCCoreItemBlockOre				(GCCoreBlocks.blockOres.blockID - 256)																																																																	.setItemName("blockores");
-		GCCoreBlocks.blockAirCollector = 									new GCCoreBlockOxygenCollector		(GCCoreConfigManager.idBlockAirCollector, 				8)						.setHardness(3.5F)  	  																		.setCreativeTab(GalacticraftCore.galacticraftTab) 		.setStepSound(Block.soundStoneFootstep)					.setBlockName("oxygenCollector");
+		GCCoreBlocks.oxygenPipe = (GCCoreBlockOxygenPipe)					new GCCoreBlockOxygenPipe			(GCCoreConfigManager.idBlockAirPipe, 					17)						.setHardness(0.3F)																				.setCreativeTab(GalacticraftCore.galacticraftTab)  	.setStepSound(Block.soundGlassFootstep)                 .setBlockName("oxygenPipe");
+		Item.itemsList[GCCoreBlocks.blockOres.blockID] = 					new GCCoreItemBlockOre				(GCCoreBlocks.blockOres.blockID - 256)																																																														.setItemName("blockores");
+		GCCoreBlocks.blockAirCollector = 									new GCCoreBlockOxygenCollector		(GCCoreConfigManager.idBlockAirCollector, 				8)						.setHardness(3.5F)  	  																		.setCreativeTab(GalacticraftCore.galacticraftTab) 	.setStepSound(Block.soundStoneFootstep)					.setBlockName("oxygenCollector");
 		GCCoreBlocks.sapling =												new GCCoreBlockSapling				(GCCoreConfigManager.idBlockSapling2,                  	15)						.setHardness(0.0F)																				.setCreativeTab((CreativeTabs)null)					.setStepSound(Block.soundGrassFootstep)					.setBlockName("sapling2");
 		GCCoreBlocks.rocketBench = 											new GCCoreBlockAdvancedCraftingTable(GCCoreConfigManager.idBlockRocketBench)										.setHardness(2.5F)																																	.setStepSound(Block.soundMetalFootstep)					.setBlockName("rocketWorkbench");
-		GCCoreBlocks.fallenMeteor = 											new GCCoreBlockFallenMeteor			(GCCoreConfigManager.idBlockFallenMeteor)										.setHardness(50.0F)																																	.setStepSound(Block.soundStoneFootstep)					.setBlockName("fallenMeteor");
-		Item.itemsList[GCCoreBlocks.sapling.blockID] = 						new GCCoreItemSapling				(GCCoreBlocks.sapling.blockID - 256)																																																																		.setItemName("sapling2");
+		GCCoreBlocks.fallenMeteor = 										new GCCoreBlockFallenMeteor			(GCCoreConfigManager.idBlockFallenMeteor)										.setHardness(50.0F)																																	.setStepSound(Block.soundStoneFootstep)					.setBlockName("fallenMeteor");
+		Item.itemsList[GCCoreBlocks.sapling.blockID] = 						new GCCoreItemSapling				(GCCoreBlocks.sapling.blockID - 256)																																																														.setItemName("sapling2");
+		GCCoreBlocks.decorationBlocks = 									new GCCoreBlock						(GCCoreConfigManager.idBlockDecorationBlock,  			3)						.setHardness(3.0F) 																				 																											.setBlockName("decorationblock");
+		Item.itemsList[GCCoreBlocks.decorationBlocks.blockID] = 			new GCCoreItemBlockBase				(GCCoreBlocks.decorationBlocks.blockID - 256)																																																												.setItemName("decorationblock");
+		GCCoreBlocks.airLockFrame = 										new GCCoreBlockAirLockFrame			(GCCoreConfigManager.idBlockAirLockFrame, 				29)						.setHardness(3.0F)                        														.setCreativeTab(GalacticraftCore.galacticraftTab)	.setStepSound(Block.soundAnvilFootstep)	   				.setBlockName("airLockFrame");
+		GCCoreBlocks.airLockSeal = 											new GCCoreBlockAirLockWall			(GCCoreConfigManager.idBlockAirLockSeal, 				26)						                        																		.setCreativeTab(GalacticraftCore.galacticraftTab)	.setStepSound(Block.soundAnvilFootstep)	   				.setBlockName("airLockSeal");
 	}
 
 	public static void setHarvestLevels()
@@ -59,6 +66,9 @@ public class GCCoreBlocks
 		MinecraftForge.setBlockHarvestLevel(GCCoreBlocks.blockOres, 0, "pickaxe", 1);
 		MinecraftForge.setBlockHarvestLevel(GCCoreBlocks.blockOres, 1, "pickaxe", 2);
 		MinecraftForge.setBlockHarvestLevel(GCCoreBlocks.blockOres, 2, "pickaxe", 3);
+		MinecraftForge.setBlockHarvestLevel(GCCoreBlocks.decorationBlocks, 0, "pickaxe", 1);
+		MinecraftForge.setBlockHarvestLevel(GCCoreBlocks.decorationBlocks, 1, "pickaxe", 2);
+		MinecraftForge.setBlockHarvestLevel(GCCoreBlocks.decorationBlocks, 2, "pickaxe", 3);
 		MinecraftForge.setBlockHarvestLevel(GCCoreBlocks.fallenMeteor, "pickaxe", 4);
 	}
 	
@@ -75,6 +85,8 @@ public class GCCoreBlocks
 		GameRegistry.registerBlock(GCCoreBlocks.blockAirCollector);
 		GameRegistry.registerBlock(GCCoreBlocks.rocketBench);
 		GameRegistry.registerBlock(GCCoreBlocks.fallenMeteor);
+		GameRegistry.registerBlock(GCCoreBlocks.airLockFrame);
+		GameRegistry.registerBlock(GCCoreBlocks.airLockSeal);
 	}
 
 	public static void addNames()
@@ -92,6 +104,12 @@ public class GCCoreBlocks
 		GCCoreBlocks.addName(GCCoreBlocks.blockAirCollector);
 		GCCoreBlocks.addName(GCCoreBlocks.rocketBench);
 		GCCoreBlocks.addName(GCCoreBlocks.fallenMeteor);
+		GCCoreBlocks.addNameWithMetadata("tile.decorationblock.aluminiumblock.name");
+		GCCoreBlocks.addNameWithMetadata("tile.decorationblock.copperblock.name");
+		GCCoreBlocks.addNameWithMetadata("tile.decorationblock.titaniumblock.name");
+		GCCoreBlocks.addNameWithMetadata("tile.decorationblock.decoblock1.name");
+		GCCoreBlocks.addNameWithMetadata("tile.decorationblock.decoblock2.name");
+		GCCoreBlocks.addName(GCCoreBlocks.airLockFrame);
 	}
 	
 	private static void addName(Block block)

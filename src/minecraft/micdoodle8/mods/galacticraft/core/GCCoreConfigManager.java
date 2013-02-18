@@ -44,6 +44,8 @@ public class GCCoreConfigManager
 	public static int idBlockRocketBench;
 	public static int idBlockFallenMeteor;
 	public static int idBlockDecorationBlock;
+	public static int idBlockAirLockFrame;
+	public static int idBlockAirLockSeal;
 
 	// ITEMS
 	public static int idItemLightOxygenTank;
@@ -147,9 +149,10 @@ public class GCCoreConfigManager
 	        GCCoreConfigManager.idBlockSapling2 = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockSapling2", 						3360)		.getInt(3360);
 	        GCCoreConfigManager.idBlockRocketBench = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockRocketBench", 					3361)		.getInt(3361);
 	        GCCoreConfigManager.idBlockFallenMeteor = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockFallenMeteor", 					3362)		.getInt(3362);
-
-	        GCCoreConfigManager.idBlockDecorationBlock = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockDecorationBlock",				2362)		.getInt(2362);
-
+	        GCCoreConfigManager.idBlockDecorationBlock = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockDecorationBlock",				3363)		.getInt(3363);
+	        GCCoreConfigManager.idBlockAirLockFrame = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockAirLockFrame",					3364)		.getInt(3364);
+	        GCCoreConfigManager.idBlockAirLockSeal = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockAirLockSeal",					3365)		.getInt(3365);
+	        
 	        GCCoreConfigManager.idItemLightOxygenTankEmpty = 			GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemLightOxygenTankEmpty", 			9854)		.getInt(9854);
 	        GCCoreConfigManager.idItemLightOxygenTank = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemLightOxygenTank", 				9855)		.getInt(9855);
 	        GCCoreConfigManager.idItemMedOxygenTankEmpty = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemMedOxygenTankEmpty", 			9856)		.getInt(9856);
