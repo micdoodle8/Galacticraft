@@ -460,12 +460,12 @@ public class GCCoreModelPlayer extends ModelPlayerBase
     	{
             this.modelPlayer.bipedLeftLeg.rotateAngleX = MathHelper.cos(var1 * speedModifier + (float)Math.PI) * 1.45F * var2;
             this.modelPlayer.bipedRightLeg.rotateAngleX = MathHelper.cos(var1 * speedModifier) * 1.45F * var2;
-            this.modelPlayer.bipedRightArm.rotateAngleX += MathHelper.cos(var1 * (speedModifier / 2) + (float)Math.PI) * 4.0F * var2 * 0.5F;
-            this.modelPlayer.bipedLeftArm.rotateAngleX += MathHelper.cos(var1 * (speedModifier / 2)) * 4.0F * var2 * 0.5F;
-            this.modelPlayer.bipedRightArm.rotateAngleY += -MathHelper.cos(var1 * 0.1162F) * 0.2F;
-            this.modelPlayer.bipedLeftArm.rotateAngleY += -MathHelper.cos(var1 * 0.1162F) * 0.2F;
-            this.modelPlayer.bipedRightArm.rotateAngleZ += (float) (5 * (Math.PI / 180));
-            this.modelPlayer.bipedLeftArm.rotateAngleZ += (float) (-5 * (Math.PI / 180));
+            this.modelPlayer.bipedRightArm.rotateAngleX = MathHelper.cos(var1 * (speedModifier / 2) + (float)Math.PI) * 4.0F * var2 * 0.5F;
+            this.modelPlayer.bipedLeftArm.rotateAngleX = MathHelper.cos(var1 * (speedModifier / 2)) * 4.0F * var2 * 0.5F;
+            this.modelPlayer.bipedRightArm.rotateAngleY = -MathHelper.cos(var1 * 0.1162F) * 0.2F;
+            this.modelPlayer.bipedLeftArm.rotateAngleY = -MathHelper.cos(var1 * 0.1162F) * 0.2F;
+            this.modelPlayer.bipedRightArm.rotateAngleZ = (float) (5 * (Math.PI / 180));
+            this.modelPlayer.bipedLeftArm.rotateAngleZ = (float) (-5 * (Math.PI / 180));
     	}
     	
     	if (this.usingParachute)
