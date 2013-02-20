@@ -103,7 +103,7 @@ public class GCCoreGuiGalaxyMap extends GCCoreGuiStarBackground
         		FMLClientHandler.instance().getClient().currentScreen = null;
         		FMLClientHandler.instance().getClient().displayGuiScreen(new GCCoreGuiChoosePlanet(this.player, this.listOfDimensions));
                 this.mc.inGameHasFocus = true;
-                this.mc.mouseHelper.grabMouseCursor();
+                this.mc.mouseHelper.ungrabMouseCursor();
         	}
         	else
         	{
