@@ -21,6 +21,8 @@ public abstract class GCCoreEntityMob extends EntityMob
 	@Override
     public void onUpdate()
     {
+        this.motionY += 0.06F;
+        
     	super.onUpdate();
     	
     	this.fallDistance = 0;

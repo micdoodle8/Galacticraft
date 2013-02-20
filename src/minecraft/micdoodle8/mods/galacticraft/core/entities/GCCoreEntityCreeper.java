@@ -144,8 +144,6 @@ public class GCCoreEntityCreeper extends GCCoreEntityMob
                 }
             }
         }
-        
-        this.motionY += 0.06F;
 
         super.onUpdate();
     }

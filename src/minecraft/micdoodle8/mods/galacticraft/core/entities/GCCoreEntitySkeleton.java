@@ -126,8 +126,6 @@ public class GCCoreEntitySkeleton extends GCCoreEntityMob
                 this.setFire(8);
             }
         }
-        
-        this.motionY += 0.06F;
 
         super.onLivingUpdate();
     }
