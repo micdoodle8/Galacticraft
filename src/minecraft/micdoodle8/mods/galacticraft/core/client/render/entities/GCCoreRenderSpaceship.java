@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
-import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelSpaceship;
+import micdoodle8.mods.galacticraft.API.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpaceship;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.Render;
@@ -23,14 +23,16 @@ public class GCCoreRenderSpaceship extends Render
 {
     /** instance of ModelMinecart for rendering */
     protected ModelBase modelSpaceship;
+    protected String texture;
 
-    public GCCoreRenderSpaceship()
+    public GCCoreRenderSpaceship(ModelBase spaceshipModel, String texture)
     {
         this.shadowSize = 2F;
-        this.modelSpaceship = new GCCoreModelSpaceship();
+        this.modelSpaceship = spaceshipModel;
+        this.texture = texture;
     }
 
-    public void renderSpaceship(GCCoreEntitySpaceship par1GCEntitySpaceship, double par2, double par4, double par6, float par8, float par9)
+    public void renderSpaceship(EntitySpaceshipBase par1GCEntitySpaceship, double par2, double par4, double par6, float par8, float par9)
     {
         GL11.glPushMatrix();
         final float var24 = par1GCEntitySpaceship.prevRotationPitch + (par1GCEntitySpaceship.rotationPitch - par1GCEntitySpaceship.prevRotationPitch) * par9;
@@ -50,12 +52,12 @@ public class GCCoreRenderSpaceship extends Render
 
         if (var28 > 0.0F)
         {
-        	final float i = par1GCEntitySpaceship.getLaunched() == 0 ? (5 - MathHelper.floor_double(par1GCEntitySpaceship.getTimeUntilLaunch() / 85)) / 10F : 0.3F;
+        	final float i = par1GCEntitySpaceship.getLaunched() == 1 ? (5 - MathHelper.floor_double(par1GCEntitySpaceship.getTimeUntilLaunch() / 85)) / 10F : 0.3F;
             GL11.glRotatef(MathHelper.sin(var28) * var28 * i * par1GCEntitySpaceship.getRollingDirection() * par9, 1.0F, 0.0F, 0.0F);
             GL11.glRotatef(MathHelper.sin(var28) * var28 * i * par1GCEntitySpaceship.getRollingDirection() * par9, 1.0F, 0.0F, 1.0F);
         }
 
-        this.loadTexture("/micdoodle8/mods/galacticraft/core/client/entities/spaceship1.png");
+        this.loadTexture(texture);
         GL11.glScalef(-1.0F, -1.0F, 1.0F);
         this.modelSpaceship.render(par1GCEntitySpaceship, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
         GL11.glPopMatrix();
@@ -70,6 +72,6 @@ public class GCCoreRenderSpaceship extends Render
     @Override
 	public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
     {
-        this.renderSpaceship((GCCoreEntitySpaceship)par1Entity, par2, par4, par6, par8, par9);
+        this.renderSpaceship((EntitySpaceshipBase)par1Entity, par2, par4, par6, par8, par9);
     }
 }
