@@ -12,13 +12,17 @@ import micdoodle8.mods.galacticraft.core.GCCoreLocalization;
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderArrow;
+import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderSpaceship;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityArrow;
 import micdoodle8.mods.galacticraft.mars.CommonProxyMars;
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
+import micdoodle8.mods.galacticraft.mars.client.model.GCMarsModelSpaceshipTier2;
+import micdoodle8.mods.galacticraft.mars.client.render.item.GCMarsItemRendererSpaceshipTier2;
 import micdoodle8.mods.galacticraft.mars.dimension.GCMarsWorldProvider;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityCreeperBoss;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityProjectileTNT;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntitySludgeling;
+import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntitySpaceshipTier2;
 import micdoodle8.mods.galacticraft.mars.items.GCMarsItemJetpack;
 import micdoodle8.mods.galacticraft.mars.items.GCMarsItems;
 import net.minecraft.block.material.Material;
@@ -87,6 +91,7 @@ public class ClientProxyMars extends CommonProxyMars implements IGalacticraftSub
 	@Override
 	public void registerRenderInformation()
 	{
+        RenderingRegistry.registerEntityRenderingHandler(GCMarsEntitySpaceshipTier2.class, new GCCoreRenderSpaceship(new GCMarsModelSpaceshipTier2(), "/micdoodle8/mods/galacticraft/mars/client/entities/spaceshipTier2.png"));
         RenderingRegistry.registerEntityRenderingHandler(GCMarsEntityCreeperBoss.class, new GCMarsRenderCreeperBoss(new GCMarsModelCreeperBoss(), 10.0F));
         RenderingRegistry.registerEntityRenderingHandler(GCMarsEntitySludgeling.class, new GCMarsRenderSludgeling());
         RenderingRegistry.addNewArmourRendererPrefix("sensor");
@@ -99,6 +104,7 @@ public class ClientProxyMars extends CommonProxyMars implements IGalacticraftSub
         RenderingRegistry.addNewArmourRendererPrefix("jetpack");
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityArrow.class, new GCCoreRenderArrow());
         RenderingRegistry.registerEntityRenderingHandler(GCMarsEntityProjectileTNT.class, new GCMarsRenderProjectileTNT());
+        MinecraftForgeClient.registerItemRenderer(GCMarsItems.spaceship.itemID, new GCMarsItemRendererSpaceshipTier2());
 		MinecraftForgeClient.preloadTexture("/micdoodle8/mods/galacticraft/mars/client/blocks/mars.png");
 		MinecraftForgeClient.preloadTexture("/micdoodle8/mods/galacticraft/mars/client/items/mars.png");
 	}

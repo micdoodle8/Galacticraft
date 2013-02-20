@@ -75,22 +75,16 @@ public class GCCoreSoundUpdaterSpaceship implements IUpdatePlayerListBox
             }
         }
 
-        if (this.theSoundManager != null && this.theMinecart != null && this.theMinecart.getReversed() == 0 && this.minecartMoveSoundVolume > 0.0F)
+        if (this.theSoundManager != null && this.theMinecart != null && this.minecartMoveSoundVolume > 0.0F)
         {
             this.theSoundManager.playEntitySound("shuttle.shuttle", this.theMinecart, this.minecartMoveSoundVolume, this.minecartSoundPitch, false);
             this.silent = false;
             var1 = true;
         }
-        else if (this.theSoundManager != null && this.theMinecart != null && this.theMinecart.getReversed() == 1 && this.minecartMoveSoundVolume > 0.0F)
-        {
-            this.theSoundManager.playEntitySound("shuttle.shuttle", this.theMinecart, this.minecartMoveSoundVolume, 1.0F, false);
-            this.silent = false;
-            var1 = true;
-        }
         
-        if (this.theMinecart.getTimeUntilLaunch() <= 400)
+        if (this.theMinecart.getTimeUntilLaunch() <= this.theMinecart.getPreLaunchWait())
         {
-        	if (this.theMinecart.getTimeUntilLaunch() < 400)
+        	if (this.theMinecart.getTimeUntilLaunch() < this.theMinecart.getPreLaunchWait())
         	{
                 if (this.minecartSoundPitch < 1.0F)
                 {

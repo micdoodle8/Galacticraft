@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.mars.items;
 
+import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.mars.GCMarsConfigManager;
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
 import micdoodle8.mods.galacticraft.mars.client.ClientProxyMars;
@@ -58,6 +59,7 @@ public class GCMarsItems
 	public static Item ingotQuandrium;
 	public static Item ingotDesh;
 	public static Item jetpack;
+	public static Item spaceship;
 	
 	public static EnumArmorMaterial OXYGENMASK = EnumHelper.addArmorMaterial("OXYGENMASK", 200, new int[] {0, 0, 0, 0}, 0);
 	public static EnumArmorMaterial SENSORGLASSES = EnumHelper.addArmorMaterial("SENSORGLASSES", 200, new int[] {0, 0, 0, 0}, 0);
@@ -109,6 +111,7 @@ public class GCMarsItems
 		GCMarsItems.ingotQuandrium = new GCMarsItem(GCMarsConfigManager.idItemIngotQuandrium).setIconIndex(32).setItemName("ingotQuandrium");
 		GCMarsItems.ingotDesh = new GCMarsItem(GCMarsConfigManager.idItemIngotDesh).setIconIndex(33).setItemName("ingotDesh");
 		GCMarsItems.jetpack = new GCMarsItemJetpack(GCMarsConfigManager.idArmorJetpack, GCMarsItems.ARMORJETPACK, 11, 1).setIconIndex(34).setItemName("jetpack");
+		GCMarsItems.spaceship = new GCMarsItemSpaceshipTier2(GCMarsConfigManager.idItemSpaceshipTier2).setItemName("spaceshipTier2");
 	}
 	
 	public static void registerHarvestLevels()
@@ -160,6 +163,7 @@ public class GCMarsItems
 		GCMarsItems.addName(GCMarsItems.ingotQuandrium);
 		GCMarsItems.addName(GCMarsItems.ingotDesh);
 		GCMarsItems.addName(GCMarsItems.jetpack);
+		GCMarsItems.addName(GCMarsItems.spaceship);
 	}
 	
 	private static void addName(Item item)

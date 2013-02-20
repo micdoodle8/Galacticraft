@@ -1,9 +1,10 @@
-package micdoodle8.mods.galacticraft.core.items;
+package micdoodle8.mods.galacticraft.mars.items;
 
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpaceship;
+import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntitySpaceshipTier2;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
@@ -18,9 +19,9 @@ import cpw.mods.fml.relauncher.SideOnly;
  *  All rights reserved.
  *
  */
-public class GCCoreItemSpaceship extends GCCoreItem
+public class GCMarsItemSpaceshipTier2 extends GCMarsItem
 {
-	public GCCoreItemSpaceship(int par1)
+	public GCMarsItemSpaceshipTier2(int par1)
 	{
 		super(par1);
 		this.setMaxDamage(0);
@@ -42,7 +43,7 @@ public class GCCoreItemSpaceship extends GCCoreItem
     {
     	int amountOfCorrectBlocks = 0;
     	
-    	final GCCoreEntitySpaceship spaceship = new GCCoreEntitySpaceship(par3World, par4 + 0.5F, par5 - 1.5F, par6 + 0.5F, par1ItemStack.getItemDamage());
+    	final GCMarsEntitySpaceshipTier2 spaceship = new GCMarsEntitySpaceshipTier2(par3World, par4 + 0.5F, par5 - 1.5F, par6 + 0.5F, par1ItemStack.getItemDamage());
     	
     	if (par3World.isRemote)
     	{

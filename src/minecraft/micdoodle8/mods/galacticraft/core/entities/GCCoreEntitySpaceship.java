@@ -1,10 +1,12 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import micdoodle8.mods.galacticraft.API.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GCCoreDamageSource;
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
@@ -13,6 +15,7 @@ import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLaunchFlameFX;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLaunchSmokeFX;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityOxygenFX;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
+import micdoodle8.mods.galacticraft.moon.GCMoonConfigManager;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
@@ -41,75 +44,22 @@ import cpw.mods.fml.relauncher.SideOnly;
  *  All rights reserved.
  *
  */
-public class GCCoreEntitySpaceship extends Entity implements IInventory
+public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInventory
 {
     protected ItemStack[] cargoItems = new ItemStack[36];
-
-    protected double dragAir;
-    
-    protected int ignite;
-    public int timeUntilLaunch;
-    public boolean launched;
-    
-    public float timeSinceEntityEntry;
-    public float timeSinceLaunch;
-    
-    public float rumble;
 	
     public IUpdatePlayerListBox rocketSoundUpdater;
+    
+    private int type;
 
     public GCCoreEntitySpaceship(World par1World)
     {
+    	super(par1World);
+    }
+
+    public GCCoreEntitySpaceship(World par1World, double par2, double par4, double par6, int type)
+    {
         super(par1World);
-        this.preventEntitySpawning = true;
-        this.setSize(0.98F, 4F);
-        this.yOffset = this.height / 2.0F;
-        this.ignoreFrustumCheck = true;
-    }
-
-    @Override
-	protected boolean canTriggerWalking()
-    {
-        return false;
-    }
-
-    @Override
-	protected void entityInit()
-    {
-        this.dataWatcher.addObject(16, new Byte((byte)0));
-        this.dataWatcher.addObject(17, new Integer(0));
-        this.dataWatcher.addObject(18, new Integer(1));
-        this.dataWatcher.addObject(19, new Integer(0));
-        this.dataWatcher.addObject(20, new Integer(0));
-        this.dataWatcher.addObject(21, new Integer(0));
-        this.dataWatcher.addObject(22, new Integer(0));
-        this.dataWatcher.addObject(23, new Integer(0));
-        this.dataWatcher.addObject(24, new Integer(0));
-        this.dataWatcher.addObject(25, new Integer(0));
-    }
-
-    @Override
-	public AxisAlignedBB getCollisionBox(Entity par1Entity)
-    {
-        return null;
-    }
-
-    @Override
-	public AxisAlignedBB getBoundingBox()
-    {
-//        return this.boundingBox;
-    	return null;
-    }
-
-    @Override
-	public boolean canBePushed()
-    {
-        return false;
-    }
-
-    public GCCoreEntitySpaceship(World par1World, double par2, double par4, double par6, boolean reversed, int type)
-    {
-        this(par1World);
         this.setPosition(par2, par4 + this.yOffset, par6);
         this.motionX = 0.0D;
         this.motionY = 0.0D;
@@ -117,44 +67,20 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
         this.prevPosX = par2;
         this.prevPosY = par4;
         this.prevPosZ = par6;
-        
-        if (reversed)
-        {
-        	this.rotationPitch += 0F;
-        	this.motionY = -1.0D;
-        }
     }
 
     public GCCoreEntitySpaceship(World par1World, double par2, double par4, double par6, boolean reversed, int type, ItemStack[] inv)
     {
-        this(par1World, par2, par4, par6, reversed, type);
+        this(par1World, par2, par4, par6, type);
         this.cargoItems = inv;
     }
 
     @Override
-	public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
+	protected void entityInit()
     {
-        return true;
-    }
-
-    @Override
-    public void performHurtAnimation()
-    {
-        this.setRollingDirection(-this.getRollingDirection());
-        this.setRollingAmplitude(5);
-        this.setDamage(this.getDamage() + this.getDamage() * 10);
-    }
-
-    @Override
-	public boolean canBeCollidedWith()
-    {
-        return !this.isDead;
-    }
-    
-    @Override
-	public boolean shouldRiderSit()
-    {
-        return false;
+    	super.entityInit();
+        this.dataWatcher.addObject(25, new Integer(0));
+        this.setSpaceshipType(type);
     }
 
     @Override
@@ -167,7 +93,7 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
             this.rocketSoundUpdater.update();
         }
     }
-    
+
     @Override
 	public void onUpdate()
     {
@@ -196,141 +122,6 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
         {
             this.rocketSoundUpdater.update();
         }
-
-    	if (this.rumble > 0)
-    	{
-    		this.rumble--;
-    	}
-    	
-    	if (this.rumble < 0)
-    	{
-    		this.rumble++;
-    	}
-    	
-    	if (this.timeSinceEntityEntry > 0)
-    	{
-    		this.timeSinceEntityEntry--;
-    	}
-    	
-    	if (this.riddenByEntity != null)
-    	{
-    		this.riddenByEntity.posX += this.rumble / 30F;
-    		this.riddenByEntity.posZ += this.rumble / 30F;
-    		
-    		final EntityPlayer player = (EntityPlayer) this.riddenByEntity;
-    	}
-    	
-    	if (this.getReversed() == 1)
-    	{
-    		this.rotationPitch = 180F;
-    	}
-    	
-    	if (this.posY > 450D)
-    	{
-    		this.teleport();
-    	}
-    	
-    	if (this.getRollingAmplitude() > 0)
-        {
-            this.setRollingAmplitude(this.getRollingAmplitude() - 1);
-        }
-
-        if (this.getDamage() > 0)
-        {
-            this.setDamage(this.getDamage() - 1);
-        }
-
-        if (this.posY < -64.0D || this.posY > 500D && this.dataWatcher.getWatchableObjectInt(21) == 0)
-        {
-            this.kill();
-        }
-        
-        if (this.ignite == 0)
-        {
-        	this.timeUntilLaunch = 400;
-        }
-        
-        if (this.launched)
-        {
-        	this.timeSinceLaunch++;
-        }
-        else
-        {
-        	this.timeSinceLaunch = 0;
-        }
-        
-        if (!this.worldObj.isRemote)
-        {
-            this.setTimeSinceLaunch((int)this.timeSinceLaunch);
-        }
-        
-        if (this.timeUntilLaunch > 0 && this.ignite == 1)
-        {
-        	this.timeUntilLaunch --;
-        }
-
-        AxisAlignedBB box = null;
-        
-        box = boundingBox.expand(0.2D, 0.2D, 0.2D);
-
-        List var15 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, box);
-
-        if (var15 != null && !var15.isEmpty())
-        {
-            for (int var52 = 0; var52 < var15.size(); ++var52)
-            {
-                Entity var17 = (Entity)var15.get(var52);
-
-                if (var17 != this.riddenByEntity)
-                {
-                    var17.applyEntityCollision(this);
-                }
-            }
-        }
-        
-        this.setTimeUntilLaunch(this.timeUntilLaunch);
-        
-        if (this.timeUntilLaunch == 0 && this.ignite == 1 || this.getReversed() == 1)
-        {
-        	this.launched = true;
-        	this.setLaunched(1);
-        	this.ignite = 0;
-        	
-        	if (!this.worldObj.isRemote)
-        	{
-        		int amountRemoved = 0;
-        		
-        		for (int x = MathHelper.floor_double(this.posX) - 1; x <= MathHelper.floor_double(this.posX) + 1; x++)
-        		{
-            		for (int y = MathHelper.floor_double(this.posY) - 3; y <= MathHelper.floor_double(this.posY) + 1; y++)
-            		{
-                		for (int z = MathHelper.floor_double(this.posZ) - 1; z <= MathHelper.floor_double(this.posZ) + 1; z++)
-                		{
-                			final int id = this.worldObj.getBlockId(x, y, z);
-                			final Block block = Block.blocksList[id];
-                			
-                			if (block != null && block instanceof GCCoreBlockLandingPad)
-                			{
-                    			if (amountRemoved < 9);
-                    			{
-                    				this.worldObj.setBlock(x, y, z, 0);
-                    				amountRemoved++;
-                    			}
-                			}
-                		}
-            		}
-        		}
-        		
-                this.playSound("random.pop", 0.2F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
-        	}
-        }
-        
-        if (this.ignite == 1 || this.launched)
-        {
-            this.performHurtAnimation();
-            
-        	this.rumble = (float) this.rand.nextInt(3) - 3;
-        }
         
         if (this.launched && this.getStackInSlot(27) != null && this.getStackInSlot(27).getItem().itemID == GCCoreItems.rocketFuelBucket.itemID)
         {
@@ -348,57 +139,17 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
         	if (Math.abs(Math.sin(this.timeSinceLaunch / 1000)) / 10 != 0.0)
         		this.motionY -= Math.abs(Math.sin(this.timeSinceLaunch / 1000)) / 20;
         }
-        
-        this.motionX = -(50 * Math.cos(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * 0.01 * Math.PI / 180.0D));
-        this.motionZ = -(50 * Math.sin(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * 0.01 * Math.PI / 180.0D));
-        
-        if (this.timeSinceLaunch > 50 && this.onGround)
-        {
-        	this.failRocket();
-        }
-        
-        this.moveEntity(this.motionX, this.motionY, this.motionZ);
-        
-        this.setRotation(this.rotationYaw, this.rotationPitch);
-
-        if (this.worldObj.isRemote)
-        {
-            this.setPosition(this.posX, this.posY, this.posZ);
-        }
-        
-        this.prevPosX = this.posX;
-        this.prevPosY = this.posY;
-        this.prevPosZ = this.posZ;
     }
     
-    public void turnYaw (float f)
+    public void onLaunch() 
     {
-		this.rotationYaw += f;
+    	
     }
     
-    public void turnPitch (float f)
+    public void onTeleport(EntityPlayerMP player) 
     {
-		this.rotationPitch += f;
-    }
-    
-    private void failRocket()
-    {
-    	if (this.riddenByEntity != null)
-    	{
-            final double var13 = this.riddenByEntity.getDistance(this.posX, this.posY, this.posZ) / 20;
-    		this.riddenByEntity.attackEntityFrom(GCCoreDamageSource.spaceshipExplosion, (int)(4.0D * 20 + 1.0D));
-    	}
-        
-  		this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 5, true);
-  		
-  		this.setDead();
-    }
-
-    @Override
-	@SideOnly(Side.CLIENT)
-    public void setPositionAndRotation2(double par1, double par3, double par5, float par7, float par8, int par9)
-    {
-    	this.setRotation(par7, par8);
+        GCCoreUtil.getPlayerBaseServerFromPlayer(player).rocketStacks = this.cargoItems;
+        GCCoreUtil.getPlayerBaseServerFromPlayer(player).rocketType = this.getSpaceshipType();
     }
     
     protected void spawnParticles(boolean launched)
@@ -428,18 +179,24 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
         }
     }
     
-    protected void spawnParticlesExplosion()
+    @Override
+	public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
     {
-        this.spawnParticle("hugeexplosion2", this.posX, this.posY, this.posZ, 0D, 0D, 0D, false);
+        return this.isDead ? false : par1EntityPlayer.getDistanceSqToEntity(this) <= 64.0D;
     }
+    
+	@Override
+	public int getSizeInventory()
+	{
+		return 28;
+	}
     
     @Override
 	protected void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
+    	super.writeEntityToNBT(par1NBTTagCompound);
+    	
         par1NBTTagCompound.setInteger("Type", this.getSpaceshipType());
-    	par1NBTTagCompound.setBoolean("launched", this.launched);
-    	par1NBTTagCompound.setInteger("timeUntilLaunch", this.timeUntilLaunch);
-    	par1NBTTagCompound.setInteger("ignite", this.ignite);
 
         if (this.getSizeInventory() > 0)
         {
@@ -463,18 +220,9 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
     @Override
 	protected void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
+    	super.readFromNBT(par1NBTTagCompound);
+    	
         this.setSpaceshipType(par1NBTTagCompound.getInteger("Type"));
-		this.launched = par1NBTTagCompound.getBoolean("launched");
-		if (par1NBTTagCompound.getBoolean("launched"))
-		{
-			this.setLaunched(1);
-		}
-		else
-		{
-			this.setLaunched(0);
-		}
-		this.timeUntilLaunch = par1NBTTagCompound.getInteger("timeUntilLaunch");
-		this.ignite = par1NBTTagCompound.getInteger("ignite");
 
         if (this.getSizeInventory() > 0)
         {
@@ -493,190 +241,6 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
             }
         }
     }
-
-    @Override
-	public boolean interact(EntityPlayer par1EntityPlayer)
-    {
-    	if (!this.worldObj.isRemote)
-    	{
-        	par1EntityPlayer.mountEntity(this);
-            this.timeSinceEntityEntry = 20;
-            
-            if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayerMP)
-            {
-        	  	final Object[] toSend = {((EntityPlayerMP)this.riddenByEntity).username};
-            	((EntityPlayerMP)this.riddenByEntity).playerNetServerHandler.sendPacketToPlayer(GCCoreUtil.createPacket("Galacticraft", 8, toSend));
-            }
-            
-        	return true;
-    	}
-        return false;
-    }
-
-    public boolean canBeRidden()
-    {
-        return false;
-    }
-
-    @Override
-	public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
-    {
-        return this.isDead ? false : par1EntityPlayer.getDistanceSqToEntity(this) <= 64.0D;
-    }
-    
-    public void setDamage(int par1)
-    {
-        this.dataWatcher.updateObject(19, Integer.valueOf(par1));
-    }
-
-    public int getDamage()
-    {
-        return this.dataWatcher.getWatchableObjectInt(19);
-    }
-
-    /**
-     * Sets the rolling amplitude the cart rolls while being attacked.
-     */
-    public void setRollingAmplitude(int par1)
-    {
-        this.dataWatcher.updateObject(17, Integer.valueOf(par1));
-    }
-
-    /**
-     * Gets the rolling amplitude the cart rolls while being attacked.
-     */
-    public int getRollingAmplitude()
-    {
-        return this.dataWatcher.getWatchableObjectInt(17);
-    }
-
-    /**
-     * Sets the rolling direction the cart rolls while being attacked. Can be 1 or -1.
-     */
-    public void setRollingDirection(int par1)
-    {
-        this.dataWatcher.updateObject(18, Integer.valueOf(par1));
-    }
-
-    /**
-     * Gets the rolling direction the cart rolls while being attacked. Can be 1 or -1.
-     */
-    public int getRollingDirection()
-    {
-        return this.dataWatcher.getWatchableObjectInt(18);
-    }
-
-    public void setFailedLaunch(int par1)
-    {
-        this.dataWatcher.updateObject(20, Integer.valueOf(par1));
-    }
-
-    public int getFailedLaunch()
-    {
-        return this.dataWatcher.getWatchableObjectInt(20);
-    }
-
-    public int getReversed()
-    {
-        return this.dataWatcher.getWatchableObjectInt(21);
-    }
-    
-    public void setLaunched(int par1)
-    {
-    	this.dataWatcher.updateObject(22, par1);
-    }
-    
-    public int getLaunched()
-    {
-    	return this.dataWatcher.getWatchableObjectInt(22);
-    }
-    
-    public void setTimeUntilLaunch(int par1)
-    {
-    	if (!this.worldObj.isRemote)
-    	{
-        	this.dataWatcher.updateObject(23, par1);
-    	}
-    }
-    
-    public int getTimeUntilLaunch()
-    {
-    	return this.dataWatcher.getWatchableObjectInt(23);
-    }
-    
-    public void setTimeSinceLaunch(int par1)
-    {
-    	this.dataWatcher.updateObject(24, par1);
-    }
-    
-    public int getTimeSinceLaunch()
-    {
-    	return this.dataWatcher.getWatchableObjectInt(24);
-    }
-    
-    public void setSpaceshipType(int par1)
-    {
-    	this.dataWatcher.updateObject(25, par1);
-    }
-    
-    public int getSpaceshipType()
-    {
-    	return this.dataWatcher.getWatchableObjectInt(25);
-    }
-    
-    public void ignite()
-    {
-    	this.ignite = 1;
-    }
-    
-    @Override
-	public double getMountedYOffset()
-    {
-        return -1D;
-    }
-    
-    public void teleport()
-    {
-    	if (this.riddenByEntity != null)
-    	{
-    		if (this.riddenByEntity instanceof EntityPlayerMP)
-            {
-        		final EntityPlayerMP entityplayermp = (EntityPlayerMP)this.riddenByEntity;
-        		
-				final Integer[] ids = DimensionManager.getStaticDimensionIDs();
-		    	
-		    	final Set set = GCCoreUtil.getArrayOfPossibleDimensions(ids).entrySet();
-		    	final Iterator i = set.iterator();
-		    	
-		    	String temp = "";
-		    	
-		    	for (int k = 0; i.hasNext(); k++)
-		    	{
-		    		final Map.Entry entry = (Map.Entry)i.next();
-		    		temp = k == 0 ? temp.concat(String.valueOf(entry.getKey())) : temp.concat("." + String.valueOf(entry.getKey()));
-		    	}
-		    	
-		    	final Object[] toSend = {entityplayermp.username, temp};
-		        FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(entityplayermp.username).playerNetServerHandler.sendPacketToPlayer(GCCoreUtil.createPacket("Galacticraft", 2, toSend));
-				
-		        GCCoreUtil.getPlayerBaseServerFromPlayer(entityplayermp).setUsingPlanetGui();
-		        
-		        GCCoreUtil.getPlayerBaseServerFromPlayer(entityplayermp).rocketStacks = this.cargoItems;
-		        GCCoreUtil.getPlayerBaseServerFromPlayer(entityplayermp).rocketType = this.getSpaceshipType();
-		        
-				if (this.riddenByEntity != null)
-				{
-            		this.riddenByEntity.mountEntity(this);
-				}
-            }
-    	}
-    }
-
-	@Override
-	public int getSizeInventory()
-	{
-		return 28;
-	}
 
 	@Override
 	public ItemStack getStackInSlot(int par1)
@@ -739,6 +303,16 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
         {
             par2ItemStack.stackSize = this.getInventoryStackLimit();
         }
+    }
+    
+    public void setSpaceshipType(int par1)
+    {
+    	this.dataWatcher.updateObject(25, par1);
+    }
+    
+    public int getSpaceshipType()
+    {
+    	return this.dataWatcher.getWatchableObjectInt(25);
     }
 
 	@Override
@@ -832,4 +406,31 @@ public class GCCoreEntitySpaceship extends Entity implements IInventory
             }
         }
     }
+
+	@Override
+	public Entity[] getSpaceshipParts() 
+	{
+		return null;
+	}
+
+	@Override
+	public HashSet<Integer> getPossiblePlanets() 
+	{
+		HashSet<Integer> dimensions = new HashSet<Integer>();
+		dimensions.add(0);
+		dimensions.add(GCMoonConfigManager.dimensionIDMoon);
+		return dimensions;
+	}
+
+	@Override
+	public int getYCoordToTeleport() 
+	{
+		return 420;
+	}
+
+	@Override
+	public int getPreLaunchWait() 
+	{
+		return 50;
+	}
 }

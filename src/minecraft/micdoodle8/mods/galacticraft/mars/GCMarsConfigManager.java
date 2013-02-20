@@ -51,6 +51,7 @@ public class GCMarsConfigManager
 	public static int idItemDeshStick;
 	public static int idItemIngotQuandrium;
 	public static int idItemIngotDesh;
+	public static int idItemSpaceshipTier2;
 	
 	// ARMOR
 	public static int idArmorQuandriumHelmet;
@@ -87,6 +88,7 @@ public class GCMarsConfigManager
 	public static int idEntityCreeperBoss;
 	public static int idEntitySludgeling;
 	public static int idEntityProjectileTNT;
+	public static int idEntitySpaceshipTier2;
 	
 	private void setDefaultValues()
     {
@@ -115,7 +117,8 @@ public class GCMarsConfigManager
 	        GCMarsConfigManager.idItemDeshStick = 					GCMarsConfigManager.configuration.get(Configuration.CATEGORY_ITEM, 									"idItemDeshStick", 					9906)	.getInt(9906);
 	        GCMarsConfigManager.idItemIngotQuandrium = 				GCMarsConfigManager.configuration.get(Configuration.CATEGORY_ITEM, 									"idItemIngotQuandrium", 			9907)	.getInt(9907);
 	        GCMarsConfigManager.idItemIngotDesh = 					GCMarsConfigManager.configuration.get(Configuration.CATEGORY_ITEM, 									"idItemIngotDesh", 					9908)	.getInt(9908);
-
+	        GCMarsConfigManager.idItemSpaceshipTier2 = 				GCMarsConfigManager.configuration.get(Configuration.CATEGORY_ITEM, 									"idItemSpaceshipTier2", 			9936)	.getInt(9936);
+	        
 	        GCMarsConfigManager.idToolPlanetStoneSword = 			GCMarsConfigManager.configuration.get(Configuration.CATEGORY_ITEM, 									"idToolPlanetStoneSword", 			9909)	.getInt(9909);
 	        GCMarsConfigManager.idToolPlanetStonePickaxe = 			GCMarsConfigManager.configuration.get(Configuration.CATEGORY_ITEM, 									"idToolPlanetStonePickaxe", 		9910)	.getInt(9910);
 	        GCMarsConfigManager.idToolPlanetStoneSpade = 			GCMarsConfigManager.configuration.get(Configuration.CATEGORY_ITEM, 									"idToolPlanetStoneSpade", 			9911)	.getInt(9911);
@@ -149,6 +152,7 @@ public class GCMarsConfigManager
 	        GCMarsConfigManager.idEntityCreeperBoss = 				GCMarsConfigManager.configuration.get("Entities", 													"idEntityCreeperBoss", 				162)	.getInt(162);
 	        GCMarsConfigManager.idEntitySludgeling = 				GCMarsConfigManager.configuration.get("Entities", 													"idEntitySludgeling",				163)	.getInt(163);
 	        GCMarsConfigManager.idEntityProjectileTNT = 			GCMarsConfigManager.configuration.get("Entities", 													"idEntityProjectileTNT",			164)	.getInt(164);
+	        GCMarsConfigManager.idEntitySpaceshipTier2 = 			GCMarsConfigManager.configuration.get("Entities", 													"idEntitySpaceshipTier2",			167)	.getInt(167);
 		}
 		catch (final Exception e)
 		{

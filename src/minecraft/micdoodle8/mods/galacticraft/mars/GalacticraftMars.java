@@ -8,6 +8,7 @@ import java.util.List;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubMod;
 import micdoodle8.mods.galacticraft.API.IGalaxy;
+import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
@@ -15,6 +16,7 @@ import micdoodle8.mods.galacticraft.mars.dimension.GCMarsWorldProvider;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityCreeperBoss;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityProjectileTNT;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntitySludgeling;
+import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntitySpaceshipTier2;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsPlayerHandler;
 import micdoodle8.mods.galacticraft.mars.items.GCMarsItems;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -105,6 +107,7 @@ public class GalacticraftMars implements IGalacticraftSubMod
 	public void registerOtherEntities()
 	{
 		this.registerGalacticraftNonMobEntity(GCMarsEntityProjectileTNT.class, "Projectile TNT", GCMarsConfigManager.idEntityProjectileTNT, 150, 5, true);
+		this.registerGalacticraftNonMobEntity(GCMarsEntitySpaceshipTier2.class, "SpaceshipT2", GCMarsConfigManager.idEntitySpaceshipTier2, 150, 1, true);
 	}
 
 	@PostInit
