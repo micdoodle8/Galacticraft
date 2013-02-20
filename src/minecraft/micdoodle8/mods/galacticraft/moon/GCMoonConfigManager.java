@@ -69,8 +69,6 @@ public class GCMoonConfigManager
 	        GCMoonConfigManager.disableCheeseMoon = 				GCMoonConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Cheese Ore Gen on Moon",		false)		.getBoolean(false);
 	        GCMoonConfigManager.disableAluminiumMoon = 				GCMoonConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Aluminium Ore Gen on Moon",	false)		.getBoolean(false);
 	        GCMoonConfigManager.disableIronMoon = 					GCMoonConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Iron Ore Gen on Moon",		false)		.getBoolean(false);
-		
-		
 		}
 		catch (final Exception e)
 		{
