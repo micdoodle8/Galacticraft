@@ -11,6 +11,7 @@ import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiRocketBench;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiRocketRefill;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiTankRefill;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpaceship;
+import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerBase;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreContainerAirDistributor;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreContainerBuggyBench;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreContainerRocketBench;
@@ -126,9 +127,11 @@ public class CommonProxyCore implements IGuiHandler
 	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
 	{
-		if (ID == GCCoreConfigManager.idGuiTankRefill)
+		GCCorePlayerBase playerBase = GCCoreUtil.getPlayerBaseServerFromPlayer(player);
+		
+		if (ID == GCCoreConfigManager.idGuiTankRefill && playerBase != null)
 		{
-			return new GCCoreContainerTankRefill(player, GCCoreUtil.getPlayerBaseServerFromPlayer(player).playerTankInventory);
+			return new GCCoreContainerTankRefill(player, playerBase.playerTankInventory);
 		}
 		else if (ID == GCCoreConfigManager.idGuiAirDistributor)
 		{

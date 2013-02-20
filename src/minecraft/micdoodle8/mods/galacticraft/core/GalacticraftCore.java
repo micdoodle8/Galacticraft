@@ -275,6 +275,8 @@ public class GalacticraftCore
             final int packetType = GCCoreUtil.readPacketID(data);
             
             final EntityPlayerMP player = (EntityPlayerMP)p;
+        	
+        	GCCorePlayerBase playerBase = GCCoreUtil.getPlayerBaseServerFromPlayer(player);
             
             if (packetType == 0)
             {
@@ -306,20 +308,22 @@ public class GalacticraftCore
                 	
                 	final ItemStack stack = ship.getStackInSlot(27);
                 	
-                	if (stack != null && stack.getItem().itemID == GCCoreItems.rocketFuelBucket.itemID)
+                	if (stack != null && stack.getItem().itemID == GCCoreItems.rocketFuelBucket.itemID && playerBase != null && playerBase.playerTankInventory != null)
                 	{
-	    				final ItemStack stack2 = GCCoreUtil.getPlayerBaseServerFromPlayer(player).playerTankInventory.getStackInSlot(4);
+	    				final ItemStack stack2 = playerBase.playerTankInventory.getStackInSlot(4);
 	    				
-	    				if (stack2 != null && stack2.getItem() instanceof GCCoreItemParachute || GCCoreUtil.getPlayerBaseServerFromPlayer(player).launchAttempts > 0)
+	    				if (stack2 != null && stack2.getItem() instanceof GCCoreItemParachute || playerBase.launchAttempts > 0)
 	    				{
+	    					Object[] toSend = {""};
+	    					player.playerNetServerHandler.sendPacketToPlayer(GCCoreUtil.createPacket("Galacticraft", 12, toSend));
 	                    	ship.ignite();
-	                    	GCCoreUtil.getPlayerBaseServerFromPlayer(player).launchAttempts = 0;
+	                    	playerBase.launchAttempts = 0;
 	    				}
-	                	else if (GalacticraftCore.this.chatCooldown == 0 && GCCoreUtil.getPlayerBaseServerFromPlayer(player).launchAttempts == 0)
+	                	else if (GalacticraftCore.this.chatCooldown == 0 && playerBase.launchAttempts == 0)
 	                	{
 	                		player.sendChatToPlayer("I don't have a parachute! If I press launch again, there's no going back!");
 	                		GalacticraftCore.this.chatCooldown = 250;
-	                		GCCoreUtil.getPlayerBaseServerFromPlayer(player).launchAttempts = 1;
+	                		playerBase.launchAttempts = 1;
 	                	}
 	    			}
                 	else if (GalacticraftCore.this.chatCooldown == 0)

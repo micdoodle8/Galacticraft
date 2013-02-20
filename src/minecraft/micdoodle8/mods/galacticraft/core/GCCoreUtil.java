@@ -18,6 +18,7 @@ import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.API.IMapPlanet;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.client.GCCorePlayerBaseClient;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiError;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiTankRefill;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerBase;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemFlag;
@@ -28,7 +29,6 @@ import micdoodle8.mods.galacticraft.core.items.GCCoreItemParachute;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreInventoryRocketBench;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreInventoryTankRefill;
-import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
 import micdoodle8.mods.galacticraft.moon.items.GCMoonItems;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiChat;
@@ -47,8 +47,10 @@ import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+
+import com.google.common.base.Throwables;
+
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLCommonHandler;
 
 public class GCCoreUtil
 {
@@ -731,8 +733,9 @@ public class GCCoreUtil
 	{
 		final Integer[] var1 = DimensionManager.getStaticDimensionIDs();
 		
-		for (final Integer element : var1) {
-			if (WorldProvider.getProviderForDimension(element).getDimensionName() != null && WorldProvider.getProviderForDimension(element).getDimensionName().equals(par1String))
+		for (final Integer element : var1) 
+		{
+			if (WorldProvider.getProviderForDimension(element) != null && WorldProvider.getProviderForDimension(element).getDimensionName() != null && WorldProvider.getProviderForDimension(element).getDimensionName().equals(par1String))
 			{
 				return WorldProvider.getProviderForDimension(element);
 			}
@@ -745,7 +748,8 @@ public class GCCoreUtil
 	{
 		int amount = 0;
 		
-		for (final Integer id : ids) {
+		for (final Integer id : ids) 
+		{
     		if (WorldProvider.getProviderForDimension(id) instanceof IGalacticraftWorldProvider || WorldProvider.getProviderForDimension(id).dimensionId == 0)
     		{
     			amount++;
@@ -759,7 +763,8 @@ public class GCCoreUtil
 	{
 		final HashMap map = new HashMap();
 		
-		for (final Integer id : ids) {
+		for (final Integer id : ids) 
+		{
     		if (WorldProvider.getProviderForDimension(id) != null && (WorldProvider.getProviderForDimension(id) instanceof IGalacticraftWorldProvider || WorldProvider.getProviderForDimension(id).dimensionId == 0))
     		{
     			map.put(WorldProvider.getProviderForDimension(id).getDimensionName(), WorldProvider.getProviderForDimension(id).dimensionId);
@@ -888,7 +893,8 @@ public class GCCoreUtil
 	{
 		final List list = new ArrayList();
 		
-		for (final WorldServer world : FMLCommonHandler.instance().getMinecraftServerInstance().worldServers) {
+		for (final WorldServer world : DimensionManager.getWorlds()) 
+		{
 			if (world != null && world.provider instanceof IGalacticraftWorldProvider)
 			{
 				if (planet.getSlotRenderer().getPlanetName().toLowerCase().equals(world.provider.getDimensionName().toLowerCase()))
@@ -1062,5 +1068,11 @@ public class GCCoreUtil
 	    }
         
         return null;
+	}
+	
+	public static void stopGameGalacticraftError(String message, Throwable t)
+	{
+        FMLClientHandler.instance().getClient().displayCrashReport(new GCCoreGuiError(message, t));
+        throw Throwables.propagate(t);
 	}
 }
