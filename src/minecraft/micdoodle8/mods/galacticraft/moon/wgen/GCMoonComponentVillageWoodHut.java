@@ -3,7 +3,9 @@ package micdoodle8.mods.galacticraft.moon.wgen;
 import java.util.List;
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import net.minecraft.block.Block;
+import net.minecraft.tileentity.TileEntitySign;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -25,7 +27,7 @@ public class GCMoonComponentVillageWoodHut extends GCMoonComponentVillage
 
     public static GCMoonComponentVillageWoodHut func_74908_a(GCMoonComponentVillageStartPiece par0ComponentVillageStartPiece, List par1List, Random par2Random, int par3, int par4, int par5, int par6, int par7)
     {
-        final StructureBoundingBox var8 = StructureBoundingBox.getComponentToAddBoundingBox(par3, par4, par5, 0, 0, 0, 4, 6, 5, par6);
+        final StructureBoundingBox var8 = StructureBoundingBox.getComponentToAddBoundingBox(par3, par4, par5, 0, -9, 0, 17, 9, 17, par6);
         return GCMoonComponentVillage.canVillageGoDeeper(var8) && StructureComponent.findIntersecting(par1List, var8) == null ? new GCMoonComponentVillageWoodHut(par0ComponentVillageStartPiece, par7, par2Random, var8, par6) : null;
     }
 
@@ -47,63 +49,383 @@ public class GCMoonComponentVillageWoodHut extends GCMoonComponentVillage
 
             this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.maxY + 6 - 1, 0);
         }
-
-        this.fillWithBlocks(par1World, par3StructureBoundingBox, 1, 1, 1, 3, 5, 4, 0, 0, false);
-        this.fillWithBlocks(par1World, par3StructureBoundingBox, 0, 0, 0, 3, 0, 4, Block.cobblestone.blockID, Block.cobblestone.blockID, false);
-        this.fillWithBlocks(par1World, par3StructureBoundingBox, 1, 0, 1, 2, 0, 3, Block.dirt.blockID, Block.dirt.blockID, false);
-
-        if (this.isTallHouse)
+        
+        this.fillWithAir(par1World, par3StructureBoundingBox, 3, 0, 3, 13, 9, 13);
+        this.fillWithAir(par1World, par3StructureBoundingBox, 5, 0, 2, 11, 9, 14);
+        this.fillWithAir(par1World, par3StructureBoundingBox, 2, 0, 5, 14, 9, 11);
+        
+        for (int i = 3; i <= 13; i++)
         {
-            this.fillWithBlocks(par1World, par3StructureBoundingBox, 1, 4, 1, 2, 4, 3, Block.wood.blockID, Block.wood.blockID, false);
+        	for (int j = 3; j <= 13; j++)
+        	{
+                this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 3, i, 0, j, par3StructureBoundingBox);
+        	}
         }
-        else
+        
+        for (int i = 5; i <= 11; i++)
         {
-            this.fillWithBlocks(par1World, par3StructureBoundingBox, 1, 5, 1, 2, 5, 3, Block.wood.blockID, Block.wood.blockID, false);
+        	for (int j = 2; j <= 14; j++)
+        	{
+                this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 3, i, 0, j, par3StructureBoundingBox);
+        	}
         }
-
-        this.placeBlockAtCurrentPosition(par1World, Block.wood.blockID, 0, 1, 4, 0, par3StructureBoundingBox);
-        this.placeBlockAtCurrentPosition(par1World, Block.wood.blockID, 0, 2, 4, 0, par3StructureBoundingBox);
-        this.placeBlockAtCurrentPosition(par1World, Block.wood.blockID, 0, 1, 4, 4, par3StructureBoundingBox);
-        this.placeBlockAtCurrentPosition(par1World, Block.wood.blockID, 0, 2, 4, 4, par3StructureBoundingBox);
-        this.placeBlockAtCurrentPosition(par1World, Block.wood.blockID, 0, 0, 4, 1, par3StructureBoundingBox);
-        this.placeBlockAtCurrentPosition(par1World, Block.wood.blockID, 0, 0, 4, 2, par3StructureBoundingBox);
-        this.placeBlockAtCurrentPosition(par1World, Block.wood.blockID, 0, 0, 4, 3, par3StructureBoundingBox);
-        this.placeBlockAtCurrentPosition(par1World, Block.wood.blockID, 0, 3, 4, 1, par3StructureBoundingBox);
-        this.placeBlockAtCurrentPosition(par1World, Block.wood.blockID, 0, 3, 4, 2, par3StructureBoundingBox);
-        this.placeBlockAtCurrentPosition(par1World, Block.wood.blockID, 0, 3, 4, 3, par3StructureBoundingBox);
-        this.fillWithBlocks(par1World, par3StructureBoundingBox, 0, 1, 0, 0, 3, 0, Block.wood.blockID, Block.wood.blockID, false);
-        this.fillWithBlocks(par1World, par3StructureBoundingBox, 3, 1, 0, 3, 3, 0, Block.wood.blockID, Block.wood.blockID, false);
-        this.fillWithBlocks(par1World, par3StructureBoundingBox, 0, 1, 4, 0, 3, 4, Block.wood.blockID, Block.wood.blockID, false);
-        this.fillWithBlocks(par1World, par3StructureBoundingBox, 3, 1, 4, 3, 3, 4, Block.wood.blockID, Block.wood.blockID, false);
-        this.fillWithBlocks(par1World, par3StructureBoundingBox, 0, 1, 1, 0, 3, 3, Block.planks.blockID, Block.planks.blockID, false);
-        this.fillWithBlocks(par1World, par3StructureBoundingBox, 3, 1, 1, 3, 3, 3, Block.planks.blockID, Block.planks.blockID, false);
-        this.fillWithBlocks(par1World, par3StructureBoundingBox, 1, 1, 0, 2, 3, 0, Block.planks.blockID, Block.planks.blockID, false);
-        this.fillWithBlocks(par1World, par3StructureBoundingBox, 1, 1, 4, 2, 3, 4, Block.planks.blockID, Block.planks.blockID, false);
-        this.placeBlockAtCurrentPosition(par1World, Block.thinGlass.blockID, 0, 0, 2, 2, par3StructureBoundingBox);
-        this.placeBlockAtCurrentPosition(par1World, Block.thinGlass.blockID, 0, 3, 2, 2, par3StructureBoundingBox);
-
-        if (this.tablePosition > 0)
+        
+        for (int i = 2; i <= 14; i++)
         {
-            this.placeBlockAtCurrentPosition(par1World, Block.fence.blockID, 0, this.tablePosition, 1, 3, par3StructureBoundingBox);
-            this.placeBlockAtCurrentPosition(par1World, Block.pressurePlatePlanks.blockID, 0, this.tablePosition, 2, 3, par3StructureBoundingBox);
+        	for (int j = 5; j <= 11; j++)
+        	{
+                this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 3, i, 0, j, par3StructureBoundingBox);
+        	}
         }
 
-        this.placeBlockAtCurrentPosition(par1World, 0, 0, 1, 1, 0, par3StructureBoundingBox);
-        this.placeBlockAtCurrentPosition(par1World, 0, 0, 1, 2, 0, par3StructureBoundingBox);
-        this.placeDoorAtCurrentPosition(par1World, par3StructureBoundingBox, par2Random, 1, 1, 0, this.getMetadataWithOffset(Block.doorWood.blockID, 1));
-
-        if (this.getBlockIdAtCurrentPosition(par1World, 1, 0, -1, par3StructureBoundingBox) == 0 && this.getBlockIdAtCurrentPosition(par1World, 1, -1, -1, par3StructureBoundingBox) != 0)
+        int yLevel = 0;
+        
+        for (yLevel = -8; yLevel < 4; yLevel++)
         {
-            this.placeBlockAtCurrentPosition(par1World, Block.stairCompactCobblestone.blockID, this.getMetadataWithOffset(Block.stairCompactCobblestone.blockID, 3), 1, 0, -1, par3StructureBoundingBox);
+            this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 4, yLevel, 2, par3StructureBoundingBox);
+            this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 3, yLevel, 2, par3StructureBoundingBox);
+            this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 2, yLevel, 3, par3StructureBoundingBox);
+            this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 2, yLevel, 4, par3StructureBoundingBox);
+            
+            this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 1, yLevel, 5, par3StructureBoundingBox);
+            this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 1, yLevel, 6, par3StructureBoundingBox);
+            this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 1, yLevel, 7, par3StructureBoundingBox);
+            this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 1, yLevel, 8, par3StructureBoundingBox);
+            this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 1, yLevel, 9, par3StructureBoundingBox);
+            this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 1, yLevel, 10, par3StructureBoundingBox);
+            this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 1, yLevel, 11, par3StructureBoundingBox);
+            
+            this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 2, yLevel, 12, par3StructureBoundingBox);
+            this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 2, yLevel, 13, par3StructureBoundingBox);
+            this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 3, yLevel, 14, par3StructureBoundingBox);
+            this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 4, yLevel, 14, par3StructureBoundingBox);
+            
+            this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 5, yLevel, 15, par3StructureBoundingBox);
+            this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 6, yLevel, 15, par3StructureBoundingBox);
+            this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 7, yLevel, 15, par3StructureBoundingBox);
+            this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 8, yLevel, 15, par3StructureBoundingBox);
+            this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 9, yLevel, 15, par3StructureBoundingBox);
+            this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 10, yLevel, 15, par3StructureBoundingBox);
+            this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 11, yLevel, 15, par3StructureBoundingBox);
+            
+            this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 12, yLevel, 14, par3StructureBoundingBox);
+            this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 13, yLevel, 14, par3StructureBoundingBox);
+            this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 14, yLevel, 13, par3StructureBoundingBox);
+            this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 14, yLevel, 12, par3StructureBoundingBox);
+            
+            this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 15, yLevel, 11, par3StructureBoundingBox);
+            this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 15, yLevel, 10, par3StructureBoundingBox);
+            this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 15, yLevel, 9, par3StructureBoundingBox);
+            this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 15, yLevel, 8, par3StructureBoundingBox);
+            this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 15, yLevel, 7, par3StructureBoundingBox);
+            this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 15, yLevel, 6, par3StructureBoundingBox);
+            this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 15, yLevel, 5, par3StructureBoundingBox);
+            
+            this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 14, yLevel, 4, par3StructureBoundingBox);
+            this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 14, yLevel, 3, par3StructureBoundingBox);
+            this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 13, yLevel, 2, par3StructureBoundingBox);
+            this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 12, yLevel, 2, par3StructureBoundingBox);
+            
+            this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 11, yLevel, 1, par3StructureBoundingBox);
+            this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 10, yLevel, 1, par3StructureBoundingBox);
+            this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 9, yLevel, 1, par3StructureBoundingBox);
+            this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 8, yLevel, 1, par3StructureBoundingBox);
+            this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 7, yLevel, 1, par3StructureBoundingBox);
+            this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 6, yLevel, 1, par3StructureBoundingBox);
+            this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 5, yLevel, 1, par3StructureBoundingBox);
         }
 
-        for (int var4 = 0; var4 < 5; ++var4)
+        yLevel = 4;
+
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 4, yLevel, 2, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 3, yLevel, 3, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 2, yLevel, 4, par3StructureBoundingBox);
+        
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 1, yLevel, 5, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 1, yLevel, 6, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 1, yLevel, 7, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 1, yLevel, 8, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 1, yLevel, 9, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 1, yLevel, 10, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 1, yLevel, 11, par3StructureBoundingBox);
+        
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 2, yLevel, 12, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 3, yLevel, 13, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 4, yLevel, 14, par3StructureBoundingBox);
+        
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 5, yLevel, 15, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 6, yLevel, 15, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 7, yLevel, 15, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 8, yLevel, 15, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 9, yLevel, 15, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 10, yLevel, 15, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 11, yLevel, 15, par3StructureBoundingBox);
+        
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 12, yLevel, 14, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 13, yLevel, 13, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 14, yLevel, 12, par3StructureBoundingBox);
+        
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 15, yLevel, 11, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 15, yLevel, 10, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 15, yLevel, 9, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 15, yLevel, 8, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 15, yLevel, 7, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 15, yLevel, 6, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 15, yLevel, 5, par3StructureBoundingBox);
+        
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 14, yLevel, 4, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 13, yLevel, 3, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 12, yLevel, 2, par3StructureBoundingBox);
+        
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 11, yLevel, 1, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 10, yLevel, 1, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 9, yLevel, 1, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 8, yLevel, 1, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 7, yLevel, 1, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 6, yLevel, 1, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 5, yLevel, 1, par3StructureBoundingBox);
+
+        yLevel = 5;
+        
+        // corner 1
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 5, yLevel, 2, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 4, yLevel, 2, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 3, yLevel, 3, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 2, yLevel, 4, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 2, yLevel, 5, par3StructureBoundingBox);
+        
+        // side 1
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 1, yLevel, 6, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 1, yLevel, 7, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 1, yLevel, 8, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 1, yLevel, 9, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 1, yLevel, 10, par3StructureBoundingBox);
+        
+        // corner 2
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 2, yLevel, 11, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 2, yLevel, 12, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 3, yLevel, 13, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 4, yLevel, 14, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 5, yLevel, 14, par3StructureBoundingBox);
+        
+        // side 2
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 6, yLevel, 15, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 7, yLevel, 15, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 8, yLevel, 15, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 9, yLevel, 15, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 10, yLevel, 15, par3StructureBoundingBox);
+        
+        // corner 3
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 11, yLevel, 14, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 12, yLevel, 14, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 13, yLevel, 13, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 14, yLevel, 12, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 14, yLevel, 11, par3StructureBoundingBox);
+        
+        // side 3
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 15, yLevel, 10, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 15, yLevel, 9, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 15, yLevel, 8, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 15, yLevel, 7, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 15, yLevel, 6, par3StructureBoundingBox);
+
+        // corner 4
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 14, yLevel, 5, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 14, yLevel, 4, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 13, yLevel, 3, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 12, yLevel, 2, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 11, yLevel, 2, par3StructureBoundingBox);
+        
+        // side 4
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 10, yLevel, 1, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 9, yLevel, 1, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 8, yLevel, 1, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 7, yLevel, 1, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 6, yLevel, 1, par3StructureBoundingBox);
+
+        yLevel = 6;
+        
+        // corner 1
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 4, yLevel, 3, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 3, yLevel, 4, par3StructureBoundingBox);
+        
+        // side 1
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 2, yLevel, 5, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 2, yLevel, 6, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 2, yLevel, 7, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 2, yLevel, 8, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 2, yLevel, 9, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 2, yLevel, 10, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 2, yLevel, 11, par3StructureBoundingBox);
+        
+        // corner 2
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 3, yLevel, 12, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 4, yLevel, 13, par3StructureBoundingBox);
+        
+        // side 2
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 5, yLevel, 14, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 6, yLevel, 14, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 7, yLevel, 14, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 8, yLevel, 14, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 9, yLevel, 14, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 10, yLevel, 14, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 11, yLevel, 14, par3StructureBoundingBox);
+        
+        // corner 3
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 12, yLevel, 13, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 13, yLevel, 12, par3StructureBoundingBox);
+        
+        // side 3
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 14, yLevel, 11, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 14, yLevel, 10, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 14, yLevel, 9, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 14, yLevel, 8, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 14, yLevel, 7, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 14, yLevel, 6, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 14, yLevel, 5, par3StructureBoundingBox);
+
+        // corner 4
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 13, yLevel, 4, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 12, yLevel, 3, par3StructureBoundingBox);
+        
+        // side 4
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 11, yLevel, 2, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 10, yLevel, 2, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 9, yLevel, 2, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 8, yLevel, 2, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 7, yLevel, 2, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 6, yLevel, 2, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 5, yLevel, 2, par3StructureBoundingBox);
+
+        yLevel = 7;
+        
+        // corner 1
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 6, yLevel, 3, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 5, yLevel, 3, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 4, yLevel, 4, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 3, yLevel, 5, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 3, yLevel, 6, par3StructureBoundingBox);
+        
+        // side 1
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 2, yLevel, 7, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 2, yLevel, 8, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 2, yLevel, 9, par3StructureBoundingBox);
+        
+        // corner 2
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 3, yLevel, 10, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 3, yLevel, 11, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 4, yLevel, 12, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 5, yLevel, 13, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 6, yLevel, 13, par3StructureBoundingBox);
+        
+        // side 2
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 7, yLevel, 14, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 8, yLevel, 14, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 9, yLevel, 14, par3StructureBoundingBox);
+        
+        // corner 3
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 10, yLevel, 13, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 11, yLevel, 13, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 12, yLevel, 12, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 13, yLevel, 11, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 13, yLevel, 10, par3StructureBoundingBox);
+        
+        // side 3
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 14, yLevel, 9, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 14, yLevel, 8, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 14, yLevel, 7, par3StructureBoundingBox);
+
+        // corner 4
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 13, yLevel, 6, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 13, yLevel, 5, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 12, yLevel, 4, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 11, yLevel, 3, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 10, yLevel, 3, par3StructureBoundingBox);
+        
+        // side 4
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 9, yLevel, 2, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 8, yLevel, 2, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 7, yLevel, 2, par3StructureBoundingBox);
+
+        yLevel = 8;
+        
+        // corner 1
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 6, yLevel, 4, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 5, yLevel, 4, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 4, yLevel, 5, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 4, yLevel, 6, par3StructureBoundingBox);
+        
+        // side 1
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 3, yLevel, 7, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 3, yLevel, 8, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 3, yLevel, 9, par3StructureBoundingBox);
+        
+        // corner 2
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 4, yLevel, 10, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 4, yLevel, 11, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 5, yLevel, 12, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 6, yLevel, 12, par3StructureBoundingBox);
+        
+        // side 2
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 7, yLevel, 13, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 8, yLevel, 13, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 9, yLevel, 13, par3StructureBoundingBox);
+        
+        // corner 3
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 10, yLevel, 12, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 11, yLevel, 12, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 12, yLevel, 11, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 12, yLevel, 10, par3StructureBoundingBox);
+        
+        // side 3
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 13, yLevel, 9, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 13, yLevel, 8, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 13, yLevel, 7, par3StructureBoundingBox);
+
+        // corner 4
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 12, yLevel, 6, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 12, yLevel, 5, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 11, yLevel, 4, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 10, yLevel, 4, par3StructureBoundingBox);
+        
+        // side 4
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 9, yLevel, 3, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 8, yLevel, 3, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 7, yLevel, 3, par3StructureBoundingBox);
+        
+        // extras
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 5, yLevel, 5, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 5, yLevel, 11, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 11, yLevel, 11, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 11, yLevel, 5, par3StructureBoundingBox);
+
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 4, yLevel, 7, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 4, yLevel, 8, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 4, yLevel, 9, par3StructureBoundingBox);
+
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 7, yLevel, 12, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 8, yLevel, 12, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 9, yLevel, 12, par3StructureBoundingBox);
+
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 9, yLevel, 4, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 8, yLevel, 4, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 7, yLevel, 4, par3StructureBoundingBox);
+
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 12, yLevel, 7, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 12, yLevel, 8, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 12, yLevel, 9, par3StructureBoundingBox);
+        
+        yLevel = 9;
+        
+        for (int i = 5; i <= 11; i++)
         {
-            for (int var5 = 0; var5 < 4; ++var5)
-            {
-                this.clearCurrentPositionBlocksUpwards(par1World, var5, 6, var4, par3StructureBoundingBox);
-                this.fillCurrentPositionBlocksDownwards(par1World, Block.cobblestone.blockID, 0, var5, -1, var4, par3StructureBoundingBox);
-            }
+        	for (int j = 5; j <= 11; j++)
+        	{
+        		if (!((j == 5 && i == 5) || (j == 5 && i == 11) || (j == 11 && i == 5) || (j == 11 && i == 11)))
+        		{
+                    this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, i, yLevel, j, par3StructureBoundingBox);
+        		}
+        	}
         }
 
         this.spawnVillagers(par1World, par3StructureBoundingBox, 1, 1, 2, 1);

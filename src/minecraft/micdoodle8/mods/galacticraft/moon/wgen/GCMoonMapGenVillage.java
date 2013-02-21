@@ -25,8 +25,8 @@ public class GCMoonMapGenVillage extends MapGenStructure
     public GCMoonMapGenVillage()
     {
         this.terrainType = 0;
-        this.field_82665_g = 32;
-        this.field_82666_h = 8;
+        this.field_82665_g = 16;
+        this.field_82666_h = 4;
     }
 
     public GCMoonMapGenVillage(Map par1Map)

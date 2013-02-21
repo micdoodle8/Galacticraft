@@ -15,15 +15,9 @@ public class GCMoonStructureVillagePieces
     public static ArrayList getStructureVillageWeightedPieceList(Random par0Random, int par1)
     {
         final ArrayList var2 = new ArrayList();
-        var2.add(new GCMoonStructureVillagePieceWeight(GCMoonComponentVillageHouse4_Garden.class, 4, MathHelper.getRandomIntegerInRange(par0Random, 2 + par1, 4 + par1 * 2)));
-        var2.add(new GCMoonStructureVillagePieceWeight(GCMoonComponentVillageChurch.class, 20, MathHelper.getRandomIntegerInRange(par0Random, 0 + par1, 1 + par1)));
-        var2.add(new GCMoonStructureVillagePieceWeight(GCMoonComponentVillageHouse1.class, 20, MathHelper.getRandomIntegerInRange(par0Random, 0 + par1, 2 + par1)));
-        var2.add(new GCMoonStructureVillagePieceWeight(GCMoonComponentVillageWoodHut.class, 3, MathHelper.getRandomIntegerInRange(par0Random, 2 + par1, 5 + par1 * 3)));
-        var2.add(new GCMoonStructureVillagePieceWeight(GCMoonComponentVillageHall.class, 15, MathHelper.getRandomIntegerInRange(par0Random, 0 + par1, 2 + par1)));
-        var2.add(new GCMoonStructureVillagePieceWeight(GCMoonComponentVillageField.class, 20, MathHelper.getRandomIntegerInRange(par0Random, 1 + par1, 4 + par1)));
-        var2.add(new GCMoonStructureVillagePieceWeight(GCMoonComponentVillageField2.class, 3, MathHelper.getRandomIntegerInRange(par0Random, 2 + par1, 4 + par1 * 2)));
-        var2.add(new GCMoonStructureVillagePieceWeight(GCMoonComponentVillageHouse2.class, 15, MathHelper.getRandomIntegerInRange(par0Random, 0, 1 + par1)));
-        var2.add(new GCMoonStructureVillagePieceWeight(GCMoonComponentVillageHouse3.class, 8, MathHelper.getRandomIntegerInRange(par0Random, 0 + par1, 3 + par1 * 2)));
+        var2.add(new GCMoonStructureVillagePieceWeight(GCMoonComponentVillageWoodHut.class, 5, MathHelper.getRandomIntegerInRange(par0Random, 2 + par1, 5 + par1 * 3)));
+        var2.add(new GCMoonStructureVillagePieceWeight(GCMoonComponentVillageField.class, 5, MathHelper.getRandomIntegerInRange(par0Random, 3 + par1, 5 + par1)));
+        var2.add(new GCMoonStructureVillagePieceWeight(GCMoonComponentVillageHouse3.class, 5, MathHelper.getRandomIntegerInRange(par0Random, 3 + par1, 4 + par1 * 2)));
         VillagerRegistry.addExtraVillageComponents(var2, par0Random, par1);
 
         final Iterator var3 = var2.iterator();
@@ -63,37 +57,13 @@ public class GCMoonStructureVillagePieces
         final Class var9 = par1StructureVillagePieceWeight.villagePieceClass;
         Object var10 = null;
 
-        if (var9 == GCMoonComponentVillageHouse4_Garden.class)
-        {
-            var10 = GCMoonComponentVillageHouse4_Garden.func_74912_a(par0ComponentVillageStartPiece, par2List, par3Random, par4, par5, par6, par7, par8);
-        }
-        else if (var9 == GCMoonComponentVillageChurch.class)
-        {
-            var10 = GCMoonComponentVillageChurch.func_74919_a(par0ComponentVillageStartPiece, par2List, par3Random, par4, par5, par6, par7, par8);
-        }
-        else if (var9 == GCMoonComponentVillageHouse1.class)
-        {
-            var10 = GCMoonComponentVillageHouse1.func_74898_a(par0ComponentVillageStartPiece, par2List, par3Random, par4, par5, par6, par7, par8);
-        }
-        else if (var9 == GCMoonComponentVillageWoodHut.class)
+        if (var9 == GCMoonComponentVillageWoodHut.class)
         {
             var10 = GCMoonComponentVillageWoodHut.func_74908_a(par0ComponentVillageStartPiece, par2List, par3Random, par4, par5, par6, par7, par8);
-        }
-        else if (var9 == GCMoonComponentVillageHall.class)
-        {
-            var10 = GCMoonComponentVillageHall.func_74906_a(par0ComponentVillageStartPiece, par2List, par3Random, par4, par5, par6, par7, par8);
         }
         else if (var9 == GCMoonComponentVillageField.class)
         {
             var10 = GCMoonComponentVillageField.func_74900_a(par0ComponentVillageStartPiece, par2List, par3Random, par4, par5, par6, par7, par8);
-        }
-        else if (var9 == GCMoonComponentVillageField2.class)
-        {
-            var10 = GCMoonComponentVillageField2.func_74902_a(par0ComponentVillageStartPiece, par2List, par3Random, par4, par5, par6, par7, par8);
-        }
-        else if (var9 == GCMoonComponentVillageHouse2.class)
-        {
-            var10 = GCMoonComponentVillageHouse2.func_74915_a(par0ComponentVillageStartPiece, par2List, par3Random, par4, par5, par6, par7, par8);
         }
         else if (var9 == GCMoonComponentVillageHouse3.class)
         {

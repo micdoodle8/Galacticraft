@@ -3,6 +3,8 @@ package micdoodle8.mods.galacticraft.moon.wgen;
 import java.util.List;
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
+import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
@@ -112,16 +114,16 @@ public class GCMoonComponentVillagePathGen extends GCMoonComponentVillageRoadPie
     @Override
 	public boolean addComponentParts(World par1World, Random par2Random, StructureBoundingBox par3StructureBoundingBox)
     {
-        final int var4 = this.getBiomeSpecificBlock(Block.gravel.blockID, 0);
+        final int var4 = this.getBiomeSpecificBlock(Block.planks.blockID, 0);
 
         for (int var5 = this.boundingBox.minX; var5 <= this.boundingBox.maxX; ++var5)
         {
             for (int var6 = this.boundingBox.minZ; var6 <= this.boundingBox.maxZ; ++var6)
             {
-                if (par3StructureBoundingBox.isVecInside(var5, 64, var6))
+                if (par3StructureBoundingBox.isVecInside(var5, 64, var6) && (par1World.getBlockId(var5, par1World.getTopSolidOrLiquidBlock(var5, var6) - 1, var6) == GCMoonBlocks.moonGrass.blockID))
                 {
                     final int var7 = par1World.getTopSolidOrLiquidBlock(var5, var6) - 1;
-                    par1World.setBlock(var5, var7, var6, var4);
+                    par1World.setBlockAndMetadata(var5, var7, var6, var4, 1);
                 }
             }
         }
