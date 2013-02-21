@@ -131,13 +131,6 @@ public class GCCoreBlockAirLockWall extends BlockBreakable
     {
         return 0;
     }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public int getRenderBlockPass()
-    {
-        return 1;
-    }
     
     @Override
 	public String getTextureFile()

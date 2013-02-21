@@ -1,22 +1,15 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import micdoodle8.mods.galacticraft.API.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
-import micdoodle8.mods.galacticraft.core.GCCoreDamageSource;
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLandingPad;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLaunchFlameFX;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLaunchSmokeFX;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityOxygenFX;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.moon.GCMoonConfigManager;
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.particle.EntitySmokeFX;
@@ -28,11 +21,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.gui.IUpdatePlayerListBox;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.common.DimensionManager;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -137,7 +126,9 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
         else if ((this.getStackInSlot(27) == null || this.getStackInSlot(27).getItem().itemID != GCCoreItems.rocketFuelBucket.itemID) && this.getLaunched() == 1)
         {
         	if (Math.abs(Math.sin(this.timeSinceLaunch / 1000)) / 10 != 0.0)
+        	{
         		this.motionY -= Math.abs(Math.sin(this.timeSinceLaunch / 1000)) / 20;
+        	}
         }
     }
     
@@ -431,6 +422,6 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
 	@Override
 	public int getPreLaunchWait() 
 	{
-		return 50;
+		return 400;
 	}
 }

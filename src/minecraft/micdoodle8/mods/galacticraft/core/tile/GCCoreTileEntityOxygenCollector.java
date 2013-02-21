@@ -31,16 +31,21 @@ public class GCCoreTileEntityOxygenCollector extends TileEntity
 		
 		double power = 0;
 		
-		for (int y = this.yCoord - 10; y <= this.yCoord + 10; y++)
+		for (int y = this.yCoord - 5; y <= this.yCoord + 5; y++)
 		{
-			for (int x = this.xCoord - 10; x <= this.xCoord + 10; x++)
+			for (int x = this.xCoord - 5; x <= this.xCoord + 5; x++)
 			{
-				for (int z = this.zCoord - 10; z <= this.zCoord + 10; z++)
+				for (int z = this.zCoord - 5; z <= this.zCoord + 5; z++)
 				{
 					final Block block = Block.blocksList[this.worldObj.getBlockId(x, y, z)];
 
 					if (block != null && block instanceof BlockLeaves)
 					{
+						if (this.worldObj.rand.nextInt(100000) == 0)
+						{
+							this.worldObj.setBlock(x, y, z, 0);
+						}
+						
 						power++;
 					}
 				}
@@ -69,7 +74,7 @@ public class GCCoreTileEntityOxygenCollector extends TileEntity
 					if (tile != null && tile instanceof GCCoreTileEntityOxygenPipe)
 					{
 						((GCCoreTileEntityOxygenPipe)tile).setOxygenInPipe(this.currentPower);
-						((GCCoreTileEntityOxygenPipe)tile).setSourceCollector(this);
+						((GCCoreTileEntityOxygenPipe)tile).addSource(this);
 						((GCCoreTileEntityOxygenPipe)tile).setIndexFromCollector(1);
 					}
 				}
@@ -79,7 +84,7 @@ public class GCCoreTileEntityOxygenCollector extends TileEntity
 					if (tile != null && tile instanceof GCCoreTileEntityOxygenPipe)
 					{
 						((GCCoreTileEntityOxygenPipe)tile).setOxygenInPipe(this.currentPower);
-						((GCCoreTileEntityOxygenPipe)tile).setSourceCollector(this);
+						((GCCoreTileEntityOxygenPipe)tile).addSource(this);
 						((GCCoreTileEntityOxygenPipe)tile).setIndexFromCollector(1);
 					}
 				}
@@ -89,7 +94,7 @@ public class GCCoreTileEntityOxygenCollector extends TileEntity
 					if (tile != null && tile instanceof GCCoreTileEntityOxygenPipe)
 					{
 						((GCCoreTileEntityOxygenPipe)tile).setOxygenInPipe(this.currentPower);
-						((GCCoreTileEntityOxygenPipe)tile).setSourceCollector(this);
+						((GCCoreTileEntityOxygenPipe)tile).addSource(this);
 						((GCCoreTileEntityOxygenPipe)tile).setIndexFromCollector(1);
 					}
 				}
@@ -99,7 +104,7 @@ public class GCCoreTileEntityOxygenCollector extends TileEntity
 					if (tile != null && tile instanceof GCCoreTileEntityOxygenPipe)
 					{
 						((GCCoreTileEntityOxygenPipe)tile).setOxygenInPipe(this.currentPower);
-						((GCCoreTileEntityOxygenPipe)tile).setSourceCollector(this);
+						((GCCoreTileEntityOxygenPipe)tile).addSource(this);
 						((GCCoreTileEntityOxygenPipe)tile).setIndexFromCollector(1);
 					}
 				}
@@ -109,7 +114,7 @@ public class GCCoreTileEntityOxygenCollector extends TileEntity
 					if (tile != null && tile instanceof GCCoreTileEntityOxygenPipe)
 					{
 						((GCCoreTileEntityOxygenPipe)tile).setOxygenInPipe(this.currentPower);
-						((GCCoreTileEntityOxygenPipe)tile).setSourceCollector(this);
+						((GCCoreTileEntityOxygenPipe)tile).addSource(this);
 						((GCCoreTileEntityOxygenPipe)tile).setIndexFromCollector(1);
 					}
 				}
@@ -119,7 +124,7 @@ public class GCCoreTileEntityOxygenCollector extends TileEntity
 					if (tile != null && tile instanceof GCCoreTileEntityOxygenPipe)
 					{
 						((GCCoreTileEntityOxygenPipe)tile).setOxygenInPipe(this.currentPower);
-						((GCCoreTileEntityOxygenPipe)tile).setSourceCollector(this);
+						((GCCoreTileEntityOxygenPipe)tile).addSource(this);
 						((GCCoreTileEntityOxygenPipe)tile).setIndexFromCollector(1);
 					}
 				}

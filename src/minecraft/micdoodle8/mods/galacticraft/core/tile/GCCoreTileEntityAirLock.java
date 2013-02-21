@@ -15,6 +15,8 @@ public class GCCoreTileEntityAirLock extends GCCoreTileEntityAdvanced
 {
 	public Set<GCCoreTileEntityAirLock> otherAirLockBlocks = new HashSet<GCCoreTileEntityAirLock>();
 	public boolean active;
+	public int index;
+	public int orientation;
 	
 	@Override
 	public void onTileEntityCreation() 
@@ -99,7 +101,7 @@ public class GCCoreTileEntityAirLock extends GCCoreTileEntityAdvanced
                             	return false;
                             }
                         }
-                        else if (var10 != 0 && var10 != GCCoreBlocks.airLockSeal.blockID)
+                        else if (var10 != 0 && var10 != GCCoreBlocks.airLockSeal.blockID && var10 != GCCoreBlocks.breatheableAir.blockID)
                         {
                             return false;
                         }
@@ -120,6 +122,45 @@ public class GCCoreTileEntityAirLock extends GCCoreTileEntityAdvanced
                         	if (tile != null && tile instanceof GCCoreTileEntityAirLock)
                         	{
                             	this.otherAirLockBlocks.add((GCCoreTileEntityAirLock) tile);
+
+                            	if (var7 == 0 && var8 == -1)
+                            	{
+                            		((GCCoreTileEntityAirLock) tile).index = 0;
+                            	}
+                            	else if (var7 == 1 && var8 == -1)
+                            	{
+                            		((GCCoreTileEntityAirLock) tile).index = 1;
+                            	}
+                            	else if (var7 == 2 && var8 == 0)
+                            	{
+                            		((GCCoreTileEntityAirLock) tile).index = 2;
+                            	}
+                            	else if (var7 == 2 && var8 == 1)
+                            	{
+                            		((GCCoreTileEntityAirLock) tile).index = 3;
+                            	}
+                            	else if (var7 == 1 && var8 == 2)
+                            	{
+                            		((GCCoreTileEntityAirLock) tile).index = 4;
+                            	}
+                            	else if (var7 == 0 && var8 == 2)
+                            	{
+                            		((GCCoreTileEntityAirLock) tile).index = 5;
+                            	}
+                            	else if (var7 == -1 && var8 == 1)
+                            	{
+                            		((GCCoreTileEntityAirLock) tile).index = 6;
+                            	}
+                            	else if (var7 == -1 && var8 == 0)
+                            	{
+                            		((GCCoreTileEntityAirLock) tile).index = 7;
+                            	}
+                            	else
+                            	{
+                            		((GCCoreTileEntityAirLock) tile).index = -1;
+                            	}
+                            	
+                            	((GCCoreTileEntityAirLock) tile).orientation = var5 == 1 ? 0 : 1;
                         	}
                         }
                     }
@@ -225,13 +266,9 @@ public class GCCoreTileEntityAirLock extends GCCoreTileEntityAdvanced
 		{
 			return false;
 		}
-		else if (numberActive % 2 == 0)
-		{
-			return true;
-		}
 		else
 		{
-			return false;
+			return true;
 		}
 	}
 
@@ -240,6 +277,8 @@ public class GCCoreTileEntityAirLock extends GCCoreTileEntityAdvanced
     {
     	super.readFromNBT(par1NBTTagCompound);
     	active = par1NBTTagCompound.getBoolean("active");
+    	index = par1NBTTagCompound.getInteger("index");
+    	orientation = par1NBTTagCompound.getInteger("orientation");
     }
 
     @Override
@@ -247,5 +286,7 @@ public class GCCoreTileEntityAirLock extends GCCoreTileEntityAdvanced
     {
     	super.writeToNBT(par1NBTTagCompound);
     	par1NBTTagCompound.setBoolean("active", active);
+    	par1NBTTagCompound.setInteger("index", index);
+    	par1NBTTagCompound.setInteger("orientation", orientation);
     }
 }
