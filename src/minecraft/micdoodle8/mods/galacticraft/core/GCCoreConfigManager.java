@@ -226,8 +226,8 @@ public class GCCoreConfigManager
 	        GCCoreConfigManager.disableCopperEarth = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable copper ore Gen on Overworld",	false)		.getBoolean(false);
 	        GCCoreConfigManager.disableTitaniumEarth = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable titanium ore Gen on Overworld",	false)		.getBoolean(false);
 	        GCCoreConfigManager.oreGenFactor = 							GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Ore Generation Factor", 				1)			.getInt(1);
-	        final int[] dimensions = {1};
-	        GCCoreConfigManager.oreGenDimensions =						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Dimensions to generate GC ores in", 	dimensions)	.getIntList();
+	        final int[] dimensions = {0};
+	        GCCoreConfigManager.oreGenDimensions =						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "List of dimensions to generate GC ores in", 	dimensions)	.getIntList();
 	        GCCoreConfigManager.disableSpaceshipParticles = 			GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Spaceship Particles",		false)		.getBoolean(false);
 	        GCCoreConfigManager.disableSpaceshipGrief = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Spaceship Explosion",		false)		.getBoolean(false);
 		}
