@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
 import micdoodle8.mods.galacticraft.core.blocks.GCBlockBreathableAir;
+import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import net.minecraft.block.Block;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.ImageBufferDownload;
@@ -44,6 +45,58 @@ public class GCCoreRenderPlayer extends RenderPlayerBase
     		super.doRenderShadowAndFire(var1, var2, var4, var6, var8, var9);
     	}
     }
+
+//	@Override TODO
+//    public void drawFirstPersonHand(EntityPlayer player)
+//    {
+//    	boolean usingParachute = false;
+//    	boolean changed = false;
+//
+//        for (final String name : ClientProxyCore.playersUsingParachutes)
+//        {
+//			if (player.username.equals(name))
+//			{
+//				usingParachute = true;
+//				changed = true;
+//			}
+//        }
+//        
+//        if (!changed || ClientProxyCore.parachuteTextures.get(player.username).equals("none"))
+//        {
+//        	usingParachute = false;
+//        }
+//        
+//        ModelBiped model = ObfuscationReflectionHelper.getPrivateValue(RenderPlayer.class, this.renderPlayer, 0);
+//        
+////        if (usingParachute)
+//        {
+//        	GL11.glPushMatrix();
+//            float var2 = 1.0F;
+//            GL11.glColor3f(var2, var2, var2);
+//            model.onGround = 0.0F;
+//            model.setRotationAngles(0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, player);
+////            GL11.glRotatef(-10, 0, 0, 1);
+////            GL11.glRotatef(50, 0, 1, 0);
+////            GL11.glRotatef(-55, 1, 0, 0);
+//            GL11.glTranslatef(0.0F, 0.6F, -1.1F * (float)1);
+//            GL11.glRotatef((float)(-55 * 1), 1.0F, 0.0F, 0.0F);
+//            GL11.glRotatef(59.0F, 0.0F, 0.0F, 1.0F);
+//            GL11.glRotatef(96.0F, 0.0F, 1.0F, 0.0F);
+//            GL11.glRotatef(-30.0F, 0.0F, 1.0F, 0.0F);
+//            model.setRotationAngles(-10F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, player);
+//            GL11.glTranslatef(-0.3F, 0.0F, -0.7F);
+//            GL11.glRotatef(-40.0F, 0.0F, 1.0F, 0.0F);
+//            model.bipedRightArm.render(0.0525F);
+//            GL11.glRotatef(40.0F, 0.0F, 1.0F, 0.0F);
+//            model.setRotationAngles(28F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, player);
+//            model.bipedLeftArm.render(0.0625F);
+//            GL11.glPopMatrix();
+//        }
+////        else
+////        {
+////        	super.drawFirstPersonHand(player);
+////        }
+//    }
 
     private void renderEntityOnFire(Entity par1Entity, double par2, double par4, double par6, float par8)
     {
