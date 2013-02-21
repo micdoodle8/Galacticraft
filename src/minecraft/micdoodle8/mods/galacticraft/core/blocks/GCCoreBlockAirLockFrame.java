@@ -52,11 +52,11 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvanced
 
         	if (te instanceof GCCoreTileEntityAirLock)
         	{
-                if (((GCCoreTileEntityAirLock) te).active && !par1World.isBlockIndirectlyGettingPowered(par2, par3, par4))
+                if (((GCCoreTileEntityAirLock) te).active && !this.gettingPowered(par1World, par2, par3, par4))
                 {
                     par1World.scheduleBlockUpdate(par2, par3, par4, this.blockID, 4);
                 }
-                else if (!((GCCoreTileEntityAirLock) te).active && par1World.isBlockIndirectlyGettingPowered(par2, par3, par4))
+                else if (!((GCCoreTileEntityAirLock) te).active && this.gettingPowered(par1World, par2, par3, par4))
                 {
             		((GCCoreTileEntityAirLock) te).active = true;
                 }
@@ -75,9 +75,9 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvanced
         	{
         		((GCCoreTileEntityAirLock) te).updateState();
         		
-                if (!par1World.isBlockIndirectlyGettingPowered(par2, par3, par4))
+                if (!this.gettingPowered(par1World, par2, par3, par4))
                 {
-                    par1World.scheduleBlockUpdate(par2, par3, par4, this.blockID, 4);
+            		((GCCoreTileEntityAirLock) te).active = false;
                 }
                 else
                 {
@@ -96,7 +96,7 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvanced
         	
         	if (te instanceof GCCoreTileEntityAirLock)
         	{
-        		if (!par1World.isBlockIndirectlyGettingPowered(par2, par3, par4))
+        		if (!this.gettingPowered(par1World, par2, par3, par4))
                 {
             		((GCCoreTileEntityAirLock) te).active = false;
                 }
@@ -128,6 +128,38 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvanced
     {
     	return true;
     }
+	
+	private boolean gettingPowered(World par1World, int x, int y, int z)
+	{
+		int var1;
+		int var2;
+    	TileEntity te = par1World.getBlockTileEntity(x, y, z);
+    	
+    	if (te instanceof GCCoreTileEntityAirLock)
+    	{
+    		GCCoreTileEntityAirLock airLock = (GCCoreTileEntityAirLock) te;
+
+    		if (airLock.index == 0 || airLock.index == 1)
+    		{
+    			var1 = airLock.orientation == 0 ? 1 : 0;
+    			var2 = airLock.orientation;
+    			
+    			if (par1World.isBlockGettingPowered(x - var1, y, z - var2) || par1World.isBlockGettingPowered(x + var1, y, z + var2))
+    			{
+    				return false;
+    			}
+    		}
+    	}
+		
+		if (par1World.isBlockIndirectlyGettingPowered(x, y, z) || par1World.isBlockGettingPowered(x, y, z))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
     
 	@Override
     public String getTextureFile()
