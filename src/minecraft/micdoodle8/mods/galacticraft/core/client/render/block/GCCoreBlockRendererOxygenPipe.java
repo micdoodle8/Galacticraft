@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.render.block;
 
+import micdoodle8.mods.galacticraft.API.IConnectableToPipe;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -27,37 +28,37 @@ public class GCCoreBlockRendererOxygenPipe implements ISimpleBlockRenderingHandl
 		renderblocks.setRenderBounds(minSize, minSize, minSize, maxSize, maxSize, maxSize);
 		renderblocks.renderStandardBlock(block, x, y, z);
 		
-		if (iblockaccess.getBlockId(x - 1, y, z) == GCCoreBlocks.oxygenPipe.blockID || iblockaccess.getBlockId(x - 1, y, z) == GCCoreBlocks.airDistributor.blockID || iblockaccess.getBlockId(x - 1, y, z) == GCCoreBlocks.airDistributorActive.blockID || iblockaccess.getBlockId(x - 1, y, z) == GCCoreBlocks.blockAirCollector.blockID)
+		if (Block.blocksList[iblockaccess.getBlockId(x - 1, y, z)] instanceof IConnectableToPipe)
 		{
 			renderblocks.setRenderBounds(0.0F, minSize, minSize, minSize, maxSize, maxSize);
 			renderblocks.renderStandardBlock(block, x, y, z);
 		}
 
-		if (iblockaccess.getBlockId(x + 1, y, z) == GCCoreBlocks.oxygenPipe.blockID || iblockaccess.getBlockId(x + 1, y, z) == GCCoreBlocks.airDistributor.blockID || iblockaccess.getBlockId(x + 1, y, z) == GCCoreBlocks.airDistributorActive.blockID || iblockaccess.getBlockId(x + 1, y, z) == GCCoreBlocks.blockAirCollector.blockID)
+		if (Block.blocksList[iblockaccess.getBlockId(x + 1, y, z)] instanceof IConnectableToPipe)
 		{
 			renderblocks.setRenderBounds(maxSize, minSize, minSize, 1.0F, maxSize, maxSize);
 			renderblocks.renderStandardBlock(block, x, y, z);
 		}
 
-		if (iblockaccess.getBlockId(x, y - 1, z) == GCCoreBlocks.oxygenPipe.blockID || iblockaccess.getBlockId(x, y - 1, z) == GCCoreBlocks.airDistributor.blockID || iblockaccess.getBlockId(x, y - 1, z) == GCCoreBlocks.airDistributorActive.blockID || iblockaccess.getBlockId(x, y - 1, z) == GCCoreBlocks.blockAirCollector.blockID)
+		if (Block.blocksList[iblockaccess.getBlockId(x, y - 1, z)] instanceof IConnectableToPipe)
 		{
 			renderblocks.setRenderBounds(minSize, 0.0F, minSize, maxSize, minSize, maxSize);
 			renderblocks.renderStandardBlock(block, x, y, z);
 		}
 
-		if (iblockaccess.getBlockId(x, y + 1, z) == GCCoreBlocks.oxygenPipe.blockID || iblockaccess.getBlockId(x, y + 1, z) == GCCoreBlocks.airDistributor.blockID || iblockaccess.getBlockId(x, y + 1, z) == GCCoreBlocks.airDistributorActive.blockID || iblockaccess.getBlockId(x, y + 1, z) == GCCoreBlocks.blockAirCollector.blockID)
+		if (Block.blocksList[iblockaccess.getBlockId(x, y + 1, z)] instanceof IConnectableToPipe)
 		{
 			renderblocks.setRenderBounds(minSize, maxSize, minSize, maxSize, 1.0F, maxSize);
 			renderblocks.renderStandardBlock(block, x, y, z);
 		}
 
-		if (iblockaccess.getBlockId(x, y, z - 1) == GCCoreBlocks.oxygenPipe.blockID || iblockaccess.getBlockId(x, y, z - 1) == GCCoreBlocks.airDistributor.blockID || iblockaccess.getBlockId(x, y, z - 1) == GCCoreBlocks.airDistributorActive.blockID || iblockaccess.getBlockId(x, y, z - 1) == GCCoreBlocks.blockAirCollector.blockID)
+		if (Block.blocksList[iblockaccess.getBlockId(x, y, z - 1)] instanceof IConnectableToPipe)
 		{
 			renderblocks.setRenderBounds(minSize, minSize, 0.0F, maxSize, maxSize, minSize);
 			renderblocks.renderStandardBlock(block, x, y, z);
 		}
 
-		if (iblockaccess.getBlockId(x, y, z + 1) == GCCoreBlocks.oxygenPipe.blockID || iblockaccess.getBlockId(x, y, z + 1) == GCCoreBlocks.airDistributor.blockID || iblockaccess.getBlockId(x, y, z + 1) == GCCoreBlocks.airDistributorActive.blockID || iblockaccess.getBlockId(x, y, z + 1) == GCCoreBlocks.blockAirCollector.blockID)
+		if (Block.blocksList[iblockaccess.getBlockId(x, y, z + 1)] instanceof IConnectableToPipe)
 		{
 			renderblocks.setRenderBounds(minSize, minSize, maxSize, maxSize, maxSize, 1.0F);
 			renderblocks.renderStandardBlock(block, x, y, z);

@@ -1,11 +1,12 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.client.model.block.GCCoreModelFan;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.ForgeDirection;
+import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreTileEntityOxygenCollector extends TileEntity
 {
@@ -53,84 +54,11 @@ public class GCCoreTileEntityOxygenCollector extends TileEntity
 		}
 		
 		this.currentPower = power / 5.0D;
-
-//		if (!this.worldObj.isRemote)
-		{
-			final int[] idSet = new int[6];
-			
-			idSet[0] = this.worldObj.getBlockId(this.xCoord + 1, this.yCoord, this.zCoord);
-			idSet[1] = this.worldObj.getBlockId(this.xCoord - 1, this.yCoord, this.zCoord);
-			idSet[2] = this.worldObj.getBlockId(this.xCoord, this.yCoord, this.zCoord + 1);
-			idSet[3] = this.worldObj.getBlockId(this.xCoord, this.yCoord, this.zCoord - 1);
-			idSet[4] = this.worldObj.getBlockId(this.xCoord, this.yCoord + 1, this.zCoord);
-			idSet[5] = this.worldObj.getBlockId(this.xCoord, this.yCoord - 1, this.zCoord);
-			
-			TileEntity tile;
-
-			for (final int element : idSet) {
-				if (idSet[0] == GCCoreBlocks.oxygenPipe.blockID)
-				{
-					tile = this.worldObj.getBlockTileEntity(this.xCoord + 1, this.yCoord, this.zCoord);
-					if (tile != null && tile instanceof GCCoreTileEntityOxygenPipe)
-					{
-						((GCCoreTileEntityOxygenPipe)tile).setOxygenInPipe(this.currentPower);
-						((GCCoreTileEntityOxygenPipe)tile).addSource(this);
-						((GCCoreTileEntityOxygenPipe)tile).setIndexFromCollector(1);
-					}
-				}
-				if (idSet[1] == GCCoreBlocks.oxygenPipe.blockID)
-				{
-					tile = this.worldObj.getBlockTileEntity(this.xCoord - 1, this.yCoord, this.zCoord);
-					if (tile != null && tile instanceof GCCoreTileEntityOxygenPipe)
-					{
-						((GCCoreTileEntityOxygenPipe)tile).setOxygenInPipe(this.currentPower);
-						((GCCoreTileEntityOxygenPipe)tile).addSource(this);
-						((GCCoreTileEntityOxygenPipe)tile).setIndexFromCollector(1);
-					}
-				}
-				if (idSet[2] == GCCoreBlocks.oxygenPipe.blockID)
-				{
-					tile = this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord + 1);
-					if (tile != null && tile instanceof GCCoreTileEntityOxygenPipe)
-					{
-						((GCCoreTileEntityOxygenPipe)tile).setOxygenInPipe(this.currentPower);
-						((GCCoreTileEntityOxygenPipe)tile).addSource(this);
-						((GCCoreTileEntityOxygenPipe)tile).setIndexFromCollector(1);
-					}
-				}
-				if (idSet[3] == GCCoreBlocks.oxygenPipe.blockID)
-				{
-					tile = this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord - 1);
-					if (tile != null && tile instanceof GCCoreTileEntityOxygenPipe)
-					{
-						((GCCoreTileEntityOxygenPipe)tile).setOxygenInPipe(this.currentPower);
-						((GCCoreTileEntityOxygenPipe)tile).addSource(this);
-						((GCCoreTileEntityOxygenPipe)tile).setIndexFromCollector(1);
-					}
-				}
-				if (idSet[4] == GCCoreBlocks.oxygenPipe.blockID)
-				{
-					tile = this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord + 1, this.zCoord);
-					if (tile != null && tile instanceof GCCoreTileEntityOxygenPipe)
-					{
-						((GCCoreTileEntityOxygenPipe)tile).setOxygenInPipe(this.currentPower);
-						((GCCoreTileEntityOxygenPipe)tile).addSource(this);
-						((GCCoreTileEntityOxygenPipe)tile).setIndexFromCollector(1);
-					}
-				}
-				if (idSet[5] == GCCoreBlocks.oxygenPipe.blockID)
-				{
-					tile = this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord - 1, this.zCoord);
-					if (tile != null && tile instanceof GCCoreTileEntityOxygenPipe)
-					{
-						((GCCoreTileEntityOxygenPipe)tile).setOxygenInPipe(this.currentPower);
-						((GCCoreTileEntityOxygenPipe)tile).addSource(this);
-						((GCCoreTileEntityOxygenPipe)tile).setIndexFromCollector(1);
-					}
-				}
-			}
-		}
 		
+		for (int i = 0; i < ForgeDirection.values().length; i++)
+    	{
+			this.updateAdjacentPipe(ForgeDirection.getOrientation(i).offsetX, ForgeDirection.getOrientation(i).offsetY, ForgeDirection.getOrientation(i).offsetZ);
+    	}
 	}
 	
 	@Override
@@ -147,5 +75,17 @@ public class GCCoreTileEntityOxygenCollector extends TileEntity
 		super.writeToNBT(par1NBTTagCompound);
 		
         par1NBTTagCompound.setDouble("power", this.currentPower);
+	}
+
+	public void updateAdjacentPipe(int xOffset, int yOffset, int zOffset)
+	{
+		TileEntity tile = this.worldObj.getBlockTileEntity(this.xCoord + xOffset, this.yCoord + yOffset, this.zCoord + zOffset);
+		
+		if (tile != null && tile instanceof GCCoreTileEntityOxygenPipe)
+		{
+			((GCCoreTileEntityOxygenPipe)tile).setOxygenInPipe(this.currentPower);
+			((GCCoreTileEntityOxygenPipe)tile).addSource(this);
+			((GCCoreTileEntityOxygenPipe)tile).setIndexFromCollector(1);
+		}
 	}
 }

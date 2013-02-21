@@ -26,7 +26,6 @@ public class GCCoreBlocks
 	public static GCCoreBlockUnlitTorch unlitTorch;
 	public static GCCoreBlockUnlitTorch unlitTorchLit;
 	public static GCCoreBlockOxygenDistributor airDistributor;
-	public static GCCoreBlockOxygenDistributor airDistributorActive;
 	public static GCCoreBlockOxygenPipe oxygenPipe;
 	public static Block blockOres;
 	public static Block blockAirCollector;
@@ -46,7 +45,6 @@ public class GCCoreBlocks
 		GCCoreBlocks.unlitTorch = (GCCoreBlockUnlitTorch) 					new GCCoreBlockUnlitTorch 			(GCCoreConfigManager.idBlockUnlitTorch,             	11, false)				.setHardness(0.0F)								.setLightValue(0.2F)							.setCreativeTab((CreativeTabs)null)					.setStepSound(Block.soundWoodFootstep)					.setBlockName("unlitTorch");
 		GCCoreBlocks.unlitTorchLit = (GCCoreBlockUnlitTorch) 				new GCCoreBlockUnlitTorch 			(GCCoreConfigManager.idBlockUnlitTorchLit,             	11, true)				.setHardness(0.0F)								.setLightValue(0.9375F)							.setCreativeTab((CreativeTabs)null)					.setStepSound(Block.soundWoodFootstep)					.setBlockName("unlitTorchLit");
 		GCCoreBlocks.airDistributor = (GCCoreBlockOxygenDistributor)		new GCCoreBlockOxygenDistributor	(GCCoreConfigManager.idBlockAirDistributor, 			false)					.setHardness(3.5F)																				.setCreativeTab(GalacticraftCore.galacticraftTab)	.setStepSound(Block.soundStoneFootstep)					.setBlockName("distributor");
-		GCCoreBlocks.airDistributorActive = (GCCoreBlockOxygenDistributor)	new GCCoreBlockOxygenDistributor	(GCCoreConfigManager.idBlockAirDistributorActive, 		true)					.setHardness(3.5F)																				.setCreativeTab((CreativeTabs)null)					.setStepSound(Block.soundStoneFootstep)					.setBlockName("distributorActive");
 		GCCoreBlocks.oxygenPipe = (GCCoreBlockOxygenPipe)					new GCCoreBlockOxygenPipe			(GCCoreConfigManager.idBlockAirPipe, 					17)						.setHardness(0.3F)																				.setCreativeTab(GalacticraftCore.galacticraftTab)  	.setStepSound(Block.soundGlassFootstep)                 .setBlockName("oxygenPipe");
 		Item.itemsList[GCCoreBlocks.blockOres.blockID] = 					new GCCoreItemBlockOre				(GCCoreBlocks.blockOres.blockID - 256)																																																														.setItemName("blockores");
 		GCCoreBlocks.blockAirCollector = 									new GCCoreBlockOxygenCollector		(GCCoreConfigManager.idBlockAirCollector, 				8)						.setHardness(3.5F)  	  																		.setCreativeTab(GalacticraftCore.galacticraftTab) 	.setStepSound(Block.soundStoneFootstep)					.setBlockName("oxygenCollector");
@@ -79,7 +77,6 @@ public class GCCoreBlocks
 		GameRegistry.registerBlock(GCCoreBlocks.unlitTorchLit);
 		GameRegistry.registerBlock(GCCoreBlocks.breatheableAir);
 		GameRegistry.registerBlock(GCCoreBlocks.airDistributor);
-		GameRegistry.registerBlock(GCCoreBlocks.airDistributorActive);
 		GameRegistry.registerBlock(GCCoreBlocks.oxygenPipe);
 		GameRegistry.registerBlock(GCCoreBlocks.blockAirCollector);
 		GameRegistry.registerBlock(GCCoreBlocks.rocketBench);
@@ -95,7 +92,6 @@ public class GCCoreBlocks
 		GCCoreBlocks.addName(GCCoreBlocks.unlitTorch);
 		GCCoreBlocks.addName(GCCoreBlocks.unlitTorchLit);
 		GCCoreBlocks.addName(GCCoreBlocks.airDistributor);
-		GCCoreBlocks.addName(GCCoreBlocks.airDistributorActive);
 		GCCoreBlocks.addName(GCCoreBlocks.oxygenPipe);
 		GCCoreBlocks.addNameWithMetadata("tile.blockores.aluminiumearth.name");
 		GCCoreBlocks.addNameWithMetadata("tile.blockores.copperearth.name");

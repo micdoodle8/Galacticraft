@@ -2,20 +2,20 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.API.IConnectableToPipe;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenDistributor;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenPipe;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -23,11 +23,9 @@ import net.minecraft.world.World;
  *  All rights reserved.
  *
  */
-public class GCCoreBlockOxygenDistributor extends BlockContainer
+public class GCCoreBlockOxygenDistributor extends BlockContainer implements IConnectableToPipe
 {
     private final Random distributorRand = new Random();
-    
-	protected boolean isActive;
     
     private static boolean keepDistributorInventory = false;
 	
@@ -35,7 +33,6 @@ public class GCCoreBlockOxygenDistributor extends BlockContainer
 	{
 		super(par1, Material.rock);
 		this.blockIndexInTexture = 22;
-		this.isActive = isActive;
 		this.setRequiresSelfNotify();
 	}
 
@@ -104,12 +101,12 @@ public class GCCoreBlockOxygenDistributor extends BlockContainer
         }
     }
 
-    @Override
-	public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
-    {
-        par5EntityPlayer.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiAirDistributor, par1World, par2, par3, par4);
-        return true;
-    }
+//    @Override
+//	public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
+//    {
+//        par5EntityPlayer.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiAirDistributor, par1World, par2, par3, par4);
+//        return true;
+//    }
 
     @Override
 	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLiving par5EntityLiving)
@@ -136,56 +133,6 @@ public class GCCoreBlockOxygenDistributor extends BlockContainer
             par1World.setBlockMetadataWithNotify(par2, par3, par4, 4);
         }
     }
-
-    @Override
-	public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6)
-    {
-    	if (!GCCoreBlockOxygenDistributor.keepDistributorInventory)
-    	{
-    		final GCCoreTileEntityOxygenDistributor var7 = (GCCoreTileEntityOxygenDistributor)par1World.getBlockTileEntity(par2, par3, par4);
-
-            if (var7 != null)
-            {
-                for (int var8 = 0; var8 < var7.getSizeInventory(); ++var8)
-                {
-                    final ItemStack var9 = var7.getStackInSlot(var8);
-
-                    if (var9 != null)
-                    {
-                        final float var10 = this.distributorRand.nextFloat() * 0.8F + 0.1F;
-                        final float var11 = this.distributorRand.nextFloat() * 0.8F + 0.1F;
-                        final float var12 = this.distributorRand.nextFloat() * 0.8F + 0.1F;
-
-                        while (var9.stackSize > 0)
-                        {
-                            int var13 = this.distributorRand.nextInt(21) + 10;
-
-                            if (var13 > var9.stackSize)
-                            {
-                                var13 = var9.stackSize;
-                            }
-
-                            var9.stackSize -= var13;
-                            final EntityItem var14 = new EntityItem(par1World, par2 + var10, par3 + var11, par4 + var12, new ItemStack(var9.itemID, var13, var9.getItemDamage()));
-
-                            if (var9.hasTagCompound())
-                            {
-                                var14.getEntityItem().setTagCompound((NBTTagCompound)var9.getTagCompound().copy());
-                            }
-
-                            final float var15 = 0.05F;
-                            var14.motionX = (float)this.distributorRand.nextGaussian() * var15;
-                            var14.motionY = (float)this.distributorRand.nextGaussian() * var15 + 0.2F;
-                            var14.motionZ = (float)this.distributorRand.nextGaussian() * var15;
-                            par1World.spawnEntityInWorld(var14);
-                        }
-                    }
-                }
-            }
-    	}
-    	
-        super.breakBlock(par1World, par2, par3, par4, par5, par6);
-    }
     
     public void removeAirBlocks(World world, int x, int y, int z)
     {
@@ -203,35 +150,6 @@ public class GCCoreBlockOxygenDistributor extends BlockContainer
 				}
 			}
 		}
-    }
-
-    public static void updateDistributorState(boolean activate, World par1World, int x, int y, int z)
-    {
-    	if (!par1World.isRemote)
-    	{
-    		final int var5 = par1World.getBlockMetadata(x, y, z);
-            final TileEntity var6 = par1World.getBlockTileEntity(x, y, z);
-            GCCoreBlockOxygenDistributor.keepDistributorInventory = true;
-
-            if (activate)
-            {
-                par1World.setBlockWithNotify(x, y, z, GCCoreBlocks.airDistributorActive.blockID);
-            }
-            else
-            {
-                par1World.setBlockWithNotify(x, y, z, GCCoreBlocks.airDistributor.blockID);
-                GCCoreBlocks.airDistributor.removeAirBlocks(par1World, x, y, z);
-            }
-
-            GCCoreBlockOxygenDistributor.keepDistributorInventory = false;
-            par1World.setBlockMetadataWithNotify(x, y, z, var5);
-
-            if (var6 != null)
-            {
-                var6.validate();
-                par1World.setBlockTileEntity(x, y, z, var6);
-            }
-    	}
     }
     
 	@Override
