@@ -2,10 +2,11 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
 
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockOxygenDistributor;
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLocation;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
@@ -17,6 +18,7 @@ public class GCCoreTileEntityOxygenPipe extends TileEntity
 	private int indexFromCollector;
 	
 	private Set<GCCoreTileEntityOxygenCollector> sources = new HashSet<GCCoreTileEntityOxygenCollector>();
+	private List<GCCoreBlockLocation> preLoadSourceCoords;
 	
 	public void setOxygenInPipe(double d)
 	{
@@ -56,6 +58,21 @@ public class GCCoreTileEntityOxygenPipe extends TileEntity
 	@Override
 	public void updateEntity()
 	{
+		if (preLoadSourceCoords != null)
+		{
+			for (GCCoreBlockLocation location : this.preLoadSourceCoords)
+			{
+	            TileEntity tile = this.worldObj.getBlockTileEntity(location.chunkZPos, location.chunkZPos, location.chunkZPos);
+
+	            if (tile != null && tile instanceof GCCoreTileEntityOxygenCollector)
+	            {
+	                this.sources.add((GCCoreTileEntityOxygenCollector) tile);
+	            }
+			}
+			
+			this.preLoadSourceCoords = null;
+		}
+		
 		if (this.sources.size() == 0)
 		{
 			this.oxygenInPipe = 0.0D;
@@ -95,7 +112,7 @@ public class GCCoreTileEntityOxygenPipe extends TileEntity
     		{
     			final GCCoreTileEntityOxygenDistributor distributor = (GCCoreTileEntityOxygenDistributor)tile;
     			distributor.currentPower = 0D;
-    			GCCoreBlockOxygenDistributor.updateDistributorState(false, this.worldObj, distributor.xCoord, distributor.yCoord, distributor.zCoord);
+    			distributor.setActive(false);
     		}
     	}
 	}
@@ -127,9 +144,9 @@ public class GCCoreTileEntityOxygenPipe extends TileEntity
             if (source != null)
             {
                 var3 = new NBTTagCompound();
-                var3.setByte("X", (byte)source.xCoord);
-                var3.setByte("Y", (byte)source.yCoord);
-                var3.setByte("Z", (byte)source.zCoord);
+                var3.setInteger("X", source.xCoord);
+                var3.setInteger("Y", source.yCoord);
+                var3.setInteger("Z", source.zCoord);
                 par1NBTTagList.appendTag(var3);
             }
         }
@@ -140,20 +157,16 @@ public class GCCoreTileEntityOxygenPipe extends TileEntity
     public synchronized void readSourcesFromNBT(NBTTagList par1NBTTagList)
     {
         this.sources = new HashSet<GCCoreTileEntityOxygenCollector>();
+        this.preLoadSourceCoords = new ArrayList<GCCoreBlockLocation>();
 
         for (int var2 = 0; var2 < par1NBTTagList.tagCount(); ++var2)
         {
             final NBTTagCompound var3 = (NBTTagCompound)par1NBTTagList.tagAt(var2);
-            final int x = var3.getByte("X") & 255;
-            final int y = var3.getByte("Y") & 255;
-            final int z = var3.getByte("Z") & 255;
+            final int x = var3.getInteger("X");
+            final int y = var3.getInteger("Y");
+            final int z = var3.getInteger("Z");
             
-            TileEntity tile = this.worldObj.getBlockTileEntity(x, y, z);
-
-            if (tile != null && tile instanceof GCCoreTileEntityOxygenCollector)
-            {
-                this.sources.add((GCCoreTileEntityOxygenCollector) tile);
-            }
+            this.preLoadSourceCoords.add(new GCCoreBlockLocation(x, y, z));
         }
     }
 	
