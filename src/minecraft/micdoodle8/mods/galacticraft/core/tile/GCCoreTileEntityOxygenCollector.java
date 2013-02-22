@@ -1,18 +1,24 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import micdoodle8.mods.galacticraft.API.TileEntityOxygenSource;
 import micdoodle8.mods.galacticraft.core.client.model.block.GCCoreModelFan;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
-import cpw.mods.fml.common.FMLLog;
 
-public class GCCoreTileEntityOxygenCollector extends TileEntity
+public class GCCoreTileEntityOxygenCollector extends TileEntityOxygenSource
 {
-	public double currentPower;
+	protected double currentPower;
 
     public GCCoreModelFan fanModel = new GCCoreModelFan();
+
+	@Override
+	public double getPower() 
+	{
+		return this.currentPower;
+	}
 
     @Override
   	public void validate()

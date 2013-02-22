@@ -14,6 +14,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 
@@ -157,4 +158,15 @@ public class GCCoreBlockOxygenDistributor extends BlockContainer implements ICon
     {
     	return "/micdoodle8/mods/galacticraft/core/client/blocks/core.png";
     }
+
+	@Override
+	public boolean isConnectableOnSide(IBlockAccess blockAccess, int x, int y, int z, ForgeDirection side) 
+	{
+		if (side != ForgeDirection.UP && side != ForgeDirection.DOWN)
+		{
+			return true;
+		}
+
+		return false;
+	}
 }

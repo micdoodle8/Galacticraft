@@ -57,10 +57,6 @@ public class GCCoreTileEntityBreathableAir extends TileEntity
 					}
 				}
 			}
-			else
-			{
-				FMLLog.info("" + this.distributor.currentPower);
-			}
 		}
 	}
 	

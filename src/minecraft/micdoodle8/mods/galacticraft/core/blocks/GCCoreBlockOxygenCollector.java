@@ -77,7 +77,7 @@ public class GCCoreBlockOxygenCollector extends BlockContainer implements IConne
 		
 		if (par1IBlockAccess.getBlockTileEntity(par2, par3, par4) instanceof GCCoreTileEntityOxygenCollector)
 		{
-			if (((GCCoreTileEntityOxygenCollector)par1IBlockAccess.getBlockTileEntity(par2, par3, par4)).currentPower > 1)
+			if (((GCCoreTileEntityOxygenCollector)par1IBlockAccess.getBlockTileEntity(par2, par3, par4)).getPower() > 1)
 			{
 				active = true;
 			}
@@ -177,7 +177,7 @@ public class GCCoreBlockOxygenCollector extends BlockContainer implements IConne
     {
 		if (par1World.getBlockTileEntity(par2, par3, par4) instanceof GCCoreTileEntityOxygenCollector)
 		{
-			if (((GCCoreTileEntityOxygenCollector)par1World.getBlockTileEntity(par2, par3, par4)).currentPower > 1)
+			if (((GCCoreTileEntityOxygenCollector)par1World.getBlockTileEntity(par2, par3, par4)).getPower() > 1)
 			{
 				for (int var6 = 0; var6 < 10; ++var6)
 		        {
@@ -216,4 +216,15 @@ public class GCCoreBlockOxygenCollector extends BlockContainer implements IConne
     {
     	return "/micdoodle8/mods/galacticraft/core/client/blocks/core.png";
     }
+
+	@Override
+	public boolean isConnectableOnSide(IBlockAccess blockAccess, int x, int y, int z, ForgeDirection side) 
+	{
+		if (side != ForgeDirection.UP && side != ForgeDirection.DOWN)
+		{
+			return true;
+		}
+
+		return false;
+	}
 }
