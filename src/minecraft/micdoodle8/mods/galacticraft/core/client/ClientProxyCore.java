@@ -1568,8 +1568,8 @@ public class ClientProxyCore extends CommonProxyCore
     
     public static class GCKeyHandler extends KeyHandler
     {
-    	static KeyBinding tankRefill = new KeyBinding("Galacticraft Player Inventory", Keyboard.KEY_R);
-    	static KeyBinding galaxyMap = new KeyBinding("Galaxy Map", Keyboard.KEY_M);
+    	public static KeyBinding tankRefill = new KeyBinding("Galacticraft Player Inventory", Keyboard.KEY_R);
+    	public static KeyBinding galaxyMap = new KeyBinding("Galaxy Map", Keyboard.KEY_M);
     	public static KeyBinding openSpaceshipInv = new KeyBinding("Open Spaceship Inventory", Keyboard.KEY_F);
     	public static KeyBinding toggleAdvGoggles = new KeyBinding("Toggle Advanced Sensor Goggles", Keyboard.KEY_K);
 
@@ -1601,6 +1601,8 @@ public class ClientProxyCore extends CommonProxyCore
         		if (minecraft.currentScreen == null)
             	{
                 	final EntityPlayerSP player = minecraft.thePlayer;
+                	
+                	GCCoreUtil.getPlayerBaseClientFromPlayer(player).setUseTutorialText(false);
                 	
                     final Object[] toSend = {player.username};
                     PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 0, toSend));

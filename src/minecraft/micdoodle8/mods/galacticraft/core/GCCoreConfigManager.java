@@ -128,6 +128,7 @@ public class GCCoreConfigManager
 	public static int[] oreGenDimensions;
 	public static boolean disableSpaceshipParticles;
 	public static boolean disableSpaceshipGrief;
+	public static boolean disableTutorialItemText;
 	
 	private void setDefaultValues()
     {
@@ -230,6 +231,7 @@ public class GCCoreConfigManager
 	        GCCoreConfigManager.oreGenDimensions =						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "List of dimensions to generate GC ores in", 	dimensions)	.getIntList();
 	        GCCoreConfigManager.disableSpaceshipParticles = 			GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Spaceship Particles",		false)		.getBoolean(false);
 	        GCCoreConfigManager.disableSpaceshipGrief = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Spaceship Explosion",		false)		.getBoolean(false);
+	        GCCoreConfigManager.disableTutorialItemText = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Tutorial Item Info Text",	false)		.getBoolean(false);
 		}
 		catch (final Exception e)
 		{
