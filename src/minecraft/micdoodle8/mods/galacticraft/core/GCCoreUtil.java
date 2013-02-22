@@ -348,18 +348,18 @@ public class GCCoreUtil
 			'X', "ingotTitanium"
 		}));
 		
-		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreBlocks.decorationBlocks, 1, 3), new Object[] {
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreBlocks.decorationBlocks, 4, 3), new Object[] {
 			"   ",
 			" XY",
 			"   ",
-			'X', Block.stone, 'Y', "ingotAluminium"
+			'X', new ItemStack(Block.stone, 4, 0), 'Y', "ingotAluminium"
 		}));
 		
-		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4), new Object[] {
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreBlocks.decorationBlocks, 4, 4), new Object[] {
 			"   ",
 			" X ",
 			" Y ",
-			'X', Block.stone, 'Y', "ingotAluminium"
+			'X', new ItemStack(Block.stone, 4, 0), 'Y', "ingotAluminium"
 		}));
 		
 		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreBlocks.airLockFrame, 2), new Object[] {
