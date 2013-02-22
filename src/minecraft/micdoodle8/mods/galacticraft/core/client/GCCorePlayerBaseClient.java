@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.client;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.nbt.NBTTagCompound;
@@ -25,7 +26,7 @@ public class GCCorePlayerBaseClient extends PlayerBase
 	
 	private boolean usingParachute;
 	private boolean lastUsingParachute;
-	
+	private boolean showTutorialText = true;
 	public boolean usingAdvancedGoggles;
 	
 	public GCCorePlayerBaseClient(PlayerAPI var1)
@@ -161,6 +162,16 @@ public class GCCorePlayerBaseClient extends PlayerBase
 		super.onUpdate();
 	}
 	
+	public void setUseTutorialText(boolean b)
+	{
+		this.showTutorialText = b;
+	}
+	
+	public boolean getUseTutorialText()
+	{
+		return this.showTutorialText && !GCCoreConfigManager.disableTutorialItemText;
+	}
+	
 	public void setUsingGoggles(boolean b)
 	{
 		this.usingAdvancedGoggles = b;
@@ -203,6 +214,7 @@ public class GCCorePlayerBaseClient extends PlayerBase
     {
         this.setParachute(par1NBTTagCompound.getBoolean("usingParachute"));
         this.setUsingGoggles(par1NBTTagCompound.getBoolean("usingAdvGoggles"));
+        this.setUseTutorialText(par1NBTTagCompound.getBoolean("tutorialText"));
         
         super.readEntityFromNBT(par1NBTTagCompound);
     }
@@ -212,6 +224,7 @@ public class GCCorePlayerBaseClient extends PlayerBase
     {
         par1NBTTagCompound.setBoolean("usingParachute", this.getParachute());
         par1NBTTagCompound.setBoolean("usingAdvGoggles", this.getUsingGoggles());
+        par1NBTTagCompound.setBoolean("tutorialText", this.getUseTutorialText());
         
         super.writeEntityToNBT(par1NBTTagCompound);
     }
