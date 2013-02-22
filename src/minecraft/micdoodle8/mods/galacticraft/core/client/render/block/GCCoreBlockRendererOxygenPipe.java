@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.common.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
@@ -30,38 +31,68 @@ public class GCCoreBlockRendererOxygenPipe implements ISimpleBlockRenderingHandl
 		
 		if (Block.blocksList[iblockaccess.getBlockId(x - 1, y, z)] instanceof IConnectableToPipe)
 		{
-			renderblocks.setRenderBounds(0.0F, minSize, minSize, minSize, maxSize, maxSize);
-			renderblocks.renderStandardBlock(block, x, y, z);
+			IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[iblockaccess.getBlockId(x - 1, y, z)];
+			
+			if (pipe.isConnectableOnSide(iblockaccess, x, y, z, ForgeDirection.WEST))
+			{
+				renderblocks.setRenderBounds(0.0F, minSize, minSize, minSize, maxSize, maxSize);
+				renderblocks.renderStandardBlock(block, x, y, z);
+			}
 		}
 
 		if (Block.blocksList[iblockaccess.getBlockId(x + 1, y, z)] instanceof IConnectableToPipe)
 		{
-			renderblocks.setRenderBounds(maxSize, minSize, minSize, 1.0F, maxSize, maxSize);
-			renderblocks.renderStandardBlock(block, x, y, z);
+			IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[iblockaccess.getBlockId(x + 1, y, z)];
+			
+			if (pipe.isConnectableOnSide(iblockaccess, x, y, z, ForgeDirection.EAST))
+			{
+				renderblocks.setRenderBounds(maxSize, minSize, minSize, 1.0F, maxSize, maxSize);
+				renderblocks.renderStandardBlock(block, x, y, z);
+			}
 		}
 
 		if (Block.blocksList[iblockaccess.getBlockId(x, y - 1, z)] instanceof IConnectableToPipe)
 		{
-			renderblocks.setRenderBounds(minSize, 0.0F, minSize, maxSize, minSize, maxSize);
-			renderblocks.renderStandardBlock(block, x, y, z);
+			IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[iblockaccess.getBlockId(x, y - 1, z)];
+			
+			if (pipe.isConnectableOnSide(iblockaccess, x, y, z, ForgeDirection.DOWN))
+			{
+				renderblocks.setRenderBounds(minSize, 0.0F, minSize, maxSize, minSize, maxSize);
+				renderblocks.renderStandardBlock(block, x, y, z);
+			}
 		}
 
 		if (Block.blocksList[iblockaccess.getBlockId(x, y + 1, z)] instanceof IConnectableToPipe)
 		{
-			renderblocks.setRenderBounds(minSize, maxSize, minSize, maxSize, 1.0F, maxSize);
-			renderblocks.renderStandardBlock(block, x, y, z);
+			IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[iblockaccess.getBlockId(x, y + 1, z)];
+			
+			if (pipe.isConnectableOnSide(iblockaccess, x, y, z, ForgeDirection.UP))
+			{
+				renderblocks.setRenderBounds(minSize, maxSize, minSize, maxSize, 1.0F, maxSize);
+				renderblocks.renderStandardBlock(block, x, y, z);
+			}
 		}
 
 		if (Block.blocksList[iblockaccess.getBlockId(x, y, z - 1)] instanceof IConnectableToPipe)
 		{
-			renderblocks.setRenderBounds(minSize, minSize, 0.0F, maxSize, maxSize, minSize);
-			renderblocks.renderStandardBlock(block, x, y, z);
+			IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[iblockaccess.getBlockId(x, y, z - 1)];
+			
+			if (pipe.isConnectableOnSide(iblockaccess, x, y, z, ForgeDirection.NORTH))
+			{
+				renderblocks.setRenderBounds(minSize, minSize, 0.0F, maxSize, maxSize, minSize);
+				renderblocks.renderStandardBlock(block, x, y, z);
+			}
 		}
 
 		if (Block.blocksList[iblockaccess.getBlockId(x, y, z + 1)] instanceof IConnectableToPipe)
 		{
-			renderblocks.setRenderBounds(minSize, minSize, maxSize, maxSize, maxSize, 1.0F);
-			renderblocks.renderStandardBlock(block, x, y, z);
+			IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[iblockaccess.getBlockId(x, y, z + 1)];
+			
+			if (pipe.isConnectableOnSide(iblockaccess, x, y, z, ForgeDirection.SOUTH))
+			{
+				renderblocks.setRenderBounds(minSize, minSize, maxSize, maxSize, maxSize, 1.0F);
+				renderblocks.renderStandardBlock(block, x, y, z);
+			}
 		}
 	}
 
