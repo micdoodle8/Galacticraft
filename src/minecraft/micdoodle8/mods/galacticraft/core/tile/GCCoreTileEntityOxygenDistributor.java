@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
 
+import cpw.mods.fml.common.FMLLog;
+
 import micdoodle8.mods.galacticraft.API.TileEntityOxygenAcceptor;
 import micdoodle8.mods.galacticraft.API.TileEntityOxygenSource;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLocation;
@@ -162,11 +164,11 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityOxygenAcceptor
 						this.worldObj.setBlockWithNotify(x, y, z, GCCoreBlocks.breatheableAir.blockID);
 					}
 					
-					this.updateAdjacentOxygenAdd(x - this.xCoord, y - this.yCoord, z - this.zCoord);
+					this.updateAdjacentOxygenAdd(ForgeDirection.getOrientation(i).offsetX, ForgeDirection.getOrientation(i).offsetY, ForgeDirection.getOrientation(i).offsetZ);
 			    }
 				else if (!active)
 				{
-					this.updateAdjacentOxygenRemove(x - this.xCoord, y - this.yCoord, z - this.zCoord);
+					this.updateAdjacentOxygenRemove(x, y, z);
 				}
 	    	}
 		}
@@ -223,13 +225,12 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityOxygenAcceptor
 	public void updateAdjacentOxygenAdd(int xOffset, int yOffset, int zOffset)
 	{
 		TileEntity tile = this.worldObj.getBlockTileEntity(this.xCoord + xOffset, this.yCoord + yOffset, this.zCoord + zOffset);
-		
+
 		if (tile != null && tile instanceof GCCoreTileEntityBreathableAir)
 		{
 			GCCoreTileEntityBreathableAir air = (GCCoreTileEntityBreathableAir) tile;
-			
-			// TODO add to list, not just set it as only distributor
-			air.setDistributor(this);
+
+			air.addDistributor(this);
 		}
 	}
 	
@@ -240,9 +241,8 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityOxygenAcceptor
 		if (tile != null && tile instanceof GCCoreTileEntityBreathableAir)
 		{
 			GCCoreTileEntityBreathableAir air = (GCCoreTileEntityBreathableAir) tile;
-			
-			// TODO remove from list, not just set it as only distributor
-//			air.setDistributor(this);
+
+			air.removeDistributor(this);
 		}
 	}
 	

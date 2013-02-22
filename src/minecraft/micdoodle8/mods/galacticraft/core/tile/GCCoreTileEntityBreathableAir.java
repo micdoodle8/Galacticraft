@@ -1,28 +1,40 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import java.util.HashSet;
+
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import net.minecraft.tileentity.TileEntity;
 import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreTileEntityBreathableAir extends TileEntity
 {
-	GCCoreTileEntityOxygenDistributor distributor;
+	GCCoreTileEntityOxygenDistributor closestDistributor;
+	private HashSet<GCCoreTileEntityOxygenDistributor> distributors = new HashSet<GCCoreTileEntityOxygenDistributor>();
+	private HashSet<GCCoreTileEntityBreathableAir> connectedAir = new HashSet<GCCoreTileEntityBreathableAir>();
 	
 	@Override
 	public void updateEntity()
 	{
-		if (this.distributor != null)
+		if (this.worldObj.isRemote)
 		{
-			
-			final TileEntity distributorTile = this.worldObj.getBlockTileEntity(this.distributor.xCoord, this.distributor.yCoord, this.distributor.zCoord);
+			return;
+		}
+		
+		FMLLog.info("bbb " + this.getDistributors().size());
+		
+		this.closestDistributor = getClosestDistributor();
+		
+		if (this.closestDistributor != null)
+		{
+			final TileEntity distributorTile = this.worldObj.getBlockTileEntity(this.closestDistributor.xCoord, this.closestDistributor.yCoord, this.closestDistributor.zCoord);
 			
 			if (distributorTile == null || !(distributorTile instanceof GCCoreTileEntityOxygenDistributor) || ((GCCoreTileEntityOxygenDistributor)distributorTile).currentPower < 1.0D)
 			{
-				this.distributor = null;
+				this.closestDistributor = null;
 			}
 		}
 		
-		if (this.distributor == null || this.distributor.currentPower < 1.0D)
+		if (this.closestDistributor == null || this.closestDistributor.currentPower < 1.0D)
 		{
 			if (!this.worldObj.isRemote)
 			{
@@ -32,9 +44,9 @@ public class GCCoreTileEntityBreathableAir extends TileEntity
 		}
 		else
 		{
-			final double distanceFromDistributor = this.distributor.getDistanceFrom2(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D);
+			double distanceFromDistributor = this.closestDistributor.getDistanceFrom2(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D);
 			
-			if (distanceFromDistributor < this.distributor.currentPower)
+			if (distanceFromDistributor < this.closestDistributor.currentPower)
 			{
 				for (int j = -1; j <= 1; j++)
 				{
@@ -50,7 +62,8 @@ public class GCCoreTileEntityBreathableAir extends TileEntity
 								
 								if (tile != null && tile instanceof GCCoreTileEntityBreathableAir)
 								{
-									((GCCoreTileEntityBreathableAir)tile).setDistributor(this.distributor);
+									this.connectedAir.add((GCCoreTileEntityBreathableAir) tile);
+									((GCCoreTileEntityBreathableAir) tile).setDistributors(getDistributors());
 								}
 							}
 						}
@@ -60,13 +73,62 @@ public class GCCoreTileEntityBreathableAir extends TileEntity
 		}
 	}
 	
-	public void setDistributor(GCCoreTileEntityOxygenDistributor distributor)
+	public void setDistributors(HashSet<GCCoreTileEntityOxygenDistributor> distributors)
 	{
-		this.distributor = distributor;
+		this.distributors = distributors;
 	}
 	
-	public GCCoreTileEntityOxygenDistributor getDistributor()
+	public HashSet<GCCoreTileEntityOxygenDistributor> getDistributors()
 	{
-		return this.distributor;
+		return this.distributors;
+	}
+	
+	private GCCoreTileEntityOxygenDistributor getClosestDistributor()
+	{
+		double distance = 5000;
+		GCCoreTileEntityOxygenDistributor closestDistributor = null;
+		
+		for (GCCoreTileEntityOxygenDistributor distributor : this.getDistributors())
+		{
+			double distanceFromDistributor = distributor.getDistanceFrom2(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D);
+			
+			if (distanceFromDistributor < distance && distributor.getActive())
+			{
+				distance = distanceFromDistributor;
+				closestDistributor = distributor;
+			}
+		}
+		
+		return closestDistributor;
+	}
+	
+	public void removeDistributor(GCCoreTileEntityOxygenDistributor distributor)
+	{
+		this.getDistributors().remove(distributor);
+		
+		if (this.connectedAir != null)
+		{
+			for (GCCoreTileEntityBreathableAir air : this.connectedAir)
+			{
+				air.getDistributors().remove(distributor);
+			}
+		}
+		
+		this.closestDistributor = getClosestDistributor();
+	}
+	
+	public void addDistributor(GCCoreTileEntityOxygenDistributor distributor)
+	{
+		this.getDistributors().add(distributor);
+		
+		if (this.connectedAir != null)
+		{
+			for (GCCoreTileEntityBreathableAir air : this.connectedAir)
+			{
+				air.getDistributors().add(distributor);
+			}
+		}
+		
+		this.closestDistributor = getClosestDistributor();
 	}
 }

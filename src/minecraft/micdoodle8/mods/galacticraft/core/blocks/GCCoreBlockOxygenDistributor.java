@@ -2,16 +2,17 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.Random;
 
+import cpw.mods.fml.common.FMLLog;
+
 import micdoodle8.mods.galacticraft.API.IConnectableToPipe;
-import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityBreathableAir;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenDistributor;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenPipe;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
@@ -32,10 +33,28 @@ public class GCCoreBlockOxygenDistributor extends BlockContainer implements ICon
 	
 	public GCCoreBlockOxygenDistributor(int par1, boolean isActive)
 	{
-		super(par1, Material.rock);
-		this.blockIndexInTexture = 22;
+		super(par1, 22, Material.rock);
 		this.setRequiresSelfNotify();
 	}
+	
+    @Override
+	public void breakBlock(World world, int x, int y, int z, int par5, int par6)
+    {
+    	for (int i = 0; i < ForgeDirection.values().length - 1; i++)
+    	{
+    		final TileEntity tile = world.getBlockTileEntity(x + ForgeDirection.getOrientation(i).offsetX, y + ForgeDirection.getOrientation(i).offsetY, z + ForgeDirection.getOrientation(i).offsetZ);
+    		final GCCoreTileEntityOxygenDistributor thisDistributor = (GCCoreTileEntityOxygenDistributor)world.getBlockTileEntity(x, y, z);
+    		
+    		if (tile != null && thisDistributor != null && tile instanceof GCCoreTileEntityBreathableAir)
+    		{
+    			final GCCoreTileEntityBreathableAir air = (GCCoreTileEntityBreathableAir)tile;
+
+				air.removeDistributor(thisDistributor);
+    		}
+    	}
+    	
+    	super.breakBlock(world, x, y, z, par5, par6);
+    }
 
 	@Override
 	public boolean renderAsNormalBlock()
@@ -60,13 +79,6 @@ public class GCCoreBlockOxygenDistributor extends BlockContainer implements ICon
 	{
 		return new GCCoreTileEntityOxygenDistributor();
 	}
-
-    @Override
-	public void onBlockAdded(World par1World, int par2, int par3, int par4)
-    {
-        super.onBlockAdded(par1World, par2, par3, par4);
-        this.setDefaultDirection(par1World, par2, par3, par4);
-    }
 
     private void setDefaultDirection(World par1World, int par2, int par3, int par4)
     {
