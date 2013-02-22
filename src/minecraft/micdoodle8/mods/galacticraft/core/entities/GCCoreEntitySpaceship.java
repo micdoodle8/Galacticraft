@@ -211,7 +211,7 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
     @Override
 	protected void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
-    	super.readFromNBT(par1NBTTagCompound);
+    	super.readEntityFromNBT(par1NBTTagCompound);
     	
         this.setSpaceshipType(par1NBTTagCompound.getInteger("Type"));
 
