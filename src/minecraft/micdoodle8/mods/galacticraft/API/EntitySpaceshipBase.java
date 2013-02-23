@@ -251,6 +251,11 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship
         	this.failRocket();
         }
         
+        if (this.getLaunched() != 1)
+        {
+        	this.motionX = this.motionY = this.motionZ = 0.0F;
+        }
+        
         this.moveEntity(this.motionX, this.motionY, this.motionZ);
         
         this.setRotation(this.rotationYaw, this.rotationPitch);
