@@ -1,7 +1,12 @@
 package micdoodle8.mods.galacticraft.core.client;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -11,6 +16,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import micdoodle8.mods.galacticraft.API.AdvancedAchievement;
 import micdoodle8.mods.galacticraft.API.IDetectableResource;
@@ -18,6 +25,7 @@ import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
 import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.API.IMapPlanet;
 import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
+import micdoodle8.mods.galacticraft.API.ISpaceship;
 import micdoodle8.mods.galacticraft.core.CommonProxyCore;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GCCoreUtil;
@@ -91,6 +99,7 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.particle.EntitySmokeFX;
+import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.settings.KeyBinding;
@@ -108,6 +117,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldProviderSurface;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -119,8 +129,10 @@ import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry.KeyHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.IScheduledTickHandler;
 import cpw.mods.fml.common.ITickHandler;
+import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -506,6 +518,8 @@ public class ClientProxyCore extends CommonProxyCore
             {
             	final Class[] decodeAs = {String.class};
                 final Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
+                
+                FMLClientHandler.instance().getClient().gameSettings.thirdPersonView = 1;
 
             	player.sendChatToPlayer("SPACE - Launch");
             	player.sendChatToPlayer("A / D  - Turn left-right");
@@ -742,6 +756,7 @@ public class ClientProxyCore extends CommonProxyCore
     {
     	public static int airRemaining;
     	public static int airRemaining2;
+        public static boolean checkedVersion = true;
     	
     	@Override
     	public void tickStart(EnumSet<TickType> type, Object... tickData)
@@ -756,26 +771,32 @@ public class ClientProxyCore extends CommonProxyCore
     		
     		if (type.equals(EnumSet.of(TickType.CLIENT)))
             {
-//    	        for (int j = 0; j < GalacticraftCore.gcPlayers.size(); ++j)
-//    	        {
-//    				final GCCoreEntityPlayer playerBase = (GCCoreEntityPlayer) GalacticraftCore.gcPlayers.get(j);
-//
-//    				if (playerBase != null && player != null && player.username.equals(playerBase.getPlayer().username))
-//    				{
-//    					if (playerBase.getPlayer() != null && playerBase.getPlayer().getDataWatcher() != null && playerBase.getPlayer().getDataWatcher().getWatchableObjectInt(23) == 1)
-//    					{
-//    	    				player.motionY = -0.3;
-//    	    				player.motionX *= 0.1;
-//    	    				player.motionZ *= 0.1;
-//
-//    	    				if (player.onGround)
-//    	    				{
-//    	    					playerBase.getPlayer().getDataWatcher().updateObject(23, Integer.valueOf(0));
-//    	    					minecraft.gameSettings.thirdPersonView = 0;
-//    	    				}
-//    					}
-//    				}
-//    	        }
+    	    	if (world != null && checkedVersion)
+    	    	{
+    	    		checkVersion();
+    	    		checkedVersion = false;
+    	    	}
+    	    	
+    			if (player != null && player.ridingEntity != null && player.ridingEntity instanceof ISpaceship)
+    			{
+    				this.zoom(15.0F);
+    			}
+    			else
+    			{
+    				this.zoom(4.0F);
+    			}
+    			
+    			if (world != null && world.provider instanceof WorldProviderSurface)
+    			{
+    				if (world.provider.getSkyRenderer() == null && player.ridingEntity != null && player.ridingEntity.posY >= 200)
+                    {
+    					world.provider.setSkyRenderer(new GCCoreSkyProviderOverworld());
+                    }
+    				else if (world.provider.getSkyRenderer() != null && world.provider.getSkyRenderer() instanceof GCCoreSkyProviderOverworld && (player.ridingEntity == null || player.ridingEntity.posY < 200))
+    				{
+    					world.provider.setSkyRenderer(null);
+    				}
+    			}
     			
     			if (player != null && player.ridingEntity != null && player.ridingEntity instanceof GCCoreEntityControllable)
     			{
@@ -929,6 +950,80 @@ public class ClientProxyCore extends CommonProxyCore
             	}
             }
         }
+
+        public static int remoteMajVer;
+        public static int remoteMinVer;
+        public static int remoteBuildVer;
+        public static int localMajVer = 0;
+        public static int localMinVer = 0;
+        public static int localBuildVer = 9;
+    	
+    	private static void checkVersion()
+        {
+        	try
+        	{
+        		URL url = new URL("http://micdoodle8.com/galacticraft/version.html");
+
+        		BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
+        		Pattern pat = Pattern.compile("Version=");
+        		Matcher matcher;
+        		String str;
+        		String str2[] = null;
+
+        		while ((str = in.readLine()) != null)
+        		{
+    	    		if (str.contains("Version"))
+    	    		{
+    	        		str = str.replace("Version=", "");
+    	        		
+			    		str2 = str.split("#");
+    		    		
+    		    		if (str2 != null && str2.length == 3)
+    		    		{
+    		    			remoteMajVer = Integer.parseInt(str2[0]);
+    		    			remoteMinVer = Integer.parseInt(str2[1]);
+    		    			remoteBuildVer = Integer.parseInt(str2[2]);
+    		    		}
+
+    		    		if ((remoteMajVer > localMajVer) || (remoteMajVer == localMajVer && remoteMinVer > localMinVer) || (remoteMajVer == localMajVer && remoteMinVer == localMinVer && remoteBuildVer > localBuildVer))
+    		    		{
+    		    			FMLClientHandler.instance().getClient().thePlayer.addChatMessage("\u00a77New \u00a73Galacticraft \u00a77version available! v" + String.valueOf(remoteMajVer) + "." + String.valueOf(remoteMinVer) + "." + String.valueOf(remoteBuildVer) + " \u00a71http://micdoodle8.com/");
+    		    		}
+    	    		}
+        		}
+        	}
+        	catch (MalformedURLException e)
+        	{
+        		e.printStackTrace();
+        		FMLClientHandler.instance().getClient().thePlayer.addChatMessage("[Galacticraft] Update Check Failed!");
+        		FMLLog.info("Galacticraft Update Check Failure - MalformedURLException");
+        	}
+        	catch (IOException e)
+        	{
+        		e.printStackTrace();
+        		FMLClientHandler.instance().getClient().thePlayer.addChatMessage("[Galacticraft] Update Check Failed!");
+        		FMLLog.info("Galacticraft Update Check Failure - IOException");
+        	}
+        	catch (NumberFormatException e)
+        	{
+        		e.printStackTrace();
+        		FMLClientHandler.instance().getClient().thePlayer.addChatMessage("[Galacticraft] Update Check Failed!");
+        		FMLLog.info("Galacticraft Update Check Failure - NumberFormatException");
+        	}
+        }
+
+    	public static void zoom(float value)
+    	{
+			try
+			{
+		        ObfuscationReflectionHelper.setPrivateValue(EntityRenderer.class, FMLClientHandler.instance().getClient().entityRenderer, value, 13);
+		        ObfuscationReflectionHelper.setPrivateValue(EntityRenderer.class, FMLClientHandler.instance().getClient().entityRenderer, value, 14);
+			}
+			catch (Exception ex)
+			{
+		        ex.printStackTrace();
+			}
+    	}
     	
 		int i = 0;
 
@@ -1589,6 +1684,10 @@ public class ClientProxyCore extends CommonProxyCore
         {
         	final Minecraft minecraft = FMLClientHandler.instance().getClient();
         	
+        	final EntityPlayerSP player = minecraft.thePlayer;
+        	
+        	final GCCorePlayerBaseClient playerBase = GCCoreUtil.getPlayerBaseClientFromPlayer(player);
+        	
         	final boolean handled = true;
         	
         	if(minecraft.currentScreen != null || tickEnd)
@@ -1598,11 +1697,9 @@ public class ClientProxyCore extends CommonProxyCore
         	
         	if (kb.keyCode == GCKeyHandler.tankRefill.keyCode)
         	{
-        		if (minecraft.currentScreen == null)
+        		if (minecraft.currentScreen == null && playerBase != null)
             	{
-                	final EntityPlayerSP player = minecraft.thePlayer;
-                	
-                	GCCoreUtil.getPlayerBaseClientFromPlayer(player).setUseTutorialText(false);
+        			playerBase.setUseTutorialText(false);
                 	
                     final Object[] toSend = {player.username};
                     PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 0, toSend));
@@ -1613,23 +1710,21 @@ public class ClientProxyCore extends CommonProxyCore
         	{
         		if (minecraft.currentScreen == null)
         		{
-                	final EntityPlayerSP player = minecraft.thePlayer;
         			player.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiGalaxyMap, minecraft.theWorld, (int)player.posX, (int)player.posY, (int)player.posZ);
         		}
         	}
         	else if (kb.keyCode == GCKeyHandler.openSpaceshipInv.keyCode)
         	{
-            	final EntityPlayerSP player = minecraft.thePlayer;
-            	
                 final Object[] toSend = {player.username};
                 PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 6, toSend));
         	    player.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiSpaceshipInventory, minecraft.theWorld, (int)player.posX, (int)player.posY, (int)player.posZ);
         	}
         	else if (kb.keyCode == GCKeyHandler.toggleAdvGoggles.keyCode)
         	{
-            	final EntityPlayerSP player = minecraft.thePlayer;
-            	
-				GCCoreUtil.getPlayerBaseClientFromPlayer(player).toggleGoggles();
+        		if (playerBase != null)
+        		{
+            		playerBase.toggleGoggles();
+        		}
             }
         	
 //        	int key = -1;
