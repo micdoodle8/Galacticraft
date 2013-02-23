@@ -116,7 +116,7 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
         {
         	double d = this.timeSinceLaunch / 250;
         	
-        	d = Math.min(d, 3);
+        	d = Math.min(d, 1);
         	
         	if (d != 0.0)
         	{

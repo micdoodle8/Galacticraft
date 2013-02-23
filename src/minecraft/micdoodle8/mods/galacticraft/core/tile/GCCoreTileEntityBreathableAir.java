@@ -20,8 +20,6 @@ public class GCCoreTileEntityBreathableAir extends TileEntity
 			return;
 		}
 		
-		FMLLog.info("bbb " + this.getDistributors().size());
-		
 		this.closestDistributor = getClosestDistributor();
 		
 		if (this.closestDistributor != null)
