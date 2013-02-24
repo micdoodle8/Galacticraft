@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.mars.entities;
 
 import java.util.HashSet;
+import java.util.List;
 
 import micdoodle8.mods.galacticraft.API.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.API.ISpaceship;
@@ -115,5 +116,11 @@ public class GCMarsEntitySpaceshipTier2 extends EntitySpaceshipBase implements I
 	public int getPreLaunchWait() 
 	{
 		return 50;
+	}
+
+	@Override
+	public List<ItemStack> getItemsDropped() 
+	{
+		return null;
 	}
 }

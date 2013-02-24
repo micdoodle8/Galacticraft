@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.API;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,8 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
@@ -19,6 +22,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -85,7 +89,60 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship
     @Override
 	public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
     {
-        return true;
+        if (!this.worldObj.isRemote && !this.isDead)
+        {
+            if (this.isEntityInvulnerable())
+            {
+                return false;
+            }
+            else
+            {
+                this.setRollingDirection(-this.getRollingDirection());
+                this.setRollingAmplitude(10);
+                this.setBeenAttacked();
+                this.setDamage(this.getDamage() + par2 * 10);
+
+                if (par1DamageSource.getEntity() instanceof EntityPlayer && ((EntityPlayer)par1DamageSource.getEntity()).capabilities.isCreativeMode)
+                {
+                    this.setDamage(100);
+                }
+
+                if (this.getDamage() > 90)
+                {
+                    if (this.riddenByEntity != null)
+                    {
+                        this.riddenByEntity.mountEntity(this);
+                    }
+
+                    this.setDead();
+                    dropShipAsItem();
+                }
+
+                return true;
+            }
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    public void dropShipAsItem()
+    {
+    	if (this.getItemsDropped() == null)
+    	{
+    		return;
+    	}
+    	
+        for(ItemStack item : getItemsDropped())
+        {
+            entityDropItem(item, 0);
+        }
+    }
+
+    public List<ItemStack> getItemsDropped()
+    {
+    	return null;
     }
 
     @Override
@@ -243,6 +300,39 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship
         	this.rumble = (float) this.rand.nextInt(3) - 3;
         }
         
+        if (this.riddenByEntity != null)
+        {
+        	if (this.worldObj.isRemote)
+        	{
+            	((EntityPlayer)this.riddenByEntity).sendChatToPlayer("client " + this.rotationPitch);
+        	}
+        	else
+        	{
+            	((EntityPlayer)this.riddenByEntity).sendChatToPlayer("server " + this.rotationPitch);
+        	}
+        }
+        
+        float serverPitch = this.worldObj.isRemote ? 0.0F : this.rotationPitch;
+        float clientPitch = this.worldObj.isRemote ? this.rotationPitch : 0.0F;
+        
+        if (serverPitch != 0.0F && clientPitch != 0.0F)
+        {
+        	if (this.worldObj.isRemote)
+        	{
+        		this.rotationPitch = serverPitch;
+        	}
+        }
+        
+        if (this.rotationPitch > 90)
+        {
+        	this.rotationPitch = 90;
+        }
+        
+        if (this.rotationPitch < -90)
+        {
+        	this.rotationPitch = -90;
+        }
+        
         this.motionX = -(50 * Math.cos(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * 0.01 * Math.PI / 180.0D));
         this.motionZ = -(50 * Math.sin(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * 0.01 * Math.PI / 180.0D));
         
@@ -297,6 +387,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship
 	@SideOnly(Side.CLIENT)
     public void setPositionAndRotation2(double par1, double par3, double par5, float par7, float par8, int par9)
     {
+//    	super.setPositionAndRotation2(par1, par3, par5, par7, par8, par9);
     	this.setRotation(par7, par8);
     }
     

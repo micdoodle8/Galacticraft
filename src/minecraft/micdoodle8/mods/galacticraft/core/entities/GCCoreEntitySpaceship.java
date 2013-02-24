@@ -1,6 +1,8 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 import micdoodle8.mods.galacticraft.API.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
@@ -10,6 +12,7 @@ import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLaunchSmokeFX;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityOxygenFX;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.moon.GCMoonConfigManager;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.particle.EntitySmokeFX;
@@ -17,6 +20,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -423,5 +427,24 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
 	public int getPreLaunchWait() 
 	{
 		return 400;
+	}
+
+	@Override
+	public List<ItemStack> getItemsDropped() 
+	{
+        List<ItemStack> items = new ArrayList<ItemStack>();
+        items.add(new ItemStack(GCCoreItems.spaceship, 1, this.getSpaceshipType()));
+        
+        for (int i = 0; i < this.cargoItems.length; i++)
+        {
+        	ItemStack item = this.cargoItems[i];
+        	
+        	if (item != null)
+        	{
+        		items.add(item);
+        	}
+        }
+
+        return items;
 	}
 }
