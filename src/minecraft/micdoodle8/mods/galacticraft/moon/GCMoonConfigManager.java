@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.logging.Level;
 
 import net.minecraftforge.common.Configuration;
+import net.minecraftforge.common.Property;
 import cpw.mods.fml.common.FMLLog;
 
 /**
@@ -21,11 +22,10 @@ public class GCMoonConfigManager
 	// DIMENSIONS
 	public static int dimensionIDMoon;
 	
-	public static int idBlockMoonStone;
-	public static int idBlockMoonGrass;
-	public static int idBlockMoonDirt;
-	public static int idBlockOre;
+	public static int idBlock;
 	public static int idBlockCheese;
+	
+	public static Property blockIDProp;
 	
 	// ITEMS
 	public static int idItemCheeseCurd;
@@ -60,10 +60,9 @@ public class GCMoonConfigManager
 	        GCMoonConfigManager.idItemBlockCheese =					GCMoonConfigManager.configuration.get(Configuration.CATEGORY_ITEM, 									"idItemBlockCheese", 				10002)	.getInt(10002);
 	        GCMoonConfigManager.idItemMeteoricIronIngot =			GCMoonConfigManager.configuration.get(Configuration.CATEGORY_ITEM, 									"idItemMeteoricIronIngot", 			10003)	.getInt(10003);
 	        
-	        GCMoonConfigManager.idBlockMoonStone = 					GCMoonConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, 								"idBlockMoonStone", 				219)	.getInt(219);
-	        GCMoonConfigManager.idBlockMoonGrass = 					GCMoonConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, 								"idBlockMoonGrass", 				220)	.getInt(220);
-	        GCMoonConfigManager.idBlockMoonDirt = 					GCMoonConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, 								"idBlockMoonDirt", 					221)	.getInt(221);
-	        GCMoonConfigManager.idBlockOre = 						GCMoonConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, 								"idBlockMoonOre", 					223)	.getInt(223);
+	        GCMoonConfigManager.blockIDProp = 						GCMoonConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, 								"idBlockMoonOre", 					223);
+	        GCMoonConfigManager.blockIDProp.comment =				"Even though this is named Moon Ore, it's actually ore, stone, grass and dirt.";
+	        GCMoonConfigManager.idBlock = 							GCMoonConfigManager.blockIDProp.getInt(223);
 	        GCMoonConfigManager.idBlockCheese = 					GCMoonConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, 								"idBlockCheese", 					224)	.getInt(224);
 	        
 	        GCMoonConfigManager.disableCheeseMoon = 				GCMoonConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Cheese Ore Gen on Moon",		false)		.getBoolean(false);

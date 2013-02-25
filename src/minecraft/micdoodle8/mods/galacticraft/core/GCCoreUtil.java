@@ -1039,8 +1039,6 @@ public class GCCoreUtil
 	        {
 	        	return (GCCorePlayerBase) entry.getValue();
 	        }
-
-	        it.remove();
 	    }
         
         return null;
@@ -1063,8 +1061,6 @@ public class GCCoreUtil
 	        {
 	        	return (GCCorePlayerBaseClient) entry.getValue();
 	        }
-
-	        it.remove();
 	    }
         
         return null;

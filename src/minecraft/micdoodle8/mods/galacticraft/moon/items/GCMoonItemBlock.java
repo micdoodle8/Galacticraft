@@ -3,9 +3,9 @@ package micdoodle8.mods.galacticraft.moon.items;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
-public class GCMoonItemBlockOre extends ItemBlock
+public class GCMoonItemBlock extends ItemBlock
 {
-	public GCMoonItemBlockOre(int i)
+	public GCMoonItemBlock(int i)
 	{
 		super(i);
         this.setMaxDamage(0);
@@ -38,6 +38,21 @@ public class GCMoonItemBlockOre extends ItemBlock
 		case 2:
 		{
 			name = "cheesestone";
+			break;
+		}
+		case 3:
+		{
+			name = "moondirt";
+			break;
+		}
+		case 4:
+		{
+			name = "moonstone";
+			break;
+		}
+		case 5:
+		{
+			name = "moongrass";
 			break;
 		}
 		default:

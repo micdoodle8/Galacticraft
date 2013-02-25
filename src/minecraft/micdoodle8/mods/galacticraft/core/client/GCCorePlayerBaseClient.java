@@ -140,7 +140,7 @@ public class GCCorePlayerBaseClient extends PlayerBase
         {
             FMLClientHandler.instance().getClient().sndManager.playSound("player.parachute", (float)this.getPlayer().posX, (float)this.getPlayer().posY, (float)this.getPlayer().posZ, 0.95F + this.rand.nextFloat() * 0.1F, 1.0F);
         }
-		
+        
 		this.lastUsingParachute = this.usingParachute;
 	}
 	

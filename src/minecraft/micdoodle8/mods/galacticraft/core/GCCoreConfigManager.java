@@ -46,6 +46,9 @@ public class GCCoreConfigManager
 	public static int idBlockDecorationBlock;
 	public static int idBlockAirLockFrame;
 	public static int idBlockAirLockSeal;
+	public static int idBlockCrudeOilStill;
+	public static int idBlockCrudeOilMoving;
+	public static int idBlockRefinery;
 
 	// ITEMS
 	public static int idItemLightOxygenTank;
@@ -75,6 +78,8 @@ public class GCCoreConfigManager
 	public static int idItemParachute;
 	public static int idItemRocketFuelBucket;
 	public static int idItemFlagPole;
+	public static int idItemOilCanister;
+	public static int idItemOilExtractor;
 	
 	// ARMOR
 	public static int idArmorOxygenMask;
@@ -100,6 +105,7 @@ public class GCCoreConfigManager
 	public static int idGuiBuggyCraftingBench;
 	public static int idGuiGalaxyMap;
 	public static int idGuiSpaceshipInventory;
+	public static int idGuiRefinery;
 	
 	// ACHIEVEMENTS
 	public static int idAchievBase;
@@ -154,6 +160,9 @@ public class GCCoreConfigManager
 	        GCCoreConfigManager.idBlockDecorationBlock = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockDecorationBlock",				3363)		.getInt(3363);
 	        GCCoreConfigManager.idBlockAirLockFrame = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockAirLockFrame",					3364)		.getInt(3364);
 	        GCCoreConfigManager.idBlockAirLockSeal = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockAirLockSeal",					3365)		.getInt(3365);
+	        GCCoreConfigManager.idBlockCrudeOilMoving = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockCrudeOilMoving",				3366)		.getInt(3366);
+	        GCCoreConfigManager.idBlockCrudeOilStill = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockCrudeOilStill",					3367)		.getInt(3367);
+	        GCCoreConfigManager.idBlockRefinery = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockRefinery",                      3368)       .getInt(3368);
 	        
 	        GCCoreConfigManager.idItemLightOxygenTankEmpty = 			GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemLightOxygenTankEmpty", 			9854)		.getInt(9854);
 	        GCCoreConfigManager.idItemLightOxygenTank = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemLightOxygenTank", 				9855)		.getInt(9855);
@@ -185,6 +194,8 @@ public class GCCoreConfigManager
 	        GCCoreConfigManager.idItemParachute = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemParachute", 					9891)		.getInt(9891);
 	        GCCoreConfigManager.idItemRocketFuelBucket = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemRocketFuelBucket", 			9892)		.getInt(9892);
 	        GCCoreConfigManager.idItemFlagPole = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemFlagPole", 					9893)		.getInt(9893);
+	        GCCoreConfigManager.idItemOilCanister = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemOilCanister", 				9894)		.getInt(9894);
+	        GCCoreConfigManager.idItemOilExtractor = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemOilExtractor", 				9895)		.getInt(9895);
 	        
 	        GCCoreConfigManager.idToolTitaniumSword = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idToolTitaniumSword", 					9876)		.getInt(9876);
 	        GCCoreConfigManager.idToolTitaniumPickaxe = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idToolTitaniumPickaxe", 				9877)		.getInt(9877);
@@ -204,6 +215,7 @@ public class GCCoreConfigManager
 	        GCCoreConfigManager.idGuiBuggyCraftingBench = 				GCCoreConfigManager.configuration.get("GUI", "idGuiBuggyCraftingBench", 									131)		.getInt(131);
 	        GCCoreConfigManager.idGuiGalaxyMap = 						GCCoreConfigManager.configuration.get("GUI", "idGuiGalaxyMap",			 									132)		.getInt(132);
 	        GCCoreConfigManager.idGuiSpaceshipInventory = 				GCCoreConfigManager.configuration.get("GUI", "idGuiSpaceshipInventory",			 							133)		.getInt(133);
+	        GCCoreConfigManager.idGuiRefinery = 						GCCoreConfigManager.configuration.get("GUI", "idGuiRefinery",                                               134)		.getInt(134);
 	        
 	        GCCoreConfigManager.idAchievBase = 							GCCoreConfigManager.configuration.get("Achievements", "idAchievBase", 										1784)		.getInt(1784);
 

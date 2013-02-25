@@ -42,13 +42,13 @@ public class GCMarsBiomeDecorator
 
 	public GCMarsBiomeDecorator(BiomeGenBase par1BiomeGenBase)
 	{
-		this.deshGen = new GCCoreWorldGenMinableMeta(GCMarsBlocks.blockOres.blockID, 12, 0, true, GCMarsBlocks.marsStone.blockID);
-		this.copperGen = new GCCoreWorldGenMinableMeta(GCMarsBlocks.blockOres.blockID, 8, 6, true, GCMarsBlocks.marsStone.blockID);
-		this.aluminumGen = new GCCoreWorldGenMinableMeta(GCMarsBlocks.blockOres.blockID, 7, 4, true, GCMarsBlocks.marsStone.blockID);
-		this.titaniumGen = new GCCoreWorldGenMinableMeta(GCMarsBlocks.blockOres.blockID, 7, 8, true, GCMarsBlocks.marsStone.blockID);
-		this.quandriumGen = new GCCoreWorldGenMinableMeta(GCMarsBlocks.blockOres.blockID, 7, 2, true, GCMarsBlocks.marsStone.blockID);
-		this.dirtGen = new GCCoreWorldGenMinableMeta(GCMarsBlocks.marsDirt.blockID, 32, 0, false, GCMarsBlocks.marsStone.blockID);
-		this.bacteriaGen = new GCCoreWorldGenMinableMeta(GCMarsBlocks.bacterialSludgeMoving.blockID, 5, 0, false, GCMarsBlocks.marsStone.blockID);
+		this.deshGen = new GCCoreWorldGenMinableMeta(GCMarsBlocks.blockOres.blockID, 12, 0, true, GCMarsBlocks.marsStone.blockID, 0);
+		this.copperGen = new GCCoreWorldGenMinableMeta(GCMarsBlocks.blockOres.blockID, 8, 6, true, GCMarsBlocks.marsStone.blockID, 0);
+		this.aluminumGen = new GCCoreWorldGenMinableMeta(GCMarsBlocks.blockOres.blockID, 7, 4, true, GCMarsBlocks.marsStone.blockID, 0);
+		this.titaniumGen = new GCCoreWorldGenMinableMeta(GCMarsBlocks.blockOres.blockID, 7, 8, true, GCMarsBlocks.marsStone.blockID, 0);
+		this.quandriumGen = new GCCoreWorldGenMinableMeta(GCMarsBlocks.blockOres.blockID, 7, 2, true, GCMarsBlocks.marsStone.blockID, 0);
+		this.dirtGen = new GCCoreWorldGenMinableMeta(GCMarsBlocks.marsDirt.blockID, 32, 0, false, GCMarsBlocks.marsStone.blockID, 0);
+		this.bacteriaGen = new GCCoreWorldGenMinableMeta(GCMarsBlocks.bacterialSludgeMoving.blockID, 5, 0, false, GCMarsBlocks.marsStone.blockID, 0);
 		this.biome = par1BiomeGenBase;
 	}
 

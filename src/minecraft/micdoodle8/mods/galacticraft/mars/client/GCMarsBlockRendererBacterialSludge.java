@@ -269,8 +269,6 @@ public class GCMarsBlockRendererBacterialSludge implements ISimpleBlockRendering
                 }
             }
 
-//            renderBlocks.customMinY = var18;
-//            renderBlocks.customMaxY = var20;
             return;
         }
     }

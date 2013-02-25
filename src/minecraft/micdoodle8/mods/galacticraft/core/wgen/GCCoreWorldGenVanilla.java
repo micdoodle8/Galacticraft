@@ -54,7 +54,7 @@ public class GCCoreWorldGenVanilla implements IWorldGenerator
     		final int Ycoord = random.nextInt(maxYCoord);
     		final int Zcoord = chunkZ * 16 + random.nextInt(16);
     		  
-    		new GCCoreWorldGenMinableMeta(blockID, amountOfBlocks, metadata, true, Block.stone.blockID).generate(world, random, Xcoord, Ycoord, Zcoord);
+    		new GCCoreWorldGenMinableMeta(blockID, amountOfBlocks, metadata, true, Block.stone.blockID, 0).generate(world, random, Xcoord, Ycoord, Zcoord);
         }
 	}
 }

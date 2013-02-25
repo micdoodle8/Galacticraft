@@ -18,7 +18,6 @@ public class GCMoonStructureVillagePieces
         var2.add(new GCMoonStructureVillagePieceWeight(GCMoonComponentVillageWoodHut.class, 5, MathHelper.getRandomIntegerInRange(par0Random, 2 + par1, 5 + par1 * 3)));
         var2.add(new GCMoonStructureVillagePieceWeight(GCMoonComponentVillageField.class, 5, MathHelper.getRandomIntegerInRange(par0Random, 3 + par1, 5 + par1)));
         var2.add(new GCMoonStructureVillagePieceWeight(GCMoonComponentVillageHouse3.class, 5, MathHelper.getRandomIntegerInRange(par0Random, 3 + par1, 4 + par1 * 2)));
-        VillagerRegistry.addExtraVillageComponents(var2, par0Random, par1);
 
         final Iterator var3 = var2.iterator();
 

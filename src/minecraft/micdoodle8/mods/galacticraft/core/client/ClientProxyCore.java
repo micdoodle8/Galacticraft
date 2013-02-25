@@ -40,6 +40,7 @@ import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelPlayer;
 import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelSpaceship;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererBreathableAir;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererCraftingTable;
+import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererCrudeOil;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererMeteor;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererOxygenCollector;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererOxygenDistributor;
@@ -160,6 +161,7 @@ public class ClientProxyCore extends CommonProxyCore
 	private static int craftingTableID;
 	private static int oxygenDistributorRenderID;
 	private static int oxygenCollectorRenderID;
+	private static int crudeOilRenderID;
 	public static long getFirstBootTime;
 	public static long getCurrentTime;
 	public static long slowTick;
@@ -227,6 +229,8 @@ public class ClientProxyCore extends CommonProxyCore
         RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererOxygenDistributor(ClientProxyCore.oxygenDistributorRenderID));
         ClientProxyCore.oxygenCollectorRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererOxygenCollector(ClientProxyCore.oxygenCollectorRenderID));
+        ClientProxyCore.crudeOilRenderID = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererCrudeOil(ClientProxyCore.crudeOilRenderID));
         final IMapPlanet earth = new GCCoreMapPlanetOverworld();
         final IMapPlanet moon = new GCMoonMapPlanet();
 		GalacticraftCore.addAdditionalMapPlanet(earth);
@@ -344,6 +348,12 @@ public class ClientProxyCore extends CommonProxyCore
 	public int getGCOxygenCollectorRenderID()
 	{
 		return ClientProxyCore.oxygenCollectorRenderID;
+	}
+
+	@Override
+	public int getGCCrudeOilRenderID()
+	{
+		return ClientProxyCore.crudeOilRenderID;
 	}
 
 	@Override
@@ -780,6 +790,10 @@ public class ClientProxyCore extends CommonProxyCore
     			if (player != null && player.ridingEntity != null && player.ridingEntity instanceof ISpaceship)
     			{
     				this.zoom(15.0F);
+    				final Object[] toSend = {player.ridingEntity.rotationPitch};
+    	            PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 8, toSend));
+    				final Object[] toSend2 = {player.ridingEntity.rotationYaw};
+    	            PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 7, toSend2));
     			}
     			else
     			{
@@ -790,6 +804,7 @@ public class ClientProxyCore extends CommonProxyCore
     			{
     				if (world.provider.getSkyRenderer() == null && player.ridingEntity != null && player.ridingEntity.posY >= 200)
                     {
+    					FMLLog.info("dsadasdasdas2");
     					world.provider.setSkyRenderer(new GCCoreSkyProviderOverworld());
                     }
     				else if (world.provider.getSkyRenderer() != null && world.provider.getSkyRenderer() instanceof GCCoreSkyProviderOverworld && (player.ridingEntity == null || player.ridingEntity.posY < 200))
@@ -837,25 +852,25 @@ public class ClientProxyCore extends CommonProxyCore
     				
     				if (minecraft.gameSettings.keyBindLeft.pressed)
     				{
-        				final Object[] toSend = {-1F};
+        	            ship.turnYaw(-1.0F);
+        				final Object[] toSend = {ship.rotationYaw};
         	            PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 7, toSend));
-        	            ship.turnYaw(-1);
     				}
     				
     				if (minecraft.gameSettings.keyBindRight.pressed)
     				{
-        				final Object[] toSend = {1F};
+        	            ship.turnYaw(1.0F);
+        				final Object[] toSend = {ship.rotationYaw};
         	            PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 7, toSend));
-        	            ship.turnYaw(1);
     				}
 
     				if (minecraft.gameSettings.keyBindForward.pressed)
     				{
     					if (ship.getLaunched() == 1)
     					{
-            				final Object[] toSend = {-1F};
+            	            ship.turnPitch(-0.7F);
+            				final Object[] toSend = {ship.rotationPitch};
             	            PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 8, toSend));
-            	            ship.turnPitch(-1);
     					}
     				}
     				
@@ -863,9 +878,9 @@ public class ClientProxyCore extends CommonProxyCore
     				{
     					if (ship.getLaunched() == 1)
     					{
-            				final Object[] toSend = {1F};
+            	            ship.turnPitch(0.7F);
+            				final Object[] toSend = {ship.rotationPitch};
             	            PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 8, toSend));
-            	            ship.turnPitch(1);
     					}
     				}
     			}

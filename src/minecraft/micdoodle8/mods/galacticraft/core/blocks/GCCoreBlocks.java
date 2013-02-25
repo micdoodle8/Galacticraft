@@ -6,9 +6,12 @@ import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockBase;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockOre;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemSapling;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.liquids.LiquidDictionary;
+import net.minecraftforge.liquids.LiquidStack;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
@@ -35,6 +38,11 @@ public class GCCoreBlocks
 	public static Block decorationBlocks;
 	public static Block airLockFrame;
 	public static Block airLockSeal;
+	public static Block crudeOilMoving;
+	public static Block crudeOilStill;
+	public static Block refinery;
+	
+	public static LiquidStack crudeOilStack;
 	
 	public static void initBlocks()
 	{
@@ -56,6 +64,9 @@ public class GCCoreBlocks
 		Item.itemsList[GCCoreBlocks.decorationBlocks.blockID] = 			new GCCoreItemBlockBase				(GCCoreBlocks.decorationBlocks.blockID - 256)																																																												.setItemName("decorationblock");
 		GCCoreBlocks.airLockFrame = 										new GCCoreBlockAirLockFrame			(GCCoreConfigManager.idBlockAirLockFrame, 				29)						.setHardness(3.0F)                        														.setCreativeTab(GalacticraftCore.galacticraftTab)	.setStepSound(Block.soundMetalFootstep)	   				.setBlockName("airLockFrame");
 		GCCoreBlocks.airLockSeal = 											new GCCoreBlockAirLockWall			(GCCoreConfigManager.idBlockAirLockSeal, 				26)						                        																		.setCreativeTab(GalacticraftCore.galacticraftTab)	.setStepSound(Block.soundMetalFootstep)	   				.setBlockName("airLockSeal");
+		GCCoreBlocks.crudeOilStill = 										new GCCoreBlockCrudeOilStationary	(GCCoreConfigManager.idBlockCrudeOilStill, 				Material.water)			.setHardness(3.0F)                        														.setCreativeTab(GalacticraftCore.galacticraftTab)															.setBlockName("crudeOilStill");
+		GCCoreBlocks.crudeOilMoving = 										new GCCoreBlockCrudeOilMoving		(GCCoreConfigManager.idBlockCrudeOilMoving, 			Material.water)			.setHardness(3.0F)                        														.setCreativeTab(GalacticraftCore.galacticraftTab)															.setBlockName("crudeOilMoving");
+		GCCoreBlocks.refinery = 											new GCCoreBlockRefinery 			(GCCoreConfigManager.idBlockRefinery, 0)                                        .setHardness(3.0F)                                                                              .setCreativeTab(GalacticraftCore.galacticraftTab)	.setStepSound(Block.soundMetalFootstep)					.setBlockName("refinery");
 	}
 
 	public static void setHarvestLevels()
@@ -83,6 +94,11 @@ public class GCCoreBlocks
 		GameRegistry.registerBlock(GCCoreBlocks.fallenMeteor);
 		GameRegistry.registerBlock(GCCoreBlocks.airLockFrame);
 		GameRegistry.registerBlock(GCCoreBlocks.airLockSeal);
+		GameRegistry.registerBlock(GCCoreBlocks.crudeOilStill);
+		GameRegistry.registerBlock(GCCoreBlocks.crudeOilMoving);
+		GameRegistry.registerBlock(GCCoreBlocks.refinery);
+		
+		GCCoreBlocks.crudeOilStack = LiquidDictionary.getOrCreateLiquid("Oil", new LiquidStack(GCCoreBlocks.crudeOilStill, 1));
 	}
 
 	public static void addNames()
@@ -106,6 +122,9 @@ public class GCCoreBlocks
 		GCCoreBlocks.addNameWithMetadata("tile.decorationblock.decoblock2.name");
 		GCCoreBlocks.addName(GCCoreBlocks.airLockFrame);
 		GCCoreBlocks.addName(GCCoreBlocks.airLockSeal);
+		GCCoreBlocks.addName(GCCoreBlocks.crudeOilStill);
+		GCCoreBlocks.addName(GCCoreBlocks.crudeOilMoving);
+		GCCoreBlocks.addName(GCCoreBlocks.refinery);
 	}
 	
 	private static void addName(Block block)

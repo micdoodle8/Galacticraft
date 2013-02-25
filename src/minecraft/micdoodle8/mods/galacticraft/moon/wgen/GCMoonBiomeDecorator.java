@@ -36,10 +36,10 @@ public class GCMoonBiomeDecorator
 
 	public GCMoonBiomeDecorator(BiomeGenBase par1BiomeGenBase)
 	{
-		this.aluminumGen = new GCCoreWorldGenMinableMeta(GCMoonBlocks.blockMoonOres.blockID, 7, 0, true, GCMoonBlocks.moonStone.blockID);
-		this.ironGen = new GCCoreWorldGenMinableMeta(GCMoonBlocks.blockMoonOres.blockID, 8, 1, true, GCMoonBlocks.moonStone.blockID);
-		this.cheeseGen = new GCCoreWorldGenMinableMeta(GCMoonBlocks.blockMoonOres.blockID, 10, 2, true, GCMoonBlocks.moonStone.blockID);
-		this.dirtGen = new GCCoreWorldGenMinableMeta(GCMoonBlocks.moonDirt.blockID, 32, 0, false, GCMoonBlocks.moonStone.blockID);
+		this.aluminumGen = new GCCoreWorldGenMinableMeta(GCMoonBlocks.blockMoon.blockID, 7, 0, true, GCMoonBlocks.blockMoon.blockID, 4);
+		this.ironGen = new GCCoreWorldGenMinableMeta(GCMoonBlocks.blockMoon.blockID, 8, 1, true, GCMoonBlocks.blockMoon.blockID, 4);
+		this.cheeseGen = new GCCoreWorldGenMinableMeta(GCMoonBlocks.blockMoon.blockID, 10, 2, true, GCMoonBlocks.blockMoon.blockID, 4);
+		this.dirtGen = new GCCoreWorldGenMinableMeta(GCMoonBlocks.blockMoon.blockID, 32, 3, false, GCMoonBlocks.blockMoon.blockID, 4);
 		this.biome = par1BiomeGenBase;
 	}
 

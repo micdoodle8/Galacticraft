@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.moon.blocks;
 
 import java.util.Random;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -11,7 +12,7 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class GCMoonBlockCheese extends GCMoonBlock
+public class GCMoonBlockCheese extends Block
 {
     protected GCMoonBlockCheese(int par1, int par2)
     {
@@ -219,4 +220,10 @@ public class GCMoonBlockCheese extends GCMoonBlock
     {
         return Item.cake.itemID;
     }
+	
+	@Override
+	public String getTextureFile()
+	{
+    	return "/micdoodle8/mods/galacticraft/moon/client/blocks/moon.png";
+	}
 }

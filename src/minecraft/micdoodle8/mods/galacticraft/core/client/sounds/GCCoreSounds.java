@@ -24,6 +24,7 @@ public class GCCoreSounds
         try
         {
             event.manager.soundPoolSounds.addSound("music/orbit_JC.ogg", GalacticraftCore.class.getResource("/micdoodle8/mods/galacticraft/core/client/sounds/music/orbit_JC.ogg"));
+            event.manager.soundPoolSounds.addSound("player/oil.wav", GalacticraftCore.class.getResource("/micdoodle8/mods/galacticraft/core/client/sounds/player/oil.wav"));
             event.manager.soundPoolSounds.addSound("shuttle/shuttle.wav", GalacticraftCore.class.getResource("/micdoodle8/mods/galacticraft/core/client/sounds/shuttle/shuttle.wav"));
             event.manager.soundPoolSounds.addSound("player/parachute.wav", GalacticraftCore.class.getResource("/micdoodle8/mods/galacticraft/core/client/sounds/player/parachute.wav"));
             event.manager.soundPoolSounds.addSound("player/closeairlock.wav", GalacticraftCore.class.getResource("/micdoodle8/mods/galacticraft/core/client/sounds/player/closeairlock.wav"));

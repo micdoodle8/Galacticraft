@@ -300,29 +300,6 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship
         	this.rumble = (float) this.rand.nextInt(3) - 3;
         }
         
-        if (this.riddenByEntity != null)
-        {
-        	if (this.worldObj.isRemote)
-        	{
-            	((EntityPlayer)this.riddenByEntity).sendChatToPlayer("client " + this.rotationPitch);
-        	}
-        	else
-        	{
-            	((EntityPlayer)this.riddenByEntity).sendChatToPlayer("server " + this.rotationPitch);
-        	}
-        }
-        
-        float serverPitch = this.worldObj.isRemote ? 0.0F : this.rotationPitch;
-        float clientPitch = this.worldObj.isRemote ? this.rotationPitch : 0.0F;
-        
-        if (serverPitch != 0.0F && clientPitch != 0.0F)
-        {
-        	if (this.worldObj.isRemote)
-        	{
-        		this.rotationPitch = serverPitch;
-        	}
-        }
-        
         if (this.rotationPitch > 90)
         {
         	this.rotationPitch = 90;

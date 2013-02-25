@@ -3,11 +3,14 @@ package micdoodle8.mods.galacticraft.moon;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubMod;
 import micdoodle8.mods.galacticraft.API.IGalaxy;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerBase;
 import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
 import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;
 import micdoodle8.mods.galacticraft.moon.entities.GCMoonPlayerBase;
@@ -32,7 +35,7 @@ import cpw.mods.fml.relauncher.Side;
  */
 public class GalacticraftMoon implements IGalacticraftSubMod
 {
-	public static List<GCMoonPlayerBase> moonPlayersServer = new ArrayList<GCMoonPlayerBase>();
+	public static Map<String, GCMoonPlayerBase> playersServer = new HashMap<String, GCMoonPlayerBase>();
 	
 	public void preLoad(FMLPreInitializationEvent event)
 	{

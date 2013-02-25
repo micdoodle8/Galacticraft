@@ -55,6 +55,8 @@ public class GCCoreItems
 	public static Item canvas;
 	public static Item rocketFuelBucket;
 	public static Item flagPole;
+	public static Item oilCanister;
+	public static Item oilExtractor;
 	
 	public static EnumArmorMaterial OXYGENMASK = EnumHelper.addArmorMaterial("OXYGENMASK", 200, new int[] {0, 0, 0, 0}, 0);
 	public static EnumArmorMaterial SENSORGLASSES = EnumHelper.addArmorMaterial("SENSORGLASSES", 200, new int[] {0, 0, 0, 0}, 0);
@@ -83,7 +85,7 @@ public class GCCoreItems
 		GCCoreItems.ingotTitanium = new GCCoreItem(GCCoreConfigManager.idItemIngotTitanium).setIconIndex(19).setItemName("ingotTitanium");
 		GCCoreItems.ingotCopper = new GCCoreItem(GCCoreConfigManager.idItemIngotCopper).setIconIndex(20).setItemName("ingotCopper");
 		GCCoreItems.ingotAluminum = new GCCoreItem(GCCoreConfigManager.idItemIngotAluminum).setIconIndex(21).setItemName("ingotAluminium");
-		GCCoreItems.aluminumCanister = new GCCoreItem(GCCoreConfigManager.idItemAluminumCanister).setIconIndex(22).setItemName("aluminumCanister");
+		GCCoreItems.aluminumCanister = new GCCoreItem(GCCoreConfigManager.idItemAluminumCanister).setIconIndex(22).setItemName("aluminiumCanister");
 		GCCoreItems.airVent = new GCCoreItem(GCCoreConfigManager.idItemAirVent).setIconIndex(23).setItemName("airVent");
 		GCCoreItems.airFan = new GCCoreItem(GCCoreConfigManager.idItemFan).setIconIndex(24).setItemName("airFan");
 		GCCoreItems.oxygenConcentrator = new GCCoreItem(GCCoreConfigManager.idItemOxygenConcentrator).setIconIndex(25).setItemName("oxygenConcentrator");
@@ -98,8 +100,10 @@ public class GCCoreItems
 		GCCoreItems.oxygenGear = new GCCoreItemOxygenGear(GCCoreConfigManager.idItemOxygenGear).setIconIndex(32).setItemName("oxygenGear");
 		GCCoreItems.parachute = new GCCoreItemParachute(GCCoreConfigManager.idItemParachute).setItemName("parachute");
 		GCCoreItems.canvas = new GCCoreItem(GCCoreConfigManager.idItemCanvas).setIconIndex(33).setItemName("canvas");
-		GCCoreItems.rocketFuelBucket = new GCCoreItem(GCCoreConfigManager.idItemRocketFuelBucket).setIconIndex(50).setItemName("rocketFuel");
+		GCCoreItems.rocketFuelBucket = new GCCoreItemFuelCanister(GCCoreConfigManager.idItemRocketFuelBucket).setIconIndex(64).setItemName("fuelCanisterPartial");
 		GCCoreItems.flagPole = new GCCoreItem(GCCoreConfigManager.idItemFlagPole).setIconIndex(51).setItemName("flagPole");
+		GCCoreItems.oilCanister = new GCCoreItemOilCanister(GCCoreConfigManager.idItemOilCanister).setIconIndex(57).setItemName("oilCanisterPartial");
+		GCCoreItems.oilExtractor = new GCCoreItemOilExtractor(GCCoreConfigManager.idItemOilExtractor).setIconIndex(52).setItemName("oilExtractor");
 	}
 	
 	public static void registerHarvestLevels()
@@ -144,8 +148,16 @@ public class GCCoreItems
 		GCCoreItems.addName(GCCoreItems.flag);
 		GCCoreItems.addName(GCCoreItems.flagPole);
 		GCCoreItems.addName(GCCoreItems.canvas);
-		GCCoreItems.addName(GCCoreItems.rocketFuelBucket);
 		GCCoreItems.addName(GCCoreItems.buggy);
+		GCCoreItems.addName(GCCoreItems.rocketFuelBucket);
+		GCCoreItems.addName(GCCoreItems.oilCanister);
+		GCCoreItems.addName(GCCoreItems.oilExtractor);
+		
+		GCCoreItems.addNameWithMetadata("item.emptyLiquidCanister.name");
+		GCCoreItems.addNameWithMetadata("item.oilCanisterPartial.name");
+		GCCoreItems.addNameWithMetadata("item.fuelCanisterPartial.name");
+		GCCoreItems.addNameWithMetadata("item.oilCanister.name");
+		GCCoreItems.addNameWithMetadata("item.fuelCanister.name");
 		
 		int i = 0;
 

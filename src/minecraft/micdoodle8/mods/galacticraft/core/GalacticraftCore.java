@@ -37,6 +37,7 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityBreathableAir;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCollector;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenDistributor;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenPipe;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityRefinery;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.core.wgen.GCCoreWorldGenVanilla;
 import micdoodle8.mods.galacticraft.moon.GalacticraftMoon;
@@ -83,7 +84,7 @@ import cpw.mods.fml.relauncher.Side;
  *
  */
 @Mod(name="Galacticraft Core", version="v1", useMetadata = false, modid = "GalacticraftCore")
-@NetworkMod(channels = {"GalacticraftCore"}, clientSideRequired = true, serverSideRequired = false)
+@NetworkMod(channels = {"Galacticraft"}, clientSideRequired = true, serverSideRequired = false)
 public class GalacticraftCore
 {
 	@SidedProxy(clientSide = "micdoodle8.mods.galacticraft.core.client.ClientProxyCore", serverSide = "micdoodle8.mods.galacticraft.core.CommonProxyCore")
@@ -155,10 +156,6 @@ public class GalacticraftCore
 			{
 				GalacticraftCore.galaxies.add(mod.getParentGalaxy());
 			}
-			else
-			{
-				FMLLog.severe("Galacticraft " + mod.getDimensionName() + " error! NO GALAXY OBJECT PROVIDED");
-			}
 		}
 		
 		GalacticraftCore.moon.load(event);
@@ -228,6 +225,7 @@ public class GalacticraftCore
         GameRegistry.registerTileEntity(GCCoreTileEntityOxygenPipe.class, "Oxygen Pipe");
         GameRegistry.registerTileEntity(GCCoreTileEntityBreathableAir.class, "Breathable Air");
         GameRegistry.registerTileEntity(GCCoreTileEntityAirLock.class, "Air Lock Frame");
+        GameRegistry.registerTileEntity(GCCoreTileEntityRefinery.class, "Refinery");
         LanguageRegistry.instance().addStringLocalization("container.airdistributor", "en_US", "Oxygen Distributor");
 	}
 	
@@ -329,6 +327,8 @@ public class GalacticraftCore
                 	else if (GalacticraftCore.this.chatCooldown == 0)
                 	{
                 		player.sendChatToPlayer("I'll probably need some Rocket Fuel before this will fly!");
+                		FMLLog.warning("Player (" + player.username + ") doesn't have rocket fuel to launch spaceship. If player DOES, please report the following line as a bug");
+                		FMLLog.warning("STACKNULL: " + (stack == null) + " ISSTACKFUEL: " + (stack == null ? "false" : stack.getItem().itemID == GCCoreItems.rocketFuelBucket.itemID) + " PLAYERBASENULL: " + (playerBase == null) + " PLAYERBASETANKINVENTORYNULL " + (playerBase == null ? "true" : playerBase.playerTankInventory == null));
                 		GalacticraftCore.this.chatCooldown = 250;
                 	}
                 }
@@ -393,7 +393,7 @@ public class GalacticraftCore
                 	
                 	if (ship != null)
                 	{
-                		ship.turnYaw((Float) packetReadout[0]);
+                		ship.rotationYaw = ((Float) packetReadout[0]);
                 	}
                 }
             }
@@ -405,10 +405,10 @@ public class GalacticraftCore
                 if (player.ridingEntity instanceof GCCoreEntitySpaceship)
                 {
                 	final GCCoreEntitySpaceship ship = (GCCoreEntitySpaceship) player.ridingEntity;
-                	
+
                 	if (ship != null)
                 	{
-                		ship.turnPitch((Float) packetReadout[0]);
+                		ship.rotationPitch = ((Float) packetReadout[0]);
                 	}
                 }
             }
@@ -445,6 +445,13 @@ public class GalacticraftCore
                 	}
                 }
             }
+            else if (packetType == 11)
+            {
+                final Class[] decodeAs = {Integer.class, Integer.class, Integer.class};
+                final Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
+
+                player.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiRefinery, player.worldObj, (Integer)packetReadout[0], (Integer)packetReadout[1], (Integer)packetReadout[2]);
+            }
         }
     }
 	
@@ -476,7 +483,6 @@ public class GalacticraftCore
 		{
 			return 1;
 		}
-		
 	}
 	
 	public class CommonTickHandler implements ITickHandler
