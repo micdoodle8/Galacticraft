@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.src.ModelPlayerAPI;
 import net.minecraft.src.ModelPlayerBase;
@@ -444,6 +445,18 @@ public class GCCoreModelPlayer extends ModelPlayerBase
     @Override
 	public void afterSetRotationAngles(float var1, float var2, float var3, float var4, float var5, float var6, Entity var7)
     {
+    	try 
+    	{
+			if (EntityCreeper.class.forName("mod_SmartMoving") != null || EntityCreeper.class.forName("net.minecraft.src.mod_SmartMoving") != null)
+			{
+				super.afterSetRotationAngles(var1, var2, var3, var4, var5, var6, var7);
+				return;
+			}
+		} 
+    	catch (ClassNotFoundException e1) 
+    	{
+			e1.printStackTrace();
+		}
     	
     	float speedModifier = 0.0F;
     	
