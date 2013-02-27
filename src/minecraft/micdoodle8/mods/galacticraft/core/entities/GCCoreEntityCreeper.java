@@ -131,13 +131,15 @@ public class GCCoreEntityCreeper extends GCCoreEntityMob
 
                 if (!this.worldObj.isRemote)
                 {
+                    boolean var2 = this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing");
+                    
                     if (this.getPowered())
                     {
-                        this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 6.0F, true);
+                        this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 6.0F, var2);
                     }
                     else
                     {
-                        this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 3.0F, true);
+                        this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 3.0F, var2);
                     }
 
                     this.setDead();
