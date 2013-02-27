@@ -445,6 +445,48 @@ public class GCCoreModelPlayer extends ModelPlayerBase
     @Override
 	public void afterSetRotationAngles(float var1, float var2, float var3, float var4, float var5, float var6, Entity var7)
     {
+    	
+    	if (this.usingParachute)
+    	{
+        	this.parachute[0].rotateAngleZ = (float) (30F * (Math.PI / 180F));
+        	this.parachute[2].rotateAngleZ = (float) -(30F * (Math.PI / 180F));
+        	this.parachuteStrings[0].rotateAngleZ = (float) (155F * (Math.PI / 180F));
+        	this.parachuteStrings[0].rotateAngleX = (float) (23F * (Math.PI / 180F));
+        	this.parachuteStrings[0].setRotationPoint(-9.0F, -7.0F, 2.0F);
+        	this.parachuteStrings[1].rotateAngleZ = (float) (155F * (Math.PI / 180F));
+        	this.parachuteStrings[1].rotateAngleX = (float) -(23F * (Math.PI / 180F));
+        	this.parachuteStrings[1].setRotationPoint(-9.0F, -7.0F, 2.0F);
+        	this.parachuteStrings[2].rotateAngleZ = (float) -(155F * (Math.PI / 180F));
+        	this.parachuteStrings[2].rotateAngleX = (float) (23F * (Math.PI / 180F));
+        	this.parachuteStrings[2].setRotationPoint(9.0F, -7.0F, 2.0F);
+        	this.parachuteStrings[3].rotateAngleZ = (float) -(155F * (Math.PI / 180F));
+        	this.parachuteStrings[3].rotateAngleX = (float) -(23F * (Math.PI / 180F));
+        	this.parachuteStrings[3].setRotationPoint(9.0F, -7.0F, 2.0F);
+        	this.modelPlayer.bipedLeftArm.rotateAngleX += (float) Math.PI;
+        	this.modelPlayer.bipedLeftArm.rotateAngleZ += (float) Math.PI / 10;
+        	this.modelPlayer.bipedRightArm.rotateAngleX += (float) Math.PI;
+        	this.modelPlayer.bipedRightArm.rotateAngleZ -= (float) Math.PI / 10;
+    	}
+    	
+    	this.greenOxygenTanks[0].rotateAngleX = this.modelPlayer.bipedBody.rotateAngleX;
+    	this.greenOxygenTanks[0].rotateAngleY = this.modelPlayer.bipedBody.rotateAngleY;
+    	this.greenOxygenTanks[0].rotateAngleZ = this.modelPlayer.bipedBody.rotateAngleZ;
+    	this.greenOxygenTanks[1].rotateAngleX = this.modelPlayer.bipedBody.rotateAngleX;
+    	this.greenOxygenTanks[1].rotateAngleY = this.modelPlayer.bipedBody.rotateAngleY;
+    	this.greenOxygenTanks[1].rotateAngleZ = this.modelPlayer.bipedBody.rotateAngleZ;
+    	this.orangeOxygenTanks[0].rotateAngleX = this.modelPlayer.bipedBody.rotateAngleX;
+    	this.orangeOxygenTanks[0].rotateAngleY = this.modelPlayer.bipedBody.rotateAngleY;
+    	this.orangeOxygenTanks[0].rotateAngleZ = this.modelPlayer.bipedBody.rotateAngleZ;
+    	this.orangeOxygenTanks[1].rotateAngleX = this.modelPlayer.bipedBody.rotateAngleX;
+    	this.orangeOxygenTanks[1].rotateAngleY = this.modelPlayer.bipedBody.rotateAngleY;
+    	this.orangeOxygenTanks[1].rotateAngleZ = this.modelPlayer.bipedBody.rotateAngleZ;
+    	this.redOxygenTanks[0].rotateAngleX = this.modelPlayer.bipedBody.rotateAngleX;
+    	this.redOxygenTanks[0].rotateAngleY = this.modelPlayer.bipedBody.rotateAngleY;
+    	this.redOxygenTanks[0].rotateAngleZ = this.modelPlayer.bipedBody.rotateAngleZ;
+    	this.redOxygenTanks[1].rotateAngleX = this.modelPlayer.bipedBody.rotateAngleX;
+    	this.redOxygenTanks[1].rotateAngleY = this.modelPlayer.bipedBody.rotateAngleY;
+    	this.redOxygenTanks[1].rotateAngleZ = this.modelPlayer.bipedBody.rotateAngleZ;
+    	
     	try 
     	{
 			if (EntityCreeper.class.forName("mod_SmartMoving") != null || EntityCreeper.class.forName("net.minecraft.src.mod_SmartMoving") != null)
@@ -452,7 +494,7 @@ public class GCCoreModelPlayer extends ModelPlayerBase
 				super.afterSetRotationAngles(var1, var2, var3, var4, var5, var6, var7);
 				return;
 			}
-		} 
+		}
     	catch (ClassNotFoundException e1) 
     	{
 		}
@@ -478,28 +520,6 @@ public class GCCoreModelPlayer extends ModelPlayerBase
             this.modelPlayer.bipedLeftArm.rotateAngleY = -MathHelper.cos(var1 * 0.1162F) * 0.2F;
             this.modelPlayer.bipedRightArm.rotateAngleZ = (float) (5 * (Math.PI / 180));
             this.modelPlayer.bipedLeftArm.rotateAngleZ = (float) (-5 * (Math.PI / 180));
-    	}
-    	
-    	if (this.usingParachute)
-    	{
-        	this.parachute[0].rotateAngleZ = (float) (30F * (Math.PI / 180F));
-        	this.parachute[2].rotateAngleZ = (float) -(30F * (Math.PI / 180F));
-        	this.parachuteStrings[0].rotateAngleZ = (float) (155F * (Math.PI / 180F));
-        	this.parachuteStrings[0].rotateAngleX = (float) (23F * (Math.PI / 180F));
-        	this.parachuteStrings[0].setRotationPoint(-9.0F, -7.0F, 2.0F);
-        	this.parachuteStrings[1].rotateAngleZ = (float) (155F * (Math.PI / 180F));
-        	this.parachuteStrings[1].rotateAngleX = (float) -(23F * (Math.PI / 180F));
-        	this.parachuteStrings[1].setRotationPoint(-9.0F, -7.0F, 2.0F);
-        	this.parachuteStrings[2].rotateAngleZ = (float) -(155F * (Math.PI / 180F));
-        	this.parachuteStrings[2].rotateAngleX = (float) (23F * (Math.PI / 180F));
-        	this.parachuteStrings[2].setRotationPoint(9.0F, -7.0F, 2.0F);
-        	this.parachuteStrings[3].rotateAngleZ = (float) -(155F * (Math.PI / 180F));
-        	this.parachuteStrings[3].rotateAngleX = (float) -(23F * (Math.PI / 180F));
-        	this.parachuteStrings[3].setRotationPoint(9.0F, -7.0F, 2.0F);
-        	this.modelPlayer.bipedLeftArm.rotateAngleX += (float) Math.PI;
-        	this.modelPlayer.bipedLeftArm.rotateAngleZ += (float) Math.PI / 10;
-        	this.modelPlayer.bipedRightArm.rotateAngleX += (float) Math.PI;
-        	this.modelPlayer.bipedRightArm.rotateAngleZ -= (float) Math.PI / 10;
     	}
     	
         float var8;
@@ -547,25 +567,6 @@ public class GCCoreModelPlayer extends ModelPlayerBase
 //        	this.modelPlayer.bipedLeftLeg.rotateAngleX = (float) (ship.rotationYaw * (Math.PI / 180F));
 //        	this.modelPlayer.bipedLeftLeg.rotateAngleZ = (float) (ship.rotationPitch * (Math.PI / 180F));
 //    	}
-    	
-    	this.greenOxygenTanks[0].rotateAngleX = this.modelPlayer.bipedBody.rotateAngleX;
-    	this.greenOxygenTanks[0].rotateAngleY = this.modelPlayer.bipedBody.rotateAngleY;
-    	this.greenOxygenTanks[0].rotateAngleZ = this.modelPlayer.bipedBody.rotateAngleZ;
-    	this.greenOxygenTanks[1].rotateAngleX = this.modelPlayer.bipedBody.rotateAngleX;
-    	this.greenOxygenTanks[1].rotateAngleY = this.modelPlayer.bipedBody.rotateAngleY;
-    	this.greenOxygenTanks[1].rotateAngleZ = this.modelPlayer.bipedBody.rotateAngleZ;
-    	this.orangeOxygenTanks[0].rotateAngleX = this.modelPlayer.bipedBody.rotateAngleX;
-    	this.orangeOxygenTanks[0].rotateAngleY = this.modelPlayer.bipedBody.rotateAngleY;
-    	this.orangeOxygenTanks[0].rotateAngleZ = this.modelPlayer.bipedBody.rotateAngleZ;
-    	this.orangeOxygenTanks[1].rotateAngleX = this.modelPlayer.bipedBody.rotateAngleX;
-    	this.orangeOxygenTanks[1].rotateAngleY = this.modelPlayer.bipedBody.rotateAngleY;
-    	this.orangeOxygenTanks[1].rotateAngleZ = this.modelPlayer.bipedBody.rotateAngleZ;
-    	this.redOxygenTanks[0].rotateAngleX = this.modelPlayer.bipedBody.rotateAngleX;
-    	this.redOxygenTanks[0].rotateAngleY = this.modelPlayer.bipedBody.rotateAngleY;
-    	this.redOxygenTanks[0].rotateAngleZ = this.modelPlayer.bipedBody.rotateAngleZ;
-    	this.redOxygenTanks[1].rotateAngleX = this.modelPlayer.bipedBody.rotateAngleX;
-    	this.redOxygenTanks[1].rotateAngleY = this.modelPlayer.bipedBody.rotateAngleY;
-    	this.redOxygenTanks[1].rotateAngleZ = this.modelPlayer.bipedBody.rotateAngleZ;
     	
     	if (!(FMLClientHandler.instance().getClient().currentScreen instanceof GuiInventory) && !(FMLClientHandler.instance().getClient().currentScreen instanceof GCCoreGuiTankRefill))
     	{
