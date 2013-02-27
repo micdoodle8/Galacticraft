@@ -8,6 +8,7 @@ import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -40,13 +41,41 @@ public class GCCoreGuiRefinery extends GuiContainer
         this.drawTexturedModalRect(var5, var6, 0, 0, this.xSize, this.ySize);
         int var7;
 
-        if (this.refineryInventory.isCookin())
+        if (!this.refineryInventory.isCookin())
         {
-            var7 = this.refineryInventory.getBurnTimeRemainingScaled(12);
-            this.drawTexturedModalRect(var5 + 56, var6 + 36 + 12 - var7, 176, 12 - var7, 14, var7 + 2);
+        	return;
+        }
+        
+        var7 = this.refineryInventory.getBurnTimeRemainingScaled(12);
+        this.drawTexturedModalRect(var5 + 74, var6 + 45 + 12 - var7, 176, 69 + 12 - var7, 14, var7 + 2);
+        var7 = this.refineryInventory.getBurnTimeRemainingScaled(12);
+        this.drawTexturedModalRect(var5 + 90, var6 + 45 + 12 - var7, 176, 69 + 12 - var7, 14, var7 + 2);
+        var7 = this.refineryInventory.getCookProgressScaled(80, 5);
+        this.drawTexturedModalRect(var5 + 57, var6 + 38, 176, 0, (var7 / 4) + 1, 5);
+        
+        var7 = this.refineryInventory.getCookProgressScaled(34 * 8, 5);
+        
+        if (var7 > 34 && var7 < 515)
+        {
+            this.drawTexturedModalRect(var5 + 77, var6 + 44 - (var7 / 8) + 34, 176, 38 - (var7 / 8) + 34, 24, (var7 / 8) + 1 - 34);
+        }
+        else if (var7 >= 515)
+        {
+            this.drawTexturedModalRect(var5 + 77, var6 + 44 - (515 / 8) + 34, 176, 38 - (515 / 8) + 34, 24, (515 / 8) + 1 - 34);
         }
 
-        var7 = this.refineryInventory.getCookProgressScaled(24);
-        this.drawTexturedModalRect(var5 + 79, var6 + 34, 176, 14, var7 + 1, 16);
+        var7 = this.refineryInventory.getCookProgressScaled(36, 5);
+
+        if (var7 > 79)
+        {
+            this.drawTexturedModalRect(var5 + 101, var6 + 6, 176, 39, ((var7 - 79) / 4) + 1, 4);
+        }
+
+        var7 = this.refineryInventory.getCookProgressScaled(36, 5);
+
+        if (var7 > 100)
+        {
+            this.drawTexturedModalRect(var5 + 107, var6 + 7, 176, 43, 3, ((var7 - 100) / 4) + 1);
+        }
     }
 }

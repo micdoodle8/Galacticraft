@@ -16,6 +16,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ISidedInventory;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -29,6 +30,7 @@ public class GCCoreTileEntityRefinery extends TileEntity implements IInventory, 
     public int furnaceBurnTime = 0;
     
     public int currentItemBurnTime = 0;
+    public int currentItemBurnTime2 = 0;
 
     public int furnaceCookTime = 0;
 
@@ -150,9 +152,9 @@ public class GCCoreTileEntityRefinery extends TileEntity implements IInventory, 
     }
 
     @SideOnly(Side.CLIENT)
-    public int getCookProgressScaled(int par1)
+    public int getCookProgressScaled(int par1, int par2)
     {
-        return this.furnaceCookTime * par1 / 400;
+        return this.furnaceCookTime * par1 / 800 * par2;
     }
 
     @SideOnly(Side.CLIENT)
@@ -160,7 +162,7 @@ public class GCCoreTileEntityRefinery extends TileEntity implements IInventory, 
     {
         if (this.currentItemBurnTime == 0)
         {
-            this.currentItemBurnTime = 400;
+            this.currentItemBurnTime = 800;
         }
 
         return this.furnaceBurnTime * par1 / this.currentItemBurnTime;
@@ -181,13 +183,17 @@ public class GCCoreTileEntityRefinery extends TileEntity implements IInventory, 
             --this.furnaceBurnTime;
         }
 
-        if (!this.worldObj.isRemote)
+//        if (!this.worldObj.isRemote)
         {
             if (this.furnaceBurnTime == 0 && this.canSmelt())
             {
                 this.currentItemBurnTime = this.furnaceBurnTime = getItemBurnTime(this.furnaceItemStacks[1]);
+//                this.currentItemBurnTime = getItemBurnTime(this.furnaceItemStacks[1]);
+//                this.currentItemBurnTime2 = getItemBurnTime(this.furnaceItemStacks[2]);
+                
+                this.furnaceBurnTime = this.currentItemBurnTime + currentItemBurnTime2;
 
-                if (this.furnaceBurnTime > 0)
+                if (this.currentItemBurnTime == currentItemBurnTime2 && this.furnaceBurnTime > 0)
                 {
                     var2 = true;
 
@@ -200,6 +206,16 @@ public class GCCoreTileEntityRefinery extends TileEntity implements IInventory, 
                             this.furnaceItemStacks[1] = this.furnaceItemStacks[1].getItem().getContainerItemStack(furnaceItemStacks[1]);
                         }
                     }
+
+                    if (this.furnaceItemStacks[2] != null)
+                    {
+                        --this.furnaceItemStacks[2].stackSize;
+
+                        if (this.furnaceItemStacks[2].stackSize == 0)
+                        {
+                            this.furnaceItemStacks[2] = this.furnaceItemStacks[2].getItem().getContainerItemStack(furnaceItemStacks[2]);
+                        }
+                    }
                 }
             }
 
@@ -207,7 +223,7 @@ public class GCCoreTileEntityRefinery extends TileEntity implements IInventory, 
             {
                 ++this.furnaceCookTime;
 
-                if (this.furnaceCookTime == 400)
+                if (this.furnaceCookTime == 800)
                 {
                     this.furnaceCookTime = 0;
                     this.smeltItem();
@@ -299,24 +315,24 @@ public class GCCoreTileEntityRefinery extends TileEntity implements IInventory, 
 
                 if (var3 == Block.woodSingleSlab)
                 {
-                    return 150;
+                    return 75;
                 }
 
                 if (var3.blockMaterial == Material.wood)
                 {
-                    return 300;
+                    return 150;
                 }
             }
 
-            if (var2 instanceof ItemTool && ((ItemTool) var2).getToolMaterialName().equals("WOOD")) return 200;
-            if (var2 instanceof ItemSword && ((ItemSword) var2).getToolMaterialName().equals("WOOD")) return 200;
-            if (var2 instanceof ItemHoe && ((ItemHoe) var2).func_77842_f().equals("WOOD")) return 200;
-            if (var1 == Item.stick.itemID) return 100;
-            if (var1 == Item.coal.itemID) return 1600;
-            if (var1 == Item.bucketLava.itemID) return 20000;
-            if (var1 == Block.sapling.blockID) return 100;
-            if (var1 == Item.blazeRod.itemID) return 2400;
-            return GameRegistry.getFuelValue(par0ItemStack);
+            if (var2 instanceof ItemTool && ((ItemTool) var2).getToolMaterialName().equals("WOOD")) return 100;
+            if (var2 instanceof ItemSword && ((ItemSword) var2).getToolMaterialName().equals("WOOD")) return 100;
+            if (var2 instanceof ItemHoe && ((ItemHoe) var2).func_77842_f().equals("WOOD")) return 100;
+            if (var1 == Item.stick.itemID) return 50;
+            if (var1 == Item.coal.itemID) return 800;
+            if (var1 == Item.bucketLava.itemID) return 10000;
+            if (var1 == Block.sapling.blockID) return 50;
+            if (var1 == Item.blazeRod.itemID) return 1200;
+            return GameRegistry.getFuelValue(par0ItemStack) / 2;
         }
     }
 
