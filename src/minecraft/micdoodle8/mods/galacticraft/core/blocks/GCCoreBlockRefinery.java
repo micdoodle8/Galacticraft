@@ -12,7 +12,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
@@ -20,9 +19,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreBlockRefinery extends BlockContainer
 {
-    private Random furnaceRand = new Random();
+    private Random refineryRand = new Random();
     
-    private static boolean keepFurnaceInventory = false;
+    private static boolean keepRefineryInventory = false;
 
     protected GCCoreBlockRefinery(int par1, int blockIndexInTexture)
     {
@@ -96,45 +95,42 @@ public class GCCoreBlockRefinery extends BlockContainer
 
     public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6)
     {
-        if (!keepFurnaceInventory)
+        GCCoreTileEntityRefinery var7 = (GCCoreTileEntityRefinery)par1World.getBlockTileEntity(par2, par3, par4);
+
+        if (var7 != null)
         {
-            GCCoreTileEntityRefinery var7 = (GCCoreTileEntityRefinery)par1World.getBlockTileEntity(par2, par3, par4);
-
-            if (var7 != null)
+            for (int var8 = 0; var8 < var7.getSizeInventory(); ++var8)
             {
-                for (int var8 = 0; var8 < var7.getSizeInventory(); ++var8)
+                ItemStack var9 = var7.getStackInSlot(var8);
+
+                if (var9 != null)
                 {
-                    ItemStack var9 = var7.getStackInSlot(var8);
+                    float var10 = this.refineryRand.nextFloat() * 0.8F + 0.1F;
+                    float var11 = this.refineryRand.nextFloat() * 0.8F + 0.1F;
+                    float var12 = this.refineryRand.nextFloat() * 0.8F + 0.1F;
 
-                    if (var9 != null)
+                    while (var9.stackSize > 0)
                     {
-                        float var10 = this.furnaceRand.nextFloat() * 0.8F + 0.1F;
-                        float var11 = this.furnaceRand.nextFloat() * 0.8F + 0.1F;
-                        float var12 = this.furnaceRand.nextFloat() * 0.8F + 0.1F;
+                        int var13 = this.refineryRand.nextInt(21) + 10;
 
-                        while (var9.stackSize > 0)
+                        if (var13 > var9.stackSize)
                         {
-                            int var13 = this.furnaceRand.nextInt(21) + 10;
-
-                            if (var13 > var9.stackSize)
-                            {
-                                var13 = var9.stackSize;
-                            }
-
-                            var9.stackSize -= var13;
-                            EntityItem var14 = new EntityItem(par1World, (double)((float)par2 + var10), (double)((float)par3 + var11), (double)((float)par4 + var12), new ItemStack(var9.itemID, var13, var9.getItemDamage()));
-
-                            if (var9.hasTagCompound())
-                            {
-                                var14.getEntityItem().setTagCompound((NBTTagCompound)var9.getTagCompound().copy());
-                            }
-
-                            float var15 = 0.05F;
-                            var14.motionX = (double)((float)this.furnaceRand.nextGaussian() * var15);
-                            var14.motionY = (double)((float)this.furnaceRand.nextGaussian() * var15 + 0.2F);
-                            var14.motionZ = (double)((float)this.furnaceRand.nextGaussian() * var15);
-                            par1World.spawnEntityInWorld(var14);
+                            var13 = var9.stackSize;
                         }
+
+                        var9.stackSize -= var13;
+                        EntityItem var14 = new EntityItem(par1World, (double)((float)par2 + var10), (double)((float)par3 + var11), (double)((float)par4 + var12), new ItemStack(var9.itemID, var13, var9.getItemDamage()));
+
+                        if (var9.hasTagCompound())
+                        {
+                            var14.getEntityItem().setTagCompound((NBTTagCompound)var9.getTagCompound().copy());
+                        }
+
+                        float var15 = 0.05F;
+                        var14.motionX = (double)((float)this.refineryRand.nextGaussian() * var15);
+                        var14.motionY = (double)((float)this.refineryRand.nextGaussian() * var15 + 0.2F);
+                        var14.motionZ = (double)((float)this.refineryRand.nextGaussian() * var15);
+                        par1World.spawnEntityInWorld(var14);
                     }
                 }
             }

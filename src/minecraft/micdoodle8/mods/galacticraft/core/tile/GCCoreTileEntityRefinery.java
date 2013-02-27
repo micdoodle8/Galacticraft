@@ -23,46 +23,46 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreTileEntityRefinery extends TileEntity implements IInventory, ISidedInventory
 {
-    private ItemStack[] furnaceItemStacks = new ItemStack[4];
+    private ItemStack[] refineryItemStacks = new ItemStack[4];
     
     public boolean isActive;
 
-    public int furnaceBurnTime = 0;
+    public int refineryBurnTime = 0;
     
     public int currentItemBurnTime = 0;
     public int currentItemBurnTime2 = 0;
 
-    public int furnaceCookTime = 0;
+    public int refineryCookTime = 0;
 
     public int getSizeInventory()
     {
-        return this.furnaceItemStacks.length;
+        return this.refineryItemStacks.length;
     }
 
     public ItemStack getStackInSlot(int par1)
     {
-        return this.furnaceItemStacks[par1];
+        return this.refineryItemStacks[par1];
     }
 
     public ItemStack decrStackSize(int par1, int par2)
     {
-        if (this.furnaceItemStacks[par1] != null)
+        if (this.refineryItemStacks[par1] != null)
         {
             ItemStack var3;
 
-            if (this.furnaceItemStacks[par1].stackSize <= par2)
+            if (this.refineryItemStacks[par1].stackSize <= par2)
             {
-                var3 = this.furnaceItemStacks[par1];
-                this.furnaceItemStacks[par1] = null;
+                var3 = this.refineryItemStacks[par1];
+                this.refineryItemStacks[par1] = null;
                 return var3;
             }
             else
             {
-                var3 = this.furnaceItemStacks[par1].splitStack(par2);
+                var3 = this.refineryItemStacks[par1].splitStack(par2);
 
-                if (this.furnaceItemStacks[par1].stackSize == 0)
+                if (this.refineryItemStacks[par1].stackSize == 0)
                 {
-                    this.furnaceItemStacks[par1] = null;
+                    this.refineryItemStacks[par1] = null;
                 }
 
                 return var3;
@@ -76,10 +76,10 @@ public class GCCoreTileEntityRefinery extends TileEntity implements IInventory, 
 
     public ItemStack getStackInSlotOnClosing(int par1)
     {
-        if (this.furnaceItemStacks[par1] != null)
+        if (this.refineryItemStacks[par1] != null)
         {
-            ItemStack var2 = this.furnaceItemStacks[par1];
-            this.furnaceItemStacks[par1] = null;
+            ItemStack var2 = this.refineryItemStacks[par1];
+            this.refineryItemStacks[par1] = null;
             return var2;
         }
         else
@@ -90,7 +90,7 @@ public class GCCoreTileEntityRefinery extends TileEntity implements IInventory, 
 
     public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
     {
-        this.furnaceItemStacks[par1] = par2ItemStack;
+        this.refineryItemStacks[par1] = par2ItemStack;
 
         if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit())
         {
@@ -107,38 +107,39 @@ public class GCCoreTileEntityRefinery extends TileEntity implements IInventory, 
     {
         super.readFromNBT(par1NBTTagCompound);
         NBTTagList var2 = par1NBTTagCompound.getTagList("Items");
-        this.furnaceItemStacks = new ItemStack[this.getSizeInventory()];
+        this.refineryItemStacks = new ItemStack[this.getSizeInventory()];
 
         for (int var3 = 0; var3 < var2.tagCount(); ++var3)
         {
             NBTTagCompound var4 = (NBTTagCompound)var2.tagAt(var3);
             byte var5 = var4.getByte("Slot");
 
-            if (var5 >= 0 && var5 < this.furnaceItemStacks.length)
+            if (var5 >= 0 && var5 < this.refineryItemStacks.length)
             {
-                this.furnaceItemStacks[var5] = ItemStack.loadItemStackFromNBT(var4);
+                this.refineryItemStacks[var5] = ItemStack.loadItemStackFromNBT(var4);
             }
         }
 
-        this.furnaceBurnTime = par1NBTTagCompound.getShort("BurnTime");
-        this.furnaceCookTime = par1NBTTagCompound.getShort("CookTime");
-        this.currentItemBurnTime = getItemBurnTime(this.furnaceItemStacks[1]);
+        this.refineryBurnTime = par1NBTTagCompound.getShort("BurnTime");
+        this.refineryCookTime = par1NBTTagCompound.getShort("CookTime");
+        this.currentItemBurnTime = getItemBurnTime(this.refineryItemStacks[1]);
+        this.currentItemBurnTime2 = getItemBurnTime(this.refineryItemStacks[2]);
     }
 
     public void writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setShort("BurnTime", (short)this.furnaceBurnTime);
-        par1NBTTagCompound.setShort("CookTime", (short)this.furnaceCookTime);
+        par1NBTTagCompound.setShort("BurnTime", (short)this.refineryBurnTime);
+        par1NBTTagCompound.setShort("CookTime", (short)this.refineryCookTime);
         NBTTagList var2 = new NBTTagList();
 
-        for (int var3 = 0; var3 < this.furnaceItemStacks.length; ++var3)
+        for (int var3 = 0; var3 < this.refineryItemStacks.length; ++var3)
         {
-            if (this.furnaceItemStacks[var3] != null)
+            if (this.refineryItemStacks[var3] != null)
             {
                 NBTTagCompound var4 = new NBTTagCompound();
                 var4.setByte("Slot", (byte)var3);
-                this.furnaceItemStacks[var3].writeToNBT(var4);
+                this.refineryItemStacks[var3].writeToNBT(var4);
                 var2.appendTag(var4);
             }
         }
@@ -154,7 +155,7 @@ public class GCCoreTileEntityRefinery extends TileEntity implements IInventory, 
     @SideOnly(Side.CLIENT)
     public int getCookProgressScaled(int par1, int par2)
     {
-        return this.furnaceCookTime * par1 / 800 * par2;
+        return this.refineryCookTime * par1 / 800 * par2;
     }
 
     @SideOnly(Side.CLIENT)
@@ -165,81 +166,74 @@ public class GCCoreTileEntityRefinery extends TileEntity implements IInventory, 
             this.currentItemBurnTime = 800;
         }
 
-        return this.furnaceBurnTime * par1 / this.currentItemBurnTime;
+        return this.refineryBurnTime * par1 / this.currentItemBurnTime;
     }
 
     public boolean isCookin()
     {
-        return this.furnaceBurnTime > 0;
+        return this.refineryBurnTime > 0;
     }
 
     public void updateEntity()
     {
-        boolean var1 = this.furnaceBurnTime > 0;
+        boolean var1 = this.refineryBurnTime > 0;
         boolean var2 = false;
 
-        if (this.furnaceBurnTime > 0)
+        if (this.refineryBurnTime > 0)
         {
-            --this.furnaceBurnTime;
+            --this.refineryBurnTime;
         }
-
-//        if (!this.worldObj.isRemote)
+        
+        if (this.refineryBurnTime == 0 && this.canSmelt())
         {
-            if (this.furnaceBurnTime == 0 && this.canSmelt())
-            {
-                this.currentItemBurnTime = this.furnaceBurnTime = getItemBurnTime(this.furnaceItemStacks[1]);
-//                this.currentItemBurnTime = getItemBurnTime(this.furnaceItemStacks[1]);
-//                this.currentItemBurnTime2 = getItemBurnTime(this.furnaceItemStacks[2]);
-                
-                this.furnaceBurnTime = this.currentItemBurnTime + currentItemBurnTime2;
-
-                if (this.currentItemBurnTime == currentItemBurnTime2 && this.furnaceBurnTime > 0)
-                {
-                    var2 = true;
-
-                    if (this.furnaceItemStacks[1] != null)
-                    {
-                        --this.furnaceItemStacks[1].stackSize;
-
-                        if (this.furnaceItemStacks[1].stackSize == 0)
-                        {
-                            this.furnaceItemStacks[1] = this.furnaceItemStacks[1].getItem().getContainerItemStack(furnaceItemStacks[1]);
-                        }
-                    }
-
-                    if (this.furnaceItemStacks[2] != null)
-                    {
-                        --this.furnaceItemStacks[2].stackSize;
-
-                        if (this.furnaceItemStacks[2].stackSize == 0)
-                        {
-                            this.furnaceItemStacks[2] = this.furnaceItemStacks[2].getItem().getContainerItemStack(furnaceItemStacks[2]);
-                        }
-                    }
-                }
-            }
-
-            if (this.isCookin() && this.canSmelt())
-            {
-                ++this.furnaceCookTime;
-
-                if (this.furnaceCookTime == 800)
-                {
-                    this.furnaceCookTime = 0;
-                    this.smeltItem();
-                    var2 = true;
-                }
-            }
-            else
-            {
-                this.furnaceCookTime = 0;
-            }
-
-            if (var1 != this.furnaceBurnTime > 0)
+            this.currentItemBurnTime = this.currentItemBurnTime2 = this.refineryBurnTime = getItemBurnTime(this.refineryItemStacks[1]) + this.getItemBurnTime(this.refineryItemStacks[2]);
+          
+            if (this.currentItemBurnTime == currentItemBurnTime2 && this.refineryBurnTime > 0)
             {
                 var2 = true;
-                this.isActive = this.furnaceBurnTime > 0;
+
+                if (this.refineryItemStacks[1] != null)
+                {
+                    --this.refineryItemStacks[1].stackSize;
+
+                    if (this.refineryItemStacks[1].stackSize == 0)
+                    {
+                        this.refineryItemStacks[1] = this.refineryItemStacks[1].getItem().getContainerItemStack(refineryItemStacks[1]);
+                    }
+                }
+
+                if (this.refineryItemStacks[2] != null)
+                {
+                    --this.refineryItemStacks[2].stackSize;
+
+                    if (this.refineryItemStacks[2].stackSize == 0)
+                    {
+                        this.refineryItemStacks[2] = this.refineryItemStacks[2].getItem().getContainerItemStack(refineryItemStacks[2]);
+                    }
+                }
             }
+        }
+
+        if (this.isCookin() && this.canSmelt())
+        {
+            ++this.refineryCookTime;
+
+            if (this.refineryCookTime == 800)
+            {
+                this.refineryCookTime = 0;
+                this.smeltItem();
+                var2 = true;
+            }
+        }
+        else
+        {
+            this.refineryCookTime = 0;
+        }
+
+        if (var1 != this.refineryBurnTime > 0)
+        {
+            var2 = true;
+            this.isActive = this.refineryBurnTime > 0;
         }
 
         if (var2)
@@ -250,7 +244,7 @@ public class GCCoreTileEntityRefinery extends TileEntity implements IInventory, 
 
     private boolean canSmelt()
     {
-        if (this.furnaceItemStacks[0] == null)
+        if (this.refineryItemStacks[0] == null)
         {
             return false;
         }
@@ -258,17 +252,17 @@ public class GCCoreTileEntityRefinery extends TileEntity implements IInventory, 
         {
             ItemStack var1 = new ItemStack(GCCoreItems.rocketFuelBucket);
             
-            if (this.furnaceItemStacks[3] == null) 
+            if (this.refineryItemStacks[3] == null) 
             {
             	return true;
             }
             	
-            if (!(this.furnaceItemStacks[3].itemID == var1.itemID && (this.furnaceItemStacks[3].getMaxDamage() - this.furnaceItemStacks[3].getItemDamage()) >= 0 && (this.furnaceItemStacks[3].getMaxDamage() - this.furnaceItemStacks[3].getItemDamage()) < 60))
+            if (!(this.refineryItemStacks[3].itemID == var1.itemID && (this.refineryItemStacks[3].getMaxDamage() - this.refineryItemStacks[3].getItemDamage()) >= 0 && (this.refineryItemStacks[3].getMaxDamage() - this.refineryItemStacks[3].getItemDamage()) < 60))
             {
             	return false;
             }
             
-            int result = furnaceItemStacks[3].stackSize + var1.stackSize;
+            int result = refineryItemStacks[3].stackSize + var1.stackSize;
             
             return (result <= getInventoryStackLimit() && result <= var1.getMaxStackSize());
         }
@@ -278,22 +272,22 @@ public class GCCoreTileEntityRefinery extends TileEntity implements IInventory, 
     {
         if (this.canSmelt())
         {
-            ItemStack var1 = new ItemStack(GCCoreItems.rocketFuelBucket, 1, this.furnaceItemStacks[0].getItemDamage());
+            ItemStack var1 = new ItemStack(GCCoreItems.rocketFuelBucket, 1, this.refineryItemStacks[0].getItemDamage());
 
-            if (this.furnaceItemStacks[3] == null)
+            if (this.refineryItemStacks[3] == null)
             {
-                this.furnaceItemStacks[3] = var1.copy();
+                this.refineryItemStacks[3] = var1.copy();
             }
-            else if (this.furnaceItemStacks[3].isItemEqual(var1))
+            else if (this.refineryItemStacks[3].isItemEqual(var1))
             {
-                furnaceItemStacks[3].stackSize += var1.stackSize;
+                refineryItemStacks[3].stackSize += var1.stackSize;
             }
 
-            --this.furnaceItemStacks[0].stackSize;
+            --this.refineryItemStacks[0].stackSize;
 
-            if (this.furnaceItemStacks[0].stackSize <= 0)
+            if (this.refineryItemStacks[0].stackSize <= 0)
             {
-                this.furnaceItemStacks[0] = null;
+                this.refineryItemStacks[0] = null;
             }
         }
     }
