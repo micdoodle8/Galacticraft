@@ -50,8 +50,14 @@ public class GCCoreGuiRefinery extends GuiContainer
         this.drawTexturedModalRect(var5 + 74, var6 + 45 + 12 - var7, 176, 69 + 12 - var7, 14, var7 + 2);
         var7 = this.refineryInventory.getBurnTimeRemainingScaled(12);
         this.drawTexturedModalRect(var5 + 90, var6 + 45 + 12 - var7, 176, 69 + 12 - var7, 14, var7 + 2);
+        
+        if (this.refineryInventory.getStackInSlot(0) == null)
+        {
+        	return;
+        }
+        
         var7 = this.refineryInventory.getCookProgressScaled(80, 5);
-        this.drawTexturedModalRect(var5 + 57, var6 + 38, 176, 0, (var7 / 4) + 1, 5);
+        this.drawTexturedModalRect(var5 + 57, var6 + 38, 176, 0, Math.min(var7 / 4, 30) + 1, 5);
         
         var7 = this.refineryInventory.getCookProgressScaled(34 * 8, 5);
         
@@ -73,9 +79,16 @@ public class GCCoreGuiRefinery extends GuiContainer
 
         var7 = this.refineryInventory.getCookProgressScaled(36, 5);
 
-        if (var7 > 100)
+        if (var7 > 105)
         {
-            this.drawTexturedModalRect(var5 + 107, var6 + 7, 176, 43, 3, ((var7 - 100) / 4) + 1);
+            this.drawTexturedModalRect(var5 + 107, var6 + 7, 176, 43, 3, Math.min(((var7 - 100) / 4) + 1, 10));
+        }
+
+        var7 = this.refineryInventory.getCookProgressScaled(57, 5);
+
+        if (var7 > 215)
+        {
+            this.drawTexturedModalRect(var5 + 107, var6 + 9, 176, 53, ((var7 - 215) / 4) + 2, 16);
         }
     }
 }
