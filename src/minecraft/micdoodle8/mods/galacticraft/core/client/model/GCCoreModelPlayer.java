@@ -455,7 +455,6 @@ public class GCCoreModelPlayer extends ModelPlayerBase
 		} 
     	catch (ClassNotFoundException e1) 
     	{
-			e1.printStackTrace();
 		}
     	
     	float speedModifier = 0.0F;
