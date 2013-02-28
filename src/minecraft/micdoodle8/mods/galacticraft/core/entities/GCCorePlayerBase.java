@@ -73,6 +73,7 @@ public class GCCorePlayerBase extends ServerPlayerBase
     
     public ItemStack[] rocketStacks = new ItemStack[28];
     public int rocketType;
+    public int fuelDamage;
 	
 	private boolean usingParachute;
 	
@@ -1013,9 +1014,24 @@ public class GCCorePlayerBase extends ServerPlayerBase
         final int var9b = MathHelper.floor_double(par1Entity.posX);
       	final int var11b = MathHelper.floor_double(par1Entity.posZ);
       
-        this.rocketStacks[26] = new ItemStack(GCCoreItems.spaceship, 1, this.rocketType);
-        this.rocketStacks[25] = new ItemStack(GCCoreItems.rocketFuelBucket, 1, 0);
-      	this.rocketStacks[24] = new ItemStack(GCCoreBlocks.landingPad, 9, 0);
+      	for (int i = 24; i < 27; i++)
+      	{
+      		if (this.rocketStacks[i] == null)
+      		{
+      			switch (i)
+      			{
+      			case 24:
+      		      	this.rocketStacks[i] = new ItemStack(GCCoreBlocks.landingPad, 9, 0);
+      				break;
+      			case 25:
+      		        this.rocketStacks[i] = new ItemStack(GCCoreItems.rocketFuelBucket, 1, this.fuelDamage);
+      				break;
+      			case 26:
+      		        this.rocketStacks[i] = new ItemStack(GCCoreItems.spaceship, 1, this.rocketType);
+      				break;
+      			}
+      		}
+      	}
       
       	if (this.chestSpawnCooldown == 0)
       	{
