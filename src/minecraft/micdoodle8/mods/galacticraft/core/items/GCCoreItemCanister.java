@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.items;
 
 import java.util.List;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -22,6 +23,7 @@ public class GCCoreItemCanister extends Item
 		this.setMaxStackSize(1);
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
+        this.setCreativeTab(GalacticraftCore.galacticraftTab);
 	}
 
     @Override
