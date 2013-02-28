@@ -39,7 +39,7 @@ public class GCCoreItems
 	public static Item ingotTitanium;
 	public static Item ingotCopper;
 	public static Item ingotAluminum;
-	public static Item aluminumCanister;
+	public static Item canister;
 	public static Item airVent;
 	public static Item airFan;
 	public static Item oxygenConcentrator;
@@ -85,7 +85,7 @@ public class GCCoreItems
 		GCCoreItems.ingotTitanium = new GCCoreItem(GCCoreConfigManager.idItemIngotTitanium).setIconIndex(19).setItemName("ingotTitanium");
 		GCCoreItems.ingotCopper = new GCCoreItem(GCCoreConfigManager.idItemIngotCopper).setIconIndex(20).setItemName("ingotCopper");
 		GCCoreItems.ingotAluminum = new GCCoreItem(GCCoreConfigManager.idItemIngotAluminum).setIconIndex(21).setItemName("ingotAluminium");
-		GCCoreItems.aluminumCanister = new GCCoreItem(GCCoreConfigManager.idItemAluminumCanister).setIconIndex(22).setItemName("aluminiumCanister");
+		GCCoreItems.canister = new GCCoreItemCanister(GCCoreConfigManager.idItemAluminumCanister).setItemName("canister");
 		GCCoreItems.airVent = new GCCoreItem(GCCoreConfigManager.idItemAirVent).setIconIndex(23).setItemName("airVent");
 		GCCoreItems.airFan = new GCCoreItem(GCCoreConfigManager.idItemFan).setIconIndex(24).setItemName("airFan");
 		GCCoreItems.oxygenConcentrator = new GCCoreItem(GCCoreConfigManager.idItemOxygenConcentrator).setIconIndex(25).setItemName("oxygenConcentrator");
@@ -135,7 +135,6 @@ public class GCCoreItems
 		GCCoreItems.addName(GCCoreItems.ingotTitanium);
 		GCCoreItems.addName(GCCoreItems.ingotCopper);
 		GCCoreItems.addName(GCCoreItems.ingotAluminum);
-		GCCoreItems.addName(GCCoreItems.aluminumCanister);
 		GCCoreItems.addName(GCCoreItems.airVent);
 		GCCoreItems.addName(GCCoreItems.airFan);
 		GCCoreItems.addName(GCCoreItems.oxygenConcentrator);
@@ -173,6 +172,13 @@ public class GCCoreItems
 			final String s = GCCoreItemParachute.names[i];
 			
 	        GCCoreItems.addNameWithMetadata("item.parachute." + s + ".name");
+		}
+
+		for (i = 0; i < GCCoreItemCanister.names.length; i++)
+		{
+			final String s = GCCoreItemCanister.names[i];
+			
+	        GCCoreItems.addNameWithMetadata("item.canister." + s + ".name");
 		}
 	}
 	
