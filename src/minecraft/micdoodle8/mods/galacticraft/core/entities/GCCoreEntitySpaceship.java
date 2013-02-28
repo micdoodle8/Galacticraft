@@ -126,8 +126,13 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
         	{
         		this.motionY = -d * Math.cos((this.rotationPitch - 180) * Math.PI / 180.0D);
         	}
+        	
+        	if (this.timeSinceLaunch % 40 == 0)
+        	{
+        		this.getStackInSlot(27).setItemDamage(this.getStackInSlot(27).getItemDamage() + 1);
+        	}
         }
-        else if ((this.getStackInSlot(27) == null || this.getStackInSlot(27).getItem().itemID != GCCoreItems.rocketFuelBucket.itemID) && this.getLaunched() == 1)
+        else if ((this.getStackInSlot(27) == null || this.getStackInSlot(27).getItem().itemID != GCCoreItems.rocketFuelBucket.itemID || this.getStackInSlot(27).getItemDamage() == this.getStackInSlot(27).getMaxDamage() - 1) && this.getLaunched() == 1)
         {
         	if (Math.abs(Math.sin(this.timeSinceLaunch / 1000)) / 10 != 0.0)
         	{
@@ -145,6 +150,7 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
     {
         GCCoreUtil.getPlayerBaseServerFromPlayer(player).rocketStacks = this.cargoItems;
         GCCoreUtil.getPlayerBaseServerFromPlayer(player).rocketType = this.getSpaceshipType();
+        GCCoreUtil.getPlayerBaseServerFromPlayer(player).fuelDamage = (this.getStackInSlot(27).itemID == GCCoreItems.rocketFuelBucket.itemID ? this.getStackInSlot(27).getItemDamage() : 0);
     }
     
     protected void spawnParticles(boolean launched)
