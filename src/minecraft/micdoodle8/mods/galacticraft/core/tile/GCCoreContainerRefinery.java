@@ -1,11 +1,13 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import micdoodle8.mods.galacticraft.core.items.GCCoreItemOilCanister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotFurnace;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntityFurnace;
 
 public class GCCoreContainerRefinery extends Container
 {
@@ -45,61 +47,75 @@ public class GCCoreContainerRefinery extends Container
 	}
 
     @Override
-	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par1)
+    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2)
     {
-        ItemStack var2 = null;
-        final Slot var3 = (Slot)this.inventorySlots.get(par1);
+        ItemStack var3 = null;
+        Slot var4 = (Slot)this.inventorySlots.get(par2);
 
-        if (var3 != null && var3.getHasStack())
+        if (var4 != null && var4.getHasStack())
         {
-            final ItemStack var4 = var3.getStack();
-            var2 = var4.copy();
+            ItemStack var5 = var4.getStack();
+            var3 = var5.copy();
 
-            if (par1 == 0)
+            if (par2 == 3)
             {
-                if (!this.mergeItemStack(var4, 11, 46, true))
+                if (!this.mergeItemStack(var5, 3, 39, true))
                 {
                     return null;
                 }
 
-                var3.onSlotChange(var4, var2);
+                var4.onSlotChange(var5, var3);
             }
-            else if (par1 >= 10 && par1 < 37)
+            else if (par2 != 2 && par2 != 1 && par2 != 0)
             {
-                if (!this.mergeItemStack(var4, 37, 46, false))
+                if (var5.getItem() instanceof GCCoreItemOilCanister && (var5.getMaxDamage() - var5.getItemDamage()) > 0)
+                {
+                    if (!this.mergeItemStack(var5, 0, 1, false))
+                    {
+                        return null;
+                    }
+                }
+                else if (TileEntityFurnace.isItemFuel(var5))
+                {
+                    if (!this.mergeItemStack(var5, 1, 2, false) && !this.mergeItemStack(var5, 2, 3, false))
+                    {
+                        return null;
+                    }
+                }
+                else if (par2 >= 4 && par2 < 30)
+                {
+                    if (!this.mergeItemStack(var5, 30, 39, false))
+                    {
+                        return null;
+                    }
+                }
+                else if (par2 >= 30 && par2 < 39 && !this.mergeItemStack(var5, 4, 30, false))
                 {
                     return null;
                 }
             }
-            else if (par1 >= 37 && par1 < 46)
-            {
-                if (!this.mergeItemStack(var4, 11, 37, false))
-                {
-                    return null;
-                }
-            }
-            else if (!this.mergeItemStack(var4, 11, 46, false))
+            else if (!this.mergeItemStack(var5, 4, 39, false))
             {
                 return null;
             }
 
-            if (var4.stackSize == 0)
+            if (var5.stackSize == 0)
             {
-                var3.putStack((ItemStack)null);
+                var4.putStack((ItemStack)null);
             }
             else
             {
-                var3.onSlotChanged();
+                var4.onSlotChanged();
             }
 
-            if (var4.stackSize == var2.stackSize)
+            if (var5.stackSize == var3.stackSize)
             {
                 return null;
             }
 
-            var3.onPickupFromSlot(par1EntityPlayer, var4);
+            var4.onPickupFromSlot(par1EntityPlayer, var5);
         }
 
-        return var2;
+        return var3;
     }
 }
