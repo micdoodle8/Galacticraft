@@ -35,24 +35,21 @@ public class GCCoreItemOilExtractor extends Item
         }
         else
         {
-            if (var12.typeOfHit == EnumMovingObjectType.TILE)
+            int var13 = var12.blockX;
+            int var14 = var12.blockY + 1;
+            int var15 = var12.blockZ;
+
+            if (!par2World.canMineBlock(par3EntityPlayer, var13, var14, var15))
             {
-                int var13 = var12.blockX;
-                int var14 = var12.blockY + 1;
-                int var15 = var12.blockZ;
+                return par1ItemStack;
+            }
 
-                if (!par2World.canMineBlock(par3EntityPlayer, var13, var14, var15))
-                {
-                    return par1ItemStack;
-                }
-
-                if ((par2World.getBlockId(var13, var14, var15) == GCCoreBlocks.crudeOilMoving.blockID || par2World.getBlockId(var13, var14, var15) == GCCoreBlocks.crudeOilStill.blockID) && par2World.getBlockMetadata(var13, var14, var15) == 0)
-                {
-                	if (openCanister(par3EntityPlayer) != null)
-                	{
-                        par3EntityPlayer.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
-                	}
-                }
+            if ((par2World.getBlockId(var13, var14, var15) == GCCoreBlocks.crudeOilMoving.blockID || par2World.getBlockId(var13, var14, var15) == GCCoreBlocks.crudeOilStill.blockID) && par2World.getBlockMetadata(var13, var14, var15) == 0)
+            {
+            	if (openCanister(par3EntityPlayer) != null)
+            	{
+                    par3EntityPlayer.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
+            	}
             }
         }
         
@@ -60,15 +57,48 @@ public class GCCoreItemOilExtractor extends Item
     }
 
     @Override
-    public void onUsingItemTick(ItemStack stack, EntityPlayer player, int count)
+    public void onUsingItemTick(ItemStack par1ItemStack, EntityPlayer par3EntityPlayer, int count)
     {
-    	ItemStack canister = this.openCanister(player);
-    	
-    	if (canister != null && count % 5 == 0)
-    	{
-    		canister.setItemDamage(canister.getItemDamage() - 1);
-    	}
-    	// TODO sounds
+        float var4 = 1.0F;
+        double var5 = par3EntityPlayer.prevPosX + (par3EntityPlayer.posX - par3EntityPlayer.prevPosX) * (double)var4;
+        double var7 = par3EntityPlayer.prevPosY + (par3EntityPlayer.posY - par3EntityPlayer.prevPosY) * (double)var4 + 1.62D - (double)par3EntityPlayer.yOffset + 2;
+        double var9 = par3EntityPlayer.prevPosZ + (par3EntityPlayer.posZ - par3EntityPlayer.prevPosZ) * (double)var4;
+        MovingObjectPosition var12 = this.getMovingObjectPositionFromPlayer(par3EntityPlayer.worldObj, par3EntityPlayer, false);
+
+        if (var12 == null)
+        {
+            return;
+        }
+        else
+        {
+            int var13 = var12.blockX;
+            int var14 = var12.blockY + 1;
+            int var15 = var12.blockZ;
+
+            if (!par3EntityPlayer.worldObj.canMineBlock(par3EntityPlayer, var13, var14, var15))
+            {
+                return;
+            }
+
+            if ((par3EntityPlayer.worldObj.getBlockId(var13, var14, var15) == GCCoreBlocks.crudeOilMoving.blockID || par3EntityPlayer.worldObj.getBlockId(var13, var14, var15) == GCCoreBlocks.crudeOilStill.blockID) && par3EntityPlayer.worldObj.getBlockMetadata(var13, var14, var15) == 0)
+            {
+            	if (openCanister(par3EntityPlayer) != null)
+            	{
+            		par3EntityPlayer.worldObj.setBlockMetadataWithNotify(var13, var14, var15, par3EntityPlayer.worldObj.getBlockMetadata(var13, var14, var15) + 1);
+            		
+                	ItemStack canister = this.openCanister(par3EntityPlayer);
+                	
+                	if (canister != null && count % 5 == 0 && canister.getItemDamage() > 5)
+                	{
+                		canister.setItemDamage(canister.getItemDamage() - 5);
+                	}
+            	}
+            }
+            else
+            {
+            	return;
+            }
+        }
     }
     
     private ItemStack openCanister(EntityPlayer player)
