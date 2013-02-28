@@ -123,7 +123,7 @@ public class GCCoreEntityParaChest extends Entity
 				this.motionY = -0.25;
 			}
 			
-			this.moveEntity(this.motionX, this.motionY, this.motionZ);
+			this.moveEntity(0, this.motionY, 0);
 		}
 	}
 	
