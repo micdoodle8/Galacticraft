@@ -28,7 +28,6 @@ import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
 import micdoodle8.mods.galacticraft.API.ISpaceship;
 import micdoodle8.mods.galacticraft.core.CommonProxyCore;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
-import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLaunchFlameFX;
@@ -92,6 +91,9 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCollector;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenDistributor;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityRefinery;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
+import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
+import micdoodle8.mods.galacticraft.core.util.PacketUtil;
+import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.moon.client.ClientProxyMoon;
 import micdoodle8.mods.galacticraft.moon.client.GCMoonMapPlanet;
 import net.minecraft.block.Block;
@@ -453,14 +455,14 @@ public class ClientProxyCore extends CommonProxyCore
 		{
             final DataInputStream data = new DataInputStream(new ByteArrayInputStream(packet.data));
             
-            final int packetType = GCCoreUtil.readPacketID(data);
+            final int packetType = PacketUtil.readPacketID(data);
             
             final EntityPlayer player = (EntityPlayer)p;
             
             if (packetType == 0)
             {
                 final Class[] decodeAs = {Integer.class, Integer.class, String.class};
-                final Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
+                final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
                 
                 if (String.valueOf(packetReadout[2]).equals(String.valueOf(FMLClientHandler.instance().getClient().thePlayer.username)))
                 {
@@ -471,14 +473,14 @@ public class ClientProxyCore extends CommonProxyCore
             else if (packetType == 1)
             {
                 final Class[] decodeAs = {Float.class};
-                final Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
+                final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
             	
                 FMLClientHandler.instance().getClient().thePlayer.timeInPortal = (Float) packetReadout[0];
             }
             else if (packetType == 2)
             {
             	final Class[] decodeAs = {String.class, String.class};
-                final Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
+                final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
             	
                 if (String.valueOf(packetReadout[0]).equals(FMLClientHandler.instance().getClient().thePlayer.username))
                 {
@@ -493,7 +495,7 @@ public class ClientProxyCore extends CommonProxyCore
             else if (packetType == 3)
             {
             	final Class[] decodeAs = {Integer.class, Integer.class};
-                final Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
+                final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
                 
                 for(int i = 0; i < player.worldObj.getLoadedEntityList().size(); i++)
                 {
@@ -514,35 +516,35 @@ public class ClientProxyCore extends CommonProxyCore
             else if (packetType == 4)
             {
             	final Class[] decodeAs = {String.class};
-                final Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
+                final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
                 
                 ClientProxyCore.playersUsingParachutes.add((String) packetReadout[0]);
             }
             else if (packetType == 5)
             {
             	final Class[] decodeAs = {String.class};
-                final Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
+                final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
                 
                 ClientProxyCore.playersUsingParachutes.remove(packetReadout[0]);
             }
             else if (packetType == 6)
             {
             	final Class[] decodeAs = {String.class, String.class};
-                final Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
+                final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
                 
                 ClientProxyCore.parachuteTextures.put((String)packetReadout[0], (String)packetReadout[1]);
             }
             else if (packetType == 7)
             {
             	final Class[] decodeAs = {String.class, String.class};
-                final Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
+                final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
                 
                 ClientProxyCore.parachuteTextures.remove(packetReadout[0]);
             }
             else if (packetType == 8)
             {
             	final Class[] decodeAs = {String.class};
-                final Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
+                final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
                 
                 FMLClientHandler.instance().getClient().gameSettings.thirdPersonView = 1;
 
@@ -554,7 +556,7 @@ public class ClientProxyCore extends CommonProxyCore
             else if (packetType == 9)
             {
             	final Class[] decodeAs = {Integer.class, Integer.class, Integer.class};
-                final Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
+                final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
                 
                 int x, y, z;
                 x = (Integer) packetReadout[0];
@@ -576,7 +578,7 @@ public class ClientProxyCore extends CommonProxyCore
             else if (packetType == 10)
             {
             	final Class[] decodeAs = {String.class, Integer.class};
-                final Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
+                final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
                 
                 final int type = (Integer) packetReadout[1];
                 
@@ -635,7 +637,7 @@ public class ClientProxyCore extends CommonProxyCore
             else if (packetType == 11)
             {
                 final Class[] decodeAs = {String.class};
-                final Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
+                final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
                 
                 this.mc.thePlayer.playerCloakUrl = (String) packetReadout[0];
             }
@@ -806,9 +808,9 @@ public class ClientProxyCore extends CommonProxyCore
     			{
     				this.zoom(15.0F);
     				final Object[] toSend = {player.ridingEntity.rotationPitch};
-    	            PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 8, toSend));
+    	            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket("Galacticraft", 8, toSend));
     				final Object[] toSend2 = {player.ridingEntity.rotationYaw};
-    	            PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 7, toSend2));
+    	            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket("Galacticraft", 7, toSend2));
     			}
     			else
     			{
@@ -836,28 +838,28 @@ public class ClientProxyCore extends CommonProxyCore
     				{
     					entityControllable.keyPressed(2, player);
     					final Object[] toSend = {2};
-    					PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 9, toSend));
+    					PacketDispatcher.sendPacketToServer(PacketUtil.createPacket("Galacticraft", 9, toSend));
     				}
     				
     				if (minecraft.gameSettings.keyBindRight.pressed)
     				{
     					entityControllable.keyPressed(3, player);
     					final Object[] toSend = {3};
-    					PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 9, toSend));
+    					PacketDispatcher.sendPacketToServer(PacketUtil.createPacket("Galacticraft", 9, toSend));
     				}
 
     				if (minecraft.gameSettings.keyBindForward.pressed)
     				{
     					entityControllable.keyPressed(0, player);
     					final Object[] toSend = {0};
-    					PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 9, toSend));
+    					PacketDispatcher.sendPacketToServer(PacketUtil.createPacket("Galacticraft", 9, toSend));
     				}
     				
     				if (minecraft.gameSettings.keyBindBack.pressed)
     				{
     					entityControllable.keyPressed(1, player);
     					final Object[] toSend = {1};
-    					PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 9, toSend));
+    					PacketDispatcher.sendPacketToServer(PacketUtil.createPacket("Galacticraft", 9, toSend));
     				}
     			}
     			
@@ -869,14 +871,14 @@ public class ClientProxyCore extends CommonProxyCore
     				{
         	            ship.turnYaw(-1.0F);
         				final Object[] toSend = {ship.rotationYaw};
-        	            PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 7, toSend));
+        	            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket("Galacticraft", 7, toSend));
     				}
     				
     				if (minecraft.gameSettings.keyBindRight.pressed)
     				{
         	            ship.turnYaw(1.0F);
         				final Object[] toSend = {ship.rotationYaw};
-        	            PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 7, toSend));
+        	            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket("Galacticraft", 7, toSend));
     				}
 
     				if (minecraft.gameSettings.keyBindForward.pressed)
@@ -885,7 +887,7 @@ public class ClientProxyCore extends CommonProxyCore
     					{
             	            ship.turnPitch(-0.7F);
             				final Object[] toSend = {ship.rotationPitch};
-            	            PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 8, toSend));
+            	            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket("Galacticraft", 8, toSend));
     					}
     				}
     				
@@ -895,7 +897,7 @@ public class ClientProxyCore extends CommonProxyCore
     					{
             	            ship.turnPitch(0.7F);
             				final Object[] toSend = {ship.rotationPitch};
-            	            PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 8, toSend));
+            	            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket("Galacticraft", 8, toSend));
     					}
     				}
     			}
@@ -944,7 +946,7 @@ public class ClientProxyCore extends CommonProxyCore
     			if (player != null && player.ridingEntity != null && minecraft.gameSettings.keyBindJump.pressed && !ClientProxyCore.lastSpacebarDown)
     			{
     				final Object[] toSend = {0};
-    	            PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 3, toSend));
+    	            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket("Galacticraft", 3, toSend));
     	            ClientProxyCore.lastSpacebarDown = true;
     			}
     			
@@ -955,7 +957,7 @@ public class ClientProxyCore extends CommonProxyCore
                     	final EntityPlayerSP player2 = minecraft.thePlayer;
                     	
                         final Object[] toSend = {player.username, 0};
-                        PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 5, toSend));
+                        PacketDispatcher.sendPacketToServer(PacketUtil.createPacket("Galacticraft", 5, toSend));
                 	}
             	}
             	if (Keyboard.isKeyDown(Keyboard.KEY_A))
@@ -965,7 +967,7 @@ public class ClientProxyCore extends CommonProxyCore
                     	final EntityPlayerSP player2 = minecraft.thePlayer;
                     	
                         final Object[] toSend = {player.username, 1};
-                        PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 5, toSend));
+                        PacketDispatcher.sendPacketToServer(PacketUtil.createPacket("Galacticraft", 5, toSend));
                 	}
             	}
             	if (Keyboard.isKeyDown(Keyboard.KEY_D))
@@ -975,7 +977,7 @@ public class ClientProxyCore extends CommonProxyCore
                     	final EntityPlayerSP player2 = minecraft.thePlayer;
                     	
                         final Object[] toSend = {player.username, 2};
-                        PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 5, toSend));
+                        PacketDispatcher.sendPacketToServer(PacketUtil.createPacket("Galacticraft", 5, toSend));
                 	}
             	}
             }
@@ -986,7 +988,7 @@ public class ClientProxyCore extends CommonProxyCore
         public static int remoteBuildVer;
         public static int localMajVer = 0;
         public static int localMinVer = 0;
-        public static int localBuildVer = 9;
+        public static int localBuildVer = 10;
     	
     	private static void checkVersion()
         {
@@ -1174,7 +1176,7 @@ public class ClientProxyCore extends CommonProxyCore
 	                    
 	                    boolean var2 = false;
 
-    					var2 = GCCoreUtil.getPlayerBaseClientFromPlayer(player).getUsingGoggles();
+    					var2 = PlayerUtil.getPlayerBaseClientFromPlayer(player).getUsingGoggles();
 
                     	minecraft.fontRenderer.drawString("Advanced Mode: " + (var2 ? "ON" : "OFF"), var6 / 2 - 50, 4, 0x03b88f);
 
@@ -1199,7 +1201,7 @@ public class ClientProxyCore extends CommonProxyCore
 		            }
         		}
 
-        		if (player != null && player.worldObj.provider instanceof IGalacticraftWorldProvider && GCCoreUtil.shouldDisplayTankGui(minecraft.currentScreen))
+        		if (player != null && player.worldObj.provider instanceof IGalacticraftWorldProvider && OxygenUtil.shouldDisplayTankGui(minecraft.currentScreen))
     			{
     				int var6 = (TickHandlerClient.airRemaining - 90) * -1;
     				if (TickHandlerClient.airRemaining <= 0)
@@ -1716,7 +1718,7 @@ public class ClientProxyCore extends CommonProxyCore
         	
         	final EntityPlayerSP player = minecraft.thePlayer;
         	
-        	final GCCorePlayerBaseClient playerBase = GCCoreUtil.getPlayerBaseClientFromPlayer(player);
+        	final GCCorePlayerBaseClient playerBase = PlayerUtil.getPlayerBaseClientFromPlayer(player);
         	
         	final boolean handled = true;
         	
@@ -1732,7 +1734,7 @@ public class ClientProxyCore extends CommonProxyCore
         			playerBase.setUseTutorialText(false);
                 	
                     final Object[] toSend = {player.username};
-                    PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 0, toSend));
+                    PacketDispatcher.sendPacketToServer(PacketUtil.createPacket("Galacticraft", 0, toSend));
             	    player.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiTankRefill, minecraft.theWorld, (int)player.posX, (int)player.posY, (int)player.posZ);
             	}
         	}
@@ -1746,7 +1748,7 @@ public class ClientProxyCore extends CommonProxyCore
         	else if (kb.keyCode == GCKeyHandler.openSpaceshipInv.keyCode)
         	{
                 final Object[] toSend = {player.username};
-                PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 6, toSend));
+                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket("Galacticraft", 6, toSend));
         	    player.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiSpaceshipInventory, minecraft.theWorld, (int)player.posX, (int)player.posY, (int)player.posZ);
         	}
         	else if (kb.keyCode == GCKeyHandler.toggleAdvGoggles.keyCode)
@@ -1788,7 +1790,7 @@ public class ClientProxyCore extends CommonProxyCore
 //    			if (handled)
 //    			{
 //                    Object[] toSend = {player.username, 2};
-//                    PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 5, toSend));
+//                    PacketDispatcher.sendPacketToServer(PacketUtil.createPacket("Galacticraft", 5, toSend));
 //    			}
 //    		}
 //    		else

@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.wgen;
 
 import java.util.Random;
 
-import micdoodle8.mods.galacticraft.core.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.world.World;
@@ -69,7 +69,7 @@ public abstract class GCCoreStructureComponent extends StructureComponent
 
         if (var7.isVecInside(var8, var9, var10) && var1.getBlockId(var8, var9, var10) != Block.chest.blockID)
         {
-            GCCoreUtil.generateChestContents(var1, var2, var8, var9, var10);
+        	WorldUtil.generateChestContents(var1, var2, var8, var9, var10);
         }
     }
 

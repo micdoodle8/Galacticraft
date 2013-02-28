@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.moon.client;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
-import micdoodle8.mods.galacticraft.core.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
@@ -141,7 +141,7 @@ public class GCMoonSkyProvider extends IRenderHandler
             var12 = 3F;
             GL11.glRotatef(40F, 0.0F, 1.0F, 0.0F);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 5F);
-            GL11.glRotatef(GCCoreUtil.calculateMarsAngleFromOtherPlanet(world.getWorldTime(), partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
+            GL11.glRotatef(WorldUtil.calculateMarsAngleFromOtherPlanet(world.getWorldTime(), partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/planets/mars.png"));
             var23.startDrawingQuads();
             var23.addVertexWithUV(-var12, 150.0D, -var12, 0.0D, 0.0D);

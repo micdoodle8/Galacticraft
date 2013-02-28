@@ -41,7 +41,7 @@ public class GCMarsUtil
 			"ZVZ",
 			'V', GCCoreItems.airFan,
 			'W', Item.redstone,
-			'X', GCCoreItems.aluminumCanister,
+			'X', new ItemStack(GCCoreItems.canister, 1, 0),
 			'Y', GCMarsItems.ingotQuandrium,
 			'Z', GCCoreItems.airVent
 		});

@@ -3,10 +3,10 @@ package micdoodle8.mods.galacticraft.core.client.gui;
 import java.util.ArrayList;
 import java.util.List;
 
-import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerBase;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreContainerTankRefill;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreInventoryTankRefill;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.ScaledResolution;

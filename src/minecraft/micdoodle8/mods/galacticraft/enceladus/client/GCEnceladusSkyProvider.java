@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.enceladus.client;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
-import micdoodle8.mods.galacticraft.core.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.mars.dimension.GCMarsWorldProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
@@ -145,7 +145,7 @@ public class GCEnceladusSkyProvider extends IRenderHandler
         final int var28 = world.getMoonPhase(partialTicks);
         final int var30 = var28 % 4;
         final int var29 = var28 / 4 % 2;
-        GL11.glRotatef(GCCoreUtil.calculateEarthAngleFromOtherPlanet(world.getWorldTime(), partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
+        GL11.glRotatef(WorldUtil.calculateEarthAngleFromOtherPlanet(world.getWorldTime(), partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
         GL11.glRotatef(-40F, 0.0F, 0.0F, 1.0F);
         var23.startDrawingQuads();
         var23.addVertexWithUV(-var12, -100.0D, var12, 0, 1);

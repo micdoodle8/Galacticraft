@@ -2,9 +2,8 @@ package micdoodle8.mods.galacticraft.core.client.fx;
 
 import java.util.List;
 
-import micdoodle8.mods.galacticraft.API.ISpaceship;
-import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.Entity;
@@ -110,7 +109,7 @@ public class GCCoreEntityLaunchFlameFX extends EntityFX
                     {
                     	var5.setFire(3);
                     	Object[] toSend = {var5.entityId};
-                    	PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 10, toSend));
+                    	PacketDispatcher.sendPacketToServer(PacketUtil.createPacket("Galacticraft", 10, toSend));
                     }
                 }
             }

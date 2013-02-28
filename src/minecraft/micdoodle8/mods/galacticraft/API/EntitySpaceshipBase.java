@@ -1,19 +1,19 @@
 package micdoodle8.mods.galacticraft.API;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import micdoodle8.mods.galacticraft.core.GCCoreDamageSource;
-import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLandingPad;
+import micdoodle8.mods.galacticraft.core.util.PacketUtil;
+import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
@@ -22,7 +22,6 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -402,7 +401,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship
             if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayerMP)
             {
         	  	final Object[] toSend = {((EntityPlayerMP)this.riddenByEntity).username};
-            	((EntityPlayerMP)this.riddenByEntity).playerNetServerHandler.sendPacketToPlayer(GCCoreUtil.createPacket("Galacticraft", 8, toSend));
+            	((EntityPlayerMP)this.riddenByEntity).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket("Galacticraft", 8, toSend));
             }
             
         	return true;
@@ -514,7 +513,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship
         		
 				final Integer[] ids = DimensionManager.getStaticDimensionIDs();
 		    	
-		    	final Set set = GCCoreUtil.getArrayOfPossibleDimensions(ids).entrySet();
+		    	final Set set = WorldUtil.getArrayOfPossibleDimensions(ids).entrySet();
 		    	final Iterator i = set.iterator();
 		    	
 		    	String temp = "";
@@ -526,9 +525,9 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship
 		    	}
 		    	
 		    	final Object[] toSend = {entityplayermp.username, temp};
-		        FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(entityplayermp.username).playerNetServerHandler.sendPacketToPlayer(GCCoreUtil.createPacket("Galacticraft", 2, toSend));
+		        FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(entityplayermp.username).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket("Galacticraft", 2, toSend));
 				
-		        GCCoreUtil.getPlayerBaseServerFromPlayer(entityplayermp).setUsingPlanetGui();
+		        PlayerUtil.getPlayerBaseServerFromPlayer(entityplayermp).setUsingPlanetGui();
 		        
 		        this.onTeleport(entityplayermp);
 		        

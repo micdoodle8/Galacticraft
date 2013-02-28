@@ -7,7 +7,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
-import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlockBreathableAir;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
@@ -15,6 +14,10 @@ import micdoodle8.mods.galacticraft.core.dimension.GCCoreTeleporter;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemParachute;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreInventoryTankRefill;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
+import micdoodle8.mods.galacticraft.core.util.PacketUtil;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
@@ -40,7 +43,6 @@ import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.common.DimensionManager;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -349,7 +351,7 @@ public class GCCorePlayerBase extends ServerPlayerBase
 		{
         	final Integer[] ids = DimensionManager.getStaticDimensionIDs();
 	    	
-	    	final Set set = GCCoreUtil.getArrayOfPossibleDimensions(ids).entrySet();
+	    	final Set set = WorldUtil.getArrayOfPossibleDimensions(ids).entrySet();
 	    	final Iterator i = set.iterator();
 	    	
 	    	String temp = "";
@@ -362,7 +364,7 @@ public class GCCorePlayerBase extends ServerPlayerBase
 
 	        Object[] toSend = {this.getPlayer().username, temp};
 	        
-	        this.getPlayer().playerNetServerHandler.sendPacketToPlayer(GCCoreUtil.createPacket("Galacticraft", 2, toSend));
+	        this.getPlayer().playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket("Galacticraft", 2, toSend));
 			
 	        this.setUsingPlanetGui();
 	        this.hasOpenedPlanetSelectionGui = true;
@@ -687,8 +689,8 @@ public class GCCorePlayerBase extends ServerPlayerBase
 		final ItemStack tankInSlot = this.playerTankInventory.getStackInSlot(2);
 		final ItemStack tankInSlot2 = this.playerTankInventory.getStackInSlot(3);
 		
-		final int drainSpacing = GCCoreUtil.getDrainSpacing(tankInSlot);
-		final int drainSpacing2 = GCCoreUtil.getDrainSpacing(tankInSlot2);
+		final int drainSpacing = OxygenUtil.getDrainSpacing(tankInSlot);
+		final int drainSpacing2 = OxygenUtil.getDrainSpacing(tankInSlot2);
 					
 		if (this.player.worldObj.provider instanceof IGalacticraftWorldProvider && !this.player.capabilities.isCreativeMode)
 	    {
@@ -762,7 +764,7 @@ public class GCCorePlayerBase extends ServerPlayerBase
 	    		}
 	    		
 	    		final boolean flag5 = this.airRemaining <= 0 || this.airRemaining2 <= 0;
-	    		final boolean invalid = !GCCoreUtil.hasValidOxygenSetup(this.player) || flag5;
+	    		final boolean invalid = !OxygenUtil.hasValidOxygenSetup(this.player) || flag5;
 	    		
 	    		if (invalid && !this.isAABBInPartialBlockWithOxygenNearby() && !this.isAABBInBreathableAirBlock())
 				{
@@ -830,7 +832,7 @@ public class GCCorePlayerBase extends ServerPlayerBase
 
 		        Object[] toSend = {0.0F};
 		        
-		        PacketDispatcher.sendPacketToPlayer(GCCoreUtil.createPacket("Galacticraft", 1, toSend), (Player)player);
+		        PacketDispatcher.sendPacketToPlayer(PacketUtil.createPacket("Galacticraft", 1, toSend), (Player)player);
 		        
 		        this.inPortal = false;
 			}
@@ -1255,7 +1257,7 @@ public class GCCorePlayerBase extends ServerPlayerBase
 	  	
 	  	if (FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.player.username) != null)
 	  	{
-	          FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.player.username).playerNetServerHandler.sendPacketToPlayer(GCCoreUtil.createPacket("Galacticraft", 0, toSend));
+	          FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.player.username).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket("Galacticraft", 0, toSend));
 	  	}
 	}
 	  
@@ -1265,7 +1267,7 @@ public class GCCorePlayerBase extends ServerPlayerBase
 	  	
 	  	if (FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.player.username) != null)
 	  	{
-	          PacketDispatcher.sendPacketToAllPlayers(GCCoreUtil.createPacket("Galacticraft", 10, toSend));
+	          PacketDispatcher.sendPacketToAllPlayers(PacketUtil.createPacket("Galacticraft", 10, toSend));
 	  	}
 	}
 	  
@@ -1275,7 +1277,7 @@ public class GCCorePlayerBase extends ServerPlayerBase
 	  	
 	  	if (FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.player.username) != null)
 	  	{
-	          PacketDispatcher.sendPacketToAllPlayers(GCCoreUtil.createPacket("Galacticraft", 5, toSend));
+	          PacketDispatcher.sendPacketToAllPlayers(PacketUtil.createPacket("Galacticraft", 5, toSend));
 	  	}
 	}
 	  
@@ -1285,7 +1287,7 @@ public class GCCorePlayerBase extends ServerPlayerBase
 	  	
 	  	if (FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.player.username) != null)
 	  	{
-	          PacketDispatcher.sendPacketToAllPlayers(GCCoreUtil.createPacket("Galacticraft", 4, toSend));
+	          PacketDispatcher.sendPacketToAllPlayers(PacketUtil.createPacket("Galacticraft", 4, toSend));
 	  	}
 	}
 	  
@@ -1305,7 +1307,7 @@ public class GCCorePlayerBase extends ServerPlayerBase
 	  	
 	  	if (FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.player.username) != null)
 	  	{
-	          PacketDispatcher.sendPacketToAllPlayers(GCCoreUtil.createPacket("Galacticraft", 6, toSend));
+	          PacketDispatcher.sendPacketToAllPlayers(PacketUtil.createPacket("Galacticraft", 6, toSend));
 	  	}
 	}
 

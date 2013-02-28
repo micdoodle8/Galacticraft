@@ -1,9 +1,9 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
-import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreContainerBuggyBench;
+import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -41,13 +41,13 @@ public class GCCoreGuiBuggyBench extends GuiContainer
             {
             case 0:
             	toSend = new Object[]{0};
-                PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 4, toSend));
+                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket("Galacticraft", 4, toSend));
                 FMLClientHandler.instance().getClient().displayGuiScreen(null);
                 FMLClientHandler.instance().getClient().thePlayer.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiRocketCraftingBench, FMLClientHandler.instance().getClient().thePlayer.worldObj, (int)FMLClientHandler.instance().getClient().thePlayer.posX, (int)FMLClientHandler.instance().getClient().thePlayer.posY, (int)FMLClientHandler.instance().getClient().thePlayer.posZ);
                 break;
             case 1:
                 toSend = new Object[]{1};
-                PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 4, toSend));
+                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket("Galacticraft", 4, toSend));
                 FMLClientHandler.instance().getClient().displayGuiScreen(null);
                 FMLClientHandler.instance().getClient().thePlayer.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiBuggyCraftingBench, FMLClientHandler.instance().getClient().thePlayer.worldObj, (int)FMLClientHandler.instance().getClient().thePlayer.posX, (int)FMLClientHandler.instance().getClient().thePlayer.posY, (int)FMLClientHandler.instance().getClient().thePlayer.posZ);
                 break;

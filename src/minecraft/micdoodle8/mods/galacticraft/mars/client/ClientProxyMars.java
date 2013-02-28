@@ -9,11 +9,11 @@ import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
 import micdoodle8.mods.galacticraft.API.IMapPlanet;
 import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
 import micdoodle8.mods.galacticraft.core.GCCoreLocalization;
-import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderArrow;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderSpaceship;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityArrow;
+import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.mars.CommonProxyMars;
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
 import micdoodle8.mods.galacticraft.mars.client.model.GCMarsModelSpaceshipTier2;
@@ -152,7 +152,7 @@ public class ClientProxyMars extends CommonProxyMars implements IGalacticraftSub
         public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player p)
         {
             final DataInputStream data = new DataInputStream(new ByteArrayInputStream(packet.data));
-            final int packetType = GCCoreUtil.readPacketID(data);
+            final int packetType = PacketUtil.readPacketID(data);
             final EntityPlayer player = (EntityPlayer)p;
             
             if (packetType == 0)

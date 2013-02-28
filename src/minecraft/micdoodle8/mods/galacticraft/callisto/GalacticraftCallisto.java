@@ -10,8 +10,8 @@ import micdoodle8.mods.galacticraft.API.IGalacticraftSubMod;
 import micdoodle8.mods.galacticraft.API.IGalaxy;
 import micdoodle8.mods.galacticraft.callisto.blocks.GCCallistoBlocks;
 import micdoodle8.mods.galacticraft.callisto.dimension.GCCallistoWorldProvider;
-import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.jupiter.GalacticraftJupiter;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.INetworkManager;
@@ -105,7 +105,7 @@ public class GalacticraftCallisto implements IGalacticraftSubMod
         public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player p)
         {
             final DataInputStream data = new DataInputStream(new ByteArrayInputStream(packet.data));
-            final int packetType = GCCoreUtil.readPacketID(data);
+            final int packetType = PacketUtil.readPacketID(data);
             final EntityPlayerMP player = (EntityPlayerMP)p;
             
             if (packetType == 0)

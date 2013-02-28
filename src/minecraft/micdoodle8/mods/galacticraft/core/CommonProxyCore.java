@@ -18,6 +18,7 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreContainerRocketRefill;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreContainerTankRefill;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreInventoryTankRefill;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityRefinery;
+import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.stats.StatBase;
 import net.minecraft.world.World;
@@ -136,7 +137,7 @@ public class CommonProxyCore implements IGuiHandler
 	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
 	{
-		GCCorePlayerBase playerBase = GCCoreUtil.getPlayerBaseServerFromPlayer(player);
+		GCCorePlayerBase playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player);
 		
 		if (ID == GCCoreConfigManager.idGuiTankRefill && playerBase != null)
 		{

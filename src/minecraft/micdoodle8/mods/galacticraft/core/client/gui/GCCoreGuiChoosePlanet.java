@@ -3,9 +3,9 @@ package micdoodle8.mods.galacticraft.core.client.gui;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
-import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
+import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -420,7 +420,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
         	if (par1GuiButton.enabled && ClientProxyCore.teleportCooldown <= 0)
         	{
                 final Object[] toSend = {this.destinations[this.selectedSlot]};
-                PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 2, toSend));
+                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket("Galacticraft", 2, toSend));
                 FMLClientHandler.instance().getClient().displayGuiScreen(null);
                 ClientProxyCore.teleportCooldown = 300;
         	}

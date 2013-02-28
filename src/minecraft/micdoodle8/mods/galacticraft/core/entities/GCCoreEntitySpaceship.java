@@ -6,13 +6,13 @@ import java.util.List;
 
 import micdoodle8.mods.galacticraft.API.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
-import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLaunchFlameFX;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLaunchSmokeFX;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityOxygenFX;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
+import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.moon.GCMoonConfigManager;
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.particle.EntitySmokeFX;
@@ -20,7 +20,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -148,9 +147,9 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
     
     public void onTeleport(EntityPlayerMP player) 
     {
-        GCCoreUtil.getPlayerBaseServerFromPlayer(player).rocketStacks = this.cargoItems;
-        GCCoreUtil.getPlayerBaseServerFromPlayer(player).rocketType = this.getSpaceshipType();
-        GCCoreUtil.getPlayerBaseServerFromPlayer(player).fuelDamage = (this.getStackInSlot(27).itemID == GCCoreItems.rocketFuelBucket.itemID ? this.getStackInSlot(27).getItemDamage() : 0);
+    	PlayerUtil.getPlayerBaseServerFromPlayer(player).rocketStacks = this.cargoItems;
+    	PlayerUtil.getPlayerBaseServerFromPlayer(player).rocketType = this.getSpaceshipType();
+    	PlayerUtil.getPlayerBaseServerFromPlayer(player).fuelDamage = (this.getStackInSlot(27).itemID == GCCoreItems.rocketFuelBucket.itemID ? this.getStackInSlot(27).getItemDamage() : 0);
     }
     
     protected void spawnParticles(boolean launched)

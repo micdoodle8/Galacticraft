@@ -8,8 +8,8 @@ import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
 import micdoodle8.mods.galacticraft.API.IMapPlanet;
 import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
 import micdoodle8.mods.galacticraft.core.GCCoreLocalization;
-import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.io.blocks.GCIoBlocks;
 import micdoodle8.mods.galacticraft.io.dimension.GCIoWorldProvider;
 import micdoodle8.mods.galacticraft.titan.client.ClientProxyTitan;
@@ -84,7 +84,7 @@ public class ClientProxyIo implements IGalacticraftSubModClient
         public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player p)
         {
             final DataInputStream data = new DataInputStream(new ByteArrayInputStream(packet.data));
-            final int packetType = GCCoreUtil.readPacketID(data);
+            final int packetType = PacketUtil.readPacketID(data);
             final EntityPlayer player = (EntityPlayer)p;
             
             if (packetType == 0)

@@ -12,8 +12,8 @@ import micdoodle8.mods.galacticraft.callisto.CommonProxyCallisto;
 import micdoodle8.mods.galacticraft.callisto.blocks.GCCallistoBlocks;
 import micdoodle8.mods.galacticraft.callisto.dimension.GCCallistoWorldProvider;
 import micdoodle8.mods.galacticraft.core.GCCoreLocalization;
-import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.multiplayer.WorldClient;
@@ -118,7 +118,7 @@ public class ClientProxyCallisto extends CommonProxyCallisto implements IGalacti
         public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player p)
         {
             final DataInputStream data = new DataInputStream(new ByteArrayInputStream(packet.data));
-            final int packetType = GCCoreUtil.readPacketID(data);
+            final int packetType = PacketUtil.readPacketID(data);
             final EntityPlayer player = (EntityPlayer)p;
             
             if (packetType == 0)

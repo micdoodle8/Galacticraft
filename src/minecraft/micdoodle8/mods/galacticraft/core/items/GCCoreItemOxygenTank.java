@@ -2,17 +2,14 @@ package micdoodle8.mods.galacticraft.core.items;
 
 import java.util.List;
 
-import org.lwjgl.input.Keyboard;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
-import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.client.GCCorePlayerBaseClient;
+import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
+
+import org.lwjgl.input.Keyboard;
 
 public class GCCoreItemOxygenTank extends GCCoreItem
 {
@@ -43,7 +40,7 @@ public class GCCoreItemOxygenTank extends GCCoreItem
 		
     	if (player.worldObj.isRemote)
     	{
-    		GCCorePlayerBaseClient playerBaseCl = GCCoreUtil.getPlayerBaseClientFromPlayer(player);
+    		GCCorePlayerBaseClient playerBaseCl = PlayerUtil.getPlayerBaseClientFromPlayer(player);
     		
     		if (playerBaseCl.getUseTutorialText())
     		{

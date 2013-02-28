@@ -2,12 +2,8 @@ package micdoodle8.mods.galacticraft.core;
 
 import java.util.Random;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Loader;
-
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreTeleporter;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockSapling;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -18,6 +14,8 @@ import net.minecraftforge.event.entity.player.BonemealEvent;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
 import net.minecraftforge.event.world.WorldEvent;
+import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.common.Loader;
 
 public class GCCoreEvents
 {

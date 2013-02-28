@@ -40,6 +40,10 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenDistributor;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenPipe;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityRefinery;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
+import micdoodle8.mods.galacticraft.core.util.PacketUtil;
+import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
+import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.core.wgen.GCCoreWorldGenVanilla;
 import micdoodle8.mods.galacticraft.moon.GalacticraftMoon;
 import net.minecraft.creativetab.CreativeTabs;
@@ -164,8 +168,8 @@ public class GalacticraftCore
         LanguageRegistry.instance().addStringLocalization("itemGroup.galacticraft", GalacticraftCore.lang.get("itemGroup.galacticraft"));
 		
         GameRegistry.registerWorldGenerator(new GCCoreWorldGenVanilla());
-        GCCoreUtil.addCraftingRecipes();
-		GCCoreUtil.addSmeltingRecipes();
+        RecipeUtil.addCraftingRecipes();
+        RecipeUtil.addSmeltingRecipes();
 		NetworkRegistry.instance().registerGuiHandler(this, GalacticraftCore.proxy);
 		this.registerTileEntities();
 		this.registerCreatures();
@@ -272,33 +276,33 @@ public class GalacticraftCore
         {
             final DataInputStream data = new DataInputStream(new ByteArrayInputStream(packet.data));
             
-            final int packetType = GCCoreUtil.readPacketID(data);
+            final int packetType = PacketUtil.readPacketID(data);
             
             final EntityPlayerMP player = (EntityPlayerMP)p;
         	
-        	GCCorePlayerBase playerBase = GCCoreUtil.getPlayerBaseServerFromPlayer(player);
+        	GCCorePlayerBase playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player);
             
             if (packetType == 0)
             {
                 final Class[] decodeAs = {String.class};
-                final Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
+                final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
 
                 player.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiTankRefill, player.worldObj, (int)player.posX, (int)player.posY, (int)player.posZ);
             }
             else if (packetType == 1)
             {
                 final Class[] decodeAs = {String.class};
-                final Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
+                final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
                 
                 player.playerNetServerHandler.sendPacketToPlayer(new Packet9Respawn(player.dimension, (byte)player.worldObj.difficultySetting, player.worldObj.getWorldInfo().getTerrainType(), player.worldObj.getHeight(), player.theItemInWorldManager.getGameType()));
             }
             else if (packetType == 2)
             {
                 final Class[] decodeAs = {String.class};
-                final Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
+                final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
                 
-	    		final Integer dim = GCCoreUtil.getProviderForName((String)packetReadout[0]).dimensionId;
-	    		GCCoreUtil.getPlayerBaseServerFromPlayer(player).travelToTheEnd(dim);
+	    		final Integer dim = WorldUtil.getProviderForName((String)packetReadout[0]).dimensionId;
+	    		PlayerUtil.getPlayerBaseServerFromPlayer(player).travelToTheEnd(dim);
             }
             else if (packetType == 3)
             {
@@ -315,7 +319,7 @@ public class GalacticraftCore
 	    				if (stack2 != null && stack2.getItem() instanceof GCCoreItemParachute || playerBase.launchAttempts > 0)
 	    				{
 	    					Object[] toSend = {""};
-	    					player.playerNetServerHandler.sendPacketToPlayer(GCCoreUtil.createPacket("Galacticraft", 12, toSend));
+	    					player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket("Galacticraft", 12, toSend));
 	                    	ship.ignite();
 	                    	playerBase.launchAttempts = 0;
 	    				}
@@ -338,7 +342,7 @@ public class GalacticraftCore
             else if (packetType == 4)
             {
                 final Class[] decodeAs = {Integer.class};
-                final Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
+                final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
                 
             	if (player != null)
             	{
@@ -359,7 +363,7 @@ public class GalacticraftCore
             else if (packetType == 5)
             {
                 final Class[] decodeAs = {Integer.class};
-                final Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
+                final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
                 
                 for(int i = 0; i < player.worldObj.loadedEntityList.size(); i++)
                 {
@@ -369,7 +373,7 @@ public class GalacticraftCore
 	                	{
 	                        final Object[] toSend = {((EntityLiving)player.worldObj.loadedEntityList.get(i)).getHealth(), (Integer)packetReadout[0]};
 	                        
-	                        player.playerNetServerHandler.sendPacketToPlayer(GCCoreUtil.createPacket("Galacticraft", 3, toSend));
+	                        player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket("Galacticraft", 3, toSend));
 	                	}
 	                }
                 }
@@ -377,7 +381,7 @@ public class GalacticraftCore
             else if (packetType == 6)
             {
                 final Class[] decodeAs = {Integer.class};
-                final Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
+                final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
                 
                 if (player.ridingEntity instanceof GCCoreEntitySpaceship)
                 {
@@ -387,7 +391,7 @@ public class GalacticraftCore
             else if (packetType == 7)
             {
                 final Class[] decodeAs = {Float.class};
-                final Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
+                final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
                 
                 if (player.ridingEntity instanceof GCCoreEntitySpaceship)
                 {
@@ -402,7 +406,7 @@ public class GalacticraftCore
             else if (packetType == 8)
             {
                 final Class[] decodeAs = {Float.class};
-                final Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
+                final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
                 
                 if (player.ridingEntity instanceof GCCoreEntitySpaceship)
                 {
@@ -417,7 +421,7 @@ public class GalacticraftCore
             else if (packetType == 9)
             {
                 final Class[] decodeAs = {Integer.class};
-                final Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
+                final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
 
                 if (player.ridingEntity instanceof GCCoreEntityControllable)
                 {
@@ -432,7 +436,7 @@ public class GalacticraftCore
             else if (packetType == 10)
             {
                 final Class[] decodeAs = {Integer.class};
-                final Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
+                final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
                 
                 for (Object object : player.worldObj.loadedEntityList)
                 {
@@ -450,7 +454,7 @@ public class GalacticraftCore
             else if (packetType == 11)
             {
                 final Class[] decodeAs = {Integer.class, Integer.class, Integer.class};
-                final Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
+                final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
 
                 player.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiRefinery, player.worldObj, (Integer)packetReadout[0], (Integer)packetReadout[1], (Integer)packetReadout[2]);
             }

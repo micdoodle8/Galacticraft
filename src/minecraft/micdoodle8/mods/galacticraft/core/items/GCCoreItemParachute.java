@@ -2,15 +2,16 @@ package micdoodle8.mods.galacticraft.core.items;
 
 import java.util.List;
 
-import org.lwjgl.input.Keyboard;
-
-import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.client.GCCorePlayerBaseClient;
+import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
+
+import org.lwjgl.input.Keyboard;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -166,7 +167,7 @@ public class GCCoreItemParachute extends GCCoreItem
     {
     	if (par2EntityPlayer.worldObj.isRemote)
     	{
-    		GCCorePlayerBaseClient playerBaseCl = GCCoreUtil.getPlayerBaseClientFromPlayer(par2EntityPlayer);
+    		GCCorePlayerBaseClient playerBaseCl = PlayerUtil.getPlayerBaseClientFromPlayer(par2EntityPlayer);
     		
     		if (playerBaseCl.getUseTutorialText())
     		{
