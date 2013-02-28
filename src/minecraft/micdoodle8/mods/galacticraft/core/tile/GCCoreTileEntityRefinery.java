@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import micdoodle8.mods.galacticraft.core.client.model.block.GCCoreModelFan;
+import micdoodle8.mods.galacticraft.core.client.model.block.GCCoreModelRefinery;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -16,7 +18,6 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ISidedInventory;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -24,6 +25,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GCCoreTileEntityRefinery extends TileEntity implements IInventory, ISidedInventory
 {
     private ItemStack[] refineryItemStacks = new ItemStack[4];
+    
+    public GCCoreModelRefinery modelRefinery = new GCCoreModelRefinery();
     
     public boolean isActive;
 
@@ -33,6 +36,17 @@ public class GCCoreTileEntityRefinery extends TileEntity implements IInventory, 
     public int currentItemBurnTime2 = 0;
 
     public int refineryCookTime = 0;
+
+    @Override
+  	public void validate()
+  	{
+   		super.validate();
+
+   		if (!this.isInvalid() && this.worldObj != null)
+      	{
+   		   	this.modelRefinery = new GCCoreModelRefinery();
+      	}
+  	}
 
     public int getSizeInventory()
     {

@@ -21,7 +21,6 @@ import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 public class GCCoreBlockRendererOxygenCollector implements ISimpleBlockRenderingHandler
 {
     final int renderID;
-    private static GCCoreModelFan fanModel = new GCCoreModelFan();
 
     public GCCoreBlockRendererOxygenCollector(int var1)
     {

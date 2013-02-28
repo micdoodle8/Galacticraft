@@ -28,10 +28,19 @@ public class GCCoreBlockRefinery extends BlockContainer
         super(par1, blockIndexInTexture, Material.rock);
     }
 
-    @SideOnly(Side.CLIENT)
-    public int getBlockTexture(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
+    public boolean renderAsNormalBlock()
     {
-    	return 0;
+        return false;
+    }
+    
+    public int getRenderType()
+    {
+        return GalacticraftCore.proxy.getGCRefineryRenderID();
+    }
+
+    public boolean isOpaqueCube()
+    {
+        return false;
     }
 
     @SideOnly(Side.CLIENT)
@@ -43,45 +52,27 @@ public class GCCoreBlockRefinery extends BlockContainer
     	{
     		GCCoreTileEntityRefinery refinery = (GCCoreTileEntityRefinery) te;
 
-            if (refinery.isActive)
+            if (refinery.isCookin())
             {
                 int var6 = par1World.getBlockMetadata(par2, par3, par4);
                 float var7 = (float)par2 + 0.5F;
-                float var8 = (float)par3 + 0.0F + par5Random.nextFloat() * 6.0F / 16.0F;
+                float var8 = (float)par3 + 1.1F;
                 float var9 = (float)par4 + 0.5F;
-                float var10 = 0.52F;
-                float var11 = par5Random.nextFloat() * 0.6F - 0.3F;
+                float var10 = 0.0F;
+                float var11 = 0.0F;
 
-                if (var6 == 4)
+                for (int i = -1; i <= 1; i++)
                 {
-                    par1World.spawnParticle("smoke", (double)(var7 - var10), (double)var8, (double)(var9 + var11), 0.0D, 0.0D, 0.0D);
-                    par1World.spawnParticle("flame", (double)(var7 - var10), (double)var8, (double)(var9 + var11), 0.0D, 0.0D, 0.0D);
-                }
-                else if (var6 == 5)
-                {
-                    par1World.spawnParticle("smoke", (double)(var7 + var10), (double)var8, (double)(var9 + var11), 0.0D, 0.0D, 0.0D);
-                    par1World.spawnParticle("flame", (double)(var7 + var10), (double)var8, (double)(var9 + var11), 0.0D, 0.0D, 0.0D);
-                }
-                else if (var6 == 2)
-                {
-                    par1World.spawnParticle("smoke", (double)(var7 + var11), (double)var8, (double)(var9 - var10), 0.0D, 0.0D, 0.0D);
-                    par1World.spawnParticle("flame", (double)(var7 + var11), (double)var8, (double)(var9 - var10), 0.0D, 0.0D, 0.0D);
-                }
-                else if (var6 == 3)
-                {
-                    par1World.spawnParticle("smoke", (double)(var7 + var11), (double)var8, (double)(var9 + var10), 0.0D, 0.0D, 0.0D);
-                    par1World.spawnParticle("flame", (double)(var7 + var11), (double)var8, (double)(var9 + var10), 0.0D, 0.0D, 0.0D);
+                    for (int j = -1; j <= 1; j++)
+                    {
+                        par1World.spawnParticle("smoke", (double)(var7 + var11 + i * 0.2), (double)var8, (double)(var9 + var10 + j * 0.2), 0.0D, 0.01D, 0.0D);
+                        par1World.spawnParticle("flame", (double)(var7 + var11 + i * 0.1), (double)var8 - 0.2, (double)(var9 + var10 + j * 0.1), 0.0D, 0.0001D, 0.0D);
+                    }
                 }
             }
     	}
     }
-
-    public int getBlockTextureFromSide(int par1)
-    {
-    	return 0;
-//        return par1 == 1 ? this.blockIndexInTexture + 17 : (par1 == 0 ? this.blockIndexInTexture + 17 : (par1 == 3 ? this.blockIndexInTexture - 1 : this.blockIndexInTexture));
-    }
-
+    
     public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
     {
     	par5EntityPlayer.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiRefinery, par1World, par2, par3, par4);

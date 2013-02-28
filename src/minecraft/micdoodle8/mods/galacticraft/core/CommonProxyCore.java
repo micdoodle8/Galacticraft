@@ -106,6 +106,11 @@ public class CommonProxyCore implements IGuiHandler
 	{
 		return -1;
 	}
+
+	public int getGCRefineryRenderID()
+	{
+		return -1;
+	}
 	
 	public World getClientWorld()
 	{
