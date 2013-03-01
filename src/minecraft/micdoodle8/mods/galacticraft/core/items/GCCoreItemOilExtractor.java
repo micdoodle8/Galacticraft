@@ -1,14 +1,15 @@
 package micdoodle8.mods.galacticraft.core.items;
 
+import java.lang.reflect.Field;
+
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumMovingObjectType;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
-import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreItemOilExtractor extends Item
@@ -44,7 +45,7 @@ public class GCCoreItemOilExtractor extends Item
                 return par1ItemStack;
             }
 
-            if ((par2World.getBlockId(var13, var14, var15) == GCCoreBlocks.crudeOilMoving.blockID || par2World.getBlockId(var13, var14, var15) == GCCoreBlocks.crudeOilStill.blockID) && par2World.getBlockMetadata(var13, var14, var15) == 0)
+            if (this.isOilBlock(par3EntityPlayer, par2World, var13, var14, var15))
             {
             	if (openCanister(par3EntityPlayer) != null)
             	{
@@ -80,7 +81,7 @@ public class GCCoreItemOilExtractor extends Item
                 return;
             }
 
-            if ((par3EntityPlayer.worldObj.getBlockId(var13, var14, var15) == GCCoreBlocks.crudeOilMoving.blockID || par3EntityPlayer.worldObj.getBlockId(var13, var14, var15) == GCCoreBlocks.crudeOilStill.blockID) && par3EntityPlayer.worldObj.getBlockMetadata(var13, var14, var15) == 0)
+            if (isOilBlock(par3EntityPlayer, par3EntityPlayer.worldObj, var13, var14, var15))
             {
             	if (openCanister(par3EntityPlayer) != null)
             	{
@@ -163,5 +164,41 @@ public class GCCoreItemOilExtractor extends Item
 	public String getTextureFile()
 	{
 		return "/micdoodle8/mods/galacticraft/core/client/items/core.png";
+	}
+	
+	private boolean isOilBlock(EntityPlayer player, World world, int x, int y, int z)
+	{
+		Class buildCraftClass = null;
+		
+		try
+		{
+			if ((buildCraftClass = Class.forName("buildcraft.BuildCraftEnergy")) != null)
+			{
+				for (Field f : buildCraftClass.getFields())
+				{
+					if (f.getName().equals("oilMoving") || f.getName().equals("oilStill"))
+					{
+						Block block = (Block) f.get(null);
+
+						if (((world.getBlockId(x, y, z) == block.blockID) && world.getBlockMetadata(x, y, z) == 0))
+						{
+							return true;
+						}
+					}
+				}
+			}
+		}
+		catch (Throwable cnfe)
+		{
+		}
+		
+		if (((world.getBlockId(x, y, z) == GCCoreBlocks.crudeOilMoving.blockID || world.getBlockId(x, y, z) == GCCoreBlocks.crudeOilStill.blockID) && world.getBlockMetadata(x, y, z) == 0))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 }
