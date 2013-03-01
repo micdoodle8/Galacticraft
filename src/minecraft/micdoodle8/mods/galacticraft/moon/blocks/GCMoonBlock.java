@@ -111,13 +111,7 @@ public class GCMoonBlock extends Block implements IDetectableResource
 	@Override
     public int quantityDropped(int meta, int fortune, Random random)
     {
-		switch (meta)
-		{
-		case 0:
-	        return random.nextInt(3) + 1;
-		default:
-			return 1;
-		}
+		return 1;
     }
 
     @SideOnly(Side.CLIENT)
