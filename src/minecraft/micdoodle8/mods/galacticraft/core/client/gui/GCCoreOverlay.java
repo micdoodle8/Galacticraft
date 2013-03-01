@@ -53,7 +53,7 @@ public class GCCoreOverlay
      * @param par1Str texture to download and bind
      * @param par2Str if fails, use this one
      */
-    protected static void loadDownloadableImageTexture(String par1Str, String par2Str)
+    protected static boolean loadDownloadableImageTexture(String par1Str, String par2Str)
     {
         final RenderEngine var3 = FMLClientHandler.instance().getClient().renderEngine;
         final int var4 = var3.getTextureForDownloadableImage(par1Str, par2Str);
@@ -61,11 +61,11 @@ public class GCCoreOverlay
         if (var4 >= 0)
         {
             var3.bindTexture(var4);
-            return;
+            return true;
         }
         else
         {
-            return;
+            return false;
         }
     }
 
