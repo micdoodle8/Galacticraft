@@ -988,7 +988,7 @@ public class ClientProxyCore extends CommonProxyCore
         public static int remoteBuildVer;
         public static int localMajVer = 0;
         public static int localMinVer = 0;
-        public static int localBuildVer = 10;
+        public static int localBuildVer = 11;
     	
     	private static void checkVersion()
         {
