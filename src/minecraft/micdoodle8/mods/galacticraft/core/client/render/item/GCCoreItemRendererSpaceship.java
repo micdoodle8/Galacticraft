@@ -33,8 +33,11 @@ public class GCCoreItemRendererSpaceship implements IItemRenderer
         
         if (type == ItemRenderType.EQUIPPED)
         {
-            GL11.glScalef(2.2F, 2.2F, 2.2F);
-            GL11.glTranslatef(0.3F, 0.7F, 0.4F);
+            GL11.glRotatef(90, 1.0F, 0, 0);
+            GL11.glRotatef(-20, 0.0F, 1, 0);
+            GL11.glRotatef(20, 0.0F, 1, 1);
+            GL11.glTranslatef(1.6F, 0.0F, 0F);
+            GL11.glScalef(5.2F, 5.2F, 5.2F);
         }
         
         GL11.glTranslatef(var12, var13 - 0.1F, var14);
