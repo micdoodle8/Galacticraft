@@ -3,6 +3,8 @@ package micdoodle8.mods.galacticraft.moon.wgen;
 import java.util.List;
 import java.util.Random;
 
+import cpw.mods.fml.common.FMLLog;
+
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntitySign;
@@ -27,8 +29,8 @@ public class GCMoonComponentVillageWoodHut extends GCMoonComponentVillage
 
     public static GCMoonComponentVillageWoodHut func_74908_a(GCMoonComponentVillageStartPiece par0ComponentVillageStartPiece, List par1List, Random par2Random, int par3, int par4, int par5, int par6, int par7)
     {
-        final StructureBoundingBox var8 = StructureBoundingBox.getComponentToAddBoundingBox(par3, par4, par5, 0, -9, 0, 17, 9, 17, par6);
-        return GCMoonComponentVillage.canVillageGoDeeper(var8) && StructureComponent.findIntersecting(par1List, var8) == null ? new GCMoonComponentVillageWoodHut(par0ComponentVillageStartPiece, par7, par2Random, var8, par6) : null;
+        final StructureBoundingBox var8 = StructureBoundingBox.getComponentToAddBoundingBox(par3, par4, par5, 0, 0, 0, 17, 9, 17, par6);
+        return StructureComponent.findIntersecting(par1List, var8) == null ? new GCMoonComponentVillageWoodHut(par0ComponentVillageStartPiece, par7, par2Random, var8, par6) : null;
     }
 
     /**
@@ -38,18 +40,18 @@ public class GCMoonComponentVillageWoodHut extends GCMoonComponentVillage
     @Override
 	public boolean addComponentParts(World par1World, Random par2Random, StructureBoundingBox par3StructureBoundingBox)
     {
-        if (this.averageGroundLevel < 0)
-        {
-            this.averageGroundLevel = this.getAverageGroundLevel(par1World, par3StructureBoundingBox);
-
-            if (this.averageGroundLevel < 0)
-            {
-                return true;
-            }
-
-            this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.maxY + 6 - 1, 0);
-        }
-        
+    	if (this.averageGroundLevel < 0)
+	    {
+	        this.averageGroundLevel = this.getAverageGroundLevel(par1World, par3StructureBoundingBox);
+	
+	        if (this.averageGroundLevel < 0)
+	        {
+	            return true;
+	        }
+	
+	        this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.maxY + 9 - 1, 0);
+	    }
+    	
         this.fillWithAir(par1World, par3StructureBoundingBox, 3, 0, 3, 13, 9, 13);
         this.fillWithAir(par1World, par3StructureBoundingBox, 5, 0, 2, 11, 9, 14);
         this.fillWithAir(par1World, par3StructureBoundingBox, 2, 0, 5, 14, 9, 11);
@@ -90,7 +92,7 @@ public class GCMoonComponentVillageWoodHut extends GCMoonComponentVillage
             this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 1, yLevel, 5, par3StructureBoundingBox);
             this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 1, yLevel, 6, par3StructureBoundingBox);
             this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 1, yLevel, 7, par3StructureBoundingBox);
-            this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 1, yLevel, 8, par3StructureBoundingBox);
+            this.placeBlockAtCurrentPosition(par1World, (yLevel == 0 || yLevel == 1) ? GCCoreBlocks.decorationBlocks.blockID : 0, 4, 1, yLevel, 8, par3StructureBoundingBox);
             this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 1, yLevel, 9, par3StructureBoundingBox);
             this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 1, yLevel, 10, par3StructureBoundingBox);
             this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 1, yLevel, 11, par3StructureBoundingBox);
@@ -103,7 +105,7 @@ public class GCMoonComponentVillageWoodHut extends GCMoonComponentVillage
             this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 5, yLevel, 15, par3StructureBoundingBox);
             this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 6, yLevel, 15, par3StructureBoundingBox);
             this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 7, yLevel, 15, par3StructureBoundingBox);
-            this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 8, yLevel, 15, par3StructureBoundingBox);
+            this.placeBlockAtCurrentPosition(par1World, (yLevel == 0 || yLevel == 1) ? GCCoreBlocks.decorationBlocks.blockID : 0, 4, 8, yLevel, 15, par3StructureBoundingBox);
             this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 9, yLevel, 15, par3StructureBoundingBox);
             this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 10, yLevel, 15, par3StructureBoundingBox);
             this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 11, yLevel, 15, par3StructureBoundingBox);
@@ -116,7 +118,7 @@ public class GCMoonComponentVillageWoodHut extends GCMoonComponentVillage
             this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 15, yLevel, 11, par3StructureBoundingBox);
             this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 15, yLevel, 10, par3StructureBoundingBox);
             this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 15, yLevel, 9, par3StructureBoundingBox);
-            this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 15, yLevel, 8, par3StructureBoundingBox);
+            this.placeBlockAtCurrentPosition(par1World, (yLevel == 0 || yLevel == 1) ? GCCoreBlocks.decorationBlocks.blockID : 0, 4, 15, yLevel, 8, par3StructureBoundingBox);
             this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 15, yLevel, 7, par3StructureBoundingBox);
             this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 15, yLevel, 6, par3StructureBoundingBox);
             this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 15, yLevel, 5, par3StructureBoundingBox);
@@ -129,7 +131,7 @@ public class GCMoonComponentVillageWoodHut extends GCMoonComponentVillage
             this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 11, yLevel, 1, par3StructureBoundingBox);
             this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 10, yLevel, 1, par3StructureBoundingBox);
             this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 9, yLevel, 1, par3StructureBoundingBox);
-            this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 8, yLevel, 1, par3StructureBoundingBox);
+            this.placeBlockAtCurrentPosition(par1World, (yLevel == 0 || yLevel == 1) ? GCCoreBlocks.decorationBlocks.blockID : 0, 4, 8, yLevel, 1, par3StructureBoundingBox);
             this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 7, yLevel, 1, par3StructureBoundingBox);
             this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 6, yLevel, 1, par3StructureBoundingBox);
             this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 5, yLevel, 1, par3StructureBoundingBox);
@@ -185,6 +187,11 @@ public class GCMoonComponentVillageWoodHut extends GCMoonComponentVillage
         this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 6, yLevel, 1, par3StructureBoundingBox);
         this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, 5, yLevel, 1, par3StructureBoundingBox);
 
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.unlitTorch.blockID, 15, 8, yLevel, 2, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.unlitTorch.blockID, 15, 14, yLevel, 8, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.unlitTorch.blockID, 15, 8, yLevel, 14, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.unlitTorch.blockID, 15, 2, yLevel, 8, par3StructureBoundingBox);
+        
         yLevel = 5;
         
         // corner 1
@@ -423,7 +430,14 @@ public class GCMoonComponentVillageWoodHut extends GCMoonComponentVillage
         	{
         		if (!((j == 5 && i == 5) || (j == 5 && i == 11) || (j == 11 && i == 5) || (j == 11 && i == 11)))
         		{
-                    this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, i, yLevel, j, par3StructureBoundingBox);
+                    if (i >= 7 && i <= 9 && j >= 7 && j <= 9)
+                    {
+                        this.placeBlockAtCurrentPosition(par1World, Block.glass.blockID, 0, i, yLevel, j, par3StructureBoundingBox);
+                    }
+                    else
+                    {
+                        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, i, yLevel, j, par3StructureBoundingBox);
+                    }
         		}
         	}
         }
