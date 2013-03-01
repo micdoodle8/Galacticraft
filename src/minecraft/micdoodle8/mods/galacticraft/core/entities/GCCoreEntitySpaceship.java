@@ -425,7 +425,7 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
 	@Override
 	public int getYCoordToTeleport() 
 	{
-		return 420;
+		return 1200;
 	}
 
 	@Override
