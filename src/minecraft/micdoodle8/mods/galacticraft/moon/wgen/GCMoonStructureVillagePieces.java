@@ -8,6 +8,7 @@ import java.util.Random;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.registry.VillagerRegistry;
 
 public class GCMoonStructureVillagePieces
@@ -109,6 +110,8 @@ public class GCMoonStructureVillagePieces
 
                         if (var13 != null)
                         {
+                            FMLLog.info(var13.toString() + " = x1" + var13.getBoundingBox().minX + " y1" + var13.getBoundingBox().minY + " z1" + var13.getBoundingBox().minZ + " x2" + var13.getBoundingBox().maxX + " y2" + var13.getBoundingBox().maxY + " z2" + var13.getBoundingBox().maxZ);
+                            
                             ++var12.villagePiecesSpawned;
                             par0ComponentVillageStartPiece.structVillagePieceWeight = var12;
 

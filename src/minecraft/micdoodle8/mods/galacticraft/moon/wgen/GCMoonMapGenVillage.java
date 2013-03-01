@@ -8,9 +8,11 @@ import java.util.Map.Entry;
 import java.util.Random;
 
 import net.minecraft.util.MathHelper;
+import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.gen.structure.MapGenStructure;
 import net.minecraft.world.gen.structure.StructureStart;
+import cpw.mods.fml.common.FMLLog;
 
 public class GCMoonMapGenVillage extends MapGenStructure
 {
@@ -72,7 +74,7 @@ public class GCMoonMapGenVillage extends MapGenStructure
         var6 *= this.field_82665_g;
         var5 += var7.nextInt(this.field_82665_g - this.field_82666_h);
         var6 += var7.nextInt(this.field_82665_g - this.field_82666_h);
-
+        
         if (var3 == var5 && var4 == var6)
         {
             return true;

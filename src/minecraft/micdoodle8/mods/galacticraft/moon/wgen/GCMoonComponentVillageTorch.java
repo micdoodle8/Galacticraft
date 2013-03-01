@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.moon.wgen;
 import java.util.List;
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -49,10 +50,10 @@ public class GCMoonComponentVillageTorch extends GCMoonComponentVillage
         this.placeBlockAtCurrentPosition(par1World, Block.fence.blockID, 0, 1, 1, 0, par3StructureBoundingBox);
         this.placeBlockAtCurrentPosition(par1World, Block.fence.blockID, 0, 1, 2, 0, par3StructureBoundingBox);
         this.placeBlockAtCurrentPosition(par1World, Block.cloth.blockID, 15, 1, 3, 0, par3StructureBoundingBox);
-        this.placeBlockAtCurrentPosition(par1World, Block.torchWood.blockID, 15, 0, 3, 0, par3StructureBoundingBox);
-        this.placeBlockAtCurrentPosition(par1World, Block.torchWood.blockID, 15, 1, 3, 1, par3StructureBoundingBox);
-        this.placeBlockAtCurrentPosition(par1World, Block.torchWood.blockID, 15, 2, 3, 0, par3StructureBoundingBox);
-        this.placeBlockAtCurrentPosition(par1World, Block.torchWood.blockID, 15, 1, 3, -1, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.unlitTorch.blockID, 15, 0, 3, 0, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.unlitTorch.blockID, 15, 1, 3, 1, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.unlitTorch.blockID, 15, 2, 3, 0, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.unlitTorch.blockID, 15, 1, 3, -1, par3StructureBoundingBox);
         return true;
     }
 }

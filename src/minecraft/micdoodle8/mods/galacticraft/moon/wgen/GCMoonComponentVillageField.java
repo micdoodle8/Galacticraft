@@ -8,6 +8,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import cpw.mods.fml.common.FMLLog;
 
 public class GCMoonComponentVillageField extends GCMoonComponentVillage
 {
@@ -55,7 +56,7 @@ public class GCMoonComponentVillageField extends GCMoonComponentVillage
     public static GCMoonComponentVillageField func_74900_a(GCMoonComponentVillageStartPiece par0ComponentVillageStartPiece, List par1List, Random par2Random, int par3, int par4, int par5, int par6, int par7)
     {
         final StructureBoundingBox var8 = StructureBoundingBox.getComponentToAddBoundingBox(par3, par4, par5, 0, 0, 0, 13, 4, 9, par6);
-        return GCMoonComponentVillage.canVillageGoDeeper(var8) && StructureComponent.findIntersecting(par1List, var8) == null ? new GCMoonComponentVillageField(par0ComponentVillageStartPiece, par7, par2Random, var8, par6) : null;
+        return StructureComponent.findIntersecting(par1List, var8) == null ? new GCMoonComponentVillageField(par0ComponentVillageStartPiece, par7, par2Random, var8, par6) : null;
     }
 
     /**
@@ -65,18 +66,18 @@ public class GCMoonComponentVillageField extends GCMoonComponentVillage
     @Override
 	public boolean addComponentParts(World par1World, Random par2Random, StructureBoundingBox par3StructureBoundingBox)
     {
-        if (this.averageGroundLevel < 0)
-        {
-            this.averageGroundLevel = this.getAverageGroundLevel(par1World, par3StructureBoundingBox);
-
-            if (this.averageGroundLevel < 0)
-            {
-                return true;
-            }
-
-            this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.maxY + 4 - 1, 0);
-        }
-
+    	if (this.averageGroundLevel < 0)
+	    {
+	        this.averageGroundLevel = this.getAverageGroundLevel(par1World, par3StructureBoundingBox);
+	
+	        if (this.averageGroundLevel < 0)
+	        {
+	            return true;
+	        }
+	
+	        this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.maxY + 7 - 1, 0);
+	    }
+    	
         this.fillWithBlocks(par1World, par3StructureBoundingBox, 0, 1, 0, 12, 4, 8, 0, 0, false);
         this.fillWithBlocks(par1World, par3StructureBoundingBox, 1, 0, 1, 2, 0, 7, Block.dirt.blockID, Block.dirt.blockID, false);
         this.fillWithBlocks(par1World, par3StructureBoundingBox, 4, 0, 1, 5, 0, 7, Block.dirt.blockID, Block.dirt.blockID, false);

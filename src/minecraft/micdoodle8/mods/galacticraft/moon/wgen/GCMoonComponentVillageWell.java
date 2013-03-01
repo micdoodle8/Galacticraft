@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.moon.wgen;
 import java.util.List;
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -60,7 +61,7 @@ public class GCMoonComponentVillageWell extends GCMoonComponentVillage
             this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.maxY + 3, 0);
         }
 
-        this.fillWithBlocks(par1World, par3StructureBoundingBox, 1, 0, 1, 4, 12, 4, Block.cobblestone.blockID, Block.waterMoving.blockID, false);
+        this.fillWithMetadataBlocks(par1World, par3StructureBoundingBox, 1, 0, 1, 4, 12, 4, GCCoreBlocks.decorationBlocks.blockID, 4, Block.waterMoving.blockID, 0, false);
         this.placeBlockAtCurrentPosition(par1World, 0, 0, 2, 12, 2, par3StructureBoundingBox);
         this.placeBlockAtCurrentPosition(par1World, 0, 0, 3, 12, 2, par3StructureBoundingBox);
         this.placeBlockAtCurrentPosition(par1World, 0, 0, 2, 12, 3, par3StructureBoundingBox);
@@ -73,7 +74,7 @@ public class GCMoonComponentVillageWell extends GCMoonComponentVillage
         this.placeBlockAtCurrentPosition(par1World, Block.fence.blockID, 0, 1, 14, 4, par3StructureBoundingBox);
         this.placeBlockAtCurrentPosition(par1World, Block.fence.blockID, 0, 4, 13, 4, par3StructureBoundingBox);
         this.placeBlockAtCurrentPosition(par1World, Block.fence.blockID, 0, 4, 14, 4, par3StructureBoundingBox);
-        this.fillWithBlocks(par1World, par3StructureBoundingBox, 1, 15, 1, 4, 15, 4, Block.cobblestone.blockID, Block.cobblestone.blockID, false);
+        this.fillWithMetadataBlocks(par1World, par3StructureBoundingBox, 1, 15, 1, 4, 15, 4, GCCoreBlocks.decorationBlocks.blockID, 4, GCCoreBlocks.decorationBlocks.blockID, 4, false);
 
         for (int var4 = 0; var4 <= 5; ++var4)
         {
@@ -88,5 +89,14 @@ public class GCMoonComponentVillageWell extends GCMoonComponentVillage
         }
 
         return true;
+    }
+    
+	protected void fillWithBlocksAndMetadata(World par1World, StructureBoundingBox par2StructureBoundingBox, int par3, int par4, int par5, int par6, int par7, int par8, int par9, int par10, boolean par11)
+    {
+        final int var12 = this.getBiomeSpecificBlock(par9, 0);
+        final int var13 = this.getBiomeSpecificBlockMetadata(par9, 0);
+        final int var14 = this.getBiomeSpecificBlock(par10, 0);
+        final int var15 = this.getBiomeSpecificBlockMetadata(par10, 0);
+        super.fillWithMetadataBlocks(par1World, par2StructureBoundingBox, par3, par4, par5, par6, par7, par8, var12, var13, var14, var15, par11);
     }
 }
