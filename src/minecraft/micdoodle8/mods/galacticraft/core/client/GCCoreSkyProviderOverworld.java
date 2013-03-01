@@ -249,9 +249,10 @@ public class GCCoreSkyProviderOverworld extends IRenderHandler
 
             if (var20 > 0.0F)
             {
+            	FMLLog.info("" + (-var20 / 10));
                 GL11.glPushMatrix();
                 GL11.glEnable(GL11.GL_TEXTURE_2D);
-                GL11.glTranslatef(0.0F, -10F, 0.0F);
+                GL11.glTranslatef(0.0F, (-var20 / 10), 0.0F);
                 float scale = 45 * (0.25F - (var20 / 10000.0F));
                 scale = Math.max(scale, 0.2F);
                 GL11.glScalef(scale, 0.0F, scale);
@@ -265,14 +266,15 @@ public class GCCoreSkyProviderOverworld extends IRenderHandler
                 alpha = (float) Math.pow(alpha, 2);
 	            GL11.glColor4f(Math.min(alpha, 1.0F), Math.min(alpha, 1.0F), Math.min(alpha, 1.0F), Math.min(alpha, 1.0F));
                 var23.startDrawingQuads();
-                var23.addVertexWithUV((double)(-var10), (double)var12, (double)var10, 0.0F, 1.0F);
-                var23.addVertexWithUV((double)var10, (double)var12, (double)var10, 1.0F, 1.0F);
-                var23.addVertexWithUV((double)var10, (double)var12, (double)(-var10), 1.0F, 0.0F);
-                var23.addVertexWithUV((double)(-var10), (double)var12, (double)(-var10), 0.0F, 0.0F);
-                var23.addVertexWithUV((double)(-var10), (double)var10, (double)var10, 0.0F, 1.0F);
-                var23.addVertexWithUV((double)var10, (double)var10, (double)var10, 1.0F, 1.0F);
-                var23.addVertexWithUV((double)var10, (double)var10, (double)(-var10), 1.0F, 0.0F);
-                var23.addVertexWithUV((double)(-var10), (double)var10, (double)(-var10), 0.0F, 0.0F);
+                var23.addVertexWithUV((double)(-var10), (double)0, (double)var10, 0.0F, 1.0F);
+                var23.addVertexWithUV((double)var10, (double)0, (double)var10, 1.0F, 1.0F);
+                var23.addVertexWithUV((double)var10, (double)0, (double)(-var10), 1.0F, 0.0F);
+                var23.addVertexWithUV((double)(-var10), (double)0, (double)(-var10), 0.0F, 0.0F);
+                var23.addVertexWithUV((double)(-var10), (double)0, (double)var10, 0.0F, 1.0F);
+                var23.addVertexWithUV((double)var10, (double)0, (double)var10, 1.0F, 1.0F);
+                var23.addVertexWithUV((double)var10, (double)0, (double)(-var10), 1.0F, 0.0F);
+                var23.addVertexWithUV((double)(-var10), (double)0, (double)(-var10), 0.0F, 0.0F);
+                var23.addVertexWithUV((double)(-var10), (double)-50, (double)(-var10), 0.0F, 0.0F);
                 var23.draw();
                 GL11.glDisable(GL11.GL_TEXTURE_2D);
                 GL11.glPopMatrix();
