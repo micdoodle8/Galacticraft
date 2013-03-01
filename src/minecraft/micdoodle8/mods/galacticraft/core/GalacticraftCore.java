@@ -316,10 +316,8 @@ public class GalacticraftCore
                 	{
 	    				final ItemStack stack2 = playerBase.playerTankInventory.getStackInSlot(4);
 	    				
-	    				if (stack2 != null && stack2.getItem() instanceof GCCoreItemParachute || playerBase.launchAttempts > 0)
+	    				if ((stack2 != null && stack2.getItem() instanceof GCCoreItemParachute) || playerBase.launchAttempts > 0)
 	    				{
-	    					Object[] toSend = {""};
-	    					player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket("Galacticraft", 12, toSend));
 	                    	ship.ignite();
 	                    	playerBase.launchAttempts = 0;
 	    				}
