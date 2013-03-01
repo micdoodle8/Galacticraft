@@ -49,7 +49,7 @@ public class GCCoreEvents
 	{
 		boolean doGen = TerrainGen.populate(event.chunkProvider, event.world, event.rand, event.chunkX, event.chunkX, event.hasVillageGenerated, PopulateChunkEvent.Populate.EventType.CUSTOM);
 
-		if (!doGen || Loader.isModLoaded("BuildCraft Energy") || Loader.isModLoaded("BuildCraft|Energy")) 
+		if (!doGen) 
 		{
 			return;
 		}
