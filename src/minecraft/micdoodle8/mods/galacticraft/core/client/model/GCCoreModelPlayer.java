@@ -442,6 +442,143 @@ public class GCCoreModelPlayer extends ModelPlayerBase
     }
 
     @Override
+    public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity par7Entity)
+    {
+    	if (!((EntityPlayer) par7Entity).onGround && ((EntityPlayer) par7Entity).worldObj.provider instanceof IGalacticraftWorldProvider && !(((EntityPlayer) par7Entity).inventory.getCurrentItem() != null && ((EntityPlayer) par7Entity).inventory.getCurrentItem().getItem() instanceof GCCoreItemSpaceship))
+    	{
+    		this.modelPlayer.bipedHead.rotateAngleY = par4 / (180F / (float)Math.PI);
+            this.modelPlayer.bipedHead.rotateAngleX = par5 / (180F / (float)Math.PI);
+            this.modelPlayer.bipedHeadwear.rotateAngleY = this.modelPlayer.bipedHead.rotateAngleY;
+            this.modelPlayer.bipedHeadwear.rotateAngleX = this.modelPlayer.bipedHead.rotateAngleX;
+            this.modelPlayer.bipedRightArm.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float)Math.PI) * 2.0F * par2 * 0.5F;
+            this.modelPlayer.bipedLeftArm.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 2.0F * par2 * 0.5F;
+            this.modelPlayer.bipedRightArm.rotateAngleZ = 0.0F;
+            this.modelPlayer.bipedLeftArm.rotateAngleZ = 0.0F;
+            this.modelPlayer.bipedRightLeg.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 1.4F * par2;
+            this.modelPlayer.bipedLeftLeg.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float)Math.PI) * 1.4F * par2;
+            this.modelPlayer.bipedRightLeg.rotateAngleY = 0.0F;
+            this.modelPlayer.bipedLeftLeg.rotateAngleY = 0.0F;
+        	
+        	float speedModifier = 0.0F;
+        	
+        	if (par7Entity.onGround)
+        	{
+        		speedModifier = 0.1162F;
+        	}
+        	else
+        	{
+        		speedModifier = 0.1162F * 2;
+        	}
+            
+            this.modelPlayer.bipedLeftLeg.rotateAngleX = MathHelper.cos(par1 * speedModifier + (float)Math.PI) * 1.45F * par2;
+            this.modelPlayer.bipedRightLeg.rotateAngleX = MathHelper.cos(par1 * speedModifier) * 1.45F * par2;
+            this.modelPlayer.bipedRightArm.rotateAngleX = MathHelper.cos(par1 * (speedModifier / 2) + (float)Math.PI) * 4.0F * par2 * 0.5F;
+            this.modelPlayer.bipedLeftArm.rotateAngleX = MathHelper.cos(par1 * (speedModifier / 2)) * 4.0F * par2 * 0.5F;
+            this.modelPlayer.bipedRightArm.rotateAngleY = -MathHelper.cos(par1 * 0.1162F) * 0.2F;
+            this.modelPlayer.bipedLeftArm.rotateAngleY = -MathHelper.cos(par1 * 0.1162F) * 0.2F;
+            this.modelPlayer.bipedRightArm.rotateAngleZ = (float) (5 * (Math.PI / 180));
+            this.modelPlayer.bipedLeftArm.rotateAngleZ = (float) (-5 * (Math.PI / 180));
+
+            if (this.modelPlayer.isRiding)
+            {
+                this.modelPlayer.bipedRightArm.rotateAngleX += -((float)Math.PI / 5F);
+                this.modelPlayer.bipedLeftArm.rotateAngleX += -((float)Math.PI / 5F);
+                this.modelPlayer.bipedRightLeg.rotateAngleX = -((float)Math.PI * 2F / 5F);
+                this.modelPlayer.bipedLeftLeg.rotateAngleX = -((float)Math.PI * 2F / 5F);
+                this.modelPlayer.bipedRightLeg.rotateAngleY = ((float)Math.PI / 10F);
+                this.modelPlayer.bipedLeftLeg.rotateAngleY = -((float)Math.PI / 10F);
+            }
+
+            if (this.modelPlayer.heldItemLeft != 0)
+            {
+                this.modelPlayer.bipedLeftArm.rotateAngleX = this.modelPlayer.bipedLeftArm.rotateAngleX * 0.5F - ((float)Math.PI / 10F) * (float)this.modelPlayer.heldItemLeft;
+            }
+
+            if (this.modelPlayer.heldItemRight != 0)
+            {
+                this.modelPlayer.bipedRightArm.rotateAngleX = this.modelPlayer.bipedRightArm.rotateAngleX * 0.5F - ((float)Math.PI / 10F) * (float)this.modelPlayer.heldItemRight;
+            }
+
+            this.modelPlayer.bipedRightArm.rotateAngleY = 0.0F;
+            this.modelPlayer.bipedLeftArm.rotateAngleY = 0.0F;
+            float var8;
+            float var9;
+
+            if (this.modelPlayer.onGround > -9990.0F)
+            {
+                var8 = this.modelPlayer.onGround;
+                this.modelPlayer.bipedBody.rotateAngleY = MathHelper.sin(MathHelper.sqrt_float(var8) * (float)Math.PI * 2.0F) * 0.2F;
+                this.modelPlayer.bipedRightArm.rotationPointZ = MathHelper.sin(this.modelPlayer.bipedBody.rotateAngleY) * 5.0F;
+                this.modelPlayer.bipedRightArm.rotationPointX = -MathHelper.cos(this.modelPlayer.bipedBody.rotateAngleY) * 5.0F;
+                this.modelPlayer.bipedLeftArm.rotationPointZ = -MathHelper.sin(this.modelPlayer.bipedBody.rotateAngleY) * 5.0F;
+                this.modelPlayer.bipedLeftArm.rotationPointX = MathHelper.cos(this.modelPlayer.bipedBody.rotateAngleY) * 5.0F;
+                this.modelPlayer.bipedRightArm.rotateAngleY += this.modelPlayer.bipedBody.rotateAngleY;
+                this.modelPlayer.bipedLeftArm.rotateAngleY += this.modelPlayer.bipedBody.rotateAngleY;
+                this.modelPlayer.bipedLeftArm.rotateAngleX += this.modelPlayer.bipedBody.rotateAngleY;
+                var8 = 1.0F - this.modelPlayer.onGround;
+                var8 *= var8;
+                var8 *= var8;
+                var8 = 1.0F - var8;
+                var9 = MathHelper.sin(var8 * (float)Math.PI);
+                float var10 = MathHelper.sin(this.modelPlayer.onGround * (float)Math.PI) * -(this.modelPlayer.bipedHead.rotateAngleX - 0.7F) * 0.75F;
+                this.modelPlayer.bipedRightArm.rotateAngleX = (float)((double)this.modelPlayer.bipedRightArm.rotateAngleX - ((double)var9 * 1.2D + (double)var10));
+                this.modelPlayer.bipedRightArm.rotateAngleY += this.modelPlayer.bipedBody.rotateAngleY * 2.0F;
+                this.modelPlayer.bipedRightArm.rotateAngleZ = MathHelper.sin(this.modelPlayer.onGround * (float)Math.PI) * -0.4F;
+            }
+
+            if (this.modelPlayer.isSneak)
+            {
+                this.modelPlayer.bipedBody.rotateAngleX = 0.5F;
+                this.modelPlayer.bipedRightArm.rotateAngleX += 0.4F;
+                this.modelPlayer.bipedLeftArm.rotateAngleX += 0.4F;
+                this.modelPlayer.bipedRightLeg.rotationPointZ = 4.0F;
+                this.modelPlayer.bipedLeftLeg.rotationPointZ = 4.0F;
+                this.modelPlayer.bipedRightLeg.rotationPointY = 9.0F;
+                this.modelPlayer.bipedLeftLeg.rotationPointY = 9.0F;
+                this.modelPlayer.bipedHead.rotationPointY = 1.0F;
+                this.modelPlayer.bipedHeadwear.rotationPointY = 1.0F;
+            }
+            else
+            {
+                this.modelPlayer.bipedBody.rotateAngleX = 0.0F;
+                this.modelPlayer.bipedRightLeg.rotationPointZ = 0.1F;
+                this.modelPlayer.bipedLeftLeg.rotationPointZ = 0.1F;
+                this.modelPlayer.bipedRightLeg.rotationPointY = 12.0F;
+                this.modelPlayer.bipedLeftLeg.rotationPointY = 12.0F;
+                this.modelPlayer.bipedHead.rotationPointY = 0.0F;
+                this.modelPlayer.bipedHeadwear.rotationPointY = 0.0F;
+            }
+
+            this.modelPlayer.bipedRightArm.rotateAngleZ += MathHelper.cos(par3 * 0.09F) * 0.05F + 0.05F;
+            this.modelPlayer.bipedLeftArm.rotateAngleZ -= MathHelper.cos(par3 * 0.09F) * 0.05F + 0.05F;
+            this.modelPlayer.bipedRightArm.rotateAngleX += MathHelper.sin(par3 * 0.067F) * 0.05F;
+            this.modelPlayer.bipedLeftArm.rotateAngleX -= MathHelper.sin(par3 * 0.067F) * 0.05F;
+
+            if (this.modelPlayer.aimedBow)
+            {
+                var8 = 0.0F;
+                var9 = 0.0F;
+                this.modelPlayer.bipedRightArm.rotateAngleZ = 0.0F;
+                this.modelPlayer.bipedLeftArm.rotateAngleZ = 0.0F;
+                this.modelPlayer.bipedRightArm.rotateAngleY = -(0.1F - var8 * 0.6F) + this.modelPlayer.bipedHead.rotateAngleY;
+                this.modelPlayer.bipedLeftArm.rotateAngleY = 0.1F - var8 * 0.6F + this.modelPlayer.bipedHead.rotateAngleY + 0.4F;
+                this.modelPlayer.bipedRightArm.rotateAngleX = -((float)Math.PI / 2F) + this.modelPlayer.bipedHead.rotateAngleX;
+                this.modelPlayer.bipedLeftArm.rotateAngleX = -((float)Math.PI / 2F) + this.modelPlayer.bipedHead.rotateAngleX;
+                this.modelPlayer.bipedRightArm.rotateAngleX -= var8 * 1.2F - var9 * 0.4F;
+                this.modelPlayer.bipedLeftArm.rotateAngleX -= var8 * 1.2F - var9 * 0.4F;
+                this.modelPlayer.bipedRightArm.rotateAngleZ += MathHelper.cos(par3 * 0.09F) * 0.05F + 0.05F;
+                this.modelPlayer.bipedLeftArm.rotateAngleZ -= MathHelper.cos(par3 * 0.09F) * 0.05F + 0.05F;
+                this.modelPlayer.bipedRightArm.rotateAngleX += MathHelper.sin(par3 * 0.067F) * 0.05F;
+                this.modelPlayer.bipedLeftArm.rotateAngleX -= MathHelper.sin(par3 * 0.067F) * 0.05F;
+            }
+    	}
+    	else
+    	{
+    		super.setRotationAngles(par1, par2, par3, par4, par5, par6, par7Entity);
+    	}
+    }
+
+    @Override
 	public void afterSetRotationAngles(float var1, float var2, float var3, float var4, float var5, float var6, Entity var7)
     {
     	boolean holdingSpaceship = false;
@@ -530,27 +667,8 @@ public class GCCoreModelPlayer extends ModelPlayerBase
     	{
 		}
     	
-    	float speedModifier = 0.0F;
-    	
-    	if (var7.onGround)
-    	{
-    		speedModifier = 0.1162F;
-    	}
-    	else
-    	{
-    		speedModifier = 0.1162F * 2;
-    	}
-    	
     	if (!var7.onGround && var7.worldObj.provider instanceof IGalacticraftWorldProvider && !holdingSpaceship)
     	{
-            this.modelPlayer.bipedLeftLeg.rotateAngleX += MathHelper.cos(var1 * speedModifier + (float)Math.PI) * 1.45F * var2;
-            this.modelPlayer.bipedRightLeg.rotateAngleX += MathHelper.cos(var1 * speedModifier) * 1.45F * var2;
-            this.modelPlayer.bipedRightArm.rotateAngleX += MathHelper.cos(var1 * (speedModifier / 2) + (float)Math.PI) * 4.0F * var2 * 0.5F;
-            this.modelPlayer.bipedLeftArm.rotateAngleX += MathHelper.cos(var1 * (speedModifier / 2)) * 4.0F * var2 * 0.5F;
-            this.modelPlayer.bipedRightArm.rotateAngleY += -MathHelper.cos(var1 * 0.1162F) * 0.2F;
-            this.modelPlayer.bipedLeftArm.rotateAngleY += -MathHelper.cos(var1 * 0.1162F) * 0.2F;
-            this.modelPlayer.bipedRightArm.rotateAngleZ += (float) (5 * (Math.PI / 180));
-            this.modelPlayer.bipedLeftArm.rotateAngleZ += (float) (-5 * (Math.PI / 180));
     	}
     	
         float var8;
