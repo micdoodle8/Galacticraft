@@ -1118,8 +1118,7 @@ public class ClientProxyCore extends CommonProxyCore
         		if (helmetSlot != null && helmetSlot.getItem() instanceof GCCoreItemSensorGlasses && minecraft.currentScreen == null)
         		{
         			GCCoreOverlaySensorGlasses.renderSensorGlassesMain();
-
-			        
+        			GCCoreOverlaySensorGlasses.renderSensorGlassesValueableBlocks();
         		}
         		
         		if (player != null && player.ridingEntity != null && player.ridingEntity instanceof EntitySpaceshipBase)
