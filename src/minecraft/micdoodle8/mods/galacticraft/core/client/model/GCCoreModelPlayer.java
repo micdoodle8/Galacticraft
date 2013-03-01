@@ -4,10 +4,9 @@ import java.util.List;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
-import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiTankRefill;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpaceship;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItemSpaceship;
 import net.minecraft.client.entity.EntityClientPlayerMP;
-import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.RenderEngine;
@@ -445,7 +444,11 @@ public class GCCoreModelPlayer extends ModelPlayerBase
     @Override
 	public void afterSetRotationAngles(float var1, float var2, float var3, float var4, float var5, float var6, Entity var7)
     {
+    	boolean holdingSpaceship = false;
     	
+        this.oxygenMask.rotateAngleY = var4 / (180F / (float)Math.PI);
+        this.oxygenMask.rotateAngleX = var5 / (180F / (float)Math.PI);
+        
     	if (this.usingParachute)
     	{
         	this.parachute[0].rotateAngleZ = (float) (30F * (Math.PI / 180F));
@@ -486,6 +489,34 @@ public class GCCoreModelPlayer extends ModelPlayerBase
     	this.redOxygenTanks[1].rotateAngleX = this.modelPlayer.bipedBody.rotateAngleX;
     	this.redOxygenTanks[1].rotateAngleY = this.modelPlayer.bipedBody.rotateAngleY;
     	this.redOxygenTanks[1].rotateAngleZ = this.modelPlayer.bipedBody.rotateAngleZ;
+        
+        if (var7 instanceof EntityPlayer)
+        {
+        	EntityPlayer player = (EntityPlayer) var7;
+        	
+        	if (player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() instanceof GCCoreItemSpaceship)
+        	{
+        		holdingSpaceship = true;
+        		
+            	this.modelPlayer.bipedLeftArm.rotateAngleX = 0;
+            	this.modelPlayer.bipedLeftArm.rotateAngleZ = 0;
+            	this.modelPlayer.bipedRightArm.rotateAngleX = 0;
+            	this.modelPlayer.bipedRightArm.rotateAngleZ = 0;
+            	
+            	this.modelPlayer.bipedLeftArm.rotateAngleX += (float) Math.PI + 0.3;
+            	this.modelPlayer.bipedLeftArm.rotateAngleZ += (float) Math.PI / 10;
+            	this.modelPlayer.bipedRightArm.rotateAngleX += (float) Math.PI + 0.3;
+            	this.modelPlayer.bipedRightArm.rotateAngleZ -= (float) Math.PI / 10;
+
+                this.modelPlayer.bipedBody.rotateAngleX = 0.5F;
+                this.modelPlayer.bipedRightLeg.rotationPointZ = 4.0F;
+                this.modelPlayer.bipedLeftLeg.rotationPointZ = 4.0F;
+                this.modelPlayer.bipedRightLeg.rotationPointY = 9.0F;
+                this.modelPlayer.bipedLeftLeg.rotationPointY = 9.0F;
+                this.modelPlayer.bipedHead.rotationPointY = 1.0F;
+                this.modelPlayer.bipedHeadwear.rotationPointY = 1.0F;
+        	}
+        }
     	
     	try 
     	{
@@ -510,42 +541,42 @@ public class GCCoreModelPlayer extends ModelPlayerBase
     		speedModifier = 0.1162F * 2;
     	}
     	
-    	if (!var7.onGround && var7.worldObj.provider instanceof IGalacticraftWorldProvider)
+    	if (!var7.onGround && var7.worldObj.provider instanceof IGalacticraftWorldProvider && !holdingSpaceship)
     	{
-            this.modelPlayer.bipedLeftLeg.rotateAngleX = MathHelper.cos(var1 * speedModifier + (float)Math.PI) * 1.45F * var2;
-            this.modelPlayer.bipedRightLeg.rotateAngleX = MathHelper.cos(var1 * speedModifier) * 1.45F * var2;
-            this.modelPlayer.bipedRightArm.rotateAngleX = MathHelper.cos(var1 * (speedModifier / 2) + (float)Math.PI) * 4.0F * var2 * 0.5F;
-            this.modelPlayer.bipedLeftArm.rotateAngleX = MathHelper.cos(var1 * (speedModifier / 2)) * 4.0F * var2 * 0.5F;
-            this.modelPlayer.bipedRightArm.rotateAngleY = -MathHelper.cos(var1 * 0.1162F) * 0.2F;
-            this.modelPlayer.bipedLeftArm.rotateAngleY = -MathHelper.cos(var1 * 0.1162F) * 0.2F;
-            this.modelPlayer.bipedRightArm.rotateAngleZ = (float) (5 * (Math.PI / 180));
-            this.modelPlayer.bipedLeftArm.rotateAngleZ = (float) (-5 * (Math.PI / 180));
+            this.modelPlayer.bipedLeftLeg.rotateAngleX += MathHelper.cos(var1 * speedModifier + (float)Math.PI) * 1.45F * var2;
+            this.modelPlayer.bipedRightLeg.rotateAngleX += MathHelper.cos(var1 * speedModifier) * 1.45F * var2;
+            this.modelPlayer.bipedRightArm.rotateAngleX += MathHelper.cos(var1 * (speedModifier / 2) + (float)Math.PI) * 4.0F * var2 * 0.5F;
+            this.modelPlayer.bipedLeftArm.rotateAngleX += MathHelper.cos(var1 * (speedModifier / 2)) * 4.0F * var2 * 0.5F;
+            this.modelPlayer.bipedRightArm.rotateAngleY += -MathHelper.cos(var1 * 0.1162F) * 0.2F;
+            this.modelPlayer.bipedLeftArm.rotateAngleY += -MathHelper.cos(var1 * 0.1162F) * 0.2F;
+            this.modelPlayer.bipedRightArm.rotateAngleZ += (float) (5 * (Math.PI / 180));
+            this.modelPlayer.bipedLeftArm.rotateAngleZ += (float) (-5 * (Math.PI / 180));
     	}
     	
         float var8;
         float var9;
 
-        if (this.modelPlayer.onGround > -9990.0F)
-        {
-            var8 = this.modelPlayer.onGround;
-            this.modelPlayer.bipedBody.rotateAngleY = MathHelper.sin(MathHelper.sqrt_float(var8) * (float)Math.PI * 2.0F) * 0.2F;
-            this.modelPlayer.bipedRightArm.rotationPointZ = MathHelper.sin(this.modelPlayer.bipedBody.rotateAngleY) * 5.0F;
-            this.modelPlayer.bipedRightArm.rotationPointX = -MathHelper.cos(this.modelPlayer.bipedBody.rotateAngleY) * 5.0F;
-            this.modelPlayer.bipedLeftArm.rotationPointZ = -MathHelper.sin(this.modelPlayer.bipedBody.rotateAngleY) * 5.0F;
-            this.modelPlayer.bipedLeftArm.rotationPointX = MathHelper.cos(this.modelPlayer.bipedBody.rotateAngleY) * 5.0F;
-            this.modelPlayer.bipedRightArm.rotateAngleY += this.modelPlayer.bipedBody.rotateAngleY;
-            this.modelPlayer.bipedLeftArm.rotateAngleY += this.modelPlayer.bipedBody.rotateAngleY;
-            this.modelPlayer.bipedLeftArm.rotateAngleX += this.modelPlayer.bipedBody.rotateAngleY;
-            var8 = 1.0F - this.modelPlayer.onGround;
-            var8 *= var8;
-            var8 *= var8;
-            var8 = 1.0F - var8;
-            var9 = MathHelper.sin(var8 * (float)Math.PI);
-            float var10 = MathHelper.sin(this.modelPlayer.onGround * (float)Math.PI) * -(this.modelPlayer.bipedHead.rotateAngleX - 0.7F) * 0.75F;
-            this.modelPlayer.bipedRightArm.rotateAngleX = (float)((double)this.modelPlayer.bipedRightArm.rotateAngleX - ((double)var9 * 1.2D + (double)var10));
-            this.modelPlayer.bipedRightArm.rotateAngleY += this.modelPlayer.bipedBody.rotateAngleY * 2.0F;
-            this.modelPlayer.bipedRightArm.rotateAngleZ = MathHelper.sin(this.modelPlayer.onGround * (float)Math.PI) * -0.4F;
-        }
+//        if (this.modelPlayer.onGround > -9990.0F)
+//        {
+//            var8 = this.modelPlayer.onGround;
+//            this.modelPlayer.bipedBody.rotateAngleY = MathHelper.sin(MathHelper.sqrt_float(var8) * (float)Math.PI * 2.0F) * 0.2F;
+//            this.modelPlayer.bipedRightArm.rotationPointZ = MathHelper.sin(this.modelPlayer.bipedBody.rotateAngleY) * 5.0F;
+//            this.modelPlayer.bipedRightArm.rotationPointX = -MathHelper.cos(this.modelPlayer.bipedBody.rotateAngleY) * 5.0F;
+//            this.modelPlayer.bipedLeftArm.rotationPointZ = -MathHelper.sin(this.modelPlayer.bipedBody.rotateAngleY) * 5.0F;
+//            this.modelPlayer.bipedLeftArm.rotationPointX = MathHelper.cos(this.modelPlayer.bipedBody.rotateAngleY) * 5.0F;
+//            this.modelPlayer.bipedRightArm.rotateAngleY += this.modelPlayer.bipedBody.rotateAngleY;
+//            this.modelPlayer.bipedLeftArm.rotateAngleY += this.modelPlayer.bipedBody.rotateAngleY;
+//            this.modelPlayer.bipedLeftArm.rotateAngleX += this.modelPlayer.bipedBody.rotateAngleY;
+//            var8 = 1.0F - this.modelPlayer.onGround;
+//            var8 *= var8;
+//            var8 *= var8;
+//            var8 = 1.0F - var8;
+//            var9 = MathHelper.sin(var8 * (float)Math.PI);
+//            float var10 = MathHelper.sin(this.modelPlayer.onGround * (float)Math.PI) * -(this.modelPlayer.bipedHead.rotateAngleX - 0.7F) * 0.75F;
+//            this.modelPlayer.bipedRightArm.rotateAngleX = (float)((double)this.modelPlayer.bipedRightArm.rotateAngleX - ((double)var9 * 1.2D + (double)var10));
+//            this.modelPlayer.bipedRightArm.rotateAngleY += this.modelPlayer.bipedBody.rotateAngleY * 2.0F;
+//            this.modelPlayer.bipedRightArm.rotateAngleZ = MathHelper.sin(this.modelPlayer.onGround * (float)Math.PI) * -0.4F;
+//        }
 
     	final EntityPlayer player = (EntityPlayer)var7;
 //
@@ -568,15 +599,15 @@ public class GCCoreModelPlayer extends ModelPlayerBase
 //        	this.modelPlayer.bipedLeftLeg.rotateAngleZ = (float) (ship.rotationPitch * (Math.PI / 180F));
 //    	}
     	
-    	if (!(FMLClientHandler.instance().getClient().currentScreen instanceof GuiInventory) && !(FMLClientHandler.instance().getClient().currentScreen instanceof GCCoreGuiTankRefill))
-    	{
-            this.oxygenMask.rotationPointX = this.modelPlayer.bipedHeadwear.rotationPointX;
-            this.oxygenMask.rotationPointY = this.modelPlayer.bipedHeadwear.rotationPointY;
-            this.oxygenMask.rotationPointZ = this.modelPlayer.bipedHeadwear.rotationPointZ;
-            this.oxygenMask.rotateAngleX = this.modelPlayer.bipedHeadwear.rotateAngleX;
-            this.oxygenMask.rotateAngleY = this.modelPlayer.bipedHeadwear.rotateAngleY;
-            this.oxygenMask.rotateAngleZ = this.modelPlayer.bipedHeadwear.rotateAngleZ;
-    	}
+//    	if (!(FMLClientHandler.instance().getClient().currentScreen instanceof GuiInventory) && !(FMLClientHandler.instance().getClient().currentScreen instanceof GCCoreGuiTankRefill))
+//    	{
+//            this.oxygenMask.rotationPointX = this.modelPlayer.bipedHeadwear.rotationPointX;
+//            this.oxygenMask.rotationPointY = this.modelPlayer.bipedHeadwear.rotationPointY;
+//            this.oxygenMask.rotationPointZ = this.modelPlayer.bipedHeadwear.rotationPointZ;
+//            this.oxygenMask.rotateAngleX = this.modelPlayer.bipedHeadwear.rotateAngleX;
+//            this.oxygenMask.rotateAngleY = this.modelPlayer.bipedHeadwear.rotateAngleY;
+//            this.oxygenMask.rotateAngleZ = this.modelPlayer.bipedHeadwear.rotateAngleZ;
+//    	}
     	
 		final List l = player.worldObj.getEntitiesWithinAABBExcludingEntity(player, AxisAlignedBB.getAABBPool().addOrModifyAABBInPool(player.posX - 20, 0, player.posZ - 20, player.posX + 20, 200, player.posZ + 20));
 	
