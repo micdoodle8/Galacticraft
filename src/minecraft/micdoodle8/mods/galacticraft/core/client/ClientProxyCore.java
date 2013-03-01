@@ -1123,7 +1123,7 @@ public class ClientProxyCore extends CommonProxyCore
         		
         		if (player != null && player.ridingEntity != null && player.ridingEntity instanceof EntitySpaceshipBase)
         		{
-//        			GCCoreOverlaySpaceship.renderSpaceshipOverlay();
+        			GCCoreOverlaySpaceship.renderSpaceshipOverlay();
         		}
 
         		if (player != null && player.worldObj.provider instanceof IGalacticraftWorldProvider && OxygenUtil.shouldDisplayTankGui(minecraft.currentScreen))

@@ -36,21 +36,23 @@ public class GCCoreOverlaySpaceship extends GCCoreOverlay
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, minecraft.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/gui/spaceshipgui.png"));
 		final Tessellator tessellator = Tessellator.instance;
         drawTexturedModalRect(10, height / 2 - 60, 0, 0, 10, 121);
+        int col = GCCoreUtil.convertTo32BitColor(255, 198, 198, 198);
+        Gui.drawRect(21, height / 2 - 59 + (120 - (int) Math.floor(getPlayerPositionY(minecraft.thePlayer) / 10)), 24, (height / 2 - 59 + (120 - (int) Math.floor(getPlayerPositionY(minecraft.thePlayer) / 10))) + 3, col);
 
-        final int col = GCCoreUtil.convertTo32BitColor(255, 198, 198, 198);
+        col = GCCoreUtil.convertTo32BitColor(255, 198, 198, 198);
         Gui.drawRect(0, 					0, 					width, 		20, 			col);
         Gui.drawRect(0,	 					height - 24, 		width, 		height,    		col);
         Gui.drawRect(0, 					0, 					10, 		height,    		col);
         Gui.drawRect(width - 10, 			0, 					width, 		height, 		col);
 
-        GL11.glColor3f(1.0F, 1.0F, 1.0F);
-        
-		loadDownloadableImageTexture(minecraft.thePlayer.skinUrl, FMLClientHandler.instance().getClient().thePlayer.getTexture());
-
-		GL11.glScalef(0.5F, 0.26F, 0.5F);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, minecraft.renderEngine.getTexture(minecraft.thePlayer.getTexture()));
-		GL11.glTranslatef(30.5F, 670.0F - ((float) ((float) (((120 - (int) Math.floor(getPlayerPositionY(minecraft.thePlayer) / 10)))) * -4.0F)), 0.0F);
-		drawTexturedModalRect(13, 9, 32, 64, 32, 65);
+//        GL11.glColor3f(1.0F, 1.0F, 1.0F);
+//        
+//		loadDownloadableImageTexture(minecraft.thePlayer.skinUrl, FMLClientHandler.instance().getClient().thePlayer.getTexture());
+//
+//		GL11.glScalef(0.5F, 0.26F, 0.5F);
+//		GL11.glBindTexture(GL11.GL_TEXTURE_2D, minecraft.renderEngine.getTexture(minecraft.thePlayer.getTexture()));
+//		GL11.glTranslatef(30.5F, 670.0F - ((float) ((float) (()) * -4.0F)), 0.0F);
+//		drawTexturedModalRect(13, 9, 32, 64, 32, 65);
         
 		GL11.glDepthMask(true);
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
