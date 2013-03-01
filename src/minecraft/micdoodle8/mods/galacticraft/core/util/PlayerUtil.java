@@ -14,6 +14,11 @@ public class PlayerUtil
 	
 	public static GCCorePlayerBase getPlayerBaseServerFromPlayer(EntityPlayer player)
 	{
+		if (player == null)
+		{
+			return null;
+		}
+		
 		if (GalacticraftCore.playersServer.size() == 0)
 		{
 			new EmptyStackException().printStackTrace();
@@ -36,6 +41,11 @@ public class PlayerUtil
 	
 	public static GCCorePlayerBaseClient getPlayerBaseClientFromPlayer(EntityPlayer player)
 	{
+		if (player == null)
+		{
+			return null;
+		}
+		
 		if (GalacticraftCore.playersClient.size() == 0)
 		{
 			new EmptyStackException().printStackTrace();
