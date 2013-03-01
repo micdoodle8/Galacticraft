@@ -821,7 +821,6 @@ public class ClientProxyCore extends CommonProxyCore
     			{
     				if (world.provider.getSkyRenderer() == null && player.ridingEntity != null && player.ridingEntity.posY >= 200)
                     {
-    					FMLLog.info("dsadasdasdas2");
     					world.provider.setSkyRenderer(new GCCoreSkyProviderOverworld());
                     }
     				else if (world.provider.getSkyRenderer() != null && world.provider.getSkyRenderer() instanceof GCCoreSkyProviderOverworld && (player.ridingEntity == null || player.ridingEntity.posY < 200))
