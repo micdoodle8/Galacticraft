@@ -10,6 +10,7 @@ import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.effect.EntityLightningBolt;
+import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,7 +27,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  *  All rights reserved.
  *
  */
-public class GCCoreEntityCreeper extends GCCoreEntityMob
+public class GCCoreEntityCreeper extends EntityCreeper
 {
     /**
      * The amount of time since the creeper was close enough to the player to ignite
@@ -74,7 +75,6 @@ public class GCCoreEntityCreeper extends GCCoreEntityMob
 	protected void entityInit()
     {
         super.entityInit();
-        this.dataWatcher.addObject(16, Byte.valueOf((byte) - 1));
         this.dataWatcher.addObject(17, Byte.valueOf((byte)0));
     }
 
@@ -147,7 +147,17 @@ public class GCCoreEntityCreeper extends GCCoreEntityMob
             }
         }
 
-        super.onUpdate();
+        this.motionY += 0.06F;
+        
+    	super.onUpdate();
+    	
+    	this.fallDistance = 0;
+    }
+
+	@Override
+    public void fall(float var1)
+    {
+		;
     }
 
     /**

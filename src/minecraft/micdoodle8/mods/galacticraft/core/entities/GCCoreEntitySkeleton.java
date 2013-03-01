@@ -10,6 +10,7 @@ import net.minecraft.entity.ai.EntityAIRestrictSun;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
+import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.item.Item;
@@ -27,7 +28,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  *  All rights reserved.
  *
  */
-public class GCCoreEntitySkeleton extends GCCoreEntityMob
+public class GCCoreEntitySkeleton extends EntitySkeleton
 {
     /** The ItemStack that any Skeleton holds (a bow). */
     private static final ItemStack defaultHeldItem = new ItemStack(Item.bow, 1);
@@ -46,6 +47,22 @@ public class GCCoreEntitySkeleton extends GCCoreEntityMob
         this.tasks.addTask(6, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 16.0F, 0, true));
+    }
+    
+	@Override
+    public void onUpdate()
+    {
+        this.motionY += 0.06F;
+        
+    	super.onUpdate();
+    	
+    	this.fallDistance = 0;
+    }
+
+	@Override
+    public void fall(float var1)
+    {
+		;
     }
 
     /**

@@ -29,7 +29,7 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class GCCoreEntityZombie extends GCCoreEntityMob
+public class GCCoreEntityZombie extends EntityZombie
 {
     private int conversionTime = 0;
 
@@ -202,7 +202,17 @@ public class GCCoreEntityZombie extends GCCoreEntityMob
             }
         }
 
-        super.onUpdate();
+        this.motionY += 0.06F;
+        
+    	super.onUpdate();
+    	
+    	this.fallDistance = 0;
+    }
+
+	@Override
+    public void fall(float var1)
+    {
+		;
     }
 
     /**

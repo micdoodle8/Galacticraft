@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.entities;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.item.Item;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -17,7 +18,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  *  All rights reserved.
  *
  */
-public class GCCoreEntitySpider extends GCCoreEntityMob
+public class GCCoreEntitySpider extends EntitySpider
 {
     public GCCoreEntitySpider(World par1World)
     {
@@ -40,12 +41,22 @@ public class GCCoreEntitySpider extends GCCoreEntityMob
     @Override
 	public void onUpdate()
     {
-        super.onUpdate();
+        this.motionY += 0.06F;
+        
+    	super.onUpdate();
+    	
+    	this.fallDistance = 0;
 
         if (!this.worldObj.isRemote)
         {
             this.setBesideClimbableBlock(this.isCollidedHorizontally);
         }
+    }
+
+	@Override
+    public void fall(float var1)
+    {
+		;
     }
 
     @Override
