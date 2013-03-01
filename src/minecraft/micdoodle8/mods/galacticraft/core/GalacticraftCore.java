@@ -88,7 +88,7 @@ import cpw.mods.fml.relauncher.Side;
  *  All rights reserved.
  *
  */
-@Mod(name="Galacticraft Core", version="v1", useMetadata = false, modid = "GalacticraftCore")
+@Mod(name="Galacticraft Core", version="v1", useMetadata = false, modid = "GalacticraftCore", dependencies = "required-after:Forge@[6.6.0.497,)")
 @NetworkMod(channels = {"Galacticraft"}, clientSideRequired = true, serverSideRequired = false)
 public class GalacticraftCore
 {
@@ -115,7 +115,7 @@ public class GalacticraftCore
 	public static List<IMapPlanet> mapPlanets = new ArrayList<IMapPlanet>();
 	public static DupKeyHashMap mapMoons = new DupKeyHashMap();
 	
-	public static final CreativeTabs galacticraftTab = new GCCoreCreativeTab(12, "galacticraft");
+	public static final CreativeTabs galacticraftTab = new GCCoreCreativeTab(CreativeTabs.getNextID(), "galacticraft");
 	
 	public static final IGalaxy galaxyMilkyWay = new GCCoreGalaxyBlockyWay();
 	
