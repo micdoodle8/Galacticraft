@@ -35,11 +35,11 @@ public class GCCoreRenderCreeper extends RenderLiving
         super(new GCCoreModelCreeper(), 0.5F);
     }
 
-    @Override
-	protected void passSpecialRender(EntityLiving par1EntityLiving, double par2, double par4, double par6)
-    {
-        ClientProxyCore.TickHandlerClient.renderName(par1EntityLiving, par2, par4, par6);
-    }
+//    @Override
+//	protected void passSpecialRender(EntityLiving par1EntityLiving, double par2, double par4, double par6)
+//    {
+//        ClientProxyCore.TickHandlerClient.renderName(par1EntityLiving, par2, par4, par6);
+//    }
 
     /**
      * Updates creeper scale in prerender callback

@@ -41,11 +41,11 @@ public class GCCoreRenderSpider extends RenderLiving
         return 180.0F;
     }
 
-    @Override
-    protected void passSpecialRender(EntityLiving par1EntityLiving, double par2, double par4, double par6)
-    {
-        ClientProxyCore.TickHandlerClient.renderName(par1EntityLiving, par2, par4, par6);
-    }
+//    @Override
+//    protected void passSpecialRender(EntityLiving par1EntityLiving, double par2, double par4, double par6)
+//    {
+//        ClientProxyCore.TickHandlerClient.renderName(par1EntityLiving, par2, par4, par6);
+//    }
     
     @Override
 	protected int shouldRenderPass(EntityLiving par1EntityLiving, int par2, float par3)
