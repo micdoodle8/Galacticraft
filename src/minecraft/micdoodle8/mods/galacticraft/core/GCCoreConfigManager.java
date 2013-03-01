@@ -135,6 +135,7 @@ public class GCCoreConfigManager
 	public static boolean disableSpaceshipParticles;
 	public static boolean disableSpaceshipGrief;
 	public static boolean disableTutorialItemText;
+	public static boolean oxygenIndicatorLeftSide;
 	
 	private void setDefaultValues()
     {
@@ -244,6 +245,7 @@ public class GCCoreConfigManager
 	        GCCoreConfigManager.disableSpaceshipParticles = 			GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Spaceship Particles",		false)		.getBoolean(false);
 	        GCCoreConfigManager.disableSpaceshipGrief = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Spaceship Explosion",		false)		.getBoolean(false);
 	        GCCoreConfigManager.disableTutorialItemText = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Tutorial Item Info Text",	false)		.getBoolean(false);
+	        GCCoreConfigManager.oxygenIndicatorLeftSide = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Using Minimap Mod",					false)		.getBoolean(false);
 		}
 		catch (final Exception e)
 		{
