@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.moon.entities;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.moon.GalacticraftMoon;
 import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
 import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;
@@ -45,6 +44,7 @@ public class GCMoonPlayerBase extends ServerPlayerBase
 					int meta = -1;
 					
 					final int i = 1 + MathHelper.floor_double(this.player.rotationYaw * 8.0F / 360.0F + 0.5D) & 7;
+					
 					switch (this.lastStep)
 					{
 					case 1:

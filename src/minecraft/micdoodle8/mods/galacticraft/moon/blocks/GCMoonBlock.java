@@ -42,9 +42,9 @@ public class GCMoonBlock extends Block implements IDetectableResource
 				case 0:
 					return 0;
 				case 1:
-					return 21;
+					return 4;
 				case 2:
-					return 20;
+					return 5;
 				case 3:
 					return 20;
 				case 4:
