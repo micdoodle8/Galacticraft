@@ -38,11 +38,11 @@ public class GCCoreItemOxygenTank extends GCCoreItem
 	{
 		par2List.add("- Air Remaining: " + (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage()));
 		
-    	if (player.worldObj.isRemote)
+    	if (player != null && player.worldObj.isRemote)
     	{
     		GCCorePlayerBaseClient playerBaseCl = PlayerUtil.getPlayerBaseClientFromPlayer(player);
     		
-    		if (playerBaseCl.getUseTutorialText())
+    		if (playerBaseCl != null && playerBaseCl.getUseTutorialText())
     		{
     			par2List.add("- Press " + Keyboard.getKeyName(ClientProxyCore.GCKeyHandler.tankRefill.keyCode) + " to access");
             	par2List.add("     Galacticraft Inventory");
