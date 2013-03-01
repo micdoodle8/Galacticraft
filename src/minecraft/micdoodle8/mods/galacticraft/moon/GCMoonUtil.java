@@ -30,5 +30,7 @@ public class GCMoonUtil
 	public static void addSmeltingRecipes()
 	{
 		FurnaceRecipes.smelting().addSmelting(GCMoonItems.meteoricIronRaw.itemID, new ItemStack(GCMoonItems.meteoricIronIngot), 1.0F);
+		FurnaceRecipes.smelting().addSmelting(GCMoonBlocks.blockMoon.blockID, 0, new ItemStack(GCCoreItems.ingotAluminum), 1.0F);
+		FurnaceRecipes.smelting().addSmelting(GCMoonBlocks.blockMoon.blockID, 1, new ItemStack(Item.ingotIron), 1.0F);
 	}
 }
