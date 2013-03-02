@@ -47,7 +47,7 @@ public class GCCoreEntityAIArrowAttack extends EntityAIBase
         this.worldObj = par1EntityLiving.worldObj;
         this.entityMoveSpeed = par2;
         this.rangedAttackID = par3;
-        if (par4 == 20 && this.worldObj.provider instanceof IGalacticraftWorldProvider)
+        if (par4 == 20 && this.worldObj != null && this.worldObj.provider instanceof IGalacticraftWorldProvider)
         {
             this.maxRangedAttackTime = par4;
         }
