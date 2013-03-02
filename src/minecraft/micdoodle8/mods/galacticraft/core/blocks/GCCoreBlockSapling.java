@@ -45,19 +45,15 @@ public class GCCoreBlockSapling extends BlockSapling
             	par1World.setBlock(par2, par3, par4, Block.deadBush.blockID);
             }
 
-            if (par1World.getBlockLightValue(par2, par3 + 1, par4) >= 9 && par5Random.nextInt(7) == 0)
-            {
-            	
-                final int var6 = par1World.getBlockMetadata(par2, par3, par4);
+            final int var6 = par1World.getBlockMetadata(par2, par3, par4);
 
-                if ((var6 & 8) == 0)
-                {
-                    par1World.setBlockMetadataWithNotify(par2, par3, par4, var6 | 8);
-                }
-                else
-                {
-                    this.growTree(par1World, par2, par3, par4, par5Random);
-                }
+            if ((var6 & 8) == 0)
+            {
+                par1World.setBlockMetadataWithNotify(par2, par3, par4, var6 | 8);
+            }
+            else
+            {
+                this.growTree(par1World, par2, par3, par4, par5Random);
             }
         }
     }
