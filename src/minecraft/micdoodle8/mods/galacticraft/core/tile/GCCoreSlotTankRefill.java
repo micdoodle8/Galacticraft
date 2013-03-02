@@ -25,20 +25,17 @@ public class GCCoreSlotTankRefill extends Slot
 	@Override
 	public boolean isItemValid(ItemStack par1ItemStack)
 	{
-		switch (this.slotNumber - 46)
+		switch (this.slotNumber)
 		{
-		case 0:
+		case 45:
 			return par1ItemStack.getItem() instanceof GCCoreItemOxygenMask;
-		case 1:
+		case 46:
 			return par1ItemStack.getItem() instanceof GCCoreItemOxygenGear;
-		case 2:
+		case 47:
 			return OxygenUtil.getDrainSpacing(par1ItemStack) > 0;
-		case 3:
+		case 48:
 			return OxygenUtil.getDrainSpacing(par1ItemStack) > 0;
-		}
-		
-		if (this.slotNumber == 1)
-		{
+		case 49:
 			return par1ItemStack.getItem() instanceof GCCoreItemParachute;
 		}
 		
