@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.moon.blocks;
 import java.util.List;
 import java.util.Random;
 
-import micdoodle8.mods.galacticraft.API.IDetectableResource;
+import micdoodle8.mods.galacticraft.API.IDetectableMetadataResource;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.moon.items.GCMoonItems;
 import net.minecraft.block.Block;
@@ -19,7 +19,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  *  All rights reserved.
  *
  */
-public class GCMoonBlock extends Block implements IDetectableResource
+public class GCMoonBlock extends Block implements IDetectableMetadataResource
 {
 	// AluminumMoon: 0, IronMoon: 1, CheeseStone: 2;
 	
@@ -33,7 +33,7 @@ public class GCMoonBlock extends Block implements IDetectableResource
 	@Override
     public int getBlockTextureFromSideAndMetadata(int side, int meta)
     {
-		if (meta >= 5)
+		if (meta >= 5 && meta <= 13)
 		{
 			if (side == 1)
 			{
@@ -78,6 +78,8 @@ public class GCMoonBlock extends Block implements IDetectableResource
 				return 2;
 			case 4:
 				return 9;
+			case 14:
+				return 1;
 			default:
 				return meta;
 			}
@@ -122,11 +124,29 @@ public class GCMoonBlock extends Block implements IDetectableResource
         {
             par3List.add(new ItemStack(par1, 1, var4));
         }
+
+        par3List.add(new ItemStack(par1, 1, 14));
     }
 	
 	@Override
 	public String getTextureFile()
 	{
 		return "/micdoodle8/mods/galacticraft/moon/client/blocks/moon.png";
+	}
+
+	@Override
+	public boolean isValueable(int metadata) 
+	{
+		switch (metadata)
+		{
+		case 0:
+			return true;
+		case 1:
+			return true;
+		case 2:
+			return true;
+		default:
+			return false;
+		}
 	}
 }
