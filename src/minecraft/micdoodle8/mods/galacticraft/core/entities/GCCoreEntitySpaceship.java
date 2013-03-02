@@ -9,9 +9,9 @@ import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLaunchFlameFX;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLaunchSmokeFX;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityOxygenFX;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItemFuelCanister;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
-import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.moon.GCMoonConfigManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
@@ -102,7 +102,7 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
         	i = 1;
         }
     	
-        if ((this.getLaunched() == 1 || this.rand.nextInt(i) == 0) && !GCCoreConfigManager.disableSpaceshipParticles)
+        if ((this.getLaunched() == 1 || this.rand.nextInt(i) == 0) && !GCCoreConfigManager.disableSpaceshipParticles && this.hasFuelTank())
         {
         	if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
         	{
@@ -115,7 +115,7 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
             this.rocketSoundUpdater.update();
         }
         
-        if (this.launched && this.getStackInSlot(27) != null && this.getStackInSlot(27).getItem().itemID == GCCoreItems.rocketFuelBucket.itemID)
+        if (this.launched && hasFuelTank())
         {
         	double d = this.timeSinceLaunch / 250;
         	
@@ -126,18 +126,30 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
         		this.motionY = -d * Math.cos((this.rotationPitch - 180) * Math.PI / 180.0D);
         	}
         	
-        	if (this.timeSinceLaunch % 40 == 0)
+        	if (this.getTimeSinceLaunch() % 50 == 0)
         	{
-        		this.getStackInSlot(27).setItemDamage(this.getStackInSlot(27).getItemDamage() + 1);
+        		this.getStackInSlot(0).setItemDamage(this.getStackInSlot(0).getItemDamage() + 1);
         	}
         }
-        else if ((this.getStackInSlot(27) == null || this.getStackInSlot(27).getItem().itemID != GCCoreItems.rocketFuelBucket.itemID || this.getStackInSlot(27).getItemDamage() == this.getStackInSlot(27).getMaxDamage() - 1) && this.getLaunched() == 1)
+        else if (!this.hasFuelTank() && this.getLaunched() == 1 && !this.worldObj.isRemote)
         {
         	if (Math.abs(Math.sin(this.timeSinceLaunch / 1000)) / 10 != 0.0)
         	{
         		this.motionY -= Math.abs(Math.sin(this.timeSinceLaunch / 1000)) / 20;
         	}
         }
+    }
+    
+    public boolean hasFuelTank()
+    {
+    	if (this.getStackInSlot(0) != null && this.getStackInSlot(0).getItem() instanceof GCCoreItemFuelCanister && (this.getStackInSlot(0).getMaxDamage() - this.getStackInSlot(0).getItemDamage()) > 0)
+    	{
+    		return true;
+    	}
+    	else
+    	{
+    		return false;
+    	}
     }
     
     public void onLaunch() 
@@ -149,7 +161,7 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
     {
     	PlayerUtil.getPlayerBaseServerFromPlayer(player).rocketStacks = this.cargoItems;
     	PlayerUtil.getPlayerBaseServerFromPlayer(player).rocketType = this.getSpaceshipType();
-    	PlayerUtil.getPlayerBaseServerFromPlayer(player).fuelDamage = (this.getStackInSlot(27).itemID == GCCoreItems.rocketFuelBucket.itemID ? this.getStackInSlot(27).getItemDamage() : 0);
+    	PlayerUtil.getPlayerBaseServerFromPlayer(player).fuelDamage = (this.getStackInSlot(0).itemID == GCCoreItems.rocketFuelBucket.itemID ? this.getStackInSlot(0).getItemDamage() : 0);
     }
     
     protected void spawnParticles(boolean launched)
