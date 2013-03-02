@@ -22,7 +22,6 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.ChunkProviderGenerate;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import net.minecraft.world.gen.structure.MapGenMineshaft;
-import cpw.mods.fml.common.FMLLog;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -99,6 +98,8 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 	private double[] stoneNoise = new double[256];
 
 	private final GCMoonMapGenVillage villageGenerator = new GCMoonMapGenVillage();
+
+//	private final GCMoonMapGenPuzzle mapGenPuzzle = new GCMoonMapGenPuzzle();
 
 	private final MapGenMineshaft mineshaftGenerator = new MapGenMineshaft();
 
@@ -679,6 +680,8 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 
         this.villageGenerator.generateStructuresInChunk(this.worldObj, this.rand, par2, par3);
 
+//        this.mapGenPuzzle.generateStructuresInChunk(this.worldObj, this.rand, par2, par3);
+
 		final int var12;
 		final int var13;
 		final int var14;
@@ -736,5 +739,6 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 	public void recreateStructures(int par1, int par2)
     {
         this.villageGenerator.generate(this, this.worldObj, par1, par2, (byte[])null);
+//        this.mapGenPuzzle.generate(this, this.worldObj, par1, par2, (byte[])null);
     }
 }
