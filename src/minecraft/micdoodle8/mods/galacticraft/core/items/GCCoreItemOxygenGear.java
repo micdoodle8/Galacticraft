@@ -36,7 +36,7 @@ public class GCCoreItemOxygenGear extends GCCoreItem
     	{
     		GCCorePlayerBaseClient playerBaseCl = PlayerUtil.getPlayerBaseClientFromPlayer(par2EntityPlayer);
     		
-    		if (playerBaseCl.getUseTutorialText())
+    		if (playerBaseCl != null && playerBaseCl.getUseTutorialText())
     		{
             	par3List.add("Press " + Keyboard.getKeyName(ClientProxyCore.GCKeyHandler.tankRefill.keyCode) + " to access");
             	par3List.add("     Galacticraft Inventory");
