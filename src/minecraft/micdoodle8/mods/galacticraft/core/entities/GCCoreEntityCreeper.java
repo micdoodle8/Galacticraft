@@ -75,7 +75,6 @@ public class GCCoreEntityCreeper extends EntityCreeper
 	protected void entityInit()
     {
         super.entityInit();
-        this.dataWatcher.addObject(17, Byte.valueOf((byte)0));
     }
 
     /**

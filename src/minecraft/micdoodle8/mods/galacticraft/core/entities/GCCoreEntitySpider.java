@@ -32,7 +32,6 @@ public class GCCoreEntitySpider extends EntitySpider
 	protected void entityInit()
     {
         super.entityInit();
-        this.dataWatcher.addObject(16, new Byte((byte)0));
     }
 
     /**

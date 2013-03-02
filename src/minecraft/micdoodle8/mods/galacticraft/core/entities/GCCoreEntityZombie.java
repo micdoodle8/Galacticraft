@@ -63,9 +63,6 @@ public class GCCoreEntityZombie extends EntityZombie
 	protected void entityInit()
     {
         super.entityInit();
-        this.getDataWatcher().addObject(12, Byte.valueOf((byte)0));
-        this.getDataWatcher().addObject(13, Byte.valueOf((byte)0));
-        this.getDataWatcher().addObject(14, Byte.valueOf((byte)0));
     }
 
     @Override
