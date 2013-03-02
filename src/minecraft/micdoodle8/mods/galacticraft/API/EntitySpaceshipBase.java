@@ -208,7 +208,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship
             this.setDamage(this.getDamage() - 1);
         }
 
-        if (this.posY < -64.0D || this.posY > this.getYCoordToTeleport() + 100 && this.dataWatcher.getWatchableObjectInt(21) == 0)
+        if (this.posY < -64.0D || this.posY > this.getYCoordToTeleport() + 100)
         {
             this.kill();
         }

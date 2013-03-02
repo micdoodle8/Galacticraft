@@ -35,6 +35,8 @@ public class GCCoreContainerRocketRefill extends Container
         int var4;
         int var5;
 
+        this.addSlotToContainer(new GCCoreSlotFuel(this.spaceshipInv, 0, 80, 18));
+
         for (var4 = 0; var4 < 3; ++var4)
         {
             for (var5 = 0; var5 < 9; ++var5)
@@ -47,25 +49,22 @@ public class GCCoreContainerRocketRefill extends Container
         {
             this.addSlotToContainer(new Slot(this.lowerChestInventory, var4, 8 + var4 * 18, 142 - 34));
         }
-
-        this.addSlotToContainer(new Slot(this.spaceshipInv, 27, 80, 18));
     }
     
     private void addSlotsForType2()
     {
         int var4;
         int var5;
+
+        this.addSlotToContainer(new GCCoreSlotFuel(this.spaceshipInv, 0, 80, 18));
         
         for (var4 = 0; var4 < 3; ++var4)
         {
             for (var5 = 0; var5 < 9; ++var5)
             {
-            	if (var4 == 2 && var5 == 8 || var4 == 2  && var5 == 7 || var4 == 2  && var5 == 6)
+            	if (!(var4 == 2 && var5 == 8 || var4 == 2  && var5 == 7 || var4 == 2  && var5 == 6))
             	{
-            	}
-            	else
-            	{
-                    this.addSlotToContainer(new Slot(this.spaceshipInv, var5 + var4 * 9, 8 + var5 * 18, 50 + var4 * 18));
+                    this.addSlotToContainer(new Slot(this.spaceshipInv, (var5 + var4 * 9) + 1, 8 + var5 * 18, 50 + var4 * 18));
             	}
             }
         }
@@ -82,8 +81,6 @@ public class GCCoreContainerRocketRefill extends Container
         {
             this.addSlotToContainer(new Slot(this.lowerChestInventory, var4, 8 + var4 * 18, 161 + 14));
         }
-
-        this.addSlotToContainer(new Slot(this.spaceshipInv, 27, 80, 18));
     }
 
     @Override
