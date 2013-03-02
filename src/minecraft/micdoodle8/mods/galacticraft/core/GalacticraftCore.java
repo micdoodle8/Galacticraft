@@ -249,7 +249,7 @@ public class GalacticraftCore
 		this.registerGalacticraftNonMobEntity(GCCoreEntitySpaceship.class, "Spaceship", GCCoreConfigManager.idEntitySpaceship, 150, 1, true);
 		this.registerGalacticraftNonMobEntity(GCCoreEntityArrow.class, "Gravity Arrow", GCCoreConfigManager.idEntityAntiGravityArrow, 150, 5, true);
 		this.registerGalacticraftNonMobEntity(GCCoreEntityMeteor.class, "Meteor", GCCoreConfigManager.idEntityMeteor, 150, 5, true);
-		this.registerGalacticraftNonMobEntity(GCCoreEntityBuggy.class, "Buggy", GCCoreConfigManager.idEntityBuggy, 150, 5, true);
+		this.registerGalacticraftNonMobEntity(GCCoreEntityBuggy.class, "Buggy", GCCoreConfigManager.idEntityBuggy, 150, 1, true);
 		this.registerGalacticraftNonMobEntity(GCCoreEntityFlag.class, "Flag", GCCoreConfigManager.idEntityFlag, 150, 5, true);
 		this.registerGalacticraftNonMobEntity(GCCoreEntityAstroOrb.class, "AstroOrb", GCCoreConfigManager.idEntityAstroOrb, 150, 5, true);
 		this.registerGalacticraftNonMobEntity(GCCoreEntityParaChest.class, "ParaChest", GCCoreConfigManager.idEntityParaChest, 150, 5, true);
@@ -310,11 +310,16 @@ public class GalacticraftCore
                 {
                 	final GCCoreEntitySpaceship ship = (GCCoreEntitySpaceship) player.ridingEntity;
                 	
-                	final ItemStack stack = ship.getStackInSlot(27);
+                	final ItemStack stack = ship.getStackInSlot(0);
                 	
-                	if (stack != null && stack.getItem().itemID == GCCoreItems.rocketFuelBucket.itemID && playerBase != null && playerBase.playerTankInventory != null)
+                	if (ship.hasFuelTank())
                 	{
-	    				final ItemStack stack2 = playerBase.playerTankInventory.getStackInSlot(4);
+                		ItemStack stack2 = null;
+                		
+                		if (playerBase != null && playerBase.playerTankInventory != null)
+                		{
+                			stack2 = playerBase.playerTankInventory.getStackInSlot(4);
+                		}
 	    				
 	    				if ((stack2 != null && stack2.getItem() instanceof GCCoreItemParachute) || playerBase.launchAttempts > 0)
 	    				{

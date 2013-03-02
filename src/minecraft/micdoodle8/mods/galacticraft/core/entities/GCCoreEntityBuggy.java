@@ -28,7 +28,7 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
     public double speed;
     float maxSpeed = 0.5F;
     float accel = 0.2F;
-    float turnFactor = 0.4F;
+    float turnFactor = 1.0F;
     public String texture;
     ItemStack[] cargoItems;
 	public float turnProgress = 0;
@@ -209,7 +209,8 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
 	@SideOnly(Side.CLIENT)
     public void setPositionAndRotation2(double par1, double par3, double par5, float par7, float par8, int par9)
     {
-    	this.setRotation(par7, par8);
+    	super.setPositionAndRotation2(par1, par3, par5, par7, par8, par9);
+//    	this.setRotation(par7, par8);
     }
 
     @Override
@@ -289,10 +290,10 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
         this.moveEntity(this.motionX, this.motionY, this.motionZ);
         
         this.setRotation(this.rotationYaw, this.rotationPitch);
+        this.setPosition(this.posX, this.posY, this.posZ);
 
         if (this.worldObj.isRemote)
         {
-            this.setPosition(this.posX, this.posY, this.posZ);
         }
         
         this.prevPosX = this.posX;
@@ -544,5 +545,11 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
 			
 			break;
 		}
+	}
+
+	@Override
+	boolean pressKey(int key) 
+	{
+		return false;
 	}
 }
