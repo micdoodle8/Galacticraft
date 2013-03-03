@@ -69,8 +69,8 @@ public class GCCoreEvents
 			return;
 		}
 
-		boolean flag1 = rand.nextDouble() <= (0.15 / 90.0);
-		boolean flag2 = rand.nextDouble() <= (0.005 / 90.0);
+		boolean flag1 = rand.nextDouble() <= (0.08);
+		boolean flag2 = rand.nextDouble() <= (0.08);
 
 		if (flag1 || flag2) 
 		{
