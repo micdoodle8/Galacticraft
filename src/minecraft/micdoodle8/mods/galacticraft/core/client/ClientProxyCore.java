@@ -986,7 +986,7 @@ public class ClientProxyCore extends CommonProxyCore
         public static int remoteBuildVer;
         public static int localMajVer = 0;
         public static int localMinVer = 0;
-        public static int localBuildVer = 12;
+        public static int localBuildVer = 14;
     	
     	private static void checkVersion()
         {
@@ -1168,7 +1168,7 @@ public class ClientProxyCore extends CommonProxyCore
     
     public static class GCKeyHandler extends KeyHandler
     {
-    	public static KeyBinding tankRefill = new KeyBinding("Galacticraft Player Inventory", Keyboard.KEY_E);
+    	public static KeyBinding tankRefill = new KeyBinding("Galacticraft Player Inventory", Keyboard.KEY_R);
     	public static KeyBinding galaxyMap = new KeyBinding("Galaxy Map", Keyboard.KEY_M);
     	public static KeyBinding openSpaceshipInv = new KeyBinding("Open Spaceship Inventory", Keyboard.KEY_F);
     	public static KeyBinding toggleAdvGoggles = new KeyBinding("Toggle Advanced Sensor Goggles", Keyboard.KEY_K);
