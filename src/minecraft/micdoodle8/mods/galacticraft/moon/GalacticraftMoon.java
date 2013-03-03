@@ -52,7 +52,7 @@ public class GalacticraftMoon implements IGalacticraftSubMod
 	
 	public void load(FMLInitializationEvent event)
 	{
-		DimensionManager.registerProviderType(GCMoonConfigManager.dimensionIDMoon, GCMoonWorldProvider.class, false);
+		DimensionManager.registerProviderType(GCMoonConfigManager.dimensionIDMoon, GCMoonWorldProvider.class, true);
 		DimensionManager.registerDimension(GCMoonConfigManager.dimensionIDMoon, GCMoonConfigManager.dimensionIDMoon);
         GCMoonUtil.addCraftingRecipes();
         GCMoonUtil.addSmeltingRecipes();
