@@ -8,4 +8,6 @@ package micdoodle8.mods.galacticraft.API;
 public interface IOxygenSource
 {
 	public double getPower();
+	
+	public void setPower(double power);
 }
