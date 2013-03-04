@@ -36,6 +36,7 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAdvancedCraftingTa
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAirLock;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityBreathableAir;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCollector;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCompressor;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenDistributor;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenPipe;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityRefinery;
@@ -232,7 +233,7 @@ public class GalacticraftCore
         GameRegistry.registerTileEntity(GCCoreTileEntityAirLock.class, "Air Lock Frame");
         GameRegistry.registerTileEntity(GCCoreTileEntityRefinery.class, "Refinery");
         GameRegistry.registerTileEntity(GCCoreTileEntityAdvancedCraftingTable.class, "NASA Workbench");
-        LanguageRegistry.instance().addStringLocalization("container.airdistributor", "en_US", "Oxygen Distributor");
+        GameRegistry.registerTileEntity(GCCoreTileEntityOxygenCompressor.class, "Air Compressor");
 	}
 	
 	public void registerCreatures()
@@ -301,8 +302,14 @@ public class GalacticraftCore
                 final Class[] decodeAs = {String.class};
                 final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
                 
-	    		final Integer dim = WorldUtil.getProviderForName((String)packetReadout[0]).dimensionId;
-	    		PlayerUtil.getPlayerBaseServerFromPlayer(player).travelToTheEnd(dim);
+                if (playerBase != null && playerBase.teleportCooldown <= 0)
+                {
+    	    		final Integer dim = WorldUtil.getProviderForName((String)packetReadout[0]).dimensionId;
+    	    		playerBase.travelToTheEnd(dim);
+    	    		playerBase.teleportCooldown = 300;
+    	    		Object[] toSend = {player.username};
+    	    		player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket("Galacticraft", 12, toSend));
+                }
             }
             else if (packetType == 3)
             {
@@ -321,7 +328,7 @@ public class GalacticraftCore
                 			stack2 = playerBase.playerTankInventory.getStackInSlot(4);
                 		}
 	    				
-	    				if ((stack2 != null && stack2.getItem() instanceof GCCoreItemParachute) || playerBase.launchAttempts > 0)
+	    				if ((stack2 != null && stack2.getItem() instanceof GCCoreItemParachute) || (playerBase != null && playerBase.launchAttempts > 0))
 	    				{
 	                    	ship.ignite();
 	                    	playerBase.launchAttempts = 0;

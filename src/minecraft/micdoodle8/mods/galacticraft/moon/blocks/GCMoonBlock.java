@@ -4,12 +4,17 @@ import java.util.List;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.API.IDetectableMetadataResource;
+import micdoodle8.mods.galacticraft.API.IPlantableMetadataBlock;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.moon.items.GCMoonItems;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockFlower;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.IPlantable;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -19,7 +24,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  *  All rights reserved.
  *
  */
-public class GCMoonBlock extends Block implements IDetectableMetadataResource
+public class GCMoonBlock extends Block implements IDetectableMetadataResource, IPlantableMetadataBlock
 {
 	// AluminumMoon: 0, IronMoon: 1, CheeseStone: 2;
 	
@@ -148,5 +153,42 @@ public class GCMoonBlock extends Block implements IDetectableMetadataResource
 		default:
 			return false;
 		}
+	}
+
+	@Override
+    public boolean canSustainPlant(World world, int x, int y, int z, ForgeDirection direction, IPlantable plant)
+    {
+		int metadata = world.getBlockMetadata(x, y, z);
+
+		if (metadata < 5 && metadata > 13)
+		{
+			return false;
+		}
+		
+        final int plantID = plant.getPlantID(world, x, y + 1, z);
+        
+        if (plant instanceof BlockFlower)
+        {
+            return true;
+        }
+        
+        return false;
+    }
+
+	@Override
+	public int requiredLiquidBlocksNearby() 
+	{
+		return 4;
+	}
+
+	@Override
+	public boolean isPlantable(int metadata) 
+	{
+		if (metadata >= 5 && metadata <= 13)
+		{
+			return true;
+		}
+		
+		return false;
 	}
 }
