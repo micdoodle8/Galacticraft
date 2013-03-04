@@ -43,6 +43,7 @@ import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.common.DimensionManager;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -102,6 +103,8 @@ public class GCCorePlayerBase extends ServerPlayerBase
 	private boolean hasOpenedPlanetSelectionGui = false;
 	
 	private int chestSpawnCooldown;
+	
+	public int teleportCooldown;
 
 	public GCCorePlayerBase(ServerPlayerAPI var1)
 	{
@@ -218,6 +221,11 @@ public class GCCorePlayerBase extends ServerPlayerBase
     public void onUpdate()
     {
     	super.onUpdate();
+    	
+    	if (this.teleportCooldown > 0)
+    	{
+    		this.teleportCooldown--;
+    	}
     	
     	if (!GalacticraftCore.playersServer.containsKey(this.player.username))
     	{
@@ -719,7 +727,7 @@ public class GCCorePlayerBase extends ServerPlayerBase
 	    		tankInSlot.damageItem(1, this.player);
 	    	}
 			
-			if (drainSpacing2 > 0 && GalacticraftCore.tick % drainSpacing2 == 0 && !this.isAABBInPartialBlockWithOxygenNearby() && !this.isAABBInBreathableAirBlock() && tankInSlot.getMaxDamage() - tankInSlot.getItemDamage() % 90 > 0)
+			if (drainSpacing2 > 0 && GalacticraftCore.tick % drainSpacing2 == 0 && !this.isAABBInPartialBlockWithOxygenNearby() && !this.isAABBInBreathableAirBlock() && tankInSlot2.getMaxDamage() - tankInSlot2.getItemDamage() % 90 > 0)
 	    	{
 	    		tankInSlot2.damageItem(1, this.player);
 	    	}
@@ -803,41 +811,6 @@ public class GCCorePlayerBase extends ServerPlayerBase
 			}
 		}
 		
-		if (this.inPortal && this.timeUntilPortal == 0)
-		{
-			if (this.player instanceof EntityPlayerMP && !this.player.worldObj.isRemote)
-			{
-				final EntityPlayerMP player = this.player;
-				
-		    	byte var5;
-		    	
-		        if (this.dimensionToSend != -2)
-		        {
-		        	var5 = (byte) this.dimensionToSend;
-		        }
-		        else
-		        {
-		        	var5 = 0;
-		        }
-		
-				for (int i = 0; i < player.mcServer.worldServerForDimension(var5).customTeleporters.size(); i++)
-				{
-					if (player.mcServer.worldServerForDimension(var5).customTeleporters.get(i) instanceof GCCoreTeleporter)
-					{
-		    			this.transferPlayerToDimension(player, var5, player.mcServer.worldServerForDimension(var5).customTeleporters.get(i));
-					}
-				}
-				
-		        player.timeUntilPortal = 10;
-
-		        Object[] toSend = {0.0F};
-		        
-		        PacketDispatcher.sendPacketToPlayer(PacketUtil.createPacket("Galacticraft", 1, toSend), (Player)player);
-		        
-		        this.inPortal = false;
-			}
-		}
-		
 		if (this.player.worldObj.provider instanceof IGalacticraftWorldProvider && FMLCommonHandler.instance().getEffectiveSide() != Side.CLIENT)
 		{
 			if (((IGalacticraftWorldProvider)this.player.worldObj.provider).getMeteorFrequency() > 0)
@@ -894,6 +867,8 @@ public class GCCorePlayerBase extends ServerPlayerBase
         final WorldServer var4 = par1EntityPlayerMP.mcServer.worldServerForDimension(par1EntityPlayerMP.dimension);
         par1EntityPlayerMP.dimension = par2;
         final WorldServer var5 = par1EntityPlayerMP.mcServer.worldServerForDimension(par1EntityPlayerMP.dimension);
+        
+        FMLLog.info("Server attempting to transfer player " + par1EntityPlayerMP.username + " to dimension " + var5.provider.dimensionId);
 
         par1EntityPlayerMP.playerNetServerHandler.sendPacketToPlayer(new Packet9Respawn(par1EntityPlayerMP.dimension, (byte)par1EntityPlayerMP.worldObj.difficultySetting, var5.getWorldInfo().getTerrainType(), var5.getHeight(), par1EntityPlayerMP.theItemInWorldManager.getGameType()));
         var4.removePlayerEntityDangerously(par1EntityPlayerMP);
@@ -911,7 +886,7 @@ public class GCCorePlayerBase extends ServerPlayerBase
             final PotionEffect var7 = (PotionEffect)var6.next();
             par1EntityPlayerMP.playerNetServerHandler.sendPacketToPlayer(new Packet41EntityEffect(par1EntityPlayerMP.entityId, var7));
         }
-        
+
         this.setNotUsingPlanetGui();
 
         GameRegistry.onPlayerChangedDimension(this.player);
@@ -1161,6 +1136,7 @@ public class GCCorePlayerBase extends ServerPlayerBase
         this.astronomyPointsTotal = par1NBTTagCompound.getInteger("AstronomyPointsTotal");
         this.setParachute(par1NBTTagCompound.getBoolean("usingParachute2"));
         this.usingPlanetSelectionGui = par1NBTTagCompound.getBoolean("usingPlanetSelectionGui");
+        this.teleportCooldown = par1NBTTagCompound.getInteger("teleportCooldown");
         
         if (par1NBTTagCompound.getBoolean("usingPlanetSelectionGui"))
         {
@@ -1195,6 +1171,7 @@ public class GCCorePlayerBase extends ServerPlayerBase
         par1NBTTagCompound.setInteger("AstronomyPointsTotal", this.astronomyPointsTotal);
         par1NBTTagCompound.setBoolean("usingParachute2", this.getParachute());
         par1NBTTagCompound.setBoolean("usingPlanetSelectionGui", this.usingPlanetSelectionGui);
+        par1NBTTagCompound.setInteger("teleportCooldown", this.teleportCooldown);
 
         final NBTTagList var2 = new NBTTagList();
 

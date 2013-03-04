@@ -46,6 +46,7 @@ import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRenderer
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererCrudeOil;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererMeteor;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererOxygenCollector;
+import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererOxygenCompressor;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererOxygenDistributor;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererOxygenPipe;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererRefinery;
@@ -70,6 +71,7 @@ import micdoodle8.mods.galacticraft.core.client.render.item.GCCoreItemRendererSp
 import micdoodle8.mods.galacticraft.core.client.render.item.GCCoreItemRendererUnlitTorch;
 import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntityAdvancedCraftingTableRenderer;
 import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntityOxygenCollectorRenderer;
+import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntityOxygenCompressorRenderer;
 import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntityOxygenDistributorRenderer;
 import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntityRefineryRenderer;
 import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntityTreasureChestRenderer;
@@ -92,6 +94,7 @@ import micdoodle8.mods.galacticraft.core.items.GCCoreItemSensorGlasses;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAdvancedCraftingTable;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCollector;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCompressor;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenDistributor;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityRefinery;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
@@ -167,6 +170,7 @@ public class ClientProxyCore extends CommonProxyCore
 	private static int craftingTableID;
 	private static int oxygenDistributorRenderID;
 	private static int oxygenCollectorRenderID;
+	private static int oxygenCompressorRenderID;
 	private static int crudeOilRenderID;
 	private static int refineryRenderID;
 	public static long getFirstBootTime;
@@ -174,7 +178,6 @@ public class ClientProxyCore extends CommonProxyCore
 	public static long slowTick;
 	private final Random rand = new Random();
 	public static ClientProxyMoon moon = new ClientProxyMoon();
-	public static int teleportCooldown;
 	public static List<IPlanetSlotRenderer> slotRenderers = new ArrayList<IPlanetSlotRenderer>();
 	public static List<int[]> valueableBlocks = new ArrayList<int[]>();
 	
@@ -222,6 +225,7 @@ public class ClientProxyCore extends CommonProxyCore
         ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityOxygenCollector.class, new GCCoreTileEntityOxygenCollectorRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityAdvancedCraftingTable.class, new GCCoreTileEntityAdvancedCraftingTableRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityRefinery.class, new GCCoreTileEntityRefineryRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityOxygenCompressor.class, new GCCoreTileEntityOxygenCompressorRenderer());
         ClientProxyCore.treasureChestRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new GCCoreRenderBlockTreasureChest(ClientProxyCore.treasureChestRenderID));
         ClientProxyCore.torchRenderID = RenderingRegistry.getNextAvailableRenderId();
@@ -242,6 +246,8 @@ public class ClientProxyCore extends CommonProxyCore
         RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererCrudeOil(ClientProxyCore.crudeOilRenderID));
         ClientProxyCore.refineryRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererRefinery(ClientProxyCore.refineryRenderID));
+        ClientProxyCore.oxygenCompressorRenderID = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererOxygenCompressor(ClientProxyCore.oxygenCompressorRenderID));
         final IMapPlanet earth = new GCCoreMapPlanetOverworld();
         final IMapPlanet moon = new GCMoonMapPlanet();
 		GalacticraftCore.addAdditionalMapPlanet(earth);
@@ -370,6 +376,11 @@ public class ClientProxyCore extends CommonProxyCore
 	public int getGCRefineryRenderID()
 	{
 		return ClientProxyCore.refineryRenderID;
+	}
+
+	public int getGCCompressorRenderID()
+	{
+		return ClientProxyCore.oxygenCompressorRenderID;
 	}
 
 	@Override
@@ -639,6 +650,13 @@ public class ClientProxyCore extends CommonProxyCore
                 final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
                 
                 this.mc.thePlayer.playerCloakUrl = (String) packetReadout[0];
+            }
+            else if (packetType == 12)
+            {
+                final Class[] decodeAs = {String.class};
+                final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
+                
+                FMLClientHandler.instance().getClient().displayGuiScreen(null);
             }
 		}
     }
@@ -920,11 +938,6 @@ public class ClientProxyCore extends CommonProxyCore
     	        		}
 	    	        }
 	        	}
-    			
-    			if (ClientProxyCore.teleportCooldown > 0)
-    			{
-    				ClientProxyCore.teleportCooldown--;
-    			}
     			
     			if (FMLClientHandler.instance().getClient().currentScreen instanceof GCCoreGuiChoosePlanet)
     			{

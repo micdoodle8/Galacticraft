@@ -5,7 +5,9 @@ import java.util.Random;
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
+import micdoodle8.mods.galacticraft.core.client.GCCorePlayerBaseClient;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
+import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -418,14 +420,16 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
         	FMLClientHandler.instance().getClient().displayGuiScreen(new GCCoreGuiGalaxyMap(this.playerToSend, this.destinations));
         	break;
         case 1:
-        	if (par1GuiButton.enabled && ClientProxyCore.teleportCooldown <= 0)
+        	if (par1GuiButton.enabled)
         	{
                 final Object[] toSend = {this.destinations[this.selectedSlot]};
                 PacketDispatcher.sendPacketToServer(PacketUtil.createPacket("Galacticraft", 2, toSend));
-                FMLClientHandler.instance().getClient().displayGuiScreen(null);
-                ClientProxyCore.teleportCooldown = 300;
+                return;
         	}
-        	break;
+        	else
+        	{
+        		FMLLog.severe("Severe problem when trying to teleport " + playerToSend.username);
+        	}
         }
     }
     
