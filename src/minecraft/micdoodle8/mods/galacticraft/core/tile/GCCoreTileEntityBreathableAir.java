@@ -10,7 +10,7 @@ public class GCCoreTileEntityBreathableAir extends TileEntity
 {
 	GCCoreTileEntityOxygenDistributor closestDistributor;
 	private HashSet<GCCoreTileEntityOxygenDistributor> distributors = new HashSet<GCCoreTileEntityOxygenDistributor>();
-	private HashSet<GCCoreTileEntityBreathableAir> connectedAir = new HashSet<GCCoreTileEntityBreathableAir>();
+	public HashSet<GCCoreTileEntityBreathableAir> connectedAir = new HashSet<GCCoreTileEntityBreathableAir>();
 	
 	@Override
 	public void updateEntity()
@@ -44,7 +44,7 @@ public class GCCoreTileEntityBreathableAir extends TileEntity
 		{
 			double distanceFromDistributor = this.closestDistributor.getDistanceFrom2(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D);
 			
-			if (distanceFromDistributor < this.closestDistributor.currentPower)
+			if (distanceFromDistributor <= this.closestDistributor.currentPower)
 			{
 				for (int j = -1; j <= 1; j++)
 				{

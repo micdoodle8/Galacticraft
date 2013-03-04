@@ -16,7 +16,6 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -211,15 +210,18 @@ public class GCCoreBlockOxygenPipe extends BlockContainer implements IConnectabl
     {
     	for (int i = 0; i < ForgeDirection.values().length - 1; i++)
     	{
-    		final TileEntity tile = world.getBlockTileEntity(x + ForgeDirection.getOrientation(i).offsetX, y + ForgeDirection.getOrientation(i).offsetY, z + ForgeDirection.getOrientation(i).offsetZ);
-    		final GCCoreTileEntityOxygenPipe thisPipe = (GCCoreTileEntityOxygenPipe)world.getBlockTileEntity(x, y, z);
-    		
-    		if (tile != null && thisPipe != null && tile instanceof GCCoreTileEntityOxygenPipe)
+    		if (world.getBlockTileEntity(x, y, z) instanceof GCCoreTileEntityOxygenPipe)
     		{
-    			final GCCoreTileEntityOxygenPipe pipe = (GCCoreTileEntityOxygenPipe)tile;
+        		final TileEntity tile = world.getBlockTileEntity(x + ForgeDirection.getOrientation(i).offsetX, y + ForgeDirection.getOrientation(i).offsetY, z + ForgeDirection.getOrientation(i).offsetZ);
+        		final GCCoreTileEntityOxygenPipe thisPipe = (GCCoreTileEntityOxygenPipe)world.getBlockTileEntity(x, y, z);
+        		
+        		if (tile != null && thisPipe != null && tile instanceof GCCoreTileEntityOxygenPipe)
+        		{
+        			final GCCoreTileEntityOxygenPipe pipe = (GCCoreTileEntityOxygenPipe)tile;
 
-				pipe.setOxygenInPipe(0D);
-				pipe.setZeroOxygen();
+    				pipe.setOxygenInPipe(0D);
+    				pipe.setZeroOxygen();
+        		}
     		}
     	}
     	

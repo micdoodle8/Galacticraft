@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
 
+import micdoodle8.mods.galacticraft.API.TileEntityOxygenAcceptor;
 import micdoodle8.mods.galacticraft.API.TileEntityOxygenSource;
 import micdoodle8.mods.galacticraft.API.TileEntityOxygenTransmitter;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLocation;
@@ -243,15 +244,15 @@ public class GCCoreTileEntityOxygenPipe extends TileEntityOxygenTransmitter
 			}
 		}
 
-		if (tile != null && tile instanceof GCCoreTileEntityOxygenDistributor)
+		if (tile != null && tile instanceof TileEntityOxygenAcceptor)
 		{
-			if (((GCCoreTileEntityOxygenDistributor)tile).getIndexFromSource() == 0 || ((GCCoreTileEntityOxygenDistributor)tile).getIndexFromSource() > this.getIndexFromCollector())
+			if (((TileEntityOxygenAcceptor)tile).getIndexFromSource() == 0 || ((TileEntityOxygenAcceptor)tile).getIndexFromSource() > this.getIndexFromCollector())
 			{
-				this.updateAdjacentSources((GCCoreTileEntityOxygenDistributor)tile);
+				this.updateAdjacentSources((TileEntityOxygenAcceptor)tile);
 				
-				if (((GCCoreTileEntityOxygenDistributor)tile).getIndexFromSource() == 0)
+				if (((TileEntityOxygenAcceptor)tile).getIndexFromSource() == 0)
 				{
-					((GCCoreTileEntityOxygenDistributor)tile).setIndexFromSource(this.indexFromCollector + 1);
+					((TileEntityOxygenAcceptor)tile).setIndexFromSource(this.indexFromCollector + 1);
 				}
 			}
 		}
@@ -272,7 +273,7 @@ public class GCCoreTileEntityOxygenPipe extends TileEntityOxygenTransmitter
 		}
 	}
 	
-	public void updateAdjacentSources(GCCoreTileEntityOxygenDistributor tile)
+	public void updateAdjacentSources(TileEntityOxygenAcceptor tile)
 	{
 		if (tile.getSourceCollectors() == null || tile.getSourceCollectors().size() == 0)
 		{

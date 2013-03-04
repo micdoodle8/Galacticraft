@@ -44,6 +44,12 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityOxygenAcceptor
 	{
 		this.sources.add(source);
 	}
+
+	@Override
+	public void removeSource(TileEntityOxygenSource source) 
+	{
+		this.sources.remove(source);
+	}
 	
 	public void setSourceCollectors(Set<TileEntityOxygenSource> sources)
 	{
@@ -263,7 +269,6 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityOxygenAcceptor
 	{
 		super.readFromNBT(par1NBTTagCompound);
 		this.setActive(par1NBTTagCompound.getBoolean("active"));
-        final NBTTagList var2 = par1NBTTagCompound.getTagList("sources");
 	}
 
 	@Override
@@ -271,42 +276,5 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityOxygenAcceptor
 	{
 		super.writeToNBT(par1NBTTagCompound);
 		par1NBTTagCompound.setBoolean("active", this.getActive());
-        par1NBTTagCompound.setTag("sources", this.writeSourcesToNBT(new NBTTagList()));
 	}
-    
-    public NBTTagList writeSourcesToNBT(NBTTagList par1NBTTagList)
-    {
-        int var2;
-        NBTTagCompound var3;
-
-		for (TileEntityOxygenSource source : this.sources)
-		{
-            if (source != null)
-            {
-                var3 = new NBTTagCompound();
-                var3.setInteger("X", source.xCoord);
-                var3.setInteger("Y", source.yCoord);
-                var3.setInteger("Z", source.zCoord);
-                par1NBTTagList.appendTag(var3);
-            }
-        }
-
-        return par1NBTTagList;
-    }
-
-    public void readSourcesFromNBT(NBTTagList par1NBTTagList)
-    {
-        this.sources = new HashSet<TileEntityOxygenSource>();
-        this.preLoadSourceCoords = new ArrayList<GCCoreBlockLocation>();
-
-        for (int var2 = 0; var2 < par1NBTTagList.tagCount(); ++var2)
-        {
-            final NBTTagCompound var3 = (NBTTagCompound)par1NBTTagList.tagAt(var2);
-            final int x = var3.getInteger("X");
-            final int y = var3.getInteger("Y");
-            final int z = var3.getInteger("Z");
-            
-            this.preLoadSourceCoords.add(new GCCoreBlockLocation(x, y, z));
-        }
-    }
 }

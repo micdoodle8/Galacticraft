@@ -1,6 +1,12 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import micdoodle8.mods.galacticraft.API.TileEntityOxygenSource;
+import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLocation;
 import micdoodle8.mods.galacticraft.core.client.model.block.GCCoreModelFan;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
@@ -10,6 +16,9 @@ import net.minecraftforge.common.ForgeDirection;
 
 public class GCCoreTileEntityOxygenCollector extends TileEntityOxygenSource
 {
+	private Set<TileEntityOxygenSource> acceptors = new HashSet<TileEntityOxygenSource>();
+	private List<GCCoreBlockLocation> preLoadAcceptorsCoords;
+	
 	protected double currentPower;
 
     public GCCoreModelFan fanModel = new GCCoreModelFan();
@@ -48,7 +57,7 @@ public class GCCoreTileEntityOxygenCollector extends TileEntityOxygenSource
 
 					if (block != null && block instanceof BlockLeaves)
 					{
-						if (this.worldObj.rand.nextInt(100000) == 0)
+						if (!this.worldObj.isRemote && this.worldObj.rand.nextInt(100000) == 0 && !GCCoreConfigManager.disableLeafDecay)
 						{
 							this.worldObj.setBlock(x, y, z, 0);
 						}
@@ -93,5 +102,11 @@ public class GCCoreTileEntityOxygenCollector extends TileEntityOxygenSource
 			((GCCoreTileEntityOxygenPipe)tile).addSource(this);
 			((GCCoreTileEntityOxygenPipe)tile).setIndexFromCollector(1);
 		}
+	}
+
+	@Override
+	public void setPower(double power) 
+	{
+		this.currentPower = power;
 	}
 }
