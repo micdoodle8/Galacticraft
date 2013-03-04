@@ -41,6 +41,7 @@ public class GCCoreBlocks
 	public static Block crudeOilMoving;
 	public static Block crudeOilStill;
 	public static Block refinery;
+	public static Block compressor;
 	
 	public static LiquidStack crudeOilStack;
 	
@@ -67,6 +68,7 @@ public class GCCoreBlocks
 		GCCoreBlocks.crudeOilStill = 										new GCCoreBlockCrudeOilStationary	(GCCoreConfigManager.idBlockCrudeOilStill, 				Material.water)			.setHardness(3.0F)                        														.setCreativeTab(null)																						.setBlockName("crudeOilStill");
 		GCCoreBlocks.crudeOilMoving = 										new GCCoreBlockCrudeOilMoving		(GCCoreConfigManager.idBlockCrudeOilMoving, 			Material.water)			.setHardness(3.0F)                        														.setCreativeTab(GalacticraftCore.galacticraftTab)															.setBlockName("crudeOilMoving");
 		GCCoreBlocks.refinery = 											new GCCoreBlockRefinery 			(GCCoreConfigManager.idBlockRefinery, 0)                                        .setHardness(3.0F)                                                                              .setCreativeTab(GalacticraftCore.galacticraftTab)	.setStepSound(Block.soundMetalFootstep)					.setBlockName("refinery");
+		GCCoreBlocks.compressor = 											new GCCoreBlockOxygenCompressor		(GCCoreConfigManager.idBlockAirCompressor, 				false)					.setHardness(3.5F)  	  																		.setCreativeTab(GalacticraftCore.galacticraftTab) 	.setStepSound(Block.soundStoneFootstep)					.setBlockName("oxygenCompressor");
 	}
 
 	public static void setHarvestLevels()
@@ -97,6 +99,7 @@ public class GCCoreBlocks
 		GameRegistry.registerBlock(GCCoreBlocks.crudeOilStill);
 		GameRegistry.registerBlock(GCCoreBlocks.crudeOilMoving);
 		GameRegistry.registerBlock(GCCoreBlocks.refinery);
+		GameRegistry.registerBlock(GCCoreBlocks.compressor);
 		
 		GCCoreBlocks.crudeOilStack = LiquidDictionary.getOrCreateLiquid("Oil", new LiquidStack(GCCoreBlocks.crudeOilStill, 1));
 	}
@@ -125,6 +128,7 @@ public class GCCoreBlocks
 		GCCoreBlocks.addName(GCCoreBlocks.crudeOilStill);
 		GCCoreBlocks.addName(GCCoreBlocks.crudeOilMoving);
 		GCCoreBlocks.addName(GCCoreBlocks.refinery);
+		GCCoreBlocks.addName(GCCoreBlocks.compressor);
 	}
 	
 	private static void addName(Block block)

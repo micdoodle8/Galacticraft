@@ -36,7 +36,6 @@ public class GCCoreConfigManager
 	public static int idBlockUnlitTorch;
 	public static int idBlockUnlitTorchLit;
 	public static int idBlockAirDistributor;
-	public static int idBlockAirDistributorActive;
 	public static int idBlockAirPipe;
 	public static int idBlockAirCollector;
 	public static int idBlockOre;
@@ -49,6 +48,7 @@ public class GCCoreConfigManager
 	public static int idBlockCrudeOilStill;
 	public static int idBlockCrudeOilMoving;
 	public static int idBlockRefinery;
+	public static int idBlockAirCompressor;
 
 	// ITEMS
 	public static int idItemLightOxygenTank;
@@ -100,12 +100,12 @@ public class GCCoreConfigManager
 	
 	// GUI
 	public static int idGuiTankRefill;
-	public static int idGuiAirDistributor;
 	public static int idGuiRocketCraftingBench;
 	public static int idGuiBuggyCraftingBench;
 	public static int idGuiGalaxyMap;
 	public static int idGuiSpaceshipInventory;
 	public static int idGuiRefinery;
+	public static int idGuiAirCompressor;
 	
 	// ACHIEVEMENTS
 	public static int idAchievBase;
@@ -130,12 +130,15 @@ public class GCCoreConfigManager
 	public static boolean disableAluminiumEarth;
 	public static boolean disableCopperEarth;
 	public static boolean disableTitaniumEarth;
+	public static boolean disableOilGen;
 	public static int oreGenFactor;
 	public static int[] oreGenDimensions;
 	public static boolean disableSpaceshipParticles;
 	public static boolean disableSpaceshipGrief;
 	public static boolean disableTutorialItemText;
 	public static boolean oxygenIndicatorLeftSide;
+	public static int oilGenFactor;
+	public static boolean disableLeafDecay;
 	
 	private void setDefaultValues()
     {
@@ -151,7 +154,7 @@ public class GCCoreConfigManager
 	        GCCoreConfigManager.idBlockUnlitTorch = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockUnlitTorch", 					3353)		.getInt(3353);
 	        GCCoreConfigManager.idBlockUnlitTorchLit = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockUnlitTorchLit", 				3354)		.getInt(3354);
 	        GCCoreConfigManager.idBlockAirDistributor = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockAirDistributor", 				3355)		.getInt(3355);
-	        GCCoreConfigManager.idBlockAirDistributorActive = 			GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockAirDistributorActive", 			3356)		.getInt(3356);
+	        GCCoreConfigManager.idBlockAirCompressor = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockAirCompressor", 				3356)		.getInt(3356);
 	        GCCoreConfigManager.idBlockAirPipe = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockAirPipe", 						3357)		.getInt(3357);
 	        GCCoreConfigManager.idBlockAirCollector = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockAirCollector", 					3358)		.getInt(3358);
 	        GCCoreConfigManager.idBlockOre = 							GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockOre", 							3359)		.getInt(3359);
@@ -211,7 +214,7 @@ public class GCCoreConfigManager
 	        GCCoreConfigManager.idArmorTitaniumHelmetBreathable = 		GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idArmorTitaniumHelmetBreathable", 		9885)		.getInt(9885);
 
 	        GCCoreConfigManager.idGuiTankRefill = 						GCCoreConfigManager.configuration.get("GUI", "idGuiTankRefill", 											128)		.getInt(128);
-	        GCCoreConfigManager.idGuiAirDistributor = 					GCCoreConfigManager.configuration.get("GUI", "idGuiAirDistributor", 										129)		.getInt(129);
+	        GCCoreConfigManager.idGuiAirCompressor = 					GCCoreConfigManager.configuration.get("GUI", "idGuiAirCompressor", 											129)		.getInt(129);
 	        GCCoreConfigManager.idGuiRocketCraftingBench = 				GCCoreConfigManager.configuration.get("GUI", "idGuiRocketCraftingBench", 									130)		.getInt(130);
 	        GCCoreConfigManager.idGuiBuggyCraftingBench = 				GCCoreConfigManager.configuration.get("GUI", "idGuiBuggyCraftingBench", 									131)		.getInt(131);
 	        GCCoreConfigManager.idGuiGalaxyMap = 						GCCoreConfigManager.configuration.get("GUI", "idGuiGalaxyMap",			 									132)		.getInt(132);
@@ -239,13 +242,16 @@ public class GCCoreConfigManager
 	        GCCoreConfigManager.disableAluminiumEarth = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable aluminium ore Gen on Overworld",	false)		.getBoolean(false);
 	        GCCoreConfigManager.disableCopperEarth = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable copper ore Gen on Overworld",	false)		.getBoolean(false);
 	        GCCoreConfigManager.disableTitaniumEarth = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable titanium ore Gen on Overworld",	false)		.getBoolean(false);
+	        GCCoreConfigManager.disableOilGen = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable oil Gen on Overworld",		false)		.getBoolean(false);
 	        GCCoreConfigManager.oreGenFactor = 							GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Ore Generation Factor", 				1)			.getInt(1);
+	        GCCoreConfigManager.oilGenFactor = 							GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Oil Generation Factor", 				1)			.getInt(1);
 	        final int[] dimensions = {0};
 	        GCCoreConfigManager.oreGenDimensions =						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "List of dimensions to generate GC ores in", 	dimensions)	.getIntList();
 	        GCCoreConfigManager.disableSpaceshipParticles = 			GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Spaceship Particles",		false)		.getBoolean(false);
 	        GCCoreConfigManager.disableSpaceshipGrief = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Spaceship Explosion",		false)		.getBoolean(false);
 	        GCCoreConfigManager.disableTutorialItemText = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Tutorial Item Info Text",	false)		.getBoolean(false);
 	        GCCoreConfigManager.oxygenIndicatorLeftSide = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Using Minimap Mod",					false)		.getBoolean(false);
+	        GCCoreConfigManager.disableLeafDecay = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Oxygen Collector Leaf Decay",false)		.getBoolean(false);
 		}
 		catch (final Exception e)
 		{
