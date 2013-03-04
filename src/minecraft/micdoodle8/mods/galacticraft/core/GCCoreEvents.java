@@ -49,7 +49,7 @@ public class GCCoreEvents
 	{
 		boolean doGen = TerrainGen.populate(event.chunkProvider, event.world, event.rand, event.chunkX, event.chunkX, event.hasVillageGenerated, PopulateChunkEvent.Populate.EventType.CUSTOM);
 
-		if (!doGen) 
+		if (!doGen || GCCoreConfigManager.disableOilGen) 
 		{
 			return;
 		}
@@ -69,8 +69,8 @@ public class GCCoreEvents
 			return;
 		}
 
-		boolean flag1 = rand.nextDouble() <= (0.08);
-		boolean flag2 = rand.nextDouble() <= (0.08);
+		boolean flag1 = rand.nextDouble() <= (0.08 * GCCoreConfigManager.oilGenFactor);
+		boolean flag2 = rand.nextDouble() <= (0.08 * GCCoreConfigManager.oilGenFactor);
 
 		if (flag1 || flag2) 
 		{
