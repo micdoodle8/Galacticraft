@@ -249,7 +249,6 @@ public class GCCoreSkyProviderOverworld extends IRenderHandler
 
             if (var20 > 0.0F)
             {
-            	FMLLog.info("" + (-var20 / 10));
                 GL11.glPushMatrix();
                 GL11.glEnable(GL11.GL_TEXTURE_2D);
                 GL11.glTranslatef(0.0F, (-var20 / 10), 0.0F);

@@ -10,6 +10,7 @@ import net.minecraft.block.BlockSapling;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
+import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreBlockSapling extends BlockSapling
 {

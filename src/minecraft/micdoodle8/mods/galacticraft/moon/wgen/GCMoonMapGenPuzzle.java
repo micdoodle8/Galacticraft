@@ -16,15 +16,6 @@ import cpw.mods.fml.common.FMLLog;
 
 public class GCMoonMapGenPuzzle extends MapGenStructure
 {
-    public static List villageSpawnBiomes = Arrays.asList(new BiomeGenBase[] {GCMoonBiomeGenBase.moonFlat});
-
-    private int terrainType;
-
-    public GCMoonMapGenPuzzle()
-    {
-        this.terrainType = 0;
-    }
-
     @Override
 	protected boolean canSpawnStructureAtCoords(int par1, int par2)
     {
@@ -60,6 +51,6 @@ public class GCMoonMapGenPuzzle extends MapGenStructure
     @Override
 	protected StructureStart getStructureStart(int par1, int par2)
     {
-        return new GCMoonStructurePuzzleStart(this.worldObj, this.rand, par1, par2, this.terrainType);
+        return new GCMoonStructurePuzzleStart(this.worldObj, this.rand, par1, par2, 0);
     }
 }

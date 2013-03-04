@@ -152,7 +152,7 @@ public class GCCorePlayerBaseClient extends PlayerBase
 			GalacticraftCore.playersClient.put(this.player.username, this);
 		}
 		
-		if (this.player != null && this.getParachute() && !this.player.capabilities.isFlying && !FMLClientHandler.instance().getClient().isGamePaused && !this.player.handleWaterMovement())
+		if (this.player != null && this.getParachute() && !this.player.capabilities.isFlying && !this.player.handleWaterMovement())
 		{
 			this.player.motionY = -0.5D;
 			this.player.motionX *= 0.5F;
