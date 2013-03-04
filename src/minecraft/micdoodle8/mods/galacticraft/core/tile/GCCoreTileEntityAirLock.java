@@ -15,6 +15,7 @@ public class GCCoreTileEntityAirLock extends GCCoreTileEntityAdvanced
 {
 	public Set<GCCoreTileEntityAirLock> otherAirLockBlocks = new HashSet<GCCoreTileEntityAirLock>();
 	public boolean active;
+	public boolean oxygenActive;
 	public int index;
 	public int orientation;
 	
@@ -204,12 +205,21 @@ public class GCCoreTileEntityAirLock extends GCCoreTileEntityAdvanced
                 {
                     for (var8 = 0; var8 < 2; ++var8)
                     {
-                    	if (this.worldObj.getBlockId(var1 + var5 * var7, var2 + var8, var3 + var6 * var7) != 0)
+                    	Block block = Block.blocksList[this.worldObj.getBlockId(var1 + var5 * var7, var2 + var8, var3 + var6 * var7)];
+                    	
+                    	if (block != null && !block.isAirBlock(this.worldObj, var1 + var5 * var7, var2 + var8, var3 + var6 * var7))
                     	{
                     		changed = true;
                     	}
                     	
-                        this.worldObj.setBlockWithNotify(var1 + var5 * var7, var2 + var8, var3 + var6 * var7, 0);
+                    	if (!this.areAnyInSetOxygenActive())
+                    	{
+                            this.worldObj.setBlockWithNotify(var1 + var5 * var7, var2 + var8, var3 + var6 * var7, 0);
+                    	}
+                    	else
+                    	{
+                            this.worldObj.setBlockWithNotify(var1 + var5 * var7, var2 + var8, var3 + var6 * var7, GCCoreBlocks.breatheableAir.blockID);
+                    	}
                     }
                 }
                 
@@ -271,12 +281,42 @@ public class GCCoreTileEntityAirLock extends GCCoreTileEntityAdvanced
 			return true;
 		}
 	}
+	
+	public boolean areAnyInSetOxygenActive()
+	{
+		int numberActive = 0;
+		
+		if (this.otherAirLockBlocks != null)
+		{
+			for (GCCoreTileEntityAirLock tile : this.otherAirLockBlocks)
+			{
+				if (tile.oxygenActive)
+				{
+					numberActive++;
+				}
+			}
+		}
+		else
+		{
+			return false;
+		}
+		
+		if (numberActive == 0)
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+	}
 
     @Override
     public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
     	super.readFromNBT(par1NBTTagCompound);
     	active = par1NBTTagCompound.getBoolean("active");
+    	oxygenActive = par1NBTTagCompound.getBoolean("oxygenActive");
     	index = par1NBTTagCompound.getInteger("index");
     	orientation = par1NBTTagCompound.getInteger("orientation");
     }
@@ -285,6 +325,7 @@ public class GCCoreTileEntityAirLock extends GCCoreTileEntityAdvanced
     public void writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
     	super.writeToNBT(par1NBTTagCompound);
+    	par1NBTTagCompound.setBoolean("oxygenActive", oxygenActive);
     	par1NBTTagCompound.setBoolean("active", active);
     	par1NBTTagCompound.setInteger("index", index);
     	par1NBTTagCompound.setInteger("orientation", orientation);

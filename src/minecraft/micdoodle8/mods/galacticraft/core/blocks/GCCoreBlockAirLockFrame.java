@@ -2,19 +2,19 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.Random;
 
-import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
+import micdoodle8.mods.galacticraft.API.IConnectableToPipe;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreBlockAdvanced;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAirLock;
-import net.minecraft.block.Block;
+import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
-public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvanced
+public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvanced implements IConnectableToPipe
 {
 	public GCCoreBlockAirLockFrame(int par1, int par2) 
 	{
@@ -60,6 +60,15 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvanced
                 {
             		((GCCoreTileEntityAirLock) te).active = true;
                 }
+
+                if (((GCCoreTileEntityAirLock) te).oxygenActive && !this.gettingOxygen(par1World, par2, par3, par4))
+                {
+                    par1World.scheduleBlockUpdate(par2, par3, par4, this.blockID, 4);
+                }
+                else if (!((GCCoreTileEntityAirLock) te).oxygenActive && this.gettingOxygen(par1World, par2, par3, par4))
+                {
+            		((GCCoreTileEntityAirLock) te).oxygenActive = true;
+                }
         	}
         }
     }
@@ -83,6 +92,15 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvanced
                 {
             		((GCCoreTileEntityAirLock) te).active = true;
                 }
+
+                if (!this.gettingOxygen(par1World, par2, par3, par4))
+                {
+            		((GCCoreTileEntityAirLock) te).oxygenActive = false;
+                }
+                else
+                {
+            		((GCCoreTileEntityAirLock) te).oxygenActive = true;
+                }
         	}
         }
     }
@@ -99,6 +117,11 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvanced
         		if (!this.gettingPowered(par1World, par2, par3, par4))
                 {
             		((GCCoreTileEntityAirLock) te).active = false;
+                }
+        		
+        		if (!this.gettingOxygen(par1World, par2, par3, par4))
+                {
+            		((GCCoreTileEntityAirLock) te).oxygenActive = false;
                 }
         	}
         }
@@ -160,10 +183,48 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvanced
 			return false;
 		}
 	}
+	
+	private boolean gettingOxygen(World par1World, int x, int y, int z)
+	{
+		int var1;
+		int var2;
+    	TileEntity te = par1World.getBlockTileEntity(x, y, z);
+    	
+    	if (te instanceof GCCoreTileEntityAirLock)
+    	{
+    		GCCoreTileEntityAirLock airLock = (GCCoreTileEntityAirLock) te;
+
+    		if (airLock.index == 0 || airLock.index == 1)
+    		{
+    			var1 = airLock.orientation == 0 ? 1 : 0;
+    			var2 = airLock.orientation;
+    			
+    			if (OxygenUtil.isBlockGettingOxygen(par1World, x - var1, y, z - var2) || OxygenUtil.isBlockGettingOxygen(par1World, x + var1, y, z + var2))
+    			{
+    				return false;
+    			}
+    		}
+    	}
+		
+		if (OxygenUtil.isBlockGettingOxygen(par1World, x, y, z))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
     
 	@Override
     public String getTextureFile()
     {
     	return "/micdoodle8/mods/galacticraft/core/client/blocks/core.png";
     }
+
+	@Override
+	public boolean isConnectableOnSide(IBlockAccess blockAccess, int x, int y, int z, ForgeDirection side) 
+	{
+		return true;
+	}
 }
