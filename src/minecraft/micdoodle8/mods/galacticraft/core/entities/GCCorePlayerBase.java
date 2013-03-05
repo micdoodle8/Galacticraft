@@ -222,7 +222,7 @@ public class GCCorePlayerBase extends ServerPlayerBase
     {
     	super.onUpdate();
     	
-    	if (!GalacticraftCore.playersServer.containsKey(this.player.username))
+    	if (!GalacticraftCore.playersServer.containsKey(this.player.username) || GalacticraftCore.slowTick % 360 == 0)
     	{
     		GalacticraftCore.playersServer.put(this.player.username, this);
     	}

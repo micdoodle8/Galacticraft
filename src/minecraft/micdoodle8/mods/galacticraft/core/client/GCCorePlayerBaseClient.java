@@ -147,7 +147,7 @@ public class GCCorePlayerBaseClient extends PlayerBase
 	@Override
 	public void onUpdate()
 	{
-		if (!GalacticraftCore.playersClient.containsKey(this.player.username))
+		if (!GalacticraftCore.playersClient.containsKey(this.player.username) || GalacticraftCore.slowTick % 360 == 0)
 		{
 			GalacticraftCore.playersClient.put(this.player.username, this);
 		}
