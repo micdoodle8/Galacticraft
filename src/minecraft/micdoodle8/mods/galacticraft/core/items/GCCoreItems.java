@@ -65,9 +65,9 @@ public class GCCoreItems
 	
 	public static void initItems()
 	{
-		GCCoreItems.lightOxygenTankFull = (GCCoreItemOxygenTank) new GCCoreItemOxygenTank(GCCoreConfigManager.idItemLightOxygenTank).setTankTier(EnumOxygenTankTier.light).setMaxDamage(90).setIconIndex(0).setItemName("oxygenTankLightFull");
-		GCCoreItems.medOxygenTankFull = (GCCoreItemOxygenTank) new GCCoreItemOxygenTank(GCCoreConfigManager.idItemMedOxygenTank).setTankTier(EnumOxygenTankTier.medium).setMaxDamage(180).setIconIndex(1).setItemName("oxygenTankMedFull");
-		GCCoreItems.heavyOxygenTankFull = (GCCoreItemOxygenTank) new GCCoreItemOxygenTank(GCCoreConfigManager.idItemHeavyOxygenTank).setTankTier(EnumOxygenTankTier.heavy).setMaxDamage(270).setIconIndex(2).setItemName("oxygenTankHeavyFull");
+		GCCoreItems.lightOxygenTankFull = (GCCoreItemOxygenTank) new GCCoreItemOxygenTank(GCCoreConfigManager.idItemLightOxygenTank).setMaxDamage(90).setIconIndex(0).setItemName("oxygenTankLightFull");
+		GCCoreItems.medOxygenTankFull = (GCCoreItemOxygenTank) new GCCoreItemOxygenTank(GCCoreConfigManager.idItemMedOxygenTank).setMaxDamage(180).setIconIndex(1).setItemName("oxygenTankMedFull");
+		GCCoreItems.heavyOxygenTankFull = (GCCoreItemOxygenTank) new GCCoreItemOxygenTank(GCCoreConfigManager.idItemHeavyOxygenTank).setMaxDamage(270).setIconIndex(2).setItemName("oxygenTankHeavyFull");
 		GCCoreItems.oxygenMask = new GCCoreItemOxygenMask(GCCoreConfigManager.idArmorOxygenMask).setIconIndex(6).setItemName("oxygenMask");
 		GCCoreItems.spaceship = new GCCoreItemSpaceship(GCCoreConfigManager.idItemSpaceship).setItemName("spaceship");
 		GCCoreItems.sensorGlasses = new GCCoreItemSensorGlasses(GCCoreConfigManager.idArmorSensorGlasses, GCCoreItems.SENSORGLASSES, 6, 0, false).setIconIndex(7).setItemName("sensorGlasses");

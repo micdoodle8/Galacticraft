@@ -13,18 +13,10 @@ import org.lwjgl.input.Keyboard;
 
 public class GCCoreItemOxygenTank extends GCCoreItem
 {
-	public EnumOxygenTankTier tier;
-	
 	public GCCoreItemOxygenTank(int par1)
 	{
 		super(par1);
 		this.setMaxStackSize(1);
-	}
-	
-	public GCCoreItemOxygenTank setTankTier(EnumOxygenTankTier tier)
-	{
-		this.tier = tier;
-		return this;
 	}
 
     @Override
