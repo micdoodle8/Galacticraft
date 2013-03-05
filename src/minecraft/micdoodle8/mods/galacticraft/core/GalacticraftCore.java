@@ -100,7 +100,7 @@ public class GalacticraftCore
 	
     public static final int LOCALMAJVERSION = 0;
     public static final int LOCALMINVERSION = 0;
-    public static final int LOCALBUILDVERSION = 15;
+    public static final int LOCALBUILDVERSION = 16;
     public static int remoteMajVer;
     public static int remoteMinVer;
     public static int remoteBuildVer;
@@ -116,6 +116,7 @@ public class GalacticraftCore
 	public static GalacticraftMoon moon = new GalacticraftMoon();
 	
 	public static long tick;
+	public static long slowTick;
 	
 	public static Map<String, GCCorePlayerBaseClient> playersClient = new HashMap<String, GCCorePlayerBaseClient>();
 	public static Map<String, GCCorePlayerBase> playersServer = new HashMap<String, GCCorePlayerBase>();
@@ -496,7 +497,7 @@ public class GalacticraftCore
 		@Override
 		public void tickStart(EnumSet<TickType> type, Object... tickData)
 		{
-			GalacticraftCore.tick++;
+			GalacticraftCore.slowTick++;
 		}
 
 		@Override
@@ -528,6 +529,8 @@ public class GalacticraftCore
 		{
 			if (type.equals(EnumSet.of(TickType.SERVER)))
             {
+				GalacticraftCore.tick++;
+				
 				if (GalacticraftCore.this.chatCooldown > 0)
 				{
 					GalacticraftCore.this.chatCooldown--;
