@@ -61,7 +61,6 @@ public class GCCorePlayerBase extends ServerPlayerBase
 	public GCCoreInventoryTankRefill playerTankInventory = new GCCoreInventoryTankRefill(this);
 	
 	public boolean inPortal;
-	
 	public int timeUntilPortal;
 	
 	private final int dimensionToSend = -2;
@@ -781,7 +780,7 @@ public class GCCorePlayerBase extends ServerPlayerBase
 	    				if (this.damageCounter == 0)
 	    	        	{
 	        				this.damageCounter = 100;
-	    		            this.player.attackEntityFrom(DamageSource.inWall, 2);
+	    		            this.player.attackEntityFrom(GalacticraftCore.oxygenSuffocation, 2);
 	    	        	}
 	    			}
 				}
