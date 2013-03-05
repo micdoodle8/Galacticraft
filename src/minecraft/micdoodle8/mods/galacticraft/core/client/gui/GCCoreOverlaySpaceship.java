@@ -1,10 +1,12 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityFlag;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.util.StringUtils;
 
 import org.lwjgl.opengl.GL11;
 
@@ -37,23 +39,19 @@ public class GCCoreOverlaySpaceship extends GCCoreOverlay
 		final Tessellator tessellator = Tessellator.instance;
         drawTexturedModalRect(10, height / 2 - 60, 0, 0, 10, 121);
         int col = GCCoreUtil.convertTo32BitColor(255, 198, 198, 198);
-        Gui.drawRect(21, height / 2 - 59 + (120 - (int) Math.floor(getPlayerPositionY(minecraft.thePlayer) / 10)), 24, (height / 2 - 59 + (120 - (int) Math.floor(getPlayerPositionY(minecraft.thePlayer) / 10))) + 3, col);
-
-        col = GCCoreUtil.convertTo32BitColor(255, 198, 198, 198);
         Gui.drawRect(0, 					0, 					width, 		20, 			col);
         Gui.drawRect(0,	 					height - 24, 		width, 		height,    		col);
         Gui.drawRect(0, 					0, 					10, 		height,    		col);
         Gui.drawRect(width - 10, 			0, 					width, 		height, 		col);
 
-//        GL11.glColor3f(1.0F, 1.0F, 1.0F);
-//        
-//		loadDownloadableImageTexture(minecraft.thePlayer.skinUrl, FMLClientHandler.instance().getClient().thePlayer.getTexture());
-//
-//		GL11.glScalef(0.5F, 0.26F, 0.5F);
-//		GL11.glBindTexture(GL11.GL_TEXTURE_2D, minecraft.renderEngine.getTexture(minecraft.thePlayer.getTexture()));
-//		GL11.glTranslatef(30.5F, 670.0F - ((float) ((float) (()) * -4.0F)), 0.0F);
-//		drawTexturedModalRect(13, 9, 32, 64, 32, 65);
-        
+        GL11.glColor3f(1.0F, 1.0F, 1.0F);
+
+		GL11.glScalef(0.5F, 0.26F, 0.5F);
+		loadDownloadableImageTexture("http://skins.minecraft.net/MinecraftSkins/" + StringUtils.stripControlCodes(minecraft.thePlayer.username) + ".png", FMLClientHandler.instance().getClient().thePlayer.getTexture());
+		int y1 = height / 2 + 420 + (120 - (int) Math.floor(getPlayerPositionY(minecraft.thePlayer) / 2.75));
+		int y2 = (height / 2 + 420 + (120 - (int) Math.floor(getPlayerPositionY(minecraft.thePlayer) / 2.75))) + 3;
+		GL11.glScalef(1F, 1F, 1F);
+        drawTexturedModalRect(42, y1, 32, 64, 32, 64);
 		GL11.glDepthMask(true);
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		GL11.glEnable(GL11.GL_ALPHA_TEST);
