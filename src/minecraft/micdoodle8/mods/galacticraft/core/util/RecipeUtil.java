@@ -355,6 +355,13 @@ public class RecipeUtil
 			"XYX",
 			'X', "ingotAluminium", 'Y', Block.stoneOvenIdle, 'Z', new ItemStack(GCCoreItems.canister, 1, 1), 'W', Block.stone
 		}));
+		
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreBlocks.compressor), new Object[] {
+			"XYX",
+			"YZY",
+			"XYX",
+			'X', "ingotAluminium", 'Y', "ingotTitanium", 'Z', GCCoreItems.oxygenConcentrator
+		}));
 	}
 	
 	public static void addSmeltingRecipes()
@@ -397,9 +404,23 @@ public class RecipeUtil
 							{
 								int type = 0;
 								
-								if ((slots[14] != null && Block.blocksList[slots[14].getItem().itemID] instanceof BlockChest) || (slots[15] != null && Block.blocksList[slots[15].getItem().itemID] instanceof BlockChest) || (slots[16] != null && Block.blocksList[slots[16].getItem().itemID] instanceof BlockChest))
+								for (int i = 14; i < 17; i++)
 								{
-									type = 1;
+									if (slots[i] != null)
+									{
+										int id = slots[i].itemID;
+										
+										if (id < Block.blocksList.length)
+										{
+											Block block = Block.blocksList[id];
+											
+											if (block != null && block instanceof BlockChest)
+											{
+												type = 1;
+												break;
+											}
+										}
+									}
 								}
 									
 								return new ItemStack(GCCoreItems.spaceship, 1, type);
