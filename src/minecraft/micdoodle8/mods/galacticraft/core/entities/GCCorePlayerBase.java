@@ -722,12 +722,12 @@ public class GCCorePlayerBase extends ServerPlayerBase
 	    		this.airRemaining2 = tankInSlot2.getMaxDamage() - tankInSlot2.getItemDamage() % 90;
 			}
 			
-			if (drainSpacing > 0 && GalacticraftCore.tick % drainSpacing == 0 && !this.isAABBInPartialBlockWithOxygenNearby() && !this.isAABBInBreathableAirBlock() && tankInSlot.getMaxDamage() - tankInSlot.getItemDamage() % 90 > 0)
+			if (drainSpacing > 0 && GalacticraftCore.slowTick % drainSpacing == 0 && !this.isAABBInPartialBlockWithOxygenNearby() && !this.isAABBInBreathableAirBlock() && tankInSlot.getMaxDamage() - tankInSlot.getItemDamage() % 90 > 0)
 	    	{
 	    		tankInSlot.damageItem(1, this.player);
 	    	}
 			
-			if (drainSpacing2 > 0 && GalacticraftCore.tick % drainSpacing2 == 0 && !this.isAABBInPartialBlockWithOxygenNearby() && !this.isAABBInBreathableAirBlock() && tankInSlot2.getMaxDamage() - tankInSlot2.getItemDamage() % 90 > 0)
+			if (drainSpacing2 > 0 && GalacticraftCore.slowTick % drainSpacing2 == 0 && !this.isAABBInPartialBlockWithOxygenNearby() && !this.isAABBInBreathableAirBlock() && tankInSlot2.getMaxDamage() - tankInSlot2.getItemDamage() % 90 > 0)
 	    	{
 	    		tankInSlot2.damageItem(1, this.player);
 	    	}
