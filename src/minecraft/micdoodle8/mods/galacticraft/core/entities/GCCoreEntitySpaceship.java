@@ -159,9 +159,14 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
     
     public void onTeleport(EntityPlayerMP player) 
     {
-    	PlayerUtil.getPlayerBaseServerFromPlayer(player).rocketStacks = this.cargoItems;
-    	PlayerUtil.getPlayerBaseServerFromPlayer(player).rocketType = this.getSpaceshipType();
-    	PlayerUtil.getPlayerBaseServerFromPlayer(player).fuelDamage = (this.getStackInSlot(0).itemID == GCCoreItems.rocketFuelBucket.itemID ? this.getStackInSlot(0).getItemDamage() : 0);
+    	GCCorePlayerBase playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player);
+    	
+    	if (playerBase != null)
+    	{
+    		playerBase.rocketStacks = this.cargoItems;
+    		playerBase.rocketType = this.getSpaceshipType();
+    		playerBase.fuelDamage = (this.getStackInSlot(0).itemID == GCCoreItems.rocketFuelBucket.itemID ? this.getStackInSlot(0).getItemDamage() : 0);
+        }
     }
     
     protected void spawnParticles(boolean launched)
