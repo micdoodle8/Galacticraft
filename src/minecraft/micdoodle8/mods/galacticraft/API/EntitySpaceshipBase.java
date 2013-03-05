@@ -7,6 +7,7 @@ import java.util.Set;
 
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GCCoreDamageSource;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLandingPad;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
@@ -405,7 +406,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship
             if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayerMP)
             {
         	  	final Object[] toSend = {((EntityPlayerMP)this.riddenByEntity).username};
-            	((EntityPlayerMP)this.riddenByEntity).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket("Galacticraft", 8, toSend));
+            	((EntityPlayerMP)this.riddenByEntity).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 8, toSend));
             }
             
         	return true;
@@ -529,7 +530,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship
 		    	}
 		    	
 		    	final Object[] toSend = {entityplayermp.username, temp};
-		        FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(entityplayermp.username).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket("Galacticraft", 2, toSend));
+		        FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(entityplayermp.username).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 2, toSend));
 				
 		        PlayerUtil.getPlayerBaseServerFromPlayer(entityplayermp).setUsingPlanetGui();
 		        

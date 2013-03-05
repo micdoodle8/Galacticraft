@@ -41,6 +41,7 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenDistributor;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenPipe;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityRefinery;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
@@ -89,14 +90,25 @@ import cpw.mods.fml.relauncher.Side;
  *  All rights reserved.
  *
  */
-@Mod(name="Galacticraft Core", version="v1", useMetadata = false, modid = "GalacticraftCore", dependencies = "required-after:Forge@[6.6.0.497,)")
-@NetworkMod(channels = {"Galacticraft"}, clientSideRequired = true, serverSideRequired = false)
+@Mod(name=GalacticraftCore.NAME, version="v1", useMetadata = false, modid=GalacticraftCore.MODID, dependencies = "required-after:Forge@[6.6.0.497,)")
+@NetworkMod(channels = {GalacticraftCore.CHANNEL}, clientSideRequired = true, serverSideRequired = false)
 public class GalacticraftCore
 {
+	public static final String NAME = "Galacticraft Core";
+	public static final String MODID = "Galacticraft Core";
+	public static final String CHANNEL = "GalacticraftCore";
+	
+    public static final int LOCALMAJVERSION = 0;
+    public static final int LOCALMINVERSION = 0;
+    public static final int LOCALBUILDVERSION = 14;
+    public static int remoteMajVer;
+    public static int remoteMinVer;
+    public static int remoteBuildVer;
+	
 	@SidedProxy(clientSide = "micdoodle8.mods.galacticraft.core.client.ClientProxyCore", serverSide = "micdoodle8.mods.galacticraft.core.CommonProxyCore")
 	public static CommonProxyCore proxy;
 	
-	@Instance("GalacticraftCore")
+	@Instance(GalacticraftCore.MODID)
 	public static GalacticraftCore instance;
 	
 	public static GCCoreLocalization lang;
@@ -116,9 +128,16 @@ public class GalacticraftCore
 	public static List<IMapPlanet> mapPlanets = new ArrayList<IMapPlanet>();
 	public static DupKeyHashMap mapMoons = new DupKeyHashMap();
 	
-	public static final CreativeTabs galacticraftTab = new GCCoreCreativeTab(CreativeTabs.getNextID(), "galacticraft");
+	public static final CreativeTabs galacticraftTab = new GCCoreCreativeTab(CreativeTabs.getNextID(), GalacticraftCore.CHANNEL);
 	
 	public static final IGalaxy galaxyMilkyWay = new GCCoreGalaxyBlockyWay();
+
+	public static final String FILE_PATH = "/micdoodle8/mods/galacticraft/core/";
+	public static final String CLIENT_PATH = "client/";
+	public static final String LANGUAGE_PATH = FILE_PATH + CLIENT_PATH + "lang/";
+	public static final String BLOCK_TEXTURE_FILE = FILE_PATH + CLIENT_PATH + "blocks/core.png";
+	public static final String ITEM_TEXTURE_FILE = FILE_PATH + CLIENT_PATH + "items/core.png";
+	public static final String CONFIG_FILE = "Galacticraft/core.conf";
 	
 	@PreInit
 	public void preInit(FMLPreInitializationEvent event)
@@ -127,11 +146,11 @@ public class GalacticraftCore
 		
 		GalacticraftCore.registerSubMod(GalacticraftCore.moon);
 		
-		new GCCoreConfigManager(new File(event.getModConfigurationDirectory(), "Galacticraft/core.conf"));
+		new GCCoreConfigManager(new File(event.getModConfigurationDirectory(), CONFIG_FILE));
 		
-		GalacticraftCore.lang = new GCCoreLocalization("micdoodle8/mods/galacticraft/core/client");
+		GalacticraftCore.lang = new GCCoreLocalization(FILE_PATH + CLIENT_PATH);
 		
-		ServerPlayerAPI.register("GalacticraftCore", GCCorePlayerBase.class);
+		ServerPlayerAPI.register(GalacticraftCore.MODID, GCCorePlayerBase.class);
 		
 		GCCoreBlocks.initBlocks();
 		GCCoreBlocks.registerBlocks();
@@ -166,7 +185,7 @@ public class GalacticraftCore
 		
 		GalacticraftCore.moon.load(event);
 		
-        LanguageRegistry.instance().addStringLocalization("itemGroup.galacticraft", GalacticraftCore.lang.get("itemGroup.galacticraft"));
+        LanguageRegistry.instance().addStringLocalization("itemGroup.GalacticraftCore", GalacticraftCore.lang.get("itemGroup.GalacticraftCore"));
 		
         GameRegistry.registerWorldGenerator(new GCCoreWorldGenVanilla());
         RecipeUtil.addCraftingRecipes();
@@ -193,9 +212,10 @@ public class GalacticraftCore
 	{
 		GalacticraftCore.moon.serverInit(event);
 		
+		GCCoreUtil.checkVersion(Side.SERVER);
         TickRegistry.registerTickHandler(new CommonTickHandler(), Side.SERVER);
         TickRegistry.registerScheduledTickHandler(new CommonTickHandlerSlow(), Side.SERVER);
-        NetworkRegistry.instance().registerChannel(new ServerPacketHandler(), "Galacticraft", Side.SERVER);
+        NetworkRegistry.instance().registerChannel(new ServerPacketHandler(), GalacticraftCore.CHANNEL, Side.SERVER);
 	}
 	
 	public static void registerSlotRenderer(IPlanetSlotRenderer renderer)
@@ -308,7 +328,7 @@ public class GalacticraftCore
     	    		playerBase.travelToTheEnd(dim);
     	    		playerBase.teleportCooldown = 300;
     	    		Object[] toSend = {player.username};
-    	    		player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket("Galacticraft", 12, toSend));
+    	    		player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 12, toSend));
                 }
             }
             else if (packetType == 3)
@@ -383,7 +403,7 @@ public class GalacticraftCore
 	                	{
 	                        final Object[] toSend = {((EntityLiving)player.worldObj.loadedEntityList.get(i)).getHealth(), (Integer)packetReadout[0]};
 	                        
-	                        player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket("Galacticraft", 3, toSend));
+	                        player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 3, toSend));
 	                	}
 	                }
                 }

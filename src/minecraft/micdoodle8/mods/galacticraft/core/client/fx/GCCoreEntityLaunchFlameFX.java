@@ -109,7 +109,7 @@ public class GCCoreEntityLaunchFlameFX extends EntityFX
                     {
                     	var5.setFire(3);
                     	Object[] toSend = {var5.entityId};
-                    	PacketDispatcher.sendPacketToServer(PacketUtil.createPacket("Galacticraft", 10, toSend));
+                    	PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 10, toSend));
                     }
                 }
             }

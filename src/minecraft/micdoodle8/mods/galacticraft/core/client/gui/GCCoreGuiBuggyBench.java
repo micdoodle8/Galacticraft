@@ -41,13 +41,13 @@ public class GCCoreGuiBuggyBench extends GuiContainer
             {
             case 0:
             	toSend = new Object[]{0};
-                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket("Galacticraft", 4, toSend));
+                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 4, toSend));
                 FMLClientHandler.instance().getClient().displayGuiScreen(null);
                 FMLClientHandler.instance().getClient().thePlayer.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiRocketCraftingBench, FMLClientHandler.instance().getClient().thePlayer.worldObj, (int)FMLClientHandler.instance().getClient().thePlayer.posX, (int)FMLClientHandler.instance().getClient().thePlayer.posY, (int)FMLClientHandler.instance().getClient().thePlayer.posZ);
                 break;
             case 1:
                 toSend = new Object[]{1};
-                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket("Galacticraft", 4, toSend));
+                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 4, toSend));
                 FMLClientHandler.instance().getClient().displayGuiScreen(null);
                 FMLClientHandler.instance().getClient().thePlayer.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiBuggyCraftingBench, FMLClientHandler.instance().getClient().thePlayer.worldObj, (int)FMLClientHandler.instance().getClient().thePlayer.posX, (int)FMLClientHandler.instance().getClient().thePlayer.posY, (int)FMLClientHandler.instance().getClient().thePlayer.posZ);
                 break;

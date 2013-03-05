@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import net.minecraft.entity.player.EntityPlayer;
@@ -43,7 +44,7 @@ public class GCCoreSlotRocketBench extends Slot
 
                     if (var14 * var14 + var16 * var16 + var18 * var18 < 20 * 20)
                     {
-                    	var13.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket("Galacticraft", 9, toSend));
+                    	var13.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 9, toSend));
                     }
                 }
             }

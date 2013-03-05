@@ -36,6 +36,7 @@ public class GCCoreLocalization {
             throw new InvalidParameterException("Mod name can't be null");
         }
         this.modName = modName;
+        FMLLog.info("" + modName);
         this.load(GCCoreLocalization.getCurrentLanguage(), true);
     }
 
@@ -58,9 +59,10 @@ public class GCCoreLocalization {
         this.mappings.clear();
         try {
             final BufferedReader langStream = new BufferedReader(new InputStreamReader(net.minecraft.enchantment.Enchantment.class.getResourceAsStream(
-                            "/" + this.modName + "/lang/" + newLanguage + ".properties"), "UTF-8"));
+                            this.modName + "lang/" + newLanguage + ".properties"), "UTF-8"));
             final BufferedReader defaultLangStream = new BufferedReader(new InputStreamReader(net.minecraft.enchantment.Enchantment.class.getResourceAsStream(
-                            "/" + this.modName + "/lang/" + GCCoreLocalization.DEFAULT_LANGUAGE + ".properties"), "UTF-8"));
+                            this.modName + "lang/" + GCCoreLocalization.DEFAULT_LANGUAGE + ".properties"), "UTF-8"));
+            FMLLog.info(this.modName + "lang/" + GCCoreLocalization.DEFAULT_LANGUAGE + ".properties");
             this.loadMappings(langStream == null ? defaultLangStream : langStream, this.mappings);
             this.loadMappings(defaultLangStream, this.defaultMappings);
             if (langStream != null) {

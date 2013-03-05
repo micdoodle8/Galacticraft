@@ -423,7 +423,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
         	if (par1GuiButton.enabled)
         	{
                 final Object[] toSend = {this.destinations[this.selectedSlot]};
-                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket("Galacticraft", 2, toSend));
+                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 2, toSend));
                 return;
         	}
         	else
