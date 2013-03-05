@@ -58,7 +58,7 @@ public class OxygenUtil
 		
 		if (tank.getItem() instanceof GCCoreItemOxygenTank)
 		{
-			return 180;
+			return 270;
 		}
 
 		return 0;
