@@ -37,11 +37,20 @@ public class GalacticraftMoon implements IGalacticraftSubMod
 {
 	public static Map<String, GCMoonPlayerBase> playersServer = new HashMap<String, GCMoonPlayerBase>();
 	
+	public static final String NAME = "Galacticraft Moon";
+	public static final String MODID = "Galacticraft Moon";
+
+	public static final String FILE_PATH = "/micdoodle8/mods/galacticraft/moon/";
+	public static final String CLIENT_PATH = "client/";
+	public static final String BLOCK_TEXTURE_FILE = FILE_PATH + CLIENT_PATH + "blocks/moon.png";
+	public static final String ITEM_TEXTURE_FILE = FILE_PATH + CLIENT_PATH + "items/moon.png";
+	public static final String CONFIG_FILE = "Galacticraft/moon.conf";
+	
 	public void preLoad(FMLPreInitializationEvent event)
 	{
-		new GCMoonConfigManager(new File(event.getModConfigurationDirectory(), "Galacticraft/moon.conf"));
+		new GCMoonConfigManager(new File(event.getModConfigurationDirectory(), CONFIG_FILE));
 		
-		ServerPlayerAPI.register("GalacticraftMoon", GCMoonPlayerBase.class);
+		ServerPlayerAPI.register(GalacticraftMoon.MODID, GCMoonPlayerBase.class);
 		
 		GCMoonBlocks.initBlocks();
 		GCMoonBlocks.registerBlocks();

@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
 import micdoodle8.mods.galacticraft.core.GCCoreLocalization;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.moon.CommonProxyMoon;
+import micdoodle8.mods.galacticraft.moon.GalacticraftMoon;
 import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
 import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;
 import micdoodle8.mods.galacticraft.moon.items.GCMoonItems;
@@ -32,7 +33,7 @@ public class ClientProxyMoon extends CommonProxyMoon implements IGalacticraftSub
 	@Override
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		ClientProxyMoon.lang = new GCCoreLocalization("micdoodle8/mods/galacticraft/moon/client");
+		ClientProxyMoon.lang = new GCCoreLocalization(GalacticraftMoon.FILE_PATH + GalacticraftMoon.CLIENT_PATH);
 	}
 
 	@Override
@@ -40,7 +41,7 @@ public class ClientProxyMoon extends CommonProxyMoon implements IGalacticraftSub
 	{
 		GalacticraftCore.registerClientSubMod(this);
 		TickRegistry.registerTickHandler(new TickHandlerClient(), Side.CLIENT);
-        GCMoonColorizerGrass.setGrassBiomeColorizer(FMLClientHandler.instance().getClient().renderEngine.getTextureContents("/micdoodle8/mods/galacticraft/moon/client/blocks/moonfoliagecolor.png"));
+//        GCMoonColorizerGrass.setGrassBiomeColorizer(FMLClientHandler.instance().getClient().renderEngine.getTextureContents("/micdoodle8/mods/galacticraft/moon/client/blocks/moonfoliagecolor.png"));
 	}
 
 	@Override
@@ -53,8 +54,8 @@ public class ClientProxyMoon extends CommonProxyMoon implements IGalacticraftSub
 	@Override
 	public void registerRenderInformation()
 	{
-		MinecraftForgeClient.preloadTexture("/micdoodle8/mods/galacticraft/moon/client/blocks/moon.png");
-		MinecraftForgeClient.preloadTexture("/micdoodle8/mods/galacticraft/moon/client/items/moon.png");
+		MinecraftForgeClient.preloadTexture(GalacticraftMoon.BLOCK_TEXTURE_FILE);
+		MinecraftForgeClient.preloadTexture(GalacticraftMoon.ITEM_TEXTURE_FILE);
 	}
 
 	@Override
