@@ -1,56 +1,17 @@
 package micdoodle8.mods.galacticraft.core.util;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.ArrayList;
-import java.util.EmptyStackException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
-import micdoodle8.mods.galacticraft.API.IMapPlanet;
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
-import micdoodle8.mods.galacticraft.core.client.GCCorePlayerBaseClient;
-import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiError;
-import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiTankRefill;
-import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerBase;
-import micdoodle8.mods.galacticraft.core.items.GCCoreItemFlag;
-import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenGear;
-import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenMask;
-import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenTank;
-import micdoodle8.mods.galacticraft.core.items.GCCoreItemParachute;
-import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreInventoryRocketBench;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreInventoryTankRefill;
-import micdoodle8.mods.galacticraft.moon.items.GCMoonItems;
-import net.minecraft.block.Block;
-import net.minecraft.client.gui.GuiChat;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.inventory.GuiInventory;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
-import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraft.network.packet.Packet250CustomPayload;
-import net.minecraft.tileentity.TileEntityChest;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldProvider;
-import net.minecraft.world.WorldServer;
-import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-
-import com.google.common.base.Throwables;
-
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.relauncher.Side;
 
 public class GCCoreUtil
 {
@@ -62,4 +23,80 @@ public class GCCoreUtil
         
         return a | r | g | b;
 	}
+	
+	public static void checkVersion(Side side)
+    {
+    	try
+    	{
+    		URL url = new URL("http://micdoodle8.com/galacticraft/version.html");
+
+    		BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
+    		Pattern pat = Pattern.compile("Version=");
+    		Matcher matcher;
+    		String str;
+    		String str2[] = null;
+
+    		while ((str = in.readLine()) != null)
+    		{
+	    		if (str.contains("Version"))
+	    		{
+	        		str = str.replace("Version=", "");
+	        		
+		    		str2 = str.split("#");
+		    		
+		    		if (str2 != null && str2.length == 3)
+		    		{
+		    			GalacticraftCore.remoteMajVer = Integer.parseInt(str2[0]);
+		    			GalacticraftCore.remoteMinVer = Integer.parseInt(str2[1]);
+		    			GalacticraftCore.remoteBuildVer = Integer.parseInt(str2[2]);
+		    		}
+
+		    		if ((GalacticraftCore.remoteMajVer > GalacticraftCore.LOCALMAJVERSION) || (GalacticraftCore.remoteMajVer == GalacticraftCore.LOCALMAJVERSION && GalacticraftCore.remoteMinVer > GalacticraftCore.LOCALMINVERSION) || (GalacticraftCore.remoteMajVer == GalacticraftCore.LOCALMAJVERSION && GalacticraftCore.remoteMinVer == GalacticraftCore.LOCALMINVERSION && GalacticraftCore.remoteBuildVer > GalacticraftCore.LOCALBUILDVERSION))
+		    		{	
+		    			if (side.equals(Side.CLIENT))
+		    			{
+		    				FMLClientHandler.instance().getClient().thePlayer.addChatMessage("\u00a77New \u00a73Galacticraft \u00a77version available! v" + String.valueOf(GalacticraftCore.remoteMajVer) + "." + String.valueOf(GalacticraftCore.remoteMinVer) + "." + String.valueOf(GalacticraftCore.remoteBuildVer) + " \u00a71http://micdoodle8.com/");
+		    			}
+		    			else if (side.equals(Side.SERVER))
+		    			{
+		    				FMLLog.severe("New Galacticraft version available! v" + String.valueOf(GalacticraftCore.remoteMajVer) + "." + String.valueOf(GalacticraftCore.remoteMinVer) + "." + String.valueOf(GalacticraftCore.remoteBuildVer) + " http://micdoodle8.com/");
+		    			}
+		    		}
+	    		}
+    		}
+    	}
+    	catch (MalformedURLException e)
+    	{
+    		e.printStackTrace();
+
+			if (side.equals(Side.CLIENT))
+			{
+	    		FMLClientHandler.instance().getClient().thePlayer.addChatMessage("[Galacticraft] Update Check Failed!");
+			}
+			
+    		FMLLog.severe("Galacticraft Update Check Failure - MalformedURLException");
+    	}
+    	catch (IOException e)
+    	{
+    		e.printStackTrace();
+
+			if (side.equals(Side.CLIENT))
+			{
+	    		FMLClientHandler.instance().getClient().thePlayer.addChatMessage("[Galacticraft] Update Check Failed!");
+			}
+			
+    		FMLLog.severe("Galacticraft Update Check Failure - IOException");
+    	}
+    	catch (NumberFormatException e)
+    	{
+    		e.printStackTrace();
+
+			if (side.equals(Side.CLIENT))
+			{
+	    		FMLClientHandler.instance().getClient().thePlayer.addChatMessage("[Galacticraft] Update Check Failed!");
+			}
+			
+    		FMLLog.severe("Galacticraft Update Check Failure - NumberFormatException");
+    	}
+    }
 }
