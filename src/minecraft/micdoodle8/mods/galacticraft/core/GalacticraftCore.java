@@ -9,7 +9,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import universalelectricity.core.UniversalElectricity;
 import universalelectricity.prefab.TranslationHelper;
+import universalelectricity.prefab.UEDamageSource;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubMod;
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
@@ -140,6 +142,9 @@ public class GalacticraftCore
 	public static final String ITEM_TEXTURE_FILE = FILE_PATH + CLIENT_PATH + "items/core.png";
 	public static final String CONFIG_FILE = "Galacticraft/core.conf";
 	private static final String[] LANGUAGES_SUPPORTED = new String[] { "en_US", "zh_CN" };
+
+	public static final UEDamageSource spaceshipCrash = (UEDamageSource) new UEDamageSource("spaceshipCrash", "%1$s was in a spaceship crash!").setDamageBypassesArmor();
+	public static final UEDamageSource oxygenSuffocation = (UEDamageSource) new UEDamageSource("oxygenSuffocation", "%1$s ran out of oxygen!").setDamageBypassesArmor();
 	
 	@PreInit
 	public void preInit(FMLPreInitializationEvent event)

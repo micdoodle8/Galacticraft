@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Set;
 
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
-import micdoodle8.mods.galacticraft.core.GCCoreDamageSource;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLandingPad;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
@@ -353,7 +352,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship
     	if (this.riddenByEntity != null)
     	{
             final double var13 = this.riddenByEntity.getDistance(this.posX, this.posY, this.posZ) / 20;
-    		this.riddenByEntity.attackEntityFrom(GCCoreDamageSource.spaceshipExplosion, (int)(4.0D * 20 + 1.0D));
+    		this.riddenByEntity.attackEntityFrom(GalacticraftCore.spaceshipCrash, (int)(4.0D * 20 + 1.0D));
     	}
         
     	if (!GCCoreConfigManager.disableSpaceshipGrief)
