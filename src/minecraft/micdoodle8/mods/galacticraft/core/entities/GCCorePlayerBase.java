@@ -222,14 +222,14 @@ public class GCCorePlayerBase extends ServerPlayerBase
     {
     	super.onUpdate();
     	
-    	if (this.teleportCooldown > 0)
-    	{
-    		this.teleportCooldown--;
-    	}
-    	
     	if (!GalacticraftCore.playersServer.containsKey(this.player.username))
     	{
     		GalacticraftCore.playersServer.put(this.player.username, this);
+    	}
+    	
+    	if (this.teleportCooldown > 0)
+    	{
+    		this.teleportCooldown--;
     	}
     	
     	if (this.openPlanetSelectionGuiCooldown > 0)
@@ -372,7 +372,7 @@ public class GCCorePlayerBase extends ServerPlayerBase
 
 	        Object[] toSend = {this.getPlayer().username, temp};
 	        
-	        this.getPlayer().playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket("Galacticraft", 2, toSend));
+	        this.getPlayer().playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 2, toSend));
 			
 	        this.setUsingPlanetGui();
 	        this.hasOpenedPlanetSelectionGui = true;
@@ -991,17 +991,17 @@ public class GCCorePlayerBase extends ServerPlayerBase
         final int var9b = MathHelper.floor_double(par1Entity.posX);
       	final int var11b = MathHelper.floor_double(par1Entity.posZ);
       
-      	for (int i = 24; i < 27; i++)
+      	for (int i = 0; i < 28; i++)
       	{
       		if (this.rocketStacks[i] == null)
       		{
       			switch (i)
       			{
-      			case 24:
-      		      	this.rocketStacks[i] = new ItemStack(GCCoreBlocks.landingPad, 9, 0);
+      			case 0:
+      		        this.rocketStacks[i] = new ItemStack(GCCoreItems.rocketFuelBucket, 1, this.fuelDamage);
       				break;
       			case 25:
-      		        this.rocketStacks[i] = new ItemStack(GCCoreItems.rocketFuelBucket, 1, this.fuelDamage);
+      		      	this.rocketStacks[i] = new ItemStack(GCCoreBlocks.landingPad, 9, 0);
       				break;
       			case 26:
       		        this.rocketStacks[i] = new ItemStack(GCCoreItems.spaceship, 1, this.rocketType);
@@ -1234,7 +1234,7 @@ public class GCCorePlayerBase extends ServerPlayerBase
 	  	
 	  	if (FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.player.username) != null)
 	  	{
-	          FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.player.username).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket("Galacticraft", 0, toSend));
+	          FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.player.username).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 0, toSend));
 	  	}
 	}
 	  
@@ -1244,7 +1244,7 @@ public class GCCorePlayerBase extends ServerPlayerBase
 	  	
 	  	if (FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.player.username) != null)
 	  	{
-	          PacketDispatcher.sendPacketToAllPlayers(PacketUtil.createPacket("Galacticraft", 10, toSend));
+	          PacketDispatcher.sendPacketToAllPlayers(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 10, toSend));
 	  	}
 	}
 	  
@@ -1254,7 +1254,7 @@ public class GCCorePlayerBase extends ServerPlayerBase
 	  	
 	  	if (FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.player.username) != null)
 	  	{
-	          PacketDispatcher.sendPacketToAllPlayers(PacketUtil.createPacket("Galacticraft", 5, toSend));
+	          PacketDispatcher.sendPacketToAllPlayers(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 5, toSend));
 	  	}
 	}
 	  
@@ -1264,7 +1264,7 @@ public class GCCorePlayerBase extends ServerPlayerBase
 	  	
 	  	if (FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.player.username) != null)
 	  	{
-	          PacketDispatcher.sendPacketToAllPlayers(PacketUtil.createPacket("Galacticraft", 4, toSend));
+	          PacketDispatcher.sendPacketToAllPlayers(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 4, toSend));
 	  	}
 	}
 	  
@@ -1284,7 +1284,7 @@ public class GCCorePlayerBase extends ServerPlayerBase
 	  	
 	  	if (FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.player.username) != null)
 	  	{
-	          PacketDispatcher.sendPacketToAllPlayers(PacketUtil.createPacket("Galacticraft", 6, toSend));
+	          PacketDispatcher.sendPacketToAllPlayers(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 6, toSend));
 	  	}
 	}
 
