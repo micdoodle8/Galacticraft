@@ -97,12 +97,6 @@ public class ClientProxyNeptune extends CommonProxyNeptune implements IGalacticr
 	}
 
 	@Override
-	public GCCoreLocalization getLanguageFile()
-	{
-		return ClientProxyNeptune.lang;
-	}
-
-	@Override
 	public String getPlanetSpriteDirectory()
 	{
 		return "/micdoodle8/mods/galacticraft/neptune/client/planets/";

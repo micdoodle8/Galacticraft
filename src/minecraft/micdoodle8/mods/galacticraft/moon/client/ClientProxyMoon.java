@@ -28,27 +28,11 @@ import cpw.mods.fml.relauncher.Side;
 
 public class ClientProxyMoon extends CommonProxyMoon implements IGalacticraftSubModClient
 {
-	public static GCCoreLocalization lang;
-	
-	@Override
-	public void preInit(FMLPreInitializationEvent event)
-	{
-		ClientProxyMoon.lang = new GCCoreLocalization(GalacticraftMoon.FILE_PATH + GalacticraftMoon.CLIENT_PATH);
-	}
-
 	@Override
 	public void init(FMLInitializationEvent event)
 	{
 		GalacticraftCore.registerClientSubMod(this);
 		TickRegistry.registerTickHandler(new TickHandlerClient(), Side.CLIENT);
-//        GCMoonColorizerGrass.setGrassBiomeColorizer(FMLClientHandler.instance().getClient().renderEngine.getTextureContents("/micdoodle8/mods/galacticraft/moon/client/blocks/moonfoliagecolor.png"));
-	}
-
-	@Override
-	public void postInit(FMLPostInitializationEvent event)
-	{
-		GCMoonBlocks.addNames();
-		GCMoonItems.addNames();
 	}
 
 	@Override
@@ -112,12 +96,6 @@ public class ClientProxyMoon extends CommonProxyMoon implements IGalacticraftSub
 	public String getDimensionName()
 	{
 		return "Moon";
-	}
-
-	@Override
-	public GCCoreLocalization getLanguageFile()
-	{
-		return ClientProxyMoon.lang;
 	}
 
 	@Override

@@ -15,6 +15,6 @@ public class GCCoreDamageSource extends DamageSource
 	@Override
     public String getDeathMessage(EntityPlayer par1EntityPlayer)
     {
-        return par1EntityPlayer.username + GalacticraftCore.lang.get("death." + this.damageType);
+        return par1EntityPlayer.username + "death." + this.damageType;
     }
 }

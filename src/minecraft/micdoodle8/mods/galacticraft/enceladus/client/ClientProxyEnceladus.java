@@ -178,12 +178,6 @@ public class ClientProxyEnceladus extends CommonProxyEnceladus implements IGalac
 	}
 
 	@Override
-	public GCCoreLocalization getLanguageFile()
-	{
-		return ClientProxyEnceladus.lang;
-	}
-
-	@Override
 	public String getPlanetSpriteDirectory()
 	{
 		return "/micdoodle8/mods/galacticraft/enceladus/client/planets/";

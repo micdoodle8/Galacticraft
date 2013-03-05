@@ -178,12 +178,6 @@ public class ClientProxyMimas extends CommonProxyMimas implements IGalacticraftS
 	}
 
 	@Override
-	public GCCoreLocalization getLanguageFile()
-	{
-		return ClientProxyMimas.lang;
-	}
-
-	@Override
 	public String getPlanetSpriteDirectory()
 	{
 		return "/micdoodle8/mods/galacticraft/mimas/client/planets/";

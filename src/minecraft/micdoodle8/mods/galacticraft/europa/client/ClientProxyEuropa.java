@@ -31,12 +31,6 @@ public class ClientProxyEuropa implements IGalacticraftSubModClient
 	public void postInit(FMLPostInitializationEvent event)
 	{
 	}
-	
-	@Override
-	public GCCoreLocalization getLanguageFile()
-	{
-		return ClientProxyEuropa.lang;
-	}
 
 	@Override
 	public String getPlanetSpriteDirectory()

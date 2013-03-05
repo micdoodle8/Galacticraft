@@ -97,12 +97,6 @@ public class ClientProxyPluto extends CommonProxyPluto implements IGalacticraftS
 	}
 
 	@Override
-	public GCCoreLocalization getLanguageFile()
-	{
-		return ClientProxyPluto.lang;
-	}
-
-	@Override
 	public String getPlanetSpriteDirectory()
 	{
 		return "/micdoodle8/mods/galacticraft/pluto/client/planets/";

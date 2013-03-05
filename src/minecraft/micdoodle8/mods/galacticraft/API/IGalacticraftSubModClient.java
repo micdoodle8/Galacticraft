@@ -6,8 +6,6 @@ public interface IGalacticraftSubModClient
 {
 	public String getDimensionName();
 	
-	public GCCoreLocalization getLanguageFile();
-	
 	public String getPlanetSpriteDirectory();
 	
 	public IPlanetSlotRenderer getSlotRenderer();

@@ -25,6 +25,7 @@ import org.lwjgl.util.glu.GLU;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -354,16 +355,13 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     		
     		if (mod.getDimensionName().toLowerCase().equals(dest))
     		{
-    			if (mod.getLanguageFile() != null)
-    			{
-    				str = mod.getLanguageFile().get("gui.choosePlanet.desc." + dest);
-    			}
+				str = LanguageRegistry.instance().getStringLocalization("gui.choosePlanet.desc." + dest);
     		}
     	}
     	
     	if (this.destinations[this.selectedSlot].toLowerCase().equals("overworld"))
     	{
-    		str = GalacticraftCore.lang.get("gui.choosePlanet.desc.overworld");
+    		str = LanguageRegistry.instance().getStringLocalization("gui.choosePlanet.desc.overworld");
     	}
     	
     	if (str != null)

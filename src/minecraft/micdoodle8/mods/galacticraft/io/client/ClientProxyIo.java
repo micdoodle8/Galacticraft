@@ -59,12 +59,6 @@ public class ClientProxyIo implements IGalacticraftSubModClient
 	{
 		GCIoBlocks.addNames();
 	}
-	
-	@Override
-	public GCCoreLocalization getLanguageFile()
-	{
-		return ClientProxyIo.lang;
-	}
 
 	@Override
 	public String getPlanetSpriteDirectory()

@@ -246,12 +246,6 @@ public class ClientProxyMars extends CommonProxyMars implements IGalacticraftSub
 	}
 
 	@Override
-	public GCCoreLocalization getLanguageFile()
-	{
-		return ClientProxyMars.lang;
-	}
-
-	@Override
 	public String getPlanetSpriteDirectory()
 	{
 		return "/micdoodle8/mods/galacticraft/mars/client/planets/";

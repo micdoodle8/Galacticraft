@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import universalelectricity.prefab.TranslationHelper;
+
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubMod;
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
 import micdoodle8.mods.galacticraft.API.IGalaxy;
@@ -111,8 +113,6 @@ public class GalacticraftCore
 	@Instance(GalacticraftCore.MODID)
 	public static GalacticraftCore instance;
 	
-	public static GCCoreLocalization lang;
-	
 	public static GalacticraftMoon moon = new GalacticraftMoon();
 	
 	public static long tick;
@@ -139,6 +139,7 @@ public class GalacticraftCore
 	public static final String BLOCK_TEXTURE_FILE = FILE_PATH + CLIENT_PATH + "blocks/core.png";
 	public static final String ITEM_TEXTURE_FILE = FILE_PATH + CLIENT_PATH + "items/core.png";
 	public static final String CONFIG_FILE = "Galacticraft/core.conf";
+	private static final String[] LANGUAGES_SUPPORTED = new String[] { "en_US", "zh_CN" };
 	
 	@PreInit
 	public void preInit(FMLPreInitializationEvent event)
@@ -149,17 +150,13 @@ public class GalacticraftCore
 		
 		new GCCoreConfigManager(new File(event.getModConfigurationDirectory(), CONFIG_FILE));
 		
-		GalacticraftCore.lang = new GCCoreLocalization(FILE_PATH + CLIENT_PATH);
-		
 		ServerPlayerAPI.register(GalacticraftCore.MODID, GCCorePlayerBase.class);
 		
 		GCCoreBlocks.initBlocks();
 		GCCoreBlocks.registerBlocks();
 		GCCoreBlocks.setHarvestLevels();
-		GCCoreBlocks.addNames();
 		
 		GCCoreItems.initItems();
-		GCCoreItems.addNames();
 		GCCoreItems.registerHarvestLevels();
 		
 		OreDictionary.registerOre("oreCopper", new ItemStack(GCCoreBlocks.blockOres, 1, 0));
@@ -183,10 +180,12 @@ public class GalacticraftCore
 				GalacticraftCore.galaxies.add(mod.getParentGalaxy());
 			}
 		}
+
+		System.out.println("Galacticraft Loaded: " + TranslationHelper.loadLanguages(LANGUAGE_PATH, LANGUAGES_SUPPORTED) + " Languages.");
 		
 		GalacticraftCore.moon.load(event);
 		
-        LanguageRegistry.instance().addStringLocalization("itemGroup.GalacticraftCore", GalacticraftCore.lang.get("itemGroup.GalacticraftCore"));
+//        LanguageRegistry.instance().addStringLocalization("itemGroup.GalacticraftCore", GalacticraftCore.lang.get("itemGroup.GalacticraftCore"));
 		
         GameRegistry.registerWorldGenerator(new GCCoreWorldGenVanilla());
         RecipeUtil.addCraftingRecipes();

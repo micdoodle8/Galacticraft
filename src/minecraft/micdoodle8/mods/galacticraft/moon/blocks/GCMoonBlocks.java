@@ -36,21 +36,21 @@ public class GCMoonBlocks
 	@SideOnly(Side.CLIENT)
 	public static void addNames()
 	{
-		GCMoonBlocks.addNameWithMetadata("tile.moonBlock.moonstone.name");
-		GCMoonBlocks.addNameWithMetadata("tile.moonBlock.moondirt.name");
-		GCMoonBlocks.addNameWithMetadata("tile.moonBlock.moongrass.name");
-		GCMoonBlocks.addNameWithMetadata("tile.moonBlock.aluminummoon.name");
-		GCMoonBlocks.addNameWithMetadata("tile.moonBlock.ironmoon.name");
-		GCMoonBlocks.addNameWithMetadata("tile.moonBlock.cheesestone.name");
+//		GCMoonBlocks.addNameWithMetadata("tile.moonBlock.moonstone.name");
+//		GCMoonBlocks.addNameWithMetadata("tile.moonBlock.moondirt.name");
+//		GCMoonBlocks.addNameWithMetadata("tile.moonBlock.moongrass.name");
+//		GCMoonBlocks.addNameWithMetadata("tile.moonBlock.aluminummoon.name");
+//		GCMoonBlocks.addNameWithMetadata("tile.moonBlock.ironmoon.name");
+//		GCMoonBlocks.addNameWithMetadata("tile.moonBlock.cheesestone.name");
 	}
 	
-	private static void addName(Block block)
-	{
-		LanguageRegistry.instance().addStringLocalization(block.getBlockName() + ".name", ClientProxyMoon.lang.get(block.getBlockName() + ".name"));
-	}
-	
-	private static void addNameWithMetadata(String string)
-	{
-		LanguageRegistry.instance().addStringLocalization(string, ClientProxyMoon.lang.get(string));
-	}
+//	private static void addName(Block block)
+//	{
+//		LanguageRegistry.instance().addStringLocalization(block.getBlockName() + ".name", ClientProxyMoon.lang.get(block.getBlockName() + ".name"));
+//	}
+//	
+//	private static void addNameWithMetadata(String string)
+//	{
+//		LanguageRegistry.instance().addStringLocalization(string, ClientProxyMoon.lang.get(string));
+//	}
 }

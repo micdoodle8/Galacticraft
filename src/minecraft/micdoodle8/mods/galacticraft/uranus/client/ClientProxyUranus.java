@@ -97,12 +97,6 @@ public class ClientProxyUranus extends CommonProxyUranus implements IGalacticraf
 	}
 
 	@Override
-	public GCCoreLocalization getLanguageFile()
-	{
-		return ClientProxyUranus.lang;
-	}
-
-	@Override
 	public String getPlanetSpriteDirectory()
 	{
 		return "/micdoodle8/mods/galacticraft/uranus/client/planets/";

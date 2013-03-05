@@ -111,12 +111,6 @@ public class ClientProxyJupiter extends CommonProxyJupiter implements IGalacticr
 	}
 
 	@Override
-	public GCCoreLocalization getLanguageFile()
-	{
-		return ClientProxyJupiter.lang;
-	}
-
-	@Override
 	public String getPlanetSpriteDirectory()
 	{
 		return "/micdoodle8/mods/galacticraft/jupiter/client/planets/";

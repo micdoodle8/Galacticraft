@@ -22,18 +22,4 @@ public class GCMoonItems
 		GCMoonItems.meteoricIronRaw = new GCMoonItem(GCMoonConfigManager.idItemMeteoricIronRaw).setIconIndex(2).setItemName("meteoricIronRaw");
 		GCMoonItems.meteoricIronIngot = new GCMoonItem(GCMoonConfigManager.idItemMeteoricIronIngot).setIconIndex(3).setItemName("meteoricIronIngot");
 	}
-	
-	@SideOnly(Side.CLIENT)
-	public static void addNames()
-	{
-		GCMoonItems.addName(GCMoonItems.cheeseCurd);
-		GCMoonItems.addName(GCMoonItems.cheeseBlock);
-		GCMoonItems.addName(GCMoonItems.meteoricIronRaw);
-		GCMoonItems.addName(GCMoonItems.meteoricIronIngot);
-	}
-
-	private static void addName(Item item)
-	{
-        LanguageRegistry.instance().addStringLocalization(item.getItemName() + ".name", ClientProxyMoon.lang.get(item.getItemName() + ".name"));
-	}
 }

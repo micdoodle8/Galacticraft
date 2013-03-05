@@ -177,12 +177,6 @@ public class ClientProxyTitan extends CommonProxyTitan implements IGalacticraftS
 	}
 
 	@Override
-	public GCCoreLocalization getLanguageFile()
-	{
-		return ClientProxyTitan.lang;
-	}
-
-	@Override
 	public String getPlanetSpriteDirectory()
 	{
 		return "/micdoodle8/mods/galacticraft/titan/client/planets/";

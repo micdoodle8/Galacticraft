@@ -103,41 +103,4 @@ public class GCCoreBlocks
 		
 		GCCoreBlocks.crudeOilStack = LiquidDictionary.getOrCreateLiquid("Oil", new LiquidStack(GCCoreBlocks.crudeOilStill, 1));
 	}
-
-	public static void addNames()
-	{
-		GCCoreBlocks.addName(GCCoreBlocks.treasureChest);
-		GCCoreBlocks.addName(GCCoreBlocks.landingPad);
-		GCCoreBlocks.addName(GCCoreBlocks.unlitTorch);
-		GCCoreBlocks.addName(GCCoreBlocks.unlitTorchLit);
-		GCCoreBlocks.addName(GCCoreBlocks.airDistributor);
-		GCCoreBlocks.addName(GCCoreBlocks.oxygenPipe);
-		GCCoreBlocks.addNameWithMetadata("tile.blockores.aluminiumearth.name");
-		GCCoreBlocks.addNameWithMetadata("tile.blockores.copperearth.name");
-		GCCoreBlocks.addNameWithMetadata("tile.blockores.titaniumearth.name");
-		GCCoreBlocks.addName(GCCoreBlocks.blockAirCollector);
-		GCCoreBlocks.addName(GCCoreBlocks.rocketBench);
-		GCCoreBlocks.addName(GCCoreBlocks.fallenMeteor);
-		GCCoreBlocks.addNameWithMetadata("tile.decorationblock.aluminiumblock.name");
-		GCCoreBlocks.addNameWithMetadata("tile.decorationblock.copperblock.name");
-		GCCoreBlocks.addNameWithMetadata("tile.decorationblock.titaniumblock.name");
-		GCCoreBlocks.addNameWithMetadata("tile.decorationblock.decoblock1.name");
-		GCCoreBlocks.addNameWithMetadata("tile.decorationblock.decoblock2.name");
-		GCCoreBlocks.addName(GCCoreBlocks.airLockFrame);
-		GCCoreBlocks.addName(GCCoreBlocks.airLockSeal);
-		GCCoreBlocks.addName(GCCoreBlocks.crudeOilStill);
-		GCCoreBlocks.addName(GCCoreBlocks.crudeOilMoving);
-		GCCoreBlocks.addName(GCCoreBlocks.refinery);
-		GCCoreBlocks.addName(GCCoreBlocks.compressor);
-	}
-	
-	private static void addName(Block block)
-	{
-        LanguageRegistry.instance().addStringLocalization(block.getBlockName() + ".name", GalacticraftCore.lang.get(block.getBlockName() + ".name"));
-	}
-	
-	private static void addNameWithMetadata(String string)
-	{
-        LanguageRegistry.instance().addStringLocalization(string, GalacticraftCore.lang.get(string));
-	}
 }

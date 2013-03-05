@@ -178,12 +178,6 @@ public class ClientProxyCallisto extends CommonProxyCallisto implements IGalacti
 	}
 
 	@Override
-	public GCCoreLocalization getLanguageFile()
-	{
-		return ClientProxyCallisto.lang;
-	}
-
-	@Override
 	public String getPlanetSpriteDirectory()
 	{
 		return "/micdoodle8/mods/galacticraft/callisto/client/planets/";

@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import universalelectricity.prefab.TranslationHelper;
+
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubMod;
 import micdoodle8.mods.galacticraft.API.IGalaxy;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -42,9 +44,11 @@ public class GalacticraftMoon implements IGalacticraftSubMod
 
 	public static final String FILE_PATH = "/micdoodle8/mods/galacticraft/moon/";
 	public static final String CLIENT_PATH = "client/";
+	public static final String LANGUAGE_PATH = FILE_PATH + CLIENT_PATH + "lang/";
 	public static final String BLOCK_TEXTURE_FILE = FILE_PATH + CLIENT_PATH + "blocks/moon.png";
 	public static final String ITEM_TEXTURE_FILE = FILE_PATH + CLIENT_PATH + "items/moon.png";
 	public static final String CONFIG_FILE = "Galacticraft/moon.conf";
+	private static final String[] LANGUAGES_SUPPORTED = new String[] { "en_US", "zh_CN" };
 	
 	public void preLoad(FMLPreInitializationEvent event)
 	{
@@ -63,6 +67,9 @@ public class GalacticraftMoon implements IGalacticraftSubMod
 	{
 		DimensionManager.registerProviderType(GCMoonConfigManager.dimensionIDMoon, GCMoonWorldProvider.class, true);
 		DimensionManager.registerDimension(GCMoonConfigManager.dimensionIDMoon, GCMoonConfigManager.dimensionIDMoon);
+
+		System.out.println("Galacticraft Moon Loaded: " + TranslationHelper.loadLanguages(LANGUAGE_PATH, LANGUAGES_SUPPORTED) + " Languages.");
+		
         GCMoonUtil.addCraftingRecipes();
         GCMoonUtil.addSmeltingRecipes();
 	}

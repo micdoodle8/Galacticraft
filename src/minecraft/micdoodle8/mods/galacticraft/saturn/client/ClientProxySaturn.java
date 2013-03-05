@@ -119,12 +119,6 @@ public class ClientProxySaturn extends CommonProxySaturn implements IGalacticraf
 	}
 
 	@Override
-	public GCCoreLocalization getLanguageFile()
-	{
-		return ClientProxySaturn.lang;
-	}
-
-	@Override
 	public String getPlanetSpriteDirectory()
 	{
 		return "/micdoodle8/mods/galacticraft/saturn/client/planets/";
