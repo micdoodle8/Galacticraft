@@ -95,7 +95,7 @@ import cpw.mods.fml.relauncher.Side;
 public class GalacticraftCore
 {
 	public static final String NAME = "Galacticraft Core";
-	public static final String MODID = "Galacticraft Core";
+	public static final String MODID = "GalacticraftCore";
 	public static final String CHANNEL = "GalacticraftCore";
 	
     public static final int LOCALMAJVERSION = 0;
