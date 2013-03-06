@@ -9,7 +9,11 @@ import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityFlag;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySkeleton;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpider;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityZombie;
+import micdoodle8.mods.galacticraft.core.perlin.NoiseModule;
+import micdoodle8.mods.galacticraft.core.perlin.generator.Gradient;
+import micdoodle8.mods.galacticraft.core.perlin.generator.RidgedMulti;
 import micdoodle8.mods.galacticraft.core.wgen.GCCoreChunk;
+import micdoodle8.mods.galacticraft.core.wgen.GCCoreCraterSize;
 import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSand;
@@ -17,7 +21,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IProgressUpdate;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.SpawnListEntry;
@@ -37,55 +40,12 @@ import net.minecraft.world.gen.structure.MapGenVillage;
 public class GCMoonChunkProvider extends ChunkProviderGenerate
 {
 	
-	private enum CraterSize
-	{
-		SMALL(8, 12, 14),
-		MEDIUM(13, 17, 8),
-		LARGE(18, 25, 2),
-		EXTREME(26, 30, 1);
-		
-		public final int MIN_SIZE;
-		public final int MAX_SIZE;
-		private final int PROBABILITY;
-		
-		private static CraterSize[] sizeArray;
-		
-		private CraterSize(int min, int max, int prob)
-		{
-			MIN_SIZE = min;
-			MAX_SIZE = max;
-			PROBABILITY = prob;
-		}
-		
-		static
-		{
-			int amount = 0;
-			for(CraterSize c : CraterSize.values())
-			{
-				amount += c.PROBABILITY;
-			}
-			sizeArray = new CraterSize[amount];
-			int pointer = 0;
-			for(CraterSize c : CraterSize.values())
-			{
-				for(int i = 0; i < c.PROBABILITY; i++)
-				{
-					sizeArray[pointer] = c;
-					pointer++;
-				}
-			}
-		}
-	}
-	
 	private final Random rand;
-
-	private final NoiseGeneratorOctaves noiseGen1;
-	private final NoiseGeneratorOctaves noiseGen2;
-	private final NoiseGeneratorOctaves noiseGen3;
-	private final NoiseGeneratorOctaves noiseGen4;
-	public NoiseGeneratorOctaves noiseGen5;
-	public NoiseGeneratorOctaves noiseGen6;
-	public NoiseGeneratorOctaves mobSpawnerNoise;
+	
+	private final NoiseModule noiseGen1;
+	private final NoiseModule noiseGen2;
+	private final NoiseModule noiseGen3;
+	private final NoiseModule noiseGen4;
 
 	public GCMoonBiomeDecorator biomedecoratorplanet = new GCMoonBiomeDecorator(GCMoonBiomeGenBase.moonFlat);
 	
@@ -106,14 +66,6 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 	private final MapGenMineshaft mineshaftGenerator = new MapGenMineshaft();
 
 	private BiomeGenBase[] biomesForGeneration = {GCMoonBiomeGenBase.moonFlat};
-
-	double[] noise1;
-	double[] noise2;
-	double[] noise3;
-	double[] noise4;
-	double[] noise5;
-	float[] field_35388_l;
-	int[][] field_914_i = new int[32][32];
 	
 	private static final double TERRAIN_HEIGHT_MOD = 2.7;
 	private static final double HILL_HEIGHT_MOD = 0.8;
@@ -134,25 +86,28 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 		this.worldObj = par1World;
 		this.mapFeaturesEnabled = par4;
 		this.rand = new Random(par2);
-		this.noiseGen1 = new NoiseGeneratorOctaves(this.rand, 4);
-		this.noiseGen2 = new NoiseGeneratorOctaves(new Random(rand.nextLong()), 6);
-		this.noiseGen3 = new NoiseGeneratorOctaves(new Random(rand.nextLong()), 1);
-		this.noiseGen4 = new NoiseGeneratorOctaves(new Random(rand.nextLong()), 1);
+		
+		noiseGen1 = new Gradient(rand.nextLong(), 4, 0.25);
+		noiseGen2 = new Gradient(rand.nextLong(), 4, 0.25);
+		noiseGen3 = new Gradient(rand.nextLong(), 1, 0.25);
+		noiseGen4 = new Gradient(rand.nextLong(), 1, 0.25);
 	}
 
 	public void generateTerrain(int chunkX, int chunkZ, int[] chunkArray)
 	{
-		noise1 = noiseGen1.generateNoiseOctaves(noise1, chunkX * CHUNK_SIZE_X, chunkZ * CHUNK_SIZE_Z, CHUNK_SIZE_X, CHUNK_SIZE_Z, 0.025D, 0.025D, 0.025D);
-		noise2 = noiseGen2.generateNoiseOctaves(noise2, chunkX * CHUNK_SIZE_X, chunkZ * CHUNK_SIZE_Z, CHUNK_SIZE_X, CHUNK_SIZE_Z, 0.07D, 0.07D, 0.07D);
-		noise3 = noiseGen3.generateNoiseOctaves(noise3, chunkX * CHUNK_SIZE_X, chunkZ * CHUNK_SIZE_Z, CHUNK_SIZE_X, CHUNK_SIZE_Z, 0.015D, 0.015D, 0.015D);
+		noiseGen1.frequency = 0.0125;
+		noiseGen2.frequency = 0.015;
+		noiseGen3.frequency = 0.01;
+		noiseGen4.frequency = 0.02;
 		
 		for(int x = 0; x < CHUNK_SIZE_X; x++)
 		{
 			for(int z = 0; z < CHUNK_SIZE_Z; z++)
 			{
-				double d = noise1[z + x * 16] * TERRAIN_HEIGHT_MOD;
-				double d2 = Math.abs(noise2[z + x * 16] * HILL_HEIGHT_MOD);
-				double d3 = noise3[z + x * 16] * HILL_FILTER_MOD;
+				double d = noiseGen1.getNoise((x + (chunkX * 16)), (z + (chunkZ * 16))) * 8;
+				double d2 = noiseGen2.getNoise((x + (chunkX * 16)), (z + (chunkZ * 16))) * 24;
+				double d3 = noiseGen3.getNoise((x + (chunkX * 16)), (z + (chunkZ * 16))) - 0.1;
+				d3 *= 4;
 				
 				double yDev = 0;
 				
@@ -184,7 +139,6 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 	{
 		final int var5 = 20;
 		final double var6 = 0.03125D;
-		this.stoneNoise = this.noiseGen4.generateNoiseOctaves(this.stoneNoise, par1 * 16, par2 * 16, 0, 16, 16, 1, var6 * 2.0D, var6 * 2.0D, var6 * 2.0D);
 
 		for (int var8 = 0; var8 < 16; ++var8)
 		{
@@ -192,7 +146,7 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 			{
 				final BiomeGenBase var10 = par4ArrayOfBiomeGenBase[var9 + var8 * 16];
 				final float var11 = var10.getFloatTemperature();
-				final int var12 = (int) (this.stoneNoise[var8 + var9 * 16] / 3.0D + 3.0D + this.rand.nextDouble() * 0.25D);
+				final int var12 = (int) (noiseGen4.getNoise(var8 + (par1 * 16), var9 * (par2 * 16)) / 3.0D + 3.0D + this.rand.nextDouble() * 0.25D);
 				int var13 = -1;
 				int var14 = GCMoonBlocks.moonGrass.blockID;
 				int var15 = GCMoonBlocks.moonDirt.blockID;
@@ -327,11 +281,10 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 				{
 					for(int z = 0; z < CHUNK_SIZE_Z; z++)
 					{
-						noise4 = noiseGen4.generateNoiseOctaves(noise4, cx * CHUNK_SIZE_X + x, cz * CHUNK_SIZE_Z + z, 1, 1, 0.015D, 0.015D, 0.015D);
-						if(Math.abs(randFromPoint(cx * 16 + x, (cz * 16 + z) * 1000)) < noise4[0] / CRATER_PROB)
+						if(Math.abs(randFromPoint(cx * 16 + x, (cz * 16 + z) * 1000)) < noiseGen4.getNoise(cx * CHUNK_SIZE_X + x, cz * CHUNK_SIZE_Z + z, 1) / CRATER_PROB)
 						{
 							Random random = new Random((cx * 16 + x) + (cz * 16 + z) * 5000);
-							CraterSize cSize = CraterSize.sizeArray[random.nextInt(CraterSize.sizeArray.length)];
+							GCCoreCraterSize cSize = GCCoreCraterSize.sizeArray[random.nextInt(GCCoreCraterSize.sizeArray.length)];
 							int size = random.nextInt(cSize.MAX_SIZE - cSize.MIN_SIZE) + cSize.MIN_SIZE;
 							makeCrater(cx * 16 + x, cz * 16 + z, chunkX * 16, chunkZ * 16, size, chunkArray);
 						}
@@ -356,7 +309,6 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 					double sqrtY = (xDev * xDev + zDev * zDev);
 					double yDev = sqrtY * sqrtY * 6;
 					yDev = 5 - yDev;
-					System.out.println(yDev + ", " + xDev + ", " + zDev);
 					int helper = 0;
 					for(int y = 127; y > 0; y--)
 					{

@@ -53,7 +53,7 @@ public class GCMarsCavern
         for (int var8 = 0; var8 < 1; ++var8)
         {
             final double xPos = xChunkCoord * 16 + this.rand.nextInt(16);
-            final double yPos = (double)this.rand.nextInt(10) + 20;
+            final double yPos = (double)this.rand.nextInt(10) + 15;
             final double zPos = zChunkCoord * 16 + this.rand.nextInt(16);
             
             int var15 = 1;
@@ -225,16 +225,16 @@ public class GCMarsCavern
                                     {
                                         final int var53 = par5ArrayOfByte[var48];
 
-                                        if (var53 == (byte) GCMarsBlocks.marsGrass.blockID)
+                                        if (var53 == GCMarsBlocks.marsGrass.blockID)
                                         {
                                             var49 = true;
                                         }
 
-                                        if (var53 == (byte)GCMarsBlocks.marsStone.blockID || var53 == (byte)GCMarsBlocks.marsDirt.blockID || var53 == (byte)GCMarsBlocks.marsGrass.blockID)
+                                        if (var53 == GCMarsBlocks.marsStone.blockID || var53 == GCMarsBlocks.marsDirt.blockID || var53 == GCMarsBlocks.marsGrass.blockID)
                                         {
                                             if (isBlockWater)
                                             {
-                                                par5ArrayOfByte[var48] = (byte) GCMarsBlocks.bacterialSludgeStill.blockID;
+                                                par5ArrayOfByte[var48] = GCMarsBlocks.bacterialSludgeStill.blockID;
                                             }
                                             else
                                             {

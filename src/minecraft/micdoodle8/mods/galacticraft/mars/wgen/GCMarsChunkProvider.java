@@ -8,8 +8,13 @@ import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityCreeper;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySkeleton;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpider;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityZombie;
+import micdoodle8.mods.galacticraft.core.perlin.generator.Gradient;
+import micdoodle8.mods.galacticraft.core.perlin.generator.RidgedMulti;
 import micdoodle8.mods.galacticraft.core.wgen.GCCoreChunk;
+import micdoodle8.mods.galacticraft.core.wgen.GCCoreCraterSize;
 import micdoodle8.mods.galacticraft.mars.GCMarsConfigManager;
+import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
+import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSand;
 import net.minecraft.entity.EnumCreatureType;
@@ -33,19 +38,19 @@ import net.minecraft.world.gen.structure.MapGenVillage;
  */
 public class GCMarsChunkProvider extends ChunkProviderGenerate
 {
+	
 	public static List giantCaveLocations;
 	public static List creeperDungeonLocations;
 	
 	private final Random rand;
 
-	private final NoiseGeneratorOctaves noiseGen1;
-	private final NoiseGeneratorOctaves noiseGen2;
-	private final NoiseGeneratorOctaves noiseGen3;
-	private final NoiseGeneratorOctaves noiseGen4;
-	public NoiseGeneratorOctaves noiseGen5;
-	public NoiseGeneratorOctaves noiseGen6;
-	public NoiseGeneratorOctaves mobSpawnerNoise;
-
+	private Gradient noiseGen1;
+	private Gradient noiseGen2;
+	private Gradient noiseGen3;
+	private Gradient noiseGen4;
+	private Gradient noiseGen5;
+	private Gradient noiseGen6;
+	private Gradient noiseGen7;
 	public GCMarsBiomeDecorator biomedecoratorplanet = new GCMarsBiomeDecorator(GCMarsBiomeGenBase.marsFlat);
 	
     private final GCMarsMapGenCreeperNest creeperNest = new GCMarsMapGenCreeperNest();
@@ -69,118 +74,172 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 	double[] noise1;
 	double[] noise2;
 	double[] noise3;
+	double[] noise4;
 	double[] noise5;
 	double[] noise6;
 	float[] field_35388_l;
 	int[][] field_914_i = new int[32][32];
-
+	
+	private static final double TERRAIN_HEIGHT_MOD = 12;
+	private static final double SMALL_FEATURE_HEIGHT_MOD = 26;
+	private static final double MOUNTAIN_HEIGHT_MOD = 95;
+	private static final double VALLEY_HEIGHT_MOD = 50;
+	private static final int CRATER_PROB = 2000;
+	
+	//DO NOT CHANGE
+	private static final int MID_HEIGHT = 63;
+	private static final int CHUNK_SIZE_X = 16;
+	private static final int CHUNK_SIZE_Y = 128;
+	private static final int CHUNK_SIZE_Z = 16;
+	private static final double MAIN_FEATURE_FILTER_MOD = 4;
+	private static final double LARGE_FEATURE_FILTER_MOD = 8;
+	private static final double SMALL_FEATURE_FILTER_MOD = 8;
+	
 	public GCMarsChunkProvider(World par1World, long par2, boolean par4)
 	{
 		super(par1World, par2, par4);
 		this.worldObj = par1World;
 		this.mapFeaturesEnabled = par4;
 		this.rand = new Random(par2);
-		this.noiseGen1 = new NoiseGeneratorOctaves(this.rand, 16);
-		this.noiseGen2 = new NoiseGeneratorOctaves(this.rand, 16);
-		this.noiseGen3 = new NoiseGeneratorOctaves(this.rand, 8);
-		this.noiseGen4 = new NoiseGeneratorOctaves(this.rand, 4);
-		this.noiseGen5 = new NoiseGeneratorOctaves(this.rand, 10);
-		this.noiseGen6 = new NoiseGeneratorOctaves(this.rand, 16);
-		this.mobSpawnerNoise = new NoiseGeneratorOctaves(this.rand, 8);
+		this.noiseGen1 = new Gradient(rand.nextLong(), 4, 0.25);
+		this.noiseGen2 = new Gradient(rand.nextLong(), 4, 0.25);
+		this.noiseGen3 = new Gradient(rand.nextLong(), 4, 0.25);
+		this.noiseGen4 = new Gradient(rand.nextLong(), 2, 0.25);
+		this.noiseGen5 = new Gradient(rand.nextLong(), 1, 0.25);
+		this.noiseGen6 = new Gradient(rand.nextLong(), 1, 0.25);
+		this.noiseGen7 = new Gradient(rand.nextLong(), 1, 0.25);
+		//this.mobSpawnerNoise = new NoiseGeneratorOctaves(this.rand, 8);
 		this.giantCaveLocations = new ArrayList();
 		this.creeperDungeonLocations = new ArrayList();
 	}
 
-	public void generateTerrain(int par1, int par2, int[] par3ArrayOfint)
+	public void generateTerrain(int chunkX, int chunkZ, int[] chunkArray)
 	{
-		final int var4 = 4;
-		final int var5 = 16;
-		final int var6 = 63;
-		final int var7 = var4 + 1;
-		final int var8 = 17;
-		final int var9 = var4 + 1;
-		this.biomesForGeneration = this.worldObj.getWorldChunkManager().getBiomesForGeneration(this.biomesForGeneration, par1 * 4 - 2, par2 * 4 - 2, var7 + 5, var9 + 5);
-		this.noiseArray = this.initializeNoiseField(this.noiseArray, par1 * var4, 0, par2 * var4, var7, var8, var9);
-
-		for (int var10 = 0; var10 < var4; ++var10) 
+		noiseGen1.frequency = 0.015;
+		noiseGen2.frequency = 0.01;
+		noiseGen3.frequency = 0.01;
+		noiseGen4.frequency = 0.01;
+		noiseGen5.frequency = 0.01;
+		noiseGen6.frequency = 0.001;
+		noiseGen7.frequency = 0.005;
+		//noise1 = noiseGen1.generateNoiseOctaves(noise1, chunkX * CHUNK_SIZE_X, chunkZ * CHUNK_SIZE_Z, CHUNK_SIZE_X, CHUNK_SIZE_Z, 0.025D, 0.025D, 0.025D);
+		//noise2 = noiseGen2.generateNoiseOctaves(noise2, chunkX * CHUNK_SIZE_X, chunkZ * CHUNK_SIZE_Z, CHUNK_SIZE_X, CHUNK_SIZE_Z, 0.07D, 0.07D, 0.07D);
+		//noise3 = noiseGen3.generateNoiseOctaves(noise3, chunkX * CHUNK_SIZE_X, chunkZ * CHUNK_SIZE_Z, CHUNK_SIZE_X, CHUNK_SIZE_Z, 0.07D, 0.07D, 0.07D);
+		//noise4 = noiseGen4.generateNoiseOctaves(noise4, chunkX * CHUNK_SIZE_X, chunkZ * CHUNK_SIZE_Z, CHUNK_SIZE_X, CHUNK_SIZE_Z, 0.015D, 0.015D, 0.015D);
+		//noise5 = noiseGen5.generateNoiseOctaves(noise5, chunkX * CHUNK_SIZE_X, chunkZ * CHUNK_SIZE_Z, CHUNK_SIZE_X, CHUNK_SIZE_Z, 0.015D, 0.015D, 0.015D);
+		
+		for(int x = 0; x < CHUNK_SIZE_X; x++)
 		{
-			for (int var11 = 0; var11 < var4; ++var11)
+			for(int z = 0; z < CHUNK_SIZE_Z; z++)
 			{
-				for (int var12 = 0; var12 < var5; ++var12) 
+				double baseHeight = noiseGen1.getNoise(chunkX * 16 + x, chunkZ * 16 + z) * TERRAIN_HEIGHT_MOD;
+				double smallHillHeight = noiseGen2.getNoise(chunkX * 16 + x, chunkZ * 16 + z) * SMALL_FEATURE_HEIGHT_MOD;
+				double mountainHeight = Math.abs(noiseGen3.getNoise(chunkX * 16 + x, chunkZ * 16 + z));
+				double valleyHeight = Math.abs(noiseGen4.getNoise(chunkX * 16 + x, chunkZ * 16 + z));
+				double featureFilter = noiseGen5.getNoise(chunkX * 16 + x, chunkZ * 16 + z) * MAIN_FEATURE_FILTER_MOD;
+				double largeFilter = noiseGen6.getNoise(chunkX * 16 + x, chunkZ * 16 + z) * LARGE_FEATURE_FILTER_MOD;
+				double smallFilter = noiseGen7.getNoise(chunkX * 16 + x, chunkZ * 16 + z) * SMALL_FEATURE_FILTER_MOD - 0.5;
+				/*if(largeFilter < 0.0)
 				{
-					final double var13 = 0.125D;
-					double var15 = this.noiseArray[((var10 + 0) * var9 + var11 + 0) * var8 + var12 + 0];
-					double var17 = this.noiseArray[((var10 + 0) * var9 + var11 + 1) * var8 + var12 + 0];
-					double var19 = this.noiseArray[((var10 + 1) * var9 + var11 + 0) * var8 + var12 + 0];
-					double var21 = this.noiseArray[((var10 + 1) * var9 + var11 + 1) * var8 + var12 + 0];
-					final double var23 = (this.noiseArray[((var10 + 0) * var9 + var11 + 0) * var8 + var12 + 1] - var15) * var13;
-					final double var25 = (this.noiseArray[((var10 + 0) * var9 + var11 + 1) * var8 + var12 + 1] - var17) * var13;
-					final double var27 = (this.noiseArray[((var10 + 1) * var9 + var11 + 0) * var8 + var12 + 1] - var19) * var13;
-					final double var29 = (this.noiseArray[((var10 + 1) * var9 + var11 + 1) * var8 + var12 + 1] - var21) * var13;
-
-					for (int var31 = 0; var31 < 8; ++var31) 
+					featureDev = valleyHeight;
+				}
+				else if(largeFilter > 1.0)
+				{
+					featureDev = mountainHeight;
+				}
+				else
+				{
+                    featureDev = valleyHeight + (mountainHeight - valleyHeight) * (largeFilter);
+				}
+				
+				if(smallFilter < 0.0)
+				{
+					featureDev = smallHillHeight;
+				}
+				else if(smallFilter < 1.0)
+				{
+                    featureDev = smallHillHeight + (featureDev - smallHillHeight) * (smallFilter);
+				}*/
+				
+				/*if(featureFilter < 0.0)
+				{
+					yDev = baseHeight;
+				}
+				else if(featureFilter > 1.0)
+				{
+					yDev = featureDev;
+				}
+				else
+				{
+                    yDev = baseHeight + (featureDev - baseHeight) * (featureFilter);
+				}*/
+				mountainHeight = lerp(smallHillHeight, mountainHeight * MOUNTAIN_HEIGHT_MOD, fade(clamp((mountainHeight * 2), 0, 1)));
+				valleyHeight = lerp(smallHillHeight, valleyHeight * VALLEY_HEIGHT_MOD - VALLEY_HEIGHT_MOD + 9, fade(clamp((valleyHeight + 2) * 4, 0, 1)));
+				
+				double yDev = lerp(valleyHeight, mountainHeight, fade(largeFilter));
+				yDev = lerp(smallHillHeight, yDev, smallFilter);
+				yDev = lerp(baseHeight, yDev, featureFilter);
+				
+				for(int y = 0; y < CHUNK_SIZE_Y; y++)
+				{
+					if(y < MID_HEIGHT + yDev)
 					{
-						final double var32 = 0.25D;
-						double var34 = var15;
-						double var36 = var17;
-						final double var38 = (var19 - var15) * var32;
-						final double var40 = (var21 - var17) * var32;
-
-						for (int var42 = 0; var42 < 4; ++var42) 
-						{
-							int var43 = var42 + var10 * 4 << 11 | 0 + var11 * 4 << 7 | var12 * 8 + var31;
-							final short var44 = 128;
-							var43 -= var44;
-							final double var45 = 0.25D;
-							final double var49 = (var36 - var34) * var45;
-							double var47 = var34 - var49;
-
-							for (int var51 = 0; var51 < 4; ++var51)
-							{
-								if ((var47 += var49) > 0.0D) 
-								{
-									par3ArrayOfint[var43 += var44] = GCMarsConfigManager.idBlockMarsStone;
-								}
-								else if (var12 * 8 + var31 < var6) 
-								{
-									par3ArrayOfint[var43 += var44] = 0;
-								} 
-								else
-								{
-									par3ArrayOfint[var43 += var44] = 0;
-								}
-							}
-
-							var34 += var38;
-							var36 += var40;
-						}
-
-						var15 += var23;
-						var17 += var25;
-						var19 += var27;
-						var21 += var29;
+						chunkArray[getIndex(x, y, z)] = GCMarsBlocks.marsStone.blockID;
 					}
 				}
 			}
 		}
 	}
 
+	private double lerp(double d1, double d2, double t)
+	{
+		if(t < 0.0)
+		{
+			return d1;
+		}
+		else if(t > 1.0)
+		{
+			return d2;
+		}
+		else
+		{
+            return d1 + (d2 - d1) * (t);
+		}
+	}
+	
+	private double fade(double n) 
+	{ 
+		return n * n * n * (n * (n * 6 - 15) + 10); 
+	}
+	
+	private double clamp(double x, double min, double max)
+	{
+		if(x < min)
+		{
+			return min;
+		}
+		if(x > max)
+		{
+			return max;
+		}
+		return x;
+	}
+	
 	public void replaceBlocksForBiome(int par1, int par2, int[] par3ArrayOfint, BiomeGenBase[] par4ArrayOfBiomeGenBase)
 	{
 		final int var5 = 20;
 		final double var6 = 0.03125D;
-		this.stoneNoise = this.noiseGen4.generateNoiseOctaves(this.stoneNoise, par1 * 16, par2 * 16, 0, 16, 16, 1, var6 * 2.0D, var6 * 2.0D, var6 * 2.0D);
-
+		noiseGen4.frequency = var6 * 2;
 		for (int var8 = 0; var8 < 16; ++var8)
 		{
 			for (int var9 = 0; var9 < 16; ++var9) 
 			{
 				final BiomeGenBase var10 = par4ArrayOfBiomeGenBase[var9 + var8 * 16];
 				final float var11 = var10.getFloatTemperature();
-				final int var12 = (int) (this.stoneNoise[var8 + var9 * 16] / 3.0D + 3.0D + this.rand.nextDouble() * 0.25D);
+				final int var12 = (int) (noiseGen4.getNoise(par1 * 16 + var8, par2 * 16 + var9) / 3.0D + 3.0D + this.rand.nextDouble() * 0.25D);
 				int var13 = -1;
-				int var14 = GCMarsConfigManager.idBlockMarsGrass;
-				int var15 = GCMarsConfigManager.idBlockMarsDirt;
+				int var14 = GCMarsBlocks.marsGrass.blockID;
+				int var15 = GCMarsBlocks.marsDirt.blockID;
 
 				for (int var16 = 127; var16 >= 0; --var16) 
 				{
@@ -197,19 +256,19 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 						{
 							var13 = -1;
 						} 
-						else if (var18 == GCMarsConfigManager.idBlockMarsStone)
+						else if (var18 == GCMarsBlocks.marsStone.blockID)
 						{
 							if (var13 == -1)
 							{
 								if (var12 <= 0)
 								{
 									var14 = 0;
-									var15 = GCMarsConfigManager.idBlockMarsStone;
+									var15 = GCMarsBlocks.marsStone.blockID;
 								} 
 								else if (var16 >= var5 - -16 && var16 <= var5 + 1)
 								{
-									var14 = GCMarsConfigManager.idBlockMarsGrass;
-									var15 = GCMarsConfigManager.idBlockMarsDirt;
+									var14 = GCMarsBlocks.marsGrass.blockID;
+									var15 = GCMarsBlocks.marsDirt.blockID;
 								}
 
 								if (var16 < var5 && var14 == 0) 
@@ -262,6 +321,7 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 		this.replaceBlocksForBiome(par1, par2, var3, this.biomesForGeneration);
 		this.caveGenerator.generate(this, this.worldObj, par1, par2, var3);
 		this.caveGenerator2.generate(this, this.worldObj, par1, par2, var3);
+		this.createCraters(par1, par2, var3);
 
 		final Chunk var4 = new GCCoreChunk(this.worldObj, var3, null, par1, par2);
 		final byte[] var5 = var4.getBiomeArray();
@@ -275,8 +335,79 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 		var4.generateSkylightMap();
 		return var4;
 	}
+	
+	public void createCraters(int chunkX, int chunkZ, int[] chunkArray)
+	{
+		noiseGen5.frequency = 0.015;
+		for(int cx = chunkX - 2; cx <= chunkX + 2; cx++)
+		{
+			for(int cz = chunkZ - 2; cz <= chunkZ + 2; cz++)
+			{
+				for(int x = 0; x < CHUNK_SIZE_X; x++)
+				{
+					for(int z = 0; z < CHUNK_SIZE_Z; z++)
+					{
+						if(Math.abs(randFromPoint(cx * 16 + x, (cz * 16 + z) * 1000)) < noiseGen5.getNoise(cx * 16 + x, cz * 16 + z) / CRATER_PROB)
+						{
+							Random random = new Random((cx * 16 + x) + (cz * 16 + z) * 5000);
+							GCCoreCraterSize cSize = GCCoreCraterSize.sizeArray[random.nextInt(GCCoreCraterSize.sizeArray.length)];
+							int size = random.nextInt(cSize.MAX_SIZE - cSize.MIN_SIZE) + cSize.MIN_SIZE;
+							makeCrater(cx * 16 + x, cz * 16 + z, chunkX * 16, chunkZ * 16, size, chunkArray);
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	public void makeCrater(int craterX, int craterZ, int chunkX, int chunkZ, int size, int[] chunkArray)
+	{
+		for(int x = 0; x < CHUNK_SIZE_X; x++)
+		{
+			for(int z = 0; z < CHUNK_SIZE_Z; z++)
+			{
+				double xDev = craterX - (chunkX + x);
+				double zDev = craterZ - (chunkZ + z);
+				if(xDev * xDev + zDev * zDev < size * size)
+				{
+					xDev /= size;
+					zDev /= size;
+					double sqrtY = (xDev * xDev + zDev * zDev);
+					double yDev = sqrtY * sqrtY * 6;
+					yDev = 5 - yDev;
+					System.out.println(yDev + ", " + xDev + ", " + zDev);
+					int helper = 0;
+					for(int y = 127; y > 0; y--)
+					{
+						if(chunkArray[getIndex(x, y, z)] != 0 && helper <= yDev)
+						{
+							chunkArray[getIndex(x, y, z)] = 0;
+							helper++;
+						}
+						if(helper > yDev)
+						{
+							break;
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	private int getIndex(int x, int y, int z) 
+	{
+		return (x * 16 + z) * 128 + y;
+	}
+	
+	private double randFromPoint(int x, int z) 
+	{
+		int n;
+		n = x + z * 57;
+		n = n << 13 ^ n;
+		return 1.0 - (n * (n * n * 15731 + 789221) + 1376312589 & 0x7fffffff) / 1073741824.0;
+	}
 
-	private double[] initializeNoiseField(double[] par1ArrayOfDouble, int par2, int par3, int par4, int par5, int par6, int par7)
+	/*private double[] initializeNoiseField(double[] par1ArrayOfDouble, int par2, int par3, int par4, int par5, int par6, int par7)
 	{
 		if (par1ArrayOfDouble == null)
 		{
@@ -421,7 +552,7 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 		}
 
 		return par1ArrayOfDouble;
-	}
+	}*/
 
 	@Override
 	public boolean chunkExists(int par1, int par2)
