@@ -43,8 +43,6 @@ public class GCCoreBlocks
 	public static Block refinery;
 	public static Block compressor;
 	
-	public static LiquidStack crudeOilStack;
-	
 	public static void initBlocks()
 	{
 		GCCoreBlocks.blockOres = 											new GCCoreBlockOre					(GCCoreConfigManager.idBlockOre,  						0)						.setHardness(3.0F) 																				 																											.setBlockName("blockores");
@@ -100,7 +98,5 @@ public class GCCoreBlocks
 		GameRegistry.registerBlock(GCCoreBlocks.crudeOilMoving);
 		GameRegistry.registerBlock(GCCoreBlocks.refinery);
 		GameRegistry.registerBlock(GCCoreBlocks.compressor);
-		
-		GCCoreBlocks.crudeOilStack = LiquidDictionary.getOrCreateLiquid("Oil", new LiquidStack(GCCoreBlocks.crudeOilStill, 1));
 	}
 }
