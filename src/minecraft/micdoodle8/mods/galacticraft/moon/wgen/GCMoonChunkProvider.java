@@ -10,7 +10,6 @@ import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpider;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityZombie;
 import micdoodle8.mods.galacticraft.core.perlin.NoiseModule;
 import micdoodle8.mods.galacticraft.core.perlin.generator.Gradient;
-import micdoodle8.mods.galacticraft.core.perlin.generator.RidgedMulti;
 import micdoodle8.mods.galacticraft.core.wgen.GCCoreChunk;
 import micdoodle8.mods.galacticraft.core.wgen.GCCoreCraterSize;
 import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
@@ -24,7 +23,6 @@ import net.minecraft.world.biome.SpawnListEntry;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.ChunkProviderGenerate;
-import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import net.minecraft.world.gen.structure.MapGenMineshaft;
 
 /**
@@ -41,46 +39,6 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 	final int fillBlockMeta = 3;
 	final int lowerBlockID = GCMoonBlocks.blockMoon.blockID;
 	final int lowerBlockMeta = 4;
-	
-	private enum CraterSize
-	{
-		SMALL(8, 12, 14),
-		MEDIUM(13, 17, 8),
-		LARGE(18, 25, 2),
-		EXTREME(26, 30, 1);
-		
-		public final int MIN_SIZE;
-		public final int MAX_SIZE;
-		private final int PROBABILITY;
-		
-		private static CraterSize[] sizeArray;
-		
-		private CraterSize(int min, int max, int prob)
-		{
-			this.MIN_SIZE = min;
-			this.MAX_SIZE = max;
-			this.PROBABILITY = prob;
-		}
-		
-		static
-		{
-			int amount = 0;
-			for(final CraterSize c : CraterSize.values())
-			{
-				amount += c.PROBABILITY;
-			}
-			CraterSize.sizeArray = new CraterSize[amount];
-			int pointer = 0;
-			for(final CraterSize c : CraterSize.values())
-			{
-				for(int i = 0; i < c.PROBABILITY; i++)
-				{
-					CraterSize.sizeArray[pointer] = c;
-					pointer++;
-				}
-			}
-		}
-	}
 	
 	private final Random rand;
 	
@@ -261,7 +219,6 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 	@Override
 	public Chunk provideChunk(int par1, int par2)
 	{
-		
 		this.rand.setSeed(par1 * 341873128712L + par2 * 132897987541L);
 		final int[] ids = new int[32768];
 		final int[] meta = new int[32768];
@@ -341,7 +298,7 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 						if(Math.abs(this.randFromPoint(cx * 16 + x, (cz * 16 + z) * 1000)) < noiseGen4.getNoise(x * GCMoonChunkProvider.CHUNK_SIZE_X + x, cz * GCMoonChunkProvider.CHUNK_SIZE_Z + z) / GCMoonChunkProvider.CRATER_PROB)
 						{
 							final Random random = new Random(cx * 16 + x + (cz * 16 + z) * 5000);
-							final CraterSize cSize = CraterSize.sizeArray[random.nextInt(CraterSize.sizeArray.length)];
+							final GCCoreCraterSize cSize = GCCoreCraterSize.sizeArray[random.nextInt(GCCoreCraterSize.sizeArray.length)];
 							final int size = random.nextInt(cSize.MAX_SIZE - cSize.MIN_SIZE) + cSize.MIN_SIZE;
 							this.makeCrater(cx * 16 + x, cz * 16 + z, chunkX * 16, chunkZ * 16, size, chunkArray, metaArray);
 						}
