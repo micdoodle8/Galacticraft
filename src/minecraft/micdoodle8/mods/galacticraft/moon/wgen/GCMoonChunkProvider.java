@@ -12,6 +12,7 @@ import micdoodle8.mods.galacticraft.core.perlin.NoiseModule;
 import micdoodle8.mods.galacticraft.core.perlin.generator.Gradient;
 import micdoodle8.mods.galacticraft.core.wgen.GCCoreChunk;
 import micdoodle8.mods.galacticraft.core.wgen.GCCoreCraterSize;
+import micdoodle8.mods.galacticraft.moon.GCMoonConfigManager;
 import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSand;
@@ -665,7 +666,7 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 	@Override
 	public String makeString()
 	{
-		return "RandomLevelSource";
+		return GCMoonConfigManager.generateOtherMods ? "RandomLevelSource" : "MoonLevelSource";
 	}
 
 	@Override
