@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GL12;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
@@ -28,7 +28,7 @@ public class GCCoreRenderBlockTreasureChest implements ISimpleBlockRenderingHand
     }
 
     @Override
-	public void renderInventoryBlock(Block var1, int var2, int var3, RenderBlocks var4) 
+	public void renderInventoryBlock(Block var1, int var2, int var3, RenderBlocks var4)
     {
         GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);

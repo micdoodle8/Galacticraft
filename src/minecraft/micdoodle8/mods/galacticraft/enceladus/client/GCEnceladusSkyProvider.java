@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.enceladus.client;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
-import micdoodle8.mods.galacticraft.core.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.mars.dimension.GCMarsWorldProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
@@ -19,18 +19,18 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.FMLClientHandler;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
  */
 public class GCEnceladusSkyProvider extends IRenderHandler
 {
-	public int starGLCallList = GLAllocation.generateDisplayLists(3); 
+	public int starGLCallList = GLAllocation.generateDisplayLists(3);
 	public int glSkyList;
 	public int glSkyList2;
 	
-	public GCEnceladusSkyProvider() 
+	public GCEnceladusSkyProvider()
 	{
 		GL11.glPushMatrix();
 		GL11.glNewList(this.starGLCallList, GL11.GL_COMPILE);
@@ -40,9 +40,9 @@ public class GCEnceladusSkyProvider extends IRenderHandler
 		final Tessellator tessellator = Tessellator.instance;
 		this.glSkyList = this.starGLCallList + 1;
 		GL11.glNewList(this.glSkyList, GL11.GL_COMPILE);
-		final byte byte2 = 64;
+		final byte byte2 = 10;
 		final int i = 256 / byte2 + 2;
-		float f = 16F;
+		float f = 3F;
 
 		for (int j = -byte2 * i; j <= byte2 * i; j += byte2) {
 			for (int l = -byte2 * i; l <= byte2 * i; l += byte2) {
@@ -145,7 +145,7 @@ public class GCEnceladusSkyProvider extends IRenderHandler
         final int var28 = world.getMoonPhase(partialTicks);
         final int var30 = var28 % 4;
         final int var29 = var28 / 4 % 2;
-        GL11.glRotatef(GCCoreUtil.calculateEarthAngleFromOtherPlanet(world.getWorldTime(), partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
+        GL11.glRotatef(WorldUtil.calculateEarthAngleFromOtherPlanet(world.getWorldTime(), partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
         GL11.glRotatef(-40F, 0.0F, 0.0F, 1.0F);
         var23.startDrawingQuads();
         var23.addVertexWithUV(-var12, -100.0D, var12, 0, 1);
@@ -302,7 +302,7 @@ public class GCEnceladusSkyProvider extends IRenderHandler
 
     private Vec3 getCustomSkyColor()
     {
-        return Vec3.vec3dPool.getVecFromPool(0.26796875D, 0.1796875D, 0.0D);
+        return Vec3.vec3dPool.getVecFromPool(0D, 0D, 0.0D);
     }
     
     public float getSkyBrightness(float par1)

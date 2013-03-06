@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubMod;
+import micdoodle8.mods.galacticraft.API.IGalaxy;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.enceladus.GalacticraftEnceladus;
 import micdoodle8.mods.galacticraft.europa.GCEuropaConfigManager;
+import micdoodle8.mods.galacticraft.mimas.GalacticraftMimas;
 import micdoodle8.mods.galacticraft.titan.GalacticraftTitan;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
@@ -23,7 +25,7 @@ import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
@@ -40,6 +42,7 @@ public class GalacticraftSaturn implements IGalacticraftSubMod
 	
 	public static GalacticraftTitan moonTitan = new GalacticraftTitan();
 	public static GalacticraftEnceladus moonEnceladus = new GalacticraftEnceladus();
+	public static GalacticraftMimas moonMimas = new GalacticraftMimas();
 	
 	public static List saturnPlayers = new ArrayList();
 	public static List gcSaturnPlayers = new ArrayList();
@@ -47,49 +50,59 @@ public class GalacticraftSaturn implements IGalacticraftSubMod
 	@PreInit
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		moonTitan.preInit(event);
-		moonEnceladus.preInit(event);
+		GalacticraftSaturn.moonTitan.preInit(event);
+		GalacticraftSaturn.moonEnceladus.preInit(event);
+		GalacticraftSaturn.moonMimas.preInit(event);
 		
 		GalacticraftCore.registerSubMod(this);
 		
 		new GCEuropaConfigManager(new File(event.getModConfigurationDirectory(), "Galacticraft/saturn.conf"));
 		
-		proxy.preInit(event);
+		GalacticraftSaturn.proxy.preInit(event);
 	}
 
 	@Init
 	public void load(FMLInitializationEvent event)
 	{
-		moonTitan.init(event);
-		moonEnceladus.init(event);
-		proxy.init(event);
+		GalacticraftSaturn.moonTitan.init(event);
+		GalacticraftSaturn.moonEnceladus.init(event);
+		GalacticraftSaturn.moonMimas.init(event);
+		GalacticraftSaturn.proxy.init(event);
 	}
 
 	@PostInit
 	public void postLoad(FMLPostInitializationEvent event)
 	{
-		moonTitan.postInit(event);
-		moonEnceladus.postInit(event);
-		proxy.postInit(event);
-		proxy.registerRenderInformation();
+		GalacticraftSaturn.moonTitan.postInit(event);
+		GalacticraftSaturn.moonEnceladus.postInit(event);
+		GalacticraftSaturn.moonMimas.postInit(event);
+		GalacticraftSaturn.proxy.postInit(event);
+		GalacticraftSaturn.proxy.registerRenderInformation();
 	}
 	
 	@ServerStarted
 	public void serverStarted(FMLServerStartedEvent event)
 	{
-		moonTitan.serverInit(event);
-		moonEnceladus.serverInit(event);
+		GalacticraftSaturn.moonTitan.serverInit(event);
+		GalacticraftSaturn.moonEnceladus.serverInit(event);
+		GalacticraftSaturn.moonMimas.serverInit(event);
 	}
 
 	@Override
-	public String getDimensionName() 
+	public String getDimensionName()
 	{
 		return "Saturn";
 	}
 
 	@Override
-	public boolean reachableDestination() 
+	public boolean reachableDestination()
 	{
 		return false;
+	}
+
+	@Override
+	public IGalaxy getParentGalaxy()
+	{
+		return GalacticraftCore.galaxyMilkyWay;
 	}
 }

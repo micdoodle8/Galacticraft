@@ -10,11 +10,11 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.SideOnly;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
@@ -590,35 +590,35 @@ public abstract class GCMarsBlockFluid extends Block
 //    	if (par1World.getBlockMaterial(par2, par3, par4 - 1) == Material.water)
 //    	{
 //            int var6 = par1World.getBlockMetadata(par2, par3, par4 - 1);
-//            
+//
 //            par1World.setBlockAndMetadataWithNotify(par2, par3, par4 - 1, GCMarsBlocks.bacterialSludgeMoving.blockID, var6);
 //    	}
 //
 //    	if (par1World.getBlockMaterial(par2, par3, par4 + 1) == Material.water)
 //    	{
 //            int var6 = par1World.getBlockMetadata(par2, par3, par4 + 1);
-//            
+//
 //            par1World.setBlockAndMetadataWithNotify(par2, par3, par4 + 1, GCMarsBlocks.bacterialSludgeMoving.blockID, var6);
 //    	}
 //
 //    	if (par1World.getBlockMaterial(par2 - 1, par3, par4) == Material.water)
 //    	{
 //            int var6 = par1World.getBlockMetadata(par2 - 1, par3, par4);
-//            
+//
 //            par1World.setBlockAndMetadataWithNotify(par2 - 1, par3, par4, GCMarsBlocks.bacterialSludgeMoving.blockID, var6);
 //    	}
 //
 //    	if (par1World.getBlockMaterial(par2 + 1, par3, par4) == Material.water)
 //    	{
 //            int var6 = par1World.getBlockMetadata(par2 + 1, par3, par4);
-//            
+//
 //            par1World.setBlockAndMetadataWithNotify(par2 + 1, par3, par4, GCMarsBlocks.bacterialSludgeMoving.blockID, var6);
 //    	}
 //
 //    	if (par1World.getBlockMaterial(par2, par3 - 1, par4) == Material.water)
 //    	{
 //            int var6 = par1World.getBlockMetadata(par2, par3 - 1, par4);
-//            
+//
 //            par1World.setBlockAndMetadataWithNotify(par2, par3 - 1, par4, GCMarsBlocks.bacterialSludgeMoving.blockID, var6);
 //    	}
     	

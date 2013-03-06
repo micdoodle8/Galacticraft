@@ -2,8 +2,10 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.API.IConnectableToPipe;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCollector;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenPipe;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -12,18 +14,57 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.common.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
-public class GCCoreBlockOxygenCollector extends BlockContainer
+public class GCCoreBlockOxygenCollector extends BlockContainer implements IConnectableToPipe
 {
-	public GCCoreBlockOxygenCollector(int par1, int par2) 
+	public GCCoreBlockOxygenCollector(int par1, int par2)
 	{
 		super(par1, par2, Material.rock);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World var1) 
+	public boolean renderAsNormalBlock()
+   	{
+       	return false;
+   	}
+
+	@Override
+    public boolean isOpaqueCube()
+    {
+        return false;
+    }
+
+	@Override
+	public int getRenderType()
+	{
+		return GalacticraftCore.proxy.getGCOxygenCollectorRenderID();
+   	}
+
+    @Override
+	public void breakBlock(World world, int x, int y, int z, int par5, int par6)
+    {
+    	for (int i = 0; i < ForgeDirection.values().length - 1; i++)
+    	{
+    		final TileEntity tile = world.getBlockTileEntity(x + ForgeDirection.getOrientation(i).offsetX, y + ForgeDirection.getOrientation(i).offsetY, z + ForgeDirection.getOrientation(i).offsetZ);
+    		final GCCoreTileEntityOxygenCollector collector = (GCCoreTileEntityOxygenCollector)world.getBlockTileEntity(x, y, z);
+    		
+    		if (tile != null && collector != null && tile instanceof GCCoreTileEntityOxygenPipe)
+    		{
+    			final GCCoreTileEntityOxygenPipe pipe = (GCCoreTileEntityOxygenPipe)tile;
+
+				pipe.setOxygenInPipe(0D);
+				pipe.setZeroOxygen();
+    		}
+    	}
+    	
+    	super.breakBlock(world, x, y, z, par5, par6);
+    }
+
+	@Override
+	public TileEntity createNewTileEntity(World var1)
 	{
 		return new GCCoreTileEntityOxygenCollector();
 	}
@@ -36,7 +77,7 @@ public class GCCoreBlockOxygenCollector extends BlockContainer
 		
 		if (par1IBlockAccess.getBlockTileEntity(par2, par3, par4) instanceof GCCoreTileEntityOxygenCollector)
 		{
-			if (((GCCoreTileEntityOxygenCollector)par1IBlockAccess.getBlockTileEntity(par2, par3, par4)).currentPower > 1)
+			if (((GCCoreTileEntityOxygenCollector)par1IBlockAccess.getBlockTileEntity(par2, par3, par4)).getPower() > 1)
 			{
 				active = true;
 			}
@@ -136,7 +177,7 @@ public class GCCoreBlockOxygenCollector extends BlockContainer
     {
 		if (par1World.getBlockTileEntity(par2, par3, par4) instanceof GCCoreTileEntityOxygenCollector)
 		{
-			if (((GCCoreTileEntityOxygenCollector)par1World.getBlockTileEntity(par2, par3, par4)).currentPower > 1)
+			if (((GCCoreTileEntityOxygenCollector)par1World.getBlockTileEntity(par2, par3, par4)).getPower() > 1)
 			{
 				for (int var6 = 0; var6 < 10; ++var6)
 		        {
@@ -175,4 +216,15 @@ public class GCCoreBlockOxygenCollector extends BlockContainer
     {
     	return "/micdoodle8/mods/galacticraft/core/client/blocks/core.png";
     }
+
+	@Override
+	public boolean isConnectableOnSide(IBlockAccess blockAccess, int x, int y, int z, ForgeDirection side) 
+	{
+		if (side != ForgeDirection.UP && side != ForgeDirection.DOWN)
+		{
+			return true;
+		}
+
+		return false;
+	}
 }

@@ -1,33 +1,39 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
+import java.util.List;
+
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.src.ModLoader;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
-import org.lwjgl.input.Keyboard;
-
-public class GCCoreEntityBuggy extends Entity implements IInventory
+public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInventory
 {
     public int fuel;
     public int currentDamage;
     public int timeSinceHit;
     public int rockDirection;
     public double speed;
-    float maxSpeed = 1.0F;
+    float maxSpeed = 0.5F;
     float accel = 0.2F;
-    float turnFactor = 3.0F;
+    float turnFactor = 1.0F;
     public String texture;
     ItemStack[] cargoItems;
 	public float turnProgress = 0;
+	private final boolean firstPacketSent = false;
+	public float rotationYawBuggy;
 
     public GCCoreEntityBuggy(World var1)
     {
@@ -44,6 +50,7 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
         this.dataWatcher.addObject(this.currentDamage, new Integer(0));
         this.dataWatcher.addObject(this.timeSinceHit, new Integer(0));
         this.dataWatcher.addObject(this.rockDirection, new Integer(1));
+        this.ignoreFrustumCheck = true;
     }
 
     public GCCoreEntityBuggy(World var1, double var2, double var4, double var6)
@@ -74,18 +81,18 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
      * Returns a boundingBox used to collide the entity with other entities and blocks. This enables the entity to be
      * pushable on contact, like boats or minecarts.
      */
-    @Override
-	public AxisAlignedBB getCollisionBox(Entity var1)
-    {
-    	if (!var1.equals(this.riddenByEntity))
-    	{
-    		return var1.boundingBox;
-    	}
-    	else
-    	{
-            return null;
-    	}
-    }
+//    @Override
+//	public AxisAlignedBB getCollisionBox(Entity var1)
+//    {
+//    	if (!var1.equals(this.riddenByEntity))
+//    	{
+//    		return var1.boundingBox;
+//    	}
+//    	else
+//    	{
+//            return null;
+//    	}
+//    }
 
     /**
      * returns the bounding box for this entity
@@ -178,7 +185,7 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
 
                 if (!this.worldObj.isRemote)
                 {
-//                    this.dropItem(mod_cars.car.shiftedIndex, 1);
+//                    this.dropItem(mod_cars.car.itemID, 1);
 //
 //                    for (int var4 = 0; var4 < this.getSizeInventory(); ++var4)
 //                    {
@@ -198,14 +205,19 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
         }
     }
 
-    /**
-     * Called to update the entity's position/logic.
-     */
+    @Override
+	@SideOnly(Side.CLIENT)
+    public void setPositionAndRotation2(double par1, double par3, double par5, float par7, float par8, int par9)
+    {
+    	super.setPositionAndRotation2(par1, par3, par5, par7, par8, par9);
+//    	this.setRotation(par7, par8);
+    }
+
     @Override
 	public void onUpdate()
     {
         super.onUpdate();
-
+        
         if (this.dataWatcher.getWatchableObjectInt(this.timeSinceHit) > 0)
         {
             this.dataWatcher.updateObject(this.timeSinceHit, Integer.valueOf(this.dataWatcher.getWatchableObjectInt(this.timeSinceHit) - 1));
@@ -215,12 +227,7 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
         {
             this.dataWatcher.updateObject(this.currentDamage, Integer.valueOf(this.dataWatcher.getWatchableObjectInt(this.currentDamage) - 1));
         }
-
-        this.rotationYaw %= 360.0F;
-        this.rotationPitch %= 360.0F;
-        this.prevPosX = this.posX;
-        this.prevPosY = this.posY;
-        this.prevPosZ = this.posZ;
+        
         final byte var20 = 5;
         final double var2 = 0.0D;
         int var4;
@@ -231,7 +238,7 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
             final double var7 = this.boundingBox.minY + (this.boundingBox.maxY - this.boundingBox.minY) * (var4 + 1) / var20 - 0.125D;
         }
 
-        double var21;
+        final double var21;
 
         if (var2 < 1.0D)
         {
@@ -244,7 +251,7 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
             {
                 final ItemStack var22 = this.getStackInSlot(var4);
 
-                if (var22 != null && var22.itemID == Item.coal.shiftedIndex)
+                if (var22 != null && var22.itemID == Item.coal.itemID)
                 {
                     this.decrStackSize(var4, 1);
                     this.fuel += 1500;
@@ -257,59 +264,6 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
                     }
                 }
             }
-        }
-
-        if (this.riddenByEntity != null)
-        {
-            if (Keyboard.isKeyDown(30))
-            {
-                this.rotationYaw = (float)(this.rotationYaw - this.turnFactor * (1.0D + this.speed / 2.0D));
-                
-        		this.turnProgress -= 0.1F;
-        		
-        		if (this.turnProgress <= -0.3F)
-        		{
-        			this.turnProgress = -0.3F;
-        		}
-            }
-
-            if (Keyboard.isKeyDown(32))
-            {
-                this.rotationYaw = (float)(this.rotationYaw + this.turnFactor * (1.0D + this.speed / 2.0D));
-                
-        		this.turnProgress += 0.1F;
-        		
-        		if (this.turnProgress >= 0.3F)
-        		{
-        			this.turnProgress = 0.3F;
-        		}
-            }
-
-            if (Keyboard.isKeyDown(17))
-            {
-                this.speed += 0.02D;
-            }
-
-            if (Keyboard.isKeyDown(31))
-            {
-                this.speed -= 0.01D;
-            }
-
-            if (Keyboard.isKeyDown(42))
-            {
-                this.speed *= 0.75D;
-            }
-            
-            if (!Keyboard.isKeyDown(30) && !Keyboard.isKeyDown(32))
-            {
-        		this.turnProgress = 0.0F;
-            }
-
-            this.fuel = (int)(this.fuel - this.speed);
-        }
-        else
-        {
-            this.speed *= 0.9D;
         }
 
         if (this.inWater && this.speed > 0.2D)
@@ -330,25 +284,21 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
             this.motionY = 0.1D;
         }
 
-        if (ModLoader.isGUIOpen((Class)null) && this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayer && Keyboard.isKeyDown(46))
-        {
-            final EntityPlayer var23 = (EntityPlayer)this.riddenByEntity;
-
-            if (!this.worldObj.isRemote)
-            {
-                var23.displayGUIChest(this);
-            }
-            else
-            {
-                System.out.println("sending packet");
-            }
-        }
-
-        this.motionX = -(this.speed * Math.cos((this.rotationYaw - 90F) * Math.PI / 180.0D));
-        this.motionZ = -(this.speed * Math.sin((this.rotationYaw - 90F) * Math.PI / 180.0D));
-        var21 = Math.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
-
+        this.motionX = -(this.speed * Math.cos((this.rotationYaw - 90F) * Math.PI / 180.0D ));
+        this.motionZ = -(this.speed * Math.sin((this.rotationYaw - 90F) * Math.PI / 180.0D ));
+        
         this.moveEntity(this.motionX, this.motionY, this.motionZ);
+        
+        this.setRotation(this.rotationYaw, this.rotationPitch);
+        this.setPosition(this.posX, this.posY, this.posZ);
+
+        if (this.worldObj.isRemote)
+        {
+        }
+        
+        this.prevPosX = this.posX;
+        this.prevPosY = this.posY;
+        this.prevPosZ = this.posZ;
     }
 
     /**
@@ -414,12 +364,6 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
         return this.cargoItems[var1];
     }
     
-    @Override
-	public void applyEntityCollision(Entity par1Entity)
-    {
-    	
-    }
-
     /**
      * Removes from an inventory slot (first arg) up to a specified number (second arg) of items and returns them in a
      * new stack.
@@ -550,4 +494,62 @@ public class GCCoreEntityBuggy extends Entity implements IInventory
             return true;
         }
     }
+
+	@Override
+	public void keyPressed(int par1, EntityPlayer par2EntityPlayer)
+	{
+		if (this.worldObj.isRemote)
+		{
+		}
+		
+		// 0 (accelerate), 1 (decelerate), 2 (turnLeft), 3 (turnRight)
+		
+		switch (par1)
+		{
+		case 0:
+            this.speed += 0.02D;
+			break;
+		case 1:
+            this.speed -= 0.02D;
+			break;
+		case 2:
+			if (this.worldObj.isRemote)
+			{
+	            this.rotationYaw = (float)(this.rotationYaw - this.turnFactor * (1.0D + this.speed / 2.0D));
+	    		this.turnProgress -= 0.1F;
+	    		if (this.turnProgress <= -0.3F)
+	    		{
+	    			this.turnProgress = -0.3F;
+	    		}
+			}
+			else
+			{
+	            this.rotationYaw = (float)(this.rotationYaw - this.turnFactor * (1.0D + this.speed / 2.0D));
+			}
+			
+			break;
+		case 3:
+			if (this.worldObj.isRemote)
+			{
+	            this.rotationYaw = (float)(this.rotationYaw + this.turnFactor * (1.0D + this.speed / 2.0D));
+	    		this.turnProgress += 0.1F;
+	    		if (this.turnProgress >= 0.3F)
+	    		{
+	    			this.turnProgress = 0.3F;
+	    		}
+			}
+			else
+			{
+	            this.rotationYaw = (float)(this.rotationYaw + this.turnFactor * (1.0D + this.speed / 2.0D));
+			}
+			
+			break;
+		}
+	}
+
+	@Override
+	boolean pressKey(int key) 
+	{
+		return false;
+	}
 }

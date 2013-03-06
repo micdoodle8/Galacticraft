@@ -11,7 +11,7 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
@@ -28,7 +28,7 @@ public class GCCoreBlockRendererUnlitTorch implements ISimpleBlockRenderingHandl
     @Override
 	public boolean renderWorldBlock(IBlockAccess var1, int var2, int var3, int var4, Block var5, int var6, RenderBlocks var7)
     {
-    	this.renderGCUnlitTorch(var7, var5, var1, var2, var3, var4);
+    	GCCoreBlockRendererUnlitTorch.renderGCUnlitTorch(var7, var5, var1, var2, var3, var4);
         return true;
     }
 
@@ -45,9 +45,9 @@ public class GCCoreBlockRendererUnlitTorch implements ISimpleBlockRenderingHandl
     }
 
 	@Override
-	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) 
+	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer)
 	{
-        renderTorchAtAngle(renderer, block, 0, 0, 0, 0.0D, 0.0D);
+        GCCoreBlockRendererUnlitTorch.renderTorchAtAngle(renderer, block, 0, 0, 0, 0.0D, 0.0D);
 	}
 
     public static void renderInvNormalBlock(RenderBlocks var0, Block var1, int var2)
@@ -55,7 +55,7 @@ public class GCCoreBlockRendererUnlitTorch implements ISimpleBlockRenderingHandl
         final Tessellator var3 = Tessellator.instance;
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        var0.setRenderMinMax(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+        var0.setRenderBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         var3.startDrawingQuads();
         var3.setNormal(0.0F, -1.0F, 0.0F);
         var0.renderBottomFace(var1, 0.0D, 0.0D, 0.0D, var1.getBlockTextureFromSideAndMetadata(0, var2));
@@ -94,23 +94,23 @@ public class GCCoreBlockRendererUnlitTorch implements ISimpleBlockRenderingHandl
 
         if (var5 == 1)
         {
-            renderTorchAtAngle(renderBlocks, par1Block, par2 - var9, par3 + var11, par4, -var7, 0.0D);
+            GCCoreBlockRendererUnlitTorch.renderTorchAtAngle(renderBlocks, par1Block, par2 - var9, par3 + var11, par4, -var7, 0.0D);
         }
         else if (var5 == 2)
         {
-            renderTorchAtAngle(renderBlocks, par1Block, par2 + var9, par3 + var11, par4, var7, 0.0D);
+            GCCoreBlockRendererUnlitTorch.renderTorchAtAngle(renderBlocks, par1Block, par2 + var9, par3 + var11, par4, var7, 0.0D);
         }
         else if (var5 == 3)
         {
-            renderTorchAtAngle(renderBlocks, par1Block, par2, par3 + var11, par4 - var9, 0.0D, -var7);
+            GCCoreBlockRendererUnlitTorch.renderTorchAtAngle(renderBlocks, par1Block, par2, par3 + var11, par4 - var9, 0.0D, -var7);
         }
         else if (var5 == 4)
         {
-            renderTorchAtAngle(renderBlocks, par1Block, par2, par3 + var11, par4 + var9, 0.0D, var7);
+            GCCoreBlockRendererUnlitTorch.renderTorchAtAngle(renderBlocks, par1Block, par2, par3 + var11, par4 + var9, 0.0D, var7);
         }
         else
         {
-            renderTorchAtAngle(renderBlocks, par1Block, par2, par3, par4, 0.0D, 0.0D);
+            GCCoreBlockRendererUnlitTorch.renderTorchAtAngle(renderBlocks, par1Block, par2, par3, par4, 0.0D, 0.0D);
         }
     }
     

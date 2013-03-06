@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubMod;
+import micdoodle8.mods.galacticraft.API.IGalaxy;
+import micdoodle8.mods.galacticraft.callisto.GalacticraftCallisto;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.europa.GCEuropaConfigManager;
 import micdoodle8.mods.galacticraft.europa.GalacticraftEuropa;
@@ -23,7 +25,7 @@ import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
@@ -40,6 +42,7 @@ public class GalacticraftJupiter implements IGalacticraftSubMod
 	
 	public static GalacticraftEuropa moonEuropa = new GalacticraftEuropa();
 	public static GalacticraftIo moonIo = new GalacticraftIo();
+	public static GalacticraftCallisto moonCallisto = new GalacticraftCallisto();
 	
 	public static List jupiterPlayers = new ArrayList();
 	public static List gcJupiterPlayers = new ArrayList();
@@ -47,49 +50,59 @@ public class GalacticraftJupiter implements IGalacticraftSubMod
 	@PreInit
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		moonEuropa.preInit(event);
-		moonIo.preInit(event);
+		GalacticraftJupiter.moonEuropa.preInit(event);
+		GalacticraftJupiter.moonIo.preInit(event);
+		GalacticraftJupiter.moonCallisto.preInit(event);
 		
 		GalacticraftCore.registerSubMod(this);
 		
 		new GCEuropaConfigManager(new File(event.getModConfigurationDirectory(), "Galacticraft/jupiter.conf"));
 		
-		proxy.preInit(event);
+		GalacticraftJupiter.proxy.preInit(event);
 	}
 
 	@Init
 	public void load(FMLInitializationEvent event)
 	{
-		moonEuropa.init(event);
-		moonIo.init(event);
-		proxy.init(event);
+		GalacticraftJupiter.moonEuropa.init(event);
+		GalacticraftJupiter.moonIo.init(event);
+		GalacticraftJupiter.moonCallisto.init(event);
+		GalacticraftJupiter.proxy.init(event);
 	}
 
 	@PostInit
 	public void postLoad(FMLPostInitializationEvent event)
 	{
-		moonEuropa.postInit(event);
-		moonIo.postInit(event);
-		proxy.postInit(event);
-		proxy.registerRenderInformation();
+		GalacticraftJupiter.moonEuropa.postInit(event);
+		GalacticraftJupiter.moonIo.postInit(event);
+		GalacticraftJupiter.moonCallisto.postInit(event);
+		GalacticraftJupiter.proxy.postInit(event);
+		GalacticraftJupiter.proxy.registerRenderInformation();
 	}
 	
 	@ServerStarted
 	public void serverStarted(FMLServerStartedEvent event)
 	{
-		moonEuropa.serverInit(event);
-		moonIo.serverInit(event);
+		GalacticraftJupiter.moonEuropa.serverInit(event);
+		GalacticraftJupiter.moonIo.serverInit(event);
+		GalacticraftJupiter.moonCallisto.serverInit(event);
 	}
 
 	@Override
-	public String getDimensionName() 
+	public String getDimensionName()
 	{
 		return "Jupiter";
 	}
 
 	@Override
-	public boolean reachableDestination() 
+	public boolean reachableDestination()
 	{
 		return false;
+	}
+
+	@Override
+	public IGalaxy getParentGalaxy()
+	{
+		return GalacticraftCore.galaxyMilkyWay;
 	}
 }

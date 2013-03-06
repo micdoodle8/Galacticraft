@@ -12,13 +12,14 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.World;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
@@ -35,7 +36,9 @@ public class GCCoreExplosion
     public double explosionZ;
     public Entity exploder;
     public float explosionSize;
-    public List field_77281_g = new ArrayList();
+
+    /** A list of ChunkPositions of blocks affected by this explosion */
+    public List affectedBlockPositions = new ArrayList();
     private final Map field_77288_k = new HashMap();
 
     public GCCoreExplosion(World par1World, Entity par2Entity, double par3, double par5, double par7, float par9)
@@ -108,7 +111,7 @@ public class GCCoreExplosion
             }
         }
 
-        this.field_77281_g.addAll(var2);
+        this.affectedBlockPositions.addAll(var2);
         this.explosionSize *= 2.0F;
         var3 = MathHelper.floor_double(this.explosionX - this.explosionSize - 1.0D);
         var4 = MathHelper.floor_double(this.explosionX + this.explosionSize + 1.0D);
@@ -138,7 +141,7 @@ public class GCCoreExplosion
                     var19 /= var32;
                     final double var31 = this.worldObj.getBlockDensity(var29, var30.boundingBox);
                     final double var33 = (1.0D - var13) * var31;
-//                    var30.attackEntityFrom(DamageSource.explosion, (int)((var33 * var33 + var33) / 2.0D * 8.0D * (double)this.explosionSize + 1.0D));
+                    var30.attackEntityFrom(DamageSource.explosion, (int)((var33 * var33 + var33) / 10.0D * 1.0D * this.explosionSize + 1.0D));
                     var30.motionX += var15 * var33 * 5;
                     var30.motionY += var17 * var33 * 1.5;
                     var30.motionZ += var19 * var33 * 5;
@@ -161,7 +164,7 @@ public class GCCoreExplosion
     {
         this.worldObj.playSoundEffect(this.explosionX, this.explosionY, this.explosionZ, "random.explode", 4.0F, (1.0F + (this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.2F) * 0.7F);
         this.worldObj.spawnParticle("hugeexplosion", this.explosionX, this.explosionY, this.explosionZ, 0.0D, 0.0D, 0.0D);
-        Iterator var2 = this.field_77281_g.iterator();
+        Iterator var2 = this.affectedBlockPositions.iterator();
         ChunkPosition var3;
         int var4;
         int var5;
@@ -212,7 +215,7 @@ public class GCCoreExplosion
 
         if (this.isFlaming)
         {
-            var2 = this.field_77281_g.iterator();
+            var2 = this.affectedBlockPositions.iterator();
 
             while (var2.hasNext())
             {
@@ -225,7 +228,7 @@ public class GCCoreExplosion
 
                 if (var7 == 0 && Block.opaqueCubeLookup[var24] && this.explosionRNG.nextInt(3) == 0)
                 {
-//                    this.worldObj.setBlockWithNotify(var4, var5, var6, Block.fire.blockID);
+                    this.worldObj.setBlockWithNotify(var4, var5, var6, Block.fire.blockID);
                 }
             }
         }

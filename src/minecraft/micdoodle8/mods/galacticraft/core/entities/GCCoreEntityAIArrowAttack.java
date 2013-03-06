@@ -10,7 +10,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
@@ -47,7 +47,7 @@ public class GCCoreEntityAIArrowAttack extends EntityAIBase
         this.worldObj = par1EntityLiving.worldObj;
         this.entityMoveSpeed = par2;
         this.rangedAttackID = par3;
-        if (par4 == 20 && this.worldObj.provider instanceof IGalacticraftWorldProvider)
+        if (par4 == 20 && this.worldObj != null && this.worldObj.provider instanceof IGalacticraftWorldProvider)
         {
             this.maxRangedAttackTime = par4;
         }

@@ -16,11 +16,11 @@ import net.minecraft.util.MathHelper;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.relauncher.SideOnly;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
@@ -35,11 +35,11 @@ public class GCCoreRenderCreeper extends RenderLiving
         super(new GCCoreModelCreeper(), 0.5F);
     }
 
-    @Override
-	protected void passSpecialRender(EntityLiving par1EntityLiving, double par2, double par4, double par6)
-    {
-        ClientProxyCore.TickHandlerClient.renderName(par1EntityLiving, par2, par4, par6);
-    }
+//    @Override
+//	protected void passSpecialRender(EntityLiving par1EntityLiving, double par2, double par4, double par6)
+//    {
+//        ClientProxyCore.TickHandlerClient.renderName(par1EntityLiving, par2, par4, par6);
+//    }
 
     /**
      * Updates creeper scale in prerender callback

@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -7,35 +8,49 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
  */
 public class GCCoreInventoryTankRefill implements IInventory
 {
-	public ItemStack[] tankSlotContents = new ItemStack[1];
+	public ItemStack[] tankSlotContents = new ItemStack[5];
+	private GCCorePlayerBase player;
 
-	@Override
-	public int getInventoryStackLimit() 
+	public GCCoreInventoryTankRefill()
 	{
-		return 1;
+		this(null);
+	}
+	
+	public GCCoreInventoryTankRefill(GCCorePlayerBase player)
+	{
+		this.player = player;
 	}
 
 	@Override
-	public ItemStack getStackInSlot(int par1) 
+	public int getInventoryStackLimit()
 	{
-		return this.tankSlotContents[par1];
+		return 5;
 	}
 
 	@Override
-	public ItemStack getStackInSlotOnClosing(int par1) 
+	public ItemStack getStackInSlot(int par1)
 	{
-		if (this.tankSlotContents[par1] != null) 
+		if (par1 < 5)
+			return this.tankSlotContents[par1];
+		else
+			return null;
+	}
+
+	@Override
+	public ItemStack getStackInSlotOnClosing(int par1)
+	{
+		if (this.tankSlotContents[par1] != null)
 		{
 			final ItemStack var2 = this.tankSlotContents[par1];
 			return var2;
-		} 
+		}
 		else
 		{
 			return null;
@@ -55,7 +70,7 @@ public class GCCoreInventoryTankRefill implements IInventory
 	{
 		this.tankSlotContents[par1] = par2ItemStack;
 
-		if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit()) 
+		if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit())
 		{
 			par2ItemStack.stackSize = this.getInventoryStackLimit();
 		}
@@ -70,18 +85,18 @@ public class GCCoreInventoryTankRefill implements IInventory
 		{
 			ItemStack var3;
 
-			if (this.tankSlotContents[par1].stackSize <= par2) 
+			if (this.tankSlotContents[par1].stackSize <= par2)
 			{
 				var3 = this.tankSlotContents[par1];
 				this.tankSlotContents[par1] = null;
 				this.onInventoryChanged();
 				return var3;
 			}
-			else 
+			else
 			{
 				var3 = this.tankSlotContents[par1].splitStack(par2);
 
-				if (this.tankSlotContents[par1].stackSize == 0) 
+				if (this.tankSlotContents[par1].stackSize == 0)
 				{
 					this.tankSlotContents[par1] = null;
 				}
@@ -89,15 +104,26 @@ public class GCCoreInventoryTankRefill implements IInventory
 				this.onInventoryChanged();
 				return var3;
 			}
-		} 
-		else 
+		}
+		else
 		{
 			return null;
 		}
 	}
 	
-
-    public NBTTagList writeToNBT2(NBTTagList par1NBTTagList)
+    public void dropAllItems()
+    {
+        for (int var1 = 0; var1 < this.tankSlotContents.length; ++var1)
+        {
+            if (this.tankSlotContents[var1] != null)
+            {
+                this.player.getPlayer().dropPlayerItemWithRandomChoice(this.tankSlotContents[var1], true);
+                this.tankSlotContents[var1] = null;
+            }
+        }
+    }
+    
+    public NBTTagList writeToNBT(NBTTagList par1NBTTagList)
     {
         int var2;
         NBTTagCompound var3;
@@ -107,18 +133,7 @@ public class GCCoreInventoryTankRefill implements IInventory
             if (this.tankSlotContents[var2] != null)
             {
                 var3 = new NBTTagCompound();
-                var3.setByte("TankSlot", (byte)var2);
-                this.tankSlotContents[var2].writeToNBT(var3);
-                par1NBTTagList.appendTag(var3);
-            }
-        }
-
-        for (var2 = 0; var2 < this.tankSlotContents.length; ++var2)
-        {
-            if (this.tankSlotContents[var2] != null)
-            {
-                var3 = new NBTTagCompound();
-                var3.setByte("TankSlot", (byte)(var2 + 100));
+                var3.setByte("Slot", (byte)var2);
                 this.tankSlotContents[var2].writeToNBT(var3);
                 par1NBTTagList.appendTag(var3);
             }
@@ -127,9 +142,9 @@ public class GCCoreInventoryTankRefill implements IInventory
         return par1NBTTagList;
     }
 
-    public void readFromNBT2(NBTTagList par1NBTTagList)
+    public void readFromNBT(NBTTagList par1NBTTagList)
     {
-        this.tankSlotContents = new ItemStack[1];
+        this.tankSlotContents = new ItemStack[5];
 
         for (int var2 = 0; var2 < par1NBTTagList.tagCount(); ++var2)
         {
@@ -148,7 +163,7 @@ public class GCCoreInventoryTankRefill implements IInventory
     }
 
 	@Override
-	public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer) 
+	public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
 	{
 		return true;
 	}
@@ -159,24 +174,24 @@ public class GCCoreInventoryTankRefill implements IInventory
 	}
 
 	@Override
-	public void closeChest() 
+	public void closeChest()
 	{
 	}
 
 	@Override
-	public int getSizeInventory() 
+	public int getSizeInventory()
 	{
-		return 1;
+		return this.tankSlotContents.length;
 	}
 
 	@Override
-	public String getInvName() 
+	public String getInvName()
 	{
 		return "Tank Holder";
 	}
 
 	@Override
-	public void onInventoryChanged() 
+	public void onInventoryChanged()
 	{
 	}
 }

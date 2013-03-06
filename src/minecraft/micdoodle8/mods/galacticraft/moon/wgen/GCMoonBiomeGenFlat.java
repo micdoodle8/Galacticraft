@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.moon.wgen;
 import net.minecraft.world.biome.BiomeGenBase;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
@@ -12,7 +12,7 @@ public class GCMoonBiomeGenFlat extends GCMoonBiomeGenBase
 {
     public GCMoonBiomeGenFlat(int par1)
     {
-        super(par1); 
+        super(par1);
         this.setBiomeName("moonFlat");
         this.setColor(11111111);
         this.minHeight = 1.5F;

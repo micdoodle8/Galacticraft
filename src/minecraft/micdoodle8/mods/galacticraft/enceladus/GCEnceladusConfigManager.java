@@ -7,12 +7,12 @@ import net.minecraftforge.common.Configuration;
 import cpw.mods.fml.common.FMLLog;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
  */
-public class GCEnceladusConfigManager 
+public class GCEnceladusConfigManager
 {
 	public static boolean loaded;
 	
@@ -21,11 +21,14 @@ public class GCEnceladusConfigManager
 	// DIMENSIONS
 	public static int dimensionIDEnceladus;
 	
+	// BLOCKS
+	public static int idBlock;
+	
 	public GCEnceladusConfigManager(File file)
 	{
-		if (!loaded)
+		if (!GCEnceladusConfigManager.loaded)
 		{
-			configuration = new Configuration(file);
+			GCEnceladusConfigManager.configuration = new Configuration(file);
 			this.setDefaultValues();
 		}
 	}
@@ -34,18 +37,20 @@ public class GCEnceladusConfigManager
     {
 		try
 		{
-	        configuration.load();
+	        GCEnceladusConfigManager.configuration.load();
 	        
-	        dimensionIDEnceladus = 				configuration.get("Dimensions", 										"Enceladus Dimension ID",				-24)		.getInt(-24);
+	        GCEnceladusConfigManager.dimensionIDEnceladus = 				GCEnceladusConfigManager.configuration.get("Dimensions", 										"Enceladus Dimension ID",				-24)		.getInt(-24);
+	        
+	        GCEnceladusConfigManager.idBlock = 							GCEnceladusConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, 						"idBlockEnceladus", 					196)	.getInt(196);
 	    }
 		catch (final Exception e)
 		{
 			FMLLog.log(Level.SEVERE, e, "Galacticraft Enceladus has a problem loading it's configuration");
 		}
-		finally 
+		finally
 		{
-			configuration.save();
-			loaded = true;
+			GCEnceladusConfigManager.configuration.save();
+			GCEnceladusConfigManager.loaded = true;
 		}
     }
 }

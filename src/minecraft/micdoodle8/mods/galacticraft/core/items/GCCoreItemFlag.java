@@ -11,11 +11,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumMovingObjectType;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.SideOnly;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
@@ -32,17 +32,17 @@ public class GCCoreItemFlag extends GCCoreItem
 			"darkgray", // 6
 			"darkgreen", // 7
 			"gray", // 8
-			"green", // 9
-			"magenta", // 10
-			"orange", // 11
-			"pink", // 12
-			"purple", // 13
-			"red", // 14
-			"teal", // 15
-			"yellow"}; // 16
+			"magenta", // 9
+			"orange", // 10
+			"pink", // 11
+			"purple", // 12
+			"red", // 13
+			"teal", // 14
+			"yellow", // 15
+			"white"}; // 16
 	public int placeProgress;
 	
-	public GCCoreItemFlag(int par1) 
+	public GCCoreItemFlag(int par1)
 	{
 		super(par1);
 		this.setMaxDamage(0);
@@ -88,7 +88,7 @@ public class GCCoreItemFlag extends GCCoreItem
                 flag.setOwner(par3EntityPlayer.username);
             }
             
-            final int var2 = this.getInventorySlotContainItem(par3EntityPlayer, this.shiftedIndex);
+            final int var2 = this.getInventorySlotContainItem(par3EntityPlayer, this.itemID);
 
             if (var2 >= 0)
             {
@@ -150,5 +150,59 @@ public class GCCoreItemFlag extends GCCoreItem
     public EnumRarity getRarity(ItemStack par1ItemStack)
     {
         return EnumRarity.epic;
+    }
+
+    @Override
+	public String getItemNameIS(ItemStack par1ItemStack)
+    {
+        int var2 = par1ItemStack.getItemDamage();
+
+        if (var2 < 0 || var2 >= GCCoreItemFlag.names.length)
+        {
+            var2 = 0;
+        }
+
+        return super.getItemName() + "." + GCCoreItemFlag.names[var2];
+    }
+    
+    public static int getFlagDamageValueFromDye(int meta)
+    {
+    	switch (meta)
+    	{
+    	case 0:
+    		return 1;
+    	case 1:
+    		return 13;
+    	case 2:
+    		return 7;
+    	case 3:
+    		return 4;
+    	case 4:
+    		return 5;
+    	case 5:
+    		return 12;
+    	case 6:
+    		return 14;
+    	case 7:
+    		return 8;
+    	case 8:
+    		return 6;
+    	case 9:
+    		return 11;
+    	case 10:
+    		return 3;
+    	case 11:
+    		return 15;
+    	case 12:
+    		return 2;
+    	case 13:
+    		return 9;
+    	case 14:
+    		return 10;
+    	case 15:
+    		return 16;
+    	}
+    	
+    	return -1;
     }
 }

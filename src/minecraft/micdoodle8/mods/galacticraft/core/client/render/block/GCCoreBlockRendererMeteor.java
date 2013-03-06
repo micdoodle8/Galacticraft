@@ -10,7 +10,7 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
@@ -48,7 +48,7 @@ public class GCCoreBlockRendererMeteor implements ISimpleBlockRenderingHandler
         final Tessellator var3 = Tessellator.instance;
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        var0.setRenderMinMax(0.15F, 0.15F, 0.15F, 0.85F, 0.85F, 0.85F);
+        var0.setRenderBounds(0.15F, 0.15F, 0.15F, 0.85F, 0.85F, 0.85F);
         var3.startDrawingQuads();
         var3.setNormal(0.0F, -0.8F, 0.0F);
         var0.renderBottomFace(var1, 0.0D, 0.0D, 0.0D, var1.getBlockTextureFromSideAndMetadata(0, var2));
@@ -76,9 +76,9 @@ public class GCCoreBlockRendererMeteor implements ISimpleBlockRenderingHandler
     }
 
 	@Override
-	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) 
+	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer)
 	{
-    	this.renderInvNormalBlock(renderer, block, metadata);
+    	GCCoreBlockRendererMeteor.renderInvNormalBlock(renderer, block, metadata);
 	}
 	
     public void renderBlockMeteor(RenderBlocks renderBlocks, Block par1Block, IBlockAccess var1, int par2, int par3, int par4)
@@ -99,31 +99,31 @@ public class GCCoreBlockRendererMeteor implements ISimpleBlockRenderingHandler
         	renderBlocks.uvRotateTop = 2;
         }
         
-        renderBlocks.setRenderMinMax(0.2F, 0.2F, 0.2F, 0.8F, 0.8F, 0.8F);
+        renderBlocks.setRenderBounds(0.2F, 0.2F, 0.2F, 0.8F, 0.8F, 0.8F);
         renderBlocks.renderStandardBlock(par1Block, par2, par3, par4);
 
-        renderBlocks.setRenderMinMax(0.52F, 0.85F, 0.4F, 0.68F, 0.88F, 0.6F);
+        renderBlocks.setRenderBounds(0.52F, 0.85F, 0.4F, 0.68F, 0.88F, 0.6F);
         renderBlocks.renderStandardBlock(par1Block, par2, par3, par4);
         
-        renderBlocks.setRenderMinMax(0.25F, 0.8F, 0.25F, 0.75F, 0.85F, 0.75F);
+        renderBlocks.setRenderBounds(0.25F, 0.8F, 0.25F, 0.75F, 0.85F, 0.75F);
         renderBlocks.renderStandardBlock(par1Block, par2, par3, par4);
         
-        renderBlocks.setRenderMinMax(0.25F, 0.15F, 0.25F, 0.75F, 0.2F, 0.75F);
+        renderBlocks.setRenderBounds(0.25F, 0.15F, 0.25F, 0.75F, 0.2F, 0.75F);
         renderBlocks.renderStandardBlock(par1Block, par2, par3, par4);
         
-        renderBlocks.setRenderMinMax(0.15F, 0.3F, 0.25F, 0.2F, 0.7F, 0.75F);
+        renderBlocks.setRenderBounds(0.15F, 0.3F, 0.25F, 0.2F, 0.7F, 0.75F);
         renderBlocks.renderStandardBlock(par1Block, par2, par3, par4);
         
-        renderBlocks.setRenderMinMax(0.8F, 0.3F, 0.25F, 0.85F, 0.7F, 0.75F);
+        renderBlocks.setRenderBounds(0.8F, 0.3F, 0.25F, 0.85F, 0.7F, 0.75F);
         renderBlocks.renderStandardBlock(par1Block, par2, par3, par4);
         
-        renderBlocks.setRenderMinMax(0.25F, 0.3F, 0.15F, 0.75F, 0.7F, 0.2F);
+        renderBlocks.setRenderBounds(0.25F, 0.3F, 0.15F, 0.75F, 0.7F, 0.2F);
         renderBlocks.renderStandardBlock(par1Block, par2, par3, par4);
         
-        renderBlocks.setRenderMinMax(0.25F, 0.3F, 0.8F, 0.75F, 0.7F, 0.85F);
+        renderBlocks.setRenderBounds(0.25F, 0.3F, 0.8F, 0.75F, 0.7F, 0.85F);
         renderBlocks.renderStandardBlock(par1Block, par2, par3, par4);
 
-        renderBlocks.setRenderMinMax(0.12F, 0.12F, 0.12F, 0.88F, 0.88F, 0.88F);
+        renderBlocks.setRenderBounds(0.12F, 0.12F, 0.12F, 0.88F, 0.88F, 0.88F);
         
         renderBlocks.clearOverrideBlockTexture();
         par1Block.setBlockBoundsForItemRender();

@@ -5,10 +5,13 @@ import java.util.EnumSet;
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
 import micdoodle8.mods.galacticraft.API.IMapPlanet;
 import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
+import micdoodle8.mods.galacticraft.callisto.client.GCCallistoMapPlanet;
 import micdoodle8.mods.galacticraft.core.GCCoreLocalization;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.europa.client.ClientProxyEuropa;
+import micdoodle8.mods.galacticraft.europa.client.GCEuropaMapPlanet;
 import micdoodle8.mods.galacticraft.io.client.ClientProxyIo;
+import micdoodle8.mods.galacticraft.io.client.GCIoMapPlanet;
 import micdoodle8.mods.galacticraft.jupiter.CommonProxyJupiter;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
@@ -21,7 +24,7 @@ import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.Player;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
@@ -34,30 +37,30 @@ public class ClientProxyJupiter extends CommonProxyJupiter implements IGalacticr
 	public static ClientProxyEuropa moonClientEuropa = new ClientProxyEuropa();
 	
 	@Override
-	public void preInit(FMLPreInitializationEvent event) 
+	public void preInit(FMLPreInitializationEvent event)
 	{
-		moonClientIo.preInit(event);
-		moonClientEuropa.preInit(event);
-		this.lang = new GCCoreLocalization("micdoodle8/mods/galacticraft/jupiter/client");
+		ClientProxyJupiter.moonClientIo.preInit(event);
+		ClientProxyJupiter.moonClientEuropa.preInit(event);
+		ClientProxyJupiter.lang = new GCCoreLocalization("micdoodle8/mods/galacticraft/jupiter/client");
 	}
 
 	@Override
-	public void init(FMLInitializationEvent event) 
+	public void init(FMLInitializationEvent event)
 	{
-		moonClientIo.init(event);
-		moonClientEuropa.init(event);
+		ClientProxyJupiter.moonClientIo.init(event);
+		ClientProxyJupiter.moonClientEuropa.init(event);
 		GalacticraftCore.registerClientSubMod(this);
 	}
 
 	@Override
-	public void postInit(FMLPostInitializationEvent event) 
+	public void postInit(FMLPostInitializationEvent event)
 	{
-		moonClientIo.postInit(event);
-		moonClientEuropa.postInit(event);
+		ClientProxyJupiter.moonClientIo.postInit(event);
+		ClientProxyJupiter.moonClientEuropa.postInit(event);
 	}
 	
 	@Override
-	public void registerRenderInformation() 
+	public void registerRenderInformation()
 	{
 	}
 
@@ -69,7 +72,7 @@ public class ClientProxyJupiter extends CommonProxyJupiter implements IGalacticr
     public class ClientPacketHandler implements IPacketHandler
     {
 		@Override
-		public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player) 
+		public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player)
 		{
 			
 		}
@@ -84,7 +87,7 @@ public class ClientProxyJupiter extends CommonProxyJupiter implements IGalacticr
         }
 
     	@Override
-    	public void tickEnd(EnumSet<TickType> type, Object... tickData) 
+    	public void tickEnd(EnumSet<TickType> type, Object... tickData)
     	{
     	}
     	
@@ -95,39 +98,49 @@ public class ClientProxyJupiter extends CommonProxyJupiter implements IGalacticr
         }
 
     	@Override
-    	public EnumSet<TickType> ticks() 
+    	public EnumSet<TickType> ticks()
     	{
     		return EnumSet.of(TickType.CLIENT);
     	}
     }
 
 	@Override
-	public String getDimensionName() 
+	public String getDimensionName()
 	{
 		return "Jupiter";
 	}
 
 	@Override
-	public GCCoreLocalization getLanguageFile() 
-	{
-		return this.lang;
-	}
-
-	@Override
-	public String getPlanetSpriteDirectory() 
+	public String getPlanetSpriteDirectory()
 	{
 		return "/micdoodle8/mods/galacticraft/jupiter/client/planets/";
 	}
 
 	@Override
-	public IPlanetSlotRenderer getSlotRenderer() 
+	public IPlanetSlotRenderer getSlotRenderer()
 	{
 		return new GCJupiterSlotRenderer();
 	}
+	
+	private final IMapPlanet jupiter = new GCJupiterMapPlanet();
 
 	@Override
-	public IMapPlanet getPlanetForMap() 
+	public IMapPlanet getPlanetForMap()
 	{
-		return new GCJupiterMapPlanet();
+		return this.jupiter;
+	}
+
+	@Override
+	public IMapPlanet[] getChildMapPlanets()
+	{
+		final IMapPlanet[] moonMapPlanet = {new GCCallistoMapPlanet(), new GCEuropaMapPlanet(), new GCIoMapPlanet()};
+		
+		return moonMapPlanet;
+	}
+
+	@Override
+	public String getPathToMusicFile()
+	{
+		return null;
 	}
 }

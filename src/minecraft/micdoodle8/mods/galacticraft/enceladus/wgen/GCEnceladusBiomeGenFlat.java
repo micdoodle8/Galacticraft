@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.enceladus.wgen;
 import net.minecraft.world.biome.BiomeGenBase;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
@@ -12,7 +12,7 @@ public class GCEnceladusBiomeGenFlat extends GCEnceladusBiomeGenBase
 {
     public GCEnceladusBiomeGenFlat(int par1)
     {
-        super(par1); 
+        super(par1);
         this.setBiomeName("enceladusFlat");
         this.setColor(16711680);
         this.minHeight = 2.5F;

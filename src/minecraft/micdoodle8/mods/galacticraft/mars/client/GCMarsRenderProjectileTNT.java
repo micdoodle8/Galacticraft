@@ -11,11 +11,11 @@ import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.relauncher.SideOnly;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
@@ -35,22 +35,14 @@ public class GCMarsRenderProjectileTNT extends Render
         GL11.glPushMatrix();
         GL11.glTranslatef((float)par2, (float)par4, (float)par6);
         this.loadTexture("/terrain.png");
-        final Block var10 = Block.blocksList[Block.tnt.blockID];
+        final Block var10 = Block.tnt;
         final World var11 = par1EntityFallingSand.getWorld();
         GL11.glDisable(GL11.GL_LIGHTING);
+        final Tessellator var12;
 
-        if (var10 == Block.dragonEgg)
+        if (var10 != null)
         {
-            this.renderBlocks.blockAccess = var11;
-            final Tessellator var12 = Tessellator.instance;
-            var12.startDrawingQuads();
-            var12.setTranslation(-MathHelper.floor_double(par1EntityFallingSand.posX) - 0.5F, -MathHelper.floor_double(par1EntityFallingSand.posY) - 0.5F, -MathHelper.floor_double(par1EntityFallingSand.posZ) - 0.5F);
-            this.renderBlocks.renderBlockByRenderType(var10, MathHelper.floor_double(par1EntityFallingSand.posX), MathHelper.floor_double(par1EntityFallingSand.posY), MathHelper.floor_double(par1EntityFallingSand.posZ));
-            var12.setTranslation(0.0D, 0.0D, 0.0D);
-            var12.draw();
-        }
-        else if (var10 != null)
-        {
+            this.renderBlocks.setRenderBoundsFromBlock(var10);
             this.renderBlocks.renderBlockSandFalling(var10, var11, MathHelper.floor_double(par1EntityFallingSand.posX), MathHelper.floor_double(par1EntityFallingSand.posY), MathHelper.floor_double(par1EntityFallingSand.posZ), 0);
         }
 

@@ -1,6 +1,9 @@
 package micdoodle8.mods.galacticraft.mars.entities;
 
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityMob;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityCreeper;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySkeleton;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpider;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityZombie;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.ai.EntityAIAttackOnCollide;
@@ -21,7 +24,10 @@ public class GCMarsEntitySludgeling extends EntityMob
         this.setSize(0.2F, 0.2F);
         this.moveSpeed = 0.6F;
         this.tasks.addTask(1, new EntityAIAttackOnCollide(this, 0.25F, true));
-        this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, GCCoreEntityMob.class, 16.0F, 0, false, true));
+        this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, GCCoreEntitySkeleton.class, 16.0F, 0, false, true));
+        this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, GCCoreEntityCreeper.class, 16.0F, 0, false, true));
+        this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, GCCoreEntityZombie.class, 16.0F, 0, false, true));
+        this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, GCCoreEntitySpider.class, 16.0F, 0, false, true));
         this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 16.0F, 0, false, true));
     }
 

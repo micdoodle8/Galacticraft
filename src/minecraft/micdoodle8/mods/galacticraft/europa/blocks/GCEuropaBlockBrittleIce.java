@@ -12,8 +12,8 @@ import net.minecraft.stats.StatList;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.SideOnly;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCEuropaBlockBrittleIce extends BlockBreakable
 {
@@ -38,7 +38,7 @@ public class GCEuropaBlockBrittleIce extends BlockBreakable
     }
     
 	@Override
-	public int getBlockTexture(IBlockAccess par1IBlockAccess, int x, int y, int z, int side) 
+	public int getBlockTexture(IBlockAccess par1IBlockAccess, int x, int y, int z, int side)
 	{
 		return side == 1 ? 1 : side == 0 ? 3 : 0;
 	}

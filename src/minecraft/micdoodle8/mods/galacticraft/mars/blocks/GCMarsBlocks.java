@@ -11,18 +11,18 @@ import net.minecraft.block.material.MaterialLiquid;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
-import cpw.mods.fml.relauncher.SideOnly;
-import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
  */
-public class GCMarsBlocks 
+public class GCMarsBlocks
 {
 	public static Block marsStone;
 	public static Block marsDirt;
@@ -36,55 +36,55 @@ public class GCMarsBlocks
 
     public static final Material bacterialSludge = new MaterialLiquid(MapColor.waterColor);
 	
-	public static void initBlocks() 
-	{	
-		blockOres = 										new GCMarsBlockOre					(GCMarsConfigManager.idBlockOre)												.setHardness(3.0F) 																				 																											.setBlockName("blockores");
-		marsCobblestone = 									new GCMarsBlock						(GCMarsConfigManager.idBlockMarsCobblestone, 			13, Material.rock)		.setHardness(2.2F)																				.setCreativeTab(GalacticraftCore.galacticraftTab)																.setBlockName("marsCobblestone");
-		marsStone = 										new GCMarsBlockStone				(GCMarsConfigManager.idBlockMarsStone, 					0)						.setHardness(1.7F)																				.setCreativeTab(GalacticraftCore.galacticraftTab)																.setBlockName("marsStone");
-		marsDirt = 											new GCMarsBlock						(GCMarsConfigManager.idBlockMarsDirt, 					3, Material.ground)		.setHardness(0.6F)																				.setCreativeTab(GalacticraftCore.galacticraftTab)																.setBlockName("marsDirt");
-		marsGrass = 										new GCMarsBlockGrass				(GCMarsConfigManager.idBlockMarsGrass,					2)						.setHardness(0.7F)																				.setCreativeTab(GalacticraftCore.galacticraftTab)																.setBlockName("marsGrass");
-		creeperEgg = 										new GCMarsBlockCreeperEgg			(GCMarsConfigManager.idBlockCreeperEgg, 				12)						.setHardness(3.0F)		.setResistance(15.0F)	.setLightValue(0.125F)							.setCreativeTab(GalacticraftCore.galacticraftTab)		.setStepSound(Block.soundStoneFootstep)					.setBlockName("creeperEgg");
-		creeperDungeonWall = 								new GCMarsBlockCreeperDungeonWall	(GCMarsConfigManager.idBlockCreeperDungeonWall,     	11, Material.rock)		.setHardness(5.0F)      .setResistance(100F)    .setLightValue(0F)								.setCreativeTab(GalacticraftCore.galacticraftTab)       	.setStepSound(Block.soundStoneFootstep)					.setBlockName("creeperDungeonWall");
-		bacterialSludgeStill = 								new GCMarsBlockStationary 			(GCMarsConfigManager.idBlockBacterialSludgeStill,  		237, bacterialSludge)	.setHardness(0.0F)								.setLightValue(0.2F)	.setLightOpacity(3)		.setCreativeTab((CreativeTabs)null)																			.setBlockName("bacterialSludgeStill");
-		bacterialSludgeMoving = 							new GCMarsBlockFlowing 				(GCMarsConfigManager.idBlockBacterialSludgeMoving, 		237, bacterialSludge)	.setHardness(0.0F)								.setLightValue(0.2F)	.setLightOpacity(3)		.setCreativeTab((CreativeTabs)null)																			.setBlockName("bacterialSludgeMoving");
-		Item.itemsList[blockOres.blockID] = 				new GCMarsItemBlockOre				(blockOres.blockID - 256)																																																																.setItemName("blockores");
+	public static void initBlocks()
+	{
+		GCMarsBlocks.blockOres = 										new GCMarsBlockOre					(GCMarsConfigManager.idBlockOre)												.setHardness(3.0F) 																				 																											.setBlockName("blockores");
+		GCMarsBlocks.marsCobblestone = 									new GCMarsBlock						(GCMarsConfigManager.idBlockMarsCobblestone, 			13, Material.rock)		.setHardness(2.2F)																				.setCreativeTab(GalacticraftCore.galacticraftTab)																.setBlockName("marsCobblestone");
+		GCMarsBlocks.marsStone = 										new GCMarsBlockStone				(GCMarsConfigManager.idBlockMarsStone, 					0)						.setHardness(1.7F)																				.setCreativeTab(GalacticraftCore.galacticraftTab)																.setBlockName("marsStone");
+		GCMarsBlocks.marsDirt = 											new GCMarsBlock						(GCMarsConfigManager.idBlockMarsDirt, 					3, Material.ground)		.setHardness(0.6F)																				.setCreativeTab(GalacticraftCore.galacticraftTab)																.setBlockName("marsDirt");
+		GCMarsBlocks.marsGrass = 										new GCMarsBlockGrass				(GCMarsConfigManager.idBlockMarsGrass,					2)						.setHardness(0.7F)																				.setCreativeTab(GalacticraftCore.galacticraftTab)																.setBlockName("marsGrass");
+		GCMarsBlocks.creeperEgg = 										new GCMarsBlockCreeperEgg			(GCMarsConfigManager.idBlockCreeperEgg, 				12)						.setHardness(3.0F)		.setResistance(15.0F)	.setLightValue(0.125F)							.setCreativeTab(GalacticraftCore.galacticraftTab)		.setStepSound(Block.soundStoneFootstep)					.setBlockName("creeperEgg");
+		GCMarsBlocks.creeperDungeonWall = 								new GCMarsBlockCreeperDungeonWall	(GCMarsConfigManager.idBlockCreeperDungeonWall,     	11, Material.rock)		.setHardness(5.0F)      .setResistance(100F)    .setLightValue(0F)								.setCreativeTab(GalacticraftCore.galacticraftTab)       	.setStepSound(Block.soundStoneFootstep)					.setBlockName("creeperDungeonWall");
+		GCMarsBlocks.bacterialSludgeStill = 								new GCMarsBlockStationary 			(GCMarsConfigManager.idBlockBacterialSludgeStill,  		237, GCMarsBlocks.bacterialSludge)	.setHardness(0.0F)								.setLightValue(0.2F)	.setLightOpacity(3)		.setCreativeTab((CreativeTabs)null)																			.setBlockName("bacterialSludgeStill");
+		GCMarsBlocks.bacterialSludgeMoving = 							new GCMarsBlockFlowing 				(GCMarsConfigManager.idBlockBacterialSludgeMoving, 		237, GCMarsBlocks.bacterialSludge)	.setHardness(0.0F)								.setLightValue(0.2F)	.setLightOpacity(3)		.setCreativeTab((CreativeTabs)null)																			.setBlockName("bacterialSludgeMoving");
+		Item.itemsList[GCMarsBlocks.blockOres.blockID] = 				new GCMarsItemBlockOre				(GCMarsBlocks.blockOres.blockID - 256)																																																																.setItemName("blockores");
 	}
 
-	public static void setHarvestLevels() 
+	public static void setHarvestLevels()
 	{
-		MinecraftForge.setBlockHarvestLevel(creeperEgg, 				"pickaxe", 	2);
-		MinecraftForge.setBlockHarvestLevel(creeperDungeonWall, 		"pickaxe", 	2);
-		MinecraftForge.setBlockHarvestLevel(marsCobblestone, 			"pickaxe", 	1);
-		MinecraftForge.setBlockHarvestLevel(marsStone, 					"pickaxe", 	1);
+		MinecraftForge.setBlockHarvestLevel(GCMarsBlocks.creeperEgg, 				"pickaxe", 	2);
+		MinecraftForge.setBlockHarvestLevel(GCMarsBlocks.creeperDungeonWall, 		"pickaxe", 	2);
+		MinecraftForge.setBlockHarvestLevel(GCMarsBlocks.marsCobblestone, 			"pickaxe", 	1);
+		MinecraftForge.setBlockHarvestLevel(GCMarsBlocks.marsStone, 					"pickaxe", 	1);
 	}
 	
-	public static void registerBlocks() 
+	public static void registerBlocks()
 	{
-		GameRegistry.registerBlock(marsStone);
-		GameRegistry.registerBlock(marsDirt);
-		GameRegistry.registerBlock(marsGrass);
-		GameRegistry.registerBlock(marsCobblestone);
-		GameRegistry.registerBlock(creeperEgg);
-		GameRegistry.registerBlock(creeperDungeonWall);
-		GameRegistry.registerBlock(bacterialSludgeStill);
-		GameRegistry.registerBlock(bacterialSludgeMoving);
+		GameRegistry.registerBlock(GCMarsBlocks.marsStone);
+		GameRegistry.registerBlock(GCMarsBlocks.marsDirt);
+		GameRegistry.registerBlock(GCMarsBlocks.marsGrass);
+		GameRegistry.registerBlock(GCMarsBlocks.marsCobblestone);
+		GameRegistry.registerBlock(GCMarsBlocks.creeperEgg);
+		GameRegistry.registerBlock(GCMarsBlocks.creeperDungeonWall);
+		GameRegistry.registerBlock(GCMarsBlocks.bacterialSludgeStill);
+		GameRegistry.registerBlock(GCMarsBlocks.bacterialSludgeMoving);
 	}
 
 	@SideOnly(Side.CLIENT)
-	public static void addNames() 
+	public static void addNames()
 	{
-		addName(marsStone);
-		addName(marsDirt);
-		addName(marsGrass);
-		addName(marsCobblestone);
-		addName(creeperEgg);
-		addName(creeperDungeonWall);
-		addNameWithMetadata("tile.blockores.desh.name");
-		addNameWithMetadata("tile.blockores.electrum.name");
-		addNameWithMetadata("tile.blockores.quandrium.name");
-		addNameWithMetadata("tile.blockores.aluminummars.name");
-		addNameWithMetadata("tile.blockores.coppermars.name");
-		addNameWithMetadata("tile.blockores.titaniummars.name");
+		GCMarsBlocks.addName(GCMarsBlocks.marsStone);
+		GCMarsBlocks.addName(GCMarsBlocks.marsDirt);
+		GCMarsBlocks.addName(GCMarsBlocks.marsGrass);
+		GCMarsBlocks.addName(GCMarsBlocks.marsCobblestone);
+		GCMarsBlocks.addName(GCMarsBlocks.creeperEgg);
+		GCMarsBlocks.addName(GCMarsBlocks.creeperDungeonWall);
+		GCMarsBlocks.addNameWithMetadata("tile.blockores.desh.name");
+		GCMarsBlocks.addNameWithMetadata("tile.blockores.electrum.name");
+		GCMarsBlocks.addNameWithMetadata("tile.blockores.quandrium.name");
+		GCMarsBlocks.addNameWithMetadata("tile.blockores.aluminummars.name");
+		GCMarsBlocks.addNameWithMetadata("tile.blockores.coppermars.name");
+		GCMarsBlocks.addNameWithMetadata("tile.blockores.titaniummars.name");
 	}
 	
 	private static void addName(Block block)

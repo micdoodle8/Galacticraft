@@ -13,9 +13,10 @@ import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 
 public class GCCoreItemBow extends ItemBow
 {
-	public GCCoreItemBow(int par1) 
+	public GCCoreItemBow(int par1)
 	{
 		super(par1);
+		this.setCreativeTab(null);
 	}
 	
 	@Override
@@ -33,7 +34,7 @@ public class GCCoreItemBow extends ItemBow
         
         final boolean var5 = par3EntityPlayer.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantment.infinity.effectId, par1ItemStack) > 0;
 
-        if (var5 || par3EntityPlayer.inventory.hasItem(Item.arrow.shiftedIndex))
+        if (var5 || par3EntityPlayer.inventory.hasItem(Item.arrow.itemID))
         {
             float var7 = var6 / 20.0F;
             var7 = (var7 * var7 + var7 * 2.0F) / 3.0F;
@@ -52,7 +53,7 @@ public class GCCoreItemBow extends ItemBow
 
             if (var7 == 1.0F)
             {
-                var8.func_70243_d(true);
+                var8.setIsCritical(true);
             }
 
             final int var9 = EnchantmentHelper.getEnchantmentLevel(Enchantment.power.effectId, par1ItemStack);
@@ -75,7 +76,7 @@ public class GCCoreItemBow extends ItemBow
             }
 
             par1ItemStack.damageItem(1, par3EntityPlayer);
-            par2World.playSoundAtEntity(par3EntityPlayer, "random.bow", 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + var7 * 0.5F);
+            par2World.playSoundAtEntity(par3EntityPlayer, "random.bow", 1.0F, 1.0F / (Item.itemRand.nextFloat() * 0.4F + 1.2F) + var7 * 0.5F);
 
             if (var5)
             {
@@ -83,7 +84,7 @@ public class GCCoreItemBow extends ItemBow
             }
             else
             {
-                par3EntityPlayer.inventory.consumeInventoryItem(Item.arrow.shiftedIndex);
+                par3EntityPlayer.inventory.consumeInventoryItem(Item.arrow.itemID);
             }
 
             if (!par2World.isRemote)

@@ -9,26 +9,27 @@ import java.util.Random;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.SideOnly;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
  */
-public class GCCoreBlockUnlitTorch extends GCCoreBlock
+public class GCCoreBlockUnlitTorch extends Block
 {
 	public boolean lit;
 	
 	protected GCCoreBlockUnlitTorch(int par1, int par2, boolean lit)
     {
-        super(par1, par2);
+        super(par1, par2, Material.circuits);
         this.setTickRandomly(true);
         this.setRequiresSelfNotify();
         this.lit = lit;
@@ -105,7 +106,11 @@ public class GCCoreBlockUnlitTorch extends GCCoreBlock
      * called before onBlockPlacedBy by ItemBlock and ItemReed
      */
     @Override
-    public int func_85104_a(World par1World, int par2, int par3, int par4, int par5, float par6, float par7, float par8, int par9)
+
+    /**
+     * Called when a block is placed using its ItemBlock. Args: World, X, Y, Z, side, hitX, hitY, hitZ, block metadata
+     */
+    public int onBlockPlaced(World par1World, int par2, int par3, int par4, int par5, float par6, float par7, float par8, int par9)
     {
         int var10 = par9;
 
@@ -321,5 +326,11 @@ public class GCCoreBlockUnlitTorch extends GCCoreBlock
                 par1World.spawnParticle("smoke", var7, var9, var11, 0.0D, 0.0D, 0.0D);
             }
     	}
+    }
+
+	@Override
+    public String getTextureFile()
+    {
+    	return "/micdoodle8/mods/galacticraft/core/client/blocks/core.png";
     }
 }

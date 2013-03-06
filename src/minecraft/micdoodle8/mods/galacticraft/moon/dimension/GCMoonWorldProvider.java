@@ -10,11 +10,11 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
-import cpw.mods.fml.relauncher.SideOnly;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
@@ -57,13 +57,14 @@ public class GCMoonWorldProvider extends WorldProvider implements IGalacticraftW
 	@Override
     public Vec3 getFogColor(float var1, float var2)
     {
-        return this.worldObj.getWorldVec3Pool().getVecFromPool((double)100F / 255F, (double)107F / 255F, (double)125F / 255F);
+//        return this.worldObj.getWorldVec3Pool().getVecFromPool((double)100F / 255F, (double)107F / 255F, (double)125F / 255F);
+        return this.worldObj.getWorldVec3Pool().getVecFromPool((double)0F / 255F, (double)0F / 255F, (double)0F / 255F);
     }
 
 	@Override
     public Vec3 getSkyColor(Entity cameraEntity, float partialTicks)
     {
-        return this.worldObj.getWorldVec3Pool().getVecFromPool((double)0, (double)0, (double)0);
+        return this.worldObj.getWorldVec3Pool().getVecFromPool(0, 0, 0);
     }
 	
 	@Override
@@ -168,7 +169,7 @@ public class GCMoonWorldProvider extends WorldProvider implements IGalacticraftW
     @Override
     public boolean canRespawnHere()
     {
-        return false;
+        return true;
     }
     
     @Override
@@ -190,7 +191,7 @@ public class GCMoonWorldProvider extends WorldProvider implements IGalacticraftW
     }
 
 	@Override
-	public String getDimensionName() 
+	public String getDimensionName()
 	{
 		return "Moon";
 	}
@@ -220,13 +221,13 @@ public class GCMoonWorldProvider extends WorldProvider implements IGalacticraftW
     }
 
 	@Override
-	public float getGravity() 
+	public float getGravity()
 	{
 		return 0.062F;
 	}
 
 	@Override
-	public float getMeteorFrequency() 
+	public float getMeteorFrequency()
 	{
 		return 7;
 	}

@@ -8,8 +8,12 @@ import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
 import micdoodle8.mods.galacticraft.core.GCCoreLocalization;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.enceladus.client.ClientProxyEnceladus;
+import micdoodle8.mods.galacticraft.enceladus.client.GCEnceladusMapPlanet;
+import micdoodle8.mods.galacticraft.mimas.client.ClientProxyMimas;
+import micdoodle8.mods.galacticraft.mimas.client.GCMimasMapPlanet;
 import micdoodle8.mods.galacticraft.saturn.CommonProxySaturn;
 import micdoodle8.mods.galacticraft.titan.client.ClientProxyTitan;
+import micdoodle8.mods.galacticraft.titan.client.GCTitanMapPlanet;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import cpw.mods.fml.common.ITickHandler;
@@ -21,7 +25,7 @@ import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.Player;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
@@ -32,33 +36,40 @@ public class ClientProxySaturn extends CommonProxySaturn implements IGalacticraf
 	
 	public static ClientProxyTitan moonClientTitan = new ClientProxyTitan();
 	public static ClientProxyEnceladus moonClientEnceladus = new ClientProxyEnceladus();
+	public static ClientProxyMimas moonClientMimas = new ClientProxyMimas();
 	
 	@Override
-	public void preInit(FMLPreInitializationEvent event) 
+	public void preInit(FMLPreInitializationEvent event)
 	{
-		moonClientTitan.preInit(event);
-		moonClientEnceladus.preInit(event);
-		this.lang = new GCCoreLocalization("micdoodle8/mods/galacticraft/saturn/client");
+		ClientProxySaturn.moonClientTitan.preInit(event);
+		ClientProxySaturn.moonClientEnceladus.preInit(event);
+		ClientProxySaturn.moonClientMimas.preInit(event);
+		ClientProxySaturn.lang = new GCCoreLocalization("micdoodle8/mods/galacticraft/saturn/client");
 	}
 
 	@Override
-	public void init(FMLInitializationEvent event) 
+	public void init(FMLInitializationEvent event)
 	{
-		moonClientTitan.init(event);
-		moonClientEnceladus.init(event);
+		ClientProxySaturn.moonClientTitan.init(event);
+		ClientProxySaturn.moonClientEnceladus.init(event);
+		ClientProxySaturn.moonClientMimas.init(event);
 		GalacticraftCore.registerClientSubMod(this);
 	}
 
 	@Override
-	public void postInit(FMLPostInitializationEvent event) 
+	public void postInit(FMLPostInitializationEvent event)
 	{
-		moonClientTitan.postInit(event);
-		moonClientEnceladus.postInit(event);
+		ClientProxySaturn.moonClientTitan.postInit(event);
+		ClientProxySaturn.moonClientEnceladus.postInit(event);
+		ClientProxySaturn.moonClientMimas.postInit(event);
 	}
 	
 	@Override
-	public void registerRenderInformation() 
+	public void registerRenderInformation()
 	{
+		ClientProxySaturn.moonClientTitan.registerRenderInformation();
+		ClientProxySaturn.moonClientEnceladus.registerRenderInformation();
+		ClientProxySaturn.moonClientMimas.registerRenderInformation();
 	}
 
 	@Override
@@ -69,7 +80,7 @@ public class ClientProxySaturn extends CommonProxySaturn implements IGalacticraf
     public class ClientPacketHandler implements IPacketHandler
     {
 		@Override
-		public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player) 
+		public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player)
 		{
 			
 		}
@@ -84,7 +95,7 @@ public class ClientProxySaturn extends CommonProxySaturn implements IGalacticraf
         }
 
     	@Override
-    	public void tickEnd(EnumSet<TickType> type, Object... tickData) 
+    	public void tickEnd(EnumSet<TickType> type, Object... tickData)
     	{
     	}
     	
@@ -95,39 +106,49 @@ public class ClientProxySaturn extends CommonProxySaturn implements IGalacticraf
         }
 
     	@Override
-    	public EnumSet<TickType> ticks() 
+    	public EnumSet<TickType> ticks()
     	{
     		return EnumSet.of(TickType.CLIENT);
     	}
     }
 
 	@Override
-	public String getDimensionName() 
+	public String getDimensionName()
 	{
 		return "Saturn";
 	}
 
 	@Override
-	public GCCoreLocalization getLanguageFile() 
-	{
-		return this.lang;
-	}
-
-	@Override
-	public String getPlanetSpriteDirectory() 
+	public String getPlanetSpriteDirectory()
 	{
 		return "/micdoodle8/mods/galacticraft/saturn/client/planets/";
 	}
 
 	@Override
-	public IPlanetSlotRenderer getSlotRenderer() 
+	public IPlanetSlotRenderer getSlotRenderer()
 	{
 		return new GCSaturnSlotRenderer();
 	}
+	
+	private final IMapPlanet saturn = new GCSaturnMapPlanet();
 
 	@Override
-	public IMapPlanet getPlanetForMap() 
+	public IMapPlanet getPlanetForMap()
 	{
-		return new GCSaturnMapPlanet();
+		return this.saturn;
+	}
+
+	@Override
+	public IMapPlanet[] getChildMapPlanets()
+	{
+		final IMapPlanet[] moonMapPlanet = {new GCTitanMapPlanet(), new GCEnceladusMapPlanet(), new GCMimasMapPlanet()};
+		
+		return moonMapPlanet;
+	}
+
+	@Override
+	public String getPathToMusicFile()
+	{
+		return null;
 	}
 }

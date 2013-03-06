@@ -1,9 +1,9 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
-import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreContainerRocketBench;
+import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -12,20 +12,18 @@ import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 
 public class GCCoreGuiRocketBench extends GuiContainer
 {
-    public GCCoreGuiRocketBench(InventoryPlayer par1InventoryPlayer)
+    public GCCoreGuiRocketBench(InventoryPlayer par1InventoryPlayer, int x, int y, int z)
     {
-        super(new GCCoreContainerRocketBench(par1InventoryPlayer));
+        super(new GCCoreContainerRocketBench(par1InventoryPlayer, x, y, z));
     }
     
     @Override
     public void initGui()
     {
-    	FMLLog.info("rocket");
     	super.initGui();
         this.controlList.clear();
         final byte var1 = -16;
@@ -45,15 +43,13 @@ public class GCCoreGuiRocketBench extends GuiContainer
             case 1:
                 final Object[] toSend = {1};
                 FMLClientHandler.instance().getClient().displayGuiScreen(null);
-                
-                FMLLog.info("" + FMLClientHandler.instance().getClient().currentScreen);
-                
+
                 while (FMLClientHandler.instance().getClient().currentScreen != null)
                 {
                 	
                 }
                 
-                PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 4, toSend));
+                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 4, toSend));
                 FMLClientHandler.instance().getClient().thePlayer.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiBuggyCraftingBench, FMLClientHandler.instance().getClient().thePlayer.worldObj, (int)FMLClientHandler.instance().getClient().thePlayer.posX, (int)FMLClientHandler.instance().getClient().thePlayer.posY, (int)FMLClientHandler.instance().getClient().thePlayer.posZ);
                 break;
             }

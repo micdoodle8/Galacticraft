@@ -36,7 +36,8 @@ public class GCCoreLocalization {
             throw new InvalidParameterException("Mod name can't be null");
         }
         this.modName = modName;
-        this.load(getCurrentLanguage(), true);
+        FMLLog.info("" + modName);
+        this.load(GCCoreLocalization.getCurrentLanguage(), true);
     }
 
     /**
@@ -46,7 +47,7 @@ public class GCCoreLocalization {
      * @return
      */
     public synchronized String get(String key) {
-        final String currentLanguage = getCurrentLanguage();
+        final String currentLanguage = GCCoreLocalization.getCurrentLanguage();
         if (!currentLanguage.equals(this.loadedLanguage)) {
             this.load(currentLanguage, true);
         }
@@ -58,9 +59,9 @@ public class GCCoreLocalization {
         this.mappings.clear();
         try {
             final BufferedReader langStream = new BufferedReader(new InputStreamReader(net.minecraft.enchantment.Enchantment.class.getResourceAsStream(
-                            "/" + this.modName + "/lang/" + newLanguage + ".properties"), "UTF-8"));
+                            this.modName + "lang/" + newLanguage + ".properties"), "UTF-8"));
             final BufferedReader defaultLangStream = new BufferedReader(new InputStreamReader(net.minecraft.enchantment.Enchantment.class.getResourceAsStream(
-                            "/" + this.modName + "/lang/" + DEFAULT_LANGUAGE + ".properties"), "UTF-8"));
+                            this.modName + "lang/" + GCCoreLocalization.DEFAULT_LANGUAGE + ".properties"), "UTF-8"));
             this.loadMappings(langStream == null ? defaultLangStream : langStream, this.mappings);
             this.loadMappings(defaultLangStream, this.defaultMappings);
             if (langStream != null) {
@@ -70,7 +71,7 @@ public class GCCoreLocalization {
         } catch (final Exception e) {
         	FMLLog.warning("COULD NOT LOAD GALACTICRAFT LANGUAGE FILE(S)");
             if (force){
-                this.load(DEFAULT_LANGUAGE, false);
+                this.load(GCCoreLocalization.DEFAULT_LANGUAGE, false);
             }
             return;
         }

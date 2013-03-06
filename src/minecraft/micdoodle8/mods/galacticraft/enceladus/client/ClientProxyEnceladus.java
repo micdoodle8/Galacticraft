@@ -9,11 +9,11 @@ import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
 import micdoodle8.mods.galacticraft.API.IMapPlanet;
 import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
 import micdoodle8.mods.galacticraft.core.GCCoreLocalization;
-import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.util.PacketUtil;
+import micdoodle8.mods.galacticraft.enceladus.CommonProxyEnceladus;
 import micdoodle8.mods.galacticraft.enceladus.blocks.GCEnceladusBlocks;
 import micdoodle8.mods.galacticraft.enceladus.dimension.GCEnceladusWorldProvider;
-import micdoodle8.mods.galacticraft.titan.CommonProxyTitan;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.multiplayer.WorldClient;
@@ -25,7 +25,6 @@ import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.ITickHandler;
-import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -34,14 +33,15 @@ import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.common.registry.TickRegistry;
+import cpw.mods.fml.relauncher.Side;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
  */
-public class ClientProxyEnceladus extends CommonProxyTitan implements IGalacticraftSubModClient
+public class ClientProxyEnceladus extends CommonProxyEnceladus implements IGalacticraftSubModClient
 {
 	public static long getFirstBootTime;
 	public static long getCurrentTime;
@@ -52,9 +52,9 @@ public class ClientProxyEnceladus extends CommonProxyTitan implements IGalacticr
 	@Override
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		lang = new GCCoreLocalization("micdoodle8/mods/galacticraft/enceladus/client");
+		ClientProxyEnceladus.lang = new GCCoreLocalization("micdoodle8/mods/galacticraft/enceladus/client");
 		MinecraftForge.EVENT_BUS.register(new GCEnceladusSounds());
-		getFirstBootTime = System.currentTimeMillis();
+		ClientProxyEnceladus.getFirstBootTime = System.currentTimeMillis();
 	}
 
 	@Override
@@ -74,7 +74,7 @@ public class ClientProxyEnceladus extends CommonProxyTitan implements IGalacticr
 	}
 	
 	@Override
-	public void registerRenderInformation() 
+	public void registerRenderInformation()
 	{
 		MinecraftForgeClient.preloadTexture("/micdoodle8/mods/galacticraft/enceladus/client/blocks/enceladus.png");
 		MinecraftForgeClient.preloadTexture("/micdoodle8/mods/galacticraft/enceladus/client/items/enceladus.png");
@@ -118,7 +118,7 @@ public class ClientProxyEnceladus extends CommonProxyTitan implements IGalacticr
         public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player p)
         {
             final DataInputStream data = new DataInputStream(new ByteArrayInputStream(packet.data));
-            final int packetType = GCCoreUtil.readPacketID(data);
+            final int packetType = PacketUtil.readPacketID(data);
             final EntityPlayer player = (EntityPlayer)p;
             
             if (packetType == 0)
@@ -154,7 +154,7 @@ public class ClientProxyEnceladus extends CommonProxyTitan implements IGalacticr
         }
 
     	@Override
-    	public void tickEnd(EnumSet<TickType> type, Object... tickData) 
+    	public void tickEnd(EnumSet<TickType> type, Object... tickData)
     	{
     	}
     	
@@ -165,38 +165,44 @@ public class ClientProxyEnceladus extends CommonProxyTitan implements IGalacticr
         }
 
     	@Override
-    	public EnumSet<TickType> ticks() 
+    	public EnumSet<TickType> ticks()
     	{
     		return EnumSet.of(TickType.CLIENT);
     	}
     }
 
 	@Override
-	public String getDimensionName() 
+	public String getDimensionName()
 	{
 		return "Enceladus";
 	}
 
 	@Override
-	public GCCoreLocalization getLanguageFile() 
-	{
-		return this.lang;
-	}
-
-	@Override
-	public String getPlanetSpriteDirectory() 
+	public String getPlanetSpriteDirectory()
 	{
 		return "/micdoodle8/mods/galacticraft/enceladus/client/planets/";
 	}
 
 	@Override
-	public IPlanetSlotRenderer getSlotRenderer() 
+	public IPlanetSlotRenderer getSlotRenderer()
 	{
 		return new GCEnceladusSlotRenderer();
 	}
 
 	@Override
-	public IMapPlanet getPlanetForMap() 
+	public IMapPlanet getPlanetForMap()
+	{
+		return null;
+	}
+
+	@Override
+	public IMapPlanet[] getChildMapPlanets()
+	{
+		return null;
+	}
+
+	@Override
+	public String getPathToMusicFile()
 	{
 		return null;
 	}

@@ -9,12 +9,12 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
  */
-public class GCMarsBiomeDecorator 
+public class GCMarsBiomeDecorator
 {
 	protected World currentWorld;
 
@@ -40,25 +40,25 @@ public class GCMarsBiomeDecorator
 	
 	protected WorldGenerator bacteriaGen;
 
-	public GCMarsBiomeDecorator(BiomeGenBase par1BiomeGenBase) 
+	public GCMarsBiomeDecorator(BiomeGenBase par1BiomeGenBase)
 	{
-		this.deshGen = new GCCoreWorldGenMinableMeta(GCMarsBlocks.blockOres.blockID, 12, 0, true, GCMarsBlocks.marsStone.blockID);
-		this.copperGen = new GCCoreWorldGenMinableMeta(GCMarsBlocks.blockOres.blockID, 8, 6, true, GCMarsBlocks.marsStone.blockID);
-		this.aluminumGen = new GCCoreWorldGenMinableMeta(GCMarsBlocks.blockOres.blockID, 7, 4, true, GCMarsBlocks.marsStone.blockID);
-		this.titaniumGen = new GCCoreWorldGenMinableMeta(GCMarsBlocks.blockOres.blockID, 7, 8, true, GCMarsBlocks.marsStone.blockID);
-		this.quandriumGen = new GCCoreWorldGenMinableMeta(GCMarsBlocks.blockOres.blockID, 7, 2, true, GCMarsBlocks.marsStone.blockID);
-		this.dirtGen = new GCCoreWorldGenMinableMeta(GCMarsBlocks.marsDirt.blockID, 32, 0, false, GCMarsBlocks.marsStone.blockID);
-		this.bacteriaGen = new GCCoreWorldGenMinableMeta(GCMarsBlocks.bacterialSludgeMoving.blockID, 5, 0, false, GCMarsBlocks.marsStone.blockID);
+		this.deshGen = new GCCoreWorldGenMinableMeta(GCMarsBlocks.blockOres.blockID, 12, 0, true, GCMarsBlocks.marsStone.blockID, 0);
+		this.copperGen = new GCCoreWorldGenMinableMeta(GCMarsBlocks.blockOres.blockID, 8, 6, true, GCMarsBlocks.marsStone.blockID, 0);
+		this.aluminumGen = new GCCoreWorldGenMinableMeta(GCMarsBlocks.blockOres.blockID, 7, 4, true, GCMarsBlocks.marsStone.blockID, 0);
+		this.titaniumGen = new GCCoreWorldGenMinableMeta(GCMarsBlocks.blockOres.blockID, 7, 8, true, GCMarsBlocks.marsStone.blockID, 0);
+		this.quandriumGen = new GCCoreWorldGenMinableMeta(GCMarsBlocks.blockOres.blockID, 7, 2, true, GCMarsBlocks.marsStone.blockID, 0);
+		this.dirtGen = new GCCoreWorldGenMinableMeta(GCMarsBlocks.marsDirt.blockID, 32, 0, false, GCMarsBlocks.marsStone.blockID, 0);
+		this.bacteriaGen = new GCCoreWorldGenMinableMeta(GCMarsBlocks.bacterialSludgeMoving.blockID, 5, 0, false, GCMarsBlocks.marsStone.blockID, 0);
 		this.biome = par1BiomeGenBase;
 	}
 
-	public void decorate(World par1World, Random par2Random, int par3, int par4) 
+	public void decorate(World par1World, Random par2Random, int par3, int par4)
 	{
-		if (this.currentWorld != null) 
+		if (this.currentWorld != null)
 		{
 			throw new RuntimeException("Already decorating!!");
-		} 
-		else 
+		}
+		else
 		{
 			this.currentWorld = par1World;
 			this.randomGenerator = par2Random;
@@ -70,9 +70,9 @@ public class GCMarsBiomeDecorator
 		}
 	}
 
-	protected void genStandardOre1(int par1, WorldGenerator par2WorldGenerator, int par3, int par4) 
+	protected void genStandardOre1(int par1, WorldGenerator par2WorldGenerator, int par3, int par4)
 	{
-		for (int var5 = 0; var5 < par1; ++var5) 
+		for (int var5 = 0; var5 < par1; ++var5)
 		{
 			final int var6 = this.chunk_X + this.randomGenerator.nextInt(16);
 			final int var7 = this.randomGenerator.nextInt(par4 - par3) + par3;

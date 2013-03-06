@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.API;
 
 /**
- * Extend this block to allow planting of saplings on it. Requires 
+ * Extend this block to allow planting of saplings on it. Requires
  */
 public interface IPlantableBlock
 {

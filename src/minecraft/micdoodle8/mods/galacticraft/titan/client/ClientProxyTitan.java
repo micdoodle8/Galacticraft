@@ -9,8 +9,8 @@ import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
 import micdoodle8.mods.galacticraft.API.IMapPlanet;
 import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
 import micdoodle8.mods.galacticraft.core.GCCoreLocalization;
-import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.titan.CommonProxyTitan;
 import micdoodle8.mods.galacticraft.titan.blocks.GCTitanBlocks;
 import micdoodle8.mods.galacticraft.titan.dimension.GCTitanWorldProvider;
@@ -25,7 +25,6 @@ import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.ITickHandler;
-import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -34,9 +33,10 @@ import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.common.registry.TickRegistry;
+import cpw.mods.fml.relauncher.Side;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
@@ -52,9 +52,9 @@ public class ClientProxyTitan extends CommonProxyTitan implements IGalacticraftS
 	@Override
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		lang = new GCCoreLocalization("micdoodle8/mods/galacticraft/titan/client");
+		ClientProxyTitan.lang = new GCCoreLocalization("micdoodle8/mods/galacticraft/titan/client");
 		MinecraftForge.EVENT_BUS.register(new GCTitanSounds());
-		getFirstBootTime = System.currentTimeMillis();
+		ClientProxyTitan.getFirstBootTime = System.currentTimeMillis();
 	}
 
 	@Override
@@ -73,7 +73,7 @@ public class ClientProxyTitan extends CommonProxyTitan implements IGalacticraftS
 	}
 	
 	@Override
-	public void registerRenderInformation() 
+	public void registerRenderInformation()
 	{
 		MinecraftForgeClient.preloadTexture("/micdoodle8/mods/galacticraft/titan/client/blocks/titan.png");
 		MinecraftForgeClient.preloadTexture("/micdoodle8/mods/galacticraft/titan/client/items/titan.png");
@@ -117,7 +117,7 @@ public class ClientProxyTitan extends CommonProxyTitan implements IGalacticraftS
         public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player p)
         {
             final DataInputStream data = new DataInputStream(new ByteArrayInputStream(packet.data));
-            final int packetType = GCCoreUtil.readPacketID(data);
+            final int packetType = PacketUtil.readPacketID(data);
             final EntityPlayer player = (EntityPlayer)p;
             
             if (packetType == 0)
@@ -153,7 +153,7 @@ public class ClientProxyTitan extends CommonProxyTitan implements IGalacticraftS
         }
 
     	@Override
-    	public void tickEnd(EnumSet<TickType> type, Object... tickData) 
+    	public void tickEnd(EnumSet<TickType> type, Object... tickData)
     	{
     	}
     	
@@ -164,38 +164,44 @@ public class ClientProxyTitan extends CommonProxyTitan implements IGalacticraftS
         }
 
     	@Override
-    	public EnumSet<TickType> ticks() 
+    	public EnumSet<TickType> ticks()
     	{
     		return EnumSet.of(TickType.CLIENT);
     	}
     }
 
 	@Override
-	public String getDimensionName() 
+	public String getDimensionName()
 	{
 		return "Titan";
 	}
 
 	@Override
-	public GCCoreLocalization getLanguageFile() 
-	{
-		return this.lang;
-	}
-
-	@Override
-	public String getPlanetSpriteDirectory() 
+	public String getPlanetSpriteDirectory()
 	{
 		return "/micdoodle8/mods/galacticraft/titan/client/planets/";
 	}
 
 	@Override
-	public IPlanetSlotRenderer getSlotRenderer() 
+	public IPlanetSlotRenderer getSlotRenderer()
 	{
 		return new GCTitanSlotRenderer();
 	}
 
 	@Override
-	public IMapPlanet getPlanetForMap() 
+	public IMapPlanet getPlanetForMap()
+	{
+		return null;
+	}
+
+	@Override
+	public IMapPlanet[] getChildMapPlanets()
+	{
+		return null;
+	}
+
+	@Override
+	public String getPathToMusicFile()
 	{
 		return null;
 	}

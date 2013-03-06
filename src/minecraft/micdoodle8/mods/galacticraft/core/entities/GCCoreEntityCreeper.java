@@ -10,6 +10,7 @@ import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.effect.EntityLightningBolt;
+import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,16 +18,16 @@ import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.SideOnly;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
  */
-public class GCCoreEntityCreeper extends GCCoreEntityMob
+public class GCCoreEntityCreeper extends EntityCreeper
 {
     /**
      * The amount of time since the creeper was close enough to the player to ignite
@@ -74,8 +75,6 @@ public class GCCoreEntityCreeper extends GCCoreEntityMob
 	protected void entityInit()
     {
         super.entityInit();
-        this.dataWatcher.addObject(16, Byte.valueOf((byte) - 1));
-        this.dataWatcher.addObject(17, Byte.valueOf((byte)0));
     }
 
     /**
@@ -131,23 +130,33 @@ public class GCCoreEntityCreeper extends GCCoreEntityMob
 
                 if (!this.worldObj.isRemote)
                 {
+                    boolean var2 = this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing");
+                    
                     if (this.getPowered())
                     {
-                        this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 6.0F, true);
+                        this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 6.0F, var2);
                     }
                     else
                     {
-                        this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 3.0F, true);
+                        this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 3.0F, var2);
                     }
 
                     this.setDead();
                 }
             }
         }
-        
-        this.motionY += 0.06F;
 
-        super.onUpdate();
+        this.motionY += 0.06F;
+        
+    	super.onUpdate();
+    	
+    	this.fallDistance = 0;
+    }
+
+	@Override
+    public void fall(float var1)
+    {
+		;
     }
 
     /**
@@ -178,7 +187,7 @@ public class GCCoreEntityCreeper extends GCCoreEntityMob
 
         if (par1DamageSource.getEntity() instanceof EntitySkeleton)
         {
-            this.dropItem(Item.record13.shiftedIndex + this.rand.nextInt(10), 1);
+            this.dropItem(Item.record13.itemID + this.rand.nextInt(10), 1);
         }
     }
 
@@ -212,7 +221,7 @@ public class GCCoreEntityCreeper extends GCCoreEntityMob
     @Override
 	protected int getDropItemId()
     {
-        return Item.gunpowder.shiftedIndex;
+        return Item.gunpowder.itemID;
     }
 
     /**

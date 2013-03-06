@@ -7,8 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubMod;
-import micdoodle8.mods.galacticraft.core.GCCoreUtil;
+import micdoodle8.mods.galacticraft.API.IGalaxy;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.enceladus.blocks.GCEnceladusBlocks;
 import micdoodle8.mods.galacticraft.enceladus.dimension.GCEnceladusWorldProvider;
 import micdoodle8.mods.galacticraft.saturn.GalacticraftSaturn;
@@ -16,7 +17,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraftforge.common.DimensionManager;
-import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -26,9 +26,10 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.relauncher.Side;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
@@ -47,8 +48,7 @@ public class GalacticraftEnceladus implements IGalacticraftSubMod
 		GCEnceladusBlocks.initBlocks();
 		GCEnceladusBlocks.registerBlocks();
 		GCEnceladusBlocks.setHarvestLevels();
-		GCEnceladusBlocks.addNames();
-//		
+//
 //		GCMarsItems.initItems();
 //		GCMarsItems.addNames(); TODO
 	}
@@ -105,7 +105,7 @@ public class GalacticraftEnceladus implements IGalacticraftSubMod
         public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player p)
         {
             final DataInputStream data = new DataInputStream(new ByteArrayInputStream(packet.data));
-            final int packetType = GCCoreUtil.readPacketID(data);
+            final int packetType = PacketUtil.readPacketID(data);
             final EntityPlayerMP player = (EntityPlayerMP)p;
             
             if (packetType == 0)
@@ -116,14 +116,20 @@ public class GalacticraftEnceladus implements IGalacticraftSubMod
     }
 
 	@Override
-	public String getDimensionName() 
+	public String getDimensionName()
 	{
 		return "Enceladus";
 	}
 
 	@Override
-	public boolean reachableDestination() 
+	public boolean reachableDestination()
 	{
 		return true;
+	}
+
+	@Override
+	public IGalaxy getParentGalaxy()
+	{
+		return GalacticraftCore.galaxyMilkyWay;
 	}
 }

@@ -13,7 +13,7 @@ public class GCMarsItemJetpack extends ItemArmor
 {
 	public boolean active;
 	
-	public GCMarsItemJetpack(int par1, EnumArmorMaterial material, int par3, int par4) 
+	public GCMarsItemJetpack(int par1, EnumArmorMaterial material, int par3, int par4)
 	{
 		super(par1, material, par3, par4);
 		this.setMaxStackSize(1);
@@ -22,17 +22,17 @@ public class GCMarsItemJetpack extends ItemArmor
 	}
 	
 	@Override
-    public void onUpdate(ItemStack itemstack, World world, Entity entity, int par4, boolean par5) 
+    public void onUpdate(ItemStack itemstack, World world, Entity entity, int par4, boolean par5)
     {
     	if (entity instanceof EntityPlayer)
     	{
     		final EntityPlayer player = (EntityPlayer) entity;
     		
-    		if (GalacticraftCore.instance.tick % 100 == 0)
+    		if (GalacticraftCore.tick % 100 == 0)
     		{
     			if (!player.capabilities.isCreativeMode)
     			{
-        			player.inventory.consumeInventoryItem(Item.coal.shiftedIndex);
+        			player.inventory.consumeInventoryItem(Item.coal.itemID);
     			}
     		}
     	}

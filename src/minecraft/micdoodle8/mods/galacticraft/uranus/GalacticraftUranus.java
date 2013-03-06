@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubMod;
+import micdoodle8.mods.galacticraft.API.IGalaxy;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.europa.GCEuropaConfigManager;
 import cpw.mods.fml.common.Mod;
@@ -21,7 +22,7 @@ import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
@@ -46,20 +47,20 @@ public class GalacticraftUranus implements IGalacticraftSubMod
 		
 		new GCEuropaConfigManager(new File(event.getModConfigurationDirectory(), "Galacticraft/uranus.conf"));
 		
-		proxy.preInit(event);
+		GalacticraftUranus.proxy.preInit(event);
 	}
 
 	@Init
 	public void load(FMLInitializationEvent event)
 	{
-		proxy.init(event);
+		GalacticraftUranus.proxy.init(event);
 	}
 
 	@PostInit
 	public void postLoad(FMLPostInitializationEvent event)
 	{
-		proxy.postInit(event);
-		proxy.registerRenderInformation();
+		GalacticraftUranus.proxy.postInit(event);
+		GalacticraftUranus.proxy.registerRenderInformation();
 	}
 	
 	@ServerStarted
@@ -68,14 +69,20 @@ public class GalacticraftUranus implements IGalacticraftSubMod
 	}
 
 	@Override
-	public String getDimensionName() 
+	public String getDimensionName()
 	{
 		return "Uranus";
 	}
 
 	@Override
-	public boolean reachableDestination() 
+	public boolean reachableDestination()
 	{
-		return true;
+		return false;
+	}
+
+	@Override
+	public IGalaxy getParentGalaxy()
+	{
+		return GalacticraftCore.galaxyMilkyWay;
 	}
 }

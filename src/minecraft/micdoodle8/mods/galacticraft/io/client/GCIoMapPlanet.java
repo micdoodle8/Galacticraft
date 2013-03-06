@@ -1,43 +1,45 @@
 package micdoodle8.mods.galacticraft.io.client;
 
+import micdoodle8.mods.galacticraft.API.IGalaxy;
 import micdoodle8.mods.galacticraft.API.IMapPlanet;
 import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 
 public class GCIoMapPlanet implements IMapPlanet
 {
 	@Override
-	public boolean isMoon()
+	public float getPlanetSize()
 	{
-		return true;
+		return 10;
 	}
 
 	@Override
-	public float getPlanetSize() 
+	public float getDistanceFromCenter()
 	{
-		return 15;
+		return 5500F / 15F;
 	}
 
 	@Override
-	public float getDistanceFromCenter() 
-	{
-		return 1500F / 15F;
-	}
-
-	@Override
-	public float getPhaseShift() 
+	public float getPhaseShift()
 	{
 		return 0;
 	}
 
 	@Override
-	public float getStretchValue() 
+	public float getStretchValue()
 	{
-		return 0;
+		return 0.05F;
 	}
 
 	@Override
-	public IPlanetSlotRenderer getSlotRenderer() 
+	public IPlanetSlotRenderer getSlotRenderer()
 	{
 		return new GCIoSlotRenderer();
+	}
+
+	@Override
+	public IGalaxy getParentGalaxy()
+	{
+		return GalacticraftCore.galaxyMilkyWay;
 	}
 }

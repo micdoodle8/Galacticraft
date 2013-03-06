@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.moon.client;
 
 import net.minecraft.util.MathHelper;
-import cpw.mods.fml.relauncher.SideOnly;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class GCMoonColorizerGrass
@@ -12,7 +12,7 @@ public class GCMoonColorizerGrass
 
     public static void setGrassBiomeColorizer(int[] par0ArrayOfInteger)
     {
-        grassBuffer = par0ArrayOfInteger;
+        GCMoonColorizerGrass.grassBuffer = par0ArrayOfInteger;
     }
 
     /**
@@ -25,6 +25,6 @@ public class GCMoonColorizerGrass
         int var5 = (int)(65536 - par2);
         var4 = MathHelper.clamp_int(var4, 0, 65536);
         var5 = MathHelper.clamp_int(var5, 0, 65536);
-        return grassBuffer[var4];
+        return GCMoonColorizerGrass.grassBuffer[var4];
     }
 }

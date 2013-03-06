@@ -31,7 +31,7 @@ import net.minecraft.world.gen.structure.MapGenMineshaft;
 import net.minecraft.world.gen.structure.MapGenVillage;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
@@ -101,6 +101,7 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 		this.worldObj = par1World;
 		this.mapFeaturesEnabled = par4;
 		this.rand = new Random(par2);
+		
 		this.noiseGen1 = new Gradient(rand.nextLong(), 4, 0.25);
 		this.noiseGen2 = new Gradient(rand.nextLong(), 4, 0.25);
 		this.noiseGen3 = new Gradient(rand.nextLong(), 4, 0.25);
@@ -109,8 +110,8 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 		this.noiseGen6 = new Gradient(rand.nextLong(), 1, 0.25);
 		this.noiseGen7 = new Gradient(rand.nextLong(), 1, 0.25);
 		//this.mobSpawnerNoise = new NoiseGeneratorOctaves(this.rand, 8);
-		this.giantCaveLocations = new ArrayList();
-		this.creeperDungeonLocations = new ArrayList();
+		GCMarsChunkProvider.giantCaveLocations = new ArrayList();
+		GCMarsChunkProvider.creeperDungeonLocations = new ArrayList();
 	}
 
 	public void generateTerrain(int chunkX, int chunkZ, int[] chunkArray)
@@ -122,11 +123,6 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 		noiseGen5.frequency = 0.01;
 		noiseGen6.frequency = 0.001;
 		noiseGen7.frequency = 0.005;
-		//noise1 = noiseGen1.generateNoiseOctaves(noise1, chunkX * CHUNK_SIZE_X, chunkZ * CHUNK_SIZE_Z, CHUNK_SIZE_X, CHUNK_SIZE_Z, 0.025D, 0.025D, 0.025D);
-		//noise2 = noiseGen2.generateNoiseOctaves(noise2, chunkX * CHUNK_SIZE_X, chunkZ * CHUNK_SIZE_Z, CHUNK_SIZE_X, CHUNK_SIZE_Z, 0.07D, 0.07D, 0.07D);
-		//noise3 = noiseGen3.generateNoiseOctaves(noise3, chunkX * CHUNK_SIZE_X, chunkZ * CHUNK_SIZE_Z, CHUNK_SIZE_X, CHUNK_SIZE_Z, 0.07D, 0.07D, 0.07D);
-		//noise4 = noiseGen4.generateNoiseOctaves(noise4, chunkX * CHUNK_SIZE_X, chunkZ * CHUNK_SIZE_Z, CHUNK_SIZE_X, CHUNK_SIZE_Z, 0.015D, 0.015D, 0.015D);
-		//noise5 = noiseGen5.generateNoiseOctaves(noise5, chunkX * CHUNK_SIZE_X, chunkZ * CHUNK_SIZE_Z, CHUNK_SIZE_X, CHUNK_SIZE_Z, 0.015D, 0.015D, 0.015D);
 		
 		for(int x = 0; x < CHUNK_SIZE_X; x++)
 		{
@@ -232,7 +228,7 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 		noiseGen4.frequency = var6 * 2;
 		for (int var8 = 0; var8 < 16; ++var8)
 		{
-			for (int var9 = 0; var9 < 16; ++var9) 
+			for (int var9 = 0; var9 < 16; ++var9)
 			{
 				final BiomeGenBase var10 = par4ArrayOfBiomeGenBase[var9 + var8 * 16];
 				final float var11 = var10.getFloatTemperature();
@@ -241,43 +237,43 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 				int var14 = GCMarsBlocks.marsGrass.blockID;
 				int var15 = GCMarsBlocks.marsDirt.blockID;
 
-				for (int var16 = 127; var16 >= 0; --var16) 
+				for (int var16 = 127; var16 >= 0; --var16)
 				{
 					final int var17 = (var9 * 16 + var8) * 128 + var16;
 
-					if (var16 <= 0 + this.rand.nextInt(5)) 
+					if (var16 <= 0 + this.rand.nextInt(5))
 					{
 						par3ArrayOfint[var17] = Block.bedrock.blockID;
-					} else 
+					} else
 					{
 						final int var18 = par3ArrayOfint[var17];
 
-						if (var18 == 0) 
+						if (var18 == 0)
 						{
 							var13 = -1;
-						} 
-						else if (var18 == GCMarsBlocks.marsStone.blockID)
+						}
+						else if (var18 == GCMarsConfigManager.idBlockMarsStone)
 						{
 							if (var13 == -1)
 							{
 								if (var12 <= 0)
 								{
 									var14 = 0;
-									var15 = GCMarsBlocks.marsStone.blockID;
-								} 
+									var15 = GCMarsConfigManager.idBlockMarsStone;
+								}
 								else if (var16 >= var5 - -16 && var16 <= var5 + 1)
 								{
 									var14 = GCMarsBlocks.marsGrass.blockID;
 									var15 = GCMarsBlocks.marsDirt.blockID;
 								}
 
-								if (var16 < var5 && var14 == 0) 
+								if (var16 < var5 && var14 == 0)
 								{
 									if (var11 < 0.15F)
 									{
 										var14 = Block.ice.blockID;
 									}
-									else 
+									else
 									{
 										var14 = 0;
 									}
@@ -285,14 +281,14 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 
 								var13 = var12;
 
-								if (var16 >= var5 - 1) 
+								if (var16 >= var5 - 1)
 								{
 									par3ArrayOfint[var17] = var14;
 								} else
 								{
 									par3ArrayOfint[var17] = var15;
 								}
-							} 
+							}
 							else if (var13 > 0)
 							{
 								--var13;
@@ -326,7 +322,7 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 		final Chunk var4 = new GCCoreChunk(this.worldObj, var3, null, par1, par2);
 		final byte[] var5 = var4.getBiomeArray();
 
-		for (int var6 = 0; var6 < var5.length; ++var6) 
+		for (int var6 = 0; var6 < var5.length; ++var6)
 		{
 			var5[var6] = (byte) this.biomesForGeneration[var6].biomeID;
 		}
@@ -414,13 +410,13 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 			par1ArrayOfDouble = new double[par5 * par6 * par7];
 		}
 
-		if (this.field_35388_l == null) 
+		if (this.field_35388_l == null)
 		{
 			this.field_35388_l = new float[25];
 
 			for (int var8 = -2; var8 <= 2; ++var8)
 			{
-				for (int var9 = -2; var9 <= 2; ++var9) 
+				for (int var9 = -2; var9 <= 2; ++var9)
 				{
 					final float var10 = 10.0F / MathHelper.sqrt_float(var8 * var8 + var9 * var9 + 0.2F);
 					this.field_35388_l[var8 + 2 + (var9 + 2) * 5] = var10;
@@ -440,9 +436,9 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 		int var12 = 0;
 		int var13 = 0;
 
-		for (int var14 = 0; var14 < par5; ++var14) 
+		for (int var14 = 0; var14 < par5; ++var14)
 		{
-			for (int var15 = 0; var15 < par7; ++var15) 
+			for (int var15 = 0; var15 < par7; ++var15)
 			{
 				float var16 = 0.0F;
 				float var17 = 0.0F;
@@ -457,7 +453,7 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 						final BiomeGenBase var23 = this.biomesForGeneration[var14 + var21 + 2 + (var15 + var22 + 2) * (par5 + 5)];
 						float var24 = this.field_35388_l[var21 + 2 + (var22 + 2) * 5] / (var23.minHeight + 2.0F);
 
-						if (var23.minHeight > var20.minHeight) 
+						if (var23.minHeight > var20.minHeight)
 						{
 							var24 /= 2.0F;
 						}
@@ -481,7 +477,7 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 
 				var47 = var47 * 3.0D - 2.0D;
 
-				if (var47 < 0.0D) 
+				if (var47 < 0.0D)
 				{
 					var47 /= 2.0D;
 
@@ -493,7 +489,7 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 					var47 /= 1.4D;
 					var47 /= 2.0D;
 				}
-				else 
+				else
 				{
 					if (var47 > 1.0D)
 					{
@@ -524,15 +520,15 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 					final double var36 = this.noise2[var12] / 512.0D;
 					final double var38 = (this.noise3[var12] / 10.0D + 1.0D) / 2.0D;
 
-					if (var38 < 0.0D) 
+					if (var38 < 0.0D)
 					{
 						var30 = var34;
-					} 
+					}
 					else if (var38 > 1.0D)
 					{
 						var30 = var36;
-					} 
-					else 
+					}
+					else
 					{
 						var30 = var34 + (var36 - var34) * var38;
 					}
@@ -591,7 +587,7 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 	}
 
 	@Override
-	public boolean saveChunks(boolean par1, IProgressUpdate par2IProgressUpdate) 
+	public boolean saveChunks(boolean par1, IProgressUpdate par2IProgressUpdate)
 	{
 		return true;
 	}
@@ -615,15 +611,15 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 	}
 
 	@Override
-	public List getPossibleCreatures(EnumCreatureType par1EnumCreatureType,	int i, int j, int k) 
+	public List getPossibleCreatures(EnumCreatureType par1EnumCreatureType,	int i, int j, int k)
 	{
 		if (/*j < 39 && */par1EnumCreatureType == EnumCreatureType.monster)
 		{
 			final List monsters = new ArrayList();
-			monsters.add(new SpawnListEntry(GCCoreEntityZombie.class, 6, 4, 4));
-			monsters.add(new SpawnListEntry(GCCoreEntitySpider.class, 6, 4, 4));
-			monsters.add(new SpawnListEntry(GCCoreEntitySkeleton.class, 6, 4, 4));
-			monsters.add(new SpawnListEntry(GCCoreEntityCreeper.class, 6, 4, 4));
+			monsters.add(new SpawnListEntry(GCCoreEntityZombie.class, 10, 2, 3));
+			monsters.add(new SpawnListEntry(GCCoreEntitySpider.class, 10, 2, 3));
+			monsters.add(new SpawnListEntry(GCCoreEntitySkeleton.class, 10, 2, 3));
+			monsters.add(new SpawnListEntry(GCCoreEntityCreeper.class, 10, 2, 3));
 			return monsters;
 		}
 		else

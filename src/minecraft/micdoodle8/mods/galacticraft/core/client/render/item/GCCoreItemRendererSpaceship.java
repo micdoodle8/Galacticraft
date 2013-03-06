@@ -12,17 +12,17 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.FMLClientHandler;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
  */
-public class GCCoreItemRendererSpaceship implements IItemRenderer 
+public class GCCoreItemRendererSpaceship implements IItemRenderer
 {
 	GCCoreEntitySpaceship spaceship = new GCCoreEntitySpaceship(FMLClientHandler.instance().getClient().theWorld);
 	GCCoreModelSpaceship modelSpaceship = new GCCoreModelSpaceship();
     
-	private void renderPipeItem(ItemRenderType type, RenderBlocks render, ItemStack item, float translateX, float translateY, float translateZ) 
+	private void renderPipeItem(ItemRenderType type, RenderBlocks render, ItemStack item, float translateX, float translateY, float translateZ)
 	{
         GL11.glPushMatrix();
         long var10 = this.spaceship.entityId * 493286711L;
@@ -33,8 +33,11 @@ public class GCCoreItemRendererSpaceship implements IItemRenderer
         
         if (type == ItemRenderType.EQUIPPED)
         {
-            GL11.glScalef(2.2F, 2.2F, 2.2F);
-            GL11.glTranslatef(0.3F, 0.7F, 0.4F);
+            GL11.glRotatef(90, 1.0F, 0, 0);
+            GL11.glRotatef(-20, 0.0F, 1, 0);
+            GL11.glRotatef(20, 0.0F, 1, 1);
+            GL11.glTranslatef(1.6F, 0.0F, 0F);
+            GL11.glScalef(5.2F, 5.2F, 5.2F);
         }
         
         GL11.glTranslatef(var12, var13 - 0.1F, var14);
@@ -65,7 +68,7 @@ public class GCCoreItemRendererSpaceship implements IItemRenderer
 	/** IItemRenderer implementation **/
 	
 	@Override
-	public boolean handleRenderType(ItemStack item, ItemRenderType type) 
+	public boolean handleRenderType(ItemStack item, ItemRenderType type)
 	{
 		switch (type) {
 		case ENTITY:
@@ -80,15 +83,15 @@ public class GCCoreItemRendererSpaceship implements IItemRenderer
 	}
 
 	@Override
-	public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) 
+	public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper)
 	{
 		return true;
 	}
 
 	@Override
-	public void renderItem(ItemRenderType type, ItemStack item, Object... data) 
+	public void renderItem(ItemRenderType type, ItemStack item, Object... data)
 	{
-		switch (type) 
+		switch (type)
 		{
 		case EQUIPPED:
 			this.renderPipeItem(type, (RenderBlocks) data[0], item, -0.5f, -0.5f, -0.5f);

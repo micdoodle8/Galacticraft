@@ -8,11 +8,11 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
-import cpw.mods.fml.relauncher.SideOnly;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
@@ -21,7 +21,7 @@ public class GCMarsBlockOre extends Block
 {
 	// Desh: 0, Quandrium: 1, AluminumMars: 2, CopperMars: 3, TitaniumMars: 4;
 	
-	public GCMarsBlockOre(int i) 
+	public GCMarsBlockOre(int i)
 	{
 		super(i, 4, Material.rock);
         this.setRequiresSelfNotify();
@@ -29,9 +29,9 @@ public class GCMarsBlockOre extends Block
 	}
 
 	@Override
-	public int getBlockTextureFromSideAndMetadata(int side, int meta) 
+	public int getBlockTextureFromSideAndMetadata(int side, int meta)
 	{
-		switch (meta) 
+		switch (meta)
 		{
 		case 0:
 			return 4;
@@ -49,7 +49,7 @@ public class GCMarsBlockOre extends Block
 	}
 
 	@Override
-	public int idDropped(int meta, Random random, int par3) 
+	public int idDropped(int meta, Random random, int par3)
 	{
 		switch (meta)
 		{

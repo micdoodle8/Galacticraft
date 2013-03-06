@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.moon.client;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
-import micdoodle8.mods.galacticraft.core.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
@@ -19,18 +19,18 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.FMLClientHandler;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
  */
 public class GCMoonSkyProvider extends IRenderHandler
 {
-	public int starGLCallList = GLAllocation.generateDisplayLists(3); 
+	public int starGLCallList = GLAllocation.generateDisplayLists(3);
 	public int glSkyList;
 	public int glSkyList2;
 	
-	public GCMoonSkyProvider() 
+	public GCMoonSkyProvider()
 	{
 		GL11.glPushMatrix();
 		GL11.glNewList(this.starGLCallList, GL11.GL_COMPILE);
@@ -141,7 +141,7 @@ public class GCMoonSkyProvider extends IRenderHandler
             var12 = 3F;
             GL11.glRotatef(40F, 0.0F, 1.0F, 0.0F);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 5F);
-            GL11.glRotatef(GCCoreUtil.calculateMarsAngleFromOtherPlanet(world.getWorldTime(), partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
+            GL11.glRotatef(WorldUtil.calculateMarsAngleFromOtherPlanet(world.getWorldTime(), partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/planets/mars.png"));
             var23.startDrawingQuads();
             var23.addVertexWithUV(-var12, 150.0D, -var12, 0.0D, 0.0D);

@@ -7,11 +7,11 @@ import net.minecraft.entity.Entity;
 
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.relauncher.SideOnly;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
@@ -38,40 +38,11 @@ public class GCCoreRenderBuggy extends Render
         final double var19 = entity.prevPosZ + (entity.posZ - entity.prevPosZ) * par9;
         final double var21 = 0.30000001192092896D;
         final float var24 = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * par9;
+        final float var25 = entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * par9;
 
         GL11.glTranslatef((float)par2, (float)par4 - 1, (float)par6);
         GL11.glRotatef(180.0F - par8, 0.0F, 1.0F, 0.0F);
         GL11.glRotatef(-var24, 0.0F, 0.0F, 1.0F);
-        
-        this.modelSpaceship.radarCenter.rotateAngleY += 0.01F;
-        
-        if (entity instanceof GCCoreEntityBuggy && entity.riddenByEntity != null)
-        {
-        	GCCoreEntityBuggy buggy = (GCCoreEntityBuggy)entity;
-        	
-        	GL11.glPushMatrix();
-        	this.modelSpaceship.wheel1a.rotateAngleY = buggy.turnProgress;
-        	this.modelSpaceship.wheel2a.rotateAngleY = buggy.turnProgress;
-        	this.modelSpaceship.wheel3a.rotateAngleY = buggy.turnProgress;
-        	this.modelSpaceship.wheel4a.rotateAngleY = buggy.turnProgress;
-        	this.modelSpaceship.wheel1b.rotateAngleY = buggy.turnProgress;
-        	this.modelSpaceship.wheel2b.rotateAngleY = buggy.turnProgress;
-        	this.modelSpaceship.wheel3b.rotateAngleY = buggy.turnProgress;
-        	this.modelSpaceship.wheel4b.rotateAngleY = buggy.turnProgress;
-        	this.modelSpaceship.wheel1c.rotateAngleY = buggy.turnProgress;
-        	this.modelSpaceship.wheel2c.rotateAngleY = buggy.turnProgress;
-        	this.modelSpaceship.wheel3c.rotateAngleY = buggy.turnProgress;
-        	this.modelSpaceship.wheel4c.rotateAngleY = buggy.turnProgress;
-        	this.modelSpaceship.wheel1d.rotateAngleY = buggy.turnProgress;
-        	this.modelSpaceship.wheel2d.rotateAngleY = buggy.turnProgress;
-        	this.modelSpaceship.wheel3d.rotateAngleY = buggy.turnProgress;
-        	this.modelSpaceship.wheel4d.rotateAngleY = buggy.turnProgress;
-        	this.modelSpaceship.wheel1e.rotateAngleY = buggy.turnProgress;
-        	this.modelSpaceship.wheel2e.rotateAngleY = buggy.turnProgress;
-        	this.modelSpaceship.wheel3e.rotateAngleY = buggy.turnProgress;
-        	this.modelSpaceship.wheel4e.rotateAngleY = buggy.turnProgress;
-            GL11.glPopMatrix();
-        }
 
         this.loadTexture("/micdoodle8/mods/galacticraft/core/client/entities/buggy.png");
         GL11.glScalef(-1.0F, -1.0F, 1.0F);

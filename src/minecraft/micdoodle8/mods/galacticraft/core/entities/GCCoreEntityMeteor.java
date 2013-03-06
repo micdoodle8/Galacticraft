@@ -142,7 +142,7 @@ public class GCCoreEntityMeteor extends Entity
         		
                 if (par1MovingObjectPosition.entityHit != null)
                 {
-                    par1MovingObjectPosition.entityHit.attackEntityFrom(this.causeMeteorDamage(this, this.shootingEntity), 6);
+                    par1MovingObjectPosition.entityHit.attackEntityFrom(GCCoreEntityMeteor.causeMeteorDamage(this, this.shootingEntity), 6);
                 }
         	}
 
@@ -162,7 +162,7 @@ public class GCCoreEntityMeteor extends Entity
     }
 
 	@Override
-	protected void entityInit() 
+	protected void entityInit()
 	{
         this.dataWatcher.addObject(16, this.size);
         this.noClip = true;
@@ -182,12 +182,12 @@ public class GCCoreEntityMeteor extends Entity
     }
 
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) 
+	protected void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
 	{
 	}
 
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) 
+	protected void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
 	{
 	}
 }

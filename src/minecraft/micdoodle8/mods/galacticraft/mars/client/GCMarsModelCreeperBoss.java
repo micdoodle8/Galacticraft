@@ -7,12 +7,12 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
  */
-public class GCMarsModelCreeperBoss extends ModelBase 
+public class GCMarsModelCreeperBoss extends ModelBase
 {
 	ModelRenderer headMain;
 	ModelRenderer bodyMain;
@@ -26,7 +26,7 @@ public class GCMarsModelCreeperBoss extends ModelBase
 	ModelRenderer neckRight;
 	ModelRenderer neckLeft;
 
-	public GCMarsModelCreeperBoss() 
+	public GCMarsModelCreeperBoss()
 	{
 		this.textureWidth = 128;
 		this.textureHeight = 64;
@@ -102,7 +102,7 @@ public class GCMarsModelCreeperBoss extends ModelBase
 	}
 
 	@Override
-	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) 
+	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
 	{
 		super.render(entity, f, f1, f2, f3, f4, f5);
 		
@@ -130,7 +130,7 @@ public class GCMarsModelCreeperBoss extends ModelBase
 		this.oxygenTank.render(f5);
 	}
 
-	private void setRotation(ModelRenderer model, float x, float y, float z) 
+	private void setRotation(ModelRenderer model, float x, float y, float z)
 	{
 		model.rotateAngleX = x;
 		model.rotateAngleY = y;
@@ -138,7 +138,7 @@ public class GCMarsModelCreeperBoss extends ModelBase
 	}
 
 	@Override
-	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity) 
+	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity)
 	{
 		super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
 		this.headMain.rotateAngleY = f3 / (180F / (float) Math.PI);

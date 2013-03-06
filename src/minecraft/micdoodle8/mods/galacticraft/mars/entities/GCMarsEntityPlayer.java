@@ -19,7 +19,7 @@ public class GCMarsEntityPlayer
 	
 	private int lastStep;
 	
-	public GCMarsEntityPlayer(EntityPlayer player) 
+	public GCMarsEntityPlayer(EntityPlayer player)
 	{
 		this.currentPlayer = player;
 		GalacticraftMars.marsPlayers.add(player);
@@ -44,12 +44,12 @@ public class GCMarsEntityPlayer
 		{
 			final EntityPlayerMP player = (EntityPlayerMP) event.entityLiving;
 			
-			if (handleBacterialMovement(player) && !player.capabilities.isCreativeMode && !player.isPotionActive(Potion.poison))
+			if (GCMarsEntityPlayer.handleBacterialMovement(player) && !player.capabilities.isCreativeMode && !player.isPotionActive(Potion.poison))
 			{
 				player.addPotionEffect(new PotionEffect(Potion.poison.id, 40, 0));
 			}
 			
-			if (GalacticraftCore.instance.tick % 100 == 0 && player.inventory.armorItemInSlot(2) != null && player.inventory.armorItemInSlot(2).getItem().shiftedIndex == GCMarsItems.jetpack.shiftedIndex)
+			if (GalacticraftCore.tick % 100 == 0 && player.inventory.armorItemInSlot(2) != null && player.inventory.armorItemInSlot(2).getItem().itemID == GCMarsItems.jetpack.itemID)
 			{
 				player.inventory.armorItemInSlot(2).damageItem(1, player);
 			}

@@ -19,28 +19,33 @@ public class GCIoItemBlock extends ItemBlock
     }
 
 	@Override
-	public String getItemNameIS(ItemStack itemstack) 
+	public String getItemNameIS(ItemStack itemstack)
 	{
 		String name = "";
 		
-		switch(itemstack.getItemDamage()) 
+		switch(itemstack.getItemDamage())
 		{
-		case 0: 
+		case 0:
 		{
-			name = "pyroxene";
+			name = "basalt";
 			break;
 		}
-		case 1: 
+		case 1:
 		{
-			name = "iostone";
+			name = "stone";
 			break;
 		}
-		case 2: 
+		case 2:
 		{
 			name = "sulfur";
 			break;
 		}
-		default: 
+		case 3:
+		{
+			name = "other";
+			break;
+		}
+		default:
 			name = "null";
 		}
 		return this.getItemName() + "." + name;

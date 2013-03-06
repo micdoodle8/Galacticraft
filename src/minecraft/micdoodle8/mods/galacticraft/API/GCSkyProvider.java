@@ -4,10 +4,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraftforge.client.IRenderHandler;
-import cpw.mods.fml.relauncher.SideOnly;
-import cpw.mods.fml.relauncher.Side;
 
 import org.lwjgl.opengl.GL11;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * SEE GITHUB REPO FOR EXAMPLE USAGE!
@@ -15,9 +16,9 @@ import org.lwjgl.opengl.GL11;
 public abstract class GCSkyProvider extends IRenderHandler
 {
 	/**
-	 * @return The X rotation for this planet, for example, the sun's rotation would be 
+	 * @return The X rotation for this planet, for example, the sun's rotation would be
 	 * 
-	 * public Float[] getXRotation(float partialTicks, WorldClient world, Minecraft mc) 
+	 * public Float[] getXRotation(float partialTicks, WorldClient world, Minecraft mc)
 	 * {
 	 *	   return new Float[] {-90.0F + (world.getCelestialAngle(partialTicks) * 360.0F))};
 	 * }
@@ -44,7 +45,8 @@ public abstract class GCSkyProvider extends IRenderHandler
      */
     public abstract String[] getSpritesForRender();
 
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public void render(float partialTicks, WorldClient world, Minecraft mc)
     {
     	for (int i = 0; i < this.getSpritesForRender().length; i++)

@@ -1,257 +1,186 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import micdoodle8.mods.galacticraft.core.GCCoreUtil;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockOxygenDistributor;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Set;
+
+import cpw.mods.fml.common.FMLLog;
+
+import micdoodle8.mods.galacticraft.API.TileEntityOxygenAcceptor;
+import micdoodle8.mods.galacticraft.API.TileEntityOxygenSource;
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLocation;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
-import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import micdoodle8.mods.galacticraft.core.client.model.block.GCCoreModelFan;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
+import net.minecraftforge.common.ForgeDirection;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
  */
-public class GCCoreTileEntityOxygenDistributor extends TileEntity implements IInventory 
+public class GCCoreTileEntityOxygenDistributor extends TileEntityOxygenAcceptor
 {
-    private ItemStack[] distributorStacks;
-    
-    public double currentPower;
-    
-    public double lastPower;
+    protected double currentPower;
+    protected double lastPower;
+    protected boolean active;
+	private int indexFromCollector;
+	
+	private Set<TileEntityOxygenSource> sources = new HashSet<TileEntityOxygenSource>();
+	private List<GCCoreBlockLocation> preLoadSourceCoords;
 
-    public GCCoreTileEntityOxygenDistributor()
-    {
-    	this.distributorStacks = new ItemStack[3];
-    }
-    
+    public GCCoreModelFan fanModel1 = new GCCoreModelFan();
+    public GCCoreModelFan fanModel2 = new GCCoreModelFan();
+    public GCCoreModelFan fanModel3 = new GCCoreModelFan();
+   	public GCCoreModelFan fanModel4 = new GCCoreModelFan();
+
+	@Override
+	public void addSource(TileEntityOxygenSource source) 
+	{
+		this.sources.add(source);
+	}
+
+	@Override
+	public void removeSource(TileEntityOxygenSource source) 
+	{
+		this.sources.remove(source);
+	}
+	
+	public void setSourceCollectors(Set<TileEntityOxygenSource> sources)
+	{
+		this.sources = sources;
+	}
+	
+	public Set<TileEntityOxygenSource> getSourceCollectors()
+	{
+		return this.sources;
+	}
+
+	@Override
+	public void setIndexFromSource(int index) 
+	{
+		this.indexFromCollector = index;
+	}
+
+	public int getIndexFromSource() 
+	{
+		return this.indexFromCollector;
+	}
+	
     @Override
-	public void onInventoryChanged()
+	public boolean getActive()
+	{
+		return this.active;
+	}
+
+    @Override
+	public void setActive(boolean active)
+	{
+		this.active = active;
+	}
+
+	@Override
+	public double getPower() 
+	{
+		return this.currentPower;
+	}
+
+	@Override
+	public void setPower(double power) 
+	{
+		this.currentPower = this.lastPower = power;
+	}
+
+    @Override
+  	public void validate()
+  	{
+   		super.validate();
+
+   		if (!this.isInvalid() && this.worldObj != null)
+      	{
+   		   	this.fanModel1 = new GCCoreModelFan();
+   		    this.fanModel2 = new GCCoreModelFan();
+   		    this.fanModel3 = new GCCoreModelFan();
+   		   	this.fanModel4 = new GCCoreModelFan();
+      	}
+  	}
+    
+    public double getDistanceFrom2(double par1, double par3, double par5)
     {
-    	if (this.distributorStacks[0] != null)
-    	{
-        	final Item tank = this.distributorStacks[0].getItem();
-        	
-        	if (tank == GCCoreItems.heavyOxygenTankFull || tank == GCCoreItems.medOxygenTankFull || tank == GCCoreItems.lightOxygenTankFull)
-        	{
-        		GCCoreBlockOxygenDistributor.updateDistributorState(true, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
-        	}
-        	else
-        	{
-        		GCCoreBlockOxygenDistributor.updateDistributorState(false, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
-        	}
-    	}
-    	else if (this.distributorStacks[0] == null || this.currentPower < 1.0D)
-    	{
-    		GCCoreBlockOxygenDistributor.updateDistributorState(false, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
-    	}
+        final double var7 = this.xCoord + 0.5D - par1;
+        final double var9 = this.yCoord + 0.5D - par3;
+        final double var11 = this.zCoord + 0.5D - par5;
+        return var7 * var7 + var9 * var9 + var11 * var11;
     }
     
 	@Override
-	public void updateEntity() 
+	public void updateEntity()
 	{
-		this.lastPower = this.currentPower;
-		
 		super.updateEntity();
+
+		if (preLoadSourceCoords != null)
+		{
+			for (GCCoreBlockLocation location : this.preLoadSourceCoords)
+			{
+	            TileEntity tile = this.worldObj.getBlockTileEntity(location.chunkZPos, location.chunkZPos, location.chunkZPos);
+
+	            if (tile != null && tile instanceof TileEntityOxygenSource)
+	            {
+	                this.sources.add((TileEntityOxygenSource) tile);
+	            }
+			}
+			
+			this.preLoadSourceCoords = null;
+		}
+		
+		updateSourceList();
+
+		for (int i = 0; i < ForgeDirection.values().length; i++)
+    	{
+			this.updateOxygenFromAdjacentPipe(ForgeDirection.getOrientation(i).offsetX, ForgeDirection.getOrientation(i).offsetY, ForgeDirection.getOrientation(i).offsetZ);
+    	}
 		
 		if (this.currentPower < 1.0D)
 		{
-    		GCCoreBlockOxygenDistributor.updateDistributorState(false, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+			this.active = false;
+		}
+		else
+		{
+			this.active = true;
 		}
 		
-		final int[] idSet = new int[6];
-		
-		idSet[0] = this.worldObj.getBlockId(this.xCoord + 1, this.yCoord, this.zCoord);
-		idSet[1] = this.worldObj.getBlockId(this.xCoord - 1, this.yCoord, this.zCoord);
-		idSet[2] = this.worldObj.getBlockId(this.xCoord, this.yCoord, this.zCoord + 1);
-		idSet[3] = this.worldObj.getBlockId(this.xCoord, this.yCoord, this.zCoord - 1);
-		idSet[4] = this.worldObj.getBlockId(this.xCoord, this.yCoord + 1, this.zCoord);
-		idSet[5] = this.worldObj.getBlockId(this.xCoord, this.yCoord - 1, this.zCoord);
-		
-		TileEntity tile;
-
-		for (int i = 0; i < idSet.length; i++)
+		if (!this.worldObj.isRemote)
 		{
-			if (idSet[0] == GCCoreBlocks.oxygenPipe.blockID)
-			{
-				tile = this.worldObj.getBlockTileEntity(this.xCoord + 1, this.yCoord, this.zCoord);
-				if (tile != null && tile instanceof GCCoreTileEntityOxygenPipe)
-				{
-					if (((GCCoreTileEntityOxygenPipe)tile).getIndexFromCollector() > 0)
-					{
-						this.currentPower = ((GCCoreTileEntityOxygenPipe)tile).getOxygenInPipe();
-					}
-				}
-			}
-			if (idSet[1] == GCCoreBlocks.oxygenPipe.blockID)
-			{
-				tile = this.worldObj.getBlockTileEntity(this.xCoord - 1, this.yCoord, this.zCoord);
-				if (tile != null && tile instanceof GCCoreTileEntityOxygenPipe)
-				{
-					if (((GCCoreTileEntityOxygenPipe)tile).getIndexFromCollector() > 0)
-					{
-						this.currentPower = ((GCCoreTileEntityOxygenPipe)tile).getOxygenInPipe();
-					}
-				}
-			}
-			if (idSet[2] == GCCoreBlocks.oxygenPipe.blockID)
-			{
-				tile = this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord + 1);
-				if (tile != null && tile instanceof GCCoreTileEntityOxygenPipe)
-				{
-					if (((GCCoreTileEntityOxygenPipe)tile).getIndexFromCollector() > 0)
-					{
-						this.currentPower = ((GCCoreTileEntityOxygenPipe)tile).getOxygenInPipe();
-					}
-				}
-			}
-			if (idSet[3] == GCCoreBlocks.oxygenPipe.blockID)
-			{
-				tile = this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord - 1);
-				if (tile != null && tile instanceof GCCoreTileEntityOxygenPipe)
-				{
-					if (((GCCoreTileEntityOxygenPipe)tile).getIndexFromCollector() > 0)
-					{
-						this.currentPower = ((GCCoreTileEntityOxygenPipe)tile).getOxygenInPipe();
-					}
-				}
-			}
-			if (idSet[4] == GCCoreBlocks.oxygenPipe.blockID)
-			{
-				tile = this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord + 1, this.zCoord);
-				if (tile != null && tile instanceof GCCoreTileEntityOxygenPipe)
-				{
-					if (((GCCoreTileEntityOxygenPipe)tile).getIndexFromCollector() > 0)
-					{
-						this.currentPower = ((GCCoreTileEntityOxygenPipe)tile).getOxygenInPipe();
-					}
-				}
-			}
-			if (idSet[5] == GCCoreBlocks.oxygenPipe.blockID)
-			{
-				tile = this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord - 1, this.zCoord);
-				if (tile != null && tile instanceof GCCoreTileEntityOxygenPipe)
-				{
-					if (((GCCoreTileEntityOxygenPipe)tile).getIndexFromCollector() > 0)
-					{
-						this.currentPower = ((GCCoreTileEntityOxygenPipe)tile).getOxygenInPipe();
-					}
-				}
-			}
-		}
-		
-		if (this.currentPower > 1.0D)
-		{
-			GCCoreBlockOxygenDistributor.updateDistributorState(true, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
-		}
-
-		final ItemStack tankInSlot = this.getStackInSlot(0);
-		
-		if (tankInSlot != null)
-		{
-			final int drainSpacing = GCCoreUtil.getDrainSpacing(tankInSlot);
-			
-			if (drainSpacing > 0 && GalacticraftCore.instance.tick % MathHelper.floor_double(drainSpacing / 4) == 0) 
+			for (int i = 0; i < ForgeDirection.values().length; i++)
 	    	{
-	            if (tankInSlot.getItemDamage() < tankInSlot.getMaxDamage() - 2)
-	            {
-		    		tankInSlot.damageItem(1, null);
-	            }
-	            else
-	            {
-	            	this.distributorStacks[0] = null;
-	            }
+				int x, y, z;
+				x = ForgeDirection.getOrientation(i).offsetX + this.xCoord;
+				y = ForgeDirection.getOrientation(i).offsetY + this.yCoord;
+				z = ForgeDirection.getOrientation(i).offsetZ + this.zCoord;
+				
+				if (this.active)
+				{
+					if (this.worldObj.getBlockId(x, y, z) == 0)
+					{
+						this.worldObj.setBlockWithNotify(x, y, z, GCCoreBlocks.breatheableAir.blockID);
+					}
+					
+					this.updateAdjacentOxygenAdd(ForgeDirection.getOrientation(i).offsetX, ForgeDirection.getOrientation(i).offsetY, ForgeDirection.getOrientation(i).offsetZ);
+			    }
+				else if (!active)
+				{
+					this.updateAdjacentOxygenRemove(x, y, z);
+				}
 	    	}
 		}
-		
-		
-		if (this.worldObj.getBlockId(this.xCoord, this.yCoord, this.zCoord) == GCCoreBlocks.airDistributorActive.blockID)
+			
+		if (this.active)
 		{
-			TileEntity tile2;
-			
-			if (this.currentPower > 1.0D && !this.worldObj.isRemote)
-			{
-				if (this.worldObj.getBlockId(this.xCoord + 1, this.yCoord, this.zCoord) == 0)
-				{
-					this.worldObj.setBlockWithNotify(this.xCoord + 1, this.yCoord, this.zCoord, GCCoreBlocks.breatheableAir.blockID);
-					
-					tile2 = this.worldObj.getBlockTileEntity(this.xCoord + 1, this.yCoord, this.zCoord);
-					
-					if (tile2 != null && tile2 instanceof GCCoreTileEntityBreathableAir)
-					{
-						((GCCoreTileEntityBreathableAir)tile2).setDistributor(this);
-					}
-				}
-
-				if (this.worldObj.getBlockId(this.xCoord - 1, this.yCoord, this.zCoord) == 0)
-				{
-					this.worldObj.setBlockWithNotify(this.xCoord - 1, this.yCoord, this.zCoord, GCCoreBlocks.breatheableAir.blockID);
-					
-					tile2 = this.worldObj.getBlockTileEntity(this.xCoord - 1, this.yCoord, this.zCoord);
-					
-					if (tile2 != null && tile2 instanceof GCCoreTileEntityBreathableAir)
-					{
-						((GCCoreTileEntityBreathableAir)tile2).setDistributor(this);
-					}
-				}
-
-				if (this.worldObj.getBlockId(this.xCoord, this.yCoord, this.zCoord + 1) == 0)
-				{
-					this.worldObj.setBlockWithNotify(this.xCoord, this.yCoord, this.zCoord + 1, GCCoreBlocks.breatheableAir.blockID);
-					
-					tile2 = this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord + 1);
-					
-					if (tile2 != null && tile2 instanceof GCCoreTileEntityBreathableAir)
-					{
-						((GCCoreTileEntityBreathableAir)tile2).setDistributor(this);
-					}
-				}
-
-				if (this.worldObj.getBlockId(this.xCoord, this.yCoord, this.zCoord - 1) == 0)
-				{
-					this.worldObj.setBlockWithNotify(this.xCoord, this.yCoord, this.zCoord - 1, GCCoreBlocks.breatheableAir.blockID);
-					
-					tile2 = this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord - 1);
-					
-					if (tile2 != null && tile2 instanceof GCCoreTileEntityBreathableAir)
-					{
-						((GCCoreTileEntityBreathableAir)tile2).setDistributor(this);
-					}
-				}
-
-				if (this.worldObj.getBlockId(this.xCoord, this.yCoord + 1, this.zCoord) == 0)
-				{
-					this.worldObj.setBlockWithNotify(this.xCoord, this.yCoord + 1, this.zCoord, GCCoreBlocks.breatheableAir.blockID);
-					
-					tile2 = this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord + 1, this.zCoord);
-					
-					if (tile2 != null && tile2 instanceof GCCoreTileEntityBreathableAir)
-					{
-						((GCCoreTileEntityBreathableAir)tile2).setDistributor(this);
-					}
-				}
-
-				if (this.worldObj.getBlockId(this.xCoord, this.yCoord - 1, this.zCoord) == 0)
-				{
-					this.worldObj.setBlockWithNotify(this.xCoord, this.yCoord - 1, this.zCoord, GCCoreBlocks.breatheableAir.blockID);
-					
-					tile2 = this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord - 1, this.zCoord);
-					
-					if (tile2 != null && tile2 instanceof GCCoreTileEntityBreathableAir)
-					{
-						((GCCoreTileEntityBreathableAir)tile2).setDistributor(this);
-					}
-				}
-			}
-			
 			final int power = Math.min((int) Math.floor(this.currentPower / 3), 8);
 			
 			for (int j = -power; j <= power; j++)
@@ -273,131 +202,79 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntity implements IIn
 				}
 			}
 		}
+		
+		this.lastPower = this.currentPower;
+	}
+	
+	public void updateSourceList()
+	{
+		ArrayList<TileEntityOxygenSource> sources = new ArrayList<TileEntityOxygenSource>();
+		
+		for (TileEntityOxygenSource source : this.sources)
+		{
+			sources.add(source);
+		}
+		
+		ListIterator li = sources.listIterator();
+		
+		while (li.hasNext())
+		{
+			TileEntityOxygenSource source = (TileEntityOxygenSource) li.next();
+			
+			if (!(this.worldObj.getBlockTileEntity(source.xCoord, source.yCoord, source.zCoord) instanceof TileEntityOxygenSource))
+			{
+				this.sources.remove(source);
+			}
+		}
+	}
+	
+	public void updateAdjacentOxygenAdd(int xOffset, int yOffset, int zOffset)
+	{
+		TileEntity tile = this.worldObj.getBlockTileEntity(this.xCoord + xOffset, this.yCoord + yOffset, this.zCoord + zOffset);
+
+		if (tile != null && tile instanceof GCCoreTileEntityBreathableAir)
+		{
+			GCCoreTileEntityBreathableAir air = (GCCoreTileEntityBreathableAir) tile;
+
+			air.addDistributor(this);
+		}
+	}
+	
+	public void updateAdjacentOxygenRemove(int xOffset, int yOffset, int zOffset)
+	{
+		TileEntity tile = this.worldObj.getBlockTileEntity(this.xCoord + xOffset, this.yCoord + yOffset, this.zCoord + zOffset);
+		
+		if (tile != null && tile instanceof GCCoreTileEntityBreathableAir)
+		{
+			GCCoreTileEntityBreathableAir air = (GCCoreTileEntityBreathableAir) tile;
+
+			air.removeDistributor(this);
+		}
+	}
+	
+	public void updateOxygenFromAdjacentPipe(int xOffset, int yOffset, int zOffset)
+	{
+		TileEntity tile = this.worldObj.getBlockTileEntity(this.xCoord + xOffset, this.yCoord + yOffset, this.zCoord + zOffset);
+		
+		if (tile != null && tile instanceof GCCoreTileEntityOxygenPipe)
+		{
+			GCCoreTileEntityOxygenPipe pipe = (GCCoreTileEntityOxygenPipe) tile;
+			
+			this.currentPower = pipe.getOxygenInPipe();
+		}
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound par1NBTTagCompound) 
+	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
 	{
 		super.readFromNBT(par1NBTTagCompound);
-		
-        final NBTTagList var2 = par1NBTTagCompound.getTagList("Items");
-        this.distributorStacks = new ItemStack[this.getSizeInventory()];
-
-        for (int var3 = 0; var3 < var2.tagCount(); ++var3)
-        {
-            final NBTTagCompound var4 = (NBTTagCompound)var2.tagAt(var3);
-            final byte var5 = var4.getByte("Slot");
-
-            if (var5 >= 0 && var5 < this.distributorStacks.length)
-            {
-                this.distributorStacks[var5] = ItemStack.loadItemStackFromNBT(var4);
-            }
-        }
+		this.setActive(par1NBTTagCompound.getBoolean("active"));
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound par1NBTTagCompound) 
+	public void writeToNBT(NBTTagCompound par1NBTTagCompound)
 	{
 		super.writeToNBT(par1NBTTagCompound);
-
-        final NBTTagList var2 = new NBTTagList();
-
-        for (int var3 = 0; var3 < this.distributorStacks.length; ++var3)
-        {
-            if (this.distributorStacks[var3] != null)
-            {
-                final NBTTagCompound var4 = new NBTTagCompound();
-                var4.setByte("Slot", (byte)var3);
-                this.distributorStacks[var3].writeToNBT(var4);
-                var2.appendTag(var4);
-            }
-        }
-
-        par1NBTTagCompound.setTag("Items", var2);
-	}
-   
-    @Override
-    public int getSizeInventory() 
-    {
-    	return this.distributorStacks.length;
-    }
-
-    @Override
-    public ItemStack getStackInSlot(int slot) 
-    {
-    	return this.distributorStacks[slot];
-    }
-   
-    @Override
-    public void setInventorySlotContents(int slot, ItemStack stack) 
-    {
-    	this.distributorStacks[slot] = stack;
-    	
-        if (stack != null && stack.stackSize > this.getInventoryStackLimit()) 
-        {
-            stack.stackSize = this.getInventoryStackLimit();
-        }              
-
-        this.onInventoryChanged();
-    }
-
-    @Override
-    public ItemStack decrStackSize(int slot, int amount) 
-    {
-        ItemStack stack = this.getStackInSlot(slot);
-        if (stack != null) 
-        {
-            if (stack.stackSize <= amount)
-            {
-                this.setInventorySlotContents(slot, null);
-            } 
-            else 
-            {
-                stack = stack.splitStack(amount);
-                if (stack.stackSize == 0) 
-                {
-                    this.setInventorySlotContents(slot, null);
-                }
-            }
-        }
-        
-        this.onInventoryChanged();
-        
-        return stack;
-    }
-
-    @Override
-    public ItemStack getStackInSlotOnClosing(int slot)
-    {
-        final ItemStack stack = this.getStackInSlot(slot);
-        if (stack != null) 
-        {
-            this.setInventorySlotContents(slot, null);
-        }
-        return stack;
-    }
-   
-    @Override
-    public int getInventoryStackLimit()
-    {
-        return 1;
-    }
-
-    @Override
-    public boolean isUseableByPlayer(EntityPlayer player) 
-    {
-        return this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && player.getDistanceSq(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5) < 64;
-    }
-
-    @Override
-    public void openChest() {}
-
-    @Override
-    public void closeChest() {}
-
-	@Override
-	public String getInvName() 
-	{
-		return "container.airdistributor";
+		par1NBTTagCompound.setBoolean("active", this.getActive());
 	}
 }

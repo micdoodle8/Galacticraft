@@ -12,7 +12,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumMovingObjectType;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.FMLLog;
 
 public class GCMarsItemReinforcedBucket extends GCMarsItem
 {
@@ -30,7 +29,7 @@ public class GCMarsItemReinforcedBucket extends GCMarsItem
     public ItemStack onFoodEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
     	
-    	if (this.shiftedIndex != GCMarsItems.reinforcedBucketMilk.shiftedIndex)
+    	if (this.itemID != GCMarsItems.reinforcedBucketMilk.itemID)
     	{
     		super.onFoodEaten(par1ItemStack, par2World, par3EntityPlayer);
     	}
@@ -38,7 +37,6 @@ public class GCMarsItemReinforcedBucket extends GCMarsItem
     	{
             if (!par3EntityPlayer.capabilities.isCreativeMode && par1ItemStack.getTagCompound().getInteger("bucketUses") > 1)
             {
-            	FMLLog.info("" + par1ItemStack.getTagCompound().getInteger("bucketUses"));
             	par1ItemStack.getTagCompound().setInteger("bucketUses", par1ItemStack.getTagCompound().getInteger("bucketUses") - 1);
             	return par1ItemStack;
             }
@@ -59,7 +57,7 @@ public class GCMarsItemReinforcedBucket extends GCMarsItem
     @Override
     public int getMaxItemUseDuration(ItemStack par1ItemStack)
     {
-    	if (this.shiftedIndex != GCMarsItems.reinforcedBucketMilk.shiftedIndex)
+    	if (this.itemID != GCMarsItems.reinforcedBucketMilk.itemID)
     	{
     		return 0;
     	}
@@ -72,7 +70,7 @@ public class GCMarsItemReinforcedBucket extends GCMarsItem
     @Override
     public EnumAction getItemUseAction(ItemStack par1ItemStack)
     {
-    	if (this.shiftedIndex != GCMarsItems.reinforcedBucketMilk.shiftedIndex)
+    	if (this.itemID != GCMarsItems.reinforcedBucketMilk.itemID)
     	{
     		return EnumAction.none;
     	}
@@ -95,7 +93,7 @@ public class GCMarsItemReinforcedBucket extends GCMarsItem
 			par1ItemStack.getTagCompound().setInteger("bucketUses", 2);
 		}
 		
-    	if (this.shiftedIndex != GCMarsItems.reinforcedBucketMilk.shiftedIndex)
+    	if (this.itemID != GCMarsItems.reinforcedBucketMilk.itemID)
     	{
     		final float var4 = 1.0F;
             final double var5 = par3EntityPlayer.prevPosX + (par3EntityPlayer.posX - par3EntityPlayer.prevPosX) * var4;
@@ -306,7 +304,7 @@ public class GCMarsItemReinforcedBucket extends GCMarsItem
         }
         else
         {
-            if (par1World.provider.isHellWorld && this.isFull == GCMarsItems.reinforcedBucketWater.shiftedIndex)
+            if (par1World.provider.isHellWorld && this.isFull == GCMarsItems.reinforcedBucketWater.itemID)
             {
                 par1World.playSoundEffect(par2 + 0.5D, par4 + 0.5D, par6 + 0.5D, "random.fizz", 0.5F, 2.6F + (par1World.rand.nextFloat() - par1World.rand.nextFloat()) * 0.8F);
 

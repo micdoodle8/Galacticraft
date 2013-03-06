@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.wgen;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.API.IPlantableBlock;
+import micdoodle8.mods.galacticraft.API.IPlantableMetadataBlock;
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
@@ -71,6 +72,7 @@ public class GCCoreWorldGenForest extends WorldGenerator
             else
             {
                 var8 = par1World.getBlockId(par3, par4 - 1, par5);
+                int var10a = par1World.getBlockId(par3, par4 - 1, par5);
                 
                 int waterBlocksNearby = 0;
                 
@@ -85,7 +87,7 @@ public class GCCoreWorldGenForest extends WorldGenerator
                     }
                 }
 
-                if (Block.blocksList[var8] != null && Block.blocksList[var8] instanceof IPlantableBlock && waterBlocksNearby >= ((IPlantableBlock)Block.blocksList[var8]).requiredLiquidBlocksNearby() && par4 < 256 - var6 - 1)
+                if (Block.blocksList[var8] != null && (Block.blocksList[var8] instanceof IPlantableBlock || (Block.blocksList[var8] instanceof IPlantableMetadataBlock && ((IPlantableMetadataBlock) Block.blocksList[var8]).isPlantable(var10a))) && (Block.blocksList[var8] instanceof IPlantableBlock && (waterBlocksNearby >= ((IPlantableBlock)Block.blocksList[var8]).requiredLiquidBlocksNearby()) || (Block.blocksList[var8] instanceof IPlantableMetadataBlock && waterBlocksNearby >= ((IPlantableMetadataBlock)Block.blocksList[var8]).requiredLiquidBlocksNearby())) && par4 < 256 - var6 - 1)
                 {
                     int var16;
 
@@ -104,7 +106,7 @@ public class GCCoreWorldGenForest extends WorldGenerator
 
                                 final Block block = Block.blocksList[par1World.getBlockId(var12, var16, var14)];
                                 
-                                if ((Math.abs(var13) != var11 || Math.abs(var15) != var11 || par2Random.nextInt(2) != 0 && var10 != 0) && 
+                                if ((Math.abs(var13) != var11 || Math.abs(var15) != var11 || par2Random.nextInt(2) != 0 && var10 != 0) &&
                                     (block == null || block.canBeReplacedByLeaves(par1World, var12, var16, var14)))
                                 {
                                     this.setBlockAndMetadata(par1World, var12, var16, var14, Block.leaves.blockID, 2);

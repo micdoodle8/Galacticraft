@@ -7,19 +7,19 @@ public class GCJupiterSlotRenderer implements IPlanetSlotRenderer
 {
 
 	@Override
-	public String getPlanetSprite() 
+	public String getPlanetSprite()
 	{
 		return "/micdoodle8/mods/galacticraft/jupiter/client/planets/jupiter.png";
 	}
 
 	@Override
-	public String getPlanetName() 
+	public String getPlanetName()
 	{
 		return "Jupiter";
 	}
 
 	@Override
-	public void renderSlot(int index, int x, int y, float slotHeight, Tessellator tessellator) 
+	public void renderSlot(int index, int x, int y, float slotHeight, Tessellator tessellator)
 	{
 		tessellator.startDrawingQuads();
 	    tessellator.addVertexWithUV(x - slotHeight / 2 * 1.3, 	y + slotHeight / 2 * 1.3, 	-90.0D, 0.35D, 0.65D);

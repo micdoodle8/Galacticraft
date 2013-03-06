@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
@@ -30,7 +30,7 @@ public class GCMarsBlockRendererBacterialSludge implements ISimpleBlockRendering
     @Override
 	public boolean renderWorldBlock(IBlockAccess var1, int var2, int var3, int var4, Block var5, int var6, RenderBlocks var7)
     {
-    	this.renderGCFluid(var7, var5, var1, var2, var3, var4);
+    	GCMarsBlockRendererBacterialSludge.renderGCFluid(var7, var5, var1, var2, var3, var4);
         return true;
     }
 
@@ -47,9 +47,9 @@ public class GCMarsBlockRendererBacterialSludge implements ISimpleBlockRendering
     }
 
 	@Override
-	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) 
+	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer)
 	{
-        renderInvNormalBlock(renderer, block, metadata);
+        GCMarsBlockRendererBacterialSludge.renderInvNormalBlock(renderer, block, metadata);
 	}
 
     public static void renderInvNormalBlock(RenderBlocks var0, Block var1, int var2)
@@ -57,7 +57,7 @@ public class GCMarsBlockRendererBacterialSludge implements ISimpleBlockRendering
         final Tessellator var3 = Tessellator.instance;
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        var0.setRenderMinMax(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+        var0.setRenderBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         var3.startDrawingQuads();
         var3.setNormal(0.0F, -1.0F, 0.0F);
         var0.renderBottomFace(var1, 0.0D, 0.0D, 0.0D, var1.getBlockTextureFromSideAndMetadata(0, var2));
@@ -110,10 +110,10 @@ public class GCMarsBlockRendererBacterialSludge implements ISimpleBlockRendering
             final double var20 = 1.0D;
             final Material var22 = par1Block.blockMaterial;
             final int var23 = var1.getBlockMetadata(par2, par3, par4);
-            double var24 = getFluidHeight(var1, par2, par3, par4, var22);
-            double var26 = getFluidHeight(var1, par2, par3, par4 + 1, var22);
-            double var28 = getFluidHeight(var1, par2 + 1, par3, par4 + 1, var22);
-            double var30 = getFluidHeight(var1, par2 + 1, par3, par4, var22);
+            double var24 = GCMarsBlockRendererBacterialSludge.getFluidHeight(var1, par2, par3, par4, var22);
+            double var26 = GCMarsBlockRendererBacterialSludge.getFluidHeight(var1, par2, par3, par4 + 1, var22);
+            double var28 = GCMarsBlockRendererBacterialSludge.getFluidHeight(var1, par2 + 1, par3, par4 + 1, var22);
+            double var30 = GCMarsBlockRendererBacterialSludge.getFluidHeight(var1, par2 + 1, par3, par4, var22);
             final double var32 = 0.0010000000474974513D;
             int var34;
             int var37;
@@ -269,8 +269,6 @@ public class GCMarsBlockRendererBacterialSludge implements ISimpleBlockRendering
                 }
             }
 
-            renderBlocks.customMinY = var18;
-            renderBlocks.customMaxY = var20;
             return;
         }
     }

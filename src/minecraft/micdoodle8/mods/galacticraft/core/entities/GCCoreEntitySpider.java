@@ -3,21 +3,22 @@ package micdoodle8.mods.galacticraft.core.entities;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.item.Item;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.SideOnly;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
  */
-public class GCCoreEntitySpider extends GCCoreEntityMob
+public class GCCoreEntitySpider extends EntitySpider
 {
     public GCCoreEntitySpider(World par1World)
     {
@@ -31,7 +32,6 @@ public class GCCoreEntitySpider extends GCCoreEntityMob
 	protected void entityInit()
     {
         super.entityInit();
-        this.dataWatcher.addObject(16, new Byte((byte)0));
     }
 
     /**
@@ -40,12 +40,22 @@ public class GCCoreEntitySpider extends GCCoreEntityMob
     @Override
 	public void onUpdate()
     {
-        super.onUpdate();
+        this.motionY += 0.06F;
+        
+    	super.onUpdate();
+    	
+    	this.fallDistance = 0;
 
         if (!this.worldObj.isRemote)
         {
             this.setBesideClimbableBlock(this.isCollidedHorizontally);
         }
+    }
+
+	@Override
+    public void fall(float var1)
+    {
+		;
     }
 
     @Override
@@ -116,7 +126,7 @@ public class GCCoreEntitySpider extends GCCoreEntityMob
     @Override
 	protected void playStepSound(int par1, int par2, int par3, int par4)
     {
-        this.func_85030_a("mob.spider.step", 0.15F, 1.0F);
+        this.playSound("mob.spider.step", 0.15F, 1.0F);
     }
 
     /**
@@ -158,7 +168,7 @@ public class GCCoreEntitySpider extends GCCoreEntityMob
     @Override
 	protected int getDropItemId()
     {
-        return Item.silk.shiftedIndex;
+        return Item.silk.itemID;
     }
 
     /**
@@ -171,7 +181,7 @@ public class GCCoreEntitySpider extends GCCoreEntityMob
 
         if (par1 && (this.rand.nextInt(3) == 0 || this.rand.nextInt(1 + par2) > 0))
         {
-            this.dropItem(Item.spiderEye.shiftedIndex, 1);
+            this.dropItem(Item.spiderEye.itemID, 1);
         }
     }
 

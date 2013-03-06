@@ -2,20 +2,21 @@ package micdoodle8.mods.galacticraft.core.items;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.item.EnumArmorMaterial;
+import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.IArmorTextureProvider;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
  */
-public class GCCoreItemSensorGlasses extends GCCoreItemBreathableHelmet implements IArmorTextureProvider
+public class GCCoreItemSensorGlasses extends ItemArmor implements IArmorTextureProvider
 {
 	public boolean attachedMask;
 	
-	public GCCoreItemSensorGlasses(int par1, EnumArmorMaterial material, int i, int j, boolean breathable) 
+	public GCCoreItemSensorGlasses(int par1, EnumArmorMaterial material, int i, int j, boolean breathable)
 	{
 		super(par1, material, i, j);
 		this.setCreativeTab(GalacticraftCore.galacticraftTab);

@@ -6,7 +6,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
@@ -29,7 +29,6 @@ public class GCCoreModelSkeleton extends ModelBase
 	ModelRenderer tubeLeft5;
 	ModelRenderer tubeLeft7;
 	ModelRenderer tubeRight6;
-	ModelRenderer tubeLeft8;
 	ModelRenderer oxygenMask;
     ModelRenderer bipedHead;
     ModelRenderer bipedHeadwear;
@@ -150,12 +149,6 @@ public class GCCoreModelSkeleton extends ModelBase
 		this.tubeRight6.setTextureSize(128, 64);
 		this.tubeRight6.mirror = true;
 		this.setRotation(this.tubeRight6, 0F, 0F, 0F);
-		this.tubeLeft8 = new ModelRenderer(this, 48, 30);
-		this.tubeLeft8.addBox(0F, 0F, 0F, 1, 1, 1, par1);
-		this.tubeLeft8.setRotationPoint(0F, -5F, 0F);
-		this.tubeLeft8.setTextureSize(128, 64);
-		this.tubeLeft8.mirror = true;
-		this.setRotation(this.tubeLeft8, 0F, 0F, 0F);
 		this.oxygenMask = new ModelRenderer(this, 48, 0);
 		this.oxygenMask.addBox(-5F, -9F, -5F, 10, 10, 10, par1);
 		this.oxygenMask.setRotationPoint(0F, 0F, 0F);
@@ -221,7 +214,6 @@ public class GCCoreModelSkeleton extends ModelBase
 		this.tubeLeft5.render(f5);
 		this.tubeLeft7.render(f5);
 		this.tubeRight6.render(f5);
-		this.tubeLeft8.render(f5);
 		this.oxygenMask.render(f5);
         this.bipedHead.render(f5);
         this.bipedBody.render(f5);

@@ -9,11 +9,11 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
-import cpw.mods.fml.relauncher.SideOnly;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
@@ -56,7 +56,7 @@ public class GCEnceladusWorldProvider extends WorldProvider implements IGalactic
 	@SideOnly(Side.CLIENT)
     public boolean doesXZShowFog(int par1, int par2)
     {
-        return true;
+        return false;
     }
 
 	@SideOnly(Side.CLIENT)
@@ -69,7 +69,7 @@ public class GCEnceladusWorldProvider extends WorldProvider implements IGalactic
 	@Override
     public Vec3 getSkyColor(Entity cameraEntity, float partialTicks)
     {
-        return this.worldObj.getWorldVec3Pool().getVecFromPool((double)0, (double)0, (double)0);
+        return this.worldObj.getWorldVec3Pool().getVecFromPool(0, 0, 0);
     }
 	
 	@Override
@@ -176,7 +176,7 @@ public class GCEnceladusWorldProvider extends WorldProvider implements IGalactic
     }
 
 	@Override
-	public String getDimensionName() 
+	public String getDimensionName()
 	{
 		return "Enceladus";
 	}
@@ -206,13 +206,13 @@ public class GCEnceladusWorldProvider extends WorldProvider implements IGalactic
     }
 
 	@Override
-	public float getGravity() 
+	public float getGravity()
 	{
 		return 0.049F;
 	}
 
 	@Override
-	public float getMeteorFrequency() 
+	public float getMeteorFrequency()
 	{
 		return 0F;
 	}

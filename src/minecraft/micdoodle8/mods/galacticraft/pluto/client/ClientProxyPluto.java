@@ -19,7 +19,7 @@ import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.Player;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
@@ -29,24 +29,24 @@ public class ClientProxyPluto extends CommonProxyPluto implements IGalacticraftS
 	public static GCCoreLocalization lang;
 	
 	@Override
-	public void preInit(FMLPreInitializationEvent event) 
+	public void preInit(FMLPreInitializationEvent event)
 	{
-		this.lang = new GCCoreLocalization("micdoodle8/mods/galacticraft/pluto/client");
+		ClientProxyPluto.lang = new GCCoreLocalization("micdoodle8/mods/galacticraft/pluto/client");
 	}
 
 	@Override
-	public void init(FMLInitializationEvent event) 
+	public void init(FMLInitializationEvent event)
 	{
 		GalacticraftCore.registerClientSubMod(this);
 	}
 
 	@Override
-	public void postInit(FMLPostInitializationEvent event) 
+	public void postInit(FMLPostInitializationEvent event)
 	{
 	}
 	
 	@Override
-	public void registerRenderInformation() 
+	public void registerRenderInformation()
 	{
 	}
 
@@ -58,7 +58,7 @@ public class ClientProxyPluto extends CommonProxyPluto implements IGalacticraftS
     public class ClientPacketHandler implements IPacketHandler
     {
 		@Override
-		public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player) 
+		public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player)
 		{
 			
 		}
@@ -73,7 +73,7 @@ public class ClientProxyPluto extends CommonProxyPluto implements IGalacticraftS
         }
 
     	@Override
-    	public void tickEnd(EnumSet<TickType> type, Object... tickData) 
+    	public void tickEnd(EnumSet<TickType> type, Object... tickData)
     	{
     	}
     	
@@ -84,39 +84,47 @@ public class ClientProxyPluto extends CommonProxyPluto implements IGalacticraftS
         }
 
     	@Override
-    	public EnumSet<TickType> ticks() 
+    	public EnumSet<TickType> ticks()
     	{
     		return EnumSet.of(TickType.CLIENT);
     	}
     }
 
 	@Override
-	public String getDimensionName() 
+	public String getDimensionName()
 	{
 		return "Pluto";
 	}
 
 	@Override
-	public GCCoreLocalization getLanguageFile() 
-	{
-		return this.lang;
-	}
-
-	@Override
-	public String getPlanetSpriteDirectory() 
+	public String getPlanetSpriteDirectory()
 	{
 		return "/micdoodle8/mods/galacticraft/pluto/client/planets/";
 	}
 
 	@Override
-	public IPlanetSlotRenderer getSlotRenderer() 
+	public IPlanetSlotRenderer getSlotRenderer()
 	{
 		return new GCPlutoSlotRenderer();
 	}
 
 	@Override
-	public IMapPlanet getPlanetForMap() 
+	public IMapPlanet getPlanetForMap()
 	{
 		return new GCPlutoMapPlanet();
+	}
+
+	@Override
+	public IMapPlanet[] getChildMapPlanets()
+	{
+//		IMapPlanet[] moonMapPlanet = {new GCCallistoMapPlanet(), new GCEuropaMapPlanet(), new GCIoMapPlanet()};
+//		TODO
+		return null;
+	}
+
+	@Override
+	public String getPathToMusicFile()
+	{
+		return null;
 	}
 }

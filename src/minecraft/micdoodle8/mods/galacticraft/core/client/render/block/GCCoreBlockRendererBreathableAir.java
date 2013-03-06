@@ -11,7 +11,7 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
@@ -28,7 +28,7 @@ public class GCCoreBlockRendererBreathableAir implements ISimpleBlockRenderingHa
     @Override
 	public boolean renderWorldBlock(IBlockAccess var1, int var2, int var3, int var4, Block var5, int var6, RenderBlocks var7)
     {
-    	this.renderBreathableAir(var7, var5, var1, var2, var3, var4);
+    	GCCoreBlockRendererBreathableAir.renderBreathableAir(var7, var5, var1, var2, var3, var4);
         return true;
     }
 
@@ -45,9 +45,9 @@ public class GCCoreBlockRendererBreathableAir implements ISimpleBlockRenderingHa
     }
 
 	@Override
-	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) 
+	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer)
 	{
-		renderInvNormalBlock(renderer, block, metadata);
+		GCCoreBlockRendererBreathableAir.renderInvNormalBlock(renderer, block, metadata);
 	}
 
     public static void renderInvNormalBlock(RenderBlocks var0, Block var1, int var2)
@@ -55,7 +55,7 @@ public class GCCoreBlockRendererBreathableAir implements ISimpleBlockRenderingHa
         final Tessellator var3 = Tessellator.instance;
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        var0.setRenderMinMax(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+        var0.setRenderBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         var3.startDrawingQuads();
         var3.setNormal(0.0F, -1.0F, 0.0F);
         var0.renderBottomFace(var1, 0.0D, 0.0D, 0.0D, var1.getBlockTextureFromSideAndMetadata(0, var2));
@@ -267,8 +267,8 @@ public class GCCoreBlockRendererBreathableAir implements ISimpleBlockRenderingHa
                 }
             }
 
-            renderBlocks.customMinY = var18;
-            renderBlocks.customMaxY = var20;
+//            renderBlocks.customMinY = var18;
+//            renderBlocks.customMaxY = var20;
         }
     }
 }

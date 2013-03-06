@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.europa.wgen;
 import net.minecraft.world.biome.BiomeGenBase;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
@@ -12,7 +12,7 @@ public class GCEuropaBiomeGenFlat extends GCEuropaBiomeGenBase
 {
     public GCEuropaBiomeGenFlat(int par1)
     {
-        super(par1); 
+        super(par1);
         this.setBiomeName("marsFlat");
         this.setColor(16711680);
         this.minHeight = 2.5F;

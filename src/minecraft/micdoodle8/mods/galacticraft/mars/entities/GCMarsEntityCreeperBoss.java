@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.mars.entities;
 
-import micdoodle8.mods.galacticraft.core.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityAIAvoidEntity;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
@@ -18,11 +19,11 @@ import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.SideOnly;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
@@ -124,21 +125,21 @@ public class GCMarsEntityCreeperBoss extends EntityMob
     	{
             final EntityPlayer var11 = null;
 
-            for (int var12 = 0; var12 < this.worldObj.playerEntities.size(); ++var12)
-            {
-                final EntityPlayer var13 = (EntityPlayer)this.worldObj.playerEntities.get(var12);
-
-                if (!var13.capabilities.isCreativeMode)
-                {
-                    final double var14 = var13.getDistanceSq(this.posX, this.posY, this.posZ);
-
-                    if ((5 < 0.0D || var14 < 5 * 5))
-                    {
-                        GCCoreUtil.createNewExplosion(this.worldObj, this, this.posX, this.posY, this.posZ, 12.0F, true);
-                        this.timeSinceTNTFired = 100;
-                    }
-                }
-            }
+//            for (int var12 = 0; var12 < GalacticraftCore.playersServer.size(); ++var12)
+//            {
+//                final EntityPlayer var13 = GalacticraftCore.playersServer.get(var12).getPlayer();
+//
+//                if (!var13.capabilities.isCreativeMode)
+//                {
+//                    final double var14 = var13.getDistanceSq(this.posX, this.posY, this.posZ);
+//
+//                    if (var14 < 25)
+//                    {
+//                        GCCoreUtil.createNewExplosion(this.worldObj, this, this.posX, this.posY, this.posZ, 12.0F, false);
+//                        this.timeSinceTNTFired = 100;
+//                    }
+//                }
+//            } TODO
     	}
         
 //        if (this.targetedEntity != null && !this.worldObj.isRemote)
@@ -155,7 +156,7 @@ public class GCMarsEntityCreeperBoss extends EntityMob
 //                var17.posY = this.posY + (double)(this.height / 2.0F) + 0.5D;
 //                var17.posZ = this.posZ + var20.zCoord * var18;
 //                this.worldObj.spawnEntityInWorld(var17);
-//                
+//
 //                this.timeSinceTNTFired = 80;
 //        	}
 //        }
@@ -264,7 +265,7 @@ public class GCMarsEntityCreeperBoss extends EntityMob
 
         if (par1DamageSource.getEntity() instanceof EntitySkeleton)
         {
-            this.dropItem(Item.record13.shiftedIndex + this.rand.nextInt(10), 1);
+            this.dropItem(Item.record13.itemID + this.rand.nextInt(10), 1);
         }
     }
 
@@ -289,7 +290,7 @@ public class GCMarsEntityCreeperBoss extends EntityMob
     @Override
 	protected int getDropItemId()
     {
-        return Item.gunpowder.shiftedIndex;
+        return Item.gunpowder.itemID;
     }
 
     public int getCreeperState()

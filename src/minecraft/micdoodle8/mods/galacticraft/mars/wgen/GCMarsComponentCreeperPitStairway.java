@@ -10,7 +10,7 @@ import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
@@ -20,7 +20,7 @@ public class GCMarsComponentCreeperPitStairway extends GCCoreStructureComponent
     private int[] orig = new int[3];
     private final GCMarsComponentCreeperPitRoom originalRoom;
     
-	protected GCMarsComponentCreeperPitStairway(GCMarsComponentCreeperPitRoom origRoom, int type, Random rand, int x, int y, int z) 
+	protected GCMarsComponentCreeperPitStairway(GCMarsComponentCreeperPitRoom origRoom, int type, Random rand, int x, int y, int z)
 	{
 		super(type);
         this.orig = new int[] {x, y, z};
@@ -35,7 +35,7 @@ public class GCMarsComponentCreeperPitStairway extends GCCoreStructureComponent
     }
 	
 	@Override
-	public boolean addComponentParts(World par1World, Random var2, StructureBoundingBox var3) 
+	public boolean addComponentParts(World par1World, Random var2, StructureBoundingBox var3)
 	{
 		final int x1 = this.getBoundingBox().minX;
 		final int y1 = this.getBoundingBox().minY;

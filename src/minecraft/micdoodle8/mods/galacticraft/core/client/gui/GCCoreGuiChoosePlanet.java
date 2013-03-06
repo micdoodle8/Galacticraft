@@ -3,9 +3,11 @@ package micdoodle8.mods.galacticraft.core.client.gui;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
-import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
+import micdoodle8.mods.galacticraft.core.client.GCCorePlayerBaseClient;
+import micdoodle8.mods.galacticraft.core.util.PacketUtil;
+import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -21,10 +23,12 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
@@ -60,6 +64,10 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     	this.playerToSend = player;
     	this.destinations = listOfDestinations;
     }
+
+    // Override keyTyped so you don't accidently hit Escape and fall to your death!
+    @Override
+	protected void keyTyped(char par1, int par2) {}
     
     @Override
 	public void initGui()
@@ -78,6 +86,8 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     	}
 
         final StringTranslate var1 = StringTranslate.getInstance();
+//        this.controlList.add(new GCCoreGuiTexturedButton(0, this.width - 110, this.height - 26, 105, 20, "Send To Dimension", "" /* TODO */));
+        this.controlList.add(new GCCoreGuiTexturedButton(0, this.width - 28, 5, 22, 22, "/micdoodle8/mods/galacticraft/core/client/gui/button1.png", 22, 22));
         this.controlList.add(this.sendButton = new GuiSmallButton(1, this.width - 110, this.height - 26, 105, 20, "Send To Dimension"));
         this.planetSlots.registerScrollButtons(this.controlList, 2, 3);
     }
@@ -167,7 +177,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
                 	GL11.glTranslatef(1.96F, 1.96F, 0.0F);
                 }
 
-                GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture(titlePanoramaPaths[var10 - var10]));
+                GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture(GCCoreGuiChoosePlanet.titlePanoramaPaths[var10 - var10]));
                 var4.startDrawingQuads();
                 var4.setColorRGBA_I(16777215, 255 / (var6 + 1));
                 var4.addVertexWithUV(-1.0D, -1.0D, 1.0D, 0.0F + 1, 0.0F + 1);
@@ -253,7 +263,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
                     GL11.glRotatef(-90.0F, 1.0F, 0.0F, 0.0F);
                 }
 
-                GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture(titlePanoramaPaths[0]));
+                GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture(GCCoreGuiChoosePlanet.titlePanoramaPaths[0]));
                 var4.startDrawingQuads();
                 var4.setColorRGBA_I(16777215, 255 / (var6 + 1));
                 var4.addVertexWithUV(-1.0D, -1.0D, 1.0D, 0.0F + 1, 0.0F + 1);
@@ -283,7 +293,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
      */
     private void rotateAndBlurSkybox()
     {
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture(titlePanoramaPaths[0]));
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture(GCCoreGuiChoosePlanet.titlePanoramaPaths[0]));
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glColorMask(true, true, true, false);
@@ -345,16 +355,13 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     		
     		if (mod.getDimensionName().toLowerCase().equals(dest))
     		{
-    			if (mod.getLanguageFile() != null)
-    			{
-    				str = mod.getLanguageFile().get("gui.choosePlanet.desc." + dest);
-    			}
+				str = LanguageRegistry.instance().getStringLocalization("gui.choosePlanet.desc." + dest);
     		}
     	}
     	
     	if (this.destinations[this.selectedSlot].toLowerCase().equals("overworld"))
     	{
-    		str = GalacticraftCore.lang.get("gui.choosePlanet.desc.overworld");
+    		str = LanguageRegistry.instance().getStringLocalization("gui.choosePlanet.desc.overworld");
     	}
     	
     	if (str != null)
@@ -405,13 +412,23 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     @Override
 	protected void actionPerformed(GuiButton par1GuiButton)
     {
-    	if (par1GuiButton.enabled)
-    	{
-            final Object[] toSend = {this.destinations[this.selectedSlot]};
-            PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 2, toSend));
-            FMLClientHandler.instance().getClient().displayGuiScreen(null);
-            ClientProxyCore.teleportCooldown = 300;
-    	}
+        switch (par1GuiButton.id)
+        {
+        case 0:
+        	FMLClientHandler.instance().getClient().displayGuiScreen(new GCCoreGuiGalaxyMap(this.playerToSend, this.destinations));
+        	break;
+        case 1:
+        	if (par1GuiButton.enabled)
+        	{
+                final Object[] toSend = {this.destinations[this.selectedSlot]};
+                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 2, toSend));
+                return;
+        	}
+        	else
+        	{
+        		FMLLog.severe("Severe problem when trying to teleport " + playerToSend.username);
+        	}
+        }
     }
     
     public boolean isValidDestination(int i)

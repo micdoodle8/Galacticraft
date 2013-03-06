@@ -7,7 +7,7 @@ import cpw.mods.fml.common.IPlayerTracker;
 public class GCMarsPlayerHandler implements IPlayerTracker
 {
 	@Override
-	public void onPlayerLogin(EntityPlayer player) 
+	public void onPlayerLogin(EntityPlayer player)
 	{
 		new GCMarsEntityPlayer(player);
 		
@@ -23,7 +23,7 @@ public class GCMarsPlayerHandler implements IPlayerTracker
 	}
 
 	@Override
-	public void onPlayerLogout(EntityPlayer player) 
+	public void onPlayerLogout(EntityPlayer player)
 	{
 		GalacticraftMars.marsPlayers.remove(player);
 		
@@ -41,13 +41,13 @@ public class GCMarsPlayerHandler implements IPlayerTracker
 	}
 
 	@Override
-	public void onPlayerChangedDimension(EntityPlayer player) 
+	public void onPlayerChangedDimension(EntityPlayer player)
 	{
 		
 	}
 
 	@Override
-	public void onPlayerRespawn(EntityPlayer player) 
+	public void onPlayerRespawn(EntityPlayer player)
 	{
 		
 	}

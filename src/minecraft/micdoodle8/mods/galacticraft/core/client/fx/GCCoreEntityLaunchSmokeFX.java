@@ -3,11 +3,11 @@ package micdoodle8.mods.galacticraft.core.client.fx;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.SideOnly;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
@@ -37,8 +37,8 @@ public class GCCoreEntityLaunchSmokeFX extends EntityFX
         }
         else
         {
-            this.particleMaxAge = (int)10.0D;
-            this.particleMaxAge = (int)(this.particleMaxAge * par14);
+            this.particleMaxAge = (int)2.0D;
+            this.particleMaxAge = 1;
         }
         this.noClip = false;
     }
@@ -90,8 +90,8 @@ public class GCCoreEntityLaunchSmokeFX extends EntityFX
 
         if (this.onGround)
         {
-        	this.motionX = (this.rand.nextFloat() * 2.0F * this.rand.nextInt(2) * 2 - 1) / 4.0; 
-        	this.motionZ = (this.rand.nextFloat() * 2.0F * this.rand.nextInt(2) * 2 - 1) / 4.0; 
+        	this.motionX = (this.rand.nextFloat() * 2.0F * this.rand.nextInt(2) * 2 - 1) / 4.0;
+        	this.motionZ = (this.rand.nextFloat() * 2.0F * this.rand.nextInt(2) * 2 - 1) / 4.0;
         	
         	this.motionX *= 0.699999988079071D;
             this.motionZ *= 0.699999988079071D;

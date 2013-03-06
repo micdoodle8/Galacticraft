@@ -8,7 +8,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
@@ -25,18 +25,18 @@ public class GCMarsComponentCreeperPitCorridor extends GCCoreStructureComponent
         this.setCoordBaseMode(cbm);
         this.height = height;
         this.width = width;
-        this.boundingBox = this.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, length, this.height, width, cbm);
+        this.boundingBox = GCCoreStructureComponent.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, length, this.height, width, cbm);
 	}
 
 	@Override
-	public boolean addComponentParts(World var1, Random var2, StructureBoundingBox var3) 
+	public boolean addComponentParts(World var1, Random var2, StructureBoundingBox var3)
 	{
         this.fillWithMetadataBlocks(var1, var3, 0, 0, 0, 10, 10, 10, Block.fence.blockID, 0, 0, 0, false);
         this.fillWithAir(var1, var3, 0, 0, 0, 10, 10, 10);
         this.fillWithMetadataBlocks(var1, var3, 0, 0, 0, 0, 0, 0, this.coordBaseMode, 0, 0, 0, false);
         
 //		int cbm = this.getCoordBaseMode();
-//		
+//
 //		for (int y = 0; y < this.height; y++)
 //		{
 //			for (int x = 0; x < this.width; x++)
@@ -69,12 +69,12 @@ public class GCMarsComponentCreeperPitCorridor extends GCCoreStructureComponent
 //        this.direction = direction;
 //        this.originalRoom = origRoom;
 //        this.shouldCapEnds = capEnds;
-//        
+//
 //        if (origRoom.corridorCount > 3)
 //        {
 //        	this.isBossEntryCorridor = true;
 //        }
-//        
+//
 //        switch (this.direction)
 //        {
 //        case 0:
@@ -104,7 +104,7 @@ public class GCMarsComponentCreeperPitCorridor extends GCCoreStructureComponent
 //            this.corridorCount = boundingBox.getZSize() / 5;
 //        }
 //    }
-//    
+//
 //    public void buildComponent(StructureComponent par1StructureComponent, List par2List, Random par3Random)
 //    {
 ////    	if (this.originalRoom.bossEntryCount < 2)
@@ -127,7 +127,7 @@ public class GCMarsComponentCreeperPitCorridor extends GCCoreStructureComponent
 ////	          	this.originalRoom.bossEntryCount++;
 ////	          	return;
 ////    		}
-//    		
+//
 ////    		switch (this.direction)
 ////            {
 ////            case 0:
@@ -179,11 +179,11 @@ public class GCMarsComponentCreeperPitCorridor extends GCCoreStructureComponent
 ////            	par2List.add(pit7);
 ////            	pit7.buildComponent(this, par2List, par3Random);
 //    	}
-//    	
+//
 ////    	if (this.originalRoom.corridorCount < 9)
 ////    	{
 ////            int var1 = this.getComponentType();
-////            
+////
 ////            switch (this.direction)
 ////            {
 ////            case 0:
@@ -240,7 +240,7 @@ public class GCMarsComponentCreeperPitCorridor extends GCCoreStructureComponent
 //		int z2 = this.getBoundingBox().maxZ;
 //
 //        this.fillWithBlocks(par1World, par3StructureBoundingBox, Math.min(x1, x2), Math.min(y1, y2), Math.min(z1, z2), Math.max(x1, x2), Math.max(y1, y2), Math.max(z1, z2), GCBlocks.creeperDungeonWall.blockID, 0, false);
-//        
+//
 //		switch (this.direction)
 //        {
 //        case 0:
@@ -252,7 +252,7 @@ public class GCMarsComponentCreeperPitCorridor extends GCCoreStructureComponent
 //        	{
 //                this.fillWithBlocks(par1World, par3StructureBoundingBox, Math.min(x1 + 1, x2 - 1), Math.min(y1 + 1, y2 - 1), Math.min(z1, z2), Math.max(x1 + 1, x2 - 1), Math.max(y1 + 1, y2 - 1), Math.max(z1, z2), 0, 0, false);
 //        	}
-//        	
+//
 //    		this.fillWithAir(par1World, par3StructureBoundingBox, this.orig[0], this.orig[1], this.orig[2], this.orig[0] + 7, this.orig[1] + 5, this.orig[2] + 7);
 //            break;
 //        case 1:
@@ -264,7 +264,7 @@ public class GCMarsComponentCreeperPitCorridor extends GCCoreStructureComponent
 //        	{
 //        		this.fillWithBlocks(par1World, par3StructureBoundingBox, Math.min(x1, x2), Math.min(y1 + 1, y2 - 1), Math.min(z1 + 1, z2 - 1), Math.max(x1, x2), Math.max(y1 + 1, y2 - 1), Math.max(z1 + 1, z2 - 1), 0, 0, false);
 //        	}
-//        	
+//
 //        	this.fillWithAir(par1World, par3StructureBoundingBox, this.orig[0], this.orig[1], this.orig[2], this.orig[0] + 7, this.orig[1] + 5, this.orig[2] + 7);
 //            break;
 //        case 2:
@@ -276,7 +276,7 @@ public class GCMarsComponentCreeperPitCorridor extends GCCoreStructureComponent
 //        	{
 //                this.fillWithBlocks(par1World, par3StructureBoundingBox, Math.min(x1 + 1, x2 - 1), Math.min(y1 + 1, y2 - 1), Math.min(z1, z2), Math.max(x1 + 1, x2 - 1), Math.max(y1 + 1, y2 - 1), Math.max(z1, z2), 0, 0, false);
 //        	}
-//        	
+//
 //    		this.fillWithAir(par1World, par3StructureBoundingBox, this.orig[0], this.orig[1], this.orig[2], this.orig[0] + 7, this.orig[1] + 5, this.orig[2] + 7);
 //            break;
 //        case 3:
@@ -288,11 +288,11 @@ public class GCMarsComponentCreeperPitCorridor extends GCCoreStructureComponent
 //        	{
 //        		this.fillWithBlocks(par1World, par3StructureBoundingBox, Math.min(x1, x2), Math.min(y1 + 1, y2 - 1), Math.min(z1 + 1, z2 - 1), Math.max(x1, x2), Math.max(y1 + 1, y2 - 1), Math.max(z1 + 1, z2 - 1), 0, 0, false);
 //        	}
-//        	
+//
 //    		this.fillWithAir(par1World, par3StructureBoundingBox, this.orig[0], this.orig[1], this.orig[2], this.orig[0] + 7, this.orig[1] + 5, this.orig[2] + 7);
 //            break;
 //        }
-//		
+//
 //		for (int i = 7; i < this.length - 7; i += 5)
 //		{
 //			if (this.direction == 0 || this.direction == 2)
@@ -310,7 +310,7 @@ public class GCMarsComponentCreeperPitCorridor extends GCCoreStructureComponent
 //	            this.randomlyPlaceBlock(par1World, par3StructureBoundingBox, par2Random, 1F, this.getBoundingBox().minX + i, this.getBoundingBox().minY + 3, this.getBoundingBox().maxZ - 1, GCBlocks.unlitTorch.blockID, 0);
 //			}
 //		}
-//		
+//
 //        return true;
 //    }
 }

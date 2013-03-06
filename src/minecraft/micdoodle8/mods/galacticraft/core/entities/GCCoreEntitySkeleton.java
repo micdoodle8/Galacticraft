@@ -10,6 +10,7 @@ import net.minecraft.entity.ai.EntityAIRestrictSun;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
+import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.item.Item;
@@ -18,16 +19,16 @@ import net.minecraft.stats.AchievementList;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.SideOnly;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
  */
-public class GCCoreEntitySkeleton extends GCCoreEntityMob
+public class GCCoreEntitySkeleton extends EntitySkeleton
 {
     /** The ItemStack that any Skeleton holds (a bow). */
     private static final ItemStack defaultHeldItem = new ItemStack(Item.bow, 1);
@@ -46,6 +47,22 @@ public class GCCoreEntitySkeleton extends GCCoreEntityMob
         this.tasks.addTask(6, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 16.0F, 0, true));
+    }
+    
+	@Override
+    public void onUpdate()
+    {
+        this.motionY += 0.06F;
+        
+    	super.onUpdate();
+    	
+    	this.fallDistance = 0;
+    }
+
+	@Override
+    public void fall(float var1)
+    {
+		;
     }
 
     /**
@@ -98,7 +115,7 @@ public class GCCoreEntitySkeleton extends GCCoreEntityMob
      */
     public ItemStack getHeldItem()
     {
-        return defaultHeldItem;
+        return GCCoreEntitySkeleton.defaultHeldItem;
     }
 
     /**
@@ -126,11 +143,9 @@ public class GCCoreEntitySkeleton extends GCCoreEntityMob
                 this.setFire(8);
             }
         }
-        
-        this.motionY += 0.06F;
 
         super.onLivingUpdate();
-    }    
+    }
 
     /**
      * Called when the mob's health reaches 0.
@@ -159,7 +174,7 @@ public class GCCoreEntitySkeleton extends GCCoreEntityMob
     @Override
 	protected int getDropItemId()
     {
-        return Item.arrow.shiftedIndex;
+        return Item.arrow.itemID;
     }
 
     /**
@@ -173,14 +188,14 @@ public class GCCoreEntitySkeleton extends GCCoreEntityMob
 
         for (var4 = 0; var4 < var3; ++var4)
         {
-            this.dropItem(Item.arrow.shiftedIndex, 1);
+            this.dropItem(Item.arrow.itemID, 1);
         }
 
         var3 = this.rand.nextInt(3 + par2);
 
         for (var4 = 0; var4 < var3; ++var4)
         {
-            this.dropItem(Item.bone.shiftedIndex, 1);
+            this.dropItem(Item.bone.itemID, 1);
         }
     }
 
@@ -195,7 +210,7 @@ public class GCCoreEntitySkeleton extends GCCoreEntityMob
         }
         else
         {
-            this.dropItem(Item.bow.shiftedIndex, 1);
+            this.dropItem(Item.bow.itemID, 1);
         }
     }
 }

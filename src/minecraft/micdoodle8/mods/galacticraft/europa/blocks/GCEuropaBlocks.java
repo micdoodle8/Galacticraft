@@ -8,32 +8,32 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
  */
-public class GCEuropaBlocks 
+public class GCEuropaBlocks
 {
 	public static Block brittleIce;
 	
-	public static void initBlocks() 
-	{	
-		brittleIce = 										new GCEuropaBlockBrittleIce				(GCEuropaConfigManager.idBlockBrittleIce, 					0)						.setHardness(1.7F)																				.setCreativeTab(GalacticraftCore.galacticraftTab)																.setBlockName("brittleIce");
+	public static void initBlocks()
+	{
+		GCEuropaBlocks.brittleIce = 										new GCEuropaBlockBrittleIce				(GCEuropaConfigManager.idBlockBrittleIce, 					0)						.setHardness(1.7F)																				.setCreativeTab(GalacticraftCore.galacticraftTab)																.setBlockName("brittleIce");
 	}
 
-	public static void setHarvestLevels() 
+	public static void setHarvestLevels()
 	{
 	}
 	
-	public static void registerBlocks() 
+	public static void registerBlocks()
 	{
-		GameRegistry.registerBlock(brittleIce);
+		GameRegistry.registerBlock(GCEuropaBlocks.brittleIce);
 	}
 
-	public static void addNames() 
+	public static void addNames()
 	{
-		addName(brittleIce);
+		GCEuropaBlocks.addName(GCEuropaBlocks.brittleIce);
 	}
 	
 	private static void addName(Block block)

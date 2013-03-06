@@ -6,7 +6,7 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
@@ -54,8 +54,13 @@ public class GCMarsEntityAIProjectileTNTAttack extends EntityAIBase
 	public boolean shouldExecute()
     {
         final EntityLiving var1 = this.worldObj.getClosestVulnerablePlayerToEntity(this.entityHost, 50.0D);
+        
+        if (var1 != null && var1.isDead)
+        {
+        	this.resetTask();
+        }
 
-        if (var1 == null)
+        if (var1 == null || var1.isDead)
         {
             return false;
         }

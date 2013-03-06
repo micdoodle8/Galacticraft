@@ -7,12 +7,12 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
  */
-public class GCCoreWorldGenMinableMeta extends WorldGenMinable 
+public class GCCoreWorldGenMinableMeta extends WorldGenMinable
 {
 	private final int minableBlockId;
 
@@ -23,8 +23,10 @@ public class GCCoreWorldGenMinableMeta extends WorldGenMinable
 	private boolean usingMetadata = false;
 	
 	private final int fillerID;
+	
+	private final int fillerMetadata;
 
-	public GCCoreWorldGenMinableMeta(int par1, int par2, int par3, boolean par4, int id)
+	public GCCoreWorldGenMinableMeta(int par1, int par2, int par3, boolean par4, int id, int meta)
 	{
 		super(par1, par2);
 		this.minableBlockId = par1;
@@ -32,10 +34,11 @@ public class GCCoreWorldGenMinableMeta extends WorldGenMinable
 		this.metadata = par3;
 		this.usingMetadata = par4;
 		this.fillerID = id;
+		this.fillerMetadata = meta;
 	}
 
 	@Override
-	public boolean generate(World par1World, Random par2Random, int par3, int par4, int par5) 
+	public boolean generate(World par1World, Random par2Random, int par3, int par4, int par5)
 	{
 		final float var6 = par2Random.nextFloat() * (float) Math.PI;
 		final double var7 = par3 + 8 + MathHelper.sin(var6) * this.numberOfBlocks / 8.0F;
@@ -45,7 +48,7 @@ public class GCCoreWorldGenMinableMeta extends WorldGenMinable
 		final double var15 = par4 + par2Random.nextInt(3) - 2;
 		final double var17 = par4 + par2Random.nextInt(3) - 2;
 
-		for (int var19 = 0; var19 <= this.numberOfBlocks; ++var19) 
+		for (int var19 = 0; var19 <= this.numberOfBlocks; ++var19)
 		{
 			final double var20 = var7 + (var9 - var7) * var19 / this.numberOfBlocks;
 			final double var22 = var15 + (var17 - var15) * var19 / this.numberOfBlocks;
@@ -64,23 +67,23 @@ public class GCCoreWorldGenMinableMeta extends WorldGenMinable
 			{
 				final double var39 = (var38 + 0.5D - var20) / (var28 / 2.0D);
 
-				if (var39 * var39 < 1.0D) 
+				if (var39 * var39 < 1.0D)
 				{
 					for (int var41 = var33; var41 <= var36; ++var41)
 					{
 						final double var42 = (var41 + 0.5D - var22) / (var30 / 2.0D);
 
-						if (var39 * var39 + var42 * var42 < 1.0D) 
+						if (var39 * var39 + var42 * var42 < 1.0D)
 						{
-							for (int var44 = var34; var44 <= var37; ++var44) 
+							for (int var44 = var34; var44 <= var37; ++var44)
 							{
 								final double var45 = (var44 + 0.5D - var24) / (var28 / 2.0D);
 
-								if (var39 * var39 + var42 * var42 + var45 * var45 < 1.0D && par1World.getBlockId(var38, var41, var44) == this.fillerID && this.usingMetadata == false) 
+								if (var39 * var39 + var42 * var42 + var45 * var45 < 1.0D && par1World.getBlockId(var38, var41, var44) == this.fillerID && par1World.getBlockMetadata(var38, var41, var44) == this.fillerMetadata && this.usingMetadata == false)
 								{
 									par1World.setBlock(var38, var41, var44, this.minableBlockId);
-								} 
-								else if (var39 * var39 + var42 * var42 + var45 * var45 < 1.0D && par1World.getBlockId(var38, var41, var44) == this.fillerID && this.usingMetadata == true) 
+								}
+								else if (var39 * var39 + var42 * var42 + var45 * var45 < 1.0D && par1World.getBlockId(var38, var41, var44) == this.fillerID && par1World.getBlockMetadata(var38, var41, var44) == this.fillerMetadata && this.usingMetadata == true)
 								{
 									par1World.setBlockAndMetadata(var38, var41,	var44, this.minableBlockId, this.metadata);
 								}

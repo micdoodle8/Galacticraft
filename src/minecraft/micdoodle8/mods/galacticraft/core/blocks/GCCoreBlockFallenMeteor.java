@@ -12,7 +12,7 @@ import net.minecraft.world.World;
 
 public class GCCoreBlockFallenMeteor extends Block
 {
-	public GCCoreBlockFallenMeteor(int i) 
+	public GCCoreBlockFallenMeteor(int i)
 	{
 		super(i, 21, Material.rock);
 		this.setCreativeTab(GalacticraftCore.galacticraftTab);
@@ -40,7 +40,7 @@ public class GCCoreBlockFallenMeteor extends Block
 	@Override
     public int idDropped(int par1, Random par2Random, int par3)
     {
-        return GCMoonItems.meteoricIronRaw.shiftedIndex;
+        return GCMoonItems.meteoricIronRaw.itemID;
     }
 
 	@Override
@@ -97,13 +97,13 @@ public class GCCoreBlockFallenMeteor extends Block
 	
     private void tryToFall(World par1World, int par2, int par3, int par4)
     {
-        if (canFallBelow(par1World, par2, par3 - 1, par4) && par3 >= 0)
+        if (GCCoreBlockFallenMeteor.canFallBelow(par1World, par2, par3 - 1, par4) && par3 >= 0)
         {
             final byte var8 = 32;
             
             par1World.setBlockWithNotify(par2, par3, par4, 0);
 
-            while (canFallBelow(par1World, par2, par3 - 1, par4) && par3 > 0)
+            while (GCCoreBlockFallenMeteor.canFallBelow(par1World, par2, par3 - 1, par4) && par3 > 0)
             {
                 --par3;
             }

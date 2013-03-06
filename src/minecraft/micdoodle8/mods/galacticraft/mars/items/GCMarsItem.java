@@ -4,14 +4,14 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.item.Item;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
  */
 public class GCMarsItem extends Item
 {
-	public GCMarsItem(int par1) 
+	public GCMarsItem(int par1)
 	{
 		super(par1);
 		this.setCreativeTab(GalacticraftCore.galacticraftTab);

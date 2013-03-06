@@ -5,78 +5,124 @@ import java.io.DataInputStream;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 import micdoodle8.mods.galacticraft.API.AdvancedAchievement;
+import micdoodle8.mods.galacticraft.API.EntitySpaceshipBase;
+import micdoodle8.mods.galacticraft.API.IDetectableMetadataResource;
+import micdoodle8.mods.galacticraft.API.IDetectableResource;
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
 import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.API.IMapPlanet;
 import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
+import micdoodle8.mods.galacticraft.API.ISpaceship;
 import micdoodle8.mods.galacticraft.core.CommonProxyCore;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
-import micdoodle8.mods.galacticraft.core.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLaunchFlameFX;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLaunchSmokeFX;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityOxygenFX;
+import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityWeldingSmoke;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiChoosePlanet;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreOverlayOxygenTankIndicator;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreOverlaySensorGlasses;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreOverlaySpaceship;
+import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelPlayer;
+import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelSpaceship;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererBreathableAir;
+import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererCraftingTable;
+import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererCrudeOil;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererMeteor;
+import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererOxygenCollector;
+import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererOxygenCompressor;
+import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererOxygenDistributor;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererOxygenPipe;
+import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererRefinery;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererUnlitTorch;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderArrow;
+import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderAstroOrb;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderBlockTreasureChest;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderBuggy;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderCreeper;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderFlag;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderMeteor;
+import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderParaChest;
+import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderPlayer;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderSkeleton;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderSpaceship;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderSpider;
+import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderWorm;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderZombie;
 import micdoodle8.mods.galacticraft.core.client.render.item.GCCoreItemRendererBuggy;
 import micdoodle8.mods.galacticraft.core.client.render.item.GCCoreItemRendererFlag;
 import micdoodle8.mods.galacticraft.core.client.render.item.GCCoreItemRendererSpaceship;
 import micdoodle8.mods.galacticraft.core.client.render.item.GCCoreItemRendererUnlitTorch;
+import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntityAdvancedCraftingTableRenderer;
+import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntityOxygenCollectorRenderer;
+import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntityOxygenCompressorRenderer;
+import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntityOxygenDistributorRenderer;
+import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntityRefineryRenderer;
 import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntityTreasureChestRenderer;
+import micdoodle8.mods.galacticraft.core.client.sounds.GCCoreSoundUpdaterSpaceship;
 import micdoodle8.mods.galacticraft.core.client.sounds.GCCoreSounds;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityArrow;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityAstroOrb;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityBuggy;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityControllable;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityCreeper;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityFlag;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityMeteor;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityParaChest;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySkeleton;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpaceship;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpider;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityWorm;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityZombie;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemSensorGlasses;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAdvancedCraftingTable;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCollector;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCompressor;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenDistributor;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityRefinery;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
+import micdoodle8.mods.galacticraft.core.util.PacketUtil;
+import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.moon.client.ClientProxyMoon;
+import micdoodle8.mods.galacticraft.moon.client.GCMoonMapPlanet;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockOre;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.particle.EntitySmokeFX;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
+import net.minecraft.src.ModelPlayerAPI;
+import net.minecraft.src.PlayerAPI;
+import net.minecraft.src.RenderPlayerAPI;
 import net.minecraft.stats.StatBase;
 import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldProviderSurface;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -89,8 +135,9 @@ import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry.KeyHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.common.IScheduledTickHandler;
 import cpw.mods.fml.common.ITickHandler;
-import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -100,9 +147,10 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.common.registry.TickRegistry;
+import cpw.mods.fml.relauncher.Side;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
@@ -114,49 +162,98 @@ public class ClientProxyCore extends CommonProxyCore
 	private static int breathableAirRenderID;
 	private static int oxygenPipeRenderID;
 	private static int meteorRenderID;
+	private static int craftingTableID;
+	private static int oxygenDistributorRenderID;
+	private static int oxygenCollectorRenderID;
+	private static int oxygenCompressorRenderID;
+	private static int crudeOilRenderID;
+	private static int refineryRenderID;
 	public static long getFirstBootTime;
 	public static long getCurrentTime;
+	public static long slowTick;
 	private final Random rand = new Random();
 	public static ClientProxyMoon moon = new ClientProxyMoon();
-	public static int teleportCooldown;
 	public static List<IPlanetSlotRenderer> slotRenderers = new ArrayList<IPlanetSlotRenderer>();
+	public static List<int[]> valueableBlocks = new ArrayList<int[]>();
+	
+	public static Set<String> playersUsingParachutes = new HashSet<String>();
+	public static HashMap<String, String> parachuteTextures = new HashMap<String, String>();
+	public static Set<String> playersWithOxygenMask = new HashSet<String>();
+	public static Set<String> playersWithOxygenGear = new HashSet<String>();
+	public static Set<String> playersWithOxygenTankLeftRed = new HashSet<String>();
+	public static Set<String> playersWithOxygenTankLeftOrange = new HashSet<String>();
+	public static Set<String> playersWithOxygenTankLeftGreen = new HashSet<String>();
+	public static Set<String> playersWithOxygenTankRightRed = new HashSet<String>();
+	public static Set<String> playersWithOxygenTankRightOrange = new HashSet<String>();
+	public static Set<String> playersWithOxygenTankRightGreen = new HashSet<String>();
+	
+	public static double playerPosX;
+    public static double playerPosY;
+    public static double playerPosZ;
+    public static float playerRotationYaw;
+    public static float playerRotationPitch;
 	
 	@Override
-	public void preInit(FMLPreInitializationEvent event) 
+	public void preInit(FMLPreInitializationEvent event)
 	{
-		moon.preInit(event);
+		ClientProxyCore.moon.preInit(event);
+		
+		ModelPlayerAPI.register(GalacticraftCore.MODID, GCCoreModelPlayer.class);
+		RenderPlayerAPI.register(GalacticraftCore.MODID, GCCoreRenderPlayer.class);
+		PlayerAPI.register(GalacticraftCore.MODID, GCCorePlayerBaseClient.class);
 		
 		MinecraftForge.EVENT_BUS.register(new GCCoreSounds());
-		getFirstBootTime = System.currentTimeMillis();
+		ClientProxyCore.getFirstBootTime = System.currentTimeMillis();
 	}
 
 	@Override
-	public void init(FMLInitializationEvent event) 
+	public void init(FMLInitializationEvent event)
 	{
-		moon.init(event);
+		ClientProxyCore.moon.init(event);
 		
 		TickRegistry.registerTickHandler(new TickHandlerClient(), Side.CLIENT);
+		TickRegistry.registerScheduledTickHandler(new TickHandlerClientSlow(), Side.CLIENT);
 		KeyBindingRegistry.registerKeyBinding(new GCKeyHandler());
-        NetworkRegistry.instance().registerChannel(new ClientPacketHandler(), "Galacticraft", Side.CLIENT);
+        NetworkRegistry.instance().registerChannel(new ClientPacketHandler(), GalacticraftCore.CHANNEL, Side.CLIENT);
         ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityTreasureChest.class, new GCCoreTileEntityTreasureChestRenderer());
-        this.treasureChestRenderID = RenderingRegistry.getNextAvailableRenderId();
-        RenderingRegistry.registerBlockHandler(new GCCoreRenderBlockTreasureChest(this.treasureChestRenderID));
-        this.torchRenderID = RenderingRegistry.getNextAvailableRenderId();
-        RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererUnlitTorch(this.torchRenderID));
-        this.breathableAirRenderID = RenderingRegistry.getNextAvailableRenderId();
-        RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererBreathableAir(this.breathableAirRenderID));
-        this.oxygenPipeRenderID = RenderingRegistry.getNextAvailableRenderId();
-        RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererOxygenPipe(this.oxygenPipeRenderID));
-        this.meteorRenderID = RenderingRegistry.getNextAvailableRenderId();
-        RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererMeteor(this.meteorRenderID));
-		GalacticraftCore.addAdditionalMapPlanet(new GCCoreMapPlanetOverworld());
+        ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityOxygenDistributor.class, new GCCoreTileEntityOxygenDistributorRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityOxygenCollector.class, new GCCoreTileEntityOxygenCollectorRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityAdvancedCraftingTable.class, new GCCoreTileEntityAdvancedCraftingTableRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityRefinery.class, new GCCoreTileEntityRefineryRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityOxygenCompressor.class, new GCCoreTileEntityOxygenCompressorRenderer());
+        ClientProxyCore.treasureChestRenderID = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(new GCCoreRenderBlockTreasureChest(ClientProxyCore.treasureChestRenderID));
+        ClientProxyCore.torchRenderID = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererUnlitTorch(ClientProxyCore.torchRenderID));
+        ClientProxyCore.breathableAirRenderID = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererBreathableAir(ClientProxyCore.breathableAirRenderID));
+        ClientProxyCore.oxygenPipeRenderID = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererOxygenPipe(ClientProxyCore.oxygenPipeRenderID));
+        ClientProxyCore.meteorRenderID = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererMeteor(ClientProxyCore.meteorRenderID));
+        ClientProxyCore.craftingTableID = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererCraftingTable(ClientProxyCore.craftingTableID));
+        ClientProxyCore.oxygenDistributorRenderID = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererOxygenDistributor(ClientProxyCore.oxygenDistributorRenderID));
+        ClientProxyCore.oxygenCollectorRenderID = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererOxygenCollector(ClientProxyCore.oxygenCollectorRenderID));
+        ClientProxyCore.crudeOilRenderID = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererCrudeOil(ClientProxyCore.crudeOilRenderID));
+        ClientProxyCore.refineryRenderID = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererRefinery(ClientProxyCore.refineryRenderID));
+        ClientProxyCore.oxygenCompressorRenderID = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererOxygenCompressor(ClientProxyCore.oxygenCompressorRenderID));
+        final IMapPlanet earth = new GCCoreMapPlanetOverworld();
+        final IMapPlanet moon = new GCMoonMapPlanet();
+		GalacticraftCore.addAdditionalMapPlanet(earth);
+		GalacticraftCore.addAdditionalMapMoon(earth, moon);
 		GalacticraftCore.addAdditionalMapPlanet(new GCCoreMapSun());
 	}
 
 	@Override
-	public void postInit(FMLPostInitializationEvent event) 
+	public void postInit(FMLPostInitializationEvent event)
 	{
-		moon.postInit(event);
+		ClientProxyCore.moon.postInit(event);
 		
 		for (final IGalacticraftSubModClient client : GalacticraftCore.clientSubMods)
 		{
@@ -164,19 +261,23 @@ public class ClientProxyCore extends CommonProxyCore
 			{
 				GalacticraftCore.mapPlanets.add(client.getPlanetForMap());
 			}
-			else
+			
+			if (client.getChildMapPlanets() != null && client.getPlanetForMap() != null)
 			{
-				FMLLog.severe("Galacticraft " + client.getDimensionName() + " failed to load: No Planet Map provided");
+				for (final IMapPlanet planet : client.getChildMapPlanets())
+				{
+					GalacticraftCore.mapMoons.put(client.getPlanetForMap(), planet);
+				}
 			}
 		}
 	}
 	
 	@Override
-	public void registerRenderInformation() 
+	public void registerRenderInformation()
 	{
-		moon.registerRenderInformation();
+		ClientProxyCore.moon.registerRenderInformation();
 		
-        RenderingRegistry.registerEntityRenderingHandler(GCCoreEntitySpaceship.class, new GCCoreRenderSpaceship());
+        RenderingRegistry.registerEntityRenderingHandler(GCCoreEntitySpaceship.class, new GCCoreRenderSpaceship(new GCCoreModelSpaceship(), "/micdoodle8/mods/galacticraft/core/client/entities/spaceship1.png"));
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntitySpider.class, new GCCoreRenderSpider());
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityZombie.class, new GCCoreRenderZombie());
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityCreeper.class, new GCCoreRenderCreeper());
@@ -184,6 +285,9 @@ public class ClientProxyCore extends CommonProxyCore
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityMeteor.class, new GCCoreRenderMeteor());
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityBuggy.class, new GCCoreRenderBuggy());
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityFlag.class, new GCCoreRenderFlag());
+        RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityAstroOrb.class, new GCCoreRenderAstroOrb());
+        RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityWorm.class, new GCCoreRenderWorm());
+        RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityParaChest.class, new GCCoreRenderParaChest());
         RenderingRegistry.addNewArmourRendererPrefix("oxygen");
         RenderingRegistry.addNewArmourRendererPrefix("sensor");
         RenderingRegistry.addNewArmourRendererPrefix("sensorox");
@@ -193,15 +297,15 @@ public class ClientProxyCore extends CommonProxyCore
 		MinecraftForgeClient.preloadTexture("/micdoodle8/mods/galacticraft/core/client/blocks/core.png");
 		MinecraftForgeClient.preloadTexture("/micdoodle8/mods/galacticraft/core/client/items/core.png");
         MinecraftForgeClient.registerItemRenderer(GCCoreBlocks.unlitTorch.blockID, new GCCoreItemRendererUnlitTorch());
-        MinecraftForgeClient.registerItemRenderer(GCCoreItems.spaceship.shiftedIndex, new GCCoreItemRendererSpaceship());
-        MinecraftForgeClient.registerItemRenderer(GCCoreItems.buggy.shiftedIndex, new GCCoreItemRendererBuggy());
-        MinecraftForgeClient.registerItemRenderer(GCCoreItems.flag.shiftedIndex, new GCCoreItemRendererFlag());
+        MinecraftForgeClient.registerItemRenderer(GCCoreItems.spaceship.itemID, new GCCoreItemRendererSpaceship());
+        MinecraftForgeClient.registerItemRenderer(GCCoreItems.buggy.itemID, new GCCoreItemRendererBuggy());
+        MinecraftForgeClient.registerItemRenderer(GCCoreItems.flag.itemID, new GCCoreItemRendererFlag());
 	}
 
 	@Override
 	public void addSlotRenderer(IPlanetSlotRenderer slotRenderer)
 	{
-		this.slotRenderers.add(slotRenderer);
+		ClientProxyCore.slotRenderers.add(slotRenderer);
 	}
 
 	@Override
@@ -213,31 +317,65 @@ public class ClientProxyCore extends CommonProxyCore
 	@Override
 	public int getGCTreasureChestRenderID()
 	{
-		return this.treasureChestRenderID;
+		return ClientProxyCore.treasureChestRenderID;
 	}
 	
 	@Override
 	public int getGCUnlitTorchRenderID()
 	{
-		return this.torchRenderID;
+		return ClientProxyCore.torchRenderID;
 	}
 	
 	@Override
 	public int getGCBreathableAirRenderID()
 	{
-		return this.breathableAirRenderID;
+		return ClientProxyCore.breathableAirRenderID;
 	}
 	
 	@Override
 	public int getGCOxygenPipeRenderID()
 	{
-		return this.oxygenPipeRenderID;
+		return ClientProxyCore.oxygenPipeRenderID;
 	}
 	
 	@Override
 	public int getGCMeteorRenderID()
 	{
-		return this.meteorRenderID;
+		return ClientProxyCore.meteorRenderID;
+	}
+
+	@Override
+	public int getGCCraftingTableRenderID()
+	{
+		return ClientProxyCore.craftingTableID;
+	}
+
+	@Override
+	public int getGCOxygenDistributorRenderID()
+	{
+		return ClientProxyCore.oxygenDistributorRenderID;
+	}
+
+	@Override
+	public int getGCOxygenCollectorRenderID()
+	{
+		return ClientProxyCore.oxygenCollectorRenderID;
+	}
+
+	@Override
+	public int getGCCrudeOilRenderID()
+	{
+		return ClientProxyCore.crudeOilRenderID;
+	}
+
+	public int getGCRefineryRenderID()
+	{
+		return ClientProxyCore.refineryRenderID;
+	}
+
+	public int getGCCompressorRenderID()
+	{
+		return ClientProxyCore.oxygenCompressorRenderID;
 	}
 
 	@Override
@@ -315,34 +453,39 @@ public class ClientProxyCore extends CommonProxyCore
 	
     public class ClientPacketHandler implements IPacketHandler
     {
+    	Minecraft mc = FMLClientHandler.instance().getClient();
+    	
 		@Override
-		public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player p) 
+		public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player p)
 		{
             final DataInputStream data = new DataInputStream(new ByteArrayInputStream(packet.data));
-            final int packetType = GCCoreUtil.readPacketID(data);
+            
+            final int packetType = PacketUtil.readPacketID(data);
+            
             final EntityPlayer player = (EntityPlayer)p;
             
             if (packetType == 0)
             {
-                final Class[] decodeAs = {Integer.class, String.class};
-                final Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
+                final Class[] decodeAs = {Integer.class, Integer.class, String.class};
+                final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
                 
-                if (String.valueOf(packetReadout[1]).equals(String.valueOf(FMLClientHandler.instance().getClient().thePlayer.username)))
+                if (String.valueOf(packetReadout[2]).equals(String.valueOf(FMLClientHandler.instance().getClient().thePlayer.username)))
                 {
                     TickHandlerClient.airRemaining = (Integer) packetReadout[0];
+                    TickHandlerClient.airRemaining2 = (Integer) packetReadout[1];
                 }
             }
             else if (packetType == 1)
             {
                 final Class[] decodeAs = {Float.class};
-                final Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
+                final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
             	
                 FMLClientHandler.instance().getClient().thePlayer.timeInPortal = (Float) packetReadout[0];
             }
             else if (packetType == 2)
             {
             	final Class[] decodeAs = {String.class, String.class};
-                final Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
+                final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
             	
                 if (String.valueOf(packetReadout[0]).equals(FMLClientHandler.instance().getClient().thePlayer.username))
                 {
@@ -351,30 +494,164 @@ public class ClientProxyCore extends CommonProxyCore
             		if (FMLClientHandler.instance().getClient().theWorld != null && !(FMLClientHandler.instance().getClient().currentScreen instanceof GCCoreGuiChoosePlanet))
             		{
             			FMLClientHandler.instance().getClient().displayGuiScreen(new GCCoreGuiChoosePlanet(FMLClientHandler.instance().getClient().thePlayer, destinations));
-            			FMLClientHandler.instance().getClient().setIngameNotInFocus();
             		}
                 }
             }
             else if (packetType == 3)
             {
             	final Class[] decodeAs = {Integer.class, Integer.class};
-                final Object[] packetReadout = GCCoreUtil.readPacketData(data, decodeAs);
+                final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
                 
                 for(int i = 0; i < player.worldObj.getLoadedEntityList().size(); i++)
                 {
 	                if(player.worldObj.getLoadedEntityList().get(i) instanceof EntityLiving && ((EntityLiving)player.worldObj.getLoadedEntityList().get(i)).entityId == (Integer)packetReadout[1])
 	                {
-	                	if (healthMap.containsKey(packetReadout[1]))
+	                	if (ClientProxyCore.healthMap.containsKey(packetReadout[1]))
 	                	{
-	                		healthMap.remove(packetReadout[1]);
-	                		healthMap.put(packetReadout[1], packetReadout[0]);
+	                		ClientProxyCore.healthMap.remove(packetReadout[1]);
+	                		ClientProxyCore.healthMap.put(packetReadout[1], packetReadout[0]);
 	                	}
 	                	else
 	                	{
-	                		healthMap.put(packetReadout[1], packetReadout[0]);
+	                		ClientProxyCore.healthMap.put(packetReadout[1], packetReadout[0]);
 	                	}
 	                }
                 }
+            }
+            else if (packetType == 4)
+            {
+            	final Class[] decodeAs = {String.class};
+                final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
+                
+                ClientProxyCore.playersUsingParachutes.add((String) packetReadout[0]);
+            }
+            else if (packetType == 5)
+            {
+            	final Class[] decodeAs = {String.class};
+                final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
+                
+                ClientProxyCore.playersUsingParachutes.remove(packetReadout[0]);
+            }
+            else if (packetType == 6)
+            {
+            	final Class[] decodeAs = {String.class, String.class};
+                final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
+                
+                ClientProxyCore.parachuteTextures.put((String)packetReadout[0], (String)packetReadout[1]);
+            }
+            else if (packetType == 7)
+            {
+            	final Class[] decodeAs = {String.class, String.class};
+                final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
+                
+                ClientProxyCore.parachuteTextures.remove(packetReadout[0]);
+            }
+            else if (packetType == 8)
+            {
+            	final Class[] decodeAs = {String.class};
+                final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
+                
+                FMLClientHandler.instance().getClient().gameSettings.thirdPersonView = 1;
+
+            	player.sendChatToPlayer("SPACE - Launch");
+            	player.sendChatToPlayer("A / D  - Turn left-right");
+            	player.sendChatToPlayer("W / S  - Turn up-down");
+            	player.sendChatToPlayer(Keyboard.getKeyName(GCKeyHandler.openSpaceshipInv.keyCode) + "       - Inventory / Fuel");
+            }
+            else if (packetType == 9)
+            {
+            	final Class[] decodeAs = {Integer.class, Integer.class, Integer.class};
+                final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
+                
+                int x, y, z;
+                x = (Integer) packetReadout[0];
+                y = (Integer) packetReadout[1];
+                z = (Integer) packetReadout[2];
+
+            	for (int i = 0; i < 4; i++)
+            	{
+                    if (this.mc != null && this.mc.renderViewEntity != null && this.mc.effectRenderer != null && this.mc.theWorld != null)
+                    {
+                		final EntityFX fx = new GCCoreEntityWeldingSmoke(this.mc.theWorld, x - 0.15 + 0.5, y + 1.2, z + 0.15 + 0.5, this.mc.theWorld.rand.nextDouble() / 20 - this.mc.theWorld.rand.nextDouble() / 20, 0.06, this.mc.theWorld.rand.nextDouble() / 20 - this.mc.theWorld.rand.nextDouble() / 20, 1.0F);
+                		if (fx != null)
+                		{
+                        	this.mc.effectRenderer.addEffect(fx);
+                		}
+                    }
+            	}
+            }
+            else if (packetType == 10)
+            {
+            	final Class[] decodeAs = {String.class, Integer.class};
+                final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
+                
+                final int type = (Integer) packetReadout[1];
+                
+                switch (type)
+                {
+                case 0:
+                	ClientProxyCore.playersWithOxygenMask.add((String) packetReadout[0]);
+                	break;
+                case 1:
+                	ClientProxyCore.playersWithOxygenMask.remove(packetReadout[0]);
+                	break;
+                case 2:
+                	ClientProxyCore.playersWithOxygenGear.add((String) packetReadout[0]);
+                	break;
+                case 3:
+                	ClientProxyCore.playersWithOxygenGear.remove(packetReadout[0]);
+                	break;
+                case 4:
+                	ClientProxyCore.playersWithOxygenTankLeftRed.add((String) packetReadout[0]);
+                	break;
+                case 5:
+                	ClientProxyCore.playersWithOxygenTankLeftRed.remove(packetReadout[0]);
+                	break;
+                case 6:
+                	ClientProxyCore.playersWithOxygenTankLeftOrange.add((String) packetReadout[0]);
+                	break;
+                case 7:
+                	ClientProxyCore.playersWithOxygenTankLeftOrange.remove(packetReadout[0]);
+                	break;
+                case 8:
+                	ClientProxyCore.playersWithOxygenTankLeftGreen.add((String) packetReadout[0]);
+                	break;
+                case 9:
+                	ClientProxyCore.playersWithOxygenTankLeftGreen.remove(packetReadout[0]);
+                	break;
+                case 10:
+                	ClientProxyCore.playersWithOxygenTankRightRed.add((String) packetReadout[0]);
+                	break;
+                case 11:
+                	ClientProxyCore.playersWithOxygenTankRightRed.remove(packetReadout[0]);
+                	break;
+                case 12:
+                	ClientProxyCore.playersWithOxygenTankRightOrange.add((String) packetReadout[0]);
+                	break;
+                case 13:
+                	ClientProxyCore.playersWithOxygenTankRightOrange.remove(packetReadout[0]);
+                	break;
+                case 14:
+                	ClientProxyCore.playersWithOxygenTankRightGreen.add((String) packetReadout[0]);
+                	break;
+                case 15:
+                	ClientProxyCore.playersWithOxygenTankRightGreen.remove(packetReadout[0]);
+                	break;
+                }
+            }
+            else if (packetType == 11)
+            {
+                final Class[] decodeAs = {String.class};
+                final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
+                
+                this.mc.thePlayer.playerCloakUrl = (String) packetReadout[0];
+            }
+            else if (packetType == 12)
+            {
+                final Class[] decodeAs = {String.class};
+                final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
+                
+                FMLClientHandler.instance().getClient().displayGuiScreen(null);
             }
 		}
     }
@@ -426,10 +703,99 @@ public class ClientProxyCore extends CommonProxyCore
 	{
 		return player.worldObj.isMaterialInBB(player.boundingBox.expand(-0.10000000149011612D, -0.4000000059604645D, -0.10000000149011612D), Material.water);
 	}
+	
+	private static boolean lastSpacebarDown;
+	
+	public static class TickHandlerClientSlow implements IScheduledTickHandler
+	{
+		@Override
+		public void tickStart(EnumSet<TickType> type, Object... tickData)
+		{
+			final EntityPlayer player = FMLClientHandler.instance().getClient().thePlayer;
+			
+			if (player != null)
+			{
+				ClientProxyCore.valueableBlocks.clear();
+				
+				for (int i = -4; i < 5; i++)
+				{
+					for (int j = -4; j < 5; j++)
+					{
+						for (int k = -4; k < 5; k++)
+						{
+							int x, y, z;
+							
+							x = MathHelper.floor_double(player.posX + i);
+							y = MathHelper.floor_double(player.posY + j);
+							z = MathHelper.floor_double(player.posZ + k);
+							
+							final int id = player.worldObj.getBlockId(x, y, z);
+							
+							if (id != 0)
+							{
+								final Block block = Block.blocksList[id];
+								
+								if (block != null && (block instanceof BlockOre || block instanceof IDetectableResource || (block instanceof IDetectableMetadataResource && ((IDetectableMetadataResource) block).isValueable(player.worldObj.getBlockMetadata(x, y, z)))))
+								{
+									final int[] blockPos = {x, y, z};
+									
+									if (!this.alreadyContainsBlock(x, y, z))
+									{
+										ClientProxyCore.valueableBlocks.add(blockPos);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		private boolean alreadyContainsBlock(int x1, int y1, int z1)
+		{
+			for (final int[] coordArray : ClientProxyCore.valueableBlocks)
+			{
+				final int x = coordArray[0];
+				final int y = coordArray[1];
+				final int z = coordArray[2];
+				
+				if (x1 == x && y1 == y && z1 == z)
+				{
+					return true;
+				}
+			}
+			
+			return false;
+		}
+
+		@Override
+		public void tickEnd(EnumSet<TickType> type, Object... tickData){}
+
+    	@Override
+    	public EnumSet<TickType> ticks()
+    	{
+    		return EnumSet.of(TickType.CLIENT);
+    	}
+
+		@Override
+		public String getLabel()
+		{
+			return "GalacticraftSlowClient";
+		}
+
+		@Override
+		public int nextTickSpacing()
+		{
+			return 20;
+		}
+		
+	}
     
     public static class TickHandlerClient implements ITickHandler
     {
     	public static int airRemaining;
+    	public static int airRemaining2;
+        public static boolean checkedVersion = true;
     	
     	@Override
     	public void tickStart(EnumSet<TickType> type, Object... tickData)
@@ -444,16 +810,135 @@ public class ClientProxyCore extends CommonProxyCore
     		
     		if (type.equals(EnumSet.of(TickType.CLIENT)))
             {
-    			if (player != null && player.worldObj.provider instanceof IGalacticraftWorldProvider && !player.capabilities.isFlying && !minecraft.isGamePaused && !player.handleWaterMovement()) 
+    			if (minecraft.currentScreen != null && minecraft.currentScreen instanceof GuiMainMenu)
     			{
-    				final IGalacticraftWorldProvider wp = (IGalacticraftWorldProvider) player.worldObj.provider;
-    				player.motionY = player.motionY + wp.getGravity();
+    				GalacticraftCore.playersServer.clear();
+    				GalacticraftCore.playersClient.clear();
     			}
     			
-    			if (teleportCooldown > 0)
+    	    	if (world != null && checkedVersion)
+    	    	{
+    	    		GCCoreUtil.checkVersion(Side.CLIENT);
+    	    		checkedVersion = false;
+    	    	}
+    	    	
+    			if (player != null && player.ridingEntity != null && player.ridingEntity instanceof ISpaceship)
     			{
-    				teleportCooldown--;
+    				this.zoom(15.0F);
+    				final Object[] toSend = {player.ridingEntity.rotationPitch};
+    	            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 8, toSend));
+    				final Object[] toSend2 = {player.ridingEntity.rotationYaw};
+    	            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 7, toSend2));
     			}
+    			else
+    			{
+    				this.zoom(4.0F);
+    			}
+    			
+    			if (world != null && world.provider instanceof WorldProviderSurface)
+    			{
+    				if (world.provider.getSkyRenderer() == null && player.ridingEntity != null && player.ridingEntity.posY >= 200)
+                    {
+    					world.provider.setSkyRenderer(new GCCoreSkyProviderOverworld());
+                    }
+    				else if (world.provider.getSkyRenderer() != null && world.provider.getSkyRenderer() instanceof GCCoreSkyProviderOverworld && (player.ridingEntity == null || player.ridingEntity.posY < 200))
+    				{
+    					world.provider.setSkyRenderer(null);
+    				}
+    			}
+    			
+    			if (player != null && player.ridingEntity != null && player.ridingEntity instanceof GCCoreEntityControllable)
+    			{
+    				final GCCoreEntityControllable entityControllable = (GCCoreEntityControllable) player.ridingEntity;
+    				
+    				if (minecraft.gameSettings.keyBindLeft.pressed)
+    				{
+    					entityControllable.keyPressed(2, player);
+    					final Object[] toSend = {2};
+    					PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 9, toSend));
+    				}
+    				
+    				if (minecraft.gameSettings.keyBindRight.pressed)
+    				{
+    					entityControllable.keyPressed(3, player);
+    					final Object[] toSend = {3};
+    					PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 9, toSend));
+    				}
+
+    				if (minecraft.gameSettings.keyBindForward.pressed)
+    				{
+    					entityControllable.keyPressed(0, player);
+    					final Object[] toSend = {0};
+    					PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 9, toSend));
+    				}
+    				
+    				if (minecraft.gameSettings.keyBindBack.pressed)
+    				{
+    					entityControllable.keyPressed(1, player);
+    					final Object[] toSend = {1};
+    					PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 9, toSend));
+    				}
+    			}
+    			
+    			if (player != null && player.ridingEntity != null && player.ridingEntity instanceof GCCoreEntitySpaceship)
+    			{
+    				final GCCoreEntitySpaceship ship = (GCCoreEntitySpaceship) player.ridingEntity;
+    				
+    				if (minecraft.gameSettings.keyBindLeft.pressed)
+    				{
+        	            ship.turnYaw(-1.0F);
+        				final Object[] toSend = {ship.rotationYaw};
+        	            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 7, toSend));
+    				}
+    				
+    				if (minecraft.gameSettings.keyBindRight.pressed)
+    				{
+        	            ship.turnYaw(1.0F);
+        				final Object[] toSend = {ship.rotationYaw};
+        	            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 7, toSend));
+    				}
+
+    				if (minecraft.gameSettings.keyBindForward.pressed)
+    				{
+    					if (ship.getLaunched() == 1)
+    					{
+            	            ship.turnPitch(-0.7F);
+            				final Object[] toSend = {ship.rotationPitch};
+            	            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket("Galacticraft", 8, toSend));
+    					}
+    				}
+    				
+    				if (minecraft.gameSettings.keyBindBack.pressed)
+    				{
+    					if (ship.getLaunched() == 1)
+    					{
+            	            ship.turnPitch(0.7F);
+            				final Object[] toSend = {ship.rotationPitch};
+            	            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 8, toSend));
+    					}
+    				}
+    			}
+
+	        	if (world != null)
+	        	{
+	    	        for (int i = 0; i < world.loadedEntityList.size(); i++)
+	    	        {
+    	        		final Entity e = (Entity) world.loadedEntityList.get(i);
+    	        		
+    	        		if (e != null)
+    	        		{
+    	        			if (e instanceof GCCoreEntitySpaceship)
+    	        			{
+    	        				final GCCoreEntitySpaceship eship = (GCCoreEntitySpaceship) e;
+    	        				
+    	        				if (eship.rocketSoundUpdater == null)
+    	        				{
+    	        					eship.rocketSoundUpdater = new GCCoreSoundUpdaterSpaceship(FMLClientHandler.instance().getClient().sndManager, eship, FMLClientHandler.instance().getClient().thePlayer);
+    	        				}
+    	        			}
+    	        		}
+	    	        }
+	        	}
     			
     			if (FMLClientHandler.instance().getClient().currentScreen instanceof GCCoreGuiChoosePlanet)
     			{
@@ -464,11 +949,17 @@ public class ClientProxyCore extends CommonProxyCore
     			{
     				world.setRainStrength(0.0F);
     			}
+
+    			if (!minecraft.gameSettings.keyBindJump.pressed)
+    			{
+    				ClientProxyCore.lastSpacebarDown = false;
+    			}
     			
-    			if (player != null && player.ridingEntity != null && minecraft.gameSettings.keyBindJump.pressed)
+    			if (player != null && player.ridingEntity != null && minecraft.gameSettings.keyBindJump.pressed && !ClientProxyCore.lastSpacebarDown)
     			{
     				final Object[] toSend = {0};
-    	            PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 3, toSend));
+    	            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 3, toSend));
+    	            ClientProxyCore.lastSpacebarDown = true;
     			}
     			
             	if (Keyboard.isKeyDown(Keyboard.KEY_W))
@@ -478,7 +969,7 @@ public class ClientProxyCore extends CommonProxyCore
                     	final EntityPlayerSP player2 = minecraft.thePlayer;
                     	
                         final Object[] toSend = {player.username, 0};
-                        PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 5, toSend));
+                        PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 5, toSend));
                 	}
             	}
             	if (Keyboard.isKeyDown(Keyboard.KEY_A))
@@ -488,7 +979,7 @@ public class ClientProxyCore extends CommonProxyCore
                     	final EntityPlayerSP player2 = minecraft.thePlayer;
                     	
                         final Object[] toSend = {player.username, 1};
-                        PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 5, toSend));
+                        PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 5, toSend));
                 	}
             	}
             	if (Keyboard.isKeyDown(Keyboard.KEY_D))
@@ -498,16 +989,27 @@ public class ClientProxyCore extends CommonProxyCore
                     	final EntityPlayerSP player2 = minecraft.thePlayer;
                     	
                         final Object[] toSend = {player.username, 2};
-                        PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 5, toSend));
+                        PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 5, toSend));
                 	}
             	}
             }
         }
     	
-		int i = 0;
+    	public static void zoom(float value)
+    	{
+			try
+			{
+		        ObfuscationReflectionHelper.setPrivateValue(EntityRenderer.class, FMLClientHandler.instance().getClient().entityRenderer, value, 13);
+		        ObfuscationReflectionHelper.setPrivateValue(EntityRenderer.class, FMLClientHandler.instance().getClient().entityRenderer, value, 14);
+			}
+			catch (Exception ex)
+			{
+		        ex.printStackTrace();
+			}
+    	}
 
     	@Override
-    	public void tickEnd(EnumSet<TickType> type, Object... tickData) 
+    	public void tickEnd(EnumSet<TickType> type, Object... tickData)
     	{
     		final Minecraft minecraft = FMLClientHandler.instance().getClient();
     		
@@ -524,6 +1026,17 @@ public class ClientProxyCore extends CommonProxyCore
             
     		if (type.equals(EnumSet.of(TickType.RENDER)))
             {
+        		final float partialTickTime = (Float) tickData[0];
+        		
+    			if (player != null)
+    			{
+        			ClientProxyCore.playerPosX = player.prevPosX + (player.posX - player.prevPosX) * partialTickTime;
+        			ClientProxyCore.playerPosY = player.prevPosY + (player.posY - player.prevPosY) * partialTickTime;
+        			ClientProxyCore.playerPosZ = player.prevPosZ + (player.posZ - player.prevPosZ) * partialTickTime;
+        			ClientProxyCore.playerRotationYaw = player.prevRotationYaw + (player.rotationYaw - player.prevRotationYaw) * partialTickTime;
+        			ClientProxyCore.playerRotationPitch = player.prevRotationPitch + (player.rotationPitch - player.prevRotationPitch) * partialTickTime;
+    			}
+    			
     			if (player != null && player.ridingEntity != null && player.ridingEntity instanceof GCCoreEntitySpaceship)
         		{
     				float f = (((GCCoreEntitySpaceship)player.ridingEntity).getTimeSinceLaunch() - 250F) / 175F;
@@ -548,14 +1061,6 @@ public class ClientProxyCore extends CommonProxyCore
 					GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 					GL11.glColor4f(1.0F, 1.0F, 1.0F, f);
 					GL11.glDisable(GL11.GL_ALPHA_TEST);
-//    				GL11.glBindTexture(GL11.GL_TEXTURE_2D, minecraft.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/backgrounds/black.png"));
-//					Tessellator tessellator = Tessellator.instance;
-//					tessellator.startDrawingQuads();
-//					tessellator.addVertexWithUV(i / 2 - 2 * k * 80, k * 40, -90D, 0.0D, 1.0D);
-//					tessellator.addVertexWithUV(i / 2 + 2 * k * 80, k * 40, -90D, 1.0D, 1.0D);
-//					tessellator.addVertexWithUV(i / 2 + 2 * k * 80, 0.0D * 40, -90D, 1.0D, 0.0D);
-//					tessellator.addVertexWithUV(i / 2 - 2 * k * 80, 0.0D * 40, -90D, 0.0D, 0.0D);
-//					tessellator.draw();
 					GL11.glDepthMask(true);
 					GL11.glEnable(GL11.GL_DEPTH_TEST);
 					GL11.glEnable(GL11.GL_ALPHA_TEST);
@@ -564,461 +1069,42 @@ public class ClientProxyCore extends CommonProxyCore
     			
         		if (helmetSlot != null && helmetSlot.getItem() instanceof GCCoreItemSensorGlasses && minecraft.currentScreen == null)
         		{
-        			this.i++;
-        			
-        	        final float f = MathHelper.sin(this.i / 80.0F) * 0.1F + 0.1F;
-        			
-					final ScaledResolution scaledresolution = new ScaledResolution(minecraft.gameSettings, minecraft.displayWidth, minecraft.displayHeight);
-			        final int i = scaledresolution.getScaledWidth();
-			        final int k = scaledresolution.getScaledHeight();
-			        minecraft.entityRenderer.setupOverlayRendering();
-			        GL11.glEnable(GL11.GL_BLEND);
-			        GL11.glDisable(GL11.GL_DEPTH_TEST);
-			        GL11.glDepthMask(false);
-					GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-					GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-					GL11.glDisable(GL11.GL_ALPHA_TEST);
-    				GL11.glBindTexture(GL11.GL_TEXTURE_2D, minecraft.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/gui/hud.png"));
-					final Tessellator tessellator = Tessellator.instance;
-					tessellator.startDrawingQuads();
-					tessellator.addVertexWithUV(i / 2 - 2 * k - f * 80, k + f * 40, -90D, 0.0D, 1.0D);
-					tessellator.addVertexWithUV(i / 2 + 2 * k + f * 80, k + f * 40, -90D, 1.0D, 1.0D);
-					tessellator.addVertexWithUV(i / 2 + 2 * k + f * 80, 0.0D - f * 40, -90D, 1.0D, 0.0D);
-					tessellator.addVertexWithUV(i / 2 - 2 * k - f * 80, 0.0D - f * 40, -90D, 0.0D, 0.0D);
-					tessellator.draw();
-					GL11.glDepthMask(true);
-					GL11.glEnable(GL11.GL_DEPTH_TEST);
-					GL11.glEnable(GL11.GL_ALPHA_TEST);
-					GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        			GCCoreOverlaySensorGlasses.renderSensorGlassesMain();
+        			GCCoreOverlaySensorGlasses.renderSensorGlassesValueableBlocks();
+        		}
+        		
+        		if (player != null && player.ridingEntity != null && player.ridingEntity instanceof EntitySpaceshipBase)
+        		{
+        			GCCoreOverlaySpaceship.renderSpaceshipOverlay();
         		}
 
-        		if (player != null && player.worldObj.provider instanceof IGalacticraftWorldProvider)
+        		if (player != null && player.worldObj.provider instanceof IGalacticraftWorldProvider && OxygenUtil.shouldDisplayTankGui(minecraft.currentScreen))
     			{
-    				final short var8 = 90;
-    				int var6 = (airRemaining - 90) * -1;
-    				if (airRemaining <= 0) 
+    				int var6 = (TickHandlerClient.airRemaining - 90) * -1;
+    				
+    				if (TickHandlerClient.airRemaining <= 0)
     				{
     					var6 = 90;
     				}
     				
-    				final float var9 = 0.00390625F;
-    				final float var10 = 0.00390625F;
+    				int var7 = (TickHandlerClient.airRemaining2 - 90) * -1;
     				
-    				final ScaledResolution scaledresolution = new ScaledResolution(minecraft.gameSettings, minecraft.displayWidth, minecraft.displayHeight);
-    		        final int i = scaledresolution.getScaledWidth();
-    		        final int k = scaledresolution.getScaledHeight();
-    		        minecraft.entityRenderer.setupOverlayRendering();
-    		        GL11.glEnable(GL11.GL_BLEND);
-    		        GL11.glDisable(GL11.GL_DEPTH_TEST);
-    		        GL11.glDepthMask(false);
-    				GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-    				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    				GL11.glDisable(GL11.GL_ALPHA_TEST);
-    				GL11.glBindTexture(GL11.GL_TEXTURE_2D, minecraft.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/gui/gui.png"));
-    				final Tessellator tessellator = Tessellator.instance;
-    				tessellator.startDrawingQuads();
-    				tessellator.addVertexWithUV(i - 20, k / 2 + 45, -90D, 0 * 0.00390625F, 90 * 0.00390625F);
-    				tessellator.addVertexWithUV(i - 10, k / 2 + 45, -90D, 10 * 0.00390625F, 90 * 0.00390625F);
-    				tessellator.addVertexWithUV(i - 10, k / 2 - 45, -90D, 10 * 0.00390625F, 0 * 0.00390625F);
-    				tessellator.addVertexWithUV(i - 20, k / 2 - 45, -90D, 0 * 0.00390625F, 0 * 0.00390625F);
-    				tessellator.draw();
-    				GL11.glDepthMask(true);
-    				GL11.glEnable(GL11.GL_DEPTH_TEST);
-    				GL11.glEnable(GL11.GL_ALPHA_TEST);
-    				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    				
-    				if (var6 > 0 || var6 <= 0) 
+    				if (TickHandlerClient.airRemaining2 <= 0)
     				{
-    					final Tessellator tessellator2 = Tessellator.instance;
-    					tessellator2.startDrawingQuads();
-    					tessellator2.addVertexWithUV(i - 20, k / 2 - 45 + var6, 0, 10 * 0.00390625F, var6 * 0.00390625F);
-    					tessellator2.addVertexWithUV(i - 10, k / 2 - 45 + var6, 0, 20 * 0.00390625F, var6 * 0.00390625F);
-    					tessellator2.addVertexWithUV(i - 10, k / 2 - 45, 0, 20 * 0.00390625F, 0 * 0.00390625F);
-    					tessellator2.addVertexWithUV(i - 20, k / 2 - 45, 0, 10 * 0.00390625F, 0 * 0.00390625F);
-    					tessellator2.draw();
+    					var7 = 90;
+    				}
+    				
+    				if (GCCoreConfigManager.oxygenIndicatorLeftSide)
+    				{
+        				GCCoreOverlayOxygenTankIndicator.renderOxygenTankIndicatorLeft(var6, var7);
+    				}
+    				else
+    				{
+        				GCCoreOverlayOxygenTankIndicator.renderOxygenTankIndicatorRight(var6, var7);
     				}
     			}
             }
     	}
-    	
-        @SuppressWarnings("unused")
-		public static void renderName(EntityLiving par1EntityPlayer, double par2, double par4, double par6)
-        {
-        	// TODO
-    		final Minecraft minecraft = FMLClientHandler.instance().getClient();
-    		
-            final WorldClient world = minecraft.theWorld;
-            
-            final EntityPlayerSP player = minecraft.thePlayer;
-            
-            ItemStack helmetSlot = null;
-    		
-    		if (player != null && player.inventory.armorItemInSlot(3) != null)
-    		{
-    			helmetSlot = player.inventory.armorItemInSlot(3);
-    		}
-    		
-            if (false && helmetSlot != null && helmetSlot.getItem() instanceof GCCoreItemSensorGlasses && minecraft.currentScreen == null && Minecraft.isGuiEnabled() && par1EntityPlayer != RenderManager.instance.livingPlayer && !par1EntityPlayer.getHasActivePotion())
-            {
-            	final int health = 100 / par1EntityPlayer.getMaxHealth()
-    					* par1EntityPlayer.getHealth();
-    			final int sizeX = 24;
-    			final int sizeY = 24;
-    			final int offsetX = 48;
-    			final int offsetY = 0;
-    			final float var6 = -sizeX / 2.0F;
-    			final float var7 = -sizeY / 2.0F;
-    			final float var8 = -0.5F;
-    			final float var9 = 0.5F;
-
-    			for (int var10 = 0; var10 < sizeX / 24; ++var10) {
-    				for (int var11 = 0; var11 < sizeY / 24; ++var11) {
-    					final float var12 = var6 + (var10 + 1) * 24;
-    					final float var13 = var6 + var10 * 24;
-    					final float var14 = var7 + (var11 + 1) * 48;
-    					final float var15 = var7 + var11 * 24;
-    					hooblah(par2, par4, par6);
-    					final float var16 = 72 / 256.0F;
-    					final float var17 = 48 / 256.0F;
-    					final float var18 = 0 / 256.0F;
-    					final float var19 = 48 / 256.0F;
-    					final float var20 = 0.75F;
-    					final float var21 = 0.8125F;
-    					final float var22 = 0.0F;
-    					final float var23 = 0.0625F;
-    					final float var24 = 0.75F;
-    					final float var25 = 0.8125F;
-    					final float var26 = 0.001953125F;
-    					final float var27 = 0.001953125F;
-    					final float var28 = 0.7519531F;
-    					final float var29 = 0.7519531F;
-    					final float var30 = 0.0F;
-    					final float var31 = 0.0625F;
-    					final Tessellator var32 = Tessellator.instance;
-    					var32.startDrawingQuads();
-    					var32.setNormal(0.0F, 0.0F, -1.0F);
-    					var32.addVertexWithUV(var12, var15, var8, var17, var18);
-    					var32.addVertexWithUV(var13, var15, var8, var16, var18);
-    					var32.addVertexWithUV(var13, var14, var8, var16, var19);
-    					var32.addVertexWithUV(var12, var14, var8, var17, var19);
-    					var32.setNormal(0.0F, 0.0F, 1.0F);
-    					var32.addVertexWithUV(var12, var14, var9, var20, var22);
-    					var32.addVertexWithUV(var13, var14, var9, var21, var22);
-    					var32.addVertexWithUV(var13, var15, var9, var21, var23);
-    					var32.addVertexWithUV(var12, var15, var9, var20, var23);
-    					var32.setNormal(0.0F, 1.0F, 0.0F);
-    					var32.addVertexWithUV(var12, var14, var8, var24, var26);
-    					var32.addVertexWithUV(var13, var14, var8, var25, var26);
-    					var32.addVertexWithUV(var13, var14, var9, var25, var27);
-    					var32.addVertexWithUV(var12, var14, var9, var24, var27);
-    					var32.setNormal(0.0F, -1.0F, 0.0F);
-    					var32.addVertexWithUV(var12, var15, var9, var24, var26);
-    					var32.addVertexWithUV(var13, var15, var9, var25, var26);
-    					var32.addVertexWithUV(var13, var15, var8, var25, var27);
-    					var32.addVertexWithUV(var12, var15, var8, var24, var27);
-    					var32.setNormal(-1.0F, 0.0F, 0.0F);
-    					var32.addVertexWithUV(var12, var14, var9, var29, var30);
-    					var32.addVertexWithUV(var12, var15, var9, var29, var31);
-    					var32.addVertexWithUV(var12, var15, var8, var28, var31);
-    					var32.addVertexWithUV(var12, var14, var8, var28, var30);
-    					var32.setNormal(1.0F, 0.0F, 0.0F);
-    					var32.addVertexWithUV(var13, var14, var8, var29, var30);
-    					var32.addVertexWithUV(var13, var15, var8, var29, var31);
-    					var32.addVertexWithUV(var13, var15, var9, var28, var31);
-    					var32.addVertexWithUV(var13, var14, var9, var28, var30);
-    					var32.draw();
-    					GL11.glDepthMask(true);
-    					GL11.glEnable(GL11.GL_LIGHTING);
-    					GL11.glDisable(GL11.GL_BLEND);
-    					GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    					GL11.glPopMatrix();
-    				}
-    			}
-
-    			for (int var10 = 0; var10 < sizeX / 13; ++var10) {
-    				for (int var11 = 0; var11 < sizeY / 13; ++var11) {
-    					final float var12 = var6 + (var10 + 1) * 102;
-    					final float var13 = var6 + var10 * 102;
-    					final float var14 = var7 + (var11 + 1) * 14;
-    					final float var15 = var7 + var11 * 14;
-    					hooblah2(par2, par4, par6);
-    					final float var16 = 256 / 256.0F;
-    					final float var17 = 154 / 256.0F;
-    					final float var18 = 14 / 256.0F;
-    					final float var19 = 0 / 256.0F;
-    					final float var20 = 0.75F;
-    					final float var21 = 0.8125F;
-    					final float var22 = 0.0F;
-    					final float var23 = 0.0625F;
-    					final float var24 = 0.75F;
-    					final float var25 = 0.8125F;
-    					final float var26 = 0.001953125F;
-    					final float var27 = 0.001953125F;
-    					final float var28 = 0.7519531F;
-    					final float var29 = 0.7519531F;
-    					final float var30 = 0.0F;
-    					final float var31 = 0.0625F;
-    					final Tessellator var32 = Tessellator.instance;
-    					var32.startDrawingQuads();
-    					var32.setNormal(0.0F, 0.0F, -1.0F);
-    					var32.addVertexWithUV(var12, var15, var8, var17, var18);
-    					var32.addVertexWithUV(var13, var15, var8, var16, var18);
-    					var32.addVertexWithUV(var13, var14, var8, var16, var19);
-    					var32.addVertexWithUV(var12, var14, var8, var17, var19);
-    					var32.setNormal(0.0F, 0.0F, 1.0F);
-    					var32.addVertexWithUV(var12, var14, var9, var20, var22);
-    					var32.addVertexWithUV(var13, var14, var9, var21, var22);
-    					var32.addVertexWithUV(var13, var15, var9, var21, var23);
-    					var32.addVertexWithUV(var12, var15, var9, var20, var23);
-    					var32.setNormal(0.0F, 1.0F, 0.0F);
-    					var32.addVertexWithUV(var12, var14, var8, var24, var26);
-    					var32.addVertexWithUV(var13, var14, var8, var25, var26);
-    					var32.addVertexWithUV(var13, var14, var9, var25, var27);
-    					var32.addVertexWithUV(var12, var14, var9, var24, var27);
-    					var32.setNormal(0.0F, -1.0F, 0.0F);
-    					var32.addVertexWithUV(var12, var15, var9, var24, var26);
-    					var32.addVertexWithUV(var13, var15, var9, var25, var26);
-    					var32.addVertexWithUV(var13, var15, var8, var25, var27);
-    					var32.addVertexWithUV(var12, var15, var8, var24, var27);
-    					var32.setNormal(-1.0F, 0.0F, 0.0F);
-    					var32.addVertexWithUV(var12, var14, var9, var29, var30);
-    					var32.addVertexWithUV(var12, var15, var9, var29, var31);
-    					var32.addVertexWithUV(var12, var15, var8, var28, var31);
-    					var32.addVertexWithUV(var12, var14, var8, var28, var30);
-    					var32.setNormal(1.0F, 0.0F, 0.0F);
-    					var32.addVertexWithUV(var13, var14, var8, var29, var30);
-    					var32.addVertexWithUV(var13, var15, var8, var29, var31);
-    					var32.addVertexWithUV(var13, var15, var9, var28, var31);
-    					var32.addVertexWithUV(var13, var14, var9, var28, var30);
-    					var32.draw();
-    					GL11.glDepthMask(true);
-    					GL11.glEnable(GL11.GL_LIGHTING);
-    					GL11.glDisable(GL11.GL_BLEND);
-    					GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    					GL11.glPopMatrix();
-    				}
-    			}
-
-    			for (int var10 = 0; var10 < sizeX / 13; ++var10) {
-    				for (int var11 = 0; var11 < sizeY / 13; ++var11) {
-    					final float var12 = var6 + (var10 + 1) * health + 1;
-    					final float var13 = var6 + var10 * health + 1;
-    					final float var14 = var7 + (var11 + 1) * 14 - 1;
-    					final float var15 = var7 + var11 * 14 - 1;
-    					hooblah2(par2, par4, par6);
-    					final float var16 = (154 + health) / 256.0F;
-    					final float var17 = 154 / 256.0F;
-    					final float var18 = 28 / 256.0F;
-    					final float var19 = 14 / 256.0F;
-    					final float var20 = 0.75F;
-    					final float var21 = 0.8125F;
-    					final float var22 = 0.0F;
-    					final float var23 = 0.0625F;
-    					final float var24 = 0.75F;
-    					final float var25 = 0.8125F;
-    					final float var26 = 0.001953125F;
-    					final float var27 = 0.001953125F;
-    					final float var28 = 0.7519531F;
-    					final float var29 = 0.7519531F;
-    					final float var30 = 0.0F;
-    					final float var31 = 0.0625F;
-    					final Tessellator var32 = Tessellator.instance;
-    					var32.startDrawingQuads();
-    					var32.setNormal(0.0F, 0.0F, -1.0F);
-    					var32.addVertexWithUV(var12, var15, var8, var17, var18);
-    					var32.addVertexWithUV(var13, var15, var8, var16, var18);
-    					var32.addVertexWithUV(var13, var14, var8, var16, var19);
-    					var32.addVertexWithUV(var12, var14, var8, var17, var19);
-    					var32.setNormal(0.0F, 0.0F, 1.0F);
-    					var32.addVertexWithUV(var12, var14, var9, var20, var22);
-    					var32.addVertexWithUV(var13, var14, var9, var21, var22);
-    					var32.addVertexWithUV(var13, var15, var9, var21, var23);
-    					var32.addVertexWithUV(var12, var15, var9, var20, var23);
-    					var32.setNormal(0.0F, 1.0F, 0.0F);
-    					var32.addVertexWithUV(var12, var14, var8, var24, var26);
-    					var32.addVertexWithUV(var13, var14, var8, var25, var26);
-    					var32.addVertexWithUV(var13, var14, var9, var25, var27);
-    					var32.addVertexWithUV(var12, var14, var9, var24, var27);
-    					var32.setNormal(0.0F, -1.0F, 0.0F);
-    					var32.addVertexWithUV(var12, var15, var9, var24, var26);
-    					var32.addVertexWithUV(var13, var15, var9, var25, var26);
-    					var32.addVertexWithUV(var13, var15, var8, var25, var27);
-    					var32.addVertexWithUV(var12, var15, var8, var24, var27);
-    					var32.setNormal(-1.0F, 0.0F, 0.0F);
-    					var32.addVertexWithUV(var12, var14, var9, var29, var30);
-    					var32.addVertexWithUV(var12, var15, var9, var29, var31);
-    					var32.addVertexWithUV(var12, var15, var8, var28, var31);
-    					var32.addVertexWithUV(var12, var14, var8, var28, var30);
-    					var32.setNormal(1.0F, 0.0F, 0.0F);
-    					var32.addVertexWithUV(var13, var14, var8, var29, var30);
-    					var32.addVertexWithUV(var13, var15, var8, var29, var31);
-    					var32.addVertexWithUV(var13, var15, var9, var28, var31);
-    					var32.addVertexWithUV(var13, var14, var9, var28, var30);
-    					var32.draw();
-    					GL11.glDepthMask(true);
-    					GL11.glEnable(GL11.GL_LIGHTING);
-    					GL11.glDisable(GL11.GL_BLEND);
-    					GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    					GL11.glPopMatrix();
-    				}
-    			}
-//                float var8 = 1.6F;
-//                float var9 = 0.016666668F * var8;
-//                double var10 = par1EntityPlayer.getDistanceSqToEntity(RenderManager.instance.livingPlayer);
-//                float var12 = par1EntityPlayer.isSneaking() ? 34F : 64F;
-//
-//                if (var10 < (double)(var12 * var12))
-//                {
-//                    String var13 = "TESTNO1";
-//
-//                    if (par1EntityPlayer.isSneaking())
-//                    {
-//                        FontRenderer var14 = RenderManager.instance.getFontRenderer();
-//                        GL11.glPushMatrix();
-//                        GL11.glTranslatef((float)par2 + 0.0F, (float)par4 + 2.3F, (float)par6);
-//                        GL11.glNormal3f(0.0F, 1.0F, 0.0F);
-//                        GL11.glRotatef(-RenderManager.instance.playerViewY, 0.0F, 1.0F, 0.0F);
-//                        GL11.glRotatef(RenderManager.instance.playerViewX, 1.0F, 0.0F, 0.0F);
-//                        GL11.glScalef(-var9, -var9, var9);
-//                        GL11.glDisable(GL11.GL_LIGHTING);
-//                        GL11.glTranslatef(0.0F, 0.25F / var9, 0.0F);
-//                        GL11.glDepthMask(false);
-//                        GL11.glEnable(GL11.GL_BLEND);
-//                        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-//                        Tessellator var15 = Tessellator.instance;
-//                        GL11.glDisable(GL11.GL_TEXTURE_2D);
-//                        var15.startDrawingQuads();
-//                        int var16 = var14.getStringWidth(var13) / 2;
-//                        var15.setColorRGBA_F(0.0F, 0.0F, 0.0F, 0.25F);
-//                        var15.addVertex((double)(-var16 - 1), -1.0D, 0.0D);
-//                        var15.addVertex((double)(-var16 - 1), 8.0D, 0.0D);
-//                        var15.addVertex((double)(var16 + 1), 8.0D, 0.0D);
-//                        var15.addVertex((double)(var16 + 1), -1.0D, 0.0D);
-//                        var15.draw();
-//                        GL11.glEnable(GL11.GL_TEXTURE_2D);
-//                        GL11.glDepthMask(true);
-//                        var14.drawString(var13, -var14.getStringWidth(var13) / 2, 0, 553648127);
-//                        GL11.glEnable(GL11.GL_LIGHTING);
-//                        GL11.glDisable(GL11.GL_BLEND);
-//                        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-//                        GL11.glPopMatrix();
-//                    }
-//                    else if (par1EntityPlayer.isPlayerSleeping())
-//                    {
-//                        renderLivingLabel(par1EntityPlayer, var13, par2, par4 - 1.5D, par6, 64);
-//                    }
-//                    else
-//                    {
-//                        renderLivingLabel(par1EntityPlayer, var13, par2, par4, par6, 64);
-//                    }
-//                }
-            }
-        }
-
-    	public static void hooblah(double par2, double par4, double par6) 
-    	{
-    		final float var8 = 0.5F;
-    		final float var9 = 0.016666668F * var8;
-    		GL11.glPushMatrix();
-    		GL11.glTranslatef((float) par2 + 0.0F, (float) par4 + 2.7F, (float) par6);
-    		GL11.glNormal3f(0.0F, 1.0F, 0.0F);
-    		GL11.glRotatef(-RenderManager.instance.playerViewY, 0.0F, 1.0F, 0.0F);
-    		GL11.glRotatef(RenderManager.instance.playerViewX, 1.0F, 0.0F, 0.0F);
-    		GL11.glScalef(-var9, -var9, var9);
-    		GL11.glDisable(GL11.GL_LIGHTING);
-    		GL11.glTranslatef(0.0F, 0.25F / var9, 0.0F);
-    		GL11.glDepthMask(false);
-    		GL11.glEnable(GL11.GL_BLEND);
-    		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-    		GL11.glBindTexture(GL11.GL_TEXTURE_2D, FMLClientHandler.instance().getClient().renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/entities/overhead.png"));
-    	}
-
-    	public static void hooblah2(double par2, double par4, double par6) 
-    	{
-    		final float var8 = 0.5F;
-    		final float var9 = 0.016666668F * var8;
-    		GL11.glPushMatrix();
-    		GL11.glTranslatef((float) par2 + 0.0F, (float) par4 + 2.47F, (float) par6);
-    		GL11.glNormal3f(0.0F, 1.0F, 0.0F);
-    		GL11.glRotatef(-RenderManager.instance.playerViewY, 0.0F, 1.0F, 0.0F);
-    		GL11.glRotatef(RenderManager.instance.playerViewX, 1.0F, 0.0F, 0.0F);
-    		GL11.glScalef(-var9, -var9, var9);
-    		GL11.glDisable(GL11.GL_LIGHTING);
-    		GL11.glTranslatef(-39.0F, 0.25F / var9, 0.0F);
-    		GL11.glDepthMask(false);
-    		GL11.glEnable(GL11.GL_BLEND);
-    		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-    		GL11.glBindTexture(GL11.GL_TEXTURE_2D, FMLClientHandler.instance().getClient().renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/entities/overhead.png"));
-    	}
-        
-        private static void renderLivingLabel(EntityLiving par1EntityLiving, String par2Str, double par3, double par5, double par7, int par9)
-        {
-            final double var10 = par1EntityLiving.getDistanceSqToEntity(RenderManager.instance.livingPlayer);
-
-            if (var10 <= (double)(par9 * par9))
-            {
-                final FontRenderer var12 = RenderManager.instance.getFontRenderer();
-                final float var13 = 1.6F;
-                final float var14 = 0.016666668F * var13;
-                GL11.glPushMatrix();
-                GL11.glTranslatef((float)par3 + 0.0F, (float)par5 + 2.3F, (float)par7);
-                GL11.glNormal3f(0.0F, 1.0F, 0.0F);
-                GL11.glRotatef(-RenderManager.instance.playerViewY, 0.0F, 1.0F, 0.0F);
-                GL11.glRotatef(RenderManager.instance.playerViewX, 1.0F, 0.0F, 0.0F);
-                GL11.glScalef(-var14, -var14, var14);
-                GL11.glDisable(GL11.GL_LIGHTING);
-                GL11.glDepthMask(false);
-                GL11.glDisable(GL11.GL_DEPTH_TEST);
-                GL11.glEnable(GL11.GL_BLEND);
-                GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-                final Tessellator var15 = Tessellator.instance;
-                byte var16 = 0;
-
-                if (par2Str.equals("deadmau5"))
-                {
-                    var16 = -10;
-                }
-
-                GL11.glDisable(GL11.GL_TEXTURE_2D);
-                var15.startDrawingQuads();
-                final int var17 = var12.getStringWidth(par2Str) / 2;
-                var15.setColorRGBA_F(0.0F, 0.0F, 0.0F, 0.25F);
-                var15.addVertex((double)(-var17 - 1), (double)(-1 + var16), 0.0D);
-                var15.addVertex((double)(-var17 - 1), (double)(8 + var16), 0.0D);
-                var15.addVertex((double)(var17 + 1), (double)(8 + var16), 0.0D);
-                var15.addVertex((double)(var17 + 1), (double)(-1 + var16), 0.0D);
-                var15.draw();
-                GL11.glEnable(GL11.GL_TEXTURE_2D);
-                var12.drawString(par2Str, -var12.getStringWidth(par2Str) / 2, var16, 553648127);
-                GL11.glEnable(GL11.GL_DEPTH_TEST);
-                GL11.glDepthMask(true);
-                var12.drawString(par2Str, -var12.getStringWidth(par2Str) / 2, var16, -1);
-                GL11.glEnable(GL11.GL_LIGHTING);
-                GL11.glDisable(GL11.GL_BLEND);
-                GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-                GL11.glPopMatrix();
-            }
-        }
-    	
-        protected MovingObjectPosition getMovingObjectPositionFromPlayer(World par1World, EntityPlayer par2EntityPlayer, boolean par3)
-        {
-            final float var4 = 1.0F;
-            final float var5 = par2EntityPlayer.prevRotationPitch + (par2EntityPlayer.rotationPitch - par2EntityPlayer.prevRotationPitch) * var4;
-            final float var6 = par2EntityPlayer.prevRotationYaw + (par2EntityPlayer.rotationYaw - par2EntityPlayer.prevRotationYaw) * var4;
-            final double var7 = par2EntityPlayer.prevPosX + (par2EntityPlayer.posX - par2EntityPlayer.prevPosX) * (double)var4;
-            final double var9 = par2EntityPlayer.prevPosY + (par2EntityPlayer.posY - par2EntityPlayer.prevPosY) * (double)var4 + 1.62D - (double)par2EntityPlayer.yOffset;
-            final double var11 = par2EntityPlayer.prevPosZ + (par2EntityPlayer.posZ - par2EntityPlayer.prevPosZ) * (double)var4;
-            final Vec3 var13 = par1World.getWorldVec3Pool().getVecFromPool(var7, var9, var11);
-            final float var14 = MathHelper.cos(-var6 * 0.017453292F - (float)Math.PI);
-            final float var15 = MathHelper.sin(-var6 * 0.017453292F - (float)Math.PI);
-            final float var16 = -MathHelper.cos(-var5 * 0.017453292F);
-            final float var17 = MathHelper.sin(-var5 * 0.017453292F);
-            final float var18 = var15 * var16;
-            final float var20 = var14 * var16;
-            final double var21 = 100.0D;
-            final Vec3 var23 = var13.addVector((double)var18 * var21, (double)var17 * var21, (double)var20 * var21);
-            return par1World.rayTraceBlocks_do_do(var13, var23, par3, !par3);
-        }
     	
         @Override
 		public String getLabel()
@@ -1027,7 +1113,7 @@ public class ClientProxyCore extends CommonProxyCore
         }
 
     	@Override
-    	public EnumSet<TickType> ticks() 
+    	public EnumSet<TickType> ticks()
     	{
     		return EnumSet.of(TickType.RENDER, TickType.CLIENT);
     	}
@@ -1035,24 +1121,30 @@ public class ClientProxyCore extends CommonProxyCore
     
     public static class GCKeyHandler extends KeyHandler
     {
-    	static KeyBinding tankRefill = new KeyBinding("Tank Refill", Keyboard.KEY_R);
-    	static KeyBinding galaxyMap = new KeyBinding("Galaxy Map", Keyboard.KEY_M);
+    	public static KeyBinding tankRefill = new KeyBinding("Galacticraft Player Inventory", Keyboard.KEY_R);
+    	public static KeyBinding galaxyMap = new KeyBinding("Galaxy Map", Keyboard.KEY_M);
+    	public static KeyBinding openSpaceshipInv = new KeyBinding("Open Spaceship Inventory", Keyboard.KEY_F);
+    	public static KeyBinding toggleAdvGoggles = new KeyBinding("Toggle Advanced Sensor Goggles", Keyboard.KEY_K);
 
-        public GCKeyHandler() 
+        public GCKeyHandler()
         {
-            super(new KeyBinding[] {tankRefill, galaxyMap}, new boolean[] {false, false});
+            super(new KeyBinding[] {GCKeyHandler.tankRefill, GCKeyHandler.galaxyMap, GCKeyHandler.openSpaceshipInv, GCKeyHandler.toggleAdvGoggles}, new boolean[] {false, false, false, false});
         }
 
         @Override
-        public String getLabel() 
+        public String getLabel()
         {
             return "Galacticraft Keybinds";
         }
 
         @Override
-        public void keyDown(EnumSet<TickType> types, KeyBinding kb, boolean tickEnd, boolean isRepeat) 
+        public void keyDown(EnumSet<TickType> types, KeyBinding kb, boolean tickEnd, boolean isRepeat)
         {
         	final Minecraft minecraft = FMLClientHandler.instance().getClient();
+        	
+        	final EntityPlayerSP player = minecraft.thePlayer;
+        	
+        	final GCCorePlayerBaseClient playerBase = PlayerUtil.getPlayerBaseClientFromPlayer(player);
         	
         	final boolean handled = true;
         	
@@ -1061,28 +1153,40 @@ public class ClientProxyCore extends CommonProxyCore
     			return;
         	}
         	
-        	if (kb.keyCode == this.tankRefill.keyCode)
+        	if (kb.keyCode == GCKeyHandler.tankRefill.keyCode)
         	{
-        		if (minecraft.currentScreen == null)
+        		if (minecraft.currentScreen == null && playerBase != null)
             	{
-                	final EntityPlayerSP player = minecraft.thePlayer;
+        			playerBase.setUseTutorialText(false);
                 	
                     final Object[] toSend = {player.username};
-                    PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 0, toSend));
+                    PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 0, toSend));
             	    player.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiTankRefill, minecraft.theWorld, (int)player.posX, (int)player.posY, (int)player.posZ);
             	}
         	}
-        	else if (kb.keyCode == this.galaxyMap.keyCode)
+        	else if (kb.keyCode == GCKeyHandler.galaxyMap.keyCode)
         	{
         		if (minecraft.currentScreen == null)
         		{
-                	final EntityPlayerSP player = minecraft.thePlayer;
         			player.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiGalaxyMap, minecraft.theWorld, (int)player.posX, (int)player.posY, (int)player.posZ);
         		}
         	}
+        	else if (kb.keyCode == GCKeyHandler.openSpaceshipInv.keyCode)
+        	{
+                final Object[] toSend = {player.username};
+                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 6, toSend));
+        	    player.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiSpaceshipInventory, minecraft.theWorld, (int)player.posX, (int)player.posY, (int)player.posZ);
+        	}
+        	else if (kb.keyCode == GCKeyHandler.toggleAdvGoggles.keyCode)
+        	{
+        		if (playerBase != null)
+        		{
+            		playerBase.toggleGoggles();
+        		}
+            }
         	
 //        	int key = -1;
-//        	
+//
 //        	switch (kb.keyCode)
 //        	{
 //        	case Keyboard.KEY_W:
@@ -1094,7 +1198,7 @@ public class ClientProxyCore extends CommonProxyCore
 //        	default:
 //        		handled = false;
 //        	}
-//        	
+//
 //        	EntityPlayer player = minecraft.thePlayer;
 //    		Entity entityTest  = player.ridingEntity;
 //
@@ -1112,7 +1216,7 @@ public class ClientProxyCore extends CommonProxyCore
 //    			if (handled)
 //    			{
 //                    Object[] toSend = {player.username, 2};
-//                    PacketDispatcher.sendPacketToServer(GCCoreUtil.createPacket("Galacticraft", 5, toSend));
+//                    PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 5, toSend));
 //    			}
 //    		}
 //    		else
@@ -1134,7 +1238,7 @@ public class ClientProxyCore extends CommonProxyCore
         }
 
         @Override
-        public void keyUp(EnumSet<TickType> types, KeyBinding kb, boolean tickEnd) 
+        public void keyUp(EnumSet<TickType> types, KeyBinding kb, boolean tickEnd)
         {
         	if (tickEnd)
     			return;
@@ -1147,7 +1251,7 @@ public class ClientProxyCore extends CommonProxyCore
         }
 
         @Override
-        public EnumSet<TickType> ticks() 
+        public EnumSet<TickType> ticks()
         {
             return EnumSet.of(TickType.CLIENT);
         }

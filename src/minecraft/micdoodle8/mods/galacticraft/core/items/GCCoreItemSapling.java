@@ -1,12 +1,11 @@
 package micdoodle8.mods.galacticraft.core.items;
 
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockSapling;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSapling;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import cpw.mods.fml.relauncher.SideOnly;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreItemSapling extends ItemBlock
 {
@@ -42,7 +41,7 @@ public class GCCoreItemSapling extends ItemBlock
     {
         int var2 = par1ItemStack.getItemDamage();
 
-        if (var2 < 0 || var2 >= GCCoreBlockSapling.WOOD_TYPES.length)
+        if (var2 < 0 || var2 >= BlockSapling.WOOD_TYPES.length)
         {
             var2 = 0;
         }

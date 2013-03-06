@@ -3,39 +3,58 @@ package micdoodle8.mods.galacticraft.moon;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import universalelectricity.prefab.TranslationHelper;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubMod;
+import micdoodle8.mods.galacticraft.API.IGalaxy;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerBase;
 import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
 import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;
-import micdoodle8.mods.galacticraft.moon.entities.GCMoonPlayerHandler;
+import micdoodle8.mods.galacticraft.moon.entities.GCMoonPlayerBase;
 import micdoodle8.mods.galacticraft.moon.items.GCMoonItems;
+import net.minecraft.src.ServerPlayerAPI;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import cpw.mods.fml.common.ITickHandler;
-import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
-import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
+import cpw.mods.fml.relauncher.Side;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
  */
 public class GalacticraftMoon implements IGalacticraftSubMod
 {
-	public static List moonPlayers = new ArrayList();
-	public static List gcMoonPlayers = new ArrayList();
+	public static Map<String, GCMoonPlayerBase> playersServer = new HashMap<String, GCMoonPlayerBase>();
+	
+	public static final String NAME = "Galacticraft Moon";
+	public static final String MODID = "Galacticraft Moon";
+
+	public static final String FILE_PATH = "/micdoodle8/mods/galacticraft/moon/";
+	public static final String CLIENT_PATH = "client/";
+	public static final String LANGUAGE_PATH = FILE_PATH + CLIENT_PATH + "lang/";
+	public static final String BLOCK_TEXTURE_FILE = FILE_PATH + CLIENT_PATH + "blocks/moon.png";
+	public static final String ITEM_TEXTURE_FILE = FILE_PATH + CLIENT_PATH + "items/moon.png";
+	public static final String CONFIG_FILE = "Galacticraft/moon.conf";
+	private static final String[] LANGUAGES_SUPPORTED = new String[] { "en_US", "zh_CN" };
 	
 	public void preLoad(FMLPreInitializationEvent event)
 	{
-		new GCMoonConfigManager(new File(event.getModConfigurationDirectory(), "Galacticraft/moon.conf"));
+		new GCMoonConfigManager(new File(event.getModConfigurationDirectory(), CONFIG_FILE));
+		
+		ServerPlayerAPI.register(GalacticraftMoon.MODID, GCMoonPlayerBase.class);
 		
 		GCMoonBlocks.initBlocks();
 		GCMoonBlocks.registerBlocks();
@@ -48,10 +67,14 @@ public class GalacticraftMoon implements IGalacticraftSubMod
 	{
 		DimensionManager.registerProviderType(GCMoonConfigManager.dimensionIDMoon, GCMoonWorldProvider.class, true);
 		DimensionManager.registerDimension(GCMoonConfigManager.dimensionIDMoon, GCMoonConfigManager.dimensionIDMoon);
-		GameRegistry.registerPlayerTracker(new GCMoonPlayerHandler());
+
+		System.out.println("Galacticraft Moon Loaded: " + TranslationHelper.loadLanguages(LANGUAGE_PATH, LANGUAGES_SUPPORTED) + " Languages.");
+		
+        GCMoonUtil.addCraftingRecipes();
+        GCMoonUtil.addSmeltingRecipes();
 	}
 
-	public void postLoad(FMLPostInitializationEvent event) 
+	public void postLoad(FMLPostInitializationEvent event)
 	{
 		
 	}
@@ -64,7 +87,7 @@ public class GalacticraftMoon implements IGalacticraftSubMod
 	public class CommonTickHandler implements ITickHandler
 	{
 		@Override
-		public void tickStart(EnumSet<TickType> type, Object... tickData) 
+		public void tickStart(EnumSet<TickType> type, Object... tickData)
 		{
 			if (type.equals(EnumSet.of(TickType.WORLD)))
             {
@@ -76,27 +99,33 @@ public class GalacticraftMoon implements IGalacticraftSubMod
 		public void tickEnd(EnumSet<TickType> type, Object... tickData) { }
 
 		@Override
-		public EnumSet<TickType> ticks() 
+		public EnumSet<TickType> ticks()
 		{
 			return EnumSet.of(TickType.WORLD);
 		}
 
 		@Override
-		public String getLabel() 
+		public String getLabel()
 		{
 			return "Galacticraft Moon Common";
 		}
 	}
 
 	@Override
-	public String getDimensionName() 
+	public String getDimensionName()
 	{
 		return "Moon";
 	}
 
 	@Override
-	public boolean reachableDestination() 
+	public boolean reachableDestination()
 	{
 		return true;
+	}
+
+	@Override
+	public IGalaxy getParentGalaxy()
+	{
+		return GalacticraftCore.galaxyMilkyWay;
 	}
 }

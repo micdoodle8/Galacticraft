@@ -1,12 +1,7 @@
 package micdoodle8.mods.galacticraft.API;
 
-public interface IMapPlanet 
+public interface IMapPlanet
 {
-	/**
-	 * @return false if this submod extends another planet, true if this is a planet itself.
-	 */
-	public boolean isMoon();
-	
 	/**
 	 * Used for rendering planet on map.
 	 * 
@@ -22,7 +17,7 @@ public interface IMapPlanet
 	public float getDistanceFromCenter();
 	
 	/**
-	 * Get the sinusoidal phase shift (offset from default planet revolution) when rendering the 
+	 * Get the sinusoidal phase shift (offset from default planet revolution) when rendering the
 	 * planet on the map.
 	 * 
 	 * @return Phase shift of planet for planet's revolution around the sun.
@@ -38,4 +33,11 @@ public interface IMapPlanet
 	public float getStretchValue();
 	
 	public IPlanetSlotRenderer getSlotRenderer();
+	
+	/**
+	 * @return IGalaxy object for the parent Galaxy
+	 * 
+	 * @see IGalaxy
+	 */
+	public IGalaxy getParentGalaxy();
 }

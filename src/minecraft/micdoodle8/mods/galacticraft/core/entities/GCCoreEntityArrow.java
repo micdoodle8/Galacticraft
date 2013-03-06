@@ -17,11 +17,11 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.SideOnly;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
@@ -298,7 +298,7 @@ public class GCCoreEntityArrow extends Entity
                     var20 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
                     int var24 = MathHelper.ceiling_double_int(var20 * this.damage);
 
-                    if (this.func_70241_g())
+                    if (this.getIsCritical())
                     {
                         var24 += this.rand.nextInt(var24 / 2 + 2);
                     }
@@ -307,11 +307,11 @@ public class GCCoreEntityArrow extends Entity
 
                     if (this.shootingEntity == null)
                     {
-                        var22 = causeArrowDamage(this, this);
+                        var22 = GCCoreEntityArrow.causeArrowDamage(this, this);
                     }
                     else
                     {
-                        var22 = causeArrowDamage(this, this.shootingEntity);
+                        var22 = GCCoreEntityArrow.causeArrowDamage(this, this.shootingEntity);
                     }
 
                     if (this.isBurning())
@@ -366,11 +366,11 @@ public class GCCoreEntityArrow extends Entity
                     this.worldObj.playSoundAtEntity(this, "random.bowhit", 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
                     this.inGround = true;
                     this.arrowShake = 7;
-                    this.func_70243_d(false);
+                    this.setIsCritical(false);
                 }
             }
 
-            if (this.func_70241_g())
+            if (this.getIsCritical())
             {
                 for (int var21 = 0; var21 < 4; ++var21)
                 {
@@ -538,7 +538,10 @@ public class GCCoreEntityArrow extends Entity
         return false;
     }
 
-    public void func_70243_d(boolean par1)
+    /**
+     * Whether the arrow has a stream of critical hit particles flying behind it.
+     */
+    public void setIsCritical(boolean par1)
     {
         final byte var2 = this.dataWatcher.getWatchableObjectByte(16);
 
@@ -552,7 +555,10 @@ public class GCCoreEntityArrow extends Entity
         }
     }
 
-    public boolean func_70241_g()
+    /**
+     * Whether the arrow has a stream of critical hit particles flying behind it.
+     */
+    public boolean getIsCritical()
     {
         final byte var1 = this.dataWatcher.getWatchableObjectByte(16);
         return (var1 & 1) != 0;

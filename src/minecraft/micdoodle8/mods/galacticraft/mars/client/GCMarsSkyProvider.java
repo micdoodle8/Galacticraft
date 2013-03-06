@@ -18,18 +18,18 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.FMLClientHandler;
 
 /**
- * Copyright 2012, micdoodle8
+ * Copyright 2012-2013, micdoodle8
  * 
  *  All rights reserved.
  *
  */
-public class GCMarsSkyProvider extends GCSkyProvider 
+public class GCMarsSkyProvider extends GCSkyProvider
 {
-	public int starGLCallList = GLAllocation.generateDisplayLists(3); 
+	public int starGLCallList = GLAllocation.generateDisplayLists(3);
 	public int glSkyList;
 	public int glSkyList2;
 	
-	public GCMarsSkyProvider() 
+	public GCMarsSkyProvider()
 	{
 		GL11.glPushMatrix();
 		GL11.glNewList(this.starGLCallList, GL11.GL_COMPILE);
@@ -271,31 +271,31 @@ public class GCMarsSkyProvider extends GCSkyProvider
     }
 
 	@Override
-	public Float[] getXRotation(float partialTicks, WorldClient world, Minecraft mc) 
+	public Float[] getXRotation(float partialTicks, WorldClient world, Minecraft mc)
 	{
 		return new Float[] {(float) ((world.getSpawnPoint().posZ - mc.thePlayer.posZ) * 0.01F) + 200F, -90.0F + world.getCelestialAngle(partialTicks) * 360.0F};
 	}
 
 	@Override
-	public Float[] getYRotation(float partialTicks, WorldClient world, Minecraft mc) 
+	public Float[] getYRotation(float partialTicks, WorldClient world, Minecraft mc)
 	{
 		return new Float[] {-90.0F, 0.0F};
 	}
 
 	@Override
-	public Float[] getZRotation(float partialTicks, WorldClient world, Minecraft mc) 
+	public Float[] getZRotation(float partialTicks, WorldClient world, Minecraft mc)
 	{
 		return new Float[] {0.0F, 0.0F};
 	}
 
 	@Override
-	public Float[] getSizes() 
+	public Float[] getSizes()
 	{
 		return new Float[] {10.0F, 50.0F};
 	}
 
 	@Override
-	public String[] getSpritesForRender() 
+	public String[] getSpritesForRender()
 	{
 		return new String[] {"/micdoodle8/mods/galacticraft/saturn/client/planets/saturn.png", "/terrain/sun.png"};
 	}
