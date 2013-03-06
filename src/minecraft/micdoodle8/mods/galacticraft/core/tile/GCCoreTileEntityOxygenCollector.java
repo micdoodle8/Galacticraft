@@ -57,7 +57,7 @@ public class GCCoreTileEntityOxygenCollector extends TileEntityOxygenSource
 
 					if (block != null && block instanceof BlockLeaves)
 					{
-						if (!this.worldObj.isRemote && this.worldObj.rand.nextInt(100000) == 0 && !GCCoreConfigManager.disableLeafDecay)
+						if (!this.worldObj.isRemote && this.worldObj.rand.nextInt(100000) == 0 && !GCCoreConfigManager.disableLeafDecay && this.acceptors.size() > 0)
 						{
 							this.worldObj.setBlock(x, y, z, 0);
 						}
