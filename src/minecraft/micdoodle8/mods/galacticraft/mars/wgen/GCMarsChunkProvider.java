@@ -244,7 +244,8 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 					if (var16 <= 0 + this.rand.nextInt(5))
 					{
 						par3ArrayOfint[var17] = Block.bedrock.blockID;
-					} else
+					} 
+					else
 					{
 						final int var18 = par3ArrayOfint[var17];
 
@@ -284,7 +285,8 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 								if (var16 >= var5 - 1)
 								{
 									par3ArrayOfint[var17] = var14;
-								} else
+								} 
+								else
 								{
 									par3ArrayOfint[var17] = var15;
 								}
@@ -293,12 +295,6 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 							{
 								--var13;
 								par3ArrayOfint[var17] = var15;
-
-								if (var13 == 0 && var15 == Block.sand.blockID)
-								{
-									var13 = this.rand.nextInt(4);
-									var15 = Block.sandStone.blockID;
-								}
 							}
 						}
 					}
