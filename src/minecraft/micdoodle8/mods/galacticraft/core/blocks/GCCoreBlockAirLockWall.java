@@ -2,11 +2,13 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.Random;
 
-import net.minecraft.block.Block;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAirLock;
 import net.minecraft.block.BlockBreakable;
 import net.minecraft.block.material.Material;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -87,21 +89,30 @@ public class GCCoreBlockAirLockWall extends BlockBreakable
                 boolean var10 = par1World.getBlockId(par2 - 1, par3, par4) == this.blockID || par1World.getBlockId(par2 + 1, par3, par4) == this.blockID;
                 boolean var11 = par1World.getBlockId(par2, par3, par4 - 1) == this.blockID || par1World.getBlockId(par2, par3, par4 + 1) == this.blockID;
 
-                if (var10 && var11)
-                {
-                    par1World.setBlockWithNotify(par2, par3, par4, 0);
-                }
-                else
-                {
-                    if ((par1World.getBlockId(par2 + var6, par3, par4 + var7) != GCCoreBlocks.airLockFrame.blockID || par1World.getBlockId(par2 - var6, par3, par4 - var7) != this.blockID) && (par1World.getBlockId(par2 - var6, par3, par4 - var7) != GCCoreBlocks.airLockFrame.blockID || par1World.getBlockId(par2 + var6, par3, par4 + var7) != this.blockID))
+                TileEntity te = par1World.getBlockTileEntity(par2, var8 + var9, par4);
+                
+        		if (te instanceof GCCoreTileEntityAirLock && ((GCCoreTileEntityAirLock) te).otherAirLockBlocks.size() > 8)
+        		{
+        			
+        		}
+        		else
+        		{
+                    if (var10 && var11)
                     {
                         par1World.setBlockWithNotify(par2, par3, par4, 0);
                     }
-                }
+                    else
+                    {
+                        if ((par1World.getBlockId(par2 + var6, par3, par4 + var7) != GCCoreBlocks.airLockFrame.blockID || par1World.getBlockId(par2 - var6, par3, par4 - var7) != this.blockID) && (par1World.getBlockId(par2 - var6, par3, par4 - var7) != GCCoreBlocks.airLockFrame.blockID || par1World.getBlockId(par2 + var6, par3, par4 + var7) != this.blockID))
+                        {
+                            par1World.setBlockWithNotify(par2, par3, par4, 0);
+                        }
+                    }
+        		}
             }
             else
             {
-                par1World.setBlockWithNotify(par2, par3, par4, 0);
+                par1World.setBlock(par2, par3, par4, 0);
             }
         }
     }

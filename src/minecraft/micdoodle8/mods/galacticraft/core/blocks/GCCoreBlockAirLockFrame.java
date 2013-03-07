@@ -11,6 +11,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -82,25 +83,32 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvanced implements ICon
 
         	if (te instanceof GCCoreTileEntityAirLock)
         	{
-        		((GCCoreTileEntityAirLock) te).updateState();
-        		
-                if (!this.gettingPowered(par1World, par2, par3, par4))
-                {
-            		((GCCoreTileEntityAirLock) te).active = false;
-                }
-                else
-                {
-            		((GCCoreTileEntityAirLock) te).active = true;
-                }
+        		if (((GCCoreTileEntityAirLock) te).otherAirLockBlocks.size() > 8)
+        		{
+        			
+        		}
+        		else
+        		{
+            		((GCCoreTileEntityAirLock) te).updateState();
+            		
+                    if (!this.gettingPowered(par1World, par2, par3, par4))
+                    {
+                		((GCCoreTileEntityAirLock) te).active = false;
+                    }
+                    else
+                    {
+                		((GCCoreTileEntityAirLock) te).active = true;
+                    }
 
-                if (!this.gettingOxygen(par1World, par2, par3, par4))
-                {
-            		((GCCoreTileEntityAirLock) te).oxygenActive = false;
-                }
-                else
-                {
-            		((GCCoreTileEntityAirLock) te).oxygenActive = true;
-                }
+                    if (!this.gettingOxygen(par1World, par2, par3, par4))
+                    {
+                		((GCCoreTileEntityAirLock) te).oxygenActive = false;
+                    }
+                    else
+                    {
+                		((GCCoreTileEntityAirLock) te).oxygenActive = true;
+                    }
+        		}
         	}
         }
     }

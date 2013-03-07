@@ -52,6 +52,11 @@ public class GCCoreTileEntityAirLock extends GCCoreTileEntityAdvanced
 	
 	public boolean checkForCompleteSetup()
 	{
+		if (otherAirLockBlocks.size() > 8)
+		{
+			return false;
+		}
+		
 		int var1 = this.xCoord;
 		int var2 = this.yCoord + 1;
 		int var3 = this.zCoord;

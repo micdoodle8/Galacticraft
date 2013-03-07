@@ -188,8 +188,6 @@ public class GalacticraftCore
 		
 		GalacticraftCore.moon.load(event);
 		
-//        LanguageRegistry.instance().addStringLocalization("itemGroup.GalacticraftCore", GalacticraftCore.lang.get("itemGroup.GalacticraftCore"));
-		
         GameRegistry.registerWorldGenerator(new GCCoreWorldGenVanilla());
         RecipeUtil.addCraftingRecipes();
         RecipeUtil.addSmeltingRecipes();
