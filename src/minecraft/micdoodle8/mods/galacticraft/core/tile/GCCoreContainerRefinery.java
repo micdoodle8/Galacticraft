@@ -16,7 +16,7 @@ public class GCCoreContainerRefinery extends Container
     public GCCoreContainerRefinery(InventoryPlayer par1InventoryPlayer, GCCoreTileEntityRefinery refinery)
     {
     	this.refinery = refinery;
-        this.addSlotToContainer(new Slot(refinery, 0, 40, 29));
+        this.addSlotToContainer(new GCCoreSlotRefinery(refinery, 0, 40, 29));
         this.addSlotToContainer(new Slot(refinery, 1, 72, 61));
         this.addSlotToContainer(new Slot(refinery, 2, 90, 61));
         this.addSlotToContainer(new SlotFurnace(par1InventoryPlayer.player, refinery, 3, 130, 8));
