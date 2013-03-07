@@ -139,6 +139,8 @@ public class GCCoreConfigManager
 	public static boolean oxygenIndicatorLeftSide;
 	public static int oilGenFactor;
 	public static boolean disableLeafDecay;
+	public static boolean disableSpaceshipOverlay;
+	public static boolean disableFancyTileEntities;
 	
 	private void setDefaultValues()
     {
@@ -252,6 +254,8 @@ public class GCCoreConfigManager
 	        GCCoreConfigManager.disableTutorialItemText = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Tutorial Item Info Text",	false)		.getBoolean(false);
 	        GCCoreConfigManager.oxygenIndicatorLeftSide = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Using Minimap Mod",					false)		.getBoolean(false);
 	        GCCoreConfigManager.disableLeafDecay = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Oxygen Collector Leaf Decay",false)		.getBoolean(false);
+	        GCCoreConfigManager.disableSpaceshipOverlay = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Spaceship GUI Overlay",		false)		.getBoolean(false);
+	        GCCoreConfigManager.disableFancyTileEntities = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Fancy Block Renderers (will raise FPS)",	false)		.getBoolean(false);
 		}
 		catch (final Exception e)
 		{

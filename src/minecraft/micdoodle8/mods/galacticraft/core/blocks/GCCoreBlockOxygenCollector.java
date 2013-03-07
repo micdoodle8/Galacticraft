@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.API.IConnectableToPipe;
+import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCollector;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenPipe;
@@ -28,19 +29,19 @@ public class GCCoreBlockOxygenCollector extends BlockContainer implements IConne
 	@Override
 	public boolean renderAsNormalBlock()
    	{
-       	return false;
+       	return GCCoreConfigManager.disableFancyTileEntities ? true : false;
    	}
 
 	@Override
     public boolean isOpaqueCube()
     {
-        return false;
+        return GCCoreConfigManager.disableFancyTileEntities ? true : false;
     }
 
 	@Override
 	public int getRenderType()
 	{
-		return GalacticraftCore.proxy.getGCOxygenCollectorRenderID();
+		return GCCoreConfigManager.disableFancyTileEntities ? 0 : GalacticraftCore.proxy.getGCOxygenCollectorRenderID();
    	}
 
     @Override

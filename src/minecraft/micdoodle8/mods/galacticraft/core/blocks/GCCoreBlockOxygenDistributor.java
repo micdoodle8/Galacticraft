@@ -5,6 +5,7 @@ import java.util.Random;
 import cpw.mods.fml.common.FMLLog;
 
 import micdoodle8.mods.galacticraft.API.IConnectableToPipe;
+import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityBreathableAir;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenDistributor;
@@ -81,19 +82,19 @@ public class GCCoreBlockOxygenDistributor extends BlockContainer implements ICon
 	@Override
 	public boolean renderAsNormalBlock()
    	{
-       	return false;
+       	return GCCoreConfigManager.disableFancyTileEntities ? true : false;
    	}
 
 	@Override
     public boolean isOpaqueCube()
     {
-        return false;
+        return GCCoreConfigManager.disableFancyTileEntities ? true : false;
     }
 
 	@Override
 	public int getRenderType()
 	{
-		return GalacticraftCore.proxy.getGCOxygenDistributorRenderID();
+		return GCCoreConfigManager.disableFancyTileEntities ? 0 : GalacticraftCore.proxy.getGCOxygenDistributorRenderID();
    	}
 
 	@Override
