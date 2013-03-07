@@ -28,6 +28,7 @@ public class GCCorePlayerBaseClient extends PlayerBase
 	private boolean lastUsingParachute;
 	private boolean showTutorialText = true;
 	public boolean usingAdvancedGoggles;
+	private int thirdPersonView = 0;
 	
 	public GCCorePlayerBaseClient(PlayerAPI var1)
 	{
@@ -46,49 +47,6 @@ public class GCCorePlayerBaseClient extends PlayerBase
     	
         this.player.cloakUrl = this.player.playerCloakUrl = "http://www.micdoodle8.com/galacticraft/capes/" + StringUtils.stripControlCodes(this.player.username) + ".png";
     }
-
-//	@Override
-//    public void addStat(StatBase par1StatBase, int par2)
-//    {
-//		if (par1StatBase != null)
-//		{
-//			if (par1StatBase instanceof AdvancedAchievement)
-//			{
-//				AdvancedAchievement achiev = (AdvancedAchievement) par1StatBase;
-//
-//				int amountOfCompletedAchievements = 0;
-//
-//				if (achiev.parentAchievements != null)
-//				{
-//					for (int i = 0; i < achiev.parentAchievements.length; i++)
-//					{
-//						if (FMLClientHandler.instance().getClient().statFileWriter.hasAchievementUnlocked(achiev.parentAchievements[i]))
-//						{
-//							amountOfCompletedAchievements++;
-//						}
-//					}
-//
-//					if (amountOfCompletedAchievements >= achiev.parentAchievements.length)
-//					{
-//	                    if (!FMLClientHandler.instance().getClient().statFileWriter.hasAchievementUnlocked(achiev))
-//	                    {
-//							FMLClientHandler.instance().getClient().guiAchievement.queueTakenAchievement(achiev);
-//	                    }
-//					}
-//				}
-//				else
-//				{
-//					super.addStat(par1StatBase, par2);
-//				}
-//
-//				FMLClientHandler.instance().getClient().statFileWriter.readStat(par1StatBase, par2);
-//			}
-//			else
-//			{
-//				super.addStat(par1StatBase, par2);
-//			}
-//		}
-//    }
 
 	@Override
     public void onDeath(DamageSource var1)
@@ -133,7 +91,7 @@ public class GCCorePlayerBaseClient extends PlayerBase
 		if (this.getParachute() && this.player.onGround)
 		{
 			this.setParachute(false);
-			FMLClientHandler.instance().getClient().gameSettings.thirdPersonView = 0;
+			FMLClientHandler.instance().getClient().gameSettings.thirdPersonView = this.getThirdPersonView();
 		}
         
         if (!this.lastUsingParachute && this.usingParachute)
@@ -208,6 +166,16 @@ public class GCCorePlayerBaseClient extends PlayerBase
     {
     	return this.usingParachute;
     }
+    
+    public void setThirdPersonView(int view)
+    {
+    	this.thirdPersonView = view;
+    }
+    
+    public int getThirdPersonView()
+    {
+    	return this.thirdPersonView;
+    }
 
     @Override
     public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
@@ -215,6 +183,7 @@ public class GCCorePlayerBaseClient extends PlayerBase
         this.setParachute(par1NBTTagCompound.getBoolean("usingParachute"));
         this.setUsingGoggles(par1NBTTagCompound.getBoolean("usingAdvGoggles"));
         this.setUseTutorialText(par1NBTTagCompound.getBoolean("tutorialText"));
+        this.setThirdPersonView(par1NBTTagCompound.getInteger("thirdPersonView"));
         
         super.readEntityFromNBT(par1NBTTagCompound);
     }
@@ -225,6 +194,7 @@ public class GCCorePlayerBaseClient extends PlayerBase
         par1NBTTagCompound.setBoolean("usingParachute", this.getParachute());
         par1NBTTagCompound.setBoolean("usingAdvGoggles", this.getUsingGoggles());
         par1NBTTagCompound.setBoolean("tutorialText", this.getUseTutorialText());
+        par1NBTTagCompound.setInteger("thirdPersonView", this.getThirdPersonView());
         
         super.writeEntityToNBT(par1NBTTagCompound);
     }

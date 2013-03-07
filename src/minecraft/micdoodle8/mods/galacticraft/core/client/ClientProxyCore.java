@@ -215,9 +215,14 @@ public class ClientProxyCore extends CommonProxyCore
 		TickRegistry.registerScheduledTickHandler(new TickHandlerClientSlow(), Side.CLIENT);
 		KeyBindingRegistry.registerKeyBinding(new GCKeyHandler());
         NetworkRegistry.instance().registerChannel(new ClientPacketHandler(), GalacticraftCore.CHANNEL, Side.CLIENT);
+        
+        if (!GCCoreConfigManager.disableFancyTileEntities)
+        {
+            ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityOxygenDistributor.class, new GCCoreTileEntityOxygenDistributorRenderer());
+            ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityOxygenCollector.class, new GCCoreTileEntityOxygenCollectorRenderer());
+        }
+        
         ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityTreasureChest.class, new GCCoreTileEntityTreasureChestRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityOxygenDistributor.class, new GCCoreTileEntityOxygenDistributorRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityOxygenCollector.class, new GCCoreTileEntityOxygenCollectorRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityAdvancedCraftingTable.class, new GCCoreTileEntityAdvancedCraftingTableRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityRefinery.class, new GCCoreTileEntityRefineryRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityOxygenCompressor.class, new GCCoreTileEntityOxygenCompressorRenderer());
@@ -464,6 +469,13 @@ public class ClientProxyCore extends CommonProxyCore
             
             final EntityPlayer player = (EntityPlayer)p;
             
+            GCCorePlayerBaseClient playerBaseClient = null;
+            
+            if (player != null && GalacticraftCore.playersClient.size() > 0)
+            {
+            	playerBaseClient = PlayerUtil.getPlayerBaseClientFromPlayer(player);
+            }
+            
             if (packetType == 0)
             {
                 final Class[] decodeAs = {Integer.class, Integer.class, String.class};
@@ -550,6 +562,11 @@ public class ClientProxyCore extends CommonProxyCore
             {
             	final Class[] decodeAs = {String.class};
                 final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
+                
+                if (playerBaseClient != null)
+                {
+                	playerBaseClient.setThirdPersonView(FMLClientHandler.instance().getClient().gameSettings.thirdPersonView);
+                }
                 
                 FMLClientHandler.instance().getClient().gameSettings.thirdPersonView = 1;
 
@@ -652,6 +669,16 @@ public class ClientProxyCore extends CommonProxyCore
                 final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
                 
                 FMLClientHandler.instance().getClient().displayGuiScreen(null);
+            }
+            else if (packetType == 13)
+            {
+                final Class[] decodeAs = {String.class};
+                final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
+                
+                if (playerBaseClient != null)
+                {
+                    FMLClientHandler.instance().getClient().gameSettings.thirdPersonView = playerBaseClient.getThirdPersonView();
+                }
             }
 		}
     }
@@ -1073,7 +1100,7 @@ public class ClientProxyCore extends CommonProxyCore
         			GCCoreOverlaySensorGlasses.renderSensorGlassesValueableBlocks();
         		}
         		
-        		if (player != null && player.ridingEntity != null && player.ridingEntity instanceof EntitySpaceshipBase)
+        		if (player != null && player.ridingEntity != null && player.ridingEntity instanceof EntitySpaceshipBase && minecraft.gameSettings.thirdPersonView != 0 && !GCCoreConfigManager.disableSpaceshipOverlay)
         		{
         			GCCoreOverlaySpaceship.renderSpaceshipOverlay();
         		}

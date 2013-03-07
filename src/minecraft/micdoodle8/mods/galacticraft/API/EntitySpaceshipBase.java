@@ -405,11 +405,17 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship
             if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayerMP)
             {
         	  	final Object[] toSend = {((EntityPlayerMP)this.riddenByEntity).username};
-            	((EntityPlayerMP)this.riddenByEntity).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 8, toSend));
+            	((EntityPlayerMP) this.riddenByEntity).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 8, toSend));
+            }
+            else if (par1EntityPlayer instanceof EntityPlayerMP)
+            {
+        	  	final Object[] toSend = {par1EntityPlayer.username};
+            	((EntityPlayerMP) par1EntityPlayer).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 13, toSend));
             }
             
         	return true;
     	}
+    	
         return false;
     }
 
