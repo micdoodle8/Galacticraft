@@ -286,7 +286,7 @@ public class GCCoreTileEntityRefinery extends TileEntity implements IInventory, 
     {
         if (this.canSmelt())
         {
-            ItemStack var1 = new ItemStack(GCCoreItems.rocketFuelBucket, 1, this.refineryItemStacks[0].getItemDamage());
+            ItemStack var1 = new ItemStack(GCCoreItems.rocketFuelBucket, 1, this.refineryItemStacks[0].getItemDamage() == 0 ? 1 : this.refineryItemStacks[0].getItemDamage());
 
             if (this.refineryItemStacks[3] == null)
             {
