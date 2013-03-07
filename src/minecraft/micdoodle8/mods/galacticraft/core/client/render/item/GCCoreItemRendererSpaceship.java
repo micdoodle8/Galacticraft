@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.client.render.item;
 import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelSpaceship;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpaceship;
 import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 
@@ -24,6 +25,8 @@ public class GCCoreItemRendererSpaceship implements IItemRenderer
     
 	private void renderPipeItem(ItemRenderType type, RenderBlocks render, ItemStack item, float translateX, float translateY, float translateZ)
 	{
+		final EntityPlayer player = FMLClientHandler.instance().getClient().thePlayer;
+		
         GL11.glPushMatrix();
         long var10 = this.spaceship.entityId * 493286711L;
         var10 = var10 * var10 * 4392167121L + var10 * 98761L;
@@ -38,6 +41,11 @@ public class GCCoreItemRendererSpaceship implements IItemRenderer
             GL11.glRotatef(20, 0.0F, 1, 1);
             GL11.glTranslatef(1.6F, 0.0F, 0F);
             GL11.glScalef(5.2F, 5.2F, 5.2F);
+            
+        	if (player != null && player.ridingEntity != null && player.ridingEntity instanceof GCCoreEntitySpaceship)
+        	{
+        		GL11.glScalef(0.0F, 0.0F, 0.0F);
+        	}
         }
         
         GL11.glTranslatef(var12, var13 - 0.1F, var14);
