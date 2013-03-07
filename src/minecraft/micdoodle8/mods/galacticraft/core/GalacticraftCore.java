@@ -9,10 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import universalelectricity.core.UniversalElectricity;
-import universalelectricity.prefab.TranslationHelper;
-import universalelectricity.prefab.UEDamageSource;
-
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubMod;
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
 import micdoodle8.mods.galacticraft.API.IGalaxy;
@@ -63,6 +59,8 @@ import net.minecraft.network.packet.Packet9Respawn;
 import net.minecraft.src.ServerPlayerAPI;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
+import universalelectricity.prefab.TranslationHelper;
+import universalelectricity.prefab.UEDamageSource;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.IScheduledTickHandler;
 import cpw.mods.fml.common.ITickHandler;
