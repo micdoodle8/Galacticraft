@@ -26,7 +26,7 @@ public class GCCoreBlockAirLockWall extends BlockBreakable
         float var5;
         float var6;
 
-        if (par1IBlockAccess.getBlockId(par2 - 1, par3, par4) != this.blockID && par1IBlockAccess.getBlockId(par2 + 1, par3, par4) != this.blockID)
+        if (par1IBlockAccess.getBlockId(par2 - 1, par3, par4) != GCCoreBlocks.airLockFrame.blockID && par1IBlockAccess.getBlockId(par2 + 1, par3, par4) != GCCoreBlocks.airLockFrame.blockID)
         {
             var5 = 0.325F;
             var6 = 0.5F;
@@ -121,20 +121,7 @@ public class GCCoreBlockAirLockWall extends BlockBreakable
     @SideOnly(Side.CLIENT)
     public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {
-        if (par1IBlockAccess.getBlockId(par2, par3, par4) == this.blockID)
-        {
-            return false;
-        }
-        else
-        {
-            boolean var6 = par1IBlockAccess.getBlockId(par2 - 1, par3, par4) == this.blockID && par1IBlockAccess.getBlockId(par2 - 2, par3, par4) != this.blockID;
-            boolean var7 = par1IBlockAccess.getBlockId(par2 + 1, par3, par4) == this.blockID && par1IBlockAccess.getBlockId(par2 + 2, par3, par4) != this.blockID;
-            boolean var8 = par1IBlockAccess.getBlockId(par2, par3, par4 - 1) == this.blockID && par1IBlockAccess.getBlockId(par2, par3, par4 - 2) != this.blockID;
-            boolean var9 = par1IBlockAccess.getBlockId(par2, par3, par4 + 1) == this.blockID && par1IBlockAccess.getBlockId(par2, par3, par4 + 2) != this.blockID;
-            boolean var10 = var6 || var7;
-            boolean var11 = var8 || var9;
-            return var10 && par5 == 4 ? true : (var10 && par5 == 5 ? true : (var11 && par5 == 2 ? true : var11 && par5 == 3));
-        }
+    	return true;
     }
 
     @Override
