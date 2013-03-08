@@ -108,9 +108,12 @@ public class GCMoonBlock extends Block implements IDetectableMetadataResource, I
 	@Override
     public int damageDropped(int meta)
     {
-		switch (meta)
+		if (meta >= 5 && meta <= 13)
 		{
-		default:
+			return 5;
+		}
+		else
+		{
 			return meta;
 		}
     }
