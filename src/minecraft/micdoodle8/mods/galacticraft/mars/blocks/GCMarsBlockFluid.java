@@ -15,7 +15,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -396,12 +396,9 @@ public abstract class GCMarsBlockFluid extends Block
     public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {
         int var6;
-        
+
         if (par5Random.nextInt(10) == 0)
         {
-            final double var10 = 0 / 255.0D;
-            final double var5 = 128 / 255.0D;
-            final double var7 = 0 / 255.0D;
             par1World.spawnParticle("mobSpell", par2 + 0.5, par3 + 0.9, par4 + 0.5, 0, 0, 0);
         }
 
@@ -554,7 +551,7 @@ public abstract class GCMarsBlockFluid extends Block
     public static double getFlowDirection(IBlockAccess par0IBlockAccess, int par1, int par2, int par3, Material par4Material)
     {
         Vec3 var5 = null;
-        
+
         if (par4Material == GCMarsBlocks.bacterialSludge)
         {
             var5 = ((GCMarsBlockFluid)GCMarsBlocks.bacterialSludgeMoving).getFlowVector(par0IBlockAccess, par1, par2, par3);
@@ -621,7 +618,7 @@ public abstract class GCMarsBlockFluid extends Block
 //
 //            par1World.setBlockAndMetadataWithNotify(par2, par3 - 1, par4, GCMarsBlocks.bacterialSludgeMoving.blockID, var6);
 //    	}
-    	
+
 //        if (par1World.getBlockId(par2, par3, par4) == this.blockID)
 //        {
 //            if (this.blockMaterial == GCBlocks.bacterialSludge)
@@ -684,7 +681,7 @@ public abstract class GCMarsBlockFluid extends Block
             par1World.spawnParticle("largesmoke", par2 + Math.random(), par3 + 1.2D, par4 + Math.random(), 0.0D, 0.0D, 0.0D);
         }
     }
-    
+
     @Override
 	public String getTextureFile()
     {

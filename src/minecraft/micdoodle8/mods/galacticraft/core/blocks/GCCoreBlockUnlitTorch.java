@@ -19,14 +19,14 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
 public class GCCoreBlockUnlitTorch extends Block
 {
 	public boolean lit;
-	
+
 	protected GCCoreBlockUnlitTorch(int par1, int par2, boolean lit)
     {
         super(par1, par2, Material.circuits);

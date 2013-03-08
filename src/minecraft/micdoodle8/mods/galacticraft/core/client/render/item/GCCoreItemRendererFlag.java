@@ -14,7 +14,7 @@ import cpw.mods.fml.client.FMLClientHandler;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -22,7 +22,7 @@ public class GCCoreItemRendererFlag implements IItemRenderer
 {
 	GCCoreEntityFlag spaceship = new GCCoreEntityFlag(FMLClientHandler.instance().getClient().theWorld);
 	GCCoreModelFlag modelSpaceship = new GCCoreModelFlag();
-    
+
 	private void renderPipeItem(ItemRenderType type, RenderBlocks render, ItemStack item, float translateX, float translateY, float translateZ)
 	{
         GL11.glPushMatrix();
@@ -31,10 +31,10 @@ public class GCCoreItemRendererFlag implements IItemRenderer
         final float var12 = (((var10 >> 16 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
         final float var13 = (((var10 >> 20 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
         final float var14 = (((var10 >> 24 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
-        
+
         this.spaceship.setType(item.getItemDamage());
         this.spaceship.setOwner(FMLClientHandler.instance().getClient().thePlayer.username);
-        
+
         if (type == ItemRenderType.EQUIPPED)
         {
             GL11.glScalef(7F, 7F, 7F);
@@ -44,9 +44,7 @@ public class GCCoreItemRendererFlag implements IItemRenderer
             {
                 float var13b;
                 float var14b;
-                final float var15;
-                
-//                GL11.glRotatef(-18.0F, 0.0F, 0.0F, 1.0F);
+                //                GL11.glRotatef(-18.0F, 0.0F, 0.0F, 1.0F);
 //                GL11.glRotatef(-12.0F, 0.0F, 1.0F, 0.0F);
 //                GL11.glRotatef(-8.0F, 1.0F, 0.0F, 0.0F);
 //                GL11.glTranslatef(-0.9F, 0.2F, 0.0F);
@@ -76,7 +74,7 @@ public class GCCoreItemRendererFlag implements IItemRenderer
 //                GL11.glRotatef(335.0F, 0.0F, 0.0F, 1.0F);
             }
         }
-        
+
         GL11.glTranslatef(var12, var13 - 0.1F, var14);
         GL11.glScalef(-0.4F, -0.4F, 0.4F);
         if (type == ItemRenderType.INVENTORY || type == ItemRenderType.ENTITY)
@@ -95,25 +93,25 @@ public class GCCoreItemRendererFlag implements IItemRenderer
             	GL11.glTranslatef(0, -0.9F, 0);
             	GL11.glScalef(0.5F, 0.5F, 0.5F);
         	}
-        	
+
         	GL11.glScalef(1.3F, 1.3F, 1.3F);
         	GL11.glTranslatef(0, -0.6F, 0);
         }
-        
+
     	switch (item.getItemDamage())
     	{
     	default:
     		FMLClientHandler.instance().getClient().renderEngine.bindTexture(FMLClientHandler.instance().getClient().renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/entities/flag/" + GCCoreItemFlag.names[item.getItemDamage()] + ".png"));
     		break;
     	}
-    	
+
         this.modelSpaceship.render(this.spaceship, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
         GL11.glPopMatrix();
 	}
 
-	
+
 	/** IItemRenderer implementation **/
-	
+
 	@Override
 	public boolean handleRenderType(ItemStack item, ItemRenderType type)
 	{

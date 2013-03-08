@@ -45,7 +45,6 @@ public class GCCoreRenderAstroOrb extends Render
         final float var27 = (par1EntityXPOrb.xpColor + par9) / 2.0F;
         var21 = (int)((MathHelper.sin(var27 + 0.0F) + 1.0F) * 0.0F * var26);
         final int var22 = (int)var26;
-        final int var23 = (int)((MathHelper.sin(var27 + 4.1887903F) + 1.0F) * 5F * var26);
         final int var24 = var21 / 2 << 16 | var22 / 2 << 8 | 255;
         GL11.glRotatef(180.0F - this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
         GL11.glRotatef(-this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);

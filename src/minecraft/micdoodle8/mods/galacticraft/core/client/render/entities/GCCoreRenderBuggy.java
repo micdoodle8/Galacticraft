@@ -12,7 +12,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -21,7 +21,7 @@ public class GCCoreRenderBuggy extends Render
 {
     /** instance of ModelMinecart for rendering */
     protected GCCoreModelBuggy modelSpaceship;
-    
+
 	float turn = 0;
 
     public GCCoreRenderBuggy()
@@ -33,13 +33,7 @@ public class GCCoreRenderBuggy extends Render
     public void renderSpaceship(GCCoreEntityBuggy entity, double par2, double par4, double par6, float par8, float par9)
     {
         GL11.glPushMatrix();
-        final double var15 = entity.prevPosX + (entity.posX - entity.prevPosX) * par9;
-        final double var17 = entity.prevPosY + (entity.posY - entity.prevPosY) * par9;
-        final double var19 = entity.prevPosZ + (entity.posZ - entity.prevPosZ) * par9;
-        final double var21 = 0.30000001192092896D;
         final float var24 = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * par9;
-        final float var25 = entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * par9;
-
         GL11.glTranslatef((float)par2, (float)par4 - 1, (float)par6);
         GL11.glRotatef(180.0F - par8, 0.0F, 1.0F, 0.0F);
         GL11.glRotatef(-var24, 0.0F, 0.0F, 1.0F);

@@ -13,7 +13,7 @@ import net.minecraft.world.gen.structure.StructureComponent;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -26,7 +26,7 @@ public class GCMarsComponentCreeperPitRoom extends GCCoreStructureComponent
     private int averageGroundLevel = -1;
     private final int height;
     private final int width;
-	
+
     public GCMarsComponentCreeperPitRoom(int type, World world, Random par2Random, int x, int y, int z, int height, int width, int cbm)
     {
         super(type);
@@ -35,20 +35,20 @@ public class GCMarsComponentCreeperPitRoom extends GCCoreStructureComponent
         this.width = width;
         this.boundingBox = GCCoreStructureComponent.getComponentToAddBoundingBox(x, 78 - this.height, z, 0, 0, 0, 7, this.height, 7, cbm);
     }
-    
+
     @Override
     public void buildComponent(StructureComponent par1StructureComponent, List par2List, Random par3Random)
     {
         int var4;
-        
+
         for (var4 = 0; var4 < 4; ++var4)
         {
             final int[] var5 = this.getValidOpening(par3Random, var4);
-            
+
             this.makeCorridor(par2List, par3Random, 1, var5[0], var5[1], var5[2], this.width, 7, var4);
         }
     }
-    
+
     public int[] getValidOpening(Random var1, int var2)
     {
     	if (var2 == 0)
@@ -67,15 +67,15 @@ public class GCMarsComponentCreeperPitRoom extends GCCoreStructureComponent
     	{
     		return new int[] {1, 0, 0};
     	}
-    	
+
     	return new int[] {0, 0, 0};
     }
-    
+
     public boolean makeCorridor(List list, Random random, int type, int x, int y, int z, int width, int height, int cbm)
     {
     	final int var10 = (this.getCoordBaseMode() + cbm) % 4;
         final int[] var11 = this.offsetCorridorCoords(x, y, z, width, var10);
-        
+
     	final GCMarsComponentCreeperPitCorridor var12 = new GCMarsComponentCreeperPitCorridor(10 + var10, var11[0], var11[1], var11[2], height, 7, 30, var10);//new GCComponentCreeperPitCorridor(var3, var11[0], var11[1], var11[2], var7, var8, var10);
 
     	if (var12 != null)
@@ -85,7 +85,7 @@ public class GCMarsComponentCreeperPitRoom extends GCCoreStructureComponent
     	}
         return true;
     }
-    
+
     protected int[] offsetCorridorCoords(int x, int y, int z, int width, int cbm)
     {
         final int var6 = this.getXWithOffset(x, z);
@@ -111,10 +111,10 @@ public class GCMarsComponentCreeperPitRoom extends GCCoreStructureComponent
 
     	this.makeWallsDown(par1World);
     	this.makePlatforms(par1World, par2Random);
-    	
+
 		return true;
     }
-    
+
     public void makeWallsDown(World world)
     {
     	for (int y = 0; y < this.height; y++)
@@ -135,7 +135,7 @@ public class GCMarsComponentCreeperPitRoom extends GCCoreStructureComponent
     		}
     	}
     }
-    
+
     public void makePlatforms(World world, Random rand)
     {
     	for (int y = this.height - 1; y > 10; y--)
@@ -153,7 +153,7 @@ public class GCMarsComponentCreeperPitRoom extends GCCoreStructureComponent
 								for (int j = -2; j < 2; j++)
 								{
 									// Creates a platform
-									
+
 									if (world.getBlockId(this.getBoundingBox().minX + x + i, this.getBoundingBox().minY + y, this.getBoundingBox().minZ + z + j) == 0)
 									{
 										this.placeBlockAtCurrentPosition(world, GCMarsBlocks.creeperDungeonWall.blockID, 0, x + i, y, z + j, this.getBoundingBox());
@@ -167,7 +167,7 @@ public class GCMarsComponentCreeperPitRoom extends GCCoreStructureComponent
 										this.placeBlockAtCurrentPosition(world, 0, 0, x - 2, y, z + 1, this.getBoundingBox());
 										this.placeBlockAtCurrentPosition(world, 0, 0, x + 1, y, z + 1, this.getBoundingBox());
 									}
-		                    		
+
 		                    		if (rand.nextInt(5) == 0 && world.getBlockId(this.getBoundingBox().minX + x + i, this.getBoundingBox().minY + y + 1, this.getBoundingBox().minZ + z + j) == 0 && world.getBlockId(this.getBoundingBox().minX + x + i, this.getBoundingBox().minY + y, this.getBoundingBox().minZ + z + j) == GCMarsBlocks.creeperDungeonWall.blockID)
 		                    		{
 		                    			// Creates random creeper eggs
@@ -176,20 +176,20 @@ public class GCMarsComponentCreeperPitRoom extends GCCoreStructureComponent
 		                    		}
 								}
 							}
-							
+
 							if (rand.nextInt(7) == 0)
 							{
 								// Sets mob spawner with creeper egg on top of it.
-								
+
 								if (x > 0 && x < 7 && z > 0 && z < 7)
 								{
 									this.placeBlockAtCurrentPosition(world, Block.mobSpawner.blockID, 0, x, y + 1, z, this.getBoundingBox());
-									
+
 									if (world.getBlockId(this.getBoundingBox().minX + x, this.getBoundingBox().minY + y + 1, this.getBoundingBox().minZ + z) == 0)
 									{
 										this.placeBlockAtCurrentPosition(world, GCMarsBlocks.creeperEgg.blockID, 0, x, y + 2, z, this.getBoundingBox());
 									}
-									
+
 					                final TileEntityMobSpawner var7 = (TileEntityMobSpawner)world.getBlockTileEntity(this.getBoundingBox().minX + x, this.getBoundingBox().minY + y + 1, this.getBoundingBox().minZ + z);
 
 					                if (var7 != null)
@@ -204,7 +204,7 @@ public class GCMarsComponentCreeperPitRoom extends GCCoreStructureComponent
     		}
     	}
     }
-    
+
     protected int getAverageGroundLevel(World par1World, StructureBoundingBox par2StructureBoundingBox)
     {
         int var3 = 0;

@@ -1,10 +1,6 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
-import java.util.List;
-
 import net.minecraft.client.model.ModelBase;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
@@ -13,9 +9,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -217,7 +211,7 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
 	public void onUpdate()
     {
         super.onUpdate();
-        
+
         if (this.dataWatcher.getWatchableObjectInt(this.timeSinceHit) > 0)
         {
             this.dataWatcher.updateObject(this.timeSinceHit, Integer.valueOf(this.dataWatcher.getWatchableObjectInt(this.timeSinceHit) - 1));
@@ -227,18 +221,14 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
         {
             this.dataWatcher.updateObject(this.currentDamage, Integer.valueOf(this.dataWatcher.getWatchableObjectInt(this.currentDamage) - 1));
         }
-        
+
         final byte var20 = 5;
         final double var2 = 0.0D;
         int var4;
 
         for (var4 = 0; var4 < var20; ++var4)
         {
-            final double var5 = this.boundingBox.minY + (this.boundingBox.maxY - this.boundingBox.minY) * (var4 + 0) / var20 - 0.125D;
-            final double var7 = this.boundingBox.minY + (this.boundingBox.maxY - this.boundingBox.minY) * (var4 + 1) / var20 - 0.125D;
         }
-
-        final double var21;
 
         if (var2 < 1.0D)
         {
@@ -277,7 +267,7 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
         {
             this.speed = this.maxSpeed;
         }
-    	
+
         if (this.isCollidedHorizontally)
         {
             this.speed *= 0.9;
@@ -286,16 +276,16 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
 
         this.motionX = -(this.speed * Math.cos((this.rotationYaw - 90F) * Math.PI / 180.0D ));
         this.motionZ = -(this.speed * Math.sin((this.rotationYaw - 90F) * Math.PI / 180.0D ));
-        
+
         this.moveEntity(this.motionX, this.motionY, this.motionZ);
-        
+
         this.setRotation(this.rotationYaw, this.rotationPitch);
         this.setPosition(this.posX, this.posY, this.posZ);
 
         if (this.worldObj.isRemote)
         {
         }
-        
+
         this.prevPosX = this.posX;
         this.prevPosY = this.posY;
         this.prevPosZ = this.posZ;
@@ -363,7 +353,7 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
     {
         return this.cargoItems[var1];
     }
-    
+
     /**
      * Removes from an inventory slot (first arg) up to a specified number (second arg) of items and returns them in a
      * new stack.
@@ -478,7 +468,7 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
     @Override
 	public boolean interact(EntityPlayer var1)
     {
-        final ItemStack var2 = var1.inventory.getCurrentItem();
+        var1.inventory.getCurrentItem();
 
         if (this.worldObj.isRemote)
         {
@@ -501,9 +491,9 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
 		if (this.worldObj.isRemote)
 		{
 		}
-		
+
 		// 0 (accelerate), 1 (decelerate), 2 (turnLeft), 3 (turnRight)
-		
+
 		switch (par1)
 		{
 		case 0:
@@ -526,7 +516,7 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
 			{
 	            this.rotationYaw = (float)(this.rotationYaw - this.turnFactor * (1.0D + this.speed / 2.0D));
 			}
-			
+
 			break;
 		case 3:
 			if (this.worldObj.isRemote)
@@ -542,13 +532,13 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
 			{
 	            this.rotationYaw = (float)(this.rotationYaw + this.turnFactor * (1.0D + this.speed / 2.0D));
 			}
-			
+
 			break;
 		}
 	}
 
 	@Override
-	boolean pressKey(int key) 
+	boolean pressKey(int key)
 	{
 		return false;
 	}

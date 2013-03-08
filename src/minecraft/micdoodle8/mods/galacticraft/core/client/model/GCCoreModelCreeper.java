@@ -9,7 +9,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -190,7 +190,7 @@ public class GCCoreModelCreeper extends ModelBase
         this.leg4.setRotationPoint(2.0F, 12 + var2, -4.0F);
         this.leg4.setTextureSize(128, 64);
     }
-	
+
 	private void setRotation(ModelRenderer model, float x, float y, float z)
 	{
 		model.rotateAngleX = x;

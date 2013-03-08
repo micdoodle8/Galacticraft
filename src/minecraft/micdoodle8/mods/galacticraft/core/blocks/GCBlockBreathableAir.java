@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -25,7 +25,7 @@ public class GCBlockBreathableAir extends BlockContainer
 	{
 		super(id, texIndex, Material.air);
 	}
-	
+
 	public void setMinYMaxY(double minY, double maxY)
 	{
 		this.minY = minY;
@@ -73,7 +73,7 @@ public class GCBlockBreathableAir extends BlockContainer
     {
         return GCCoreConfigManager.transparentBreathableAir ? 1 : 0;
     }
-	
+
     @Override
 	public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {
@@ -127,7 +127,7 @@ public class GCBlockBreathableAir extends BlockContainer
 	{
 		return new GCCoreTileEntityBreathableAir();
 	}
-    
+
 	@Override
     public String getTextureFile()
     {

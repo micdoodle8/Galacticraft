@@ -11,7 +11,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GCCoreItemAxe extends ItemAxe
 {
 	private final EnumToolMaterial material;
-	
+
 	public GCCoreItemAxe(int par1, EnumToolMaterial par2EnumToolMaterial)
 	{
 		super(par1, par2EnumToolMaterial);

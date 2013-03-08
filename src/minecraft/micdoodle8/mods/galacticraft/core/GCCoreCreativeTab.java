@@ -9,7 +9,7 @@ public class GCCoreCreativeTab extends CreativeTabs
 	{
 		super(par1, par2Str);
 	}
-	
+
     @Override
 	public int getTabIconItemIndex()
     {

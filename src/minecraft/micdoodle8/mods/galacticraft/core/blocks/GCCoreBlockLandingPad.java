@@ -6,7 +6,7 @@ import net.minecraft.world.World;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -103,7 +103,7 @@ public class GCCoreBlockLandingPad extends Block
 		{
 			return false;
 		}
-    	
+
     	if (par1World.getBlockId(par2, par3 - 1, par4) == GCCoreBlocks.landingPad.blockID && par5 == 1)
     	{
     		return false;
@@ -113,7 +113,7 @@ public class GCCoreBlockLandingPad extends Block
             return this.canPlaceBlockAt(par1World, par2, par3, par4);
     	}
     }
-	
+
     @Override
 	public boolean isOpaqueCube()
     {

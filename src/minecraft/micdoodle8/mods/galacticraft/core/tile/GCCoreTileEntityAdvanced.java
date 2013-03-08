@@ -13,7 +13,7 @@ public abstract class GCCoreTileEntityAdvanced extends TileEntity
     {
      	super.validate();
 
-        if (!isInvalid() && worldObj != null)
+        if (!this.isInvalid() && this.worldObj != null)
         {
         	this.onTileEntityCreation();
         }
@@ -25,14 +25,14 @@ public abstract class GCCoreTileEntityAdvanced extends TileEntity
     public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
     	super.readFromNBT(par1NBTTagCompound);
-    	direction = par1NBTTagCompound.getInteger("direction");
+    	this.direction = par1NBTTagCompound.getInteger("direction");
     }
 
     @Override
     public void writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
     	super.writeToNBT(par1NBTTagCompound);
-    	par1NBTTagCompound.setInteger("direction", direction);
+    	par1NBTTagCompound.setInteger("direction", this.direction);
     }
 
     public int getDirection()

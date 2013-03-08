@@ -20,7 +20,7 @@ import cpw.mods.fml.client.FMLClientHandler;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -29,7 +29,7 @@ public class GCCallistoSkyProvider extends IRenderHandler
 	public int starGLCallList = GLAllocation.generateDisplayLists(3);
 	public int glSkyList;
 	public int glSkyList2;
-	
+
 	public GCCallistoSkyProvider()
 	{
 		GL11.glPushMatrix();
@@ -82,12 +82,12 @@ public class GCCallistoSkyProvider extends IRenderHandler
 	public void render(float partialTicks, WorldClient world, Minecraft mc)
 	{
 		GCMarsWorldProvider gcProvider = null;
-		
+
 		if (world.provider instanceof GCMarsWorldProvider)
 		{
 			gcProvider = (GCMarsWorldProvider)world.provider;
 		}
-		
+
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
         final Vec3 var2 = this.getCustomSkyColor();
         float var3 = (float)var2.xCoord * (1 - world.getStarBrightness(partialTicks) * 2);
@@ -116,7 +116,6 @@ public class GCCallistoSkyProvider extends IRenderHandler
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         RenderHelper.disableStandardItemLighting();
-        final float var9;
         float var10;
         float var11;
         float var12;
@@ -143,8 +142,6 @@ public class GCCallistoSkyProvider extends IRenderHandler
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 5F);
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/planets/overworld.png"));
         final int var28 = world.getMoonPhase(partialTicks);
-        final int var30 = var28 % 4;
-        final int var29 = var28 / 4 % 2;
         GL11.glRotatef(WorldUtil.calculateEarthAngleFromOtherPlanet(world.getWorldTime(), partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
         GL11.glRotatef(-40F, 0.0F, 0.0F, 1.0F);
         var23.startDrawingQuads();
@@ -171,7 +168,7 @@ public class GCCallistoSkyProvider extends IRenderHandler
             var23.addVertexWithUV(-var12, -100.0D, -var12, 0, 0);
             var23.draw();
             GL11.glPopMatrix();
-            
+
             GL11.glPushMatrix();
 	        var12 = 2.0F;
 	        GL11.glScalef(0.6F, 0.6F, 0.6F);
@@ -304,7 +301,7 @@ public class GCCallistoSkyProvider extends IRenderHandler
     {
         return Vec3.vec3dPool.getVecFromPool(0D, 0D, 0.0D);
     }
-    
+
     public float getSkyBrightness(float par1)
     {
         final float var2 = FMLClientHandler.instance().getClient().theWorld.getCelestialAngle(par1);

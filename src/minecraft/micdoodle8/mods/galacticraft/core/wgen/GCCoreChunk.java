@@ -18,9 +18,9 @@ public class GCCoreChunk extends Chunk
                 for (int var8 = 0; var8 < var5; ++var8)
                 {
                     final int idAtCoord = idArray[var6 << 11 | var7 << 7 | var8] & 0xFF;
-                    
+
                     int metaAtCoord = -1;
-                    
+
                     if (metadataArray != null)
                     {
                     	metaAtCoord = metadataArray[var6 << 11 | var7 << 7 | var8] & 0xFF;
@@ -36,7 +36,7 @@ public class GCCoreChunk extends Chunk
                         }
 
                         this.getBlockStorageArray()[var10].setExtBlockID(var6, var8 & 15, var7, idAtCoord);
-                        
+
                         if (metaAtCoord != -1)
                         {
                             this.getBlockStorageArray()[var10].setExtBlockMetadata(var6, var8 & 15, var7, metaAtCoord);

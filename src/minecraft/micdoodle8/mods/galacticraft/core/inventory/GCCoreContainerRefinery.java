@@ -12,8 +12,8 @@ import net.minecraft.tileentity.TileEntityFurnace;
 
 public class GCCoreContainerRefinery extends Container
 {
-	private GCCoreTileEntityRefinery refinery;
-	
+	private final GCCoreTileEntityRefinery refinery;
+
     public GCCoreContainerRefinery(InventoryPlayer par1InventoryPlayer, GCCoreTileEntityRefinery refinery)
     {
     	this.refinery = refinery;
@@ -21,10 +21,10 @@ public class GCCoreContainerRefinery extends Container
         this.addSlotToContainer(new Slot(refinery, 1, 72, 61));
         this.addSlotToContainer(new Slot(refinery, 2, 90, 61));
         this.addSlotToContainer(new SlotFurnace(par1InventoryPlayer.player, refinery, 3, 130, 8));
-        
+
         int var6;
         int var7;
-        
+
         // Player inv:
 
         for (var6 = 0; var6 < 3; ++var6)
@@ -40,9 +40,9 @@ public class GCCoreContainerRefinery extends Container
             this.addSlotToContainer(new Slot(par1InventoryPlayer, var6, 8 + var6 * 18, 142));
         }
     }
-    
+
 	@Override
-	public boolean canInteractWith(EntityPlayer var1) 
+	public boolean canInteractWith(EntityPlayer var1)
 	{
 		return true;
 	}
@@ -51,11 +51,11 @@ public class GCCoreContainerRefinery extends Container
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2)
     {
         ItemStack var3 = null;
-        Slot var4 = (Slot)this.inventorySlots.get(par2);
+        final Slot var4 = (Slot)this.inventorySlots.get(par2);
 
         if (var4 != null && var4.getHasStack())
         {
-            ItemStack var5 = var4.getStack();
+            final ItemStack var5 = var4.getStack();
             var3 = var5.copy();
 
             if (par2 == 3)
@@ -69,7 +69,7 @@ public class GCCoreContainerRefinery extends Container
             }
             else if (par2 != 2 && par2 != 1 && par2 != 0)
             {
-                if (var5.getItem() instanceof GCCoreItemOilCanister && (var5.getMaxDamage() - var5.getItemDamage()) > 0)
+                if (var5.getItem() instanceof GCCoreItemOilCanister && var5.getMaxDamage() - var5.getItemDamage() > 0)
                 {
                     if (!this.mergeItemStack(var5, 0, 1, false))
                     {

@@ -77,7 +77,7 @@ public class GCCoreModelFlag extends ModelBase
 		this.base.render(f5);
 		this.pole.render(f5);
 		this.flag.render(f5);
-		
+
 		if (((GCCoreEntityFlag)entity).getType() != 0)
 		{
 			GL11.glScalef(0.5F, 0.5F, 0.5F);
@@ -94,7 +94,7 @@ public class GCCoreModelFlag extends ModelBase
 	{
 		this.setRotationAngles(entity, f, f1, f2, f3, f4, f5);
 		this.flag.render(f5);
-		
+
 		if (((GCCoreEntityFlag)entity).getType() == 1)
 		{
 			GL11.glScalef(0.5F, 0.5F, 0.5F);
@@ -103,7 +103,7 @@ public class GCCoreModelFlag extends ModelBase
 			this.picSide2.render(f5);
 		}
 	}
-	
+
     protected boolean loadDownloadableImageTexture(String par1Str, String par2Str)
     {
         final RenderEngine var3 = FMLClientHandler.instance().getClient().renderEngine;

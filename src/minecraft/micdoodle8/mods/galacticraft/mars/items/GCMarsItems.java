@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.mars.items;
 
-import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.mars.GCMarsConfigManager;
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
 import micdoodle8.mods.galacticraft.mars.client.ClientProxyMars;
@@ -16,7 +15,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -32,7 +31,7 @@ public class GCMarsItems
 	public static Item quandriumLeggings;
 	public static Item quandriumBoots;
 //	public static Item quandriumHelmetBreathable;
-	
+
 	public static Item rawDesh;
 	public static Item deshPickaxe;
 	public static Item deshAxe;
@@ -60,7 +59,7 @@ public class GCMarsItems
 	public static Item ingotDesh;
 	public static Item jetpack;
 	public static Item spaceship;
-	
+
 	public static EnumArmorMaterial OXYGENMASK = EnumHelper.addArmorMaterial("OXYGENMASK", 200, new int[] {0, 0, 0, 0}, 0);
 	public static EnumArmorMaterial SENSORGLASSES = EnumHelper.addArmorMaterial("SENSORGLASSES", 200, new int[] {0, 0, 0, 0}, 0);
 	public static EnumArmorMaterial TITANIUMARMOR = EnumHelper.addArmorMaterial("TITANIUM", 42, new int[] {4, 9, 7, 4}, 12);
@@ -72,7 +71,7 @@ public class GCMarsItems
 	public static EnumToolMaterial TOOLDESH = EnumHelper.addToolMaterial("DESH", 0, 0, 0F, 0, 0);
 	public static EnumToolMaterial TOOLTITANIUM = EnumHelper.addToolMaterial("TITANIUM", 0, 0, 0F, 0, 0);
 	public static EnumToolMaterial TOOLQUANDRIUM = EnumHelper.addToolMaterial("QUANDRIUM", 0, 0, 0F, 0, 0);
-	
+
 	public static void initItems()
 	{
 		GCMarsItems.reinforcedBucketEmpty = new GCMarsItemReinforcedBucket(GCMarsConfigManager.idItemReinforcedBucket, 0).setIconIndex(0).setItemName("reinfocedBucket");
@@ -113,7 +112,7 @@ public class GCMarsItems
 		GCMarsItems.jetpack = new GCMarsItemJetpack(GCMarsConfigManager.idArmorJetpack, GCMarsItems.ARMORJETPACK, 11, 1).setIconIndex(34).setItemName("jetpack");
 		GCMarsItems.spaceship = new GCMarsItemSpaceshipTier2(GCMarsConfigManager.idItemSpaceshipTier2).setItemName("spaceshipTier2");
 	}
-	
+
 	public static void registerHarvestLevels()
 	{
 		MinecraftForge.setToolClass(GCMarsItems.deshPickaxe, "pickaxe", 4);
@@ -165,7 +164,7 @@ public class GCMarsItems
 		GCMarsItems.addName(GCMarsItems.jetpack);
 		GCMarsItems.addName(GCMarsItems.spaceship);
 	}
-	
+
 	private static void addName(Item item)
 	{
         LanguageRegistry.instance().addStringLocalization(item.getItemName() + ".name", ClientProxyMars.lang.get(item.getItemName() + ".name"));

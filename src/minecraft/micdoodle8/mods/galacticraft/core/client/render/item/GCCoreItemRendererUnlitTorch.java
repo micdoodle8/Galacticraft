@@ -7,7 +7,7 @@ import org.lwjgl.opengl.GL11;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -41,11 +41,11 @@ public class GCCoreItemRendererUnlitTorch implements IItemRenderer
 		default:
 		}
 	}
-	
+
 	public void renderTorchInInv()
 	{
 		GL11.glPushMatrix();
-		
+
         GL11.glPopMatrix();
 	}
 }

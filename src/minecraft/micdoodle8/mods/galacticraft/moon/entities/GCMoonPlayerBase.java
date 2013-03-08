@@ -11,7 +11,7 @@ import net.minecraft.util.MathHelper;
 public class GCMoonPlayerBase extends ServerPlayerBase
 {
 	private int lastStep;
-	
+
 	public GCMoonPlayerBase(ServerPlayerAPI var1)
 	{
 		super(var1);
@@ -21,10 +21,10 @@ public class GCMoonPlayerBase extends ServerPlayerBase
     public void onDeath(DamageSource var1)
     {
 		GalacticraftMoon.playersServer.remove(this);
-		
+
     	super.onDeath(var1);
     }
-	
+
 	@Override
 	public void onUpdate()
 	{
@@ -32,9 +32,9 @@ public class GCMoonPlayerBase extends ServerPlayerBase
     	{
     		GalacticraftMoon.playersServer.put(this.player.username, this);
     	}
-    	
-		final double j = Math.sqrt(this.player.motionX * this.player.motionX + this.player.motionZ * this.player.motionZ);
-		
+
+		Math.sqrt(this.player.motionX * this.player.motionX + this.player.motionZ * this.player.motionZ);
+
 		if (this.player.worldObj != null && this.player.worldObj.provider instanceof GCMoonWorldProvider && !this.player.isAirBorne)
 		{
 			if (this.player.worldObj.getBlockId(MathHelper.floor_double(this.player.posX), MathHelper.floor_double(this.player.posY - 1), MathHelper.floor_double(this.player.posZ)) == GCMoonBlocks.blockMoon.blockID)
@@ -42,9 +42,9 @@ public class GCMoonPlayerBase extends ServerPlayerBase
 				if (this.player.worldObj.getBlockMetadata(MathHelper.floor_double(this.player.posX), MathHelper.floor_double(this.player.posY - 1), MathHelper.floor_double(this.player.posZ)) == 5)
 				{
 					int meta = -1;
-					
+
 					final int i = 1 + MathHelper.floor_double(this.player.rotationYaw * 8.0F / 360.0F + 0.5D) & 7;
-					
+
 					switch (this.lastStep)
 					{
 					case 1:
@@ -131,7 +131,7 @@ public class GCMoonPlayerBase extends ServerPlayerBase
 				}
 			}
 		}
-		
+
 		super.onUpdate();
 	}
 }

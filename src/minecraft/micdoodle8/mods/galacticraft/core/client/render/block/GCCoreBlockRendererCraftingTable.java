@@ -2,20 +2,14 @@ package micdoodle8.mods.galacticraft.core.client.render.block;
 
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAdvancedCraftingTable;
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.ChestItemRenderHelper;
 import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreBlockRendererCraftingTable implements ISimpleBlockRenderingHandler
 {
@@ -25,17 +19,17 @@ public class GCCoreBlockRendererCraftingTable implements ISimpleBlockRenderingHa
     {
         this.renderID = var1;
     }
-    
+
 	public void renderNasaBench(RenderBlocks renderBlocks, IBlockAccess iblockaccess, Block par1Block, int par2, int par3, int par4)
 	{
     	renderBlocks.overrideBlockTexture = par1Block.blockIndexInTexture;
-    	
+
         renderBlocks.setRenderBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.92F, 1.0F);
         renderBlocks.renderStandardBlock(par1Block, par2, par3, par4);
-        
+
         renderBlocks.overrideBlockTexture = -1;
 	}
-    
+
     private final GCCoreTileEntityAdvancedCraftingTable table = new GCCoreTileEntityAdvancedCraftingTable();
 
 	@Override

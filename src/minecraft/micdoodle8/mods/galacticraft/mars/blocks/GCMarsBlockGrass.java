@@ -14,7 +14,7 @@ import net.minecraftforge.common.IPlantable;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -33,7 +33,7 @@ public class GCMarsBlockGrass extends Block implements IPlantableBlock
     {
 		return side == 1 ? 2 : side == 0 ? 3 : 1;
     }
-    
+
 	@Override
 	public int getBlockTexture(IBlockAccess par1IBlockAccess, int x, int y, int z, int side)
 	{
@@ -43,13 +43,13 @@ public class GCMarsBlockGrass extends Block implements IPlantableBlock
 	@Override
     public boolean canSustainPlant(World world, int x, int y, int z, ForgeDirection direction, IPlantable plant)
     {
-        final int plantID = plant.getPlantID(world, x, y + 1, z);
-        
+        plant.getPlantID(world, x, y + 1, z);
+
         if (plant instanceof BlockFlower)
         {
             return true;
         }
-        
+
         return false;
     }
 
@@ -69,7 +69,7 @@ public class GCMarsBlockGrass extends Block implements IPlantableBlock
 					final int var7 = par2 + par5Random.nextInt(3) - 1;
 					final int var8 = par3 + par5Random.nextInt(5) - 3;
 					final int var9 = par4 + par5Random.nextInt(3) - 1;
-					
+
 					final int var10 = par1World.getBlockId(var7, var8 + 1, var9);
 
 					if (par1World.getBlockId(var7, var8, var9) == GCMarsBlocks.marsDirt.blockID	&& par1World.getBlockLightValue(var7, var8 + 1, var9) >= 4 && Block.lightOpacity[var10] <= 2)

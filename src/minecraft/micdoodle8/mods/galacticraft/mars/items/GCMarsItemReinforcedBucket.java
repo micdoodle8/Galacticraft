@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 public class GCMarsItemReinforcedBucket extends GCMarsItem
 {
 	public int isFull;
-	
+
     public GCMarsItemReinforcedBucket(int par1, int par2)
     {
         super(par1);
@@ -28,7 +28,7 @@ public class GCMarsItemReinforcedBucket extends GCMarsItem
     @Override
     public ItemStack onFoodEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
-    	
+
     	if (this.itemID != GCMarsItems.reinforcedBucketMilk.itemID)
     	{
     		super.onFoodEaten(par1ItemStack, par2World, par3EntityPlayer);
@@ -53,7 +53,7 @@ public class GCMarsItemReinforcedBucket extends GCMarsItem
 
         return par1ItemStack.stackSize <= 0 ? new ItemStack(GCMarsItems.reinforcedBucketEmpty) : par1ItemStack;
     }
-    
+
     @Override
     public int getMaxItemUseDuration(ItemStack par1ItemStack)
     {
@@ -66,7 +66,7 @@ public class GCMarsItemReinforcedBucket extends GCMarsItem
             return 32;
     	}
     }
-    
+
     @Override
     public EnumAction getItemUseAction(ItemStack par1ItemStack)
     {
@@ -79,7 +79,7 @@ public class GCMarsItemReinforcedBucket extends GCMarsItem
             return EnumAction.drink;
     	}
     }
-    
+
     @Override
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
@@ -87,12 +87,12 @@ public class GCMarsItemReinforcedBucket extends GCMarsItem
 		{
 			par1ItemStack.setTagCompound(new NBTTagCompound());
 		}
-		
+
 		if (par1ItemStack != null && par1ItemStack.getTagCompound().getInteger("bucketUses") != 1 && par1ItemStack.getTagCompound().getInteger("bucketUses") != 2 && par1ItemStack.getTagCompound().getInteger("bucketUses") != 3)
 		{
 			par1ItemStack.getTagCompound().setInteger("bucketUses", 2);
 		}
-		
+
     	if (this.itemID != GCMarsItems.reinforcedBucketMilk.itemID)
     	{
     		final float var4 = 1.0F;
@@ -218,7 +218,7 @@ public class GCMarsItemReinforcedBucket extends GCMarsItem
                             if (par1ItemStack != null)
                             	return par1ItemStack;
                         }
-                        
+
                         if (par1ItemStack != null)
                         	if (par1ItemStack != null)
                             	return par1ItemStack;
@@ -288,10 +288,10 @@ public class GCMarsItemReinforcedBucket extends GCMarsItem
     	{
             par3EntityPlayer.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
     	}
-    	
+
 		return par1ItemStack;
     }
-    
+
     public boolean tryPlaceContainedLiquid(World par1World, double par2, double par4, double par6, int par8, int par9, int par10)
     {
     	if (this.isFull <= 0)

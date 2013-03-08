@@ -27,7 +27,7 @@ import net.minecraft.world.gen.structure.MapGenVillage;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -35,7 +35,7 @@ public class GCIoChunkProvider extends ChunkProviderGenerate
 {
 	public static List giantCaveLocations;
 	public static List creeperDungeonLocations;
-	
+
 	private final Random rand;
 
 	private final NoiseGeneratorOctaves noiseGen1;
@@ -169,7 +169,7 @@ public class GCIoChunkProvider extends ChunkProviderGenerate
 		final int fillBlockMeta = 0;
 		final int lowerBlockID = GCIoBlocks.block.blockID;
 		final int lowerBlockMeta = 1;
-		
+
 		final int var5 = 20;
 		final double var6 = 0.03125D;
 		this.stoneNoise = this.noiseGen4.generateNoiseOctaves(this.stoneNoise, par1 * 16, par2 * 16, 0, 16, 16, 1, var6 * 2.0D, var6 * 2.0D, var6 * 2.0D);
@@ -179,7 +179,7 @@ public class GCIoChunkProvider extends ChunkProviderGenerate
 			for (int var9 = 0; var9 < 16; ++var9)
 			{
 				final BiomeGenBase var10 = par4ArrayOfBiomeGenBase[var9 + var8 * 16];
-				final float var11 = var10.getFloatTemperature();
+				var10.getFloatTemperature();
 				final int var12 = (int) (this.stoneNoise[var8 + var9 * 16] / 3.0D + 3.0D + this.rand.nextDouble() * 0.25D);
 				int var13 = -1;
 				final int var14 = topBlockID;
@@ -208,7 +208,7 @@ public class GCIoChunkProvider extends ChunkProviderGenerate
 						else if (var18 == lowerBlockID)
 						{
 							arrayOfMeta[index] = lowerBlockMeta;
-							
+
 							if (var13 == -1)
 							{
 								var13 = var12;
@@ -254,7 +254,7 @@ public class GCIoChunkProvider extends ChunkProviderGenerate
 		{
 			var5[var6] = (byte) this.biomesForGeneration[var6].biomeID;
 		}
-		
+
 		var4.generateSkylightMap();
 		return var4;
 	}
@@ -287,8 +287,6 @@ public class GCIoChunkProvider extends ChunkProviderGenerate
 		this.noise3 = this.noiseGen3.generateNoiseOctaves(this.noise3, par2, par3, par4, par5, par6, par7, var44 / 80.0D, var45 / 160.0D, var44 / 80.0D);
 		this.noise1 = this.noiseGen1.generateNoiseOctaves(this.noise1, par2, par3, par4, par5, par6, par7, var44, var45, var44);
 		this.noise2 = this.noiseGen2.generateNoiseOctaves(this.noise2, par2, par3, par4, par5, par6, par7, var44, var45, var44);
-		final boolean var43 = false;
-		final boolean var42 = false;
 		int var12 = 0;
 		int var13 = 0;
 
@@ -423,7 +421,7 @@ public class GCIoChunkProvider extends ChunkProviderGenerate
 		BlockSand.fallInstantly = true;
 		int var4 = par2 * 16;
 		int var5 = par3 * 16;
-		final BiomeGenBase var6 = this.worldObj.getBiomeGenForCoords(var4 + 16, var5 + 16);
+		this.worldObj.getBiomeGenForCoords(var4 + 16, var5 + 16);
 		this.rand.setSeed(this.worldObj.getSeed());
 		final long var7 = this.rand.nextLong() / 2L * 2L + 1L;
 		final long var9 = this.rand.nextLong() / 2L * 2L + 1L;
@@ -433,7 +431,7 @@ public class GCIoChunkProvider extends ChunkProviderGenerate
 		int var12;
 		int var13;
 		int var14;
-		
+
         if (!var11)
         {
             var12 = var4 + this.rand.nextInt(16) + 8;
@@ -441,7 +439,7 @@ public class GCIoChunkProvider extends ChunkProviderGenerate
             var14 = var5 + this.rand.nextInt(16) + 8;
             new GCIoWorldGenLakes(GCIoBlocks.block.blockID).generate(this.worldObj, this.rand, var12, var13, var14);
         }
-		
+
         if (!var11 && this.rand.nextInt(700) == 0)
         {
             var12 = var4 + this.rand.nextInt(16) + 8;

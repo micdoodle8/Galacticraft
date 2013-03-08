@@ -17,7 +17,7 @@ import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 
-public class WorldUtil 
+public class WorldUtil
 {
     public static List<ItemStack> useless = new ArrayList();
     public static List<ItemStack> common = new ArrayList();
@@ -63,7 +63,7 @@ public class WorldUtil
     {
         return var1.nextInt(4) == 0 ? WorldUtil.getRandomItemFromList(WorldUtil.ultrarare, var1) : WorldUtil.getRandomItemFromList(WorldUtil.rare, var1);
     }
-    
+
     public static ItemStack getRandomItemFromList(List list, Random rand)
     {
     	return (ItemStack) list.get(rand.nextInt(list.size()));
@@ -101,49 +101,49 @@ public class WorldUtil
 
         return -1;
     }
-	
+
 	public static WorldProvider getProviderForName(String par1String)
 	{
 		final Integer[] var1 = DimensionManager.getStaticDimensionIDs();
-		
-		for (final Integer element : var1) 
+
+		for (final Integer element : var1)
 		{
 			if (WorldProvider.getProviderForDimension(element) != null && WorldProvider.getProviderForDimension(element).getDimensionName() != null && WorldProvider.getProviderForDimension(element).getDimensionName().equals(par1String))
 			{
 				return WorldProvider.getProviderForDimension(element);
 			}
 		}
-		
+
 		return null;
 	}
-	
+
 	public static int getAmountOfPossibleProviders(Integer[] ids)
 	{
 		int amount = 0;
-		
-		for (final Integer id : ids) 
+
+		for (final Integer id : ids)
 		{
     		if (WorldProvider.getProviderForDimension(id) instanceof IGalacticraftWorldProvider || WorldProvider.getProviderForDimension(id).dimensionId == 0)
     		{
     			amount++;
     		}
 		}
-		
+
 		return amount;
 	}
-	
+
 	public static HashMap getArrayOfPossibleDimensions(Integer[] ids)
 	{
 		final HashMap map = new HashMap();
-		
-		for (final Integer id : ids) 
+
+		for (final Integer id : ids)
 		{
     		if (WorldProvider.getProviderForDimension(id) != null && (WorldProvider.getProviderForDimension(id) instanceof IGalacticraftWorldProvider || WorldProvider.getProviderForDimension(id).dimensionId == 0))
     		{
     			map.put(WorldProvider.getProviderForDimension(id).getDimensionName(), WorldProvider.getProviderForDimension(id).dimensionId);
     		}
 		}
-		
+
 		for (int j = 0; j < GalacticraftCore.subMods.size(); j++)
 		{
 			if (!GalacticraftCore.subMods.get(j).reachableDestination())
@@ -151,14 +151,14 @@ public class WorldUtil
 				map.put(GalacticraftCore.subMods.get(j).getDimensionName() + "*", 0);
 			}
 		}
-		
+
 		return map;
 	}
-	
+
 	public static double getSpaceshipFailChance(EntityPlayer player)
 	{
 		final Double level = Double.valueOf(player.experienceLevel);
-		
+
 		if (level <= 50.0D)
 		{
 			return 12.5D - level / 4.0D;
@@ -168,7 +168,7 @@ public class WorldUtil
 			return 0.0;
 		}
 	}
-	
+
 	public static float calculateMarsAngleFromOtherPlanet(long par1, float par3)
 	{
         final int var4 = (int)(par1 % 48000L);
@@ -189,7 +189,7 @@ public class WorldUtil
         var5 = var6 + (var5 - var6) / 3.0F;
         return var5;
 	}
-	
+
 	public static float calculateEarthAngleFromOtherPlanet(long par1, float par3)
 	{
         final int var4 = (int)(par1 % 48000L);
@@ -210,12 +210,12 @@ public class WorldUtil
         var5 = var6 + (var5 - var6) / 3.0F;
         return var5;
 	}
-	
+
 	public static List getPlayersOnPlanet(IMapPlanet planet)
 	{
 		final List list = new ArrayList();
-		
-		for (final WorldServer world : DimensionManager.getWorlds()) 
+
+		for (final WorldServer world : DimensionManager.getWorlds())
 		{
 			if (world != null && world.provider instanceof IGalacticraftWorldProvider)
 			{
@@ -231,7 +231,7 @@ public class WorldUtil
 				}
 			}
 		}
-		
+
 		return list;
 	}
 }

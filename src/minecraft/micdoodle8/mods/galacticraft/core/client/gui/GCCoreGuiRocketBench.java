@@ -20,13 +20,12 @@ public class GCCoreGuiRocketBench extends GuiContainer
     {
         super(new GCCoreContainerRocketBench(par1InventoryPlayer, x, y, z));
     }
-    
+
     @Override
     public void initGui()
     {
     	super.initGui();
         this.controlList.clear();
-        final byte var1 = -16;
         final GuiButton button = new GuiButton(0, this.width / 2 - 130, this.height / 2 - 30, 40, 20, "Back");
         button.enabled = false;
         this.controlList.add(button);
@@ -46,9 +45,9 @@ public class GCCoreGuiRocketBench extends GuiContainer
 
                 while (FMLClientHandler.instance().getClient().currentScreen != null)
                 {
-                	
+
                 }
-                
+
                 PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 4, toSend));
                 FMLClientHandler.instance().getClient().thePlayer.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiBuggyCraftingBench, FMLClientHandler.instance().getClient().thePlayer.worldObj, (int)FMLClientHandler.instance().getClient().thePlayer.posX, (int)FMLClientHandler.instance().getClient().thePlayer.posY, (int)FMLClientHandler.instance().getClient().thePlayer.posZ);
                 break;

@@ -13,7 +13,6 @@ import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.europa.blocks.GCEuropaBlocks;
 import micdoodle8.mods.galacticraft.europa.dimension.GCEuropaWorldProvider;
 import micdoodle8.mods.galacticraft.jupiter.GalacticraftJupiter;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraftforge.common.DimensionManager;
@@ -30,7 +29,7 @@ import cpw.mods.fml.relauncher.Side;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -44,7 +43,7 @@ public class GalacticraftEuropa implements IGalacticraftSubMod
 		GalacticraftCore.registerSubMod(this);
 
 		new GCEuropaConfigManager(new File(event.getModConfigurationDirectory(), "Galacticraft/europa.conf"));
-		
+
 		GCEuropaBlocks.initBlocks();
 		GCEuropaBlocks.registerBlocks();
 		GCEuropaBlocks.setHarvestLevels();
@@ -53,7 +52,7 @@ public class GalacticraftEuropa implements IGalacticraftSubMod
 //		GCMarsItems.initItems();
 //		GCMarsItems.addNames(); TODO
 	}
-	
+
 	public void init(FMLInitializationEvent event)
 	{
 		DimensionManager.registerProviderType(GCEuropaConfigManager.dimensionIDEuropa, GCEuropaWorldProvider.class, false);
@@ -64,25 +63,25 @@ public class GalacticraftEuropa implements IGalacticraftSubMod
 		this.registerCreatures();
 		this.registerOtherEntities();
 	}
-	
+
 	public void registerTileEntities()
 	{
-		
+
 	}
-	
+
 	public void registerCreatures()
 	{
 	}
-	
+
 	public void registerOtherEntities()
 	{
 	}
-	
+
 	public void postInit(FMLPostInitializationEvent event)
 	{
 //		GCMarsAchievementList.initAchievs();
 	}
-	
+
 	public void serverInit(FMLServerStartedEvent event)
 	{
         NetworkRegistry.instance().registerChannel(new ServerPacketHandler(), "GcEu", Side.SERVER);
@@ -94,12 +93,12 @@ public class GalacticraftEuropa implements IGalacticraftSubMod
         EntityRegistry.registerModEntity(var0, var1, id, GalacticraftJupiter.moonEuropa, 80, 3, true);
 		LanguageRegistry.instance().addStringLocalization("entity." + var1 + ".name", "en_US", var1);
     }
-    
+
     public void registerGalacticraftNonMobEntity(Class var0, String var1, int id, int trackingDistance, int updateFreq, boolean sendVel)
     {
         EntityRegistry.registerModEntity(var0, var1, id, this, trackingDistance, updateFreq, sendVel);
     }
-	
+
     public class ServerPacketHandler implements IPacketHandler
     {
         @Override
@@ -107,11 +106,9 @@ public class GalacticraftEuropa implements IGalacticraftSubMod
         {
             final DataInputStream data = new DataInputStream(new ByteArrayInputStream(packet.data));
             final int packetType = PacketUtil.readPacketID(data);
-            final EntityPlayerMP player = (EntityPlayerMP)p;
-            
             if (packetType == 0)
             {
-            	
+
             }
         }
     }

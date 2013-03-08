@@ -16,9 +16,9 @@ import net.minecraft.world.World;
 public class GCMarsEntitySpaceshipTier2 extends EntitySpaceshipBase implements ISpaceship
 {
     protected ItemStack[] cargoItems = new ItemStack[36];
-	
+
     public IUpdatePlayerListBox rocketSoundUpdater;
-    
+
     private int type;
 
     public GCMarsEntitySpaceshipTier2(World par1World)
@@ -50,45 +50,45 @@ public class GCMarsEntitySpaceshipTier2 extends EntitySpaceshipBase implements I
     {
     	super.entityInit();
         this.dataWatcher.addObject(25, new Integer(0));
-        this.setSpaceshipType(type);
+        this.setSpaceshipType(this.type);
     }
 
 	@Override
 	public void onUpdate()
     {
 		super.onUpdate();
-		
+
 		if (this.getLaunched() == 1)
 		{
 			this.motionY += 0.005F;
 		}
-		
+
 		this.prevPosX = this.posX;
 		this.prevPosY = this.posY;
 		this.prevPosZ = this.posZ;
     }
 
 	@Override
-	public Entity[] getSpaceshipParts() 
+	public Entity[] getSpaceshipParts()
 	{
 		return null;
 	}
 
 	@Override
-	public HashSet<Integer> getPossiblePlanets() 
+	public HashSet<Integer> getPossiblePlanets()
 	{
-		HashSet<Integer> dimensions = new HashSet<Integer>();
+		final HashSet<Integer> dimensions = new HashSet<Integer>();
 		dimensions.add(0);
 		dimensions.add(GCMoonConfigManager.dimensionIDMoon);
 		dimensions.add(GCMarsConfigManager.dimensionIDMars);
 		return dimensions;
 	}
-    
+
     public void setSpaceshipType(int par1)
     {
     	this.dataWatcher.updateObject(25, par1);
     }
-    
+
     public int getSpaceshipType()
     {
     	return this.dataWatcher.getWatchableObjectInt(25);
@@ -101,25 +101,25 @@ public class GCMarsEntitySpaceshipTier2 extends EntitySpaceshipBase implements I
 	}
 
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) 
+	protected void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
 	{
 		super.readEntityFromNBT(par1NBTTagCompound);
 	}
 
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) 
+	protected void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
 	{
 		super.writeEntityToNBT(par1NBTTagCompound);
 	}
 
 	@Override
-	public int getPreLaunchWait() 
+	public int getPreLaunchWait()
 	{
 		return 50;
 	}
 
 	@Override
-	public List<ItemStack> getItemsDropped() 
+	public List<ItemStack> getItemsDropped()
 	{
 		return null;
 	}

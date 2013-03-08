@@ -23,7 +23,7 @@ import cpw.mods.fml.common.network.NetworkMod;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -33,20 +33,20 @@ public class GalacticraftNeptune implements IGalacticraftSubMod
 {
 	@SidedProxy(clientSide = "micdoodle8.mods.galacticraft.neptune.client.ClientProxyNeptune", serverSide = "micdoodle8.mods.galacticraft.neptune.CommonProxyNeptune")
 	public static CommonProxyNeptune proxy;
-	
+
 	@Instance("GalacticraftNeptune")
 	public static GalacticraftNeptune instance;
-	
+
 	public static List neptunePlayers = new ArrayList();
 	public static List gcNeptunePlayers = new ArrayList();
-	
+
 	@PreInit
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		GalacticraftCore.registerSubMod(this);
-		
+
 		new GCEuropaConfigManager(new File(event.getModConfigurationDirectory(), "Galacticraft/neptune.conf"));
-		
+
 		GalacticraftNeptune.proxy.preInit(event);
 	}
 
@@ -62,7 +62,7 @@ public class GalacticraftNeptune implements IGalacticraftSubMod
 		GalacticraftNeptune.proxy.postInit(event);
 		GalacticraftNeptune.proxy.registerRenderInformation();
 	}
-	
+
 	@ServerStarted
 	public void serverStarted(FMLServerStartedEvent event)
 	{

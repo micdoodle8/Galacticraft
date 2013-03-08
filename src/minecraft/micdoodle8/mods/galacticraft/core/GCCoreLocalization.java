@@ -81,7 +81,7 @@ public class GCCoreLocalization {
     private static String getCurrentLanguage() {
         return StringTranslate.getInstance().getCurrentLanguage();
     }
-    
+
     private void loadMappings(BufferedReader var3, Properties par1Properties)
     {
     	try
@@ -89,7 +89,7 @@ public class GCCoreLocalization {
         	for (String var4 = var3.readLine(); var4 != null; var4 = var3.readLine())
             {
                 var4 = var4.trim();
-                
+
                 var4 = var4.replace("?", "");
 
                 if (!var4.startsWith("#"))

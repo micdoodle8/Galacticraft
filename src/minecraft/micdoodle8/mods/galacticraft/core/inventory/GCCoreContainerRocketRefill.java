@@ -18,7 +18,7 @@ public class GCCoreContainerRocketRefill extends Container
         this.spaceshipInv = par2IInventory;
         this.type = type;
         par2IInventory.openChest();
-        
+
         switch (type)
         {
         case 0:
@@ -29,7 +29,7 @@ public class GCCoreContainerRocketRefill extends Container
         	break;
         }
     }
-    
+
     private void addSlotsForType1()
     {
         int var4;
@@ -50,21 +50,21 @@ public class GCCoreContainerRocketRefill extends Container
             this.addSlotToContainer(new Slot(this.lowerChestInventory, var4, 8 + var4 * 18, 142 - 34));
         }
     }
-    
+
     private void addSlotsForType2()
     {
         int var4;
         int var5;
 
         this.addSlotToContainer(new GCCoreSlotFuel(this.spaceshipInv, 0, 80, 18));
-        
+
         for (var4 = 0; var4 < 3; ++var4)
         {
             for (var5 = 0; var5 < 9; ++var5)
             {
             	if (!(var4 == 2 && var5 == 8 || var4 == 2  && var5 == 7 || var4 == 2  && var5 == 6))
             	{
-                    this.addSlotToContainer(new Slot(this.spaceshipInv, (var5 + var4 * 9) + 1, 8 + var5 * 18, 50 + var4 * 18));
+                    this.addSlotToContainer(new Slot(this.spaceshipInv, var5 + var4 * 9 + 1, 8 + var5 * 18, 50 + var4 * 18));
             	}
             }
         }

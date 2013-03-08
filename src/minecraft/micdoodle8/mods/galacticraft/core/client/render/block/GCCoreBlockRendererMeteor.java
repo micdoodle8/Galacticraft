@@ -11,7 +11,7 @@ import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -80,7 +80,7 @@ public class GCCoreBlockRendererMeteor implements ISimpleBlockRenderingHandler
 	{
     	GCCoreBlockRendererMeteor.renderInvNormalBlock(renderer, block, metadata);
 	}
-	
+
     public void renderBlockMeteor(RenderBlocks renderBlocks, Block par1Block, IBlockAccess var1, int par2, int par3, int par4)
     {
         final int var5 = var1.getBlockMetadata(par2, par3, par4);
@@ -98,33 +98,33 @@ public class GCCoreBlockRendererMeteor implements ISimpleBlockRenderingHandler
         {
         	renderBlocks.uvRotateTop = 2;
         }
-        
+
         renderBlocks.setRenderBounds(0.2F, 0.2F, 0.2F, 0.8F, 0.8F, 0.8F);
         renderBlocks.renderStandardBlock(par1Block, par2, par3, par4);
 
         renderBlocks.setRenderBounds(0.52F, 0.85F, 0.4F, 0.68F, 0.88F, 0.6F);
         renderBlocks.renderStandardBlock(par1Block, par2, par3, par4);
-        
+
         renderBlocks.setRenderBounds(0.25F, 0.8F, 0.25F, 0.75F, 0.85F, 0.75F);
         renderBlocks.renderStandardBlock(par1Block, par2, par3, par4);
-        
+
         renderBlocks.setRenderBounds(0.25F, 0.15F, 0.25F, 0.75F, 0.2F, 0.75F);
         renderBlocks.renderStandardBlock(par1Block, par2, par3, par4);
-        
+
         renderBlocks.setRenderBounds(0.15F, 0.3F, 0.25F, 0.2F, 0.7F, 0.75F);
         renderBlocks.renderStandardBlock(par1Block, par2, par3, par4);
-        
+
         renderBlocks.setRenderBounds(0.8F, 0.3F, 0.25F, 0.85F, 0.7F, 0.75F);
         renderBlocks.renderStandardBlock(par1Block, par2, par3, par4);
-        
+
         renderBlocks.setRenderBounds(0.25F, 0.3F, 0.15F, 0.75F, 0.7F, 0.2F);
         renderBlocks.renderStandardBlock(par1Block, par2, par3, par4);
-        
+
         renderBlocks.setRenderBounds(0.25F, 0.3F, 0.8F, 0.75F, 0.7F, 0.85F);
         renderBlocks.renderStandardBlock(par1Block, par2, par3, par4);
 
         renderBlocks.setRenderBounds(0.12F, 0.12F, 0.12F, 0.88F, 0.88F, 0.88F);
-        
+
         renderBlocks.clearOverrideBlockTexture();
         par1Block.setBlockBoundsForItemRender();
         renderBlocks.uvRotateTop = 0;

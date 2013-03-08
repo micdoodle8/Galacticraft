@@ -4,7 +4,6 @@ import java.util.Random;
 
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
-import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 
@@ -59,7 +58,7 @@ public class GCMoonPuzzle
         this.rawDepth = this.depth * 2 + 1;
         this.storage = new int[this.rawWidth * this.rawDepth];
         this.rand = new Random();
-        
+
         for (int i = 0; i < this.storage.length; i++)
         {
         	this.storage[i] = 0;
@@ -164,8 +163,8 @@ public class GCMoonPuzzle
             {
                 if (this.getRaw(var5, var6) == 0)
                 {
-                    int var7 = var2 + var5 / 2 * (this.evenBias + this.oddBias);
-                    int var8 = var4 + var6 / 2 * (this.evenBias + this.oddBias);
+                    final int var7 = var2 + var5 / 2 * (this.evenBias + this.oddBias);
+                    final int var8 = var4 + var6 / 2 * (this.evenBias + this.oddBias);
                     int var9;
 
                     if (this.isEven(var5) && this.isEven(var6))
@@ -255,8 +254,8 @@ public class GCMoonPuzzle
             {
                 if (this.getRaw(var5, var6) != 0)
                 {
-                    int var7 = var2 + var5 / 2 * (this.evenBias + this.oddBias);
-                    int var8 = var4 + var6 / 2 * (this.evenBias + this.oddBias);
+                    final int var7 = var2 + var5 / 2 * (this.evenBias + this.oddBias);
+                    final int var8 = var4 + var6 / 2 * (this.evenBias + this.oddBias);
                     int var9;
 
                     if (this.isEven(var5) && this.isEven(var6))
@@ -492,7 +491,7 @@ public class GCMoonPuzzle
 
     public void placeTorches(World var1)
     {
-        byte var2 = 1;
+        final byte var2 = 1;
 
         for (int var3 = 0; var3 < this.rawWidth; ++var3)
         {
@@ -500,9 +499,9 @@ public class GCMoonPuzzle
             {
                 if (this.getRaw(var3, var4) == 0)
                 {
-                    int var5 = this.worldX + var3 / 2 * (this.evenBias + this.oddBias);
-                    int var6 = this.worldY + var2;
-                    int var7 = this.worldZ + var4 / 2 * (this.evenBias + this.oddBias);
+                    final int var5 = this.worldX + var3 / 2 * (this.evenBias + this.oddBias);
+                    final int var6 = this.worldY + var2;
+                    final int var7 = this.worldZ + var4 / 2 * (this.evenBias + this.oddBias);
 
                     if (this.isEven(var3) && this.isEven(var4) && this.shouldTorch(var3, var4) && var1.getBlockId(var5, var6, var7) == this.wallBlockID)
                     {
@@ -515,17 +514,17 @@ public class GCMoonPuzzle
 
     public boolean shouldTorch(int var1, int var2)
     {
-        return this.getRaw(var1 + 1, var2) != Integer.MIN_VALUE && this.getRaw(var1 - 1, var2) != Integer.MIN_VALUE && this.getRaw(var1, var2 + 1) != Integer.MIN_VALUE && this.getRaw(var1, var2 - 1) != Integer.MIN_VALUE ? ((this.getRaw(var1 + 1, var2) != 0 || this.getRaw(var1 - 1, var2) != 0) && (this.getRaw(var1, var2 + 1) != 0 || this.getRaw(var1, var2 - 1) != 0) ? this.rand.nextFloat() <= this.torchRarity : false) : false;
+        return this.getRaw(var1 + 1, var2) != Integer.MIN_VALUE && this.getRaw(var1 - 1, var2) != Integer.MIN_VALUE && this.getRaw(var1, var2 + 1) != Integer.MIN_VALUE && this.getRaw(var1, var2 - 1) != Integer.MIN_VALUE ? (this.getRaw(var1 + 1, var2) != 0 || this.getRaw(var1 - 1, var2) != 0) && (this.getRaw(var1, var2 + 1) != 0 || this.getRaw(var1, var2 - 1) != 0) ? this.rand.nextFloat() <= this.torchRarity : false : false;
     }
 
     public boolean shouldPillar(int var1, int var2)
     {
-        return this.pillarBlockID == -1 ? false : (this.getRaw(var1 + 1, var2) != Integer.MIN_VALUE && this.getRaw(var1 - 1, var2) != Integer.MIN_VALUE && this.getRaw(var1, var2 + 1) != Integer.MIN_VALUE && this.getRaw(var1, var2 - 1) != Integer.MIN_VALUE ? (this.getRaw(var1 + 1, var2) != 0 || this.getRaw(var1 - 1, var2) != 0) && (this.getRaw(var1, var2 + 1) != 0 || this.getRaw(var1, var2 - 1) != 0) : false);
+        return this.pillarBlockID == -1 ? false : this.getRaw(var1 + 1, var2) != Integer.MIN_VALUE && this.getRaw(var1 - 1, var2) != Integer.MIN_VALUE && this.getRaw(var1, var2 + 1) != Integer.MIN_VALUE && this.getRaw(var1, var2 - 1) != Integer.MIN_VALUE ? (this.getRaw(var1 + 1, var2) != 0 || this.getRaw(var1 - 1, var2) != 0) && (this.getRaw(var1, var2 + 1) != 0 || this.getRaw(var1, var2 - 1) != 0) : false;
     }
 
     public boolean shouldTree(int var1, int var2)
     {
-        return (var1 == 0 || var1 == this.rawWidth - 1) && (this.getRaw(var1, var2 + 1) != 0 || this.getRaw(var1, var2 - 1) != 0) ? true : ((var2 == 0 || var2 == this.rawDepth - 1) && (this.getRaw(var1 + 1, var2) != 0 || this.getRaw(var1 - 1, var2) != 0) ? true : this.rand.nextInt(50) == 0);
+        return (var1 == 0 || var1 == this.rawWidth - 1) && (this.getRaw(var1, var2 + 1) != 0 || this.getRaw(var1, var2 - 1) != 0) ? true : (var2 == 0 || var2 == this.rawDepth - 1) && (this.getRaw(var1 + 1, var2) != 0 || this.getRaw(var1 - 1, var2) != 0) ? true : this.rand.nextInt(50) == 0;
     }
 
     int getWorldX(int var1)
@@ -553,8 +552,8 @@ public class GCMoonPuzzle
 
     public void carveRoom1(int var1, int var2)
     {
-        int var3 = var1 * 2 + 1;
-        int var4 = var2 * 2 + 1;
+        final int var3 = var1 * 2 + 1;
+        final int var4 = var2 * 2 + 1;
 
         for (int var5 = -2; var5 <= 2; ++var5)
         {
@@ -592,8 +591,8 @@ public class GCMoonPuzzle
 
     public void add4Exits()
     {
-        int var1 = this.rawWidth / 2 + 1;
-        int var2 = this.rawDepth / 2 + 1;
+        final int var1 = this.rawWidth / 2 + 1;
+        final int var2 = this.rawDepth / 2 + 1;
         this.putRaw(var1, 0, 5);
         this.putRaw(var1, this.rawDepth - 1, 5);
         this.putRaw(0, var2, 5);

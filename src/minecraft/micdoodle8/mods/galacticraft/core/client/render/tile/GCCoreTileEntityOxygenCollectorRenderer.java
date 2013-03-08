@@ -16,7 +16,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -26,12 +26,11 @@ public class GCCoreTileEntityOxygenCollectorRenderer extends TileEntitySpecialRe
     public void renderGCTileEntityTreasureChestAt(GCCoreTileEntityOxygenCollector par1GCTileEntityTreasureChest, double par2, double par4, double par6, float par8)
     {
         this.drawStringAt(String.valueOf("P: " + Math.round(par1GCTileEntityTreasureChest.getPower() * 10) / 10.0D), par2 + 0.0F, par4 + 0.3F, par6 + 0.0F);
-        
-    	int x, y, z;
-    	x = MathHelper.floor_double(par2 + 0.5D);
-    	y = MathHelper.floor_double(par4 + 0.5D);
-    	z = MathHelper.floor_double(par6 + 0.5D);
-    	
+
+    	MathHelper.floor_double(par2 + 0.5D);
+    	MathHelper.floor_double(par4 + 0.5D);
+    	MathHelper.floor_double(par6 + 0.5D);
+
 		this.bindTextureByName("/micdoodle8/mods/galacticraft/core/client/entities/fan.png");
 
       	GL11.glPushMatrix();
@@ -50,7 +49,7 @@ public class GCCoreTileEntityOxygenCollectorRenderer extends TileEntitySpecialRe
     				par1GCTileEntityTreasureChest.fanModel.fans[i][j].rotateAngleY -= par1GCTileEntityTreasureChest.getPower() / 500.0F;
     			}
     		}
-    		
+
     		par1GCTileEntityTreasureChest.fanModel.center.rotateAngleY -= par1GCTileEntityTreasureChest.getPower() / 500.0F;
     	}
     	else
@@ -65,7 +64,7 @@ public class GCCoreTileEntityOxygenCollectorRenderer extends TileEntitySpecialRe
 
     		par1GCTileEntityTreasureChest.fanModel.center.rotateAngleY = 0;
     	}
-		
+
     	par1GCTileEntityTreasureChest.fanModel.renderAll();
       	GL11.glDisable(GL12.GL_RESCALE_NORMAL);
       	GL11.glPopMatrix();
@@ -77,12 +76,12 @@ public class GCCoreTileEntityOxygenCollectorRenderer extends TileEntitySpecialRe
     {
         this.renderGCTileEntityTreasureChestAt((GCCoreTileEntityOxygenCollector)par1TileEntity, par2, par4, par6, par8);
     }
-    
+
     private void drawStringAt(String name, double x, double y, double z)
     {
-        FontRenderer var12 = RenderManager.instance.getFontRenderer();
-        float var13 = 1.6F;
-        float var14 = 0.016666668F * var13;
+        final FontRenderer var12 = RenderManager.instance.getFontRenderer();
+        final float var13 = 1.6F;
+        final float var14 = 0.016666668F * var13;
         GL11.glPushMatrix();
         GL11.glTranslatef((float)x + 0.5F, (float)y + 1.3F, (float)z + 0.5F);
         GL11.glNormal3f(0.0F, 1.0F, 0.0F);
@@ -94,17 +93,17 @@ public class GCCoreTileEntityOxygenCollectorRenderer extends TileEntitySpecialRe
         GL11.glDisable(GL11.GL_DEPTH_TEST);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        Tessellator var15 = Tessellator.instance;
-        byte var16 = 0;
+        final Tessellator var15 = Tessellator.instance;
+        final byte var16 = 0;
 
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         var15.startDrawingQuads();
-        int var17 = var12.getStringWidth(name) / 2;
+        final int var17 = var12.getStringWidth(name) / 2;
         var15.setColorRGBA_F(0.0F, 0.0F, 0.0F, 0.25F);
-        var15.addVertex((double)(-var17 - 1), (double)(-1 + var16), 0.0D);
-        var15.addVertex((double)(-var17 - 1), (double)(8 + var16), 0.0D);
-        var15.addVertex((double)(var17 + 1), (double)(8 + var16), 0.0D);
-        var15.addVertex((double)(var17 + 1), (double)(-1 + var16), 0.0D);
+        var15.addVertex((-var17 - 1), (-1 + var16), 0.0D);
+        var15.addVertex((-var17 - 1), (8 + var16), 0.0D);
+        var15.addVertex((var17 + 1), (8 + var16), 0.0D);
+        var15.addVertex((var17 + 1), (-1 + var16), 0.0D);
         var15.draw();
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         var12.drawString(name, -var12.getStringWidth(name) / 2, var16, 553648127);

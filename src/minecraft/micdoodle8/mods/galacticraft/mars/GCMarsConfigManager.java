@@ -8,16 +8,16 @@ import cpw.mods.fml.common.FMLLog;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
 public class GCMarsConfigManager
 {
 	public static boolean loaded;
-	
+
 	static Configuration configuration;
-	
+
 	public GCMarsConfigManager(File file)
 	{
 		if (!GCMarsConfigManager.loaded)
@@ -26,7 +26,7 @@ public class GCMarsConfigManager
 			this.setDefaultValues();
 		}
 	}
-	
+
 	// DIMENSIONS
 	public static int dimensionIDMars;
 
@@ -52,7 +52,7 @@ public class GCMarsConfigManager
 	public static int idItemIngotQuandrium;
 	public static int idItemIngotDesh;
 	public static int idItemSpaceshipTier2;
-	
+
 	// ARMOR
 	public static int idArmorQuandriumHelmet;
 	public static int idArmorQuandriumChestplate;
@@ -83,21 +83,21 @@ public class GCMarsConfigManager
 	public static int idToolQuandriumAxe;
 	public static int idToolQuandriumSpade;
 	public static int idToolQuandriumHoe;
-	
+
 	// MOBS
 	public static int idEntityCreeperBoss;
 	public static int idEntitySludgeling;
 	public static int idEntityProjectileTNT;
 	public static int idEntitySpaceshipTier2;
-	
+
 	private void setDefaultValues()
     {
 		try
 		{
 	        GCMarsConfigManager.configuration.load();
-	        
+
 	        GCMarsConfigManager.dimensionIDMars = 					GCMarsConfigManager.configuration.get("Dimensions", 												"Mars Dimension ID",				-29)		.getInt(-29);
-	        
+
 	        GCMarsConfigManager.idBlockMarsStone = 					GCMarsConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, 								"idBlockMarsStone", 				210)	.getInt(210);
 	        GCMarsConfigManager.idBlockMarsGrass = 					GCMarsConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, 								"idBlockMarsGrass", 				211)	.getInt(211);
 	        GCMarsConfigManager.idBlockMarsDirt = 					GCMarsConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, 								"idBlockMarsDirt", 					212)	.getInt(212);
@@ -118,7 +118,7 @@ public class GCMarsConfigManager
 	        GCMarsConfigManager.idItemIngotQuandrium = 				GCMarsConfigManager.configuration.get(Configuration.CATEGORY_ITEM, 									"idItemIngotQuandrium", 			9907)	.getInt(9907);
 	        GCMarsConfigManager.idItemIngotDesh = 					GCMarsConfigManager.configuration.get(Configuration.CATEGORY_ITEM, 									"idItemIngotDesh", 					9908)	.getInt(9908);
 	        GCMarsConfigManager.idItemSpaceshipTier2 = 				GCMarsConfigManager.configuration.get(Configuration.CATEGORY_ITEM, 									"idItemSpaceshipTier2", 			9936)	.getInt(9936);
-	        
+
 	        GCMarsConfigManager.idToolPlanetStoneSword = 			GCMarsConfigManager.configuration.get(Configuration.CATEGORY_ITEM, 									"idToolPlanetStoneSword", 			9909)	.getInt(9909);
 	        GCMarsConfigManager.idToolPlanetStonePickaxe = 			GCMarsConfigManager.configuration.get(Configuration.CATEGORY_ITEM, 									"idToolPlanetStonePickaxe", 		9910)	.getInt(9910);
 	        GCMarsConfigManager.idToolPlanetStoneSpade = 			GCMarsConfigManager.configuration.get(Configuration.CATEGORY_ITEM, 									"idToolPlanetStoneSpade", 			9911)	.getInt(9911);
@@ -148,7 +148,7 @@ public class GCMarsConfigManager
 
 	        GCMarsConfigManager.idArmorHeavyBoots = 				GCMarsConfigManager.configuration.get(Configuration.CATEGORY_ITEM, 									"idArmorHeavyBoots", 				9934)	.getInt(9934);
 	        GCMarsConfigManager.idArmorJetpack = 					GCMarsConfigManager.configuration.get(Configuration.CATEGORY_ITEM, 									"idArmorJetpack",					9935)	.getInt(9935);
-	        
+
 	        GCMarsConfigManager.idEntityCreeperBoss = 				GCMarsConfigManager.configuration.get("Entities", 													"idEntityCreeperBoss", 				162)	.getInt(162);
 	        GCMarsConfigManager.idEntitySludgeling = 				GCMarsConfigManager.configuration.get("Entities", 													"idEntitySludgeling",				163)	.getInt(163);
 	        GCMarsConfigManager.idEntityProjectileTNT = 			GCMarsConfigManager.configuration.get("Entities", 													"idEntityProjectileTNT",			164)	.getInt(164);

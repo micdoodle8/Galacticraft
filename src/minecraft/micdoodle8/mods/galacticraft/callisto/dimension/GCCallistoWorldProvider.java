@@ -14,20 +14,20 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
 public class GCCallistoWorldProvider extends WorldProvider implements IGalacticraftWorldProvider
 {
     private final float[] colorsSunriseSunset = new float[4];
-    
+
 	public GCCallistoWorldProvider()
     {
         this.setDimension(GCCallistoConfigManager.dimensionIDCallisto);
         this.dimensionId = GCCallistoConfigManager.dimensionIDCallisto;
     }
-	
+
 	@Override
     protected void generateLightBrightnessTable()
     {
@@ -51,7 +51,7 @@ public class GCCallistoWorldProvider extends WorldProvider implements IGalacticr
     {
         this.worldChunkMgr = new GCCallistoWorldChunkManager(this.worldObj, 0F);
     }
-    
+
     @Override
 	@SideOnly(Side.CLIENT)
     public boolean doesXZShowFog(int par1, int par2)
@@ -71,7 +71,7 @@ public class GCCallistoWorldProvider extends WorldProvider implements IGalacticr
     {
         return this.worldObj.getWorldVec3Pool().getVecFromPool(0, 0, 0);
     }
-	
+
 	@Override
     public float calculateCelestialAngle(long par1, float par3)
     {
@@ -93,12 +93,12 @@ public class GCCallistoWorldProvider extends WorldProvider implements IGalacticr
         var5 = var6 + (var5 - var6) / 3.0F;
         return var5;
     }
-	
+
 	public float calculatePhobosAngle(long par1, float par3)
 	{
 		return this.calculateCelestialAngle(par1, par3) * 3000;
 	}
-	
+
 	public float calculateDeimosAngle(long par1, float par3)
 	{
 		return this.calculatePhobosAngle(par1, par3) * 0.0000000001F;
@@ -109,7 +109,7 @@ public class GCCallistoWorldProvider extends WorldProvider implements IGalacticr
     {
         return new GCCallistoChunkProvider(this.worldObj, this.worldObj.getSeed(), this.worldObj.getWorldInfo().isMapFeaturesEnabled());
     }
-	
+
 	@Override
 	public void updateWeather()
 	{
@@ -124,7 +124,7 @@ public class GCCallistoWorldProvider extends WorldProvider implements IGalacticr
     {
         return true;
     }
-    
+
     @Override
 	public double getHorizon()
     {
@@ -136,7 +136,7 @@ public class GCCallistoWorldProvider extends WorldProvider implements IGalacticr
     {
         return 44;
     }
-    
+
     @Override
 	public boolean isSurfaceWorld()
     {
@@ -150,13 +150,13 @@ public class GCCallistoWorldProvider extends WorldProvider implements IGalacticr
 //        int var3 = this.worldObj.getFirstUncoveredBlock(var1, var2);
 //        return var3 == GCMarsBlocks.marsGrass.blockID;
     }
-    
+
     @Override
     public boolean canRespawnHere()
     {
         return false;
     }
-    
+
     @Override
     public String getSaveFolder()
     {
@@ -192,13 +192,13 @@ public class GCCallistoWorldProvider extends WorldProvider implements IGalacticr
     {
         return false;
     }
-    
+
     @Override
 	public boolean canDoLightning(Chunk chunk)
     {
         return false;
     }
-    
+
     @Override
 	public boolean canDoRainSnowIce(Chunk chunk)
     {

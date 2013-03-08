@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.mars.entities;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityAIAvoidEntity;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
@@ -24,7 +22,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -33,13 +31,13 @@ public class GCMarsEntityCreeperBoss extends EntityMob
     int timeSinceIgnited;
 
     int lastActiveTime;
-    
+
     Entity targetedEntity = null;
-    
+
     int timeSinceTNTFired;
-    
+
     public int headsRemaining = 3;
-    
+
     public int deathTicks = 0;
 
     public GCMarsEntityCreeperBoss(World par1World)
@@ -96,7 +94,7 @@ public class GCMarsEntityCreeperBoss extends EntityMob
         {
             this.dataWatcher.updateObject(16, Integer.valueOf(this.health));
         }
-		
+
 		if (this.getBossHealth() >= 2 * (this.getMaxHealth() / 3))
 		{
         	this.headsRemaining = 3;
@@ -113,17 +111,16 @@ public class GCMarsEntityCreeperBoss extends EntityMob
 		{
 			this.headsRemaining = 0;
 		}
-        
+
     	if (this.timeSinceTNTFired > 0)
     	{
     		this.timeSinceTNTFired -= 1;
     	}
-    	
+
         this.targetedEntity = this.worldObj.getClosestVulnerablePlayerToEntity(this, 50.0D);
-        
+
         if (!this.worldObj.isRemote && this.timeSinceTNTFired == 0)
     	{
-            final EntityPlayer var11 = null;
 
 //            for (int var12 = 0; var12 < GalacticraftCore.playersServer.size(); ++var12)
 //            {
@@ -141,7 +138,7 @@ public class GCMarsEntityCreeperBoss extends EntityMob
 //                }
 //            } TODO
     	}
-        
+
 //        if (this.targetedEntity != null && !this.worldObj.isRemote)
 //        {
 //        	if (this.timeSinceTNTFired == 0)
@@ -160,7 +157,7 @@ public class GCMarsEntityCreeperBoss extends EntityMob
 //                this.timeSinceTNTFired = 80;
 //        	}
 //        }
-        
+
         if (this.isEntityAlive())
         {
             this.lastActiveTime = this.timeSinceIgnited;
@@ -200,7 +197,7 @@ public class GCMarsEntityCreeperBoss extends EntityMob
 
         super.onUpdate();
     }
-    
+
     @Override
 	protected void onDeathUpdate()
     {
@@ -241,7 +238,7 @@ public class GCMarsEntityCreeperBoss extends EntityMob
                 var4 -= var5;
                 this.worldObj.spawnEntityInWorld(new EntityXPOrb(this.worldObj, this.posX, this.posY, this.posZ, var5 / 10));
             }
-            
+
             this.setDead();
         }
     }
@@ -308,7 +305,7 @@ public class GCMarsEntityCreeperBoss extends EntityMob
     public void onStruckByLightning(EntityLightningBolt par1EntityLightningBolt)
     {
     }
-    
+
     public int getBossHealth()
     {
         return this.dataWatcher.getWatchableObjectInt(16);

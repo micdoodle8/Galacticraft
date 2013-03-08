@@ -23,7 +23,7 @@ public class GCCoreBlockOxygenPipe extends BlockContainer implements IConnectabl
 {
 	private final float oxygenPipeMin = 0.4F;
 	private final float oxygenPipeMax = 0.6F;
-	
+
 	public GCCoreBlockOxygenPipe(int i, int j)
 	{
 		super(i, j, Material.glass);
@@ -52,19 +52,19 @@ public class GCCoreBlockOxygenPipe extends BlockContainer implements IConnectabl
 	{
 		return new GCCoreTileEntityOxygenPipe();
 	}
-	
+
 	@Override
 	public void addCollidingBlockToList(World world, int i, int j, int k, AxisAlignedBB axisalignedbb, List arraylist, Entity par7Entity)
 	{
 		this.setBlockBounds(this.oxygenPipeMin, this.oxygenPipeMin, this.oxygenPipeMin, this.oxygenPipeMax, this.oxygenPipeMax, this.oxygenPipeMax);
 		super.addCollidingBlockToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
 
-		final TileEntity tile1 = world.getBlockTileEntity(i, j, k);
+		world.getBlockTileEntity(i, j, k);
 
 		if (Block.blocksList[world.getBlockId(i - 1, j, k)] instanceof IConnectableToPipe)
 		{
-			IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[world.getBlockId(i - 1, j, k)];
-			
+			final IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[world.getBlockId(i - 1, j, k)];
+
 			if (pipe.isConnectableOnSide(world, i, j, k, ForgeDirection.WEST))
 			{
 				this.setBlockBounds(0.0F, this.oxygenPipeMin, this.oxygenPipeMin, this.oxygenPipeMax, this.oxygenPipeMax, this.oxygenPipeMax);
@@ -74,8 +74,8 @@ public class GCCoreBlockOxygenPipe extends BlockContainer implements IConnectabl
 
 		if (Block.blocksList[world.getBlockId(i + 1, j, k)] instanceof IConnectableToPipe)
 		{
-			IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[world.getBlockId(i + 1, j, k)];
-			
+			final IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[world.getBlockId(i + 1, j, k)];
+
 			if (pipe.isConnectableOnSide(world, i, j, k, ForgeDirection.EAST))
 			{
 				this.setBlockBounds(this.oxygenPipeMin, this.oxygenPipeMin, this.oxygenPipeMin, 1.0F, this.oxygenPipeMax, this.oxygenPipeMax);
@@ -85,8 +85,8 @@ public class GCCoreBlockOxygenPipe extends BlockContainer implements IConnectabl
 
 		if (Block.blocksList[world.getBlockId(i, j - 1, k)] instanceof IConnectableToPipe)
 		{
-			IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[world.getBlockId(i, j - 1, k)];
-			
+			final IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[world.getBlockId(i, j - 1, k)];
+
 			if (pipe.isConnectableOnSide(world, i, j, k, ForgeDirection.DOWN))
 			{
 				this.setBlockBounds(this.oxygenPipeMin, 0.0F, this.oxygenPipeMin, this.oxygenPipeMax, this.oxygenPipeMax, this.oxygenPipeMax);
@@ -96,8 +96,8 @@ public class GCCoreBlockOxygenPipe extends BlockContainer implements IConnectabl
 
 		if (Block.blocksList[world.getBlockId(i, j + 1, k)] instanceof IConnectableToPipe)
 		{
-			IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[world.getBlockId(i, j + 1, k)];
-			
+			final IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[world.getBlockId(i, j + 1, k)];
+
 			if (pipe.isConnectableOnSide(world, i, j, k, ForgeDirection.UP))
 			{
 				this.setBlockBounds(this.oxygenPipeMin, this.oxygenPipeMin, this.oxygenPipeMin, this.oxygenPipeMax, 1.0F, this.oxygenPipeMax);
@@ -107,8 +107,8 @@ public class GCCoreBlockOxygenPipe extends BlockContainer implements IConnectabl
 
 		if (Block.blocksList[world.getBlockId(i, j, k - 1)] instanceof IConnectableToPipe)
 		{
-			IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[world.getBlockId(i, j, k - 1)];
-			
+			final IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[world.getBlockId(i, j, k - 1)];
+
 			if (pipe.isConnectableOnSide(world, i, j, k, ForgeDirection.NORTH))
 			{
 				this.setBlockBounds(this.oxygenPipeMin, this.oxygenPipeMin, 0.0F, this.oxygenPipeMax, this.oxygenPipeMax, this.oxygenPipeMax);
@@ -118,8 +118,8 @@ public class GCCoreBlockOxygenPipe extends BlockContainer implements IConnectabl
 
 		if (Block.blocksList[world.getBlockId(i, j, k + 1)] instanceof IConnectableToPipe)
 		{
-			IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[world.getBlockId(i, j, k + 1)];
-			
+			final IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[world.getBlockId(i, j, k + 1)];
+
 			if (pipe.isConnectableOnSide(world, i, j, k, ForgeDirection.SOUTH))
 			{
 				this.setBlockBounds(this.oxygenPipeMin, this.oxygenPipeMin, this.oxygenPipeMin, this.oxygenPipeMax, this.oxygenPipeMax, 1.0F);
@@ -129,7 +129,7 @@ public class GCCoreBlockOxygenPipe extends BlockContainer implements IConnectabl
 
 		this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 	}
-	
+
 	@Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int i, int j, int k)
 	{
@@ -137,8 +137,8 @@ public class GCCoreBlockOxygenPipe extends BlockContainer implements IConnectabl
 
 		if (Block.blocksList[world.getBlockId(i - 1, j, k)] instanceof IConnectableToPipe)
 		{
-			IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[world.getBlockId(i - 1, j, k)];
-			
+			final IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[world.getBlockId(i - 1, j, k)];
+
 			if (pipe.isConnectableOnSide(world, i, j, k, ForgeDirection.WEST))
 			{
 				xMin = 0.0F;
@@ -147,8 +147,8 @@ public class GCCoreBlockOxygenPipe extends BlockContainer implements IConnectabl
 
 		if (Block.blocksList[world.getBlockId(i + 1, j, k)] instanceof IConnectableToPipe)
 		{
-			IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[world.getBlockId(i + 1, j, k)];
-			
+			final IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[world.getBlockId(i + 1, j, k)];
+
 			if (pipe.isConnectableOnSide(world, i, j, k, ForgeDirection.EAST))
 			{
 				xMax = 1.0F;
@@ -157,8 +157,8 @@ public class GCCoreBlockOxygenPipe extends BlockContainer implements IConnectabl
 
 		if (Block.blocksList[world.getBlockId(i, j - 1, k)] instanceof IConnectableToPipe)
 		{
-			IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[world.getBlockId(i, j - 1, k)];
-			
+			final IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[world.getBlockId(i, j - 1, k)];
+
 			if (pipe.isConnectableOnSide(world, i, j, k, ForgeDirection.DOWN))
 			{
 				yMin = 0.0F;
@@ -167,8 +167,8 @@ public class GCCoreBlockOxygenPipe extends BlockContainer implements IConnectabl
 
 		if (Block.blocksList[world.getBlockId(i, j + 1, k)] instanceof IConnectableToPipe)
 		{
-			IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[world.getBlockId(i, j + 1, k)];
-			
+			final IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[world.getBlockId(i, j + 1, k)];
+
 			if (pipe.isConnectableOnSide(world, i, j, k, ForgeDirection.UP))
 			{
 				yMax = 1.0F;
@@ -177,8 +177,8 @@ public class GCCoreBlockOxygenPipe extends BlockContainer implements IConnectabl
 
 		if (Block.blocksList[world.getBlockId(i, j, k - 1)] instanceof IConnectableToPipe)
 		{
-			IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[world.getBlockId(i, j, k - 1)];
-			
+			final IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[world.getBlockId(i, j, k - 1)];
+
 			if (pipe.isConnectableOnSide(world, i, j, k, ForgeDirection.NORTH))
 			{
 				zMin = 0.0F;
@@ -187,14 +187,14 @@ public class GCCoreBlockOxygenPipe extends BlockContainer implements IConnectabl
 
 		if (Block.blocksList[world.getBlockId(i, j, k + 1)] instanceof IConnectableToPipe)
 		{
-			IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[world.getBlockId(i, j, k + 1)];
-			
+			final IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[world.getBlockId(i, j, k + 1)];
+
 			if (pipe.isConnectableOnSide(world, i, j, k, ForgeDirection.SOUTH))
 			{
 				zMax = 1.0F;
 			}
 		}
-		
+
 		return AxisAlignedBB.getBoundingBox((double) i + xMin, (double) j + yMin, (double) k + zMin, (double) i + xMax, (double) j + yMax, (double) k + zMax);
 	}
 
@@ -204,7 +204,7 @@ public class GCCoreBlockOxygenPipe extends BlockContainer implements IConnectabl
 	{
 		return this.getCollisionBoundingBoxFromPool(world, i, j, k);
 	}
-	
+
     @Override
 	public void breakBlock(World world, int x, int y, int z, int par5, int par6)
     {
@@ -214,7 +214,7 @@ public class GCCoreBlockOxygenPipe extends BlockContainer implements IConnectabl
     		{
         		final TileEntity tile = world.getBlockTileEntity(x + ForgeDirection.getOrientation(i).offsetX, y + ForgeDirection.getOrientation(i).offsetY, z + ForgeDirection.getOrientation(i).offsetZ);
         		final GCCoreTileEntityOxygenPipe thisPipe = (GCCoreTileEntityOxygenPipe)world.getBlockTileEntity(x, y, z);
-        		
+
         		if (tile != null && thisPipe != null && tile instanceof GCCoreTileEntityOxygenPipe)
         		{
         			final GCCoreTileEntityOxygenPipe pipe = (GCCoreTileEntityOxygenPipe)tile;
@@ -224,10 +224,10 @@ public class GCCoreBlockOxygenPipe extends BlockContainer implements IConnectabl
         		}
     		}
     	}
-    	
+
     	super.breakBlock(world, x, y, z, par5, par6);
     }
-	
+
 	@Override
 	public MovingObjectPosition collisionRayTrace(World world, int i, int j, int k, Vec3 vec3d, Vec3 vec3d1)
 	{
@@ -235,8 +235,8 @@ public class GCCoreBlockOxygenPipe extends BlockContainer implements IConnectabl
 
 		if (Block.blocksList[world.getBlockId(i - 1, j, k)] instanceof IConnectableToPipe)
 		{
-			IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[world.getBlockId(i - 1, j, k)];
-			
+			final IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[world.getBlockId(i - 1, j, k)];
+
 			if (pipe.isConnectableOnSide(world, i, j, k, ForgeDirection.WEST))
 			{
 				xMin = 0.0F;
@@ -245,8 +245,8 @@ public class GCCoreBlockOxygenPipe extends BlockContainer implements IConnectabl
 
 		if (Block.blocksList[world.getBlockId(i + 1, j, k)] instanceof IConnectableToPipe)
 		{
-			IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[world.getBlockId(i + 1, j, k)];
-			
+			final IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[world.getBlockId(i + 1, j, k)];
+
 			if (pipe.isConnectableOnSide(world, i, j, k, ForgeDirection.EAST))
 			{
 				xMax = 1.0F;
@@ -255,8 +255,8 @@ public class GCCoreBlockOxygenPipe extends BlockContainer implements IConnectabl
 
 		if (Block.blocksList[world.getBlockId(i, j - 1, k)] instanceof IConnectableToPipe)
 		{
-			IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[world.getBlockId(i, j - 1, k)];
-			
+			final IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[world.getBlockId(i, j - 1, k)];
+
 			if (pipe.isConnectableOnSide(world, i, j, k, ForgeDirection.DOWN))
 			{
 				yMin = 0.0F;
@@ -265,8 +265,8 @@ public class GCCoreBlockOxygenPipe extends BlockContainer implements IConnectabl
 
 		if (Block.blocksList[world.getBlockId(i, j + 1, k)] instanceof IConnectableToPipe)
 		{
-			IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[world.getBlockId(i, j + 1, k)];
-			
+			final IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[world.getBlockId(i, j + 1, k)];
+
 			if (pipe.isConnectableOnSide(world, i, j, k, ForgeDirection.UP))
 			{
 				yMax = 1.0F;
@@ -275,8 +275,8 @@ public class GCCoreBlockOxygenPipe extends BlockContainer implements IConnectabl
 
 		if (Block.blocksList[world.getBlockId(i, j, k - 1)] instanceof IConnectableToPipe)
 		{
-			IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[world.getBlockId(i, j, k - 1)];
-			
+			final IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[world.getBlockId(i, j, k - 1)];
+
 			if (pipe.isConnectableOnSide(world, i, j, k, ForgeDirection.NORTH))
 			{
 				zMin = 0.0F;
@@ -285,8 +285,8 @@ public class GCCoreBlockOxygenPipe extends BlockContainer implements IConnectabl
 
 		if (Block.blocksList[world.getBlockId(i, j, k + 1)] instanceof IConnectableToPipe)
 		{
-			IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[world.getBlockId(i, j, k + 1)];
-			
+			final IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[world.getBlockId(i, j, k + 1)];
+
 			if (pipe.isConnectableOnSide(world, i, j, k, ForgeDirection.SOUTH))
 			{
 				zMax = 1.0F;
@@ -309,7 +309,7 @@ public class GCCoreBlockOxygenPipe extends BlockContainer implements IConnectabl
     }
 
 	@Override
-	public boolean isConnectableOnSide(IBlockAccess blockAccess, int x, int y, int z, ForgeDirection side) 
+	public boolean isConnectableOnSide(IBlockAccess blockAccess, int x, int y, int z, ForgeDirection side)
 	{
 		return true;
 	}

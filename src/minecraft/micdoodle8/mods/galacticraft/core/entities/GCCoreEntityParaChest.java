@@ -14,16 +14,16 @@ import net.minecraft.world.World;
 public class GCCoreEntityParaChest extends Entity
 {
 	public ItemStack[] cargo;
-	
+
 	private boolean placedChest;
-	
+
 	public GCCoreEntityParaChest(World world, ItemStack[] cargo)
 	{
 		this(world);
 		this.cargo = cargo;
 		this.placedChest = false;
 	}
-	
+
 	public GCCoreEntityParaChest(World world)
 	{
 		super(world);
@@ -50,7 +50,7 @@ public class GCCoreEntityParaChest extends Entity
                 this.cargo[var5] = ItemStack.loadItemStackFromNBT(var4);
             }
         }
-        
+
         this.placedChest = par1NBTTagCompound.getBoolean("placedChest");
 	}
 
@@ -73,7 +73,7 @@ public class GCCoreEntityParaChest extends Entity
         par1NBTTagCompound.setTag("Items", var2);
         par1NBTTagCompound.setBoolean("placedChest", this.placedChest);
 	}
-	
+
 	@Override
 	public void onUpdate()
 	{
@@ -86,9 +86,9 @@ public class GCCoreEntityParaChest extends Entity
 					final int x = MathHelper.floor_double(this.posX);
 					final int y = MathHelper.floor_double(this.posY);
 					final int z = MathHelper.floor_double(this.posZ);
-					
+
 					final int id = this.worldObj.getBlockId(x, y + i, z);
-					
+
 					if (id == 0)
 					{
 						if (this.placeChest(x, y + i, z))
@@ -103,7 +103,7 @@ public class GCCoreEntityParaChest extends Entity
 								final EntityItem e = new EntityItem(this.worldObj, this.posX, this.posY, this.posZ, stack);
 								this.worldObj.spawnEntityInWorld(e);
 							}
-							
+
 							return;
 						}
 					}
@@ -122,30 +122,30 @@ public class GCCoreEntityParaChest extends Entity
 			{
 				this.motionY = -0.25;
 			}
-			
+
 			this.moveEntity(0, this.motionY, 0);
 		}
 	}
-	
+
 	private boolean placeChest(int x, int y, int z)
 	{
 		this.worldObj.setBlock(x, y, z, Block.chest.blockID);
 		final TileEntity te = this.worldObj.getBlockTileEntity(x, y, z);
-		
+
 		if (te instanceof TileEntityChest && this.cargo != null)
 		{
 			final TileEntityChest chest = (TileEntityChest) te;
-			
+
 			for (int i = 0; i < this.cargo.length; i++)
 			{
 				chest.setInventorySlotContents(i, this.cargo[i]);
 			}
-			
+
 			return true;
 		}
-		
+
 		this.placedChest = true;
-		
+
 		return true;
 	}
 }

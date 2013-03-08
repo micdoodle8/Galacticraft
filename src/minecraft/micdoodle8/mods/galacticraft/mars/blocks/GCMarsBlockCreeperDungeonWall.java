@@ -10,7 +10,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -30,7 +30,7 @@ public class GCMarsBlockCreeperDungeonWall extends GCMarsBlock
     	{
     		GalacticraftMars.proxy.spawnParticle("sludgeDrip", par2 + 0.5F, par3, par4 + 0.5F, 0, 0, 0, false);
     	}
-    	
+
         if (par5Random.nextInt(2000) == 0)
         {
             par1World.playSoundEffect(par2 + 0.5D, par3 + 0.5D, par4 + 0.5D, "creepernest.singledrip", 0.5F, par5Random.nextFloat() * 0.4F + 0.8F);

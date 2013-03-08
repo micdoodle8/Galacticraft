@@ -18,7 +18,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -35,7 +35,7 @@ public class GCMarsBlocks
 	public static Block blockOres;
 
     public static final Material bacterialSludge = new MaterialLiquid(MapColor.waterColor);
-	
+
 	public static void initBlocks()
 	{
 		GCMarsBlocks.blockOres = 										new GCMarsBlockOre					(GCMarsConfigManager.idBlockOre)												.setHardness(3.0F) 																				 																											.setBlockName("blockores");
@@ -57,7 +57,7 @@ public class GCMarsBlocks
 		MinecraftForge.setBlockHarvestLevel(GCMarsBlocks.marsCobblestone, 			"pickaxe", 	1);
 		MinecraftForge.setBlockHarvestLevel(GCMarsBlocks.marsStone, 					"pickaxe", 	1);
 	}
-	
+
 	public static void registerBlocks()
 	{
 		GameRegistry.registerBlock(GCMarsBlocks.marsStone);
@@ -86,12 +86,12 @@ public class GCMarsBlocks
 		GCMarsBlocks.addNameWithMetadata("tile.blockores.coppermars.name");
 		GCMarsBlocks.addNameWithMetadata("tile.blockores.titaniummars.name");
 	}
-	
+
 	private static void addName(Block block)
 	{
 		LanguageRegistry.instance().addStringLocalization(block.getBlockName() + ".name", ClientProxyMars.lang.get(block.getBlockName() + ".name"));
 	}
-	
+
 	private static void addNameWithMetadata(String string)
 	{
 		LanguageRegistry.instance().addStringLocalization(string, ClientProxyMars.lang.get(string));

@@ -10,7 +10,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -38,23 +38,23 @@ public class GCMarsBlockCreeperEgg extends BlockDragonEgg
     {
         return 27;
     }
-    
+
     @Override
 	public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {
-    	
+
     }
-    
+
     @Override
 	public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
     {
         return false;
     }
-    
+
     @Override
 	public void onBlockClicked(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer)
     {
-    	
+
     }
 
     @Override
@@ -63,7 +63,7 @@ public class GCMarsBlockCreeperEgg extends BlockDragonEgg
     {
         return 0;
     }
-    
+
     @Override
 	public String getTextureFile()
     {

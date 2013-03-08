@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
 import micdoodle8.mods.galacticraft.API.EntitySpaceshipBase;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpaceship;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
@@ -14,7 +13,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -57,7 +56,7 @@ public class GCCoreRenderSpaceship extends Render
             GL11.glRotatef(MathHelper.sin(var28) * var28 * i * par1GCEntitySpaceship.getRollingDirection() * par9, 1.0F, 0.0F, 1.0F);
         }
 
-        this.loadTexture(texture);
+        this.loadTexture(this.texture);
         GL11.glScalef(-1.0F, -1.0F, 1.0F);
         this.modelSpaceship.render(par1GCEntitySpaceship, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
         GL11.glPopMatrix();

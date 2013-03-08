@@ -8,7 +8,7 @@ public class GCCoreEntityWormPart extends Entity
 {
     public final IEntityMultiPart entityWormObj;
     public final String name;
-    
+
     public GCCoreEntityWormPart(IEntityMultiPart par1, String par2, float par3, float par4)
     {
         super(par1.getWorld());

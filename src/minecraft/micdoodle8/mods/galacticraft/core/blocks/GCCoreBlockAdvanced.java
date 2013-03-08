@@ -6,7 +6,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.FMLLog;
 
 public abstract class GCCoreBlockAdvanced extends BlockContainer
 {
@@ -18,12 +17,12 @@ public abstract class GCCoreBlockAdvanced extends BlockContainer
 	@Override
     public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLiving par5EntityLiving)
     {
-        GCCoreTileEntityAdvanced tentity = (GCCoreTileEntityAdvanced)par1World.getBlockTileEntity(par2, par3, par4);
+        final GCCoreTileEntityAdvanced tentity = (GCCoreTileEntityAdvanced)par1World.getBlockTileEntity(par2, par3, par4);
 
         if (tentity != null)
         {
-        	int yaw = MathHelper.floor_double((double)((par5EntityLiving.rotationYaw * 4F) / 360F) + 0.5D) & 3;
-            int pitch = Math.round(par5EntityLiving.rotationPitch);
+        	final int yaw = MathHelper.floor_double((par5EntityLiving.rotationYaw * 4F / 360F) + 0.5D) & 3;
+            final int pitch = Math.round(par5EntityLiving.rotationPitch);
 
             if (pitch >= 65)
             {

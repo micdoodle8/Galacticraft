@@ -8,16 +8,16 @@ public class GCCoreModelParaChest extends ModelChest
 {
     public ModelRenderer[] parachute = new ModelRenderer[3];
     public ModelRenderer[] parachuteStrings = new ModelRenderer[4];
-    
+
 	public GCCoreModelParaChest()
 	{
 		this(0.0F);
 	}
-	
+
 	public GCCoreModelParaChest(float par1)
 	{
 		super();
-		
+
         this.parachute[0] = new ModelRenderer(this, 0, 0).setTextureSize(512, 256);
         this.parachute[0].addBox(-20.0F, -45.0F, -20.0F, 10, 2, 40, par1);
         this.parachute[0].setRotationPoint(15.0F, 4.0F, 0.0F);
@@ -46,25 +46,25 @@ public class GCCoreModelParaChest extends ModelChest
     public void renderAll()
     {
     	super.renderAll();
-    	
+
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(FMLClientHandler.instance().getClient().renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/entities/parachute/gray.png"));
 
     	int i;
-    	
+
     	for (i = 0; i < this.parachute.length; i++)
     	{
     		this.parachute[i].render(0.0625F);
     	}
-    	
+
     	for (i = 0; i < this.parachuteStrings.length; i++)
     	{
     		this.parachuteStrings[i].render(0.0625F);
     	}
-    	
+
     	this.chestLid.rotateAngleX = (float) Math.PI;
     	this.chestBelow.rotateAngleX = (float) Math.PI;
     	this.chestKnob.rotateAngleX = (float) Math.PI;
-    	
+
     	this.chestLid.rotationPointX = 2.0F;
         this.chestLid.rotationPointY = 7.0F;
         this.chestLid.rotationPointZ = -6.0F;
@@ -94,14 +94,14 @@ public class GCCoreModelParaChest extends ModelChest
     	this.parachuteStrings[1].rotateAngleZ = (float) ((155F + 180F) * (Math.PI / 180F));
     	this.parachuteStrings[1].rotateAngleX = (float) -(23F * (Math.PI / 180F));
     	this.parachuteStrings[1].setRotationPoint(9.0F, 3.0F, 2.0F);
-    	
+
     	this.parachuteStrings[2].rotateAngleZ = (float) -((155F + 180F) * (Math.PI / 180F));
     	this.parachuteStrings[2].rotateAngleX = (float) (23F * (Math.PI / 180F));
     	this.parachuteStrings[2].setRotationPoint(9.0F, 3.0F, 2.0F);
     	this.parachuteStrings[3].rotateAngleZ = (float) -((155F + 180F) * (Math.PI / 180F));
     	this.parachuteStrings[3].rotateAngleX = (float) -(23F * (Math.PI / 180F));
     	this.parachuteStrings[3].setRotationPoint(9.0F, 3.0F, 2.0F);
-    	
+
 //    	for (i = 0; i < this.parachute.length; i++)
 //    	{
 //    		this.parachute[i].rotateAngleY = (float) (180 * (Math.PI / 180F));

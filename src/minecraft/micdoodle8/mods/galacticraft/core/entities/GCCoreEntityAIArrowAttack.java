@@ -11,7 +11,7 @@ import net.minecraft.world.World;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -144,7 +144,7 @@ public class GCCoreEntityAIArrowAttack extends EntityAIBase
         if (this.rangedAttackID == 1)
         {
         	Entity var1;
-        	
+
         	if (this.worldObj.provider instanceof IGalacticraftWorldProvider)
         	{
         		var1 = new GCCoreEntityArrow(this.worldObj, this.entityHost, this.attackTarget, 0.3F, 12.0F);
@@ -153,7 +153,7 @@ public class GCCoreEntityAIArrowAttack extends EntityAIBase
         	{
                 var1 = new EntityArrow(this.worldObj, this.entityHost, this.attackTarget, 1.6F, 12.0F);
         	}
-        	
+
             this.worldObj.playSoundAtEntity(this.entityHost, "random.bow", 1.0F, 1.0F / (this.entityHost.getRNG().nextFloat() * 0.4F + 0.8F));
             this.worldObj.spawnEntityInWorld(var1);
         }

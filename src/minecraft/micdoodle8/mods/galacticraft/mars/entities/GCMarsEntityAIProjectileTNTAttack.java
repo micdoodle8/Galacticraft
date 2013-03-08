@@ -7,7 +7,7 @@ import net.minecraft.world.World;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -54,7 +54,7 @@ public class GCMarsEntityAIProjectileTNTAttack extends EntityAIBase
 	public boolean shouldExecute()
     {
         final EntityLiving var1 = this.worldObj.getClosestVulnerablePlayerToEntity(this.entityHost, 50.0D);
-        
+
         if (var1 != null && var1.isDead)
         {
         	this.resetTask();
@@ -118,7 +118,6 @@ public class GCMarsEntityAIProjectileTNTAttack extends EntityAIBase
             final double var13 = this.attackTarget.boundingBox.minY + this.attackTarget.height / 2.0F - (this.entityHost.posY + this.entityHost.height / 2.0F);
             final double var15 = this.attackTarget.posZ - this.entityHost.posZ;
         	final GCMarsEntityProjectileTNT var17 = new GCMarsEntityProjectileTNT(this.entityHost.worldObj, this.entityHost, var11, var13, var15);
-            final double var18 = 4.0D;
             final Vec3 var20 = this.entityHost.getLook(1.0F);
             var17.posX = this.entityHost.posX + var20.xCoord * 1;
             var17.posY = this.entityHost.posY + this.entityHost.height / 2.0F + 0.5D;

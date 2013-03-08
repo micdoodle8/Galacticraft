@@ -29,11 +29,11 @@ public class GCCoreItemOxygenTank extends GCCoreItem
     public void addInformation(ItemStack par1ItemStack, EntityPlayer player, List par2List, boolean b)
 	{
 		par2List.add("- Air Remaining: " + (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage()));
-		
+
     	if (player != null && player.worldObj.isRemote)
     	{
-    		GCCorePlayerBaseClient playerBaseCl = PlayerUtil.getPlayerBaseClientFromPlayer(player);
-    		
+    		final GCCorePlayerBaseClient playerBaseCl = PlayerUtil.getPlayerBaseClientFromPlayer(player);
+
     		if (playerBaseCl != null && playerBaseCl.getUseTutorialText())
     		{
     			par2List.add("- Press " + Keyboard.getKeyName(ClientProxyCore.GCKeyHandler.tankRefill.keyCode) + " to access");

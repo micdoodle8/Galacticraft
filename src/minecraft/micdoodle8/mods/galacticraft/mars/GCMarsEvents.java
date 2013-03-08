@@ -1,13 +1,5 @@
 package micdoodle8.mods.galacticraft.mars;
 
-import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBucket;
-import net.minecraft.util.EnumMovingObjectType;
-import net.minecraft.util.MathHelper;
-import net.minecraftforge.event.Event.Result;
-import net.minecraftforge.event.ForgeSubscribe;
-import net.minecraftforge.event.entity.player.FillBucketEvent;
 
 public class GCMarsEvents
 {
@@ -19,7 +11,7 @@ public class GCMarsEvents
 //            final int x = event.target.blockX;
 //            final int y = event.target.blockY;
 //            final int z = event.target.blockZ;
-//            
+//
 //            if (event.current.getItem() instanceof ItemBucket)
 //            {
 //                final ItemBucket bucket = (ItemBucket) event.current.getItem();
@@ -36,9 +28,9 @@ public class GCMarsEvents
 //                    	event.world.setBlockWithNotify(x, y, z, 0);
 //
 //                    	event.world.setBlockWithNotify(MathHelper.floor_double(event.entityPlayer.posX), MathHelper.floor_double(event.entityPlayer.posY + event.entityPlayer.getEyeHeight()), MathHelper.floor_double(event.entityPlayer.posZ), GCMarsBlocks.bacterialSludgeMoving.blockID);
-//                		
+//
 //                        event.setResult(Result.DENY);
-//                        
+//
 //                        return;
 //                    }
 //                    else
@@ -49,7 +41,7 @@ public class GCMarsEvents
 //                }
 //            }
 //        }
-//        
+//
 //		event.setResult(Result.ALLOW);
 //	}
 }

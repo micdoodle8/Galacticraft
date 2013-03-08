@@ -14,7 +14,7 @@ import net.minecraft.item.ItemStack;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -36,7 +36,7 @@ public class GCCoreContainerTankRefill extends Container
 
         for (var4 = 0; var4 < 4; ++var4)
         {
-            this.addSlotToContainer(new GCCoreSlotArmor(((ContainerPlayer)par1EntityPlayer.inventoryContainer), par1EntityPlayer.inventory, par1EntityPlayer.inventory.getSizeInventory() - 1 - var4, 8, 8 + var4 * 18, var4));
+            this.addSlotToContainer(new GCCoreSlotArmor((ContainerPlayer)par1EntityPlayer.inventoryContainer, par1EntityPlayer.inventory, par1EntityPlayer.inventory.getSizeInventory() - 1 - var4, 8, 8 + var4 * 18, var4));
         }
 
         for (var4 = 0; var4 < 3; ++var4)
@@ -56,9 +56,9 @@ public class GCCoreContainerTankRefill extends Container
         {
             this.addSlotToContainer(new GCCoreSlotTankRefill(inventorytankrefill, var4, 80, 8 + var4 * 18));
         }
-        
+
         this.addSlotToContainer(new GCCoreSlotTankRefill(inventorytankrefill, 4, 154, 6));
-        
+
         this.onCraftMatrixChanged(((ContainerPlayer)par1EntityPlayer.inventoryContainer).craftMatrix);
 	}
 
@@ -148,7 +148,7 @@ public class GCCoreContainerTankRefill extends Container
             }
             else if (var3.getItem() instanceof ItemArmor && !((Slot)this.inventorySlots.get(5 + ((ItemArmor)var3.getItem()).armorType)).getHasStack())
             {
-                int var6 = 5 + ((ItemArmor)var3.getItem()).armorType;
+                final int var6 = 5 + ((ItemArmor)var3.getItem()).armorType;
 
                 if (!this.mergeItemStack(var5, var6, var6 + 1, false))
                 {

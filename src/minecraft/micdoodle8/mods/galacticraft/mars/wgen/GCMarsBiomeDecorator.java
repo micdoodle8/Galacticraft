@@ -10,7 +10,7 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -31,13 +31,13 @@ public class GCMarsBiomeDecorator
 	protected WorldGenerator deshGen;
 
 	protected WorldGenerator quandriumGen;
-	
+
 	protected WorldGenerator aluminumGen;
-	
+
 	protected WorldGenerator copperGen;
-	
+
 	protected WorldGenerator titaniumGen;
-	
+
 	protected WorldGenerator bacteriaGen;
 
 	public GCMarsBiomeDecorator(BiomeGenBase par1BiomeGenBase)

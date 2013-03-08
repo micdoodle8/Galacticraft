@@ -12,12 +12,12 @@ public class GCCoreItemCanister extends Item
 	public static final String[] names = {
 		"aluminium", // 0
 		"copper"}; // 1
-	
+
 	public static final int[] spriteIndexes = {
-    	22, 
+    	22,
     	71};
-	
-	public GCCoreItemCanister(int par1) 
+
+	public GCCoreItemCanister(int par1)
 	{
 		super(par1);
 		this.setMaxStackSize(1);
@@ -40,8 +40,9 @@ public class GCCoreItemCanister extends Item
     {
         return par1;
     }
-    
-    public int getIconFromDamage(int par1)
+
+    @Override
+	public int getIconFromDamage(int par1)
     {
         if (par1 < 0 || par1 >= GCCoreItemCanister.names.length)
         {

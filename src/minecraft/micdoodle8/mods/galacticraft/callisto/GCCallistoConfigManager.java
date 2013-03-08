@@ -8,22 +8,22 @@ import cpw.mods.fml.common.FMLLog;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
 public class GCCallistoConfigManager
 {
 	public static boolean loaded;
-	
+
 	static Configuration configuration;
-	
+
 	// DIMENSIONS
 	public static int dimensionIDCallisto;
-	
+
 	// BLOCKS
 	public static int idBlock;
-	
+
 	public GCCallistoConfigManager(File file)
 	{
 		if (!GCCallistoConfigManager.loaded)
@@ -32,15 +32,15 @@ public class GCCallistoConfigManager
 			this.setDefaultValues();
 		}
 	}
-	
+
 	private void setDefaultValues()
     {
 		try
 		{
 	        GCCallistoConfigManager.configuration.load();
-	        
+
 	        GCCallistoConfigManager.dimensionIDCallisto = 				GCCallistoConfigManager.configuration.get("Dimensions", 										"Callisto Dimension ID",				-22)		.getInt(-22);
-	        
+
 	        GCCallistoConfigManager.idBlock = 							GCCallistoConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, 						"idBlockCallisto", 					197)	.getInt(197);
 		}
 		catch (final Exception e)

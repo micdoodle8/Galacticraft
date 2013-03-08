@@ -4,7 +4,7 @@ import net.minecraft.world.biome.BiomeGenBase;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -18,7 +18,7 @@ public class GCEuropaBiomeGenFlat extends GCEuropaBiomeGenBase
         this.minHeight = 2.5F;
         this.maxHeight = 0.4F;
     }
-    
+
     private BiomeGenBase setTemperatureRainfall2(float par1, float par2)
     {
         if (par1 > 0.1F && par1 < 0.2F)

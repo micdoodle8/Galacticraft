@@ -10,7 +10,7 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -25,7 +25,7 @@ public class GCEuropaBiomeDecorator
 	protected int chunk_Z;
 
 	protected BiomeGenBase biome;
-	
+
     protected WorldGenerator gravelGen;
     protected WorldGenerator coalGen;
     protected WorldGenerator ironGen;

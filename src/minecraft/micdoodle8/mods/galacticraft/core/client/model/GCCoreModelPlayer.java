@@ -31,7 +31,7 @@ public class GCCoreModelPlayer extends ModelPlayerBase
     public ModelRenderer[] orangeOxygenTanks = new ModelRenderer[2];
     public ModelRenderer[] redOxygenTanks = new ModelRenderer[2];
     public ModelRenderer oxygenMask;
-    
+
 	boolean usingParachute = false;
 	boolean wearingMask = false;
 	boolean wearingGear = false;
@@ -41,7 +41,7 @@ public class GCCoreModelPlayer extends ModelPlayerBase
 	boolean wearingRightTankRed = false;
 	boolean wearingRightTankOrange = false;
 	boolean wearingRightTankGreen = false;
-    
+
 	public GCCoreModelPlayer(ModelPlayerAPI mpapi)
 	{
 		super(mpapi);
@@ -53,7 +53,7 @@ public class GCCoreModelPlayer extends ModelPlayerBase
 		this.oxygenMask = new ModelRenderer(this.modelPlayer, 32, 2);
         this.oxygenMask.addBox(-4.0F, -8.0F, -4.0F, 8, 8, 8, 1);
         this.oxygenMask.setRotationPoint(0.0F, 0.0F + 0.0F, 0.0F);
-		
+
         this.parachute[0] = new ModelRenderer(this.modelPlayer, 0, 0).setTextureSize(512, 256);
         this.parachute[0].addBox(-20.0F, -45.0F, -20.0F, 10, 2, 40, var1);
         this.parachute[0].setRotationPoint(15.0F, 4.0F, 0.0F);
@@ -148,7 +148,7 @@ public class GCCoreModelPlayer extends ModelPlayerBase
 		this.tubes[1][6].setRotationPoint(-2F, -3F, 4.8F);
 		this.tubes[1][6].setTextureSize(128, 64);
 		this.tubes[1][6].mirror = true;
-		
+
 		this.greenOxygenTanks[0] = new ModelRenderer(this.modelPlayer, 4, 0);
 		this.greenOxygenTanks[0].addBox(-1.5F, 0F, -1.5F, 3, 7, 3, var1);
 		this.greenOxygenTanks[0].setRotationPoint(2F, 2F, 3.8F);
@@ -157,7 +157,7 @@ public class GCCoreModelPlayer extends ModelPlayerBase
 		this.greenOxygenTanks[1].addBox(-1.5F, 0F, -1.5F, 3, 7, 3, var1);
 		this.greenOxygenTanks[1].setRotationPoint(-2F, 2F, 3.8F);
 		this.greenOxygenTanks[1].mirror = true;
-		
+
 		this.orangeOxygenTanks[0] = new ModelRenderer(this.modelPlayer, 16, 0);
 		this.orangeOxygenTanks[0].addBox(-1.5F, 0F, -1.5F, 3, 7, 3, var1);
 		this.orangeOxygenTanks[0].setRotationPoint(2F, 2F, 3.8F);
@@ -166,7 +166,7 @@ public class GCCoreModelPlayer extends ModelPlayerBase
 		this.orangeOxygenTanks[1].addBox(-1.5F, 0F, -1.5F, 3, 7, 3, var1);
 		this.orangeOxygenTanks[1].setRotationPoint(-2F, 2F, 3.8F);
 		this.orangeOxygenTanks[1].mirror = true;
-		
+
 		this.redOxygenTanks[0] = new ModelRenderer(this.modelPlayer, 28, 0);
 		this.redOxygenTanks[0].addBox(-1.5F, 0F, -1.5F, 3, 7, 3, var1);
 		this.redOxygenTanks[0].setRotationPoint(2F, 2F, 3.8F);
@@ -175,7 +175,7 @@ public class GCCoreModelPlayer extends ModelPlayerBase
 		this.redOxygenTanks[1].addBox(-1.5F, 0F, -1.5F, 3, 7, 3, var1);
 		this.redOxygenTanks[1].setRotationPoint(-2F, 2F, 3.8F);
 		this.redOxygenTanks[1].mirror = true;
-		
+
     	super.afterLocalConstructing(var1);
     }
 
@@ -185,12 +185,10 @@ public class GCCoreModelPlayer extends ModelPlayerBase
     	final Class<?> entityClass = EntityClientPlayerMP.class;
     	final Render render = RenderManager.instance.getEntityClassRenderObject(entityClass);
     	final ModelBiped modelBipedMain = ((RenderPlayer)render).getModelBipedMainField();
-    	
+
     	if (var1 instanceof EntityPlayer && this.modelPlayer == modelBipedMain)
     	{
         	final EntityPlayer player = (EntityPlayer)var1;
-        	final int j;
-        	
         	boolean changed = false;
 
             for (final String name : ClientProxyCore.playersUsingParachutes)
@@ -201,16 +199,16 @@ public class GCCoreModelPlayer extends ModelPlayerBase
     				changed = true;
     			}
             }
-            
+
             if (!changed || ClientProxyCore.parachuteTextures.get(player.username).equals("none"))
             {
             	this.usingParachute = false;
             }
-            
+
             //
 
     		FMLClientHandler.instance().getClient().renderEngine.bindTexture(FMLClientHandler.instance().getClient().renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/entities/player.png"));
-    		
+
             changed = false;
 
             for (final String name : ClientProxyCore.playersWithOxygenMask)
@@ -221,19 +219,19 @@ public class GCCoreModelPlayer extends ModelPlayerBase
     				changed = true;
     			}
             }
-            
+
             if (!changed)
             {
             	this.wearingMask = false;
             }
-            
+
 			if (this.wearingMask)
 			{
 				this.oxygenMask.render(var7);
 			}
-			
+
 			//
-    		
+
             changed = false;
 
             for (final String name : ClientProxyCore.playersWithOxygenGear)
@@ -244,12 +242,12 @@ public class GCCoreModelPlayer extends ModelPlayerBase
     				changed = true;
     			}
             }
-            
+
             if (!changed)
             {
             	this.wearingGear = false;
             }
-            
+
 			if (this.wearingGear)
 			{
 				for (int i = 0; i < 7; i++)
@@ -260,9 +258,9 @@ public class GCCoreModelPlayer extends ModelPlayerBase
 	        		}
 	        	}
 			}
-			
+
 			//
-    		
+
             changed = false;
 
             for (final String name : ClientProxyCore.playersWithOxygenTankLeftRed)
@@ -273,19 +271,19 @@ public class GCCoreModelPlayer extends ModelPlayerBase
     				changed = true;
     			}
             }
-            
+
             if (!changed)
             {
             	this.wearingLeftTankRed = false;
             }
-            
+
 			if (this.wearingLeftTankRed)
 			{
 				this.redOxygenTanks[0].render(var7);
 			}
-			
+
 			//
-    		
+
             changed = false;
 
             for (final String name : ClientProxyCore.playersWithOxygenTankLeftOrange)
@@ -296,19 +294,19 @@ public class GCCoreModelPlayer extends ModelPlayerBase
     				changed = true;
     			}
             }
-            
+
             if (!changed)
             {
             	this.wearingLeftTankOrange = false;
             }
-            
+
 			if (this.wearingLeftTankOrange)
 			{
 				this.orangeOxygenTanks[0].render(var7);
 			}
-			
+
 			//
-    		
+
             changed = false;
 
             for (final String name : ClientProxyCore.playersWithOxygenTankLeftGreen)
@@ -319,19 +317,19 @@ public class GCCoreModelPlayer extends ModelPlayerBase
     				changed = true;
     			}
             }
-            
+
             if (!changed)
             {
             	this.wearingLeftTankGreen = false;
             }
-            
+
 			if (this.wearingLeftTankGreen)
 			{
 				this.greenOxygenTanks[0].render(var7);
 			}
-			
+
 			//
-    		
+
             changed = false;
 
             for (final String name : ClientProxyCore.playersWithOxygenTankRightRed)
@@ -342,19 +340,19 @@ public class GCCoreModelPlayer extends ModelPlayerBase
     				changed = true;
     			}
             }
-            
+
             if (!changed)
             {
             	this.wearingRightTankRed = false;
             }
-            
+
 			if (this.wearingRightTankRed)
 			{
 				this.redOxygenTanks[1].render(var7);
 			}
-			
+
 			//
-    		
+
             changed = false;
 
             for (final String name : ClientProxyCore.playersWithOxygenTankRightOrange)
@@ -365,19 +363,19 @@ public class GCCoreModelPlayer extends ModelPlayerBase
     				changed = true;
     			}
             }
-            
+
             if (!changed)
             {
             	this.wearingRightTankOrange = false;
             }
-            
+
 			if (this.wearingRightTankOrange)
 			{
 				this.orangeOxygenTanks[1].render(var7);
 			}
-			
+
 			//
-    		
+
             changed = false;
 
             for (final String name : ClientProxyCore.playersWithOxygenTankRightGreen)
@@ -388,19 +386,19 @@ public class GCCoreModelPlayer extends ModelPlayerBase
     				changed = true;
     			}
             }
-            
+
             if (!changed)
             {
             	this.wearingRightTankGreen = false;
             }
-            
+
 			if (this.wearingRightTankGreen)
 			{
 				this.greenOxygenTanks[1].render(var7);
 			}
-			
+
 			//
-			
+
         	if (this.usingParachute)
         	{
         		FMLClientHandler.instance().getClient().renderEngine.bindTexture(FMLClientHandler.instance().getClient().renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/entities/parachute/" + ClientProxyCore.parachuteTextures.get(player.username) + ".png"));
@@ -416,7 +414,7 @@ public class GCCoreModelPlayer extends ModelPlayerBase
         	}
 
         	this.loadDownloadableImageTexture(var1.skinUrl, var1.getTexture());
-        	
+
         	super.afterRender(var1, var2, var3, var4, var5, var6, var7);
     	}
     	else
@@ -458,9 +456,9 @@ public class GCCoreModelPlayer extends ModelPlayerBase
             this.modelPlayer.bipedLeftLeg.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float)Math.PI) * 1.4F * par2;
             this.modelPlayer.bipedRightLeg.rotateAngleY = 0.0F;
             this.modelPlayer.bipedLeftLeg.rotateAngleY = 0.0F;
-        	
+
         	float speedModifier = 0.0F;
-        	
+
         	if (par7Entity.onGround)
         	{
         		speedModifier = 0.1162F;
@@ -469,7 +467,7 @@ public class GCCoreModelPlayer extends ModelPlayerBase
         	{
         		speedModifier = 0.1162F * 2;
         	}
-            
+
             this.modelPlayer.bipedLeftLeg.rotateAngleX = MathHelper.cos(par1 * speedModifier + (float)Math.PI) * 1.45F * par2;
             this.modelPlayer.bipedRightLeg.rotateAngleX = MathHelper.cos(par1 * speedModifier) * 1.45F * par2;
             this.modelPlayer.bipedRightArm.rotateAngleX = MathHelper.cos(par1 * (speedModifier / 2) + (float)Math.PI) * 4.0F * par2 * 0.5F;
@@ -485,18 +483,18 @@ public class GCCoreModelPlayer extends ModelPlayerBase
                 this.modelPlayer.bipedLeftArm.rotateAngleX += -((float)Math.PI / 5F);
                 this.modelPlayer.bipedRightLeg.rotateAngleX = -((float)Math.PI * 2F / 5F);
                 this.modelPlayer.bipedLeftLeg.rotateAngleX = -((float)Math.PI * 2F / 5F);
-                this.modelPlayer.bipedRightLeg.rotateAngleY = ((float)Math.PI / 10F);
+                this.modelPlayer.bipedRightLeg.rotateAngleY = (float)Math.PI / 10F;
                 this.modelPlayer.bipedLeftLeg.rotateAngleY = -((float)Math.PI / 10F);
             }
 
             if (this.modelPlayer.heldItemLeft != 0)
             {
-                this.modelPlayer.bipedLeftArm.rotateAngleX = this.modelPlayer.bipedLeftArm.rotateAngleX * 0.5F - ((float)Math.PI / 10F) * (float)this.modelPlayer.heldItemLeft;
+                this.modelPlayer.bipedLeftArm.rotateAngleX = this.modelPlayer.bipedLeftArm.rotateAngleX * 0.5F - (float)Math.PI / 10F * this.modelPlayer.heldItemLeft;
             }
 
             if (this.modelPlayer.heldItemRight != 0)
             {
-                this.modelPlayer.bipedRightArm.rotateAngleX = this.modelPlayer.bipedRightArm.rotateAngleX * 0.5F - ((float)Math.PI / 10F) * (float)this.modelPlayer.heldItemRight;
+                this.modelPlayer.bipedRightArm.rotateAngleX = this.modelPlayer.bipedRightArm.rotateAngleX * 0.5F - (float)Math.PI / 10F * this.modelPlayer.heldItemRight;
             }
 
             this.modelPlayer.bipedRightArm.rotateAngleY = 0.0F;
@@ -520,8 +518,8 @@ public class GCCoreModelPlayer extends ModelPlayerBase
                 var8 *= var8;
                 var8 = 1.0F - var8;
                 var9 = MathHelper.sin(var8 * (float)Math.PI);
-                float var10 = MathHelper.sin(this.modelPlayer.onGround * (float)Math.PI) * -(this.modelPlayer.bipedHead.rotateAngleX - 0.7F) * 0.75F;
-                this.modelPlayer.bipedRightArm.rotateAngleX = (float)((double)this.modelPlayer.bipedRightArm.rotateAngleX - ((double)var9 * 1.2D + (double)var10));
+                final float var10 = MathHelper.sin(this.modelPlayer.onGround * (float)Math.PI) * -(this.modelPlayer.bipedHead.rotateAngleX - 0.7F) * 0.75F;
+                this.modelPlayer.bipedRightArm.rotateAngleX = (float)(this.modelPlayer.bipedRightArm.rotateAngleX - (var9 * 1.2D + var10));
                 this.modelPlayer.bipedRightArm.rotateAngleY += this.modelPlayer.bipedBody.rotateAngleY * 2.0F;
                 this.modelPlayer.bipedRightArm.rotateAngleZ = MathHelper.sin(this.modelPlayer.onGround * (float)Math.PI) * -0.4F;
             }
@@ -582,10 +580,10 @@ public class GCCoreModelPlayer extends ModelPlayerBase
 	public void afterSetRotationAngles(float var1, float var2, float var3, float var4, float var5, float var6, Entity var7)
     {
     	boolean holdingSpaceship = false;
-    	
+
         this.oxygenMask.rotateAngleY = var4 / (180F / (float)Math.PI);
         this.oxygenMask.rotateAngleX = var5 / (180F / (float)Math.PI);
-        
+
     	if (this.usingParachute)
     	{
         	this.parachute[0].rotateAngleZ = (float) (30F * (Math.PI / 180F));
@@ -607,7 +605,7 @@ public class GCCoreModelPlayer extends ModelPlayerBase
         	this.modelPlayer.bipedRightArm.rotateAngleX += (float) Math.PI;
         	this.modelPlayer.bipedRightArm.rotateAngleZ -= (float) Math.PI / 10;
     	}
-    	
+
     	this.greenOxygenTanks[0].rotateAngleX = this.modelPlayer.bipedBody.rotateAngleX;
     	this.greenOxygenTanks[0].rotateAngleY = this.modelPlayer.bipedBody.rotateAngleY;
     	this.greenOxygenTanks[0].rotateAngleZ = this.modelPlayer.bipedBody.rotateAngleZ;
@@ -626,20 +624,20 @@ public class GCCoreModelPlayer extends ModelPlayerBase
     	this.redOxygenTanks[1].rotateAngleX = this.modelPlayer.bipedBody.rotateAngleX;
     	this.redOxygenTanks[1].rotateAngleY = this.modelPlayer.bipedBody.rotateAngleY;
     	this.redOxygenTanks[1].rotateAngleZ = this.modelPlayer.bipedBody.rotateAngleZ;
-        
+
         if (var7 instanceof EntityPlayer)
         {
-        	EntityPlayer player = (EntityPlayer) var7;
-        	
+        	final EntityPlayer player = (EntityPlayer) var7;
+
         	if (player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() instanceof GCCoreItemSpaceship)
         	{
         		holdingSpaceship = true;
-        		
+
             	this.modelPlayer.bipedLeftArm.rotateAngleX = 0;
             	this.modelPlayer.bipedLeftArm.rotateAngleZ = 0;
             	this.modelPlayer.bipedRightArm.rotateAngleX = 0;
             	this.modelPlayer.bipedRightArm.rotateAngleZ = 0;
-            	
+
             	this.modelPlayer.bipedLeftArm.rotateAngleX += (float) Math.PI + 0.3;
             	this.modelPlayer.bipedLeftArm.rotateAngleZ += (float) Math.PI / 10;
             	this.modelPlayer.bipedRightArm.rotateAngleX += (float) Math.PI + 0.3;
@@ -654,8 +652,8 @@ public class GCCoreModelPlayer extends ModelPlayerBase
                 this.modelPlayer.bipedHeadwear.rotationPointY = 1.0F;
         	}
         }
-    	
-    	try 
+
+    	try
     	{
 			if (EntityCreeper.class.forName("mod_SmartMoving") != null || EntityCreeper.class.forName("net.minecraft.src.mod_SmartMoving") != null)
 			{
@@ -663,16 +661,15 @@ public class GCCoreModelPlayer extends ModelPlayerBase
 				return;
 			}
 		}
-    	catch (ClassNotFoundException e1) 
+    	catch (final ClassNotFoundException e1)
     	{
 		}
-    	
+
     	if (!var7.onGround && var7.worldObj.provider instanceof IGalacticraftWorldProvider && !holdingSpaceship)
     	{
     	}
-    	
-        float var8;
-        float var9;
+
+
 
 //        if (this.modelPlayer.onGround > -9990.0F)
 //        {
@@ -716,7 +713,7 @@ public class GCCoreModelPlayer extends ModelPlayerBase
 //        	this.modelPlayer.bipedLeftLeg.rotateAngleX = (float) (ship.rotationYaw * (Math.PI / 180F));
 //        	this.modelPlayer.bipedLeftLeg.rotateAngleZ = (float) (ship.rotationPitch * (Math.PI / 180F));
 //    	}
-    	
+
 //    	if (!(FMLClientHandler.instance().getClient().currentScreen instanceof GuiInventory) && !(FMLClientHandler.instance().getClient().currentScreen instanceof GCCoreGuiTankRefill))
 //    	{
 //            this.oxygenMask.rotationPointX = this.modelPlayer.bipedHeadwear.rotationPointX;
@@ -726,17 +723,17 @@ public class GCCoreModelPlayer extends ModelPlayerBase
 //            this.oxygenMask.rotateAngleY = this.modelPlayer.bipedHeadwear.rotateAngleY;
 //            this.oxygenMask.rotateAngleZ = this.modelPlayer.bipedHeadwear.rotateAngleZ;
 //    	}
-    	
+
 		final List l = player.worldObj.getEntitiesWithinAABBExcludingEntity(player, AxisAlignedBB.getAABBPool().addOrModifyAABBInPool(player.posX - 20, 0, player.posZ - 20, player.posX + 20, 200, player.posZ + 20));
-	
+
 		for (int i = 0; i < l.size(); i++)
 		{
 			final Entity e = (Entity) l.get(i);
-			
+
 			if (e instanceof GCCoreEntitySpaceship)
 			{
 				final GCCoreEntitySpaceship ship = (GCCoreEntitySpaceship)e;
-				
+
 				if (ship.riddenByEntity != null && !((EntityPlayer)ship.riddenByEntity).username.equals(player.username) && (ship.getLaunched() == 1 || ship.getTimeUntilLaunch() < 390))
 				{
 			    	this.modelPlayer.bipedRightArm.rotateAngleZ -= (float) (Math.PI / 8) + MathHelper.sin(var3 * 0.9F) * 0.2F;
@@ -744,11 +741,12 @@ public class GCCoreModelPlayer extends ModelPlayerBase
 				}
 			}
 		}
-		
+
     	super.afterSetRotationAngles(var1, var2, var3, var4, var5, var6, var7);
     }
 
-    public void renderCloak(float var1)
+    @Override
+	public void renderCloak(float var1)
     {
     	super.renderCloak(var1);
     }

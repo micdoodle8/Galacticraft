@@ -7,7 +7,7 @@ import net.minecraft.util.MathHelper;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -46,7 +46,7 @@ public class GCCoreModelSkeleton extends ModelBase
 	{
 		this(0.0F);
 	}
-	
+
 	public GCCoreModelSkeleton(float par1)
 	{
 		this.textureWidth = 128;
@@ -223,7 +223,7 @@ public class GCCoreModelSkeleton extends ModelBase
         this.bipedLeftLeg.render(f5);
         this.bipedHeadwear.render(f5);
 	}
-	
+
 	private void setRotation(ModelRenderer model, float x, float y, float z)
 	{
 		model.rotateAngleX = x;
@@ -297,11 +297,11 @@ public class GCCoreModelSkeleton extends ModelBase
         this.bipedRightArm.rotateAngleX += MathHelper.sin(par3 * 0.067F) * 0.05F;
         this.bipedLeftArm.rotateAngleX -= MathHelper.sin(par3 * 0.067F) * 0.05F;
 
-        final float var7a = MathHelper.sin(this.onGround * (float)Math.PI);
-        final float var8a = MathHelper.sin((1.0F - (1.0F - this.onGround) * (1.0F - this.onGround)) * (float)Math.PI);
+        MathHelper.sin(this.onGround * (float)Math.PI);
+        MathHelper.sin((1.0F - (1.0F - this.onGround) * (1.0F - this.onGround)) * (float)Math.PI);
 
         this.aimedBow = true;
-        
+
         if (this.aimedBow)
         {
             var7 = 0.0F;

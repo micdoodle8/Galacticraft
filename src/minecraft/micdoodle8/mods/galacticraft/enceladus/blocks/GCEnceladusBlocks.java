@@ -11,14 +11,14 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
 public class GCEnceladusBlocks
 {
 	public static Block block;
-	
+
 	public static void initBlocks()
 	{
 		GCEnceladusBlocks.block = 										new GCEnceladusBlock			(GCEnceladusConfigManager.idBlock, 					0)						.setHardness(1.7F)																				.setCreativeTab(GalacticraftCore.galacticraftTab)																.setBlockName("BlockEnceladus");
@@ -28,7 +28,7 @@ public class GCEnceladusBlocks
 	public static void setHarvestLevels()
 	{
 	}
-	
+
 	public static void registerBlocks()
 	{
 	}
@@ -39,12 +39,12 @@ public class GCEnceladusBlocks
 		GCEnceladusBlocks.addNameWithMetadata("tile.BlockEnceladus.dirt.name");
 		GCEnceladusBlocks.addNameWithMetadata("tile.BlockEnceladus.stone.name");
 	}
-	
+
 	private static void addName(Block block)
 	{
 		LanguageRegistry.instance().addStringLocalization(block.getBlockName() + ".name", ClientProxyCallisto.lang.get(block.getBlockName() + ".name"));
 	}
-	
+
 	private static void addNameWithMetadata(String string)
 	{
 		LanguageRegistry.instance().addStringLocalization(string, ClientProxyEnceladus.lang.get(string));

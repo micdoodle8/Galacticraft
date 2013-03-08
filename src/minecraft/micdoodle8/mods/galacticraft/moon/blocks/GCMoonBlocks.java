@@ -1,13 +1,10 @@
 package micdoodle8.mods.galacticraft.moon.blocks;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.moon.GCMoonConfigManager;
-import micdoodle8.mods.galacticraft.moon.client.ClientProxyMoon;
 import micdoodle8.mods.galacticraft.moon.items.GCMoonItemBlock;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -27,7 +24,7 @@ public class GCMoonBlocks
 	{
 		// TODO
 	}
-	
+
 	public static void registerBlocks()
 	{
 		GameRegistry.registerBlock(GCMoonBlocks.cheeseBlock);
@@ -43,12 +40,12 @@ public class GCMoonBlocks
 //		GCMoonBlocks.addNameWithMetadata("tile.moonBlock.ironmoon.name");
 //		GCMoonBlocks.addNameWithMetadata("tile.moonBlock.cheesestone.name");
 	}
-	
+
 //	private static void addName(Block block)
 //	{
 //		LanguageRegistry.instance().addStringLocalization(block.getBlockName() + ".name", ClientProxyMoon.lang.get(block.getBlockName() + ".name"));
 //	}
-//	
+//
 //	private static void addNameWithMetadata(String string)
 //	{
 //		LanguageRegistry.instance().addStringLocalization(string, ClientProxyMoon.lang.get(string));

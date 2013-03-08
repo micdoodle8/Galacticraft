@@ -18,7 +18,7 @@ public class ClientProxyEuropa implements IGalacticraftSubModClient
 	{
 		return "Europa";
 	}
-	
+
 	public void preInit(FMLPreInitializationEvent event)
 	{
 	}

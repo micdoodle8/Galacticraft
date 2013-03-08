@@ -8,13 +8,12 @@ import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreBlockAirLockWall extends BlockBreakable
 {
-    public GCCoreBlockAirLockWall(int par1, int par2) 
+    public GCCoreBlockAirLockWall(int par1, int par2)
     {
         super(par1, par2, Material.portal, false);
         this.setTickRandomly(true);
@@ -86,14 +85,14 @@ public class GCCoreBlockAirLockWall extends BlockBreakable
 
             if (var9 == 2 && par1World.getBlockId(par2, var8 + var9, par4) == GCCoreBlocks.airLockFrame.blockID)
             {
-                boolean var10 = par1World.getBlockId(par2 - 1, par3, par4) == this.blockID || par1World.getBlockId(par2 + 1, par3, par4) == this.blockID;
-                boolean var11 = par1World.getBlockId(par2, par3, par4 - 1) == this.blockID || par1World.getBlockId(par2, par3, par4 + 1) == this.blockID;
+                final boolean var10 = par1World.getBlockId(par2 - 1, par3, par4) == this.blockID || par1World.getBlockId(par2 + 1, par3, par4) == this.blockID;
+                final boolean var11 = par1World.getBlockId(par2, par3, par4 - 1) == this.blockID || par1World.getBlockId(par2, par3, par4 + 1) == this.blockID;
 
-                TileEntity te = par1World.getBlockTileEntity(par2, var8 + var9, par4);
-                
+                final TileEntity te = par1World.getBlockTileEntity(par2, var8 + var9, par4);
+
         		if (te instanceof GCCoreTileEntityAirLock && ((GCCoreTileEntityAirLock) te).otherAirLockBlocks.size() > 8)
         		{
-        			
+
         		}
         		else
         		{
@@ -129,7 +128,7 @@ public class GCCoreBlockAirLockWall extends BlockBreakable
     {
         return 0;
     }
-    
+
     @Override
 	public String getTextureFile()
 	{

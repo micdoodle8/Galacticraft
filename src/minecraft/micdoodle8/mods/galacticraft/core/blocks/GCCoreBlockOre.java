@@ -14,14 +14,14 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
 public class GCCoreBlockOre extends Block implements IDetectableResource
 {
 	// Copper: 0, Aluminum: 1, Titanium: 2.
-	
+
 	public GCCoreBlockOre(int i, int j)
 	{
 		super(i, j, Material.rock);
@@ -84,7 +84,7 @@ public class GCCoreBlockOre extends Block implements IDetectableResource
             par3List.add(new ItemStack(par1, 1, var4));
         }
     }
-	
+
 	@Override
 	public String getTextureFile()
 	{

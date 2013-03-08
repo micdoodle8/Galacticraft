@@ -14,7 +14,7 @@ import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -53,9 +53,9 @@ public class GCCoreRenderBlockTreasureChest implements ISimpleBlockRenderingHand
     {
         return this.renderID;
     }
-    
+
     private final GCCoreTileEntityTreasureChest chest = new GCCoreTileEntityTreasureChest();
-    
+
     public void renderChest(Block par1Block, int par2, float par3)
     {
         if (par1Block.blockID == GCCoreBlocks.treasureChest.blockID)

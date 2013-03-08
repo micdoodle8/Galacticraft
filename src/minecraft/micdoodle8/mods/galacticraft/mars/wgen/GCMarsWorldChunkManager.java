@@ -16,7 +16,7 @@ import net.minecraft.world.gen.layer.IntCache;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */

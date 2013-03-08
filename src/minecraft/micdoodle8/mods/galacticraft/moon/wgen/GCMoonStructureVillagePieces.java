@@ -8,8 +8,6 @@ import java.util.Random;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
-import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.common.registry.VillagerRegistry;
 
 public class GCMoonStructureVillagePieces
 {
@@ -152,13 +150,9 @@ public class GCMoonStructureVillagePieces
 
             if (var8 != null)
             {
-                final int var9 = (var8.getBoundingBox().minX + var8.getBoundingBox().maxX) / 2;
-                final int var10 = (var8.getBoundingBox().minZ + var8.getBoundingBox().maxZ) / 2;
                 final int var11 = var8.getBoundingBox().maxX - var8.getBoundingBox().minX;
                 final int var12 = var8.getBoundingBox().maxZ - var8.getBoundingBox().minZ;
-                final int var13 = var11 > var12 ? var11 : var12;
-
-//                if (par0ComponentVillageStartPiece.getWorldChunkManager().areBiomesViable(var9, var10, var13 / 2 + 4, GCMoonMapGenVillage.villageSpawnBiomes))
+                //                if (par0ComponentVillageStartPiece.getWorldChunkManager().areBiomesViable(var9, var10, var13 / 2 + 4, GCMoonMapGenVillage.villageSpawnBiomes))
                 {
                     par1List.add(var8);
                     par0ComponentVillageStartPiece.field_74932_i.add(var8);
@@ -187,13 +181,9 @@ public class GCMoonStructureVillagePieces
             if (var8 != null && var8.minY > 10)
             {
                 final GCMoonComponentVillagePathGen var9 = new GCMoonComponentVillagePathGen(par0ComponentVillageStartPiece, par7, par2Random, var8, par6);
-                final int var10 = (var9.getBoundingBox().minX + var9.getBoundingBox().maxX) / 2;
-                final int var11 = (var9.getBoundingBox().minZ + var9.getBoundingBox().maxZ) / 2;
                 final int var12 = var9.getBoundingBox().maxX - var9.getBoundingBox().minX;
                 final int var13 = var9.getBoundingBox().maxZ - var9.getBoundingBox().minZ;
-                final int var14 = var12 > var13 ? var12 : var13;
-
-//                if (par0ComponentVillageStartPiece.getWorldChunkManager().areBiomesViable(var10, var11, var14 / 2 + 4, GCMoonMapGenVillage.villageSpawnBiomes))
+                //                if (par0ComponentVillageStartPiece.getWorldChunkManager().areBiomesViable(var10, var11, var14 / 2 + 4, GCMoonMapGenVillage.villageSpawnBiomes))
                 {
                     par1List.add(var9);
                     par0ComponentVillageStartPiece.field_74930_j.add(var9);

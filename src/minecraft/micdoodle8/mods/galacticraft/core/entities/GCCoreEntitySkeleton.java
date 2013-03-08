@@ -24,7 +24,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -48,14 +48,14 @@ public class GCCoreEntitySkeleton extends EntitySkeleton
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 16.0F, 0, true));
     }
-    
+
 	@Override
     public void onUpdate()
     {
         this.motionY += 0.06F;
-        
+
     	super.onUpdate();
-    	
+
     	this.fallDistance = 0;
     }
 

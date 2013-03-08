@@ -7,59 +7,57 @@ import micdoodle8.mods.galacticraft.core.perlin.NoiseModule;
 
 public class Billowed extends NoiseModule {
 
-	private FishyNoise noiseGen;
-	private double offsetX;
-	private double offsetY;
-	private double offsetZ;
-	private int numOctaves;
-	private double persistance;
-	
+	private final FishyNoise noiseGen;
+	private final double offsetX;
+	private final double offsetY;
+	private final double offsetZ;
+	private final int numOctaves;
+	private final double persistance;
+
 	public Billowed(long seed, int nOctaves, double p)
 	{
-		numOctaves = nOctaves;
-		persistance = p;
-		Random rand = new Random(seed);
-		offsetX = (rand.nextDouble() / 2) + 0.01D;
-		offsetY = (rand.nextDouble() / 2) + 0.01D;
-		offsetZ = (rand.nextDouble() / 2) + 0.01D;
-		noiseGen = new FishyNoise(seed);
+		this.numOctaves = nOctaves;
+		this.persistance = p;
+		final Random rand = new Random(seed);
+		this.offsetX = rand.nextDouble() / 2 + 0.01D;
+		this.offsetY = rand.nextDouble() / 2 + 0.01D;
+		this.offsetZ = rand.nextDouble() / 2 + 0.01D;
+		this.noiseGen = new FishyNoise(seed);
 	}
-	
+
 	@Override
 	public double getNoise(double i) {
-		return getNoise(i, 0.0D);
+		return this.getNoise(i, 0.0D);
 	}
 
 	@Override
 	public double getNoise(double i, double j) {
-		i *= frequency;
-		j *= frequency;
+		i *= this.frequency;
+		j *= this.frequency;
 		double val = 0;
-		double curAmplitude = amplitude;
-		for(int n = 0; n < numOctaves; n++)
+		double curAmplitude = this.amplitude;
+		for(int n = 0; n < this.numOctaves; n++)
 		{
-			val += Math.abs(noiseGen.noise2d(i + offsetX, j + offsetY) * curAmplitude);
+			val += Math.abs(this.noiseGen.noise2d(i + this.offsetX, j + this.offsetY) * curAmplitude);
 			i *= 2;
 			j *= 2;
-			curAmplitude *= persistance;
+			curAmplitude *= this.persistance;
 		}
 		return val;
 	}
 
 	@Override
 	public double getNoise(double i, double j, double k) {
-		i *= frequency;
-		j *= frequency;
-		k *= frequency;
+		i *= this.frequency;
+		j *= this.frequency;
+		k *= this.frequency;
 		double val = 0;
-		double curAmplitude = amplitude;
-		for(int n = 0; n < numOctaves; n++)
+		for(int n = 0; n < this.numOctaves; n++)
 		{
-			val += Math.abs(noiseGen.noise3d(i + offsetX, j + offsetY, k + offsetZ) * amplitude);
+			val += Math.abs(this.noiseGen.noise3d(i + this.offsetX, j + this.offsetY, k + this.offsetZ) * this.amplitude);
 			i *= 2;
 			j *= 2;
 			k *= 2;
-			curAmplitude *= persistance;
 		}
 		return val;
 	}

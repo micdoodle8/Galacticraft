@@ -16,7 +16,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -81,7 +81,7 @@ public class GCCoreEntityLaunchFlameFX extends EntityFX
         this.setParticleTextureIndex(7 - this.particleAge * 8 / this.particleMaxAge);
         this.motionY += 0.001D;
         this.moveEntity(this.motionX, this.motionY, this.motionZ);
-        
+
         this.particleGreen += 0.01F;
 
         if (this.posY == this.prevPosY)
@@ -93,22 +93,22 @@ public class GCCoreEntityLaunchFlameFX extends EntityFX
         this.motionX *= 0.9599999785423279D;
         this.motionY *= 0.9599999785423279D;
         this.motionZ *= 0.9599999785423279D;
-        
 
-        List var3 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(1.0D, 0.5D, 1.0D));
+
+        final List var3 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(1.0D, 0.5D, 1.0D));
 
         if (var3 != null)
         {
             for (int var4 = 0; var4 < var3.size(); ++var4)
             {
-                Entity var5 = (Entity)var3.get(var4);
-                
+                final Entity var5 = (Entity)var3.get(var4);
+
                 if (var5 instanceof EntityLiving)
                 {
                     if (!var5.isDead && !var5.isBurning() && !var5.equals(FMLClientHandler.instance().getClient().thePlayer))
                     {
                     	var5.setFire(3);
-                    	Object[] toSend = {var5.entityId};
+                    	final Object[] toSend = {var5.entityId};
                     	PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 10, toSend));
                     }
                 }

@@ -34,8 +34,6 @@ public class GCCoreWorldGenTaiga2 extends WorldGenerator
 
             for (var11 = par4; var11 <= par4 + 1 + var6 && var10; ++var11)
             {
-                final boolean var12 = true;
-
                 if (var11 - par4 < var7)
                 {
                     var21 = 0;
@@ -76,9 +74,9 @@ public class GCCoreWorldGenTaiga2 extends WorldGenerator
             {
                 var11 = par1World.getBlockId(par3, par4 - 1, par5);
                 var10a = par1World.getBlockMetadata(par3, par4 - 1, par5);
-                
+
                 int waterBlocksNearby = 0;
-                
+
                 for (int i = -4; i < 5; i++)
                 {
                     for (int j = -4; j < 5; j++)
@@ -89,8 +87,8 @@ public class GCCoreWorldGenTaiga2 extends WorldGenerator
                         }
                     }
                 }
-                
-                if (Block.blocksList[var11] != null && (Block.blocksList[var8] instanceof IPlantableBlock || (Block.blocksList[var8] instanceof IPlantableMetadataBlock && ((IPlantableMetadataBlock) Block.blocksList[var8]).isPlantable(var10a))) && (Block.blocksList[var8] instanceof IPlantableBlock && (waterBlocksNearby >= ((IPlantableBlock)Block.blocksList[var8]).requiredLiquidBlocksNearby()) || (Block.blocksList[var8] instanceof IPlantableMetadataBlock && waterBlocksNearby >= ((IPlantableMetadataBlock)Block.blocksList[var8]).requiredLiquidBlocksNearby())))
+
+                if (Block.blocksList[var11] != null && (Block.blocksList[var8] instanceof IPlantableBlock || Block.blocksList[var8] instanceof IPlantableMetadataBlock && ((IPlantableMetadataBlock) Block.blocksList[var8]).isPlantable(var10a)) && (Block.blocksList[var8] instanceof IPlantableBlock && waterBlocksNearby >= ((IPlantableBlock)Block.blocksList[var8]).requiredLiquidBlocksNearby() || Block.blocksList[var8] instanceof IPlantableMetadataBlock && waterBlocksNearby >= ((IPlantableMetadataBlock)Block.blocksList[var8]).requiredLiquidBlocksNearby()))
                 {
                     var21 = par2Random.nextInt(2);
                     var13 = 1;

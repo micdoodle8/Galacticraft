@@ -19,11 +19,11 @@ public class GCCoreBlockRendererRefinery implements ISimpleBlockRenderingHandler
     {
         this.renderID = var1;
     }
-    
+
 	public void renderNasaBench(RenderBlocks renderBlocks, IBlockAccess iblockaccess, Block par1Block, int par2, int par3, int par4)
 	{
 	}
-    
+
     private final GCCoreTileEntityRefinery table = new GCCoreTileEntityRefinery();
 
 	@Override

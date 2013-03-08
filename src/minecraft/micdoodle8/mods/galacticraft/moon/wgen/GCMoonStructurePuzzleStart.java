@@ -1,11 +1,8 @@
 package micdoodle8.mods.galacticraft.moon.wgen;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Random;
 
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.StructureStart;
 
 class GCMoonStructurePuzzleStart extends StructureStart

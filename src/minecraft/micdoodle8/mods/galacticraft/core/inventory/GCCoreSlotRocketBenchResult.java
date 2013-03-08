@@ -23,7 +23,7 @@ public class GCCoreSlotRocketBenchResult extends Slot
     {
         return false;
     }
-    
+
     @Override
 	public ItemStack decrStackSize(int par1)
     {
@@ -48,7 +48,7 @@ public class GCCoreSlotRocketBenchResult extends Slot
         par1ItemStack.onCrafting(this.thePlayer.worldObj, this.thePlayer, this.field_48436_g);
         this.field_48436_g = 0;
     }
-    
+
     @Override
     public void onPickupFromSlot(EntityPlayer par1EntityPlayer, ItemStack par1ItemStack)
     {

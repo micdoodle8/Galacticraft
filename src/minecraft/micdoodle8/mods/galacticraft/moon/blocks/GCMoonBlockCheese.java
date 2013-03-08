@@ -220,7 +220,7 @@ public class GCMoonBlockCheese extends Block
     {
         return Item.cake.itemID;
     }
-	
+
 	@Override
 	public String getTextureFile()
 	{

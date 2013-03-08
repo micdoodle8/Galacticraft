@@ -16,7 +16,7 @@ public class GCIoBlockPyroxene extends Block
     public GCIoBlockPyroxene(int par1, Material par3Material)
     {
         super(par1, 6, par3Material);
-        
+
         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.5F, 1.0F);
     }
 
@@ -89,7 +89,7 @@ public class GCIoBlockPyroxene extends Block
     {
         return super.getDamageValue(par1World, par2, par3, par4);
     }
-	
+
 	@Override
 	public String getTextureFile()
 	{

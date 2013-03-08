@@ -6,7 +6,6 @@ import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
 
 public class GCMoonComponentPuzzle extends GCMoonComponent
 {
@@ -26,16 +25,17 @@ public class GCMoonComponentPuzzle extends GCMoonComponent
      * second Part of Structure generating, this for example places Spiderwebs, Mob Spawners, it closes Mineshafts at
      * the end, it adds Fences...
      */
-    public boolean addComponentParts(World var1, Random var2, StructureBoundingBox var3)
+    @Override
+	public boolean addComponentParts(World var1, Random var2, StructureBoundingBox var3)
     {
-        GCMoonPuzzle var4 = new GCMoonPuzzle(MSIZE, MSIZE);
+        final GCMoonPuzzle var4 = new GCMoonPuzzle(MSIZE, MSIZE);
         var4.oddBias = 2;
         var4.wallBlockID = GCMoonBlocks.blockMoon.blockID;
         var4.wallBlockMeta = 14;
         var4.type = 4;
         var4.tall = 3;
         var4.roots = 3;
-        var4.setSeed(var1.getSeed() + (long)(this.boundingBox.minX * this.boundingBox.minZ));
+        var4.setSeed(var1.getSeed() + (this.boundingBox.minX * this.boundingBox.minZ));
         int var5;
 
         for (var5 = 0; var5 <= DIAMETER; ++var5)
@@ -58,7 +58,7 @@ public class GCMoonComponentPuzzle extends GCMoonComponent
         }
 
         var5 = MSIZE / 3;
-        int[] var10 = new int[var5 * 2];
+        final int[] var10 = new int[var5 * 2];
 
         for (int var7 = 0; var7 < var5; ++var7)
         {
@@ -94,8 +94,8 @@ public class GCMoonComponentPuzzle extends GCMoonComponent
         {
             for (int var4 = 0; var4 < var3.length / 2; ++var4)
             {
-                int var5 = var3[var4 * 2];
-                int var6 = var3[var4 * 2 + 1];
+                final int var5 = var3[var4 * 2];
+                final int var6 = var3[var4 * 2 + 1];
 
                 if ((var5 != 0 || var6 != 0) && Math.abs(var1 - var5) < 3 && Math.abs(var2 - var6) < 3)
                 {
@@ -121,16 +121,16 @@ public class GCMoonComponentPuzzle extends GCMoonComponent
 
     void decorate3x3Room(World var1, int var2, int var3, StructureBoundingBox var4)
     {
-        Random var5 = new Random(var1.getSeed() ^ (long)(var2 + var3));
+        final Random var5 = new Random(var1.getSeed() ^ (var2 + var3));
 
         this.roomSpawner(var1, var5, var2, var3, 8, var4);
     }
 
     private void roomSpawner(World var1, Random var2, int var3, int var4, int var5, StructureBoundingBox var6)
     {
-        int var7 = var3 + var2.nextInt(var5) - var5 / 2;
-        int var8 = var4 + var2.nextInt(var5) - var5 / 2;
-        String var9 = "Evolved Skeleton";
+        final int var7 = var3 + var2.nextInt(var5) - var5 / 2;
+        final int var8 = var4 + var2.nextInt(var5) - var5 / 2;
+        final String var9 = "Evolved Skeleton";
 
         this.placeSpawnerAtCurrentPosition(var1, var2, var7, FLOOR_LEVEL, var8, var9, var6);
     }

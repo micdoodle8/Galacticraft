@@ -12,7 +12,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -20,7 +20,7 @@ public class GCIoBlocks
 {
 	public static Block block;
 	public static Block blockPyroxene;
-	
+
 	public static void initBlocks()
 	{
 		GCIoBlocks.block = 										new GCIoBlock				(GCIoConfigManager.idBlock, 					0)						.setHardness(1.7F)																				.setCreativeTab(GalacticraftCore.galacticraftTab)																.setBlockName("BlockIo");
@@ -31,7 +31,7 @@ public class GCIoBlocks
 	public static void setHarvestLevels()
 	{
 	}
-	
+
 	public static void registerBlocks()
 	{
 		GameRegistry.registerBlock(GCIoBlocks.blockPyroxene);
@@ -45,12 +45,12 @@ public class GCIoBlocks
 		GCIoBlocks.addNameWithMetadata("tile.BlockIo.sulfur.name");
 		GCIoBlocks.addNameWithMetadata("tile.BlockIo.other.name");
 	}
-	
+
 	private static void addName(Block block)
 	{
 		LanguageRegistry.instance().addStringLocalization(block.getBlockName() + ".name", ClientProxyIo.lang.get(block.getBlockName() + ".name"));
 	}
-	
+
 	private static void addNameWithMetadata(String string)
 	{
 		LanguageRegistry.instance().addStringLocalization(string, ClientProxyIo.lang.get(string));

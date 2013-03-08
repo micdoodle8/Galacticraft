@@ -14,7 +14,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -41,9 +41,9 @@ public class GCCoreEntitySpider extends EntitySpider
 	public void onUpdate()
     {
         this.motionY += 0.06F;
-        
+
     	super.onUpdate();
-    	
+
     	this.fallDistance = 0;
 
         if (!this.worldObj.isRemote)
@@ -200,7 +200,8 @@ public class GCCoreEntitySpider extends EntitySpider
     @Override
 	public void setInWeb() {}
 
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
 
     /**
      * How large the spider should be scaled.
@@ -229,7 +230,8 @@ public class GCCoreEntitySpider extends EntitySpider
      * Returns true if the WatchableObject (Byte) is 0x01 otherwise returns false. The WatchableObject is updated using
      * setBesideClimableBlock.
      */
-    public boolean isBesideClimbableBlock()
+    @Override
+	public boolean isBesideClimbableBlock()
     {
         return (this.dataWatcher.getWatchableObjectByte(16) & 1) != 0;
     }
@@ -238,7 +240,8 @@ public class GCCoreEntitySpider extends EntitySpider
      * Updates the WatchableObject (Byte) created in entityInit(), setting it to 0x01 if par1 is true or 0x00 if it is
      * false.
      */
-    public void setBesideClimbableBlock(boolean par1)
+    @Override
+	public void setBesideClimbableBlock(boolean par1)
     {
         byte var2 = this.dataWatcher.getWatchableObjectByte(16);
 

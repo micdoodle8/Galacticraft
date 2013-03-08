@@ -37,7 +37,7 @@ public abstract class GCCoreMapGenStructure extends GCCoreMapGenBase
         while (var8.hasNext())
         {
         	final StructureStart var9 = (StructureStart)var8.next();
-        	
+
             if (var9 != null && var9.isSizeableStructure() && var9.getBoundingBox().intersectsWith(var5, var6, var5 + 15, var6 + 15))
             {
                 var9.generateStructure(par1World, par2Random, new StructureBoundingBox(var5, var6, var5 + 15, var6 + 15));
@@ -47,7 +47,7 @@ public abstract class GCCoreMapGenStructure extends GCCoreMapGenBase
 
         return var7;
     }
-    
+
     protected List getCoordList()
     {
         return null;

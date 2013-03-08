@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import micdoodle8.mods.galacticraft.core.client.model.block.GCCoreModelFan;
 import micdoodle8.mods.galacticraft.core.client.model.block.GCCoreModelRefinery;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import net.minecraft.block.Block;
@@ -25,13 +24,13 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GCCoreTileEntityRefinery extends TileEntity implements IInventory, ISidedInventory
 {
     private ItemStack[] refineryItemStacks = new ItemStack[4];
-    
+
     public GCCoreModelRefinery modelRefinery = new GCCoreModelRefinery();
-    
+
     public boolean isActive;
 
     public int refineryBurnTime = 0;
-    
+
     public int currentItemBurnTime = 0;
     public int currentItemBurnTime2 = 0;
 
@@ -48,17 +47,20 @@ public class GCCoreTileEntityRefinery extends TileEntity implements IInventory, 
       	}
   	}
 
-    public int getSizeInventory()
+    @Override
+	public int getSizeInventory()
     {
         return this.refineryItemStacks.length;
     }
 
-    public ItemStack getStackInSlot(int par1)
+    @Override
+	public ItemStack getStackInSlot(int par1)
     {
         return this.refineryItemStacks[par1];
     }
 
-    public ItemStack decrStackSize(int par1, int par2)
+    @Override
+	public ItemStack decrStackSize(int par1, int par2)
     {
         if (this.refineryItemStacks[par1] != null)
         {
@@ -88,11 +90,12 @@ public class GCCoreTileEntityRefinery extends TileEntity implements IInventory, 
         }
     }
 
-    public ItemStack getStackInSlotOnClosing(int par1)
+    @Override
+	public ItemStack getStackInSlotOnClosing(int par1)
     {
         if (this.refineryItemStacks[par1] != null)
         {
-            ItemStack var2 = this.refineryItemStacks[par1];
+            final ItemStack var2 = this.refineryItemStacks[par1];
             this.refineryItemStacks[par1] = null;
             return var2;
         }
@@ -102,7 +105,8 @@ public class GCCoreTileEntityRefinery extends TileEntity implements IInventory, 
         }
     }
 
-    public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
+    @Override
+	public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
     {
         this.refineryItemStacks[par1] = par2ItemStack;
 
@@ -112,21 +116,23 @@ public class GCCoreTileEntityRefinery extends TileEntity implements IInventory, 
         }
     }
 
-    public String getInvName()
+    @Override
+	public String getInvName()
     {
         return "refinery";
     }
 
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound)
+    @Override
+	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readFromNBT(par1NBTTagCompound);
-        NBTTagList var2 = par1NBTTagCompound.getTagList("Items");
+        final NBTTagList var2 = par1NBTTagCompound.getTagList("Items");
         this.refineryItemStacks = new ItemStack[this.getSizeInventory()];
 
         for (int var3 = 0; var3 < var2.tagCount(); ++var3)
         {
-            NBTTagCompound var4 = (NBTTagCompound)var2.tagAt(var3);
-            byte var5 = var4.getByte("Slot");
+            final NBTTagCompound var4 = (NBTTagCompound)var2.tagAt(var3);
+            final byte var5 = var4.getByte("Slot");
 
             if (var5 >= 0 && var5 < this.refineryItemStacks.length)
             {
@@ -140,18 +146,19 @@ public class GCCoreTileEntityRefinery extends TileEntity implements IInventory, 
         this.currentItemBurnTime2 = getItemBurnTime(this.refineryItemStacks[2]);
     }
 
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound)
+    @Override
+	public void writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeToNBT(par1NBTTagCompound);
         par1NBTTagCompound.setShort("BurnTime", (short)this.refineryBurnTime);
         par1NBTTagCompound.setShort("CookTime", (short)this.refineryCookTime);
-        NBTTagList var2 = new NBTTagList();
+        final NBTTagList var2 = new NBTTagList();
 
         for (int var3 = 0; var3 < this.refineryItemStacks.length; ++var3)
         {
             if (this.refineryItemStacks[var3] != null)
             {
-                NBTTagCompound var4 = new NBTTagCompound();
+                final NBTTagCompound var4 = new NBTTagCompound();
                 var4.setByte("Slot", (byte)var3);
                 this.refineryItemStacks[var3].writeToNBT(var4);
                 var2.appendTag(var4);
@@ -161,7 +168,8 @@ public class GCCoreTileEntityRefinery extends TileEntity implements IInventory, 
         par1NBTTagCompound.setTag("Items", var2);
     }
 
-    public int getInventoryStackLimit()
+    @Override
+	public int getInventoryStackLimit()
     {
         return 64;
     }
@@ -188,21 +196,22 @@ public class GCCoreTileEntityRefinery extends TileEntity implements IInventory, 
         return this.refineryBurnTime > 0;
     }
 
-    public void updateEntity()
+    @Override
+	public void updateEntity()
     {
-        boolean var1 = this.refineryBurnTime > 0;
+        final boolean var1 = this.refineryBurnTime > 0;
         boolean var2 = false;
 
         if (this.refineryBurnTime > 0)
         {
             --this.refineryBurnTime;
         }
-        
+
         if (this.refineryBurnTime == 0 && this.canSmelt())
         {
             this.currentItemBurnTime = this.currentItemBurnTime2 = this.refineryBurnTime = getItemBurnTime(this.refineryItemStacks[1]) + this.getItemBurnTime(this.refineryItemStacks[2]);
-          
-            if (this.currentItemBurnTime == currentItemBurnTime2 && this.refineryBurnTime > 0)
+
+            if (this.currentItemBurnTime == this.currentItemBurnTime2 && this.refineryBurnTime > 0)
             {
                 var2 = true;
 
@@ -212,7 +221,7 @@ public class GCCoreTileEntityRefinery extends TileEntity implements IInventory, 
 
                     if (this.refineryItemStacks[1].stackSize == 0)
                     {
-                        this.refineryItemStacks[1] = this.refineryItemStacks[1].getItem().getContainerItemStack(refineryItemStacks[1]);
+                        this.refineryItemStacks[1] = this.refineryItemStacks[1].getItem().getContainerItemStack(this.refineryItemStacks[1]);
                     }
                 }
 
@@ -222,7 +231,7 @@ public class GCCoreTileEntityRefinery extends TileEntity implements IInventory, 
 
                     if (this.refineryItemStacks[2].stackSize == 0)
                     {
-                        this.refineryItemStacks[2] = this.refineryItemStacks[2].getItem().getContainerItemStack(refineryItemStacks[2]);
+                        this.refineryItemStacks[2] = this.refineryItemStacks[2].getItem().getContainerItemStack(this.refineryItemStacks[2]);
                     }
                 }
             }
@@ -264,21 +273,21 @@ public class GCCoreTileEntityRefinery extends TileEntity implements IInventory, 
         }
         else
         {
-            ItemStack var1 = new ItemStack(GCCoreItems.rocketFuelBucket);
-            
-            if (this.refineryItemStacks[3] == null) 
+            final ItemStack var1 = new ItemStack(GCCoreItems.rocketFuelBucket);
+
+            if (this.refineryItemStacks[3] == null)
             {
             	return true;
             }
-            	
-            if (!(this.refineryItemStacks[3].itemID == var1.itemID && (this.refineryItemStacks[3].getMaxDamage() - this.refineryItemStacks[3].getItemDamage()) >= 0 && (this.refineryItemStacks[3].getMaxDamage() - this.refineryItemStacks[3].getItemDamage()) < 60))
+
+            if (!(this.refineryItemStacks[3].itemID == var1.itemID && this.refineryItemStacks[3].getMaxDamage() - this.refineryItemStacks[3].getItemDamage() >= 0 && this.refineryItemStacks[3].getMaxDamage() - this.refineryItemStacks[3].getItemDamage() < 60))
             {
             	return false;
             }
-            
-            int result = refineryItemStacks[3].stackSize + var1.stackSize;
-            
-            return (result <= getInventoryStackLimit() && result <= var1.getMaxStackSize());
+
+            final int result = this.refineryItemStacks[3].stackSize + var1.stackSize;
+
+            return result <= this.getInventoryStackLimit() && result <= var1.getMaxStackSize();
         }
     }
 
@@ -286,7 +295,7 @@ public class GCCoreTileEntityRefinery extends TileEntity implements IInventory, 
     {
         if (this.canSmelt())
         {
-            ItemStack var1 = new ItemStack(GCCoreItems.rocketFuelBucket, 1, this.refineryItemStacks[0].getItemDamage() == 0 ? 1 : this.refineryItemStacks[0].getItemDamage());
+            final ItemStack var1 = new ItemStack(GCCoreItems.rocketFuelBucket, 1, this.refineryItemStacks[0].getItemDamage() == 0 ? 1 : this.refineryItemStacks[0].getItemDamage());
 
             if (this.refineryItemStacks[3] == null)
             {
@@ -294,7 +303,7 @@ public class GCCoreTileEntityRefinery extends TileEntity implements IInventory, 
             }
             else if (this.refineryItemStacks[3].isItemEqual(var1))
             {
-                refineryItemStacks[3].stackSize += var1.stackSize;
+                this.refineryItemStacks[3].stackSize += var1.stackSize;
             }
 
             --this.refineryItemStacks[0].stackSize;
@@ -314,12 +323,12 @@ public class GCCoreTileEntityRefinery extends TileEntity implements IInventory, 
         }
         else
         {
-            int var1 = par0ItemStack.getItem().itemID;
-            Item var2 = par0ItemStack.getItem();
+            final int var1 = par0ItemStack.getItem().itemID;
+            final Item var2 = par0ItemStack.getItem();
 
             if (par0ItemStack.getItem() instanceof ItemBlock && Block.blocksList[var1] != null)
             {
-                Block var3 = Block.blocksList[var1];
+                final Block var3 = Block.blocksList[var1];
 
                 if (var3 == Block.woodSingleSlab)
                 {
@@ -349,14 +358,17 @@ public class GCCoreTileEntityRefinery extends TileEntity implements IInventory, 
         return getItemBurnTime(par0ItemStack) > 0;
     }
 
-    public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
+    @Override
+	public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
     {
-        return this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : par1EntityPlayer.getDistanceSq((double)this.xCoord + 0.5D, (double)this.yCoord + 0.5D, (double)this.zCoord + 0.5D) <= 64.0D;
+        return this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : par1EntityPlayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
     }
 
-    public void openChest() {}
+    @Override
+	public void openChest() {}
 
-    public void closeChest() {}
+    @Override
+	public void closeChest() {}
 
     @Override
     public int getStartInventorySide(ForgeDirection side)

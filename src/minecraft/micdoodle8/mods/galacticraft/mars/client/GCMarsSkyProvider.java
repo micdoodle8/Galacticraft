@@ -19,7 +19,7 @@ import cpw.mods.fml.client.FMLClientHandler;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -28,7 +28,7 @@ public class GCMarsSkyProvider extends GCSkyProvider
 	public int starGLCallList = GLAllocation.generateDisplayLists(3);
 	public int glSkyList;
 	public int glSkyList2;
-	
+
 	public GCMarsSkyProvider()
 	{
 		GL11.glPushMatrix();
@@ -77,12 +77,12 @@ public class GCMarsSkyProvider extends GCSkyProvider
 	public void render(float partialTicks, WorldClient world, Minecraft mc)
 	{
 		GCMarsWorldProvider gcProvider = null;
-		
+
 		if (world.provider instanceof GCMarsWorldProvider)
 		{
 			gcProvider = (GCMarsWorldProvider)world.provider;
 		}
-		
+
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
         final Vec3 var2 = this.getCustomSkyColor();
         float var3 = (float)var2.xCoord * (1 - world.getStarBrightness(partialTicks) * 2);
@@ -111,13 +111,12 @@ public class GCMarsSkyProvider extends GCSkyProvider
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         RenderHelper.disableStandardItemLighting();
-        final float var9;
         float var10;
         float var11;
         float var12;
-        
+
         float var20 = 0;
-        
+
         if (gcProvider != null)
         {
             var20 = gcProvider.getStarBrightness(partialTicks);
@@ -131,17 +130,17 @@ public class GCMarsSkyProvider extends GCSkyProvider
 
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
-        
+
         GL11.glPushMatrix();
 
 		super.render(partialTicks, world, mc);
-        
+
         GL11.glPopMatrix();
-        
+
         GL11.glPushMatrix();
 
         GL11.glDisable(GL11.GL_BLEND);
-        
+
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
@@ -251,7 +250,7 @@ public class GCMarsSkyProvider extends GCSkyProvider
     {
         return Vec3.vec3dPool.getVecFromPool(1D, 1D, 1D);
     }
-    
+
     public float getSkyBrightness(float par1)
     {
         final float var2 = FMLClientHandler.instance().getClient().theWorld.getCelestialAngle(par1);

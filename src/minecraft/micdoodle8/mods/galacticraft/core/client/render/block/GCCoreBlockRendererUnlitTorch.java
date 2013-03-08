@@ -12,7 +12,7 @@ import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -81,7 +81,7 @@ public class GCCoreBlockRendererUnlitTorch implements ISimpleBlockRenderingHandl
         var0.renderSouthFace(var1, 0.0D, 0.0D, 0.0D, var1.getBlockTextureFromSideAndMetadata(5, var2));
         var3.draw();
     }
-    
+
     public static void renderGCUnlitTorch(RenderBlocks renderBlocks, Block par1Block, IBlockAccess var1, int par2, int par3, int par4)
     {
     	final int var5 = var1.getBlockMetadata(par2, par3, par4);
@@ -113,13 +113,13 @@ public class GCCoreBlockRendererUnlitTorch implements ISimpleBlockRenderingHandl
             GCCoreBlockRendererUnlitTorch.renderTorchAtAngle(renderBlocks, par1Block, par2, par3, par4, 0.0D, 0.0D);
         }
     }
-    
+
     public static void renderTorchAtAngle(RenderBlocks renderBlocks, Block par1Block, double par2, double par4, double par6, double par8, double par10)
     {
     	if (par1Block instanceof GCCoreBlockUnlitTorch)
     	{
     		final GCCoreBlockUnlitTorch block = (GCCoreBlockUnlitTorch) par1Block;
-    		
+
     		if (block.lit)
     		{
     			final Tessellator var12 = Tessellator.instance;
@@ -219,6 +219,6 @@ public class GCCoreBlockRendererUnlitTorch implements ISimpleBlockRenderingHandl
     	        var12.addVertexWithUV(var28, par4 + 1.0D, par6 - var36, var17, var18);
     		}
     	}
-        
+
     }
 }

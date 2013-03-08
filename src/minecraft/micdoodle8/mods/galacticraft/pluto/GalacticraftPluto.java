@@ -23,7 +23,7 @@ import cpw.mods.fml.common.network.NetworkMod;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -33,20 +33,20 @@ public class GalacticraftPluto implements IGalacticraftSubMod
 {
 	@SidedProxy(clientSide = "micdoodle8.mods.galacticraft.pluto.client.ClientProxyPluto", serverSide = "micdoodle8.mods.galacticraft.pluto.CommonProxyPluto")
 	public static CommonProxyPluto proxy;
-	
+
 	@Instance("GalacticraftPluto")
 	public static GalacticraftPluto instance;
-	
+
 	public static List plutoPlayers = new ArrayList();
 	public static List gcPlutoPlayers = new ArrayList();
-	
+
 	@PreInit
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		GalacticraftCore.registerSubMod(this);
-		
+
 		new GCEuropaConfigManager(new File(event.getModConfigurationDirectory(), "Galacticraft/pluto.conf"));
-		
+
 		GalacticraftPluto.proxy.preInit(event);
 	}
 
@@ -62,7 +62,7 @@ public class GalacticraftPluto implements IGalacticraftSubMod
 		GalacticraftPluto.proxy.postInit(event);
 		GalacticraftPluto.proxy.registerRenderInformation();
 	}
-	
+
 	@ServerStarted
 	public void serverStarted(FMLServerStartedEvent event)
 	{

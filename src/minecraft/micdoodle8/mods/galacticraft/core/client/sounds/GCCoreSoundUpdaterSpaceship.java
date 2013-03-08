@@ -44,7 +44,6 @@ public class GCCoreSoundUpdaterSpaceship implements IUpdatePlayerListBox
         final float var5 = this.minecartMoveSoundVolume;
         final float var6 = this.minecartSoundPitch;
         final float var7 = this.minecartRideSoundVolume;
-        final double var8 = this.minecartSpeed;
         this.playerSPRidingMinecart = this.thePlayer != null && this.theMinecart.riddenByEntity == this.thePlayer;
         this.minecartIsDead = this.theMinecart.isDead;
         this.minecartSpeed = 20;
@@ -81,7 +80,7 @@ public class GCCoreSoundUpdaterSpaceship implements IUpdatePlayerListBox
             this.silent = false;
             var1 = true;
         }
-        
+
         if (this.theMinecart.getTimeUntilLaunch() <= this.theMinecart.getPreLaunchWait())
         {
         	if (this.theMinecart.getTimeUntilLaunch() < this.theMinecart.getPreLaunchWait())

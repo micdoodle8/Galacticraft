@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.mars.client;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityProjectileTNT;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
@@ -16,7 +15,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -38,8 +37,6 @@ public class GCMarsRenderProjectileTNT extends Render
         final Block var10 = Block.tnt;
         final World var11 = par1EntityFallingSand.getWorld();
         GL11.glDisable(GL11.GL_LIGHTING);
-        final Tessellator var12;
-
         if (var10 != null)
         {
             this.renderBlocks.setRenderBoundsFromBlock(var10);

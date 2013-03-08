@@ -9,7 +9,7 @@ import net.minecraft.world.chunk.IChunkProvider;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -43,11 +43,10 @@ public class GCMarsCavern
 
     protected void recursiveGenerate(World par1World, int xChunkCoord, int zChunkCoord, int origXChunkCoord, int origZChunkCoord, int[] par6ArrayOfByte)
     {
-        int var7 = this.rand.nextInt(this.rand.nextInt(this.rand.nextInt(40) + 1) + 1);
+        this.rand.nextInt(this.rand.nextInt(this.rand.nextInt(40) + 1) + 1);
 
         if (this.rand.nextInt(15) != 0)
         {
-            var7 = 0;
         }
 
         for (int var8 = 0; var8 < 1; ++var8)
@@ -55,17 +54,15 @@ public class GCMarsCavern
             final double xPos = xChunkCoord * 16 + this.rand.nextInt(16);
             final double yPos = (double)this.rand.nextInt(10) + 15;
             final double zPos = zChunkCoord * 16 + this.rand.nextInt(16);
-            
-            int var15 = 1;
 
             if (this.rand.nextInt(22) == 0)
             {
                 this.generateLargeCaveNode(this.rand.nextLong(), origXChunkCoord, origZChunkCoord, par6ArrayOfByte, xPos, yPos, zPos);
-                var15 += this.rand.nextInt(4);
+                this.rand.nextInt(4);
             }
         }
     }
-    
+
     protected void generateLargeCaveNode(long par1, int origXChunkCoord, int origZChunkCoord, int[] par5ArrayOfByte, double xPos, double yPos, double zPos)
     {
         this.generateCaveNode(par1, origXChunkCoord, origZChunkCoord, par5ArrayOfByte, xPos, yPos, zPos, 1.0F + this.rand.nextFloat() * 6.0F, 10.0F, 10.0F, -1, -1, 0.2D);
@@ -202,7 +199,7 @@ public class GCMarsCavern
 
                     if (!isBlockWater)
                     {
-                    	
+
                     }
                     for (var42 = caveMinX; var42 < caveMaxX; ++var42)
                     {
@@ -212,7 +209,7 @@ public class GCMarsCavern
                         {
                             final double var46 = (var45 + origZChunkCoord * 16 + 0.5D - zPos) / caveWidth;
                             int var48 = (var42 * 16 + var45) * 128 + caveMaxY;
-                            
+
                             boolean var49 = false;
 
                             if (var59 * var59 + var46 * var46 < 1.0D)

@@ -20,7 +20,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -251,7 +251,7 @@ public class GCMarsEntityProjectileTNT extends Entity
             this.setDead();
         }
     }
-    
+
     public static DamageSource causeTNTImpactDamage(GCMarsEntityProjectileTNT par0EntityFireball, Entity par1Entity)
     {
         return new EntityDamageSourceIndirect("explosion", par0EntityFireball, par0EntityFireball).setProjectile();

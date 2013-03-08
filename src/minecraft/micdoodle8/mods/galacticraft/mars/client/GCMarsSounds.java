@@ -6,7 +6,7 @@ import net.minecraftforge.event.ForgeSubscribe;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -27,7 +27,7 @@ public class GCMarsSounds
             event.manager.soundPoolSounds.addSound("creepernest/singledrip8.wav", GalacticraftMars.class.getResource("/micdoodle8/mods/galacticraft/mars/client/sounds/creepernest/singledrip8.wav"));
             event.manager.soundPoolSounds.addSound("creepernest/heartbeat.wav", GalacticraftMars.class.getResource("/micdoodle8/mods/galacticraft/mars/client/sounds/creepernest/heartbeat.wav"));
             event.manager.soundPoolSounds.addSound("creepernest/scaryscape.wav", GalacticraftMars.class.getResource("/micdoodle8/mods/galacticraft/mars/client/sounds/creepernest/scaryscape.wav"));
-       
+
         }
         catch (final Exception e)
         {

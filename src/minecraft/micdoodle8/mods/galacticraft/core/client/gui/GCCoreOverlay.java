@@ -6,11 +6,11 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
 import cpw.mods.fml.client.FMLClientHandler;
 
-public class GCCoreOverlay 
+public class GCCoreOverlay
 {
 	/**
 	 * Get the player's spaceship height off ground
-	 * 
+	 *
 	 * @param player thePlayer
 	 * @return position of player's spaceship
 	 */
@@ -20,13 +20,13 @@ public class GCCoreOverlay
 		{
 			return (int) Math.floor(((GCCoreEntitySpaceship) player.ridingEntity).posY);
 		}
-		
+
 		return (int) Math.floor(player.posY);
 	}
 
     /**
      * Draw a textured rectangle at the specified position
-     * 
+     *
      * @param par1 xpos
      * @param par2 ypos
      * @param par3 u
@@ -36,20 +36,20 @@ public class GCCoreOverlay
      */
 	protected static void drawTexturedModalRect(int par1, int par2, int par3, int par4, int par5, int par6)
     {
-        float var7 = 0.00390625F;
-        float var8 = 0.00390625F;
-        Tessellator var9 = Tessellator.instance;
+        final float var7 = 0.00390625F;
+        final float var8 = 0.00390625F;
+        final Tessellator var9 = Tessellator.instance;
         var9.startDrawingQuads();
-        var9.addVertexWithUV((double)(par1 + 0), (double)(par2 + par6), (double)0.0, (double)((float)(par3 + 0) * var7), (double)((float)(par4 + par6) * var8));
-        var9.addVertexWithUV((double)(par1 + par5), (double)(par2 + par6), (double)0.0, (double)((float)(par3 + par5) * var7), (double)((float)(par4 + par6) * var8));
-        var9.addVertexWithUV((double)(par1 + par5), (double)(par2 + 0), (double)0.0, (double)((float)(par3 + par5) * var7), (double)((float)(par4 + 0) * var8));
-        var9.addVertexWithUV((double)(par1 + 0), (double)(par2 + 0), (double)0.0, (double)((float)(par3 + 0) * var7), (double)((float)(par4 + 0) * var8));
+        var9.addVertexWithUV((par1 + 0), (par2 + par6), 0.0, ((par3 + 0) * var7), ((par4 + par6) * var8));
+        var9.addVertexWithUV((par1 + par5), (par2 + par6), 0.0, ((par3 + par5) * var7), ((par4 + par6) * var8));
+        var9.addVertexWithUV((par1 + par5), (par2 + 0), 0.0, ((par3 + par5) * var7), ((par4 + 0) * var8));
+        var9.addVertexWithUV((par1 + 0), (par2 + 0), 0.0, ((par3 + 0) * var7), ((par4 + 0) * var8));
         var9.draw();
     }
-	
+
     /**
      * Downloads image and binds it
-     * 
+     *
      * @param par1Str texture to download and bind
      * @param par2Str if fails, use this one
      */
@@ -71,7 +71,7 @@ public class GCCoreOverlay
 
     /**
      * Draws a rectangle with middle at point specified
-     * 
+     *
      * @param var1 x
      * @param var3 y
      * @param var5 depth

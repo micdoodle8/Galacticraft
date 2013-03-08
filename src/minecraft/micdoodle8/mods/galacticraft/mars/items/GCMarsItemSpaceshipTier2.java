@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.mars.items;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpaceship;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntitySpaceshipTier2;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,7 +14,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -42,9 +41,9 @@ public class GCMarsItemSpaceshipTier2 extends GCMarsItem
     public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10)
     {
     	int amountOfCorrectBlocks = 0;
-    	
+
     	final GCMarsEntitySpaceshipTier2 spaceship = new GCMarsEntitySpaceshipTier2(par3World, par4 + 0.5F, par5 - 1.5F, par6 + 0.5F, par1ItemStack.getItemDamage());
-    	
+
     	if (par3World.isRemote)
     	{
     		return false;
@@ -61,7 +60,7 @@ public class GCMarsItemSpaceshipTier2 extends GCMarsItem
     				}
         		}
     		}
-    		
+
     		if (amountOfCorrectBlocks == 9)
     		{
 	    		par3World.spawnEntityInWorld(spaceship);
@@ -83,7 +82,7 @@ public class GCMarsItemSpaceshipTier2 extends GCMarsItem
     {
         return EnumRarity.epic;
     }
-	
+
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack par1ItemStack, EntityPlayer player, List par2List, boolean b)

@@ -8,22 +8,22 @@ import cpw.mods.fml.common.FMLLog;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
 public class GCEnceladusConfigManager
 {
 	public static boolean loaded;
-	
+
 	static Configuration configuration;
-	
+
 	// DIMENSIONS
 	public static int dimensionIDEnceladus;
-	
+
 	// BLOCKS
 	public static int idBlock;
-	
+
 	public GCEnceladusConfigManager(File file)
 	{
 		if (!GCEnceladusConfigManager.loaded)
@@ -32,15 +32,15 @@ public class GCEnceladusConfigManager
 			this.setDefaultValues();
 		}
 	}
-	
+
 	private void setDefaultValues()
     {
 		try
 		{
 	        GCEnceladusConfigManager.configuration.load();
-	        
+
 	        GCEnceladusConfigManager.dimensionIDEnceladus = 				GCEnceladusConfigManager.configuration.get("Dimensions", 										"Enceladus Dimension ID",				-24)		.getInt(-24);
-	        
+
 	        GCEnceladusConfigManager.idBlock = 							GCEnceladusConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, 						"idBlockEnceladus", 					196)	.getInt(196);
 	    }
 		catch (final Exception e)

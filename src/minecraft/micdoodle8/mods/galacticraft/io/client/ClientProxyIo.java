@@ -14,9 +14,7 @@ import micdoodle8.mods.galacticraft.io.blocks.GCIoBlocks;
 import micdoodle8.mods.galacticraft.io.dimension.GCIoWorldProvider;
 import micdoodle8.mods.galacticraft.titan.client.ClientProxyTitan;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.multiplayer.WorldClient;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraftforge.client.MinecraftForgeClient;
@@ -41,7 +39,7 @@ public class ClientProxyIo implements IGalacticraftSubModClient
 	{
 		return "Io";
 	}
-	
+
 	public void preInit(FMLPreInitializationEvent event)
 	{
 	}
@@ -71,7 +69,7 @@ public class ClientProxyIo implements IGalacticraftSubModClient
 	{
 		return new GCIoSlotRenderer();
 	}
-	
+
     public class ClientPacketHandler implements IPacketHandler
     {
         @Override
@@ -79,29 +77,25 @@ public class ClientProxyIo implements IGalacticraftSubModClient
         {
             final DataInputStream data = new DataInputStream(new ByteArrayInputStream(packet.data));
             final int packetType = PacketUtil.readPacketID(data);
-            final EntityPlayer player = (EntityPlayer)p;
-            
             if (packetType == 0)
             {
-            	
+
             }
         }
     }
-	
+
 	public static class TickHandlerClient implements ITickHandler
     {
     	@Override
     	public void tickStart(EnumSet<TickType> type, Object... tickData)
         {
     		ClientProxyTitan.getCurrentTime = System.currentTimeMillis();
-    		
+
     		final Minecraft minecraft = FMLClientHandler.instance().getClient();
-    		
+
             final WorldClient world = minecraft.theWorld;
-            
-            final EntityClientPlayerMP player = minecraft.thePlayer;
-    		
-    		if (type.equals(EnumSet.of(TickType.CLIENT)))
+
+            if (type.equals(EnumSet.of(TickType.CLIENT)))
             {
     			if (world != null && world.provider instanceof GCIoWorldProvider)
     			{
@@ -117,7 +111,7 @@ public class ClientProxyIo implements IGalacticraftSubModClient
     	public void tickEnd(EnumSet<TickType> type, Object... tickData)
     	{
     	}
-    	
+
         @Override
 		public String getLabel()
         {

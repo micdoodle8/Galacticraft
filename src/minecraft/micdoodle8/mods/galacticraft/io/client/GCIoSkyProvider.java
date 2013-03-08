@@ -19,7 +19,7 @@ import cpw.mods.fml.client.FMLClientHandler;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -28,7 +28,7 @@ public class GCIoSkyProvider extends IRenderHandler
 	public int starGLCallList = GLAllocation.generateDisplayLists(3);
 	public int glSkyList;
 	public int glSkyList2;
-	
+
 	public GCIoSkyProvider()
 	{
 		GL11.glPushMatrix();
@@ -77,12 +77,12 @@ public class GCIoSkyProvider extends IRenderHandler
 	public void render(float partialTicks, WorldClient world, Minecraft mc)
 	{
 		GCIoWorldProvider gcProvider = null;
-		
+
 		if (world.provider instanceof GCIoWorldProvider)
 		{
 			gcProvider = (GCIoWorldProvider)world.provider;
 		}
-		
+
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
         final Vec3 var2 = this.getCustomSkyColor();
         float var3 = (float)var2.xCoord * (1 - world.getStarBrightness(partialTicks) * 2);
@@ -111,13 +111,12 @@ public class GCIoSkyProvider extends IRenderHandler
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         RenderHelper.disableStandardItemLighting();
-        final float var9;
         float var10;
         float var11;
         float var12;
-        
+
         float var20 = 0;
-        
+
         if (gcProvider != null)
         {
             var20 = gcProvider.getStarBrightness(partialTicks);
@@ -131,7 +130,7 @@ public class GCIoSkyProvider extends IRenderHandler
 
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
-        
+
         GL11.glPushMatrix();
 
         GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
@@ -145,13 +144,13 @@ public class GCIoSkyProvider extends IRenderHandler
         var23.addVertexWithUV(var12, 150.0D, var12, 1.0D, 1.0D);
         var23.addVertexWithUV(-var12, 150.0D, var12, 0.0D, 1.0D);
         var23.draw();
-        
+
         GL11.glPopMatrix();
-        
+
         GL11.glPushMatrix();
 
         GL11.glDisable(GL11.GL_BLEND);
-        
+
         // HOME:
         var12 = 10.0F;
         final float earthRotation = (float) (world.getSpawnPoint().posZ - mc.thePlayer.posZ) * 0.01F;
@@ -161,15 +160,13 @@ public class GCIoSkyProvider extends IRenderHandler
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1F);
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/micdoodle8/mods/galacticraft/saturn/client/planets/saturn.png"));
         final int var28 = world.getMoonPhase(partialTicks);
-        final int var30 = var28 % 4;
-        final int var29 = var28 / 4 % 2;
         var23.startDrawingQuads();
         var23.addVertexWithUV(-var12, -100.0D, var12, 0, 1);
         var23.addVertexWithUV(var12, -100.0D, var12, 1, 1);
         var23.addVertexWithUV(var12, -100.0D, -var12, 1, 0);
         var23.addVertexWithUV(-var12, -100.0D, -var12, 0, 0);
         var23.draw();
-        
+
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
@@ -279,7 +276,7 @@ public class GCIoSkyProvider extends IRenderHandler
     {
         return Vec3.vec3dPool.getVecFromPool(1D, 1D, 1D);
     }
-    
+
     public float getSkyBrightness(float par1)
     {
         final float var2 = FMLClientHandler.instance().getClient().theWorld.getCelestialAngle(par1);

@@ -12,13 +12,13 @@ import java.util.List;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerBase;
 import net.minecraft.network.packet.Packet250CustomPayload;
 
-public class PacketUtil 
+public class PacketUtil
 {
 	public static Packet250CustomPayload createRealObjPacket(String channel, int packetID, Object[] input)
     {
         final ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         ObjectOutputStream data = null;
-        
+
 		try
 		{
 			data = new ObjectOutputStream(bytes);
@@ -27,7 +27,7 @@ public class PacketUtil
 		{
 			e1.printStackTrace();
 		}
-		
+
         try
         {
         	if (data != null)
@@ -55,7 +55,7 @@ public class PacketUtil
 
         return packet;
     }
-	
+
 	public static Packet250CustomPayload createPacket(String channel, int packetID, Object[] input)
     {
         final ByteArrayOutputStream bytes = new ByteArrayOutputStream();
@@ -123,7 +123,7 @@ public class PacketUtil
 
         return result.toArray();
     }
-    
+
     private static void writeObjectToStream(Object obj, DataOutputStream data) throws IOException
     {
         final Class objClass = obj.getClass();
@@ -199,7 +199,7 @@ public class PacketUtil
 
         return null;
     }
-    
+
     private static void writeObjectToStream(Object obj, ObjectOutputStream data) throws IOException
     {
         final Class objClass = obj.getClass();

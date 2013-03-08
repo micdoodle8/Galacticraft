@@ -13,7 +13,7 @@ public class GCCoreItemArmor extends ItemArmor implements IArmorTextureProvider
 {
 	public boolean attachedMask;
 	private final EnumArmorMaterial material;
-	
+
 	public GCCoreItemArmor(int par1, EnumArmorMaterial par2EnumArmorMaterial, int par3, int par4, boolean breathable)
 	{
 		super(par1, par2EnumArmorMaterial, par3, par4);
@@ -25,8 +25,8 @@ public class GCCoreItemArmor extends ItemArmor implements IArmorTextureProvider
 	@Override
     public String getArmorTextureFile(ItemStack itemstack)
     {
-		
-		
+
+
     	if (this.material == GCCoreItems.TITANIUMARMOR)
     	{
     		if (itemstack.getItem().itemID == GCCoreItems.titaniumHelmet.itemID)

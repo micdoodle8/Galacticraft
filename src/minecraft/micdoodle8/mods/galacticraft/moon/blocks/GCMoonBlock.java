@@ -20,14 +20,14 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
 public class GCMoonBlock extends Block implements IDetectableMetadataResource, IPlantableMetadataBlock
 {
 	// AluminumMoon: 0, IronMoon: 1, CheeseStone: 2;
-	
+
 	public GCMoonBlock(int i)
 	{
 		super(i, 4, Material.rock);
@@ -89,7 +89,7 @@ public class GCMoonBlock extends Block implements IDetectableMetadataResource, I
 				return meta;
 			}
 		}
-		
+
 		return 3;
     }
 
@@ -135,7 +135,7 @@ public class GCMoonBlock extends Block implements IDetectableMetadataResource, I
 
         par3List.add(new ItemStack(par1, 1, 14));
     }
-	
+
 	@Override
 	public String getTextureFile()
 	{
@@ -143,7 +143,7 @@ public class GCMoonBlock extends Block implements IDetectableMetadataResource, I
 	}
 
 	@Override
-	public boolean isValueable(int metadata) 
+	public boolean isValueable(int metadata)
 	{
 		switch (metadata)
 		{
@@ -161,37 +161,37 @@ public class GCMoonBlock extends Block implements IDetectableMetadataResource, I
 	@Override
     public boolean canSustainPlant(World world, int x, int y, int z, ForgeDirection direction, IPlantable plant)
     {
-		int metadata = world.getBlockMetadata(x, y, z);
+		final int metadata = world.getBlockMetadata(x, y, z);
 
 		if (metadata < 5 && metadata > 13)
 		{
 			return false;
 		}
-		
-        final int plantID = plant.getPlantID(world, x, y + 1, z);
-        
+
+        plant.getPlantID(world, x, y + 1, z);
+
         if (plant instanceof BlockFlower)
         {
             return true;
         }
-        
+
         return false;
     }
 
 	@Override
-	public int requiredLiquidBlocksNearby() 
+	public int requiredLiquidBlocksNearby()
 	{
 		return 4;
 	}
 
 	@Override
-	public boolean isPlantable(int metadata) 
+	public boolean isPlantable(int metadata)
 	{
 		if (metadata >= 5 && metadata <= 13)
 		{
 			return true;
 		}
-		
+
 		return false;
 	}
 }

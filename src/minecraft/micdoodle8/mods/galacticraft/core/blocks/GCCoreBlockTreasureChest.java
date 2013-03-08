@@ -29,7 +29,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -167,10 +167,8 @@ public class GCCoreBlockTreasureChest extends BlockContainer
             final int var6 = par1World.getBlockId(par2, par3, par4 + 1);
             final int var7 = par1World.getBlockId(par2 - 1, par3, par4);
             final int var8 = par1World.getBlockId(par2 + 1, par3, par4);
-            final boolean var9 = true;
             int var10;
             int var11;
-            boolean var12;
             byte var13;
             int var14;
 
@@ -205,8 +203,6 @@ public class GCCoreBlockTreasureChest extends BlockContainer
                     var10 = par1World.getBlockId(var7 == this.blockID ? par2 - 1 : par2 + 1, par3, par4 - 1);
                     var11 = par1World.getBlockId(var7 == this.blockID ? par2 - 1 : par2 + 1, par3, par4 + 1);
                     var13 = 3;
-                    var12 = true;
-
                     if (var7 == this.blockID)
                     {
                         var14 = par1World.getBlockMetadata(par2 - 1, par3, par4);
@@ -237,8 +233,6 @@ public class GCCoreBlockTreasureChest extends BlockContainer
                 var10 = par1World.getBlockId(par2 - 1, par3, var5 == this.blockID ? par4 - 1 : par4 + 1);
                 var11 = par1World.getBlockId(par2 + 1, par3, var5 == this.blockID ? par4 - 1 : par4 + 1);
                 var13 = 5;
-                var12 = true;
-
                 if (var5 == this.blockID)
                 {
                     var14 = par1World.getBlockMetadata(par2, par3, par4 - 1);

@@ -7,7 +7,7 @@ import net.minecraft.world.biome.SpawnListEntry;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -25,7 +25,7 @@ public class GCMarsBiomeGenBase extends BiomeGenBase
         this.spawnableMonsterList.add(new SpawnListEntry(GCCoreEntitySpider.class, 10, 4, 4));
         this.rainfall = 0F;
     }
-    
+
     @Override
 	public GCMarsBiomeGenBase setColor(int var1)
     {

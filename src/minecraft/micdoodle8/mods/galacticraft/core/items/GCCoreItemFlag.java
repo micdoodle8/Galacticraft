@@ -16,7 +16,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -41,7 +41,7 @@ public class GCCoreItemFlag extends GCCoreItem
 			"yellow", // 15
 			"white"}; // 16
 	public int placeProgress;
-	
+
 	public GCCoreItemFlag(int par1)
 	{
 		super(par1);
@@ -63,7 +63,7 @@ public class GCCoreItemFlag extends GCCoreItem
     public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4)
     {
         final int useTime = this.getMaxItemUseDuration(par1ItemStack) - par4;
-        
+
         final MovingObjectPosition var12 = this.getMovingObjectPositionFromPlayer(par2World, par3EntityPlayer, true);
 
         float var7 = useTime / 20.0F;
@@ -73,13 +73,13 @@ public class GCCoreItemFlag extends GCCoreItem
         {
             var7 = 1.0F;
         }
-        
+
         if (var7 == 1.0F && var12 != null && var12.typeOfHit == EnumMovingObjectType.TILE)
         {
             final int x = var12.blockX;
             final int y = var12.blockY;
             final int z = var12.blockZ;
-            
+
             if (!par2World.isRemote)
             {
             	final GCCoreEntityFlag flag = new GCCoreEntityFlag(par2World, x + 0.5F, y + 1.0F, z + 0.5F, par3EntityPlayer.rotationYaw - 90F);
@@ -87,7 +87,7 @@ public class GCCoreItemFlag extends GCCoreItem
                 flag.setType(par1ItemStack.getItemDamage());
                 flag.setOwner(par3EntityPlayer.username);
             }
-            
+
             final int var2 = this.getInventorySlotContainItem(par3EntityPlayer, this.itemID);
 
             if (var2 >= 0)
@@ -99,7 +99,7 @@ public class GCCoreItemFlag extends GCCoreItem
             }
         }
     }
-    
+
     private int getInventorySlotContainItem(EntityPlayer player, int par1)
     {
         for (int var2 = 0; var2 < player.inventory.mainInventory.length; ++var2)
@@ -164,7 +164,7 @@ public class GCCoreItemFlag extends GCCoreItem
 
         return super.getItemName() + "." + GCCoreItemFlag.names[var2];
     }
-    
+
     public static int getFlagDamageValueFromDye(int meta)
     {
     	switch (meta)
@@ -202,7 +202,7 @@ public class GCCoreItemFlag extends GCCoreItem
     	case 15:
     		return 16;
     	}
-    	
+
     	return -1;
     }
 }

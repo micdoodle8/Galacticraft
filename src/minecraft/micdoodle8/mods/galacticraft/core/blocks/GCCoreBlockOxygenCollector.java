@@ -51,7 +51,7 @@ public class GCCoreBlockOxygenCollector extends BlockContainer implements IConne
     	{
     		final TileEntity tile = world.getBlockTileEntity(x + ForgeDirection.getOrientation(i).offsetX, y + ForgeDirection.getOrientation(i).offsetY, z + ForgeDirection.getOrientation(i).offsetZ);
     		final GCCoreTileEntityOxygenCollector collector = (GCCoreTileEntityOxygenCollector)world.getBlockTileEntity(x, y, z);
-    		
+
     		if (tile != null && collector != null && tile instanceof GCCoreTileEntityOxygenPipe)
     		{
     			final GCCoreTileEntityOxygenPipe pipe = (GCCoreTileEntityOxygenPipe)tile;
@@ -60,7 +60,7 @@ public class GCCoreBlockOxygenCollector extends BlockContainer implements IConne
 				pipe.setZeroOxygen();
     		}
     	}
-    	
+
     	super.breakBlock(world, x, y, z, par5, par6);
     }
 
@@ -75,7 +75,7 @@ public class GCCoreBlockOxygenCollector extends BlockContainer implements IConne
     public int getBlockTexture(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {
 		boolean active = false;
-		
+
 		if (par1IBlockAccess.getBlockTileEntity(par2, par3, par4) instanceof GCCoreTileEntityOxygenCollector)
 		{
 			if (((GCCoreTileEntityOxygenCollector)par1IBlockAccess.getBlockTileEntity(par2, par3, par4)).getPower() > 1)
@@ -83,7 +83,7 @@ public class GCCoreBlockOxygenCollector extends BlockContainer implements IConne
 				active = true;
 			}
 		}
-		
+
         if (par5 == 1)
         {
             return this.blockIndexInTexture;
@@ -211,7 +211,7 @@ public class GCCoreBlockOxygenCollector extends BlockContainer implements IConne
 			}
 		}
 	}
-    
+
 	@Override
     public String getTextureFile()
     {
@@ -219,7 +219,7 @@ public class GCCoreBlockOxygenCollector extends BlockContainer implements IConne
     }
 
 	@Override
-	public boolean isConnectableOnSide(IBlockAccess blockAccess, int x, int y, int z, ForgeDirection side) 
+	public boolean isConnectableOnSide(IBlockAccess blockAccess, int x, int y, int z, ForgeDirection side)
 	{
 		if (side != ForgeDirection.UP && side != ForgeDirection.DOWN)
 		{

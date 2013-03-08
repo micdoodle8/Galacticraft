@@ -10,7 +10,7 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -29,7 +29,7 @@ public class GCMoonBiomeDecorator
 	protected WorldGenerator dirtGen;
 
 	protected WorldGenerator cheeseGen;
-	
+
 	protected WorldGenerator aluminumGen;
 
 	protected WorldGenerator ironGen;

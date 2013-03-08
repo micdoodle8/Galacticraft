@@ -6,21 +6,18 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
 
-import cpw.mods.fml.common.FMLLog;
-
 import micdoodle8.mods.galacticraft.API.TileEntityOxygenAcceptor;
 import micdoodle8.mods.galacticraft.API.TileEntityOxygenSource;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLocation;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.client.model.block.GCCoreModelFan;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -30,7 +27,7 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityOxygenAcceptor
     protected double lastPower;
     protected boolean active;
 	private int indexFromCollector;
-	
+
 	private Set<TileEntityOxygenSource> sources = new HashSet<TileEntityOxygenSource>();
 	private List<GCCoreBlockLocation> preLoadSourceCoords;
 
@@ -40,38 +37,41 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityOxygenAcceptor
    	public GCCoreModelFan fanModel4 = new GCCoreModelFan();
 
 	@Override
-	public void addSource(TileEntityOxygenSource source) 
+	public void addSource(TileEntityOxygenSource source)
 	{
 		this.sources.add(source);
 	}
 
 	@Override
-	public void removeSource(TileEntityOxygenSource source) 
+	public void removeSource(TileEntityOxygenSource source)
 	{
 		this.sources.remove(source);
 	}
-	
+
+	@Override
 	public void setSourceCollectors(Set<TileEntityOxygenSource> sources)
 	{
 		this.sources = sources;
 	}
-	
+
+	@Override
 	public Set<TileEntityOxygenSource> getSourceCollectors()
 	{
 		return this.sources;
 	}
 
 	@Override
-	public void setIndexFromSource(int index) 
+	public void setIndexFromSource(int index)
 	{
 		this.indexFromCollector = index;
 	}
 
-	public int getIndexFromSource() 
+	@Override
+	public int getIndexFromSource()
 	{
 		return this.indexFromCollector;
 	}
-	
+
     @Override
 	public boolean getActive()
 	{
@@ -85,13 +85,13 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityOxygenAcceptor
 	}
 
 	@Override
-	public double getPower() 
+	public double getPower()
 	{
 		return this.currentPower;
 	}
 
 	@Override
-	public void setPower(double power) 
+	public void setPower(double power)
 	{
 		this.currentPower = this.lastPower = power;
 	}
@@ -109,7 +109,7 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityOxygenAcceptor
    		   	this.fanModel4 = new GCCoreModelFan();
       	}
   	}
-    
+
     public double getDistanceFrom2(double par1, double par3, double par5)
     {
         final double var7 = this.xCoord + 0.5D - par1;
@@ -117,34 +117,34 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityOxygenAcceptor
         final double var11 = this.zCoord + 0.5D - par5;
         return var7 * var7 + var9 * var9 + var11 * var11;
     }
-    
+
 	@Override
 	public void updateEntity()
 	{
 		super.updateEntity();
 
-		if (preLoadSourceCoords != null)
+		if (this.preLoadSourceCoords != null)
 		{
-			for (GCCoreBlockLocation location : this.preLoadSourceCoords)
+			for (final GCCoreBlockLocation location : this.preLoadSourceCoords)
 			{
-	            TileEntity tile = this.worldObj.getBlockTileEntity(location.chunkZPos, location.chunkZPos, location.chunkZPos);
+	            final TileEntity tile = this.worldObj.getBlockTileEntity(location.chunkZPos, location.chunkZPos, location.chunkZPos);
 
 	            if (tile != null && tile instanceof TileEntityOxygenSource)
 	            {
 	                this.sources.add((TileEntityOxygenSource) tile);
 	            }
 			}
-			
+
 			this.preLoadSourceCoords = null;
 		}
-		
-		updateSourceList();
+
+		this.updateSourceList();
 
 		for (int i = 0; i < ForgeDirection.values().length; i++)
     	{
 			this.updateOxygenFromAdjacentPipe(ForgeDirection.getOrientation(i).offsetX, ForgeDirection.getOrientation(i).offsetY, ForgeDirection.getOrientation(i).offsetZ);
     	}
-		
+
 		if (this.currentPower < 1.0D)
 		{
 			this.active = false;
@@ -153,7 +153,7 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityOxygenAcceptor
 		{
 			this.active = true;
 		}
-		
+
 		if (!this.worldObj.isRemote)
 		{
 			for (int i = 0; i < ForgeDirection.values().length; i++)
@@ -162,27 +162,27 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityOxygenAcceptor
 				x = ForgeDirection.getOrientation(i).offsetX + this.xCoord;
 				y = ForgeDirection.getOrientation(i).offsetY + this.yCoord;
 				z = ForgeDirection.getOrientation(i).offsetZ + this.zCoord;
-				
+
 				if (this.active)
 				{
 					if (this.worldObj.getBlockId(x, y, z) == 0)
 					{
 						this.worldObj.setBlockWithNotify(x, y, z, GCCoreBlocks.breatheableAir.blockID);
 					}
-					
+
 					this.updateAdjacentOxygenAdd(ForgeDirection.getOrientation(i).offsetX, ForgeDirection.getOrientation(i).offsetY, ForgeDirection.getOrientation(i).offsetZ);
 			    }
-				else if (!active)
+				else if (!this.active)
 				{
 					this.updateAdjacentOxygenRemove(x, y, z);
 				}
 	    	}
 		}
-			
+
 		if (this.active)
 		{
 			final int power = Math.min((int) Math.floor(this.currentPower / 3), 8);
-			
+
 			for (int j = -power; j <= power; j++)
 			{
 				for (int i = -power; i <= power; i++)
@@ -202,68 +202,68 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityOxygenAcceptor
 				}
 			}
 		}
-		
+
 		this.lastPower = this.currentPower;
 	}
-	
+
 	public void updateSourceList()
 	{
-		ArrayList<TileEntityOxygenSource> sources = new ArrayList<TileEntityOxygenSource>();
-		
-		for (TileEntityOxygenSource source : this.sources)
+		final ArrayList<TileEntityOxygenSource> sources = new ArrayList<TileEntityOxygenSource>();
+
+		for (final TileEntityOxygenSource source : this.sources)
 		{
 			sources.add(source);
 		}
-		
-		ListIterator li = sources.listIterator();
-		
+
+		final ListIterator li = sources.listIterator();
+
 		while (li.hasNext())
 		{
-			TileEntityOxygenSource source = (TileEntityOxygenSource) li.next();
-			
+			final TileEntityOxygenSource source = (TileEntityOxygenSource) li.next();
+
 			if (!(this.worldObj.getBlockTileEntity(source.xCoord, source.yCoord, source.zCoord) instanceof TileEntityOxygenSource))
 			{
 				this.sources.remove(source);
 			}
 		}
 	}
-	
+
 	public void updateAdjacentOxygenAdd(int xOffset, int yOffset, int zOffset)
 	{
-		TileEntity tile = this.worldObj.getBlockTileEntity(this.xCoord + xOffset, this.yCoord + yOffset, this.zCoord + zOffset);
+		final TileEntity tile = this.worldObj.getBlockTileEntity(this.xCoord + xOffset, this.yCoord + yOffset, this.zCoord + zOffset);
 
 		if (tile != null && tile instanceof GCCoreTileEntityBreathableAir)
 		{
-			GCCoreTileEntityBreathableAir air = (GCCoreTileEntityBreathableAir) tile;
+			final GCCoreTileEntityBreathableAir air = (GCCoreTileEntityBreathableAir) tile;
 
 			air.addDistributor(this);
 		}
 	}
-	
+
 	public void updateAdjacentOxygenRemove(int xOffset, int yOffset, int zOffset)
 	{
-		TileEntity tile = this.worldObj.getBlockTileEntity(this.xCoord + xOffset, this.yCoord + yOffset, this.zCoord + zOffset);
-		
+		final TileEntity tile = this.worldObj.getBlockTileEntity(this.xCoord + xOffset, this.yCoord + yOffset, this.zCoord + zOffset);
+
 		if (tile != null && tile instanceof GCCoreTileEntityBreathableAir)
 		{
-			GCCoreTileEntityBreathableAir air = (GCCoreTileEntityBreathableAir) tile;
+			final GCCoreTileEntityBreathableAir air = (GCCoreTileEntityBreathableAir) tile;
 
 			air.removeDistributor(this);
 		}
 	}
-	
+
 	public void updateOxygenFromAdjacentPipe(int xOffset, int yOffset, int zOffset)
 	{
-		TileEntity tile = this.worldObj.getBlockTileEntity(this.xCoord + xOffset, this.yCoord + yOffset, this.zCoord + zOffset);
-		
+		final TileEntity tile = this.worldObj.getBlockTileEntity(this.xCoord + xOffset, this.yCoord + yOffset, this.zCoord + zOffset);
+
 		if (tile != null && tile instanceof GCCoreTileEntityOxygenPipe)
 		{
-			GCCoreTileEntityOxygenPipe pipe = (GCCoreTileEntityOxygenPipe) tile;
-			
+			final GCCoreTileEntityOxygenPipe pipe = (GCCoreTileEntityOxygenPipe) tile;
+
 			this.currentPower = pipe.getOxygenInPipe();
 		}
 	}
-	
+
 	@Override
 	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
 	{

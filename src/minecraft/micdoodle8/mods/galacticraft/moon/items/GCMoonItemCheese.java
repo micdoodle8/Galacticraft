@@ -15,7 +15,7 @@ public class GCMoonItemCheese extends ItemFood
     {
         this(par1, par2, 0.6F, par3);
     }
-    
+
     @Override
 	public String getTextureFile()
     {

@@ -20,16 +20,16 @@ import net.minecraftforge.common.ForgeDirection;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
 public class GCCoreBlockOxygenCompressor extends BlockContainer implements IConnectableToPipe
 {
     private final Random distributorRand = new Random();
-    
+
     private static boolean keepDistributorInventory = false;
-	
+
 	public GCCoreBlockOxygenCompressor(int par1, boolean isActive)
 	{
 		super(par1, 22, Material.rock);
@@ -42,7 +42,7 @@ public class GCCoreBlockOxygenCompressor extends BlockContainer implements IConn
     	par5EntityPlayer.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiAirCompressor, par1World, par2, par3, par4);
     	return true;
     }
-	
+
     @Override
 	public void breakBlock(World world, int x, int y, int z, int par5, int par6)
     {
@@ -52,7 +52,7 @@ public class GCCoreBlockOxygenCompressor extends BlockContainer implements IConn
     		{
         		final TileEntity tile = world.getBlockTileEntity(x + ForgeDirection.getOrientation(i).offsetX, y + ForgeDirection.getOrientation(i).offsetY, z + ForgeDirection.getOrientation(i).offsetZ);
         		final GCCoreTileEntityOxygenPipe thisPipe = (GCCoreTileEntityOxygenPipe)world.getBlockTileEntity(x, y, z);
-        		
+
         		if (tile != null && thisPipe != null && tile instanceof GCCoreTileEntityOxygenPipe)
         		{
         			final GCCoreTileEntityOxygenPipe pipe = (GCCoreTileEntityOxygenPipe)tile;
@@ -62,7 +62,7 @@ public class GCCoreBlockOxygenCompressor extends BlockContainer implements IConn
         		}
     		}
     	}
-    	
+
     	super.breakBlock(world, x, y, z, par5, par6);
     }
 
@@ -156,7 +156,7 @@ public class GCCoreBlockOxygenCompressor extends BlockContainer implements IConn
             par1World.setBlockMetadataWithNotify(par2, par3, par4, 4);
         }
     }
-    
+
 	@Override
     public String getTextureFile()
     {
@@ -164,7 +164,7 @@ public class GCCoreBlockOxygenCompressor extends BlockContainer implements IConn
     }
 
 	@Override
-	public boolean isConnectableOnSide(IBlockAccess blockAccess, int x, int y, int z, ForgeDirection side) 
+	public boolean isConnectableOnSide(IBlockAccess blockAccess, int x, int y, int z, ForgeDirection side)
 	{
 		return true;
 	}

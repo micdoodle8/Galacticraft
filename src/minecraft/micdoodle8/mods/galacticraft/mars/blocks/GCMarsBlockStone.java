@@ -7,7 +7,7 @@ import net.minecraft.block.material.Material;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -23,7 +23,7 @@ public class GCMarsBlockStone extends Block
 	{
 		return GCMarsBlocks.marsCobblestone.blockID;
 	}
-	
+
 	@Override
 	public String getTextureFile()
 	{

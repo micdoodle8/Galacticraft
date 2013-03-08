@@ -7,7 +7,7 @@ import net.minecraft.util.MathHelper;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -40,12 +40,12 @@ public class GCCoreModelZombie extends ModelBase
     ModelRenderer bipedLeftLeg;
     ModelRenderer bipedEars;
     ModelRenderer bipedCloak;
-    
+
     public GCCoreModelZombie()
     {
     	this(0.0F);
     }
-	
+
 	public GCCoreModelZombie(float par1)
 	{
 		this.textureWidth = 128;
@@ -228,7 +228,7 @@ public class GCCoreModelZombie extends ModelBase
         this.bipedLeftLeg.render(f5);
         this.bipedHeadwear.render(f5);
 	}
-	
+
 	private void setRotation(ModelRenderer model, float x, float y, float z)
 	{
 		model.rotateAngleX = x;
@@ -304,7 +304,7 @@ public class GCCoreModelZombie extends ModelBase
 
         final float var7a = MathHelper.sin(this.onGround * (float)Math.PI);
         final float var8a = MathHelper.sin((1.0F - (1.0F - this.onGround) * (1.0F - this.onGround)) * (float)Math.PI);
-        
+
         this.bipedRightArm.rotateAngleZ = 0.0F;
         this.bipedLeftArm.rotateAngleZ = 0.0F;
         this.bipedRightArm.rotateAngleY = -(0.1F - var7a * 0.6F);

@@ -11,7 +11,7 @@ import net.minecraft.world.gen.structure.StructureComponent;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */

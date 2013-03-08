@@ -231,9 +231,9 @@ public class GCCoreEntityAstroOrb extends Entity
                 this.playSound("random.orb", 0.1F, 0.5F * ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.8F));
                 par1EntityPlayer.onItemPickup(this, 1);
                 par1EntityPlayer.addExperience(this.xpValue);
-                
+
                 PlayerUtil.getPlayerBaseServerFromPlayer(par1EntityPlayer).addExperience2(this.xpValue);
-                
+
                 this.setDead();
             }
         }

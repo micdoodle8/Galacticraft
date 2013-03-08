@@ -26,7 +26,7 @@ import net.minecraft.world.gen.structure.MapGenVillage;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -34,7 +34,7 @@ public class GCTitanChunkProvider extends ChunkProviderGenerate
 {
 	public static List giantCaveLocations;
 	public static List creeperDungeonLocations;
-	
+
 	private final Random rand;
 
 	private final NoiseGeneratorOctaves noiseGen1;
@@ -59,7 +59,7 @@ public class GCTitanChunkProvider extends ChunkProviderGenerate
 	private final MapGenMineshaft mineshaftGenerator = new MapGenMineshaft();
 
 	private BiomeGenBase[] biomesForGeneration = {GCTitanBiomeGenBase.titanFlat};
-	
+
 	private short stoneBlockID;
 	private short stoneBlockMetadata;
 
@@ -94,7 +94,7 @@ public class GCTitanChunkProvider extends ChunkProviderGenerate
 		final byte topBlockMeta = 0;
 		final short fillBlockID = (short) Block.dirt.blockID;
 		final byte fillBlockMeta = 1;
-		
+
 		final int var5 = 20;
 		final double var6 = 0.03125D;
 		this.stoneNoise = this.noiseGen4.generateNoiseOctaves(this.stoneNoise, par1 * 16, par2 * 16, 0, 16, 16, 1, var6 * 2.0D, var6 * 2.0D, var6 * 2.0D);
@@ -104,7 +104,7 @@ public class GCTitanChunkProvider extends ChunkProviderGenerate
 			for (int var9 = 0; var9 < 16; ++var9)
 			{
 				final BiomeGenBase var10 = par4ArrayOfBiomeGenBase[var9 + var8 * 16];
-				final float var11 = var10.getFloatTemperature();
+				var10.getFloatTemperature();
 				final int var12 = (int) (this.stoneNoise[var8 + var9 * 16] / 3.0D + 3.0D + this.rand.nextDouble() * 0.25D);
 				int var13 = -1;
 				short var14 = topBlockID;
@@ -133,7 +133,7 @@ public class GCTitanChunkProvider extends ChunkProviderGenerate
 						else if (var18 == Block.stone.blockID)
 						{
 							arrayOfMeta[index] = 1;
-							
+
 							if (var13 == -1)
 							{
 								if (var12 <= 0)
@@ -190,7 +190,7 @@ public class GCTitanChunkProvider extends ChunkProviderGenerate
 		{
 			var5[var6] = (byte) this.biomesForGeneration[var6].biomeID;
 		}
-		
+
 		var4.generateSkylightMap();
 		return var4;
 	}
@@ -198,9 +198,9 @@ public class GCTitanChunkProvider extends ChunkProviderGenerate
 	@Override
 	public void generateTerrain(int par1, int par2, byte[] par3ArrayOfByte)
     {
-		
+
     }
-	
+
 	public void generateTerrain(int par1, int par2, int[] idArray, int[] metaArray)
 	{
 		final byte var4 = 4;
@@ -303,8 +303,6 @@ public class GCTitanChunkProvider extends ChunkProviderGenerate
 		this.noise3 = this.noiseGen3.generateNoiseOctaves(this.noise3, par2, par3, par4, par5, par6, par7, var44 / 80.0D, var45 / 160.0D, var44 / 80.0D);
 		this.noise1 = this.noiseGen1.generateNoiseOctaves(this.noise1, par2, par3, par4, par5, par6, par7, var44, var45, var44);
 		this.noise2 = this.noiseGen2.generateNoiseOctaves(this.noise2, par2, par3, par4, par5, par6, par7, var44, var45, var44);
-		final boolean var43 = false;
-		final boolean var42 = false;
 		int var12 = 0;
 		int var13 = 0;
 
@@ -439,17 +437,11 @@ public class GCTitanChunkProvider extends ChunkProviderGenerate
 		BlockSand.fallInstantly = true;
 		int var4 = par2 * 16;
 		int var5 = par3 * 16;
-		final BiomeGenBase var6 = this.worldObj.getBiomeGenForCoords(var4 + 16, var5 + 16);
+		this.worldObj.getBiomeGenForCoords(var4 + 16, var5 + 16);
 		this.rand.setSeed(this.worldObj.getSeed());
 		final long var7 = this.rand.nextLong() / 2L * 2L + 1L;
 		final long var9 = this.rand.nextLong() / 2L * 2L + 1L;
 		this.rand.setSeed(par2 * var7 + par3 * var9 ^ this.worldObj.getSeed());
-		final boolean var11 = false;
-
-		final int var12;
-		final int var13;
-		final int var14;
-
 		this.decoratePlanet(this.worldObj, this.rand, var4, var5);
 		var4 += 8;
 		var5 += 8;

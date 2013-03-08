@@ -90,7 +90,7 @@ public class GCMoonComponentVillageWell extends GCMoonComponentVillage
 
         return true;
     }
-    
+
 	protected void fillWithBlocksAndMetadata(World par1World, StructureBoundingBox par2StructureBoundingBox, int par3, int par4, int par5, int par6, int par7, int par8, int par9, int par10, boolean par11)
     {
         final int var12 = this.getBiomeSpecificBlock(par9, 0);

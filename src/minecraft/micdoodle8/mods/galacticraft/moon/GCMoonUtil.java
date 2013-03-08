@@ -10,7 +10,7 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -26,7 +26,7 @@ public class GCMoonUtil
 			'Y', GCMoonItems.cheeseCurd
 		});
 	}
-	
+
 	public static void addSmeltingRecipes()
 	{
 		FurnaceRecipes.smelting().addSmelting(GCMoonItems.meteoricIronRaw.itemID, new ItemStack(GCMoonItems.meteoricIronIngot), 1.0F);

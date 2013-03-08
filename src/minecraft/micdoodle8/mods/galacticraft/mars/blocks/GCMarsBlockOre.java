@@ -13,14 +13,14 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
 public class GCMarsBlockOre extends Block
 {
 	// Desh: 0, Quandrium: 1, AluminumMars: 2, CopperMars: 3, TitaniumMars: 4;
-	
+
 	public GCMarsBlockOre(int i)
 	{
 		super(i, 4, Material.rock);
@@ -91,7 +91,7 @@ public class GCMarsBlockOre extends Block
             par3List.add(new ItemStack(par1, 1, var4));
         }
     }
-	
+
 	@Override
 	public String getTextureFile()
 	{

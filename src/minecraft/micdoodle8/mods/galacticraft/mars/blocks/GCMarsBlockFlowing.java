@@ -10,7 +10,7 @@ import net.minecraft.world.World;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -62,14 +62,14 @@ public class GCMarsBlockFlowing extends GCMarsBlockFluid
 	public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {
         par1World.scheduleBlockUpdate(par2, par3, par4, this.blockID, this.tickRate() / 10);
-        
+
     	if (par5Random.nextInt(40) == 0)
     	{
     		final GCMarsEntitySludgeling sludgeling = new GCMarsEntitySludgeling(par1World);
     		sludgeling.setLocationAndAngles(par2, par3, par4, 0F, 0F);
     		par1World.spawnEntityInWorld(sludgeling);
     	}
-    	
+
         int var6 = this.getFlowDecay(par1World, par2, par3, par4);
         byte var7 = 1;
 

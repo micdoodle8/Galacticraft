@@ -8,7 +8,6 @@ import net.minecraft.block.Block;
 import net.minecraft.util.Direction;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
-import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreWorldGenTrees extends WorldGenerator
 {
@@ -99,12 +98,12 @@ public class GCCoreWorldGenTrees extends WorldGenerator
             }
             else
             {
-            	
+
                 var8 = par1World.getBlockId(par3, par4 - 1, par5);
                 var10 = par1World.getBlockMetadata(par3, par4 - 1, par5);
-                
+
                 int waterBlocksNearby = 0;
-                
+
                 for (int i = -4; i < 5; i++)
                 {
                     for (int j = -4; j < 5; j++)
@@ -116,7 +115,7 @@ public class GCCoreWorldGenTrees extends WorldGenerator
                     }
                 }
 
-                if (Block.blocksList[var8] != null && (Block.blocksList[var8] instanceof IPlantableBlock || (Block.blocksList[var8] instanceof IPlantableMetadataBlock && ((IPlantableMetadataBlock) Block.blocksList[var8]).isPlantable(var10))) && (Block.blocksList[var8] instanceof IPlantableBlock && (waterBlocksNearby >= ((IPlantableBlock)Block.blocksList[var8]).requiredLiquidBlocksNearby()) || (Block.blocksList[var8] instanceof IPlantableMetadataBlock && waterBlocksNearby >= ((IPlantableMetadataBlock)Block.blocksList[var8]).requiredLiquidBlocksNearby())) && par4 < 256 - var6 - 1)
+                if (Block.blocksList[var8] != null && (Block.blocksList[var8] instanceof IPlantableBlock || Block.blocksList[var8] instanceof IPlantableMetadataBlock && ((IPlantableMetadataBlock) Block.blocksList[var8]).isPlantable(var10)) && (Block.blocksList[var8] instanceof IPlantableBlock && waterBlocksNearby >= ((IPlantableBlock)Block.blocksList[var8]).requiredLiquidBlocksNearby() || Block.blocksList[var8] instanceof IPlantableMetadataBlock && waterBlocksNearby >= ((IPlantableMetadataBlock)Block.blocksList[var8]).requiredLiquidBlocksNearby()) && par4 < 256 - var6 - 1)
                 {
                     var9 = 3;
                     final byte var18 = 0;

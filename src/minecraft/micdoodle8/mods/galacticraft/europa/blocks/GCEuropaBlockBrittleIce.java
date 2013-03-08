@@ -36,7 +36,7 @@ public class GCEuropaBlockBrittleIce extends BlockBreakable
     {
 		return side == 1 ? 1 : side == 0 ? 3 : 0;
     }
-    
+
 	@Override
 	public int getBlockTexture(IBlockAccess par1IBlockAccess, int x, int y, int z, int side)
 	{
@@ -105,13 +105,13 @@ public class GCEuropaBlockBrittleIce extends BlockBreakable
             par1World.setBlockWithNotify(par2, par3, par4, Block.waterStill.blockID);
         }
     }
-    
+
     @Override
 	public int getMobilityFlag()
     {
         return 0;
     }
-    
+
     @Override
     public String getTextureFile()
     {

@@ -7,12 +7,12 @@ import net.minecraft.entity.Entity;
 public class GCCoreModelMeteor extends ModelBase
 {
 	ModelRenderer[] shapes = new ModelRenderer[13];
-  
+
 	public GCCoreModelMeteor()
 	{
 		this.textureWidth = 128;
 		this.textureHeight = 64;
-    
+
 		this.shapes[0] = new ModelRenderer(this, 0, 0);
 		this.shapes[0].addBox(0F, -7F, -13F, 2, 4, 4);
 		this.shapes[0].setRotationPoint(0F, 0F, 0F);
@@ -92,18 +92,18 @@ public class GCCoreModelMeteor extends ModelBase
 		this.shapes[12].mirror = true;
 		this.setRotation(this.shapes[12], 0F, 0F, 0F);
 	}
-  
+
 	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
 	{
 		super.render(entity, f, f1, f2, f3, f4, f5);
 		super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-		
+
 		for (final ModelRenderer shape : this.shapes) {
 			shape.render(f5);
 		}
 	}
-	
+
 	public void renderBlock(float f)
 	{
 		for (final ModelRenderer shape : this.shapes) {

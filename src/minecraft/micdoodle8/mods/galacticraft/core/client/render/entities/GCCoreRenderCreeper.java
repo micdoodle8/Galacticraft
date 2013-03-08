@@ -1,13 +1,11 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
-import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelCreeper;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityCreeper;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemSensorGlasses;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.item.ItemStack;
@@ -21,7 +19,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -104,18 +102,16 @@ public class GCCoreRenderCreeper extends RenderLiving
     protected int renderCreeperPassModel(GCCoreEntityCreeper par1GCEntityCreeper, int par2, float par3)
     {
 		final Minecraft minecraft = FMLClientHandler.instance().getClient();
-		
-        final WorldClient world = minecraft.theWorld;
-        
+
         final EntityPlayerSP player = minecraft.thePlayer;
-        
+
         ItemStack helmetSlot = null;
-		
+
 		if (player != null && player.inventory.armorItemInSlot(3) != null)
 		{
 			helmetSlot = player.inventory.armorItemInSlot(3);
 		}
-		
+
         if (helmetSlot != null && helmetSlot.getItem() instanceof GCCoreItemSensorGlasses && minecraft.currentScreen == null)
         {
             if (par2 == 1)

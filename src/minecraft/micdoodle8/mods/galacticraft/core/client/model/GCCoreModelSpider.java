@@ -7,7 +7,7 @@ import net.minecraft.util.MathHelper;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -24,7 +24,7 @@ public class GCCoreModelSpider extends ModelBase
 	ModelRenderer leg3;
 	ModelRenderer leg1;
 	ModelRenderer head;
-    
+
 	ModelRenderer oxygenMask;
 	ModelRenderer tank1;
 	ModelRenderer tank2;
@@ -56,7 +56,7 @@ public class GCCoreModelSpider extends ModelBase
 	{
 		this.textureWidth = 128;
 		this.textureHeight = 64;
-		
+
 		this.body = new ModelRenderer(this, 0, 0);
 		this.body.addBox(-3F, -3F, -3F, 6, 6, 6, par1);
 		this.body.setRotationPoint(0F, 15F, 0F);
@@ -123,7 +123,7 @@ public class GCCoreModelSpider extends ModelBase
 		this.head.setTextureSize(128, 64);
 		this.head.mirror = true;
 		this.setRotation(this.head, 0F, 0F, 0F);
-		
+
 		this.oxygenMask = new ModelRenderer(this, 0, 32);
 		this.oxygenMask.addBox(-5F, -5F, -9F, 10, 10, 10, par1);
 		this.oxygenMask.setRotationPoint(0F, 15F, -3F);

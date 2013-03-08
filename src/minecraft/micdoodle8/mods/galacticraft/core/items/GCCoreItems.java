@@ -7,11 +7,10 @@ import net.minecraft.item.EnumToolMaterial;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.EnumHelper;
 import net.minecraftforge.common.MinecraftForge;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -25,7 +24,7 @@ public class GCCoreItems
 	public static Item sensorGlasses;
 //	public static Item sensorGlassesWithOxygenMask;
 	public static Item sensorLens;
-	
+
 	public static Item titaniumPickaxe;
 	public static Item titaniumAxe;
 	public static Item titaniumHoe;
@@ -57,12 +56,12 @@ public class GCCoreItems
 	public static Item flagPole;
 	public static Item oilCanister;
 	public static Item oilExtractor;
-	
+
 	public static EnumArmorMaterial OXYGENMASK = EnumHelper.addArmorMaterial("OXYGENMASK", 200, new int[] {0, 0, 0, 0}, 0);
 	public static EnumArmorMaterial SENSORGLASSES = EnumHelper.addArmorMaterial("SENSORGLASSES", 200, new int[] {0, 0, 0, 0}, 0);
 	public static EnumArmorMaterial TITANIUMARMOR = EnumHelper.addArmorMaterial("TITANIUM", 42, new int[] {4, 9, 7, 4}, 12);
 	public static EnumToolMaterial TOOLTITANIUM = EnumHelper.addToolMaterial("TITANIUM", 4, 768, 7.0F, 3, 8);
-	
+
 	public static void initItems()
 	{
 		GCCoreItems.lightOxygenTankFull = (GCCoreItemOxygenTank) new GCCoreItemOxygenTank(GCCoreConfigManager.idItemLightOxygenTank).setMaxDamage(90).setIconIndex(0).setItemName("oxygenTankLightFull");
@@ -104,10 +103,10 @@ public class GCCoreItems
 		GCCoreItems.flagPole = new GCCoreItem(GCCoreConfigManager.idItemFlagPole).setIconIndex(51).setItemName("flagPole");
 		GCCoreItems.oilCanister = new GCCoreItemOilCanister(GCCoreConfigManager.idItemOilCanister).setIconIndex(57).setItemName("oilCanisterPartial");
 		GCCoreItems.oilExtractor = new GCCoreItemOilExtractor(GCCoreConfigManager.idItemOilExtractor).setIconIndex(52).setItemName("oilExtractor");
-		
+
 		GalacticraftCore.hiddenItems.add(gravityBow.itemID);
 	}
-	
+
 	public static void registerHarvestLevels()
 	{
 		MinecraftForge.setToolClass(GCCoreItems.titaniumPickaxe, "pickaxe", 4);

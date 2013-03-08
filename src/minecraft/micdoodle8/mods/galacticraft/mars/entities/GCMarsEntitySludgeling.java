@@ -42,13 +42,13 @@ public class GCMarsEntitySludgeling extends EntityMob
     {
         return true;
     }
-    
+
     @Override
 	protected boolean canTriggerWalking()
     {
         return false;
     }
-    
+
     @Override
 	protected Entity findPlayerToAttack()
     {
@@ -73,7 +73,7 @@ public class GCMarsEntitySludgeling extends EntityMob
     {
         return "mob.silverfish.kill";
     }
-    
+
     public EntityPlayer getClosestEntityToAttack(double par1, double par3, double par5, double par7)
     {
         double var9 = -1.0D;
@@ -115,7 +115,7 @@ public class GCMarsEntitySludgeling extends EntityMob
     {
         return 0;
     }
-    
+
     @Override
 	public void onUpdate()
     {

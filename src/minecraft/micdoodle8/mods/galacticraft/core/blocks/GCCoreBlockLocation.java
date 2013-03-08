@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-public class GCCoreBlockLocation 
+public class GCCoreBlockLocation
 {
     public final int chunkXPos;
     public final int chunkYPos;

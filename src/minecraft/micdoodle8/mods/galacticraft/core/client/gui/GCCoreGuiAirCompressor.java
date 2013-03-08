@@ -10,14 +10,14 @@ import org.lwjgl.opengl.GL11;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
 public class GCCoreGuiAirCompressor extends GuiContainer
 {
     private final GCCoreTileEntityOxygenCompressor distributorInv;
-    
+
 	public GCCoreGuiAirCompressor(InventoryPlayer par1InventoryPlayer, GCCoreTileEntityOxygenCompressor par2TileEntityAirDistributor)
 	{
         super(new GCCoreContainerAirCompressor(par1InventoryPlayer, par2TileEntityAirDistributor));
@@ -40,10 +40,10 @@ public class GCCoreGuiAirCompressor extends GuiContainer
 		final int var5 = (this.width - this.xSize) / 2;
 		final int var6 = (this.height - this.ySize) / 2;
 		this.drawTexturedModalRect(var5, var6 + 5, 0, 0, this.xSize, this.ySize);
-		
-		if (distributorInv != null)
+
+		if (this.distributorInv != null)
 		{
-			this.drawTexturedModalRect(var5 + 68, var6 + 34, 176, 0, (int) Math.min(distributorInv.getPower(), 32), 12);
+			this.drawTexturedModalRect(var5 + 68, var6 + 34, 176, 0, (int) Math.min(this.distributorInv.getPower(), 32), 12);
 		}
 	}
 }

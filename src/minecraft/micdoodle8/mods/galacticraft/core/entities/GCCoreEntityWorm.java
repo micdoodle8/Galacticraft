@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 public class GCCoreEntityWorm extends EntityMob implements IEntityMultiPart
 {
     public GCCoreEntityWormPart[] wormPartArray;
-    
+
     public GCCoreEntityWormPart wormPartHead;
     public GCCoreEntityWormPart wormPartBody1;
     public GCCoreEntityWormPart wormPartBody2;
@@ -26,7 +26,7 @@ public class GCCoreEntityWorm extends EntityMob implements IEntityMultiPart
     public GCCoreEntityWormPart wormPartBody7;
     public GCCoreEntityWormPart wormPartBody8;
     public GCCoreEntityWormPart wormPartBody9;
-    
+
     public GCCoreEntityWorm(World par1World)
     {
         super(par1World);
@@ -49,7 +49,7 @@ public class GCCoreEntityWorm extends EntityMob implements IEntityMultiPart
         this.noClip = true;
         this.ignoreFrustumCheck = true;
     }
-    
+
     @Override
 	protected void entityInit()
     {
@@ -57,7 +57,7 @@ public class GCCoreEntityWorm extends EntityMob implements IEntityMultiPart
         this.dataWatcher.addObject(16, Integer.valueOf(this.rand.nextInt(4)));
         this.dataWatcher.addObject(17, Integer.valueOf(0));
     }
-    
+
     @Override
 	public AxisAlignedBB getCollisionBox(Entity var1)
     {
@@ -138,7 +138,7 @@ public class GCCoreEntityWorm extends EntityMob implements IEntityMultiPart
     	}
 
 		this.rotationYaw = this.getRotationIndex() % 4 * 90F + 45F;
-    	
+
 //    	if (this.worldObj.isBlockSolidOnSide((int)this.posX, (int)this.posY - 3, (int)this.posZ, ForgeDirection.UP))
 //    	{
 //
@@ -146,10 +146,10 @@ public class GCCoreEntityWorm extends EntityMob implements IEntityMultiPart
 //    	else
 //    	{
 //    	}
-		
+
 		int xOffset = 0;
 		int zOffset = 0;
-		
+
 		switch (this.getRotationIndex() % 4)
 		{
 		case 0:
@@ -165,7 +165,7 @@ public class GCCoreEntityWorm extends EntityMob implements IEntityMultiPart
 			zOffset = 4;
 			break;
 		}
-    	
+
 //    	for (int i = -1; i < 2; i++)
 //    	{
 //    		for (int j = -1; j < 2; j++)
@@ -221,15 +221,15 @@ public class GCCoreEntityWorm extends EntityMob implements IEntityMultiPart
 //            		}
 //            	}
 //    		}
-		
-		
+
+
         final float var5 = this.rotationYaw * (float)Math.PI / 180.0F;
-        final float var27 = MathHelper.sin(var5);
-        final float var7 = MathHelper.cos(var5);
-		
+        MathHelper.sin(var5);
+        MathHelper.cos(var5);
+
 		this.wormPartHead.onUpdate();
         this.wormPartHead.setLocationAndAngles(this.posX + xOffset, this.posY - 0.5, this.posZ + zOffset, 0.0F, 0.0F);
-    	
+
     	final int id = this.worldObj.getBlockId(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 3), MathHelper.floor_double(this.posZ));
 
     	if (id == Block.waterMoving.blockID || id == Block.waterStill.blockID || id == 0)
@@ -242,13 +242,13 @@ public class GCCoreEntityWorm extends EntityMob implements IEntityMultiPart
         for (int var11 = 0; var11 < var9.size(); ++var11)
         {
             final Entity var32 = (Entity)var9.get(var11);
-            
+
             if (var32 != null && !(var32 instanceof EntityItem))
             {
             	var32.attackEntityFrom(DamageSource.cactus, 1);
             }
         }
-        
+
         this.motionY *= 0.95;
 
         this.motionX = -(this.moveSpeed * Math.cos(((this.getRotationIndex() % 4 + 1) * 90F - 90F) * Math.PI / 180.0D));
@@ -268,7 +268,7 @@ public class GCCoreEntityWorm extends EntityMob implements IEntityMultiPart
             this.setSlowed(this.destroyBlocksInAABB(this.wormPartHead.boundingBox) | this.destroyBlocksInAABB(this.wormPartBody1.boundingBox));
         }
     }
-    
+
     @Override
 	protected boolean isValidLightLevel()
     {
@@ -288,28 +288,28 @@ public class GCCoreEntityWorm extends EntityMob implements IEntityMultiPart
             return false;
         }
     }
-    
+
     @Override
 	public int getAttackStrength(Entity par1Entity)
     {
         return 1;
     }
-    
+
     public int getRotationIndex()
     {
     	return this.dataWatcher.getWatchableObjectInt(16);
     }
-    
+
     public void setRotationIndex(int i)
     {
     	this.dataWatcher.updateObject(16, Integer.valueOf(i));
     }
-    
+
     public int getSlowed()
     {
     	return this.dataWatcher.getWatchableObjectInt(17);
     }
-    
+
     public void setSlowed(boolean b)
     {
     	if (b)
@@ -321,12 +321,12 @@ public class GCCoreEntityWorm extends EntityMob implements IEntityMultiPart
     		this.setSlowed(0);
     	}
     }
-    
+
     public void setSlowed(int i)
     {
     	this.dataWatcher.updateObject(17, Integer.valueOf(i));
     }
-    
+
     private void turn()
     {
 		this.setRotationIndex(this.getRotationIndex() + 1);

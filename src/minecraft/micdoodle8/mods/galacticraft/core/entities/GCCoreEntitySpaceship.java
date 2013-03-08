@@ -32,16 +32,16 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
 public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInventory
 {
     protected ItemStack[] cargoItems = new ItemStack[36];
-	
+
     public IUpdatePlayerListBox rocketSoundUpdater;
-    
+
     private int type;
 
     public GCCoreEntitySpaceship(World par1World)
@@ -72,7 +72,7 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
     {
     	super.entityInit();
         this.dataWatcher.addObject(25, new Integer(0));
-        this.setSpaceshipType(type);
+        this.setSpaceshipType(this.type);
     }
 
     @Override
@@ -90,9 +90,9 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
 	public void onUpdate()
     {
     	super.onUpdate();
-        
+
         int i;
-        
+
         if (this.timeUntilLaunch >= 100)
         {
             i = Math.abs(this.timeUntilLaunch / 100);
@@ -101,7 +101,7 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
         {
         	i = 1;
         }
-    	
+
         if ((this.getLaunched() == 1 || this.rand.nextInt(i) == 0) && !GCCoreConfigManager.disableSpaceshipParticles && this.hasFuelTank())
         {
         	if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
@@ -109,23 +109,23 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
             	this.spawnParticles(this.getLaunched() == 1);
         	}
         }
-    	
+
         if (this.rocketSoundUpdater != null)
         {
             this.rocketSoundUpdater.update();
         }
-        
-        if (this.launched && hasFuelTank())
+
+        if (this.launched && this.hasFuelTank())
         {
         	double d = this.timeSinceLaunch / 250;
-        	
+
         	d = Math.min(d, 1);
-        	
+
         	if (d != 0.0)
         	{
         		this.motionY = -d * Math.cos((this.rotationPitch - 180) * Math.PI / 180.0D);
         	}
-        	
+
         	if (this.getTimeSinceLaunch() % 50 == 0)
         	{
         		this.getStackInSlot(0).setItemDamage(this.getStackInSlot(0).getItemDamage() + 1);
@@ -139,10 +139,10 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
         	}
         }
     }
-    
+
     public boolean hasFuelTank()
     {
-    	if (this.getStackInSlot(0) != null && this.getStackInSlot(0).getItem() instanceof GCCoreItemFuelCanister && (this.getStackInSlot(0).getMaxDamage() - this.getStackInSlot(0).getItemDamage()) > 0)
+    	if (this.getStackInSlot(0) != null && this.getStackInSlot(0).getItem() instanceof GCCoreItemFuelCanister && this.getStackInSlot(0).getMaxDamage() - this.getStackInSlot(0).getItemDamage() > 0)
     	{
     		return true;
     	}
@@ -151,37 +151,39 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
     		return false;
     	}
     }
-    
-    public void onLaunch() 
+
+    @Override
+	public void onLaunch()
     {
-    	
+
     }
-    
-    public void onTeleport(EntityPlayerMP player) 
+
+    @Override
+	public void onTeleport(EntityPlayerMP player)
     {
-    	GCCorePlayerBase playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player);
-    	
+    	final GCCorePlayerBase playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player);
+
     	if (playerBase != null)
     	{
     		playerBase.rocketStacks = this.cargoItems;
     		playerBase.rocketType = this.getSpaceshipType();
-    		playerBase.fuelDamage = (this.getStackInSlot(0).itemID == GCCoreItems.rocketFuelBucket.itemID ? this.getStackInSlot(0).getItemDamage() : 0);
+    		playerBase.fuelDamage = this.getStackInSlot(0).itemID == GCCoreItems.rocketFuelBucket.itemID ? this.getStackInSlot(0).getItemDamage() : 0;
         }
     }
-    
+
     protected void spawnParticles(boolean launched)
     {
     	final double x1 = 2 * Math.cos(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D);
     	final double z1 = 2 * Math.sin(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D);
     	double y1 = 2 * Math.cos((this.rotationPitch - 180) * Math.PI / 180.0D) + (this.getReversed() == 1 ? 10D : 0D);
-    	
+
     	if (this.getLaunched() == 0)
     	{
     		y1 -= 2D;
     	}
-    	
+
     	final double y = this.prevPosY + (this.posY - this.prevPosY);
-    	
+
     	if (!this.isDead)
     	{
         	this.spawnParticle("launchflame", 	this.posX + 0.4 - this.rand.nextDouble() / 10 + x1, 					y - 0.0D + y1, 	this.posZ + 0.4 - this.rand.nextDouble() / 10 + z1, 	x1, y1, z1, this.getLaunched() == 1);
@@ -195,24 +197,24 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
         	this.spawnParticle("launchflame", 	this.posX + x1, 														y - 0.0D + y1, 	this.posZ - 0.4D + z1, 									x1, y1, z1, this.getLaunched() == 1);
         }
     }
-    
+
     @Override
 	public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
     {
         return this.isDead ? false : par1EntityPlayer.getDistanceSqToEntity(this) <= 64.0D;
     }
-    
+
 	@Override
 	public int getSizeInventory()
 	{
 		return 28;
 	}
-    
+
     @Override
 	protected void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
     	super.writeEntityToNBT(par1NBTTagCompound);
-    	
+
         par1NBTTagCompound.setInteger("Type", this.getSpaceshipType());
 
         if (this.getSizeInventory() > 0)
@@ -238,7 +240,7 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
 	protected void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
     	super.readEntityFromNBT(par1NBTTagCompound);
-    	
+
         this.setSpaceshipType(par1NBTTagCompound.getInteger("Type"));
 
         if (this.getSizeInventory() > 0)
@@ -321,12 +323,12 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
             par2ItemStack.stackSize = this.getInventoryStackLimit();
         }
     }
-    
+
     public void setSpaceshipType(int par1)
     {
     	this.dataWatcher.updateObject(25, par1);
     }
-    
+
     public int getSpaceshipType()
     {
     	return this.dataWatcher.getWatchableObjectInt(25);
@@ -352,13 +354,13 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
 
 	@Override
 	public void closeChest() { }
-	
+
 	@SideOnly(Side.CLIENT)
     public void spawnParticle(String var1, double var2, double var4, double var6, double var8, double var10, double var12, boolean b)
 	{
 		this.spawnParticle(var1, var2, var4, var6, var8, var10, var12, 0.0D, 0.0D, 0.0D, b);
 	}
-	
+
 	@SideOnly(Side.CLIENT)
 	public void spawnParticle(String var1, double var2, double var4, double var6, double var8, double var10, double var12, double var13, double var14, double var15, boolean b)
     {
@@ -371,7 +373,7 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
             final double var19 = mc.renderViewEntity.posZ - var6;
             Object var21 = null;
             final double var22 = 64.0D;
-            
+
             if (var1.equals("whitesmoke"))
             {
         		final EntityFX fx = new GCCoreEntityLaunchSmokeFX(mc.theWorld, var2, var4, var6, var8, var10, var12, 1.0F, b);
@@ -413,7 +415,7 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
                     ((EntityFX)var21).setRBGColorF((float)var13, (float)var14, (float)var15);
             	}
             }
-            
+
             if (var21 != null)
             {
                 ((EntityFX)var21).prevPosX = ((EntityFX)var21).posX;
@@ -425,42 +427,39 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
     }
 
 	@Override
-	public Entity[] getSpaceshipParts() 
+	public Entity[] getSpaceshipParts()
 	{
 		return null;
 	}
 
 	@Override
-	public HashSet<Integer> getPossiblePlanets() 
+	public HashSet<Integer> getPossiblePlanets()
 	{
-		HashSet<Integer> dimensions = new HashSet<Integer>();
+		final HashSet<Integer> dimensions = new HashSet<Integer>();
 		dimensions.add(0);
 		dimensions.add(GCMoonConfigManager.dimensionIDMoon);
 		return dimensions;
 	}
 
 	@Override
-	public int getYCoordToTeleport() 
+	public int getYCoordToTeleport()
 	{
 		return 1200;
 	}
 
 	@Override
-	public int getPreLaunchWait() 
+	public int getPreLaunchWait()
 	{
 		return 400;
 	}
 
 	@Override
-	public List<ItemStack> getItemsDropped() 
+	public List<ItemStack> getItemsDropped()
 	{
-        List<ItemStack> items = new ArrayList<ItemStack>();
+        final List<ItemStack> items = new ArrayList<ItemStack>();
         items.add(new ItemStack(GCCoreItems.spaceship, 1, this.getSpaceshipType()));
-        
-        for (int i = 0; i < this.cargoItems.length; i++)
-        {
-        	ItemStack item = this.cargoItems[i];
-        	
+
+        for (final ItemStack item : this.cargoItems) {
         	if (item != null)
         	{
         		items.add(item);

@@ -6,7 +6,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -19,7 +19,7 @@ public class GCTitanBlocks
 	public static void setHarvestLevels()
 	{
 	}
-	
+
 	public static void registerBlocks()
 	{
 	}
@@ -27,12 +27,12 @@ public class GCTitanBlocks
 	public static void addNames()
 	{
 	}
-	
+
 	private static void addName(Block block)
 	{
 		LanguageRegistry.instance().addStringLocalization(block.getBlockName() + ".name", ClientProxyTitan.lang.get(block.getBlockName() + ".name"));
 	}
-	
+
 	private static void addNameWithMetadata(String string)
 	{
 		LanguageRegistry.instance().addStringLocalization(string, ClientProxyTitan.lang.get(string));

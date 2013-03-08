@@ -2,8 +2,6 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.Random;
 
-import cpw.mods.fml.common.FMLLog;
-
 import micdoodle8.mods.galacticraft.API.IConnectableToPipe;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -22,22 +20,22 @@ import net.minecraftforge.common.ForgeDirection;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
 public class GCCoreBlockOxygenDistributor extends BlockContainer implements IConnectableToPipe
 {
     private final Random distributorRand = new Random();
-    
+
     private static boolean keepDistributorInventory = false;
-	
+
 	public GCCoreBlockOxygenDistributor(int par1, boolean isActive)
 	{
 		super(par1, 22, Material.rock);
 		this.setRequiresSelfNotify();
 	}
-	
+
     @Override
 	public void breakBlock(World world, int x, int y, int z, int par5, int par6)
     {
@@ -45,27 +43,27 @@ public class GCCoreBlockOxygenDistributor extends BlockContainer implements ICon
     	{
     		final TileEntity tile = world.getBlockTileEntity(x + ForgeDirection.getOrientation(i).offsetX, y + ForgeDirection.getOrientation(i).offsetY, z + ForgeDirection.getOrientation(i).offsetZ);
     		final GCCoreTileEntityOxygenDistributor thisDistributor = (GCCoreTileEntityOxygenDistributor)world.getBlockTileEntity(x, y, z);
-    		
+
     		if (tile != null && thisDistributor != null && tile instanceof GCCoreTileEntityBreathableAir)
     		{
     			final GCCoreTileEntityBreathableAir air = (GCCoreTileEntityBreathableAir)tile;
 
 				air.removeDistributor(thisDistributor);
-				
-				for (GCCoreTileEntityBreathableAir airTile : air.connectedAir)
+
+				for (final GCCoreTileEntityBreathableAir airTile : air.connectedAir)
 				{
 					airTile.removeDistributor(thisDistributor);
 				}
     		}
     	}
-    	
+
     	for (int i = 0; i < ForgeDirection.values().length - 1; i++)
     	{
     		if (world.getBlockTileEntity(x, y, z) instanceof GCCoreTileEntityOxygenPipe)
     		{
         		final TileEntity tile = world.getBlockTileEntity(x + ForgeDirection.getOrientation(i).offsetX, y + ForgeDirection.getOrientation(i).offsetY, z + ForgeDirection.getOrientation(i).offsetZ);
         		final GCCoreTileEntityOxygenPipe thisPipe = (GCCoreTileEntityOxygenPipe)world.getBlockTileEntity(x, y, z);
-        		
+
         		if (tile != null && thisPipe != null && tile instanceof GCCoreTileEntityOxygenPipe)
         		{
         			final GCCoreTileEntityOxygenPipe pipe = (GCCoreTileEntityOxygenPipe)tile;
@@ -75,7 +73,7 @@ public class GCCoreBlockOxygenDistributor extends BlockContainer implements ICon
         		}
     		}
     	}
-    	
+
     	super.breakBlock(world, x, y, z, par5, par6);
     }
 
@@ -169,7 +167,7 @@ public class GCCoreBlockOxygenDistributor extends BlockContainer implements ICon
             par1World.setBlockMetadataWithNotify(par2, par3, par4, 4);
         }
     }
-    
+
     public void removeAirBlocks(World world, int x, int y, int z)
     {
     	for (int j = -8; j <= 8; j++)
@@ -187,7 +185,7 @@ public class GCCoreBlockOxygenDistributor extends BlockContainer implements ICon
 			}
 		}
     }
-    
+
 	@Override
     public String getTextureFile()
     {
@@ -195,7 +193,7 @@ public class GCCoreBlockOxygenDistributor extends BlockContainer implements ICon
     }
 
 	@Override
-	public boolean isConnectableOnSide(IBlockAccess blockAccess, int x, int y, int z, ForgeDirection side) 
+	public boolean isConnectableOnSide(IBlockAccess blockAccess, int x, int y, int z, ForgeDirection side)
 	{
 		if (side != ForgeDirection.UP && side != ForgeDirection.DOWN)
 		{

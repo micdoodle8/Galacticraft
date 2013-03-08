@@ -11,7 +11,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GCCoreItemHoe extends ItemHoe
 {
 	private final EnumToolMaterial material;
-	
+
 	public GCCoreItemHoe(int par1, EnumToolMaterial par2EnumToolMaterial)
 	{
 		super(par1, par2EnumToolMaterial);

@@ -20,7 +20,6 @@ import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
 import net.minecraftforge.event.world.WorldEvent;
-import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreEvents
 {
@@ -36,10 +35,10 @@ public class GCCoreEvents
 				event.setResult(Result.DENY);
 			}
 		}
-		
+
 		event.setResult(Result.DENY);
 	}
-	
+
 	@ForgeSubscribe
 	public void onWorldLoad(WorldEvent.Load event)
 	{
@@ -50,9 +49,9 @@ public class GCCoreEvents
 	}
 
 	@ForgeSubscribe
-	public void onBucketFill(FillBucketEvent event) 
+	public void onBucketFill(FillBucketEvent event)
 	{
-		ItemStack result = fillCustomBucket(event.world, event.target);
+		final ItemStack result = this.fillCustomBucket(event.world, event.target);
 
 		if (result == null)
 		{
@@ -63,105 +62,105 @@ public class GCCoreEvents
 		event.setResult(Result.ALLOW);
 	}
 
-	public ItemStack fillCustomBucket(World world, MovingObjectPosition pos) 
+	public ItemStack fillCustomBucket(World world, MovingObjectPosition pos)
 	{
 		Class buildCraftClass = null;
-		
+
 		int bcOilID1 = -1;
 		int bcOilID2 = -1;
 		Item bcOilBucket = null;
-		
+
 		try
 		{
 			if ((buildCraftClass = Class.forName("buildcraft.BuildCraftEnergy")) != null)
 			{
-				for (Field f : buildCraftClass.getFields())
+				for (final Field f : buildCraftClass.getFields())
 				{
 					if (f.getName().equals("oilMoving"))
 					{
-						Block block = (Block) f.get(null);
-						
+						final Block block = (Block) f.get(null);
+
 						bcOilID1 = block.blockID;
 					}
 					else if (f.getName().equals("oilStill"))
 					{
-						Block block = (Block) f.get(null);
-						
+						final Block block = (Block) f.get(null);
+
 						bcOilID2 = block.blockID;
 					}
 					else if (f.getName().equals("bucketOil"))
 					{
-						Item item = (Item) f.get(null);
-						
+						final Item item = (Item) f.get(null);
+
 						bcOilBucket = item;
 					}
 				}
 			}
 		}
-		catch (Throwable cnfe)
+		catch (final Throwable cnfe)
 		{
-			
-		}
-		
-		int blockID = world.getBlockId(pos.blockX, pos.blockY, pos.blockZ);
 
-		if ((blockID == bcOilID1 || blockID == bcOilID2 || blockID == GCCoreBlocks.crudeOilMoving.blockID || blockID == GCCoreBlocks.crudeOilStill.blockID) && world.getBlockMetadata(pos.blockX, pos.blockY, pos.blockZ) == 0 && bcOilBucket != null) 
+		}
+
+		final int blockID = world.getBlockId(pos.blockX, pos.blockY, pos.blockZ);
+
+		if ((blockID == bcOilID1 || blockID == bcOilID2 || blockID == GCCoreBlocks.crudeOilMoving.blockID || blockID == GCCoreBlocks.crudeOilStill.blockID) && world.getBlockMetadata(pos.blockX, pos.blockY, pos.blockZ) == 0 && bcOilBucket != null)
 		{
 			world.setBlockWithNotify(pos.blockX, pos.blockY, pos.blockZ, 0);
 
 			return new ItemStack(bcOilBucket);
-		} 
+		}
 		else
 		{
 			return null;
 		}
 	}
-	
-	@ForgeSubscribe
-	public void populate(PopulateChunkEvent.Post event) 
-	{
-		boolean doGen = TerrainGen.populate(event.chunkProvider, event.world, event.rand, event.chunkX, event.chunkX, event.hasVillageGenerated, PopulateChunkEvent.Populate.EventType.CUSTOM);
 
-		if (!doGen || GCCoreConfigManager.disableOilGen) 
+	@ForgeSubscribe
+	public void populate(PopulateChunkEvent.Post event)
+	{
+		final boolean doGen = TerrainGen.populate(event.chunkProvider, event.world, event.rand, event.chunkX, event.chunkX, event.hasVillageGenerated, PopulateChunkEvent.Populate.EventType.CUSTOM);
+
+		if (!doGen || GCCoreConfigManager.disableOilGen)
 		{
 			return;
 		}
 
-		int worldX = event.chunkX << 4;
-		int worldZ = event.chunkZ << 4;
+		final int worldX = event.chunkX << 4;
+		final int worldZ = event.chunkZ << 4;
 
 		this.doPopulate(event.world, event.rand, worldX, worldZ);
 	}
 
-	public static void doPopulate(World world, Random rand, int x, int z) 
+	public static void doPopulate(World world, Random rand, int x, int z)
 	{
-		BiomeGenBase biomegenbase = world.getBiomeGenForCoords(x + 16, z + 16);
+		final BiomeGenBase biomegenbase = world.getBiomeGenForCoords(x + 16, z + 16);
 
-		if (biomegenbase.biomeID == BiomeGenBase.sky.biomeID || biomegenbase.biomeID == BiomeGenBase.hell.biomeID) 
+		if (biomegenbase.biomeID == BiomeGenBase.sky.biomeID || biomegenbase.biomeID == BiomeGenBase.hell.biomeID)
 		{
 			return;
 		}
 
-		boolean flag1 = rand.nextDouble() <= (0.08 * GCCoreConfigManager.oilGenFactor);
-		boolean flag2 = rand.nextDouble() <= (0.08 * GCCoreConfigManager.oilGenFactor);
+		final boolean flag1 = rand.nextDouble() <= 0.08 * GCCoreConfigManager.oilGenFactor;
+		final boolean flag2 = rand.nextDouble() <= 0.08 * GCCoreConfigManager.oilGenFactor;
 
-		if (flag1 || flag2) 
+		if (flag1 || flag2)
 		{
-			int cx = x, cy = 20 + rand.nextInt(10), cz = z;
+			final int cx = x, cy = 20 + rand.nextInt(10), cz = z;
 
-			int r = 1 + rand.nextInt(2);
+			final int r = 1 + rand.nextInt(2);
 
-			int r2 = r * r;
+			final int r2 = r * r;
 
-			for (int bx = -r; bx <= r; bx++) 
+			for (int bx = -r; bx <= r; bx++)
 			{
-				for (int by = -r; by <= r; by++) 
+				for (int by = -r; by <= r; by++)
 				{
-					for (int bz = -r; bz <= r; bz++) 
+					for (int bz = -r; bz <= r; bz++)
 					{
-						int d2 = bx * bx + by * by + bz * bz;
+						final int d2 = bx * bx + by * by + bz * bz;
 
-						if (d2 <= r2) 
+						if (d2 <= r2)
 						{
 							world.setBlockWithNotify(bx + cx, by + cy, bz + cz, GCCoreBlocks.crudeOilStill.blockID);
 						}

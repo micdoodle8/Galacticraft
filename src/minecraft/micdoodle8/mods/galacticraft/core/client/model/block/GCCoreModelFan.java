@@ -12,7 +12,7 @@ public class GCCoreModelFan extends ModelBase
 	{
 		this(0.0F);
 	}
-	
+
 	public GCCoreModelFan(float par1)
 	{
 		this.center = new ModelRenderer(this, 0, 0);
@@ -98,7 +98,7 @@ public class GCCoreModelFan extends ModelBase
 		this.fans[3][2].mirror = true;
 		this.setRotation(this.fans[3][2], 0F, 0F, 0F);
 	}
-	  
+
 	public void renderAll()
 	{
 		for (int i = 0; i < 4; i++)
@@ -108,10 +108,10 @@ public class GCCoreModelFan extends ModelBase
 				this.fans[i][j].render(0.0625F);
 			}
 		}
-		
+
 		this.center.render(0.0625F);
 	}
-	  
+
 	private void setRotation(ModelRenderer model, float x, float y, float z)
 	{
 		model.rotateAngleX = x;

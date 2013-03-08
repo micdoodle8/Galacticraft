@@ -22,7 +22,7 @@ public class GCCoreContainerRocketBench extends Container
         this.addSlotToContainer(new GCCoreSlotRocketBenchResult(par1InventoryPlayer.player, this.craftMatrix, this.craftResult, 0, 142, 69));
         int var6;
         int var7;
-        
+
         // Cone
         this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, 1, 48, -8, x, y, z, par1InventoryPlayer.player));
 
@@ -31,7 +31,7 @@ public class GCCoreContainerRocketBench extends Container
         {
             this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, 2 + var6, 39, -6 + var6 * 18 + 16, x, y, z, par1InventoryPlayer.player));
         }
-        
+
         // Body Right
         for (var6 = 0; var6 < 4; ++var6)
         {
@@ -41,10 +41,10 @@ public class GCCoreContainerRocketBench extends Container
         // Left fins
         this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, 10, 21, 64, x, y, z, par1InventoryPlayer.player));
         this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, 11, 21, 82, x, y, z, par1InventoryPlayer.player));
-        
+
         // Engine
         this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, 12, 48, 82, x, y, z, par1InventoryPlayer.player));
-        
+
         // Right fins
         this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, 13, 75, 64, x, y, z, par1InventoryPlayer.player));
         this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, 14, 75, 82, x, y, z, par1InventoryPlayer.player));
@@ -54,7 +54,7 @@ public class GCCoreContainerRocketBench extends Container
         {
             this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, 15 + var8, 93 + var8 * 26, -15, x, y, z, par1InventoryPlayer.player));
         }
-        
+
         // Player inv:
 
         for (var6 = 0; var6 < 3; ++var6)
@@ -91,7 +91,7 @@ public class GCCoreContainerRocketBench extends Container
             }
         }
     }
-    
+
     @Override
 	public void onCraftMatrixChanged(IInventory par1IInventory)
     {

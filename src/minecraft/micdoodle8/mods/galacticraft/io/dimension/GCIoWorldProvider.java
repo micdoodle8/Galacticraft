@@ -16,13 +16,13 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GCIoWorldProvider extends WorldProvider implements IGalacticraftWorldProvider
 {
     private final float[] colorsSunriseSunset = new float[4];
-    
+
 	public GCIoWorldProvider()
     {
         this.setDimension(GCIoConfigManager.dimensionIDIo);
         this.dimensionId = GCIoConfigManager.dimensionIDIo;
     }
-	
+
 	@Override
     protected void generateLightBrightnessTable()
     {
@@ -66,7 +66,7 @@ public class GCIoWorldProvider extends WorldProvider implements IGalacticraftWor
     {
         this.worldChunkMgr = new GCIoWorldChunkManager(this.worldObj, 0F);
     }
-    
+
     @Override
 	@SideOnly(Side.CLIENT)
     public boolean doesXZShowFog(int par1, int par2)
@@ -86,7 +86,7 @@ public class GCIoWorldProvider extends WorldProvider implements IGalacticraftWor
     {
         return this.worldObj.getWorldVec3Pool().getVecFromPool(0, 0, 0);
     }
-	
+
 	@Override
     public float calculateCelestialAngle(long par1, float par3)
     {
@@ -108,12 +108,12 @@ public class GCIoWorldProvider extends WorldProvider implements IGalacticraftWor
         var5 = var6 + (var5 - var6) / 3.0F;
         return var5;
     }
-	
+
 	public float calculatePhobosAngle(long par1, float par3)
 	{
 		return this.calculateCelestialAngle(par1, par3) * 3000;
 	}
-	
+
 	public float calculateDeimosAngle(long par1, float par3)
 	{
 		return this.calculatePhobosAngle(par1, par3) * 0.0000000001F;
@@ -124,7 +124,7 @@ public class GCIoWorldProvider extends WorldProvider implements IGalacticraftWor
     {
         return new GCIoChunkProvider(this.worldObj, this.worldObj.getSeed(), this.worldObj.getWorldInfo().isMapFeaturesEnabled());
     }
-	
+
 	@Override
 	public void updateWeather()
 	{
@@ -139,7 +139,7 @@ public class GCIoWorldProvider extends WorldProvider implements IGalacticraftWor
     {
         return true;
     }
-    
+
     @Override
 	public double getHorizon()
     {
@@ -151,7 +151,7 @@ public class GCIoWorldProvider extends WorldProvider implements IGalacticraftWor
     {
         return 44;
     }
-    
+
     @Override
 	public boolean isSurfaceWorld()
     {
@@ -165,13 +165,13 @@ public class GCIoWorldProvider extends WorldProvider implements IGalacticraftWor
 //        int var3 = this.worldObj.getFirstUncoveredBlock(var1, var2);
 //        return var3 == GCMarsBlocks.marsGrass.blockID;
     }
-    
+
     @Override
     public boolean canRespawnHere()
     {
         return false;
     }
-    
+
     @Override
     public String getSaveFolder()
     {
@@ -207,13 +207,13 @@ public class GCIoWorldProvider extends WorldProvider implements IGalacticraftWor
     {
         return false;
     }
-    
+
     @Override
 	public boolean canDoLightning(Chunk chunk)
     {
         return false;
     }
-    
+
     @Override
 	public boolean canDoRainSnowIce(Chunk chunk)
     {

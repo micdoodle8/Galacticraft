@@ -10,7 +10,7 @@ public class GCCoreModelWorm extends ModelBase
 	ModelRenderer[] body = new ModelRenderer[9];
     ModelRenderer head;
     ModelRenderer[][] pincers = new ModelRenderer[4][4];
-  
+
 	public GCCoreModelWorm(float f)
 	{
 		this.textureWidth = 256;
@@ -336,13 +336,13 @@ public class GCCoreModelWorm extends ModelBase
 	{
 		super.render(entity, f, f1, f2, f3, f4, f5);
 		this.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-		
+
 		this.updateBodyRotation(entity, f2);
-		
+
 		for (final ModelRenderer element : this.body) {
 			element.render(f5);
 		}
-		
+
 		for (int i = 0; i < 4; i++)
 		{
 			for (int j = 0; j < 4; j++)
@@ -366,11 +366,11 @@ public class GCCoreModelWorm extends ModelBase
 	{
 		super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
 	}
-	
+
 	private void updateBodyRotation(Entity e, float f)
 	{
         final float var8 = 0.03F * (e.entityId % 10) + 0.05F;
-		
+
 		for (int i = 0; i < this.body.length; i++)
 		{
 			if (i != this.body.length - 1)
@@ -385,9 +385,9 @@ public class GCCoreModelWorm extends ModelBase
 			}
 			this.body[i].rotateAngleZ = e.ticksExisted * var8 - (float)(Math.PI / 15) * i;
 		}
-		
+
 		this.head.rotateAngleZ = e.ticksExisted * var8 + (float)(Math.PI / 8) * 1;
-		
+
 		for (int i = 0; i < 4; i++)
 		{
 			for (int j = 0; j < 4; j++)
@@ -395,7 +395,7 @@ public class GCCoreModelWorm extends ModelBase
 				this.pincers[i][j].rotateAngleZ = e.ticksExisted * var8 + (float)(Math.PI / 2) * j;
 			}
 		}
-		
+
 		for (int i = 0; i < 4; i++)
 		{
 			this.pincers[i][0].rotateAngleX = MathHelper.sin(e.ticksExisted * var8) * 4.5F * (float)Math.PI / 180.0F - (float)Math.PI;

@@ -24,7 +24,7 @@ public class GCCoreEntityMeteor extends Entity
     private int xTile = -1;
     private int yTile = -1;
     private int zTile = -1;
-    
+
 	public GCCoreEntityMeteor(World world)
 	{
 		super(world);
@@ -52,7 +52,7 @@ public class GCCoreEntityMeteor extends Entity
         this.prevPosZ = this.posZ;
         this.motionY -= 0.03999999910593033D;
         this.moveEntity(this.motionX, this.motionY, this.motionZ);
-        
+
         if (this.worldObj.isRemote)
         {
         	this.spawnParticles();
@@ -107,19 +107,19 @@ public class GCCoreEntityMeteor extends Entity
             this.xTile = var3.blockX;
             this.yTile = var3.blockY;
             this.zTile = var3.blockZ;
-            
+
             if (!(this.worldObj.getBlockId(this.xTile, this.yTile, this.zTile) == GCCoreBlocks.breatheableAir.blockID))
             {
                 this.onImpact(var3);
             }
         }
-        
+
         if (this.posY <= -20 || this.posY >= 400)
         {
         	this.setDead();
         }
     }
-    
+
     protected void spawnParticles()
     {
     	GalacticraftCore.proxy.spawnParticle("distancesmoke", this.posX, this.posY + 1D + Math.random(), this.posZ, 0.0D, 0.0D, 0.0D, false);
@@ -139,7 +139,7 @@ public class GCCoreEntityMeteor extends Entity
         		{
             		this.worldObj.setBlock(par1MovingObjectPosition.blockX, par1MovingObjectPosition.blockY + 1, par1MovingObjectPosition.blockZ, GCCoreBlocks.fallenMeteor.blockID);
         		}
-        		
+
                 if (par1MovingObjectPosition.entityHit != null)
                 {
                     par1MovingObjectPosition.entityHit.attackEntityFrom(GCCoreEntityMeteor.causeMeteorDamage(this, this.shootingEntity), 6);
@@ -148,7 +148,7 @@ public class GCCoreEntityMeteor extends Entity
 
             this.worldObj.newExplosion((Entity)null, this.posX, this.posY, this.posZ, this.size / 3 + 2, false, true);
         }
-        
+
         this.setDead();
     }
 
@@ -167,7 +167,7 @@ public class GCCoreEntityMeteor extends Entity
         this.dataWatcher.addObject(16, this.size);
         this.noClip = true;
 	}
-	
+
     public int getSize()
     {
         return this.dataWatcher.getWatchableObjectInt(16);

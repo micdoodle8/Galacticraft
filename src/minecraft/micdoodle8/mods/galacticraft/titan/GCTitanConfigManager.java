@@ -8,19 +8,19 @@ import cpw.mods.fml.common.FMLLog;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
 public class GCTitanConfigManager
 {
 	public static boolean loaded;
-	
+
 	static Configuration configuration;
-	
+
 	// DIMENSIONS
 	public static int dimensionIDTitan;
-	
+
 	public GCTitanConfigManager(File file)
 	{
 		if (!GCTitanConfigManager.loaded)
@@ -29,13 +29,13 @@ public class GCTitanConfigManager
 			this.setDefaultValues();
 		}
 	}
-	
+
 	private void setDefaultValues()
     {
 		try
 		{
 	        GCTitanConfigManager.configuration.load();
-	        
+
 	        GCTitanConfigManager.dimensionIDTitan = 				GCTitanConfigManager.configuration.get("Dimensions", 										"Titan Dimension ID",				-25)		.getInt(-25);
 	    }
 		catch (final Exception e)

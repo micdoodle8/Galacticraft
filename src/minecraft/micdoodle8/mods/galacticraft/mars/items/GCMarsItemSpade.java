@@ -11,7 +11,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GCMarsItemSpade extends ItemSpade
 {
 	private final EnumToolMaterial material;
-	
+
 	public GCMarsItemSpade(int par1, EnumToolMaterial par2EnumToolMaterial)
 	{
 		super(par1, par2EnumToolMaterial);

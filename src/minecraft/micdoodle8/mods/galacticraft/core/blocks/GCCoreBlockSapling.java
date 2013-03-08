@@ -10,7 +10,6 @@ import net.minecraft.block.BlockSapling;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
-import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreBlockSapling extends BlockSapling
 {
@@ -27,9 +26,9 @@ public class GCCoreBlockSapling extends BlockSapling
         if (!par1World.isRemote)
         {
             super.updateTick(par1World, par2, par3, par4, par5Random);
-            
+
             int waterBlocksNearby = 0;
-            
+
             for (int i = -4; i < 5; i++)
             {
                 for (int j = -4; j < 5; j++)
@@ -40,7 +39,7 @@ public class GCCoreBlockSapling extends BlockSapling
                     }
                 }
             }
-            
+
             if (!(waterBlocksNearby > 3))
             {
             	par1World.setBlock(par2, par3, par4, Block.deadBush.blockID);
@@ -58,7 +57,7 @@ public class GCCoreBlockSapling extends BlockSapling
             }
         }
     }
-    
+
 	@Override
     public void growTree(World par1World, int par2, int par3, int par4, Random par5Random)
     {
@@ -67,7 +66,7 @@ public class GCCoreBlockSapling extends BlockSapling
         final int var8 = 0;
         final int var9 = 0;
         final boolean var10 = false;
-		
+
 		if (var6 == 1)
         {
             var7 = new GCCoreWorldGenTaiga2(true);

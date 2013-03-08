@@ -10,11 +10,11 @@ public class GCMarsPlayerHandler implements IPlayerTracker
 	public void onPlayerLogin(EntityPlayer player)
 	{
 		new GCMarsEntityPlayer(player);
-		
+
 		for (int i = 0; i < GalacticraftMars.gcMarsPlayers.size(); i++)
 		{
 			final GCMarsEntityPlayer player2 = (GCMarsEntityPlayer) GalacticraftMars.gcMarsPlayers.get(i);
-			
+
 			if (player2.getPlayer().username == player.username)
 			{
 				player2.readEntityFromNBT();
@@ -26,15 +26,15 @@ public class GCMarsPlayerHandler implements IPlayerTracker
 	public void onPlayerLogout(EntityPlayer player)
 	{
 		GalacticraftMars.marsPlayers.remove(player);
-		
+
 		for (int i = 0; i < GalacticraftMars.gcMarsPlayers.size(); i++)
 		{
 			final GCMarsEntityPlayer player2 = (GCMarsEntityPlayer) GalacticraftMars.gcMarsPlayers.get(i);
-			
+
 			if (player2.getPlayer().username == player.username)
 			{
 				player2.writeEntityToNBT();
-				
+
 				GalacticraftMars.gcMarsPlayers.remove(player2);
 			}
 		}
@@ -43,12 +43,12 @@ public class GCMarsPlayerHandler implements IPlayerTracker
 	@Override
 	public void onPlayerChangedDimension(EntityPlayer player)
 	{
-		
+
 	}
 
 	@Override
 	public void onPlayerRespawn(EntityPlayer player)
 	{
-		
+
 	}
 }

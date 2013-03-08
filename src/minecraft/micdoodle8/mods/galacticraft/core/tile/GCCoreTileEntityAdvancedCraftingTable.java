@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.core.client.model.block.GCCoreModelAssemblyTable;
-import micdoodle8.mods.galacticraft.core.client.model.block.GCCoreModelFan;
 import net.minecraft.tileentity.TileEntity;
 
 public class GCCoreTileEntityAdvancedCraftingTable extends TileEntity

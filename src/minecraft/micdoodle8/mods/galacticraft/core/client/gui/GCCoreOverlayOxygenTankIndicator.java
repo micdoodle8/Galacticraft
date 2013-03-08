@@ -1,15 +1,8 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
-import static micdoodle8.mods.galacticraft.core.client.gui.GCCoreOverlay.drawTexturedModalRect;
-import static micdoodle8.mods.galacticraft.core.client.gui.GCCoreOverlay.getPlayerPositionY;
-import static micdoodle8.mods.galacticraft.core.client.gui.GCCoreOverlay.loadDownloadableImageTexture;
-import micdoodle8.mods.galacticraft.core.client.ClientProxyCore.TickHandlerClient;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.StringUtils;
 
 import org.lwjgl.opengl.GL11;
 
@@ -21,18 +14,15 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GCCoreOverlayOxygenTankIndicator extends GCCoreOverlay
 {
 	private static Minecraft minecraft = FMLClientHandler.instance().getClient();
-	
+
 	/**
 	 * Render the GUI that displays oxygen level in tanks
 	 */
 	public static void renderOxygenTankIndicatorRight(int oxygenInTank1, int oxygenInTank2)
 	{
-		final float var9 = 0.00390625F;
-		final float var10 = 0.00390625F;
-		
 		final ScaledResolution scaledresolution = new ScaledResolution(minecraft.gameSettings, minecraft.displayWidth, minecraft.displayHeight);
-        int i = scaledresolution.getScaledWidth();
-        int k = scaledresolution.getScaledHeight();
+        final int i = scaledresolution.getScaledWidth();
+        scaledresolution.getScaledHeight();
         minecraft.entityRenderer.setupOverlayRendering();
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
@@ -45,7 +35,7 @@ public class GCCoreOverlayOxygenTankIndicator extends GCCoreOverlay
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		GL11.glEnable(GL11.GL_ALPHA_TEST);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		
+
 		tessellator.startDrawingQuads();
 		tessellator.addVertexWithUV(i - 29, 33.5 + 23.5, -90D, 85 * 0.00390625F, 		47 * 0.00390625F);
 		tessellator.addVertexWithUV(i - 10, 33.5 + 23.5, -90D, (85 + 19) * 0.00390625F, 	47 * 0.00390625F);
@@ -59,7 +49,7 @@ public class GCCoreOverlayOxygenTankIndicator extends GCCoreOverlay
 		tessellator.addVertexWithUV(i - 49, 33.5 - 23.5, -90D, 85 * 0.00390625F, 		0 * 0.00390625F);
 		tessellator.draw();
 		GL11.glDepthMask(true);
-		
+
 		if (oxygenInTank1 > 0 || oxygenInTank1 <= 0)
 		{
 			final Tessellator tessellator2 = Tessellator.instance;
@@ -78,7 +68,7 @@ public class GCCoreOverlayOxygenTankIndicator extends GCCoreOverlay
 			tessellator.addVertexWithUV(i - 49, 34.5 - 23.5 + oxygenInTank1 / 2 - 1, 	0, 66 * 0.00390625F, 		(oxygenInTank1 / 2 - 1) * 0.00390625F);
 			tessellator2.draw();
 		}
-		
+
 		if (oxygenInTank2 > 0 || oxygenInTank2 <= 0)
 		{
 			final Tessellator tessellator2 = Tessellator.instance;
@@ -104,12 +94,9 @@ public class GCCoreOverlayOxygenTankIndicator extends GCCoreOverlay
 	 */
 	public static void renderOxygenTankIndicatorLeft(int oxygenInTank1, int oxygenInTank2)
 	{
-		final float var9 = 0.00390625F;
-		final float var10 = 0.00390625F;
-		
 		final ScaledResolution scaledresolution = new ScaledResolution(minecraft.gameSettings, minecraft.displayWidth, minecraft.displayHeight);
-        int i = scaledresolution.getScaledWidth();
-        int k = scaledresolution.getScaledHeight();
+        scaledresolution.getScaledWidth();
+        scaledresolution.getScaledHeight();
         minecraft.entityRenderer.setupOverlayRendering();
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
@@ -122,7 +109,7 @@ public class GCCoreOverlayOxygenTankIndicator extends GCCoreOverlay
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		GL11.glEnable(GL11.GL_ALPHA_TEST);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		
+
 		tessellator.startDrawingQuads();
 		tessellator.addVertexWithUV(0 + 10, 33.5 + 23.5, -90D, 85 * 0.00390625F, 		47 * 0.00390625F);
 		tessellator.addVertexWithUV(0 + 29, 33.5 + 23.5, -90D, (85 + 19) * 0.00390625F, 	47 * 0.00390625F);
@@ -136,7 +123,7 @@ public class GCCoreOverlayOxygenTankIndicator extends GCCoreOverlay
 		tessellator.addVertexWithUV(0 + 30, 33.5 - 23.5, -90D, 85 * 0.00390625F, 		0 * 0.00390625F);
 		tessellator.draw();
 		GL11.glDepthMask(true);
-		
+
 		if (oxygenInTank1 > 0 || oxygenInTank1 <= 0)
 		{
 			final Tessellator tessellator2 = Tessellator.instance;
@@ -155,7 +142,7 @@ public class GCCoreOverlayOxygenTankIndicator extends GCCoreOverlay
 			tessellator.addVertexWithUV(0 + 30, 34.5 - 23.5 + oxygenInTank1 / 2 - 1, 	0, 66 * 0.00390625F, 		(oxygenInTank1 / 2 - 1) * 0.00390625F);
 			tessellator2.draw();
 		}
-		
+
 		if (oxygenInTank2 > 0 || oxygenInTank2 <= 0)
 		{
 			final Tessellator tessellator2 = Tessellator.instance;

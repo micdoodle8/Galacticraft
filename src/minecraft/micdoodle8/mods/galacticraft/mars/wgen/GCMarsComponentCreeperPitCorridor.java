@@ -9,7 +9,7 @@ import net.minecraft.world.gen.structure.StructureBoundingBox;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -18,7 +18,7 @@ public class GCMarsComponentCreeperPitCorridor extends GCCoreStructureComponent
     private final int height;
     private final int width;
     private int length;
-    
+
 	public GCMarsComponentCreeperPitCorridor(int type, int x, int y, int z, int height, int width, int length, int cbm)
 	{
         super(type);
@@ -34,7 +34,7 @@ public class GCMarsComponentCreeperPitCorridor extends GCCoreStructureComponent
         this.fillWithMetadataBlocks(var1, var3, 0, 0, 0, 10, 10, 10, Block.fence.blockID, 0, 0, 0, false);
         this.fillWithAir(var1, var3, 0, 0, 0, 10, 10, 10);
         this.fillWithMetadataBlocks(var1, var3, 0, 0, 0, 0, 0, 0, this.coordBaseMode, 0, 0, 0, false);
-        
+
 //		int cbm = this.getCoordBaseMode();
 //
 //		for (int y = 0; y < this.height; y++)
@@ -47,10 +47,10 @@ public class GCMarsComponentCreeperPitCorridor extends GCCoreStructureComponent
 //				}
 //			}
 //		}
-		
+
 		return true;
 	}
-	
+
 //    private boolean spawnerPlaced;
 //    private int[] orig = new int[3];
 //    private int[] newbb = new int[6];

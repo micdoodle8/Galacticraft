@@ -21,7 +21,7 @@ public class GCCoreContainerBuggyBench extends Container
         this.addSlotToContainer(new GCCoreSlotRocketBenchResult(par1InventoryPlayer.player, this.craftMatrix, this.craftResult, 0, 142, 79));
         int var6;
         int var7;
-        
+
         // Body
         for (var6 = 0; var6 < 4; ++var6)
         {
@@ -44,7 +44,7 @@ public class GCCoreContainerBuggyBench extends Container
         {
             this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, 17 + var8, 93 + var8 * 26, -15, x, y, z, par1InventoryPlayer.player));
         }
-        
+
         // Player inv:
 
         for (var6 = 0; var6 < 3; ++var6)
@@ -81,7 +81,7 @@ public class GCCoreContainerBuggyBench extends Container
             }
         }
     }
-    
+
     @Override
 	public void onCraftMatrixChanged(IInventory par1IInventory)
     {

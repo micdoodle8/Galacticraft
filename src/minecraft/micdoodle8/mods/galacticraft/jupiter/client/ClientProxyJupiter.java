@@ -25,17 +25,17 @@ import cpw.mods.fml.common.network.Player;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
 public class ClientProxyJupiter extends CommonProxyJupiter implements IGalacticraftSubModClient
 {
 	public static GCCoreLocalization lang;
-	
+
 	public static ClientProxyIo moonClientIo = new ClientProxyIo();
 	public static ClientProxyEuropa moonClientEuropa = new ClientProxyEuropa();
-	
+
 	@Override
 	public void preInit(FMLPreInitializationEvent event)
 	{
@@ -58,7 +58,7 @@ public class ClientProxyJupiter extends CommonProxyJupiter implements IGalacticr
 		ClientProxyJupiter.moonClientIo.postInit(event);
 		ClientProxyJupiter.moonClientEuropa.postInit(event);
 	}
-	
+
 	@Override
 	public void registerRenderInformation()
 	{
@@ -68,29 +68,29 @@ public class ClientProxyJupiter extends CommonProxyJupiter implements IGalacticr
     public void spawnParticle(String var1, double var2, double var4, double var6, double var8, double var10, double var12, boolean b)
     {
     }
-	
+
     public class ClientPacketHandler implements IPacketHandler
     {
 		@Override
 		public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player)
 		{
-			
+
 		}
     }
-    
+
     public static class TickHandlerClient implements ITickHandler
     {
     	@Override
     	public void tickStart(EnumSet<TickType> type, Object... tickData)
         {
-    		
+
         }
 
     	@Override
     	public void tickEnd(EnumSet<TickType> type, Object... tickData)
     	{
     	}
-    	
+
         @Override
 		public String getLabel()
         {
@@ -121,7 +121,7 @@ public class ClientProxyJupiter extends CommonProxyJupiter implements IGalacticr
 	{
 		return new GCJupiterSlotRenderer();
 	}
-	
+
 	private final IMapPlanet jupiter = new GCJupiterMapPlanet();
 
 	@Override
@@ -134,7 +134,7 @@ public class ClientProxyJupiter extends CommonProxyJupiter implements IGalacticr
 	public IMapPlanet[] getChildMapPlanets()
 	{
 		final IMapPlanet[] moonMapPlanet = {new GCCallistoMapPlanet(), new GCEuropaMapPlanet(), new GCIoMapPlanet()};
-		
+
 		return moonMapPlanet;
 	}
 

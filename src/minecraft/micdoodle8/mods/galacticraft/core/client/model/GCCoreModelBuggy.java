@@ -41,14 +41,14 @@ public class GCCoreModelBuggy extends ModelBase
 	public ModelRenderer seatArmRight2;
 	public ModelRenderer seatArmLeft2;
 	public ModelRenderer backBottom;
-    
+
 	float turn = 0;
-	
+
 	public GCCoreModelBuggy()
 	{
 		this.textureWidth = 512;
 		this.textureHeight = 256;
-		
+
 		this.wheel1e = new ModelRenderer(this, 328, 0);
 		this.wheel1e.addBox(-3F, -5F, 5F, 3, 8, 1);
 		this.wheel1e.setRotationPoint(-16F, 19F, -21F);
@@ -254,7 +254,7 @@ public class GCCoreModelBuggy extends ModelBase
 		this.backBottom.mirror = true;
 		this.setRotation(this.backBottom, 0F, 0F, 0F);
 	}
-	
+
 	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
 	{
@@ -295,18 +295,18 @@ public class GCCoreModelBuggy extends ModelBase
 		this.seatArmLeft2.render(f5);
 		this.backBottom.render(f5);
 	}
-	
+
 	private void setRotation(ModelRenderer model, float x, float y, float z)
 	{
 		model.rotateAngleX = x;
 		model.rotateAngleY = y;
 		model.rotateAngleZ = z;
 	}
-	
+
 	public void setRotationAngles(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
 	{
 		super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-        
+
         this.radarCenter.rotateAngleY += 0.01F;
 
         if (entity instanceof GCCoreEntityBuggy && entity.riddenByEntity != null)
@@ -334,7 +334,7 @@ public class GCCoreModelBuggy extends ModelBase
         	this.wheel3e.rotateAngleY = buggy.turnProgress;
         	this.wheel4e.rotateAngleY = buggy.turnProgress;
 
-        	
+
         	this.wheel1a.rotateAngleX += (float) buggy.speed / 20F;
         	this.wheel2a.rotateAngleX += (float) buggy.speed / 20F;
         	this.wheel3a.rotateAngleX += (float) buggy.speed / 20F;
@@ -356,7 +356,7 @@ public class GCCoreModelBuggy extends ModelBase
         	this.wheel3e.rotateAngleX += (float) buggy.speed / 20F;
         	this.wheel4e.rotateAngleX += (float) buggy.speed / 20F;
         }
-        
+
 //        this.radarCenter.rotateAngleY += 0.01F;
 	}
 }

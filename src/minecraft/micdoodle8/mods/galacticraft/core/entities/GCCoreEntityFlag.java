@@ -21,14 +21,14 @@ public class GCCoreEntityFlag extends Entity
     public double yPosition;
     public double zPosition;
     public boolean indestructable = false;
-    
+
     public GCCoreEntityFlag(World world)
     {
     	super(world);
         this.yOffset = 1.5F;
         this.setSize(0.4F, 3F);
     }
-    
+
     public GCCoreEntityFlag(World par1World, double x, double y, double z, float dir)
     {
         this(par1World);
@@ -38,7 +38,7 @@ public class GCCoreEntityFlag extends Entity
         this.yPosition = y;
         this.zPosition = z;
     }
-    
+
     @Override
 	public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
     {
@@ -77,12 +77,12 @@ public class GCCoreEntityFlag extends Entity
             return true;
         }
     }
-    
+
     public void setDirection(float par1)
     {
         this.prevRotationYaw = this.rotationYaw = par1;
     }
-    
+
     public void setIndestructable()
     {
     	this.indestructable = true;
@@ -142,7 +142,7 @@ public class GCCoreEntityFlag extends Entity
 		this.setOwner(par1NBTTagCompound.getString("Owner"));
 		this.setType(par1NBTTagCompound.getInteger("Type"));
 		this.indestructable = par1NBTTagCompound.getBoolean("Indestructable");
-		
+
         this.xPosition = par1NBTTagCompound.getDouble("TileX");
         this.yPosition = par1NBTTagCompound.getDouble("TileY");
         this.zPosition = par1NBTTagCompound.getDouble("TileZ");
@@ -160,7 +160,7 @@ public class GCCoreEntityFlag extends Entity
         par1NBTTagCompound.setDouble("TileY", this.yPosition);
         par1NBTTagCompound.setDouble("TileZ", this.zPosition);
 	}
-	
+
     public void dropItemStack()
     {
         this.entityDropItem(new ItemStack(GCCoreItems.flag, 1, this.getType()), 0.0F); // TODO
@@ -171,34 +171,34 @@ public class GCCoreEntityFlag extends Entity
     {
     	final int id = this.worldObj.getBlockId(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 1), MathHelper.floor_double(this.posZ));
     	final Block block = Block.blocksList[id];
-    	
+
     	if (block != null)
     	{
     		if (block instanceof BlockFence)
     		{
-    			
+
     		}
     		else if (block.blockID == 0)
     		{
-    			
+
     		}
     		else
     		{
             	this.motionY -= 0.02F;
     		}
     	}
-    	
+
     	this.moveEntity(this.motionX, this.motionY, this.motionZ);
     }
-    
+
     @Override
     public boolean interact(EntityPlayer par1EntityPlayer)
     {
     	this.setDirection(this.rotationYaw + 3F);
-    	
+
         return true;
     }
-    
+
     public void setType(int par1)
     {
         this.dataWatcher.updateObject(16, Integer.valueOf(par1));
@@ -208,17 +208,17 @@ public class GCCoreEntityFlag extends Entity
     {
         return this.dataWatcher.getWatchableObjectInt(16);
     }
-    
+
     public void setOwner(String par1)
     {
         this.dataWatcher.updateObject(17, String.valueOf(par1));
     }
-    
+
     public String getOwner()
     {
         return this.dataWatcher.getWatchableObjectString(17);
     }
-    
+
     public void setDamage(int par1)
     {
         this.dataWatcher.updateObject(18, Integer.valueOf(par1));

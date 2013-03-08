@@ -18,12 +18,12 @@ public class GCCoreItemBow extends ItemBow
 		super(par1);
 		this.setCreativeTab(null);
 	}
-	
+
 	@Override
     public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4)
     {
         int var6 = this.getMaxItemUseDuration(par1ItemStack) - par4;
-        
+
         final ArrowLooseEvent event = new ArrowLooseEvent(par3EntityPlayer, par1ItemStack, var6);
         MinecraftForge.EVENT_BUS.post(event);
         if (event.isCanceled())
@@ -31,7 +31,7 @@ public class GCCoreItemBow extends ItemBow
             return;
         }
         var6 = event.charge;
-        
+
         final boolean var5 = par3EntityPlayer.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantment.infinity.effectId, par1ItemStack) > 0;
 
         if (var5 || par3EntityPlayer.inventory.hasItem(Item.arrow.itemID))

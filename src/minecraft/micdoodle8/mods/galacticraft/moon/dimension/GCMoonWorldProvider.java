@@ -15,20 +15,20 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
 public class GCMoonWorldProvider extends WorldProvider implements IGalacticraftWorldProvider
 {
     private final float[] colorsSunriseSunset = new float[4];
-    
+
 	public GCMoonWorldProvider()
     {
         this.setDimension(GCMoonConfigManager.dimensionIDMoon);
         this.dimensionId = GCMoonConfigManager.dimensionIDMoon;
     }
-	
+
 	@Override
     protected void generateLightBrightnessTable()
     {
@@ -66,7 +66,7 @@ public class GCMoonWorldProvider extends WorldProvider implements IGalacticraftW
     {
         return this.worldObj.getWorldVec3Pool().getVecFromPool(0, 0, 0);
     }
-	
+
 	@Override
     public float calculateCelestialAngle(long par1, float par3)
     {
@@ -108,12 +108,12 @@ public class GCMoonWorldProvider extends WorldProvider implements IGalacticraftW
 
         return var3 * var3 * 0.5F + 0.3F;
     }
-    
+
 	public float calculatePhobosAngle(long par1, float par3)
 	{
 		return this.calculateCelestialAngle(par1, par3) * 3000;
 	}
-	
+
 	public float calculateDeimosAngle(long par1, float par3)
 	{
 		return this.calculatePhobosAngle(par1, par3) * 0.0000000001F;
@@ -124,7 +124,7 @@ public class GCMoonWorldProvider extends WorldProvider implements IGalacticraftW
     {
         return new GCMoonChunkProvider(this.worldObj, this.worldObj.getSeed(), this.worldObj.getWorldInfo().isMapFeaturesEnabled());
     }
-	
+
 	@Override
 	public void updateWeather()
 	{
@@ -139,7 +139,7 @@ public class GCMoonWorldProvider extends WorldProvider implements IGalacticraftW
     {
         return false;
     }
-    
+
     @Override
 	public double getHorizon()
     {
@@ -151,7 +151,7 @@ public class GCMoonWorldProvider extends WorldProvider implements IGalacticraftW
     {
         return 44;
     }
-    
+
     @Override
 	public boolean isSurfaceWorld()
     {
@@ -165,13 +165,13 @@ public class GCMoonWorldProvider extends WorldProvider implements IGalacticraftW
 //        return var3 == GCBlocks.marsGrass.blockID;
     	return true;
     }
-    
+
     @Override
     public boolean canRespawnHere()
     {
         return true;
     }
-    
+
     @Override
     public String getSaveFolder()
     {
@@ -207,13 +207,13 @@ public class GCMoonWorldProvider extends WorldProvider implements IGalacticraftW
     {
         return false;
     }
-    
+
     @Override
 	public boolean canDoLightning(Chunk chunk)
     {
         return false;
     }
-    
+
     @Override
 	public boolean canDoRainSnowIce(Chunk chunk)
     {

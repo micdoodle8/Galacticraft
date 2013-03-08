@@ -34,7 +34,7 @@ public class GCCoreItemParachute extends GCCoreItem
 		"red", // 13
 		"teal", // 14
 		"yellow"}; // 15
-	
+
 	public GCCoreItemParachute(int par1)
 	{
 		super(par1);
@@ -110,10 +110,10 @@ public class GCCoreItemParachute extends GCCoreItem
     	case 15: // yellow
     		return 45;
     	}
-    	
+
     	return 0;
     }
-    
+
     public static int getParachuteDamageValueFromDye(int meta)
     {
     	switch (meta)
@@ -151,7 +151,7 @@ public class GCCoreItemParachute extends GCCoreItem
     	case 15:
     		return 0;
     	}
-    	
+
     	return -1;
     }
 
@@ -163,12 +163,12 @@ public class GCCoreItemParachute extends GCCoreItem
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) 
+    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
     {
     	if (par2EntityPlayer.worldObj.isRemote)
     	{
-    		GCCorePlayerBaseClient playerBaseCl = PlayerUtil.getPlayerBaseClientFromPlayer(par2EntityPlayer);
-    		
+    		final GCCorePlayerBaseClient playerBaseCl = PlayerUtil.getPlayerBaseClientFromPlayer(par2EntityPlayer);
+
     		if (playerBaseCl.getUseTutorialText())
     		{
             	par3List.add("Press " + Keyboard.getKeyName(ClientProxyCore.GCKeyHandler.tankRefill.keyCode) + " to access");

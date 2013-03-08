@@ -11,7 +11,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GCCoreItemSword extends ItemSword
 {
 	private final EnumToolMaterial material;
-	
+
 	public GCCoreItemSword(int par1, EnumToolMaterial par2EnumToolMaterial)
 	{
 		super(par1, par2EnumToolMaterial);

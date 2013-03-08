@@ -1,27 +1,24 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
-import micdoodle8.mods.galacticraft.core.items.GCCoreItemOilCanister;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCompressor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraft.util.StatCollector;
 
 public class GCCoreContainerAirCompressor extends Container
 {
-	private GCCoreTileEntityOxygenCompressor refinery;
-	
+	private final GCCoreTileEntityOxygenCompressor refinery;
+
     public GCCoreContainerAirCompressor(InventoryPlayer par1InventoryPlayer, GCCoreTileEntityOxygenCompressor refinery)
     {
     	this.refinery = refinery;
         this.addSlotToContainer(new Slot(refinery, 0, 103, 31));
-        
+
         int var6;
         int var7;
-        
+
         // Player inv:
 
         for (var6 = 0; var6 < 3; ++var6)
@@ -37,9 +34,9 @@ public class GCCoreContainerAirCompressor extends Container
             this.addSlotToContainer(new Slot(par1InventoryPlayer, var6, 8 + var6 * 18, 116));
         }
     }
-    
+
 	@Override
-	public boolean canInteractWith(EntityPlayer var1) 
+	public boolean canInteractWith(EntityPlayer var1)
 	{
 		return true;
 	}

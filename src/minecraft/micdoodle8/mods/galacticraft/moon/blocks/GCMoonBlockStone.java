@@ -5,7 +5,7 @@
 //
 ///**
 // * Copyright 2012-2013, micdoodle8
-// * 
+// *
 // *  All rights reserved.
 // *
 // */
@@ -15,7 +15,7 @@
 //	{
 //		super(par1, par2, Material.rock);
 //	}
-//	
+//
 //	@Override
 //	public String getTextureFile()
 //	{

@@ -8,7 +8,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -92,7 +92,7 @@ public class GCCoreEntityLaunchSmokeFX extends EntityFX
         {
         	this.motionX = (this.rand.nextFloat() * 2.0F * this.rand.nextInt(2) * 2 - 1) / 4.0;
         	this.motionZ = (this.rand.nextFloat() * 2.0F * this.rand.nextInt(2) * 2 - 1) / 4.0;
-        	
+
         	this.motionX *= 0.699999988079071D;
             this.motionZ *= 0.699999988079071D;
         }

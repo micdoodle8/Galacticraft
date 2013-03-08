@@ -18,7 +18,6 @@ import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntitySludgeling;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntitySpaceshipTier2;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsPlayerHandler;
 import micdoodle8.mods.galacticraft.mars.items.GCMarsItems;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraftforge.common.DimensionManager;
@@ -45,7 +44,7 @@ import cpw.mods.fml.relauncher.Side;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -55,10 +54,10 @@ public class GalacticraftMars implements IGalacticraftSubMod
 {
 	@SidedProxy(clientSide = "micdoodle8.mods.galacticraft.mars.client.ClientProxyMars", serverSide = "micdoodle8.mods.galacticraft.mars.CommonProxyMars")
 	public static CommonProxyMars proxy;
-	
+
 	@Instance("GalacticraftMars")
 	public static GalacticraftMars instance;
-	
+
 	public static List marsPlayers = new ArrayList();
 	public static List gcMarsPlayers = new ArrayList();
 
@@ -68,13 +67,13 @@ public class GalacticraftMars implements IGalacticraftSubMod
 		GalacticraftCore.registerSubMod(this);
 
 		new GCMarsConfigManager(new File(event.getModConfigurationDirectory(), "Galacticraft/mars.conf"));
-		
+
 		GCMarsBlocks.initBlocks();
 		GCMarsBlocks.registerBlocks();
 		GCMarsBlocks.setHarvestLevels();
-		
+
 		GCMarsItems.initItems();
-		
+
 		GalacticraftMars.proxy.preInit(event);
 	}
 
@@ -91,18 +90,18 @@ public class GalacticraftMars implements IGalacticraftSubMod
 		this.registerOtherEntities();
 		GalacticraftMars.proxy.init(event);
 	}
-	
+
 	public void registerTileEntities()
 	{
-		
+
 	}
-	
+
 	public void registerCreatures()
 	{
 		this.registerGalacticraftCreature(GCMarsEntityCreeperBoss.class, "Creeper Boss", GCMarsConfigManager.idEntityCreeperBoss, 894731, 0);
 		this.registerGalacticraftCreature(GCMarsEntitySludgeling.class, "Sludgeling", GCMarsConfigManager.idEntitySludgeling, 25600, 0);
 	}
-	
+
 	public void registerOtherEntities()
 	{
 		this.registerGalacticraftNonMobEntity(GCMarsEntityProjectileTNT.class, "Projectile TNT", GCMarsConfigManager.idEntityProjectileTNT, 150, 5, true);
@@ -117,7 +116,7 @@ public class GalacticraftMars implements IGalacticraftSubMod
 		GalacticraftMars.proxy.registerRenderInformation();
 		GCMarsUtil.addCraftingRecipes();
 	}
-	
+
 	@ServerStarted
 	public void serverInit(FMLServerStartedEvent event)
 	{
@@ -130,12 +129,12 @@ public class GalacticraftMars implements IGalacticraftSubMod
         EntityRegistry.registerModEntity(var0, var1, id, GalacticraftMars.instance, 80, 3, true);
 		LanguageRegistry.instance().addStringLocalization("entity." + var1 + ".name", "en_US", var1);
     }
-    
+
     public void registerGalacticraftNonMobEntity(Class var0, String var1, int id, int trackingDistance, int updateFreq, boolean sendVel)
     {
         EntityRegistry.registerModEntity(var0, var1, id, this, trackingDistance, updateFreq, sendVel);
     }
-	
+
     public class ServerPacketHandler implements IPacketHandler
     {
         @Override
@@ -143,11 +142,9 @@ public class GalacticraftMars implements IGalacticraftSubMod
         {
             final DataInputStream data = new DataInputStream(new ByteArrayInputStream(packet.data));
             final int packetType = PacketUtil.readPacketID(data);
-            final EntityPlayerMP player = (EntityPlayerMP)p;
-            
             if (packetType == 0)
             {
-            	
+
             }
         }
     }

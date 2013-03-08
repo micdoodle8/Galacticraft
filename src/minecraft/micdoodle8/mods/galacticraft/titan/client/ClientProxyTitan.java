@@ -15,10 +15,8 @@ import micdoodle8.mods.galacticraft.titan.CommonProxyTitan;
 import micdoodle8.mods.galacticraft.titan.blocks.GCTitanBlocks;
 import micdoodle8.mods.galacticraft.titan.dimension.GCTitanWorldProvider;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.particle.EntityFX;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraftforge.client.MinecraftForgeClient;
@@ -37,7 +35,7 @@ import cpw.mods.fml.relauncher.Side;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -46,9 +44,9 @@ public class ClientProxyTitan extends CommonProxyTitan implements IGalacticraftS
 	public static long getFirstBootTime;
 	public static long getCurrentTime;
 	private final Random rand = new Random();
-	
+
 	public static GCCoreLocalization lang;
-	
+
 	@Override
 	public void preInit(FMLPreInitializationEvent event)
 	{
@@ -71,7 +69,7 @@ public class ClientProxyTitan extends CommonProxyTitan implements IGalacticraftS
 		GCTitanBlocks.addNames();
 //		GCTitanItems.addNames(); TODO
 	}
-	
+
 	@Override
 	public void registerRenderInformation()
 	{
@@ -100,7 +98,7 @@ public class ClientProxyTitan extends CommonProxyTitan implements IGalacticraftS
             		// spawn nothing
             	}
             }
-            
+
             if (var21 != null)
             {
                 ((EntityFX)var21).prevPosX = ((EntityFX)var21).posX;
@@ -110,7 +108,7 @@ public class ClientProxyTitan extends CommonProxyTitan implements IGalacticraftS
             }
         }
     }
-	
+
     public class ClientPacketHandler implements IPacketHandler
     {
         @Override
@@ -118,29 +116,25 @@ public class ClientProxyTitan extends CommonProxyTitan implements IGalacticraftS
         {
             final DataInputStream data = new DataInputStream(new ByteArrayInputStream(packet.data));
             final int packetType = PacketUtil.readPacketID(data);
-            final EntityPlayer player = (EntityPlayer)p;
-            
             if (packetType == 0)
             {
-            	
+
             }
         }
     }
-    
+
     public static class TickHandlerClient implements ITickHandler
     {
     	@Override
     	public void tickStart(EnumSet<TickType> type, Object... tickData)
         {
     		ClientProxyTitan.getCurrentTime = System.currentTimeMillis();
-    		
+
     		final Minecraft minecraft = FMLClientHandler.instance().getClient();
-    		
+
             final WorldClient world = minecraft.theWorld;
-            
-            final EntityClientPlayerMP player = minecraft.thePlayer;
-    		
-    		if (type.equals(EnumSet.of(TickType.CLIENT)))
+
+            if (type.equals(EnumSet.of(TickType.CLIENT)))
             {
     			if (world != null && world.provider instanceof GCTitanWorldProvider)
     			{
@@ -156,7 +150,7 @@ public class ClientProxyTitan extends CommonProxyTitan implements IGalacticraftS
     	public void tickEnd(EnumSet<TickType> type, Object... tickData)
     	{
     	}
-    	
+
         @Override
 		public String getLabel()
         {

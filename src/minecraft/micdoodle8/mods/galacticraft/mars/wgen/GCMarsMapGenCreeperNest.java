@@ -5,7 +5,7 @@ import net.minecraft.world.gen.structure.StructureStart;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -18,7 +18,7 @@ public class GCMarsMapGenCreeperNest extends GCCoreMapGenStructure
     	{
     		return false;
     	}
-    	
+
     	return true;
     }
 

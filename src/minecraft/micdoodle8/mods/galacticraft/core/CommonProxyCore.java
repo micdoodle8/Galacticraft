@@ -36,7 +36,7 @@ import cpw.mods.fml.common.network.IGuiHandler;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -44,39 +44,39 @@ public class CommonProxyCore implements IGuiHandler
 {
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		
+
 	}
-	
+
 	public void init(FMLInitializationEvent event)
 	{
-		
+
 	}
-	
+
 	public void postInit(FMLPostInitializationEvent event)
 	{
-		
+
 	}
-	
+
 	public void registerRenderInformation()
 	{
-		
+
 	}
 
 	public void addStat(EntityPlayer player, StatBase stat, int i)
 	{
-		
+
 	}
-	
+
 	public int getGCUnlitTorchRenderID()
 	{
 		return -1;
 	}
-	
+
 	public int getGCBreathableAirRenderID()
 	{
 		return -1;
 	}
-	
+
 	public int getGCOxygenPipeRenderID()
 	{
 		return -1;
@@ -121,33 +121,33 @@ public class CommonProxyCore implements IGuiHandler
 	{
 		return -1;
 	}
-	
+
 	public World getClientWorld()
 	{
 		return null;
 	}
-	
+
 	public void addSlotRenderer(IPlanetSlotRenderer slotRenderer)
 	{
 		;
 	}
-	
+
     public void spawnParticle(String var1, double var2, double var4, double var6, double var8, double var10, double var12, boolean b) {}
-	
+
     public void spawnParticle(String var1, double var2, double var4, double var6, double var8, double var10, double var12, double var13, double var14, double var15, boolean b) {}
-    
-    
+
+
     // IGUIHANDLER IMPLEMENTATION:
-    
+
     GCCoreInventoryTankRefill inv = null;
 
     public static List<GCCoreInventoryTankRefill> airTanks = Lists.newArrayList();
-	
+
 	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
 	{
-		GCCorePlayerBase playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player);
-		
+		final GCCorePlayerBase playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player);
+
 		if (ID == GCCoreConfigManager.idGuiTankRefill && playerBase != null)
 		{
 			return new GCCoreContainerTankRefill(player, playerBase.playerTankInventory);
@@ -172,15 +172,15 @@ public class CommonProxyCore implements IGuiHandler
 		{
 			return new GCCoreContainerAirCompressor(player.inventory, (GCCoreTileEntityOxygenCompressor)world.getBlockTileEntity(x, y, z));
 		}
-		
+
 		return null;
 	}
 
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
 	{
-		TileEntity tile = world.getBlockTileEntity(x, y, z);
-		
+		final TileEntity tile = world.getBlockTileEntity(x, y, z);
+
 		if (ID == GCCoreConfigManager.idGuiTankRefill)
 		{
 			return new GCCoreGuiTankRefill(player);

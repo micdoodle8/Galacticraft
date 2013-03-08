@@ -4,10 +4,7 @@ import java.util.Random;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
-import micdoodle8.mods.galacticraft.core.client.GCCorePlayerBaseClient;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
-import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -29,36 +26,36 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
 public class GCCoreGuiChoosePlanet extends GuiScreen
 {
     private int spaceTimer = 0;
-    
+
     private GCCoreGuiChoosePlanetSlot planetSlots;
-    
+
     private static final Random rand = new Random();
 
     private final float updateCounter = 0.0F;
-    
+
     public int selectedSlot;
-    
+
     private WorldProvider oldProvider;
-    
+
     protected FontRenderer fontRenderer = FMLClientHandler.instance().getClient().fontRenderer;
-    
+
     private final String[] destinations;
-    
+
     public EntityPlayer playerToSend;
-    
+
     private boolean initialized;
-    
+
     public GuiSmallButton sendButton;
 
     private static final String[] titlePanoramaPaths = new String[] {"/micdoodle8/mods/galacticraft/core/client/backgrounds/bg3.png"};
-    
+
     public GCCoreGuiChoosePlanet(EntityPlayer player, String[] listOfDestinations)
     {
     	this.playerToSend = player;
@@ -68,15 +65,15 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     // Override keyTyped so you don't accidently hit Escape and fall to your death!
     @Override
 	protected void keyTyped(char par1, int par2) {}
-    
+
     @Override
 	public void initGui()
     {
     	if (!(this.planetSlots == null))
             this.planetSlots.func_77207_a(2, 10, 10, 10);
-    	
+
         this.planetSlots = new GCCoreGuiChoosePlanetSlot(this);
-        
+
     	if (!this.initialized)
     	{
             this.initialized = true;
@@ -85,25 +82,25 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     	{
     	}
 
-        final StringTranslate var1 = StringTranslate.getInstance();
+        StringTranslate.getInstance();
 //        this.controlList.add(new GCCoreGuiTexturedButton(0, this.width - 110, this.height - 26, 105, 20, "Send To Dimension", "" /* TODO */));
         this.controlList.add(new GCCoreGuiTexturedButton(0, this.width - 28, 5, 22, 22, "/micdoodle8/mods/galacticraft/core/client/gui/button1.png", 22, 22));
         this.controlList.add(this.sendButton = new GuiSmallButton(1, this.width - 110, this.height - 26, 105, 20, "Send To Dimension"));
         this.planetSlots.registerScrollButtons(this.controlList, 2, 3);
     }
-    
+
     @Override
 	public void updateScreen()
     {
         ++this.spaceTimer;
     }
-    
+
     @Override
 	public boolean doesGuiPauseGame()
     {
         return false;
     }
-    
+
     private void drawPanorama2(float par1)
     {
         final Tessellator var4 = Tessellator.instance;
@@ -122,7 +119,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
         GL11.glDepthMask(false);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
         final byte var5 = 1;
-        
+
 
         for (int var6 = 0; var6 < var5 * var5; ++var6)
         {
@@ -220,7 +217,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
         GL11.glDepthMask(false);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
         final byte var5 = 1;
-        
+
 
         for (int var6 = 0; var6 < var5 * var5; ++var6)
         {
@@ -236,7 +233,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
             for (int var10 = 0; var10 < 6; ++var10)
             {
                 GL11.glPushMatrix();
-                
+
 
                 if (var10 == 1)
                 {
@@ -332,44 +329,44 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
         var4.draw();
         GL11.glPopMatrix();
     }
-    
+
     @Override
 	public void drawScreen(int par1, int par2, float par3)
     {
     	String str = null;
-    	
+
     	if (this.initialized)
     	{
             this.planetSlots.drawScreen(par1, par2, par3);
             super.drawScreen(par1, par2, par3);
     	}
-    	
+
 		for (final IGalacticraftSubModClient mod : GalacticraftCore.clientSubMods)
 		{
     		String dest = this.destinations[this.selectedSlot].toLowerCase();
-    		
+
     		if (dest.contains("*"))
     		{
     			dest = dest.replace("*", "");
     		}
-    		
+
     		if (mod.getDimensionName().toLowerCase().equals(dest))
     		{
 				str = LanguageRegistry.instance().getStringLocalization("gui.choosePlanet.desc." + dest);
     		}
     	}
-    	
+
     	if (this.destinations[this.selectedSlot].toLowerCase().equals("overworld"))
     	{
     		str = LanguageRegistry.instance().getStringLocalization("gui.choosePlanet.desc.overworld");
     	}
-    	
+
     	if (str != null)
     	{
 	    	final String[] strArray = str.split("#");
-	    	
+
 	    	final int j = 260 / strArray.length + 1;
-	    	
+
 	    	for (int i = 0; i < strArray.length; i++)
 	    	{
 	    		if (strArray[i].contains("*"))
@@ -384,7 +381,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
 	    	}
     	}
     }
-    
+
     public void drawBlackBackground()
     {
         final ScaledResolution var5 = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
@@ -408,7 +405,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
         GL11.glEnable(GL11.GL_ALPHA_TEST);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
     }
-    
+
     @Override
 	protected void actionPerformed(GuiButton par1GuiButton)
     {
@@ -426,15 +423,15 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
         	}
         	else
         	{
-        		FMLLog.severe("Severe problem when trying to teleport " + playerToSend.username);
+        		FMLLog.severe("Severe problem when trying to teleport " + this.playerToSend.username);
         	}
         }
     }
-    
+
     public boolean isValidDestination(int i)
     {
     	final String str = this.destinations[i];
-    	
+
     	if (str.contains("*"))
     	{
     		return false;
@@ -449,12 +446,12 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     {
         return par0GuiLanguage.playerToSend;
     }
-    
+
     static String[] getDestinations(GCCoreGuiChoosePlanet par0GuiLanguage)
     {
     	return par0GuiLanguage.destinations;
     }
-    
+
     static GuiSmallButton getSendButton(GCCoreGuiChoosePlanet par0GuiLanguage)
     {
     	return par0GuiLanguage.sendButton;

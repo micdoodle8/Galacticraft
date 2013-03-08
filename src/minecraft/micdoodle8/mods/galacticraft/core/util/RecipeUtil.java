@@ -14,7 +14,7 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
-public class RecipeUtil 
+public class RecipeUtil
 {
 	public static void addCraftingRecipes()
 	{
@@ -262,12 +262,12 @@ public class RecipeUtil
 			" Y ",
 			'X', GCCoreItems.canvas, 'Y', Item.silk
 		}));
-		
+
         for (int var2 = 0; var2 < 16; ++var2)
         {
         	CraftingManager.getInstance().addShapelessRecipe(new ItemStack(GCCoreItems.parachute, 1, GCCoreItemParachute.getParachuteDamageValueFromDye(var2)), new Object[] {new ItemStack(Item.dyePowder, 1, var2), new ItemStack(GCCoreItems.parachute, 1, 0)});
         }
-        
+
 		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.flagPole, 2, 0), new Object[] {
 			"X",
 			"X",
@@ -280,82 +280,82 @@ public class RecipeUtil
 			"X  ",
 			'X', GCCoreItems.flagPole, 'Y', GCCoreItems.canvas
 		}));
-		
+
         for (int var2 = 0; var2 < 16; ++var2)
         {
         	CraftingManager.getInstance().addShapelessRecipe(new ItemStack(GCCoreItems.flag, 1, GCCoreItemFlag.getFlagDamageValueFromDye(var2)), new Object[] {new ItemStack(Item.dyePowder, 1, var2), new ItemStack(GCCoreItems.flag, 1, 16)});
         }
-        
+
 		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.oxygenGear), new Object[] {
 			" Y ",
 			"YXY",
 			"Y Y",
 			'X', GCCoreItems.oxygenConcentrator, 'Y', GCCoreBlocks.oxygenPipe
 		}));
-		
+
 		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreBlocks.decorationBlocks, 1, 0), new Object[] {
 			"XXX",
 			"XXX",
 			"XXX",
 			'X', "ingotCopper"
 		}));
-		
+
 		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreBlocks.decorationBlocks, 1, 1), new Object[] {
 			"XXX",
 			"XXX",
 			"XXX",
 			'X', "ingotAluminium"
 		}));
-		
+
 		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreBlocks.decorationBlocks, 1, 2), new Object[] {
 			"XXX",
 			"XXX",
 			"XXX",
 			'X', "ingotTitanium"
 		}));
-		
+
 		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreBlocks.decorationBlocks, 4, 3), new Object[] {
 			"   ",
 			" XY",
 			"   ",
 			'X', new ItemStack(Block.stone, 4, 0), 'Y', "ingotAluminium"
 		}));
-		
+
 		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreBlocks.decorationBlocks, 4, 4), new Object[] {
 			"   ",
 			" X ",
 			" Y ",
 			'X', new ItemStack(Block.stone, 4, 0), 'Y', "ingotAluminium"
 		}));
-		
+
 		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreBlocks.airLockFrame, 2), new Object[] {
 			"XXX",
 			"YVY",
 			"ZWZ",
 			'V', GCCoreBlocks.oxygenPipe, 'W', Item.redstone, 'X', GCMoonItems.meteoricIronIngot, 'Y', "ingotTitanium", 'Z', GCCoreItems.oxygenConcentrator
 		}));
-		
+
 		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.oilExtractor), new Object[] {
 			"X  ",
 			" XY",
 			"ZYY",
 			'X', "ingotAluminium", 'Y', "ingotCopper", 'Z', Item.redstone
 		}));
-		
+
 		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.oilCanister, 1, 61), new Object[] {
 			"WXW",
 			"WYW",
 			"WZW",
 			'X', "ingotTitanium", 'Y', Block.glass, 'Z', new ItemStack(GCCoreItems.canister, 1, 0), 'W', GCCoreItems.ingotAluminum
 		}));
-		
+
 		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreBlocks.refinery), new Object[] {
 			" Z ",
 			"WZW",
 			"XYX",
 			'X', "ingotAluminium", 'Y', Block.stoneOvenIdle, 'Z', new ItemStack(GCCoreItems.canister, 1, 1), 'W', Block.stone
 		}));
-		
+
 		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreBlocks.compressor), new Object[] {
 			"XYX",
 			"YZY",
@@ -363,29 +363,29 @@ public class RecipeUtil
 			'X', "ingotAluminium", 'Y', "ingotTitanium", 'Z', GCCoreItems.oxygenConcentrator
 		}));
 	}
-	
+
 	public static void addSmeltingRecipes()
 	{
 		FurnaceRecipes.smelting().addSmelting(GCCoreBlocks.blockOres.blockID, 0, new ItemStack(GCCoreItems.ingotCopper), 0.1F);
 		FurnaceRecipes.smelting().addSmelting(GCCoreBlocks.blockOres.blockID, 1, new ItemStack(GCCoreItems.ingotAluminum), 0.3F);
 		FurnaceRecipes.smelting().addSmelting(GCCoreBlocks.blockOres.blockID, 2, new ItemStack(GCCoreItems.ingotTitanium), 1.0F);
 	}
-	
+
 	public static ItemStack findMatchingSpaceshipRecipe(GCCoreInventoryRocketBench inventoryRocketBench)
 	{
 		final ItemStack[] slots = new ItemStack[18];
-		
+
 		for (int i = 0; i < 18; i++)
 		{
 			slots[i] = inventoryRocketBench.getStackInSlot(i + 1);
 		}
-		
+
 		if (slots[0] != null && slots[1] != null && slots[2] != null && slots[3] != null && slots[4] != null && slots[5] != null && slots[6] != null && slots[7] != null && slots[8] != null && slots[9] != null && slots[10] != null && slots[11] != null && slots[12] != null && slots[13] != null)
 		{
 			if (slots[0].getItem().itemID == GCCoreItems.rocketNoseCone.itemID)
 			{
 				int platesInPlace = 0;
-				
+
 				for (int i = 1; i < 9; i++)
 				{
 					if (slots[i].getItem().itemID == GCCoreItems.heavyPlating.itemID)
@@ -393,7 +393,7 @@ public class RecipeUtil
 						platesInPlace++;
 					}
 				}
-				
+
 				if (platesInPlace == 8)
 				{
 					if (slots[9].getItem().itemID == GCCoreItems.rocketFins.itemID && slots[10].getItem().itemID == GCCoreItems.rocketFins.itemID)
@@ -403,17 +403,17 @@ public class RecipeUtil
 							if (slots[11].getItem().itemID == GCCoreItems.rocketEngine.itemID)
 							{
 								int type = 0;
-								
+
 								for (int i = 14; i < 17; i++)
 								{
 									if (slots[i] != null)
 									{
-										int id = slots[i].itemID;
-										
+										final int id = slots[i].itemID;
+
 										if (id < Block.blocksList.length)
 										{
-											Block block = Block.blocksList[id];
-											
+											final Block block = Block.blocksList[id];
+
 											if (block != null && block instanceof BlockChest)
 											{
 												type = 1;
@@ -422,7 +422,7 @@ public class RecipeUtil
 										}
 									}
 								}
-									
+
 								return new ItemStack(GCCoreItems.spaceship, 1, type);
 							}
 						}
@@ -430,7 +430,7 @@ public class RecipeUtil
 				}
 			}
 		}
-		
+
 		return null;
 	}
 }

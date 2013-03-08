@@ -8,7 +8,6 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
-import cpw.mods.fml.common.FMLLog;
 
 public class GCMoonComponentVillageField extends GCMoonComponentVillage
 {
@@ -69,15 +68,15 @@ public class GCMoonComponentVillageField extends GCMoonComponentVillage
     	if (this.averageGroundLevel < 0)
 	    {
 	        this.averageGroundLevel = this.getAverageGroundLevel(par1World, par3StructureBoundingBox);
-	
+
 	        if (this.averageGroundLevel < 0)
 	        {
 	            return true;
 	        }
-	
+
 	        this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.maxY + 7 - 1, 0);
 	    }
-    	
+
         this.fillWithBlocks(par1World, par3StructureBoundingBox, 0, 1, 0, 12, 4, 8, 0, 0, false);
         this.fillWithBlocks(par1World, par3StructureBoundingBox, 1, 0, 1, 2, 0, 7, Block.dirt.blockID, Block.dirt.blockID, false);
         this.fillWithBlocks(par1World, par3StructureBoundingBox, 4, 0, 1, 5, 0, 7, Block.dirt.blockID, Block.dirt.blockID, false);

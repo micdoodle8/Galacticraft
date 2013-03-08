@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.render.block;
 
 import micdoodle8.mods.galacticraft.API.IConnectableToPipe;
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -20,7 +19,7 @@ public class GCCoreBlockRendererOxygenPipe implements ISimpleBlockRenderingHandl
     {
         this.renderID = var1;
     }
-    
+
 	public void renderPipe(RenderBlocks renderblocks, IBlockAccess iblockaccess, Block block, int x, int y, int z)
 	{
 		final float minSize = 0.4F;
@@ -28,11 +27,11 @@ public class GCCoreBlockRendererOxygenPipe implements ISimpleBlockRenderingHandl
 
 		renderblocks.setRenderBounds(minSize, minSize, minSize, maxSize, maxSize, maxSize);
 		renderblocks.renderStandardBlock(block, x, y, z);
-		
+
 		if (Block.blocksList[iblockaccess.getBlockId(x - 1, y, z)] instanceof IConnectableToPipe)
 		{
-			IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[iblockaccess.getBlockId(x - 1, y, z)];
-			
+			final IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[iblockaccess.getBlockId(x - 1, y, z)];
+
 			if (pipe.isConnectableOnSide(iblockaccess, x, y, z, ForgeDirection.WEST))
 			{
 				renderblocks.setRenderBounds(0.0F, minSize, minSize, minSize, maxSize, maxSize);
@@ -42,8 +41,8 @@ public class GCCoreBlockRendererOxygenPipe implements ISimpleBlockRenderingHandl
 
 		if (Block.blocksList[iblockaccess.getBlockId(x + 1, y, z)] instanceof IConnectableToPipe)
 		{
-			IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[iblockaccess.getBlockId(x + 1, y, z)];
-			
+			final IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[iblockaccess.getBlockId(x + 1, y, z)];
+
 			if (pipe.isConnectableOnSide(iblockaccess, x, y, z, ForgeDirection.EAST))
 			{
 				renderblocks.setRenderBounds(maxSize, minSize, minSize, 1.0F, maxSize, maxSize);
@@ -53,8 +52,8 @@ public class GCCoreBlockRendererOxygenPipe implements ISimpleBlockRenderingHandl
 
 		if (Block.blocksList[iblockaccess.getBlockId(x, y - 1, z)] instanceof IConnectableToPipe)
 		{
-			IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[iblockaccess.getBlockId(x, y - 1, z)];
-			
+			final IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[iblockaccess.getBlockId(x, y - 1, z)];
+
 			if (pipe.isConnectableOnSide(iblockaccess, x, y, z, ForgeDirection.DOWN))
 			{
 				renderblocks.setRenderBounds(minSize, 0.0F, minSize, maxSize, minSize, maxSize);
@@ -64,8 +63,8 @@ public class GCCoreBlockRendererOxygenPipe implements ISimpleBlockRenderingHandl
 
 		if (Block.blocksList[iblockaccess.getBlockId(x, y + 1, z)] instanceof IConnectableToPipe)
 		{
-			IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[iblockaccess.getBlockId(x, y + 1, z)];
-			
+			final IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[iblockaccess.getBlockId(x, y + 1, z)];
+
 			if (pipe.isConnectableOnSide(iblockaccess, x, y, z, ForgeDirection.UP))
 			{
 				renderblocks.setRenderBounds(minSize, maxSize, minSize, maxSize, 1.0F, maxSize);
@@ -75,8 +74,8 @@ public class GCCoreBlockRendererOxygenPipe implements ISimpleBlockRenderingHandl
 
 		if (Block.blocksList[iblockaccess.getBlockId(x, y, z - 1)] instanceof IConnectableToPipe)
 		{
-			IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[iblockaccess.getBlockId(x, y, z - 1)];
-			
+			final IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[iblockaccess.getBlockId(x, y, z - 1)];
+
 			if (pipe.isConnectableOnSide(iblockaccess, x, y, z, ForgeDirection.NORTH))
 			{
 				renderblocks.setRenderBounds(minSize, minSize, 0.0F, maxSize, maxSize, minSize);
@@ -86,8 +85,8 @@ public class GCCoreBlockRendererOxygenPipe implements ISimpleBlockRenderingHandl
 
 		if (Block.blocksList[iblockaccess.getBlockId(x, y, z + 1)] instanceof IConnectableToPipe)
 		{
-			IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[iblockaccess.getBlockId(x, y, z + 1)];
-			
+			final IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[iblockaccess.getBlockId(x, y, z + 1)];
+
 			if (pipe.isConnectableOnSide(iblockaccess, x, y, z, ForgeDirection.SOUTH))
 			{
 				renderblocks.setRenderBounds(minSize, minSize, maxSize, maxSize, maxSize, 1.0F);
@@ -101,7 +100,7 @@ public class GCCoreBlockRendererOxygenPipe implements ISimpleBlockRenderingHandl
 	{
 		final float minSize = 0.4F;
 		final float maxSize = 0.6F;
-		
+
         final Tessellator var3 = Tessellator.instance;
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

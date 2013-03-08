@@ -8,7 +8,7 @@ import net.minecraft.util.MathHelper;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -105,15 +105,15 @@ public class GCMarsModelCreeperBoss extends ModelBase
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
 	{
 		super.render(entity, f, f1, f2, f3, f4, f5);
-		
+
 		final GCMarsEntityCreeperBoss creeper = (GCMarsEntityCreeperBoss) entity;
-		
+
 		if (creeper.headsRemaining == 3)
 		{
 			this.headLeft.render(f5);
 			this.neckLeft.render(f5);
 		}
-		
+
 		if (creeper.headsRemaining >= 2)
 		{
 			this.headRight.render(f5);

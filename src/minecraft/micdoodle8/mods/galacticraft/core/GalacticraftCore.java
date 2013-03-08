@@ -89,7 +89,7 @@ import cpw.mods.fml.relauncher.Side;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -100,38 +100,38 @@ public class GalacticraftCore
 	public static final String NAME = "Galacticraft Core";
 	public static final String MODID = "GalacticraftCore";
 	public static final String CHANNEL = "GalacticraftCore";
-	
+
     public static final int LOCALMAJVERSION = 0;
     public static final int LOCALMINVERSION = 0;
     public static final int LOCALBUILDVERSION = 18;
     public static int remoteMajVer;
     public static int remoteMinVer;
     public static int remoteBuildVer;
-	
+
 	@SidedProxy(clientSide = "micdoodle8.mods.galacticraft.core.client.ClientProxyCore", serverSide = "micdoodle8.mods.galacticraft.core.CommonProxyCore")
 	public static CommonProxyCore proxy;
-	
+
 	@Instance(GalacticraftCore.MODID)
 	public static GalacticraftCore instance;
-	
+
 	public static GalacticraftMoon moon = new GalacticraftMoon();
-	
+
 	public static long tick;
 	public static long slowTick;
-	
+
 	public static Map<String, GCCorePlayerBaseClient> playersClient = new HashMap<String, GCCorePlayerBaseClient>();
 	public static Map<String, GCCorePlayerBase> playersServer = new HashMap<String, GCCorePlayerBase>();
-	
+
 	public static List<IGalacticraftSubMod> subMods = new ArrayList<IGalacticraftSubMod>();
 	public static List<IGalacticraftSubModClient> clientSubMods = new ArrayList<IGalacticraftSubModClient>();
 
 	public static List<IGalaxy> galaxies = new ArrayList<IGalaxy>();
-	
+
 	public static List<IMapPlanet> mapPlanets = new ArrayList<IMapPlanet>();
 	public static DupKeyHashMap mapMoons = new DupKeyHashMap();
-	
+
 	public static final CreativeTabs galacticraftTab = new GCCoreCreativeTab(CreativeTabs.getNextID(), GalacticraftCore.CHANNEL);
-	
+
 	public static final IGalaxy galaxyMilkyWay = new GCCoreGalaxyBlockyWay();
 
 	public static final String FILE_PATH = "/micdoodle8/mods/galacticraft/core/";
@@ -144,27 +144,27 @@ public class GalacticraftCore
 
 	public static final UEDamageSource spaceshipCrash = (UEDamageSource) new UEDamageSource("spaceshipCrash", "%1$s was in a spaceship crash!").setDamageBypassesArmor();
 	public static final UEDamageSource oxygenSuffocation = (UEDamageSource) new UEDamageSource("oxygenSuffocation", "%1$s ran out of oxygen!").setDamageBypassesArmor();
-	
+
 	public static ArrayList<Integer> hiddenItems = new ArrayList<Integer>();
-	
+
 	@PreInit
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		GalacticraftCore.moon.preLoad(event);
-		
+
 		GalacticraftCore.registerSubMod(GalacticraftCore.moon);
-		
+
 		new GCCoreConfigManager(new File(event.getModConfigurationDirectory(), CONFIG_FILE));
 
 		ServerPlayerAPI.register(GalacticraftCore.MODID, GCCorePlayerBase.class);
-		
+
 		GCCoreBlocks.initBlocks();
 		GCCoreBlocks.registerBlocks();
 		GCCoreBlocks.setHarvestLevels();
-		
+
 		GCCoreItems.initItems();
 		GCCoreItems.registerHarvestLevels();
-		
+
 		OreDictionary.registerOre("oreCopper", new ItemStack(GCCoreBlocks.blockOres, 1, 0));
 		OreDictionary.registerOre("oreAluminium", new ItemStack(GCCoreBlocks.blockOres, 1, 1));
 		OreDictionary.registerOre("oreTitanium", new ItemStack(GCCoreBlocks.blockOres, 1, 2));
@@ -172,10 +172,10 @@ public class GalacticraftCore
 		OreDictionary.registerOre("ingotCopper", new ItemStack(GCCoreItems.ingotCopper));
 		OreDictionary.registerOre("ingotAluminium", new ItemStack(GCCoreItems.ingotAluminum));
 		OreDictionary.registerOre("ingotTitanium", new ItemStack(GCCoreItems.ingotTitanium));
-		
+
 		GalacticraftCore.proxy.preInit(event);
 	}
-	
+
 	@Init
 	public void init(FMLInitializationEvent event)
 	{
@@ -188,9 +188,9 @@ public class GalacticraftCore
 		}
 
 		System.out.println("Galacticraft Loaded: " + TranslationHelper.loadLanguages(LANGUAGE_PATH, LANGUAGES_SUPPORTED) + " Languages.");
-		
+
 		GalacticraftCore.moon.load(event);
-		
+
         GameRegistry.registerWorldGenerator(new GCCoreWorldGenVanilla());
         RecipeUtil.addCraftingRecipes();
         RecipeUtil.addSmeltingRecipes();
@@ -201,55 +201,55 @@ public class GalacticraftCore
 		MinecraftForge.EVENT_BUS.register(new GCCoreEvents());
 		GalacticraftCore.proxy.init(event);
 	}
-	
+
 	@PostInit
 	public void postInit(FMLPostInitializationEvent event)
 	{
 		GalacticraftCore.moon.postLoad(event);
-		
+
 		GalacticraftCore.proxy.postInit(event);
 		GalacticraftCore.proxy.registerRenderInformation();
-		
+
 		// Hide certain items from NEI
 		API.hideItems(this.hiddenItems);
 	}
-	
+
 	@ServerStarted
 	public void serverInit(FMLServerStartedEvent event)
 	{
 		GalacticraftCore.moon.serverInit(event);
-		
+
 		GCCoreUtil.checkVersion(Side.SERVER);
         TickRegistry.registerTickHandler(new CommonTickHandler(), Side.SERVER);
         TickRegistry.registerScheduledTickHandler(new CommonTickHandlerSlow(), Side.SERVER);
         NetworkRegistry.instance().registerChannel(new ServerPacketHandler(), GalacticraftCore.CHANNEL, Side.SERVER);
 	}
-	
+
 	public static void registerSlotRenderer(IPlanetSlotRenderer renderer)
 	{
 		GalacticraftCore.proxy.addSlotRenderer(renderer);
 	}
-	
+
 	public static void registerSubMod(IGalacticraftSubMod mod)
 	{
 		GalacticraftCore.subMods.add(mod);
 	}
-	
+
 	public static void registerClientSubMod(IGalacticraftSubModClient mod)
 	{
 		GalacticraftCore.clientSubMods.add(mod);
 	}
-	
+
 	public static void addAdditionalMapPlanet(IMapPlanet planet)
 	{
 		GalacticraftCore.mapPlanets.add(planet);
 	}
-	
+
 	public static void addAdditionalMapMoon(IMapPlanet planet, IMapPlanet moon)
 	{
 		GalacticraftCore.mapMoons.put(planet, moon);
 	}
-	
+
 	public void registerTileEntities()
 	{
         GameRegistry.registerTileEntity(GCCoreTileEntityTreasureChest.class, "Treasure Chest");
@@ -262,7 +262,7 @@ public class GalacticraftCore
         GameRegistry.registerTileEntity(GCCoreTileEntityAdvancedCraftingTable.class, "NASA Workbench");
         GameRegistry.registerTileEntity(GCCoreTileEntityOxygenCompressor.class, "Air Compressor");
 	}
-	
+
 	public void registerCreatures()
 	{
 		this.registerGalacticraftCreature(GCCoreEntitySpider.class, "Evolved Spider", GCCoreConfigManager.idEntityEvolvedSpider, 3419431, 11013646);
@@ -271,7 +271,7 @@ public class GalacticraftCore
 		this.registerGalacticraftCreature(GCCoreEntitySkeleton.class, "Evolved Skeleton", GCCoreConfigManager.idEntityEvolvedSkeleton, 12698049, 4802889);
 		this.registerGalacticraftCreature(GCCoreEntityWorm.class, "Giant Worm", GCCoreConfigManager.idEntityGiantWorm, 12698049, 4802889);
 	}
-	
+
 	public void registerOtherEntities()
 	{
 		this.registerGalacticraftNonMobEntity(GCCoreEntitySpaceship.class, "Spaceship", GCCoreConfigManager.idEntitySpaceship, 150, 1, true);
@@ -289,52 +289,52 @@ public class GalacticraftCore
         EntityRegistry.registerModEntity(var0, var1, id, GalacticraftCore.instance, 80, 3, true);
 		LanguageRegistry.instance().addStringLocalization("entity." + var1 + ".name", "en_US", var1);
     }
-    
+
     public void registerGalacticraftNonMobEntity(Class var0, String var1, int id, int trackingDistance, int updateFreq, boolean sendVel)
     {
         EntityRegistry.registerModEntity(var0, var1, id, this, trackingDistance, updateFreq, sendVel);
     }
-    
+
 	public int chatCooldown;
-    
+
     public class ServerPacketHandler implements IPacketHandler
     {
         @Override
         public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player p)
         {
             final DataInputStream data = new DataInputStream(new ByteArrayInputStream(packet.data));
-            
+
             final int packetType = PacketUtil.readPacketID(data);
-            
+
             final EntityPlayerMP player = (EntityPlayerMP)p;
-        	
-        	GCCorePlayerBase playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player);
-            
+
+        	final GCCorePlayerBase playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player);
+
             if (packetType == 0)
             {
                 final Class[] decodeAs = {String.class};
-                final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
+                PacketUtil.readPacketData(data, decodeAs);
 
                 player.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiTankRefill, player.worldObj, (int)player.posX, (int)player.posY, (int)player.posZ);
             }
             else if (packetType == 1)
             {
                 final Class[] decodeAs = {String.class};
-                final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
-                
+                PacketUtil.readPacketData(data, decodeAs);
+
                 player.playerNetServerHandler.sendPacketToPlayer(new Packet9Respawn(player.dimension, (byte)player.worldObj.difficultySetting, player.worldObj.getWorldInfo().getTerrainType(), player.worldObj.getHeight(), player.theItemInWorldManager.getGameType()));
             }
             else if (packetType == 2)
             {
                 final Class[] decodeAs = {String.class};
                 final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
-                
+
                 if (playerBase != null && playerBase.teleportCooldown <= 0)
                 {
     	    		final Integer dim = WorldUtil.getProviderForName((String)packetReadout[0]).dimensionId;
     	    		playerBase.travelToTheEnd(dim);
     	    		playerBase.teleportCooldown = 300;
-    	    		Object[] toSend = {player.username};
+    	    		final Object[] toSend = {player.username};
     	    		player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 12, toSend));
                 }
             }
@@ -343,19 +343,19 @@ public class GalacticraftCore
                 if (!player.worldObj.isRemote && !player.isDead && player.ridingEntity != null && !player.ridingEntity.isDead && player.ridingEntity instanceof GCCoreEntitySpaceship)
                 {
                 	final GCCoreEntitySpaceship ship = (GCCoreEntitySpaceship) player.ridingEntity;
-                	
+
                 	final ItemStack stack = ship.getStackInSlot(0);
-                	
+
                 	if (ship.hasFuelTank())
                 	{
                 		ItemStack stack2 = null;
-                		
+
                 		if (playerBase != null && playerBase.playerTankInventory != null)
                 		{
                 			stack2 = playerBase.playerTankInventory.getStackInSlot(4);
                 		}
-	    				
-	    				if ((stack2 != null && stack2.getItem() instanceof GCCoreItemParachute) || (playerBase != null && playerBase.launchAttempts > 0))
+
+	    				if (stack2 != null && stack2.getItem() instanceof GCCoreItemParachute || playerBase != null && playerBase.launchAttempts > 0)
 	    				{
 	                    	ship.ignite();
 	                    	playerBase.launchAttempts = 0;
@@ -380,10 +380,10 @@ public class GalacticraftCore
             {
                 final Class[] decodeAs = {Integer.class};
                 final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
-                
+
             	if (player != null)
             	{
-            		
+
             		switch ((Integer)packetReadout[0])
             		{
             		case 0:
@@ -401,7 +401,7 @@ public class GalacticraftCore
             {
                 final Class[] decodeAs = {Integer.class};
                 final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
-                
+
                 for(int i = 0; i < player.worldObj.loadedEntityList.size(); i++)
                 {
 	                if(((Entity)player.worldObj.loadedEntityList.get(i)).entityId == (Integer)packetReadout[0])
@@ -409,7 +409,7 @@ public class GalacticraftCore
 	                	if (player.worldObj.loadedEntityList.get(i) instanceof EntityLiving)
 	                	{
 	                        final Object[] toSend = {((EntityLiving)player.worldObj.loadedEntityList.get(i)).getHealth(), (Integer)packetReadout[0]};
-	                        
+
 	                        player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 3, toSend));
 	                	}
 	                }
@@ -418,8 +418,8 @@ public class GalacticraftCore
             else if (packetType == 6)
             {
                 final Class[] decodeAs = {Integer.class};
-                final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
-                
+                PacketUtil.readPacketData(data, decodeAs);
+
                 if (player.ridingEntity instanceof GCCoreEntitySpaceship)
                 {
                 	player.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiSpaceshipInventory, player.worldObj, (int)player.posX, (int)player.posY, (int)player.posZ);
@@ -429,14 +429,14 @@ public class GalacticraftCore
             {
                 final Class[] decodeAs = {Float.class};
                 final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
-                
+
                 if (player.ridingEntity instanceof GCCoreEntitySpaceship)
                 {
                 	final GCCoreEntitySpaceship ship = (GCCoreEntitySpaceship) player.ridingEntity;
-                	
+
                 	if (ship != null)
                 	{
-                		ship.rotationYaw = ((Float) packetReadout[0]);
+                		ship.rotationYaw = (Float) packetReadout[0];
                 	}
                 }
             }
@@ -444,14 +444,14 @@ public class GalacticraftCore
             {
                 final Class[] decodeAs = {Float.class};
                 final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
-                
+
                 if (player.ridingEntity instanceof GCCoreEntitySpaceship)
                 {
                 	final GCCoreEntitySpaceship ship = (GCCoreEntitySpaceship) player.ridingEntity;
 
                 	if (ship != null)
                 	{
-                		ship.rotationPitch = ((Float) packetReadout[0]);
+                		ship.rotationPitch = (Float) packetReadout[0];
                 	}
                 }
             }
@@ -463,7 +463,7 @@ public class GalacticraftCore
                 if (player.ridingEntity instanceof GCCoreEntityControllable)
                 {
                 	final GCCoreEntityControllable controllableEntity = (GCCoreEntityControllable) player.ridingEntity;
-                	
+
                 	if (controllableEntity != null)
                 	{
                 		controllableEntity.keyPressed((Integer) packetReadout[0], player);
@@ -474,13 +474,13 @@ public class GalacticraftCore
             {
                 final Class[] decodeAs = {Integer.class};
                 final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
-                
-                for (Object object : player.worldObj.loadedEntityList)
+
+                for (final Object object : player.worldObj.loadedEntityList)
                 {
                 	if (object instanceof EntityLiving)
                 	{
-                		EntityLiving entity = (EntityLiving) object;
-                		
+                		final EntityLiving entity = (EntityLiving) object;
+
                 		if (entity.entityId == (Integer) packetReadout[0])
                 		{
                 			entity.setFire(3);
@@ -497,7 +497,7 @@ public class GalacticraftCore
             }
         }
     }
-	
+
 	public class CommonTickHandlerSlow implements IScheduledTickHandler
 	{
 		@Override
@@ -527,7 +527,7 @@ public class GalacticraftCore
 			return 1;
 		}
 	}
-	
+
 	public class CommonTickHandler implements ITickHandler
 	{
 		@Override
@@ -536,7 +536,7 @@ public class GalacticraftCore
 			if (type.equals(EnumSet.of(TickType.SERVER)))
             {
 				GalacticraftCore.tick++;
-				
+
 				if (GalacticraftCore.this.chatCooldown > 0)
 				{
 					GalacticraftCore.this.chatCooldown--;

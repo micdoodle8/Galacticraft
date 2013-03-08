@@ -9,20 +9,20 @@ import net.minecraft.nbt.NBTTagList;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
 public class GCCoreInventoryTankRefill implements IInventory
 {
 	public ItemStack[] tankSlotContents = new ItemStack[5];
-	private GCCorePlayerBase player;
+	private final GCCorePlayerBase player;
 
 	public GCCoreInventoryTankRefill()
 	{
 		this(null);
 	}
-	
+
 	public GCCoreInventoryTankRefill(GCCorePlayerBase player)
 	{
 		this.player = player;
@@ -56,7 +56,7 @@ public class GCCoreInventoryTankRefill implements IInventory
 			return null;
 		}
 	}
-	
+
 	public void consumeTankInSlot(int par1)
 	{
 		if (this.tankSlotContents[par1] != null)
@@ -110,7 +110,7 @@ public class GCCoreInventoryTankRefill implements IInventory
 			return null;
 		}
 	}
-	
+
     public void dropAllItems()
     {
         for (int var1 = 0; var1 < this.tankSlotContents.length; ++var1)
@@ -122,7 +122,7 @@ public class GCCoreInventoryTankRefill implements IInventory
             }
         }
     }
-    
+
     public NBTTagList writeToNBT(NBTTagList par1NBTTagList)
     {
         int var2;

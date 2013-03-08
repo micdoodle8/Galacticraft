@@ -23,7 +23,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -130,8 +130,8 @@ public class GCCoreEntityCreeper extends EntityCreeper
 
                 if (!this.worldObj.isRemote)
                 {
-                    boolean var2 = this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing");
-                    
+                    final boolean var2 = this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing");
+
                     if (this.getPowered())
                     {
                         this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 6.0F, var2);
@@ -147,9 +147,9 @@ public class GCCoreEntityCreeper extends EntityCreeper
         }
 
         this.motionY += 0.06F;
-        
+
     	super.onUpdate();
-    	
+
     	this.fallDistance = 0;
     }
 
@@ -200,7 +200,8 @@ public class GCCoreEntityCreeper extends EntityCreeper
     /**
      * Returns true if the creeper is powered by a lightning bolt.
      */
-    public boolean getPowered()
+    @Override
+	public boolean getPowered()
     {
         return this.dataWatcher.getWatchableObjectByte(17) == 1;
     }
@@ -227,7 +228,8 @@ public class GCCoreEntityCreeper extends EntityCreeper
     /**
      * Returns the current state of creeper, -1 is idle, 1 is 'in fuse'
      */
-    public int getCreeperState()
+    @Override
+	public int getCreeperState()
     {
         return this.dataWatcher.getWatchableObjectByte(16);
     }
@@ -235,7 +237,8 @@ public class GCCoreEntityCreeper extends EntityCreeper
     /**
      * Sets the state of creeper, -1 to idle and 1 to be 'in fuse'
      */
-    public void setCreeperState(int par1)
+    @Override
+	public void setCreeperState(int par1)
     {
         this.dataWatcher.updateObject(16, Byte.valueOf((byte)par1));
     }

@@ -12,7 +12,7 @@ import cpw.mods.fml.client.FMLClientHandler;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -36,18 +36,18 @@ public class GCCoreSounds
             System.err.println("[GCCore] Failed to register one or more sounds.");
         }
     }
-    
+
     @ForgeSubscribe
     public void onMusicSound(PlayBackgroundMusicEvent event)
     {
     	final Minecraft mc = FMLClientHandler.instance().getClient();
-    	
+
     	if (mc.thePlayer.worldObj.provider instanceof IGalacticraftWorldProvider)
     	{
     		for (int i = 0; i < GalacticraftCore.clientSubMods.size(); i++)
     		{
     			final IGalacticraftSubModClient client = GalacticraftCore.clientSubMods.get(i);
-    			
+
     			if (client != null && client.getDimensionName() != null)
     			{
     	    		if (mc.thePlayer.worldObj.provider.getDimensionName().toLowerCase().equals(client.getDimensionName().toLowerCase()))
@@ -55,7 +55,7 @@ public class GCCoreSounds
     	    			if (client.getPathToMusicFile() != null)
     	    			{
     	    				final String[] strings = client.getPathToMusicFile().split("//");
-    	    				
+
     	    				for (final String string : strings)
     	    				{
     	    					if (string.toLowerCase().contains(".ogg"))
@@ -68,9 +68,9 @@ public class GCCoreSounds
     	    		}
     			}
     		}
-    		
+
     		final int randInt = FMLClientHandler.instance().getClient().thePlayer.worldObj.rand.nextInt(3);
-    		
+
     		if (randInt == 0)
     		{
     			event.result = new SoundPoolEntry("music/spacerace_JC.ogg", GalacticraftCore.class.getResource("/micdoodle8/mods/galacticraft/core/client/sounds/music/spacerace_JC.ogg"));

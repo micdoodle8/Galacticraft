@@ -22,7 +22,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -428,7 +428,7 @@ public class GCCoreEntityArrow extends Entity
             this.doBlockCollisions();
         }
     }
-    
+
     public static DamageSource causeArrowDamage(GCCoreEntityArrow par0EntityArrow, Entity par1Entity)
     {
         return new EntityDamageSourceIndirect("arrow", par0EntityArrow, par1Entity).setProjectile();

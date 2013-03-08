@@ -13,7 +13,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -41,7 +41,7 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
     	{
     		GCCoreGuiChoosePlanet.setSelectedDimension(this.languageGui, par1);
     	}
-    	
+
         GCCoreGuiChoosePlanet.getSendButton(this.languageGui).displayString = "Send To Dimension";
         GCCoreGuiChoosePlanet.getSendButton(this.languageGui).enabled = this.languageGui.isValidDestination(this.languageGui.selectedSlot);
     }
@@ -68,22 +68,22 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             GL11.glDisable(GL11.GL_ALPHA_TEST);
-            final String lowercase = GCCoreGuiChoosePlanet.getDestinations(this.languageGui)[par1].toLowerCase();
+            GCCoreGuiChoosePlanet.getDestinations(this.languageGui)[par1].toLowerCase();
             final Tessellator var3 = Tessellator.instance;
-            
+
             for (int i = 0; i < GalacticraftCore.clientSubMods.size(); i++)
             {
             	if (GalacticraftCore.clientSubMods.get(i) != null && GalacticraftCore.clientSubMods.get(i).getSlotRenderer() != null)
             	{
             		final IPlanetSlotRenderer renderer = GalacticraftCore.clientSubMods.get(i).getSlotRenderer();
-            		
+
         			String str = GCCoreGuiChoosePlanet.getDestinations(this.languageGui)[par1].toLowerCase();
-        			
+
         			if (str.contains("*"))
         			{
         				str = str.replace("*", "");
         			}
-        			
+
         			if (renderer.getPlanetName().toLowerCase().equals(str))
         			{
             			GL11.glBindTexture(GL11.GL_TEXTURE_2D, FMLClientHandler.instance().getClient().renderEngine.getTexture(renderer.getPlanetSprite()));
@@ -92,7 +92,7 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
         			}
             	}
             }
-    		
+
     		if (GCCoreGuiChoosePlanet.getDestinations(this.languageGui)[par1].equals("Overworld"))
             {
                 GL11.glBindTexture(GL11.GL_TEXTURE_2D, FMLClientHandler.instance().getClient().renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/planets/overworld.png"));
@@ -104,13 +104,13 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
                 var3.addVertexWithUV(par2 - 10 - this.slotHeight * 0.9, 	par3 - 1, 							-90.0D, 0.0, 0.0);
                 var3.draw();
             }
-            
+
             GL11.glDepthMask(true);
             GL11.glEnable(GL11.GL_DEPTH_TEST);
             GL11.glEnable(GL11.GL_ALPHA_TEST);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
     	}
-    	
+
     	if (this.languageGui.isValidDestination(par1))
     	{
             this.languageGui.drawCenteredString(this.languageGui.fontRenderer, GCCoreGuiChoosePlanet.getDestinations(this.languageGui)[par1], this.languageGui.width / 2, par3 + 3, 16777215);
@@ -127,7 +127,7 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
 	protected void drawBackground()
 	{
 	}
-	
+
 	@Override
 	public void drawContainerBackground(Tessellator par1Tessellator)
 	{

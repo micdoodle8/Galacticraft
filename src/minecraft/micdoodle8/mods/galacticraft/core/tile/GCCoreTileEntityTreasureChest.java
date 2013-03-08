@@ -10,7 +10,7 @@ import net.minecraft.tileentity.TileEntity;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */

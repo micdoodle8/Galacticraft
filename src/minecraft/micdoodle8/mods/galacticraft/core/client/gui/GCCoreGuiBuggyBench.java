@@ -20,7 +20,7 @@ public class GCCoreGuiBuggyBench extends GuiContainer
     {
         super(new GCCoreContainerBuggyBench(par1InventoryPlayer, 0, 0, 0));
     }
-    
+
     @Override
     public void initGui()
     {
@@ -36,7 +36,7 @@ public class GCCoreGuiBuggyBench extends GuiContainer
         if (par1GuiButton.enabled)
         {
         	Object[] toSend;
-        	
+
             switch (par1GuiButton.id)
             {
             case 0:

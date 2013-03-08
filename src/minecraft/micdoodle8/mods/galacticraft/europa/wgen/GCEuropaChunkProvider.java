@@ -27,7 +27,7 @@ import net.minecraft.world.gen.structure.MapGenVillage;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -35,7 +35,7 @@ public class GCEuropaChunkProvider extends ChunkProviderGenerate
 {
 	public static List giantCaveLocations;
 	public static List creeperDungeonLocations;
-	
+
 	private final Random rand;
 
 	private final NoiseGeneratorOctaves noiseGen1;
@@ -264,7 +264,7 @@ public class GCEuropaChunkProvider extends ChunkProviderGenerate
 		{
 			var5[var6] = (byte) this.biomesForGeneration[var6].biomeID;
 		}
-		
+
 		var4.generateSkylightMap();
 		return var4;
 	}
@@ -297,8 +297,6 @@ public class GCEuropaChunkProvider extends ChunkProviderGenerate
 		this.noise3 = this.noiseGen3.generateNoiseOctaves(this.noise3, par2, par3, par4, par5, par6, par7, var44 / 80.0D, var45 / 160.0D, var44 / 80.0D);
 		this.noise1 = this.noiseGen1.generateNoiseOctaves(this.noise1, par2, par3, par4, par5, par6, par7, var44, var45, var44);
 		this.noise2 = this.noiseGen2.generateNoiseOctaves(this.noise2, par2, par3, par4, par5, par6, par7, var44, var45, var44);
-		final boolean var43 = false;
-		final boolean var42 = false;
 		int var12 = 0;
 		int var13 = 0;
 
@@ -433,7 +431,7 @@ public class GCEuropaChunkProvider extends ChunkProviderGenerate
 		BlockSand.fallInstantly = true;
 		int var4 = par2 * 16;
 		int var5 = par3 * 16;
-		final BiomeGenBase var6 = this.worldObj.getBiomeGenForCoords(var4 + 16, var5 + 16);
+		this.worldObj.getBiomeGenForCoords(var4 + 16, var5 + 16);
 		this.rand.setSeed(this.worldObj.getSeed());
 		final long var7 = this.rand.nextLong() / 2L * 2L + 1L;
 		final long var9 = this.rand.nextLong() / 2L * 2L + 1L;
@@ -443,7 +441,7 @@ public class GCEuropaChunkProvider extends ChunkProviderGenerate
         int var12;
         int var13;
         int var14;
-		
+
         if (!var11 && this.rand.nextInt(2) == 0)
         {
             var12 = var4 + this.rand.nextInt(16) + 8;

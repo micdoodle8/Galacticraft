@@ -50,7 +50,7 @@ import cpw.mods.fml.relauncher.Side;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -60,9 +60,9 @@ public class ClientProxyMars extends CommonProxyMars implements IGalacticraftSub
 	public static long getFirstBootTime;
 	public static long getCurrentTime;
 	private final Random rand = new Random();
-	
+
 	public static GCCoreLocalization lang;
-	
+
 	@Override
 	public void preInit(FMLPreInitializationEvent event)
 	{
@@ -87,7 +87,7 @@ public class ClientProxyMars extends CommonProxyMars implements IGalacticraftSub
 		GCMarsBlocks.addNames();
 		GCMarsItems.addNames();
 	}
-	
+
 	@Override
 	public void registerRenderInformation()
 	{
@@ -135,7 +135,7 @@ public class ClientProxyMars extends CommonProxyMars implements IGalacticraftSub
             		var21 = new GCMarsEntityDropParticleFX(var14.theWorld, var2, var4, var6, GCMarsBlocks.bacterialSludge);
             	}
             }
-            
+
             if (var21 != null)
             {
                 ((EntityFX)var21).prevPosX = ((EntityFX)var21).posX;
@@ -145,7 +145,7 @@ public class ClientProxyMars extends CommonProxyMars implements IGalacticraftSub
             }
         }
     }
-	
+
     public class ClientPacketHandler implements IPacketHandler
     {
         @Override
@@ -153,55 +153,53 @@ public class ClientProxyMars extends CommonProxyMars implements IGalacticraftSub
         {
             final DataInputStream data = new DataInputStream(new ByteArrayInputStream(packet.data));
             final int packetType = PacketUtil.readPacketID(data);
-            final EntityPlayer player = (EntityPlayer)p;
-            
             if (packetType == 0)
             {
-            	
+
             }
         }
     }
-    
+
     public static boolean handleBacterialMovement(EntityPlayer player)
     {
         return player.worldObj.isMaterialInBB(player.boundingBox.expand(-0.10000000149011612D, -0.4000000059604645D, -0.10000000149011612D), GCMarsBlocks.bacterialSludge);
     }
-    
+
     public static boolean handleLavaMovement(EntityPlayer player)
     {
         return player.worldObj.isMaterialInBB(player.boundingBox.expand(-0.10000000149011612D, -0.4000000059604645D, -0.10000000149011612D), Material.lava);
     }
-    
+
     public static boolean handleWaterMovement(EntityPlayer player)
     {
         return player.worldObj.isMaterialInBB(player.boundingBox.expand(-0.10000000149011612D, -0.4000000059604645D, -0.10000000149011612D), Material.water);
     }
-    
+
     public static boolean handleLiquidMovement(EntityPlayer player)
     {
     	return ClientProxyMars.handleBacterialMovement(player) || ClientProxyMars.handleLavaMovement(player) || ClientProxyMars.handleWaterMovement(player);
     }
-    
+
     public static class TickHandlerClient implements ITickHandler
     {
     	@Override
     	public void tickStart(EnumSet<TickType> type, Object... tickData)
         {
     		ClientProxyMars.getCurrentTime = System.currentTimeMillis();
-    		
+
     		final Minecraft minecraft = FMLClientHandler.instance().getClient();
-    		
+
             final WorldClient world = minecraft.theWorld;
-            
+
             final EntityClientPlayerMP player = minecraft.thePlayer;
-    		
+
     		if (type.equals(EnumSet.of(TickType.CLIENT)))
             {
     			if (player != null && player.worldObj.provider instanceof GCMarsWorldProvider && !player.capabilities.isFlying && !minecraft.isGamePaused)
     			{
     				player.motionY = player.motionY + 0.042;
     			}
-    			
+
         		if (player != null && world != null && player.inventory.armorItemInSlot(2) != null && player.inventory.armorItemInSlot(2).getItem().itemID == GCMarsItems.jetpack.itemID && FMLClientHandler.instance().getClient().gameSettings.keyBindJump.pressed && player.posY < 125)
         		{
         			((GCMarsItemJetpack)player.inventory.armorItemInSlot(2).getItem()).setActive();
@@ -210,7 +208,7 @@ public class ClientProxyMars extends CommonProxyMars implements IGalacticraftSub
         			player.fallDistance = 0;
             		world.spawnParticle("largesmoke", player.posX, player.posY - 1D, player.posZ, 0, -0.1, 0);
         		}
-    			
+
     			if (world != null && world.provider instanceof GCMarsWorldProvider)
     			{
     				if (world.provider.getSkyRenderer() == null)
@@ -225,7 +223,7 @@ public class ClientProxyMars extends CommonProxyMars implements IGalacticraftSub
     	public void tickEnd(EnumSet<TickType> type, Object... tickData)
     	{
     	}
-    	
+
         @Override
 		public String getLabel()
         {

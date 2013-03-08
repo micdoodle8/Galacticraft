@@ -11,7 +11,7 @@ public class GCMarsItemBlockOre extends ItemBlock
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
 	}
-	
+
 	@Override
 	public int getMetadata(int meta)
     {
@@ -22,7 +22,7 @@ public class GCMarsItemBlockOre extends ItemBlock
 	public String getItemNameIS(ItemStack itemstack)
 	{
 		String name = "";
-		
+
 		switch(itemstack.getItemDamage())
 		{
 		case 0:

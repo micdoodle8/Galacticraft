@@ -20,14 +20,14 @@ import cpw.mods.fml.common.network.Player;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
 public class ClientProxyNeptune extends CommonProxyNeptune implements IGalacticraftSubModClient
 {
 	public static GCCoreLocalization lang;
-	
+
 	@Override
 	public void preInit(FMLPreInitializationEvent event)
 	{
@@ -44,7 +44,7 @@ public class ClientProxyNeptune extends CommonProxyNeptune implements IGalacticr
 	public void postInit(FMLPostInitializationEvent event)
 	{
 	}
-	
+
 	@Override
 	public void registerRenderInformation()
 	{
@@ -54,29 +54,29 @@ public class ClientProxyNeptune extends CommonProxyNeptune implements IGalacticr
     public void spawnParticle(String var1, double var2, double var4, double var6, double var8, double var10, double var12, boolean b)
     {
     }
-	
+
     public class ClientPacketHandler implements IPacketHandler
     {
 		@Override
 		public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player)
 		{
-			
+
 		}
     }
-    
+
     public static class TickHandlerClient implements ITickHandler
     {
     	@Override
     	public void tickStart(EnumSet<TickType> type, Object... tickData)
         {
-    		
+
         }
 
     	@Override
     	public void tickEnd(EnumSet<TickType> type, Object... tickData)
     	{
     	}
-    	
+
         @Override
 		public String getLabel()
         {

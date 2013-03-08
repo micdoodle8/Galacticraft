@@ -14,7 +14,7 @@ import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -83,7 +83,7 @@ public class GCMarsBlockRendererBacterialSludge implements ISimpleBlockRendering
         var0.renderSouthFace(var1, 0.0D, 0.0D, 0.0D, var1.getBlockTextureFromSideAndMetadata(5, var2));
         var3.draw();
     }
-    
+
     public static void renderGCFluid(RenderBlocks renderBlocks, Block par1Block, IBlockAccess var1, int par2, int par3, int par4)
     {
     	final Tessellator var5 = Tessellator.instance;
@@ -101,13 +101,10 @@ public class GCMarsBlockRendererBacterialSludge implements ISimpleBlockRendering
         }
         else
         {
-            boolean var13 = false;
             final float var14 = 0.5F;
             final float var15 = 1.0F;
             final float var16 = 0.8F;
             final float var17 = 0.6F;
-            final double var18 = 0.0D;
-            final double var20 = 1.0D;
             final Material var22 = par1Block.blockMaterial;
             final int var23 = var1.getBlockMetadata(par2, par3, par4);
             double var24 = GCMarsBlockRendererBacterialSludge.getFluidHeight(var1, par2, par3, par4, var22);
@@ -120,7 +117,6 @@ public class GCMarsBlockRendererBacterialSludge implements ISimpleBlockRendering
 
 //            if (this.renderAllFaces || var10)
             {
-                var13 = true;
                 var34 = par1Block.getBlockTextureFromSideAndMetadata(1, var23);
                 float var35 = (float)GCMarsBlockFluid.getFlowDirection(var1, par2, par3, par4, var22);
 
@@ -165,7 +161,6 @@ public class GCMarsBlockRendererBacterialSludge implements ISimpleBlockRendering
                 final float var65 = 1.0F;
                 var5.setColorOpaque_F(var14 * var65, var14 * var65, var14 * var65);
                 renderBlocks.renderBottomFace(par1Block, par2, par3 + var32, par4, par1Block.getBlockTextureFromSide(0));
-                var13 = true;
             }
 
             for (var34 = 0; var34 < 4; ++var34)
@@ -243,7 +238,6 @@ public class GCMarsBlockRendererBacterialSludge implements ISimpleBlockRendering
                         var51 = par4 + 1;
                     }
 
-                    var13 = true;
                     final double var53 = (var39 + 0) / 256.0F;
                     final double var55 = (var39 + 16 - 0.01D) / 256.0D;
                     final double var57 = (var67 + (1.0D - var41) * 16.0D) / 256.0D;
@@ -272,7 +266,7 @@ public class GCMarsBlockRendererBacterialSludge implements ISimpleBlockRendering
             return;
         }
     }
-    
+
     public static float getFluidHeight(IBlockAccess var1, int par1, int par2, int par3, Material par4Material)
     {
         int var5 = 0;

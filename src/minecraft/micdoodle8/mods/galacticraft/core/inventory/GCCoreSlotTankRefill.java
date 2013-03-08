@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core.inventory;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenGear;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenMask;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemParachute;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
@@ -11,7 +10,7 @@ import net.minecraft.item.ItemStack;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -38,7 +37,7 @@ public class GCCoreSlotTankRefill extends Slot
 		case 49:
 			return par1ItemStack.getItem() instanceof GCCoreItemParachute;
 		}
-		
+
 		return false;
 	}
 

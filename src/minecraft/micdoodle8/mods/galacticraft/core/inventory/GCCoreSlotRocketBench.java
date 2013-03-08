@@ -31,7 +31,7 @@ public class GCCoreSlotRocketBench extends Slot
     	if (this.player instanceof EntityPlayerMP)
     	{
     		final Object[] toSend = {this.x, this.y, this.z};
-    		
+
             for (int var12 = 0; var12 < this.player.worldObj.playerEntities.size(); ++var12)
             {
                 final EntityPlayerMP var13 = (EntityPlayerMP) this.player.worldObj.playerEntities.get(var12);
@@ -91,7 +91,7 @@ public class GCCoreSlotRocketBench extends Slot
     	case 17:
     		return true;
     	}
-    	
+
     	return false;
     }
 

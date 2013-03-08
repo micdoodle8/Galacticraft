@@ -119,7 +119,8 @@ public class GCCoreEntityZombie extends EntityZombie
     /**
      * Set whether this zombie is a child.
      */
-    public void setChild(boolean par1)
+    @Override
+	public void setChild(boolean par1)
     {
         this.getDataWatcher().updateObject(12, Byte.valueOf((byte)1));
     }
@@ -127,7 +128,8 @@ public class GCCoreEntityZombie extends EntityZombie
     /**
      * Return whether this zombie is a villager.
      */
-    public boolean isVillager()
+    @Override
+	public boolean isVillager()
     {
         return this.getDataWatcher().getWatchableObjectByte(13) == 1;
     }
@@ -135,7 +137,8 @@ public class GCCoreEntityZombie extends EntityZombie
     /**
      * Set whether this zombie is a villager.
      */
-    public void setVillager(boolean par1)
+    @Override
+	public void setVillager(boolean par1)
     {
         this.getDataWatcher().updateObject(13, Byte.valueOf((byte)(par1 ? 1 : 0)));
     }
@@ -200,9 +203,9 @@ public class GCCoreEntityZombie extends EntityZombie
         }
 
         this.motionY += 0.06F;
-        
+
     	super.onUpdate();
-    	
+
     	this.fallDistance = 0;
     }
 
@@ -460,7 +463,8 @@ public class GCCoreEntityZombie extends EntityZombie
      * Starts converting this zombie into a villager. The zombie converts into a villager after the specified time in
      * ticks.
      */
-    protected void startConversion(int par1)
+    @Override
+	protected void startConversion(int par1)
     {
         this.conversionTime = par1;
         this.getDataWatcher().updateObject(14, Byte.valueOf((byte)1));
@@ -486,7 +490,8 @@ public class GCCoreEntityZombie extends EntityZombie
     /**
      * Returns whether this zombie is in the process of converting to a villager
      */
-    public boolean isConverting()
+    @Override
+	public boolean isConverting()
     {
         return this.getDataWatcher().getWatchableObjectByte(14) == 1;
     }
@@ -494,7 +499,8 @@ public class GCCoreEntityZombie extends EntityZombie
     /**
      * Convert this zombie into a villager.
      */
-    protected void convertToVillager()
+    @Override
+	protected void convertToVillager()
     {
         final EntityVillager var1 = new EntityVillager(this.worldObj);
         var1.func_82149_j(this);
@@ -515,7 +521,8 @@ public class GCCoreEntityZombie extends EntityZombie
     /**
      * Return the amount of time decremented from conversionTime every tick.
      */
-    protected int getConversionTimeBoost()
+    @Override
+	protected int getConversionTimeBoost()
     {
         int var1 = 1;
 

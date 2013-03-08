@@ -10,112 +10,112 @@ import cpw.mods.fml.client.FMLTextureFX;
 
 public class GCCoreTextureCrudeOilFlowFX extends FMLTextureFX {
 
-	public GCCoreTextureCrudeOilFlowFX() 
+	public GCCoreTextureCrudeOilFlowFX()
 	{
 		super(GCCoreBlocks.crudeOilMoving.blockIndexInTexture + 1);
-		tileSize = 2;
+		this.tileSize = 2;
 	}
 
 	@Override
-	protected void setup() 
+	protected void setup()
 	{
 		super.setup();
-		field_1138_g = new float[tileSizeSquare];
-		field_1137_h = new float[tileSizeSquare];
-		field_1136_i = new float[tileSizeSquare];
-		field_1135_j = new float[tileSizeSquare];
-		field_1134_k = 0;
+		this.field_1138_g = new float[this.tileSizeSquare];
+		this.field_1137_h = new float[this.tileSizeSquare];
+		this.field_1136_i = new float[this.tileSizeSquare];
+		this.field_1135_j = new float[this.tileSizeSquare];
+		this.field_1134_k = 0;
 	}
 
 	@Override
-	public void bindImage(RenderEngine renderengine) 
+	public void bindImage(RenderEngine renderengine)
 	{
 		GL11.glBindTexture(3553, renderengine.getTexture(GCCoreBlocks.crudeOilMoving.getTextureFile()));
 	}
 
 	@Override
-	public void onTick() 
+	public void onTick()
 	{
-		field_1134_k += 0.1F;
-		for (int i = 0; i < tileSizeBase; i++) 
+		this.field_1134_k += 0.1F;
+		for (int i = 0; i < this.tileSizeBase; i++)
 		{
-			for (int k = 0; k < tileSizeBase; k++)
+			for (int k = 0; k < this.tileSizeBase; k++)
 			{
 				float f = 0.0F;
-				
-				for (int j1 = k - 2; j1 <= k; j1++) 
+
+				for (int j1 = k - 2; j1 <= k; j1++)
 				{
-					int k1 = i & tileSizeMask;
-					int i2 = j1 & tileSizeMask;
-					f += field_1138_g[k1 + i2 * tileSizeBase];
+					final int k1 = i & this.tileSizeMask;
+					final int i2 = j1 & this.tileSizeMask;
+					f += this.field_1138_g[k1 + i2 * this.tileSizeBase];
 				}
 
-				field_1137_h[i + k * tileSizeBase] = f / 3.2F + field_1136_i[i + k * tileSizeBase] * 0.8F;
+				this.field_1137_h[i + k * this.tileSizeBase] = f / 3.2F + this.field_1136_i[i + k * this.tileSizeBase] * 0.8F;
 			}
 		}
 
-		for (int j = 0; j < tileSizeBase; j++) 
+		for (int j = 0; j < this.tileSizeBase; j++)
 		{
-			for (int l = 0; l < tileSizeBase; l++) 
+			for (int l = 0; l < this.tileSizeBase; l++)
 			{
-				field_1136_i[j + l * tileSizeBase] += field_1135_j[j + l * tileSizeBase] * 0.05F;
-				
-				if (field_1136_i[j + l * tileSizeBase] < 0.0F)
+				this.field_1136_i[j + l * this.tileSizeBase] += this.field_1135_j[j + l * this.tileSizeBase] * 0.05F;
+
+				if (this.field_1136_i[j + l * this.tileSizeBase] < 0.0F)
 				{
-					field_1136_i[j + l * tileSizeBase] = 0.0F;
+					this.field_1136_i[j + l * this.tileSizeBase] = 0.0F;
 				}
-				
-				field_1135_j[j + l * tileSizeBase] -= 0.3F;
-				
+
+				this.field_1135_j[j + l * this.tileSizeBase] -= 0.3F;
+
 				if (Math.random() < 0.20000000000000001D)
 				{
-					field_1135_j[j + l * tileSizeBase] = 0.5F;
+					this.field_1135_j[j + l * this.tileSizeBase] = 0.5F;
 				}
 			}
 		}
 
-		float af[] = field_1137_h;
-		field_1137_h = field_1138_g;
-		field_1138_g = af;
-		
-		for (int i1 = 0; i1 < tileSizeSquare; i1++) 
+		final float af[] = this.field_1137_h;
+		this.field_1137_h = this.field_1138_g;
+		this.field_1138_g = af;
+
+		for (int i1 = 0; i1 < this.tileSizeSquare; i1++)
 		{
-			float f1 = field_1138_g[i1 - MathHelper.floor_float(field_1134_k) * tileSizeBase & tileSizeSquareMask];
-			
-			if (f1 > 1.0F) 
+			float f1 = this.field_1138_g[i1 - MathHelper.floor_float(this.field_1134_k) * this.tileSizeBase & this.tileSizeSquareMask];
+
+			if (f1 > 1.0F)
 			{
 				f1 = 1.0F;
 			}
-			
-			if (f1 < 0.0F) 
+
+			if (f1 < 0.0F)
 			{
 				f1 = 0.0F;
 			}
-			
-			float f2 = f1 * f1;
+
+			final float f2 = f1 * f1;
 			int l1 = (int) (10F + f2 * 22F);
 			int j2 = (int) (50F + f2 * 64F);
 			int k2 = 255;
-			
-			if (anaglyphEnabled) 
+
+			if (this.anaglyphEnabled)
 			{
-				int i3 = (l1 * 30 + j2 * 59 + k2 * 11) / 100;
-				int j3 = (l1 * 30 + j2 * 70) / 100;
-				int k3 = (l1 * 30 + k2 * 70) / 100;
+				final int i3 = (l1 * 30 + j2 * 59 + k2 * 11) / 100;
+				final int j3 = (l1 * 30 + j2 * 70) / 100;
+				final int k3 = (l1 * 30 + k2 * 70) / 100;
 				l1 = i3;
 				j2 = j3;
 				k2 = k3;
 			}
-			
+
 			// imageData[i1 * 4 + 0] = (byte)l1;
 			// imageData[i1 * 4 + 1] = (byte)j2;
 			// imageData[i1 * 4 + 2] = (byte) k2;
 			// imageData[i1 * 4 + 3] = /*(byte)l2*/(byte)255;
 
-			imageData[i1 * 4 + 0] = (byte) l1;
-			imageData[i1 * 4 + 1] = (byte) l1;
-			imageData[i1 * 4 + 2] = (byte) l1;
-			imageData[i1 * 4 + 3] = /* (byte)l2 */(byte) 255;
+			this.imageData[i1 * 4 + 0] = (byte) l1;
+			this.imageData[i1 * 4 + 1] = (byte) l1;
+			this.imageData[i1 * 4 + 2] = (byte) l1;
+			this.imageData[i1 * 4 + 3] = /* (byte)l2 */(byte) 255;
 		}
 
 	}

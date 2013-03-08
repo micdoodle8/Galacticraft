@@ -18,7 +18,7 @@ public class GCCoreBlockFallenMeteor extends Block
 		this.setCreativeTab(GalacticraftCore.galacticraftTab);
 		this.setBlockBounds(0.2F, 0.2F, 0.2F, 0.8F, 0.8F, 0.8F);
 	}
-	
+
 	@Override
     public int getRenderType()
     {
@@ -30,7 +30,7 @@ public class GCCoreBlockFallenMeteor extends Block
     {
         return false;
     }
-	
+
 	@Override
     public int quantityDroppedWithBonus(int par1, Random par2Random)
     {
@@ -49,19 +49,19 @@ public class GCCoreBlockFallenMeteor extends Block
 		if (par5Entity instanceof EntityLiving)
 		{
 			final EntityLiving livingEntity = (EntityLiving) par5Entity;
-			
+
 	        par1World.playSoundEffect(par2 + 0.5F, par3 + 0.5F, par4 + 0.5F, "random.fizz", 0.5F, 2.6F + (par1World.rand.nextFloat() - par1World.rand.nextFloat()) * 0.8F);
 
 	        for (int var5 = 0; var5 < 8; ++var5)
 	        {
 	            par1World.spawnParticle("largesmoke", par2 + Math.random(), par3 + 0.2D + Math.random(), par4 + Math.random(), 0.0D, 0.0D, 0.0D);
 	        }
-	        
+
 	        if (!livingEntity.isBurning())
 	        {
 		        livingEntity.setFire(2);
 	        }
-	        
+
 	        double var9 = livingEntity.posX - par2;
             double var7;
 
@@ -94,13 +94,11 @@ public class GCCoreBlockFallenMeteor extends Block
             this.tryToFall(par1World, par2, par3, par4);
         }
     }
-	
+
     private void tryToFall(World par1World, int par2, int par3, int par4)
     {
         if (GCCoreBlockFallenMeteor.canFallBelow(par1World, par2, par3 - 1, par4) && par3 >= 0)
         {
-            final byte var8 = 32;
-            
             par1World.setBlockWithNotify(par2, par3, par4, 0);
 
             while (GCCoreBlockFallenMeteor.canFallBelow(par1World, par2, par3 - 1, par4) && par3 > 0)

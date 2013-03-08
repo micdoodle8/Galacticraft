@@ -10,7 +10,7 @@ import org.lwjgl.opengl.GL11;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -22,7 +22,7 @@ public class GCMarsRenderCreeperBoss extends RenderLiving
 	{
 		super(new GCMarsModelCreeperBoss(), f);
 	}
-	
+
 	protected void scaleMob(float f)
 	{
 		GL11.glScalef(f, f, f);

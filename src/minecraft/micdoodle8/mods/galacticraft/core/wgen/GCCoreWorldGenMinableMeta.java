@@ -8,7 +8,7 @@ import net.minecraft.world.gen.feature.WorldGenMinable;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -21,9 +21,9 @@ public class GCCoreWorldGenMinableMeta extends WorldGenMinable
 	private final int metadata;
 
 	private boolean usingMetadata = false;
-	
+
 	private final int fillerID;
-	
+
 	private final int fillerMetadata;
 
 	public GCCoreWorldGenMinableMeta(int par1, int par2, int par3, boolean par4, int id, int meta)

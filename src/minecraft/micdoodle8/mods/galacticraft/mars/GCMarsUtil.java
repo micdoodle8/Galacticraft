@@ -11,7 +11,7 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
@@ -46,7 +46,7 @@ public class GCMarsUtil
 			'Z', GCCoreItems.airVent
 		});
 	}
-	
+
 	public static void addSmeltingRecipes()
 	{
 		FurnaceRecipes.smelting().addSmelting(GCMarsItems.rawDesh.itemID, new ItemStack(GCMarsItems.ingotDesh, 1), 0.2F);

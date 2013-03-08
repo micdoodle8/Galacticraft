@@ -5,15 +5,11 @@ import java.util.EnumSet;
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
 import micdoodle8.mods.galacticraft.API.IMapPlanet;
 import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
-import micdoodle8.mods.galacticraft.core.GCCoreLocalization;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.moon.CommonProxyMoon;
 import micdoodle8.mods.galacticraft.moon.GalacticraftMoon;
-import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
 import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;
-import micdoodle8.mods.galacticraft.moon.items.GCMoonItems;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
@@ -21,8 +17,6 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 
@@ -50,19 +44,17 @@ public class ClientProxyMoon extends CommonProxyMoon implements IGalacticraftSub
 
 	@Override
     public void spawnParticle(String var1, double var2, double var4, double var6, double var8, double var10, double var12, boolean b) {}
-	
+
     public static class TickHandlerClient implements ITickHandler
     {
     	@Override
     	public void tickStart(EnumSet<TickType> type, Object... tickData)
         {
     		final Minecraft minecraft = FMLClientHandler.instance().getClient();
-    		
+
             final WorldClient world = minecraft.theWorld;
-            
-            final EntityClientPlayerMP player = minecraft.thePlayer;
-    		
-    		if (type.equals(EnumSet.of(TickType.CLIENT)))
+
+            if (type.equals(EnumSet.of(TickType.CLIENT)))
             {
     			if (world != null && world.provider instanceof GCMoonWorldProvider)
     			{
@@ -78,7 +70,7 @@ public class ClientProxyMoon extends CommonProxyMoon implements IGalacticraftSub
     	public void tickEnd(EnumSet<TickType> type, Object... tickData)
     	{
     	}
-    	
+
         @Override
 		public String getLabel()
         {

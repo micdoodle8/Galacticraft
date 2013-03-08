@@ -22,12 +22,12 @@
 //    public boolean canSustainPlant(World world, int x, int y, int z, ForgeDirection direction, IPlantable plant)
 //    {
 //        final int plantID = plant.getPlantID(world, x, y + 1, z);
-//        
+//
 //        if (plant instanceof BlockFlower)
 //        {
 //            return true;
 //        }
-//        
+//
 //        return false;
 //    }
 //
@@ -49,7 +49,7 @@
 //                var7 += var10 & 255;
 //            }
 //        }
-//        
+//
 //        return (var5 / 9 & 255) << 16 | (var6 / 9 & 255) << 8 | var7 / 9 & 255;
 //    }
 //
@@ -81,12 +81,12 @@
 //
 //        return (var5 / 9 & 255) << 16 | (var6 / 9 & 255) << 8 | var7 / 9 & 255;
 //    }
-//    
+//
 //    private int getGrassColorAtYCoord(int y)
 //    {
 //    	return GCMoonColorizerGrass.getGrassColor((y + 100) / 1.7D, (y + 100) / 1.7D);
 //    }
-//	
+//
 //	@Override
 //	public String getTextureFile()
 //	{

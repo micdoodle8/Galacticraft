@@ -2,9 +2,6 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.List;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAdvancedCraftingTable;
@@ -18,6 +15,8 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreBlockAdvancedCraftingTable extends BlockContainer
 {
@@ -28,7 +27,7 @@ public class GCCoreBlockAdvancedCraftingTable extends BlockContainer
         this.setCreativeTab(GalacticraftCore.galacticraftTab);
         this.setBlockBounds(-0.3F, 0.0F, -0.3F, 1.3F, 0.5F, 1.3F);
 	}
-	
+
 	@Override
     public int getRenderType()
     {
@@ -40,7 +39,7 @@ public class GCCoreBlockAdvancedCraftingTable extends BlockContainer
     {
         return false;
     }
-	
+
 	@Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int i, int j, int k)
 	{
@@ -52,7 +51,7 @@ public class GCCoreBlockAdvancedCraftingTable extends BlockContainer
     {
         return false;
     }
-	
+
 	@SideOnly(Side.CLIENT)
 	@Override
 	public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int i, int j, int k)
@@ -83,23 +82,23 @@ public class GCCoreBlockAdvancedCraftingTable extends BlockContainer
     public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4)
     {
 		boolean canPlace = true;
-		
+
 		for (int i = par2 - 1; i <= par2 + 1; i++)
 		{
 			for (int j = par3; j <= par3 + 1; j++)
 			{
 				for (int k = par4 - 1; k <= par4 + 1; k++)
 				{
-			        int var5 = par1World.getBlockId(i, j, k);
-			        
-			        if (var5 != 0 || (blocksList[var5] != null && !blocksList[var5].blockMaterial.isReplaceable()))
+			        final int var5 = par1World.getBlockId(i, j, k);
+
+			        if (var5 != 0 || blocksList[var5] != null && !blocksList[var5].blockMaterial.isReplaceable())
 			        {
 			        	canPlace = false;
 			        }
 				}
 			}
 		}
-		
+
         return canPlace;
     }
 
@@ -108,7 +107,7 @@ public class GCCoreBlockAdvancedCraftingTable extends BlockContainer
     {
         return par1 == 1 ? this.blockIndexInTexture + 1 : par1 == 0 ? this.blockIndexInTexture - 1 : this.blockIndexInTexture;
     }
-	
+
 	@Override
 	public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
     {

@@ -1,21 +1,13 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
-import static micdoodle8.mods.galacticraft.core.client.gui.GCCoreOverlay.drawTexturedModalRect;
-import static micdoodle8.mods.galacticraft.core.client.gui.GCCoreOverlay.getPlayerPositionY;
-import static micdoodle8.mods.galacticraft.core.client.gui.GCCoreOverlay.loadDownloadableImageTexture;
-
 import java.util.Iterator;
 
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
-import micdoodle8.mods.galacticraft.core.client.ClientProxyCore.TickHandlerClient;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.MathHelper;
-import net.minecraft.util.StringUtils;
 
 import org.lwjgl.opengl.GL11;
 
@@ -27,18 +19,18 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GCCoreOverlaySensorGlasses extends GCCoreOverlay
 {
 	private static Minecraft minecraft = FMLClientHandler.instance().getClient();
-	
+
 	private static int zoom = 0;
-	
+
 	/**
 	 * Render the GUI that displays sensor glasses
 	 */
 	public static void renderSensorGlassesMain()
 	{
 		zoom++;
-		
+
         final float f = MathHelper.sin(zoom / 80.0F) * 0.1F + 0.1F;
-		
+
 		final ScaledResolution scaledresolution = new ScaledResolution(minecraft.gameSettings, minecraft.displayWidth, minecraft.displayHeight);
         final int i = scaledresolution.getScaledWidth();
         final int k = scaledresolution.getScaledHeight();
@@ -51,20 +43,20 @@ public class GCCoreOverlaySensorGlasses extends GCCoreOverlay
 		GL11.glDisable(GL11.GL_ALPHA_TEST);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, minecraft.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/gui/hud.png"));
 		final Tessellator tessellator = Tessellator.instance;
-		
+
 		tessellator.startDrawingQuads();
 		tessellator.addVertexWithUV(i / 2 - 2 * k - f * 80, k + f * 40, -90D, 0.0D, 1.0D);
 		tessellator.addVertexWithUV(i / 2 + 2 * k + f * 80, k + f * 40, -90D, 1.0D, 1.0D);
 		tessellator.addVertexWithUV(i / 2 + 2 * k + f * 80, 0.0D - f * 40, -90D, 1.0D, 0.0D);
 		tessellator.addVertexWithUV(i / 2 - 2 * k - f * 80, 0.0D - f * 40, -90D, 0.0D, 0.0D);
 		tessellator.draw();
-		
+
 		GL11.glDepthMask(true);
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		GL11.glEnable(GL11.GL_ALPHA_TEST);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 	}
-	
+
 	public static void renderSensorGlassesValueableBlocks()
 	{
 		final Iterator var51 = ClientProxyCore.valueableBlocks.iterator();
@@ -78,7 +70,7 @@ public class GCCoreOverlaySensorGlasses extends GCCoreOverlay
         while (var51.hasNext())
         {
             final int[] coords = (int[]) var51.next();
-            
+
             final int x = coords[0];
             final int y = coords[1];
             final int z = coords[2];
@@ -93,7 +85,7 @@ public class GCCoreOverlaySensorGlasses extends GCCoreOverlay
             final ScaledResolution var5 = new ScaledResolution(minecraft.gameSettings, minecraft.displayWidth, minecraft.displayHeight);
             final int var6 = var5.getScaledWidth();
             final int var7 = var5.getScaledHeight();
-            
+
             boolean var2 = false;
 
 			var2 = PlayerUtil.getPlayerBaseClientFromPlayer(minecraft.thePlayer).getUsingGoggles();

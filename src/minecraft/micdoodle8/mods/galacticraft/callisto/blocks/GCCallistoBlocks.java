@@ -10,14 +10,14 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 
 /**
  * Copyright 2012-2013, micdoodle8
- * 
+ *
  *  All rights reserved.
  *
  */
 public class GCCallistoBlocks
 {
 	public static Block block;
-	
+
 	public static void initBlocks()
 	{
 		GCCallistoBlocks.block = 										new GCCallistoBlock			(GCCallistoConfigManager.idBlock, 					0)						.setHardness(1.7F)																				.setCreativeTab(GalacticraftCore.galacticraftTab)																.setBlockName("BlockCallisto");
@@ -27,7 +27,7 @@ public class GCCallistoBlocks
 	public static void setHarvestLevels()
 	{
 	}
-	
+
 	public static void registerBlocks()
 	{
 	}
@@ -38,12 +38,12 @@ public class GCCallistoBlocks
 		GCCallistoBlocks.addNameWithMetadata("tile.BlockCallisto.dirt.name");
 		GCCallistoBlocks.addNameWithMetadata("tile.BlockCallisto.stone.name");
 	}
-	
+
 	private static void addName(Block block)
 	{
 		LanguageRegistry.instance().addStringLocalization(block.getBlockName() + ".name", ClientProxyCallisto.lang.get(block.getBlockName() + ".name"));
 	}
-	
+
 	private static void addNameWithMetadata(String string)
 	{
 		LanguageRegistry.instance().addStringLocalization(string, ClientProxyCallisto.lang.get(string));
