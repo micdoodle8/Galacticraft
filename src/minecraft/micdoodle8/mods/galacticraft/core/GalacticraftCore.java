@@ -209,9 +209,6 @@ public class GalacticraftCore
 
 		GalacticraftCore.proxy.postInit(event);
 		GalacticraftCore.proxy.registerRenderInformation();
-
-		// Hide certain items from NEI
-		API.hideItems(this.hiddenItems);
 	}
 
 	@ServerStarted
