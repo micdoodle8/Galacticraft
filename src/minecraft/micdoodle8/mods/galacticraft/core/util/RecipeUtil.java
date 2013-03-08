@@ -1,10 +1,10 @@
 package micdoodle8.mods.galacticraft.core.util;
 
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
+import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryRocketBench;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemFlag;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemParachute;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreInventoryRocketBench;
 import micdoodle8.mods.galacticraft.moon.items.GCMoonItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;

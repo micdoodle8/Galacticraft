@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
-import micdoodle8.mods.galacticraft.core.tile.GCCoreContainerAirCompressor;
+import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerAirCompressor;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCompressor;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;

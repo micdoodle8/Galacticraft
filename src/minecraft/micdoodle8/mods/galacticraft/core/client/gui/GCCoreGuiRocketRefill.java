@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpaceship;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreContainerRocketRefill;
+import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerRocketRefill;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;

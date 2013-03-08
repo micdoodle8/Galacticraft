@@ -29,14 +29,6 @@ public class GCCoreTileEntityAirLock extends GCCoreTileEntityAdvanced
     	super.updateEntity();
     	
     	this.updateState();
-    	
-    	if (this.otherAirLockBlocks.size() == 8)
-    	{
-    		for (GCCoreTileEntityAirLock tile : otherAirLockBlocks)
-    		{
-    			
-    		}
-    	}
     }
     
     public void updateState()

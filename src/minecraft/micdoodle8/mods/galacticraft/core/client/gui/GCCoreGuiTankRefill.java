@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerBase;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreContainerTankRefill;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreInventoryTankRefill;
+import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerTankRefill;
+import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryTankRefill;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;

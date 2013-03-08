@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.API.IConnectableToPipe;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreBlockAdvanced;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAirLock;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import net.minecraft.block.material.Material;
@@ -36,12 +35,6 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvanced implements ICon
 		{
 			return 38;
 		}
-    }
-
-	@Override
-    public int getBlockTextureFromSideAndMetadata(int par1, int par2)
-    {
-		return 38;
     }
 
 	@Override
