@@ -1,4 +1,4 @@
-package micdoodle8.mods.galacticraft.core.tile;
+package micdoodle8.mods.galacticraft.core.inventory;
 
 import net.minecraft.block.Block;
 import net.minecraft.inventory.ContainerPlayer;

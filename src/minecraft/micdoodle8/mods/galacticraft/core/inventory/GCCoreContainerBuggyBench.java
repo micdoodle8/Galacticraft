@@ -1,6 +1,5 @@
-package micdoodle8.mods.galacticraft.core.tile;
+package micdoodle8.mods.galacticraft.core.inventory;
 
-import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -10,49 +9,40 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-public class GCCoreContainerRocketBench extends Container
+public class GCCoreContainerBuggyBench extends Container
 {
-    public GCCoreInventoryRocketBench craftMatrix = new GCCoreInventoryRocketBench(this);
+    public GCCoreInventoryBuggyBench craftMatrix = new GCCoreInventoryBuggyBench(this);
     public IInventory craftResult = new InventoryCraftResult();
     private final World worldObj;
 
-    public GCCoreContainerRocketBench(InventoryPlayer par1InventoryPlayer, int x, int y, int z)
+    public GCCoreContainerBuggyBench(InventoryPlayer par1InventoryPlayer, int x, int y, int z)
     {
     	this.worldObj = par1InventoryPlayer.player.worldObj;
-        this.addSlotToContainer(new GCCoreSlotRocketBenchResult(par1InventoryPlayer.player, this.craftMatrix, this.craftResult, 0, 142, 69));
+        this.addSlotToContainer(new GCCoreSlotRocketBenchResult(par1InventoryPlayer.player, this.craftMatrix, this.craftResult, 0, 142, 79));
         int var6;
         int var7;
         
-        // Cone
-        this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, 1, 48, -8, x, y, z, par1InventoryPlayer.player));
-
         // Body
         for (var6 = 0; var6 < 4; ++var6)
         {
-            this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, 2 + var6, 39, -6 + var6 * 18 + 16, x, y, z, par1InventoryPlayer.player));
-        }
-        
-        // Body Right
-        for (var6 = 0; var6 < 4; ++var6)
-        {
-            this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, 6 + var6, 57, -6 + var6 * 18 + 16, x, y, z, par1InventoryPlayer.player));
+            for (var7 = 0; var7 < 3; ++var7)
+            {
+                this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, var7 * 4 + var6 + 1, 39 + var7 * 18, 14 + var6 * 18, x, y, z, par1InventoryPlayer.player));
+            }
         }
 
-        // Left fins
-        this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, 10, 21, 64, x, y, z, par1InventoryPlayer.player));
-        this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, 11, 21, 82, x, y, z, par1InventoryPlayer.player));
-        
-        // Engine
-        this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, 12, 48, 82, x, y, z, par1InventoryPlayer.player));
-        
-        // Right fins
-        this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, 13, 75, 64, x, y, z, par1InventoryPlayer.player));
-        this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, 14, 75, 82, x, y, z, par1InventoryPlayer.player));
+        for (var6 = 0; var6 < 2; ++var6)
+        {
+            for (var7 = 0; var7 < 2; ++var7)
+            {
+                this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, var7 * 2 + var6 + 13, 21 + var7 * 72, 14 + var6 * 54, x, y, z, par1InventoryPlayer.player));
+            }
+        }
 
         // Addons
         for (int var8 = 0; var8 < 3; var8++)
         {
-            this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, 15 + var8, 93 + var8 * 26, -15, x, y, z, par1InventoryPlayer.player));
+            this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, 17 + var8, 93 + var8 * 26, -15, x, y, z, par1InventoryPlayer.player));
         }
         
         // Player inv:
@@ -95,7 +85,7 @@ public class GCCoreContainerRocketBench extends Container
     @Override
 	public void onCraftMatrixChanged(IInventory par1IInventory)
     {
-        this.craftResult.setInventorySlotContents(0, RecipeUtil.findMatchingSpaceshipRecipe(this.craftMatrix));
+//        this.craftResult.setInventorySlotContents(0, GCCoreUtil.findMatchingSpaceshipRecipe(craftMatrix)); TODO
     }
 
     @Override

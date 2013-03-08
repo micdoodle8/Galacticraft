@@ -1,4 +1,4 @@
-package micdoodle8.mods.galacticraft.core.tile;
+package micdoodle8.mods.galacticraft.core.inventory;
 
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerBase;
 import net.minecraft.entity.player.EntityPlayer;

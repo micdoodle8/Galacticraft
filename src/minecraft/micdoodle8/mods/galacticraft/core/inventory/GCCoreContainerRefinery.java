@@ -1,6 +1,7 @@
-package micdoodle8.mods.galacticraft.core.tile;
+package micdoodle8.mods.galacticraft.core.inventory;
 
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemOilCanister;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityRefinery;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
