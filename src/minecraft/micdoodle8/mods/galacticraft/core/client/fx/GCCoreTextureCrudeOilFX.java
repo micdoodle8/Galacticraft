@@ -10,9 +10,8 @@
 package micdoodle8.mods.galacticraft.core.client.fx;
 
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
-import buildcraft.core.render.TextureLiquidsFX;
 
-public class GCCoreTextureCrudeOilFX extends TextureLiquidsFX
+public class GCCoreTextureCrudeOilFX extends GCCoreTextureLiquidsFX
 {
 	public GCCoreTextureCrudeOilFX()
 	{
