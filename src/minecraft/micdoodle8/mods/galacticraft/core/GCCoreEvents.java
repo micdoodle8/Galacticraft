@@ -1,24 +1,26 @@
 package micdoodle8.mods.galacticraft.core;
 
+import java.lang.reflect.Field;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreTeleporter;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockSapling;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.event.Event.Result;
 import net.minecraftforge.event.ForgeSubscribe;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.player.BonemealEvent;
+import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
 import net.minecraftforge.event.world.WorldEvent;
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.relauncher.Side;
 
 public class GCCoreEvents
 {
@@ -44,6 +46,74 @@ public class GCCoreEvents
 		if (event.world instanceof WorldServer)
 		{
 			((WorldServer)event.world).customTeleporters.add(new GCCoreTeleporter((WorldServer)event.world));
+		}
+	}
+
+	@ForgeSubscribe
+	public void onBucketFill(FillBucketEvent event) 
+	{
+		ItemStack result = fillCustomBucket(event.world, event.target);
+
+		if (result == null)
+		{
+			return;
+		}
+
+		event.result = result;
+		event.setResult(Result.ALLOW);
+	}
+
+	public ItemStack fillCustomBucket(World world, MovingObjectPosition pos) 
+	{
+		Class buildCraftClass = null;
+		
+		int bcOilID1 = -1;
+		int bcOilID2 = -1;
+		Item bcOilBucket = null;
+		
+		try
+		{
+			if ((buildCraftClass = Class.forName("buildcraft.BuildCraftEnergy")) != null)
+			{
+				for (Field f : buildCraftClass.getFields())
+				{
+					if (f.getName().equals("oilMoving"))
+					{
+						Block block = (Block) f.get(null);
+						
+						bcOilID1 = block.blockID;
+					}
+					else if (f.getName().equals("oilStill"))
+					{
+						Block block = (Block) f.get(null);
+						
+						bcOilID2 = block.blockID;
+					}
+					else if (f.getName().equals("bucketOil"))
+					{
+						Item item = (Item) f.get(null);
+						
+						bcOilBucket = item;
+					}
+				}
+			}
+		}
+		catch (Throwable cnfe)
+		{
+			
+		}
+		
+		int blockID = world.getBlockId(pos.blockX, pos.blockY, pos.blockZ);
+
+		if ((blockID == bcOilID1 || blockID == bcOilID2 || blockID == GCCoreBlocks.crudeOilMoving.blockID || blockID == GCCoreBlocks.crudeOilStill.blockID) && world.getBlockMetadata(pos.blockX, pos.blockY, pos.blockZ) == 0 && bcOilBucket != null) 
+		{
+			world.setBlockWithNotify(pos.blockX, pos.blockY, pos.blockZ, 0);
+
+			return new ItemStack(bcOilBucket);
+		} 
+		else
+		{
+			return null;
 		}
 	}
 	
