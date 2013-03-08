@@ -61,6 +61,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
 import universalelectricity.prefab.TranslationHelper;
 import universalelectricity.prefab.UEDamageSource;
+import codechicken.nei.api.API;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.IScheduledTickHandler;
 import cpw.mods.fml.common.ITickHandler;
@@ -102,7 +103,7 @@ public class GalacticraftCore
 	
     public static final int LOCALMAJVERSION = 0;
     public static final int LOCALMINVERSION = 0;
-    public static final int LOCALBUILDVERSION = 17;
+    public static final int LOCALBUILDVERSION = 18;
     public static int remoteMajVer;
     public static int remoteMinVer;
     public static int remoteBuildVer;
@@ -144,6 +145,8 @@ public class GalacticraftCore
 	public static final UEDamageSource spaceshipCrash = (UEDamageSource) new UEDamageSource("spaceshipCrash", "%1$s was in a spaceship crash!").setDamageBypassesArmor();
 	public static final UEDamageSource oxygenSuffocation = (UEDamageSource) new UEDamageSource("oxygenSuffocation", "%1$s ran out of oxygen!").setDamageBypassesArmor();
 	
+	public static ArrayList<Integer> hiddenItems = new ArrayList<Integer>();
+	
 	@PreInit
 	public void preInit(FMLPreInitializationEvent event)
 	{
@@ -152,7 +155,7 @@ public class GalacticraftCore
 		GalacticraftCore.registerSubMod(GalacticraftCore.moon);
 		
 		new GCCoreConfigManager(new File(event.getModConfigurationDirectory(), CONFIG_FILE));
-		
+
 		ServerPlayerAPI.register(GalacticraftCore.MODID, GCCorePlayerBase.class);
 		
 		GCCoreBlocks.initBlocks();
@@ -206,6 +209,9 @@ public class GalacticraftCore
 		
 		GalacticraftCore.proxy.postInit(event);
 		GalacticraftCore.proxy.registerRenderInformation();
+		
+		// Hide certain items from NEI
+		API.hideItems(this.hiddenItems);
 	}
 	
 	@ServerStarted

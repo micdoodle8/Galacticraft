@@ -104,6 +104,8 @@ public class GCCoreItems
 		GCCoreItems.flagPole = new GCCoreItem(GCCoreConfigManager.idItemFlagPole).setIconIndex(51).setItemName("flagPole");
 		GCCoreItems.oilCanister = new GCCoreItemOilCanister(GCCoreConfigManager.idItemOilCanister).setIconIndex(57).setItemName("oilCanisterPartial");
 		GCCoreItems.oilExtractor = new GCCoreItemOilExtractor(GCCoreConfigManager.idItemOilExtractor).setIconIndex(52).setItemName("oilExtractor");
+		
+		GalacticraftCore.hiddenItems.add(gravityBow.itemID);
 	}
 	
 	public static void registerHarvestLevels()

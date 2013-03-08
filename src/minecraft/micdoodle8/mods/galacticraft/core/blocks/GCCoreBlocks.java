@@ -6,7 +6,9 @@ import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockBase;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockOre;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemSapling;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.material.MaterialLiquid;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
@@ -61,12 +63,18 @@ public class GCCoreBlocks
 		Item.itemsList[GCCoreBlocks.sapling.blockID] = 						new GCCoreItemSapling				(GCCoreBlocks.sapling.blockID - 256)																																																														.setItemName("sapling2");
 		GCCoreBlocks.decorationBlocks = 									new GCCoreBlock						(GCCoreConfigManager.idBlockDecorationBlock,  			3)						.setHardness(3.0F) 																				 																											.setBlockName("decorationblock");
 		Item.itemsList[GCCoreBlocks.decorationBlocks.blockID] = 			new GCCoreItemBlockBase				(GCCoreBlocks.decorationBlocks.blockID - 256)																																																												.setItemName("decorationblock");
-		GCCoreBlocks.airLockFrame = 										new GCCoreBlockAirLockFrame			(GCCoreConfigManager.idBlockAirLockFrame, 				29)						.setHardness(3.0F)                        														.setCreativeTab(GalacticraftCore.galacticraftTab)	.setStepSound(Block.soundMetalFootstep)	   				.setBlockName("airLockFrame");
+		GCCoreBlocks.airLockFrame = 										new GCCoreBlockAirLockFrame			(GCCoreConfigManager.idBlockAirLockFrame, 				38)						.setHardness(3.0F)                        														.setCreativeTab(GalacticraftCore.galacticraftTab)	.setStepSound(Block.soundMetalFootstep)	   				.setBlockName("airLockFrame");
 		GCCoreBlocks.airLockSeal = 											new GCCoreBlockAirLockWall			(GCCoreConfigManager.idBlockAirLockSeal, 				26)						                        																		.setCreativeTab(null)								.setStepSound(Block.soundMetalFootstep)	   				.setBlockName("airLockSeal");
 		GCCoreBlocks.crudeOilStill = 										new GCCoreBlockCrudeOilStationary	(GCCoreConfigManager.idBlockCrudeOilStill, 				Material.water)			.setHardness(3.0F)                        														.setCreativeTab(null)																						.setBlockName("crudeOilStill");
 		GCCoreBlocks.crudeOilMoving = 										new GCCoreBlockCrudeOilMoving		(GCCoreConfigManager.idBlockCrudeOilMoving, 			Material.water)			.setHardness(3.0F)                        														.setCreativeTab(GalacticraftCore.galacticraftTab)															.setBlockName("crudeOilMoving");
 		GCCoreBlocks.refinery = 											new GCCoreBlockRefinery 			(GCCoreConfigManager.idBlockRefinery, 0)                                        .setHardness(3.0F)                                                                              .setCreativeTab(GalacticraftCore.galacticraftTab)	.setStepSound(Block.soundMetalFootstep)					.setBlockName("refinery");
 		GCCoreBlocks.compressor = 											new GCCoreBlockOxygenCompressor		(GCCoreConfigManager.idBlockAirCompressor, 				false)					.setHardness(3.5F)  	  																		.setCreativeTab(GalacticraftCore.galacticraftTab) 	.setStepSound(Block.soundStoneFootstep)					.setBlockName("oxygenCompressor");
+
+		GalacticraftCore.hiddenItems.add(airLockSeal.blockID);
+		GalacticraftCore.hiddenItems.add(sapling.blockID);
+		GalacticraftCore.hiddenItems.add(breatheableAir.blockID);
+		GalacticraftCore.hiddenItems.add(unlitTorch.blockID);
+		GalacticraftCore.hiddenItems.add(unlitTorchLit.blockID);
 	}
 
 	public static void setHarvestLevels()
