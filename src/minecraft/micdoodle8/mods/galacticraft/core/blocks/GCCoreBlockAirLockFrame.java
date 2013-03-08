@@ -2,9 +2,12 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.Random;
 
+import universalelectricity.core.vector.Vector3;
+
 import micdoodle8.mods.galacticraft.API.IConnectableToPipe;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAirLock;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
@@ -20,20 +23,171 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvanced implements ICon
 		super(par1, par2, Material.rock);
 	}
 
-	@Override
-    @SideOnly(Side.CLIENT)
-    public int getBlockTexture(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
-    {
-		par1IBlockAccess.getBlockTileEntity(par2, par3, par4);
+//	@Override
+//    @SideOnly(Side.CLIENT)
+//    public int getBlockTexture(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
+//    {
+//		par1IBlockAccess.getBlockTileEntity(par2, par3, par4);
+//
+//		if (par1IBlockAccess.getBlockId(par2 - 1, par3, par4) == GCCoreBlocks.airLockSeal.blockID || par1IBlockAccess.getBlockId(par2 + 1, par3, par4) == GCCoreBlocks.airLockSeal.blockID || par1IBlockAccess.getBlockId(par2, par3 - 1, par4) == GCCoreBlocks.airLockSeal.blockID || par1IBlockAccess.getBlockId(par2, par3 + 1, par4) == GCCoreBlocks.airLockSeal.blockID || par1IBlockAccess.getBlockId(par2, par3, par4 - 1) == GCCoreBlocks.airLockSeal.blockID || par1IBlockAccess.getBlockId(par2, par3, par4 + 1) == GCCoreBlocks.airLockSeal.blockID)
+//		{
+//			return 39;
+//		}
+//		else
+//		{
+//			return 38;
+//		}
+//    }
 
-		if (par1IBlockAccess.getBlockId(par2 - 1, par3, par4) == GCCoreBlocks.airLockSeal.blockID || par1IBlockAccess.getBlockId(par2 + 1, par3, par4) == GCCoreBlocks.airLockSeal.blockID || par1IBlockAccess.getBlockId(par2, par3 - 1, par4) == GCCoreBlocks.airLockSeal.blockID || par1IBlockAccess.getBlockId(par2, par3 + 1, par4) == GCCoreBlocks.airLockSeal.blockID || par1IBlockAccess.getBlockId(par2, par3, par4 - 1) == GCCoreBlocks.airLockSeal.blockID || par1IBlockAccess.getBlockId(par2, par3, par4 + 1) == GCCoreBlocks.airLockSeal.blockID)
+    public int getBlockTexture(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int side)
+    {
+    	for(ForgeDirection orientation : ForgeDirection.values())
 		{
-			return 39;
+			if(orientation != ForgeDirection.UNKNOWN)
+			{
+				Vector3 vector = new Vector3(par2, par3, par4);
+				Vector3 blockVec = vector.clone().modifyPositionFromSide(orientation);
+				Block connection = Block.blocksList[blockVec.getBlockID(par1IBlockAccess)];
+			
+				if (connection != null && connection.equals(GCCoreBlocks.airLockSeal))
+				{
+					if (orientation.offsetY == -1)
+					{
+						if (side == 0)
+						{
+							return this.blockIndexInTexture + 1;
+						}
+						else if (side == 1)
+						{
+							return this.blockIndexInTexture;
+						}
+						else
+						{
+							return this.blockIndexInTexture + 2;
+						}
+					}
+					else if (orientation.offsetY == 1)
+					{
+						if (side == 0)
+						{
+							return this.blockIndexInTexture;
+						}
+						else if (side == 1)
+						{
+							return this.blockIndexInTexture + 1;
+						}
+						else
+						{
+							return this.blockIndexInTexture + 3;
+						}
+					}
+					else if (orientation.ordinal() == side)
+					{
+						if (side == 0)
+						{
+							return this.blockIndexInTexture;
+						}
+						else if (side == 1)
+						{
+							return this.blockIndexInTexture + 1;
+						}
+						else
+						{
+							return this.blockIndexInTexture + 3;
+						}
+					}
+					else if (orientation.getOpposite().ordinal() == side)
+					{
+						return this.blockIndexInTexture;
+					}
+
+					blockVec = vector.clone().add(new Vector3(orientation.offsetX, orientation.offsetY, orientation.offsetZ));
+					connection = Block.blocksList[blockVec.getBlockID(par1IBlockAccess)];
+					
+					if (connection != null && connection.equals(GCCoreBlocks.airLockSeal))
+					{
+						if (orientation.offsetX == 1)
+						{
+							if (side == 0)
+							{
+								return this.blockIndexInTexture + 4;
+							}
+							else if (side == 1)
+							{
+								return this.blockIndexInTexture + 4;
+							}
+							else if (side == 3)
+							{
+								return this.blockIndexInTexture + 4;
+							}
+							else if (side == 2)
+							{
+								return this.blockIndexInTexture + 5;
+							}
+						}
+						else if (orientation.offsetX == -1)
+						{
+							if (side == 0)
+							{
+								return this.blockIndexInTexture + 5;
+							}
+							else if (side == 1)
+							{
+								return this.blockIndexInTexture + 5;
+							}
+							else if (side == 3)
+							{
+								return this.blockIndexInTexture + 5;
+							}
+							else if (side == 2)
+							{
+								return this.blockIndexInTexture + 4;
+							}
+						}
+						else if (orientation.offsetZ == 1)
+						{
+							if (side == 0)
+							{
+								return this.blockIndexInTexture + 2;
+							}
+							else if (side == 1)
+							{
+								return this.blockIndexInTexture + 2;
+							}
+							else if (side == 4)
+							{
+								return this.blockIndexInTexture + 4;
+							}
+							else if (side == 5)
+							{
+								return this.blockIndexInTexture + 5;
+							}
+						}
+						else if (orientation.offsetZ == -1)
+						{
+							if (side == 0)
+							{
+								return this.blockIndexInTexture + 3;
+							}
+							else if (side == 1)
+							{
+								return this.blockIndexInTexture + 3;
+							}
+							else if (side == 4)
+							{
+								return this.blockIndexInTexture + 5;
+							}
+							else if (side == 5)
+							{
+								return this.blockIndexInTexture + 4;
+							}
+						}
+					}
+				}
+			}
 		}
-		else
-		{
-			return 38;
-		}
+    	
+    	return this.blockIndexInTexture;
     }
 
 	@Override
