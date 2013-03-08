@@ -6,10 +6,13 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.MathHelper;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import universalelectricity.core.vector.Vector3;
 import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreItemOilExtractor extends Item
@@ -24,34 +27,14 @@ public class GCCoreItemOilExtractor extends Item
     @Override
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
-        float var4 = 1.0F;
-        double var5 = par3EntityPlayer.prevPosX + (par3EntityPlayer.posX - par3EntityPlayer.prevPosX) * (double)var4;
-        double var7 = par3EntityPlayer.prevPosY + (par3EntityPlayer.posY - par3EntityPlayer.prevPosY) * (double)var4 + 1.62D - (double)par3EntityPlayer.yOffset + 2;
-        double var9 = par3EntityPlayer.prevPosZ + (par3EntityPlayer.posZ - par3EntityPlayer.prevPosZ) * (double)var4;
-        MovingObjectPosition var12 = this.getMovingObjectPositionFromPlayer(par2World, par3EntityPlayer, false);
-
-        if (var12 == null)
+    	Vector3 blockHit = null;
+    	
+        if ((blockHit = this.getNearestOilBlock(par3EntityPlayer)) != null)
         {
-            return par1ItemStack;
-        }
-        else
-        {
-            int var13 = var12.blockX;
-            int var14 = var12.blockY + 1;
-            int var15 = var12.blockZ;
-
-            if (!par2World.canMineBlock(par3EntityPlayer, var13, var14, var15))
-            {
-                return par1ItemStack;
-            }
-
-            if (this.isOilBlock(par3EntityPlayer, par2World, var13, var14, var15))
-            {
-            	if (openCanister(par3EntityPlayer) != null)
-            	{
-                    par3EntityPlayer.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
-            	}
-            }
+        	if (openCanister(par3EntityPlayer) != null)
+        	{
+                par3EntityPlayer.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
+        	}
         }
         
         return par1ItemStack;
@@ -60,33 +43,18 @@ public class GCCoreItemOilExtractor extends Item
     @Override
     public void onUsingItemTick(ItemStack par1ItemStack, EntityPlayer par3EntityPlayer, int count)
     {
-        float var4 = 1.0F;
-        double var5 = par3EntityPlayer.prevPosX + (par3EntityPlayer.posX - par3EntityPlayer.prevPosX) * (double)var4;
-        double var7 = par3EntityPlayer.prevPosY + (par3EntityPlayer.posY - par3EntityPlayer.prevPosY) * (double)var4 + 1.62D - (double)par3EntityPlayer.yOffset + 2;
-        double var9 = par3EntityPlayer.prevPosZ + (par3EntityPlayer.posZ - par3EntityPlayer.prevPosZ) * (double)var4;
-        MovingObjectPosition var12 = this.getMovingObjectPositionFromPlayer(par3EntityPlayer.worldObj, par3EntityPlayer, false);
-
-        if (var12 == null)
+    	Vector3 blockHit = null;
+    	
+        if ((blockHit = this.getNearestOilBlock(par3EntityPlayer)) != null)
         {
-            return;
-        }
-        else
-        {
-            int var13 = var12.blockX;
-            int var14 = var12.blockY + 1;
-            int var15 = var12.blockZ;
-
-            if (!par3EntityPlayer.worldObj.canMineBlock(par3EntityPlayer, var13, var14, var15))
-            {
-                return;
-            }
-
-            if (isOilBlock(par3EntityPlayer, par3EntityPlayer.worldObj, var13, var14, var15))
-            {
+    		int x = MathHelper.floor_double(blockHit.x), y = MathHelper.floor_double(blockHit.y), z = MathHelper.floor_double(blockHit.z);
+    		
+    		if (this.isOilBlock(par3EntityPlayer, par3EntityPlayer.worldObj, x, y, z))
+    		{
+        		par3EntityPlayer.worldObj.setBlockWithNotify(x, y, z, 0);
+        		
             	if (openCanister(par3EntityPlayer) != null)
             	{
-            		par3EntityPlayer.worldObj.setBlockMetadataWithNotify(var13, var14, var15, par3EntityPlayer.worldObj.getBlockMetadata(var13, var14, var15) + 1);
-            		
                 	ItemStack canister = this.openCanister(par3EntityPlayer);
                 	
                 	if (canister != null && count % 5 == 0 && canister.getItemDamage() > 5)
@@ -94,11 +62,7 @@ public class GCCoreItemOilExtractor extends Item
                 		canister.setItemDamage(canister.getItemDamage() - 5);
                 	}
             	}
-            }
-            else
-            {
-            	return;
-            }
+    		}
         }
     }
     
@@ -196,9 +160,42 @@ public class GCCoreItemOilExtractor extends Item
 		{
 			return true;
 		}
-		else
-		{
-			return false;
-		}
+
+		return false;
+	}
+	
+	private Vector3 getNearestOilBlock(EntityPlayer par1EntityPlayer)
+	{		
+        float var4 = 1.0F;
+        float var5 = par1EntityPlayer.prevRotationPitch + (par1EntityPlayer.rotationPitch - par1EntityPlayer.prevRotationPitch) * var4;
+        float var6 = par1EntityPlayer.prevRotationYaw + (par1EntityPlayer.rotationYaw - par1EntityPlayer.prevRotationYaw) * var4;
+        double var7 = par1EntityPlayer.prevPosX + (par1EntityPlayer.posX - par1EntityPlayer.prevPosX) * (double)var4;
+        double var9 = par1EntityPlayer.prevPosY + (par1EntityPlayer.posY - par1EntityPlayer.prevPosY) * (double)var4 + 1.62D - (double)par1EntityPlayer.yOffset;
+        double var11 = par1EntityPlayer.prevPosZ + (par1EntityPlayer.posZ - par1EntityPlayer.prevPosZ) * (double)var4;
+        Vector3 var13 = new Vector3(var7, var9, var11);
+        float var14 = MathHelper.cos(-var6 * 0.017453292F - (float)Math.PI);
+        float var15 = MathHelper.sin(-var6 * 0.017453292F - (float)Math.PI);
+        float var16 = -MathHelper.cos(-var5 * 0.017453292F);
+        float var17 = MathHelper.sin(-var5 * 0.017453292F);
+        float var18 = var15 * var16;
+        float var20 = var14 * var16;
+        double var21 = 5.0D;
+        
+        if (par1EntityPlayer instanceof EntityPlayerMP)
+        {
+            var21 = ((EntityPlayerMP)par1EntityPlayer).theItemInWorldManager.getBlockReachDistance();
+        }
+        
+        for (double dist = 0.0; dist <= var21; dist += 1D)
+        {
+            Vector3 var23 = var13.add(new Vector3((double)var18 * dist, (double)var17 * dist, (double)var20 * dist));
+            
+            if (this.isOilBlock(par1EntityPlayer, par1EntityPlayer.worldObj, MathHelper.floor_double(var23.x), MathHelper.floor_double(var23.y), MathHelper.floor_double(var23.z)))
+            {
+            	return var23;
+            }
+        }
+        
+        return null;
 	}
 }
