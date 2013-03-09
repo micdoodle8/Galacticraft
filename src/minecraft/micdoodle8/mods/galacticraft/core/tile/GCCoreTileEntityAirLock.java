@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreTileEntityAirLock extends GCCoreTileEntityAdvanced
 {
@@ -42,11 +43,10 @@ public class GCCoreTileEntityAirLock extends GCCoreTileEntityAdvanced
 
 	public boolean checkForCompleteSetup()
 	{
-		if (this.otherAirLockBlocks.size() > 8)
+		if (this.worldObj.isRemote)
 		{
 			return false;
 		}
-
 		int var1 = this.xCoord;
 		final int var2 = this.yCoord + 1;
 		int var3 = this.zCoord;
@@ -163,7 +163,7 @@ public class GCCoreTileEntityAirLock extends GCCoreTileEntityAdvanced
                 }
             }
 
-            if (this.areAnyInSetActive() && !this.worldObj.isRemote)
+            if (this.areAnyInSetActive())
             {
                 this.worldObj.editingBlocks = true;
 
@@ -190,7 +190,7 @@ public class GCCoreTileEntityAirLock extends GCCoreTileEntityAdvanced
                 this.worldObj.editingBlocks = false;
                 return true;
             }
-            else if (!this.worldObj.isRemote)
+            else
             {
                 this.worldObj.editingBlocks = true;
 
@@ -227,8 +227,6 @@ public class GCCoreTileEntityAirLock extends GCCoreTileEntityAdvanced
                 return false;
             }
         }
-
-        return false;
     }
 
 	private boolean isAirLockBlock(int x, int y, int z)
