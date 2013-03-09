@@ -1,7 +1,11 @@
 package micdoodle8.mods.galacticraft.core.items;
 
+import java.util.List;
+
+import mekanism.api.EnumColor;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSapling;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import cpw.mods.fml.relauncher.Side;
@@ -15,10 +19,7 @@ public class GCCoreItemSapling extends ItemBlock
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
     }
-
-    /**
-     * Returns the metadata of the block which this Item (ItemBlock) can place
-     */
+    
     @Override
 	public int getMetadata(int par1)
     {
@@ -27,10 +28,6 @@ public class GCCoreItemSapling extends ItemBlock
 
     @Override
 	@SideOnly(Side.CLIENT)
-
-    /**
-     * Gets an icon index based on an item's damage value
-     */
     public int getIconFromDamage(int par1)
     {
         return Block.sapling.getBlockTextureFromSideAndMetadata(0, par1);
@@ -47,5 +44,11 @@ public class GCCoreItemSapling extends ItemBlock
         }
 
         return super.getItemName() + "." + BlockSapling.WOOD_TYPES[var2];
+    }
+
+    @Override
+    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
+    {
+    	par3List.add("\u00a7cRequires water blocks to grow");
     }
 }
