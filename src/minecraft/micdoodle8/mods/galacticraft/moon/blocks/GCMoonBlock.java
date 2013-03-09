@@ -11,6 +11,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockFlower;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
@@ -34,6 +35,30 @@ public class GCMoonBlock extends Block implements IDetectableMetadataResource, I
         this.setRequiresSelfNotify();
         this.setCreativeTab(GalacticraftCore.galacticraftTab);
 	}
+
+	@Override
+    public float getBlockHardness(World par1World, int par2, int par3, int par4)
+    {
+    	int meta = par1World.getBlockMetadata(par2, par3, par4);
+    	
+		if (meta == 3 || (meta >= 5 && meta <= 13))
+		{
+			return 0.1F;
+		}
+		
+        return this.blockHardness;
+    }
+
+	@Override
+    public boolean canHarvestBlock(EntityPlayer player, int meta)
+    {
+		if (meta == 3 || (meta >= 5 && meta <= 13))
+		{
+			return true;
+		}
+		
+    	return super.canHarvestBlock(player, meta);
+    }
 
 	@Override
     public int getBlockTextureFromSideAndMetadata(int side, int meta)
