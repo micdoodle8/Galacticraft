@@ -30,6 +30,7 @@ import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityOxygenFX;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityWeldingSmoke;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreTextureCrudeOilFX;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreTextureCrudeOilFlowFX;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiAPIMissing;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiChoosePlanet;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreOverlayOxygenTankIndicator;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreOverlaySensorGlasses;
@@ -85,6 +86,7 @@ import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpaceship;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpider;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityWorm;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityZombie;
+import micdoodle8.mods.galacticraft.core.exception.MissingAPIException;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemSensorGlasses;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAdvancedCraftingTable;
@@ -198,10 +200,45 @@ public class ClientProxyCore extends CommonProxyCore
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		ClientProxyCore.moon.preInit(event);
-
-		ModelPlayerAPI.register(GalacticraftCore.MODID, GCCoreModelPlayer.class);
-		RenderPlayerAPI.register(GalacticraftCore.MODID, GCCoreRenderPlayer.class);
-		PlayerAPI.register(GalacticraftCore.MODID, GCCorePlayerBaseClient.class);
+		
+		try 
+		{
+			if (Class.forName("net.minecraft.src.RenderPlayerAPI") == null)
+			{
+				GalacticraftCore.missingAPIs.add("RenderPlayerAPI.class");
+			}
+		}
+		catch (ClassNotFoundException e) 
+		{
+			GalacticraftCore.missingAPIs.add("RenderPlayerAPI.class");
+			e.printStackTrace();
+		}
+		
+		try 
+		{
+			if (Class.forName("net.minecraft.src.ModelPlayerAPI") == null)
+			{
+				GalacticraftCore.missingAPIs.add("ModelPlayerAPI.class");
+			}
+		}
+		catch (ClassNotFoundException e) 
+		{
+			GalacticraftCore.missingAPIs.add("ModelPlayerAPI.class");
+			e.printStackTrace();
+		}
+		
+		try 
+		{
+			if (Class.forName("net.minecraft.src.PlayerAPI") == null)
+			{
+				GalacticraftCore.missingAPIs.add("PlayerAPI.class");
+			}
+		}
+		catch (ClassNotFoundException e) 
+		{
+			GalacticraftCore.missingAPIs.add("PlayerAPI.class");
+			e.printStackTrace();
+		}
 
 		MinecraftForge.EVENT_BUS.register(new GCCoreSounds());
 		ClientProxyCore.getFirstBootTime = System.currentTimeMillis();
@@ -211,6 +248,22 @@ public class ClientProxyCore extends CommonProxyCore
 	public void init(FMLInitializationEvent event)
 	{
 		ClientProxyCore.moon.init(event);
+		
+		if (GalacticraftCore.missingAPIs.size() > 0)
+		{
+        	FMLClientHandler.instance().getClient().displayGuiScreen(new GCCoreGuiAPIMissing(new MissingAPIException(GalacticraftCore.missingAPIs)));
+		}
+		
+		try
+		{
+			ModelPlayerAPI.register(GalacticraftCore.MODID, GCCoreModelPlayer.class);
+			RenderPlayerAPI.register(GalacticraftCore.MODID, GCCoreRenderPlayer.class);
+			PlayerAPI.register(GalacticraftCore.MODID, GCCorePlayerBaseClient.class);
+		}
+		catch (Throwable cnfe)
+		{
+			cnfe.printStackTrace();
+		}
 
 		TickRegistry.registerTickHandler(new TickHandlerClient(), Side.CLIENT);
 		TickRegistry.registerScheduledTickHandler(new TickHandlerClientSlow(), Side.CLIENT);
@@ -846,6 +899,15 @@ public class ClientProxyCore extends CommonProxyCore
     			{
     				GalacticraftCore.playersServer.clear();
     				GalacticraftCore.playersClient.clear();
+    				ClientProxyCore.playersUsingParachutes.clear();
+    				ClientProxyCore.playersWithOxygenGear.clear();
+    				ClientProxyCore.playersWithOxygenMask.clear();
+    				ClientProxyCore.playersWithOxygenTankLeftGreen.clear();
+    				ClientProxyCore.playersWithOxygenTankLeftOrange.clear();
+    				ClientProxyCore.playersWithOxygenTankLeftRed.clear();
+    				ClientProxyCore.playersWithOxygenTankRightGreen.clear();
+    				ClientProxyCore.playersWithOxygenTankRightOrange.clear();
+    				ClientProxyCore.playersWithOxygenTankRightRed.clear();
     			}
 
     	    	if (world != null && checkedVersion)

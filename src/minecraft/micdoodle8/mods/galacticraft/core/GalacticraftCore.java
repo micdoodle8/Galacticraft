@@ -61,7 +61,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
 import universalelectricity.prefab.TranslationHelper;
 import universalelectricity.prefab.UEDamageSource;
-import codechicken.nei.api.API;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.IScheduledTickHandler;
 import cpw.mods.fml.common.ITickHandler;
@@ -103,7 +102,7 @@ public class GalacticraftCore
 
     public static final int LOCALMAJVERSION = 0;
     public static final int LOCALMINVERSION = 0;
-    public static final int LOCALBUILDVERSION = 18;
+    public static final int LOCALBUILDVERSION = 19;
     public static int remoteMajVer;
     public static int remoteMinVer;
     public static int remoteBuildVer;
@@ -140,23 +139,35 @@ public class GalacticraftCore
 	public static final String BLOCK_TEXTURE_FILE = FILE_PATH + CLIENT_PATH + "blocks/core.png";
 	public static final String ITEM_TEXTURE_FILE = FILE_PATH + CLIENT_PATH + "items/core.png";
 	public static final String CONFIG_FILE = "Galacticraft/core.conf";
-	private static final String[] LANGUAGES_SUPPORTED = new String[] { "en_US", "zh_CN" };
+	private static final String[] LANGUAGES_SUPPORTED = new String[] { "en_US", "zh_CN", "fr_CA", "fr_FR" };
 
 	public static final UEDamageSource spaceshipCrash = (UEDamageSource) new UEDamageSource("spaceshipCrash", "%1$s was in a spaceship crash!").setDamageBypassesArmor();
 	public static final UEDamageSource oxygenSuffocation = (UEDamageSource) new UEDamageSource("oxygenSuffocation", "%1$s ran out of oxygen!").setDamageBypassesArmor();
 
 	public static ArrayList<Integer> hiddenItems = new ArrayList<Integer>();
+	
+    public static ArrayList<String> missingAPIs = new ArrayList<String>();
 
 	@PreInit
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		GalacticraftCore.moon.preLoad(event);
 
+		try 
+		{
+			if (Class.forName("net.minecraft.src.ServerPlayerAPI") == null)
+			{
+				GalacticraftCore.missingAPIs.add("ServerPlayerAPI.class");
+			}
+		}
+		catch (ClassNotFoundException e) 
+		{
+			e.printStackTrace();
+		}
+
 		GalacticraftCore.registerSubMod(GalacticraftCore.moon);
 
 		new GCCoreConfigManager(new File(event.getModConfigurationDirectory(), CONFIG_FILE));
-
-		ServerPlayerAPI.register(GalacticraftCore.MODID, GCCorePlayerBase.class);
 
 		GCCoreBlocks.initBlocks();
 		GCCoreBlocks.registerBlocks();
@@ -179,6 +190,17 @@ public class GalacticraftCore
 	@Init
 	public void init(FMLInitializationEvent event)
 	{
+		GalacticraftCore.proxy.init(event);
+		
+		try
+		{
+			ServerPlayerAPI.register(GalacticraftCore.MODID, GCCorePlayerBase.class);
+		}
+		catch (Throwable t)
+		{
+			t.printStackTrace();
+		}
+		
 		for (final IGalacticraftSubMod mod : GalacticraftCore.subMods)
 		{
 			if (mod.getParentGalaxy() != null && !GalacticraftCore.galaxies.contains(mod.getParentGalaxy()))
@@ -199,7 +221,6 @@ public class GalacticraftCore
 		this.registerCreatures();
 		this.registerOtherEntities();
 		MinecraftForge.EVENT_BUS.register(new GCCoreEvents());
-		GalacticraftCore.proxy.init(event);
 	}
 
 	@PostInit
