@@ -46,7 +46,7 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvanced implements ICon
 			if(orientation != ForgeDirection.UNKNOWN)
 			{
 				Vector3 vector = new Vector3(par2, par3, par4);
-				Vector3 blockVec = vector.clone().modifyPositionFromSide(orientation);
+				Vector3 blockVec = this.modifyPositionFromSide(vector.clone(), orientation, 1);
 				Block connection = Block.blocksList[blockVec.getBlockID(par1IBlockAccess)];
 			
 				if (connection != null && connection.equals(GCCoreBlocks.airLockSeal))
@@ -189,6 +189,32 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvanced implements ICon
     	
     	return this.blockIndexInTexture;
     }
+    
+	public Vector3 modifyPositionFromSide(Vector3 vec, ForgeDirection side, double amount)
+	{
+		switch (side.ordinal())
+		{
+			case 0:
+				vec.y -= amount;
+				break;
+			case 1:
+				vec.y += amount;
+				break;
+			case 2:
+				vec.z -= amount;
+				break;
+			case 3:
+				vec.z += amount;
+				break;
+			case 4:
+				vec.x -= amount;
+				break;
+			case 5:
+				vec.x += amount;
+				break;
+		}
+		return vec;
+	}
 
 	@Override
     public void onBlockAdded(World par1World, int par2, int par3, int par4)
