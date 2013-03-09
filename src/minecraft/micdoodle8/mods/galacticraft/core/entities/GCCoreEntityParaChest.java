@@ -132,7 +132,7 @@ public class GCCoreEntityParaChest extends Entity
 		this.worldObj.setBlock(x, y, z, Block.chest.blockID);
 		final TileEntity te = this.worldObj.getBlockTileEntity(x, y, z);
 
-		if (te instanceof TileEntityChest && this.cargo != null)
+		if (te instanceof TileEntityChest && this.cargo != null && this.cargo.length > 0)
 		{
 			final TileEntityChest chest = (TileEntityChest) te;
 
