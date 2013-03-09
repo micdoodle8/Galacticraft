@@ -138,6 +138,7 @@ import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry.KeyHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.IScheduledTickHandler;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
@@ -201,43 +202,25 @@ public class ClientProxyCore extends CommonProxyCore
 	{
 		ClientProxyCore.moon.preInit(event);
 		
-		try 
+		try
 		{
-			if (Class.forName("net.minecraft.src.RenderPlayerAPI") == null)
-			{
-				GalacticraftCore.missingAPIs.add("RenderPlayerAPI.class");
-			}
+			PlayerAPI.register(GalacticraftCore.MODID, GCCorePlayerBaseClient.class);
 		}
-		catch (ClassNotFoundException e) 
+		catch (Exception cnfe)
 		{
-			GalacticraftCore.missingAPIs.add("RenderPlayerAPI.class");
-			e.printStackTrace();
+			FMLLog.severe("PLAYER API NOT INSTALLED!");
+			cnfe.printStackTrace();
 		}
 		
-		try 
+		try
 		{
-			if (Class.forName("net.minecraft.src.ModelPlayerAPI") == null)
-			{
-				GalacticraftCore.missingAPIs.add("ModelPlayerAPI.class");
-			}
+			ModelPlayerAPI.register(GalacticraftCore.MODID, GCCoreModelPlayer.class);
+			RenderPlayerAPI.register(GalacticraftCore.MODID, GCCoreRenderPlayer.class);
 		}
-		catch (ClassNotFoundException e) 
+		catch (Exception cnfe)
 		{
-			GalacticraftCore.missingAPIs.add("ModelPlayerAPI.class");
-			e.printStackTrace();
-		}
-		
-		try 
-		{
-			if (Class.forName("net.minecraft.src.PlayerAPI") == null)
-			{
-				GalacticraftCore.missingAPIs.add("PlayerAPI.class");
-			}
-		}
-		catch (ClassNotFoundException e) 
-		{
-			GalacticraftCore.missingAPIs.add("PlayerAPI.class");
-			e.printStackTrace();
+			FMLLog.severe("RENDER PLAYER API NOT INSTALLED!");
+			cnfe.printStackTrace();
 		}
 
 		MinecraftForge.EVENT_BUS.register(new GCCoreSounds());
@@ -248,22 +231,6 @@ public class ClientProxyCore extends CommonProxyCore
 	public void init(FMLInitializationEvent event)
 	{
 		ClientProxyCore.moon.init(event);
-		
-		if (GalacticraftCore.missingAPIs.size() > 0)
-		{
-        	FMLClientHandler.instance().getClient().displayGuiScreen(new GCCoreGuiAPIMissing(new MissingAPIException(GalacticraftCore.missingAPIs)));
-		}
-		
-		try
-		{
-			ModelPlayerAPI.register(GalacticraftCore.MODID, GCCoreModelPlayer.class);
-			RenderPlayerAPI.register(GalacticraftCore.MODID, GCCoreRenderPlayer.class);
-			PlayerAPI.register(GalacticraftCore.MODID, GCCorePlayerBaseClient.class);
-		}
-		catch (Throwable cnfe)
-		{
-			cnfe.printStackTrace();
-		}
 
 		TickRegistry.registerTickHandler(new TickHandlerClient(), Side.CLIENT);
 		TickRegistry.registerScheduledTickHandler(new TickHandlerClientSlow(), Side.CLIENT);

@@ -27,7 +27,7 @@ public class GCCoreGuiAPIMissing extends GuiErrorScreen
     @Override
     public void drawScreen(int par1, int par2, float par3)
     {
-        this.drawDefaultBackground();
+        this.drawBackground(par1);
         int offset = Math.max(85 - apiMissing.missingAPIs.size() * 10, 10);
         this.drawCenteredString(this.fontRenderer, "Galacticraft has found a problem with your minecraft installation", this.width / 2, offset, 0xFFFFFF);
         offset+=10;

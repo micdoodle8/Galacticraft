@@ -145,26 +145,22 @@ public class GalacticraftCore
 	public static final UEDamageSource oxygenSuffocation = (UEDamageSource) new UEDamageSource("oxygenSuffocation", "%1$s ran out of oxygen!").setDamageBypassesArmor();
 
 	public static ArrayList<Integer> hiddenItems = new ArrayList<Integer>();
-	
-    public static ArrayList<String> missingAPIs = new ArrayList<String>();
 
 	@PreInit
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		GalacticraftCore.moon.preLoad(event);
-
-		try 
+		
+		try
 		{
-			if (Class.forName("net.minecraft.src.ServerPlayerAPI") == null)
-			{
-				GalacticraftCore.missingAPIs.add("ServerPlayerAPI.class");
-			}
+			ServerPlayerAPI.register(GalacticraftCore.MODID, GCCorePlayerBase.class);
 		}
-		catch (ClassNotFoundException e) 
+		catch (Exception e)
 		{
+			FMLLog.severe("PLAYER API NOT INSTALLED!");
 			e.printStackTrace();
 		}
-
+		
 		GalacticraftCore.registerSubMod(GalacticraftCore.moon);
 
 		new GCCoreConfigManager(new File(event.getModConfigurationDirectory(), CONFIG_FILE));
@@ -191,15 +187,6 @@ public class GalacticraftCore
 	public void init(FMLInitializationEvent event)
 	{
 		GalacticraftCore.proxy.init(event);
-		
-		try
-		{
-			ServerPlayerAPI.register(GalacticraftCore.MODID, GCCorePlayerBase.class);
-		}
-		catch (Throwable t)
-		{
-			t.printStackTrace();
-		}
 		
 		for (final IGalacticraftSubMod mod : GalacticraftCore.subMods)
 		{
