@@ -567,7 +567,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship
     		}
 		}
 		
-		if (amountStillValid < 9)
+		if (amountStillValid < 9 && !this.launched)
 		{
             this.setDead();
 			this.dropShipAsItem();
