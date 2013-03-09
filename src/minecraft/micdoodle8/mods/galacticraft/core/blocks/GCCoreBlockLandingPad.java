@@ -1,7 +1,11 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
+import micdoodle8.mods.galacticraft.API.EntitySpaceshipBase;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpaceship;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.Entity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 
 /**
@@ -17,67 +21,6 @@ public class GCCoreBlockLandingPad extends Block
 		super(i, j, Material.iron);
         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.2F, 1.0F);
 	}
-
-//    @Override
-//    public void onBlockAdded(World par1World, int par2, int par3, int par4)
-//    {
-//    	int amountOfCorrectBlocks = 0;
-//
-//    	for (int i = -2; i < 3; i++)
-//		{
-//			for (int j = -2; j < 3; j++)
-//    		{
-//				if (par1World.getBlockId(par2 + i, par3, par4 + j) == GCCoreBlocks.landingPad.blockID)
-//				{
-//					amountOfCorrectBlocks++;
-//				}
-//    		}
-//		}
-//
-//    	if (amountOfCorrectBlocks == 9)
-//    	{
-//			int id;
-//			Block block;
-//
-//			id = par1World.getBlockId(par2 + 1, par3, par4);
-//
-//			block = Block.blocksList[id];
-//
-//			if (block != null)
-//			{
-//		        this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.9F, 1.0F);
-//			}
-//
-//			id = par1World.getBlockId(par2 - 1, par3, par4);
-//
-//			block = Block.blocksList[id];
-//
-//			if (block != null)
-//			{
-//		        this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.9F, 1.0F);
-//			}
-//
-//			id = par1World.getBlockId(par2, par3, par4 + 1);
-//
-//			block = Block.blocksList[id];
-//
-//			if (block != null)
-//			{
-//		        this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.9F, 1.0F);
-//			}
-//
-//			id = par1World.getBlockId(par2, par3, par4 - 1);
-//
-//			block = Block.blocksList[id];
-//
-//			if (block != null)
-//			{
-//		        this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.9F, 1.0F);
-//			}
-//    	}
-//
-//    	super.onBlockAdded(par1World, par2, par3, par4);
-//    }
 
     @Override
     public boolean canPlaceBlockOnSide(World par1World, int par2, int par3, int par4, int par5)
@@ -112,6 +55,22 @@ public class GCCoreBlockLandingPad extends Block
     	{
             return this.canPlaceBlockAt(par1World, par2, par3, par4);
     	}
+    }
+
+    @Override
+    public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6)
+    {
+    	for (Object o : par1World.getEntitiesWithinAABB(GCCoreEntitySpaceship.class, AxisAlignedBB.getAABBPool().addOrModifyAABBInPool(par2 - 2, par3 - 2, par4 - 2, par2 + 2, par3 + 2, par4 + 2)))
+    	{
+    		Entity e = (Entity) o;
+    		
+    		if (e instanceof EntitySpaceshipBase)
+    		{
+    			((EntitySpaceshipBase) e).checkValidLaunchPadBroken();
+    		}
+    	}
+    	
+    	super.breakBlock(par1World, par2, par3, par4, par5, par6);
     }
 
     @Override

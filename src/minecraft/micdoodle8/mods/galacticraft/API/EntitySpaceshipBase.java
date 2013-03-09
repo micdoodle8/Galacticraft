@@ -545,6 +545,34 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship
             }
     	}
     }
+    
+    public void checkValidLaunchPadBroken()
+    {
+		int amountStillValid = 0;
+
+		for (int x = MathHelper.floor_double(this.posX) - 1; x <= MathHelper.floor_double(this.posX) + 1; x++)
+		{
+    		for (int y = MathHelper.floor_double(this.posY) - 3; y <= MathHelper.floor_double(this.posY) + 1; y++)
+    		{
+        		for (int z = MathHelper.floor_double(this.posZ) - 1; z <= MathHelper.floor_double(this.posZ) + 1; z++)
+        		{
+        			final int id = this.worldObj.getBlockId(x, y, z);
+        			final Block block = Block.blocksList[id];
+
+        			if (block != null && block instanceof GCCoreBlockLandingPad)
+        			{
+        				amountStillValid++;
+        			}
+        		}
+    		}
+		}
+		
+		if (amountStillValid < 9)
+		{
+            this.setDead();
+			this.dropShipAsItem();
+		}
+    }
 
     public void onLaunch() {}
 
