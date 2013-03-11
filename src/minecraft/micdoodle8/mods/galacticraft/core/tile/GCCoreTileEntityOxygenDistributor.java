@@ -1,19 +1,23 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Set;
+import com.google.common.io.ByteArrayDataInput;
 
-import micdoodle8.mods.galacticraft.API.TileEntityOxygenAcceptor;
-import micdoodle8.mods.galacticraft.API.TileEntityOxygenSource;
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLocation;
+import mekanism.api.EnumGas;
+import mekanism.api.IGasAcceptor;
+import mekanism.api.ITubeConnection;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.client.model.block.GCCoreModelFan;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.INetworkManager;
+import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
+import universalelectricity.core.block.IConnector;
+import universalelectricity.core.block.IElectricityStorage;
+import universalelectricity.core.block.IVoltage;
+import universalelectricity.prefab.network.IPacketReceiver;
+import universalelectricity.prefab.tile.TileEntityElectricityStorage;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -21,80 +25,15 @@ import net.minecraftforge.common.ForgeDirection;
  *  All rights reserved.
  *
  */
-public class GCCoreTileEntityOxygenDistributor extends TileEntityOxygenAcceptor
+public class GCCoreTileEntityOxygenDistributor extends TileEntityElectricityStorage implements IElectricityStorage, IPacketReceiver, IGasAcceptor, ITubeConnection, IConnector, IVoltage
 {
-    protected double currentPower;
-    protected double lastPower;
-    protected boolean active;
-	private int indexFromCollector;
-
-	private Set<TileEntityOxygenSource> sources = new HashSet<TileEntityOxygenSource>();
-	private List<GCCoreBlockLocation> preLoadSourceCoords;
-
+	public int currentPower;
+    public boolean active;
+    
     public GCCoreModelFan fanModel1 = new GCCoreModelFan();
     public GCCoreModelFan fanModel2 = new GCCoreModelFan();
     public GCCoreModelFan fanModel3 = new GCCoreModelFan();
    	public GCCoreModelFan fanModel4 = new GCCoreModelFan();
-
-	@Override
-	public void addSource(TileEntityOxygenSource source)
-	{
-		this.sources.add(source);
-	}
-
-	@Override
-	public void removeSource(TileEntityOxygenSource source)
-	{
-		this.sources.remove(source);
-	}
-
-	@Override
-	public void setSourceCollectors(Set<TileEntityOxygenSource> sources)
-	{
-		this.sources = sources;
-	}
-
-	@Override
-	public Set<TileEntityOxygenSource> getSourceCollectors()
-	{
-		return this.sources;
-	}
-
-	@Override
-	public void setIndexFromSource(int index)
-	{
-		this.indexFromCollector = index;
-	}
-
-	@Override
-	public int getIndexFromSource()
-	{
-		return this.indexFromCollector;
-	}
-
-    @Override
-	public boolean getActive()
-	{
-		return this.active;
-	}
-
-    @Override
-	public void setActive(boolean active)
-	{
-		this.active = active;
-	}
-
-	@Override
-	public double getPower()
-	{
-		return this.currentPower;
-	}
-
-	@Override
-	public void setPower(double power)
-	{
-		this.currentPower = this.lastPower = power;
-	}
 
     @Override
   	public void validate()
@@ -123,27 +62,10 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityOxygenAcceptor
 	{
 		super.updateEntity();
 
-		if (this.preLoadSourceCoords != null)
+		if (this.currentPower > 0)
 		{
-			for (final GCCoreBlockLocation location : this.preLoadSourceCoords)
-			{
-	            final TileEntity tile = this.worldObj.getBlockTileEntity(location.chunkZPos, location.chunkZPos, location.chunkZPos);
-
-	            if (tile != null && tile instanceof TileEntityOxygenSource)
-	            {
-	                this.sources.add((TileEntityOxygenSource) tile);
-	            }
-			}
-
-			this.preLoadSourceCoords = null;
+			this.currentPower -= 1;
 		}
-
-		this.updateSourceList();
-
-		for (int i = 0; i < ForgeDirection.values().length; i++)
-    	{
-			this.updateOxygenFromAdjacentPipe(ForgeDirection.getOrientation(i).offsetX, ForgeDirection.getOrientation(i).offsetY, ForgeDirection.getOrientation(i).offsetZ);
-    	}
 
 		if (this.currentPower < 1.0D)
 		{
@@ -202,30 +124,6 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityOxygenAcceptor
 				}
 			}
 		}
-
-		this.lastPower = this.currentPower;
-	}
-
-	public void updateSourceList()
-	{
-		final ArrayList<TileEntityOxygenSource> sources = new ArrayList<TileEntityOxygenSource>();
-
-		for (final TileEntityOxygenSource source : this.sources)
-		{
-			sources.add(source);
-		}
-
-		final ListIterator li = sources.listIterator();
-
-		while (li.hasNext())
-		{
-			final TileEntityOxygenSource source = (TileEntityOxygenSource) li.next();
-
-			if (!(this.worldObj.getBlockTileEntity(source.xCoord, source.yCoord, source.zCoord) instanceof TileEntityOxygenSource))
-			{
-				this.sources.remove(source);
-			}
-		}
 	}
 
 	public void updateAdjacentOxygenAdd(int xOffset, int yOffset, int zOffset)
@@ -252,29 +150,67 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityOxygenAcceptor
 		}
 	}
 
-	public void updateOxygenFromAdjacentPipe(int xOffset, int yOffset, int zOffset)
-	{
-		final TileEntity tile = this.worldObj.getBlockTileEntity(this.xCoord + xOffset, this.yCoord + yOffset, this.zCoord + zOffset);
-
-		if (tile != null && tile instanceof GCCoreTileEntityOxygenPipe)
-		{
-			final GCCoreTileEntityOxygenPipe pipe = (GCCoreTileEntityOxygenPipe) tile;
-
-			this.currentPower = pipe.getOxygenInPipe();
-		}
-	}
-
 	@Override
 	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
 	{
 		super.readFromNBT(par1NBTTagCompound);
-		this.setActive(par1NBTTagCompound.getBoolean("active"));
+		this.currentPower = par1NBTTagCompound.getInteger("currentPower");
 	}
 
 	@Override
 	public void writeToNBT(NBTTagCompound par1NBTTagCompound)
 	{
 		super.writeToNBT(par1NBTTagCompound);
-		par1NBTTagCompound.setBoolean("active", this.getActive());
+		par1NBTTagCompound.setInteger("currentPower", this.currentPower);
+	}
+
+	@Override
+	public int transferGasToAcceptor(int amount, EnumGas type) 
+	{
+		if (type == EnumGas.OXYGEN)
+		{
+			currentPower = Math.max(this.currentPower, amount);
+			return 0;
+		}
+		else
+		{
+			return amount;
+		}
+	}
+
+	@Override
+	public boolean canReceiveGas(ForgeDirection side, EnumGas type) 
+	{
+		return true;
+	}
+
+	@Override
+	public boolean canTubeConnect(ForgeDirection side)
+	{
+		return (side != ForgeDirection.UP && side != ForgeDirection.DOWN);
+	}
+
+	@Override
+	public boolean canConnect(ForgeDirection side)
+	{
+		return (side != ForgeDirection.UP && side != ForgeDirection.DOWN);
+	}
+
+	@Override
+	public double getVoltage() 
+	{
+		return 120.0D;
+	}
+
+	@Override
+	public void handlePacketData(INetworkManager network, int packetType, Packet250CustomPayload packet, EntityPlayer player, ByteArrayDataInput dataStream) 
+	{
+		
+	}
+
+	@Override
+	public double getMaxJoules() 
+	{
+		return 2500000;
 	}
 }

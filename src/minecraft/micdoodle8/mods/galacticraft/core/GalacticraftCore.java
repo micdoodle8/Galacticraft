@@ -143,6 +143,8 @@ public class GalacticraftCore
 
 	public static final UEDamageSource spaceshipCrash = (UEDamageSource) new UEDamageSource("spaceshipCrash", "%1$s was in a spaceship crash!").setDamageBypassesArmor();
 	public static final UEDamageSource oxygenSuffocation = (UEDamageSource) new UEDamageSource("oxygenSuffocation", "%1$s ran out of oxygen!").setDamageBypassesArmor();
+	
+	public static double BuildcraftEnergyScalar = 0.2;
 
 	public static ArrayList<Integer> hiddenItems = new ArrayList<Integer>();
 

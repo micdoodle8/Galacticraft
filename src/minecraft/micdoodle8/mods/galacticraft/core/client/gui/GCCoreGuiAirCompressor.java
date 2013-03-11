@@ -43,7 +43,7 @@ public class GCCoreGuiAirCompressor extends GuiContainer
 
 		if (this.distributorInv != null)
 		{
-			this.drawTexturedModalRect(var5 + 68, var6 + 34, 176, 0, (int) Math.min(this.distributorInv.getPower(), 32), 12);
+			this.drawTexturedModalRect(var5 + 68, var6 + 34, 176, 0, (int) Math.min(this.distributorInv.currentPower, 32), 12);
 		}
 	}
 }

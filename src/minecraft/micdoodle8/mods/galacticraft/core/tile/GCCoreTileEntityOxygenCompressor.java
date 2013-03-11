@@ -1,20 +1,19 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.ListIterator;
-import java.util.Set;
-
-import micdoodle8.mods.galacticraft.API.TileEntityOxygenAcceptor;
-import micdoodle8.mods.galacticraft.API.TileEntityOxygenSource;
+import mekanism.api.EnumGas;
+import mekanism.api.IGasAcceptor;
+import mekanism.api.ITubeConnection;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.oxygen.OxygenNetwork;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.ForgeDirection;
+import cpw.mods.fml.common.FMLLog;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -22,76 +21,23 @@ import net.minecraftforge.common.ForgeDirection;
  *  All rights reserved.
  *
  */
-public class GCCoreTileEntityOxygenCompressor extends TileEntityOxygenAcceptor implements IInventory
+public class GCCoreTileEntityOxygenCompressor extends TileEntity implements IInventory, IGasAcceptor, ITubeConnection
 {
-    protected double currentPower;
-    protected double lastPower;
-    protected boolean active;
-	private int indexFromCollector;
+    public int currentPower;
+    
+    public boolean active;
+    
+    /** 
+     * Since this is a modulo calculation, the maximum is lower than the minimum speed
+     */
+    public int MAX_COMPRESSION_SPEED = 20;
+    
+    /** 
+     * Since this is a modulo calculation, the maximum is lower than the minimum speed
+     */
+    public int MIN_COMPRESSION_SPEED = 400;
 
 	private ItemStack[] compressorStacks = new ItemStack[1];
-
-	private Set<TileEntityOxygenSource> sources = new HashSet<TileEntityOxygenSource>();
-
-	@Override
-	public void addSource(TileEntityOxygenSource source)
-	{
-		this.sources.add(source);
-	}
-
-	@Override
-	public void removeSource(TileEntityOxygenSource source)
-	{
-		this.sources.remove(source);
-	}
-
-	@Override
-	public void setSourceCollectors(Set<TileEntityOxygenSource> sources)
-	{
-		this.sources = sources;
-	}
-
-	@Override
-	public Set<TileEntityOxygenSource> getSourceCollectors()
-	{
-		return this.sources;
-	}
-
-	@Override
-	public void setIndexFromSource(int index)
-	{
-		this.indexFromCollector = index;
-	}
-
-	@Override
-	public int getIndexFromSource()
-	{
-		return this.indexFromCollector;
-	}
-
-    @Override
-	public boolean getActive()
-	{
-		return this.active;
-	}
-
-    @Override
-	public void setActive(boolean active)
-	{
-		this.active = active;
-	}
-
-	@Override
-	public double getPower()
-	{
-		return this.currentPower;
-	}
-
-	@Override
-	public void setPower(double power)
-	{
-		this.currentPower = this.lastPower = power;
-	}
 
     public double getDistanceFrom2(double par1, double par3, double par5)
     {
@@ -106,28 +52,7 @@ public class GCCoreTileEntityOxygenCompressor extends TileEntityOxygenAcceptor i
 	{
 		super.updateEntity();
 
-		this.updateSourceList();
-
-		for (int i = 0; i < ForgeDirection.values().length; i++)
-    	{
-			this.updateOxygenFromAdjacentPipe(ForgeDirection.getOrientation(i).offsetX, ForgeDirection.getOrientation(i).offsetY, ForgeDirection.getOrientation(i).offsetZ);
-    	}
-
-		if (!this.worldObj.isRemote && GalacticraftCore.tick % ((31 - Math.min(Math.floor(this.getPower()), 30)) * 5) == 0)
-		{
-			final ItemStack stack = this.getStackInSlot(0);
-
-			if (stack != null && stack.getItemDamage() > 0)
-			{
-				stack.setItemDamage(stack.getItemDamage() - 1);
-			}
-			else if (stack != null)
-			{
-				stack.setItemDamage(0);
-			}
-		}
-
-		if (this.currentPower < 1.0D)
+		if (this.currentPower < 1)
 		{
 			this.active = false;
 		}
@@ -136,40 +61,21 @@ public class GCCoreTileEntityOxygenCompressor extends TileEntityOxygenAcceptor i
 			this.active = true;
 		}
 
-		this.lastPower = this.currentPower;
-	}
-
-	public void updateSourceList()
-	{
-		final ArrayList<TileEntityOxygenSource> sources = new ArrayList<TileEntityOxygenSource>();
-
-		for (final TileEntityOxygenSource source : this.sources)
+		if (this.active)
 		{
-			sources.add(source);
-		}
-
-		final ListIterator li = sources.listIterator();
-
-		while (li.hasNext())
-		{
-			final TileEntityOxygenSource source = (TileEntityOxygenSource) li.next();
-
-			if (!(this.worldObj.getBlockTileEntity(source.xCoord, source.yCoord, source.zCoord) instanceof TileEntityOxygenSource))
+			if (!this.worldObj.isRemote && GalacticraftCore.tick % ((31 - Math.min(Math.floor(this.currentPower), 30)) * 5) == 0)
 			{
-				this.sources.remove(source);
+				final ItemStack stack = this.getStackInSlot(0);
+
+				if (stack != null && stack.getItemDamage() > 0)
+				{
+					stack.setItemDamage(stack.getItemDamage() - 1);
+				}
+				else if (stack != null)
+				{
+					stack.setItemDamage(0);
+				}
 			}
-		}
-	}
-
-	public void updateOxygenFromAdjacentPipe(int xOffset, int yOffset, int zOffset)
-	{
-		final TileEntity tile = this.worldObj.getBlockTileEntity(this.xCoord + xOffset, this.yCoord + yOffset, this.zCoord + zOffset);
-
-		if (tile != null && tile instanceof GCCoreTileEntityOxygenPipe)
-		{
-			final GCCoreTileEntityOxygenPipe pipe = (GCCoreTileEntityOxygenPipe) tile;
-
-			this.currentPower = pipe.getOxygenInPipe();
 		}
 	}
 
@@ -177,7 +83,7 @@ public class GCCoreTileEntityOxygenCompressor extends TileEntityOxygenAcceptor i
 	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
 	{
 		super.readFromNBT(par1NBTTagCompound);
-		this.setActive(par1NBTTagCompound.getBoolean("active"));
+		this.currentPower = par1NBTTagCompound.getInteger("currentPower");
 
         final NBTTagList var2 = par1NBTTagCompound.getTagList("Items");
         this.compressorStacks = new ItemStack[this.getSizeInventory()];
@@ -198,7 +104,7 @@ public class GCCoreTileEntityOxygenCompressor extends TileEntityOxygenAcceptor i
 	public void writeToNBT(NBTTagCompound par1NBTTagCompound)
 	{
 		super.writeToNBT(par1NBTTagCompound);
-		par1NBTTagCompound.setBoolean("active", this.getActive());
+		par1NBTTagCompound.setInteger("currentPower", this.currentPower);
 
         final NBTTagList list = new NBTTagList();
 
@@ -308,4 +214,42 @@ public class GCCoreTileEntityOxygenCompressor extends TileEntityOxygenAcceptor i
 
 	@Override
 	public void closeChest() {}
+
+	@Override
+	public int transferGasToAcceptor(int amount, EnumGas type)
+	{
+		if (type == EnumGas.OXYGEN)
+		{
+			int rejects = 0;
+			int neededOxygen = this.getStackInSlot(0).getItemDamage();
+			
+			if (amount <= neededOxygen)
+			{
+				currentPower = amount;
+			}
+			else if (amount > neededOxygen)
+			{
+				currentPower = neededOxygen;
+				rejects = amount - neededOxygen;
+			}
+			
+			return rejects;
+		}
+		else
+		{
+			return amount;
+		}
+	}
+
+	@Override
+	public boolean canReceiveGas(ForgeDirection side, EnumGas type)
+	{
+		return this.getStackInSlot(0) != null && this.getStackInSlot(0).getItemDamage() > 0 && type == EnumGas.OXYGEN;
+	}
+
+	@Override
+	public boolean canTubeConnect(ForgeDirection side) 
+	{
+		return (side != ForgeDirection.UP && side != ForgeDirection.DOWN);
+	}
 }

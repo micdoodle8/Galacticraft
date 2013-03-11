@@ -1,14 +1,13 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import java.util.List;
+import java.util.Arrays;
 
-import micdoodle8.mods.galacticraft.API.IConnectableToPipe;
+import mekanism.api.ITubeConnection;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.oxygen.OxygenNetwork;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenPipe;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MovingObjectPosition;
@@ -19,7 +18,7 @@ import net.minecraftforge.common.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class GCCoreBlockOxygenPipe extends BlockContainer implements IConnectableToPipe
+public class GCCoreBlockOxygenPipe extends BlockContainer
 {
 	private final float oxygenPipeMin = 0.4F;
 	private final float oxygenPipeMax = 0.6F;
@@ -52,150 +51,64 @@ public class GCCoreBlockOxygenPipe extends BlockContainer implements IConnectabl
 	{
 		return new GCCoreTileEntityOxygenPipe();
 	}
-
+	
 	@Override
-	public void addCollidingBlockToList(World world, int i, int j, int k, AxisAlignedBB axisalignedbb, List arraylist, Entity par7Entity)
+	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z)
 	{
-		this.setBlockBounds(this.oxygenPipeMin, this.oxygenPipeMin, this.oxygenPipeMin, this.oxygenPipeMax, this.oxygenPipeMax, this.oxygenPipeMax);
-		super.addCollidingBlockToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
-
-		world.getBlockTileEntity(i, j, k);
-
-		if (Block.blocksList[world.getBlockId(i - 1, j, k)] instanceof IConnectableToPipe)
+		TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
+		
+		float minX = 0.4F;
+		float minY = 0.4F;
+		float minZ = 0.4F;
+		float maxX = 0.6F;
+		float maxY = 0.6F;
+		float maxZ = 0.6F;
+		
+		if(tileEntity != null)
 		{
-			final IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[world.getBlockId(i - 1, j, k)];
-
-			if (pipe.isConnectableOnSide(world, i, j, k, ForgeDirection.WEST))
+			boolean[] connectable = new boolean[] {false, false, false, false, false, false};
+			ITubeConnection[] connections = OxygenNetwork.getConnections(tileEntity);
+			
+			for(ITubeConnection connection : connections)
 			{
-				this.setBlockBounds(0.0F, this.oxygenPipeMin, this.oxygenPipeMin, this.oxygenPipeMax, this.oxygenPipeMax, this.oxygenPipeMax);
-				super.addCollidingBlockToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
+				if(connection !=  null)
+				{
+					int side = Arrays.asList(connections).indexOf(connection);
+					
+					if(connection.canTubeConnect(ForgeDirection.getOrientation(side).getOpposite()))
+					{
+						connectable[side] = true;
+					}
+				}
 			}
-		}
-
-		if (Block.blocksList[world.getBlockId(i + 1, j, k)] instanceof IConnectableToPipe)
-		{
-			final IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[world.getBlockId(i + 1, j, k)];
-
-			if (pipe.isConnectableOnSide(world, i, j, k, ForgeDirection.EAST))
+			
+			if(connectable[0])
 			{
-				this.setBlockBounds(this.oxygenPipeMin, this.oxygenPipeMin, this.oxygenPipeMin, 1.0F, this.oxygenPipeMax, this.oxygenPipeMax);
-				super.addCollidingBlockToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
+				minY = 0.0F;
 			}
-		}
-
-		if (Block.blocksList[world.getBlockId(i, j - 1, k)] instanceof IConnectableToPipe)
-		{
-			final IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[world.getBlockId(i, j - 1, k)];
-
-			if (pipe.isConnectableOnSide(world, i, j, k, ForgeDirection.DOWN))
+			if(connectable[1])
 			{
-				this.setBlockBounds(this.oxygenPipeMin, 0.0F, this.oxygenPipeMin, this.oxygenPipeMax, this.oxygenPipeMax, this.oxygenPipeMax);
-				super.addCollidingBlockToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
+				maxY = 1.0F;
 			}
-		}
-
-		if (Block.blocksList[world.getBlockId(i, j + 1, k)] instanceof IConnectableToPipe)
-		{
-			final IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[world.getBlockId(i, j + 1, k)];
-
-			if (pipe.isConnectableOnSide(world, i, j, k, ForgeDirection.UP))
+			if(connectable[2])
 			{
-				this.setBlockBounds(this.oxygenPipeMin, this.oxygenPipeMin, this.oxygenPipeMin, this.oxygenPipeMax, 1.0F, this.oxygenPipeMax);
-				super.addCollidingBlockToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
+				minZ = 0.0F;
 			}
-		}
-
-		if (Block.blocksList[world.getBlockId(i, j, k - 1)] instanceof IConnectableToPipe)
-		{
-			final IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[world.getBlockId(i, j, k - 1)];
-
-			if (pipe.isConnectableOnSide(world, i, j, k, ForgeDirection.NORTH))
+			if(connectable[3])
 			{
-				this.setBlockBounds(this.oxygenPipeMin, this.oxygenPipeMin, 0.0F, this.oxygenPipeMax, this.oxygenPipeMax, this.oxygenPipeMax);
-				super.addCollidingBlockToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
+				maxZ = 1.0F;
 			}
-		}
-
-		if (Block.blocksList[world.getBlockId(i, j, k + 1)] instanceof IConnectableToPipe)
-		{
-			final IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[world.getBlockId(i, j, k + 1)];
-
-			if (pipe.isConnectableOnSide(world, i, j, k, ForgeDirection.SOUTH))
+			if(connectable[4])
 			{
-				this.setBlockBounds(this.oxygenPipeMin, this.oxygenPipeMin, this.oxygenPipeMin, this.oxygenPipeMax, this.oxygenPipeMax, 1.0F);
-				super.addCollidingBlockToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
+				minX = 0.0F;
 			}
-		}
-
-		this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-	}
-
-	@Override
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int i, int j, int k)
-	{
-		float xMin = this.oxygenPipeMin, xMax = this.oxygenPipeMax, yMin = this.oxygenPipeMin, yMax = this.oxygenPipeMax, zMin = this.oxygenPipeMin, zMax = this.oxygenPipeMax;
-
-		if (Block.blocksList[world.getBlockId(i - 1, j, k)] instanceof IConnectableToPipe)
-		{
-			final IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[world.getBlockId(i - 1, j, k)];
-
-			if (pipe.isConnectableOnSide(world, i, j, k, ForgeDirection.WEST))
+			if(connectable[5])
 			{
-				xMin = 0.0F;
+				maxX = 1.0F;
 			}
+			
+			setBlockBounds(minX, minY, minZ, maxX, maxY, maxZ);
 		}
-
-		if (Block.blocksList[world.getBlockId(i + 1, j, k)] instanceof IConnectableToPipe)
-		{
-			final IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[world.getBlockId(i + 1, j, k)];
-
-			if (pipe.isConnectableOnSide(world, i, j, k, ForgeDirection.EAST))
-			{
-				xMax = 1.0F;
-			}
-		}
-
-		if (Block.blocksList[world.getBlockId(i, j - 1, k)] instanceof IConnectableToPipe)
-		{
-			final IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[world.getBlockId(i, j - 1, k)];
-
-			if (pipe.isConnectableOnSide(world, i, j, k, ForgeDirection.DOWN))
-			{
-				yMin = 0.0F;
-			}
-		}
-
-		if (Block.blocksList[world.getBlockId(i, j + 1, k)] instanceof IConnectableToPipe)
-		{
-			final IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[world.getBlockId(i, j + 1, k)];
-
-			if (pipe.isConnectableOnSide(world, i, j, k, ForgeDirection.UP))
-			{
-				yMax = 1.0F;
-			}
-		}
-
-		if (Block.blocksList[world.getBlockId(i, j, k - 1)] instanceof IConnectableToPipe)
-		{
-			final IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[world.getBlockId(i, j, k - 1)];
-
-			if (pipe.isConnectableOnSide(world, i, j, k, ForgeDirection.NORTH))
-			{
-				zMin = 0.0F;
-			}
-		}
-
-		if (Block.blocksList[world.getBlockId(i, j, k + 1)] instanceof IConnectableToPipe)
-		{
-			final IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[world.getBlockId(i, j, k + 1)];
-
-			if (pipe.isConnectableOnSide(world, i, j, k, ForgeDirection.SOUTH))
-			{
-				zMax = 1.0F;
-			}
-		}
-
-		return AxisAlignedBB.getBoundingBox((double) i + xMin, (double) j + yMin, (double) k + zMin, (double) i + xMax, (double) j + yMax, (double) k + zMax);
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -204,102 +117,68 @@ public class GCCoreBlockOxygenPipe extends BlockContainer implements IConnectabl
 	{
 		return this.getCollisionBoundingBoxFromPool(world, i, j, k);
 	}
-
-    @Override
-	public void breakBlock(World world, int x, int y, int z, int par5, int par6)
-    {
-    	for (int i = 0; i < ForgeDirection.values().length - 1; i++)
-    	{
-    		if (world.getBlockTileEntity(x, y, z) instanceof GCCoreTileEntityOxygenPipe)
-    		{
-        		final TileEntity tile = world.getBlockTileEntity(x + ForgeDirection.getOrientation(i).offsetX, y + ForgeDirection.getOrientation(i).offsetY, z + ForgeDirection.getOrientation(i).offsetZ);
-        		final GCCoreTileEntityOxygenPipe thisPipe = (GCCoreTileEntityOxygenPipe)world.getBlockTileEntity(x, y, z);
-
-        		if (tile != null && thisPipe != null && tile instanceof GCCoreTileEntityOxygenPipe)
-        		{
-        			final GCCoreTileEntityOxygenPipe pipe = (GCCoreTileEntityOxygenPipe)tile;
-
-    				pipe.setOxygenInPipe(0D);
-    				pipe.setZeroOxygen();
-        		}
-    		}
-    	}
-
-    	super.breakBlock(world, x, y, z, par5, par6);
-    }
-
+	
 	@Override
-	public MovingObjectPosition collisionRayTrace(World world, int i, int j, int k, Vec3 vec3d, Vec3 vec3d1)
+	public MovingObjectPosition collisionRayTrace(World world, int x, int y, int z, Vec3 vec3d, Vec3 vec3d1)
 	{
-		float xMin = this.oxygenPipeMin, xMax = this.oxygenPipeMax, yMin = this.oxygenPipeMin, yMax = this.oxygenPipeMax, zMin = this.oxygenPipeMin, zMax = this.oxygenPipeMax;
-
-		if (Block.blocksList[world.getBlockId(i - 1, j, k)] instanceof IConnectableToPipe)
+		TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
+		
+		float minX = 0.4F;
+		float minY = 0.4F;
+		float minZ = 0.4F;
+		float maxX = 0.6F;
+		float maxY = 0.6F;
+		float maxZ = 0.6F;
+		
+		if(tileEntity != null)
 		{
-			final IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[world.getBlockId(i - 1, j, k)];
-
-			if (pipe.isConnectableOnSide(world, i, j, k, ForgeDirection.WEST))
+			boolean[] connectable = new boolean[] {false, false, false, false, false, false};
+			ITubeConnection[] connections = OxygenNetwork.getConnections(tileEntity);
+			
+			for(ITubeConnection connection : connections)
 			{
-				xMin = 0.0F;
+				if(connection !=  null)
+				{
+					int side = Arrays.asList(connections).indexOf(connection);
+					
+					if(connection.canTubeConnect(ForgeDirection.getOrientation(side).getOpposite()))
+					{
+						connectable[side] = true;
+					}
+				}
 			}
+			
+			if(connectable[0])
+			{
+				minY = 0.0F;
+			}
+			if(connectable[1])
+			{
+				maxY = 1.0F;
+			}
+			if(connectable[2])
+			{
+				minZ = 0.0F;
+			}
+			if(connectable[3])
+			{
+				maxZ = 1.0F;
+			}
+			if(connectable[4])
+			{
+				minX = 0.0F;
+			}
+			if(connectable[5])
+			{
+				maxX = 1.0F;
+			}
+			
+			setBlockBounds(minX, minY, minZ, maxX, maxY, maxZ);
 		}
 
-		if (Block.blocksList[world.getBlockId(i + 1, j, k)] instanceof IConnectableToPipe)
-		{
-			final IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[world.getBlockId(i + 1, j, k)];
+		final MovingObjectPosition r = super.collisionRayTrace(world, x, y, z, vec3d, vec3d1);
 
-			if (pipe.isConnectableOnSide(world, i, j, k, ForgeDirection.EAST))
-			{
-				xMax = 1.0F;
-			}
-		}
-
-		if (Block.blocksList[world.getBlockId(i, j - 1, k)] instanceof IConnectableToPipe)
-		{
-			final IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[world.getBlockId(i, j - 1, k)];
-
-			if (pipe.isConnectableOnSide(world, i, j, k, ForgeDirection.DOWN))
-			{
-				yMin = 0.0F;
-			}
-		}
-
-		if (Block.blocksList[world.getBlockId(i, j + 1, k)] instanceof IConnectableToPipe)
-		{
-			final IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[world.getBlockId(i, j + 1, k)];
-
-			if (pipe.isConnectableOnSide(world, i, j, k, ForgeDirection.UP))
-			{
-				yMax = 1.0F;
-			}
-		}
-
-		if (Block.blocksList[world.getBlockId(i, j, k - 1)] instanceof IConnectableToPipe)
-		{
-			final IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[world.getBlockId(i, j, k - 1)];
-
-			if (pipe.isConnectableOnSide(world, i, j, k, ForgeDirection.NORTH))
-			{
-				zMin = 0.0F;
-			}
-		}
-
-		if (Block.blocksList[world.getBlockId(i, j, k + 1)] instanceof IConnectableToPipe)
-		{
-			final IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[world.getBlockId(i, j, k + 1)];
-
-			if (pipe.isConnectableOnSide(world, i, j, k, ForgeDirection.SOUTH))
-			{
-				zMax = 1.0F;
-			}
-		}
-
-		this.setBlockBounds(xMin, yMin, zMin, xMax, yMax, zMax);
-
-		final MovingObjectPosition r = super.collisionRayTrace(world, i, j, k, vec3d, vec3d1);
-
-		this.setBlockBounds(0, 0, 0, 1, 1, 1);
-
-		return r;
+		return super.collisionRayTrace(world, x, y, z, vec3d, vec3d1);
 	}
 
 	@Override
@@ -307,10 +186,4 @@ public class GCCoreBlockOxygenPipe extends BlockContainer implements IConnectabl
     {
     	return "/micdoodle8/mods/galacticraft/core/client/blocks/core.png";
     }
-
-	@Override
-	public boolean isConnectableOnSide(IBlockAccess blockAccess, int x, int y, int z, ForgeDirection side)
-	{
-		return true;
-	}
 }

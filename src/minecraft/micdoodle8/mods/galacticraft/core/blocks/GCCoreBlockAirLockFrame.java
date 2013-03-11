@@ -2,9 +2,6 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.Random;
 
-import universalelectricity.core.vector.Vector3;
-
-import micdoodle8.mods.galacticraft.API.IConnectableToPipe;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAirLock;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import net.minecraft.block.Block;
@@ -13,10 +10,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import universalelectricity.core.vector.Vector3;
 
-public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvanced implements IConnectableToPipe
+public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvanced
 {
 	public GCCoreBlockAirLockFrame(int par1, int par2)
 	{
@@ -402,9 +398,9 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvanced implements ICon
     	return "/micdoodle8/mods/galacticraft/core/client/blocks/core.png";
     }
 
-	@Override
-	public boolean isConnectableOnSide(IBlockAccess blockAccess, int x, int y, int z, ForgeDirection side)
-	{
-		return true;
-	}
+//	@Override
+//	public boolean isConnectableOnSide(IBlockAccess blockAccess, int x, int y, int z, ForgeDirection side)
+//	{
+//		return true;
+//	}
 }

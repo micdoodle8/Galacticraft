@@ -23,8 +23,8 @@ public class GCCoreTileEntityOxygenCompressorRenderer extends TileEntitySpecialR
 {
     public void renderGCTileEntityTreasureChestAt(GCCoreTileEntityOxygenCompressor par1GCTileEntityTreasureChest, double par2, double par4, double par6, float par8)
     {
-        this.drawStringAt(String.valueOf("P: " + Math.round(par1GCTileEntityTreasureChest.getPower() * 10) / 10.0D), par2 + 0.0F, par4 + 0.3F, par6 + 0.0F);
-        this.drawStringAt(String.valueOf("S: " + par1GCTileEntityTreasureChest.getSourceCollectors().size()), par2 + 0.0F, par4 + 0.6F, par6 + 0.0F);
+        this.drawStringAt(String.valueOf("P: " + Math.round(par1GCTileEntityTreasureChest.currentPower * 10) / 10.0D), par2 + 0.0F, par4 + 0.3F, par6 + 0.0F);
+//        this.drawStringAt(String.valueOf("S: " + par1GCTileEntityTreasureChest.getSourceCollectors().size()), par2 + 0.0F, par4 + 0.6F, par6 + 0.0F);
     }
 
     @Override

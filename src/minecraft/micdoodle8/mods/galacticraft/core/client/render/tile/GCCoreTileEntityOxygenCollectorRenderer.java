@@ -25,7 +25,7 @@ public class GCCoreTileEntityOxygenCollectorRenderer extends TileEntitySpecialRe
 {
     public void renderGCTileEntityTreasureChestAt(GCCoreTileEntityOxygenCollector par1GCTileEntityTreasureChest, double par2, double par4, double par6, float par8)
     {
-        this.drawStringAt(String.valueOf("P: " + Math.round(par1GCTileEntityTreasureChest.getPower() * 10) / 10.0D), par2 + 0.0F, par4 + 0.3F, par6 + 0.0F);
+//        this.drawStringAt(String.valueOf("P: " + Math.round(par1GCTileEntityTreasureChest.outputSpeed * 10) / 10.0D), par2 + 0.0F, par4 + 0.3F, par6 + 0.0F);
 
     	MathHelper.floor_double(par2 + 0.5D);
     	MathHelper.floor_double(par4 + 0.5D);
@@ -40,17 +40,17 @@ public class GCCoreTileEntityOxygenCollectorRenderer extends TileEntitySpecialRe
       	GL11.glTranslatef(0.5F, 0.8F, 0.5F);
 	    GL11.glScalef(1.3F, -1.3F, -1.3F);
 
-    	if (par1GCTileEntityTreasureChest.getPower() > 0)
+    	if (par1GCTileEntityTreasureChest.outputSpeed > 0)
     	{
     		for (int i = 0; i < 4; i++)
     		{
     			for (int j = 0; j < 3; j++)
     			{
-    				par1GCTileEntityTreasureChest.fanModel.fans[i][j].rotateAngleY -= par1GCTileEntityTreasureChest.getPower() / 500.0F;
+    				par1GCTileEntityTreasureChest.fanModel.fans[i][j].rotateAngleY -= par1GCTileEntityTreasureChest.outputSpeed / 500.0F;
     			}
     		}
 
-    		par1GCTileEntityTreasureChest.fanModel.center.rotateAngleY -= par1GCTileEntityTreasureChest.getPower() / 500.0F;
+    		par1GCTileEntityTreasureChest.fanModel.center.rotateAngleY -= par1GCTileEntityTreasureChest.outputSpeed / 500.0F;
     	}
     	else
     	{

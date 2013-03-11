@@ -89,7 +89,7 @@ public class GCCoreTileEntityBreathableAir extends TileEntity
 		{
 			final double distanceFromDistributor = distributor.getDistanceFrom2(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D);
 
-			if (distanceFromDistributor < distance && distributor.getActive())
+			if (distanceFromDistributor < distance && distributor.currentPower > 1)
 			{
 				distance = distanceFromDistributor;
 				closestDistributor = distributor;

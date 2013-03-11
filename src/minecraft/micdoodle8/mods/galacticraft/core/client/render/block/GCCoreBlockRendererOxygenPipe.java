@@ -1,9 +1,13 @@
 package micdoodle8.mods.galacticraft.core.client.render.block;
 
-import micdoodle8.mods.galacticraft.API.IConnectableToPipe;
+import java.util.Arrays;
+
+import mekanism.api.ITubeConnection;
+import micdoodle8.mods.galacticraft.core.oxygen.OxygenNetwork;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.ForgeDirection;
 
@@ -22,76 +26,61 @@ public class GCCoreBlockRendererOxygenPipe implements ISimpleBlockRenderingHandl
 
 	public void renderPipe(RenderBlocks renderblocks, IBlockAccess iblockaccess, Block block, int x, int y, int z)
 	{
-		final float minSize = 0.4F;
-		final float maxSize = 0.6F;
-
-		renderblocks.setRenderBounds(minSize, minSize, minSize, maxSize, maxSize, maxSize);
-		renderblocks.renderStandardBlock(block, x, y, z);
-
-		if (Block.blocksList[iblockaccess.getBlockId(x - 1, y, z)] instanceof IConnectableToPipe)
+		TileEntity tileEntity = iblockaccess.getBlockTileEntity(x, y, z);
+		
+		float minX = 0.40F;
+		float minY = 0.40F;
+		float minZ = 0.40F;
+		float maxX = 0.60F;
+		float maxY = 0.60F;
+		float maxZ = 0.60F;
+		
+		if(tileEntity != null)
 		{
-			final IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[iblockaccess.getBlockId(x - 1, y, z)];
-
-			if (pipe.isConnectableOnSide(iblockaccess, x, y, z, ForgeDirection.WEST))
+			boolean[] connectable = new boolean[] {false, false, false, false, false, false};
+			ITubeConnection[] connections = OxygenNetwork.getConnections(tileEntity);
+			
+			for(ITubeConnection connection : connections)
 			{
-				renderblocks.setRenderBounds(0.0F, minSize, minSize, minSize, maxSize, maxSize);
-				renderblocks.renderStandardBlock(block, x, y, z);
+				if(connection !=  null)
+				{
+					int side = Arrays.asList(connections).indexOf(connection);
+
+					if(connection.canTubeConnect(ForgeDirection.getOrientation(side).getOpposite()))
+					{
+						switch (side)
+						{ 
+						case 0: // DOWN
+							renderblocks.setRenderBounds(minX, 0.0F, minZ, maxX, 0.4F, maxZ);
+							renderblocks.renderStandardBlock(block, x, y, z);
+							break;
+						case 1: // UP
+							renderblocks.setRenderBounds(minX, 0.6F, minZ, maxX, 1.0F, maxZ);
+							renderblocks.renderStandardBlock(block, x, y, z);
+							break;
+						case 2: // NORTH
+							renderblocks.setRenderBounds(minX, minY, 0.0, maxX, maxY, 0.4F);
+							renderblocks.renderStandardBlock(block, x, y, z);
+							break;
+						case 3: // SOUTH
+							renderblocks.setRenderBounds(minX, minY, 0.6F, maxX, maxY, 1.0);
+							renderblocks.renderStandardBlock(block, x, y, z);
+							break;
+						case 4: // WEST
+							renderblocks.setRenderBounds(0.0, minY, minZ, 0.4F, maxY, maxZ);
+							renderblocks.renderStandardBlock(block, x, y, z);
+							break;
+						case 5: // EAST
+							renderblocks.setRenderBounds(0.6F, minY, minZ, 1.0, maxY, maxZ);
+							renderblocks.renderStandardBlock(block, x, y, z);
+							break;
+						}
+					}
+				}
 			}
-		}
 
-		if (Block.blocksList[iblockaccess.getBlockId(x + 1, y, z)] instanceof IConnectableToPipe)
-		{
-			final IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[iblockaccess.getBlockId(x + 1, y, z)];
-
-			if (pipe.isConnectableOnSide(iblockaccess, x, y, z, ForgeDirection.EAST))
-			{
-				renderblocks.setRenderBounds(maxSize, minSize, minSize, 1.0F, maxSize, maxSize);
-				renderblocks.renderStandardBlock(block, x, y, z);
-			}
-		}
-
-		if (Block.blocksList[iblockaccess.getBlockId(x, y - 1, z)] instanceof IConnectableToPipe)
-		{
-			final IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[iblockaccess.getBlockId(x, y - 1, z)];
-
-			if (pipe.isConnectableOnSide(iblockaccess, x, y, z, ForgeDirection.DOWN))
-			{
-				renderblocks.setRenderBounds(minSize, 0.0F, minSize, maxSize, minSize, maxSize);
-				renderblocks.renderStandardBlock(block, x, y, z);
-			}
-		}
-
-		if (Block.blocksList[iblockaccess.getBlockId(x, y + 1, z)] instanceof IConnectableToPipe)
-		{
-			final IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[iblockaccess.getBlockId(x, y + 1, z)];
-
-			if (pipe.isConnectableOnSide(iblockaccess, x, y, z, ForgeDirection.UP))
-			{
-				renderblocks.setRenderBounds(minSize, maxSize, minSize, maxSize, 1.0F, maxSize);
-				renderblocks.renderStandardBlock(block, x, y, z);
-			}
-		}
-
-		if (Block.blocksList[iblockaccess.getBlockId(x, y, z - 1)] instanceof IConnectableToPipe)
-		{
-			final IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[iblockaccess.getBlockId(x, y, z - 1)];
-
-			if (pipe.isConnectableOnSide(iblockaccess, x, y, z, ForgeDirection.NORTH))
-			{
-				renderblocks.setRenderBounds(minSize, minSize, 0.0F, maxSize, maxSize, minSize);
-				renderblocks.renderStandardBlock(block, x, y, z);
-			}
-		}
-
-		if (Block.blocksList[iblockaccess.getBlockId(x, y, z + 1)] instanceof IConnectableToPipe)
-		{
-			final IConnectableToPipe pipe = (IConnectableToPipe) Block.blocksList[iblockaccess.getBlockId(x, y, z + 1)];
-
-			if (pipe.isConnectableOnSide(iblockaccess, x, y, z, ForgeDirection.SOUTH))
-			{
-				renderblocks.setRenderBounds(minSize, minSize, maxSize, maxSize, maxSize, 1.0F);
-				renderblocks.renderStandardBlock(block, x, y, z);
-			}
+			renderblocks.setRenderBounds(minX, minY, minZ, maxX, maxY, maxZ);
+			renderblocks.renderStandardBlock(block, x, y, z);
 		}
 	}
 
