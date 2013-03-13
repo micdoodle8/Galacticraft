@@ -1,20 +1,35 @@
 package micdoodle8.mods.galacticraft.core.items;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import universalelectricity.core.vector.Vector3;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreItemOilExtractor extends Item
 {
+	protected List<Icon> icons = new ArrayList<Icon>();
+	
+	public static final String[] names = {
+		"extactor_1", // 0
+		"extactor_2", // 1
+		"extactor_3", // 2
+		"extactor_4", // 3
+		"extactor_5"}; // 4
+	
 	public GCCoreItemOilExtractor(int par1)
 	{
 		super(par1);
@@ -36,6 +51,28 @@ public class GCCoreItemOilExtractor extends Item
         return par1ItemStack;
     }
 
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void func_94581_a(IconRegister iconRegister)
+	{
+		List<ItemStack> list = new ArrayList<ItemStack>();
+		this.getSubItems(this.itemID, this.getCreativeTab(), list);
+
+		this.icons.add(iconRegister.func_94245_a("galacticraftcore:extractor_1"));
+		this.icons.add(iconRegister.func_94245_a("galacticraftcore:extractor_2"));
+		this.icons.add(iconRegister.func_94245_a("galacticraftcore:extractor_3"));
+		this.icons.add(iconRegister.func_94245_a("galacticraftcore:extractor_4"));
+		this.icons.add(iconRegister.func_94245_a("galacticraftcore:extractor_5"));
+			
+		this.iconIndex = iconRegister.func_94245_a("galacticraftcore:extractor_1");
+	}
+
+	@Override
+	public String getUnlocalizedName(ItemStack itemStack)
+	{
+		return "item.oilExtractor";
+	}
+
     @Override
     public void onUsingItemTick(ItemStack par1ItemStack, EntityPlayer par3EntityPlayer, int count)
     {
@@ -47,7 +84,7 @@ public class GCCoreItemOilExtractor extends Item
 
     		if (this.isOilBlock(par3EntityPlayer, par3EntityPlayer.worldObj, x, y, z))
     		{
-        		par3EntityPlayer.worldObj.setBlockWithNotify(x, y, z, 0);
+        		par3EntityPlayer.worldObj.func_94571_i(x, y, z);
 
             	if (this.openCanister(par3EntityPlayer) != null)
             	{
@@ -85,13 +122,13 @@ public class GCCoreItemOilExtractor extends Item
     }
 
     @Override
-    public ItemStack onFoodEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
+    public ItemStack onEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
         return par1ItemStack;
     }
 
     @Override
-	public int getIconIndex(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining)
+	public Icon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining)
     {
 		final int count2 = useRemaining / 2;
 
@@ -100,33 +137,27 @@ public class GCCoreItemOilExtractor extends Item
 		case 0:
 			if (useRemaining == 0)
 			{
-				return 52;
+				return this.icons.get(0);
 			}
-			return 56;
+			return this.icons.get(4);
 		case 1:
-			return 55;
+			return this.icons.get(3);
 		case 2:
-			return 54;
+			return this.icons.get(2);
 		case 3:
-			return 53;
+			return this.icons.get(1);
 		case 4:
-			return 52;
+			return this.icons.get(0);
 		}
 
-		return 0;
+		return this.icons.get(0);
     }
 
     @Override
 	public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4)
     {
-    	this.iconIndex = 52;
+    	this.iconIndex = this.icons.get(0);
     }
-
-	@Override
-	public String getTextureFile()
-	{
-		return "/micdoodle8/mods/galacticraft/core/client/items/core.png";
-	}
 
 	private boolean isOilBlock(EntityPlayer player, World world, int x, int y, int z)
 	{

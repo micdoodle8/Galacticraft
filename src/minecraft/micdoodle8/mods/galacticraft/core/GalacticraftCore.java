@@ -56,11 +56,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.network.packet.Packet9Respawn;
-import net.minecraft.src.ServerPlayerAPI;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
+import universalelectricity.prefab.CustomDamageSource;
 import universalelectricity.prefab.TranslationHelper;
-import universalelectricity.prefab.UEDamageSource;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.IScheduledTickHandler;
 import cpw.mods.fml.common.ITickHandler;
@@ -101,8 +100,8 @@ public class GalacticraftCore
 	public static final String CHANNEL = "GalacticraftCore";
 
     public static final int LOCALMAJVERSION = 0;
-    public static final int LOCALMINVERSION = 0;
-    public static final int LOCALBUILDVERSION = 20;
+    public static final int LOCALMINVERSION = 1;
+    public static final int LOCALBUILDVERSION = 21;
     public static int remoteMajVer;
     public static int remoteMinVer;
     public static int remoteBuildVer;
@@ -141,8 +140,8 @@ public class GalacticraftCore
 	public static final String CONFIG_FILE = "Galacticraft/core.conf";
 	private static final String[] LANGUAGES_SUPPORTED = new String[] { "en_US", "zh_CN", "fr_CA", "fr_FR" };
 
-	public static final UEDamageSource spaceshipCrash = (UEDamageSource) new UEDamageSource("spaceshipCrash", "%1$s was in a spaceship crash!").setDamageBypassesArmor();
-	public static final UEDamageSource oxygenSuffocation = (UEDamageSource) new UEDamageSource("oxygenSuffocation", "%1$s ran out of oxygen!").setDamageBypassesArmor();
+	public static final CustomDamageSource spaceshipCrash = (CustomDamageSource) new CustomDamageSource("spaceshipCrash").setDeathMessage("%1$s was in a spaceship crash!").setDamageBypassesArmor();
+	public static final CustomDamageSource oxygenSuffocation = (CustomDamageSource) new CustomDamageSource("oxygenSuffocation").setDeathMessage("%1$s ran out of oxygen!").setDamageBypassesArmor();
 	
 	public static double BuildcraftEnergyScalar = 0.2;
 
@@ -153,15 +152,15 @@ public class GalacticraftCore
 	{
 		GalacticraftCore.moon.preLoad(event);
 		
-		try
-		{
-			ServerPlayerAPI.register(GalacticraftCore.MODID, GCCorePlayerBase.class);
-		}
-		catch (Exception e)
-		{
-			FMLLog.severe("PLAYER API NOT INSTALLED!");
-			e.printStackTrace();
-		}
+//		try
+//		{
+//			ServerPlayerAPI.register(GalacticraftCore.MODID, GCCorePlayerBase.class);
+//		}
+//		catch (Exception e)
+//		{
+//			FMLLog.severe("PLAYER API NOT INSTALLED!");
+//			e.printStackTrace();
+//		}
 		
 		GalacticraftCore.registerSubMod(GalacticraftCore.moon);
 
@@ -177,10 +176,6 @@ public class GalacticraftCore
 		OreDictionary.registerOre("oreCopper", new ItemStack(GCCoreBlocks.blockOres, 1, 0));
 		OreDictionary.registerOre("oreAluminium", new ItemStack(GCCoreBlocks.blockOres, 1, 1));
 		OreDictionary.registerOre("oreTitanium", new ItemStack(GCCoreBlocks.blockOres, 1, 2));
-
-		OreDictionary.registerOre("ingotCopper", new ItemStack(GCCoreItems.ingotCopper));
-		OreDictionary.registerOre("ingotAluminium", new ItemStack(GCCoreItems.ingotAluminum));
-		OreDictionary.registerOre("ingotTitanium", new ItemStack(GCCoreItems.ingotTitanium));
 
 		GalacticraftCore.proxy.preInit(event);
 	}

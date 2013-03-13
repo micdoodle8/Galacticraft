@@ -24,7 +24,7 @@ public class GCCoreBlockRefinery extends BlockContainer
 
     protected GCCoreBlockRefinery(int par1, int blockIndexInTexture)
     {
-        super(par1, blockIndexInTexture, Material.rock);
+        super(par1, Material.rock);
     }
 
     @Override
@@ -68,8 +68,8 @@ public class GCCoreBlockRefinery extends BlockContainer
                 {
                     for (int j = -1; j <= 1; j++)
                     {
-                        par1World.spawnParticle("smoke", (var7 + var11 + i * 0.2), var8, (var9 + var10 + j * 0.2), 0.0D, 0.01D, 0.0D);
-                        par1World.spawnParticle("flame", (var7 + var11 + i * 0.1), var8 - 0.2, (var9 + var10 + j * 0.1), 0.0D, 0.0001D, 0.0D);
+                        par1World.spawnParticle("smoke", var7 + var11 + i * 0.2, var8, var9 + var10 + j * 0.2, 0.0D, 0.01D, 0.0D);
+                        par1World.spawnParticle("flame", var7 + var11 + i * 0.1, var8 - 0.2, var9 + var10 + j * 0.1, 0.0D, 0.0001D, 0.0D);
                     }
                 }
             }
@@ -116,7 +116,7 @@ public class GCCoreBlockRefinery extends BlockContainer
                         }
 
                         var9.stackSize -= var13;
-                        final EntityItem var14 = new EntityItem(par1World, (par2 + var10), (par3 + var11), (par4 + var12), new ItemStack(var9.itemID, var13, var9.getItemDamage()));
+                        final EntityItem var14 = new EntityItem(par1World, par2 + var10, par3 + var11, par4 + var12, new ItemStack(var9.itemID, var13, var9.getItemDamage()));
 
                         if (var9.hasTagCompound())
                         {
@@ -124,9 +124,9 @@ public class GCCoreBlockRefinery extends BlockContainer
                         }
 
                         final float var15 = 0.05F;
-                        var14.motionX = ((float)this.refineryRand.nextGaussian() * var15);
-                        var14.motionY = ((float)this.refineryRand.nextGaussian() * var15 + 0.2F);
-                        var14.motionZ = ((float)this.refineryRand.nextGaussian() * var15);
+                        var14.motionX = (float)this.refineryRand.nextGaussian() * var15;
+                        var14.motionY = (float)this.refineryRand.nextGaussian() * var15 + 0.2F;
+                        var14.motionZ = (float)this.refineryRand.nextGaussian() * var15;
                         par1World.spawnEntityInWorld(var14);
                     }
                 }

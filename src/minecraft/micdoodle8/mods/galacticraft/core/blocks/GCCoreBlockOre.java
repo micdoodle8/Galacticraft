@@ -7,8 +7,10 @@ import micdoodle8.mods.galacticraft.API.IDetectableResource;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Icon;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -21,28 +23,27 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GCCoreBlockOre extends Block implements IDetectableResource
 {
 	// Copper: 0, Aluminum: 1, Titanium: 2.
+	Icon[] iconBuffer;
 
-	public GCCoreBlockOre(int i, int j)
+	public GCCoreBlockOre(int i)
 	{
-		super(i, j, Material.rock);
-        this.setRequiresSelfNotify();
+		super(i, Material.rock);
         this.setCreativeTab(GalacticraftCore.galacticraftTab);
 	}
 
+    @Override
+    public void func_94332_a(IconRegister par1IconRegister)
+    {
+    	this.iconBuffer = new Icon[3];
+    	this.iconBuffer[0] = par1IconRegister.func_94245_a("galacticraftcore:ore_copper");
+    	this.iconBuffer[1] = par1IconRegister.func_94245_a("galacticraftcore:ore_aluminium");
+    	this.iconBuffer[2] = par1IconRegister.func_94245_a("galacticraftcore:ore_titanium");
+    }
+
 	@Override
-	public int getBlockTextureFromSideAndMetadata(int side, int meta)
+	public Icon getBlockTextureFromSideAndMetadata(int side, int meta)
 	{
-		switch (meta)
-		{
-		case 0:
-			return 1;
-		case 1:
-			return 0;
-		case 2:
-			return 2;
-		default:
-			return -1;
-		}
+		return this.iconBuffer[meta];
 	}
 
 	@Override

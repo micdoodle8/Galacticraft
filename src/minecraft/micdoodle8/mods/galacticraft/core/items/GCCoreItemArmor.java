@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.items;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.item.EnumArmorMaterial;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemArmor;
@@ -25,36 +26,31 @@ public class GCCoreItemArmor extends ItemArmor implements IArmorTextureProvider
 	@Override
     public String getArmorTextureFile(ItemStack itemstack)
     {
-
-
-    	if (this.material == GCCoreItems.TITANIUMARMOR)
+    	if (this.material == GCCoreItems.steelARMOR)
     	{
-    		if (itemstack.getItem().itemID == GCCoreItems.titaniumHelmet.itemID)
+    		if (itemstack.getItem().itemID == GCCoreItems.steelHelmet.itemID)
     		{
     			return "/micdoodle8/mods/galacticraft/core/client/armor/titanium_1.png";
     		}
-    		else if (itemstack.getItem().itemID == GCCoreItems.titaniumChestplate.itemID || itemstack.getItem().itemID == GCCoreItems.titaniumBoots.itemID)
+    		else if (itemstack.getItem().itemID == GCCoreItems.steelChestplate.itemID || itemstack.getItem().itemID == GCCoreItems.steelBoots.itemID)
     		{
     			return "/micdoodle8/mods/galacticraft/core/client/armor/titanium_2.png";
     		}
-    		else if (itemstack.getItem().itemID == GCCoreItems.titaniumLeggings.itemID)
+    		else if (itemstack.getItem().itemID == GCCoreItems.steelLeggings.itemID)
     		{
     			return "/micdoodle8/mods/galacticraft/core/client/armor/titanium_3.png";
     		}
-//    		else if (itemstack.getItem().itemID == GCCoreItems.titaniumHelmetBreathable.itemID)
-//    		{
-//    			return "/micdoodle8/mods/galacticraft/core/client/armor/titaniumox_1.png";
-//    		}
     	}
 
     	return null;
     }
 
 	@Override
-	public String getTextureFile()
-	{
-		return "/micdoodle8/mods/galacticraft/core/client/items/core.png";
-	}
+    @SideOnly(Side.CLIENT)
+    public void func_94581_a(IconRegister par1IconRegister)
+    {
+        this.iconIndex = par1IconRegister.func_94245_a(this.getUnlocalizedName().replace("item.", "galacticraftcore:"));
+    }
 
 	@Override
     @SideOnly(Side.CLIENT)

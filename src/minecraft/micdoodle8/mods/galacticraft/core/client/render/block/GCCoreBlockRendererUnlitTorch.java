@@ -125,10 +125,10 @@ public class GCCoreBlockRendererUnlitTorch implements ISimpleBlockRenderingHandl
     			final Tessellator var12 = Tessellator.instance;
     	        int var13 = 11;
 
-    	        if (renderBlocks.overrideBlockTexture >= 0)
-    	        {
-    	            var13 = renderBlocks.overrideBlockTexture;
-    	        }
+//    	        if (renderBlocks.overrideBlockTexture >= 0)
+//    	        {
+//    	            var13 = renderBlocks.overrideBlockTexture;
+//    	        }
 
     	        final int var14 = (var13 & 15) << 4;
     	        final int var15 = var13 & 240;
@@ -174,10 +174,10 @@ public class GCCoreBlockRendererUnlitTorch implements ISimpleBlockRenderingHandl
     			final Tessellator var12 = Tessellator.instance;
     	        int var13 = 12;
 
-    	        if (renderBlocks.overrideBlockTexture >= 0)
-    	        {
-    	            var13 = renderBlocks.overrideBlockTexture;
-    	        }
+//    	        if (renderBlocks.overrideBlockTexture >= 0)
+//    	        {
+//    	            var13 = renderBlocks.overrideBlockTexture;
+//    	        }
 
     	        final int var14 = (var13 & 15) << 4;
     	        final int var15 = var13 & 240;

@@ -6,36 +6,48 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAirLock;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.core.vector.Vector3;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvanced
 {
-	public GCCoreBlockAirLockFrame(int par1, int par2)
+    @SideOnly(Side.CLIENT)
+    private Icon[] airLockIcons;
+    
+	public GCCoreBlockAirLockFrame(int par1)
 	{
-		super(par1, par2, Material.rock);
+		super(par1, Material.rock);
 	}
 
-//	@Override
-//    @SideOnly(Side.CLIENT)
-//    public int getBlockTexture(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
-//    {
-//		par1IBlockAccess.getBlockTileEntity(par2, par3, par4);
-//
-//		if (par1IBlockAccess.getBlockId(par2 - 1, par3, par4) == GCCoreBlocks.airLockSeal.blockID || par1IBlockAccess.getBlockId(par2 + 1, par3, par4) == GCCoreBlocks.airLockSeal.blockID || par1IBlockAccess.getBlockId(par2, par3 - 1, par4) == GCCoreBlocks.airLockSeal.blockID || par1IBlockAccess.getBlockId(par2, par3 + 1, par4) == GCCoreBlocks.airLockSeal.blockID || par1IBlockAccess.getBlockId(par2, par3, par4 - 1) == GCCoreBlocks.airLockSeal.blockID || par1IBlockAccess.getBlockId(par2, par3, par4 + 1) == GCCoreBlocks.airLockSeal.blockID)
-//		{
-//			return 39;
-//		}
-//		else
-//		{
-//			return 38;
-//		}
-//    }
+    @Override
+	@SideOnly(Side.CLIENT)
+    public void func_94332_a(IconRegister par1IconRegister)
+    {
+        this.airLockIcons = new Icon[6];
+        this.airLockIcons[0] = par1IconRegister.func_94245_a("galacticraftcore:airlock_off");
+        this.airLockIcons[1] = par1IconRegister.func_94245_a("galacticraftcore:airlock_on_1");
+        this.airLockIcons[2] = par1IconRegister.func_94245_a("galacticraftcore:airlock_on_2");
+        this.airLockIcons[3] = par1IconRegister.func_94245_a("galacticraftcore:airlock_on_3");
+        this.airLockIcons[4] = par1IconRegister.func_94245_a("galacticraftcore:airlock_on_4");
+        this.airLockIcons[5] = par1IconRegister.func_94245_a("galacticraftcore:airlock_on_5");
+    }
 
-    public int getBlockTexture(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int side)
+    @Override
+    @SideOnly(Side.CLIENT)
+    public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
+    {
+    	return this.airLockIcons[0];
+    }
+
+    @Override
+    public Icon getBlockTexture(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int side)
     {
     	for(ForgeDirection orientation : ForgeDirection.values())
 		{
@@ -51,50 +63,50 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvanced
 					{
 						if (side == 0)
 						{
-							return this.blockIndexInTexture + 1;
+							return this.airLockIcons[1];
 						}
 						else if (side == 1)
 						{
-							return this.blockIndexInTexture;
+							return this.airLockIcons[0];
 						}
 						else
 						{
-							return this.blockIndexInTexture + 2;
+							return this.airLockIcons[2];
 						}
 					}
 					else if (orientation.offsetY == 1)
 					{
 						if (side == 0)
 						{
-							return this.blockIndexInTexture;
+							return this.airLockIcons[0];
 						}
 						else if (side == 1)
 						{
-							return this.blockIndexInTexture + 1;
+							return this.airLockIcons[1];
 						}
 						else
 						{
-							return this.blockIndexInTexture + 3;
+							return this.airLockIcons[3];
 						}
 					}
 					else if (orientation.ordinal() == side)
 					{
 						if (side == 0)
 						{
-							return this.blockIndexInTexture;
+							return this.airLockIcons[0];
 						}
 						else if (side == 1)
 						{
-							return this.blockIndexInTexture + 1;
+							return this.airLockIcons[1];
 						}
 						else
 						{
-							return this.blockIndexInTexture + 3;
+							return this.airLockIcons[3];
 						}
 					}
 					else if (orientation.getOpposite().ordinal() == side)
 					{
-						return this.blockIndexInTexture;
+						return this.airLockIcons[0];
 					}
 
 					blockVec = vector.clone().add(new Vector3(orientation.offsetX, orientation.offsetY, orientation.offsetZ));
@@ -106,76 +118,76 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvanced
 						{
 							if (side == 0)
 							{
-								return this.blockIndexInTexture + 4;
+								return this.airLockIcons[4];
 							}
 							else if (side == 1)
 							{
-								return this.blockIndexInTexture + 4;
+								return this.airLockIcons[4];
 							}
 							else if (side == 3)
 							{
-								return this.blockIndexInTexture + 4;
+								return this.airLockIcons[4];
 							}
 							else if (side == 2)
 							{
-								return this.blockIndexInTexture + 5;
+								return this.airLockIcons[5];
 							}
 						}
 						else if (orientation.offsetX == -1)
 						{
 							if (side == 0)
 							{
-								return this.blockIndexInTexture + 5;
+								return this.airLockIcons[5];
 							}
 							else if (side == 1)
 							{
-								return this.blockIndexInTexture + 5;
+								return this.airLockIcons[5];
 							}
 							else if (side == 3)
 							{
-								return this.blockIndexInTexture + 5;
+								return this.airLockIcons[5];
 							}
 							else if (side == 2)
 							{
-								return this.blockIndexInTexture + 4;
+								return this.airLockIcons[4];
 							}
 						}
 						else if (orientation.offsetZ == 1)
 						{
 							if (side == 0)
 							{
-								return this.blockIndexInTexture + 2;
+								return this.airLockIcons[2];
 							}
 							else if (side == 1)
 							{
-								return this.blockIndexInTexture + 2;
+								return this.airLockIcons[2];
 							}
 							else if (side == 4)
 							{
-								return this.blockIndexInTexture + 4;
+								return this.airLockIcons[4];
 							}
 							else if (side == 5)
 							{
-								return this.blockIndexInTexture + 5;
+								return this.airLockIcons[5];
 							}
 						}
 						else if (orientation.offsetZ == -1)
 						{
 							if (side == 0)
 							{
-								return this.blockIndexInTexture + 3;
+								return this.airLockIcons[3];
 							}
 							else if (side == 1)
 							{
-								return this.blockIndexInTexture + 3;
+								return this.airLockIcons[3];
 							}
 							else if (side == 4)
 							{
-								return this.blockIndexInTexture + 5;
+								return this.airLockIcons[5];
 							}
 							else if (side == 5)
 							{
-								return this.blockIndexInTexture + 4;
+								return this.airLockIcons[4];
 							}
 						}
 					}
@@ -183,7 +195,7 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvanced
 			}
 		}
     	
-    	return this.blockIndexInTexture;
+    	return this.airLockIcons[0];
     }
     
 	public Vector3 modifyPositionFromSide(Vector3 vec, ForgeDirection side, double amount)
@@ -343,14 +355,14 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvanced
     			var1 = airLock.orientation == 0 ? 1 : 0;
     			var2 = airLock.orientation;
 
-    			if (par1World.isBlockGettingPowered(x - var1, y, z - var2) || par1World.isBlockGettingPowered(x + var1, y, z + var2))
+    			if (par1World.isBlockIndirectlyGettingPowered(x - var1, y, z - var2) || par1World.isBlockIndirectlyGettingPowered(x + var1, y, z + var2))
     			{
     				return false;
     			}
     		}
     	}
 
-		if (par1World.isBlockIndirectlyGettingPowered(x, y, z) || par1World.isBlockGettingPowered(x, y, z))
+		if (par1World.isBlockIndirectlyGettingPowered(x, y, z) || par1World.isBlockIndirectlyGettingPowered(x, y, z))
 		{
 			return true;
 		}

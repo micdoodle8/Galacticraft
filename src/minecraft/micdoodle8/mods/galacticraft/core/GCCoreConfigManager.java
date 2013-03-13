@@ -103,6 +103,8 @@ public class GCCoreConfigManager
 	public static int idGuiGalaxyMap;
 	public static int idGuiSpaceshipInventory;
 	public static int idGuiRefinery;
+	public static int idGuiAirCollector;
+	public static int idGuiAirDistributor;
 	public static int idGuiAirCompressor;
 
 	// ACHIEVEMENTS
@@ -218,6 +220,8 @@ public class GCCoreConfigManager
 	        GCCoreConfigManager.idGuiGalaxyMap = 						GCCoreConfigManager.configuration.get("GUI", "idGuiGalaxyMap",			 									132)		.getInt(132);
 	        GCCoreConfigManager.idGuiSpaceshipInventory = 				GCCoreConfigManager.configuration.get("GUI", "idGuiSpaceshipInventory",			 							133)		.getInt(133);
 	        GCCoreConfigManager.idGuiRefinery = 						GCCoreConfigManager.configuration.get("GUI", "idGuiRefinery",                                               134)		.getInt(134);
+	        GCCoreConfigManager.idGuiAirCollector = 					GCCoreConfigManager.configuration.get("GUI", "idGuiAirCollector", 											135)		.getInt(135);
+	        GCCoreConfigManager.idGuiAirDistributor = 					GCCoreConfigManager.configuration.get("GUI", "idGuiAirDistributor", 										136)		.getInt(136);
 
 	        GCCoreConfigManager.idAchievBase = 							GCCoreConfigManager.configuration.get("Achievements", "idAchievBase", 										1784)		.getInt(1784);
 

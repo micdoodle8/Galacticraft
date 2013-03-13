@@ -10,9 +10,11 @@ import micdoodle8.mods.galacticraft.moon.items.GCMoonItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFlower;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.IPlantable;
@@ -28,20 +30,44 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GCMoonBlock extends Block implements IDetectableMetadataResource, IPlantableMetadataBlock
 {
 	// AluminumMoon: 0, IronMoon: 1, CheeseStone: 2;
+    @SideOnly(Side.CLIENT)
+    private Icon[] moonBlockIcons;
 
 	public GCMoonBlock(int i)
 	{
-		super(i, 4, Material.rock);
-        this.setRequiresSelfNotify();
+		super(i, Material.rock);
         this.setCreativeTab(GalacticraftCore.galacticraftTab);
 	}
+
+    @Override
+	@SideOnly(Side.CLIENT)
+    public void func_94332_a(IconRegister par1IconRegister)
+    {
+        this.moonBlockIcons = new Icon[16];
+        this.moonBlockIcons[0] = par1IconRegister.func_94245_a("galacticraftmoon:grass_top");
+        this.moonBlockIcons[1] = par1IconRegister.func_94245_a("galacticraftmoon:brick");
+        this.moonBlockIcons[2] = par1IconRegister.func_94245_a("galacticraftmoon:dirt");
+        this.moonBlockIcons[3] = par1IconRegister.func_94245_a("galacticraftmoon:grass_side");
+        this.moonBlockIcons[4] = par1IconRegister.func_94245_a("galacticraftmoon:grass_step_1");
+        this.moonBlockIcons[5] = par1IconRegister.func_94245_a("galacticraftmoon:grass_step_2");
+        this.moonBlockIcons[6] = par1IconRegister.func_94245_a("galacticraftmoon:grass_step_3");
+        this.moonBlockIcons[7] = par1IconRegister.func_94245_a("galacticraftmoon:grass_step_4");
+        this.moonBlockIcons[8] = par1IconRegister.func_94245_a("galacticraftmoon:grass_step_5");
+        this.moonBlockIcons[9] = par1IconRegister.func_94245_a("galacticraftmoon:grass_step_6");
+        this.moonBlockIcons[10] = par1IconRegister.func_94245_a("galacticraftmoon:grass_step_7");
+        this.moonBlockIcons[11] = par1IconRegister.func_94245_a("galacticraftmoon:grass_step_8");
+        this.moonBlockIcons[12] = par1IconRegister.func_94245_a("galacticraftmoon:moonore_aluminium");
+        this.moonBlockIcons[13] = par1IconRegister.func_94245_a("galacticraftmoon:moonore_iron");
+        this.moonBlockIcons[14] = par1IconRegister.func_94245_a("galacticraftmoon:moonore_cheese");
+        this.moonBlockIcons[15] = par1IconRegister.func_94245_a("galacticraftmoon:moonstone");
+    }
 
 	@Override
     public float getBlockHardness(World par1World, int par2, int par3, int par4)
     {
     	int meta = par1World.getBlockMetadata(par2, par3, par4);
     	
-		if (meta == 3 || (meta >= 5 && meta <= 13))
+		if (meta == 3 || meta >= 5 && meta <= 13)
 		{
 			return 0.1F;
 		}
@@ -52,7 +78,7 @@ public class GCMoonBlock extends Block implements IDetectableMetadataResource, I
 	@Override
     public boolean canHarvestBlock(EntityPlayer player, int meta)
     {
-		if (meta == 3 || (meta >= 5 && meta <= 13))
+		if (meta == 3 || meta >= 5 && meta <= 13)
 		{
 			return true;
 		}
@@ -61,7 +87,7 @@ public class GCMoonBlock extends Block implements IDetectableMetadataResource, I
     }
 
 	@Override
-    public int getBlockTextureFromSideAndMetadata(int side, int meta)
+    public Icon getBlockTextureFromSideAndMetadata(int side, int meta)
     {
 		if (meta >= 5 && meta <= 13)
 		{
@@ -70,28 +96,32 @@ public class GCMoonBlock extends Block implements IDetectableMetadataResource, I
 				switch (meta - 5)
 				{
 				case 0:
-					return 0;
+					return this.moonBlockIcons[0];
 				case 1:
-					return 4;
+					return this.moonBlockIcons[4];
 				case 2:
-					return 5;
+					return this.moonBlockIcons[5];
 				case 3:
-					return 20;
+					return this.moonBlockIcons[6];
 				case 4:
-					return 21;
+					return this.moonBlockIcons[7];
 				case 5:
-					return 22;
+					return this.moonBlockIcons[8];
 				case 6:
-					return 23;
+					return this.moonBlockIcons[9];
 				case 7:
-					return 24;
+					return this.moonBlockIcons[10];
 				case 8:
-					return 25;
+					return this.moonBlockIcons[11];
 				}
 			}
 			else if (side == 0)
 			{
-				return 2;
+				return this.moonBlockIcons[2];
+			}
+			else
+			{
+				return this.moonBlockIcons[3];
 			}
 		}
 		else
@@ -99,23 +129,23 @@ public class GCMoonBlock extends Block implements IDetectableMetadataResource, I
 			switch (meta)
 			{
 			case 0:
-				return 6;
+				return this.moonBlockIcons[12];
 			case 1:
-				return 7;
+				return this.moonBlockIcons[13];
 			case 2:
-				return 8;
+				return this.moonBlockIcons[14];
 			case 3:
-				return 2;
+				return this.moonBlockIcons[2];
 			case 4:
-				return 9;
+				return this.moonBlockIcons[15];
 			case 14:
-				return 1;
+				return this.moonBlockIcons[1];
 			default:
-				return meta;
+				return null;
 			}
 		}
 
-		return 3;
+		return null;
     }
 
 	@Override

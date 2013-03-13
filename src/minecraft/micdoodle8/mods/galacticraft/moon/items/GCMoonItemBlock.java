@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.moon.items;
 
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
@@ -17,9 +18,9 @@ public class GCMoonItemBlock extends ItemBlock
     {
         return meta;
     }
-
+    
 	@Override
-	public String getItemNameIS(ItemStack itemstack)
+	public String getUnlocalizedName(ItemStack itemstack)
 	{
 		String name = "";
 
@@ -59,6 +60,12 @@ public class GCMoonItemBlock extends ItemBlock
 			name = "null";
 		}
 
-		return this.getItemName() + "." + name;
+		return Block.blocksList[this.getBlockID()].getUnlocalizedName() + "." + name;
+	}
+
+	@Override
+	public String getUnlocalizedName()
+	{
+		return Block.blocksList[this.getBlockID()].getUnlocalizedName() + ".0";
 	}
 }

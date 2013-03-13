@@ -4,16 +4,23 @@ import mekanism.api.EnumGas;
 import mekanism.api.IGasAcceptor;
 import mekanism.api.ITubeConnection;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.oxygen.OxygenNetwork;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
+import net.minecraft.network.INetworkManager;
+import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraftforge.common.ForgeDirection;
-import cpw.mods.fml.common.FMLLog;
+import universalelectricity.components.common.BasicComponents;
+import universalelectricity.core.electricity.ElectricityPack;
+import universalelectricity.core.item.ElectricItemHelper;
+import universalelectricity.prefab.network.IPacketReceiver;
+import universalelectricity.prefab.network.PacketManager;
+import universalelectricity.prefab.tile.TileEntityElectricityRunnable;
+
+import com.google.common.io.ByteArrayDataInput;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -21,62 +28,111 @@ import cpw.mods.fml.common.FMLLog;
  *  All rights reserved.
  *
  */
-public class GCCoreTileEntityOxygenCompressor extends TileEntity implements IInventory, IGasAcceptor, ITubeConnection
+public class GCCoreTileEntityOxygenCompressor extends TileEntityElectricityRunnable implements IInventory, IPacketReceiver, IGasAcceptor, ITubeConnection
 {
     public int currentPower;
     
     public boolean active;
-    
-    /** 
-     * Since this is a modulo calculation, the maximum is lower than the minimum speed
-     */
-    public int MAX_COMPRESSION_SPEED = 20;
-    
-    /** 
-     * Since this is a modulo calculation, the maximum is lower than the minimum speed
-     */
-    public int MIN_COMPRESSION_SPEED = 400;
 
-	private ItemStack[] compressorStacks = new ItemStack[1];
+	private ItemStack[] containingItems = new ItemStack[2];
+   	
+	public static final double WATTS_PER_TICK = 300;
 
-    public double getDistanceFrom2(double par1, double par3, double par5)
-    {
-        final double var7 = this.xCoord + 0.5D - par1;
-        final double var9 = this.yCoord + 0.5D - par3;
-        final double var11 = this.zCoord + 0.5D - par5;
-        return var7 * var7 + var9 * var9 + var11 * var11;
-    }
+	private int playersUsing = 0;
+	
+	public static int timeSinceOxygenRequest;
 
 	@Override
 	public void updateEntity()
 	{
 		super.updateEntity();
 
-		if (this.currentPower < 1)
+		this.wattsReceived += ElectricItemHelper.dechargeItem(this.containingItems[1], WATTS_PER_TICK, this.getVoltage());
+		
+		if (!this.worldObj.isRemote)
 		{
-			this.active = false;
-		}
-		else
-		{
-			this.active = true;
-		}
-
-		if (this.active)
-		{
-			if (!this.worldObj.isRemote && GalacticraftCore.tick % ((31 - Math.min(Math.floor(this.currentPower), 30)) * 5) == 0)
+			if (this.currentPower < 1)
 			{
-				final ItemStack stack = this.getStackInSlot(0);
+				this.active = false;
+			}
+			else
+			{
+				this.active = true;
+			}
 
-				if (stack != null && stack.getItemDamage() > 0)
+			if (this.active)
+			{
+				if (!this.worldObj.isRemote && GalacticraftCore.tick % ((31 - Math.min(Math.floor(this.currentPower), 30)) * 5) == 0)
 				{
-					stack.setItemDamage(stack.getItemDamage() - 1);
-				}
-				else if (stack != null)
-				{
-					stack.setItemDamage(0);
+					final ItemStack stack = this.getStackInSlot(0);
+
+					if (stack != null && stack.getItemDamage() > 0)
+					{
+						stack.setItemDamage(stack.getItemDamage() - 1);
+					}
+					else if (stack != null)
+					{
+						stack.setItemDamage(0);
+					}
 				}
 			}
 		}
+	}
+
+	@Override
+	public Packet getDescriptionPacket()
+	{
+		Packet p = PacketManager.getPacket(BasicComponents.CHANNEL, this, this.currentPower, this.wattsReceived, this.disabledTicks);
+		return p;
+	}
+
+	@Override
+	public void handlePacketData(INetworkManager network, int type, Packet250CustomPayload packet, EntityPlayer player, ByteArrayDataInput dataStream)
+	{
+		try
+		{
+			if (this.worldObj.isRemote)
+			{
+				this.currentPower = dataStream.readInt();
+				this.wattsReceived = dataStream.readInt();
+				this.disabledTicks = dataStream.readInt();
+			}
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public ElectricityPack getRequest()
+	{
+		if (timeSinceOxygenRequest > 0)
+		{
+			return new ElectricityPack(WATTS_PER_TICK / this.getVoltage(), this.getVoltage());
+		}
+		else
+		{
+			return new ElectricityPack();
+		}
+	}
+
+	@Override
+	public boolean canReceiveGas(ForgeDirection side, EnumGas type) 
+	{
+		return side == ForgeDirection.getOrientation(this.getBlockMetadata() + 2).getOpposite() && type == EnumGas.OXYGEN;
+	}
+
+	@Override
+	public boolean canTubeConnect(ForgeDirection direction) 
+	{
+		return direction == ForgeDirection.getOrientation(this.getBlockMetadata() + 2).getOpposite();
+	}
+
+	@Override
+	public boolean canConnect(ForgeDirection direction)
+	{
+		return direction == ForgeDirection.getOrientation(this.getBlockMetadata() + 2);
 	}
 
 	@Override
@@ -86,16 +142,16 @@ public class GCCoreTileEntityOxygenCompressor extends TileEntity implements IInv
 		this.currentPower = par1NBTTagCompound.getInteger("currentPower");
 
         final NBTTagList var2 = par1NBTTagCompound.getTagList("Items");
-        this.compressorStacks = new ItemStack[this.getSizeInventory()];
+        this.containingItems = new ItemStack[this.getSizeInventory()];
 
         for (int var3 = 0; var3 < var2.tagCount(); ++var3)
         {
             final NBTTagCompound var4 = (NBTTagCompound)var2.tagAt(var3);
             final byte var5 = var4.getByte("Slot");
 
-            if (var5 >= 0 && var5 < this.compressorStacks.length)
+            if (var5 >= 0 && var5 < this.containingItems.length)
             {
-                this.compressorStacks[var5] = ItemStack.loadItemStackFromNBT(var4);
+                this.containingItems[var5] = ItemStack.loadItemStackFromNBT(var4);
             }
         }
 	}
@@ -108,13 +164,13 @@ public class GCCoreTileEntityOxygenCompressor extends TileEntity implements IInv
 
         final NBTTagList list = new NBTTagList();
 
-        for (int var3 = 0; var3 < this.compressorStacks.length; ++var3)
+        for (int var3 = 0; var3 < this.containingItems.length; ++var3)
         {
-            if (this.compressorStacks[var3] != null)
+            if (this.containingItems[var3] != null)
             {
                 final NBTTagCompound var4 = new NBTTagCompound();
                 var4.setByte("Slot", (byte)var3);
-                this.compressorStacks[var3].writeToNBT(var4);
+                this.containingItems[var3].writeToNBT(var4);
                 list.appendTag(var4);
             }
         }
@@ -125,35 +181,35 @@ public class GCCoreTileEntityOxygenCompressor extends TileEntity implements IInv
 	@Override
     public int getSizeInventory()
     {
-        return this.compressorStacks.length;
+        return this.containingItems.length;
     }
 
 	@Override
     public ItemStack getStackInSlot(int par1)
     {
-        return this.compressorStacks[par1];
+        return this.containingItems[par1];
     }
 
 	@Override
     public ItemStack decrStackSize(int par1, int par2)
     {
-        if (this.compressorStacks[par1] != null)
+        if (this.containingItems[par1] != null)
         {
             ItemStack var3;
 
-            if (this.compressorStacks[par1].stackSize <= par2)
+            if (this.containingItems[par1].stackSize <= par2)
             {
-                var3 = this.compressorStacks[par1];
-                this.compressorStacks[par1] = null;
+                var3 = this.containingItems[par1];
+                this.containingItems[par1] = null;
                 return var3;
             }
             else
             {
-                var3 = this.compressorStacks[par1].splitStack(par2);
+                var3 = this.containingItems[par1].splitStack(par2);
 
-                if (this.compressorStacks[par1].stackSize == 0)
+                if (this.containingItems[par1].stackSize == 0)
                 {
-                    this.compressorStacks[par1] = null;
+                    this.containingItems[par1] = null;
                 }
 
                 return var3;
@@ -168,10 +224,10 @@ public class GCCoreTileEntityOxygenCompressor extends TileEntity implements IInv
 	@Override
     public ItemStack getStackInSlotOnClosing(int par1)
     {
-        if (this.compressorStacks[par1] != null)
+        if (this.containingItems[par1] != null)
         {
-            final ItemStack var2 = this.compressorStacks[par1];
-            this.compressorStacks[par1] = null;
+            final ItemStack var2 = this.containingItems[par1];
+            this.containingItems[par1] = null;
             return var2;
         }
         else
@@ -183,7 +239,7 @@ public class GCCoreTileEntityOxygenCompressor extends TileEntity implements IInv
 	@Override
     public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
     {
-        this.compressorStacks[par1] = par2ItemStack;
+        this.containingItems[par1] = par2ItemStack;
 
         if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit())
         {
@@ -218,18 +274,18 @@ public class GCCoreTileEntityOxygenCompressor extends TileEntity implements IInv
 	@Override
 	public int transferGasToAcceptor(int amount, EnumGas type)
 	{
-		if (type == EnumGas.OXYGEN)
+		if (type == EnumGas.OXYGEN && this.getStackInSlot(0) != null)
 		{
 			int rejects = 0;
 			int neededOxygen = this.getStackInSlot(0).getItemDamage();
 			
 			if (amount <= neededOxygen)
 			{
-				currentPower = amount;
+				this.currentPower = amount;
 			}
 			else if (amount > neededOxygen)
 			{
-				currentPower = neededOxygen;
+				this.currentPower = neededOxygen;
 				rejects = amount - neededOxygen;
 			}
 			
@@ -242,14 +298,14 @@ public class GCCoreTileEntityOxygenCompressor extends TileEntity implements IInv
 	}
 
 	@Override
-	public boolean canReceiveGas(ForgeDirection side, EnumGas type)
-	{
-		return this.getStackInSlot(0) != null && this.getStackInSlot(0).getItemDamage() > 0 && type == EnumGas.OXYGEN;
+	public boolean func_94042_c() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	@Override
-	public boolean canTubeConnect(ForgeDirection side) 
-	{
-		return (side != ForgeDirection.UP && side != ForgeDirection.DOWN);
+	public boolean func_94041_b(int i, ItemStack itemstack) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

@@ -13,9 +13,9 @@ public class GCMoonItems
 
 	public static void initItems()
 	{
-		GCMoonItems.cheeseCurd = new GCMoonItemCheese(GCMoonConfigManager.idItemCheeseCurd, 1, 0.1F, false).setIconIndex(0).setItemName("cheeseCurd");
-		GCMoonItems.cheeseBlock = new GCMoonItemReed(GCMoonConfigManager.idItemBlockCheese, GCMoonBlocks.cheeseBlock).setMaxStackSize(1).setIconIndex(1).setItemName("cheeseBlock");
-		GCMoonItems.meteoricIronRaw = new GCMoonItem(GCMoonConfigManager.idItemMeteoricIronRaw).setIconIndex(2).setItemName("meteoricIronRaw");
-		GCMoonItems.meteoricIronIngot = new GCMoonItem(GCMoonConfigManager.idItemMeteoricIronIngot).setIconIndex(3).setItemName("meteoricIronIngot");
+		GCMoonItems.cheeseCurd = 			new GCMoonItemCheese(GCMoonConfigManager.idItemCheeseCurd, 1, 0.1F, false)				.setUnlocalizedName("cheeseCurd");
+		GCMoonItems.cheeseBlock = 			new GCMoonItemReed(GCMoonConfigManager.idItemBlockCheese, GCMoonBlocks.cheeseBlock)		.setUnlocalizedName("cheeseBlock");
+		GCMoonItems.meteoricIronRaw = 		new GCMoonItem(GCMoonConfigManager.idItemMeteoricIronRaw)								.setUnlocalizedName("meteoricIronRaw");
+		GCMoonItems.meteoricIronIngot = 	new GCMoonItem(GCMoonConfigManager.idItemMeteoricIronIngot)								.setUnlocalizedName("meteoricIronIngot");
 	}
 }

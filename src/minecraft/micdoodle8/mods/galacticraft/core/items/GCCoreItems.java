@@ -16,28 +16,25 @@ import net.minecraftforge.common.MinecraftForge;
  */
 public class GCCoreItems
 {
-	public static GCCoreItemOxygenTank lightOxygenTankFull;
-	public static GCCoreItemOxygenTank medOxygenTankFull;
-	public static GCCoreItemOxygenTank heavyOxygenTankFull;
+	public static Item lightOxygenTank;
+	public static Item medOxygenTank;
+	public static Item heavyOxygenTank;
 	public static Item oxygenMask;
 	public static Item spaceship;
 	public static Item sensorGlasses;
 //	public static Item sensorGlassesWithOxygenMask;
 	public static Item sensorLens;
 
-	public static Item titaniumPickaxe;
-	public static Item titaniumAxe;
-	public static Item titaniumHoe;
-	public static Item titaniumSpade;
-	public static Item titaniumSword;
-	public static Item titaniumHelmet;
-	public static Item titaniumChestplate;
-	public static Item titaniumLeggings;
-	public static Item titaniumBoots;
-//	public static Item titaniumHelmetBreathable;
-	public static Item ingotTitanium;
-	public static Item ingotCopper;
-	public static Item ingotAluminum;
+	public static Item steelPickaxe;
+	public static Item steelAxe;
+	public static Item steelHoe;
+	public static Item steelSpade;
+	public static Item steelSword;
+	public static Item steelHelmet;
+	public static Item steelChestplate;
+	public static Item steelLeggings;
+	public static Item steelBoots;
+//	public static Item steelHelmetBreathable;
 	public static Item canister;
 	public static Item airVent;
 	public static Item airFan;
@@ -59,58 +56,55 @@ public class GCCoreItems
 
 	public static EnumArmorMaterial OXYGENMASK = EnumHelper.addArmorMaterial("OXYGENMASK", 200, new int[] {0, 0, 0, 0}, 0);
 	public static EnumArmorMaterial SENSORGLASSES = EnumHelper.addArmorMaterial("SENSORGLASSES", 200, new int[] {0, 0, 0, 0}, 0);
-	public static EnumArmorMaterial TITANIUMARMOR = EnumHelper.addArmorMaterial("TITANIUM", 42, new int[] {4, 9, 7, 4}, 12);
-	public static EnumToolMaterial TOOLTITANIUM = EnumHelper.addToolMaterial("TITANIUM", 4, 768, 7.0F, 3, 8);
+	public static EnumArmorMaterial steelARMOR = EnumHelper.addArmorMaterial("steel", 42, new int[] {4, 9, 7, 4}, 12);
+	public static EnumToolMaterial TOOLsteel = EnumHelper.addToolMaterial("steel", 4, 768, 7.0F, 3, 8);
 
 	public static void initItems()
 	{
-		GCCoreItems.lightOxygenTankFull = (GCCoreItemOxygenTank) new GCCoreItemOxygenTank(GCCoreConfigManager.idItemLightOxygenTank).setMaxDamage(90).setIconIndex(0).setItemName("oxygenTankLightFull");
-		GCCoreItems.medOxygenTankFull = (GCCoreItemOxygenTank) new GCCoreItemOxygenTank(GCCoreConfigManager.idItemMedOxygenTank).setMaxDamage(180).setIconIndex(1).setItemName("oxygenTankMedFull");
-		GCCoreItems.heavyOxygenTankFull = (GCCoreItemOxygenTank) new GCCoreItemOxygenTank(GCCoreConfigManager.idItemHeavyOxygenTank).setMaxDamage(270).setIconIndex(2).setItemName("oxygenTankHeavyFull");
-		GCCoreItems.oxygenMask = new GCCoreItemOxygenMask(GCCoreConfigManager.idArmorOxygenMask).setIconIndex(6).setItemName("oxygenMask");
-		GCCoreItems.spaceship = new GCCoreItemSpaceship(GCCoreConfigManager.idItemSpaceship).setItemName("spaceship");
-		GCCoreItems.sensorGlasses = new GCCoreItemSensorGlasses(GCCoreConfigManager.idArmorSensorGlasses, GCCoreItems.SENSORGLASSES, 6, 0, false).setIconIndex(7).setItemName("sensorGlasses");
-//		sensorGlassesWithOxygenMask = new GCCoreItemSensorGlasses(GCCoreConfigManager.idArmorSensorGlassesWithOxygenMask, SENSORGLASSES, 7, 0, true).setIconIndex(8).setItemName("sensorGlassesWithOxygenMask");
-		GCCoreItems.titaniumPickaxe = new GCCoreItemPickaxe(GCCoreConfigManager.idToolTitaniumPickaxe, GCCoreItems.TOOLTITANIUM).setIconIndex(11).setItemName("titaniumPick");
-		GCCoreItems.titaniumAxe = new GCCoreItemAxe(GCCoreConfigManager.idToolTitaniumAxe, GCCoreItems.TOOLTITANIUM).setIconIndex(10).setItemName("titaniumAxe");
-		GCCoreItems.titaniumHoe = new GCCoreItemHoe(GCCoreConfigManager.idToolTitaniumHoe, GCCoreItems.TOOLTITANIUM).setIconIndex(9).setItemName("titaniumHoe");
-		GCCoreItems.titaniumSpade = new GCCoreItemSpade(GCCoreConfigManager.idToolTitaniumSpade, GCCoreItems.TOOLTITANIUM).setIconIndex(12).setItemName("titaniumSpade");
-		GCCoreItems.titaniumSword = new GCCoreItemSword(GCCoreConfigManager.idToolTitaniumSword, GCCoreItems.TOOLTITANIUM).setIconIndex(13).setItemName("titaniumSword");
-		GCCoreItems.titaniumHelmet = new GCCoreItemArmor(GCCoreConfigManager.idArmorTitaniumHelmet, GCCoreItems.TITANIUMARMOR, 9, 0, false).setIconIndex(14).setItemName("titaniumHelmet");
-		GCCoreItems.titaniumChestplate = new GCCoreItemArmor(GCCoreConfigManager.idArmorTitaniumChestplate, GCCoreItems.TITANIUMARMOR, 9, 1, false).setIconIndex(15).setItemName("titaniumChestplate");
-		GCCoreItems.titaniumLeggings = new GCCoreItemArmor(GCCoreConfigManager.idArmorTitaniumLeggings, GCCoreItems.TITANIUMARMOR, 9, 2, false).setIconIndex(16).setItemName("titaniumLeggings");
-		GCCoreItems.titaniumBoots = new GCCoreItemArmor(GCCoreConfigManager.idArmorTitaniumBoots, GCCoreItems.TITANIUMARMOR, 9, 3, false).setIconIndex(17).setItemName("titaniumBoots");
-//		titaniumHelmetBreathable = new GCCoreItemArmor(GCCoreConfigManager.idArmorTitaniumHelmetBreathable, TITANIUMARMOR, 9, 0, true).setIconIndex(18).setItemName("titaniumHelmetBreathable");
-		GCCoreItems.ingotTitanium = new GCCoreItem(GCCoreConfigManager.idItemIngotTitanium).setIconIndex(19).setItemName("ingotTitanium");
-		GCCoreItems.ingotCopper = new GCCoreItem(GCCoreConfigManager.idItemIngotCopper).setIconIndex(20).setItemName("ingotCopper");
-		GCCoreItems.ingotAluminum = new GCCoreItem(GCCoreConfigManager.idItemIngotAluminum).setIconIndex(21).setItemName("ingotAluminium");
-		GCCoreItems.canister = new GCCoreItemCanister(GCCoreConfigManager.idItemAluminumCanister).setItemName("canister");
-		GCCoreItems.airVent = new GCCoreItem(GCCoreConfigManager.idItemAirVent).setIconIndex(23).setItemName("airVent");
-		GCCoreItems.airFan = new GCCoreItem(GCCoreConfigManager.idItemFan).setIconIndex(24).setItemName("airFan");
-		GCCoreItems.oxygenConcentrator = new GCCoreItem(GCCoreConfigManager.idItemOxygenConcentrator).setIconIndex(25).setItemName("oxygenConcentrator");
-		GCCoreItems.gravityBow = new GCCoreItemBow(GCCoreConfigManager.idItemGravityBow).setIconCoord(5, 1).setItemName("bow");
-		GCCoreItems.heavyPlating = new GCCoreItem(GCCoreConfigManager.idItemHeavyPlate).setIconIndex(26).setItemName("heavyPlating");
-		GCCoreItems.rocketEngine = new GCCoreItem(GCCoreConfigManager.idItemRocketEngine).setIconIndex(27).setItemName("rocketEngine");
-		GCCoreItems.rocketFins = new GCCoreItem(GCCoreConfigManager.idItemRocketFins).setIconIndex(28).setItemName("rocketFins");
-		GCCoreItems.rocketNoseCone = new GCCoreItem(GCCoreConfigManager.idItemRocketNoseCone).setIconIndex(29).setItemName("noseCone");
-		GCCoreItems.sensorLens = new GCCoreItem(GCCoreConfigManager.idItemSensorLens).setIconIndex(31).setItemName("sensorLens");
-		GCCoreItems.buggy = new GCCoreItemBuggy(GCCoreConfigManager.idItemBuggy).setIconIndex(200).setItemName("buggy");
-		GCCoreItems.flag = new GCCoreItemFlag(GCCoreConfigManager.idItemFlag).setIconIndex(201).setItemName("flag");
-		GCCoreItems.oxygenGear = new GCCoreItemOxygenGear(GCCoreConfigManager.idItemOxygenGear).setIconIndex(32).setItemName("oxygenGear");
-		GCCoreItems.parachute = new GCCoreItemParachute(GCCoreConfigManager.idItemParachute).setItemName("parachute");
-		GCCoreItems.canvas = new GCCoreItem(GCCoreConfigManager.idItemCanvas).setIconIndex(33).setItemName("canvas");
-		GCCoreItems.rocketFuelBucket = new GCCoreItemFuelCanister(GCCoreConfigManager.idItemRocketFuelBucket).setIconIndex(64).setItemName("fuelCanisterPartial");
-		GCCoreItems.flagPole = new GCCoreItem(GCCoreConfigManager.idItemFlagPole).setIconIndex(51).setItemName("flagPole");
-		GCCoreItems.oilCanister = new GCCoreItemOilCanister(GCCoreConfigManager.idItemOilCanister).setIconIndex(57).setItemName("oilCanisterPartial");
-		GCCoreItems.oilExtractor = new GCCoreItemOilExtractor(GCCoreConfigManager.idItemOilExtractor).setIconIndex(52).setItemName("oilExtractor");
+		GCCoreItems.lightOxygenTank = new GCCoreItemOxygenTank(GCCoreConfigManager.idItemLightOxygenTank).setMaxDamage(90).setUnlocalizedName("oxygenTankLightFull");
+		GCCoreItems.medOxygenTank = new GCCoreItemOxygenTank(GCCoreConfigManager.idItemMedOxygenTank).setMaxDamage(180).setUnlocalizedName("oxygenTankMedFull");
+		GCCoreItems.heavyOxygenTank = new GCCoreItemOxygenTank(GCCoreConfigManager.idItemHeavyOxygenTank).setMaxDamage(270).setUnlocalizedName("oxygenTankHeavyFull");
+		GCCoreItems.oxygenMask = new GCCoreItemOxygenMask(GCCoreConfigManager.idArmorOxygenMask).setUnlocalizedName("oxygenMask");
+		GCCoreItems.spaceship = new GCCoreItemSpaceship(GCCoreConfigManager.idItemSpaceship).setUnlocalizedName("spaceship");
+		GCCoreItems.sensorGlasses = new GCCoreItemSensorGlasses(GCCoreConfigManager.idArmorSensorGlasses, GCCoreItems.SENSORGLASSES, 6, 0, false).setUnlocalizedName("sensorGlasses");
+//		sensorGlassesWithOxygenMask = new GCCoreItemSensorGlasses(GCCoreConfigManager.idArmorSensorGlassesWithOxygenMask, SENSORGLASSES, 7, 0, true).setIconIndex(8).setUnlocalizedName("sensorGlassesWithOxygenMask");
+		GCCoreItems.steelPickaxe = new GCCoreItemPickaxe(GCCoreConfigManager.idToolTitaniumPickaxe, GCCoreItems.TOOLsteel).setUnlocalizedName("steel_pickaxe");
+		GCCoreItems.steelAxe = new GCCoreItemAxe(GCCoreConfigManager.idToolTitaniumAxe, GCCoreItems.TOOLsteel).setUnlocalizedName("steel_axe");
+		GCCoreItems.steelHoe = new GCCoreItemHoe(GCCoreConfigManager.idToolTitaniumHoe, GCCoreItems.TOOLsteel).setUnlocalizedName("steel_hoe");
+		GCCoreItems.steelSpade = new GCCoreItemSpade(GCCoreConfigManager.idToolTitaniumSpade, GCCoreItems.TOOLsteel).setUnlocalizedName("steel_shovel");
+		GCCoreItems.steelSword = new GCCoreItemSword(GCCoreConfigManager.idToolTitaniumSword, GCCoreItems.TOOLsteel).setUnlocalizedName("steel_sword");
+		GCCoreItems.steelHelmet = new GCCoreItemArmor(GCCoreConfigManager.idArmorTitaniumHelmet, GCCoreItems.steelARMOR, 9, 0, false).setUnlocalizedName("steel_helmet");
+		GCCoreItems.steelChestplate = new GCCoreItemArmor(GCCoreConfigManager.idArmorTitaniumChestplate, GCCoreItems.steelARMOR, 9, 1, false).setUnlocalizedName("steel_chestplate");
+		GCCoreItems.steelLeggings = new GCCoreItemArmor(GCCoreConfigManager.idArmorTitaniumLeggings, GCCoreItems.steelARMOR, 9, 2, false).setUnlocalizedName("steel_leggings");
+		GCCoreItems.steelBoots = new GCCoreItemArmor(GCCoreConfigManager.idArmorTitaniumBoots, GCCoreItems.steelARMOR, 9, 3, false).setUnlocalizedName("steel_boots");
+//		steelHelmetBreathable = new GCCoreItemArmor(GCCoreConfigManager.idArmorsteelHelmetBreathable, steelARMOR, 9, 0, true).setIconIndex(18).setUnlocalizedName("steelHelmetBreathable");
+		GCCoreItems.canister = new GCCoreItemCanister(GCCoreConfigManager.idItemAluminumCanister).setUnlocalizedName("canister");
+		GCCoreItems.airVent = new GCCoreItem(GCCoreConfigManager.idItemAirVent, "air_vent").setUnlocalizedName("airVent");
+		GCCoreItems.airFan = new GCCoreItem(GCCoreConfigManager.idItemFan, "air_fan").setUnlocalizedName("airFan");
+		GCCoreItems.oxygenConcentrator = new GCCoreItem(GCCoreConfigManager.idItemOxygenConcentrator, "air_condenser").setUnlocalizedName("oxygenConcentrator");
+		GCCoreItems.gravityBow = new GCCoreItemBow(GCCoreConfigManager.idItemGravityBow).setUnlocalizedName("bow");
+		GCCoreItems.heavyPlating = new GCCoreItem(GCCoreConfigManager.idItemHeavyPlate, "heavy_plating").setUnlocalizedName("heavyPlating");
+		GCCoreItems.rocketEngine = new GCCoreItem(GCCoreConfigManager.idItemRocketEngine, "rocket_engine").setUnlocalizedName("rocketEngine");
+		GCCoreItems.rocketFins = new GCCoreItem(GCCoreConfigManager.idItemRocketFins, "rocket_fin").setUnlocalizedName("rocketFins");
+		GCCoreItems.rocketNoseCone = new GCCoreItem(GCCoreConfigManager.idItemRocketNoseCone, "rocket_nose_cone").setUnlocalizedName("noseCone");
+		GCCoreItems.sensorLens = new GCCoreItem(GCCoreConfigManager.idItemSensorLens, "sensor_lens").setUnlocalizedName("sensorLens");
+		GCCoreItems.buggy = new GCCoreItemBuggy(GCCoreConfigManager.idItemBuggy).setUnlocalizedName("buggy");
+		GCCoreItems.flag = new GCCoreItemFlag(GCCoreConfigManager.idItemFlag).setUnlocalizedName("flag");
+		GCCoreItems.oxygenGear = new GCCoreItemOxygenGear(GCCoreConfigManager.idItemOxygenGear).setUnlocalizedName("oxygenGear");
+		GCCoreItems.parachute = new GCCoreItemParachute(GCCoreConfigManager.idItemParachute).setUnlocalizedName("parachute");
+		GCCoreItems.canvas = new GCCoreItem(GCCoreConfigManager.idItemCanvas, "canvas").setUnlocalizedName("canvas");
+		GCCoreItems.rocketFuelBucket = new GCCoreItemFuelCanister(GCCoreConfigManager.idItemRocketFuelBucket).setUnlocalizedName("fuelCanisterPartial");
+		GCCoreItems.flagPole = new GCCoreItem(GCCoreConfigManager.idItemFlagPole, "flagpole").setUnlocalizedName("flagPole");
+		GCCoreItems.oilCanister = new GCCoreItemOilCanister(GCCoreConfigManager.idItemOilCanister).setUnlocalizedName("oilCanisterPartial");
+		GCCoreItems.oilExtractor = new GCCoreItemOilExtractor(GCCoreConfigManager.idItemOilExtractor).setUnlocalizedName("oilExtractor");
 
 		GalacticraftCore.hiddenItems.add(gravityBow.itemID);
 	}
 
 	public static void registerHarvestLevels()
 	{
-		MinecraftForge.setToolClass(GCCoreItems.titaniumPickaxe, "pickaxe", 4);
-		MinecraftForge.setToolClass(GCCoreItems.titaniumAxe, "axe", 4);
-		MinecraftForge.setToolClass(GCCoreItems.titaniumSpade, "shovel", 4);
+		MinecraftForge.setToolClass(GCCoreItems.steelPickaxe, "pickaxe", 4);
+		MinecraftForge.setToolClass(GCCoreItems.steelAxe, "axe", 4);
+		MinecraftForge.setToolClass(GCCoreItems.steelSpade, "shovel", 4);
 	}
 }

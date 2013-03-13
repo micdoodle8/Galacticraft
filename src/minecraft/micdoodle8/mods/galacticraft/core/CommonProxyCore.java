@@ -3,7 +3,9 @@ package micdoodle8.mods.galacticraft.core;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiAirCollector;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiAirCompressor;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiAirDistributor;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiBuggyBench;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiGalaxyMap;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiRefinery;
@@ -12,14 +14,18 @@ import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiRocketRefill;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiTankRefill;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpaceship;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerBase;
+import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerAirCollector;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerAirCompressor;
+import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerAirDistributor;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerBuggyBench;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerRefinery;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerRocketBench;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerRocketRefill;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerTankRefill;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryTankRefill;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCollector;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCompressor;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenDistributor;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityRefinery;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.entity.player.EntityPlayer;
@@ -97,27 +103,12 @@ public class CommonProxyCore implements IGuiHandler
 		return -1;
 	}
 
-	public int getGCOxygenDistributorRenderID()
-	{
-		return -1;
-	}
-
-	public int getGCOxygenCollectorRenderID()
-	{
-		return -1;
-	}
-
 	public int getGCCrudeOilRenderID()
 	{
 		return -1;
 	}
 
 	public int getGCRefineryRenderID()
-	{
-		return -1;
-	}
-
-	public int getGCCompressorRenderID()
 	{
 		return -1;
 	}
@@ -172,6 +163,14 @@ public class CommonProxyCore implements IGuiHandler
 		{
 			return new GCCoreContainerAirCompressor(player.inventory, (GCCoreTileEntityOxygenCompressor)world.getBlockTileEntity(x, y, z));
 		}
+		else if (ID == GCCoreConfigManager.idGuiAirCollector)
+		{
+			return new GCCoreContainerAirCollector(player.inventory, (GCCoreTileEntityOxygenCollector)world.getBlockTileEntity(x, y, z));
+		}
+		else if (ID == GCCoreConfigManager.idGuiAirDistributor)
+		{
+			return new GCCoreContainerAirDistributor(player.inventory, (GCCoreTileEntityOxygenDistributor)world.getBlockTileEntity(x, y, z));
+		}
 
 		return null;
 	}
@@ -210,6 +209,28 @@ public class CommonProxyCore implements IGuiHandler
 			if (tile != null && tile instanceof GCCoreTileEntityOxygenCompressor)
 			{
 				return new GCCoreGuiAirCompressor(player.inventory, (GCCoreTileEntityOxygenCompressor)tile);
+			}
+			else
+			{
+				return null;
+			}
+		}
+		else if (ID == GCCoreConfigManager.idGuiAirCollector)
+		{
+			if (tile != null && tile instanceof GCCoreTileEntityOxygenCollector)
+			{
+				return new GCCoreGuiAirCollector(player.inventory, (GCCoreTileEntityOxygenCollector)tile);
+			}
+			else
+			{
+				return null;
+			}
+		}
+		else if (ID == GCCoreConfigManager.idGuiAirDistributor)
+		{
+			if (tile != null && tile instanceof GCCoreTileEntityOxygenDistributor)
+			{
+				return new GCCoreGuiAirDistributor(player.inventory, (GCCoreTileEntityOxygenDistributor)tile);
 			}
 			else
 			{

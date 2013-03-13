@@ -3,22 +3,19 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAirLock;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockBreakable;
 import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
-import universalelectricity.core.vector.Vector3;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreBlockAirLockWall extends BlockBreakable
 {
-    public GCCoreBlockAirLockWall(int par1, int par2)
+    public GCCoreBlockAirLockWall(int par1)
     {
-        super(par1, par2, Material.portal, false);
+        super(par1, "galacticraftcore:oxygentile_3", Material.portal, false);
         this.setTickRandomly(true);
 	}
 
@@ -75,7 +72,7 @@ public class GCCoreBlockAirLockWall extends BlockBreakable
 
         if (par1World.getBlockId(par2, var8 - 1, par4) != GCCoreBlocks.airLockFrame.blockID)
         {
-            par1World.setBlockWithNotify(par2, par3, par4, 0);
+            par1World.setBlockAndMetadataWithNotify(par2, par3, par4, 0, 0, 3);
         }
         else
         {
@@ -101,20 +98,20 @@ public class GCCoreBlockAirLockWall extends BlockBreakable
         		{
                     if (var10 && var11)
                     {
-                        par1World.setBlockWithNotify(par2, par3, par4, 0);
+                        par1World.setBlockAndMetadataWithNotify(par2, par3, par4, 0, 0, 3);
                     }
                     else
                     {
                         if ((par1World.getBlockId(par2 + var6, par3, par4 + var7) != GCCoreBlocks.airLockFrame.blockID || par1World.getBlockId(par2 - var6, par3, par4 - var7) != this.blockID) && (par1World.getBlockId(par2 - var6, par3, par4 - var7) != GCCoreBlocks.airLockFrame.blockID || par1World.getBlockId(par2 + var6, par3, par4 + var7) != this.blockID))
                         {
-                            par1World.setBlockWithNotify(par2, par3, par4, 0);
+                            par1World.setBlockAndMetadataWithNotify(par2, par3, par4, 0, 0, 3);
                         }
                     }
         		}
             }
             else
             {
-                par1World.setBlock(par2, par3, par4, 0);
+                par1World.setBlockAndMetadataWithNotify(par2, par3, par4, 0, 0, 3);
             }
         }
     }

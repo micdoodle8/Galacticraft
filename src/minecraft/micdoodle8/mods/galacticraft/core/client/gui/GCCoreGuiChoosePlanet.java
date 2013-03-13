@@ -84,9 +84,9 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
 
         StringTranslate.getInstance();
 //        this.controlList.add(new GCCoreGuiTexturedButton(0, this.width - 110, this.height - 26, 105, 20, "Send To Dimension", "" /* TODO */));
-        this.controlList.add(new GCCoreGuiTexturedButton(0, this.width - 28, 5, 22, 22, "/micdoodle8/mods/galacticraft/core/client/gui/button1.png", 22, 22));
-        this.controlList.add(this.sendButton = new GuiSmallButton(1, this.width - 110, this.height - 26, 105, 20, "Send To Dimension"));
-        this.planetSlots.registerScrollButtons(this.controlList, 2, 3);
+        this.buttonList.add(new GCCoreGuiTexturedButton(0, this.width - 28, 5, 22, 22, "/micdoodle8/mods/galacticraft/core/client/gui/button1.png", 22, 22));
+        this.buttonList.add(this.sendButton = new GuiSmallButton(1, this.width - 110, this.height - 26, 105, 20, "Send To Dimension"));
+        this.planetSlots.registerScrollButtons(this.buttonList, 2, 3);
     }
 
     @Override

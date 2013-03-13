@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
-import micdoodle8.mods.galacticraft.core.blocks.GCBlockBreathableAir;
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockBreathableAir;
 import net.minecraft.block.Block;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.ImageBufferDownload;
@@ -9,8 +9,6 @@ import net.minecraft.client.renderer.ThreadDownloadImageData;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.src.RenderPlayerAPI;
-import net.minecraft.src.RenderPlayerBase;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.StringUtils;
 
@@ -43,7 +41,7 @@ public class GCCoreRenderPlayer extends RenderPlayerBase
                 {
                     final Block var12 = Block.blocksList[FMLClientHandler.instance().getClient().thePlayer.worldObj.getBlockId(var9, var10, var11)];
 
-                    if (var12 != null && var12 instanceof GCBlockBreathableAir)
+                    if (var12 != null && var12 instanceof GCCoreBlockBreathableAir)
                     {
                         final int var13 = FMLClientHandler.instance().getClient().thePlayer.worldObj.getBlockMetadata(var9, var10, var11);
                         double var14 = var10 + 1;
@@ -73,7 +71,7 @@ public class GCCoreRenderPlayer extends RenderPlayerBase
 
         if (var4 >= 0)
         {
-            var3.bindTexture(var4);
+            var3.func_98187_b(var4);
             return true;
         }
         else

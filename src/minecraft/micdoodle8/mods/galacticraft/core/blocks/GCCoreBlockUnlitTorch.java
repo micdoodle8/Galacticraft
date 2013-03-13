@@ -27,55 +27,38 @@ public class GCCoreBlockUnlitTorch extends Block
 {
 	public boolean lit;
 
-	protected GCCoreBlockUnlitTorch(int par1, int par2, boolean lit)
+	protected GCCoreBlockUnlitTorch(int par1, boolean lit)
     {
-        super(par1, par2, Material.circuits);
+        super(par1, Material.circuits);
         this.setTickRandomly(true);
-        this.setRequiresSelfNotify();
         this.lit = lit;
+        this.setLightValue(lit ? 0.9375F : 0.2F);
     }
-
-    /**
-     * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been
-     * cleared to be reused)
-     */
+	
     @Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
     {
         return null;
     }
 
-    /**
-     * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-     */
     @Override
 	public boolean isOpaqueCube()
     {
         return false;
     }
 
-    /**
-     * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-     */
     @Override
 	public boolean renderAsNormalBlock()
     {
         return false;
     }
 
-    /**
-     * The type of render function that is called for this block
-     */
     @Override
 	public int getRenderType()
     {
         return GalacticraftCore.proxy.getGCUnlitTorchRenderID();
     }
 
-    /**
-     * Gets if we can place a torch on a block.
-     */
     private boolean canPlaceTorchOn(World par1World, int par2, int par3, int par4)
     {
         if (par1World.doesBlockHaveSolidTopSurface(par2, par3, par4))
@@ -89,9 +72,6 @@ public class GCCoreBlockUnlitTorch extends Block
         }
     }
 
-    /**
-     * Checks to see if its valid to put this block at the specified coordinates. Args: world, x, y, z
-     */
     @Override
 	public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4)
     {
@@ -102,14 +82,7 @@ public class GCCoreBlockUnlitTorch extends Block
                this.canPlaceTorchOn(par1World, par2, par3 - 1, par4);
     }
 
-    /**
-     * called before onBlockPlacedBy by ItemBlock and ItemReed
-     */
     @Override
-
-    /**
-     * Called when a block is placed using its ItemBlock. Args: World, X, Y, Z, side, hitX, hitY, hitZ, block metadata
-     */
     public int onBlockPlaced(World par1World, int par2, int par3, int par4, int par5, float par6, float par7, float par8, int par9)
     {
         int var10 = par9;
@@ -142,9 +115,6 @@ public class GCCoreBlockUnlitTorch extends Block
         return var10;
     }
 
-    /**
-     * Ticks the block if it's been scheduled
-     */
     @Override
 	public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {
@@ -156,31 +126,28 @@ public class GCCoreBlockUnlitTorch extends Block
         }
     }
 
-    /**
-     * Called whenever the block is added into the world. Args: world, x, y, z
-     */
     @Override
 	public void onBlockAdded(World par1World, int par2, int par3, int par4)
     {
         if (par1World.isBlockSolidOnSide(par2 - 1, par3, par4, EAST, true))
         {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 1);
+            par1World.setBlockMetadataWithNotify(par2, par3, par4, 1, 2);
         }
         else if (par1World.isBlockSolidOnSide(par2 + 1, par3, par4, WEST, true))
         {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 2);
+            par1World.setBlockMetadataWithNotify(par2, par3, par4, 2, 2);
         }
         else if (par1World.isBlockSolidOnSide(par2, par3, par4 - 1, SOUTH, true))
         {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 3);
+            par1World.setBlockMetadataWithNotify(par2, par3, par4, 3, 2);
         }
         else if (par1World.isBlockSolidOnSide(par2, par3, par4 + 1, NORTH, true))
         {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 4);
+            par1World.setBlockMetadataWithNotify(par2, par3, par4, 4, 2);
         }
         else if (this.canPlaceTorchOn(par1World, par2, par3 - 1, par4))
         {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 5);
+            par1World.setBlockMetadataWithNotify(par2, par3, par4, 5, 2);
         }
 
         this.dropTorchIfCantStay(par1World, par2, par3, par4);
@@ -226,7 +193,7 @@ public class GCCoreBlockUnlitTorch extends Block
             if (var7)
             {
                 this.dropBlockAsItem(par1World, par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4), 0);
-                par1World.setBlockWithNotify(par2, par3, par4, 0);
+                par1World.func_94571_i(par2, par3, par4);
             }
         }
     }
@@ -242,7 +209,7 @@ public class GCCoreBlockUnlitTorch extends Block
             if (par1World.getBlockId(par2, par3, par4) == this.blockID)
             {
                 this.dropBlockAsItem(par1World, par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4), 0);
-                par1World.setBlockWithNotify(par2, par3, par4, 0);
+                par1World.func_94571_i(par2, par3, par4);
             }
 
             return false;

@@ -35,7 +35,7 @@ public class GCMoonComponentPuzzle extends GCMoonComponent
         var4.type = 4;
         var4.tall = 3;
         var4.roots = 3;
-        var4.setSeed(var1.getSeed() + (this.boundingBox.minX * this.boundingBox.minZ));
+        var4.setSeed(var1.getSeed() + this.boundingBox.minX * this.boundingBox.minZ);
         int var5;
 
         for (var5 = 0; var5 <= DIAMETER; ++var5)
@@ -121,7 +121,7 @@ public class GCMoonComponentPuzzle extends GCMoonComponent
 
     void decorate3x3Room(World var1, int var2, int var3, StructureBoundingBox var4)
     {
-        final Random var5 = new Random(var1.getSeed() ^ (var2 + var3));
+        final Random var5 = new Random(var1.getSeed() ^ var2 + var3);
 
         this.roomSpawner(var1, var5, var2, var3, 8, var4);
     }

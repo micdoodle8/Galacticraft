@@ -26,6 +26,6 @@ public class GCCoreGalaxyBlockyWay implements IGalaxy
 	@Override
 	public Vec3 getRGBRingColors()
 	{
-		return Vec3.vec3dPool.getVecFromPool(50.0D / 256.0D, 60.0D / 256.0D, 256.0D / 256.0D);
+		return Vec3.fakePool.getVecFromPool(50.0D / 256.0D, 60.0D / 256.0D, 256.0D / 256.0D);
 	}
 }

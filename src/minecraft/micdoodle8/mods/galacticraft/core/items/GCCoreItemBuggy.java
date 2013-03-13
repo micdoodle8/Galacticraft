@@ -27,7 +27,7 @@ public class GCCoreItemBuggy extends GCCoreItem
 {
 	public GCCoreItemBuggy(int par1)
 	{
-		super(par1);
+		super(par1, "");
 	}
 
 	@Override

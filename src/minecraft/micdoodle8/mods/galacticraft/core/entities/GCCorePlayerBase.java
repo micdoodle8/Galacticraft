@@ -8,7 +8,7 @@ import java.util.Set;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.GCBlockBreathableAir;
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockBreathableAir;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreTeleporter;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryTankRefill;
@@ -31,8 +31,6 @@ import net.minecraft.network.packet.Packet4UpdateTime;
 import net.minecraft.network.packet.Packet70GameEvent;
 import net.minecraft.network.packet.Packet9Respawn;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.src.ServerPlayerAPI;
-import net.minecraft.src.ServerPlayerBase;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
@@ -143,7 +141,7 @@ public class GCCorePlayerBase extends ServerPlayerBase
                 {
                     final Block var12 = Block.blocksList[this.player.worldObj.getBlockId(var9, var10, var11)];
 
-                    if (var12 != null && var12 instanceof GCBlockBreathableAir)
+                    if (var12 != null && var12 instanceof GCCoreBlockBreathableAir)
                     {
                         final int var13 = this.player.worldObj.getBlockMetadata(var9, var10, var11);
                         double var14 = var10 + 1;
@@ -194,7 +192,7 @@ public class GCCorePlayerBase extends ServerPlayerBase
                             	{
                                     final Block block2 = Block.blocksList[this.player.worldObj.getBlockId(x1, y1, z1)];
 
-                                    if (block2 instanceof GCBlockBreathableAir)
+                                    if (block2 instanceof GCCoreBlockBreathableAir)
                                     {
                                     	return true;
                                     }
@@ -423,15 +421,15 @@ public class GCCorePlayerBase extends ServerPlayerBase
 
 		if (this.tankInSlot1 != null && this.lastTankInSlot1 == null)
 		{
-			if (this.tankInSlot1.getItem().itemID == GCCoreItems.lightOxygenTankFull.itemID)
+			if (this.tankInSlot1.getItem().itemID == GCCoreItems.lightOxygenTank.itemID)
 			{
 				this.sendGearUpdatePacket(modelUpdatePacketTypes.ADDLEFTGREENTANK.getIndex());
 			}
-			else if (this.tankInSlot1.getItem().itemID == GCCoreItems.medOxygenTankFull.itemID)
+			else if (this.tankInSlot1.getItem().itemID == GCCoreItems.medOxygenTank.itemID)
 			{
 				this.sendGearUpdatePacket(modelUpdatePacketTypes.ADDLEFTORANGETANK.getIndex());
 			}
-			else if (this.tankInSlot1.getItem().itemID == GCCoreItems.heavyOxygenTankFull.itemID)
+			else if (this.tankInSlot1.getItem().itemID == GCCoreItems.heavyOxygenTank.itemID)
 			{
 				this.sendGearUpdatePacket(modelUpdatePacketTypes.ADDLEFTREDTANK.getIndex());
 			}
@@ -439,15 +437,15 @@ public class GCCorePlayerBase extends ServerPlayerBase
 
 		if (this.tankInSlot1 == null && this.lastTankInSlot1 != null)
 		{
-			if (this.lastTankInSlot1.getItem().itemID == GCCoreItems.lightOxygenTankFull.itemID)
+			if (this.lastTankInSlot1.getItem().itemID == GCCoreItems.lightOxygenTank.itemID)
 			{
 				this.sendGearUpdatePacket(modelUpdatePacketTypes.REMOVELEFTGREENTANK.getIndex());
 			}
-			else if (this.lastTankInSlot1.getItem().itemID == GCCoreItems.medOxygenTankFull.itemID)
+			else if (this.lastTankInSlot1.getItem().itemID == GCCoreItems.medOxygenTank.itemID)
 			{
 				this.sendGearUpdatePacket(modelUpdatePacketTypes.REMOVELEFTORANGETANK.getIndex());
 			}
-			else if (this.lastTankInSlot1.getItem().itemID == GCCoreItems.heavyOxygenTankFull.itemID)
+			else if (this.lastTankInSlot1.getItem().itemID == GCCoreItems.heavyOxygenTank.itemID)
 			{
 				this.sendGearUpdatePacket(modelUpdatePacketTypes.REMOVELEFTREDTANK.getIndex());
 			}
@@ -457,39 +455,39 @@ public class GCCorePlayerBase extends ServerPlayerBase
 		{
 			if (this.tankInSlot1.getItem().itemID != this.lastTankInSlot1.getItem().itemID)
 			{
-				if (this.tankInSlot1.getItem().itemID == GCCoreItems.lightOxygenTankFull.itemID)
+				if (this.tankInSlot1.getItem().itemID == GCCoreItems.lightOxygenTank.itemID)
 				{
-					if (this.lastTankInSlot1.getItem().itemID == GCCoreItems.medOxygenTankFull.itemID)
+					if (this.lastTankInSlot1.getItem().itemID == GCCoreItems.medOxygenTank.itemID)
 					{
 						this.sendGearUpdatePacket(modelUpdatePacketTypes.REMOVELEFTORANGETANK.getIndex());
 					}
-					else if (this.lastTankInSlot1.getItem().itemID == GCCoreItems.heavyOxygenTankFull.itemID)
+					else if (this.lastTankInSlot1.getItem().itemID == GCCoreItems.heavyOxygenTank.itemID)
 					{
 						this.sendGearUpdatePacket(modelUpdatePacketTypes.REMOVELEFTREDTANK.getIndex());
 					}
 
 					this.sendGearUpdatePacket(modelUpdatePacketTypes.ADDLEFTGREENTANK.getIndex());
 				}
-				else if (this.tankInSlot1.getItem().itemID == GCCoreItems.medOxygenTankFull.itemID)
+				else if (this.tankInSlot1.getItem().itemID == GCCoreItems.medOxygenTank.itemID)
 				{
-					if (this.lastTankInSlot1.getItem().itemID == GCCoreItems.lightOxygenTankFull.itemID)
+					if (this.lastTankInSlot1.getItem().itemID == GCCoreItems.lightOxygenTank.itemID)
 					{
 						this.sendGearUpdatePacket(modelUpdatePacketTypes.REMOVELEFTGREENTANK.getIndex());
 					}
-					else if (this.lastTankInSlot1.getItem().itemID == GCCoreItems.heavyOxygenTankFull.itemID)
+					else if (this.lastTankInSlot1.getItem().itemID == GCCoreItems.heavyOxygenTank.itemID)
 					{
 						this.sendGearUpdatePacket(modelUpdatePacketTypes.REMOVELEFTREDTANK.getIndex());
 					}
 
 					this.sendGearUpdatePacket(modelUpdatePacketTypes.ADDLEFTORANGETANK.getIndex());
 				}
-				else if (this.tankInSlot1.getItem().itemID == GCCoreItems.heavyOxygenTankFull.itemID)
+				else if (this.tankInSlot1.getItem().itemID == GCCoreItems.heavyOxygenTank.itemID)
 				{
-					if (this.lastTankInSlot1.getItem().itemID == GCCoreItems.lightOxygenTankFull.itemID)
+					if (this.lastTankInSlot1.getItem().itemID == GCCoreItems.lightOxygenTank.itemID)
 					{
 						this.sendGearUpdatePacket(modelUpdatePacketTypes.REMOVELEFTGREENTANK.getIndex());
 					}
-					else if (this.lastTankInSlot1.getItem().itemID == GCCoreItems.medOxygenTankFull.itemID)
+					else if (this.lastTankInSlot1.getItem().itemID == GCCoreItems.medOxygenTank.itemID)
 					{
 						this.sendGearUpdatePacket(modelUpdatePacketTypes.REMOVELEFTORANGETANK.getIndex());
 					}
@@ -503,15 +501,15 @@ public class GCCorePlayerBase extends ServerPlayerBase
 
 		if (this.tankInSlot2 != null && this.lastTankInSlot2 == null)
 		{
-			if (this.tankInSlot2.getItem().itemID == GCCoreItems.lightOxygenTankFull.itemID)
+			if (this.tankInSlot2.getItem().itemID == GCCoreItems.lightOxygenTank.itemID)
 			{
 				this.sendGearUpdatePacket(modelUpdatePacketTypes.ADDRIGHTGREENTANK.getIndex());
 			}
-			else if (this.tankInSlot2.getItem().itemID == GCCoreItems.medOxygenTankFull.itemID)
+			else if (this.tankInSlot2.getItem().itemID == GCCoreItems.medOxygenTank.itemID)
 			{
 				this.sendGearUpdatePacket(modelUpdatePacketTypes.ADDRIGHTORANGETANK.getIndex());
 			}
-			else if (this.tankInSlot2.getItem().itemID == GCCoreItems.heavyOxygenTankFull.itemID)
+			else if (this.tankInSlot2.getItem().itemID == GCCoreItems.heavyOxygenTank.itemID)
 			{
 				this.sendGearUpdatePacket(modelUpdatePacketTypes.ADDRIGHTREDTANK.getIndex());
 			}
@@ -519,15 +517,15 @@ public class GCCorePlayerBase extends ServerPlayerBase
 
 		if (this.tankInSlot2 == null && this.lastTankInSlot2 != null)
 		{
-			if (this.lastTankInSlot2.getItem().itemID == GCCoreItems.lightOxygenTankFull.itemID)
+			if (this.lastTankInSlot2.getItem().itemID == GCCoreItems.lightOxygenTank.itemID)
 			{
 				this.sendGearUpdatePacket(modelUpdatePacketTypes.REMOVERIGHTGREENTANK.getIndex());
 			}
-			else if (this.lastTankInSlot2.getItem().itemID == GCCoreItems.medOxygenTankFull.itemID)
+			else if (this.lastTankInSlot2.getItem().itemID == GCCoreItems.medOxygenTank.itemID)
 			{
 				this.sendGearUpdatePacket(modelUpdatePacketTypes.REMOVERIGHTORANGETANK.getIndex());
 			}
-			else if (this.lastTankInSlot2.getItem().itemID == GCCoreItems.heavyOxygenTankFull.itemID)
+			else if (this.lastTankInSlot2.getItem().itemID == GCCoreItems.heavyOxygenTank.itemID)
 			{
 				this.sendGearUpdatePacket(modelUpdatePacketTypes.REMOVERIGHTREDTANK.getIndex());
 			}
@@ -537,39 +535,39 @@ public class GCCorePlayerBase extends ServerPlayerBase
 		{
 			if (this.tankInSlot2.getItem().itemID != this.lastTankInSlot2.getItem().itemID)
 			{
-				if (this.tankInSlot2.getItem().itemID == GCCoreItems.lightOxygenTankFull.itemID)
+				if (this.tankInSlot2.getItem().itemID == GCCoreItems.lightOxygenTank.itemID)
 				{
-					if (this.lastTankInSlot2.getItem().itemID == GCCoreItems.medOxygenTankFull.itemID)
+					if (this.lastTankInSlot2.getItem().itemID == GCCoreItems.medOxygenTank.itemID)
 					{
 						this.sendGearUpdatePacket(modelUpdatePacketTypes.REMOVERIGHTORANGETANK.getIndex());
 					}
-					else if (this.lastTankInSlot2.getItem().itemID == GCCoreItems.heavyOxygenTankFull.itemID)
+					else if (this.lastTankInSlot2.getItem().itemID == GCCoreItems.heavyOxygenTank.itemID)
 					{
 						this.sendGearUpdatePacket(modelUpdatePacketTypes.REMOVERIGHTREDTANK.getIndex());
 					}
 
 					this.sendGearUpdatePacket(modelUpdatePacketTypes.ADDRIGHTGREENTANK.getIndex());
 				}
-				else if (this.tankInSlot2.getItem().itemID == GCCoreItems.medOxygenTankFull.itemID)
+				else if (this.tankInSlot2.getItem().itemID == GCCoreItems.medOxygenTank.itemID)
 				{
-					if (this.lastTankInSlot2.getItem().itemID == GCCoreItems.lightOxygenTankFull.itemID)
+					if (this.lastTankInSlot2.getItem().itemID == GCCoreItems.lightOxygenTank.itemID)
 					{
 						this.sendGearUpdatePacket(modelUpdatePacketTypes.REMOVERIGHTGREENTANK.getIndex());
 					}
-					else if (this.lastTankInSlot2.getItem().itemID == GCCoreItems.heavyOxygenTankFull.itemID)
+					else if (this.lastTankInSlot2.getItem().itemID == GCCoreItems.heavyOxygenTank.itemID)
 					{
 						this.sendGearUpdatePacket(modelUpdatePacketTypes.REMOVERIGHTREDTANK.getIndex());
 					}
 
 					this.sendGearUpdatePacket(modelUpdatePacketTypes.ADDRIGHTORANGETANK.getIndex());
 				}
-				else if (this.tankInSlot2.getItem().itemID == GCCoreItems.heavyOxygenTankFull.itemID)
+				else if (this.tankInSlot2.getItem().itemID == GCCoreItems.heavyOxygenTank.itemID)
 				{
-					if (this.lastTankInSlot2.getItem().itemID == GCCoreItems.lightOxygenTankFull.itemID)
+					if (this.lastTankInSlot2.getItem().itemID == GCCoreItems.lightOxygenTank.itemID)
 					{
 						this.sendGearUpdatePacket(modelUpdatePacketTypes.REMOVERIGHTGREENTANK.getIndex());
 					}
-					else if (this.lastTankInSlot2.getItem().itemID == GCCoreItems.medOxygenTankFull.itemID)
+					else if (this.lastTankInSlot2.getItem().itemID == GCCoreItems.medOxygenTank.itemID)
 					{
 						this.sendGearUpdatePacket(modelUpdatePacketTypes.REMOVERIGHTORANGETANK.getIndex());
 					}
@@ -648,15 +646,15 @@ public class GCCorePlayerBase extends ServerPlayerBase
 			{
 				id = this.tankInSlot1.itemID;
 
-				if (id == GCCoreItems.lightOxygenTankFull.itemID)
+				if (id == GCCoreItems.lightOxygenTank.itemID)
 				{
 					this.sendGearUpdatePacket(modelUpdatePacketTypes.ADDLEFTGREENTANK.getIndex());
 				}
-				else if (id == GCCoreItems.medOxygenTankFull.itemID)
+				else if (id == GCCoreItems.medOxygenTank.itemID)
 				{
 					this.sendGearUpdatePacket(modelUpdatePacketTypes.ADDLEFTORANGETANK.getIndex());
 				}
-				else if (id == GCCoreItems.heavyOxygenTankFull.itemID)
+				else if (id == GCCoreItems.heavyOxygenTank.itemID)
 				{
 					this.sendGearUpdatePacket(modelUpdatePacketTypes.ADDLEFTREDTANK.getIndex());
 				}
@@ -666,15 +664,15 @@ public class GCCorePlayerBase extends ServerPlayerBase
 			{
 				id = this.tankInSlot2.itemID;
 
-				if (id == GCCoreItems.lightOxygenTankFull.itemID)
+				if (id == GCCoreItems.lightOxygenTank.itemID)
 				{
 					this.sendGearUpdatePacket(modelUpdatePacketTypes.ADDRIGHTGREENTANK.getIndex());
 				}
-				else if (id == GCCoreItems.medOxygenTankFull.itemID)
+				else if (id == GCCoreItems.medOxygenTank.itemID)
 				{
 					this.sendGearUpdatePacket(modelUpdatePacketTypes.ADDRIGHTORANGETANK.getIndex());
 				}
-				else if (id == GCCoreItems.heavyOxygenTankFull.itemID)
+				else if (id == GCCoreItems.heavyOxygenTank.itemID)
 				{
 					this.sendGearUpdatePacket(modelUpdatePacketTypes.ADDRIGHTREDTANK.getIndex());
 				}

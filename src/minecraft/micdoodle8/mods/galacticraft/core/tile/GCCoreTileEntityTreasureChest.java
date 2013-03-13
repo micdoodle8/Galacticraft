@@ -356,18 +356,6 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
         }
     }
 
-    /**
-     * Called when a client event is received with the event number and argument, see World.sendClientEvent
-     */
-    @Override
-	public void receiveClientEvent(int par1, int par2)
-    {
-        if (par1 == 1)
-        {
-            this.numUsingPlayers = par2;
-        }
-    }
-
     @Override
 	public void openChest()
     {
@@ -392,4 +380,16 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
         this.checkForAdjacentChests();
         super.invalidate();
     }
+
+	@Override
+	public boolean func_94042_c() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean func_94041_b(int i, ItemStack itemstack) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

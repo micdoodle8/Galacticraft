@@ -1,23 +1,31 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import com.google.common.io.ByteArrayDataInput;
-
 import mekanism.api.EnumGas;
 import mekanism.api.IGasAcceptor;
 import mekanism.api.ITubeConnection;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
-import micdoodle8.mods.galacticraft.core.client.model.block.GCCoreModelFan;
+import micdoodle8.mods.galacticraft.core.oxygen.OxygenBubble;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.INetworkManager;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
-import universalelectricity.core.block.IConnector;
-import universalelectricity.core.block.IElectricityStorage;
-import universalelectricity.core.block.IVoltage;
+import universalelectricity.components.common.BasicComponents;
+import universalelectricity.core.electricity.ElectricityPack;
+import universalelectricity.core.item.ElectricItemHelper;
+import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.IPacketReceiver;
-import universalelectricity.prefab.tile.TileEntityElectricityStorage;
+import universalelectricity.prefab.network.PacketManager;
+import universalelectricity.prefab.tile.TileEntityElectricityRunnable;
+
+import com.google.common.io.ByteArrayDataInput;
+
+import cpw.mods.fml.common.registry.LanguageRegistry;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -25,151 +33,260 @@ import universalelectricity.prefab.tile.TileEntityElectricityStorage;
  *  All rights reserved.
  *
  */
-public class GCCoreTileEntityOxygenDistributor extends TileEntityElectricityStorage implements IElectricityStorage, IPacketReceiver, IGasAcceptor, ITubeConnection, IConnector, IVoltage
+public class GCCoreTileEntityOxygenDistributor extends TileEntityElectricityRunnable implements IInventory, IPacketReceiver, IGasAcceptor, ITubeConnection
 {
-	public int currentPower;
+	public int power;
+	public int lastPower;
+	
     public boolean active;
-    
-    public GCCoreModelFan fanModel1 = new GCCoreModelFan();
-    public GCCoreModelFan fanModel2 = new GCCoreModelFan();
-    public GCCoreModelFan fanModel3 = new GCCoreModelFan();
-   	public GCCoreModelFan fanModel4 = new GCCoreModelFan();
+	private ItemStack[] containingItems = new ItemStack[1];
+   	
+   	public OxygenBubble bubble;
+   	
+	public static final double WATTS_PER_TICK = 300;
+
+	private int playersUsing = 0;
+	
+	public static int timeSinceOxygenRequest;
 
     @Override
-  	public void validate()
+  	public void invalidate()
   	{
-   		super.validate();
-
-   		if (!this.isInvalid() && this.worldObj != null)
-      	{
-   		   	this.fanModel1 = new GCCoreModelFan();
-   		    this.fanModel2 = new GCCoreModelFan();
-   		    this.fanModel3 = new GCCoreModelFan();
-   		   	this.fanModel4 = new GCCoreModelFan();
-      	}
+    	if (this.bubble != null)
+    	{
+    		if (this.bubble.connectedDistributors.contains(this))
+    		{
+        		this.bubble.connectedDistributors.remove(this);
+    		}
+    		
+        	this.bubble.stopProducingOxygen();
+    	}
+    	
+    	for (int x = (int) Math.floor(this.xCoord - this.power * 1.5); x < Math.ceil(this.xCoord + this.power * 1.5); x++)
+    	{
+        	for (int y = (int) Math.floor(this.yCoord - this.power * 1.5); y < Math.ceil(this.yCoord + this.power * 1.5); y++)
+        	{
+            	for (int z = (int) Math.floor(this.zCoord - this.power * 1.5); z < Math.ceil(this.zCoord + this.power * 1.5); z++)
+            	{
+            		TileEntity tile = this.worldObj.getBlockTileEntity(x, y, z);
+            		
+            		if (tile != null && tile instanceof GCCoreTileEntityBreathableAir)
+            		{
+        				tile.worldObj.func_94571_i(tile.xCoord, tile.yCoord, tile.zCoord);
+						tile.invalidate();
+            		}
+            	}
+        	}
+    	}
+    	
+    	super.invalidate();
   	}
-
-    public double getDistanceFrom2(double par1, double par3, double par5)
-    {
-        final double var7 = this.xCoord + 0.5D - par1;
-        final double var9 = this.yCoord + 0.5D - par3;
-        final double var11 = this.zCoord + 0.5D - par5;
-        return var7 * var7 + var9 * var9 + var11 * var11;
-    }
 
 	@Override
 	public void updateEntity()
 	{
 		super.updateEntity();
 
-		if (this.currentPower > 0)
-		{
-			this.currentPower -= 1;
-		}
-
-		if (this.currentPower < 1.0D)
-		{
-			this.active = false;
-		}
-		else
-		{
-			this.active = true;
-		}
-
+		this.wattsReceived += ElectricItemHelper.dechargeItem(this.containingItems[0], WATTS_PER_TICK, this.getVoltage());
+		
 		if (!this.worldObj.isRemote)
 		{
-			for (int i = 0; i < ForgeDirection.values().length; i++)
-	    	{
-				int x, y, z;
-				x = ForgeDirection.getOrientation(i).offsetX + this.xCoord;
-				y = ForgeDirection.getOrientation(i).offsetY + this.yCoord;
-				z = ForgeDirection.getOrientation(i).offsetZ + this.zCoord;
-
-				if (this.active)
-				{
-					if (this.worldObj.getBlockId(x, y, z) == 0)
-					{
-						this.worldObj.setBlockWithNotify(x, y, z, GCCoreBlocks.breatheableAir.blockID);
-					}
-
-					this.updateAdjacentOxygenAdd(ForgeDirection.getOrientation(i).offsetX, ForgeDirection.getOrientation(i).offsetY, ForgeDirection.getOrientation(i).offsetZ);
-			    }
-				else if (!this.active)
-				{
-					this.updateAdjacentOxygenRemove(x, y, z);
-				}
-	    	}
-		}
-
-		if (this.active)
-		{
-			final int power = Math.min((int) Math.floor(this.currentPower / 3), 8);
-
-			for (int j = -power; j <= power; j++)
+			if (this.timeSinceOxygenRequest > 0)
 			{
-				for (int i = -power; i <= power; i++)
+				timeSinceOxygenRequest--;
+			}
+			
+			this.wattsReceived = Math.max(this.wattsReceived - WATTS_PER_TICK / 4, 0);
+			
+			if (this.power >= 1 && this.wattsReceived > 0)
+			{
+				this.active = true;
+			}
+			else
+			{
+				this.active = false;
+		    	
+		    	for (int x = (int) Math.floor(this.xCoord - this.power * 1.5); x < Math.ceil(this.xCoord + this.power * 1.5); x++)
+		    	{
+		        	for (int y = (int) Math.floor(this.yCoord - this.power * 1.5); y < Math.ceil(this.yCoord + this.power * 1.5); y++)
+		        	{
+		            	for (int z = (int) Math.floor(this.zCoord - this.power * 1.5); z < Math.ceil(this.zCoord + this.power * 1.5); z++)
+		            	{
+		            		TileEntity tile = this.worldObj.getBlockTileEntity(x, y, z);
+		            		
+		            		if (tile != null && tile instanceof GCCoreTileEntityBreathableAir)
+		            		{
+		        				tile.worldObj.func_94571_i(tile.xCoord, tile.yCoord, tile.zCoord);
+								tile.invalidate();
+		            		}
+		            	}
+		        	}
+		    	}
+			}
+			
+			if (this.bubble == null && this.active)
+			{
+				this.bubble = new OxygenBubble(this);
+			}
+
+			if (this.bubble != null)
+			{
+				if (!this.bubble.connectedDistributors.contains(this))
 				{
-					for (int k = -power; k <= power; k++)
+					this.bubble.connectedDistributors.add(this);
+				}
+				
+				if (this.lastPower != this.power)
+				{
+					this.bubble.calculate();
+				}
+			}
+			
+			if (this.active)
+			{
+				final int power = Math.min((int) Math.floor(this.power / 3), 8);
+
+				for (int j = -power; j <= power; j++)
+				{
+					for (int i = -power; i <= power; i++)
 					{
-						if (this.worldObj.getBlockId(this.xCoord + i, this.yCoord + j, this.zCoord + k) == GCCoreBlocks.breatheableAir.blockID)
+						for (int k = -power; k <= power; k++)
 						{
-							this.worldObj.scheduleBlockUpdate(this.xCoord + i, this.yCoord + j, this.zCoord + k, GCCoreBlocks.breatheableAir.blockID, GCCoreBlocks.breatheableAir.tickRate());
-						}
-						else if (this.worldObj.getBlockId(this.xCoord + i, this.yCoord + j, this.zCoord + k) == GCCoreBlocks.unlitTorch.blockID)
-						{
-							final int meta = this.worldObj.getBlockMetadata(this.xCoord + i, this.yCoord + j, this.zCoord + k);
-							this.worldObj.setBlockAndMetadataWithNotify(this.xCoord + i, this.yCoord + j, this.zCoord + k, GCCoreBlocks.unlitTorchLit.blockID, meta);
+							if (this.worldObj.getBlockId(this.xCoord + i, this.yCoord + j, this.zCoord + k) == GCCoreBlocks.unlitTorch.blockID)
+							{
+								final int meta = this.worldObj.getBlockMetadata(this.xCoord + i, this.yCoord + j, this.zCoord + k);
+								this.worldObj.setBlockAndMetadataWithNotify(this.xCoord + i, this.yCoord + j, this.zCoord + k, GCCoreBlocks.unlitTorchLit.blockID, meta, 3);
+							}
 						}
 					}
 				}
 			}
+
+			if (this.power > 0)
+			{
+				this.power -= 1;
+			}
+
+			if (this.ticks % 3 == 0)
+			{
+				PacketManager.sendPacketToClients(this.getDescriptionPacket(), this.worldObj, new Vector3(this), 6);
+			}
+			
+			this.lastPower = this.power;
 		}
 	}
 
-	public void updateAdjacentOxygenAdd(int xOffset, int yOffset, int zOffset)
+	@Override
+	public Packet getDescriptionPacket()
 	{
-		final TileEntity tile = this.worldObj.getBlockTileEntity(this.xCoord + xOffset, this.yCoord + yOffset, this.zCoord + zOffset);
-
-		if (tile != null && tile instanceof GCCoreTileEntityBreathableAir)
-		{
-			final GCCoreTileEntityBreathableAir air = (GCCoreTileEntityBreathableAir) tile;
-
-			air.addDistributor(this);
-		}
+		Packet p = PacketManager.getPacket(BasicComponents.CHANNEL, this, this.power, this.wattsReceived, this.disabledTicks);
+		return p;
 	}
 
-	public void updateAdjacentOxygenRemove(int xOffset, int yOffset, int zOffset)
+	@Override
+	public void handlePacketData(INetworkManager network, int type, Packet250CustomPayload packet, EntityPlayer player, ByteArrayDataInput dataStream)
 	{
-		final TileEntity tile = this.worldObj.getBlockTileEntity(this.xCoord + xOffset, this.yCoord + yOffset, this.zCoord + zOffset);
-
-		if (tile != null && tile instanceof GCCoreTileEntityBreathableAir)
+		try
 		{
-			final GCCoreTileEntityBreathableAir air = (GCCoreTileEntityBreathableAir) tile;
-
-			air.removeDistributor(this);
+			if (this.worldObj.isRemote)
+			{
+				this.power = dataStream.readInt();
+				this.wattsReceived = dataStream.readInt();
+				this.disabledTicks = dataStream.readInt();
+			}
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
 		}
 	}
+
+	@Override
+	public ElectricityPack getRequest()
+	{
+		if (timeSinceOxygenRequest > 0)
+		{
+			return new ElectricityPack(WATTS_PER_TICK / this.getVoltage(), this.getVoltage());
+		}
+		else
+		{
+			return new ElectricityPack();
+		}
+	}
+
+//	public void updateAdjacentOxygenAdd(int xOffset, int yOffset, int zOffset)
+//	{
+//		final TileEntity tile = this.worldObj.getBlockTileEntity(this.xCoord + xOffset, this.yCoord + yOffset, this.zCoord + zOffset);
+//
+//		if (tile != null && tile instanceof GCCoreTileEntityBreathableAir)
+//		{
+//			final GCCoreTileEntityBreathableAir air = (GCCoreTileEntityBreathableAir) tile;
+//
+//			air.addDistributor(this);
+//		}
+//	}
+//
+//	public void updateAdjacentOxygenRemove(int xOffset, int yOffset, int zOffset)
+//	{
+//		final TileEntity tile = this.worldObj.getBlockTileEntity(this.xCoord + xOffset, this.yCoord + yOffset, this.zCoord + zOffset);
+//
+//		if (tile != null && tile instanceof GCCoreTileEntityBreathableAir)
+//		{
+//			final GCCoreTileEntityBreathableAir air = (GCCoreTileEntityBreathableAir) tile;
+//
+//			air.removeDistributor(this);
+//		}
+//	}
 
 	@Override
 	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
 	{
 		super.readFromNBT(par1NBTTagCompound);
-		this.currentPower = par1NBTTagCompound.getInteger("currentPower");
+
+        final NBTTagList var2 = par1NBTTagCompound.getTagList("Items");
+        this.containingItems = new ItemStack[this.getSizeInventory()];
+
+        for (int var3 = 0; var3 < var2.tagCount(); ++var3)
+        {
+            final NBTTagCompound var4 = (NBTTagCompound)var2.tagAt(var3);
+            final byte var5 = var4.getByte("Slot");
+
+            if (var5 >= 0 && var5 < this.containingItems.length)
+            {
+                this.containingItems[var5] = ItemStack.loadItemStackFromNBT(var4);
+            }
+        }
 	}
 
 	@Override
 	public void writeToNBT(NBTTagCompound par1NBTTagCompound)
 	{
 		super.writeToNBT(par1NBTTagCompound);
-		par1NBTTagCompound.setInteger("currentPower", this.currentPower);
+
+        final NBTTagList list = new NBTTagList();
+
+        for (int var3 = 0; var3 < this.containingItems.length; ++var3)
+        {
+            if (this.containingItems[var3] != null)
+            {
+                final NBTTagCompound var4 = new NBTTagCompound();
+                var4.setByte("Slot", (byte)var3);
+                this.containingItems[var3].writeToNBT(var4);
+                list.appendTag(var4);
+            }
+        }
+
+        par1NBTTagCompound.setTag("Items", list);
 	}
 
 	@Override
 	public int transferGasToAcceptor(int amount, EnumGas type) 
 	{
-		if (type == EnumGas.OXYGEN)
+		this.timeSinceOxygenRequest = 20;
+		
+		if (this.wattsReceived > 0 && type == EnumGas.OXYGEN)
 		{
-			currentPower = Math.max(this.currentPower, amount);
+			this.power = Math.max(this.power, amount * 3);
 			return 0;
 		}
 		else
@@ -181,36 +298,136 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityElectricityStor
 	@Override
 	public boolean canReceiveGas(ForgeDirection side, EnumGas type) 
 	{
-		return true;
+		return side == ForgeDirection.getOrientation(this.getBlockMetadata() + 2).getOpposite();
 	}
 
 	@Override
-	public boolean canTubeConnect(ForgeDirection side)
+	public boolean canTubeConnect(ForgeDirection direction) 
 	{
-		return (side != ForgeDirection.UP && side != ForgeDirection.DOWN);
+		return direction == ForgeDirection.getOrientation(this.getBlockMetadata() + 2).getOpposite();
 	}
 
 	@Override
-	public boolean canConnect(ForgeDirection side)
+	public boolean canConnect(ForgeDirection direction)
 	{
-		return (side != ForgeDirection.UP && side != ForgeDirection.DOWN);
+		return direction == ForgeDirection.getOrientation(this.getBlockMetadata() + 2);
 	}
 
 	@Override
-	public double getVoltage() 
+	public int getSizeInventory()
 	{
-		return 120.0D;
+		return this.containingItems.length;
 	}
 
 	@Override
-	public void handlePacketData(INetworkManager network, int packetType, Packet250CustomPayload packet, EntityPlayer player, ByteArrayDataInput dataStream) 
+	public ItemStack getStackInSlot(int par1)
 	{
+		return this.containingItems[par1];
+	}
+
+	@Override
+	public ItemStack decrStackSize(int par1, int par2)
+	{
+		if (this.containingItems[par1] != null)
+		{
+			ItemStack var3;
+
+			if (this.containingItems[par1].stackSize <= par2)
+			{
+				var3 = this.containingItems[par1];
+				this.containingItems[par1] = null;
+				return var3;
+			}
+			else
+			{
+				var3 = this.containingItems[par1].splitStack(par2);
+
+				if (this.containingItems[par1].stackSize == 0)
+				{
+					this.containingItems[par1] = null;
+				}
+
+				return var3;
+			}
+		}
+		else
+		{
+			return null;
+		}
+	}
+
+	@Override
+	public ItemStack getStackInSlotOnClosing(int par1)
+	{
+		if (this.containingItems[par1] != null)
+		{
+			ItemStack var2 = this.containingItems[par1];
+			this.containingItems[par1] = null;
+			return var2;
+		}
+		else
+		{
+			return null;
+		}
+	}
+
+	@Override
+	public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
+	{
+		this.containingItems[par1] = par2ItemStack;
+
+		if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit())
+		{
+			par2ItemStack.stackSize = this.getInventoryStackLimit();
+		}
+	}
+
+	@Override
+	public String getInvName()
+	{
+		return LanguageRegistry.instance().getStringLocalization("tile.bcMachine.2.name");
+	}
+
+	@Override
+	public int getInventoryStackLimit()
+	{
+		return 64;
+	}
+
+	@Override
+	public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
+	{
+		return this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : par1EntityPlayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
+	}
+
+	@Override
+	public boolean func_94042_c()
+	{
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean func_94041_b(int i, ItemStack itemstack)
+	{
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void openChest()
+	{
+		if (!this.worldObj.isRemote)
+		{
+			PacketManager.sendPacketToClients(this.getDescriptionPacket(), this.worldObj, new Vector3(this), 15);
+		}
 		
+		this.playersUsing++;
 	}
 
 	@Override
-	public double getMaxJoules() 
+	public void closeChest()
 	{
-		return 2500000;
+		this.playersUsing--;
 	}
 }

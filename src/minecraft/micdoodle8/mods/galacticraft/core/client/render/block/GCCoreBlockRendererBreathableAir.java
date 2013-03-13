@@ -185,7 +185,8 @@ public class GCCoreBlockRendererBreathableAir implements ISimpleBlockRenderingHa
                     ++var64;
                 }
 
-                final int var66 = par1Block.getBlockTextureFromSideAndMetadata(var34 + 2, var23);
+//                final int var66 = par1Block.getBlockTextureFromSideAndMetadata(var34 + 2, var23);
+                final int var66 = 0;
                 final int var39 = (var66 & 15) << 4;
                 final int var67 = var66 & 240;
 

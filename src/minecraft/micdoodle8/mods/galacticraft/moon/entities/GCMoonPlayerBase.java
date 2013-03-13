@@ -3,8 +3,6 @@ package micdoodle8.mods.galacticraft.moon.entities;
 import micdoodle8.mods.galacticraft.moon.GalacticraftMoon;
 import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
 import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;
-import net.minecraft.src.ServerPlayerAPI;
-import net.minecraft.src.ServerPlayerBase;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 

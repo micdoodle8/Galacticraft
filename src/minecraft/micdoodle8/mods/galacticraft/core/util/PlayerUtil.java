@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.util;
 
-import java.util.EmptyStackException;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -22,7 +21,7 @@ public class PlayerUtil
 
 		if (GalacticraftCore.playersServer.size() == 0)
 		{
-			new EmptyStackException().printStackTrace();
+//			new EmptyStackException().printStackTrace();
 		}
 
 	    final Iterator it = GalacticraftCore.playersServer.entrySet().iterator();
@@ -51,7 +50,7 @@ public class PlayerUtil
 
 		if (GalacticraftCore.playersClient.size() == 0)
 		{
-			new EmptyStackException().printStackTrace();
+//			new EmptyStackException().printStackTrace();
 		}
 
 	    final Iterator it = GalacticraftCore.playersClient.entrySet().iterator();

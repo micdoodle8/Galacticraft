@@ -148,7 +148,7 @@ public class GCCoreSkyProviderOverworld extends IRenderHandler
                 var13 = var27 * (float)Math.PI * 2.0F / var26;
                 final float var14 = MathHelper.sin(var13);
                 final float var15 = MathHelper.cos(var13);
-                var23.addVertex((var14 * 120.0F), (var15 * 120.0F), (-var15 * 40.0F * var24[3]));
+                var23.addVertex(var14 * 120.0F, var15 * 120.0F, -var15 * 40.0F * var24[3]);
             }
 
             var23.draw();
@@ -177,7 +177,7 @@ public class GCCoreSkyProviderOverworld extends IRenderHandler
         var23.draw();
         var12 = 20.0F;
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.minecraft.renderEngine.getTexture("/terrain/moon_phases.png"));
-        final int var28 = this.minecraft.theWorld.getMoonPhase(partialTicks);
+        final int var28 = this.minecraft.theWorld.getMoonPhase();
         final int var30 = var28 % 4;
         final int var29 = var28 / 4 % 2;
         final float var16 = (var30 + 0) / 4.0F;
@@ -255,7 +255,7 @@ public class GCCoreSkyProviderOverworld extends IRenderHandler
                 scale = Math.max(scale, 0.2F);
                 GL11.glScalef(scale, 0.0F, scale);
                 GL11.glTranslatef(0.0F, -var20, 0.0F);
-                this.minecraft.renderEngine.bindTexture(this.minecraft.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/planets/overworld.png"));
+                this.minecraft.renderEngine.func_98187_b("/micdoodle8/mods/galacticraft/core/client/planets/overworld.png");
 
                 var10 = 1.0F;
                 var12 = -1.0F;

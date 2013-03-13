@@ -122,7 +122,7 @@ public class GCMoonComponentVillagePathGen extends GCMoonComponentVillageRoadPie
                 if (par3StructureBoundingBox.isVecInside(var5, 64, var6) && (par1World.getBlockId(var5, par1World.getTopSolidOrLiquidBlock(var5, var6) - 1, var6) == GCMoonBlocks.blockMoon.blockID && par1World.getBlockMetadata(var5, par1World.getTopSolidOrLiquidBlock(var5, var6) - 1, var6) == 5 || par1World.getBlockId(var5, par1World.getTopSolidOrLiquidBlock(var5, var6) - 1, var6) == 0))
                 {
                     final int var7 = par1World.getTopSolidOrLiquidBlock(var5, var6) - 1;
-                    par1World.setBlockAndMetadata(var5, var7, var6, var4, 1);
+                    par1World.setBlockAndMetadataWithNotify(var5, var7, var6, var4, 1, 3);
                 }
             }
         }

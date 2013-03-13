@@ -1,27 +1,34 @@
 package micdoodle8.mods.galacticraft.core.items;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.client.GCCorePlayerBaseClient;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Icon;
 
 import org.lwjgl.input.Keyboard;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class GCCoreItemParachute extends GCCoreItem
+public class GCCoreItemParachute extends Item
 {
+	protected List<Icon> icons = new ArrayList<Icon>();
+	
 	public static final String[] names = {
 		"plain", // 0
 		"black", // 1
 		"blue", // 2
-		"green", // 3
+		"lime", // 3
 		"brown", // 4
 		"darkblue", // 5
 		"darkgray", // 6
@@ -41,6 +48,7 @@ public class GCCoreItemParachute extends GCCoreItem
 		this.setMaxDamage(0);
 		this.setHasSubtypes(true);
 		this.setMaxStackSize(1);
+		this.setCreativeTab(GalacticraftCore.galacticraftTab);
 	}
 
     @Override
@@ -58,61 +66,85 @@ public class GCCoreItemParachute extends GCCoreItem
         return par1;
     }
 
-    @Override
-	public String getItemNameIS(ItemStack par1ItemStack)
-    {
-        int var2 = par1ItemStack.getItemDamage();
-
-        if (var2 < 0 || var2 >= GCCoreItemParachute.names.length)
-        {
-            var2 = 0;
-        }
-
-        return super.getItemName() + "." + GCCoreItemParachute.names[var2];
-    }
-
-    @Override
+	@Override
 	@SideOnly(Side.CLIENT)
-    public int getIconFromDamage(int par1)
-    {
-    	switch (par1)
-    	{
-    	case 0: // plain
-    		return 49;
-    	case 1: // black
-    		return 34;
-    	case 2: // blue
-    		return 46;
-    	case 3: // green
-    		return 44;
-    	case 4: // brown
-    		return 37;
-    	case 5: // dark blue
-    		return 38;
-    	case 6: // dark gray
-    		return 42;
-    	case 7: // dark green
-    		return 36;
-    	case 8: // gray
-    		return 41;
-    	case 9: // magenta
-    		return 47;
-    	case 10: // orange
-    		return 48;
-    	case 11: // pink
-    		return 43;
-    	case 12: // purple
-    		return 39;
-    	case 13: // red
-    		return 35;
-    	case 14: // teal
-    		return 40;
-    	case 15: // yellow
-    		return 45;
-    	}
+	public void func_94581_a(IconRegister iconRegister)
+	{
+		List<ItemStack> list = new ArrayList<ItemStack>();
+		this.getSubItems(this.itemID, this.getCreativeTab(), list);
 
-    	return 0;
-    }
+		if (list.size() > 0)
+		{
+			for (ItemStack itemStack : list)
+			{
+				this.icons.add(iconRegister.func_94245_a(this.getUnlocalizedName(itemStack).replace("item.", "galacticraftcore:")));
+			}
+		}
+		else
+		{
+			this.iconIndex = iconRegister.func_94245_a(this.getUnlocalizedName().replace("item.", "galacticraftcore:"));
+		}
+	}
+
+	@Override
+	public String getUnlocalizedName(ItemStack itemStack)
+	{
+		return "item.parachute_" + names[itemStack.getItemDamage()];
+	}
+
+	@Override
+	public Icon getIconFromDamage(int damage)
+	{
+		if (this.icons.size() > damage)
+		{
+			return this.icons.get(damage);
+		}
+
+		return super.getIconFromDamage(damage);
+	}
+
+//    @Override
+//	@SideOnly(Side.CLIENT)
+//    public int getIconFromDamage(int par1)
+//    {
+//    	switch (par1)
+//    	{
+//    	case 0: // plain
+//    		return 49;
+//    	case 1: // black
+//    		return 34;
+//    	case 2: // blue
+//    		return 46;
+//    	case 3: // green
+//    		return 44;
+//    	case 4: // brown
+//    		return 37;
+//    	case 5: // dark blue
+//    		return 38;
+//    	case 6: // dark gray
+//    		return 42;
+//    	case 7: // dark green
+//    		return 36;
+//    	case 8: // gray
+//    		return 41;
+//    	case 9: // magenta
+//    		return 47;
+//    	case 10: // orange
+//    		return 48;
+//    	case 11: // pink
+//    		return 43;
+//    	case 12: // purple
+//    		return 39;
+//    	case 13: // red
+//    		return 35;
+//    	case 14: // teal
+//    		return 40;
+//    	case 15: // yellow
+//    		return 45;
+//    	}
+//
+//    	return 0;
+//    }
 
     public static int getParachuteDamageValueFromDye(int meta)
     {
@@ -169,7 +201,7 @@ public class GCCoreItemParachute extends GCCoreItem
     	{
     		final GCCorePlayerBaseClient playerBaseCl = PlayerUtil.getPlayerBaseClientFromPlayer(par2EntityPlayer);
 
-    		if (playerBaseCl.getUseTutorialText())
+    		if (playerBaseCl != null && playerBaseCl.getUseTutorialText())
     		{
             	par3List.add("Press " + Keyboard.getKeyName(ClientProxyCore.GCKeyHandler.tankRefill.keyCode) + " to access");
             	par3List.add("     Galacticraft Inventory");

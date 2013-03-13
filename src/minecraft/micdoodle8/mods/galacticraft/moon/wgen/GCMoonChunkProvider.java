@@ -642,12 +642,6 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 	}
 
 	@Override
-	public boolean unload100OldestChunks()
-	{
-		return false;
-	}
-
-	@Override
 	public boolean canSave()
 	{
 		return true;

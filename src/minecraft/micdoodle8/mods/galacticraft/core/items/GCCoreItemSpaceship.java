@@ -22,7 +22,7 @@ public class GCCoreItemSpaceship extends GCCoreItem
 {
 	public GCCoreItemSpaceship(int par1)
 	{
-		super(par1);
+		super(par1, "");
 		this.setMaxDamage(0);
 		this.setHasSubtypes(true);
 		this.setMaxStackSize(1);

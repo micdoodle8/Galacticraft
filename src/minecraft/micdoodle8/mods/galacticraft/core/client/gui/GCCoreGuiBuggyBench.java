@@ -25,9 +25,9 @@ public class GCCoreGuiBuggyBench extends GuiContainer
     public void initGui()
     {
     	super.initGui();
-        this.controlList.clear();
-        this.controlList.add(new GuiButton(0, this.width / 2 - 130, this.height / 2 - 30, 40, 20, "Back"));
-        this.controlList.add(new GuiButton(1, this.width / 2 + 90, this.height / 2 - 30, 40, 20, "Next"));
+        this.buttonList.clear();
+        this.buttonList.add(new GuiButton(0, this.width / 2 - 130, this.height / 2 - 30, 40, 20, "Back"));
+        this.buttonList.add(new GuiButton(1, this.width / 2 + 90, this.height / 2 - 30, 40, 20, "Next"));
     }
 
     @Override
@@ -65,9 +65,8 @@ public class GCCoreGuiBuggyBench extends GuiContainer
     @Override
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
-        final int var4 = this.mc.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/gui/buggybench.png");
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.renderEngine.bindTexture(var4);
+        this.mc.renderEngine.func_98187_b("/micdoodle8/mods/galacticraft/core/client/gui/buggybench.png");
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - 220) / 2;
         this.drawTexturedModalRect(var5, var6, 0, 0, this.xSize, 220);

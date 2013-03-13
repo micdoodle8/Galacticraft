@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.core.oxygen.OxygenNetwork;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenPipe;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MovingObjectPosition;
@@ -23,9 +24,9 @@ public class GCCoreBlockOxygenPipe extends BlockContainer
 	private final float oxygenPipeMin = 0.4F;
 	private final float oxygenPipeMax = 0.6F;
 
-	public GCCoreBlockOxygenPipe(int i, int j)
+	public GCCoreBlockOxygenPipe(int i)
 	{
-		super(i, j, Material.glass);
+		super(i, Material.glass);
 	}
 
 	@Override
@@ -33,6 +34,13 @@ public class GCCoreBlockOxygenPipe extends BlockContainer
 	{
 		return GalacticraftCore.proxy.getGCOxygenPipeRenderID();
 	}
+
+    @Override
+	@SideOnly(Side.CLIENT)
+    public void func_94332_a(IconRegister par1IconRegister)
+    {
+    	this.field_94336_cN = par1IconRegister.func_94245_a("galacticraftcore:pipe_oxygen");
+    }
 
 	@Override
 	public boolean isOpaqueCube()
@@ -107,7 +115,7 @@ public class GCCoreBlockOxygenPipe extends BlockContainer
 				maxX = 1.0F;
 			}
 			
-			setBlockBounds(minX, minY, minZ, maxX, maxY, maxZ);
+			this.setBlockBounds(minX, minY, minZ, maxX, maxY, maxZ);
 		}
 	}
 
@@ -173,7 +181,7 @@ public class GCCoreBlockOxygenPipe extends BlockContainer
 				maxX = 1.0F;
 			}
 			
-			setBlockBounds(minX, minY, minZ, maxX, maxY, maxZ);
+			this.setBlockBounds(minX, minY, minZ, maxX, maxY, maxZ);
 		}
 
 		final MovingObjectPosition r = super.collisionRayTrace(world, x, y, z, vec3d, vec3d1);

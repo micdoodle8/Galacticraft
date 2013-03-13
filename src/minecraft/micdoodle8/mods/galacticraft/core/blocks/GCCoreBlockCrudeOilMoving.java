@@ -6,6 +6,8 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFluid;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.liquids.ILiquid;
@@ -17,19 +19,41 @@ public class GCCoreBlockCrudeOilMoving extends BlockFluid implements ILiquid
 	int numAdjacentSources = 0;
 	boolean isOptimalFlowDirection[] = new boolean[4];
 	int flowCost[] = new int[4];
+	
+    @SideOnly(Side.CLIENT)
+    public Icon[] fluidIcons;
 
 	public GCCoreBlockCrudeOilMoving(int i, Material material)
 	{
 		super(i, material);
 		this.setHardness(100F);
 		this.setLightOpacity(3);
-		this.blockIndexInTexture = 237;
 	}
+	
+	@Override
+    @SideOnly(Side.CLIENT)
+    public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
+    {
+        return par1 != 0 && par1 != 1 ? this.fluidIcons[1] : this.fluidIcons[0];
+    }
+
+	@Override
+    @SideOnly(Side.CLIENT)
+    public void func_94332_a(IconRegister par1IconRegister)
+    {
+        this.fluidIcons = new Icon[] {par1IconRegister.func_94245_a("galacticraftcore:oil"), par1IconRegister.func_94245_a("galacticraftcore:oil_flow")};
+    }
+
+    @SideOnly(Side.CLIENT)
+    public static Icon func_94424_b(String par0Str)
+    {
+        return par0Str == "galacticraftcore:oil" ? GCCoreBlocks.crudeOilMoving.fluidIcons[0] : par0Str == "galacticraftcore:oil_flow" ? GCCoreBlocks.crudeOilMoving.fluidIcons[1] : null;
+    }
 
 	private void updateFlow(World world, int i, int j, int k)
 	{
 		final int l = world.getBlockMetadata(i, j, k);
-		world.setBlockAndMetadata(i, j, k, this.blockID + 1, l);
+		world.setBlockAndMetadataWithNotify(i, j, k, this.blockID + 1, l, 3);
 		world.markBlockRangeForRenderUpdate(i, j, k, i, j, k);
 		world.markBlockForUpdate(i, j, k);
 	}
@@ -74,12 +98,12 @@ public class GCCoreBlockCrudeOilMoving extends BlockFluid implements ILiquid
 
 				if (l < 0)
 				{
-					world.setBlockWithNotify(i, j, k, 0);
+					world.func_94571_i(i, j, k);
 				}
 				else
 				{
-					world.setBlockMetadataWithNotify(i, j, k, l);
-					world.scheduleBlockUpdate(i, j, k, this.blockID, this.tickRate());
+					world.setBlockMetadataWithNotify(i, j, k, l, 3);
+					world.scheduleBlockUpdate(i, j, k, this.blockID, this.tickRate(world));
 					world.notifyBlocksOfNeighborChange(i, j, k, this.blockID);
 				}
 			}
@@ -97,11 +121,11 @@ public class GCCoreBlockCrudeOilMoving extends BlockFluid implements ILiquid
 		{
 			if (l >= 8)
 			{
-				world.setBlockAndMetadataWithNotify(i, j - 1, k, this.blockID, l);
+				world.setBlockAndMetadataWithNotify(i, j - 1, k, this.blockID, l, 3);
 			}
 			else
 			{
-				world.setBlockAndMetadataWithNotify(i, j - 1, k, this.blockID, l + 8);
+				world.setBlockAndMetadataWithNotify(i, j - 1, k, this.blockID, l + 8, 3);
 			}
 		}
 		else if (l >= 0 && (l == 0 || this.blockBlocksFlow(world, i, j - 1, k)))
@@ -152,7 +176,7 @@ public class GCCoreBlockCrudeOilMoving extends BlockFluid implements ILiquid
 				Block.blocksList[i1].dropBlockAsItem(world, i, j, k, world.getBlockMetadata(i, j, k), 0);
 			}
 
-			world.setBlockAndMetadataWithNotify(i, j, k, this.blockID, l);
+			world.setBlockAndMetadataWithNotify(i, j, k, this.blockID, l, 3);
 		}
 	}
 
@@ -333,7 +357,7 @@ public class GCCoreBlockCrudeOilMoving extends BlockFluid implements ILiquid
 		super.onBlockAdded(world, i, j, k);
 		if (world.getBlockId(i, j, k) == this.blockID)
 		{
-			world.scheduleBlockUpdate(i, j, k, this.blockID, this.tickRate());
+			world.scheduleBlockUpdate(i, j, k, this.blockID, this.tickRate(world));
 		}
 	}
 
@@ -387,7 +411,7 @@ public class GCCoreBlockCrudeOilMoving extends BlockFluid implements ILiquid
 
                 if (var6 <= 0 || var6 >= 8)
                 {
-                    par1World.spawnParticle("suspended", (par2 + par5Random.nextFloat()), (par3 + par5Random.nextFloat()), (par4 + par5Random.nextFloat()), 0.0D, 0.0D, 0.0D);
+                    par1World.spawnParticle("suspended", par2 + par5Random.nextFloat(), par3 + par5Random.nextFloat(), par4 + par5Random.nextFloat(), 0.0D, 0.0D, 0.0D);
                 }
             }
 
@@ -420,28 +444,28 @@ public class GCCoreBlockCrudeOilMoving extends BlockFluid implements ILiquid
                 if (par1World.getBlockMaterial(var8, par3, var9) == Material.air && (par1World.getBlockMaterial(var8, par3 - 1, var9).blocksMovement() || par1World.getBlockMaterial(var8, par3 - 1, var9).isLiquid()))
                 {
                     final float var10 = 0.0625F;
-                    double var11 = (par2 + par5Random.nextFloat());
-                    final double var13 = (par3 + par5Random.nextFloat());
-                    double var15 = (par4 + par5Random.nextFloat());
+                    double var11 = par2 + par5Random.nextFloat();
+                    final double var13 = par3 + par5Random.nextFloat();
+                    double var15 = par4 + par5Random.nextFloat();
 
                     if (var7 == 0)
                     {
-                        var11 = (par2 - var10);
+                        var11 = par2 - var10;
                     }
 
                     if (var7 == 1)
                     {
-                        var11 = ((par2 + 1) + var10);
+                        var11 = par2 + 1 + var10;
                     }
 
                     if (var7 == 2)
                     {
-                        var15 = (par4 - var10);
+                        var15 = par4 - var10;
                     }
 
                     if (var7 == 3)
                     {
-                        var15 = ((par4 + 1) + var10);
+                        var15 = par4 + 1 + var10;
                     }
 
                     double var17 = 0.0D;
@@ -490,9 +514,9 @@ public class GCCoreBlockCrudeOilMoving extends BlockFluid implements ILiquid
         {
             if (par5Random.nextInt(100) == 0)
             {
-                var21 = (par2 + par5Random.nextFloat());
+                var21 = par2 + par5Random.nextFloat();
                 var22 = par3 + this.maxY;
-                var23 = (par4 + par5Random.nextFloat());
+                var23 = par4 + par5Random.nextFloat();
                 par1World.spawnParticle("lava", var21, var22, var23, 0.0D, 0.0D, 0.0D);
                 par1World.playSound(var21, var22, var23, "liquid.lavapop", 0.2F + par5Random.nextFloat() * 0.2F, 0.9F + par5Random.nextFloat() * 0.15F, false);
             }
@@ -505,9 +529,9 @@ public class GCCoreBlockCrudeOilMoving extends BlockFluid implements ILiquid
 
         if (par5Random.nextInt(10) == 0 && par1World.doesBlockHaveSolidTopSurface(par2, par3 - 1, par4) && !par1World.getBlockMaterial(par2, par3 - 2, par4).blocksMovement())
         {
-            var21 = (par2 + par5Random.nextFloat());
+            var21 = par2 + par5Random.nextFloat();
             var22 = par3 - 1.05D;
-            var23 = (par4 + par5Random.nextFloat());
+            var23 = par4 + par5Random.nextFloat();
 
             if (this.blockMaterial == Material.water)
             {

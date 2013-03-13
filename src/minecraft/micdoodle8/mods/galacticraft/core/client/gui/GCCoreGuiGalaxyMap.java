@@ -383,7 +383,7 @@ public class GCCoreGuiGalaxyMap extends GCCoreGuiStarBackground
 
 		            if (renderer != null)
 		            {
-		                this.mc.renderEngine.bindTexture(this.mc.renderEngine.getTexture(renderer.getPlanetSprite()));
+		                this.mc.renderEngine.func_98187_b(renderer.getPlanetSprite());
 		                renderer.renderSlot(0, var42, var41, planet.getPlanetSize() + 1 / this.zoom * 3F, var3);
 
 		                if (this.selectedPlanet != null && planet.getSlotRenderer().getPlanetName().equals(this.selectedPlanet.getSlotRenderer().getPlanetName()))
@@ -451,7 +451,7 @@ public class GCCoreGuiGalaxyMap extends GCCoreGuiStarBackground
 
 				                    if (moonRenderer != null)
 				                    {
-				                        this.mc.renderEngine.bindTexture(this.mc.renderEngine.getTexture(moonRenderer.getPlanetSprite()));
+				                        this.mc.renderEngine.func_98187_b(moonRenderer.getPlanetSprite());
 				                        moonRenderer.renderSlot(0, var42b, var41b, (float) (moon.getPlanetSize() + 1 / Math.pow(this.zoom, -2)), var3);
 
 				                        if (this.selectedPlanet != null && moon.getSlotRenderer().getPlanetName().equals(this.selectedPlanet.getSlotRenderer().getPlanetName()))
@@ -497,7 +497,7 @@ public class GCCoreGuiGalaxyMap extends GCCoreGuiStarBackground
         GL11.glDisable(GL11.GL_DEPTH_TEST);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
 
-//    	this.mc.renderEngine.bindTexture(this.mc.renderEngine.getTexture());
+//    	this.mc.renderEngine.func_98187_b(this.mc.renderEngine.getTexture());
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/gui/gui.png"));
         this.drawTexturedModalRect(this.width / 2 - 5, this.height / 2 - 5, 123, 0, 10, 10);
 

@@ -279,7 +279,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship
                 			{
                     			if (amountRemoved < 9);
                     			{
-                    				this.worldObj.setBlock(x, y, z, 0);
+                    				this.worldObj.func_94571_i(x, y, z);
                     				amountRemoved++;
                     			}
                 			}

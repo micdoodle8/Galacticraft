@@ -32,14 +32,14 @@ public abstract class GCCoreTileEntityBase extends TileEntityDisableable impleme
     public void readFromNBT(NBTTagCompound nbtTags)
     {
         super.readFromNBT(nbtTags);
-        direction = nbtTags.getInteger("facing");
+        this.direction = nbtTags.getInteger("facing");
     }
 
 	@Override
     public void writeToNBT(NBTTagCompound nbtTags)
     {
         super.writeToNBT(nbtTags);
-        nbtTags.setInteger("facing", direction);
+        nbtTags.setInteger("facing", this.direction);
     }
 	
 	public abstract void updateTile();
@@ -47,15 +47,15 @@ public abstract class GCCoreTileEntityBase extends TileEntityDisableable impleme
 	@Override
 	public void handlePacketData(ByteArrayDataInput dataStream)
 	{
-		direction = dataStream.readInt();
-		worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
-		worldObj.updateAllLightTypes(xCoord, yCoord, zCoord);
+		this.direction = dataStream.readInt();
+		this.worldObj.markBlockForRenderUpdate(this.xCoord, this.yCoord, this.zCoord);
+		this.worldObj.updateAllLightTypes(this.xCoord, this.yCoord, this.zCoord);
 	}
 	
 	@Override
 	public ArrayList getNetworkedData(ArrayList data)
 	{
-		data.add(direction);
+		data.add(this.direction);
 		return data;
 	}
 	

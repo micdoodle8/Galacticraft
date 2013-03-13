@@ -9,12 +9,7 @@ public class GCMoonItemReed extends ItemReed
 	public GCMoonItemReed(int par1, Block par2Block)
 	{
 		super(par1, par2Block);
+		this.setMaxStackSize(1);
 		this.setCreativeTab(GalacticraftCore.galacticraftTab);
-	}
-
-	@Override
-	public String getTextureFile()
-	{
-		return "/micdoodle8/mods/galacticraft/moon/client/items/moon.png";
 	}
 }

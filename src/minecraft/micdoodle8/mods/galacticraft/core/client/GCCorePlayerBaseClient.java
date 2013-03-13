@@ -7,8 +7,6 @@ import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.src.PlayerAPI;
-import net.minecraft.src.PlayerBase;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.StringUtils;
 import cpw.mods.fml.client.FMLClientHandler;

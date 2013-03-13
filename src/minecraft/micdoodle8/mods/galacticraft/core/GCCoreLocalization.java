@@ -36,7 +36,6 @@ public class GCCoreLocalization {
             throw new InvalidParameterException("Mod name can't be null");
         }
         this.modName = modName;
-        FMLLog.info("" + modName);
         this.load(GCCoreLocalization.getCurrentLanguage(), true);
     }
 

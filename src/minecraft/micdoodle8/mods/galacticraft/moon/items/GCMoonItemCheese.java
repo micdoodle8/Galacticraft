@@ -15,10 +15,4 @@ public class GCMoonItemCheese extends ItemFood
     {
         this(par1, par2, 0.6F, par3);
     }
-
-    @Override
-	public String getTextureFile()
-    {
-		return "/micdoodle8/mods/galacticraft/moon/client/items/moon.png";
-    }
 }

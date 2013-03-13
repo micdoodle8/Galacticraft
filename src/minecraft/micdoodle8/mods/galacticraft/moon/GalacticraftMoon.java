@@ -12,7 +12,6 @@ import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
 import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;
 import micdoodle8.mods.galacticraft.moon.entities.GCMoonPlayerBase;
 import micdoodle8.mods.galacticraft.moon.items.GCMoonItems;
-import net.minecraft.src.ServerPlayerAPI;
 import net.minecraftforge.common.DimensionManager;
 import universalelectricity.prefab.TranslationHelper;
 import cpw.mods.fml.common.ITickHandler;
@@ -49,7 +48,7 @@ public class GalacticraftMoon implements IGalacticraftSubMod
 	{
 		new GCMoonConfigManager(new File(event.getModConfigurationDirectory(), CONFIG_FILE));
 
-		ServerPlayerAPI.register(GalacticraftMoon.MODID, GCMoonPlayerBase.class);
+//		ServerPlayerAPI.register(GalacticraftMoon.MODID, GCMoonPlayerBase.class);
 
 		GCMoonBlocks.initBlocks();
 		GCMoonBlocks.registerBlocks();

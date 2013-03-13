@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.API.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpaceship;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
@@ -16,11 +17,17 @@ import net.minecraft.world.World;
  */
 public class GCCoreBlockLandingPad extends Block
 {
-	public GCCoreBlockLandingPad(int i, int j)
+	public GCCoreBlockLandingPad(int i)
 	{
-		super(i, j, Material.iron);
+		super(i, Material.iron);
         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.2F, 1.0F);
 	}
+
+    @Override
+    public void func_94332_a(IconRegister par1IconRegister)
+    {
+    	this.field_94336_cN = par1IconRegister.func_94245_a("galacticraftcore:launch_pad");
+    }
 
     @Override
     public boolean canPlaceBlockOnSide(World par1World, int par2, int par3, int par4, int par5)
@@ -60,7 +67,7 @@ public class GCCoreBlockLandingPad extends Block
     @Override
     public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6)
     {
-    	for (Object o : par1World.getEntitiesWithinAABB(GCCoreEntitySpaceship.class, AxisAlignedBB.getAABBPool().addOrModifyAABBInPool(par2 - 2, par3 - 2, par4 - 2, par2 + 2, par3 + 2, par4 + 2)))
+    	for (Object o : par1World.getEntitiesWithinAABB(GCCoreEntitySpaceship.class, AxisAlignedBB.getAABBPool().getAABB(par2 - 2, par3 - 2, par4 - 2, par2 + 2, par3 + 2, par4 + 2)))
     	{
     		Entity e = (Entity) o;
     		

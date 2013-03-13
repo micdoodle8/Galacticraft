@@ -46,7 +46,7 @@ public class GCCoreTeleporter extends Teleporter
 	}
 
     @Override
-    public boolean func_85188_a(Entity par1Entity)
+    public boolean makePortal(Entity par1Entity)
     {
     	return false;
     }

@@ -111,7 +111,7 @@ public class GCCoreModelFlag extends ModelBase
 
         if (var4 >= 0)
         {
-            var3.bindTexture(var4);
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, var4);
             return true;
         }
         else

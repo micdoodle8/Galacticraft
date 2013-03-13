@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.client.GCCorePlayerBaseClient;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
@@ -30,11 +31,12 @@ public class GCCoreItemOxygenMask extends Item
 		this.setCreativeTab(GalacticraftCore.galacticraftTab);
 	}
 
-	@Override
-	public String getTextureFile()
-	{
-		return "/micdoodle8/mods/galacticraft/core/client/items/core.png";
-	}
+    @Override
+	@SideOnly(Side.CLIENT)
+    public void func_94581_a(IconRegister par1IconRegister)
+    {
+        this.iconIndex = par1IconRegister.func_94245_a("galacticraftcore:oxygen_mask");
+    }
 
     @Override
     public EnumRarity getRarity(ItemStack par1ItemStack)

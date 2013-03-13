@@ -27,7 +27,7 @@ public class GCCoreBlockRendererOxygenCollector implements ISimpleBlockRendering
     @Override
 	public boolean renderWorldBlock(IBlockAccess var1, int var2, int var3, int var4, Block var5, int var6, RenderBlocks var7)
     {
-    	var7.overrideBlockTexture = 32;
+//    	var7.overrideBlockTexture = 32;
 
     	// Corners
     	var7.setRenderBounds(0.0F, 0.1F, 0.0F, 0.1F, 1.0F, 0.1F);
@@ -42,13 +42,13 @@ public class GCCoreBlockRendererOxygenCollector implements ISimpleBlockRendering
     	var7.setRenderBounds(0.9F, 0.1F, 0.9F, 1.0F, 1.0F, 1.0F);
     	var7.renderStandardBlock(var5, var2, var3, var4);
 
-    	var7.overrideBlockTexture = 35;
+//    	var7.overrideBlockTexture = 35;
 
     	// Base
     	var7.setRenderBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.1F, 1.0F);
     	var7.renderStandardBlock(var5, var2, var3, var4);
 
-    	var7.overrideBlockTexture = 33;
+//    	var7.overrideBlockTexture = 33;
 
     	// Axles
     	var7.setRenderBounds(0.0F, 0.42F, 0.42F, 1.0F, 0.58F, 0.58F);
@@ -60,7 +60,7 @@ public class GCCoreBlockRendererOxygenCollector implements ISimpleBlockRendering
     	var7.setRenderBounds(0.42F, 0.42F, 0.42F, 0.58F, 0.9F, 0.58F);
     	var7.renderStandardBlock(var5, var2, var3, var4);
 
-    	var7.overrideBlockTexture = 34;
+//    	var7.overrideBlockTexture = 34;
 
     	// Grate
     	var7.setRenderBounds(0.3F, 1.0 - 0.02F, 0.0F + 0.02F, 0.4F, 1.0 - 0.002F, 1.0F - 0.02F);
@@ -167,7 +167,7 @@ public class GCCoreBlockRendererOxygenCollector implements ISimpleBlockRendering
     	var7.setRenderBounds(1.0F - 0.02F, 0.95F, 0.6F, 1.0F - 0.002, 1.0F, 0.7F);
     	var7.renderStandardBlock(var5, var2, var3, var4);
 
-    	var7.overrideBlockTexture = -1;
+    	var7.clearOverrideBlockTexture();
 
     	return true;
     }
@@ -192,7 +192,7 @@ public class GCCoreBlockRendererOxygenCollector implements ISimpleBlockRendering
 
     public static void renderInvNormalBlock(RenderBlocks var7, Block var5, int var2)
     {
-    	var7.overrideBlockTexture = 32;
+//    	var7.overrideBlockTexture = 32;
 
     	// Corners
     	var7.setRenderBounds(0.0F, 0.1F, 0.0F, 0.1F, 1.0F, 0.1F);
@@ -207,13 +207,13 @@ public class GCCoreBlockRendererOxygenCollector implements ISimpleBlockRendering
     	var7.setRenderBounds(0.9F, 0.1F, 0.9F, 1.0F, 1.0F, 1.0F);
     	GCCoreBlockRendererOxygenCollector.renderStandardBlock(var7, var5, var2);
 
-    	var7.overrideBlockTexture = 35;
+//    	var7.overrideBlockTexture = 35;
 
     	// Base
     	var7.setRenderBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.1F, 1.0F);
     	GCCoreBlockRendererOxygenCollector.renderStandardBlock(var7, var5, var2);
 
-    	var7.overrideBlockTexture = 33;
+//    	var7.overrideBlockTexture = 33;
 
     	// Axles
     	var7.setRenderBounds(0.0F, 0.42F, 0.42F, 1.0F, 0.58F, 0.58F);
@@ -225,7 +225,7 @@ public class GCCoreBlockRendererOxygenCollector implements ISimpleBlockRendering
     	var7.setRenderBounds(0.42F, 0.42F, 0.42F, 0.58F, 0.9F, 0.58F);
     	GCCoreBlockRendererOxygenCollector.renderStandardBlock(var7, var5, var2);
 
-    	var7.overrideBlockTexture = 34;
+//    	var7.overrideBlockTexture = 34;
 
     	// Grate
     	var7.setRenderBounds(0.3F, 1.0 - 0.02F, 0.0F + 0.02F, 0.4F, 1.0 - 0.002F, 1.0F - 0.02F);
@@ -332,7 +332,7 @@ public class GCCoreBlockRendererOxygenCollector implements ISimpleBlockRendering
     	var7.setRenderBounds(1.0F - 0.02F, 0.95F, 0.6F, 1.0F - 0.002, 1.0F, 0.7F);
     	GCCoreBlockRendererOxygenCollector.renderStandardBlock(var7, var5, var2);
 
-    	var7.overrideBlockTexture = -1;
+    	var7.clearOverrideBlockTexture();
     }
 
     private static void renderStandardBlock(RenderBlocks var0, Block var1, int var2)

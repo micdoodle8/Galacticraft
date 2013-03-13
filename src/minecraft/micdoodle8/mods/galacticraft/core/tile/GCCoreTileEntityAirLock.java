@@ -7,7 +7,6 @@ import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreTileEntityAirLock extends GCCoreTileEntityAdvanced
 {
@@ -165,8 +164,6 @@ public class GCCoreTileEntityAirLock extends GCCoreTileEntityAdvanced
 
             if (this.areAnyInSetActive())
             {
-                this.worldObj.editingBlocks = true;
-
                 boolean changed = false;
 
                 for (var7 = 0; var7 < 2; ++var7)
@@ -178,7 +175,7 @@ public class GCCoreTileEntityAirLock extends GCCoreTileEntityAdvanced
                     		changed = true;
                     	}
 
-                        this.worldObj.setBlockWithNotify(var1 + var5 * var7, var2 + var8, var3 + var6 * var7, GCCoreBlocks.airLockSeal.blockID);
+                        this.worldObj.setBlockAndMetadataWithNotify(var1 + var5 * var7, var2 + var8, var3 + var6 * var7, GCCoreBlocks.airLockSeal.blockID, 0, 3);
                     }
                 }
 
@@ -187,13 +184,10 @@ public class GCCoreTileEntityAirLock extends GCCoreTileEntityAdvanced
                 	this.worldObj.playSoundEffect(var1 + var5, var2, var3 + var6 * var7, "player.openairlock", 1.0F, 1.0F);
                 }
 
-                this.worldObj.editingBlocks = false;
                 return true;
             }
             else
             {
-                this.worldObj.editingBlocks = true;
-
                 boolean changed = false;
 
                 for (var7 = 0; var7 < 2; ++var7)
@@ -209,11 +203,11 @@ public class GCCoreTileEntityAirLock extends GCCoreTileEntityAdvanced
 
                     	if (!this.areAnyInSetOxygenActive())
                     	{
-                            this.worldObj.setBlockWithNotify(var1 + var5 * var7, var2 + var8, var3 + var6 * var7, 0);
+                            this.worldObj.setBlockAndMetadataWithNotify(var1 + var5 * var7, var2 + var8, var3 + var6 * var7, 0, 0, 3);
                     	}
                     	else
                     	{
-                            this.worldObj.setBlockWithNotify(var1 + var5 * var7, var2 + var8, var3 + var6 * var7, GCCoreBlocks.breatheableAir.blockID);
+                            this.worldObj.setBlockAndMetadataWithNotify(var1 + var5 * var7, var2 + var8, var3 + var6 * var7, GCCoreBlocks.breatheableAir.blockID, 0, 3);
                     	}
                     }
                 }
@@ -223,7 +217,6 @@ public class GCCoreTileEntityAirLock extends GCCoreTileEntityAdvanced
                 	this.worldObj.playSoundEffect(var1 + var5, var2, var3 + var6 * var7, "player.closeairlock", 1.0F, 1.0F);
                 }
 
-                this.worldObj.editingBlocks = false;
                 return false;
             }
         }

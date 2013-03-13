@@ -1,14 +1,17 @@
 package micdoodle8.mods.galacticraft.core.items;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityFlag;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumMovingObjectType;
+import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
@@ -22,6 +25,8 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GCCoreItemFlag extends GCCoreItem
 {
+	protected List<Icon> icons = new ArrayList<Icon>();
+	
 	public static final String[] names = {
 			"american", // 0
 			"black", // 1
@@ -44,7 +49,7 @@ public class GCCoreItemFlag extends GCCoreItem
 
 	public GCCoreItemFlag(int par1)
 	{
-		super(par1);
+		super(par1, "");
 		this.setMaxDamage(0);
 		this.setHasSubtypes(true);
 		this.setMaxStackSize(1);
@@ -120,7 +125,7 @@ public class GCCoreItemFlag extends GCCoreItem
     }
 
     @Override
-    public ItemStack onFoodEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
+    public ItemStack onEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
         return par1ItemStack;
     }
@@ -152,18 +157,42 @@ public class GCCoreItemFlag extends GCCoreItem
         return EnumRarity.epic;
     }
 
-    @Override
-	public String getItemNameIS(ItemStack par1ItemStack)
-    {
-        int var2 = par1ItemStack.getItemDamage();
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void func_94581_a(IconRegister iconRegister)
+	{
+		List<ItemStack> list = new ArrayList<ItemStack>();
+		this.getSubItems(this.itemID, this.getCreativeTab(), list);
 
-        if (var2 < 0 || var2 >= GCCoreItemFlag.names.length)
-        {
-            var2 = 0;
-        }
+		if (list.size() > 0)
+		{
+			for (ItemStack itemStack : list)
+			{
+				this.icons.add(iconRegister.func_94245_a(this.getUnlocalizedName(itemStack).replace("item.", "galacticraftcore")));
+			}
+		}
+		else
+		{
+			this.iconIndex = iconRegister.func_94245_a(this.getUnlocalizedName().replace("item.", "galacticraftcore"));
+		}
+	}
 
-        return super.getItemName() + "." + GCCoreItemFlag.names[var2];
-    }
+	@Override
+	public String getUnlocalizedName(ItemStack itemStack)
+	{
+		return "item.flag." + names[itemStack.getItemDamage()];
+	}
+
+	@Override
+	public Icon getIconFromDamage(int damage)
+	{
+		if (this.icons.size() > damage)
+		{
+			return this.icons.get(damage);
+		}
+
+		return super.getIconFromDamage(damage);
+	}
 
     public static int getFlagDamageValueFromDye(int meta)
     {

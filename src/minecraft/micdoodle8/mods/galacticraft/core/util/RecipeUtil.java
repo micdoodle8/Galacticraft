@@ -11,7 +11,6 @@ import net.minecraft.block.BlockChest;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
-import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 public class RecipeUtil
@@ -99,7 +98,7 @@ public class RecipeUtil
 			"XXX",
 			'X', Block.thinGlass
 		}));
-		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.lightOxygenTankFull, 1), new Object[] {
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.lightOxygenTank, 1), new Object[] {
 			"Z",
 			"X",
 			"Y",
@@ -107,7 +106,7 @@ public class RecipeUtil
 			'Y', "ingotCopper",
 			'Z', new ItemStack(Block.cloth, 1, 5)
 		}));
-		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.medOxygenTankFull, 1), new Object[] {
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.medOxygenTank, 1), new Object[] {
 			"ZZ",
 			"XX",
 			"YY",
@@ -115,7 +114,7 @@ public class RecipeUtil
 			'Y', "ingotAluminium",
 			'Z', new ItemStack(Block.cloth, 1, 1)
 		}));
-		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.heavyOxygenTankFull, 1), new Object[] {
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.heavyOxygenTank, 1), new Object[] {
 			"ZZZ",
 			"XXX",
 			"YYY",
@@ -179,73 +178,73 @@ public class RecipeUtil
 			'Y', new ItemStack(GCCoreItems.canister, 1, 0),
 			'Z', "ingotTitanium"
 		}));
-		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.titaniumPickaxe, 1), new Object[] {
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.steelPickaxe, 1), new Object[] {
 			"YYY",
 			" X ",
 			" X ",
 			'Y', "ingotTitanium",
 			'X', Item.stick
 		}));
-		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.titaniumAxe, 1), new Object[] {
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.steelAxe, 1), new Object[] {
 			"YY ",
 			"YX ",
 			" X ",
 			'Y', "ingotTitanium",
 			'X', Item.stick
 		}));
-		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.titaniumAxe, 1), new Object[] {
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.steelAxe, 1), new Object[] {
 			" YY",
 			" XY",
 			" X ",
 			'Y', "ingotTitanium",
 			'X', Item.stick
 		}));
-		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.titaniumHoe, 1), new Object[] {
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.steelHoe, 1), new Object[] {
 			" YY",
 			" X ",
 			" X ",
 			'Y', "ingotTitanium",
 			'X', Item.stick
 		}));
-		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.titaniumHoe, 1), new Object[] {
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.steelHoe, 1), new Object[] {
 			"YY ",
 			" X ",
 			" X ",
 			'Y', "ingotTitanium",
 			'X', Item.stick
 		}));
-		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.titaniumSpade, 1), new Object[] {
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.steelSpade, 1), new Object[] {
 			" Y ",
 			" X ",
 			" X ",
 			'Y', "ingotTitanium",
 			'X', Item.stick
 		}));
-		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.titaniumSword, 1), new Object[] {
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.steelSword, 1), new Object[] {
 			" Y ",
 			" Y ",
 			" X ",
 			'Y', "ingotTitanium",
 			'X', Item.stick
 		}));
-		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.titaniumBoots, 1), new Object[] {
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.steelBoots, 1), new Object[] {
 			"X X",
 			"X X",
 			'X', "ingotTitanium"
 		}));
-		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.titaniumChestplate, 1), new Object[] {
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.steelChestplate, 1), new Object[] {
 			"X X",
 			"XXX",
 			"XXX",
 			'X', "ingotTitanium"
 		}));
-		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.titaniumLeggings, 1), new Object[] {
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.steelLeggings, 1), new Object[] {
 			"XXX",
 			"X X",
 			"X X",
 			'X', "ingotTitanium"
 		}));
-		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.titaniumHelmet, 1), new Object[] {
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.steelHelmet, 1), new Object[] {
 			"XXX",
 			"X X",
 			'X', "ingotTitanium"
@@ -346,14 +345,14 @@ public class RecipeUtil
 			"WXW",
 			"WYW",
 			"WZW",
-			'X', "ingotTitanium", 'Y', Block.glass, 'Z', new ItemStack(GCCoreItems.canister, 1, 0), 'W', GCCoreItems.ingotAluminum
+			'X', "ingotTitanium", 'Y', Block.glass, 'Z', new ItemStack(GCCoreItems.canister, 1, 0), 'W', "ingotAluminium"
 		}));
 
 		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreBlocks.refinery), new Object[] {
 			" Z ",
 			"WZW",
 			"XYX",
-			'X', "ingotAluminium", 'Y', Block.stoneOvenIdle, 'Z', new ItemStack(GCCoreItems.canister, 1, 1), 'W', Block.stone
+			'X', "ingotAluminium", 'Y', Block.furnaceIdle, 'Z', new ItemStack(GCCoreItems.canister, 1, 1), 'W', Block.stone
 		}));
 
 		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreBlocks.compressor), new Object[] {
@@ -366,9 +365,10 @@ public class RecipeUtil
 
 	public static void addSmeltingRecipes()
 	{
-		FurnaceRecipes.smelting().addSmelting(GCCoreBlocks.blockOres.blockID, 0, new ItemStack(GCCoreItems.ingotCopper), 0.1F);
-		FurnaceRecipes.smelting().addSmelting(GCCoreBlocks.blockOres.blockID, 1, new ItemStack(GCCoreItems.ingotAluminum), 0.3F);
-		FurnaceRecipes.smelting().addSmelting(GCCoreBlocks.blockOres.blockID, 2, new ItemStack(GCCoreItems.ingotTitanium), 1.0F);
+		// TODO
+//		FurnaceRecipes.smelting().addSmelting(GCCoreBlocks.blockOres.blockID, 0, new ItemStack(GCCoreItems.ingotCopper), 0.1F);
+//		FurnaceRecipes.smelting().addSmelting(GCCoreBlocks.blockOres.blockID, 1, new ItemStack(GCCoreItems.ingotAluminum), 0.3F);
+//		FurnaceRecipes.smelting().addSmelting(GCCoreBlocks.blockOres.blockID, 2, new ItemStack(GCCoreItems.ingotTitanium), 1.0F);
 	}
 
 	public static ItemStack findMatchingSpaceshipRecipe(GCCoreInventoryRocketBench inventoryRocketBench)

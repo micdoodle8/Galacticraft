@@ -4,9 +4,11 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
@@ -14,12 +16,22 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCMoonBlockCheese extends Block
 {
-    protected GCMoonBlockCheese(int par1, int par2)
+	Icon[] cheeseIcons;
+	
+    protected GCMoonBlockCheese(int par1)
     {
-        super(par1, par2, Material.cake);
+        super(par1, Material.cake);
         this.setTickRandomly(true);
         this.disableStats();
-        this.setRequiresSelfNotify();
+    }
+
+    @Override
+    public void func_94332_a(IconRegister par1IconRegister)
+    {
+    	this.cheeseIcons = new Icon[3];
+    	this.cheeseIcons[0] = par1IconRegister.func_94245_a("galacticraftmoon:cheese_1");
+    	this.cheeseIcons[1] = par1IconRegister.func_94245_a("galacticraftmoon:cheese_2");
+    	this.cheeseIcons[2] = par1IconRegister.func_94245_a("galacticraftmoon:cheese_3");
     }
 
     /**
@@ -57,7 +69,7 @@ public class GCMoonBlockCheese extends Block
         final float var6 = 0.0625F;
         final float var7 = (1 + var5 * 2) / 16.0F;
         final float var8 = 0.5F;
-        return AxisAlignedBB.getAABBPool().addOrModifyAABBInPool(par2 + var7, par3, par4 + var6, par2 + 1 - var6, par3 + var8 - var6, par4 + 1 - var6);
+        return AxisAlignedBB.getAABBPool().getAABB(par2 + var7, par3, par4 + var6, par2 + 1 - var6, par3 + var8 - var6, par4 + 1 - var6);
     }
 
     @Override
@@ -72,25 +84,16 @@ public class GCMoonBlockCheese extends Block
         final float var6 = 0.0625F;
         final float var7 = (1 + var5 * 2) / 16.0F;
         final float var8 = 0.5F;
-        return AxisAlignedBB.getAABBPool().addOrModifyAABBInPool(par2 + var7, par3, par4 + var6, par2 + 1 - var6, par3 + var8, par4 + 1 - var6);
+        return AxisAlignedBB.getAABBPool().getAABB(par2 + var7, par3, par4 + var6, par2 + 1 - var6, par3 + var8, par4 + 1 - var6);
     }
 
     /**
      * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
      */
     @Override
-	public int getBlockTextureFromSideAndMetadata(int par1, int par2)
+	public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
     {
-        return par1 == 1 ? this.blockIndexInTexture : par1 == 0 ? this.blockIndexInTexture + 3 : par2 > 0 && par1 == 4 ? this.blockIndexInTexture + 2 : this.blockIndexInTexture + 1;
-    }
-
-    /**
-     * Returns the block texture based on the side being looked at.  Args: side
-     */
-    @Override
-	public int getBlockTextureFromSide(int par1)
-    {
-        return par1 == 1 ? this.blockIndexInTexture : par1 == 0 ? this.blockIndexInTexture + 3 : this.blockIndexInTexture + 1;
+        return par1 == 1 ? this.cheeseIcons[0] : par1 == 0 ? this.cheeseIcons[2] : par2 > 0 && par1 == 4 ? this.cheeseIcons[2] : this.cheeseIcons[1];
     }
 
     /**
@@ -138,17 +141,16 @@ public class GCMoonBlockCheese extends Block
     {
         if (par5EntityPlayer.canEat(false))
         {
-            par5EntityPlayer.getFoodStats().addStats(3, 0.1F);
-            final int var6 = par1World.getBlockMetadata(par2, par3, par4) + 1;
+            par5EntityPlayer.getFoodStats().addStats(2, 0.1F);
+            int l = par1World.getBlockMetadata(par2, par3, par4) + 1;
 
-            if (var6 >= 6)
+            if (l >= 6)
             {
-                par1World.setBlockWithNotify(par2, par3, par4, 0);
+                par1World.func_94571_i(par2, par3, par4);
             }
             else
             {
-                par1World.setBlockMetadataWithNotify(par2, par3, par4, var6);
-                par1World.markBlockForRenderUpdate2(par2, par3, par4);
+                par1World.setBlockMetadataWithNotify(par2, par3, par4, l, 2);
             }
         }
     }
@@ -171,8 +173,7 @@ public class GCMoonBlockCheese extends Block
     {
         if (!this.canBlockStay(par1World, par2, par3, par4))
         {
-            this.dropBlockAsItem(par1World, par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4), 0);
-            par1World.setBlockWithNotify(par2, par3, par4, 0);
+            par1World.func_94571_i(par2, par3, par4);
         }
     }
 
@@ -182,14 +183,7 @@ public class GCMoonBlockCheese extends Block
     @Override
 	public boolean canBlockStay(World par1World, int par2, int par3, int par4)
     {
-    	if (par1World.blockExists(par2, par3 - 1, par4))
-    	{
-            return par1World.getBlockMaterial(par2, par3 - 1, par4).isSolid();
-    	}
-    	else
-    	{
-    		return false;
-    	}
+        return par1World.getBlockMaterial(par2, par3 - 1, par4).isSolid();
     }
 
     /**
@@ -220,10 +214,4 @@ public class GCMoonBlockCheese extends Block
     {
         return Item.cake.itemID;
     }
-
-	@Override
-	public String getTextureFile()
-	{
-    	return "/micdoodle8/mods/galacticraft/moon/client/blocks/moon.png";
-	}
 }

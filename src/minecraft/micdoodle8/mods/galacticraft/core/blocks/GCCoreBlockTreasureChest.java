@@ -22,10 +22,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -40,7 +37,6 @@ public class GCCoreBlockTreasureChest extends BlockContainer
     protected GCCoreBlockTreasureChest(int par1)
     {
         super(par1, Material.rock);
-        this.blockIndexInTexture = 14;
         this.setCreativeTab(CreativeTabs.tabDecorations);
     }
 
@@ -94,7 +90,7 @@ public class GCCoreBlockTreasureChest extends BlockContainer
     }
 
     @Override
-	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLiving par5EntityLiving)
+	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLiving par5EntityLiving, ItemStack stack)
     {
         final int var6 = par1World.getBlockId(par2, par3, par4 - 1);
         final int var7 = par1World.getBlockId(par2, par3, par4 + 1);
@@ -125,7 +121,7 @@ public class GCCoreBlockTreasureChest extends BlockContainer
 
         if (var6 != this.blockID && var7 != this.blockID && var8 != this.blockID && var9 != this.blockID)
         {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, var10);
+            par1World.setBlockMetadataWithNotify(par2, par3, par4, var10, 3);
         }
         else
         {
@@ -133,28 +129,28 @@ public class GCCoreBlockTreasureChest extends BlockContainer
             {
                 if (var6 == this.blockID)
                 {
-                    par1World.setBlockMetadataWithNotify(par2, par3, par4 - 1, var10);
+                    par1World.setBlockMetadataWithNotify(par2, par3, par4 - 1, var10, 3);
                 }
                 else
                 {
-                    par1World.setBlockMetadataWithNotify(par2, par3, par4 + 1, var10);
+                    par1World.setBlockMetadataWithNotify(par2, par3, par4 + 1, var10, 3);
                 }
 
-                par1World.setBlockMetadataWithNotify(par2, par3, par4, var10);
+                par1World.setBlockMetadataWithNotify(par2, par3, par4, var10, 3);
             }
 
             if ((var8 == this.blockID || var9 == this.blockID) && (var10 == 2 || var10 == 3))
             {
                 if (var8 == this.blockID)
                 {
-                    par1World.setBlockMetadataWithNotify(par2 - 1, par3, par4, var10);
+                    par1World.setBlockMetadataWithNotify(par2 - 1, par3, par4, var10, 3);
                 }
                 else
                 {
-                    par1World.setBlockMetadataWithNotify(par2 + 1, par3, par4, var10);
+                    par1World.setBlockMetadataWithNotify(par2 + 1, par3, par4, var10, 3);
                 }
 
-                par1World.setBlockMetadataWithNotify(par2, par3, par4, var10);
+                par1World.setBlockMetadataWithNotify(par2, par3, par4, var10, 3);
             }
         }
     }
@@ -258,21 +254,8 @@ public class GCCoreBlockTreasureChest extends BlockContainer
                 }
             }
 
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, var13);
+            par1World.setBlockMetadataWithNotify(par2, par3, par4, var13, 3);
         }
-    }
-
-    @Override
-	@SideOnly(Side.CLIENT)
-    public int getBlockTexture(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
-    {
-        return 4;
-    }
-
-    @Override
-	public int getBlockTextureFromSide(int par1)
-    {
-        return 4;
     }
 
     @Override
@@ -460,7 +443,7 @@ public class GCCoreBlockTreasureChest extends BlockContainer
      */
     public static boolean isOcelotBlockingChest(World par0World, int par1, int par2, int par3)
     {
-        final Iterator var4 = par0World.getEntitiesWithinAABB(EntityOcelot.class, AxisAlignedBB.getAABBPool().addOrModifyAABBInPool(par1, par2 + 1, par3, par1 + 1, par2 + 2, par3 + 1)).iterator();
+        final Iterator var4 = par0World.getEntitiesWithinAABB(EntityOcelot.class, AxisAlignedBB.getAABBPool().getAABB(par1, par2 + 1, par3, par1 + 1, par2 + 2, par3 + 1)).iterator();
         EntityOcelot var6;
 
         do

@@ -48,8 +48,8 @@ public class GCCoreGuiTankRefill extends GuiContainer
 		final int var5 = (this.width - this.xSize) / 2;
 		final int var6 = (this.height - this.ySize) / 2;
 		this.rotation = 0;
-    	this.controlList.add(new GuiButton(0, var5 + 36, var6 + 71, 7, 7, ""));
-    	this.controlList.add(new GuiButton(1, var5 + 60, var6 + 71, 7, 7, ""));
+    	this.buttonList.add(new GuiButton(0, var5 + 36, var6 + 71, 7, 7, ""));
+    	this.buttonList.add(new GuiButton(1, var5 + 60, var6 + 71, 7, 7, ""));
     }
 
 	@Override
@@ -213,9 +213,8 @@ public class GCCoreGuiTankRefill extends GuiContainer
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3)
 	{
-		final int texture = this.mc.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/gui/airtank.png");
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		this.mc.renderEngine.bindTexture(texture);
+		this.mc.renderEngine.func_98187_b("/micdoodle8/mods/galacticraft/core/client/gui/airtank.png");
 		final int var5 = (this.width - this.xSize) / 2;
 		final int var6 = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(var5, var6, 0, 0, this.xSize, this.ySize);

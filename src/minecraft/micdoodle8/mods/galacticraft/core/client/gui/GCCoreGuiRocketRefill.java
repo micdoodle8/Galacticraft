@@ -71,19 +71,19 @@ public class GCCoreGuiRocketRefill extends GuiContainer
     @Override
 	protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
-    	int var4 = 0;
+    	String var4 = null;
 
     	switch (this.type)
     	{
     	case 0:
-            var4 = this.mc.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/gui/rocketrefill-nochest.png");
+            var4 = "/micdoodle8/mods/galacticraft/core/client/gui/rocketrefill-nochest.png";
             break;
     	case 1:
-            var4 = this.mc.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/gui/rocketrefill-chest.png");
+            var4 = "/micdoodle8/mods/galacticraft/core/client/gui/rocketrefill-chest.png";
             break;
     	}
 
-        this.mc.renderEngine.bindTexture(var4);
+        this.mc.renderEngine.func_98187_b(var4);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         final int var5 = (this.width - this.xSize) / 2;

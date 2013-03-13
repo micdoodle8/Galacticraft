@@ -7,10 +7,12 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAdvancedCraftingTable;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
@@ -20,13 +22,22 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreBlockAdvancedCraftingTable extends BlockContainer
 {
+	Icon[] iconBuffer;
+	
 	public GCCoreBlockAdvancedCraftingTable(int par1)
 	{
 		super(par1, Material.wood);
-		this.blockIndexInTexture = 19;
         this.setCreativeTab(GalacticraftCore.galacticraftTab);
         this.setBlockBounds(-0.3F, 0.0F, -0.3F, 1.3F, 0.5F, 1.3F);
 	}
+	
+    @Override
+    public void func_94332_a(IconRegister par1IconRegister)
+    {
+    	this.iconBuffer = new Icon[2];
+    	this.iconBuffer[0] = par1IconRegister.func_94245_a("galacticraftcore:workbench_nasa_side");
+    	this.iconBuffer[1] = par1IconRegister.func_94245_a("galacticraftcore:workbench_nasa_top");
+    }
 
 	@Override
     public int getRenderType()
@@ -72,10 +83,10 @@ public class GCCoreBlockAdvancedCraftingTable extends BlockContainer
 	}
 
 	@Override
-	public void addCollidingBlockToList(World world, int i, int j, int k, AxisAlignedBB axisalignedbb, List arraylist, Entity par7Entity)
+	public void addCollisionBoxesToList(World world, int i, int j, int k, AxisAlignedBB axisalignedbb, List arraylist, Entity par7Entity)
 	{
 		this.setBlockBounds(-0.0F, 0.0F, -0.0F, 1.0F, 1.4F, 1.0F);
-		super.addCollidingBlockToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
+		super.addCollisionBoxesToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
 	}
 
 	@Override
@@ -103,9 +114,9 @@ public class GCCoreBlockAdvancedCraftingTable extends BlockContainer
     }
 
 	@Override
-	public int getBlockTextureFromSide(int par1)
+    public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
     {
-        return par1 == 1 ? this.blockIndexInTexture + 1 : par1 == 0 ? this.blockIndexInTexture - 1 : this.blockIndexInTexture;
+        return par1 == 1 ? this.iconBuffer[1] : this.iconBuffer[0];
     }
 
 	@Override

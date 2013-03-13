@@ -542,4 +542,16 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
 	{
 		return false;
 	}
+
+	@Override
+	public boolean func_94042_c() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean func_94041_b(int i, ItemStack itemstack) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

@@ -16,10 +16,4 @@ public class GCMoonItem extends Item
 		super(par1);
 		this.setCreativeTab(GalacticraftCore.galacticraftTab);
 	}
-
-	@Override
-	public String getTextureFile()
-	{
-		return "/micdoodle8/mods/galacticraft/moon/client/items/moon.png";
-	}
 }

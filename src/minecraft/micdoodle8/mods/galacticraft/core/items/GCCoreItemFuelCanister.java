@@ -1,20 +1,34 @@
 package micdoodle8.mods.galacticraft.core.items;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreItemFuelCanister extends Item
 {
+	protected List<Icon> icons = new ArrayList<Icon>();
+
+	public static final String[] names = {
+			"liquidcan_fuel_6", // 0
+			"liquidcan_fuel_5", // 0
+			"liquidcan_fuel_4", // 1
+			"liquidcan_fuel_3", // 2
+			"liquidcan_fuel_2", // 3
+			"liquidcan_fuel_1", // 4
+			"liquidcan_empty"}; // 5
+	
 	public GCCoreItemFuelCanister(int par1)
 	{
 		super(par1);
@@ -30,32 +44,39 @@ public class GCCoreItemFuelCanister extends Item
         par3List.add(new ItemStack(par1, 1, 1));
     }
 
-    @Override
+	@Override
 	@SideOnly(Side.CLIENT)
-    public int getIconFromDamage(int par1)
-    {
+	public void func_94581_a(IconRegister iconRegister)
+	{
+		for (String name : this.names)
+		{
+			this.icons.add(iconRegister.func_94245_a("galacticraftcore:" + name));
+		}
+	}
+
+	@Override
+	public String getUnlocalizedName(ItemStack itemStack)
+	{
+		if (itemStack.getItemDamage() == 1)
+		{
+			return "item.fuelCanister";
+		}
+		
+		return "item.fuelCanisterPartial";
+	}
+
+	@Override
+	public Icon getIconFromDamage(int par1)
+	{
     	final int damage = (int) Math.floor(par1 / 10);
+    	
+		if (this.icons.size() > damage)
+		{
+			return this.icons.get(damage);
+		}
 
-    	switch (damage)
-    	{
-    	case 0:
-    		return 70;
-    	case 1:
-    		return 69;
-    	case 2:
-    		return 68;
-    	case 3:
-    		return 67;
-    	case 4:
-    		return 66;
-    	case 5:
-    		return 65;
-    	case 6:
-    		return 64;
-    	}
-
-    	return 0;
-    }
+		return super.getIconFromDamage(damage);
+	}
 
     @Override
     public EnumRarity getRarity(ItemStack par1ItemStack)
@@ -86,25 +107,4 @@ public class GCCoreItemFuelCanister extends Item
         	par3List.add("Fuel: " + (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage()));
     	}
     }
-
-    @Override
-	public String getItemNameIS(ItemStack par1ItemStack)
-    {
-    	if (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage() > 0 && par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage() < 60)
-    	{
-    		return "item.fuelCanisterPartial";
-    	}
-    	else if (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage() == 60)
-    	{
-    		return "item.fuelCanister";
-    	}
-
-    	return "";
-    }
-
-	@Override
-	public String getTextureFile()
-	{
-		return "/micdoodle8/mods/galacticraft/core/client/items/core.png";
-	}
 }

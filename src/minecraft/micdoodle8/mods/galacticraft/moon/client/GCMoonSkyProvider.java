@@ -183,7 +183,7 @@ public class GCMoonSkyProvider extends IRenderHandler
         GL11.glRotatef(200F, 1.0F, 0.0F, 0.0F);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1F);
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/planets/overworld.png"));
-        final int var28 = world.getMoonPhase(partialTicks);
+        final int var28 = world.getMoonPhase();
         var23.startDrawingQuads();
         var23.addVertexWithUV(-var12, -100.0D, var12, 0, 1);
         var23.addVertexWithUV(var12, -100.0D, var12, 1, 1);
@@ -298,7 +298,7 @@ public class GCMoonSkyProvider extends IRenderHandler
 
     private Vec3 getCustomSkyColor()
     {
-        return Vec3.vec3dPool.getVecFromPool(0.26796875D, 0.1796875D, 0.0D);
+        return Vec3.fakePool.getVecFromPool(0.26796875D, 0.1796875D, 0.0D);
     }
 
     public float getSkyBrightness(float par1)

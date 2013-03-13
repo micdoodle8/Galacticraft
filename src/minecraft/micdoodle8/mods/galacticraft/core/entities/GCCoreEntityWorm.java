@@ -237,7 +237,7 @@ public class GCCoreEntityWorm extends EntityMob implements IEntityMultiPart
     		this.motionY -= 0.062D;
     	}
 
-        final List var9 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, AxisAlignedBB.getAABBPool().addOrModifyAABBInPool((double)MathHelper.floor_double(this.posX) - 2 + xOffset, (double)MathHelper.floor_double(this.posY) - 2, (double)MathHelper.floor_double(this.posZ) - 2 + zOffset, (double)MathHelper.floor_double(this.posX) + 2 + xOffset, (double)MathHelper.floor_double(this.posY) + 2, (double)MathHelper.floor_double(this.posZ) + 2 + zOffset));
+        final List var9 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, AxisAlignedBB.getAABBPool().getAABB((double)MathHelper.floor_double(this.posX) - 2 + xOffset, (double)MathHelper.floor_double(this.posY) - 2, (double)MathHelper.floor_double(this.posZ) - 2 + zOffset, (double)MathHelper.floor_double(this.posX) + 2 + xOffset, (double)MathHelper.floor_double(this.posY) + 2, (double)MathHelper.floor_double(this.posZ) + 2 + zOffset));
 
         for (int var11 = 0; var11 < var9.size(); ++var11)
         {
@@ -364,7 +364,7 @@ public class GCCoreEntityWorm extends EntityMob implements IEntityMultiPart
             par3 = par3 / 4 + 1;
         }
 
-        if (par2DamageSource.getEntity() instanceof EntityPlayer || par2DamageSource == DamageSource.explosion)
+        if (par2DamageSource.getEntity() instanceof EntityPlayer)
         {
         	super.attackEntityFrom(par2DamageSource, par3);
         }
@@ -397,7 +397,7 @@ public class GCCoreEntityWorm extends EntityMob implements IEntityMultiPart
                         if (block.canDragonDestroy(this.worldObj, var10, var11, var12))
                         {
                             var9 = true;
-                            this.worldObj.setBlockWithNotify(var10, var11, var12, 0);
+                            this.worldObj.setBlockAndMetadataWithNotify(var10, var11, var12, 0, 0, 3);
                         }
                         else
                         {

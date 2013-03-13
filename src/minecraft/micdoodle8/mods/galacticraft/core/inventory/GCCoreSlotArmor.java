@@ -1,12 +1,12 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
-import net.minecraft.block.Block;
 import net.minecraft.inventory.ContainerPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Icon;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -45,7 +45,8 @@ public class GCCoreSlotArmor extends Slot
     @Override
 	public boolean isItemValid(ItemStack par1ItemStack)
     {
-        return par1ItemStack == null ? false : par1ItemStack.getItem() instanceof ItemArmor ? ((ItemArmor)par1ItemStack.getItem()).armorType == this.armorType : par1ItemStack.getItem().itemID != Block.pumpkin.blockID && par1ItemStack.getItem().itemID != Item.skull.itemID ? false : this.armorType == 0;
+        Item item = par1ItemStack == null ? null : par1ItemStack.getItem();
+        return item != null && item.isValidArmor(par1ItemStack, this.armorType);
     }
 
     @Override
@@ -54,8 +55,8 @@ public class GCCoreSlotArmor extends Slot
     /**
      * Returns the icon index on items.png that is used as background image of the slot.
      */
-    public int getBackgroundIconIndex()
+    public Icon getBackgroundIconIndex()
     {
-        return 15 + this.armorType * 16;
+        return ItemArmor.func_94602_b(this.armorType);
     }
 }

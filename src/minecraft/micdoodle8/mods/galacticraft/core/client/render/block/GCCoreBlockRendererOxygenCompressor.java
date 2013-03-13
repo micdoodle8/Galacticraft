@@ -27,7 +27,7 @@ public class GCCoreBlockRendererOxygenCompressor implements ISimpleBlockRenderin
     @Override
 	public boolean renderWorldBlock(IBlockAccess var1, int var2, int var3, int var4, Block var5, int var6, RenderBlocks var7)
     {
-    	var7.overrideBlockTexture = 32;
+//    	var7.overrideBlockTexture = 32;
 
     	// Corners
     	var7.setRenderBounds(0.0F, 0.35F, 0.0F, 0.1F, 0.9F, 0.1F);
@@ -56,13 +56,13 @@ public class GCCoreBlockRendererOxygenCompressor implements ISimpleBlockRenderin
     	var7.setRenderBounds(0.0F, 0.9F, 0.1F, 0.1F, 1.0F, 0.9F);
     	var7.renderStandardBlock(var5, var2, var3, var4);
 
-    	var7.overrideBlockTexture = 35;
+//    	var7.overrideBlockTexture = 35;
 
     	// Base
     	var7.setRenderBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.35F, 1.0F);
     	var7.renderStandardBlock(var5, var2, var3, var4);
 
-    	var7.overrideBlockTexture = 33;
+//    	var7.overrideBlockTexture = 33;
 
     	// Axles
     	var7.setRenderBounds(0.0F, 0.42F, 0.42F, 1.0F, 0.58F, 0.58F);
@@ -71,18 +71,18 @@ public class GCCoreBlockRendererOxygenCompressor implements ISimpleBlockRenderin
     	var7.setRenderBounds(0.42F, 0.42F, 0.0F, 0.58F, 0.58F, 1.0F);
     	var7.renderStandardBlock(var5, var2, var3, var4);
 
-    	var7.overrideBlockTexture = 36;
+//    	var7.overrideBlockTexture = 36;
 
     	// Tanks
     	var7.setRenderBounds(0.35F, 0.35F, 0.35F, 0.65F, 0.845F, 0.65F);
     	var7.renderStandardBlock(var5, var2, var3, var4);
 
-    	var7.overrideBlockTexture = 37;
+//    	var7.overrideBlockTexture = 37;
 
     	var7.setRenderBounds(0.35F, 0.8451F, 0.35F, 0.65F, 0.85F, 0.65F);
     	var7.renderStandardBlock(var5, var2, var3, var4);
 
-    	var7.overrideBlockTexture = -1;
+    	var7.clearOverrideBlockTexture();
 
     	return true;
     }
@@ -134,13 +134,13 @@ public class GCCoreBlockRendererOxygenCompressor implements ISimpleBlockRenderin
     	var7.setRenderBounds(0.0F, 0.9F, 0.1F, 0.1F, 1.0F, 0.9F);
     	GCCoreBlockRendererOxygenCompressor.renderStandardBlock(var7, var5, var2);
 
-    	var7.overrideBlockTexture = 35;
+//    	var7.overrideBlockTexture = 35;
 
     	// Base
     	var7.setRenderBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.35F, 1.0F);
     	GCCoreBlockRendererOxygenCompressor.renderStandardBlock(var7, var5, var2);
 
-    	var7.overrideBlockTexture = 33;
+//    	var7.overrideBlockTexture = 33;
 
     	// Axles
     	var7.setRenderBounds(0.0F, 0.42F, 0.42F, 1.0F, 0.58F, 0.58F);
@@ -149,18 +149,18 @@ public class GCCoreBlockRendererOxygenCompressor implements ISimpleBlockRenderin
     	var7.setRenderBounds(0.42F, 0.42F, 0.0F, 0.58F, 0.58F, 1.0F);
     	GCCoreBlockRendererOxygenCompressor.renderStandardBlock(var7, var5, var2);
 
-    	var7.overrideBlockTexture = 36;
+//    	var7.overrideBlockTexture = 36;
 
     	// Tanks
     	var7.setRenderBounds(0.35F, 0.35F, 0.35F, 0.65F, 0.845F, 0.65F);
     	GCCoreBlockRendererOxygenCompressor.renderStandardBlock(var7, var5, var2);
 
-    	var7.overrideBlockTexture = 37;
+//    	var7.overrideBlockTexture = 37;
 
     	var7.setRenderBounds(0.35F, 0.8451F, 0.35F, 0.65F, 0.85F, 0.65F);
     	GCCoreBlockRendererOxygenCompressor.renderStandardBlock(var7, var5, var2);
 
-    	var7.overrideBlockTexture = -1;
+    	var7.clearOverrideBlockTexture();
 
     	////////
 //    	var7.setRenderBounds(0.0F, 0.1F, 0.0F, 0.1F, 0.9F, 0.1F);

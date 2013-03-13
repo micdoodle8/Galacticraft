@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.items;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.EnumToolMaterial;
 import net.minecraft.item.ItemSpade;
@@ -20,10 +21,11 @@ public class GCCoreItemSpade extends ItemSpade
 	}
 
 	@Override
-	public String getTextureFile()
-	{
-		return "/micdoodle8/mods/galacticraft/core/client/items/core.png";
-	}
+    @SideOnly(Side.CLIENT)
+    public void func_94581_a(IconRegister par1IconRegister)
+    {
+        this.iconIndex = par1IconRegister.func_94245_a(this.getUnlocalizedName().replace("item.", "galacticraftcore:"));
+    }
 
 	@Override
     @SideOnly(Side.CLIENT)

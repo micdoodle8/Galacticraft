@@ -101,7 +101,7 @@ public class GCCoreItemRendererFlag implements IItemRenderer
     	switch (item.getItemDamage())
     	{
     	default:
-    		FMLClientHandler.instance().getClient().renderEngine.bindTexture(FMLClientHandler.instance().getClient().renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/entities/flag/" + GCCoreItemFlag.names[item.getItemDamage()] + ".png"));
+    		FMLClientHandler.instance().getClient().renderEngine.func_98187_b("/micdoodle8/mods/galacticraft/core/client/entities/flag/" + GCCoreItemFlag.names[item.getItemDamage()] + ".png");
     		break;
     	}
 

@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.moon.items.GCMoonItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.world.World;
@@ -14,10 +15,16 @@ public class GCCoreBlockFallenMeteor extends Block
 {
 	public GCCoreBlockFallenMeteor(int i)
 	{
-		super(i, 21, Material.rock);
+		super(i, Material.rock);
 		this.setCreativeTab(GalacticraftCore.galacticraftTab);
 		this.setBlockBounds(0.2F, 0.2F, 0.2F, 0.8F, 0.8F, 0.8F);
 	}
+
+    @Override
+    public void func_94332_a(IconRegister par1IconRegister)
+    {
+    	this.field_94336_cN = par1IconRegister.func_94245_a("galacticraftcore:fallen_meteor");
+    }
 
 	@Override
     public int getRenderType()
@@ -77,13 +84,13 @@ public class GCCoreBlockFallenMeteor extends Block
 	@Override
     public void onBlockAdded(World par1World, int par2, int par3, int par4)
     {
-        par1World.scheduleBlockUpdate(par2, par3, par4, this.blockID, this.tickRate());
+        par1World.scheduleBlockUpdate(par2, par3, par4, this.blockID, this.tickRate(par1World));
     }
 
 	@Override
     public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
     {
-        par1World.scheduleBlockUpdate(par2, par3, par4, this.blockID, this.tickRate());
+        par1World.scheduleBlockUpdate(par2, par3, par4, this.blockID, this.tickRate(par1World));
     }
 
 	@Override
@@ -99,7 +106,7 @@ public class GCCoreBlockFallenMeteor extends Block
     {
         if (GCCoreBlockFallenMeteor.canFallBelow(par1World, par2, par3 - 1, par4) && par3 >= 0)
         {
-            par1World.setBlockWithNotify(par2, par3, par4, 0);
+            par1World.setBlockAndMetadataWithNotify(par2, par3, par4, 0, 0, 3);
 
             while (GCCoreBlockFallenMeteor.canFallBelow(par1World, par2, par3 - 1, par4) && par3 > 0)
             {
@@ -108,7 +115,7 @@ public class GCCoreBlockFallenMeteor extends Block
 
             if (par3 > 0)
             {
-                par1World.setBlockWithNotify(par2, par3, par4, this.blockID);
+                par1World.setBlockAndMetadataWithNotify(par2, par3, par4, this.blockID, 0, 3);
             }
         }
     }
@@ -130,11 +137,5 @@ public class GCCoreBlockFallenMeteor extends Block
             final Material var5 = Block.blocksList[var4].blockMaterial;
             return var5 == Material.water ? true : var5 == Material.lava;
         }
-    }
-
-	@Override
-    public String getTextureFile()
-    {
-    	return "/micdoodle8/mods/galacticraft/core/client/blocks/core.png";
     }
 }

@@ -16,10 +16,11 @@ import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.src.ModelPlayerAPI;
-import net.minecraft.src.ModelPlayerBase;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
+
+import org.lwjgl.opengl.GL11;
+
 import cpw.mods.fml.client.FMLClientHandler;
 
 public class GCCoreModelPlayer extends ModelPlayerBase
@@ -207,7 +208,7 @@ public class GCCoreModelPlayer extends ModelPlayerBase
 
             //
 
-    		FMLClientHandler.instance().getClient().renderEngine.bindTexture(FMLClientHandler.instance().getClient().renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/entities/player.png"));
+    		FMLClientHandler.instance().getClient().renderEngine.func_98187_b("/micdoodle8/mods/galacticraft/core/client/entities/player.png");
 
             changed = false;
 
@@ -401,7 +402,7 @@ public class GCCoreModelPlayer extends ModelPlayerBase
 
         	if (this.usingParachute)
         	{
-        		FMLClientHandler.instance().getClient().renderEngine.bindTexture(FMLClientHandler.instance().getClient().renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/entities/parachute/" + ClientProxyCore.parachuteTextures.get(player.username) + ".png"));
+        		FMLClientHandler.instance().getClient().renderEngine.func_98187_b("/micdoodle8/mods/galacticraft/core/client/entities/parachute/" + ClientProxyCore.parachuteTextures.get(player.username) + ".png");
 
             	this.parachute[0].render(var7);
             	this.parachute[1].render(var7);
@@ -430,7 +431,7 @@ public class GCCoreModelPlayer extends ModelPlayerBase
 
         if (var4 >= 0)
         {
-            var3.bindTexture(var4);
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, var4);
             return true;
         }
         else

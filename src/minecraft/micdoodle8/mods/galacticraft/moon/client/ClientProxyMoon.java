@@ -7,12 +7,10 @@ import micdoodle8.mods.galacticraft.API.IMapPlanet;
 import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.moon.CommonProxyMoon;
-import micdoodle8.mods.galacticraft.moon.GalacticraftMoon;
 import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.world.World;
-import net.minecraftforge.client.MinecraftForgeClient;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
@@ -32,8 +30,6 @@ public class ClientProxyMoon extends CommonProxyMoon implements IGalacticraftSub
 	@Override
 	public void registerRenderInformation()
 	{
-		MinecraftForgeClient.preloadTexture(GalacticraftMoon.BLOCK_TEXTURE_FILE);
-		MinecraftForgeClient.preloadTexture(GalacticraftMoon.ITEM_TEXTURE_FILE);
 	}
 
 	@Override

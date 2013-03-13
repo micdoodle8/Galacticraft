@@ -11,7 +11,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.core.vector.VectorHelper;
-import cpw.mods.fml.common.FMLLog;
 
 /**
  * 
@@ -46,9 +45,9 @@ public class OxygenNetwork
 	 */
 	public OxygenNetwork(TileEntity head, EnumGas type, int amount)
 	{
-		pointer = head;
-		transferType = type;
-		gasToSend = amount;
+		this.pointer = head;
+		this.transferType = type;
+		this.gasToSend = amount;
 	}
 	
 	/**
@@ -63,14 +62,14 @@ public class OxygenNetwork
 		{
 			if(acceptor != null)
 			{
-				if(acceptor.canReceiveGas(ForgeDirection.getOrientation(Arrays.asList(acceptors).indexOf(acceptor)).getOpposite(), transferType))
+				if(acceptor.canReceiveGas(ForgeDirection.getOrientation(Arrays.asList(acceptors).indexOf(acceptor)).getOpposite(), this.transferType))
 				{
-					availableAcceptors.add(acceptor);
+					this.availableAcceptors.add(acceptor);
 				}
 			}
 		}
 		
-		iteratedTubes.add(tile);
+		this.iteratedTubes.add(tile);
 		
 		TileEntity[] tubes = this.getConnectedTubes(tile);
 		
@@ -78,9 +77,9 @@ public class OxygenNetwork
 		{
 			if(tube != null)
 			{
-				if(!iteratedTubes.contains(tube))
+				if(!this.iteratedTubes.contains(tube))
 				{
-					loopThrough(tube);
+					this.loopThrough(tube);
 				}
 			}
 		}
@@ -192,16 +191,16 @@ public class OxygenNetwork
 	 */
 	public int calculate()
 	{
-		loopThrough(pointer);
+		this.loopThrough(this.pointer);
 		
-		if(!availableAcceptors.isEmpty())
+		if(!this.availableAcceptors.isEmpty())
 		{
 			boolean sentRemaining = false;
-			int divider = availableAcceptors.size();
-			int remaining = gasToSend % divider;
-			int sending = (gasToSend-remaining)/divider;
+			int divider = this.availableAcceptors.size();
+			int remaining = this.gasToSend % divider;
+			int sending = (this.gasToSend-remaining)/divider;
 			
-			for(IGasAcceptor acceptor : availableAcceptors)
+			for(IGasAcceptor acceptor : this.availableAcceptors)
 			{
 				int currentSending = sending;
 				
@@ -211,11 +210,11 @@ public class OxygenNetwork
 					remaining--;
 				}
 				
-				int rejects = acceptor.transferGasToAcceptor(currentSending, transferType);
-				gasToSend -= (currentSending - rejects);
+				int rejects = acceptor.transferGasToAcceptor(currentSending, this.transferType);
+				this.gasToSend -= currentSending - rejects;
 			}
 		}
 		
-		return gasToSend;
+		return this.gasToSend;
 	}
 }

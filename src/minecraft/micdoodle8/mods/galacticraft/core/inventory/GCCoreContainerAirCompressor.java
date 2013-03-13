@@ -9,30 +9,30 @@ import net.minecraft.item.ItemStack;
 
 public class GCCoreContainerAirCompressor extends Container
 {
-	private final GCCoreTileEntityOxygenCompressor refinery;
+	private final GCCoreTileEntityOxygenCompressor compressor;
 
-    public GCCoreContainerAirCompressor(InventoryPlayer par1InventoryPlayer, GCCoreTileEntityOxygenCompressor refinery)
+    public GCCoreContainerAirCompressor(InventoryPlayer par1InventoryPlayer, GCCoreTileEntityOxygenCompressor compressor)
     {
-    	this.refinery = refinery;
-        this.addSlotToContainer(new Slot(refinery, 0, 103, 31));
+    	this.compressor = compressor;
+        this.addSlotToContainer(new Slot(compressor, 0, 133, 68));
+        this.addSlotToContainer(new Slot(compressor, 1, 32, 27));
+        
+		int var3;
 
-        int var6;
-        int var7;
+		for (var3 = 0; var3 < 3; ++var3)
+		{
+			for (int var4 = 0; var4 < 9; ++var4)
+			{
+				this.addSlotToContainer(new Slot(par1InventoryPlayer, var4 + var3 * 9 + 9, 8 + var4 * 18, 20 + 84 + var3 * 18));
+			}
+		}
 
-        // Player inv:
+		for (var3 = 0; var3 < 9; ++var3)
+		{
+			this.addSlotToContainer(new Slot(par1InventoryPlayer, var3, 8 + var3 * 18, 20 + 142));
+		}
 
-        for (var6 = 0; var6 < 3; ++var6)
-        {
-            for (var7 = 0; var7 < 9; ++var7)
-            {
-                this.addSlotToContainer(new Slot(par1InventoryPlayer, var7 + var6 * 9 + 9, 8 + var7 * 18, 58 + var6 * 18));
-            }
-        }
-
-        for (var6 = 0; var6 < 9; ++var6)
-        {
-            this.addSlotToContainer(new Slot(par1InventoryPlayer, var6, 8 + var6 * 18, 116));
-        }
+		compressor.openChest();
     }
 
 	@Override

@@ -1,22 +1,33 @@
 package micdoodle8.mods.galacticraft.core.items;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.client.GCCorePlayerBaseClient;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Icon;
 
 import org.lwjgl.input.Keyboard;
 
-public class GCCoreItemOxygenTank extends GCCoreItem
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
+public class GCCoreItemOxygenTank extends Item
 {
+	protected List<Icon> icons = new ArrayList<Icon>();
+	
 	public GCCoreItemOxygenTank(int par1)
 	{
 		super(par1);
 		this.setMaxStackSize(1);
+		this.setCreativeTab(GalacticraftCore.galacticraftTab);
 	}
 
     @Override
@@ -40,5 +51,48 @@ public class GCCoreItemOxygenTank extends GCCoreItem
             	par2List.add("     Galacticraft Inventory");
     		}
     	}
+    }
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void func_94581_a(IconRegister iconRegister)
+	{
+		List<ItemStack> list = new ArrayList<ItemStack>();
+		this.getSubItems(this.itemID, this.getCreativeTab(), list);
+
+		if (list.size() > 0)
+		{
+			for (ItemStack itemStack : list)
+			{
+				this.icons.add(iconRegister.func_94245_a("galacticraftcore:oxygen_tank_light"));
+				this.icons.add(iconRegister.func_94245_a("galacticraftcore:oxygen_tank_medium"));
+				this.icons.add(iconRegister.func_94245_a("galacticraftcore:oxygen_tank_heavy"));
+			}
+		}
+		else
+		{
+			this.iconIndex = iconRegister.func_94245_a("galacticraftcore:extractor_1");
+		}
+	}
+
+	@Override
+    public Icon getIconFromDamage(int par1)
+    {
+		if (this.itemID == GCCoreItems.heavyOxygenTank.itemID)
+		{
+			return this.icons.get(2);
+		}
+
+		if (this.itemID == GCCoreItems.medOxygenTank.itemID)
+		{
+			return this.icons.get(1);
+		}
+
+		if (this.itemID == GCCoreItems.lightOxygenTank.itemID)
+		{
+			return this.icons.get(0);
+		}
+		
+		return this.icons.get(0);
     }
 }

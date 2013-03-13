@@ -47,7 +47,7 @@ public class GCCoreModelParaChest extends ModelChest
     {
     	super.renderAll();
 
-		FMLClientHandler.instance().getClient().renderEngine.bindTexture(FMLClientHandler.instance().getClient().renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/entities/parachute/gray.png"));
+		FMLClientHandler.instance().getClient().renderEngine.func_98187_b("/micdoodle8/mods/galacticraft/core/client/entities/parachute/gray.png");
 
     	int i;
 

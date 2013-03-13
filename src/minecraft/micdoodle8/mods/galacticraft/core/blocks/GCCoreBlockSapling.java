@@ -13,10 +13,9 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 
 public class GCCoreBlockSapling extends BlockSapling
 {
-	protected GCCoreBlockSapling(int par1, int par2)
+	protected GCCoreBlockSapling(int par1)
 	{
-		super(par1, par2);
-		this.setRequiresSelfNotify();
+		super(par1);
 		this.setCreativeTab(CreativeTabs.tabBlock);
 	}
 
@@ -42,14 +41,14 @@ public class GCCoreBlockSapling extends BlockSapling
 
             if (!(waterBlocksNearby > 3))
             {
-            	par1World.setBlock(par2, par3, par4, Block.deadBush.blockID);
+            	par1World.setBlockAndMetadataWithNotify(par2, par3, par4, Block.deadBush.blockID, 0, 3);
             }
 
             final int var6 = par1World.getBlockMetadata(par2, par3, par4);
 
             if ((var6 & 8) == 0)
             {
-                par1World.setBlockMetadataWithNotify(par2, par3, par4, var6 | 8);
+                par1World.setBlockMetadataWithNotify(par2, par3, par4, var6 | 8, 3);
             }
             else
             {
@@ -83,28 +82,28 @@ public class GCCoreBlockSapling extends BlockSapling
 
         if (var10)
         {
-            par1World.setBlock(par2 + var8, par3, par4 + var9, 0);
-            par1World.setBlock(par2 + var8 + 1, par3, par4 + var9, 0);
-            par1World.setBlock(par2 + var8, par3, par4 + var9 + 1, 0);
-            par1World.setBlock(par2 + var8 + 1, par3, par4 + var9 + 1, 0);
+            par1World.setBlockAndMetadataWithNotify(par2 + var8, par3, par4 + var9, 0, 0, 3);
+            par1World.setBlockAndMetadataWithNotify(par2 + var8 + 1, par3, par4 + var9, 0, 0, 3);
+            par1World.setBlockAndMetadataWithNotify(par2 + var8, par3, par4 + var9 + 1, 0, 0, 3);
+            par1World.setBlockAndMetadataWithNotify(par2 + var8 + 1, par3, par4 + var9 + 1, 0, 0, 3);
         }
         else
         {
-            par1World.setBlock(par2, par3, par4, 0);
+            par1World.setBlockAndMetadataWithNotify(par2, par3, par4, 0, 0, 3);
         }
 
         if (!((WorldGenerator)var7).generate(par1World, par5Random, par2 + var8, par3, par4 + var9))
         {
             if (var10)
             {
-                par1World.setBlockAndMetadata(par2 + var8, par3, par4 + var9, this.blockID, var6);
-                par1World.setBlockAndMetadata(par2 + var8 + 1, par3, par4 + var9, this.blockID, var6);
-                par1World.setBlockAndMetadata(par2 + var8, par3, par4 + var9 + 1, this.blockID, var6);
-                par1World.setBlockAndMetadata(par2 + var8 + 1, par3, par4 + var9 + 1, this.blockID, var6);
+                par1World.setBlockAndMetadataWithNotify(par2 + var8, par3, par4 + var9, this.blockID, var6, 3);
+                par1World.setBlockAndMetadataWithNotify(par2 + var8 + 1, par3, par4 + var9, this.blockID, var6, 3);
+                par1World.setBlockAndMetadataWithNotify(par2 + var8, par3, par4 + var9 + 1, this.blockID, var6, 3);
+                par1World.setBlockAndMetadataWithNotify(par2 + var8 + 1, par3, par4 + var9 + 1, this.blockID, var6, 3);
             }
             else
             {
-                par1World.setBlockAndMetadata(par2, par3, par4, this.blockID, var6);
+                par1World.setBlockAndMetadataWithNotify(par2, par3, par4, this.blockID, var6, 3);
             }
         }
     }

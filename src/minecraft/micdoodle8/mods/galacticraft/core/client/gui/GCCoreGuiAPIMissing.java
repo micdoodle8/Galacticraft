@@ -1,13 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
-import java.io.File;
-import java.util.Map.Entry;
-
 import micdoodle8.mods.galacticraft.core.exception.MissingAPIException;
 import net.minecraft.client.gui.GuiErrorScreen;
-import net.minecraft.src.ServerPlayerAPI;
-import cpw.mods.fml.common.DuplicateModsFoundException;
-import cpw.mods.fml.common.ModContainer;
 
 public class GCCoreGuiAPIMissing extends GuiErrorScreen
 {
@@ -28,14 +22,14 @@ public class GCCoreGuiAPIMissing extends GuiErrorScreen
     public void drawScreen(int par1, int par2, float par3)
     {
         this.drawBackground(par1);
-        int offset = Math.max(85 - apiMissing.missingAPIs.size() * 10, 10);
+        int offset = Math.max(85 - this.apiMissing.missingAPIs.size() * 10, 10);
         this.drawCenteredString(this.fontRenderer, "Galacticraft has found a problem with your minecraft installation", this.width / 2, offset, 0xFFFFFF);
         offset+=10;
         this.drawCenteredString(this.fontRenderer, "You are missing a required API", this.width / 2, offset, 0xFFFFFF);
         offset+=10;
         this.drawCenteredString(this.fontRenderer, "Class Name : API", this.width / 2, offset, 0xFFFFFF);
         offset+=5;
-        for (String s : apiMissing.missingAPIs)
+        for (String s : this.apiMissing.missingAPIs)
         {
             offset+=10;
             

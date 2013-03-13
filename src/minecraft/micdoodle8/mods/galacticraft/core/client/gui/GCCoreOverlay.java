@@ -4,6 +4,9 @@ import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpaceship;
 import net.minecraft.client.renderer.RenderEngine;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
+
+import org.lwjgl.opengl.GL11;
+
 import cpw.mods.fml.client.FMLClientHandler;
 
 public class GCCoreOverlay
@@ -40,10 +43,10 @@ public class GCCoreOverlay
         final float var8 = 0.00390625F;
         final Tessellator var9 = Tessellator.instance;
         var9.startDrawingQuads();
-        var9.addVertexWithUV((par1 + 0), (par2 + par6), 0.0, ((par3 + 0) * var7), ((par4 + par6) * var8));
-        var9.addVertexWithUV((par1 + par5), (par2 + par6), 0.0, ((par3 + par5) * var7), ((par4 + par6) * var8));
-        var9.addVertexWithUV((par1 + par5), (par2 + 0), 0.0, ((par3 + par5) * var7), ((par4 + 0) * var8));
-        var9.addVertexWithUV((par1 + 0), (par2 + 0), 0.0, ((par3 + 0) * var7), ((par4 + 0) * var8));
+        var9.addVertexWithUV(par1 + 0, par2 + par6, 0.0, (par3 + 0) * var7, (par4 + par6) * var8);
+        var9.addVertexWithUV(par1 + par5, par2 + par6, 0.0, (par3 + par5) * var7, (par4 + par6) * var8);
+        var9.addVertexWithUV(par1 + par5, par2 + 0, 0.0, (par3 + par5) * var7, (par4 + 0) * var8);
+        var9.addVertexWithUV(par1 + 0, par2 + 0, 0.0, (par3 + 0) * var7, (par4 + 0) * var8);
         var9.draw();
     }
 
@@ -60,7 +63,7 @@ public class GCCoreOverlay
 
         if (var4 >= 0)
         {
-            var3.bindTexture(var4);
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, var4);
             return true;
         }
         else

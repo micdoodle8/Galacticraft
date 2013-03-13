@@ -21,7 +21,7 @@ public abstract class GCCoreTileEntityContainer extends GCCoreTileEntityBase imp
 	
 	public GCCoreTileEntityContainer(String name)
 	{
-		fullName = name;
+		this.fullName = name;
 	}
 	
 	@Override
@@ -31,16 +31,16 @@ public abstract class GCCoreTileEntityContainer extends GCCoreTileEntityBase imp
         
         NBTTagList tagList = nbtTags.getTagList("Items");
         
-        stacks = new ItemStack[this.getSizeInventory()];
+        this.stacks = new ItemStack[this.getSizeInventory()];
 
         for (int slots = 0; slots < tagList.tagCount(); ++slots)
         {
             NBTTagCompound tagCompound = (NBTTagCompound)tagList.tagAt(slots);
             byte slotID = tagCompound.getByte("Slot");
 
-            if (slotID >= 0 && slotID < stacks.length)
+            if (slotID >= 0 && slotID < this.stacks.length)
             {
-            	stacks[slotID] = ItemStack.loadItemStackFromNBT(tagCompound);
+            	this.stacks[slotID] = ItemStack.loadItemStackFromNBT(tagCompound);
             }
         }
     }
@@ -52,13 +52,13 @@ public abstract class GCCoreTileEntityContainer extends GCCoreTileEntityBase imp
         
         NBTTagList tagList = new NBTTagList();
 
-        for (int slots = 0; slots < stacks.length; ++slots)
+        for (int slots = 0; slots < this.stacks.length; ++slots)
         {
-            if (stacks[slots] != null)
+            if (this.stacks[slots] != null)
             {
                 NBTTagCompound tagCompound = new NBTTagCompound();
                 tagCompound.setByte("Slot", (byte)slots);
-                stacks[slots].writeToNBT(tagCompound);
+                this.stacks[slots].writeToNBT(tagCompound);
                 tagList.appendTag(tagCompound);
             }
         }
@@ -81,35 +81,35 @@ public abstract class GCCoreTileEntityContainer extends GCCoreTileEntityBase imp
 	@Override
 	public int getSizeInventory() 
 	{
-		return stacks.length;
+		return this.stacks.length;
 	}
 
 	@Override
 	public ItemStack getStackInSlot(int par1) 
 	{
-		return stacks[par1];
+		return this.stacks[par1];
 	}
 
 	@Override
     public ItemStack decrStackSize(int par1, int par2)
     {
-        if (stacks[par1] != null)
+        if (this.stacks[par1] != null)
         {
             ItemStack var3;
 
-            if (stacks[par1].stackSize <= par2)
+            if (this.stacks[par1].stackSize <= par2)
             {
-                var3 = stacks[par1];
-                stacks[par1] = null;
+                var3 = this.stacks[par1];
+                this.stacks[par1] = null;
                 return var3;
             }
             else
             {
-                var3 = stacks[par1].splitStack(par2);
+                var3 = this.stacks[par1].splitStack(par2);
 
-                if (stacks[par1].stackSize == 0)
+                if (this.stacks[par1].stackSize == 0)
                 {
-                	stacks[par1] = null;
+                	this.stacks[par1] = null;
                 }
 
                 return var3;
@@ -124,10 +124,10 @@ public abstract class GCCoreTileEntityContainer extends GCCoreTileEntityBase imp
 	@Override
     public ItemStack getStackInSlotOnClosing(int par1)
     {
-        if (stacks[par1] != null)
+        if (this.stacks[par1] != null)
         {
-            ItemStack var2 = stacks[par1];
-            stacks[par1] = null;
+            ItemStack var2 = this.stacks[par1];
+            this.stacks[par1] = null;
             return var2;
         }
         else
@@ -139,24 +139,24 @@ public abstract class GCCoreTileEntityContainer extends GCCoreTileEntityBase imp
 	@Override
     public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
     {
-		stacks[par1] = par2ItemStack;
+		this.stacks[par1] = par2ItemStack;
 
-        if (par2ItemStack != null && par2ItemStack.stackSize > getInventoryStackLimit())
+        if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit())
         {
-            par2ItemStack.stackSize = getInventoryStackLimit();
+            par2ItemStack.stackSize = this.getInventoryStackLimit();
         }
     }
 	
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer entityplayer)
 	{
-		return worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) != this ? false : entityplayer.getDistanceSq((double)xCoord + 0.5D, (double)yCoord + 0.5D, (double)zCoord + 0.5D) <= 64.0D;
+		return this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : entityplayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
 	}
 	
 	@Override
 	public String getInvName()
 	{
-		return fullName;
+		return this.fullName;
 	}
 	
 	@Override
@@ -168,12 +168,12 @@ public abstract class GCCoreTileEntityContainer extends GCCoreTileEntityBase imp
 	@Override
 	public void openChest()
 	{
-		playersUsing++;
+		this.playersUsing++;
 	}
 
 	@Override
 	public void closeChest()
 	{
-		playersUsing--;
+		this.playersUsing--;
 	}
 }
