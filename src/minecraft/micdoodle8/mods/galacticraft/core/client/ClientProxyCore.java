@@ -12,7 +12,6 @@ import java.util.Random;
 import java.util.Set;
 
 import micdoodle8.mods.galacticraft.API.AdvancedAchievement;
-import micdoodle8.mods.galacticraft.API.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.API.IDetectableMetadataResource;
 import micdoodle8.mods.galacticraft.API.IDetectableResource;
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
@@ -62,6 +61,7 @@ import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntityRefi
 import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntityTreasureChestRenderer;
 import micdoodle8.mods.galacticraft.core.client.sounds.GCCoreSoundUpdaterSpaceship;
 import micdoodle8.mods.galacticraft.core.client.sounds.GCCoreSounds;
+import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityArrow;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityAstroOrb;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityBuggy;
@@ -77,6 +77,7 @@ import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityWorm;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityZombie;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemSensorGlasses;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketEntityUpdate;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAdvancedCraftingTable;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityRefinery;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
@@ -120,6 +121,7 @@ import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry.KeyHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.IScheduledTickHandler;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
@@ -655,6 +657,17 @@ public class ClientProxyCore extends CommonProxyCore
                     FMLClientHandler.instance().getClient().gameSettings.thirdPersonView = playerBaseClient.getThirdPersonView();
                 }
             }
+            else if (packetType == 14)
+            {
+                try
+                {
+    	    		new GCCorePacketEntityUpdate().handlePacket(data, new Object[] {player}, Side.SERVER);
+                }
+                catch(Exception e)
+                {
+                	e.printStackTrace();
+                }
+            }
 		}
     }
 
@@ -858,38 +871,38 @@ public class ClientProxyCore extends CommonProxyCore
     				}
     			}
 
-    			if (player != null && player.ridingEntity != null && player.ridingEntity instanceof GCCoreEntityControllable)
-    			{
-    				final GCCoreEntityControllable entityControllable = (GCCoreEntityControllable) player.ridingEntity;
-
-    				if (minecraft.gameSettings.keyBindLeft.pressed)
-    				{
-    					entityControllable.keyPressed(2, player);
-    					final Object[] toSend = {2};
-    					PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 9, toSend));
-    				}
-
-    				if (minecraft.gameSettings.keyBindRight.pressed)
-    				{
-    					entityControllable.keyPressed(3, player);
-    					final Object[] toSend = {3};
-    					PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 9, toSend));
-    				}
-
-    				if (minecraft.gameSettings.keyBindForward.pressed)
-    				{
-    					entityControllable.keyPressed(0, player);
-    					final Object[] toSend = {0};
-    					PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 9, toSend));
-    				}
-
-    				if (minecraft.gameSettings.keyBindBack.pressed)
-    				{
-    					entityControllable.keyPressed(1, player);
-    					final Object[] toSend = {1};
-    					PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 9, toSend));
-    				}
-    			}
+//    			if (player != null && player.ridingEntity != null && player.ridingEntity instanceof GCCoreEntityControllable)
+//    			{
+//    				final GCCoreEntityControllable entityControllable = (GCCoreEntityControllable) player.ridingEntity;
+//
+//    				if (minecraft.gameSettings.keyBindLeft.pressed)
+//    				{
+//    					entityControllable.keyPressed(2, player);
+//    					final Object[] toSend = {2};
+//    					PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 9, toSend));
+//    				}
+//
+//    				if (minecraft.gameSettings.keyBindRight.pressed)
+//    				{
+//    					entityControllable.keyPressed(3, player);
+//    					final Object[] toSend = {3};
+//    					PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 9, toSend));
+//    				}
+//
+//    				if (minecraft.gameSettings.keyBindForward.pressed)
+//    				{
+//    					entityControllable.keyPressed(0, player);
+//    					final Object[] toSend = {0};
+//    					PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 9, toSend));
+//    				}
+//
+//    				if (minecraft.gameSettings.keyBindBack.pressed)
+//    				{
+//    					entityControllable.keyPressed(1, player);
+//    					final Object[] toSend = {1};
+//    					PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 9, toSend));
+//    				}
+//    			}
 
     			if (player != null && player.ridingEntity != null && player.ridingEntity instanceof GCCoreEntitySpaceship)
     			{
@@ -1128,10 +1141,14 @@ public class ClientProxyCore extends CommonProxyCore
     	public static KeyBinding galaxyMap = new KeyBinding("Galaxy Map", Keyboard.KEY_M);
     	public static KeyBinding openSpaceshipInv = new KeyBinding("Open Spaceship Inventory", Keyboard.KEY_F);
     	public static KeyBinding toggleAdvGoggles = new KeyBinding("Toggle Advanced Sensor Goggles", Keyboard.KEY_K);
+    	public static KeyBinding accelerateKey = new KeyBinding("Accelerate Key", Keyboard.KEY_W);
+    	public static KeyBinding decelerateKey = new KeyBinding("Decelerate Key", Keyboard.KEY_S);
+    	public static KeyBinding leftKey = new KeyBinding("Left Key", Keyboard.KEY_A);
+    	public static KeyBinding rightKey = new KeyBinding("Right Key", Keyboard.KEY_D);
 
         public GCKeyHandler()
         {
-            super(new KeyBinding[] {GCKeyHandler.tankRefill, GCKeyHandler.galaxyMap, GCKeyHandler.openSpaceshipInv, GCKeyHandler.toggleAdvGoggles}, new boolean[] {false, false, false, false});
+            super(new KeyBinding[] {GCKeyHandler.tankRefill, GCKeyHandler.galaxyMap, GCKeyHandler.openSpaceshipInv, GCKeyHandler.toggleAdvGoggles, GCKeyHandler.accelerateKey, GCKeyHandler.decelerateKey, GCKeyHandler.leftKey, GCKeyHandler.rightKey}, new boolean[] {false, false, false, false, true, true, true, true});
         }
 
         @Override
@@ -1186,56 +1203,69 @@ public class ClientProxyCore extends CommonProxyCore
         		}
             }
 
-//        	int key = -1;
-//
-//        	switch (kb.keyCode)
-//        	{
-//        	case Keyboard.KEY_W:
-//        		key = 2;
-//        	case Keyboard.KEY_A:
-//        		key = 0;
-//        	case Keyboard.KEY_D:
-//        		key = 1;
-//        	default:
-//        		handled = false;
-//        	}
-//
-//        	EntityPlayer player = minecraft.thePlayer;
-//    		Entity entityTest  = player.ridingEntity;
-//
-//    		if (entityTest != null && entityTest instanceof GCCoreEntityBuggy && handled == true)
-//    		{
-//    			GCCoreEntityBuggy entity = (GCCoreEntityBuggy)entityTest;
-//    			if (kb.keyCode == minecraft.gameSettings.keyBindInventory.keyCode)
-//    			{
-//    				minecraft.gameSettings.keyBindInventory.pressed = false;
-//    				minecraft.gameSettings.keyBindInventory.pressTime = 0;
-//    			}
-//    			entity.onKeyPressed(key);
-//    			handled = true;
-//
-//    			if (handled)
-//    			{
-//                    Object[] toSend = {player.username, 2};
-//                    PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 5, toSend));
-//    			}
-//    		}
-//    		else
-//    			handled = false;
-//
-//
-//    		if (handled == true)
-//    			return;
-//
-//    		for (KeyBinding keybind : minecraft.gameSettings.keyBindings)
-//    		{
-//    			if (kb.keyCode == keybind.keyCode && keybind != kb)
-//    			{
-//    				keybind.pressed = true;
-//    				keybind.pressTime = 1;
-//    				break;
-//    			}
-//    		}
+    		if(minecraft.currentScreen != null || tickEnd)
+    		{
+    			return;
+    		}
+    		
+    		int keyNum = -1;
+    		boolean handled = true;
+    		
+    		if(kb == accelerateKey)
+    		{
+    			keyNum = 0;
+    		}
+    		else if(kb == decelerateKey)
+    		{
+    			keyNum = 1;
+    		}
+    		else if(kb == leftKey)
+    		{
+    			keyNum = 2;
+    		}
+    		else if(kb == rightKey)
+    		{
+    			keyNum = 3;
+    		}
+    		else
+    		{
+    			handled = false;
+    		}
+    		
+    		Entity entityTest  = player.ridingEntity;
+    		
+    		if (entityTest != null && entityTest instanceof GCCoreEntityControllable && handled == true)
+    		{
+    			GCCoreEntityControllable entity = (GCCoreEntityControllable)entityTest;
+    			
+    			if (kb.keyCode == minecraft.gameSettings.keyBindInventory.keyCode)
+    			{
+    				minecraft.gameSettings.keyBindInventory.pressed = false;
+    				minecraft.gameSettings.keyBindInventory.pressTime = 0;
+    			}
+    			
+    			handled = entity.pressKey(keyNum);
+    		}
+    		else
+    		{
+    			handled = false;
+    		}
+    		
+
+			FMLLog.info("" + handled);
+    		if (handled == true)
+    		{
+    			return;
+    		}
+
+    		for (KeyBinding key : minecraft.gameSettings.keyBindings)
+    		{
+    			if (kb.keyCode == key.keyCode && key != kb)
+    			{
+    				key.pressed = true;
+    				key.pressTime = 1;
+    			}
+    		}
         }
 
         @Override
