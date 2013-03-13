@@ -11,7 +11,7 @@ public abstract class GCCoreEntityControllable extends Entity
 		super(par1World);
 	}
 
-	public abstract void keyPressed(int par1, EntityPlayer par2EntityPlayer);
-
-	abstract boolean pressKey(int key);
+	public abstract boolean pressKey(int key);
+	
+	public abstract void setPositionRotationAndMotion(double x, double y, double z, float yaw, float pitch, double motX, double motY, double motZ);
 }

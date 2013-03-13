@@ -1,15 +1,31 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketControllableEntity;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketEntityUpdate;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+
+import com.google.common.io.ByteArrayDataInput;
+import com.google.common.io.ByteArrayDataOutput;
+
+import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -22,12 +38,18 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
     public double speed;
     float maxSpeed = 0.5F;
     float accel = 0.2F;
-    float turnFactor = 1.0F;
+    float turnFactor = 3.0F;
     public String texture;
     ItemStack[] cargoItems;
 	public float turnProgress = 0;
 	private final boolean firstPacketSent = false;
 	public float rotationYawBuggy;
+    public double boatX;
+    public double boatY;
+    public double boatZ;
+    public double boatYaw;
+    public double boatPitch;
+	public int boatPosRotationIncrements;
 
     public GCCoreEntityBuggy(World var1)
     {
@@ -61,63 +83,30 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
     @Override
 	protected void entityInit() {}
 
-    /**
-     * returns if this entity triggers Block.onEntityWalking on the blocks they walk on. used for spiders and wolves to
-     * prevent them from trampling crops
-     */
     @Override
 	protected boolean canTriggerWalking()
     {
         return false;
     }
-
-    /**
-     * Returns a boundingBox used to collide the entity with other entities and blocks. This enables the entity to be
-     * pushable on contact, like boats or minecarts.
-     */
-//    @Override
-//	public AxisAlignedBB getCollisionBox(Entity var1)
-//    {
-//    	if (!var1.equals(this.riddenByEntity))
-//    	{
-//    		return var1.boundingBox;
-//    	}
-//    	else
-//    	{
-//            return null;
-//    	}
-//    }
-
-    /**
-     * returns the bounding box for this entity
-     */
+    
     @Override
 	public AxisAlignedBB getBoundingBox()
     {
         return this.boundingBox;
     }
 
-    /**
-     * Returns true if this entity should push and be pushed by other entities when colliding.
-     */
     @Override
 	public boolean canBePushed()
     {
         return false;
     }
 
-    /**
-     * Returns the Y offset from the entity's position for any entity riding this one.
-     */
     @Override
 	public double getMountedYOffset()
     {
         return this.height - 3.0D;
     }
 
-    /**
-     * Returns true if other Entities should be prevented from moving through this Entity.
-     */
     @Override
 	public boolean canBeCollidedWith()
     {
@@ -134,10 +123,31 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
             this.riddenByEntity.setPosition(this.posX + var1, this.posY - 2 + this.riddenByEntity.getYOffset(), this.posZ + var3);
         }
     }
+	
+	public void setPositionRotationAndMotion(double x, double y, double z, float yaw, float pitch, double motX, double motY, double motZ)
+	{
+		if(worldObj.isRemote)
+		{
+	        boatX = x;
+	        boatY = y;
+	        boatZ = z;
+	        boatYaw = yaw;
+	        boatPitch = pitch;
+	        motionX = motX;
+	        motionY = motY;
+	        motionZ = motZ;
+	        boatPosRotationIncrements = 5;
+		}
+		else
+		{
+			setPosition(x, y, z);
+			setRotation(yaw, pitch);
+			motionX = motX;
+			motionY = motY;
+			motionZ = motZ;
+		}
+	}
 
-    /**
-     * Setups the entity to do the hurt animation. Only used by packets in multiplayer.
-     */
     @Override
 	public void performHurtAnimation()
     {
@@ -146,14 +156,9 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
         this.dataWatcher.updateObject(this.currentDamage, Integer.valueOf(this.dataWatcher.getWatchableObjectInt(this.currentDamage) * 5));
     }
 
-    /**
-     * Called when the entity is attacked.
-     */
     @Override
 	public boolean attackEntityFrom(DamageSource var1, int var2)
     {
-        final boolean var3 = false;
-
         if (this.isDead)
         {
             return true;
@@ -162,15 +167,15 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
         {
             this.dataWatcher.updateObject(this.rockDirection, Integer.valueOf(-this.dataWatcher.getWatchableObjectInt(this.rockDirection)));
             this.dataWatcher.updateObject(this.timeSinceHit, Integer.valueOf(10));
-            this.dataWatcher.updateObject(this.currentDamage, Integer.valueOf(this.dataWatcher.getWatchableObjectInt(this.currentDamage) + var2 * 5));
+            this.dataWatcher.updateObject(this.currentDamage, Integer.valueOf(this.dataWatcher.getWatchableObjectInt(this.currentDamage) + var2 * 10));
             this.setBeenAttacked();
 
-            if (var1.getEntity() instanceof EntityPlayer)
+            if (var1.getEntity() instanceof EntityPlayer && ((EntityPlayer)var1.getEntity()).capabilities.isCreativeMode)
             {
-                ;
+                this.dataWatcher.updateObject(this.currentDamage, 100);
             }
 
-            if (this.dataWatcher.getWatchableObjectInt(this.currentDamage) > 40 || var3)
+            if (this.dataWatcher.getWatchableObjectInt(this.currentDamage) > 2)
             {
                 if (this.riddenByEntity != null)
                 {
@@ -179,17 +184,12 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
 
                 if (!this.worldObj.isRemote)
                 {
-//                    this.dropItem(mod_cars.car.itemID, 1);
-//
-//                    for (int var4 = 0; var4 < this.getSizeInventory(); ++var4)
-//                    {
-//                        ItemStack var5 = this.getStackInSlot(var4);
-//
-//                        if (var5 != null)
-//                        {
-//                            this.entityDropItem(var5, 0.0F);
-//                        }
-//                    }
+                    if (this.riddenByEntity != null)
+                    {
+                        this.riddenByEntity.mountEntity(this);
+                    }
+
+                    this.dropBuggyAsItem();
                 }
 
                 this.setDead();
@@ -199,18 +199,90 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
         }
     }
 
-    @Override
-	@SideOnly(Side.CLIENT)
-    public void setPositionAndRotation2(double par1, double par3, double par5, float par7, float par8, int par9)
+    public void dropBuggyAsItem()
     {
-    	super.setPositionAndRotation2(par1, par3, par5, par7, par8, par9);
-//    	this.setRotation(par7, par8);
+    	if (this.getItemsDropped() == null)
+    	{
+    		return;
+    	}
+
+        for(final ItemStack item : this.getItemsDropped())
+        {
+            this.entityDropItem(item, 0);
+        }
+    }
+
+    public List<ItemStack> getItemsDropped()
+    {
+        final List<ItemStack> items = new ArrayList<ItemStack>();
+        items.add(new ItemStack(GCCoreItems.buggy));
+    	return items;
+    }
+
+	@Override
+    public void setPositionAndRotation2(double d, double d1, double d2, float f, float f1, int i)
+    {
+		if (this.riddenByEntity != null)
+		{
+			if(riddenByEntity instanceof EntityPlayer && FMLClientHandler.instance().getClient().thePlayer.equals(this.riddenByEntity))
+			{
+			}
+			else
+			{
+	            boatPosRotationIncrements = i + 5;
+		        boatX = d;
+		        boatY = d1 + (this.riddenByEntity == null ? 1 : 0);
+		        boatZ = d2;
+		        boatYaw = (double)f;
+		        boatPitch = (double)f1;
+			}
+		}
     }
 
     @Override
 	public void onUpdate()
     {
         super.onUpdate();
+        
+        if(worldObj.isRemote && (riddenByEntity == null || !(riddenByEntity instanceof EntityPlayer) || !FMLClientHandler.instance().getClient().thePlayer.equals(this.riddenByEntity)))
+        {
+            double x;
+            double y;
+            double var12;
+            double z;
+            if (boatPosRotationIncrements > 0)
+            {
+                x = posX + (boatX - posX) / (double)boatPosRotationIncrements;
+                y = posY + (boatY - posY) / (double)boatPosRotationIncrements;
+                z = posZ + (boatZ - posZ) / (double)boatPosRotationIncrements;
+                var12 = MathHelper.wrapAngleTo180_double(boatYaw - (double)rotationYaw);
+                rotationYaw = (float)((double)rotationYaw + var12 / (double)boatPosRotationIncrements);
+                rotationPitch = (float)((double)rotationPitch + (boatPitch - (double)rotationPitch) / (double)boatPosRotationIncrements);
+                --boatPosRotationIncrements;
+                setPosition(x, y, z);
+                setRotation(rotationYaw, rotationPitch);     
+            }
+            else
+            {
+                x = posX + motionX;
+                y = posY + motionY;
+                z = posZ + motionZ;
+        		if (this.riddenByEntity != null)
+                setPosition(x, y, z);
+
+                if (onGround)
+                {
+                    motionX *= 0.5D;
+                    motionY *= 0.5D;
+                    motionZ *= 0.5D;
+                }
+
+                motionX *= 0.9900000095367432D;
+                motionY *= 0.949999988079071D;
+                motionZ *= 0.9900000095367432D;
+            }
+            return;
+        }
 
         if (this.dataWatcher.getWatchableObjectInt(this.timeSinceHit) > 0)
         {
@@ -255,6 +327,11 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
                 }
             }
         }
+        
+        if (this.riddenByEntity == null)
+        {
+        	this.yOffset = 5;
+        }
 
         if (this.inWater && this.speed > 0.2D)
         {
@@ -276,24 +353,28 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
 
         this.motionX = -(this.speed * Math.cos((this.rotationYaw - 90F) * Math.PI / 180.0D ));
         this.motionZ = -(this.speed * Math.sin((this.rotationYaw - 90F) * Math.PI / 180.0D ));
+        
 
-        this.moveEntity(this.motionX, this.motionY, this.motionZ);
-
-        this.setRotation(this.rotationYaw, this.rotationPitch);
-        this.setPosition(this.posX, this.posY, this.posZ);
-
-        if (this.worldObj.isRemote)
-        {
-        }
+		if (this.worldObj.isRemote)
+		{
+			moveEntity(motionX, motionY, motionZ);
+		}
 
         this.prevPosX = this.posX;
         this.prevPosY = this.posY;
         this.prevPosZ = this.posZ;
+		
+		if(this.worldObj.isRemote && riddenByEntity instanceof EntityPlayer && FMLClientHandler.instance().getClient().thePlayer.equals(this.riddenByEntity))
+		{
+			PacketDispatcher.sendPacketToServer(GCCorePacketEntityUpdate.buildUpdatePacket(this));
+		}
+		
+		if(!worldObj.isRemote && ticksExisted % 5 == 0)
+		{
+			PacketDispatcher.sendPacketToAllAround(posX, posY, posZ, 50, dimension, GCCorePacketEntityUpdate.buildUpdatePacket(this));
+		}
     }
 
-    /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
     @Override
 	protected void readEntityFromNBT(NBTTagCompound var1)
     {
@@ -313,9 +394,6 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
         }
     }
 
-    /**
-     * (abstract) Protected helper method to write subclass entity data to NBT.
-     */
     @Override
 	protected void writeEntityToNBT(NBTTagCompound var1)
     {
@@ -336,28 +414,18 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
         var1.setTag("Items", var2);
     }
 
-    /**
-     * Returns the number of slots in the inventory.
-     */
     @Override
 	public int getSizeInventory()
     {
         return 27;
     }
 
-    /**
-     * Returns the stack in slot i
-     */
     @Override
 	public ItemStack getStackInSlot(int var1)
     {
         return this.cargoItems[var1];
     }
 
-    /**
-     * Removes from an inventory slot (first arg) up to a specified number (second arg) of items and returns them in a
-     * new stack.
-     */
     @Override
 	public ItemStack decrStackSize(int var1, int var2)
     {
@@ -389,10 +457,6 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
         }
     }
 
-    /**
-     * When some containers are closed they call this on each slot, then drop whatever it returns as an EntityItem -
-     * like when you close a workbench GUI.
-     */
     @Override
 	public ItemStack getStackInSlotOnClosing(int var1)
     {
@@ -408,9 +472,6 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
         }
     }
 
-    /**
-     * Sets the given item stack to the specified slot in the inventory (can be crafting or armor sections).
-     */
     @Override
 	public void setInventorySlotContents(int var1, ItemStack var2)
     {
@@ -422,34 +483,21 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
         }
     }
 
-    /**
-     * Returns the name of the inventory.
-     */
     @Override
 	public String getInvName()
     {
-        return "Car";
+        return "Buggy";
     }
 
-    /**
-     * Returns the maximum stack size for a inventory slot. Seems to always be 64, possibly will be extended. *Isn't
-     * this more of a set than a get?*
-     */
     @Override
 	public int getInventoryStackLimit()
     {
         return 64;
     }
 
-    /**
-     * Called when an the contents of an Inventory change, usually
-     */
     @Override
 	public void onInventoryChanged() {}
 
-    /**
-     * Do not make give this method the name canInteractWith because it clashes with Container
-     */
     @Override
 	public boolean isUseableByPlayer(EntityPlayer var1)
     {
@@ -462,9 +510,6 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
     @Override
 	public void closeChest() {}
 
-    /**
-     * Called when a player interacts with a mob. e.g. gets milk from a cow, gets into the saddle on a pig.
-     */
     @Override
 	public boolean interact(EntityPlayer var1)
     {
@@ -486,60 +531,37 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
     }
 
 	@Override
-	public void keyPressed(int par1, EntityPlayer par2EntityPlayer)
+	public boolean pressKey(int key)
 	{
-		if (this.worldObj.isRemote)
+    	if(worldObj.isRemote && (key == 6 || key == 8 || key == 9))
+    	{
+    		PacketDispatcher.sendPacketToServer(GCCorePacketControllableEntity.buildKeyPacket(key));
+    		return true;
+    	}
+		switch(key)
 		{
+			case 0 : //Accelerate
+			{
+				this.speed += this.accel / 20D;
+				return true;
+			}
+			case 1 : //Deccelerate
+			{
+				this.speed -= this.accel / 20D;
+				return true;
+			}
+			case 2 : //Left
+			{
+				this.rotationYaw -= 0.5F * this.turnFactor;
+				return true;
+			}
+			case 3 : //Right
+			{
+				this.rotationYaw += 0.5F * this.turnFactor;
+				return true;
+			}
 		}
-
-		// 0 (accelerate), 1 (decelerate), 2 (turnLeft), 3 (turnRight)
-
-		switch (par1)
-		{
-		case 0:
-            this.speed += 0.02D;
-			break;
-		case 1:
-            this.speed -= 0.02D;
-			break;
-		case 2:
-			if (this.worldObj.isRemote)
-			{
-	            this.rotationYaw = (float)(this.rotationYaw - this.turnFactor * (1.0D + this.speed / 2.0D));
-	    		this.turnProgress -= 0.1F;
-	    		if (this.turnProgress <= -0.3F)
-	    		{
-	    			this.turnProgress = -0.3F;
-	    		}
-			}
-			else
-			{
-	            this.rotationYaw = (float)(this.rotationYaw - this.turnFactor * (1.0D + this.speed / 2.0D));
-			}
-
-			break;
-		case 3:
-			if (this.worldObj.isRemote)
-			{
-	            this.rotationYaw = (float)(this.rotationYaw + this.turnFactor * (1.0D + this.speed / 2.0D));
-	    		this.turnProgress += 0.1F;
-	    		if (this.turnProgress >= 0.3F)
-	    		{
-	    			this.turnProgress = 0.3F;
-	    		}
-			}
-			else
-			{
-	            this.rotationYaw = (float)(this.rotationYaw + this.turnFactor * (1.0D + this.speed / 2.0D));
-			}
-
-			break;
-		}
-	}
-
-	@Override
-	boolean pressKey(int key)
-	{
+		
 		return false;
 	}
 
