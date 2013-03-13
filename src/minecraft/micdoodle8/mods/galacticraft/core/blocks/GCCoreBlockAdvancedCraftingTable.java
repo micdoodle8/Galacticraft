@@ -133,12 +133,6 @@ public class GCCoreBlockAdvancedCraftingTable extends BlockContainer
     }
 
 	@Override
-	public String getTextureFile()
-	{
-		return "/micdoodle8/mods/galacticraft/core/client/blocks/core.png";
-	}
-
-	@Override
 	public TileEntity createNewTileEntity(World var1)
 	{
 		return new GCCoreTileEntityAdvancedCraftingTable();

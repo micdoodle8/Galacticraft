@@ -188,10 +188,4 @@ public class GCCoreBlockOxygenPipe extends BlockContainer
 
 		return super.collisionRayTrace(world, x, y, z, vec3d, vec3d1);
 	}
-
-	@Override
-    public String getTextureFile()
-    {
-    	return "/micdoodle8/mods/galacticraft/core/client/blocks/core.png";
-    }
 }

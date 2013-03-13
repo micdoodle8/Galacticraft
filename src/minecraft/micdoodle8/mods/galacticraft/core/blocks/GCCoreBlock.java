@@ -116,10 +116,4 @@ public class GCCoreBlock extends Block
             par3List.add(new ItemStack(par1, 1, var4));
         }
     }
-
-	@Override
-    public String getTextureFile()
-    {
-    	return "/micdoodle8/mods/galacticraft/core/client/blocks/core.png";
-    }
 }

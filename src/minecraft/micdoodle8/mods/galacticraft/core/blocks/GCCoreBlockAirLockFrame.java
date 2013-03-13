@@ -403,16 +403,4 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvanced
 			return false;
 		}
 	}
-
-	@Override
-    public String getTextureFile()
-    {
-    	return "/micdoodle8/mods/galacticraft/core/client/blocks/core.png";
-    }
-
-//	@Override
-//	public boolean isConnectableOnSide(IBlockAccess blockAccess, int x, int y, int z, ForgeDirection side)
-//	{
-//		return true;
-//	}
 }

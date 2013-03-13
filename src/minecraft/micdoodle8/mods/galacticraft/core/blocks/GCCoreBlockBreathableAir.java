@@ -134,10 +134,4 @@ public class GCCoreBlockBreathableAir extends BlockContainer
 	{
 		return new GCCoreTileEntityBreathableAir();
 	}
-
-	@Override
-    public String getTextureFile()
-    {
-    	return "/micdoodle8/mods/galacticraft/core/client/blocks/core.png";
-    }
 }

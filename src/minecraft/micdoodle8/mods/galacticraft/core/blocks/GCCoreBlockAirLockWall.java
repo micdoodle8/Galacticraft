@@ -5,6 +5,7 @@ import java.util.Random;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAirLock;
 import net.minecraft.block.BlockBreakable;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -18,6 +19,13 @@ public class GCCoreBlockAirLockWall extends BlockBreakable
         super(par1, "galacticraftcore:oxygentile_3", Material.portal, false);
         this.setTickRandomly(true);
 	}
+
+    @Override
+	@SideOnly(Side.CLIENT)
+    public void func_94332_a(IconRegister par1IconRegister)
+    {
+    	this.field_94336_cN = par1IconRegister.func_94245_a("galacticraftcore:deco_aluminium_4");
+    }
 
     @Override
 	public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
@@ -128,10 +136,4 @@ public class GCCoreBlockAirLockWall extends BlockBreakable
     {
         return 0;
     }
-
-    @Override
-	public String getTextureFile()
-	{
-		return "/micdoodle8/mods/galacticraft/core/client/blocks/core.png";
-	}
 }

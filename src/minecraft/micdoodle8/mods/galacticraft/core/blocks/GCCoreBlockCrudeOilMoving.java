@@ -392,12 +392,6 @@ public class GCCoreBlockCrudeOilMoving extends BlockFluid implements ILiquid
     }
 
 	@Override
-    public String getTextureFile()
-    {
-    	return "/micdoodle8/mods/galacticraft/core/client/blocks/core.png";
-    }
-
-	@Override
 	@SideOnly(Side.CLIENT)
     public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {

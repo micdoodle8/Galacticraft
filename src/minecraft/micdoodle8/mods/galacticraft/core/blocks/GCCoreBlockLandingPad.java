@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import micdoodle8.mods.galacticraft.API.EntitySpaceshipBase;
+import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpaceship;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -90,11 +90,5 @@ public class GCCoreBlockLandingPad extends Block
 	public boolean renderAsNormalBlock()
     {
         return false;
-    }
-
-	@Override
-    public String getTextureFile()
-    {
-    	return "/micdoodle8/mods/galacticraft/core/client/blocks/core.png";
     }
 }

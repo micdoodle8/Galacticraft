@@ -294,10 +294,4 @@ public class GCCoreBlockUnlitTorch extends Block
             }
     	}
     }
-
-	@Override
-    public String getTextureFile()
-    {
-    	return "/micdoodle8/mods/galacticraft/core/client/blocks/core.png";
-    }
 }
