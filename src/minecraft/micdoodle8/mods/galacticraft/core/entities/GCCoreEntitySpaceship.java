@@ -1,10 +1,11 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
+import icbm.api.IMissileLockable;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import micdoodle8.mods.galacticraft.API.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLaunchFlameFX;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLaunchSmokeFX;
@@ -36,7 +37,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  *  All rights reserved.
  *
  */
-public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInventory
+public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInventory, IMissileLockable
 {
     protected ItemStack[] cargoItems = new ItemStack[36];
 
@@ -459,7 +460,8 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
         final List<ItemStack> items = new ArrayList<ItemStack>();
         items.add(new ItemStack(GCCoreItems.spaceship, 1, this.getSpaceshipType()));
 
-        for (final ItemStack item : this.cargoItems) {
+        for (final ItemStack item : this.cargoItems) 
+        {
         	if (item != null)
         	{
         		items.add(item);
@@ -479,5 +481,11 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
 	public boolean func_94041_b(int i, ItemStack itemstack) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public boolean canLock() 
+	{
+		return true;
 	}
 }
