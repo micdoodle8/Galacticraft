@@ -95,7 +95,7 @@ public class GCCoreItemBuggy extends GCCoreItem
                         --var33;
                     }
 
-                    final GCCoreEntityBuggy var35 = new GCCoreEntityBuggy(par2World, var29 + 0.5F, var33 + 3.0F, var34 + 0.5F);
+                    final GCCoreEntityBuggy var35 = new GCCoreEntityBuggy(par2World, var29 + 0.5F, var33 + 1.0F, var34 + 0.5F);
 
                     if (!par2World.getCollidingBoundingBoxes(var35, var35.boundingBox.expand(-0.1D, -0.1D, -0.1D)).isEmpty())
                     {
