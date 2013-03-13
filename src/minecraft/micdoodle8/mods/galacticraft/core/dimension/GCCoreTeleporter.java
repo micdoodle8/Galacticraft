@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.dimension;
 
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.API.IInterplanetaryObject;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemParachute;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.entity.Entity;
@@ -54,29 +55,44 @@ public class GCCoreTeleporter extends Teleporter
     @Override
     public boolean placeInExistingPortal(Entity par1Entity, double par2, double par4, double par6, float par8)
     {
-        final int var9 = MathHelper.floor_double(par1Entity.posX);
-        final int var11 = MathHelper.floor_double(par1Entity.posZ);
+    	if (par1Entity instanceof IInterplanetaryObject)
+    	{
+            final int var9 = MathHelper.floor_double(par1Entity.posX);
+            final int var11 = MathHelper.floor_double(par1Entity.posZ);
+            
+            par1Entity.setLocationAndAngles(var9, ((IInterplanetaryObject) par1Entity).getYCoordToTeleportTo(), var11, par1Entity.rotationYaw, 0.0F);
+            par1Entity.motionX = par1Entity.motionY = par1Entity.motionZ = 0.0D;
 
-        par1Entity.setLocationAndAngles(var9, 250, var11, par1Entity.rotationYaw, 0.0F);
-        par1Entity.motionX = par1Entity.motionY = par1Entity.motionZ = 0.0D;
+            par1Entity.worldObj.markBlockForUpdate(var9, 10, var11);
+            par1Entity.worldObj.markBlockForUpdate(var9, 20, var11);
+            par1Entity.worldObj.markBlockForUpdate(var9, 30, var11);
+    	}
+    	else if (par1Entity instanceof EntityPlayer)
+    	{
+            final int var9 = MathHelper.floor_double(par1Entity.posX);
+            final int var11 = MathHelper.floor_double(par1Entity.posZ);
 
-        par1Entity.worldObj.markBlockForUpdate(var9, 30, var11);
+            par1Entity.setLocationAndAngles(var9, 250, var11, par1Entity.rotationYaw, 0.0F);
+            par1Entity.motionX = par1Entity.motionY = par1Entity.motionZ = 0.0D;
 
-		final ItemStack stack = PlayerUtil.getPlayerBaseServerFromPlayer((EntityPlayer) par1Entity).playerTankInventory.getStackInSlot(4);
+            par1Entity.worldObj.markBlockForUpdate(var9, 30, var11);
 
-		if (stack != null && stack.getItem() instanceof GCCoreItemParachute)
-		{
-			PlayerUtil.getPlayerBaseServerFromPlayer((EntityPlayer) par1Entity).setParachute(true);
-		}
-		else
-		{
-			PlayerUtil.getPlayerBaseServerFromPlayer((EntityPlayer) par1Entity).setParachute(false);
-		}
+    		final ItemStack stack = PlayerUtil.getPlayerBaseServerFromPlayer((EntityPlayer) par1Entity).playerTankInventory.getStackInSlot(4);
 
-        if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
-        {
-    		FMLClientHandler.instance().getClient().gameSettings.thirdPersonView = 1;
-        }
+    		if (stack != null && stack.getItem() instanceof GCCoreItemParachute)
+    		{
+    			PlayerUtil.getPlayerBaseServerFromPlayer((EntityPlayer) par1Entity).setParachute(true);
+    		}
+    		else
+    		{
+    			PlayerUtil.getPlayerBaseServerFromPlayer((EntityPlayer) par1Entity).setParachute(false);
+    		}
+
+            if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+            {
+        		FMLClientHandler.instance().getClient().gameSettings.thirdPersonView = 1;
+            }
+    	}
 
 		return true;
 	}
