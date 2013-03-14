@@ -27,6 +27,7 @@ public class GCCoreGuiAirCollector extends GuiContainer
 	{
         super(new GCCoreContainerAirCollector(par1InventoryPlayer, par2TileEntityAirDistributor));
         this.distributorInv = par2TileEntityAirDistributor;
+        this.ySize = 180;
 	}
 
     @Override
