@@ -6,10 +6,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubMod;
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
@@ -39,6 +37,7 @@ import micdoodle8.mods.galacticraft.core.network.GCCorePacketEntityUpdate;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAdvancedCraftingTable;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAirLock;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityBreathableAir;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFuelLoader;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCollector;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCompressor;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenDistributor;
@@ -50,7 +49,6 @@ import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
-import micdoodle8.mods.galacticraft.core.wgen.GCCoreWorldGenVanilla;
 import micdoodle8.mods.galacticraft.moon.GalacticraftMoon;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -62,7 +60,6 @@ import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.network.packet.Packet9Respawn;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.oredict.OreDictionary;
 import universalelectricity.prefab.CustomDamageSource;
 import universalelectricity.prefab.TranslationHelper;
 import cpw.mods.fml.common.FMLLog;
@@ -133,7 +130,7 @@ public class GalacticraftCore
 	public static List<IMapPlanet> mapPlanets = new ArrayList<IMapPlanet>();
 	public static DupKeyHashMap mapMoons = new DupKeyHashMap();
 
-	public static final CreativeTabs galacticraftTab = new GCCoreCreativeTab(CreativeTabs.getNextID(), GalacticraftCore.CHANNEL);
+	public static CreativeTabs galacticraftTab;
 
 	public static final IGalaxy galaxyMilkyWay = new GCCoreGalaxyBlockyWay();
 
@@ -178,16 +175,14 @@ public class GalacticraftCore
 		GCCoreItems.initItems();
 		GCCoreItems.registerHarvestLevels();
 
-		OreDictionary.registerOre("oreCopper", new ItemStack(GCCoreBlocks.blockOres, 1, 0));
-		OreDictionary.registerOre("oreAluminium", new ItemStack(GCCoreBlocks.blockOres, 1, 1));
-		OreDictionary.registerOre("oreTitanium", new ItemStack(GCCoreBlocks.blockOres, 1, 2));
-
 		GalacticraftCore.proxy.preInit(event);
 	}
 
 	@Init
 	public void init(FMLInitializationEvent event)
 	{
+		this.galacticraftTab = new GCCoreCreativeTab(CreativeTabs.getNextID(), GalacticraftCore.CHANNEL, GCCoreItems.spaceship.itemID, 0);
+		
 		GalacticraftCore.proxy.init(event);
 		
 		for (final IGalacticraftSubMod mod : GalacticraftCore.subMods)
@@ -202,7 +197,6 @@ public class GalacticraftCore
 
 		GalacticraftCore.moon.load(event);
 
-        GameRegistry.registerWorldGenerator(new GCCoreWorldGenVanilla());
         RecipeUtil.addCraftingRecipes();
         RecipeUtil.addSmeltingRecipes();
 		NetworkRegistry.instance().registerGuiHandler(this, GalacticraftCore.proxy);
@@ -268,6 +262,7 @@ public class GalacticraftCore
         GameRegistry.registerTileEntity(GCCoreTileEntityRefinery.class, "Refinery");
         GameRegistry.registerTileEntity(GCCoreTileEntityAdvancedCraftingTable.class, "NASA Workbench");
         GameRegistry.registerTileEntity(GCCoreTileEntityOxygenCompressor.class, "Air Compressor");
+        GameRegistry.registerTileEntity(GCCoreTileEntityFuelLoader.class, "Fuel Loader");
 	}
 
 	public void registerCreatures()
