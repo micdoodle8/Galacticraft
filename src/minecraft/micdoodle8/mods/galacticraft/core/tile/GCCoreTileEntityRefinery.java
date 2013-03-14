@@ -75,7 +75,6 @@ public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable impl
 					}
 					else if (this.processTicks > 0)
 					{
-						FMLLog.info("" + this.processTicks);
 						this.processTicks--;
 
 						/**

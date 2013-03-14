@@ -90,8 +90,6 @@ public class GCCoreGuiFuelLoader extends GuiContainer
         		
         		float ratio = (stack.getMaxDamage() / 40.0F);
         		
-        		FMLLog.info("" + ratio);
-        		
                 this.drawTexturedModalRect(var5 + 29, MathHelper.ceiling_float_int(var6 + 58 - fuelLevel / ratio), 176, 0, 10, MathHelper.ceiling_float_int(fuelLevel / ratio));
         	}
         }
