@@ -16,6 +16,8 @@ import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.src.ModelPlayerAPI;
+import net.minecraft.src.ModelPlayerBase;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 
@@ -725,7 +727,7 @@ public class GCCoreModelPlayer extends ModelPlayerBase
 //            this.oxygenMask.rotateAngleZ = this.modelPlayer.bipedHeadwear.rotateAngleZ;
 //    	}
 
-		final List l = player.worldObj.getEntitiesWithinAABBExcludingEntity(player, AxisAlignedBB.getAABBPool().addOrModifyAABBInPool(player.posX - 20, 0, player.posZ - 20, player.posX + 20, 200, player.posZ + 20));
+		final List l = player.worldObj.getEntitiesWithinAABBExcludingEntity(player, AxisAlignedBB.getAABBPool().getAABB(player.posX - 20, 0, player.posZ - 20, player.posX + 20, 200, player.posZ + 20));
 
 		for (int i = 0; i < l.size(); i++)
 		{

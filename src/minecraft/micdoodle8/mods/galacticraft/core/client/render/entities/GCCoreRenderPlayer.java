@@ -9,6 +9,8 @@ import net.minecraft.client.renderer.ThreadDownloadImageData;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.src.RenderPlayerAPI;
+import net.minecraft.src.RenderPlayerBase;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.StringUtils;
 
@@ -71,7 +73,7 @@ public class GCCoreRenderPlayer extends RenderPlayerBase
 
         if (var4 >= 0)
         {
-            var3.func_98187_b(var4);
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, var4);
             return true;
         }
         else

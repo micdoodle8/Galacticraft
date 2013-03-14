@@ -3,6 +3,8 @@ package micdoodle8.mods.galacticraft.moon.entities;
 import micdoodle8.mods.galacticraft.moon.GalacticraftMoon;
 import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
 import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;
+import net.minecraft.src.ServerPlayerAPI;
+import net.minecraft.src.ServerPlayerBase;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 
@@ -50,35 +52,35 @@ public class GCMoonPlayerBase extends ServerPlayerBase
 						{
 						case 0:
 							meta = 2;
-							this.player.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(this.player.posX), MathHelper.floor_double(this.player.posY - 1), MathHelper.floor_double(this.player.posZ), meta + 5);
+							this.player.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(this.player.posX), MathHelper.floor_double(this.player.posY - 1), MathHelper.floor_double(this.player.posZ), meta + 5, 3);
 							break;
 						case 1:
 							meta = 4;
-							this.player.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(this.player.posX), MathHelper.floor_double(this.player.posY - 1), MathHelper.floor_double(this.player.posZ), meta + 5);
+							this.player.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(this.player.posX), MathHelper.floor_double(this.player.posY - 1), MathHelper.floor_double(this.player.posZ), meta + 5, 3);
 							break;
 						case 2:
 							meta = 2;
-							this.player.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(this.player.posX), MathHelper.floor_double(this.player.posY - 1), MathHelper.floor_double(this.player.posZ), meta + 5);
+							this.player.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(this.player.posX), MathHelper.floor_double(this.player.posY - 1), MathHelper.floor_double(this.player.posZ), meta + 5, 3);
 							break;
 						case 3:
 							meta = 2;
-							this.player.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(this.player.posX), MathHelper.floor_double(this.player.posY - 1), MathHelper.floor_double(this.player.posZ), meta + 5);
+							this.player.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(this.player.posX), MathHelper.floor_double(this.player.posY - 1), MathHelper.floor_double(this.player.posZ), meta + 5, 3);
 							break;
 						case 4:
 							meta = 2;
-							this.player.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(this.player.posX), MathHelper.floor_double(this.player.posY - 1), MathHelper.floor_double(this.player.posZ), meta + 5);
+							this.player.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(this.player.posX), MathHelper.floor_double(this.player.posY - 1), MathHelper.floor_double(this.player.posZ), meta + 5, 3);
 							break;
 						case 5:
 							meta = 2;
-							this.player.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(this.player.posX), MathHelper.floor_double(this.player.posY - 1), MathHelper.floor_double(this.player.posZ), meta + 5);
+							this.player.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(this.player.posX), MathHelper.floor_double(this.player.posY - 1), MathHelper.floor_double(this.player.posZ), meta + 5, 3);
 							break;
 						case 6:
 							meta = 2;
-							this.player.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(this.player.posX), MathHelper.floor_double(this.player.posY - 1), MathHelper.floor_double(this.player.posZ), meta + 5);
+							this.player.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(this.player.posX), MathHelper.floor_double(this.player.posY - 1), MathHelper.floor_double(this.player.posZ), meta + 5, 3);
 							break;
 						case 7:
 							meta = 2;
-							this.player.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(this.player.posX), MathHelper.floor_double(this.player.posY - 1), MathHelper.floor_double(this.player.posZ), meta + 5);
+							this.player.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(this.player.posX), MathHelper.floor_double(this.player.posY - 1), MathHelper.floor_double(this.player.posZ), meta + 5, 3);
 							break;
 						}
 						this.lastStep = 2;
@@ -88,39 +90,39 @@ public class GCMoonPlayerBase extends ServerPlayerBase
 						{
 						case 0:
 							meta = 1;
-							this.player.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(this.player.posX), MathHelper.floor_double(this.player.posY - 1), MathHelper.floor_double(this.player.posZ), meta + 5);
+							this.player.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(this.player.posX), MathHelper.floor_double(this.player.posY - 1), MathHelper.floor_double(this.player.posZ), meta + 5, 3);
 							break;
 						case 1:
 							meta = 1;
-							this.player.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(this.player.posX), MathHelper.floor_double(this.player.posY - 1), MathHelper.floor_double(this.player.posZ), meta + 5);
+							this.player.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(this.player.posX), MathHelper.floor_double(this.player.posY - 1), MathHelper.floor_double(this.player.posZ), meta + 5, 3);
 							break;
 						case 2:
 							meta = 4;
-							this.player.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(this.player.posX), MathHelper.floor_double(this.player.posY - 1), MathHelper.floor_double(this.player.posZ), meta + 5);
+							this.player.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(this.player.posX), MathHelper.floor_double(this.player.posY - 1), MathHelper.floor_double(this.player.posZ), meta + 5, 3);
 							break;
 						case 3:
 							meta = 4;
-							this.player.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(this.player.posX), MathHelper.floor_double(this.player.posY - 1), MathHelper.floor_double(this.player.posZ), meta + 5);
+							this.player.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(this.player.posX), MathHelper.floor_double(this.player.posY - 1), MathHelper.floor_double(this.player.posZ), meta + 5, 3);
 							break;
 						case 4:
 							meta = 1;
-							this.player.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(this.player.posX), MathHelper.floor_double(this.player.posY - 1), MathHelper.floor_double(this.player.posZ), meta + 5);
+							this.player.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(this.player.posX), MathHelper.floor_double(this.player.posY - 1), MathHelper.floor_double(this.player.posZ), meta + 5, 3);
 							break;
 						case 5:
 							meta = 3;
-							this.player.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(this.player.posX), MathHelper.floor_double(this.player.posY - 1), MathHelper.floor_double(this.player.posZ), meta + 5);
+							this.player.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(this.player.posX), MathHelper.floor_double(this.player.posY - 1), MathHelper.floor_double(this.player.posZ), meta + 5, 3);
 							break;
 						case 6:
 							meta = 2;
-							this.player.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(this.player.posX), MathHelper.floor_double(this.player.posY - 1), MathHelper.floor_double(this.player.posZ), meta + 5);
+							this.player.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(this.player.posX), MathHelper.floor_double(this.player.posY - 1), MathHelper.floor_double(this.player.posZ), meta + 5, 3);
 							break;
 						case 7:
 							meta = 4;
-							this.player.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(this.player.posX), MathHelper.floor_double(this.player.posY - 1), MathHelper.floor_double(this.player.posZ), meta + 5);
+							this.player.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(this.player.posX), MathHelper.floor_double(this.player.posY - 1), MathHelper.floor_double(this.player.posZ), meta + 5, 3);
 							break;
 						}
 						this.lastStep = 1;
-						this.player.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(this.player.posX), MathHelper.floor_double(this.player.posY - 1), MathHelper.floor_double(this.player.posZ), meta + 5);
+						this.player.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(this.player.posX), MathHelper.floor_double(this.player.posY - 1), MathHelper.floor_double(this.player.posZ), meta + 5, 3);
 						break;
 					default:
 						this.lastStep = 1;

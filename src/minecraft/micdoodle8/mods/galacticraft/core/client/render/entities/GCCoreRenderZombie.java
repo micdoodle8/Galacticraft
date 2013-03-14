@@ -26,12 +26,6 @@ public class GCCoreRenderZombie extends RenderLiving
 {
     private final ModelBase model = new GCCoreModelZombie(0.2F);
 
-//    @Override
-//    protected void passSpecialRender(EntityLiving par1EntityLiving, double par2, double par4, double par6)
-//    {
-//        ClientProxyCore.TickHandlerClient.renderName(par1EntityLiving, par2, par4, par6);
-//    }
-
     public GCCoreRenderZombie()
     {
         super(new GCCoreModelZombie(), 1.0F);

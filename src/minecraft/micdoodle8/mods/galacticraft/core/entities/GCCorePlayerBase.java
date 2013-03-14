@@ -31,6 +31,8 @@ import net.minecraft.network.packet.Packet4UpdateTime;
 import net.minecraft.network.packet.Packet70GameEvent;
 import net.minecraft.network.packet.Packet9Respawn;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.src.ServerPlayerAPI;
+import net.minecraft.src.ServerPlayerBase;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
@@ -1181,7 +1183,7 @@ public class GCCorePlayerBase extends ServerPlayerBase
 		String s2 = null;
 		if (stack != null && stack.getItem() instanceof GCCoreItemParachute)
 		{
-			s = stack.getItem().getItemNameIS(stack);
+			s = stack.getItem().getItemDisplayName(stack);
 
 			s2 = s.replace("item.parachute.", "");
 		}

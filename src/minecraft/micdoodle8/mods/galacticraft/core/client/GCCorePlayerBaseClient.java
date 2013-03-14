@@ -7,6 +7,8 @@ import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.src.PlayerAPI;
+import net.minecraft.src.PlayerBase;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.StringUtils;
 import cpw.mods.fml.client.FMLClientHandler;
@@ -42,7 +44,7 @@ public class GCCorePlayerBaseClient extends PlayerBase
     {
     	super.updateCloak();
 
-        this.player.cloakUrl = this.player.playerCloakUrl = "http://www.micdoodle8.com/galacticraft/capes/" + StringUtils.stripControlCodes(this.player.username) + ".png";
+        this.player.cloakUrl = this.player.cloakUrl = "http://www.micdoodle8.com/galacticraft/capes/" + StringUtils.stripControlCodes(this.player.username) + ".png";
     }
 
 	@Override
