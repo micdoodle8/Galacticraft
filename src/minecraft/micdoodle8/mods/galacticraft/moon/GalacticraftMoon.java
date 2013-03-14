@@ -7,11 +7,14 @@ import java.util.Map;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubMod;
 import micdoodle8.mods.galacticraft.API.IGalaxy;
+import micdoodle8.mods.galacticraft.core.GCCoreCreativeTab;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
 import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;
 import micdoodle8.mods.galacticraft.moon.entities.GCMoonPlayerBase;
 import micdoodle8.mods.galacticraft.moon.items.GCMoonItems;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.common.DimensionManager;
 import universalelectricity.prefab.TranslationHelper;
 import cpw.mods.fml.common.ITickHandler;
@@ -34,7 +37,7 @@ public class GalacticraftMoon implements IGalacticraftSubMod
 	public static Map<String, GCMoonPlayerBase> playersServer = new HashMap<String, GCMoonPlayerBase>();
 
 	public static final String NAME = "Galacticraft Moon";
-	public static final String MODID = "Galacticraft Moon";
+	public static final String MODID = "GalacticraftMoon";
 
 	public static final String FILE_PATH = "/micdoodle8/mods/galacticraft/moon/";
 	public static final String CLIENT_PATH = "client/";
@@ -43,6 +46,8 @@ public class GalacticraftMoon implements IGalacticraftSubMod
 	public static final String ITEM_TEXTURE_FILE = FILE_PATH + CLIENT_PATH + "items/moon.png";
 	public static final String CONFIG_FILE = "Galacticraft/moon.conf";
 	private static final String[] LANGUAGES_SUPPORTED = new String[] { "en_US", "zh_CN" };
+
+	public static GCCoreCreativeTab galacticraftMoonTab;
 
 	public void preLoad(FMLPreInitializationEvent event)
 	{
@@ -59,6 +64,8 @@ public class GalacticraftMoon implements IGalacticraftSubMod
 
 	public void load(FMLInitializationEvent event)
 	{
+		this.galacticraftMoonTab = new GCCoreCreativeTab(CreativeTabs.getNextID(), GalacticraftMoon.MODID, GCMoonBlocks.blockMoon.blockID, 5);
+		
 		DimensionManager.registerProviderType(GCMoonConfigManager.dimensionIDMoon, GCMoonWorldProvider.class, true);
 		DimensionManager.registerDimension(GCMoonConfigManager.dimensionIDMoon, GCMoonConfigManager.dimensionIDMoon);
 
