@@ -12,6 +12,7 @@ import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLaunchSmokeFX;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityOxygenFX;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemFuelCanister;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.moon.GCMoonConfigManager;
 import net.minecraft.client.Minecraft;
@@ -42,6 +43,8 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
     protected ItemStack[] cargoItems = new ItemStack[36];
 
     public IUpdatePlayerListBox rocketSoundUpdater;
+    
+    private GCCoreTileEntityLandingPad landingPad;
 
     private int type;
 
@@ -333,6 +336,16 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
     public int getSpaceshipType()
     {
     	return this.dataWatcher.getWatchableObjectInt(25);
+    }
+    
+    public void setLandingPad(GCCoreTileEntityLandingPad pad)
+    {
+    	this.landingPad = pad;
+    }
+    
+    public GCCoreTileEntityLandingPad getLandingPad()
+    {
+    	return this.landingPad;
     }
 
 	@Override
