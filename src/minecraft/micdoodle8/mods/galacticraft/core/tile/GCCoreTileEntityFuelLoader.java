@@ -11,11 +11,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.components.common.BasicComponents;
 import universalelectricity.core.electricity.ElectricityPack;
 import universalelectricity.core.item.ElectricItemHelper;
 import universalelectricity.core.vector.Vector3;
+import universalelectricity.core.vector.VectorHelper;
 import universalelectricity.prefab.network.IPacketReceiver;
 import universalelectricity.prefab.network.PacketManager;
 import universalelectricity.prefab.tile.TileEntityElectricityRunnable;
@@ -25,6 +27,7 @@ public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable im
 	private ItemStack[] containingItems = new ItemStack[2];
 	public static final double WATTS_PER_TICK = 300;
 	private int playersUsing = 0;
+	private GCCoreTileEntityLandingPad attachedLandingPad;
 	
 	@Override
 	public boolean canConnect(ForgeDirection direction) 
@@ -56,6 +59,17 @@ public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable im
 		if (!this.worldObj.isRemote)
 		{
 			this.wattsReceived = Math.max(this.wattsReceived - WATTS_PER_TICK / 4, 0);
+			
+			TileEntity pad = VectorHelper.getTileEntityFromSide(worldObj, new Vector3(this), ForgeDirection.getOrientation(this.getBlockMetadata() + 2).getOpposite());
+			
+			if (pad != null && pad instanceof GCCoreTileEntityLandingPad)
+			{
+				this.attachedLandingPad = (GCCoreTileEntityLandingPad) pad;
+			}
+			else
+			{
+				this.attachedLandingPad = null;
+			}
 
 			if (this.ticks % 3 == 0)
 			{

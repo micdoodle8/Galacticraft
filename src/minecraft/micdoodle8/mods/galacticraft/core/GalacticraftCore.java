@@ -38,6 +38,8 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAdvancedCraftingTa
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAirLock;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityBreathableAir;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFuelLoader;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPad;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPadSingle;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCollector;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCompressor;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenDistributor;
@@ -264,6 +266,8 @@ public class GalacticraftCore
         GameRegistry.registerTileEntity(GCCoreTileEntityAdvancedCraftingTable.class, "NASA Workbench");
         GameRegistry.registerTileEntity(GCCoreTileEntityOxygenCompressor.class, "Air Compressor");
         GameRegistry.registerTileEntity(GCCoreTileEntityFuelLoader.class, "Fuel Loader");
+        GameRegistry.registerTileEntity(GCCoreTileEntityLandingPadSingle.class, "Landing Pad");
+        GameRegistry.registerTileEntity(GCCoreTileEntityLandingPad.class, "Landing Pad Full");
 	}
 
 	public void registerCreatures()

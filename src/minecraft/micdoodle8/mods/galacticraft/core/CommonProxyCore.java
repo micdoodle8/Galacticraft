@@ -111,7 +111,7 @@ public class CommonProxyCore implements IGuiHandler
 		return -1;
 	}
 
-	public int getGCRefineryRenderID()
+	public int getGCFullLandingPadRenderID()
 	{
 		return -1;
 	}

@@ -51,24 +51,6 @@ public class GCCoreBlockRefinery extends BlockAdvanced
     }
 
     @Override
-	public boolean renderAsNormalBlock()
-    {
-        return false;
-    }
-
-    @Override
-	public int getRenderType()
-    {
-        return GalacticraftCore.proxy.getGCRefineryRenderID();
-    }
-
-    @Override
-	public boolean isOpaqueCube()
-    {
-        return false;
-    }
-
-    @Override
 	@SideOnly(Side.CLIENT)
     public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {

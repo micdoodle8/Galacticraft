@@ -6,7 +6,6 @@ import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockBase;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemSapling;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.Icon;
 import net.minecraftforge.common.MinecraftForge;
@@ -39,6 +38,7 @@ public class GCCoreBlocks
 	public static Block refinery;
 	public static Block compressor;
 	public static Block fuelLoader;
+	public static Block landingPadFull;
 	
 	public static Icon[] blockIcons;
 
@@ -47,6 +47,7 @@ public class GCCoreBlocks
 		GCCoreBlocks.breatheableAir = (GCCoreBlockBreathableAir)			new GCCoreBlockBreathableAir		(GCCoreConfigManager.idBlockBreatheableAir)							.setHardness(0.0F) 		.setResistance(1000F)																.setUnlocalizedName("breatheableAir");
 		GCCoreBlocks.treasureChest = 										new GCCoreBlockTreasureChest		(GCCoreConfigManager.idBlockTreasureChest)							.setHardness(1.0F)      .setResistance(10.0F)      	.setStepSound(Block.soundStoneFootstep)                 .setUnlocalizedName("treasureChest");
 		GCCoreBlocks.landingPad = 											new GCCoreBlockLandingPad			(GCCoreConfigManager.idBlockLandingPad)								.setHardness(1.0F)      .setResistance(10.0F)  	   	.setStepSound(Block.soundStoneFootstep)                 .setUnlocalizedName("landingPad");
+		GCCoreBlocks.landingPadFull = 										new GCCoreBlockLandingPadFull		(GCCoreConfigManager.idBlockLandingPadFull)							.setHardness(1.0F)      .setResistance(10.0F)  	   	.setStepSound(Block.soundStoneFootstep)                 .setUnlocalizedName("landingPadFull");
 		GCCoreBlocks.unlitTorch = (GCCoreBlockUnlitTorch) 					new GCCoreBlockUnlitTorch 			(GCCoreConfigManager.idBlockUnlitTorch, false)						.setHardness(0.0F)									.setStepSound(Block.soundWoodFootstep)					.setUnlocalizedName("unlitTorch");
 		GCCoreBlocks.unlitTorchLit = (GCCoreBlockUnlitTorch) 				new GCCoreBlockUnlitTorch 			(GCCoreConfigManager.idBlockUnlitTorchLit, true)					.setHardness(0.0F)									.setStepSound(Block.soundWoodFootstep)					.setUnlocalizedName("unlitTorchLit");
 		GCCoreBlocks.airDistributor = (GCCoreBlockOxygenDistributor)		new GCCoreBlockOxygenDistributor	(GCCoreConfigManager.idBlockAirDistributor, false)					.setHardness(3.5F)									.setStepSound(Block.soundStoneFootstep)					.setUnlocalizedName("distributor");
@@ -70,6 +71,7 @@ public class GCCoreBlocks
 		GalacticraftCore.hiddenItems.add(breatheableAir.blockID);
 		GalacticraftCore.hiddenItems.add(unlitTorch.blockID);
 		GalacticraftCore.hiddenItems.add(unlitTorchLit.blockID);
+		GalacticraftCore.hiddenItems.add(landingPadFull.blockID);
 	}
 
 	public static void setHarvestLevels()
@@ -86,6 +88,7 @@ public class GCCoreBlocks
 		//							Block							ItemBlock class				Block Name												Mod ID
 		GameRegistry.registerBlock(GCCoreBlocks.treasureChest, 		ItemBlock.class, 			GCCoreBlocks.treasureChest.getUnlocalizedName(), 		GalacticraftCore.MODID);
 		GameRegistry.registerBlock(GCCoreBlocks.landingPad, 		ItemBlock.class, 			GCCoreBlocks.landingPad.getUnlocalizedName(), 			GalacticraftCore.MODID);
+		GameRegistry.registerBlock(GCCoreBlocks.landingPadFull, 	ItemBlock.class, 			GCCoreBlocks.landingPadFull.getUnlocalizedName(), 		GalacticraftCore.MODID);
 		GameRegistry.registerBlock(GCCoreBlocks.unlitTorch, 		ItemBlock.class, 			GCCoreBlocks.unlitTorch.getUnlocalizedName(), 			GalacticraftCore.MODID);
 		GameRegistry.registerBlock(GCCoreBlocks.unlitTorchLit, 		ItemBlock.class, 			GCCoreBlocks.unlitTorchLit.getUnlocalizedName(), 		GalacticraftCore.MODID);
 		GameRegistry.registerBlock(GCCoreBlocks.breatheableAir, 	ItemBlock.class, 			GCCoreBlocks.breatheableAir.getUnlocalizedName(), 		GalacticraftCore.MODID);

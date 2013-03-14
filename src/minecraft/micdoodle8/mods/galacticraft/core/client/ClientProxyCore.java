@@ -57,6 +57,7 @@ import micdoodle8.mods.galacticraft.core.client.render.item.GCCoreItemRendererFl
 import micdoodle8.mods.galacticraft.core.client.render.item.GCCoreItemRendererSpaceship;
 import micdoodle8.mods.galacticraft.core.client.render.item.GCCoreItemRendererUnlitTorch;
 import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntityAdvancedCraftingTableRenderer;
+import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntityLandingPadRenderer;
 import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntityRefineryRenderer;
 import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntityTreasureChestRenderer;
 import micdoodle8.mods.galacticraft.core.client.sounds.GCCoreSoundUpdaterSpaceship;
@@ -79,6 +80,7 @@ import micdoodle8.mods.galacticraft.core.items.GCCoreItemSensorGlasses;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketEntityUpdate;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAdvancedCraftingTable;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityRefinery;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -153,7 +155,7 @@ public class ClientProxyCore extends CommonProxyCore
 	private static int meteorRenderID;
 	private static int craftingTableID;
 	private static int crudeOilRenderID;
-	private static int refineryRenderID;
+	private static int fullLandingPadRenderID;
 	public static long getFirstBootTime;
 	public static long getCurrentTime;
 	public static long slowTick;
@@ -222,6 +224,7 @@ public class ClientProxyCore extends CommonProxyCore
         ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityTreasureChest.class, new GCCoreTileEntityTreasureChestRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityAdvancedCraftingTable.class, new GCCoreTileEntityAdvancedCraftingTableRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityRefinery.class, new GCCoreTileEntityRefineryRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityLandingPad.class, new GCCoreTileEntityLandingPadRenderer());
         ClientProxyCore.treasureChestRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new GCCoreRenderBlockTreasureChest(ClientProxyCore.treasureChestRenderID));
         ClientProxyCore.torchRenderID = RenderingRegistry.getNextAvailableRenderId();
@@ -236,6 +239,8 @@ public class ClientProxyCore extends CommonProxyCore
         RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererCraftingTable(ClientProxyCore.craftingTableID));
         ClientProxyCore.crudeOilRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererCrudeOil(ClientProxyCore.crudeOilRenderID));
+//        ClientProxyCore.fullLandingPadRenderID = RenderingRegistry.getNextAvailableRenderId();
+//        RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererLandingPad(ClientProxyCore.fullLandingPadRenderID));
         final IMapPlanet earth = new GCCoreMapPlanetOverworld();
         final IMapPlanet moon = new GCMoonMapPlanet();
 		GalacticraftCore.addAdditionalMapPlanet(earth);
@@ -348,11 +353,11 @@ public class ClientProxyCore extends CommonProxyCore
 	}
 
 	@Override
-	public int getGCRefineryRenderID()
+	public int getGCFullLandingPadRenderID()
 	{
-		return ClientProxyCore.refineryRenderID;
+		return ClientProxyCore.fullLandingPadRenderID;
 	}
-
+	
 	@Override
     public void spawnParticle(String var1, double var2, double var4, double var6, double var8, double var10, double var12, boolean b)
 	{

@@ -31,6 +31,7 @@ public class GCCoreConfigManager
 	public static int idBlockBreatheableAir;
 	public static int idBlockTreasureChest;
 	public static int idBlockLandingPad;
+	public static int idBlockLandingPadFull;
 	public static int idBlockUnlitTorch;
 	public static int idBlockUnlitTorchLit;
 	public static int idBlockAirDistributor;
@@ -146,13 +147,14 @@ public class GCCoreConfigManager
 	        
 	        GCCoreConfigManager.idBlockBreatheableAir = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockCoreBreatheableAir", 			3350)		.getInt(3350);
 	        GCCoreConfigManager.idBlockLandingPad = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockLandingPad", 					3351)		.getInt(3351);
-	        GCCoreConfigManager.idBlockUnlitTorch = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockUnlitTorch", 					3352)		.getInt(3352);
-	        GCCoreConfigManager.idBlockUnlitTorchLit = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockUnlitTorchLit", 				3353)		.getInt(3353);
-	        GCCoreConfigManager.idBlockAirDistributor = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockAirDistributor", 				3354)		.getInt(3354);
-	        GCCoreConfigManager.idBlockAirCompressor = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockAirCompressor", 				3355)		.getInt(3355);
-	        GCCoreConfigManager.idBlockAirCollector = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockAirCollector", 					3356)		.getInt(3356);
-	        GCCoreConfigManager.idBlockRefinery = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockRefinery",                      3357)       .getInt(3357);
-	        GCCoreConfigManager.idBlockFuelLoader = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockFuelLoader",					3358)		.getInt(3358);
+	        GCCoreConfigManager.idBlockLandingPadFull = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockLandingPadFull", 				3352)		.getInt(3352);
+	        GCCoreConfigManager.idBlockUnlitTorch = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockUnlitTorch", 					3353)		.getInt(3353);
+	        GCCoreConfigManager.idBlockUnlitTorchLit = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockUnlitTorchLit", 				3354)		.getInt(3354);
+	        GCCoreConfigManager.idBlockAirDistributor = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockAirDistributor", 				3355)		.getInt(3355);
+	        GCCoreConfigManager.idBlockAirCompressor = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockAirCompressor", 				3356)		.getInt(3356);
+	        GCCoreConfigManager.idBlockAirCollector = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockAirCollector", 					3357)		.getInt(3357);
+	        GCCoreConfigManager.idBlockRefinery = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockRefinery",                      3358)       .getInt(3358);
+	        GCCoreConfigManager.idBlockFuelLoader = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockFuelLoader",					3359)		.getInt(3359);
 	        GCCoreConfigManager.idBlockAirPipe = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockAirPipe", 						3368)		.getInt(3368);
 	        GCCoreConfigManager.idBlockSapling2 = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockSapling2", 						3369)		.getInt(3369);
 	        GCCoreConfigManager.idBlockRocketBench = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockRocketBench", 					3370)		.getInt(3370);
