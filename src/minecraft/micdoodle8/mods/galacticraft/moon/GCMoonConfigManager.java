@@ -61,7 +61,7 @@ public class GCMoonConfigManager
 	        GCMoonConfigManager.idItemBlockCheese =					GCMoonConfigManager.configuration.get(Configuration.CATEGORY_ITEM, 									"idItemBlockCheese", 				9853)	.getInt(9853);
 	        GCMoonConfigManager.idItemMeteoricIronIngot =			GCMoonConfigManager.configuration.get(Configuration.CATEGORY_ITEM, 									"idItemMeteoricIronIngot", 			9854)	.getInt(9854);
 
-	        GCMoonConfigManager.idBlock = 							GCMoonConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, 								"idBlockMoon", 						3347) 	.getInt(3347);
+	        GCMoonConfigManager.idBlock = 							GCMoonConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, 								"idBlockMoon", 						223) 	.getInt(223);
 	        GCMoonConfigManager.idBlockCheese = 					GCMoonConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, 								"idBlockCheese", 					3348)	.getInt(3348);
 
 	        GCMoonConfigManager.disableCheeseMoon = 				GCMoonConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Cheese Ore Gen on Moon",			false)		.getBoolean(false);
