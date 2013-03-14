@@ -58,6 +58,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.network.packet.Packet9Respawn;
+import net.minecraft.src.ServerPlayerAPI;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
 import universalelectricity.prefab.CustomDamageSource;
@@ -154,15 +155,15 @@ public class GalacticraftCore
 	{
 		GalacticraftCore.moon.preLoad(event);
 		
-//		try
-//		{
-//			ServerPlayerAPI.register(GalacticraftCore.MODID, GCCorePlayerBase.class);
-//		}
-//		catch (Exception e)
-//		{
-//			FMLLog.severe("PLAYER API NOT INSTALLED!");
-//			e.printStackTrace();
-//		}
+		try
+		{
+			ServerPlayerAPI.register(GalacticraftCore.MODID, GCCorePlayerBase.class);
+		}
+		catch (Exception e)
+		{
+			FMLLog.severe("PLAYER API NOT INSTALLED!");
+			e.printStackTrace();
+		}
 		
 		GalacticraftCore.registerSubMod(GalacticraftCore.moon);
 

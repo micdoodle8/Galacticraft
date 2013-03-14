@@ -30,13 +30,13 @@ import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiChoosePlanet;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreOverlayOxygenTankIndicator;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreOverlaySensorGlasses;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreOverlaySpaceship;
+import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelPlayer;
 import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelSpaceship;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererBreathableAir;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererCraftingTable;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererCrudeOil;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererMeteor;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererOxygenPipe;
-import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererRefinery;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererUnlitTorch;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderArrow;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderAstroOrb;
@@ -46,6 +46,7 @@ import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderCree
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderFlag;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderMeteor;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderParaChest;
+import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderPlayer;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderSkeleton;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderSpaceship;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderSpider;
@@ -105,7 +106,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
-import net.minecraft.stats.StatBase;
+import net.minecraft.src.ModelPlayerAPI;
+import net.minecraft.src.PlayerAPI;
+import net.minecraft.src.RenderPlayerAPI;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProviderSurface;
@@ -181,26 +184,26 @@ public class ClientProxyCore extends CommonProxyCore
 	{
 		ClientProxyCore.moon.preInit(event);
 		
-//		try
-//		{
-//			PlayerAPI.register(GalacticraftCore.MODID, GCCorePlayerBaseClient.class);
-//		}
-//		catch (Exception cnfe)
-//		{
-//			FMLLog.severe("PLAYER API NOT INSTALLED!");
-//			cnfe.printStackTrace();
-//		}
-//		
-//		try
-//		{
-//			ModelPlayerAPI.register(GalacticraftCore.MODID, GCCoreModelPlayer.class);
-//			RenderPlayerAPI.register(GalacticraftCore.MODID, GCCoreRenderPlayer.class);
-//		}
-//		catch (Exception cnfe)
-//		{
-//			FMLLog.severe("RENDER PLAYER API NOT INSTALLED!");
-//			cnfe.printStackTrace();
-//		}
+		try
+		{
+			PlayerAPI.register(GalacticraftCore.MODID, GCCorePlayerBaseClient.class);
+		}
+		catch (Exception cnfe)
+		{
+			FMLLog.severe("PLAYER API NOT INSTALLED!");
+			cnfe.printStackTrace();
+		}
+		
+		try
+		{
+			ModelPlayerAPI.register(GalacticraftCore.MODID, GCCoreModelPlayer.class);
+			RenderPlayerAPI.register(GalacticraftCore.MODID, GCCoreRenderPlayer.class);
+		}
+		catch (Exception cnfe)
+		{
+			FMLLog.severe("RENDER PLAYER API NOT INSTALLED!");
+			cnfe.printStackTrace();
+		}
 
 		MinecraftForge.EVENT_BUS.register(new GCCoreSounds());
 		ClientProxyCore.getFirstBootTime = System.currentTimeMillis();
@@ -1242,7 +1245,6 @@ public class ClientProxyCore extends CommonProxyCore
     		}
     		
 
-			FMLLog.info("" + handled);
     		if (handled == true)
     		{
     			return;
