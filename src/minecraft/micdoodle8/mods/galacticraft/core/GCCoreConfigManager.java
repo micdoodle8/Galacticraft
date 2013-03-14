@@ -28,8 +28,6 @@ public class GCCoreConfigManager
 	}
 
 	// BLOCKS
-	public static int idBlockID;
-
 	public static int idBlockBreatheableAir;
 	public static int idBlockTreasureChest;
 	public static int idBlockLandingPad;
@@ -38,7 +36,6 @@ public class GCCoreConfigManager
 	public static int idBlockAirDistributor;
 	public static int idBlockAirPipe;
 	public static int idBlockAirCollector;
-	public static int idBlockOre;
 	public static int idBlockSapling2;
 	public static int idBlockRocketBench;
 	public static int idBlockFallenMeteor;
@@ -49,19 +46,17 @@ public class GCCoreConfigManager
 	public static int idBlockCrudeOilMoving;
 	public static int idBlockRefinery;
 	public static int idBlockAirCompressor;
+	public static int idBlockFuelLoader;
 
 	// ITEMS
 	public static int idItemLightOxygenTank;
-	public static int idItemLightOxygenTankEmpty;
 	public static int idItemMedOxygenTank;
-	public static int idItemMedOxygenTankEmpty;
 	public static int idItemHeavyOxygenTank;
-	public static int idItemHeavyOxygenTankEmpty;
 	public static int idItemSpaceship;
 	public static int idItemIngotTitanium;
 	public static int idItemIngotCopper;
 	public static int idItemIngotAluminum;
-	public static int idItemAluminumCanister;
+	public static int idItemTinCanister;
 	public static int idItemAirVent;
 	public static int idItemOxygenConcentrator;
 	public static int idItemFan;
@@ -80,21 +75,22 @@ public class GCCoreConfigManager
 	public static int idItemFlagPole;
 	public static int idItemOilCanister;
 	public static int idItemOilExtractor;
+	public static int idItemFuel;
 
 	// ARMOR
 	public static int idArmorOxygenMask;
 	public static int idArmorSensorGlasses;
-	public static int idArmorTitaniumHelmet;
-	public static int idArmorTitaniumChestplate;
-	public static int idArmorTitaniumLeggings;
-	public static int idArmorTitaniumBoots;
+	public static int idArmorSteelHelmet;
+	public static int idArmorSteelChestplate;
+	public static int idArmorSteelLeggings;
+	public static int idArmorSteelBoots;
 
 	// TOOLS
-	public static int idToolTitaniumSword;
-	public static int idToolTitaniumPickaxe;
-	public static int idToolTitaniumAxe;
-	public static int idToolTitaniumSpade;
-	public static int idToolTitaniumHoe;
+	public static int idToolSteelSword;
+	public static int idToolSteelPickaxe;
+	public static int idToolSteelAxe;
+	public static int idToolSteelSpade;
+	public static int idToolSteelHoe;
 
 	// GUI
 	public static int idGuiTankRefill;
@@ -106,6 +102,7 @@ public class GCCoreConfigManager
 	public static int idGuiAirCollector;
 	public static int idGuiAirDistributor;
 	public static int idGuiAirCompressor;
+	public static int idGuiFuelLoader;
 
 	// ACHIEVEMENTS
 	public static int idAchievBase;
@@ -140,78 +137,70 @@ public class GCCoreConfigManager
 	public static int oilGenFactor;
 	public static boolean disableLeafDecay;
 	public static boolean disableSpaceshipOverlay;
-	public static boolean disableFancyTileEntities;
 
 	private void setDefaultValues()
     {
 		try
 		{
 	        GCCoreConfigManager.configuration.load();
-
-	        GCCoreConfigManager.idBlockID = 							GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlock", 								3349)		.getInt(3349);
-
+	        
 	        GCCoreConfigManager.idBlockBreatheableAir = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockCoreBreatheableAir", 			3350)		.getInt(3350);
-	        GCCoreConfigManager.idBlockTreasureChest = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockTreasureChest", 				3351)		.getInt(3351);
-	        GCCoreConfigManager.idBlockLandingPad = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockLandingPad", 					3352)		.getInt(3352);
-	        GCCoreConfigManager.idBlockUnlitTorch = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockUnlitTorch", 					3353)		.getInt(3353);
-	        GCCoreConfigManager.idBlockUnlitTorchLit = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockUnlitTorchLit", 				3354)		.getInt(3354);
-	        GCCoreConfigManager.idBlockAirDistributor = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockAirDistributor", 				3355)		.getInt(3355);
-	        GCCoreConfigManager.idBlockAirCompressor = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockAirCompressor", 				3356)		.getInt(3356);
-	        GCCoreConfigManager.idBlockAirPipe = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockAirPipe", 						3357)		.getInt(3357);
-	        GCCoreConfigManager.idBlockAirCollector = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockAirCollector", 					3358)		.getInt(3358);
-	        GCCoreConfigManager.idBlockOre = 							GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockOre", 							3359)		.getInt(3359);
-	        GCCoreConfigManager.idBlockSapling2 = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockSapling2", 						3360)		.getInt(3360);
-	        GCCoreConfigManager.idBlockRocketBench = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockRocketBench", 					3361)		.getInt(3361);
-	        GCCoreConfigManager.idBlockFallenMeteor = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockFallenMeteor", 					3362)		.getInt(3362);
-	        GCCoreConfigManager.idBlockDecorationBlock = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockDecorationBlock",				3363)		.getInt(3363);
-	        GCCoreConfigManager.idBlockAirLockFrame = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockAirLockFrame",					3364)		.getInt(3364);
-	        GCCoreConfigManager.idBlockAirLockSeal = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockAirLockSeal",					3365)		.getInt(3365);
-	        GCCoreConfigManager.idBlockCrudeOilMoving = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockCrudeOilMoving",				3366)		.getInt(3366);
-	        GCCoreConfigManager.idBlockCrudeOilStill = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockCrudeOilStill",					3367)		.getInt(3367);
-	        GCCoreConfigManager.idBlockRefinery = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockRefinery",                      3368)       .getInt(3368);
+	        GCCoreConfigManager.idBlockLandingPad = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockLandingPad", 					3351)		.getInt(3351);
+	        GCCoreConfigManager.idBlockUnlitTorch = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockUnlitTorch", 					3352)		.getInt(3352);
+	        GCCoreConfigManager.idBlockUnlitTorchLit = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockUnlitTorchLit", 				3353)		.getInt(3353);
+	        GCCoreConfigManager.idBlockAirDistributor = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockAirDistributor", 				3354)		.getInt(3354);
+	        GCCoreConfigManager.idBlockAirCompressor = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockAirCompressor", 				3355)		.getInt(3355);
+	        GCCoreConfigManager.idBlockAirCollector = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockAirCollector", 					3356)		.getInt(3356);
+	        GCCoreConfigManager.idBlockRefinery = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockRefinery",                      3357)       .getInt(3357);
+	        GCCoreConfigManager.idBlockFuelLoader = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockFuelLoader",					3358)		.getInt(3358);
+	        GCCoreConfigManager.idBlockAirPipe = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockAirPipe", 						3368)		.getInt(3368);
+	        GCCoreConfigManager.idBlockSapling2 = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockSapling2", 						3369)		.getInt(3369);
+	        GCCoreConfigManager.idBlockRocketBench = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockRocketBench", 					3370)		.getInt(3370);
+	        GCCoreConfigManager.idBlockFallenMeteor = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockFallenMeteor", 					3371)		.getInt(3371);
+	        GCCoreConfigManager.idBlockDecorationBlock = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockDecorationBlock",				3372)		.getInt(3372);
+	        GCCoreConfigManager.idBlockAirLockFrame = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockAirLockFrame",					3373)		.getInt(3373);
+	        GCCoreConfigManager.idBlockAirLockSeal = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockAirLockSeal",					3374)		.getInt(3374);
+	        GCCoreConfigManager.idBlockTreasureChest = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockTreasureChest", 				3375)		.getInt(3375);
+	        GCCoreConfigManager.idBlockCrudeOilMoving = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockCrudeOilMoving",				3376)		.getInt(3376);
+	        GCCoreConfigManager.idBlockCrudeOilStill = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockCrudeOilStill",					3377)		.getInt(3377);
 
-	        GCCoreConfigManager.idItemLightOxygenTankEmpty = 			GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemLightOxygenTankEmpty", 			9854)		.getInt(9854);
-	        GCCoreConfigManager.idItemLightOxygenTank = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemLightOxygenTank", 				9855)		.getInt(9855);
-	        GCCoreConfigManager.idItemMedOxygenTankEmpty = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemMedOxygenTankEmpty", 			9856)		.getInt(9856);
+	        GCCoreConfigManager.idItemSpaceship = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemSpaceship", 						9855)		.getInt(9855);
+	        GCCoreConfigManager.idItemLightOxygenTank = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemLightOxygenTank", 				9856)		.getInt(9856);
 	        GCCoreConfigManager.idItemMedOxygenTank = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemMedOxygenTank", 					9857)		.getInt(9857);
 	        GCCoreConfigManager.idItemHeavyOxygenTank = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemHeavyOxygenTank", 				9858)		.getInt(9858);
-	        GCCoreConfigManager.idItemHeavyOxygenTankEmpty = 			GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemHeavyOxygenTankEmpty",			9859)		.getInt(9859);
-	        GCCoreConfigManager.idArmorOxygenMask = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idArmorOxygenMask", 					9860)		.getInt(9860);
-	        GCCoreConfigManager.idItemSpaceship = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemSpaceship", 						9861)		.getInt(9861);
-	        GCCoreConfigManager.idArmorSensorGlasses = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idArmorSensorGlasses", 				9862)		.getInt(9862);
-	        GCCoreConfigManager.idItemIngotTitanium = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemIngotTitanium", 					9864)		.getInt(9864);
-	        GCCoreConfigManager.idItemIngotCopper = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemIngotCopper", 					9865)		.getInt(9865);
-	        GCCoreConfigManager.idItemIngotAluminum = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemIngotAluminum", 					9866)		.getInt(9866);
-	        GCCoreConfigManager.idItemAluminumCanister = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemAluminumCanister", 				9867)		.getInt(9867);
-	        GCCoreConfigManager.idItemAirVent = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemAirVent", 						9868)		.getInt(9868);
-	        GCCoreConfigManager.idItemOxygenConcentrator = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemOxygenConcentrator", 			9869)		.getInt(9869);
-	        GCCoreConfigManager.idItemFan = 							GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemFan", 							9870)		.getInt(9870);
-	        GCCoreConfigManager.idItemGravityBow = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemGravityBow", 					9871)		.getInt(9871);
-	        GCCoreConfigManager.idItemRocketEngine = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemRocketEngine", 					9872)		.getInt(9872);
-	        GCCoreConfigManager.idItemHeavyPlate = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemHeavyPlate", 					9873)		.getInt(9873);
-	        GCCoreConfigManager.idItemRocketNoseCone = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemRocketNoseCone", 				9874)		.getInt(9874);
-	        GCCoreConfigManager.idItemRocketFins = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemRocketFins", 					9875)		.getInt(9875);
-	        GCCoreConfigManager.idItemSensorLens = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemSensorLens", 					9886)		.getInt(9886);
-	        GCCoreConfigManager.idItemBuggy = 							GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemBuggyPlacer", 				9887)		.getInt(9887);
-	        GCCoreConfigManager.idItemFlag = 							GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemFlagPlacer", 					9888)		.getInt(9888);
-	        GCCoreConfigManager.idItemOxygenGear = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemOxygenGear", 					9889)		.getInt(9889);
-	        GCCoreConfigManager.idItemCanvas = 							GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemCanvas", 						9890)		.getInt(9890);
-	        GCCoreConfigManager.idItemParachute = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemParachute", 					9891)		.getInt(9891);
-	        GCCoreConfigManager.idItemRocketFuelBucket = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemRocketFuelBucket", 			9893)		.getInt(9893);
-	        GCCoreConfigManager.idItemFlagPole = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemFlagPole", 					9892)		.getInt(9892);
-	        GCCoreConfigManager.idItemOilCanister = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemOilCanister", 				9894)		.getInt(9894);
-	        GCCoreConfigManager.idItemOilExtractor = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemOilExtractor", 				9895)		.getInt(9895);
+	        GCCoreConfigManager.idArmorOxygenMask = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idArmorOxygenMask", 					9859)		.getInt(9859);
+	        GCCoreConfigManager.idArmorSensorGlasses = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idArmorSensorGlasses", 					9860)		.getInt(9860);
+	        GCCoreConfigManager.idItemTinCanister = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemCanister", 						9861)		.getInt(9861);
+	        GCCoreConfigManager.idItemAirVent = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemAirVent", 						9862)		.getInt(9862);
+	        GCCoreConfigManager.idItemOxygenConcentrator = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemOxygenConcentrator", 				9863)		.getInt(9863);
+	        GCCoreConfigManager.idItemFan = 							GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemFan", 							9864)		.getInt(9864);
+	        GCCoreConfigManager.idItemGravityBow = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemGravityBow", 						9865)		.getInt(9865);
+	        GCCoreConfigManager.idItemRocketEngine = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemRocketEngine", 					9866)		.getInt(9866);
+	        GCCoreConfigManager.idItemHeavyPlate = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemHeavyPlate", 						9867)		.getInt(9867);
+	        GCCoreConfigManager.idItemRocketNoseCone = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemRocketNoseCone", 					9868)		.getInt(9868);
+	        GCCoreConfigManager.idItemRocketFins = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemRocketFins", 						9869)		.getInt(9869);
+	        GCCoreConfigManager.idItemSensorLens = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemSensorLens", 						9870)		.getInt(9870);
+	        GCCoreConfigManager.idItemBuggy = 							GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemBuggyPlacer", 					9871)		.getInt(9871);
+	        GCCoreConfigManager.idItemFlagPole = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemFlagPole", 						9872)		.getInt(9872);
+	        GCCoreConfigManager.idItemFlag = 							GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemFlagPlacer", 						9873)		.getInt(9873);
+	        GCCoreConfigManager.idItemOxygenGear = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemOxygenGear", 						9874)		.getInt(9874);
+	        GCCoreConfigManager.idItemCanvas = 							GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemCanvas", 							9875)		.getInt(9875);
+	        GCCoreConfigManager.idItemParachute = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemParachute", 						9876)		.getInt(9876);
+	        GCCoreConfigManager.idItemOilExtractor = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemOilExtractor", 					9877)		.getInt(9877);
+	        GCCoreConfigManager.idItemOilCanister = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemOilCanister", 					9878)		.getInt(9878);
+	        GCCoreConfigManager.idItemRocketFuelBucket = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemRocketFuelCanister", 				9879)		.getInt(9879);
+	        GCCoreConfigManager.idItemFuel = 							GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "iditemFuel",			 				9880)		.getInt(9880);
+	        
+	        GCCoreConfigManager.idToolSteelSword = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idToolSteelSword", 						9980)		.getInt(9880);
+	        GCCoreConfigManager.idToolSteelPickaxe = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idToolSteelPickaxe", 					9981)		.getInt(9881);
+	        GCCoreConfigManager.idToolSteelSpade = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idToolSteelSpade", 						9982)		.getInt(9882);
+	        GCCoreConfigManager.idToolSteelHoe = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idToolSteelHoe", 						9983)		.getInt(9883);
+	        GCCoreConfigManager.idToolSteelAxe = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idToolSteelAxe", 						9984)		.getInt(9884);
 
-	        GCCoreConfigManager.idToolTitaniumSword = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idToolTitaniumSword", 					9876)		.getInt(9876);
-	        GCCoreConfigManager.idToolTitaniumPickaxe = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idToolTitaniumPickaxe", 				9877)		.getInt(9877);
-	        GCCoreConfigManager.idToolTitaniumSpade = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idToolTitaniumSpade", 					9878)		.getInt(9878);
-	        GCCoreConfigManager.idToolTitaniumHoe = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idToolTitaniumHoe", 					9879)		.getInt(9879);
-	        GCCoreConfigManager.idToolTitaniumAxe = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idToolTitaniumAxe", 					9880)		.getInt(9880);
-
-	        GCCoreConfigManager.idArmorTitaniumHelmet = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idArmorTitaniumHelmet", 				9881)		.getInt(9881);
-	        GCCoreConfigManager.idArmorTitaniumChestplate = 			GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idArmorTitaniumChestplate", 			9882)		.getInt(9882);
-	        GCCoreConfigManager.idArmorTitaniumLeggings = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idArmorTitaniumLeggings", 				9883)		.getInt(9883);
-	        GCCoreConfigManager.idArmorTitaniumBoots = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idArmorTitaniumBoots", 				9884)		.getInt(9884);
+	        GCCoreConfigManager.idArmorSteelHelmet = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idArmorSteelHelmet", 					9985)		.getInt(9885);
+	        GCCoreConfigManager.idArmorSteelChestplate = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idArmorSteelChestplate", 				9986)		.getInt(9886);
+	        GCCoreConfigManager.idArmorSteelLeggings = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idArmorSteelLeggings", 					9987)		.getInt(9887);
+	        GCCoreConfigManager.idArmorSteelBoots = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idArmorSteelBoots", 					9988)		.getInt(9888);
 
 	        GCCoreConfigManager.idGuiTankRefill = 						GCCoreConfigManager.configuration.get("GUI", "idGuiTankRefill", 											128)		.getInt(128);
 	        GCCoreConfigManager.idGuiAirCompressor = 					GCCoreConfigManager.configuration.get("GUI", "idGuiAirCompressor", 											129)		.getInt(129);
@@ -222,7 +211,8 @@ public class GCCoreConfigManager
 	        GCCoreConfigManager.idGuiRefinery = 						GCCoreConfigManager.configuration.get("GUI", "idGuiRefinery",                                               134)		.getInt(134);
 	        GCCoreConfigManager.idGuiAirCollector = 					GCCoreConfigManager.configuration.get("GUI", "idGuiAirCollector", 											135)		.getInt(135);
 	        GCCoreConfigManager.idGuiAirDistributor = 					GCCoreConfigManager.configuration.get("GUI", "idGuiAirDistributor", 										136)		.getInt(136);
-
+	        GCCoreConfigManager.idGuiFuelLoader =						GCCoreConfigManager.configuration.get("GUI", "idGuiFuelLoader", 											137)		.getInt(137);
+	        
 	        GCCoreConfigManager.idAchievBase = 							GCCoreConfigManager.configuration.get("Achievements", "idAchievBase", 										1784)		.getInt(1784);
 
 	        GCCoreConfigManager.idEntityEvolvedSpider = 				GCCoreConfigManager.configuration.get("Entities", "idEntityEvolvedSpider", 									155)		.getInt(155);
@@ -238,14 +228,10 @@ public class GCCoreConfigManager
 	        GCCoreConfigManager.idEntityGiantWorm = 					GCCoreConfigManager.configuration.get("Entities", "idEntityGiantWorm", 										165)		.getInt(165);
 	        GCCoreConfigManager.idEntityParaChest = 					GCCoreConfigManager.configuration.get("Entities", "idEntityParaChest", 										166)		.getInt(166);
 
-	        GCCoreConfigManager.transparentBreathableAir = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "transparentBreathableAir", 			true)		.getBoolean(true);
-	        GCCoreConfigManager.moreStars = 							GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "moreStars", 							true)		.getBoolean(true);
+	        GCCoreConfigManager.transparentBreathableAir = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Transparent Breathable Air",			true)		.getBoolean(true);
+	        GCCoreConfigManager.moreStars = 							GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "More Stars",							true)		.getBoolean(true);
 	        GCCoreConfigManager.wasdMapMovement = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "WASD Map Movement", 					true)		.getBoolean(true);
-	        GCCoreConfigManager.disableAluminiumEarth = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable aluminium ore Gen on Overworld",	false)		.getBoolean(false);
-	        GCCoreConfigManager.disableCopperEarth = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable copper ore Gen on Overworld",	false)		.getBoolean(false);
-	        GCCoreConfigManager.disableTitaniumEarth = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable titanium ore Gen on Overworld",	false)		.getBoolean(false);
 	        GCCoreConfigManager.disableOilGen = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable oil Gen on Overworld",		false)		.getBoolean(false);
-	        GCCoreConfigManager.oreGenFactor = 							GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Ore Generation Factor", 				1)			.getInt(1);
 	        GCCoreConfigManager.oilGenFactor = 							GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Oil Generation Factor", 				1)			.getInt(1);
 	        final int[] dimensions = {0};
 	        GCCoreConfigManager.oreGenDimensions =						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "List of dimensions to generate GC ores in", 	dimensions)	.getIntList();
@@ -255,7 +241,6 @@ public class GCCoreConfigManager
 	        GCCoreConfigManager.oxygenIndicatorLeftSide = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Using Minimap Mod",					false)		.getBoolean(false);
 	        GCCoreConfigManager.disableLeafDecay = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Oxygen Collector Leaf Decay",false)		.getBoolean(false);
 	        GCCoreConfigManager.disableSpaceshipOverlay = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Spaceship GUI Overlay",		false)		.getBoolean(false);
-	        GCCoreConfigManager.disableFancyTileEntities = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Fancy Block Renderers (will raise FPS)",	false)		.getBoolean(false);
 		}
 		catch (final Exception e)
 		{

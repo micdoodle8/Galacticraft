@@ -56,20 +56,16 @@ public class GCMoonConfigManager
 
 	        GCMoonConfigManager.dimensionIDMoon = 					GCMoonConfigManager.configuration.get("Dimensions", 												"Moon Dimension ID", 				-28)		.getInt(-28);
 
-	        GCMoonConfigManager.idItemCheeseCurd = 					GCMoonConfigManager.configuration.get(Configuration.CATEGORY_ITEM, 									"idItemCheeseCurd", 				10000)	.getInt(10000);
-	        GCMoonConfigManager.idItemMeteoricIronRaw =				GCMoonConfigManager.configuration.get(Configuration.CATEGORY_ITEM, 									"idItemMeteoricIronRaw", 			10001)	.getInt(10001);
-	        GCMoonConfigManager.idItemBlockCheese =					GCMoonConfigManager.configuration.get(Configuration.CATEGORY_ITEM, 									"idItemBlockCheese", 				10002)	.getInt(10002);
-	        GCMoonConfigManager.idItemMeteoricIronIngot =			GCMoonConfigManager.configuration.get(Configuration.CATEGORY_ITEM, 									"idItemMeteoricIronIngot", 			10003)	.getInt(10003);
+	        GCMoonConfigManager.idItemCheeseCurd = 					GCMoonConfigManager.configuration.get(Configuration.CATEGORY_ITEM, 									"idItemCheeseCurd", 				9851)	.getInt(9851);
+	        GCMoonConfigManager.idItemMeteoricIronRaw =				GCMoonConfigManager.configuration.get(Configuration.CATEGORY_ITEM, 									"idItemMeteoricIronRaw", 			9852)	.getInt(9852);
+	        GCMoonConfigManager.idItemBlockCheese =					GCMoonConfigManager.configuration.get(Configuration.CATEGORY_ITEM, 									"idItemBlockCheese", 				9853)	.getInt(9853);
+	        GCMoonConfigManager.idItemMeteoricIronIngot =			GCMoonConfigManager.configuration.get(Configuration.CATEGORY_ITEM, 									"idItemMeteoricIronIngot", 			9854)	.getInt(9854);
 
-	        GCMoonConfigManager.blockIDProp = 						GCMoonConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, 								"idBlockMoonOre", 					223);
-	        GCMoonConfigManager.blockIDProp.comment =				"Even though this is named Moon Ore, it's actually ore, stone, grass and dirt.";
-	        GCMoonConfigManager.idBlock = 							GCMoonConfigManager.blockIDProp.getInt(223);
-	        GCMoonConfigManager.idBlockCheese = 					GCMoonConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, 								"idBlockCheese", 					224)	.getInt(224);
+	        GCMoonConfigManager.idBlock = 							GCMoonConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, 								"idBlockMoon", 						3347) 	.getInt(3347);
+	        GCMoonConfigManager.idBlockCheese = 					GCMoonConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, 								"idBlockCheese", 					3348)	.getInt(3348);
 
-	        GCMoonConfigManager.disableCheeseMoon = 				GCMoonConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Cheese Ore Gen on Moon",		false)		.getBoolean(false);
-	        GCMoonConfigManager.disableAluminiumMoon = 				GCMoonConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Aluminium Ore Gen on Moon",	false)		.getBoolean(false);
-	        GCMoonConfigManager.disableIronMoon = 					GCMoonConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Iron Ore Gen on Moon",		false)		.getBoolean(false);
-	        GCMoonConfigManager.generateOtherMods = 				GCMoonConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Generate other mod's features on Moon", false)		.getBoolean(false);
+	        GCMoonConfigManager.disableCheeseMoon = 				GCMoonConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Cheese Ore Gen on Moon",			false)		.getBoolean(false);
+	        GCMoonConfigManager.generateOtherMods = 				GCMoonConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Generate other mod's features on Moon", 	false)		.getBoolean(false);
 		}
 		catch (final Exception e)
 		{
