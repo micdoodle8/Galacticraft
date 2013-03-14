@@ -23,17 +23,17 @@ public class GCCoreTileEntityRefineryRenderer extends TileEntitySpecialRenderer
 
 		this.bindTextureByName("/micdoodle8/mods/galacticraft/core/client/entities/refinery.png");
 
-	    table.modelRefinery.renderAll();
-
-	    if (table.getStackInSlot(0) != null)
-	    {
-	    	table.modelRefinery.renderTank1();
-	    }
-
-	    if (table.getStackInSlot(3) != null)
-	    {
-	    	table.modelRefinery.renderTank2();
-	    }
+//	    table.modelRefinery.renderAll();
+//
+//	    if (table.getStackInSlot(0) != null)
+//	    {
+//	    	table.modelRefinery.renderTank1();
+//	    }
+//
+//	    if (table.getStackInSlot(3) != null)
+//	    {
+//	    	table.modelRefinery.renderTank2();
+//	    }
 
       	GL11.glDisable(GL12.GL_RESCALE_NORMAL);
       	GL11.glPopMatrix();
