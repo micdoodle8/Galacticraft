@@ -18,13 +18,9 @@ LICENSE.txt
 CHANGELOG
 
 /src/minecraft/*
-/src/minecraft_server/*
-/src/common/*
-!/src/minecraft/mods/
-!/src/common/micdoodle8/
+!/src/minecraft/micdoodle8/
 !/src/common/mcmod.info
 !/src/common/SP.png
-/src/minecraft/mods/basiccomponents/
 
 *.bat
 *.sh
