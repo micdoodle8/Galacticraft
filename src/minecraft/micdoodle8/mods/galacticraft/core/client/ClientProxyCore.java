@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
-import micdoodle8.mods.galacticraft.API.AdvancedAchievement;
 import micdoodle8.mods.galacticraft.API.IDetectableMetadataResource;
 import micdoodle8.mods.galacticraft.API.IDetectableResource;
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
@@ -217,16 +216,9 @@ public class ClientProxyCore extends CommonProxyCore
 		KeyBindingRegistry.registerKeyBinding(new GCKeyHandler());
         NetworkRegistry.instance().registerChannel(new ClientPacketHandler(), GalacticraftCore.CHANNEL, Side.CLIENT);
 
-        if (!GCCoreConfigManager.disableFancyTileEntities)
-        {
-//            ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityOxygenDistributor.class, new GCCoreTileEntityOxygenDistributorRenderer());
-//            ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityOxygenCollector.class, new GCCoreTileEntityOxygenCollectorRenderer());
-        }
-
         ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityTreasureChest.class, new GCCoreTileEntityTreasureChestRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityAdvancedCraftingTable.class, new GCCoreTileEntityAdvancedCraftingTableRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityRefinery.class, new GCCoreTileEntityRefineryRenderer());
-//        ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityOxygenCompressor.class, new GCCoreTileEntityOxygenCompressorRenderer());
         ClientProxyCore.treasureChestRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new GCCoreRenderBlockTreasureChest(ClientProxyCore.treasureChestRenderID));
         ClientProxyCore.torchRenderID = RenderingRegistry.getNextAvailableRenderId();
@@ -241,8 +233,6 @@ public class ClientProxyCore extends CommonProxyCore
         RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererCraftingTable(ClientProxyCore.craftingTableID));
         ClientProxyCore.crudeOilRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererCrudeOil(ClientProxyCore.crudeOilRenderID));
-        ClientProxyCore.refineryRenderID = RenderingRegistry.getNextAvailableRenderId();
-        RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererRefinery(ClientProxyCore.refineryRenderID));
         final IMapPlanet earth = new GCCoreMapPlanetOverworld();
         final IMapPlanet moon = new GCMoonMapPlanet();
 		GalacticraftCore.addAdditionalMapPlanet(earth);
@@ -671,48 +661,48 @@ public class ClientProxyCore extends CommonProxyCore
 		}
     }
 
-    @Override
-	public void addStat(EntityPlayer player, StatBase stat, int i)
-	{
-    	if (stat != null)
-		{
-			if (stat instanceof AdvancedAchievement)
-			{
-				final AdvancedAchievement achiev = (AdvancedAchievement) stat;
-
-				int amountOfCompletedAchievements = 0;
-
-				if (achiev.parentAchievements != null)
-				{
-					for (int j = 0; i < achiev.parentAchievements.length; j++)
-					{
-						if (FMLClientHandler.instance().getClient().statFileWriter.hasAchievementUnlocked(achiev.parentAchievements[j]))
-						{
-							amountOfCompletedAchievements++;
-						}
-					}
-
-					if (amountOfCompletedAchievements >= achiev.parentAchievements.length)
-					{
-	                    if (!FMLClientHandler.instance().getClient().statFileWriter.hasAchievementUnlocked(achiev))
-	                    {
-							FMLClientHandler.instance().getClient().guiAchievement.queueTakenAchievement(achiev);
-	                    }
-					}
-				}
-				else
-				{
-					player.addStat(stat, i);
-				}
-
-				FMLClientHandler.instance().getClient().statFileWriter.readStat(stat, i);
-			}
-			else
-			{
-				player.addStat(stat, i);
-			}
-		}
-	}
+//    @Override
+//	public void addStat(EntityPlayer player, StatBase stat, int i)
+//	{
+//    	if (stat != null)
+//		{
+//			if (stat instanceof AdvancedAchievement)
+//			{
+//				final AdvancedAchievement achiev = (AdvancedAchievement) stat;
+//
+//				int amountOfCompletedAchievements = 0;
+//
+//				if (achiev.parentAchievements != null)
+//				{
+//					for (int j = 0; i < achiev.parentAchievements.length; j++)
+//					{
+//						if (FMLClientHandler.instance().getClient().statFileWriter.hasAchievementUnlocked(achiev.parentAchievements[j]))
+//						{
+//							amountOfCompletedAchievements++;
+//						}
+//					}
+//
+//					if (amountOfCompletedAchievements >= achiev.parentAchievements.length)
+//					{
+//	                    if (!FMLClientHandler.instance().getClient().statFileWriter.hasAchievementUnlocked(achiev))
+//	                    {
+//							FMLClientHandler.instance().getClient().guiAchievement.queueTakenAchievement(achiev);
+//	                    }
+//					}
+//				}
+//				else
+//				{
+//					player.addStat(stat, i);
+//				}
+//
+//				FMLClientHandler.instance().getClient().statFileWriter.readStat(stat, i);
+//			}
+//			else
+//			{
+//				player.addStat(stat, i);
+//			}
+//		}
+//	}
 
 	public static boolean handleWaterMovement(EntityPlayer player)
 	{
