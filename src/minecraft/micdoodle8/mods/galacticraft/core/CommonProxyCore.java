@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiAirCollector;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiAirCompressor;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiAirDistributor;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiBuggyBench;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiFuelLoader;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiGalaxyMap;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiRefinery;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiRocketBench;
@@ -18,11 +19,13 @@ import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerAirCollector;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerAirCompressor;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerAirDistributor;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerBuggyBench;
+import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerFuelLoader;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerRefinery;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerRocketBench;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerRocketRefill;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerTankRefill;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryTankRefill;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFuelLoader;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCollector;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCompressor;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenDistributor;
@@ -171,6 +174,10 @@ public class CommonProxyCore implements IGuiHandler
 		{
 			return new GCCoreContainerAirDistributor(player.inventory, (GCCoreTileEntityOxygenDistributor)world.getBlockTileEntity(x, y, z));
 		}
+		else if (ID == GCCoreConfigManager.idGuiFuelLoader)
+		{
+			return new GCCoreContainerFuelLoader(player.inventory, (GCCoreTileEntityFuelLoader)world.getBlockTileEntity(x, y, z));
+		}
 
 		return null;
 	}
@@ -231,6 +238,17 @@ public class CommonProxyCore implements IGuiHandler
 			if (tile != null && tile instanceof GCCoreTileEntityOxygenDistributor)
 			{
 				return new GCCoreGuiAirDistributor(player.inventory, (GCCoreTileEntityOxygenDistributor)tile);
+			}
+			else
+			{
+				return null;
+			}
+		}
+		else if (ID == GCCoreConfigManager.idGuiFuelLoader)
+		{
+			if (tile != null && tile instanceof GCCoreTileEntityFuelLoader)
+			{
+				return new GCCoreGuiFuelLoader(player.inventory, (GCCoreTileEntityFuelLoader)tile);
 			}
 			else
 			{
