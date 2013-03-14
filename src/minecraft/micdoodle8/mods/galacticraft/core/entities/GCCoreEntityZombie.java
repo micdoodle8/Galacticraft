@@ -79,7 +79,7 @@ public class GCCoreEntityZombie extends EntityZombie
 	@SideOnly(Side.CLIENT)
     public String getTexture()
     {
-        return this.isVillager() ? "/mob/zombie_villager.png" : "/mob/zombie.png";
+        return this.isVillager() ? "/mob/zombie_villager.png" : "/micdoodle8/mods/galacticraft/core/client/entities/zombie.png";
     }
 
     @Override
