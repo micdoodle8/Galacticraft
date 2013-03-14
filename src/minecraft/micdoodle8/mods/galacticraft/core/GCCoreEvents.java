@@ -3,10 +3,11 @@ package micdoodle8.mods.galacticraft.core;
 import java.lang.reflect.Field;
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockSapling;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreTeleporter;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockSapling;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
@@ -15,6 +16,7 @@ import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.event.Event.Result;
 import net.minecraftforge.event.ForgeSubscribe;
+import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.player.BonemealEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
@@ -24,13 +26,27 @@ import net.minecraftforge.event.world.WorldEvent;
 public class GCCoreEvents
 {
 	@ForgeSubscribe
+	public void onEntityFall(LivingFallEvent event)
+	{
+		if (event.entityLiving.worldObj.provider instanceof IGalacticraftWorldProvider)
+		{
+			event.setCanceled(true);
+			event.setResult(Result.DENY);
+			return;
+		}
+
+		event.setCanceled(false);
+		event.setResult(Result.ALLOW);
+	}
+	
+	@ForgeSubscribe
 	public void growTreeBonemeal(BonemealEvent event)
 	{
 		if (event.world.getBlockId(event.X, event.Y, event.Z) == GCCoreBlocks.sapling.blockID)
 		{
-			if (!event.world.isRemote)
+			if (!event.world.isRemote && event.entityLiving.worldObj.provider instanceof IGalacticraftWorldProvider)
 			{
-                ((BlockSapling)GCCoreBlocks.sapling).growTree(event.world, event.X, event.Y, event.Z, event.world.rand);
+                ((GCCoreBlockSapling)GCCoreBlocks.sapling).growTree(event.world, event.X, event.Y, event.Z, event.world.rand);
                 --event.entityPlayer.inventory.getCurrentItem().stackSize;
 				event.setResult(Result.DENY);
 			}
