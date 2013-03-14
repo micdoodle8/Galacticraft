@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.API.IPlantableMetadataBlock;
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
+import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreWorldGenTaiga2 extends WorldGenerator
 {
@@ -30,7 +31,7 @@ public class GCCoreWorldGenTaiga2 extends WorldGenerator
             int var13;
             int var15;
             int var10a;
-            int var21;
+            int var21 = 1;
 
             for (var11 = par4; var11 <= par4 + 1 + var6 && var10; ++var11)
             {
@@ -38,7 +39,8 @@ public class GCCoreWorldGenTaiga2 extends WorldGenerator
                 {
                     var21 = 0;
                 }
-                else
+                
+                if (var11 >= par4 + 1 + var6 - 2)
                 {
                     var21 = var9;
                 }
@@ -87,8 +89,8 @@ public class GCCoreWorldGenTaiga2 extends WorldGenerator
                         }
                     }
                 }
-
-                if (Block.blocksList[var11] != null && (Block.blocksList[var8] instanceof IPlantableBlock || Block.blocksList[var8] instanceof IPlantableMetadataBlock && ((IPlantableMetadataBlock) Block.blocksList[var8]).isPlantable(var10a)) && (Block.blocksList[var8] instanceof IPlantableBlock && waterBlocksNearby >= ((IPlantableBlock)Block.blocksList[var8]).requiredLiquidBlocksNearby() || Block.blocksList[var8] instanceof IPlantableMetadataBlock && waterBlocksNearby >= ((IPlantableMetadataBlock)Block.blocksList[var8]).requiredLiquidBlocksNearby()))
+                
+                if (Block.blocksList[var11] != null && (Block.blocksList[var11] instanceof IPlantableBlock || Block.blocksList[var11] instanceof IPlantableMetadataBlock && ((IPlantableMetadataBlock) Block.blocksList[var11]).isPlantable(var10a)) && (Block.blocksList[var11] instanceof IPlantableBlock && waterBlocksNearby >= ((IPlantableBlock)Block.blocksList[var11]).requiredLiquidBlocksNearby() || Block.blocksList[var11] instanceof IPlantableMetadataBlock && waterBlocksNearby >= ((IPlantableMetadataBlock)Block.blocksList[var11]).requiredLiquidBlocksNearby()))
                 {
                     var21 = par2Random.nextInt(2);
                     var13 = 1;

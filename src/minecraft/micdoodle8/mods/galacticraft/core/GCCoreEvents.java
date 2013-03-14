@@ -4,10 +4,10 @@ import java.lang.reflect.Field;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockSapling;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreTeleporter;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockSapling;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
@@ -22,6 +22,7 @@ import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
 import net.minecraftforge.event.world.WorldEvent;
+import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreEvents
 {
@@ -46,9 +47,9 @@ public class GCCoreEvents
 		{
 			if (!event.world.isRemote && event.entityLiving.worldObj.provider instanceof IGalacticraftWorldProvider)
 			{
-                ((GCCoreBlockSapling)GCCoreBlocks.sapling).growTree(event.world, event.X, event.Y, event.Z, event.world.rand);
-                --event.entityPlayer.inventory.getCurrentItem().stackSize;
-				event.setResult(Result.DENY);
+				((BlockSapling)GCCoreBlocks.sapling).growTree(event.world, event.X, event.Y, event.Z, event.world.rand);
+				event.setResult(Result.ALLOW);
+				return;
 			}
 		}
 

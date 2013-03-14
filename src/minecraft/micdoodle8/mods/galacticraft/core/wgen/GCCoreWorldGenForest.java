@@ -2,6 +2,8 @@ package micdoodle8.mods.galacticraft.core.wgen;
 
 import java.util.Random;
 
+import cpw.mods.fml.common.FMLLog;
+
 import micdoodle8.mods.galacticraft.API.IPlantableBlock;
 import micdoodle8.mods.galacticraft.API.IPlantableMetadataBlock;
 import net.minecraft.block.Block;
@@ -72,7 +74,7 @@ public class GCCoreWorldGenForest extends WorldGenerator
             else
             {
                 var8 = par1World.getBlockId(par3, par4 - 1, par5);
-                final int var10a = par1World.getBlockId(par3, par4 - 1, par5);
+                int var10a = par1World.getBlockMetadata(par3, par4 - 1, par5);
 
                 int waterBlocksNearby = 0;
 
@@ -86,7 +88,7 @@ public class GCCoreWorldGenForest extends WorldGenerator
                         }
                     }
                 }
-
+                
                 if (Block.blocksList[var8] != null && (Block.blocksList[var8] instanceof IPlantableBlock || Block.blocksList[var8] instanceof IPlantableMetadataBlock && ((IPlantableMetadataBlock) Block.blocksList[var8]).isPlantable(var10a)) && (Block.blocksList[var8] instanceof IPlantableBlock && waterBlocksNearby >= ((IPlantableBlock)Block.blocksList[var8]).requiredLiquidBlocksNearby() || Block.blocksList[var8] instanceof IPlantableMetadataBlock && waterBlocksNearby >= ((IPlantableMetadataBlock)Block.blocksList[var8]).requiredLiquidBlocksNearby()) && par4 < 256 - var6 - 1)
                 {
                     int var16;
