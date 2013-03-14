@@ -6,6 +6,7 @@ import java.util.Random;
 import micdoodle8.mods.galacticraft.API.IDetectableMetadataResource;
 import micdoodle8.mods.galacticraft.API.IPlantableMetadataBlock;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.moon.GalacticraftMoon;
 import micdoodle8.mods.galacticraft.moon.items.GCMoonItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFlower;
@@ -29,14 +30,13 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GCMoonBlock extends Block implements IDetectableMetadataResource, IPlantableMetadataBlock
 {
-	// AluminumMoon: 0, IronMoon: 1, CheeseStone: 2;
+	// CopperMoon: 0, TinMoon: 1, CheeseStone: 2;
     @SideOnly(Side.CLIENT)
     private Icon[] moonBlockIcons;
 
 	public GCMoonBlock(int i)
 	{
 		super(i, Material.rock);
-        this.setCreativeTab(GalacticraftCore.galacticraftTab);
 	}
 
     @Override
@@ -56,10 +56,16 @@ public class GCMoonBlock extends Block implements IDetectableMetadataResource, I
         this.moonBlockIcons[9] = par1IconRegister.func_94245_a("galacticraftmoon:grass_step_6");
         this.moonBlockIcons[10] = par1IconRegister.func_94245_a("galacticraftmoon:grass_step_7");
         this.moonBlockIcons[11] = par1IconRegister.func_94245_a("galacticraftmoon:grass_step_8");
-        this.moonBlockIcons[12] = par1IconRegister.func_94245_a("galacticraftmoon:moonore_aluminium");
-        this.moonBlockIcons[13] = par1IconRegister.func_94245_a("galacticraftmoon:moonore_iron");
+        this.moonBlockIcons[12] = par1IconRegister.func_94245_a("galacticraftmoon:moonore_copper");
+        this.moonBlockIcons[13] = par1IconRegister.func_94245_a("galacticraftmoon:moonore_tin");
         this.moonBlockIcons[14] = par1IconRegister.func_94245_a("galacticraftmoon:moonore_cheese");
         this.moonBlockIcons[15] = par1IconRegister.func_94245_a("galacticraftmoon:moonstone");
+    }
+
+	@Override
+    public CreativeTabs getCreativeTabToDisplayOn()
+    {
+        return GalacticraftMoon.galacticraftMoonTab;
     }
 
 	@Override
@@ -190,12 +196,6 @@ public class GCMoonBlock extends Block implements IDetectableMetadataResource, I
 
         par3List.add(new ItemStack(par1, 1, 14));
     }
-
-	@Override
-	public String getTextureFile()
-	{
-		return "/micdoodle8/mods/galacticraft/moon/client/blocks/moon.png";
-	}
 
 	@Override
 	public boolean isValueable(int metadata)

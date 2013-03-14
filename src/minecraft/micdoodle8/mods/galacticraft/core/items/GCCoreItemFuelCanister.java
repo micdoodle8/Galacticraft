@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.items;
 import java.util.ArrayList;
 import java.util.List;
 
+import micdoodle8.mods.galacticraft.API.IRefinableItem;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -33,9 +34,14 @@ public class GCCoreItemFuelCanister extends Item
 	{
 		super(par1);
 		this.setMaxDamage(61);
-		this.setCreativeTab(GalacticraftCore.galacticraftTab);
 		this.setMaxStackSize(1);
 	}
+
+	@Override
+    public CreativeTabs getCreativeTab()
+    {
+        return GalacticraftCore.galacticraftTab;
+    }
 
     @Override
     @SideOnly(Side.CLIENT)

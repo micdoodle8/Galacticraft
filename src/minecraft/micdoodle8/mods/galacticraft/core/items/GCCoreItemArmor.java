@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.items;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumArmorMaterial;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemArmor;
@@ -19,9 +20,14 @@ public class GCCoreItemArmor extends ItemArmor implements IArmorTextureProvider
 	{
 		super(par1, par2EnumArmorMaterial, par3, par4);
 		this.material = par2EnumArmorMaterial;
-		this.setCreativeTab(GalacticraftCore.galacticraftTab);
 		this.attachedMask = breathable;
 	}
+
+	@Override
+    public CreativeTabs getCreativeTab()
+    {
+        return GalacticraftCore.galacticraftTab;
+    }
 
 	@Override
     public String getArmorTextureFile(ItemStack itemstack)

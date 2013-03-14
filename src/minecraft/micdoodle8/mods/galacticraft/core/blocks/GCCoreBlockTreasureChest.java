@@ -37,7 +37,12 @@ public class GCCoreBlockTreasureChest extends BlockContainer
     protected GCCoreBlockTreasureChest(int par1)
     {
         super(par1, Material.rock);
-        this.setCreativeTab(CreativeTabs.tabDecorations);
+    }
+
+	@Override
+    public CreativeTabs getCreativeTabToDisplayOn()
+    {
+        return GalacticraftCore.galacticraftTab;
     }
 
     @Override

@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.moon.items.GCMoonItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.world.World;
@@ -16,9 +17,14 @@ public class GCCoreBlockFallenMeteor extends Block
 	public GCCoreBlockFallenMeteor(int i)
 	{
 		super(i, Material.rock);
-		this.setCreativeTab(GalacticraftCore.galacticraftTab);
 		this.setBlockBounds(0.2F, 0.2F, 0.2F, 0.8F, 0.8F, 0.8F);
 	}
+
+	@Override
+    public CreativeTabs getCreativeTabToDisplayOn()
+    {
+        return GalacticraftCore.galacticraftTab;
+    }
 
     @Override
     public void func_94332_a(IconRegister par1IconRegister)

@@ -1,7 +1,9 @@
 package micdoodle8.mods.galacticraft.core.items;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.moon.GalacticraftMoon;
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -19,7 +21,6 @@ public class GCCoreItem extends Item
 	public GCCoreItem(int par1, String iconName)
 	{
 		super(par1);
-		this.setCreativeTab(GalacticraftCore.galacticraftTab);
 		this.iconName = iconName;
 	}
 
@@ -28,5 +29,11 @@ public class GCCoreItem extends Item
     public void func_94581_a(IconRegister par1IconRegister)
     {
         this.iconIndex = par1IconRegister.func_94245_a("galacticraftcore:" + this.iconName);
+    }
+
+	@Override
+    public CreativeTabs getCreativeTab()
+    {
+        return GalacticraftCore.galacticraftTab;
     }
 }

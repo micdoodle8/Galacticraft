@@ -26,8 +26,13 @@ public class GCCoreItemCanister extends Item
 		this.setMaxStackSize(1);
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
-        this.setCreativeTab(GalacticraftCore.galacticraftTab);
 	}
+
+	@Override
+    public CreativeTabs getCreativeTab()
+    {
+        return GalacticraftCore.galacticraftTab;
+    }
 
 	@Override
 	@SideOnly(Side.CLIENT)

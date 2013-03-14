@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.moon.GalacticraftMoon;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -33,16 +34,18 @@ public class GCCoreBlock extends Block
 	protected GCCoreBlock(int i)
 	{
 		super(i, Material.rock);
-        this.setCreativeTab(GalacticraftCore.galacticraftTab);
 	}
+
+	@Override
+    public CreativeTabs getCreativeTabToDisplayOn()
+    {
+        return GalacticraftCore.galacticraftTab;
+    }
 
     @Override
     public void func_94332_a(IconRegister par1IconRegister)
     {
     	this.iconBuffer = new Icon[5][3];
-    	this.iconBuffer[0][0] = par1IconRegister.func_94245_a("galacticraftcore:oreblock_copper");
-    	this.iconBuffer[1][0] = par1IconRegister.func_94245_a("galacticraftcore:oreblock_aluminium");
-    	this.iconBuffer[2][0] = par1IconRegister.func_94245_a("galacticraftcore:oreblock_titanium");
     	this.iconBuffer[3][0] = par1IconRegister.func_94245_a("galacticraftcore:deco_aluminium_2");
     	this.iconBuffer[3][1] = par1IconRegister.func_94245_a("galacticraftcore:deco_aluminium_4");
     	this.iconBuffer[3][2] = par1IconRegister.func_94245_a("galacticraftcore:deco_aluminium_1");
@@ -54,12 +57,6 @@ public class GCCoreBlock extends Block
 	{
 		switch (meta)
 		{
-		case 0:
-			return this.iconBuffer[0][0];
-		case 1:
-			return this.iconBuffer[1][0];
-		case 2:
-			return this.iconBuffer[2][0];
 		case 3:
 			switch (side)
 			{
@@ -111,7 +108,7 @@ public class GCCoreBlock extends Block
 	@Override
     public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
     {
-        for (int var4 = 0; var4 < 5; ++var4)
+        for (int var4 = 3; var4 < 5; ++var4)
         {
             par3List.add(new ItemStack(par1, 1, var4));
         }

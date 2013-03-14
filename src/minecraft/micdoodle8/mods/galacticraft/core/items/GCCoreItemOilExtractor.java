@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
@@ -33,9 +34,14 @@ public class GCCoreItemOilExtractor extends Item
 	public GCCoreItemOilExtractor(int par1)
 	{
 		super(par1);
-		this.setCreativeTab(GalacticraftCore.galacticraftTab);
 		this.setMaxStackSize(1);
 	}
+
+	@Override
+    public CreativeTabs getCreativeTab()
+    {
+        return GalacticraftCore.galacticraftTab;
+    }
 
     @Override
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)

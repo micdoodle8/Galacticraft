@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.client.GCCorePlayerBaseClient;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
@@ -28,8 +29,13 @@ public class GCCoreItemOxygenMask extends Item
 	protected GCCoreItemOxygenMask(int par1)
 	{
 		super(par1);
-		this.setCreativeTab(GalacticraftCore.galacticraftTab);
 	}
+
+	@Override
+    public CreativeTabs getCreativeTab()
+    {
+        return GalacticraftCore.galacticraftTab;
+    }
 
     @Override
 	@SideOnly(Side.CLIENT)

@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.items;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.EnumToolMaterial;
 import net.minecraft.item.ItemAxe;
@@ -17,8 +18,13 @@ public class GCCoreItemAxe extends ItemAxe
 	{
 		super(par1, par2EnumToolMaterial);
 		this.material = par2EnumToolMaterial;
-		this.setCreativeTab(GalacticraftCore.galacticraftTab);
 	}
+
+	@Override
+    public CreativeTabs getCreativeTab()
+    {
+        return GalacticraftCore.galacticraftTab;
+    }
 
 	@Override
     @SideOnly(Side.CLIENT)

@@ -16,7 +16,6 @@ public class GCCoreItemBow extends ItemBow
 	public GCCoreItemBow(int par1)
 	{
 		super(par1);
-		this.setCreativeTab(null);
 	}
 
 	@Override

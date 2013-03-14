@@ -28,12 +28,12 @@ public class GCMoonItemBlock extends ItemBlock
 		{
 		case 0:
 		{
-			name = "aluminummoon";
+			name = "coppermoon";
 			break;
 		}
 		case 1:
 		{
-			name = "ironmoon";
+			name = "tinmoon";
 			break;
 		}
 		case 2:
@@ -54,6 +54,11 @@ public class GCMoonItemBlock extends ItemBlock
 		case 5:
 		{
 			name = "moongrass";
+			break;
+		}
+		case 14:
+		{
+			name = "bricks";
 			break;
 		}
 		default:

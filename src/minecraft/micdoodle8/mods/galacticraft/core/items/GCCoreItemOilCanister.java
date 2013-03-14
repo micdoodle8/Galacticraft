@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.items;
 import java.util.ArrayList;
 import java.util.List;
 
+import micdoodle8.mods.galacticraft.API.IRefinableItem;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -14,7 +15,7 @@ import net.minecraft.util.Icon;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class GCCoreItemOilCanister extends Item
+public class GCCoreItemOilCanister extends Item implements IRefinableItem
 {
 	protected List<Icon> icons = new ArrayList<Icon>();
 
@@ -31,9 +32,14 @@ public class GCCoreItemOilCanister extends Item
 	{
 		super(par1);
 		this.setMaxDamage(61);
-		this.setCreativeTab(GalacticraftCore.galacticraftTab);
 		this.setMaxStackSize(1);
 	}
+
+	@Override
+    public CreativeTabs getCreativeTab()
+    {
+        return GalacticraftCore.galacticraftTab;
+    }
 
 	@Override
 	@SideOnly(Side.CLIENT)
@@ -97,4 +103,26 @@ public class GCCoreItemOilCanister extends Item
         	par3List.add("Oil: " + (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage()));
     	}
     }
+
+	@Override
+	public boolean canSmeltItem(ItemStack originalStack)
+	{
+		if ((originalStack.getMaxDamage() - originalStack.getItemDamage()) > 0)
+		{
+			return true;
+		}
+		
+		return false;
+	}
+
+	@Override
+	public ItemStack getResultItem(ItemStack originalStack) 
+	{
+		if ((originalStack.getMaxDamage() - originalStack.getItemDamage()) > 0)
+		{
+			return new ItemStack(GCCoreItems.rocketFuelBucket.itemID, 1, originalStack.getItemDamage() == 0 ? 1 : originalStack.getItemDamage());
+		}
+		
+		return null;
+	}
 }

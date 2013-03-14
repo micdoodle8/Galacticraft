@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.wgen.GCCoreWorldGenForest;
 import micdoodle8.mods.galacticraft.core.wgen.GCCoreWorldGenTaiga2;
 import micdoodle8.mods.galacticraft.core.wgen.GCCoreWorldGenTrees;
@@ -16,7 +17,6 @@ public class GCCoreBlockSapling extends BlockSapling
 	protected GCCoreBlockSapling(int par1)
 	{
 		super(par1);
-		this.setCreativeTab(CreativeTabs.tabBlock);
 	}
 
 	@Override

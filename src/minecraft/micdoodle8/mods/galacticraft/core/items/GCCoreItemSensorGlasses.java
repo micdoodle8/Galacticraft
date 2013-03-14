@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.items;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumArmorMaterial;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
@@ -22,9 +23,14 @@ public class GCCoreItemSensorGlasses extends ItemArmor implements IArmorTextureP
 	public GCCoreItemSensorGlasses(int par1, EnumArmorMaterial material, int i, int j, boolean breathable)
 	{
 		super(par1, material, i, j);
-		this.setCreativeTab(GalacticraftCore.galacticraftTab);
 		this.attachedMask = breathable;
 	}
+
+	@Override
+    public CreativeTabs getCreativeTab()
+    {
+        return GalacticraftCore.galacticraftTab;
+    }
 
     @Override
 	@SideOnly(Side.CLIENT)
