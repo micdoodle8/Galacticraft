@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.Tessellator;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -61,6 +62,17 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
     @Override
 	protected void drawSlot(int par1, int par2, int par3, int par4, Tessellator par5Tessellator)
     {
+    	if (this.languageGui.isValidDestination(par1))
+    	{
+            this.languageGui.drawCenteredString(this.languageGui.fontRenderer, GCCoreGuiChoosePlanet.getDestinations(this.languageGui)[par1], this.languageGui.width / 2, par3 + 3, 16777215);
+    	}
+    	else
+    	{
+    		String str = GCCoreGuiChoosePlanet.getDestinations(this.languageGui)[par1];
+    		str = str.replace("*", "");
+            this.languageGui.drawCenteredString(this.languageGui.fontRenderer, str, this.languageGui.width / 2, par3 + 3, 16716305);
+    	}
+    	
     	if (this.isSelected(par1))
     	{
             GL11.glDisable(GL11.GL_DEPTH_TEST);
@@ -95,7 +107,7 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
 
     		if (GCCoreGuiChoosePlanet.getDestinations(this.languageGui)[par1].equals("Overworld"))
             {
-                GL11.glBindTexture(GL11.GL_TEXTURE_2D, FMLClientHandler.instance().getClient().renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/planets/overworld.png"));
+                FMLClientHandler.instance().getClient().renderEngine.func_98187_b("/micdoodle8/mods/galacticraft/core/client/planets/overworld.png");
 
                 var3.startDrawingQuads();
                 var3.addVertexWithUV(par2 - 10 - this.slotHeight * 0.9, 	par3 - 1 + this.slotHeight * 0.9, 	-90.0D, 0.0, 1.0);
@@ -103,23 +115,14 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
                 var3.addVertexWithUV(par2 - 10, 							par3 - 1, 							-90.0D, 1.0, 0.0);
                 var3.addVertexWithUV(par2 - 10 - this.slotHeight * 0.9, 	par3 - 1, 							-90.0D, 0.0, 0.0);
                 var3.draw();
+                
+                GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
             }
 
             GL11.glDepthMask(true);
             GL11.glEnable(GL11.GL_DEPTH_TEST);
             GL11.glEnable(GL11.GL_ALPHA_TEST);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    	}
-
-    	if (this.languageGui.isValidDestination(par1))
-    	{
-            this.languageGui.drawCenteredString(this.languageGui.fontRenderer, GCCoreGuiChoosePlanet.getDestinations(this.languageGui)[par1], this.languageGui.width / 2, par3 + 3, 16777215);
-    	}
-    	else
-    	{
-    		String str = GCCoreGuiChoosePlanet.getDestinations(this.languageGui)[par1];
-    		str = str.replace("*", "");
-            this.languageGui.drawCenteredString(this.languageGui.fontRenderer, str, this.languageGui.width / 2, par3 + 3, 16716305);
     	}
     }
 

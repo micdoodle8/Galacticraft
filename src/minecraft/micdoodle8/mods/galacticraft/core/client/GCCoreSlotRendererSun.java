@@ -8,7 +8,7 @@ public class GCCoreSlotRendererSun implements IPlanetSlotRenderer
 	@Override
 	public String getPlanetSprite()
 	{
-		return "/terrain/sun.png";
+		return "/environment/sun.png";
 	}
 
 	@Override
