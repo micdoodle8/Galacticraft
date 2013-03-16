@@ -35,6 +35,7 @@ import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelSpaceship;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererBreathableAir;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererCraftingTable;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererCrudeOil;
+import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererLandingPad;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererMeteor;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererOxygenPipe;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererUnlitTorch;
@@ -101,6 +102,7 @@ import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.particle.EntitySmokeFX;
 import net.minecraft.client.renderer.EntityRenderer;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -111,6 +113,7 @@ import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.src.ModelPlayerAPI;
 import net.minecraft.src.PlayerAPI;
 import net.minecraft.src.RenderPlayerAPI;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProviderSurface;
@@ -239,8 +242,8 @@ public class ClientProxyCore extends CommonProxyCore
         RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererCraftingTable(ClientProxyCore.craftingTableID));
         ClientProxyCore.crudeOilRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererCrudeOil(ClientProxyCore.crudeOilRenderID));
-//        ClientProxyCore.fullLandingPadRenderID = RenderingRegistry.getNextAvailableRenderId();
-//        RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererLandingPad(ClientProxyCore.fullLandingPadRenderID));
+        ClientProxyCore.fullLandingPadRenderID = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererLandingPad(ClientProxyCore.fullLandingPadRenderID));
         final IMapPlanet earth = new GCCoreMapPlanetOverworld();
         final IMapPlanet moon = new GCMoonMapPlanet();
 		GalacticraftCore.addAdditionalMapPlanet(earth);
@@ -666,6 +669,16 @@ public class ClientProxyCore extends CommonProxyCore
                 	e.printStackTrace();
                 }
             }
+            else if (packetType == 15)
+            {
+                final Class[] decodeAs = {Integer.class};
+                final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
+                
+            	if (player.ridingEntity != null && player.ridingEntity instanceof EntitySpaceshipBase)
+            	{
+            		((EntitySpaceshipBase) player.ridingEntity).fuel = (Integer) packetReadout[0];
+            	}
+            }
 		}
     }
 
@@ -1009,6 +1022,35 @@ public class ClientProxyCore extends CommonProxyCore
                 	}
             	}
             }
+        }
+    	
+        private void drawOutlinedBoundingBox(AxisAlignedBB par1AxisAlignedBB)
+        {
+            Tessellator tessellator = Tessellator.instance;
+            tessellator.startDrawing(3);
+            tessellator.addVertex(par1AxisAlignedBB.minX, par1AxisAlignedBB.minY, par1AxisAlignedBB.minZ);
+            tessellator.addVertex(par1AxisAlignedBB.maxX, par1AxisAlignedBB.minY, par1AxisAlignedBB.minZ);
+            tessellator.addVertex(par1AxisAlignedBB.maxX, par1AxisAlignedBB.minY, par1AxisAlignedBB.maxZ);
+            tessellator.addVertex(par1AxisAlignedBB.minX, par1AxisAlignedBB.minY, par1AxisAlignedBB.maxZ);
+            tessellator.addVertex(par1AxisAlignedBB.minX, par1AxisAlignedBB.minY, par1AxisAlignedBB.minZ);
+            tessellator.draw();
+            tessellator.startDrawing(3);
+            tessellator.addVertex(par1AxisAlignedBB.minX, par1AxisAlignedBB.maxY, par1AxisAlignedBB.minZ);
+            tessellator.addVertex(par1AxisAlignedBB.maxX, par1AxisAlignedBB.maxY, par1AxisAlignedBB.minZ);
+            tessellator.addVertex(par1AxisAlignedBB.maxX, par1AxisAlignedBB.maxY, par1AxisAlignedBB.maxZ);
+            tessellator.addVertex(par1AxisAlignedBB.minX, par1AxisAlignedBB.maxY, par1AxisAlignedBB.maxZ);
+            tessellator.addVertex(par1AxisAlignedBB.minX, par1AxisAlignedBB.maxY, par1AxisAlignedBB.minZ);
+            tessellator.draw();
+            tessellator.startDrawing(1);
+            tessellator.addVertex(par1AxisAlignedBB.minX, par1AxisAlignedBB.minY, par1AxisAlignedBB.minZ);
+            tessellator.addVertex(par1AxisAlignedBB.minX, par1AxisAlignedBB.maxY, par1AxisAlignedBB.minZ);
+            tessellator.addVertex(par1AxisAlignedBB.maxX, par1AxisAlignedBB.minY, par1AxisAlignedBB.minZ);
+            tessellator.addVertex(par1AxisAlignedBB.maxX, par1AxisAlignedBB.maxY, par1AxisAlignedBB.minZ);
+            tessellator.addVertex(par1AxisAlignedBB.maxX, par1AxisAlignedBB.minY, par1AxisAlignedBB.maxZ);
+            tessellator.addVertex(par1AxisAlignedBB.maxX, par1AxisAlignedBB.maxY, par1AxisAlignedBB.maxZ);
+            tessellator.addVertex(par1AxisAlignedBB.minX, par1AxisAlignedBB.minY, par1AxisAlignedBB.maxZ);
+            tessellator.addVertex(par1AxisAlignedBB.minX, par1AxisAlignedBB.maxY, par1AxisAlignedBB.maxZ);
+            tessellator.draw();
         }
 
     	public static void zoom(float value)
