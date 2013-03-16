@@ -27,6 +27,7 @@ public class GCCoreEntityFlag extends Entity
     	super(world);
         this.yOffset = 1.5F;
         this.setSize(0.4F, 3F);
+        this.ignoreFrustumCheck = true;
     }
 
     public GCCoreEntityFlag(World par1World, double x, double y, double z, float dir)
