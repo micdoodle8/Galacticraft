@@ -1183,9 +1183,10 @@ public class GCCorePlayerBase extends ServerPlayerBase
 		String s2 = null;
 		if (stack != null && stack.getItem() instanceof GCCoreItemParachute)
 		{
-			s = stack.getItem().getItemDisplayName(stack);
+			s = stack.getItem().getUnlocalizedName(stack);
 
-			s2 = s.replace("item.parachute.", "");
+			s2 = s.replace("item.parachute_", "");
+			FMLLog.info(s2);
 		}
 
 	  	final Object[] toSend = {this.player.username, stack == null ? "none" : String.valueOf(s2)};
