@@ -35,8 +35,6 @@ public class GCCoreContainerRocketRefill extends Container
         int var4;
         int var5;
 
-        this.addSlotToContainer(new GCCoreSlotFuel(this.spaceshipInv, 0, 80, 18));
-
         for (var4 = 0; var4 < 3; ++var4)
         {
             for (var5 = 0; var5 < 9; ++var5)
@@ -55,8 +53,6 @@ public class GCCoreContainerRocketRefill extends Container
     {
         int var4;
         int var5;
-
-        this.addSlotToContainer(new GCCoreSlotFuel(this.spaceshipInv, 0, 80, 18));
 
         for (var4 = 0; var4 < 3; ++var4)
         {
