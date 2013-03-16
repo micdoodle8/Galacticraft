@@ -9,7 +9,9 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -40,27 +42,50 @@ public class GCCoreItemSpaceship extends GCCoreItem
     {
     	int amountOfCorrectBlocks = 0;
 
-    	final GCCoreEntitySpaceship spaceship = new GCCoreEntitySpaceship(par3World, par4 + 0.5F, par5 - 1.5F, par6 + 0.5F, par1ItemStack.getItemDamage());
-
     	if (par3World.isRemote)
     	{
     		return false;
     	}
     	else
     	{
+    		float centerX = -1;
+    		float centerY = -1;
+    		float centerZ = -1;
+    		
     		for (int i = -1; i < 2; i++)
     		{
     			for (int j = -1; j < 2; j++)
         		{
-    				if (par3World.getBlockId(par4 + i, par5, par6 + j) == GCCoreBlocks.landingPad.blockID)
+    				int id = par3World.getBlockId(par4 + i, par5, par6 + j);
+    				int id2 = par3World.getBlockId(par4 + i, par5 + 1, par6 + j);
+
+    				if (id == GCCoreBlocks.landingPad.blockID || id == GCCoreBlocks.landingPadFull.blockID || id2 == GCCoreBlocks.landingPadFull.blockID)
     				{
     					amountOfCorrectBlocks++;
+    					
+						centerX = par4 + i + 0.5F;
+						centerY = par5 - 2.2F;
+						centerZ = par6 + j + 0.5F;
+    					
+    					if (id == GCCoreBlocks.landingPadFull.blockID || id2 == GCCoreBlocks.landingPadFull.blockID)
+    					{
+    						amountOfCorrectBlocks = 9;
+    					}
+    					
+    					if (id2 == GCCoreBlocks.landingPadFull.blockID)
+    					{
+    						centerX = par4 + i + 0.5F;
+    						centerY = par5 + 1 - 2.2F;
+    						centerZ = par6 + j + 0.5F;
+    					}
     				}
         		}
     		}
 
     		if (amountOfCorrectBlocks == 9)
     		{
+    	    	final GCCoreEntitySpaceship spaceship = new GCCoreEntitySpaceship(par3World, centerX, centerY + 0.2D, centerZ, par1ItemStack.getItemDamage());
+
 	    		par3World.spawnEntityInWorld(spaceship);
 	    		if (!par2EntityPlayer.capabilities.isCreativeMode)
 	    		par2EntityPlayer.inventory.consumeInventoryItem(par1ItemStack.getItem().itemID);
