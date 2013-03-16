@@ -11,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumMovingObjectType;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
@@ -75,6 +76,8 @@ public class GCCoreItemFlag extends GCCoreItem
     public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4)
     {
         final int useTime = this.getMaxItemUseDuration(par1ItemStack) - par4;
+        
+        boolean placed = false;
 
         final MovingObjectPosition var12 = this.getMovingObjectPositionFromPlayer(par2World, par3EntityPlayer, true);
 
@@ -95,28 +98,48 @@ public class GCCoreItemFlag extends GCCoreItem
             if (!par2World.isRemote)
             {
             	final GCCoreEntityFlag flag = new GCCoreEntityFlag(par2World, x + 0.5F, y + 1.0F, z + 0.5F, par3EntityPlayer.rotationYaw - 90F);
-            	par2World.spawnEntityInWorld(flag);
-                flag.setType(par1ItemStack.getItemDamage());
-                flag.setOwner(par3EntityPlayer.username);
+            	
+            	if (par2World.getEntitiesWithinAABB(GCCoreEntityFlag.class, AxisAlignedBB.getAABBPool().getAABB(x, y, z, x + 1, y + 3, z + 1)).size() == 0)
+            	{
+                	par2World.spawnEntityInWorld(flag);
+                    flag.setType(par1ItemStack.getItemDamage());
+                    flag.setOwner(par3EntityPlayer.username);
+                    placed = true;
+            	}
+            	else
+            	{
+            		par3EntityPlayer.sendChatToPlayer("Flag already placed here!");
+            	}
             }
 
-            final int var2 = this.getInventorySlotContainItem(par3EntityPlayer, this.itemID);
-
-            if (var2 >= 0)
+            if (placed)
             {
-                if (--par3EntityPlayer.inventory.mainInventory[var2].stackSize <= 0)
+                final int var2 = this.getInventorySlotContainItem(par3EntityPlayer, par1ItemStack);
+
+                if (var2 >= 0)
                 {
-                	par3EntityPlayer.inventory.mainInventory[var2] = null;
+                    if (--par3EntityPlayer.inventory.mainInventory[var2].stackSize <= 0)
+                    {
+                    	par3EntityPlayer.inventory.mainInventory[var2] = null;
+                    }
                 }
             }
         }
+        
+//        if (placed)
+//        {
+//        	if (--par1ItemStack.stackSize <= 0)
+//        	{
+//        		par1ItemStack = null;
+//        	}
+//        }
     }
 
-    private int getInventorySlotContainItem(EntityPlayer player, int par1)
+    private int getInventorySlotContainItem(EntityPlayer player, ItemStack stack)
     {
         for (int var2 = 0; var2 < player.inventory.mainInventory.length; ++var2)
         {
-            if (player.inventory.mainInventory[var2] != null && player.inventory.mainInventory[var2].itemID == par1)
+            if (player.inventory.mainInventory[var2] != null && player.inventory.mainInventory[var2].isItemEqual(stack))
             {
                 return var2;
             }
