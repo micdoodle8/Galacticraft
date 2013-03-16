@@ -158,19 +158,59 @@ public class GalacticraftCore
 
 	public static ArrayList<Integer> hiddenItems = new ArrayList<Integer>();
 
+	public static boolean inMCP = true;
+	public static boolean playerAPILoaded = true;
+
 	@PreInit
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		GalacticraftCore.moon.preLoad(event);
 		
-		try
+		try 
 		{
-			ServerPlayerAPI.register(GalacticraftCore.MODID, GCCorePlayerBase.class);
+			Class.forName("net.minecraft.block.Block");
+		} 
+		catch (ClassNotFoundException e1) 
+		{
+			inMCP = false;
 		}
-		catch (Exception e)
+		
+		if (inMCP)
 		{
-			FMLLog.severe("PLAYER API NOT INSTALLED!");
-			e.printStackTrace();
+			try 
+			{
+				Class.forName("net.minecraft.src.ServerPlayerAPI");
+			} 
+			catch (ClassNotFoundException e1) 
+			{
+				playerAPILoaded = false;
+			}
+		}
+		else
+		{
+			try 
+			{
+				Class.forName("ServerPlayerAPI");
+			} 
+			catch (ClassNotFoundException e1) 
+			{
+				playerAPILoaded = false;
+			}
+		}
+		
+		FMLLog.info("Galacticraft Load Status - PlayerAPI Found: " + playerAPILoaded + " - " + "In MCP: " + inMCP);
+		
+		if (playerAPILoaded)
+		{
+			try
+			{
+				ServerPlayerAPI.register(GalacticraftCore.MODID, GCCorePlayerBase.class);
+			}
+			catch (Exception e)
+			{
+				FMLLog.severe("PLAYER API NOT INSTALLED!");
+				e.printStackTrace();
+			}
 		}
 		
 		GalacticraftCore.registerSubMod(GalacticraftCore.moon);
@@ -342,7 +382,7 @@ public class GalacticraftCore
                 final Class[] decodeAs = {String.class};
                 final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
 
-                if (playerBase != null && playerBase.teleportCooldown <= 0)
+                if (playerBase != null)
                 {
     	    		final Integer dim = WorldUtil.getProviderForName((String)packetReadout[0]).dimensionId;
     	    		playerBase.travelToTheEnd(dim);
@@ -363,12 +403,12 @@ public class GalacticraftCore
                 	{
                 		ItemStack stack2 = null;
 
-                		if (playerBase != null && playerBase.playerTankInventory != null)
+                		if (player != null && playerBase.playerTankInventory != null)
                 		{
                 			stack2 = playerBase.playerTankInventory.getStackInSlot(4);
                 		}
 
-	    				if (stack2 != null && stack2.getItem() instanceof GCCoreItemParachute || playerBase != null && playerBase.launchAttempts > 0)
+	    				if (stack2 != null && stack2.getItem() instanceof GCCoreItemParachute || player != null && playerBase.launchAttempts > 0)
 	    				{
 	                    	ship.ignite();
 	                    	playerBase.launchAttempts = 0;
@@ -384,7 +424,7 @@ public class GalacticraftCore
                 	{
                 		player.sendChatToPlayer("I'll probably need some Rocket Fuel before this will fly!");
                 		FMLLog.warning("Player (" + player.username + ") doesn't have rocket fuel to launch spaceship. If player DOES, please report the following line as a bug");
-                		FMLLog.warning("STACKNULL: " + (stack == null) + " ISSTACKFUEL: " + (stack == null ? "false" : stack.getItem().itemID == GCCoreItems.rocketFuelBucket.itemID) + " PLAYERBASENULL: " + (playerBase == null) + " PLAYERBASETANKINVENTORYNULL " + (playerBase == null ? "true" : playerBase.playerTankInventory == null));
+                		FMLLog.warning("STACKNULL: " + (stack == null) + " ISSTACKFUEL: " + (stack == null ? "false" : stack.getItem().itemID == GCCoreItems.rocketFuelBucket.itemID) + " PLAYERBASENULL: " + (player == null) + " PLAYERBASETANKINVENTORYNULL " + (player == null ? "true" : playerBase.playerTankInventory == null));
                 		GalacticraftCore.this.chatCooldown = 250;
                 	}
                 }
@@ -583,7 +623,7 @@ public class GalacticraftCore
 			else if (type.equals(EnumSet.of(TickType.WORLD)))
 			{
 				WorldServer world = (WorldServer) tickData[0];
-				for (Object o : world.getLoadedEntityList())
+				for (Object o : world.loadedEntityList)
 				{
 					if (o instanceof Entity && o instanceof IInterplanetaryObject)
 					{

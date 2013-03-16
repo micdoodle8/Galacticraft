@@ -10,6 +10,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.EnumRarity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumMovingObjectType;
@@ -25,7 +26,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  *  All rights reserved.
  *
  */
-public class GCCoreItemFlag extends GCCoreItem
+public class GCCoreItemFlag extends Item
 {
 	protected List<Icon> icons = new ArrayList<Icon>();
 	
@@ -51,7 +52,7 @@ public class GCCoreItemFlag extends GCCoreItem
 
 	public GCCoreItemFlag(int par1)
 	{
-		super(par1, "");
+		super(par1);
 		this.setMaxDamage(0);
 		this.setHasSubtypes(true);
 		this.setMaxStackSize(1);
@@ -64,6 +65,12 @@ public class GCCoreItemFlag extends GCCoreItem
     	{
             par3List.add(new ItemStack(par1, 1, i));
     	}
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void func_94581_a(IconRegister par1IconRegister)
+    {
+        this.iconIndex = null;
     }
 
 	@Override
@@ -186,26 +193,6 @@ public class GCCoreItemFlag extends GCCoreItem
     {
         return EnumRarity.epic;
     }
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void func_94581_a(IconRegister iconRegister)
-	{
-		List<ItemStack> list = new ArrayList<ItemStack>();
-		this.getSubItems(this.itemID, this.getCreativeTab(), list);
-
-		if (list.size() > 0)
-		{
-			for (ItemStack itemStack : list)
-			{
-				this.icons.add(iconRegister.func_94245_a(this.getUnlocalizedName(itemStack).replace("item.", "galacticraftcore")));
-			}
-		}
-		else
-		{
-			this.iconIndex = iconRegister.func_94245_a(this.getUnlocalizedName().replace("item.", "galacticraftcore"));
-		}
-	}
 
 	@Override
 	public String getUnlocalizedName(ItemStack itemStack)

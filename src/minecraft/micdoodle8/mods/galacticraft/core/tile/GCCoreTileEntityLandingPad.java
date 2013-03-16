@@ -48,6 +48,18 @@ public class GCCoreTileEntityLandingPad extends TileEntityAdvanced implements IP
 				}
 			}
 			
+			for (TileEntity tile : this.connectedTiles)
+			{
+				GCCoreTileEntityFuelLoader loader = (GCCoreTileEntityFuelLoader) tile;
+
+				TileEntity newTile = this.worldObj.getBlockTileEntity(loader.xCoord, loader.yCoord, loader.zCoord);
+
+				if (newTile == null || !(newTile instanceof GCCoreTileEntityFuelLoader))
+				{
+					this.connectedTiles.remove(newTile);
+				}
+			}
+			
 			List list = this.worldObj.getEntitiesWithinAABB(EntitySpaceshipBase.class, AxisAlignedBB.getAABBPool().getAABB(this.xCoord - 0.5D, this.yCoord, this.zCoord - 0.5D, this.xCoord + 0.5D, this.yCoord + 5, this.zCoord + 0.5D));
 			
 			boolean changed = false;

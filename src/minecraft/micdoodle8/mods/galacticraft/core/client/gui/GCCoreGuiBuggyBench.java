@@ -19,6 +19,7 @@ public class GCCoreGuiBuggyBench extends GuiContainer
     public GCCoreGuiBuggyBench(InventoryPlayer par1InventoryPlayer)
     {
         super(new GCCoreContainerBuggyBench(par1InventoryPlayer, 0, 0, 0));
+        this.ySize = 221;
     }
 
     @Override
@@ -26,8 +27,8 @@ public class GCCoreGuiBuggyBench extends GuiContainer
     {
     	super.initGui();
         this.buttonList.clear();
-        this.buttonList.add(new GuiButton(0, this.width / 2 - 130, this.height / 2 - 30, 40, 20, "Back"));
-        this.buttonList.add(new GuiButton(1, this.width / 2 + 90, this.height / 2 - 30, 40, 20, "Next"));
+        this.buttonList.add(new GuiButton(0, this.width / 2 - 130, this.height / 2 - 30 + 27, 40, 20, "Back"));
+        this.buttonList.add(new GuiButton(1, this.width / 2 + 90, this.height / 2 - 30 + 27, 40, 20, "Next"));
     }
 
     @Override
@@ -58,8 +59,8 @@ public class GCCoreGuiBuggyBench extends GuiContainer
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRenderer.drawString("NASA Workbench", 7, -20, 4210752);
-        this.fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, 202 - 104 + 2, 4210752);
+        this.fontRenderer.drawString("NASA Workbench", 7, -20 + 27, 4210752);
+        this.fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, 202 - 104 + 2 + 27, 4210752);
     }
 
     @Override

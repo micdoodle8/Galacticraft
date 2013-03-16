@@ -25,7 +25,7 @@ public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable im
 	private ItemStack[] containingItems = new ItemStack[2];
 	public static final double WATTS_PER_TICK = 300;
 	private int playersUsing = 0;
-	private GCCoreTileEntityLandingPad attachedLandingPad;
+	public GCCoreTileEntityLandingPad attachedLandingPad;
 	
 	@Override
 	public boolean canConnect(ForgeDirection direction) 

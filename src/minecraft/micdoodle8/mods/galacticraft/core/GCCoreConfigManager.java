@@ -250,7 +250,11 @@ public class GCCoreConfigManager
 		}
 		finally
 		{
-			GCCoreConfigManager.configuration.save();
+			if (configuration.hasChanged())
+			{
+				GCCoreConfigManager.configuration.save();
+			}
+			
 			GCCoreConfigManager.loaded = true;
 		}
     }

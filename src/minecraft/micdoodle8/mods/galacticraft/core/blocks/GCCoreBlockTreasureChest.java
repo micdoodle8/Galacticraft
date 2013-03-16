@@ -5,11 +5,15 @@ import static net.minecraftforge.common.ForgeDirection.DOWN;
 import java.util.Iterator;
 import java.util.Random;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
@@ -37,6 +41,13 @@ public class GCCoreBlockTreasureChest extends BlockContainer
     protected GCCoreBlockTreasureChest(int par1)
     {
         super(par1, Material.rock);
+    }
+
+    @Override
+	@SideOnly(Side.CLIENT)
+    public void func_94332_a(IconRegister par1IconRegister)
+    {
+    	this.field_94336_cN = par1IconRegister.func_94245_a("galacticraftcore:treasure_front_single");
     }
 
 	@Override

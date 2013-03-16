@@ -63,22 +63,10 @@ public class GCCoreItemOxygenTank extends Item
 	@SideOnly(Side.CLIENT)
 	public void func_94581_a(IconRegister iconRegister)
 	{
-		List<ItemStack> list = new ArrayList<ItemStack>();
-		this.getSubItems(this.itemID, this.getCreativeTab(), list);
-
-		if (list.size() > 0)
-		{
-			for (ItemStack itemStack : list)
-			{
-				this.icons.add(iconRegister.func_94245_a("galacticraftcore:oxygen_tank_light"));
-				this.icons.add(iconRegister.func_94245_a("galacticraftcore:oxygen_tank_medium"));
-				this.icons.add(iconRegister.func_94245_a("galacticraftcore:oxygen_tank_heavy"));
-			}
-		}
-		else
-		{
-			this.iconIndex = iconRegister.func_94245_a("galacticraftcore:extractor_1");
-		}
+		this.icons.add(iconRegister.func_94245_a("galacticraftcore:oxygen_tank_light"));
+		this.icons.add(iconRegister.func_94245_a("galacticraftcore:oxygen_tank_medium"));
+		this.icons.add(iconRegister.func_94245_a("galacticraftcore:oxygen_tank_heavy"));
+		this.iconIndex = iconRegister.func_94245_a("galacticraftcore:extractor_1");
 	}
 
 	@Override

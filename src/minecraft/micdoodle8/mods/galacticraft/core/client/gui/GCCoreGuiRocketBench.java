@@ -19,6 +19,7 @@ public class GCCoreGuiRocketBench extends GuiContainer
     public GCCoreGuiRocketBench(InventoryPlayer par1InventoryPlayer, int x, int y, int z)
     {
         super(new GCCoreContainerRocketBench(par1InventoryPlayer, x, y, z));
+        this.ySize = 221;
     }
 
     @Override
@@ -26,10 +27,10 @@ public class GCCoreGuiRocketBench extends GuiContainer
     {
     	super.initGui();
         this.buttonList.clear();
-        final GuiButton button = new GuiButton(0, this.width / 2 - 130, this.height / 2 - 30, 40, 20, "Back");
+        final GuiButton button = new GuiButton(0, this.width / 2 - 130, this.height / 2 - 30 + 27, 40, 20, "Back");
         button.enabled = false;
         this.buttonList.add(button);
-        this.buttonList.add(new GuiButton(1, this.width / 2 + 90, this.height / 2 - 30, 40, 20, "Next"));
+        this.buttonList.add(new GuiButton(1, this.width / 2 + 90, this.height / 2 - 30 + 27, 40, 20, "Next"));
     }
 
     @Override
@@ -58,8 +59,8 @@ public class GCCoreGuiRocketBench extends GuiContainer
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRenderer.drawString("NASA Workbench", 7, -20, 4210752);
-        this.fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, 202 - 104 + 2, 4210752);
+        this.fontRenderer.drawString("NASA Workbench", 7, -20 + 27, 4210752);
+        this.fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, 202 - 104 + 2 + 27, 4210752);
     }
 
     @Override

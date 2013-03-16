@@ -21,13 +21,14 @@ public class GCCoreContainerBuggyBench extends Container
         this.addSlotToContainer(new GCCoreSlotRocketBenchResult(par1InventoryPlayer.player, this.craftMatrix, this.craftResult, 0, 142, 79));
         int var6;
         int var7;
+        int change = 27;
 
         // Body
         for (var6 = 0; var6 < 4; ++var6)
         {
             for (var7 = 0; var7 < 3; ++var7)
             {
-                this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, var7 * 4 + var6 + 1, 39 + var7 * 18, 14 + var6 * 18, x, y, z, par1InventoryPlayer.player));
+                this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, var7 * 4 + var6 + 1, 39 + var7 * 18, 14 + var6 * 18 + change, x, y, z, par1InventoryPlayer.player));
             }
         }
 
@@ -35,14 +36,14 @@ public class GCCoreContainerBuggyBench extends Container
         {
             for (var7 = 0; var7 < 2; ++var7)
             {
-                this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, var7 * 2 + var6 + 13, 21 + var7 * 72, 14 + var6 * 54, x, y, z, par1InventoryPlayer.player));
+                this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, var7 * 2 + var6 + 13, 21 + var7 * 72, 14 + var6 * 54 + change, x, y, z, par1InventoryPlayer.player));
             }
         }
 
         // Addons
         for (int var8 = 0; var8 < 3; var8++)
         {
-            this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, 17 + var8, 93 + var8 * 26, -15, x, y, z, par1InventoryPlayer.player));
+            this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, 17 + var8, 93 + var8 * 26, -15 + change, x, y, z, par1InventoryPlayer.player));
         }
 
         // Player inv:
@@ -51,13 +52,13 @@ public class GCCoreContainerBuggyBench extends Container
         {
             for (var7 = 0; var7 < 9; ++var7)
             {
-                this.addSlotToContainer(new Slot(par1InventoryPlayer, var7 + var6 * 9 + 9, 8 + var7 * 18, 111 + var6 * 18));
+                this.addSlotToContainer(new Slot(par1InventoryPlayer, var7 + var6 * 9 + 9, 8 + var7 * 18, 111 + var6 * 18 + change));
             }
         }
 
         for (var6 = 0; var6 < 9; ++var6)
         {
-            this.addSlotToContainer(new Slot(par1InventoryPlayer, var6, 8 + var6 * 18, 169));
+            this.addSlotToContainer(new Slot(par1InventoryPlayer, var6, 8 + var6 * 18, 169 + change));
         }
 
         this.onCraftMatrixChanged(this.craftMatrix);

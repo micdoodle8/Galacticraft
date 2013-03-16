@@ -5,9 +5,11 @@ import java.util.HashSet;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityBreathableAir;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenDistributor;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityUnlitTorch;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.core.vector.Vector3;
+import cpw.mods.fml.common.FMLLog;
 
 public class OxygenBubble 
 {
@@ -17,18 +19,14 @@ public class OxygenBubble
 
 	public HashSet<TileEntity> checkedBlocks = new HashSet<TileEntity>();
 	
+	public HashSet<TileEntity> connectedTorches = new HashSet<TileEntity>();
+	
 	public TileEntity pointer;
 	
     public OxygenBubble(TileEntity pointer) 
     {
     	this.pointer = pointer;
 	}
-
-//	public static void emitGasFromDistributor(TileEntity sender)
-//    {
-//		OxygenBubble calculation = new OxygenBubble(sender);
-//    	calculation.calculate();
-//    }
 	
 	/**
 	 * Recursive loop that iterates through connected tubes and adds connected acceptors to an ArrayList.
@@ -49,6 +47,10 @@ public class OxygenBubble
 				else if (bubbleTile instanceof GCCoreTileEntityBreathableAir)
 				{
 					this.connectedAir.add(bubbleTile);
+				}
+				else if (bubbleTile instanceof GCCoreTileEntityUnlitTorch)
+				{
+					this.connectedTorches.add(bubbleTile);
 				}
 			}
 			
@@ -87,6 +89,21 @@ public class OxygenBubble
 					}
 				}
 			}
+			
+			FMLLog.info("" + this.connectedTorches.size());
+
+			for (TileEntity tile : this.connectedTorches)
+			{
+				if (tile instanceof GCCoreTileEntityUnlitTorch)
+				{
+					GCCoreTileEntityUnlitTorch torch = (GCCoreTileEntityUnlitTorch) tile;
+
+					if (!this.isDistributorWithinRange(torch, true) && torch.worldObj.getBlockId(torch.xCoord, torch.yCoord, torch.zCoord) == GCCoreBlocks.unlitTorchLit.blockID)
+					{
+						torch.worldObj.setBlockAndMetadataWithNotify(torch.xCoord, torch.yCoord, torch.zCoord, GCCoreBlocks.unlitTorch.blockID, 0, 3);
+					}
+				}
+			}
 		}
 	}
 
@@ -94,6 +111,7 @@ public class OxygenBubble
 	{
 		HashSet<TileEntity> allObjects = (HashSet<TileEntity>) this.connectedAir.clone();
 		allObjects.addAll(this.connectedDistributors);
+		allObjects.addAll(this.connectedTorches);
 		
 		for(TileEntity object : allObjects)
 		{
@@ -111,6 +129,11 @@ public class OxygenBubble
 					if (this.connectedDistributors.contains(object))
 					{
 						this.connectedDistributors.remove(object);
+					}
+					
+					if (this.connectedTorches.contains(object))
+					{
+						this.connectedTorches.remove(object);
 					}
 				}
 			}
@@ -152,6 +175,11 @@ public class OxygenBubble
 								{
 									distributor.worldObj.setBlockAndMetadataWithNotify(x, y, z, GCCoreBlocks.breatheableAir.blockID, 0, 3);
 								}
+
+								if (distributor.worldObj.getBlockId(x, y, z) == GCCoreBlocks.unlitTorch.blockID && !distributor.worldObj.isRemote)
+								{
+									distributor.worldObj.setBlockAndMetadataWithNotify(x, y, z, GCCoreBlocks.unlitTorchLit.blockID, 0, 3);
+								}
 							}
 						}
 					}
@@ -177,9 +205,25 @@ public class OxygenBubble
 				}
 			}
 		}
+		
+		if (!this.connectedTorches.isEmpty())
+		{
+			for (TileEntity tile : this.connectedTorches)
+			{
+				if (tile instanceof GCCoreTileEntityUnlitTorch)
+				{
+					GCCoreTileEntityUnlitTorch torch = (GCCoreTileEntityUnlitTorch) tile;
+					
+					if (!torch.worldObj.isRemote && !this.isDistributorWithinRange(torch, false) && torch.worldObj.getBlockId(torch.xCoord, torch.yCoord, torch.zCoord) == GCCoreBlocks.unlitTorchLit.blockID)
+					{
+						torch.worldObj.setBlockAndMetadataWithNotify(torch.xCoord, torch.yCoord, torch.zCoord, GCCoreBlocks.unlitTorch.blockID, 0, 3);
+					}
+				}
+			}
+		}
 	}
 	
-	public boolean isDistributorWithinRange(GCCoreTileEntityBreathableAir airBlock, boolean extra)
+	public boolean isDistributorWithinRange(TileEntity tileToCheck, boolean extra)
 	{
 		if (!this.connectedDistributors.isEmpty())
 		{
@@ -189,7 +233,7 @@ public class OxygenBubble
 				{
 					GCCoreTileEntityOxygenDistributor distributor = (GCCoreTileEntityOxygenDistributor) tile;
 					
-					if (distributor.getDistanceFrom(airBlock.xCoord + 0.5, airBlock.yCoord + 0.5, airBlock.zCoord + 0.5) <= distributor.power * (extra ? 1.5 : 1))
+					if (distributor.getDistanceFrom(tileToCheck.xCoord + 0.5, tileToCheck.yCoord + 0.5, tileToCheck.zCoord + 0.5) <= distributor.power * (extra ? 1.5 : 1))
 					{
 						return true;
 					}
@@ -217,7 +261,7 @@ public class OxygenBubble
     			
     			TileEntity acceptor = vec.clone().modifyPositionFromSide(orientation).getTileEntity(tileEntity.worldObj);
     			
-    			if(acceptor instanceof GCCoreTileEntityOxygenDistributor || acceptor instanceof GCCoreTileEntityBreathableAir)
+    			if(acceptor instanceof GCCoreTileEntityOxygenDistributor || acceptor instanceof GCCoreTileEntityBreathableAir || acceptor instanceof GCCoreTileEntityUnlitTorch)
     			{
     				tiles[orientation.ordinal()] = acceptor;
     			}

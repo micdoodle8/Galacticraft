@@ -5,10 +5,12 @@ import java.util.List;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityBuggy;
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumMovingObjectType;
@@ -25,17 +27,23 @@ import cpw.mods.fml.relauncher.SideOnly;
  *  All rights reserved.
  *
  */
-public class GCCoreItemBuggy extends GCCoreItem
+public class GCCoreItemBuggy extends Item
 {
 	public GCCoreItemBuggy(int par1)
 	{
-		super(par1, "");
+		super(par1);
 	}
 
 	@Override
     public CreativeTabs getCreativeTab()
     {
         return GalacticraftCore.galacticraftTab;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void func_94581_a(IconRegister par1IconRegister)
+    {
+        this.iconIndex = null;
     }
 
 	@Override

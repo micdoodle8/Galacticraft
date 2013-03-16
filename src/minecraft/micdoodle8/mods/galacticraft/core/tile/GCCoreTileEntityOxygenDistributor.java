@@ -75,6 +75,11 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityElectricityRunn
         				tile.worldObj.func_94571_i(tile.xCoord, tile.yCoord, tile.zCoord);
 						tile.invalidate();
             		}
+            		
+            		if (tile != null && tile instanceof GCCoreTileEntityUnlitTorch)
+            		{
+            			tile.worldObj.setBlockAndMetadataWithNotify(tile.xCoord, tile.yCoord, tile.zCoord, GCCoreBlocks.unlitTorch.blockID, 0, 3);
+            		}
             	}
         	}
     	}
@@ -119,6 +124,11 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityElectricityRunn
 		        				tile.worldObj.func_94571_i(tile.xCoord, tile.yCoord, tile.zCoord);
 								tile.invalidate();
 		            		}
+		            		
+		            		if (tile != null && tile instanceof GCCoreTileEntityUnlitTorch)
+		            		{
+		            			tile.worldObj.setBlockAndMetadataWithNotify(tile.xCoord, tile.yCoord, tile.zCoord, GCCoreBlocks.unlitTorch.blockID, 0, 3);
+		            		}
 		            	}
 		        	}
 		    	}
@@ -139,26 +149,6 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityElectricityRunn
 				if (this.lastPower != this.power)
 				{
 					this.bubble.calculate();
-				}
-			}
-			
-			if (this.active)
-			{
-				final int power = Math.min((int) Math.floor(this.power / 3), 8);
-
-				for (int j = -power; j <= power; j++)
-				{
-					for (int i = -power; i <= power; i++)
-					{
-						for (int k = -power; k <= power; k++)
-						{
-							if (this.worldObj.getBlockId(this.xCoord + i, this.yCoord + j, this.zCoord + k) == GCCoreBlocks.unlitTorch.blockID)
-							{
-								final int meta = this.worldObj.getBlockMetadata(this.xCoord + i, this.yCoord + j, this.zCoord + k);
-								this.worldObj.setBlockAndMetadataWithNotify(this.xCoord + i, this.yCoord + j, this.zCoord + k, GCCoreBlocks.unlitTorchLit.blockID, meta, 3);
-							}
-						}
-					}
 				}
 			}
 

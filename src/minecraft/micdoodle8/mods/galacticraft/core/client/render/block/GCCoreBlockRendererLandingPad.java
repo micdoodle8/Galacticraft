@@ -29,7 +29,6 @@ public class GCCoreBlockRendererLandingPad implements ISimpleBlockRenderingHandl
 	@Override
     public boolean renderWorldBlock(IBlockAccess var1, int var2, int var3, int var4, Block var5, int var6, RenderBlocks var7)
     {
-    	FMLLog.info("true");
     	this.renderBlockLandingPad(var7, var5, var1, var2, var3, var4);
         return true;
     }

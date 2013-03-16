@@ -8,16 +8,18 @@ import static net.minecraftforge.common.ForgeDirection.WEST;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityUnlitTorch;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -27,7 +29,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  *  All rights reserved.
  *
  */
-public class GCCoreBlockUnlitTorch extends Block
+public class GCCoreBlockUnlitTorch extends BlockContainer
 {
 	public boolean lit;
 	
@@ -330,4 +332,10 @@ public class GCCoreBlockUnlitTorch extends Block
             }
     	}
     }
+
+	@Override
+	public TileEntity createNewTileEntity(World world) 
+	{
+		return new GCCoreTileEntityUnlitTorch();
+	}
 }

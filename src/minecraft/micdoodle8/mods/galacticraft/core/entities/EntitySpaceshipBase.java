@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.API.ISpaceship;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLandingPad;
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLandingPadFull;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFuelLoader;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
@@ -208,17 +209,28 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship
     	{
     		for (TileEntity tile : this.getLandingPad().connectedTiles)
     		{
-    			if (tile instanceof GCCoreTileEntityFuelLoader && ((GCCoreTileEntityFuelLoader) tile).wattsReceived > 0)
+    			if (this.worldObj.getBlockTileEntity(tile.xCoord, tile.yCoord, tile.zCoord) == null || !(this.worldObj.getBlockTileEntity(tile.xCoord, tile.yCoord, tile.zCoord) instanceof GCCoreTileEntityFuelLoader))
     			{
-    				GCCoreTileEntityFuelLoader loader = (GCCoreTileEntityFuelLoader) tile;
     				
-    				if (loader.getStackInSlot(1) != null)
-    				{
-    					if (this.fuel < this.getMaxFuel())
-    					{
-    						loader.transferFuelToSpaceship(this);
-    					}
-    				}
+    			}
+    			else
+    			{
+        			if (tile instanceof GCCoreTileEntityFuelLoader && ((GCCoreTileEntityFuelLoader) tile).wattsReceived > 0)
+        			{
+        				GCCoreTileEntityFuelLoader loader = (GCCoreTileEntityFuelLoader) tile;
+        				
+        				if (!this.launched && loader.getStackInSlot(1) != null)
+        				{
+        					if (this.fuel < this.getMaxFuel())
+        					{
+        						loader.transferFuelToSpaceship(this);
+        					}
+        				}
+        				else if (this.launched)
+        				{
+        					this.setLandingPad(null);
+        				}
+        			}
     			}
     		}
     	}
@@ -259,7 +271,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship
             this.setDamage(this.getDamage() - 1);
         }
 
-        if (this.posY < -64.0D || this.posY > this.getYCoordToTeleport() + 100)
+        if (this.posY < -64.0D || this.posY > this.getYCoordToTeleport() + 10)
         {
             this.kill();
         }
@@ -314,6 +326,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship
         	this.launched = true;
         	this.setLaunched(1);
         	this.ignite = 0;
+        	this.onLaunch();
 
         	if (!this.worldObj.isRemote)
         	{
@@ -327,10 +340,19 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship
                 		{
                 			final int id = this.worldObj.getBlockId(x, y, z);
                 			final Block block = Block.blocksList[id];
+                			
+                			if (block != null && block instanceof GCCoreBlockLandingPadFull)
+                			{
+                				if (amountRemoved < 9)
+                				{
+                    				this.worldObj.func_94571_i(x, y, z);
+                    				amountRemoved = 9;
+                				}
+                			}
 
                 			if (block != null && block instanceof GCCoreBlockLandingPad)
                 			{
-                    			if (amountRemoved < 9);
+                    			if (amountRemoved < 9)
                     			{
                     				this.worldObj.func_94571_i(x, y, z);
                     				amountRemoved++;
@@ -601,7 +623,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship
 		        
 		        if (playerBase != null)
 		        {
-			        playerBase.setUsingPlanetGui();
+		        	playerBase.setUsingPlanetGui();
 		        }
 
 		        this.onTeleport(entityplayermp);
