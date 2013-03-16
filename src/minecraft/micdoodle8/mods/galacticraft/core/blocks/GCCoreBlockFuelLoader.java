@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFuelLoader;
@@ -15,8 +13,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.prefab.block.BlockAdvanced;
+import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreBlockFuelLoader extends BlockAdvanced
 {
@@ -118,5 +118,37 @@ public class GCCoreBlockFuelLoader extends BlockAdvanced
 		}
 
 		world.setBlockMetadataWithNotify(x, y, z, change, 3);
+		
+		for (int dX = -2; dX < 3; dX++)
+		{
+			for (int dZ = -2; dZ < 3; dZ++)
+			{
+				int id = world.getBlockId(x + dX, y, z + dZ);
+				
+				if (id == GCCoreBlocks.landingPadFull.blockID)
+				{
+			        world.markBlockForUpdate(x + dX, y, z + dZ);
+				}
+			}
+		}
+	}
+
+	@Override
+	public void onBlockDestroyedByPlayer(World world, int x, int y, int z, int par5)
+	{
+		super.onBlockDestroyedByPlayer(world, x, y, z, par5);
+		
+		for (int dX = -2; dX < 3; dX++)
+		{
+			for (int dZ = -2; dZ < 3; dZ++)
+			{
+				int id = world.getBlockId(x + dX, y, z + dZ);
+				
+				if (id == GCCoreBlocks.landingPadFull.blockID)
+				{
+			        world.markBlockForUpdate(x + dX, y, z + dZ);
+				}
+			}
+		}
 	}
 }
