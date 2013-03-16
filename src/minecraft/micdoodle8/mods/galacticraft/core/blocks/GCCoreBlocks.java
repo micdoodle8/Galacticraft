@@ -80,7 +80,7 @@ public class GCCoreBlocks
 		MinecraftForge.setBlockHarvestLevel(GCCoreBlocks.decorationBlocks, 	0, 		"pickaxe", 	1);
 		MinecraftForge.setBlockHarvestLevel(GCCoreBlocks.decorationBlocks, 	1, 		"pickaxe", 	2);
 		MinecraftForge.setBlockHarvestLevel(GCCoreBlocks.decorationBlocks, 	2, 		"pickaxe", 	3);
-		MinecraftForge.setBlockHarvestLevel(GCCoreBlocks.fallenMeteor, 				"pickaxe", 	4);
+		MinecraftForge.setBlockHarvestLevel(GCCoreBlocks.fallenMeteor, 				"pickaxe", 	3);
 	}
 
 	public static void registerBlocks()
