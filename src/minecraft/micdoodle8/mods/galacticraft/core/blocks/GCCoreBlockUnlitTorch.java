@@ -10,10 +10,14 @@ import java.util.Random;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -26,6 +30,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GCCoreBlockUnlitTorch extends Block
 {
 	public boolean lit;
+	
+	public static Icon[] torchIcons = new Icon[2];
 
 	protected GCCoreBlockUnlitTorch(int par1, boolean lit)
     {
@@ -33,6 +39,36 @@ public class GCCoreBlockUnlitTorch extends Block
         this.setTickRandomly(true);
         this.lit = lit;
         this.setLightValue(lit ? 0.9375F : 0.2F);
+    }
+
+    @SideOnly(Side.CLIENT)
+    public Icon getBlockTexture(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
+    {
+    	if (this.blockID == GCCoreBlocks.unlitTorch.blockID)
+    	{
+    		return this.torchIcons[1];
+    	}
+    	else if (this.blockID == GCCoreBlocks.unlitTorchLit.blockID)
+    	{
+    		return this.torchIcons[0];
+    	}
+    	
+    	return this.torchIcons[0];
+    }
+
+    @Override
+	@SideOnly(Side.CLIENT)
+    public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
+    {
+    	return this.torchIcons[0];
+    }
+
+    @Override
+	@SideOnly(Side.CLIENT)
+    public void func_94332_a(IconRegister par1IconRegister)
+    {
+    	this.torchIcons[0] = par1IconRegister.func_94245_a("galacticraftcore:torch_lit");
+		this.torchIcons[1] = par1IconRegister.func_94245_a("galacticraftcore:torch_unlit");
     }
 	
     @Override
