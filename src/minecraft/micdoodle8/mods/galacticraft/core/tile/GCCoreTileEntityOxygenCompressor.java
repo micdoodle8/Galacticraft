@@ -16,11 +16,14 @@ import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.components.common.BasicComponents;
 import universalelectricity.core.electricity.ElectricityPack;
 import universalelectricity.core.item.ElectricItemHelper;
+import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.IPacketReceiver;
 import universalelectricity.prefab.network.PacketManager;
 import universalelectricity.prefab.tile.TileEntityElectricityRunnable;
 
 import com.google.common.io.ByteArrayDataInput;
+
+import cpw.mods.fml.common.FMLLog;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -51,7 +54,19 @@ public class GCCoreTileEntityOxygenCompressor extends TileEntityElectricityRunna
 		
 		if (!this.worldObj.isRemote)
 		{
-			if (this.currentPower < 1)
+			if (this.wattsReceived >= 0.05)
+			{
+				this.wattsReceived -= 0.05;
+			}
+			
+			if (this.timeSinceOxygenRequest > 0)
+			{
+				timeSinceOxygenRequest--;
+			}
+			
+			this.wattsReceived = Math.max(this.wattsReceived - WATTS_PER_TICK / 4, 0);
+			
+			if (this.currentPower < 1 && this.wattsReceived > 0)
 			{
 				this.active = false;
 			}
@@ -76,6 +91,16 @@ public class GCCoreTileEntityOxygenCompressor extends TileEntityElectricityRunna
 					}
 				}
 			}
+
+			if (this.ticks % 3 == 0)
+			{
+				Packet packet = this.getDescriptionPacket();
+				
+				if (packet != null)
+				{
+					PacketManager.sendPacketToClients(this.getDescriptionPacket(), this.worldObj, new Vector3(this), 6);
+				}
+			}
 		}
 	}
 
@@ -94,7 +119,7 @@ public class GCCoreTileEntityOxygenCompressor extends TileEntityElectricityRunna
 			if (this.worldObj.isRemote)
 			{
 				this.currentPower = dataStream.readInt();
-				this.wattsReceived = dataStream.readInt();
+				this.wattsReceived = dataStream.readDouble();
 				this.disabledTicks = dataStream.readInt();
 			}
 		}
@@ -107,7 +132,7 @@ public class GCCoreTileEntityOxygenCompressor extends TileEntityElectricityRunna
 	@Override
 	public ElectricityPack getRequest()
 	{
-		if (timeSinceOxygenRequest > 0)
+		if (this.getStackInSlot(0) != null)
 		{
 			return new ElectricityPack(WATTS_PER_TICK / this.getVoltage(), this.getVoltage());
 		}
@@ -274,6 +299,8 @@ public class GCCoreTileEntityOxygenCompressor extends TileEntityElectricityRunna
 	@Override
 	public int transferGasToAcceptor(int amount, EnumGas type)
 	{
+		this.timeSinceOxygenRequest = 20;
+		
 		if (type == EnumGas.OXYGEN && this.getStackInSlot(0) != null)
 		{
 			int rejects = 0;
