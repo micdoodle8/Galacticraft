@@ -1,10 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import com.google.common.io.ByteArrayDataInput;
-
-import mekanism.api.IGasAcceptor;
-import mekanism.api.ITubeConnection;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -21,6 +17,8 @@ import universalelectricity.core.vector.VectorHelper;
 import universalelectricity.prefab.network.IPacketReceiver;
 import universalelectricity.prefab.network.PacketManager;
 import universalelectricity.prefab.tile.TileEntityElectricityRunnable;
+
+import com.google.common.io.ByteArrayDataInput;
 
 public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable implements IInventory, IPacketReceiver
 {
@@ -47,14 +45,22 @@ public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable im
 			return new ElectricityPack();
 		}
 	}
-
+	
+	public void transferFuelToSpaceship(EntitySpaceshipBase spaceship)
+	{
+		if (!this.worldObj.isRemote && this.getStackInSlot(1) != null && (this.getStackInSlot(1).getMaxDamage() - this.getStackInSlot(1).getItemDamage() != 0) && this.getStackInSlot(1).getItemDamage() < this.getStackInSlot(1).getMaxDamage())
+		{
+			spaceship.fuel += 1F;
+			this.getStackInSlot(1).setItemDamage(this.getStackInSlot(1).getItemDamage() + 1);
+		}
+	}
 
 	@Override
 	public void updateEntity()
 	{
 		super.updateEntity();
 
-		this.wattsReceived += ElectricItemHelper.dechargeItem(this.containingItems[1], WATTS_PER_TICK, this.getVoltage());
+		this.wattsReceived += ElectricItemHelper.dechargeItem(this.getStackInSlot(0), WATTS_PER_TICK, this.getVoltage());
 		
 		if (!this.worldObj.isRemote)
 		{
