@@ -86,10 +86,11 @@ public class RecipeUtil
 		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreBlocks.rocketBench, 1), new Object[] {
 			"XXX",
 			"YZY",
-			"YYY",
+			"YWY",
 			'X', "ingotSteel",
 			'Y', "plateSteel",
-			'Z', Block.workbench
+			'Z', Block.workbench,
+			'W', "advancedCircuit"
 		}));
 		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreBlocks.oxygenPipe, 1), new Object[] {
 			"XXX",
@@ -158,8 +159,8 @@ public class RecipeUtil
 			" Y ",
 			"ZXZ",
 			'X', Item.redstone,
-			'Y', "ingotSteel",
-			'Z', "motor"
+			'Y', "motor",
+			'Z', "ingotSteel"
 		}));
 		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.oxygenMask, 1), new Object[] {
 			"XXX",
@@ -339,14 +340,17 @@ public class RecipeUtil
 			"XYX",
 			'X', "ingotSteel", 'Y', "ingotBronze", 'Z', GCCoreItems.oxygenConcentrator
 		}));
+
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreBlocks.fuelLoader), new Object[] {
+			"XXX",
+			"XZX",
+			"XYX",
+			'X', "ingotSteel", 'Y', "basicCircuit", 'Z', "motor"
+		}));
 	}
 
 	public static void addSmeltingRecipes()
 	{
-		// TODO
-//		FurnaceRecipes.smelting().addSmelting(GCCoreBlocks.blockOres.blockID, 0, new ItemStack(GCCoreItems.ingotCopper), 0.1F);
-//		FurnaceRecipes.smelting().addSmelting(GCCoreBlocks.blockOres.blockID, 1, new ItemStack(GCCoreItems.ingotAluminum), 0.3F);
-//		FurnaceRecipes.smelting().addSmelting(GCCoreBlocks.blockOres.blockID, 2, new ItemStack(GCCoreItems.ingotTitanium), 1.0F);
 	}
 
 	public static ItemStack findMatchingSpaceshipRecipe(GCCoreInventoryRocketBench inventoryRocketBench)
