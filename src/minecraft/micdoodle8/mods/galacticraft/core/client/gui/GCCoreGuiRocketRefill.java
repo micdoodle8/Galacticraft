@@ -37,13 +37,10 @@ public class GCCoreGuiRocketRefill extends GuiContainer
         this.type = type;
     }
 
-    /**
-     * Draw the foreground layer for the GuiContainer (everything in front of the items)
-     */
     @Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRenderer.drawString(StatCollector.translateToLocal("Fuel"), this.xSize / 2 - this.fontRenderer.getStringWidth(StatCollector.translateToLocal("Fuel")) / 2, 6, 4210752);
+        this.fontRenderer.drawString(StatCollector.translateToLocal("Fuel"), 8, 6, 4210752);
 
     	if (this.type == 1)
     	{
@@ -54,20 +51,12 @@ public class GCCoreGuiRocketRefill extends GuiContainer
 
         if (this.mc.thePlayer != null && this.mc.thePlayer.ridingEntity != null && this.mc.thePlayer.ridingEntity instanceof GCCoreEntitySpaceship)
         {
-        	final ItemStack stack = ((GCCoreEntitySpaceship) this.mc.thePlayer.ridingEntity).getStackInSlot(0);
+    		final float fuelLevel = (((GCCoreEntitySpaceship) this.mc.thePlayer.ridingEntity).fuel) / (60.0F) * 1000.0F;
 
-        	if (stack != null)
-        	{
-        		final float fuelLevel = (stack.getMaxDamage() - stack.getItemDamage()) / (stack.getMaxDamage() - 1.0F) * 1000.0F;
-
-                this.fontRenderer.drawString("" + Math.round(fuelLevel) / 10.0 + "%", 133, this.ySize - 111, 4210752);
-        	}
+            this.fontRenderer.drawString("" + Math.round(fuelLevel) / 10.0D + "%", 109, this.ySize - ((GCCoreEntitySpaceship) this.mc.thePlayer.ridingEntity).getSpaceshipType() == 0 ? 111 : 20, 4210752);
         }
     }
 
-    /**
-     * Draw the background layer for the GuiContainer (everything behind the items)
-     */
     @Override
 	protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
@@ -92,14 +81,9 @@ public class GCCoreGuiRocketRefill extends GuiContainer
 
         if (this.mc.thePlayer != null && this.mc.thePlayer.ridingEntity != null && this.mc.thePlayer.ridingEntity instanceof GCCoreEntitySpaceship)
         {
-        	final ItemStack stack = ((GCCoreEntitySpaceship) this.mc.thePlayer.ridingEntity).getStackInSlot(0);
+    		final int fuelLevel = ((GCCoreEntitySpaceship) this.mc.thePlayer.ridingEntity).fuel;
 
-        	if (stack != null)
-        	{
-        		final int fuelLevel = stack.getMaxDamage() - stack.getItemDamage();
-
-                this.drawTexturedModalRect(var5 + 118, var6 + 41 - fuelLevel / 2, 176, 0, 10, fuelLevel / 2);
-        	}
+            this.drawTexturedModalRect(var5 + 74, var6 + 41 - fuelLevel / 2, 176, 0, 30, fuelLevel / 2);
         }
     }
 }
