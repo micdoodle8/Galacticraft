@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
 import icbm.api.IMissileLockable;
+import icbm.api.RadarRegistry;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -43,8 +44,6 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
     protected ItemStack[] cargoItems = new ItemStack[36];
 
     public IUpdatePlayerListBox rocketSoundUpdater;
-    
-    private GCCoreTileEntityLandingPad landingPad;
 
     private int type;
 
@@ -77,12 +76,15 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
     	super.entityInit();
         this.dataWatcher.addObject(25, new Integer(0));
         this.setSpaceshipType(this.type);
+        RadarRegistry.register(this);
     }
 
     @Override
     public void setDead()
     {
     	super.setDead();
+    	
+    	RadarRegistry.unregister(this);
 
         if (this.rocketSoundUpdater != null)
         {
@@ -132,7 +134,7 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
 
         	if (this.getTimeSinceLaunch() % 50 == 0)
         	{
-        		this.getStackInSlot(0).setItemDamage(this.getStackInSlot(0).getItemDamage() + 1);
+        		this.fuel -= 1;
         	}
         }
         else if (!this.hasFuelTank() && this.getLaunched() == 1 && !this.worldObj.isRemote)
@@ -146,14 +148,7 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
 
     public boolean hasFuelTank()
     {
-    	if (this.getStackInSlot(0) != null && this.getStackInSlot(0).getItem() instanceof GCCoreItemFuelCanister && this.getStackInSlot(0).getMaxDamage() - this.getStackInSlot(0).getItemDamage() > 0)
-    	{
-    		return true;
-    	}
-    	else
-    	{
-    		return false;
-    	}
+    	return this.fuel > 0;
     }
 
     @Override
@@ -171,7 +166,7 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
     	{
     		playerBase.rocketStacks = this.cargoItems;
     		playerBase.rocketType = this.getSpaceshipType();
-    		playerBase.fuelDamage = this.getStackInSlot(0).itemID == GCCoreItems.rocketFuelBucket.itemID ? this.getStackInSlot(0).getItemDamage() : 0;
+    		playerBase.fuelDamage = this.fuel;
         }
     }
 
@@ -337,16 +332,6 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
     {
     	return this.dataWatcher.getWatchableObjectInt(25);
     }
-    
-    public void setLandingPad(GCCoreTileEntityLandingPad pad)
-    {
-    	this.landingPad = pad;
-    }
-    
-    public GCCoreTileEntityLandingPad getLandingPad()
-    {
-    	return this.landingPad;
-    }
 
 	@Override
     public String getInvName()
@@ -499,6 +484,17 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
 	@Override
 	public boolean canLock() 
 	{
-		return true;
+		if (this.launched)
+		{
+			return true;
+		}
+		
+		return false;
+	}
+
+	@Override
+	public int getMaxFuel() 
+	{
+		return 60;
 	}
 }

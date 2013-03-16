@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
+import java.io.DataInputStream;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +10,8 @@ import micdoodle8.mods.galacticraft.API.ISpaceship;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLandingPad;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFuelLoader;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
@@ -18,18 +21,24 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.INetworkManager;
+import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.Packet250CustomPayload;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public abstract class EntitySpaceshipBase extends Entity implements ISpaceship
 {
+	protected long ticks = 0;
+	
     protected double dragAir;
 
     protected int ignite;
@@ -37,6 +46,10 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship
     public boolean launched;
 
     public float timeSinceLaunch;
+    
+    public int fuel;
+    
+    private GCCoreTileEntityLandingPad landingPad;
 
     public float rumble;
 
@@ -48,6 +61,18 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship
         this.yOffset = this.height / 2.0F;
         this.ignoreFrustumCheck = true;
     }
+    
+    public void setLandingPad(GCCoreTileEntityLandingPad pad)
+    {
+    	this.landingPad = pad;
+    }
+    
+    public GCCoreTileEntityLandingPad getLandingPad()
+    {
+    	return this.landingPad;
+    }
+    
+    public abstract int getMaxFuel();
 
     @Override
 	protected boolean canTriggerWalking()
@@ -78,7 +103,6 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship
     @Override
 	public AxisAlignedBB getBoundingBox()
     {
-//        return this.boundingBox;
     	return null;
     }
 
@@ -171,7 +195,33 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship
     @Override
 	public void onUpdate()
     {
+		if (this.ticks >= Long.MAX_VALUE)
+		{
+			this.ticks = 1;
+		}
+
+		this.ticks++;
+		
     	super.onUpdate();
+    	
+    	if (!this.worldObj.isRemote && this.ticks % 20 == 0 && this.getLandingPad() != null && this.getLandingPad().connectedTiles != null)
+    	{
+    		for (TileEntity tile : this.getLandingPad().connectedTiles)
+    		{
+    			if (tile instanceof GCCoreTileEntityFuelLoader && ((GCCoreTileEntityFuelLoader) tile).wattsReceived > 0)
+    			{
+    				GCCoreTileEntityFuelLoader loader = (GCCoreTileEntityFuelLoader) tile;
+    				
+    				if (loader.getStackInSlot(1) != null)
+    				{
+    					if (this.fuel < this.getMaxFuel())
+    					{
+    						loader.transferFuelToSpaceship(this);
+    					}
+    				}
+    			}
+    		}
+    	}
 
     	if (this.rumble > 0)
     	{
@@ -336,6 +386,16 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship
         this.prevPosX = this.posX;
         this.prevPosY = this.posY;
         this.prevPosZ = this.posZ;
+
+		if (!this.worldObj.isRemote && this.ticks % 3 == 0)
+		{
+			Packet packet = this.getDescriptionPacket();
+			
+			if (packet != null)
+			{
+				PacketDispatcher.sendPacketToAllPlayers(packet);
+			}
+		}
     }
 
     public void turnYaw (float f)
@@ -537,7 +597,12 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship
 		    	final Object[] toSend = {entityplayermp.username, temp};
 		        FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(entityplayermp.username).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 2, toSend));
 
-		        PlayerUtil.getPlayerBaseServerFromPlayer(entityplayermp).setUsingPlanetGui();
+		        GCCorePlayerBase playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(entityplayermp);
+		        
+		        if (playerBase != null)
+		        {
+			        playerBase.setUsingPlanetGui();
+		        }
 
 		        this.onTeleport(entityplayermp);
 
@@ -574,6 +639,27 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship
 		{
             this.setDead();
 			this.dropShipAsItem();
+		}
+    }
+
+	public Packet getDescriptionPacket()
+	{
+		Object[] toSend = {this.fuel};
+		return PacketUtil.createPacket(GalacticraftCore.CHANNEL, 15, toSend);
+	}
+    
+    public void handlePacketData(INetworkManager network, int packetType, Packet250CustomPayload packet, EntityPlayer player, DataInputStream data)
+    {
+		try
+		{
+			if (this.worldObj.isRemote)
+			{
+				this.fuel = data.readInt();
+			}
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
 		}
     }
 
