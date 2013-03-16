@@ -34,7 +34,11 @@ public class GCCoreGuiRefinery extends GuiContainer
 		this.fontRenderer.drawString("Battery:", 10, 53, 4210752);
 		String displayText = "";
 
-		if (this.tileEntity.wattsReceived < this.tileEntity.WATTS_PER_TICK)
+		if (this.tileEntity.wattsReceived == 0)
+		{
+			displayText = "Idle";
+		}
+		else if (this.tileEntity.wattsReceived < this.tileEntity.WATTS_PER_TICK)
 		{
 			displayText = "Heating";
 		}
