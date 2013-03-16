@@ -96,7 +96,13 @@ import cpw.mods.fml.relauncher.Side;
  *  All rights reserved.
  *
  */
-@Mod(name=GalacticraftCore.NAME, version="v1", useMetadata = false, modid=GalacticraftCore.MODID, dependencies = "required-after:Forge@[6.6.0.497,)")
+@Mod(
+	name=GalacticraftCore.NAME, 
+	version=GalacticraftCore.LOCALMAJVERSION + "." + GalacticraftCore.LOCALMINVERSION + "." + GalacticraftCore.LOCALBUILDVERSION, 
+	useMetadata = true, 
+	modid=GalacticraftCore.MODID, 
+	dependencies = "required-after:Forge@[7.7.0.559,)"
+)
 @NetworkMod(channels = {GalacticraftCore.CHANNEL}, clientSideRequired = true, serverSideRequired = false)
 public class GalacticraftCore
 {
