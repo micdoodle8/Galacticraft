@@ -30,6 +30,9 @@ public class GCCoreBlockRefinery extends BlockAdvanced
     
 	private Icon iconMachineSide;
 	private Icon iconInput;
+	private Icon iconFront;
+	private Icon iconBack;
+	private Icon iconTop;
 
     protected GCCoreBlockRefinery(int par1, int blockIndexInTexture)
     {
@@ -48,6 +51,9 @@ public class GCCoreBlockRefinery extends BlockAdvanced
     {
         this.iconMachineSide = par1IconRegister.func_94245_a("galacticraftcore:machine_blank");
         this.iconInput = par1IconRegister.func_94245_a("galacticraftcore:machine_power_input");
+        this.iconFront = par1IconRegister.func_94245_a("galacticraftcore:refinery_front");
+        this.iconBack = par1IconRegister.func_94245_a("galacticraftcore:refinery_side");
+        this.iconTop = par1IconRegister.func_94245_a("galacticraftcore:refinery_top");
     }
 
     @Override
@@ -173,13 +179,21 @@ public class GCCoreBlockRefinery extends BlockAdvanced
 	@Override
 	public Icon getBlockTextureFromSideAndMetadata(int side, int metadata)
 	{
-		if (side == 0 || side == 1)
+		if (side == 1)
 		{
-			return this.iconMachineSide;
+			return this.iconTop;
 		}
 		else if (side == metadata + 2)
 		{
 			return this.iconInput;
+		}
+		else if (metadata == 0 && side == 5 || metadata == 3 && side == 3 || metadata == 1 && side == 4 || metadata == 2 && side == 2)
+		{
+			return this.iconFront;
+		}
+		else if (metadata == 0 && side == 4 || metadata == 3 && side == 2 || metadata == 1 && side == 5 || metadata == 2 && side == 3)
+		{
+			return this.iconBack;
 		}
 		else
 		{
