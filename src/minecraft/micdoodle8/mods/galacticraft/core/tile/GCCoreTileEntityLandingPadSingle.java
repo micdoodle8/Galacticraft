@@ -28,8 +28,6 @@ public class GCCoreTileEntityLandingPadSingle extends TileEntity
     			}
 			}
 		}
-		
-		FMLLog.info( "" + attachedLaunchPads.size());
     	
     	if (attachedLaunchPads.size() == 9)
     	{
