@@ -165,7 +165,7 @@ public class GCCoreTileEntityOxygenCollector extends TileEntityElectricityRunnab
 			if (this.worldObj.isRemote)
 			{
 				this.storedOxygen = dataStream.readInt();
-				this.wattsReceived = dataStream.readInt();
+				this.wattsReceived = dataStream.readDouble();
 				this.disabledTicks = dataStream.readInt();
 			}
 		}

@@ -8,7 +8,7 @@ public class GCMoonSlotRenderer implements IPlanetSlotRenderer
 	@Override
 	public String getPlanetSprite()
 	{
-		return "/terrain/moon.png";
+		return "/environment/moon.png";
 	}
 
 	@Override
