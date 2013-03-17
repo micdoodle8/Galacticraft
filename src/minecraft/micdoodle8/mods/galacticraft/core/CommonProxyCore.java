@@ -35,6 +35,16 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.stats.StatBase;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import universalelectricity.components.client.gui.GuiBatteryBox;
+import universalelectricity.components.client.gui.GuiCoalGenerator;
+import universalelectricity.components.client.gui.GuiElectricFurnace;
+import universalelectricity.components.common.BCGuiHandler;
+import universalelectricity.components.common.container.ContainerBatteryBox;
+import universalelectricity.components.common.container.ContainerCoalGenerator;
+import universalelectricity.components.common.container.ContainerElectricFurnace;
+import universalelectricity.components.common.tileentity.TileEntityBatteryBox;
+import universalelectricity.components.common.tileentity.TileEntityCoalGenerator;
+import universalelectricity.components.common.tileentity.TileEntityElectricFurnace;
 
 import com.google.common.collect.Lists;
 
@@ -49,7 +59,7 @@ import cpw.mods.fml.common.network.IGuiHandler;
  *  All rights reserved.
  *
  */
-public class CommonProxyCore implements IGuiHandler
+public class CommonProxyCore extends BCGuiHandler implements IGuiHandler
 {
 	public void preInit(FMLPreInitializationEvent event)
 	{
@@ -178,8 +188,8 @@ public class CommonProxyCore implements IGuiHandler
 		{
 			return new GCCoreContainerFuelLoader(player.inventory, (GCCoreTileEntityFuelLoader)world.getBlockTileEntity(x, y, z));
 		}
-
-		return null;
+		
+		return super.getServerGuiElement(ID, player, world, x, y, z);
 	}
 
 	@Override
@@ -255,9 +265,7 @@ public class CommonProxyCore implements IGuiHandler
 				return null;
 			}
 		}
-		else
-		{
-			return null;
-		}
+		
+		return super.getClientGuiElement(ID, player, world, x, y, z);
 	}
 }

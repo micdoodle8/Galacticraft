@@ -46,6 +46,7 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenDistributor;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenPipe;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityRefinery;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityUnlitTorch;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
@@ -63,6 +64,7 @@ import net.minecraft.network.packet.Packet9Respawn;
 import net.minecraft.src.ServerPlayerAPI;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
+import universalelectricity.components.common.BasicComponents;
 import universalelectricity.prefab.CustomDamageSource;
 import universalelectricity.prefab.TranslationHelper;
 import cpw.mods.fml.common.FMLLog;
@@ -112,7 +114,7 @@ public class GalacticraftCore
 
     public static final int LOCALMAJVERSION = 0;
     public static final int LOCALMINVERSION = 1;
-    public static final int LOCALBUILDVERSION = 21;
+    public static final int LOCALBUILDVERSION = 22;
     public static int remoteMajVer;
     public static int remoteMinVer;
     public static int remoteBuildVer;
@@ -166,52 +168,65 @@ public class GalacticraftCore
 	{
 		GalacticraftCore.moon.preLoad(event);
 		
-		try 
-		{
-			Class.forName("net.minecraft.block.Block");
-		} 
-		catch (ClassNotFoundException e1) 
-		{
-			inMCP = false;
-		}
+		BasicComponents.registerOres(0, true);
+		BasicComponents.registerIngots(0, true);
+		BasicComponents.registerPlates(0, true);
+		BasicComponents.registerBronzeDust(0, true);
+		BasicComponents.registerSteelDust(0, true);
+		BasicComponents.registerBattery(0);
+		BasicComponents.registerWrench(0);
+		BasicComponents.registerCopperWire(0);
+		BasicComponents.registerMachines(0);
+		BasicComponents.registerCircuits(0);
+		BasicComponents.registerMotor(0);
+		BasicComponents.registerInfiniteBattery(0);
 		
-		if (inMCP)
-		{
-			try 
-			{
-				Class.forName("net.minecraft.src.ServerPlayerAPI");
-			} 
-			catch (ClassNotFoundException e1) 
-			{
-				playerAPILoaded = false;
-			}
-		}
-		else
-		{
-			try 
-			{
-				Class.forName("ServerPlayerAPI");
-			} 
-			catch (ClassNotFoundException e1) 
-			{
-				playerAPILoaded = false;
-			}
-		}
+//		try 
+//		{
+//			Class.forName("net.minecraft.block.Block");
+//		} 
+//		catch (ClassNotFoundException e1) 
+//		{
+//			inMCP = false;
+//		}
+//		
+//		if (inMCP)
+//		{
+//			try 
+//			{
+//				Class.forName("net.minecraft.src.ServerPlayerAPI");
+//			} 
+//			catch (ClassNotFoundException e1) 
+//			{
+//				playerAPILoaded = false;
+//			}
+//		}
+//		else
+//		{
+//			try 
+//			{
+//				Class.forName("ServerPlayerAPI");
+//			} 
+//			catch (ClassNotFoundException e1) 
+//			{
+//				playerAPILoaded = false;
+//			}
+//		}
+//		
+//		FMLLog.info("Galacticraft Load Status - PlayerAPI Found: " + playerAPILoaded + " - " + "In MCP: " + inMCP);
 		
-		FMLLog.info("Galacticraft Load Status - PlayerAPI Found: " + playerAPILoaded + " - " + "In MCP: " + inMCP);
-		
-		if (playerAPILoaded)
-		{
-			try
-			{
-				ServerPlayerAPI.register(GalacticraftCore.MODID, GCCorePlayerBase.class);
-			}
-			catch (Exception e)
-			{
-				FMLLog.severe("PLAYER API NOT INSTALLED!");
-				e.printStackTrace();
-			}
-		}
+//		if (playerAPILoaded)
+//		{
+//			try
+//			{
+//				ServerPlayerAPI.register(GalacticraftCore.MODID, GCCorePlayerBase.class);
+//			}
+//			catch (Exception e)
+//			{
+//				FMLLog.severe("PLAYER API NOT INSTALLED!");
+//				e.printStackTrace();
+//			}
+//		}
 		
 		GalacticraftCore.registerSubMod(GalacticraftCore.moon);
 
@@ -233,6 +248,8 @@ public class GalacticraftCore
 		this.galacticraftTab = new GCCoreCreativeTab(CreativeTabs.getNextID(), GalacticraftCore.CHANNEL, GCCoreItems.spaceship.itemID, 0);
 		
 		GalacticraftCore.proxy.init(event);
+
+		BasicComponents.register(this);
 		
 		for (final IGalacticraftSubMod mod : GalacticraftCore.subMods)
 		{
@@ -314,6 +331,7 @@ public class GalacticraftCore
         GameRegistry.registerTileEntity(GCCoreTileEntityFuelLoader.class, "Fuel Loader");
         GameRegistry.registerTileEntity(GCCoreTileEntityLandingPadSingle.class, "Landing Pad");
         GameRegistry.registerTileEntity(GCCoreTileEntityLandingPad.class, "Landing Pad Full");
+        GameRegistry.registerTileEntity(GCCoreTileEntityUnlitTorch.class, "Unlit Torch");
 	}
 
 	public void registerCreatures()
