@@ -17,11 +17,15 @@ import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
+import micdoodle8.mods.galacticraft.moon.GalacticraftMoon;
+import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
+import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemInWorldManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -31,12 +35,12 @@ import net.minecraft.network.packet.Packet4UpdateTime;
 import net.minecraft.network.packet.Packet70GameEvent;
 import net.minecraft.network.packet.Packet9Respawn;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.src.ServerPlayerAPI;
-import net.minecraft.src.ServerPlayerBase;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.Teleporter;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -47,7 +51,7 @@ import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 
-public class GCCorePlayerBase extends ServerPlayerBase
+public class GCCorePlayerBase extends EntityPlayerMP
 {
 	private int airRemaining;
 	private int airRemaining2;
@@ -102,23 +106,20 @@ public class GCCorePlayerBase extends ServerPlayerBase
 	private int chestSpawnCooldown;
 
 	public int teleportCooldown;
+	
+	private int lastStep;
 
-	public GCCorePlayerBase(ServerPlayerAPI var1)
-	{
-		super(var1);
-	}
-
-	public EntityPlayerMP getPlayer()
-	{
-		return this.player;
-	}
+    public GCCorePlayerBase(MinecraftServer par1MinecraftServer, World par2World, String par3Str, ItemInWorldManager par4ItemInWorldManager)
+    {
+    	super(par1MinecraftServer, par2World, par3Str, par4ItemInWorldManager);
+    }
 
 	@Override
     public void onDeath(DamageSource var1)
     {
 		GalacticraftCore.playersServer.remove(this);
 
-        if (!this.player.worldObj.getGameRules().getGameRuleBooleanValue("keepInventory"))
+        if (!this.worldObj.getGameRules().getGameRuleBooleanValue("keepInventory"))
         {
             this.playerTankInventory.dropAllItems();
         }
@@ -128,12 +129,12 @@ public class GCCorePlayerBase extends ServerPlayerBase
 
     public boolean isAABBInBreathableAirBlock()
     {
-        final int var3 = MathHelper.floor_double(this.player.boundingBox.minX);
-        final int var4 = MathHelper.floor_double(this.player.boundingBox.maxX + 1.0D);
-        final int var5 = MathHelper.floor_double(this.player.boundingBox.minY);
-        final int var6 = MathHelper.floor_double(this.player.boundingBox.maxY + 1.0D);
-        final int var7 = MathHelper.floor_double(this.player.boundingBox.minZ);
-        final int var8 = MathHelper.floor_double(this.player.boundingBox.maxZ + 1.0D);
+        final int var3 = MathHelper.floor_double(this.boundingBox.minX);
+        final int var4 = MathHelper.floor_double(this.boundingBox.maxX + 1.0D);
+        final int var5 = MathHelper.floor_double(this.boundingBox.minY);
+        final int var6 = MathHelper.floor_double(this.boundingBox.maxY + 1.0D);
+        final int var7 = MathHelper.floor_double(this.boundingBox.minZ);
+        final int var8 = MathHelper.floor_double(this.boundingBox.maxZ + 1.0D);
 
         for (int var9 = var3; var9 < var4; ++var9)
         {
@@ -141,11 +142,11 @@ public class GCCorePlayerBase extends ServerPlayerBase
             {
                 for (int var11 = var7; var11 < var8; ++var11)
                 {
-                    final Block var12 = Block.blocksList[this.player.worldObj.getBlockId(var9, var10, var11)];
+                    final Block var12 = Block.blocksList[this.worldObj.getBlockId(var9, var10, var11)];
 
                     if (var12 != null && var12 instanceof GCCoreBlockBreathableAir)
                     {
-                        final int var13 = this.player.worldObj.getBlockMetadata(var9, var10, var11);
+                        final int var13 = this.worldObj.getBlockMetadata(var9, var10, var11);
                         double var14 = var10 + 1;
 
                         if (var13 < 8)
@@ -153,7 +154,7 @@ public class GCCorePlayerBase extends ServerPlayerBase
                             var14 = var10 + 1 - var13 / 8.0D;
                         }
 
-                        if (var14 >= this.player.boundingBox.minY)
+                        if (var14 >= this.boundingBox.minY)
                         {
                             return true;
                         }
@@ -167,12 +168,12 @@ public class GCCorePlayerBase extends ServerPlayerBase
 
     public boolean isAABBInPartialBlockWithOxygenNearby()
     {
-        final int var3 = MathHelper.floor_double(this.player.boundingBox.minX);
-        final int var4 = MathHelper.floor_double(this.player.boundingBox.maxX + 1.0D);
-        final int var5 = MathHelper.floor_double(this.player.boundingBox.minY);
-        final int var6 = MathHelper.floor_double(this.player.boundingBox.maxY + 1.0D);
-        final int var7 = MathHelper.floor_double(this.player.boundingBox.minZ);
-        final int var8 = MathHelper.floor_double(this.player.boundingBox.maxZ + 1.0D);
+        final int var3 = MathHelper.floor_double(this.boundingBox.minX);
+        final int var4 = MathHelper.floor_double(this.boundingBox.maxX + 1.0D);
+        final int var5 = MathHelper.floor_double(this.boundingBox.minY);
+        final int var6 = MathHelper.floor_double(this.boundingBox.maxY + 1.0D);
+        final int var7 = MathHelper.floor_double(this.boundingBox.minZ);
+        final int var8 = MathHelper.floor_double(this.boundingBox.maxZ + 1.0D);
 
         for (int x = var3; x < var4; ++x)
         {
@@ -180,7 +181,7 @@ public class GCCorePlayerBase extends ServerPlayerBase
             {
                 for (int z = var7; z < var8; ++z)
                 {
-                    final Block block = Block.blocksList[this.player.worldObj.getBlockId(x, y, z)];
+                    final Block block = Block.blocksList[this.worldObj.getBlockId(x, y, z)];
 
                     if (block != null && !block.isOpaqueCube())
                     {
@@ -192,7 +193,7 @@ public class GCCorePlayerBase extends ServerPlayerBase
                         	{
                             	for (int z1 = z - 1; z1 < z + 2; z1++)
                             	{
-                                    final Block block2 = Block.blocksList[this.player.worldObj.getBlockId(x1, y1, z1)];
+                                    final Block block2 = Block.blocksList[this.worldObj.getBlockId(x1, y1, z1)];
 
                                     if (block2 instanceof GCCoreBlockBreathableAir)
                                     {
@@ -219,10 +220,109 @@ public class GCCorePlayerBase extends ServerPlayerBase
     {
     	super.onUpdate();
 
-    	if (!GalacticraftCore.playersServer.containsKey(this.player.username) || GalacticraftCore.slowTick % 360 == 0)
+    	if (!GalacticraftCore.playersServer.containsKey(this.username) || GalacticraftCore.slowTick % 360 == 0)
     	{
-    		GalacticraftCore.playersServer.put(this.player.username, this);
+    		GalacticraftCore.playersServer.put(this.username, this);
     	}
+    	
+    	Math.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
+
+		if (this.worldObj != null && this.worldObj.provider instanceof GCMoonWorldProvider && !this.isAirBorne)
+		{
+			if (this.worldObj.getBlockId(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 1), MathHelper.floor_double(this.posZ)) == GCMoonBlocks.blockMoon.blockID)
+			{
+				if (this.worldObj.getBlockMetadata(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 1), MathHelper.floor_double(this.posZ)) == 5)
+				{
+					int meta = -1;
+
+					final int i = 1 + MathHelper.floor_double(this.rotationYaw * 8.0F / 360.0F + 0.5D) & 7;
+
+					switch (this.lastStep)
+					{
+					case 1:
+						switch (i)
+						{
+						case 0:
+							meta = 2;
+							this.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 1), MathHelper.floor_double(this.posZ), meta + 5, 3);
+							break;
+						case 1:
+							meta = 4;
+							this.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 1), MathHelper.floor_double(this.posZ), meta + 5, 3);
+							break;
+						case 2:
+							meta = 2;
+							this.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 1), MathHelper.floor_double(this.posZ), meta + 5, 3);
+							break;
+						case 3:
+							meta = 2;
+							this.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 1), MathHelper.floor_double(this.posZ), meta + 5, 3);
+							break;
+						case 4:
+							meta = 2;
+							this.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 1), MathHelper.floor_double(this.posZ), meta + 5, 3);
+							break;
+						case 5:
+							meta = 2;
+							this.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 1), MathHelper.floor_double(this.posZ), meta + 5, 3);
+							break;
+						case 6:
+							meta = 2;
+							this.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 1), MathHelper.floor_double(this.posZ), meta + 5, 3);
+							break;
+						case 7:
+							meta = 2;
+							this.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 1), MathHelper.floor_double(this.posZ), meta + 5, 3);
+							break;
+						}
+						this.lastStep = 2;
+						break;
+					case 2:
+						switch (i)
+						{
+						case 0:
+							meta = 1;
+							this.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 1), MathHelper.floor_double(this.posZ), meta + 5, 3);
+							break;
+						case 1:
+							meta = 1;
+							this.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 1), MathHelper.floor_double(this.posZ), meta + 5, 3);
+							break;
+						case 2:
+							meta = 4;
+							this.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 1), MathHelper.floor_double(this.posZ), meta + 5, 3);
+							break;
+						case 3:
+							meta = 4;
+							this.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 1), MathHelper.floor_double(this.posZ), meta + 5, 3);
+							break;
+						case 4:
+							meta = 1;
+							this.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 1), MathHelper.floor_double(this.posZ), meta + 5, 3);
+							break;
+						case 5:
+							meta = 3;
+							this.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 1), MathHelper.floor_double(this.posZ), meta + 5, 3);
+							break;
+						case 6:
+							meta = 2;
+							this.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 1), MathHelper.floor_double(this.posZ), meta + 5, 3);
+							break;
+						case 7:
+							meta = 4;
+							this.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 1), MathHelper.floor_double(this.posZ), meta + 5, 3);
+							break;
+						}
+						this.lastStep = 1;
+						this.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 1), MathHelper.floor_double(this.posZ), meta + 5, 3);
+						break;
+					default:
+						this.lastStep = 1;
+						break;
+					}
+				}
+			}
+		}
 
     	if (this.teleportCooldown > 0)
     	{
@@ -242,24 +342,24 @@ public class GCCorePlayerBase extends ServerPlayerBase
 
     	if (this.getParachute())
     	{
-    		this.player.fallDistance = 0.0F;
+    		this.fallDistance = 0.0F;
     	}
 
-		if (this.player.worldObj.provider instanceof IGalacticraftWorldProvider && this.player.inventory.getCurrentItem() != null)
+		if (this.worldObj.provider instanceof IGalacticraftWorldProvider && this.inventory.getCurrentItem() != null)
 	    {
-	    	final int var1 = this.player.inventory.getCurrentItem().stackSize;
-	    	final int var2 = this.player.inventory.getCurrentItem().getItemDamage();
+	    	final int var1 = this.inventory.getCurrentItem().stackSize;
+	    	final int var2 = this.inventory.getCurrentItem().getItemDamage();
 
-			if (this.player.inventory.getCurrentItem().getItem().itemID == Block.torchWood.blockID)
+			if (this.inventory.getCurrentItem().getItem().itemID == Block.torchWood.blockID)
 			{
 	        	final ItemStack stack = new ItemStack(GCCoreBlocks.unlitTorch, var1, 0);
-	            this.player.inventory.mainInventory[this.player.inventory.currentItem] = stack;
+	            this.inventory.mainInventory[this.inventory.currentItem] = stack;
 			}
-			else if (this.player.inventory.getCurrentItem().getItem().itemID == Item.bow.itemID)
+			else if (this.inventory.getCurrentItem().getItem().itemID == Item.bow.itemID)
 			{
 	        	final Hashtable<Integer, Enchantment> enchants = new Hashtable<Integer, Enchantment>();
 
-	        	final NBTTagList list = this.player.inventory.getCurrentItem().getEnchantmentTagList();
+	        	final NBTTagList list = this.inventory.getCurrentItem().getEnchantmentTagList();
 
 	        	if (list != null)
 	            {
@@ -288,38 +388,38 @@ public class GCCorePlayerBase extends ServerPlayerBase
 	        		}
 	        	}
 
-	            this.player.inventory.mainInventory[this.player.inventory.currentItem] = stack;
+	            this.inventory.mainInventory[this.inventory.currentItem] = stack;
 			}
-			else if (this.player.inventory.getCurrentItem().getItem().itemID == Block.sapling.blockID)
+			else if (this.inventory.getCurrentItem().getItem().itemID == Block.sapling.blockID)
 			{
 				// No jungle trees...
 				if (var2 != 3)
 				{
 		        	final ItemStack stack = new ItemStack(GCCoreBlocks.sapling, var1, var2);
-		            this.player.inventory.mainInventory[this.player.inventory.currentItem] = stack;
+		            this.inventory.mainInventory[this.inventory.currentItem] = stack;
 				}
 			}
 	    }
-	    else if (!(this.player.worldObj.provider instanceof IGalacticraftWorldProvider) && this.player.inventory.getCurrentItem() != null)
+	    else if (!(this.worldObj.provider instanceof IGalacticraftWorldProvider) && this.inventory.getCurrentItem() != null)
 	    {
-	    	final int var1 = this.player.inventory.getCurrentItem().stackSize;
-	    	final int var2 = this.player.inventory.getCurrentItem().getItemDamage();
+	    	final int var1 = this.inventory.getCurrentItem().stackSize;
+	    	final int var2 = this.inventory.getCurrentItem().getItemDamage();
 
-	    	if (this.player.inventory.getCurrentItem().getItem().itemID == GCCoreBlocks.unlitTorch.blockID)
+	    	if (this.inventory.getCurrentItem().getItem().itemID == GCCoreBlocks.unlitTorch.blockID)
 	    	{
 	        	final ItemStack stack = new ItemStack(Block.torchWood, var1, 0);
-	            this.player.inventory.mainInventory[this.player.inventory.currentItem] = stack;
+	            this.inventory.mainInventory[this.inventory.currentItem] = stack;
 	    	}
-	    	else if (this.player.inventory.getCurrentItem().getItem().itemID == GCCoreBlocks.sapling.blockID)
+	    	else if (this.inventory.getCurrentItem().getItem().itemID == GCCoreBlocks.sapling.blockID)
 	    	{
 	        	final ItemStack stack = new ItemStack(Block.sapling, var1, var2);
-	            this.player.inventory.mainInventory[this.player.inventory.currentItem] = stack;
+	            this.inventory.mainInventory[this.inventory.currentItem] = stack;
 	    	}
-	    	else if (this.player.inventory.getCurrentItem().getItem().itemID == GCCoreItems.gravityBow.itemID)
+	    	else if (this.inventory.getCurrentItem().getItem().itemID == GCCoreItems.gravityBow.itemID)
 	    	{
 	        	final Hashtable<Integer, Enchantment> enchants = new Hashtable<Integer, Enchantment>();
 
-	        	final NBTTagList list = this.player.inventory.getCurrentItem().getEnchantmentTagList();
+	        	final NBTTagList list = this.inventory.getCurrentItem().getEnchantmentTagList();
 
 	        	if (list != null)
 	            {
@@ -348,7 +448,7 @@ public class GCCorePlayerBase extends ServerPlayerBase
 	        		}
 	        	}
 
-	            this.player.inventory.mainInventory[this.player.inventory.currentItem] = stack;
+	            this.inventory.mainInventory[this.inventory.currentItem] = stack;
 	    	}
 	    }
 
@@ -367,9 +467,9 @@ public class GCCorePlayerBase extends ServerPlayerBase
 	    		temp = k == 0 ? temp.concat(String.valueOf(entry.getKey())) : temp.concat("." + String.valueOf(entry.getKey()));
 	    	}
 
-	        final Object[] toSend = {this.getPlayer().username, temp};
+	        final Object[] toSend = {this.username, temp};
 
-	        this.getPlayer().playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 2, toSend));
+	        this.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 2, toSend));
 
 	        this.setUsingPlanetGui();
 	        this.hasOpenedPlanetSelectionGui = true;
@@ -384,14 +484,14 @@ public class GCCorePlayerBase extends ServerPlayerBase
 		{
 			this.sendAirRemainingPacket();
 
-			if (this.player.onGround)
+			if (this.onGround)
 			{
 				this.sendParachuteRemovalPacket();
 				this.setParachute(false);
 			}
 		}
 
-		if (this.player.onGround && this.getParachute())
+		if (this.onGround && this.getParachute())
 		{
 			this.sendParachuteRemovalPacket();
 			this.setParachute(false);
@@ -681,14 +781,14 @@ public class GCCorePlayerBase extends ServerPlayerBase
 			}
 		}
 
-		if (this.launchAttempts > 0 && this.player.ridingEntity == null)
+		if (this.launchAttempts > 0 && this.ridingEntity == null)
 		{
 			this.launchAttempts = 0;
 		}
 
-		if (this.player != null && this.player.worldObj.provider instanceof IGalacticraftWorldProvider)
+		if (this.worldObj.provider instanceof IGalacticraftWorldProvider)
 		{
-			this.player.fallDistance = 0.0F;
+			this.fallDistance = 0.0F;
 		}
 
 		final ItemStack tankInSlot = this.playerTankInventory.getStackInSlot(2);
@@ -697,7 +797,7 @@ public class GCCorePlayerBase extends ServerPlayerBase
 		final int drainSpacing = OxygenUtil.getDrainSpacing(tankInSlot);
 		final int drainSpacing2 = OxygenUtil.getDrainSpacing(tankInSlot2);
 
-		if (this.player.worldObj.provider instanceof IGalacticraftWorldProvider && !this.player.capabilities.isCreativeMode)
+		if (this.worldObj.provider instanceof IGalacticraftWorldProvider && !this.capabilities.isCreativeMode)
 	    {
 			if (tankInSlot == null)
 			{
@@ -721,12 +821,12 @@ public class GCCorePlayerBase extends ServerPlayerBase
 
 			if (drainSpacing > 0 && GalacticraftCore.slowTick % drainSpacing == 0 && !this.isAABBInPartialBlockWithOxygenNearby() && !this.isAABBInBreathableAirBlock() && tankInSlot.getMaxDamage() - tankInSlot.getItemDamage() % 90 > 0)
 	    	{
-	    		tankInSlot.damageItem(1, this.player);
+	    		tankInSlot.damageItem(1, this);
 	    	}
 
 			if (drainSpacing2 > 0 && GalacticraftCore.slowTick % drainSpacing2 == 0 && !this.isAABBInPartialBlockWithOxygenNearby() && !this.isAABBInBreathableAirBlock() && tankInSlot2.getMaxDamage() - tankInSlot2.getItemDamage() % 90 > 0)
 	    	{
-	    		tankInSlot2.damageItem(1, this.player);
+	    		tankInSlot2.damageItem(1, this);
 	    	}
 
 			if (drainSpacing == 0 && GalacticraftCore.tick % 60 == 0 && !this.isAABBInPartialBlockWithOxygenNearby() && !this.isAABBInBreathableAirBlock() && this.airRemaining > 0)
@@ -761,33 +861,33 @@ public class GCCorePlayerBase extends ServerPlayerBase
 
 	    	if (this.damageCounter == 0)
 	    	{
-	    		if (this.player.inventory.armorItemInSlot(3) != null)
+	    		if (this.inventory.armorItemInSlot(3) != null)
 	    		{
-	    			this.player.inventory.armorItemInSlot(3);
+	    			this.inventory.armorItemInSlot(3);
 	    		}
 
 	    		final boolean flag5 = this.airRemaining <= 0 || this.airRemaining2 <= 0;
-	    		final boolean invalid = !OxygenUtil.hasValidOxygenSetup(this.player) || flag5;
+	    		final boolean invalid = !OxygenUtil.hasValidOxygenSetup(this) || flag5;
 
 	    		if (invalid && !this.isAABBInPartialBlockWithOxygenNearby() && !this.isAABBInBreathableAirBlock())
 				{
-	    			if (!this.player.worldObj.isRemote && this.player.isEntityAlive())
+	    			if (!this.worldObj.isRemote && this.isEntityAlive())
 	    			{
 	    				if (this.damageCounter == 0)
 	    	        	{
 	        				this.damageCounter = 100;
-	    		            this.player.attackEntityFrom(GalacticraftCore.oxygenSuffocation, 2);
+	    		            this.attackEntityFrom(GalacticraftCore.oxygenSuffocation, 2);
 	    	        	}
 	    			}
 				}
 			}
 	    }
-		else if (GalacticraftCore.tick % 20 == 0 && !this.player.capabilities.isCreativeMode && this.airRemaining < 90)
+		else if (GalacticraftCore.tick % 20 == 0 && !this.capabilities.isCreativeMode && this.airRemaining < 90)
 		{
 			this.airRemaining += 1;
 			this.airRemaining2 += 1;
 		}
-		else if (this.player.capabilities.isCreativeMode)
+		else if (this.capabilities.isCreativeMode)
 		{
 			this.airRemaining = 90;
 			this.airRemaining2 = 90;
@@ -800,50 +900,50 @@ public class GCCorePlayerBase extends ServerPlayerBase
 
 		if (this.getParachute())
 		{
-			if (this.getPlayer().onGround)
+			if (this.onGround)
 			{
 				this.setParachute(false);
 			}
 		}
 
-		if (this.player.worldObj.provider instanceof IGalacticraftWorldProvider && FMLCommonHandler.instance().getEffectiveSide() != Side.CLIENT)
+		if (this.worldObj.provider instanceof IGalacticraftWorldProvider && FMLCommonHandler.instance().getEffectiveSide() != Side.CLIENT)
 		{
-			if (((IGalacticraftWorldProvider)this.player.worldObj.provider).getMeteorFrequency() > 0)
+			if (((IGalacticraftWorldProvider)this.worldObj.provider).getMeteorFrequency() > 0)
 			{
-				final float f = ((IGalacticraftWorldProvider)this.player.worldObj.provider).getMeteorFrequency();
+				final float f = ((IGalacticraftWorldProvider)this.worldObj.provider).getMeteorFrequency();
 
-				if (this.player.worldObj.rand.nextInt(MathHelper.floor_float(f * 1000)) == 0)
+				if (this.worldObj.rand.nextInt(MathHelper.floor_float(f * 1000)) == 0)
 				{
 					int x, y, z;
 					double motX, motZ;
-					x = this.player.worldObj.rand.nextInt(20) - 10;
-					y = this.player.worldObj.rand.nextInt(20) + 200;
-					z = this.player.worldObj.rand.nextInt(20) - 10;
-					motX = this.player.worldObj.rand.nextDouble() * 5;
-					motZ = this.player.worldObj.rand.nextDouble() * 5;
+					x = this.worldObj.rand.nextInt(20) - 10;
+					y = this.worldObj.rand.nextInt(20) + 200;
+					z = this.worldObj.rand.nextInt(20) - 10;
+					motX = this.worldObj.rand.nextDouble() * 5;
+					motZ = this.worldObj.rand.nextDouble() * 5;
 
-					final GCCoreEntityMeteor meteor = new GCCoreEntityMeteor(this.player.worldObj, this.player.posX + x, this.player.posY + y, this.player.posZ + z, motX - 2.5D, 0, motZ - 2.5D, 1);
+					final GCCoreEntityMeteor meteor = new GCCoreEntityMeteor(this.worldObj, this.posX + x, this.posY + y, this.posZ + z, motX - 2.5D, 0, motZ - 2.5D, 1);
 
-					if (!this.player.worldObj.isRemote)
+					if (!this.worldObj.isRemote)
 					{
-						this.player.worldObj.spawnEntityInWorld(meteor);
+						this.worldObj.spawnEntityInWorld(meteor);
 					}
 				}
-				if (this.player.worldObj.rand.nextInt(MathHelper.floor_float(f * 3000)) == 0)
+				if (this.worldObj.rand.nextInt(MathHelper.floor_float(f * 3000)) == 0)
 				{
 					int x, y, z;
 					double motX, motZ;
-					x = this.player.worldObj.rand.nextInt(20) - 10;
-					y = this.player.worldObj.rand.nextInt(20) + 200;
-					z = this.player.worldObj.rand.nextInt(20) - 10;
-					motX = this.player.worldObj.rand.nextDouble() * 5;
-					motZ = this.player.worldObj.rand.nextDouble() * 5;
+					x = this.worldObj.rand.nextInt(20) - 10;
+					y = this.worldObj.rand.nextInt(20) + 200;
+					z = this.worldObj.rand.nextInt(20) - 10;
+					motX = this.worldObj.rand.nextDouble() * 5;
+					motZ = this.worldObj.rand.nextDouble() * 5;
 
-					final GCCoreEntityMeteor meteor = new GCCoreEntityMeteor(this.player.worldObj, this.player.posX + x, this.player.posY + y, this.player.posZ + z, motX - 2.5D, 0, motZ - 2.5D, 6);
+					final GCCoreEntityMeteor meteor = new GCCoreEntityMeteor(this.worldObj, this.posX + x, this.posY + y, this.posZ + z, motX - 2.5D, 0, motZ - 2.5D, 6);
 
-					if (!this.player.worldObj.isRemote)
+					if (!this.worldObj.isRemote)
 					{
-						this.player.worldObj.spawnEntityInWorld(meteor);
+						this.worldObj.spawnEntityInWorld(meteor);
 					}
 				}
 			}
@@ -884,7 +984,7 @@ public class GCCorePlayerBase extends ServerPlayerBase
 
         this.setNotUsingPlanetGui();
 
-        GameRegistry.onPlayerChangedDimension(this.player);
+        GameRegistry.onPlayerChangedDimension(this);
     }
 
     public void updateTimeAndWeatherForPlayer(EntityPlayerMP par1EntityPlayerMP, WorldServer par2WorldServer)
@@ -1138,19 +1238,19 @@ public class GCCorePlayerBase extends ServerPlayerBase
 
 	public void sendAirRemainingPacket()
 	{
-	  	final Object[] toSend = {this.airRemaining, this.airRemaining2, this.player.username};
+	  	final Object[] toSend = {this.airRemaining, this.airRemaining2, this.username};
 
-	  	if (FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.player.username) != null)
+	  	if (FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.username) != null)
 	  	{
-	          FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.player.username).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 0, toSend));
+	          FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.username).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 0, toSend));
 	  	}
 	}
 
 	public void sendGearUpdatePacket(int i)
 	{
-	  	final Object[] toSend = {this.player.username, i};
+	  	final Object[] toSend = {this.username, i};
 
-	  	if (FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.player.username) != null)
+	  	if (FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.username) != null)
 	  	{
 	          PacketDispatcher.sendPacketToAllPlayers(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 10, toSend));
 	  	}
@@ -1158,9 +1258,9 @@ public class GCCorePlayerBase extends ServerPlayerBase
 
 	public void sendParachuteRemovalPacket()
 	{
-	  	final Object[] toSend = {this.player.username};
+	  	final Object[] toSend = {this.username};
 
-	  	if (FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.player.username) != null)
+	  	if (FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.username) != null)
 	  	{
 	          PacketDispatcher.sendPacketToAllPlayers(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 5, toSend));
 	  	}
@@ -1168,9 +1268,9 @@ public class GCCorePlayerBase extends ServerPlayerBase
 
 	public void sendParachuteAddPacket()
 	{
-	  	final Object[] toSend = {this.player.username};
+	  	final Object[] toSend = {this.username};
 
-	  	if (FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.player.username) != null)
+	  	if (FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.username) != null)
 	  	{
 	          PacketDispatcher.sendPacketToAllPlayers(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 4, toSend));
 	  	}
@@ -1186,12 +1286,11 @@ public class GCCorePlayerBase extends ServerPlayerBase
 			s = stack.getItem().getUnlocalizedName(stack);
 
 			s2 = s.replace("item.parachute_", "");
-			FMLLog.info(s2);
 		}
 
-	  	final Object[] toSend = {this.player.username, stack == null ? "none" : String.valueOf(s2)};
+	  	final Object[] toSend = {this.username, stack == null ? "none" : String.valueOf(s2)};
 
-	  	if (FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.player.username) != null)
+	  	if (FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.username) != null)
 	  	{
 	          PacketDispatcher.sendPacketToAllPlayers(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 6, toSend));
 	  	}
@@ -1199,16 +1298,12 @@ public class GCCorePlayerBase extends ServerPlayerBase
 
     public void travelToTheEnd(int par1)
     {
-    	if (this.player instanceof EntityPlayerMP)
-    	{
-    		final EntityPlayerMP player = this.player;
-    		for (int i = 0; i < player.mcServer.worldServerForDimension(par1).customTeleporters.size(); i++)
-    		{
-    			if (player.mcServer.worldServerForDimension(par1).customTeleporters.get(i) instanceof GCCoreTeleporter)
-    			{
-        			this.transferPlayerToDimension(player, par1, player.mcServer.worldServerForDimension(par1).customTeleporters.get(i));
-    			}
-    		}
+		for (int i = 0; i < this.mcServer.worldServerForDimension(par1).customTeleporters.size(); i++)
+		{
+			if (this.mcServer.worldServerForDimension(par1).customTeleporters.get(i) instanceof GCCoreTeleporter)
+			{
+    			this.transferPlayerToDimension(this, par1, this.mcServer.worldServerForDimension(par1).customTeleporters.get(i));
+			}
     	}
     }
 
