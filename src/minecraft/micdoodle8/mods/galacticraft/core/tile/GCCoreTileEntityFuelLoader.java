@@ -4,6 +4,8 @@ import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
@@ -176,6 +178,47 @@ public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable im
             par2ItemStack.stackSize = this.getInventoryStackLimit();
         }
     }
+
+	@Override
+	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
+	{
+		super.readFromNBT(par1NBTTagCompound);
+
+        final NBTTagList var2 = par1NBTTagCompound.getTagList("Items");
+        this.containingItems = new ItemStack[this.getSizeInventory()];
+
+        for (int var3 = 0; var3 < var2.tagCount(); ++var3)
+        {
+            final NBTTagCompound var4 = (NBTTagCompound)var2.tagAt(var3);
+            final byte var5 = var4.getByte("Slot");
+
+            if (var5 >= 0 && var5 < this.containingItems.length)
+            {
+                this.containingItems[var5] = ItemStack.loadItemStackFromNBT(var4);
+            }
+        }
+	}
+
+	@Override
+	public void writeToNBT(NBTTagCompound par1NBTTagCompound)
+	{
+		super.writeToNBT(par1NBTTagCompound);
+
+        final NBTTagList list = new NBTTagList();
+
+        for (int var3 = 0; var3 < this.containingItems.length; ++var3)
+        {
+            if (this.containingItems[var3] != null)
+            {
+                final NBTTagCompound var4 = new NBTTagCompound();
+                var4.setByte("Slot", (byte)var3);
+                this.containingItems[var3].writeToNBT(var4);
+                list.appendTag(var4);
+            }
+        }
+
+        par1NBTTagCompound.setTag("Items", list);
+	}
 
 	@Override
 	public String getInvName()
