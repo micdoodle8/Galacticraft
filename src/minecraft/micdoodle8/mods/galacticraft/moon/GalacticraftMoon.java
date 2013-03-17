@@ -2,8 +2,6 @@ package micdoodle8.mods.galacticraft.moon;
 
 import java.io.File;
 import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Map;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubMod;
 import micdoodle8.mods.galacticraft.API.IGalaxy;
@@ -11,13 +9,10 @@ import micdoodle8.mods.galacticraft.core.GCCoreCreativeTab;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
 import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;
-import micdoodle8.mods.galacticraft.moon.entities.GCMoonPlayerBase;
 import micdoodle8.mods.galacticraft.moon.items.GCMoonItems;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.src.ServerPlayerAPI;
 import net.minecraftforge.common.DimensionManager;
 import universalelectricity.prefab.TranslationHelper;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -35,7 +30,7 @@ import cpw.mods.fml.relauncher.Side;
  */
 public class GalacticraftMoon implements IGalacticraftSubMod
 {
-	public static Map<String, GCMoonPlayerBase> playersServer = new HashMap<String, GCMoonPlayerBase>();
+//	public static Map<String, GCMoonPlayerBase> playersServer = new HashMap<String, GCMoonPlayerBase>();
 
 	public static final String NAME = "Galacticraft Moon";
 	public static final String MODID = "GalacticraftMoon";
@@ -54,15 +49,16 @@ public class GalacticraftMoon implements IGalacticraftSubMod
 	{
 		new GCMoonConfigManager(new File(event.getModConfigurationDirectory(), CONFIG_FILE));
 
-		try
-		{
-			ServerPlayerAPI.register(GalacticraftMoon.MODID, GCMoonPlayerBase.class);
-
-		}
-		catch (Exception e)
-		{
-			FMLLog.severe("PLAYER API NOT INSTALLED");
-		}
+//		try
+//		{
+//			ServerPlayerAPI.register(GalacticraftMoon.MODID, GCMoonPlayerBase.class);
+//
+//		}
+//		catch (Exception e)
+//		{
+//			FMLLog.severe("PLAYER API NOT INSTALLED");
+//		}
+		
 		GCMoonBlocks.initBlocks();
 		GCMoonBlocks.registerBlocks();
 		GCMoonBlocks.setHarvestLevels();

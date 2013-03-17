@@ -30,7 +30,6 @@ import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiChoosePlanet;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreOverlayOxygenTankIndicator;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreOverlaySensorGlasses;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreOverlaySpaceship;
-import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelPlayer;
 import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelSpaceship;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererBreathableAir;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererCraftingTable;
@@ -110,9 +109,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
-import net.minecraft.src.ModelPlayerAPI;
-import net.minecraft.src.PlayerAPI;
-import net.minecraft.src.RenderPlayerAPI;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
@@ -128,7 +124,6 @@ import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry.KeyHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.IScheduledTickHandler;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
@@ -189,26 +184,26 @@ public class ClientProxyCore extends CommonProxyCore
 	{
 		ClientProxyCore.moon.preInit(event);
 		
-		try
-		{
-			PlayerAPI.register(GalacticraftCore.MODID, GCCorePlayerBaseClient.class);
-		}
-		catch (Exception cnfe)
-		{
-			FMLLog.severe("PLAYER API NOT INSTALLED!");
-			cnfe.printStackTrace();
-		}
-		
-		try
-		{
-			ModelPlayerAPI.register(GalacticraftCore.MODID, GCCoreModelPlayer.class);
-			RenderPlayerAPI.register(GalacticraftCore.MODID, GCCoreRenderPlayer.class);
-		}
-		catch (Exception cnfe)
-		{
-			FMLLog.severe("RENDER PLAYER API NOT INSTALLED!");
-			cnfe.printStackTrace();
-		}
+//		try
+//		{
+//			PlayerAPI.register(GalacticraftCore.MODID, GCCorePlayerBaseClient.class);
+//		}
+//		catch (Exception cnfe)
+//		{
+//			FMLLog.severe("PLAYER API NOT INSTALLED!");
+//			cnfe.printStackTrace();
+//		}
+//		
+//		try
+//		{
+//			ModelPlayerAPI.register(GalacticraftCore.MODID, GCCoreModelPlayer.class);
+//			RenderPlayerAPI.register(GalacticraftCore.MODID, GCCoreRenderPlayer.class);
+//		}
+//		catch (Exception cnfe)
+//		{
+//			FMLLog.severe("RENDER PLAYER API NOT INSTALLED!");
+//			cnfe.printStackTrace();
+//		}
 
 		MinecraftForge.EVENT_BUS.register(new GCCoreSounds());
 		ClientProxyCore.getFirstBootTime = System.currentTimeMillis();
@@ -289,6 +284,7 @@ public class ClientProxyCore extends CommonProxyCore
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityAstroOrb.class, new GCCoreRenderAstroOrb());
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityWorm.class, new GCCoreRenderWorm());
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityParaChest.class, new GCCoreRenderParaChest());
+        RenderingRegistry.registerEntityRenderingHandler(EntityPlayer.class, new GCCoreRenderPlayer());
         RenderingRegistry.addNewArmourRendererPrefix("oxygen");
         RenderingRegistry.addNewArmourRendererPrefix("sensor");
         RenderingRegistry.addNewArmourRendererPrefix("sensorox");
@@ -795,7 +791,9 @@ public class ClientProxyCore extends CommonProxyCore
 		}
 
 		@Override
-		public void tickEnd(EnumSet<TickType> type, Object... tickData){}
+		public void tickEnd(EnumSet<TickType> type, Object... tickData)
+		{
+		}
 
     	@Override
     	public EnumSet<TickType> ticks()

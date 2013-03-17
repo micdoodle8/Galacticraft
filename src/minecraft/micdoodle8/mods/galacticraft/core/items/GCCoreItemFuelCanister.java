@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.items;
 import java.util.ArrayList;
 import java.util.List;
 
-import micdoodle8.mods.galacticraft.API.IRefinableItem;
+import micdoodle8.mods.galacticraft.API.IFuelTank;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class GCCoreItemFuelCanister extends Item
+public class GCCoreItemFuelCanister extends Item implements IFuelTank
 {
 	protected List<Icon> icons = new ArrayList<Icon>();
 

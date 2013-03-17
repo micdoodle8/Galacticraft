@@ -89,8 +89,6 @@ public class OxygenBubble
 					}
 				}
 			}
-			
-			FMLLog.info("" + this.connectedTorches.size());
 
 			for (TileEntity tile : this.connectedTorches)
 			{

@@ -5,12 +5,16 @@ import java.util.Random;
 import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.multiplayer.NetClientHandler;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.src.PlayerAPI;
-import net.minecraft.src.PlayerBase;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.Session;
 import net.minecraft.util.StringUtils;
+import net.minecraft.world.World;
 import cpw.mods.fml.client.FMLClientHandler;
 
 /**
@@ -19,7 +23,7 @@ import cpw.mods.fml.client.FMLClientHandler;
  *  All rights reserved.
  *
  */
-public class GCCorePlayerBaseClient extends PlayerBase
+public class GCCorePlayerBaseClient extends EntityClientPlayerMP
 {
 	private final Random rand = new Random();
 
@@ -29,14 +33,9 @@ public class GCCorePlayerBaseClient extends PlayerBase
 	public boolean usingAdvancedGoggles;
 	private int thirdPersonView = 0;
 
-	public GCCorePlayerBaseClient(PlayerAPI var1)
-	{
-		super(var1);
-	}
-
-	public EntityPlayerSP getPlayer()
-	{
-		return this.player;
+    public GCCorePlayerBaseClient(Minecraft par1Minecraft, World par2World, Session par3Session, NetClientHandler par4NetClientHandler)
+    {
+		super(par1Minecraft, par2World, par3Session, par4NetClientHandler);
 	}
 
 	@Override
@@ -44,7 +43,7 @@ public class GCCorePlayerBaseClient extends PlayerBase
     {
     	super.updateCloak();
 
-        this.player.cloakUrl = this.player.cloakUrl = "http://www.micdoodle8.com/galacticraft/capes/" + StringUtils.stripControlCodes(this.player.username) + ".png";
+        this.cloakUrl = "http://www.micdoodle8.com/galacticraft/capes/" + StringUtils.stripControlCodes(this.username) + ".png";
     }
 
 	@Override
@@ -64,12 +63,12 @@ public class GCCorePlayerBaseClient extends PlayerBase
 
     	if (this.getParachute())
     	{
-    		this.player.fallDistance = 0.0F;
+    		this.fallDistance = 0.0F;
     	}
 
         for (final String name : ClientProxyCore.playersUsingParachutes)
         {
-			if (this.player.username.equals(name))
+			if (this.username.equals(name))
 			{
 				this.usingParachute = true;
 				changed = true;
@@ -81,13 +80,13 @@ public class GCCorePlayerBaseClient extends PlayerBase
         	this.usingParachute = false;
         }
 
-		if (!this.getParachute() && this.player.worldObj.provider instanceof IGalacticraftWorldProvider && !this.player.capabilities.isFlying && !FMLClientHandler.instance().getClient().isGamePaused && !this.player.handleWaterMovement())
+		if (!this.getParachute() && this.worldObj.provider instanceof IGalacticraftWorldProvider && !this.capabilities.isFlying && !FMLClientHandler.instance().getClient().isGamePaused && !this.handleWaterMovement())
 		{
-			final IGalacticraftWorldProvider wp = (IGalacticraftWorldProvider) this.player.worldObj.provider;
-			this.player.motionY = this.player.motionY + wp.getGravity();
+			final IGalacticraftWorldProvider wp = (IGalacticraftWorldProvider) this.worldObj.provider;
+			this.motionY = this.motionY + wp.getGravity();
 		}
 
-		if (this.getParachute() && this.player.onGround)
+		if (this.getParachute() && this.onGround)
 		{
 			this.setParachute(false);
 			FMLClientHandler.instance().getClient().gameSettings.thirdPersonView = this.getThirdPersonView();
@@ -95,7 +94,7 @@ public class GCCorePlayerBaseClient extends PlayerBase
 
         if (!this.lastUsingParachute && this.usingParachute)
         {
-            FMLClientHandler.instance().getClient().sndManager.playSound("player.parachute", (float)this.getPlayer().posX, (float)this.getPlayer().posY, (float)this.getPlayer().posZ, 0.95F + this.rand.nextFloat() * 0.1F, 1.0F);
+            FMLClientHandler.instance().getClient().sndManager.playSound("player.parachute", (float)this.posX, (float)this.posY, (float)this.posZ, 0.95F + this.rand.nextFloat() * 0.1F, 1.0F);
         }
 
 		this.lastUsingParachute = this.usingParachute;
@@ -104,16 +103,16 @@ public class GCCorePlayerBaseClient extends PlayerBase
 	@Override
 	public void onUpdate()
 	{
-		if (!GalacticraftCore.playersClient.containsKey(this.player.username) || GalacticraftCore.slowTick % 360 == 0)
+		if (!GalacticraftCore.playersClient.containsKey(this.username) || GalacticraftCore.slowTick % 360 == 0)
 		{
-			GalacticraftCore.playersClient.put(this.player.username, this);
+			GalacticraftCore.playersClient.put(this.username, this);
 		}
 
-		if (this.player != null && this.getParachute() && !this.player.capabilities.isFlying && !this.player.handleWaterMovement())
+		if (this != null && this.getParachute() && !this.capabilities.isFlying && !this.handleWaterMovement())
 		{
-			this.player.motionY = -0.5D;
-			this.player.motionX *= 0.5F;
-			this.player.motionZ *= 0.5F;
+			this.motionY = -0.5D;
+			this.motionX *= 0.5F;
+			this.motionZ *= 0.5F;
 		}
 
 		super.onUpdate();
