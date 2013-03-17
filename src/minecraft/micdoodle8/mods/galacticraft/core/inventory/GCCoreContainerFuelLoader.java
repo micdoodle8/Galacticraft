@@ -1,13 +1,14 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
-import universalelectricity.core.item.IItemElectric;
-import universalelectricity.prefab.SlotSpecific;
+import micdoodle8.mods.galacticraft.API.IFuelTank;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFuelLoader;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import universalelectricity.core.item.IItemElectric;
+import universalelectricity.prefab.SlotSpecific;
 
 public class GCCoreContainerFuelLoader extends Container
 {
@@ -17,7 +18,7 @@ public class GCCoreContainerFuelLoader extends Container
     {
     	this.fuelLoader = fuelLoader;
 		this.addSlotToContainer(new SlotSpecific(fuelLoader, 0, 55, 54, IItemElectric.class));
-		this.addSlotToContainer(new Slot(fuelLoader, 1, 55, 27));
+		this.addSlotToContainer(new SlotSpecific(fuelLoader, 1, 55, 27, IFuelTank.class));
 
         int var6;
         int var7;
