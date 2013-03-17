@@ -67,6 +67,7 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
         this.dataWatcher.addObject(this.timeSinceHit, new Integer(0));
         this.dataWatcher.addObject(this.rockDirection, new Integer(1));
         this.ignoreFrustumCheck = true;
+        this.isImmuneToFire = true;
     }
 
     public GCCoreEntityBuggy(World var1, double var2, double var4, double var6)
