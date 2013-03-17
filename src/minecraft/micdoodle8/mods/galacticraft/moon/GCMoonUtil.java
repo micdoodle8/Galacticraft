@@ -6,6 +6,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
+import universalelectricity.components.common.BasicComponents;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -29,6 +30,7 @@ public class GCMoonUtil
 	public static void addSmeltingRecipes()
 	{
 		FurnaceRecipes.smelting().addSmelting(GCMoonItems.meteoricIronRaw.itemID, new ItemStack(GCMoonItems.meteoricIronIngot), 1.0F);
-		FurnaceRecipes.smelting().addSmelting(GCMoonBlocks.blockMoon.blockID, 1, new ItemStack(Item.ingotIron), 1.0F);
+		FurnaceRecipes.smelting().addSmelting(GCMoonBlocks.blockMoon.blockID, 0, new ItemStack(BasicComponents.itemIngot, 1, 0), 1.0F);
+		FurnaceRecipes.smelting().addSmelting(GCMoonBlocks.blockMoon.blockID, 1, new ItemStack(BasicComponents.itemIngot, 1, 1), 1.0F);
 	}
 }
