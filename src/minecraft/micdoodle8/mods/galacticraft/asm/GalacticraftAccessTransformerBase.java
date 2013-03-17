@@ -17,10 +17,11 @@ public class GalacticraftAccessTransformerBase implements IClassTransformer
 	@Override
 	public byte[] transform(String name, String transformedName, byte[] bytes) 
 	{
-        if(FMLRelauncher.side().equals("CLIENT"))
+        if(FMLRelauncher.side().equals("CLIENT") || FMLRelauncher.side().equals("SERVER"))
         {
 			bytes = override(name, bytes, this.getObfuscatedName(), this.getLocation());
         }
+        
 		return bytes;
 	}
 	

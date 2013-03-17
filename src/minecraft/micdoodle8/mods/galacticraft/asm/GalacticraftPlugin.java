@@ -15,6 +15,7 @@ public class GalacticraftPlugin implements IFMLLoadingPlugin, IFMLCallHook
 {
 	private static String transformerDir = "micdoodle8.mods.galacticraft.asm.";
 	private static String serverConfigManager = transformerDir + "GCCoreServerConfigurationManagerTransformer";
+	private static String playerControllerMP = transformerDir + "GCCorePlayerControllerMPTransformer";
 	public static boolean hasRegistered = false;
     public static File fileLocation;
 	
@@ -27,7 +28,7 @@ public class GalacticraftPlugin implements IFMLLoadingPlugin, IFMLCallHook
 	@Override
 	public String[] getASMTransformerClass() 
 	{
-		String[] asmStrings = new String[] {serverConfigManager};
+		String[] asmStrings = new String[] {serverConfigManager, playerControllerMP};
 		
         if (!hasRegistered) 
         {
@@ -83,6 +84,7 @@ public class GalacticraftPlugin implements IFMLLoadingPlugin, IFMLCallHook
 	@Override
 	public Void call() throws Exception 
 	{
+        GalacticraftAccessTransformer.addTransformerMap("galacticraft_at.cfg");
 		return null;
 	}
 }
