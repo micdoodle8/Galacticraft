@@ -39,6 +39,7 @@ public class GCCoreBlocks
 	public static Block compressor;
 	public static Block fuelLoader;
 	public static Block landingPadFull;
+	public static Block spaceStationBase;
 	
 	public static Icon[] blockIcons;
 
@@ -64,6 +65,7 @@ public class GCCoreBlocks
 		GCCoreBlocks.refinery = 											new GCCoreBlockRefinery 			(GCCoreConfigManager.idBlockRefinery, 0)                          	.setHardness(3.0F)                              	.setStepSound(Block.soundMetalFootstep)					.setUnlocalizedName("refinery");
 		GCCoreBlocks.compressor = 											new GCCoreBlockOxygenCompressor		(GCCoreConfigManager.idBlockAirCompressor, false)					.setHardness(3.5F)  	  						 	.setStepSound(Block.soundStoneFootstep)					.setUnlocalizedName("oxygenCompressor");
 		GCCoreBlocks.fuelLoader = 											new GCCoreBlockFuelLoader			(GCCoreConfigManager.idBlockFuelLoader)								.setHardness(3.0F)       							.setStepSound(Block.soundMetalFootstep)					.setUnlocalizedName("fuelLoader");
+		GCCoreBlocks.spaceStationBase = 									new GCCoreBlockSpaceStationBase		(GCCoreConfigManager.idBlockSpaceStationBase)						.setHardness(3.0F)       							.setStepSound(Block.soundMetalFootstep)					.setUnlocalizedName("spaceStationBase");
 		
 		// Hide certain items from NEI
 		GalacticraftCore.hiddenItems.add(airLockSeal.blockID);
@@ -106,5 +108,6 @@ public class GCCoreBlocks
 		GameRegistry.registerBlock(GCCoreBlocks.decorationBlocks, 	GCCoreItemBlockBase.class, 	GCCoreBlocks.decorationBlocks.getUnlocalizedName(), 	GalacticraftCore.MODID);
 		GameRegistry.registerBlock(GCCoreBlocks.sapling, 			GCCoreItemSapling.class, 	GCCoreBlocks.sapling.getUnlocalizedName(), 				GalacticraftCore.MODID);
 		GameRegistry.registerBlock(GCCoreBlocks.fuelLoader, 		ItemBlock.class, 			GCCoreBlocks.fuelLoader.getUnlocalizedName(), 			GalacticraftCore.MODID);
+		GameRegistry.registerBlock(GCCoreBlocks.spaceStationBase, 	ItemBlock.class, 			GCCoreBlocks.spaceStationBase.getUnlocalizedName(), 	GalacticraftCore.MODID);
 	}
 }

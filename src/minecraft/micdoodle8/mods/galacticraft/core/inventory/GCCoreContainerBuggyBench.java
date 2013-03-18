@@ -17,11 +17,11 @@ public class GCCoreContainerBuggyBench extends Container
 
     public GCCoreContainerBuggyBench(InventoryPlayer par1InventoryPlayer, int x, int y, int z)
     {
+        int change = 27;
     	this.worldObj = par1InventoryPlayer.player.worldObj;
-        this.addSlotToContainer(new GCCoreSlotRocketBenchResult(par1InventoryPlayer.player, this.craftMatrix, this.craftResult, 0, 142, 79));
+        this.addSlotToContainer(new GCCoreSlotRocketBenchResult(par1InventoryPlayer.player, this.craftMatrix, this.craftResult, 0, 142, 79 + change));
         int var6;
         int var7;
-        int change = 27;
 
         // Body
         for (var6 = 0; var6 < 4; ++var6)

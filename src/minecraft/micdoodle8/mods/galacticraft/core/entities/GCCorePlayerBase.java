@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
@@ -7,17 +8,20 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockBreathableAir;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
+import micdoodle8.mods.galacticraft.core.dimension.GCCoreFromOrbitTeleporter;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreTeleporter;
+import micdoodle8.mods.galacticraft.core.dimension.GCCoreToOrbitTeleporter;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryTankRefill;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemParachute;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketDimensionList;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
-import micdoodle8.mods.galacticraft.moon.GalacticraftMoon;
 import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
 import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;
 import net.minecraft.block.Block;
@@ -108,6 +112,11 @@ public class GCCorePlayerBase extends EntityPlayerMP
 	public int teleportCooldown;
 	
 	private int lastStep;
+	
+	public double coordsTeleportedFromX;
+	public double coordsTeleportedFromZ;
+	
+	public int spaceStationDimensionID = -1;
 
     public GCCorePlayerBase(MinecraftServer par1MinecraftServer, World par2World, String par3Str, ItemInWorldManager par4ItemInWorldManager)
     {
@@ -219,7 +228,7 @@ public class GCCorePlayerBase extends EntityPlayerMP
     public void onUpdate()
     {
     	super.onUpdate();
-
+    	
     	if (!GalacticraftCore.playersServer.containsKey(this.username) || GalacticraftCore.slowTick % 360 == 0)
     	{
     		GalacticraftCore.playersServer.put(this.username, this);
@@ -454,6 +463,15 @@ public class GCCorePlayerBase extends EntityPlayerMP
 
 		if (!this.hasOpenedPlanetSelectionGui && this.openPlanetSelectionGuiCooldown == 1)
 		{
+	        if (this.spaceStationDimensionID == -1)
+	        {
+	        	WorldUtil.bindSpaceStationToNewDimension(this.worldObj, this);
+	        }
+	        else
+	        {
+	        	WorldUtil.createSpaceStation(this.worldObj, this.spaceStationDimensionID, this);
+	        }
+	        
         	final Integer[] ids = DimensionManager.getStaticDimensionIDs();
 
 	    	final Set set = WorldUtil.getArrayOfPossibleDimensions(ids).entrySet();
@@ -975,6 +993,8 @@ public class GCCorePlayerBase extends EntityPlayerMP
         this.updateTimeAndWeatherForPlayer(par1EntityPlayerMP, var5);
         this.syncPlayerInventory(par1EntityPlayerMP);
         final Iterator var6 = par1EntityPlayerMP.getActivePotionEffects().iterator();
+        
+        // SET PLAYER COORDS BASED ON COORDS WHEN LAUNCHED TODO
 
         while (var6.hasNext())
         {
@@ -1145,6 +1165,9 @@ public class GCCorePlayerBase extends EntityPlayerMP
         this.setParachute(par1NBTTagCompound.getBoolean("usingParachute2"));
         this.usingPlanetSelectionGui = par1NBTTagCompound.getBoolean("usingPlanetSelectionGui");
         this.teleportCooldown = par1NBTTagCompound.getInteger("teleportCooldown");
+        this.coordsTeleportedFromX = par1NBTTagCompound.getDouble("coordsTeleportedFromX");
+        this.coordsTeleportedFromZ = par1NBTTagCompound.getDouble("coordsTeleportedFromZ");
+        this.spaceStationDimensionID = par1NBTTagCompound.getInteger("spaceStationDimensionID");
 
         if (par1NBTTagCompound.getBoolean("usingPlanetSelectionGui"))
         {
@@ -1180,6 +1203,9 @@ public class GCCorePlayerBase extends EntityPlayerMP
         par1NBTTagCompound.setBoolean("usingParachute2", this.getParachute());
         par1NBTTagCompound.setBoolean("usingPlanetSelectionGui", this.usingPlanetSelectionGui);
         par1NBTTagCompound.setInteger("teleportCooldown", this.teleportCooldown);
+        par1NBTTagCompound.setDouble("coordsTeleportedFromX", this.coordsTeleportedFromX);
+        par1NBTTagCompound.setDouble("coordsTeleportedFromZ", this.coordsTeleportedFromZ);
+        par1NBTTagCompound.setInteger("spaceStationDimensionID", this.spaceStationDimensionID);
 
         final NBTTagList var2 = new NBTTagList();
 
@@ -1296,13 +1322,32 @@ public class GCCorePlayerBase extends EntityPlayerMP
 	  	}
 	}
 
-    public void travelToTheEnd(int par1)
+    public void travelToTheEnd(int par1, int specific)
     {
 		for (int i = 0; i < this.mcServer.worldServerForDimension(par1).customTeleporters.size(); i++)
 		{
-			if (this.mcServer.worldServerForDimension(par1).customTeleporters.get(i) instanceof GCCoreTeleporter)
+			if (specific == 0)
 			{
-    			this.transferPlayerToDimension(this, par1, this.mcServer.worldServerForDimension(par1).customTeleporters.get(i));
+				if (this.mcServer.worldServerForDimension(par1).customTeleporters.get(i) instanceof GCCoreTeleporter)
+				{
+	    			this.transferPlayerToDimension(this, par1, this.mcServer.worldServerForDimension(par1).customTeleporters.get(i));
+				}
+			}
+			
+			if (specific == 1)
+			{
+				if (this.mcServer.worldServerForDimension(par1).customTeleporters.get(i) instanceof GCCoreFromOrbitTeleporter)
+				{
+	    			this.transferPlayerToDimension(this, par1, this.mcServer.worldServerForDimension(par1).customTeleporters.get(i));
+				}
+			}
+			
+			if (specific == 2)
+			{
+				if (this.mcServer.worldServerForDimension(par1).customTeleporters.get(i) instanceof GCCoreToOrbitTeleporter)
+				{
+	    			this.transferPlayerToDimension(this, par1, this.mcServer.worldServerForDimension(par1).customTeleporters.get(i));
+				}
 			}
     	}
     }

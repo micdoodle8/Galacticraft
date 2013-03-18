@@ -21,36 +21,37 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GCCoreGuiChoosePlanetSlot extends GuiSlot
 {
-    final GCCoreGuiChoosePlanet languageGui;
+    final GCCoreGuiChoosePlanet choosePlanetGui;
 
     public GCCoreGuiChoosePlanetSlot(GCCoreGuiChoosePlanet par1GCGuiChoosePlanet)
     {
         super(FMLClientHandler.instance().getClient(), par1GCGuiChoosePlanet.width, par1GCGuiChoosePlanet.height, 32, par1GCGuiChoosePlanet.height - 32, 20);
-        this.languageGui = par1GCGuiChoosePlanet;
+        this.choosePlanetGui = par1GCGuiChoosePlanet;
     }
 
     @Override
 	protected int getSize()
     {
-        return GCCoreGuiChoosePlanet.getDestinations(this.languageGui).length;
+        return GCCoreGuiChoosePlanet.getDestinations(this.choosePlanetGui).length;
     }
 
     @Override
 	protected void elementClicked(int par1, boolean par2)
     {
-    	if (par1 < GCCoreGuiChoosePlanet.getDestinations(this.languageGui).length)
+    	if (par1 < GCCoreGuiChoosePlanet.getDestinations(this.choosePlanetGui).length)
     	{
-    		GCCoreGuiChoosePlanet.setSelectedDimension(this.languageGui, par1);
+    		GCCoreGuiChoosePlanet.setSelectedDimension(this.choosePlanetGui, par1);
+    		FMLLog.info("" + par1);
     	}
 
-        GCCoreGuiChoosePlanet.getSendButton(this.languageGui).displayString = "Send To Dimension";
-        GCCoreGuiChoosePlanet.getSendButton(this.languageGui).enabled = this.languageGui.isValidDestination(this.languageGui.selectedSlot);
+        GCCoreGuiChoosePlanet.getSendButton(this.choosePlanetGui).displayString = "Send To Dimension";
+        GCCoreGuiChoosePlanet.getSendButton(this.choosePlanetGui).enabled = this.choosePlanetGui.isValidDestination(this.choosePlanetGui.selectedSlot);
     }
 
     @Override
 	protected boolean isSelected(int par1)
     {
-        return par1 == GCCoreGuiChoosePlanet.getSelectedDimension(this.languageGui);
+        return par1 == GCCoreGuiChoosePlanet.getSelectedDimension(this.choosePlanetGui);
     }
 
     @Override
@@ -62,14 +63,17 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
     @Override
 	protected void drawSlot(int par1, int par2, int par3, int par4, Tessellator par5Tessellator)
     {
+        this.choosePlanetGui.drawString(this.choosePlanetGui.fontRenderer, "", par2 + 2, par3 + 1, 16777215);
+        
     	if (this.isSelected(par1))
     	{
+    		GL11.glPushMatrix();
             GL11.glDisable(GL11.GL_DEPTH_TEST);
             GL11.glDepthMask(false);
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             GL11.glDisable(GL11.GL_ALPHA_TEST);
-            GCCoreGuiChoosePlanet.getDestinations(this.languageGui)[par1].toLowerCase();
+            GCCoreGuiChoosePlanet.getDestinations(this.choosePlanetGui)[par1].toLowerCase();
             final Tessellator var3 = Tessellator.instance;
 
             for (int i = 0; i < GalacticraftCore.clientSubMods.size(); i++)
@@ -78,11 +82,18 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
             	{
             		final IPlanetSlotRenderer renderer = GalacticraftCore.clientSubMods.get(i).getSlotRenderer();
 
-        			String str = GCCoreGuiChoosePlanet.getDestinations(this.languageGui)[par1].toLowerCase();
+        			String str = GCCoreGuiChoosePlanet.getDestinations(this.choosePlanetGui)[par1].toLowerCase();
 
         			if (str.contains("*"))
         			{
         				str = str.replace("*", "");
+        			}
+        			
+        			if (str.contains("$"))
+        			{
+        				String[] twoDimensions = str.split("\\$");
+        				
+        				str = twoDimensions[0];
         			}
 
         			if (renderer.getPlanetName().toLowerCase().equals(str))
@@ -96,7 +107,7 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
             	}
             }
 
-    		if (GCCoreGuiChoosePlanet.getDestinations(this.languageGui)[par1].equals("Overworld"))
+    		if (GCCoreGuiChoosePlanet.getDestinations(this.choosePlanetGui)[par1].equals("Overworld"))
             {
                 FMLClientHandler.instance().getClient().renderEngine.func_98187_b("/micdoodle8/mods/galacticraft/core/client/planets/overworld.png");
 
@@ -114,17 +125,27 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
             GL11.glEnable(GL11.GL_DEPTH_TEST);
             GL11.glEnable(GL11.GL_ALPHA_TEST);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            GL11.glPopMatrix();
     	}
 
-    	if (this.languageGui.isValidDestination(par1))
+    	if (this.choosePlanetGui.isValidDestination(par1))
     	{
-            this.languageGui.drawCenteredString(this.languageGui.fontRenderer, GCCoreGuiChoosePlanet.getDestinations(this.languageGui)[par1], this.languageGui.width / 2, par3 + 3, 16777215);
+    		String str = GCCoreGuiChoosePlanet.getDestinations(this.choosePlanetGui)[par1];
+
+        	if (str.contains("$"))
+        	{
+        		String[] strs = str.split("\\$");
+        		str = strs[0];
+        	}
+
+            this.choosePlanetGui.drawCenteredString(this.choosePlanetGui.fontRenderer, str, this.choosePlanetGui.width / 2, par3 + 3, 0xEEEEEE);
     	}
     	else
     	{
-    		String str = GCCoreGuiChoosePlanet.getDestinations(this.languageGui)[par1];
+    		String str = GCCoreGuiChoosePlanet.getDestinations(this.choosePlanetGui)[par1];
     		str = str.replace("*", "");
-            this.languageGui.drawCenteredString(this.languageGui.fontRenderer, str, this.languageGui.width / 2, par3 + 3, 16716305);
+        	
+            this.choosePlanetGui.drawCenteredString(this.choosePlanetGui.fontRenderer, str, this.choosePlanetGui.width / 2, par3 + 3, 0xEEEEEE);
     	}
     }
 
@@ -136,7 +157,7 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
 	@Override
 	public void drawContainerBackground(Tessellator par1Tessellator)
 	{
-		this.languageGui.drawBlackBackground();
-		this.languageGui.renderSkybox(1);
+		this.choosePlanetGui.drawBlackBackground();
+		this.choosePlanetGui.renderSkybox(1);
 	}
 }

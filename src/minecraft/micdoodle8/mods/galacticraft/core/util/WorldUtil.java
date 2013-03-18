@@ -1,15 +1,23 @@
 package micdoodle8.mods.galacticraft.core.util;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.API.IInterplanetaryObject;
 import micdoodle8.mods.galacticraft.API.IMapPlanet;
+import micdoodle8.mods.galacticraft.API.IOrbitDimension;
+import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.dimension.GCCoreSpaceStationData;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreTeleporter;
+import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerBase;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketDimensionList;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -24,9 +32,12 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
 
 public class WorldUtil
 {
+    public static Collection registeredDimensions;
     public static List<ItemStack> useless = new ArrayList();
     public static List<ItemStack> common = new ArrayList();
     public static List<ItemStack> uncommon = new ArrayList();
@@ -116,9 +127,21 @@ public class WorldUtil
 
 		for (final Integer element : var1)
 		{
-			if (WorldProvider.getProviderForDimension(element) != null && WorldProvider.getProviderForDimension(element).getDimensionName() != null && WorldProvider.getProviderForDimension(element).getDimensionName().equals(par1String))
+			if (WorldProvider.getProviderForDimension(element) != null && WorldProvider.getProviderForDimension(element).getDimensionName() != null)
 			{
-				return WorldProvider.getProviderForDimension(element);
+				if (par1String.contains("$"))
+				{
+					String[] twoDimensions = par1String.split("\\$");
+
+					if (WorldProvider.getProviderForDimension(element).getDimensionName().equals(twoDimensions[0]))
+					{
+						return WorldProvider.getProviderForDimension(element);
+					}
+				}
+				else if (WorldProvider.getProviderForDimension(element).getDimensionName().equals(par1String))
+				{
+					return WorldProvider.getProviderForDimension(element);
+				}
 			}
 		}
 
@@ -146,10 +169,17 @@ public class WorldUtil
 
 		for (final Integer id : ids)
 		{
-    		if (WorldProvider.getProviderForDimension(id) != null && (WorldProvider.getProviderForDimension(id) instanceof IGalacticraftWorldProvider || WorldProvider.getProviderForDimension(id).dimensionId == 0))
-    		{
-    			map.put(WorldProvider.getProviderForDimension(id).getDimensionName(), WorldProvider.getProviderForDimension(id).dimensionId);
-    		}
+			if (WorldProvider.getProviderForDimension(id) != null)
+			{
+	    		if (((WorldProvider.getProviderForDimension(id) instanceof IGalacticraftWorldProvider && !(WorldProvider.getProviderForDimension(id) instanceof IOrbitDimension)) || WorldProvider.getProviderForDimension(id).dimensionId == 0))
+	    		{
+	    			map.put(WorldProvider.getProviderForDimension(id).getDimensionName(), WorldProvider.getProviderForDimension(id).dimensionId);
+	    		}
+	    		else if (WorldProvider.getProviderForDimension(id) instanceof IOrbitDimension)
+	    		{
+	    			map.put(WorldProvider.getProviderForDimension(id).getDimensionName() + "$" + ((IOrbitDimension) WorldProvider.getProviderForDimension(id)).getPlanetToOrbit(), WorldProvider.getProviderForDimension(id).dimensionId);
+	    		}
+			}
 		}
 
 		for (int j = 0; j < GalacticraftCore.subMods.size(); j++)
@@ -344,5 +374,79 @@ public class WorldUtil
         {
         	((IInterplanetaryObject) par1Entity).onPlanetChanged();
         }
+    }
+
+    private static List getExistingSpaceStationList(File var0)
+    {
+        ArrayList var1 = new ArrayList();
+        File[] var2 = var0.listFiles();
+        int var3 = var2.length;
+
+        for (int var4 = 0; var4 < var3; ++var4)
+        {
+            File var5 = var2[var4];
+
+            if (var5.getName().contains("spacestation_"))
+            {
+                String var6 = var5.getName();
+                var6 = var6.substring(13, var6.length() - 4);
+                var1.add(Integer.valueOf(Integer.parseInt(var6)));
+            }
+        }
+
+        return var1;
+    }
+
+    public static void unregisterDimensions()
+    {
+        if (registeredDimensions != null)
+        {
+            Iterator var0 = registeredDimensions.iterator();
+
+            while (var0.hasNext())
+            {
+                Integer var1 = (Integer)var0.next();
+                DimensionManager.unregisterDimension(var1.intValue());
+            }
+
+            registeredDimensions = null;
+        }
+    }
+
+    public static void registerDimensions(File var0)
+    {
+    	registeredDimensions = getExistingSpaceStationList(var0);
+        Iterator var1 = registeredDimensions.iterator();
+
+        while (var1.hasNext())
+        {
+            Integer var2 = (Integer)var1.next();
+            DimensionManager.registerDimension(var2.intValue(), GCCoreConfigManager.idDimensionOverworldOrbit);
+        }
+    }
+    
+    public static GCCoreSpaceStationData bindSpaceStationToNewDimension(World var0, GCCorePlayerBase player)
+    {
+    	int newID = DimensionManager.getNextFreeDimId();
+    	GCCoreSpaceStationData data = WorldUtil.createSpaceStation(var0, newID, player);
+    	player.spaceStationDimensionID = newID;
+    	return data;
+    }
+    
+    public static GCCoreSpaceStationData createSpaceStation(World var0, int par1, GCCorePlayerBase player)
+    {
+    	WorldUtil.registeredDimensions.add(par1);
+        DimensionManager.registerDimension(par1, GCCoreConfigManager.idDimensionOverworldOrbit);
+        MinecraftServer var2 = FMLCommonHandler.instance().getMinecraftServerInstance();
+
+        if (var2 != null)
+        {
+            ArrayList var1 = new ArrayList();
+            var1.add(par1);
+            var2.getConfigurationManager().sendPacketToAllPlayers(GCCorePacketDimensionList.buildDimensionListPacket(var1));
+        }
+
+        GCCoreSpaceStationData var3 = GCCoreSpaceStationData.getStationData(var0, par1, player);
+        return var3;
     }
 }

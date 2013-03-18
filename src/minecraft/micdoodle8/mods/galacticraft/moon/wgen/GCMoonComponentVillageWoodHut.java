@@ -439,7 +439,7 @@ public class GCMoonComponentVillageWoodHut extends GCMoonComponentVillage
         	}
         }
 
-        this.spawnVillagers(par1World, par3StructureBoundingBox, 1, 1, 2, 1);
+        this.spawnVillagers(par1World, par3StructureBoundingBox, 6, 5, 6, 4);
         return true;
     }
 }

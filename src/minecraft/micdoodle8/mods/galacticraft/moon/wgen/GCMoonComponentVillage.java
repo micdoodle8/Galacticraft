@@ -3,8 +3,8 @@ package micdoodle8.mods.galacticraft.moon.wgen;
 import java.util.List;
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityAlienVillager;
 import net.minecraft.block.Block;
-import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -112,9 +112,12 @@ public abstract class GCMoonComponentVillage extends StructureComponent
         {
             for (int var7 = this.villagersSpawned; var7 < par6; ++var7)
             {
-                final int var8 = this.getXWithOffset(par3 + var7, par5);
-                final int var9 = this.getYWithOffset(par4);
-                final int var10 = this.getZWithOffset(par3 + var7, par5);
+                int var8 = this.getXWithOffset(par3 + var7, par5);
+                int var9 = this.getYWithOffset(par4);
+                int var10 = this.getZWithOffset(par3 + var7, par5);
+                
+                var8 += par1World.rand.nextInt(3) - 1;
+                var10 += par1World.rand.nextInt(3) - 1;
 
                 if (!par2StructureBoundingBox.isVecInside(var8, var9, var10))
                 {
@@ -122,7 +125,7 @@ public abstract class GCMoonComponentVillage extends StructureComponent
                 }
 
                 ++this.villagersSpawned;
-                final EntityVillager var11 = new EntityVillager(par1World, this.getVillagerType(var7));
+                final GCCoreEntityAlienVillager var11 = new GCCoreEntityAlienVillager(par1World);
                 var11.setLocationAndAngles(var8 + 0.5D, var9, var10 + 0.5D, 0.0F, 0.0F);
                 par1World.spawnEntityInWorld(var11);
             }

@@ -167,7 +167,7 @@ public class OxygenBubble
 					{
 						for (int z = distributor.zCoord - distributor.power - 1; z <= distributor.zCoord + distributor.power; z++)
 						{
-							if (distributor.getDistanceFrom(x + 0.5, y + 0.5, z + 0.5) < distributor.power)
+							if (distributor.getDistanceFromServer(x + 0.5, y + 0.5, z + 0.5) < distributor.power)
 							{
 								if (distributor.worldObj.getBlockId(x, y, z) == 0 && !distributor.worldObj.isRemote)
 								{
@@ -231,7 +231,7 @@ public class OxygenBubble
 				{
 					GCCoreTileEntityOxygenDistributor distributor = (GCCoreTileEntityOxygenDistributor) tile;
 					
-					if (distributor.getDistanceFrom(tileToCheck.xCoord + 0.5, tileToCheck.yCoord + 0.5, tileToCheck.zCoord + 0.5) <= distributor.power * (extra ? 1.5 : 1))
+					if (distributor.getDistanceFromServer(tileToCheck.xCoord + 0.5, tileToCheck.yCoord + 0.5, tileToCheck.zCoord + 0.5) <= distributor.power * (extra ? 1.5 : 1))
 					{
 						return true;
 					}

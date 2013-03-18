@@ -435,7 +435,7 @@ public class GCMoonComponentVillageHouse3 extends GCMoonComponentVillage
         	}
         }
 
-        this.spawnVillagers(par1World, par3StructureBoundingBox, 4, 1, 2, 2);
+        this.spawnVillagers(par1World, par3StructureBoundingBox, 6, 5, 6, 4);
         return true;
     }
 }

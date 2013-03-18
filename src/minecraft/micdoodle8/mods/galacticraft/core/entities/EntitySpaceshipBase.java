@@ -1,16 +1,19 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
 import java.io.DataInputStream;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import micdoodle8.mods.galacticraft.API.IOrbitDimension;
 import micdoodle8.mods.galacticraft.API.ISpaceship;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLandingPad;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLandingPadFull;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketDimensionList;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFuelLoader;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
@@ -25,6 +28,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
@@ -330,6 +334,12 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship
 
         	if (!this.worldObj.isRemote)
         	{
+        		if (!(this.worldObj.provider instanceof IOrbitDimension))
+        		{
+        	        ((GCCorePlayerBase) this.riddenByEntity).coordsTeleportedFromX = this.riddenByEntity.posX;
+        	        ((GCCorePlayerBase) this.riddenByEntity).coordsTeleportedFromZ = this.riddenByEntity.posZ;
+        		}
+        		
         		int amountRemoved = 0;
 
         		for (int x = MathHelper.floor_double(this.posX) - 1; x <= MathHelper.floor_double(this.posX) + 1; x++)
@@ -459,6 +469,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship
     	par1NBTTagCompound.setBoolean("launched", this.launched);
     	par1NBTTagCompound.setInteger("timeUntilLaunch", this.timeUntilLaunch);
     	par1NBTTagCompound.setInteger("ignite", this.ignite);
+    	par1NBTTagCompound.setInteger("fuel", this.fuel);
     }
 
     @Override
@@ -475,6 +486,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship
 		}
 		this.timeUntilLaunch = par1NBTTagCompound.getInteger("timeUntilLaunch");
 		this.ignite = par1NBTTagCompound.getInteger("ignite");
+		this.fuel = par1NBTTagCompound.getInteger("fuel");
     }
 
     @Override
@@ -601,6 +613,17 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship
     	{
     		if (this.riddenByEntity instanceof EntityPlayerMP)
             {
+		        GCCorePlayerBase playerBase = PlayerUtil.getPlayerBaseServerFromPlayer((EntityPlayerMP)this.riddenByEntity);
+		        
+		        if (playerBase.spaceStationDimensionID == -1)
+		        {
+		        	WorldUtil.bindSpaceStationToNewDimension(this.worldObj, playerBase);
+		        }
+		        else
+		        {
+		        	WorldUtil.createSpaceStation(this.worldObj, playerBase.spaceStationDimensionID, playerBase);
+		        }
+		        
         		final EntityPlayerMP entityplayermp = (EntityPlayerMP)this.riddenByEntity;
 
 				final Integer[] ids = DimensionManager.getStaticDimensionIDs();
@@ -619,8 +642,6 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship
 		    	final Object[] toSend = {entityplayermp.username, temp};
 		        FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(entityplayermp.username).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 2, toSend));
 
-		        GCCorePlayerBase playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(entityplayermp);
-		        
 		        if (playerBase != null)
 		        {
 		        	playerBase.setUsingPlanetGui();

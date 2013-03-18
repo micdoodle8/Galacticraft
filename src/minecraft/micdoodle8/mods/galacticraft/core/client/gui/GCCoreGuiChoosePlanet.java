@@ -442,6 +442,20 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     	}
     }
 
+    public boolean hasSpacestation(int i)
+    {
+    	final String str = this.destinations[i];
+
+    	if (str.contains("$"))
+    	{
+    		return true;
+    	}
+    	else
+    	{
+    		return false;
+    	}
+    }
+
     static EntityPlayer getPlayerToSend(GCCoreGuiChoosePlanet par0GuiLanguage)
     {
         return par0GuiLanguage.playerToSend;

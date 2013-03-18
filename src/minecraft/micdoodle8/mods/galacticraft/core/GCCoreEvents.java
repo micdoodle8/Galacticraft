@@ -5,7 +5,9 @@ import java.util.Random;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
+import micdoodle8.mods.galacticraft.core.dimension.GCCoreFromOrbitTeleporter;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreTeleporter;
+import micdoodle8.mods.galacticraft.core.dimension.GCCoreToOrbitTeleporter;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSapling;
 import net.minecraft.item.Item;
@@ -22,7 +24,6 @@ import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
 import net.minecraftforge.event.world.WorldEvent;
-import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreEvents
 {
@@ -62,6 +63,8 @@ public class GCCoreEvents
 		if (event.world instanceof WorldServer)
 		{
 			((WorldServer)event.world).customTeleporters.add(new GCCoreTeleporter((WorldServer)event.world));
+			((WorldServer)event.world).customTeleporters.add(new GCCoreFromOrbitTeleporter((WorldServer)event.world, true));
+			((WorldServer)event.world).customTeleporters.add(new GCCoreToOrbitTeleporter((WorldServer)event.world, true));
 		}
 	}
 

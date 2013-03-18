@@ -12,6 +12,7 @@ import micdoodle8.mods.galacticraft.core.perlin.NoiseModule;
 import micdoodle8.mods.galacticraft.core.perlin.generator.Gradient;
 import micdoodle8.mods.galacticraft.core.wgen.GCCoreChunk;
 import micdoodle8.mods.galacticraft.core.wgen.GCCoreCraterSize;
+import micdoodle8.mods.galacticraft.core.wgen.GCCoreMapGenBaseMeta;
 import micdoodle8.mods.galacticraft.moon.GCMoonConfigManager;
 import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
 import net.minecraft.block.Block;
@@ -25,7 +26,6 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.ChunkProviderGenerate;
 import net.minecraft.world.gen.structure.MapGenMineshaft;
-import cpw.mods.fml.common.FMLLog;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -65,6 +65,8 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 	private final MapGenMineshaft mineshaftGenerator = new MapGenMineshaft();
 
 	private BiomeGenBase[] biomesForGeneration = {GCMoonBiomeGenBase.moonFlat};
+	
+    private GCCoreMapGenBaseMeta caveGenerator = new GCMoonGenCaves();
 
 	private static final double TERRAIN_HEIGHT_MOD = 2.7;
 	private static final double HILL_HEIGHT_MOD = 0.8;
@@ -224,6 +226,7 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 		this.biomesForGeneration = this.worldObj.getWorldChunkManager().loadBlockGeneratorData(this.biomesForGeneration, par1 * 16, par2 * 16, 16, 16);
 		this.createCraters(par1, par2, ids, meta);
 		this.replaceBlocksForBiome(par1, par2, ids, meta, this.biomesForGeneration);
+        this.caveGenerator.generate(this, this.worldObj, par1, par2, ids, meta);
 
 		final Chunk var4 = new GCCoreChunk(this.worldObj, ids, meta, par1, par2);
 		final byte[] var5 = var4.getBiomeArray();

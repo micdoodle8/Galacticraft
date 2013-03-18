@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.client;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import java.util.logging.Level;
 
 import micdoodle8.mods.galacticraft.API.IDetectableMetadataResource;
 import micdoodle8.mods.galacticraft.API.IDetectableResource;
@@ -38,6 +40,7 @@ import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRenderer
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererMeteor;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererOxygenPipe;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererUnlitTorch;
+import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderAlienVillager;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderArrow;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderAstroOrb;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderBlockTreasureChest;
@@ -62,7 +65,9 @@ import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntityRefi
 import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntityTreasureChestRenderer;
 import micdoodle8.mods.galacticraft.core.client.sounds.GCCoreSoundUpdaterSpaceship;
 import micdoodle8.mods.galacticraft.core.client.sounds.GCCoreSounds;
+import micdoodle8.mods.galacticraft.core.dimension.GCCoreSpaceStationData;
 import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityAlienVillager;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityArrow;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityAstroOrb;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityBuggy;
@@ -87,6 +92,7 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.moon.client.ClientProxyMoon;
 import micdoodle8.mods.galacticraft.moon.client.GCMoonMapPlanet;
 import net.minecraft.block.Block;
@@ -107,6 +113,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompressedStreamTools;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.util.AxisAlignedBB;
@@ -114,16 +122,19 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProviderSurface;
 import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
+import universalelectricity.components.common.BasicComponents;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry.KeyHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.IScheduledTickHandler;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
@@ -273,6 +284,7 @@ public class ClientProxyCore extends CommonProxyCore
 	{
 		ClientProxyCore.moon.registerRenderInformation();
 
+		BasicComponents.registerTileEntityRenderers();
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntitySpaceship.class, new GCCoreRenderSpaceship(new GCCoreModelSpaceship(), "/micdoodle8/mods/galacticraft/core/client/entities/spaceship1.png"));
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntitySpider.class, new GCCoreRenderSpider());
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityZombie.class, new GCCoreRenderZombie());
@@ -285,6 +297,7 @@ public class ClientProxyCore extends CommonProxyCore
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityWorm.class, new GCCoreRenderWorm());
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityParaChest.class, new GCCoreRenderParaChest());
         RenderingRegistry.registerEntityRenderingHandler(EntityPlayer.class, new GCCoreRenderPlayer());
+        RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityAlienVillager.class, new GCCoreRenderAlienVillager());
         RenderingRegistry.addNewArmourRendererPrefix("oxygen");
         RenderingRegistry.addNewArmourRendererPrefix("sensor");
         RenderingRegistry.addNewArmourRendererPrefix("sensorox");
@@ -674,6 +687,61 @@ public class ClientProxyCore extends CommonProxyCore
             	{
             		((EntitySpaceshipBase) player.ridingEntity).fuel = (Integer) packetReadout[0];
             	}
+            }
+            else if (packetType == 16)
+            {
+                if (WorldUtil.registeredDimensions == null)
+                {
+                	WorldUtil.registeredDimensions = new ArrayList();
+                }
+
+				try 
+				{
+					int var1 = data.readInt();
+
+	                for (int var2 = 0; var2 < var1; ++var2)
+	                {
+	                    int var3 = data.readInt();
+	
+	                    if (!WorldUtil.registeredDimensions.contains(Integer.valueOf(var3)))
+	                    {
+	                    	WorldUtil.registeredDimensions.add(Integer.valueOf(var3));
+	                        DimensionManager.registerDimension(var3, GCCoreConfigManager.idDimensionOverworldOrbit);
+	                    }
+	                }
+				} 
+				catch (IOException e) 
+				{
+					e.printStackTrace();
+				}
+            }
+            else if (packetType == 17)
+            {
+                try
+                {
+                    int var2 = data.readInt();
+                    NBTTagCompound var3;
+
+                    short var1 = data.readShort();
+
+                    if (var1 < 0)
+                    {
+                    	var3 = null;
+                    }
+                    else
+                    {
+                        byte[] var21 = new byte[var1];
+                        data.readFully(var21);
+                        var3 = CompressedStreamTools.decompress(var21);
+                    }
+                    
+                    GCCoreSpaceStationData var4 = GCCoreSpaceStationData.getMPSpaceStationData(player.worldObj, var2, player);
+                    var4.readFromNBT(var3);
+                }
+                catch (IOException var5)
+                {
+                    var5.printStackTrace();
+                }
             }
 		}
     }

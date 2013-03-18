@@ -4,11 +4,14 @@ import java.util.List;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
+import micdoodle8.mods.galacticraft.core.client.GCCorePlayerBaseClient;
+import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderPlayer;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpaceship;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemSpaceship;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.RenderEngine;
+import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityCreeper;
@@ -19,7 +22,6 @@ import net.minecraft.util.MathHelper;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreModelPlayer extends ModelBiped
 {
@@ -175,7 +177,11 @@ public class GCCoreModelPlayer extends ModelBiped
     @Override
 	public void render(Entity var1, float var2, float var3, float var4, float var5, float var6, float var7)
     {
-    	if (var1 instanceof EntityPlayer)
+    	final Class<?> entityClass = GCCorePlayerBaseClient.class;
+    	final Render render = RenderManager.instance.getEntityClassRenderObject(entityClass);
+    	final ModelBiped modelBipedMain = ((GCCoreRenderPlayer)render).getModel();
+    	
+    	if (var1 instanceof EntityPlayer && this.equals(modelBipedMain))
     	{
         	final EntityPlayer player = (EntityPlayer)var1;
         	boolean changed = false;

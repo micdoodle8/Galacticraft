@@ -330,7 +330,7 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
     private boolean func_94044_a(int par1, int par2, int par3)
     {
         Block block = Block.blocksList[this.worldObj.getBlockId(par1, par2, par3)];
-        return block != null && block instanceof BlockChest ? ((BlockChest)block).field_94443_a == this.func_98041_l() : false;
+        return block != null && block instanceof GCCoreBlockTreasureChest;
     }
 
     /**
@@ -368,7 +368,7 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
         }
 
         this.prevLidAngle = this.lidAngle;
-        f = 0.1F;
+        f = 0.05F;
         double d0;
 
         if (this.numUsingPlayers > 0 && this.lidAngle == 0.0F && this.adjacentChestZNeg == null && this.adjacentChestXNeg == null)
@@ -386,7 +386,7 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
                 d1 += 0.5D;
             }
 
-            this.worldObj.playSoundEffect(d1, (double)this.yCoord + 0.5D, d0, "random.chestopen", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
+            this.worldObj.playSoundEffect(d1, (double)this.yCoord + 0.5D, d0, "random.chestopen", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.6F);
         }
 
         if (this.numUsingPlayers == 0 && this.lidAngle > 0.0F || this.numUsingPlayers > 0 && this.lidAngle < 1.0F)
@@ -424,7 +424,7 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
                     d0 += 0.5D;
                 }
 
-                this.worldObj.playSoundEffect(d0, (double)this.yCoord + 0.5D, d2, "random.chestclosed", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
+                this.worldObj.playSoundEffect(d0, (double)this.yCoord + 0.5D, d2, "random.chestclosed", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.6F);
             }
 
             if (this.lidAngle < 0.0F)
@@ -487,20 +487,5 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
         super.invalidate();
         this.updateContainingBlockInfo();
         this.checkForAdjacentChests();
-    }
-
-    public int func_98041_l()
-    {
-        if (this.field_94046_i == -1)
-        {
-            if (this.worldObj == null || !(this.getBlockType() instanceof BlockChest))
-            {
-                return 0;
-            }
-
-            this.field_94046_i = ((BlockChest)this.getBlockType()).field_94443_a;
-        }
-
-        return this.field_94046_i;
     }
 }

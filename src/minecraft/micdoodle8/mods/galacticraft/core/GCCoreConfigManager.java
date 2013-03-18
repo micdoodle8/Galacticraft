@@ -26,6 +26,8 @@ public class GCCoreConfigManager
 			this.setDefaultValues();
 		}
 	}
+	
+	public static int idDimensionOverworldOrbit;
 
 	// BLOCKS
 	public static int idBlockBreatheableAir;
@@ -48,6 +50,7 @@ public class GCCoreConfigManager
 	public static int idBlockRefinery;
 	public static int idBlockAirCompressor;
 	public static int idBlockFuelLoader;
+	public static int idBlockSpaceStationBase;
 
 	// ITEMS
 	public static int idItemLightOxygenTank;
@@ -120,6 +123,7 @@ public class GCCoreConfigManager
 	public static int idEntityAstroOrb;
 	public static int idEntityGiantWorm;
 	public static int idEntityParaChest;
+	public static int idEntityAlienVillager;
 
 	// GENERAL
 	public static boolean transparentBreathableAir;
@@ -145,6 +149,9 @@ public class GCCoreConfigManager
 		{
 	        GCCoreConfigManager.configuration.load();
 	        
+	        GCCoreConfigManager.idDimensionOverworldOrbit = 			GCCoreConfigManager.configuration.get("DIMENSIONS",                 "idDimensionOverworldOrbit",            -27)        .getInt(-27);
+	        
+	        GCCoreConfigManager.idBlockSpaceStationBase = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockSpaceStationBase", 				224)		.getInt(224);
 	        GCCoreConfigManager.idBlockBreatheableAir = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockCoreBreatheableAir", 			3350)		.getInt(3350);
 	        GCCoreConfigManager.idBlockLandingPad = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockLandingPad", 					3351)		.getInt(3351);
 	        GCCoreConfigManager.idBlockLandingPadFull = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockLandingPadFull", 				3352)		.getInt(3352);
@@ -229,7 +236,8 @@ public class GCCoreConfigManager
 	        GCCoreConfigManager.idEntityAstroOrb = 						GCCoreConfigManager.configuration.get("Entities", "idEntityAstroOrb", 										164)		.getInt(164);
 	        GCCoreConfigManager.idEntityGiantWorm = 					GCCoreConfigManager.configuration.get("Entities", "idEntityGiantWorm", 										165)		.getInt(165);
 	        GCCoreConfigManager.idEntityParaChest = 					GCCoreConfigManager.configuration.get("Entities", "idEntityParaChest", 										166)		.getInt(166);
-
+	        GCCoreConfigManager.idEntityAlienVillager = 				GCCoreConfigManager.configuration.get("Entities", "idEntityAlienVillager", 									167)		.getInt(167);
+	        
 	        GCCoreConfigManager.transparentBreathableAir = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Transparent Breathable Air",			true)		.getBoolean(true);
 	        GCCoreConfigManager.moreStars = 							GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "More Stars",							true)		.getBoolean(true);
 	        GCCoreConfigManager.wasdMapMovement = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "WASD Map Movement", 					true)		.getBoolean(true);

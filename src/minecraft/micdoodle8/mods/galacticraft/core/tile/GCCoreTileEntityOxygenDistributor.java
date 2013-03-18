@@ -87,6 +87,14 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityElectricityRunn
     	super.invalidate();
   	}
 
+    public double getDistanceFromServer(double par1, double par3, double par5)
+    {
+        double d3 = (double)this.xCoord + 0.5D - par1;
+        double d4 = (double)this.yCoord + 0.5D - par3;
+        double d5 = (double)this.zCoord + 0.5D - par5;
+        return d3 * d3 + d4 * d4 + d5 * d5;
+    }
+
 	@Override
 	public void updateEntity()
 	{

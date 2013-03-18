@@ -14,9 +14,12 @@ import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
 import micdoodle8.mods.galacticraft.API.IGalaxy;
 import micdoodle8.mods.galacticraft.API.IInterplanetaryObject;
 import micdoodle8.mods.galacticraft.API.IMapPlanet;
+import micdoodle8.mods.galacticraft.API.IOrbitDimension;
 import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.client.GCCorePlayerBaseClient;
+import micdoodle8.mods.galacticraft.core.dimension.GCCoreWorldProvider;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityAlienVillager;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityArrow;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityAstroOrb;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityBuggy;
@@ -27,11 +30,11 @@ import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityParaChest;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySkeleton;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpaceship;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpider;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityWorm;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityZombie;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerBase;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemParachute;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
+import micdoodle8.mods.galacticraft.core.network.GCCoreConnectionHandler;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketControllableEntity;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketEntityUpdate;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAdvancedCraftingTable;
@@ -45,6 +48,7 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCompressor;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenDistributor;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenPipe;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityRefinery;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntitySpaceStationBase;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityUnlitTorch;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -56,13 +60,15 @@ import micdoodle8.mods.galacticraft.moon.GalacticraftMoon;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.network.packet.Packet9Respawn;
-import net.minecraft.src.ServerPlayerAPI;
+import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 import universalelectricity.components.common.BasicComponents;
 import universalelectricity.prefab.CustomDamageSource;
@@ -76,12 +82,16 @@ import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.Mod.PostInit;
 import cpw.mods.fml.common.Mod.PreInit;
 import cpw.mods.fml.common.Mod.ServerStarted;
+import cpw.mods.fml.common.Mod.ServerStarting;
+import cpw.mods.fml.common.Mod.ServerStopped;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
@@ -105,7 +115,12 @@ import cpw.mods.fml.relauncher.Side;
 	modid=GalacticraftCore.MODID, 
 	dependencies = "required-after:Forge@[7.7.0.559,)"
 )
-@NetworkMod(channels = {GalacticraftCore.CHANNEL}, clientSideRequired = true, serverSideRequired = false)
+@NetworkMod(
+	channels = {GalacticraftCore.CHANNEL}, 
+	clientSideRequired = true, 
+	serverSideRequired = false,
+    connectionHandler = GCCoreConnectionHandler.class
+)
 public class GalacticraftCore
 {
 	public static final String NAME = "Galacticraft Core";
@@ -114,7 +129,7 @@ public class GalacticraftCore
 
     public static final int LOCALMAJVERSION = 0;
     public static final int LOCALMINVERSION = 1;
-    public static final int LOCALBUILDVERSION = 22;
+    public static final int LOCALBUILDVERSION = 23;
     public static int remoteMajVer;
     public static int remoteMinVer;
     public static int remoteBuildVer;
@@ -246,6 +261,8 @@ public class GalacticraftCore
 	public void init(FMLInitializationEvent event)
 	{
 		this.galacticraftTab = new GCCoreCreativeTab(CreativeTabs.getNextID(), GalacticraftCore.CHANNEL, GCCoreItems.spaceship.itemID, 0);
+
+		DimensionManager.registerProviderType(GCCoreConfigManager.idDimensionOverworldOrbit, GCCoreWorldProvider.class, true);
 		
 		GalacticraftCore.proxy.init(event);
 
@@ -263,6 +280,7 @@ public class GalacticraftCore
 
 		GalacticraftCore.moon.load(event);
 
+		BasicComponents.registerTileEntities();
         RecipeUtil.addCraftingRecipes();
         RecipeUtil.addSmeltingRecipes();
 		NetworkRegistry.instance().registerGuiHandler(this, GalacticraftCore.proxy);
@@ -292,6 +310,18 @@ public class GalacticraftCore
         NetworkRegistry.instance().registerChannel(new ServerPacketHandler(), GalacticraftCore.CHANNEL, Side.SERVER);
 	}
 
+	@ServerStarting
+	public void serverStarting(FMLServerStartingEvent event)
+	{
+        WorldUtil.registerDimensions(event.getServer().worldServerForDimension(0).getSaveHandler().getMapFileFromName("dummy").getParentFile());
+	}
+
+    @ServerStopped
+    public void unregisterDims(FMLServerStoppedEvent var1)
+    {
+    	WorldUtil.unregisterDimensions();
+    }
+	
 	public static void registerSlotRenderer(IPlanetSlotRenderer renderer)
 	{
 		GalacticraftCore.proxy.addSlotRenderer(renderer);
@@ -332,6 +362,7 @@ public class GalacticraftCore
         GameRegistry.registerTileEntity(GCCoreTileEntityLandingPadSingle.class, "Landing Pad");
         GameRegistry.registerTileEntity(GCCoreTileEntityLandingPad.class, "Landing Pad Full");
         GameRegistry.registerTileEntity(GCCoreTileEntityUnlitTorch.class, "Unlit Torch");
+        GameRegistry.registerTileEntity(GCCoreTileEntitySpaceStationBase.class, "Space Station");
 	}
 
 	public void registerCreatures()
@@ -340,7 +371,8 @@ public class GalacticraftCore
 		this.registerGalacticraftCreature(GCCoreEntityZombie.class, "Evolved Zombie", GCCoreConfigManager.idEntityEvolvedZombie, 44975, 7969893);
 		this.registerGalacticraftCreature(GCCoreEntityCreeper.class, "Evolved Creeper", GCCoreConfigManager.idEntityEvolvedCreeper, 894731, 0);
 		this.registerGalacticraftCreature(GCCoreEntitySkeleton.class, "Evolved Skeleton", GCCoreConfigManager.idEntityEvolvedSkeleton, 12698049, 4802889);
-		this.registerGalacticraftCreature(GCCoreEntityWorm.class, "Giant Worm", GCCoreConfigManager.idEntityGiantWorm, 12698049, 4802889);
+//		this.registerGalacticraftCreature(GCCoreEntityWorm.class, "Giant Worm", GCCoreConfigManager.idEntityGiantWorm, 12698049, 4802889);
+		this.registerGalacticraftCreature(GCCoreEntityAlienVillager.class, "Alien Villager", GCCoreConfigManager.idEntityAlienVillager, GCCoreUtil.convertTo32BitColor(255, 103, 181, 145), 12422002);
 	}
 
 	public void registerOtherEntities()
@@ -402,11 +434,30 @@ public class GalacticraftCore
 
                 if (playerBase != null)
                 {
-    	    		final Integer dim = WorldUtil.getProviderForName((String)packetReadout[0]).dimensionId;
-    	    		playerBase.travelToTheEnd(dim);
-    	    		playerBase.teleportCooldown = 300;
-    	    		final Object[] toSend = {player.username};
-    	    		player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 12, toSend));
+                	try
+                	{
+                    	WorldProvider provider = WorldUtil.getProviderForName((String)packetReadout[0]);
+        	    		final Integer dim = provider.dimensionId;
+                		FMLLog.severe("Found matching world name for " + (String)packetReadout[0]);
+        	    		
+        	    		if (provider instanceof IOrbitDimension)
+        	    		{
+            	    		playerBase.travelToTheEnd(dim, 2);
+        	    		}
+        	    		else
+        	    		{
+            	    		playerBase.travelToTheEnd(dim, 0);
+        	    		}
+        	    		
+        	    		playerBase.teleportCooldown = 300;
+        	    		final Object[] toSend = {player.username};
+        	    		player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 12, toSend));
+                	}
+                	catch (Exception e)
+                	{
+                		FMLLog.severe("Not matching world names found for " + (String)packetReadout[0]);
+                		e.printStackTrace();
+                	}
                 }
             }
             else if (packetType == 3)
@@ -641,7 +692,8 @@ public class GalacticraftCore
 			else if (type.equals(EnumSet.of(TickType.WORLD)))
 			{
 				WorldServer world = (WorldServer) tickData[0];
-				for (Object o : world.loadedEntityList)
+				Object[] entityList = world.loadedEntityList.toArray();
+				for (Object o : entityList)
 				{
 					if (o instanceof Entity && o instanceof IInterplanetaryObject)
 					{
@@ -651,6 +703,31 @@ public class GalacticraftCore
 						if (e.posY >= iiobject.getYCoordToTeleportFrom() && e.dimension != iiobject.getDimensionForTeleport())
 						{
 							WorldUtil.travelToDimension(e, world, iiobject.getDimensionForTeleport());
+						}
+					}
+					
+					if (o instanceof Entity && ((Entity) o).worldObj.provider instanceof IOrbitDimension)
+					{
+						Entity e = (Entity) o;
+						IOrbitDimension dimension = ((IOrbitDimension)((Entity)o).worldObj.provider);
+						
+						if (e.posY <= dimension.getYCoordToTeleport())
+						{
+		    	    		Integer dim = WorldUtil.getProviderForName(dimension.getPlanetToOrbit()).dimensionId;
+		    	    		
+		    	    		if (e instanceof EntityPlayer)
+		    	    		{
+		    	            	GCCorePlayerBase playerBase = PlayerUtil.getPlayerBaseServerFromPlayer((EntityPlayer)e);
+		    	            	
+		    	            	if (playerBase != null)
+		    	            	{
+		    	            		playerBase.travelToTheEnd(dim, 1);
+		    	            	}
+		    	    		}
+		    	    		else
+		    	    		{
+								WorldUtil.travelToDimension(e, world, dim);
+		    	    		}
 						}
 					}
 				}

@@ -160,7 +160,7 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
     @Override
 	public boolean attackEntityFrom(DamageSource var1, int var2)
     {
-        if (this.isDead)
+        if (this.isDead || var1.equals(DamageSource.cactus))
         {
             return true;
         }

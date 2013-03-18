@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.client.render.item;
 
 import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelSpaceship;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpaceship;
+import net.minecraft.client.model.ModelChest;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -9,6 +10,7 @@ import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 
 import cpw.mods.fml.client.FMLClientHandler;
 
@@ -22,6 +24,7 @@ public class GCCoreItemRendererSpaceship implements IItemRenderer
 {
 	GCCoreEntitySpaceship spaceship = new GCCoreEntitySpaceship(FMLClientHandler.instance().getClient().theWorld);
 	GCCoreModelSpaceship modelSpaceship = new GCCoreModelSpaceship();
+    private ModelChest chestModel = new ModelChest();
 
 	private void renderPipeItem(ItemRenderType type, RenderBlocks render, ItemStack item, float translateX, float translateY, float translateZ)
 	{
@@ -70,6 +73,40 @@ public class GCCoreItemRendererSpaceship implements IItemRenderer
         FMLClientHandler.instance().getClient().renderEngine.func_98187_b("/micdoodle8/mods/galacticraft/core/client/entities/spaceship1.png");
         this.modelSpaceship.render(this.spaceship, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
         GL11.glPopMatrix();
+        
+        if (type == ItemRenderType.INVENTORY)
+        {
+        	if (item.getItemDamage() == 1)
+        	{
+                ModelChest modelChest = chestModel;
+                FMLClientHandler.instance().getClient().renderEngine.func_98187_b("/item/chest.png");
+                
+                GL11.glPushMatrix();
+//                GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+                GL11.glDisable(GL11.GL_DEPTH_TEST);
+                GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+                GL11.glScalef(0.5F, -0.5F, -0.5F);
+                GL11.glTranslatef(1.5F, 1.95F, 1.7F);
+                short short1 = 0;
+
+                GL11.glRotatef((float)short1, 0.0F, 1.0F, 0.0F);
+                GL11.glTranslatef(-1.5F, -1.5F, -1.5F);
+                float f1 = 0;
+                float f2;
+
+                f1 = 1.0F - f1;
+                f1 = 1.0F - f1 * f1 * f1;
+                modelChest.chestLid.rotateAngleX = -(f1 * (float)Math.PI / 2.0F);
+
+                modelChest.chestBelow.render(0.0625F);
+                modelChest.chestLid.render(0.0625F);
+                modelChest.chestKnob.render(0.0625F);
+//                GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+                GL11.glEnable(GL11.GL_DEPTH_TEST);
+                GL11.glPopMatrix();
+                GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        	}
+        }
 	}
 
 

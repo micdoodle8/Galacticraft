@@ -22,16 +22,18 @@ import cpw.mods.fml.relauncher.Side;
  *  All rights reserved.
  *
  */
-public class GCCoreTeleporter extends Teleporter
+public class GCCoreToOrbitTeleporter extends Teleporter
 {
 	private final Random random;
     private final WorldServer worldServer;
+    private boolean usePlayerBaseCoords;
 
-	public GCCoreTeleporter(WorldServer par1WorldServer)
+	public GCCoreToOrbitTeleporter(WorldServer par1WorldServer, boolean usePlayerBaseCoords)
 	{
 		super(par1WorldServer);
 		this.worldServer = par1WorldServer;
 		this.random = new Random();
+		this.usePlayerBaseCoords = usePlayerBaseCoords;
 	}
 
     @Override
@@ -56,24 +58,12 @@ public class GCCoreTeleporter extends Teleporter
     @Override
     public boolean placeInExistingPortal(Entity par1Entity, double par2, double par4, double par6, float par8)
     {
-    	if (par1Entity instanceof IInterplanetaryObject)
-    	{
-            final int var9 = MathHelper.floor_double(par1Entity.posX);
-            final int var11 = MathHelper.floor_double(par1Entity.posZ);
-            
-            par1Entity.setLocationAndAngles(var9, ((IInterplanetaryObject) par1Entity).getYCoordToTeleportTo(), var11, par1Entity.rotationYaw, 0.0F);
-            par1Entity.motionX = par1Entity.motionY = par1Entity.motionZ = 0.0D;
-
-            par1Entity.worldObj.markBlockForUpdate(var9, 10, var11);
-            par1Entity.worldObj.markBlockForUpdate(var9, 20, var11);
-            par1Entity.worldObj.markBlockForUpdate(var9, 30, var11);
-    	}
-    	else if (par1Entity instanceof GCCorePlayerBase)
+    	if (par1Entity instanceof GCCorePlayerBase)
     	{
     		GCCorePlayerBase playerBase = (GCCorePlayerBase) par1Entity;
-
-            final int var9 = MathHelper.floor_double(par1Entity.posX);
-            final int var11 = MathHelper.floor_double(par1Entity.posZ);
+    		
+            final int var9 = MathHelper.floor_double(0);
+            final int var11 = MathHelper.floor_double(0);
 
             par1Entity.setLocationAndAngles(var9, 250, var11, par1Entity.rotationYaw, 0.0F);
             par1Entity.motionX = par1Entity.motionY = par1Entity.motionZ = 0.0D;

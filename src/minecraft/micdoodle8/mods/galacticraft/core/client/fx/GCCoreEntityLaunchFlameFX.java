@@ -2,6 +2,8 @@ package micdoodle8.mods.galacticraft.core.client.fx;
 
 import java.util.List;
 
+import org.lwjgl.opengl.GL11;
+
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import net.minecraft.client.particle.EntityFX;

@@ -3,19 +3,21 @@ package micdoodle8.mods.galacticraft.core.client;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.API.ISpaceship;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.multiplayer.NetClientHandler;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.src.PlayerAPI;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Session;
 import net.minecraft.util.StringUtils;
 import net.minecraft.world.World;
+import net.minecraft.world.storage.MapData;
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLLog;
 
 /**
  * Copyright 2012-2013, micdoodle8
