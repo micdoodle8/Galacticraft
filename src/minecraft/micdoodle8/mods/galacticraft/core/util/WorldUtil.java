@@ -33,7 +33,6 @@ import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
 
 public class WorldUtil
 {
@@ -165,19 +164,48 @@ public class WorldUtil
 
 	public static HashMap getArrayOfPossibleDimensions(Integer[] ids)
 	{
+		return WorldUtil.getArrayOfPossibleDimensions(ids, null);
+	}
+
+	public static HashMap getArrayOfPossibleDimensions(Integer[] ids, GCCorePlayerBase playerBase)
+	{
 		final HashMap map = new HashMap();
 
 		for (final Integer id : ids)
 		{
+			if (playerBase != null && WorldProvider.getProviderForDimension(id) instanceof IOrbitDimension && playerBase.worldObj instanceof WorldServer)
+			{
+				((WorldServer)playerBase.worldObj).func_98180_V().func_98233_a("Found ID:" + id);
+				
+    			GCCoreSpaceStationData data = GCCoreSpaceStationData.getStationData(playerBase.worldObj, id, playerBase);
+
+    			for (String str : data.getAllowedPlayers())
+    			{
+    				((WorldServer)playerBase.worldObj).func_98180_V().func_98233_a(str);
+    			}
+    			
+				((WorldServer)playerBase.worldObj).func_98180_V().func_98233_a("" + playerBase.spaceStationDimensionID);
+				
+    			if (data != null && data.getAllowedPlayers().contains(playerBase.username.toLowerCase()))
+    			{
+    				((WorldServer)playerBase.worldObj).func_98180_V().func_98233_a((String) (WorldProvider.getProviderForDimension(id).getDimensionName() + "$" + ((IOrbitDimension) WorldProvider.getProviderForDimension(id)).getPlanetToOrbit()));
+    			}
+			}
+			
 			if (WorldProvider.getProviderForDimension(id) != null)
 			{
 	    		if (((WorldProvider.getProviderForDimension(id) instanceof IGalacticraftWorldProvider && !(WorldProvider.getProviderForDimension(id) instanceof IOrbitDimension)) || WorldProvider.getProviderForDimension(id).dimensionId == 0))
 	    		{
 	    			map.put(WorldProvider.getProviderForDimension(id).getDimensionName(), WorldProvider.getProviderForDimension(id).dimensionId);
 	    		}
-	    		else if (WorldProvider.getProviderForDimension(id) instanceof IOrbitDimension)
+	    		else if (playerBase != null && WorldProvider.getProviderForDimension(id) instanceof IOrbitDimension)
 	    		{
-	    			map.put(WorldProvider.getProviderForDimension(id).getDimensionName() + "$" + ((IOrbitDimension) WorldProvider.getProviderForDimension(id)).getPlanetToOrbit(), WorldProvider.getProviderForDimension(id).dimensionId);
+	    			GCCoreSpaceStationData data = GCCoreSpaceStationData.getStationData(playerBase.worldObj, id, playerBase);
+	    			
+	    			if (data.getAllowedPlayers().contains(playerBase.username.toLowerCase()))
+	    			{
+	    				map.put(WorldProvider.getProviderForDimension(id).getDimensionName() + "$" + ((IOrbitDimension) WorldProvider.getProviderForDimension(id)).getPlanetToOrbit(), WorldProvider.getProviderForDimension(id).dimensionId);
+	    			}
 	    		}
 			}
 		}
@@ -435,8 +463,12 @@ public class WorldUtil
     
     public static GCCoreSpaceStationData createSpaceStation(World var0, int par1, GCCorePlayerBase player)
     {
-    	WorldUtil.registeredDimensions.add(par1);
-        DimensionManager.registerDimension(par1, GCCoreConfigManager.idDimensionOverworldOrbit);
+    	if (!WorldUtil.registeredDimensions.contains(par1))
+    	{
+        	WorldUtil.registeredDimensions.add(par1);
+            DimensionManager.registerDimension(par1, GCCoreConfigManager.idDimensionOverworldOrbit);
+    	}
+    	
         MinecraftServer var2 = FMLCommonHandler.instance().getMinecraftServerInstance();
 
         if (var2 != null)

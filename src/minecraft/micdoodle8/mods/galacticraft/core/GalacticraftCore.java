@@ -18,6 +18,7 @@ import micdoodle8.mods.galacticraft.API.IOrbitDimension;
 import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.client.GCCorePlayerBaseClient;
+import micdoodle8.mods.galacticraft.core.command.GCCoreCommandSpaceStationAddOwner;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreWorldProvider;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityAlienVillager;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityArrow;
@@ -57,6 +58,7 @@ import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.moon.GalacticraftMoon;
+import net.minecraft.command.ServerCommandManager;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -313,6 +315,7 @@ public class GalacticraftCore
 	@ServerStarting
 	public void serverStarting(FMLServerStartingEvent event)
 	{
+        event.registerServerCommand(new GCCoreCommandSpaceStationAddOwner());
         WorldUtil.registerDimensions(event.getServer().worldServerForDimension(0).getSaveHandler().getMapFileFromName("dummy").getParentFile());
 	}
 

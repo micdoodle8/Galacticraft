@@ -61,14 +61,11 @@ public class GCCoreToOrbitTeleporter extends Teleporter
     	if (par1Entity instanceof GCCorePlayerBase)
     	{
     		GCCorePlayerBase playerBase = (GCCorePlayerBase) par1Entity;
-    		
-            final int var9 = MathHelper.floor_double(0);
-            final int var11 = MathHelper.floor_double(0);
 
-            par1Entity.setLocationAndAngles(var9, 250, var11, par1Entity.rotationYaw, 0.0F);
+            par1Entity.setLocationAndAngles(0.5, 66, 0.5, par1Entity.rotationYaw, 0.0F);
             par1Entity.motionX = par1Entity.motionY = par1Entity.motionZ = 0.0D;
 
-            par1Entity.worldObj.markBlockForUpdate(var9, 30, var11);
+            par1Entity.worldObj.markBlockForUpdate(0, 30, 0);
 
     		final ItemStack stack = PlayerUtil.getPlayerBaseServerFromPlayer((EntityPlayer) par1Entity).playerTankInventory.getStackInSlot(4);
 

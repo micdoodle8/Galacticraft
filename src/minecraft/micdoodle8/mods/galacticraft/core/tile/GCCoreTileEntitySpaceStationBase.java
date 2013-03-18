@@ -5,7 +5,7 @@ import net.minecraft.tileentity.TileEntity;
 
 public class GCCoreTileEntitySpaceStationBase extends TileEntity
 {
-	public String ownerUsername;
+	public String ownerUsername = "bobby";
 
     public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {

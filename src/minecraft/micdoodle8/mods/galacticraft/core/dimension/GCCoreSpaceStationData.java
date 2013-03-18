@@ -1,46 +1,86 @@
 package micdoodle8.mods.galacticraft.core.dimension;
 
+import java.util.ArrayList;
+
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
 import net.minecraftforge.common.DimensionManager;
-import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreSpaceStationData extends WorldSavedData
 {
-    private String spaceStationName = "New Space Station";
-    private String owner;
+    private String spaceStationName = "NoName";
+    private String owner = "NoOwner";
+    private ArrayList<String> allowedPlayers = new ArrayList<String>();
     private NBTTagCompound dataCompound;
     
 	public GCCoreSpaceStationData(String par1Str) 
 	{
 		super(par1Str);
 	}
+	
+	public ArrayList<String> getAllowedPlayers()
+	{
+		return this.allowedPlayers;
+	}
+	
+	public String getSpaceStationName()
+	{
+		return this.spaceStationName;
+	}
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbttagcompound) 
 	{
-		this.spaceStationName = nbttagcompound.getString("spaceStationName");
 		this.owner = nbttagcompound.getString("owner");
+		this.spaceStationName = nbttagcompound.getString("spaceStationName");
 
         if (nbttagcompound.hasKey("DataCompound"))
         {
-            this.dataCompound = nbttagcompound.getCompoundTag("DataCompound");
+            this.dataCompound = nbttagcompound.getCompoundTag("dataCompound");
         }
         else
         {
             this.dataCompound = new NBTTagCompound();
+        }
+        
+        final NBTTagList var2 = nbttagcompound.getTagList("allowedPlayers");
+        this.allowedPlayers = new ArrayList<String>();
+
+        for (int var3 = 0; var3 < var2.tagCount(); ++var3)
+        {
+            final NBTTagCompound var4 = (NBTTagCompound)var2.tagAt(var3);
+            String var5 = var4.getString("allowedPlayer");
+            this.allowedPlayers.add(var5);
         }
 	}
 
 	@Override
 	public void writeToNBT(NBTTagCompound nbttagcompound) 
 	{
-		nbttagcompound.setString("spaceStationName", spaceStationName);
 		nbttagcompound.setString("owner", owner);
-		nbttagcompound.setCompoundTag("DataCompound", this.dataCompound);
+		nbttagcompound.setString("spaceStationName", spaceStationName);
+		nbttagcompound.setCompoundTag("dataCompound", this.dataCompound);
+
+        final NBTTagList var2 = new NBTTagList();
+
+        for (int var3 = 0; var3 < this.allowedPlayers.size(); ++var3)
+        {
+        	String player = this.allowedPlayers.get(var3);
+        	
+            if (player != null)
+            {
+                final NBTTagCompound var4 = new NBTTagCompound();
+                var4.setString("allowedPlayer", (String)player);
+                var2.appendTag(var4);
+            }
+        }
+
+        nbttagcompound.setTag("allowedPlayers", var2);
 	}
 	
 	public static GCCoreSpaceStationData getStationData(World var0, int var1, EntityPlayer player)
@@ -59,7 +99,20 @@ public class GCCoreSpaceStationData extends WorldSavedData
                 var3 = new GCCoreSpaceStationData(var2);
                 var0.setItemData(var2, var3);
                 var3.dataCompound = new NBTTagCompound();
-                var3.owner = player.username;
+                
+                if (player != null)
+                {
+                    var3.owner = player.username;
+                }
+                
+                var3.spaceStationName = var3.owner + "\'s Space Station";
+                var3.allowedPlayers = new ArrayList<String>();
+                
+                if (player != null)
+                {
+                    var3.allowedPlayers.add(player.username);
+                }
+                
                 var3.markDirty();
             }
 
@@ -77,7 +130,19 @@ public class GCCoreSpaceStationData extends WorldSavedData
             var3 = new GCCoreSpaceStationData(var2);
             var0.setItemData(var2, var3);
             var3.dataCompound = new NBTTagCompound();
-            var3.owner = player.username;
+            
+            if (player != null)
+            {
+                var3.owner = player.username;
+            }
+            
+            var3.spaceStationName = var3.owner + "\'s Space Station";
+            var3.allowedPlayers = new ArrayList<String>();
+            
+            if (player != null)
+            {
+                var3.allowedPlayers.add(player.username);
+            }
             var3.markDirty();
         }
 

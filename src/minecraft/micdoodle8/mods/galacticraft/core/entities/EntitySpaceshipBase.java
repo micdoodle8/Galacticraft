@@ -122,7 +122,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship
     {
         if (!this.worldObj.isRemote && !this.isDead)
         {
-            if (this.isEntityInvulnerable())
+            if (this.isEntityInvulnerable() || this.posY > 300)
             {
                 return false;
             }
@@ -615,11 +615,11 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship
             {
 		        GCCorePlayerBase playerBase = PlayerUtil.getPlayerBaseServerFromPlayer((EntityPlayerMP)this.riddenByEntity);
 		        
-		        if (playerBase.spaceStationDimensionID == -1)
+		        if (playerBase != null && playerBase.spaceStationDimensionID == -1)
 		        {
 		        	WorldUtil.bindSpaceStationToNewDimension(this.worldObj, playerBase);
 		        }
-		        else
+		        else if (playerBase != null)
 		        {
 		        	WorldUtil.createSpaceStation(this.worldObj, playerBase.spaceStationDimensionID, playerBase);
 		        }
@@ -628,7 +628,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship
 
 				final Integer[] ids = DimensionManager.getStaticDimensionIDs();
 
-		    	final Set set = WorldUtil.getArrayOfPossibleDimensions(ids).entrySet();
+		    	final Set set = WorldUtil.getArrayOfPossibleDimensions(ids, playerBase).entrySet();
 		    	final Iterator i = set.iterator();
 
 		    	String temp = "";

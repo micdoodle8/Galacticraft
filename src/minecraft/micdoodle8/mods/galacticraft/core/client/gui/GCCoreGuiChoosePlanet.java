@@ -46,7 +46,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
 
     protected FontRenderer fontRenderer = FMLClientHandler.instance().getClient().fontRenderer;
 
-    private final String[] destinations;
+    private String[] destinations;
 
     public EntityPlayer playerToSend;
 
@@ -60,6 +60,12 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     {
     	this.playerToSend = player;
     	this.destinations = listOfDestinations;
+    }
+    
+    public void updateDimensionList(String[] listOfDestinations)
+    {
+    	this.destinations = listOfDestinations;
+    	this.initGui();
     }
 
     // Override keyTyped so you don't accidently hit Escape and fall to your death!

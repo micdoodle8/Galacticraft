@@ -16,13 +16,13 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
 
-public class GCCoreSkyProviderOverworld extends IRenderHandler
+public class GCCoreSkyProviderOrbit extends IRenderHandler
 {
 	public int starGLCallList = GLAllocation.generateDisplayLists(3);
 	public int glSkyList;
 	public int glSkyList2;
 
-	public GCCoreSkyProviderOverworld()
+	public GCCoreSkyProviderOrbit()
 	{
 		GL11.glPushMatrix();
 		GL11.glNewList(this.starGLCallList, GL11.GL_COMPILE);
@@ -73,11 +73,11 @@ public class GCCoreSkyProviderOverworld extends IRenderHandler
 	@Override
 	public void render(float partialTicks, WorldClient world, Minecraft mc)
 	{
-        float var20 = 0.0F;
+        float var20 = 400.0F;
 
-        if (this.minecraft.thePlayer.ridingEntity != null && this.minecraft.thePlayer.ridingEntity.posY > 350)
+//        if (this.minecraft.thePlayer.ridingEntity != null)
         {
-            var20 = (float) (this.minecraft.thePlayer.ridingEntity.posY - 200.0F);
+//            var20 = (float) (this.minecraft.thePlayer.posY - 200.0F);
         }
 
         GL11.glDisable(GL11.GL_TEXTURE_2D);
@@ -192,9 +192,9 @@ public class GCCoreSkyProviderOverworld extends IRenderHandler
         var23.draw();
         GL11.glDisable(GL11.GL_TEXTURE_2D);
 
-        if (var20 > 0.0F)
+//        if (var20 > 0.0F)
         {
-            GL11.glColor4f(var20, var20, var20, var20 / 100F);
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             GL11.glCallList(this.starGLCallList);
         }
 
@@ -208,42 +208,42 @@ public class GCCoreSkyProviderOverworld extends IRenderHandler
 
         double var25 = 0.0D;
 
-        if (this.minecraft.thePlayer.ridingEntity != null)
+//        if (this.minecraft.thePlayer.ridingEntity != null)
         {
-            var25 = this.minecraft.thePlayer.ridingEntity.posY - this.minecraft.theWorld.getHorizon();
+            var25 = this.minecraft.thePlayer.posY - 64;
 
             if (var25 < 0.0D)
             {
-                GL11.glPushMatrix();
-                GL11.glTranslatef(0.0F, 12.0F, 0.0F);
-                GL11.glCallList(this.glSkyList2);
-                GL11.glPopMatrix();
-                var10 = 1.0F;
-                var11 = -((float)(var25 + 65.0D));
-                var12 = -var10;
-                var23.startDrawingQuads();
-                var23.setColorRGBA_I(0, 255);
-                var23.addVertex(-var10, var11, var10);
-                var23.addVertex(var10, var11, var10);
-                var23.addVertex(var10, var12, var10);
-                var23.addVertex(-var10, var12, var10);
-                var23.addVertex(-var10, var12, -var10);
-                var23.addVertex(var10, var12, -var10);
-                var23.addVertex(var10, var11, -var10);
-                var23.addVertex(-var10, var11, -var10);
-                var23.addVertex(var10, var12, -var10);
-                var23.addVertex(var10, var12, var10);
-                var23.addVertex(var10, var11, var10);
-                var23.addVertex(var10, var11, -var10);
-                var23.addVertex(-var10, var11, -var10);
-                var23.addVertex(-var10, var11, var10);
-                var23.addVertex(-var10, var12, var10);
-                var23.addVertex(-var10, var12, -var10);
-                var23.addVertex(-var10, var12, -var10);
-                var23.addVertex(-var10, var12, var10);
-                var23.addVertex(var10, var12, var10);
-                var23.addVertex(var10, var12, -var10);
-                var23.draw();
+//                GL11.glPushMatrix();
+//                GL11.glTranslatef(0.0F, 12.0F, 0.0F);
+//                GL11.glCallList(this.glSkyList2);
+//                GL11.glPopMatrix();
+//                var10 = 1.0F;
+//                var11 = -((float)(var25 + 65.0D));
+//                var12 = -var10;
+//                var23.startDrawingQuads();
+//                var23.setColorRGBA_I(0, 255);
+//                var23.addVertex(-var10, var11, var10);
+//                var23.addVertex(var10, var11, var10);
+//                var23.addVertex(var10, var12, var10);
+//                var23.addVertex(-var10, var12, var10);
+//                var23.addVertex(-var10, var12, -var10);
+//                var23.addVertex(var10, var12, -var10);
+//                var23.addVertex(var10, var11, -var10);
+//                var23.addVertex(-var10, var11, -var10);
+//                var23.addVertex(var10, var12, -var10);
+//                var23.addVertex(var10, var12, var10);
+//                var23.addVertex(var10, var11, var10);
+//                var23.addVertex(var10, var11, -var10);
+//                var23.addVertex(-var10, var11, -var10);
+//                var23.addVertex(-var10, var11, var10);
+//                var23.addVertex(-var10, var12, var10);
+//                var23.addVertex(-var10, var12, -var10);
+//                var23.addVertex(-var10, var12, -var10);
+//                var23.addVertex(-var10, var12, var10);
+//                var23.addVertex(var10, var12, var10);
+//                var23.addVertex(var10, var12, -var10);
+//                var23.draw();
             }
 
             if (var20 > 0.0F)
@@ -251,7 +251,7 @@ public class GCCoreSkyProviderOverworld extends IRenderHandler
                 GL11.glPushMatrix();
                 GL11.glEnable(GL11.GL_TEXTURE_2D);
                 GL11.glTranslatef(0.0F, -var20 / 10, 0.0F);
-                float scale = 150 * (0.25F - var20 / 10000.0F);
+                float scale = 100 * (0.25F - var20 / 10000.0F);
                 scale = Math.max(scale, 0.2F);
                 GL11.glScalef(scale, 0.0F, scale);
                 GL11.glTranslatef(0.0F, -var20, 0.0F);
@@ -291,7 +291,6 @@ public class GCCoreSkyProviderOverworld extends IRenderHandler
 
         GL11.glPushMatrix();
         GL11.glTranslatef(0.0F, -((float)(var25 - 16.0D)), 0.0F);
-        GL11.glCallList(this.glSkyList2);
         GL11.glPopMatrix();
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glDepthMask(true);

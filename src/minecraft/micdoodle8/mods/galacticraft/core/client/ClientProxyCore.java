@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
-import java.util.logging.Level;
 
 import micdoodle8.mods.galacticraft.API.IDetectableMetadataResource;
 import micdoodle8.mods.galacticraft.API.IDetectableResource;
@@ -66,6 +65,7 @@ import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntityTrea
 import micdoodle8.mods.galacticraft.core.client.sounds.GCCoreSoundUpdaterSpaceship;
 import micdoodle8.mods.galacticraft.core.client.sounds.GCCoreSounds;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreSpaceStationData;
+import micdoodle8.mods.galacticraft.core.dimension.GCCoreWorldProvider;
 import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityAlienVillager;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityArrow;
@@ -134,7 +134,7 @@ import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry.KeyHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.IScheduledTickHandler;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
@@ -493,6 +493,11 @@ public class ClientProxyCore extends CommonProxyCore
             		if (FMLClientHandler.instance().getClient().theWorld != null && !(FMLClientHandler.instance().getClient().currentScreen instanceof GCCoreGuiChoosePlanet))
             		{
             			FMLClientHandler.instance().getClient().displayGuiScreen(new GCCoreGuiChoosePlanet(FMLClientHandler.instance().getClient().thePlayer, destinations));
+            		}
+            		else if (FMLClientHandler.instance().getClient().currentScreen instanceof GCCoreGuiChoosePlanet)
+            		{
+            			FMLLog.info("done");
+            			((GCCoreGuiChoosePlanet) FMLClientHandler.instance().getClient().currentScreen).updateDimensionList(destinations);
             		}
                 }
             }
@@ -946,6 +951,14 @@ public class ClientProxyCore extends CommonProxyCore
     				{
     					world.provider.setSkyRenderer(null);
     				}
+    			}
+
+    			if (world != null && world.provider instanceof GCCoreWorldProvider)
+    			{
+    				if (world.provider.getSkyRenderer() == null)
+                    {
+    					world.provider.setSkyRenderer(new GCCoreSkyProviderOrbit());
+                    }
     			}
 
 //    			if (player != null && player.ridingEntity != null && player.ridingEntity instanceof GCCoreEntityControllable)

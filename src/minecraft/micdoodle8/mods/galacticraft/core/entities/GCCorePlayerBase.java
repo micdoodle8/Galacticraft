@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
-import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
@@ -8,17 +7,18 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
-import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
+import micdoodle8.mods.galacticraft.API.IOrbitDimension;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockBreathableAir;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreFromOrbitTeleporter;
+import micdoodle8.mods.galacticraft.core.dimension.GCCoreSpaceStationData;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreTeleporter;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreToOrbitTeleporter;
+import micdoodle8.mods.galacticraft.core.dimension.GCCoreWorldProvider;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryTankRefill;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemParachute;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
-import micdoodle8.mods.galacticraft.core.network.GCCorePacketDimensionList;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
@@ -474,7 +474,7 @@ public class GCCorePlayerBase extends EntityPlayerMP
 	        
         	final Integer[] ids = DimensionManager.getStaticDimensionIDs();
 
-	    	final Set set = WorldUtil.getArrayOfPossibleDimensions(ids).entrySet();
+	    	final Set set = WorldUtil.getArrayOfPossibleDimensions(ids, this).entrySet();
 	    	final Iterator i = set.iterator();
 
 	    	String temp = "";
@@ -491,6 +491,26 @@ public class GCCorePlayerBase extends EntityPlayerMP
 
 	        this.setUsingPlanetGui();
 	        this.hasOpenedPlanetSelectionGui = true;
+		}
+		
+		if (this.usingPlanetSelectionGui && GalacticraftCore.tick % 100 == 0)
+		{
+        	final Integer[] ids = DimensionManager.getStaticDimensionIDs();
+
+	    	final Set set = WorldUtil.getArrayOfPossibleDimensions(ids, this).entrySet();
+	    	final Iterator i = set.iterator();
+
+	    	String temp = "";
+
+	    	for (int k = 0; i.hasNext(); k++)
+	    	{
+	    		final Map.Entry entry = (Map.Entry)i.next();
+	    		temp = k == 0 ? temp.concat(String.valueOf(entry.getKey())) : temp.concat("." + String.valueOf(entry.getKey()));
+	    	}
+
+	        final Object[] toSend = {this.username, temp};
+
+	        this.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 2, toSend));
 		}
 
 		if (this.damageCounter > 0)

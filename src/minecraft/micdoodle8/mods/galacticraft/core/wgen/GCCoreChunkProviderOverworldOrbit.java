@@ -3,6 +3,10 @@ package micdoodle8.mods.galacticraft.core.wgen;
 import java.util.List;
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntitySpaceStationBase;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockSand;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.util.IProgressUpdate;
 import net.minecraft.world.World;
@@ -51,23 +55,52 @@ public class GCCoreChunkProviderOverworldOrbit extends ChunkProviderGenerate
 	@Override
 	public void populate(IChunkProvider par1IChunkProvider, int par2, int par3)
 	{
-//		BlockSand.fallInstantly = true;
-//		int var4 = par2 * 16;
-//		int var5 = par3 * 16;
-//		this.worldObj.getBiomeGenForCoords(var4 + 16, var5 + 16);
-//		this.rand.setSeed(this.worldObj.getSeed());
-//		final long var7 = this.rand.nextLong() / 2L * 2L + 1L;
-//		final long var9 = this.rand.nextLong() / 2L * 2L + 1L;
-//		this.rand.setSeed(par2 * var7 + par3 * var9 ^ this.worldObj.getSeed());
-//		this.villageGenerator.generateStructuresInChunk(this.worldObj, this.rand, par2, par3);
-//
-////        this.mapGenPuzzle.generateStructuresInChunk(this.worldObj, this.rand, par2, par3);
-//
-//		this.decoratePlanet(this.worldObj, this.rand, var4, var5);
-//		var4 += 8;
-//		var5 += 8;
-//
-//		BlockSand.fallInstantly = false;
+		BlockSand.fallInstantly = true;
+        int k = par2 * 16;
+        int l = par3 * 16;
+        this.rand.setSeed(this.worldObj.getSeed());
+        long i1 = this.rand.nextLong() / 2L * 2L + 1L;
+        long j1 = this.rand.nextLong() / 2L * 2L + 1L;
+        this.rand.setSeed((long)par2 * i1 + (long)par3 * j1 ^ this.worldObj.getSeed());
+        if (k == 0 && l == 0)
+        {
+            this.worldObj.setBlockAndMetadataWithNotify(k, 64, l, GCCoreBlocks.spaceStationBase.blockID, 0, 3);
+            this.worldObj.setBlockTileEntity(k, 64, l, new GCCoreTileEntitySpaceStationBase());
+            
+            (new GCCoreWorldGenSpaceStation()).generate(this.worldObj, this.rand, k - 10, 62, l - 3);
+//            for (int x = -3; x < 4; x++)
+//            {
+//            	for (int y = 0; y < 6; y++)
+//            	{
+//                    for (int z = -3; z < 4; z++)
+//                    {
+//                    	if (Math.abs(x) == 3 || Math.abs(y) == 0 || Math.abs(y) == 5 || Math.abs(z) == 3)
+//                    	{
+//                    		if (y == 2 && !(Math.abs(x) == 3 && Math.abs(z) == 3))
+//                    		{
+//                    			this.worldObj.setBlockAndMetadataWithNotify(k + x, 63 + y, l + z, Block.thinGlass.blockID, 0, 3);
+//                    		}
+//                    		else
+//                    		{
+//                    			this.worldObj.setBlockAndMetadataWithNotify(k + x, 63 + y, l + z, GCCoreBlocks.decorationBlocks.blockID, 4, 3);
+//                    		}
+//                    	}
+//                    }
+//            	}
+//            }
+
+            for (int x = -2; x < 3; x++)
+            {
+            	for (int y = 0; y < 6; y++)
+            	{
+                    for (int z = -2; z < 3; z++)
+                    {
+                    	this.worldObj.setBlockAndMetadataWithNotify(k + x, 63, l + z, GCCoreBlocks.decorationBlocks.blockID, 4, 3);
+                    }
+            	}
+            }
+        }
+		BlockSand.fallInstantly = false;
 	}
 
 	@Override
