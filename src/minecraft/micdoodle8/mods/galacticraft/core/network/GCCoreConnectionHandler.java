@@ -6,22 +6,24 @@ import net.minecraft.network.NetLoginHandler;
 import net.minecraft.network.packet.NetHandler;
 import net.minecraft.network.packet.Packet1Login;
 import net.minecraft.server.MinecraftServer;
+import universalelectricity.prefab.network.ConnectionHandler;
 import cpw.mods.fml.common.network.IConnectionHandler;
 import cpw.mods.fml.common.network.Player;
 
-public class GCCoreConnectionHandler implements IConnectionHandler
+public class GCCoreConnectionHandler extends ConnectionHandler implements IConnectionHandler
 {
     private static boolean connected = false;
     
 	@Override
 	public void playerLoggedIn(Player player, NetHandler netHandler, INetworkManager manager) 
 	{
-		
+		super.playerLoggedIn(player, netHandler, manager);
 	}
 
 	@Override
 	public String connectionReceived(NetLoginHandler netHandler, INetworkManager manager)
 	{
+		super.connectionReceived(netHandler, manager);
 		manager.addToSendQueue(GCCorePacketDimensionList.buildDimensionListPacket(WorldUtil.registeredDimensions));
 		return null;
 	}
@@ -29,18 +31,21 @@ public class GCCoreConnectionHandler implements IConnectionHandler
 	@Override
 	public void connectionOpened(NetHandler netClientHandler, String server, int port, INetworkManager manager) 
 	{
+		super.connectionOpened(netClientHandler, server, port, manager);
         connected = true;
 	}
 
 	@Override
 	public void connectionOpened(NetHandler netClientHandler, MinecraftServer server, INetworkManager manager) 
 	{
-		
+		super.connectionOpened(netClientHandler, server, manager);
 	}
 
 	@Override
 	public void connectionClosed(INetworkManager manager) 
 	{
+		super.connectionClosed(manager);
+		
         if (connected)
         {
             WorldUtil.unregisterDimensions();
@@ -52,6 +57,6 @@ public class GCCoreConnectionHandler implements IConnectionHandler
 	@Override
 	public void clientLoggedIn(NetHandler clientHandler, INetworkManager manager, Packet1Login login) 
 	{
-		
+		super.clientLoggedIn(clientHandler, manager, login);
 	}
 }

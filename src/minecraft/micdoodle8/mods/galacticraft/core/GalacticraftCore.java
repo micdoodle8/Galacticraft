@@ -75,6 +75,8 @@ import universalelectricity.components.common.BasicComponents;
 import universalelectricity.prefab.CustomDamageSource;
 import universalelectricity.prefab.TranslationHelper;
 import universalelectricity.prefab.multiblock.TileEntityMulti;
+import universalelectricity.prefab.network.ConnectionHandler;
+import universalelectricity.prefab.network.PacketManager;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.IScheduledTickHandler;
 import cpw.mods.fml.common.ITickHandler;
@@ -111,17 +113,18 @@ import cpw.mods.fml.relauncher.Side;
  *
  */
 @Mod(
-	name=GalacticraftCore.NAME, 
+	name=GalacticraftCore.NAME,
 	version=GalacticraftCore.LOCALMAJVERSION + "." + GalacticraftCore.LOCALMINVERSION + "." + GalacticraftCore.LOCALBUILDVERSION, 
 	useMetadata = true, 
 	modid=GalacticraftCore.MODID, 
 	dependencies = "required-after:Forge@[7.7.0.559,)"
 )
 @NetworkMod(
-	channels = {GalacticraftCore.CHANNEL}, 
+	channels = {GalacticraftCore.CHANNEL, BasicComponents.CHANNEL}, 
 	clientSideRequired = true, 
 	serverSideRequired = false,
-    connectionHandler = GCCoreConnectionHandler.class
+    connectionHandler = GCCoreConnectionHandler.class,
+    packetHandler = PacketManager.class
 )
 public class GalacticraftCore
 {
