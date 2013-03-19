@@ -19,6 +19,7 @@ import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.client.GCCorePlayerBaseClient;
 import micdoodle8.mods.galacticraft.core.command.GCCoreCommandSpaceStationAddOwner;
+import micdoodle8.mods.galacticraft.core.dimension.GCCoreTeleportType;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreWorldProvider;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityAlienVillager;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityArrow;
@@ -58,11 +59,9 @@ import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.moon.GalacticraftMoon;
-import net.minecraft.command.ServerCommandManager;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.INetworkManager;
@@ -75,6 +74,7 @@ import net.minecraftforge.common.MinecraftForge;
 import universalelectricity.components.common.BasicComponents;
 import universalelectricity.prefab.CustomDamageSource;
 import universalelectricity.prefab.TranslationHelper;
+import universalelectricity.prefab.multiblock.TileEntityMulti;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.IScheduledTickHandler;
 import cpw.mods.fml.common.ITickHandler;
@@ -264,7 +264,7 @@ public class GalacticraftCore
 	{
 		this.galacticraftTab = new GCCoreCreativeTab(CreativeTabs.getNextID(), GalacticraftCore.CHANNEL, GCCoreItems.spaceship.itemID, 0);
 
-		DimensionManager.registerProviderType(GCCoreConfigManager.idDimensionOverworldOrbit, GCCoreWorldProvider.class, true);
+		DimensionManager.registerProviderType(GCCoreConfigManager.idDimensionOverworldOrbit, GCCoreWorldProvider.class, false);
 		
 		GalacticraftCore.proxy.init(event);
 
@@ -366,6 +366,7 @@ public class GalacticraftCore
         GameRegistry.registerTileEntity(GCCoreTileEntityLandingPad.class, "Landing Pad Full");
         GameRegistry.registerTileEntity(GCCoreTileEntityUnlitTorch.class, "Unlit Torch");
         GameRegistry.registerTileEntity(GCCoreTileEntitySpaceStationBase.class, "Space Station");
+        GameRegistry.registerTileEntity(TileEntityMulti.class, "Dummy Block");
 	}
 
 	public void registerCreatures()
@@ -441,16 +442,21 @@ public class GalacticraftCore
                 	{
                     	WorldProvider provider = WorldUtil.getProviderForName((String)packetReadout[0]);
         	    		final Integer dim = provider.dimensionId;
-                		FMLLog.severe("Found matching world name for " + (String)packetReadout[0]);
+                		FMLLog.info("Found matching world name for " + (String)packetReadout[0]);
         	    		
-        	    		if (provider instanceof IOrbitDimension)
-        	    		{
-            	    		playerBase.travelToTheEnd(dim, 2);
-        	    		}
-        	    		else
-        	    		{
-            	    		playerBase.travelToTheEnd(dim, 0);
-        	    		}
+                		if (playerBase.worldObj instanceof WorldServer)
+                		{
+                			WorldServer world = (WorldServer) playerBase.worldObj;
+                			
+            	    		if (provider instanceof IOrbitDimension)
+            	    		{
+        	            		WorldUtil.transferEntityToDimension(playerBase, dim, world, GCCoreTeleportType.TOORBIT);
+            	    		}
+            	    		else
+            	    		{
+        	            		WorldUtil.transferEntityToDimension(playerBase, dim, world, GCCoreTeleportType.TOPLANET);
+            	    		}
+                		}
         	    		
         	    		playerBase.teleportCooldown = 300;
         	    		final Object[] toSend = {player.username};
@@ -645,6 +651,10 @@ public class GalacticraftCore
                 	e.printStackTrace();
                 }
             }
+            else if (packetType == 15)
+            {
+            	WorldUtil.bindSpaceStationToNewDimension(playerBase.worldObj, playerBase);
+            }
         }
     }
 
@@ -705,7 +715,8 @@ public class GalacticraftCore
 						
 						if (e.posY >= iiobject.getYCoordToTeleportFrom() && e.dimension != iiobject.getDimensionForTeleport())
 						{
-							WorldUtil.travelToDimension(e, world, iiobject.getDimensionForTeleport());
+							int dim = iiobject.getDimensionForTeleport();
+							WorldUtil.transferEntityToDimension(e, dim, world, dim == 0 ? GCCoreTeleportType.TOOVERWORLD : GCCoreTeleportType.TOPLANET);
 						}
 					}
 					
@@ -718,19 +729,7 @@ public class GalacticraftCore
 						{
 		    	    		Integer dim = WorldUtil.getProviderForName(dimension.getPlanetToOrbit()).dimensionId;
 		    	    		
-		    	    		if (e instanceof EntityPlayer)
-		    	    		{
-		    	            	GCCorePlayerBase playerBase = PlayerUtil.getPlayerBaseServerFromPlayer((EntityPlayer)e);
-		    	            	
-		    	            	if (playerBase != null)
-		    	            	{
-		    	            		playerBase.travelToTheEnd(dim, 1);
-		    	            	}
-		    	    		}
-		    	    		else
-		    	    		{
-								WorldUtil.travelToDimension(e, world, dim);
-		    	    		}
+	    	    			WorldUtil.transferEntityToDimension(e, dim, world, GCCoreTeleportType.TOOVERWORLD);
 						}
 					}
 				}

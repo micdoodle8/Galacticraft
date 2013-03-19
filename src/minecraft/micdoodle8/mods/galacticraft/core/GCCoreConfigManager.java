@@ -51,6 +51,7 @@ public class GCCoreConfigManager
 	public static int idBlockAirCompressor;
 	public static int idBlockFuelLoader;
 	public static int idBlockSpaceStationBase;
+	public static int idBlockDummy;
 
 	// ITEMS
 	public static int idItemLightOxygenTank;
@@ -142,6 +143,7 @@ public class GCCoreConfigManager
 	public static int oilGenFactor;
 	public static boolean disableLeafDecay;
 	public static boolean disableSpaceshipOverlay;
+	public static boolean spaceStationsRequirePermission;
 
 	private void setDefaultValues()
     {
@@ -172,7 +174,8 @@ public class GCCoreConfigManager
 	        GCCoreConfigManager.idBlockTreasureChest = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockTreasureChest", 				3375)		.getInt(3375);
 	        GCCoreConfigManager.idBlockCrudeOilMoving = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockCrudeOilMoving",				3376)		.getInt(3376);
 	        GCCoreConfigManager.idBlockCrudeOilStill = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockCrudeOilStill",					3377)		.getInt(3377);
-
+	        GCCoreConfigManager.idBlockDummy = 							GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockDummy", 						3378)		.getInt(3378);
+	        
 	        GCCoreConfigManager.idItemSpaceship = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemSpaceship", 						9855)		.getInt(9855);
 	        GCCoreConfigManager.idItemLightOxygenTank = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemLightOxygenTank", 				9856)		.getInt(9856);
 	        GCCoreConfigManager.idItemMedOxygenTank = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemMedOxygenTank", 					9857)		.getInt(9857);
@@ -251,6 +254,7 @@ public class GCCoreConfigManager
 	        GCCoreConfigManager.oxygenIndicatorLeftSide = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Using Minimap Mod",					false)		.getBoolean(false);
 	        GCCoreConfigManager.disableLeafDecay = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Oxygen Collector Leaf Decay",false)		.getBoolean(false);
 	        GCCoreConfigManager.disableSpaceshipOverlay = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Spaceship GUI Overlay",		true)		.getBoolean(true);
+	        GCCoreConfigManager.spaceStationsRequirePermission = 		GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Space Stations Require Permission",	true)		.getBoolean(true);
 		}
 		catch (final Exception e)
 		{

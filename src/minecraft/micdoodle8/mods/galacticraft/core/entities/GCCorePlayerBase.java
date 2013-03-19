@@ -7,15 +7,9 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
-import micdoodle8.mods.galacticraft.API.IOrbitDimension;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockBreathableAir;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
-import micdoodle8.mods.galacticraft.core.dimension.GCCoreFromOrbitTeleporter;
-import micdoodle8.mods.galacticraft.core.dimension.GCCoreSpaceStationData;
-import micdoodle8.mods.galacticraft.core.dimension.GCCoreTeleporter;
-import micdoodle8.mods.galacticraft.core.dimension.GCCoreToOrbitTeleporter;
-import micdoodle8.mods.galacticraft.core.dimension.GCCoreWorldProvider;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryTankRefill;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemParachute;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
@@ -107,7 +101,7 @@ public class GCCorePlayerBase extends EntityPlayerMP
 	private int openPlanetSelectionGuiCooldown;
 	private boolean hasOpenedPlanetSelectionGui = false;
 
-	private int chestSpawnCooldown;
+	public int chestSpawnCooldown;
 
 	public int teleportCooldown;
 	
@@ -463,16 +457,12 @@ public class GCCorePlayerBase extends EntityPlayerMP
 
 		if (!this.hasOpenedPlanetSelectionGui && this.openPlanetSelectionGuiCooldown == 1)
 		{
-	        if (this.spaceStationDimensionID == -1)
-	        {
-	        	WorldUtil.bindSpaceStationToNewDimension(this.worldObj, this);
-	        }
-	        else
-	        {
-	        	WorldUtil.createSpaceStation(this.worldObj, this.spaceStationDimensionID, this);
-	        }
+//	        if (this.spaceStationDimensionID == -1)
+//	        {
+//	        	WorldUtil.bindSpaceStationToNewDimension(this.worldObj, this);
+//	        }
 	        
-        	final Integer[] ids = DimensionManager.getStaticDimensionIDs();
+        	final Integer[] ids = WorldUtil.getArrayOfPossibleDimensions();
 
 	    	final Set set = WorldUtil.getArrayOfPossibleDimensions(ids, this).entrySet();
 	    	final Iterator i = set.iterator();
@@ -749,6 +739,9 @@ public class GCCorePlayerBase extends EntityPlayerMP
 
 		if (GalacticraftCore.tick % 30 == 0)
 		{
+			Object[] toSend = {spaceStationDimensionID};
+	    	this.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 18, toSend));
+	    	
 			this.sendPlayerParachuteTexturePacket(this);
 
 			if (this.getParachute() && this.parachuteInSlot != null)
@@ -994,6 +987,7 @@ public class GCCorePlayerBase extends EntityPlayerMP
     	this.lastParachuteInSlot = this.playerTankInventory.getStackInSlot(4);
 	}
 
+	@Deprecated
     public void transferPlayerToDimension(EntityPlayerMP par1EntityPlayerMP, int par2, Teleporter teleporter)
     {
         final int var3 = par1EntityPlayerMP.dimension;
@@ -1014,8 +1008,6 @@ public class GCCorePlayerBase extends EntityPlayerMP
         this.syncPlayerInventory(par1EntityPlayerMP);
         final Iterator var6 = par1EntityPlayerMP.getActivePotionEffects().iterator();
         
-        // SET PLAYER COORDS BASED ON COORDS WHEN LAUNCHED TODO
-
         while (var6.hasNext())
         {
             final PotionEffect var7 = (PotionEffect)var6.next();
@@ -1341,36 +1333,6 @@ public class GCCorePlayerBase extends EntityPlayerMP
 	          PacketDispatcher.sendPacketToAllPlayers(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 6, toSend));
 	  	}
 	}
-
-    public void travelToTheEnd(int par1, int specific)
-    {
-		for (int i = 0; i < this.mcServer.worldServerForDimension(par1).customTeleporters.size(); i++)
-		{
-			if (specific == 0)
-			{
-				if (this.mcServer.worldServerForDimension(par1).customTeleporters.get(i) instanceof GCCoreTeleporter)
-				{
-	    			this.transferPlayerToDimension(this, par1, this.mcServer.worldServerForDimension(par1).customTeleporters.get(i));
-				}
-			}
-			
-			if (specific == 1)
-			{
-				if (this.mcServer.worldServerForDimension(par1).customTeleporters.get(i) instanceof GCCoreFromOrbitTeleporter)
-				{
-	    			this.transferPlayerToDimension(this, par1, this.mcServer.worldServerForDimension(par1).customTeleporters.get(i));
-				}
-			}
-			
-			if (specific == 2)
-			{
-				if (this.mcServer.worldServerForDimension(par1).customTeleporters.get(i) instanceof GCCoreToOrbitTeleporter)
-				{
-	    			this.transferPlayerToDimension(this, par1, this.mcServer.worldServerForDimension(par1).customTeleporters.get(i));
-				}
-			}
-    	}
-    }
 
     public void setParachute(boolean tf)
     {

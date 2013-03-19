@@ -10,7 +10,9 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
@@ -18,6 +20,8 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import universalelectricity.core.vector.Vector3;
+import universalelectricity.prefab.multiblock.IMultiBlock;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -117,6 +121,32 @@ public class GCCoreBlockAdvancedCraftingTable extends BlockContainer
 		}
 
         return canPlace;
+    }
+
+	@Override
+    public void onBlockPlacedBy(World var1, int var2, int var3, int var4, EntityLiving var5, ItemStack var6)
+    {
+        TileEntity var8 = var1.getBlockTileEntity(var2, var3, var4);
+        
+        if (var8 instanceof IMultiBlock)
+        {
+            ((IMultiBlock)var8).onCreate(new Vector3((double)var2, (double)var3, (double)var4));
+        }
+        
+        super.onBlockPlacedBy(var1, var2, var3, var4, var5, var6);
+    }
+
+	@Override
+    public void breakBlock(World var1, int var2, int var3, int var4, int var5, int var6)
+    {
+        TileEntity var9 = var1.getBlockTileEntity(var2, var3, var4);
+        
+        if (var9 instanceof IMultiBlock)
+        {
+            ((IMultiBlock)var9).onDestroy(var9);
+        }
+        
+        super.breakBlock(var1, var2, var3, var4, var5, var6);
     }
 
 	@Override

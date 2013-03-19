@@ -28,6 +28,11 @@ public class GCCoreSpaceStationData extends WorldSavedData
 		return this.allowedPlayers;
 	}
 	
+	public String getOwner()
+	{
+		return this.owner;
+	}
+	
 	public String getSpaceStationName()
 	{
 		return this.spaceStationName;

@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
 import java.io.DataInputStream;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -13,7 +12,6 @@ import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLandingPad;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLandingPadFull;
-import micdoodle8.mods.galacticraft.core.network.GCCorePacketDimensionList;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFuelLoader;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
@@ -28,13 +26,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.common.DimensionManager;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
@@ -615,18 +611,14 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship
             {
 		        GCCorePlayerBase playerBase = PlayerUtil.getPlayerBaseServerFromPlayer((EntityPlayerMP)this.riddenByEntity);
 		        
-		        if (playerBase != null && playerBase.spaceStationDimensionID == -1)
-		        {
-		        	WorldUtil.bindSpaceStationToNewDimension(this.worldObj, playerBase);
-		        }
-		        else if (playerBase != null)
-		        {
-		        	WorldUtil.createSpaceStation(this.worldObj, playerBase.spaceStationDimensionID, playerBase);
-		        }
+//		        if (playerBase != null && playerBase.spaceStationDimensionID == -1)
+//		        {
+//		        	WorldUtil.bindSpaceStationToNewDimension(this.worldObj, playerBase);
+//		        }
 		        
         		final EntityPlayerMP entityplayermp = (EntityPlayerMP)this.riddenByEntity;
 
-				final Integer[] ids = DimensionManager.getStaticDimensionIDs();
+				final Integer[] ids = WorldUtil.getArrayOfPossibleDimensions();
 
 		    	final Set set = WorldUtil.getArrayOfPossibleDimensions(ids, playerBase).entrySet();
 		    	final Iterator i = set.iterator();

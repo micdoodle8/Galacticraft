@@ -9,6 +9,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.Icon;
 import net.minecraftforge.common.MinecraftForge;
+import universalelectricity.prefab.multiblock.BlockMulti;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 /**
@@ -40,6 +41,7 @@ public class GCCoreBlocks
 	public static Block fuelLoader;
 	public static Block landingPadFull;
 	public static Block spaceStationBase;
+	public static GCCoreBlockMulti dummyBlock;
 	
 	public static Icon[] blockIcons;
 
@@ -66,6 +68,7 @@ public class GCCoreBlocks
 		GCCoreBlocks.compressor = 											new GCCoreBlockOxygenCompressor		(GCCoreConfigManager.idBlockAirCompressor, false)					.setHardness(3.5F)  	  						 	.setStepSound(Block.soundStoneFootstep)					.setUnlocalizedName("oxygenCompressor");
 		GCCoreBlocks.fuelLoader = 											new GCCoreBlockFuelLoader			(GCCoreConfigManager.idBlockFuelLoader)								.setHardness(3.0F)       							.setStepSound(Block.soundMetalFootstep)					.setUnlocalizedName("fuelLoader");
 		GCCoreBlocks.spaceStationBase = 									new GCCoreBlockSpaceStationBase		(GCCoreConfigManager.idBlockSpaceStationBase)						.setHardness(3.0F)       							.setStepSound(Block.soundMetalFootstep)					.setUnlocalizedName("spaceStationBase");
+		GCCoreBlocks.dummyBlock = (GCCoreBlockMulti) 						new GCCoreBlockMulti				(GCCoreConfigManager.idBlockDummy)																						.setStepSound(Block.soundMetalFootstep)					.setUnlocalizedName("dummyblock");
 		
 		// Hide certain items from NEI
 		GalacticraftCore.hiddenItems.add(airLockSeal.blockID);
@@ -74,6 +77,8 @@ public class GCCoreBlocks
 		GalacticraftCore.hiddenItems.add(unlitTorch.blockID);
 		GalacticraftCore.hiddenItems.add(unlitTorchLit.blockID);
 		GalacticraftCore.hiddenItems.add(landingPadFull.blockID);
+		GalacticraftCore.hiddenItems.add(dummyBlock.blockID);
+		GalacticraftCore.hiddenItems.add(spaceStationBase.blockID);
 	}
 
 	public static void setHarvestLevels()
@@ -109,5 +114,6 @@ public class GCCoreBlocks
 		GameRegistry.registerBlock(GCCoreBlocks.sapling, 			GCCoreItemSapling.class, 	GCCoreBlocks.sapling.getUnlocalizedName(), 				GalacticraftCore.MODID);
 		GameRegistry.registerBlock(GCCoreBlocks.fuelLoader, 		ItemBlock.class, 			GCCoreBlocks.fuelLoader.getUnlocalizedName(), 			GalacticraftCore.MODID);
 		GameRegistry.registerBlock(GCCoreBlocks.spaceStationBase, 	ItemBlock.class, 			GCCoreBlocks.spaceStationBase.getUnlocalizedName(), 	GalacticraftCore.MODID);
+		GameRegistry.registerBlock(GCCoreBlocks.dummyBlock, 		ItemBlock.class, 			GCCoreBlocks.dummyBlock.getUnlocalizedName(), 	GalacticraftCore.MODID);
 	}
 }

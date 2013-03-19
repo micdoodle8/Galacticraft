@@ -34,6 +34,7 @@ public class GCCorePlayerBaseClient extends EntityClientPlayerMP
 	private boolean showTutorialText = true;
 	public boolean usingAdvancedGoggles;
 	private int thirdPersonView = 0;
+	public int spaceStationDimensionIDClient = 0;
 
     public GCCorePlayerBaseClient(Minecraft par1Minecraft, World par2World, Session par3Session, NetClientHandler par4NetClientHandler)
     {
@@ -175,27 +176,5 @@ public class GCCorePlayerBaseClient extends EntityClientPlayerMP
     public int getThirdPersonView()
     {
     	return this.thirdPersonView;
-    }
-
-    @Override
-    public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
-    {
-        this.setParachute(par1NBTTagCompound.getBoolean("usingParachute"));
-        this.setUsingGoggles(par1NBTTagCompound.getBoolean("usingAdvGoggles"));
-        this.setUseTutorialText(par1NBTTagCompound.getBoolean("tutorialText"));
-        this.setThirdPersonView(par1NBTTagCompound.getInteger("thirdPersonView"));
-
-        super.readEntityFromNBT(par1NBTTagCompound);
-    }
-
-    @Override
-    public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
-    {
-        par1NBTTagCompound.setBoolean("usingParachute", this.getParachute());
-        par1NBTTagCompound.setBoolean("usingAdvGoggles", this.getUsingGoggles());
-        par1NBTTagCompound.setBoolean("tutorialText", this.getUseTutorialText());
-        par1NBTTagCompound.setInteger("thirdPersonView", this.getThirdPersonView());
-
-        super.writeEntityToNBT(par1NBTTagCompound);
     }
 }

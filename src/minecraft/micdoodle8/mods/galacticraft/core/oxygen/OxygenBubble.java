@@ -151,10 +151,7 @@ public class OxygenBubble
     			}
     		}
     	}
-		
-//		if (this.pointer != null)
-//		FMLLog.info("" + this.pointer.worldObj.isRemote + " " + this.connectedDistributors.size() + " " + this.connectedAir.size());
-
+    	
 		for (TileEntity tile : this.connectedDistributors)
 		{
 			if (tile instanceof GCCoreTileEntityOxygenDistributor)

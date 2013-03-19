@@ -3,11 +3,17 @@ package micdoodle8.mods.galacticraft.core.wgen;
 import java.util.List;
 import java.util.Random;
 
+import universalelectricity.core.vector.Vector3;
+import universalelectricity.prefab.multiblock.IMultiBlock;
+
+import cpw.mods.fml.common.FMLLog;
+
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntitySpaceStationBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSand;
 import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IProgressUpdate;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
@@ -32,6 +38,30 @@ public class GCCoreChunkProviderOverworldOrbit extends ChunkProviderGenerate
 		this.rand = new Random(par2);
 		this.worldObj = par1World;
 	}
+
+	@Override
+    public boolean unloadQueuedChunks()
+    {
+        return false;
+    }
+
+	@Override
+    public int getLoadedChunkCount()
+    {
+        return 0;
+    }
+	
+	@Override
+    public boolean saveChunks(boolean var1, IProgressUpdate var2)
+    {
+        return true;
+    }
+
+	@Override
+    public boolean canSave()
+    {
+        return true;
+    }
 
 	@Override
 	public Chunk provideChunk(int par1, int par2)
@@ -65,7 +95,14 @@ public class GCCoreChunkProviderOverworldOrbit extends ChunkProviderGenerate
         if (k == 0 && l == 0)
         {
             this.worldObj.setBlockAndMetadataWithNotify(k, 64, l, GCCoreBlocks.spaceStationBase.blockID, 0, 3);
-            this.worldObj.setBlockTileEntity(k, 64, l, new GCCoreTileEntitySpaceStationBase());
+//            this.worldObj.setBlockTileEntity(k, 64, l, new GCCoreTileEntitySpaceStationBase());
+
+            TileEntity var8 = this.worldObj.getBlockTileEntity(k, 64, l);
+            
+            if (var8 instanceof IMultiBlock)
+            {
+                ((IMultiBlock)var8).onCreate(new Vector3(k, 64, l));
+            }
             
             (new GCCoreWorldGenSpaceStation()).generate(this.worldObj, this.rand, k - 10, 62, l - 3);
 //            for (int x = -3; x < 4; x++)
@@ -89,30 +126,18 @@ public class GCCoreChunkProviderOverworldOrbit extends ChunkProviderGenerate
 //            	}
 //            }
 
-            for (int x = -2; x < 3; x++)
-            {
-            	for (int y = 0; y < 6; y++)
-            	{
-                    for (int z = -2; z < 3; z++)
-                    {
-                    	this.worldObj.setBlockAndMetadataWithNotify(k + x, 63, l + z, GCCoreBlocks.decorationBlocks.blockID, 4, 3);
-                    }
-            	}
-            }
+//            for (int x = -2; x < 3; x++)
+//            {
+//            	for (int y = 0; y < 6; y++)
+//            	{
+//                    for (int z = -2; z < 3; z++)
+//                    {
+//                    	this.worldObj.setBlockAndMetadataWithNotify(k + x, 63, l + z, GCCoreBlocks.decorationBlocks.blockID, 4, 3);
+//                    }
+//            	}
+//            }
         }
 		BlockSand.fallInstantly = false;
-	}
-
-	@Override
-	public boolean saveChunks(boolean par1, IProgressUpdate par2IProgressUpdate)
-	{
-		return true;
-	}
-
-	@Override
-	public boolean canSave()
-	{
-		return true;
 	}
 
 	@Override

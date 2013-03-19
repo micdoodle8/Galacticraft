@@ -159,13 +159,13 @@ public class GCCoreWorldProvider extends WorldProvider implements IOrbitDimensio
     {
 //        int var3 = this.worldObj.getFirstUncoveredBlock(var1, var2);
 //        return var3 == GCBlocks.marsGrass.blockID;
-    	return true;
+    	return false;
     }
 
     @Override
     public boolean canRespawnHere()
     {
-        return true;
+        return false;
     }
 
     @Override

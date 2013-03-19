@@ -175,7 +175,7 @@ public class GCCoreSkyProviderOrbit extends IRenderHandler
         var23.addVertexWithUV(var12, 100.0D, var12, 1.0D, 1.0D);
         var23.addVertexWithUV(-var12, 100.0D, var12, 0.0D, 1.0D);
         var23.draw();
-        var12 = 20.0F;
+        var12 = 40.0F;
         FMLClientHandler.instance().getClient().renderEngine.func_98187_b("/environment/moon_phases.png");
         final int var28 = this.minecraft.theWorld.getMoonPhase();
         final int var30 = var28 % 4;
@@ -260,8 +260,7 @@ public class GCCoreSkyProviderOrbit extends IRenderHandler
                 var10 = 1.0F;
                 var12 = -1.0F;
 
-                float alpha = (var20 - 200) / 400.0F;
-                alpha = (float) Math.pow(alpha, 2);
+                float alpha = 0.5F;
 	            GL11.glColor4f(Math.min(alpha, 1.0F), Math.min(alpha, 1.0F), Math.min(alpha, 1.0F), Math.min(alpha, 1.0F));
                 var23.startDrawingQuads();
                 var23.addVertexWithUV(-var10, 0, var10, 0.0F, 1.0F);

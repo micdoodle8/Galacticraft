@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import net.minecraft.tileentity.TileEntity;
 import universalelectricity.core.vector.Vector3;
+import universalelectricity.prefab.multiblock.IMultiBlock;
 import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreTileEntityLandingPadSingle extends TileEntity
@@ -39,6 +40,12 @@ public class GCCoreTileEntityLandingPadSingle extends TileEntity
     		}
     		
         	this.worldObj.setBlockAndMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, GCCoreBlocks.landingPadFull.blockID, 0, 3);
-        }
+        	GCCoreTileEntityLandingPad tile = (GCCoreTileEntityLandingPad) this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord);
+        	
+            if (tile instanceof IMultiBlock)
+            {
+                ((IMultiBlock)tile).onCreate(new Vector3((double)this.xCoord, (double)this.yCoord, (double)this.zCoord));
+            }
+    	}
 	}
 }

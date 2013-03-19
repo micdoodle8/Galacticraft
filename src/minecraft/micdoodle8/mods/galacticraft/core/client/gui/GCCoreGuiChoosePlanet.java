@@ -4,7 +4,9 @@ import java.util.Random;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.GCCorePlayerBaseClient;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
+import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -54,6 +56,8 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
 
     public GuiSmallButton sendButton;
 
+    public GuiSmallButton createSpaceStationButton;
+
     private static final String[] titlePanoramaPaths = new String[] {"/micdoodle8/mods/galacticraft/core/client/backgrounds/bg3.png"};
 
     public GCCoreGuiChoosePlanet(EntityPlayer player, String[] listOfDestinations)
@@ -65,7 +69,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     public void updateDimensionList(String[] listOfDestinations)
     {
     	this.destinations = listOfDestinations;
-    	this.initGui();
+//    	this.initGui();
     }
 
     // Override keyTyped so you don't accidently hit Escape and fall to your death!
@@ -89,16 +93,27 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     	}
 
         StringTranslate.getInstance();
-//        this.controlList.add(new GCCoreGuiTexturedButton(0, this.width - 110, this.height - 26, 105, 20, "Send To Dimension", "" /* TODO */));
+        this.buttonList.clear();
         this.buttonList.add(new GCCoreGuiTexturedButton(0, this.width - 28, 5, 22, 22, "/micdoodle8/mods/galacticraft/core/client/gui/button1.png", 22, 22));
         this.buttonList.add(this.sendButton = new GuiSmallButton(1, this.width - 110, this.height - 26, 105, 20, "Send To Dimension"));
+        
+        if (this.createSpaceStationButton == null)
+        {
+        	this.buttonList.add(this.createSpaceStationButton = new GuiSmallButton(2, (this.width / 2) - 60, 4, 120, 20, "Create Space Station"));
+        	this.createSpaceStationButton.enabled = false;
+        }
+        else
+        {
+        	this.buttonList.add(this.createSpaceStationButton);
+        }
+        
         this.planetSlots.registerScrollButtons(this.buttonList, 2, 3);
     }
 
     @Override
 	public void updateScreen()
     {
-        ++this.spaceTimer;
+        this.spaceTimer += 2;
     }
 
     @Override
@@ -431,6 +446,20 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
         	{
         		FMLLog.severe("Severe problem when trying to teleport " + this.playerToSend.username);
         	}
+        	break;
+        case 2:
+        	if (par1GuiButton.enabled)
+        	{
+                final Object[] toSend = {this.destinations[this.selectedSlot]};
+                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 15, toSend));
+                par1GuiButton.enabled = false;
+                return;
+        	}
+        	else
+        	{
+        		FMLLog.severe("Severe problem when trying to create new space station for " + this.playerToSend.username);
+        	}
+        	break;
         }
     }
 
@@ -446,6 +475,33 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     	{
     		return true;
     	}
+    }
+
+    public boolean canCreateSpaceStation(int i)
+    {
+    	final String str = this.destinations[i];
+    	
+    	GCCorePlayerBaseClient clientPlayer = PlayerUtil.getPlayerBaseClientFromPlayer(playerToSend);
+
+    	if (str.toLowerCase().equals("overworld"))
+    	{
+    		if (clientPlayer.spaceStationDimensionIDClient == 0)
+    		{
+    			return false;
+    		}
+    		else if (clientPlayer.spaceStationDimensionIDClient == -1)
+    		{
+    			return true;
+    		}
+    		else
+    		{
+    			return false;
+    		}
+    	}
+		else
+		{
+			return false;
+		}
     }
 
     public boolean hasSpacestation(int i)
@@ -475,6 +531,11 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     static GuiSmallButton getSendButton(GCCoreGuiChoosePlanet par0GuiLanguage)
     {
     	return par0GuiLanguage.sendButton;
+    }
+
+    static GuiSmallButton getCreateSpaceStationButton(GCCoreGuiChoosePlanet par0GuiLanguage)
+    {
+    	return par0GuiLanguage.createSpaceStationButton;
     }
 
     static int setSelectedDimension(GCCoreGuiChoosePlanet par0GuiLanguage, int par1)

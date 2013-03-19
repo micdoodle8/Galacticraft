@@ -5,16 +5,12 @@ import java.util.Random;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
-import micdoodle8.mods.galacticraft.core.dimension.GCCoreFromOrbitTeleporter;
-import micdoodle8.mods.galacticraft.core.dimension.GCCoreTeleporter;
-import micdoodle8.mods.galacticraft.core.dimension.GCCoreToOrbitTeleporter;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSapling;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.event.Event.Result;
 import net.minecraftforge.event.ForgeSubscribe;
@@ -23,7 +19,6 @@ import net.minecraftforge.event.entity.player.BonemealEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
-import net.minecraftforge.event.world.WorldEvent;
 
 public class GCCoreEvents
 {
@@ -57,16 +52,16 @@ public class GCCoreEvents
 		event.setResult(Result.DENY);
 	}
 
-	@ForgeSubscribe
-	public void onWorldLoad(WorldEvent.Load event)
-	{
-		if (event.world instanceof WorldServer)
-		{
-			((WorldServer)event.world).customTeleporters.add(new GCCoreTeleporter((WorldServer)event.world));
-			((WorldServer)event.world).customTeleporters.add(new GCCoreFromOrbitTeleporter((WorldServer)event.world, true));
-			((WorldServer)event.world).customTeleporters.add(new GCCoreToOrbitTeleporter((WorldServer)event.world, true));
-		}
-	}
+//	@ForgeSubscribe
+//	public void onWorldLoad(WorldEvent.Load event)
+//	{
+//		if (event.world instanceof WorldServer)
+//		{
+//			((WorldServer)event.world).customTeleporters.add(new GCCoreTeleporter((WorldServer)event.world));
+//			((WorldServer)event.world).customTeleporters.add(new GCCoreFromOrbitTeleporter((WorldServer)event.world, true));
+//			((WorldServer)event.world).customTeleporters.add(new GCCoreToOrbitTeleporter((WorldServer)event.world, true));
+//		}
+//	}
 
 	@ForgeSubscribe
 	public void onBucketFill(FillBucketEvent event)

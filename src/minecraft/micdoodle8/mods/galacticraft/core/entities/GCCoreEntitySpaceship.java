@@ -443,7 +443,7 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
 	@Override
 	public int getYCoordToTeleport()
 	{
-		return this.riddenByEntity != null && ((EntityPlayer)this.riddenByEntity).username.contains("Player") ? 50 : 1200;
+		return 1200;
 	}
 
 	@Override

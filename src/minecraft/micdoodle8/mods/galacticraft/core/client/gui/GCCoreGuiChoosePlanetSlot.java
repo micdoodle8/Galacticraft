@@ -41,11 +41,13 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
     	if (par1 < GCCoreGuiChoosePlanet.getDestinations(this.choosePlanetGui).length)
     	{
     		GCCoreGuiChoosePlanet.setSelectedDimension(this.choosePlanetGui, par1);
-    		FMLLog.info("" + par1);
     	}
 
         GCCoreGuiChoosePlanet.getSendButton(this.choosePlanetGui).displayString = "Send To Dimension";
         GCCoreGuiChoosePlanet.getSendButton(this.choosePlanetGui).enabled = this.choosePlanetGui.isValidDestination(this.choosePlanetGui.selectedSlot);
+        
+        GCCoreGuiChoosePlanet.getCreateSpaceStationButton(this.choosePlanetGui).displayString = "Create Space Station";
+        GCCoreGuiChoosePlanet.getCreateSpaceStationButton(this.choosePlanetGui).enabled = this.choosePlanetGui.canCreateSpaceStation(this.choosePlanetGui.selectedSlot);
     }
 
     @Override
@@ -63,7 +65,7 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
     @Override
 	protected void drawSlot(int par1, int par2, int par3, int par4, Tessellator par5Tessellator)
     {
-        this.choosePlanetGui.drawString(this.choosePlanetGui.fontRenderer, "", par2 + 2, par3 + 1, 16777215);
+//        this.choosePlanetGui.drawString(this.choosePlanetGui.fontRenderer, "test", par2 + 2, par3 + 1, 16777215);
         
     	if (this.isSelected(par1))
     	{
@@ -126,26 +128,51 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
             GL11.glEnable(GL11.GL_ALPHA_TEST);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             GL11.glPopMatrix();
-    	}
 
-    	if (this.choosePlanetGui.isValidDestination(par1))
-    	{
-    		String str = GCCoreGuiChoosePlanet.getDestinations(this.choosePlanetGui)[par1];
-
-        	if (str.contains("$"))
+        	if (this.choosePlanetGui.isValidDestination(par1))
         	{
-        		String[] strs = str.split("\\$");
-        		str = strs[0];
-        	}
+        		String str = GCCoreGuiChoosePlanet.getDestinations(this.choosePlanetGui)[par1];
 
-            this.choosePlanetGui.drawCenteredString(this.choosePlanetGui.fontRenderer, str, this.choosePlanetGui.width / 2, par3 + 3, 0xEEEEEE);
+            	if (str.contains("$"))
+            	{
+            		String[] strs = str.split("\\$");
+            		str = strs[0];
+            		str = str.concat(" -\u00a73 Owner: ");
+            		str = str.concat(strs[1]);
+            	}
+
+                this.choosePlanetGui.drawCenteredString(this.choosePlanetGui.fontRenderer, str, this.choosePlanetGui.width / 2, par3 + 3, 0xEEEEEE);
+        	}
+        	else
+        	{
+        		String str = GCCoreGuiChoosePlanet.getDestinations(this.choosePlanetGui)[par1];
+        		str = str.replace("*", "");
+            	
+                this.choosePlanetGui.drawCenteredString(this.choosePlanetGui.fontRenderer, str, this.choosePlanetGui.width / 2, par3 + 3, 0xEEEEEE);
+        	}
     	}
     	else
     	{
-    		String str = GCCoreGuiChoosePlanet.getDestinations(this.choosePlanetGui)[par1];
-    		str = str.replace("*", "");
-        	
-            this.choosePlanetGui.drawCenteredString(this.choosePlanetGui.fontRenderer, str, this.choosePlanetGui.width / 2, par3 + 3, 0xEEEEEE);
+
+        	if (this.choosePlanetGui.isValidDestination(par1))
+        	{
+        		String str = GCCoreGuiChoosePlanet.getDestinations(this.choosePlanetGui)[par1];
+
+            	if (str.contains("$"))
+            	{
+            		String[] strs = str.split("\\$");
+            		str = strs[0];
+            	}
+
+                this.choosePlanetGui.drawCenteredString(this.choosePlanetGui.fontRenderer, str, this.choosePlanetGui.width / 2, par3 + 3, 0xEEEEEE);
+        	}
+        	else
+        	{
+        		String str = GCCoreGuiChoosePlanet.getDestinations(this.choosePlanetGui)[par1];
+        		str = str.replace("*", "");
+            	
+                this.choosePlanetGui.drawCenteredString(this.choosePlanetGui.fontRenderer, str, this.choosePlanetGui.width / 2, par3 + 3, 0xEEEEEE);
+        	}
     	}
     }
 
