@@ -1,5 +1,9 @@
 package micdoodle8.mods.galacticraft.core.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import universalelectricity.components.common.BasicComponents;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryRocketBench;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemFlag;
@@ -418,4 +422,15 @@ public class RecipeUtil
 
 		return null;
 	}
+    
+    public static List<ItemStack> getStandardSpaceStationRequirements()
+    {
+    	List<ItemStack> stacks = new ArrayList<ItemStack>();
+    	
+    	stacks.add(new ItemStack(BasicComponents.itemIngot, 16, 1));
+    	stacks.add(new ItemStack(BasicComponents.itemIngot, 8, 3));
+    	stacks.add(new ItemStack(Item.ingotIron, 12, 0));
+    	
+    	return stacks;
+    }
 }

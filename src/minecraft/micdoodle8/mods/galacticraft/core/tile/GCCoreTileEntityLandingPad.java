@@ -129,7 +129,7 @@ public class GCCoreTileEntityLandingPad extends TileEntityMulti implements IMult
 		{
 			for (int z = -1; z < 2; z++)
 			{
-				if (this.worldObj.rand.nextDouble() < 0.1D)
+				if (this.worldObj.isRemote && this.worldObj.rand.nextDouble() < 0.1D)
 					FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.intX() + x, thisBlock.intY(), thisBlock.intZ() + z, GCCoreBlocks.landingPad.blockID & 4095, GCCoreBlocks.landingPad.blockID >> 12 & 255);
 				this.worldObj.setBlockAndMetadataWithNotify(thisBlock.intX() + x, thisBlock.intY(), thisBlock.intZ() + z, 0, 0, 3);
 			}

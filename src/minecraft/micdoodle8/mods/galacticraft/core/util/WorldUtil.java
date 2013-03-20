@@ -821,7 +821,7 @@ public class WorldUtil
               		chest.setPosition(-8.5D, spawnChestHeight, -1.5D);
                     break;
                 default:
-              		chest.setPosition(x, spawnChestHeight, z);
+              		chest.setPosition(var8.posX + x, spawnChestHeight, var8.posZ + z);
                     break;
                 }
 

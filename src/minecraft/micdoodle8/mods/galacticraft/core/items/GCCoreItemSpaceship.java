@@ -97,6 +97,11 @@ public class GCCoreItemSpaceship extends Item
 	    		if (!par2EntityPlayer.capabilities.isCreativeMode)
 	    		par2EntityPlayer.inventory.consumeInventoryItem(par1ItemStack.getItem().itemID);
 	    		spaceship.setSpaceshipType(par1ItemStack.getItemDamage());
+	    		
+	    		if (par1ItemStack.getItemDamage() == 2)
+	    		{
+	    			spaceship.fuel = spaceship.getMaxFuel();
+	    		}
     		}
     		else
     		{
@@ -109,7 +114,7 @@ public class GCCoreItemSpaceship extends Item
     @Override
     public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
     {
-    	for (int i = 0; i < 2; i++)
+    	for (int i = 0; i < 3; i++)
     	{
             par3List.add(new ItemStack(par1, 1, i));
     	}
@@ -132,6 +137,9 @@ public class GCCoreItemSpaceship extends Item
     		{
     		case 1:
     			par2List.add("Storage Space: 27");
+    			break;
+    		case 2:
+    			par2List.add("Fuel: 100%");
     			break;
     		}
     	}

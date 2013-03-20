@@ -9,6 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import universalelectricity.prefab.network.IPacketReceiver;
 import universalelectricity.prefab.network.PacketManager;
@@ -16,6 +17,7 @@ import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
 
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.Player;
 
@@ -23,7 +25,7 @@ public class GCCorePacketManager extends PacketManager implements IPacketHandler
 {
 	public enum GCCorePacketType
 	{
-		UNSPECIFIED, ENTITY;
+		UNSPECIFIED, TILEENTITY, ENTITY;
 
 		public static GCCorePacketType get(int id)
 		{
@@ -39,7 +41,7 @@ public class GCCorePacketManager extends PacketManager implements IPacketHandler
 	{
 		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
 		DataOutputStream data = new DataOutputStream(bytes);
-
+		
 		try
 		{
 			data.writeInt(GCCorePacketType.ENTITY.ordinal());
@@ -72,9 +74,7 @@ public class GCCorePacketManager extends PacketManager implements IPacketHandler
 
 			int packetTypeID = data.readInt();
 
-			GCCorePacketType packetType = GCCorePacketType.get(packetTypeID);
-
-			if (packetType == GCCorePacketType.ENTITY)
+			if (packetTypeID == 2)
 			{
 				double id = data.readInt();
 
@@ -96,9 +96,26 @@ public class GCCorePacketManager extends PacketManager implements IPacketHandler
 					}
 				}
 			}
-			else
+			else if (packetTypeID == 1)
 			{
-				super.onPacketData(network, packet, player);
+				int x = data.readInt();
+				int y = data.readInt();
+				int z = data.readInt();
+
+				World world = ((EntityPlayer) player).worldObj;
+
+				if (world != null)
+				{
+					TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
+
+					if (tileEntity != null)
+					{
+						if (tileEntity instanceof IPacketReceiver)
+						{
+							((IPacketReceiver) tileEntity).handlePacketData(network, packetTypeID, packet, ((EntityPlayer) player), data);
+						}
+					}
+				}
 			}
 		}
 		catch (Exception e)

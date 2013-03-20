@@ -15,6 +15,12 @@ public class GCCoreCommandSpaceStationAddOwner extends CommandBase
     {
         return "/" + this.getCommandName() + " [player]";
     }
+
+	@Override
+    public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender)
+    {
+        return true;
+    }
     
 	@Override
 	public String getCommandName() 

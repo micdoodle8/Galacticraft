@@ -31,7 +31,6 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import universalelectricity.components.common.BasicComponents;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.IPacketReceiver;
 import universalelectricity.prefab.network.PacketManager;
@@ -39,7 +38,6 @@ import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
 
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -337,7 +335,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
 
         	if (!this.worldObj.isRemote)
         	{
-        		if (!(this.worldObj.provider instanceof IOrbitDimension))
+        		if (!(this.worldObj.provider instanceof IOrbitDimension) && this.riddenByEntity != null && this.riddenByEntity instanceof GCCorePlayerBase)
         		{
         	        ((GCCorePlayerBase) this.riddenByEntity).coordsTeleportedFromX = this.riddenByEntity.posX;
         	        ((GCCorePlayerBase) this.riddenByEntity).coordsTeleportedFromZ = this.riddenByEntity.posZ;

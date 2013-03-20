@@ -40,20 +40,30 @@ public class GCCoreGuiRocketRefill extends GuiContainer
     @Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRenderer.drawString(StatCollector.translateToLocal("Fuel"), 8, 6, 4210752);
+        int offset = 0;
+        
+        switch (this.type)
+        {
+        case 0:
+        	offset = -14;
+        	break;
+        case 1:
+        	offset = 12;
+        	break;
+        case 2:
+        	offset = -80;
+        	break;
+        }
+        
+        this.fontRenderer.drawString(StatCollector.translateToLocal("Fuel"), 8, 3 + offset, 4210752);
 
-    	if (this.type == 1)
-    	{
-            this.fontRenderer.drawString(StatCollector.translateToLocal("Spaceship"), 8, 38, 4210752);
-    	}
-
-        this.fontRenderer.drawString(StatCollector.translateToLocal(this.upperChestInventory.getInvName()), 8, this.ySize - 96 + 2, 4210752);
+        this.fontRenderer.drawString(StatCollector.translateToLocal(this.upperChestInventory.getInvName()), 8, 34 + 2 + offset, 4210752);
 
         if (this.mc.thePlayer != null && this.mc.thePlayer.ridingEntity != null && this.mc.thePlayer.ridingEntity instanceof GCCoreEntitySpaceship)
         {
     		final float fuelLevel = (((GCCoreEntitySpaceship) this.mc.thePlayer.ridingEntity).fuel) / (60.0F) * 1000.0F;
 
-            this.fontRenderer.drawString("" + Math.round(fuelLevel) / 10.0D + "%", 109, this.ySize - ((GCCoreEntitySpaceship) this.mc.thePlayer.ridingEntity).getSpaceshipType() == 0 ? 111 : 20, 4210752);
+            this.fontRenderer.drawString("" + Math.round(fuelLevel) / 10.0D + "%", 109, this.ySize - ((GCCoreEntitySpaceship) this.mc.thePlayer.ridingEntity).getSpaceshipType() != 0 + offset ? 20 + offset : 111, 4210752);
         }
     }
 
@@ -64,11 +74,13 @@ public class GCCoreGuiRocketRefill extends GuiContainer
 
     	switch (this.type)
     	{
-    	case 0:
-            var4 = "/micdoodle8/mods/galacticraft/core/client/gui/rocketrefill-nochest.png";
-            break;
     	case 1:
+    		this.ySize = 180;
             var4 = "/micdoodle8/mods/galacticraft/core/client/gui/rocketrefill-chest.png";
+            break;
+    	default:
+    		this.ySize = 166;
+            var4 = "/micdoodle8/mods/galacticraft/core/client/gui/rocketrefill-nochest.png";
             break;
     	}
 

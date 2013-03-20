@@ -27,6 +27,9 @@ public class GCCoreContainerRocketRefill extends Container
         case 1:
         	this.addSlotsForType2();
         	break;
+        case 2:
+        	this.addSlotsForType1();
+        	break;
         }
     }
 
@@ -34,18 +37,30 @@ public class GCCoreContainerRocketRefill extends Container
     {
         int var4;
         int var5;
+        
+        int offset = 0;
+        
+        switch (this.type)
+        {
+        case 0:
+        	offset = -17;
+        	break;
+        case 2:
+        	offset = -83;
+        	break;
+        }
 
         for (var4 = 0; var4 < 3; ++var4)
         {
             for (var5 = 0; var5 < 9; ++var5)
             {
-                this.addSlotToContainer(new Slot(this.lowerChestInventory, var5 + (var4 + 1) * 9, 8 + var5 * 18, 84 + var4 * 18 - 34));
+                this.addSlotToContainer(new Slot(this.lowerChestInventory, var5 + (var4 + 1) * 9, 8 + var5 * 18, offset + 84 + var4 * 18 - 34));
             }
         }
 
         for (var4 = 0; var4 < 9; ++var4)
         {
-            this.addSlotToContainer(new Slot(this.lowerChestInventory, var4, 8 + var4 * 18, 142 - 34));
+            this.addSlotToContainer(new Slot(this.lowerChestInventory, var4, 8 + var4 * 18, offset + 142 - 34));
         }
     }
 
@@ -53,6 +68,15 @@ public class GCCoreContainerRocketRefill extends Container
     {
         int var4;
         int var5;
+        
+        int offset = 0;
+        
+        switch (this.type)
+        {
+        case 1:
+        	offset = 9;
+        	break;
+        }
 
         for (var4 = 0; var4 < 3; ++var4)
         {
@@ -60,7 +84,7 @@ public class GCCoreContainerRocketRefill extends Container
             {
             	if (!(var4 == 2 && var5 == 8 || var4 == 2  && var5 == 7 || var4 == 2  && var5 == 6))
             	{
-                    this.addSlotToContainer(new Slot(this.spaceshipInv, var5 + var4 * 9 + 1, 8 + var5 * 18, 50 + var4 * 18));
+                    this.addSlotToContainer(new Slot(this.spaceshipInv, var5 + var4 * 9 + 1, 8 + var5 * 18, offset + 50 + var4 * 18));
             	}
             }
         }
@@ -69,13 +93,13 @@ public class GCCoreContainerRocketRefill extends Container
         {
             for (var5 = 0; var5 < 9; ++var5)
             {
-                this.addSlotToContainer(new Slot(this.lowerChestInventory, var5 + var4 * 9 + 9, 8 + var5 * 18, 103 + var4 * 18 + 14));
+                this.addSlotToContainer(new Slot(this.lowerChestInventory, var5 + var4 * 9 + 9, 8 + var5 * 18, offset + 103 + var4 * 18 + 14));
             }
         }
 
         for (var4 = 0; var4 < 9; ++var4)
         {
-            this.addSlotToContainer(new Slot(this.lowerChestInventory, var4, 8 + var4 * 18, 161 + 14));
+            this.addSlotToContainer(new Slot(this.lowerChestInventory, var4, 8 + var4 * 18, offset + 161 + 14));
         }
     }
 

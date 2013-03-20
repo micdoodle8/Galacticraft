@@ -658,7 +658,7 @@ public class GalacticraftCore
             {
             	WorldUtil.bindSpaceStationToNewDimension(playerBase.worldObj, playerBase);
             	
-            	for (ItemStack stack : GCCoreGuiChoosePlanet.getStandardRequirements())
+            	for (ItemStack stack : RecipeUtil.getStandardSpaceStationRequirements())
             	{
             		int amountToRemove = stack.stackSize;
             		

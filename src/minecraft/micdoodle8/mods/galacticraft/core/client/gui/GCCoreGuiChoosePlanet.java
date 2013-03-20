@@ -9,6 +9,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.GCCorePlayerBaseClient;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
+import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -528,13 +529,13 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     				List<ItemStack> items = new ArrayList();
     				List<Boolean> hasEnough = new ArrayList();
     				ItemStack stack = null;
-    				stack = this.getStandardRequirements().get(0);
+    				stack = RecipeUtil.getStandardSpaceStationRequirements().get(0);
     				strings.add("Tin: " + this.getItemCountInPlayerInventory(this.mc.thePlayer, stack) + " / " + this.getNumberRequired(stack));
     				hasEnough.add(this.hasCorrectAmount(this.mc.thePlayer, stack));
-    				stack = this.getStandardRequirements().get(1);
+    				stack = RecipeUtil.getStandardSpaceStationRequirements().get(1);
     				strings.add("Steel: " + this.getItemCountInPlayerInventory(this.mc.thePlayer, stack) + " / " + this.getNumberRequired(stack));
     				hasEnough.add(this.hasCorrectAmount(this.mc.thePlayer, stack));
-    				stack = this.getStandardRequirements().get(2);
+    				stack = RecipeUtil.getStandardSpaceStationRequirements().get(2);
     				strings.add("Iron: " + this.getItemCountInPlayerInventory(this.mc.thePlayer, stack) + " / " + this.getNumberRequired(stack));
     				hasEnough.add(this.hasCorrectAmount(this.mc.thePlayer, stack));
     				items.add(new ItemStack(BasicComponents.itemIngot, 1, 1));
@@ -588,17 +589,6 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     	}
     	
     	return flag;
-    }
-    
-    public static List<ItemStack> getStandardRequirements()
-    {
-    	List<ItemStack> stacks = new ArrayList<ItemStack>();
-    	
-    	stacks.add(new ItemStack(BasicComponents.itemIngot, 16, 1));
-    	stacks.add(new ItemStack(BasicComponents.itemIngot, 8, 3));
-    	stacks.add(new ItemStack(Item.ingotIron, 12, 0));
-    	
-    	return stacks;
     }
     
     public static boolean hasCorrectAmount(EntityPlayer player, ItemStack stack)
@@ -669,7 +659,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
         	}
         	break;
         case 2:
-        	if (par1GuiButton.enabled && this.hasCorrectMaterials(this.mc.thePlayer, this.getStandardRequirements()))
+        	if (par1GuiButton.enabled && this.hasCorrectMaterials(this.mc.thePlayer, RecipeUtil.getStandardSpaceStationRequirements()))
         	{
                 final Object[] toSend = {this.destinations[this.selectedSlot]};
                 PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 15, toSend));

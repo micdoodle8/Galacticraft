@@ -81,7 +81,7 @@ public class GCCoreTileEntityAdvancedCraftingTable extends TileEntityMulti imple
 					{
 						if ((y == 0 || y == 3) && x == 0 && z == 0)
 						{
-							if (this.worldObj.rand.nextDouble() < 0.05D)
+							if (this.worldObj.isRemote && this.worldObj.rand.nextDouble() < 0.05D)
 								FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z, GCCoreBlocks.rocketBench.blockID & 4095, GCCoreBlocks.rocketBench.blockID >> 12 & 255);
 							this.worldObj.setBlockAndMetadataWithNotify(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z, 0, 0, 3);
 						}
