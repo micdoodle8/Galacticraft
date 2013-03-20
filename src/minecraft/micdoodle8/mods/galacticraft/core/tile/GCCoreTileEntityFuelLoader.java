@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import micdoodle8.mods.galacticraft.API.IFuelTank;
 import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -21,6 +22,8 @@ import universalelectricity.prefab.network.PacketManager;
 import universalelectricity.prefab.tile.TileEntityElectricityRunnable;
 
 import com.google.common.io.ByteArrayDataInput;
+
+import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable implements IInventory, IPacketReceiver
 {
@@ -50,7 +53,7 @@ public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable im
 	
 	public void transferFuelToSpaceship(EntitySpaceshipBase spaceship)
 	{
-		if (!this.worldObj.isRemote && this.getStackInSlot(1) != null && (this.getStackInSlot(1).getMaxDamage() - this.getStackInSlot(1).getItemDamage() != 0) && this.getStackInSlot(1).getItemDamage() < this.getStackInSlot(1).getMaxDamage())
+		if (!this.worldObj.isRemote && this.getStackInSlot(1) != null && this.getStackInSlot(1).getItem() instanceof IFuelTank && (this.getStackInSlot(1).getMaxDamage() - this.getStackInSlot(1).getItemDamage() != 0) && this.getStackInSlot(1).getItemDamage() < this.getStackInSlot(1).getMaxDamage())
 		{
 			spaceship.fuel += 1F;
 			this.getStackInSlot(1).setItemDamage(this.getStackInSlot(1).getItemDamage() + 1);

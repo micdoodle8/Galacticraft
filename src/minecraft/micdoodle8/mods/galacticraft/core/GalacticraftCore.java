@@ -18,6 +18,7 @@ import micdoodle8.mods.galacticraft.API.IOrbitDimension;
 import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.client.GCCorePlayerBaseClient;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiChoosePlanet;
 import micdoodle8.mods.galacticraft.core.command.GCCoreCommandSpaceStationAddOwner;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreTeleportType;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreWorldProvider;
@@ -39,6 +40,7 @@ import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.network.GCCoreConnectionHandler;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketControllableEntity;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketEntityUpdate;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAdvancedCraftingTable;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAirLock;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityBreathableAir;
@@ -75,8 +77,6 @@ import universalelectricity.components.common.BasicComponents;
 import universalelectricity.prefab.CustomDamageSource;
 import universalelectricity.prefab.TranslationHelper;
 import universalelectricity.prefab.multiblock.TileEntityMulti;
-import universalelectricity.prefab.network.ConnectionHandler;
-import universalelectricity.prefab.network.PacketManager;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.IScheduledTickHandler;
 import cpw.mods.fml.common.ITickHandler;
@@ -124,7 +124,7 @@ import cpw.mods.fml.relauncher.Side;
 	clientSideRequired = true, 
 	serverSideRequired = false,
     connectionHandler = GCCoreConnectionHandler.class,
-    packetHandler = PacketManager.class
+    packetHandler = GCCorePacketManager.class
 )
 public class GalacticraftCore
 {
@@ -657,6 +657,28 @@ public class GalacticraftCore
             else if (packetType == 15)
             {
             	WorldUtil.bindSpaceStationToNewDimension(playerBase.worldObj, playerBase);
+            	
+            	for (ItemStack stack : GCCoreGuiChoosePlanet.getStandardRequirements())
+            	{
+            		int amountToRemove = stack.stackSize;
+            		
+            		for (ItemStack stack2 : playerBase.inventory.mainInventory)
+            		{
+            			if (stack != null && stack2 != null && stack.itemID == stack2.itemID && stack.getItemDamage() == stack2.getItemDamage())
+            			{
+            				if (stack2.stackSize > amountToRemove)
+            				{
+            					stack2.stackSize -= amountToRemove;
+            					break;
+            				}
+            				else if (stack2.stackSize <= amountToRemove)
+            				{
+            					amountToRemove -= stack2.stackSize;
+            					stack2.stackSize = 0;
+            				}
+            			}
+            		}
+            	}
             }
         }
     }

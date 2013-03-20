@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
@@ -12,15 +14,21 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiSmallButton;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.StringTranslate;
 import net.minecraft.world.WorldProvider;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 import org.lwjgl.util.glu.GLU;
 
+import universalelectricity.components.common.BasicComponents;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
@@ -36,6 +44,8 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
 {
     private int spaceTimer = 0;
 
+    public static RenderItem drawItems = new RenderItem();
+    
     private GCCoreGuiChoosePlanetSlot planetSlots;
 
     private static final Random rand = new Random();
@@ -100,7 +110,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
         if (this.createSpaceStationButton == null)
         {
         	this.buttonList.add(this.createSpaceStationButton = new GuiSmallButton(2, (this.width / 2) - 60, 4, 120, 20, "Create Space Station"));
-        	this.createSpaceStationButton.enabled = false;
+        	this.createSpaceStationButton.enabled = true;
         }
         else
         {
@@ -350,11 +360,104 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
         var4.draw();
         GL11.glPopMatrix();
     }
+    
+    protected void drawItemStackTooltip(List<String> strings, List<ItemStack> items, List<Boolean> correctAmount, int par2, int par3)
+    {
+        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+        RenderHelper.disableStandardItemLighting();
+        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glDisable(GL11.GL_DEPTH_TEST);
+
+        if (!strings.isEmpty())
+        {
+            int k = 0;
+            int l;
+            int i1;
+
+            for (l = 0; l < strings.size(); ++l)
+            {
+                i1 = this.fontRenderer.getStringWidth((String)strings.get(l));
+
+                if (i1 > k)
+                {
+                    k = i1 + (items.size() == 0 ? 0 : 34);
+                }
+            }
+
+            l = par2 + 12;
+            i1 = par3 - 12;
+            int j1 = 14;
+
+            if (strings.size() > 1)
+            {
+                j1 += 2 + (strings.size() - 1) * (items.size() == 0 ? 10 : 16);
+            }
+
+            if (((this.height - 500) / 2) + i1 + j1 + 6 > this.height)
+            {
+                i1 = this.height - j1 - ((this.height - 500) / 2) - 6;
+            }
+
+            this.zLevel = 300.0F;
+            this.drawItems.zLevel = 300.0F;
+            int k1 = -267386864;
+            
+            this.drawGradientRect(l - 3, i1 - 4, l + k + 3, i1 - 3, k1, k1);
+            this.drawGradientRect(l - 3, i1 + j1 + 3, l + k + 3, i1 + j1 + 4, k1, k1);
+            this.drawGradientRect(l - 3, i1 - 3, l + k + 3, i1 + j1 + 3, k1, k1);
+            this.drawGradientRect(l - 4, i1 - 3, l - 3, i1 + j1 + 3, k1, k1);
+            this.drawGradientRect(l + k + 3, i1 - 3, l + k + 4, i1 + j1 + 3, k1, k1);
+            int l1 = 1347420415;
+            int i2 = (l1 & 16711422) >> 1 | l1 & -16777216;
+            this.drawGradientRect(l - 3, i1 - 3 + 1, l - 3 + 1, i1 + j1 + 3 - 1, l1, i2);
+            this.drawGradientRect(l + k + 2, i1 - 3 + 1, l + k + 3, i1 + j1 + 3 - 1, l1, i2);
+            this.drawGradientRect(l - 3, i1 - 3, l + k + 3, i1 - 3 + 1, l1, l1);
+            this.drawGradientRect(l - 3, i1 + j1 + 2, l + k + 3, i1 + j1 + 3, i2, i2);
+
+            int stringY = i1 + (items.size() == 0 ? 0 : 5);
+            
+            for (int j2 = 0; j2 < strings.size(); ++j2)
+            {
+                String s = (String)strings.get(j2);
+                Boolean b = correctAmount.get(j2);
+                
+                s = "\u00a7" + Integer.toHexString(b ? 10 : 4) + s;
+
+                this.fontRenderer.drawStringWithShadow(s, l + (items.size() == 0 ? 0 : 19), stringY, -1);
+
+                stringY += items.size() > 0 ? 16 : 14;
+            }
+
+            int itemY = i1;
+            
+            for (ItemStack stack : items)
+            {
+            	this.drawItems.renderItemAndEffectIntoGUI(fontRenderer, this.mc.renderEngine, stack, l, itemY);
+            	
+            	itemY += 16;
+            }
+
+            this.zLevel = 0.0F;
+            this.drawItems.zLevel = 0.0F;
+        }
+    }
 
     @Override
 	public void drawScreen(int par1, int par2, float par3)
     {
     	String str = null;
+    	
+    	if (this.createSpaceStationButton != null)
+    	{
+        	if (this.createSpaceStationButton.enabled == false && this.canCreateSpaceStation(this.selectedSlot))
+        	{
+        		this.createSpaceStationButton.enabled = true;
+        	}
+        	else if (this.createSpaceStationButton.enabled == true && !this.canCreateSpaceStation(this.selectedSlot))
+        	{
+        		this.createSpaceStationButton.enabled = false;
+        	}
+    	}
 
     	if (this.initialized)
     	{
@@ -401,6 +504,124 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
 	    		}
 	    	}
     	}
+    	
+    	if (createSpaceStationButton != null)
+    	{
+        	GCCorePlayerBaseClient clientPlayer = PlayerUtil.getPlayerBaseClientFromPlayer(playerToSend);
+        	
+    		if (par1 >= createSpaceStationButton.xPosition && par2 >= createSpaceStationButton.yPosition && par1 < createSpaceStationButton.xPosition + 120 && par2 < createSpaceStationButton.yPosition + 20)
+    		{
+    			if (this.playerAlreadyCreatedDimension(clientPlayer))
+    			{
+    				List<String> strings = new ArrayList();
+    				List<ItemStack> items = new ArrayList();
+    				List<Boolean> hasEnough = new ArrayList();
+    				strings.add("Space Station Already");
+    				strings.add("        Created!");
+    				hasEnough.add(false);
+    				hasEnough.add(false);
+    				this.drawItemStackTooltip(strings, items, hasEnough, createSpaceStationButton.xPosition + 115, createSpaceStationButton.yPosition + 15);
+    			}
+    			else if (this.canCreateSpaceStation(this.selectedSlot))
+    			{
+    				List<String> strings = new ArrayList();
+    				List<ItemStack> items = new ArrayList();
+    				List<Boolean> hasEnough = new ArrayList();
+    				ItemStack stack = null;
+    				stack = this.getStandardRequirements().get(0);
+    				strings.add("Tin: " + this.getItemCountInPlayerInventory(this.mc.thePlayer, stack) + " / " + this.getNumberRequired(stack));
+    				hasEnough.add(this.hasCorrectAmount(this.mc.thePlayer, stack));
+    				stack = this.getStandardRequirements().get(1);
+    				strings.add("Steel: " + this.getItemCountInPlayerInventory(this.mc.thePlayer, stack) + " / " + this.getNumberRequired(stack));
+    				hasEnough.add(this.hasCorrectAmount(this.mc.thePlayer, stack));
+    				stack = this.getStandardRequirements().get(2);
+    				strings.add("Iron: " + this.getItemCountInPlayerInventory(this.mc.thePlayer, stack) + " / " + this.getNumberRequired(stack));
+    				hasEnough.add(this.hasCorrectAmount(this.mc.thePlayer, stack));
+    				items.add(new ItemStack(BasicComponents.itemIngot, 1, 1));
+    				items.add(new ItemStack(BasicComponents.itemIngot, 1, 3));
+    				items.add(new ItemStack(Item.ingotIron, 1, 0));
+    				this.drawItemStackTooltip(strings, items, hasEnough, createSpaceStationButton.xPosition + 115, createSpaceStationButton.yPosition + 15);
+    			}
+    			else
+    			{
+    				List<String> strings = new ArrayList();
+    				List<ItemStack> items = new ArrayList();
+    				List<Boolean> hasEnough = new ArrayList();
+    				strings.add("Cannot create Space");
+    				strings.add("     Station here!");
+    				hasEnough.add(false);
+    				hasEnough.add(false);
+    				this.drawItemStackTooltip(strings, items, hasEnough, createSpaceStationButton.xPosition + 115, createSpaceStationButton.yPosition + 15);
+    			}
+    		}
+    	}
+    }
+    
+    private static int getItemCountInPlayerInventory(EntityPlayer player, ItemStack itemToFind)
+    {
+    	int count = 0;
+    	
+    	if (player != null)
+    	{
+    		for (ItemStack stack : player.inventory.mainInventory)
+    		{
+    			if (stack != null && itemToFind != null && stack.itemID == itemToFind.itemID && stack.getItemDamage() == itemToFind.getItemDamage())
+    			{
+    				count += stack.stackSize;
+    			}
+    		}
+    	}
+    	
+    	return count;
+    }
+    
+    public static boolean hasCorrectMaterials(EntityPlayer player, List<ItemStack> stacks)
+    {
+    	boolean flag = true;
+    	
+    	for (ItemStack stack : stacks)
+    	{
+    		if (!hasCorrectAmount(player, stack))
+    		{
+    			flag = false;
+    		}
+    	}
+    	
+    	return flag;
+    }
+    
+    public static List<ItemStack> getStandardRequirements()
+    {
+    	List<ItemStack> stacks = new ArrayList<ItemStack>();
+    	
+    	stacks.add(new ItemStack(BasicComponents.itemIngot, 16, 1));
+    	stacks.add(new ItemStack(BasicComponents.itemIngot, 8, 3));
+    	stacks.add(new ItemStack(Item.ingotIron, 12, 0));
+    	
+    	return stacks;
+    }
+    
+    public static boolean hasCorrectAmount(EntityPlayer player, ItemStack stack)
+    {
+    	return getItemCountInPlayerInventory(player, stack) >= getNumberRequired(stack);
+    }
+    
+    public static int getNumberRequired(ItemStack stack)
+    {
+    	if (stack.itemID == BasicComponents.itemIngot.itemID && stack.getItemDamage() == 1) // tin
+    	{
+    		return 16;
+    	}
+    	else if (stack.itemID == BasicComponents.itemIngot.itemID && stack.getItemDamage() == 3) // steel
+    	{
+    		return 8;
+    	}
+    	else if (stack.itemID == Item.ingotIron.itemID && stack.getItemDamage() == 0) // iron
+    	{
+    		return 12;
+    	}
+    	
+    	return 0;
     }
 
     public void drawBlackBackground()
@@ -448,16 +669,12 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
         	}
         	break;
         case 2:
-        	if (par1GuiButton.enabled)
+        	if (par1GuiButton.enabled && this.hasCorrectMaterials(this.mc.thePlayer, this.getStandardRequirements()))
         	{
                 final Object[] toSend = {this.destinations[this.selectedSlot]};
                 PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 15, toSend));
                 par1GuiButton.enabled = false;
                 return;
-        	}
-        	else
-        	{
-        		FMLLog.severe("Severe problem when trying to create new space station for " + this.playerToSend.username);
         	}
         	break;
         }
@@ -482,12 +699,13 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     	final String str = this.destinations[i];
     	
     	GCCorePlayerBaseClient clientPlayer = PlayerUtil.getPlayerBaseClientFromPlayer(playerToSend);
+    	
 
-    	if (str.toLowerCase().equals("overworld"))
+    	if (clientPlayer != null && str.toLowerCase().equals("overworld"))
     	{
     		if (clientPlayer.spaceStationDimensionIDClient == 0)
     		{
-    			return false;
+    			return true;
     		}
     		else if (clientPlayer.spaceStationDimensionIDClient == -1)
     		{
@@ -502,6 +720,16 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
 		{
 			return false;
 		}
+    }
+    
+    public boolean playerAlreadyCreatedDimension(GCCorePlayerBaseClient clientPlayer)
+    {
+    	if (clientPlayer != null && clientPlayer.spaceStationDimensionIDClient != 0 && clientPlayer.spaceStationDimensionIDClient != -1)
+    	{
+    		return true;
+    	}
+    	
+    	return false;
     }
 
     public boolean hasSpacestation(int i)

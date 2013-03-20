@@ -57,7 +57,5 @@ public class GCCoreTileEntitySpaceStationBase extends TileEntityMulti implements
 	@Override
 	public void onDestroy(TileEntity callingBlock) 
 	{
-//		this.worldObj.setBlockAndMetadataWithNotify(callingBlock.xCoord, callingBlock.yCoord, callingBlock.zCoord, GCCoreBlocks.dummyBlock.blockID, 0, 3);
-		GCCoreBlocks.dummyBlock.makeFakeBlock(this.worldObj, new Vector3(callingBlock), new Vector3(this));
 	}
 }

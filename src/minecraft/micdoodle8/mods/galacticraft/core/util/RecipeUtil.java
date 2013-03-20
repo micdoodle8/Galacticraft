@@ -12,6 +12,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 public class RecipeUtil
 {
@@ -149,11 +150,6 @@ public class RecipeUtil
 			"XXX",
 			'X', "ingotCopper"
 		}));
-		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.airVent, 1), new Object[] {
-			"XX",
-			"XX",
-			'X', "ingotTin"
-		}));
 		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.airFan, 1), new Object[] {
 			"Z Z",
 			" Y ",
@@ -284,7 +280,14 @@ public class RecipeUtil
         {
         	CraftingManager.getInstance().addShapelessRecipe(new ItemStack(GCCoreItems.flag, 1, GCCoreItemFlag.getFlagDamageValueFromDye(var2)), new Object[] {new ItemStack(Item.dyePowder, 1, var2), new ItemStack(GCCoreItems.flag, 1, 16)});
         }
-
+        
+    	CraftingManager.getInstance().getRecipeList().add(new ShapelessOreRecipe(new ItemStack(GCCoreItems.airVent, 1), new Object[] {
+    		"ingotTin", 
+    		"ingotTin",
+    		"ingotTin",
+    		"ingotSteel"
+    	}));
+    	
 		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.oxygenGear), new Object[] {
 			" Y ",
 			"YXY",

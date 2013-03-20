@@ -17,9 +17,10 @@ import universalelectricity.prefab.network.IPacketReceiver;
 
 import com.google.common.io.ByteArrayDataInput;
 
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLLog;
 
-public class GCCoreTileEntityLandingPad extends TileEntityMulti implements IPacketReceiver, IMultiBlock
+public class GCCoreTileEntityLandingPad extends TileEntityMulti implements IMultiBlock
 {
 	protected long ticks = 0;
 	private EntitySpaceshipBase spaceshipOnPad;
@@ -30,7 +31,6 @@ public class GCCoreTileEntityLandingPad extends TileEntityMulti implements IPack
 	{
 		super.updateEntity();
 		
-
 		if (!this.worldObj.isRemote)
 		{
 			for (int x = -2; x < 3; x++)
@@ -70,7 +70,7 @@ public class GCCoreTileEntityLandingPad extends TileEntityMulti implements IPack
 			
 			for (Object o : list)
 			{
-				if (o != null && o instanceof EntitySpaceshipBase)
+				if (o != null && o instanceof EntitySpaceshipBase && !this.worldObj.isRemote)
 				{
 					EntitySpaceshipBase spaceship = (EntitySpaceshipBase) o;
 					
@@ -96,12 +96,6 @@ public class GCCoreTileEntityLandingPad extends TileEntityMulti implements IPack
 	}
 
 	@Override
-	public void handlePacketData(INetworkManager network, int packetType, Packet250CustomPayload packet, EntityPlayer player, ByteArrayDataInput dataStream) 
-	{
-		
-	}
-
-	@Override
 	public boolean onActivated(EntityPlayer entityPlayer) 
 	{
 		return false;
@@ -120,7 +114,7 @@ public class GCCoreTileEntityLandingPad extends TileEntityMulti implements IPack
 				
 				if (!vecToAdd.isEqual(placedPosition))
 				{
-					GCCoreBlocks.dummyBlock.makeFakeBlock(this.worldObj, vecToAdd, placedPosition);
+					GCCoreBlocks.dummyBlock.makeFakeBlock(this.worldObj, vecToAdd, placedPosition, 2);
 				}
 			}
 		}
@@ -135,8 +129,17 @@ public class GCCoreTileEntityLandingPad extends TileEntityMulti implements IPack
 		{
 			for (int z = -1; z < 2; z++)
 			{
+				if (this.worldObj.rand.nextDouble() < 0.1D)
+					FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.intX() + x, thisBlock.intY(), thisBlock.intZ() + z, GCCoreBlocks.landingPad.blockID & 4095, GCCoreBlocks.landingPad.blockID >> 12 & 255);
 				this.worldObj.setBlockAndMetadataWithNotify(thisBlock.intX() + x, thisBlock.intY(), thisBlock.intZ() + z, 0, 0, 3);
 			}
+		}
+		
+		if (this.spaceshipOnPad != null && !this.spaceshipOnPad.isDead && !this.spaceshipOnPad.launched)
+		{
+			this.spaceshipOnPad.dropShipAsItem();
+			this.spaceshipOnPad.setDead();
+			this.spaceshipOnPad = null;
 		}
 	}
 }

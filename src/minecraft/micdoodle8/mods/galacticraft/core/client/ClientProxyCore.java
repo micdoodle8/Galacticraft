@@ -751,7 +751,8 @@ public class ClientProxyCore extends CommonProxyCore
             {
                 final Class[] decodeAs = {Integer.class};
                 final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
-                
+
+            	FMLLog.info("lefthere");
             	if (playerBaseClient != null)
             	{
             		playerBaseClient.spaceStationDimensionIDClient = (Integer) packetReadout[0];

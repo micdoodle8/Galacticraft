@@ -483,7 +483,7 @@ public class GCCorePlayerBase extends EntityPlayerMP
 	        this.hasOpenedPlanetSelectionGui = true;
 		}
 		
-		if (this.usingPlanetSelectionGui && GalacticraftCore.tick % 100 == 0)
+		if (this.usingPlanetSelectionGui && GalacticraftCore.tick % 10 == 0)
 		{
         	final Integer[] ids = DimensionManager.getStaticDimensionIDs();
 

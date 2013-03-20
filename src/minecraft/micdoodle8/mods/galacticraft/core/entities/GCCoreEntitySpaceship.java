@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import com.google.common.io.ByteArrayDataInput;
+
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLaunchFlameFX;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLaunchSmokeFX;
@@ -26,6 +28,8 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.INetworkManager;
+import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.world.World;
 import cpw.mods.fml.client.FMLClientHandler;

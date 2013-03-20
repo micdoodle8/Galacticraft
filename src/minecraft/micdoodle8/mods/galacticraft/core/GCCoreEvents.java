@@ -156,8 +156,8 @@ public class GCCoreEvents
 			return;
 		}
 
-		final boolean flag1 = rand.nextDouble() <= 0.08 * GCCoreConfigManager.oilGenFactor;
-		final boolean flag2 = rand.nextDouble() <= 0.08 * GCCoreConfigManager.oilGenFactor;
+		final boolean flag1 = rand.nextDouble() <= 0.1D * GCCoreConfigManager.oilGenFactor;
+		final boolean flag2 = rand.nextDouble() <= 0.1D * GCCoreConfigManager.oilGenFactor;
 
 		if (flag1 || flag2)
 		{

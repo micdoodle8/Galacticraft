@@ -710,6 +710,21 @@ public class WorldUtil
         }
 
         var0.updateEntityWithOptionalForce(var1, false);
+        
+        if (var1 instanceof GCCorePlayerBase)
+        {
+            var8 = (GCCorePlayerBase)var1;
+            
+            switch (type)
+            {
+            case TOORBIT:
+            	var8.setParachute(false);
+                break;
+            default:
+            	var8.setParachute(true);
+                break;
+            }
+        }
 
         if (var1 instanceof GCCorePlayerBase && var7)
         {
@@ -784,7 +799,7 @@ public class WorldUtil
           				var8.rocketStacks[i] = new ItemStack(GCCoreItems.rocketFuelBucket, 1, var8.fuelDamage);
           				break;
           			case 25:
-          				var8.rocketStacks[i] = new ItemStack(GCCoreBlocks.landingPad, 9, 0);
+          				var8.rocketStacks[i] = type.equals(GCCoreTeleportType.TOORBIT) ? null : new ItemStack(GCCoreBlocks.landingPad, 9, 0);
           				break;
           			case 26:
           				var8.rocketStacks[i] = new ItemStack(GCCoreItems.spaceship, 1, var8.rocketType);
@@ -798,9 +813,17 @@ public class WorldUtil
               	final GCCoreEntityParaChest chest = new GCCoreEntityParaChest(var0, var8.rocketStacks);
 
               	double x = (var8.worldObj.rand.nextInt(2) - 1) * 3.0D;
-              	double y = (var8.worldObj.rand.nextInt(2) - 1) * 3.0D;
+              	double z = (var8.worldObj.rand.nextInt(2) - 1) * 3.0D;
               	
-          		chest.setPosition(x, spawnChestHeight, y);
+                switch (type)
+                {
+                case TOORBIT:
+              		chest.setPosition(-8.5D, spawnChestHeight, -1.5D);
+                    break;
+                default:
+              		chest.setPosition(x, spawnChestHeight, z);
+                    break;
+                }
 
               	if (!var0.isRemote)
               	{

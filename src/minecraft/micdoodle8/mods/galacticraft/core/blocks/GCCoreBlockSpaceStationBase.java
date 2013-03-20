@@ -26,12 +26,6 @@ public class GCCoreBlockSpaceStationBase extends BlockContainer
     {
         return -1.0F;
     }
-    
-	@Override
-    public CreativeTabs getCreativeTabToDisplayOn()
-    {
-        return GalacticraftCore.galacticraftTab;
-    }
 
     @Override
 	@SideOnly(Side.CLIENT)
