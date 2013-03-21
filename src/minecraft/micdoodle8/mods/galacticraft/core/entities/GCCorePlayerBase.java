@@ -21,6 +21,7 @@ import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemInWorldManager;
@@ -128,6 +129,16 @@ public class GCCorePlayerBase extends EntityPlayerMP
         }
 
     	super.onDeath(var1);
+    }
+	
+    public void clonePlayer(EntityPlayer par1EntityPlayer, boolean par2)
+    {
+    	super.clonePlayer(par1EntityPlayer, par2);
+    	
+    	if (par1EntityPlayer instanceof GCCorePlayerBase)
+    	{
+        	this.spaceStationDimensionID = ((GCCorePlayerBase) par1EntityPlayer).spaceStationDimensionID;
+    	}
     }
 
     public boolean isAABBInBreathableAirBlock()
@@ -483,9 +494,9 @@ public class GCCorePlayerBase extends EntityPlayerMP
 	        this.hasOpenedPlanetSelectionGui = true;
 		}
 		
-		if (this.usingPlanetSelectionGui && GalacticraftCore.tick % 10 == 0)
+		if (this.usingPlanetSelectionGui)
 		{
-        	final Integer[] ids = DimensionManager.getStaticDimensionIDs();
+        	final Integer[] ids = WorldUtil.getArrayOfPossibleDimensions();
 
 	    	final Set set = WorldUtil.getArrayOfPossibleDimensions(ids, this).entrySet();
 	    	final Iterator i = set.iterator();

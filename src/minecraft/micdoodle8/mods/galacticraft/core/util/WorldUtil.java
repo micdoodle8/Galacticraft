@@ -23,6 +23,7 @@ import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerBase;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketDimensionList;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketSpaceStationData;
+import micdoodle8.mods.galacticraft.moon.GCMoonConfigManager;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -466,12 +467,9 @@ public class WorldUtil
     public static Integer[] getArrayOfPossibleDimensions()
     {
     	ArrayList<Integer> temp = new ArrayList<Integer>();
-    	Integer[] ids = DimensionManager.getStaticDimensionIDs();
     	
-    	for (Integer i : ids)
-    	{
-    		temp.add(i);
-    	}
+		temp.add(0);
+		temp.add(GCMoonConfigManager.dimensionIDMoon);
     	
     	for (Integer i : WorldUtil.registeredDimensions)
     	{

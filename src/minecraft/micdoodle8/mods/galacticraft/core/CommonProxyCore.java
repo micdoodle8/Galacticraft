@@ -35,19 +35,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.stats.StatBase;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import universalelectricity.components.client.gui.GuiBatteryBox;
-import universalelectricity.components.client.gui.GuiCoalGenerator;
-import universalelectricity.components.client.gui.GuiElectricFurnace;
 import universalelectricity.components.common.BCGuiHandler;
-import universalelectricity.components.common.container.ContainerBatteryBox;
-import universalelectricity.components.common.container.ContainerCoalGenerator;
-import universalelectricity.components.common.container.ContainerElectricFurnace;
-import universalelectricity.components.common.tileentity.TileEntityBatteryBox;
-import universalelectricity.components.common.tileentity.TileEntityCoalGenerator;
-import universalelectricity.components.common.tileentity.TileEntityElectricFurnace;
 
 import com.google.common.collect.Lists;
 
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;

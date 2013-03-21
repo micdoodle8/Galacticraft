@@ -261,7 +261,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
     		this.rotationPitch = 180F;
     	}
 
-    	if (this.posY > this.getYCoordToTeleport())
+    	if (this.posY > this.getYCoordToTeleport() || GalacticraftCore.usingDevVersion)
     	{
     		this.teleport();
     	}

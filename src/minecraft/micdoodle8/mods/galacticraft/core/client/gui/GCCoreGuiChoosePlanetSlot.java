@@ -65,19 +65,17 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
     @Override
 	protected void drawSlot(int par1, int par2, int par3, int par4, Tessellator par5Tessellator)
     {
-//        this.choosePlanetGui.drawString(this.choosePlanetGui.fontRenderer, "test", par2 + 2, par3 + 1, 16777215);
+		GL11.glPushMatrix();
+        GL11.glDisable(GL11.GL_DEPTH_TEST);
+        GL11.glDepthMask(false);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        GL11.glDisable(GL11.GL_ALPHA_TEST);
+        GCCoreGuiChoosePlanet.getDestinations(this.choosePlanetGui)[par1].toLowerCase();
+        final Tessellator var3 = Tessellator.instance;
         
     	if (this.isSelected(par1))
     	{
-    		GL11.glPushMatrix();
-            GL11.glDisable(GL11.GL_DEPTH_TEST);
-            GL11.glDepthMask(false);
-            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            GL11.glDisable(GL11.GL_ALPHA_TEST);
-            GCCoreGuiChoosePlanet.getDestinations(this.choosePlanetGui)[par1].toLowerCase();
-            final Tessellator var3 = Tessellator.instance;
-
             for (int i = 0; i < GalacticraftCore.clientSubMods.size(); i++)
             {
             	if (GalacticraftCore.clientSubMods.get(i) != null && GalacticraftCore.clientSubMods.get(i).getSlotRenderer() != null)
@@ -122,12 +120,6 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
                 
                 FMLClientHandler.instance().getClient().renderEngine.func_98185_a();
             }
-
-            GL11.glDepthMask(true);
-            GL11.glEnable(GL11.GL_DEPTH_TEST);
-            GL11.glEnable(GL11.GL_ALPHA_TEST);
-            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            GL11.glPopMatrix();
 
         	if (this.choosePlanetGui.isValidDestination(par1))
         	{
@@ -174,6 +166,12 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
                 this.choosePlanetGui.drawCenteredString(this.choosePlanetGui.fontRenderer, str, this.choosePlanetGui.width / 2, par3 + 3, 0xEEEEEE);
         	}
     	}
+
+        GL11.glDepthMask(true);
+        GL11.glEnable(GL11.GL_DEPTH_TEST);
+        GL11.glEnable(GL11.GL_ALPHA_TEST);
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        GL11.glPopMatrix();
     }
 
 	@Override

@@ -64,6 +64,11 @@ public class GCCoreUtil
 		    			GalacticraftCore.remoteMinVer = Integer.parseInt(str2[1]);
 		    			GalacticraftCore.remoteBuildVer = Integer.parseInt(str2[2]);
 		    		}
+		    		
+		    		if (GalacticraftCore.remoteBuildVer != 0 && GalacticraftCore.remoteBuildVer < GalacticraftCore.LOCALBUILDVERSION)
+		    		{
+		    			GalacticraftCore.usingDevVersion = true;
+		    		}
 
 		    		if (GalacticraftCore.remoteMajVer > GalacticraftCore.LOCALMAJVERSION || GalacticraftCore.remoteMajVer == GalacticraftCore.LOCALMAJVERSION && GalacticraftCore.remoteMinVer > GalacticraftCore.LOCALMINVERSION || GalacticraftCore.remoteMajVer == GalacticraftCore.LOCALMAJVERSION && GalacticraftCore.remoteMinVer == GalacticraftCore.LOCALMINVERSION && GalacticraftCore.remoteBuildVer > GalacticraftCore.LOCALBUILDVERSION)
 		    		{

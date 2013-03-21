@@ -18,7 +18,6 @@ import micdoodle8.mods.galacticraft.API.IOrbitDimension;
 import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.client.GCCorePlayerBaseClient;
-import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiChoosePlanet;
 import micdoodle8.mods.galacticraft.core.command.GCCoreCommandSpaceStationAddOwner;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreTeleportType;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreWorldProvider;
@@ -104,6 +103,7 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
+import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
 import cpw.mods.fml.relauncher.Side;
 
 /**
@@ -134,7 +134,7 @@ public class GalacticraftCore
 
     public static final int LOCALMAJVERSION = 0;
     public static final int LOCALMINVERSION = 1;
-    public static final int LOCALBUILDVERSION = 23;
+    public static final int LOCALBUILDVERSION = 24;
     public static int remoteMajVer;
     public static int remoteMinVer;
     public static int remoteBuildVer;
@@ -177,6 +177,8 @@ public class GalacticraftCore
 	public static final CustomDamageSource oxygenSuffocation = (CustomDamageSource) new CustomDamageSource("oxygenSuffocation").setDeathMessage("%1$s ran out of oxygen!").setDamageBypassesArmor();
 	
 	public static double BuildcraftEnergyScalar = 0.2;
+	
+	public static boolean usingDevVersion = false;
 
 	public static ArrayList<Integer> hiddenItems = new ArrayList<Integer>();
 
@@ -484,7 +486,7 @@ public class GalacticraftCore
                 	{
                 		ItemStack stack2 = null;
 
-                		if (player != null && playerBase.playerTankInventory != null)
+                		if (playerBase != null && playerBase.playerTankInventory != null)
                 		{
                 			stack2 = playerBase.playerTankInventory.getStackInSlot(4);
                 		}
@@ -656,29 +658,40 @@ public class GalacticraftCore
             }
             else if (packetType == 15)
             {
-            	WorldUtil.bindSpaceStationToNewDimension(playerBase.worldObj, playerBase);
-            	
-            	for (ItemStack stack : RecipeUtil.getStandardSpaceStationRequirements())
+            	if (playerBase.spaceStationDimensionID == -1)
             	{
-            		int amountToRemove = stack.stackSize;
-            		
-            		for (ItemStack stack2 : playerBase.inventory.mainInventory)
-            		{
-            			if (stack != null && stack2 != null && stack.itemID == stack2.itemID && stack.getItemDamage() == stack2.getItemDamage())
-            			{
-            				if (stack2.stackSize > amountToRemove)
-            				{
-            					stack2.stackSize -= amountToRemove;
-            					break;
-            				}
-            				else if (stack2.stackSize <= amountToRemove)
-            				{
-            					amountToRemove -= stack2.stackSize;
-            					stack2.stackSize = 0;
-            				}
-            			}
-            		}
+                	WorldUtil.bindSpaceStationToNewDimension(playerBase.worldObj, playerBase);
+                	
+                	for (ItemStack stack : RecipeUtil.getStandardSpaceStationRequirements())
+                	{
+                		int amountToRemove = stack.stackSize;
+                		
+                		for (ItemStack stack2 : playerBase.inventory.mainInventory)
+                		{
+                			if (stack != null && stack2 != null && stack.itemID == stack2.itemID && stack.getItemDamage() == stack2.getItemDamage())
+                			{
+                				if (stack2.stackSize > amountToRemove)
+                				{
+                					stack2.stackSize -= amountToRemove;
+                					break;
+                				}
+                				else if (stack2.stackSize <= amountToRemove)
+                				{
+                					amountToRemove -= stack2.stackSize;
+                					stack2.stackSize = 0;
+                				}
+                			}
+                		}
+                	}
             	}
+            }
+            else if (packetType == 16)
+            {
+            	playerBase.setNotUsingPlanetGui();
+            }
+            else if (packetType == 17)
+            {
+            	playerBase.setUsingPlanetGui();
             }
         }
     }

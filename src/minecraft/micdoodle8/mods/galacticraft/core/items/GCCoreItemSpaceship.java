@@ -139,7 +139,7 @@ public class GCCoreItemSpaceship extends Item
     			par2List.add("Storage Space: 27");
     			break;
     		case 2:
-    			par2List.add("Fuel: 100%");
+    			par2List.add("Pre-fueled");
     			break;
     		}
     	}

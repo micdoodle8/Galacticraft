@@ -15,6 +15,9 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiSmallButton;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.multiplayer.LanServerList;
+import net.minecraft.client.multiplayer.ServerList;
+import net.minecraft.client.multiplayer.ThreadLanServerFind;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
@@ -57,8 +60,6 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
 
     private WorldProvider oldProvider;
 
-    protected FontRenderer fontRenderer = FMLClientHandler.instance().getClient().fontRenderer;
-
     private String[] destinations;
 
     public EntityPlayer playerToSend;
@@ -68,6 +69,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     public GuiSmallButton sendButton;
 
     public GuiSmallButton createSpaceStationButton;
+    private boolean field_74024_A;
 
     private static final String[] titlePanoramaPaths = new String[] {"/micdoodle8/mods/galacticraft/core/client/backgrounds/bg3.png"};
 
@@ -80,7 +82,6 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     public void updateDimensionList(String[] listOfDestinations)
     {
     	this.destinations = listOfDestinations;
-//    	this.initGui();
     }
 
     // Override keyTyped so you don't accidently hit Escape and fall to your death!
@@ -94,14 +95,6 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
             this.planetSlots.func_77207_a(2, 10, 10, 10);
 
         this.planetSlots = new GCCoreGuiChoosePlanetSlot(this);
-
-    	if (!this.initialized)
-    	{
-            this.initialized = true;
-    	}
-    	else
-    	{
-    	}
 
         StringTranslate.getInstance();
         this.buttonList.clear();
@@ -221,6 +214,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
         }
 
         var4.setTranslation(0.0D, 0.0D, 0.0D);
+        GL11.glColorMask(true, true, true, true);
         GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glPopMatrix();
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
@@ -307,6 +301,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
         }
 
         var4.setTranslation(0.0D, 0.0D, 0.0D);
+        GL11.glColorMask(true, true, true, true);
         GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glPopMatrix();
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
@@ -360,6 +355,8 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
         var4.addVertexWithUV(0.0D, 0.0D, this.zLevel, 0.5F + var6, 0.5F + var7);
         var4.draw();
         GL11.glPopMatrix();
+        GL11.glColorMask(true, true, true, true);
+        this.mc.renderEngine.func_98185_a();
     }
     
     protected void drawItemStackTooltip(List<String> strings, List<ItemStack> items, List<Boolean> correctAmount, int par2, int par3)
@@ -644,6 +641,8 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
         switch (par1GuiButton.id)
         {
         case 0:
+            Object[] toSend2 = {this.mc.thePlayer.username};
+            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 16, toSend2));
         	FMLClientHandler.instance().getClient().displayGuiScreen(new GCCoreGuiGalaxyMap(this.playerToSend, this.destinations));
         	break;
         case 1:
@@ -659,7 +658,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
         	}
         	break;
         case 2:
-        	if (par1GuiButton.enabled && this.hasCorrectMaterials(this.mc.thePlayer, RecipeUtil.getStandardSpaceStationRequirements()))
+        	if (initialized && par1GuiButton.enabled && this.hasCorrectMaterials(this.mc.thePlayer, RecipeUtil.getStandardSpaceStationRequirements()))
         	{
                 final Object[] toSend = {this.destinations[this.selectedSlot]};
                 PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 15, toSend));
@@ -689,10 +688,11 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     	final String str = this.destinations[i];
     	
     	GCCorePlayerBaseClient clientPlayer = PlayerUtil.getPlayerBaseClientFromPlayer(playerToSend);
-    	
 
     	if (clientPlayer != null && str.toLowerCase().equals("overworld"))
     	{
+    		initialized = true;
+    		
     		if (clientPlayer.spaceStationDimensionIDClient == 0)
     		{
     			return true;

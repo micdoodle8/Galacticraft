@@ -7,6 +7,7 @@ import net.minecraft.network.packet.NetHandler;
 import net.minecraft.network.packet.Packet1Login;
 import net.minecraft.server.MinecraftServer;
 import universalelectricity.prefab.network.ConnectionHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.IConnectionHandler;
 import cpw.mods.fml.common.network.Player;
 
@@ -32,7 +33,6 @@ public class GCCoreConnectionHandler extends ConnectionHandler implements IConne
 	public void connectionOpened(NetHandler netClientHandler, String server, int port, INetworkManager manager) 
 	{
 		super.connectionOpened(netClientHandler, server, port, manager);
-        connected = true;
 	}
 
 	@Override
@@ -45,7 +45,7 @@ public class GCCoreConnectionHandler extends ConnectionHandler implements IConne
 	public void connectionClosed(INetworkManager manager) 
 	{
 		super.connectionClosed(manager);
-		
+
         if (connected)
         {
             WorldUtil.unregisterDimensions();
@@ -57,6 +57,7 @@ public class GCCoreConnectionHandler extends ConnectionHandler implements IConne
 	@Override
 	public void clientLoggedIn(NetHandler clientHandler, INetworkManager manager, Packet1Login login) 
 	{
+        connected = true;
 		super.clientLoggedIn(clientHandler, manager, login);
 	}
 }
