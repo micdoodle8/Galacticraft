@@ -2,12 +2,17 @@ package micdoodle8.mods.galacticraft.core.client.render.entities;
 
 import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelVillager;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityAlienVillager;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItemSensorGlasses;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.item.ItemStack;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -16,11 +21,13 @@ public class GCCoreRenderAlienVillager extends RenderLiving
 {
     /** Model of the villager. */
     protected GCCoreModelVillager villagerModel;
+    protected GCCoreModelVillager villagerModel2;
 
     public GCCoreRenderAlienVillager()
     {
         super(new GCCoreModelVillager(0.0F), 0.5F);
         this.villagerModel = (GCCoreModelVillager)this.mainModel;
+        this.villagerModel2 = new GCCoreModelVillager(0.5F);
     }
 
     /**
@@ -39,6 +46,54 @@ public class GCCoreRenderAlienVillager extends RenderLiving
     protected void renderVillagerEquipedItems(GCCoreEntityAlienVillager par1EntityVillager, float par2)
     {
         super.renderEquippedItems(par1EntityVillager, par2);
+    }
+
+    @Override
+	protected int shouldRenderPass(EntityLiving par1EntityLiving, int par2, float par3)
+    {
+		final Minecraft minecraft = FMLClientHandler.instance().getClient();
+
+        final EntityPlayerSP player = minecraft.thePlayer;
+
+        ItemStack helmetSlot = null;
+
+		if (player != null && player.inventory.armorItemInSlot(3) != null)
+		{
+			helmetSlot = player.inventory.armorItemInSlot(3);
+		}
+
+        if (helmetSlot != null && helmetSlot.getItem() instanceof GCCoreItemSensorGlasses && minecraft.currentScreen == null)
+        {
+            if (par2 == 1)
+            {
+                final float var4 = par1EntityLiving.ticksExisted * 2 + par3;
+                this.loadTexture("/micdoodle8/mods/galacticraft/core/client/entities/power.png");
+                GL11.glMatrixMode(GL11.GL_TEXTURE);
+                GL11.glLoadIdentity();
+                final float var5 = var4 * 0.01F;
+                final float var6 = var4 * 0.01F;
+                GL11.glTranslatef(var5, var6, 0.0F);
+                this.setRenderPassModel(this.villagerModel2);
+                GL11.glMatrixMode(GL11.GL_MODELVIEW);
+                GL11.glEnable(GL11.GL_BLEND);
+                final float var7 = 0.5F;
+                GL11.glColor4f(var7, var7, var7, 1.0F);
+                GL11.glDisable(GL11.GL_LIGHTING);
+                GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
+                return 1;
+            }
+
+            if (par2 == 2)
+            {
+                GL11.glMatrixMode(GL11.GL_TEXTURE);
+                GL11.glLoadIdentity();
+                GL11.glMatrixMode(GL11.GL_MODELVIEW);
+                GL11.glEnable(GL11.GL_LIGHTING);
+                GL11.glDisable(GL11.GL_BLEND);
+            }
+        }
+
+        return -1;
     }
 
     protected void preRenderVillager(GCCoreEntityAlienVillager par1EntityVillager, float par2)
@@ -65,14 +120,6 @@ public class GCCoreRenderAlienVillager extends RenderLiving
     protected void preRenderCallback(EntityLiving par1EntityLiving, float par2)
     {
         this.preRenderVillager((GCCoreEntityAlienVillager)par1EntityLiving, par2);
-    }
-
-    /**
-     * Queries whether should render the specified pass or not.
-     */
-    protected int shouldRenderPass(EntityLiving par1EntityLiving, int par2, float par3)
-    {
-        return this.shouldVillagerRenderPass((GCCoreEntityAlienVillager)par1EntityLiving, par2, par3);
     }
 
     protected void renderEquippedItems(EntityLiving par1EntityLiving, float par2)

@@ -1,10 +1,12 @@
 package micdoodle8.mods.galacticraft.moon.blocks;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.moon.GCMoonConfigManager;
 import micdoodle8.mods.galacticraft.moon.items.GCMoonItemBlock;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
+import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class GCMoonBlocks
@@ -20,7 +22,18 @@ public class GCMoonBlocks
 
 	public static void setHarvestLevels()
 	{
-		// TODO
+		MinecraftForge.setBlockHarvestLevel(GCMoonBlocks.blockMoon, 	0, 		"pickaxe", 	3);
+		MinecraftForge.setBlockHarvestLevel(GCMoonBlocks.blockMoon, 	1, 		"pickaxe", 	3);
+		MinecraftForge.setBlockHarvestLevel(GCMoonBlocks.blockMoon, 	2, 		"pickaxe", 	3);
+		MinecraftForge.setBlockHarvestLevel(GCMoonBlocks.blockMoon, 	3, 		"shovel", 	0);
+		MinecraftForge.setBlockHarvestLevel(GCMoonBlocks.blockMoon, 	4, 		"pickaxe", 	2);
+		
+		for (int num = 5; num < 14; num++)
+		{
+			MinecraftForge.setBlockHarvestLevel(GCMoonBlocks.blockMoon, num, 	"shovel", 	0);
+		}
+		
+		MinecraftForge.setBlockHarvestLevel(GCMoonBlocks.blockMoon, 	14, 	"pickaxe", 	2);
 	}
 
 	public static void registerBlocks()

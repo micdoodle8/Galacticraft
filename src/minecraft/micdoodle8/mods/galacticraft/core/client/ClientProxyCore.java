@@ -694,9 +694,9 @@ public class ClientProxyCore extends CommonProxyCore
             }
             else if (packetType == 16)
             {
-                if (WorldUtil.registeredDimensions == null)
+                if (WorldUtil.registeredSpaceStations == null)
                 {
-                	WorldUtil.registeredDimensions = new ArrayList();
+                	WorldUtil.registeredSpaceStations = new ArrayList();
                 }
 
 				try 
@@ -707,9 +707,9 @@ public class ClientProxyCore extends CommonProxyCore
 	                {
 	                    int var3 = data.readInt();
 	
-	                    if (!WorldUtil.registeredDimensions.contains(Integer.valueOf(var3)))
+	                    if (!WorldUtil.registeredSpaceStations.contains(Integer.valueOf(var3)))
 	                    {
-	                    	WorldUtil.registeredDimensions.add(Integer.valueOf(var3));
+	                    	WorldUtil.registeredSpaceStations.add(Integer.valueOf(var3));
 	                        DimensionManager.registerDimension(var3, GCCoreConfigManager.idDimensionOverworldOrbit);
 	                    }
 	                }

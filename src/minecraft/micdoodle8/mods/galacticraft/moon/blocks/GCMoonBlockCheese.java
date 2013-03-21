@@ -101,7 +101,7 @@ public class GCMoonBlockCheese extends Block
     @Override
 	public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
     {
-        return par1 == 1 ? this.cheeseIcons[0] : par1 == 0 ? this.cheeseIcons[2] : par2 > 0 && par1 == 4 ? this.cheeseIcons[2] : this.cheeseIcons[1];
+        return par1 == 1 ? this.cheeseIcons[0] : par1 == 0 ? this.cheeseIcons[0] : par2 > 0 && par1 == 4 ? this.cheeseIcons[2] : this.cheeseIcons[1];
     }
 
     /**

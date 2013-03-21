@@ -648,7 +648,12 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
         case 1:
         	if (par1GuiButton.enabled)
         	{
-                final Object[] toSend = {this.destinations[this.selectedSlot]};
+        		String dimension = this.destinations[this.selectedSlot];
+                final Object[] toSend = {dimension};
+                if (dimension.contains("$"))
+                {
+                    this.mc.gameSettings.thirdPersonView = 0;
+                }
                 PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 2, toSend));
                 return;
         	}
