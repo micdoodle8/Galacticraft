@@ -23,10 +23,10 @@ public class GCMoonWorldProvider extends WorldProvider implements IGalacticraftW
 {
     private final float[] colorsSunriseSunset = new float[4];
 
-	public GCMoonWorldProvider()
+    public void setDimension(int var1)
     {
-        this.setDimension(GCMoonConfigManager.dimensionIDMoon);
-        this.dimensionId = GCMoonConfigManager.dimensionIDMoon;
+        this.dimensionId = var1;
+        super.setDimension(var1);
     }
 
 	@Override
@@ -161,15 +161,13 @@ public class GCMoonWorldProvider extends WorldProvider implements IGalacticraftW
     @Override
     public boolean canCoordinateBeSpawn(int var1, int var2)
     {
-//        int var3 = this.worldObj.getFirstUncoveredBlock(var1, var2);
-//        return var3 == GCBlocks.marsGrass.blockID;
     	return true;
     }
 
     @Override
     public boolean canRespawnHere()
     {
-        return true;
+        return false;
     }
 
     @Override

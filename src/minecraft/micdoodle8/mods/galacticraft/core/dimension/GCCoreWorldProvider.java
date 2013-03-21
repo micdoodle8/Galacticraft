@@ -157,8 +157,6 @@ public class GCCoreWorldProvider extends WorldProvider implements IOrbitDimensio
     @Override
     public boolean canCoordinateBeSpawn(int var1, int var2)
     {
-//        int var3 = this.worldObj.getFirstUncoveredBlock(var1, var2);
-//        return var3 == GCBlocks.marsGrass.blockID;
     	return false;
     }
 

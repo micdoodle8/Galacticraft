@@ -496,6 +496,18 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 		return true;
 	}
 
+	@Override
+    public boolean unloadQueuedChunks()
+    {
+        return false;
+    }
+
+	@Override
+    public int getLoadedChunkCount()
+    {
+        return 0;
+    }
+
 	/*private void computeCraters(int x, int z, int[] chunkArr)
 	{
 		boolean evenX, evenZ;

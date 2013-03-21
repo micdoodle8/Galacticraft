@@ -44,7 +44,7 @@ public class GCCoreSpaceStationData extends WorldSavedData
 		this.owner = nbttagcompound.getString("owner");
 		this.spaceStationName = nbttagcompound.getString("spaceStationName");
 
-        if (nbttagcompound.hasKey("DataCompound"))
+        if (nbttagcompound.hasKey("dataCompound"))
         {
             this.dataCompound = nbttagcompound.getCompoundTag("dataCompound");
         }

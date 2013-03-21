@@ -320,14 +320,17 @@ public class GalacticraftCore
 	@ServerStarting
 	public void serverStarting(FMLServerStartingEvent event)
 	{
+		GalacticraftCore.moon.serverStarting(event);
+		
         event.registerServerCommand(new GCCoreCommandSpaceStationAddOwner());
-        WorldUtil.registerDimensions(event.getServer().worldServerForDimension(0).getSaveHandler().getMapFileFromName("dummy").getParentFile());
+        WorldUtil.registerSpaceStations(event.getServer().worldServerForDimension(0).getSaveHandler().getMapFileFromName("dummy").getParentFile());
 	}
 
     @ServerStopped
     public void unregisterDims(FMLServerStoppedEvent var1)
     {
-    	WorldUtil.unregisterDimensions();
+    	WorldUtil.unregisterPlanets();
+    	WorldUtil.unregisterSpaceStations();
     }
 	
 	public static void registerSlotRenderer(IPlanetSlotRenderer renderer)

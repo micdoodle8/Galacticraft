@@ -47,7 +47,9 @@ import cpw.mods.fml.common.FMLLog;
 
 public class WorldUtil
 {
-    public static Collection<Integer> registeredDimensions;
+    public static Collection<Integer> registeredSpaceStations;
+    public static Collection<Integer> registeredPlanets;
+    public static Collection<String> registeredPlanetNames;
     public static List<ItemStack> useless = new ArrayList();
     public static List<ItemStack> common = new ArrayList();
     public static List<ItemStack> uncommon = new ArrayList();
@@ -436,11 +438,11 @@ public class WorldUtil
         return var1;
     }
 
-    public static void unregisterDimensions()
+    public static void unregisterSpaceStations()
     {
-        if (registeredDimensions != null)
+        if (registeredSpaceStations != null)
         {
-            Iterator var0 = registeredDimensions.iterator();
+            Iterator var0 = registeredSpaceStations.iterator();
 
             while (var0.hasNext())
             {
@@ -448,19 +450,51 @@ public class WorldUtil
                 DimensionManager.unregisterDimension(var1.intValue());
             }
 
-            registeredDimensions = null;
+            registeredSpaceStations = null;
         }
     }
 
-    public static void registerDimensions(File var0)
+    public static void registerSpaceStations(File var0)
     {
-    	registeredDimensions = getExistingSpaceStationList(var0);
-        Iterator var1 = registeredDimensions.iterator();
+    	registeredSpaceStations = getExistingSpaceStationList(var0);
+        Iterator var1 = registeredSpaceStations.iterator();
 
         while (var1.hasNext())
         {
             Integer var2 = (Integer)var1.next();
             DimensionManager.registerDimension(var2.intValue(), GCCoreConfigManager.idDimensionOverworldOrbit);
+        }
+    }
+
+    /**
+     * Call this on FMLServerStartingEvent to add a hotloadable planet ID
+     */
+    public static void registerPlanet(int planetID, boolean isStatic)
+    {
+    	if (registeredPlanets != null)
+    	{
+    		registeredPlanets.add(planetID);
+    	}
+
+    	if (isStatic)
+    	{
+    		DimensionManager.registerDimension(planetID, planetID);
+    	}
+    }
+
+    public static void unregisterPlanets()
+    {
+        if (registeredPlanets != null)
+        {
+            Iterator var0 = registeredPlanets.iterator();
+
+            while (var0.hasNext())
+            {
+                Integer var1 = (Integer)var0.next();
+                DimensionManager.unregisterDimension(var1.intValue());
+            }
+
+            registeredPlanets = null;
         }
     }
     
@@ -471,7 +505,7 @@ public class WorldUtil
 		temp.add(0);
 		temp.add(GCMoonConfigManager.dimensionIDMoon);
     	
-    	for (Integer i : WorldUtil.registeredDimensions)
+    	for (Integer i : WorldUtil.registeredSpaceStations)
     	{
     		temp.add(i);
     	}
@@ -500,7 +534,7 @@ public class WorldUtil
     
     public static GCCoreSpaceStationData createSpaceStation(World var0, int par1, GCCorePlayerBase player)
     {
-    	WorldUtil.registeredDimensions.add(par1);
+    	WorldUtil.registeredSpaceStations.add(par1);
         DimensionManager.registerDimension(par1, GCCoreConfigManager.idDimensionOverworldOrbit);
     	
         MinecraftServer var2 = FMLCommonHandler.instance().getMinecraftServerInstance();
@@ -565,7 +599,7 @@ public class WorldUtil
                 var8.dimension = var2;
                 var8.playerNetServerHandler.sendPacketToPlayer(new Packet9Respawn(var8.dimension, (byte)var8.worldObj.difficultySetting, var0.getWorldInfo().getTerrainType(), var0.getHeight(), var8.theItemInWorldManager.getGameType()));
 
-                if (var0.provider instanceof GCCoreWorldProvider && WorldUtil.registeredDimensions.contains(var8))
+                if (var0.provider instanceof GCCoreWorldProvider && WorldUtil.registeredSpaceStations.contains(var8))
                 {
                 	var8.playerNetServerHandler.sendPacketToPlayer(GCCorePacketSpaceStationData.buildSpaceStationDataPacket(var0, var0.provider.dimensionId, var8));
                 }
@@ -716,7 +750,6 @@ public class WorldUtil
             switch (type)
             {
             case TOORBIT:
-            	var8.setParachute(false);
                 break;
             default:
             	var8.setParachute(true);

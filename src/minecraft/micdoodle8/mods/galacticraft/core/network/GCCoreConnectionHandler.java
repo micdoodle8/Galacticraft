@@ -25,7 +25,7 @@ public class GCCoreConnectionHandler extends ConnectionHandler implements IConne
 	public String connectionReceived(NetLoginHandler netHandler, INetworkManager manager)
 	{
 		super.connectionReceived(netHandler, manager);
-		manager.addToSendQueue(GCCorePacketDimensionList.buildDimensionListPacket(WorldUtil.registeredDimensions));
+		manager.addToSendQueue(GCCorePacketDimensionList.buildDimensionListPacket(WorldUtil.registeredSpaceStations)); // TODO
 		return null;
 	}
 
@@ -48,7 +48,8 @@ public class GCCoreConnectionHandler extends ConnectionHandler implements IConne
 
         if (connected)
         {
-            WorldUtil.unregisterDimensions();
+            WorldUtil.unregisterPlanets();
+            WorldUtil.unregisterSpaceStations();
         }
 
         connected = false;
