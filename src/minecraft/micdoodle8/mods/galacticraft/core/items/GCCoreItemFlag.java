@@ -28,8 +28,6 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GCCoreItemFlag extends Item
 {
-	protected List<Icon> icons = new ArrayList<Icon>();
-	
 	public static final String[] names = {
 			"american", // 0
 			"black", // 1
@@ -203,11 +201,6 @@ public class GCCoreItemFlag extends Item
 	@Override
 	public Icon getIconFromDamage(int damage)
 	{
-		if (this.icons.size() > damage)
-		{
-			return this.icons.get(damage);
-		}
-
 		return super.getIconFromDamage(damage);
 	}
 

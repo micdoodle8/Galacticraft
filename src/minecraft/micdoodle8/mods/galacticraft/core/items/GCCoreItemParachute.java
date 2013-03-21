@@ -22,7 +22,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreItemParachute extends Item
 {
-	protected List<Icon> icons = new ArrayList<Icon>();
+	protected Icon[] icons = new Icon[256];
 	
 	public static final String[] names = {
 		"plain", // 0
@@ -78,16 +78,9 @@ public class GCCoreItemParachute extends Item
 		List<ItemStack> list = new ArrayList<ItemStack>();
 		this.getSubItems(this.itemID, this.getCreativeTab(), list);
 
-		if (list.size() > 0)
+		for (ItemStack itemStack : list)
 		{
-			for (ItemStack itemStack : list)
-			{
-				this.icons.add(iconRegister.func_94245_a(this.getUnlocalizedName(itemStack).replace("item.", "galacticraftcore:")));
-			}
-		}
-		else
-		{
-			this.iconIndex = iconRegister.func_94245_a(this.getUnlocalizedName().replace("item.", "galacticraftcore:"));
+			icons[list.indexOf(itemStack)] = iconRegister.func_94245_a(this.getUnlocalizedName(itemStack).replace("item.", "GalacticraftCore:"));
 		}
 	}
 
@@ -100,9 +93,9 @@ public class GCCoreItemParachute extends Item
 	@Override
 	public Icon getIconFromDamage(int damage)
 	{
-		if (this.icons.size() > damage)
+		if (this.icons.length > damage)
 		{
-			return this.icons.get(damage);
+			return this.icons[damage];
 		}
 
 		return super.getIconFromDamage(damage);

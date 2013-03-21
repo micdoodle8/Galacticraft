@@ -17,7 +17,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreItemOilCanister extends Item implements IRefinableItem
 {
-	protected List<Icon> icons = new ArrayList<Icon>();
+	protected Icon[] icons = new Icon[256];
 
 	public static final String[] names = {
 		"liquidcan_oil_6", // 0
@@ -45,9 +45,11 @@ public class GCCoreItemOilCanister extends Item implements IRefinableItem
 	@SideOnly(Side.CLIENT)
 	public void func_94581_a(IconRegister iconRegister)
 	{
+		int i = 0;
+		
 		for (String name : this.names)
 		{
-			this.icons.add(iconRegister.func_94245_a("galacticraftcore:" + name));
+			icons[i++] = (iconRegister.func_94245_a("galacticraftcore:" + name));
 		}
 	}
 
@@ -72,9 +74,9 @@ public class GCCoreItemOilCanister extends Item implements IRefinableItem
 	{
     	final int damage = (int) Math.floor(par1 / 10);
     	
-		if (this.icons.size() > damage)
+		if (this.icons.length > damage)
 		{
-			return this.icons.get(damage);
+			return this.icons[damage];
 		}
 
 		return super.getIconFromDamage(damage);

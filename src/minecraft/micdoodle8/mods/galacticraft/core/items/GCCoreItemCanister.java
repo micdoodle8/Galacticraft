@@ -18,7 +18,7 @@ public class GCCoreItemCanister extends Item
 		"tin", // 0
 		"copper"}; // 1
 
-	protected List<Icon> icons = new ArrayList<Icon>();
+	protected Icon[] icons = new Icon[256];
 
 	public GCCoreItemCanister(int par1)
 	{
@@ -38,9 +38,11 @@ public class GCCoreItemCanister extends Item
 	@SideOnly(Side.CLIENT)
 	public void func_94581_a(IconRegister iconRegister)
 	{
+		int i = 0;
+		
 		for (String name : this.names)
 		{
-			this.icons.add(iconRegister.func_94245_a("galacticraftcore:canister_" + name));
+			icons[i++] = (iconRegister.func_94245_a("galacticraftcore:canister_" + name));
 		}
 	}
 
@@ -53,9 +55,9 @@ public class GCCoreItemCanister extends Item
 	@Override
 	public Icon getIconFromDamage(int damage)
 	{
-		if (this.icons.size() > damage)
+		if (this.icons.length > damage)
 		{
-			return this.icons.get(damage);
+			return this.icons[damage];
 		}
 
 		return super.getIconFromDamage(damage);

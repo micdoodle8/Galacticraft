@@ -22,7 +22,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreItemOilExtractor extends Item
 {
-	protected List<Icon> icons = new ArrayList<Icon>();
+	protected Icon[] icons = new Icon[256];
 	
 	public static final String[] names = {
 		"extactor_1", // 0
@@ -64,11 +64,11 @@ public class GCCoreItemOilExtractor extends Item
 		List<ItemStack> list = new ArrayList<ItemStack>();
 		this.getSubItems(this.itemID, this.getCreativeTab(), list);
 
-		this.icons.add(iconRegister.func_94245_a("galacticraftcore:extractor_1"));
-		this.icons.add(iconRegister.func_94245_a("galacticraftcore:extractor_2"));
-		this.icons.add(iconRegister.func_94245_a("galacticraftcore:extractor_3"));
-		this.icons.add(iconRegister.func_94245_a("galacticraftcore:extractor_4"));
-		this.icons.add(iconRegister.func_94245_a("galacticraftcore:extractor_5"));
+		this.icons[0] = iconRegister.func_94245_a("galacticraftcore:extractor_1");
+		this.icons[1] = iconRegister.func_94245_a("galacticraftcore:extractor_2");
+		this.icons[2] = iconRegister.func_94245_a("galacticraftcore:extractor_3");
+		this.icons[3] = iconRegister.func_94245_a("galacticraftcore:extractor_4");
+		this.icons[4] = iconRegister.func_94245_a("galacticraftcore:extractor_5");
 			
 		this.iconIndex = iconRegister.func_94245_a("galacticraftcore:extractor_1");
 	}
@@ -143,26 +143,26 @@ public class GCCoreItemOilExtractor extends Item
 		case 0:
 			if (useRemaining == 0)
 			{
-				return this.icons.get(0);
+				return this.icons[0];
 			}
-			return this.icons.get(4);
+			return this.icons[4];
 		case 1:
-			return this.icons.get(3);
+			return this.icons[3];
 		case 2:
-			return this.icons.get(2);
+			return this.icons[2];
 		case 3:
-			return this.icons.get(1);
+			return this.icons[1];
 		case 4:
-			return this.icons.get(0);
+			return this.icons[0];
 		}
 
-		return this.icons.get(0);
+		return this.icons[0];
     }
 
     @Override
 	public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4)
     {
-    	this.iconIndex = this.icons.get(0);
+    	this.iconIndex = this.icons[0];
     }
 
 	private boolean isOilBlock(EntityPlayer player, World world, int x, int y, int z)

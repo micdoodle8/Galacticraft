@@ -22,7 +22,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreItemOxygenTank extends Item
 {
-	protected List<Icon> icons = new ArrayList<Icon>();
+	protected Icon[] icons = new Icon[256];
 	
 	public GCCoreItemOxygenTank(int par1)
 	{
@@ -63,9 +63,9 @@ public class GCCoreItemOxygenTank extends Item
 	@SideOnly(Side.CLIENT)
 	public void func_94581_a(IconRegister iconRegister)
 	{
-		this.icons.add(iconRegister.func_94245_a("galacticraftcore:oxygen_tank_light"));
-		this.icons.add(iconRegister.func_94245_a("galacticraftcore:oxygen_tank_medium"));
-		this.icons.add(iconRegister.func_94245_a("galacticraftcore:oxygen_tank_heavy"));
+		this.icons[0] = iconRegister.func_94245_a("galacticraftcore:oxygen_tank_light");
+		this.icons[1] = iconRegister.func_94245_a("galacticraftcore:oxygen_tank_medium");
+		this.icons[2] = iconRegister.func_94245_a("galacticraftcore:oxygen_tank_heavy");
 		this.iconIndex = iconRegister.func_94245_a("galacticraftcore:extractor_1");
 	}
 
@@ -74,19 +74,19 @@ public class GCCoreItemOxygenTank extends Item
     {
 		if (this.itemID == GCCoreItems.heavyOxygenTank.itemID)
 		{
-			return this.icons.get(2);
+			return this.icons[2];
 		}
 
 		if (this.itemID == GCCoreItems.medOxygenTank.itemID)
 		{
-			return this.icons.get(1);
+			return this.icons[1];
 		}
 
 		if (this.itemID == GCCoreItems.lightOxygenTank.itemID)
 		{
-			return this.icons.get(0);
+			return this.icons[0];
 		}
 		
-		return this.icons.get(0);
+		return this.icons[0];
     }
 }
