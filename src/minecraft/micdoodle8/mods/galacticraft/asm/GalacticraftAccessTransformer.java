@@ -5,8 +5,6 @@ import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.List;
 
-import codechicken.core.asm.CodeChickenAccessTransformer;
-
 import cpw.mods.fml.common.asm.transformers.AccessTransformer;
 
 public class GalacticraftAccessTransformer extends AccessTransformer
@@ -17,25 +15,25 @@ public class GalacticraftAccessTransformer extends AccessTransformer
 	public GalacticraftAccessTransformer() throws IOException
 	{
 		super();
-		instance = this;
+		GalacticraftAccessTransformer.instance = this;
 		
-		for(String file : mapFileList)
+		for(String file : GalacticraftAccessTransformer.mapFileList)
 		{
-			readMapFile(file);
+			this.readMapFile(file);
 		}
 		
-		mapFileList = null;
+		GalacticraftAccessTransformer.mapFileList = null;
 	}
 	
 	public static void addTransformerMap(String mapFile)
 	{
-		if(instance == null)
+		if(GalacticraftAccessTransformer.instance == null)
 		{
-			mapFileList.add(mapFile);
+			GalacticraftAccessTransformer.mapFileList.add(mapFile);
 		}
 		else
 		{
-			instance.readMapFile(mapFile);
+			GalacticraftAccessTransformer.instance.readMapFile(mapFile);
 		}
 	}
 	

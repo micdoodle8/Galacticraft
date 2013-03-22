@@ -931,10 +931,10 @@ public class ClientProxyCore extends CommonProxyCore
     				ClientProxyCore.playersWithOxygenTankRightRed.clear();
     			}
 
-    	    	if (world != null && checkedVersion)
+    	    	if (world != null && TickHandlerClient.checkedVersion)
     	    	{
     	    		GCCoreUtil.checkVersion(Side.CLIENT);
-    	    		checkedVersion = false;
+    	    		TickHandlerClient.checkedVersion = false;
     	    	}
 
     			if (player != null && player.ridingEntity != null && player.ridingEntity instanceof ISpaceship)
@@ -1339,19 +1339,19 @@ public class ClientProxyCore extends CommonProxyCore
     		int keyNum = -1;
     		boolean handled = true;
     		
-    		if(kb == accelerateKey)
+    		if(kb == GCKeyHandler.accelerateKey)
     		{
     			keyNum = 0;
     		}
-    		else if(kb == decelerateKey)
+    		else if(kb == GCKeyHandler.decelerateKey)
     		{
     			keyNum = 1;
     		}
-    		else if(kb == leftKey)
+    		else if(kb == GCKeyHandler.leftKey)
     		{
     			keyNum = 2;
     		}
-    		else if(kb == rightKey)
+    		else if(kb == GCKeyHandler.rightKey)
     		{
     			keyNum = 3;
     		}

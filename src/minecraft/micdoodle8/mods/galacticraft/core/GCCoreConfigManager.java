@@ -262,7 +262,7 @@ public class GCCoreConfigManager
 		}
 		finally
 		{
-			if (configuration.hasChanged())
+			if (GCCoreConfigManager.configuration.hasChanged())
 			{
 				GCCoreConfigManager.configuration.save();
 			}

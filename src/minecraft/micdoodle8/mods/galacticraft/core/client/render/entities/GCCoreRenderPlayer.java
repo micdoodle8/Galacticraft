@@ -1,32 +1,20 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
-import static net.minecraftforge.client.IItemRenderer.ItemRenderType.EQUIPPED;
-import static net.minecraftforge.client.IItemRenderer.ItemRendererHelper.BLOCK_3D;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockBreathableAir;
 import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelPlayer;
 import net.minecraft.block.Block;
 import net.minecraft.client.model.ModelBiped;
-import net.minecraft.client.renderer.ImageBufferDownload;
-import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.RenderEngine;
 import net.minecraft.client.renderer.ThreadDownloadImageData;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
-import net.minecraft.client.renderer.tileentity.TileEntitySkullRenderer;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.StringUtils;
-import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.client.MinecraftForgeClient;
 
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreRenderPlayer extends RenderPlayer
 {
@@ -100,7 +88,7 @@ public class GCCoreRenderPlayer extends RenderPlayer
         }
     }
 
-    private ThreadDownloadImageData playerCloak = null;
+    private final ThreadDownloadImageData playerCloak = null;
 
     @Override
     public void renderSpecials(EntityPlayer var1, float var2)

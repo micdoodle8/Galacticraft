@@ -8,13 +8,12 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotFurnace;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
-import universalelectricity.components.common.tileentity.TileEntityElectricFurnace;
 import universalelectricity.core.item.IItemElectric;
 import universalelectricity.prefab.SlotSpecific;
 
 public class GCCoreContainerRefinery extends Container
 {
-	private GCCoreTileEntityRefinery tileEntity;
+	private final GCCoreTileEntityRefinery tileEntity;
 
 	public GCCoreContainerRefinery(InventoryPlayer par1InventoryPlayer, GCCoreTileEntityRefinery tileEntity)
 	{
@@ -46,10 +45,11 @@ public class GCCoreContainerRefinery extends Container
 		tileEntity.openChest();
 	}
 
+	@Override
 	public void onCraftGuiClosed(EntityPlayer entityplayer)
 	{
 		super.onCraftGuiClosed(entityplayer);
-		tileEntity.closeChest();
+		this.tileEntity.closeChest();
 	}
 
 	@Override

@@ -207,7 +207,7 @@ public class WorldUtil
 			
 			if (WorldProvider.getProviderForDimension(id) != null)
 			{
-	    		if (((WorldProvider.getProviderForDimension(id) instanceof IGalacticraftWorldProvider && !(WorldProvider.getProviderForDimension(id) instanceof IOrbitDimension)) || WorldProvider.getProviderForDimension(id).dimensionId == 0))
+	    		if (WorldProvider.getProviderForDimension(id) instanceof IGalacticraftWorldProvider && !(WorldProvider.getProviderForDimension(id) instanceof IOrbitDimension) || WorldProvider.getProviderForDimension(id).dimensionId == 0)
 	    		{
 	    			map.put(WorldProvider.getProviderForDimension(id).getDimensionName(), WorldProvider.getProviderForDimension(id).dimensionId);
 	    		}
@@ -440,9 +440,9 @@ public class WorldUtil
 
     public static void unregisterSpaceStations()
     {
-        if (registeredSpaceStations != null)
+        if (WorldUtil.registeredSpaceStations != null)
         {
-            Iterator var0 = registeredSpaceStations.iterator();
+            Iterator var0 = WorldUtil.registeredSpaceStations.iterator();
 
             while (var0.hasNext())
             {
@@ -450,14 +450,14 @@ public class WorldUtil
                 DimensionManager.unregisterDimension(var1.intValue());
             }
 
-            registeredSpaceStations = null;
+            WorldUtil.registeredSpaceStations = null;
         }
     }
 
     public static void registerSpaceStations(File var0)
     {
-    	registeredSpaceStations = getExistingSpaceStationList(var0);
-        Iterator var1 = registeredSpaceStations.iterator();
+    	WorldUtil.registeredSpaceStations = WorldUtil.getExistingSpaceStationList(var0);
+        Iterator var1 = WorldUtil.registeredSpaceStations.iterator();
 
         while (var1.hasNext())
         {
@@ -471,9 +471,9 @@ public class WorldUtil
      */
     public static void registerPlanet(int planetID, boolean isStatic)
     {
-    	if (registeredPlanets != null)
+    	if (WorldUtil.registeredPlanets != null)
     	{
-    		registeredPlanets.add(planetID);
+    		WorldUtil.registeredPlanets.add(planetID);
     	}
 
     	if (isStatic)
@@ -484,9 +484,9 @@ public class WorldUtil
 
     public static void unregisterPlanets()
     {
-        if (registeredPlanets != null)
+        if (WorldUtil.registeredPlanets != null)
         {
-            Iterator var0 = registeredPlanets.iterator();
+            Iterator var0 = WorldUtil.registeredPlanets.iterator();
 
             while (var0.hasNext())
             {
@@ -494,7 +494,7 @@ public class WorldUtil
                 DimensionManager.unregisterDimension(var1.intValue());
             }
 
-            registeredPlanets = null;
+            WorldUtil.registeredPlanets = null;
         }
     }
     
@@ -556,21 +556,21 @@ public class WorldUtil
     {
         if (!world.isRemote)
         {
-            if (mcServer == null)
+            if (WorldUtil.mcServer == null)
             {
-                mcServer = FMLCommonHandler.instance().getMinecraftServerInstance();
+                WorldUtil.mcServer = FMLCommonHandler.instance().getMinecraftServerInstance();
             }
 
-            if (mcServer != null)
+            if (WorldUtil.mcServer != null)
             {
-                WorldServer var6 = mcServer.worldServerForDimension(dimensionID);
+                WorldServer var6 = WorldUtil.mcServer.worldServerForDimension(dimensionID);
 
                 if (var6 == null)
                 {
                     System.err.println("Cannot Transfer Entity to Dimension: Could not get World for Dimension " + dimensionID);
                 }
 
-                teleportEntity(var6, entity, dimensionID, type);
+                WorldUtil.teleportEntity(var6, entity, dimensionID, type);
             }
         }
     }
@@ -579,7 +579,7 @@ public class WorldUtil
     {
         Entity var6 = var1.ridingEntity;
 
-        if (var1.ridingEntity != null && (var1.ridingEntity instanceof ISpaceship))
+        if (var1.ridingEntity != null && var1.ridingEntity instanceof ISpaceship)
         {
             var1.mountEntity(var1.ridingEntity);
 //            teleportEntity(var0, var1, var2, type);
@@ -612,7 +612,7 @@ public class WorldUtil
 
         if (var7)
         {
-            removeEntityFromWorld(var1.worldObj, var1);
+            WorldUtil.removeEntityFromWorld(var1.worldObj, var1);
         }
 
         if (var7)

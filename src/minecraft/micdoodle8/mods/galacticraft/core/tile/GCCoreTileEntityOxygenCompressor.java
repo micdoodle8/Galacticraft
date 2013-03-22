@@ -23,8 +23,6 @@ import universalelectricity.prefab.tile.TileEntityElectricityRunnable;
 
 import com.google.common.io.ByteArrayDataInput;
 
-import cpw.mods.fml.common.FMLLog;
-
 /**
  * Copyright 2012-2013, micdoodle8
  *
@@ -41,7 +39,7 @@ public class GCCoreTileEntityOxygenCompressor extends TileEntityElectricityRunna
    	
 	public static final double WATTS_PER_TICK = 300;
 
-	private int playersUsing = 0;
+	private final int playersUsing = 0;
 	
 	public static int timeSinceOxygenRequest;
 
@@ -50,7 +48,7 @@ public class GCCoreTileEntityOxygenCompressor extends TileEntityElectricityRunna
 	{
 		super.updateEntity();
 
-		this.wattsReceived += ElectricItemHelper.dechargeItem(this.containingItems[1], WATTS_PER_TICK, this.getVoltage());
+		this.wattsReceived += ElectricItemHelper.dechargeItem(this.containingItems[1], GCCoreTileEntityOxygenCompressor.WATTS_PER_TICK, this.getVoltage());
 		
 		if (!this.worldObj.isRemote)
 		{
@@ -61,10 +59,10 @@ public class GCCoreTileEntityOxygenCompressor extends TileEntityElectricityRunna
 			
 			if (this.timeSinceOxygenRequest > 0)
 			{
-				timeSinceOxygenRequest--;
+				GCCoreTileEntityOxygenCompressor.timeSinceOxygenRequest--;
 			}
 			
-			this.wattsReceived = Math.max(this.wattsReceived - WATTS_PER_TICK / 4, 0);
+			this.wattsReceived = Math.max(this.wattsReceived - GCCoreTileEntityOxygenCompressor.WATTS_PER_TICK / 4, 0);
 			
 			if (this.currentPower < 1 && this.wattsReceived > 0)
 			{
@@ -134,7 +132,7 @@ public class GCCoreTileEntityOxygenCompressor extends TileEntityElectricityRunna
 	{
 		if (this.getStackInSlot(0) != null)
 		{
-			return new ElectricityPack(WATTS_PER_TICK / this.getVoltage(), this.getVoltage());
+			return new ElectricityPack(GCCoreTileEntityOxygenCompressor.WATTS_PER_TICK / this.getVoltage(), this.getVoltage());
 		}
 		else
 		{

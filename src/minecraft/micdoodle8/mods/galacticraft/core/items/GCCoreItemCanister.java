@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.items;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -42,14 +41,14 @@ public class GCCoreItemCanister extends Item
 		
 		for (String name : this.names)
 		{
-			icons[i++] = (iconRegister.func_94245_a("galacticraftcore:canister_" + name));
+			this.icons[i++] = iconRegister.func_94245_a("galacticraftcore:canister_" + name);
 		}
 	}
 
 	@Override
 	public String getUnlocalizedName(ItemStack itemStack)
 	{
-		return "item." + "canister." + names[itemStack.getItemDamage()];
+		return "item." + "canister." + GCCoreItemCanister.names[itemStack.getItemDamage()];
 	}
 
 	@Override

@@ -3,14 +3,7 @@ package micdoodle8.mods.galacticraft.core.wgen;
 import java.util.List;
 import java.util.Random;
 
-import universalelectricity.core.vector.Vector3;
-import universalelectricity.prefab.multiblock.IMultiBlock;
-
-import cpw.mods.fml.common.FMLLog;
-
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntitySpaceStationBase;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockSand;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.tileentity.TileEntity;
@@ -19,6 +12,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.ChunkProviderGenerate;
+import universalelectricity.core.vector.Vector3;
+import universalelectricity.prefab.multiblock.IMultiBlock;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -91,7 +86,7 @@ public class GCCoreChunkProviderOverworldOrbit extends ChunkProviderGenerate
         this.rand.setSeed(this.worldObj.getSeed());
         long i1 = this.rand.nextLong() / 2L * 2L + 1L;
         long j1 = this.rand.nextLong() / 2L * 2L + 1L;
-        this.rand.setSeed((long)par2 * i1 + (long)par3 * j1 ^ this.worldObj.getSeed());
+        this.rand.setSeed(par2 * i1 + par3 * j1 ^ this.worldObj.getSeed());
         if (k == 0 && l == 0)
         {
             this.worldObj.setBlockAndMetadataWithNotify(k, 64, l, GCCoreBlocks.spaceStationBase.blockID, 0, 3);
@@ -104,7 +99,7 @@ public class GCCoreChunkProviderOverworldOrbit extends ChunkProviderGenerate
                 ((IMultiBlock)var8).onCreate(new Vector3(k, 64, l));
             }
             
-            (new GCCoreWorldGenSpaceStation()).generate(this.worldObj, this.rand, k - 10, 62, l - 3);
+            new GCCoreWorldGenSpaceStation().generate(this.worldObj, this.rand, k - 10, 62, l - 3);
 //            for (int x = -3; x < 4; x++)
 //            {
 //            	for (int y = 0; y < 6; y++)

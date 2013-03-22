@@ -417,7 +417,7 @@ public class GCCoreEntityZombie extends EntityZombie
     @Override
 	public void initCreature()
     {
-        this.func_98053_h(this.rand.nextFloat() < pickUpLootProability[this.worldObj.difficultySetting]);
+        this.func_98053_h(this.rand.nextFloat() < EntityLiving.pickUpLootProability[this.worldObj.difficultySetting]);
 
         if (this.worldObj.rand.nextFloat() < 0.05F)
         {

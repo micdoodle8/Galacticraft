@@ -66,7 +66,7 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 
 	private BiomeGenBase[] biomesForGeneration = {GCMoonBiomeGenBase.moonFlat};
 	
-    private GCCoreMapGenBaseMeta caveGenerator = new GCMoonGenCaves();
+    private final GCCoreMapGenBaseMeta caveGenerator = new GCMoonGenCaves();
 
 	private static final double TERRAIN_HEIGHT_MOD = 2.7;
 	private static final double HILL_HEIGHT_MOD = 0.8;

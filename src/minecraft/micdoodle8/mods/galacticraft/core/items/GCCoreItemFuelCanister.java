@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.items;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.API.IFuelTank;
@@ -58,7 +57,7 @@ public class GCCoreItemFuelCanister extends Item implements IFuelTank
 		
 		for (String name : this.names)
 		{
-			icons[i++] = (iconRegister.func_94245_a("galacticraftcore:" + name));
+			this.icons[i++] = iconRegister.func_94245_a("galacticraftcore:" + name);
 		}
 	}
 

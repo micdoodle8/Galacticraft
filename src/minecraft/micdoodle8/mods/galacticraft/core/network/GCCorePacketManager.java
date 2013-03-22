@@ -17,7 +17,6 @@ import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
 
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.Player;
 
@@ -47,7 +46,7 @@ public class GCCorePacketManager extends PacketManager implements IPacketHandler
 			data.writeInt(GCCorePacketType.ENTITY.ordinal());
 
 			data.writeInt(sender.entityId);
-			data = encodeDataStream(data, sendData);
+			data = PacketManager.encodeDataStream(data, sendData);
 
 			Packet250CustomPayload packet = new Packet250CustomPayload();
 			packet.channel = channelName;
@@ -90,7 +89,7 @@ public class GCCorePacketManager extends PacketManager implements IPacketHandler
 							
 							if (id == e.entityId && e instanceof IPacketReceiver)
 							{
-								((IPacketReceiver) e).handlePacketData(network, packetTypeID, packet, ((EntityPlayer) player), data);
+								((IPacketReceiver) e).handlePacketData(network, packetTypeID, packet, (EntityPlayer) player, data);
 							}
 						}
 					}
@@ -112,7 +111,7 @@ public class GCCorePacketManager extends PacketManager implements IPacketHandler
 					{
 						if (tileEntity instanceof IPacketReceiver)
 						{
-							((IPacketReceiver) tileEntity).handlePacketData(network, packetTypeID, packet, ((EntityPlayer) player), data);
+							((IPacketReceiver) tileEntity).handlePacketData(network, packetTypeID, packet, (EntityPlayer) player, data);
 						}
 					}
 				}

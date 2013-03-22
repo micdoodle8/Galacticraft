@@ -43,7 +43,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.IChunkProvider;
-import net.minecraftforge.common.DimensionManager;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
@@ -131,7 +130,8 @@ public class GCCorePlayerBase extends EntityPlayerMP
     	super.onDeath(var1);
     }
 	
-    public void clonePlayer(EntityPlayer par1EntityPlayer, boolean par2)
+    @Override
+	public void clonePlayer(EntityPlayer par1EntityPlayer, boolean par2)
     {
     	super.clonePlayer(par1EntityPlayer, par2);
     	
@@ -750,7 +750,7 @@ public class GCCorePlayerBase extends EntityPlayerMP
 
 		if (GalacticraftCore.tick % 30 == 0)
 		{
-			Object[] toSend = {spaceStationDimensionID};
+			Object[] toSend = {this.spaceStationDimensionID};
 	    	this.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 18, toSend));
 	    	
 			this.sendPlayerParachuteTexturePacket(this);

@@ -23,13 +23,11 @@ import universalelectricity.prefab.tile.TileEntityElectricityRunnable;
 
 import com.google.common.io.ByteArrayDataInput;
 
-import cpw.mods.fml.common.FMLLog;
-
 public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable implements IInventory, IPacketReceiver
 {
 	private ItemStack[] containingItems = new ItemStack[2];
 	public static final double WATTS_PER_TICK = 300;
-	private int playersUsing = 0;
+	private final int playersUsing = 0;
 	public GCCoreTileEntityLandingPad attachedLandingPad;
 	
 	@Override
@@ -43,7 +41,7 @@ public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable im
 	{
 		if (this.getStackInSlot(1) != null)
 		{
-			return new ElectricityPack(WATTS_PER_TICK / this.getVoltage(), this.getVoltage());
+			return new ElectricityPack(GCCoreTileEntityFuelLoader.WATTS_PER_TICK / this.getVoltage(), this.getVoltage());
 		}
 		else
 		{
@@ -53,7 +51,7 @@ public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable im
 	
 	public void transferFuelToSpaceship(EntitySpaceshipBase spaceship)
 	{
-		if (!this.worldObj.isRemote && this.getStackInSlot(1) != null && this.getStackInSlot(1).getItem() instanceof IFuelTank && (this.getStackInSlot(1).getMaxDamage() - this.getStackInSlot(1).getItemDamage() != 0) && this.getStackInSlot(1).getItemDamage() < this.getStackInSlot(1).getMaxDamage())
+		if (!this.worldObj.isRemote && this.getStackInSlot(1) != null && this.getStackInSlot(1).getItem() instanceof IFuelTank && this.getStackInSlot(1).getMaxDamage() - this.getStackInSlot(1).getItemDamage() != 0 && this.getStackInSlot(1).getItemDamage() < this.getStackInSlot(1).getMaxDamage())
 		{
 			spaceship.fuel += 1F;
 			this.getStackInSlot(1).setItemDamage(this.getStackInSlot(1).getItemDamage() + 1);
@@ -65,13 +63,13 @@ public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable im
 	{
 		super.updateEntity();
 
-		this.wattsReceived += ElectricItemHelper.dechargeItem(this.getStackInSlot(0), WATTS_PER_TICK, this.getVoltage());
+		this.wattsReceived += ElectricItemHelper.dechargeItem(this.getStackInSlot(0), GCCoreTileEntityFuelLoader.WATTS_PER_TICK, this.getVoltage());
 		
 		if (!this.worldObj.isRemote)
 		{
-			this.wattsReceived = Math.max(this.wattsReceived - WATTS_PER_TICK / 4, 0);
+			this.wattsReceived = Math.max(this.wattsReceived - GCCoreTileEntityFuelLoader.WATTS_PER_TICK / 4, 0);
 			
-			TileEntity pad = VectorHelper.getTileEntityFromSide(worldObj, new Vector3(this), ForgeDirection.getOrientation(this.getBlockMetadata() + 2).getOpposite());
+			TileEntity pad = VectorHelper.getTileEntityFromSide(this.worldObj, new Vector3(this), ForgeDirection.getOrientation(this.getBlockMetadata() + 2).getOpposite());
 			
 			if (pad != null && pad instanceof GCCoreTileEntityLandingPad)
 			{

@@ -39,9 +39,9 @@ public class GalacticraftMoon implements IGalacticraftSubMod
 
 	public static final String FILE_PATH = "/micdoodle8/mods/galacticraft/moon/";
 	public static final String CLIENT_PATH = "client/";
-	public static final String LANGUAGE_PATH = FILE_PATH + CLIENT_PATH + "lang/";
-	public static final String BLOCK_TEXTURE_FILE = FILE_PATH + CLIENT_PATH + "blocks/moon.png";
-	public static final String ITEM_TEXTURE_FILE = FILE_PATH + CLIENT_PATH + "items/moon.png";
+	public static final String LANGUAGE_PATH = GalacticraftMoon.FILE_PATH + GalacticraftMoon.CLIENT_PATH + "lang/";
+	public static final String BLOCK_TEXTURE_FILE = GalacticraftMoon.FILE_PATH + GalacticraftMoon.CLIENT_PATH + "blocks/moon.png";
+	public static final String ITEM_TEXTURE_FILE = GalacticraftMoon.FILE_PATH + GalacticraftMoon.CLIENT_PATH + "items/moon.png";
 	public static final String CONFIG_FILE = "Galacticraft/moon.conf";
 	private static final String[] LANGUAGES_SUPPORTED = new String[] { "en_US", "zh_CN" };
 
@@ -49,7 +49,7 @@ public class GalacticraftMoon implements IGalacticraftSubMod
 
 	public void preLoad(FMLPreInitializationEvent event)
 	{
-		new GCMoonConfigManager(new File(event.getModConfigurationDirectory(), CONFIG_FILE));
+		new GCMoonConfigManager(new File(event.getModConfigurationDirectory(), GalacticraftMoon.CONFIG_FILE));
 
 //		try
 //		{
@@ -74,7 +74,7 @@ public class GalacticraftMoon implements IGalacticraftSubMod
 		
 		DimensionManager.registerProviderType(GCMoonConfigManager.dimensionIDMoon, GCMoonWorldProvider.class, false);
 
-		System.out.println("Galacticraft Moon Loaded: " + TranslationHelper.loadLanguages(LANGUAGE_PATH, LANGUAGES_SUPPORTED) + " Languages.");
+		System.out.println("Galacticraft Moon Loaded: " + TranslationHelper.loadLanguages(GalacticraftMoon.LANGUAGE_PATH, GalacticraftMoon.LANGUAGES_SUPPORTED) + " Languages.");
 
         GCMoonUtil.addCraftingRecipes();
         GCMoonUtil.addSmeltingRecipes();

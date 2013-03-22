@@ -103,7 +103,6 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
-import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
 import cpw.mods.fml.relauncher.Side;
 
 /**
@@ -167,9 +166,9 @@ public class GalacticraftCore
 
 	public static final String FILE_PATH = "/micdoodle8/mods/galacticraft/core/";
 	public static final String CLIENT_PATH = "client/";
-	public static final String LANGUAGE_PATH = FILE_PATH + CLIENT_PATH + "lang/";
-	public static final String BLOCK_TEXTURE_FILE = FILE_PATH + CLIENT_PATH + "blocks/core.png";
-	public static final String ITEM_TEXTURE_FILE = FILE_PATH + CLIENT_PATH + "items/core.png";
+	public static final String LANGUAGE_PATH = GalacticraftCore.FILE_PATH + GalacticraftCore.CLIENT_PATH + "lang/";
+	public static final String BLOCK_TEXTURE_FILE = GalacticraftCore.FILE_PATH + GalacticraftCore.CLIENT_PATH + "blocks/core.png";
+	public static final String ITEM_TEXTURE_FILE = GalacticraftCore.FILE_PATH + GalacticraftCore.CLIENT_PATH + "items/core.png";
 	public static final String CONFIG_FILE = "Galacticraft/core.conf";
 	private static final String[] LANGUAGES_SUPPORTED = new String[] { "en_US", "zh_CN", "fr_CA", "fr_FR" };
 
@@ -252,7 +251,7 @@ public class GalacticraftCore
 		
 		GalacticraftCore.registerSubMod(GalacticraftCore.moon);
 
-		new GCCoreConfigManager(new File(event.getModConfigurationDirectory(), CONFIG_FILE));
+		new GCCoreConfigManager(new File(event.getModConfigurationDirectory(), GalacticraftCore.CONFIG_FILE));
 
 		GCCoreBlocks.initBlocks();
 		GCCoreBlocks.registerBlocks();
@@ -283,7 +282,7 @@ public class GalacticraftCore
 			}
 		}
 
-		System.out.println("Galacticraft Loaded: " + TranslationHelper.loadLanguages(LANGUAGE_PATH, LANGUAGES_SUPPORTED) + " Languages.");
+		System.out.println("Galacticraft Loaded: " + TranslationHelper.loadLanguages(GalacticraftCore.LANGUAGE_PATH, GalacticraftCore.LANGUAGES_SUPPORTED) + " Languages.");
 
 		GalacticraftCore.moon.load(event);
 
@@ -756,7 +755,7 @@ public class GalacticraftCore
 					if (o instanceof Entity && ((Entity) o).worldObj.provider instanceof IOrbitDimension)
 					{
 						Entity e = (Entity) o;
-						IOrbitDimension dimension = ((IOrbitDimension)((Entity)o).worldObj.provider);
+						IOrbitDimension dimension = (IOrbitDimension)((Entity)o).worldObj.provider;
 						
 						if (e.posY <= dimension.getYCoordToTeleport())
 						{

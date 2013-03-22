@@ -12,7 +12,6 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -32,7 +31,8 @@ public class GCCoreItemSpaceship extends Item
 		this.setMaxStackSize(1);
 	}
 
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public void func_94581_a(IconRegister par1IconRegister)
     {
         this.iconIndex = null;

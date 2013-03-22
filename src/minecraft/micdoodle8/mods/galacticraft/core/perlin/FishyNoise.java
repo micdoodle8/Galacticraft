@@ -65,31 +65,31 @@ public class FishyNoise {
 
 	public double noise2d(double x, double y)
 	{
-		int largeX = fastFloor(x);
-		int largeY = fastFloor(y);
+		int largeX = FishyNoise.fastFloor(x);
+		int largeY = FishyNoise.fastFloor(y);
 		x -= largeX;
 		y -= largeY;
 		largeX = largeX & 255;
 		largeY = largeY & 255;
 
-		final double u = fade(x);
-		final double v = fade(y);
+		final double u = FishyNoise.fade(x);
+		final double v = FishyNoise.fade(y);
 
-		final double grad00 = dot2(this.grad2d[this.perm[largeX + this.perm[largeY]] & 15], x, y);
-		final double grad01 = dot2(this.grad2d[this.perm[largeX + this.perm[largeY + 1]] & 15], x, y - 1);
-		final double grad11 = dot2(this.grad2d[this.perm[largeX + 1 + this.perm[largeY + 1]] & 15], x - 1, y - 1);
-		final double grad10 = dot2(this.grad2d[this.perm[largeX + 1 + this.perm[largeY]]  & 15], x - 1, y);
+		final double grad00 = FishyNoise.dot2(this.grad2d[this.perm[largeX + this.perm[largeY]] & 15], x, y);
+		final double grad01 = FishyNoise.dot2(this.grad2d[this.perm[largeX + this.perm[largeY + 1]] & 15], x, y - 1);
+		final double grad11 = FishyNoise.dot2(this.grad2d[this.perm[largeX + 1 + this.perm[largeY + 1]] & 15], x - 1, y - 1);
+		final double grad10 = FishyNoise.dot2(this.grad2d[this.perm[largeX + 1 + this.perm[largeY]]  & 15], x - 1, y);
 
-		final double lerpX0 = lerp(grad00, grad10, u);
-		final double lerpX1 = lerp(grad01, grad11, u);
-		return lerp(lerpX0, lerpX1, v);
+		final double lerpX0 = FishyNoise.lerp(grad00, grad10, u);
+		final double lerpX1 = FishyNoise.lerp(grad01, grad11, u);
+		return FishyNoise.lerp(lerpX0, lerpX1, v);
 	}
 
 	public double noise3d(double x, double y, double z)
 	{
-		int unitX = fastFloor(x);
-		int unitY = fastFloor(y);
-		int unitZ = fastFloor(z);
+		int unitX = FishyNoise.fastFloor(x);
+		int unitY = FishyNoise.fastFloor(y);
+		int unitZ = FishyNoise.fastFloor(z);
 
 		x -= unitX;
 		y -= unitY;
@@ -99,26 +99,26 @@ public class FishyNoise {
 		unitY = unitY & 255;
 		unitZ = unitZ & 255;
 
-		final double u = fade(x);
-		final double v = fade(y);
-		final double w = fade(z);
+		final double u = FishyNoise.fade(x);
+		final double v = FishyNoise.fade(y);
+		final double w = FishyNoise.fade(z);
 
-		final double grad000 = dot3(this.grad3d[this.perm[unitX + this.perm[unitY + this.perm[unitZ]]] & 15], x, y, z);
-		final double grad100 = dot3(this.grad3d[this.perm[unitX + 1 + this.perm[unitY + this.perm[unitZ]]] & 15], x - 1, y, z);
-		final double grad010 = dot3(this.grad3d[this.perm[unitX + this.perm[unitY + 1 + this.perm[unitZ]]] & 15], x, y - 1, z);
-		final double grad110 = dot3(this.grad3d[this.perm[unitX + 1 + this.perm[unitY + 1 + this.perm[unitZ]]] & 15], x - 1, y - 1, z);
-		final double grad001 = dot3(this.grad3d[this.perm[unitX + this.perm[unitY + this.perm[unitZ + 1]]] & 15], x, y, z - 1);
-		final double grad101 = dot3(this.grad3d[this.perm[unitX + 1 + this.perm[unitY + this.perm[unitZ + 1]]] & 15], x - 1, y, z - 1);
-		final double grad011 = dot3(this.grad3d[this.perm[unitX + this.perm[unitY + 1 + this.perm[unitZ + 1]]] & 15], x, y - 1, z - 1);
-		final double grad111 = dot3(this.grad3d[this.perm[unitX + 1 + this.perm[unitY + 1 + this.perm[unitZ + 1]]] & 15], x - 1, y - 1, z - 1);
+		final double grad000 = FishyNoise.dot3(this.grad3d[this.perm[unitX + this.perm[unitY + this.perm[unitZ]]] & 15], x, y, z);
+		final double grad100 = FishyNoise.dot3(this.grad3d[this.perm[unitX + 1 + this.perm[unitY + this.perm[unitZ]]] & 15], x - 1, y, z);
+		final double grad010 = FishyNoise.dot3(this.grad3d[this.perm[unitX + this.perm[unitY + 1 + this.perm[unitZ]]] & 15], x, y - 1, z);
+		final double grad110 = FishyNoise.dot3(this.grad3d[this.perm[unitX + 1 + this.perm[unitY + 1 + this.perm[unitZ]]] & 15], x - 1, y - 1, z);
+		final double grad001 = FishyNoise.dot3(this.grad3d[this.perm[unitX + this.perm[unitY + this.perm[unitZ + 1]]] & 15], x, y, z - 1);
+		final double grad101 = FishyNoise.dot3(this.grad3d[this.perm[unitX + 1 + this.perm[unitY + this.perm[unitZ + 1]]] & 15], x - 1, y, z - 1);
+		final double grad011 = FishyNoise.dot3(this.grad3d[this.perm[unitX + this.perm[unitY + 1 + this.perm[unitZ + 1]]] & 15], x, y - 1, z - 1);
+		final double grad111 = FishyNoise.dot3(this.grad3d[this.perm[unitX + 1 + this.perm[unitY + 1 + this.perm[unitZ + 1]]] & 15], x - 1, y - 1, z - 1);
 
-		return lerp(
-				lerp(
-				  lerp(grad000, grad100, u),
-				  lerp(grad010, grad110, u), v),
-				lerp(
-				  lerp(grad001, grad101, u),
-				  lerp(grad011, grad111, u), v), w);
+		return FishyNoise.lerp(
+				FishyNoise.lerp(
+				  FishyNoise.lerp(grad000, grad100, u),
+				  FishyNoise.lerp(grad010, grad110, u), v),
+				FishyNoise.lerp(
+				  FishyNoise.lerp(grad001, grad101, u),
+				  FishyNoise.lerp(grad011, grad111, u), v), w);
 	}
 
 }

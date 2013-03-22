@@ -6,19 +6,12 @@ import java.util.List;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.multiblock.IMultiBlock;
 import universalelectricity.prefab.multiblock.TileEntityMulti;
-import universalelectricity.prefab.network.IPacketReceiver;
-
-import com.google.common.io.ByteArrayDataInput;
-
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreTileEntityLandingPad extends TileEntityMulti implements IMultiBlock
 {
@@ -37,7 +30,7 @@ public class GCCoreTileEntityLandingPad extends TileEntityMulti implements IMult
 			{
 				for (int z = -2; z < 3; z++)
 				{
-					if ((x == -2 || x == 2) || (z == -2 || z == 2))
+					if (x == -2 || x == 2 || z == -2 || z == 2)
 					{
 						if (Math.abs(x) != Math.abs(z))
 						{

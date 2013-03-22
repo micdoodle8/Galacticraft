@@ -5,7 +5,6 @@ import java.io.File;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.FMLRelauncher;
 import cpw.mods.fml.relauncher.IClassTransformer;
 
@@ -19,7 +18,7 @@ public class GalacticraftAccessTransformerBase implements IClassTransformer
 	{
         if(FMLRelauncher.side().equals("CLIENT") || FMLRelauncher.side().equals("SERVER"))
         {
-			bytes = override(name, bytes, this.getObfuscatedName(), this.getLocation());
+			bytes = GalacticraftAccessTransformerBase.override(name, bytes, this.getObfuscatedName(), this.getLocation());
         }
         
 		return bytes;

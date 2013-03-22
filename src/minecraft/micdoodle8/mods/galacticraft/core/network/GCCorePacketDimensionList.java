@@ -7,9 +7,6 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityControllable;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import cpw.mods.fml.relauncher.Side;
@@ -28,7 +25,7 @@ public class GCCorePacketDimensionList implements IGalacticraftAdvancedPacket
         
         try
         {
-        	data.writeByte(packetID);
+        	data.writeByte(GCCorePacketDimensionList.packetID);
         	data.writeInt(col.size());
             Iterator var3 = col.iterator();
 
@@ -60,6 +57,6 @@ public class GCCorePacketDimensionList implements IGalacticraftAdvancedPacket
 	@Override
 	public byte getPacketID()
 	{
-		return packetID;
+		return GCCorePacketDimensionList.packetID;
 	}
 }

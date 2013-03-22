@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,22 +11,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-
-import com.google.common.io.ByteArrayDataInput;
-import com.google.common.io.ByteArrayDataOutput;
-
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.network.PacketDispatcher;
-import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInventory
 {
@@ -125,27 +116,28 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
         }
     }
 	
+	@Override
 	public void setPositionRotationAndMotion(double x, double y, double z, float yaw, float pitch, double motX, double motY, double motZ)
 	{
-		if(worldObj.isRemote)
+		if(this.worldObj.isRemote)
 		{
-	        boatX = x;
-	        boatY = y;
-	        boatZ = z;
-	        boatYaw = yaw;
-	        boatPitch = pitch;
-	        motionX = motX;
-	        motionY = motY;
-	        motionZ = motZ;
-	        boatPosRotationIncrements = 5;
+	        this.boatX = x;
+	        this.boatY = y;
+	        this.boatZ = z;
+	        this.boatYaw = yaw;
+	        this.boatPitch = pitch;
+	        this.motionX = motX;
+	        this.motionY = motY;
+	        this.motionZ = motZ;
+	        this.boatPosRotationIncrements = 5;
 		}
 		else
 		{
-			setPosition(x, y, z);
-			setRotation(yaw, pitch);
-			motionX = motX;
-			motionY = motY;
-			motionZ = motZ;
+			this.setPosition(x, y, z);
+			this.setRotation(yaw, pitch);
+			this.motionX = motX;
+			this.motionY = motY;
+			this.motionZ = motZ;
 		}
 	}
 
@@ -225,17 +217,17 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
     {
 		if (this.riddenByEntity != null)
 		{
-			if(riddenByEntity instanceof EntityPlayer && FMLClientHandler.instance().getClient().thePlayer.equals(this.riddenByEntity))
+			if(this.riddenByEntity instanceof EntityPlayer && FMLClientHandler.instance().getClient().thePlayer.equals(this.riddenByEntity))
 			{
 			}
 			else
 			{
-	            boatPosRotationIncrements = i + 5;
-		        boatX = d;
-		        boatY = d1 + (this.riddenByEntity == null ? 1 : 0);
-		        boatZ = d2;
-		        boatYaw = (double)f;
-		        boatPitch = (double)f1;
+	            this.boatPosRotationIncrements = i + 5;
+		        this.boatX = d;
+		        this.boatY = d1 + (this.riddenByEntity == null ? 1 : 0);
+		        this.boatZ = d2;
+		        this.boatYaw = f;
+		        this.boatPitch = f1;
 			}
 		}
     }
@@ -245,42 +237,42 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
     {
         super.onUpdate();
         
-        if(worldObj.isRemote && (riddenByEntity == null || !(riddenByEntity instanceof EntityPlayer) || !FMLClientHandler.instance().getClient().thePlayer.equals(this.riddenByEntity)))
+        if(this.worldObj.isRemote && (this.riddenByEntity == null || !(this.riddenByEntity instanceof EntityPlayer) || !FMLClientHandler.instance().getClient().thePlayer.equals(this.riddenByEntity)))
         {
             double x;
             double y;
             double var12;
             double z;
-            if (boatPosRotationIncrements > 0)
+            if (this.boatPosRotationIncrements > 0)
             {
-                x = posX + (boatX - posX) / (double)boatPosRotationIncrements;
-                y = posY + (boatY - posY) / (double)boatPosRotationIncrements;
-                z = posZ + (boatZ - posZ) / (double)boatPosRotationIncrements;
-                var12 = MathHelper.wrapAngleTo180_double(boatYaw - (double)rotationYaw);
-                rotationYaw = (float)((double)rotationYaw + var12 / (double)boatPosRotationIncrements);
-                rotationPitch = (float)((double)rotationPitch + (boatPitch - (double)rotationPitch) / (double)boatPosRotationIncrements);
-                --boatPosRotationIncrements;
-                setPosition(x, y, z);
-                setRotation(rotationYaw, rotationPitch);     
+                x = this.posX + (this.boatX - this.posX) / this.boatPosRotationIncrements;
+                y = this.posY + (this.boatY - this.posY) / this.boatPosRotationIncrements;
+                z = this.posZ + (this.boatZ - this.posZ) / this.boatPosRotationIncrements;
+                var12 = MathHelper.wrapAngleTo180_double(this.boatYaw - this.rotationYaw);
+                this.rotationYaw = (float)(this.rotationYaw + var12 / this.boatPosRotationIncrements);
+                this.rotationPitch = (float)(this.rotationPitch + (this.boatPitch - this.rotationPitch) / this.boatPosRotationIncrements);
+                --this.boatPosRotationIncrements;
+                this.setPosition(x, y, z);
+                this.setRotation(this.rotationYaw, this.rotationPitch);     
             }
             else
             {
-                x = posX + motionX;
-                y = posY + motionY;
-                z = posZ + motionZ;
+                x = this.posX + this.motionX;
+                y = this.posY + this.motionY;
+                z = this.posZ + this.motionZ;
         		if (this.riddenByEntity != null)
-                setPosition(x, y, z);
+                this.setPosition(x, y, z);
 
-                if (onGround)
+                if (this.onGround)
                 {
-                    motionX *= 0.5D;
-                    motionY *= 0.5D;
-                    motionZ *= 0.5D;
+                    this.motionX *= 0.5D;
+                    this.motionY *= 0.5D;
+                    this.motionZ *= 0.5D;
                 }
 
-                motionX *= 0.9900000095367432D;
-                motionY *= 0.949999988079071D;
-                motionZ *= 0.9900000095367432D;
+                this.motionX *= 0.9900000095367432D;
+                this.motionY *= 0.949999988079071D;
+                this.motionZ *= 0.9900000095367432D;
             }
             return;
         }
@@ -358,21 +350,21 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
 
 		if (this.worldObj.isRemote)
 		{
-			moveEntity(motionX, motionY, motionZ);
+			this.moveEntity(this.motionX, this.motionY, this.motionZ);
 		}
 
         this.prevPosX = this.posX;
         this.prevPosY = this.posY;
         this.prevPosZ = this.posZ;
 		
-		if(this.worldObj.isRemote && riddenByEntity instanceof EntityPlayer && FMLClientHandler.instance().getClient().thePlayer.equals(this.riddenByEntity))
+		if(this.worldObj.isRemote && this.riddenByEntity instanceof EntityPlayer && FMLClientHandler.instance().getClient().thePlayer.equals(this.riddenByEntity))
 		{
 			PacketDispatcher.sendPacketToServer(GCCorePacketEntityUpdate.buildUpdatePacket(this));
 		}
 		
-		if(!worldObj.isRemote && ticksExisted % 5 == 0)
+		if(!this.worldObj.isRemote && this.ticksExisted % 5 == 0)
 		{
-			PacketDispatcher.sendPacketToAllAround(posX, posY, posZ, 50, dimension, GCCorePacketEntityUpdate.buildUpdatePacket(this));
+			PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 50, this.dimension, GCCorePacketEntityUpdate.buildUpdatePacket(this));
 		}
     }
 
@@ -534,7 +526,7 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
 	@Override
 	public boolean pressKey(int key)
 	{
-    	if(worldObj.isRemote && (key == 6 || key == 8 || key == 9))
+    	if(this.worldObj.isRemote && (key == 6 || key == 8 || key == 9))
     	{
     		PacketDispatcher.sendPacketToServer(GCCorePacketControllableEntity.buildKeyPacket(key));
     		return true;

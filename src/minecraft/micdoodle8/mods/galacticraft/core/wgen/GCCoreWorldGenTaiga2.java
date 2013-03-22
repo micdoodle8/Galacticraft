@@ -7,7 +7,6 @@ import micdoodle8.mods.galacticraft.API.IPlantableMetadataBlock;
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
-import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreWorldGenTaiga2 extends WorldGenerator
 {

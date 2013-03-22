@@ -2,8 +2,6 @@ package micdoodle8.mods.galacticraft.core.wgen;
 
 import java.util.Random;
 
-import cpw.mods.fml.common.FMLLog;
-
 import micdoodle8.mods.galacticraft.API.IPlantableBlock;
 import micdoodle8.mods.galacticraft.API.IPlantableMetadataBlock;
 import net.minecraft.block.Block;

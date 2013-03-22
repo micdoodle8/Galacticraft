@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.items;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.moon.GalacticraftMoon;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -16,7 +15,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GCCoreItem extends Item
 {
-	private String iconName;
+	private final String iconName;
 	
 	public GCCoreItem(int par1, String iconName)
 	{

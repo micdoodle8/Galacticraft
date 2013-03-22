@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
@@ -67,8 +66,8 @@ public class GCCoreSpaceStationData extends WorldSavedData
 	@Override
 	public void writeToNBT(NBTTagCompound nbttagcompound) 
 	{
-		nbttagcompound.setString("owner", owner);
-		nbttagcompound.setString("spaceStationName", spaceStationName);
+		nbttagcompound.setString("owner", this.owner);
+		nbttagcompound.setString("spaceStationName", this.spaceStationName);
 		nbttagcompound.setCompoundTag("dataCompound", this.dataCompound);
 
         final NBTTagList var2 = new NBTTagList();
@@ -80,7 +79,7 @@ public class GCCoreSpaceStationData extends WorldSavedData
             if (player != null)
             {
                 final NBTTagCompound var4 = new NBTTagCompound();
-                var4.setString("allowedPlayer", (String)player);
+                var4.setString("allowedPlayer", player);
                 var2.appendTag(var4);
             }
         }
@@ -96,7 +95,7 @@ public class GCCoreSpaceStationData extends WorldSavedData
         }
         else
         {
-            String var2 = getSpaceStationID(var1);
+            String var2 = GCCoreSpaceStationData.getSpaceStationID(var1);
             GCCoreSpaceStationData var3 = (GCCoreSpaceStationData)var0.loadItemData(GCCoreSpaceStationData.class, var2);
 
             if (var3 == null)
@@ -127,7 +126,7 @@ public class GCCoreSpaceStationData extends WorldSavedData
 
     public static GCCoreSpaceStationData getMPSpaceStationData(World var0, int var1, EntityPlayer player)
     {
-        String var2 = getSpaceStationID(var1);
+        String var2 = GCCoreSpaceStationData.getSpaceStationID(var1);
         GCCoreSpaceStationData var3 = (GCCoreSpaceStationData)var0.loadItemData(GCCoreSpaceStationData.class, var2);
 
         if (var3 == null)

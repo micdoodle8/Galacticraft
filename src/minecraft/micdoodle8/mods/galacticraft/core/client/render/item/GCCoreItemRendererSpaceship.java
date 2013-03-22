@@ -2,12 +2,10 @@ package micdoodle8.mods.galacticraft.core.client.render.item;
 
 import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelSpaceship;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpaceship;
-import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.model.ModelChest;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.RenderEngine;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -16,10 +14,8 @@ import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLLog;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -31,7 +27,7 @@ public class GCCoreItemRendererSpaceship implements IItemRenderer
 {
 	GCCoreEntitySpaceship spaceship = new GCCoreEntitySpaceship(FMLClientHandler.instance().getClient().theWorld);
 	GCCoreModelSpaceship modelSpaceship = new GCCoreModelSpaceship();
-    private ModelChest chestModel = new ModelChest();
+    private final ModelChest chestModel = new ModelChest();
 
     public static RenderItem drawItems = new RenderItem();
 
@@ -87,7 +83,7 @@ public class GCCoreItemRendererSpaceship implements IItemRenderer
         {
         	if (item.getItemDamage() == 1)
         	{
-                ModelChest modelChest = chestModel;
+                ModelChest modelChest = this.chestModel;
                 FMLClientHandler.instance().getClient().renderEngine.func_98187_b("/item/chest.png");
                 
                 GL11.glPushMatrix();
@@ -98,7 +94,7 @@ public class GCCoreItemRendererSpaceship implements IItemRenderer
                 GL11.glTranslatef(1.5F, 1.95F, 1.7F);
                 short short1 = 0;
 
-                GL11.glRotatef((float)short1, 0.0F, 1.0F, 0.0F);
+                GL11.glRotatef(short1, 0.0F, 1.0F, 0.0F);
                 GL11.glTranslatef(-1.5F, -1.5F, -1.5F);
                 float f1 = 0;
                 float f2;

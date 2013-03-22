@@ -133,18 +133,18 @@ public class GCCoreBlockRendererUnlitTorch implements ISimpleBlockRenderingHandl
             	icon = GCCoreBlockUnlitTorch.torchIcons[0];
             }
 
-            double d5 = (double)icon.func_94209_e();
-            double d6 = (double)icon.func_94206_g();
-            double d7 = (double)icon.func_94212_f();
-            double d8 = (double)icon.func_94210_h();
-            double d9 = (double)icon.func_94214_a(7.0D);
-            double d10 = (double)icon.func_94207_b(6.0D);
-            double d11 = (double)icon.func_94214_a(9.0D);
-            double d12 = (double)icon.func_94207_b(8.0D);
-            double d13 = (double)icon.func_94214_a(7.0D);
-            double d14 = (double)icon.func_94207_b(13.0D);
-            double d15 = (double)icon.func_94214_a(9.0D);
-            double d16 = (double)icon.func_94207_b(15.0D);
+            double d5 = icon.func_94209_e();
+            double d6 = icon.func_94206_g();
+            double d7 = icon.func_94212_f();
+            double d8 = icon.func_94210_h();
+            double d9 = icon.func_94214_a(7.0D);
+            double d10 = icon.func_94207_b(6.0D);
+            double d11 = icon.func_94214_a(9.0D);
+            double d12 = icon.func_94207_b(8.0D);
+            double d13 = icon.func_94214_a(7.0D);
+            double d14 = icon.func_94207_b(13.0D);
+            double d15 = icon.func_94214_a(9.0D);
+            double d16 = icon.func_94207_b(15.0D);
             par2 += 0.5D;
             par6 += 0.5D;
             double d17 = par2 - 0.5D;

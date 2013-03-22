@@ -1,10 +1,7 @@
 package micdoodle8.mods.galacticraft.core.dimension;
 
 import micdoodle8.mods.galacticraft.API.IOrbitDimension;
-import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.wgen.GCCoreChunkProviderOverworldOrbit;
-import micdoodle8.mods.galacticraft.moon.GCMoonConfigManager;
-import micdoodle8.mods.galacticraft.moon.wgen.GCMoonChunkProvider;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
@@ -26,14 +23,16 @@ public class GCCoreWorldProvider extends WorldProvider implements IOrbitDimensio
     public int spaceStationDimensionID;
     private final float[] colorsSunriseSunset = new float[4];
 
-    public void setDimension(int var1)
+    @Override
+	public void setDimension(int var1)
     {
         this.spaceStationDimensionID = var1;
         this.dimensionId = var1;
         super.setDimension(var1);
     }
 	
-    public IChunkProvider createChunkGenerator()
+    @Override
+	public IChunkProvider createChunkGenerator()
     {
     	return new GCCoreChunkProviderOverworldOrbit(this.worldObj, this.worldObj.getSeed(), this.worldObj.getWorldInfo().isMapFeaturesEnabled());
     }
@@ -238,7 +237,8 @@ public class GCCoreWorldProvider extends WorldProvider implements IOrbitDimensio
 		return 30;
 	}
 
-    public String getSaveFolder()
+    @Override
+	public String getSaveFolder()
     {
         return "DIM_SPACESTATION" + this.spaceStationDimensionID;
     }

@@ -97,7 +97,7 @@ public class GCCoreItems
 		GCCoreItems.oilCanister = new GCCoreItemOilCanister(GCCoreConfigManager.idItemOilCanister).setUnlocalizedName("oilCanisterPartial");
 		GCCoreItems.oilExtractor = new GCCoreItemOilExtractor(GCCoreConfigManager.idItemOilExtractor).setUnlocalizedName("oilExtractor");
 
-		GalacticraftCore.hiddenItems.add(gravityBow.itemID);
+		GalacticraftCore.hiddenItems.add(GCCoreItems.gravityBow.itemID);
 	}
 
 	public static void registerHarvestLevels()

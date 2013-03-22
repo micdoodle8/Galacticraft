@@ -85,7 +85,8 @@ public class GCCoreEntityAlienVillager extends EntityAgeable
     /**
      * Returns true if the newer Entity AI code should be run
      */
-    public boolean isAIEnabled()
+    @Override
+	public boolean isAIEnabled()
     {
         return true;
     }
@@ -93,7 +94,8 @@ public class GCCoreEntityAlienVillager extends EntityAgeable
     /**
      * main AI tick function, replaces updateEntityActionState
      */
-    protected void updateAITick()
+    @Override
+	protected void updateAITick()
     {
         if (--this.randomTickDivider <= 0)
         {
@@ -108,7 +110,7 @@ public class GCCoreEntityAlienVillager extends EntityAgeable
             else
             {
                 ChunkCoordinates chunkcoordinates = this.villageObj.getCenter();
-                this.setHomeArea(chunkcoordinates.posX, chunkcoordinates.posY, chunkcoordinates.posZ, (int)((float)this.villageObj.getVillageRadius() * 0.6F));
+                this.setHomeArea(chunkcoordinates.posX, chunkcoordinates.posY, chunkcoordinates.posZ, (int)(this.villageObj.getVillageRadius() * 0.6F));
 
                 if (this.field_82190_bM)
                 {
@@ -157,13 +159,15 @@ public class GCCoreEntityAlienVillager extends EntityAgeable
         super.updateAITick();
     }
 
-    protected void entityInit()
+    @Override
+	protected void entityInit()
     {
         super.entityInit();
         this.dataWatcher.addObject(16, Integer.valueOf(0));
     }
 
-    public int getMaxHealth()
+    @Override
+	public int getMaxHealth()
     {
         return 20;
     }
@@ -171,7 +175,8 @@ public class GCCoreEntityAlienVillager extends EntityAgeable
     /**
      * (abstract) Protected helper method to write subclass entity data to NBT.
      */
-    public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
+    @Override
+	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeEntityToNBT(par1NBTTagCompound);
         par1NBTTagCompound.setInteger("Profession", this.getProfession());
@@ -186,7 +191,8 @@ public class GCCoreEntityAlienVillager extends EntityAgeable
     /**
      * (abstract) Protected helper method to read subclass entity data from NBT.
      */
-    public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
+    @Override
+	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readEntityFromNBT(par1NBTTagCompound);
         this.setProfession(par1NBTTagCompound.getInteger("Profession"));
@@ -202,7 +208,8 @@ public class GCCoreEntityAlienVillager extends EntityAgeable
     /**
      * Determines if an entity can be despawned, used on idle far away entities
      */
-    protected boolean canDespawn()
+    @Override
+	protected boolean canDespawn()
     {
         return false;
     }
@@ -210,7 +217,8 @@ public class GCCoreEntityAlienVillager extends EntityAgeable
     /**
      * Returns the sound this mob makes while it's alive.
      */
-    protected String getLivingSound()
+    @Override
+	protected String getLivingSound()
     {
         return "mob.villager.default";
     }
@@ -218,7 +226,8 @@ public class GCCoreEntityAlienVillager extends EntityAgeable
     /**
      * Returns the sound this mob makes when it is hurt.
      */
-    protected String getHurtSound()
+    @Override
+	protected String getHurtSound()
     {
         return "mob.villager.defaulthurt";
     }
@@ -226,7 +235,8 @@ public class GCCoreEntityAlienVillager extends EntityAgeable
     /**
      * Returns the sound this mob makes on death.
      */
-    protected String getDeathSound()
+    @Override
+	protected String getDeathSound()
     {
         return "mob.villager.defaultdeath";
     }
@@ -261,7 +271,8 @@ public class GCCoreEntityAlienVillager extends EntityAgeable
         return this.isPlaying;
     }
 
-    public void setRevengeTarget(EntityLiving par1EntityLiving)
+    @Override
+	public void setRevengeTarget(EntityLiving par1EntityLiving)
     {
         super.setRevengeTarget(par1EntityLiving);
 
@@ -291,7 +302,8 @@ public class GCCoreEntityAlienVillager extends EntityAgeable
     /**
      * Called when the mob's health reaches 0.
      */
-    public void onDeath(DamageSource par1DamageSource)
+    @Override
+	public void onDeath(DamageSource par1DamageSource)
     {
         if (this.villageObj != null)
         {
@@ -368,7 +380,8 @@ public class GCCoreEntityAlienVillager extends EntityAgeable
         return f1 > 0.9F ? 0.9F - (f1 - 0.9F) : f1;
     }
 
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public void handleHealthUpdate(byte par1)
     {
         if (par1 == 12)
@@ -401,11 +414,12 @@ public class GCCoreEntityAlienVillager extends EntityAgeable
             double d0 = this.rand.nextGaussian() * 0.02D;
             double d1 = this.rand.nextGaussian() * 0.02D;
             double d2 = this.rand.nextGaussian() * 0.02D;
-            this.worldObj.spawnParticle(par1Str, this.posX + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + 1.0D + (double)(this.rand.nextFloat() * this.height), this.posZ + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, d0, d1, d2);
+            this.worldObj.spawnParticle(par1Str, this.posX + (this.rand.nextFloat() * this.width * 2.0F) - this.width, this.posY + 1.0D + (this.rand.nextFloat() * this.height), this.posZ + (this.rand.nextFloat() * this.width * 2.0F) - this.width, d0, d1, d2);
         }
     }
 
-    public void initCreature()
+    @Override
+	public void initCreature()
     {
     }
 
@@ -421,7 +435,8 @@ public class GCCoreEntityAlienVillager extends EntityAgeable
         return entityvillager;
     }
 
-    public EntityAgeable createChild(EntityAgeable par1EntityAgeable)
+    @Override
+	public EntityAgeable createChild(EntityAgeable par1EntityAgeable)
     {
         return this.func_90012_b(par1EntityAgeable);
     }

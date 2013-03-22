@@ -6,7 +6,6 @@ import net.minecraft.world.World;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.multiblock.BlockMulti;
 import universalelectricity.prefab.multiblock.TileEntityMulti;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -20,15 +19,17 @@ public class GCCoreBlockMulti extends BlockMulti
 		super(id);
 	}
 
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public void func_94332_a(IconRegister par1IconRegister)
     {
-    	fakeIcons = new Icon[2];
-    	fakeIcons[0] = par1IconRegister.func_94245_a("galacticraftcore:launch_pad");
-    	fakeIcons[1] = par1IconRegister.func_94245_a("galacticraftcore:workbench_nasa_top");
+    	this.fakeIcons = new Icon[2];
+    	this.fakeIcons[0] = par1IconRegister.func_94245_a("galacticraftcore:launch_pad");
+    	this.fakeIcons[1] = par1IconRegister.func_94245_a("galacticraftcore:workbench_nasa_top");
     }
 
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
     {
     	switch (par2)
@@ -54,7 +55,8 @@ public class GCCoreBlockMulti extends BlockMulti
 		((TileEntityMulti) worldObj.getBlockTileEntity(position.intX(), position.intY(), position.intZ())).setMainBlock(mainBlock);
 	}
 	
-    public float getBlockHardness(World par1World, int par2, int par3, int par4)
+    @Override
+	public float getBlockHardness(World par1World, int par2, int par3, int par4)
     {
         return par1World.getBlockMetadata(par2, par3, par4) == 0 ? this.blockHardness : -1.0F;
     }

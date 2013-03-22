@@ -25,7 +25,7 @@ public class GCCorePacketControllableEntity implements IGalacticraftAdvancedPack
         
         try
         {
-        	data.write(packetID);
+        	data.write(GCCorePacketControllableEntity.packetID);
         	data.writeInt(key);
         	
         	packet.data = bytes.toByteArray();
@@ -45,7 +45,7 @@ public class GCCorePacketControllableEntity implements IGalacticraftAdvancedPack
 	@Override
 	public byte getPacketID()
 	{
-		return packetID;
+		return GCCorePacketControllableEntity.packetID;
 	}
 
 	@Override

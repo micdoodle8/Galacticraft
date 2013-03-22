@@ -5,7 +5,6 @@ import java.util.List;
 
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockTreasureChest;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockChest;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ContainerChest;
 import net.minecraft.inventory.IInventory;
@@ -46,13 +45,14 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
 
     /** Server sync counter (once per 20 ticks) */
     private int ticksSinceSync;
-    private int field_94046_i = -1;
+    private final int field_94046_i = -1;
     private String field_94045_s;
 
     /**
      * Returns the number of slots in the inventory.
      */
-    public int getSizeInventory()
+    @Override
+	public int getSizeInventory()
     {
         return 27;
     }
@@ -60,7 +60,8 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
     /**
      * Returns the stack in slot i
      */
-    public ItemStack getStackInSlot(int par1)
+    @Override
+	public ItemStack getStackInSlot(int par1)
     {
         return this.chestContents[par1];
     }
@@ -69,7 +70,8 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
      * Removes from an inventory slot (first arg) up to a specified number (second arg) of items and returns them in a
      * new stack.
      */
-    public ItemStack decrStackSize(int par1, int par2)
+    @Override
+	public ItemStack decrStackSize(int par1, int par2)
     {
         if (this.chestContents[par1] != null)
         {
@@ -105,7 +107,8 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
      * When some containers are closed they call this on each slot, then drop whatever it returns as an EntityItem -
      * like when you close a workbench GUI.
      */
-    public ItemStack getStackInSlotOnClosing(int par1)
+    @Override
+	public ItemStack getStackInSlotOnClosing(int par1)
     {
         if (this.chestContents[par1] != null)
         {
@@ -122,7 +125,8 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
     /**
      * Sets the given item stack to the specified slot in the inventory (can be crafting or armor sections).
      */
-    public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
+    @Override
+	public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
     {
         this.chestContents[par1] = par2ItemStack;
 
@@ -137,12 +141,14 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
     /**
      * Returns the name of the inventory.
      */
-    public String getInvName()
+    @Override
+	public String getInvName()
     {
         return this.func_94042_c() ? this.field_94045_s : "container.chest";
     }
 
-    public boolean func_94042_c()
+    @Override
+	public boolean func_94042_c()
     {
         return this.field_94045_s != null && this.field_94045_s.length() > 0;
     }
@@ -155,7 +161,8 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
     /**
      * Reads a tile entity from NBT.
      */
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound)
+    @Override
+	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readFromNBT(par1NBTTagCompound);
         NBTTagList nbttaglist = par1NBTTagCompound.getTagList("Items");
@@ -181,7 +188,8 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
     /**
      * Writes a tile entity to NBT.
      */
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound)
+    @Override
+	public void writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeToNBT(par1NBTTagCompound);
         NBTTagList nbttaglist = new NBTTagList();
@@ -209,7 +217,8 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
      * Returns the maximum stack size for a inventory slot. Seems to always be 64, possibly will be extended. *Isn't
      * this more of a set than a get?*
      */
-    public int getInventoryStackLimit()
+    @Override
+	public int getInventoryStackLimit()
     {
         return 64;
     }
@@ -217,16 +226,18 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
     /**
      * Do not make give this method the name canInteractWith because it clashes with Container
      */
-    public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
+    @Override
+	public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
     {
-        return this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : par1EntityPlayer.getDistanceSq((double)this.xCoord + 0.5D, (double)this.yCoord + 0.5D, (double)this.zCoord + 0.5D) <= 64.0D;
+        return this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : par1EntityPlayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
     }
 
     /**
      * Causes the TileEntity to reset all it's cached values for it's container block, blockID, metaData and in the case
      * of chests, the adjcacent chest check
      */
-    public void updateContainingBlockInfo()
+    @Override
+	public void updateContainingBlockInfo()
     {
         super.updateContainingBlockInfo();
         this.adjacentChestChecked = false;
@@ -337,7 +348,8 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
      * Allows the entity to update its state. Overridden in most subclasses, e.g. the mob spawner uses this to count
      * ticks and creates a new spawn inside its implementation.
      */
-    public void updateEntity()
+    @Override
+	public void updateEntity()
     {
         super.updateEntity();
         this.checkForAdjacentChests();
@@ -348,7 +360,7 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
         {
             this.numUsingPlayers = 0;
             f = 5.0F;
-            List list = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getAABBPool().getAABB((double)((float)this.xCoord - f), (double)((float)this.yCoord - f), (double)((float)this.zCoord - f), (double)((float)(this.xCoord + 1) + f), (double)((float)(this.yCoord + 1) + f), (double)((float)(this.zCoord + 1) + f)));
+            List list = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getAABBPool().getAABB((this.xCoord - f), (this.yCoord - f), (this.zCoord - f), ((this.xCoord + 1) + f), ((this.yCoord + 1) + f), ((this.zCoord + 1) + f)));
             Iterator iterator = list.iterator();
 
             while (iterator.hasNext())
@@ -373,8 +385,8 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
 
         if (this.numUsingPlayers > 0 && this.lidAngle == 0.0F && this.adjacentChestZNeg == null && this.adjacentChestXNeg == null)
         {
-            double d1 = (double)this.xCoord + 0.5D;
-            d0 = (double)this.zCoord + 0.5D;
+            double d1 = this.xCoord + 0.5D;
+            d0 = this.zCoord + 0.5D;
 
             if (this.adjacentChestZPosition != null)
             {
@@ -386,7 +398,7 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
                 d1 += 0.5D;
             }
 
-            this.worldObj.playSoundEffect(d1, (double)this.yCoord + 0.5D, d0, "random.chestopen", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.6F);
+            this.worldObj.playSoundEffect(d1, this.yCoord + 0.5D, d0, "random.chestopen", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.6F);
         }
 
         if (this.numUsingPlayers == 0 && this.lidAngle > 0.0F || this.numUsingPlayers > 0 && this.lidAngle < 1.0F)
@@ -411,8 +423,8 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
 
             if (this.lidAngle < f2 && f1 >= f2 && this.adjacentChestZNeg == null && this.adjacentChestXNeg == null)
             {
-                d0 = (double)this.xCoord + 0.5D;
-                double d2 = (double)this.zCoord + 0.5D;
+                d0 = this.xCoord + 0.5D;
+                double d2 = this.zCoord + 0.5D;
 
                 if (this.adjacentChestZPosition != null)
                 {
@@ -424,7 +436,7 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
                     d0 += 0.5D;
                 }
 
-                this.worldObj.playSoundEffect(d0, (double)this.yCoord + 0.5D, d2, "random.chestclosed", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.6F);
+                this.worldObj.playSoundEffect(d0, this.yCoord + 0.5D, d2, "random.chestclosed", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.6F);
             }
 
             if (this.lidAngle < 0.0F)
@@ -437,7 +449,8 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
     /**
      * Called when a client event is received with the event number and argument, see World.sendClientEvent
      */
-    public boolean receiveClientEvent(int par1, int par2)
+    @Override
+	public boolean receiveClientEvent(int par1, int par2)
     {
         if (par1 == 1)
         {
@@ -450,7 +463,8 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
         }
     }
 
-    public void openChest()
+    @Override
+	public void openChest()
     {
         if (this.numUsingPlayers < 0)
         {
@@ -463,7 +477,8 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
         this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord - 1, this.zCoord, this.getBlockType().blockID);
     }
 
-    public void closeChest()
+    @Override
+	public void closeChest()
     {
         if (this.getBlockType() != null && this.getBlockType() instanceof GCCoreBlockTreasureChest)
         {
@@ -474,7 +489,8 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
         }
     }
 
-    public boolean func_94041_b(int par1, ItemStack par2ItemStack)
+    @Override
+	public boolean func_94041_b(int par1, ItemStack par2ItemStack)
     {
         return true;
     }
@@ -482,7 +498,8 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
     /**
      * invalidates a tile entity
      */
-    public void invalidate()
+    @Override
+	public void invalidate()
     {
         super.invalidate();
         this.updateContainingBlockInfo();

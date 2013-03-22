@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
 import mekanism.api.EnumColor;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpaceship;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerFuelLoader;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemFuelCanister;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFuelLoader;
@@ -15,7 +14,6 @@ import org.lwjgl.opengl.GL11;
 
 import universalelectricity.core.electricity.ElectricityDisplay;
 import universalelectricity.core.electricity.ElectricityDisplay.ElectricUnit;
-import cpw.mods.fml.common.FMLLog;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -82,13 +80,13 @@ public class GCCoreGuiFuelLoader extends GuiContainer
 
     	if (stack != null)
     	{
-			int scale = (int) (((double) (stack.getMaxDamage() - stack.getItemDamage()) / (double) stack.getMaxDamage()) * 124);
+			int scale = (int) ((double) (stack.getMaxDamage() - stack.getItemDamage()) / (double) stack.getMaxDamage() * 124);
 
         	if (stack != null)
         	{
         		final int fuelLevel = stack.getMaxDamage() - stack.getItemDamage();
         		
-        		float ratio = (stack.getMaxDamage() / 40.0F);
+        		float ratio = stack.getMaxDamage() / 40.0F;
         		
                 this.drawTexturedModalRect(var5 + 29, MathHelper.ceiling_float_int(var6 + 58 - fuelLevel / ratio), 176, 0, 10, MathHelper.ceiling_float_int(fuelLevel / ratio));
         	}

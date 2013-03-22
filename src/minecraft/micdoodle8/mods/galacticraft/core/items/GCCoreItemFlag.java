@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.items;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -65,7 +64,8 @@ public class GCCoreItemFlag extends Item
     	}
     }
 
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public void func_94581_a(IconRegister par1IconRegister)
     {
         this.iconIndex = null;
@@ -195,7 +195,7 @@ public class GCCoreItemFlag extends Item
 	@Override
 	public String getUnlocalizedName(ItemStack itemStack)
 	{
-		return "item.flag." + names[itemStack.getItemDamage()];
+		return "item.flag." + GCCoreItemFlag.names[itemStack.getItemDamage()];
 	}
 
 	@Override

@@ -1,16 +1,15 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import cpw.mods.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.client.model.block.GCCoreModelAssemblyTable;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.multiblock.IMultiBlock;
 import universalelectricity.prefab.multiblock.TileEntityMulti;
+import cpw.mods.fml.client.FMLClientHandler;
 
 public class GCCoreTileEntityAdvancedCraftingTable extends TileEntityMulti implements IMultiBlock
 {
@@ -49,7 +48,7 @@ public class GCCoreTileEntityAdvancedCraftingTable extends TileEntityMulti imple
 					
 					if (!vecToAdd.isEqual(placedPosition))
 					{
-						if ((Math.abs(x) != 1 || Math.abs(z) != 1))
+						if (Math.abs(x) != 1 || Math.abs(z) != 1)
 						{
 							if ((y == 0 || y == 3) && x == 0 && z == 0)
 							{
@@ -77,7 +76,7 @@ public class GCCoreTileEntityAdvancedCraftingTable extends TileEntityMulti imple
 			{
 				for (int z = -1; z < 2; z++)
 				{
-					if ((Math.abs(x) != 1 || Math.abs(z) != 1))
+					if (Math.abs(x) != 1 || Math.abs(z) != 1)
 					{
 						if ((y == 0 || y == 3) && x == 0 && z == 0)
 						{

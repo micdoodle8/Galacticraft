@@ -21,8 +21,6 @@ import universalelectricity.prefab.tile.TileEntityElectricityRunnable;
 
 import com.google.common.io.ByteArrayDataInput;
 
-import cpw.mods.fml.common.FMLLog;
-
 public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable implements IInventory, ISidedInventory, IPacketReceiver
 {
 	/**
@@ -58,7 +56,7 @@ public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable impl
 		/**
 		 * Attempts to charge using batteries.
 		 */
-		this.wattsReceived += ElectricItemHelper.dechargeItem(this.containingItems[0], WATTS_PER_TICK, this.getVoltage());
+		this.wattsReceived += ElectricItemHelper.dechargeItem(this.containingItems[0], GCCoreTileEntityRefinery.WATTS_PER_TICK, this.getVoltage());
 
 		/**
 		 * Attempts to smelt an item.
@@ -101,11 +99,11 @@ public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable impl
 				this.processTicks = 0;
 			}
 			
-			this.wattsReceived = Math.max(this.wattsReceived - WATTS_PER_TICK / 4, 0);
+			this.wattsReceived = Math.max(this.wattsReceived - GCCoreTileEntityRefinery.WATTS_PER_TICK / 4, 0);
 
 			if (this.ticks % 3 == 0 && this.playersUsing > 0)
 			{
-				PacketManager.sendPacketToClients(getDescriptionPacket(), this.worldObj, new Vector3(this), 12);
+				PacketManager.sendPacketToClients(this.getDescriptionPacket(), this.worldObj, new Vector3(this), 12);
 			}
 		}
 	}
@@ -121,7 +119,7 @@ public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable impl
 	{
 		if (this.canProcess() || this.wattsReceived <= this.WATTS_PER_TICK)
 		{
-			return new ElectricityPack(WATTS_PER_TICK / this.getVoltage(), this.getVoltage());
+			return new ElectricityPack(GCCoreTileEntityRefinery.WATTS_PER_TICK / this.getVoltage(), this.getVoltage());
 		}
 		else
 		{
@@ -155,7 +153,7 @@ public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable impl
 	{
 		if (!this.worldObj.isRemote)
 		{
-			PacketManager.sendPacketToClients(getDescriptionPacket(), this.worldObj, new Vector3(this), 15);
+			PacketManager.sendPacketToClients(this.getDescriptionPacket(), this.worldObj, new Vector3(this), 15);
 		}
 		this.playersUsing++;
 	}
@@ -178,7 +176,7 @@ public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable impl
 			return false;
 		}
 		
-		if (!(((IRefinableItem) this.containingItems[1].getItem()).canSmeltItem(this.containingItems[1])))
+		if (!((IRefinableItem) this.containingItems[1].getItem()).canSmeltItem(this.containingItems[1]))
 		{
 			return false;
 		}

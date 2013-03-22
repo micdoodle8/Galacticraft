@@ -7,7 +7,6 @@ import net.minecraft.network.packet.NetHandler;
 import net.minecraft.network.packet.Packet1Login;
 import net.minecraft.server.MinecraftServer;
 import universalelectricity.prefab.network.ConnectionHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.IConnectionHandler;
 import cpw.mods.fml.common.network.Player;
 
@@ -46,19 +45,19 @@ public class GCCoreConnectionHandler extends ConnectionHandler implements IConne
 	{
 		super.connectionClosed(manager);
 
-        if (connected)
+        if (GCCoreConnectionHandler.connected)
         {
             WorldUtil.unregisterPlanets();
             WorldUtil.unregisterSpaceStations();
         }
 
-        connected = false;
+        GCCoreConnectionHandler.connected = false;
 	}
 
 	@Override
 	public void clientLoggedIn(NetHandler clientHandler, INetworkManager manager, Packet1Login login) 
 	{
-        connected = true;
+        GCCoreConnectionHandler.connected = true;
 		super.clientLoggedIn(clientHandler, manager, login);
 	}
 }

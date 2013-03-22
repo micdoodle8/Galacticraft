@@ -16,7 +16,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GCCoreGuiRefinery extends GuiContainer
 {
-	private GCCoreTileEntityRefinery tileEntity;
+	private final GCCoreTileEntityRefinery tileEntity;
 
 	private int containerWidth;
 	private int containerHeight;
@@ -63,14 +63,14 @@ public class GCCoreGuiRefinery extends GuiContainer
 		this.mc.renderEngine.func_98187_b("/micdoodle8/mods/galacticraft/core/client/gui/refinery.png");
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-		containerWidth = (this.width - this.xSize) / 2;
-		containerHeight = (this.height - this.ySize) / 2;
-		this.drawTexturedModalRect(containerWidth, containerHeight, 0, 0, this.xSize, this.ySize);
+		this.containerWidth = (this.width - this.xSize) / 2;
+		this.containerHeight = (this.height - this.ySize) / 2;
+		this.drawTexturedModalRect(this.containerWidth, this.containerHeight, 0, 0, this.xSize, this.ySize);
 
 		if (this.tileEntity.processTicks > 0)
 		{
-			int scale = (int) (((double) this.tileEntity.processTicks / (double) this.tileEntity.PROCESS_TIME_REQUIRED) * 124);
-			this.drawTexturedModalRect(containerWidth + 26, containerHeight + 15, 0, 166, 124 - scale, 20);
+			int scale = (int) ((double) this.tileEntity.processTicks / (double) this.tileEntity.PROCESS_TIME_REQUIRED * 124);
+			this.drawTexturedModalRect(this.containerWidth + 26, this.containerHeight + 15, 0, 166, 124 - scale, 20);
 		}
 	}
 }

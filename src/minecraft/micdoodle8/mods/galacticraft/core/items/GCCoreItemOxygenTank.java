@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.items;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;

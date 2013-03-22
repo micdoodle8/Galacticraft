@@ -9,6 +9,7 @@ public class GCCoreServerConfigurationManagerTransformer extends GalacticraftAcc
 		this.setObfuscatedName("gu");
 	}
 	
+	@Override
 	public File getLocation()
 	{
 		return GalacticraftPlugin.fileLocation;

@@ -452,18 +452,18 @@ public class GCCoreModelPlayer extends ModelBiped
             this.bipedLeftArm.rotateAngleX += -((float)Math.PI / 5F);
             this.bipedRightLeg.rotateAngleX = -((float)Math.PI * 2F / 5F);
             this.bipedLeftLeg.rotateAngleX = -((float)Math.PI * 2F / 5F);
-            this.bipedRightLeg.rotateAngleY = ((float)Math.PI / 10F);
+            this.bipedRightLeg.rotateAngleY = (float)Math.PI / 10F;
             this.bipedLeftLeg.rotateAngleY = -((float)Math.PI / 10F);
         }
 
         if (this.heldItemLeft != 0)
         {
-            this.bipedLeftArm.rotateAngleX = this.bipedLeftArm.rotateAngleX * 0.5F - ((float)Math.PI / 10F) * (float)this.heldItemLeft;
+            this.bipedLeftArm.rotateAngleX = this.bipedLeftArm.rotateAngleX * 0.5F - (float)Math.PI / 10F * this.heldItemLeft;
         }
 
         if (this.heldItemRight != 0)
         {
-            this.bipedRightArm.rotateAngleX = this.bipedRightArm.rotateAngleX * 0.5F - ((float)Math.PI / 10F) * (float)this.heldItemRight;
+            this.bipedRightArm.rotateAngleX = this.bipedRightArm.rotateAngleX * 0.5F - (float)Math.PI / 10F * this.heldItemRight;
         }
 
         this.bipedRightArm.rotateAngleY = 0.0F;
@@ -488,7 +488,7 @@ public class GCCoreModelPlayer extends ModelBiped
             f6 = 1.0F - f6;
             f7 = MathHelper.sin(f6 * (float)Math.PI);
             float f8 = MathHelper.sin(this.onGround * (float)Math.PI) * -(this.bipedHead.rotateAngleX - 0.7F) * 0.75F;
-            this.bipedRightArm.rotateAngleX = (float)((double)this.bipedRightArm.rotateAngleX - ((double)f7 * 1.2D + (double)f8));
+            this.bipedRightArm.rotateAngleX = (float)(this.bipedRightArm.rotateAngleX - (f7 * 1.2D + f8));
             this.bipedRightArm.rotateAngleY += this.bipedBody.rotateAngleY * 2.0F;
             this.bipedRightArm.rotateAngleZ = MathHelper.sin(this.onGround * (float)Math.PI) * -0.4F;
         }

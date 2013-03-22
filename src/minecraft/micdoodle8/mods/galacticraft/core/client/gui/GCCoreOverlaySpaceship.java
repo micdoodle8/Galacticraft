@@ -22,18 +22,18 @@ public class GCCoreOverlaySpaceship extends GCCoreOverlay
 	 */
 	public static void renderSpaceshipOverlay()
 	{
-		final ScaledResolution scaledresolution = new ScaledResolution(minecraft.gameSettings, minecraft.displayWidth, minecraft.displayHeight);
+		final ScaledResolution scaledresolution = new ScaledResolution(GCCoreOverlaySpaceship.minecraft.gameSettings, GCCoreOverlaySpaceship.minecraft.displayWidth, GCCoreOverlaySpaceship.minecraft.displayHeight);
         final int width = scaledresolution.getScaledWidth();
         final int height = scaledresolution.getScaledHeight();
-        minecraft.entityRenderer.setupOverlayRendering();
+        GCCoreOverlaySpaceship.minecraft.entityRenderer.setupOverlayRendering();
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
         GL11.glDepthMask(false);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glDisable(GL11.GL_ALPHA_TEST);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, minecraft.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/gui/spaceshipgui.png"));
-		drawTexturedModalRect(10, height / 2 - 60, 0, 0, 10, 121);
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, GCCoreOverlaySpaceship.minecraft.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/gui/spaceshipgui.png"));
+		GCCoreOverlay.drawTexturedModalRect(10, height / 2 - 60, 0, 0, 10, 121);
         final int col = GCCoreUtil.convertTo32BitColor(255, 198, 198, 198);
         Gui.drawRect(0, 					0, 					width, 		20, 			col);
         Gui.drawRect(0,	 					height - 24, 		width, 		height,    		col);
@@ -43,10 +43,10 @@ public class GCCoreOverlaySpaceship extends GCCoreOverlay
         GL11.glColor3f(1.0F, 1.0F, 1.0F);
 
 		GL11.glScalef(0.5F, 0.26F, 0.5F);
-		loadDownloadableImageTexture("http://skins.minecraft.net/MinecraftSkins/" + StringUtils.stripControlCodes(minecraft.thePlayer.username) + ".png", FMLClientHandler.instance().getClient().thePlayer.getTexture());
-		final int y1 = height / 2 + 420 + 120 - (int) Math.floor(getPlayerPositionY(minecraft.thePlayer) / 2.75);
+		GCCoreOverlay.loadDownloadableImageTexture("http://skins.minecraft.net/MinecraftSkins/" + StringUtils.stripControlCodes(GCCoreOverlaySpaceship.minecraft.thePlayer.username) + ".png", FMLClientHandler.instance().getClient().thePlayer.getTexture());
+		final int y1 = height / 2 + 420 + 120 - (int) Math.floor(GCCoreOverlay.getPlayerPositionY(GCCoreOverlaySpaceship.minecraft.thePlayer) / 2.75);
 		GL11.glScalef(1F, 1F, 1F);
-        drawTexturedModalRect(42, y1, 32, 64, 32, 64);
+        GCCoreOverlay.drawTexturedModalRect(42, y1, 32, 64, 32, 64);
 		GL11.glDepthMask(true);
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		GL11.glEnable(GL11.GL_ALPHA_TEST);

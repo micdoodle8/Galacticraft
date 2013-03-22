@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import universalelectricity.components.common.BasicComponents;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryRocketBench;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemFlag;
@@ -17,6 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
+import universalelectricity.components.common.BasicComponents;
 
 public class RecipeUtil
 {

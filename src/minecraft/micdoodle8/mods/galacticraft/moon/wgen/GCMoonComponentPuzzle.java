@@ -10,15 +10,15 @@ import net.minecraft.world.gen.structure.StructureBoundingBox;
 public class GCMoonComponentPuzzle extends GCMoonComponent
 {
     static int MSIZE = 16;
-    static int RADIUS = MSIZE / 2 * 3 + 1;
-    static int DIAMETER = 2 * RADIUS;
+    static int RADIUS = GCMoonComponentPuzzle.MSIZE / 2 * 3 + 1;
+    static int DIAMETER = 2 * GCMoonComponentPuzzle.RADIUS;
     static int FLOOR_LEVEL = 3;
 
     public GCMoonComponentPuzzle(World var1, Random var2, int var3, int var4, int var5, int var6)
     {
         super(var3);
         this.coordBaseMode = 0;
-        this.boundingBox = GCMoonComponent.getComponentToAddBoundingBox(var4, var5, var6, -RADIUS, -3, -RADIUS, RADIUS * 2, 10, RADIUS * 2, 0);
+        this.boundingBox = GCMoonComponent.getComponentToAddBoundingBox(var4, var5, var6, -GCMoonComponentPuzzle.RADIUS, -3, -GCMoonComponentPuzzle.RADIUS, GCMoonComponentPuzzle.RADIUS * 2, 10, GCMoonComponentPuzzle.RADIUS * 2, 0);
     }
 
     /**
@@ -28,7 +28,7 @@ public class GCMoonComponentPuzzle extends GCMoonComponent
     @Override
 	public boolean addComponentParts(World var1, Random var2, StructureBoundingBox var3)
     {
-        final GCMoonPuzzle var4 = new GCMoonPuzzle(MSIZE, MSIZE);
+        final GCMoonPuzzle var4 = new GCMoonPuzzle(GCMoonComponentPuzzle.MSIZE, GCMoonComponentPuzzle.MSIZE);
         var4.oddBias = 2;
         var4.wallBlockID = GCMoonBlocks.blockMoon.blockID;
         var4.wallBlockMeta = 14;
@@ -38,9 +38,9 @@ public class GCMoonComponentPuzzle extends GCMoonComponent
         var4.setSeed(var1.getSeed() + this.boundingBox.minX * this.boundingBox.minZ);
         int var5;
 
-        for (var5 = 0; var5 <= DIAMETER; ++var5)
+        for (var5 = 0; var5 <= GCMoonComponentPuzzle.DIAMETER; ++var5)
         {
-            for (int var6 = 0; var6 <= DIAMETER; ++var6)
+            for (int var6 = 0; var6 <= GCMoonComponentPuzzle.DIAMETER; ++var6)
             {
             	for (int var7 = -1; var7 <= this.FLOOR_LEVEL + 2; var7++)
             	{
@@ -49,15 +49,15 @@ public class GCMoonComponentPuzzle extends GCMoonComponent
             }
         }
 
-        for (var5 = 0; var5 <= DIAMETER; ++var5)
+        for (var5 = 0; var5 <= GCMoonComponentPuzzle.DIAMETER; ++var5)
         {
-            for (int var6 = 0; var6 <= DIAMETER; ++var6)
+            for (int var6 = 0; var6 <= GCMoonComponentPuzzle.DIAMETER; ++var6)
             {
-                this.placeBlockAtCurrentPosition(var1, Block.grass.blockID, 0, var5, FLOOR_LEVEL - 1, var6, var3);
+                this.placeBlockAtCurrentPosition(var1, Block.grass.blockID, 0, var5, GCMoonComponentPuzzle.FLOOR_LEVEL - 1, var6, var3);
             }
         }
 
-        var5 = MSIZE / 3;
+        var5 = GCMoonComponentPuzzle.MSIZE / 3;
         final int[] var10 = new int[var5 * 2];
 
         for (int var7 = 0; var7 < var5; ++var7)
@@ -67,8 +67,8 @@ public class GCMoonComponentPuzzle extends GCMoonComponent
 
             do
             {
-                var8 = var4.rand.nextInt(MSIZE - 2) + 1;
-                var9 = var4.rand.nextInt(MSIZE - 2) + 1;
+                var8 = var4.rand.nextInt(GCMoonComponentPuzzle.MSIZE - 2) + 1;
+                var9 = var4.rand.nextInt(GCMoonComponentPuzzle.MSIZE - 2) + 1;
             }
             while (this.isNearRoom(var8, var9, var10));
 
@@ -79,7 +79,7 @@ public class GCMoonComponentPuzzle extends GCMoonComponent
 
         var4.generateRecursiveBacktracker(0, 0);
         var4.add4Exits();
-        var4.copyToStructure(var1, var2, 1, FLOOR_LEVEL, 1, this, var3);
+        var4.copyToStructure(var1, var2, 1, GCMoonComponentPuzzle.FLOOR_LEVEL, 1, this, var3);
         this.decorate3x3Rooms(var1, var10, var3);
         return true;
     }
@@ -132,6 +132,6 @@ public class GCMoonComponentPuzzle extends GCMoonComponent
         final int var8 = var4 + var2.nextInt(var5) - var5 / 2;
         final String var9 = "Evolved Skeleton";
 
-        this.placeSpawnerAtCurrentPosition(var1, var2, var7, FLOOR_LEVEL, var8, var9, var6);
+        this.placeSpawnerAtCurrentPosition(var1, var2, var7, GCMoonComponentPuzzle.FLOOR_LEVEL, var8, var9, var6);
     }
 }

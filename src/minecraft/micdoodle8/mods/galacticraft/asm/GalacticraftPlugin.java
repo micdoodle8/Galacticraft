@@ -17,15 +17,14 @@ import cpw.mods.fml.common.versioning.VersionParser;
 import cpw.mods.fml.relauncher.FMLInjectionData;
 import cpw.mods.fml.relauncher.IFMLCallHook;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
-import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.TransformerExclusions;
 
 @TransformerExclusions(value={"micdoodle8.mods.galacticraft.asm"})
 public class GalacticraftPlugin implements IFMLLoadingPlugin, IFMLCallHook
 {
 	private static String transformerDir = "micdoodle8.mods.galacticraft.asm.";
-	private static String serverConfigManager = transformerDir + "GCCoreServerConfigurationManagerTransformer";
-	private static String playerControllerMP = transformerDir + "GCCorePlayerControllerMPTransformer";
+	private static String serverConfigManager = GalacticraftPlugin.transformerDir + "GCCoreServerConfigurationManagerTransformer";
+	private static String playerControllerMP = GalacticraftPlugin.transformerDir + "GCCorePlayerControllerMPTransformer";
 	public static boolean hasRegistered = false;
     public static File fileLocation;
 	public static final String mcVersion = "[1.5]";
@@ -78,10 +77,10 @@ public class GalacticraftPlugin implements IFMLLoadingPlugin, IFMLCallHook
 	@Override
 	public String[] getASMTransformerClass() 
 	{
-		versionCheck(mcVersion, "GalacticraftCore");
-		String[] asmStrings = new String[] {serverConfigManager, playerControllerMP};
+		GalacticraftPlugin.versionCheck(GalacticraftPlugin.mcVersion, "GalacticraftCore");
+		String[] asmStrings = new String[] {GalacticraftPlugin.serverConfigManager, GalacticraftPlugin.playerControllerMP};
 		
-        if (!hasRegistered) 
+        if (!GalacticraftPlugin.hasRegistered) 
         {
             List<String> asm = Arrays.asList(asmStrings);
             
@@ -93,7 +92,7 @@ public class GalacticraftPlugin implements IFMLLoadingPlugin, IFMLCallHook
                     
                     if (c != null) 
                     {
-                        String a = transformerDir + "Transformer";
+                        String a = GalacticraftPlugin.transformerDir + "Transformer";
                         
                         int l = a.length() + 1;
                         
@@ -107,7 +106,7 @@ public class GalacticraftPlugin implements IFMLLoadingPlugin, IFMLCallHook
                 }
             }
             
-            hasRegistered = true;
+            GalacticraftPlugin.hasRegistered = true;
         }
         
         return asmStrings;
@@ -128,7 +127,7 @@ public class GalacticraftPlugin implements IFMLLoadingPlugin, IFMLCallHook
 	@Override
 	public void injectData(Map<String, Object> data) 
 	{
-		fileLocation = (File) data.get("coremodLocation");
+		GalacticraftPlugin.fileLocation = (File) data.get("coremodLocation");
 		FMLLog.info("[GCCoreTransformer]: " + "Patching game...");
 	}
 

@@ -2,17 +2,17 @@ package micdoodle8.mods.galacticraft.core.wgen;
 
 import java.util.Random;
 
-import universalelectricity.core.vector.Vector3;
-import universalelectricity.prefab.multiblock.IMultiBlock;
-
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPad;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
+import universalelectricity.core.vector.Vector3;
+import universalelectricity.prefab.multiblock.IMultiBlock;
 
 public class GCCoreWorldGenSpaceStation extends WorldGenerator
 {
+	@Override
 	public boolean generate(World world, Random rand, int i, int j, int k) 
 	{
 		world.setBlockAndMetadataWithNotify(i + 0, j + 0, k + 0, GCCoreBlocks.decorationBlocks.blockID, 4, 3);

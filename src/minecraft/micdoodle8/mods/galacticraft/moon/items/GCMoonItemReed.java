@@ -23,7 +23,8 @@ public class GCMoonItemReed extends ItemReed
 		this.iconIndex = iconRegister.func_94245_a("galacticraftmoon:cheese_block");
 	}
 
-    public CreativeTabs getCreativeTab()
+    @Override
+	public CreativeTabs getCreativeTab()
     {
         return GalacticraftMoon.galacticraftMoonTab;
     }

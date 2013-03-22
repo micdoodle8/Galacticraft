@@ -9,6 +9,7 @@ public class GCCorePlayerControllerMPTransformer extends GalacticraftAccessTrans
 		this.setObfuscatedName("bdl");
 	}
 	
+	@Override
 	public File getLocation()
 	{
 		return GalacticraftPlugin.fileLocation;

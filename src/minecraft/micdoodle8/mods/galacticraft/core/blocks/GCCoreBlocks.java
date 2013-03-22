@@ -9,7 +9,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.Icon;
 import net.minecraftforge.common.MinecraftForge;
-import universalelectricity.prefab.multiblock.BlockMulti;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 /**
@@ -71,14 +70,14 @@ public class GCCoreBlocks
 		GCCoreBlocks.dummyBlock = (GCCoreBlockMulti) 						new GCCoreBlockMulti				(GCCoreConfigManager.idBlockDummy)																						.setStepSound(Block.soundMetalFootstep)					.setUnlocalizedName("dummyblock");
 		
 		// Hide certain items from NEI
-		GalacticraftCore.hiddenItems.add(airLockSeal.blockID);
-		GalacticraftCore.hiddenItems.add(sapling.blockID);
-		GalacticraftCore.hiddenItems.add(breatheableAir.blockID);
-		GalacticraftCore.hiddenItems.add(unlitTorch.blockID);
-		GalacticraftCore.hiddenItems.add(unlitTorchLit.blockID);
-		GalacticraftCore.hiddenItems.add(landingPadFull.blockID);
-		GalacticraftCore.hiddenItems.add(dummyBlock.blockID);
-		GalacticraftCore.hiddenItems.add(spaceStationBase.blockID);
+		GalacticraftCore.hiddenItems.add(GCCoreBlocks.airLockSeal.blockID);
+		GalacticraftCore.hiddenItems.add(GCCoreBlocks.sapling.blockID);
+		GalacticraftCore.hiddenItems.add(GCCoreBlocks.breatheableAir.blockID);
+		GalacticraftCore.hiddenItems.add(GCCoreBlocks.unlitTorch.blockID);
+		GalacticraftCore.hiddenItems.add(GCCoreBlocks.unlitTorchLit.blockID);
+		GalacticraftCore.hiddenItems.add(GCCoreBlocks.landingPadFull.blockID);
+		GalacticraftCore.hiddenItems.add(GCCoreBlocks.dummyBlock.blockID);
+		GalacticraftCore.hiddenItems.add(GCCoreBlocks.spaceStationBase.blockID);
 	}
 
 	public static void setHarvestLevels()

@@ -10,14 +10,10 @@ import micdoodle8.mods.galacticraft.core.client.GCCorePlayerBaseClient;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiSmallButton;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.multiplayer.LanServerList;
-import net.minecraft.client.multiplayer.ServerList;
-import net.minecraft.client.multiplayer.ThreadLanServerFind;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
@@ -103,7 +99,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
         
         if (this.createSpaceStationButton == null)
         {
-        	this.buttonList.add(this.createSpaceStationButton = new GuiSmallButton(2, (this.width / 2) - 60, 4, 120, 20, "Create Space Station"));
+        	this.buttonList.add(this.createSpaceStationButton = new GuiSmallButton(2, this.width / 2 - 60, 4, 120, 20, "Create Space Station"));
         	this.createSpaceStationButton.enabled = true;
         }
         else
@@ -374,7 +370,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
 
             for (l = 0; l < strings.size(); ++l)
             {
-                i1 = this.fontRenderer.getStringWidth((String)strings.get(l));
+                i1 = this.fontRenderer.getStringWidth(strings.get(l));
 
                 if (i1 > k)
                 {
@@ -391,9 +387,9 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
                 j1 += 2 + (strings.size() - 1) * (items.size() == 0 ? 10 : 16);
             }
 
-            if (((this.height - 500) / 2) + i1 + j1 + 6 > this.height)
+            if ((this.height - 500) / 2 + i1 + j1 + 6 > this.height)
             {
-                i1 = this.height - j1 - ((this.height - 500) / 2) - 6;
+                i1 = this.height - j1 - (this.height - 500) / 2 - 6;
             }
 
             this.zLevel = 300.0F;
@@ -416,7 +412,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
             
             for (int j2 = 0; j2 < strings.size(); ++j2)
             {
-                String s = (String)strings.get(j2);
+                String s = strings.get(j2);
                 Boolean b = correctAmount.get(j2);
                 
                 s = "\u00a7" + Integer.toHexString(b ? 10 : 4) + s;
@@ -430,7 +426,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
             
             for (ItemStack stack : items)
             {
-            	this.drawItems.renderItemAndEffectIntoGUI(fontRenderer, this.mc.renderEngine, stack, l, itemY);
+            	this.drawItems.renderItemAndEffectIntoGUI(this.fontRenderer, this.mc.renderEngine, stack, l, itemY);
             	
             	itemY += 16;
             }
@@ -503,11 +499,11 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
 	    	}
     	}
     	
-    	if (createSpaceStationButton != null)
+    	if (this.createSpaceStationButton != null)
     	{
-        	GCCorePlayerBaseClient clientPlayer = PlayerUtil.getPlayerBaseClientFromPlayer(playerToSend);
+        	GCCorePlayerBaseClient clientPlayer = PlayerUtil.getPlayerBaseClientFromPlayer(this.playerToSend);
         	
-    		if (par1 >= createSpaceStationButton.xPosition && par2 >= createSpaceStationButton.yPosition && par1 < createSpaceStationButton.xPosition + 120 && par2 < createSpaceStationButton.yPosition + 20)
+    		if (par1 >= this.createSpaceStationButton.xPosition && par2 >= this.createSpaceStationButton.yPosition && par1 < this.createSpaceStationButton.xPosition + 120 && par2 < this.createSpaceStationButton.yPosition + 20)
     		{
     			if (this.playerAlreadyCreatedDimension(clientPlayer))
     			{
@@ -518,7 +514,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     				strings.add("        Created!");
     				hasEnough.add(false);
     				hasEnough.add(false);
-    				this.drawItemStackTooltip(strings, items, hasEnough, createSpaceStationButton.xPosition + 115, createSpaceStationButton.yPosition + 15);
+    				this.drawItemStackTooltip(strings, items, hasEnough, this.createSpaceStationButton.xPosition + 115, this.createSpaceStationButton.yPosition + 15);
     			}
     			else if (this.canCreateSpaceStation(this.selectedSlot))
     			{
@@ -538,7 +534,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     				items.add(new ItemStack(BasicComponents.itemIngot, 1, 1));
     				items.add(new ItemStack(BasicComponents.itemIngot, 1, 3));
     				items.add(new ItemStack(Item.ingotIron, 1, 0));
-    				this.drawItemStackTooltip(strings, items, hasEnough, createSpaceStationButton.xPosition + 115, createSpaceStationButton.yPosition + 15);
+    				this.drawItemStackTooltip(strings, items, hasEnough, this.createSpaceStationButton.xPosition + 115, this.createSpaceStationButton.yPosition + 15);
     			}
     			else
     			{
@@ -549,7 +545,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     				strings.add("     Station here!");
     				hasEnough.add(false);
     				hasEnough.add(false);
-    				this.drawItemStackTooltip(strings, items, hasEnough, createSpaceStationButton.xPosition + 115, createSpaceStationButton.yPosition + 15);
+    				this.drawItemStackTooltip(strings, items, hasEnough, this.createSpaceStationButton.xPosition + 115, this.createSpaceStationButton.yPosition + 15);
     			}
     		}
     	}
@@ -579,7 +575,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     	
     	for (ItemStack stack : stacks)
     	{
-    		if (!hasCorrectAmount(player, stack))
+    		if (!GCCoreGuiChoosePlanet.hasCorrectAmount(player, stack))
     		{
     			flag = false;
     		}
@@ -590,7 +586,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     
     public static boolean hasCorrectAmount(EntityPlayer player, ItemStack stack)
     {
-    	return getItemCountInPlayerInventory(player, stack) >= getNumberRequired(stack);
+    	return GCCoreGuiChoosePlanet.getItemCountInPlayerInventory(player, stack) >= GCCoreGuiChoosePlanet.getNumberRequired(stack);
     }
     
     public static int getNumberRequired(ItemStack stack)
@@ -662,7 +658,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
         	}
         	break;
         case 2:
-        	if (initialized && par1GuiButton.enabled && this.hasCorrectMaterials(this.mc.thePlayer, RecipeUtil.getStandardSpaceStationRequirements()))
+        	if (this.initialized && par1GuiButton.enabled && this.hasCorrectMaterials(this.mc.thePlayer, RecipeUtil.getStandardSpaceStationRequirements()))
         	{
                 final Object[] toSend = {this.destinations[this.selectedSlot]};
                 PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 15, toSend));
@@ -691,11 +687,11 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     {
     	final String str = this.destinations[i];
     	
-    	GCCorePlayerBaseClient clientPlayer = PlayerUtil.getPlayerBaseClientFromPlayer(playerToSend);
+    	GCCorePlayerBaseClient clientPlayer = PlayerUtil.getPlayerBaseClientFromPlayer(this.playerToSend);
 
     	if (clientPlayer != null && str.toLowerCase().equals("overworld"))
     	{
-    		initialized = true;
+    		this.initialized = true;
     		
     		if (clientPlayer.spaceStationDimensionIDClient == 0)
     		{

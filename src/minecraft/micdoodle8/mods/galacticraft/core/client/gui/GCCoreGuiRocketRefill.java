@@ -4,7 +4,6 @@ import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpaceship;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerRocketRefill;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
@@ -61,7 +60,7 @@ public class GCCoreGuiRocketRefill extends GuiContainer
 
         if (this.mc.thePlayer != null && this.mc.thePlayer.ridingEntity != null && this.mc.thePlayer.ridingEntity instanceof GCCoreEntitySpaceship)
         {
-    		final float fuelLevel = (((GCCoreEntitySpaceship) this.mc.thePlayer.ridingEntity).fuel) / (60.0F) * 1000.0F;
+    		final float fuelLevel = ((GCCoreEntitySpaceship) this.mc.thePlayer.ridingEntity).fuel / 60.0F * 1000.0F;
 
             this.fontRenderer.drawString("" + Math.round(fuelLevel) / 10.0D + "%", 109, this.ySize - ((GCCoreEntitySpaceship) this.mc.thePlayer.ridingEntity).getSpaceshipType() != 0 + offset ? 20 + offset : 111, 4210752);
         }

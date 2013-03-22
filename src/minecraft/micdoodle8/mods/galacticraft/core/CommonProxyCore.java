@@ -39,7 +39,6 @@ import universalelectricity.components.common.BCGuiHandler;
 
 import com.google.common.collect.Lists;
 
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;

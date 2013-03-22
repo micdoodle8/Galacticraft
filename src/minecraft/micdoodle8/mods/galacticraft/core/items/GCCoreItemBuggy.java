@@ -40,7 +40,8 @@ public class GCCoreItemBuggy extends Item
         return GalacticraftCore.galacticraftTab;
     }
 
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public void func_94581_a(IconRegister par1IconRegister)
     {
         this.iconIndex = null;

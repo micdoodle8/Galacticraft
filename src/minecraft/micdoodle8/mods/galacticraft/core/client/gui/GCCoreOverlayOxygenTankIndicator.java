@@ -20,17 +20,17 @@ public class GCCoreOverlayOxygenTankIndicator extends GCCoreOverlay
 	 */
 	public static void renderOxygenTankIndicatorRight(int oxygenInTank1, int oxygenInTank2)
 	{
-		final ScaledResolution scaledresolution = new ScaledResolution(minecraft.gameSettings, minecraft.displayWidth, minecraft.displayHeight);
+		final ScaledResolution scaledresolution = new ScaledResolution(GCCoreOverlayOxygenTankIndicator.minecraft.gameSettings, GCCoreOverlayOxygenTankIndicator.minecraft.displayWidth, GCCoreOverlayOxygenTankIndicator.minecraft.displayHeight);
         final int i = scaledresolution.getScaledWidth();
         scaledresolution.getScaledHeight();
-        minecraft.entityRenderer.setupOverlayRendering();
+        GCCoreOverlayOxygenTankIndicator.minecraft.entityRenderer.setupOverlayRendering();
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
         GL11.glDepthMask(false);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glDisable(GL11.GL_ALPHA_TEST);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, minecraft.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/gui/gui.png"));
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, GCCoreOverlayOxygenTankIndicator.minecraft.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/gui/gui.png"));
 		final Tessellator tessellator = Tessellator.instance;
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		GL11.glEnable(GL11.GL_ALPHA_TEST);
@@ -94,17 +94,17 @@ public class GCCoreOverlayOxygenTankIndicator extends GCCoreOverlay
 	 */
 	public static void renderOxygenTankIndicatorLeft(int oxygenInTank1, int oxygenInTank2)
 	{
-		final ScaledResolution scaledresolution = new ScaledResolution(minecraft.gameSettings, minecraft.displayWidth, minecraft.displayHeight);
+		final ScaledResolution scaledresolution = new ScaledResolution(GCCoreOverlayOxygenTankIndicator.minecraft.gameSettings, GCCoreOverlayOxygenTankIndicator.minecraft.displayWidth, GCCoreOverlayOxygenTankIndicator.minecraft.displayHeight);
         scaledresolution.getScaledWidth();
         scaledresolution.getScaledHeight();
-        minecraft.entityRenderer.setupOverlayRendering();
+        GCCoreOverlayOxygenTankIndicator.minecraft.entityRenderer.setupOverlayRendering();
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
         GL11.glDepthMask(false);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glDisable(GL11.GL_ALPHA_TEST);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, minecraft.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/gui/gui.png"));
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, GCCoreOverlayOxygenTankIndicator.minecraft.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/gui/gui.png"));
 		final Tessellator tessellator = Tessellator.instance;
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		GL11.glEnable(GL11.GL_ALPHA_TEST);

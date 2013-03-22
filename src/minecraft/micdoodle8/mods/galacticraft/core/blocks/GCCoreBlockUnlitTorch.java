@@ -43,7 +43,8 @@ public class GCCoreBlockUnlitTorch extends BlockContainer
         this.setLightValue(lit ? 0.9375F : 0.2F);
     }
 
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public Icon getBlockTexture(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {
     	if (this.blockID == GCCoreBlocks.unlitTorch.blockID)

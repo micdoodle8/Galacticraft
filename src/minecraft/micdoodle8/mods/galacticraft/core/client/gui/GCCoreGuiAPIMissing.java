@@ -5,7 +5,7 @@ import net.minecraft.client.gui.GuiErrorScreen;
 
 public class GCCoreGuiAPIMissing extends GuiErrorScreen
 {
-    private MissingAPIException apiMissing;
+    private final MissingAPIException apiMissing;
 
     public GCCoreGuiAPIMissing(MissingAPIException dupes)
     {

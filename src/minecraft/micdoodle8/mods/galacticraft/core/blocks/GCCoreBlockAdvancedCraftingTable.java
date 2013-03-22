@@ -5,6 +5,7 @@ import java.util.List;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAdvancedCraftingTable;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -112,7 +113,7 @@ public class GCCoreBlockAdvancedCraftingTable extends BlockContainer
 				{
 			        final int var5 = par1World.getBlockId(i, j, k);
 
-			        if (var5 != 0 || blocksList[var5] != null && !blocksList[var5].blockMaterial.isReplaceable())
+			        if (var5 != 0 || Block.blocksList[var5] != null && !Block.blocksList[var5].blockMaterial.isReplaceable())
 			        {
 			        	canPlace = false;
 			        }
@@ -130,7 +131,7 @@ public class GCCoreBlockAdvancedCraftingTable extends BlockContainer
         
         if (var8 instanceof IMultiBlock)
         {
-            ((IMultiBlock)var8).onCreate(new Vector3((double)var2, (double)var3, (double)var4));
+            ((IMultiBlock)var8).onCreate(new Vector3(var2, var3, var4));
         }
         
         super.onBlockPlacedBy(var1, var2, var3, var4, var5, var6);

@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.items;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.API.IRefinableItem;
@@ -49,7 +48,7 @@ public class GCCoreItemOilCanister extends Item implements IRefinableItem
 		
 		for (String name : this.names)
 		{
-			icons[i++] = (iconRegister.func_94245_a("galacticraftcore:" + name));
+			this.icons[i++] = iconRegister.func_94245_a("galacticraftcore:" + name);
 		}
 	}
 
@@ -109,7 +108,7 @@ public class GCCoreItemOilCanister extends Item implements IRefinableItem
 	@Override
 	public boolean canSmeltItem(ItemStack originalStack)
 	{
-		if ((originalStack.getMaxDamage() - originalStack.getItemDamage()) > 0)
+		if (originalStack.getMaxDamage() - originalStack.getItemDamage() > 0)
 		{
 			return true;
 		}
@@ -120,7 +119,7 @@ public class GCCoreItemOilCanister extends Item implements IRefinableItem
 	@Override
 	public ItemStack getResultItem(ItemStack originalStack) 
 	{
-		if ((originalStack.getMaxDamage() - originalStack.getItemDamage()) > 0)
+		if (originalStack.getMaxDamage() - originalStack.getItemDamage() > 0)
 		{
 			return new ItemStack(GCCoreItems.rocketFuelBucket.itemID, 1, originalStack.getItemDamage() == 0 ? 1 : originalStack.getItemDamage());
 		}

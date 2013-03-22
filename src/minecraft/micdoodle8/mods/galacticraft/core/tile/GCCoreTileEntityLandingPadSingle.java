@@ -6,7 +6,6 @@ import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import net.minecraft.tileentity.TileEntity;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.multiblock.IMultiBlock;
-import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreTileEntityLandingPadSingle extends TileEntity
 {
@@ -21,7 +20,7 @@ public class GCCoreTileEntityLandingPadSingle extends TileEntity
 			{
 				Vector3 vector = new Vector3(x, this.yCoord, z);
 				
-				TileEntity tile = vector.getTileEntity(worldObj);
+				TileEntity tile = vector.getTileEntity(this.worldObj);
 				
     			if (tile != null && tile instanceof GCCoreTileEntityLandingPadSingle)
     			{
@@ -44,7 +43,7 @@ public class GCCoreTileEntityLandingPadSingle extends TileEntity
         	
             if (tile instanceof IMultiBlock)
             {
-                ((IMultiBlock)tile).onCreate(new Vector3((double)this.xCoord, (double)this.yCoord, (double)this.zCoord));
+                ((IMultiBlock)tile).onCreate(new Vector3(this.xCoord, this.yCoord, this.zCoord));
             }
     	}
 	}

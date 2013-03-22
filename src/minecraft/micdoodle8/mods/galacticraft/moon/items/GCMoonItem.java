@@ -1,12 +1,11 @@
 package micdoodle8.mods.galacticraft.moon.items;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.moon.GalacticraftMoon;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -16,7 +15,7 @@ import net.minecraft.item.Item;
  */
 public class GCMoonItem extends Item
 {
-	private String iconName;
+	private final String iconName;
 	
 	public GCMoonItem(int par1, String iconName)
 	{

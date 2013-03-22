@@ -38,7 +38,7 @@ public class GCCoreTileEntityOxygenCollector extends TileEntityElectricityRunnab
    	
 	public static final double WATTS_PER_TICK = 200;
 
-	private int playersUsing = 0;
+	private final int playersUsing = 0;
 	
 	public int storedOxygen;
 	
@@ -53,11 +53,11 @@ public class GCCoreTileEntityOxygenCollector extends TileEntityElectricityRunnab
 	{
 		super.updateEntity();
 
-		this.wattsReceived += ElectricItemHelper.dechargeItem(this.containingItems[0], WATTS_PER_TICK, this.getVoltage());
+		this.wattsReceived += ElectricItemHelper.dechargeItem(this.containingItems[0], GCCoreTileEntityOxygenCollector.WATTS_PER_TICK, this.getVoltage());
 		
 		if (!this.worldObj.isRemote)
 		{
-			this.wattsReceived = Math.max(this.wattsReceived - WATTS_PER_TICK / 4, 0);
+			this.wattsReceived = Math.max(this.wattsReceived - GCCoreTileEntityOxygenCollector.WATTS_PER_TICK / 4, 0);
 			
 			double power = 0;
 
@@ -180,7 +180,7 @@ public class GCCoreTileEntityOxygenCollector extends TileEntityElectricityRunnab
 	{
 		if (this.getGas(EnumGas.OXYGEN) > 0)
 		{
-			return new ElectricityPack(WATTS_PER_TICK / this.getVoltage(), this.getVoltage());
+			return new ElectricityPack(GCCoreTileEntityOxygenCollector.WATTS_PER_TICK / this.getVoltage(), this.getVoltage());
 		}
 		else
 		{

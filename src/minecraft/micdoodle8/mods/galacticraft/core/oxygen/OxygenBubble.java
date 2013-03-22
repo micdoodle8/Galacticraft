@@ -9,7 +9,6 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityUnlitTorch;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.core.vector.Vector3;
-import cpw.mods.fml.common.FMLLog;
 
 public class OxygenBubble 
 {

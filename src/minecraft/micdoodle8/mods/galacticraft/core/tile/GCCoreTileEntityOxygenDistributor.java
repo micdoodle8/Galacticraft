@@ -89,9 +89,9 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityElectricityRunn
 
     public double getDistanceFromServer(double par1, double par3, double par5)
     {
-        double d3 = (double)this.xCoord + 0.5D - par1;
-        double d4 = (double)this.yCoord + 0.5D - par3;
-        double d5 = (double)this.zCoord + 0.5D - par5;
+        double d3 = this.xCoord + 0.5D - par1;
+        double d4 = this.yCoord + 0.5D - par3;
+        double d5 = this.zCoord + 0.5D - par5;
         return d3 * d3 + d4 * d4 + d5 * d5;
     }
 
@@ -100,16 +100,16 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityElectricityRunn
 	{
 		super.updateEntity();
 
-		this.wattsReceived += ElectricItemHelper.dechargeItem(this.containingItems[0], WATTS_PER_TICK, this.getVoltage());
+		this.wattsReceived += ElectricItemHelper.dechargeItem(this.containingItems[0], GCCoreTileEntityOxygenDistributor.WATTS_PER_TICK, this.getVoltage());
 		
 		if (!this.worldObj.isRemote)
 		{
 			if (this.timeSinceOxygenRequest > 0)
 			{
-				timeSinceOxygenRequest--;
+				GCCoreTileEntityOxygenDistributor.timeSinceOxygenRequest--;
 			}
 			
-			this.wattsReceived = Math.max(this.wattsReceived - WATTS_PER_TICK / 4, 0);
+			this.wattsReceived = Math.max(this.wattsReceived - GCCoreTileEntityOxygenDistributor.WATTS_PER_TICK / 4, 0);
 			
 			if (this.power >= 1 && this.wattsReceived > 0)
 			{
@@ -202,9 +202,9 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityElectricityRunn
 	@Override
 	public ElectricityPack getRequest()
 	{
-		if (timeSinceOxygenRequest > 0)
+		if (GCCoreTileEntityOxygenDistributor.timeSinceOxygenRequest > 0)
 		{
-			return new ElectricityPack(WATTS_PER_TICK / this.getVoltage(), this.getVoltage());
+			return new ElectricityPack(GCCoreTileEntityOxygenDistributor.WATTS_PER_TICK / this.getVoltage(), this.getVoltage());
 		}
 		else
 		{

@@ -26,7 +26,7 @@ public class GCCorePacketEntityUpdate implements IGalacticraftAdvancedPacket
         
         try
         {
-        	data.write(packetID);
+        	data.write(GCCorePacketEntityUpdate.packetID);
         	data.writeInt(driveable.entityId);
         	data.writeDouble(driveable.posX);
         	data.writeDouble(driveable.posY);
@@ -84,6 +84,6 @@ public class GCCorePacketEntityUpdate implements IGalacticraftAdvancedPacket
 	@Override
 	public byte getPacketID()
 	{
-		return packetID;
+		return GCCorePacketEntityUpdate.packetID;
 	}
 }

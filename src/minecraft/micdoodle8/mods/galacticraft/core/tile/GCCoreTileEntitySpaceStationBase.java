@@ -12,14 +12,16 @@ public class GCCoreTileEntitySpaceStationBase extends TileEntityMulti implements
 {
 	public String ownerUsername = "bobby";
 
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound)
+    @Override
+	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         this.ownerUsername = par1NBTTagCompound.getString("ownerUsername");
     }
 
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound)
+    @Override
+	public void writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
-    	par1NBTTagCompound.setString("ownerUsername", ownerUsername);
+    	par1NBTTagCompound.setString("ownerUsername", this.ownerUsername);
     }
     
     public void setOwner(String username)

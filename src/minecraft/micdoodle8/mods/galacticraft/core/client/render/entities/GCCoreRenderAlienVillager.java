@@ -102,7 +102,7 @@ public class GCCoreRenderAlienVillager extends RenderLiving
 
         if (par1EntityVillager.getGrowingAge() < 0)
         {
-            f1 = (float)((double)f1 * 0.5D);
+            f1 = (float)(f1 * 0.5D);
             this.shadowSize = 0.25F;
         }
         else
@@ -117,17 +117,20 @@ public class GCCoreRenderAlienVillager extends RenderLiving
      * Allows the render to do any OpenGL state modifications necessary before the model is rendered. Args:
      * entityLiving, partialTickTime
      */
-    protected void preRenderCallback(EntityLiving par1EntityLiving, float par2)
+    @Override
+	protected void preRenderCallback(EntityLiving par1EntityLiving, float par2)
     {
         this.preRenderVillager((GCCoreEntityAlienVillager)par1EntityLiving, par2);
     }
 
-    protected void renderEquippedItems(EntityLiving par1EntityLiving, float par2)
+    @Override
+	protected void renderEquippedItems(EntityLiving par1EntityLiving, float par2)
     {
         this.renderVillagerEquipedItems((GCCoreEntityAlienVillager)par1EntityLiving, par2);
     }
 
-    public void doRenderLiving(EntityLiving par1EntityLiving, double par2, double par4, double par6, float par8, float par9)
+    @Override
+	public void doRenderLiving(EntityLiving par1EntityLiving, double par2, double par4, double par6, float par8, float par9)
     {
         this.renderVillager((GCCoreEntityAlienVillager)par1EntityLiving, par2, par4, par6, par8, par9);
     }
@@ -138,7 +141,8 @@ public class GCCoreRenderAlienVillager extends RenderLiving
      * (Render<T extends Entity) and this method has signature public void doRender(T entity, double d, double d1,
      * double d2, float f, float f1). But JAD is pre 1.5 so doesn't do that.
      */
-    public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
+    @Override
+	public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
     {
         this.renderVillager((GCCoreEntityAlienVillager)par1Entity, par2, par4, par6, par8, par9);
     }

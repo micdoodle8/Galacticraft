@@ -23,7 +23,8 @@ public class GCMoonWorldProvider extends WorldProvider implements IGalacticraftW
 {
     private final float[] colorsSunriseSunset = new float[4];
 
-    public void setDimension(int var1)
+    @Override
+	public void setDimension(int var1)
     {
         this.dimensionId = var1;
         super.setDimension(var1);
