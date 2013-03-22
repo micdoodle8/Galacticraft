@@ -107,7 +107,6 @@ public class GCCoreGuiGalaxyMap extends GCCoreGuiStarBackground
                 this.mc.inGameHasFocus = true;
                 this.mc.mouseHelper.ungrabMouseCursor();
                 Object[] toSend = {this.mc.thePlayer.username};
-                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 17, toSend));
         	}
         	else
         	{

@@ -688,14 +688,6 @@ public class GalacticraftCore
                 	}
             	}
             }
-            else if (packetType == 16)
-            {
-            	playerBase.setNotUsingPlanetGui();
-            }
-            else if (packetType == 17)
-            {
-            	playerBase.setUsingPlanetGui();
-            }
         }
     }
 

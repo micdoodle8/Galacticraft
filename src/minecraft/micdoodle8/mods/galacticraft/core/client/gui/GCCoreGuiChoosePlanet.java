@@ -642,7 +642,6 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
         {
         case 0:
             Object[] toSend2 = {this.mc.thePlayer.username};
-            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 16, toSend2));
         	FMLClientHandler.instance().getClient().displayGuiScreen(new GCCoreGuiGalaxyMap(this.playerToSend, this.destinations));
         	break;
         case 1:
