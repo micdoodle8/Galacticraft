@@ -10,8 +10,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import universalelectricity.core.vector.Vector2;
+import universalelectricity.core.vector.Vector3;
 
 public class GCCoreEntityFlag extends Entity
 {
@@ -170,20 +171,17 @@ public class GCCoreEntityFlag extends Entity
     @Override
 	public void onUpdate()
     {
-    	final int id = this.worldObj.getBlockId(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 1), MathHelper.floor_double(this.posZ));
-    	final Block block = Block.blocksList[id];
+    	Vector3 vec = new Vector3(this);
+    	vec = Vector3.add(vec, new Vector3(0, -1, 0));
+    	Block blockAt = Block.blocksList[vec.getBlockID(worldObj)];
 
-    	if (block != null)
+    	if (blockAt != null)
     	{
-    		if (block instanceof BlockFence)
+    		if (blockAt instanceof BlockFence)
     		{
 
     		}
-    		else if (block.blockID == 0)
-    		{
-
-    		}
-    		else
+    		else if (blockAt.isAirBlock(this.worldObj, vec.intX(), vec.intY(), vec.intZ()))
     		{
             	this.motionY -= 0.02F;
     		}
