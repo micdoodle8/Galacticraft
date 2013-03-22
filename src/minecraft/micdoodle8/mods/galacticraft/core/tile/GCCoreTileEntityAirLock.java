@@ -7,10 +7,12 @@ import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import universalelectricity.core.vector.Vector3;
+import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreTileEntityAirLock extends GCCoreTileEntityAdvanced
 {
-	public Set<GCCoreTileEntityAirLock> otherAirLockBlocks = new HashSet<GCCoreTileEntityAirLock>();
+	public HashSet<GCCoreTileEntityAirLock> otherAirLockBlocks = new HashSet<GCCoreTileEntityAirLock>();
 	public boolean active;
 	public boolean oxygenActive;
 	public int index;
@@ -46,6 +48,29 @@ public class GCCoreTileEntityAirLock extends GCCoreTileEntityAdvanced
 		{
 			return false;
 		}
+		
+		if (this.otherAirLockBlocks != null)
+		{
+			HashSet<GCCoreTileEntityAirLock> copiedSet = (HashSet<GCCoreTileEntityAirLock>) this.otherAirLockBlocks.clone();
+			
+			for (final GCCoreTileEntityAirLock tile : copiedSet)
+			{
+				Vector3 vec = new Vector3(tile);
+				int x = vec.intX();
+				int y = vec.intY();
+				int z = vec.intZ();
+				
+				TileEntity newTile = this.worldObj.getBlockTileEntity(x, y, z);
+				
+				if (newTile == null || !newTile.equals(tile))
+				{
+					FMLLog.info("NOTEQUAL");
+					this.otherAirLockBlocks.clear();
+				}
+			}
+		}
+
+		
 		int var1 = this.xCoord;
 		final int var2 = this.yCoord + 1;
 		int var3 = this.zCoord;
@@ -200,14 +225,12 @@ public class GCCoreTileEntityAirLock extends GCCoreTileEntityAdvanced
                     	{
                     		changed = true;
                     	}
-
-                    	if (!this.areAnyInSetOxygenActive())
+                    	
+                    	int idAtCenter = this.worldObj.getBlockId(var1 + var5 * var7, var2 + var8, var3 + var6 * var7);
+                    	
+                    	if (idAtCenter == 0 || idAtCenter == GCCoreBlocks.airLockSeal.blockID)
                     	{
                             this.worldObj.setBlockAndMetadataWithNotify(var1 + var5 * var7, var2 + var8, var3 + var6 * var7, 0, 0, 3);
-                    	}
-                    	else
-                    	{
-                            this.worldObj.setBlockAndMetadataWithNotify(var1 + var5 * var7, var2 + var8, var3 + var6 * var7, GCCoreBlocks.breatheableAir.blockID, 0, 3);
                     	}
                     }
                 }
@@ -248,35 +271,6 @@ public class GCCoreTileEntityAirLock extends GCCoreTileEntityAdvanced
 			for (final GCCoreTileEntityAirLock tile : this.otherAirLockBlocks)
 			{
 				if (tile.active)
-				{
-					numberActive++;
-				}
-			}
-		}
-		else
-		{
-			return false;
-		}
-
-		if (numberActive == 0)
-		{
-			return false;
-		}
-		else
-		{
-			return true;
-		}
-	}
-
-	public boolean areAnyInSetOxygenActive()
-	{
-		int numberActive = 0;
-
-		if (this.otherAirLockBlocks != null)
-		{
-			for (final GCCoreTileEntityAirLock tile : this.otherAirLockBlocks)
-			{
-				if (tile.oxygenActive)
 				{
 					numberActive++;
 				}
