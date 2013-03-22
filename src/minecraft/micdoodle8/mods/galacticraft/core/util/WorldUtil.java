@@ -471,14 +471,17 @@ public class WorldUtil
      */
     public static void registerPlanet(int planetID, boolean isStatic)
     {
-    	if (WorldUtil.registeredPlanets != null)
+    	if (WorldUtil.registeredPlanets == null)
     	{
-    		WorldUtil.registeredPlanets.add(planetID);
+    		WorldUtil.registeredPlanets = new ArrayList<Integer>();
     	}
+    	
+		WorldUtil.registeredPlanets.add(planetID);
 
     	if (isStatic)
     	{
     		DimensionManager.registerDimension(planetID, planetID);
+            FMLLog.info("Registered Dimension: " + planetID);
     	}
     }
 
@@ -492,6 +495,7 @@ public class WorldUtil
             {
                 Integer var1 = (Integer)var0.next();
                 DimensionManager.unregisterDimension(var1.intValue());
+                FMLLog.info("Unregistered Dimension: " + var1.intValue());
             }
 
             WorldUtil.registeredPlanets = null;
