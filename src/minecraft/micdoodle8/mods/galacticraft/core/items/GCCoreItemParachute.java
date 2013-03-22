@@ -80,7 +80,7 @@ public class GCCoreItemParachute extends Item
 
 		for (ItemStack itemStack : list)
 		{
-			this.icons[list.indexOf(itemStack)] = iconRegister.func_94245_a(this.getUnlocalizedName(itemStack).replace("item.", "GalacticraftCore:"));
+			this.icons[list.indexOf(itemStack)] = iconRegister.func_94245_a(this.getUnlocalizedName(itemStack).replace("item.", "galacticraftcore:"));
 		}
 	}
 
