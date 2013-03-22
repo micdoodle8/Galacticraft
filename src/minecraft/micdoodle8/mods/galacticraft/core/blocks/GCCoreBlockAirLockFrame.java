@@ -354,21 +354,21 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvanced
 		int var2;
     	final TileEntity te = par1World.getBlockTileEntity(x, y, z);
 
-    	if (te instanceof GCCoreTileEntityAirLock)
-    	{
-    		final GCCoreTileEntityAirLock airLock = (GCCoreTileEntityAirLock) te;
-
-    		if (airLock.index == 0 || airLock.index == 1)
-    		{
-    			var1 = airLock.orientation == 0 ? 1 : 0;
-    			var2 = airLock.orientation;
-
-    			if (par1World.isBlockIndirectlyGettingPowered(x - var1, y, z - var2) || par1World.isBlockIndirectlyGettingPowered(x + var1, y, z + var2))
-    			{
-    				return false;
-    			}
-    		}
-    	}
+//    	if (te instanceof GCCoreTileEntityAirLock)
+//    	{
+//    		final GCCoreTileEntityAirLock airLock = (GCCoreTileEntityAirLock) te;
+//
+//    		if (airLock.index == 0 || airLock.index == 1)
+//    		{
+//    			var1 = airLock.orientation == 0 ? 1 : 0;
+//    			var2 = airLock.orientation;
+//
+//    			if (par1World.isBlockIndirectlyGettingPowered(x - var1, y, z - var2) || par1World.isBlockIndirectlyGettingPowered(x + var1, y, z + var2))
+//    			{
+//    				return false;
+//    			}
+//    		}
+//    	}
 
 		if (par1World.isBlockIndirectlyGettingPowered(x, y, z) || par1World.isBlockIndirectlyGettingPowered(x, y, z))
 		{
