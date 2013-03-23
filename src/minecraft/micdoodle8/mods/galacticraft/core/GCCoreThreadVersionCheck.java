@@ -21,7 +21,7 @@ public class GCCoreThreadVersionCheck extends Thread
 	
 	public static void startCheck(Side sideToCheck)
 	{
-		Thread thread = new Thread(instance);
+		Thread thread = new Thread(GCCoreThreadVersionCheck.instance);
 		thread.start();
 	}
 	
@@ -100,7 +100,7 @@ public class GCCoreThreadVersionCheck extends Thread
 			}
 			else
 			{
-				FMLLog.info("Galacticraft remote version found: " + (GalacticraftCore.remoteMajVer + "." + GalacticraftCore.remoteMinVer + "." + GalacticraftCore.remoteBuildVer));
+				FMLLog.info("Galacticraft remote version found: " + GalacticraftCore.remoteMajVer + "." + GalacticraftCore.remoteMinVer + "." + GalacticraftCore.remoteBuildVer);
 			}
 			
 			count++;

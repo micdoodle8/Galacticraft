@@ -1,19 +1,6 @@
 package micdoodle8.mods.galacticraft.core.util;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.regex.Pattern;
-
-import codechicken.core.featurehack.GameDataManipulator;
-import codechicken.nei.ItemMobSpawner;
-
 import micdoodle8.mods.galacticraft.core.GCCoreThreadVersionCheck;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 
 public class GCCoreUtil
