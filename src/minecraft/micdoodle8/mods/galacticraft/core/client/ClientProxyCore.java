@@ -20,7 +20,17 @@ import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLaunchFlameFX;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLaunchSmokeFX;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityOxygenFX;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiAirCollector;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiAirCompressor;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiAirDistributor;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiBuggyBench;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiChoosePlanet;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiFuelLoader;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiGalaxyMap;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiRefinery;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiRocketBench;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiRocketRefill;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiTankRefill;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreOverlayOxygenTankIndicator;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreOverlaySensorGlasses;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreOverlaySpaceship;
@@ -79,7 +89,11 @@ import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient;
 import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerClient;
 import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerSlowClient;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAdvancedCraftingTable;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFuelLoader;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPad;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCollector;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCompressor;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenDistributor;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityRefinery;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -103,6 +117,7 @@ import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProviderSurface;
@@ -622,4 +637,81 @@ public class ClientProxyCore extends CommonProxyCore
             return EnumSet.of(TickType.CLIENT);
         }
     }
+
+	@Override
+	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
+	{
+		final TileEntity tile = world.getBlockTileEntity(x, y, z);
+
+		if (ID == GCCoreConfigManager.idGuiTankRefill)
+		{
+			return new GCCoreGuiTankRefill(player);
+		}
+		else if (ID == GCCoreConfigManager.idGuiRocketCraftingBench)
+		{
+			return new GCCoreGuiRocketBench(player.inventory, x, y, z);
+		}
+		else if (ID == GCCoreConfigManager.idGuiBuggyCraftingBench)
+		{
+			return new GCCoreGuiBuggyBench(player.inventory);
+		}
+		else if (ID == GCCoreConfigManager.idGuiGalaxyMap)
+		{
+			return new GCCoreGuiGalaxyMap(player);
+		}
+		else if (ID == GCCoreConfigManager.idGuiSpaceshipInventory && player.ridingEntity != null && player.ridingEntity instanceof GCCoreEntitySpaceship)
+		{
+			return new GCCoreGuiRocketRefill(player.inventory, (GCCoreEntitySpaceship) player.ridingEntity, ((GCCoreEntitySpaceship) player.ridingEntity).getSpaceshipType());
+		}
+		else if (ID == GCCoreConfigManager.idGuiRefinery)
+		{
+			return new GCCoreGuiRefinery(player.inventory, (GCCoreTileEntityRefinery)world.getBlockTileEntity(x, y, z));
+		}
+		else if (ID == GCCoreConfigManager.idGuiAirCompressor)
+		{
+			if (tile != null && tile instanceof GCCoreTileEntityOxygenCompressor)
+			{
+				return new GCCoreGuiAirCompressor(player.inventory, (GCCoreTileEntityOxygenCompressor)tile);
+			}
+			else
+			{
+				return null;
+			}
+		}
+		else if (ID == GCCoreConfigManager.idGuiAirCollector)
+		{
+			if (tile != null && tile instanceof GCCoreTileEntityOxygenCollector)
+			{
+				return new GCCoreGuiAirCollector(player.inventory, (GCCoreTileEntityOxygenCollector)tile);
+			}
+			else
+			{
+				return null;
+			}
+		}
+		else if (ID == GCCoreConfigManager.idGuiAirDistributor)
+		{
+			if (tile != null && tile instanceof GCCoreTileEntityOxygenDistributor)
+			{
+				return new GCCoreGuiAirDistributor(player.inventory, (GCCoreTileEntityOxygenDistributor)tile);
+			}
+			else
+			{
+				return null;
+			}
+		}
+		else if (ID == GCCoreConfigManager.idGuiFuelLoader)
+		{
+			if (tile != null && tile instanceof GCCoreTileEntityFuelLoader)
+			{
+				return new GCCoreGuiFuelLoader(player.inventory, (GCCoreTileEntityFuelLoader)tile);
+			}
+			else
+			{
+				return null;
+			}
+		}
+		
+		return super.getClientGuiElement(ID, player, world, x, y, z);
+	}
 }
