@@ -6,7 +6,7 @@ import java.io.DataOutputStream;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreSpaceStationData;
-import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerBase;
+import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
@@ -18,7 +18,7 @@ public class GCCorePacketSpaceStationData implements IGalacticraftAdvancedPacket
 {
 	public static final byte packetID = 17;
 	
-	public static Packet buildSpaceStationDataPacket(World var0, int var1, GCCorePlayerBase player)
+	public static Packet buildSpaceStationDataPacket(World var0, int var1, GCCorePlayerMP player)
 	{
         NBTTagCompound var2 = new NBTTagCompound();
         GCCoreSpaceStationData.getStationData(var0, var1, player).writeToNBT(var2);

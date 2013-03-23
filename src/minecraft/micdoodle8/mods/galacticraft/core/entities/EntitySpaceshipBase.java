@@ -337,10 +337,10 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
 
         	if (!this.worldObj.isRemote)
         	{
-        		if (!(this.worldObj.provider instanceof IOrbitDimension) && this.riddenByEntity != null && this.riddenByEntity instanceof GCCorePlayerBase)
+        		if (!(this.worldObj.provider instanceof IOrbitDimension) && this.riddenByEntity != null && this.riddenByEntity instanceof GCCorePlayerMP)
         		{
-        	        ((GCCorePlayerBase) this.riddenByEntity).coordsTeleportedFromX = this.riddenByEntity.posX;
-        	        ((GCCorePlayerBase) this.riddenByEntity).coordsTeleportedFromZ = this.riddenByEntity.posZ;
+        	        ((GCCorePlayerMP) this.riddenByEntity).coordsTeleportedFromX = this.riddenByEntity.posX;
+        	        ((GCCorePlayerMP) this.riddenByEntity).coordsTeleportedFromZ = this.riddenByEntity.posZ;
         		}
         		
         		int amountRemoved = 0;
@@ -633,7 +633,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
     	{
     		if (this.riddenByEntity instanceof EntityPlayerMP)
             {
-		        GCCorePlayerBase playerBase = PlayerUtil.getPlayerBaseServerFromPlayer((EntityPlayerMP)this.riddenByEntity);
+		        GCCorePlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer((EntityPlayerMP)this.riddenByEntity);
 		        
 //		        if (playerBase != null && playerBase.spaceStationDimensionID == -1)
 //		        {

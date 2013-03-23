@@ -16,10 +16,10 @@ import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreSpaceStationData;
-import micdoodle8.mods.galacticraft.core.dimension.GCCoreTeleportType;
+import micdoodle8.mods.galacticraft.core.dimension.GCCoreEnumTeleportType;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreWorldProvider;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityParaChest;
-import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerBase;
+import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketDimensionList;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketSpaceStationData;
@@ -180,7 +180,7 @@ public class WorldUtil
 		return WorldUtil.getArrayOfPossibleDimensions(ids, null);
 	}
 
-	public static HashMap getArrayOfPossibleDimensions(Integer[] ids, GCCorePlayerBase playerBase)
+	public static HashMap getArrayOfPossibleDimensions(Integer[] ids, GCCorePlayerMP playerBase)
 	{
 		final HashMap map = new HashMap();
 
@@ -507,7 +507,11 @@ public class WorldUtil
     	ArrayList<Integer> temp = new ArrayList<Integer>();
     	
 		temp.add(0);
-		temp.add(GCMoonConfigManager.dimensionIDMoon);
+    	
+    	for (Integer i : WorldUtil.registeredPlanets)
+    	{
+    		temp.add(i);
+    	}
     	
     	for (Integer i : WorldUtil.registeredSpaceStations)
     	{
@@ -526,7 +530,7 @@ public class WorldUtil
     	return finalArray;
     }
     
-    public static GCCoreSpaceStationData bindSpaceStationToNewDimension(World var0, GCCorePlayerBase player)
+    public static GCCoreSpaceStationData bindSpaceStationToNewDimension(World var0, GCCorePlayerMP player)
     {
     	int newID = DimensionManager.getNextFreeDimId();
     	GCCoreSpaceStationData data = WorldUtil.createSpaceStation(var0, newID, player);
@@ -536,7 +540,7 @@ public class WorldUtil
     	return data;
     }
     
-    public static GCCoreSpaceStationData createSpaceStation(World var0, int par1, GCCorePlayerBase player)
+    public static GCCoreSpaceStationData createSpaceStation(World var0, int par1, GCCorePlayerMP player)
     {
     	WorldUtil.registeredSpaceStations.add(par1);
         DimensionManager.registerDimension(par1, GCCoreConfigManager.idDimensionOverworldOrbit);
@@ -547,7 +551,7 @@ public class WorldUtil
         {
             ArrayList var1 = new ArrayList();
             var1.add(par1);
-            var2.getConfigurationManager().sendPacketToAllPlayers(GCCorePacketDimensionList.buildDimensionListPacket(var1));
+            var2.getConfigurationManager().sendPacketToAllPlayers(GCCorePacketDimensionList.buildDimensionListPacket(var1, (byte) 16));
         }
 
         GCCoreSpaceStationData var3 = GCCoreSpaceStationData.getStationData(var0, par1, player);
@@ -556,7 +560,7 @@ public class WorldUtil
 
     private static MinecraftServer mcServer = null;
     
-    public static void transferEntityToDimension(Entity entity, int dimensionID, WorldServer world, GCCoreTeleportType type)
+    public static void transferEntityToDimension(Entity entity, int dimensionID, WorldServer world, GCCoreEnumTeleportType type)
     {
         if (!world.isRemote)
         {
@@ -579,7 +583,7 @@ public class WorldUtil
         }
     }
 
-    private static Entity teleportEntity(World var0, Entity var1, int var2, GCCoreTeleportType type)
+    private static Entity teleportEntity(World var0, Entity var1, int var2, GCCoreEnumTeleportType type)
     {
         Entity var6 = var1.ridingEntity;
 
@@ -591,11 +595,11 @@ public class WorldUtil
 
         boolean var7 = var1.worldObj != var0;
         var1.worldObj.updateEntityWithOptionalForce(var1, false);
-        GCCorePlayerBase var8 = null;
+        GCCorePlayerMP var8 = null;
 
-        if (var1 instanceof GCCorePlayerBase)
+        if (var1 instanceof GCCorePlayerMP)
         {
-            var8 = (GCCorePlayerBase)var1;
+            var8 = (GCCorePlayerMP)var1;
             var8.closeScreen();
 
             if (var7)
@@ -720,9 +724,9 @@ public class WorldUtil
             }
         }
 
-        if (var1 instanceof GCCorePlayerBase)
+        if (var1 instanceof GCCorePlayerMP)
         {
-            var8 = (GCCorePlayerBase)var1;
+            var8 = (GCCorePlayerMP)var1;
 
             if (var7)
             {
@@ -747,9 +751,9 @@ public class WorldUtil
 
         var0.updateEntityWithOptionalForce(var1, false);
         
-        if (var1 instanceof GCCorePlayerBase)
+        if (var1 instanceof GCCorePlayerMP)
         {
-            var8 = (GCCorePlayerBase)var1;
+            var8 = (GCCorePlayerMP)var1;
             
             switch (type)
             {
@@ -761,9 +765,9 @@ public class WorldUtil
             }
         }
 
-        if (var1 instanceof GCCorePlayerBase && var7)
+        if (var1 instanceof GCCorePlayerMP && var7)
         {
-            var8 = (GCCorePlayerBase)var1;
+            var8 = (GCCorePlayerMP)var1;
             var8.theItemInWorldManager.setWorld((WorldServer)var0);
             var8.mcServer.getConfigurationManager().updateTimeAndWeatherForPlayer(var8, (WorldServer)var0);
             var8.mcServer.getConfigurationManager().syncPlayerInventory(var8);
@@ -809,9 +813,9 @@ public class WorldUtil
             }
         }
         
-        if (var1 instanceof GCCorePlayerBase)
+        if (var1 instanceof GCCorePlayerMP)
         {
-            var8 = (GCCorePlayerBase)var1;
+            var8 = (GCCorePlayerMP)var1;
             double spawnChestHeight = 250.0D;
 
             switch (type)
@@ -834,7 +838,7 @@ public class WorldUtil
           				var8.rocketStacks[i] = new ItemStack(GCCoreItems.rocketFuelBucket, 1, var8.fuelDamage);
           				break;
           			case 25:
-          				var8.rocketStacks[i] = type.equals(GCCoreTeleportType.TOORBIT) ? null : new ItemStack(GCCoreBlocks.landingPad, 9, 0);
+          				var8.rocketStacks[i] = type.equals(GCCoreEnumTeleportType.TOORBIT) ? null : new ItemStack(GCCoreBlocks.landingPad, 9, 0);
           				break;
           			case 26:
           				var8.rocketStacks[i] = new ItemStack(GCCoreItems.spaceship, 1, var8.rocketType);
@@ -867,6 +871,15 @@ public class WorldUtil
 
               	var8.chestSpawnCooldown = 200;
           	}
+        }
+    	
+        MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+
+        if (server != null)
+        {
+            ArrayList array = new ArrayList();
+            array.add(var2);
+            server.getConfigurationManager().sendPacketToAllPlayers(GCCorePacketDimensionList.buildDimensionListPacket(array, (byte) 19));
         }
         
         if (var1 != null && var6 != null)

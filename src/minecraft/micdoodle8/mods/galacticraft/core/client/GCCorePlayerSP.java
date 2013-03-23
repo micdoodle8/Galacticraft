@@ -20,7 +20,7 @@ import cpw.mods.fml.client.FMLClientHandler;
  *  All rights reserved.
  *
  */
-public class GCCorePlayerBaseClient extends EntityClientPlayerMP
+public class GCCorePlayerSP extends EntityClientPlayerMP
 {
 	private final Random rand = new Random();
 
@@ -32,7 +32,7 @@ public class GCCorePlayerBaseClient extends EntityClientPlayerMP
 	public int spaceStationDimensionIDClient = 0;
 	public long tick;
 
-    public GCCorePlayerBaseClient(Minecraft par1Minecraft, World par2World, Session par3Session, NetClientHandler par4NetClientHandler)
+    public GCCorePlayerSP(Minecraft par1Minecraft, World par2World, Session par3Session, NetClientHandler par4NetClientHandler)
     {
 		super(par1Minecraft, par2World, par3Session, par4NetClientHandler);
 	}

@@ -5,7 +5,7 @@ import java.util.List;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
-import micdoodle8.mods.galacticraft.core.client.GCCorePlayerBaseClient;
+import micdoodle8.mods.galacticraft.core.client.GCCorePlayerSP;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -197,7 +197,7 @@ public class GCCoreItemParachute extends Item
     {
     	if (par2EntityPlayer.worldObj.isRemote)
     	{
-    		final GCCorePlayerBaseClient playerBaseCl = PlayerUtil.getPlayerBaseClientFromPlayer(par2EntityPlayer);
+    		final GCCorePlayerSP playerBaseCl = PlayerUtil.getPlayerBaseClientFromPlayer(par2EntityPlayer);
 
     		if (playerBaseCl != null && playerBaseCl.getUseTutorialText())
     		{

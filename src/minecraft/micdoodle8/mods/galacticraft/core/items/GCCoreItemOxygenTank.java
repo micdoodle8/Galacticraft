@@ -4,7 +4,7 @@ import java.util.List;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
-import micdoodle8.mods.galacticraft.core.client.GCCorePlayerBaseClient;
+import micdoodle8.mods.galacticraft.core.client.GCCorePlayerSP;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -48,7 +48,7 @@ public class GCCoreItemOxygenTank extends Item
 
     	if (player != null && player.worldObj.isRemote)
     	{
-    		final GCCorePlayerBaseClient playerBaseCl = PlayerUtil.getPlayerBaseClientFromPlayer(player);
+    		final GCCorePlayerSP playerBaseCl = PlayerUtil.getPlayerBaseClientFromPlayer(player);
 
     		if (playerBaseCl != null && playerBaseCl.getUseTutorialText())
     		{

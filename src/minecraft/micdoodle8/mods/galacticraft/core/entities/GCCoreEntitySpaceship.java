@@ -158,7 +158,7 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
     @Override
 	public void onTeleport(EntityPlayerMP player)
     {
-    	final GCCorePlayerBase playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player);
+    	final GCCorePlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player);
 
     	if (playerBase != null)
     	{

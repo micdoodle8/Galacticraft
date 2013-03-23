@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.util;
 
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiTankRefill;
-import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerBase;
+import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryTankRefill;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenGear;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenMask;
@@ -92,7 +92,7 @@ public class OxygenUtil
         }
 	}
 
-	public static boolean hasValidOxygenSetup(GCCorePlayerBase player)
+	public static boolean hasValidOxygenSetup(GCCorePlayerMP player)
 	{
 		boolean missingComponent = false;
 

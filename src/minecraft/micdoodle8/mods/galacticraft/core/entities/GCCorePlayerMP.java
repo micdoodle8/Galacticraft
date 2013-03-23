@@ -49,7 +49,7 @@ import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 
-public class GCCorePlayerBase extends EntityPlayerMP
+public class GCCorePlayerMP extends EntityPlayerMP
 {
 	private int airRemaining;
 	private int airRemaining2;
@@ -114,7 +114,7 @@ public class GCCorePlayerBase extends EntityPlayerMP
 	
 	public int spaceStationDimensionID = -1;
 
-    public GCCorePlayerBase(MinecraftServer par1MinecraftServer, World par2World, String par3Str, ItemInWorldManager par4ItemInWorldManager)
+    public GCCorePlayerMP(MinecraftServer par1MinecraftServer, World par2World, String par3Str, ItemInWorldManager par4ItemInWorldManager)
     {
     	super(par1MinecraftServer, par2World, par3Str, par4ItemInWorldManager);
     }
@@ -137,9 +137,9 @@ public class GCCorePlayerBase extends EntityPlayerMP
     {
     	super.clonePlayer(par1EntityPlayer, par2);
     	
-    	if (par1EntityPlayer instanceof GCCorePlayerBase)
+    	if (par1EntityPlayer instanceof GCCorePlayerMP)
     	{
-        	this.spaceStationDimensionID = ((GCCorePlayerBase) par1EntityPlayer).spaceStationDimensionID;
+        	this.spaceStationDimensionID = ((GCCorePlayerMP) par1EntityPlayer).spaceStationDimensionID;
     	}
     }
 
@@ -236,16 +236,16 @@ public class GCCorePlayerBase extends EntityPlayerMP
     {
     	super.onUpdate();
     	
-    	this.tick++;
-    	
     	if (!GalacticraftCore.playersServer.containsKey(this.username) || this.tick % 360 == 0)
     	{
     		GalacticraftCore.playersServer.put(this.username, this);
     	}
     	
+    	this.tick++;
+    	
     	Math.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
 
-		if (this.worldObj != null && this.worldObj.provider instanceof GCMoonWorldProvider && !this.isAirBorne)
+		if (this.worldObj != null && this.worldObj.provider instanceof GCMoonWorldProvider && !this.isAirBorne && this.ridingEntity == null)
 		{
 			if (this.worldObj.getBlockId(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 1), MathHelper.floor_double(this.posZ)) == GCMoonBlocks.blockMoon.blockID)
 			{
@@ -1329,7 +1329,7 @@ public class GCCorePlayerBase extends EntityPlayerMP
 	  	}
 	}
 
-	public void sendPlayerParachuteTexturePacket(GCCorePlayerBase player)
+	public void sendPlayerParachuteTexturePacket(GCCorePlayerMP player)
 	{
 		final ItemStack stack = player.playerTankInventory.getStackInSlot(4);
 		String s;

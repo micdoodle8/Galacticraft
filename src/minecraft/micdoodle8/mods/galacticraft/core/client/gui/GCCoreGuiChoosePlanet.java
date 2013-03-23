@@ -6,7 +6,7 @@ import java.util.Random;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.client.GCCorePlayerBaseClient;
+import micdoodle8.mods.galacticraft.core.client.GCCorePlayerSP;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
@@ -507,7 +507,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     	
     	if (this.createSpaceStationButton != null)
     	{
-        	GCCorePlayerBaseClient clientPlayer = PlayerUtil.getPlayerBaseClientFromPlayer(this.playerToSend);
+        	GCCorePlayerSP clientPlayer = PlayerUtil.getPlayerBaseClientFromPlayer(this.playerToSend);
         	
     		if (par1 >= this.createSpaceStationButton.xPosition && par2 >= this.createSpaceStationButton.yPosition && par1 < this.createSpaceStationButton.xPosition + 120 && par2 < this.createSpaceStationButton.yPosition + 20)
     		{
@@ -693,7 +693,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     {
     	final String str = this.destinations[i];
     	
-    	GCCorePlayerBaseClient clientPlayer = PlayerUtil.getPlayerBaseClientFromPlayer(this.playerToSend);
+    	GCCorePlayerSP clientPlayer = PlayerUtil.getPlayerBaseClientFromPlayer(this.playerToSend);
 
     	if (clientPlayer != null && str.toLowerCase().equals("overworld"))
     	{
@@ -718,7 +718,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
 		}
     }
     
-    public boolean playerAlreadyCreatedDimension(GCCorePlayerBaseClient clientPlayer)
+    public boolean playerAlreadyCreatedDimension(GCCorePlayerSP clientPlayer)
     {
     	if (clientPlayer != null && clientPlayer.spaceStationDimensionIDClient != 0 && clientPlayer.spaceStationDimensionIDClient != -1)
     	{

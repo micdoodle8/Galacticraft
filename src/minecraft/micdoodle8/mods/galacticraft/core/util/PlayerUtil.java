@@ -4,14 +4,14 @@ import java.util.Iterator;
 import java.util.Map;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.client.GCCorePlayerBaseClient;
-import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerBase;
+import micdoodle8.mods.galacticraft.core.client.GCCorePlayerSP;
+import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
 import net.minecraft.entity.player.EntityPlayer;
 import cpw.mods.fml.common.FMLLog;
 
 public class PlayerUtil
 {
-	public static GCCorePlayerBase getPlayerBaseServerFromPlayerUsername(String username)
+	public static GCCorePlayerMP getPlayerBaseServerFromPlayerUsername(String username)
 	{
 		if (GalacticraftCore.playersServer.size() == 0)
 		{
@@ -26,7 +26,7 @@ public class PlayerUtil
 
 	        if (entry.getKey().equals(username))
 	        {
-	        	return (GCCorePlayerBase) entry.getValue();
+	        	return (GCCorePlayerMP) entry.getValue();
 	        }
 	    }
 
@@ -35,7 +35,7 @@ public class PlayerUtil
         return null;
 	}
 
-	public static GCCorePlayerBase getPlayerBaseServerFromPlayer(EntityPlayer player)
+	public static GCCorePlayerMP getPlayerBaseServerFromPlayer(EntityPlayer player)
 	{
 		if (player == null)
 		{
@@ -55,7 +55,7 @@ public class PlayerUtil
 
 	        if (entry.getKey().equals(player.username))
 	        {
-	        	return (GCCorePlayerBase) entry.getValue();
+	        	return (GCCorePlayerMP) entry.getValue();
 	        }
 	    }
 
@@ -64,7 +64,7 @@ public class PlayerUtil
         return null;
 	}
 
-	public static GCCorePlayerBaseClient getPlayerBaseClientFromPlayer(EntityPlayer player)
+	public static GCCorePlayerSP getPlayerBaseClientFromPlayer(EntityPlayer player)
 	{
 		if (player == null)
 		{
@@ -84,7 +84,7 @@ public class PlayerUtil
 
 	        if (entry.getKey().equals(player.username))
 	        {
-	        	return (GCCorePlayerBaseClient) entry.getValue();
+	        	return (GCCorePlayerSP) entry.getValue();
 	        }
 	    }
 

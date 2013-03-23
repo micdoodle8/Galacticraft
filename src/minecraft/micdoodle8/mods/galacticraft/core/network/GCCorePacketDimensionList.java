@@ -13,10 +13,11 @@ import cpw.mods.fml.relauncher.Side;
 
 public class GCCorePacketDimensionList implements IGalacticraftAdvancedPacket
 {
-	public static final byte packetID = 16;
+	public static byte packetID = 16;
 	
-	public static Packet buildDimensionListPacket(Collection col)
+	public static Packet buildDimensionListPacket(Collection col, byte packetType)
 	{
+		packetID = packetType;
 		Packet250CustomPayload packet = new Packet250CustomPayload();
 		packet.channel = GalacticraftCore.CHANNEL;
 		

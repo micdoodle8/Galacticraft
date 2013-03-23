@@ -8,7 +8,7 @@ import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 
-public class GCCoreCommandSpaceStationAddOwner extends CommandBase
+public class GCCoreCommandSpaceStationRemoveOwner extends CommandBase
 {
 	@Override
     public String getCommandUsage(ICommandSender var1)
@@ -25,7 +25,7 @@ public class GCCoreCommandSpaceStationAddOwner extends CommandBase
 	@Override
 	public String getCommandName() 
 	{
-		return "ssinvite";
+		return "ssuninvite";
 	}
 
 	@Override
@@ -53,18 +53,11 @@ public class GCCoreCommandSpaceStationAddOwner extends CommandBase
                 	{
                 		GCCoreSpaceStationData data = GCCoreSpaceStationData.getStationData(playerBase.worldObj, playerBase.spaceStationDimensionID, playerBase);
                     	
-                		if (!data.getAllowedPlayers().contains(var3.toLowerCase()))
+                		if (data.getAllowedPlayers().contains(var3.toLowerCase()))
                 		{
-                        	data.getAllowedPlayers().add(var3.toLowerCase());
+                        	data.getAllowedPlayers().remove(var3.toLowerCase());
                         	data.markDirty();
                 		}
-                	}
-                	
-                	GCCorePlayerMP playerToAdd = PlayerUtil.getPlayerBaseServerFromPlayerUsername(var3);
-                	
-                	if (playerToAdd != null)
-                	{
-                		playerToAdd.sendChatToPlayer("You've been added to " + playerBase.username + "\'s Space Station accepted players!");
                 	}
                 }
             }
@@ -81,7 +74,7 @@ public class GCCoreCommandSpaceStationAddOwner extends CommandBase
         
         if (playerBase != null)
         {
-        	playerBase.sendChatToPlayer("Successfully added " + var3 + " to Space Station list!");
+        	playerBase.sendChatToPlayer("Successfully removed " + var3 + " from Space Station list!");
         }
 	}
 }

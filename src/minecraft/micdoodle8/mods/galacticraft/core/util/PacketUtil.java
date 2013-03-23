@@ -9,7 +9,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerBase;
+import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
 import net.minecraft.network.packet.Packet250CustomPayload;
 
 public class PacketUtil
@@ -204,7 +204,7 @@ public class PacketUtil
     {
         final Class objClass = obj.getClass();
 
-        if (objClass.equals(GCCorePlayerBase.class))
+        if (objClass.equals(GCCorePlayerMP.class))
         {
             data.writeObject(obj);
         }
@@ -212,7 +212,7 @@ public class PacketUtil
 
     private static Object readObjectFromStream(ObjectInputStream data, Class curClass) throws IOException
     {
-    	if (curClass.equals(GCCorePlayerBase.class))
+    	if (curClass.equals(GCCorePlayerMP.class))
         {
         	try
         	{

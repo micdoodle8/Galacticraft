@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.dimension;
 
-public enum GCCoreTeleportType
+public enum GCCoreEnumTeleportType
 {
 	TOORBIT,
 	TOPLANET,

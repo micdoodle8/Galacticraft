@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
-import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerBase;
+import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -16,14 +16,14 @@ import net.minecraft.nbt.NBTTagList;
 public class GCCoreInventoryTankRefill implements IInventory
 {
 	public ItemStack[] tankSlotContents = new ItemStack[5];
-	private final GCCorePlayerBase player;
+	private final GCCorePlayerMP player;
 
 	public GCCoreInventoryTankRefill()
 	{
 		this(null);
 	}
 
-	public GCCoreInventoryTankRefill(GCCorePlayerBase player)
+	public GCCoreInventoryTankRefill(GCCorePlayerMP player)
 	{
 		this.player = player;
 	}
