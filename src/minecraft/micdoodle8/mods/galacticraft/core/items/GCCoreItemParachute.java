@@ -73,14 +73,14 @@ public class GCCoreItemParachute extends Item
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void func_94581_a(IconRegister iconRegister)
+	public void updateIcons(IconRegister iconRegister)
 	{
 		List<ItemStack> list = new ArrayList<ItemStack>();
 		this.getSubItems(this.itemID, this.getCreativeTab(), list);
 
 		for (ItemStack itemStack : list)
 		{
-			this.icons[list.indexOf(itemStack)] = iconRegister.func_94245_a(this.getUnlocalizedName(itemStack).replace("item.", "galacticraftcore:"));
+			this.icons[list.indexOf(itemStack)] = iconRegister.registerIcon(this.getUnlocalizedName(itemStack).replace("item.", "galacticraftcore:"));
 		}
 	}
 

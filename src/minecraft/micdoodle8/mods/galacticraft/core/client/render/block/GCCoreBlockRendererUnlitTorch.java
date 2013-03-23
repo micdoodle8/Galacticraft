@@ -121,7 +121,7 @@ public class GCCoreBlockRendererUnlitTorch implements ISimpleBlockRenderingHandl
     	if (par1Block instanceof GCCoreBlockUnlitTorch)
     	{
             Tessellator tessellator = Tessellator.instance;
-            Icon icon = renderBlocks.func_94165_a(par1Block, 0, 0);
+            Icon icon = renderBlocks.getBlockIconFromSideAndMetadata(par1Block, 0, 0);
             
             if (par1Block.blockID == GCCoreBlocks.unlitTorch.blockID)
             {
@@ -133,18 +133,18 @@ public class GCCoreBlockRendererUnlitTorch implements ISimpleBlockRenderingHandl
             	icon = GCCoreBlockUnlitTorch.torchIcons[0];
             }
 
-            double d5 = icon.func_94209_e();
-            double d6 = icon.func_94206_g();
-            double d7 = icon.func_94212_f();
-            double d8 = icon.func_94210_h();
-            double d9 = icon.func_94214_a(7.0D);
-            double d10 = icon.func_94207_b(6.0D);
-            double d11 = icon.func_94214_a(9.0D);
-            double d12 = icon.func_94207_b(8.0D);
-            double d13 = icon.func_94214_a(7.0D);
-            double d14 = icon.func_94207_b(13.0D);
-            double d15 = icon.func_94214_a(9.0D);
-            double d16 = icon.func_94207_b(15.0D);
+            double d5 = (double)icon.getMinU();
+            double d6 = (double)icon.getMinV();
+            double d7 = (double)icon.getMaxU();
+            double d8 = (double)icon.getMaxV();
+            double d9 = (double)icon.getInterpolatedU(7.0D);
+            double d10 = (double)icon.getInterpolatedV(6.0D);
+            double d11 = (double)icon.getInterpolatedU(9.0D);
+            double d12 = (double)icon.getInterpolatedV(8.0D);
+            double d13 = (double)icon.getInterpolatedU(7.0D);
+            double d14 = (double)icon.getInterpolatedV(13.0D);
+            double d15 = (double)icon.getInterpolatedU(9.0D);
+            double d16 = (double)icon.getInterpolatedV(15.0D);
             par2 += 0.5D;
             par6 += 0.5D;
             double d17 = par2 - 0.5D;

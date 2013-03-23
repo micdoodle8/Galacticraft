@@ -59,18 +59,18 @@ public class GCCoreItemOilExtractor extends Item
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void func_94581_a(IconRegister iconRegister)
+	public void updateIcons(IconRegister iconRegister)
 	{
 		List<ItemStack> list = new ArrayList<ItemStack>();
 		this.getSubItems(this.itemID, this.getCreativeTab(), list);
 
-		this.icons[0] = iconRegister.func_94245_a("galacticraftcore:extractor_1");
-		this.icons[1] = iconRegister.func_94245_a("galacticraftcore:extractor_2");
-		this.icons[2] = iconRegister.func_94245_a("galacticraftcore:extractor_3");
-		this.icons[3] = iconRegister.func_94245_a("galacticraftcore:extractor_4");
-		this.icons[4] = iconRegister.func_94245_a("galacticraftcore:extractor_5");
+		this.icons[0] = iconRegister.registerIcon("galacticraftcore:extractor_1");
+		this.icons[1] = iconRegister.registerIcon("galacticraftcore:extractor_2");
+		this.icons[2] = iconRegister.registerIcon("galacticraftcore:extractor_3");
+		this.icons[3] = iconRegister.registerIcon("galacticraftcore:extractor_4");
+		this.icons[4] = iconRegister.registerIcon("galacticraftcore:extractor_5");
 			
-		this.iconIndex = iconRegister.func_94245_a("galacticraftcore:extractor_1");
+		this.iconIndex = iconRegister.registerIcon("galacticraftcore:extractor_1");
 	}
 
 	@Override
@@ -90,7 +90,7 @@ public class GCCoreItemOilExtractor extends Item
 
     		if (this.isOilBlock(par3EntityPlayer, par3EntityPlayer.worldObj, x, y, z))
     		{
-        		par3EntityPlayer.worldObj.func_94571_i(x, y, z);
+        		par3EntityPlayer.worldObj.setBlock(x, y, z, 0);
 
             	if (this.openCanister(par3EntityPlayer) != null)
             	{

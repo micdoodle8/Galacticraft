@@ -68,10 +68,10 @@ public class GCCoreBlockUnlitTorch extends BlockContainer
 
     @Override
 	@SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
+    public void registerIcons(IconRegister par1IconRegister)
     {
-    	this.torchIcons[0] = par1IconRegister.func_94245_a("galacticraftcore:torch_lit");
-		this.torchIcons[1] = par1IconRegister.func_94245_a("galacticraftcore:torch_unlit");
+    	this.torchIcons[0] = par1IconRegister.registerIcon("galacticraftcore:torch_lit");
+		this.torchIcons[1] = par1IconRegister.registerIcon("galacticraftcore:torch_unlit");
     }
 	
     @Override
@@ -232,7 +232,7 @@ public class GCCoreBlockUnlitTorch extends BlockContainer
             if (var7)
             {
                 this.dropBlockAsItem(par1World, par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4), 0);
-                par1World.func_94571_i(par2, par3, par4);
+                par1World.setBlock(par2, par3, par4, 0);
             }
         }
     }
@@ -248,7 +248,7 @@ public class GCCoreBlockUnlitTorch extends BlockContainer
             if (par1World.getBlockId(par2, par3, par4) == this.blockID)
             {
                 this.dropBlockAsItem(par1World, par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4), 0);
-                par1World.func_94571_i(par2, par3, par4);
+                par1World.setBlock(par2, par3, par4, 0);
             }
 
             return false;

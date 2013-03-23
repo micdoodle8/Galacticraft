@@ -39,9 +39,9 @@ public class GCCoreBlockCrudeOilMoving extends BlockFluid implements ILiquid
 
 	@Override
     @SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
+    public void registerIcons(IconRegister par1IconRegister)
     {
-        this.fluidIcons = new Icon[] {par1IconRegister.func_94245_a("galacticraftcore:oil"), par1IconRegister.func_94245_a("galacticraftcore:oil_flow")};
+        this.fluidIcons = new Icon[] {par1IconRegister.registerIcon("galacticraftcore:oil"), par1IconRegister.registerIcon("galacticraftcore:oil_flow")};
     }
 
     @SideOnly(Side.CLIENT)
@@ -53,7 +53,7 @@ public class GCCoreBlockCrudeOilMoving extends BlockFluid implements ILiquid
 	private void updateFlow(World world, int i, int j, int k)
 	{
 		final int l = world.getBlockMetadata(i, j, k);
-		world.setBlockAndMetadataWithNotify(i, j, k, this.blockID + 1, l, 3);
+		world.setBlock(i, j, k, this.blockID + 1, l, 3);
 		world.markBlockRangeForRenderUpdate(i, j, k, i, j, k);
 		world.markBlockForUpdate(i, j, k);
 	}
@@ -98,7 +98,7 @@ public class GCCoreBlockCrudeOilMoving extends BlockFluid implements ILiquid
 
 				if (l < 0)
 				{
-					world.func_94571_i(i, j, k);
+					world.setBlock(i, j, k, 0);
 				}
 				else
 				{
@@ -121,11 +121,11 @@ public class GCCoreBlockCrudeOilMoving extends BlockFluid implements ILiquid
 		{
 			if (l >= 8)
 			{
-				world.setBlockAndMetadataWithNotify(i, j - 1, k, this.blockID, l, 3);
+				world.setBlock(i, j - 1, k, this.blockID, l, 3);
 			}
 			else
 			{
-				world.setBlockAndMetadataWithNotify(i, j - 1, k, this.blockID, l + 8, 3);
+				world.setBlock(i, j - 1, k, this.blockID, l + 8, 3);
 			}
 		}
 		else if (l >= 0 && (l == 0 || this.blockBlocksFlow(world, i, j - 1, k)))
@@ -176,7 +176,7 @@ public class GCCoreBlockCrudeOilMoving extends BlockFluid implements ILiquid
 				Block.blocksList[i1].dropBlockAsItem(world, i, j, k, world.getBlockMetadata(i, j, k), 0);
 			}
 
-			world.setBlockAndMetadataWithNotify(i, j, k, this.blockID, l, 3);
+			world.setBlock(i, j, k, this.blockID, l, 3);
 		}
 	}
 

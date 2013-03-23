@@ -34,12 +34,12 @@ public class GCMoonBlockCheese extends Block
     }
 
     @Override
-    public void func_94332_a(IconRegister par1IconRegister)
+    public void registerIcons(IconRegister par1IconRegister)
     {
     	this.cheeseIcons = new Icon[3];
-    	this.cheeseIcons[0] = par1IconRegister.func_94245_a("galacticraftmoon:cheese_1");
-    	this.cheeseIcons[1] = par1IconRegister.func_94245_a("galacticraftmoon:cheese_2");
-    	this.cheeseIcons[2] = par1IconRegister.func_94245_a("galacticraftmoon:cheese_3");
+    	this.cheeseIcons[0] = par1IconRegister.registerIcon("galacticraftmoon:cheese_1");
+    	this.cheeseIcons[1] = par1IconRegister.registerIcon("galacticraftmoon:cheese_2");
+    	this.cheeseIcons[2] = par1IconRegister.registerIcon("galacticraftmoon:cheese_3");
     }
 
     /**
@@ -154,7 +154,7 @@ public class GCMoonBlockCheese extends Block
 
             if (l >= 6)
             {
-                par1World.func_94571_i(par2, par3, par4);
+                par1World.setBlockToAir(par2, par3, par4);
             }
             else
             {
@@ -181,7 +181,7 @@ public class GCMoonBlockCheese extends Block
     {
         if (!this.canBlockStay(par1World, par2, par3, par4))
         {
-            par1World.func_94571_i(par2, par3, par4);
+            par1World.setBlockToAir(par2, par3, par4);
         }
     }
 

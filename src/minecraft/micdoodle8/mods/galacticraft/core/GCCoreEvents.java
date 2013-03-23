@@ -121,7 +121,7 @@ public class GCCoreEvents
 
 		if ((blockID == bcOilID1 || blockID == bcOilID2 || blockID == GCCoreBlocks.crudeOilMoving.blockID || blockID == GCCoreBlocks.crudeOilStill.blockID) && world.getBlockMetadata(pos.blockX, pos.blockY, pos.blockZ) == 0 && bcOilBucket != null)
 		{
-			world.func_94571_i(pos.blockX, pos.blockY, pos.blockZ);
+			world.setBlockToAir(pos.blockX, pos.blockY, pos.blockZ);
 
 			return new ItemStack(bcOilBucket);
 		}
@@ -177,7 +177,7 @@ public class GCCoreEvents
 
 						if (d2 <= r2)
 						{
-							world.func_94575_c(bx + cx, by + cy, bz + cz, GCCoreBlocks.crudeOilStill.blockID);
+							world.setBlock(bx + cx, by + cy, bz + cz, GCCoreBlocks.crudeOilStill.blockID);
 						}
 					}
 				}

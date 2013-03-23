@@ -58,7 +58,7 @@ public class GCCoreItemRendererBuggy implements IItemRenderer
         	GL11.glTranslatef(0, -0.6F, 0);
         	GL11.glRotatef(Sys.getTime() / 90F % 360F, 0F, 1F, 0F);
         }
-        FMLClientHandler.instance().getClient().renderEngine.func_98187_b("/micdoodle8/mods/galacticraft/core/client/entities/buggy.png");
+        FMLClientHandler.instance().getClient().renderEngine.bindTexture("/micdoodle8/mods/galacticraft/core/client/entities/buggy.png");
         this.modelSpaceship.render(this.spaceship, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
         GL11.glPopMatrix();
 	}

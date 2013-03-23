@@ -34,9 +34,9 @@ public class GCCoreBlockCrudeOilStationary extends BlockStationary implements IL
 
 	@Override
     @SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
+    public void registerIcons(IconRegister par1IconRegister)
     {
-        this.fluidIcons = new Icon[] {par1IconRegister.func_94245_a("galacticraftcore:oil"), par1IconRegister.func_94245_a("galacticraftcore:oil_flow")};
+        this.fluidIcons = new Icon[] {par1IconRegister.registerIcon("galacticraftcore:oil"), par1IconRegister.registerIcon("galacticraftcore:oil_flow")};
     }
 
     @SideOnly(Side.CLIENT)

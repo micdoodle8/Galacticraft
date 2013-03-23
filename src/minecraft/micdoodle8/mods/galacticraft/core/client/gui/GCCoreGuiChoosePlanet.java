@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.core.client.GCCorePlayerBaseClient;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiSmallButton;
@@ -78,6 +79,11 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     public void updateDimensionList(String[] listOfDestinations)
     {
     	this.destinations = listOfDestinations;
+    }
+    
+    public FontRenderer getFontRenderer()
+    {
+    	return this.fontRenderer;
     }
 
     // Override keyTyped so you don't accidently hit Escape and fall to your death!
@@ -352,7 +358,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
         var4.draw();
         GL11.glPopMatrix();
         GL11.glColorMask(true, true, true, true);
-        this.mc.renderEngine.func_98185_a();
+        this.mc.renderEngine.resetBoundTexture();
     }
     
     protected void drawItemStackTooltip(List<String> strings, List<ItemStack> items, List<Boolean> correctAmount, int par2, int par3)

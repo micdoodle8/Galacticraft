@@ -83,7 +83,7 @@ public class OxygenBubble
 
 					if (!this.isDistributorWithinRange(airBlock, true) && airBlock.worldObj.getBlockId(airBlock.xCoord, airBlock.yCoord, airBlock.zCoord) == GCCoreBlocks.breatheableAir.blockID)
 					{
-						airBlock.worldObj.func_94571_i(airBlock.xCoord, airBlock.yCoord, airBlock.zCoord);
+						airBlock.worldObj.setBlock(airBlock.xCoord, airBlock.yCoord, airBlock.zCoord, 0);
 						airBlock.invalidate();
 					}
 				}
@@ -97,7 +97,7 @@ public class OxygenBubble
 
 					if (!this.isDistributorWithinRange(torch, true) && torch.worldObj.getBlockId(torch.xCoord, torch.yCoord, torch.zCoord) == GCCoreBlocks.unlitTorchLit.blockID)
 					{
-						torch.worldObj.setBlockAndMetadataWithNotify(torch.xCoord, torch.yCoord, torch.zCoord, GCCoreBlocks.unlitTorch.blockID, 0, 3);
+						torch.worldObj.setBlock(torch.xCoord, torch.yCoord, torch.zCoord, GCCoreBlocks.unlitTorch.blockID, 0, 3);
 					}
 				}
 			}
@@ -167,12 +167,12 @@ public class OxygenBubble
 							{
 								if (distributor.worldObj.getBlockId(x, y, z) == 0 && !distributor.worldObj.isRemote)
 								{
-									distributor.worldObj.setBlockAndMetadataWithNotify(x, y, z, GCCoreBlocks.breatheableAir.blockID, 0, 3);
+									distributor.worldObj.setBlock(x, y, z, GCCoreBlocks.breatheableAir.blockID, 0, 3);
 								}
 
 								if (distributor.worldObj.getBlockId(x, y, z) == GCCoreBlocks.unlitTorch.blockID && !distributor.worldObj.isRemote)
 								{
-									distributor.worldObj.setBlockAndMetadataWithNotify(x, y, z, GCCoreBlocks.unlitTorchLit.blockID, 0, 3);
+									distributor.worldObj.setBlock(x, y, z, GCCoreBlocks.unlitTorchLit.blockID, 0, 3);
 								}
 							}
 						}
@@ -193,7 +193,7 @@ public class OxygenBubble
 					
 					if (!airBlock.worldObj.isRemote && !this.isDistributorWithinRange(airBlock, false) && airBlock.worldObj.getBlockId(airBlock.xCoord, airBlock.yCoord, airBlock.zCoord) == GCCoreBlocks.breatheableAir.blockID)
 					{
-						airBlock.worldObj.func_94571_i(airBlock.xCoord, airBlock.yCoord, airBlock.zCoord);
+						airBlock.worldObj.setBlock(airBlock.xCoord, airBlock.yCoord, airBlock.zCoord, 0);
 						airBlock.invalidate();
 					}
 				}
@@ -210,7 +210,7 @@ public class OxygenBubble
 					
 					if (!torch.worldObj.isRemote && !this.isDistributorWithinRange(torch, false) && torch.worldObj.getBlockId(torch.xCoord, torch.yCoord, torch.zCoord) == GCCoreBlocks.unlitTorchLit.blockID)
 					{
-						torch.worldObj.setBlockAndMetadataWithNotify(torch.xCoord, torch.yCoord, torch.zCoord, GCCoreBlocks.unlitTorch.blockID, 0, 3);
+						torch.worldObj.setBlock(torch.xCoord, torch.yCoord, torch.zCoord, GCCoreBlocks.unlitTorch.blockID, 0, 3);
 					}
 				}
 			}

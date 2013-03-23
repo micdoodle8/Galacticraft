@@ -28,11 +28,11 @@ public class GCCoreBlockSpaceStationBase extends BlockContainer
 
     @Override
 	@SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
+    public void registerIcons(IconRegister par1IconRegister)
     {
     	this.spaceStationIcons = new Icon[2];
-    	this.spaceStationIcons[0] = par1IconRegister.func_94245_a("galacticraftcore:space_station_top");
-    	this.spaceStationIcons[1] = par1IconRegister.func_94245_a("galacticraftcore:space_station_side");
+    	this.spaceStationIcons[0] = par1IconRegister.registerIcon("galacticraftcore:space_station_top");
+    	this.spaceStationIcons[1] = par1IconRegister.registerIcon("galacticraftcore:space_station_side");
     }
 
     @Override

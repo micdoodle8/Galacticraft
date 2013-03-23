@@ -97,18 +97,18 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
 
         			if (renderer.getPlanetName().toLowerCase().equals(str))
         			{
-        				FMLClientHandler.instance().getClient().renderEngine.func_98187_b(renderer.getPlanetSprite());
+        				FMLClientHandler.instance().getClient().renderEngine.bindTexture(renderer.getPlanetSprite());
 
         				renderer.renderSlot(par1, par2 - 18, par3 + 7, par4, par5Tessellator);
 
-                        FMLClientHandler.instance().getClient().renderEngine.func_98185_a();
+                        FMLClientHandler.instance().getClient().renderEngine.resetBoundTexture();
         			}
             	}
             }
 
     		if (GCCoreGuiChoosePlanet.getDestinations(this.choosePlanetGui)[par1].equals("Overworld"))
             {
-                FMLClientHandler.instance().getClient().renderEngine.func_98187_b("/micdoodle8/mods/galacticraft/core/client/planets/overworld.png");
+                FMLClientHandler.instance().getClient().renderEngine.bindTexture("/micdoodle8/mods/galacticraft/core/client/planets/overworld.png");
 
                 var3.startDrawingQuads();
                 var3.addVertexWithUV(par2 - 10 - this.slotHeight * 0.9, 	par3 - 1 + this.slotHeight * 0.9, 	-90.0D, 0.0, 1.0);
@@ -117,7 +117,7 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
                 var3.addVertexWithUV(par2 - 10 - this.slotHeight * 0.9, 	par3 - 1, 							-90.0D, 0.0, 0.0);
                 var3.draw();
                 
-                FMLClientHandler.instance().getClient().renderEngine.func_98185_a();
+                FMLClientHandler.instance().getClient().renderEngine.resetBoundTexture();
             }
 
         	if (this.choosePlanetGui.isValidDestination(par1))
@@ -132,14 +132,14 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
             		str = str.concat(strs[1]);
             	}
 
-                this.choosePlanetGui.drawCenteredString(this.choosePlanetGui.fontRenderer, str, this.choosePlanetGui.width / 2, par3 + 3, 0xEEEEEE);
+                this.choosePlanetGui.drawCenteredString(this.choosePlanetGui.getFontRenderer(), str, this.choosePlanetGui.width / 2, par3 + 3, 0xEEEEEE);
         	}
         	else
         	{
         		String str = GCCoreGuiChoosePlanet.getDestinations(this.choosePlanetGui)[par1];
         		str = str.replace("*", "");
             	
-                this.choosePlanetGui.drawCenteredString(this.choosePlanetGui.fontRenderer, str, this.choosePlanetGui.width / 2, par3 + 3, 0xEEEEEE);
+                this.choosePlanetGui.drawCenteredString(this.choosePlanetGui.getFontRenderer(), str, this.choosePlanetGui.width / 2, par3 + 3, 0xEEEEEE);
         	}
     	}
     	else
@@ -155,14 +155,14 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
             		str = strs[0];
             	}
 
-                this.choosePlanetGui.drawCenteredString(this.choosePlanetGui.fontRenderer, str, this.choosePlanetGui.width / 2, par3 + 3, 0xEEEEEE);
+                this.choosePlanetGui.drawCenteredString(this.choosePlanetGui.getFontRenderer(), str, this.choosePlanetGui.width / 2, par3 + 3, 0xEEEEEE);
         	}
         	else
         	{
         		String str = GCCoreGuiChoosePlanet.getDestinations(this.choosePlanetGui)[par1];
         		str = str.replace("*", "");
             	
-                this.choosePlanetGui.drawCenteredString(this.choosePlanetGui.fontRenderer, str, this.choosePlanetGui.width / 2, par3 + 3, 0xEEEEEE);
+                this.choosePlanetGui.drawCenteredString(this.choosePlanetGui.getFontRenderer(), str, this.choosePlanetGui.width / 2, par3 + 3, 0xEEEEEE);
         	}
     	}
 

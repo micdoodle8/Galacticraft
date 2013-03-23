@@ -39,7 +39,7 @@ public class GCCoreBlockSapling extends BlockSapling
 
             if (!(waterBlocksNearby > 3))
             {
-            	par1World.setBlockAndMetadataWithNotify(par2, par3, par4, Block.deadBush.blockID, 0, 3);
+            	par1World.setBlock(par2, par3, par4, Block.deadBush.blockID, 0, 3);
             }
 
             final int var6 = par1World.getBlockMetadata(par2, par3, par4);
@@ -80,28 +80,28 @@ public class GCCoreBlockSapling extends BlockSapling
 
         if (var10)
         {
-            par1World.setBlockAndMetadataWithNotify(par2 + var8, par3, par4 + var9, 0, 0, 3);
-            par1World.setBlockAndMetadataWithNotify(par2 + var8 + 1, par3, par4 + var9, 0, 0, 3);
-            par1World.setBlockAndMetadataWithNotify(par2 + var8, par3, par4 + var9 + 1, 0, 0, 3);
-            par1World.setBlockAndMetadataWithNotify(par2 + var8 + 1, par3, par4 + var9 + 1, 0, 0, 3);
+            par1World.setBlock(par2 + var8, par3, par4 + var9, 0, 0, 3);
+            par1World.setBlock(par2 + var8 + 1, par3, par4 + var9, 0, 0, 3);
+            par1World.setBlock(par2 + var8, par3, par4 + var9 + 1, 0, 0, 3);
+            par1World.setBlock(par2 + var8 + 1, par3, par4 + var9 + 1, 0, 0, 3);
         }
         else
         {
-            par1World.setBlockAndMetadataWithNotify(par2, par3, par4, 0, 0, 3);
+            par1World.setBlock(par2, par3, par4, 0, 0, 3);
         }
 
         if (!((WorldGenerator)var7).generate(par1World, par5Random, par2 + var8, par3, par4 + var9))
         {
             if (var10)
             {
-                par1World.setBlockAndMetadataWithNotify(par2 + var8, par3, par4 + var9, this.blockID, var6, 3);
-                par1World.setBlockAndMetadataWithNotify(par2 + var8 + 1, par3, par4 + var9, this.blockID, var6, 3);
-                par1World.setBlockAndMetadataWithNotify(par2 + var8, par3, par4 + var9 + 1, this.blockID, var6, 3);
-                par1World.setBlockAndMetadataWithNotify(par2 + var8 + 1, par3, par4 + var9 + 1, this.blockID, var6, 3);
+                par1World.setBlock(par2 + var8, par3, par4 + var9, this.blockID, var6, 3);
+                par1World.setBlock(par2 + var8 + 1, par3, par4 + var9, this.blockID, var6, 3);
+                par1World.setBlock(par2 + var8, par3, par4 + var9 + 1, this.blockID, var6, 3);
+                par1World.setBlock(par2 + var8 + 1, par3, par4 + var9 + 1, this.blockID, var6, 3);
             }
             else
             {
-                par1World.setBlockAndMetadataWithNotify(par2, par3, par4, this.blockID, var6, 3);
+                par1World.setBlock(par2, par3, par4, this.blockID, var6, 3);
             }
         }
     }

@@ -149,39 +149,6 @@ public abstract class GCMoonComponentVillage extends StructureComponent
         MinecraftForge.TERRAIN_GEN_BUS.post(event);
         if (event.getResult() == Result.DENY) return event.replacement;
 
-        if (this.startPiece.inDesert)
-        {
-            if (par1 == Block.wood.blockID)
-            {
-                return Block.sandStone.blockID;
-            }
-
-            if (par1 == Block.cobblestone.blockID)
-            {
-                return Block.sandStone.blockID;
-            }
-
-            if (par1 == Block.planks.blockID)
-            {
-                return Block.sandStone.blockID;
-            }
-
-            if (par1 == Block.stairCompactPlanks.blockID)
-            {
-                return Block.stairsSandStone.blockID;
-            }
-
-            if (par1 == Block.stairCompactCobblestone.blockID)
-            {
-                return Block.stairsSandStone.blockID;
-            }
-
-            if (par1 == Block.gravel.blockID)
-            {
-                return Block.sandStone.blockID;
-            }
-        }
-
         return par1;
     }
 

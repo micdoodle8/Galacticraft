@@ -59,7 +59,7 @@ public class WorldUtil
     public static boolean generateChestContents(World var1, Random var2, int var3, int var4, int var5)
     {
         boolean var6 = true;
-        var1.setBlockAndMetadataWithNotify(var3, var4, var5, Block.chest.blockID, 0, 3);
+        var1.setBlock(var3, var4, var5, Block.chest.blockID, 0, 3);
         int var7;
 
         for (var7 = 0; var7 < 4; ++var7)

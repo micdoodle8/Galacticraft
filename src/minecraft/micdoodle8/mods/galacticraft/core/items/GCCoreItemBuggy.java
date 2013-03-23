@@ -42,7 +42,7 @@ public class GCCoreItemBuggy extends Item
 
     @Override
 	@SideOnly(Side.CLIENT)
-    public void func_94581_a(IconRegister par1IconRegister)
+    public void updateIcons(IconRegister par1IconRegister)
     {
         this.iconIndex = null;
     }

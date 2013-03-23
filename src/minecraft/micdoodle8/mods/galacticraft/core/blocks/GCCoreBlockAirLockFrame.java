@@ -36,15 +36,15 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvanced
 
     @Override
 	@SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
+    public void registerIcons(IconRegister par1IconRegister)
     {
         this.airLockIcons = new Icon[6];
-        this.airLockIcons[0] = par1IconRegister.func_94245_a("galacticraftcore:airlock_off");
-        this.airLockIcons[1] = par1IconRegister.func_94245_a("galacticraftcore:airlock_on_1");
-        this.airLockIcons[2] = par1IconRegister.func_94245_a("galacticraftcore:airlock_on_2");
-        this.airLockIcons[3] = par1IconRegister.func_94245_a("galacticraftcore:airlock_on_3");
-        this.airLockIcons[4] = par1IconRegister.func_94245_a("galacticraftcore:airlock_on_4");
-        this.airLockIcons[5] = par1IconRegister.func_94245_a("galacticraftcore:airlock_on_5");
+        this.airLockIcons[0] = par1IconRegister.registerIcon("galacticraftcore:airlock_off");
+        this.airLockIcons[1] = par1IconRegister.registerIcon("galacticraftcore:airlock_on_1");
+        this.airLockIcons[2] = par1IconRegister.registerIcon("galacticraftcore:airlock_on_2");
+        this.airLockIcons[3] = par1IconRegister.registerIcon("galacticraftcore:airlock_on_3");
+        this.airLockIcons[4] = par1IconRegister.registerIcon("galacticraftcore:airlock_on_4");
+        this.airLockIcons[5] = par1IconRegister.registerIcon("galacticraftcore:airlock_on_5");
     }
 
     @Override

@@ -35,8 +35,8 @@ public class GCCoreItemSword extends ItemSword
 
 	@Override
     @SideOnly(Side.CLIENT)
-    public void func_94581_a(IconRegister par1IconRegister)
+    public void updateIcons(IconRegister par1IconRegister)
     {
-        this.iconIndex = par1IconRegister.func_94245_a(this.getUnlocalizedName().replace("item.", "galacticraftcore:"));
+        this.iconIndex = par1IconRegister.registerIcon(this.getUnlocalizedName().replace("item.", "galacticraftcore:"));
     }
 }

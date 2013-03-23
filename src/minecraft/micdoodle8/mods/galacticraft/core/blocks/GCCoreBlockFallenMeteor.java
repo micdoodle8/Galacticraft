@@ -27,9 +27,9 @@ public class GCCoreBlockFallenMeteor extends Block
     }
 
     @Override
-    public void func_94332_a(IconRegister par1IconRegister)
+    public void registerIcons(IconRegister par1IconRegister)
     {
-    	this.field_94336_cN = par1IconRegister.func_94245_a("galacticraftcore:fallen_meteor");
+    	this.blockIcon = par1IconRegister.registerIcon("galacticraftcore:fallen_meteor");
     }
 
 	@Override
@@ -112,7 +112,7 @@ public class GCCoreBlockFallenMeteor extends Block
     {
         if (GCCoreBlockFallenMeteor.canFallBelow(par1World, par2, par3 - 1, par4) && par3 >= 0)
         {
-            par1World.setBlockAndMetadataWithNotify(par2, par3, par4, 0, 0, 3);
+            par1World.setBlock(par2, par3, par4, 0, 0, 3);
 
             while (GCCoreBlockFallenMeteor.canFallBelow(par1World, par2, par3 - 1, par4) && par3 > 0)
             {
@@ -121,7 +121,7 @@ public class GCCoreBlockFallenMeteor extends Block
 
             if (par3 > 0)
             {
-                par1World.setBlockAndMetadataWithNotify(par2, par3, par4, this.blockID, 0, 3);
+                par1World.setBlock(par2, par3, par4, this.blockID, 0, 3);
             }
         }
     }

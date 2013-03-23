@@ -6,7 +6,7 @@ public class GCCorePlayerControllerMPTransformer extends GalacticraftAccessTrans
 {
 	public GCCorePlayerControllerMPTransformer()
 	{
-		this.setObfuscatedName("bdl");
+		this.setObfuscatedName("bds");
 	}
 	
 	@Override

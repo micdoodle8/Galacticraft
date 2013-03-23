@@ -138,21 +138,6 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
         this.onInventoryChanged();
     }
 
-    /**
-     * Returns the name of the inventory.
-     */
-    @Override
-	public String getInvName()
-    {
-        return this.func_94042_c() ? this.field_94045_s : "container.chest";
-    }
-
-    @Override
-	public boolean func_94042_c()
-    {
-        return this.field_94045_s != null && this.field_94045_s.length() > 0;
-    }
-
     public void func_94043_a(String par1Str)
     {
         this.field_94045_s = par1Str;
@@ -206,11 +191,6 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
         }
 
         par1NBTTagCompound.setTag("Items", nbttaglist);
-
-        if (this.func_94042_c())
-        {
-            par1NBTTagCompound.setString("CustomName", this.field_94045_s);
-        }
     }
 
     /**
@@ -489,11 +469,17 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
         }
     }
 
-    @Override
-	public boolean func_94041_b(int par1, ItemStack par2ItemStack)
-    {
-        return true;
-    }
+	@Override
+	public boolean isInvNameLocalized() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
     /**
      * invalidates a tile entity
@@ -505,4 +491,10 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
         this.updateContainingBlockInfo();
         this.checkForAdjacentChests();
     }
+
+	@Override
+	public String getInvName() 
+	{
+		return "Treasure Chest";
+	}
 }

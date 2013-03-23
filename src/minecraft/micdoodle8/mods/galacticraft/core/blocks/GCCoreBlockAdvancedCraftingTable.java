@@ -43,11 +43,11 @@ public class GCCoreBlockAdvancedCraftingTable extends BlockContainer
     }
 	
     @Override
-    public void func_94332_a(IconRegister par1IconRegister)
+    public void registerIcons(IconRegister par1IconRegister)
     {
     	this.iconBuffer = new Icon[2];
-    	this.iconBuffer[0] = par1IconRegister.func_94245_a("galacticraftcore:workbench_nasa_side");
-    	this.iconBuffer[1] = par1IconRegister.func_94245_a("galacticraftcore:workbench_nasa_top");
+    	this.iconBuffer[0] = par1IconRegister.registerIcon("galacticraftcore:workbench_nasa_side");
+    	this.iconBuffer[1] = par1IconRegister.registerIcon("galacticraftcore:workbench_nasa_top");
     }
 
 	@Override

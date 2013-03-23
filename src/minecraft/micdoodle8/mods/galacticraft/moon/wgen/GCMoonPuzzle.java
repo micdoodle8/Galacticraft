@@ -444,7 +444,7 @@ public class GCMoonPuzzle
 
     protected void putWallBlock(World var1, int var2, int var3, int var4)
     {
-        var1.setBlockAndMetadataWithNotify(var2, var3, var4, this.wallBlockID, this.wallBlockMeta, 3);
+        var1.setBlock(var2, var3, var4, this.wallBlockID, this.wallBlockMeta, 3);
     }
 
     protected void putWallBlock(World var1, int var2, int var3, int var4, GCMoonComponent var5, StructureBoundingBox var6)
@@ -461,12 +461,12 @@ public class GCMoonPuzzle
 
     protected void carveBlock(World var1, int var2, int var3, int var4)
     {
-        var1.setBlockAndMetadataWithNotify(var2, var3, var4, 0, 0, 3);
+        var1.setBlock(var2, var3, var4, 0, 0, 3);
     }
 
     protected void putHeadBlock(World var1, int var2, int var3, int var4)
     {
-        var1.setBlockAndMetadataWithNotify(var2, var3, var4, this.headBlockID, this.headBlockMeta, 3);
+        var1.setBlock(var2, var3, var4, this.headBlockID, this.headBlockMeta, 3);
     }
 
     protected void putHeadBlock(World var1, int var2, int var3, int var4, GCMoonComponent var5, StructureBoundingBox var6)
@@ -476,7 +476,7 @@ public class GCMoonPuzzle
 
     protected void putRootBlock(World var1, int var2, int var3, int var4)
     {
-        var1.setBlockAndMetadataWithNotify(var2, var3, var4, this.rootBlockID, this.rootBlockMeta, 3);
+        var1.setBlock(var2, var3, var4, this.rootBlockID, this.rootBlockMeta, 3);
     }
 
     protected void putRootBlock(World var1, int var2, int var3, int var4, GCMoonComponent var5, StructureBoundingBox var6)
@@ -505,7 +505,7 @@ public class GCMoonPuzzle
 
                     if (this.isEven(var3) && this.isEven(var4) && this.shouldTorch(var3, var4) && var1.getBlockId(var5, var6, var7) == this.wallBlockID)
                     {
-                        var1.setBlockAndMetadataWithNotify(var5, var6, var7, this.torchBlockID, this.torchBlockMeta, 3);
+                        var1.setBlock(var5, var6, var7, this.torchBlockID, this.torchBlockMeta, 3);
                     }
                 }
             }

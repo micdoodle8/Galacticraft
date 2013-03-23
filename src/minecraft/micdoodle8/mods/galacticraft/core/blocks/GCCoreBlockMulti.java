@@ -21,11 +21,11 @@ public class GCCoreBlockMulti extends BlockMulti
 
     @Override
 	@SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
+    public void registerIcons(IconRegister par1IconRegister)
     {
     	this.fakeIcons = new Icon[2];
-    	this.fakeIcons[0] = par1IconRegister.func_94245_a("galacticraftcore:launch_pad");
-    	this.fakeIcons[1] = par1IconRegister.func_94245_a("galacticraftcore:workbench_nasa_top");
+    	this.fakeIcons[0] = par1IconRegister.registerIcon("galacticraftcore:launch_pad");
+    	this.fakeIcons[1] = par1IconRegister.registerIcon("galacticraftcore:workbench_nasa_top");
     }
 
     @Override
@@ -51,7 +51,7 @@ public class GCCoreBlockMulti extends BlockMulti
 
 	public void makeFakeBlock(World worldObj, Vector3 position, Vector3 mainBlock, int meta)
 	{
-		worldObj.setBlockAndMetadataWithNotify(position.intX(), position.intY(), position.intZ(), this.blockID, meta, 3);
+		worldObj.setBlock(position.intX(), position.intY(), position.intZ(), this.blockID, meta, 3);
 		((TileEntityMulti) worldObj.getBlockTileEntity(position.intX(), position.intY(), position.intZ())).setMainBlock(mainBlock);
 	}
 	

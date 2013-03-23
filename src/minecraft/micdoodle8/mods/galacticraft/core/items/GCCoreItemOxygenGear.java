@@ -57,9 +57,9 @@ public class GCCoreItemOxygenGear extends Item
     
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void func_94581_a(IconRegister iconRegister)
+	public void updateIcons(IconRegister iconRegister)
 	{
-		this.iconIndex = iconRegister.func_94245_a("galacticraftcore:oxygen_gear");
+		this.iconIndex = iconRegister.registerIcon("galacticraftcore:oxygen_gear");
 	}
 
 	@Override

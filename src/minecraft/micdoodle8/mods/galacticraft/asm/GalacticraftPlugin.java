@@ -27,7 +27,7 @@ public class GalacticraftPlugin implements IFMLLoadingPlugin, IFMLCallHook
 	private static String playerControllerMP = GalacticraftPlugin.transformerDir + "GCCorePlayerControllerMPTransformer";
 	public static boolean hasRegistered = false;
     public static File fileLocation;
-	public static final String mcVersion = "[1.5]";
+	public static final String mcVersion = "[1.5.1]";
 	
 	@Override
 	public String[] getLibraryRequestClass() 

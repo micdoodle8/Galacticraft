@@ -46,13 +46,13 @@ public class GCCoreBlockRefinery extends BlockAdvanced
 
     @Override
 	@SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
+    public void registerIcons(IconRegister par1IconRegister)
     {
-        this.iconMachineSide = par1IconRegister.func_94245_a("galacticraftcore:machine_blank");
-        this.iconInput = par1IconRegister.func_94245_a("galacticraftcore:machine_power_input");
-        this.iconFront = par1IconRegister.func_94245_a("galacticraftcore:refinery_front");
-        this.iconBack = par1IconRegister.func_94245_a("galacticraftcore:refinery_side");
-        this.iconTop = par1IconRegister.func_94245_a("galacticraftcore:refinery_top");
+        this.iconMachineSide = par1IconRegister.registerIcon("galacticraftcore:machine_blank");
+        this.iconInput = par1IconRegister.registerIcon("galacticraftcore:machine_power_input");
+        this.iconFront = par1IconRegister.registerIcon("galacticraftcore:refinery_front");
+        this.iconBack = par1IconRegister.registerIcon("galacticraftcore:refinery_side");
+        this.iconTop = par1IconRegister.registerIcon("galacticraftcore:refinery_top");
     }
 
     @Override

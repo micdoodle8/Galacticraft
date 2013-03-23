@@ -199,7 +199,7 @@ public class GCCoreTileEntityAirLock extends GCCoreTileEntityAdvanced
                     		changed = true;
                     	}
 
-                        this.worldObj.setBlockAndMetadataWithNotify(var1 + var5 * var7, var2 + var8, var3 + var6 * var7, GCCoreBlocks.airLockSeal.blockID, 0, 3);
+                        this.worldObj.setBlock(var1 + var5 * var7, var2 + var8, var3 + var6 * var7, GCCoreBlocks.airLockSeal.blockID, 0, 3);
                     }
                 }
 
@@ -229,7 +229,7 @@ public class GCCoreTileEntityAirLock extends GCCoreTileEntityAdvanced
                     	
                     	if (idAtCenter == 0 || idAtCenter == GCCoreBlocks.airLockSeal.blockID)
                     	{
-                            this.worldObj.setBlockAndMetadataWithNotify(var1 + var5 * var7, var2 + var8, var3 + var6 * var7, 0, 0, 3);
+                            this.worldObj.setBlock(var1 + var5 * var7, var2 + var8, var3 + var6 * var7, 0, 0, 3);
                     	}
                     }
                 }

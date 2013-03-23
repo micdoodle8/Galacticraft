@@ -49,7 +49,7 @@ public class GCCoreBlockRendererMeteor implements ISimpleBlockRenderingHandler
         final Tessellator var3 = Tessellator.instance;
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        FMLClientHandler.instance().getClient().renderEngine.func_98187_b("/micdoodle8/mods/galacticraft/core/client/entities/meteor.png");
+        FMLClientHandler.instance().getClient().renderEngine.bindTexture("/micdoodle8/mods/galacticraft/core/client/entities/meteor.png");
         var0.setRenderBounds(0.15F, 0.15F, 0.15F, 0.85F, 0.85F, 0.85F);
         var3.startDrawingQuads();
         var3.setNormal(0.0F, -0.8F, 0.0F);

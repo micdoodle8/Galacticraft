@@ -397,7 +397,7 @@ public class GCCoreEntityWorm extends EntityMob implements IEntityMultiPart
                         if (block.canDragonDestroy(this.worldObj, var10, var11, var12))
                         {
                             var9 = true;
-                            this.worldObj.setBlockAndMetadataWithNotify(var10, var11, var12, 0, 0, 3);
+                            this.worldObj.setBlock(var10, var11, var12, 0, 0, 3);
                         }
                         else
                         {

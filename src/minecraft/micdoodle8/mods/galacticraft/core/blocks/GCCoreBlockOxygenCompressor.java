@@ -51,13 +51,13 @@ public class GCCoreBlockOxygenCompressor extends BlockAdvanced
 
     @Override
 	@SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
+    public void registerIcons(IconRegister par1IconRegister)
     {
-        this.iconMachineSide = par1IconRegister.func_94245_a("galacticraftcore:machine_blank");
-        this.iconCompressor1 = par1IconRegister.func_94245_a("galacticraftcore:machine_compressor_1");
-        this.iconCompressor2 = par1IconRegister.func_94245_a("galacticraftcore:machine_compressor_2");
-        this.iconInput = par1IconRegister.func_94245_a("galacticraftcore:machine_power_input");
-        this.iconOutput = par1IconRegister.func_94245_a("galacticraftcore:machine_oxygen_input");
+        this.iconMachineSide = par1IconRegister.registerIcon("galacticraftcore:machine_blank");
+        this.iconCompressor1 = par1IconRegister.registerIcon("galacticraftcore:machine_compressor_1");
+        this.iconCompressor2 = par1IconRegister.registerIcon("galacticraftcore:machine_compressor_2");
+        this.iconInput = par1IconRegister.registerIcon("galacticraftcore:machine_power_input");
+        this.iconOutput = par1IconRegister.registerIcon("galacticraftcore:machine_oxygen_input");
     }
 
 	@Override

@@ -72,13 +72,13 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityElectricityRunn
             		
             		if (tile != null && tile instanceof GCCoreTileEntityBreathableAir)
             		{
-        				tile.worldObj.func_94571_i(tile.xCoord, tile.yCoord, tile.zCoord);
+        				tile.worldObj.setBlockToAir(tile.xCoord, tile.yCoord, tile.zCoord);
 						tile.invalidate();
             		}
             		
             		if (tile != null && tile instanceof GCCoreTileEntityUnlitTorch)
             		{
-            			tile.worldObj.setBlockAndMetadataWithNotify(tile.xCoord, tile.yCoord, tile.zCoord, GCCoreBlocks.unlitTorch.blockID, 0, 3);
+            			tile.worldObj.setBlock(tile.xCoord, tile.yCoord, tile.zCoord, GCCoreBlocks.unlitTorch.blockID, 0, 3);
             		}
             	}
         	}
@@ -129,13 +129,13 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityElectricityRunn
 		            		
 		            		if (tile != null && tile instanceof GCCoreTileEntityBreathableAir)
 		            		{
-		        				tile.worldObj.func_94571_i(tile.xCoord, tile.yCoord, tile.zCoord);
+		        				tile.worldObj.setBlockToAir(tile.xCoord, tile.yCoord, tile.zCoord);
 								tile.invalidate();
 		            		}
 		            		
 		            		if (tile != null && tile instanceof GCCoreTileEntityUnlitTorch)
 		            		{
-		            			tile.worldObj.setBlockAndMetadataWithNotify(tile.xCoord, tile.yCoord, tile.zCoord, GCCoreBlocks.unlitTorch.blockID, 0, 3);
+		            			tile.worldObj.setBlock(tile.xCoord, tile.yCoord, tile.zCoord, GCCoreBlocks.unlitTorch.blockID, 0, 3);
 		            		}
 		            	}
 		        	}
@@ -399,15 +399,13 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityElectricityRunn
 	}
 
 	@Override
-	public boolean func_94042_c()
-	{
+	public boolean isInvNameLocalized() {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean func_94041_b(int i, ItemStack itemstack)
-	{
+	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
 		// TODO Auto-generated method stub
 		return false;
 	}

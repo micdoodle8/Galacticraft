@@ -42,13 +42,13 @@ public class GCCoreItemOilCanister extends Item implements IRefinableItem
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void func_94581_a(IconRegister iconRegister)
+	public void updateIcons(IconRegister iconRegister)
 	{
 		int i = 0;
 		
 		for (String name : this.names)
 		{
-			this.icons[i++] = iconRegister.func_94245_a("galacticraftcore:" + name);
+			this.icons[i++] = iconRegister.registerIcon("galacticraftcore:" + name);
 		}
 	}
 

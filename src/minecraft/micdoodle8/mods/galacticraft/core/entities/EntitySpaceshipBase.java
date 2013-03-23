@@ -358,7 +358,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
                 			{
                 				if (amountRemoved < 9)
                 				{
-                    				this.worldObj.func_94571_i(x, y, z);
+                    				this.worldObj.setBlockToAir(x, y, z);
                     				amountRemoved = 9;
                 				}
                 			}
@@ -367,7 +367,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
                 			{
                     			if (amountRemoved < 9)
                     			{
-                    				this.worldObj.func_94571_i(x, y, z);
+                    				this.worldObj.setBlockToAir(x, y, z);
                     				amountRemoved++;
                     			}
                 			}

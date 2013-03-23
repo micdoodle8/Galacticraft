@@ -73,7 +73,7 @@ public class GCCoreTileEntityOxygenCollector extends TileEntityElectricityRunnab
 						{
 							if (!this.worldObj.isRemote && this.worldObj.rand.nextInt(100000) == 0 && !GCCoreConfigManager.disableLeafDecay)
 							{
-								this.worldObj.func_94571_i(x, y, z);
+								this.worldObj.setBlockToAir(x, y, z);
 							}
 
 							power++;
@@ -351,15 +351,13 @@ public class GCCoreTileEntityOxygenCollector extends TileEntityElectricityRunnab
 	}
 
 	@Override
-	public boolean func_94042_c()
-	{
+	public boolean isInvNameLocalized() {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean func_94041_b(int i, ItemStack itemstack)
-	{
+	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
 		// TODO Auto-generated method stub
 		return false;
 	}

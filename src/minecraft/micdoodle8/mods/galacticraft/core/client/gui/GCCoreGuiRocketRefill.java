@@ -83,7 +83,7 @@ public class GCCoreGuiRocketRefill extends GuiContainer
             break;
     	}
 
-        this.mc.renderEngine.func_98187_b(var4);
+        this.mc.renderEngine.bindTexture(var4);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         final int var5 = (this.width - this.xSize) / 2;

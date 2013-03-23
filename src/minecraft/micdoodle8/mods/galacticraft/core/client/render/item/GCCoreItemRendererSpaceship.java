@@ -75,7 +75,7 @@ public class GCCoreItemRendererSpaceship implements IItemRenderer
         	GL11.glTranslatef(0, -0.6F, 0);
         	GL11.glRotatef(Sys.getTime() / 90F % 360F, 0F, 1F, 0F);
         }
-        FMLClientHandler.instance().getClient().renderEngine.func_98187_b("/micdoodle8/mods/galacticraft/core/client/entities/spaceship1.png");
+        FMLClientHandler.instance().getClient().renderEngine.bindTexture("/micdoodle8/mods/galacticraft/core/client/entities/spaceship1.png");
         this.modelSpaceship.render(this.spaceship, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
         GL11.glPopMatrix();
         
@@ -84,7 +84,7 @@ public class GCCoreItemRendererSpaceship implements IItemRenderer
         	if (item.getItemDamage() == 1)
         	{
                 ModelChest modelChest = this.chestModel;
-                FMLClientHandler.instance().getClient().renderEngine.func_98187_b("/item/chest.png");
+                FMLClientHandler.instance().getClient().renderEngine.bindTexture("/item/chest.png");
                 
                 GL11.glPushMatrix();
 //                GL11.glEnable(GL12.GL_RESCALE_NORMAL);
@@ -128,27 +128,27 @@ public class GCCoreItemRendererSpaceship implements IItemRenderer
         }
 	}
 
-    public void renderItemIntoGUI(RenderBlocks renderBlocks, FontRenderer par1FontRenderer, RenderEngine par2RenderEngine, ItemStack par3ItemStack, int par4, int par5)
-    {
-//        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-//        GL11.glDisable(GL11.GL_DEPTH_TEST);
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        short short1 = 0;
-
-        float f1 = 0;
-        float f2;
-
-        f1 = 1.0F - f1;
-        f1 = 1.0F - f1 * f1 * f1;
-        
-        Icon icon = par2RenderEngine.func_96448_c(par3ItemStack.func_94608_d());
-            
-        this.drawItems.zLevel = 300.0F;
-        this.drawItems.func_94149_a(100, 100, icon, 16, 16);
-//        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-//        GL11.glEnable(GL11.GL_DEPTH_TEST);
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    }
+//    public void renderItemIntoGUI(RenderBlocks renderBlocks, FontRenderer par1FontRenderer, RenderEngine par2RenderEngine, ItemStack par3ItemStack, int par4, int par5)
+//    {
+////        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+////        GL11.glDisable(GL11.GL_DEPTH_TEST);
+//        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+//        short short1 = 0;
+//
+//        float f1 = 0;
+//        float f2;
+//
+//        f1 = 1.0F - f1;
+//        f1 = 1.0F - f1 * f1 * f1;
+//        
+////        Icon icon = par2RenderEngine.func_96448_c(par3ItemStack.bindTexture());
+//            
+////        this.drawItems.zLevel = 300.0F;
+////        this.drawItems.bindTexture(100, 100, icon, 16, 16);
+////        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+////        GL11.glEnable(GL11.GL_DEPTH_TEST);
+//        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+//    }
 
 	/** IItemRenderer implementation **/
 

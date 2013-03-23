@@ -70,9 +70,9 @@ public class GCCoreBlockLandingPadFull extends BlockAdvanced
 	}
 
     @Override
-    public void func_94332_a(IconRegister par1IconRegister)
+    public void registerIcons(IconRegister par1IconRegister)
     {
-    	this.field_94336_cN = par1IconRegister.func_94245_a("galacticraftcore:launch_pad");
+    	this.blockIcon = par1IconRegister.registerIcon("galacticraftcore:launch_pad");
     }
 	
 	@Override

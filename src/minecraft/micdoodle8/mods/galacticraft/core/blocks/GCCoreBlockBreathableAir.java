@@ -28,9 +28,9 @@ public class GCCoreBlockBreathableAir extends BlockContainer
 	}
 
     @Override
-    public void func_94332_a(IconRegister par1IconRegister)
+    public void registerIcons(IconRegister par1IconRegister)
     {
-    	this.field_94336_cN = par1IconRegister.func_94245_a("galacticraftcore:breathable_air");
+    	this.blockIcon = par1IconRegister.registerIcon("galacticraftcore:breathable_air");
     }
 
 	public void setMinYMaxY(double minY, double maxY)

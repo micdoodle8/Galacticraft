@@ -202,7 +202,7 @@ public class GCCoreModelPlayer extends ModelBiped
 
             //
 
-    		FMLClientHandler.instance().getClient().renderEngine.func_98187_b("/micdoodle8/mods/galacticraft/core/client/entities/player.png");
+    		FMLClientHandler.instance().getClient().renderEngine.bindTexture("/micdoodle8/mods/galacticraft/core/client/entities/player.png");
 
             changed = false;
 
@@ -396,7 +396,7 @@ public class GCCoreModelPlayer extends ModelBiped
 
         	if (this.usingParachute)
         	{
-        		FMLClientHandler.instance().getClient().renderEngine.func_98187_b("/micdoodle8/mods/galacticraft/core/client/entities/parachute/" + ClientProxyCore.parachuteTextures.get(player.username) + ".png");
+        		FMLClientHandler.instance().getClient().renderEngine.bindTexture("/micdoodle8/mods/galacticraft/core/client/entities/parachute/" + ClientProxyCore.parachuteTextures.get(player.username) + ".png");
 
             	this.parachute[0].render(var7);
             	this.parachute[1].render(var7);

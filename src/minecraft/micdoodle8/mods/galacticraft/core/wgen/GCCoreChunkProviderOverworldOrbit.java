@@ -89,7 +89,7 @@ public class GCCoreChunkProviderOverworldOrbit extends ChunkProviderGenerate
         this.rand.setSeed(par2 * i1 + par3 * j1 ^ this.worldObj.getSeed());
         if (k == 0 && l == 0)
         {
-            this.worldObj.setBlockAndMetadataWithNotify(k, 64, l, GCCoreBlocks.spaceStationBase.blockID, 0, 3);
+            this.worldObj.setBlock(k, 64, l, GCCoreBlocks.spaceStationBase.blockID, 0, 3);
 //            this.worldObj.setBlockTileEntity(k, 64, l, new GCCoreTileEntitySpaceStationBase());
 
             TileEntity var8 = this.worldObj.getBlockTileEntity(k, 64, l);
@@ -110,11 +110,11 @@ public class GCCoreChunkProviderOverworldOrbit extends ChunkProviderGenerate
 //                    	{
 //                    		if (y == 2 && !(Math.abs(x) == 3 && Math.abs(z) == 3))
 //                    		{
-//                    			this.worldObj.setBlockAndMetadataWithNotify(k + x, 63 + y, l + z, Block.thinGlass.blockID, 0, 3);
+//                    			this.worldObj.setBlock(k + x, 63 + y, l + z, Block.thinGlass.blockID, 0, 3);
 //                    		}
 //                    		else
 //                    		{
-//                    			this.worldObj.setBlockAndMetadataWithNotify(k + x, 63 + y, l + z, GCCoreBlocks.decorationBlocks.blockID, 4, 3);
+//                    			this.worldObj.setBlock(k + x, 63 + y, l + z, GCCoreBlocks.decorationBlocks.blockID, 4, 3);
 //                    		}
 //                    	}
 //                    }
@@ -127,7 +127,7 @@ public class GCCoreChunkProviderOverworldOrbit extends ChunkProviderGenerate
 //            	{
 //                    for (int z = -2; z < 3; z++)
 //                    {
-//                    	this.worldObj.setBlockAndMetadataWithNotify(k + x, 63, l + z, GCCoreBlocks.decorationBlocks.blockID, 4, 3);
+//                    	this.worldObj.setBlock(k + x, 63, l + z, GCCoreBlocks.decorationBlocks.blockID, 4, 3);
 //                    }
 //            	}
 //            }

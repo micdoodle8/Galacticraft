@@ -40,25 +40,25 @@ public class GCMoonBlock extends Block implements IDetectableMetadataResource, I
 
     @Override
 	@SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
+    public void registerIcons(IconRegister par1IconRegister)
     {
         this.moonBlockIcons = new Icon[16];
-        this.moonBlockIcons[0] = par1IconRegister.func_94245_a("galacticraftmoon:grass_top");
-        this.moonBlockIcons[1] = par1IconRegister.func_94245_a("galacticraftmoon:brick");
-        this.moonBlockIcons[2] = par1IconRegister.func_94245_a("galacticraftmoon:dirt");
-        this.moonBlockIcons[3] = par1IconRegister.func_94245_a("galacticraftmoon:grass_side");
-        this.moonBlockIcons[4] = par1IconRegister.func_94245_a("galacticraftmoon:grass_step_1");
-        this.moonBlockIcons[5] = par1IconRegister.func_94245_a("galacticraftmoon:grass_step_2");
-        this.moonBlockIcons[6] = par1IconRegister.func_94245_a("galacticraftmoon:grass_step_3");
-        this.moonBlockIcons[7] = par1IconRegister.func_94245_a("galacticraftmoon:grass_step_4");
-        this.moonBlockIcons[8] = par1IconRegister.func_94245_a("galacticraftmoon:grass_step_5");
-        this.moonBlockIcons[9] = par1IconRegister.func_94245_a("galacticraftmoon:grass_step_6");
-        this.moonBlockIcons[10] = par1IconRegister.func_94245_a("galacticraftmoon:grass_step_7");
-        this.moonBlockIcons[11] = par1IconRegister.func_94245_a("galacticraftmoon:grass_step_8");
-        this.moonBlockIcons[12] = par1IconRegister.func_94245_a("galacticraftmoon:moonore_copper");
-        this.moonBlockIcons[13] = par1IconRegister.func_94245_a("galacticraftmoon:moonore_tin");
-        this.moonBlockIcons[14] = par1IconRegister.func_94245_a("galacticraftmoon:moonore_cheese");
-        this.moonBlockIcons[15] = par1IconRegister.func_94245_a("galacticraftmoon:moonstone");
+        this.moonBlockIcons[0] = par1IconRegister.registerIcon("galacticraftmoon:grass_top");
+        this.moonBlockIcons[1] = par1IconRegister.registerIcon("galacticraftmoon:brick");
+        this.moonBlockIcons[2] = par1IconRegister.registerIcon("galacticraftmoon:dirt");
+        this.moonBlockIcons[3] = par1IconRegister.registerIcon("galacticraftmoon:grass_side");
+        this.moonBlockIcons[4] = par1IconRegister.registerIcon("galacticraftmoon:grass_step_1");
+        this.moonBlockIcons[5] = par1IconRegister.registerIcon("galacticraftmoon:grass_step_2");
+        this.moonBlockIcons[6] = par1IconRegister.registerIcon("galacticraftmoon:grass_step_3");
+        this.moonBlockIcons[7] = par1IconRegister.registerIcon("galacticraftmoon:grass_step_4");
+        this.moonBlockIcons[8] = par1IconRegister.registerIcon("galacticraftmoon:grass_step_5");
+        this.moonBlockIcons[9] = par1IconRegister.registerIcon("galacticraftmoon:grass_step_6");
+        this.moonBlockIcons[10] = par1IconRegister.registerIcon("galacticraftmoon:grass_step_7");
+        this.moonBlockIcons[11] = par1IconRegister.registerIcon("galacticraftmoon:grass_step_8");
+        this.moonBlockIcons[12] = par1IconRegister.registerIcon("galacticraftmoon:moonore_copper");
+        this.moonBlockIcons[13] = par1IconRegister.registerIcon("galacticraftmoon:moonore_tin");
+        this.moonBlockIcons[14] = par1IconRegister.registerIcon("galacticraftmoon:moonore_cheese");
+        this.moonBlockIcons[15] = par1IconRegister.registerIcon("galacticraftmoon:moonstone");
     }
 
 	@Override

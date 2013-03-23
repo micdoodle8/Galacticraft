@@ -34,11 +34,11 @@ public class GCCoreTileEntityLandingPadSingle extends TileEntity
     		for (TileEntity tile : attachedLaunchPads)
     		{
     			tile.invalidate();
-    			tile.worldObj.func_94571_i(tile.xCoord, tile.yCoord, tile.zCoord);
+    			tile.worldObj.setBlock(tile.xCoord, tile.yCoord, tile.zCoord, 0);
 //            	((GCCoreBlockLandingPadFull)GCCoreBlocks.landingPadFull).onBlockAdded(worldObj, tile.xCoord, tile.yCoord, tile.zCoord);
     		}
     		
-        	this.worldObj.setBlockAndMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, GCCoreBlocks.landingPadFull.blockID, 0, 3);
+        	this.worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, GCCoreBlocks.landingPadFull.blockID, 0, 3);
         	GCCoreTileEntityLandingPad tile = (GCCoreTileEntityLandingPad) this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord);
         	
             if (tile instanceof IMultiBlock)

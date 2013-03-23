@@ -22,9 +22,9 @@ public class GCCoreBlockAirLockWall extends BlockBreakable
 
     @Override
 	@SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
+    public void registerIcons(IconRegister par1IconRegister)
     {
-    	this.field_94336_cN = par1IconRegister.func_94245_a("galacticraftcore:deco_aluminium_4");
+    	this.blockIcon = par1IconRegister.registerIcon("galacticraftcore:deco_aluminium_4");
     }
 
     @Override
@@ -80,7 +80,7 @@ public class GCCoreBlockAirLockWall extends BlockBreakable
 
         if (par1World.getBlockId(par2, var8 - 1, par4) != GCCoreBlocks.airLockFrame.blockID)
         {
-            par1World.setBlockAndMetadataWithNotify(par2, par3, par4, 0, 0, 3);
+            par1World.setBlock(par2, par3, par4, 0, 0, 3);
         }
         else
         {
@@ -106,20 +106,20 @@ public class GCCoreBlockAirLockWall extends BlockBreakable
         		{
                     if (var10 && var11)
                     {
-                        par1World.setBlockAndMetadataWithNotify(par2, par3, par4, 0, 0, 3);
+                        par1World.setBlock(par2, par3, par4, 0, 0, 3);
                     }
                     else
                     {
                         if ((par1World.getBlockId(par2 + var6, par3, par4 + var7) != GCCoreBlocks.airLockFrame.blockID || par1World.getBlockId(par2 - var6, par3, par4 - var7) != this.blockID) && (par1World.getBlockId(par2 - var6, par3, par4 - var7) != GCCoreBlocks.airLockFrame.blockID || par1World.getBlockId(par2 + var6, par3, par4 + var7) != this.blockID))
                         {
-                            par1World.setBlockAndMetadataWithNotify(par2, par3, par4, 0, 0, 3);
+                            par1World.setBlock(par2, par3, par4, 0, 0, 3);
                         }
                     }
         		}
             }
             else
             {
-                par1World.setBlockAndMetadataWithNotify(par2, par3, par4, 0, 0, 3);
+                par1World.setBlock(par2, par3, par4, 0, 0, 3);
             }
         }
     }

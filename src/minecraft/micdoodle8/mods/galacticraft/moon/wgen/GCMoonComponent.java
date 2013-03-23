@@ -46,12 +46,12 @@ public abstract class GCMoonComponent extends StructureComponent
 
         if (var7.isVecInside(var9, var10, var11) && var1.getBlockId(var9, var10, var11) != Block.mobSpawner.blockID)
         {
-            var1.setBlockAndMetadataWithNotify(var9, var10, var11, Block.mobSpawner.blockID, 0, 3);
+            var1.setBlock(var9, var10, var11, Block.mobSpawner.blockID, 0, 3);
             var8 = (TileEntityMobSpawner)var1.getBlockTileEntity(var9, var10, var11);
 
             if (var8 != null)
             {
-            	var8.func_98049_a().func_98272_a(var6);
+            	var8.func_98049_a().setMobID(var6);
             }
         }
 
@@ -217,7 +217,7 @@ public abstract class GCMoonComponent extends StructureComponent
 
         if (var8.isVecInside(var9, var10, var11))
         {
-            var1.setBlockAndMetadataWithNotify(var9, var10, var11, var2, var3, 3);
+            var1.setBlock(var9, var10, var11, var2, var3, 3);
         }
     }
 

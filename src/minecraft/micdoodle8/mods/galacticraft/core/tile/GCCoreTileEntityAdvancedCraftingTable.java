@@ -82,13 +82,13 @@ public class GCCoreTileEntityAdvancedCraftingTable extends TileEntityMulti imple
 						{
 							if (this.worldObj.isRemote && this.worldObj.rand.nextDouble() < 0.05D)
 								FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z, GCCoreBlocks.rocketBench.blockID & 4095, GCCoreBlocks.rocketBench.blockID >> 12 & 255);
-							this.worldObj.setBlockAndMetadataWithNotify(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z, 0, 0, 3);
+							this.worldObj.setBlock(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z, 0, 0, 3);
 						}
 						else if (y != 0 && y != 3)
 						{
 							if (this.worldObj.rand.nextDouble() < 0.05D)
 								FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z, GCCoreBlocks.rocketBench.blockID & 4095, GCCoreBlocks.rocketBench.blockID >> 12 & 255);
-							this.worldObj.setBlockAndMetadataWithNotify(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z, 0, 0, 3);
+							this.worldObj.setBlock(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z, 0, 0, 3);
 						}
 					}
 				}
