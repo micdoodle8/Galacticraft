@@ -58,6 +58,10 @@ public class GCCoreCommandSpaceStationRemoveOwner extends CommandBase
                         	data.getAllowedPlayers().remove(var3.toLowerCase());
                         	data.markDirty();
                 		}
+                		else
+                		{
+                            throw new CommandException("Couldn't find player with username \"" + var3 + "\" on your Space Station list!", new Object[0]);
+                		}
                 	}
                 }
             }
