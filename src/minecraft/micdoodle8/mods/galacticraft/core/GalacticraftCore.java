@@ -146,9 +146,6 @@ public class GalacticraftCore
 
 	public static GalacticraftMoon moon = new GalacticraftMoon();
 
-	public static long tick;
-	public static long slowTick;
-
 	public static Map<String, GCCorePlayerBaseClient> playersClient = new HashMap<String, GCCorePlayerBaseClient>();
 	public static Map<String, GCCorePlayerBase> playersServer = new HashMap<String, GCCorePlayerBase>();
 
@@ -201,53 +198,6 @@ public class GalacticraftCore
 		BasicComponents.registerCircuits(0);
 		BasicComponents.registerMotor(0);
 		BasicComponents.registerInfiniteBattery(0);
-		
-//		try 
-//		{
-//			Class.forName("net.minecraft.block.Block");
-//		} 
-//		catch (ClassNotFoundException e1) 
-//		{
-//			inMCP = false;
-//		}
-//		
-//		if (inMCP)
-//		{
-//			try 
-//			{
-//				Class.forName("net.minecraft.src.ServerPlayerAPI");
-//			} 
-//			catch (ClassNotFoundException e1) 
-//			{
-//				playerAPILoaded = false;
-//			}
-//		}
-//		else
-//		{
-//			try 
-//			{
-//				Class.forName("ServerPlayerAPI");
-//			} 
-//			catch (ClassNotFoundException e1) 
-//			{
-//				playerAPILoaded = false;
-//			}
-//		}
-//		
-//		FMLLog.info("Galacticraft Load Status - PlayerAPI Found: " + playerAPILoaded + " - " + "In MCP: " + inMCP);
-		
-//		if (playerAPILoaded)
-//		{
-//			try
-//			{
-//				ServerPlayerAPI.register(GalacticraftCore.MODID, GCCorePlayerBase.class);
-//			}
-//			catch (Exception e)
-//			{
-//				FMLLog.severe("PLAYER API NOT INSTALLED!");
-//				e.printStackTrace();
-//			}
-//		}
 		
 		GalacticraftCore.registerSubMod(GalacticraftCore.moon);
 
@@ -312,7 +262,7 @@ public class GalacticraftCore
 
 		GCCoreUtil.checkVersion(Side.SERVER);
         TickRegistry.registerTickHandler(new CommonTickHandler(), Side.SERVER);
-        TickRegistry.registerScheduledTickHandler(new CommonTickHandlerSlow(), Side.SERVER);
+//        TickRegistry.registerScheduledTickHandler(new CommonTickHandlerSlow(), Side.SERVER);
         NetworkRegistry.instance().registerChannel(new ServerPacketHandler(), GalacticraftCore.CHANNEL, Side.SERVER);
 	}
 
@@ -690,35 +640,35 @@ public class GalacticraftCore
         }
     }
 
-	public class CommonTickHandlerSlow implements IScheduledTickHandler
-	{
-		@Override
-		public void tickStart(EnumSet<TickType> type, Object... tickData)
-		{
-			GalacticraftCore.slowTick++;
-		}
-
-		@Override
-		public void tickEnd(EnumSet<TickType> type, Object... tickData) { }
-
-		@Override
-		public EnumSet<TickType> ticks()
-		{
-			return EnumSet.of(TickType.SERVER);
-		}
-
-		@Override
-		public String getLabel()
-		{
-			return "Galacticraft Core Common Slow";
-		}
-
-		@Override
-		public int nextTickSpacing()
-		{
-			return 1;
-		}
-	}
+//	public class CommonTickHandlerSlow implements IScheduledTickHandler
+//	{
+//		@Override
+//		public void tickStart(EnumSet<TickType> type, Object... tickData)
+//		{
+//			GalacticraftCore.slowTick++;
+//		}
+//
+//		@Override
+//		public void tickEnd(EnumSet<TickType> type, Object... tickData) { }
+//
+//		@Override
+//		public EnumSet<TickType> ticks()
+//		{
+//			return EnumSet.of(TickType.SERVER);
+//		}
+//
+//		@Override
+//		public String getLabel()
+//		{
+//			return "Galacticraft Core Common Slow";
+//		}
+//
+//		@Override
+//		public int nextTickSpacing()
+//		{
+//			return 1;
+//		}
+//	}
 
 	public class CommonTickHandler implements ITickHandler
 	{
@@ -727,7 +677,7 @@ public class GalacticraftCore
 		{
 			if (type.equals(EnumSet.of(TickType.SERVER)))
             {
-				GalacticraftCore.tick++;
+//				GalacticraftCore.tick++;
 
 				if (GalacticraftCore.this.chatCooldown > 0)
 				{

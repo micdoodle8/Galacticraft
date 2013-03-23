@@ -75,7 +75,7 @@ public class GCCoreTileEntityOxygenCompressor extends TileEntityElectricityRunna
 
 			if (this.active)
 			{
-				if (!this.worldObj.isRemote && GalacticraftCore.tick % ((31 - Math.min(Math.floor(this.currentPower), 30)) * 5) == 0)
+				if (!this.worldObj.isRemote && this.ticks % ((31 - Math.min(Math.floor(this.currentPower), 30)) * 5) == 0)
 				{
 					final ItemStack stack = this.getStackInSlot(0);
 

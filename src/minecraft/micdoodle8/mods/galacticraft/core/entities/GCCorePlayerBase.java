@@ -55,6 +55,8 @@ public class GCCorePlayerBase extends EntityPlayerMP
 	private int airRemaining2;
 
 	public boolean hasTank;
+	
+	public long tick;
 
 	public ItemStack tankInSlot;
 
@@ -234,7 +236,9 @@ public class GCCorePlayerBase extends EntityPlayerMP
     {
     	super.onUpdate();
     	
-    	if (!GalacticraftCore.playersServer.containsKey(this.username) || GalacticraftCore.slowTick % 360 == 0)
+    	this.tick++;
+    	
+    	if (!GalacticraftCore.playersServer.containsKey(this.username) || this.tick % 360 == 0)
     	{
     		GalacticraftCore.playersServer.put(this.username, this);
     	}
@@ -519,7 +523,7 @@ public class GCCorePlayerBase extends EntityPlayerMP
 			this.damageCounter--;
 		}
 
-		if (GalacticraftCore.tick % 30 == 0)
+		if (this.tick % 30 == 0)
 		{
 			this.sendAirRemainingPacket();
 
@@ -748,7 +752,7 @@ public class GCCorePlayerBase extends EntityPlayerMP
 			}
 		}
 
-		if (GalacticraftCore.tick % 30 == 0)
+		if (this.tick % 30 == 0)
 		{
 			Object[] toSend = {this.spaceStationDimensionID};
 	    	this.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 18, toSend));
@@ -861,22 +865,22 @@ public class GCCorePlayerBase extends EntityPlayerMP
 	    		this.airRemaining2 = tankInSlot2.getMaxDamage() - tankInSlot2.getItemDamage() % 90;
 			}
 
-			if (drainSpacing > 0 && GalacticraftCore.slowTick % drainSpacing == 0 && !this.isAABBInPartialBlockWithOxygenNearby() && !this.isAABBInBreathableAirBlock() && tankInSlot.getMaxDamage() - tankInSlot.getItemDamage() % 90 > 0)
+			if (drainSpacing > 0 && this.tick % drainSpacing == 0 && !this.isAABBInPartialBlockWithOxygenNearby() && !this.isAABBInBreathableAirBlock() && tankInSlot.getMaxDamage() - tankInSlot.getItemDamage() % 90 > 0)
 	    	{
 	    		tankInSlot.damageItem(1, this);
 	    	}
 
-			if (drainSpacing2 > 0 && GalacticraftCore.slowTick % drainSpacing2 == 0 && !this.isAABBInPartialBlockWithOxygenNearby() && !this.isAABBInBreathableAirBlock() && tankInSlot2.getMaxDamage() - tankInSlot2.getItemDamage() % 90 > 0)
+			if (drainSpacing2 > 0 && this.tick % drainSpacing2 == 0 && !this.isAABBInPartialBlockWithOxygenNearby() && !this.isAABBInBreathableAirBlock() && tankInSlot2.getMaxDamage() - tankInSlot2.getItemDamage() % 90 > 0)
 	    	{
 	    		tankInSlot2.damageItem(1, this);
 	    	}
 
-			if (drainSpacing == 0 && GalacticraftCore.tick % 60 == 0 && !this.isAABBInPartialBlockWithOxygenNearby() && !this.isAABBInBreathableAirBlock() && this.airRemaining > 0)
+			if (drainSpacing == 0 && this.tick % 60 == 0 && !this.isAABBInPartialBlockWithOxygenNearby() && !this.isAABBInBreathableAirBlock() && this.airRemaining > 0)
 			{
 	    		this.airRemaining -= 1;
 			}
 
-			if (drainSpacing2 == 0 && GalacticraftCore.tick % 60 == 0 && !this.isAABBInPartialBlockWithOxygenNearby() && !this.isAABBInBreathableAirBlock() && this.airRemaining2 > 0)
+			if (drainSpacing2 == 0 && this.tick % 60 == 0 && !this.isAABBInPartialBlockWithOxygenNearby() && !this.isAABBInBreathableAirBlock() && this.airRemaining2 > 0)
 			{
 	    		this.airRemaining2 -= 1;
 			}
@@ -891,12 +895,12 @@ public class GCCorePlayerBase extends EntityPlayerMP
 				this.airRemaining2 = 0;
 			}
 
-			if (GalacticraftCore.tick % 60 == 0 && (this.isAABBInBreathableAirBlock() ||  this.isAABBInPartialBlockWithOxygenNearby()) && this.airRemaining < 90 && tankInSlot != null)
+			if (this.tick % 60 == 0 && (this.isAABBInBreathableAirBlock() ||  this.isAABBInPartialBlockWithOxygenNearby()) && this.airRemaining < 90 && tankInSlot != null)
 			{
 				this.airRemaining += 1;
 			}
 
-			if (GalacticraftCore.tick % 60 == 0 && (this.isAABBInBreathableAirBlock() ||  this.isAABBInPartialBlockWithOxygenNearby()) && this.airRemaining2 < 90 && tankInSlot2 != null)
+			if (this.tick % 60 == 0 && (this.isAABBInBreathableAirBlock() ||  this.isAABBInPartialBlockWithOxygenNearby()) && this.airRemaining2 < 90 && tankInSlot2 != null)
 			{
 				this.airRemaining2 += 1;
 			}
@@ -924,7 +928,7 @@ public class GCCorePlayerBase extends EntityPlayerMP
 				}
 			}
 	    }
-		else if (GalacticraftCore.tick % 20 == 0 && !this.capabilities.isCreativeMode && this.airRemaining < 90)
+		else if (this.tick % 20 == 0 && !this.capabilities.isCreativeMode && this.airRemaining < 90)
 		{
 			this.airRemaining += 1;
 			this.airRemaining2 += 1;

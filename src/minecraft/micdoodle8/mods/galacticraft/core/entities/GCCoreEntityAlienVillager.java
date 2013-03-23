@@ -49,10 +49,10 @@ public class GCCoreEntityAlienVillager extends EntityAgeable
         this.tasks.addTask(3, new EntityAIRestrictOpenDoor(this));
         this.tasks.addTask(4, new EntityAIOpenDoor(this, true));
         this.tasks.addTask(5, new EntityAIMoveTwardsRestriction(this, 0.3F));
-        this.tasks.addTask(9, new EntityAIWatchClosest2(this, EntityPlayer.class, 30.0F, 1.0F));
-        this.tasks.addTask(9, new EntityAIWatchClosest2(this, EntityVillager.class, 30.0F, 0.05F));
+        this.tasks.addTask(9, new EntityAIWatchClosest2(this, EntityPlayer.class, 15.0F, 1.0F));
+        this.tasks.addTask(9, new EntityAIWatchClosest2(this, EntityVillager.class, 15.0F, 0.05F));
         this.tasks.addTask(9, new EntityAIWander(this, 0.5F));
-        this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityLiving.class, 30.0F));
+        this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityLiving.class, 15.0F));
 	}
 
 	@Override

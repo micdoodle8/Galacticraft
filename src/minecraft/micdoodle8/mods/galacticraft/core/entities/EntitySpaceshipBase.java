@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
+import icbm.api.IMissileLockable;
+
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -41,7 +43,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, IPacketReceiver
+public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, IPacketReceiver, IMissileLockable
 {
 	protected long ticks = 0;
 	
@@ -698,6 +700,17 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
 			this.dropShipAsItem();
 		}
     }
+
+	@Override
+	public boolean canLock() 
+	{
+		if (this.launched)
+		{
+			return true;
+		}
+		
+		return false;
+	}
 
     public void onLaunch() {}
 

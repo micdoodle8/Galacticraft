@@ -96,7 +96,7 @@ public class GCCoreItems
 		GCCoreItems.flagPole = new GCCoreItem(GCCoreConfigManager.idItemFlagPole, "flagpole").setUnlocalizedName("flagPole");
 		GCCoreItems.oilCanister = new GCCoreItemOilCanister(GCCoreConfigManager.idItemOilCanister).setUnlocalizedName("oilCanisterPartial");
 		GCCoreItems.oilExtractor = new GCCoreItemOilExtractor(GCCoreConfigManager.idItemOilExtractor).setUnlocalizedName("oilExtractor");
-
+		
 		GalacticraftCore.hiddenItems.add(GCCoreItems.gravityBow.itemID);
 	}
 

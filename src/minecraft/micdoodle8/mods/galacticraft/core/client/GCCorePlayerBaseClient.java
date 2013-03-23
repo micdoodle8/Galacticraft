@@ -30,6 +30,7 @@ public class GCCorePlayerBaseClient extends EntityClientPlayerMP
 	public boolean usingAdvancedGoggles;
 	private int thirdPersonView = 0;
 	public int spaceStationDimensionIDClient = 0;
+	public long tick;
 
     public GCCorePlayerBaseClient(Minecraft par1Minecraft, World par2World, Session par3Session, NetClientHandler par4NetClientHandler)
     {
@@ -101,7 +102,9 @@ public class GCCorePlayerBaseClient extends EntityClientPlayerMP
 	@Override
 	public void onUpdate()
 	{
-		if (!GalacticraftCore.playersClient.containsKey(this.username) || GalacticraftCore.slowTick % 360 == 0)
+		this.tick++;
+		
+		if (!GalacticraftCore.playersClient.containsKey(this.username) || this.tick % 360 == 0)
 		{
 			GalacticraftCore.playersClient.put(this.username, this);
 		}
