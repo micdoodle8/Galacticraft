@@ -15,6 +15,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.core.vector.Vector3;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -32,6 +33,47 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvanced
     public CreativeTabs getCreativeTabToDisplayOn()
     {
         return GalacticraftCore.galacticraftTab;
+    }
+
+    @Override
+    public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4)
+    {
+    	int airLocksAround = 0;
+    	
+    	for(ForgeDirection orientation : ForgeDirection.values())
+    	{
+    		if(orientation != ForgeDirection.UNKNOWN)
+    		{
+    			Vector3 vec = new Vector3(par2, par3, par4);
+    			
+    			Vector3 vec2 = vec.clone().modifyPositionFromSide(orientation);
+    			
+    			TileEntity tilePos = vec2.getTileEntity(par1World);
+
+    			if (tilePos != null && tilePos instanceof GCCoreTileEntityAirLock)
+    			{
+        	    	for(ForgeDirection orientation2 : ForgeDirection.values())
+        	    	{
+        	    		if(orientation2 != ForgeDirection.UNKNOWN)
+        	    		{
+        	    			TileEntity tilePos2 = vec2.clone().modifyPositionFromSide(orientation2).getTileEntity(par1World);
+        	    			
+        	    			if (tilePos2 != null && tilePos2 instanceof GCCoreTileEntityAirLock)
+        	    			{
+        	    				airLocksAround++;
+        	    			}
+        	    		}
+        	    	}
+    			}
+    		}
+    	}
+    	
+    	if (airLocksAround > 0)
+    	{
+    		return false;
+    	}
+    	
+    	return true;
     }
 
     @Override
