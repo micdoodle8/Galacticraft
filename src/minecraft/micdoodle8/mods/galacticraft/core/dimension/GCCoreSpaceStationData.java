@@ -40,7 +40,7 @@ public class GCCoreSpaceStationData extends WorldSavedData
 	@Override
 	public void readFromNBT(NBTTagCompound nbttagcompound) 
 	{
-		this.owner = nbttagcompound.getString("owner");
+		this.owner = nbttagcompound.getString("owner").toLowerCase();
 		this.spaceStationName = nbttagcompound.getString("spaceStationName");
 
         if (nbttagcompound.hasKey("dataCompound"))
@@ -59,7 +59,11 @@ public class GCCoreSpaceStationData extends WorldSavedData
         {
             final NBTTagCompound var4 = (NBTTagCompound)var2.tagAt(var3);
             String var5 = var4.getString("allowedPlayer");
-            this.allowedPlayers.add(var5);
+            
+            if (!this.allowedPlayers.contains(var5.toLowerCase()))
+            {
+                this.allowedPlayers.add(var5.toLowerCase());
+            }
         }
 	}
 
@@ -106,7 +110,7 @@ public class GCCoreSpaceStationData extends WorldSavedData
                 
                 if (player != null)
                 {
-                    var3.owner = player.username;
+                    var3.owner = player.username.toLowerCase();
                 }
                 
                 var3.spaceStationName = var3.owner + "\'s Space Station";
@@ -114,7 +118,7 @@ public class GCCoreSpaceStationData extends WorldSavedData
                 
                 if (player != null)
                 {
-                    var3.allowedPlayers.add(player.username);
+                    var3.allowedPlayers.add(player.username.toLowerCase());
                 }
                 
                 var3.markDirty();
@@ -145,8 +149,9 @@ public class GCCoreSpaceStationData extends WorldSavedData
             
             if (player != null)
             {
-                var3.allowedPlayers.add(player.username);
+                var3.allowedPlayers.add(player.username.toLowerCase());
             }
+            
             var3.markDirty();
         }
 
