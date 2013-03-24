@@ -8,6 +8,7 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import org.lwjgl.opengl.GL11;
@@ -38,6 +39,17 @@ public class GCCoreRenderSkeleton extends RenderLiving
 //    {
 //        ClientProxyCore.TickHandlerClient.renderName(par1EntityLiving, par2, par4, par6);
 //    }
+
+    protected void renderEquippedItems(EntityLiving par1EntityLiving, float par2) 
+    {
+    	GL11.glTranslatef(-0.3F, -0.3F, -0.7F);
+    	GL11.glScalef(0.5F, 0.5F, 0.5F);
+    	GL11.glTranslatef(0.5F, 0.0F, 0.0F);
+    	GL11.glRotatef(50, 0.0F, 1.0F, 0.0F);
+    	GL11.glRotatef(-10, 1.0F, 0.0F, 0.0F);
+    	GL11.glRotatef(10, 0.0F, 0.0F, 1.0F);
+        this.renderManager.itemRenderer.renderItem(par1EntityLiving, new ItemStack(Item.bow), 0);
+    }
 
     @Override
 	protected int shouldRenderPass(EntityLiving par1EntityLiving, int par2, float par3)
