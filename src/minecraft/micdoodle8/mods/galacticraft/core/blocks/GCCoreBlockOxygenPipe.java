@@ -72,12 +72,12 @@ public class GCCoreBlockOxygenPipe extends BlockContainer
 	{
 		TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
 		
-		float minX = 0.4F;
-		float minY = 0.4F;
-		float minZ = 0.4F;
-		float maxX = 0.6F;
-		float maxY = 0.6F;
-		float maxZ = 0.6F;
+		float minX = 0.3F;
+		float minY = 0.3F;
+		float minZ = 0.3F;
+		float maxX = 0.7F;
+		float maxY = 0.7F;
+		float maxZ = 0.7F;
 		
 		if(tileEntity != null)
 		{
@@ -97,14 +97,6 @@ public class GCCoreBlockOxygenPipe extends BlockContainer
 				}
 			}
 			
-			if(connectable[0])
-			{
-				minY = 0.0F;
-			}
-			if(connectable[1])
-			{
-				maxY = 1.0F;
-			}
 			if(connectable[2])
 			{
 				minZ = 0.0F;
@@ -113,10 +105,12 @@ public class GCCoreBlockOxygenPipe extends BlockContainer
 			{
 				maxZ = 1.0F;
 			}
+			
 			if(connectable[4])
 			{
 				minX = 0.0F;
 			}
+			
 			if(connectable[5])
 			{
 				maxX = 1.0F;
@@ -138,12 +132,12 @@ public class GCCoreBlockOxygenPipe extends BlockContainer
 	{
 		TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
 		
-		float minX = 0.4F;
-		float minY = 0.4F;
-		float minZ = 0.4F;
-		float maxX = 0.6F;
-		float maxY = 0.6F;
-		float maxZ = 0.6F;
+		float minX = 0.0F;
+		float minY = 0.0F;
+		float minZ = 0.0F;
+		float maxX = 1.0F;
+		float maxY = 1.0F;
+		float maxZ = 1.0F;
 		
 		if(tileEntity != null)
 		{
@@ -163,26 +157,21 @@ public class GCCoreBlockOxygenPipe extends BlockContainer
 				}
 			}
 			
-			if(connectable[0])
-			{
-				minY = 0.0F;
-			}
-			if(connectable[1])
-			{
-				maxY = 1.0F;
-			}
 			if(connectable[2])
 			{
 				minZ = 0.0F;
 			}
+			
 			if(connectable[3])
 			{
 				maxZ = 1.0F;
 			}
+			
 			if(connectable[4])
 			{
 				minX = 0.0F;
 			}
+			
 			if(connectable[5])
 			{
 				maxX = 1.0F;
