@@ -15,15 +15,15 @@ import micdoodle8.mods.galacticraft.API.ISpaceship;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
-import micdoodle8.mods.galacticraft.core.dimension.GCCoreSpaceStationData;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreEnumTeleportType;
+import micdoodle8.mods.galacticraft.core.dimension.GCCoreSpaceStationData;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreWorldProvider;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityParaChest;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
-import micdoodle8.mods.galacticraft.core.network.GCCorePacketDimensionList;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketDimensionListPlanets;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketDimensionListSpaceStations;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketSpaceStationData;
-import micdoodle8.mods.galacticraft.moon.GCMoonConfigManager;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -551,7 +551,7 @@ public class WorldUtil
         {
             ArrayList var1 = new ArrayList();
             var1.add(par1);
-            var2.getConfigurationManager().sendPacketToAllPlayers(GCCorePacketDimensionList.buildDimensionListPacket(var1, (byte) 16));
+            var2.getConfigurationManager().sendPacketToAllPlayers(GCCorePacketDimensionListSpaceStations.buildDimensionListPacket(var1));
         }
 
         GCCoreSpaceStationData var3 = GCCoreSpaceStationData.getStationData(var0, par1, player);
@@ -879,7 +879,7 @@ public class WorldUtil
         {
             ArrayList array = new ArrayList();
             array.add(var2);
-            server.getConfigurationManager().sendPacketToAllPlayers(GCCorePacketDimensionList.buildDimensionListPacket(array, (byte) 19));
+            server.getConfigurationManager().sendPacketToAllPlayers(GCCorePacketDimensionListPlanets.buildDimensionListPacket(array));
         }
         
         if (var1 != null && var6 != null)

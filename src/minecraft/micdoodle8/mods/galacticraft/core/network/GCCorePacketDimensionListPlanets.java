@@ -11,13 +11,12 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import cpw.mods.fml.relauncher.Side;
 
-public class GCCorePacketDimensionList implements IGalacticraftAdvancedPacket
+public class GCCorePacketDimensionListPlanets implements IGalacticraftAdvancedPacket
 {
-	public static byte packetID = 16;
+	public static byte packetID = 19;
 	
-	public static Packet buildDimensionListPacket(Collection col, byte packetType)
+	public static Packet buildDimensionListPacket(Collection col)
 	{
-		packetID = packetType;
 		Packet250CustomPayload packet = new Packet250CustomPayload();
 		packet.channel = GalacticraftCore.CHANNEL;
 		
@@ -26,7 +25,7 @@ public class GCCorePacketDimensionList implements IGalacticraftAdvancedPacket
         
         try
         {
-        	data.writeByte(GCCorePacketDimensionList.packetID);
+        	data.writeByte(GCCorePacketDimensionListPlanets.packetID);
         	data.writeInt(col.size());
             Iterator var3 = col.iterator();
 
@@ -58,6 +57,6 @@ public class GCCorePacketDimensionList implements IGalacticraftAdvancedPacket
 	@Override
 	public byte getPacketID()
 	{
-		return GCCorePacketDimensionList.packetID;
+		return GCCorePacketDimensionListPlanets.packetID;
 	}
 }
