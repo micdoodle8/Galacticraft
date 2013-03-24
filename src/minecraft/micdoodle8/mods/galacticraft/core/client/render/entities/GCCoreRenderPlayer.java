@@ -2,13 +2,17 @@ package micdoodle8.mods.galacticraft.core.client.render.entities;
 
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockBreathableAir;
 import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelPlayer;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItemBow;
 import net.minecraft.block.Block;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.RenderEngine;
 import net.minecraft.client.renderer.ThreadDownloadImageData;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.StringUtils;
 
@@ -31,6 +35,43 @@ public class GCCoreRenderPlayer extends RenderPlayer
 	{
 		return this.modelBipedMain;
 	}
+
+    protected void renderEquippedItems(EntityLiving par1EntityLiving, float par2)
+    {
+        ItemStack itemstack = par1EntityLiving.getHeldItem();
+        float f2;
+        
+    	if (itemstack != null && itemstack.getItem() instanceof GCCoreItemBow)
+        {
+            GL11.glPushMatrix();
+
+            if (this.mainModel.isChild)
+            {
+                f2 = 0.5F;
+                GL11.glTranslatef(0.0F, 0.625F, 0.0F);
+                GL11.glRotatef(-20.0F, -1.0F, 0.0F, 0.0F);
+                GL11.glScalef(f2, f2, f2);
+            }
+
+            this.modelBipedMain.bipedRightArm.postRender(0.0625F);
+            GL11.glTranslatef(-0.0625F, 0.4375F, 0.0625F);
+
+            f2 = 0.625F;
+            GL11.glTranslatef(0.0F, 0.125F, 0.3125F);
+            GL11.glRotatef(-20.0F, 0.0F, 1.0F, 0.0F);
+            GL11.glScalef(f2, -f2, f2);
+            GL11.glRotatef(-100.0F, 1.0F, 0.0F, 0.0F);
+            GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
+
+            this.renderManager.itemRenderer.renderItem(par1EntityLiving, itemstack, 0);
+
+            GL11.glPopMatrix();
+        }
+    	else
+    	{
+        	super.renderEquippedItems(par1EntityLiving, par2);
+    	}
+    }
 
     public boolean isAABBInBreathableAirBlock()
     {

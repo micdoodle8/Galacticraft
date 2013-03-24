@@ -5,14 +5,20 @@ import java.util.Random;
 import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.multiplayer.NetClientHandler;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.Icon;
 import net.minecraft.util.Session;
 import net.minecraft.util.StringUtils;
 import net.minecraft.world.World;
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -98,6 +104,53 @@ public class GCCorePlayerSP extends EntityClientPlayerMP
 
 		this.lastUsingParachute = this.usingParachute;
 	}
+
+	@Override
+    @SideOnly(Side.CLIENT)
+    public Icon getItemIcon(ItemStack par1ItemStack, int par2)
+    {
+        Icon icon = super.getItemIcon(par1ItemStack, par2);
+
+        if (par1ItemStack.itemID == Item.fishingRod.itemID && this.fishEntity != null)
+        {
+            icon = Item.fishingRod.func_94597_g();
+        }
+        else
+        {
+            if (par1ItemStack.getItem().requiresMultipleRenderPasses())
+            {
+                return par1ItemStack.getItem().getIcon(par1ItemStack, par2);
+            }
+
+            if (this.getItemInUse() != null && par1ItemStack.itemID == GCCoreItems.gravityBow.itemID)
+            {
+                int j = par1ItemStack.getMaxItemUseDuration() - this.getItemInUseCount();
+
+                if (j >= 18)
+                {
+                    return Item.bow.func_94599_c(2);
+                }
+
+                if (j > 13)
+                {
+                    return Item.bow.func_94599_c(1);
+                }
+
+                if (j > 0)
+                {
+                    return Item.bow.func_94599_c(0);
+                }
+            }
+            else
+            {
+            	return super.getItemIcon(par1ItemStack, par2);
+            }
+            
+            icon = par1ItemStack.getItem().getIcon(par1ItemStack, par2, this, this.getItemInUse(), this.getItemInUseCount());
+        }
+
+        return icon;
+    }
 
 	@Override
 	public void onUpdate()

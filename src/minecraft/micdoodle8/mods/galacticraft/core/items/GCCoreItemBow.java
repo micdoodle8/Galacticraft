@@ -1,85 +1,93 @@
 package micdoodle8.mods.galacticraft.core.items;
 
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityArrow;
+import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
+import net.minecraftforge.event.entity.player.ArrowNockEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
-public class GCCoreItemBow extends ItemBow
+public class GCCoreItemBow extends Item
 {
-	public GCCoreItemBow(int par1)
-	{
-		super(par1);
-	}
-
-	@Override
+    public GCCoreItemBow(int par1)
+    {
+        super(par1);
+        this.maxStackSize = 1;
+        this.setMaxDamage(384);
+    }
+    
     public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4)
     {
-        int var6 = this.getMaxItemUseDuration(par1ItemStack) - par4;
+        int j = this.getMaxItemUseDuration(par1ItemStack) - par4;
 
-        final ArrowLooseEvent event = new ArrowLooseEvent(par3EntityPlayer, par1ItemStack, var6);
+        ArrowLooseEvent event = new ArrowLooseEvent(par3EntityPlayer, par1ItemStack, j);
         MinecraftForge.EVENT_BUS.post(event);
         if (event.isCanceled())
         {
             return;
         }
-        var6 = event.charge;
+        j = event.charge;
 
-        final boolean var5 = par3EntityPlayer.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantment.infinity.effectId, par1ItemStack) > 0;
+        boolean flag = par3EntityPlayer.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantment.infinity.effectId, par1ItemStack) > 0;
 
-        if (var5 || par3EntityPlayer.inventory.hasItem(Item.arrow.itemID))
+        if (flag || par3EntityPlayer.inventory.hasItem(Item.arrow.itemID))
         {
-            float var7 = var6 / 20.0F;
-            var7 = (var7 * var7 + var7 * 2.0F) / 3.0F;
+            float f = (float)j / 20.0F;
+            f = (f * f + f * 2.0F) / 3.0F;
 
-            if (var7 < 0.1D)
+            if ((double)f < 0.1D)
             {
                 return;
             }
 
-            if (var7 > 1.0F)
+            if (f > 1.0F)
             {
-                var7 = 1.0F;
+                f = 1.0F;
             }
 
-            final GCCoreEntityArrow var8 = new GCCoreEntityArrow(par2World, par3EntityPlayer, var7 * 2.0F);
+            GCCoreEntityArrow entityarrow = new GCCoreEntityArrow(par2World, par3EntityPlayer, f * 2.0F);
 
-            if (var7 == 1.0F)
+            if (f == 1.0F)
             {
-                var8.setIsCritical(true);
+                entityarrow.setIsCritical(true);
             }
 
-            final int var9 = EnchantmentHelper.getEnchantmentLevel(Enchantment.power.effectId, par1ItemStack);
+            int k = EnchantmentHelper.getEnchantmentLevel(Enchantment.power.effectId, par1ItemStack);
 
-            if (var9 > 0)
+            if (k > 0)
             {
-                var8.setDamage(var8.getDamage() + var9 * 0.5D + 0.5D);
+                entityarrow.setDamage(entityarrow.getDamage() + (double)k * 0.5D + 0.5D);
             }
 
-            final int var10 = EnchantmentHelper.getEnchantmentLevel(Enchantment.punch.effectId, par1ItemStack);
+            int l = EnchantmentHelper.getEnchantmentLevel(Enchantment.punch.effectId, par1ItemStack);
 
-            if (var10 > 0)
+            if (l > 0)
             {
-                var8.setKnockbackStrength(var10);
+                entityarrow.setKnockbackStrength(l);
             }
 
             if (EnchantmentHelper.getEnchantmentLevel(Enchantment.flame.effectId, par1ItemStack) > 0)
             {
-                var8.setFire(100);
+                entityarrow.setFire(100);
             }
 
             par1ItemStack.damageItem(1, par3EntityPlayer);
-            par2World.playSoundAtEntity(par3EntityPlayer, "random.bow", 1.0F, 1.0F / (Item.itemRand.nextFloat() * 0.4F + 1.2F) + var7 * 0.5F);
+            par2World.playSoundAtEntity(par3EntityPlayer, "random.bow", 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
 
-            if (var5)
+            if (flag)
             {
-                var8.canBePickedUp = 2;
+                entityarrow.canBePickedUp = 2;
             }
             else
             {
@@ -88,8 +96,54 @@ public class GCCoreItemBow extends ItemBow
 
             if (!par2World.isRemote)
             {
-                par2World.spawnEntityInWorld(var8);
+                par2World.spawnEntityInWorld(entityarrow);
             }
         }
+    }
+
+    public ItemStack onEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
+    {
+        return par1ItemStack;
+    }
+
+    public int getMaxItemUseDuration(ItemStack par1ItemStack)
+    {
+        return 72000;
+    }
+
+    public EnumAction getItemUseAction(ItemStack par1ItemStack)
+    {
+        return EnumAction.bow;
+    }
+
+    public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
+    {
+        ArrowNockEvent event = new ArrowNockEvent(par3EntityPlayer, par1ItemStack);
+        MinecraftForge.EVENT_BUS.post(event);
+        if (event.isCanceled())
+        {
+            return event.result;
+        }
+
+        if (par3EntityPlayer.capabilities.isCreativeMode || par3EntityPlayer.inventory.hasItem(Item.arrow.itemID))
+        {
+            par3EntityPlayer.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
+        }
+
+        return par1ItemStack;
+    }
+
+    /**
+     * Return the enchantability factor of the item, most of the time is based on material.
+     */
+    public int getItemEnchantability()
+    {
+        return 1;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void updateIcons(IconRegister par1IconRegister)
+    {
+        super.updateIcons(par1IconRegister);
     }
 }
