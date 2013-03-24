@@ -24,7 +24,9 @@ public class GCCoreSounds
         try
         {
             event.manager.soundPoolSounds.addSound("music/orbit_JC.ogg", GalacticraftCore.class.getResource("/micdoodle8/mods/galacticraft/core/client/sounds/music/orbit_JC.ogg"));
-            event.manager.soundPoolSounds.addSound("player/oil.wav", GalacticraftCore.class.getResource("/micdoodle8/mods/galacticraft/core/client/sounds/player/oil.wav"));
+            event.manager.soundPoolSounds.addSound("music/spacerace_JC.ogg", GalacticraftCore.class.getResource("/micdoodle8/mods/galacticraft/core/client/sounds/music/spacerace_JC.ogg"));
+            event.manager.soundPoolSounds.addSound("music/mars_JC.ogg", GalacticraftCore.class.getResource("/micdoodle8/mods/galacticraft/core/client/sounds/music/mars_JC.ogg"));
+            event.manager.soundPoolSounds.addSound("music/mimas_JC.ogg", GalacticraftCore.class.getResource("/micdoodle8/mods/galacticraft/core/client/sounds/music/mimas_JC.ogg"));
             event.manager.soundPoolSounds.addSound("shuttle/shuttle.wav", GalacticraftCore.class.getResource("/micdoodle8/mods/galacticraft/core/client/sounds/shuttle/shuttle.wav"));
             event.manager.soundPoolSounds.addSound("player/parachute.wav", GalacticraftCore.class.getResource("/micdoodle8/mods/galacticraft/core/client/sounds/player/parachute.wav"));
             event.manager.soundPoolSounds.addSound("player/closeairlock.wav", GalacticraftCore.class.getResource("/micdoodle8/mods/galacticraft/core/client/sounds/player/closeairlock.wav"));
@@ -69,15 +71,27 @@ public class GCCoreSounds
     			}
     		}
 
-    		final int randInt = FMLClientHandler.instance().getClient().thePlayer.worldObj.rand.nextInt(3);
+    		final int randInt = FMLClientHandler.instance().getClient().thePlayer.worldObj.rand.nextInt(6);
 
     		if (randInt == 0)
     		{
-    			event.result = new SoundPoolEntry("music/spacerace_JC.ogg", GalacticraftCore.class.getResource("/micdoodle8/mods/galacticraft/core/client/sounds/music/spacerace_JC.ogg"));
+    			event.result = new SoundPoolEntry("music/orbit_JC.ogg", GalacticraftCore.class.getResource("/micdoodle8/mods/galacticraft/core/client/sounds/music/orbit_JC.ogg"));
     		}
     		else if (randInt == 1)
     		{
     			event.result = new SoundPoolEntry("music/scary-ambience.ogg", GalacticraftCore.class.getResource("/micdoodle8/mods/galacticraft/core/client/sounds/music/scary-ambience.ogg"));
+    		}
+    		else if (randInt == 2)
+    		{
+    			event.result = new SoundPoolEntry("music/spacerace_JC.ogg", GalacticraftCore.class.getResource("/micdoodle8/mods/galacticraft/core/client/sounds/music/spacerace_JC.ogg"));
+    		}
+    		else if (randInt == 3)
+    		{
+    			event.result = new SoundPoolEntry("music/mars_JC.ogg", GalacticraftCore.class.getResource("/micdoodle8/mods/galacticraft/core/client/sounds/music/mars_JC.ogg"));
+    		}
+    		else if (randInt == 4)
+    		{
+    			event.result = new SoundPoolEntry("music/mimas_JC.ogg", GalacticraftCore.class.getResource("/micdoodle8/mods/galacticraft/core/client/sounds/music/mimas_JC.ogg"));
     		}
     	}
     	else

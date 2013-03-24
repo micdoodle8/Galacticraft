@@ -100,6 +100,12 @@ public class GCCoreSoundUpdaterSpaceship implements IUpdatePlayerListBox
             this.minecartRideSoundVolume = 0.0F + var10 * 0.75F;
             var10 = MathHelper.clamp_float(var10 * 2.0F, 0.0F, 1.0F);
             this.minecartMoveSoundVolume = 0.0F + var10 * 0.7F;
+            
+            if (this.theMinecart.posY > 1000)
+            {
+            	this.minecartMoveSoundVolume = 0F;
+            	this.minecartRideSoundVolume = 0F;
+            }
         }
         else if (var4)
         {
