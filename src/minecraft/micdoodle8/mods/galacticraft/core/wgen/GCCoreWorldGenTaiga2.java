@@ -5,6 +5,8 @@ import java.util.Random;
 import micdoodle8.mods.galacticraft.API.IPlantableBlock;
 import micdoodle8.mods.galacticraft.API.IPlantableMetadataBlock;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockDirt;
+import net.minecraft.block.BlockGrass;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
@@ -89,68 +91,79 @@ public class GCCoreWorldGenTaiga2 extends WorldGenerator
                     }
                 }
                 
-                if (Block.blocksList[var11] != null && (Block.blocksList[var11] instanceof IPlantableBlock || Block.blocksList[var11] instanceof IPlantableMetadataBlock && ((IPlantableMetadataBlock) Block.blocksList[var11]).isPlantable(var10a)) && (Block.blocksList[var11] instanceof IPlantableBlock && waterBlocksNearby >= ((IPlantableBlock)Block.blocksList[var11]).requiredLiquidBlocksNearby() || Block.blocksList[var11] instanceof IPlantableMetadataBlock && waterBlocksNearby >= ((IPlantableMetadataBlock)Block.blocksList[var11]).requiredLiquidBlocksNearby()))
+                if (Block.blocksList[var11] != null)
                 {
-                    var21 = par2Random.nextInt(2);
-                    var13 = 1;
-                    byte var22 = 0;
-                    int var17;
-                    int var16;
+                	boolean flag = Block.blocksList[var11] instanceof IPlantableBlock || Block.blocksList[var11] instanceof IPlantableMetadataBlock && ((IPlantableMetadataBlock) Block.blocksList[var11]).isPlantable(var10a);
+                	boolean flag2 = Block.blocksList[var11] instanceof IPlantableBlock && waterBlocksNearby >= ((IPlantableBlock)Block.blocksList[var11]).requiredLiquidBlocksNearby() || Block.blocksList[var11] instanceof IPlantableMetadataBlock && waterBlocksNearby >= ((IPlantableMetadataBlock)Block.blocksList[var11]).requiredLiquidBlocksNearby();
+                	boolean flag3 = (Block.blocksList[var11] instanceof BlockGrass || Block.blocksList[var11] instanceof BlockDirt) && waterBlocksNearby >= 4;
+                	
+                	if ((flag && flag2) || flag3)
+                	{
+                        var21 = par2Random.nextInt(2);
+                        var13 = 1;
+                        byte var22 = 0;
+                        int var17;
+                        int var16;
 
-                    for (var15 = 0; var15 <= var8; ++var15)
-                    {
-                        var16 = par4 + var6 - var15;
-
-                        for (var17 = par3 - var21; var17 <= par3 + var21; ++var17)
+                        for (var15 = 0; var15 <= var8; ++var15)
                         {
-                            final int var18 = var17 - par3;
+                            var16 = par4 + var6 - var15;
 
-                            for (int var19 = par5 - var21; var19 <= par5 + var21; ++var19)
+                            for (var17 = par3 - var21; var17 <= par3 + var21; ++var17)
                             {
-                                final int var20 = var19 - par5;
+                                final int var18 = var17 - par3;
 
-                                final Block block = Block.blocksList[par1World.getBlockId(var17, var16, var19)];
-
-                                if ((Math.abs(var18) != var21 || Math.abs(var20) != var21 || var21 <= 0) &&
-                                    (block == null || block.canBeReplacedByLeaves(par1World, var17, var16, var19)))
+                                for (int var19 = par5 - var21; var19 <= par5 + var21; ++var19)
                                 {
-                                    this.setBlockAndMetadata(par1World, var17, var16, var19, Block.leaves.blockID, 1);
+                                    final int var20 = var19 - par5;
+
+                                    final Block block = Block.blocksList[par1World.getBlockId(var17, var16, var19)];
+
+                                    if ((Math.abs(var18) != var21 || Math.abs(var20) != var21 || var21 <= 0) &&
+                                        (block == null || block.canBeReplacedByLeaves(par1World, var17, var16, var19)))
+                                    {
+                                        this.setBlockAndMetadata(par1World, var17, var16, var19, Block.leaves.blockID, 1);
+                                    }
                                 }
                             }
-                        }
 
-                        if (var21 >= var13)
-                        {
-                            var21 = var22;
-                            var22 = 1;
-                            ++var13;
-
-                            if (var13 > var9)
+                            if (var21 >= var13)
                             {
-                                var13 = var9;
+                                var21 = var22;
+                                var22 = 1;
+                                ++var13;
+
+                                if (var13 > var9)
+                                {
+                                    var13 = var9;
+                                }
+                            }
+                            else
+                            {
+                                ++var21;
                             }
                         }
-                        else
+
+                        var15 = par2Random.nextInt(3);
+
+                        for (var16 = 0; var16 < var6 - var15; ++var16)
                         {
-                            ++var21;
+                            var17 = par1World.getBlockId(par3, par4 + var16, par5);
+
+                            final Block block = Block.blocksList[var17];
+
+                            if (var17 == 0 || block == null || block.isLeaves(par1World, par3, par4 + var16, par5))
+                            {
+                                this.setBlockAndMetadata(par1World, par3, par4 + var16, par5, Block.wood.blockID, 1);
+                            }
                         }
-                    }
 
-                    var15 = par2Random.nextInt(3);
-
-                    for (var16 = 0; var16 < var6 - var15; ++var16)
-                    {
-                        var17 = par1World.getBlockId(par3, par4 + var16, par5);
-
-                        final Block block = Block.blocksList[var17];
-
-                        if (var17 == 0 || block == null || block.isLeaves(par1World, par3, par4 + var16, par5))
-                        {
-                            this.setBlockAndMetadata(par1World, par3, par4 + var16, par5, Block.wood.blockID, 1);
-                        }
-                    }
-
-                    return true;
+                        return true;
+                	}
+                	else
+                	{
+                		return false;
+                	}
                 }
                 else
                 {

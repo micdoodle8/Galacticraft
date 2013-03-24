@@ -5,6 +5,8 @@ import java.util.Random;
 import micdoodle8.mods.galacticraft.API.IPlantableBlock;
 import micdoodle8.mods.galacticraft.API.IPlantableMetadataBlock;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockDirt;
+import net.minecraft.block.BlockGrass;
 import net.minecraft.util.Direction;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
@@ -115,128 +117,140 @@ public class GCCoreWorldGenTrees extends WorldGenerator
                     }
                 }
 
-                if (Block.blocksList[var8] != null && (Block.blocksList[var8] instanceof IPlantableBlock || Block.blocksList[var8] instanceof IPlantableMetadataBlock && ((IPlantableMetadataBlock) Block.blocksList[var8]).isPlantable(var10)) && (Block.blocksList[var8] instanceof IPlantableBlock && waterBlocksNearby >= ((IPlantableBlock)Block.blocksList[var8]).requiredLiquidBlocksNearby() || Block.blocksList[var8] instanceof IPlantableMetadataBlock && waterBlocksNearby >= ((IPlantableMetadataBlock)Block.blocksList[var8]).requiredLiquidBlocksNearby()) && par4 < 256 - var6 - 1)
+                if (Block.blocksList[var8] != null)
                 {
-                    var9 = 3;
-                    final byte var18 = 0;
-                    int var13;
-                    int var14;
-                    int var15;
+                	boolean flag = Block.blocksList[var8] instanceof IPlantableBlock || Block.blocksList[var8] instanceof IPlantableMetadataBlock && ((IPlantableMetadataBlock) Block.blocksList[var8]).isPlantable(var10);
+                	boolean flag2 = Block.blocksList[var8] instanceof IPlantableBlock && waterBlocksNearby >= ((IPlantableBlock)Block.blocksList[var8]).requiredLiquidBlocksNearby() || Block.blocksList[var8] instanceof IPlantableMetadataBlock && waterBlocksNearby >= ((IPlantableMetadataBlock)Block.blocksList[var8]).requiredLiquidBlocksNearby();
+                	boolean flag3 = par4 < 256 - var6 - 1;
+                	boolean flag4 = (Block.blocksList[var8] instanceof BlockGrass || Block.blocksList[var8] instanceof BlockDirt) && waterBlocksNearby >= 4;
+                	
+                	if ((flag && flag2 && flag3) || flag4)
+                	{
+                		var9 = 3;
+                        final byte var18 = 0;
+                        int var13;
+                        int var14;
+                        int var15;
 
-                    for (var11 = par4 - var9 + var6; var11 <= par4 + var6; ++var11)
-                    {
-                        var12 = var11 - (par4 + var6);
-                        var13 = var18 + 1 - var12 / 2;
-
-                        for (var14 = par3 - var13; var14 <= par3 + var13; ++var14)
-                        {
-                            var15 = var14 - par3;
-
-                            for (int var16 = par5 - var13; var16 <= par5 + var13; ++var16)
-                            {
-                                final int var17 = var16 - par5;
-
-                                final Block block = Block.blocksList[par1World.getBlockId(var14, var11, var16)];
-
-                                if ((Math.abs(var15) != var13 || Math.abs(var17) != var13 || par2Random.nextInt(2) != 0 && var12 != 0) &&
-                                    (block == null || block.canBeReplacedByLeaves(par1World, var14, var11, var16)))
-                                {
-                                    this.setBlockAndMetadata(par1World, var14, var11, var16, Block.leaves.blockID, this.metaLeaves);
-                                }
-                            }
-                        }
-                    }
-
-                    for (var11 = 0; var11 < var6; ++var11)
-                    {
-                        var12 = par1World.getBlockId(par3, par4 + var11, par5);
-
-                        final Block block = Block.blocksList[var12];
-
-                        if (var12 == 0 || block == null || block.isLeaves(par1World, par3, par4 + var11, par5))
-                        {
-                            this.setBlockAndMetadata(par1World, par3, par4 + var11, par5, Block.wood.blockID, this.metaWood);
-
-                            if (this.vinesGrow && var11 > 0)
-                            {
-                                if (par2Random.nextInt(3) > 0 && par1World.isAirBlock(par3 - 1, par4 + var11, par5))
-                                {
-                                    this.setBlockAndMetadata(par1World, par3 - 1, par4 + var11, par5, Block.vine.blockID, 8);
-                                }
-
-                                if (par2Random.nextInt(3) > 0 && par1World.isAirBlock(par3 + 1, par4 + var11, par5))
-                                {
-                                    this.setBlockAndMetadata(par1World, par3 + 1, par4 + var11, par5, Block.vine.blockID, 2);
-                                }
-
-                                if (par2Random.nextInt(3) > 0 && par1World.isAirBlock(par3, par4 + var11, par5 - 1))
-                                {
-                                    this.setBlockAndMetadata(par1World, par3, par4 + var11, par5 - 1, Block.vine.blockID, 1);
-                                }
-
-                                if (par2Random.nextInt(3) > 0 && par1World.isAirBlock(par3, par4 + var11, par5 + 1))
-                                {
-                                    this.setBlockAndMetadata(par1World, par3, par4 + var11, par5 + 1, Block.vine.blockID, 4);
-                                }
-                            }
-                        }
-                    }
-
-                    if (this.vinesGrow)
-                    {
-                        for (var11 = par4 - 3 + var6; var11 <= par4 + var6; ++var11)
+                        for (var11 = par4 - var9 + var6; var11 <= par4 + var6; ++var11)
                         {
                             var12 = var11 - (par4 + var6);
-                            var13 = 2 - var12 / 2;
+                            var13 = var18 + 1 - var12 / 2;
 
                             for (var14 = par3 - var13; var14 <= par3 + var13; ++var14)
                             {
-                                for (var15 = par5 - var13; var15 <= par5 + var13; ++var15)
+                                var15 = var14 - par3;
+
+                                for (int var16 = par5 - var13; var16 <= par5 + var13; ++var16)
                                 {
-                                    final Block block = Block.blocksList[par1World.getBlockId(var14, var11, var15)];
-                                    if (block != null && block.isLeaves(par1World, var14, var11, var15))
+                                    final int var17 = var16 - par5;
+
+                                    final Block block = Block.blocksList[par1World.getBlockId(var14, var11, var16)];
+
+                                    if ((Math.abs(var15) != var13 || Math.abs(var17) != var13 || par2Random.nextInt(2) != 0 && var12 != 0) &&
+                                        (block == null || block.canBeReplacedByLeaves(par1World, var14, var11, var16)))
                                     {
-                                        if (par2Random.nextInt(4) == 0 && par1World.getBlockId(var14 - 1, var11, var15) == 0)
-                                        {
-                                            this.growVines(par1World, var14 - 1, var11, var15, 8);
-                                        }
-
-                                        if (par2Random.nextInt(4) == 0 && par1World.getBlockId(var14 + 1, var11, var15) == 0)
-                                        {
-                                            this.growVines(par1World, var14 + 1, var11, var15, 2);
-                                        }
-
-                                        if (par2Random.nextInt(4) == 0 && par1World.getBlockId(var14, var11, var15 - 1) == 0)
-                                        {
-                                            this.growVines(par1World, var14, var11, var15 - 1, 1);
-                                        }
-
-                                        if (par2Random.nextInt(4) == 0 && par1World.getBlockId(var14, var11, var15 + 1) == 0)
-                                        {
-                                            this.growVines(par1World, var14, var11, var15 + 1, 4);
-                                        }
+                                        this.setBlockAndMetadata(par1World, var14, var11, var16, Block.leaves.blockID, this.metaLeaves);
                                     }
                                 }
                             }
                         }
 
-                        if (par2Random.nextInt(5) == 0 && var6 > 5)
+                        for (var11 = 0; var11 < var6; ++var11)
                         {
-                            for (var11 = 0; var11 < 2; ++var11)
+                            var12 = par1World.getBlockId(par3, par4 + var11, par5);
+
+                            final Block block = Block.blocksList[var12];
+
+                            if (var12 == 0 || block == null || block.isLeaves(par1World, par3, par4 + var11, par5))
                             {
-                                for (var12 = 0; var12 < 4; ++var12)
+                                this.setBlockAndMetadata(par1World, par3, par4 + var11, par5, Block.wood.blockID, this.metaWood);
+
+                                if (this.vinesGrow && var11 > 0)
                                 {
-                                    if (par2Random.nextInt(4 - var11) == 0)
+                                    if (par2Random.nextInt(3) > 0 && par1World.isAirBlock(par3 - 1, par4 + var11, par5))
                                     {
-                                        var13 = par2Random.nextInt(3);
-                                        this.setBlockAndMetadata(par1World, par3 + Direction.offsetX[Direction.footInvisibleFaceRemap[var12]], par4 + var6 - 5 + var11, par5 + Direction.offsetZ[Direction.footInvisibleFaceRemap[var12]], Block.cocoaPlant.blockID, var13 << 2 | var12);
+                                        this.setBlockAndMetadata(par1World, par3 - 1, par4 + var11, par5, Block.vine.blockID, 8);
+                                    }
+
+                                    if (par2Random.nextInt(3) > 0 && par1World.isAirBlock(par3 + 1, par4 + var11, par5))
+                                    {
+                                        this.setBlockAndMetadata(par1World, par3 + 1, par4 + var11, par5, Block.vine.blockID, 2);
+                                    }
+
+                                    if (par2Random.nextInt(3) > 0 && par1World.isAirBlock(par3, par4 + var11, par5 - 1))
+                                    {
+                                        this.setBlockAndMetadata(par1World, par3, par4 + var11, par5 - 1, Block.vine.blockID, 1);
+                                    }
+
+                                    if (par2Random.nextInt(3) > 0 && par1World.isAirBlock(par3, par4 + var11, par5 + 1))
+                                    {
+                                        this.setBlockAndMetadata(par1World, par3, par4 + var11, par5 + 1, Block.vine.blockID, 4);
                                     }
                                 }
                             }
                         }
-                    }
 
-                    return true;
+                        if (this.vinesGrow)
+                        {
+                            for (var11 = par4 - 3 + var6; var11 <= par4 + var6; ++var11)
+                            {
+                                var12 = var11 - (par4 + var6);
+                                var13 = 2 - var12 / 2;
+
+                                for (var14 = par3 - var13; var14 <= par3 + var13; ++var14)
+                                {
+                                    for (var15 = par5 - var13; var15 <= par5 + var13; ++var15)
+                                    {
+                                        final Block block = Block.blocksList[par1World.getBlockId(var14, var11, var15)];
+                                        if (block != null && block.isLeaves(par1World, var14, var11, var15))
+                                        {
+                                            if (par2Random.nextInt(4) == 0 && par1World.getBlockId(var14 - 1, var11, var15) == 0)
+                                            {
+                                                this.growVines(par1World, var14 - 1, var11, var15, 8);
+                                            }
+
+                                            if (par2Random.nextInt(4) == 0 && par1World.getBlockId(var14 + 1, var11, var15) == 0)
+                                            {
+                                                this.growVines(par1World, var14 + 1, var11, var15, 2);
+                                            }
+
+                                            if (par2Random.nextInt(4) == 0 && par1World.getBlockId(var14, var11, var15 - 1) == 0)
+                                            {
+                                                this.growVines(par1World, var14, var11, var15 - 1, 1);
+                                            }
+
+                                            if (par2Random.nextInt(4) == 0 && par1World.getBlockId(var14, var11, var15 + 1) == 0)
+                                            {
+                                                this.growVines(par1World, var14, var11, var15 + 1, 4);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            if (par2Random.nextInt(5) == 0 && var6 > 5)
+                            {
+                                for (var11 = 0; var11 < 2; ++var11)
+                                {
+                                    for (var12 = 0; var12 < 4; ++var12)
+                                    {
+                                        if (par2Random.nextInt(4 - var11) == 0)
+                                        {
+                                            var13 = par2Random.nextInt(3);
+                                            this.setBlockAndMetadata(par1World, par3 + Direction.offsetX[Direction.footInvisibleFaceRemap[var12]], par4 + var6 - 5 + var11, par5 + Direction.offsetZ[Direction.footInvisibleFaceRemap[var12]], Block.cocoaPlant.blockID, var13 << 2 | var12);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        return true;
+                	}
+                	else
+                	{
+                		return false;
+                	}
                 }
                 else
                 {
