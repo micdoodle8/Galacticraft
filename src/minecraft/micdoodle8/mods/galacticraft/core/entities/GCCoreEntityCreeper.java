@@ -11,7 +11,7 @@ import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.effect.EntityLightningBolt;
-import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,7 +28,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  *  All rights reserved.
  *
  */
-public class GCCoreEntityCreeper extends EntityMob implements IEntityBreathable
+public class GCCoreEntityCreeper extends EntityCreeper implements IEntityBreathable
 {
     /**
      * The amount of time since the creeper was close enough to the player to ignite
@@ -44,6 +44,7 @@ public class GCCoreEntityCreeper extends EntityMob implements IEntityBreathable
     public GCCoreEntityCreeper(World par1World)
     {
         super(par1World);
+        this.tasks.taskEntries.clear();
         this.texture = "/micdoodle8/mods/galacticraft/core/client/entities/creeper.png";
         this.tasks.addTask(1, new EntityAISwimming(this));
         this.tasks.addTask(2, new GCCoreEntityAICreeperSwell(this));
@@ -64,14 +65,6 @@ public class GCCoreEntityCreeper extends EntityMob implements IEntityBreathable
 	public boolean isAIEnabled()
     {
         return true;
-    }
-
-    @Override
-    protected void entityInit()
-    {
-        super.entityInit();
-        this.dataWatcher.addObject(16, Byte.valueOf((byte) - 1));
-        this.dataWatcher.addObject(17, Byte.valueOf((byte)0));
     }
 
     @Override

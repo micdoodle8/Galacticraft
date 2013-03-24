@@ -59,7 +59,7 @@ public class GCCoreEntitySpider extends EntitySpider implements IEntityBreathabl
     @Override
 	public int getMaxHealth()
     {
-        return 16;
+        return 22;
     }
 
     /**

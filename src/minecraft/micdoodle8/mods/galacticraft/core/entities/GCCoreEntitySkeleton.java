@@ -74,7 +74,7 @@ public class GCCoreEntitySkeleton extends EntitySkeleton implements IEntityBreat
     @Override
 	public int getMaxHealth()
     {
-        return 20;
+        return 25;
     }
 
     /**
