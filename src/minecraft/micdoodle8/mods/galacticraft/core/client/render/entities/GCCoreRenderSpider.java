@@ -39,11 +39,11 @@ public class GCCoreRenderSpider extends RenderLiving
         return 180.0F;
     }
 
-//    @Override
-//    protected void passSpecialRender(EntityLiving par1EntityLiving, double par2, double par4, double par6)
-//    {
-//        ClientProxyCore.TickHandlerClient.renderName(par1EntityLiving, par2, par4, par6);
-//    }
+    @Override
+    protected void preRenderCallback(EntityLiving par1EntityLiving, float par2) 
+    {
+    	GL11.glScalef(1.2F, 1.2F, 1.2F);
+    }
 
     @Override
 	protected int shouldRenderPass(EntityLiving par1EntityLiving, int par2, float par3)
@@ -107,18 +107,6 @@ public class GCCoreRenderSpider extends RenderLiving
         }
 
         return -1;
-    }
-
-    protected void scaleSpider(GCCoreEntitySpider par1EntitySpider, float par2)
-    {
-        final float var3 = par1EntitySpider.spiderScaleAmount();
-        GL11.glScalef(var3, var3, var3);
-    }
-
-    @Override
-	protected void preRenderCallback(EntityLiving par1EntityLiving, float par2)
-    {
-        this.scaleSpider((GCCoreEntitySpider)par1EntityLiving, par2);
     }
 
     @Override

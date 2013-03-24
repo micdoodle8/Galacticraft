@@ -32,6 +32,12 @@ public class GCCoreRenderZombie extends RenderLiving
     }
 
     @Override
+    protected void preRenderCallback(EntityLiving par1EntityLiving, float par2) 
+    {
+    	GL11.glScalef(1.2F, 1.2F, 1.2F);
+    }
+
+    @Override
 	protected int shouldRenderPass(EntityLiving par1EntityLiving, int par2, float par3)
     {
     	final Minecraft minecraft = FMLClientHandler.instance().getClient();

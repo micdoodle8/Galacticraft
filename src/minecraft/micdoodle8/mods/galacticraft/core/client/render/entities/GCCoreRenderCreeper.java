@@ -33,15 +33,6 @@ public class GCCoreRenderCreeper extends RenderLiving
         super(new GCCoreModelCreeper(), 0.5F);
     }
 
-//    @Override
-//	protected void passSpecialRender(EntityLiving par1EntityLiving, double par2, double par4, double par6)
-//    {
-//        ClientProxyCore.TickHandlerClient.renderName(par1EntityLiving, par2, par4, par6);
-//    }
-
-    /**
-     * Updates creeper scale in prerender callback
-     */
     protected void updateCreeperScale(GCCoreEntityCreeper par1GCEntityCreeper, float par2)
     {
         float var4 = par1GCEntityCreeper.setCreeperFlashTime(par2);
@@ -61,7 +52,7 @@ public class GCCoreRenderCreeper extends RenderLiving
         var4 *= var4;
         final float var6 = (1.0F + var4 * 0.4F) * var5;
         final float var7 = (1.0F + var4 * 0.1F) / var5;
-        GL11.glScalef(var6, var7, var6);
+        GL11.glScalef(0.2F + var6, 0.2F + var7, 0.2F + var6);
     }
 
     /**

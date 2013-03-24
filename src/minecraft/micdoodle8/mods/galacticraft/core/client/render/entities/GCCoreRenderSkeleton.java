@@ -34,21 +34,34 @@ public class GCCoreRenderSkeleton extends RenderLiving
         this.setRenderPassModel(new GCCoreModelSpider());
     }
 
-//    @Override
-//    protected void passSpecialRender(EntityLiving par1EntityLiving, double par2, double par4, double par6)
-//    {
-//        ClientProxyCore.TickHandlerClient.renderName(par1EntityLiving, par2, par4, par6);
-//    }
+    @Override
+    protected void preRenderCallback(EntityLiving par1EntityLiving, float par2) 
+    {
+    	GL11.glScalef(1.2F, 1.2F, 1.2F);
+    }
 
     protected void renderEquippedItems(EntityLiving par1EntityLiving, float par2) 
     {
-    	GL11.glTranslatef(-0.3F, -0.3F, -0.7F);
+    	GL11.glPushMatrix();
+    	GL11.glTranslatef(-0.3F, -0.3F, -0.6F);
+    	GL11.glTranslatef(0.1F, 0.0F, 0.0F);
+    	GL11.glRotatef(41, 0.0F, 1.0F, 0.0F);
+    	GL11.glRotatef(-20, 1.0F, 0.0F, 0.0F);
+    	GL11.glRotatef(-20, 0.0F, 0.0F, 1.0F);
     	GL11.glScalef(0.5F, 0.5F, 0.5F);
-    	GL11.glTranslatef(0.5F, 0.0F, 0.0F);
-    	GL11.glRotatef(50, 0.0F, 1.0F, 0.0F);
-    	GL11.glRotatef(-10, 1.0F, 0.0F, 0.0F);
-    	GL11.glRotatef(10, 0.0F, 0.0F, 1.0F);
+//    	GL11.glRotatef(00, 0.0F, 0.0F, 1.0F);
         this.renderManager.itemRenderer.renderItem(par1EntityLiving, new ItemStack(Item.bow), 0);
+        GL11.glPopMatrix();
+
+    	GL11.glPushMatrix();
+    	GL11.glTranslatef(0.11F, -0.3F, -0.6F);
+    	GL11.glTranslatef(0.1F, 0.0F, 0.0F);
+    	GL11.glRotatef(46, 0.0F, 1.0F, 0.0F);
+    	GL11.glRotatef(-20, 1.0F, 0.0F, 0.0F);
+    	GL11.glRotatef(-20, 0.0F, 0.0F, 1.0F);
+    	GL11.glScalef(0.5F, 0.5F, 0.5F);
+        this.renderManager.itemRenderer.renderItem(par1EntityLiving, new ItemStack(Item.bow), 0);
+        GL11.glPopMatrix();
     }
 
     @Override
