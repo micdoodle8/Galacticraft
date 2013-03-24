@@ -103,7 +103,7 @@ public class RecipeUtil
 			"XXX",
 			'X', Block.thinGlass
 		}));
-		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.lightOxygenTank, 1), new Object[] {
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.lightOxygenTank, 1, GCCoreItems.lightOxygenTank.getMaxDamage()), new Object[] {
 			"Z",
 			"X",
 			"Y",
@@ -111,7 +111,7 @@ public class RecipeUtil
 			'Y', "ingotCopper",
 			'Z', new ItemStack(Block.cloth, 1, 5)
 		}));
-		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.medOxygenTank, 1), new Object[] {
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.medOxygenTank, 1, GCCoreItems.medOxygenTank.getMaxDamage()), new Object[] {
 			"ZZ",
 			"XX",
 			"YY",
@@ -119,7 +119,7 @@ public class RecipeUtil
 			'Y', "ingotTin",
 			'Z', new ItemStack(Block.cloth, 1, 1)
 		}));
-		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.heavyOxygenTank, 1), new Object[] {
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.heavyOxygenTank, 1, GCCoreItems.heavyOxygenTank.getMaxDamage()), new Object[] {
 			"ZZZ",
 			"XXX",
 			"YYY",
