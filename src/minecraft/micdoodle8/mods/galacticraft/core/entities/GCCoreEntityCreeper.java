@@ -11,7 +11,7 @@ import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.effect.EntityLightningBolt;
-import net.minecraft.entity.monster.EntityCreeper;
+import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,12 +28,12 @@ import cpw.mods.fml.relauncher.SideOnly;
  *  All rights reserved.
  *
  */
-public class GCCoreEntityCreeper extends EntityCreeper implements IEntityBreathable
+public class GCCoreEntityCreeper extends EntityMob implements IEntityBreathable
 {
     /**
      * The amount of time since the creeper was close enough to the player to ignite
      */
-    int timeSinceIgnited;
+    int timeSinceIgnited2;
 
     /**
      * Time when this creeper was last in an active state (Messed up code here, probably causes creeper animation to go
@@ -67,20 +67,19 @@ public class GCCoreEntityCreeper extends EntityCreeper implements IEntityBreatha
     }
 
     @Override
-	public int getMaxHealth()
+    protected void entityInit()
     {
-        return 20;
+        super.entityInit();
+        this.dataWatcher.addObject(16, Byte.valueOf((byte) - 1));
+        this.dataWatcher.addObject(17, Byte.valueOf((byte)0));
     }
 
     @Override
-	protected void entityInit()
+	public int getMaxHealth()
     {
-        super.entityInit();
+        return 25;
     }
 
-    /**
-     * (abstract) Protected helper method to write subclass entity data to NBT.
-     */
     @Override
 	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
@@ -110,24 +109,24 @@ public class GCCoreEntityCreeper extends EntityCreeper implements IEntityBreatha
     {
         if (this.isEntityAlive())
         {
-            this.lastActiveTime = this.timeSinceIgnited;
+            this.lastActiveTime = this.timeSinceIgnited2;
             final int var1 = this.getCreeperState();
 
-            if (var1 > 0 && this.timeSinceIgnited == 0)
+            if (var1 > 0 && this.timeSinceIgnited2 == 0)
             {
                 this.worldObj.playSoundAtEntity(this, "random.fuse", 1.0F, 0.5F);
             }
 
-            this.timeSinceIgnited += var1;
+            this.timeSinceIgnited2 += var1;
 
-            if (this.timeSinceIgnited < 0)
+            if (this.timeSinceIgnited2 < 0)
             {
-                this.timeSinceIgnited = 0;
+                this.timeSinceIgnited2 = 0;
             }
 
-            if (this.timeSinceIgnited >= 30)
+            if (this.timeSinceIgnited2 >= 60)
             {
-                this.timeSinceIgnited = 30;
+                this.timeSinceIgnited2 = 60;
 
                 if (!this.worldObj.isRemote)
                 {
@@ -135,11 +134,11 @@ public class GCCoreEntityCreeper extends EntityCreeper implements IEntityBreatha
 
                     if (this.getPowered())
                     {
-                        this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 6.0F, var2);
+                        this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 12.0F, var2);
                     }
                     else
                     {
-                        this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 3.0F, var2);
+                        this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 6.0F, var2);
                     }
 
                     this.setDead();
@@ -194,10 +193,6 @@ public class GCCoreEntityCreeper extends EntityCreeper implements IEntityBreatha
         return true;
     }
 
-    /**
-     * Returns true if the creeper is powered by a lightning bolt.
-     */
-    @Override
 	public boolean getPowered()
     {
         return this.dataWatcher.getWatchableObjectByte(17) == 1;
@@ -210,7 +205,7 @@ public class GCCoreEntityCreeper extends EntityCreeper implements IEntityBreatha
      */
     public float setCreeperFlashTime(float par1)
     {
-        return (this.lastActiveTime + (this.timeSinceIgnited - this.lastActiveTime) * par1) / 28.0F;
+        return (this.lastActiveTime + (this.timeSinceIgnited2 - this.lastActiveTime) * par1) / 28.0F;
     }
 
     /**
@@ -222,19 +217,11 @@ public class GCCoreEntityCreeper extends EntityCreeper implements IEntityBreatha
         return Item.gunpowder.itemID;
     }
 
-    /**
-     * Returns the current state of creeper, -1 is idle, 1 is 'in fuse'
-     */
-    @Override
 	public int getCreeperState()
     {
         return this.dataWatcher.getWatchableObjectByte(16);
     }
 
-    /**
-     * Sets the state of creeper, -1 to idle and 1 to be 'in fuse'
-     */
-    @Override
 	public void setCreeperState(int par1)
     {
         this.dataWatcher.updateObject(16, Byte.valueOf((byte)par1));
