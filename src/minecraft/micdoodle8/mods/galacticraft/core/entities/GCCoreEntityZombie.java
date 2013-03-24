@@ -38,8 +38,9 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
     public GCCoreEntityZombie(World par1World)
     {
         super(par1World);
+        this.tasks.taskEntries.clear();
         this.texture = "/micdoodle8/mods/galacticraft/core/client/entities/zombie.png";
-        this.moveSpeed = 0.28F;
+        this.moveSpeed = 0.36F;
         this.getNavigator().setBreakDoors(true);
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIBreakDoor(this));
@@ -93,7 +94,7 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
     @Override
 	public int getMaxHealth()
     {
-        return 20;
+        return 30;
     }
 
     /**
