@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
+import micdoodle8.mods.galacticraft.API.IEntityBreathable;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAIAvoidEntity;
@@ -27,7 +28,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  *  All rights reserved.
  *
  */
-public class GCCoreEntityCreeper extends EntityCreeper
+public class GCCoreEntityCreeper extends EntityCreeper implements IEntityBreathable
 {
     /**
      * The amount of time since the creeper was close enough to the player to ignite
@@ -146,11 +147,7 @@ public class GCCoreEntityCreeper extends EntityCreeper
             }
         }
 
-        this.motionY += 0.06F;
-
-    	super.onUpdate();
-
-    	this.fallDistance = 0;
+        super.onUpdate();
     }
 
 	@Override
@@ -252,4 +249,10 @@ public class GCCoreEntityCreeper extends EntityCreeper
         super.onStruckByLightning(par1EntityLightningBolt);
         this.dataWatcher.updateObject(17, Byte.valueOf((byte)1));
     }
+
+	@Override
+	public boolean canBreath() 
+	{
+		return true;
+	}
 }

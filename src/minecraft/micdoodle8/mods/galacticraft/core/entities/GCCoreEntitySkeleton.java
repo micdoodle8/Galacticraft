@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
+import micdoodle8.mods.galacticraft.API.IEntityBreathable;
+import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.ai.EntityAIFleeSun;
@@ -28,9 +30,8 @@ import cpw.mods.fml.relauncher.SideOnly;
  *  All rights reserved.
  *
  */
-public class GCCoreEntitySkeleton extends EntitySkeleton
+public class GCCoreEntitySkeleton extends EntitySkeleton implements IEntityBreathable
 {
-    /** The ItemStack that any Skeleton holds (a bow). */
     private static final ItemStack defaultHeldItem = new ItemStack(Item.bow, 1);
 
     public GCCoreEntitySkeleton(World par1World)
@@ -52,11 +53,7 @@ public class GCCoreEntitySkeleton extends EntitySkeleton
 	@Override
     public void onUpdate()
     {
-        this.motionY += 0.06F;
-
-    	super.onUpdate();
-
-    	this.fallDistance = 0;
+        super.onUpdate();
     }
 
 	@Override
@@ -213,4 +210,10 @@ public class GCCoreEntitySkeleton extends EntitySkeleton
             this.dropItem(Item.bow.itemID, 1);
         }
     }
+
+	@Override
+	public boolean canBreath() 
+	{
+		return true;
+	}
 }

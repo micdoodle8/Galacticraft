@@ -3,10 +3,12 @@ package micdoodle8.mods.galacticraft.core;
 import java.lang.reflect.Field;
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.API.IEntityBreathable;
 import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSapling;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
@@ -14,6 +16,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.event.Event.Result;
 import net.minecraftforge.event.ForgeSubscribe;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.player.BonemealEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
@@ -50,6 +53,34 @@ public class GCCoreEvents
 		}
 
 		event.setResult(Result.DENY);
+	}
+
+	@ForgeSubscribe
+	public void entityLivingEvent(LivingUpdateEvent event)
+	{
+		if (event.entityLiving.worldObj.provider instanceof IGalacticraftWorldProvider && !(event.entityLiving instanceof EntityPlayer))
+		{
+//            if (event.entityLiving.worldObj.isRemote && (!event.entityLiving.worldObj.blockExists((int)event.entityLiving.posX, 0, (int)event.entityLiving.posZ) || !event.entityLiving.worldObj.getChunkFromBlockCoords((int)event.entityLiving.posX, (int)event.entityLiving.posZ).isChunkLoaded))
+//            {
+//            	
+//            }
+//            else
+//            {
+//            	
+//            }
+			if ((!(event.entityLiving instanceof IEntityBreathable) || (event.entityLiving instanceof IEntityBreathable && !((IEntityBreathable) event.entityLiving).canBreath())) && event.entityLiving.ticksExisted % 100 == 0)
+			{
+				event.entityLiving.attackEntityFrom(GalacticraftCore.oxygenSuffocation, 1);
+			}
+			
+//			if (!(event.entityLiving instanceof EntityPlayer) && !event.entityLiving.onGround)
+//			{
+////				event.entityLiving.motionY += 0.068;
+//			}
+//			else if (!(event.entityLiving instanceof EntityPlayer) && event.entityLiving.worldObj.provider instanceof IGalacticraftWorldProvider && event.entityLiving.onGround)
+//			{
+//			}
+		}
 	}
 
 //	@ForgeSubscribe

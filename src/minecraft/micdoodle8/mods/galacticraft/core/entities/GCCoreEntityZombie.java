@@ -2,6 +2,8 @@ package micdoodle8.mods.galacticraft.core.entities;
 
 import java.util.Calendar;
 
+import micdoodle8.mods.galacticraft.API.IEntityBreathable;
+import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -29,7 +31,7 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class GCCoreEntityZombie extends EntityZombie
+public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathable
 {
     private int conversionTime = 0;
 
@@ -51,6 +53,12 @@ public class GCCoreEntityZombie extends EntityZombie
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 16.0F, 0, true));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityVillager.class, 16.0F, 0, false));
+    }
+
+	@Override
+    public void fall(float var1)
+    {
+		;
     }
 
     @Override
@@ -567,4 +575,10 @@ public class GCCoreEntityZombie extends EntityZombie
 
         return i;
     }
+
+	@Override
+	public boolean canBreath() 
+	{
+		return true;
+	}
 }

@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
+import micdoodle8.mods.galacticraft.API.IEntityBreathable;
+import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.EntitySkeleton;
@@ -18,7 +20,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  *  All rights reserved.
  *
  */
-public class GCCoreEntitySpider extends EntitySpider
+public class GCCoreEntitySpider extends EntitySpider implements IEntityBreathable
 {
     public GCCoreEntitySpider(World par1World)
     {
@@ -40,11 +42,7 @@ public class GCCoreEntitySpider extends EntitySpider
     @Override
 	public void onUpdate()
     {
-        this.motionY += 0.06F;
-
-    	super.onUpdate();
-
-    	this.fallDistance = 0;
+        super.onUpdate();
 
         if (!this.worldObj.isRemote)
         {
@@ -272,4 +270,10 @@ public class GCCoreEntitySpider extends EntitySpider
             var1.mountEntity(this);
         }
     }
+
+	@Override
+	public boolean canBreath() 
+	{
+		return true;
+	}
 }

@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.entities;
 
 import java.util.Iterator;
 
+import micdoodle8.mods.galacticraft.API.IEntityBreathable;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLiving;
@@ -30,7 +31,7 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class GCCoreEntityAlienVillager extends EntityAgeable
+public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityBreathable
 {
 	public GCCoreEntityAlienVillager(World par1World) 
 	{
@@ -403,10 +404,6 @@ public class GCCoreEntityAlienVillager extends EntityAgeable
     }
 
     @SideOnly(Side.CLIENT)
-
-    /**
-     * par1 is the particleName
-     */
     private void generateRandomParticles(String par1Str)
     {
         for (int i = 0; i < 5; ++i)
@@ -440,4 +437,10 @@ public class GCCoreEntityAlienVillager extends EntityAgeable
     {
         return this.func_90012_b(par1EntityAgeable);
     }
+
+	@Override
+	public boolean canBreath()
+	{
+		return true;
+	}
 }
