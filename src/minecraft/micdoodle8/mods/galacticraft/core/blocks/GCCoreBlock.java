@@ -69,7 +69,7 @@ public class GCCoreBlock extends Block
 		case 4:
 			return this.iconBuffer[4][0];
 		default:
-			return null;
+			return this.iconBuffer[4][0];
 		}
 	}
 
