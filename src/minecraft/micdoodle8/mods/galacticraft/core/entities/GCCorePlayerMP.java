@@ -907,11 +907,6 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
 	    	if (this.damageCounter == 0)
 	    	{
-	    		if (this.inventory.armorItemInSlot(3) != null)
-	    		{
-	    			this.inventory.armorItemInSlot(3);
-	    		}
-
 	    		final boolean flag5 = this.airRemaining <= 0 || this.airRemaining2 <= 0;
 	    		final boolean invalid = !OxygenUtil.hasValidOxygenSetup(this) || flag5;
 

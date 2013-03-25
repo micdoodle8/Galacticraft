@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.util;
 
+import micdoodle8.mods.galacticraft.API.EnumGearType;
+import micdoodle8.mods.galacticraft.API.IBreathableArmor;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiTankRefill;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryTankRefill;
@@ -100,27 +102,65 @@ public class OxygenUtil
 
 		if (inventory.getStackInSlot(0) == null || !OxygenUtil.isItemValidForPlayerTankInv(0, inventory.getStackInSlot(0)))
 		{
-			missingComponent = true;
+			for (ItemStack armorStack : player.inventory.armorInventory)
+			{
+				if (armorStack != null && armorStack.getItem() instanceof IBreathableArmor)
+				{
+					IBreathableArmor breathableArmor = (IBreathableArmor) armorStack.getItem();
+					
+					if (!breathableArmor.canBreathe(armorStack, player, EnumGearType.HELMET))
+					{
+						missingComponent = true;
+					}
+				}
+				else
+				{
+					missingComponent = true;
+				}
+			}
 		}
 
 		if (inventory.getStackInSlot(1) == null || !OxygenUtil.isItemValidForPlayerTankInv(1, inventory.getStackInSlot(1)))
 		{
-			missingComponent = true;
+			for (ItemStack armorStack : player.inventory.armorInventory)
+			{
+				if (armorStack != null && armorStack.getItem() instanceof IBreathableArmor)
+				{
+					IBreathableArmor breathableArmor = (IBreathableArmor) armorStack.getItem();
+					
+					if (!breathableArmor.canBreathe(armorStack, player, EnumGearType.GEAR))
+					{
+						missingComponent = true;
+					}
+				}
+				else
+				{
+					missingComponent = true;
+				}
+			}
 		}
 
 		if ((inventory.getStackInSlot(2) == null || !OxygenUtil.isItemValidForPlayerTankInv(2, inventory.getStackInSlot(2))) && (inventory.getStackInSlot(3) == null || !OxygenUtil.isItemValidForPlayerTankInv(3, inventory.getStackInSlot(3))))
 		{
-			missingComponent = true;
+			for (ItemStack armorStack : player.inventory.armorInventory)
+			{
+				if (armorStack != null && armorStack.getItem() instanceof IBreathableArmor)
+				{
+					IBreathableArmor breathableArmor = (IBreathableArmor) armorStack.getItem();
+					
+					if (!breathableArmor.canBreathe(armorStack, player, EnumGearType.TANK1) && !breathableArmor.canBreathe(armorStack, player, EnumGearType.TANK2))
+					{
+						missingComponent = true;
+					}
+				}
+				else
+				{
+					missingComponent = true;
+				}
+			}
 		}
-
-		if (missingComponent)
-        {
-    		return false;
-        }
-        else
-        {
-        	return true;
-        }
+		
+		return !missingComponent;
 	}
 
 	public static boolean isItemValidForPlayerTankInv(int slotIndex, ItemStack stack)

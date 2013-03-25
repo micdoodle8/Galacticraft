@@ -47,7 +47,7 @@ public class GCCoreModelPlayer extends ModelBiped
     {
     	super(var1);
     	
-		this.oxygenMask = new ModelRenderer(this, 32, 2);
+		this.oxygenMask = new ModelRenderer(this, 0, 0);
         this.oxygenMask.addBox(-4.0F, -8.0F, -4.0F, 8, 8, 8, 1);
         this.oxygenMask.setRotationPoint(0.0F, 0.0F + 0.0F, 0.0F);
 
@@ -202,7 +202,7 @@ public class GCCoreModelPlayer extends ModelBiped
 
             //
 
-    		FMLClientHandler.instance().getClient().renderEngine.bindTexture("/micdoodle8/mods/galacticraft/core/client/entities/player.png");
+    		FMLClientHandler.instance().getClient().renderEngine.bindTexture("/micdoodle8/mods/galacticraft/core/client/armor/sensorox_1_alt.png");
 
             changed = false;
 
@@ -222,10 +222,16 @@ public class GCCoreModelPlayer extends ModelBiped
 
 			if (this.wearingMask)
 			{
+				GL11.glPushMatrix();
+				GL11.glScalef(1.05F, 1.05F, 1.05F);
 				this.oxygenMask.render(var7);
+				GL11.glScalef(1F, 1F, 1F);
+				GL11.glPopMatrix();
 			}
 
 			//
+
+    		FMLClientHandler.instance().getClient().renderEngine.bindTexture("/micdoodle8/mods/galacticraft/core/client/entities/player.png");
 
             changed = false;
 

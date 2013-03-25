@@ -4,6 +4,7 @@ import mekanism.api.EnumGas;
 import mekanism.api.IGasAcceptor;
 import mekanism.api.IGasStorage;
 import mekanism.api.ITubeConnection;
+import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.oxygen.OxygenNetwork;
 import net.minecraft.block.Block;
@@ -61,25 +62,32 @@ public class GCCoreTileEntityOxygenCollector extends TileEntityElectricityRunnab
 			
 			double power = 0;
 
-			for (int y = this.yCoord - 5; y <= this.yCoord + 5; y++)
+			if (this.worldObj.provider instanceof IGalacticraftWorldProvider)
 			{
-				for (int x = this.xCoord - 5; x <= this.xCoord + 5; x++)
+				for (int y = this.yCoord - 5; y <= this.yCoord + 5; y++)
 				{
-					for (int z = this.zCoord - 5; z <= this.zCoord + 5; z++)
+					for (int x = this.xCoord - 5; x <= this.xCoord + 5; x++)
 					{
-						final Block block = Block.blocksList[this.worldObj.getBlockId(x, y, z)];
-
-						if (block != null && block instanceof BlockLeaves)
+						for (int z = this.zCoord - 5; z <= this.zCoord + 5; z++)
 						{
-							if (!this.worldObj.isRemote && this.worldObj.rand.nextInt(100000) == 0 && !GCCoreConfigManager.disableLeafDecay)
-							{
-								this.worldObj.setBlockToAir(x, y, z);
-							}
+							final Block block = Block.blocksList[this.worldObj.getBlockId(x, y, z)];
 
-							power++;
+							if (block != null && block instanceof BlockLeaves)
+							{
+								if (!this.worldObj.isRemote && this.worldObj.rand.nextInt(100000) == 0 && !GCCoreConfigManager.disableLeafDecay)
+								{
+									this.worldObj.setBlockToAir(x, y, z);
+								}
+
+								power++;
+							}
 						}
 					}
 				}
+			}
+			else
+			{
+				power = 250;
 			}
 			
 			this.setGas(EnumGas.OXYGEN, MathHelper.floor_double(power / 5));

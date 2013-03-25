@@ -65,7 +65,7 @@ public class GCCoreItems
 		GCCoreItems.heavyOxygenTank = new GCCoreItemOxygenTank(GCCoreConfigManager.idItemHeavyOxygenTank).setMaxDamage(270).setUnlocalizedName("oxygenTankHeavyFull");
 		GCCoreItems.oxygenMask = new GCCoreItemOxygenMask(GCCoreConfigManager.idArmorOxygenMask).setUnlocalizedName("oxygenMask");
 		GCCoreItems.spaceship = new GCCoreItemSpaceship(GCCoreConfigManager.idItemSpaceship).setUnlocalizedName("spaceship");
-		GCCoreItems.sensorGlasses = new GCCoreItemSensorGlasses(GCCoreConfigManager.idArmorSensorGlasses, GCCoreItems.SENSORGLASSES, 6, 0, false).setUnlocalizedName("sensorGlasses");
+		GCCoreItems.sensorGlasses = new GCCoreItemSensorGlasses(GCCoreConfigManager.idArmorSensorGlasses, GCCoreItems.SENSORGLASSES, 6, 0).setUnlocalizedName("sensorGlasses");
 //		sensorGlassesWithOxygenMask = new GCCoreItemSensorGlasses(GCCoreConfigManager.idArmorSensorGlassesWithOxygenMask, SENSORGLASSES, 7, 0, true).setIconIndex(8).setUnlocalizedName("sensorGlassesWithOxygenMask");
 		GCCoreItems.steelPickaxe = new GCCoreItemPickaxe(GCCoreConfigManager.idToolSteelPickaxe, GCCoreItems.TOOLsteel).setUnlocalizedName("steel_pickaxe");
 		GCCoreItems.steelAxe = new GCCoreItemAxe(GCCoreConfigManager.idToolSteelAxe, GCCoreItems.TOOLsteel).setUnlocalizedName("steel_axe");

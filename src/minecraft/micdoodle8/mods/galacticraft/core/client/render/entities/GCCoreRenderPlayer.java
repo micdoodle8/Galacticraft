@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
+import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockBreathableAir;
 import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelPlayer;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemBow;
@@ -134,9 +135,11 @@ public class GCCoreRenderPlayer extends RenderPlayer
     @Override
     public void renderSpecials(EntityPlayer var1, float var2)
     {
-    	final String string = "http://www.micdoodle8.com/galacticraft/capes/" + StringUtils.stripControlCodes(var1.username) + ".png";
-
-    	var1.cloakUrl = string;
+    	if (GCCoreConfigManager.overrideCapes)
+    	{
+        	final String string = "http://www.micdoodle8.com/galacticraft/capes/" + StringUtils.stripControlCodes(var1.username) + ".png";
+        	var1.cloakUrl = string;
+    	}
     	
     	super.renderSpecials(var1, var2);
     }

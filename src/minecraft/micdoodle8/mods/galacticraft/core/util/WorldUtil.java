@@ -873,13 +873,21 @@ public class WorldUtil
           	}
         }
     	
-        MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
-
-        if (server != null)
+        if (var1 instanceof EntityPlayer)
         {
-            ArrayList array = new ArrayList();
-            array.add(var2);
-            server.getConfigurationManager().sendPacketToAllPlayers(GCCorePacketDimensionListPlanets.buildDimensionListPacket(array));
+            MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+
+            if (server != null)
+            {
+                ArrayList array = new ArrayList();
+
+                for (int i : WorldUtil.registeredPlanets)
+                {
+                	array.add(i);
+                }
+                
+                server.getConfigurationManager().sendPacketToAllPlayers(GCCorePacketDimensionListPlanets.buildDimensionListPacket(array));
+            }
         }
         
         if (var1 != null && var6 != null)

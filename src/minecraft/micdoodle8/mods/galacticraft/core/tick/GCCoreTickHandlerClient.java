@@ -338,7 +338,7 @@ public class GCCoreTickHandlerClient implements ITickHandler
     			GCCoreOverlaySensorGlasses.renderSensorGlassesValueableBlocks();
     		}
 
-    		if (player != null && player.ridingEntity != null && player.ridingEntity instanceof EntitySpaceshipBase && minecraft.gameSettings.thirdPersonView != 0 && !GCCoreConfigManager.disableSpaceshipOverlay)
+    		if (minecraft.currentScreen == null && player != null && player.ridingEntity != null && player.ridingEntity instanceof EntitySpaceshipBase && minecraft.gameSettings.thirdPersonView != 0)
     		{
     			GCCoreOverlaySpaceship.renderSpaceshipOverlay();
     		}

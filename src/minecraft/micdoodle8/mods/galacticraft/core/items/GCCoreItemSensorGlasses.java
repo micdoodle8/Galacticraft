@@ -18,12 +18,9 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GCCoreItemSensorGlasses extends ItemArmor implements IArmorTextureProvider
 {
-	public boolean attachedMask;
-
-	public GCCoreItemSensorGlasses(int par1, EnumArmorMaterial material, int i, int j, boolean breathable)
+	public GCCoreItemSensorGlasses(int par1, EnumArmorMaterial material, int i, int j)
 	{
 		super(par1, material, i, j);
-		this.attachedMask = breathable;
 	}
 
 	@Override
@@ -36,12 +33,12 @@ public class GCCoreItemSensorGlasses extends ItemArmor implements IArmorTextureP
 	@SideOnly(Side.CLIENT)
     public void updateIcons(IconRegister par1IconRegister)
     {
-        this.iconIndex = par1IconRegister.registerIcon("galacticraftcore:sensor_glasses");
+        this.iconIndex = par1IconRegister.registerIcon("galacticraftcore:sensor_glasses_32_1");
     }
 
     @Override
 	public String getArmorTextureFile(ItemStack itemstack)
     {
-    	return this.attachedMask ? "/micdoodle8/mods/galacticraft/core/client/armor/sensorox_1.png" : "/micdoodle8/mods/galacticraft/core/client/armor/sensor_1.png";
+    	return "/micdoodle8/mods/galacticraft/core/client/armor/sensor_1_alt.png";
     }
 }

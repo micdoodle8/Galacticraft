@@ -27,6 +27,11 @@ public class GCCoreOverlaySensorGlasses extends GCCoreOverlay
 	 */
 	public static void renderSensorGlassesMain()
 	{
+		if (minecraft.gameSettings.thirdPersonView != 0)
+		{
+			return;
+		}
+		
 		GCCoreOverlaySensorGlasses.zoom++;
 
         final float f = MathHelper.sin(GCCoreOverlaySensorGlasses.zoom / 80.0F) * 0.1F + 0.1F;

@@ -168,7 +168,7 @@ public class GCMoonWorldProvider extends WorldProvider implements IGalacticraftW
     @Override
     public boolean canRespawnHere()
     {
-        return false;
+        return GCMoonConfigManager.canRespawnOnMoon;
     }
 
     @Override

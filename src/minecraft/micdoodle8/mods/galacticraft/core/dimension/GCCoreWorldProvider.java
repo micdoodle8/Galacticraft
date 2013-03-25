@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.dimension;
 
 import micdoodle8.mods.galacticraft.API.IOrbitDimension;
+import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.wgen.GCCoreChunkProviderOverworldOrbit;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
@@ -162,7 +163,7 @@ public class GCCoreWorldProvider extends WorldProvider implements IOrbitDimensio
     @Override
     public boolean canRespawnHere()
     {
-        return false;
+        return GCCoreConfigManager.canRespawnOnSpaceStations;
     }
 
     @Override

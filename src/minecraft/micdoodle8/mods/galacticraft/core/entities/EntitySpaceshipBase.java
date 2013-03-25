@@ -68,6 +68,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
         this.setSize(0.98F, 4F);
         this.yOffset = this.height / 2.0F;
         this.ignoreFrustumCheck = true;
+        this.renderDistanceWeight = 5.0D;
     }
     
     public void setLandingPad(GCCoreTileEntityLandingPad pad)

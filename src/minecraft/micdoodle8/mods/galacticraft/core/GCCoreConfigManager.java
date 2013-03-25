@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core;
 import java.io.File;
 import java.util.logging.Level;
 
+import micdoodle8.mods.galacticraft.moon.GCMoonConfigManager;
 import net.minecraftforge.common.Configuration;
 import cpw.mods.fml.common.FMLLog;
 
@@ -142,8 +143,9 @@ public class GCCoreConfigManager
 	public static boolean oxygenIndicatorLeftSide;
 	public static int oilGenFactor;
 	public static boolean disableLeafDecay;
-	public static boolean disableSpaceshipOverlay;
 	public static boolean spaceStationsRequirePermission;
+	public static boolean canRespawnOnSpaceStations;
+	public static boolean overrideCapes;
 
 	private void setDefaultValues()
     {
@@ -253,8 +255,9 @@ public class GCCoreConfigManager
 	        GCCoreConfigManager.disableTutorialItemText = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Tutorial Item Info Text",	false)		.getBoolean(false);
 	        GCCoreConfigManager.oxygenIndicatorLeftSide = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Using Minimap Mod",					false)		.getBoolean(false);
 	        GCCoreConfigManager.disableLeafDecay = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Oxygen Collector Leaf Decay",false)		.getBoolean(false);
-	        GCCoreConfigManager.disableSpaceshipOverlay = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Spaceship GUI Overlay",		true)		.getBoolean(true);
 	        GCCoreConfigManager.spaceStationsRequirePermission = 		GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Space Stations Require Permission",	true)		.getBoolean(true);
+	        GCCoreConfigManager.canRespawnOnSpaceStations = 			GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Can players respawn on Space Stations", false)	.getBoolean(false);
+	        GCCoreConfigManager.overrideCapes = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Override Capes", 					true)		.getBoolean(true);
 		}
 		catch (final Exception e)
 		{
