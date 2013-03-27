@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
+import micdoodle8.mods.galacticraft.API.IRefinableItem;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityRefinery;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -23,7 +24,7 @@ public class GCCoreContainerRefinery extends Container
 		this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 55, 49, IItemElectric.class));
 
 		// To be smelted
-		this.addSlotToContainer(new Slot(tileEntity, 1, 7, 15));
+		this.addSlotToContainer(new SlotSpecific(tileEntity, 1, 7, 15, IRefinableItem.class));
 
 		// Smelting result
 		this.addSlotToContainer(new SlotFurnace(par1InventoryPlayer.player, tileEntity, 2, 153, 15));
