@@ -60,9 +60,9 @@ public class GCCoreBlock extends Block
 			switch (side)
 			{
 			case 0:
-				return this.iconBuffer[3][0];
-			case 1:
 				return this.iconBuffer[3][1];
+			case 1:
+				return this.iconBuffer[3][0];
 			default:
 				return this.iconBuffer[3][2];
 			}

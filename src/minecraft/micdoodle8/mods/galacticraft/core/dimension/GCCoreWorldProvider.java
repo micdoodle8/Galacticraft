@@ -243,10 +243,4 @@ public class GCCoreWorldProvider extends WorldProvider implements IOrbitDimensio
     {
         return "DIM_SPACESTATION" + this.spaceStationDimensionID;
     }
-
-	@Override
-	public float getMobGravity() 
-	{
-		return 0.016F;
-	}
 }

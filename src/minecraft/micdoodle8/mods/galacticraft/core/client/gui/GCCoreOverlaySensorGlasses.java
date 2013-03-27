@@ -27,7 +27,7 @@ public class GCCoreOverlaySensorGlasses extends GCCoreOverlay
 	 */
 	public static void renderSensorGlassesMain()
 	{
-		if (minecraft.gameSettings.thirdPersonView != 0)
+		if (minecraft.gameSettings.thirdPersonView != 0 || minecraft.gameSettings.showDebugProfilerChart)
 		{
 			return;
 		}
