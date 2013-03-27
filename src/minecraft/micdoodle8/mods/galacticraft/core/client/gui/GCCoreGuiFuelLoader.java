@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
 import mekanism.api.EnumColor;
+import micdoodle8.mods.galacticraft.API.IRefinableItem;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerFuelLoader;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemFuelCanister;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFuelLoader;
@@ -49,17 +50,27 @@ public class GCCoreGuiFuelLoader extends GuiContainer
     
     private String getStatus()
     {
+    	if (this.fuelLoaderInv.getStackInSlot(1) != null && (this.fuelLoaderInv.getStackInSlot(1).getMaxDamage() - this.fuelLoaderInv.getStackInSlot(1).getItemDamage()) == 0)
+    	{
+    		return EnumColor.DARK_RED + "Fuel Canister Empty!";
+    	}
+
+    	if (this.fuelLoaderInv.getStackInSlot(1) != null && !(this.fuelLoaderInv.getStackInSlot(1).getItem() instanceof IRefinableItem))
+    	{
+    		return EnumColor.DARK_RED + "Item Cannot Be Loaded!";
+    	}
+    	
     	if (this.fuelLoaderInv.getStackInSlot(1) == null)
     	{
     		return EnumColor.DARK_RED + "No Fuel To Load!";
     	}
     	
-    	if (this.fuelLoaderInv.getStackInSlot(1).getItem() instanceof GCCoreItemFuelCanister && this.fuelLoaderInv.wattsReceived > 0)
+    	if (this.fuelLoaderInv.getStackInSlot(1).getItem() instanceof GCCoreItemFuelCanister && (this.fuelLoaderInv.wattsReceived > 0 || this.fuelLoaderInv.ic2WattsReceived > 0))
     	{
     		return EnumColor.DARK_GREEN + "Active";
     	}
     	
-    	if (this.fuelLoaderInv.wattsReceived == 0)
+    	if (this.fuelLoaderInv.wattsReceived == 0 && this.fuelLoaderInv.ic2WattsReceived == 0)
     	{
     		return EnumColor.DARK_RED + "Not Enough Power";
     	}

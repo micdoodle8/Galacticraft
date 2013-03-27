@@ -1,6 +1,10 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import ic2.api.Direction;
+import ic2.api.energy.event.EnergyTileLoadEvent;
+import ic2.api.energy.tile.IEnergySink;
 import micdoodle8.mods.galacticraft.API.IFuelTank;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -12,6 +16,7 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.MinecraftForge;
 import universalelectricity.components.common.BasicComponents;
 import universalelectricity.core.electricity.ElectricityPack;
 import universalelectricity.core.item.ElectricItemHelper;
@@ -23,35 +28,18 @@ import universalelectricity.prefab.tile.TileEntityElectricityRunnable;
 
 import com.google.common.io.ByteArrayDataInput;
 
-public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable implements IInventory, IPacketReceiver
+public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable implements IInventory, IPacketReceiver, IEnergySink
 {
 	private ItemStack[] containingItems = new ItemStack[2];
 	public static final double WATTS_PER_TICK = 300;
 	private final int playersUsing = 0;
 	public GCCoreTileEntityLandingPad attachedLandingPad;
-	
-	@Override
-	public boolean canConnect(ForgeDirection direction) 
-	{
-		return direction == ForgeDirection.getOrientation(this.getBlockMetadata() + 2);
-	}
-
-	@Override
-	public ElectricityPack getRequest()
-	{
-		if (this.getStackInSlot(1) != null)
-		{
-			return new ElectricityPack(GCCoreTileEntityFuelLoader.WATTS_PER_TICK / this.getVoltage(), this.getVoltage());
-		}
-		else
-		{
-			return new ElectricityPack();
-		}
-	}
+	public double ic2WattsReceived = 0;
+	private boolean initialized = false;
 	
 	public void transferFuelToSpaceship(EntitySpaceshipBase spaceship)
 	{
-		if (!this.worldObj.isRemote && this.getStackInSlot(1) != null && this.getStackInSlot(1).getItem() instanceof IFuelTank && this.getStackInSlot(1).getMaxDamage() - this.getStackInSlot(1).getItemDamage() != 0 && this.getStackInSlot(1).getItemDamage() < this.getStackInSlot(1).getMaxDamage())
+		if (!this.worldObj.isRemote && (this.ic2WattsReceived > 0 || this.wattsReceived > 0) && this.getStackInSlot(1) != null && this.getStackInSlot(1).getItem() instanceof IFuelTank && this.getStackInSlot(1).getMaxDamage() - this.getStackInSlot(1).getItemDamage() != 0 && this.getStackInSlot(1).getItemDamage() < this.getStackInSlot(1).getMaxDamage())
 		{
 			spaceship.fuel += 1F;
 			this.getStackInSlot(1).setItemDamage(this.getStackInSlot(1).getItemDamage() + 1);
@@ -62,6 +50,16 @@ public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable im
 	public void updateEntity()
 	{
 		super.updateEntity();
+		
+		if (!this.initialized && this.worldObj != null)
+		{
+			if(GalacticraftCore.modIC2Loaded)
+			{
+				MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(this));
+			}
+			
+			initialized = true;
+		}
 
 		this.wattsReceived += ElectricItemHelper.dechargeItem(this.getStackInSlot(0), GCCoreTileEntityFuelLoader.WATTS_PER_TICK, this.getVoltage());
 		
@@ -90,7 +88,7 @@ public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable im
 	@Override
 	public Packet getDescriptionPacket()
 	{
-		Packet p = PacketManager.getPacket(BasicComponents.CHANNEL, this, this.wattsReceived, this.disabledTicks);
+		Packet p = PacketManager.getPacket(BasicComponents.CHANNEL, this, this.wattsReceived, this.disabledTicks, this.ic2WattsReceived);
 		return p;
 	}
 
@@ -103,6 +101,7 @@ public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable im
 			{
 				this.wattsReceived = dataStream.readInt();
 				this.disabledTicks = dataStream.readInt();
+				this.ic2WattsReceived = dataStream.readDouble();
 			}
 		}
 		catch (Exception e)
@@ -252,8 +251,80 @@ public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable im
 	}
 
 	@Override
-	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
+	public boolean isStackValidForSlot(int i, ItemStack itemstack) 
+	{
 		// TODO Auto-generated method stub
 		return false;
+	}
+	
+	private boolean validStackInSlot()
+	{
+		return this.getStackInSlot(1) != null && this.getStackInSlot(1).getItem() instanceof IFuelTank && this.getStackInSlot(1).getMaxDamage() - this.getStackInSlot(1).getItemDamage() != 0 && this.getStackInSlot(1).getItemDamage() < this.getStackInSlot(1).getMaxDamage();
+	}
+	
+	// Universal Electricity Implementation:
+	
+	@Override
+	public boolean canConnect(ForgeDirection direction) 
+	{
+		return direction == ForgeDirection.getOrientation(this.getBlockMetadata() + 2);
+	}
+
+	@Override
+	public ElectricityPack getRequest()
+	{
+		if (this.validStackInSlot())
+		{
+			return new ElectricityPack(GCCoreTileEntityFuelLoader.WATTS_PER_TICK / this.getVoltage(), this.getVoltage());
+		}
+		else
+		{
+			return new ElectricityPack();
+		}
+	}
+	
+	// Industrial Craft 2 Implementation:
+
+	@Override
+	public int demandsEnergy()
+	{
+		return validStackInSlot() ? (int) ((GCCoreTileEntityFuelLoader.WATTS_PER_TICK / this.getVoltage()) * GalacticraftCore.IC2EnergyScalar) : 0;
+	}
+
+	@Override
+	public int injectEnergy(Direction directionFrom, int amount) 
+	{
+		double rejects = 0;
+    	double neededEnergy = ((GCCoreTileEntityFuelLoader.WATTS_PER_TICK / this.getVoltage()) * GalacticraftCore.IC2EnergyScalar);
+    	
+    	if(amount <= neededEnergy)
+    	{
+    		ic2WattsReceived += amount;
+    	}
+    	else if(amount > neededEnergy)
+    	{
+    		ic2WattsReceived += neededEnergy;
+    		rejects = amount - neededEnergy;
+    	}
+    	
+    	return (int) (rejects * GalacticraftCore.IC2EnergyScalar);
+	}
+
+	@Override
+	public int getMaxSafeInput() 
+	{
+		return 2048;
+	}
+
+	@Override
+	public boolean acceptsEnergyFrom(TileEntity emitter, Direction direction) 
+	{
+		return direction.toForgeDirection() == ForgeDirection.getOrientation(this.getBlockMetadata() + 2);
+	}
+
+	@Override
+	public boolean isAddedToEnergyNet() 
+	{
+		return this.initialized;
 	}
 }

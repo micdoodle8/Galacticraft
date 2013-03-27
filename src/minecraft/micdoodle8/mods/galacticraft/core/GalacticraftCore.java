@@ -59,6 +59,7 @@ import universalelectricity.components.common.BasicComponents;
 import universalelectricity.prefab.CustomDamageSource;
 import universalelectricity.prefab.TranslationHelper;
 import universalelectricity.prefab.multiblock.TileEntityMulti;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
@@ -150,8 +151,11 @@ public class GalacticraftCore
 	public static final CustomDamageSource oxygenSuffocation = (CustomDamageSource) new CustomDamageSource("oxygenSuffocation").setDeathMessage("%1$s ran out of oxygen!").setDamageBypassesArmor();
 	
 	public static double BuildcraftEnergyScalar = 0.2;
+	public static double IC2EnergyScalar = 0.2;
 	
 	public static boolean usingDevVersion = false;
+	
+	public static boolean modIC2Loaded = false;
 
 	public static ArrayList<Integer> hiddenItems = new ArrayList<Integer>();
 
@@ -227,6 +231,11 @@ public class GalacticraftCore
 	public void postInit(FMLPostInitializationEvent event)
 	{
 		GalacticraftCore.moon.postLoad(event);
+		
+		if(Loader.isModLoaded("IC2")) 
+		{
+			GalacticraftCore.modIC2Loaded = true;
+		}
 
 		GalacticraftCore.proxy.postInit(event);
 		GalacticraftCore.proxy.registerRenderInformation();
