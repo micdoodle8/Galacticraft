@@ -230,4 +230,10 @@ public class GCMoonWorldProvider extends WorldProvider implements IGalacticraftW
 	{
 		return 7;
 	}
+
+	@Override
+	public float getMobGravity() 
+	{
+		return 0.016F;
+	}
 }

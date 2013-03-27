@@ -117,7 +117,7 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
      * Returns true if the newer Entity AI code should be run
      */
     @Override
-	protected boolean isAIEnabled()
+	public boolean isAIEnabled()
     {
         return true;
     }
