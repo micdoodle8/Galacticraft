@@ -23,8 +23,7 @@ import cpw.mods.fml.relauncher.IFMLLoadingPlugin.TransformerExclusions;
 public class GalacticraftPlugin implements IFMLLoadingPlugin, IFMLCallHook
 {
 	private static String transformerDir = "micdoodle8.mods.galacticraft.asm.";
-	private static String serverConfigManager = GalacticraftPlugin.transformerDir + "GCCoreServerConfigurationManagerTransformer";
-	private static String playerControllerMP = GalacticraftPlugin.transformerDir + "GCCorePlayerControllerMPTransformer";
+	private static String transformerMain = GalacticraftPlugin.transformerDir + "GCCoreTransformer";
 	public static boolean hasRegistered = false;
     public static File fileLocation;
 	public static final String mcVersion = "[1.5.1]";
@@ -78,7 +77,7 @@ public class GalacticraftPlugin implements IFMLLoadingPlugin, IFMLCallHook
 	public String[] getASMTransformerClass() 
 	{
 		GalacticraftPlugin.versionCheck(GalacticraftPlugin.mcVersion, "GalacticraftCore");
-		String[] asmStrings = new String[] {GalacticraftPlugin.serverConfigManager, GalacticraftPlugin.playerControllerMP};
+		String[] asmStrings = new String[] {GalacticraftPlugin.transformerMain};
 		
         if (!GalacticraftPlugin.hasRegistered) 
         {
@@ -121,7 +120,7 @@ public class GalacticraftPlugin implements IFMLLoadingPlugin, IFMLCallHook
 	@Override
 	public String getSetupClass()
 	{
-		return null;
+        return "micdoodle8.mods.galacticraft.asm.GalacticraftPlugin";
 	}
 
 	@Override
