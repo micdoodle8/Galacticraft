@@ -41,7 +41,7 @@ public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityB
         this.isPlaying = false;
         this.villageObj = null;
         this.texture = "/micdoodle8/mods/galacticraft/core/client/entities/villager_1.png";
-        this.moveSpeed = 0.8F;
+        this.moveSpeed = 0.3F;
         this.setSize(0.6F, 1.8F);
         this.getNavigator().setBreakDoors(true);
         this.getNavigator().setAvoidsWater(true);
@@ -52,7 +52,7 @@ public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityB
         this.tasks.addTask(5, new EntityAIMoveTwardsRestriction(this, 0.3F));
         this.tasks.addTask(9, new EntityAIWatchClosest2(this, EntityPlayer.class, 15.0F, 1.0F));
         this.tasks.addTask(9, new EntityAIWatchClosest2(this, EntityVillager.class, 15.0F, 0.05F));
-        this.tasks.addTask(9, new EntityAIWander(this, 0.5F));
+        this.tasks.addTask(9, new EntityAIWander(this, 0.3F));
         this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityLiving.class, 15.0F));
 	}
 
