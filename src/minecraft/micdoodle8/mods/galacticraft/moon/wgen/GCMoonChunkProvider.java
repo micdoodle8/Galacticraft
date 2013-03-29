@@ -142,8 +142,6 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 		{
 			for (int var9 = 0; var9 < 16; ++var9)
 			{
-				final BiomeGenBase var10 = par4ArrayOfBiomeGenBase[var9 + var8 * 16];
-				var10.getFloatTemperature();
 				final int var12 = (int) (this.noiseGen4.getNoise(var8 + par1 * 16, var9 * par2 * 16) / 3.0D + 3.0D + this.rand.nextDouble() * 0.25D);
 				int var13 = -1;
 				int var14 = this.topBlockID;
@@ -227,12 +225,6 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
         this.caveGenerator.generate(this, this.worldObj, par1, par2, ids, meta);
 
 		final Chunk var4 = new GCCoreChunk(this.worldObj, ids, meta, par1, par2);
-		final byte[] var5 = var4.getBiomeArray();
-
-		for (int var6 = 0; var6 < var5.length; ++var6)
-		{
-			var5[var6] = (byte) this.biomesForGeneration[var6].biomeID;
-		}
 
 		var4.generateSkylightMap();
 		return var4;

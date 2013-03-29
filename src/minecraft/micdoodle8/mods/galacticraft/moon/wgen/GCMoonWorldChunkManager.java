@@ -12,6 +12,21 @@ import net.minecraft.world.biome.BiomeCache;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.WorldChunkManager;
 import net.minecraft.world.gen.layer.GenLayer;
+import net.minecraft.world.gen.layer.GenLayerAddIsland;
+import net.minecraft.world.gen.layer.GenLayerAddMushroomIsland;
+import net.minecraft.world.gen.layer.GenLayerAddSnow;
+import net.minecraft.world.gen.layer.GenLayerBiome;
+import net.minecraft.world.gen.layer.GenLayerFuzzyZoom;
+import net.minecraft.world.gen.layer.GenLayerHills;
+import net.minecraft.world.gen.layer.GenLayerIsland;
+import net.minecraft.world.gen.layer.GenLayerRiver;
+import net.minecraft.world.gen.layer.GenLayerRiverInit;
+import net.minecraft.world.gen.layer.GenLayerRiverMix;
+import net.minecraft.world.gen.layer.GenLayerShore;
+import net.minecraft.world.gen.layer.GenLayerSmooth;
+import net.minecraft.world.gen.layer.GenLayerSwampRivers;
+import net.minecraft.world.gen.layer.GenLayerVoronoiZoom;
+import net.minecraft.world.gen.layer.GenLayerZoom;
 import net.minecraft.world.gen.layer.IntCache;
 
 /**
@@ -38,9 +53,69 @@ public class GCMoonWorldChunkManager extends WorldChunkManager
     public GCMoonWorldChunkManager(long par1, WorldType par3WorldType)
     {
         this();
-        final GenLayer[] var4 = GenLayer.initializeAllBiomeGenerators(par1, par3WorldType);
+        final GenLayer[] var4 = this.initializeAllBiomeGenerators(par1, par3WorldType);
         this.genBiomes = var4[0];
         this.biomeIndexLayer = var4[1];
+    }
+    
+    public static GenLayer[] initializeAllBiomeGenerators(long par0, WorldType par2WorldType)
+    {
+        GenLayerIsland genlayerisland = new GenLayerIsland(1L);
+        GenLayerFuzzyZoom genlayerfuzzyzoom = new GenLayerFuzzyZoom(2000L, genlayerisland);
+        GenLayerAddIsland genlayeraddisland = new GenLayerAddIsland(1L, genlayerfuzzyzoom);
+        GenLayerZoom genlayerzoom = new GenLayerZoom(2001L, genlayeraddisland);
+        genlayeraddisland = new GenLayerAddIsland(2L, genlayerzoom);
+        GenLayerAddSnow genlayeraddsnow = new GenLayerAddSnow(2L, genlayeraddisland);
+        genlayerzoom = new GenLayerZoom(2002L, genlayeraddsnow);
+        genlayeraddisland = new GenLayerAddIsland(3L, genlayerzoom);
+        genlayerzoom = new GenLayerZoom(2003L, genlayeraddisland);
+        genlayeraddisland = new GenLayerAddIsland(4L, genlayerzoom);
+        GenLayerAddMushroomIsland genlayeraddmushroomisland = new GenLayerAddMushroomIsland(5L, genlayeraddisland);
+        byte b0 = 4;
+
+        if (par2WorldType == WorldType.LARGE_BIOMES)
+        {
+            b0 = 6;
+        }
+        
+        b0 = GenLayer.getModdedBiomeSize(par2WorldType, b0);
+
+        GenLayer genlayer = GenLayerZoom.func_75915_a(1000L, genlayeraddmushroomisland, 0);
+        GenLayerRiverInit genlayerriverinit = new GenLayerRiverInit(100L, genlayer);
+        genlayer = GenLayerZoom.func_75915_a(1000L, genlayerriverinit, b0 + 2);
+        GenLayerRiver genlayerriver = new GenLayerRiver(1L, genlayer);
+        GenLayerSmooth genlayersmooth = new GenLayerSmooth(1000L, genlayerriver);
+        GenLayer genlayer1 = GenLayerZoom.func_75915_a(1000L, genlayeraddmushroomisland, 0);
+        GenLayerBiome genlayerbiome = new GenLayerBiome(200L, genlayer1, par2WorldType);
+        genlayer1 = GenLayerZoom.func_75915_a(1000L, genlayerbiome, 2);
+        Object object = new GenLayerHills(1000L, genlayer1);
+
+        for (int j = 0; j < b0; ++j)
+        {
+            object = new GenLayerZoom((long)(1000 + j), (GenLayer)object);
+
+            if (j == 0)
+            {
+                object = new GenLayerAddIsland(3L, (GenLayer)object);
+            }
+
+            if (j == 1)
+            {
+                object = new GenLayerShore(1000L, (GenLayer)object);
+            }
+
+            if (j == 1)
+            {
+                object = new GenLayerSwampRivers(1000L, (GenLayer)object);
+            }
+        }
+
+        GenLayerSmooth genlayersmooth1 = new GenLayerSmooth(1000L, (GenLayer)object);
+        GenLayerRiverMix genlayerrivermix = new GenLayerRiverMix(100L, genlayersmooth1, genlayersmooth);
+        GenLayerVoronoiZoom genlayervoronoizoom = new GenLayerVoronoiZoom(10L, genlayerrivermix);
+        genlayerrivermix.initWorldGenSeed(par0);
+        genlayervoronoizoom.initWorldGenSeed(par0);
+        return new GenLayer[] {genlayerrivermix, genlayervoronoizoom, genlayerrivermix};
     }
 
     public GCMoonWorldChunkManager(World par1World, float par2)
@@ -109,21 +184,7 @@ public class GCMoonWorldChunkManager extends WorldChunkManager
     @Override
     public BiomeGenBase[] getBiomesForGeneration(BiomeGenBase[] par1ArrayOfBiomeGenBase, int par2, int par3, int par4, int par5)
     {
-        IntCache.resetIntCache();
-
-        if (par1ArrayOfBiomeGenBase == null || par1ArrayOfBiomeGenBase.length < par4 * par5)
-        {
-            par1ArrayOfBiomeGenBase = new BiomeGenBase[par4 * par5];
-        }
-
-        final int[] var6 = this.genBiomes.getInts(par2, par3, par4, par5);
-
-        for (int var7 = 0; var7 < par4 * par5; ++var7)
-        {
-            par1ArrayOfBiomeGenBase[var7] = BiomeGenBase.biomeList[var6[var7]];
-        }
-
-        return par1ArrayOfBiomeGenBase;
+        return new BiomeGenBase[] {GCMoonBiomeGenBase.moonFlat};
     }
 
     @Override
@@ -135,30 +196,12 @@ public class GCMoonWorldChunkManager extends WorldChunkManager
     @Override
     public BiomeGenBase[] getBiomeGenAt(BiomeGenBase[] par1ArrayOfBiomeGenBase, int par2, int par3, int par4, int par5, boolean par6)
     {
-        IntCache.resetIntCache();
-
-        if (par1ArrayOfBiomeGenBase == null || par1ArrayOfBiomeGenBase.length < par4 * par5)
+        for (int var8 = 0; var8 < par1ArrayOfBiomeGenBase.length; ++var8)
         {
-            par1ArrayOfBiomeGenBase = new BiomeGenBase[par4 * par5];
+            par1ArrayOfBiomeGenBase[var8] = GCMoonBiomeGenBase.moonFlat;
         }
-
-        if (par6 && par4 == 16 && par5 == 16 && (par2 & 15) == 0 && (par3 & 15) == 0)
-        {
-            final BiomeGenBase[] var9 = this.biomeCache.getCachedBiomes(par2, par3);
-            System.arraycopy(var9, 0, par1ArrayOfBiomeGenBase, 0, par4 * par5);
-            return par1ArrayOfBiomeGenBase;
-        }
-        else
-        {
-            final int[] var7 = this.biomeIndexLayer.getInts(par2, par3, par4, par5);
-
-            for (int var8 = 0; var8 < par4 * par5; ++var8)
-            {
-                par1ArrayOfBiomeGenBase[var8] = BiomeGenBase.biomeList[var7[var8]];
-            }
-
-            return par1ArrayOfBiomeGenBase;
-        }
+        
+        return par1ArrayOfBiomeGenBase;
     }
 
     @Override
