@@ -2,17 +2,21 @@ package micdoodle8.mods.galacticraft.core.util;
 
 import micdoodle8.mods.galacticraft.API.EnumGearType;
 import micdoodle8.mods.galacticraft.API.IBreathableArmor;
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockBreathableAir;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiTankRefill;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryTankRefill;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenGear;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenMask;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenTank;
+import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiInventory;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import cpw.mods.fml.client.FMLClientHandler;
 
@@ -47,6 +51,94 @@ public class OxygenUtil
 
 		return false;
 	}
+
+    public static boolean isAABBInBreathableAirBlock(Entity entity)
+    {
+        final int var3 = MathHelper.floor_double(entity.boundingBox.minX);
+        final int var4 = MathHelper.floor_double(entity.boundingBox.maxX + 1.0D);
+        final int var5 = MathHelper.floor_double(entity.boundingBox.minY);
+        final int var6 = MathHelper.floor_double(entity.boundingBox.maxY + 1.0D);
+        final int var7 = MathHelper.floor_double(entity.boundingBox.minZ);
+        final int var8 = MathHelper.floor_double(entity.boundingBox.maxZ + 1.0D);
+
+        for (int var9 = var3; var9 < var4; ++var9)
+        {
+            for (int var10 = var5; var10 < var6; ++var10)
+            {
+                for (int var11 = var7; var11 < var8; ++var11)
+                {
+                    final Block var12 = Block.blocksList[entity.worldObj.getBlockId(var9, var10, var11)];
+
+                    if (var12 != null && var12 instanceof GCCoreBlockBreathableAir)
+                    {
+                        final int var13 = entity.worldObj.getBlockMetadata(var9, var10, var11);
+                        double var14 = var10 + 1;
+
+                        if (var13 < 8)
+                        {
+                            var14 = var10 + 1 - var13 / 8.0D;
+                        }
+
+                        if (var14 >= entity.boundingBox.minY)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public static boolean isAABBInPartialBlockWithOxygenNearby(Entity entity)
+    {
+        final int var3 = MathHelper.floor_double(entity.boundingBox.minX);
+        final int var4 = MathHelper.floor_double(entity.boundingBox.maxX + 1.0D);
+        final int var5 = MathHelper.floor_double(entity.boundingBox.minY);
+        final int var6 = MathHelper.floor_double(entity.boundingBox.maxY + 1.0D);
+        final int var7 = MathHelper.floor_double(entity.boundingBox.minZ);
+        final int var8 = MathHelper.floor_double(entity.boundingBox.maxZ + 1.0D);
+
+        for (int x = var3; x < var4; ++x)
+        {
+            for (int y = var5; y < var6; ++y)
+            {
+                for (int z = var7; z < var8; ++z)
+                {
+                    final Block block = Block.blocksList[entity.worldObj.getBlockId(x, y, z)];
+
+                    if (block != null && !block.isOpaqueCube())
+                    {
+                    	final boolean changed = false;
+
+                    	for (int x1 = x - 1; x1 < x + 2; x1++)
+                    	{
+                        	for (int y1 = y - 1; y1 < y + 2; y1++)
+                        	{
+                            	for (int z1 = z - 1; z1 < z + 2; z1++)
+                            	{
+                                    final Block block2 = Block.blocksList[entity.worldObj.getBlockId(x1, y1, z1)];
+
+                                    if (block2 instanceof GCCoreBlockBreathableAir)
+                                    {
+                                    	return true;
+                                    }
+                            	}
+                        	}
+                    	}
+
+                    	if (!changed)
+                    	{
+                    		return false;
+                    	}
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
 
     public static int getDrainSpacing(ItemStack tank)
     {

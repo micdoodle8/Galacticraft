@@ -8,7 +8,6 @@ import java.util.Set;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockBreathableAir;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryTankRefill;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemParachute;
@@ -141,94 +140,6 @@ public class GCCorePlayerMP extends EntityPlayerMP
     	{
         	this.spaceStationDimensionID = ((GCCorePlayerMP) par1EntityPlayer).spaceStationDimensionID;
     	}
-    }
-
-    public boolean isAABBInBreathableAirBlock()
-    {
-        final int var3 = MathHelper.floor_double(this.boundingBox.minX);
-        final int var4 = MathHelper.floor_double(this.boundingBox.maxX + 1.0D);
-        final int var5 = MathHelper.floor_double(this.boundingBox.minY);
-        final int var6 = MathHelper.floor_double(this.boundingBox.maxY + 1.0D);
-        final int var7 = MathHelper.floor_double(this.boundingBox.minZ);
-        final int var8 = MathHelper.floor_double(this.boundingBox.maxZ + 1.0D);
-
-        for (int var9 = var3; var9 < var4; ++var9)
-        {
-            for (int var10 = var5; var10 < var6; ++var10)
-            {
-                for (int var11 = var7; var11 < var8; ++var11)
-                {
-                    final Block var12 = Block.blocksList[this.worldObj.getBlockId(var9, var10, var11)];
-
-                    if (var12 != null && var12 instanceof GCCoreBlockBreathableAir)
-                    {
-                        final int var13 = this.worldObj.getBlockMetadata(var9, var10, var11);
-                        double var14 = var10 + 1;
-
-                        if (var13 < 8)
-                        {
-                            var14 = var10 + 1 - var13 / 8.0D;
-                        }
-
-                        if (var14 >= this.boundingBox.minY)
-                        {
-                            return true;
-                        }
-                    }
-                }
-            }
-        }
-
-        return false;
-    }
-
-    public boolean isAABBInPartialBlockWithOxygenNearby()
-    {
-        final int var3 = MathHelper.floor_double(this.boundingBox.minX);
-        final int var4 = MathHelper.floor_double(this.boundingBox.maxX + 1.0D);
-        final int var5 = MathHelper.floor_double(this.boundingBox.minY);
-        final int var6 = MathHelper.floor_double(this.boundingBox.maxY + 1.0D);
-        final int var7 = MathHelper.floor_double(this.boundingBox.minZ);
-        final int var8 = MathHelper.floor_double(this.boundingBox.maxZ + 1.0D);
-
-        for (int x = var3; x < var4; ++x)
-        {
-            for (int y = var5; y < var6; ++y)
-            {
-                for (int z = var7; z < var8; ++z)
-                {
-                    final Block block = Block.blocksList[this.worldObj.getBlockId(x, y, z)];
-
-                    if (block != null && !block.isOpaqueCube())
-                    {
-                    	final boolean changed = false;
-
-                    	for (int x1 = x - 1; x1 < x + 2; x1++)
-                    	{
-                        	for (int y1 = y - 1; y1 < y + 2; y1++)
-                        	{
-                            	for (int z1 = z - 1; z1 < z + 2; z1++)
-                            	{
-                                    final Block block2 = Block.blocksList[this.worldObj.getBlockId(x1, y1, z1)];
-
-                                    if (block2 instanceof GCCoreBlockBreathableAir)
-                                    {
-                                    	return true;
-                                    }
-                            	}
-                        	}
-                    	}
-
-                    	if (!changed)
-                    	{
-                    		return false;
-                    	}
-                    }
-                }
-            }
-        }
-
-        return false;
     }
 
 	@Override
@@ -865,22 +776,22 @@ public class GCCorePlayerMP extends EntityPlayerMP
 	    		this.airRemaining2 = tankInSlot2.getMaxDamage() - tankInSlot2.getItemDamage() % 90;
 			}
 
-			if (drainSpacing > 0 && this.tick % drainSpacing == 0 && !this.isAABBInPartialBlockWithOxygenNearby() && !this.isAABBInBreathableAirBlock() && tankInSlot.getMaxDamage() - tankInSlot.getItemDamage() % 90 > 0)
+			if (drainSpacing > 0 && this.tick % drainSpacing == 0 && !OxygenUtil.isAABBInPartialBlockWithOxygenNearby(this) && !OxygenUtil.isAABBInBreathableAirBlock(this) && tankInSlot.getMaxDamage() - tankInSlot.getItemDamage() % 90 > 0)
 	    	{
 	    		tankInSlot.damageItem(1, this);
 	    	}
 
-			if (drainSpacing2 > 0 && this.tick % drainSpacing2 == 0 && !this.isAABBInPartialBlockWithOxygenNearby() && !this.isAABBInBreathableAirBlock() && tankInSlot2.getMaxDamage() - tankInSlot2.getItemDamage() % 90 > 0)
+			if (drainSpacing2 > 0 && this.tick % drainSpacing2 == 0 && !OxygenUtil.isAABBInPartialBlockWithOxygenNearby(this) && !OxygenUtil.isAABBInBreathableAirBlock(this) && tankInSlot2.getMaxDamage() - tankInSlot2.getItemDamage() % 90 > 0)
 	    	{
 	    		tankInSlot2.damageItem(1, this);
 	    	}
 
-			if (drainSpacing == 0 && this.tick % 60 == 0 && !this.isAABBInPartialBlockWithOxygenNearby() && !this.isAABBInBreathableAirBlock() && this.airRemaining > 0)
+			if (drainSpacing == 0 && this.tick % 60 == 0 && !OxygenUtil.isAABBInPartialBlockWithOxygenNearby(this) && !OxygenUtil.isAABBInBreathableAirBlock(this) && this.airRemaining > 0)
 			{
 	    		this.airRemaining -= 1;
 			}
 
-			if (drainSpacing2 == 0 && this.tick % 60 == 0 && !this.isAABBInPartialBlockWithOxygenNearby() && !this.isAABBInBreathableAirBlock() && this.airRemaining2 > 0)
+			if (drainSpacing2 == 0 && this.tick % 60 == 0 && !OxygenUtil.isAABBInPartialBlockWithOxygenNearby(this) && !OxygenUtil.isAABBInBreathableAirBlock(this) && this.airRemaining2 > 0)
 			{
 	    		this.airRemaining2 -= 1;
 			}
@@ -895,12 +806,12 @@ public class GCCorePlayerMP extends EntityPlayerMP
 				this.airRemaining2 = 0;
 			}
 
-			if (this.tick % 60 == 0 && (this.isAABBInBreathableAirBlock() ||  this.isAABBInPartialBlockWithOxygenNearby()) && this.airRemaining < 90 && tankInSlot != null)
+			if (this.tick % 60 == 0 && (OxygenUtil.isAABBInBreathableAirBlock(this) ||  OxygenUtil.isAABBInPartialBlockWithOxygenNearby(this)) && this.airRemaining < 90 && tankInSlot != null)
 			{
 				this.airRemaining += 1;
 			}
 
-			if (this.tick % 60 == 0 && (this.isAABBInBreathableAirBlock() ||  this.isAABBInPartialBlockWithOxygenNearby()) && this.airRemaining2 < 90 && tankInSlot2 != null)
+			if (this.tick % 60 == 0 && (OxygenUtil.isAABBInBreathableAirBlock(this) ||  OxygenUtil.isAABBInPartialBlockWithOxygenNearby(this)) && this.airRemaining2 < 90 && tankInSlot2 != null)
 			{
 				this.airRemaining2 += 1;
 			}
@@ -910,7 +821,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 	    		final boolean flag5 = this.airRemaining <= 0 || this.airRemaining2 <= 0;
 	    		final boolean invalid = !OxygenUtil.hasValidOxygenSetup(this) || flag5;
 
-	    		if (invalid && !this.isAABBInPartialBlockWithOxygenNearby() && !this.isAABBInBreathableAirBlock())
+	    		if (invalid && !OxygenUtil.isAABBInPartialBlockWithOxygenNearby(this) && !OxygenUtil.isAABBInBreathableAirBlock(this))
 				{
 	    			if (!this.worldObj.isRemote && this.isEntityAlive())
 	    			{

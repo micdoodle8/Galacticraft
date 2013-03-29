@@ -82,7 +82,7 @@ public class GCCoreItems
 		GCCoreItems.airFan = new GCCoreItem(GCCoreConfigManager.idItemFan, "air_fan" + GalacticraftCore.TEXTURE_SUFFIX).setUnlocalizedName("airFan");
 		GCCoreItems.oxygenConcentrator = new GCCoreItem(GCCoreConfigManager.idItemOxygenConcentrator, "air_condenser" + GalacticraftCore.TEXTURE_SUFFIX).setUnlocalizedName("oxygenConcentrator");
 		GCCoreItems.gravityBow = new GCCoreItemBow(GCCoreConfigManager.idItemGravityBow).setUnlocalizedName("bow");
-		GCCoreItems.heavyPlating = new GCCoreItem(GCCoreConfigManager.idItemHeavyPlate, "heavy_plating").setUnlocalizedName("heavyPlating");
+		GCCoreItems.heavyPlating = new GCCoreItem(GCCoreConfigManager.idItemHeavyPlate, "heavy_plating" + GalacticraftCore.TEXTURE_SUFFIX).setUnlocalizedName("heavyPlating");
 		GCCoreItems.rocketEngine = new GCCoreItem(GCCoreConfigManager.idItemRocketEngine, "rocket_engine" + GalacticraftCore.TEXTURE_SUFFIX).setUnlocalizedName("rocketEngine");
 		GCCoreItems.rocketFins = new GCCoreItem(GCCoreConfigManager.idItemRocketFins, "rocket_fin" + GalacticraftCore.TEXTURE_SUFFIX).setUnlocalizedName("rocketFins");
 		GCCoreItems.rocketNoseCone = new GCCoreItem(GCCoreConfigManager.idItemRocketNoseCone, "rocket_nose_cone" + GalacticraftCore.TEXTURE_SUFFIX).setUnlocalizedName("noseCone");
