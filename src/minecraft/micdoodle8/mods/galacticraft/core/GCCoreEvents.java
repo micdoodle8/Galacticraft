@@ -5,6 +5,7 @@ import java.util.Random;
 
 import micdoodle8.mods.galacticraft.API.IEntityBreathable;
 import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.API.event.LivingMoveEvent;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSapling;
@@ -19,7 +20,6 @@ import net.minecraftforge.event.Event.Result;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
-import net.minecraftforge.event.entity.living.LivingMoveEvent;
 import net.minecraftforge.event.entity.player.BonemealEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;

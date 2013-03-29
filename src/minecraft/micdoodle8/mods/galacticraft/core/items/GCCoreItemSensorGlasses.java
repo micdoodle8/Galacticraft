@@ -33,7 +33,7 @@ public class GCCoreItemSensorGlasses extends ItemArmor implements IArmorTextureP
 	@SideOnly(Side.CLIENT)
     public void updateIcons(IconRegister par1IconRegister)
     {
-        this.iconIndex = par1IconRegister.registerIcon("galacticraftcore:sensor_glasses_32_1");
+        this.iconIndex = par1IconRegister.registerIcon("galacticraftcore:sensor_glasses" + GalacticraftCore.TEXTURE_SUFFIX);
     }
 
     @Override

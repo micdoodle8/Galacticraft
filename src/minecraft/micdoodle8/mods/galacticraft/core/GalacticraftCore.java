@@ -111,7 +111,7 @@ public class GalacticraftCore
 
     public static final int LOCALMAJVERSION = 0;
     public static final int LOCALMINVERSION = 1;
-    public static final int LOCALBUILDVERSION = 27;
+    public static final int LOCALBUILDVERSION = 28;
     public static int remoteMajVer;
     public static int remoteMinVer;
     public static int remoteBuildVer;
@@ -161,6 +161,8 @@ public class GalacticraftCore
 
 	public static boolean inMCP = true;
 	public static boolean playerAPILoaded = true;
+	
+	public static String TEXTURE_SUFFIX;
 
 	@PreInit
 	public void preInit(FMLPreInitializationEvent event)
@@ -183,6 +185,8 @@ public class GalacticraftCore
 		GalacticraftCore.registerSubMod(GalacticraftCore.moon);
 
 		new GCCoreConfigManager(new File(event.getModConfigurationDirectory(), GalacticraftCore.CONFIG_FILE));
+		
+		TEXTURE_SUFFIX = GCCoreConfigManager.hiresTextures ? "_32" : "";
 
 		GCCoreBlocks.initBlocks();
 		GCCoreBlocks.registerBlocks();

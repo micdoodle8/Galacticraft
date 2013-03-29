@@ -146,6 +146,7 @@ public class GCCoreConfigManager
 	public static boolean spaceStationsRequirePermission;
 	public static boolean canRespawnOnSpaceStations;
 	public static boolean overrideCapes;
+	public static boolean hiresTextures;
 
 	private void setDefaultValues()
     {
@@ -258,6 +259,7 @@ public class GCCoreConfigManager
 	        GCCoreConfigManager.spaceStationsRequirePermission = 		GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Space Stations Require Permission",	true)		.getBoolean(true);
 	        GCCoreConfigManager.canRespawnOnSpaceStations = 			GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Can players respawn on Space Stations", false)	.getBoolean(false);
 	        GCCoreConfigManager.overrideCapes = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Override Capes", 					true)		.getBoolean(true);
+	        GCCoreConfigManager.hiresTextures = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Hi-Res Textures (32x32)", 			true)		.getBoolean(true);
 		}
 		catch (final Exception e)
 		{

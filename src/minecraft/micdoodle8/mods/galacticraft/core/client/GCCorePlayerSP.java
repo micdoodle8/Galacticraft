@@ -85,12 +85,6 @@ public class GCCorePlayerSP extends EntityClientPlayerMP
         	this.usingParachute = false;
         }
 
-		if (!this.getParachute() && this.worldObj.provider instanceof IGalacticraftWorldProvider && !this.capabilities.isFlying && !FMLClientHandler.instance().getClient().isGamePaused && !this.handleWaterMovement())
-		{
-			final IGalacticraftWorldProvider wp = (IGalacticraftWorldProvider) this.worldObj.provider;
-			this.motionY = this.motionY + wp.getGravity();
-		}
-
 		if (this.getParachute() && this.onGround)
 		{
 			this.setParachute(false);

@@ -64,13 +64,13 @@ public class GCCoreItemOilExtractor extends Item
 		List<ItemStack> list = new ArrayList<ItemStack>();
 		this.getSubItems(this.itemID, this.getCreativeTab(), list);
 
-		this.icons[0] = iconRegister.registerIcon("galacticraftcore:extractor_1");
-		this.icons[1] = iconRegister.registerIcon("galacticraftcore:extractor_2");
-		this.icons[2] = iconRegister.registerIcon("galacticraftcore:extractor_3");
-		this.icons[3] = iconRegister.registerIcon("galacticraftcore:extractor_4");
-		this.icons[4] = iconRegister.registerIcon("galacticraftcore:extractor_5");
+		this.icons[0] = iconRegister.registerIcon("galacticraftcore:extractor_1" + GalacticraftCore.TEXTURE_SUFFIX);
+		this.icons[1] = iconRegister.registerIcon("galacticraftcore:extractor_2" + GalacticraftCore.TEXTURE_SUFFIX);
+		this.icons[2] = iconRegister.registerIcon("galacticraftcore:extractor_3" + GalacticraftCore.TEXTURE_SUFFIX);
+		this.icons[3] = iconRegister.registerIcon("galacticraftcore:extractor_4" + GalacticraftCore.TEXTURE_SUFFIX);
+		this.icons[4] = iconRegister.registerIcon("galacticraftcore:extractor_5" + GalacticraftCore.TEXTURE_SUFFIX);
 			
-		this.iconIndex = iconRegister.registerIcon("galacticraftcore:extractor_1");
+		this.iconIndex = iconRegister.registerIcon("galacticraftcore:extractor_1" + GalacticraftCore.TEXTURE_SUFFIX);
 	}
 
 	@Override
