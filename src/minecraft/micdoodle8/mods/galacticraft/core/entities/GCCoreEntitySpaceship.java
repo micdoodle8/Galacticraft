@@ -1,11 +1,14 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
+import icbm.api.IMissile;
 import icbm.api.IMissileLockable;
 import icbm.api.RadarRegistry;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+
+import universalelectricity.core.vector.Vector3;
 
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLaunchFlameFX;
@@ -480,19 +483,20 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
 	}
 
 	@Override
-	public boolean canLock() 
-	{
-		if (this.launched)
-		{
-			return true;
-		}
-		
-		return false;
-	}
-
-	@Override
 	public int getMaxFuel() 
 	{
 		return 60;
+	}
+
+	@Override
+	public boolean canLock(IMissile missile) 
+	{
+		return true;
+	}
+
+	@Override
+	public Vector3 getPredictedPosition(int ticks) 
+	{
+		return new Vector3(this);
 	}
 }
