@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 import mekanism.api.EnumGas;
 import mekanism.api.IGasAcceptor;
 import mekanism.api.ITubeConnection;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenTank;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -79,11 +79,11 @@ public class GCCoreTileEntityOxygenCompressor extends TileEntityElectricityRunna
 				{
 					final ItemStack stack = this.getStackInSlot(0);
 
-					if (stack != null && stack.getItemDamage() > 0)
+					if (stack != null && stack.getItem() instanceof GCCoreItemOxygenTank && stack.getItemDamage() > 0)
 					{
 						stack.setItemDamage(stack.getItemDamage() - 1);
 					}
-					else if (stack != null)
+					else if (stack != null && stack.getItem() instanceof GCCoreItemOxygenTank)
 					{
 						stack.setItemDamage(0);
 					}
