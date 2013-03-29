@@ -284,7 +284,7 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityElectricityRunn
 		
 		if (this.wattsReceived > 0 && type == EnumGas.OXYGEN)
 		{
-			this.power = Math.max(this.power, amount * 3);
+			this.power = Math.max(this.power, amount * 10);
 			return 0;
 		}
 		else
