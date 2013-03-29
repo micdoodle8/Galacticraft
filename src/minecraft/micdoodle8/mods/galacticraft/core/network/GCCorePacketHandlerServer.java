@@ -222,7 +222,7 @@ public class GCCorePacketHandlerServer implements IPacketHandler
             	{
             		final EntityLiving entity = (EntityLiving) object;
 
-            		if (entity.entityId == (Integer) packetReadout[0])
+            		if (entity.entityId == (Integer) packetReadout[0] && entity.ridingEntity == null)
             		{
             			entity.setFire(3);
             		}
