@@ -1,6 +1,10 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import ic2.api.Direction;
+import ic2.api.energy.event.EnergyTileLoadEvent;
+import ic2.api.energy.tile.IEnergySink;
 import micdoodle8.mods.galacticraft.API.IRefinableItem;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -9,8 +13,10 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ISidedInventory;
+import net.minecraftforge.common.MinecraftForge;
 import universalelectricity.components.common.BasicComponents;
 import universalelectricity.core.electricity.ElectricityPack;
 import universalelectricity.core.item.ElectricItemHelper;
@@ -21,46 +27,34 @@ import universalelectricity.prefab.tile.TileEntityElectricityRunnable;
 
 import com.google.common.io.ByteArrayDataInput;
 
-public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable implements IInventory, ISidedInventory, IPacketReceiver
+public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable implements IInventory, ISidedInventory, IPacketReceiver, IEnergySink
 {
-	/**
-	 * The amount of watts required every TICK.
-	 */
 	public static final double WATTS_PER_TICK = 600;
-
-	/**
-	 * The amount of processing time required.
-	 */
 	public static final int PROCESS_TIME_REQUIRED = 1000;
-
-	/**
-	 * The amount of ticks this machine has been processing.
-	 */
 	public int processTicks = 0;
-
-	/**
-	 * The ItemStacks that hold the items currently being used in the battery box
-	 */
 	private ItemStack[] containingItems = new ItemStack[3];
-
-	/**
-	 * The amount of players using the electric furnace.
-	 */
 	private int playersUsing = 0;
+	
+	public double ic2WattsReceived = 0;
+	private boolean initialized = false;
 
 	@Override
 	public void updateEntity()
 	{
 		super.updateEntity();
+		
+		if (!this.initialized && this.worldObj != null)
+		{
+			if(GalacticraftCore.modIC2Loaded)
+			{
+				MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(this));
+			}
+			
+			initialized = true;
+		}
 
-		/**
-		 * Attempts to charge using batteries.
-		 */
 		this.wattsReceived += ElectricItemHelper.dechargeItem(this.containingItems[0], GCCoreTileEntityRefinery.WATTS_PER_TICK, this.getVoltage());
 
-		/**
-		 * Attempts to smelt an item.
-		 */
 		if (!this.worldObj.isRemote)
 		{
 			if (this.canProcess())
@@ -74,10 +68,7 @@ public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable impl
 					else if (this.processTicks > 0)
 					{
 						this.processTicks--;
-
-						/**
-						 * Process the item when the process timer is done.
-						 */
+						
 						if (this.processTicks < 1)
 						{
 							this.smeltItem();
@@ -373,5 +364,50 @@ public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable impl
 	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+	
+	// Industrial Craft 2 Implementation:
+
+	@Override
+	public int demandsEnergy()
+	{
+		return this.canProcess() ? (int) ((GCCoreTileEntityFuelLoader.WATTS_PER_TICK / this.getVoltage()) * GalacticraftCore.IC2EnergyScalar) : 0;
+	}
+
+	@Override
+	public int injectEnergy(Direction directionFrom, int amount) 
+	{
+		double rejects = 0;
+    	double neededEnergy = ((GCCoreTileEntityFuelLoader.WATTS_PER_TICK / this.getVoltage()) * GalacticraftCore.IC2EnergyScalar);
+    	
+    	if(amount <= neededEnergy)
+    	{
+    		ic2WattsReceived += amount;
+    	}
+    	else if(amount > neededEnergy)
+    	{
+    		ic2WattsReceived += neededEnergy;
+    		rejects = amount - neededEnergy;
+    	}
+    	
+    	return (int) (rejects * GalacticraftCore.IC2EnergyScalar);
+	}
+
+	@Override
+	public int getMaxSafeInput() 
+	{
+		return 2048;
+	}
+
+	@Override
+	public boolean acceptsEnergyFrom(TileEntity emitter, Direction direction) 
+	{
+		return direction.toForgeDirection() == ForgeDirection.getOrientation(this.getBlockMetadata() + 2);
+	}
+
+	@Override
+	public boolean isAddedToEnergyNet() 
+	{
+		return this.initialized;
 	}
 }
