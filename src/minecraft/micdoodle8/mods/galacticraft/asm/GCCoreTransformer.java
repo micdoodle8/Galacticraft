@@ -3,7 +3,9 @@ package micdoodle8.mods.galacticraft.asm;
 import static org.objectweb.asm.ClassWriter.COMPUTE_MAXS;
 import static org.objectweb.asm.Opcodes.CHECKCAST;
 import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
+import static org.objectweb.asm.Opcodes.INVOKESTATIC;
 import static org.objectweb.asm.Opcodes.NEW;
+import static org.objectweb.asm.Opcodes.ALOAD;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -12,9 +14,11 @@ import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.LdcInsnNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.TypeInsnNode;
+import org.objectweb.asm.tree.VarInsnNode;
 
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.IClassTransformer;
@@ -47,6 +51,15 @@ public class GCCoreTransformer implements IClassTransformer
 		this.unObfuscatedMap.put("createClientPlayerDesc", "(Lnet/minecraft/world/World;)Lnet/minecraft/client/entity/EntityClientPlayerMP;");
 		this.obfuscatedMap.put("playerClient", "bdw");
 		this.unObfuscatedMap.put("playerClient", "net/minecraft/client/entity/EntityClientPlayerMP");
+
+		this.obfuscatedMap.put("entityLivingClass", "ng");
+		this.unObfuscatedMap.put("entityLivingClass", "net/minecraft/entity/EntityLiving");
+		this.obfuscatedMap.put("moveEntityMethod", "e");
+		this.unObfuscatedMap.put("moveEntityMethod", "moveEntityWithHeading");
+		this.obfuscatedMap.put("moveEntityDesc", "(FF)V");
+		this.unObfuscatedMap.put("moveEntityDesc", "(FF)V");
+		this.obfuscatedMap.put("entityLiving", "ng");
+		this.unObfuscatedMap.put("entityLiving", "net/minecraft/entity/EntityLiving");
 	}
 
 	@Override
@@ -68,6 +81,15 @@ public class GCCoreTransformer implements IClassTransformer
 		else if (name.replace('.', '/').equals(this.obfuscatedMap.get("playerControllerClass")))
 		{
 			bytes = transform2(name, bytes, this.obfuscatedMap);
+		}
+
+		if (name.replace('.', '/').equals(this.unObfuscatedMap.get("entityLivingClass")))
+		{
+			bytes = transform3(name, bytes, this.unObfuscatedMap);
+		}
+		else if (name.replace('.', '/').equals(this.obfuscatedMap.get("entityLivingClass")))
+		{
+			bytes = transform3(name, bytes, this.obfuscatedMap);
 		}
 		
 		return bytes;
@@ -202,6 +224,50 @@ public class GCCoreTransformer implements IClassTransformer
 	            			methodnode.instructions.set(nodeAt, new MethodInsnNode(INVOKESPECIAL, "micdoodle8/mods/galacticraft/core/client/GCCorePlayerSP", "<init>", "(Lnet/minecraft/client/Minecraft;Lnet/minecraft/world/World;Lnet/minecraft/util/Session;Lnet/minecraft/client/multiplayer/NetClientHandler;)V"));
 
 	            			FMLLog.info("Successfully set INVOKESPECIAL method insertion node with owner \"" + map.get("playerClient") + "\" to \"micdoodle8/mods/galacticraft/core/client/GCCorePlayerSP\"");
+	            		}
+	            	}
+	            }
+			}
+		}
+    
+        ClassWriter writer = new ClassWriter(COMPUTE_MAXS);
+        node.accept(writer);
+        bytes = writer.toByteArray();
+    
+        return bytes;
+    }
+
+    public byte[] transform3(String name, byte[] bytes, HashMap<String, String> map)
+    {
+        ClassNode node = new ClassNode();
+        ClassReader reader = new ClassReader(bytes);
+        reader.accept(node, 0);
+
+		Iterator<MethodNode> methods = node.methods.iterator();
+		
+		while (methods.hasNext())
+		{
+			MethodNode methodnode = methods.next();
+			
+			if (methodnode.name.equals(map.get("moveEntityMethod")) && methodnode.desc.equals(map.get("moveEntityDesc")))
+			{
+	            for (int count = 0; count < methodnode.instructions.size(); count++)
+	            {
+	            	AbstractInsnNode list = methodnode.instructions.get(count);
+	            	
+	            	if (list instanceof LdcInsnNode)
+	            	{
+	            		LdcInsnNode nodeAt = (LdcInsnNode) list;
+	            		
+	            		if (nodeAt.cst.equals(Double.valueOf(0.08D)))
+	            		{
+	            			VarInsnNode beforeNode = new VarInsnNode(ALOAD, 0);
+	            			MethodInsnNode overwriteNode = new MethodInsnNode(INVOKESTATIC, "micdoodle8/mods/galacticraft/core/util/WorldUtil", "getGravityForEntity", "(L" + map.get("entityLiving") + ";)D");
+	            			
+	            			methodnode.instructions.insertBefore(nodeAt, beforeNode);
+	            			methodnode.instructions.set(nodeAt, overwriteNode);
+	            			
+	            			FMLLog.info("Successfully set INVOKESTATIC type insertion node with name \"micdoodle8/mods/galacticraft/core/util/WorldUtil\"");
 	            		}
 	            	}
 	            }

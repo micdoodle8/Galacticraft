@@ -27,6 +27,7 @@ import micdoodle8.mods.galacticraft.core.network.GCCorePacketSpaceStationData;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -55,6 +56,20 @@ public class WorldUtil
     public static List<ItemStack> uncommon = new ArrayList();
     public static List<ItemStack> rare = new ArrayList();
     public static List<ItemStack> ultrarare = new ArrayList();
+    
+    public static double getGravityForEntity(EntityLiving eLiving)
+    {
+    	if (eLiving.worldObj.provider instanceof IGalacticraftWorldProvider)
+    	{
+    		IGalacticraftWorldProvider customProvider = (IGalacticraftWorldProvider) eLiving.worldObj.provider;
+        	return 0.08D - customProvider.getGravity();
+    	}
+    	else
+    	{
+    		return 0.08D;
+    	}
+    	
+    }
 
     public static boolean generateChestContents(World var1, Random var2, int var3, int var4, int var5)
     {
