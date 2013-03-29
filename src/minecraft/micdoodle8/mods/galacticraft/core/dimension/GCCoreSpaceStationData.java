@@ -141,7 +141,7 @@ public class GCCoreSpaceStationData extends WorldSavedData
             
             if (player != null)
             {
-                var3.owner = player.username;
+                var3.owner = player.username.toLowerCase();
             }
             
             var3.spaceStationName = var3.owner + "\'s Space Station";

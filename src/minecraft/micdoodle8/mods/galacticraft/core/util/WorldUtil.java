@@ -202,25 +202,6 @@ public class WorldUtil
 
 		for (final Integer id : ids)
 		{
-//			if (playerBase != null && WorldProvider.getProviderForDimension(id) instanceof IOrbitDimension && playerBase.worldObj instanceof WorldServer)
-//			{
-//				((WorldServer)playerBase.worldObj).func_98180_V().func_98233_a("Found ID:" + id);
-//				
-//    			GCCoreSpaceStationData data = GCCoreSpaceStationData.getStationData(playerBase.worldObj, id, playerBase);
-//
-//    			for (String str : data.getAllowedPlayers())
-//    			{
-//    				((WorldServer)playerBase.worldObj).func_98180_V().func_98233_a(str);
-//    			}
-//    			
-//				((WorldServer)playerBase.worldObj).func_98180_V().func_98233_a("" + playerBase.spaceStationDimensionID);
-//				
-//    			if (data != null && data.getAllowedPlayers().contains(playerBase.username.toLowerCase()))
-//    			{
-//    				((WorldServer)playerBase.worldObj).func_98180_V().func_98233_a((String) (WorldProvider.getProviderForDimension(id).getDimensionName() + "$" + ((IOrbitDimension) WorldProvider.getProviderForDimension(id)).getPlanetToOrbit()));
-//    			}
-//			}
-			
 			if (WorldProvider.getProviderForDimension(id) != null)
 			{
 	    		if (WorldProvider.getProviderForDimension(id) instanceof IGalacticraftWorldProvider && !(WorldProvider.getProviderForDimension(id) instanceof IOrbitDimension) || WorldProvider.getProviderForDimension(id).dimensionId == 0)
@@ -231,7 +212,7 @@ public class WorldUtil
 	    		{
 	    			GCCoreSpaceStationData data = GCCoreSpaceStationData.getStationData(playerBase.worldObj, id, playerBase);
 
-	    			if (!GCCoreConfigManager.spaceStationsRequirePermission || data.getAllowedPlayers().contains(playerBase.username.toLowerCase()))
+	    			if (!GCCoreConfigManager.spaceStationsRequirePermission || data.getAllowedPlayers().contains(playerBase.username.toLowerCase()) || data.getAllowedPlayers().contains(playerBase.username))
 	    			{
 	    				map.put(WorldProvider.getProviderForDimension(id).getDimensionName() + "$" + data.getOwner(), WorldProvider.getProviderForDimension(id).dimensionId);
 	    			}
