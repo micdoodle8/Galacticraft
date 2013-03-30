@@ -6,6 +6,7 @@ import java.util.Random;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.client.GCCorePlayerSP;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
@@ -60,8 +61,6 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     private String[] destinations;
 
     public EntityPlayer playerToSend;
-
-    private boolean initialized;
 
     public GuiSmallButton sendButton;
 
@@ -459,11 +458,8 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
         	}
     	}
 
-    	if (this.initialized)
-    	{
-            this.planetSlots.drawScreen(par1, par2, par3);
-            super.drawScreen(par1, par2, par3);
-    	}
+        this.planetSlots.drawScreen(par1, par2, par3);
+        super.drawScreen(par1, par2, par3);
 
 		for (final IGalacticraftSubModClient mod : GalacticraftCore.clientSubMods)
 		{
@@ -511,7 +507,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
         	
     		if (par1 >= this.createSpaceStationButton.xPosition && par2 >= this.createSpaceStationButton.yPosition && par1 < this.createSpaceStationButton.xPosition + 120 && par2 < this.createSpaceStationButton.yPosition + 20)
     		{
-    			if (this.playerAlreadyCreatedDimension(clientPlayer))
+    			if (this.playerAlreadyCreatedDimension())
     			{
     				List<String> strings = new ArrayList();
     				List<ItemStack> items = new ArrayList();
@@ -664,7 +660,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
         	}
         	break;
         case 2:
-        	if (this.initialized && par1GuiButton.enabled && this.hasCorrectMaterials(this.mc.thePlayer, RecipeUtil.getStandardSpaceStationRequirements()))
+        	if (par1GuiButton.enabled && this.hasCorrectMaterials(this.mc.thePlayer, RecipeUtil.getStandardSpaceStationRequirements()))
         	{
                 final Object[] toSend = {this.destinations[this.selectedSlot]};
                 PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 15, toSend));
@@ -693,34 +689,23 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     {
     	final String str = this.destinations[i];
     	
-    	GCCorePlayerSP clientPlayer = PlayerUtil.getPlayerBaseClientFromPlayer(this.playerToSend);
-
-    	if (clientPlayer != null && str.toLowerCase().equals("overworld"))
-    	{
-    		this.initialized = true;
-    		
-    		if (clientPlayer.spaceStationDimensionIDClient == 0)
-    		{
-    			return true;
-    		}
-    		else if (clientPlayer.spaceStationDimensionIDClient == -1)
-    		{
-    			return true;
-    		}
-    		else
-    		{
-    			return false;
-    		}
-    	}
+		if (ClientProxyCore.clientSpaceStationID == 0)
+		{
+			return true;
+		}
+		else if (ClientProxyCore.clientSpaceStationID == -1)
+		{
+			return true;
+		}
 		else
 		{
 			return false;
 		}
     }
     
-    public boolean playerAlreadyCreatedDimension(GCCorePlayerSP clientPlayer)
+    public boolean playerAlreadyCreatedDimension()
     {
-    	if (clientPlayer != null && clientPlayer.spaceStationDimensionIDClient != 0 && clientPlayer.spaceStationDimensionIDClient != -1)
+    	if (ClientProxyCore.clientSpaceStationID != 0 && ClientProxyCore.clientSpaceStationID != -1)
     	{
     		return true;
     	}

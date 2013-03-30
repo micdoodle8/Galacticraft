@@ -184,6 +184,8 @@ public class ClientProxyCore extends CommonProxyCore
     public static double playerPosZ;
     public static float playerRotationYaw;
     public static float playerRotationPitch;
+    
+    public static int clientSpaceStationID = 0;
 
 	@Override
 	public void preInit(FMLPreInitializationEvent event)

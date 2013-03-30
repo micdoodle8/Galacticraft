@@ -35,7 +35,6 @@ public class GCCorePlayerSP extends EntityClientPlayerMP
 	private boolean showTutorialText = true;
 	public boolean usingAdvancedGoggles;
 	private int thirdPersonView = 0;
-	public int spaceStationDimensionIDClient = 0;
 	public long tick;
 
     public GCCorePlayerSP(Minecraft par1Minecraft, World par2World, Session par3Session, NetClientHandler par4NetClientHandler)

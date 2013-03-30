@@ -263,7 +263,7 @@ public class GCCorePacketHandlerServer implements IPacketHandler
         }
         else if (packetType == 15)
         {
-        	if (playerBase.spaceStationDimensionID == -1)
+        	if (playerBase.spaceStationDimensionID == -1 || playerBase.spaceStationDimensionID == 0)
         	{
             	WorldUtil.bindSpaceStationToNewDimension(playerBase.worldObj, playerBase);
             	

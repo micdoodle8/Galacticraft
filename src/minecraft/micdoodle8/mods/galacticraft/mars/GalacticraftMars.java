@@ -8,6 +8,7 @@ import java.util.List;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubMod;
 import micdoodle8.mods.galacticraft.API.IGalaxy;
+import micdoodle8.mods.galacticraft.core.GCCoreCreativeTab;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
@@ -18,6 +19,9 @@ import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntitySludgeling;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntitySpaceshipTier2;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsPlayerHandler;
 import micdoodle8.mods.galacticraft.mars.items.GCMarsItems;
+import micdoodle8.mods.galacticraft.moon.GalacticraftMoon;
+import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraftforge.common.DimensionManager;
@@ -60,6 +64,10 @@ public class GalacticraftMars implements IGalacticraftSubMod
 
 	public static List marsPlayers = new ArrayList();
 	public static List gcMarsPlayers = new ArrayList();
+	
+	public static GCCoreCreativeTab galacticraftMarsTab;
+	
+	public static String MARS_TEXTURE_PREFIX = "galacticraftmars:";
 
 	@PreInit
 	public void preInit(FMLPreInitializationEvent event)
@@ -80,6 +88,7 @@ public class GalacticraftMars implements IGalacticraftSubMod
 	@Init
 	public void load(FMLInitializationEvent event)
 	{
+//		this.galacticraftMarsTab = new GCCoreCreativeTab(CreativeTabs.getNextID(), GalacticraftMoon.MODID, GCMoonBlocks.blockMoon.blockID, 5);
 		DimensionManager.registerProviderType(GCMarsConfigManager.dimensionIDMars, GCMarsWorldProvider.class, false);
 		DimensionManager.registerDimension(GCMarsConfigManager.dimensionIDMars, GCMarsConfigManager.dimensionIDMars);
 		MinecraftForge.EVENT_BUS.register(new GCMarsEvents());

@@ -111,7 +111,7 @@ public class GalacticraftCore
 
     public static final int LOCALMAJVERSION = 0;
     public static final int LOCALMINVERSION = 1;
-    public static final int LOCALBUILDVERSION = 28;
+    public static final int LOCALBUILDVERSION = 29;
     public static int remoteMajVer;
     public static int remoteMinVer;
     public static int remoteBuildVer;

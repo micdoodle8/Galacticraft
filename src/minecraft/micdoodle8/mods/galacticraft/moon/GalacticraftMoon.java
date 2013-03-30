@@ -50,16 +50,6 @@ public class GalacticraftMoon implements IGalacticraftSubMod
 	public void preLoad(FMLPreInitializationEvent event)
 	{
 		new GCMoonConfigManager(new File(event.getModConfigurationDirectory(), GalacticraftMoon.CONFIG_FILE));
-
-//		try
-//		{
-//			ServerPlayerAPI.register(GalacticraftMoon.MODID, GCMoonPlayerBase.class);
-//
-//		}
-//		catch (Exception e)
-//		{
-//			FMLLog.severe("PLAYER API NOT INSTALLED");
-//		}
 		
 		GCMoonBlocks.initBlocks();
 		GCMoonBlocks.registerBlocks();

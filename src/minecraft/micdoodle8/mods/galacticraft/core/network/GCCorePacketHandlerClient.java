@@ -328,10 +328,7 @@ public class GCCorePacketHandlerClient implements IPacketHandler
             final Class[] decodeAs = {Integer.class};
             final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
 
-        	if (playerBaseClient != null)
-        	{
-        		playerBaseClient.spaceStationDimensionIDClient = (Integer) packetReadout[0];
-        	}
+    		ClientProxyCore.clientSpaceStationID = (Integer) packetReadout[0];
         }
         else if (packetType == 19)
         {
