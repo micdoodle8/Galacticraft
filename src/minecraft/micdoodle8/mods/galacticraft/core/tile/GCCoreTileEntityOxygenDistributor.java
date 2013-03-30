@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.oxygen.OxygenBubble;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -18,6 +19,7 @@ import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.components.common.BasicComponents;
 import universalelectricity.core.electricity.ElectricityPack;
 import universalelectricity.core.item.ElectricItemHelper;
+import universalelectricity.core.item.IItemElectric;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.IPacketReceiver;
 import universalelectricity.prefab.network.PacketManager;
@@ -33,7 +35,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
  *  All rights reserved.
  *
  */
-public class GCCoreTileEntityOxygenDistributor extends TileEntityElectricityRunnable implements IInventory, IPacketReceiver, IGasAcceptor, ITubeConnection
+public class GCCoreTileEntityOxygenDistributor extends TileEntityElectricityRunnable implements IInventory, IPacketReceiver, IGasAcceptor, ITubeConnection, ISidedInventory
 {
 	public int power;
 	public int lastPower;
@@ -284,7 +286,7 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityElectricityRunn
 		
 		if (this.wattsReceived > 0 && type == EnumGas.OXYGEN)
 		{
-			this.power = Math.max(this.power, amount * 10);
+			this.power = Math.max(this.power, amount * 4);
 			return 0;
 		}
 		else
@@ -383,7 +385,7 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityElectricityRunn
 	@Override
 	public String getInvName()
 	{
-		return LanguageRegistry.instance().getStringLocalization("tile.bcMachine.2.name");
+		return "Oxygen Distributor";
 	}
 
 	@Override
@@ -396,18 +398,6 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityElectricityRunn
 	public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
 	{
 		return this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : par1EntityPlayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
-	}
-
-	@Override
-	public boolean isInvNameLocalized() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 	@Override
@@ -425,5 +415,37 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityElectricityRunn
 	public void closeChest()
 	{
 		this.playersUsing--;
+	}
+	
+	// ISidedInventory Implementation:
+
+	@Override
+	public int[] getSizeInventorySide(int side) 
+	{
+		return new int[] {0};
+	}
+
+	@Override
+	public boolean func_102007_a(int slotID, ItemStack itemstack, int side) 
+	{
+		return isStackValidForSlot(slotID, itemstack);
+	}
+
+	@Override
+	public boolean func_102008_b(int slotID, ItemStack itemstack, int side) 
+	{
+		return slotID == 0;
+	}
+
+	@Override
+	public boolean isInvNameLocalized() 
+	{
+		return true;
+	}
+
+	@Override
+	public boolean isStackValidForSlot(int slotID, ItemStack itemstack) 
+	{
+		return slotID == 0 ? itemstack.getItem() instanceof IItemElectric : false;
 	}
 }

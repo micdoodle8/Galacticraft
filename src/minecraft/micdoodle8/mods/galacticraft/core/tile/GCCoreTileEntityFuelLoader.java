@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -20,6 +21,7 @@ import net.minecraftforge.common.MinecraftForge;
 import universalelectricity.components.common.BasicComponents;
 import universalelectricity.core.electricity.ElectricityPack;
 import universalelectricity.core.item.ElectricItemHelper;
+import universalelectricity.core.item.IItemElectric;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.core.vector.VectorHelper;
 import universalelectricity.prefab.network.IPacketReceiver;
@@ -28,7 +30,9 @@ import universalelectricity.prefab.tile.TileEntityElectricityRunnable;
 
 import com.google.common.io.ByteArrayDataInput;
 
-public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable implements IInventory, IPacketReceiver, IEnergySink
+import cpw.mods.fml.common.FMLLog;
+
+public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable implements IInventory, ISidedInventory, IPacketReceiver, IEnergySink
 {
 	private ItemStack[] containingItems = new ItemStack[2];
 	public static final double WATTS_PER_TICK = 300;
@@ -243,19 +247,6 @@ public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable im
 
 	@Override
 	public void closeChest() {}
-
-	@Override
-	public boolean isInvNameLocalized() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean isStackValidForSlot(int i, ItemStack itemstack) 
-	{
-		// TODO Auto-generated method stub
-		return false;
-	}
 	
 	private boolean validStackInSlot()
 	{
@@ -326,5 +317,38 @@ public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable im
 	public boolean isAddedToEnergyNet() 
 	{
 		return this.initialized;
+	}
+	
+	// ISidedInventory Implementation:
+
+	@Override
+	public int[] getSizeInventorySide(int side) 
+	{
+		return side == 1 || side == 0 ? new int[] {0} : new int[] {1};
+	}
+
+	@Override
+	public boolean func_102007_a(int slotID, ItemStack itemstack, int side) 
+	{
+		return isStackValidForSlot(slotID, itemstack);
+	}
+
+	@Override
+	public boolean func_102008_b(int slotID, ItemStack itemstack, int side) 
+	{
+		return slotID == 1;
+	}
+
+	@Override
+	public boolean isInvNameLocalized() 
+	{
+		return true;
+	}
+
+	@Override
+	public boolean isStackValidForSlot(int slotID, ItemStack itemstack) 
+	{
+		return slotID == 1 ? itemstack.getItem() instanceof IFuelTank && itemstack.getMaxDamage() - itemstack.getItemDamage() != 0 && itemstack.getItemDamage() < itemstack.getMaxDamage() 
+				: (slotID == 0 ? itemstack.getItem() instanceof IItemElectric : false);
 	}
 }

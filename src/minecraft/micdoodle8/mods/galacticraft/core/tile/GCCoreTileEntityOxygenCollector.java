@@ -11,6 +11,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -23,6 +24,7 @@ import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.components.common.BasicComponents;
 import universalelectricity.core.electricity.ElectricityPack;
 import universalelectricity.core.item.ElectricItemHelper;
+import universalelectricity.core.item.IItemElectric;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.core.vector.VectorHelper;
 import universalelectricity.prefab.network.IPacketReceiver;
@@ -33,7 +35,7 @@ import com.google.common.io.ByteArrayDataInput;
 
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-public class GCCoreTileEntityOxygenCollector extends TileEntityElectricityRunnable implements IGasStorage, ITubeConnection, IInventory, IPacketReceiver
+public class GCCoreTileEntityOxygenCollector extends TileEntityElectricityRunnable implements IGasStorage, ITubeConnection, IInventory, IPacketReceiver, ISidedInventory
 {
     public boolean active;
    	
@@ -359,18 +361,6 @@ public class GCCoreTileEntityOxygenCollector extends TileEntityElectricityRunnab
 	}
 
 	@Override
-	public boolean isInvNameLocalized() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
 	public void openChest() 
 	{
 		
@@ -380,5 +370,37 @@ public class GCCoreTileEntityOxygenCollector extends TileEntityElectricityRunnab
 	public void closeChest() 
 	{
 		
+	}
+	
+	// ISidedInventory Implementation:
+
+	@Override
+	public int[] getSizeInventorySide(int side) 
+	{
+		return new int[] {0};
+	}
+
+	@Override
+	public boolean func_102007_a(int slotID, ItemStack itemstack, int side) 
+	{
+		return isStackValidForSlot(slotID, itemstack);
+	}
+
+	@Override
+	public boolean func_102008_b(int slotID, ItemStack itemstack, int side) 
+	{
+		return slotID == 0;
+	}
+
+	@Override
+	public boolean isInvNameLocalized() 
+	{
+		return true;
+	}
+
+	@Override
+	public boolean isStackValidForSlot(int slotID, ItemStack itemstack) 
+	{
+		return slotID == 0 ? itemstack.getItem() instanceof IItemElectric : false;
 	}
 }

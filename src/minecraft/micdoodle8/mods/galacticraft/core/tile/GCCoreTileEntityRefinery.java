@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.API.IRefinableItem;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -15,11 +16,11 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.common.ISidedInventory;
 import net.minecraftforge.common.MinecraftForge;
 import universalelectricity.components.common.BasicComponents;
 import universalelectricity.core.electricity.ElectricityPack;
 import universalelectricity.core.item.ElectricItemHelper;
+import universalelectricity.core.item.IItemElectric;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.IPacketReceiver;
 import universalelectricity.prefab.network.PacketManager;
@@ -250,22 +251,22 @@ public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable impl
 		par1NBTTagCompound.setTag("Items", var2);
 	}
 
-	@Override
-	public int getStartInventorySide(ForgeDirection side)
-	{
-		if (side == side.DOWN || side == side.UP)
-		{
-			return side.ordinal();
-		}
-
-		return 2;
-	}
-
-	@Override
-	public int getSizeInventorySide(ForgeDirection side)
-	{
-		return 1;
-	}
+//	@Override
+//	public int getStartInventorySide(ForgeDirection side)
+//	{
+//		if (side == side.DOWN || side == side.UP)
+//		{
+//			return side.ordinal();
+//		}
+//
+//		return 2;
+//	}
+//
+//	@Override
+//	public int getSizeInventorySide(ForgeDirection side)
+//	{
+//		return 1;
+//	}
 
 	@Override
 	public int getSizeInventory()
@@ -355,15 +356,35 @@ public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable impl
 	}
 
 	@Override
-	public boolean isInvNameLocalized() {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean isInvNameLocalized() 
+	{
+		return true;
 	}
 
 	@Override
-	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean isStackValidForSlot(int slotID, ItemStack itemstack) 
+	{
+		return slotID == 1 ? itemstack.getItem() instanceof IRefinableItem && ((IRefinableItem) itemstack.getItem()).canSmeltItem(itemstack) : (slotID == 0 ? itemstack.getItem() instanceof IItemElectric : (slotID == 2 ? true : false));
+	}
+	
+	// ISidedInventory Implementation:
+
+	@Override
+	public int[] getSizeInventorySide(int side) 
+	{
+		return side == 1 ? new int[] {1} : side == 0 ? new int[] {0} : new int[] {2};
+	}
+
+	@Override
+	public boolean func_102007_a(int slotID, ItemStack itemstack, int side) 
+	{
+		return isStackValidForSlot(slotID, itemstack);
+	}
+
+	@Override
+	public boolean func_102008_b(int slotID, ItemStack itemstack, int side) 
+	{
+		return slotID == 2;
 	}
 	
 	// Industrial Craft 2 Implementation:

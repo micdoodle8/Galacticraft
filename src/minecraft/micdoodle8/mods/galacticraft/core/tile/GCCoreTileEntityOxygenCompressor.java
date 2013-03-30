@@ -6,6 +6,7 @@ import mekanism.api.ITubeConnection;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenTank;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -16,6 +17,7 @@ import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.components.common.BasicComponents;
 import universalelectricity.core.electricity.ElectricityPack;
 import universalelectricity.core.item.ElectricItemHelper;
+import universalelectricity.core.item.IItemElectric;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.IPacketReceiver;
 import universalelectricity.prefab.network.PacketManager;
@@ -29,7 +31,7 @@ import com.google.common.io.ByteArrayDataInput;
  *  All rights reserved.
  *
  */
-public class GCCoreTileEntityOxygenCompressor extends TileEntityElectricityRunnable implements IInventory, IPacketReceiver, IGasAcceptor, ITubeConnection
+public class GCCoreTileEntityOxygenCompressor extends TileEntityElectricityRunnable implements IInventory, IPacketReceiver, IGasAcceptor, ITubeConnection, ISidedInventory
 {
     public int currentPower;
     
@@ -321,16 +323,36 @@ public class GCCoreTileEntityOxygenCompressor extends TileEntityElectricityRunna
 			return amount;
 		}
 	}
+	
+	// ISidedInventory Implementation:
 
 	@Override
-	public boolean isInvNameLocalized() {
-		// TODO Auto-generated method stub
-		return false;
+	public int[] getSizeInventorySide(int side) 
+	{
+		return side == 1 || side == 0 ? new int[] {1} : new int[] {0};
 	}
 
 	@Override
-	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean func_102007_a(int slotID, ItemStack itemstack, int side) 
+	{
+		return isStackValidForSlot(slotID, itemstack);
+	}
+
+	@Override
+	public boolean func_102008_b(int slotID, ItemStack itemstack, int side) 
+	{
+		return slotID == 0;
+	}
+
+	@Override
+	public boolean isInvNameLocalized() 
+	{
+		return true;
+	}
+
+	@Override
+	public boolean isStackValidForSlot(int slotID, ItemStack itemstack) 
+	{
+		return slotID == 0 ? itemstack != null && itemstack.getItem() instanceof GCCoreItemOxygenTank && itemstack.getItemDamage() > 0 : (slotID == 1 ? itemstack.getItem() instanceof IItemElectric : false);
 	}
 }
