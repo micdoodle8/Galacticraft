@@ -61,9 +61,6 @@ public class GCCoreItemOilExtractor extends Item
 	@SideOnly(Side.CLIENT)
 	public void updateIcons(IconRegister iconRegister)
 	{
-		List<ItemStack> list = new ArrayList<ItemStack>();
-		this.getSubItems(this.itemID, this.getCreativeTab(), list);
-
 		this.icons[0] = iconRegister.registerIcon("galacticraftcore:extractor_1" + GalacticraftCore.TEXTURE_SUFFIX);
 		this.icons[1] = iconRegister.registerIcon("galacticraftcore:extractor_2" + GalacticraftCore.TEXTURE_SUFFIX);
 		this.icons[2] = iconRegister.registerIcon("galacticraftcore:extractor_3" + GalacticraftCore.TEXTURE_SUFFIX);
