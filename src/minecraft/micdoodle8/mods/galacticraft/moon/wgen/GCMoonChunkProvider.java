@@ -334,7 +334,12 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 		final long var7 = this.rand.nextLong() / 2L * 2L + 1L;
 		final long var9 = this.rand.nextLong() / 2L * 2L + 1L;
 		this.rand.setSeed(par2 * var7 + par3 * var9 ^ this.worldObj.getSeed());
-		this.villageGenerator.generateStructuresInChunk(this.worldObj, this.rand, par2, par3);
+		
+    	if (!GCMoonConfigManager.disableMoonVillageGen)
+    	{
+    		this.villageGenerator.generateStructuresInChunk(this.worldObj, this.rand, par2, par3);
+    	}
+    	
 		this.decoratePlanet(this.worldObj, this.rand, var4, var5);
 		BlockSand.fallInstantly = false;
 	}
@@ -378,7 +383,10 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
     @Override
 	public void recreateStructures(int par1, int par2)
     {
-        this.villageGenerator.generate(this, this.worldObj, par1, par2, (byte[])null);
+    	if (!GCMoonConfigManager.disableMoonVillageGen)
+    	{
+            this.villageGenerator.generate(this, this.worldObj, par1, par2, (byte[])null);
+    	}
 //        this.mapGenPuzzle.generate(this, this.worldObj, par1, par2, (byte[])null);
     }
 }
