@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.versioning.DefaultArtifactVersion;
 import cpw.mods.fml.common.versioning.VersionParser;
@@ -128,6 +129,8 @@ public class GalacticraftPlugin implements IFMLLoadingPlugin, IFMLCallHook
 	{
 		GalacticraftPlugin.fileLocation = (File) data.get("coremodLocation");
 		FMLLog.info("[GCCoreTransformer]: " + "Patching game...");
+        if(data.containsKey("mcLocation"))
+        	GalacticraftCore.minecraftDir = (File) data.get("mcLocation");
 	}
 
 	@Override

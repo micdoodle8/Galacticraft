@@ -1,10 +1,20 @@
 package micdoodle8.mods.galacticraft.core;
 
+import java.awt.Desktop;
 import java.io.File;
+import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.jar.Attributes;
+import java.util.jar.JarFile;
+import java.util.jar.Manifest;
+
+import javax.swing.JEditorPane;
+import javax.swing.JOptionPane;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubMod;
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
@@ -59,6 +69,9 @@ import universalelectricity.components.common.BasicComponents;
 import universalelectricity.prefab.CustomDamageSource;
 import universalelectricity.prefab.TranslationHelper;
 import universalelectricity.prefab.multiblock.TileEntityMulti;
+import codechicken.core.asm.CodeChickenAccessTransformer;
+import codechicken.core.asm.DelegatedTransformer;
+import codechicken.core.asm.ObfuscationMappings;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
@@ -167,6 +180,21 @@ public class GalacticraftCore
 	@PreInit
 	public void preInit(FMLPreInitializationEvent event)
 	{
+		if (!checkForCoremod())
+		{
+			String err = "Galacticraft Core is not placed in the coremods folder!";
+			System.err.println(err);
+			
+            JEditorPane ep = new JEditorPane("text/html", 
+					"<html>" + err + "</html>");
+
+            ep.setEditable(false);
+            ep.setOpaque(false);
+            
+            JOptionPane.showMessageDialog(null, ep, "Fatal error", JOptionPane.ERROR_MESSAGE);
+			System.exit(1);
+		}
+		
 		GalacticraftCore.moon.preLoad(event);
 		
 		BasicComponents.registerOres(0, true);
@@ -347,4 +375,29 @@ public class GalacticraftCore
     {
         EntityRegistry.registerModEntity(var0, var1, id, this, trackingDistance, updateFreq, sendVel);
     }
+    
+    public static File minecraftDir;
+
+    private boolean checkForCoremod()
+    {
+    	if (minecraftDir != null)
+    	{
+            File modsDir = new File(minecraftDir, "coremods");
+            
+            if(!modsDir.exists())
+            {
+                return false;
+            }
+            
+            for(File file : modsDir.listFiles())
+            {
+            	if (file.getName().endsWith(".jar") && file.getName().toLowerCase().contains("galacticraft"))
+            	{
+                    return true;
+            	}
+            }
+        }
+    	
+		return false;
+	}
 }
