@@ -21,7 +21,7 @@ public class GCCoreModelOxygenBubble extends ModelBase
     	this.textureWidth = 128;
 		this.textureHeight = 64;
 		this.bubble = new NMTModelRenderer(this, 40, 20);
-		this.bubble.addSphere(0.0F, 0.0F, 0.0F, 100.0F, 50, 50, this.textureWidth, this.textureHeight, true, NMTGlobal.NMT_SPHERE_LINEAR);
+		this.bubble.addSphere(0.0F, 0.0F, 0.0F, 100.0F, 50, 50, this.textureWidth, this.textureHeight, true, NMTGlobal.NMT_SPHERE_CYLINDRICAL);
 		this.bubble.setRotationPoint(0F, 0F, 0F);
 		this.bubble.setTextureSize(128, 64);
 		this.bubble.mirror = true;

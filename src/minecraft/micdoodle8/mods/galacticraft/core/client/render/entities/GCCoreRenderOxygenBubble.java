@@ -23,7 +23,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GCCoreRenderOxygenBubble extends Render
 {
-    private final ModelBase oxygenBubbleModel = new GCCoreModelOxygenBubble();
+    private final GCCoreModelOxygenBubble oxygenBubbleModel = new GCCoreModelOxygenBubble();
 
 	@Override
 	public void doRender(Entity entity, double d0, double d1, double d2, float f, float f1) 
@@ -46,7 +46,6 @@ public class GCCoreRenderOxygenBubble extends Render
         GL11.glMatrixMode(GL11.GL_TEXTURE);
         GL11.glLoadIdentity();
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
-        FMLLog.info("" + d1);
         GL11.glScaled(((GCCoreEntityOxygenBubble)entity).getSize() / 30, ((GCCoreEntityOxygenBubble)entity).getSize() / 30, ((GCCoreEntityOxygenBubble)entity).getSize() / 30);
 		this.oxygenBubbleModel.render(entity, (float)d0, (float)d1, (float)d2, 0, 0, 0.062F);
 
