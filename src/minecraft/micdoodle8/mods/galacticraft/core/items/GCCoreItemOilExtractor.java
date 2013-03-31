@@ -22,7 +22,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreItemOilExtractor extends Item
 {
-	protected Icon[] icons = new Icon[256];
+	protected Icon[] icons = new Icon[5];
 	
 	public static final String[] names = {
 		"extactor_1", // 0
@@ -61,13 +61,14 @@ public class GCCoreItemOilExtractor extends Item
 	@SideOnly(Side.CLIENT)
 	public void updateIcons(IconRegister iconRegister)
 	{
+		this.icons = new Icon[5];
 		this.icons[0] = iconRegister.registerIcon("galacticraftcore:extractor_1" + GalacticraftCore.TEXTURE_SUFFIX);
 		this.icons[1] = iconRegister.registerIcon("galacticraftcore:extractor_2" + GalacticraftCore.TEXTURE_SUFFIX);
 		this.icons[2] = iconRegister.registerIcon("galacticraftcore:extractor_3" + GalacticraftCore.TEXTURE_SUFFIX);
 		this.icons[3] = iconRegister.registerIcon("galacticraftcore:extractor_4" + GalacticraftCore.TEXTURE_SUFFIX);
 		this.icons[4] = iconRegister.registerIcon("galacticraftcore:extractor_5" + GalacticraftCore.TEXTURE_SUFFIX);
 			
-		this.iconIndex = iconRegister.registerIcon("galacticraftcore:extractor_1" + GalacticraftCore.TEXTURE_SUFFIX);
+		this.iconIndex = this.icons[0];
 	}
 
 	@Override
@@ -159,7 +160,10 @@ public class GCCoreItemOilExtractor extends Item
     @Override
 	public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4)
     {
-    	this.iconIndex = this.icons[0];
+    	if (par2World.isRemote)
+    	{
+        	this.iconIndex = this.icons[0];
+    	}
     }
 
 	private boolean isOilBlock(EntityPlayer player, World world, int x, int y, int z)
