@@ -50,6 +50,12 @@ public class GCCoreBlockOxygenPipe extends BlockContainer
     }
 
 	@Override
+    public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
+    {
+        return true;
+    }
+
+	@Override
 	public boolean isOpaqueCube()
 	{
 		return false;
