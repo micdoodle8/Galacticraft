@@ -19,6 +19,9 @@ CHANGELOG
 
 /src/minecraft/*
 !/src/minecraft/micdoodle8/
+!/src/minecraft/META-INF/
+!/src/minecraft/galacticraft_at.cfg
+!/src/minecraft/mcmod.info
 !/src/common/mcmod.info
 !/src/common/SP.png
 
