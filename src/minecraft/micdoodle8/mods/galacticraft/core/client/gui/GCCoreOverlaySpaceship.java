@@ -38,10 +38,10 @@ public class GCCoreOverlaySpaceship extends GCCoreOverlay
 
 		float var1 = 0F;
 		float var2 = height / 2 - 170 / 2;
-		float var3 = 0;
+		float var3 = minecraft.thePlayer.worldObj.provider.dimensionId == 0 ? 0 : 13.5F;
 		float var3b = 0;
 		float var4 = 0;
-		float var5 = 20;
+		float var5 = 13.5F;
 		float var6 = 170;
         float var7 = 0.00390625F * 1.5F;
         float var8 = 0.00390625F * 1.5F;
