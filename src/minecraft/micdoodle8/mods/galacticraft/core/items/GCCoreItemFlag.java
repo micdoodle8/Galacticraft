@@ -121,7 +121,7 @@ public class GCCoreItemFlag extends Item
             {
                 final int var2 = this.getInventorySlotContainItem(par3EntityPlayer, par1ItemStack);
 
-                if (var2 >= 0)
+                if (var2 >= 0 && !par3EntityPlayer.capabilities.isCreativeMode)
                 {
                     if (--par3EntityPlayer.inventory.mainInventory[var2].stackSize <= 0)
                     {
@@ -130,14 +130,6 @@ public class GCCoreItemFlag extends Item
                 }
             }
         }
-        
-//        if (placed)
-//        {
-//        	if (--par1ItemStack.stackSize <= 0)
-//        	{
-//        		par1ItemStack = null;
-//        	}
-//        }
     }
 
     private int getInventorySlotContainItem(EntityPlayer player, ItemStack stack)
