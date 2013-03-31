@@ -403,4 +403,10 @@ public class GCCoreTileEntityOxygenCollector extends TileEntityElectricityRunnab
 	{
 		return slotID == 0 ? itemstack.getItem() instanceof IItemElectric : false;
 	}
+
+	@Override
+	public int getMaxGas(EnumGas type) 
+	{
+		return type == EnumGas.OXYGEN ? this.MAX_OXYGEN : 0;
+	}
 }
