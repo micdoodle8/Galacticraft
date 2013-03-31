@@ -22,8 +22,10 @@ CHANGELOG
 !/src/minecraft/META-INF/
 !/src/minecraft/galacticraft_at.cfg
 !/src/minecraft/mcmod.info
+!/src/minecraft/mods/
 !/src/common/mcmod.info
 !/src/common/SP.png
+/src/minecraft/mods/galacticraftmars/
 
 *.bat
 *.sh
