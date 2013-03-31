@@ -1,20 +1,13 @@
 package micdoodle8.mods.galacticraft.core;
 
-import java.awt.Desktop;
 import java.io.File;
-import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.jar.Attributes;
-import java.util.jar.JarFile;
-import java.util.jar.Manifest;
 
 import javax.swing.JEditorPane;
 import javax.swing.JOptionPane;
-import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubMod;
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
@@ -33,6 +26,7 @@ import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityBuggy;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityCreeper;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityFlag;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityMeteor;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityOxygenBubble;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityParaChest;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySkeleton;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpaceship;
@@ -69,9 +63,6 @@ import universalelectricity.components.common.BasicComponents;
 import universalelectricity.prefab.CustomDamageSource;
 import universalelectricity.prefab.TranslationHelper;
 import universalelectricity.prefab.multiblock.TileEntityMulti;
-import codechicken.core.asm.CodeChickenAccessTransformer;
-import codechicken.core.asm.DelegatedTransformer;
-import codechicken.core.asm.ObfuscationMappings;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
@@ -121,6 +112,7 @@ public class GalacticraftCore
 	public static final String NAME = "Galacticraft Core";
 	public static final String MODID = "GalacticraftCore";
 	public static final String CHANNEL = "GalacticraftCore";
+	public static final String CHANNELENTITIES = "GCCoreEntities";
 
     public static final int LOCALMAJVERSION = 0;
     public static final int LOCALMINVERSION = 1;
@@ -158,7 +150,7 @@ public class GalacticraftCore
 	public static final String BLOCK_TEXTURE_FILE = GalacticraftCore.FILE_PATH + GalacticraftCore.CLIENT_PATH + "blocks/core.png";
 	public static final String ITEM_TEXTURE_FILE = GalacticraftCore.FILE_PATH + GalacticraftCore.CLIENT_PATH + "items/core.png";
 	public static final String CONFIG_FILE = "Galacticraft/core.conf";
-	private static final String[] LANGUAGES_SUPPORTED = new String[] { "en_US", "zh_CN", "fr_CA", "fr_FR" };
+	private static final String[] LANGUAGES_SUPPORTED = new String[] { "en_US", "zh_CN", "fr_CA", "fr_FR", "nl_NL", "ja_JP" };
 
 	public static final CustomDamageSource spaceshipCrash = (CustomDamageSource) new CustomDamageSource("spaceshipCrash").setDeathMessage("%1$s was in a spaceship crash!").setDamageBypassesArmor();
 	public static final CustomDamageSource oxygenSuffocation = (CustomDamageSource) new CustomDamageSource("oxygenSuffocation").setDeathMessage("%1$s ran out of oxygen!").setDamageBypassesArmor();
@@ -257,6 +249,7 @@ public class GalacticraftCore
 		this.registerCreatures();
 		this.registerOtherEntities();
 		MinecraftForge.EVENT_BUS.register(new GCCoreEvents());
+        NetworkRegistry.instance().registerChannel(new GCCorePacketManager(), GalacticraftCore.CHANNELENTITIES, Side.CLIENT);
 	}
 
 	@PostInit
@@ -362,6 +355,7 @@ public class GalacticraftCore
 		this.registerGalacticraftNonMobEntity(GCCoreEntityFlag.class, "Flag", GCCoreConfigManager.idEntityFlag, 150, 5, true);
 		this.registerGalacticraftNonMobEntity(GCCoreEntityAstroOrb.class, "AstroOrb", GCCoreConfigManager.idEntityAstroOrb, 150, 5, true);
 		this.registerGalacticraftNonMobEntity(GCCoreEntityParaChest.class, "ParaChest", GCCoreConfigManager.idEntityParaChest, 150, 5, true);
+		this.registerGalacticraftNonMobEntity(GCCoreEntityOxygenBubble.class, "OxygenBubble", GCCoreConfigManager.idEntityOxygenBubble, 150, 20, false);
 	}
 
     public void registerGalacticraftCreature(Class var0, String var1, int id, int back, int fore)

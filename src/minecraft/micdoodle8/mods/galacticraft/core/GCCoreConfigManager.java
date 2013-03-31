@@ -126,6 +126,7 @@ public class GCCoreConfigManager
 	public static int idEntityGiantWorm;
 	public static int idEntityParaChest;
 	public static int idEntityAlienVillager;
+	public static int idEntityOxygenBubble;
 
 	// GENERAL
 	public static boolean transparentBreathableAir;
@@ -243,6 +244,7 @@ public class GCCoreConfigManager
 	        GCCoreConfigManager.idEntityGiantWorm = 					GCCoreConfigManager.configuration.get("Entities", "idEntityGiantWorm", 										165)		.getInt(165);
 	        GCCoreConfigManager.idEntityParaChest = 					GCCoreConfigManager.configuration.get("Entities", "idEntityParaChest", 										166)		.getInt(166);
 	        GCCoreConfigManager.idEntityAlienVillager = 				GCCoreConfigManager.configuration.get("Entities", "idEntityAlienVillager", 									167)		.getInt(167);
+	        GCCoreConfigManager.idEntityOxygenBubble = 					GCCoreConfigManager.configuration.get("Entities", "idEntityOxygenBubble", 									168)		.getInt(168);
 	        
 	        GCCoreConfigManager.transparentBreathableAir = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Transparent Breathable Air",			true)		.getBoolean(true);
 	        GCCoreConfigManager.moreStars = 							GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "More Stars",							true)		.getBoolean(true);

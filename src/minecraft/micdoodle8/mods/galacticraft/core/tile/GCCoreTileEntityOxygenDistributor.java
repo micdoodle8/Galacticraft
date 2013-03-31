@@ -4,6 +4,7 @@ import mekanism.api.EnumGas;
 import mekanism.api.IGasAcceptor;
 import mekanism.api.ITubeConnection;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityOxygenBubble;
 import micdoodle8.mods.galacticraft.core.oxygen.OxygenBubble;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -27,8 +28,6 @@ import universalelectricity.prefab.tile.TileEntityElectricityRunnable;
 
 import com.google.common.io.ByteArrayDataInput;
 
-import cpw.mods.fml.common.registry.LanguageRegistry;
-
 /**
  * Copyright 2012-2013, micdoodle8
  *
@@ -43,25 +42,32 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityElectricityRunn
     public boolean active;
 	private ItemStack[] containingItems = new ItemStack[1];
    	
-   	public OxygenBubble bubble;
+//   	public OxygenBubble bubble;
    	
 	public static final double WATTS_PER_TICK = 300;
 
 	private int playersUsing = 0;
 	
 	public static int timeSinceOxygenRequest;
+	
+	public GCCoreEntityOxygenBubble oxygenBubble;
 
     @Override
   	public void invalidate()
   	{
-    	if (this.bubble != null)
+//    	if (this.bubble != null)
+//    	{
+//    		if (this.bubble.connectedDistributors.contains(this))
+//    		{
+//        		this.bubble.connectedDistributors.remove(this);
+//    		}
+//    		
+//        	this.bubble.stopProducingOxygen();
+//    	}
+    	
+    	if (this.oxygenBubble != null)
     	{
-    		if (this.bubble.connectedDistributors.contains(this))
-    		{
-        		this.bubble.connectedDistributors.remove(this);
-    		}
-    		
-        	this.bubble.stopProducingOxygen();
+    		this.oxygenBubble.setDead();
     	}
     	
     	for (int x = (int) Math.floor(this.xCoord - this.power * 1.5); x < Math.ceil(this.xCoord + this.power * 1.5); x++)
@@ -101,6 +107,16 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityElectricityRunn
 	public void updateEntity()
 	{
 		super.updateEntity();
+		
+		if (this.oxygenBubble == null)
+		{
+			this.oxygenBubble = new GCCoreEntityOxygenBubble(this.worldObj, new Vector3(this), this);
+			
+			if (!this.worldObj.isRemote)
+			{
+				this.worldObj.spawnEntityInWorld(this.oxygenBubble);
+			}
+		}
 
 		this.wattsReceived += ElectricItemHelper.dechargeItem(this.containingItems[0], GCCoreTileEntityOxygenDistributor.WATTS_PER_TICK, this.getVoltage());
 		
@@ -144,23 +160,23 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityElectricityRunn
 		    	}
 			}
 			
-			if (this.bubble == null && this.active)
-			{
-				this.bubble = new OxygenBubble(this);
-			}
-
-			if (this.bubble != null)
-			{
-				if (!this.bubble.connectedDistributors.contains(this))
-				{
-					this.bubble.connectedDistributors.add(this);
-				}
-				
-				if (this.lastPower != this.power)
-				{
-					this.bubble.calculate();
-				}
-			}
+//			if (this.bubble == null && this.active)
+//			{
+//				this.bubble = new OxygenBubble(this);
+//			}
+//
+//			if (this.bubble != null)
+//			{
+//				if (!this.bubble.connectedDistributors.contains(this))
+//				{
+//					this.bubble.connectedDistributors.add(this);
+//				}
+//				
+//				if (this.lastPower != this.power)
+//				{
+//					this.bubble.calculate();
+//				}
+//			}
 
 			if (this.power > 0)
 			{

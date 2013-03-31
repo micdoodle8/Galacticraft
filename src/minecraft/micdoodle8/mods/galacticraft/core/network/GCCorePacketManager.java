@@ -43,7 +43,7 @@ public class GCCorePacketManager extends PacketManager implements IPacketHandler
 		
 		try
 		{
-			data.writeInt(GCCorePacketType.ENTITY.ordinal());
+			data.writeInt(2);
 
 			data.writeInt(sender.entityId);
 			data = PacketManager.encodeDataStream(data, sendData);
