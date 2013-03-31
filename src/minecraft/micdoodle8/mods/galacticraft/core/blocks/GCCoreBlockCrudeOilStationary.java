@@ -168,8 +168,6 @@ public class GCCoreBlockCrudeOilStationary extends BlockStationary implements IL
                     {
                         var19 = var10;
                     }
-
-                    par1World.spawnParticle("splash", var11, var13, var15, var17, 0.0D, var19);
                 }
             }
         }

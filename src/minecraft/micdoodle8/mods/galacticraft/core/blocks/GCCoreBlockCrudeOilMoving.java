@@ -484,19 +484,7 @@ public class GCCoreBlockCrudeOilMoving extends BlockFluid implements ILiquid
                     {
                         var19 = var10;
                     }
-
-                    par1World.spawnParticle("splash", var11, var13, var15, var17, 0.0D, var19);
                 }
-            }
-        }
-
-        if (this.blockMaterial == Material.water && par5Random.nextInt(64) == 0)
-        {
-            var6 = par1World.getBlockMetadata(par2, par3, par4);
-
-            if (var6 > 0 && var6 < 8)
-            {
-//                par1World.playSound((double)((float)par2 + 0.5F), (double)((float)par3 + 0.5F), (double)((float)par4 + 0.5F), "liquid.water", par5Random.nextFloat() * 0.25F + 0.75F, par5Random.nextFloat() * 1.0F + 1.5F, false);
             }
         }
 
