@@ -89,7 +89,7 @@ public class GCCoreBlockCrudeOilStationary extends BlockStationary implements IL
 
                 if (var6 <= 0 || var6 >= 8)
                 {
-                    par1World.spawnParticle("suspended", par2 + par5Random.nextFloat(), par3 + par5Random.nextFloat(), par4 + par5Random.nextFloat(), 0.0D, 0.0D, 0.0D);
+//                    par1World.spawnParticle("suspended", par2 + par5Random.nextFloat(), par3 + par5Random.nextFloat(), par4 + par5Random.nextFloat(), 0.0D, 0.0D, 0.0D);
                 }
             }
 
@@ -193,7 +193,7 @@ public class GCCoreBlockCrudeOilStationary extends BlockStationary implements IL
                 var21 = par2 + par5Random.nextFloat();
                 var22 = par3 + this.maxY;
                 var23 = par4 + par5Random.nextFloat();
-                par1World.spawnParticle("lava", var21, var22, var23, 0.0D, 0.0D, 0.0D);
+//                par1World.spawnParticle("lava", var21, var22, var23, 0.0D, 0.0D, 0.0D);
                 par1World.playSound(var21, var22, var23, "liquid.lavapop", 0.2F + par5Random.nextFloat() * 0.2F, 0.9F + par5Random.nextFloat() * 0.15F, false);
             }
 
@@ -211,11 +211,11 @@ public class GCCoreBlockCrudeOilStationary extends BlockStationary implements IL
 
             if (this.blockMaterial == Material.water)
             {
-                par1World.spawnParticle("dripWater", var21, var22, var23, 0.0D, 0.0D, 0.0D);
+//                par1World.spawnParticle("dripWater", var21, var22, var23, 0.0D, 0.0D, 0.0D);
             }
             else
             {
-                par1World.spawnParticle("dripLava", var21, var22, var23, 0.0D, 0.0D, 0.0D);
+//                par1World.spawnParticle("dripLava", var21, var22, var23, 0.0D, 0.0D, 0.0D);
             }
         }
     }
