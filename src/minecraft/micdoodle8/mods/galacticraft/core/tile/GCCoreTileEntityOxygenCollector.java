@@ -64,7 +64,7 @@ public class GCCoreTileEntityOxygenCollector extends TileEntityElectricityRunnab
 			
 			double power = 0;
 
-//			if (this.worldObj.provider instanceof IGalacticraftWorldProvider)
+			if (this.worldObj.provider instanceof IGalacticraftWorldProvider)
 			{
 				for (int y = this.yCoord - 5; y <= this.yCoord + 5; y++)
 				{
@@ -87,10 +87,10 @@ public class GCCoreTileEntityOxygenCollector extends TileEntityElectricityRunnab
 					}
 				}
 			}
-//			else
-//			{
-//				power = 250;
-//			}
+			else
+			{
+				power = 250;
+			}
 			
 			this.setGas(EnumGas.OXYGEN, MathHelper.floor_double(power / 5));
 
