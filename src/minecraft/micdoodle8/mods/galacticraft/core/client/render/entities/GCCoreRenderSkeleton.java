@@ -26,12 +26,11 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GCCoreRenderSkeleton extends RenderLiving
 {
-    private final ModelBase model = new GCCoreModelSkeleton(0.2F);
+    private final GCCoreModelSkeleton model = new GCCoreModelSkeleton(0.2F);
 
     public GCCoreRenderSkeleton()
     {
         super(new GCCoreModelSkeleton(), 1.0F);
-        this.setRenderPassModel(new GCCoreModelSpider());
     }
 
     @Override
@@ -89,6 +88,7 @@ public class GCCoreRenderSkeleton extends RenderLiving
                 final float var5 = var4 * 0.01F;
                 final float var6 = var4 * 0.01F;
                 GL11.glTranslatef(var5, var6, 0.0F);
+                this.model.aimedBow = true;
                 this.setRenderPassModel(this.model);
                 GL11.glMatrixMode(GL11.GL_MODELVIEW);
                 GL11.glEnable(GL11.GL_BLEND);
