@@ -19,13 +19,15 @@ import universalelectricity.prefab.network.PacketManager;
 
 import com.google.common.io.ByteArrayDataInput;
 
+import cpw.mods.fml.common.FMLLog;
+
 public class GCCoreEntityOxygenBubble extends Entity implements IPacketReceiver
 {
 	private double size;
 	
 	protected long ticks = 0;
 	
-	private GCCoreTileEntityOxygenDistributor distributor;
+	public GCCoreTileEntityOxygenDistributor distributor;
 	
 	public GCCoreEntityOxygenBubble(World world, Vector3 mainBlockVec, GCCoreTileEntityOxygenDistributor distributor)
 	{
@@ -67,13 +69,27 @@ public class GCCoreEntityOxygenBubble extends Entity implements IPacketReceiver
 		
     	super.onEntityUpdate();
     	
-    	TileEntity tileAt = this.worldObj.getBlockTileEntity(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ));
+    	TileEntity tileAt = this.worldObj.getBlockTileEntity(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 1.0), MathHelper.floor_double(this.posZ));
     	
-    	if (tileAt instanceof GCCoreTileEntityOxygenDistributor)
+    	if (tileAt instanceof GCCoreTileEntityOxygenDistributor && !this.worldObj.isRemote)
     	{
     		GCCoreTileEntityOxygenDistributor distributor = (GCCoreTileEntityOxygenDistributor) tileAt;
     		
     		this.distributor = distributor;
+    	}
+    	
+    	if (this.distributor != null && (this.distributor.oxygenBubble == null || this.distributor.oxygenBubble.equals(this)) && !this.worldObj.isRemote)
+    	{
+    		this.distributor.oxygenBubble = this;
+    	}
+    	else if (!this.worldObj.isRemote)
+    	{
+    		this.setDead();
+    	}
+    	
+    	if (tileAt == null && !this.worldObj.isRemote)
+    	{
+    		this.setDead();
     	}
     	
     	if (!this.worldObj.isRemote && this.distributor != null)
@@ -85,10 +101,6 @@ public class GCCoreEntityOxygenBubble extends Entity implements IPacketReceiver
     		this.posX = vec.x + 0.5D;
     		this.posY = vec.y + 1.0D;
     		this.posZ = vec.z + 0.5D;
-    	}
-    	else if (!this.worldObj.isRemote)
-    	{
-    		this.setDead();
     	}
 
 		if (!this.worldObj.isRemote && this.ticks % 5 == 0)
