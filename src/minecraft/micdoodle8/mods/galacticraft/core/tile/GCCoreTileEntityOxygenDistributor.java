@@ -55,21 +55,6 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityElectricityRunn
     @Override
   	public void invalidate()
   	{
-//    	if (this.bubble != null)
-//    	{
-//    		if (this.bubble.connectedDistributors.contains(this))
-//    		{
-//        		this.bubble.connectedDistributors.remove(this);
-//    		}
-//    		
-//        	this.bubble.stopProducingOxygen();
-//    	}
-    	
-    	if (this.oxygenBubble != null)
-    	{
-    		this.oxygenBubble.setDead();
-    	}
-    	
     	for (int x = (int) Math.floor(this.xCoord - this.power * 1.5); x < Math.ceil(this.xCoord + this.power * 1.5); x++)
     	{
         	for (int y = (int) Math.floor(this.yCoord - this.power * 1.5); y < Math.ceil(this.yCoord + this.power * 1.5); y++)
