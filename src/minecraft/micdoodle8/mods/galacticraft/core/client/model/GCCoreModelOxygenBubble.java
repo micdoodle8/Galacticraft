@@ -4,8 +4,8 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
-import com.overminddl1.minecraft.libs.NMT.NMTGlobal;
-import com.overminddl1.minecraft.libs.NMT.NMTModelRenderer;
+import com.overminddl1.mods.NMT.NMTGlobal;
+import com.overminddl1.mods.NMT.NMTModelRenderer;
 
 public class GCCoreModelOxygenBubble extends ModelBase
 {
