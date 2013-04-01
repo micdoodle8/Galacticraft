@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.dimension;
 
 import micdoodle8.mods.galacticraft.API.IOrbitDimension;
+import micdoodle8.mods.galacticraft.API.ISolarLevel;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.wgen.GCCoreChunkProviderOverworldOrbit;
 import net.minecraft.entity.Entity;
@@ -19,7 +20,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  *  All rights reserved.
  *
  */
-public class GCCoreWorldProvider extends WorldProvider implements IOrbitDimension
+public class GCCoreWorldProvider extends WorldProvider implements IOrbitDimension, ISolarLevel
 {
     public int spaceStationDimensionID;
     private final float[] colorsSunriseSunset = new float[4];
@@ -243,4 +244,10 @@ public class GCCoreWorldProvider extends WorldProvider implements IOrbitDimensio
     {
         return "DIM_SPACESTATION" + this.spaceStationDimensionID;
     }
+
+	@Override
+	public double getSolorEnergyMultiplier()
+	{
+		return 3.0D;
+	}
 }
