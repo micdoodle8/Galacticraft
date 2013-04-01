@@ -148,6 +148,7 @@ public class GCCoreConfigManager
 	public static boolean canRespawnOnSpaceStations;
 	public static boolean overrideCapes;
 	public static boolean hiresTextures;
+	public static boolean enableBCLoading;
 
 	private void setDefaultValues()
     {
@@ -262,6 +263,7 @@ public class GCCoreConfigManager
 	        GCCoreConfigManager.canRespawnOnSpaceStations = 			GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Can players respawn on Space Stations", false)	.getBoolean(false);
 	        GCCoreConfigManager.overrideCapes = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Override Capes", 					true)		.getBoolean(true);
 	        GCCoreConfigManager.hiresTextures = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Hi-Res Textures (32x32)", 			true)		.getBoolean(true);
+	        GCCoreConfigManager.enableBCLoading =						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Load Basic Components", 				true)		.getBoolean(true);
 		}
 		catch (final Exception e)
 		{

@@ -149,7 +149,7 @@ public class GalacticraftCore
 	public static final String BLOCK_TEXTURE_FILE = GalacticraftCore.FILE_PATH + GalacticraftCore.CLIENT_PATH + "blocks/core.png";
 	public static final String ITEM_TEXTURE_FILE = GalacticraftCore.FILE_PATH + GalacticraftCore.CLIENT_PATH + "items/core.png";
 	public static final String CONFIG_FILE = "Galacticraft/core.conf";
-	private static final String[] LANGUAGES_SUPPORTED = new String[] { "en_US", "zh_CN", "fr_CA", "fr_FR", "nl_NL" };
+	private static final String[] LANGUAGES_SUPPORTED = new String[] { "en_US", "zh_CN", "fr_CA", "fr_FR", "nl_NL", "pl_PL", "de_DE" };
 
 	public static final CustomDamageSource spaceshipCrash = (CustomDamageSource) new CustomDamageSource("spaceshipCrash").setDeathMessage("%1$s was in a spaceship crash!").setDamageBypassesArmor();
 	public static final CustomDamageSource oxygenSuffocation = (CustomDamageSource) new CustomDamageSource("oxygenSuffocation").setDeathMessage("%1$s ran out of oxygen!").setDamageBypassesArmor();
@@ -188,18 +188,21 @@ public class GalacticraftCore
 		
 		GalacticraftCore.moon.preLoad(event);
 		
-		BasicComponents.registerOres(0, true);
-		BasicComponents.registerIngots(0, true);
-		BasicComponents.registerPlates(0, true);
-		BasicComponents.registerBronzeDust(0, true);
-		BasicComponents.registerSteelDust(0, true);
-		BasicComponents.registerBattery(0);
-		BasicComponents.registerWrench(0);
-		BasicComponents.registerCopperWire(0);
-		BasicComponents.registerMachines(0);
-		BasicComponents.registerCircuits(0);
-		BasicComponents.registerMotor(0);
-		BasicComponents.registerInfiniteBattery(0);
+		if (GCCoreConfigManager.enableBCLoading)
+		{
+			BasicComponents.registerOres(0, true);
+			BasicComponents.registerIngots(0, true);
+			BasicComponents.registerPlates(0, true);
+			BasicComponents.registerBronzeDust(0, true);
+			BasicComponents.registerSteelDust(0, true);
+			BasicComponents.registerBattery(0);
+			BasicComponents.registerWrench(0);
+			BasicComponents.registerCopperWire(0);
+			BasicComponents.registerMachines(0);
+			BasicComponents.registerCircuits(0);
+			BasicComponents.registerMotor(0);
+			BasicComponents.registerInfiniteBattery(0);
+		}
 		
 		GalacticraftCore.registerSubMod(GalacticraftCore.moon);
 
@@ -226,7 +229,10 @@ public class GalacticraftCore
 		
 		GalacticraftCore.proxy.init(event);
 
-		BasicComponents.register(this);
+		if (GCCoreConfigManager.enableBCLoading)
+		{
+			BasicComponents.register(this);
+		}
 		
 		for (final IGalacticraftSubMod mod : GalacticraftCore.subMods)
 		{
@@ -240,7 +246,11 @@ public class GalacticraftCore
 
 		GalacticraftCore.moon.load(event);
 
-		BasicComponents.registerTileEntities();
+		if (GCCoreConfigManager.enableBCLoading)
+		{
+			BasicComponents.registerTileEntities();
+		}
+		
         RecipeUtil.addCraftingRecipes();
         RecipeUtil.addSmeltingRecipes();
 		NetworkRegistry.instance().registerGuiHandler(this, GalacticraftCore.proxy);
