@@ -5,12 +5,12 @@ import java.util.List;
 import micdoodle8.mods.galacticraft.API.EnumGearType;
 import micdoodle8.mods.galacticraft.API.IBreathableArmor;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiTankRefill;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityOxygenBubble;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryTankRefill;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenGear;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenMask;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenTank;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenDistributor;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiInventory;
@@ -21,6 +21,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLLog;
 
 public class OxygenUtil
 {
@@ -65,19 +66,19 @@ public class OxygenUtil
         
         AxisAlignedBB box = AxisAlignedBB.getBoundingBox(entity.posX - 40, entity.posY - 40, entity.posZ - 40, entity.posX + 40, entity.posY + 40, entity.posZ + 40);
         
-        List l = entity.worldObj.getEntitiesWithinAABB(GCCoreEntityOxygenBubble.class, box);
+        List l = entity.worldObj.loadedTileEntityList;
         
         for (Object o : l)
         {
-        	if (o instanceof GCCoreEntityOxygenBubble)
+        	if (o instanceof GCCoreTileEntityOxygenDistributor)
         	{
-        		GCCoreEntityOxygenBubble bubble = (GCCoreEntityOxygenBubble) o;
+        		GCCoreTileEntityOxygenDistributor distributor = (GCCoreTileEntityOxygenDistributor) o;
         		
-        		if (!bubble.worldObj.isRemote && bubble.distributor != null)
+        		if (!distributor.worldObj.isRemote)
         		{
-        			double dist = bubble.distributor.getDistanceFromServer(entity.posX, entity.posY, entity.posZ);
+        			double dist = distributor.getDistanceFromServer(entity.posX, entity.posY, entity.posZ);
         			
-        			if (Math.sqrt(dist) < bubble.distributor.power)
+        			if (Math.sqrt(dist) < distributor.power)
         			{
         				return true;
         			}
