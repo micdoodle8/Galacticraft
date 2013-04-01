@@ -46,8 +46,9 @@ public class GCCoreRenderOxygenBubble extends Render
         GL11.glMatrixMode(GL11.GL_TEXTURE);
         GL11.glLoadIdentity();
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
-        GL11.glScaled(((GCCoreEntityOxygenBubble)entity).getSize() / 30, ((GCCoreEntityOxygenBubble)entity).getSize() / 30, ((GCCoreEntityOxygenBubble)entity).getSize() / 30);
-		this.oxygenBubbleModel.render(entity, (float)d0, (float)d1, (float)d2, 0, 0, 0.062F);
+        GL11.glScaled(((GCCoreEntityOxygenBubble)entity).getSize(), ((GCCoreEntityOxygenBubble)entity).getSize(), ((GCCoreEntityOxygenBubble)entity).getSize());
+		
+        this.oxygenBubbleModel.render(entity, (float)d0, (float)d1, (float)d2, 0, 0, 1.0F);
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glMatrixMode(GL11.GL_TEXTURE);

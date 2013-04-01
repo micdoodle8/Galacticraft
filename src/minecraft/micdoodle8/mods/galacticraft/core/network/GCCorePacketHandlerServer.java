@@ -125,9 +125,7 @@ public class GCCorePacketHandlerServer implements IPacketHandler
     			}
             	else if (GCCoreTickHandlerCommon.chatCooldown == 0)
             	{
-            		player.sendChatToPlayer("I'll probably need some Rocket Fuel before this will fly!");
-            		FMLLog.warning("Player (" + player.username + ") doesn't have rocket fuel to launch spaceship. If player DOES, please report the following line as a bug");
-            		FMLLog.warning("STACKNULL: " + (stack == null) + " ISSTACKFUEL: " + (stack == null ? "false" : stack.getItem().itemID == GCCoreItems.rocketFuelBucket.itemID) + " PLAYERBASENULL: " + (player == null) + " PLAYERBASETANKINVENTORYNULL " + (player == null ? "true" : playerBase.playerTankInventory == null));
+            		player.sendChatToPlayer("I'll need to load in some rocket fuel first!");
             		GCCoreTickHandlerCommon.chatCooldown = 250;
             	}
             }
