@@ -40,7 +40,6 @@ import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerCommon;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAdvancedCraftingTable;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAirLock;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityBreathableAir;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFuelLoader;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPadSingle;
@@ -323,7 +322,7 @@ public class GalacticraftCore
         GameRegistry.registerTileEntity(GCCoreTileEntityOxygenDistributor.class, "Air Distributor");
         GameRegistry.registerTileEntity(GCCoreTileEntityOxygenCollector.class, "Air Collector");
         GameRegistry.registerTileEntity(GCCoreTileEntityOxygenPipe.class, "Oxygen Pipe");
-        GameRegistry.registerTileEntity(GCCoreTileEntityBreathableAir.class, "Breathable Air");
+//        GameRegistry.registerTileEntity(GCCoreTileEntityBreathableAir.class, "Breathable Air");
         GameRegistry.registerTileEntity(GCCoreTileEntityAirLock.class, "Air Lock Frame");
         GameRegistry.registerTileEntity(GCCoreTileEntityRefinery.class, "Refinery");
         GameRegistry.registerTileEntity(GCCoreTileEntityAdvancedCraftingTable.class, "NASA Workbench");

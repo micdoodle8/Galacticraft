@@ -4,7 +4,6 @@ import java.util.List;
 
 import micdoodle8.mods.galacticraft.API.EnumGearType;
 import micdoodle8.mods.galacticraft.API.IBreathableArmor;
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockBreathableAir;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiTankRefill;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityOxygenBubble;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
@@ -12,7 +11,6 @@ import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryTankRefill;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenGear;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenMask;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenTank;
-import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiInventory;
@@ -23,7 +21,6 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLLog;
 
 public class OxygenUtil
 {

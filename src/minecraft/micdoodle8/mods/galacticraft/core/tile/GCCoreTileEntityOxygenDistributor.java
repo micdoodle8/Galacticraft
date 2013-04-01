@@ -5,7 +5,6 @@ import mekanism.api.IGasAcceptor;
 import mekanism.api.ITubeConnection;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityOxygenBubble;
-import micdoodle8.mods.galacticraft.core.oxygen.OxygenBubble;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -63,12 +62,12 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityElectricityRunn
             	{
             		TileEntity tile = this.worldObj.getBlockTileEntity(x, y, z);
             		
-            		if (tile != null && tile instanceof GCCoreTileEntityBreathableAir)
-            		{
-        				tile.worldObj.setBlockToAir(tile.xCoord, tile.yCoord, tile.zCoord);
-						tile.invalidate();
-            		}
-            		
+//            		if (tile != null && tile instanceof GCCoreTileEntityBreathableAir)
+//            		{
+//        				tile.worldObj.setBlockToAir(tile.xCoord, tile.yCoord, tile.zCoord);
+//						tile.invalidate();
+//            		}
+//            		
             		if (tile != null && tile instanceof GCCoreTileEntityUnlitTorch)
             		{
             			tile.worldObj.setBlock(tile.xCoord, tile.yCoord, tile.zCoord, GCCoreBlocks.unlitTorch.blockID, 0, 3);
@@ -130,11 +129,11 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityElectricityRunn
 		            	{
 		            		TileEntity tile = this.worldObj.getBlockTileEntity(x, y, z);
 		            		
-		            		if (tile != null && tile instanceof GCCoreTileEntityBreathableAir)
-		            		{
-		        				tile.worldObj.setBlockToAir(tile.xCoord, tile.yCoord, tile.zCoord);
-								tile.invalidate();
-		            		}
+//		            		if (tile != null && tile instanceof GCCoreTileEntityBreathableAir)
+//		            		{
+//		        				tile.worldObj.setBlockToAir(tile.xCoord, tile.yCoord, tile.zCoord);
+//								tile.invalidate();
+//		            		}
 		            		
 		            		if (tile != null && tile instanceof GCCoreTileEntityUnlitTorch)
 		            		{

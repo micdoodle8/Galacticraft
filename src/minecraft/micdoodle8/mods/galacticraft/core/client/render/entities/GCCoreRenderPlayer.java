@@ -1,10 +1,8 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockBreathableAir;
 import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelPlayer;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemBow;
-import net.minecraft.block.Block;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -15,15 +13,11 @@ import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.StringUtils;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-
-import cpw.mods.fml.client.FMLClientHandler;
 
 public class GCCoreRenderPlayer extends RenderPlayer
 {
@@ -315,45 +309,6 @@ public class GCCoreRenderPlayer extends RenderPlayer
         GL11.glEnable(GL11.GL_CULL_FACE);
         GL11.glPopMatrix();
         this.passSpecialRender(par1EntityLiving, par2, par4, par6);
-    }
-
-    public boolean isAABBInBreathableAirBlock()
-    {
-        final int var3 = MathHelper.floor_double(FMLClientHandler.instance().getClient().thePlayer.boundingBox.minX);
-        final int var4 = MathHelper.floor_double(FMLClientHandler.instance().getClient().thePlayer.boundingBox.maxX + 1.0D);
-        final int var5 = MathHelper.floor_double(FMLClientHandler.instance().getClient().thePlayer.boundingBox.minY);
-        final int var6 = MathHelper.floor_double(FMLClientHandler.instance().getClient().thePlayer.boundingBox.maxY + 1.0D);
-        final int var7 = MathHelper.floor_double(FMLClientHandler.instance().getClient().thePlayer.boundingBox.minZ);
-        final int var8 = MathHelper.floor_double(FMLClientHandler.instance().getClient().thePlayer.boundingBox.maxZ + 1.0D);
-
-        for (int var9 = var3; var9 < var4; ++var9)
-        {
-            for (int var10 = var5; var10 < var6; ++var10)
-            {
-                for (int var11 = var7; var11 < var8; ++var11)
-                {
-                    final Block var12 = Block.blocksList[FMLClientHandler.instance().getClient().thePlayer.worldObj.getBlockId(var9, var10, var11)];
-
-                    if (var12 != null && var12 instanceof GCCoreBlockBreathableAir)
-                    {
-                        final int var13 = FMLClientHandler.instance().getClient().thePlayer.worldObj.getBlockMetadata(var9, var10, var11);
-                        double var14 = var10 + 1;
-
-                        if (var13 < 8)
-                        {
-                            var14 = var10 + 1 - var13 / 8.0D;
-                        }
-
-                        if (var14 >= FMLClientHandler.instance().getClient().thePlayer.boundingBox.minY)
-                        {
-                            return true;
-                        }
-                    }
-                }
-            }
-        }
-
-        return false;
     }
 
     @Override

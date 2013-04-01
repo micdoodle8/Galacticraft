@@ -107,11 +107,8 @@ public class GCCoreEntityMeteor extends Entity
             this.xTile = var3.blockX;
             this.yTile = var3.blockY;
             this.zTile = var3.blockZ;
-
-            if (!(this.worldObj.getBlockId(this.xTile, this.yTile, this.zTile) == GCCoreBlocks.breatheableAir.blockID))
-            {
-                this.onImpact(var3);
-            }
+            
+            this.onImpact(var3);
         }
 
         if (this.posY <= -20 || this.posY >= 400)

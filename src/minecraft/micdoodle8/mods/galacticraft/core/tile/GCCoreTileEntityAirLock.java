@@ -120,7 +120,7 @@ public class GCCoreTileEntityAirLock extends GCCoreTileEntityAdvanced
                             	return false;
                             }
                         }
-                        else if (var10 != 0 && var10 != GCCoreBlocks.airLockSeal.blockID && var10 != GCCoreBlocks.breatheableAir.blockID)
+                        else if (var10 != 0 && var10 != GCCoreBlocks.airLockSeal.blockID)
                         {
                             return false;
                         }

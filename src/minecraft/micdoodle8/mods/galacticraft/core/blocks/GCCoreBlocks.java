@@ -19,7 +19,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
  */
 public class GCCoreBlocks
 {
-	public static GCCoreBlockBreathableAir breatheableAir;
+//	public static GCCoreBlockBreathableAir breatheableAir;
 	public static Block treasureChest;
 	public static Block landingPad;
 	public static GCCoreBlockUnlitTorch unlitTorch;
@@ -46,7 +46,7 @@ public class GCCoreBlocks
 
 	public static void initBlocks()
 	{
-		GCCoreBlocks.breatheableAir = (GCCoreBlockBreathableAir)			new GCCoreBlockBreathableAir		(GCCoreConfigManager.idBlockBreatheableAir)							.setHardness(0.0F) 		.setResistance(1000F)																.setUnlocalizedName("breatheableAir");
+//		GCCoreBlocks.breatheableAir = (GCCoreBlockBreathableAir)			new GCCoreBlockBreathableAir		(GCCoreConfigManager.idBlockBreatheableAir)							.setHardness(0.0F) 		.setResistance(1000F)																.setUnlocalizedName("breatheableAir");
 		GCCoreBlocks.treasureChest = 										new GCCoreBlockTreasureChest		(GCCoreConfigManager.idBlockTreasureChest)							.setHardness(1.0F)      .setResistance(10.0F)      	.setStepSound(Block.soundStoneFootstep)                 .setUnlocalizedName("treasureChest");
 		GCCoreBlocks.landingPad = 											new GCCoreBlockLandingPad			(GCCoreConfigManager.idBlockLandingPad)								.setHardness(1.0F)      .setResistance(10.0F)  	   	.setStepSound(Block.soundStoneFootstep)                 .setUnlocalizedName("landingPad");
 		GCCoreBlocks.landingPadFull = 										new GCCoreBlockLandingPadFull		(GCCoreConfigManager.idBlockLandingPadFull)							.setHardness(1.0F)      .setResistance(10.0F)  	   	.setStepSound(Block.soundStoneFootstep)                 .setUnlocalizedName("landingPadFull");
@@ -72,7 +72,7 @@ public class GCCoreBlocks
 		// Hide certain items from NEI
 		GalacticraftCore.hiddenItems.add(GCCoreBlocks.airLockSeal.blockID);
 		GalacticraftCore.hiddenItems.add(GCCoreBlocks.sapling.blockID);
-		GalacticraftCore.hiddenItems.add(GCCoreBlocks.breatheableAir.blockID);
+//		GalacticraftCore.hiddenItems.add(GCCoreBlocks.breatheableAir.blockID);
 		GalacticraftCore.hiddenItems.add(GCCoreBlocks.unlitTorch.blockID);
 		GalacticraftCore.hiddenItems.add(GCCoreBlocks.unlitTorchLit.blockID);
 		GalacticraftCore.hiddenItems.add(GCCoreBlocks.landingPadFull.blockID);
@@ -97,7 +97,7 @@ public class GCCoreBlocks
 		GameRegistry.registerBlock(GCCoreBlocks.landingPadFull, 	ItemBlock.class, 			GCCoreBlocks.landingPadFull.getUnlocalizedName(), 		GalacticraftCore.MODID);
 		GameRegistry.registerBlock(GCCoreBlocks.unlitTorch, 		ItemBlock.class, 			GCCoreBlocks.unlitTorch.getUnlocalizedName(), 			GalacticraftCore.MODID);
 		GameRegistry.registerBlock(GCCoreBlocks.unlitTorchLit, 		ItemBlock.class, 			GCCoreBlocks.unlitTorchLit.getUnlocalizedName(), 		GalacticraftCore.MODID);
-		GameRegistry.registerBlock(GCCoreBlocks.breatheableAir, 	ItemBlock.class, 			GCCoreBlocks.breatheableAir.getUnlocalizedName(), 		GalacticraftCore.MODID);
+//		GameRegistry.registerBlock(GCCoreBlocks.breatheableAir, 	ItemBlock.class, 			GCCoreBlocks.breatheableAir.getUnlocalizedName(), 		GalacticraftCore.MODID);
 		GameRegistry.registerBlock(GCCoreBlocks.airDistributor, 	ItemBlock.class, 			GCCoreBlocks.airDistributor.getUnlocalizedName(), 		GalacticraftCore.MODID);
 		GameRegistry.registerBlock(GCCoreBlocks.oxygenPipe, 		ItemBlock.class, 			GCCoreBlocks.oxygenPipe.getUnlocalizedName(), 			GalacticraftCore.MODID);
 		GameRegistry.registerBlock(GCCoreBlocks.blockAirCollector, 	ItemBlock.class, 			GCCoreBlocks.blockAirCollector.getUnlocalizedName(), 	GalacticraftCore.MODID);
