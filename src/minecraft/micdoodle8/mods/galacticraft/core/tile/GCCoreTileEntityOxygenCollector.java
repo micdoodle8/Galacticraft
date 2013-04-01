@@ -1,11 +1,15 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import ic2.api.Direction;
+import ic2.api.energy.event.EnergyTileLoadEvent;
+import ic2.api.energy.tile.IEnergySink;
 import mekanism.api.EnumGas;
 import mekanism.api.IGasAcceptor;
 import mekanism.api.IGasStorage;
 import mekanism.api.ITubeConnection;
 import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.oxygen.OxygenNetwork;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
@@ -21,6 +25,7 @@ import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.MinecraftForge;
 import universalelectricity.components.common.BasicComponents;
 import universalelectricity.core.electricity.ElectricityPack;
 import universalelectricity.core.item.ElectricItemHelper;
@@ -35,7 +40,7 @@ import com.google.common.io.ByteArrayDataInput;
 
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-public class GCCoreTileEntityOxygenCollector extends TileEntityElectricityRunnable implements IGasStorage, ITubeConnection, IInventory, IPacketReceiver, ISidedInventory
+public class GCCoreTileEntityOxygenCollector extends TileEntityElectricityRunnable implements IGasStorage, ITubeConnection, IInventory, IPacketReceiver, ISidedInventory, IEnergySink
 {
     public boolean active;
    	
@@ -50,11 +55,25 @@ public class GCCoreTileEntityOxygenCollector extends TileEntityElectricityRunnab
 	public int outputSpeed = 16;
     
 	private ItemStack[] containingItems = new ItemStack[1];
+	
+	private boolean initialized = false;
+	
+	public double ic2WattsReceived = 0;
 
 	@Override
 	public void updateEntity() 
 	{
 		super.updateEntity();
+		
+		if (!this.initialized && this.worldObj != null)
+		{
+			if(GalacticraftCore.modIC2Loaded)
+			{
+				MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(this));
+			}
+			
+			initialized = true;
+		}
 
 		this.wattsReceived += ElectricItemHelper.dechargeItem(this.containingItems[0], GCCoreTileEntityOxygenCollector.WATTS_PER_TICK, this.getVoltage());
 		
@@ -114,6 +133,11 @@ public class GCCoreTileEntityOxygenCollector extends TileEntityElectricityRunnab
 				this.wattsReceived -= 0.05;
 			}
 			
+			if (this.ic2WattsReceived >= 0.05)
+			{
+				this.ic2WattsReceived -= 0.05;
+			}
+			
 			if(this.getGas(EnumGas.OXYGEN) > 0 && !this.worldObj.isRemote)
 			{
 		    	for(ForgeDirection orientation : ForgeDirection.values())
@@ -160,7 +184,7 @@ public class GCCoreTileEntityOxygenCollector extends TileEntityElectricityRunnab
 
 		if (power != 0)
 		{
-			Packet p = PacketManager.getPacket(BasicComponents.CHANNEL, this, power, this.wattsReceived, this.disabledTicks);
+			Packet p = PacketManager.getPacket(BasicComponents.CHANNEL, this, power, this.wattsReceived, this.disabledTicks, this.ic2WattsReceived);
 			return p;
 		}
 		
@@ -177,6 +201,7 @@ public class GCCoreTileEntityOxygenCollector extends TileEntityElectricityRunnab
 				this.storedOxygen = dataStream.readInt();
 				this.wattsReceived = dataStream.readDouble();
 				this.disabledTicks = dataStream.readInt();
+				this.ic2WattsReceived = dataStream.readDouble();
 			}
 		}
 		catch (Exception e)
@@ -408,5 +433,50 @@ public class GCCoreTileEntityOxygenCollector extends TileEntityElectricityRunnab
 	public int getMaxGas(EnumGas type) 
 	{
 		return type == EnumGas.OXYGEN ? this.MAX_OXYGEN : 0;
+	}
+	
+	// Industrial Craft 2 Implementation:
+
+	@Override
+	public int demandsEnergy()
+	{
+		return this.getGas(EnumGas.OXYGEN) > 0 ? (int) ((GCCoreTileEntityFuelLoader.WATTS_PER_TICK / this.getVoltage()) * GalacticraftCore.IC2EnergyScalar) : 0;
+	}
+
+	@Override
+	public int injectEnergy(Direction directionFrom, int amount) 
+	{
+		double rejects = 0;
+    	double neededEnergy = ((GCCoreTileEntityFuelLoader.WATTS_PER_TICK / this.getVoltage()) * GalacticraftCore.IC2EnergyScalar);
+    	
+    	if(amount <= neededEnergy)
+    	{
+    		ic2WattsReceived += amount;
+    	}
+    	else if(amount > neededEnergy)
+    	{
+    		ic2WattsReceived += neededEnergy;
+    		rejects = amount - neededEnergy;
+    	}
+    	
+    	return (int) (rejects * GalacticraftCore.IC2EnergyScalar);
+	}
+
+	@Override
+	public int getMaxSafeInput() 
+	{
+		return 2048;
+	}
+
+	@Override
+	public boolean acceptsEnergyFrom(TileEntity emitter, Direction direction) 
+	{
+		return direction.toForgeDirection() == ForgeDirection.getOrientation(this.getBlockMetadata() + 2);
+	}
+
+	@Override
+	public boolean isAddedToEnergyNet() 
+	{
+		return this.initialized;
 	}
 }

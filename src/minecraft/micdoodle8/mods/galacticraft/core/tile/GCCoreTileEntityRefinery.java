@@ -60,7 +60,7 @@ public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable impl
 		{
 			if (this.canProcess())
 			{
-				if (this.wattsReceived >= this.WATTS_PER_TICK)
+				if (this.wattsReceived >= this.WATTS_PER_TICK || this.ic2WattsReceived >= this.WATTS_PER_TICK)
 				{
 					if (this.processTicks == 0)
 					{
@@ -92,6 +92,7 @@ public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable impl
 			}
 			
 			this.wattsReceived = Math.max(this.wattsReceived - GCCoreTileEntityRefinery.WATTS_PER_TICK / 4, 0);
+			this.ic2WattsReceived = Math.max(this.ic2WattsReceived - GCCoreTileEntityRefinery.WATTS_PER_TICK / 4, 0);
 
 			if (this.ticks % 3 == 0 && this.playersUsing > 0)
 			{
@@ -122,7 +123,7 @@ public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable impl
 	@Override
 	public Packet getDescriptionPacket()
 	{
-		return PacketManager.getPacket(BasicComponents.CHANNEL, this, this.wattsReceived, this.processTicks, this.disabledTicks);
+		return PacketManager.getPacket(BasicComponents.CHANNEL, this, this.wattsReceived, this.processTicks, this.disabledTicks, this.ic2WattsReceived);
 	}
 
 	@Override
@@ -133,6 +134,7 @@ public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable impl
 			this.wattsReceived = dataStream.readDouble();
 			this.processTicks = dataStream.readInt();
 			this.disabledTicks = dataStream.readInt();
+			this.ic2WattsReceived = dataStream.readDouble();
 		}
 		catch (Exception e)
 		{
