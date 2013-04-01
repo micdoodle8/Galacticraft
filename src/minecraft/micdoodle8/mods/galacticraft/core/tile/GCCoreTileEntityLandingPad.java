@@ -105,7 +105,7 @@ public class GCCoreTileEntityLandingPad extends TileEntityMulti implements IMult
 			{
 				Vector3 vecToAdd = Vector3.add(placedPosition, new Vector3(x, 0, z));
 				
-				if (!vecToAdd.isEqual(placedPosition))
+				if (!vecToAdd.equals(placedPosition))
 				{
 					GCCoreBlocks.dummyBlock.makeFakeBlock(this.worldObj, vecToAdd, placedPosition, 2);
 				}

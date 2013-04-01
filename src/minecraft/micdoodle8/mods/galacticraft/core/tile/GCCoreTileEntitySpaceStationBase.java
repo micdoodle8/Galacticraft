@@ -49,7 +49,7 @@ public class GCCoreTileEntitySpaceStationBase extends TileEntityMulti implements
 		{
 			Vector3 vecToAdd = Vector3.add(placedPosition, new Vector3(0, y, 0));
 			
-			if (!vecToAdd.isEqual(placedPosition))
+			if (!vecToAdd.equals(placedPosition))
 			{
 				GCCoreBlocks.dummyBlock.makeFakeBlock(this.worldObj, vecToAdd, placedPosition, 1);
 			}
