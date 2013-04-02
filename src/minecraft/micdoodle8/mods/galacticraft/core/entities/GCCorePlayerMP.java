@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
@@ -7,11 +8,14 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.core.GCCoreSchematicRegistry;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
+import micdoodle8.mods.galacticraft.core.client.gui.ISchematicPage;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryTankRefill;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemParachute;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketSchematicList;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
@@ -112,6 +116,8 @@ public class GCCorePlayerMP extends EntityPlayerMP
 	public double coordsTeleportedFromZ;
 	
 	public int spaceStationDimensionID = -1;
+
+	public ArrayList<ISchematicPage> unlockedSchematics = new ArrayList<ISchematicPage>();
 
     public GCCorePlayerMP(MinecraftServer par1MinecraftServer, World par2World, String par3Str, ItemInWorldManager par4ItemInWorldManager)
     {
@@ -268,6 +274,11 @@ public class GCCorePlayerMP extends EntityPlayerMP
     	this.tankInSlot1 = this.playerTankInventory.getStackInSlot(2);
     	this.tankInSlot2 = this.playerTankInventory.getStackInSlot(3);
     	this.parachuteInSlot = this.playerTankInventory.getStackInSlot(4);
+    	
+    	if (this.tick % 5 == 0)
+    	{
+	        this.playerNetServerHandler.sendPacketToPlayer(GCCorePacketSchematicList.buildDimensionListPacket(this.unlockedSchematics));
+    	}
 
     	if (this.getParachute())
     	{
@@ -1102,6 +1113,9 @@ public class GCCorePlayerMP extends EntityPlayerMP
         this.coordsTeleportedFromZ = par1NBTTagCompound.getDouble("coordsTeleportedFromZ");
         this.spaceStationDimensionID = par1NBTTagCompound.getInteger("spaceStationDimensionID");
 
+        final NBTTagList schematics = par1NBTTagCompound.getTagList("Schematics");
+        GCCoreSchematicRegistry.readFromNBT(this, schematics);
+        
         if (par1NBTTagCompound.getBoolean("usingPlanetSelectionGui"))
         {
         	this.openPlanetSelectionGuiCooldown = 20;
@@ -1139,6 +1153,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
         par1NBTTagCompound.setDouble("coordsTeleportedFromX", this.coordsTeleportedFromX);
         par1NBTTagCompound.setDouble("coordsTeleportedFromZ", this.coordsTeleportedFromZ);
         par1NBTTagCompound.setInteger("spaceStationDimensionID", this.spaceStationDimensionID);
+        par1NBTTagCompound.setTag("Schematics", GCCoreSchematicRegistry.writeToNBT(this, new NBTTagList()));
 
         final NBTTagList var2 = new NBTTagList();
 

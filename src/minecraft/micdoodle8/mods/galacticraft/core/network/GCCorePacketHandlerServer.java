@@ -5,12 +5,14 @@ import java.io.DataInputStream;
 
 import micdoodle8.mods.galacticraft.API.IOrbitDimension;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
+import micdoodle8.mods.galacticraft.core.GCCoreSchematicRegistry;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.gui.ISchematicPage;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreEnumTeleportType;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpaceship;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
+import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerSchematic;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemParachute;
-import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerCommon;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
@@ -18,6 +20,7 @@ import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
@@ -286,6 +289,23 @@ public class GCCorePacketHandlerServer implements IPacketHandler
             			}
             		}
             	}
+        	}
+        }
+        else if (packetType == 16)
+        {
+        	Container container = player.openContainer;
+        	
+        	if (container instanceof GCCoreContainerSchematic)
+        	{
+        		GCCoreContainerSchematic schematicContainer = (GCCoreContainerSchematic) container;
+        		
+        		ISchematicPage page = GCCoreSchematicRegistry.getMatchingRecipeForItemStack(schematicContainer.craftMatrix.getStackInSlot(0));
+        		
+        		if (page != null)
+        		{
+    	    		final Object[] toSend = {page.getPageID()};
+    	    		player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 20, toSend));
+        		}
         	}
         }
     }

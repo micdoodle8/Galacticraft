@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
+import micdoodle8.mods.galacticraft.core.GCCoreSchematicRegistry;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore.GCKeyHandler;
@@ -13,6 +14,7 @@ import micdoodle8.mods.galacticraft.core.client.GCCorePlayerSP;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityWeldingSmoke;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiChoosePlanet;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiGalaxyMap;
+import micdoodle8.mods.galacticraft.core.client.gui.ISchematicPage;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreSpaceStationData;
 import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerClient;
@@ -356,6 +358,40 @@ public class GCCorePacketHandlerClient implements IPacketHandler
 			{
 				e.printStackTrace();
 			}
+        }
+        else if (packetType == 20)
+        {
+            final Class[] decodeAs = {Integer.class};
+            final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
+            
+        	if (playerBaseClient != null)
+        	{
+        		playerBaseClient.unlockedSchematics.add(GCCoreSchematicRegistry.getMatchingRecipeForID((Integer) packetReadout[0]));
+        	}
+        }
+        else if (packetType == 21)
+        {
+        	if (playerBaseClient != null)
+        	{
+    			try 
+    			{
+    				int var1 = data.readInt();
+
+                    for (int var2 = 0; var2 < var1; ++var2)
+                    {
+                        int var3 = data.readInt();
+
+                        if (!playerBaseClient.unlockedSchematics.contains(Integer.valueOf(var3)))
+                        {
+                        	playerBaseClient.unlockedSchematics.add(GCCoreSchematicRegistry.getMatchingRecipeForID(Integer.valueOf(var3)));
+                        }
+                    }
+    			} 
+    			catch (IOException e) 
+    			{
+    				e.printStackTrace();
+    			}
+        	}
         }
 	}
 }

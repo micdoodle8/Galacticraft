@@ -1,10 +1,12 @@
 package micdoodle8.mods.galacticraft.core.client;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.gui.ISchematicPage;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
@@ -36,6 +38,8 @@ public class GCCorePlayerSP extends EntityClientPlayerMP
 	public boolean usingAdvancedGoggles;
 	private int thirdPersonView = 0;
 	public long tick;
+
+	public ArrayList<ISchematicPage> unlockedSchematics = new ArrayList<ISchematicPage>();
 
     public GCCorePlayerSP(Minecraft par1Minecraft, World par2World, Session par3Session, NetClientHandler par4NetClientHandler)
     {
