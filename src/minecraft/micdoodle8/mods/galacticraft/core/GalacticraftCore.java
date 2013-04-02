@@ -188,6 +188,10 @@ public class GalacticraftCore
 		
 		GalacticraftCore.moon.preLoad(event);
 		
+		GalacticraftCore.registerSubMod(GalacticraftCore.moon);
+
+		new GCCoreConfigManager(new File(event.getModConfigurationDirectory(), GalacticraftCore.CONFIG_FILE));
+		
 		if (GCCoreConfigManager.enableBCLoading)
 		{
 			BasicComponents.registerOres(0, true);
@@ -203,10 +207,6 @@ public class GalacticraftCore
 			BasicComponents.registerMotor(0);
 			BasicComponents.registerInfiniteBattery(0);
 		}
-		
-		GalacticraftCore.registerSubMod(GalacticraftCore.moon);
-
-		new GCCoreConfigManager(new File(event.getModConfigurationDirectory(), GalacticraftCore.CONFIG_FILE));
 		
 		TEXTURE_SUFFIX = GCCoreConfigManager.hiresTextures ? "_32" : "";
 
