@@ -6,6 +6,7 @@ import java.io.DataOutputStream;
 import java.util.Collection;
 import java.util.Iterator;
 
+import micdoodle8.mods.galacticraft.API.ISchematicPage;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
@@ -15,7 +16,7 @@ public class GCCorePacketSchematicList implements IGalacticraftAdvancedPacket
 {
 	public static byte packetID = 21;
 	
-	public static Packet buildDimensionListPacket(Collection col)
+	public static Packet buildSchematicListPacket(Collection col)
 	{
 		Packet250CustomPayload packet = new Packet250CustomPayload();
 		packet.channel = GalacticraftCore.CHANNEL;
@@ -31,8 +32,8 @@ public class GCCorePacketSchematicList implements IGalacticraftAdvancedPacket
 
             while (var3.hasNext())
             {
-                Integer var4 = (Integer)var3.next();
-                data.writeInt(var4.intValue());
+            	ISchematicPage var4 = (ISchematicPage)var3.next();
+                data.writeInt(var4.getPageID());
             }
         	
         	packet.data = bytes.toByteArray();

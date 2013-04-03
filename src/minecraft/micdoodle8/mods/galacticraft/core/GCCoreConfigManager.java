@@ -109,6 +109,7 @@ public class GCCoreConfigManager
 	public static int idGuiAirDistributor;
 	public static int idGuiAirCompressor;
 	public static int idGuiFuelLoader;
+	public static int idGuiAddSchematic;
 
 	// ACHIEVEMENTS
 	public static int idAchievBase;
@@ -229,6 +230,7 @@ public class GCCoreConfigManager
 	        GCCoreConfigManager.idGuiAirCollector = 					GCCoreConfigManager.configuration.get("GUI", "idGuiAirCollector", 											135)		.getInt(135);
 	        GCCoreConfigManager.idGuiAirDistributor = 					GCCoreConfigManager.configuration.get("GUI", "idGuiAirDistributor", 										136)		.getInt(136);
 	        GCCoreConfigManager.idGuiFuelLoader =						GCCoreConfigManager.configuration.get("GUI", "idGuiFuelLoader", 											137)		.getInt(137);
+	        GCCoreConfigManager.idGuiAddSchematic = 					GCCoreConfigManager.configuration.get("GUI", "idGuiAddSchematic", 											138)		.getInt(138);
 	        
 	        GCCoreConfigManager.idAchievBase = 							GCCoreConfigManager.configuration.get("Achievements", "idAchievBase", 										1784)		.getInt(1784);
 

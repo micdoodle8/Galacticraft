@@ -1,9 +1,8 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
-import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.API.ISchematicResultPage;
+import micdoodle8.mods.galacticraft.API.SchematicRegistry;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerBuggyBench;
-import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -11,12 +10,11 @@ import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.network.PacketDispatcher;
-
-public class GCCoreGuiBuggyBench extends GuiContainer
+public class GCCoreGuiSchematicBuggy extends GuiContainer implements ISchematicResultPage
 {
-    public GCCoreGuiBuggyBench(InventoryPlayer par1InventoryPlayer)
+	private int pageIndex;
+	
+    public GCCoreGuiSchematicBuggy(InventoryPlayer par1InventoryPlayer)
     {
         super(new GCCoreContainerBuggyBench(par1InventoryPlayer, 0, 0, 0));
         this.ySize = 221;
@@ -41,17 +39,11 @@ public class GCCoreGuiBuggyBench extends GuiContainer
             switch (par1GuiButton.id)
             {
             case 0:
-            	toSend = new Object[]{0};
-                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 4, toSend));
-                FMLClientHandler.instance().getClient().displayGuiScreen(null);
-                FMLClientHandler.instance().getClient().thePlayer.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiRocketCraftingBench, FMLClientHandler.instance().getClient().thePlayer.worldObj, (int)FMLClientHandler.instance().getClient().thePlayer.posX, (int)FMLClientHandler.instance().getClient().thePlayer.posY, (int)FMLClientHandler.instance().getClient().thePlayer.posZ);
+            	SchematicRegistry.flipToLastPage(this.pageIndex);
                 break;
             case 1:
-                toSend = new Object[]{1};
-                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 4, toSend));
-                FMLClientHandler.instance().getClient().displayGuiScreen(null);
-                FMLClientHandler.instance().getClient().thePlayer.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiBuggyCraftingBench, FMLClientHandler.instance().getClient().thePlayer.worldObj, (int)FMLClientHandler.instance().getClient().thePlayer.posX, (int)FMLClientHandler.instance().getClient().thePlayer.posY, (int)FMLClientHandler.instance().getClient().thePlayer.posZ);
-                break;
+            	SchematicRegistry.flipToNextPage(this.pageIndex);
+            	break;
             }
         }
     }
@@ -59,7 +51,7 @@ public class GCCoreGuiBuggyBench extends GuiContainer
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRenderer.drawString("NASA Workbench", 7, -20 + 27, 4210752);
+        this.fontRenderer.drawString("Moon Buggy", 7, -20 + 27, 4210752);
         this.fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, 202 - 104 + 2 + 27, 4210752);
     }
 
@@ -72,4 +64,10 @@ public class GCCoreGuiBuggyBench extends GuiContainer
         final int var6 = (this.height - 220) / 2;
         this.drawTexturedModalRect(var5, var6, 0, 0, this.xSize, 220);
     }
+
+	@Override
+	public void setPageIndex(int index)
+	{
+		this.pageIndex = index;
+	}
 }

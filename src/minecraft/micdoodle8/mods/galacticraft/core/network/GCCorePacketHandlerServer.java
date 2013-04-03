@@ -3,11 +3,11 @@ package micdoodle8.mods.galacticraft.core.network;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 
+import micdoodle8.mods.galacticraft.API.SchematicRegistry;
 import micdoodle8.mods.galacticraft.API.IOrbitDimension;
+import micdoodle8.mods.galacticraft.API.ISchematicPage;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
-import micdoodle8.mods.galacticraft.core.GCCoreSchematicRegistry;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.client.gui.ISchematicPage;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreEnumTeleportType;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpaceship;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
@@ -140,18 +140,22 @@ public class GCCorePacketHandlerServer implements IPacketHandler
 
         	if (player != null)
         	{
+        		ISchematicPage page = SchematicRegistry.getMatchingRecipeForID((Integer) packetReadout[0]);
+        		
+        		FMLLog.info("serv " + page.getGuiID());
 
-        		switch ((Integer)packetReadout[0])
-        		{
-        		case 0:
-        			player.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiRocketCraftingBench, player.worldObj, (int)player.posX, (int)player.posY, (int)player.posZ);
-        			break;
-        		case 1:
-        			player.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiBuggyCraftingBench, player.worldObj, (int)player.posX, (int)player.posY, (int)player.posZ);
-        			break;
-        		case 2:
-        			break;
-        		}
+        		player.openGui(GalacticraftCore.instance, page.getGuiID(), player.worldObj, (int)player.posX, (int)player.posY, (int)player.posZ);
+//        		switch ((Integer)packetReadout[0])
+//        		{
+//        		case 0:
+//        			player.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiRocketCraftingBench, player.worldObj, (int)player.posX, (int)player.posY, (int)player.posZ);
+//        			break;
+//        		case 1:
+//        			player.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiBuggyCraftingBench, player.worldObj, (int)player.posX, (int)player.posY, (int)player.posZ);
+//        			break;
+//        		case 2:
+//        			break;
+//        		}
         	}
         }
         else if (packetType == 5)
@@ -299,7 +303,7 @@ public class GCCorePacketHandlerServer implements IPacketHandler
         	{
         		GCCoreContainerSchematic schematicContainer = (GCCoreContainerSchematic) container;
         		
-        		ISchematicPage page = GCCoreSchematicRegistry.getMatchingRecipeForItemStack(schematicContainer.craftMatrix.getStackInSlot(0));
+        		ISchematicPage page = SchematicRegistry.getMatchingRecipeForItemStack(schematicContainer.craftMatrix.getStackInSlot(0));
         		
         		if (page != null)
         		{

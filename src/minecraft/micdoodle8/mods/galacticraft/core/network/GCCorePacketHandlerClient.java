@@ -5,8 +5,9 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import micdoodle8.mods.galacticraft.API.ISchematicPage;
+import micdoodle8.mods.galacticraft.API.SchematicRegistry;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
-import micdoodle8.mods.galacticraft.core.GCCoreSchematicRegistry;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore.GCKeyHandler;
@@ -14,7 +15,6 @@ import micdoodle8.mods.galacticraft.core.client.GCCorePlayerSP;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityWeldingSmoke;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiChoosePlanet;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiGalaxyMap;
-import micdoodle8.mods.galacticraft.core.client.gui.ISchematicPage;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreSpaceStationData;
 import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerClient;
@@ -22,7 +22,6 @@ import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.moon.GCMoonConfigManager;
-import micdoodle8.mods.galacticraft.moon.client.ClientProxyMoon.TickHandlerClient;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.player.EntityPlayer;
@@ -35,6 +34,7 @@ import net.minecraftforge.common.DimensionManager;
 import org.lwjgl.input.Keyboard;
 
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
@@ -366,7 +366,12 @@ public class GCCorePacketHandlerClient implements IPacketHandler
             
         	if (playerBaseClient != null)
         	{
-        		playerBaseClient.unlockedSchematics.add(GCCoreSchematicRegistry.getMatchingRecipeForID((Integer) packetReadout[0]));
+        		ISchematicPage page = SchematicRegistry.getMatchingRecipeForID((Integer) packetReadout[0]);
+        		
+        		if (!playerBaseClient.unlockedSchematics.contains(page))
+        		{
+            		playerBaseClient.unlockedSchematics.add(page);
+        		}
         	}
         }
         else if (packetType == 21)
@@ -381,9 +386,9 @@ public class GCCorePacketHandlerClient implements IPacketHandler
                     {
                         int var3 = data.readInt();
 
-                        if (!playerBaseClient.unlockedSchematics.contains(Integer.valueOf(var3)))
+                        if (!playerBaseClient.unlockedSchematics.contains(SchematicRegistry.getMatchingRecipeForID(Integer.valueOf(var3))))
                         {
-                        	playerBaseClient.unlockedSchematics.add(GCCoreSchematicRegistry.getMatchingRecipeForID(Integer.valueOf(var3)));
+                        	playerBaseClient.unlockedSchematics.add(SchematicRegistry.getMatchingRecipeForID(Integer.valueOf(var3)));
                         }
                     }
     			} 

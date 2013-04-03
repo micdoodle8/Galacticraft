@@ -11,6 +11,8 @@ import java.util.Set;
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
 import micdoodle8.mods.galacticraft.API.IMapPlanet;
 import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
+import micdoodle8.mods.galacticraft.API.ISchematicPage;
+import micdoodle8.mods.galacticraft.API.ISchematicResultPage;
 import micdoodle8.mods.galacticraft.core.CommonProxyCore;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -21,11 +23,10 @@ import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityOxygenFX;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiAirCollector;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiAirCompressor;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiAirDistributor;
-import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiBuggyBench;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiSchematicBuggy;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiFuelLoader;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiGalaxyMap;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiRefinery;
-import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiRocketBench;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiRocketRefill;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiTankRefill;
 import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelSpaceship;
@@ -95,6 +96,7 @@ import micdoodle8.mods.galacticraft.moon.client.GCMoonMapPlanet;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.particle.EntitySmokeFX;
 import net.minecraft.client.settings.KeyBinding;
@@ -113,6 +115,7 @@ import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry.KeyHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -628,14 +631,6 @@ public class ClientProxyCore extends CommonProxyCore
 		{
 			return new GCCoreGuiTankRefill(player);
 		}
-		else if (ID == GCCoreConfigManager.idGuiRocketCraftingBench)
-		{
-			return new GCCoreGuiRocketBench(player.inventory, x, y, z);
-		}
-		else if (ID == GCCoreConfigManager.idGuiBuggyCraftingBench)
-		{
-			return new GCCoreGuiBuggyBench(player.inventory);
-		}
 		else if (ID == GCCoreConfigManager.idGuiGalaxyMap)
 		{
 			return new GCCoreGuiGalaxyMap(player);
@@ -690,6 +685,25 @@ public class ClientProxyCore extends CommonProxyCore
 			else
 			{
 				return null;
+			}
+		}
+		else
+		{
+			GCCorePlayerSP playerClient = PlayerUtil.getPlayerBaseClientFromPlayer(player);
+
+			for (ISchematicPage page : playerClient.unlockedSchematics)
+			{
+				if (ID == page.getGuiID())
+				{
+					GuiScreen screen = page.getResultScreen(playerClient, x, y, z);
+					
+					if (screen instanceof ISchematicResultPage)
+					{
+						((ISchematicResultPage) screen).setPageIndex(page.getPageID());
+					}
+					
+					return screen;
+				}
 			}
 		}
 		

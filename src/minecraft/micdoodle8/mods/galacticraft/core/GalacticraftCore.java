@@ -14,6 +14,7 @@ import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
 import micdoodle8.mods.galacticraft.API.IGalaxy;
 import micdoodle8.mods.galacticraft.API.IMapPlanet;
 import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
+import micdoodle8.mods.galacticraft.API.SchematicRegistry;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.client.GCCorePlayerSP;
 import micdoodle8.mods.galacticraft.core.command.GCCoreCommandSpaceStationAddOwner;
@@ -37,6 +38,9 @@ import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.network.GCCoreConnectionHandler;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerServer;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
+import micdoodle8.mods.galacticraft.core.schematic.GCCoreSchematicAdd;
+import micdoodle8.mods.galacticraft.core.schematic.GCCoreSchematicMoonBuggy;
+import micdoodle8.mods.galacticraft.core.schematic.GCCoreSchematicRocketT1;
 import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerCommon;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAdvancedCraftingTable;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAirLock;
@@ -250,6 +254,10 @@ public class GalacticraftCore
 		{
 			BasicComponents.registerTileEntities();
 		}
+		
+		SchematicRegistry.registerSchematicRecipe(new GCCoreSchematicRocketT1());
+		SchematicRegistry.registerSchematicRecipe(new GCCoreSchematicMoonBuggy());
+		SchematicRegistry.registerSchematicRecipe(new GCCoreSchematicAdd());
 		
         RecipeUtil.addCraftingRecipes();
         RecipeUtil.addSmeltingRecipes();

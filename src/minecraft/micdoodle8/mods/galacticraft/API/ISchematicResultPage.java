@@ -1,4 +1,4 @@
-package micdoodle8.mods.galacticraft.core.client.gui;
+package micdoodle8.mods.galacticraft.API;
 
 public interface ISchematicResultPage 
 {

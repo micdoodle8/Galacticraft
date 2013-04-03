@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
+import micdoodle8.mods.galacticraft.API.ISchematicPage;
+import micdoodle8.mods.galacticraft.API.SchematicRegistry;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerRocketBench;
@@ -12,11 +14,15 @@ import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 
-public class GCCoreGuiRocketBench extends GuiContainer
+public class GCCoreGuiSchematicRocketT1 extends GuiContainer
 {
-    public GCCoreGuiRocketBench(InventoryPlayer par1InventoryPlayer, int x, int y, int z)
+	private GuiButton backButton;
+	private GuiButton nextButton;
+	
+    public GCCoreGuiSchematicRocketT1(InventoryPlayer par1InventoryPlayer, int x, int y, int z)
     {
         super(new GCCoreContainerRocketBench(par1InventoryPlayer, x, y, z));
         this.ySize = 221;
@@ -27,10 +33,9 @@ public class GCCoreGuiRocketBench extends GuiContainer
     {
     	super.initGui();
         this.buttonList.clear();
-        final GuiButton button = new GuiButton(0, this.width / 2 - 130, this.height / 2 - 30 + 27, 40, 20, "Back");
-        button.enabled = false;
-        this.buttonList.add(button);
-        this.buttonList.add(new GuiButton(1, this.width / 2 + 90, this.height / 2 - 30 + 27, 40, 20, "Next"));
+        this.buttonList.add((backButton = new GuiButton(0, this.width / 2 - 130, this.height / 2 - 30 + 27, 40, 20, "Back")));
+        this.buttonList.add((nextButton = new GuiButton(1, this.width / 2 + 90, this.height / 2 - 30 + 27, 40, 20, "Next")));
+        this.backButton.enabled = false;
     }
 
     @Override
@@ -40,18 +45,12 @@ public class GCCoreGuiRocketBench extends GuiContainer
         {
             switch (par1GuiButton.id)
             {
-            case 1:
-                final Object[] toSend = {1};
-                FMLClientHandler.instance().getClient().displayGuiScreen(null);
-
-                while (FMLClientHandler.instance().getClient().currentScreen != null)
-                {
-
-                }
-
-                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 4, toSend));
-                FMLClientHandler.instance().getClient().thePlayer.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiBuggyCraftingBench, FMLClientHandler.instance().getClient().thePlayer.worldObj, (int)FMLClientHandler.instance().getClient().thePlayer.posX, (int)FMLClientHandler.instance().getClient().thePlayer.posY, (int)FMLClientHandler.instance().getClient().thePlayer.posZ);
+            case 0:
+            	SchematicRegistry.flipToLastPage(0);
                 break;
+            case 1:
+            	SchematicRegistry.flipToNextPage(0);
+            	break;
             }
         }
     }
@@ -59,7 +58,7 @@ public class GCCoreGuiRocketBench extends GuiContainer
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRenderer.drawString("NASA Workbench", 7, -20 + 27, 4210752);
+        this.fontRenderer.drawString("Tier 1 Rocket", 7, -20 + 27, 4210752);
         this.fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, 202 - 104 + 2 + 27, 4210752);
     }
 
