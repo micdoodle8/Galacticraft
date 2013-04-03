@@ -108,13 +108,13 @@ public class GCCoreBlockAdvancedCraftingTable extends BlockContainer
 
 		for (int i = par2 - 1; i <= par2 + 1; i++)
 		{
-			for (int j = par3; j <= par3 + 1; j++)
+			for (int j = par3; j <= par3 + 4; j++)
 			{
 				for (int k = par4 - 1; k <= par4 + 1; k++)
 				{
 			        final int var5 = par1World.getBlockId(i, j, k);
 
-			        if (var5 != 0 || Block.blocksList[var5] != null && !Block.blocksList[var5].blockMaterial.isReplaceable())
+			        if (Block.blocksList[var5] != null && !Block.blocksList[var5].blockMaterial.isReplaceable())
 			        {
 			        	canPlace = false;
 			        }
