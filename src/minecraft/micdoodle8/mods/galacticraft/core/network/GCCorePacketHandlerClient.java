@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import micdoodle8.mods.galacticraft.API.ISchematicPage;
 import micdoodle8.mods.galacticraft.API.SchematicRegistry;
@@ -385,10 +386,13 @@ public class GCCorePacketHandlerClient implements IPacketHandler
                     for (int var2 = 0; var2 < var1; ++var2)
                     {
                         int var3 = data.readInt();
+                        
+                    	Collections.sort(playerBaseClient.unlockedSchematics);
 
                         if (!playerBaseClient.unlockedSchematics.contains(SchematicRegistry.getMatchingRecipeForID(Integer.valueOf(var3))))
                         {
                         	playerBaseClient.unlockedSchematics.add(SchematicRegistry.getMatchingRecipeForID(Integer.valueOf(var3)));
+                        	
                         }
                     }
     			} 

@@ -53,6 +53,7 @@ public class GCCoreItems
 	public static Item flagPole;
 	public static Item oilCanister;
 	public static Item oilExtractor;
+	public static Item schematic;
 
 	public static EnumArmorMaterial SENSORGLASSES = EnumHelper.addArmorMaterial("SENSORGLASSES", 200, new int[] {0, 0, 0, 0}, 0);
 	public static EnumArmorMaterial steelARMOR = EnumHelper.addArmorMaterial("steel", 30, new int[] {3, 8, 6, 3}, 12);
@@ -96,6 +97,7 @@ public class GCCoreItems
 		GCCoreItems.flagPole = new GCCoreItem(GCCoreConfigManager.idItemFlagPole, "flagpole" + GalacticraftCore.TEXTURE_SUFFIX).setUnlocalizedName("flagPole");
 		GCCoreItems.oilCanister = new GCCoreItemOilCanister(GCCoreConfigManager.idItemOilCanister).setUnlocalizedName("oilCanisterPartial");
 		GCCoreItems.oilExtractor = new GCCoreItemOilExtractor(GCCoreConfigManager.idItemOilExtractor).setUnlocalizedName("oilExtractor");
+		GCCoreItems.schematic = new GCCoreItemSchematic(GCCoreConfigManager.idItemSchematic).setUnlocalizedName("schematic");
 		
 		GalacticraftCore.hiddenItems.add(GCCoreItems.gravityBow.itemID);
 	}

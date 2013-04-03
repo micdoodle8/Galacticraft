@@ -27,7 +27,7 @@ public class GCCoreSchematicMoonBuggy implements ISchematicPage
 	@Override
 	public ItemStack getRequiredItem() 
 	{
-		return new ItemStack(GCCoreItems.buggy);
+		return new ItemStack(GCCoreItems.schematic, 1, 0);
 	}
 
 	@Override

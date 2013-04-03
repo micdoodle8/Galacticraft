@@ -311,8 +311,17 @@ public class GCCorePacketHandlerServer implements IPacketHandler
             		
             		if (page != null)
             		{
-        	    		final Object[] toSend = {page.getPageID()};
-        	    		player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 20, toSend));
+            			SchematicRegistry.unlockNewPage(playerBase, stack);
+            			
+            			if (--stack.stackSize <= 0)
+            			{
+            				stack = null;
+            			}
+
+            			schematicContainer.craftMatrix.setInventorySlotContents(0, stack);
+            			schematicContainer.craftMatrix.onInventoryChanged();
+            			
+        	    		player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 20, new Object[] {page.getPageID()}));
             		}
         		}
         	}

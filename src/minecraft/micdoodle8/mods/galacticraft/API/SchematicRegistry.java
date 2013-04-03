@@ -34,7 +34,9 @@ public class SchematicRegistry
 	{
 		for (ISchematicPage schematic : SchematicRegistry.schematicRecipes)
 		{
-			if (schematic.getRequiredItem().isItemEqual(stack))
+			ItemStack requiredItem = schematic.getRequiredItem();
+			
+			if (requiredItem != null && stack != null && requiredItem.isItemEqual(stack))
 			{
 				return schematic;
 			}
@@ -72,6 +74,8 @@ public class SchematicRegistry
 			
 			if (schematic != null)
 			{
+				FMLLog.info("d  " + schematic.getPageID());
+				
 				addUnlockedPage(player, schematic);
 				
 				return schematic;

@@ -1,13 +1,15 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
-import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
+import micdoodle8.mods.galacticraft.API.ISchematicItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCraftResult;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import universalelectricity.prefab.SlotSpecific;
 
 public class GCCoreContainerSchematic  extends Container
 {
@@ -18,7 +20,7 @@ public class GCCoreContainerSchematic  extends Container
     public GCCoreContainerSchematic(InventoryPlayer par1InventoryPlayer, int x, int y, int z)
     {
 		this.worldObj = par1InventoryPlayer.player.worldObj;
-	    this.addSlotToContainer(new GCCoreSlotRocketBenchResult(par1InventoryPlayer.player, this.craftMatrix, this.craftResult, 0, 80, 1));
+		this.addSlotToContainer(new SlotSpecific(craftMatrix, 0, 80, 1, ISchematicItem.class));
         int var6;
         int var7;
 
@@ -40,9 +42,64 @@ public class GCCoreContainerSchematic  extends Container
         this.onCraftMatrixChanged(this.craftMatrix);
     }
 
+    @Override
+	public void onCraftGuiClosed(EntityPlayer par1EntityPlayer)
+    {
+        super.onCraftGuiClosed(par1EntityPlayer);
+
+        if (!this.worldObj.isRemote)
+        {
+            for (int var2 = 0; var2 < 1; ++var2)
+            {
+                final ItemStack var3 = this.craftMatrix.getStackInSlotOnClosing(var2);
+
+                if (var3 != null)
+                {
+                    par1EntityPlayer.dropPlayerItem(var3);
+                }
+            }
+        }
+    }
+
 	@Override
 	public boolean canInteractWith(EntityPlayer entityplayer) 
 	{
 		return true;
 	}
+
+	@Override
+	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2)
+    {
+        ItemStack var3 = null;
+        final Slot var4 = (Slot)this.inventorySlots.get(par2);
+
+        if (var4 != null && var4.getHasStack())
+        {
+            final ItemStack var5 = var4.getStack();
+            var3 = var5.copy();
+
+            if (par2 < 27)
+            {
+                if (!this.mergeItemStack(var5, 27, this.inventorySlots.size(), true))
+                {
+                    return null;
+                }
+            }
+            else if (!this.mergeItemStack(var5, 0, 27, false))
+            {
+                return null;
+            }
+
+            if (var5.stackSize == 0)
+            {
+                var4.putStack((ItemStack)null);
+            }
+            else
+            {
+                var4.onSlotChanged();
+            }
+        }
+
+        return var3;
+    }
 }
