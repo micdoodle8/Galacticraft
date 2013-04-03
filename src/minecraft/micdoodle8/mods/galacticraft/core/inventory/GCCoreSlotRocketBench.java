@@ -102,6 +102,6 @@ public class GCCoreSlotRocketBench extends Slot
     @Override
 	public int getSlotStackLimit()
     {
-        return 64;
+        return 1;
     }
 }

@@ -196,14 +196,14 @@ public class GCCoreInventoryTankRefill implements IInventory
 	}
 
 	@Override
-	public boolean isInvNameLocalized() {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean isInvNameLocalized() 
+	{
+		return true;
 	}
 
 	@Override
-	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
-		// TODO Auto-generated method stub
+	public boolean isStackValidForSlot(int i, ItemStack itemstack) 
+	{
 		return false;
 	}
 }

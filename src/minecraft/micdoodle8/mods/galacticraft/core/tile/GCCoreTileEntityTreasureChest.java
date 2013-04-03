@@ -470,17 +470,10 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
     }
 
 	@Override
-	public boolean isInvNameLocalized() {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean isInvNameLocalized() 
+	{
+		return true;
 	}
-
-	@Override
-	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
     /**
      * invalidates a tile entity
      */
@@ -497,4 +490,9 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
 	{
 		return "Treasure Chest";
 	}
+	
+    public boolean isStackValidForSlot(int par1, ItemStack par2ItemStack)
+    {
+        return true;
+    }
 }
