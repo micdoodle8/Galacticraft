@@ -691,18 +691,21 @@ public class ClientProxyCore extends CommonProxyCore
 		{
 			GCCorePlayerSP playerClient = PlayerUtil.getPlayerBaseClientFromPlayer(player);
 
-			for (ISchematicPage page : playerClient.unlockedSchematics)
+			if (playerClient != null)
 			{
-				if (ID == page.getGuiID())
+				for (ISchematicPage page : playerClient.unlockedSchematics)
 				{
-					GuiScreen screen = page.getResultScreen(playerClient, x, y, z);
-					
-					if (screen instanceof ISchematicResultPage)
+					if (ID == page.getGuiID())
 					{
-						((ISchematicResultPage) screen).setPageIndex(page.getPageID());
+						GuiScreen screen = page.getResultScreen(playerClient, x, y, z);
+						
+						if (screen instanceof ISchematicResultPage)
+						{
+							((ISchematicResultPage) screen).setPageIndex(page.getPageID());
+						}
+						
+						return screen;
 					}
-					
-					return screen;
 				}
 			}
 		}
