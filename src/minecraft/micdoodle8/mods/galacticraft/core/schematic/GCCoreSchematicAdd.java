@@ -14,7 +14,7 @@ public class GCCoreSchematicAdd implements ISchematicPage
 	@Override
 	public int getPageID() 
 	{
-		return Integer.MAX_VALUE;
+		return GCCoreConfigManager.idSchematicAddSchematic;
 	}
 
 	@Override

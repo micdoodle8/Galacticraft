@@ -15,7 +15,7 @@ public class GCCoreSchematicMoonBuggy implements ISchematicPage
 	@Override
 	public int getPageID() 
 	{
-		return 1;
+		return GCCoreConfigManager.idSchematicMoonBuggy;
 	}
 
 	@Override

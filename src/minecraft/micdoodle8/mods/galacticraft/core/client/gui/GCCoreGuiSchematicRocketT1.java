@@ -1,11 +1,8 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
-import micdoodle8.mods.galacticraft.API.ISchematicPage;
+import micdoodle8.mods.galacticraft.API.ISchematicResultPage;
 import micdoodle8.mods.galacticraft.API.SchematicRegistry;
-import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerRocketBench;
-import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -13,14 +10,11 @@ import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.common.network.PacketDispatcher;
-
-public class GCCoreGuiSchematicRocketT1 extends GuiContainer
+public class GCCoreGuiSchematicRocketT1 extends GuiContainer implements ISchematicResultPage
 {
 	private GuiButton backButton;
 	private GuiButton nextButton;
+	private int pageIndex;
 	
     public GCCoreGuiSchematicRocketT1(InventoryPlayer par1InventoryPlayer, int x, int y, int z)
     {
@@ -46,10 +40,10 @@ public class GCCoreGuiSchematicRocketT1 extends GuiContainer
             switch (par1GuiButton.id)
             {
             case 0:
-            	SchematicRegistry.flipToLastPage(0);
+            	SchematicRegistry.flipToLastPage(this.pageIndex);
                 break;
             case 1:
-            	SchematicRegistry.flipToNextPage(0);
+            	SchematicRegistry.flipToNextPage(this.pageIndex);
             	break;
             }
         }
@@ -71,4 +65,10 @@ public class GCCoreGuiSchematicRocketT1 extends GuiContainer
         final int var6 = (this.height - 220) / 2;
         this.drawTexturedModalRect(var5, var6, 0, 0, this.xSize, 220);
     }
+
+	@Override
+	public void setPageIndex(int index) 
+	{
+		this.pageIndex = index;
+	}
 }

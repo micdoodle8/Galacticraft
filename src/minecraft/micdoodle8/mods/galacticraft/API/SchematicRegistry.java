@@ -66,13 +66,16 @@ public class SchematicRegistry
 	
 	public static ISchematicPage unlockNewPage(GCCorePlayerMP player, ItemStack stack)
 	{
-		ISchematicPage schematic = SchematicRegistry.getMatchingRecipeForItemStack(stack);
-		
-		if (schematic != null)
+		if (stack != null)
 		{
-			addUnlockedPage(player, schematic);
+			ISchematicPage schematic = SchematicRegistry.getMatchingRecipeForItemStack(stack);
 			
-			return schematic;
+			if (schematic != null)
+			{
+				addUnlockedPage(player, schematic);
+				
+				return schematic;
+			}
 		}
 		
 		return null;
@@ -80,14 +83,13 @@ public class SchematicRegistry
 
     public static NBTTagList writeToNBT(GCCorePlayerMP player, NBTTagList par1NBTTagList)
     {
-        NBTTagCompound nbttagcompound = new NBTTagCompound();
-		
 		Collections.sort(player.unlockedSchematics);
         
         for (ISchematicPage page : player.unlockedSchematics)
         {
         	if (page != null)
         	{
+                NBTTagCompound nbttagcompound = new NBTTagCompound();
             	nbttagcompound.setInteger("UnlockedPage", page.getPageID());
             	par1NBTTagList.appendTag(nbttagcompound);
         	}

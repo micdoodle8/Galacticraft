@@ -911,7 +911,6 @@ public class GCCorePlayerMP extends EntityPlayerMP
 		}
 
 		SchematicRegistry.addUnlockedPage(this, SchematicRegistry.getMatchingRecipeForID(0));
-		SchematicRegistry.addUnlockedPage(this, SchematicRegistry.getMatchingRecipeForID(1));
 		SchematicRegistry.addUnlockedPage(this, SchematicRegistry.getMatchingRecipeForID(Integer.MAX_VALUE));
 		
 		Collections.sort(this.unlockedSchematics);

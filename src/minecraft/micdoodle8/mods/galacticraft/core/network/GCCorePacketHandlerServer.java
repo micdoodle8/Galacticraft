@@ -303,12 +303,17 @@ public class GCCorePacketHandlerServer implements IPacketHandler
         	{
         		GCCoreContainerSchematic schematicContainer = (GCCoreContainerSchematic) container;
         		
-        		ISchematicPage page = SchematicRegistry.getMatchingRecipeForItemStack(schematicContainer.craftMatrix.getStackInSlot(0));
+        		ItemStack stack = schematicContainer.craftMatrix.getStackInSlot(0);
         		
-        		if (page != null)
+        		if (stack != null)
         		{
-    	    		final Object[] toSend = {page.getPageID()};
-    	    		player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 20, toSend));
+            		ISchematicPage page = SchematicRegistry.getMatchingRecipeForItemStack(stack);
+            		
+            		if (page != null)
+            		{
+        	    		final Object[] toSend = {page.getPageID()};
+        	    		player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 20, toSend));
+            		}
         		}
         	}
         }

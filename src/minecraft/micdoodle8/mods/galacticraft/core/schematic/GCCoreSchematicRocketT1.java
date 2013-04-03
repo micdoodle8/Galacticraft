@@ -16,7 +16,7 @@ public class GCCoreSchematicRocketT1 implements ISchematicPage
 	@Override
 	public int getPageID() 
 	{
-		return 0;
+		return GCCoreConfigManager.idSchematicRocketT1;
 	}
 	
 	@Override

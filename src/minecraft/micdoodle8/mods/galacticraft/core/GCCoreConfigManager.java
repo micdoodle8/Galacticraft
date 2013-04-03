@@ -82,6 +82,11 @@ public class GCCoreConfigManager
 	public static int idItemOilCanister;
 	public static int idItemOilExtractor;
 	public static int idItemFuel;
+	
+	// SCHEMATICS
+	public static int idSchematicRocketT1;
+	public static int idSchematicMoonBuggy;
+	public static int idSchematicAddSchematic;
 
 	// ARMOR
 	public static int idArmorOxygenMask;
@@ -231,6 +236,10 @@ public class GCCoreConfigManager
 	        GCCoreConfigManager.idGuiAirDistributor = 					GCCoreConfigManager.configuration.get("GUI", "idGuiAirDistributor", 										136)		.getInt(136);
 	        GCCoreConfigManager.idGuiFuelLoader =						GCCoreConfigManager.configuration.get("GUI", "idGuiFuelLoader", 											137)		.getInt(137);
 	        GCCoreConfigManager.idGuiAddSchematic = 					GCCoreConfigManager.configuration.get("GUI", "idGuiAddSchematic", 											138)		.getInt(138);
+
+	        GCCoreConfigManager.idSchematicRocketT1 = 					GCCoreConfigManager.configuration.get("Schematic", "idSchematicRocketT1", 									0)			.getInt(0);
+	        GCCoreConfigManager.idSchematicMoonBuggy = 					GCCoreConfigManager.configuration.get("Schematic", "idSchematicMoonBuggy", 									1)			.getInt(1);
+	        GCCoreConfigManager.idSchematicAddSchematic = 				GCCoreConfigManager.configuration.get("Schematic", "idSchematicAddSchematic", 						Integer.MAX_VALUE)	.getInt(Integer.MAX_VALUE);
 	        
 	        GCCoreConfigManager.idAchievBase = 							GCCoreConfigManager.configuration.get("Achievements", "idAchievBase", 										1784)		.getInt(1784);
 
