@@ -153,7 +153,7 @@ public class GalacticraftCore
 	public static final String BLOCK_TEXTURE_FILE = GalacticraftCore.FILE_PATH + GalacticraftCore.CLIENT_PATH + "blocks/core.png";
 	public static final String ITEM_TEXTURE_FILE = GalacticraftCore.FILE_PATH + GalacticraftCore.CLIENT_PATH + "items/core.png";
 	public static final String CONFIG_FILE = "Galacticraft/core.conf";
-	private static final String[] LANGUAGES_SUPPORTED = new String[] { "en_US", "zh_CN", "fr_CA", "fr_FR", "nl_NL", "pl_PL", "de_DE" };
+	private static final String[] LANGUAGES_SUPPORTED = new String[] { "en_US", "es_ES", "zh_CN", "fr_CA", "fr_FR", "nl_NL", "pl_PL", "de_DE" };
 
 	public static final CustomDamageSource spaceshipCrash = (CustomDamageSource) new CustomDamageSource("spaceshipCrash").setDeathMessage("%1$s was in a spaceship crash!").setDamageBypassesArmor();
 	public static final CustomDamageSource oxygenSuffocation = (CustomDamageSource) new CustomDamageSource("oxygenSuffocation").setDeathMessage("%1$s ran out of oxygen!").setDamageBypassesArmor();
