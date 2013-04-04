@@ -777,20 +777,20 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
 			if (drainSpacing > 0 && tankInSlot != null)
 			{
-	    		this.airRemaining = tankInSlot.getMaxDamage() - tankInSlot.getItemDamage() % 90;
+	    		this.airRemaining = tankInSlot.getMaxDamage() - tankInSlot.getItemDamage();
 			}
 
 			if (drainSpacing2 > 0 && tankInSlot2 != null)
 			{
-	    		this.airRemaining2 = tankInSlot2.getMaxDamage() - tankInSlot2.getItemDamage() % 90;
+	    		this.airRemaining2 = tankInSlot2.getMaxDamage() - tankInSlot2.getItemDamage();
 			}
 
-			if (drainSpacing > 0 && this.tick % drainSpacing == 0 && !OxygenUtil.isAABBInBreathableAirBlock(this) && tankInSlot.getMaxDamage() - tankInSlot.getItemDamage() % 90 > 0)
+			if (drainSpacing > 0 && this.tick % drainSpacing == 0 && !OxygenUtil.isAABBInBreathableAirBlock(this) && tankInSlot.getMaxDamage() - tankInSlot.getItemDamage() > 0)
 	    	{
 	    		tankInSlot.damageItem(1, this);
 	    	}
 
-			if (drainSpacing2 > 0 && this.tick % drainSpacing2 == 0 && !OxygenUtil.isAABBInBreathableAirBlock(this) && tankInSlot2.getMaxDamage() - tankInSlot2.getItemDamage() % 90 > 0)
+			if (drainSpacing2 > 0 && this.tick % drainSpacing2 == 0 && !OxygenUtil.isAABBInBreathableAirBlock(this) && tankInSlot2.getMaxDamage() - tankInSlot2.getItemDamage() > 0)
 	    	{
 	    		tankInSlot2.damageItem(1, this);
 	    	}
@@ -1220,7 +1220,10 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
 	public void sendAirRemainingPacket()
 	{
-	  	final Object[] toSend = {this.airRemaining, this.airRemaining2, this.username};
+		float f1 = Float.valueOf(this.tankInSlot1 == null ? 0.0F : this.tankInSlot1.getMaxDamage() / 90.0F);
+		float f2 = Float.valueOf(this.tankInSlot2 == null ? 0.0F : this.tankInSlot2.getMaxDamage() / 90.0F);
+		
+	  	final Object[] toSend = {MathHelper.floor_float(this.airRemaining / f1), MathHelper.floor_float(this.airRemaining2 / f2), this.username};
 
 	  	if (FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.username) != null)
 	  	{
