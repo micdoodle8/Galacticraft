@@ -15,8 +15,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class SchematicRegistry 
 {
@@ -74,8 +75,6 @@ public class SchematicRegistry
 			
 			if (schematic != null)
 			{
-				FMLLog.info("d  " + schematic.getPageID());
-				
 				addUnlockedPage(player, schematic);
 				
 				return schematic;
@@ -117,7 +116,8 @@ public class SchematicRegistry
 		
 		Collections.sort(player.unlockedSchematics);
     }
-    
+
+    @SideOnly(Side.CLIENT)
     private static ISchematicPage getNextSchematic(int currentIndex)
     {
     	HashMap<Integer, Integer> idList = new HashMap<Integer, Integer>();
@@ -150,7 +150,8 @@ public class SchematicRegistry
     	
     	return null;
     }
-    
+
+    @SideOnly(Side.CLIENT)
     private static ISchematicPage getLastSchematic(int currentIndex)
     {
     	HashMap<Integer, Integer> idList = new HashMap<Integer, Integer>();
@@ -184,6 +185,7 @@ public class SchematicRegistry
     	return null;
     }
     
+    @SideOnly(Side.CLIENT)
     public static void flipToNextPage(int currentIndex)
     {
     	ISchematicPage page = SchematicRegistry.getNextSchematic(currentIndex);
@@ -200,7 +202,8 @@ public class SchematicRegistry
             FMLClientHandler.instance().getClient().thePlayer.openGui(GalacticraftCore.instance, nextGuiID, FMLClientHandler.instance().getClient().thePlayer.worldObj, (int)FMLClientHandler.instance().getClient().thePlayer.posX, (int)FMLClientHandler.instance().getClient().thePlayer.posY, (int)FMLClientHandler.instance().getClient().thePlayer.posZ);
         }
     }
-    
+
+    @SideOnly(Side.CLIENT)
     public static void flipToLastPage(int currentIndex)
     {
     	ISchematicPage page = SchematicRegistry.getLastSchematic(currentIndex);
