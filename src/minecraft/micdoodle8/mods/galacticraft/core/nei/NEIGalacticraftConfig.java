@@ -10,6 +10,8 @@ public class NEIGalacticraftConfig implements IConfigureNEI
 	public void loadConfig() 
 	{
 		API.hideItems(GalacticraftCore.hiddenItems);
+		API.registerRecipeHandler(new RocketT1RecipeHandler());
+		API.registerUsageHandler(new RocketT1RecipeHandler());
 	}
 
 	@Override
