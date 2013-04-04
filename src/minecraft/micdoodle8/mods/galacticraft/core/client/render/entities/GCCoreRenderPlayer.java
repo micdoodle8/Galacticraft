@@ -327,18 +327,4 @@ public class GCCoreRenderPlayer extends RenderPlayer
             return false;
         }
     }
-
-    private final ThreadDownloadImageData playerCloak = null;
-
-    @Override
-    public void renderSpecials(EntityPlayer var1, float var2)
-    {
-    	if (GCCoreConfigManager.overrideCapes)
-    	{
-        	final String string = "http://www.micdoodle8.com/galacticraft/capes/" + StringUtils.stripControlCodes(var1.username) + ".png";
-        	var1.cloakUrl = string;
-    	}
-    	
-    	super.renderSpecials(var1, var2);
-    }
 }

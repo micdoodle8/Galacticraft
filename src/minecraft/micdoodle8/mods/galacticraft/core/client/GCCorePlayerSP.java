@@ -49,8 +49,11 @@ public class GCCorePlayerSP extends EntityClientPlayerMP
     public void updateCloak()
     {
     	super.updateCloak();
-
-        this.cloakUrl = "http://www.micdoodle8.com/galacticraft/capes/" + StringUtils.stripControlCodes(this.username) + ".png";
+    	
+    	if (GCCoreConfigManager.overrideCapes)
+    	{
+            this.cloakUrl = "http://www.micdoodle8.com/galacticraft/capes/" + StringUtils.stripControlCodes(this.username) + ".png";
+    	}
     }
 
 	@Override
