@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.schematic;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.API.ISchematicPage;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiSchematicInput;
@@ -29,12 +31,14 @@ public class GCCoreSchematicAdd implements ISchematicPage
 		return null;
 	}
 
+	@SideOnly(Side.CLIENT)
 	@Override
 	public String getTitle() 
 	{
 		return "Add Schematic";
 	}
 
+	@SideOnly(Side.CLIENT)
 	@Override
 	public GuiScreen getResultScreen(EntityPlayer player, int x, int y, int z) 
 	{
