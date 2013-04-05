@@ -373,6 +373,8 @@ public class GalacticraftCore
 		this.registerGalacticraftNonMobEntity(GCCoreEntityAstroOrb.class, "AstroOrb", GCCoreConfigManager.idEntityAstroOrb, 150, 5, true);
 		this.registerGalacticraftNonMobEntity(GCCoreEntityParaChest.class, "ParaChest", GCCoreConfigManager.idEntityParaChest, 150, 5, true);
 		this.registerGalacticraftNonMobEntity(GCCoreEntityOxygenBubble.class, "OxygenBubble", GCCoreConfigManager.idEntityOxygenBubble, 150, 20, false);
+//		this.registerGalacticraftNonMobEntity(GCCoreEntityLander.class, "Test", GCCoreConfigManager.idEntityLander, 150, 5, true);
+//    	EntityRegistry.registerGlobalEntityID(GCCoreEntityLander.class, "Test", GCCoreConfigManager.idEntityLander, 12698049, 4802889);
 	}
 
     public void registerGalacticraftCreature(Class var0, String var1, int id, int back, int fore)

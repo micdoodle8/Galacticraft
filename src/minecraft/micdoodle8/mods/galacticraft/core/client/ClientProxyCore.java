@@ -23,7 +23,6 @@ import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityOxygenFX;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiAirCollector;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiAirCompressor;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiAirDistributor;
-import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiSchematicBuggy;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiFuelLoader;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiGalaxyMap;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiRefinery;
@@ -115,7 +114,6 @@ import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry.KeyHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -277,6 +275,7 @@ public class ClientProxyCore extends CommonProxyCore
         RenderingRegistry.registerEntityRenderingHandler(EntityPlayer.class, new GCCoreRenderPlayer());
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityAlienVillager.class, new GCCoreRenderAlienVillager());
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityOxygenBubble.class, new GCCoreRenderOxygenBubble());
+//        RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityLander.class, new GCCoreRenderLander()); TODO
         RenderingRegistry.addNewArmourRendererPrefix("oxygen");
         RenderingRegistry.addNewArmourRendererPrefix("sensor");
         RenderingRegistry.addNewArmourRendererPrefix("sensorox");
@@ -472,18 +471,20 @@ public class ClientProxyCore extends CommonProxyCore
 
     public static class GCKeyHandler extends KeyHandler
     {
-    	public static KeyBinding tankRefill = new KeyBinding("Galacticraft Player Inventory", Keyboard.KEY_R);
-    	public static KeyBinding galaxyMap = new KeyBinding("Galaxy Map", Keyboard.KEY_M);
-    	public static KeyBinding openSpaceshipInv = new KeyBinding("Open Spaceship Inventory", Keyboard.KEY_F);
-    	public static KeyBinding toggleAdvGoggles = new KeyBinding("Toggle Advanced Sensor Goggles", Keyboard.KEY_K);
-    	public static KeyBinding accelerateKey = new KeyBinding("Accelerate Key", Keyboard.KEY_W);
-    	public static KeyBinding decelerateKey = new KeyBinding("Decelerate Key", Keyboard.KEY_S);
-    	public static KeyBinding leftKey = new KeyBinding("Left Key", Keyboard.KEY_A);
-    	public static KeyBinding rightKey = new KeyBinding("Right Key", Keyboard.KEY_D);
+    	public static KeyBinding tankRefill = new KeyBinding("[GC] Player Inventory", Keyboard.KEY_R);
+    	public static KeyBinding galaxyMap = new KeyBinding("[GC] Galaxy Map", Keyboard.KEY_M);
+    	public static KeyBinding openSpaceshipInv = new KeyBinding("[GC] Open Spaceship Inventory", Keyboard.KEY_F);
+    	public static KeyBinding toggleAdvGoggles = new KeyBinding("[GC] Toggle Sensor Goggles Mode", Keyboard.KEY_K);
+    	public static KeyBinding accelerateKey = new KeyBinding("[GC] Vehicle Forward Key", Keyboard.KEY_W);
+    	public static KeyBinding decelerateKey = new KeyBinding("[GC] Vehicle Backward Key", Keyboard.KEY_S);
+    	public static KeyBinding leftKey = new KeyBinding("[GC] Vehicle Left Key", Keyboard.KEY_A);
+    	public static KeyBinding rightKey = new KeyBinding("[GC] Vehicle Right Key", Keyboard.KEY_D);
+    	public static KeyBinding spaceKey = new KeyBinding("[GC] Vehicle Up Key", Keyboard.KEY_SPACE);
+    	public static KeyBinding leftShiftKey = new KeyBinding("[GC] Vehicle Down Key", Keyboard.KEY_LSHIFT);
 
         public GCKeyHandler()
         {
-            super(new KeyBinding[] {GCKeyHandler.tankRefill, GCKeyHandler.galaxyMap, GCKeyHandler.openSpaceshipInv, GCKeyHandler.toggleAdvGoggles, GCKeyHandler.accelerateKey, GCKeyHandler.decelerateKey, GCKeyHandler.leftKey, GCKeyHandler.rightKey}, new boolean[] {false, false, false, false, true, true, true, true});
+            super(new KeyBinding[] {GCKeyHandler.tankRefill, GCKeyHandler.galaxyMap, GCKeyHandler.openSpaceshipInv, GCKeyHandler.toggleAdvGoggles, GCKeyHandler.accelerateKey, GCKeyHandler.decelerateKey, GCKeyHandler.leftKey, GCKeyHandler.rightKey, GCKeyHandler.spaceKey, GCKeyHandler.leftShiftKey}, new boolean[] {false, false, false, false, true, true, true, true, true, true});
         }
 
         @Override
@@ -561,6 +562,14 @@ public class ClientProxyCore extends CommonProxyCore
     		else if(kb == GCKeyHandler.rightKey)
     		{
     			keyNum = 3;
+    		}
+    		else if(kb == GCKeyHandler.spaceKey)
+    		{
+    			keyNum = 4;
+    		}
+    		else if(kb == GCKeyHandler.leftShiftKey)
+    		{
+    			keyNum = 5;
     		}
     		else
     		{

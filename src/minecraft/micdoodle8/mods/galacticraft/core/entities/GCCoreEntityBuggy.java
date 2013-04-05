@@ -299,27 +299,6 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
         {
             this.motionY -= 0.04D;
         }
-
-        if (this.fuel <= 0)
-        {
-            for (var4 = 0; var4 < this.getSizeInventory(); ++var4)
-            {
-                final ItemStack var22 = this.getStackInSlot(var4);
-
-                if (var22 != null && var22.itemID == Item.coal.itemID)
-                {
-                    this.decrStackSize(var4, 1);
-                    this.fuel += 1500;
-
-                    if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayer)
-                    {
-                        final EntityPlayer var6 = (EntityPlayer)this.riddenByEntity;
-                        var6.addChatMessage("Added Fuel");
-                        break;
-                    }
-                }
-            }
-        }
         
         if (this.riddenByEntity == null)
         {
