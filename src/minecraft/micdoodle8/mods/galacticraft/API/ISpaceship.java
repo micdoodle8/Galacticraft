@@ -10,7 +10,5 @@ public interface ISpaceship
 
 	public HashSet<Integer> getPossiblePlanets();
 
-	public int getYCoordToTeleport();
-
 	public int getPreLaunchWait();
 }

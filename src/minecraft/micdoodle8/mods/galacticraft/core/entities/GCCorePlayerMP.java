@@ -871,9 +871,9 @@ public class GCCorePlayerMP extends EntityPlayerMP
 		{
 			if (((IGalacticraftWorldProvider)this.worldObj.provider).getMeteorFrequency() > 0)
 			{
-				final float f = ((IGalacticraftWorldProvider)this.worldObj.provider).getMeteorFrequency();
+				final double f = ((IGalacticraftWorldProvider)this.worldObj.provider).getMeteorFrequency();
 
-				if (this.worldObj.rand.nextInt(MathHelper.floor_float(f * 1000)) == 0)
+				if (this.worldObj.rand.nextInt(MathHelper.floor_double(f * 1000)) == 0)
 				{
 					int x, y, z;
 					double motX, motZ;
@@ -890,7 +890,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 						this.worldObj.spawnEntityInWorld(meteor);
 					}
 				}
-				if (this.worldObj.rand.nextInt(MathHelper.floor_float(f * 3000)) == 0)
+				if (this.worldObj.rand.nextInt(MathHelper.floor_double(f * 3000)) == 0)
 				{
 					int x, y, z;
 					double motX, motZ;

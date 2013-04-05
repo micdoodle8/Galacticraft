@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import micdoodle8.mods.galacticraft.API.IExitHeight;
 import micdoodle8.mods.galacticraft.API.IOrbitDimension;
 import micdoodle8.mods.galacticraft.API.ISpaceship;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
@@ -264,7 +265,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
     		this.rotationPitch = 180F;
     	}
 
-    	if (this.posY > this.getYCoordToTeleport())
+    	if (this.posY > (this.worldObj.provider instanceof IExitHeight ? ((IExitHeight) this.worldObj.provider).getYCoordinateToTeleport() : 1200))
     	{
     		this.teleport();
     	}
@@ -279,7 +280,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
             this.setDamage(this.getDamage() - 1);
         }
 
-        if (this.posY < -64.0D || this.posY > this.getYCoordToTeleport() + 10)
+        if (this.posY < -64.0D || this.posY > (this.worldObj.provider instanceof IExitHeight ? ((IExitHeight) this.worldObj.provider).getYCoordinateToTeleport() : 1200) + 10)
         {
             this.kill();
         }
@@ -625,7 +626,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
     @Override
 	public double getMountedYOffset()
     {
-        return -1D;
+        return -1.0D;
     }
 
     public void teleport()
@@ -635,11 +636,6 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
     		if (this.riddenByEntity instanceof EntityPlayerMP)
             {
 		        GCCorePlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer((EntityPlayerMP)this.riddenByEntity);
-		        
-//		        if (playerBase != null && playerBase.spaceStationDimensionID == -1)
-//		        {
-//		        	WorldUtil.bindSpaceStationToNewDimension(this.worldObj, playerBase);
-//		        }
 		        
         		final EntityPlayerMP entityplayermp = (EntityPlayerMP)this.riddenByEntity;
 
@@ -670,38 +666,15 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
 				{
             		this.riddenByEntity.mountEntity(this);
 				}
+				
+				if (!this.isDead)
+				{
+					this.setDead();
+				}
             }
     	}
     }
     
-    public void checkValidLaunchPadBroken()
-    {
-		int amountStillValid = 0;
-
-		for (int x = MathHelper.floor_double(this.posX) - 1; x <= MathHelper.floor_double(this.posX) + 1; x++)
-		{
-    		for (int y = MathHelper.floor_double(this.posY) - 3; y <= MathHelper.floor_double(this.posY) + 1; y++)
-    		{
-        		for (int z = MathHelper.floor_double(this.posZ) - 1; z <= MathHelper.floor_double(this.posZ) + 1; z++)
-        		{
-        			final int id = this.worldObj.getBlockId(x, y, z);
-        			final Block block = Block.blocksList[id];
-
-        			if (block != null && block instanceof GCCoreBlockLandingPad)
-        			{
-        				amountStillValid++;
-        			}
-        		}
-    		}
-		}
-		
-		if (amountStillValid < 9 && !this.launched && !this.isDead)
-		{
-            this.setDead();
-			this.dropShipAsItem();
-		}
-    }
-
     public void onLaunch() {}
 
     public void onTeleport(EntityPlayerMP player) {}

@@ -8,8 +8,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import universalelectricity.core.vector.Vector3;
-
+import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLaunchFlameFX;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLaunchSmokeFX;
@@ -28,9 +27,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.gui.IUpdatePlayerListBox;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import universalelectricity.core.vector.Vector3;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -132,8 +134,20 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
         	{
         		this.motionY = -d * Math.cos((this.rotationPitch - 180) * Math.PI / 180.0D);
         	}
+        	
+        	double multiplier = 1.0D;
+        	
+        	if (this.worldObj.provider instanceof IGalacticraftWorldProvider)
+        	{
+        		multiplier = ((IGalacticraftWorldProvider)this.worldObj.provider).getFuelUsageMultiplier();
+        		
+        		if (multiplier <= 0)
+        		{
+        			multiplier = 1;
+        		}
+        	}
 
-        	if (this.getTimeSinceLaunch() % 50 == 0)
+        	if (this.timeSinceLaunch % MathHelper.floor_double(50 * (1 / multiplier)) == 0)
         	{
         		this.fuel -= 1;
         	}
@@ -439,12 +453,6 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
 		dimensions.add(0);
 		dimensions.add(GCMoonConfigManager.dimensionIDMoon);
 		return dimensions;
-	}
-
-	@Override
-	public int getYCoordToTeleport()
-	{
-		return 1200;
 	}
 
 	@Override
