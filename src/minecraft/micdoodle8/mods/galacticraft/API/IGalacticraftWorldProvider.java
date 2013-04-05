@@ -16,5 +16,12 @@ public interface IGalacticraftWorldProvider
 	 *
 	 * @return
 	 */
-	public float getMeteorFrequency();
+	public double getMeteorFrequency();
+	
+	/**
+	 * Depending on gravity, different fuel depletion rates will occur in spacecraft (less force required to lift)
+	 * 
+	 * @return multiplier of fuel usage, relative to the earth. Lower gravity = Lower fuel usage (multiplier less than zero)
+	 */
+	public double getFuelUsageMultiplier();
 }

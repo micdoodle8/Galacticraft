@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.dimension;
 
+import micdoodle8.mods.galacticraft.API.IExitHeight;
 import micdoodle8.mods.galacticraft.API.IOrbitDimension;
 import micdoodle8.mods.galacticraft.API.ISolarLevel;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
@@ -20,7 +21,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  *  All rights reserved.
  *
  */
-public class GCCoreWorldProvider extends WorldProvider implements IOrbitDimension, ISolarLevel
+public class GCCoreWorldProvider extends WorldProvider implements IOrbitDimension, ISolarLevel, IExitHeight
 {
     public int spaceStationDimensionID;
     private final float[] colorsSunriseSunset = new float[4];
@@ -216,9 +217,15 @@ public class GCCoreWorldProvider extends WorldProvider implements IOrbitDimensio
 	}
 
 	@Override
-	public float getMeteorFrequency()
+	public double getMeteorFrequency()
 	{
 		return 0;
+	}
+
+	@Override
+	public double getFuelUsageMultiplier()
+	{
+		return 0.5D;
 	}
 
 	@Override
@@ -249,5 +256,11 @@ public class GCCoreWorldProvider extends WorldProvider implements IOrbitDimensio
 	public double getSolorEnergyMultiplier()
 	{
 		return 3.0D;
+	}
+
+	@Override
+	public double getYCoordinateToTeleport() 
+	{
+		return 120;
 	}
 }

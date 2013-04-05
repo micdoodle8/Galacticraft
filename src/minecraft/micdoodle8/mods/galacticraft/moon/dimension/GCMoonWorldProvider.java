@@ -226,8 +226,14 @@ public class GCMoonWorldProvider extends WorldProvider implements IGalacticraftW
 	}
 
 	@Override
-	public float getMeteorFrequency()
+	public double getMeteorFrequency()
 	{
-		return 7;
+		return 7.0D;
+	}
+
+	@Override
+	public double getFuelUsageMultiplier()
+	{
+		return 0.7D;
 	}
 }
