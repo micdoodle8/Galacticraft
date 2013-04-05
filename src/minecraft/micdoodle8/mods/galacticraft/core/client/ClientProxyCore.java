@@ -43,6 +43,7 @@ import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderBloc
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderBuggy;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderCreeper;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderFlag;
+import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderLander;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderMeteor;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderOxygenBubble;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderParaChest;
@@ -68,6 +69,7 @@ import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityBuggy;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityControllable;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityCreeper;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityFlag;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityLander;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityMeteor;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityOxygenBubble;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityParaChest;
@@ -275,7 +277,7 @@ public class ClientProxyCore extends CommonProxyCore
         RenderingRegistry.registerEntityRenderingHandler(EntityPlayer.class, new GCCoreRenderPlayer());
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityAlienVillager.class, new GCCoreRenderAlienVillager());
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityOxygenBubble.class, new GCCoreRenderOxygenBubble());
-//        RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityLander.class, new GCCoreRenderLander()); TODO
+//        RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityLander.class, new GCCoreRenderLander());
         RenderingRegistry.addNewArmourRendererPrefix("oxygen");
         RenderingRegistry.addNewArmourRendererPrefix("sensor");
         RenderingRegistry.addNewArmourRendererPrefix("sensorox");
