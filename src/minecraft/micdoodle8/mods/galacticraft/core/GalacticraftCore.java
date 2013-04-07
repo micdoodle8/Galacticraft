@@ -27,6 +27,7 @@ import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityBuggy;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityCreeper;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityFlag;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityLander;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityLanderChest;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityMeteor;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityOxygenBubble;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityParaChest;
@@ -52,6 +53,7 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCollector;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCompressor;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenDistributor;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenPipe;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenSealer;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityRefinery;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntitySpaceStationBase;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
@@ -341,7 +343,6 @@ public class GalacticraftCore
         GameRegistry.registerTileEntity(GCCoreTileEntityOxygenDistributor.class, "Air Distributor");
         GameRegistry.registerTileEntity(GCCoreTileEntityOxygenCollector.class, "Air Collector");
         GameRegistry.registerTileEntity(GCCoreTileEntityOxygenPipe.class, "Oxygen Pipe");
-//        GameRegistry.registerTileEntity(GCCoreTileEntityBreathableAir.class, "Breathable Air");
         GameRegistry.registerTileEntity(GCCoreTileEntityAirLock.class, "Air Lock Frame");
         GameRegistry.registerTileEntity(GCCoreTileEntityRefinery.class, "Refinery");
         GameRegistry.registerTileEntity(GCCoreTileEntityAdvancedCraftingTable.class, "NASA Workbench");
@@ -352,6 +353,7 @@ public class GalacticraftCore
         GameRegistry.registerTileEntity(GCCoreTileEntityUnlitTorch.class, "Unlit Torch");
         GameRegistry.registerTileEntity(GCCoreTileEntitySpaceStationBase.class, "Space Station");
         GameRegistry.registerTileEntity(TileEntityMulti.class, "Dummy Block");
+        GameRegistry.registerTileEntity(GCCoreTileEntityOxygenSealer.class, "Air Sealer");
 	}
 
 	public void registerCreatures()
@@ -374,7 +376,8 @@ public class GalacticraftCore
 		this.registerGalacticraftNonMobEntity(GCCoreEntityAstroOrb.class, "AstroOrb", GCCoreConfigManager.idEntityAstroOrb, 150, 5, true);
 		this.registerGalacticraftNonMobEntity(GCCoreEntityParaChest.class, "ParaChest", GCCoreConfigManager.idEntityParaChest, 150, 5, true);
 		this.registerGalacticraftNonMobEntity(GCCoreEntityOxygenBubble.class, "OxygenBubble", GCCoreConfigManager.idEntityOxygenBubble, 150, 20, false);
-//		this.registerGalacticraftNonMobEntity(GCCoreEntityLander.class, "Test", GCCoreConfigManager.idEntityLander, 150, 5, true);
+		this.registerGalacticraftNonMobEntity(GCCoreEntityLander.class, "Lander", GCCoreConfigManager.idEntityLander, 150, 5, true);
+		this.registerGalacticraftNonMobEntity(GCCoreEntityLanderChest.class, "LanderChest", GCCoreConfigManager.idEntityLanderChest, 150, 5, false);
 	}
 
     public void registerGalacticraftCreature(Class var0, String var1, int id, int back, int fore)

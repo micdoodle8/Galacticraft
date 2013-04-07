@@ -1,8 +1,10 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
+import java.util.Random;
+
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFuelLoader;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenSealer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -18,15 +20,26 @@ import universalelectricity.prefab.block.BlockAdvanced;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class GCCoreBlockFuelLoader extends BlockAdvanced
+/**
+ * Copyright 2012-2013, micdoodle8
+ *
+ *  All rights reserved.
+ *
+ */
+public class GCCoreBlockOxygenSealer extends BlockAdvanced
 {
+    private final Random distributorRand = new Random();
+
 	private Icon iconMachineSide;
+	private Icon iconDistributor;
 	private Icon iconInput;
-	private Icon iconFront;
+	private Icon iconOutput;
 	
-	public GCCoreBlockFuelLoader(int id) 
+    private static boolean keepDistributorInventory = false;
+
+	public GCCoreBlockOxygenSealer(int par1)
 	{
-		super(id, Material.rock);
+		super(par1, Material.rock);
 	}
 
 	@Override
@@ -39,43 +52,10 @@ public class GCCoreBlockFuelLoader extends BlockAdvanced
 	@SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister par1IconRegister)
     {
-        this.iconInput = par1IconRegister.registerIcon("galacticraftcore:machine_power_input");
         this.iconMachineSide = par1IconRegister.registerIcon("galacticraftcore:machine_blank");
-        this.iconFront = par1IconRegister.registerIcon("galacticraftcore:machine_fuelloader");
-    }
-
-	@Override
-	public TileEntity createNewTileEntity(World var1)
-	{
-		return new GCCoreTileEntityFuelLoader();
-	}
-
-    @Override
-	public boolean onMachineActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float hitX, float hitY, float hitZ)
-	{
-    	entityPlayer.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiFuelLoader, world, x, y, z);
-    	return true;
-    }
-
-	@Override
-	public Icon getBlockTextureFromSideAndMetadata(int side, int metadata)
-	{
-		if (side == 0 || side == 1)
-		{
-			return this.iconMachineSide;
-		}
-		else if (side == metadata + 2)
-		{
-			return this.iconInput;
-		}
-		else if (side == ForgeDirection.getOrientation(metadata + 2).getOpposite().ordinal())
-		{
-			return this.iconMachineSide;
-		}
-		else
-		{
-			return this.iconFront;
-		}
+        this.iconDistributor = par1IconRegister.registerIcon("galacticraftcore:machine_sealer");
+        this.iconInput = par1IconRegister.registerIcon("galacticraftcore:machine_power_input");
+        this.iconOutput = par1IconRegister.registerIcon("galacticraftcore:machine_oxygen_input");
     }
 
 	@Override
@@ -106,6 +86,34 @@ public class GCCoreBlockFuelLoader extends BlockAdvanced
 		par1World.setBlockMetadataWithNotify(x, y, z, change, 3);
 		return true;
 	}
+
+    @Override
+	public boolean onMachineActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float hitX, float hitY, float hitZ)
+	{
+    	entityPlayer.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiAirSealer, world, x, y, z);
+    	return true;
+    }
+	
+	@Override
+	public Icon getBlockTextureFromSideAndMetadata(int side, int metadata)
+	{
+		if (side == 0 || side == 1)
+		{
+			return this.iconMachineSide;
+		}
+		else if (side == metadata + 2)
+		{
+			return this.iconOutput;
+		}
+		else if (side == ForgeDirection.getOrientation(metadata + 2).getOpposite().ordinal())
+		{
+			return this.iconInput;
+		}
+		else
+		{
+			return this.iconDistributor;
+		}
+    }
     
 	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving entityLiving, ItemStack itemStack)
@@ -130,37 +138,11 @@ public class GCCoreBlockFuelLoader extends BlockAdvanced
 		}
 
 		world.setBlockMetadataWithNotify(x, y, z, change, 3);
-		
-		for (int dX = -2; dX < 3; dX++)
-		{
-			for (int dZ = -2; dZ < 3; dZ++)
-			{
-				int id = world.getBlockId(x + dX, y, z + dZ);
-				
-				if (id == GCCoreBlocks.landingPadFull.blockID)
-				{
-			        world.markBlockForUpdate(x + dX, y, z + dZ);
-				}
-			}
-		}
 	}
 
 	@Override
-	public void onBlockDestroyedByPlayer(World world, int x, int y, int z, int par5)
+	public TileEntity createNewTileEntity(World var1)
 	{
-		super.onBlockDestroyedByPlayer(world, x, y, z, par5);
-		
-		for (int dX = -2; dX < 3; dX++)
-		{
-			for (int dZ = -2; dZ < 3; dZ++)
-			{
-				int id = world.getBlockId(x + dX, y, z + dZ);
-				
-				if (id == GCCoreBlocks.landingPadFull.blockID)
-				{
-			        world.markBlockForUpdate(x + dX, y, z + dZ);
-				}
-			}
-		}
+		return new GCCoreTileEntityOxygenSealer();
 	}
 }

@@ -53,6 +53,7 @@ public class GCCoreConfigManager
 	public static int idBlockFuelLoader;
 	public static int idBlockSpaceStationBase;
 	public static int idBlockDummy;
+	public static int idBlockOxygenSealer;
 
 	// ITEMS
 	public static int idItemLightOxygenTank;
@@ -116,6 +117,7 @@ public class GCCoreConfigManager
 	public static int idGuiAirCompressor;
 	public static int idGuiFuelLoader;
 	public static int idGuiAddSchematic;
+	public static int idGuiAirSealer;
 
 	// ACHIEVEMENTS
 	public static int idAchievBase;
@@ -135,6 +137,7 @@ public class GCCoreConfigManager
 	public static int idEntityAlienVillager;
 	public static int idEntityOxygenBubble;
 	public static int idEntityLander;
+	public static int idEntityLanderChest;
 
 	// GENERAL
 	public static boolean transparentBreathableAir;
@@ -177,6 +180,7 @@ public class GCCoreConfigManager
 	        GCCoreConfigManager.idBlockAirCollector = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockAirCollector", 					3357)		.getInt(3357);
 	        GCCoreConfigManager.idBlockRefinery = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockRefinery",                      3358)       .getInt(3358);
 	        GCCoreConfigManager.idBlockFuelLoader = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockFuelLoader",					3359)		.getInt(3359);
+	        GCCoreConfigManager.idBlockOxygenSealer = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockOxygenSealer", 					3360)		.getInt(3360);
 	        GCCoreConfigManager.idBlockAirPipe = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockAirPipe", 						3368)		.getInt(3368);
 	        GCCoreConfigManager.idBlockSapling2 = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockSapling2", 						3369)		.getInt(3369);
 	        GCCoreConfigManager.idBlockRocketBench = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockRocketBench", 					3370)		.getInt(3370);
@@ -239,6 +243,7 @@ public class GCCoreConfigManager
 	        GCCoreConfigManager.idGuiAirDistributor = 					GCCoreConfigManager.configuration.get("GUI", "idGuiAirDistributor", 										136)		.getInt(136);
 	        GCCoreConfigManager.idGuiFuelLoader =						GCCoreConfigManager.configuration.get("GUI", "idGuiFuelLoader", 											137)		.getInt(137);
 	        GCCoreConfigManager.idGuiAddSchematic = 					GCCoreConfigManager.configuration.get("GUI", "idGuiAddSchematic", 											138)		.getInt(138);
+	        GCCoreConfigManager.idGuiAirSealer = 						GCCoreConfigManager.configuration.get("GUI", "idGuiAirSealer", 												139)		.getInt(139);
 
 	        GCCoreConfigManager.idSchematicRocketT1 = 					GCCoreConfigManager.configuration.get("Schematic", "idSchematicRocketT1", 									0)			.getInt(0);
 	        GCCoreConfigManager.idSchematicMoonBuggy = 					GCCoreConfigManager.configuration.get("Schematic", "idSchematicMoonBuggy", 									1)			.getInt(1);
@@ -261,6 +266,7 @@ public class GCCoreConfigManager
 	        GCCoreConfigManager.idEntityAlienVillager = 				GCCoreConfigManager.configuration.get("Entities", "idEntityAlienVillager", 									167)		.getInt(167);
 	        GCCoreConfigManager.idEntityOxygenBubble = 					GCCoreConfigManager.configuration.get("Entities", "idEntityOxygenBubble", 									168)		.getInt(168);
 	        GCCoreConfigManager.idEntityLander = 						GCCoreConfigManager.configuration.get("Entities", "idEntityLander", 										169)		.getInt(169);
+	        GCCoreConfigManager.idEntityLanderChest = 					GCCoreConfigManager.configuration.get("Entities", "idEntityLanderChest", 									170)		.getInt(170);
 	        
 	        GCCoreConfigManager.transparentBreathableAir = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Transparent Breathable Air",			true)		.getBoolean(true);
 	        GCCoreConfigManager.moreStars = 							GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "More Stars",							true)		.getBoolean(true);

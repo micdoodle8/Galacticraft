@@ -23,6 +23,7 @@ import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityOxygenFX;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiAirCollector;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiAirCompressor;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiAirDistributor;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiAirSealer;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiFuelLoader;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiGalaxyMap;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiRefinery;
@@ -44,6 +45,7 @@ import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderBugg
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderCreeper;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderFlag;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderLander;
+import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderLanderChest;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderMeteor;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderOxygenBubble;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderParaChest;
@@ -70,6 +72,7 @@ import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityControllable;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityCreeper;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityFlag;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityLander;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityLanderChest;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityMeteor;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityOxygenBubble;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityParaChest;
@@ -88,6 +91,7 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCollector;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCompressor;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenDistributor;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenSealer;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityRefinery;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
@@ -277,7 +281,8 @@ public class ClientProxyCore extends CommonProxyCore
         RenderingRegistry.registerEntityRenderingHandler(EntityPlayer.class, new GCCoreRenderPlayer());
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityAlienVillager.class, new GCCoreRenderAlienVillager());
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityOxygenBubble.class, new GCCoreRenderOxygenBubble());
-//        RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityLander.class, new GCCoreRenderLander());
+        RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityLander.class, new GCCoreRenderLander());
+        RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityLanderChest.class, new GCCoreRenderLanderChest());
         RenderingRegistry.addNewArmourRendererPrefix("oxygen");
         RenderingRegistry.addNewArmourRendererPrefix("sensor");
         RenderingRegistry.addNewArmourRendererPrefix("sensorox");
@@ -692,6 +697,17 @@ public class ClientProxyCore extends CommonProxyCore
 			if (tile != null && tile instanceof GCCoreTileEntityFuelLoader)
 			{
 				return new GCCoreGuiFuelLoader(player.inventory, (GCCoreTileEntityFuelLoader)tile);
+			}
+			else
+			{
+				return null;
+			}
+		}
+		else if (ID == GCCoreConfigManager.idGuiAirSealer)
+		{
+			if (tile != null && tile instanceof GCCoreTileEntityOxygenSealer)
+			{
+				return new GCCoreGuiAirSealer(player.inventory, (GCCoreTileEntityOxygenSealer)tile);
 			}
 			else
 			{

@@ -37,7 +37,7 @@ public class GCCoreBlockOxygenDistributor extends BlockAdvanced
 	
     private static boolean keepDistributorInventory = false;
 
-	public GCCoreBlockOxygenDistributor(int par1, boolean isActive)
+	public GCCoreBlockOxygenDistributor(int par1)
 	{
 		super(par1, Material.rock);
 	}

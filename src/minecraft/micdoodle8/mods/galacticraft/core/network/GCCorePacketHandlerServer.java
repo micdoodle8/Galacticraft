@@ -3,9 +3,9 @@ package micdoodle8.mods.galacticraft.core.network;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 
-import micdoodle8.mods.galacticraft.API.SchematicRegistry;
 import micdoodle8.mods.galacticraft.API.IOrbitDimension;
 import micdoodle8.mods.galacticraft.API.ISchematicPage;
+import micdoodle8.mods.galacticraft.API.SchematicRegistry;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreEnumTeleportType;
@@ -14,6 +14,7 @@ import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerSchematic;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemParachute;
 import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerCommon;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenSealer;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
@@ -25,6 +26,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.network.packet.Packet9Respawn;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
 import cpw.mods.fml.common.FMLLog;
@@ -141,21 +143,8 @@ public class GCCorePacketHandlerServer implements IPacketHandler
         	if (player != null)
         	{
         		ISchematicPage page = SchematicRegistry.getMatchingRecipeForID((Integer) packetReadout[0]);
-        		
-        		FMLLog.info("serv " + page.getGuiID());
 
         		player.openGui(GalacticraftCore.instance, page.getGuiID(), player.worldObj, (int)player.posX, (int)player.posY, (int)player.posZ);
-//        		switch ((Integer)packetReadout[0])
-//        		{
-//        		case 0:
-//        			player.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiRocketCraftingBench, player.worldObj, (int)player.posX, (int)player.posY, (int)player.posZ);
-//        			break;
-//        		case 1:
-//        			player.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiBuggyCraftingBench, player.worldObj, (int)player.posX, (int)player.posY, (int)player.posZ);
-//        			break;
-//        		case 2:
-//        			break;
-//        		}
         	}
         }
         else if (packetType == 5)
@@ -326,5 +315,41 @@ public class GCCorePacketHandlerServer implements IPacketHandler
         		}
         	}
         }
+//        else if (packetType == ) TODO
+//        {
+//            final Class[] decodeAs = {Integer.class, Float.class, Double.class, Double.class, Double.class};
+//            final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
+//            
+//            for (final Object object : player.worldObj.loadedEntityList)
+//            {
+//            	if (object instanceof GCCoreEntityLander)
+//            	{
+//            		final GCCoreEntityLander entity = (GCCoreEntityLander) object;
+//
+//            		if (entity.entityId == (Integer) packetReadout[0])
+//            		{
+//            			entity.worldObj.createExplosion(entity, (Double) packetReadout[2], (Double) packetReadout[3], (Double) packetReadout[4], (Float) packetReadout[1], false);
+//            			
+//            			entity.setDead();
+//            		}
+//            	}
+//            }
+//        }
+        else if (packetType == 17)
+      	{
+        	final Class[] decodeAs = {Integer.class, Integer.class, Integer.class};
+          	final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
+          	
+          	TileEntity tileAt = player.worldObj.getBlockTileEntity((Integer) packetReadout[0], (Integer) packetReadout[1], (Integer) packetReadout[2]);
+      	
+          	if (tileAt instanceof GCCoreTileEntityOxygenSealer)
+          	{
+          		GCCoreTileEntityOxygenSealer sealer = (GCCoreTileEntityOxygenSealer) tileAt;
+          		
+          		boolean disabledBefore = sealer.disabled;
+          		
+          		sealer.disabled = !disabledBefore;
+          	}
+      	}
     }
 }

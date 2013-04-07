@@ -19,7 +19,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
  */
 public class GCCoreBlocks
 {
-//	public static GCCoreBlockBreathableAir breatheableAir;
+	public static GCCoreBlockBreathableAir breatheableAir;
 	public static Block treasureChest;
 	public static Block landingPad;
 	public static GCCoreBlockUnlitTorch unlitTorch;
@@ -41,18 +41,19 @@ public class GCCoreBlocks
 	public static Block landingPadFull;
 	public static Block spaceStationBase;
 	public static GCCoreBlockMulti dummyBlock;
+	public static Block sealer;
 	
 	public static Icon[] blockIcons;
 
 	public static void initBlocks()
 	{
-//		GCCoreBlocks.breatheableAir = (GCCoreBlockBreathableAir)			new GCCoreBlockBreathableAir		(GCCoreConfigManager.idBlockBreatheableAir)							.setHardness(0.0F) 		.setResistance(1000F)																.setUnlocalizedName("breatheableAir");
+		GCCoreBlocks.breatheableAir = (GCCoreBlockBreathableAir)			new GCCoreBlockBreathableAir		(GCCoreConfigManager.idBlockBreatheableAir)							.setHardness(0.0F) 		.setResistance(1000F)																.setUnlocalizedName("breatheableAir");
 		GCCoreBlocks.treasureChest = 										new GCCoreBlockTreasureChest		(GCCoreConfigManager.idBlockTreasureChest)							.setHardness(1.0F)      .setResistance(10.0F)      	.setStepSound(Block.soundStoneFootstep)                 .setUnlocalizedName("treasureChest");
 		GCCoreBlocks.landingPad = 											new GCCoreBlockLandingPad			(GCCoreConfigManager.idBlockLandingPad)								.setHardness(1.0F)      .setResistance(10.0F)  	   	.setStepSound(Block.soundStoneFootstep)                 .setUnlocalizedName("landingPad");
 		GCCoreBlocks.landingPadFull = 										new GCCoreBlockLandingPadFull		(GCCoreConfigManager.idBlockLandingPadFull)							.setHardness(1.0F)      .setResistance(10.0F)  	   	.setStepSound(Block.soundStoneFootstep)                 .setUnlocalizedName("landingPadFull");
 		GCCoreBlocks.unlitTorch = (GCCoreBlockUnlitTorch) 					new GCCoreBlockUnlitTorch 			(GCCoreConfigManager.idBlockUnlitTorch, false)						.setHardness(0.0F)									.setStepSound(Block.soundWoodFootstep)					.setUnlocalizedName("unlitTorch");
 		GCCoreBlocks.unlitTorchLit = (GCCoreBlockUnlitTorch) 				new GCCoreBlockUnlitTorch 			(GCCoreConfigManager.idBlockUnlitTorchLit, true)					.setHardness(0.0F)									.setStepSound(Block.soundWoodFootstep)					.setUnlocalizedName("unlitTorchLit");
-		GCCoreBlocks.airDistributor = (GCCoreBlockOxygenDistributor)		new GCCoreBlockOxygenDistributor	(GCCoreConfigManager.idBlockAirDistributor, false)					.setHardness(3.5F)									.setStepSound(Block.soundStoneFootstep)					.setUnlocalizedName("distributor");
+		GCCoreBlocks.airDistributor = (GCCoreBlockOxygenDistributor)		new GCCoreBlockOxygenDistributor	(GCCoreConfigManager.idBlockAirDistributor)							.setHardness(3.5F)									.setStepSound(Block.soundStoneFootstep)					.setUnlocalizedName("distributor");
 		GCCoreBlocks.oxygenPipe = (GCCoreBlockOxygenPipe)					new GCCoreBlockOxygenPipe			(GCCoreConfigManager.idBlockAirPipe)								.setHardness(0.3F)								  	.setStepSound(Block.soundGlassFootstep)                 .setUnlocalizedName("oxygenPipe");
 		GCCoreBlocks.blockAirCollector = 									new GCCoreBlockOxygenCollector		(GCCoreConfigManager.idBlockAirCollector)							.setHardness(3.5F)  	  						 	.setStepSound(Block.soundStoneFootstep)					.setUnlocalizedName("oxygenCollector");
 		GCCoreBlocks.sapling = (GCCoreBlockSapling)							new GCCoreBlockSapling				(GCCoreConfigManager.idBlockSapling2)								.setHardness(0.0F)									.setStepSound(Block.soundGrassFootstep)					.setUnlocalizedName("sapling2");
@@ -68,11 +69,12 @@ public class GCCoreBlocks
 		GCCoreBlocks.fuelLoader = 											new GCCoreBlockFuelLoader			(GCCoreConfigManager.idBlockFuelLoader)								.setHardness(3.0F)       							.setStepSound(Block.soundMetalFootstep)					.setUnlocalizedName("fuelLoader");
 		GCCoreBlocks.spaceStationBase = 									new GCCoreBlockSpaceStationBase		(GCCoreConfigManager.idBlockSpaceStationBase)						.setHardness(3.0F)       							.setStepSound(Block.soundMetalFootstep)					.setUnlocalizedName("spaceStationBase");
 		GCCoreBlocks.dummyBlock = (GCCoreBlockMulti) 						new GCCoreBlockMulti				(GCCoreConfigManager.idBlockDummy)																						.setStepSound(Block.soundMetalFootstep)					.setUnlocalizedName("dummyblock");
+		GCCoreBlocks.sealer = (GCCoreBlockOxygenSealer)						new GCCoreBlockOxygenSealer			(GCCoreConfigManager.idBlockOxygenSealer)							.setHardness(3.5F)									.setStepSound(Block.soundStoneFootstep)					.setUnlocalizedName("sealer");
 		
 		// Hide certain items from NEI
 		GalacticraftCore.hiddenItems.add(GCCoreBlocks.airLockSeal.blockID);
 		GalacticraftCore.hiddenItems.add(GCCoreBlocks.sapling.blockID);
-//		GalacticraftCore.hiddenItems.add(GCCoreBlocks.breatheableAir.blockID);
+		GalacticraftCore.hiddenItems.add(GCCoreBlocks.breatheableAir.blockID);
 		GalacticraftCore.hiddenItems.add(GCCoreBlocks.unlitTorch.blockID);
 		GalacticraftCore.hiddenItems.add(GCCoreBlocks.unlitTorchLit.blockID);
 		GalacticraftCore.hiddenItems.add(GCCoreBlocks.landingPadFull.blockID);
@@ -97,7 +99,7 @@ public class GCCoreBlocks
 		GameRegistry.registerBlock(GCCoreBlocks.landingPadFull, 	ItemBlock.class, 			GCCoreBlocks.landingPadFull.getUnlocalizedName(), 		GalacticraftCore.MODID);
 		GameRegistry.registerBlock(GCCoreBlocks.unlitTorch, 		ItemBlock.class, 			GCCoreBlocks.unlitTorch.getUnlocalizedName(), 			GalacticraftCore.MODID);
 		GameRegistry.registerBlock(GCCoreBlocks.unlitTorchLit, 		ItemBlock.class, 			GCCoreBlocks.unlitTorchLit.getUnlocalizedName(), 		GalacticraftCore.MODID);
-//		GameRegistry.registerBlock(GCCoreBlocks.breatheableAir, 	ItemBlock.class, 			GCCoreBlocks.breatheableAir.getUnlocalizedName(), 		GalacticraftCore.MODID);
+		GameRegistry.registerBlock(GCCoreBlocks.breatheableAir, 	ItemBlock.class, 			GCCoreBlocks.breatheableAir.getUnlocalizedName(), 		GalacticraftCore.MODID);
 		GameRegistry.registerBlock(GCCoreBlocks.airDistributor, 	ItemBlock.class, 			GCCoreBlocks.airDistributor.getUnlocalizedName(), 		GalacticraftCore.MODID);
 		GameRegistry.registerBlock(GCCoreBlocks.oxygenPipe, 		ItemBlock.class, 			GCCoreBlocks.oxygenPipe.getUnlocalizedName(), 			GalacticraftCore.MODID);
 		GameRegistry.registerBlock(GCCoreBlocks.blockAirCollector, 	ItemBlock.class, 			GCCoreBlocks.blockAirCollector.getUnlocalizedName(), 	GalacticraftCore.MODID);
@@ -113,6 +115,7 @@ public class GCCoreBlocks
 		GameRegistry.registerBlock(GCCoreBlocks.sapling, 			GCCoreItemSapling.class, 	GCCoreBlocks.sapling.getUnlocalizedName(), 				GalacticraftCore.MODID);
 		GameRegistry.registerBlock(GCCoreBlocks.fuelLoader, 		ItemBlock.class, 			GCCoreBlocks.fuelLoader.getUnlocalizedName(), 			GalacticraftCore.MODID);
 		GameRegistry.registerBlock(GCCoreBlocks.spaceStationBase, 	ItemBlock.class, 			GCCoreBlocks.spaceStationBase.getUnlocalizedName(), 	GalacticraftCore.MODID);
-		GameRegistry.registerBlock(GCCoreBlocks.dummyBlock, 		ItemBlock.class, 			GCCoreBlocks.dummyBlock.getUnlocalizedName(), 	GalacticraftCore.MODID);
+		GameRegistry.registerBlock(GCCoreBlocks.dummyBlock, 		ItemBlock.class, 			GCCoreBlocks.dummyBlock.getUnlocalizedName(), 			GalacticraftCore.MODID);
+		GameRegistry.registerBlock(GCCoreBlocks.sealer, 			ItemBlock.class, 			GCCoreBlocks.sealer.getUnlocalizedName(), 				GalacticraftCore.MODID);
 	}
 }

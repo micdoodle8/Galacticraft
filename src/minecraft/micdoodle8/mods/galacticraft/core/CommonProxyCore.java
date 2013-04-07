@@ -9,6 +9,7 @@ import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerAirCollector;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerAirCompressor;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerAirDistributor;
+import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerAirSealer;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerFuelLoader;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerRefinery;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerRocketRefill;
@@ -18,6 +19,7 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFuelLoader;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCollector;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCompressor;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenDistributor;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenSealer;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityRefinery;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.entity.player.EntityPlayer;
@@ -160,6 +162,10 @@ public class CommonProxyCore extends BCGuiHandler implements IGuiHandler
 		else if (ID == GCCoreConfigManager.idGuiFuelLoader)
 		{
 			return new GCCoreContainerFuelLoader(player.inventory, (GCCoreTileEntityFuelLoader)world.getBlockTileEntity(x, y, z));
+		}
+		else if (ID == GCCoreConfigManager.idGuiAirSealer)
+		{
+			return new GCCoreContainerAirSealer(player.inventory, (GCCoreTileEntityOxygenSealer)world.getBlockTileEntity(x, y, z));
 		}
 		else
 		{
