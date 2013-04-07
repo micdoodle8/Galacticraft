@@ -121,7 +121,7 @@ public class GCCoreItemOilCanister extends Item implements IRefinableItem
 	{
 		if (originalStack.getMaxDamage() - originalStack.getItemDamage() > 0)
 		{
-			return new ItemStack(GCCoreItems.rocketFuelBucket.itemID, 1, originalStack.getItemDamage() == 0 ? 1 : originalStack.getItemDamage());
+			return new ItemStack(GCCoreItems.fuelCanister.itemID, 1, originalStack.getItemDamage() == 0 ? 1 : originalStack.getItemDamage());
 		}
 		
 		return null;

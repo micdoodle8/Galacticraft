@@ -49,11 +49,12 @@ public class GCCoreItems
 	public static Item oxygenGear;
 	public static Item parachute;
 	public static Item canvas;
-	public static Item rocketFuelBucket;
 	public static Item flagPole;
 	public static Item oilCanister;
+	public static Item fuelCanister;
 	public static Item oilExtractor;
 	public static Item schematic;
+	public static Item fuel;
 
 	public static EnumArmorMaterial SENSORGLASSES = EnumHelper.addArmorMaterial("SENSORGLASSES", 200, new int[] {0, 0, 0, 0}, 0);
 	public static EnumArmorMaterial steelARMOR = EnumHelper.addArmorMaterial("steel", 30, new int[] {3, 8, 6, 3}, 12);
@@ -93,11 +94,12 @@ public class GCCoreItems
 		GCCoreItems.oxygenGear = new GCCoreItemOxygenGear(GCCoreConfigManager.idItemOxygenGear).setUnlocalizedName("oxygenGear");
 		GCCoreItems.parachute = new GCCoreItemParachute(GCCoreConfigManager.idItemParachute).setUnlocalizedName("parachute");
 		GCCoreItems.canvas = new GCCoreItem(GCCoreConfigManager.idItemCanvas, "canvas" + GalacticraftCore.TEXTURE_SUFFIX).setUnlocalizedName("canvas");
-		GCCoreItems.rocketFuelBucket = new GCCoreItemFuelCanister(GCCoreConfigManager.idItemRocketFuelBucket).setUnlocalizedName("fuelCanisterPartial");
+		GCCoreItems.fuelCanister = new GCCoreItemFuelCanister(GCCoreConfigManager.idItemRocketFuelBucket).setUnlocalizedName("fuelCanisterPartial");
 		GCCoreItems.flagPole = new GCCoreItem(GCCoreConfigManager.idItemFlagPole, "flagpole" + GalacticraftCore.TEXTURE_SUFFIX).setUnlocalizedName("flagPole");
 		GCCoreItems.oilCanister = new GCCoreItemOilCanister(GCCoreConfigManager.idItemOilCanister).setUnlocalizedName("oilCanisterPartial");
 		GCCoreItems.oilExtractor = new GCCoreItemOilExtractor(GCCoreConfigManager.idItemOilExtractor).setUnlocalizedName("oilExtractor");
 		GCCoreItems.schematic = new GCCoreItemSchematic(GCCoreConfigManager.idItemSchematic).setUnlocalizedName("schematic");
+		GCCoreItems.fuel = new GCCoreItem(GCCoreConfigManager.idItemFuel, "fuel").setUnlocalizedName("fuel");
 		
 		GalacticraftCore.hiddenItems.add(GCCoreItems.gravityBow.itemID);
 	}

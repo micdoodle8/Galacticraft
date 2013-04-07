@@ -1065,7 +1065,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
       			switch (i)
       			{
       			case 0:
-      		        this.rocketStacks[i] = new ItemStack(GCCoreItems.rocketFuelBucket, 1, this.fuelDamage);
+      		        this.rocketStacks[i] = new ItemStack(GCCoreItems.fuelCanister, 1, this.fuelDamage);
       				break;
       			case 25:
       		      	this.rocketStacks[i] = new ItemStack(GCCoreBlocks.landingPad, 9, 0);
