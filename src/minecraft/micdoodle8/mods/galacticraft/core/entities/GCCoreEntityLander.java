@@ -3,13 +3,11 @@ package micdoodle8.mods.galacticraft.core.entities;
 import java.util.ArrayList;
 import java.util.List;
 
-import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
-import micdoodle8.mods.galacticraft.core.network.GCCorePacketControllableEntity;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketEntityUpdate;
 import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -17,21 +15,27 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+
+import com.google.common.io.ByteArrayDataInput;
+import com.google.common.io.ByteArrayDataOutput;
+
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 
 public class GCCoreEntityLander extends GCCoreEntityControllable implements IInventory
 {
-    public int fuel;
     public int currentDamage;
     public int timeSinceHit;
     public int rockDirection;
     public double speed;
-    float maxSpeed = 0.5F;
-    float accel = 0.2F;
-    float turnFactor = 3.0F;
+    public double actualSpeed = -5.0D;
+    float maxSpeed = 0.05F;
+    float minSpeed = 0.5F;
+    float accel = 0.04F;
+    float turnFactor = 2.0F;
     public String texture;
-    ItemStack[] cargoItems;
 	public float turnProgress = 0;
 	private final boolean firstPacketSent = false;
 	public float rotationYawBuggy;
@@ -41,18 +45,22 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
     public double boatYaw;
     public double boatPitch;
 	public int boatPosRotationIncrements;
+	private boolean lastOnGround = false;
+	private double lastMotionY;
+	public ItemStack[] chestContents = new ItemStack[27];
+    public int numUsingPlayers;
+//	private GCCoreEntityLanderChest moduleChest;
 
     public GCCoreEntityLander(World var1)
     {
         super(var1);
         this.setSize(3.0F, 4.5F);
         this.yOffset = 2.5F;
-        this.cargoItems = new ItemStack[36];
-        this.fuel = 0;
         this.currentDamage = 18;
         this.timeSinceHit = 19;
         this.rockDirection = 20;
         this.speed = 0.0D;
+        this.actualSpeed = -5.0D;
         this.preventEntitySpawning = true;
         this.dataWatcher.addObject(this.currentDamage, new Integer(0));
         this.dataWatcher.addObject(this.timeSinceHit, new Integer(0));
@@ -65,6 +73,16 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
     {
         this(var1);
         this.setPosition(var2, var4 + this.yOffset, var6);
+    }
+
+    public void setPosition(double par1, double par3, double par5)
+    {
+        this.posX = par1;
+        this.posY = par3;
+        this.posZ = par5;
+        float f = this.width / 2.0F;
+        float f1 = this.height;
+        this.boundingBox.setBounds(par1 - (double)f, par3 - (double)this.yOffset + (double)this.ySize, par5 - (double)f, par1 + (double)f, par3 - (double)this.yOffset + (double)this.ySize + (double)f1, par5 + (double)f);
     }
 
     public ModelBase getModel()
@@ -96,7 +114,7 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
     @Override
 	public double getMountedYOffset()
     {
-        return this.height - 3.0D;
+        return this.height - 1.0D;
     }
 
     @Override
@@ -112,7 +130,7 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
         {
             final double var1 = Math.cos(this.rotationYaw * Math.PI / 180.0D + 114.8) * -0.5D;
             final double var3 = Math.sin(this.rotationYaw * Math.PI / 180.0D + 114.8) * -0.5D;
-            this.riddenByEntity.setPosition(this.posX + var1, this.posY - 2 + this.riddenByEntity.getYOffset(), this.posZ + var3);
+            this.riddenByEntity.setPosition(this.posX + var1, this.posY + this.riddenByEntity.getYOffset(), this.posZ + var3);
         }
     }
 	
@@ -192,6 +210,16 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
         }
     }
 
+    public void setDead()
+    {
+        this.isDead = true;
+        
+//        if (this.moduleChest != null)
+//        {
+//        	this.moduleChest.setDead();
+//        }
+    }
+
     public void dropLanderAsItem()
     {
     	if (this.getItemsDropped() == null)
@@ -208,7 +236,18 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
     public List<ItemStack> getItemsDropped()
     {
         final List<ItemStack> items = new ArrayList<ItemStack>();
-        items.add(new ItemStack(GCCoreItems.buggy));
+        
+//        if (this.moduleChest != null)
+//        {
+//            for (ItemStack stack : this.moduleChest.chestContents)
+//            {
+//            	if (stack != null)
+//            	{
+//                	items.add(stack);
+//            	}
+//            }
+//        }
+        
     	return items;
     }
 
@@ -293,54 +332,59 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
         for (var4 = 0; var4 < var20; ++var4)
         {
         }
-
-        if (this.fuel <= 0)
-        {
-            for (var4 = 0; var4 < this.getSizeInventory(); ++var4)
-            {
-                final ItemStack var22 = this.getStackInSlot(var4);
-
-                if (var22 != null && var22.itemID == Item.coal.itemID)
-                {
-                    this.decrStackSize(var4, 1);
-                    this.fuel += 1500;
-
-                    if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayer)
-                    {
-                        final EntityPlayer var6 = (EntityPlayer)this.riddenByEntity;
-                        var6.addChatMessage("Added Fuel");
-                        break;
-                    }
-                }
-            }
-        }
         
         if (this.riddenByEntity == null)
         {
-        	this.yOffset = 5;
+//        	this.yOffset = 5;
+        }
+
+
+        if (this.inWater && this.speed > 0.2D)
+        {
+            this.worldObj.playSoundEffect((float)this.posX, (float)this.posY, (float)this.posZ, "random.fizz", 0.5F, 2.6F + (this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.8F);
         }
 
         this.speed *= 0.98D;
+        
+        this.actualSpeed += this.speed * this.accel;
+        
+        this.actualSpeed = MathHelper.clamp_float((float) this.actualSpeed, -5.0F, -0.5F);
 
-        if (this.speed > this.maxSpeed)
-        {
-            this.speed = this.maxSpeed;
-        }
-
-        this.motionY = -(this.speed * Math.cos((this.rotationPitch) * Math.PI / 180.0D));
-        this.motionZ = 0.0D;
-        this.motionZ = 0.0D;
-
+        this.motionY = actualSpeed;
+        
 		if (this.worldObj.isRemote)
 		{
 			this.moveEntity(this.motionX, this.motionY, this.motionZ);
 		}
+		
+//		if (this.moduleChest != null)
+//		{
+//            this.moduleChest.posX = this.posX;
+//            this.moduleChest.posY = this.posY + 5 + this.yOffset;
+//            this.moduleChest.posZ = this.posZ;
+//            this.moduleChest.rotationPitch = this.rotationPitch;
+//            this.moduleChest.rotationYaw = this.rotationYaw;
+//		}
+//		else if (this.moduleChest == null)
+//		{
+//			this.moduleChest = new GCCoreEntityLanderChest(this);
+//	        this.worldObj.spawnEntityInWorld(this.moduleChest);
+//		}
+		
+		// TODO Lander Explosions
+		
+//		if (this.worldObj.isRemote && this.onGround && !lastOnGround && this.lastMotionY < -0.7D)
+//		{
+//			PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 17, new Object[] {this.entityId, 5.0F, this.posX, this.posY, this.posZ}));
+//		}
 
         this.prevPosX = this.posX;
         this.prevPosY = this.posY;
         this.prevPosZ = this.posZ;
-		
-		if(this.worldObj.isRemote && this.riddenByEntity instanceof EntityPlayer && FMLClientHandler.instance().getClient().thePlayer.equals(this.riddenByEntity))
+        this.lastOnGround = this.onGround;
+        this.lastMotionY = this.motionY;
+        
+		if(this.worldObj.isRemote)
 		{
 			PacketDispatcher.sendPacketToServer(GCCorePacketEntityUpdate.buildUpdatePacket(this));
 		}
@@ -354,77 +398,74 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
     @Override
 	protected void readEntityFromNBT(NBTTagCompound var1)
     {
-        this.fuel = var1.getInteger("Fuel");
         final NBTTagList var2 = var1.getTagList("Items");
-        this.cargoItems = new ItemStack[this.getSizeInventory()];
+        this.chestContents = new ItemStack[this.getSizeInventory()];
 
         for (int var3 = 0; var3 < var2.tagCount(); ++var3)
         {
             final NBTTagCompound var4 = (NBTTagCompound)var2.tagAt(var3);
             final int var5 = var4.getByte("Slot") & 255;
 
-            if (var5 >= 0 && var5 < this.cargoItems.length)
+            if (var5 >= 0 && var5 < this.chestContents.length)
             {
-                this.cargoItems[var5] = ItemStack.loadItemStackFromNBT(var4);
+            	this.chestContents[var5] = ItemStack.loadItemStackFromNBT(var4);
             }
         }
     }
 
     @Override
-	protected void writeEntityToNBT(NBTTagCompound var1)
+	protected void writeEntityToNBT(NBTTagCompound nbttagcompound)
     {
-        var1.setInteger("fuel", this.fuel);
-        final NBTTagList var2 = new NBTTagList();
+    	NBTTagList nbttaglist = new NBTTagList();
 
-        for (int var3 = 0; var3 < this.cargoItems.length; ++var3)
+        for (int i = 0; i < this.chestContents.length; ++i)
         {
-            if (this.cargoItems[var3] != null)
+            if (this.chestContents[i] != null)
             {
-                final NBTTagCompound var4 = new NBTTagCompound();
-                var4.setByte("Slot", (byte)var3);
-                this.cargoItems[var3].writeToNBT(var4);
-                var2.appendTag(var4);
+                NBTTagCompound nbttagcompound1 = new NBTTagCompound();
+                nbttagcompound1.setByte("Slot", (byte)i);
+                this.chestContents[i].writeToNBT(nbttagcompound1);
+                nbttaglist.appendTag(nbttagcompound1);
             }
         }
-
-        var1.setTag("Items", var2);
+        
+        nbttagcompound.setTag("Items", nbttaglist);
+    }
+	
+    public int getSizeInventory()
+    {
+        return this.chestContents.length;
+    }
+    
+    public ItemStack getStackInSlot(int par1)
+    {
+        return this.chestContents[par1];
     }
 
-    @Override
-	public int getSizeInventory()
+    public ItemStack decrStackSize(int par1, int par2)
     {
-        return 27;
-    }
-
-    @Override
-	public ItemStack getStackInSlot(int var1)
-    {
-        return this.cargoItems[var1];
-    }
-
-    @Override
-	public ItemStack decrStackSize(int var1, int var2)
-    {
-        if (this.cargoItems[var1] != null)
+        if (this.chestContents[par1] != null)
         {
-            ItemStack var3;
+            ItemStack itemstack;
 
-            if (this.cargoItems[var1].stackSize <= var2)
+            if (this.chestContents[par1].stackSize <= par2)
             {
-                var3 = this.cargoItems[var1];
-                this.cargoItems[var1] = null;
-                return var3;
+                itemstack = this.chestContents[par1];
+                this.chestContents[par1] = null;
+                this.onInventoryChanged();
+                return itemstack;
             }
             else
             {
-                var3 = this.cargoItems[var1].splitStack(var2);
+                itemstack = this.chestContents[par1].splitStack(par2);
 
-                if (this.cargoItems[var1].stackSize == 0)
+                if (this.chestContents[par1].stackSize == 0)
                 {
-                    this.cargoItems[var1] = null;
+                    this.chestContents[par1] = null;
                 }
 
-                return var3;
+                this.onInventoryChanged();
+                return itemstack;
             }
         }
         else
@@ -433,14 +474,13 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
         }
     }
 
-    @Override
-	public ItemStack getStackInSlotOnClosing(int var1)
+    public ItemStack getStackInSlotOnClosing(int par1)
     {
-        if (this.cargoItems[var1] != null)
+        if (this.chestContents[par1] != null)
         {
-            final ItemStack var2 = this.cargoItems[var1];
-            this.cargoItems[var1] = null;
-            return var2;
+            ItemStack itemstack = this.chestContents[par1];
+            this.chestContents[par1] = null;
+            return itemstack;
         }
         else
         {
@@ -448,96 +488,137 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
         }
     }
 
-    @Override
-	public void setInventorySlotContents(int var1, ItemStack var2)
+    public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
     {
-        this.cargoItems[var1] = var2;
+        this.chestContents[par1] = par2ItemStack;
 
-        if (var2 != null && var2.stackSize > this.getInventoryStackLimit())
+        if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit())
         {
-            var2.stackSize = this.getInventoryStackLimit();
+            par2ItemStack.stackSize = this.getInventoryStackLimit();
         }
+
+        this.onInventoryChanged();
     }
 
-    @Override
-	public String getInvName()
+    public String getInvName()
     {
-        return "Lander";
+        return "container.chest";
     }
 
-    @Override
-	public int getInventoryStackLimit()
+    public boolean isInvNameLocalized()
+    {
+        return false;
+    }
+
+    public int getInventoryStackLimit()
     {
         return 64;
     }
 
-    @Override
-	public void onInventoryChanged() {}
+    public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
+    {
+        return par1EntityPlayer.getDistanceSq((double)this.posX + 0.5D, (double)this.posY + 0.5D, (double)this.posZ + 0.5D) <= 64.0D;
+    }
 
-    @Override
-	public boolean isUseableByPlayer(EntityPlayer var1)
+
+    public void openChest()
+    {
+        if (this.numUsingPlayers < 0)
+        {
+            this.numUsingPlayers = 0;
+        }
+
+        ++this.numUsingPlayers;
+    }
+
+    public void closeChest()
+    {
+        --this.numUsingPlayers;
+    }
+
+    public boolean isStackValidForSlot(int par1, ItemStack par2ItemStack)
     {
         return true;
     }
 
-    @Override
-	public void openChest() {}
-
-    @Override
-	public void closeChest() {}
+	@Override
+	public void onInventoryChanged() 
+	{
+	}
 
     @Override
 	public boolean interact(EntityPlayer var1)
     {
-        var1.inventory.getCurrentItem();
-
         if (this.worldObj.isRemote)
         {
             return true;
         }
-        else if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayer && this.riddenByEntity != var1)
+        else if (this.riddenByEntity == null && this.isCollidedVertically)
         {
-            return true;
-        }
-        else if (this.onGround)
-        {
-            var1.mountEntity(this);
+        	var1.displayGUIChest(this);
             return true;
         }
         else
         {
-        	return true;
+            var1.mountEntity(this);
+            return true;
         }
     }
 
 	@Override
 	public boolean pressKey(int key)
 	{
-    	if(this.worldObj.isRemote)
-    	{
-    		PacketDispatcher.sendPacketToServer(GCCorePacketControllableEntity.buildKeyPacket(key));
-    		return true;
-    	}
+//    	if(this.worldObj.isRemote || key == 5)
+//    	{
+//    		PacketDispatcher.sendPacketToServer(GCCorePacketControllableEntity.buildKeyPacket(key));
+//    		return true;
+//    	}
 		switch(key)
 		{
 			case 0 : //Accelerate
 			{
-				this.rotationPitch -= 0.5F * this.turnFactor;
+				if (!this.onGround)
+				{
+					this.rotationPitch -= 0.5F * this.turnFactor;
+				}
+				
 				return true;
 			}
 			case 1 : //Deccelerate
 			{
-				this.rotationPitch += 0.5F * this.turnFactor;
+				if (!this.onGround)
+				{
+					this.rotationPitch += 0.5F * this.turnFactor;
+				}
+				
 				return true;
 			}
 			case 2 : //Left
 			{
-				this.rotationYaw -= 0.5F * this.turnFactor;
+				if (!this.onGround)
+				{
+					this.rotationYaw -= 0.5F * this.turnFactor;
+				}
+				
 				return true;
 			}
 			case 3 : //Right
 			{
-				this.rotationYaw += 0.5F * this.turnFactor;
+				if (!this.onGround)
+				{
+					this.rotationYaw += 0.5F * this.turnFactor;
+				}
+				
+				return true;
+			}
+			case 4 : //Space
+			{
+				this.speed += 0.05F;
+				return true;
+			}
+			case 5 : //LShift
+			{
+				this.speed -= 0.005F;
 				return true;
 			}
 		}
@@ -545,15 +626,26 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
 		return false;
 	}
 
-	@Override
-	public boolean isInvNameLocalized() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+//	@Override
+//	public void writeSpawnData(ByteArrayDataOutput data)
+//	{
+//		this.moduleChest = new GCCoreEntityLanderChest(this);
+//        this.worldObj.spawnEntityInWorld(this.moduleChest);
+//        
+//		data.writeInt(moduleChest.entityId);
+//	}
+//
+//	@Override
+//	public void readSpawnData(ByteArrayDataInput data) 
+//	{
+//		FMLLog.info("done1");
+//		if (this.worldObj instanceof WorldClient)
+//		{
+//			FMLLog.info("done");
+//			int entityID = data.readInt();
+//			this.moduleChest = new GCCoreEntityLanderChest(this);
+//			moduleChest.entityId = entityID;
+//	        ((WorldClient)this.worldObj).addEntityToWorld(entityID, moduleChest);
+//		}
+//	}
 }

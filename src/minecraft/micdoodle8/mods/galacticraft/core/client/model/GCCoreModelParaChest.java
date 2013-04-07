@@ -49,18 +49,6 @@ public class GCCoreModelParaChest extends ModelChest
 
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture("/micdoodle8/mods/galacticraft/core/client/entities/parachute/gray.png");
 
-    	int i;
-
-    	for (i = 0; i < this.parachute.length; i++)
-    	{
-    		this.parachute[i].render(0.0625F);
-    	}
-
-    	for (i = 0; i < this.parachuteStrings.length; i++)
-    	{
-    		this.parachuteStrings[i].render(0.0625F);
-    	}
-
     	this.chestLid.rotateAngleX = (float) Math.PI;
     	this.chestBelow.rotateAngleX = (float) Math.PI;
     	this.chestKnob.rotateAngleX = (float) Math.PI;
@@ -74,6 +62,33 @@ public class GCCoreModelParaChest extends ModelChest
         this.chestBelow.rotationPointX = 2.0F;
         this.chestBelow.rotationPointY = 8.0F;
         this.chestBelow.rotationPointZ = 8.0F;
+
+//    	for (i = 0; i < this.parachute.length; i++)
+//    	{
+//    		this.parachute[i].rotateAngleY = (float) (180 * (Math.PI / 180F));
+//    	}
+//
+//    	for (i = 0; i < this.parachuteStrings.length; i++)
+//    	{
+//    		this.parachuteStrings[i].rotateAngleY = (float) (180 * (Math.PI / 180F));
+//    	}
+    }
+	
+	public void renderParachute()
+	{
+		FMLClientHandler.instance().getClient().renderEngine.bindTexture("/micdoodle8/mods/galacticraft/core/client/entities/parachute/gray.png");
+		
+    	int i;
+
+    	for (i = 0; i < this.parachute.length; i++)
+    	{
+    		this.parachute[i].render(0.0625F);
+    	}
+
+    	for (i = 0; i < this.parachuteStrings.length; i++)
+    	{
+    		this.parachuteStrings[i].render(0.0625F);
+    	}
 
     	this.parachute[0].rotateAngleY = (float) (0 * (Math.PI / 180F));
     	this.parachute[2].rotateAngleY = (float) -(0 * (Math.PI / 180F));
@@ -101,15 +116,5 @@ public class GCCoreModelParaChest extends ModelChest
     	this.parachuteStrings[3].rotateAngleZ = (float) -((155F + 180F) * (Math.PI / 180F));
     	this.parachuteStrings[3].rotateAngleX = (float) -(23F * (Math.PI / 180F));
     	this.parachuteStrings[3].setRotationPoint(9.0F, 3.0F, 2.0F);
-
-//    	for (i = 0; i < this.parachute.length; i++)
-//    	{
-//    		this.parachute[i].rotateAngleY = (float) (180 * (Math.PI / 180F));
-//    	}
-//
-//    	for (i = 0; i < this.parachuteStrings.length; i++)
-//    	{
-//    		this.parachuteStrings[i].rotateAngleY = (float) (180 * (Math.PI / 180F));
-//    	}
-    }
+	}
 }
