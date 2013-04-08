@@ -28,9 +28,9 @@ public class GCCoreItemFuel extends Item
         this.iconIndex = par1IconRegister.registerIcon("galacticraftcore:fuel_flow");
     }
 
-	@Override
-    public CreativeTabs getCreativeTab()
-    {
-        return GalacticraftCore.galacticraftTab;
-    }
+//	@Override
+//    public CreativeTabs getCreativeTab()
+//    {
+//        return GalacticraftCore.galacticraftTab;
+//    }
 }
