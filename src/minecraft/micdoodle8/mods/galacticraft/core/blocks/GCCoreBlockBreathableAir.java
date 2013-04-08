@@ -148,7 +148,7 @@ public class GCCoreBlockBreathableAir extends Block
 
     private void spread(World var1, int var2, int var3, int var4)
     {
-    	OxygenPressureProtocol var5 = new OxygenPressureProtocol(var1);
-        var5.decompress(var1, var2, var3, var4);
+    	OxygenPressureProtocol var5 = new OxygenPressureProtocol();
+        var5.unSeal(var1, var2, var3, var4);
     }
 }

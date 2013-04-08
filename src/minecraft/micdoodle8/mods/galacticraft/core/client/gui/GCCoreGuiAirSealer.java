@@ -42,8 +42,6 @@ public class GCCoreGuiAirSealer extends GuiContainer
     	{
     	case 0:
 			PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 17, new Object[] {this.distributorInv.xCoord, this.distributorInv.yCoord, this.distributorInv.zCoord}));
-//			this.distributorInv.disabled = false;
-//    		this.initGui();
 			break;
     	}
     }

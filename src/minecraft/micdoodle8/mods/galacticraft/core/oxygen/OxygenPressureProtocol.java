@@ -1,32 +1,72 @@
 package micdoodle8.mods.galacticraft.core.oxygen;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import micdoodle8.mods.galacticraft.API.IPartialSealedBlock;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.core.vector.Vector3;
-import cpw.mods.fml.common.FMLLog;
 
 public class OxygenPressureProtocol
 {
     private LinkedList<Vector3> checked = new LinkedList<Vector3>();
     private boolean airtight;
+    private static ArrayList<Integer> vanillaPermeableBlocks = new ArrayList<Integer>();
 
-    public OxygenPressureProtocol(World var1) {}
+    static
+    {
+    	vanillaPermeableBlocks.add(Block.doorSteel.blockID);
+    	vanillaPermeableBlocks.add(Block.doorWood.blockID);
+    	vanillaPermeableBlocks.add(Block.torchWood.blockID);
+    	vanillaPermeableBlocks.add(Block.torchRedstoneActive.blockID);
+    	vanillaPermeableBlocks.add(Block.torchRedstoneIdle.blockID);
+    	vanillaPermeableBlocks.add(Block.bed.blockID);
+    	vanillaPermeableBlocks.add(Block.blockSnow.blockID);
+    	vanillaPermeableBlocks.add(Block.anvil.blockID);
+    	vanillaPermeableBlocks.add(Block.fence.blockID);
+    	vanillaPermeableBlocks.add(Block.fenceGate.blockID);
+    	vanillaPermeableBlocks.add(Block.fenceIron.blockID);
+    	vanillaPermeableBlocks.add(Block.crops.blockID);
+    	vanillaPermeableBlocks.add(Block.stoneSingleSlab.blockID);
+    	vanillaPermeableBlocks.add(Block.woodSingleSlab.blockID);
+    	vanillaPermeableBlocks.add(Block.ladder.blockID);
+    	vanillaPermeableBlocks.add(Block.flowerPot.blockID);
+    	vanillaPermeableBlocks.add(Block.tallGrass.blockID);
+    	vanillaPermeableBlocks.add(Block.melonStem.blockID);
+    	vanillaPermeableBlocks.add(Block.pressurePlateGold.blockID);
+    	vanillaPermeableBlocks.add(Block.pressurePlateIron.blockID);
+    	vanillaPermeableBlocks.add(Block.pressurePlatePlanks.blockID);
+    	vanillaPermeableBlocks.add(Block.pressurePlateStone.blockID);
+    	vanillaPermeableBlocks.add(Block.woodenButton.blockID);
+    	vanillaPermeableBlocks.add(Block.stoneButton.blockID);
+    	vanillaPermeableBlocks.add(Block.waterlily.blockID);
+    	vanillaPermeableBlocks.add(Block.sapling.blockID);
+    	vanillaPermeableBlocks.add(Block.redstoneComparatorActive.blockID);
+    	vanillaPermeableBlocks.add(Block.redstoneComparatorIdle.blockID);
+    	vanillaPermeableBlocks.add(Block.redstoneRepeaterActive.blockID);
+    	vanillaPermeableBlocks.add(Block.redstoneRepeaterIdle.blockID);
+    	vanillaPermeableBlocks.add(Block.daylightSensor.blockID);
+    	vanillaPermeableBlocks.add(Block.redstoneWire.blockID);
+    	vanillaPermeableBlocks.add(Block.stairsStoneBrick.blockID);
+    	vanillaPermeableBlocks.add(Block.stairsBrick.blockID);
+    	vanillaPermeableBlocks.add(Block.stairsNetherBrick.blockID);
+    	vanillaPermeableBlocks.add(Block.stairsCobblestone.blockID);
+    	vanillaPermeableBlocks.add(Block.stairsWoodOak.blockID);
+    }
 
     private void loopThrough(World var1, int var2, int var3, int var4, int var5)
     {
         this.checked.add(new Vector3(var2, var3, var4));
 
-        if (this.isTouchingAir(var1, var2, var3, var4) && this.airtight)
+        if (this.touchingUnsealedBlock(var1, var2, var3, var4) && this.airtight)
         {
             if (var5 > 0)
             {
-                this.nextNodes(var1, var2, var3, var4, var5);
+                this.nextVec(var1, var2, var3, var4, var5);
             }
             else if (!this.getIsSealed(var1, var2, var3, var4))
             {
@@ -35,17 +75,17 @@ public class OxygenPressureProtocol
         }
     }
 
-    private void check(World var1, Vector3 vec)
+    private void checkAtVec(World var1, Vector3 vec)
     {
         this.checked.add(vec);
 
-        if (this.isTouchingAirD(var1, vec.intX(), vec.intY(), vec.intZ()))
+        if (this.isTouchingBreathableAir(var1, vec.intX(), vec.intY(), vec.intZ()))
         {
-            this.nextNodesD(var1, vec.intX(), vec.intY(), vec.intZ());
+            this.nextVecD(var1, vec.intX(), vec.intY(), vec.intZ());
         }
     }
 
-    private void nextNodes(World var1, int var2, int var3, int var4, int var5)
+    private void nextVec(World var1, int var2, int var3, int var4, int var5)
     {
     	for (ForgeDirection dir : ForgeDirection.values())
     	{
@@ -54,7 +94,7 @@ public class OxygenPressureProtocol
     			Vector3 vec = new Vector3(var2, var3, var4);
     			vec = vec.add(new Vector3(dir));
     			
-    			if (this.isPermeable(var1, vec) && !this.isVisited(vec))
+    			if (this.canBlockPass(var1, vec) && !this.isVisited(vec))
     			{
     				this.loopThrough(var1, vec.intX(), vec.intY(), vec.intZ(), var5 - 1);
     			}
@@ -62,7 +102,7 @@ public class OxygenPressureProtocol
     	}
     }
 
-    private void nextNodesD(World var1, int var2, int var3, int var4)
+    private void nextVecD(World var1, int var2, int var3, int var4)
     {
     	for (ForgeDirection dir : ForgeDirection.values())
     	{
@@ -71,18 +111,18 @@ public class OxygenPressureProtocol
     			Vector3 vec = new Vector3(var2, var3, var4);
     			vec = vec.add(new Vector3(dir));
     			
-    			if (this.isPermeableD(var1, vec.intX(), vec.intY(), vec.intZ()) && !this.isVisited(vec))
+    			if (this.isBreathableAir(var1, vec.intX(), vec.intY(), vec.intZ()) && !this.isVisited(vec))
     			{
-    				this.check(var1, vec);
+    				this.checkAtVec(var1, vec);
     			}
     		}
     	}
     }
 
-    public boolean scrub(World var1, int var2, int var3, int var4, int var5)
+    public boolean seal(World var1, int var2, int var3, int var4, int var5)
     {
         this.airtight = true;
-        this.nextNodes(var1, var2, var3, var4, var5);
+        this.nextVec(var1, var2, var3, var4, var5);
 
         if (this.airtight)
         {
@@ -126,13 +166,13 @@ public class OxygenPressureProtocol
         return this.airtight;
     }
 
-    public boolean checkCompression(World var1, int var2, int var3, int var4, int var5)
+    public boolean checkSeal(World var1, int var2, int var3, int var4, int var5)
     {
         this.airtight = true;
 
         if (var1.getBlockMetadata(var2, var3, var4) != 100)
         {
-            this.nextNodes(var1, var2, var3, var4, var5);
+            this.nextVec(var1, var2, var3, var4, var5);
         }
 
         if (this.airtight)
@@ -154,9 +194,9 @@ public class OxygenPressureProtocol
         return this.airtight;
     }
 
-    public void decompress(World var1, int var2, int var3, int var4)
+    public void unSeal(World var1, int var2, int var3, int var4)
     {
-        this.nextNodesD(var1, var2, var3, var4);
+        this.nextVecD(var1, var2, var3, var4);
         Iterator var5 = this.checked.iterator();
         Vector3 var6;
 
@@ -164,11 +204,11 @@ public class OxygenPressureProtocol
         {
             var6 = (Vector3)var5.next();
 
-            if (isPermeable(var1, var6.intX(), var6.intY(), var6.intZ()))
+            if (canBlockPass(var1, var6.intX(), var6.intY(), var6.intZ()))
             {
                 int var9 = var1.getBlockId(var6.intX(), var6.intY(), var6.intZ());
 
-//                Block.blocksList[var1.getBlockId(var6.intX(), var6.intY(), var6.intZ())].dropBlockAsItem(var1, var6.intX(), var6.intY(), var6.intZ(), var1.getBlockMetadata(var6.intX(), var6.intY(), var6.intZ()), 0);
+                Block.blocksList[var1.getBlockId(var6.intX(), var6.intY(), var6.intZ())].dropBlockAsItem(var1, var6.intX(), var6.intY(), var6.intZ(), var1.getBlockMetadata(var6.intX(), var6.intY(), var6.intZ()), 0);
                 var1.setBlock(var6.intX(), var6.intY(), var6.intZ(), 0, 0, 2);
             }
         }
@@ -200,35 +240,34 @@ public class OxygenPressureProtocol
         this.checked = new LinkedList();
     }
 
-    public static boolean isPermeable(World var0, int var1, int var2, int var3)
+    public boolean canBlockPass(World var0, int var1, int var2, int var3)
     {
-    	return var0.getBlockId(var1, var3, var3) == 0 || var0.getBlockId(var1, var3, var3) == GCCoreBlocks.breatheableAir.blockID;
-//        return var0.getBlockId(var1, var2, var3) == Block.pressurePlateStone.blockID || var0.getBlockId(var1, var2, var3) == Block.fenceIron.blockID || var0.getBlockId(var1, var2, var3) == Block.fenceIron.blockID || var0.getBlockId(var1, var2, var3) == Block.fenceIron.blockID || var0.getBlockId(var1, var2, var3) == Block.fenceIron.blockID || var0.getBlockId(var1, var2, var3) == Block.fenceIron.blockID || var0.getBlockId(var1, var2, var3) == Block.doorSteel.blockID && var0.getBlockMetadata(var1, var2, var3) == 4 || var0.getBlockId(var1, var2, var3) == Block.doorSteel.blockID && var0.getBlockMetadata(var1, var2, var3) == 5 || var0.getBlockId(var1, var2, var3) == Block.doorSteel.blockID && var0.getBlockMetadata(var1, var2, var3) == 6 || var0.getBlockId(var1, var2, var3) == Block.doorSteel.blockID && var0.getBlockMetadata(var1, var2, var3) == 7 || var0.getBlockId(var1, var2, var3) == Block.doorSteel.blockID && var0.getBlockMetadata(var1, var2, var3) == 12 || var0.getBlockId(var1, var2, var3) != 0 && var0.getBlockMaterial(var1, var2, var3) != Material.rock && var0.getBlockMaterial(var1, var2, var3) != Material.iron && var0.getBlockMaterial(var1, var2, var3) != Material.glass && var0.getBlockMaterial(var1, var2, var3) != Material.ice;
+    	Block block = Block.blocksList[var0.getBlockId(var1, var2, var3)];
+
+    	return block == null
+    			|| block.blockID == 0
+    			|| block.blockID == GCCoreBlocks.breatheableAir.blockID
+    			|| (!block.isOpaqueCube() && !(block instanceof IPartialSealedBlock) && this.vanillaPermeableBlocks.contains(block.blockID))
+    			|| (!block.isOpaqueCube() && block instanceof IPartialSealedBlock && !((IPartialSealedBlock) block).isSealed(var0, var1, var2, var3));
     }
 
-    public static boolean isPermeable(World var0, Vector3 vec)
+    public boolean canBlockPass(World var0, Vector3 vec)
     {
-    	return vec.getBlockID(var0) == 0 || vec.getBlockID(var0) == GCCoreBlocks.breatheableAir.blockID;
-//        return vec.getBlockID(var0) == Block.pressurePlateStone.blockID 
-//        		|| vec.getBlockID(var0) == Block.fenceIron.blockID 
-//        		|| vec.getBlockID(var0) == Block.fenceIron.blockID 
-//        		|| vec.getBlockID(var0) == Block.fenceIron.blockID 
-//        		|| vec.getBlockID(var0) == Block.fenceIron.blockID 
-//        		|| vec.getBlockID(var0) == Block.fenceIron.blockID 
-//        		|| vec.getBlockID(var0) == Block.doorSteel.blockID && vec.getBlockMetadata(var0) == 4 
-//        		|| vec.getBlockID(var0) == Block.doorSteel.blockID && vec.getBlockMetadata(var0) == 5 
-//        		|| vec.getBlockID(var0) == Block.doorSteel.blockID && vec.getBlockMetadata(var0) == 6 
-//        		|| vec.getBlockID(var0) == Block.doorSteel.blockID && vec.getBlockMetadata(var0) == 7 
-//        		|| vec.getBlockID(var0) == Block.doorSteel.blockID && vec.getBlockMetadata(var0) == 12 
-//        		|| vec.getBlockID(var0) == 0 && var0.getBlockMaterial(vec.intX(), vec.intY(), vec.intZ()) != Material.rock && var0.getBlockMaterial(vec.intX(), vec.intY(), vec.intZ()) != Material.iron && var0.getBlockMaterial(vec.intX(), vec.intY(), vec.intZ()) != Material.glass && var0.getBlockMaterial(vec.intX(), vec.intY(), vec.intZ()) != Material.ice;
+    	Block block = Block.blocksList[vec.getBlockID(var0)];
+    	
+    	return block == null
+    			|| block.blockID == 0 
+    			|| block.blockID == GCCoreBlocks.breatheableAir.blockID
+    			|| (!block.isOpaqueCube() && !(block instanceof IPartialSealedBlock) && this.vanillaPermeableBlocks.contains(block.blockID))
+    			|| (!block.isOpaqueCube() && block instanceof IPartialSealedBlock && !((IPartialSealedBlock) block).isSealed(var0, vec.intX(), vec.intY(), vec.intZ()));
     }
 
-    public static boolean isPermeableD(World var0, int var1, int var2, int var3)
+    public static boolean isBreathableAir(World var0, int var1, int var2, int var3)
     {
         return var0.getBlockId(var1, var2, var3) == GCCoreBlocks.breatheableAir.blockID;
     }
 
-    private boolean isTouchingAir(World var1, int var2, int var3, int var4)
+    private boolean touchingUnsealedBlock(World var1, int var2, int var3, int var4)
     {
     	for (ForgeDirection dir : ForgeDirection.values())
     	{
@@ -237,7 +276,7 @@ public class OxygenPressureProtocol
     			Vector3 vec = new Vector3(var2, var3, var4);
     			vec = vec.add(new Vector3(dir));
     			
-    			if (this.isPermeable(var1, vec.intX(), vec.intY(), vec.intZ()) && !this.isVisited(vec.intX(), vec.intY(), vec.intZ()))
+    			if (this.canBlockPass(var1, vec.intX(), vec.intY(), vec.intZ()) && !this.isVisited(vec))
     			{
     				return true;
     			}
@@ -249,28 +288,40 @@ public class OxygenPressureProtocol
 
     private boolean getIsSealed(World var1, int var2, int var3, int var4)
     {
-        return (var1.getBlockId(var2 + 1, var3, var4) != 0 
-        		|| this.isVisited(var2 + 1, var3, var4)) && (var1.getBlockId(var2 - 1, var3, var4) != 0
-        		|| this.isVisited(var2 - 1, var3, var4)) && (var1.getBlockId(var2, var3 + 1, var4) != 0
-        		|| this.isVisited(var2, var3 + 1, var4)) && (var1.getBlockId(var2, var3 - 1, var4) != 0
-        		|| this.isVisited(var2, var3 - 1, var4)) && (var1.getBlockId(var2, var3, var4 + 1) != 0
-        		|| this.isVisited(var2, var3, var4 + 1)) && (var1.getBlockId(var2, var3, var4 - 1) != 0
-        		|| this.isVisited(var2, var3, var4 - 1));
+    	for (ForgeDirection dir : ForgeDirection.values())
+    	{
+    		if (dir != ForgeDirection.UNKNOWN)
+    		{
+    			Vector3 vec = new Vector3(var2, var3, var4);
+    			vec = vec.add(new Vector3(dir));
+    			
+    			if (vec.getBlockID(var1) == 0 && !this.isVisited(vec))
+    			{
+    				return false;
+    			}
+    		}
+    	}
+    	
+    	return true;
     }
 
-    private boolean isTouchingAirD(World var1, int var2, int var3, int var4)
+    private boolean isTouchingBreathableAir(World var1, int var2, int var3, int var4)
     {
-        return isPermeableD(var1, var2 + 1, var3, var4) && !this.isVisited(var2 + 1, var3, var4) 
-        		|| isPermeableD(var1, var2 - 1, var3, var4) && !this.isVisited(var2 - 1, var3, var4) 
-        		|| isPermeableD(var1, var2, var3 + 1, var4) && !this.isVisited(var2, var3 + 1, var4) 
-        		|| isPermeableD(var1, var2, var3 - 1, var4) && !this.isVisited(var2, var3 - 1, var4) 
-        		|| isPermeableD(var1, var2, var3, var4 + 1) && !this.isVisited(var2, var3, var4 + 1) 
-        		|| isPermeableD(var1, var2, var3, var4 - 1) && !this.isVisited(var2, var3, var4 - 1);
-    }
-
-    private boolean isVisited(int var1, int var2, int var3)
-    {
-        return this.isVisited(new Vector3(var1, var2, var3));
+    	for (ForgeDirection dir : ForgeDirection.values())
+    	{
+    		if (dir != ForgeDirection.UNKNOWN)
+    		{
+    			Vector3 vec = new Vector3(var2, var3, var4);
+    			vec = vec.add(new Vector3(dir));
+    			
+    			if (this.isBreathableAir(var1, vec.intX(), vec.intY(), vec.intZ()) && !this.isVisited(vec))
+    			{
+    				return true;
+    			}
+    		}
+    	}
+    	
+    	return false;
     }
 
     private boolean isVisited(Vector3 var1)

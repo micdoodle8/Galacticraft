@@ -6,9 +6,8 @@ import ic2.api.energy.tile.IEnergySink;
 import mekanism.api.EnumGas;
 import mekanism.api.IGasAcceptor;
 import mekanism.api.ITubeConnection;
+import micdoodle8.mods.galacticraft.API.IDisableableMachine;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityOxygenBubble;
 import micdoodle8.mods.galacticraft.core.oxygen.OxygenPressureProtocol;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -34,15 +33,13 @@ import universalelectricity.prefab.tile.TileEntityElectricityRunnable;
 
 import com.google.common.io.ByteArrayDataInput;
 
-import cpw.mods.fml.common.FMLLog;
-
 /**
  * Copyright 2012-2013, micdoodle8
  *
  *  All rights reserved.
  *
  */
-public class GCCoreTileEntityOxygenSealer extends TileEntityElectricityRunnable implements IInventory, IPacketReceiver, IGasAcceptor, ITubeConnection, ISidedInventory, IEnergySink
+public class GCCoreTileEntityOxygenSealer extends TileEntityElectricityRunnable implements IInventory, IPacketReceiver, IGasAcceptor, ITubeConnection, ISidedInventory, IEnergySink, IDisableableMachine
 {
 	public int power;
 	public int lastPower;
@@ -431,19 +428,31 @@ public class GCCoreTileEntityOxygenSealer extends TileEntityElectricityRunnable 
 
     public boolean isOn(World var1, int var2, int var3, int var4)
     {
-    	OxygenPressureProtocol var5 = new OxygenPressureProtocol(var1);
-        return var5.checkCompression(var1, var2, var3, var4, 3);
+    	OxygenPressureProtocol var5 = new OxygenPressureProtocol();
+        return var5.checkSeal(var1, var2, var3, var4, 3);
     }
 
     public void clean(World var1, int var2, int var3, int var4, int var5)
     {
-    	OxygenPressureProtocol var6 = new OxygenPressureProtocol(var1);
-        var6.scrub(var1, var2, var3, var4, var5);
+    	OxygenPressureProtocol var6 = new OxygenPressureProtocol();
+        var6.seal(var1, var2, var3, var4, var5);
     }
 
     private void spread(World var1, int var2, int var3, int var4)
     {
-    	OxygenPressureProtocol var5 = new OxygenPressureProtocol(var1);
-        var5.decompress(var1, var2, var3, var4);
+    	OxygenPressureProtocol var5 = new OxygenPressureProtocol();
+        var5.unSeal(var1, var2, var3, var4);
     }
+
+	@Override
+	public void setDisabled(boolean disabled) 
+	{
+		this.disabled = disabled;
+	}
+
+	@Override
+	public boolean getDisabled() 
+	{
+		return this.disabled;
+	}
 }
