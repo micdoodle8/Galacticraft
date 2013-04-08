@@ -46,35 +46,64 @@ public class GCCoreBlockRendererMeteor implements ISimpleBlockRenderingHandler
 
     public static void renderInvNormalBlock(RenderBlocks var0, Block var1, int var2)
     {
-        final Tessellator var3 = Tessellator.instance;
-        GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        FMLClientHandler.instance().getClient().renderEngine.bindTexture("/micdoodle8/mods/galacticraft/core/client/entities/meteor.png");
-        var0.setRenderBounds(0.15F, 0.15F, 0.15F, 0.85F, 0.85F, 0.85F);
-        var3.startDrawingQuads();
-        var3.setNormal(0.0F, -0.8F, 0.0F);
-        var0.renderBottomFace(var1, 0.0D, 0.0D, 0.0D, var1.getBlockTextureFromSideAndMetadata(0, var2));
-        var3.draw();
-        var3.startDrawingQuads();
-        var3.setNormal(0.0F, 0.8F, 0.0F);
-        var0.renderTopFace(var1, 0.0D, 0.0D, 0.0D, var1.getBlockTextureFromSideAndMetadata(1, var2));
-        var3.draw();
-        var3.startDrawingQuads();
-        var3.setNormal(0.0F, 0.0F, -0.8F);
-        var0.renderEastFace(var1, 0.0D, 0.0D, 0.0D, var1.getBlockTextureFromSideAndMetadata(2, var2));
-        var3.draw();
-        var3.startDrawingQuads();
-        var3.setNormal(0.0F, 0.0F, 0.8F);
-        var0.renderWestFace(var1, 0.0D, 0.0D, 0.0D, var1.getBlockTextureFromSideAndMetadata(3, var2));
-        var3.draw();
-        var3.startDrawingQuads();
-        var3.setNormal(-0.8F, 0.0F, 0.0F);
-        var0.renderNorthFace(var1, 0.0D, 0.0D, 0.0D, var1.getBlockTextureFromSideAndMetadata(4, var2));
-        var3.draw();
-        var3.startDrawingQuads();
-        var3.setNormal(0.8F, 0.0F, 0.0F);
-        var0.renderSouthFace(var1, 0.0D, 0.0D, 0.0D, var1.getBlockTextureFromSideAndMetadata(5, var2));
-        var3.draw();
+    	var0.setRenderBounds(0.2F, 0.2F, 0.2F, 0.8F, 0.8F, 0.8F);
+        renderStandardBlock(var0, var1, var2);
+
+        var0.setRenderBounds(0.52F, 0.85F, 0.4F, 0.68F, 0.88F, 0.6F);
+        renderStandardBlock(var0, var1, var2);
+
+        var0.setRenderBounds(0.25F, 0.8F, 0.25F, 0.75F, 0.85F, 0.75F);
+        renderStandardBlock(var0, var1, var2);
+
+        var0.setRenderBounds(0.25F, 0.15F, 0.25F, 0.75F, 0.2F, 0.75F);
+        renderStandardBlock(var0, var1, var2);
+
+        var0.setRenderBounds(0.15F, 0.3F, 0.25F, 0.2F, 0.7F, 0.75F);
+        renderStandardBlock(var0, var1, var2);
+
+        var0.setRenderBounds(0.8F, 0.3F, 0.25F, 0.85F, 0.7F, 0.75F);
+        renderStandardBlock(var0, var1, var2);
+
+        var0.setRenderBounds(0.25F, 0.3F, 0.15F, 0.75F, 0.7F, 0.2F);
+        renderStandardBlock(var0, var1, var2);
+
+        var0.setRenderBounds(0.25F, 0.3F, 0.8F, 0.75F, 0.7F, 0.85F);
+        renderStandardBlock(var0, var1, var2);
+
+        var0.clearOverrideBlockTexture();
+    }
+
+    private static void renderStandardBlock(RenderBlocks var0, Block var1, int var2)
+    {
+    	GL11.glPushMatrix();
+    	final Tessellator var3 = Tessellator.instance;
+      	GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+      	GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+      	var3.startDrawingQuads();
+      	var3.setNormal(0.0F, -1.0F, 0.0F);
+      	var0.renderBottomFace(var1, 0.0D, 0.0D, 0.0D, var1.getBlockTextureFromSideAndMetadata(0, var2));
+      	var3.draw();
+      	var3.startDrawingQuads();
+      	var3.setNormal(0.0F, 1.0F, 0.0F);
+      	var0.renderTopFace(var1, 0.0D, 0.0D, 0.0D, var1.getBlockTextureFromSideAndMetadata(1, var2));
+      	var3.draw();
+      	var3.startDrawingQuads();
+      	var3.setNormal(0.0F, 0.0F, -1.0F);
+      	var0.renderEastFace(var1, 0.0D, 0.0D, 0.0D, var1.getBlockTextureFromSideAndMetadata(2, var2));
+      	var3.draw();
+      	var3.startDrawingQuads();
+      	var3.setNormal(0.0F, 0.0F, 1.0F);
+      	var0.renderWestFace(var1, 0.0D, 0.0D, 0.0D, var1.getBlockTextureFromSideAndMetadata(3, var2));
+      	var3.draw();
+      	var3.startDrawingQuads();
+      	var3.setNormal(-1.0F, 0.0F, 0.0F);
+      	var0.renderNorthFace(var1, 0.0D, 0.0D, 0.0D, var1.getBlockTextureFromSideAndMetadata(4, var2));
+      	var3.draw();
+      	var3.startDrawingQuads();
+      	var3.setNormal(1.0F, 0.0F, 0.0F);
+      	var0.renderSouthFace(var1, 0.0D, 0.0D, 0.0D, var1.getBlockTextureFromSideAndMetadata(5, var2));
+      	var3.draw();
+      	GL11.glPopMatrix();
     }
 
 	@Override
