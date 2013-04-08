@@ -45,6 +45,7 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 public class WorldUtil
 {
@@ -894,6 +895,11 @@ public class WorldUtil
             }
 
             var1.mountEntity(var6);
+        }
+        
+        if (var1 instanceof EntityPlayer)
+        {
+            GameRegistry.onPlayerChangedDimension((EntityPlayer) var1);
         }
 
         return var1;
