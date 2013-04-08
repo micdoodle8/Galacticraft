@@ -56,6 +56,8 @@ public class OxygenPressureProtocol
     	vanillaPermeableBlocks.add(Block.stairsNetherBrick.blockID);
     	vanillaPermeableBlocks.add(Block.stairsCobblestone.blockID);
     	vanillaPermeableBlocks.add(Block.stairsWoodOak.blockID);
+    	vanillaPermeableBlocks.add(Block.waterStill.blockID);
+    	vanillaPermeableBlocks.add(Block.waterMoving.blockID);
     }
 
     private void loopThrough(World var1, int var2, int var3, int var4, int var5)
