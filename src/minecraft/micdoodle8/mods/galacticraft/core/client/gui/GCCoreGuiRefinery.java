@@ -1,7 +1,11 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
+import mekanism.api.EnumColor;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerRefinery;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityRefinery;
+import micdoodle8.mods.galacticraft.core.util.PacketUtil;
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.StatCollector;
@@ -10,6 +14,7 @@ import org.lwjgl.opengl.GL11;
 
 import universalelectricity.core.electricity.ElectricityDisplay;
 import universalelectricity.core.electricity.ElectricityDisplay.ElectricUnit;
+import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -17,6 +22,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GCCoreGuiRefinery extends GuiContainer
 {
 	private final GCCoreTileEntityRefinery tileEntity;
+	
+    private GuiButton buttonDisable;
 
 	private int containerWidth;
 	private int containerHeight;
@@ -25,36 +32,64 @@ public class GCCoreGuiRefinery extends GuiContainer
 	{
 		super(new GCCoreContainerRefinery(par1InventoryPlayer, tileEntity));
 		this.tileEntity = tileEntity;
+		this.ySize += 20;
 	}
+
+	@Override
+    public void initGui()
+    {
+    	super.initGui();
+    	
+        this.buttonList.add(buttonDisable = new GuiButton(0, this.width / 2 - 38, this.height / 2 - 49, 76, 20, "Refine"));
+    }
+
+    @Override
+    protected void actionPerformed(GuiButton par1GuiButton) 
+    {
+    	switch (par1GuiButton.id)
+    	{
+    	case 0:
+			PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 17, new Object[] {this.tileEntity.xCoord, this.tileEntity.yCoord, this.tileEntity.zCoord}));
+			break;
+    	}
+    }
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
 	{
 		this.fontRenderer.drawString("Refinery", 68, 5, 4210752);
-		this.fontRenderer.drawString("Battery:", 10, 53, 4210752);
 		String displayText = "";
-
-		if (this.tileEntity.wattsReceived == 0)
+		
+		if (this.tileEntity.oilTank.getLiquid() == null || this.tileEntity.oilTank.getLiquid().amount == 0)
 		{
-			displayText = "Idle";
+			displayText = EnumColor.RED + "No Oil";
+		}
+		else if (this.tileEntity.oilTank.getLiquid().amount > 0 && this.tileEntity.disabled)
+		{
+			displayText = EnumColor.ORANGE + "Ready";
+		}
+		else if (this.tileEntity.wattsReceived == 0)
+		{
+			displayText = EnumColor.ORANGE + "Idle";
 		}
 		else if (this.tileEntity.wattsReceived < this.tileEntity.WATTS_PER_TICK)
 		{
-			displayText = "Heating";
+			displayText = EnumColor.ORANGE + "Heating";
 		}
 		else if (this.tileEntity.processTicks > 0)
 		{
-			displayText = "Refining";
+			displayText = EnumColor.BRIGHT_GREEN + "Refining";
 		}
 		else
 		{
-			displayText = "Idle";
+			displayText = EnumColor.ORANGE + "Idle";
 		}
 
-		this.fontRenderer.drawString("Status: " + displayText, 82, 45, 4210752);
-		this.fontRenderer.drawString(ElectricityDisplay.getDisplay(this.tileEntity.WATTS_PER_TICK * 20, ElectricUnit.WATT), 82, 56, 4210752);
-		this.fontRenderer.drawString(ElectricityDisplay.getDisplay(this.tileEntity.getVoltage(), ElectricUnit.VOLTAGE), 82, 68, 4210752);
-		this.fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
+        this.buttonDisable.enabled = this.tileEntity.processTicks == 0;
+		this.fontRenderer.drawString("Status: " + displayText, 72, 45 + 23, 4210752);
+		this.fontRenderer.drawString(ElectricityDisplay.getDisplay(this.tileEntity.WATTS_PER_TICK * 20, ElectricUnit.WATT), 72, 56 + 23, 4210752);
+		this.fontRenderer.drawString(ElectricityDisplay.getDisplay(this.tileEntity.getVoltage(), ElectricUnit.VOLTAGE), 72, 68 + 23, 4210752);
+		this.fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 118 + 2 + 23, 4210752);
 	}
 
 	@Override
@@ -70,7 +105,13 @@ public class GCCoreGuiRefinery extends GuiContainer
 		if (this.tileEntity.processTicks > 0)
 		{
 			int scale = (int) ((double) this.tileEntity.processTicks / (double) this.tileEntity.PROCESS_TIME_REQUIRED * 124);
-			this.drawTexturedModalRect(this.containerWidth + 26, this.containerHeight + 15, 0, 166, 124 - scale, 20);
+			this.drawTexturedModalRect(this.containerWidth + 26, this.containerHeight + 24, 0, 186, 124 - scale, 20);
 		}
+
+        int displayInt = tileEntity.getScaledOilLevel(38);
+        drawTexturedModalRect(((width - xSize) / 2) + 7, ((height - ySize) / 2) + 17 + 49 - displayInt, 176, 38 - displayInt, 16, displayInt);
+
+        displayInt = tileEntity.getScaledFuelLevel(38);
+        drawTexturedModalRect(((width - xSize) / 2) + 153, ((height - ySize) / 2) + 17 + 49 - displayInt, 176 + 16, 38 - displayInt, 16, displayInt);
 	}
 }

@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.network;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 
+import micdoodle8.mods.galacticraft.API.IDisableableMachine;
 import micdoodle8.mods.galacticraft.API.IOrbitDimension;
 import micdoodle8.mods.galacticraft.API.ISchematicPage;
 import micdoodle8.mods.galacticraft.API.SchematicRegistry;
@@ -342,13 +343,11 @@ public class GCCorePacketHandlerServer implements IPacketHandler
           	
           	TileEntity tileAt = player.worldObj.getBlockTileEntity((Integer) packetReadout[0], (Integer) packetReadout[1], (Integer) packetReadout[2]);
       	
-          	if (tileAt instanceof GCCoreTileEntityOxygenSealer)
+          	if (tileAt instanceof IDisableableMachine)
           	{
-          		GCCoreTileEntityOxygenSealer sealer = (GCCoreTileEntityOxygenSealer) tileAt;
+          		IDisableableMachine machine = (IDisableableMachine) tileAt;
           		
-          		boolean disabledBefore = sealer.disabled;
-          		
-          		sealer.disabled = !disabledBefore;
+          		machine.setDisabled(!machine.getDisabled());
           	}
       	}
     }

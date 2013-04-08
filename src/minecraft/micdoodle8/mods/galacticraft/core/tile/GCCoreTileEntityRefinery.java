@@ -3,11 +3,15 @@ package micdoodle8.mods.galacticraft.core.tile;
 import ic2.api.Direction;
 import ic2.api.energy.event.EnergyTileLoadEvent;
 import ic2.api.energy.tile.IEnergySink;
+import micdoodle8.mods.galacticraft.API.IDisableableMachine;
 import micdoodle8.mods.galacticraft.API.IRefinableItem;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -15,8 +19,13 @@ import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.liquids.LiquidContainerRegistry;
+import net.minecraftforge.liquids.LiquidDictionary;
+import net.minecraftforge.liquids.LiquidStack;
+import net.minecraftforge.liquids.LiquidTank;
 import universalelectricity.components.common.BasicComponents;
 import universalelectricity.core.electricity.ElectricityPack;
 import universalelectricity.core.item.ElectricItemHelper;
@@ -28,8 +37,18 @@ import universalelectricity.prefab.tile.TileEntityElectricityRunnable;
 
 import com.google.common.io.ByteArrayDataInput;
 
-public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable implements IInventory, ISidedInventory, IPacketReceiver, IEnergySink
+import cpw.mods.fml.common.FMLLog;
+
+public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable implements IInventory, ISidedInventory, IPacketReceiver, IEnergySink, IDisableableMachine
 {
+	private int tankCapacity = 24000;
+	
+	public LiquidTank oilTank = new LiquidTank(tankCapacity);
+	public LiquidTank fuelTank = new LiquidTank(tankCapacity);
+	
+	public boolean disabled = true;
+	public boolean lastDisabled = true;
+	
 	public static final double WATTS_PER_TICK = 600;
 	public static final int PROCESS_TIME_REQUIRED = 1000;
 	public int processTicks = 0;
@@ -38,6 +57,9 @@ public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable impl
 	
 	public double ic2WattsReceived = 0;
 	private boolean initialized = false;
+	
+	private int canisterToTankRatio = tankCapacity / GCCoreItems.fuelCanister.getMaxDamage();
+	private int canisterToLiquidStackRatio = GalacticraftCore.fuelStack.amount / GCCoreItems.fuelCanister.getMaxDamage();
 
 	@Override
 	public void updateEntity()
@@ -58,6 +80,50 @@ public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable impl
 
 		if (!this.worldObj.isRemote)
 		{
+			if (this.containingItems[1] != null)
+			{
+				LiquidStack liquid = LiquidContainerRegistry.getLiquidForFilledItem(this.containingItems[1]);
+
+				if (liquid != null && LiquidDictionary.findLiquidName(liquid).equals("Oil"))
+				{
+					if (this.oilTank.getLiquid() == null || this.oilTank.getLiquid().amount + liquid.amount <= this.oilTank.getCapacity())
+					{
+						this.oilTank.fill(liquid, true);
+						
+						if(liquid.itemID == GCCoreBlocks.crudeOilStill.blockID)
+						{
+							this.containingItems[1] = new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.oilCanister.getMaxDamage());
+						}
+						else 
+						{
+							this.containingItems[1].stackSize--;
+
+							if(this.containingItems[1].stackSize == 0)
+							{
+								this.containingItems[1] = null;
+							}
+						}
+					}
+				}
+			}
+
+			if (this.containingItems[2] != null && LiquidContainerRegistry.isContainer(this.containingItems[2]))
+			{
+				LiquidStack liquid = this.fuelTank.getLiquid();
+
+				if (liquid != null && this.fuelTank.getLiquidName().equals("Fuel"))
+				{
+					if (this.containingItems[2].isItemEqual(new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.oilCanister.getMaxDamage())))
+					{
+						int amountToFill = Math.min(GCCoreItems.fuelCanister.getMaxDamage() - 1, MathHelper.floor_double(liquid.amount / this.canisterToLiquidStackRatio));
+						
+						this.containingItems[2] = new ItemStack(GCCoreItems.fuelCanister, 1, GCCoreItems.fuelCanister.getMaxDamage() - amountToFill);
+						
+						this.fuelTank.drain(amountToFill * canisterToLiquidStackRatio, true);
+					}
+				}
+			}
+			
 			if (this.canProcess())
 			{
 				if (this.wattsReceived >= this.WATTS_PER_TICK || this.ic2WattsReceived >= this.WATTS_PER_TICK)
@@ -107,6 +173,16 @@ public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable impl
 		return direction == ForgeDirection.getOrientation(this.getBlockMetadata() + 2);
 	}
 
+	public int getScaledOilLevel(int i)
+	{
+		return this.oilTank.getLiquid() != null ? this.oilTank.getLiquid().amount * i / this.oilTank.getCapacity() : 0;
+	}
+
+	public int getScaledFuelLevel(int i)
+	{
+		return this.fuelTank.getLiquid() != null ? this.fuelTank.getLiquid().amount * i / this.fuelTank.getCapacity() : 0;
+	}
+
 	@Override
 	public ElectricityPack getRequest()
 	{
@@ -123,7 +199,7 @@ public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable impl
 	@Override
 	public Packet getDescriptionPacket()
 	{
-		return PacketManager.getPacket(BasicComponents.CHANNEL, this, this.wattsReceived, this.processTicks, this.disabledTicks, this.ic2WattsReceived);
+		return PacketManager.getPacket(BasicComponents.CHANNEL, this, this.wattsReceived, this.processTicks, this.disabledTicks, this.ic2WattsReceived, this.oilTank.getLiquid() == null ? 0 : this.oilTank.getLiquid().amount, this.fuelTank.getLiquid() == null ? 0 : this.fuelTank.getLiquid().amount, this.disabled);
 	}
 
 	@Override
@@ -135,6 +211,14 @@ public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable impl
 			this.processTicks = dataStream.readInt();
 			this.disabledTicks = dataStream.readInt();
 			this.ic2WattsReceived = dataStream.readDouble();
+			
+			int amount = dataStream.readInt();
+			this.oilTank.setLiquid(new LiquidStack(GCCoreBlocks.crudeOilStill.blockID, amount, 0));
+			
+			int amount2 = dataStream.readInt();
+			this.fuelTank.setLiquid(new LiquidStack(GCCoreItems.fuel.itemID, amount2, 0));
+			
+			this.disabled = dataStream.readBoolean();
 		}
 		catch (Exception e)
 		{
@@ -160,22 +244,12 @@ public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable impl
 
 	public boolean canProcess()
 	{
-		if (this.containingItems[1] == null)
+		if (this.oilTank.getLiquid() == null || this.oilTank.getLiquid().amount <= 0)
 		{
 			return false;
 		}
 		
-		if (!(this.containingItems[1].getItem() instanceof IRefinableItem))
-		{
-			return false;
-		}
-		
-		if (!((IRefinableItem) this.containingItems[1].getItem()).canSmeltItem(this.containingItems[1]))
-		{
-			return false;
-		}
-
-		if (this.containingItems[2] != null)
+		if (this.disabled)
 		{
 			return false;
 		}
@@ -187,27 +261,17 @@ public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable impl
 	{
 		if (this.canProcess())
 		{
-			ItemStack resultItemStack = null;
+			int oilAmount = this.oilTank.getLiquid().amount;
+			int fuelSpace = this.fuelTank.getCapacity() - (this.fuelTank.getLiquid() == null ? 0 : this.fuelTank.getLiquid().amount);
 			
-			if (this.containingItems[1] != null && this.containingItems[1].getItem() instanceof IRefinableItem)
-			{
-				resultItemStack = ((IRefinableItem) this.containingItems[1].getItem()).getResultItem(this.containingItems[1]);
-			}
+			int amountToDrain = Math.min(oilAmount, fuelSpace);
 			
-			if (this.containingItems[2] == null && resultItemStack != null)
+			this.oilTank.drain(amountToDrain, true);
+			this.fuelTank.fill(new LiquidStack(GCCoreItems.fuel, amountToDrain), true);
+			
+			if (!this.disabled)
 			{
-				this.containingItems[2] = resultItemStack.copy();
-			}
-			else if (resultItemStack != null && this.containingItems[2].isItemEqual(resultItemStack))
-			{
-				this.containingItems[2].stackSize++;
-			}
-
-			this.containingItems[1].stackSize--;
-
-			if (this.containingItems[1].stackSize <= 0)
-			{
-				this.containingItems[1] = null;
+				this.disabled = true;
 			}
 		}
 	}
@@ -432,5 +496,17 @@ public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable impl
 	public boolean isAddedToEnergyNet() 
 	{
 		return this.initialized;
+	}
+
+	@Override
+	public void setDisabled(boolean disabled) 
+	{
+		this.disabled = disabled;
+	}
+
+	@Override
+	public boolean getDisabled()
+	{
+		return this.disabled;
 	}
 }
