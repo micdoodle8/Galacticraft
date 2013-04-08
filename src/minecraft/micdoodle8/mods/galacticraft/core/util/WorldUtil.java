@@ -8,14 +8,16 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.API.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.API.IMapPlanet;
 import micdoodle8.mods.galacticraft.API.IOrbitDimension;
 import micdoodle8.mods.galacticraft.API.ISpaceship;
+import micdoodle8.mods.galacticraft.API.ITeleportType;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
-import micdoodle8.mods.galacticraft.core.dimension.GCCoreEnumTeleportType;
+import micdoodle8.mods.galacticraft.core.dimension.GCCoreOrbitTeleportType;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreSpaceStationData;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreWorldProvider;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityParaChest;
@@ -38,11 +40,11 @@ import net.minecraft.network.packet.Packet9Respawn;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntityChest;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
+import universalelectricity.core.vector.Vector3;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -557,7 +559,7 @@ public class WorldUtil
 
     private static MinecraftServer mcServer = null;
     
-    public static void transferEntityToDimension(Entity entity, int dimensionID, WorldServer world, GCCoreEnumTeleportType type)
+    public static void transferEntityToDimension(Entity entity, int dimensionID, WorldServer world)
     {
         if (!world.isRemote)
         {
@@ -574,13 +576,20 @@ public class WorldUtil
                 {
                     System.err.println("Cannot Transfer Entity to Dimension: Could not get World for Dimension " + dimensionID);
                 }
+                
+                ITeleportType type = GalacticraftRegistry.getTeleportTypeForDimension(var6.provider.getClass());
+                
+                FMLLog.info("" + var6.provider);
 
-                WorldUtil.teleportEntity(var6, entity, dimensionID, type);
+                if (type != null)
+                {
+                    WorldUtil.teleportEntity(var6, entity, dimensionID, type);
+                }
             }
         }
     }
 
-    private static Entity teleportEntity(World var0, Entity var1, int var2, GCCoreEnumTeleportType type)
+    private static Entity teleportEntity(World var0, Entity var1, int var2, ITeleportType type)
     {
         Entity var6 = var1.ridingEntity;
 
@@ -622,23 +631,10 @@ public class WorldUtil
 
         if (var7)
         {
-            if (var1 instanceof EntityPlayer)
+            if (var1 instanceof EntityPlayerMP)
             {
-                switch (type)
-                {
-                case TOORBIT:
-                    var1.setLocationAndAngles(0.5D, 65.0D, 0.5D, var1.rotationYaw, var1.rotationPitch);
-                    ((WorldServer)var0).theChunkProviderServer.loadChunk(0, 0);
-                    break;
-                case TOPLANET:
-                    var1.setLocationAndAngles(var8.coordsTeleportedFromX, 250.0D, var8.coordsTeleportedFromZ, var1.rotationYaw, var1.rotationPitch);
-                    ((WorldServer)var0).theChunkProviderServer.loadChunk(var0.getChunkFromChunkCoords(MathHelper.floor_double(var8.coordsTeleportedFromX), MathHelper.floor_double(var8.coordsTeleportedFromZ)).getChunkCoordIntPair().chunkXPos, var0.getChunkFromBlockCoords(MathHelper.floor_double(var8.coordsTeleportedFromX), MathHelper.floor_double(var8.coordsTeleportedFromZ)).getChunkCoordIntPair().chunkZPos);
-                    break;
-                case TOOVERWORLD:
-                    var1.setLocationAndAngles(var8.coordsTeleportedFromX, 250.0D, var8.coordsTeleportedFromZ, var1.rotationYaw, var1.rotationPitch);
-                    ((WorldServer)var0).theChunkProviderServer.loadChunk(var0.getChunkFromChunkCoords(MathHelper.floor_double(var8.coordsTeleportedFromX), MathHelper.floor_double(var8.coordsTeleportedFromZ)).getChunkCoordIntPair().chunkXPos, var0.getChunkFromBlockCoords(MathHelper.floor_double(var8.coordsTeleportedFromX), MathHelper.floor_double(var8.coordsTeleportedFromZ)).getChunkCoordIntPair().chunkZPos);
-                    break;
-                }
+                var1.setLocationAndAngles(type.getPlayerSpawnLocation((WorldServer)var1.worldObj, (EntityPlayerMP)var1).x, type.getPlayerSpawnLocation((WorldServer)var1.worldObj, (EntityPlayerMP)var1).y, type.getPlayerSpawnLocation((WorldServer)var1.worldObj, (EntityPlayerMP)var1).z, var1.rotationYaw, var1.rotationPitch);
+                ((WorldServer)var0).theChunkProviderServer.loadChunk(var0.getChunkFromChunkCoords(type.getPlayerSpawnLocation((WorldServer)var1.worldObj, (EntityPlayerMP)var1).intX(), type.getPlayerSpawnLocation((WorldServer)var1.worldObj, (EntityPlayerMP)var1).intZ()).getChunkCoordIntPair().chunkXPos, var0.getChunkFromChunkCoords(type.getPlayerSpawnLocation((WorldServer)var1.worldObj, (EntityPlayerMP)var1).intX(), type.getPlayerSpawnLocation((WorldServer)var1.worldObj, (EntityPlayerMP)var1).intZ()).getChunkCoordIntPair().chunkZPos);
             }
         }
 
@@ -646,18 +642,7 @@ public class WorldUtil
         {
             if (var1 instanceof EntityPlayer)
             {
-                switch (type)
-                {
-                case TOORBIT:
-                    var1.setPosition(0.5D, 65.0D, 0.5D);
-                    break;
-                case TOPLANET:
-                    var1.setPosition(var8.coordsTeleportedFromX, 250.0D, var8.coordsTeleportedFromZ);
-                    break;
-                case TOOVERWORLD:
-                    var1.setPosition(var8.coordsTeleportedFromX, 250.0D, var8.coordsTeleportedFromZ);
-                    break;
-                }
+                var1.setPosition(type.getPlayerSpawnLocation((WorldServer)var1.worldObj, (EntityPlayerMP)var1).x, type.getPlayerSpawnLocation((WorldServer)var1.worldObj, (EntityPlayerMP)var1).y, type.getPlayerSpawnLocation((WorldServer)var1.worldObj, (EntityPlayerMP)var1).z);
             }
         }
 
@@ -685,18 +670,7 @@ public class WorldUtil
         {
             if (var1 instanceof EntityPlayer)
             {
-                switch (type)
-                {
-                case TOORBIT:
-                    var1.setLocationAndAngles(0.5D, 65.0D, 0.5D, var1.rotationYaw, var1.rotationPitch);
-                    break;
-                case TOPLANET:
-                    var1.setLocationAndAngles(var8.coordsTeleportedFromX, 250.0D, var8.coordsTeleportedFromZ, var1.rotationYaw, var1.rotationPitch);
-                    break;
-                case TOOVERWORLD:
-                    var1.setLocationAndAngles(var8.coordsTeleportedFromX, 250.0D, var8.coordsTeleportedFromZ, var1.rotationYaw, var1.rotationPitch);
-                    break;
-                }
+            	var1.setLocationAndAngles(type.getPlayerSpawnLocation((WorldServer)var1.worldObj, (EntityPlayerMP)var1).x, type.getPlayerSpawnLocation((WorldServer)var1.worldObj, (EntityPlayerMP)var1).y, type.getPlayerSpawnLocation((WorldServer)var1.worldObj, (EntityPlayerMP)var1).z, var1.rotationYaw, var1.rotationPitch);
             }
         }
         
@@ -706,18 +680,7 @@ public class WorldUtil
         {
             if (var1 instanceof EntityPlayer)
             {
-                switch (type)
-                {
-                case TOORBIT:
-                    var1.setLocationAndAngles(0.5D, 65.0D, 0.5D, var1.rotationYaw, var1.rotationPitch);
-                    break;
-                case TOPLANET:
-                    var1.setLocationAndAngles(var8.coordsTeleportedFromX, 250.0D, var8.coordsTeleportedFromZ, var1.rotationYaw, var1.rotationPitch);
-                    break;
-                case TOOVERWORLD:
-                    var1.setLocationAndAngles(var8.coordsTeleportedFromX, 250.0D, var8.coordsTeleportedFromZ, var1.rotationYaw, var1.rotationPitch);
-                    break;
-                }
+                var1.setLocationAndAngles(type.getPlayerSpawnLocation((WorldServer)var1.worldObj, (EntityPlayerMP)var1).x, type.getPlayerSpawnLocation((WorldServer)var1.worldObj, (EntityPlayerMP)var1).y, type.getPlayerSpawnLocation((WorldServer)var1.worldObj, (EntityPlayerMP)var1).z, var1.rotationYaw, var1.rotationPitch);
             }
         }
 
@@ -730,18 +693,7 @@ public class WorldUtil
                 var8.mcServer.getConfigurationManager().func_72375_a(var8, (WorldServer)var0);
             }
 
-            switch (type)
-            {
-            case TOORBIT:
-            	var8.playerNetServerHandler.setPlayerLocation(0.5D, 65.0D, 0.5D, var1.rotationYaw, var1.rotationPitch);
-                break;
-            case TOPLANET:
-            	var8.playerNetServerHandler.setPlayerLocation(var8.coordsTeleportedFromX, 250.0D, var8.coordsTeleportedFromZ, var1.rotationYaw, var1.rotationPitch);
-                break;
-            case TOOVERWORLD:
-            	var8.playerNetServerHandler.setPlayerLocation(var8.coordsTeleportedFromX, 250.0D, var8.coordsTeleportedFromZ, var1.rotationYaw, var1.rotationPitch);
-                break;
-            }
+        	var8.playerNetServerHandler.setPlayerLocation(type.getPlayerSpawnLocation((WorldServer)var1.worldObj, (EntityPlayerMP)var1).x, type.getPlayerSpawnLocation((WorldServer)var1.worldObj, (EntityPlayerMP)var1).y, type.getPlayerSpawnLocation((WorldServer)var1.worldObj, (EntityPlayerMP)var1).z, var1.rotationYaw, var1.rotationPitch);
             
             FMLLog.info("Server attempting to transfer player " + var8.username + " to dimension " + var0.provider.dimensionId);
         }
@@ -752,13 +704,9 @@ public class WorldUtil
         {
             var8 = (GCCorePlayerMP)var1;
             
-            switch (type)
+            if (type.useParachute())
             {
-            case TOORBIT:
-                break;
-            default:
             	var8.setParachute(true);
-                break;
             }
         }
 
@@ -781,49 +729,16 @@ public class WorldUtil
         
         if (var8 != null)
         {
-            switch (type)
-            {
-            case TOORBIT:
-            	var1.setLocationAndAngles(0.5D, 65.0D, 0.5D, var1.rotationYaw, var1.rotationPitch);
-                break;
-            case TOPLANET:
-            	var1.setLocationAndAngles(var8.coordsTeleportedFromX, 250.0D, var8.coordsTeleportedFromZ, var1.rotationYaw, var1.rotationPitch);
-                break;
-            case TOOVERWORLD:
-            	var1.setLocationAndAngles(var8.coordsTeleportedFromX, 250.0D, var8.coordsTeleportedFromZ, var1.rotationYaw, var1.rotationPitch);
-                break;
-            }
+        	var1.setLocationAndAngles(type.getPlayerSpawnLocation((WorldServer)var1.worldObj, (EntityPlayerMP)var1).x, type.getPlayerSpawnLocation((WorldServer)var1.worldObj, (EntityPlayerMP)var1).y, type.getPlayerSpawnLocation((WorldServer)var1.worldObj, (EntityPlayerMP)var1).z, var1.rotationYaw, var1.rotationPitch);
         }
         else
         {
-            switch (type)
-            {
-            case TOORBIT:
-            	var1.setLocationAndAngles(0.5D, 65.0D, 0.5D, var1.rotationYaw, var1.rotationPitch);
-                break;
-            case TOPLANET:
-            	var1.setLocationAndAngles(var1.posX, 250.0D, var1.posZ, var1.rotationYaw, var1.rotationPitch);
-                break;
-            case TOOVERWORLD:
-            	var1.setLocationAndAngles(var1.posX, 250.0D, var1.posZ, var1.rotationYaw, var1.rotationPitch);
-                break;
-            }
+        	var1.setLocationAndAngles(type.getEntitySpawnLocation((WorldServer)var1.worldObj, var1).x, type.getEntitySpawnLocation((WorldServer)var1.worldObj, var1).y, type.getEntitySpawnLocation((WorldServer)var1.worldObj, var1).z, var1.rotationYaw, var1.rotationPitch);
         }
         
         if (var1 instanceof GCCorePlayerMP)
         {
             var8 = (GCCorePlayerMP)var1;
-            double spawnChestHeight = 250.0D;
-
-            switch (type)
-            {
-            case TOORBIT:
-            	spawnChestHeight = 90.0D;
-                break;
-            default:
-            	spawnChestHeight = 250.0D;
-                break;
-            }
             
           	for (int i = 0; i < 28; i++)
           	{
@@ -835,7 +750,7 @@ public class WorldUtil
           				var8.rocketStacks[i] = new ItemStack(GCCoreItems.fuelCanister, 1, var8.fuelDamage);
           				break;
           			case 25:
-          				var8.rocketStacks[i] = type.equals(GCCoreEnumTeleportType.TOORBIT) ? null : new ItemStack(GCCoreBlocks.landingPad, 9, 0);
+          				var8.rocketStacks[i] = type instanceof GCCoreOrbitTeleportType ? null : new ItemStack(GCCoreBlocks.landingPad, 9, 0);
           				break;
           			case 26:
           				var8.rocketStacks[i] = new ItemStack(GCCoreItems.spaceship, 1, var8.rocketType);
@@ -847,26 +762,33 @@ public class WorldUtil
           	if (var8.chestSpawnCooldown == 0)
           	{
               	final GCCoreEntityParaChest chest = new GCCoreEntityParaChest(var0, var8.rocketStacks);
-
-              	double x = (var8.worldObj.rand.nextInt(2) - 1) * 3.0D;
-              	double z = (var8.worldObj.rand.nextInt(2) - 1) * 3.0D;
               	
-                switch (type)
-                {
-                case TOORBIT:
-              		chest.setPosition(-8.5D, spawnChestHeight, -1.5D);
-                    break;
-                default:
-              		chest.setPosition(var8.posX + x, spawnChestHeight, var8.posZ + z);
-                    break;
-                }
-
-              	if (!var0.isRemote)
+              	Vector3 chestVec = type.getParaChestSpawnLocation((WorldServer)var1.worldObj, chest, var8, new Random());
+              	
+              	if (chestVec != null)
               	{
-              		var0.spawnEntityInWorld(chest);
-              	}
+                  	double x = (var8.worldObj.rand.nextInt(2) - 1) * 3.0D;
+                  	double z = (var8.worldObj.rand.nextInt(2) - 1) * 3.0D;
+                  	
+                  	chest.setPosition(chestVec.x, chestVec.y, chestVec.z);
+                  	
+//                    switch (type)
+//                    {
+//                    case TOORBIT:
+//                  		chest.setPosition(-8.5D, spawnChestHeight, -1.5D);
+//                        break;
+//                    default:
+//                  		chest.setPosition(var8.posX + x, spawnChestHeight, var8.posZ + z);
+//                        break;
+//                    }
 
-              	var8.chestSpawnCooldown = 200;
+                  	if (!var0.isRemote)
+                  	{
+                  		var0.spawnEntityInWorld(chest);
+                  	}
+
+                  	var8.chestSpawnCooldown = 200;
+              	}
           	}
         }
     	
