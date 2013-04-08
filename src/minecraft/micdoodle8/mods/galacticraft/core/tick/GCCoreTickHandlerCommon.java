@@ -4,7 +4,6 @@ import java.util.EnumSet;
 
 import micdoodle8.mods.galacticraft.API.IInterplanetaryObject;
 import micdoodle8.mods.galacticraft.API.IOrbitDimension;
-import micdoodle8.mods.galacticraft.core.dimension.GCCoreEnumTeleportType;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.WorldServer;
@@ -20,8 +19,6 @@ public class GCCoreTickHandlerCommon implements ITickHandler
 	{
 		if (type.equals(EnumSet.of(TickType.SERVER)))
         {
-//			GalacticraftCore.tick++;
-
 			if (chatCooldown > 0)
 			{
 				chatCooldown--;
@@ -41,7 +38,7 @@ public class GCCoreTickHandlerCommon implements ITickHandler
 					if (e.posY >= iiobject.getYCoordToTeleportFrom() && e.dimension != iiobject.getDimensionForTeleport())
 					{
 						int dim = iiobject.getDimensionForTeleport();
-						WorldUtil.transferEntityToDimension(e, dim, world, dim == 0 ? GCCoreEnumTeleportType.TOOVERWORLD : GCCoreEnumTeleportType.TOPLANET);
+						WorldUtil.transferEntityToDimension(e, dim, world);
 					}
 				}
 				
@@ -54,7 +51,7 @@ public class GCCoreTickHandlerCommon implements ITickHandler
 					{
 	    	    		Integer dim = WorldUtil.getProviderForName(dimension.getPlanetToOrbit()).dimensionId;
 	    	    		
-    	    			WorldUtil.transferEntityToDimension(e, dim, world, GCCoreEnumTeleportType.TOOVERWORLD);
+    	    			WorldUtil.transferEntityToDimension(e, dim, world);
 					}
 				}
 			}

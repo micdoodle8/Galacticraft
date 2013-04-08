@@ -3,12 +3,14 @@ package micdoodle8.mods.galacticraft.moon;
 import java.io.File;
 import java.util.EnumSet;
 
+import micdoodle8.mods.galacticraft.API.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubMod;
 import micdoodle8.mods.galacticraft.API.IGalaxy;
 import micdoodle8.mods.galacticraft.core.GCCoreCreativeTab;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
+import micdoodle8.mods.galacticraft.moon.dimension.GCMoonTeleportType;
 import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;
 import micdoodle8.mods.galacticraft.moon.items.GCMoonItems;
 import net.minecraft.creativetab.CreativeTabs;
@@ -66,6 +68,8 @@ public class GalacticraftMoon implements IGalacticraftSubMod
 
 		System.out.println("Galacticraft Moon Loaded: " + TranslationHelper.loadLanguages(GalacticraftMoon.LANGUAGE_PATH, GalacticraftMoon.LANGUAGES_SUPPORTED) + " Languages.");
 
+		GalacticraftRegistry.registerTeleportType(GCMoonWorldProvider.class, new GCMoonTeleportType());
+		
         GCMoonUtil.addCraftingRecipes();
         GCMoonUtil.addSmeltingRecipes();
 	}

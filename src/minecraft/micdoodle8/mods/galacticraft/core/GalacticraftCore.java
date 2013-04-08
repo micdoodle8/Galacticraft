@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.swing.JEditorPane;
 import javax.swing.JOptionPane;
 
+import micdoodle8.mods.galacticraft.API.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubMod;
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
 import micdoodle8.mods.galacticraft.API.IGalaxy;
@@ -19,6 +20,8 @@ import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.client.GCCorePlayerSP;
 import micdoodle8.mods.galacticraft.core.command.GCCoreCommandSpaceStationAddOwner;
 import micdoodle8.mods.galacticraft.core.command.GCCoreCommandSpaceStationRemoveOwner;
+import micdoodle8.mods.galacticraft.core.dimension.GCCoreOrbitTeleportType;
+import micdoodle8.mods.galacticraft.core.dimension.GCCoreOverworldTeleportType;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreWorldProvider;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityAlienVillager;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityArrow;
@@ -62,10 +65,9 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.moon.GalacticraftMoon;
-import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.WorldProviderSurface;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.liquids.LiquidContainerData;
@@ -245,6 +247,9 @@ public class GalacticraftCore
 		DimensionManager.registerProviderType(GCCoreConfigManager.idDimensionOverworldOrbit, GCCoreWorldProvider.class, false);
 		
 		GalacticraftCore.proxy.init(event);
+		
+		GalacticraftRegistry.registerTeleportType(WorldProviderSurface.class, new GCCoreOverworldTeleportType());
+		GalacticraftRegistry.registerTeleportType(GCCoreWorldProvider.class, new GCCoreOrbitTeleportType());
 
 		if (GCCoreConfigManager.enableBCLoading)
 		{

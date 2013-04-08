@@ -9,13 +9,11 @@ import micdoodle8.mods.galacticraft.API.ISchematicPage;
 import micdoodle8.mods.galacticraft.API.SchematicRegistry;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.dimension.GCCoreEnumTeleportType;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpaceship;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerSchematic;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemParachute;
 import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerCommon;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenSealer;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
@@ -81,11 +79,11 @@ public class GCCorePacketHandlerServer implements IPacketHandler
             			
         	    		if (provider instanceof IOrbitDimension)
         	    		{
-    	            		WorldUtil.transferEntityToDimension(playerBase, dim, world, GCCoreEnumTeleportType.TOORBIT);
+    	            		WorldUtil.transferEntityToDimension(playerBase, dim, world);
         	    		}
         	    		else
         	    		{
-    	            		WorldUtil.transferEntityToDimension(playerBase, dim, world, GCCoreEnumTeleportType.TOPLANET);
+    	            		WorldUtil.transferEntityToDimension(playerBase, dim, world);
         	    		}
             		}
     	    		
