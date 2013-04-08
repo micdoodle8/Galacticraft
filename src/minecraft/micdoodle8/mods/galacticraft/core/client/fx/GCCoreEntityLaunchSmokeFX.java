@@ -51,6 +51,8 @@ public class GCCoreEntityLaunchSmokeFX extends EntityFX
 	public void renderParticle(Tessellator par1Tessellator, float par2, float par3, float par4, float par5, float par6, float par7)
     {
     	GL11.glPushMatrix();
+    	GL11.glDepthMask(false);
+    	GL11.glDisable(GL11.GL_DEPTH_TEST);
         float var8 = (this.particleAge + par2) / this.particleMaxAge * 32.0F;
 
         if (var8 < 0.0F)
@@ -87,7 +89,9 @@ public class GCCoreEntityLaunchSmokeFX extends EntityFX
         par1Tessellator.addVertexWithUV((double)(f11 - par3 * f10 + par6 * f10), (double)(f12 + par4 * f10), (double)(f13 - par5 * f10 + par7 * f10), (double)f7, (double)f8);
         par1Tessellator.addVertexWithUV((double)(f11 + par3 * f10 + par6 * f10), (double)(f12 + par4 * f10), (double)(f13 + par5 * f10 + par7 * f10), (double)f6, (double)f8);
         par1Tessellator.addVertexWithUV((double)(f11 + par3 * f10 - par6 * f10), (double)(f12 - par4 * f10), (double)(f13 + par5 * f10 - par7 * f10), (double)f6, (double)f9);
-        
+
+    	GL11.glEnable(GL11.GL_DEPTH_TEST);
+    	GL11.glDepthMask(true);
         GL11.glPopMatrix();
     }
 

@@ -2,6 +2,8 @@ package micdoodle8.mods.galacticraft.core.client.fx;
 
 import java.util.List;
 
+import org.lwjgl.opengl.GL11;
+
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import net.minecraft.client.particle.EntityFX;
@@ -48,6 +50,8 @@ public class GCCoreEntityLaunchFlameFX extends EntityFX
     @Override
 	public void renderParticle(Tessellator par1Tessellator, float par2, float par3, float par4, float par5, float par6, float par7)
     {
+    	GL11.glDepthMask(false);
+    	GL11.glDisable(GL11.GL_DEPTH_TEST);
         float var8 = (this.particleAge + par2) / this.particleMaxAge * 32.0F;
 
         if (var8 < 0.0F)
@@ -62,6 +66,8 @@ public class GCCoreEntityLaunchFlameFX extends EntityFX
 
         this.particleScale = this.smokeParticleScale * var8;
         super.renderParticle(par1Tessellator, par2, par3, par4, par5, par6, par7);
+    	GL11.glEnable(GL11.GL_DEPTH_TEST);
+    	GL11.glDepthMask(true);
     }
 
     @Override
@@ -123,5 +129,17 @@ public class GCCoreEntityLaunchFlameFX extends EntityFX
 //        	this.motionX *= 0.699999988079071D;
 //            this.motionZ *= 0.699999988079071D;
 //        }
+    }
+
+    @Override
+    public int getBrightnessForRender(float par1)
+    {
+        return 15728880;
+    }
+
+    @Override
+    public float getBrightness(float par1)
+    {
+        return 1.0F;
     }
 }
