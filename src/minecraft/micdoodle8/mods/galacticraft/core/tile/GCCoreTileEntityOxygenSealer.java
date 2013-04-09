@@ -115,7 +115,7 @@ public class GCCoreTileEntityOxygenSealer extends TileEntityElectricityRunnable 
 			{
 				if (this.active)
 				{
-		            this.clean(this.worldObj, this.xCoord, this.yCoord, this.zCoord, 250);
+		            this.clean(this.worldObj, this.xCoord, this.yCoord, this.zCoord, this.power * 4);
 		            this.sealed = this.isOn(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
 				}
 				else
