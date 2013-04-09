@@ -65,7 +65,10 @@ public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable im
 			initialized = true;
 		}
 
-		this.wattsReceived += ElectricItemHelper.dechargeItem(this.getStackInSlot(0), GCCoreTileEntityFuelLoader.WATTS_PER_TICK, this.getVoltage());
+		if (this.validStackInSlot())
+		{
+			this.wattsReceived += ElectricItemHelper.dechargeItem(this.getStackInSlot(0), GCCoreTileEntityFuelLoader.WATTS_PER_TICK, this.getVoltage());
+		}
 		
 		if (!this.worldObj.isRemote)
 		{
@@ -92,8 +95,7 @@ public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable im
 	@Override
 	public Packet getDescriptionPacket()
 	{
-		Packet p = PacketManager.getPacket(BasicComponents.CHANNEL, this, this.wattsReceived, this.disabledTicks, this.ic2WattsReceived);
-		return p;
+		return PacketManager.getPacket(BasicComponents.CHANNEL, this, this.wattsReceived, this.disabledTicks, this.ic2WattsReceived);
 	}
 
 	@Override

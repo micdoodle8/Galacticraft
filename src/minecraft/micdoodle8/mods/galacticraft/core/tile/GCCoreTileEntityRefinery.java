@@ -76,7 +76,10 @@ public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable impl
 			initialized = true;
 		}
 
-		this.wattsReceived += ElectricItemHelper.dechargeItem(this.containingItems[0], GCCoreTileEntityRefinery.WATTS_PER_TICK, this.getVoltage());
+		if (this.canProcess() || this.wattsReceived <= this.WATTS_PER_TICK)
+		{
+			this.wattsReceived += ElectricItemHelper.dechargeItem(this.containingItems[0], GCCoreTileEntityRefinery.WATTS_PER_TICK, this.getVoltage());
+		}
 
 		if (!this.worldObj.isRemote)
 		{

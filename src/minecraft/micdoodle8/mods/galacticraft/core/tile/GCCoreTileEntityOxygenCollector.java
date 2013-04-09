@@ -75,7 +75,10 @@ public class GCCoreTileEntityOxygenCollector extends TileEntityElectricityRunnab
 			initialized = true;
 		}
 
-		this.wattsReceived += ElectricItemHelper.dechargeItem(this.containingItems[0], GCCoreTileEntityOxygenCollector.WATTS_PER_TICK, this.getVoltage());
+		if (this.getGas(EnumGas.OXYGEN) > 0)
+		{
+			this.wattsReceived += ElectricItemHelper.dechargeItem(this.containingItems[0], GCCoreTileEntityOxygenCollector.WATTS_PER_TICK, this.getVoltage());
+		}
 		
 		if (!this.worldObj.isRemote)
 		{

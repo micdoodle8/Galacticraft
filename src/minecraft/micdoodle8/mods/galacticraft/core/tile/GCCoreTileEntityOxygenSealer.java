@@ -81,9 +81,12 @@ public class GCCoreTileEntityOxygenSealer extends TileEntityElectricityRunnable 
 			
 			initialized = true;
 		}
-		
-		this.wattsReceived += ElectricItemHelper.dechargeItem(this.containingItems[0], GCCoreTileEntityOxygenSealer.WATTS_PER_TICK, this.getVoltage());
-		
+
+		if (GCCoreTileEntityOxygenSealer.timeSinceOxygenRequest > 0 && !this.disabled)
+		{		
+			this.wattsReceived += ElectricItemHelper.dechargeItem(this.containingItems[0], GCCoreTileEntityOxygenSealer.WATTS_PER_TICK, this.getVoltage());
+		}
+
 		if (!this.worldObj.isRemote)
 		{
 			if (this.disableCooldown > 0)

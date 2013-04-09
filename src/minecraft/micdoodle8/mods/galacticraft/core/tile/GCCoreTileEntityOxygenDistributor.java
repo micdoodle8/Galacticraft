@@ -69,12 +69,6 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityElectricityRunn
             	for (int z = (int) Math.floor(this.zCoord - this.power * 1.5); z < Math.ceil(this.zCoord + this.power * 1.5); z++)
             	{
             		TileEntity tile = this.worldObj.getBlockTileEntity(x, y, z);
-            		
-//            		if (tile != null && tile instanceof GCCoreTileEntityBreathableAir)
-//            		{
-//        				tile.worldObj.setBlockToAir(tile.xCoord, tile.yCoord, tile.zCoord);
-//						tile.invalidate();
-//            		}
 //            		
             		if (tile != null && tile instanceof GCCoreTileEntityUnlitTorch)
             		{
@@ -120,7 +114,10 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityElectricityRunn
 			}
 		}
 
-		this.wattsReceived += ElectricItemHelper.dechargeItem(this.containingItems[0], GCCoreTileEntityOxygenDistributor.WATTS_PER_TICK, this.getVoltage());
+		if (GCCoreTileEntityOxygenDistributor.timeSinceOxygenRequest > 0)
+		{
+			this.wattsReceived += ElectricItemHelper.dechargeItem(this.containingItems[0], GCCoreTileEntityOxygenDistributor.WATTS_PER_TICK, this.getVoltage());
+		}
 		
 		if (!this.worldObj.isRemote)
 		{
@@ -148,12 +145,6 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityElectricityRunn
 		            	{
 		            		TileEntity tile = this.worldObj.getBlockTileEntity(x, y, z);
 		            		
-//		            		if (tile != null && tile instanceof GCCoreTileEntityBreathableAir)
-//		            		{
-//		        				tile.worldObj.setBlockToAir(tile.xCoord, tile.yCoord, tile.zCoord);
-//								tile.invalidate();
-//		            		}
-		            		
 		            		if (tile != null && tile instanceof GCCoreTileEntityUnlitTorch)
 		            		{
 		            			tile.worldObj.setBlock(tile.xCoord, tile.yCoord, tile.zCoord, GCCoreBlocks.unlitTorch.blockID, 0, 3);
@@ -162,24 +153,6 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityElectricityRunn
 		        	}
 		    	}
 			}
-			
-//			if (this.bubble == null && this.active)
-//			{
-//				this.bubble = new OxygenBubble(this);
-//			}
-//
-//			if (this.bubble != null)
-//			{
-//				if (!this.bubble.connectedDistributors.contains(this))
-//				{
-//					this.bubble.connectedDistributors.add(this);
-//				}
-//				
-//				if (this.lastPower != this.power)
-//				{
-//					this.bubble.calculate();
-//				}
-//			}
 
 			if (this.power > 0)
 			{
@@ -233,30 +206,6 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityElectricityRunn
 			return new ElectricityPack();
 		}
 	}
-
-//	public void updateAdjacentOxygenAdd(int xOffset, int yOffset, int zOffset)
-//	{
-//		final TileEntity tile = this.worldObj.getBlockTileEntity(this.xCoord + xOffset, this.yCoord + yOffset, this.zCoord + zOffset);
-//
-//		if (tile != null && tile instanceof GCCoreTileEntityBreathableAir)
-//		{
-//			final GCCoreTileEntityBreathableAir air = (GCCoreTileEntityBreathableAir) tile;
-//
-//			air.addDistributor(this);
-//		}
-//	}
-//
-//	public void updateAdjacentOxygenRemove(int xOffset, int yOffset, int zOffset)
-//	{
-//		final TileEntity tile = this.worldObj.getBlockTileEntity(this.xCoord + xOffset, this.yCoord + yOffset, this.zCoord + zOffset);
-//
-//		if (tile != null && tile instanceof GCCoreTileEntityBreathableAir)
-//		{
-//			final GCCoreTileEntityBreathableAir air = (GCCoreTileEntityBreathableAir) tile;
-//
-//			air.removeDistributor(this);
-//		}
-//	}
 
 	@Override
 	public void readFromNBT(NBTTagCompound par1NBTTagCompound)

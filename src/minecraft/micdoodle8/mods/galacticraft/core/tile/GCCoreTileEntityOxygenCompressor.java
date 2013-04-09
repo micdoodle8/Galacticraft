@@ -50,7 +50,10 @@ public class GCCoreTileEntityOxygenCompressor extends TileEntityElectricityRunna
 	{
 		super.updateEntity();
 
-		this.wattsReceived += ElectricItemHelper.dechargeItem(this.containingItems[1], GCCoreTileEntityOxygenCompressor.WATTS_PER_TICK, this.getVoltage());
+		if (this.getStackInSlot(0) != null)
+		{
+			this.wattsReceived += ElectricItemHelper.dechargeItem(this.containingItems[1], GCCoreTileEntityOxygenCompressor.WATTS_PER_TICK, this.getVoltage());
+		}
 		
 		if (!this.worldObj.isRemote)
 		{
@@ -107,8 +110,7 @@ public class GCCoreTileEntityOxygenCompressor extends TileEntityElectricityRunna
 	@Override
 	public Packet getDescriptionPacket()
 	{
-		Packet p = PacketManager.getPacket(BasicComponents.CHANNEL, this, this.currentPower, this.wattsReceived, this.disabledTicks);
-		return p;
+		return PacketManager.getPacket(BasicComponents.CHANNEL, this, this.currentPower, this.wattsReceived, this.disabledTicks);
 	}
 
 	@Override
