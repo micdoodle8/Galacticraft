@@ -1,11 +1,11 @@
 package micdoodle8.mods.galacticraft.asm;
 
 import static org.objectweb.asm.ClassWriter.COMPUTE_MAXS;
+import static org.objectweb.asm.Opcodes.ALOAD;
 import static org.objectweb.asm.Opcodes.CHECKCAST;
 import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
 import static org.objectweb.asm.Opcodes.INVOKESTATIC;
 import static org.objectweb.asm.Opcodes.NEW;
-import static org.objectweb.asm.Opcodes.ALOAD;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -43,6 +43,11 @@ public class GCCoreTransformer implements IClassTransformer
 		this.obfuscatedMap.put("playerMP", "jc");
 		this.unObfuscatedMap.put("playerMP", "net/minecraft/entity/player/EntityPlayerMP");
 
+		this.obfuscatedMap.put("attemptLoginMethodBukkit", "attemptLogin");
+		this.obfuscatedMap.put("attemptLoginDescBukkit", "(Ljf;Ljava/lang/String;Ljava/lang/String;)Ljc;");
+		this.unObfuscatedMap.put("attemptLoginMethodBukkit", "dontfindthis");
+		this.unObfuscatedMap.put("attemptLoginDescBukkit", "dontfindthis");
+		
 		this.obfuscatedMap.put("playerControllerClass", "bds");
 		this.unObfuscatedMap.put("playerControllerClass", "net/minecraft/client/multiplayer/PlayerControllerMP");
 		this.obfuscatedMap.put("createClientPlayerMethod", "a");
@@ -171,6 +176,39 @@ public class GCCoreTransformer implements IClassTransformer
 	            			methodnode.instructions.set(nodeAt, new MethodInsnNode(INVOKESPECIAL, "micdoodle8/mods/galacticraft/core/entities/GCCorePlayerMP", "<init>", "(Lnet/minecraft/server/MinecraftServer;Lnet/minecraft/world/World;Ljava/lang/String;Lnet/minecraft/item/ItemInWorldManager;)V"));
 
 	            			FMLLog.info("Successfully set method insertion node with owner \"" + map.get("playerMP") + "\" to \"micdoodle8/mods/galacticraft/core/entities/GCCorePlayerMP\" in method: " + methodnode.name);
+	            		}
+	            	}
+	            }
+			}
+			
+			if (methodnode.name.equals(map.get("attemptLoginMethodBukkit")) && methodnode.desc.equals(map.get("attemptLoginDescBukkit")))
+			{
+				for (int count = 0; count < methodnode.instructions.size(); count++)
+	            {
+	            	AbstractInsnNode list = methodnode.instructions.get(count);
+	            	
+	            	if (list instanceof TypeInsnNode)
+	            	{
+	            		TypeInsnNode nodeAt = (TypeInsnNode) list;
+	            		
+	            		if (nodeAt.getOpcode() == NEW && nodeAt.desc.contains(map.get("playerMP")))
+	            		{
+	            			TypeInsnNode overwriteNode = new TypeInsnNode(NEW, "micdoodle8/mods/galacticraft/core/entities/GCCorePlayerMP");
+	            			
+	            			methodnode.instructions.set(nodeAt, overwriteNode);
+	            			
+	            			FMLLog.info("[BUKKIT] Successfully set type insertion node with description \"NEW " + map.get("playerMP") + "\" to \"NEW micdoodle8/mods/galacticraft/core/entities/GCCorePlayerMP\" in method: " + methodnode.name);
+	            		}
+	            	}
+	            	else if (list instanceof MethodInsnNode)
+	            	{
+	            		MethodInsnNode nodeAt = (MethodInsnNode) list;
+	            		
+	            		if (nodeAt.getOpcode() == INVOKESPECIAL && nodeAt.name.equals("<init>") && nodeAt.owner.equals(map.get("playerMP")))
+	            		{
+	            			methodnode.instructions.set(nodeAt, new MethodInsnNode(INVOKESPECIAL, "micdoodle8/mods/galacticraft/core/entities/GCCorePlayerMP", "<init>", "(Lnet/minecraft/server/MinecraftServer;Laab;Ljava/lang/String;Ljd;)V"));
+
+	            			FMLLog.info("[BUKKIT] Successfully set method insertion node with owner \"" + map.get("playerMP") + "\" to \"micdoodle8/mods/galacticraft/core/entities/GCCorePlayerMP\" in method: " + methodnode.name);
 	            		}
 	            	}
 	            }
