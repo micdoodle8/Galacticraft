@@ -7,6 +7,7 @@ import static net.minecraftforge.common.ForgeDirection.WEST;
 
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.API.IOxygenReliantBlock;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityUnlitTorch;
@@ -21,6 +22,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -347,12 +349,26 @@ public class GCCoreBlockUnlitTorch extends BlockContainer implements IOxygenReli
 	@Override
 	public void onOxygenRemoved(World world, int x, int y, int z) 
 	{
-		world.setBlock(x, y, z, GCCoreBlocks.unlitTorch.blockID);
+		if (world.provider instanceof IGalacticraftWorldProvider)
+		{
+			world.setBlock(x, y, z, GCCoreBlocks.unlitTorch.blockID, world.getBlockMetadata(x, y, z), 2);
+		}
+		else
+		{
+			world.setBlock(x, y, z, Block.torchWood.blockID, world.getBlockMetadata(x, y, z), 2);
+		}
 	}
 
 	@Override
 	public void onOxygenAdded(World world, int x, int y, int z) 
 	{
-		world.setBlock(x, y, z, GCCoreBlocks.unlitTorchLit.blockID);
+		if (world.provider instanceof IGalacticraftWorldProvider)
+		{
+			world.setBlock(x, y, z, GCCoreBlocks.unlitTorchLit.blockID, world.getBlockMetadata(x, y, z), 2);
+		}
+		else
+		{
+			world.setBlock(x, y, z, Block.torchWood.blockID, world.getBlockMetadata(x, y, z), 2);
+		}
 	}
 }

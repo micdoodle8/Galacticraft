@@ -33,6 +33,8 @@ import universalelectricity.prefab.tile.TileEntityElectricityRunnable;
 
 import com.google.common.io.ByteArrayDataInput;
 
+import cpw.mods.fml.common.FMLLog;
+
 /**
  * Copyright 2012-2013, micdoodle8
  *
@@ -51,6 +53,8 @@ public class GCCoreTileEntityOxygenSealer extends TileEntityElectricityRunnable 
 	
     public boolean active;
 	private ItemStack[] containingItems = new ItemStack[1];
+	
+	private int disableCooldown = 20;
    	
 //   	public OxygenBubble bubble;
    	
@@ -82,6 +86,11 @@ public class GCCoreTileEntityOxygenSealer extends TileEntityElectricityRunnable 
 		
 		if (!this.worldObj.isRemote)
 		{
+			if (this.disableCooldown > 0)
+			{
+				this.disableCooldown--;
+			}
+			
 			if (this.timeSinceOxygenRequest > 0)
 			{
 				GCCoreTileEntityOxygenSealer.timeSinceOxygenRequest--;
@@ -447,7 +456,10 @@ public class GCCoreTileEntityOxygenSealer extends TileEntityElectricityRunnable 
 	@Override
 	public void setDisabled(boolean disabled) 
 	{
-		this.disabled = disabled;
+		if (this.disableCooldown == 0)
+		{
+			this.disabled = disabled;
+		}
 	}
 
 	@Override

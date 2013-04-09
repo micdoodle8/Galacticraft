@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import cpw.mods.fml.common.FMLLog;
+
 import micdoodle8.mods.galacticraft.API.IOxygenReliantBlock;
 import micdoodle8.mods.galacticraft.API.IPartialSealedBlock;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
@@ -79,14 +81,6 @@ public class OxygenPressureProtocol
                 this.airtight = false;
             }
         }
-        
-        if (vecAt.getBlockID(var1) != 0)
-        {
-        	if (Block.blocksList[vecAt.getBlockID(var1)] instanceof IOxygenReliantBlock)
-        	{
-        		this.oxygenReliantBlocks.add(vecAt);
-        	}
-        }
     }
 
     private void checkAtVec(World var1, Vector3 vec)
@@ -111,6 +105,13 @@ public class OxygenPressureProtocol
     			if (this.canBlockPass(var1, vec) && !this.isVisited(vec))
     			{
     				this.loopThrough(var1, vec.intX(), vec.intY(), vec.intZ(), var5 - 1);
+    			}
+    			
+    			int idAtVec = vec.getBlockID(var1);
+    			
+    			if (idAtVec != 0 && Block.blocksList[idAtVec] instanceof IOxygenReliantBlock)
+    			{
+    				this.oxygenReliantBlocks.add(vec);
     			}
     		}
     	}
@@ -160,6 +161,20 @@ public class OxygenPressureProtocol
                 }
             }
 
+            var6 = this.oxygenReliantBlocks.iterator();
+
+            while (var6.hasNext())
+            {
+                var7 = (Vector3)var6.next();
+                
+                Block block = Block.blocksList[var7.getBlockID(var1)];
+                
+                if (block != null && block instanceof IOxygenReliantBlock)
+                {
+                	((IOxygenReliantBlock) block).onOxygenAdded(var1, var7.intX(), var7.intY(), var7.intZ());
+                }
+            }
+
             var6 = this.checked.iterator();
 
             while (var6.hasNext())
@@ -179,20 +194,6 @@ public class OxygenPressureProtocol
                     }
 
                     var1.setBlock(var7.intX(), var7.intY(), var7.intZ(), GCCoreBlocks.breatheableAir.blockID, 0, 2);
-                }
-            }
-
-            var6 = this.oxygenReliantBlocks.iterator();
-
-            while (var6.hasNext())
-            {
-                var7 = (Vector3)var6.next();
-                
-                Block block = Block.blocksList[var7.getBlockID(var1)];
-                
-                if (block != null && block instanceof IOxygenReliantBlock)
-                {
-                	((IOxygenReliantBlock) block).onOxygenAdded(var1, var7.intX(), var7.intY(), var7.intZ());
                 }
             }
         }
