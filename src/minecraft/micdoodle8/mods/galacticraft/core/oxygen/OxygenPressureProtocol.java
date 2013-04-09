@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import micdoodle8.mods.galacticraft.API.IOxygenReliantBlock;
 import micdoodle8.mods.galacticraft.API.IPartialSealedBlock;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import net.minecraft.block.Block;
@@ -14,6 +15,7 @@ import universalelectricity.core.vector.Vector3;
 public class OxygenPressureProtocol
 {
     private LinkedList<Vector3> checked = new LinkedList<Vector3>();
+    private LinkedList<Vector3> oxygenReliantBlocks = new LinkedList<Vector3>();
     private boolean airtight;
     private static ArrayList<Integer> vanillaPermeableBlocks = new ArrayList<Integer>();
 
@@ -62,7 +64,9 @@ public class OxygenPressureProtocol
 
     private void loopThrough(World var1, int var2, int var3, int var4, int var5)
     {
-        this.checked.add(new Vector3(var2, var3, var4));
+    	Vector3 vecAt = new Vector3(var2, var3, var4);
+    	
+        this.checked.add(vecAt);
 
         if (this.touchingUnsealedBlock(var1, var2, var3, var4) && this.airtight)
         {
@@ -74,6 +78,14 @@ public class OxygenPressureProtocol
             {
                 this.airtight = false;
             }
+        }
+        
+        if (vecAt.getBlockID(var1) != 0)
+        {
+        	if (Block.blocksList[vecAt.getBlockID(var1)] instanceof IOxygenReliantBlock)
+        	{
+        		this.oxygenReliantBlocks.add(vecAt);
+        	}
         }
     }
 
@@ -116,6 +128,13 @@ public class OxygenPressureProtocol
     			if (this.isBreathableAir(var1, vec.intX(), vec.intY(), vec.intZ()) && !this.isVisited(vec))
     			{
     				this.checkAtVec(var1, vec);
+    			}
+    			
+    			int idAtVec = vec.getBlockID(var1);
+    			
+    			if (idAtVec != 0 && Block.blocksList[idAtVec] instanceof IOxygenReliantBlock)
+    			{
+    				this.oxygenReliantBlocks.add(vec);
     			}
     		}
     	}
@@ -162,9 +181,24 @@ public class OxygenPressureProtocol
                     var1.setBlock(var7.intX(), var7.intY(), var7.intZ(), GCCoreBlocks.breatheableAir.blockID, 0, 2);
                 }
             }
+
+            var6 = this.oxygenReliantBlocks.iterator();
+
+            while (var6.hasNext())
+            {
+                var7 = (Vector3)var6.next();
+                
+                Block block = Block.blocksList[var7.getBlockID(var1)];
+                
+                if (block != null && block instanceof IOxygenReliantBlock)
+                {
+                	((IOxygenReliantBlock) block).onOxygenAdded(var1, var7.intX(), var7.intY(), var7.intZ());
+                }
+            }
         }
 
         this.checked = new LinkedList();
+        this.oxygenReliantBlocks = new LinkedList();
         return this.airtight;
     }
 
@@ -227,6 +261,20 @@ public class OxygenPressureProtocol
             }
         }
 
+        var5 = this.oxygenReliantBlocks.iterator();
+
+        while (var5.hasNext())
+        {
+            var6 = (Vector3)var5.next();
+            
+            int idAt = var6.getBlockID(var1);
+
+            if (idAt != 0 && Block.blocksList[idAt] instanceof IOxygenReliantBlock)
+            {
+                ((IOxygenReliantBlock) Block.blocksList[idAt]).onOxygenRemoved(var1, var6.intX(), var6.intY(), var6.intZ());
+            }
+        }
+
         var5 = this.checked.iterator();
 
         while (var5.hasNext())
@@ -239,6 +287,7 @@ public class OxygenPressureProtocol
             }
         }
 
+        this.oxygenReliantBlocks = new LinkedList();
         this.checked = new LinkedList();
     }
 

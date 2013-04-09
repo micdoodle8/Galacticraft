@@ -7,6 +7,7 @@ import static net.minecraftforge.common.ForgeDirection.WEST;
 
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.API.IOxygenReliantBlock;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityUnlitTorch;
 import net.minecraft.block.Block;
@@ -29,7 +30,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  *  All rights reserved.
  *
  */
-public class GCCoreBlockUnlitTorch extends BlockContainer
+public class GCCoreBlockUnlitTorch extends BlockContainer implements IOxygenReliantBlock
 {
 	public boolean lit;
 	
@@ -168,25 +169,28 @@ public class GCCoreBlockUnlitTorch extends BlockContainer
     @Override
 	public void onBlockAdded(World par1World, int par2, int par3, int par4)
     {
-        if (par1World.isBlockSolidOnSide(par2 - 1, par3, par4, EAST, true))
+        if (par1World.getBlockMetadata(par2, par3, par4) == 0)
         {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 1, 2);
-        }
-        else if (par1World.isBlockSolidOnSide(par2 + 1, par3, par4, WEST, true))
-        {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 2, 2);
-        }
-        else if (par1World.isBlockSolidOnSide(par2, par3, par4 - 1, SOUTH, true))
-        {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 3, 2);
-        }
-        else if (par1World.isBlockSolidOnSide(par2, par3, par4 + 1, NORTH, true))
-        {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 4, 2);
-        }
-        else if (this.canPlaceTorchOn(par1World, par2, par3 - 1, par4))
-        {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 5, 2);
+            if (par1World.isBlockSolidOnSide(par2 - 1, par3, par4, EAST, true))
+            {
+                par1World.setBlockMetadataWithNotify(par2, par3, par4, 1, 2);
+            }
+            else if (par1World.isBlockSolidOnSide(par2 + 1, par3, par4, WEST, true))
+            {
+                par1World.setBlockMetadataWithNotify(par2, par3, par4, 2, 2);
+            }
+            else if (par1World.isBlockSolidOnSide(par2, par3, par4 - 1, SOUTH, true))
+            {
+                par1World.setBlockMetadataWithNotify(par2, par3, par4, 3, 2);
+            }
+            else if (par1World.isBlockSolidOnSide(par2, par3, par4 + 1, NORTH, true))
+            {
+                par1World.setBlockMetadataWithNotify(par2, par3, par4, 4, 2);
+            }
+            else if (this.canPlaceTorchOn(par1World, par2, par3 - 1, par4))
+            {
+                par1World.setBlockMetadataWithNotify(par2, par3, par4, 5, 2);
+            }
         }
 
         this.dropTorchIfCantStay(par1World, par2, par3, par4);
@@ -338,5 +342,17 @@ public class GCCoreBlockUnlitTorch extends BlockContainer
 	public TileEntity createNewTileEntity(World world) 
 	{
 		return new GCCoreTileEntityUnlitTorch();
+	}
+
+	@Override
+	public void onOxygenRemoved(World world, int x, int y, int z) 
+	{
+		world.setBlock(x, y, z, GCCoreBlocks.unlitTorch.blockID);
+	}
+
+	@Override
+	public void onOxygenAdded(World world, int x, int y, int z) 
+	{
+		world.setBlock(x, y, z, GCCoreBlocks.unlitTorchLit.blockID);
 	}
 }
