@@ -745,7 +745,7 @@ public class WorldUtil
           			switch (i)
           			{
           			case 0:
-          				var8.rocketStacks[i] = new ItemStack(GCCoreItems.fuelCanister, 1, var8.fuelDamage);
+          				var8.rocketStacks[i] = var8.fuelDamage > 0 ? new ItemStack(GCCoreItems.fuelCanister, 1, var8.fuelDamage) : null;
           				break;
           			case 25:
           				var8.rocketStacks[i] = type instanceof GCCoreOrbitTeleportType ? null : new ItemStack(GCCoreBlocks.landingPad, 9, 0);

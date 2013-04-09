@@ -4,8 +4,9 @@ import ic2.api.Direction;
 import ic2.api.energy.event.EnergyTileLoadEvent;
 import ic2.api.energy.tile.IEnergySink;
 import micdoodle8.mods.galacticraft.API.IFuelTank;
+import micdoodle8.mods.galacticraft.API.IFuelable;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -18,37 +19,42 @@ import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.liquids.LiquidContainerRegistry;
+import net.minecraftforge.liquids.LiquidDictionary;
+import net.minecraftforge.liquids.LiquidStack;
+import net.minecraftforge.liquids.LiquidTank;
 import universalelectricity.components.common.BasicComponents;
 import universalelectricity.core.electricity.ElectricityPack;
 import universalelectricity.core.item.ElectricItemHelper;
 import universalelectricity.core.item.IItemElectric;
 import universalelectricity.core.vector.Vector3;
-import universalelectricity.core.vector.VectorHelper;
+import universalelectricity.prefab.multiblock.TileEntityMulti;
 import universalelectricity.prefab.network.IPacketReceiver;
 import universalelectricity.prefab.network.PacketManager;
 import universalelectricity.prefab.tile.TileEntityElectricityRunnable;
 
 import com.google.common.io.ByteArrayDataInput;
 
-import cpw.mods.fml.common.FMLLog;
-
 public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable implements IInventory, ISidedInventory, IPacketReceiver, IEnergySink
 {
+	private int tankCapacity = 24000;
+	public LiquidTank fuelTank = new LiquidTank(tankCapacity);
+	
 	private ItemStack[] containingItems = new ItemStack[2];
 	public static final double WATTS_PER_TICK = 300;
 	private final int playersUsing = 0;
-	public GCCoreTileEntityLandingPad attachedLandingPad;
+	public IFuelable attachedFuelable;
 	public double ic2WattsReceived = 0;
 	private boolean initialized = false;
 	
-	public void transferFuelToSpaceship(EntitySpaceshipBase spaceship)
-	{
-		if (!this.worldObj.isRemote && (this.ic2WattsReceived > 0 || this.wattsReceived > 0) && this.getStackInSlot(1) != null && this.getStackInSlot(1).getItem() instanceof IFuelTank && this.getStackInSlot(1).getMaxDamage() - this.getStackInSlot(1).getItemDamage() != 0 && this.getStackInSlot(1).getItemDamage() < this.getStackInSlot(1).getMaxDamage())
-		{
-			spaceship.fuel += 1F;
-			this.getStackInSlot(1).setItemDamage(this.getStackInSlot(1).getItemDamage() + 1);
-		}
-	}
+//	public void transferFuelToSpaceship(EntitySpaceshipBase spaceship)
+//	{
+//		if (!this.worldObj.isRemote && (this.ic2WattsReceived > 0 || this.wattsReceived > 0) && this.getStackInSlot(1) != null && this.getStackInSlot(1).getItem() instanceof IFuelTank && this.getStackInSlot(1).getMaxDamage() - this.getStackInSlot(1).getItemDamage() != 0 && this.getStackInSlot(1).getItemDamage() < this.getStackInSlot(1).getMaxDamage())
+//		{
+//			spaceship.fuel += 1F;
+//			this.getStackInSlot(1).setItemDamage(this.getStackInSlot(1).getItemDamage() + 1);
+//		}
+//	}
 
 	@Override
 	public void updateEntity()
@@ -64,7 +70,7 @@ public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable im
 			
 			initialized = true;
 		}
-
+		
 		if (this.validStackInSlot())
 		{
 			this.wattsReceived += ElectricItemHelper.dechargeItem(this.getStackInSlot(0), GCCoreTileEntityFuelLoader.WATTS_PER_TICK, this.getVoltage());
@@ -73,16 +79,75 @@ public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable im
 		if (!this.worldObj.isRemote)
 		{
 			this.wattsReceived = Math.max(this.wattsReceived - GCCoreTileEntityFuelLoader.WATTS_PER_TICK / 4, 0);
-			
-			TileEntity pad = VectorHelper.getTileEntityFromSide(this.worldObj, new Vector3(this), ForgeDirection.getOrientation(this.getBlockMetadata() + 2).getOpposite());
-			
-			if (pad != null && pad instanceof GCCoreTileEntityLandingPad)
+
+			if (this.containingItems[1] != null && (this.ic2WattsReceived > 0 || this.wattsReceived > 0))
 			{
-				this.attachedLandingPad = (GCCoreTileEntityLandingPad) pad;
+				LiquidStack liquid = LiquidContainerRegistry.getLiquidForFilledItem(this.containingItems[1]);
+
+				if (liquid != null && LiquidDictionary.findLiquidName(liquid).equals("Fuel"))
+				{
+					if (this.fuelTank.getLiquid() == null || this.fuelTank.getLiquid().amount + liquid.amount <= this.fuelTank.getCapacity())
+					{
+						this.fuelTank.fill(liquid, true);
+						
+						if(liquid.itemID == GCCoreItems.fuel.itemID)
+						{
+							this.containingItems[1] = new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.oilCanister.getMaxDamage());
+						}
+						else 
+						{
+							this.containingItems[1].stackSize--;
+
+							if(this.containingItems[1].stackSize == 0)
+							{
+								this.containingItems[1] = null;
+							}
+						}
+					}
+				}
 			}
-			else
+			
+			if (this.attachedFuelable == null || this.ticks % 100 == 0)
 			{
-				this.attachedLandingPad = null;
+				for (ForgeDirection dir : ForgeDirection.values())
+				{
+					if (dir != ForgeDirection.UNKNOWN)
+					{
+						Vector3 vecAt = new Vector3(this);
+						vecAt = vecAt.modifyPositionFromSide(dir);
+						
+						TileEntity pad = vecAt.getTileEntity(this.worldObj);
+
+						if (pad != null && pad instanceof TileEntityMulti)
+						{
+							TileEntity mainTile = ((TileEntityMulti) pad).mainBlockPosition.getTileEntity(this.worldObj);
+							
+							if (mainTile != null && mainTile instanceof IFuelable)
+							{
+								this.attachedFuelable = (IFuelable) mainTile;
+								break;
+							}
+						}
+						else if (pad != null && pad instanceof IFuelable)
+						{
+							this.attachedFuelable = (IFuelable) pad;
+						}
+						else
+						{
+							this.attachedFuelable = null;
+						}
+					}
+				}
+			}
+			
+			if (this.attachedFuelable != null && (this.ic2WattsReceived > 0 || this.wattsReceived > 0))
+			{
+				LiquidStack liquid = this.fuelTank.getLiquid();
+
+				if (liquid != null && LiquidDictionary.findLiquidName(liquid).equals("Fuel"))
+				{
+					this.fuelTank.drain(this.attachedFuelable.addFuel(liquid, 1), true);
+				}
 			}
 
 			if (this.ticks % 3 == 0)

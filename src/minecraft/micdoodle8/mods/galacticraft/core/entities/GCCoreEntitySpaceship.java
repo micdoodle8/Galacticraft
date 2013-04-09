@@ -10,10 +10,13 @@ import java.util.List;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLaunchFlameFX;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLaunchSmokeFX;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityOxygenFX;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.moon.GCMoonConfigManager;
 import net.minecraft.client.Minecraft;
@@ -26,13 +29,22 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.INetworkManager;
+import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.liquids.LiquidDictionary;
+import net.minecraftforge.liquids.LiquidStack;
+import net.minecraftforge.liquids.LiquidTank;
 import universalelectricity.core.vector.Vector3;
+import universalelectricity.prefab.network.PacketManager;
+
+import com.google.common.io.ByteArrayDataInput;
+
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -44,11 +56,19 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInventory, IMissileLockable
 {
-    protected ItemStack[] cargoItems = new ItemStack[36];
+	private int tankCapacity = 2000;
+	public LiquidTank spaceshipFuelTank = new LiquidTank(tankCapacity);
+	
+    protected ItemStack[] cargoItems = new ItemStack[27];
 
     public IUpdatePlayerListBox rocketSoundUpdater;
 
     private int type;
+    
+    private GCCoreTileEntityLandingPad landingPad;
+
+    public int canisterToTankRatio = tankCapacity / GCCoreItems.fuelCanister.getMaxDamage();
+	public int canisterToLiquidStackRatio = GalacticraftCore.fuelStack.amount / GCCoreItems.fuelCanister.getMaxDamage();
 
     public GCCoreEntitySpaceship(World par1World)
     {
@@ -149,7 +169,7 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
 
         	if (this.timeSinceLaunch % MathHelper.floor_double(50 * (1 / multiplier)) == 0)
         	{
-        		this.fuel -= 1;
+        		this.removeFuel(null, 1);
         	}
         }
         else if (!this.hasFuelTank() && this.getLaunched() == 1 && !this.worldObj.isRemote)
@@ -159,11 +179,40 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
         		this.motionY -= Math.abs(Math.sin(this.timeSinceLaunch / 1000)) / 20;
         	}
         }
+        
+		if (!this.worldObj.isRemote && this.ticks % 3 == 0)
+		{
+			PacketManager.sendPacketToClients(this.getDescriptionPacket(), this.worldObj, new Vector3(this), 50);
+		}
     }
+    
+    public Packet getDescriptionPacket()
+	{
+		Packet p = GCCorePacketManager.getPacket(GalacticraftCore.CHANNEL, this, 0, 2000);
+		return p;
+	}
+
+	@Override
+	public void handlePacketData(INetworkManager network, int packetType, Packet250CustomPayload packet, EntityPlayer player, ByteArrayDataInput dataStream) 
+	{
+		try
+		{
+			if (this.worldObj.isRemote)
+			{
+				int id = dataStream.readInt();
+				int amount = dataStream.readInt();
+				this.spaceshipFuelTank.setLiquid(new LiquidStack(GCCoreItems.fuel.itemID, amount, 0));
+			}
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
 
     public boolean hasFuelTank()
     {
-    	return this.fuel > 0;
+    	return !(this.spaceshipFuelTank.getLiquid() == null || this.spaceshipFuelTank.getLiquid().amount == 0);
     }
 
     @Override
@@ -181,7 +230,7 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
     	{
     		playerBase.rocketStacks = this.cargoItems;
     		playerBase.rocketType = this.getSpaceshipType();
-    		playerBase.fuelDamage = this.fuel;
+    		playerBase.fuelDamage = this.spaceshipFuelTank.getLiquid() == null ? 0 : this.spaceshipFuelTank.getLiquid().amount / this.canisterToLiquidStackRatio;
         }
     }
 
@@ -248,6 +297,8 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
 
             par1NBTTagCompound.setTag("Items", var2);
         }
+        
+    	par1NBTTagCompound.setInteger("fuelLiquid", this.spaceshipFuelTank.getLiquid() == null ? 0 : this.spaceshipFuelTank.getLiquid().amount);
     }
 
     @Override
@@ -273,6 +324,8 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
                 }
             }
         }
+        
+        this.spaceshipFuelTank.setLiquid(new LiquidStack(GCCoreItems.fuel.itemID, par1NBTTagCompound.getInteger("fuelLiquid"), 0));
     }
 
 	@Override
@@ -507,4 +560,53 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
 	{
 		return new Vector3(this);
 	}
+
+	@Override
+	public int addFuel(LiquidStack liquid, int amount) 
+	{
+		LiquidStack liquidInTank = this.spaceshipFuelTank.getLiquid();
+		
+		if (liquid != null && LiquidDictionary.findLiquidName(liquid).equals("Fuel"))
+		{
+			if (liquidInTank == null || liquidInTank.amount + liquid.amount <= this.spaceshipFuelTank.getCapacity())
+			{
+				return this.spaceshipFuelTank.fill(liquid, true);
+			}
+		}
+		
+		return 0;
+	}
+
+	@Override
+	public LiquidStack removeFuel(LiquidStack liquid, int amount) 
+	{
+		if (liquid == null)
+		{
+			return this.spaceshipFuelTank.drain(amount, true);
+		}
+		
+		return null;
+	}
+
+	@Override
+	public void onPadDestroyed() 
+	{
+		if (!this.isDead && !this.launched)
+		{
+			this.dropShipAsItem();
+			this.setDead();
+		}
+	}
+
+	@Override
+    public void setLandingPad(GCCoreTileEntityLandingPad pad)
+    {
+    	this.landingPad = pad;
+    }
+
+	@Override
+    public GCCoreTileEntityLandingPad getLandingPad()
+    {
+    	return this.landingPad;
+    }
 }

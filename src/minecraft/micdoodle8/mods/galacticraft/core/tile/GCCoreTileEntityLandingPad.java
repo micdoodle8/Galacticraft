@@ -3,20 +3,28 @@ package micdoodle8.mods.galacticraft.core.tile;
 import java.util.HashSet;
 import java.util.List;
 
+import micdoodle8.mods.galacticraft.API.IDockable;
+import micdoodle8.mods.galacticraft.API.IFuelable;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
-import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraftforge.liquids.LiquidDictionary;
+import net.minecraftforge.liquids.LiquidStack;
+import net.minecraftforge.liquids.LiquidTank;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.multiblock.IMultiBlock;
 import universalelectricity.prefab.multiblock.TileEntityMulti;
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLLog;
 
-public class GCCoreTileEntityLandingPad extends TileEntityMulti implements IMultiBlock
+public class GCCoreTileEntityLandingPad extends TileEntityMulti implements IMultiBlock, IFuelable
 {
+	private int tankCapacity = 2000;
+	public LiquidTank landingPadFuelTank = new LiquidTank(tankCapacity);
+	
 	protected long ticks = 0;
-	private EntitySpaceshipBase spaceshipOnPad;
+	private IDockable dockedEntity;
 	public HashSet<TileEntity> connectedTiles = new HashSet<TileEntity>();
 	
 	@Override
@@ -57,19 +65,19 @@ public class GCCoreTileEntityLandingPad extends TileEntityMulti implements IMult
 				}
 			}
 			
-			List list = this.worldObj.getEntitiesWithinAABB(EntitySpaceshipBase.class, AxisAlignedBB.getAABBPool().getAABB(this.xCoord - 0.5D, this.yCoord, this.zCoord - 0.5D, this.xCoord + 0.5D, this.yCoord + 5, this.zCoord + 0.5D));
+			List list = this.worldObj.getEntitiesWithinAABB(IFuelable.class, AxisAlignedBB.getAABBPool().getAABB(this.xCoord - 0.5D, this.yCoord, this.zCoord - 0.5D, this.xCoord + 0.5D, this.yCoord + 5, this.zCoord + 0.5D));
 			
 			boolean changed = false;
 			
 			for (Object o : list)
 			{
-				if (o != null && o instanceof EntitySpaceshipBase && !this.worldObj.isRemote)
+				if (o != null && o instanceof IDockable && !this.worldObj.isRemote)
 				{
-					EntitySpaceshipBase spaceship = (EntitySpaceshipBase) o;
+					IDockable fuelable = (IDockable) o;
 					
-					this.spaceshipOnPad = spaceship;
+					this.dockedEntity = fuelable;
 					
-					this.spaceshipOnPad.setLandingPad(this);
+					this.dockedEntity.setLandingPad(this);
 					
 					changed = true;
 				}
@@ -77,7 +85,17 @@ public class GCCoreTileEntityLandingPad extends TileEntityMulti implements IMult
 			
 			if (!changed)
 			{
-				this.spaceshipOnPad = null;
+				this.dockedEntity = null;
+			}
+			
+			if (this.dockedEntity != null)
+			{
+				LiquidStack liquid = this.landingPadFuelTank.getLiquid();
+
+				if (liquid != null && LiquidDictionary.findLiquidName(liquid).equals("Fuel"))
+				{
+					this.removeFuel(null, this.dockedEntity.addFuel(liquid, 1));
+				}
 			}
 		}
 	}
@@ -128,11 +146,37 @@ public class GCCoreTileEntityLandingPad extends TileEntityMulti implements IMult
 			}
 		}
 		
-		if (this.spaceshipOnPad != null && !this.spaceshipOnPad.isDead && !this.spaceshipOnPad.launched)
+		if (this.dockedEntity != null)
 		{
-			this.spaceshipOnPad.dropShipAsItem();
-			this.spaceshipOnPad.setDead();
-			this.spaceshipOnPad = null;
+			this.dockedEntity.onPadDestroyed();
+			this.dockedEntity = null;
 		}
+	}
+
+	@Override
+	public int addFuel(LiquidStack liquid, int amount) 
+	{
+		LiquidStack liquidInTank = this.landingPadFuelTank.getLiquid();
+		
+		if (liquid != null && LiquidDictionary.findLiquidName(liquid).equals("Fuel"))
+		{
+			if (liquidInTank == null || liquidInTank.amount + liquid.amount <= this.landingPadFuelTank.getCapacity())
+			{
+				return this.landingPadFuelTank.fill(liquid, true);
+			}
+		}
+		
+		return 0;
+	}
+
+	@Override
+	public LiquidStack removeFuel(LiquidStack liquid, int amount) 
+	{
+		if (liquid == null)
+		{
+			return this.landingPadFuelTank.drain(amount, true);
+		}
+		
+		return null;
 	}
 }

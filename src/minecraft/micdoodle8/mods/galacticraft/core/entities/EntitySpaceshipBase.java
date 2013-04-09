@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import micdoodle8.mods.galacticraft.API.IDockable;
 import micdoodle8.mods.galacticraft.API.IExitHeight;
 import micdoodle8.mods.galacticraft.API.IOrbitDimension;
 import micdoodle8.mods.galacticraft.API.ISpaceship;
@@ -44,7 +45,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, IPacketReceiver, IMissileLockable
+public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, IPacketReceiver, IMissileLockable, IDockable
 {
 	protected long ticks = 0;
 	
@@ -55,13 +56,9 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
     public boolean launched;
 
     public float timeSinceLaunch;
-    
-    public int fuel;
-    
-    private GCCoreTileEntityLandingPad landingPad;
 
     public float rumble;
-
+    
     public EntitySpaceshipBase(World par1World)
     {
         super(par1World);
@@ -70,16 +67,6 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
         this.yOffset = this.height / 2.0F;
         this.ignoreFrustumCheck = true;
         this.renderDistanceWeight = 5.0D;
-    }
-    
-    public void setLandingPad(GCCoreTileEntityLandingPad pad)
-    {
-    	this.landingPad = pad;
-    }
-    
-    public GCCoreTileEntityLandingPad getLandingPad()
-    {
-    	return this.landingPad;
     }
     
     public abstract int getMaxFuel();
@@ -214,7 +201,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
 		
     	super.onUpdate();
     	
-    	if (!this.worldObj.isRemote && this.ticks % 20 == 0 && this.getLandingPad() != null && this.getLandingPad().connectedTiles != null)
+    	if (!this.worldObj.isRemote && this.getLandingPad() != null && this.getLandingPad().connectedTiles != null)
     	{
     		for (TileEntity tile : this.getLandingPad().connectedTiles)
     		{
@@ -228,14 +215,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
         			{
         				GCCoreTileEntityFuelLoader loader = (GCCoreTileEntityFuelLoader) tile;
         				
-        				if (!this.launched && loader.getStackInSlot(1) != null)
-        				{
-        					if (this.fuel < this.getMaxFuel())
-        					{
-        						loader.transferFuelToSpaceship(this);
-        					}
-        				}
-        				else if (this.launched)
+        				if (this.launched)
         				{
         					this.setLandingPad(null);
         				}
@@ -423,34 +403,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
         this.prevPosX = this.posX;
         this.prevPosY = this.posY;
         this.prevPosZ = this.posZ;
-
-		if (!this.worldObj.isRemote && this.ticks % 5 == 0)
-		{
-			PacketManager.sendPacketToClients(this.getDescriptionPacket(), this.worldObj, new Vector3(this), 50);
-		}
     }
-
-	public Packet getDescriptionPacket()
-	{
-		Packet p = GCCorePacketManager.getPacket(GalacticraftCore.CHANNEL, this, this.fuel);
-		return p;
-	}
-
-	@Override
-	public void handlePacketData(INetworkManager network, int packetType, Packet250CustomPayload packet, EntityPlayer player, ByteArrayDataInput dataStream) 
-	{
-		try
-		{
-			if (this.worldObj.isRemote)
-			{
-				this.fuel = dataStream.readInt();
-			}
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-	}
 
     public void turnYaw (float f)
     {
@@ -481,7 +434,6 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
 	@SideOnly(Side.CLIENT)
     public void setPositionAndRotation2(double par1, double par3, double par5, float par7, float par8, int par9)
     {
-//    	super.setPositionAndRotation2(par1, par3, par5, par7, par8, par9);
     	this.setRotation(par7, par8);
     }
 
@@ -491,7 +443,6 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
     	par1NBTTagCompound.setBoolean("launched", this.launched);
     	par1NBTTagCompound.setInteger("timeUntilLaunch", this.timeUntilLaunch);
     	par1NBTTagCompound.setInteger("ignite", this.ignite);
-    	par1NBTTagCompound.setInteger("fuel", this.fuel);
     }
 
     @Override
@@ -508,7 +459,6 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
 		}
 		this.timeUntilLaunch = par1NBTTagCompound.getInteger("timeUntilLaunch");
 		this.ignite = par1NBTTagCompound.getInteger("ignite");
-		this.fuel = par1NBTTagCompound.getInteger("fuel");
     }
 
     @Override

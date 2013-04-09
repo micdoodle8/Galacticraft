@@ -1,10 +1,13 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpaceship;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerRocketRefill;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.liquids.LiquidStack;
 
 import org.lwjgl.opengl.GL11;
 
@@ -60,7 +63,8 @@ public class GCCoreGuiRocketRefill extends GuiContainer
 
         if (this.mc.thePlayer != null && this.mc.thePlayer.ridingEntity != null && this.mc.thePlayer.ridingEntity instanceof GCCoreEntitySpaceship)
         {
-    		final float fuelLevel = ((GCCoreEntitySpaceship) this.mc.thePlayer.ridingEntity).fuel / 60.0F * 1000.0F;
+        	LiquidStack liquid = ((GCCoreEntitySpaceship) this.mc.thePlayer.ridingEntity).spaceshipFuelTank.getLiquid();
+    		final float fuelLevel = (liquid == null ? 0 : (liquid.amount / (GalacticraftCore.fuelStack.amount / GCCoreItems.fuelCanister.getMaxDamage() + 1))) / 60.0F * 1000.0F;
 
             this.fontRenderer.drawString("" + Math.round(fuelLevel) / 10.0D + "%", 109, this.ySize - ((GCCoreEntitySpaceship) this.mc.thePlayer.ridingEntity).getSpaceshipType() != 0 + offset ? 20 + offset : 111, 4210752);
         }
@@ -92,7 +96,9 @@ public class GCCoreGuiRocketRefill extends GuiContainer
 
         if (this.mc.thePlayer != null && this.mc.thePlayer.ridingEntity != null && this.mc.thePlayer.ridingEntity instanceof GCCoreEntitySpaceship)
         {
-    		final int fuelLevel = ((GCCoreEntitySpaceship) this.mc.thePlayer.ridingEntity).fuel;
+        	LiquidStack liquid = ((GCCoreEntitySpaceship) this.mc.thePlayer.ridingEntity).spaceshipFuelTank.getLiquid();
+
+    		final int fuelLevel = (liquid == null ? 0 : liquid.amount / ((GalacticraftCore.fuelStack.amount / GCCoreItems.fuelCanister.getMaxDamage() + 1)));
 
             this.drawTexturedModalRect(var5 + 74, var6 + 41 - fuelLevel / 2, 176, 0, 30, fuelLevel / 2);
         }

@@ -263,13 +263,6 @@ public class GCCorePacketHandlerClient implements IPacketHandler
         }
         else if (packetType == 15)
         {
-            final Class[] decodeAs = {Integer.class};
-            final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
-            
-        	if (player.ridingEntity != null && player.ridingEntity instanceof EntitySpaceshipBase)
-        	{
-        		((EntitySpaceshipBase) player.ridingEntity).fuel = (Integer) packetReadout[0];
-        	}
         }
         else if (packetType == 16)
         {
