@@ -93,7 +93,7 @@ public class GCCorePacketHandlerServer implements IPacketHandler
             	}
             	catch (Exception e)
             	{
-            		FMLLog.severe("Not matching world names found for " + (String)packetReadout[0]);
+            		FMLLog.severe("Error occurred when attempting to transfer entity to dimension: " + (String)packetReadout[0]);
             		e.printStackTrace();
             	}
             }
