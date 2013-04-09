@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.moon.dimension;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.API.ISolarLevel;
 import micdoodle8.mods.galacticraft.moon.GCMoonConfigManager;
 import micdoodle8.mods.galacticraft.moon.wgen.GCMoonChunkProvider;
 import micdoodle8.mods.galacticraft.moon.wgen.GCMoonWorldChunkManager;
@@ -19,7 +20,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  *  All rights reserved.
  *
  */
-public class GCMoonWorldProvider extends WorldProvider implements IGalacticraftWorldProvider
+public class GCMoonWorldProvider extends WorldProvider implements IGalacticraftWorldProvider, ISolarLevel
 {
     private final float[] colorsSunriseSunset = new float[4];
 
@@ -235,5 +236,11 @@ public class GCMoonWorldProvider extends WorldProvider implements IGalacticraftW
 	public double getFuelUsageMultiplier()
 	{
 		return 0.7D;
+	}
+
+	@Override
+	public double getSolorEnergyMultiplier() 
+	{
+		return 1.4D;
 	}
 }
