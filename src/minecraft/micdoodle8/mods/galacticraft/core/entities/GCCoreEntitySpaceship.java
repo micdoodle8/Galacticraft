@@ -221,7 +221,7 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
 	@Override
 	public int getSizeInventory()
 	{
-		return 28;
+		return 27;
 	}
 
     @Override

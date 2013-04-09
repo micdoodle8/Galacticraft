@@ -81,7 +81,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
     public float astronomyPoints;
 
-    public ItemStack[] rocketStacks = new ItemStack[28];
+    public ItemStack[] rocketStacks = new ItemStack[27];
     public int rocketType;
     public int fuelDamage;
 
@@ -1058,7 +1058,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
         final int var9b = MathHelper.floor_double(par1Entity.posX);
       	final int var11b = MathHelper.floor_double(par1Entity.posZ);
 
-      	for (int i = 0; i < 28; i++)
+      	for (int i = 0; i < 27; i++)
       	{
       		if (this.rocketStacks[i] == null)
       		{
@@ -1130,7 +1130,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
         }
 
         final NBTTagList var23 = par1NBTTagCompound.getTagList("RocketItems");
-        this.rocketStacks = new ItemStack[28];
+        this.rocketStacks = new ItemStack[27];
 
         for (int var3 = 0; var3 < var23.tagCount(); ++var3)
         {

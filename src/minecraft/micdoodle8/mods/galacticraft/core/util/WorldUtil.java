@@ -578,8 +578,6 @@ public class WorldUtil
                 }
                 
                 ITeleportType type = GalacticraftRegistry.getTeleportTypeForDimension(var6.provider.getClass());
-                
-                FMLLog.info("" + var6.provider);
 
                 if (type != null)
                 {
@@ -740,7 +738,7 @@ public class WorldUtil
         {
             var8 = (GCCorePlayerMP)var1;
             
-          	for (int i = 0; i < 28; i++)
+          	for (int i = 0; i < 27; i++)
           	{
           		if (var8.rocketStacks[i] == null)
           		{

@@ -38,7 +38,7 @@ public class GCCoreEntityParaChest extends Entity
 	protected void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
 	{
         final NBTTagList var2 = par1NBTTagCompound.getTagList("Items");
-        this.cargo = new ItemStack[28];
+        this.cargo = new ItemStack[27];
 
         for (int var3 = 0; var3 < var2.tagCount(); ++var3)
         {
@@ -138,7 +138,10 @@ public class GCCoreEntityParaChest extends Entity
 
 			for (int i = 0; i < this.cargo.length; i++)
 			{
-				chest.setInventorySlotContents(i, this.cargo[i]);
+				if (i < chest.getSizeInventory())
+				{
+					chest.setInventorySlotContents(i, this.cargo[i]);
+				}
 			}
 
 			return true;
