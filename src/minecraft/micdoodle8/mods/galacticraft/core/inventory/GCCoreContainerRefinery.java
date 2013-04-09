@@ -1,14 +1,14 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
 import micdoodle8.mods.galacticraft.API.IRefinableItem;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityRefinery;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
-import net.minecraft.inventory.SlotFurnace;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraftforge.liquids.LiquidContainerRegistry;
 import universalelectricity.core.item.IItemElectric;
 import universalelectricity.prefab.SlotSpecific;
 
@@ -91,7 +91,7 @@ public class GCCoreContainerRefinery extends Container
 						return null;
 					}
 				}
-				else if (FurnaceRecipes.smelting().getSmeltingResult(var4) != null)
+				else if (LiquidContainerRegistry.isLiquid(var4) || LiquidContainerRegistry.containsLiquid(var4, GalacticraftCore.oilStack))
 				{
 					if (!this.mergeItemStack(var4, 1, 2, false))
 					{
