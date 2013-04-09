@@ -160,7 +160,7 @@ public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable im
 	@Override
 	public Packet getDescriptionPacket()
 	{
-		return PacketManager.getPacket(BasicComponents.CHANNEL, this, this.wattsReceived, this.disabledTicks, this.ic2WattsReceived);
+		return PacketManager.getPacket(BasicComponents.CHANNEL, this, this.wattsReceived, this.disabledTicks, this.ic2WattsReceived, this.fuelTank.getLiquid() == null ? 0 : this.fuelTank.getLiquid().amount);
 	}
 
 	@Override
@@ -170,9 +170,11 @@ public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable im
 		{
 			if (this.worldObj.isRemote)
 			{
-				this.wattsReceived = dataStream.readInt();
+				this.wattsReceived = dataStream.readDouble();
 				this.disabledTicks = dataStream.readInt();
 				this.ic2WattsReceived = dataStream.readDouble();
+				int amount = dataStream.readInt();
+				this.fuelTank.setLiquid(new LiquidStack(GCCoreItems.fuel.itemID, amount, 0));
 			}
 		}
 		catch (Exception e)

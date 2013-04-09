@@ -17,8 +17,8 @@ public class GCCoreContainerFuelLoader extends Container
     public GCCoreContainerFuelLoader(InventoryPlayer par1InventoryPlayer, GCCoreTileEntityFuelLoader fuelLoader)
     {
     	this.fuelLoader = fuelLoader;
-		this.addSlotToContainer(new SlotSpecific(fuelLoader, 0, 55, 54, IItemElectric.class));
-		this.addSlotToContainer(new SlotSpecific(fuelLoader, 1, 55, 27, IFuelTank.class));
+		this.addSlotToContainer(new SlotSpecific(fuelLoader, 0, 51, 55, IItemElectric.class));
+		this.addSlotToContainer(new Slot(fuelLoader, 1, 7, 12));
 
         int var6;
         int var7;
