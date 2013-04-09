@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import cpw.mods.fml.common.FMLLog;
-
 import micdoodle8.mods.galacticraft.API.IOxygenReliantBlock;
 import micdoodle8.mods.galacticraft.API.IPartialSealedBlock;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenSealer;
 import net.minecraft.block.Block;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.core.vector.Vector3;
@@ -112,6 +112,13 @@ public class OxygenPressureProtocol
     			if (idAtVec != 0 && Block.blocksList[idAtVec] instanceof IOxygenReliantBlock)
     			{
     				this.oxygenReliantBlocks.add(vec);
+    			}
+    			
+    			TileEntity tileAtVec = vec.getTileEntity(var1);
+    			
+    			if (tileAtVec != null && tileAtVec instanceof GCCoreTileEntityOxygenSealer)
+    			{
+    				var5 += (((GCCoreTileEntityOxygenSealer) tileAtVec).power * 4);
     			}
     		}
     	}
