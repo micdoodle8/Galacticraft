@@ -14,6 +14,8 @@ import micdoodle8.mods.galacticraft.API.IMapPlanet;
 import micdoodle8.mods.galacticraft.API.IOrbitDimension;
 import micdoodle8.mods.galacticraft.API.ISpaceship;
 import micdoodle8.mods.galacticraft.API.ITeleportType;
+import micdoodle8.mods.galacticraft.API.SpaceStationRecipe;
+import micdoodle8.mods.galacticraft.API.SpaceStationType;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
@@ -847,5 +849,22 @@ public class WorldUtil
         }
 
         var1.isDead = false;
+    }
+    
+    public static SpaceStationRecipe getSpaceStationRecipe(int planetID)
+    {
+    	Iterator i = GalacticraftRegistry.getSpaceStationData().keySet().iterator();
+    	
+    	while (i.hasNext())
+    	{
+    		Integer type = (Integer) i.next();
+    		
+    		if (type != null && type == planetID)
+    		{
+    			return GalacticraftRegistry.getSpaceStationData().get(type).getRecipeForSpaceStation();
+    		}
+    	}
+    	
+    	return null;
     }
 }

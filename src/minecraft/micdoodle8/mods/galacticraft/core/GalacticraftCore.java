@@ -16,6 +16,8 @@ import micdoodle8.mods.galacticraft.API.IGalaxy;
 import micdoodle8.mods.galacticraft.API.IMapPlanet;
 import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
 import micdoodle8.mods.galacticraft.API.SchematicRegistry;
+import micdoodle8.mods.galacticraft.API.SpaceStationRecipe;
+import micdoodle8.mods.galacticraft.API.SpaceStationType;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.client.GCCorePlayerSP;
 import micdoodle8.mods.galacticraft.core.command.GCCoreCommandSpaceStationAddOwner;
@@ -66,6 +68,7 @@ import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.moon.GalacticraftMoon;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.WorldProviderSurface;
 import net.minecraftforge.common.DimensionManager;
@@ -250,7 +253,13 @@ public class GalacticraftCore
 		
 		GalacticraftRegistry.registerTeleportType(WorldProviderSurface.class, new GCCoreOverworldTeleportType());
 		GalacticraftRegistry.registerTeleportType(GCCoreWorldProvider.class, new GCCoreOrbitTeleportType());
-
+		
+		HashMap<Object, Integer> inputMap = new HashMap<Object, Integer>();
+		inputMap.put("ingotTin", 16);
+		inputMap.put("ingotSteel", 8);
+		inputMap.put("ingotIron", 12);
+		GalacticraftRegistry.registerSpaceStation(new SpaceStationType(GCCoreConfigManager.idDimensionOverworldOrbit, "Overworld", 0, new SpaceStationRecipe(inputMap)));
+		
 		if (GCCoreConfigManager.enableBCLoading)
 		{
 			BasicComponents.register(this);

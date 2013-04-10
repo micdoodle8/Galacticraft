@@ -423,6 +423,7 @@ public class RecipeUtil
 		return null;
 	}
     
+	@Deprecated
     public static List<ItemStack> getStandardSpaceStationRequirements()
     {
     	List<ItemStack> stacks = new ArrayList<ItemStack>();
@@ -433,4 +434,6 @@ public class RecipeUtil
     	
     	return stacks;
     }
+	
+//	public static 
 }

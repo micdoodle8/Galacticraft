@@ -256,31 +256,36 @@ public class GCCorePacketHandlerServer implements IPacketHandler
         }
         else if (packetType == 15)
         {
+            final Class[] decodeAs = {Integer.class};
+            final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
+            
         	if (playerBase.spaceStationDimensionID == -1 || playerBase.spaceStationDimensionID == 0)
         	{
             	WorldUtil.bindSpaceStationToNewDimension(playerBase.worldObj, playerBase);
             	
-            	for (ItemStack stack : RecipeUtil.getStandardSpaceStationRequirements())
-            	{
-            		int amountToRemove = stack.stackSize;
-            		
-            		for (ItemStack stack2 : playerBase.inventory.mainInventory)
-            		{
-            			if (stack != null && stack2 != null && stack.itemID == stack2.itemID && stack.getItemDamage() == stack2.getItemDamage())
-            			{
-            				if (stack2.stackSize > amountToRemove)
-            				{
-            					stack2.stackSize -= amountToRemove;
-            					break;
-            				}
-            				else if (stack2.stackSize <= amountToRemove)
-            				{
-            					amountToRemove -= stack2.stackSize;
-            					stack2.stackSize = 0;
-            				}
-            			}
-            		}
-            	}
+            	WorldUtil.getSpaceStationRecipe((Integer) packetReadout[0]).matches(playerBase, true);
+            	
+//            	for (ItemStack stack : RecipeUtil.getStandardSpaceStationRequirements())
+//            	{
+//            		int amountToRemove = stack.stackSize;
+//            		
+//            		for (ItemStack stack2 : playerBase.inventory.mainInventory)
+//            		{
+//            			if (stack != null && stack2 != null && stack.itemID == stack2.itemID && stack.getItemDamage() == stack2.getItemDamage())
+//            			{
+//            				if (stack2.stackSize > amountToRemove)
+//            				{
+//            					stack2.stackSize -= amountToRemove;
+//            					break;
+//            				}
+//            				else if (stack2.stackSize <= amountToRemove)
+//            				{
+//            					amountToRemove -= stack2.stackSize;
+//            					stack2.stackSize = 0;
+//            				}
+//            			}
+//            		}
+//            	}
         	}
         }
         else if (packetType == 16)
