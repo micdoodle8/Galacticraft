@@ -68,7 +68,7 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
     private GCCoreTileEntityLandingPad landingPad;
 
     public int canisterToTankRatio = tankCapacity / GCCoreItems.fuelCanister.getMaxDamage();
-	public int canisterToLiquidStackRatio = GalacticraftCore.fuelStack.amount / GCCoreItems.fuelCanister.getMaxDamage();
+	public double canisterToLiquidStackRatio = (double)GalacticraftCore.fuelStack.amount / (double)GCCoreItems.fuelCanister.getMaxDamage();
 
     public GCCoreEntitySpaceship(World par1World)
     {
@@ -188,7 +188,7 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
     
     public Packet getDescriptionPacket()
 	{
-		Packet p = GCCorePacketManager.getPacket(GalacticraftCore.CHANNEL, this, 0, 2000);
+		Packet p = GCCorePacketManager.getPacket(GalacticraftCore.CHANNEL, this, 0, this.spaceshipFuelTank.getLiquid() == null ? 0 : this.spaceshipFuelTank.getLiquid().amount);
 		return p;
 	}
 
@@ -230,7 +230,7 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
     	{
     		playerBase.rocketStacks = this.cargoItems;
     		playerBase.rocketType = this.getSpaceshipType();
-    		playerBase.fuelDamage = this.spaceshipFuelTank.getLiquid() == null ? 0 : this.spaceshipFuelTank.getLiquid().amount / this.canisterToLiquidStackRatio;
+    		playerBase.fuelDamage = this.spaceshipFuelTank.getLiquid() == null ? 0 : this.spaceshipFuelTank.getLiquid().amount / (int)this.canisterToLiquidStackRatio;
         }
     }
 
@@ -546,7 +546,7 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
 	@Override
 	public int getMaxFuel() 
 	{
-		return 60;
+		return this.spaceshipFuelTank.getCapacity();
 	}
 
 	@Override
