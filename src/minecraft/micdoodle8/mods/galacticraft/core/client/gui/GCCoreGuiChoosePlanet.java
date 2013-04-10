@@ -5,12 +5,14 @@ import java.util.List;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
+import micdoodle8.mods.galacticraft.API.SpaceStationRecipe;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.client.GCCorePlayerSP;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -660,9 +662,17 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
         	}
         	break;
         case 2:
-        	if (par1GuiButton.enabled && this.hasCorrectMaterials(this.mc.thePlayer, RecipeUtil.getStandardSpaceStationRequirements()))
+    		String dimension = this.destinations[this.selectedSlot];
+        	WorldProvider provider = WorldUtil.getProviderForName(dimension);
+        	if (provider == null)
         	{
-                final Object[] toSend = {this.destinations[this.selectedSlot]};
+        		throw new NullPointerException("Could not find world provider for dimension: " + dimension);
+        	}
+    		final Integer dim = provider.dimensionId;
+    		SpaceStationRecipe recipe = WorldUtil.getSpaceStationRecipe(dim);
+        	if (par1GuiButton.enabled && recipe.matches(playerToSend, false)/*this.hasCorrectMaterials(this.mc.thePlayer, RecipeUtil.getStandardSpaceStationRequirements())*/)
+        	{
+                final Object[] toSend = {dim};
                 PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 15, toSend));
                 par1GuiButton.enabled = false;
                 return;

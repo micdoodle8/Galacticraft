@@ -37,7 +37,7 @@ public class GCCoreGuiAirCollector extends GuiContainer
         this.fontRenderer.drawString("In:", 90, 31, 4210752);
         String status = "Status: " + this.getStatus();
         this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 50, 4210752);
-        status = "Oxygen: " + this.distributorInv.getGas(EnumGas.OXYGEN);
+        status = "Oxygen: " + this.distributorInv.getPower();
         this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 60, 4210752);
         status = ElectricityDisplay.getDisplay(this.distributorInv.WATTS_PER_TICK * 20, ElectricUnit.WATT);
         this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 70, 4210752);
@@ -48,7 +48,7 @@ public class GCCoreGuiAirCollector extends GuiContainer
     
     private String getStatus()
     {
-    	if (this.distributorInv.getGas(EnumGas.OXYGEN) > 1 && this.distributorInv.wattsReceived > 0)
+    	if (this.distributorInv.getPower() > 1 && this.distributorInv.wattsReceived > 0)
     	{
     		return EnumColor.DARK_GREEN + "Active";
     	}
@@ -58,7 +58,7 @@ public class GCCoreGuiAirCollector extends GuiContainer
     		return EnumColor.DARK_RED + "Not Enough Power";
     	}
     	
-    	if (this.distributorInv.getGas(EnumGas.OXYGEN) < 1)
+    	if (this.distributorInv.getPower() < 1)
     	{
     		return EnumColor.DARK_RED + "Not Enough Leaf Blocks";
     	}
@@ -77,7 +77,7 @@ public class GCCoreGuiAirCollector extends GuiContainer
 
 		if (this.distributorInv != null)
 		{
-			int scale = (int) ((double) this.distributorInv.getGas(EnumGas.OXYGEN) / (double) 50 * 54);
+			int scale = (int) ((double) this.distributorInv.getPower() / (double) 50 * 54);
 			this.drawTexturedModalRect(var5 + 108, var6 + 26, 176, 0, Math.min(scale, 54), 16);
 		}
 	}

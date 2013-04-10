@@ -4,13 +4,13 @@ import ic2.api.Direction;
 import ic2.api.energy.event.EnergyTileLoadEvent;
 import ic2.api.energy.tile.IEnergySink;
 import mekanism.api.EnumGas;
+import mekanism.api.GasTransmission;
 import mekanism.api.IGasAcceptor;
 import mekanism.api.IGasStorage;
 import mekanism.api.ITubeConnection;
 import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.oxygen.OxygenNetwork;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.entity.player.EntityPlayer;
@@ -40,7 +40,7 @@ import com.google.common.io.ByteArrayDataInput;
 
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-public class GCCoreTileEntityOxygenCollector extends TileEntityElectricityRunnable implements IGasStorage, ITubeConnection, IInventory, IPacketReceiver, ISidedInventory, IEnergySink
+public class GCCoreTileEntityOxygenCollector extends TileEntityElectricityRunnable implements ITubeConnection, IInventory, IPacketReceiver, ISidedInventory, IEnergySink
 {
     public boolean active;
    	
@@ -48,9 +48,9 @@ public class GCCoreTileEntityOxygenCollector extends TileEntityElectricityRunnab
 
 	private final int playersUsing = 0;
 	
-	public int storedOxygen;
+	public double power;
 	
-	public int MAX_OXYGEN = 180;
+	public int MAX_POWER = 180;
 	
 	public int outputSpeed = 16;
     
@@ -75,7 +75,7 @@ public class GCCoreTileEntityOxygenCollector extends TileEntityElectricityRunnab
 			initialized = true;
 		}
 
-		if (this.getGas(EnumGas.OXYGEN) > 0)
+		if (this.getPower() > 0)
 		{
 			this.wattsReceived += ElectricItemHelper.dechargeItem(this.containingItems[0], GCCoreTileEntityOxygenCollector.WATTS_PER_TICK, this.getVoltage());
 		}
@@ -114,7 +114,7 @@ public class GCCoreTileEntityOxygenCollector extends TileEntityElectricityRunnab
 				power = 250;
 			}
 			
-			this.setGas(EnumGas.OXYGEN, MathHelper.floor_double(power / 5));
+			this.setPower(power / 5);
 
 			if (this.ticks % 3 == 0)
 			{
@@ -126,9 +126,9 @@ public class GCCoreTileEntityOxygenCollector extends TileEntityElectricityRunnab
 				}
 			}
 			
-			if(this.storedOxygen > this.MAX_OXYGEN)
+			if(this.getPower() > this.MAX_POWER)
 			{
-				this.storedOxygen = this.MAX_OXYGEN;
+				this.setPower(this.MAX_POWER);
 			}
 			
 			if (this.wattsReceived >= 0.05)
@@ -141,7 +141,7 @@ public class GCCoreTileEntityOxygenCollector extends TileEntityElectricityRunnab
 				this.ic2WattsReceived -= 0.05;
 			}
 			
-			if(this.getGas(EnumGas.OXYGEN) > 0 && !this.worldObj.isRemote)
+			if(this.getPower() > 0 && !this.worldObj.isRemote)
 			{
 		    	for(ForgeDirection orientation : ForgeDirection.values())
 		    	{
@@ -149,7 +149,7 @@ public class GCCoreTileEntityOxygenCollector extends TileEntityElectricityRunnab
 		    		{
 		    			if (orientation == ForgeDirection.getOrientation(this.getBlockMetadata() + 2).getOpposite())
 		    			{
-			    			this.setGas(EnumGas.OXYGEN, this.getGas(EnumGas.OXYGEN) - (Math.min(this.getGas(EnumGas.OXYGEN), this.outputSpeed) - OxygenNetwork.emitGasToNetwork(EnumGas.OXYGEN, Math.min(this.getGas(EnumGas.OXYGEN), this.outputSpeed), this, orientation)));
+			    			this.setPower(this.getPower() - (Math.min(this.getPower(), this.outputSpeed) - GasTransmission.emitGasToNetwork(EnumGas.OXYGEN, (int)Math.min(this.getPower(), this.outputSpeed), this, orientation)));
 
 			    			TileEntity tileEntity = VectorHelper.getTileEntityFromSide(this.worldObj, new Vector3(this), orientation);
 
@@ -157,20 +157,20 @@ public class GCCoreTileEntityOxygenCollector extends TileEntityElectricityRunnab
 			    			{
 			    				if(((IGasAcceptor)tileEntity).canReceiveGas(orientation.getOpposite(), EnumGas.OXYGEN))
 			    				{
-			    					int sendingGas = 0;
+			    					double sendingGas = 0;
 			    					
-			    					if(this.getGas(EnumGas.OXYGEN) >= this.outputSpeed)
+			    					if(this.getPower() >= this.outputSpeed)
 			    					{
 			    						sendingGas = this.outputSpeed;
 			    					}
-			    					else if(this.getGas(EnumGas.OXYGEN) < this.outputSpeed)
+			    					else if(this.getPower() < this.outputSpeed)
 			    					{
-			    						sendingGas = this.getGas(EnumGas.OXYGEN);
+			    						sendingGas = this.getPower();
 			    					}
 
-			    					int rejects = ((IGasAcceptor)tileEntity).transferGasToAcceptor(sendingGas, EnumGas.OXYGEN);
+			    					int rejects = ((IGasAcceptor)tileEntity).transferGasToAcceptor(MathHelper.floor_double(sendingGas), EnumGas.OXYGEN);
 
-			    					this.setGas(EnumGas.OXYGEN, this.getGas(EnumGas.OXYGEN) - (sendingGas - rejects));
+			    					this.setPower(this.getPower() - (sendingGas - rejects));
 			    				}
 			    			}
 		    			}
@@ -183,12 +183,11 @@ public class GCCoreTileEntityOxygenCollector extends TileEntityElectricityRunnab
 	@Override
 	public Packet getDescriptionPacket()
 	{
-		int power = this.getGas(EnumGas.OXYGEN);
+		double power = this.getPower();
 
 		if (power != 0)
 		{
-			Packet p = PacketManager.getPacket(BasicComponents.CHANNEL, this, power, this.wattsReceived, this.disabledTicks, this.ic2WattsReceived);
-			return p;
+			return PacketManager.getPacket(BasicComponents.CHANNEL, this, power, this.wattsReceived, this.disabledTicks, this.ic2WattsReceived);
 		}
 		
 		return null;
@@ -201,7 +200,7 @@ public class GCCoreTileEntityOxygenCollector extends TileEntityElectricityRunnab
 		{
 			if (this.worldObj.isRemote)
 			{
-				this.storedOxygen = dataStream.readInt();
+				this.setPower(dataStream.readDouble());
 				this.wattsReceived = dataStream.readDouble();
 				this.disabledTicks = dataStream.readInt();
 				this.ic2WattsReceived = dataStream.readDouble();
@@ -216,7 +215,7 @@ public class GCCoreTileEntityOxygenCollector extends TileEntityElectricityRunnab
 	@Override
 	public ElectricityPack getRequest()
 	{
-		if (this.getGas(EnumGas.OXYGEN) > 0)
+		if (this.getPower() > 0)
 		{
 			return new ElectricityPack(GCCoreTileEntityOxygenCollector.WATTS_PER_TICK / this.getVoltage(), this.getVoltage());
 		}
@@ -230,7 +229,7 @@ public class GCCoreTileEntityOxygenCollector extends TileEntityElectricityRunnab
 	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
 	{
 		super.readFromNBT(par1NBTTagCompound);
-		this.storedOxygen = par1NBTTagCompound.getInteger("storedOxygen");
+		this.setPower(par1NBTTagCompound.getDouble("storedOxygenD"));
 
         final NBTTagList var2 = par1NBTTagCompound.getTagList("Items");
         this.containingItems = new ItemStack[this.getSizeInventory()];
@@ -251,7 +250,7 @@ public class GCCoreTileEntityOxygenCollector extends TileEntityElectricityRunnab
 	public void writeToNBT(NBTTagCompound par1NBTTagCompound)
 	{
 		super.writeToNBT(par1NBTTagCompound);
-		par1NBTTagCompound.setInteger("storedOxygen", this.storedOxygen);
+		par1NBTTagCompound.setDouble("storedOxygenD", this.getPower());
 
         final NBTTagList list = new NBTTagList();
 
@@ -269,24 +268,14 @@ public class GCCoreTileEntityOxygenCollector extends TileEntityElectricityRunnab
         par1NBTTagCompound.setTag("Items", list);
 	}
 
-	@Override
-	public int getGas(EnumGas type) 
+	public double getPower() 
 	{
-		if (type == EnumGas.OXYGEN)
-		{
-			return this.storedOxygen;
-		}
-		
-		return 0;
+		return this.power;
 	}
 
-	@Override
-	public void setGas(EnumGas type, int amount) 
+	public void setPower(double power) 
 	{
-		if (type == EnumGas.OXYGEN)
-		{
-			this.storedOxygen = Math.max(Math.min(amount, this.MAX_OXYGEN), 0);
-		}
+		this.power = power;
 	}
 
 	@Override
@@ -431,19 +420,13 @@ public class GCCoreTileEntityOxygenCollector extends TileEntityElectricityRunnab
 	{
 		return slotID == 0 ? itemstack.getItem() instanceof IItemElectric : false;
 	}
-
-	@Override
-	public int getMaxGas(EnumGas type) 
-	{
-		return type == EnumGas.OXYGEN ? this.MAX_OXYGEN : 0;
-	}
 	
 	// Industrial Craft 2 Implementation:
 
 	@Override
 	public int demandsEnergy()
 	{
-		return this.getGas(EnumGas.OXYGEN) > 0 ? (int) ((GCCoreTileEntityFuelLoader.WATTS_PER_TICK / this.getVoltage()) * GalacticraftCore.IC2EnergyScalar) : 0;
+		return this.getPower() > 0 ? (int) ((GCCoreTileEntityFuelLoader.WATTS_PER_TICK / this.getVoltage()) * GalacticraftCore.IC2EnergyScalar) : 0;
 	}
 
 	@Override

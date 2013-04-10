@@ -16,8 +16,6 @@ import universalelectricity.prefab.network.PacketManager;
 
 import com.google.common.io.ByteArrayDataInput;
 
-import cpw.mods.fml.common.FMLLog;
-
 public class GCCoreTileEntityOxygenPipe extends TileEntity implements ITubeConnection, IPressurizedTube, IColorable, IPacketReceiver
 {
 	private byte pipeColor = 15;
@@ -26,7 +24,7 @@ public class GCCoreTileEntityOxygenPipe extends TileEntity implements ITubeConne
 	private boolean setColor = false;
 	
 	@Override
-	public boolean canTransferGas()
+	public boolean canTransferGas(TileEntity fromTile)
 	{
 		return true;
 	}

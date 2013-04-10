@@ -25,6 +25,8 @@ import universalelectricity.prefab.tile.TileEntityElectricityRunnable;
 
 import com.google.common.io.ByteArrayDataInput;
 
+import cpw.mods.fml.common.FMLLog;
+
 /**
  * Copyright 2012-2013, micdoodle8
  *

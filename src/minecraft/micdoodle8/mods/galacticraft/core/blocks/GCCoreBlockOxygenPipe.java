@@ -2,10 +2,10 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.Arrays;
 
+import mekanism.api.GasTransmission;
 import mekanism.api.ITubeConnection;
 import micdoodle8.mods.galacticraft.API.IColorable;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.oxygen.OxygenNetwork;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenPipe;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -27,7 +27,6 @@ import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.components.common.BasicComponents;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.PacketManager;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -61,11 +60,9 @@ public class GCCoreBlockOxygenPipe extends BlockContainer
 		
 		if (idAtSide == GCCoreBlocks.oxygenPipe.blockID && ((GCCoreTileEntityOxygenPipe)thisVec.getTileEntity(par1IBlockAccess)).getColor() == tileEntity.getColor())
 		{
-			this.blockIcon = this.pipeIcons[15];
 			return this.pipeIcons[15];
 		}
 		
-		this.blockIcon = this.pipeIcons[tileEntity.getColor()];
         return this.pipeIcons[tileEntity.getColor()];
     }
 
@@ -188,7 +185,7 @@ public class GCCoreBlockOxygenPipe extends BlockContainer
 		if(tileEntity != null)
 		{
 			boolean[] connectable = new boolean[] {false, false, false, false, false, false};
-			ITubeConnection[] connections = OxygenNetwork.getConnections(tileEntity);
+			ITubeConnection[] connections = GasTransmission.getConnections(tileEntity);
 			
 			for(ITubeConnection connection : connections)
 			{
@@ -248,7 +245,7 @@ public class GCCoreBlockOxygenPipe extends BlockContainer
 		if(tileEntity != null)
 		{
 			boolean[] connectable = new boolean[] {false, false, false, false, false, false};
-			ITubeConnection[] connections = OxygenNetwork.getConnections(tileEntity);
+			ITubeConnection[] connections = GasTransmission.getConnections(tileEntity);
 			
 			for(ITubeConnection connection : connections)
 			{

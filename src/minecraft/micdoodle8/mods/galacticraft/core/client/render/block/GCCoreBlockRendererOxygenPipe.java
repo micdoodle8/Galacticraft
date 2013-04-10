@@ -2,8 +2,8 @@ package micdoodle8.mods.galacticraft.core.client.render.block;
 
 import java.util.Arrays;
 
+import mekanism.api.GasTransmission;
 import mekanism.api.ITubeConnection;
-import micdoodle8.mods.galacticraft.core.oxygen.OxygenNetwork;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -38,7 +38,7 @@ public class GCCoreBlockRendererOxygenPipe implements ISimpleBlockRenderingHandl
 		if(tileEntity != null)
 		{
 			boolean[] connectable = new boolean[] {false, false, false, false, false, false};
-			ITubeConnection[] connections = OxygenNetwork.getConnections(tileEntity);
+			ITubeConnection[] connections = GasTransmission.getConnections(tileEntity);
 			
 			for(ITubeConnection connection : connections)
 			{

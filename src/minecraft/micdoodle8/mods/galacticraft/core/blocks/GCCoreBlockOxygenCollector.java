@@ -138,7 +138,7 @@ public class GCCoreBlockOxygenCollector extends BlockAdvanced
     {
 		if (par1World.getBlockTileEntity(par2, par3, par4) instanceof GCCoreTileEntityOxygenCollector)
 		{
-			if (((GCCoreTileEntityOxygenCollector)par1World.getBlockTileEntity(par2, par3, par4)).getGas(EnumGas.OXYGEN) > 1)
+			if (((GCCoreTileEntityOxygenCollector)par1World.getBlockTileEntity(par2, par3, par4)).getPower() > 1)
 			{
 				for (int var6 = 0; var6 < 10; ++var6)
 		        {
