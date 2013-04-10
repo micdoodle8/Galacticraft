@@ -62,6 +62,8 @@ public class OxygenPressureProtocol
     	vanillaPermeableBlocks.add(Block.stairsWoodOak.blockID);
     	vanillaPermeableBlocks.add(Block.waterStill.blockID);
     	vanillaPermeableBlocks.add(Block.waterMoving.blockID);
+    	vanillaPermeableBlocks.add(Block.lavaStill.blockID);
+    	vanillaPermeableBlocks.add(Block.lavaMoving.blockID);
     }
 
     private void loopThrough(World var1, int var2, int var3, int var4, int var5)
@@ -306,7 +308,8 @@ public class OxygenPressureProtocol
     	return block == null
     			|| block.blockID == 0
     			|| block.blockID == GCCoreBlocks.breatheableAir.blockID
-    			|| (!block.isOpaqueCube() && !(block instanceof IPartialSealedBlock) && this.vanillaPermeableBlocks.contains(block.blockID))
+    	    	|| this.vanillaPermeableBlocks.contains(block.blockID)
+    			|| (!block.isOpaqueCube() && !(block instanceof IPartialSealedBlock))
     			|| (!block.isOpaqueCube() && block instanceof IPartialSealedBlock && !((IPartialSealedBlock) block).isSealed(var0, var1, var2, var3));
     }
 
@@ -317,7 +320,8 @@ public class OxygenPressureProtocol
     	return block == null
     			|| block.blockID == 0 
     			|| block.blockID == GCCoreBlocks.breatheableAir.blockID
-    			|| (!block.isOpaqueCube() && !(block instanceof IPartialSealedBlock) && this.vanillaPermeableBlocks.contains(block.blockID))
+    	    	|| this.vanillaPermeableBlocks.contains(block.blockID)
+    			|| (!block.isOpaqueCube() && !(block instanceof IPartialSealedBlock))
     			|| (!block.isOpaqueCube() && block instanceof IPartialSealedBlock && !((IPartialSealedBlock) block).isSealed(var0, vec.intX(), vec.intY(), vec.intZ()));
     }
 
