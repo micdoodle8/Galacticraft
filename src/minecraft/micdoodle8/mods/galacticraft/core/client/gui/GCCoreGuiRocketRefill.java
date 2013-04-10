@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
+import mekanism.api.EnumColor;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpaceship;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerRocketRefill;
@@ -11,6 +12,7 @@ import net.minecraftforge.liquids.LiquidStack;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -33,40 +35,33 @@ public class GCCoreGuiRocketRefill extends GuiContainer
         this.upperChestInventory = par1IInventory;
         this.lowerChestInventory = par2IInventory;
         this.allowUserInput = false;
-        final short var3 = 222;
         this.inventoryRows = par2IInventory.getSizeInventory() / 9;
-        this.ySize = type == 0 ? 132 : type == 1 ? 199 : 0;
+        this.ySize = type == 1 ? 180 : 166;
         this.type = type;
     }
 
     @Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        int offset = 0;
-        
-        switch (this.type)
-        {
-        case 0:
-        	offset = -14;
-        	break;
-        case 1:
-        	offset = 12;
-        	break;
-        case 2:
-        	offset = -80;
-        	break;
-        }
-        
-        this.fontRenderer.drawString(StatCollector.translateToLocal("Fuel"), 8, 3 + offset, 4210752);
+        this.fontRenderer.drawString(StatCollector.translateToLocal("Fuel"), 8, 2 + 3, 4210752);
 
-        this.fontRenderer.drawString(StatCollector.translateToLocal(this.upperChestInventory.getInvName()), 8, 34 + 2 + offset, 4210752);
+        this.fontRenderer.drawString(StatCollector.translateToLocal(this.upperChestInventory.getInvName()), 8, 34 + 2 + 3, 4210752);
 
         if (this.mc.thePlayer != null && this.mc.thePlayer.ridingEntity != null && this.mc.thePlayer.ridingEntity instanceof GCCoreEntitySpaceship)
         {
         	LiquidStack liquid = ((GCCoreEntitySpaceship) this.mc.thePlayer.ridingEntity).spaceshipFuelTank.getLiquid();
-    		final float fuelLevel = (liquid == null ? 0 : (liquid.amount / (GalacticraftCore.fuelStack.amount / GCCoreItems.fuelCanister.getMaxDamage() + 1))) / 60.0F * 1000.0F;
+        	int maxLiquid = ((GCCoreEntitySpaceship) this.mc.thePlayer.ridingEntity).spaceshipFuelTank.getCapacity();
+        	double ratio = ((GCCoreEntitySpaceship) this.mc.thePlayer.ridingEntity).canisterToLiquidStackRatio;
 
-            this.fontRenderer.drawString("" + Math.round(fuelLevel) / 10.0D + "%", 109, this.ySize - ((GCCoreEntitySpaceship) this.mc.thePlayer.ridingEntity).getSpaceshipType() != 0 + offset ? 20 + offset : 111, 4210752);
+    		double fuelLevel = liquid == null ? 0 : (liquid.amount / (GalacticraftCore.fuelStack.amount / GCCoreItems.fuelCanister.getMaxDamage() + 1));
+    		
+    		if (liquid != null)
+    		
+            this.fontRenderer.drawString("Fuel:", 125, 15 + 3, 4210752);
+    		double percentage = (Math.round((double)fuelLevel * ratio * 101.6669D) / (double)maxLiquid);
+    		String color = percentage > 80.0D ? EnumColor.BRIGHT_GREEN.code : (percentage > 40.0D ? EnumColor.ORANGE.code : (EnumColor.RED.code));
+            String str = percentage + "% full";
+    		this.fontRenderer.drawString(color + str, 117 - (str.length() / 2), 20 + 8, 4210752);
         }
     }
 
@@ -78,11 +73,9 @@ public class GCCoreGuiRocketRefill extends GuiContainer
     	switch (this.type)
     	{
     	case 1:
-    		this.ySize = 180;
             var4 = "/micdoodle8/mods/galacticraft/core/client/gui/rocketrefill-chest.png";
             break;
     	default:
-    		this.ySize = 166;
             var4 = "/micdoodle8/mods/galacticraft/core/client/gui/rocketrefill-nochest.png";
             break;
     	}
@@ -97,10 +90,10 @@ public class GCCoreGuiRocketRefill extends GuiContainer
         if (this.mc.thePlayer != null && this.mc.thePlayer.ridingEntity != null && this.mc.thePlayer.ridingEntity instanceof GCCoreEntitySpaceship)
         {
         	LiquidStack liquid = ((GCCoreEntitySpaceship) this.mc.thePlayer.ridingEntity).spaceshipFuelTank.getLiquid();
-
-    		final int fuelLevel = (liquid == null ? 0 : liquid.amount / ((GalacticraftCore.fuelStack.amount / GCCoreItems.fuelCanister.getMaxDamage() + 1)));
-
-            this.drawTexturedModalRect(var5 + 74, var6 + 41 - fuelLevel / 2, 176, 0, 30, fuelLevel / 2);
+    		
+    		int fuelLevel = liquid == null ? 0 : (liquid.amount / (GalacticraftCore.fuelStack.amount / GCCoreItems.fuelCanister.getMaxDamage() + 1));
+    		
+            this.drawTexturedModalRect(((width - xSize) / 2) + (this.type == 1 ? 72 : 71), ((height - ySize) / 2) + 45 - fuelLevel, 176, 38 - fuelLevel, 42, fuelLevel);
         }
     }
 }
