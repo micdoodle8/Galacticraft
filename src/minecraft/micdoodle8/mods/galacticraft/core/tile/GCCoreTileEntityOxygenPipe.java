@@ -9,20 +9,70 @@ import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
+import universalelectricity.components.common.BasicComponents;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.IPacketReceiver;
+import universalelectricity.prefab.network.PacketManager;
 
 import com.google.common.io.ByteArrayDataInput;
+
+import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreTileEntityOxygenPipe extends TileEntity implements ITubeConnection, IPressurizedTube, IColorable, IPacketReceiver
 {
 	private byte pipeColor = 15;
+	private byte preLoadColor;
+	private byte preColorCooldown;
+	private boolean setColor = false;
 	
 	@Override
 	public boolean canTransferGas()
 	{
 		return true;
 	}
+
+	@Override
+    public boolean canUpdate()
+    {
+        return !setColor;
+    }
+	
+	@Override
+    public void updateEntity() 
+    {
+		if (this.preColorCooldown > 0)
+		{
+			this.preColorCooldown--;
+		}
+		
+    	if (this.preColorCooldown == 0 && !this.worldObj.isRemote && this.preLoadColor != -1)
+    	{
+            PacketManager.sendPacketToClients(PacketManager.getPacket(BasicComponents.CHANNEL, this, this.getColor(), this.preLoadColor));
+            this.preLoadColor = -1;
+            this.setColor = true;
+    	}
+
+    	if (this.preColorCooldown == 0 && this.worldObj.isRemote && this.preLoadColor == 0)
+    	{
+			Vector3 thisVec = new Vector3(this);
+			this.worldObj.markBlockForRenderUpdate(thisVec.intX(), thisVec.intY(), thisVec.intZ());
+            this.preLoadColor = -1;
+            this.setColor = true;
+    	}
+    }
+	
+    public void validate()
+    {
+    	super.validate();
+    	
+    	this.preColorCooldown = 40;
+    	
+		if (this.worldObj != null && this.worldObj.isRemote)
+		{
+			Vector3 thisVec = new Vector3(this);
+			this.worldObj.markBlockForRenderUpdate(thisVec.intX(), thisVec.intY(), thisVec.intZ());
+		}
+    }
 	
 	@Override
 	public void setColor(byte col)
@@ -52,10 +102,9 @@ public class GCCoreTileEntityOxygenPipe extends TileEntity implements ITubeConne
     {
     	super.readFromNBT(par1NBTTagCompound);
     	
-    	if (par1NBTTagCompound.hasKey("pipeColor"))
-    	{
-    		this.setColor(par1NBTTagCompound.getByte("pipeColor"));
-    	}
+    	byte by = par1NBTTagCompound.getByte("pipeColor");
+		this.setColor(by);
+		this.preLoadColor = by;
     }
 
 	@Override
@@ -96,6 +145,7 @@ public class GCCoreTileEntityOxygenPipe extends TileEntity implements ITubeConne
 			if (this.worldObj.isRemote)
 			{
 				this.setColor(dataStream.readByte());
+				this.preLoadColor = dataStream.readByte();
 			}
 		}
 		catch (Exception e)
