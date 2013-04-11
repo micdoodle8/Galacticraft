@@ -22,6 +22,8 @@ import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.liquids.ILiquidTank;
+import net.minecraftforge.liquids.ITankContainer;
 import net.minecraftforge.liquids.LiquidContainerRegistry;
 import net.minecraftforge.liquids.LiquidDictionary;
 import net.minecraftforge.liquids.LiquidStack;
@@ -37,7 +39,9 @@ import universalelectricity.prefab.tile.TileEntityElectricityRunnable;
 
 import com.google.common.io.ByteArrayDataInput;
 
-public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable implements IInventory, ISidedInventory, IPacketReceiver, IEnergySink, IDisableableMachine
+import cpw.mods.fml.common.FMLLog;
+
+public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable implements IInventory, ISidedInventory, IPacketReceiver, IEnergySink, IDisableableMachine, ITankContainer
 {
 	private int tankCapacity = 24000;
 	
@@ -183,7 +187,7 @@ public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable impl
 	@Override
 	public boolean canConnect(ForgeDirection direction)
 	{
-		return direction == ForgeDirection.getOrientation(this.getBlockMetadata() + 2);
+		return direction == ForgeDirection.UP;
 	}
 
 	public int getScaledOilLevel(int i)
@@ -526,7 +530,7 @@ public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable impl
 	@Override
 	public boolean acceptsEnergyFrom(TileEntity emitter, Direction direction) 
 	{
-		return direction.toForgeDirection() == ForgeDirection.getOrientation(this.getBlockMetadata() + 2);
+		return direction.toForgeDirection() == ForgeDirection.UP;
 	}
 
 	@Override
@@ -549,5 +553,61 @@ public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable impl
 	public boolean getDisabled()
 	{
 		return this.disabled;
+	}
+
+	@Override
+	public int fill(ForgeDirection from, LiquidStack resource, boolean doFill) 
+	{
+		return this.fill(0, resource, doFill);
+	}
+
+	@Override
+	public int fill(int tankIndex, LiquidStack resource, boolean doFill) 
+	{
+		int used = 0;
+		LiquidStack resourceUsing = resource.copy();
+		String liquidName = LiquidDictionary.findLiquidName(resource);
+		
+		if (tankIndex == 0 && liquidName != null && liquidName.equals("Oil"))
+		{
+			used = this.oilTank.fill(resource, doFill);
+		}
+		
+		return used;
+	}
+
+	@Override
+	public LiquidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) 
+	{
+		return this.drain(0, maxDrain, doDrain);
+	}
+
+	@Override
+	public LiquidStack drain(int tankIndex, int maxDrain, boolean doDrain) 
+	{
+		return this.fuelTank.drain(maxDrain, doDrain);
+	}
+
+	@Override
+	public ILiquidTank[] getTanks(ForgeDirection direction) 
+	{
+		return new ILiquidTank[] {this.oilTank, this.fuelTank};
+	}
+
+	@Override
+	public ILiquidTank getTank(ForgeDirection direction, LiquidStack type) 
+	{
+		if (direction == ForgeDirection.getOrientation(this.getBlockMetadata() + 2).getOpposite())
+		{
+			// OIL
+			return this.oilTank;
+		}
+		else if (direction == ForgeDirection.getOrientation(this.getBlockMetadata() + 2))
+		{
+			// FUEL
+			return this.fuelTank;
+		}
+		
+		return null;
 	}
 }

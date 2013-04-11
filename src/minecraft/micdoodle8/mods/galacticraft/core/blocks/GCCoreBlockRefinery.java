@@ -17,6 +17,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.prefab.block.BlockAdvanced;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -28,7 +29,8 @@ public class GCCoreBlockRefinery extends BlockAdvanced
     private static boolean keepRefineryInventory = false;
     
 	private Icon iconMachineSide;
-	private Icon iconInput;
+	private Icon iconFuelOutput;
+	private Icon iconOilInput;
 	private Icon iconFront;
 	private Icon iconBack;
 	private Icon iconTop;
@@ -49,10 +51,11 @@ public class GCCoreBlockRefinery extends BlockAdvanced
     public void registerIcons(IconRegister par1IconRegister)
     {
         this.iconMachineSide = par1IconRegister.registerIcon("galacticraftcore:machine_blank");
-        this.iconInput = par1IconRegister.registerIcon("galacticraftcore:machine_power_input");
+        this.iconFuelOutput = par1IconRegister.registerIcon("galacticraftcore:machine_fuel_input");
+        this.iconOilInput = par1IconRegister.registerIcon("galacticraftcore:machine_oil_input");
         this.iconFront = par1IconRegister.registerIcon("galacticraftcore:refinery_front");
         this.iconBack = par1IconRegister.registerIcon("galacticraftcore:refinery_side");
-        this.iconTop = par1IconRegister.registerIcon("galacticraftcore:refinery_top");
+        this.iconTop = par1IconRegister.registerIcon("galacticraftcore:machine_power_input");
     }
 
     @Override
@@ -104,18 +107,18 @@ public class GCCoreBlockRefinery extends BlockAdvanced
 		// Re-orient the block
 		switch (original)
 		{
-			case 0:
-				change = 3;
-				break;
-			case 3:
-				change = 1;
-				break;
-			case 1:
-				change = 2;
-				break;
-			case 2:
-				change = 0;
-				break;
+		case 0:
+			change = 3;
+			break;
+		case 1:
+			change = 1;
+			break;
+		case 2:
+			change = 2;
+			break;
+		case 3:
+			change = 0;
+			break;
 		}
 
 		par1World.setBlockMetadataWithNotify(x, y, z, change, 3);
@@ -178,26 +181,31 @@ public class GCCoreBlockRefinery extends BlockAdvanced
 	@Override
 	public Icon getBlockTextureFromSideAndMetadata(int side, int metadata)
 	{
+		if (side == metadata + 2)
+		{
+			return this.iconFuelOutput;
+		}
+		else if (side == ForgeDirection.getOrientation(metadata + 2).getOpposite().ordinal())
+		{
+			return this.iconOilInput;
+		}
+		
 		if (side == 1)
 		{
 			return this.iconTop;
 		}
-		else if (side == metadata + 2)
-		{
-			return this.iconInput;
-		}
-		else if (metadata == 0 && side == 5 || metadata == 3 && side == 3 || metadata == 1 && side == 4 || metadata == 2 && side == 2)
-		{
-			return this.iconFront;
-		}
-		else if (metadata == 0 && side == 4 || metadata == 3 && side == 2 || metadata == 1 && side == 5 || metadata == 2 && side == 3)
-		{
-			return this.iconBack;
-		}
-		else
+		
+		if (side == 0)
 		{
 			return this.iconMachineSide;
 		}
+		
+		if ((metadata == 0 && side == 4) || (metadata == 1 && side == 5) || (metadata == 2 && side == 3) || (metadata == 3 && side == 2))
+		{
+			return this.iconFront;
+		}
+
+		return this.iconBack;
     }
     
 	@Override
@@ -209,16 +217,16 @@ public class GCCoreBlockRefinery extends BlockAdvanced
 		switch (angle)
 		{
 		case 0:
-			change = 1;
+			change = 3;
 			break;
 		case 1:
-			change = 2;
+			change = 1;
 			break;
 		case 2:
-			change = 0;
+			change = 2;
 			break;
 		case 3:
-			change = 3;
+			change = 0;
 			break;
 		}
 
