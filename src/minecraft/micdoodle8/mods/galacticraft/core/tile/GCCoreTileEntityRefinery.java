@@ -56,6 +56,8 @@ public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable impl
 	public double ic2WattsReceived = 0;
 	private boolean initialized = false;
 	
+	private int disableCooldown = 0;
+	
 	private int canisterToTankRatio = tankCapacity / GCCoreItems.fuelCanister.getMaxDamage();
 	private int canisterToLiquidStackRatio = (LiquidContainerRegistry.BUCKET_VOLUME * 2) / GCCoreItems.fuelCanister.getMaxDamage();
 
@@ -81,6 +83,11 @@ public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable impl
 
 		if (!this.worldObj.isRemote)
 		{
+			if (this.disableCooldown > 0)
+			{
+				this.disableCooldown--;
+			}
+			
 			if (this.containingItems[1] != null)
 			{
 				LiquidStack liquid = LiquidContainerRegistry.getLiquidForFilledItem(this.containingItems[1]);
@@ -300,6 +307,18 @@ public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable impl
 				this.containingItems[var5] = ItemStack.loadItemStackFromNBT(var4);
 			}
 		}
+		
+		this.setDisabled(par1NBTTagCompound.getBoolean("isDisabled"));
+		
+		if (par1NBTTagCompound.hasKey("oilTank"))
+		{
+			this.oilTank.readFromNBT(par1NBTTagCompound.getCompoundTag("oilTank"));
+		}
+		
+		if (par1NBTTagCompound.hasKey("fuelTank"))
+		{
+			this.fuelTank.readFromNBT(par1NBTTagCompound.getCompoundTag("fuelTank"));
+		}
 	}
 
 	@Override
@@ -321,6 +340,18 @@ public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable impl
 		}
 
 		par1NBTTagCompound.setTag("Items", var2);
+		
+		par1NBTTagCompound.setBoolean("isDisabled", this.getDisabled());
+		
+		if (this.oilTank.getLiquid() != null)
+		{
+			par1NBTTagCompound.setTag("oilTank", this.oilTank.writeToNBT(new NBTTagCompound()));
+		}
+		
+		if (this.fuelTank.getLiquid() != null)
+		{
+			par1NBTTagCompound.setTag("fuelTank", this.fuelTank.writeToNBT(new NBTTagCompound()));
+		}
 	}
 
 //	@Override
@@ -507,7 +538,11 @@ public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable impl
 	@Override
 	public void setDisabled(boolean disabled) 
 	{
-		this.disabled = disabled;
+		if (this.disableCooldown == 0)
+		{
+			this.disabled = disabled;
+			this.disableCooldown = 20;
+		}
 	}
 
 	@Override
