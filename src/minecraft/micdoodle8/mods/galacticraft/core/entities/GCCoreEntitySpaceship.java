@@ -75,6 +75,13 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
     {
     	super(par1World);
     }
+	
+	public int getScaledFuelLevel(int i)
+	{
+		double fuelLevel = this.spaceshipFuelTank.getLiquid() == null ? 0 : (this.spaceshipFuelTank.getLiquid().amount);
+		
+		return (int) (fuelLevel * i / 2000);
+	}
 
     public GCCoreEntitySpaceship(World par1World, double par2, double par4, double par6, int type)
     {
@@ -168,7 +175,7 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
         		}
         	}
 
-        	if (this.timeSinceLaunch % MathHelper.floor_double(50 * (1 / multiplier)) == 0)
+        	if (this.timeSinceLaunch % MathHelper.floor_double(3 * (1 / multiplier)) == 0)
         	{
         		this.removeFuel(null, 1);
         	}

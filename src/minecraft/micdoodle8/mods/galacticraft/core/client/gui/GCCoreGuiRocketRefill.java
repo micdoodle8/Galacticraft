@@ -48,16 +48,8 @@ public class GCCoreGuiRocketRefill extends GuiContainer
 
         if (this.mc.thePlayer != null && this.mc.thePlayer.ridingEntity != null && this.mc.thePlayer.ridingEntity instanceof GCCoreEntitySpaceship)
         {
-        	LiquidStack liquid = ((GCCoreEntitySpaceship) this.mc.thePlayer.ridingEntity).spaceshipFuelTank.getLiquid();
-        	int maxLiquid = ((GCCoreEntitySpaceship) this.mc.thePlayer.ridingEntity).spaceshipFuelTank.getCapacity();
-        	double ratio = ((GCCoreEntitySpaceship) this.mc.thePlayer.ridingEntity).canisterToLiquidStackRatio;
-
-    		double fuelLevel = liquid == null ? 0 : (liquid.amount / (2000 / GCCoreItems.fuelCanister.getMaxDamage() + 1));
-    		
-    		if (liquid != null)
-    		
             this.fontRenderer.drawString("Fuel:", 125, 15 + 3, 4210752);
-    		double percentage = (Math.round((double)fuelLevel * ratio * 101.6669D) / (double)maxLiquid);
+    		double percentage = ((GCCoreEntitySpaceship) this.mc.thePlayer.ridingEntity).getScaledFuelLevel(100);
     		String color = percentage > 80.0D ? EnumColor.BRIGHT_GREEN.code : (percentage > 40.0D ? EnumColor.ORANGE.code : (EnumColor.RED.code));
             String str = percentage + "% full";
     		this.fontRenderer.drawString(color + str, 117 - (str.length() / 2), 20 + 8, 4210752);
@@ -88,9 +80,7 @@ public class GCCoreGuiRocketRefill extends GuiContainer
 
         if (this.mc.thePlayer != null && this.mc.thePlayer.ridingEntity != null && this.mc.thePlayer.ridingEntity instanceof GCCoreEntitySpaceship)
         {
-        	LiquidStack liquid = ((GCCoreEntitySpaceship) this.mc.thePlayer.ridingEntity).spaceshipFuelTank.getLiquid();
-    		
-    		int fuelLevel = liquid == null ? 0 : (liquid.amount / ((LiquidContainerRegistry.BUCKET_VOLUME * 2) / GCCoreItems.fuelCanister.getMaxDamage() + 1));
+    		int fuelLevel = ((GCCoreEntitySpaceship) this.mc.thePlayer.ridingEntity).getScaledFuelLevel(38);
     		
             this.drawTexturedModalRect(((width - xSize) / 2) + (this.type == 1 ? 72 : 71), ((height - ySize) / 2) + 45 - fuelLevel, 176, 38 - fuelLevel, 42, fuelLevel);
         }
