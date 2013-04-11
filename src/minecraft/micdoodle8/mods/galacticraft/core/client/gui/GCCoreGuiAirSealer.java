@@ -59,6 +59,7 @@ public class GCCoreGuiAirSealer extends GuiContainer
         this.fontRenderer.drawString("Oxygen Sealer", 8, 10, 4210752);
         this.fontRenderer.drawString("In:", 90, 31, 4210752);
         String status = "Status: " + this.getStatus();
+        this.buttonDisable.enabled = this.distributorInv.disableCooldown == 0;
         this.buttonDisable.displayString = this.distributorInv.disabled ? "Enable Seal" : "Disable Seal";
         this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 50, 4210752);
         status = "Oxygen: " + this.distributorInv.power;

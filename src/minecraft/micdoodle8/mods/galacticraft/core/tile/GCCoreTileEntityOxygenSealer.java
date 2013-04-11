@@ -52,9 +52,7 @@ public class GCCoreTileEntityOxygenSealer extends TileEntityElectricityRunnable 
     public boolean active;
 	private ItemStack[] containingItems = new ItemStack[1];
 	
-	private int disableCooldown = 20;
-   	
-//   	public OxygenBubble bubble;
+	public int disableCooldown;
    	
 	public static final double WATTS_PER_TICK = 300;
 
@@ -140,7 +138,7 @@ public class GCCoreTileEntityOxygenSealer extends TileEntityElectricityRunnable 
 	@Override
 	public Packet getDescriptionPacket()
 	{
-		return PacketManager.getPacket(BasicComponents.CHANNEL, this, this.power, this.wattsReceived, this.disabled, this.ic2WattsReceived, this.sealed);
+		return PacketManager.getPacket(BasicComponents.CHANNEL, this, this.power, this.wattsReceived, this.disabled, this.ic2WattsReceived, this.sealed, this.disableCooldown);
 	}
 
 	@Override
@@ -155,6 +153,7 @@ public class GCCoreTileEntityOxygenSealer extends TileEntityElectricityRunnable 
 				this.disabled = dataStream.readBoolean();
 				this.ic2WattsReceived = dataStream.readDouble();
 				this.sealed = dataStream.readBoolean();
+				this.disableCooldown = dataStream.readInt();
 			}
 		}
 		catch (Exception e)
@@ -460,6 +459,7 @@ public class GCCoreTileEntityOxygenSealer extends TileEntityElectricityRunnable 
 		if (this.disableCooldown == 0)
 		{
 			this.disabled = disabled;
+			this.disableCooldown = 50;
 		}
 	}
 
