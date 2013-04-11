@@ -23,6 +23,7 @@ public class GCCoreBlockFuelLoader extends BlockAdvanced
 	private Icon iconMachineSide;
 	private Icon iconInput;
 	private Icon iconFront;
+	private Icon iconFuelInput;
 	
 	public GCCoreBlockFuelLoader(int id) 
 	{
@@ -42,6 +43,7 @@ public class GCCoreBlockFuelLoader extends BlockAdvanced
         this.iconInput = par1IconRegister.registerIcon("galacticraftcore:machine_power_input");
         this.iconMachineSide = par1IconRegister.registerIcon("galacticraftcore:machine_blank");
         this.iconFront = par1IconRegister.registerIcon("galacticraftcore:machine_fuelloader");
+        this.iconFuelInput = par1IconRegister.registerIcon("galacticraftcore:machine_fuel_input");
     }
 
 	@Override
@@ -70,7 +72,7 @@ public class GCCoreBlockFuelLoader extends BlockAdvanced
 		}
 		else if (side == ForgeDirection.getOrientation(metadata + 2).getOpposite().ordinal())
 		{
-			return this.iconMachineSide;
+			return this.iconFuelInput;
 		}
 		else
 		{
