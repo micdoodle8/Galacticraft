@@ -35,6 +35,7 @@ import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.liquids.LiquidContainerRegistry;
 import net.minecraftforge.liquids.LiquidDictionary;
 import net.minecraftforge.liquids.LiquidStack;
 import net.minecraftforge.liquids.LiquidTank;
@@ -68,7 +69,7 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
     private GCCoreTileEntityLandingPad landingPad;
 
     public int canisterToTankRatio = tankCapacity / GCCoreItems.fuelCanister.getMaxDamage();
-	public double canisterToLiquidStackRatio = 2000.0D / (double)GCCoreItems.fuelCanister.getMaxDamage();
+	public double canisterToLiquidStackRatio = (LiquidContainerRegistry.BUCKET_VOLUME * 2.0D) / (double)GCCoreItems.fuelCanister.getMaxDamage();
 
     public GCCoreEntitySpaceship(World par1World)
     {

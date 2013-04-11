@@ -187,8 +187,8 @@ public class GalacticraftCore
 	
 	public static String TEXTURE_SUFFIX;
 	
-//	public static LiquidStack oilStack;
-//	public static LiquidStack fuelStack;
+	public static LiquidStack oilStack;
+	public static LiquidStack fuelStack;
 
 	@PreInit
 	public void preInit(FMLPreInitializationEvent event)
@@ -281,9 +281,19 @@ public class GalacticraftCore
 		{
 			BasicComponents.registerTileEntities();
 		}
+		
+		GalacticraftCore.oilStack = LiquidDictionary.getOrCreateLiquid("Oil", new LiquidStack(GCCoreBlocks.crudeOilStill, 1));
+		GalacticraftCore.fuelStack = LiquidDictionary.getOrCreateLiquid("Fuel", new LiquidStack(GCCoreItems.fuel, 1));
+		
+		for (int i = GCCoreItems.fuelCanister.getMaxDamage() - 1; i > 0; i--)
+		{
+			LiquidContainerRegistry.registerLiquid(new LiquidContainerData(LiquidDictionary.getLiquid("Fuel", LiquidContainerRegistry.BUCKET_VOLUME * 2), new ItemStack(GCCoreItems.fuelCanister, 1, i), new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.fuelCanister.getMaxDamage())));
+		}
 
-		LiquidContainerRegistry.registerLiquid(new LiquidContainerData(LiquidDictionary.getOrCreateLiquid("Oil", new LiquidStack(GCCoreBlocks.crudeOilStill, LiquidContainerRegistry.BUCKET_VOLUME * 2)), new ItemStack(GCCoreItems.oilCanister, 1, 1), new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.fuelCanister.getMaxDamage())));
-		LiquidContainerRegistry.registerLiquid(new LiquidContainerData(LiquidDictionary.getOrCreateLiquid("Fuel", new LiquidStack(GCCoreItems.fuel, LiquidContainerRegistry.BUCKET_VOLUME * 2)), new ItemStack(GCCoreItems.fuelCanister, 1, 1), new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.fuelCanister.getMaxDamage())));
+		for (int i = GCCoreItems.oilCanister.getMaxDamage() - 1; i > 0; i--)
+		{
+			LiquidContainerRegistry.registerLiquid(new LiquidContainerData(LiquidDictionary.getLiquid("Oil", LiquidContainerRegistry.BUCKET_VOLUME * 2), new ItemStack(GCCoreItems.oilCanister, 1, i), new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.oilCanister.getMaxDamage())));
+		}
 		
 		SchematicRegistry.registerSchematicRecipe(new GCCoreSchematicRocketT1());
 		SchematicRegistry.registerSchematicRecipe(new GCCoreSchematicMoonBuggy());

@@ -1,18 +1,17 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
 import mekanism.api.EnumColor;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpaceship;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerRocketRefill;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.liquids.LiquidContainerRegistry;
 import net.minecraftforge.liquids.LiquidStack;
 
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -91,7 +90,7 @@ public class GCCoreGuiRocketRefill extends GuiContainer
         {
         	LiquidStack liquid = ((GCCoreEntitySpaceship) this.mc.thePlayer.ridingEntity).spaceshipFuelTank.getLiquid();
     		
-    		int fuelLevel = liquid == null ? 0 : (liquid.amount / (2000 / GCCoreItems.fuelCanister.getMaxDamage() + 1));
+    		int fuelLevel = liquid == null ? 0 : (liquid.amount / ((LiquidContainerRegistry.BUCKET_VOLUME * 2) / GCCoreItems.fuelCanister.getMaxDamage() + 1));
     		
             this.drawTexturedModalRect(((width - xSize) / 2) + (this.type == 1 ? 72 : 71), ((height - ySize) / 2) + 45 - fuelLevel, 176, 38 - fuelLevel, 42, fuelLevel);
         }

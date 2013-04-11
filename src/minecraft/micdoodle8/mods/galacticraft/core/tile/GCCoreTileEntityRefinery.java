@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.API.IDisableableMachine;
 import micdoodle8.mods.galacticraft.API.IRefinableItem;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItemOilCanister;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -19,7 +20,6 @@ import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.liquids.LiquidContainerRegistry;
@@ -36,8 +36,6 @@ import universalelectricity.prefab.network.PacketManager;
 import universalelectricity.prefab.tile.TileEntityElectricityRunnable;
 
 import com.google.common.io.ByteArrayDataInput;
-
-import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable implements IInventory, ISidedInventory, IPacketReceiver, IEnergySink, IDisableableMachine
 {
@@ -59,7 +57,7 @@ public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable impl
 	private boolean initialized = false;
 	
 	private int canisterToTankRatio = tankCapacity / GCCoreItems.fuelCanister.getMaxDamage();
-	private int canisterToLiquidStackRatio = 2000 / GCCoreItems.fuelCanister.getMaxDamage();
+	private int canisterToLiquidStackRatio = (LiquidContainerRegistry.BUCKET_VOLUME * 2) / GCCoreItems.fuelCanister.getMaxDamage();
 
 	@Override
 	public void updateEntity()
@@ -93,9 +91,14 @@ public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable impl
 					{
 						this.oilTank.fill(liquid, true);
 						
-						if(liquid.itemID == GCCoreBlocks.crudeOilStill.blockID)
+						if(this.containingItems[1].getItem() instanceof GCCoreItemOilCanister)
 						{
 							this.containingItems[1] = new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.oilCanister.getMaxDamage());
+						}
+						else if (LiquidContainerRegistry.isBucket(this.containingItems[1]) && LiquidContainerRegistry.isFilledContainer(this.containingItems[1]))
+						{
+							int amount = this.containingItems[1].stackSize;
+							this.containingItems[1] = new ItemStack(Item.bucketEmpty, amount);
 						}
 						else 
 						{
@@ -113,16 +116,16 @@ public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable impl
 			if (this.containingItems[2] != null && LiquidContainerRegistry.isContainer(this.containingItems[2]))
 			{
 				LiquidStack liquid = this.fuelTank.getLiquid();
-
+				
 				if (liquid != null && this.fuelTank.getLiquidName() != null && this.fuelTank.getLiquidName().equals("Fuel"))
 				{
-					if (this.containingItems[2].isItemEqual(new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.oilCanister.getMaxDamage())))
+					if (LiquidContainerRegistry.isEmptyContainer(this.containingItems[2]))
 					{
-						int amountToFill = Math.min(GCCoreItems.fuelCanister.getMaxDamage() - 1, MathHelper.floor_double(liquid.amount / (this.canisterToLiquidStackRatio == 0 ? 1 : this.canisterToLiquidStackRatio)));
+						int amountToFill = this.containingItems[2].isItemEqual(new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.oilCanister.getMaxDamage())) ? LiquidContainerRegistry.BUCKET_VOLUME * 2 : LiquidContainerRegistry.BUCKET_VOLUME;
 						
-						this.containingItems[2] = new ItemStack(GCCoreItems.fuelCanister, 1, GCCoreItems.fuelCanister.getMaxDamage() - amountToFill);
-						
-						this.fuelTank.drain(amountToFill * canisterToLiquidStackRatio, true);
+						this.containingItems[2] = LiquidContainerRegistry.fillLiquidContainer(liquid, this.containingItems[2]);
+
+						this.fuelTank.drain(amountToFill, true);
 					}
 				}
 			}
@@ -270,7 +273,7 @@ public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable impl
 			int amountToDrain = Math.min(oilAmount, fuelSpace);
 			
 			this.oilTank.drain(amountToDrain, true);
-			this.fuelTank.fill(new LiquidStack(GCCoreItems.fuel, amountToDrain), true);
+			this.fuelTank.fill(LiquidDictionary.getLiquid("Fuel", amountToDrain), true);
 			
 			if (!this.disabled)
 			{

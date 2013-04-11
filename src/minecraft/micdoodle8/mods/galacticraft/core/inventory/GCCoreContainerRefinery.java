@@ -27,7 +27,7 @@ public class GCCoreContainerRefinery extends Container
 		this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 50, 69, IItemElectric.class));
 
 		// To be smelted
-		this.addSlotToContainer(new SlotSpecific(tileEntity, 1, 7, 7, IRefinableItem.class));
+		this.addSlotToContainer(new Slot(tileEntity, 1, 7, 7));
 
 		// Smelting result
 		this.addSlotToContainer(new Slot(tileEntity, 2, 153, 7));
