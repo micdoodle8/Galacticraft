@@ -26,6 +26,7 @@ CHANGELOG
 !/src/common/mcmod.info
 !/src/common/SP.png
 /src/minecraft/mods/galacticraftmars/
+/src/minecraft/mods/fluidmech/
 
 *.bat
 *.sh
