@@ -88,11 +88,11 @@ public class GCCoreTileEntityLandingPad extends TileEntityMulti implements IMult
 				this.dockedEntity = null;
 			}
 			
-			if (this.dockedEntity != null)
+			if (this.dockedEntity != null && this.landingPadFuelTank.getLiquid() != null && this.landingPadFuelTank.getLiquid().amount > 0)
 			{
-				LiquidStack liquid = this.landingPadFuelTank.getLiquid();
+				LiquidStack liquid = LiquidDictionary.getLiquid("Fuel", 1);
 
-				if (liquid != null && LiquidDictionary.findLiquidName(liquid).equals("Fuel"))
+				if (liquid != null)
 				{
 					this.removeFuel(null, this.dockedEntity.addFuel(liquid, 1));
 				}

@@ -36,6 +36,8 @@ import universalelectricity.prefab.tile.TileEntityElectricityRunnable;
 
 import com.google.common.io.ByteArrayDataInput;
 
+import cpw.mods.fml.common.FMLLog;
+
 public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable implements IInventory, ISidedInventory, IPacketReceiver, IEnergySink, IDisableableMachine
 {
 	private int tankCapacity = 24000;
@@ -47,16 +49,14 @@ public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable im
 	public IFuelable attachedFuelable;
 	public double ic2WattsReceived = 0;
 	private boolean initialized = false;
-	private boolean disabled;
+	private boolean disabled = true;
 	
-//	public void transferFuelToSpaceship(EntitySpaceshipBase spaceship)
-//	{
-//		if (!this.worldObj.isRemote && (this.ic2WattsReceived > 0 || this.wattsReceived > 0) && this.getStackInSlot(1) != null && this.getStackInSlot(1).getItem() instanceof IFuelTank && this.getStackInSlot(1).getMaxDamage() - this.getStackInSlot(1).getItemDamage() != 0 && this.getStackInSlot(1).getItemDamage() < this.getStackInSlot(1).getMaxDamage())
-//		{
-//			spaceship.fuel += 1F;
-//			this.getStackInSlot(1).setItemDamage(this.getStackInSlot(1).getItemDamage() + 1);
-//		}
-//	}
+	public int getScaledFuelLevel(int i)
+	{
+		double fuelLevel = this.fuelTank.getLiquid() == null ? 0 : (this.fuelTank.getLiquid().amount);
+		
+		return (int) (fuelLevel * i / 2000);
+	}
 
 	@Override
 	public void updateEntity()
@@ -73,7 +73,7 @@ public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable im
 			initialized = true;
 		}
 		
-		if (this.validStackInSlot())
+		if (this.fuelTank.getLiquid() != null && this.fuelTank.getLiquid().amount > 0)
 		{
 			this.wattsReceived += ElectricItemHelper.dechargeItem(this.getStackInSlot(0), GCCoreTileEntityFuelLoader.WATTS_PER_TICK, this.getVoltage());
 		}
@@ -82,7 +82,7 @@ public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable im
 		{
 			this.wattsReceived = Math.max(this.wattsReceived - GCCoreTileEntityFuelLoader.WATTS_PER_TICK / 4, 0);
 
-			if (this.containingItems[1] != null && (this.ic2WattsReceived > 0 || this.wattsReceived > 0))
+			if (this.containingItems[1] != null)
 			{
 				LiquidStack liquid = LiquidContainerRegistry.getLiquidForFilledItem(this.containingItems[1]);
 
@@ -109,8 +109,10 @@ public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable im
 				}
 			}
 			
-			if (this.attachedFuelable == null || this.ticks % 100 == 0)
+			if (this.ticks % 100 == 0)
 			{
+				boolean foundFuelable = false;
+				
 				for (ForgeDirection dir : ForgeDirection.values())
 				{
 					if (dir != ForgeDirection.UNKNOWN)
@@ -127,26 +129,30 @@ public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable im
 							if (mainTile != null && mainTile instanceof IFuelable)
 							{
 								this.attachedFuelable = (IFuelable) mainTile;
+								foundFuelable = true;
 								break;
 							}
 						}
 						else if (pad != null && pad instanceof IFuelable)
 						{
 							this.attachedFuelable = (IFuelable) pad;
-						}
-						else
-						{
-							this.attachedFuelable = null;
+							foundFuelable = true;
+							break;
 						}
 					}
 				}
+				
+				if (!foundFuelable)
+				{
+					this.attachedFuelable = null;
+				}
 			}
 			
-			if (this.attachedFuelable != null && (this.ic2WattsReceived > 0 || this.wattsReceived > 0))
+			if (this.attachedFuelable != null && (this.ic2WattsReceived > 0 || this.wattsReceived > 0) && !this.disabled)
 			{
-				LiquidStack liquid = this.fuelTank.getLiquid();
-
-				if (liquid != null && LiquidDictionary.findLiquidName(liquid).equals("Fuel"))
+				LiquidStack liquid = LiquidDictionary.getLiquid("Fuel", 1);
+				
+				if (liquid != null)
 				{
 					this.fuelTank.drain(this.attachedFuelable.addFuel(liquid, 1), true);
 				}
@@ -162,7 +168,7 @@ public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable im
 	@Override
 	public Packet getDescriptionPacket()
 	{
-		return PacketManager.getPacket(BasicComponents.CHANNEL, this, this.wattsReceived, this.disabledTicks, this.ic2WattsReceived, this.fuelTank.getLiquid() == null ? 0 : this.fuelTank.getLiquid().amount);
+		return PacketManager.getPacket(BasicComponents.CHANNEL, this, this.wattsReceived, this.disabledTicks, this.ic2WattsReceived, this.fuelTank.getLiquid() == null ? 0 : this.fuelTank.getLiquid().amount, this.disabled);
 	}
 
 	@Override
@@ -177,6 +183,7 @@ public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable im
 				this.ic2WattsReceived = dataStream.readDouble();
 				int amount = dataStream.readInt();
 				this.fuelTank.setLiquid(new LiquidStack(GCCoreItems.fuel.itemID, amount, 0));
+				this.disabled = dataStream.readBoolean();
 			}
 		}
 		catch (Exception e)
@@ -335,7 +342,7 @@ public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable im
 	@Override
 	public ElectricityPack getRequest()
 	{
-		if (this.validStackInSlot())
+		if (this.fuelTank.getLiquid() != null && this.fuelTank.getLiquid().amount > 0)
 		{
 			return new ElectricityPack(GCCoreTileEntityFuelLoader.WATTS_PER_TICK / this.getVoltage(), this.getVoltage());
 		}
