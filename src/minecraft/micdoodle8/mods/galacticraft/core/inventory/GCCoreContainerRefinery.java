@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.inventory;
 
 import micdoodle8.mods.galacticraft.API.IRefinableItem;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityRefinery;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -9,6 +10,8 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.liquids.LiquidContainerRegistry;
+import net.minecraftforge.liquids.LiquidDictionary;
+import net.minecraftforge.liquids.LiquidStack;
 import universalelectricity.core.item.IItemElectric;
 import universalelectricity.prefab.SlotSpecific;
 
@@ -91,7 +94,7 @@ public class GCCoreContainerRefinery extends Container
 						return null;
 					}
 				}
-				else if (LiquidContainerRegistry.isLiquid(var4) || LiquidContainerRegistry.containsLiquid(var4, GalacticraftCore.oilStack))
+				else if (LiquidContainerRegistry.isLiquid(var4) || LiquidContainerRegistry.containsLiquid(var4, LiquidDictionary.getOrCreateLiquid("Fuel", new LiquidStack(GCCoreItems.fuel, LiquidContainerRegistry.BUCKET_VOLUME * 2))))
 				{
 					if (!this.mergeItemStack(var4, 1, 2, false))
 					{

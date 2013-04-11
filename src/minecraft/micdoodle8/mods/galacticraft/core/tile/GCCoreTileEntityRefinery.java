@@ -59,7 +59,7 @@ public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable impl
 	private boolean initialized = false;
 	
 	private int canisterToTankRatio = tankCapacity / GCCoreItems.fuelCanister.getMaxDamage();
-	private int canisterToLiquidStackRatio = GalacticraftCore.fuelStack.amount / GCCoreItems.fuelCanister.getMaxDamage();
+	private int canisterToLiquidStackRatio = 2000 / GCCoreItems.fuelCanister.getMaxDamage();
 
 	@Override
 	public void updateEntity()
@@ -114,11 +114,11 @@ public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable impl
 			{
 				LiquidStack liquid = this.fuelTank.getLiquid();
 
-				if (liquid != null && this.fuelTank.getLiquidName().equals("Fuel"))
+				if (liquid != null && this.fuelTank.getLiquidName() != null && this.fuelTank.getLiquidName().equals("Fuel"))
 				{
 					if (this.containingItems[2].isItemEqual(new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.oilCanister.getMaxDamage())))
 					{
-						int amountToFill = Math.min(GCCoreItems.fuelCanister.getMaxDamage() - 1, MathHelper.floor_double(liquid.amount / this.canisterToLiquidStackRatio));
+						int amountToFill = Math.min(GCCoreItems.fuelCanister.getMaxDamage() - 1, MathHelper.floor_double(liquid.amount / (this.canisterToLiquidStackRatio == 0 ? 1 : this.canisterToLiquidStackRatio)));
 						
 						this.containingItems[2] = new ItemStack(GCCoreItems.fuelCanister, 1, GCCoreItems.fuelCanister.getMaxDamage() - amountToFill);
 						

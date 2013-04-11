@@ -68,7 +68,7 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
     private GCCoreTileEntityLandingPad landingPad;
 
     public int canisterToTankRatio = tankCapacity / GCCoreItems.fuelCanister.getMaxDamage();
-	public double canisterToLiquidStackRatio = (double)GalacticraftCore.fuelStack.amount / (double)GCCoreItems.fuelCanister.getMaxDamage();
+	public double canisterToLiquidStackRatio = 2000.0D / (double)GCCoreItems.fuelCanister.getMaxDamage();
 
     public GCCoreEntitySpaceship(World par1World)
     {
@@ -230,7 +230,7 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
     	{
     		playerBase.rocketStacks = this.cargoItems;
     		playerBase.rocketType = this.getSpaceshipType();
-    		playerBase.fuelDamage = this.spaceshipFuelTank.getLiquid() == null ? 0 : this.spaceshipFuelTank.getLiquid().amount / (int)this.canisterToLiquidStackRatio;
+    		playerBase.fuelDamage = this.spaceshipFuelTank.getLiquid() == null ? 0 : this.spaceshipFuelTank.getLiquid().amount / (MathHelper.floor_double(this.canisterToLiquidStackRatio == 0 ? 1 : this.canisterToLiquidStackRatio));
         }
     }
 

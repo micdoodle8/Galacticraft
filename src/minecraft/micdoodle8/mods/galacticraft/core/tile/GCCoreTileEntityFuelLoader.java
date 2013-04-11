@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 import ic2.api.Direction;
 import ic2.api.energy.event.EnergyTileLoadEvent;
 import ic2.api.energy.tile.IEnergySink;
+import micdoodle8.mods.galacticraft.API.IDisableableMachine;
 import micdoodle8.mods.galacticraft.API.IFuelTank;
 import micdoodle8.mods.galacticraft.API.IFuelable;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -35,7 +36,7 @@ import universalelectricity.prefab.tile.TileEntityElectricityRunnable;
 
 import com.google.common.io.ByteArrayDataInput;
 
-public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable implements IInventory, ISidedInventory, IPacketReceiver, IEnergySink
+public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable implements IInventory, ISidedInventory, IPacketReceiver, IEnergySink, IDisableableMachine
 {
 	private int tankCapacity = 24000;
 	public LiquidTank fuelTank = new LiquidTank(tankCapacity);
@@ -46,6 +47,7 @@ public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable im
 	public IFuelable attachedFuelable;
 	public double ic2WattsReceived = 0;
 	private boolean initialized = false;
+	private boolean disabled;
 	
 //	public void transferFuelToSpaceship(EntitySpaceshipBase spaceship)
 //	{
@@ -419,5 +421,17 @@ public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable im
 	{
 		return slotID == 1 ? itemstack.getItem() instanceof IFuelTank && itemstack.getMaxDamage() - itemstack.getItemDamage() != 0 && itemstack.getItemDamage() < itemstack.getMaxDamage() 
 				: (slotID == 0 ? itemstack.getItem() instanceof IItemElectric : false);
+	}
+
+	@Override
+	public void setDisabled(boolean disabled) 
+	{
+		this.disabled = disabled;
+	}
+
+	@Override
+	public boolean getDisabled() 
+	{
+		return this.disabled;
 	}
 }

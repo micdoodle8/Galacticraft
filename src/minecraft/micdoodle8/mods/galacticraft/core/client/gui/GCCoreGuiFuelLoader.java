@@ -101,7 +101,7 @@ public class GCCoreGuiFuelLoader extends GuiContainer
 		final int var6 = (this.height - this.ySize) / 2;
 		this.drawTexturedModalRect(var5, var6 + 5, 0, 0, this.xSize, 181);
 		
-		final int fuelLevel = this.fuelLoaderInv.fuelTank.getLiquid() == null ? 0 : (this.fuelLoaderInv.fuelTank.getLiquid().amount / (GalacticraftCore.fuelStack.amount / GCCoreItems.fuelCanister.getMaxDamage() + 1));
+		final int fuelLevel = this.fuelLoaderInv.fuelTank.getLiquid() == null ? 0 : (this.fuelLoaderInv.fuelTank.getLiquid().amount / MathHelper.floor_double((2000.0D / GCCoreItems.fuelCanister.getMaxDamage() + 1)));
 		
         this.drawTexturedModalRect(((width - xSize) / 2) + 7, ((height - ySize) / 2) + 17 + 54 - fuelLevel, 176, 38 - fuelLevel, 16, fuelLevel);
 	}

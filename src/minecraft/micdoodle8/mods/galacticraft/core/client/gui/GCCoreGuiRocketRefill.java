@@ -53,7 +53,7 @@ public class GCCoreGuiRocketRefill extends GuiContainer
         	int maxLiquid = ((GCCoreEntitySpaceship) this.mc.thePlayer.ridingEntity).spaceshipFuelTank.getCapacity();
         	double ratio = ((GCCoreEntitySpaceship) this.mc.thePlayer.ridingEntity).canisterToLiquidStackRatio;
 
-    		double fuelLevel = liquid == null ? 0 : (liquid.amount / (GalacticraftCore.fuelStack.amount / GCCoreItems.fuelCanister.getMaxDamage() + 1));
+    		double fuelLevel = liquid == null ? 0 : (liquid.amount / (2000 / GCCoreItems.fuelCanister.getMaxDamage() + 1));
     		
     		if (liquid != null)
     		
@@ -91,7 +91,7 @@ public class GCCoreGuiRocketRefill extends GuiContainer
         {
         	LiquidStack liquid = ((GCCoreEntitySpaceship) this.mc.thePlayer.ridingEntity).spaceshipFuelTank.getLiquid();
     		
-    		int fuelLevel = liquid == null ? 0 : (liquid.amount / (GalacticraftCore.fuelStack.amount / GCCoreItems.fuelCanister.getMaxDamage() + 1));
+    		int fuelLevel = liquid == null ? 0 : (liquid.amount / (2000 / GCCoreItems.fuelCanister.getMaxDamage() + 1));
     		
             this.drawTexturedModalRect(((width - xSize) / 2) + (this.type == 1 ? 72 : 71), ((height - ySize) / 2) + 45 - fuelLevel, 176, 38 - fuelLevel, 42, fuelLevel);
         }

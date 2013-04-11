@@ -187,8 +187,8 @@ public class GalacticraftCore
 	
 	public static String TEXTURE_SUFFIX;
 	
-	public static LiquidStack oilStack;
-	public static LiquidStack fuelStack;
+//	public static LiquidStack oilStack;
+//	public static LiquidStack fuelStack;
 
 	@PreInit
 	public void preInit(FMLPreInitializationEvent event)
@@ -282,8 +282,8 @@ public class GalacticraftCore
 			BasicComponents.registerTileEntities();
 		}
 
-		LiquidContainerRegistry.registerLiquid(new LiquidContainerData(GalacticraftCore.oilStack = LiquidDictionary.getOrCreateLiquid("Oil", new LiquidStack(GCCoreBlocks.crudeOilStill, LiquidContainerRegistry.BUCKET_VOLUME * 2)), new ItemStack(GCCoreItems.oilCanister, 1, 1), new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.fuelCanister.getMaxDamage())));
-		LiquidContainerRegistry.registerLiquid(new LiquidContainerData(GalacticraftCore.fuelStack = LiquidDictionary.getOrCreateLiquid("Fuel", new LiquidStack(GCCoreItems.fuel, LiquidContainerRegistry.BUCKET_VOLUME * 2)), new ItemStack(GCCoreItems.fuelCanister, 1, 1), new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.fuelCanister.getMaxDamage())));
+		LiquidContainerRegistry.registerLiquid(new LiquidContainerData(LiquidDictionary.getOrCreateLiquid("Oil", new LiquidStack(GCCoreBlocks.crudeOilStill, LiquidContainerRegistry.BUCKET_VOLUME * 2)), new ItemStack(GCCoreItems.oilCanister, 1, 1), new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.fuelCanister.getMaxDamage())));
+		LiquidContainerRegistry.registerLiquid(new LiquidContainerData(LiquidDictionary.getOrCreateLiquid("Fuel", new LiquidStack(GCCoreItems.fuel, LiquidContainerRegistry.BUCKET_VOLUME * 2)), new ItemStack(GCCoreItems.fuelCanister, 1, 1), new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.fuelCanister.getMaxDamage())));
 		
 		SchematicRegistry.registerSchematicRecipe(new GCCoreSchematicRocketT1());
 		SchematicRegistry.registerSchematicRecipe(new GCCoreSchematicMoonBuggy());
