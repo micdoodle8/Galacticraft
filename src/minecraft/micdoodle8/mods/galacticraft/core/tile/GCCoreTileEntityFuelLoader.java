@@ -279,6 +279,13 @@ public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable im
                 this.containingItems[var5] = ItemStack.loadItemStackFromNBT(var4);
             }
         }
+        
+        this.setDisabled(par1NBTTagCompound.getBoolean("isDisabled"));
+		
+		if (par1NBTTagCompound.hasKey("fuelTank"))
+		{
+			this.fuelTank.readFromNBT(par1NBTTagCompound.getCompoundTag("fuelTank"));
+		}
 	}
 
 	@Override
@@ -300,6 +307,13 @@ public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable im
         }
 
         par1NBTTagCompound.setTag("Items", list);
+        
+        par1NBTTagCompound.setBoolean("isDisabled", this.getDisabled());
+		
+		if (this.fuelTank.getLiquid() != null)
+		{
+			par1NBTTagCompound.setTag("fuelTank", this.fuelTank.writeToNBT(new NBTTagCompound()));
+		}
 	}
 
 	@Override

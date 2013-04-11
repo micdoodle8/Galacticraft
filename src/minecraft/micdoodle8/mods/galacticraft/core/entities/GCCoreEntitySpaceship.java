@@ -305,8 +305,13 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
 
             par1NBTTagCompound.setTag("Items", var2);
         }
+		
+		if (this.spaceshipFuelTank.getLiquid() != null)
+		{
+			par1NBTTagCompound.setTag("fuelTank", this.spaceshipFuelTank.writeToNBT(new NBTTagCompound()));
+		}
         
-    	par1NBTTagCompound.setInteger("fuelLiquid", this.spaceshipFuelTank.getLiquid() == null ? 0 : this.spaceshipFuelTank.getLiquid().amount);
+//    	par1NBTTagCompound.setInteger("fuelLiquid", this.spaceshipFuelTank.getLiquid() == null ? 0 : this.spaceshipFuelTank.getLiquid().amount);
     }
 
     @Override
@@ -332,8 +337,13 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
                 }
             }
         }
+		
+		if (par1NBTTagCompound.hasKey("fuelTank"))
+		{
+			this.spaceshipFuelTank.readFromNBT(par1NBTTagCompound.getCompoundTag("fuelTank"));
+		}
         
-        this.spaceshipFuelTank.setLiquid(new LiquidStack(GCCoreItems.fuel.itemID, par1NBTTagCompound.getInteger("fuelLiquid"), 0));
+//        this.spaceshipFuelTank.setLiquid(new LiquidStack(GCCoreItems.fuel.itemID, par1NBTTagCompound.getInteger("fuelLiquid"), 0));
     }
 
 	@Override

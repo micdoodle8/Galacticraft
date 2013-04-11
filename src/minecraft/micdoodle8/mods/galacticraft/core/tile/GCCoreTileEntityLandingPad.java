@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.API.IDockable;
 import micdoodle8.mods.galacticraft.API.IFuelable;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.liquids.LiquidDictionary;
@@ -178,5 +179,27 @@ public class GCCoreTileEntityLandingPad extends TileEntityMulti implements IMult
 		}
 		
 		return null;
+	}
+
+	@Override
+	public void readFromNBT(NBTTagCompound tags)
+	{
+		super.readFromNBT(tags);
+		
+		if (tags.hasKey("fuelTank"))
+		{
+			this.landingPadFuelTank.readFromNBT(tags.getCompoundTag("fuelTank"));
+		}
+	}
+
+	@Override
+	public void writeToNBT(NBTTagCompound tags)
+	{
+		super.writeToNBT(tags);
+		
+		if (this.landingPadFuelTank.getLiquid() != null)
+		{
+			tags.setTag("fuelTank", this.landingPadFuelTank.writeToNBT(new NBTTagCompound()));
+		}
 	}
 }

@@ -507,6 +507,11 @@ public class ClientProxyCore extends CommonProxyCore
 
         	final EntityPlayerSP player = minecraft.thePlayer;
 
+        	if (player == null)
+        	{
+        		return;
+        	}
+        	
         	final GCCorePlayerSP playerBase = PlayerUtil.getPlayerBaseClientFromPlayer(player);
 
         	if(minecraft.currentScreen != null || tickEnd)
