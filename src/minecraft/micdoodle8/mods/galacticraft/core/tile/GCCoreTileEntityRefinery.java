@@ -203,7 +203,7 @@ public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable impl
 	@Override
 	public ElectricityPack getRequest()
 	{
-		if (this.canProcess() || this.wattsReceived <= this.WATTS_PER_TICK)
+		if ((this.canProcess() || this.wattsReceived <= this.WATTS_PER_TICK) && !this.disabled)
 		{
 			return new ElectricityPack(GCCoreTileEntityRefinery.WATTS_PER_TICK / this.getVoltage(), this.getVoltage());
 		}
