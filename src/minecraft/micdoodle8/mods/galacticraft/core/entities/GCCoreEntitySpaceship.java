@@ -17,6 +17,7 @@ import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityOxygenFX;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPad;
+import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.moon.GCMoonConfigManager;
 import net.minecraft.client.Minecraft;
@@ -234,6 +235,8 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
     {
     	final GCCorePlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player);
 
+	  	player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, new Object[] {0}));
+    	
     	if (playerBase != null)
     	{
     		playerBase.rocketStacks = this.cargoItems;

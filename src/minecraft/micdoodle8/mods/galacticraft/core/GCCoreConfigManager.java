@@ -54,6 +54,7 @@ public class GCCoreConfigManager
 	public static int idBlockSpaceStationBase;
 	public static int idBlockDummy;
 	public static int idBlockOxygenSealer;
+	public static int idBlockEnclosedWire;
 
 	// ITEMS
 	public static int idItemLightOxygenTank;
@@ -192,6 +193,7 @@ public class GCCoreConfigManager
 	        GCCoreConfigManager.idBlockCrudeOilMoving = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockCrudeOilMoving",				3376)		.getInt(3376);
 	        GCCoreConfigManager.idBlockCrudeOilStill = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockCrudeOilStill",					3377)		.getInt(3377);
 	        GCCoreConfigManager.idBlockDummy = 							GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockDummy", 						3378)		.getInt(3378);
+	        GCCoreConfigManager.idBlockEnclosedWire = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockEnclosedWire", 					3379)		.getInt(3379);
 	        
 	        GCCoreConfigManager.idItemSpaceship = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemSpaceship", 						9855)		.getInt(9855);
 	        GCCoreConfigManager.idItemLightOxygenTank = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemLightOxygenTank", 				9856)		.getInt(9856);
