@@ -19,51 +19,52 @@ public class OxygenPressureProtocol
     private LinkedList<Vector3> checked = new LinkedList<Vector3>();
     private LinkedList<Vector3> oxygenReliantBlocks = new LinkedList<Vector3>();
     private boolean airtight;
-    private static ArrayList<Integer> vanillaPermeableBlocks = new ArrayList<Integer>();
+    private static ArrayList<Integer> vanillaNonPermeableBlocks = new ArrayList<Integer>();
 
     static
     {
-    	vanillaPermeableBlocks.add(Block.doorSteel.blockID);
-    	vanillaPermeableBlocks.add(Block.doorWood.blockID);
-    	vanillaPermeableBlocks.add(Block.torchWood.blockID);
-    	vanillaPermeableBlocks.add(Block.torchRedstoneActive.blockID);
-    	vanillaPermeableBlocks.add(Block.torchRedstoneIdle.blockID);
-    	vanillaPermeableBlocks.add(Block.bed.blockID);
-    	vanillaPermeableBlocks.add(Block.blockSnow.blockID);
-    	vanillaPermeableBlocks.add(Block.anvil.blockID);
-    	vanillaPermeableBlocks.add(Block.fence.blockID);
-    	vanillaPermeableBlocks.add(Block.fenceGate.blockID);
-    	vanillaPermeableBlocks.add(Block.fenceIron.blockID);
-    	vanillaPermeableBlocks.add(Block.crops.blockID);
-    	vanillaPermeableBlocks.add(Block.stoneSingleSlab.blockID);
-    	vanillaPermeableBlocks.add(Block.woodSingleSlab.blockID);
-    	vanillaPermeableBlocks.add(Block.ladder.blockID);
-    	vanillaPermeableBlocks.add(Block.flowerPot.blockID);
-    	vanillaPermeableBlocks.add(Block.tallGrass.blockID);
-    	vanillaPermeableBlocks.add(Block.melonStem.blockID);
-    	vanillaPermeableBlocks.add(Block.pressurePlateGold.blockID);
-    	vanillaPermeableBlocks.add(Block.pressurePlateIron.blockID);
-    	vanillaPermeableBlocks.add(Block.pressurePlatePlanks.blockID);
-    	vanillaPermeableBlocks.add(Block.pressurePlateStone.blockID);
-    	vanillaPermeableBlocks.add(Block.woodenButton.blockID);
-    	vanillaPermeableBlocks.add(Block.stoneButton.blockID);
-    	vanillaPermeableBlocks.add(Block.waterlily.blockID);
-    	vanillaPermeableBlocks.add(Block.sapling.blockID);
-    	vanillaPermeableBlocks.add(Block.redstoneComparatorActive.blockID);
-    	vanillaPermeableBlocks.add(Block.redstoneComparatorIdle.blockID);
-    	vanillaPermeableBlocks.add(Block.redstoneRepeaterActive.blockID);
-    	vanillaPermeableBlocks.add(Block.redstoneRepeaterIdle.blockID);
-    	vanillaPermeableBlocks.add(Block.daylightSensor.blockID);
-    	vanillaPermeableBlocks.add(Block.redstoneWire.blockID);
-    	vanillaPermeableBlocks.add(Block.stairsStoneBrick.blockID);
-    	vanillaPermeableBlocks.add(Block.stairsBrick.blockID);
-    	vanillaPermeableBlocks.add(Block.stairsNetherBrick.blockID);
-    	vanillaPermeableBlocks.add(Block.stairsCobblestone.blockID);
-    	vanillaPermeableBlocks.add(Block.stairsWoodOak.blockID);
-    	vanillaPermeableBlocks.add(Block.waterStill.blockID);
-    	vanillaPermeableBlocks.add(Block.waterMoving.blockID);
-    	vanillaPermeableBlocks.add(Block.lavaStill.blockID);
-    	vanillaPermeableBlocks.add(Block.lavaMoving.blockID);
+    	vanillaNonPermeableBlocks.add(Block.sponge.blockID);
+//    	vanillaPermeableBlocks.add(Block.doorSteel.blockID);
+//    	vanillaPermeableBlocks.add(Block.doorWood.blockID);
+//    	vanillaPermeableBlocks.add(Block.torchWood.blockID);
+//    	vanillaPermeableBlocks.add(Block.torchRedstoneActive.blockID);
+//    	vanillaPermeableBlocks.add(Block.torchRedstoneIdle.blockID);
+//    	vanillaPermeableBlocks.add(Block.bed.blockID);
+//    	vanillaPermeableBlocks.add(Block.blockSnow.blockID);
+//    	vanillaPermeableBlocks.add(Block.anvil.blockID);
+//    	vanillaPermeableBlocks.add(Block.fence.blockID);
+//    	vanillaPermeableBlocks.add(Block.fenceGate.blockID);
+//    	vanillaPermeableBlocks.add(Block.fenceIron.blockID);
+//    	vanillaPermeableBlocks.add(Block.crops.blockID);
+//    	vanillaPermeableBlocks.add(Block.stoneSingleSlab.blockID);
+//    	vanillaPermeableBlocks.add(Block.woodSingleSlab.blockID);
+//    	vanillaPermeableBlocks.add(Block.ladder.blockID);
+//    	vanillaPermeableBlocks.add(Block.flowerPot.blockID);
+//    	vanillaPermeableBlocks.add(Block.tallGrass.blockID);
+//    	vanillaPermeableBlocks.add(Block.melonStem.blockID);
+//    	vanillaPermeableBlocks.add(Block.pressurePlateGold.blockID);
+//    	vanillaPermeableBlocks.add(Block.pressurePlateIron.blockID);
+//    	vanillaPermeableBlocks.add(Block.pressurePlatePlanks.blockID);
+//    	vanillaPermeableBlocks.add(Block.pressurePlateStone.blockID);
+//    	vanillaPermeableBlocks.add(Block.woodenButton.blockID);
+//    	vanillaPermeableBlocks.add(Block.stoneButton.blockID);
+//    	vanillaPermeableBlocks.add(Block.waterlily.blockID);
+//    	vanillaPermeableBlocks.add(Block.sapling.blockID);
+//    	vanillaPermeableBlocks.add(Block.redstoneComparatorActive.blockID);
+//    	vanillaPermeableBlocks.add(Block.redstoneComparatorIdle.blockID);
+//    	vanillaPermeableBlocks.add(Block.redstoneRepeaterActive.blockID);
+//    	vanillaPermeableBlocks.add(Block.redstoneRepeaterIdle.blockID);
+//    	vanillaPermeableBlocks.add(Block.daylightSensor.blockID);
+//    	vanillaPermeableBlocks.add(Block.redstoneWire.blockID);
+//    	vanillaPermeableBlocks.add(Block.stairsStoneBrick.blockID);
+//    	vanillaPermeableBlocks.add(Block.stairsBrick.blockID);
+//    	vanillaPermeableBlocks.add(Block.stairsNetherBrick.blockID);
+//    	vanillaPermeableBlocks.add(Block.stairsCobblestone.blockID);
+//    	vanillaPermeableBlocks.add(Block.stairsWoodOak.blockID);
+//    	vanillaPermeableBlocks.add(Block.waterStill.blockID);
+//    	vanillaPermeableBlocks.add(Block.waterMoving.blockID);
+//    	vanillaPermeableBlocks.add(Block.lavaStill.blockID);
+//    	vanillaPermeableBlocks.add(Block.lavaMoving.blockID);
     }
 
     private void loopThrough(World var1, int var2, int var3, int var4, int var5)
@@ -250,7 +251,7 @@ public class OxygenPressureProtocol
         {
             var6 = (Vector3)var5.next();
 
-            if (canBlockPass(var1, var6.intX(), var6.intY(), var6.intZ()))
+            if (canBlockPass(var1, var6))
             {
                 int var9 = var1.getBlockId(var6.intX(), var6.intY(), var6.intZ());
 
@@ -301,18 +302,6 @@ public class OxygenPressureProtocol
         this.checked = new LinkedList();
     }
 
-    public boolean canBlockPass(World var0, int var1, int var2, int var3)
-    {
-    	Block block = Block.blocksList[var0.getBlockId(var1, var2, var3)];
-
-    	return block == null
-    			|| block.blockID == 0
-    			|| block.blockID == GCCoreBlocks.breatheableAir.blockID
-    	    	|| this.vanillaPermeableBlocks.contains(block.blockID)
-    			|| (!block.isOpaqueCube() && !(block instanceof IPartialSealedBlock))
-    			|| (!block.isOpaqueCube() && block instanceof IPartialSealedBlock && !((IPartialSealedBlock) block).isSealed(var0, var1, var2, var3));
-    }
-
     public boolean canBlockPass(World var0, Vector3 vec)
     {
     	Block block = Block.blocksList[vec.getBlockID(var0)];
@@ -320,7 +309,7 @@ public class OxygenPressureProtocol
     	return block == null
     			|| block.blockID == 0 
     			|| block.blockID == GCCoreBlocks.breatheableAir.blockID
-    	    	|| this.vanillaPermeableBlocks.contains(block.blockID)
+    	    	|| this.vanillaNonPermeableBlocks.contains(block.blockID)
     			|| (!block.isOpaqueCube() && !(block instanceof IPartialSealedBlock))
     			|| (!block.isOpaqueCube() && block instanceof IPartialSealedBlock && !((IPartialSealedBlock) block).isSealed(var0, vec.intX(), vec.intY(), vec.intZ()));
     }
@@ -339,7 +328,7 @@ public class OxygenPressureProtocol
     			Vector3 vec = new Vector3(var2, var3, var4);
     			vec = vec.add(new Vector3(dir));
     			
-    			if (this.canBlockPass(var1, vec.intX(), vec.intY(), vec.intZ()) && !this.isVisited(vec))
+    			if (this.canBlockPass(var1, vec) && !this.isVisited(vec))
     			{
     				return true;
     			}
