@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.API.SchematicRegistry;
-import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAdvancedCraftingTable;
 import net.minecraft.block.Block;
@@ -30,7 +29,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GCCoreBlockAdvancedCraftingTable extends BlockContainer
 {
 	Icon[] iconBuffer;
-	
+
 	public GCCoreBlockAdvancedCraftingTable(int par1)
 	{
 		super(par1, Material.wood);
@@ -42,7 +41,7 @@ public class GCCoreBlockAdvancedCraftingTable extends BlockContainer
     {
         return GalacticraftCore.galacticraftTab;
     }
-	
+
     @Override
     public void registerIcons(IconRegister par1IconRegister)
     {
@@ -128,26 +127,26 @@ public class GCCoreBlockAdvancedCraftingTable extends BlockContainer
 	@Override
     public void onBlockPlacedBy(World var1, int var2, int var3, int var4, EntityLiving var5, ItemStack var6)
     {
-        TileEntity var8 = var1.getBlockTileEntity(var2, var3, var4);
-        
+        final TileEntity var8 = var1.getBlockTileEntity(var2, var3, var4);
+
         if (var8 instanceof IMultiBlock)
         {
             ((IMultiBlock)var8).onCreate(new Vector3(var2, var3, var4));
         }
-        
+
         super.onBlockPlacedBy(var1, var2, var3, var4, var5, var6);
     }
 
 	@Override
     public void breakBlock(World var1, int var2, int var3, int var4, int var5, int var6)
     {
-        TileEntity var9 = var1.getBlockTileEntity(var2, var3, var4);
-        
+        final TileEntity var9 = var1.getBlockTileEntity(var2, var3, var4);
+
         if (var9 instanceof IMultiBlock)
         {
             ((IMultiBlock)var9).onDestroy(var9);
         }
-        
+
         super.breakBlock(var1, var2, var3, var4, var5, var6);
     }
 

@@ -239,7 +239,7 @@ public class GCMoonWorldProvider extends WorldProvider implements IGalacticraftW
 	}
 
 	@Override
-	public double getSolorEnergyMultiplier() 
+	public double getSolorEnergyMultiplier()
 	{
 		return 1.4D;
 	}

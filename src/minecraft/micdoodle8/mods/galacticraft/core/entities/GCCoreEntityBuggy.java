@@ -9,7 +9,6 @@ import micdoodle8.mods.galacticraft.core.network.GCCorePacketEntityUpdate;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -80,7 +79,7 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
     {
         return false;
     }
-    
+
     @Override
 	public AxisAlignedBB getBoundingBox()
     {
@@ -115,7 +114,7 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
             this.riddenByEntity.setPosition(this.posX + var1, this.posY - 2 + this.riddenByEntity.getYOffset(), this.posZ + var3);
         }
     }
-	
+
 	@Override
 	public void setPositionRotationAndMotion(double x, double y, double z, float yaw, float pitch, double motX, double motY, double motZ)
 	{
@@ -236,7 +235,7 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
 	public void onUpdate()
     {
         super.onUpdate();
-        
+
         if(this.worldObj.isRemote && (this.riddenByEntity == null || !(this.riddenByEntity instanceof EntityPlayer) || !FMLClientHandler.instance().getClient().thePlayer.equals(this.riddenByEntity)))
         {
             double x;
@@ -253,7 +252,7 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
                 this.rotationPitch = (float)(this.rotationPitch + (this.boatPitch - this.rotationPitch) / this.boatPosRotationIncrements);
                 --this.boatPosRotationIncrements;
                 this.setPosition(x, y, z);
-                this.setRotation(this.rotationYaw, this.rotationPitch);     
+                this.setRotation(this.rotationYaw, this.rotationPitch);
             }
             else
             {
@@ -299,7 +298,7 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
         {
             this.motionY -= 0.04D;
         }
-        
+
         if (this.riddenByEntity == null)
         {
         	this.yOffset = 5;
@@ -325,7 +324,7 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
 
         this.motionX = -(this.speed * Math.cos((this.rotationYaw - 90F) * Math.PI / 180.0D ));
         this.motionZ = -(this.speed * Math.sin((this.rotationYaw - 90F) * Math.PI / 180.0D ));
-        
+
 
 		if (this.worldObj.isRemote)
 		{
@@ -335,12 +334,12 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
         this.prevPosX = this.posX;
         this.prevPosY = this.posY;
         this.prevPosZ = this.posZ;
-		
+
 		if(this.worldObj.isRemote && this.riddenByEntity instanceof EntityPlayer && FMLClientHandler.instance().getClient().thePlayer.equals(this.riddenByEntity))
 		{
 			PacketDispatcher.sendPacketToServer(GCCorePacketEntityUpdate.buildUpdatePacket(this));
 		}
-		
+
 		if(!this.worldObj.isRemote && this.ticksExisted % 5 == 0)
 		{
 			PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 50, this.dimension, GCCorePacketEntityUpdate.buildUpdatePacket(this));
@@ -533,7 +532,7 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
 

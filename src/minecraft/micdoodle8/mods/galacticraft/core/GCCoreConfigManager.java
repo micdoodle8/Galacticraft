@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core;
 import java.io.File;
 import java.util.logging.Level;
 
-import micdoodle8.mods.galacticraft.moon.GCMoonConfigManager;
 import net.minecraftforge.common.Configuration;
 import cpw.mods.fml.common.FMLLog;
 
@@ -27,7 +26,7 @@ public class GCCoreConfigManager
 			this.setDefaultValues();
 		}
 	}
-	
+
 	public static int idDimensionOverworldOrbit;
 
 	// BLOCKS
@@ -85,7 +84,7 @@ public class GCCoreConfigManager
 	public static int idItemOilExtractor;
 	public static int idItemFuel;
 	public static int idItemSchematic;
-	
+
 	// SCHEMATICS
 	public static int idSchematicRocketT1;
 	public static int idSchematicMoonBuggy;
@@ -167,9 +166,9 @@ public class GCCoreConfigManager
 		try
 		{
 	        GCCoreConfigManager.configuration.load();
-	        
+
 	        GCCoreConfigManager.idDimensionOverworldOrbit = 			GCCoreConfigManager.configuration.get("DIMENSIONS",                 "idDimensionOverworldOrbit",            -27)        .getInt(-27);
-	        
+
 	        GCCoreConfigManager.idBlockSpaceStationBase = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockSpaceStationBase", 				224)		.getInt(224);
 	        GCCoreConfigManager.idBlockBreatheableAir = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockCoreBreatheableAir", 			3350)		.getInt(3350);
 	        GCCoreConfigManager.idBlockLandingPad = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockLandingPad", 					3351)		.getInt(3351);
@@ -194,7 +193,7 @@ public class GCCoreConfigManager
 	        GCCoreConfigManager.idBlockCrudeOilStill = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockCrudeOilStill",					3377)		.getInt(3377);
 	        GCCoreConfigManager.idBlockDummy = 							GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockDummy", 						3378)		.getInt(3378);
 	        GCCoreConfigManager.idBlockEnclosedWire = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockEnclosedWire", 					3379)		.getInt(3379);
-	        
+
 	        GCCoreConfigManager.idItemSpaceship = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemSpaceship", 						9855)		.getInt(9855);
 	        GCCoreConfigManager.idItemLightOxygenTank = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemLightOxygenTank", 				9856)		.getInt(9856);
 	        GCCoreConfigManager.idItemMedOxygenTank = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemMedOxygenTank", 					9857)		.getInt(9857);
@@ -222,7 +221,7 @@ public class GCCoreConfigManager
 	        GCCoreConfigManager.idItemRocketFuelBucket = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemRocketFuelCanister", 				9879)		.getInt(9879);
 	        GCCoreConfigManager.idItemFuel = 							GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "iditemFuel",			 				9880)		.getInt(9880);
 	        GCCoreConfigManager.idItemSchematic = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemSchematic",			 			9989)		.getInt(9989);
-	        
+
 	        GCCoreConfigManager.idToolSteelSword = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idToolSteelSword", 						9980)		.getInt(9880);
 	        GCCoreConfigManager.idToolSteelPickaxe = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idToolSteelPickaxe", 					9981)		.getInt(9881);
 	        GCCoreConfigManager.idToolSteelSpade = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idToolSteelSpade", 						9982)		.getInt(9882);
@@ -250,7 +249,7 @@ public class GCCoreConfigManager
 	        GCCoreConfigManager.idSchematicRocketT1 = 					GCCoreConfigManager.configuration.get("Schematic", "idSchematicRocketT1", 									0)			.getInt(0);
 	        GCCoreConfigManager.idSchematicMoonBuggy = 					GCCoreConfigManager.configuration.get("Schematic", "idSchematicMoonBuggy", 									1)			.getInt(1);
 	        GCCoreConfigManager.idSchematicAddSchematic = 				GCCoreConfigManager.configuration.get("Schematic", "idSchematicAddSchematic", 						Integer.MAX_VALUE)	.getInt(Integer.MAX_VALUE);
-	        
+
 	        GCCoreConfigManager.idAchievBase = 							GCCoreConfigManager.configuration.get("Achievements", "idAchievBase", 										1784)		.getInt(1784);
 
 	        GCCoreConfigManager.idEntityEvolvedSpider = 				GCCoreConfigManager.configuration.get("Entities", "idEntityEvolvedSpider", 									155)		.getInt(155);
@@ -269,7 +268,7 @@ public class GCCoreConfigManager
 	        GCCoreConfigManager.idEntityOxygenBubble = 					GCCoreConfigManager.configuration.get("Entities", "idEntityOxygenBubble", 									168)		.getInt(168);
 	        GCCoreConfigManager.idEntityLander = 						GCCoreConfigManager.configuration.get("Entities", "idEntityLander", 										169)		.getInt(169);
 	        GCCoreConfigManager.idEntityLanderChest = 					GCCoreConfigManager.configuration.get("Entities", "idEntityLanderChest", 									170)		.getInt(170);
-	        
+
 	        GCCoreConfigManager.transparentBreathableAir = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Transparent Breathable Air",			true)		.getBoolean(true);
 	        GCCoreConfigManager.moreStars = 							GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "More Stars",							true)		.getBoolean(true);
 	        GCCoreConfigManager.wasdMapMovement = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "WASD Map Movement", 					true)		.getBoolean(true);
@@ -298,7 +297,7 @@ public class GCCoreConfigManager
 			{
 				GCCoreConfigManager.configuration.save();
 			}
-			
+
 			GCCoreConfigManager.loaded = true;
 		}
     }

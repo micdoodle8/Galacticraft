@@ -64,21 +64,21 @@ public class OxygenUtil
         final int var6 = MathHelper.floor_double(entity.boundingBox.maxY + 1.0D);
         final int var7 = MathHelper.floor_double(entity.boundingBox.minZ);
         final int var8 = MathHelper.floor_double(entity.boundingBox.maxZ + 1.0D);
-        
-        AxisAlignedBB box = AxisAlignedBB.getBoundingBox(entity.posX - 40, entity.posY - 40, entity.posZ - 40, entity.posX + 40, entity.posY + 40, entity.posZ + 40);
-        
-        List l = entity.worldObj.loadedTileEntityList;
-        
-        for (Object o : l)
+
+        final AxisAlignedBB box = AxisAlignedBB.getBoundingBox(entity.posX - 40, entity.posY - 40, entity.posZ - 40, entity.posX + 40, entity.posY + 40, entity.posZ + 40);
+
+        final List l = entity.worldObj.loadedTileEntityList;
+
+        for (final Object o : l)
         {
         	if (o instanceof GCCoreTileEntityOxygenDistributor)
         	{
-        		GCCoreTileEntityOxygenDistributor distributor = (GCCoreTileEntityOxygenDistributor) o;
-        		
+        		final GCCoreTileEntityOxygenDistributor distributor = (GCCoreTileEntityOxygenDistributor) o;
+
         		if (!distributor.worldObj.isRemote)
         		{
-        			double dist = distributor.getDistanceFromServer(entity.posX, entity.posY, entity.posZ);
-        			
+        			final double dist = distributor.getDistanceFromServer(entity.posX, entity.posY, entity.posZ);
+
         			if (Math.sqrt(dist) < distributor.power)
         			{
         				return true;
@@ -86,7 +86,7 @@ public class OxygenUtil
         		}
         	}
         }
-        
+
         for (int var9 = var3; var9 < var4; ++var9)
         {
             for (int var10 = var5; var10 < var6; ++var10)
@@ -102,7 +102,7 @@ public class OxygenUtil
                 }
             }
         }
-        
+
         return false;
     }
 
@@ -160,12 +160,12 @@ public class OxygenUtil
 
 		if (inventory.getStackInSlot(0) == null || !OxygenUtil.isItemValidForPlayerTankInv(0, inventory.getStackInSlot(0)))
 		{
-			for (ItemStack armorStack : player.inventory.armorInventory)
+			for (final ItemStack armorStack : player.inventory.armorInventory)
 			{
 				if (armorStack != null && armorStack.getItem() instanceof IBreathableArmor)
 				{
-					IBreathableArmor breathableArmor = (IBreathableArmor) armorStack.getItem();
-					
+					final IBreathableArmor breathableArmor = (IBreathableArmor) armorStack.getItem();
+
 					if (!breathableArmor.canBreathe(armorStack, player, EnumGearType.HELMET))
 					{
 						missingComponent = true;
@@ -180,12 +180,12 @@ public class OxygenUtil
 
 		if (inventory.getStackInSlot(1) == null || !OxygenUtil.isItemValidForPlayerTankInv(1, inventory.getStackInSlot(1)))
 		{
-			for (ItemStack armorStack : player.inventory.armorInventory)
+			for (final ItemStack armorStack : player.inventory.armorInventory)
 			{
 				if (armorStack != null && armorStack.getItem() instanceof IBreathableArmor)
 				{
-					IBreathableArmor breathableArmor = (IBreathableArmor) armorStack.getItem();
-					
+					final IBreathableArmor breathableArmor = (IBreathableArmor) armorStack.getItem();
+
 					if (!breathableArmor.canBreathe(armorStack, player, EnumGearType.GEAR))
 					{
 						missingComponent = true;
@@ -200,12 +200,12 @@ public class OxygenUtil
 
 		if ((inventory.getStackInSlot(2) == null || !OxygenUtil.isItemValidForPlayerTankInv(2, inventory.getStackInSlot(2))) && (inventory.getStackInSlot(3) == null || !OxygenUtil.isItemValidForPlayerTankInv(3, inventory.getStackInSlot(3))))
 		{
-			for (ItemStack armorStack : player.inventory.armorInventory)
+			for (final ItemStack armorStack : player.inventory.armorInventory)
 			{
 				if (armorStack != null && armorStack.getItem() instanceof IBreathableArmor)
 				{
-					IBreathableArmor breathableArmor = (IBreathableArmor) armorStack.getItem();
-					
+					final IBreathableArmor breathableArmor = (IBreathableArmor) armorStack.getItem();
+
 					if (!breathableArmor.canBreathe(armorStack, player, EnumGearType.TANK1) && !breathableArmor.canBreathe(armorStack, player, EnumGearType.TANK2))
 					{
 						missingComponent = true;
@@ -217,7 +217,7 @@ public class OxygenUtil
 				}
 			}
 		}
-		
+
 		return !missingComponent;
 	}
 

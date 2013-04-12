@@ -120,39 +120,39 @@ public class GCCoreBlockRendererUnlitTorch implements ISimpleBlockRenderingHandl
     {
     	if (par1Block instanceof GCCoreBlockUnlitTorch)
     	{
-            Tessellator tessellator = Tessellator.instance;
+            final Tessellator tessellator = Tessellator.instance;
             Icon icon = renderBlocks.getBlockIconFromSideAndMetadata(par1Block, 0, 0);
-            
+
             if (par1Block.blockID == GCCoreBlocks.unlitTorch.blockID)
             {
             	icon = GCCoreBlockUnlitTorch.torchIcons[1];
             }
-            
+
             if (par1Block.blockID == GCCoreBlocks.unlitTorchLit.blockID)
             {
             	icon = GCCoreBlockUnlitTorch.torchIcons[0];
             }
 
-            double d5 = (double)icon.getMinU();
-            double d6 = (double)icon.getMinV();
-            double d7 = (double)icon.getMaxU();
-            double d8 = (double)icon.getMaxV();
-            double d9 = (double)icon.getInterpolatedU(7.0D);
-            double d10 = (double)icon.getInterpolatedV(6.0D);
-            double d11 = (double)icon.getInterpolatedU(9.0D);
-            double d12 = (double)icon.getInterpolatedV(8.0D);
-            double d13 = (double)icon.getInterpolatedU(7.0D);
-            double d14 = (double)icon.getInterpolatedV(13.0D);
-            double d15 = (double)icon.getInterpolatedU(9.0D);
-            double d16 = (double)icon.getInterpolatedV(15.0D);
+            final double d5 = icon.getMinU();
+            final double d6 = icon.getMinV();
+            final double d7 = icon.getMaxU();
+            final double d8 = icon.getMaxV();
+            final double d9 = icon.getInterpolatedU(7.0D);
+            final double d10 = icon.getInterpolatedV(6.0D);
+            final double d11 = icon.getInterpolatedU(9.0D);
+            final double d12 = icon.getInterpolatedV(8.0D);
+            final double d13 = icon.getInterpolatedU(7.0D);
+            final double d14 = icon.getInterpolatedV(13.0D);
+            final double d15 = icon.getInterpolatedU(9.0D);
+            final double d16 = icon.getInterpolatedV(15.0D);
             par2 += 0.5D;
             par6 += 0.5D;
-            double d17 = par2 - 0.5D;
-            double d18 = par2 + 0.5D;
-            double d19 = par6 - 0.5D;
-            double d20 = par6 + 0.5D;
-            double d21 = 0.0625D;
-            double d22 = 0.625D;
+            final double d17 = par2 - 0.5D;
+            final double d18 = par2 + 0.5D;
+            final double d19 = par6 - 0.5D;
+            final double d20 = par6 + 0.5D;
+            final double d21 = 0.0625D;
+            final double d22 = 0.625D;
             tessellator.addVertexWithUV(par2 + par8 * (1.0D - d22) - d21, par4 + d22, par6 + par10 * (1.0D - d22) - d21, d9, d10);
             tessellator.addVertexWithUV(par2 + par8 * (1.0D - d22) - d21, par4 + d22, par6 + par10 * (1.0D - d22) + d21, d9, d12);
             tessellator.addVertexWithUV(par2 + par8 * (1.0D - d22) + d21, par4 + d22, par6 + par10 * (1.0D - d22) + d21, d11, d12);

@@ -20,7 +20,7 @@ public class GCCoreContainerSchematic  extends Container
     public GCCoreContainerSchematic(InventoryPlayer par1InventoryPlayer, int x, int y, int z)
     {
 		this.worldObj = par1InventoryPlayer.player.worldObj;
-		this.addSlotToContainer(new SlotSpecific(craftMatrix, 0, 80, 1, ISchematicItem.class));
+		this.addSlotToContainer(new SlotSpecific(this.craftMatrix, 0, 80, 1, ISchematicItem.class));
         int var6;
         int var7;
 
@@ -62,7 +62,7 @@ public class GCCoreContainerSchematic  extends Container
     }
 
 	@Override
-	public boolean canInteractWith(EntityPlayer entityplayer) 
+	public boolean canInteractWith(EntityPlayer entityplayer)
 	{
 		return true;
 	}

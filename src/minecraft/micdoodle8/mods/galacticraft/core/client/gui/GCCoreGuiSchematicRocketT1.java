@@ -15,7 +15,7 @@ public class GCCoreGuiSchematicRocketT1 extends GuiContainer implements ISchemat
 	private GuiButton backButton;
 	private GuiButton nextButton;
 	private int pageIndex;
-	
+
     public GCCoreGuiSchematicRocketT1(InventoryPlayer par1InventoryPlayer, int x, int y, int z)
     {
         super(new GCCoreContainerRocketBench(par1InventoryPlayer, x, y, z));
@@ -27,8 +27,8 @@ public class GCCoreGuiSchematicRocketT1 extends GuiContainer implements ISchemat
     {
     	super.initGui();
         this.buttonList.clear();
-        this.buttonList.add((backButton = new GuiButton(0, this.width / 2 - 130, this.height / 2 - 30 + 27, 40, 20, "Back")));
-        this.buttonList.add((nextButton = new GuiButton(1, this.width / 2 + 90, this.height / 2 - 30 + 27, 40, 20, "Next")));
+        this.buttonList.add(this.backButton = new GuiButton(0, this.width / 2 - 130, this.height / 2 - 30 + 27, 40, 20, "Back"));
+        this.buttonList.add(this.nextButton = new GuiButton(1, this.width / 2 + 90, this.height / 2 - 30 + 27, 40, 20, "Next"));
         this.backButton.enabled = false;
     }
 
@@ -67,7 +67,7 @@ public class GCCoreGuiSchematicRocketT1 extends GuiContainer implements ISchemat
     }
 
 	@Override
-	public void setPageIndex(int index) 
+	public void setPageIndex(int index)
 	{
 		this.pageIndex = index;
 	}

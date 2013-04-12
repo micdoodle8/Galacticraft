@@ -29,7 +29,7 @@ public class GCCoreBlock extends Block
 	 *  4: DECO 2
 	 */
 	Icon[][] iconBuffer;
-	
+
 	protected GCCoreBlock(int i)
 	{
 		super(i, Material.rock);

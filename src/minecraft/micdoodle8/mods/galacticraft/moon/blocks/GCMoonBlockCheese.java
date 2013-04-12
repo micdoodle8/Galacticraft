@@ -19,7 +19,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GCMoonBlockCheese extends Block
 {
 	Icon[] cheeseIcons;
-	
+
     protected GCMoonBlockCheese(int par1)
     {
         super(par1, Material.cake);
@@ -150,7 +150,7 @@ public class GCMoonBlockCheese extends Block
         if (par5EntityPlayer.canEat(false))
         {
             par5EntityPlayer.getFoodStats().addStats(2, 0.1F);
-            int l = par1World.getBlockMetadata(par2, par3, par4) + 1;
+            final int l = par1World.getBlockMetadata(par2, par3, par4) + 1;
 
             if (l >= 6)
             {

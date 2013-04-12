@@ -186,6 +186,7 @@ public class GCCoreEntityCreeper extends EntityCreeper implements IEntityBreatha
         return true;
     }
 
+	@Override
 	public boolean getPowered()
     {
         return this.dataWatcher.getWatchableObjectByte(17) == 1;
@@ -210,11 +211,13 @@ public class GCCoreEntityCreeper extends EntityCreeper implements IEntityBreatha
         return Item.gunpowder.itemID;
     }
 
+	@Override
 	public int getCreeperState()
     {
         return this.dataWatcher.getWatchableObjectByte(16);
     }
 
+	@Override
 	public void setCreeperState(int par1)
     {
         this.dataWatcher.updateObject(16, Byte.valueOf((byte)par1));
@@ -231,7 +234,7 @@ public class GCCoreEntityCreeper extends EntityCreeper implements IEntityBreatha
     }
 
 	@Override
-	public boolean canBreath() 
+	public boolean canBreath()
 	{
 		return true;
 	}

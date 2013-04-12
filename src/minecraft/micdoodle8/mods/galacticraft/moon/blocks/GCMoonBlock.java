@@ -70,13 +70,13 @@ public class GCMoonBlock extends Block implements IDetectableMetadataResource, I
 	@Override
     public float getBlockHardness(World par1World, int par2, int par3, int par4)
     {
-    	int meta = par1World.getBlockMetadata(par2, par3, par4);
-    	
+    	final int meta = par1World.getBlockMetadata(par2, par3, par4);
+
 		if (meta == 3 || meta >= 5 && meta <= 13)
 		{
 			return 0.1F;
 		}
-		
+
         return this.blockHardness;
     }
 
@@ -87,7 +87,7 @@ public class GCMoonBlock extends Block implements IDetectableMetadataResource, I
 		{
 			return true;
 		}
-		
+
     	return super.canHarvestBlock(player, meta);
     }
 

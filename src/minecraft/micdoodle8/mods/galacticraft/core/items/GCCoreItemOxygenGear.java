@@ -54,7 +54,7 @@ public class GCCoreItemOxygenGear extends Item
     		}
     	}
     }
-    
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void updateIcons(IconRegister iconRegister)

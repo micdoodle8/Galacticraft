@@ -43,12 +43,12 @@ public class GCCoreModelVillager extends ModelVillager
         this.brain.setRotationPoint(0.0F, 0.0F + par2, 0.0F);
         this.brain.setTextureOffset(32, 0).addBox(-4.0F, -16.0F, -4.0F, 8, 8, 8, par1 + 0.5F);
 	}
-    
+
     @Override
 	public void render(Entity par1Entity, float par2, float par3, float par4, float par5, float par6, float par7)
     {
     	super.render(par1Entity, par2, par3, par4, par5, par6, par7);
-    	
+
     	this.brain.render(par7);
     }
 
@@ -56,7 +56,7 @@ public class GCCoreModelVillager extends ModelVillager
 	public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity par7Entity)
     {
     	super.setRotationAngles(par1, par2, par3, par4, par5, par6, par7Entity);
-    	
+
     	this.brain.rotateAngleX = this.villagerHead.rotateAngleX;
     	this.brain.rotateAngleY = this.villagerHead.rotateAngleY;
     	this.brain.rotateAngleZ = this.villagerHead.rotateAngleZ;

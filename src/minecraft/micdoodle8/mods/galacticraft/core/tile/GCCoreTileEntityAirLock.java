@@ -47,20 +47,20 @@ public class GCCoreTileEntityAirLock extends GCCoreTileEntityAdvanced
 		{
 			return false;
 		}
-		
+
 		if (this.otherAirLockBlocks != null)
 		{
-			HashSet<GCCoreTileEntityAirLock> copiedSet = (HashSet<GCCoreTileEntityAirLock>) this.otherAirLockBlocks.clone();
-			
+			final HashSet<GCCoreTileEntityAirLock> copiedSet = (HashSet<GCCoreTileEntityAirLock>) this.otherAirLockBlocks.clone();
+
 			for (final GCCoreTileEntityAirLock tile : copiedSet)
 			{
-				Vector3 vec = new Vector3(tile);
-				int x = vec.intX();
-				int y = vec.intY();
-				int z = vec.intZ();
-				
-				TileEntity newTile = this.worldObj.getBlockTileEntity(x, y, z);
-				
+				final Vector3 vec = new Vector3(tile);
+				final int x = vec.intX();
+				final int y = vec.intY();
+				final int z = vec.intZ();
+
+				final TileEntity newTile = this.worldObj.getBlockTileEntity(x, y, z);
+
 				if (newTile == null || !newTile.equals(tile))
 				{
 					FMLLog.info("NOTEQUAL");
@@ -69,7 +69,7 @@ public class GCCoreTileEntityAirLock extends GCCoreTileEntityAdvanced
 			}
 		}
 
-		
+
 		int var1 = this.xCoord;
 		final int var2 = this.yCoord + 1;
 		int var3 = this.zCoord;
@@ -224,9 +224,9 @@ public class GCCoreTileEntityAirLock extends GCCoreTileEntityAdvanced
                     	{
                     		changed = true;
                     	}
-                    	
-                    	int idAtCenter = this.worldObj.getBlockId(var1 + var5 * var7, var2 + var8, var3 + var6 * var7);
-                    	
+
+                    	final int idAtCenter = this.worldObj.getBlockId(var1 + var5 * var7, var2 + var8, var3 + var6 * var7);
+
                     	if (idAtCenter == 0 || idAtCenter == GCCoreBlocks.airLockSeal.blockID)
                     	{
                             this.worldObj.setBlock(var1 + var5 * var7, var2 + var8, var3 + var6 * var7, 0, 0, 3);

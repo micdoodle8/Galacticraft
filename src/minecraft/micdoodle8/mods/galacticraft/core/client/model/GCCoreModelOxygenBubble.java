@@ -11,7 +11,7 @@ public class GCCoreModelOxygenBubble extends ModelBase
 {
 	public NMTModelRenderer bubble;
 	public NMTModelRenderer bubble2;
-	
+
 	public GCCoreModelOxygenBubble()
 	{
 		this(0.0F);
@@ -52,6 +52,6 @@ public class GCCoreModelOxygenBubble extends ModelBase
     @Override
     public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity par7Entity)
     {
-    	
+
     }
 }

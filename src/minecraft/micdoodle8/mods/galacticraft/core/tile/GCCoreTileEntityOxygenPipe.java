@@ -22,7 +22,7 @@ public class GCCoreTileEntityOxygenPipe extends TileEntity implements ITubeConne
 	private byte preLoadColor;
 	private byte preColorCooldown;
 	private boolean setColor = false;
-	
+
 	@Override
 	public boolean canTransferGas(TileEntity fromTile)
 	{
@@ -32,17 +32,17 @@ public class GCCoreTileEntityOxygenPipe extends TileEntity implements ITubeConne
 	@Override
     public boolean canUpdate()
     {
-        return !setColor;
+        return !this.setColor;
     }
-	
+
 	@Override
-    public void updateEntity() 
+    public void updateEntity()
     {
 		if (this.preColorCooldown > 0)
 		{
 			this.preColorCooldown--;
 		}
-		
+
     	if (this.preColorCooldown == 0 && !this.worldObj.isRemote && this.preLoadColor != -1)
     	{
             PacketManager.sendPacketToClients(PacketManager.getPacket(BasicComponents.CHANNEL, this, this.getColor(), this.preLoadColor));
@@ -52,34 +52,35 @@ public class GCCoreTileEntityOxygenPipe extends TileEntity implements ITubeConne
 
     	if (this.preColorCooldown == 0 && this.worldObj.isRemote && this.preLoadColor == 0)
     	{
-			Vector3 thisVec = new Vector3(this);
+			final Vector3 thisVec = new Vector3(this);
 			this.worldObj.markBlockForRenderUpdate(thisVec.intX(), thisVec.intY(), thisVec.intZ());
             this.preLoadColor = -1;
             this.setColor = true;
     	}
     }
-	
-    public void validate()
+
+    @Override
+	public void validate()
     {
     	super.validate();
-    	
+
     	this.preColorCooldown = 40;
-    	
+
 		if (this.worldObj != null && this.worldObj.isRemote)
 		{
-			Vector3 thisVec = new Vector3(this);
+			final Vector3 thisVec = new Vector3(this);
 			this.worldObj.markBlockForRenderUpdate(thisVec.intX(), thisVec.intY(), thisVec.intZ());
 		}
     }
-	
+
 	@Override
 	public void setColor(byte col)
 	{
 		this.pipeColor = col;
-		
+
 		if (this.worldObj != null && this.worldObj.isRemote)
 		{
-			Vector3 thisVec = new Vector3(this);
+			final Vector3 thisVec = new Vector3(this);
 			this.worldObj.markBlockForRenderUpdate(thisVec.intX(), thisVec.intY(), thisVec.intZ());
 		}
 	}
@@ -99,8 +100,8 @@ public class GCCoreTileEntityOxygenPipe extends TileEntity implements ITubeConne
     public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
     	super.readFromNBT(par1NBTTagCompound);
-    	
-    	byte by = par1NBTTagCompound.getByte("pipeColor");
+
+    	final byte by = par1NBTTagCompound.getByte("pipeColor");
 		this.setColor(by);
 		this.preLoadColor = by;
     }
@@ -109,19 +110,19 @@ public class GCCoreTileEntityOxygenPipe extends TileEntity implements ITubeConne
     public void writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
     	super.writeToNBT(par1NBTTagCompound);
-    	
+
     	par1NBTTagCompound.setByte("pipeColor", this.getColor());
     }
 
 	@Override
-	public boolean canTubeConnect(ForgeDirection side) 
+	public boolean canTubeConnect(ForgeDirection side)
 	{
-		TileEntity tile = this.worldObj.getBlockTileEntity(this.xCoord + side.offsetX, this.yCoord + side.offsetY, this.zCoord + side.offsetZ);
-		
+		final TileEntity tile = this.worldObj.getBlockTileEntity(this.xCoord + side.offsetX, this.yCoord + side.offsetY, this.zCoord + side.offsetZ);
+
 		if (tile != null && tile instanceof IColorable)
 		{
-			byte color = ((IColorable) tile).getColor();
-			
+			final byte color = ((IColorable) tile).getColor();
+
 			if (color == this.getColor())
 			{
 				return true;
@@ -131,7 +132,7 @@ public class GCCoreTileEntityOxygenPipe extends TileEntity implements ITubeConne
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
 
@@ -146,7 +147,7 @@ public class GCCoreTileEntityOxygenPipe extends TileEntity implements ITubeConne
 				this.preLoadColor = dataStream.readByte();
 			}
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			e.printStackTrace();
 		}

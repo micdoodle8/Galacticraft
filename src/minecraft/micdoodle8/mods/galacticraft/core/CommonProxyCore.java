@@ -4,7 +4,7 @@ import java.util.List;
 
 import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
 import micdoodle8.mods.galacticraft.API.ISchematicPage;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpaceship;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityRocketT1;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerAirCollector;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerAirCompressor;
@@ -139,9 +139,9 @@ public class CommonProxyCore extends BCGuiHandler implements IGuiHandler
 		{
 			return new GCCoreContainerTankRefill(player, playerBase.playerTankInventory);
 		}
-		else if (ID == GCCoreConfigManager.idGuiSpaceshipInventory && player.ridingEntity != null && player.ridingEntity instanceof GCCoreEntitySpaceship)
+		else if (ID == GCCoreConfigManager.idGuiSpaceshipInventory && player.ridingEntity != null && player.ridingEntity instanceof GCCoreEntityRocketT1)
 		{
-			return new GCCoreContainerRocketRefill(player.inventory, (GCCoreEntitySpaceship) player.ridingEntity, ((GCCoreEntitySpaceship) player.ridingEntity).getSpaceshipType());
+			return new GCCoreContainerRocketRefill(player.inventory, (GCCoreEntityRocketT1) player.ridingEntity, ((GCCoreEntityRocketT1) player.ridingEntity).getSpaceshipType());
 		}
 		else if (ID == GCCoreConfigManager.idGuiRefinery)
 		{
@@ -169,21 +169,21 @@ public class CommonProxyCore extends BCGuiHandler implements IGuiHandler
 		}
 		else
 		{
-			for (ISchematicPage page : playerBase.unlockedSchematics)
+			for (final ISchematicPage page : playerBase.unlockedSchematics)
 			{
 				FMLLog.info("" + ID + " " + page.getGuiID());
-				
+
 				if (ID == page.getGuiID())
 				{
-					Container container = page.getResultContainer(playerBase, x, y, z);
-					
+					final Container container = page.getResultContainer(playerBase, x, y, z);
+
 					FMLLog.info(container.toString());
-					
+
 					return container;
 				}
 			}
 		}
-		
+
 		return super.getServerGuiElement(ID, player, world, x, y, z);
 	}
 }

@@ -49,7 +49,7 @@ public class GCCorePlayerSP extends EntityClientPlayerMP
     public void updateCloak()
     {
     	super.updateCloak();
-    	
+
     	if (GCCoreConfigManager.overrideCapes)
     	{
             this.cloakUrl = "http://micdoodle8.com/oldsite/galacticraft/capes/" + StringUtils.stripControlCodes(this.username) + ".png";
@@ -123,7 +123,7 @@ public class GCCorePlayerSP extends EntityClientPlayerMP
 
             if (this.getItemInUse() != null && par1ItemStack.itemID == GCCoreItems.gravityBow.itemID)
             {
-                int j = par1ItemStack.getMaxItemUseDuration() - this.getItemInUseCount();
+                final int j = par1ItemStack.getMaxItemUseDuration() - this.getItemInUseCount();
 
                 if (j >= 18)
                 {
@@ -144,7 +144,7 @@ public class GCCorePlayerSP extends EntityClientPlayerMP
             {
             	return super.getItemIcon(par1ItemStack, par2);
             }
-            
+
             icon = par1ItemStack.getItem().getIcon(par1ItemStack, par2, this, this.getItemInUse(), this.getItemInUseCount());
         }
 
@@ -155,7 +155,7 @@ public class GCCorePlayerSP extends EntityClientPlayerMP
 	public void onUpdate()
 	{
 		this.tick++;
-		
+
 		if (!GalacticraftCore.playersClient.containsKey(this.username) || this.tick % 360 == 0)
 		{
 			GalacticraftCore.playersClient.put(this.username, this);

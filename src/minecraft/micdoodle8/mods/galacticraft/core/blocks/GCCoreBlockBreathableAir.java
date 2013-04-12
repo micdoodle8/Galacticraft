@@ -53,19 +53,19 @@ public class GCCoreBlockBreathableAir extends Block
     {
         return false;
     }
-    
+
     @Override
 	public int getRenderBlockPass()
     {
       return GCCoreConfigManager.transparentBreathableAir ? 1 : 0;
     }
-    
+
 	@Override
 	public void registerIcons(IconRegister par1IconRegister)
 	{
 	  	this.blockIcon = par1IconRegister.registerIcon("galacticraftcore:breathable_air");
 	}
-    
+
     @Override
     public int getMobilityFlag()
     {
@@ -86,7 +86,7 @@ public class GCCoreBlockBreathableAir extends Block
             this.spread(var1, var2, var3, var4);
         }
     }
-    
+
     @Override
 	public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
   	{
@@ -98,12 +98,12 @@ public class GCCoreBlockBreathableAir extends Block
     	{
     		final int i = par1IBlockAccess.getBlockId(par2, par3, par4);
     		boolean var6 = false;
-    		
+
     		if (Block.blocksList[i] != null)
     		{
     			var6 = !Block.blocksList[i].isOpaqueCube();
     		}
-    		
+
     		final boolean var7 = i == 0;
 
     		if ((var6 || var7) && par5 == 3 && !var6)
@@ -148,7 +148,7 @@ public class GCCoreBlockBreathableAir extends Block
 
     private void spread(World var1, int var2, int var3, int var4)
     {
-    	OxygenPressureProtocol var5 = new OxygenPressureProtocol();
+    	final OxygenPressureProtocol var5 = new OxygenPressureProtocol();
         var5.unSeal(var1, var2, var3, var4);
     }
 }

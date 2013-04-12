@@ -107,7 +107,7 @@ public class GCCoreEntityMeteor extends Entity
             this.xTile = var3.blockX;
             this.yTile = var3.blockY;
             this.zTile = var3.blockZ;
-            
+
             this.onImpact(var3);
         }
 

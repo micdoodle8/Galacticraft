@@ -1,15 +1,12 @@
 package micdoodle8.mods.galacticraft.core.client.render.item;
 
 import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelSpaceship;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpaceship;
-import net.minecraft.client.gui.FontRenderer;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityRocketT1;
 import net.minecraft.client.model.ModelChest;
 import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.RenderEngine;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Icon;
 import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.Sys;
@@ -25,7 +22,7 @@ import cpw.mods.fml.client.FMLClientHandler;
  */
 public class GCCoreItemRendererSpaceship implements IItemRenderer
 {
-	GCCoreEntitySpaceship spaceship = new GCCoreEntitySpaceship(FMLClientHandler.instance().getClient().theWorld);
+	GCCoreEntityRocketT1 spaceship = new GCCoreEntityRocketT1(FMLClientHandler.instance().getClient().theWorld);
 	GCCoreModelSpaceship modelSpaceship = new GCCoreModelSpaceship();
     private final ModelChest chestModel = new ModelChest();
 
@@ -50,7 +47,7 @@ public class GCCoreItemRendererSpaceship implements IItemRenderer
             GL11.glTranslatef(1.6F, 0.0F, 0F);
             GL11.glScalef(5.2F, 5.2F, 5.2F);
 
-        	if (player != null && player.ridingEntity != null && player.ridingEntity instanceof GCCoreEntitySpaceship)
+        	if (player != null && player.ridingEntity != null && player.ridingEntity instanceof GCCoreEntityRocketT1)
         	{
         		GL11.glScalef(0.0F, 0.0F, 0.0F);
         	}
@@ -78,26 +75,26 @@ public class GCCoreItemRendererSpaceship implements IItemRenderer
         FMLClientHandler.instance().getClient().renderEngine.bindTexture("/micdoodle8/mods/galacticraft/core/client/entities/spaceship1.png");
         this.modelSpaceship.render(this.spaceship, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
         GL11.glPopMatrix();
-        
+
         if (type == ItemRenderType.INVENTORY)
         {
         	if (item.getItemDamage() == 1)
         	{
-                ModelChest modelChest = this.chestModel;
+                final ModelChest modelChest = this.chestModel;
                 FMLClientHandler.instance().getClient().renderEngine.bindTexture("/item/chest.png");
-                
+
                 GL11.glPushMatrix();
 //                GL11.glEnable(GL12.GL_RESCALE_NORMAL);
                 GL11.glDisable(GL11.GL_DEPTH_TEST);
                 GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
                 GL11.glScalef(0.5F, -0.5F, -0.5F);
                 GL11.glTranslatef(1.5F, 1.95F, 1.7F);
-                short short1 = 0;
+                final short short1 = 0;
 
                 GL11.glRotatef(short1, 0.0F, 1.0F, 0.0F);
                 GL11.glTranslatef(-1.5F, -1.5F, -1.5F);
                 float f1 = 0;
-                float f2;
+                final float f2;
 
                 f1 = 1.0F - f1;
                 f1 = 1.0F - f1 * f1 * f1;
@@ -117,7 +114,7 @@ public class GCCoreItemRendererSpaceship implements IItemRenderer
 //                RenderHelper.disableStandardItemLighting();
 //                GL11.glDisable(GL11.GL_LIGHTING);
 //                GL11.glDisable(GL11.GL_DEPTH_TEST);
-//                
+//
 //                this.renderItemIntoGUI(render, FMLClientHandler.instance().getClient().fontRenderer, FMLClientHandler.instance().getClient().renderEngine, new ItemStack(GCCoreItems.rocketFuelBucket, 1, 60), 0, 0);
 //
 //                GL11.glEnable(GL12.GL_RESCALE_NORMAL);
@@ -140,9 +137,9 @@ public class GCCoreItemRendererSpaceship implements IItemRenderer
 //
 //        f1 = 1.0F - f1;
 //        f1 = 1.0F - f1 * f1 * f1;
-//        
+//
 ////        Icon icon = par2RenderEngine.func_96448_c(par3ItemStack.bindTexture());
-//            
+//
 ////        this.drawItems.zLevel = 300.0F;
 ////        this.drawItems.bindTexture(100, 100, icon, 16, 16);
 ////        GL11.glDisable(GL12.GL_RESCALE_NORMAL);

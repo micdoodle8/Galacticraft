@@ -26,12 +26,12 @@ public class GCMoonBlocks
 		MinecraftForge.setBlockHarvestLevel(GCMoonBlocks.blockMoon, 	2, 		"pickaxe", 	3);
 		MinecraftForge.setBlockHarvestLevel(GCMoonBlocks.blockMoon, 	3, 		"shovel", 	0);
 		MinecraftForge.setBlockHarvestLevel(GCMoonBlocks.blockMoon, 	4, 		"pickaxe", 	2);
-		
+
 		for (int num = 5; num < 14; num++)
 		{
 			MinecraftForge.setBlockHarvestLevel(GCMoonBlocks.blockMoon, num, 	"shovel", 	0);
 		}
-		
+
 		MinecraftForge.setBlockHarvestLevel(GCMoonBlocks.blockMoon, 	14, 	"pickaxe", 	2);
 	}
 

@@ -18,10 +18,10 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GCCoreItemSchematic extends Item implements ISchematicItem
 {
 	protected Icon[] icons = new Icon[1];
-	
+
 	public static final String[] names = {
 		"schematic_buggy"}; // 15
-	
+
 	public GCCoreItemSchematic(int itemID)
 	{
 		super(itemID);

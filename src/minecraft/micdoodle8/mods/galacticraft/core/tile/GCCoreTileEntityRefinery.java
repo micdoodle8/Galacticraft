@@ -39,48 +39,46 @@ import universalelectricity.prefab.tile.TileEntityElectricityRunnable;
 
 import com.google.common.io.ByteArrayDataInput;
 
-import cpw.mods.fml.common.FMLLog;
-
 public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable implements IInventory, ISidedInventory, IPacketReceiver, IEnergySink, IDisableableMachine, ITankContainer
 {
-	private int tankCapacity = 24000;
-	
-	public LiquidTank oilTank = new LiquidTank(tankCapacity);
-	public LiquidTank fuelTank = new LiquidTank(tankCapacity);
-	
+	private final int tankCapacity = 24000;
+
+	public LiquidTank oilTank = new LiquidTank(this.tankCapacity);
+	public LiquidTank fuelTank = new LiquidTank(this.tankCapacity);
+
 	public boolean disabled = true;
 	public boolean lastDisabled = true;
-	
+
 	public static final double WATTS_PER_TICK = 600;
 	public static final int PROCESS_TIME_REQUIRED = 1000;
 	public int processTicks = 0;
 	private ItemStack[] containingItems = new ItemStack[3];
 	private int playersUsing = 0;
-	
+
 	public double ic2WattsReceived = 0;
 	private boolean initialized = false;
-	
+
 	private int disableCooldown = 0;
-	
-	private int canisterToTankRatio = tankCapacity / GCCoreItems.fuelCanister.getMaxDamage();
-	private int canisterToLiquidStackRatio = (LiquidContainerRegistry.BUCKET_VOLUME * 2) / GCCoreItems.fuelCanister.getMaxDamage();
+
+	private final int canisterToTankRatio = this.tankCapacity / GCCoreItems.fuelCanister.getMaxDamage();
+	private final int canisterToLiquidStackRatio = LiquidContainerRegistry.BUCKET_VOLUME * 2 / GCCoreItems.fuelCanister.getMaxDamage();
 
 	@Override
 	public void updateEntity()
 	{
 		super.updateEntity();
-		
+
 		if (!this.initialized && this.worldObj != null)
 		{
 			if(GalacticraftCore.modIC2Loaded)
 			{
 				MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(this));
 			}
-			
-			initialized = true;
+
+			this.initialized = true;
 		}
 
-		if (this.canProcess() || this.wattsReceived <= this.WATTS_PER_TICK)
+		if (this.canProcess() || this.wattsReceived <= GCCoreTileEntityRefinery.WATTS_PER_TICK)
 		{
 			this.wattsReceived += ElectricItemHelper.dechargeItem(this.containingItems[0], GCCoreTileEntityRefinery.WATTS_PER_TICK, this.getVoltage());
 		}
@@ -91,27 +89,27 @@ public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable impl
 			{
 				this.disableCooldown--;
 			}
-			
+
 			if (this.containingItems[1] != null)
 			{
-				LiquidStack liquid = LiquidContainerRegistry.getLiquidForFilledItem(this.containingItems[1]);
+				final LiquidStack liquid = LiquidContainerRegistry.getLiquidForFilledItem(this.containingItems[1]);
 
 				if (liquid != null && LiquidDictionary.findLiquidName(liquid).equals("Oil"))
 				{
 					if (this.oilTank.getLiquid() == null || this.oilTank.getLiquid().amount + liquid.amount <= this.oilTank.getCapacity())
 					{
 						this.oilTank.fill(liquid, true);
-						
+
 						if(this.containingItems[1].getItem() instanceof GCCoreItemOilCanister)
 						{
 							this.containingItems[1] = new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.oilCanister.getMaxDamage());
 						}
 						else if (LiquidContainerRegistry.isBucket(this.containingItems[1]) && LiquidContainerRegistry.isFilledContainer(this.containingItems[1]))
 						{
-							int amount = this.containingItems[1].stackSize;
+							final int amount = this.containingItems[1].stackSize;
 							this.containingItems[1] = new ItemStack(Item.bucketEmpty, amount);
 						}
-						else 
+						else
 						{
 							this.containingItems[1].stackSize--;
 
@@ -126,33 +124,33 @@ public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable impl
 
 			if (this.containingItems[2] != null && LiquidContainerRegistry.isContainer(this.containingItems[2]))
 			{
-				LiquidStack liquid = this.fuelTank.getLiquid();
-				
+				final LiquidStack liquid = this.fuelTank.getLiquid();
+
 				if (liquid != null && this.fuelTank.getLiquidName() != null && this.fuelTank.getLiquidName().equals("Fuel"))
 				{
 					if (LiquidContainerRegistry.isEmptyContainer(this.containingItems[2]))
 					{
-						int amountToFill = this.containingItems[2].isItemEqual(new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.oilCanister.getMaxDamage())) ? LiquidContainerRegistry.BUCKET_VOLUME * 2 : LiquidContainerRegistry.BUCKET_VOLUME;
-						
+						final int amountToFill = this.containingItems[2].isItemEqual(new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.oilCanister.getMaxDamage())) ? LiquidContainerRegistry.BUCKET_VOLUME * 2 : LiquidContainerRegistry.BUCKET_VOLUME;
+
 						this.containingItems[2] = LiquidContainerRegistry.fillLiquidContainer(liquid, this.containingItems[2]);
 
 						this.fuelTank.drain(amountToFill, true);
 					}
 				}
 			}
-			
+
 			if (this.canProcess())
 			{
-				if (this.wattsReceived >= this.WATTS_PER_TICK || this.ic2WattsReceived >= this.WATTS_PER_TICK)
+				if (this.wattsReceived >= GCCoreTileEntityRefinery.WATTS_PER_TICK || this.ic2WattsReceived >= GCCoreTileEntityRefinery.WATTS_PER_TICK)
 				{
 					if (this.processTicks == 0)
 					{
-						this.processTicks = this.PROCESS_TIME_REQUIRED;
+						this.processTicks = GCCoreTileEntityRefinery.PROCESS_TIME_REQUIRED;
 					}
 					else if (this.processTicks > 0)
 					{
 						this.processTicks--;
-						
+
 						if (this.processTicks < 1)
 						{
 							this.smeltItem();
@@ -173,7 +171,7 @@ public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable impl
 			{
 				this.processTicks = 0;
 			}
-			
+
 			this.wattsReceived = Math.max(this.wattsReceived - GCCoreTileEntityRefinery.WATTS_PER_TICK / 4, 0);
 			this.ic2WattsReceived = Math.max(this.ic2WattsReceived - GCCoreTileEntityRefinery.WATTS_PER_TICK / 4, 0);
 
@@ -203,7 +201,7 @@ public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable impl
 	@Override
 	public ElectricityPack getRequest()
 	{
-		if ((this.canProcess() || this.wattsReceived <= this.WATTS_PER_TICK) && !this.disabled)
+		if ((this.canProcess() || this.wattsReceived <= GCCoreTileEntityRefinery.WATTS_PER_TICK) && !this.disabled)
 		{
 			return new ElectricityPack(GCCoreTileEntityRefinery.WATTS_PER_TICK / this.getVoltage(), this.getVoltage());
 		}
@@ -228,16 +226,16 @@ public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable impl
 			this.processTicks = dataStream.readInt();
 			this.disabledTicks = dataStream.readInt();
 			this.ic2WattsReceived = dataStream.readDouble();
-			
-			int amount = dataStream.readInt();
+
+			final int amount = dataStream.readInt();
 			this.oilTank.setLiquid(new LiquidStack(GCCoreBlocks.crudeOilStill.blockID, amount, 0));
-			
-			int amount2 = dataStream.readInt();
+
+			final int amount2 = dataStream.readInt();
 			this.fuelTank.setLiquid(new LiquidStack(GCCoreItems.fuel.itemID, amount2, 0));
-			
+
 			this.disabled = dataStream.readBoolean();
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -265,7 +263,7 @@ public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable impl
 		{
 			return false;
 		}
-		
+
 		if (this.disabled)
 		{
 			return false;
@@ -278,14 +276,14 @@ public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable impl
 	{
 		if (this.canProcess())
 		{
-			int oilAmount = this.oilTank.getLiquid().amount;
-			int fuelSpace = this.fuelTank.getCapacity() - (this.fuelTank.getLiquid() == null ? 0 : this.fuelTank.getLiquid().amount);
-			
-			int amountToDrain = Math.min(oilAmount, fuelSpace);
-			
+			final int oilAmount = this.oilTank.getLiquid().amount;
+			final int fuelSpace = this.fuelTank.getCapacity() - (this.fuelTank.getLiquid() == null ? 0 : this.fuelTank.getLiquid().amount);
+
+			final int amountToDrain = Math.min(oilAmount, fuelSpace);
+
 			this.oilTank.drain(amountToDrain, true);
 			this.fuelTank.fill(LiquidDictionary.getLiquid("Fuel", amountToDrain), true);
-			
+
 			if (!this.disabled)
 			{
 				this.disabled = true;
@@ -298,27 +296,27 @@ public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable impl
 	{
 		super.readFromNBT(par1NBTTagCompound);
 		this.processTicks = par1NBTTagCompound.getInteger("smeltingTicks");
-		NBTTagList var2 = par1NBTTagCompound.getTagList("Items");
+		final NBTTagList var2 = par1NBTTagCompound.getTagList("Items");
 		this.containingItems = new ItemStack[this.getSizeInventory()];
 
 		for (int var3 = 0; var3 < var2.tagCount(); ++var3)
 		{
-			NBTTagCompound var4 = (NBTTagCompound) var2.tagAt(var3);
-			byte var5 = var4.getByte("Slot");
+			final NBTTagCompound var4 = (NBTTagCompound) var2.tagAt(var3);
+			final byte var5 = var4.getByte("Slot");
 
 			if (var5 >= 0 && var5 < this.containingItems.length)
 			{
 				this.containingItems[var5] = ItemStack.loadItemStackFromNBT(var4);
 			}
 		}
-		
+
 		this.setDisabled(par1NBTTagCompound.getBoolean("isDisabled"));
-		
+
 		if (par1NBTTagCompound.hasKey("oilTank"))
 		{
 			this.oilTank.readFromNBT(par1NBTTagCompound.getCompoundTag("oilTank"));
 		}
-		
+
 		if (par1NBTTagCompound.hasKey("fuelTank"))
 		{
 			this.fuelTank.readFromNBT(par1NBTTagCompound.getCompoundTag("fuelTank"));
@@ -330,13 +328,13 @@ public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable impl
 	{
 		super.writeToNBT(par1NBTTagCompound);
 		par1NBTTagCompound.setInteger("smeltingTicks", this.processTicks);
-		NBTTagList var2 = new NBTTagList();
+		final NBTTagList var2 = new NBTTagList();
 
 		for (int var3 = 0; var3 < this.containingItems.length; ++var3)
 		{
 			if (this.containingItems[var3] != null)
 			{
-				NBTTagCompound var4 = new NBTTagCompound();
+				final NBTTagCompound var4 = new NBTTagCompound();
 				var4.setByte("Slot", (byte) var3);
 				this.containingItems[var3].writeToNBT(var4);
 				var2.appendTag(var4);
@@ -344,14 +342,14 @@ public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable impl
 		}
 
 		par1NBTTagCompound.setTag("Items", var2);
-		
+
 		par1NBTTagCompound.setBoolean("isDisabled", this.getDisabled());
-		
+
 		if (this.oilTank.getLiquid() != null)
 		{
 			par1NBTTagCompound.setTag("oilTank", this.oilTank.writeToNBT(new NBTTagCompound()));
 		}
-		
+
 		if (this.fuelTank.getLiquid() != null)
 		{
 			par1NBTTagCompound.setTag("fuelTank", this.fuelTank.writeToNBT(new NBTTagCompound()));
@@ -423,7 +421,7 @@ public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable impl
 	{
 		if (this.containingItems[par1] != null)
 		{
-			ItemStack var2 = this.containingItems[par1];
+			final ItemStack var2 = this.containingItems[par1];
 			this.containingItems[par1] = null;
 			return var2;
 		}
@@ -463,84 +461,84 @@ public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable impl
 	}
 
 	@Override
-	public boolean isInvNameLocalized() 
+	public boolean isInvNameLocalized()
 	{
 		return true;
 	}
 
 	@Override
-	public boolean isStackValidForSlot(int slotID, ItemStack itemstack) 
+	public boolean isStackValidForSlot(int slotID, ItemStack itemstack)
 	{
-		return slotID == 1 ? itemstack.getItem() instanceof IRefinableItem && ((IRefinableItem) itemstack.getItem()).canSmeltItem(itemstack) : (slotID == 0 ? itemstack.getItem() instanceof IItemElectric : (slotID == 2 ? true : false));
+		return slotID == 1 ? itemstack.getItem() instanceof IRefinableItem && ((IRefinableItem) itemstack.getItem()).canSmeltItem(itemstack) : slotID == 0 ? itemstack.getItem() instanceof IItemElectric : slotID == 2 ? true : false;
 	}
-	
+
 	// ISidedInventory Implementation:
 
 	@Override
-	public int[] getSizeInventorySide(int side) 
+	public int[] getSizeInventorySide(int side)
 	{
 		return side == 1 ? new int[] {1} : side == 0 ? new int[] {0} : new int[] {2};
 	}
 
 	@Override
-	public boolean func_102007_a(int slotID, ItemStack itemstack, int side) 
+	public boolean func_102007_a(int slotID, ItemStack itemstack, int side)
 	{
-		return isStackValidForSlot(slotID, itemstack);
+		return this.isStackValidForSlot(slotID, itemstack);
 	}
 
 	@Override
-	public boolean func_102008_b(int slotID, ItemStack itemstack, int side) 
+	public boolean func_102008_b(int slotID, ItemStack itemstack, int side)
 	{
 		return slotID == 2;
 	}
-	
+
 	// Industrial Craft 2 Implementation:
 
 	@Override
 	public int demandsEnergy()
 	{
-		return this.canProcess() ? (int) ((GCCoreTileEntityFuelLoader.WATTS_PER_TICK / this.getVoltage()) * GalacticraftCore.IC2EnergyScalar) : 0;
+		return this.canProcess() ? (int) (GCCoreTileEntityFuelLoader.WATTS_PER_TICK / this.getVoltage() * GalacticraftCore.IC2EnergyScalar) : 0;
 	}
 
 	@Override
-	public int injectEnergy(Direction directionFrom, int amount) 
+	public int injectEnergy(Direction directionFrom, int amount)
 	{
 		double rejects = 0;
-    	double neededEnergy = ((GCCoreTileEntityFuelLoader.WATTS_PER_TICK / this.getVoltage()) * GalacticraftCore.IC2EnergyScalar);
-    	
+    	final double neededEnergy = GCCoreTileEntityFuelLoader.WATTS_PER_TICK / this.getVoltage() * GalacticraftCore.IC2EnergyScalar;
+
     	if(amount <= neededEnergy)
     	{
-    		ic2WattsReceived += amount;
+    		this.ic2WattsReceived += amount;
     	}
     	else if(amount > neededEnergy)
     	{
-    		ic2WattsReceived += neededEnergy;
+    		this.ic2WattsReceived += neededEnergy;
     		rejects = amount - neededEnergy;
     	}
-    	
+
     	return (int) (rejects * GalacticraftCore.IC2EnergyScalar);
 	}
 
 	@Override
-	public int getMaxSafeInput() 
+	public int getMaxSafeInput()
 	{
 		return 2048;
 	}
 
 	@Override
-	public boolean acceptsEnergyFrom(TileEntity emitter, Direction direction) 
+	public boolean acceptsEnergyFrom(TileEntity emitter, Direction direction)
 	{
 		return direction.toForgeDirection() == ForgeDirection.UP;
 	}
 
 	@Override
-	public boolean isAddedToEnergyNet() 
+	public boolean isAddedToEnergyNet()
 	{
 		return this.initialized;
 	}
 
 	@Override
-	public void setDisabled(boolean disabled) 
+	public void setDisabled(boolean disabled)
 	{
 		if (this.disableCooldown == 0)
 		{
@@ -556,46 +554,46 @@ public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable impl
 	}
 
 	@Override
-	public int fill(ForgeDirection from, LiquidStack resource, boolean doFill) 
+	public int fill(ForgeDirection from, LiquidStack resource, boolean doFill)
 	{
 		return this.fill(0, resource, doFill);
 	}
 
 	@Override
-	public int fill(int tankIndex, LiquidStack resource, boolean doFill) 
+	public int fill(int tankIndex, LiquidStack resource, boolean doFill)
 	{
 		int used = 0;
-		LiquidStack resourceUsing = resource.copy();
-		String liquidName = LiquidDictionary.findLiquidName(resource);
-		
+		final LiquidStack resourceUsing = resource.copy();
+		final String liquidName = LiquidDictionary.findLiquidName(resource);
+
 		if (tankIndex == 0 && liquidName != null && liquidName.equals("Oil"))
 		{
 			used = this.oilTank.fill(resource, doFill);
 		}
-		
+
 		return used;
 	}
 
 	@Override
-	public LiquidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) 
+	public LiquidStack drain(ForgeDirection from, int maxDrain, boolean doDrain)
 	{
 		return this.drain(0, maxDrain, doDrain);
 	}
 
 	@Override
-	public LiquidStack drain(int tankIndex, int maxDrain, boolean doDrain) 
+	public LiquidStack drain(int tankIndex, int maxDrain, boolean doDrain)
 	{
 		return this.fuelTank.drain(maxDrain, doDrain);
 	}
 
 	@Override
-	public ILiquidTank[] getTanks(ForgeDirection direction) 
+	public ILiquidTank[] getTanks(ForgeDirection direction)
 	{
 		return new ILiquidTank[] {this.oilTank, this.fuelTank};
 	}
 
 	@Override
-	public ILiquidTank getTank(ForgeDirection direction, LiquidStack type) 
+	public ILiquidTank getTank(ForgeDirection direction, LiquidStack type)
 	{
 		if (direction == ForgeDirection.getOrientation(this.getBlockMetadata() + 2).getOpposite())
 		{
@@ -607,7 +605,7 @@ public class GCCoreTileEntityRefinery extends TileEntityElectricityRunnable impl
 			// FUEL
 			return this.fuelTank;
 		}
-		
+
 		return null;
 	}
 }

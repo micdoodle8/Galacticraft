@@ -23,11 +23,11 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSealedBlock
 {
 	private Icon[] enclosedIcons;
-	
+
 	public GCCoreBlockEnclosed(int id)
 	{
 		super(id, Material.cloth);
-		this.setStepSound(soundClothFootstep);
+		this.setStepSound(Block.soundClothFootstep);
 		this.setResistance(0.2F);
 		this.setHardness(0.1f);
 		this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
@@ -62,7 +62,7 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
 		case 1:
 			return this.enclosedIcons[1];
 		}
-		
+
 		return this.blockIcon;
     }
 
@@ -80,7 +80,7 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
 	{
 		super.onBlockAdded(world, x, y, z);
 
-		TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
+		final TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
 
 		if (tileEntity instanceof IConductor)
 		{
@@ -91,7 +91,7 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
 	@Override
 	public void onNeighborBlockChange(World world, int x, int y, int z, int blockID)
 	{
-		TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
+		final TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
 
 		if (tileEntity instanceof IConductor)
 		{
@@ -121,12 +121,12 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
 		case 1:
 			return new GCCoreTileEntityOxygenPipe();
 		}
-		
+
 		return null;
 	}
 
 	@Override
-	public boolean isSealed(World world, int x, int y, int z) 
+	public boolean isSealed(World world, int x, int y, int z)
 	{
 		return true;
 	}

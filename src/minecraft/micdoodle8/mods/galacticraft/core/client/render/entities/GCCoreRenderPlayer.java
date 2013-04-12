@@ -1,20 +1,17 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
-import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelPlayer;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemBow;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderEngine;
-import net.minecraft.client.renderer.ThreadDownloadImageData;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StringUtils;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -29,17 +26,18 @@ public class GCCoreRenderPlayer extends RenderPlayer
         this.modelArmorChestplate = new GCCoreModelPlayer(1.0F);
         this.modelArmor =  new GCCoreModelPlayer(0.5F);
 	}
-	
+
 	public ModelBiped getModel()
 	{
 		return this.modelBipedMain;
 	}
 
-    protected void renderEquippedItems(EntityLiving par1EntityLiving, float par2)
+    @Override
+	protected void renderEquippedItems(EntityLiving par1EntityLiving, float par2)
     {
-        ItemStack itemstack = par1EntityLiving.getHeldItem();
+        final ItemStack itemstack = par1EntityLiving.getHeldItem();
         float f2;
-        
+
     	if (itemstack != null && itemstack.getItem() instanceof GCCoreItemBow)
         {
             GL11.glPushMatrix();
@@ -72,16 +70,17 @@ public class GCCoreRenderPlayer extends RenderPlayer
     	}
     }
 
-    public void renderPlayer(EntityPlayer par1EntityPlayer, double par2, double par4, double par6, float par8, float par9)
+    @Override
+	public void renderPlayer(EntityPlayer par1EntityPlayer, double par2, double par4, double par6, float par8, float par9)
     {
-        float f2 = 1.0F;
+        final float f2 = 1.0F;
         GL11.glColor3f(f2, f2, f2);
-        ItemStack itemstack = par1EntityPlayer.inventory.getCurrentItem();
+        final ItemStack itemstack = par1EntityPlayer.inventory.getCurrentItem();
         this.modelArmorChestplate.heldItemRight = this.modelArmor.heldItemRight = this.modelBipedMain.heldItemRight = itemstack != null ? 1 : 0;
 
         if (itemstack != null && par1EntityPlayer.getItemInUseCount() > 0)
         {
-            EnumAction enumaction = itemstack.getItemUseAction();
+            final EnumAction enumaction = itemstack.getItemUseAction();
 
             if (enumaction == EnumAction.block)
             {
@@ -94,7 +93,7 @@ public class GCCoreRenderPlayer extends RenderPlayer
         }
 
         this.modelArmorChestplate.isSneak = this.modelArmor.isSneak = this.modelBipedMain.isSneak = par1EntityPlayer.isSneaking();
-        double d3 = par4 - (double)par1EntityPlayer.yOffset;
+        double d3 = par4 - par1EntityPlayer.yOffset;
 
         if (par1EntityPlayer.isSneaking() && !(par1EntityPlayer instanceof EntityPlayerSP))
         {
@@ -123,8 +122,9 @@ public class GCCoreRenderPlayer extends RenderPlayer
 
         return par1 + par3 * f3;
     }
-    
-    public void doRenderLiving(EntityLiving par1EntityLiving, double par2, double par4, double par6, float par8, float par9)
+
+    @Override
+	public void doRenderLiving(EntityLiving par1EntityLiving, double par2, double par4, double par6, float par8, float par9)
     {
         GL11.glPushMatrix();
         GL11.glDisable(GL11.GL_CULL_FACE);
@@ -151,13 +151,13 @@ public class GCCoreRenderPlayer extends RenderPlayer
 
         try
         {
-            float f2 = this.interpolateRotation(par1EntityLiving.prevRenderYawOffset, par1EntityLiving.renderYawOffset, par9);
-            float f3 = this.interpolateRotation(par1EntityLiving.prevRotationYawHead, par1EntityLiving.rotationYawHead, par9);
-            float f4 = par1EntityLiving.prevRotationPitch + (par1EntityLiving.rotationPitch - par1EntityLiving.prevRotationPitch) * par9;
+            final float f2 = this.interpolateRotation(par1EntityLiving.prevRenderYawOffset, par1EntityLiving.renderYawOffset, par9);
+            final float f3 = this.interpolateRotation(par1EntityLiving.prevRotationYawHead, par1EntityLiving.rotationYawHead, par9);
+            final float f4 = par1EntityLiving.prevRotationPitch + (par1EntityLiving.rotationPitch - par1EntityLiving.prevRotationPitch) * par9;
             this.renderLivingAt(par1EntityLiving, par2, par4, par6);
-            float f5 = this.handleRotationFloat(par1EntityLiving, par9);
+            final float f5 = this.handleRotationFloat(par1EntityLiving, par9);
             this.rotateCorpse(par1EntityLiving, f5, f2, par9);
-            float f6 = 0.0625F;
+            final float f6 = 0.0625F;
             GL11.glEnable(GL12.GL_RESCALE_NORMAL);
             GL11.glScalef(-1.0F, -1.0F, 1.0F);
             this.preRenderCallback(par1EntityLiving, par9);
@@ -200,7 +200,7 @@ public class GCCoreRenderPlayer extends RenderPlayer
 
                     if ((i & 15) == 15)
                     {
-                        f9 = (float)par1EntityLiving.ticksExisted + par9;
+                        f9 = par1EntityLiving.ticksExisted + par9;
                         this.loadTexture("%blur%/misc/glint.png");
                         GL11.glEnable(GL11.GL_BLEND);
                         f10 = 0.5F;
@@ -216,10 +216,10 @@ public class GCCoreRenderPlayer extends RenderPlayer
                             GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE);
                             GL11.glMatrixMode(GL11.GL_TEXTURE);
                             GL11.glLoadIdentity();
-                            float f12 = f9 * (0.001F + (float)k * 0.003F) * 20.0F;
-                            float f13 = 0.33333334F;
+                            final float f12 = f9 * (0.001F + k * 0.003F) * 20.0F;
+                            final float f13 = 0.33333334F;
                             GL11.glScalef(f13, f13, f13);
-                            GL11.glRotatef(30.0F - (float)k * 60.0F, 0.0F, 0.0F, 1.0F);
+                            GL11.glRotatef(30.0F - k * 60.0F, 0.0F, 0.0F, 1.0F);
                             GL11.glTranslatef(0.0F, f12, 0.0F);
                             GL11.glMatrixMode(GL11.GL_MODELVIEW);
                             this.renderPassModel.render(par1EntityLiving, f8, f7, f5, f3 - f2, f4, f6);
@@ -242,7 +242,7 @@ public class GCCoreRenderPlayer extends RenderPlayer
 
             GL11.glDepthMask(true);
             this.renderEquippedItems(par1EntityLiving, par9);
-            float f14 = par1EntityLiving.getBrightness(par9);
+            final float f14 = par1EntityLiving.getBrightness(par9);
             i = this.getColorMultiplier(par1EntityLiving, f14, par9);
             OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
             GL11.glDisable(GL11.GL_TEXTURE_2D);
@@ -273,10 +273,10 @@ public class GCCoreRenderPlayer extends RenderPlayer
 
                 if ((i >> 24 & 255) > 0)
                 {
-                    f9 = (float)(i >> 16 & 255) / 255.0F;
-                    f10 = (float)(i >> 8 & 255) / 255.0F;
-                    float f15 = (float)(i & 255) / 255.0F;
-                    f11 = (float)(i >> 24 & 255) / 255.0F;
+                    f9 = (i >> 16 & 255) / 255.0F;
+                    f10 = (i >> 8 & 255) / 255.0F;
+                    final float f15 = (i & 255) / 255.0F;
+                    f11 = (i >> 24 & 255) / 255.0F;
                     GL11.glColor4f(f9, f10, f15, f11);
                     this.mainModel.render(par1EntityLiving, f8, f7, f5, f3 - f2, f4, f6);
 
@@ -298,7 +298,7 @@ public class GCCoreRenderPlayer extends RenderPlayer
 
             GL11.glDisable(GL12.GL_RESCALE_NORMAL);
         }
-        catch (Exception exception)
+        catch (final Exception exception)
         {
             exception.printStackTrace();
         }

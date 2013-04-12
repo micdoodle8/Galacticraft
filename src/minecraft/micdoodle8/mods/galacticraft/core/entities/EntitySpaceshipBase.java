@@ -15,9 +15,7 @@ import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLandingPad;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLandingPadFull;
-import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFuelLoader;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
@@ -27,20 +25,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.IPacketReceiver;
-import universalelectricity.prefab.network.PacketManager;
-
-import com.google.common.io.ByteArrayDataInput;
-
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -48,7 +38,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, IPacketReceiver, IMissileLockable, IDockable
 {
 	protected long ticks = 0;
-	
+
     protected double dragAir;
 
     protected int ignite;
@@ -58,7 +48,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
     public float timeSinceLaunch;
 
     public float rumble;
-    
+
     public EntitySpaceshipBase(World par1World)
     {
         super(par1World);
@@ -68,7 +58,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
         this.ignoreFrustumCheck = true;
         this.renderDistanceWeight = 5.0D;
     }
-    
+
     public abstract int getMaxFuel();
 
     @Override
@@ -198,23 +188,23 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
 		}
 
 		this.ticks++;
-		
+
     	super.onUpdate();
-    	
+
     	if (!this.worldObj.isRemote && this.getLandingPad() != null && this.getLandingPad().connectedTiles != null)
     	{
-    		for (TileEntity tile : this.getLandingPad().connectedTiles)
+    		for (final TileEntity tile : this.getLandingPad().connectedTiles)
     		{
     			if (this.worldObj.getBlockTileEntity(tile.xCoord, tile.yCoord, tile.zCoord) == null || !(this.worldObj.getBlockTileEntity(tile.xCoord, tile.yCoord, tile.zCoord) instanceof GCCoreTileEntityFuelLoader))
     			{
-    				
+
     			}
     			else
     			{
         			if (tile instanceof GCCoreTileEntityFuelLoader && ((GCCoreTileEntityFuelLoader) tile).wattsReceived > 0)
         			{
-        				GCCoreTileEntityFuelLoader loader = (GCCoreTileEntityFuelLoader) tile;
-        				
+        				final GCCoreTileEntityFuelLoader loader = (GCCoreTileEntityFuelLoader) tile;
+
         				if (this.launched)
         				{
         					this.setLandingPad(null);
@@ -324,7 +314,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
         	        ((GCCorePlayerMP) this.riddenByEntity).coordsTeleportedFromX = this.riddenByEntity.posX;
         	        ((GCCorePlayerMP) this.riddenByEntity).coordsTeleportedFromZ = this.riddenByEntity.posZ;
         		}
-        		
+
         		int amountRemoved = 0;
 
         		for (int x = MathHelper.floor_double(this.posX) - 1; x <= MathHelper.floor_double(this.posX) + 1; x++)
@@ -335,7 +325,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
                 		{
                 			final int id = this.worldObj.getBlockId(x, y, z);
                 			final Block block = Block.blocksList[id];
-                			
+
                 			if (block != null && block instanceof GCCoreBlockLandingPadFull)
                 			{
                 				if (amountRemoved < 9)
@@ -589,8 +579,8 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
     	{
     		if (this.riddenByEntity instanceof EntityPlayerMP)
             {
-		        GCCorePlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer((EntityPlayerMP)this.riddenByEntity);
-		        
+		        final GCCorePlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer((EntityPlayerMP)this.riddenByEntity);
+
         		final EntityPlayerMP entityplayermp = (EntityPlayerMP)this.riddenByEntity;
 
 				final Integer[] ids = WorldUtil.getArrayOfPossibleDimensions();
@@ -620,7 +610,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
 				{
             		this.riddenByEntity.mountEntity(this);
     			}
-				
+
 				if (!this.isDead)
 				{
 					this.setDead();
@@ -628,7 +618,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
             }
     	}
     }
-    
+
     public void onLaunch() {}
 
     public void onTeleport(EntityPlayerMP player) {}

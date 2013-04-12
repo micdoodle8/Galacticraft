@@ -81,7 +81,7 @@ public class GCMoonConfigManager
 			{
 				GCMoonConfigManager.configuration.save();
 			}
-			
+
 			GCMoonConfigManager.loaded = true;
 		}
     }

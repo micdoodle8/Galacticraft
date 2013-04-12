@@ -28,27 +28,27 @@ public class GalacticraftPlugin implements IFMLLoadingPlugin, IFMLCallHook
 	public static boolean hasRegistered = false;
     public static File fileLocation;
 	public static final String mcVersion = "[1.5.1]";
-	
+
 	@Override
-	public String[] getLibraryRequestClass() 
+	public String[] getLibraryRequestClass()
 	{
 		return null;
 	}
 
 	public static void versionCheck(String reqVersion, String mod)
 	{
-		String mcVersion = (String) FMLInjectionData.data()[4];
-		
+		final String mcVersion = (String) FMLInjectionData.data()[4];
+
 		FMLLog.info(mcVersion);
-		
+
 		if(!VersionParser.parseRange(reqVersion).containsVersion(new DefaultArtifactVersion(mcVersion)))
 		{
-			String err = "This version of " + mod + " does not support minecraft version " + mcVersion;
+			final String err = "This version of " + mod + " does not support minecraft version " + mcVersion;
 			System.err.println(err);
-			
-            JEditorPane ep = new JEditorPane("text/html", 
+
+            final JEditorPane ep = new JEditorPane("text/html",
 					"<html>" +
-					err + 
+					err +
 					"<br>Remove it from your coremods folder and check <a href=\"http://micdoodle8.com\">here</a> for updates" +
 					"</html>");
 
@@ -64,56 +64,56 @@ public class GalacticraftPlugin implements IFMLLoadingPlugin, IFMLCallHook
 						if (event.getEventType().equals(HyperlinkEvent.EventType.ACTIVATED))
 							Desktop.getDesktop().browse(event.getURL().toURI());
 					}
-					catch(Exception e)
+					catch(final Exception e)
 					{}
 				}
 			});
-            
+
             JOptionPane.showMessageDialog(null, ep, "Fatal error", JOptionPane.ERROR_MESSAGE);
 			System.exit(1);
 		}
 	}
 
 	@Override
-	public String[] getASMTransformerClass() 
+	public String[] getASMTransformerClass()
 	{
 		GalacticraftPlugin.versionCheck(GalacticraftPlugin.mcVersion, "GalacticraftCore");
-		String[] asmStrings = new String[] {GalacticraftPlugin.transformerMain};
-		
-        if (!GalacticraftPlugin.hasRegistered) 
+		final String[] asmStrings = new String[] {GalacticraftPlugin.transformerMain};
+
+        if (!GalacticraftPlugin.hasRegistered)
         {
-            List<String> asm = Arrays.asList(asmStrings);
-            
-            for (String s : asm) 
+            final List<String> asm = Arrays.asList(asmStrings);
+
+            for (final String s : asm)
             {
-                try 
+                try
                 {
-                    Class c = Class.forName(s);
-                    
-                    if (c != null) 
+                    final Class c = Class.forName(s);
+
+                    if (c != null)
                     {
-                        String a = GalacticraftPlugin.transformerDir + "Transformer";
-                        
-                        int l = a.length() + 1;
-                        
+                        final String a = GalacticraftPlugin.transformerDir + "Transformer";
+
+                        final int l = a.length() + 1;
+
                         FMLLog.info("[GCCoreTransformer]: " + "Registered Transformer " + s.substring(l));
                     }
-                } 
-                catch (Exception ex)
+                }
+                catch (final Exception ex)
                 {
                     FMLLog.info("[GCCoreTransformer]: " + "Error while running transformer " + s);
                     return null;
                 }
             }
-            
+
             GalacticraftPlugin.hasRegistered = true;
         }
-        
+
         return asmStrings;
 	}
 
 	@Override
-	public String getModContainerClass() 
+	public String getModContainerClass()
 	{
 		return null;
 	}
@@ -125,7 +125,7 @@ public class GalacticraftPlugin implements IFMLLoadingPlugin, IFMLCallHook
 	}
 
 	@Override
-	public void injectData(Map<String, Object> data) 
+	public void injectData(Map<String, Object> data)
 	{
 		GalacticraftPlugin.fileLocation = (File) data.get("coremodLocation");
 		FMLLog.info("[GCCoreTransformer]: " + "Patching game...");
@@ -134,7 +134,7 @@ public class GalacticraftPlugin implements IFMLLoadingPlugin, IFMLCallHook
 	}
 
 	@Override
-	public Void call() throws Exception 
+	public Void call() throws Exception
 	{
         GalacticraftAccessTransformer.addTransformerMap("galacticraft_at.cfg");
 		return null;

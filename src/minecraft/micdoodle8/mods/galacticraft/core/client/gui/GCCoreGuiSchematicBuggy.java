@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GL11;
 public class GCCoreGuiSchematicBuggy extends GuiContainer implements ISchematicResultPage
 {
 	private int pageIndex;
-	
+
     public GCCoreGuiSchematicBuggy(InventoryPlayer par1InventoryPlayer)
     {
         super(new GCCoreContainerBuggyBench(par1InventoryPlayer, 0, 0, 0));
@@ -34,7 +34,7 @@ public class GCCoreGuiSchematicBuggy extends GuiContainer implements ISchematicR
     {
         if (par1GuiButton.enabled)
         {
-        	Object[] toSend;
+        	final Object[] toSend;
 
             switch (par1GuiButton.id)
             {

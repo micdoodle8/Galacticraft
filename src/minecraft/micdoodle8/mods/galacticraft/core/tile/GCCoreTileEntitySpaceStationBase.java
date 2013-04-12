@@ -23,32 +23,32 @@ public class GCCoreTileEntitySpaceStationBase extends TileEntityMulti implements
     {
     	par1NBTTagCompound.setString("ownerUsername", this.ownerUsername);
     }
-    
+
     public void setOwner(String username)
     {
     	this.ownerUsername = username;
     }
-    
+
     public String getOwner()
     {
     	return this.ownerUsername;
     }
 
 	@Override
-	public boolean onActivated(EntityPlayer entityPlayer) 
+	public boolean onActivated(EntityPlayer entityPlayer)
 	{
 		return false;
 	}
 
 	@Override
-	public void onCreate(Vector3 placedPosition) 
+	public void onCreate(Vector3 placedPosition)
 	{
 		this.mainBlockPosition = placedPosition;
-		
+
 		for (int y = 1; y < 3; y++)
 		{
-			Vector3 vecToAdd = Vector3.add(placedPosition, new Vector3(0, y, 0));
-			
+			final Vector3 vecToAdd = Vector3.add(placedPosition, new Vector3(0, y, 0));
+
 			if (!vecToAdd.equals(placedPosition))
 			{
 				GCCoreBlocks.dummyBlock.makeFakeBlock(this.worldObj, vecToAdd, placedPosition, 1);
@@ -57,7 +57,7 @@ public class GCCoreTileEntitySpaceStationBase extends TileEntityMulti implements
 	}
 
 	@Override
-	public void onDestroy(TileEntity callingBlock) 
+	public void onDestroy(TileEntity callingBlock)
 	{
 	}
 }

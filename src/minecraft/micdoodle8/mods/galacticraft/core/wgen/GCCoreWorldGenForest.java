@@ -74,7 +74,7 @@ public class GCCoreWorldGenForest extends WorldGenerator
             else
             {
                 var8 = par1World.getBlockId(par3, par4 - 1, par5);
-                int var10a = par1World.getBlockMetadata(par3, par4 - 1, par5);
+                final int var10a = par1World.getBlockMetadata(par3, par4 - 1, par5);
 
                 int waterBlocksNearby = 0;
 
@@ -88,15 +88,15 @@ public class GCCoreWorldGenForest extends WorldGenerator
                         }
                     }
                 }
-                
+
                 if (Block.blocksList[var8] != null)
                 {
-                	boolean flag = Block.blocksList[var8] instanceof IPlantableBlock || Block.blocksList[var8] instanceof IPlantableMetadataBlock && ((IPlantableMetadataBlock) Block.blocksList[var8]).isPlantable(var10a);
-                	boolean flag2 = Block.blocksList[var8] instanceof IPlantableBlock && waterBlocksNearby >= ((IPlantableBlock)Block.blocksList[var8]).requiredLiquidBlocksNearby() || Block.blocksList[var8] instanceof IPlantableMetadataBlock && waterBlocksNearby >= ((IPlantableMetadataBlock)Block.blocksList[var8]).requiredLiquidBlocksNearby();
-                	boolean flag3 = par4 < 256 - var6 - 1;
-                	boolean flag4 = (Block.blocksList[var8] instanceof BlockGrass || Block.blocksList[var8] instanceof BlockDirt) && waterBlocksNearby >= 4;
-                	
-                	if ((flag && flag2 && flag3) || flag4)
+                	final boolean flag = Block.blocksList[var8] instanceof IPlantableBlock || Block.blocksList[var8] instanceof IPlantableMetadataBlock && ((IPlantableMetadataBlock) Block.blocksList[var8]).isPlantable(var10a);
+                	final boolean flag2 = Block.blocksList[var8] instanceof IPlantableBlock && waterBlocksNearby >= ((IPlantableBlock)Block.blocksList[var8]).requiredLiquidBlocksNearby() || Block.blocksList[var8] instanceof IPlantableMetadataBlock && waterBlocksNearby >= ((IPlantableMetadataBlock)Block.blocksList[var8]).requiredLiquidBlocksNearby();
+                	final boolean flag3 = par4 < 256 - var6 - 1;
+                	final boolean flag4 = (Block.blocksList[var8] instanceof BlockGrass || Block.blocksList[var8] instanceof BlockDirt) && waterBlocksNearby >= 4;
+
+                	if (flag && flag2 && flag3 || flag4)
                 	{
                 		int var16;
 

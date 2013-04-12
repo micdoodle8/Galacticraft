@@ -37,9 +37,9 @@ public class GCCoreContainerRocketRefill extends Container
     {
         int var4;
         int var5;
-        
+
         int offset = 0;
-        
+
         switch (this.type)
         {
         case 0:
@@ -76,12 +76,12 @@ public class GCCoreContainerRocketRefill extends Container
             	if (!(var4 == 2 && var5 == 8 || var4 == 2  && var5 == 7 || var4 == 2  && var5 == 6))
             	{
             		int offset = 0;
-            		
+
             		if (var4 == 2)
             		{
             			offset = 28;
             		}
-            		
+
                     this.addSlotToContainer(new Slot(this.spaceshipInv, var5 + var4 * 9 + 1, 8 + var5 * 18 + offset, 50 + var4 * 18));
             	}
             }

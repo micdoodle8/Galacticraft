@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core.entities;
 import java.util.Calendar;
 
 import micdoodle8.mods.galacticraft.API.IEntityBreathable;
-import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -167,12 +166,12 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
     {
         if (this.worldObj.isDaytime() && !this.worldObj.isRemote && !this.isChild())
         {
-            float f = this.getBrightness(1.0F);
+            final float f = this.getBrightness(1.0F);
 
             if (f > 0.5F && this.rand.nextFloat() * 30.0F < (f - 0.4F) * 2.0F && this.worldObj.canBlockSeeTheSky(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ)))
             {
                 boolean flag = true;
-                ItemStack itemstack = this.getCurrentItemOrArmor(4);
+                final ItemStack itemstack = this.getCurrentItemOrArmor(4);
 
                 if (itemstack != null)
                 {
@@ -208,7 +207,7 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
     {
         if (!this.worldObj.isRemote && this.isConverting())
         {
-            int i = this.getConversionTimeBoost();
+            final int i = this.getConversionTimeBoost();
             this.conversionTime -= i;
 
             if (this.conversionTime <= 0)
@@ -223,7 +222,7 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
     @Override
 	public boolean attackEntityAsMob(Entity par1Entity)
     {
-        boolean flag = super.attackEntityAsMob(par1Entity);
+        final boolean flag = super.attackEntityAsMob(par1Entity);
 
         if (flag && this.getHeldItem() == null && this.isBurning() && this.rand.nextFloat() < this.worldObj.difficultySetting * 0.3F)
         {
@@ -239,8 +238,8 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
     @Override
 	public int getAttackStrength(Entity par1Entity)
     {
-        ItemStack itemstack = this.getHeldItem();
-        float f = (float)(this.getMaxHealth() - this.getHealth()) / (float)this.getMaxHealth();
+        final ItemStack itemstack = this.getHeldItem();
+        final float f = (float)(this.getMaxHealth() - this.getHealth()) / (float)this.getMaxHealth();
         int i = 3 + MathHelper.floor_float(f * 4.0F);
 
         if (itemstack != null)
@@ -331,7 +330,7 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
 
         if (this.rand.nextFloat() < (this.worldObj.difficultySetting == 3 ? 0.05F : 0.01F))
         {
-            int i = this.rand.nextInt(3);
+            final int i = this.rand.nextInt(3);
 
             if (i == 0)
             {
@@ -404,7 +403,7 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
                 return;
             }
 
-            EntityZombie entityzombie = new EntityZombie(this.worldObj);
+            final EntityZombie entityzombie = new EntityZombie(this.worldObj);
             entityzombie.func_82149_j(par1EntityLiving);
             this.worldObj.removeEntity(par1EntityLiving);
             entityzombie.initCreature();
@@ -438,7 +437,7 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
 
         if (this.getCurrentItemOrArmor(4) == null)
         {
-            Calendar calendar = this.worldObj.getCurrentDate();
+            final Calendar calendar = this.worldObj.getCurrentDate();
 
             if (calendar.get(2) + 1 == 10 && calendar.get(5) == 31 && this.rand.nextFloat() < 0.25F)
             {
@@ -454,7 +453,7 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
     @Override
 	public boolean interact(EntityPlayer par1EntityPlayer)
     {
-        ItemStack itemstack = par1EntityPlayer.getCurrentEquippedItem();
+        final ItemStack itemstack = par1EntityPlayer.getCurrentEquippedItem();
 
         if (itemstack != null && itemstack.getItem() == Item.appleGold && itemstack.getItemDamage() == 0 && this.isVillager() && this.isPotionActive(Potion.weakness))
         {
@@ -524,7 +523,7 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
     @Override
 	protected void convertToVillager()
     {
-        EntityVillager entityvillager = new EntityVillager(this.worldObj);
+        final EntityVillager entityvillager = new EntityVillager(this.worldObj);
         entityvillager.func_82149_j(this);
         entityvillager.initCreature();
         entityvillager.func_82187_q();
@@ -558,7 +557,7 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
                 {
                     for (int i1 = (int)this.posZ - 4; i1 < (int)this.posZ + 4 && j < 14; ++i1)
                     {
-                        int j1 = this.worldObj.getBlockId(k, l, i1);
+                        final int j1 = this.worldObj.getBlockId(k, l, i1);
 
                         if (j1 == Block.fenceIron.blockID || j1 == Block.bed.blockID)
                         {
@@ -578,7 +577,7 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
     }
 
 	@Override
-	public boolean canBreath() 
+	public boolean canBreath()
 	{
 		return true;
 	}

@@ -14,45 +14,45 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GCCoreSchematicRocketT1 implements ISchematicPage
 {
 	@Override
-	public int getPageID() 
+	public int getPageID()
 	{
 		return GCCoreConfigManager.idSchematicRocketT1;
 	}
-	
+
 	@Override
-	public int getGuiID() 
+	public int getGuiID()
 	{
 		return GCCoreConfigManager.idGuiRocketCraftingBench;
 	}
 
 	@Override
-	public ItemStack getRequiredItem() 
+	public ItemStack getRequiredItem()
 	{
 		return null;
 	}
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public String getTitle() 
+	public String getTitle()
 	{
 		return "T1 Rocket";
 	}
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public GuiScreen getResultScreen(EntityPlayer player, int x, int y, int z) 
+	public GuiScreen getResultScreen(EntityPlayer player, int x, int y, int z)
 	{
 		return new GCCoreGuiSchematicRocketT1(player.inventory, x, y, z);
 	}
 
 	@Override
-	public Container getResultContainer(EntityPlayer player, int x, int y, int z) 
+	public Container getResultContainer(EntityPlayer player, int x, int y, int z)
 	{
 		return new GCCoreContainerRocketBench(player.inventory, x, y, z);
 	}
 
 	@Override
-	public int compareTo(ISchematicPage o) 
+	public int compareTo(ISchematicPage o)
 	{
 		if (this.getPageID() > o.getPageID())
 		{

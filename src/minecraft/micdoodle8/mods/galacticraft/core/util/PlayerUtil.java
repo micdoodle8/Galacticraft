@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.util;
 
-import java.util.EmptyStackException;
 import java.util.Iterator;
 import java.util.Map;
 

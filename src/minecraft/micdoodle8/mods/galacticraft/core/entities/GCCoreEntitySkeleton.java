@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
 import micdoodle8.mods.galacticraft.API.IEntityBreathable;
-import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.ai.EntityAIFleeSun;
@@ -212,7 +211,7 @@ public class GCCoreEntitySkeleton extends EntitySkeleton implements IEntityBreat
     }
 
 	@Override
-	public boolean canBreath() 
+	public boolean canBreath()
 	{
 		return true;
 	}

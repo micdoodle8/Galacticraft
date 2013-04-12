@@ -13,8 +13,8 @@ public class GCCoreBlockMulti extends BlockMulti
 {
 	// 0: Normal, 1: Space Station Teleport, 2: Rocket Launch Pad, 3: Rocket Crafting Table
 	Icon[] fakeIcons;
-	
-	public GCCoreBlockMulti(int id) 
+
+	public GCCoreBlockMulti(int id)
 	{
 		super(id);
 	}
@@ -54,7 +54,7 @@ public class GCCoreBlockMulti extends BlockMulti
 		worldObj.setBlock(position.intX(), position.intY(), position.intZ(), this.blockID, meta, 3);
 		((TileEntityMulti) worldObj.getBlockTileEntity(position.intX(), position.intY(), position.intZ())).setMainBlock(mainBlock);
 	}
-	
+
     @Override
 	public float getBlockHardness(World par1World, int par2, int par3, int par4)
     {

@@ -35,13 +35,13 @@ public class GCCoreBlockLandingPadFull extends BlockAdvanced
 	@Override
     public void breakBlock(World var1, int var2, int var3, int var4, int var5, int var6)
     {
-        TileEntity var9 = var1.getBlockTileEntity(var2, var3, var4);
-        
+        final TileEntity var9 = var1.getBlockTileEntity(var2, var3, var4);
+
         if (var9 instanceof IMultiBlock)
         {
             ((IMultiBlock)var9).onDestroy(var9);
         }
-        
+
         super.breakBlock(var1, var2, var3, var4, var5, var6);
     }
 
@@ -74,7 +74,7 @@ public class GCCoreBlockLandingPadFull extends BlockAdvanced
     {
     	this.blockIcon = par1IconRegister.registerIcon("galacticraftcore:launch_pad");
     }
-	
+
 	@Override
 	public boolean canPlaceBlockAt(World world, int x, int y, int z)
 	{
@@ -87,18 +87,18 @@ public class GCCoreBlockLandingPadFull extends BlockAdvanced
 					return false;
 				}
 			}
-			
+
 		}
-		
+
 		return true;
 	}
-	
+
 	@Override
 	public boolean hasTileEntity(int metadata)
 	{
 		return true;
 	}
-	
+
 	@Override
 	public TileEntity createTileEntity(World world, int meta)
 	{
@@ -106,7 +106,7 @@ public class GCCoreBlockLandingPadFull extends BlockAdvanced
 	}
 
 	@Override
-    public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5) 
+    public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
     {
 		par1World.markBlockForUpdate(par2, par3, par4);
     }

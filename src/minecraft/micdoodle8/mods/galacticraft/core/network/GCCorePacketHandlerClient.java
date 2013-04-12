@@ -34,7 +34,6 @@ import net.minecraftforge.common.DimensionManager;
 import org.lwjgl.input.Keyboard;
 
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
@@ -255,7 +254,7 @@ public class GCCorePacketHandlerClient implements IPacketHandler
             {
 	    		new GCCorePacketEntityUpdate().handlePacket(data, new Object[] {player}, Side.SERVER);
             }
-            catch(Exception e)
+            catch(final Exception e)
             {
             	e.printStackTrace();
             }
@@ -270,13 +269,13 @@ public class GCCorePacketHandlerClient implements IPacketHandler
             	WorldUtil.registeredSpaceStations = new ArrayList();
             }
 
-			try 
+			try
 			{
-				int var1 = data.readInt();
+				final int var1 = data.readInt();
 
                 for (int var2 = 0; var2 < var1; ++var2)
                 {
-                    int var3 = data.readInt();
+                    final int var3 = data.readInt();
 
                     if (!WorldUtil.registeredSpaceStations.contains(Integer.valueOf(var3)))
                     {
@@ -284,8 +283,8 @@ public class GCCorePacketHandlerClient implements IPacketHandler
                         DimensionManager.registerDimension(var3, GCCoreConfigManager.idDimensionOverworldOrbit);
                     }
                 }
-			} 
-			catch (IOException e) 
+			}
+			catch (final IOException e)
 			{
 				e.printStackTrace();
 			}
@@ -294,10 +293,10 @@ public class GCCorePacketHandlerClient implements IPacketHandler
         {
             try
             {
-                int var2 = data.readInt();
+                final int var2 = data.readInt();
                 NBTTagCompound var3;
 
-                short var1 = data.readShort();
+                final short var1 = data.readShort();
 
                 if (var1 < 0)
                 {
@@ -305,15 +304,15 @@ public class GCCorePacketHandlerClient implements IPacketHandler
                 }
                 else
                 {
-                    byte[] var21 = new byte[var1];
+                    final byte[] var21 = new byte[var1];
                     data.readFully(var21);
                     var3 = CompressedStreamTools.decompress(var21);
                 }
-                
-                GCCoreSpaceStationData var4 = GCCoreSpaceStationData.getMPSpaceStationData(player.worldObj, var2, player);
+
+                final GCCoreSpaceStationData var4 = GCCoreSpaceStationData.getMPSpaceStationData(player.worldObj, var2, player);
                 var4.readFromNBT(var3);
             }
-            catch (IOException var5)
+            catch (final IOException var5)
             {
                 var5.printStackTrace();
             }
@@ -332,13 +331,13 @@ public class GCCorePacketHandlerClient implements IPacketHandler
             	WorldUtil.registeredPlanets = new ArrayList();
             }
 
-			try 
+			try
 			{
-				int var1 = data.readInt();
+				final int var1 = data.readInt();
 
                 for (int var2 = 0; var2 < var1; ++var2)
                 {
-                    int var3 = data.readInt();
+                    final int var3 = data.readInt();
 
                     if (!WorldUtil.registeredPlanets.contains(Integer.valueOf(var3)))
                     {
@@ -346,8 +345,8 @@ public class GCCorePacketHandlerClient implements IPacketHandler
                         DimensionManager.registerDimension(var3, GCMoonConfigManager.dimensionIDMoon);
                     }
                 }
-			} 
-			catch (IOException e) 
+			}
+			catch (final IOException e)
 			{
 				e.printStackTrace();
 			}
@@ -356,11 +355,11 @@ public class GCCorePacketHandlerClient implements IPacketHandler
         {
             final Class[] decodeAs = {Integer.class};
             final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
-            
+
         	if (playerBaseClient != null)
         	{
-        		ISchematicPage page = SchematicRegistry.getMatchingRecipeForID((Integer) packetReadout[0]);
-        		
+        		final ISchematicPage page = SchematicRegistry.getMatchingRecipeForID((Integer) packetReadout[0]);
+
         		if (!playerBaseClient.unlockedSchematics.contains(page))
         		{
             		playerBaseClient.unlockedSchematics.add(page);
@@ -371,24 +370,24 @@ public class GCCorePacketHandlerClient implements IPacketHandler
         {
         	if (playerBaseClient != null)
         	{
-    			try 
+    			try
     			{
-    				int var1 = data.readInt();
+    				final int var1 = data.readInt();
 
                     for (int var2 = 0; var2 < var1; ++var2)
                     {
-                        int var3 = data.readInt();
-                        
+                        final int var3 = data.readInt();
+
                     	Collections.sort(playerBaseClient.unlockedSchematics);
 
                         if (!playerBaseClient.unlockedSchematics.contains(SchematicRegistry.getMatchingRecipeForID(Integer.valueOf(var3))))
                         {
                         	playerBaseClient.unlockedSchematics.add(SchematicRegistry.getMatchingRecipeForID(Integer.valueOf(var3)));
-                        	
+
                         }
                     }
-    			} 
-    			catch (IOException e) 
+    			}
+    			catch (final IOException e)
     			{
     				e.printStackTrace();
     			}

@@ -1,23 +1,17 @@
 package micdoodle8.mods.galacticraft.core.dimension;
 
-import java.util.Random;
-
 import micdoodle8.mods.galacticraft.API.IExitHeight;
 import micdoodle8.mods.galacticraft.API.IOrbitDimension;
 import micdoodle8.mods.galacticraft.API.ISolarLevel;
-import micdoodle8.mods.galacticraft.API.ITeleportType;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.wgen.GCCoreChunkProviderOverworldOrbit;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.WorldProvider;
-import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
-import universalelectricity.core.vector.Vector3;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -39,7 +33,7 @@ public class GCCoreWorldProvider extends WorldProvider implements IOrbitDimensio
         this.dimensionId = var1;
         super.setDimension(var1);
     }
-	
+
     @Override
 	public IChunkProvider createChunkGenerator()
     {
@@ -247,7 +241,7 @@ public class GCCoreWorldProvider extends WorldProvider implements IOrbitDimensio
 	}
 
 	@Override
-	public int getYCoordToTeleport() 
+	public int getYCoordToTeleport()
 	{
 		return 30;
 	}
@@ -265,7 +259,7 @@ public class GCCoreWorldProvider extends WorldProvider implements IOrbitDimensio
 	}
 
 	@Override
-	public double getYCoordinateToTeleport() 
+	public double getYCoordinateToTeleport()
 	{
 		return 120;
 	}

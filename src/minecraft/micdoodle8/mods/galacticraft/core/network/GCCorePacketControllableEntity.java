@@ -14,34 +14,34 @@ import cpw.mods.fml.relauncher.Side;
 public class GCCorePacketControllableEntity implements IGalacticraftAdvancedPacket
 {
 	public static final byte packetID = 12;
-	
+
 	public static Packet buildKeyPacket(int key)
 	{
-		Packet250CustomPayload packet = new Packet250CustomPayload();
+		final Packet250CustomPayload packet = new Packet250CustomPayload();
 		packet.channel = GalacticraftCore.CHANNEL;
-		
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        DataOutputStream data = new DataOutputStream(bytes);
-        
+
+        final ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        final DataOutputStream data = new DataOutputStream(bytes);
+
         try
         {
         	data.write(GCCorePacketControllableEntity.packetID);
         	data.writeInt(key);
-        	
+
         	packet.data = bytes.toByteArray();
         	packet.length = packet.data.length;
-        	
+
         	data.close();
         	bytes.close();
         }
-        catch(Exception e)
+        catch(final Exception e)
         {
             e.printStackTrace();
         }
-        
+
         return packet;
 	}
-	
+
 	@Override
 	public byte getPacketID()
 	{
@@ -49,20 +49,20 @@ public class GCCorePacketControllableEntity implements IGalacticraftAdvancedPack
 	}
 
 	@Override
-	public void handlePacket(DataInputStream stream, Object[] extraData, Side side) 
+	public void handlePacket(DataInputStream stream, Object[] extraData, Side side)
 	{
 		try
 		{
-			EntityPlayer player =  (EntityPlayer) extraData[0];
-			
-			int key = stream.readInt();
+			final EntityPlayer player =  (EntityPlayer) extraData[0];
+
+			final int key = stream.readInt();
 			if(player.ridingEntity != null && player.ridingEntity instanceof GCCoreEntityControllable)
 			{
 				((GCCoreEntityControllable)player.ridingEntity).pressKey(key);
 			}
-			
+
 		}
-        catch(Exception e)
+        catch(final Exception e)
         {
         	e.printStackTrace();
         }

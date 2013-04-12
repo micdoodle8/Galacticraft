@@ -1,17 +1,11 @@
 package micdoodle8.mods.galacticraft.asm;
 
-import static org.objectweb.asm.ClassWriter.COMPUTE_MAXS;
-import static org.objectweb.asm.Opcodes.ALOAD;
-import static org.objectweb.asm.Opcodes.CHECKCAST;
-import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
-import static org.objectweb.asm.Opcodes.INVOKESTATIC;
-import static org.objectweb.asm.Opcodes.NEW;
-
 import java.util.HashMap;
 import java.util.Iterator;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.LdcInsnNode;
@@ -27,7 +21,7 @@ public class GCCoreTransformer implements IClassTransformer
 {
 	HashMap<String, String> obfuscatedMap = new HashMap<String, String>();
 	HashMap<String, String> unObfuscatedMap = new HashMap<String, String>();
-	
+
 	public GCCoreTransformer()
 	{
 		this.obfuscatedMap.put("confManagerClass", "gu");
@@ -47,7 +41,7 @@ public class GCCoreTransformer implements IClassTransformer
 		this.obfuscatedMap.put("attemptLoginDescBukkit", "(Ljf;Ljava/lang/String;Ljava/lang/String;)Ljc;");
 		this.unObfuscatedMap.put("attemptLoginMethodBukkit", "dontfindthis");
 		this.unObfuscatedMap.put("attemptLoginDescBukkit", "dontfindthis");
-		
+
 		this.obfuscatedMap.put("playerControllerClass", "bds");
 		this.unObfuscatedMap.put("playerControllerClass", "net/minecraft/client/multiplayer/PlayerControllerMP");
 		this.obfuscatedMap.put("createClientPlayerMethod", "a");
@@ -68,35 +62,35 @@ public class GCCoreTransformer implements IClassTransformer
 	}
 
 	@Override
-	public byte[] transform(String name, String transformedName, byte[] bytes) 
+	public byte[] transform(String name, String transformedName, byte[] bytes)
 	{
 		if (name.replace('.', '/').equals(this.unObfuscatedMap.get("confManagerClass")))
 		{
-			bytes = transform1(name, bytes, this.unObfuscatedMap);
+			bytes = this.transform1(name, bytes, this.unObfuscatedMap);
 		}
 		else if (name.replace('.', '/').equals(this.obfuscatedMap.get("confManagerClass")))
 		{
-			bytes = transform1(name, bytes, this.obfuscatedMap);
+			bytes = this.transform1(name, bytes, this.obfuscatedMap);
 		}
 
 		if (name.replace('.', '/').equals(this.unObfuscatedMap.get("playerControllerClass")))
 		{
-			bytes = transform2(name, bytes, this.unObfuscatedMap);
+			bytes = this.transform2(name, bytes, this.unObfuscatedMap);
 		}
 		else if (name.replace('.', '/').equals(this.obfuscatedMap.get("playerControllerClass")))
 		{
-			bytes = transform2(name, bytes, this.obfuscatedMap);
+			bytes = this.transform2(name, bytes, this.obfuscatedMap);
 		}
 
 		if (name.replace('.', '/').equals(this.unObfuscatedMap.get("entityLivingClass")))
 		{
-			bytes = transform3(name, bytes, this.unObfuscatedMap);
+			bytes = this.transform3(name, bytes, this.unObfuscatedMap);
 		}
 		else if (name.replace('.', '/').equals(this.obfuscatedMap.get("entityLivingClass")))
 		{
-			bytes = transform3(name, bytes, this.obfuscatedMap);
+			bytes = this.transform3(name, bytes, this.obfuscatedMap);
 		}
-		
+
 		return bytes;
 	}
 
@@ -105,42 +99,42 @@ public class GCCoreTransformer implements IClassTransformer
 	 */
     public byte[] transform1(String name, byte[] bytes, HashMap<String, String> map)
     {
-        ClassNode node = new ClassNode();
-        ClassReader reader = new ClassReader(bytes);
+        final ClassNode node = new ClassNode();
+        final ClassReader reader = new ClassReader(bytes);
         reader.accept(node, 0);
 
-		Iterator<MethodNode> methods = node.methods.iterator();
-		
+		final Iterator<MethodNode> methods = node.methods.iterator();
+
 		while (methods.hasNext())
 		{
-			MethodNode methodnode = methods.next();
-			
+			final MethodNode methodnode = methods.next();
+
 			if (methodnode.name.equals(map.get("createPlayerMethod")) && methodnode.desc.equals(map.get("createPlayerDesc")))
 			{
 	            for (int count = 0; count < methodnode.instructions.size(); count++)
 	            {
-	            	AbstractInsnNode list = methodnode.instructions.get(count);
-	            	
+	            	final AbstractInsnNode list = methodnode.instructions.get(count);
+
 	            	if (list instanceof TypeInsnNode)
 	            	{
-	            		TypeInsnNode nodeAt = (TypeInsnNode) list;
-	            		
-	            		if (nodeAt.getOpcode() != CHECKCAST && nodeAt.desc.contains(map.get("playerMP")))
+	            		final TypeInsnNode nodeAt = (TypeInsnNode) list;
+
+	            		if (nodeAt.getOpcode() != Opcodes.CHECKCAST && nodeAt.desc.contains(map.get("playerMP")))
 	            		{
-	            			TypeInsnNode overwriteNode = new TypeInsnNode(NEW, "micdoodle8/mods/galacticraft/core/entities/GCCorePlayerMP");
-	            			
+	            			final TypeInsnNode overwriteNode = new TypeInsnNode(Opcodes.NEW, "micdoodle8/mods/galacticraft/core/entities/GCCorePlayerMP");
+
 	            			methodnode.instructions.set(nodeAt, overwriteNode);
-	            			
+
 	            			FMLLog.info("Successfully set type insertion node with description \"NEW " + map.get("playerMP") + "\" to \"NEW micdoodle8/mods/galacticraft/core/entities/GCCorePlayerMP\" in method: " + methodnode.name);
 	            		}
 	            	}
 	            	else if (list instanceof MethodInsnNode)
 	            	{
-	            		MethodInsnNode nodeAt = (MethodInsnNode) list;
-	            		
+	            		final MethodInsnNode nodeAt = (MethodInsnNode) list;
+
 	            		if (nodeAt.owner.contains(map.get("playerMP")))
 	            		{
-	            			methodnode.instructions.set(nodeAt, new MethodInsnNode(INVOKESPECIAL, "micdoodle8/mods/galacticraft/core/entities/GCCorePlayerMP", "<init>", "(Lnet/minecraft/server/MinecraftServer;Lnet/minecraft/world/World;Ljava/lang/String;Lnet/minecraft/item/ItemInWorldManager;)V"));
+	            			methodnode.instructions.set(nodeAt, new MethodInsnNode(Opcodes.INVOKESPECIAL, "micdoodle8/mods/galacticraft/core/entities/GCCorePlayerMP", "<init>", "(Lnet/minecraft/server/MinecraftServer;Lnet/minecraft/world/World;Ljava/lang/String;Lnet/minecraft/item/ItemInWorldManager;)V"));
 
 	            			FMLLog.info("Successfully set method insertion node with owner \"" + map.get("playerMP") + "\" to \"micdoodle8/mods/galacticraft/core/entities/GCCorePlayerMP\" in method: " + methodnode.name);
 	            		}
@@ -152,61 +146,61 @@ public class GCCoreTransformer implements IClassTransformer
 			{
 				for (int count = 0; count < methodnode.instructions.size(); count++)
 	            {
-	            	AbstractInsnNode list = methodnode.instructions.get(count);
-	            	
+	            	final AbstractInsnNode list = methodnode.instructions.get(count);
+
 	            	if (list instanceof TypeInsnNode)
 	            	{
-	            		TypeInsnNode nodeAt = (TypeInsnNode) list;
-	            		
-	            		if (nodeAt.getOpcode() != CHECKCAST && nodeAt.desc.contains(map.get("playerMP")))
+	            		final TypeInsnNode nodeAt = (TypeInsnNode) list;
+
+	            		if (nodeAt.getOpcode() != Opcodes.CHECKCAST && nodeAt.desc.contains(map.get("playerMP")))
 	            		{
-	            			TypeInsnNode overwriteNode = new TypeInsnNode(NEW, "micdoodle8/mods/galacticraft/core/entities/GCCorePlayerMP");
-	            			
+	            			final TypeInsnNode overwriteNode = new TypeInsnNode(Opcodes.NEW, "micdoodle8/mods/galacticraft/core/entities/GCCorePlayerMP");
+
 	            			methodnode.instructions.set(nodeAt, overwriteNode);
-	            			
+
 	            			FMLLog.info("Successfully set type insertion node with description \"NEW " + map.get("playerMP") + "\" to \"NEW micdoodle8/mods/galacticraft/core/entities/GCCorePlayerMP\" in method: " + methodnode.name);
 	            		}
 	            	}
 	            	else if (list instanceof MethodInsnNode)
 	            	{
-	            		MethodInsnNode nodeAt = (MethodInsnNode) list;
-	            		
+	            		final MethodInsnNode nodeAt = (MethodInsnNode) list;
+
 	            		if (nodeAt.name.equals("<init>") && nodeAt.owner.equals(map.get("playerMP")))
 	            		{
-	            			methodnode.instructions.set(nodeAt, new MethodInsnNode(INVOKESPECIAL, "micdoodle8/mods/galacticraft/core/entities/GCCorePlayerMP", "<init>", "(Lnet/minecraft/server/MinecraftServer;Lnet/minecraft/world/World;Ljava/lang/String;Lnet/minecraft/item/ItemInWorldManager;)V"));
+	            			methodnode.instructions.set(nodeAt, new MethodInsnNode(Opcodes.INVOKESPECIAL, "micdoodle8/mods/galacticraft/core/entities/GCCorePlayerMP", "<init>", "(Lnet/minecraft/server/MinecraftServer;Lnet/minecraft/world/World;Ljava/lang/String;Lnet/minecraft/item/ItemInWorldManager;)V"));
 
 	            			FMLLog.info("Successfully set method insertion node with owner \"" + map.get("playerMP") + "\" to \"micdoodle8/mods/galacticraft/core/entities/GCCorePlayerMP\" in method: " + methodnode.name);
 	            		}
 	            	}
 	            }
 			}
-			
+
 			if (methodnode.name.equals(map.get("attemptLoginMethodBukkit")) && methodnode.desc.equals(map.get("attemptLoginDescBukkit")))
 			{
 				for (int count = 0; count < methodnode.instructions.size(); count++)
 	            {
-	            	AbstractInsnNode list = methodnode.instructions.get(count);
-	            	
+	            	final AbstractInsnNode list = methodnode.instructions.get(count);
+
 	            	if (list instanceof TypeInsnNode)
 	            	{
-	            		TypeInsnNode nodeAt = (TypeInsnNode) list;
-	            		
-	            		if (nodeAt.getOpcode() == NEW && nodeAt.desc.contains(map.get("playerMP")))
+	            		final TypeInsnNode nodeAt = (TypeInsnNode) list;
+
+	            		if (nodeAt.getOpcode() == Opcodes.NEW && nodeAt.desc.contains(map.get("playerMP")))
 	            		{
-	            			TypeInsnNode overwriteNode = new TypeInsnNode(NEW, "micdoodle8/mods/galacticraft/core/entities/GCCorePlayerMP");
-	            			
+	            			final TypeInsnNode overwriteNode = new TypeInsnNode(Opcodes.NEW, "micdoodle8/mods/galacticraft/core/entities/GCCorePlayerMP");
+
 	            			methodnode.instructions.set(nodeAt, overwriteNode);
-	            			
+
 	            			FMLLog.info("[BUKKIT] Successfully set type insertion node with description \"NEW " + map.get("playerMP") + "\" to \"NEW micdoodle8/mods/galacticraft/core/entities/GCCorePlayerMP\" in method: " + methodnode.name);
 	            		}
 	            	}
 	            	else if (list instanceof MethodInsnNode)
 	            	{
-	            		MethodInsnNode nodeAt = (MethodInsnNode) list;
-	            		
-	            		if (nodeAt.getOpcode() == INVOKESPECIAL && nodeAt.name.equals("<init>") && nodeAt.owner.equals(map.get("playerMP")))
+	            		final MethodInsnNode nodeAt = (MethodInsnNode) list;
+
+	            		if (nodeAt.getOpcode() == Opcodes.INVOKESPECIAL && nodeAt.name.equals("<init>") && nodeAt.owner.equals(map.get("playerMP")))
 	            		{
-	            			methodnode.instructions.set(nodeAt, new MethodInsnNode(INVOKESPECIAL, "micdoodle8/mods/galacticraft/core/entities/GCCorePlayerMP", "<init>", "(Lnet/minecraft/server/MinecraftServer;Laab;Ljava/lang/String;Ljd;)V"));
+	            			methodnode.instructions.set(nodeAt, new MethodInsnNode(Opcodes.INVOKESPECIAL, "micdoodle8/mods/galacticraft/core/entities/GCCorePlayerMP", "<init>", "(Lnet/minecraft/server/MinecraftServer;Laab;Ljava/lang/String;Ljd;)V"));
 
 	            			FMLLog.info("[BUKKIT] Successfully set method insertion node with owner \"" + map.get("playerMP") + "\" to \"micdoodle8/mods/galacticraft/core/entities/GCCorePlayerMP\" in method: " + methodnode.name);
 	            		}
@@ -214,52 +208,52 @@ public class GCCoreTransformer implements IClassTransformer
 	            }
 			}
 		}
-    
-        ClassWriter writer = new ClassWriter(COMPUTE_MAXS);
+
+        final ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
         node.accept(writer);
         bytes = writer.toByteArray();
-    
+
         return bytes;
     }
 
     public byte[] transform2(String name, byte[] bytes, HashMap<String, String> map)
     {
-        ClassNode node = new ClassNode();
-        ClassReader reader = new ClassReader(bytes);
+        final ClassNode node = new ClassNode();
+        final ClassReader reader = new ClassReader(bytes);
         reader.accept(node, 0);
 
-		Iterator<MethodNode> methods = node.methods.iterator();
-		
+		final Iterator<MethodNode> methods = node.methods.iterator();
+
 		while (methods.hasNext())
 		{
-			MethodNode methodnode = methods.next();
-			
+			final MethodNode methodnode = methods.next();
+
 			if (methodnode.name.equals(map.get("createClientPlayerMethod")) && methodnode.desc.equals(map.get("createClientPlayerDesc")))
 			{
 	            for (int count = 0; count < methodnode.instructions.size(); count++)
 	            {
-	            	AbstractInsnNode list = methodnode.instructions.get(count);
-	            	
+	            	final AbstractInsnNode list = methodnode.instructions.get(count);
+
 	            	if (list instanceof TypeInsnNode)
 	            	{
-	            		TypeInsnNode nodeAt = (TypeInsnNode) list;
-	            		
+	            		final TypeInsnNode nodeAt = (TypeInsnNode) list;
+
 	            		if (nodeAt.desc.contains(map.get("playerClient")))
 	            		{
-	            			TypeInsnNode overwriteNode = new TypeInsnNode(NEW, "micdoodle8/mods/galacticraft/core/client/GCCorePlayerSP");
-	            			
+	            			final TypeInsnNode overwriteNode = new TypeInsnNode(Opcodes.NEW, "micdoodle8/mods/galacticraft/core/client/GCCorePlayerSP");
+
 	            			methodnode.instructions.set(nodeAt, overwriteNode);
-	            			
+
 	            			FMLLog.info("Successfully set NEW type insertion node with description \"NEW " + map.get("playerClient") + "\" to \"NEW micdoodle8/mods/galacticraft/core/client/GCCorePlayerSP\"");
 	            		}
 	            	}
 	            	else if (list instanceof MethodInsnNode)
 	            	{
-	            		MethodInsnNode nodeAt = (MethodInsnNode) list;
+	            		final MethodInsnNode nodeAt = (MethodInsnNode) list;
 
 	            		if (nodeAt.name.equals("<init>") && nodeAt.owner.equals(map.get("playerClient")))
 	            		{
-	            			methodnode.instructions.set(nodeAt, new MethodInsnNode(INVOKESPECIAL, "micdoodle8/mods/galacticraft/core/client/GCCorePlayerSP", "<init>", "(Lnet/minecraft/client/Minecraft;Lnet/minecraft/world/World;Lnet/minecraft/util/Session;Lnet/minecraft/client/multiplayer/NetClientHandler;)V"));
+	            			methodnode.instructions.set(nodeAt, new MethodInsnNode(Opcodes.INVOKESPECIAL, "micdoodle8/mods/galacticraft/core/client/GCCorePlayerSP", "<init>", "(Lnet/minecraft/client/Minecraft;Lnet/minecraft/world/World;Lnet/minecraft/util/Session;Lnet/minecraft/client/multiplayer/NetClientHandler;)V"));
 
 	            			FMLLog.info("Successfully set INVOKESPECIAL method insertion node with owner \"" + map.get("playerClient") + "\" to \"micdoodle8/mods/galacticraft/core/client/GCCorePlayerSP\"");
 	            		}
@@ -267,55 +261,55 @@ public class GCCoreTransformer implements IClassTransformer
 	            }
 			}
 		}
-    
-        ClassWriter writer = new ClassWriter(COMPUTE_MAXS);
+
+        final ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
         node.accept(writer);
         bytes = writer.toByteArray();
-    
+
         return bytes;
     }
 
     public byte[] transform3(String name, byte[] bytes, HashMap<String, String> map)
     {
-        ClassNode node = new ClassNode();
-        ClassReader reader = new ClassReader(bytes);
+        final ClassNode node = new ClassNode();
+        final ClassReader reader = new ClassReader(bytes);
         reader.accept(node, 0);
 
-		Iterator<MethodNode> methods = node.methods.iterator();
-		
+		final Iterator<MethodNode> methods = node.methods.iterator();
+
 		while (methods.hasNext())
 		{
-			MethodNode methodnode = methods.next();
-			
+			final MethodNode methodnode = methods.next();
+
 			if (methodnode.name.equals(map.get("moveEntityMethod")) && methodnode.desc.equals(map.get("moveEntityDesc")))
 			{
 	            for (int count = 0; count < methodnode.instructions.size(); count++)
 	            {
-	            	AbstractInsnNode list = methodnode.instructions.get(count);
-	            	
+	            	final AbstractInsnNode list = methodnode.instructions.get(count);
+
 	            	if (list instanceof LdcInsnNode)
 	            	{
-	            		LdcInsnNode nodeAt = (LdcInsnNode) list;
-	            		
+	            		final LdcInsnNode nodeAt = (LdcInsnNode) list;
+
 	            		if (nodeAt.cst.equals(Double.valueOf(0.08D)))
 	            		{
-	            			VarInsnNode beforeNode = new VarInsnNode(ALOAD, 0);
-	            			MethodInsnNode overwriteNode = new MethodInsnNode(INVOKESTATIC, "micdoodle8/mods/galacticraft/core/util/WorldUtil", "getGravityForEntity", "(L" + map.get("entityLiving") + ";)D");
-	            			
+	            			final VarInsnNode beforeNode = new VarInsnNode(Opcodes.ALOAD, 0);
+	            			final MethodInsnNode overwriteNode = new MethodInsnNode(Opcodes.INVOKESTATIC, "micdoodle8/mods/galacticraft/core/util/WorldUtil", "getGravityForEntity", "(L" + map.get("entityLiving") + ";)D");
+
 	            			methodnode.instructions.insertBefore(nodeAt, beforeNode);
 	            			methodnode.instructions.set(nodeAt, overwriteNode);
-	            			
+
 	            			FMLLog.info("Successfully set INVOKESTATIC type insertion node with name \"micdoodle8/mods/galacticraft/core/util/WorldUtil\"");
 	            		}
 	            	}
 	            }
 			}
 		}
-    
-        ClassWriter writer = new ClassWriter(COMPUTE_MAXS);
+
+        final ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
         node.accept(writer);
         bytes = writer.toByteArray();
-    
+
         return bytes;
     }
 }

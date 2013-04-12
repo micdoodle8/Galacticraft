@@ -21,19 +21,19 @@ public class GCCoreCommandSpaceStationAddOwner extends CommandBase
     {
         return true;
     }
-    
+
 	@Override
-	public String getCommandName() 
+	public String getCommandName()
 	{
 		return "ssinvite";
 	}
 
 	@Override
-	public void processCommand(ICommandSender icommandsender, String[] astring) 
+	public void processCommand(ICommandSender icommandsender, String[] astring)
 	{
         String var3 = null;
         GCCorePlayerMP playerBase = null;
-        
+
 
         if (astring.length > 0)
         {
@@ -42,7 +42,7 @@ public class GCCoreCommandSpaceStationAddOwner extends CommandBase
             try
             {
             	playerBase = PlayerUtil.getPlayerBaseServerFromPlayerUsername(icommandsender.getCommandSenderName());
-            	
+
                 if (playerBase != null)
                 {
                 	if (playerBase.spaceStationDimensionID <= 0)
@@ -51,24 +51,24 @@ public class GCCoreCommandSpaceStationAddOwner extends CommandBase
                 	}
                 	else
                 	{
-                		GCCoreSpaceStationData data = GCCoreSpaceStationData.getStationData(playerBase.worldObj, playerBase.spaceStationDimensionID, playerBase);
-                    	
+                		final GCCoreSpaceStationData data = GCCoreSpaceStationData.getStationData(playerBase.worldObj, playerBase.spaceStationDimensionID, playerBase);
+
                 		if (!data.getAllowedPlayers().contains(var3.toLowerCase()))
                 		{
                         	data.getAllowedPlayers().add(var3.toLowerCase());
                         	data.markDirty();
                 		}
                 	}
-                	
-                	GCCorePlayerMP playerToAdd = PlayerUtil.getPlayerBaseServerFromPlayerUsername(var3);
-                	
+
+                	final GCCorePlayerMP playerToAdd = PlayerUtil.getPlayerBaseServerFromPlayerUsername(var3);
+
                 	if (playerToAdd != null)
                 	{
                 		playerToAdd.sendChatToPlayer("You've been added to " + playerBase.username + "\'s Space Station accepted players!");
                 	}
                 }
             }
-            catch (Exception var6)
+            catch (final Exception var6)
             {
                 throw new CommandException(var6.getMessage(), new Object[0]);
             }
@@ -78,7 +78,7 @@ public class GCCoreCommandSpaceStationAddOwner extends CommandBase
         {
         	throw new WrongUsageException("Not enough command arguments! Usage: " + this.getCommandUsage(icommandsender), new Object[0]);
         }
-        
+
         if (playerBase != null)
         {
         	playerBase.sendChatToPlayer("Successfully added " + var3 + " to Space Station list!");

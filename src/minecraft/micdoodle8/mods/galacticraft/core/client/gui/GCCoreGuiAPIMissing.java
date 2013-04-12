@@ -17,7 +17,7 @@ public class GCCoreGuiAPIMissing extends GuiErrorScreen
     {
         super.initGui();
     }
-    
+
     @Override
     public void drawScreen(int par1, int par2, float par3)
     {
@@ -29,22 +29,22 @@ public class GCCoreGuiAPIMissing extends GuiErrorScreen
         offset+=10;
         this.drawCenteredString(this.fontRenderer, "Class Name : API", this.width / 2, offset, 0xFFFFFF);
         offset+=5;
-        for (String s : this.apiMissing.missingAPIs)
+        for (final String s : this.apiMissing.missingAPIs)
         {
             offset+=10;
-            
+
             String actualName = "";
-            
+
             if (s == "ServerPlayerAPI.class" || s == "PlayerAPI.class")
             {
             	actualName = "Player API";
             }
-            
+
             if (s == "ModelPlayerAPI.class" || s == "RenderPlayerAPI.class")
             {
             	actualName = "Render Player API";
             }
-            
+
             this.drawCenteredString(this.fontRenderer, String.format("%s : %s", s, actualName), this.width / 2, offset, 0xEEEEEE);
         }
     }

@@ -17,8 +17,6 @@ import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryTankRefill;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemParachute;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketSchematicList;
-import micdoodle8.mods.galacticraft.core.schematic.GCCoreSchematicAdd;
-import micdoodle8.mods.galacticraft.core.schematic.GCCoreSchematicRocketT1;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
@@ -61,7 +59,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 	private int airRemaining2;
 
 	public boolean hasTank;
-	
+
 	public long tick;
 
 	public ItemStack tankInSlot;
@@ -112,12 +110,12 @@ public class GCCorePlayerMP extends EntityPlayerMP
 	public int chestSpawnCooldown;
 
 	public int teleportCooldown;
-	
+
 	private int lastStep;
-	
+
 	public double coordsTeleportedFromX;
 	public double coordsTeleportedFromZ;
-	
+
 	public int spaceStationDimensionID = -1;
 
 	public ArrayList<ISchematicPage> unlockedSchematics = new ArrayList<ISchematicPage>();
@@ -139,12 +137,12 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
     	super.onDeath(var1);
     }
-	
+
     @Override
 	public void clonePlayer(EntityPlayer par1EntityPlayer, boolean par2)
     {
     	super.clonePlayer(par1EntityPlayer, par2);
-    	
+
     	if (par1EntityPlayer instanceof GCCorePlayerMP)
     	{
         	this.spaceStationDimensionID = ((GCCorePlayerMP) par1EntityPlayer).spaceStationDimensionID;
@@ -155,14 +153,14 @@ public class GCCorePlayerMP extends EntityPlayerMP
     public void onUpdate()
     {
     	super.onUpdate();
-    	
+
     	if (!GalacticraftCore.playersServer.containsKey(this.username) || this.tick % 360 == 0)
     	{
     		GalacticraftCore.playersServer.put(this.username, this);
     	}
-    	
+
     	this.tick++;
-    	
+
     	Math.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
 
 		if (this.worldObj != null && this.worldObj.provider instanceof GCMoonWorldProvider && !this.isAirBorne && this.ridingEntity == null)
@@ -396,7 +394,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 //	        {
 //	        	WorldUtil.bindSpaceStationToNewDimension(this.worldObj, this);
 //	        }
-	        
+
         	final Integer[] ids = WorldUtil.getArrayOfPossibleDimensions();
 
 	    	final Set set = WorldUtil.getArrayOfPossibleDimensions(ids, this).entrySet();
@@ -417,7 +415,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 	        this.setUsingPlanetGui();
 	        this.hasOpenedPlanetSelectionGui = true;
 		}
-		
+
 		if (this.usingPlanetSelectionGui)
 		{
         	final Integer[] ids = WorldUtil.getArrayOfPossibleDimensions();
@@ -674,9 +672,9 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
 		if (this.tick % 30 == 0)
 		{
-			Object[] toSend = {this.spaceStationDimensionID};
+			final Object[] toSend = {this.spaceStationDimensionID};
 	    	this.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 18, toSend));
-	    	
+
 			this.sendPlayerParachuteTexturePacket(this);
 
 			if (this.getParachute() && this.parachuteInSlot != null)
@@ -912,9 +910,9 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
 		SchematicRegistry.addUnlockedPage(this, SchematicRegistry.getMatchingRecipeForID(0));
 		SchematicRegistry.addUnlockedPage(this, SchematicRegistry.getMatchingRecipeForID(Integer.MAX_VALUE));
-		
+
 		Collections.sort(this.unlockedSchematics);
-    	
+
     	if (this.tick % 5 == 0)
     	{
 	        this.playerNetServerHandler.sendPacketToPlayer(GCCorePacketSchematicList.buildSchematicListPacket(this.unlockedSchematics));
@@ -947,7 +945,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
         this.updateTimeAndWeatherForPlayer(par1EntityPlayerMP, var5);
         this.syncPlayerInventory(par1EntityPlayerMP);
         final Iterator var6 = par1EntityPlayerMP.getActivePotionEffects().iterator();
-        
+
         while (var6.hasNext())
         {
             final PotionEffect var7 = (PotionEffect)var6.next();
@@ -1123,7 +1121,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
         final NBTTagList schematics = par1NBTTagCompound.getTagList("Schematics");
         SchematicRegistry.readFromNBT(this, schematics);
-        
+
         if (par1NBTTagCompound.getBoolean("usingPlanetSelectionGui"))
         {
         	this.openPlanetSelectionGuiCooldown = 20;
@@ -1220,9 +1218,9 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
 	public void sendAirRemainingPacket()
 	{
-		float f1 = Float.valueOf(this.tankInSlot1 == null ? 0.0F : this.tankInSlot1.getMaxDamage() / 90.0F);
-		float f2 = Float.valueOf(this.tankInSlot2 == null ? 0.0F : this.tankInSlot2.getMaxDamage() / 90.0F);
-		
+		final float f1 = Float.valueOf(this.tankInSlot1 == null ? 0.0F : this.tankInSlot1.getMaxDamage() / 90.0F);
+		final float f2 = Float.valueOf(this.tankInSlot2 == null ? 0.0F : this.tankInSlot2.getMaxDamage() / 90.0F);
+
 	  	final Object[] toSend = {MathHelper.floor_float(this.airRemaining / f1), MathHelper.floor_float(this.airRemaining2 / f2), this.username};
 
 	  	if (FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.username) != null)

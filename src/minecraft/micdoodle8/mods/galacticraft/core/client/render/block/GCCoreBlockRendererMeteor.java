@@ -7,7 +7,6 @@ import net.minecraft.world.IBlockAccess;
 
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 /**
@@ -47,28 +46,28 @@ public class GCCoreBlockRendererMeteor implements ISimpleBlockRenderingHandler
     public static void renderInvNormalBlock(RenderBlocks var0, Block var1, int var2)
     {
     	var0.setRenderBounds(0.2F, 0.2F, 0.2F, 0.8F, 0.8F, 0.8F);
-        renderStandardBlock(var0, var1, var2);
+        GCCoreBlockRendererMeteor.renderStandardBlock(var0, var1, var2);
 
         var0.setRenderBounds(0.52F, 0.85F, 0.4F, 0.68F, 0.88F, 0.6F);
-        renderStandardBlock(var0, var1, var2);
+        GCCoreBlockRendererMeteor.renderStandardBlock(var0, var1, var2);
 
         var0.setRenderBounds(0.25F, 0.8F, 0.25F, 0.75F, 0.85F, 0.75F);
-        renderStandardBlock(var0, var1, var2);
+        GCCoreBlockRendererMeteor.renderStandardBlock(var0, var1, var2);
 
         var0.setRenderBounds(0.25F, 0.15F, 0.25F, 0.75F, 0.2F, 0.75F);
-        renderStandardBlock(var0, var1, var2);
+        GCCoreBlockRendererMeteor.renderStandardBlock(var0, var1, var2);
 
         var0.setRenderBounds(0.15F, 0.3F, 0.25F, 0.2F, 0.7F, 0.75F);
-        renderStandardBlock(var0, var1, var2);
+        GCCoreBlockRendererMeteor.renderStandardBlock(var0, var1, var2);
 
         var0.setRenderBounds(0.8F, 0.3F, 0.25F, 0.85F, 0.7F, 0.75F);
-        renderStandardBlock(var0, var1, var2);
+        GCCoreBlockRendererMeteor.renderStandardBlock(var0, var1, var2);
 
         var0.setRenderBounds(0.25F, 0.3F, 0.15F, 0.75F, 0.7F, 0.2F);
-        renderStandardBlock(var0, var1, var2);
+        GCCoreBlockRendererMeteor.renderStandardBlock(var0, var1, var2);
 
         var0.setRenderBounds(0.25F, 0.3F, 0.8F, 0.75F, 0.7F, 0.85F);
-        renderStandardBlock(var0, var1, var2);
+        GCCoreBlockRendererMeteor.renderStandardBlock(var0, var1, var2);
 
         var0.clearOverrideBlockTexture();
     }

@@ -23,7 +23,8 @@ public class GCCoreItemSapling extends ItemMultiTextureTile
         return null;
     }
 
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) 
+    @Override
+	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
     {
     	par3List.add(EnumColor.RED + "Requires 4 blocks of water nearby to grow");
     }

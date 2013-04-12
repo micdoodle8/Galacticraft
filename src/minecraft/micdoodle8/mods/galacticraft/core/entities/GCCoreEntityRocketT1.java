@@ -56,35 +56,35 @@ import cpw.mods.fml.relauncher.SideOnly;
  *  All rights reserved.
  *
  */
-public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInventory, IMissileLockable
+public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInventory, IMissileLockable
 {
-	private int tankCapacity = 2000;
-	public LiquidTank spaceshipFuelTank = new LiquidTank(tankCapacity);
-	
+	private final int tankCapacity = 2000;
+	public LiquidTank spaceshipFuelTank = new LiquidTank(this.tankCapacity);
+
     protected ItemStack[] cargoItems = new ItemStack[27];
 
     public IUpdatePlayerListBox rocketSoundUpdater;
 
     private int type;
-    
+
     private GCCoreTileEntityLandingPad landingPad;
 
-    public int canisterToTankRatio = tankCapacity / GCCoreItems.fuelCanister.getMaxDamage();
-	public double canisterToLiquidStackRatio = (LiquidContainerRegistry.BUCKET_VOLUME * 2.0D) / (double)GCCoreItems.fuelCanister.getMaxDamage();
+    public int canisterToTankRatio = this.tankCapacity / GCCoreItems.fuelCanister.getMaxDamage();
+	public double canisterToLiquidStackRatio = LiquidContainerRegistry.BUCKET_VOLUME * 2.0D / GCCoreItems.fuelCanister.getMaxDamage();
 
-    public GCCoreEntitySpaceship(World par1World)
+    public GCCoreEntityRocketT1(World par1World)
     {
     	super(par1World);
     }
-	
+
 	public int getScaledFuelLevel(int i)
 	{
-		double fuelLevel = this.spaceshipFuelTank.getLiquid() == null ? 0 : (this.spaceshipFuelTank.getLiquid().amount);
-		
+		final double fuelLevel = this.spaceshipFuelTank.getLiquid() == null ? 0 : this.spaceshipFuelTank.getLiquid().amount;
+
 		return (int) (fuelLevel * i / 2000);
 	}
 
-    public GCCoreEntitySpaceship(World par1World, double par2, double par4, double par6, int type)
+    public GCCoreEntityRocketT1(World par1World, double par2, double par4, double par6, int type)
     {
         super(par1World);
         this.setPosition(par2, par4 + this.yOffset, par6);
@@ -96,7 +96,7 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
         this.prevPosZ = par6;
     }
 
-    public GCCoreEntitySpaceship(World par1World, double par2, double par4, double par6, boolean reversed, int type, ItemStack[] inv)
+    public GCCoreEntityRocketT1(World par1World, double par2, double par4, double par6, boolean reversed, int type, ItemStack[] inv)
     {
         this(par1World, par2, par4, par6, type);
         this.cargoItems = inv;
@@ -115,7 +115,7 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
     public void setDead()
     {
     	super.setDead();
-    	
+
     	RadarRegistry.unregister(this);
 
         if (this.rocketSoundUpdater != null)
@@ -163,13 +163,13 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
         	{
         		this.motionY = -d * Math.cos((this.rotationPitch - 180) * Math.PI / 180.0D);
         	}
-        	
+
         	double multiplier = 1.0D;
-        	
+
         	if (this.worldObj.provider instanceof IGalacticraftWorldProvider)
         	{
         		multiplier = ((IGalacticraftWorldProvider)this.worldObj.provider).getFuelUsageMultiplier();
-        		
+
         		if (multiplier <= 0)
         		{
         			multiplier = 1;
@@ -188,32 +188,32 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
         		this.motionY -= Math.abs(Math.sin(this.timeSinceLaunch / 1000)) / 20;
         	}
         }
-        
+
 		if (!this.worldObj.isRemote && this.ticks % 3 == 0)
 		{
 			PacketManager.sendPacketToClients(this.getDescriptionPacket(), this.worldObj, new Vector3(this), 50);
 		}
     }
-    
+
     public Packet getDescriptionPacket()
 	{
-		Packet p = GCCorePacketManager.getPacket(GalacticraftCore.CHANNEL, this, 0, this.spaceshipFuelTank.getLiquid() == null ? 0 : this.spaceshipFuelTank.getLiquid().amount);
+		final Packet p = GCCorePacketManager.getPacket(GalacticraftCore.CHANNEL, this, 0, this.spaceshipFuelTank.getLiquid() == null ? 0 : this.spaceshipFuelTank.getLiquid().amount);
 		return p;
 	}
 
 	@Override
-	public void handlePacketData(INetworkManager network, int packetType, Packet250CustomPayload packet, EntityPlayer player, ByteArrayDataInput dataStream) 
+	public void handlePacketData(INetworkManager network, int packetType, Packet250CustomPayload packet, EntityPlayer player, ByteArrayDataInput dataStream)
 	{
 		try
 		{
 			if (this.worldObj.isRemote)
 			{
-				int id = dataStream.readInt();
-				int amount = dataStream.readInt();
+				final int id = dataStream.readInt();
+				final int amount = dataStream.readInt();
 				this.spaceshipFuelTank.setLiquid(new LiquidStack(GCCoreItems.fuel.itemID, amount, 0));
 			}
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -236,12 +236,12 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
     	final GCCorePlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player);
 
 	  	player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, new Object[] {0}));
-    	
+
     	if (playerBase != null)
     	{
     		playerBase.rocketStacks = this.cargoItems;
     		playerBase.rocketType = this.getSpaceshipType();
-    		playerBase.fuelDamage = this.spaceshipFuelTank.getLiquid() == null ? 0 : this.spaceshipFuelTank.getLiquid().amount / (MathHelper.floor_double(this.canisterToLiquidStackRatio == 0 ? 1 : this.canisterToLiquidStackRatio));
+    		playerBase.fuelDamage = this.spaceshipFuelTank.getLiquid() == null ? 0 : this.spaceshipFuelTank.getLiquid().amount / MathHelper.floor_double(this.canisterToLiquidStackRatio == 0 ? 1 : this.canisterToLiquidStackRatio);
         }
     }
 
@@ -308,12 +308,12 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
 
             par1NBTTagCompound.setTag("Items", var2);
         }
-		
+
 		if (this.spaceshipFuelTank.getLiquid() != null)
 		{
 			par1NBTTagCompound.setTag("fuelTank", this.spaceshipFuelTank.writeToNBT(new NBTTagCompound()));
 		}
-        
+
 //    	par1NBTTagCompound.setInteger("fuelLiquid", this.spaceshipFuelTank.getLiquid() == null ? 0 : this.spaceshipFuelTank.getLiquid().amount);
     }
 
@@ -340,12 +340,12 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
                 }
             }
         }
-		
+
 		if (par1NBTTagCompound.hasKey("fuelTank"))
 		{
 			this.spaceshipFuelTank.readFromNBT(par1NBTTagCompound.getCompoundTag("fuelTank"));
 		}
-        
+
 //        this.spaceshipFuelTank.setLiquid(new LiquidStack(GCCoreItems.fuel.itemID, par1NBTTagCompound.getInteger("fuelLiquid"), 0));
     }
 
@@ -541,7 +541,7 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
         final List<ItemStack> items = new ArrayList<ItemStack>();
         items.add(new ItemStack(GCCoreItems.spaceship, 1, this.getSpaceshipType()));
 
-        for (final ItemStack item : this.cargoItems) 
+        for (final ItemStack item : this.cargoItems)
         {
         	if (item != null)
         	{
@@ -565,28 +565,28 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
 	}
 
 	@Override
-	public int getMaxFuel() 
+	public int getMaxFuel()
 	{
 		return this.spaceshipFuelTank.getCapacity();
 	}
 
 	@Override
-	public boolean canLock(IMissile missile) 
+	public boolean canLock(IMissile missile)
 	{
 		return true;
 	}
 
 	@Override
-	public Vector3 getPredictedPosition(int ticks) 
+	public Vector3 getPredictedPosition(int ticks)
 	{
 		return new Vector3(this);
 	}
 
 	@Override
-	public int addFuel(LiquidStack liquid, int amount) 
+	public int addFuel(LiquidStack liquid, int amount)
 	{
-		LiquidStack liquidInTank = this.spaceshipFuelTank.getLiquid();
-		
+		final LiquidStack liquidInTank = this.spaceshipFuelTank.getLiquid();
+
 		if (liquid != null && LiquidDictionary.findLiquidName(liquid).equals("Fuel"))
 		{
 			if (liquidInTank == null || liquidInTank.amount + liquid.amount <= this.spaceshipFuelTank.getCapacity())
@@ -594,23 +594,23 @@ public class GCCoreEntitySpaceship extends EntitySpaceshipBase implements IInven
 				return this.spaceshipFuelTank.fill(liquid, true);
 			}
 		}
-		
+
 		return 0;
 	}
 
 	@Override
-	public LiquidStack removeFuel(LiquidStack liquid, int amount) 
+	public LiquidStack removeFuel(LiquidStack liquid, int amount)
 	{
 		if (liquid == null)
 		{
 			return this.spaceshipFuelTank.drain(amount, true);
 		}
-		
+
 		return null;
 	}
 
 	@Override
-	public void onPadDestroyed() 
+	public void onPadDestroyed()
 	{
 		if (!this.isDead && !this.launched)
 		{

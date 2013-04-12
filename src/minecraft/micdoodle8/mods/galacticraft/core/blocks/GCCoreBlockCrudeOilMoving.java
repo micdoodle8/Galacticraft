@@ -19,7 +19,7 @@ public class GCCoreBlockCrudeOilMoving extends BlockFluid implements ILiquid
 	int numAdjacentSources = 0;
 	boolean isOptimalFlowDirection[] = new boolean[4];
 	int flowCost[] = new int[4];
-	
+
     @SideOnly(Side.CLIENT)
     public Icon[] fluidIcons;
 
@@ -29,7 +29,7 @@ public class GCCoreBlockCrudeOilMoving extends BlockFluid implements ILiquid
 		this.setHardness(100F);
 		this.setLightOpacity(3);
 	}
-	
+
 	@Override
     @SideOnly(Side.CLIENT)
     public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)

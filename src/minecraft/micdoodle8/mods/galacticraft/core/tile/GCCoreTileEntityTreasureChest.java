@@ -112,7 +112,7 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
     {
         if (this.chestContents[par1] != null)
         {
-            ItemStack itemstack = this.chestContents[par1];
+            final ItemStack itemstack = this.chestContents[par1];
             this.chestContents[par1] = null;
             return itemstack;
         }
@@ -150,7 +150,7 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
 	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readFromNBT(par1NBTTagCompound);
-        NBTTagList nbttaglist = par1NBTTagCompound.getTagList("Items");
+        final NBTTagList nbttaglist = par1NBTTagCompound.getTagList("Items");
         this.chestContents = new ItemStack[this.getSizeInventory()];
 
         if (par1NBTTagCompound.hasKey("CustomName"))
@@ -160,8 +160,8 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
 
         for (int i = 0; i < nbttaglist.tagCount(); ++i)
         {
-            NBTTagCompound nbttagcompound1 = (NBTTagCompound)nbttaglist.tagAt(i);
-            int j = nbttagcompound1.getByte("Slot") & 255;
+            final NBTTagCompound nbttagcompound1 = (NBTTagCompound)nbttaglist.tagAt(i);
+            final int j = nbttagcompound1.getByte("Slot") & 255;
 
             if (j >= 0 && j < this.chestContents.length)
             {
@@ -177,13 +177,13 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
 	public void writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeToNBT(par1NBTTagCompound);
-        NBTTagList nbttaglist = new NBTTagList();
+        final NBTTagList nbttaglist = new NBTTagList();
 
         for (int i = 0; i < this.chestContents.length; ++i)
         {
             if (this.chestContents[i] != null)
             {
-                NBTTagCompound nbttagcompound1 = new NBTTagCompound();
+                final NBTTagCompound nbttagcompound1 = new NBTTagCompound();
                 nbttagcompound1.setByte("Slot", (byte)i);
                 this.chestContents[i].writeToNBT(nbttagcompound1);
                 nbttaglist.appendTag(nbttagcompound1);
@@ -320,7 +320,7 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
 
     private boolean func_94044_a(int par1, int par2, int par3)
     {
-        Block block = Block.blocksList[this.worldObj.getBlockId(par1, par2, par3)];
+        final Block block = Block.blocksList[this.worldObj.getBlockId(par1, par2, par3)];
         return block != null && block instanceof GCCoreBlockTreasureChest;
     }
 
@@ -340,16 +340,16 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
         {
             this.numUsingPlayers = 0;
             f = 5.0F;
-            List list = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getAABBPool().getAABB(this.xCoord - f, this.yCoord - f, this.zCoord - f, this.xCoord + 1 + f, this.yCoord + 1 + f, this.zCoord + 1 + f));
-            Iterator iterator = list.iterator();
+            final List list = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getAABBPool().getAABB(this.xCoord - f, this.yCoord - f, this.zCoord - f, this.xCoord + 1 + f, this.yCoord + 1 + f, this.zCoord + 1 + f));
+            final Iterator iterator = list.iterator();
 
             while (iterator.hasNext())
             {
-                EntityPlayer entityplayer = (EntityPlayer)iterator.next();
+                final EntityPlayer entityplayer = (EntityPlayer)iterator.next();
 
                 if (entityplayer.openContainer instanceof ContainerChest)
                 {
-                    IInventory iinventory = ((ContainerChest)entityplayer.openContainer).getLowerChestInventory();
+                    final IInventory iinventory = ((ContainerChest)entityplayer.openContainer).getLowerChestInventory();
 
                     if (iinventory == this || iinventory instanceof InventoryLargeChest && ((InventoryLargeChest)iinventory).isPartOfLargeChest(this))
                     {
@@ -383,7 +383,7 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
 
         if (this.numUsingPlayers == 0 && this.lidAngle > 0.0F || this.numUsingPlayers > 0 && this.lidAngle < 1.0F)
         {
-            float f1 = this.lidAngle;
+            final float f1 = this.lidAngle;
 
             if (this.numUsingPlayers > 0)
             {
@@ -399,7 +399,7 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
                 this.lidAngle = 1.0F;
             }
 
-            float f2 = 0.5F;
+            final float f2 = 0.5F;
 
             if (this.lidAngle < f2 && f1 >= f2 && this.adjacentChestZNeg == null && this.adjacentChestXNeg == null)
             {
@@ -470,7 +470,7 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
     }
 
 	@Override
-	public boolean isInvNameLocalized() 
+	public boolean isInvNameLocalized()
 	{
 		return true;
 	}
@@ -486,11 +486,11 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
     }
 
 	@Override
-	public String getInvName() 
+	public String getInvName()
 	{
 		return "Treasure Chest";
 	}
-	
+
     public boolean isStackValidForSlot(int par1, ItemStack par2ItemStack)
     {
         return true;

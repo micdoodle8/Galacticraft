@@ -52,7 +52,7 @@ public class GalacticraftMoon implements IGalacticraftSubMod
 	public void preLoad(FMLPreInitializationEvent event)
 	{
 		new GCMoonConfigManager(new File(event.getModConfigurationDirectory(), GalacticraftMoon.CONFIG_FILE));
-		
+
 		GCMoonBlocks.initBlocks();
 		GCMoonBlocks.registerBlocks();
 		GCMoonBlocks.setHarvestLevels();
@@ -62,14 +62,14 @@ public class GalacticraftMoon implements IGalacticraftSubMod
 
 	public void load(FMLInitializationEvent event)
 	{
-		this.galacticraftMoonTab = new GCCoreCreativeTab(CreativeTabs.getNextID(), GalacticraftMoon.MODID, GCMoonBlocks.blockMoon.blockID, 5);
-		
+		GalacticraftMoon.galacticraftMoonTab = new GCCoreCreativeTab(CreativeTabs.getNextID(), GalacticraftMoon.MODID, GCMoonBlocks.blockMoon.blockID, 5);
+
 		DimensionManager.registerProviderType(GCMoonConfigManager.dimensionIDMoon, GCMoonWorldProvider.class, false);
 
 		System.out.println("Galacticraft Moon Loaded: " + TranslationHelper.loadLanguages(GalacticraftMoon.LANGUAGE_PATH, GalacticraftMoon.LANGUAGES_SUPPORTED) + " Languages.");
 
 		GalacticraftRegistry.registerTeleportType(GCMoonWorldProvider.class, new GCMoonTeleportType());
-		
+
         GCMoonUtil.addCraftingRecipes();
         GCMoonUtil.addSmeltingRecipes();
 	}
@@ -83,7 +83,7 @@ public class GalacticraftMoon implements IGalacticraftSubMod
 	{
         TickRegistry.registerTickHandler(new CommonTickHandler(), Side.SERVER);
 	}
-	
+
 	public void serverStarting(FMLServerStartingEvent event)
 	{
 		WorldUtil.registerPlanet(GCMoonConfigManager.dimensionIDMoon, true);

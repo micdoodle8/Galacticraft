@@ -22,7 +22,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GCCoreItemOxygenTank extends Item
 {
 	protected Icon[] icons = new Icon[256];
-	
+
 	public GCCoreItemOxygenTank(int par1)
 	{
 		super(par1);
@@ -93,7 +93,7 @@ public class GCCoreItemOxygenTank extends Item
 		{
 			return this.icons[0];
 		}
-		
+
 		return this.icons[0];
     }
 }

@@ -19,16 +19,14 @@ import universalelectricity.prefab.network.PacketManager;
 
 import com.google.common.io.ByteArrayDataInput;
 
-import cpw.mods.fml.common.FMLLog;
-
 public class GCCoreEntityOxygenBubble extends Entity implements IPacketReceiver
 {
 	private double size;
-	
+
 	protected long ticks = 0;
-	
+
 	public GCCoreTileEntityOxygenDistributor distributor;
-	
+
 	public GCCoreEntityOxygenBubble(World world, Vector3 mainBlockVec, GCCoreTileEntityOxygenDistributor distributor)
 	{
 		this (world);
@@ -37,14 +35,14 @@ public class GCCoreEntityOxygenBubble extends Entity implements IPacketReceiver
 		this.posZ = mainBlockVec.z + 0.5D;
 		this.distributor = distributor;
 	}
-	
+
 	public GCCoreEntityOxygenBubble(World world)
 	{
 		super (world);
 		this.isImmuneToFire = true;
 		this.ignoreFrustumCheck = true;
 	}
-    
+
     @Override
 	public AxisAlignedBB getBoundingBox()
     {
@@ -66,18 +64,18 @@ public class GCCoreEntityOxygenBubble extends Entity implements IPacketReceiver
 		}
 
 		this.ticks++;
-		
+
     	super.onEntityUpdate();
-    	
-    	TileEntity tileAt = this.worldObj.getBlockTileEntity(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 1.0), MathHelper.floor_double(this.posZ));
-    	
+
+    	final TileEntity tileAt = this.worldObj.getBlockTileEntity(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 1.0), MathHelper.floor_double(this.posZ));
+
     	if (tileAt instanceof GCCoreTileEntityOxygenDistributor && !this.worldObj.isRemote)
     	{
-    		GCCoreTileEntityOxygenDistributor distributor = (GCCoreTileEntityOxygenDistributor) tileAt;
-    		
+    		final GCCoreTileEntityOxygenDistributor distributor = (GCCoreTileEntityOxygenDistributor) tileAt;
+
     		this.distributor = distributor;
     	}
-    	
+
     	if (this.distributor != null && (this.distributor.oxygenBubble == null || this.distributor.oxygenBubble.equals(this)) && !this.worldObj.isRemote)
     	{
     		this.distributor.oxygenBubble = this;
@@ -86,17 +84,17 @@ public class GCCoreEntityOxygenBubble extends Entity implements IPacketReceiver
     	{
     		this.setDead();
     	}
-    	
+
     	if (tileAt == null && !this.worldObj.isRemote)
     	{
     		this.setDead();
     	}
-    	
+
     	if (!this.worldObj.isRemote && this.distributor != null)
     	{
-    		this.size = distributor.power;
-    		
-    		Vector3 vec = new Vector3(this.distributor);
+    		this.size = this.distributor.power;
+
+    		final Vector3 vec = new Vector3(this.distributor);
 
     		this.posX = vec.x + 0.5D;
     		this.posY = vec.y + 1.0D;
@@ -111,12 +109,12 @@ public class GCCoreEntityOxygenBubble extends Entity implements IPacketReceiver
 
 	public Packet getDescriptionPacket()
 	{
-		Packet p = GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.size);
+		final Packet p = GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.size);
 		return p;
 	}
 
 	@Override
-	public void handlePacketData(INetworkManager network, int packetType, Packet250CustomPayload packet, EntityPlayer player, ByteArrayDataInput dataStream) 
+	public void handlePacketData(INetworkManager network, int packetType, Packet250CustomPayload packet, EntityPlayer player, ByteArrayDataInput dataStream)
 	{
 		try
 		{
@@ -125,7 +123,7 @@ public class GCCoreEntityOxygenBubble extends Entity implements IPacketReceiver
 				this.size = dataStream.readDouble();
 			}
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -136,31 +134,31 @@ public class GCCoreEntityOxygenBubble extends Entity implements IPacketReceiver
     {
         return false;
     }
-	
+
 	public void setSize(double bubbleSize)
 	{
 		this.size = bubbleSize;
 	}
-	
+
 	public double getSize()
 	{
 		return this.size;
 	}
 
 	@Override
-	protected void entityInit() 
+	protected void entityInit()
 	{
 	}
 
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound nbttagcompound) 
+	protected void readEntityFromNBT(NBTTagCompound nbttagcompound)
 	{
 		this.size = nbttagcompound.getDouble("bubbleSize");
 	}
 
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound nbttagcompound) 
+	protected void writeEntityToNBT(NBTTagCompound nbttagcompound)
 	{
-		nbttagcompound.setDouble("bubbleSize", size);
+		nbttagcompound.setDouble("bubbleSize", this.size);
 	}
 }

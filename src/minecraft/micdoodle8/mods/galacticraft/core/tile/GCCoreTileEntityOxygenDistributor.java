@@ -42,20 +42,20 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityElectricityRunn
 {
 	public int power;
 	public int lastPower;
-	
+
     public boolean active;
 	private ItemStack[] containingItems = new ItemStack[1];
-   	
+
 //   	public OxygenBubble bubble;
-   	
+
 	public static final double WATTS_PER_TICK = 300;
 
 	private int playersUsing = 0;
-	
+
 	public static int timeSinceOxygenRequest;
-	
+
 	public GCCoreEntityOxygenBubble oxygenBubble;
-	
+
 	public double ic2WattsReceived = 0;
 	private boolean initialized = false;
 
@@ -68,8 +68,8 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityElectricityRunn
         	{
             	for (int z = (int) Math.floor(this.zCoord - this.power * 1.5); z < Math.ceil(this.zCoord + this.power * 1.5); z++)
             	{
-            		TileEntity tile = this.worldObj.getBlockTileEntity(x, y, z);
-//            		
+            		final TileEntity tile = this.worldObj.getBlockTileEntity(x, y, z);
+//
             		if (tile != null && tile instanceof GCCoreTileEntityUnlitTorch)
             		{
             			tile.worldObj.setBlock(tile.xCoord, tile.yCoord, tile.zCoord, GCCoreBlocks.unlitTorch.blockID, 0, 3);
@@ -77,15 +77,15 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityElectricityRunn
             	}
         	}
     	}
-    	
+
     	super.invalidate();
   	}
 
     public double getDistanceFromServer(double par1, double par3, double par5)
     {
-        double d3 = this.xCoord + 0.5D - par1;
-        double d4 = this.yCoord + 0.5D - par3;
-        double d5 = this.zCoord + 0.5D - par5;
+        final double d3 = this.xCoord + 0.5D - par1;
+        final double d4 = this.yCoord + 0.5D - par3;
+        final double d5 = this.zCoord + 0.5D - par5;
         return d3 * d3 + d4 * d4 + d5 * d5;
     }
 
@@ -93,21 +93,21 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityElectricityRunn
 	public void updateEntity()
 	{
 		super.updateEntity();
-		
+
 		if (!this.initialized && this.worldObj != null)
 		{
 			if(GalacticraftCore.modIC2Loaded)
 			{
 				MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(this));
 			}
-			
-			initialized = true;
+
+			this.initialized = true;
 		}
-		
+
 		if (this.oxygenBubble == null)
 		{
 			this.oxygenBubble = new GCCoreEntityOxygenBubble(this.worldObj, new Vector3(this), this);
-			
+
 			if (!this.worldObj.isRemote)
 			{
 				this.worldObj.spawnEntityInWorld(this.oxygenBubble);
@@ -118,17 +118,17 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityElectricityRunn
 		{
 			this.wattsReceived += ElectricItemHelper.dechargeItem(this.containingItems[0], GCCoreTileEntityOxygenDistributor.WATTS_PER_TICK, this.getVoltage());
 		}
-		
+
 		if (!this.worldObj.isRemote)
 		{
-			if (this.timeSinceOxygenRequest > 0)
+			if (GCCoreTileEntityOxygenDistributor.timeSinceOxygenRequest > 0)
 			{
 				GCCoreTileEntityOxygenDistributor.timeSinceOxygenRequest--;
 			}
-			
+
 			this.wattsReceived = Math.max(this.wattsReceived - GCCoreTileEntityOxygenDistributor.WATTS_PER_TICK / 4, 0);
 			this.ic2WattsReceived = Math.max(this.ic2WattsReceived - GCCoreTileEntityOxygenDistributor.WATTS_PER_TICK / 4, 0);
-			
+
 			if (this.power >= 1 && (this.wattsReceived > 0 || this.ic2WattsReceived > 0))
 			{
 				this.active = true;
@@ -136,15 +136,15 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityElectricityRunn
 			else
 			{
 				this.active = false;
-		    	
+
 		    	for (int x = (int) Math.floor(this.xCoord - this.power * 1.5); x < Math.ceil(this.xCoord + this.power * 1.5); x++)
 		    	{
 		        	for (int y = (int) Math.floor(this.yCoord - this.power * 1.5); y < Math.ceil(this.yCoord + this.power * 1.5); y++)
 		        	{
 		            	for (int z = (int) Math.floor(this.zCoord - this.power * 1.5); z < Math.ceil(this.zCoord + this.power * 1.5); z++)
 		            	{
-		            		TileEntity tile = this.worldObj.getBlockTileEntity(x, y, z);
-		            		
+		            		final TileEntity tile = this.worldObj.getBlockTileEntity(x, y, z);
+
 		            		if (tile != null && tile instanceof GCCoreTileEntityUnlitTorch)
 		            		{
 		            			tile.worldObj.setBlock(tile.xCoord, tile.yCoord, tile.zCoord, GCCoreBlocks.unlitTorch.blockID, 0, 3);
@@ -163,7 +163,7 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityElectricityRunn
 			{
 				PacketManager.sendPacketToClients(this.getDescriptionPacket(), this.worldObj, new Vector3(this), 6);
 			}
-			
+
 			this.lastPower = this.power;
 		}
 	}
@@ -171,7 +171,7 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityElectricityRunn
 	@Override
 	public Packet getDescriptionPacket()
 	{
-		Packet p = PacketManager.getPacket(BasicComponents.CHANNEL, this, this.power, this.wattsReceived, this.disabledTicks, this.ic2WattsReceived);
+		final Packet p = PacketManager.getPacket(BasicComponents.CHANNEL, this, this.power, this.wattsReceived, this.disabledTicks, this.ic2WattsReceived);
 		return p;
 	}
 
@@ -188,7 +188,7 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityElectricityRunn
 				this.ic2WattsReceived = dataStream.readDouble();
 			}
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -249,10 +249,10 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityElectricityRunn
 	}
 
 	@Override
-	public int transferGasToAcceptor(int amount, EnumGas type) 
+	public int transferGasToAcceptor(int amount, EnumGas type)
 	{
-		this.timeSinceOxygenRequest = 20;
-		
+		GCCoreTileEntityOxygenDistributor.timeSinceOxygenRequest = 20;
+
 		if (this.wattsReceived > 0 && type == EnumGas.OXYGEN)
 		{
 			this.power = Math.max(this.power, amount);
@@ -265,13 +265,13 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityElectricityRunn
 	}
 
 	@Override
-	public boolean canReceiveGas(ForgeDirection side, EnumGas type) 
+	public boolean canReceiveGas(ForgeDirection side, EnumGas type)
 	{
 		return side == ForgeDirection.getOrientation(this.getBlockMetadata() + 2).getOpposite();
 	}
 
 	@Override
-	public boolean canTubeConnect(ForgeDirection direction) 
+	public boolean canTubeConnect(ForgeDirection direction)
 	{
 		return direction == ForgeDirection.getOrientation(this.getBlockMetadata() + 2).getOpposite();
 	}
@@ -330,7 +330,7 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityElectricityRunn
 	{
 		if (this.containingItems[par1] != null)
 		{
-			ItemStack var2 = this.containingItems[par1];
+			final ItemStack var2 = this.containingItems[par1];
 			this.containingItems[par1] = null;
 			return var2;
 		}
@@ -376,7 +376,7 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityElectricityRunn
 		{
 			PacketManager.sendPacketToClients(this.getDescriptionPacket(), this.worldObj, new Vector3(this), 15);
 		}
-		
+
 		this.playersUsing++;
 	}
 
@@ -385,80 +385,80 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityElectricityRunn
 	{
 		this.playersUsing--;
 	}
-	
+
 	// ISidedInventory Implementation:
 
 	@Override
-	public int[] getSizeInventorySide(int side) 
+	public int[] getSizeInventorySide(int side)
 	{
 		return new int[] {0};
 	}
 
 	@Override
-	public boolean func_102007_a(int slotID, ItemStack itemstack, int side) 
+	public boolean func_102007_a(int slotID, ItemStack itemstack, int side)
 	{
-		return isStackValidForSlot(slotID, itemstack);
+		return this.isStackValidForSlot(slotID, itemstack);
 	}
 
 	@Override
-	public boolean func_102008_b(int slotID, ItemStack itemstack, int side) 
+	public boolean func_102008_b(int slotID, ItemStack itemstack, int side)
 	{
 		return slotID == 0;
 	}
 
 	@Override
-	public boolean isInvNameLocalized() 
+	public boolean isInvNameLocalized()
 	{
 		return true;
 	}
 
 	@Override
-	public boolean isStackValidForSlot(int slotID, ItemStack itemstack) 
+	public boolean isStackValidForSlot(int slotID, ItemStack itemstack)
 	{
 		return slotID == 0 ? itemstack.getItem() instanceof IItemElectric : false;
 	}
-	
+
 	// Industrial Craft 2 Implementation:
 
 	@Override
 	public int demandsEnergy()
 	{
-		return GCCoreTileEntityOxygenDistributor.timeSinceOxygenRequest > 0 ? (int) ((GCCoreTileEntityFuelLoader.WATTS_PER_TICK / this.getVoltage()) * GalacticraftCore.IC2EnergyScalar) : 0;
+		return GCCoreTileEntityOxygenDistributor.timeSinceOxygenRequest > 0 ? (int) (GCCoreTileEntityFuelLoader.WATTS_PER_TICK / this.getVoltage() * GalacticraftCore.IC2EnergyScalar) : 0;
 	}
 
 	@Override
-	public int injectEnergy(Direction directionFrom, int amount) 
+	public int injectEnergy(Direction directionFrom, int amount)
 	{
 		double rejects = 0;
-    	double neededEnergy = ((GCCoreTileEntityFuelLoader.WATTS_PER_TICK / this.getVoltage()) * GalacticraftCore.IC2EnergyScalar);
-    	
+    	final double neededEnergy = GCCoreTileEntityFuelLoader.WATTS_PER_TICK / this.getVoltage() * GalacticraftCore.IC2EnergyScalar;
+
     	if(amount <= neededEnergy)
     	{
-    		ic2WattsReceived += amount;
+    		this.ic2WattsReceived += amount;
     	}
     	else if(amount > neededEnergy)
     	{
-    		ic2WattsReceived += neededEnergy;
+    		this.ic2WattsReceived += neededEnergy;
     		rejects = amount - neededEnergy;
     	}
-    	
+
     	return (int) (rejects * GalacticraftCore.IC2EnergyScalar);
 	}
 
 	@Override
-	public int getMaxSafeInput() 
+	public int getMaxSafeInput()
 	{
 		return 2048;
 	}
 
 	@Override
-	public boolean acceptsEnergyFrom(TileEntity emitter, Direction direction) 
+	public boolean acceptsEnergyFrom(TileEntity emitter, Direction direction)
 	{
 		return direction.toForgeDirection() == ForgeDirection.getOrientation(this.getBlockMetadata() + 2);
 	}
 
 	@Override
-	public boolean isAddedToEnergyNet() 
+	public boolean isAddedToEnergyNet()
 	{
 		return this.initialized;
 	}

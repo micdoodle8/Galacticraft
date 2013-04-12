@@ -14,18 +14,18 @@ public class GCMoonGenCaves extends GCCoreMapGenBaseMeta
     {
         this.generateCaveNode(par1, par3, par4, blockIdArray, metaArray, par6, par8, par10, 1.0F + this.rand.nextFloat() * 6.0F, 0.0F, 0.0F, -1, -1, 0.5D);
     }
-    
+
     protected void generateCaveNode(long par1, int par3, int par4, int[] blockIdArray, int[] metaArray, double par6, double par8, double par10, float par12, float par13, float par14, int par15, int par16, double par17)
     {
-        double d4 = par3 * 16 + 8;
-        double d5 = par4 * 16 + 8;
+        final double d4 = par3 * 16 + 8;
+        final double d5 = par4 * 16 + 8;
         float f3 = 0.0F;
         float f4 = 0.0F;
-        Random random = new Random(par1);
+        final Random random = new Random(par1);
 
         if (par16 <= 0)
         {
-            int j1 = this.range * 16 - 16;
+            final int j1 = this.range * 16 - 16;
             par16 = j1 - random.nextInt(j1 / 4);
         }
 
@@ -37,14 +37,14 @@ public class GCMoonGenCaves extends GCCoreMapGenBaseMeta
             flag = true;
         }
 
-        int k1 = random.nextInt(par16 / 2) + par16 / 4;
+        final int k1 = random.nextInt(par16 / 2) + par16 / 4;
 
-        for (boolean flag1 = random.nextInt(6) == 0; par15 < par16; ++par15)
+        for (final boolean flag1 = random.nextInt(6) == 0; par15 < par16; ++par15)
         {
-            double d6 = 1.5D + MathHelper.sin(par15 * (float)Math.PI / par16) * par12 * 1.0F;
-            double d7 = d6 * par17;
-            float f5 = MathHelper.cos(par14);
-            float f6 = MathHelper.sin(par14);
+            final double d6 = 1.5D + MathHelper.sin(par15 * (float)Math.PI / par16) * par12 * 1.0F;
+            final double d7 = d6 * par17;
+            final float f5 = MathHelper.cos(par14);
+            final float f6 = MathHelper.sin(par14);
             par6 += MathHelper.cos(par13) * f5;
             par8 += f6;
             par10 += MathHelper.sin(par13) * f5;
@@ -74,10 +74,10 @@ public class GCMoonGenCaves extends GCCoreMapGenBaseMeta
 
             if (flag || random.nextInt(4) != 0)
             {
-                double d8 = par6 - d4;
-                double d9 = par10 - d5;
-                double d10 = par16 - par15;
-                double d11 = par12 + 2.0F + 16.0F;
+                final double d8 = par6 - d4;
+                final double d9 = par10 - d5;
+                final double d10 = par16 - par15;
+                final double d11 = par12 + 2.0F + 16.0F;
 
                 if (d8 * d8 + d9 * d9 - d10 * d10 > d11 * d11)
                 {
@@ -155,24 +155,24 @@ public class GCMoonGenCaves extends GCCoreMapGenBaseMeta
                     {
                         for (j3 = l1; j3 < i2; ++j3)
                         {
-                            double d12 = (j3 + par3 * 16 + 0.5D - par6) / d6;
+                            final double d12 = (j3 + par3 * 16 + 0.5D - par6) / d6;
 
                             for (k3 = l2; k3 < i3; ++k3)
                             {
-                                double d13 = (k3 + par4 * 16 + 0.5D - par10) / d6;
+                                final double d13 = (k3 + par4 * 16 + 0.5D - par10) / d6;
                                 int j4 = (j3 * 16 + k3) * 128 + k2;
-                                boolean flag3 = false;
+                                final boolean flag3 = false;
 
                                 if (d12 * d12 + d13 * d13 < 1.0D)
                                 {
                                     for (int k4 = k2 - 1; k4 >= j2; --k4)
                                     {
-                                        double d14 = (k4 + 0.5D - par8) / d7;
+                                        final double d14 = (k4 + 0.5D - par8) / d7;
 
                                         if (d14 > -0.7D && d12 * d12 + d14 * d14 + d13 * d13 < 1.0D)
                                         {
-                                            int b0 = blockIdArray[j4];
-                                            int b1 = metaArray[j4];
+                                            final int b0 = blockIdArray[j4];
+                                            final int b1 = metaArray[j4];
 
                                             if (b0 == GCMoonBlocks.blockMoon.blockID && (b1 == 3 || b1 == 4))
                                             {
@@ -208,9 +208,9 @@ public class GCMoonGenCaves extends GCCoreMapGenBaseMeta
 
         for (int j1 = 0; j1 < i1; ++j1)
         {
-            double d0 = par2 * 16 + this.rand.nextInt(16);
-            double d1 = this.rand.nextInt(this.rand.nextInt(120) + 8);
-            double d2 = par3 * 16 + this.rand.nextInt(16);
+            final double d0 = par2 * 16 + this.rand.nextInt(16);
+            final double d1 = this.rand.nextInt(this.rand.nextInt(120) + 8);
+            final double d2 = par3 * 16 + this.rand.nextInt(16);
             int k1 = 1;
 
             if (this.rand.nextInt(4) == 0)
@@ -221,8 +221,8 @@ public class GCMoonGenCaves extends GCCoreMapGenBaseMeta
 
             for (int l1 = 0; l1 < k1; ++l1)
             {
-                float f = this.rand.nextFloat() * (float)Math.PI * 2.0F;
-                float f1 = (this.rand.nextFloat() - 0.5F) * 2.0F / 8.0F;
+                final float f = this.rand.nextFloat() * (float)Math.PI * 2.0F;
+                final float f1 = (this.rand.nextFloat() - 0.5F) * 2.0F / 8.0F;
                 float f2 = this.rand.nextFloat() * 2.0F + this.rand.nextFloat();
 
                 if (this.rand.nextInt(10) == 0)

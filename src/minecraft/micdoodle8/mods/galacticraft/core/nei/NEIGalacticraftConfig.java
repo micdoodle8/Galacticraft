@@ -7,7 +7,7 @@ import codechicken.nei.api.IConfigureNEI;
 public class NEIGalacticraftConfig implements IConfigureNEI
 {
 	@Override
-	public void loadConfig() 
+	public void loadConfig()
 	{
 		API.hideItems(GalacticraftCore.hiddenItems);
 		API.registerRecipeHandler(new RocketT1RecipeHandler());
@@ -15,13 +15,13 @@ public class NEIGalacticraftConfig implements IConfigureNEI
 	}
 
 	@Override
-	public String getName() 
+	public String getName()
 	{
 		return "Galacticraft NEI Plugin";
 	}
 
 	@Override
-	public String getVersion() 
+	public String getVersion()
 	{
 		return GalacticraftCore.LOCALMAJVERSION + "." + GalacticraftCore.LOCALMINVERSION + "." + GalacticraftCore.LOCALBUILDVERSION;
 	}

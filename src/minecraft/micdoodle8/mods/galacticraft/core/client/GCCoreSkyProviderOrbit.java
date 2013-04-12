@@ -73,7 +73,7 @@ public class GCCoreSkyProviderOrbit extends IRenderHandler
 	@Override
 	public void render(float partialTicks, WorldClient world, Minecraft mc)
 	{
-        float var20 = 400.0F;
+        final float var20 = 400.0F;
 
 //        if (this.minecraft.thePlayer.ridingEntity != null)
         {
@@ -260,7 +260,7 @@ public class GCCoreSkyProviderOrbit extends IRenderHandler
                 var10 = 1.0F;
                 var12 = -1.0F;
 
-                float alpha = 0.5F;
+                final float alpha = 0.5F;
 	            GL11.glColor4f(Math.min(alpha, 1.0F), Math.min(alpha, 1.0F), Math.min(alpha, 1.0F), Math.min(alpha, 1.0F));
                 var23.startDrawingQuads();
                 var23.addVertexWithUV(-var10, 0, var10, 0.0F, 1.0F);

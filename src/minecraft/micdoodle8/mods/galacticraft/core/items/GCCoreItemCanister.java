@@ -38,8 +38,8 @@ public class GCCoreItemCanister extends Item
 	public void updateIcons(IconRegister iconRegister)
 	{
 		int i = 0;
-		
-		for (String name : this.names)
+
+		for (final String name : GCCoreItemCanister.names)
 		{
 			this.icons[i++] = iconRegister.registerIcon("galacticraftcore:canister_" + name + GalacticraftCore.TEXTURE_SUFFIX);
 		}

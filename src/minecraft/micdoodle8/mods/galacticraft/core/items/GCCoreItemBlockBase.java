@@ -18,7 +18,7 @@ public class GCCoreItemBlockBase extends ItemBlock
     {
         return meta;
     }
-    
+
 	@Override
 	public String getUnlocalizedName(ItemStack itemstack)
 	{

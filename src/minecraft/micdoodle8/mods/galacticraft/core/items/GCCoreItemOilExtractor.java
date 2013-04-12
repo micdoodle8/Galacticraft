@@ -1,8 +1,6 @@
 package micdoodle8.mods.galacticraft.core.items;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
@@ -24,14 +22,14 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GCCoreItemOilExtractor extends Item
 {
 	protected Icon[] icons = new Icon[5];
-	
+
 	public static final String[] names = {
 		"extactor_1", // 0
 		"extactor_2", // 1
 		"extactor_3", // 2
 		"extactor_4", // 3
 		"extactor_5"}; // 4
-	
+
 	public GCCoreItemOilExtractor(int par1)
 	{
 		super(par1);
@@ -74,7 +72,7 @@ public class GCCoreItemOilExtractor extends Item
 		this.icons[2] = iconRegister.registerIcon("galacticraftcore:extractor_3" + GalacticraftCore.TEXTURE_SUFFIX);
 		this.icons[3] = iconRegister.registerIcon("galacticraftcore:extractor_4" + GalacticraftCore.TEXTURE_SUFFIX);
 		this.icons[4] = iconRegister.registerIcon("galacticraftcore:extractor_5" + GalacticraftCore.TEXTURE_SUFFIX);
-			
+
 		this.iconIndex = this.icons[0];
 	}
 

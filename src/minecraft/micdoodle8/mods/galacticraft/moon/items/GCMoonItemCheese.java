@@ -18,7 +18,7 @@ public class GCMoonItemCheese extends ItemFood
     {
         this(par1, par2, 0.6F, par3);
     }
-    
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void updateIcons(IconRegister iconRegister)

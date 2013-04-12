@@ -28,7 +28,7 @@ public class GCCoreItemFuelCanister extends Item implements IFuelTank
 			"liquidcan_fuel_2", // 3
 			"liquidcan_fuel_1", // 4
 			"liquidcan_empty"}; // 5
-	
+
 	public GCCoreItemFuelCanister(int par1)
 	{
 		super(par1);
@@ -54,8 +54,8 @@ public class GCCoreItemFuelCanister extends Item implements IFuelTank
 	public void updateIcons(IconRegister iconRegister)
 	{
 		int i = 0;
-		
-		for (String name : this.names)
+
+		for (final String name : GCCoreItemFuelCanister.names)
 		{
 			this.icons[i++] = iconRegister.registerIcon("galacticraftcore:" + name);
 		}
@@ -68,7 +68,7 @@ public class GCCoreItemFuelCanister extends Item implements IFuelTank
 		{
 			return "item.fuelCanister";
 		}
-		
+
 		return "item.fuelCanisterPartial";
 	}
 
@@ -76,7 +76,7 @@ public class GCCoreItemFuelCanister extends Item implements IFuelTank
 	public Icon getIconFromDamage(int par1)
 	{
     	final int damage = (int) Math.floor(par1 / 10);
-    	
+
 		if (this.icons.length > damage)
 		{
 			return this.icons[damage];

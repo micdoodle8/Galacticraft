@@ -39,7 +39,7 @@ public class GCCoreEvents
 		event.setCanceled(false);
 		event.setResult(Result.ALLOW);
 	}
-	
+
 	@ForgeSubscribe
 	public void growTreeBonemeal(BonemealEvent event)
 	{
@@ -61,7 +61,7 @@ public class GCCoreEvents
 	{
 		if (event.entityLiving.worldObj.provider instanceof IGalacticraftWorldProvider && !(event.entityLiving instanceof EntityPlayer) && !OxygenUtil.isAABBInBreathableAirBlock(event.entityLiving))
 		{
-			if ((!(event.entityLiving instanceof IEntityBreathable) || (event.entityLiving instanceof IEntityBreathable && !((IEntityBreathable) event.entityLiving).canBreath())) && event.entityLiving.ticksExisted % 100 == 0)
+			if ((!(event.entityLiving instanceof IEntityBreathable) || event.entityLiving instanceof IEntityBreathable && !((IEntityBreathable) event.entityLiving).canBreath()) && event.entityLiving.ticksExisted % 100 == 0)
 			{
 				event.entityLiving.attackEntityFrom(GalacticraftCore.oxygenSuffocation, 1);
 			}
@@ -149,7 +149,7 @@ public class GCCoreEvents
 		final int worldX = event.chunkX << 4;
 		final int worldZ = event.chunkZ << 4;
 
-		this.doPopulate(event.world, event.rand, worldX, worldZ);
+		GCCoreEvents.doPopulate(event.world, event.rand, worldX, worldZ);
 	}
 
 	public static void doPopulate(World world, Random rand, int x, int z)

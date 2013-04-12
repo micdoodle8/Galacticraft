@@ -63,7 +63,7 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 	private final MapGenMineshaft mineshaftGenerator = new MapGenMineshaft();
 
 	private BiomeGenBase[] biomesForGeneration = {GCMoonBiomeGenBase.moonFlat};
-	
+
     private final GCCoreMapGenBaseMeta caveGenerator = new GCMoonGenCaves();
 
 	private static final double TERRAIN_HEIGHT_MOD = 2.7;
@@ -327,19 +327,19 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 	public void populate(IChunkProvider par1IChunkProvider, int par2, int par3)
 	{
 		BlockSand.fallInstantly = true;
-		int var4 = par2 * 16;
-		int var5 = par3 * 16;
+		final int var4 = par2 * 16;
+		final int var5 = par3 * 16;
 		this.worldObj.getBiomeGenForCoords(var4 + 16, var5 + 16);
 		this.rand.setSeed(this.worldObj.getSeed());
 		final long var7 = this.rand.nextLong() / 2L * 2L + 1L;
 		final long var9 = this.rand.nextLong() / 2L * 2L + 1L;
 		this.rand.setSeed(par2 * var7 + par3 * var9 ^ this.worldObj.getSeed());
-		
+
     	if (!GCMoonConfigManager.disableMoonVillageGen)
     	{
     		this.villageGenerator.generateStructuresInChunk(this.worldObj, this.rand, par2, par3);
     	}
-    	
+
 		this.decoratePlanet(this.worldObj, this.rand, var4, var5);
 		BlockSand.fallInstantly = false;
 	}

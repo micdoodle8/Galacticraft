@@ -44,7 +44,7 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
 
         GCCoreGuiChoosePlanet.getSendButton(this.choosePlanetGui).displayString = "Send To Dimension";
         GCCoreGuiChoosePlanet.getSendButton(this.choosePlanetGui).enabled = this.choosePlanetGui.isValidDestination(this.choosePlanetGui.selectedSlot);
-        
+
         GCCoreGuiChoosePlanet.getCreateSpaceStationButton(this.choosePlanetGui).displayString = "Create Space Station";
         GCCoreGuiChoosePlanet.getCreateSpaceStationButton(this.choosePlanetGui).enabled = this.choosePlanetGui.canCreateSpaceStation(this.choosePlanetGui.selectedSlot);
     }
@@ -72,7 +72,7 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
         GL11.glDisable(GL11.GL_ALPHA_TEST);
         GCCoreGuiChoosePlanet.getDestinations(this.choosePlanetGui)[par1].toLowerCase();
         final Tessellator var3 = Tessellator.instance;
-        
+
     	if (this.isSelected(par1))
     	{
             for (int i = 0; i < GalacticraftCore.clientSubMods.size(); i++)
@@ -87,11 +87,11 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
         			{
         				str = str.replace("*", "");
         			}
-        			
+
         			if (str.contains("$"))
         			{
-        				String[] twoDimensions = str.split("\\$");
-        				
+        				final String[] twoDimensions = str.split("\\$");
+
         				str = twoDimensions[0];
         			}
 
@@ -116,7 +116,7 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
                 var3.addVertexWithUV(par2 - 10, 							par3 - 1, 							-90.0D, 1.0, 0.0);
                 var3.addVertexWithUV(par2 - 10 - this.slotHeight * 0.9, 	par3 - 1, 							-90.0D, 0.0, 0.0);
                 var3.draw();
-                
+
                 FMLClientHandler.instance().getClient().renderEngine.resetBoundTexture();
             }
 
@@ -126,7 +126,7 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
 
             	if (str.contains("$"))
             	{
-            		String[] strs = str.split("\\$");
+            		final String[] strs = str.split("\\$");
             		str = strs[0];
             		str = str.concat(" -\u00a73 Owner: ");
             		str = str.concat(strs[1]);
@@ -138,7 +138,7 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
         	{
         		String str = GCCoreGuiChoosePlanet.getDestinations(this.choosePlanetGui)[par1];
         		str = str.replace("*", "");
-            	
+
                 this.choosePlanetGui.drawCenteredString(this.choosePlanetGui.getFontRenderer(), str, this.choosePlanetGui.width / 2, par3 + 3, 0xEEEEEE);
         	}
     	}
@@ -151,7 +151,7 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
 
             	if (str.contains("$"))
             	{
-            		String[] strs = str.split("\\$");
+            		final String[] strs = str.split("\\$");
             		str = strs[0];
             	}
 
@@ -161,7 +161,7 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
         	{
         		String str = GCCoreGuiChoosePlanet.getDestinations(this.choosePlanetGui)[par1];
         		str = str.replace("*", "");
-            	
+
                 this.choosePlanetGui.drawCenteredString(this.choosePlanetGui.getFontRenderer(), str, this.choosePlanetGui.width / 2, par3 + 3, 0xEEEEEE);
         	}
     	}

@@ -284,14 +284,14 @@ public class RecipeUtil
         {
         	CraftingManager.getInstance().addShapelessRecipe(new ItemStack(GCCoreItems.flag, 1, GCCoreItemFlag.getFlagDamageValueFromDye(var2)), new Object[] {new ItemStack(Item.dyePowder, 1, var2), new ItemStack(GCCoreItems.flag, 1, 16)});
         }
-        
+
     	CraftingManager.getInstance().getRecipeList().add(new ShapelessOreRecipe(new ItemStack(GCCoreItems.airVent, 1), new Object[] {
-    		"ingotTin", 
+    		"ingotTin",
     		"ingotTin",
     		"ingotTin",
     		"ingotSteel"
     	}));
-    	
+
 		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.oxygenGear), new Object[] {
 			" Y ",
 			"YXY",
@@ -422,18 +422,18 @@ public class RecipeUtil
 
 		return null;
 	}
-    
+
 	@Deprecated
     public static List<ItemStack> getStandardSpaceStationRequirements()
     {
-    	List<ItemStack> stacks = new ArrayList<ItemStack>();
-    	
+    	final List<ItemStack> stacks = new ArrayList<ItemStack>();
+
     	stacks.add(new ItemStack(BasicComponents.itemIngot, 16, 1));
     	stacks.add(new ItemStack(BasicComponents.itemIngot, 8, 3));
     	stacks.add(new ItemStack(Item.ingotIron, 12, 0));
-    	
+
     	return stacks;
     }
-	
-//	public static 
+
+//	public static
 }

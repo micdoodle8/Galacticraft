@@ -113,9 +113,9 @@ public abstract class GCMoonComponentVillage extends StructureComponent
             for (int var7 = this.villagersSpawned; var7 < par6; ++var7)
             {
                 int var8 = this.getXWithOffset(par3 + var7, par5);
-                int var9 = this.getYWithOffset(par4);
+                final int var9 = this.getYWithOffset(par4);
                 int var10 = this.getZWithOffset(par3 + var7, par5);
-                
+
                 var8 += par1World.rand.nextInt(3) - 1;
                 var10 += par1World.rand.nextInt(3) - 1;
 

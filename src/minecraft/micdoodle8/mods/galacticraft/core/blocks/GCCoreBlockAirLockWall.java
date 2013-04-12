@@ -10,9 +10,6 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
-import universalelectricity.core.vector.Vector3;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -142,7 +139,7 @@ public class GCCoreBlockAirLockWall extends BlockBreakable implements IPartialSe
     }
 
 	@Override
-	public boolean isSealed(World world, int x, int y, int z) 
+	public boolean isSealed(World world, int x, int y, int z)
 	{
 		return true;
 	}

@@ -16,7 +16,7 @@ import micdoodle8.mods.galacticraft.core.client.gui.GCCoreOverlaySpaceship;
 import micdoodle8.mods.galacticraft.core.client.sounds.GCCoreSoundUpdaterSpaceship;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreWorldProvider;
 import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpaceship;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityRocketT1;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemSensorGlasses;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
@@ -37,7 +37,6 @@ import net.minecraft.world.WorldProviderSurface;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import cpw.mods.fml.common.TickType;
@@ -145,9 +144,9 @@ public class GCCoreTickHandlerClient implements ITickHandler
 //				}
 //			}
 
-			if (player != null && player.ridingEntity != null && player.ridingEntity instanceof GCCoreEntitySpaceship)
+			if (player != null && player.ridingEntity != null && player.ridingEntity instanceof GCCoreEntityRocketT1)
 			{
-				final GCCoreEntitySpaceship ship = (GCCoreEntitySpaceship) player.ridingEntity;
+				final GCCoreEntityRocketT1 ship = (GCCoreEntityRocketT1) player.ridingEntity;
 
 				if (minecraft.gameSettings.keyBindLeft.pressed)
 				{
@@ -192,9 +191,9 @@ public class GCCoreTickHandlerClient implements ITickHandler
 
 	        		if (e != null)
 	        		{
-	        			if (e instanceof GCCoreEntitySpaceship)
+	        			if (e instanceof GCCoreEntityRocketT1)
 	        			{
-	        				final GCCoreEntitySpaceship eship = (GCCoreEntitySpaceship) e;
+	        				final GCCoreEntityRocketT1 eship = (GCCoreEntityRocketT1) e;
 
 	        				if (eship.rocketSoundUpdater == null)
 	        				{
@@ -228,10 +227,10 @@ public class GCCoreTickHandlerClient implements ITickHandler
 			}
         }
     }
-	
+
     private void drawOutlinedBoundingBox(AxisAlignedBB par1AxisAlignedBB)
     {
-        Tessellator tessellator = Tessellator.instance;
+        final Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawing(3);
         tessellator.addVertex(par1AxisAlignedBB.minX, par1AxisAlignedBB.minY, par1AxisAlignedBB.minZ);
         tessellator.addVertex(par1AxisAlignedBB.maxX, par1AxisAlignedBB.minY, par1AxisAlignedBB.minZ);
@@ -298,9 +297,9 @@ public class GCCoreTickHandlerClient implements ITickHandler
     			ClientProxyCore.playerRotationPitch = player.prevRotationPitch + (player.rotationPitch - player.prevRotationPitch) * partialTickTime;
 			}
 
-			if (player != null && player.ridingEntity != null && player.ridingEntity instanceof GCCoreEntitySpaceship)
+			if (player != null && player.ridingEntity != null && player.ridingEntity instanceof GCCoreEntityRocketT1)
     		{
-				float f = (((GCCoreEntitySpaceship)player.ridingEntity).getTimeSinceLaunch() - 250F) / 175F;
+				float f = (((GCCoreEntityRocketT1)player.ridingEntity).getTimeSinceLaunch() - 250F) / 175F;
 
 				if (f < 0)
 				{

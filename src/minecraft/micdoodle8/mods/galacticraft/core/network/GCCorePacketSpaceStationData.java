@@ -17,45 +17,45 @@ import cpw.mods.fml.relauncher.Side;
 public class GCCorePacketSpaceStationData implements IGalacticraftAdvancedPacket
 {
 	public static final byte packetID = 17;
-	
+
 	public static Packet buildSpaceStationDataPacket(World var0, int var1, GCCorePlayerMP player)
 	{
-        NBTTagCompound var2 = new NBTTagCompound();
+        final NBTTagCompound var2 = new NBTTagCompound();
         GCCoreSpaceStationData.getStationData(var0, var1, player).writeToNBT(var2);
-		Packet250CustomPayload packet = new Packet250CustomPayload();
+		final Packet250CustomPayload packet = new Packet250CustomPayload();
 		packet.channel = GalacticraftCore.CHANNEL;
-		
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        DataOutputStream data = new DataOutputStream(bytes);
-        
+
+        final ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        final DataOutputStream data = new DataOutputStream(bytes);
+
         try
         {
         	data.writeByte(GCCorePacketSpaceStationData.packetID);
         	data.writeInt(var1);
 
-            byte[] bytes2 = CompressedStreamTools.compress(var2);
+            final byte[] bytes2 = CompressedStreamTools.compress(var2);
             data.writeShort((short)bytes2.length);
             data.write(bytes2);
-        	
+
         	packet.data = bytes.toByteArray();
         	packet.length = packet.data.length;
-        	
+
         	data.close();
         	bytes.close();
         }
-        catch(Exception e)
+        catch(final Exception e)
         {
             e.printStackTrace();
         }
-        
+
         return packet;
 	}
-	
+
 	@Override
 	public void handlePacket(DataInputStream stream, Object[] extradata, Side side)
 	{
 	}
-	
+
 	@Override
 	public byte getPacketID()
 	{

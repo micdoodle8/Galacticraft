@@ -12,12 +12,12 @@
 //public class GCCoreTileEntityOxygenDistributorRenderer extends TileEntitySpecialRenderer
 //{
 //	private GCCoreModelOxygenBubble bubble;
-//	
+//
 //	public GCCoreTileEntityOxygenDistributorRenderer()
 //	{
 //		bubble = new GCCoreModelOxygenBubble();
 //	}
-//	
+//
 //	@Override
 //	public void renderTileEntityAt(TileEntity var1, double par2, double par4, double par6, float var8)
 //	{

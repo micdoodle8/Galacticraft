@@ -27,7 +27,7 @@ public class GCCoreBlockRefinery extends BlockAdvanced
     private final Random refineryRand = new Random();
 
     private static boolean keepRefineryInventory = false;
-    
+
 	private Icon iconMachineSide;
 	private Icon iconFuelOutput;
 	private Icon iconOilInput;
@@ -99,11 +99,11 @@ public class GCCoreBlockRefinery extends BlockAdvanced
 	@Override
 	public boolean onUseWrench(World par1World, int x, int y, int z, EntityPlayer par5EntityPlayer, int side, float hitX, float hitY, float hitZ)
 	{
-		int metadata = par1World.getBlockMetadata(x, y, z);
-		int original = metadata;
+		final int metadata = par1World.getBlockMetadata(x, y, z);
+		final int original = metadata;
 
 		int change = 0;
-		
+
 		// Re-orient the block
 		switch (original)
 		{
@@ -177,7 +177,7 @@ public class GCCoreBlockRefinery extends BlockAdvanced
 
         super.breakBlock(par1World, par2, par3, par4, par5, par6);
     }
-	
+
 	@Override
 	public Icon getBlockTextureFromSideAndMetadata(int side, int metadata)
 	{
@@ -189,29 +189,29 @@ public class GCCoreBlockRefinery extends BlockAdvanced
 		{
 			return this.iconOilInput;
 		}
-		
+
 		if (side == 1)
 		{
 			return this.iconTop;
 		}
-		
+
 		if (side == 0)
 		{
 			return this.iconMachineSide;
 		}
-		
-		if ((metadata == 0 && side == 4) || (metadata == 1 && side == 5) || (metadata == 2 && side == 3) || (metadata == 3 && side == 2))
+
+		if (metadata == 0 && side == 4 || metadata == 1 && side == 5 || metadata == 2 && side == 3 || metadata == 3 && side == 2)
 		{
 			return this.iconFront;
 		}
 
 		return this.iconBack;
     }
-    
+
 	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving entityLiving, ItemStack itemStack)
 	{
-		int angle = MathHelper.floor_double(entityLiving.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+		final int angle = MathHelper.floor_double(entityLiving.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
 		int change = 0;
 
 		switch (angle)

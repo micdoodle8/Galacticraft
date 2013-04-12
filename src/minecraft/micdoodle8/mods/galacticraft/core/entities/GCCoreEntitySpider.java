@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
 import micdoodle8.mods.galacticraft.API.IEntityBreathable;
-import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.EntitySkeleton;
@@ -272,7 +271,7 @@ public class GCCoreEntitySpider extends EntitySpider implements IEntityBreathabl
     }
 
 	@Override
-	public boolean canBreath() 
+	public boolean canBreath()
 	{
 		return true;
 	}

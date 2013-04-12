@@ -16,7 +16,7 @@ public class GCCoreContainerAirCompressor extends Container
     	this.compressor = compressor;
         this.addSlotToContainer(new Slot(compressor, 0, 133, 68));
         this.addSlotToContainer(new Slot(compressor, 1, 32, 27));
-        
+
 		int var3;
 
 		for (var3 = 0; var3 < 3; ++var3)

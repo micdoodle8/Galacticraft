@@ -14,12 +14,12 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GCCoreBlockSpaceStationBase extends BlockContainer
 {
 	private Icon[] spaceStationIcons;
-	
-	public GCCoreBlockSpaceStationBase(int par1) 
+
+	public GCCoreBlockSpaceStationBase(int par1)
 	{
 		super(par1, Material.rock);
 	}
-	
+
     @Override
 	public float getBlockHardness(World par1World, int par2, int par3, int par4)
     {
@@ -49,7 +49,7 @@ public class GCCoreBlockSpaceStationBase extends BlockContainer
     }
 
 	@Override
-	public TileEntity createNewTileEntity(World world) 
+	public TileEntity createNewTileEntity(World world)
 	{
 		return new GCCoreTileEntitySpaceStationBase();
 	}

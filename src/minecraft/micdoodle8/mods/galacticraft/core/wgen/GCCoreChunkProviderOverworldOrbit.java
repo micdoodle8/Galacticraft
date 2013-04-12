@@ -24,7 +24,7 @@ import universalelectricity.prefab.multiblock.IMultiBlock;
 public class GCCoreChunkProviderOverworldOrbit extends ChunkProviderGenerate
 {
 	private final Random rand;
-	
+
 	private final World worldObj;
 
 	public GCCoreChunkProviderOverworldOrbit(World par1World, long par2, boolean par4)
@@ -45,7 +45,7 @@ public class GCCoreChunkProviderOverworldOrbit extends ChunkProviderGenerate
     {
         return 0;
     }
-	
+
 	@Override
     public boolean saveChunks(boolean var1, IProgressUpdate var2)
     {
@@ -70,7 +70,7 @@ public class GCCoreChunkProviderOverworldOrbit extends ChunkProviderGenerate
 		var4.generateSkylightMap();
 		return var4;
 	}
-	
+
 	@Override
 	public boolean chunkExists(int par1, int par2)
 	{
@@ -81,24 +81,24 @@ public class GCCoreChunkProviderOverworldOrbit extends ChunkProviderGenerate
 	public void populate(IChunkProvider par1IChunkProvider, int par2, int par3)
 	{
 		BlockSand.fallInstantly = true;
-        int k = par2 * 16;
-        int l = par3 * 16;
+        final int k = par2 * 16;
+        final int l = par3 * 16;
         this.rand.setSeed(this.worldObj.getSeed());
-        long i1 = this.rand.nextLong() / 2L * 2L + 1L;
-        long j1 = this.rand.nextLong() / 2L * 2L + 1L;
+        final long i1 = this.rand.nextLong() / 2L * 2L + 1L;
+        final long j1 = this.rand.nextLong() / 2L * 2L + 1L;
         this.rand.setSeed(par2 * i1 + par3 * j1 ^ this.worldObj.getSeed());
         if (k == 0 && l == 0)
         {
             this.worldObj.setBlock(k, 64, l, GCCoreBlocks.spaceStationBase.blockID, 0, 3);
 //            this.worldObj.setBlockTileEntity(k, 64, l, new GCCoreTileEntitySpaceStationBase());
 
-            TileEntity var8 = this.worldObj.getBlockTileEntity(k, 64, l);
-            
+            final TileEntity var8 = this.worldObj.getBlockTileEntity(k, 64, l);
+
             if (var8 instanceof IMultiBlock)
             {
                 ((IMultiBlock)var8).onCreate(new Vector3(k, 64, l));
             }
-            
+
             new GCCoreWorldGenSpaceStation().generate(this.worldObj, this.rand, k - 10, 62, l - 3);
 //            for (int x = -3; x < 4; x++)
 //            {

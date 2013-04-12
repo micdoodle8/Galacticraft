@@ -110,7 +110,7 @@ public class GCCoreTileEntityTreasureChestRenderer extends TileEntitySpecialRend
             GL11.glRotatef(var11, 0.0F, 1.0F, 0.0F);
             GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
             float var12 = par1GCTileEntityTreasureChest.prevLidAngle + (par1GCTileEntityTreasureChest.lidAngle - par1GCTileEntityTreasureChest.prevLidAngle) * par8;
-            
+
             float var13;
 
             if (par1GCTileEntityTreasureChest.adjacentChestZNeg != null)

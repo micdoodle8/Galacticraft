@@ -22,7 +22,6 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -35,7 +34,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GCCoreBlockUnlitTorch extends BlockContainer implements IOxygenReliantBlock
 {
 	public boolean lit;
-	
+
 	public static Icon[] torchIcons = new Icon[2];
 
 	protected GCCoreBlockUnlitTorch(int par1, boolean lit)
@@ -52,31 +51,31 @@ public class GCCoreBlockUnlitTorch extends BlockContainer implements IOxygenReli
     {
     	if (this.blockID == GCCoreBlocks.unlitTorch.blockID)
     	{
-    		return this.torchIcons[1];
+    		return GCCoreBlockUnlitTorch.torchIcons[1];
     	}
     	else if (this.blockID == GCCoreBlocks.unlitTorchLit.blockID)
     	{
-    		return this.torchIcons[0];
+    		return GCCoreBlockUnlitTorch.torchIcons[0];
     	}
-    	
-    	return this.torchIcons[0];
+
+    	return GCCoreBlockUnlitTorch.torchIcons[0];
     }
 
     @Override
 	@SideOnly(Side.CLIENT)
     public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
     {
-    	return this.torchIcons[0];
+    	return GCCoreBlockUnlitTorch.torchIcons[0];
     }
 
     @Override
 	@SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister par1IconRegister)
     {
-    	this.torchIcons[0] = par1IconRegister.registerIcon("galacticraftcore:torch_lit");
-		this.torchIcons[1] = par1IconRegister.registerIcon("galacticraftcore:torch_unlit");
+    	GCCoreBlockUnlitTorch.torchIcons[0] = par1IconRegister.registerIcon("galacticraftcore:torch_lit");
+		GCCoreBlockUnlitTorch.torchIcons[1] = par1IconRegister.registerIcon("galacticraftcore:torch_unlit");
     }
-	
+
     @Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
     {
@@ -341,13 +340,13 @@ public class GCCoreBlockUnlitTorch extends BlockContainer implements IOxygenReli
     }
 
 	@Override
-	public TileEntity createNewTileEntity(World world) 
+	public TileEntity createNewTileEntity(World world)
 	{
 		return new GCCoreTileEntityUnlitTorch();
 	}
 
 	@Override
-	public void onOxygenRemoved(World world, int x, int y, int z) 
+	public void onOxygenRemoved(World world, int x, int y, int z)
 	{
 		if (world.provider instanceof IGalacticraftWorldProvider)
 		{
@@ -360,7 +359,7 @@ public class GCCoreBlockUnlitTorch extends BlockContainer implements IOxygenReli
 	}
 
 	@Override
-	public void onOxygenAdded(World world, int x, int y, int z) 
+	public void onOxygenAdded(World world, int x, int y, int z)
 	{
 		if (world.provider instanceof IGalacticraftWorldProvider)
 		{

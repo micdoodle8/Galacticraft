@@ -11,20 +11,20 @@ public class GalacticraftAccessTransformer extends AccessTransformer
 {
 	private static GalacticraftAccessTransformer instance;
 	private static List<String> mapFileList = new LinkedList<String>();
-	
+
 	public GalacticraftAccessTransformer() throws IOException
 	{
 		super();
 		GalacticraftAccessTransformer.instance = this;
-		
-		for(String file : GalacticraftAccessTransformer.mapFileList)
+
+		for(final String file : GalacticraftAccessTransformer.mapFileList)
 		{
 			this.readMapFile(file);
 		}
-		
+
 		GalacticraftAccessTransformer.mapFileList = null;
 	}
-	
+
 	public static void addTransformerMap(String mapFile)
 	{
 		if(GalacticraftAccessTransformer.instance == null)
@@ -36,18 +36,18 @@ public class GalacticraftAccessTransformer extends AccessTransformer
 			GalacticraftAccessTransformer.instance.readMapFile(mapFile);
 		}
 	}
-	
+
 	private void readMapFile(String mapFile)
 	{
 		System.out.println("[GCCoreTransformer]: Adding AccessTransformer: " + mapFile);
-		
+
 		try
 		{
-			Method parentMapFile = AccessTransformer.class.getDeclaredMethod("readMapFile", String.class);
+			final Method parentMapFile = AccessTransformer.class.getDeclaredMethod("readMapFile", String.class);
 			parentMapFile.setAccessible(true);
 			parentMapFile.invoke(this, mapFile);
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			throw new RuntimeException(e);
 		}

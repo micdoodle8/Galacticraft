@@ -38,13 +38,13 @@ public class GCCoreGuiAirCompressor extends GuiContainer
         this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 50, 4210752);
         status = "Oxygen: " + this.compressorInv.currentPower;
         this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 60, 4210752);
-        status = ElectricityDisplay.getDisplay(this.compressorInv.WATTS_PER_TICK * 20, ElectricUnit.WATT);
+        status = ElectricityDisplay.getDisplay(GCCoreTileEntityOxygenCompressor.WATTS_PER_TICK * 20, ElectricUnit.WATT);
         this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 70, 4210752);
         status = ElectricityDisplay.getDisplay(this.compressorInv.getVoltage(), ElectricUnit.VOLTAGE);
         this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 80, 4210752);
         this.fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 104 + 17, 4210752);
     }
-    
+
     private String getStatus()
     {
     	if (this.compressorInv.getStackInSlot(0) == null)
@@ -56,12 +56,12 @@ public class GCCoreGuiAirCompressor extends GuiContainer
     	{
     		return EnumColor.DARK_RED + "Oxygen Tank Full";
     	}
-    	
+
     	if (this.compressorInv.wattsReceived == 0)
     	{
     		return EnumColor.DARK_RED + "Not Enough Power";
     	}
-    	
+
     	if (this.compressorInv.currentPower < 1)
     	{
     		return EnumColor.DARK_RED + "Not Enough Oxygen";
@@ -81,7 +81,7 @@ public class GCCoreGuiAirCompressor extends GuiContainer
 
 		if (this.compressorInv != null)
 		{
-			int scale = (int) ((double) this.compressorInv.currentPower / (double) 31 * 54);
+			final int scale = (int) ((double) this.compressorInv.currentPower / (double) 31 * 54);
 			this.drawTexturedModalRect(var5 + 108, var6 + 26, 176, 0, Math.min(scale, 54), 16);
 		}
 	}

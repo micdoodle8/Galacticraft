@@ -15,7 +15,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.core.vector.Vector3;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -23,7 +22,7 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvanced
 {
     @SideOnly(Side.CLIENT)
     private Icon[] airLockIcons;
-    
+
 	public GCCoreBlockAirLockFrame(int par1)
 	{
 		super(par1, Material.rock);
@@ -39,25 +38,25 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvanced
     public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4)
     {
     	int airLocksAround = 0;
-    	
-    	for(ForgeDirection orientation : ForgeDirection.values())
+
+    	for(final ForgeDirection orientation : ForgeDirection.values())
     	{
     		if(orientation != ForgeDirection.UNKNOWN)
     		{
-    			Vector3 vec = new Vector3(par2, par3, par4);
-    			
-    			Vector3 vec2 = vec.clone().modifyPositionFromSide(orientation);
-    			
-    			TileEntity tilePos = vec2.getTileEntity(par1World);
+    			final Vector3 vec = new Vector3(par2, par3, par4);
+
+    			final Vector3 vec2 = vec.clone().modifyPositionFromSide(orientation);
+
+    			final TileEntity tilePos = vec2.getTileEntity(par1World);
 
     			if (tilePos != null && tilePos instanceof GCCoreTileEntityAirLock)
     			{
-        	    	for(ForgeDirection orientation2 : ForgeDirection.values())
+        	    	for(final ForgeDirection orientation2 : ForgeDirection.values())
         	    	{
         	    		if(orientation2 != ForgeDirection.UNKNOWN)
         	    		{
-        	    			TileEntity tilePos2 = vec2.clone().modifyPositionFromSide(orientation2).getTileEntity(par1World);
-        	    			
+        	    			final TileEntity tilePos2 = vec2.clone().modifyPositionFromSide(orientation2).getTileEntity(par1World);
+
         	    			if (tilePos2 != null && tilePos2 instanceof GCCoreTileEntityAirLock)
         	    			{
         	    				airLocksAround++;
@@ -67,12 +66,12 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvanced
     			}
     		}
     	}
-    	
+
     	if (airLocksAround > 0)
     	{
     		return false;
     	}
-    	
+
     	return true;
     }
 
@@ -99,14 +98,14 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvanced
     @Override
     public Icon getBlockTexture(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int side)
     {
-    	for(ForgeDirection orientation : ForgeDirection.values())
+    	for(final ForgeDirection orientation : ForgeDirection.values())
 		{
 			if(orientation != ForgeDirection.UNKNOWN)
 			{
-				Vector3 vector = new Vector3(par2, par3, par4);
+				final Vector3 vector = new Vector3(par2, par3, par4);
 				Vector3 blockVec = this.modifyPositionFromSide(vector.clone(), orientation, 1);
 				Block connection = Block.blocksList[blockVec.getBlockID(par1IBlockAccess)];
-			
+
 				if (connection != null && connection.equals(GCCoreBlocks.airLockSeal))
 				{
 					if (orientation.offsetY == -1)
@@ -161,7 +160,7 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvanced
 
 					blockVec = vector.clone().add(new Vector3(orientation.offsetX, orientation.offsetY, orientation.offsetZ));
 					connection = Block.blocksList[blockVec.getBlockID(par1IBlockAccess)];
-					
+
 					if (connection != null && connection.equals(GCCoreBlocks.airLockSeal))
 					{
 						if (orientation.offsetX == 1)
@@ -244,10 +243,10 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvanced
 				}
 			}
 		}
-    	
+
     	return this.airLockIcons[0];
     }
-    
+
 	public Vector3 modifyPositionFromSide(Vector3 vec, ForgeDirection side, double amount)
 	{
 		switch (side.ordinal())
@@ -392,8 +391,8 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvanced
 
 	private boolean gettingPowered(World par1World, int x, int y, int z)
 	{
-		int var1;
-		int var2;
+		final int var1;
+		final int var2;
     	final TileEntity te = par1World.getBlockTileEntity(x, y, z);
 
 //    	if (te instanceof GCCoreTileEntityAirLock)

@@ -13,9 +13,9 @@ import cpw.mods.fml.common.network.Player;
 public class GCCoreConnectionHandler extends ConnectionHandler implements IConnectionHandler
 {
     private static boolean connected = false;
-    
+
 	@Override
-	public void playerLoggedIn(Player player, NetHandler netHandler, INetworkManager manager) 
+	public void playerLoggedIn(Player player, NetHandler netHandler, INetworkManager manager)
 	{
 		super.playerLoggedIn(player, netHandler, manager);
 	}
@@ -30,19 +30,19 @@ public class GCCoreConnectionHandler extends ConnectionHandler implements IConne
 	}
 
 	@Override
-	public void connectionOpened(NetHandler netClientHandler, String server, int port, INetworkManager manager) 
+	public void connectionOpened(NetHandler netClientHandler, String server, int port, INetworkManager manager)
 	{
 		super.connectionOpened(netClientHandler, server, port, manager);
 	}
 
 	@Override
-	public void connectionOpened(NetHandler netClientHandler, MinecraftServer server, INetworkManager manager) 
+	public void connectionOpened(NetHandler netClientHandler, MinecraftServer server, INetworkManager manager)
 	{
 		super.connectionOpened(netClientHandler, server, manager);
 	}
 
 	@Override
-	public void connectionClosed(INetworkManager manager) 
+	public void connectionClosed(INetworkManager manager)
 	{
 		super.connectionClosed(manager);
 
@@ -56,7 +56,7 @@ public class GCCoreConnectionHandler extends ConnectionHandler implements IConne
 	}
 
 	@Override
-	public void clientLoggedIn(NetHandler clientHandler, INetworkManager manager, Packet1Login login) 
+	public void clientLoggedIn(NetHandler clientHandler, INetworkManager manager, Packet1Login login)
 	{
         GCCoreConnectionHandler.connected = true;
 		super.clientLoggedIn(clientHandler, manager, login);

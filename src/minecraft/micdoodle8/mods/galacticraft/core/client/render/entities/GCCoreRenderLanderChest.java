@@ -6,7 +6,6 @@ import net.minecraft.entity.Entity;
 
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -26,12 +25,12 @@ public class GCCoreRenderLanderChest extends Render
         GL11.glPushMatrix();
         GL11.glTranslatef((float)par2, (float)par4, (float)par6);
         this.loadTexture("/item/chest.png");
-        
+
         if (!entity.isDead)
         {
             this.chestModel.render(entity, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
         }
-        
+
         GL11.glPopMatrix();
     }
 

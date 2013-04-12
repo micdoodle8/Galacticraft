@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
-import micdoodle8.mods.galacticraft.API.ISchematicPage;
 import micdoodle8.mods.galacticraft.API.ISchematicResultPage;
 import micdoodle8.mods.galacticraft.API.SchematicRegistry;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -13,7 +12,6 @@ import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.network.PacketDispatcher;
 
 public class GCCoreGuiSchematicInput extends GuiContainer implements ISchematicResultPage
@@ -22,7 +20,7 @@ public class GCCoreGuiSchematicInput extends GuiContainer implements ISchematicR
 	private GuiButton nextButton;
 	private GuiButton unlockButton;
 	private int pageIndex;
-	
+
     public GCCoreGuiSchematicInput(InventoryPlayer par1InventoryPlayer, int x, int y, int z)
     {
         super(new GCCoreContainerSchematic(par1InventoryPlayer, x, y, z));
@@ -33,9 +31,9 @@ public class GCCoreGuiSchematicInput extends GuiContainer implements ISchematicR
     {
     	super.initGui();
         this.buttonList.clear();
-        this.buttonList.add((backButton = new GuiButton(0, this.width / 2 - 130, this.height / 2 - 30 + 27, 40, 20, "Back")));
-        this.buttonList.add((nextButton = new GuiButton(1, this.width / 2 + 90, this.height / 2 - 30 + 27, 40, 20, "Next")));
-        this.buttonList.add((unlockButton = new GuiButton(2, this.width / 2 - 46, this.height / 2 - 52, 92, 20, "Unlock Schematic")));
+        this.buttonList.add(this.backButton = new GuiButton(0, this.width / 2 - 130, this.height / 2 - 30 + 27, 40, 20, "Back"));
+        this.buttonList.add(this.nextButton = new GuiButton(1, this.width / 2 + 90, this.height / 2 - 30 + 27, 40, 20, "Next"));
+        this.buttonList.add(this.unlockButton = new GuiButton(2, this.width / 2 - 46, this.height / 2 - 52, 92, 20, "Unlock Schematic"));
         this.nextButton.enabled = false;
     }
 
@@ -78,7 +76,7 @@ public class GCCoreGuiSchematicInput extends GuiContainer implements ISchematicR
     }
 
 	@Override
-	public void setPageIndex(int index) 
+	public void setPageIndex(int index)
 	{
 		this.pageIndex = index;
 	}

@@ -33,7 +33,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityBreathable
 {
-	public GCCoreEntityAlienVillager(World par1World) 
+	public GCCoreEntityAlienVillager(World par1World)
 	{
 		super(par1World);
         this.randomTickDivider = 0;
@@ -110,7 +110,7 @@ public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityB
             }
             else
             {
-                ChunkCoordinates chunkcoordinates = this.villageObj.getCenter();
+                final ChunkCoordinates chunkcoordinates = this.villageObj.getCenter();
                 this.setHomeArea(chunkcoordinates.posX, chunkcoordinates.posY, chunkcoordinates.posZ, (int)(this.villageObj.getVillageRadius() * 0.6F));
 
                 if (this.field_82190_bM)
@@ -131,11 +131,11 @@ public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityB
                 {
                     if (this.buyingList.size() > 1)
                     {
-                        Iterator iterator = this.buyingList.iterator();
+                        final Iterator iterator = this.buyingList.iterator();
 
                         while (iterator.hasNext())
                         {
-                            MerchantRecipe merchantrecipe = (MerchantRecipe)iterator.next();
+                            final MerchantRecipe merchantrecipe = (MerchantRecipe)iterator.next();
 
                             if (merchantrecipe.func_82784_g())
                             {
@@ -143,7 +143,7 @@ public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityB
                             }
                         }
                     }
-                    
+
                     this.needsInitilization = false;
 
                     if (this.villageObj != null && this.lastBuyingPlayer != null)
@@ -201,7 +201,7 @@ public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityB
 
         if (par1NBTTagCompound.hasKey("Offers"))
         {
-            NBTTagCompound nbttagcompound1 = par1NBTTagCompound.getCompoundTag("Offers");
+            final NBTTagCompound nbttagcompound1 = par1NBTTagCompound.getCompoundTag("Offers");
             this.buyingList = new MerchantRecipeList(nbttagcompound1);
         }
     }
@@ -308,7 +308,7 @@ public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityB
     {
         if (this.villageObj != null)
         {
-            Entity entity = par1DamageSource.getEntity();
+            final Entity entity = par1DamageSource.getEntity();
 
             if (entity != null)
             {
@@ -323,7 +323,7 @@ public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityB
             }
             else if (entity == null)
             {
-                EntityPlayer entityplayer = this.worldObj.getClosestPlayerToEntity(this, 16.0D);
+                final EntityPlayer entityplayer = this.worldObj.getClosestPlayerToEntity(this, 16.0D);
 
                 if (entityplayer != null)
                 {
@@ -377,7 +377,7 @@ public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityB
 
     private float func_82188_j(float par1)
     {
-        float f1 = par1 + this.field_82191_bN;
+        final float f1 = par1 + this.field_82191_bN;
         return f1 > 0.9F ? 0.9F - (f1 - 0.9F) : f1;
     }
 
@@ -408,9 +408,9 @@ public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityB
     {
         for (int i = 0; i < 5; ++i)
         {
-            double d0 = this.rand.nextGaussian() * 0.02D;
-            double d1 = this.rand.nextGaussian() * 0.02D;
-            double d2 = this.rand.nextGaussian() * 0.02D;
+            final double d0 = this.rand.nextGaussian() * 0.02D;
+            final double d1 = this.rand.nextGaussian() * 0.02D;
+            final double d2 = this.rand.nextGaussian() * 0.02D;
             this.worldObj.spawnParticle(par1Str, this.posX + this.rand.nextFloat() * this.width * 2.0F - this.width, this.posY + 1.0D + this.rand.nextFloat() * this.height, this.posZ + this.rand.nextFloat() * this.width * 2.0F - this.width, d0, d1, d2);
         }
     }
@@ -427,7 +427,7 @@ public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityB
 
     public GCCoreEntityAlienVillager func_90012_b(EntityAgeable par1EntityAgeable)
     {
-        GCCoreEntityAlienVillager entityvillager = new GCCoreEntityAlienVillager(this.worldObj);
+        final GCCoreEntityAlienVillager entityvillager = new GCCoreEntityAlienVillager(this.worldObj);
         entityvillager.initCreature();
         return entityvillager;
     }

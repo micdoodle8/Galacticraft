@@ -15,46 +15,46 @@ import cpw.mods.fml.relauncher.Side;
 public class GCCorePacketSchematicList implements IGalacticraftAdvancedPacket
 {
 	public static byte packetID = 21;
-	
+
 	public static Packet buildSchematicListPacket(Collection col)
 	{
-		Packet250CustomPayload packet = new Packet250CustomPayload();
+		final Packet250CustomPayload packet = new Packet250CustomPayload();
 		packet.channel = GalacticraftCore.CHANNEL;
-		
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        DataOutputStream data = new DataOutputStream(bytes);
-        
+
+        final ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        final DataOutputStream data = new DataOutputStream(bytes);
+
         try
         {
         	data.writeByte(GCCorePacketSchematicList.packetID);
         	data.writeInt(col.size());
-            Iterator var3 = col.iterator();
+            final Iterator var3 = col.iterator();
 
             while (var3.hasNext())
             {
-            	ISchematicPage var4 = (ISchematicPage)var3.next();
+            	final ISchematicPage var4 = (ISchematicPage)var3.next();
                 data.writeInt(var4.getPageID());
             }
-        	
+
         	packet.data = bytes.toByteArray();
         	packet.length = packet.data.length;
-        	
+
         	data.close();
         	bytes.close();
         }
-        catch(Exception e)
+        catch(final Exception e)
         {
             e.printStackTrace();
         }
-        
+
         return packet;
 	}
-	
+
 	@Override
 	public void handlePacket(DataInputStream stream, Object[] extradata, Side side)
 	{
 	}
-	
+
 	@Override
 	public byte getPacketID()
 	{

@@ -15,7 +15,7 @@ public class GCCoreInventorySchematic implements IInventory
         this.stackList = new ItemStack[1];
         this.eventHandler = par1Container;
     }
-    
+
     @Override
 	public int getSizeInventory()
     {

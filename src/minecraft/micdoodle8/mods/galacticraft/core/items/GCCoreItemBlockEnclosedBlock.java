@@ -18,11 +18,12 @@ public class GCCoreItemBlockEnclosedBlock extends ItemBlock
 		this.setMaxDamage(0);
 		this.setHasSubtypes(true);
 	}
-	
-    public String getUnlocalizedName(ItemStack par1ItemStack)
+
+    @Override
+	public String getUnlocalizedName(ItemStack par1ItemStack)
     {
     	String name = "";
-    	
+
     	switch (par1ItemStack.getItemDamage())
     	{
     	case 0:

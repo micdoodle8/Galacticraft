@@ -23,7 +23,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GCCoreItemParachute extends Item
 {
 	protected Icon[] icons = new Icon[256];
-	
+
 	public static final String[] names = {
 		"plain", // 0
 		"black", // 1
@@ -75,10 +75,10 @@ public class GCCoreItemParachute extends Item
 	@SideOnly(Side.CLIENT)
 	public void updateIcons(IconRegister iconRegister)
 	{
-		List<ItemStack> list = new ArrayList<ItemStack>();
+		final List<ItemStack> list = new ArrayList<ItemStack>();
 		this.getSubItems(this.itemID, this.getCreativeTab(), list);
 
-		for (ItemStack itemStack : list)
+		for (final ItemStack itemStack : list)
 		{
 			this.icons[list.indexOf(itemStack)] = iconRegister.registerIcon(this.getUnlocalizedName(itemStack).replace("item.", "galacticraftcore:"));
 		}

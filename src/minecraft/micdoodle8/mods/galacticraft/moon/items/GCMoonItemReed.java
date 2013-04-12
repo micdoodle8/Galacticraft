@@ -15,7 +15,7 @@ public class GCMoonItemReed extends ItemReed
 		super(par1, par2Block);
 		this.setMaxStackSize(1);
 	}
-    
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void updateIcons(IconRegister iconRegister)

@@ -4,7 +4,7 @@ import java.util.List;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpaceship;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityRocketT1;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -59,27 +59,27 @@ public class GCCoreItemSpaceship extends Item
     		float centerX = -1;
     		float centerY = -1;
     		float centerZ = -1;
-    		
+
     		for (int i = -1; i < 2; i++)
     		{
     			for (int j = -1; j < 2; j++)
         		{
-    				int id = par3World.getBlockId(par4 + i, par5, par6 + j);
-    				int id2 = par3World.getBlockId(par4 + i, par5 + 1, par6 + j);
+    				final int id = par3World.getBlockId(par4 + i, par5, par6 + j);
+    				final int id2 = par3World.getBlockId(par4 + i, par5 + 1, par6 + j);
 
     				if (id == GCCoreBlocks.landingPad.blockID || id == GCCoreBlocks.landingPadFull.blockID || id2 == GCCoreBlocks.landingPadFull.blockID)
     				{
     					amountOfCorrectBlocks++;
-    					
+
 						centerX = par4 + i + 0.5F;
 						centerY = par5 - 2.2F;
 						centerZ = par6 + j + 0.5F;
-    					
+
     					if (id == GCCoreBlocks.landingPadFull.blockID || id2 == GCCoreBlocks.landingPadFull.blockID)
     					{
     						amountOfCorrectBlocks = 9;
     					}
-    					
+
     					if (id2 == GCCoreBlocks.landingPadFull.blockID)
     					{
     						centerX = par4 + i + 0.5F;
@@ -92,13 +92,13 @@ public class GCCoreItemSpaceship extends Item
 
     		if (amountOfCorrectBlocks == 9)
     		{
-    	    	final GCCoreEntitySpaceship spaceship = new GCCoreEntitySpaceship(par3World, centerX, centerY + 0.2D, centerZ, par1ItemStack.getItemDamage());
+    	    	final GCCoreEntityRocketT1 spaceship = new GCCoreEntityRocketT1(par3World, centerX, centerY + 0.2D, centerZ, par1ItemStack.getItemDamage());
 
 	    		par3World.spawnEntityInWorld(spaceship);
 	    		if (!par2EntityPlayer.capabilities.isCreativeMode)
 	    		par2EntityPlayer.inventory.consumeInventoryItem(par1ItemStack.getItem().itemID);
 	    		spaceship.setSpaceshipType(par1ItemStack.getItemDamage());
-	    		
+
 	    		if (par1ItemStack.getItemDamage() == 2)
 	    		{
 	    			spaceship.spaceshipFuelTank.setLiquid(new LiquidStack(GCCoreItems.fuel.itemID, spaceship.getMaxFuel()));

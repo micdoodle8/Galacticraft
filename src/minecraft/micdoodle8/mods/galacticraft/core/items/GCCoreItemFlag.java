@@ -81,7 +81,7 @@ public class GCCoreItemFlag extends Item
     public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4)
     {
         final int useTime = this.getMaxItemUseDuration(par1ItemStack) - par4;
-        
+
         boolean placed = false;
 
         final MovingObjectPosition var12 = this.getMovingObjectPositionFromPlayer(par2World, par3EntityPlayer, true);
@@ -103,7 +103,7 @@ public class GCCoreItemFlag extends Item
             if (!par2World.isRemote)
             {
             	final GCCoreEntityFlag flag = new GCCoreEntityFlag(par2World, x + 0.5F, y + 1.0F, z + 0.5F, par3EntityPlayer.rotationYaw - 90F);
-            	
+
             	if (par2World.getEntitiesWithinAABB(GCCoreEntityFlag.class, AxisAlignedBB.getAABBPool().getAABB(x, y, z, x + 1, y + 3, z + 1)).size() == 0)
             	{
                 	par2World.spawnEntityInWorld(flag);

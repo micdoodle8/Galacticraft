@@ -6,20 +6,20 @@
 //import net.minecraftforge.liquids.LiquidStack;
 //import cpw.mods.fml.common.FMLLog;
 //
-//public class GCCoreRefineryRecipe implements Comparable<GCCoreRefineryRecipe> 
+//public class GCCoreRefineryRecipe implements Comparable<GCCoreRefineryRecipe>
 //{
 //	private static SortedSet<GCCoreRefineryRecipe> recipes = new TreeSet<GCCoreRefineryRecipe>();
 //
 //	public final LiquidStack ingredient;
 //	public final LiquidStack result;
-//	
-//	public GCCoreRefineryRecipe(LiquidStack ingredient, LiquidStack result) 
+//
+//	public GCCoreRefineryRecipe(LiquidStack ingredient, LiquidStack result)
 //	{
 //		this.ingredient = ingredient;
 //		this.result = result;
 //	}
 //
-//	public static void registerRefineryRecipe(GCCoreRefineryRecipe recipe) 
+//	public static void registerRefineryRecipe(GCCoreRefineryRecipe recipe)
 //	{
 //		if (!recipes.contains(recipe))
 //		{
@@ -27,7 +27,7 @@
 //		}
 //	}
 //
-//	public static GCCoreRefineryRecipe findRefineryRecipe(LiquidStack liquid1) 
+//	public static GCCoreRefineryRecipe findRefineryRecipe(LiquidStack liquid1)
 //	{
 //		for (GCCoreRefineryRecipe recipe : recipes)
 //		{
@@ -41,14 +41,14 @@
 //		return null;
 //	}
 //
-//	public boolean matches(LiquidStack liquid1) 
+//	public boolean matches(LiquidStack liquid1)
 //	{
 //		if (liquid1 == null)
 //		{
 //			return false;
 //		}
 //
-//		if (ingredient != null) 
+//		if (ingredient != null)
 //		{
 //			return ingredient.isLiquidEqual(liquid1);
 //		}
@@ -63,7 +63,7 @@
 //		{
 //			return -1;
 //		}
-//		else if (ingredient == null) 
+//		else if (ingredient == null)
 //		{
 //			if (other.ingredient == null)
 //			{
@@ -73,7 +73,7 @@
 //			{
 //				return 1;
 //			}
-//		} 
+//		}
 //		else if (other.ingredient == null)
 //		{
 //			return -1;
@@ -91,24 +91,24 @@
 //	}
 //
 //	@Override
-//	public boolean equals(Object obj) 
+//	public boolean equals(Object obj)
 //	{
 //		if (obj != null && obj instanceof GCCoreRefineryRecipe)
 //		{
 //			return this.compareTo((GCCoreRefineryRecipe) obj) == 0;
 //		}
-//			
+//
 //		return false;
 //	}
 //
 //	@Override
-//	public int hashCode() 
+//	public int hashCode()
 //	{
 //		if (ingredient == null)
 //		{
 //			return 0;
 //		}
-//		
+//
 //		return ingredient.itemID ^ ingredient.itemMeta;
 //	}
 //}

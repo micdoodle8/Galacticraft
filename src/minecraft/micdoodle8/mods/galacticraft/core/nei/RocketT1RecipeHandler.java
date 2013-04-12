@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.nei;
 
-import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,9 +16,8 @@ import codechicken.nei.NEIServerUtils;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.forge.GuiContainerManager;
 import codechicken.nei.recipe.TemplateRecipeHandler;
-import cpw.mods.fml.common.FMLLog;
 
-public class RocketT1RecipeHandler extends TemplateRecipeHandler 
+public class RocketT1RecipeHandler extends TemplateRecipeHandler
 {
 	int ticksPassed;
 
@@ -27,7 +25,7 @@ public class RocketT1RecipeHandler extends TemplateRecipeHandler
 	{
 		return "galacticraft.rocketT1";
 	}
-    
+
     @Override
     public int recipiesPerPage()
     {
@@ -36,13 +34,13 @@ public class RocketT1RecipeHandler extends TemplateRecipeHandler
 
 	public Set<Entry<ArrayList<PositionedStack>, PositionedStack>> getRecipes()
 	{
-		HashMap<ArrayList<PositionedStack>, PositionedStack> recipes = new HashMap<ArrayList<PositionedStack>, PositionedStack>();
+		final HashMap<ArrayList<PositionedStack>, PositionedStack> recipes = new HashMap<ArrayList<PositionedStack>, PositionedStack>();
 
-        int changex = -3;
-        int changey = 23;
+        final int changex = -3;
+        final int changey = 23;
 
 		// Spaceship T1
-		ArrayList<PositionedStack> input1 = new ArrayList<PositionedStack>();
+		final ArrayList<PositionedStack> input1 = new ArrayList<PositionedStack>();
 		input1.add(new PositionedStack(new ItemStack(GCCoreItems.rocketNoseCone), 48 + changex, -8 + changey));
 		input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlating), 39 + changex, -6 + 0 * 18 + 16 + changey));
 		input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlating), 39 + changex, -6 + 1 * 18 + 16 + changey));
@@ -58,9 +56,9 @@ public class RocketT1RecipeHandler extends TemplateRecipeHandler
 		input1.add(new PositionedStack(new ItemStack(GCCoreItems.rocketFins), 75 + changex, 64 + changey));
 		input1.add(new PositionedStack(new ItemStack(GCCoreItems.rocketFins), 75 + changex, 82 + changey));
 		recipes.put(input1, new PositionedStack(new ItemStack(GCCoreItems.spaceship, 1, 0), 142 + changex, 69 + changey));
-		
+
 		// Spaceship T1 with 27 storage space
-		ArrayList<PositionedStack> input2 = new ArrayList<PositionedStack>();
+		final ArrayList<PositionedStack> input2 = new ArrayList<PositionedStack>();
 		input2.add(new PositionedStack(new ItemStack(GCCoreItems.rocketNoseCone), 48 + changex, -8 + changey));
 		input2.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlating), 39 + changex, -6 + 0 * 18 + 16 + changey));
 		input2.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlating), 39 + changex, -6 + 1 * 18 + 16 + changey));
@@ -77,7 +75,7 @@ public class RocketT1RecipeHandler extends TemplateRecipeHandler
 		input2.add(new PositionedStack(new ItemStack(GCCoreItems.rocketFins), 75 + changex, 82 + changey));
 		input2.add(new PositionedStack(new ItemStack(Block.chest), 93 + 0 * 26 + changex, -15 + changey));
 		recipes.put(input2, new PositionedStack(new ItemStack(GCCoreItems.spaceship, 1, 1), 142 + changex, 69 + changey));
-		
+
 		return recipes.entrySet();
 	}
 
@@ -85,24 +83,24 @@ public class RocketT1RecipeHandler extends TemplateRecipeHandler
 	public void drawBackground(GuiContainerManager guimanager, int i)
 	{
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		guimanager.bindTexture(getGuiTexture());
+		guimanager.bindTexture(this.getGuiTexture());
 		guimanager.drawTexturedModalRect(0, 0, 3, 4, 168, 130);
 	}
 
 	@Override
 	public void drawExtras(GuiContainerManager guimanager, int i)
 	{
-		float f = ticksPassed >= 20 ? (ticksPassed - 20) % 20 / 20.0F : 0.0F;
-		drawProgressBar(guimanager, 63, 34, 176 + 26, 0, 24, 7, f, 0);
-		f = ticksPassed <= 20 ? ticksPassed / 20.0F : 1.0F;
-		drawProgressBar(guimanager, 149, 12, 176 + 26, 7, 4, 52, f, 3);
+		float f = this.ticksPassed >= 20 ? (this.ticksPassed - 20) % 20 / 20.0F : 0.0F;
+		this.drawProgressBar(guimanager, 63, 34, 176 + 26, 0, 24, 7, f, 0);
+		f = this.ticksPassed <= 20 ? this.ticksPassed / 20.0F : 1.0F;
+		this.drawProgressBar(guimanager, 149, 12, 176 + 26, 7, 4, 52, f, 3);
 	}
 
 	@Override
 	public void onUpdate()
 	{
 		super.onUpdate();
-		ticksPassed++;
+		this.ticksPassed++;
 	}
 
 	@Override
@@ -113,14 +111,14 @@ public class RocketT1RecipeHandler extends TemplateRecipeHandler
 	@Override
 	public void loadCraftingRecipes(String outputId, Object... results)
 	{
-		if(outputId.equals(getRecipeId()))
+		if(outputId.equals(this.getRecipeId()))
 		{
-			for(Map.Entry irecipe : getRecipes())
+			for(final Map.Entry irecipe : this.getRecipes())
 			{
-				arecipes.add(new CachedRocketRecipe(irecipe));
+				this.arecipes.add(new CachedRocketRecipe(irecipe));
 			}
 		}
-		else 
+		else
 		{
 			super.loadCraftingRecipes(outputId, results);
 		}
@@ -129,11 +127,11 @@ public class RocketT1RecipeHandler extends TemplateRecipeHandler
 	@Override
 	public void loadCraftingRecipes(ItemStack result)
 	{
-		for(Map.Entry irecipe : getRecipes())
+		for(final Map.Entry irecipe : this.getRecipes())
 		{
 			if(NEIServerUtils.areStacksSameTypeCrafting(((PositionedStack)irecipe.getValue()).item, result))
 			{
-				arecipes.add(new CachedRocketRecipe(irecipe));
+				this.arecipes.add(new CachedRocketRecipe(irecipe));
 			}
 		}
 	}
@@ -141,13 +139,13 @@ public class RocketT1RecipeHandler extends TemplateRecipeHandler
 	@Override
 	public void loadUsageRecipes(ItemStack ingredient)
 	{
-		for(Map.Entry irecipe : getRecipes())
+		for(final Map.Entry irecipe : this.getRecipes())
 		{
-			for (PositionedStack pstack : (((ArrayList<PositionedStack>)irecipe.getKey())))
+			for (final PositionedStack pstack : (ArrayList<PositionedStack>)irecipe.getKey())
 			{
 				if (NEIServerUtils.areStacksSameTypeCrafting(ingredient, pstack.item))
 				{
-					arecipes.add(new CachedRocketRecipe(irecipe));
+					this.arecipes.add(new CachedRocketRecipe(irecipe));
 					break;
 				}
 			}
@@ -162,20 +160,20 @@ public class RocketT1RecipeHandler extends TemplateRecipeHandler
 		@Override
         public ArrayList<PositionedStack> getIngredients()
         {
-            return input;
+            return this.input;
         }
 
 		@Override
 		public PositionedStack getResult()
 		{
-			return output;
+			return this.output;
 		}
 
 		public CachedRocketRecipe(ArrayList<PositionedStack> pstack1, PositionedStack pstack2)
 		{
 			super();
-			input = pstack1;
-			output = pstack2;
+			this.input = pstack1;
+			this.output = pstack2;
 		}
 
 		public CachedRocketRecipe(Map.Entry recipe)
@@ -185,13 +183,13 @@ public class RocketT1RecipeHandler extends TemplateRecipeHandler
 	}
 
 	@Override
-	public String getRecipeName() 
+	public String getRecipeName()
 	{
 		return "Rocket T1";
 	}
 
 	@Override
-	public String getGuiTexture() 
+	public String getGuiTexture()
 	{
 		return "/micdoodle8/mods/galacticraft/core/client/gui/rocketbench.png";
 	}

@@ -1,13 +1,10 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderSpaceship;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpaceship;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityRocketT1;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.StringUtils;
@@ -38,14 +35,14 @@ public class GCCoreOverlaySpaceship extends GCCoreOverlay
 
 		float var1 = 0F;
 		float var2 = height / 2 - 170 / 2;
-		float var3 = minecraft.thePlayer.worldObj.provider.dimensionId == 0 ? 0 : 13.5F;
+		float var3 = GCCoreOverlaySpaceship.minecraft.thePlayer.worldObj.provider.dimensionId == 0 ? 0 : 13.5F;
 		float var3b = 0;
 		float var4 = 0;
 		float var5 = 13.5F;
 		float var6 = 170;
         float var7 = 0.00390625F * 1.5F;
         float var8 = 0.00390625F * 1.5F;
-        
+
         final Tessellator var9 = Tessellator.instance;
         var9.startDrawingQuads();
         var9.addVertexWithUV(var1 + 0, var2 + var6, 0.0, (var3 + 0) * var7, (var4 + var6) * var8);
@@ -53,10 +50,10 @@ public class GCCoreOverlaySpaceship extends GCCoreOverlay
         var9.addVertexWithUV(var1 + var5, var2 + 0, 0.0, (var3 + var5) * var7, (var4 + 0) * var8);
         var9.addVertexWithUV(var1 + 0, var2 + 0, 0.0, (var3 + 0) * var7, (var4 + 0) * var8);
         var9.draw();
-        
+
         GL11.glColor3f(1.0F, 1.0F, 1.0F);
-        
-        GCCoreRenderSpaceship spaceship = (GCCoreRenderSpaceship) RenderManager.instance.entityRenderMap.get(GCCoreEntitySpaceship.class);
+
+        final GCCoreRenderSpaceship spaceship = (GCCoreRenderSpaceship) RenderManager.instance.entityRenderMap.get(GCCoreEntityRocketT1.class);
 
 		final int y1 = height / 2 + 60 - (int) Math.floor(GCCoreOverlay.getPlayerPositionY(GCCoreOverlaySpaceship.minecraft.thePlayer) / 10.5F);
 		var1 = 2.5F;
@@ -68,25 +65,25 @@ public class GCCoreOverlaySpaceship extends GCCoreOverlay
 		var6 = 8;
         var7 = 1.0F / 64.0F;
         var8 = 1.0F / 32.0F;
-        
+
         GL11.glPushMatrix();
-        int i = minecraft.thePlayer.ridingEntity.getBrightnessForRender(1);
-        int j = i % 65536;
-        int k = i / 65536;
-        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)j / 1.0F, (float)k / 1.0F);
+        final int i = GCCoreOverlaySpaceship.minecraft.thePlayer.ridingEntity.getBrightnessForRender(1);
+        final int j = i % 65536;
+        final int k = i / 65536;
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, j / 1.0F, k / 1.0F);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glEnable(GL11.GL_COLOR_MATERIAL);
         GL11.glTranslatef(var1 + 4, var2 + 6, 50F);
         GL11.glScalef(5F, 5F, 5F);
         GL11.glRotatef(180F, 1, 0, 0);
         GL11.glRotatef(90F, 0, 1, 0);
-        spaceship.renderSpaceship(new GCCoreEntitySpaceship(minecraft.theWorld), 0, 0, 0, 0, 0);
+        spaceship.renderSpaceship(new GCCoreEntityRocketT1(GCCoreOverlaySpaceship.minecraft.theWorld), 0, 0, 0, 0, 0);
         GL11.glPopMatrix();
-        
+
 		GCCoreOverlay.loadDownloadableImageTexture("http://skins.minecraft.net/MinecraftSkins/" + StringUtils.stripControlCodes(GCCoreOverlaySpaceship.minecraft.thePlayer.username) + ".png", FMLClientHandler.instance().getClient().thePlayer.getTexture());
 
         GL11.glTranslatef(0F, 0F, 60F);
-        
+
         var9.startDrawingQuads();
         var9.addVertexWithUV(var1 + 0, var2 + var6, 0.0, (var3 + 0) * var7, (var4 + var6) * var8);
         var9.addVertexWithUV(var1 + var5, var2 + var6, 0.0, (var3 + var5) * var7, (var4 + var6) * var8);
@@ -100,7 +97,7 @@ public class GCCoreOverlaySpaceship extends GCCoreOverlay
         var9.addVertexWithUV(var1 + var5, var2 + 0, 0.0, (var3b + var5) * var7, (var4 + 0) * var8);
         var9.addVertexWithUV(var1 + 0, var2 + 0, 0.0, (var3b + 0) * var7, (var4 + 0) * var8);
         var9.draw();
-        
+
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 	}
 }

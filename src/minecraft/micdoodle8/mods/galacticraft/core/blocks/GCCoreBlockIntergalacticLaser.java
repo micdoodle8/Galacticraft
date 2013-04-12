@@ -30,7 +30,7 @@
 //public class GCCoreBlockIntergalacticLaser extends BlockContainer
 //{
 //	Icon[] iconBuffer;
-//	
+//
 //	public GCCoreBlockIntergalacticLaser(int par1)
 //	{
 //		super(par1, Material.wood);
@@ -42,7 +42,7 @@
 //    {
 //        return GalacticraftCore.galacticraftTab;
 //    }
-//	
+//
 //    @Override
 //    public void registerIcons(IconRegister par1IconRegister)
 //    {
@@ -129,12 +129,12 @@
 //    public void onBlockPlacedBy(World var1, int var2, int var3, int var4, EntityLiving var5, ItemStack var6)
 //    {
 //        TileEntity var8 = var1.getBlockTileEntity(var2, var3, var4);
-//        
+//
 //        if (var8 instanceof IMultiBlock)
 //        {
 //            ((IMultiBlock)var8).onCreate(new Vector3(var2, var3, var4));
 //        }
-//        
+//
 //        super.onBlockPlacedBy(var1, var2, var3, var4, var5, var6);
 //    }
 //
@@ -142,12 +142,12 @@
 //    public void breakBlock(World var1, int var2, int var3, int var4, int var5, int var6)
 //    {
 //        TileEntity var9 = var1.getBlockTileEntity(var2, var3, var4);
-//        
+//
 //        if (var9 instanceof IMultiBlock)
 //        {
 //            ((IMultiBlock)var9).onDestroy(var9);
 //        }
-//        
+//
 //        super.breakBlock(var1, var2, var3, var4, var5, var6);
 //    }
 //

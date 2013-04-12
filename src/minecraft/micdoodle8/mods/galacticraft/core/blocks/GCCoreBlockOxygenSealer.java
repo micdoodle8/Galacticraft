@@ -34,7 +34,7 @@ public class GCCoreBlockOxygenSealer extends BlockAdvanced
 	private Icon iconDistributor;
 	private Icon iconInput;
 	private Icon iconOutput;
-	
+
     private static boolean keepDistributorInventory = false;
 
 	public GCCoreBlockOxygenSealer(int par1)
@@ -61,11 +61,11 @@ public class GCCoreBlockOxygenSealer extends BlockAdvanced
 	@Override
 	public boolean onUseWrench(World par1World, int x, int y, int z, EntityPlayer par5EntityPlayer, int side, float hitX, float hitY, float hitZ)
 	{
-		int metadata = par1World.getBlockMetadata(x, y, z);
-		int original = metadata;
+		final int metadata = par1World.getBlockMetadata(x, y, z);
+		final int original = metadata;
 
 		int change = 0;
-		
+
 		// Re-orient the block
 		switch (original)
 		{
@@ -93,7 +93,7 @@ public class GCCoreBlockOxygenSealer extends BlockAdvanced
     	entityPlayer.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiAirSealer, world, x, y, z);
     	return true;
     }
-	
+
 	@Override
 	public Icon getBlockTextureFromSideAndMetadata(int side, int metadata)
 	{
@@ -114,11 +114,11 @@ public class GCCoreBlockOxygenSealer extends BlockAdvanced
 			return this.iconDistributor;
 		}
     }
-    
+
 	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving entityLiving, ItemStack itemStack)
 	{
-		int angle = MathHelper.floor_double(entityLiving.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+		final int angle = MathHelper.floor_double(entityLiving.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
 		int change = 0;
 
 		switch (angle)

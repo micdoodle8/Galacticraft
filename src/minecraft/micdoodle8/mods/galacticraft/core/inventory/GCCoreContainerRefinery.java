@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
-import micdoodle8.mods.galacticraft.API.IRefinableItem;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityRefinery;
 import net.minecraft.entity.player.EntityPlayer;
@@ -69,11 +67,11 @@ public class GCCoreContainerRefinery extends Container
 	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par1)
 	{
 		ItemStack var2 = null;
-		Slot var3 = (Slot) this.inventorySlots.get(par1);
+		final Slot var3 = (Slot) this.inventorySlots.get(par1);
 
 		if (var3 != null && var3.getHasStack())
 		{
-			ItemStack var4 = var3.getStack();
+			final ItemStack var4 = var3.getStack();
 			var2 = var4.copy();
 
 			if (par1 == 2)

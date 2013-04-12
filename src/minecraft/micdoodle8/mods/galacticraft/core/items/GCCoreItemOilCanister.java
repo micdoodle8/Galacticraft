@@ -26,7 +26,7 @@ public class GCCoreItemOilCanister extends Item implements IRefinableItem
 		"liquidcan_oil_2", // 3
 		"liquidcan_oil_1", // 4
 		"liquidcan_empty"}; // 5
-	
+
 	public GCCoreItemOilCanister(int par1)
 	{
 		super(par1);
@@ -45,8 +45,8 @@ public class GCCoreItemOilCanister extends Item implements IRefinableItem
 	public void updateIcons(IconRegister iconRegister)
 	{
 		int i = 0;
-		
-		for (String name : this.names)
+
+		for (final String name : GCCoreItemOilCanister.names)
 		{
 			this.icons[i++] = iconRegister.registerIcon("galacticraftcore:" + name);
 		}
@@ -64,7 +64,7 @@ public class GCCoreItemOilCanister extends Item implements IRefinableItem
 		{
 			return "item.oilCanister";
 		}
-		
+
 		return "item.oilCanisterPartial";
 	}
 
@@ -72,7 +72,7 @@ public class GCCoreItemOilCanister extends Item implements IRefinableItem
 	public Icon getIconFromDamage(int par1)
 	{
     	final int damage = (int) Math.floor(par1 / 10);
-    	
+
 		if (this.icons.length > damage)
 		{
 			return this.icons[damage];
@@ -112,18 +112,18 @@ public class GCCoreItemOilCanister extends Item implements IRefinableItem
 		{
 			return true;
 		}
-		
+
 		return false;
 	}
 
 	@Override
-	public ItemStack getResultItem(ItemStack originalStack) 
+	public ItemStack getResultItem(ItemStack originalStack)
 	{
 		if (originalStack.getMaxDamage() - originalStack.getItemDamage() > 0)
 		{
 			return new ItemStack(GCCoreItems.fuelCanister.itemID, 1, originalStack.getItemDamage() == 0 ? 1 : originalStack.getItemDamage());
 		}
-		
+
 		return null;
 	}
 }

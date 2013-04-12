@@ -13,7 +13,7 @@ import universalelectricity.prefab.multiblock.IMultiBlock;
 public class GCCoreWorldGenSpaceStation extends WorldGenerator
 {
 	@Override
-	public boolean generate(World world, Random rand, int i, int j, int k) 
+	public boolean generate(World world, Random rand, int i, int j, int k)
 	{
 		world.setBlock(i + 0, j + 0, k + 0, GCCoreBlocks.decorationBlocks.blockID, 4, 3);
 		world.setBlock(i + 0, j + 0, k + 1, GCCoreBlocks.decorationBlocks.blockID, 4, 3);
@@ -55,20 +55,20 @@ public class GCCoreWorldGenSpaceStation extends WorldGenerator
 		world.setBlock(i + 3, j + 0, k + 5, GCCoreBlocks.decorationBlocks.blockID, 4, 3);
 		world.setBlock(i + 3, j + 0, k + 6, GCCoreBlocks.decorationBlocks.blockID, 4, 3);
 		world.setBlock(i + 3, j + 1, k + 0, GCCoreBlocks.decorationBlocks.blockID, 4, 3);
-		
-		
-		
+
+
+
 		world.setBlock(i + 3, j + 1, k + 3, GCCoreBlocks.landingPadFull.blockID, 0, 3);
 		world.setBlockTileEntity(i + 3, j + 1, k + 3, new GCCoreTileEntityLandingPad());
 
-        TileEntity var8 = world.getBlockTileEntity(i + 3, j + 1, k + 3);
-        
+        final TileEntity var8 = world.getBlockTileEntity(i + 3, j + 1, k + 3);
+
         if (var8 instanceof IMultiBlock)
         {
             ((IMultiBlock)var8).onCreate(new Vector3(i + 3, j + 1, k + 3));
         }
-		
-		
+
+
 		world.setBlock(i + 3, j + 1, k + 6, GCCoreBlocks.decorationBlocks.blockID, 4, 3);
 		world.setBlock(i + 4, j + 0, k + 0, GCCoreBlocks.decorationBlocks.blockID, 4, 3);
 		world.setBlock(i + 4, j + 0, k + 1, GCCoreBlocks.decorationBlocks.blockID, 4, 3);
@@ -186,11 +186,11 @@ public class GCCoreWorldGenSpaceStation extends WorldGenerator
 		world.setBlock(i + 10, j + 1, k + 4, GCCoreBlocks.decorationBlocks.blockID, 4, 3);
 		world.setBlock(i + 10, j + 1, k + 5, GCCoreBlocks.decorationBlocks.blockID, 4, 3);
 		world.setBlock(i + 10, j + 1, k + 6, GCCoreBlocks.decorationBlocks.blockID, 4, 3);
-		
-		
+
+
 //		world.setBlock(i + 10, j + 2, k + 3, 3, 0, 3);
-		
-		
+
+
 		world.setBlock(i + 10, j + 5, k + 0, GCCoreBlocks.decorationBlocks.blockID, 4, 3);
 		world.setBlock(i + 10, j + 5, k + 6, GCCoreBlocks.decorationBlocks.blockID, 4, 3);
 		world.setBlock(i + 10, j + 6, k + 0, GCCoreBlocks.decorationBlocks.blockID, 4, 3);

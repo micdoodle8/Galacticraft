@@ -1,11 +1,9 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
 import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelSkeleton;
-import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelSpider;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemSensorGlasses;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.item.Item;
@@ -34,12 +32,13 @@ public class GCCoreRenderSkeleton extends RenderLiving
     }
 
     @Override
-    protected void preRenderCallback(EntityLiving par1EntityLiving, float par2) 
+    protected void preRenderCallback(EntityLiving par1EntityLiving, float par2)
     {
     	GL11.glScalef(1.2F, 1.2F, 1.2F);
     }
 
-    protected void renderEquippedItems(EntityLiving par1EntityLiving, float par2) 
+    @Override
+	protected void renderEquippedItems(EntityLiving par1EntityLiving, float par2)
     {
     	GL11.glPushMatrix();
     	GL11.glTranslatef(-0.3F, -0.3F, -0.6F);

@@ -17,7 +17,7 @@ public class GCCoreUtil
 	public static void checkVersion(Side side)
     {
 		GCCoreThreadVersionCheck.startCheck(side);
-        
+
 //    	try
 //    	{
 //    		final URL url = new URL("http://micdoodle8.com/galacticraft/version.html");
@@ -41,7 +41,7 @@ public class GCCoreUtil
 //		    			GalacticraftCore.remoteMinVer = Integer.parseInt(str2[1]);
 //		    			GalacticraftCore.remoteBuildVer = Integer.parseInt(str2[2]);
 //		    		}
-//		    		
+//
 //		    		if (GalacticraftCore.remoteBuildVer != 0 && GalacticraftCore.remoteBuildVer < GalacticraftCore.LOCALBUILDVERSION)
 //		    		{
 //		    			GalacticraftCore.usingDevVersion = true;

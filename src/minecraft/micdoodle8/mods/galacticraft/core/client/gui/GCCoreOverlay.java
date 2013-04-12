@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpaceship;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityRocketT1;
 import net.minecraft.client.renderer.RenderEngine;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,9 +19,9 @@ public class GCCoreOverlay
 	 */
 	protected static int getPlayerPositionY(EntityPlayer player)
 	{
-		if (player.ridingEntity != null && player.ridingEntity instanceof GCCoreEntitySpaceship)
+		if (player.ridingEntity != null && player.ridingEntity instanceof GCCoreEntityRocketT1)
 		{
-			return (int) Math.floor(((GCCoreEntitySpaceship) player.ridingEntity).posY);
+			return (int) Math.floor(((GCCoreEntityRocketT1) player.ridingEntity).posY);
 		}
 
 		return (int) Math.floor(player.posY);

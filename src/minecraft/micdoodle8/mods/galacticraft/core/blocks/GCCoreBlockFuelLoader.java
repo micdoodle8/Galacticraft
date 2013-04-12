@@ -24,8 +24,8 @@ public class GCCoreBlockFuelLoader extends BlockAdvanced
 	private Icon iconInput;
 	private Icon iconFront;
 	private Icon iconFuelInput;
-	
-	public GCCoreBlockFuelLoader(int id) 
+
+	public GCCoreBlockFuelLoader(int id)
 	{
 		super(id, Material.rock);
 	}
@@ -83,11 +83,11 @@ public class GCCoreBlockFuelLoader extends BlockAdvanced
 	@Override
 	public boolean onUseWrench(World par1World, int x, int y, int z, EntityPlayer par5EntityPlayer, int side, float hitX, float hitY, float hitZ)
 	{
-		int metadata = par1World.getBlockMetadata(x, y, z);
-		int original = metadata;
+		final int metadata = par1World.getBlockMetadata(x, y, z);
+		final int original = metadata;
 
 		int change = 0;
-		
+
 		// Re-orient the block
 		switch (original)
 		{
@@ -108,11 +108,11 @@ public class GCCoreBlockFuelLoader extends BlockAdvanced
 		par1World.setBlockMetadataWithNotify(x, y, z, change, 3);
 		return true;
 	}
-    
+
 	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving entityLiving, ItemStack itemStack)
 	{
-		int angle = MathHelper.floor_double(entityLiving.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+		final int angle = MathHelper.floor_double(entityLiving.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
 		int change = 0;
 
 		switch (angle)
@@ -132,13 +132,13 @@ public class GCCoreBlockFuelLoader extends BlockAdvanced
 		}
 
 		world.setBlockMetadataWithNotify(x, y, z, change, 3);
-		
+
 		for (int dX = -2; dX < 3; dX++)
 		{
 			for (int dZ = -2; dZ < 3; dZ++)
 			{
-				int id = world.getBlockId(x + dX, y, z + dZ);
-				
+				final int id = world.getBlockId(x + dX, y, z + dZ);
+
 				if (id == GCCoreBlocks.landingPadFull.blockID)
 				{
 			        world.markBlockForUpdate(x + dX, y, z + dZ);
@@ -151,13 +151,13 @@ public class GCCoreBlockFuelLoader extends BlockAdvanced
 	public void onBlockDestroyedByPlayer(World world, int x, int y, int z, int par5)
 	{
 		super.onBlockDestroyedByPlayer(world, x, y, z, par5);
-		
+
 		for (int dX = -2; dX < 3; dX++)
 		{
 			for (int dZ = -2; dZ < 3; dZ++)
 			{
-				int id = world.getBlockId(x + dX, y, z + dZ);
-				
+				final int id = world.getBlockId(x + dX, y, z + dZ);
+
 				if (id == GCCoreBlocks.landingPadFull.blockID)
 				{
 			        world.markBlockForUpdate(x + dX, y, z + dZ);

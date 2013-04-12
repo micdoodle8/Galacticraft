@@ -10,16 +10,16 @@ import cpw.mods.fml.relauncher.SideOnly;
 public interface ISchematicPage extends Comparable<ISchematicPage>
 {
 	public int getPageID();
-	
+
 	public int getGuiID();
-	
+
 	public ItemStack getRequiredItem();
 
 	@SideOnly(Side.CLIENT)
 	public String getTitle();
-	
+
 	@SideOnly(Side.CLIENT)
 	public GuiScreen getResultScreen(EntityPlayer player, int x, int y, int z);
-	
+
 	public Container getResultContainer(EntityPlayer player, int x, int y, int z);
 }

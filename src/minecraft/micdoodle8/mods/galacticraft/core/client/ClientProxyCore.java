@@ -76,8 +76,8 @@ import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityLanderChest;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityMeteor;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityOxygenBubble;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityParaChest;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityRocketT1;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySkeleton;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpaceship;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpider;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityWorm;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityZombie;
@@ -169,14 +169,14 @@ public class ClientProxyCore extends CommonProxyCore
     public static double playerPosZ;
     public static float playerRotationYaw;
     public static float playerRotationPitch;
-    
+
     public static int clientSpaceStationID = 0;
 
 	@Override
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		ClientProxyCore.moon.preInit(event);
-		
+
 //		try
 //		{
 //			PlayerAPI.register(GalacticraftCore.MODID, GCCorePlayerBaseClient.class);
@@ -186,7 +186,7 @@ public class ClientProxyCore extends CommonProxyCore
 //			FMLLog.severe("PLAYER API NOT INSTALLED!");
 //			cnfe.printStackTrace();
 //		}
-//		
+//
 //		try
 //		{
 //			ModelPlayerAPI.register(GalacticraftCore.MODID, GCCoreModelPlayer.class);
@@ -267,7 +267,7 @@ public class ClientProxyCore extends CommonProxyCore
 		ClientProxyCore.moon.registerRenderInformation();
 
 		BasicComponents.registerTileEntityRenderers();
-        RenderingRegistry.registerEntityRenderingHandler(GCCoreEntitySpaceship.class, new GCCoreRenderSpaceship(new GCCoreModelSpaceship(), "/micdoodle8/mods/galacticraft/core/client/entities/spaceship1.png"));
+        RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityRocketT1.class, new GCCoreRenderSpaceship(new GCCoreModelSpaceship(), "/micdoodle8/mods/galacticraft/core/client/entities/spaceship1.png"));
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntitySpider.class, new GCCoreRenderSpider());
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityZombie.class, new GCCoreRenderZombie());
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityCreeper.class, new GCCoreRenderCreeper());
@@ -354,7 +354,7 @@ public class ClientProxyCore extends CommonProxyCore
 	{
 		return ClientProxyCore.fullLandingPadRenderID;
 	}
-	
+
 	@Override
     public void spawnParticle(String var1, double var2, double var4, double var6, double var8, double var10, double var12, boolean b)
 	{
@@ -511,7 +511,7 @@ public class ClientProxyCore extends CommonProxyCore
         	{
         		return;
         	}
-        	
+
         	final GCCorePlayerSP playerBase = PlayerUtil.getPlayerBaseClientFromPlayer(player);
 
         	if(minecraft.currentScreen != null || tickEnd)
@@ -555,10 +555,10 @@ public class ClientProxyCore extends CommonProxyCore
     		{
     			return;
     		}
-    		
+
     		int keyNum = -1;
     		boolean handled = true;
-    		
+
     		if(kb == GCKeyHandler.accelerateKey)
     		{
     			keyNum = 0;
@@ -587,33 +587,33 @@ public class ClientProxyCore extends CommonProxyCore
     		{
     			handled = false;
     		}
-    		
-    		Entity entityTest  = player.ridingEntity;
-    		
+
+    		final Entity entityTest  = player.ridingEntity;
+
     		if (entityTest != null && entityTest instanceof GCCoreEntityControllable && handled == true)
     		{
-    			GCCoreEntityControllable entity = (GCCoreEntityControllable)entityTest;
-    			
+    			final GCCoreEntityControllable entity = (GCCoreEntityControllable)entityTest;
+
     			if (kb.keyCode == minecraft.gameSettings.keyBindInventory.keyCode)
     			{
     				minecraft.gameSettings.keyBindInventory.pressed = false;
     				minecraft.gameSettings.keyBindInventory.pressTime = 0;
     			}
-    			
+
     			handled = entity.pressKey(keyNum);
     		}
     		else
     		{
     			handled = false;
     		}
-    		
+
 
     		if (handled == true)
     		{
     			return;
     		}
 
-    		for (KeyBinding key : minecraft.gameSettings.keyBindings)
+    		for (final KeyBinding key : minecraft.gameSettings.keyBindings)
     		{
     			if (kb.keyCode == key.keyCode && key != kb)
     			{
@@ -656,9 +656,9 @@ public class ClientProxyCore extends CommonProxyCore
 		{
 			return new GCCoreGuiGalaxyMap(player);
 		}
-		else if (ID == GCCoreConfigManager.idGuiSpaceshipInventory && player.ridingEntity != null && player.ridingEntity instanceof GCCoreEntitySpaceship)
+		else if (ID == GCCoreConfigManager.idGuiSpaceshipInventory && player.ridingEntity != null && player.ridingEntity instanceof GCCoreEntityRocketT1)
 		{
-			return new GCCoreGuiRocketRefill(player.inventory, (GCCoreEntitySpaceship) player.ridingEntity, ((GCCoreEntitySpaceship) player.ridingEntity).getSpaceshipType());
+			return new GCCoreGuiRocketRefill(player.inventory, (GCCoreEntityRocketT1) player.ridingEntity, ((GCCoreEntityRocketT1) player.ridingEntity).getSpaceshipType());
 		}
 		else if (ID == GCCoreConfigManager.idGuiRefinery)
 		{
@@ -721,27 +721,27 @@ public class ClientProxyCore extends CommonProxyCore
 		}
 		else
 		{
-			GCCorePlayerSP playerClient = PlayerUtil.getPlayerBaseClientFromPlayer(player);
+			final GCCorePlayerSP playerClient = PlayerUtil.getPlayerBaseClientFromPlayer(player);
 
 			if (playerClient != null)
 			{
-				for (ISchematicPage page : playerClient.unlockedSchematics)
+				for (final ISchematicPage page : playerClient.unlockedSchematics)
 				{
 					if (ID == page.getGuiID())
 					{
-						GuiScreen screen = page.getResultScreen(playerClient, x, y, z);
-						
+						final GuiScreen screen = page.getResultScreen(playerClient, x, y, z);
+
 						if (screen instanceof ISchematicResultPage)
 						{
 							((ISchematicResultPage) screen).setPageIndex(page.getPageID());
 						}
-						
+
 						return screen;
 					}
 				}
 			}
 		}
-		
+
 		return super.getClientGuiElement(ID, player, world, x, y, z);
 	}
 }

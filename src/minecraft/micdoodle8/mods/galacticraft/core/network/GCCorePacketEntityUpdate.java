@@ -15,15 +15,15 @@ import cpw.mods.fml.relauncher.Side;
 public class GCCorePacketEntityUpdate implements IGalacticraftAdvancedPacket
 {
 	public static final byte packetID = 14;
-	
+
 	public static Packet buildUpdatePacket(GCCoreEntityControllable driveable)
 	{
-		Packet250CustomPayload packet = new Packet250CustomPayload();
+		final Packet250CustomPayload packet = new Packet250CustomPayload();
 		packet.channel = GalacticraftCore.CHANNEL;
-		
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        DataOutputStream data = new DataOutputStream(bytes);
-        
+
+        final ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        final DataOutputStream data = new DataOutputStream(bytes);
+
         try
         {
         	data.write(GCCorePacketEntityUpdate.packetID);
@@ -36,32 +36,32 @@ public class GCCorePacketEntityUpdate implements IGalacticraftAdvancedPacket
         	data.writeDouble(driveable.motionX);
         	data.writeDouble(driveable.motionY);
         	data.writeDouble(driveable.motionZ);
-        	
+
         	packet.data = bytes.toByteArray();
         	packet.length = packet.data.length;
-        	
+
         	data.close();
         	bytes.close();
         }
-        catch(Exception e)
+        catch(final Exception e)
         {
             e.printStackTrace();
         }
-        
+
         return packet;
 	}
-	
+
 	@Override
 	public void handlePacket(DataInputStream stream, Object[] extradata, Side side)
 	{
 		try
 		{
-			EntityPlayer player =  (EntityPlayer)extradata[0];
-			
-			int entityId = stream.readInt();
+			final EntityPlayer player =  (EntityPlayer)extradata[0];
+
+			final int entityId = stream.readInt();
 			GCCoreEntityControllable driveable = null;
-			
-			for(Object obj : player.worldObj.loadedEntityList)
+
+			for(final Object obj : player.worldObj.loadedEntityList)
 			{
 				if(obj instanceof GCCoreEntityControllable && ((Entity)obj).entityId == entityId)
 				{
@@ -69,18 +69,18 @@ public class GCCorePacketEntityUpdate implements IGalacticraftAdvancedPacket
 					break;
 				}
 			}
-			
+
 			if(driveable != null)
 			{
 				driveable.setPositionRotationAndMotion(stream.readDouble(), stream.readDouble(), stream.readDouble(), stream.readFloat(), stream.readFloat(), stream.readDouble(), stream.readDouble(), stream.readDouble());
 			}
 		}
-        catch(Exception e)
+        catch(final Exception e)
         {
         	e.printStackTrace();
         }
 	}
-	
+
 	@Override
 	public byte getPacketID()
 	{

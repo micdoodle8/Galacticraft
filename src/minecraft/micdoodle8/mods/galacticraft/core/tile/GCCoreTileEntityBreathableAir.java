@@ -6,18 +6,18 @@
 //public class GCCoreTileEntityBreathableAir extends TileEntity
 //{
 //   	private OxygenBubble bubble;
-//	
+//
 //	@Override
 //	public void updateEntity()
 //	{
 //		super.updateEntity();
 //	}
-//	
+//
 //	public void setBubble(OxygenBubble bubble)
 //	{
 //		this.bubble = bubble;
 //	}
-//	
+//
 //	public OxygenBubble getBubble()
 //	{
 //		return this.bubble;

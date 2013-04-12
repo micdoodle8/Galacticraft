@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.API;
 
-public enum EnumGearType 
+public enum EnumGearType
 {
 	HELMET,
 	GEAR,

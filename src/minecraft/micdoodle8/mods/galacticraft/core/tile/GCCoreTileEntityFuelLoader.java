@@ -40,9 +40,9 @@ import com.google.common.io.ByteArrayDataInput;
 
 public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable implements IInventory, ISidedInventory, IPacketReceiver, IEnergySink, IDisableableMachine, ITankContainer
 {
-	private int tankCapacity = 24000;
-	public LiquidTank fuelTank = new LiquidTank(tankCapacity);
-	
+	private final int tankCapacity = 24000;
+	public LiquidTank fuelTank = new LiquidTank(this.tankCapacity);
+
 	private ItemStack[] containingItems = new ItemStack[2];
 	public static final double WATTS_PER_TICK = 300;
 	private final int playersUsing = 0;
@@ -50,11 +50,11 @@ public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable im
 	public double ic2WattsReceived = 0;
 	private boolean initialized = false;
 	private boolean disabled = true;
-	
+
 	public int getScaledFuelLevel(int i)
 	{
-		double fuelLevel = this.fuelTank.getLiquid() == null ? 0 : (this.fuelTank.getLiquid().amount);
-		
+		final double fuelLevel = this.fuelTank.getLiquid() == null ? 0 : this.fuelTank.getLiquid().amount;
+
 		return (int) (fuelLevel * i / 2000);
 	}
 
@@ -62,41 +62,41 @@ public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable im
 	public void updateEntity()
 	{
 		super.updateEntity();
-		
+
 		if (!this.initialized && this.worldObj != null)
 		{
 			if(GalacticraftCore.modIC2Loaded)
 			{
 				MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(this));
 			}
-			
-			initialized = true;
+
+			this.initialized = true;
 		}
-		
+
 		if (this.fuelTank.getLiquid() != null && this.fuelTank.getLiquid().amount > 0)
 		{
 			this.wattsReceived += ElectricItemHelper.dechargeItem(this.getStackInSlot(0), GCCoreTileEntityFuelLoader.WATTS_PER_TICK, this.getVoltage());
 		}
-		
+
 		if (!this.worldObj.isRemote)
 		{
 			this.wattsReceived = Math.max(this.wattsReceived - GCCoreTileEntityFuelLoader.WATTS_PER_TICK / 4, 0);
 
 			if (this.containingItems[1] != null)
 			{
-				LiquidStack liquid = LiquidContainerRegistry.getLiquidForFilledItem(this.containingItems[1]);
+				final LiquidStack liquid = LiquidContainerRegistry.getLiquidForFilledItem(this.containingItems[1]);
 
 				if (liquid != null && LiquidDictionary.findLiquidName(liquid).equals("Fuel"))
 				{
 					if (this.fuelTank.getLiquid() == null || this.fuelTank.getLiquid().amount + liquid.amount <= this.fuelTank.getCapacity())
 					{
 						this.fuelTank.fill(liquid, true);
-						
+
 						if(liquid.itemID == GCCoreItems.fuel.itemID)
 						{
 							this.containingItems[1] = new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.oilCanister.getMaxDamage());
 						}
-						else 
+						else
 						{
 							this.containingItems[1].stackSize--;
 
@@ -108,24 +108,24 @@ public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable im
 					}
 				}
 			}
-			
+
 			if (this.ticks % 100 == 0)
 			{
 				boolean foundFuelable = false;
-				
-				for (ForgeDirection dir : ForgeDirection.values())
+
+				for (final ForgeDirection dir : ForgeDirection.values())
 				{
 					if (dir != ForgeDirection.UNKNOWN)
 					{
 						Vector3 vecAt = new Vector3(this);
 						vecAt = vecAt.modifyPositionFromSide(dir);
-						
-						TileEntity pad = vecAt.getTileEntity(this.worldObj);
+
+						final TileEntity pad = vecAt.getTileEntity(this.worldObj);
 
 						if (pad != null && pad instanceof TileEntityMulti)
 						{
-							TileEntity mainTile = ((TileEntityMulti) pad).mainBlockPosition.getTileEntity(this.worldObj);
-							
+							final TileEntity mainTile = ((TileEntityMulti) pad).mainBlockPosition.getTileEntity(this.worldObj);
+
 							if (mainTile != null && mainTile instanceof IFuelable)
 							{
 								this.attachedFuelable = (IFuelable) mainTile;
@@ -141,17 +141,17 @@ public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable im
 						}
 					}
 				}
-				
+
 				if (!foundFuelable)
 				{
 					this.attachedFuelable = null;
 				}
 			}
-			
+
 			if (this.attachedFuelable != null && (this.ic2WattsReceived > 0 || this.wattsReceived > 0) && !this.disabled)
 			{
-				LiquidStack liquid = LiquidDictionary.getLiquid("Fuel", 1);
-				
+				final LiquidStack liquid = LiquidDictionary.getLiquid("Fuel", 1);
+
 				if (liquid != null)
 				{
 					this.fuelTank.drain(this.attachedFuelable.addFuel(liquid, 1), true);
@@ -172,7 +172,7 @@ public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable im
 	}
 
 	@Override
-	public void handlePacketData(INetworkManager network, int packetType, Packet250CustomPayload packet, EntityPlayer player, ByteArrayDataInput dataStream) 
+	public void handlePacketData(INetworkManager network, int packetType, Packet250CustomPayload packet, EntityPlayer player, ByteArrayDataInput dataStream)
 	{
 		try
 		{
@@ -181,12 +181,12 @@ public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable im
 				this.wattsReceived = dataStream.readDouble();
 				this.disabledTicks = dataStream.readInt();
 				this.ic2WattsReceived = dataStream.readDouble();
-				int amount = dataStream.readInt();
+				final int amount = dataStream.readInt();
 				this.fuelTank.setLiquid(new LiquidStack(GCCoreItems.fuel.itemID, amount, 0));
 				this.disabled = dataStream.readBoolean();
 			}
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -279,9 +279,9 @@ public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable im
                 this.containingItems[var5] = ItemStack.loadItemStackFromNBT(var4);
             }
         }
-        
+
         this.setDisabled(par1NBTTagCompound.getBoolean("isDisabled"));
-		
+
 		if (par1NBTTagCompound.hasKey("fuelTank"))
 		{
 			this.fuelTank.readFromNBT(par1NBTTagCompound.getCompoundTag("fuelTank"));
@@ -307,9 +307,9 @@ public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable im
         }
 
         par1NBTTagCompound.setTag("Items", list);
-        
+
         par1NBTTagCompound.setBoolean("isDisabled", this.getDisabled());
-		
+
 		if (this.fuelTank.getLiquid() != null)
 		{
 			par1NBTTagCompound.setTag("fuelTank", this.fuelTank.writeToNBT(new NBTTagCompound()));
@@ -339,16 +339,16 @@ public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable im
 
 	@Override
 	public void closeChest() {}
-	
+
 	private boolean validStackInSlot()
 	{
 		return this.getStackInSlot(1) != null && this.getStackInSlot(1).getItem() instanceof IFuelTank && this.getStackInSlot(1).getMaxDamage() - this.getStackInSlot(1).getItemDamage() != 0 && this.getStackInSlot(1).getItemDamage() < this.getStackInSlot(1).getMaxDamage();
 	}
-	
+
 	// Universal Electricity Implementation:
-	
+
 	@Override
-	public boolean canConnect(ForgeDirection direction) 
+	public boolean canConnect(ForgeDirection direction)
 	{
 		return direction == ForgeDirection.getOrientation(this.getBlockMetadata() + 2);
 	}
@@ -365,143 +365,143 @@ public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable im
 			return new ElectricityPack();
 		}
 	}
-	
+
 	// Industrial Craft 2 Implementation:
 
 	@Override
 	public int demandsEnergy()
 	{
-		return validStackInSlot() ? (int) ((GCCoreTileEntityFuelLoader.WATTS_PER_TICK / this.getVoltage()) * GalacticraftCore.IC2EnergyScalar) : 0;
+		return this.validStackInSlot() ? (int) (GCCoreTileEntityFuelLoader.WATTS_PER_TICK / this.getVoltage() * GalacticraftCore.IC2EnergyScalar) : 0;
 	}
 
 	@Override
-	public int injectEnergy(Direction directionFrom, int amount) 
+	public int injectEnergy(Direction directionFrom, int amount)
 	{
 		double rejects = 0;
-    	double neededEnergy = ((GCCoreTileEntityFuelLoader.WATTS_PER_TICK / this.getVoltage()) * GalacticraftCore.IC2EnergyScalar);
-    	
+    	final double neededEnergy = GCCoreTileEntityFuelLoader.WATTS_PER_TICK / this.getVoltage() * GalacticraftCore.IC2EnergyScalar;
+
     	if(amount <= neededEnergy)
     	{
-    		ic2WattsReceived += amount;
+    		this.ic2WattsReceived += amount;
     	}
     	else if(amount > neededEnergy)
     	{
-    		ic2WattsReceived += neededEnergy;
+    		this.ic2WattsReceived += neededEnergy;
     		rejects = amount - neededEnergy;
     	}
-    	
+
     	return (int) (rejects * GalacticraftCore.IC2EnergyScalar);
 	}
 
 	@Override
-	public int getMaxSafeInput() 
+	public int getMaxSafeInput()
 	{
 		return 2048;
 	}
 
 	@Override
-	public boolean acceptsEnergyFrom(TileEntity emitter, Direction direction) 
+	public boolean acceptsEnergyFrom(TileEntity emitter, Direction direction)
 	{
 		return direction.toForgeDirection() == ForgeDirection.getOrientation(this.getBlockMetadata() + 2);
 	}
 
 	@Override
-	public boolean isAddedToEnergyNet() 
+	public boolean isAddedToEnergyNet()
 	{
 		return this.initialized;
 	}
-	
+
 	// ISidedInventory Implementation:
 
 	@Override
-	public int[] getSizeInventorySide(int side) 
+	public int[] getSizeInventorySide(int side)
 	{
 		return side == 1 || side == 0 ? new int[] {0} : new int[] {1};
 	}
 
 	@Override
-	public boolean func_102007_a(int slotID, ItemStack itemstack, int side) 
+	public boolean func_102007_a(int slotID, ItemStack itemstack, int side)
 	{
-		return isStackValidForSlot(slotID, itemstack);
+		return this.isStackValidForSlot(slotID, itemstack);
 	}
 
 	@Override
-	public boolean func_102008_b(int slotID, ItemStack itemstack, int side) 
+	public boolean func_102008_b(int slotID, ItemStack itemstack, int side)
 	{
 		return slotID == 1;
 	}
 
 	@Override
-	public boolean isInvNameLocalized() 
+	public boolean isInvNameLocalized()
 	{
 		return true;
 	}
 
 	@Override
-	public boolean isStackValidForSlot(int slotID, ItemStack itemstack) 
+	public boolean isStackValidForSlot(int slotID, ItemStack itemstack)
 	{
-		return slotID == 1 ? itemstack.getItem() instanceof IFuelTank && itemstack.getMaxDamage() - itemstack.getItemDamage() != 0 && itemstack.getItemDamage() < itemstack.getMaxDamage() 
-				: (slotID == 0 ? itemstack.getItem() instanceof IItemElectric : false);
+		return slotID == 1 ? itemstack.getItem() instanceof IFuelTank && itemstack.getMaxDamage() - itemstack.getItemDamage() != 0 && itemstack.getItemDamage() < itemstack.getMaxDamage()
+				: slotID == 0 ? itemstack.getItem() instanceof IItemElectric : false;
 	}
 
 	@Override
-	public void setDisabled(boolean disabled) 
+	public void setDisabled(boolean disabled)
 	{
 		this.disabled = disabled;
 	}
 
 	@Override
-	public boolean getDisabled() 
+	public boolean getDisabled()
 	{
 		return this.disabled;
 	}
 
 	@Override
-	public int fill(ForgeDirection from, LiquidStack resource, boolean doFill) 
+	public int fill(ForgeDirection from, LiquidStack resource, boolean doFill)
 	{
 		return this.fill(0, resource, doFill);
 	}
 
 	@Override
-	public int fill(int tankIndex, LiquidStack resource, boolean doFill) 
+	public int fill(int tankIndex, LiquidStack resource, boolean doFill)
 	{
 		int used = 0;
-		String liquidName = LiquidDictionary.findLiquidName(resource);
-		
+		final String liquidName = LiquidDictionary.findLiquidName(resource);
+
 		if (tankIndex == 0 && liquidName != null && liquidName.equals("Fuel"))
 		{
 			used = this.fuelTank.fill(resource, doFill);
 		}
-		
+
 		return used;
 	}
 
 	@Override
-	public LiquidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) 
+	public LiquidStack drain(ForgeDirection from, int maxDrain, boolean doDrain)
 	{
 		return null;
 	}
 
 	@Override
-	public LiquidStack drain(int tankIndex, int maxDrain, boolean doDrain) 
+	public LiquidStack drain(int tankIndex, int maxDrain, boolean doDrain)
 	{
 		return null;
 	}
 
 	@Override
-	public ILiquidTank[] getTanks(ForgeDirection direction) 
+	public ILiquidTank[] getTanks(ForgeDirection direction)
 	{
 		return new ILiquidTank[] {this.fuelTank};
 	}
 
 	@Override
-	public ILiquidTank getTank(ForgeDirection direction, LiquidStack type) 
+	public ILiquidTank getTank(ForgeDirection direction, LiquidStack type)
 	{
 		if (direction == ForgeDirection.getOrientation(this.getBlockMetadata() + 2))
 		{
 			return this.fuelTank;
 		}
-		
+
 		return null;
 	}
 }

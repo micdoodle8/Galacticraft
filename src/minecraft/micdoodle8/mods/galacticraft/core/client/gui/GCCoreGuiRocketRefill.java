@@ -1,14 +1,11 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
 import mekanism.api.EnumColor;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpaceship;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityRocketT1;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerRocketRefill;
-import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.util.StatCollector;
-import net.minecraftforge.liquids.LiquidContainerRegistry;
-import net.minecraftforge.liquids.LiquidStack;
 
 import org.lwjgl.opengl.GL11;
 
@@ -46,13 +43,13 @@ public class GCCoreGuiRocketRefill extends GuiContainer
 
         this.fontRenderer.drawString(StatCollector.translateToLocal(this.upperChestInventory.getInvName()), 8, 34 + 2 + 3, 4210752);
 
-        if (this.mc.thePlayer != null && this.mc.thePlayer.ridingEntity != null && this.mc.thePlayer.ridingEntity instanceof GCCoreEntitySpaceship)
+        if (this.mc.thePlayer != null && this.mc.thePlayer.ridingEntity != null && this.mc.thePlayer.ridingEntity instanceof GCCoreEntityRocketT1)
         {
             this.fontRenderer.drawString("Fuel:", 125, 15 + 3, 4210752);
-    		double percentage = ((GCCoreEntitySpaceship) this.mc.thePlayer.ridingEntity).getScaledFuelLevel(100);
-    		String color = percentage > 80.0D ? EnumColor.BRIGHT_GREEN.code : (percentage > 40.0D ? EnumColor.ORANGE.code : (EnumColor.RED.code));
-            String str = percentage + "% full";
-    		this.fontRenderer.drawString(color + str, 117 - (str.length() / 2), 20 + 8, 4210752);
+    		final double percentage = ((GCCoreEntityRocketT1) this.mc.thePlayer.ridingEntity).getScaledFuelLevel(100);
+    		final String color = percentage > 80.0D ? EnumColor.BRIGHT_GREEN.code : percentage > 40.0D ? EnumColor.ORANGE.code : EnumColor.RED.code;
+            final String str = percentage + "% full";
+    		this.fontRenderer.drawString(color + str, 117 - str.length() / 2, 20 + 8, 4210752);
         }
     }
 
@@ -78,11 +75,11 @@ public class GCCoreGuiRocketRefill extends GuiContainer
         final int var6 = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(var5, var6, 0, 0, 176, 199);
 
-        if (this.mc.thePlayer != null && this.mc.thePlayer.ridingEntity != null && this.mc.thePlayer.ridingEntity instanceof GCCoreEntitySpaceship)
+        if (this.mc.thePlayer != null && this.mc.thePlayer.ridingEntity != null && this.mc.thePlayer.ridingEntity instanceof GCCoreEntityRocketT1)
         {
-    		int fuelLevel = ((GCCoreEntitySpaceship) this.mc.thePlayer.ridingEntity).getScaledFuelLevel(38);
-    		
-            this.drawTexturedModalRect(((width - xSize) / 2) + (this.type == 1 ? 72 : 71), ((height - ySize) / 2) + 45 - fuelLevel, 176, 38 - fuelLevel, 42, fuelLevel);
+    		final int fuelLevel = ((GCCoreEntityRocketT1) this.mc.thePlayer.ridingEntity).getScaledFuelLevel(38);
+
+            this.drawTexturedModalRect((this.width - this.xSize) / 2 + (this.type == 1 ? 72 : 71), (this.height - this.ySize) / 2 + 45 - fuelLevel, 176, 38 - fuelLevel, 42, fuelLevel);
         }
     }
 }

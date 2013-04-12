@@ -100,7 +100,7 @@ public class GCCoreItems
 		GCCoreItems.oilExtractor = new GCCoreItemOilExtractor(GCCoreConfigManager.idItemOilExtractor).setUnlocalizedName("oilExtractor");
 		GCCoreItems.schematic = new GCCoreItemSchematic(GCCoreConfigManager.idItemSchematic).setUnlocalizedName("schematic");
 		GCCoreItems.fuel = new GCCoreItemFuel(GCCoreConfigManager.idItemFuel).setUnlocalizedName("fuel");
-		
+
 		GalacticraftCore.hiddenItems.add(GCCoreItems.gravityBow.itemID);
 	}
 

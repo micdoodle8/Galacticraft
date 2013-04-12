@@ -1,10 +1,11 @@
 package micdoodle8.mods.galacticraft.core.client.fx;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.world.World;
+
+import org.lwjgl.opengl.GL11;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -66,11 +67,11 @@ public class GCCoreEntityLaunchSmokeFX extends EntityFX
         }
 
         this.particleScale = this.smokeParticleScale * var8;
-        float f6 = (float)this.particleTextureIndexX / 16.0F;
+        float f6 = this.particleTextureIndexX / 16.0F;
         float f7 = f6 + 0.0624375F;
-        float f8 = (float)this.particleTextureIndexY / 16.0F;
+        float f8 = this.particleTextureIndexY / 16.0F;
         float f9 = f8 + 0.0624375F;
-        float f10 = 0.1F * this.particleScale;
+        final float f10 = 0.1F * this.particleScale;
 
         if (this.particleTextureIndex != null)
         {
@@ -80,15 +81,15 @@ public class GCCoreEntityLaunchSmokeFX extends EntityFX
             f9 = this.particleTextureIndex.getMaxV();
         }
 
-        float f11 = (float)(this.prevPosX + (this.posX - this.prevPosX) * (double)par2 - interpPosX);
-        float f12 = (float)(this.prevPosY + (this.posY - this.prevPosY) * (double)par2 - interpPosY);
-        float f13 = (float)(this.prevPosZ + (this.posZ - this.prevPosZ) * (double)par2 - interpPosZ);
-        float f14 = 1.0F;
+        final float f11 = (float)(this.prevPosX + (this.posX - this.prevPosX) * par2 - EntityFX.interpPosX);
+        final float f12 = (float)(this.prevPosY + (this.posY - this.prevPosY) * par2 - EntityFX.interpPosY);
+        final float f13 = (float)(this.prevPosZ + (this.posZ - this.prevPosZ) * par2 - EntityFX.interpPosZ);
+        final float f14 = 1.0F;
         par1Tessellator.setColorRGBA_F(this.particleRed * f14, this.particleGreen * f14, this.particleBlue * f14, this.particleAlpha);
-        par1Tessellator.addVertexWithUV((double)(f11 - par3 * f10 - par6 * f10), (double)(f12 - par4 * f10), (double)(f13 - par5 * f10 - par7 * f10), (double)f7, (double)f9);
-        par1Tessellator.addVertexWithUV((double)(f11 - par3 * f10 + par6 * f10), (double)(f12 + par4 * f10), (double)(f13 - par5 * f10 + par7 * f10), (double)f7, (double)f8);
-        par1Tessellator.addVertexWithUV((double)(f11 + par3 * f10 + par6 * f10), (double)(f12 + par4 * f10), (double)(f13 + par5 * f10 + par7 * f10), (double)f6, (double)f8);
-        par1Tessellator.addVertexWithUV((double)(f11 + par3 * f10 - par6 * f10), (double)(f12 - par4 * f10), (double)(f13 + par5 * f10 - par7 * f10), (double)f6, (double)f9);
+        par1Tessellator.addVertexWithUV((f11 - par3 * f10 - par6 * f10), (f12 - par4 * f10), (f13 - par5 * f10 - par7 * f10), f7, f9);
+        par1Tessellator.addVertexWithUV((f11 - par3 * f10 + par6 * f10), (f12 + par4 * f10), (f13 - par5 * f10 + par7 * f10), f7, f8);
+        par1Tessellator.addVertexWithUV((f11 + par3 * f10 + par6 * f10), (f12 + par4 * f10), (f13 + par5 * f10 + par7 * f10), f6, f8);
+        par1Tessellator.addVertexWithUV((f11 + par3 * f10 - par6 * f10), (f12 - par4 * f10), (f13 + par5 * f10 - par7 * f10), f6, f9);
 
     	GL11.glEnable(GL11.GL_DEPTH_TEST);
     	GL11.glDepthMask(true);

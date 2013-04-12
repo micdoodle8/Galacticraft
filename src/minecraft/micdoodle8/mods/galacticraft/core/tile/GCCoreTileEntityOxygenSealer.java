@@ -43,23 +43,23 @@ public class GCCoreTileEntityOxygenSealer extends TileEntityElectricityRunnable 
 {
 	public int power;
 	public int lastPower;
-	
+
 	public boolean sealed;
-	
+
 	public boolean disabled = true;
 	public boolean lastDisabled = true;
-	
+
     public boolean active;
 	private ItemStack[] containingItems = new ItemStack[1];
-	
+
 	public int disableCooldown;
-   	
+
 	public static final double WATTS_PER_TICK = 300;
 
 	private int playersUsing = 0;
-	
+
 	public static int timeSinceOxygenRequest;
-	
+
 	public double ic2WattsReceived = 0;
 	private boolean initialized = false;
 
@@ -67,19 +67,19 @@ public class GCCoreTileEntityOxygenSealer extends TileEntityElectricityRunnable 
 	public void updateEntity()
 	{
 		super.updateEntity();
-		
+
 		if (!this.initialized && this.worldObj != null)
 		{
 			if(GalacticraftCore.modIC2Loaded)
 			{
 				MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(this));
 			}
-			
-			initialized = true;
+
+			this.initialized = true;
 		}
 
 		if (GCCoreTileEntityOxygenSealer.timeSinceOxygenRequest > 0 && !this.disabled)
-		{		
+		{
 			this.wattsReceived += ElectricItemHelper.dechargeItem(this.containingItems[0], GCCoreTileEntityOxygenSealer.WATTS_PER_TICK, this.getVoltage());
 		}
 
@@ -89,15 +89,15 @@ public class GCCoreTileEntityOxygenSealer extends TileEntityElectricityRunnable 
 			{
 				this.disableCooldown--;
 			}
-			
-			if (this.timeSinceOxygenRequest > 0)
+
+			if (GCCoreTileEntityOxygenSealer.timeSinceOxygenRequest > 0)
 			{
 				GCCoreTileEntityOxygenSealer.timeSinceOxygenRequest--;
 			}
-			
+
 			this.wattsReceived = Math.max(this.wattsReceived - GCCoreTileEntityOxygenSealer.WATTS_PER_TICK / 4, 0);
 			this.ic2WattsReceived = Math.max(this.ic2WattsReceived - GCCoreTileEntityOxygenSealer.WATTS_PER_TICK / 4, 0);
-			
+
 			if (this.power >= 1 && (this.wattsReceived > 0 || this.ic2WattsReceived > 0) && !this.disabled)
 			{
 				this.active = true;
@@ -106,8 +106,8 @@ public class GCCoreTileEntityOxygenSealer extends TileEntityElectricityRunnable 
 			{
 				this.active = false;
 			}
-			
-			if (this.ticks % 50 == 0 || (this.lastDisabled != this.disabled) || (this.power != this.lastPower))
+
+			if (this.ticks % 50 == 0 || this.lastDisabled != this.disabled || this.power != this.lastPower)
 			{
 				if (this.active)
 				{
@@ -129,7 +129,7 @@ public class GCCoreTileEntityOxygenSealer extends TileEntityElectricityRunnable 
 			{
 				PacketManager.sendPacketToClients(this.getDescriptionPacket(), this.worldObj, new Vector3(this), 6);
 			}
-			
+
 			this.lastPower = this.power;
 			this.lastDisabled = this.disabled;
 		}
@@ -156,7 +156,7 @@ public class GCCoreTileEntityOxygenSealer extends TileEntityElectricityRunnable 
 				this.disableCooldown = dataStream.readInt();
 			}
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -193,7 +193,7 @@ public class GCCoreTileEntityOxygenSealer extends TileEntityElectricityRunnable 
                 this.containingItems[var5] = ItemStack.loadItemStackFromNBT(var4);
             }
         }
-        
+
         this.disabled = this.lastDisabled = par1NBTTagCompound.getBoolean("sealerDisabled");
 	}
 
@@ -216,15 +216,15 @@ public class GCCoreTileEntityOxygenSealer extends TileEntityElectricityRunnable 
         }
 
         par1NBTTagCompound.setTag("Items", list);
-        
+
         par1NBTTagCompound.setBoolean("sealerDisabled", this.disabled);
 	}
 
 	@Override
-	public int transferGasToAcceptor(int amount, EnumGas type) 
+	public int transferGasToAcceptor(int amount, EnumGas type)
 	{
-		this.timeSinceOxygenRequest = 20;
-		
+		GCCoreTileEntityOxygenSealer.timeSinceOxygenRequest = 20;
+
 		if (this.wattsReceived > 0 && type == EnumGas.OXYGEN)
 		{
 			this.power = Math.max(this.power, amount);
@@ -237,13 +237,13 @@ public class GCCoreTileEntityOxygenSealer extends TileEntityElectricityRunnable 
 	}
 
 	@Override
-	public boolean canReceiveGas(ForgeDirection side, EnumGas type) 
+	public boolean canReceiveGas(ForgeDirection side, EnumGas type)
 	{
 		return side == ForgeDirection.getOrientation(this.getBlockMetadata() + 2).getOpposite();
 	}
 
 	@Override
-	public boolean canTubeConnect(ForgeDirection direction) 
+	public boolean canTubeConnect(ForgeDirection direction)
 	{
 		return direction == ForgeDirection.getOrientation(this.getBlockMetadata() + 2).getOpposite();
 	}
@@ -302,7 +302,7 @@ public class GCCoreTileEntityOxygenSealer extends TileEntityElectricityRunnable 
 	{
 		if (this.containingItems[par1] != null)
 		{
-			ItemStack var2 = this.containingItems[par1];
+			final ItemStack var2 = this.containingItems[par1];
 			this.containingItems[par1] = null;
 			return var2;
 		}
@@ -348,7 +348,7 @@ public class GCCoreTileEntityOxygenSealer extends TileEntityElectricityRunnable 
 		{
 			PacketManager.sendPacketToClients(this.getDescriptionPacket(), this.worldObj, new Vector3(this), 15);
 		}
-		
+
 		this.playersUsing++;
 	}
 
@@ -357,104 +357,105 @@ public class GCCoreTileEntityOxygenSealer extends TileEntityElectricityRunnable 
 	{
 		this.playersUsing--;
 	}
-	
+
 	// ISidedInventory Implementation:
 
 	@Override
-	public int[] getSizeInventorySide(int side) 
+	public int[] getSizeInventorySide(int side)
 	{
 		return new int[] {0};
 	}
 
 	@Override
-	public boolean func_102007_a(int slotID, ItemStack itemstack, int side) 
+	public boolean func_102007_a(int slotID, ItemStack itemstack, int side)
 	{
-		return isStackValidForSlot(slotID, itemstack);
+		return this.isStackValidForSlot(slotID, itemstack);
 	}
 
 	@Override
-	public boolean func_102008_b(int slotID, ItemStack itemstack, int side) 
+	public boolean func_102008_b(int slotID, ItemStack itemstack, int side)
 	{
 		return slotID == 0;
 	}
 
 	@Override
-	public boolean isInvNameLocalized() 
+	public boolean isInvNameLocalized()
 	{
 		return true;
 	}
 
 	@Override
-	public boolean isStackValidForSlot(int slotID, ItemStack itemstack) 
+	public boolean isStackValidForSlot(int slotID, ItemStack itemstack)
 	{
 		return slotID == 0 ? itemstack.getItem() instanceof IItemElectric : false;
 	}
-	
+
 	// Industrial Craft 2 Implementation:
 
 	@Override
 	public int demandsEnergy()
 	{
-		return GCCoreTileEntityOxygenSealer.timeSinceOxygenRequest > 0 && !this.disabled ? (int) ((GCCoreTileEntityFuelLoader.WATTS_PER_TICK / this.getVoltage()) * GalacticraftCore.IC2EnergyScalar) : 0;
+		return GCCoreTileEntityOxygenSealer.timeSinceOxygenRequest > 0 && !this.disabled ? (int) (GCCoreTileEntityFuelLoader.WATTS_PER_TICK / this.getVoltage() * GalacticraftCore.IC2EnergyScalar) : 0;
 	}
 
 	@Override
-	public int injectEnergy(Direction directionFrom, int amount) 
+	public int injectEnergy(Direction directionFrom, int amount)
 	{
 		double rejects = 0;
-    	double neededEnergy = ((GCCoreTileEntityFuelLoader.WATTS_PER_TICK / this.getVoltage()) * GalacticraftCore.IC2EnergyScalar);
-    	
+    	final double neededEnergy = GCCoreTileEntityFuelLoader.WATTS_PER_TICK / this.getVoltage() * GalacticraftCore.IC2EnergyScalar;
+
     	if(amount <= neededEnergy)
     	{
-    		ic2WattsReceived += amount;
+    		this.ic2WattsReceived += amount;
     	}
     	else if(amount > neededEnergy)
     	{
-    		ic2WattsReceived += neededEnergy;
+    		this.ic2WattsReceived += neededEnergy;
     		rejects = amount - neededEnergy;
     	}
-    	
+
     	return (int) (rejects * GalacticraftCore.IC2EnergyScalar);
 	}
 
 	@Override
-	public int getMaxSafeInput() 
+	public int getMaxSafeInput()
 	{
 		return 2048;
 	}
 
 	@Override
-	public boolean acceptsEnergyFrom(TileEntity emitter, Direction direction) 
+	public boolean acceptsEnergyFrom(TileEntity emitter, Direction direction)
 	{
 		return direction.toForgeDirection() == ForgeDirection.getOrientation(this.getBlockMetadata() + 2);
 	}
 
 	@Override
-	public boolean isAddedToEnergyNet() 
+	public boolean isAddedToEnergyNet()
 	{
 		return this.initialized;
 	}
 
     public boolean isOn(World var1, int var2, int var3, int var4)
     {
-    	OxygenPressureProtocol var5 = new OxygenPressureProtocol();
-        return var5.checkSeal(var1, var2, var3, var4, 3);
+    	final OxygenPressureProtocol var5 = new OxygenPressureProtocol();
+        final boolean on = var5.checkSeal(var1, var2, var3, var4, 3);
+        return on;
     }
 
     public void clean(World var1, int var2, int var3, int var4, int var5)
     {
-    	OxygenPressureProtocol var6 = new OxygenPressureProtocol();
+    	final OxygenPressureProtocol var6 = new OxygenPressureProtocol();
         var6.seal(var1, var2, var3, var4, var5);
     }
 
     private void spread(World var1, int var2, int var3, int var4)
     {
-    	OxygenPressureProtocol var5 = new OxygenPressureProtocol();
+    	final OxygenPressureProtocol var5 = new OxygenPressureProtocol();
         var5.unSeal(var1, var2, var3, var4);
     }
 
 	@Override
-	public void setDisabled(boolean disabled) 
+	public void setDisabled(boolean disabled)
 	{
 		if (this.disableCooldown == 0)
 		{
@@ -464,7 +465,7 @@ public class GCCoreTileEntityOxygenSealer extends TileEntityElectricityRunnable 
 	}
 
 	@Override
-	public boolean getDisabled() 
+	public boolean getDisabled()
 	{
 		return this.disabled;
 	}

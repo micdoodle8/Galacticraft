@@ -1,21 +1,21 @@
 package micdoodle8.mods.galacticraft.core.schematic;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.item.ItemStack;
 import micdoodle8.mods.galacticraft.API.ISchematicPage;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiSchematicBuggy;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerBuggyBench;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
+import net.minecraft.item.ItemStack;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreSchematicMoonBuggy implements ISchematicPage
 {
 	@Override
-	public int getPageID() 
+	public int getPageID()
 	{
 		return GCCoreConfigManager.idSchematicMoonBuggy;
 	}
@@ -27,7 +27,7 @@ public class GCCoreSchematicMoonBuggy implements ISchematicPage
 	}
 
 	@Override
-	public ItemStack getRequiredItem() 
+	public ItemStack getRequiredItem()
 	{
 		return new ItemStack(GCCoreItems.schematic, 1, 0);
 	}
@@ -47,13 +47,13 @@ public class GCCoreSchematicMoonBuggy implements ISchematicPage
 	}
 
 	@Override
-	public Container getResultContainer(EntityPlayer player, int x, int y, int z) 
+	public Container getResultContainer(EntityPlayer player, int x, int y, int z)
 	{
 		return new GCCoreContainerBuggyBench(player.inventory, x, y, z);
 	}
 
 	@Override
-	public int compareTo(ISchematicPage o) 
+	public int compareTo(ISchematicPage o)
 	{
 		if (this.getPageID() > o.getPageID())
 		{

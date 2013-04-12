@@ -5,7 +5,6 @@ import java.util.List;
 
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketEntityUpdate;
 import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -15,14 +14,8 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-
-import com.google.common.io.ByteArrayDataInput;
-import com.google.common.io.ByteArrayDataOutput;
-
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
-import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 
 public class GCCoreEntityLander extends GCCoreEntityControllable implements IInventory
 {
@@ -75,14 +68,15 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
         this.setPosition(var2, var4 + this.yOffset, var6);
     }
 
-    public void setPosition(double par1, double par3, double par5)
+    @Override
+	public void setPosition(double par1, double par3, double par5)
     {
         this.posX = par1;
         this.posY = par3;
         this.posZ = par5;
-        float f = this.width / 2.0F;
-        float f1 = this.height;
-        this.boundingBox.setBounds(par1 - (double)f, par3 - (double)this.yOffset + (double)this.ySize, par5 - (double)f, par1 + (double)f, par3 - (double)this.yOffset + (double)this.ySize + (double)f1, par5 + (double)f);
+        final float f = this.width / 2.0F;
+        final float f1 = this.height;
+        this.boundingBox.setBounds(par1 - f, par3 - this.yOffset + this.ySize, par5 - f, par1 + f, par3 - this.yOffset + this.ySize + f1, par5 + f);
     }
 
     public ModelBase getModel()
@@ -98,7 +92,7 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
     {
         return false;
     }
-    
+
     @Override
 	public AxisAlignedBB getBoundingBox()
     {
@@ -133,7 +127,7 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
             this.riddenByEntity.setPosition(this.posX + var1, this.posY + this.riddenByEntity.getYOffset(), this.posZ + var3);
         }
     }
-	
+
 	@Override
 	public void setPositionRotationAndMotion(double x, double y, double z, float yaw, float pitch, double motX, double motY, double motZ)
 	{
@@ -210,10 +204,11 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
         }
     }
 
-    public void setDead()
+    @Override
+	public void setDead()
     {
         this.isDead = true;
-        
+
 //        if (this.moduleChest != null)
 //        {
 //        	this.moduleChest.setDead();
@@ -236,7 +231,7 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
     public List<ItemStack> getItemsDropped()
     {
         final List<ItemStack> items = new ArrayList<ItemStack>();
-        
+
 //        if (this.moduleChest != null)
 //        {
 //            for (ItemStack stack : this.moduleChest.chestContents)
@@ -247,7 +242,7 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
 //            	}
 //            }
 //        }
-        
+
     	return items;
     }
 
@@ -275,7 +270,7 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
 	public void onUpdate()
     {
         super.onUpdate();
-        
+
         if(this.worldObj.isRemote && (this.riddenByEntity == null || !(this.riddenByEntity instanceof EntityPlayer) || !FMLClientHandler.instance().getClient().thePlayer.equals(this.riddenByEntity)))
         {
             double x;
@@ -292,7 +287,7 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
                 this.rotationPitch = (float)(this.rotationPitch + (this.boatPitch - this.rotationPitch) / this.boatPosRotationIncrements);
                 --this.boatPosRotationIncrements;
                 this.setPosition(x, y, z);
-                this.setRotation(this.rotationYaw, this.rotationPitch);     
+                this.setRotation(this.rotationYaw, this.rotationPitch);
             }
             else
             {
@@ -332,7 +327,7 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
         for (var4 = 0; var4 < var20; ++var4)
         {
         }
-        
+
         if (this.riddenByEntity == null)
         {
 //        	this.yOffset = 5;
@@ -345,18 +340,18 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
         }
 
         this.speed *= 0.98D;
-        
+
         this.actualSpeed += this.speed * this.accel;
-        
+
         this.actualSpeed = MathHelper.clamp_float((float) this.actualSpeed, -5.0F, -0.5F);
 
-        this.motionY = actualSpeed;
-        
+        this.motionY = this.actualSpeed;
+
 		if (this.worldObj.isRemote)
 		{
 			this.moveEntity(this.motionX, this.motionY, this.motionZ);
 		}
-		
+
 //		if (this.moduleChest != null)
 //		{
 //            this.moduleChest.posX = this.posX;
@@ -370,9 +365,9 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
 //			this.moduleChest = new GCCoreEntityLanderChest(this);
 //	        this.worldObj.spawnEntityInWorld(this.moduleChest);
 //		}
-		
+
 		// TODO Lander Explosions
-		
+
 //		if (this.worldObj.isRemote && this.onGround && !lastOnGround && this.lastMotionY < -0.7D)
 //		{
 //			PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 17, new Object[] {this.entityId, 5.0F, this.posX, this.posY, this.posZ}));
@@ -383,12 +378,12 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
         this.prevPosZ = this.posZ;
         this.lastOnGround = this.onGround;
         this.lastMotionY = this.motionY;
-        
+
 		if(this.worldObj.isRemote)
 		{
 			PacketDispatcher.sendPacketToServer(GCCorePacketEntityUpdate.buildUpdatePacket(this));
 		}
-		
+
 		if(!this.worldObj.isRemote && this.ticksExisted % 5 == 0)
 		{
 			PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 50, this.dimension, GCCorePacketEntityUpdate.buildUpdatePacket(this));
@@ -416,27 +411,27 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
     @Override
 	protected void writeEntityToNBT(NBTTagCompound nbttagcompound)
     {
-    	NBTTagList nbttaglist = new NBTTagList();
+    	final NBTTagList nbttaglist = new NBTTagList();
 
         for (int i = 0; i < this.chestContents.length; ++i)
         {
             if (this.chestContents[i] != null)
             {
-                NBTTagCompound nbttagcompound1 = new NBTTagCompound();
+                final NBTTagCompound nbttagcompound1 = new NBTTagCompound();
                 nbttagcompound1.setByte("Slot", (byte)i);
                 this.chestContents[i].writeToNBT(nbttagcompound1);
                 nbttaglist.appendTag(nbttagcompound1);
             }
         }
-        
+
         nbttagcompound.setTag("Items", nbttaglist);
     }
-	
+
     public int getSizeInventory()
     {
         return this.chestContents.length;
     }
-    
+
     public ItemStack getStackInSlot(int par1)
     {
         return this.chestContents[par1];
@@ -478,7 +473,7 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
     {
         if (this.chestContents[par1] != null)
         {
-            ItemStack itemstack = this.chestContents[par1];
+            final ItemStack itemstack = this.chestContents[par1];
             this.chestContents[par1] = null;
             return itemstack;
         }
@@ -517,7 +512,7 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
 
     public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
     {
-        return par1EntityPlayer.getDistanceSq((double)this.posX + 0.5D, (double)this.posY + 0.5D, (double)this.posZ + 0.5D) <= 64.0D;
+        return par1EntityPlayer.getDistanceSq(this.posX + 0.5D, this.posY + 0.5D, this.posZ + 0.5D) <= 64.0D;
     }
 
 
@@ -542,7 +537,7 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
     }
 
 	@Override
-	public void onInventoryChanged() 
+	public void onInventoryChanged()
 	{
 	}
 
@@ -581,7 +576,7 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
 				{
 					this.rotationPitch -= 0.5F * this.turnFactor;
 				}
-				
+
 				return true;
 			}
 			case 1 : //Deccelerate
@@ -590,7 +585,7 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
 				{
 					this.rotationPitch += 0.5F * this.turnFactor;
 				}
-				
+
 				return true;
 			}
 			case 2 : //Left
@@ -599,7 +594,7 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
 				{
 					this.rotationYaw -= 0.5F * this.turnFactor;
 				}
-				
+
 				return true;
 			}
 			case 3 : //Right
@@ -608,7 +603,7 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
 				{
 					this.rotationYaw += 0.5F * this.turnFactor;
 				}
-				
+
 				return true;
 			}
 			case 4 : //Space
@@ -622,7 +617,7 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
 
@@ -631,12 +626,12 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
 //	{
 //		this.moduleChest = new GCCoreEntityLanderChest(this);
 //        this.worldObj.spawnEntityInWorld(this.moduleChest);
-//        
+//
 //		data.writeInt(moduleChest.entityId);
 //	}
 //
 //	@Override
-//	public void readSpawnData(ByteArrayDataInput data) 
+//	public void readSpawnData(ByteArrayDataInput data)
 //	{
 //		FMLLog.info("done1");
 //		if (this.worldObj instanceof WorldClient)

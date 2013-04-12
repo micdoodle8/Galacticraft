@@ -42,7 +42,7 @@ public class GCMoonComponentPuzzle extends GCMoonComponent
         {
             for (int var6 = 0; var6 <= GCMoonComponentPuzzle.DIAMETER; ++var6)
             {
-            	for (int var7 = -1; var7 <= this.FLOOR_LEVEL + 2; var7++)
+            	for (int var7 = -1; var7 <= GCMoonComponentPuzzle.FLOOR_LEVEL + 2; var7++)
             	{
                     this.placeBlockAtCurrentPosition(var1, 0, 0, var5, var7, var6, var3);
             	}

@@ -16,13 +16,13 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GCMoonItem extends Item
 {
 	private final String iconName;
-	
+
 	public GCMoonItem(int par1, String iconName)
 	{
 		super(par1);
 		this.iconName = iconName;
 	}
-    
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void updateIcons(IconRegister iconRegister)

@@ -25,8 +25,6 @@ import universalelectricity.prefab.tile.TileEntityElectricityRunnable;
 
 import com.google.common.io.ByteArrayDataInput;
 
-import cpw.mods.fml.common.FMLLog;
-
 /**
  * Copyright 2012-2013, micdoodle8
  *
@@ -36,15 +34,15 @@ import cpw.mods.fml.common.FMLLog;
 public class GCCoreTileEntityOxygenCompressor extends TileEntityElectricityRunnable implements IInventory, IPacketReceiver, IGasAcceptor, ITubeConnection, ISidedInventory
 {
     public int currentPower;
-    
+
     public boolean active;
 
 	private ItemStack[] containingItems = new ItemStack[2];
-   	
+
 	public static final double WATTS_PER_TICK = 300;
 
 	private final int playersUsing = 0;
-	
+
 	public static int timeSinceOxygenRequest;
 
 	@Override
@@ -56,21 +54,21 @@ public class GCCoreTileEntityOxygenCompressor extends TileEntityElectricityRunna
 		{
 			this.wattsReceived += ElectricItemHelper.dechargeItem(this.containingItems[1], GCCoreTileEntityOxygenCompressor.WATTS_PER_TICK, this.getVoltage());
 		}
-		
+
 		if (!this.worldObj.isRemote)
 		{
 			if (this.wattsReceived >= 0.05)
 			{
 				this.wattsReceived -= 0.05;
 			}
-			
-			if (this.timeSinceOxygenRequest > 0)
+
+			if (GCCoreTileEntityOxygenCompressor.timeSinceOxygenRequest > 0)
 			{
 				GCCoreTileEntityOxygenCompressor.timeSinceOxygenRequest--;
 			}
-			
+
 			this.wattsReceived = Math.max(this.wattsReceived - GCCoreTileEntityOxygenCompressor.WATTS_PER_TICK / 4, 0);
-			
+
 			if (this.currentPower < 1 && this.wattsReceived > 0)
 			{
 				this.active = false;
@@ -99,8 +97,8 @@ public class GCCoreTileEntityOxygenCompressor extends TileEntityElectricityRunna
 
 			if (this.ticks % 3 == 0)
 			{
-				Packet packet = this.getDescriptionPacket();
-				
+				final Packet packet = this.getDescriptionPacket();
+
 				if (packet != null)
 				{
 					PacketManager.sendPacketToClients(this.getDescriptionPacket(), this.worldObj, new Vector3(this), 6);
@@ -127,7 +125,7 @@ public class GCCoreTileEntityOxygenCompressor extends TileEntityElectricityRunna
 				this.disabledTicks = dataStream.readInt();
 			}
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -147,13 +145,13 @@ public class GCCoreTileEntityOxygenCompressor extends TileEntityElectricityRunna
 	}
 
 	@Override
-	public boolean canReceiveGas(ForgeDirection side, EnumGas type) 
+	public boolean canReceiveGas(ForgeDirection side, EnumGas type)
 	{
 		return side == ForgeDirection.getOrientation(this.getBlockMetadata() + 2).getOpposite() && type == EnumGas.OXYGEN;
 	}
 
 	@Override
-	public boolean canTubeConnect(ForgeDirection direction) 
+	public boolean canTubeConnect(ForgeDirection direction)
 	{
 		return direction == ForgeDirection.getOrientation(this.getBlockMetadata() + 2).getOpposite();
 	}
@@ -303,13 +301,13 @@ public class GCCoreTileEntityOxygenCompressor extends TileEntityElectricityRunna
 	@Override
 	public int transferGasToAcceptor(int amount, EnumGas type)
 	{
-		this.timeSinceOxygenRequest = 20;
-		
+		GCCoreTileEntityOxygenCompressor.timeSinceOxygenRequest = 20;
+
 		if (type == EnumGas.OXYGEN && this.getStackInSlot(0) != null)
 		{
 			int rejects = 0;
-			int neededOxygen = this.getStackInSlot(0).getItemDamage();
-			
+			final int neededOxygen = this.getStackInSlot(0).getItemDamage();
+
 			if (amount <= neededOxygen)
 			{
 				this.currentPower = amount;
@@ -319,7 +317,7 @@ public class GCCoreTileEntityOxygenCompressor extends TileEntityElectricityRunna
 				this.currentPower = neededOxygen;
 				rejects = amount - neededOxygen;
 			}
-			
+
 			return rejects;
 		}
 		else
@@ -327,36 +325,36 @@ public class GCCoreTileEntityOxygenCompressor extends TileEntityElectricityRunna
 			return amount;
 		}
 	}
-	
+
 	// ISidedInventory Implementation:
 
 	@Override
-	public int[] getSizeInventorySide(int side) 
+	public int[] getSizeInventorySide(int side)
 	{
 		return side == 1 || side == 0 ? new int[] {1} : new int[] {0};
 	}
 
 	@Override
-	public boolean func_102007_a(int slotID, ItemStack itemstack, int side) 
+	public boolean func_102007_a(int slotID, ItemStack itemstack, int side)
 	{
-		return isStackValidForSlot(slotID, itemstack);
+		return this.isStackValidForSlot(slotID, itemstack);
 	}
 
 	@Override
-	public boolean func_102008_b(int slotID, ItemStack itemstack, int side) 
+	public boolean func_102008_b(int slotID, ItemStack itemstack, int side)
 	{
 		return slotID == 0;
 	}
 
 	@Override
-	public boolean isInvNameLocalized() 
+	public boolean isInvNameLocalized()
 	{
 		return true;
 	}
 
 	@Override
-	public boolean isStackValidForSlot(int slotID, ItemStack itemstack) 
+	public boolean isStackValidForSlot(int slotID, ItemStack itemstack)
 	{
-		return slotID == 0 ? itemstack != null && itemstack.getItem() instanceof GCCoreItemOxygenTank && itemstack.getItemDamage() > 0 : (slotID == 1 ? itemstack.getItem() instanceof IItemElectric : false);
+		return slotID == 0 ? itemstack != null && itemstack.getItem() instanceof GCCoreItemOxygenTank && itemstack.getItemDamage() > 0 : slotID == 1 ? itemstack.getItem() instanceof IItemElectric : false;
 	}
 }

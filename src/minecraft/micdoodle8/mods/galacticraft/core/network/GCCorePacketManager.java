@@ -35,12 +35,12 @@ public class GCCorePacketManager extends PacketManager implements IPacketHandler
 			return UNSPECIFIED;
 		}
 	}
-	
+
 	public static Packet getPacket(String channelName, Entity sender, Object... sendData)
 	{
-		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+		final ByteArrayOutputStream bytes = new ByteArrayOutputStream();
 		DataOutputStream data = new DataOutputStream(bytes);
-		
+
 		try
 		{
 			data.writeInt(2);
@@ -48,14 +48,14 @@ public class GCCorePacketManager extends PacketManager implements IPacketHandler
 			data.writeInt(sender.entityId);
 			data = PacketManager.encodeDataStream(data, sendData);
 
-			Packet250CustomPayload packet = new Packet250CustomPayload();
+			final Packet250CustomPayload packet = new Packet250CustomPayload();
 			packet.channel = channelName;
 			packet.data = bytes.toByteArray();
 			packet.length = packet.data.length;
 
 			return packet;
 		}
-		catch (IOException e)
+		catch (final IOException e)
 		{
 			System.out.println("Failed to create packet.");
 			e.printStackTrace();
@@ -69,24 +69,24 @@ public class GCCorePacketManager extends PacketManager implements IPacketHandler
 	{
 		try
 		{
-			ByteArrayDataInput data = ByteStreams.newDataInput(packet.data);
+			final ByteArrayDataInput data = ByteStreams.newDataInput(packet.data);
 
-			int packetTypeID = data.readInt();
+			final int packetTypeID = data.readInt();
 
 			if (packetTypeID == 2)
 			{
-				double id = data.readInt();
+				final double id = data.readInt();
 
-				World world = ((EntityPlayer) player).worldObj;
+				final World world = ((EntityPlayer) player).worldObj;
 
 				if (world != null)
 				{
-					for (Object o : world.loadedEntityList)
+					for (final Object o : world.loadedEntityList)
 					{
 						if (o instanceof Entity)
 						{
-							Entity e = (Entity) o;
-							
+							final Entity e = (Entity) o;
+
 							if (id == e.entityId && e instanceof IPacketReceiver)
 							{
 								((IPacketReceiver) e).handlePacketData(network, packetTypeID, packet, (EntityPlayer) player, data);
@@ -97,15 +97,15 @@ public class GCCorePacketManager extends PacketManager implements IPacketHandler
 			}
 			else if (packetTypeID == 1)
 			{
-				int x = data.readInt();
-				int y = data.readInt();
-				int z = data.readInt();
+				final int x = data.readInt();
+				final int y = data.readInt();
+				final int z = data.readInt();
 
-				World world = ((EntityPlayer) player).worldObj;
+				final World world = ((EntityPlayer) player).worldObj;
 
 				if (world != null)
 				{
-					TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
+					final TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
 
 					if (tileEntity != null)
 					{
@@ -117,15 +117,15 @@ public class GCCorePacketManager extends PacketManager implements IPacketHandler
 				}
 			}
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			e.printStackTrace();
 		}
 	}
 
 	@Override
-	public void handlePacketData(INetworkManager network, int packetType, Packet250CustomPayload packet, EntityPlayer player, ByteArrayDataInput dataStream) 
+	public void handlePacketData(INetworkManager network, int packetType, Packet250CustomPayload packet, EntityPlayer player, ByteArrayDataInput dataStream)
 	{
-		
+
 	}
 }

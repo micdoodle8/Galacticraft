@@ -119,12 +119,12 @@ public class GCCoreWorldGenTrees extends WorldGenerator
 
                 if (Block.blocksList[var8] != null)
                 {
-                	boolean flag = Block.blocksList[var8] instanceof IPlantableBlock || Block.blocksList[var8] instanceof IPlantableMetadataBlock && ((IPlantableMetadataBlock) Block.blocksList[var8]).isPlantable(var10);
-                	boolean flag2 = Block.blocksList[var8] instanceof IPlantableBlock && waterBlocksNearby >= ((IPlantableBlock)Block.blocksList[var8]).requiredLiquidBlocksNearby() || Block.blocksList[var8] instanceof IPlantableMetadataBlock && waterBlocksNearby >= ((IPlantableMetadataBlock)Block.blocksList[var8]).requiredLiquidBlocksNearby();
-                	boolean flag3 = par4 < 256 - var6 - 1;
-                	boolean flag4 = (Block.blocksList[var8] instanceof BlockGrass || Block.blocksList[var8] instanceof BlockDirt) && waterBlocksNearby >= 4;
-                	
-                	if ((flag && flag2 && flag3) || flag4)
+                	final boolean flag = Block.blocksList[var8] instanceof IPlantableBlock || Block.blocksList[var8] instanceof IPlantableMetadataBlock && ((IPlantableMetadataBlock) Block.blocksList[var8]).isPlantable(var10);
+                	final boolean flag2 = Block.blocksList[var8] instanceof IPlantableBlock && waterBlocksNearby >= ((IPlantableBlock)Block.blocksList[var8]).requiredLiquidBlocksNearby() || Block.blocksList[var8] instanceof IPlantableMetadataBlock && waterBlocksNearby >= ((IPlantableMetadataBlock)Block.blocksList[var8]).requiredLiquidBlocksNearby();
+                	final boolean flag3 = par4 < 256 - var6 - 1;
+                	final boolean flag4 = (Block.blocksList[var8] instanceof BlockGrass || Block.blocksList[var8] instanceof BlockDirt) && waterBlocksNearby >= 4;
+
+                	if (flag && flag2 && flag3 || flag4)
                 	{
                 		var9 = 3;
                         final byte var18 = 0;

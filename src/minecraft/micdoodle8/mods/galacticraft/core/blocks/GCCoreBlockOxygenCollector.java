@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.Random;
 
-import mekanism.api.EnumGas;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCollector;
@@ -29,7 +28,7 @@ public class GCCoreBlockOxygenCollector extends BlockAdvanced
 	private Icon iconMachineSide;
 	private Icon iconInput;
 	private Icon iconOutput;
-    
+
 	public GCCoreBlockOxygenCollector(int par1)
 	{
 		super(par1, Material.rock);
@@ -53,11 +52,11 @@ public class GCCoreBlockOxygenCollector extends BlockAdvanced
 	@Override
 	public boolean onUseWrench(World par1World, int x, int y, int z, EntityPlayer par5EntityPlayer, int side, float hitX, float hitY, float hitZ)
 	{
-		int metadata = par1World.getBlockMetadata(x, y, z);
-		int original = metadata;
+		final int metadata = par1World.getBlockMetadata(x, y, z);
+		final int original = metadata;
 
 		int change = 0;
-		
+
 		// Re-orient the block
 		switch (original)
 		{
@@ -106,11 +105,11 @@ public class GCCoreBlockOxygenCollector extends BlockAdvanced
 
 		return this.iconMachineSide;
     }
-    
+
 	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving entityLiving, ItemStack itemStack)
 	{
-		int angle = MathHelper.floor_double(entityLiving.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+		final int angle = MathHelper.floor_double(entityLiving.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
 		int change = 0;
 
 		switch (angle)

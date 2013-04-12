@@ -26,30 +26,30 @@ public class GCCoreBlockRendererOxygenPipe implements ISimpleBlockRenderingHandl
 
 	public void renderPipe(RenderBlocks renderblocks, IBlockAccess iblockaccess, Block block, int x, int y, int z)
 	{
-		TileEntity tileEntity = iblockaccess.getBlockTileEntity(x, y, z);
-		
-		float minX = 0.40F;
-		float minY = 0.40F;
-		float minZ = 0.40F;
-		float maxX = 0.60F;
-		float maxY = 0.60F;
-		float maxZ = 0.60F;
-		
+		final TileEntity tileEntity = iblockaccess.getBlockTileEntity(x, y, z);
+
+		final float minX = 0.40F;
+		final float minY = 0.40F;
+		final float minZ = 0.40F;
+		final float maxX = 0.60F;
+		final float maxY = 0.60F;
+		final float maxZ = 0.60F;
+
 		if(tileEntity != null)
 		{
-			boolean[] connectable = new boolean[] {false, false, false, false, false, false};
-			ITubeConnection[] connections = GasTransmission.getConnections(tileEntity);
-			
-			for(ITubeConnection connection : connections)
+			final boolean[] connectable = new boolean[] {false, false, false, false, false, false};
+			final ITubeConnection[] connections = GasTransmission.getConnections(tileEntity);
+
+			for(final ITubeConnection connection : connections)
 			{
 				if(connection !=  null)
 				{
-					int side = Arrays.asList(connections).indexOf(connection);
+					final int side = Arrays.asList(connections).indexOf(connection);
 
 					if(connection.canTubeConnect(ForgeDirection.getOrientation(side).getOpposite()))
 					{
 						switch (side)
-						{ 
+						{
 						case 0: // DOWN
 							renderblocks.setRenderBounds(minX, 0.0F, minZ, maxX, 0.4F, maxZ);
 							renderblocks.renderStandardBlock(block, x, y, z);

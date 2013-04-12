@@ -14,23 +14,23 @@ public class GCCoreEntityLanderChest extends Entity implements IInventory
     public int numUsingPlayers;
     private GCCoreEntityLander mainLander;
 
-	public GCCoreEntityLanderChest(World world) 
+	public GCCoreEntityLanderChest(World world)
 	{
 		super(world);
 		this.ignoreFrustumCheck = true;
 		this.setSize(20.0F, 20.0F);
 	}
-	
-	public GCCoreEntityLanderChest(GCCoreEntityLander lander) 
+
+	public GCCoreEntityLanderChest(GCCoreEntityLander lander)
 	{
 		this(lander.worldObj);
 		this.mainLander = lander;
 	}
 
 	@Override
-	protected void entityInit() 
+	protected void entityInit()
 	{
-		
+
 	}
 
 	@Override
@@ -42,12 +42,12 @@ public class GCCoreEntityLanderChest extends Entity implements IInventory
 	protected void writeEntityToNBT(NBTTagCompound nbttagcompound)
 	{
 	}
-	
+
     public int getSizeInventory()
     {
         return this.chestContents.length;
     }
-    
+
     public ItemStack getStackInSlot(int par1)
     {
         return this.chestContents[par1];
@@ -89,7 +89,7 @@ public class GCCoreEntityLanderChest extends Entity implements IInventory
     {
         if (this.chestContents[par1] != null)
         {
-            ItemStack itemstack = this.chestContents[par1];
+            final ItemStack itemstack = this.chestContents[par1];
             this.chestContents[par1] = null;
             return itemstack;
         }
@@ -128,7 +128,7 @@ public class GCCoreEntityLanderChest extends Entity implements IInventory
 
     public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
     {
-        return par1EntityPlayer.getDistanceSq((double)this.posX + 0.5D, (double)this.posY + 0.5D, (double)this.posZ + 0.5D) <= 64.0D;
+        return par1EntityPlayer.getDistanceSq(this.posX + 0.5D, this.posY + 0.5D, this.posZ + 0.5D) <= 64.0D;
     }
 
 
@@ -153,15 +153,15 @@ public class GCCoreEntityLanderChest extends Entity implements IInventory
     }
 
 	@Override
-	public void onInventoryChanged() 
+	public void onInventoryChanged()
 	{
 	}
-	
+
     @Override
 	public boolean interact(EntityPlayer var1)
     {
     	FMLLog.info("merp");
-    	
+
         if (this.worldObj.isRemote)
         {
             return true;

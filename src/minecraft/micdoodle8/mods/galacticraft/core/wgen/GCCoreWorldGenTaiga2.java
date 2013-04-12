@@ -40,7 +40,7 @@ public class GCCoreWorldGenTaiga2 extends WorldGenerator
                 {
                     var21 = 0;
                 }
-                
+
                 if (var11 >= par4 + 1 + var6 - 2)
                 {
                     var21 = var9;
@@ -90,14 +90,14 @@ public class GCCoreWorldGenTaiga2 extends WorldGenerator
                         }
                     }
                 }
-                
+
                 if (Block.blocksList[var11] != null)
                 {
-                	boolean flag = Block.blocksList[var11] instanceof IPlantableBlock || Block.blocksList[var11] instanceof IPlantableMetadataBlock && ((IPlantableMetadataBlock) Block.blocksList[var11]).isPlantable(var10a);
-                	boolean flag2 = Block.blocksList[var11] instanceof IPlantableBlock && waterBlocksNearby >= ((IPlantableBlock)Block.blocksList[var11]).requiredLiquidBlocksNearby() || Block.blocksList[var11] instanceof IPlantableMetadataBlock && waterBlocksNearby >= ((IPlantableMetadataBlock)Block.blocksList[var11]).requiredLiquidBlocksNearby();
-                	boolean flag3 = (Block.blocksList[var11] instanceof BlockGrass || Block.blocksList[var11] instanceof BlockDirt) && waterBlocksNearby >= 4;
-                	
-                	if ((flag && flag2) || flag3)
+                	final boolean flag = Block.blocksList[var11] instanceof IPlantableBlock || Block.blocksList[var11] instanceof IPlantableMetadataBlock && ((IPlantableMetadataBlock) Block.blocksList[var11]).isPlantable(var10a);
+                	final boolean flag2 = Block.blocksList[var11] instanceof IPlantableBlock && waterBlocksNearby >= ((IPlantableBlock)Block.blocksList[var11]).requiredLiquidBlocksNearby() || Block.blocksList[var11] instanceof IPlantableMetadataBlock && waterBlocksNearby >= ((IPlantableMetadataBlock)Block.blocksList[var11]).requiredLiquidBlocksNearby();
+                	final boolean flag3 = (Block.blocksList[var11] instanceof BlockGrass || Block.blocksList[var11] instanceof BlockDirt) && waterBlocksNearby >= 4;
+
+                	if (flag && flag2 || flag3)
                 	{
                         var21 = par2Random.nextInt(2);
                         var13 = 1;

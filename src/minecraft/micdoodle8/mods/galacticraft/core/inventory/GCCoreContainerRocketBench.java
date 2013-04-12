@@ -20,7 +20,7 @@ public class GCCoreContainerRocketBench extends Container
 
     public GCCoreContainerRocketBench(InventoryPlayer par1InventoryPlayer, int x, int y, int z)
     {
-        int change = 27;
+        final int change = 27;
     	this.worldObj = par1InventoryPlayer.player.worldObj;
         this.addSlotToContainer(new GCCoreSlotRocketBenchResult(par1InventoryPlayer.player, this.craftMatrix, this.craftResult, 0, 142, 69 + change));
         int var6;

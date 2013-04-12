@@ -9,14 +9,13 @@ import micdoodle8.mods.galacticraft.API.ISchematicPage;
 import micdoodle8.mods.galacticraft.API.SchematicRegistry;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpaceship;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityRocketT1;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerSchematic;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemParachute;
 import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerCommon;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
-import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -69,14 +68,14 @@ public class GCCorePacketHandlerServer implements IPacketHandler
             {
             	try
             	{
-                	WorldProvider provider = WorldUtil.getProviderForName((String)packetReadout[0]);
+                	final WorldProvider provider = WorldUtil.getProviderForName((String)packetReadout[0]);
     	    		final Integer dim = provider.dimensionId;
             		FMLLog.info("Found matching world name for " + (String)packetReadout[0]);
-    	    		
+
             		if (playerBase.worldObj instanceof WorldServer)
             		{
-            			WorldServer world = (WorldServer) playerBase.worldObj;
-            			
+            			final WorldServer world = (WorldServer) playerBase.worldObj;
+
         	    		if (provider instanceof IOrbitDimension)
         	    		{
     	            		WorldUtil.transferEntityToDimension(playerBase, dim, world);
@@ -86,12 +85,12 @@ public class GCCorePacketHandlerServer implements IPacketHandler
     	            		WorldUtil.transferEntityToDimension(playerBase, dim, world);
         	    		}
             		}
-    	    		
+
     	    		playerBase.teleportCooldown = 300;
     	    		final Object[] toSend = {player.username};
     	    		player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 12, toSend));
             	}
-            	catch (Exception e)
+            	catch (final Exception e)
             	{
             		FMLLog.severe("Error occurred when attempting to transfer entity to dimension: " + (String)packetReadout[0]);
             		e.printStackTrace();
@@ -100,9 +99,9 @@ public class GCCorePacketHandlerServer implements IPacketHandler
         }
         else if (packetType == 3)
         {
-            if (!player.worldObj.isRemote && !player.isDead && player.ridingEntity != null && !player.ridingEntity.isDead && player.ridingEntity instanceof GCCoreEntitySpaceship)
+            if (!player.worldObj.isRemote && !player.isDead && player.ridingEntity != null && !player.ridingEntity.isDead && player.ridingEntity instanceof GCCoreEntityRocketT1)
             {
-            	final GCCoreEntitySpaceship ship = (GCCoreEntitySpaceship) player.ridingEntity;
+            	final GCCoreEntityRocketT1 ship = (GCCoreEntityRocketT1) player.ridingEntity;
 
             	final ItemStack stack = ship.getStackInSlot(0);
 
@@ -141,7 +140,7 @@ public class GCCorePacketHandlerServer implements IPacketHandler
 
         	if (player != null)
         	{
-        		ISchematicPage page = SchematicRegistry.getMatchingRecipeForID((Integer) packetReadout[0]);
+        		final ISchematicPage page = SchematicRegistry.getMatchingRecipeForID((Integer) packetReadout[0]);
 
         		player.openGui(GalacticraftCore.instance, page.getGuiID(), player.worldObj, (int)player.posX, (int)player.posY, (int)player.posZ);
         	}
@@ -154,7 +153,7 @@ public class GCCorePacketHandlerServer implements IPacketHandler
             final Class[] decodeAs = {Integer.class};
             PacketUtil.readPacketData(data, decodeAs);
 
-            if (player.ridingEntity instanceof GCCoreEntitySpaceship)
+            if (player.ridingEntity instanceof GCCoreEntityRocketT1)
             {
             	player.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiSpaceshipInventory, player.worldObj, (int)player.posX, (int)player.posY, (int)player.posZ);
             }
@@ -164,9 +163,9 @@ public class GCCorePacketHandlerServer implements IPacketHandler
             final Class[] decodeAs = {Float.class};
             final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
 
-            if (player.ridingEntity instanceof GCCoreEntitySpaceship)
+            if (player.ridingEntity instanceof GCCoreEntityRocketT1)
             {
-            	final GCCoreEntitySpaceship ship = (GCCoreEntitySpaceship) player.ridingEntity;
+            	final GCCoreEntityRocketT1 ship = (GCCoreEntityRocketT1) player.ridingEntity;
 
             	if (ship != null)
             	{
@@ -179,9 +178,9 @@ public class GCCorePacketHandlerServer implements IPacketHandler
             final Class[] decodeAs = {Float.class};
             final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
 
-            if (player.ridingEntity instanceof GCCoreEntitySpaceship)
+            if (player.ridingEntity instanceof GCCoreEntityRocketT1)
             {
-            	final GCCoreEntitySpaceship ship = (GCCoreEntitySpaceship) player.ridingEntity;
+            	final GCCoreEntityRocketT1 ship = (GCCoreEntityRocketT1) player.ridingEntity;
 
             	if (ship != null)
             	{
@@ -235,7 +234,7 @@ public class GCCorePacketHandlerServer implements IPacketHandler
             {
 	    		new GCCorePacketControllableEntity().handlePacket(data, new Object[] {player}, Side.SERVER);
             }
-            catch(Exception e)
+            catch(final Exception e)
             {
             	e.printStackTrace();
             }
@@ -249,7 +248,7 @@ public class GCCorePacketHandlerServer implements IPacketHandler
             {
 	    		new GCCorePacketEntityUpdate().handlePacket(data, new Object[] {player}, Side.SERVER);
             }
-            catch(Exception e)
+            catch(final Exception e)
             {
             	e.printStackTrace();
             }
@@ -258,17 +257,17 @@ public class GCCorePacketHandlerServer implements IPacketHandler
         {
             final Class[] decodeAs = {Integer.class};
             final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
-            
+
         	if (playerBase.spaceStationDimensionID == -1 || playerBase.spaceStationDimensionID == 0)
         	{
             	WorldUtil.bindSpaceStationToNewDimension(playerBase.worldObj, playerBase);
-            	
+
             	WorldUtil.getSpaceStationRecipe((Integer) packetReadout[0]).matches(playerBase, true);
-            	
+
 //            	for (ItemStack stack : RecipeUtil.getStandardSpaceStationRequirements())
 //            	{
 //            		int amountToRemove = stack.stackSize;
-//            		
+//
 //            		for (ItemStack stack2 : playerBase.inventory.mainInventory)
 //            		{
 //            			if (stack != null && stack2 != null && stack.itemID == stack2.itemID && stack.getItemDamage() == stack2.getItemDamage())
@@ -290,22 +289,22 @@ public class GCCorePacketHandlerServer implements IPacketHandler
         }
         else if (packetType == 16)
         {
-        	Container container = player.openContainer;
-        	
+        	final Container container = player.openContainer;
+
         	if (container instanceof GCCoreContainerSchematic)
         	{
-        		GCCoreContainerSchematic schematicContainer = (GCCoreContainerSchematic) container;
-        		
+        		final GCCoreContainerSchematic schematicContainer = (GCCoreContainerSchematic) container;
+
         		ItemStack stack = schematicContainer.craftMatrix.getStackInSlot(0);
-        		
+
         		if (stack != null)
         		{
-            		ISchematicPage page = SchematicRegistry.getMatchingRecipeForItemStack(stack);
-            		
+            		final ISchematicPage page = SchematicRegistry.getMatchingRecipeForItemStack(stack);
+
             		if (page != null)
             		{
             			SchematicRegistry.unlockNewPage(playerBase, stack);
-            			
+
             			if (--stack.stackSize <= 0)
             			{
             				stack = null;
@@ -313,7 +312,7 @@ public class GCCorePacketHandlerServer implements IPacketHandler
 
             			schematicContainer.craftMatrix.setInventorySlotContents(0, stack);
             			schematicContainer.craftMatrix.onInventoryChanged();
-            			
+
         	    		player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 20, new Object[] {page.getPageID()}));
             		}
         		}
@@ -323,7 +322,7 @@ public class GCCorePacketHandlerServer implements IPacketHandler
 //        {
 //            final Class[] decodeAs = {Integer.class, Float.class, Double.class, Double.class, Double.class};
 //            final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
-//            
+//
 //            for (final Object object : player.worldObj.loadedEntityList)
 //            {
 //            	if (object instanceof GCCoreEntityLander)
@@ -333,7 +332,7 @@ public class GCCorePacketHandlerServer implements IPacketHandler
 //            		if (entity.entityId == (Integer) packetReadout[0])
 //            		{
 //            			entity.worldObj.createExplosion(entity, (Double) packetReadout[2], (Double) packetReadout[3], (Double) packetReadout[4], (Float) packetReadout[1], false);
-//            			
+//
 //            			entity.setDead();
 //            		}
 //            	}
@@ -343,13 +342,13 @@ public class GCCorePacketHandlerServer implements IPacketHandler
       	{
         	final Class[] decodeAs = {Integer.class, Integer.class, Integer.class};
           	final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
-          	
-          	TileEntity tileAt = player.worldObj.getBlockTileEntity((Integer) packetReadout[0], (Integer) packetReadout[1], (Integer) packetReadout[2]);
-      	
+
+          	final TileEntity tileAt = player.worldObj.getBlockTileEntity((Integer) packetReadout[0], (Integer) packetReadout[1], (Integer) packetReadout[2]);
+
           	if (tileAt instanceof IDisableableMachine)
           	{
-          		IDisableableMachine machine = (IDisableableMachine) tileAt;
-          		
+          		final IDisableableMachine machine = (IDisableableMachine) tileAt;
+
           		machine.setDisabled(!machine.getDisabled());
           	}
       	}

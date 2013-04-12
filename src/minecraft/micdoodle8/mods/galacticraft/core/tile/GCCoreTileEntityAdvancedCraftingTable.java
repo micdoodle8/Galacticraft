@@ -27,25 +27,25 @@ public class GCCoreTileEntityAdvancedCraftingTable extends TileEntityMulti imple
   	}
 
 	@Override
-	public boolean onActivated(EntityPlayer entityPlayer) 
+	public boolean onActivated(EntityPlayer entityPlayer)
 	{
 		entityPlayer.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiRocketCraftingBench, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
 		return true;
 	}
 
 	@Override
-	public void onCreate(Vector3 placedPosition) 
+	public void onCreate(Vector3 placedPosition)
 	{
 		this.mainBlockPosition = placedPosition;
-		
+
 		for (int x = -1; x < 2; x++)
 		{
 			for (int y = 0; y < 4; y++)
 			{
 				for (int z = -1; z < 2; z++)
 				{
-					Vector3 vecToAdd = Vector3.add(placedPosition, new Vector3(x, y, z));
-					
+					final Vector3 vecToAdd = Vector3.add(placedPosition, new Vector3(x, y, z));
+
 					if (!vecToAdd.equals(placedPosition))
 					{
 						if (Math.abs(x) != 1 || Math.abs(z) != 1)
@@ -66,10 +66,10 @@ public class GCCoreTileEntityAdvancedCraftingTable extends TileEntityMulti imple
 	}
 
 	@Override
-	public void onDestroy(TileEntity callingBlock) 
+	public void onDestroy(TileEntity callingBlock)
 	{
-		Vector3 thisBlock = new Vector3(this);
-		
+		final Vector3 thisBlock = new Vector3(this);
+
 		for (int x = -1; x < 2; x++)
 		{
 			for (int y = 0; y < 4; y++)

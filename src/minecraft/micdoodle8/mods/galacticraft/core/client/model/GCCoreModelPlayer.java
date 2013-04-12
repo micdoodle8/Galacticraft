@@ -6,7 +6,7 @@ import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.client.GCCorePlayerSP;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderPlayer;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpaceship;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityRocketT1;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemSpaceship;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
@@ -14,7 +14,6 @@ import net.minecraft.client.renderer.RenderEngine;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
@@ -46,7 +45,7 @@ public class GCCoreModelPlayer extends ModelBiped
     public GCCoreModelPlayer(float var1)
     {
     	super(var1);
-    	
+
 		this.oxygenMask = new ModelRenderer(this, 0, 0);
         this.oxygenMask.addBox(-4.0F, -8.0F, -4.0F, 8, 8, 8, 1);
         this.oxygenMask.setRotationPoint(0.0F, 0.0F + 0.0F, 0.0F);
@@ -180,9 +179,9 @@ public class GCCoreModelPlayer extends ModelBiped
     	final Class<?> entityClass = GCCorePlayerSP.class;
     	final Render render = RenderManager.instance.getEntityClassRenderObject(entityClass);
     	final ModelBiped modelBipedMain = ((GCCoreRenderPlayer)render).getModel();
-    	
+
     	this.setRotationAngles(var2, var3, var4, var5, var6, var7, var1);
-    	
+
     	if (var1 instanceof EntityPlayer && this.equals(modelBipedMain))
     	{
         	final EntityPlayer player = (EntityPlayer)var1;
@@ -418,7 +417,7 @@ public class GCCoreModelPlayer extends ModelBiped
 
         	this.loadDownloadableImageTexture(var1.skinUrl, var1.getTexture());
     	}
-    	
+
     	super.render(var1, var2, var3, var4, var5, var6, var7);
     }
 
@@ -495,7 +494,7 @@ public class GCCoreModelPlayer extends ModelBiped
             f6 *= f6;
             f6 = 1.0F - f6;
             f7 = MathHelper.sin(f6 * (float)Math.PI);
-            float f8 = MathHelper.sin(this.onGround * (float)Math.PI) * -(this.bipedHead.rotateAngleX - 0.7F) * 0.75F;
+            final float f8 = MathHelper.sin(this.onGround * (float)Math.PI) * -(this.bipedHead.rotateAngleX - 0.7F) * 0.75F;
             this.bipedRightArm.rotateAngleX = (float)(this.bipedRightArm.rotateAngleX - (f7 * 1.2D + f8));
             this.bipedRightArm.rotateAngleY += this.bipedBody.rotateAngleY * 2.0F;
             this.bipedRightArm.rotateAngleZ = MathHelper.sin(this.onGround * (float)Math.PI) * -0.4F;
@@ -546,7 +545,7 @@ public class GCCoreModelPlayer extends ModelBiped
             this.bipedRightArm.rotateAngleX += MathHelper.sin(par3 * 0.067F) * 0.05F;
             this.bipedLeftArm.rotateAngleX -= MathHelper.sin(par3 * 0.067F) * 0.05F;
         }
-        
+
     	if (!((EntityPlayer) par7Entity).onGround && ((EntityPlayer) par7Entity).worldObj.provider instanceof IGalacticraftWorldProvider && !(((EntityPlayer) par7Entity).inventory.getCurrentItem() != null && ((EntityPlayer) par7Entity).inventory.getCurrentItem().getItem() instanceof GCCoreItemSpaceship))
     	{
     		this.bipedHead.rotateAngleY = par4 / (180F / (float)Math.PI);
@@ -675,7 +674,7 @@ public class GCCoreModelPlayer extends ModelBiped
                 this.bipedLeftArm.rotateAngleX -= MathHelper.sin(par3 * 0.067F) * 0.05F;
             }
     	}
-    	
+
     	boolean holdingSpaceship = false;
 
         this.oxygenMask.rotateAngleY = par4 / (180F / (float)Math.PI);
@@ -729,7 +728,7 @@ public class GCCoreModelPlayer extends ModelBiped
         	if (player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() instanceof GCCoreItemSpaceship)
         	{
         		holdingSpaceship = true;
-        		
+
 
             	this.bipedLeftArm.rotateAngleX = 0;
             	this.bipedLeftArm.rotateAngleZ = 0;
@@ -753,7 +752,7 @@ public class GCCoreModelPlayer extends ModelBiped
 
     	try
     	{
-			if (EntityCreeper.class.forName("mod_SmartMoving") != null || EntityCreeper.class.forName("net.minecraft.src.mod_SmartMoving") != null)
+			if (Class.forName("mod_SmartMoving") != null || Class.forName("net.minecraft.src.mod_SmartMoving") != null)
 			{
 				super.setRotationAngles(par1, par2, par3, par4, par5, par6, par7Entity);
 				return;
@@ -771,9 +770,9 @@ public class GCCoreModelPlayer extends ModelBiped
 		{
 			final Entity e = (Entity) l.get(i);
 
-			if (e instanceof GCCoreEntitySpaceship)
+			if (e instanceof GCCoreEntityRocketT1)
 			{
-				final GCCoreEntitySpaceship ship = (GCCoreEntitySpaceship)e;
+				final GCCoreEntityRocketT1 ship = (GCCoreEntityRocketT1)e;
 
 				if (ship.riddenByEntity != null && !((EntityPlayer)ship.riddenByEntity).username.equals(player.username) && (ship.getLaunched() == 1 || ship.getTimeUntilLaunch() < 390))
 				{
@@ -787,7 +786,7 @@ public class GCCoreModelPlayer extends ModelBiped
 //    @Override
 //	public void setRotationAngles(float var1, float var2, float var3, float var4, float var5, float var6, Entity var7)
 //    {
-    	
+
 //
 //    	super.afterSetRotationAngles(var1, var2, var3, var4, var5, var6, var7);
 //    }
