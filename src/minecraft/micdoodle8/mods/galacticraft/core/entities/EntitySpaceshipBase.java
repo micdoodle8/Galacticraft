@@ -472,11 +472,15 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
             {
         	  	final Object[] toSend = {((EntityPlayerMP)this.riddenByEntity).username};
             	((EntityPlayerMP) this.riddenByEntity).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 8, toSend));
+        	  	final Object[] toSend2 = {1};
+            	((EntityPlayerMP) par1EntityPlayer).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, toSend2));
             }
             else if (par1EntityPlayer instanceof EntityPlayerMP)
             {
         	  	final Object[] toSend = {par1EntityPlayer.username};
             	((EntityPlayerMP) par1EntityPlayer).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 13, toSend));
+        	  	final Object[] toSend2 = {0};
+            	((EntityPlayerMP) par1EntityPlayer).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, toSend2));
             }
 
         	return true;
@@ -615,7 +619,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
 				if (this.riddenByEntity != null)
 				{
             		this.riddenByEntity.mountEntity(this);
-				}
+    			}
 				
 				if (!this.isDead)
 				{

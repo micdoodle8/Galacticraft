@@ -37,6 +37,7 @@ import net.minecraft.world.WorldProviderSurface;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import cpw.mods.fml.common.TickType;
@@ -85,15 +86,10 @@ public class GCCoreTickHandlerClient implements ITickHandler
 
 			if (player != null && player.ridingEntity != null && player.ridingEntity instanceof ISpaceship)
 			{
-				this.zoom(15.0F);
 				final Object[] toSend = {player.ridingEntity.rotationPitch};
 	            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 8, toSend));
 				final Object[] toSend2 = {player.ridingEntity.rotationYaw};
 	            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 7, toSend2));
-			}
-			else
-			{
-				this.zoom(4.0F);
 			}
 
 			if (world != null && world.provider instanceof WorldProviderSurface)

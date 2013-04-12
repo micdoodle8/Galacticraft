@@ -17,7 +17,6 @@ import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityWeldingSmoke;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiChoosePlanet;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiGalaxyMap;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreSpaceStationData;
-import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerClient;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
@@ -394,6 +393,13 @@ public class GCCorePacketHandlerClient implements IPacketHandler
     				e.printStackTrace();
     			}
         	}
+        }
+        else if (packetType == 22)
+        {
+            final Class[] decodeAs = {Integer.class};
+            final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
+
+			GCCoreTickHandlerClient.zoom((Integer) packetReadout[0] == 0 ? 4.0F : 15.0F);
         }
 	}
 }
