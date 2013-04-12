@@ -47,7 +47,7 @@ public class GCCoreTickHandlerCommon implements ITickHandler
 					final Entity e = (Entity) o;
 					final IOrbitDimension dimension = (IOrbitDimension)((Entity)o).worldObj.provider;
 
-					if (e.posY <= dimension.getYCoordToTeleport())
+					if (e.posY <= dimension.getYCoordToTeleportToPlanet())
 					{
 	    	    		final Integer dim = WorldUtil.getProviderForName(dimension.getPlanetToOrbit()).dimensionId;
 
