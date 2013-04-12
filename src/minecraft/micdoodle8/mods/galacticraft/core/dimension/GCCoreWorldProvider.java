@@ -235,13 +235,7 @@ public class GCCoreWorldProvider extends WorldProvider implements IOrbitDimensio
 	}
 
 	@Override
-	public ItemStack getRequiredItemStack()
-	{
-		return null; // TODO
-	}
-
-	@Override
-	public int getYCoordToTeleport()
+	public int getYCoordToTeleportToPlanet()
 	{
 		return 30;
 	}
@@ -255,7 +249,7 @@ public class GCCoreWorldProvider extends WorldProvider implements IOrbitDimensio
 	@Override
 	public double getSolorEnergyMultiplier()
 	{
-		return 3.0D;
+		return GCCoreConfigManager.spaceStationEnergyScalar;
 	}
 
 	@Override
