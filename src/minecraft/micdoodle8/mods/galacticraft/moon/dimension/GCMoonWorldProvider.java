@@ -72,8 +72,8 @@ public class GCMoonWorldProvider extends WorldProvider implements IGalacticraftW
 	@Override
     public float calculateCelestialAngle(long par1, float par3)
     {
-        final int var4 = (int)(par1 % 24000L);
-        float var5 = (var4 + par3) / 24000.0F - 0.25F;
+        final int var4 = (int)(par1 % 655200L);
+        float var5 = (var4 + par3) / 655200.0F - 0.25F;
 
         if (var5 < 0.0F)
         {
