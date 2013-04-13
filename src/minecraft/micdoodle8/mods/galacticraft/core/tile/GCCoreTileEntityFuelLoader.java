@@ -51,6 +51,8 @@ public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable im
 	private boolean initialized = false;
 	private boolean disabled = true;
 
+	public int disableCooldown = 0;
+
 	public int getScaledFuelLevel(int i)
 	{
 		final double fuelLevel = this.fuelTank.getLiquid() == null ? 0 : this.fuelTank.getLiquid().amount;
@@ -80,6 +82,11 @@ public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable im
 
 		if (!this.worldObj.isRemote)
 		{
+			if (this.disableCooldown > 0)
+			{
+				this.disableCooldown--;
+			}
+			
 			this.wattsReceived = Math.max(this.wattsReceived - GCCoreTileEntityFuelLoader.WATTS_PER_TICK / 4, 0);
 
 			if (this.containingItems[1] != null)
@@ -147,15 +154,19 @@ public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable im
 					this.attachedFuelable = null;
 				}
 			}
+			
+			final LiquidStack liquid = LiquidDictionary.getLiquid("Fuel", 1);
 
 			if (this.attachedFuelable != null && (this.ic2WattsReceived > 0 || this.wattsReceived > 0) && !this.disabled)
 			{
-				final LiquidStack liquid = LiquidDictionary.getLiquid("Fuel", 1);
-
 				if (liquid != null)
 				{
-					this.fuelTank.drain(this.attachedFuelable.addFuel(liquid, 1), true);
+					this.fuelTank.drain(this.attachedFuelable.addFuel(liquid, 1, true), true);
 				}
+			}
+			else
+			{
+				this.disabled = true;
 			}
 
 			if (this.ticks % 3 == 0)
@@ -168,7 +179,7 @@ public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable im
 	@Override
 	public Packet getDescriptionPacket()
 	{
-		return PacketManager.getPacket(BasicComponents.CHANNEL, this, this.wattsReceived, this.disabledTicks, this.ic2WattsReceived, this.fuelTank.getLiquid() == null ? 0 : this.fuelTank.getLiquid().amount, this.disabled);
+		return PacketManager.getPacket(BasicComponents.CHANNEL, this, this.wattsReceived, this.disabledTicks, this.ic2WattsReceived, this.fuelTank.getLiquid() == null ? 0 : this.fuelTank.getLiquid().amount, this.disabled, this.disableCooldown);
 	}
 
 	@Override
@@ -184,6 +195,7 @@ public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable im
 				final int amount = dataStream.readInt();
 				this.fuelTank.setLiquid(new LiquidStack(GCCoreItems.fuel.itemID, amount, 0));
 				this.disabled = dataStream.readBoolean();
+				this.disableCooldown = dataStream.readInt();
 			}
 		}
 		catch (final Exception e)
@@ -447,7 +459,11 @@ public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable im
 	@Override
 	public void setDisabled(boolean disabled)
 	{
-		this.disabled = disabled;
+		if (this.disableCooldown == 0)
+		{
+			this.disabled = disabled;
+			this.disableCooldown = 20;
+		}
 	}
 
 	@Override
