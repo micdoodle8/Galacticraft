@@ -110,6 +110,8 @@ public class GCCorePlayerMP extends EntityPlayerMP
 	public int chestSpawnCooldown;
 
 	public int teleportCooldown;
+	
+	public static int chatCooldown;
 
 	private int lastStep;
 
@@ -263,6 +265,11 @@ public class GCCorePlayerMP extends EntityPlayerMP
     	if (this.teleportCooldown > 0)
     	{
     		this.teleportCooldown--;
+    	}
+    	
+    	if (this.chatCooldown > 0)
+    	{
+    		this.chatCooldown--;
     	}
 
     	if (this.openPlanetSelectionGuiCooldown > 0)

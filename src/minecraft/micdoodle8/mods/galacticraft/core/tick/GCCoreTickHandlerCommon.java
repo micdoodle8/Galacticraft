@@ -12,19 +12,10 @@ import cpw.mods.fml.common.TickType;
 
 public class GCCoreTickHandlerCommon implements ITickHandler
 {
-	public static int chatCooldown;
-
 	@Override
 	public void tickStart(EnumSet<TickType> type, Object... tickData)
 	{
-		if (type.equals(EnumSet.of(TickType.SERVER)))
-        {
-			if (GCCoreTickHandlerCommon.chatCooldown > 0)
-			{
-				GCCoreTickHandlerCommon.chatCooldown--;
-			}
-        }
-		else if (type.equals(EnumSet.of(TickType.WORLD)))
+		if (type.equals(EnumSet.of(TickType.WORLD)))
 		{
 			final WorldServer world = (WorldServer) tickData[0];
 			final Object[] entityList = world.loadedEntityList.toArray();
@@ -64,7 +55,7 @@ public class GCCoreTickHandlerCommon implements ITickHandler
 	@Override
 	public EnumSet<TickType> ticks()
 	{
-		return EnumSet.of(TickType.SERVER, TickType.WORLD);
+		return EnumSet.of(TickType.WORLD);
 	}
 
 	@Override

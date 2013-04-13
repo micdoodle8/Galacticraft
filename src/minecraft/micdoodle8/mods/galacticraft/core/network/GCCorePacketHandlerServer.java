@@ -28,6 +28,7 @@ import net.minecraft.network.packet.Packet9Respawn;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
@@ -114,22 +115,22 @@ public class GCCorePacketHandlerServer implements IPacketHandler
             			stack2 = playerBase.playerTankInventory.getStackInSlot(4);
             		}
 
-    				if (stack2 != null && stack2.getItem() instanceof GCCoreItemParachute || player != null && playerBase.launchAttempts > 0)
+    				if ((stack2 != null && stack2.getItem() instanceof GCCoreItemParachute) || (playerBase != null && playerBase.launchAttempts > 0))
     				{
                     	ship.ignite();
                     	playerBase.launchAttempts = 0;
     				}
-                	else if (GCCoreTickHandlerCommon.chatCooldown == 0 && playerBase.launchAttempts == 0)
+                	else if (playerBase.chatCooldown == 0 && playerBase.launchAttempts == 0)
                 	{
                 		player.sendChatToPlayer("I don't have a parachute! If I press launch again, there's no going back!");
-                		GCCoreTickHandlerCommon.chatCooldown = 250;
+                		playerBase.chatCooldown = 250;
                 		playerBase.launchAttempts = 1;
                 	}
     			}
-            	else if (GCCoreTickHandlerCommon.chatCooldown == 0)
+            	else if (playerBase.chatCooldown == 0)
             	{
             		player.sendChatToPlayer("I'll need to load in some rocket fuel first!");
-            		GCCoreTickHandlerCommon.chatCooldown = 250;
+            		playerBase.chatCooldown = 250;
             	}
             }
         }
