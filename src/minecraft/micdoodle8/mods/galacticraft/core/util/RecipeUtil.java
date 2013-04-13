@@ -1,8 +1,14 @@
 package micdoodle8.mods.galacticraft.core.util;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
+import java.util.Map.Entry;
 
+import codechicken.nei.PositionedStack;
+
+import micdoodle8.mods.galacticraft.API.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryRocketBench;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemFlag;
@@ -19,7 +25,7 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 import universalelectricity.components.common.BasicComponents;
 
 public class RecipeUtil
-{
+{	
 	public static void addCraftingRecipes()
 	{
 		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.rocketEngine, 1), new Object[] {
@@ -67,7 +73,7 @@ public class RecipeUtil
 		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreBlocks.landingPad, 9), new Object[] {
 			"YYY",
 			"XXX",
-			'X', Block.blockSteel,
+			'X', Block.blockIron,
 			'Y', "plateIron"
 		}));
 		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreBlocks.airDistributor, 1), new Object[] {
@@ -77,6 +83,16 @@ public class RecipeUtil
 			'W', "ingotSteel",
 			'X', GCCoreItems.airFan,
 			'Y', GCCoreItems.airVent
+		}));
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreBlocks.sealer, 1), new Object[] {
+			"WZW",
+			"YXY",
+			"WZW",
+			'V', "copperWire",
+			'W', "ingotSteel",
+			'X', GCCoreItems.airFan,
+			'Y', GCCoreItems.airVent,
+			'Z', "plateSteel"
 		}));
 		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreBlocks.blockAirCollector, 1), new Object[] {
 			"WWW",
@@ -167,7 +183,7 @@ public class RecipeUtil
 			"XYX",
 			"XXX",
 			'X', Block.thinGlass,
-			'Y', Item.helmetSteel
+			'Y', Item.helmetIron
 		}));
 		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreItems.oxygenConcentrator, 1), new Object[] {
 			"ZWZ",
@@ -260,6 +276,14 @@ public class RecipeUtil
 			"Y Y",
 			" Y ",
 			'X', GCCoreItems.canvas, 'Y', Item.silk
+		}));
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreBlocks.enclosedWire, 1, 0), new Object[] {
+			"XYX",
+			'X', "copperWire", 'Y', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4)
+		}));
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreBlocks.enclosedWire, 1, 1), new Object[] {
+			"XYX",
+			'X', GCCoreBlocks.oxygenPipe, 'Y', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4)
 		}));
 
         for (int var2 = 0; var2 < 16; ++var2)
@@ -434,6 +458,4 @@ public class RecipeUtil
 
     	return stacks;
     }
-
-//	public static
 }
