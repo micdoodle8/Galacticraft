@@ -1,16 +1,18 @@
 package micdoodle8.mods.galacticraft.API;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import net.minecraft.world.WorldProvider;
+import codechicken.nei.PositionedStack;
 
 public class GalacticraftRegistry
 {
 	private static Map<Class<? extends WorldProvider>, ITeleportType> teleportTypeMap = new HashMap<Class<? extends WorldProvider>, ITeleportType>();
-	/** Galacticraft internal use only. You should be adding it using the registerSpaceStationRecipe method **/
 	private static Map<Class<? extends IOrbitDimension>, SpaceStationRecipe> spaceStationRecipes = new HashMap<Class<? extends IOrbitDimension>, SpaceStationRecipe>();
-	/** Galacticraft internal use only. You should be adding it using the registerSpaceStationRecipe method **/
 	private static Map<Integer, SpaceStationType> spaceStations = new HashMap<Integer, SpaceStationType>();
 
 	/**
@@ -46,23 +48,4 @@ public class GalacticraftRegistry
 	{
 		return GalacticraftRegistry.spaceStations;
 	}
-
-//	/**
-//	 * Register recipes for space stations here (items required to create it)
-//	 *
-//	 * @param clazz the world provider class that implements IOrbitDimension (space station)
-//	 * @param recipe the GCCoreSpaceStationRecipe for this space station
-//	 */
-//	public static void registerSpaceStationRecipe(Class<? extends IOrbitDimension> clazz, SpaceStationRecipe recipe)
-//	{
-//		if (!spaceStationRecipes.containsKey(clazz))
-//		{
-//			spaceStationRecipes.put(clazz, recipe);
-//		}
-//	}
-//
-//	public static SpaceStationRecipe getRecipeFromSpaceStation(Class<? extends IOrbitDimension> clazz)
-//	{
-//		return spaceStationRecipes.get(clazz);
-//	}
 }
