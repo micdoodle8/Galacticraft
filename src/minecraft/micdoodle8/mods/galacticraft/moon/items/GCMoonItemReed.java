@@ -18,9 +18,9 @@ public class GCMoonItemReed extends ItemReed
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void updateIcons(IconRegister iconRegister)
+	public void registerIcons(IconRegister iconRegister)
 	{
-		this.iconIndex = iconRegister.registerIcon("galacticraftmoon:cheese_block");
+		this.itemIcon = iconRegister.registerIcon("galacticraftmoon:cheese_block");
 	}
 
     @Override

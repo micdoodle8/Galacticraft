@@ -64,7 +64,7 @@ public class GCCoreItemOilExtractor extends Item
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void updateIcons(IconRegister iconRegister)
+	public void registerIcons(IconRegister iconRegister)
 	{
 		this.icons = new Icon[5];
 		this.icons[0] = iconRegister.registerIcon("galacticraftcore:extractor_1" + GalacticraftCore.TEXTURE_SUFFIX);
@@ -73,7 +73,7 @@ public class GCCoreItemOilExtractor extends Item
 		this.icons[3] = iconRegister.registerIcon("galacticraftcore:extractor_4" + GalacticraftCore.TEXTURE_SUFFIX);
 		this.icons[4] = iconRegister.registerIcon("galacticraftcore:extractor_5" + GalacticraftCore.TEXTURE_SUFFIX);
 
-		this.iconIndex = this.icons[0];
+		this.itemIcon = this.icons[0];
 	}
 
 	@Override
@@ -167,7 +167,7 @@ public class GCCoreItemOilExtractor extends Item
     {
     	if (par2World.isRemote)
     	{
-        	this.iconIndex = this.icons[0];
+        	this.itemIcon = this.icons[0];
     	}
     }
 

@@ -21,9 +21,9 @@ public class GCMoonItemCheese extends ItemFood
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void updateIcons(IconRegister iconRegister)
+	public void registerIcons(IconRegister iconRegister)
 	{
-		this.iconIndex = iconRegister.registerIcon("galacticraftmoon:cheese_curd");
+		this.itemIcon = iconRegister.registerIcon("galacticraftmoon:cheese_curd");
 	}
 
 	@Override

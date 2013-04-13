@@ -32,7 +32,7 @@ public class GCCoreBlockCrudeOilMoving extends BlockFluid implements ILiquid
 
 	@Override
     @SideOnly(Side.CLIENT)
-    public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
+    public Icon getIcon(int par1, int par2)
     {
         return par1 != 0 && par1 != 1 ? this.fluidIcons[1] : this.fluidIcons[0];
     }
@@ -307,7 +307,7 @@ public class GCCoreBlockCrudeOilMoving extends BlockFluid implements ILiquid
 	{
 		final int l = world.getBlockId(i, j, k);
 
-		if (l == Block.doorWood.blockID || l == Block.doorSteel.blockID || l == Block.signPost.blockID || l == Block.ladder.blockID || l == Block.reed.blockID)
+		if (l == Block.doorWood.blockID || l == Block.doorIron.blockID || l == Block.signPost.blockID || l == Block.ladder.blockID || l == Block.reed.blockID)
 		{
 			return true;
 		}

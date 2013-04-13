@@ -99,7 +99,7 @@ public class GCMoonBlockCheese extends Block
      * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
      */
     @Override
-	public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
+	public Icon getIcon(int par1, int par2)
     {
         return par1 == 1 ? this.cheeseIcons[0] : par1 == 0 ? this.cheeseIcons[0] : par2 > 0 && par1 == 4 ? this.cheeseIcons[2] : this.cheeseIcons[1];
     }

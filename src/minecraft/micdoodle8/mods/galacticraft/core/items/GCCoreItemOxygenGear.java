@@ -57,9 +57,9 @@ public class GCCoreItemOxygenGear extends Item
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void updateIcons(IconRegister iconRegister)
+	public void registerIcons(IconRegister iconRegister)
 	{
-		this.iconIndex = iconRegister.registerIcon("galacticraftcore:oxygen_gear" + GalacticraftCore.TEXTURE_SUFFIX);
+		this.itemIcon = iconRegister.registerIcon("galacticraftcore:oxygen_gear" + GalacticraftCore.TEXTURE_SUFFIX);
 	}
 
 	@Override

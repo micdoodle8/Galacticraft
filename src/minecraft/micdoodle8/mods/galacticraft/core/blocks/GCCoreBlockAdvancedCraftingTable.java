@@ -151,7 +151,7 @@ public class GCCoreBlockAdvancedCraftingTable extends BlockContainer
     }
 
 	@Override
-    public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
+    public Icon getIcon(int par1, int par2)
     {
         return par1 == 1 ? this.iconBuffer[1] : this.iconBuffer[0];
     }

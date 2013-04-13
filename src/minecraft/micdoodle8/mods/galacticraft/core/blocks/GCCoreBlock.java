@@ -52,7 +52,7 @@ public class GCCoreBlock extends Block
     }
 
 	@Override
-	public Icon getBlockTextureFromSideAndMetadata(int side, int meta)
+	public Icon getIcon(int side, int meta)
 	{
 		switch (meta)
 		{

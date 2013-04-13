@@ -34,9 +34,9 @@ public class GCCoreItemSpaceship extends Item
 
     @Override
 	@SideOnly(Side.CLIENT)
-    public void updateIcons(IconRegister par1IconRegister)
+    public void registerIcons(IconRegister par1IconRegister)
     {
-        this.iconIndex = null;
+        this.itemIcon = null;
     }
 
 	@Override

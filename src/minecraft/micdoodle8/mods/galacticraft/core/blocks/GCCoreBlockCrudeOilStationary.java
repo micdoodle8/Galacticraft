@@ -27,7 +27,7 @@ public class GCCoreBlockCrudeOilStationary extends BlockStationary implements IL
 
 	@Override
     @SideOnly(Side.CLIENT)
-    public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
+    public Icon getIcon(int par1, int par2)
     {
         return par1 != 0 && par1 != 1 ? this.fluidIcons[1] : this.fluidIcons[0];
     }

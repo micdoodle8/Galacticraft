@@ -92,7 +92,7 @@ public class GCMoonBlock extends Block implements IDetectableMetadataResource, I
     }
 
 	@Override
-    public Icon getBlockTextureFromSideAndMetadata(int side, int meta)
+    public Icon getIcon(int side, int meta)
     {
 		if (meta >= 5 && meta <= 13)
 		{

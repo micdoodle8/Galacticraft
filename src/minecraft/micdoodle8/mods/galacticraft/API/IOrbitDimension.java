@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.API;
 
-import net.minecraft.item.ItemStack;
 
 public interface IOrbitDimension extends IGalacticraftWorldProvider
 {

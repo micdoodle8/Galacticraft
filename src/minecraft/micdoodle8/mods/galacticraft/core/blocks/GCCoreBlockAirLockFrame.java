@@ -90,7 +90,7 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvanced
 
     @Override
     @SideOnly(Side.CLIENT)
-    public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
+    public Icon getIcon(int par1, int par2)
     {
     	return this.airLockIcons[0];
     }

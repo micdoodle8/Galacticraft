@@ -21,9 +21,9 @@ public class GCCoreItemFuel extends Item
 
 	@Override
     @SideOnly(Side.CLIENT)
-    public void updateIcons(IconRegister par1IconRegister)
+    public void registerIcons(IconRegister par1IconRegister)
     {
-        this.iconIndex = par1IconRegister.registerIcon("galacticraftcore:fuel_flow");
+        this.itemIcon = par1IconRegister.registerIcon("galacticraftcore:fuel_flow");
     }
 
 //	@Override

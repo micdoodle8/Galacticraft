@@ -42,7 +42,7 @@ public class GCCoreItemOilCanister extends Item implements IRefinableItem
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void updateIcons(IconRegister iconRegister)
+	public void registerIcons(IconRegister iconRegister)
 	{
 		int i = 0;
 

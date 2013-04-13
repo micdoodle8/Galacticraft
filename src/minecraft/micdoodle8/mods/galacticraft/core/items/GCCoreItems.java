@@ -68,7 +68,7 @@ public class GCCoreItems
 		GCCoreItems.oxygenMask = new GCCoreItemOxygenMask(GCCoreConfigManager.idArmorOxygenMask).setUnlocalizedName("oxygenMask");
 		GCCoreItems.spaceship = new GCCoreItemSpaceship(GCCoreConfigManager.idItemSpaceship).setUnlocalizedName("spaceship");
 		GCCoreItems.sensorGlasses = new GCCoreItemSensorGlasses(GCCoreConfigManager.idArmorSensorGlasses, GCCoreItems.SENSORGLASSES, 6, 0).setUnlocalizedName("sensorGlasses");
-//		sensorGlassesWithOxygenMask = new GCCoreItemSensorGlasses(GCCoreConfigManager.idArmorSensorGlassesWithOxygenMask, SENSORGLASSES, 7, 0, true).setIconIndex(8).setUnlocalizedName("sensorGlassesWithOxygenMask");
+//		sensorGlassesWithOxygenMask = new GCCoreItemSensorGlasses(GCCoreConfigManager.idArmorSensorGlassesWithOxygenMask, SENSORGLASSES, 7, 0, true).setitemIcon(8).setUnlocalizedName("sensorGlassesWithOxygenMask");
 		GCCoreItems.steelPickaxe = new GCCoreItemPickaxe(GCCoreConfigManager.idToolSteelPickaxe, GCCoreItems.TOOLsteel).setUnlocalizedName("steel_pickaxe");
 		GCCoreItems.steelAxe = new GCCoreItemAxe(GCCoreConfigManager.idToolSteelAxe, GCCoreItems.TOOLsteel).setUnlocalizedName("steel_axe");
 		GCCoreItems.steelHoe = new GCCoreItemHoe(GCCoreConfigManager.idToolSteelHoe, GCCoreItems.TOOLsteel).setUnlocalizedName("steel_hoe");
@@ -78,7 +78,7 @@ public class GCCoreItems
 		GCCoreItems.steelChestplate = new GCCoreItemArmor(GCCoreConfigManager.idArmorSteelChestplate, GCCoreItems.steelARMOR, 9, 1, false).setUnlocalizedName("steel_chestplate");
 		GCCoreItems.steelLeggings = new GCCoreItemArmor(GCCoreConfigManager.idArmorSteelLeggings, GCCoreItems.steelARMOR, 9, 2, false).setUnlocalizedName("steel_leggings");
 		GCCoreItems.steelBoots = new GCCoreItemArmor(GCCoreConfigManager.idArmorSteelBoots, GCCoreItems.steelARMOR, 9, 3, false).setUnlocalizedName("steel_boots");
-//		steelHelmetBreathable = new GCCoreItemArmor(GCCoreConfigManager.idArmorsteelHelmetBreathable, steelARMOR, 9, 0, true).setIconIndex(18).setUnlocalizedName("steelHelmetBreathable");
+//		steelHelmetBreathable = new GCCoreItemArmor(GCCoreConfigManager.idArmorsteelHelmetBreathable, steelARMOR, 9, 0, true).setitemIcon(18).setUnlocalizedName("steelHelmetBreathable");
 		GCCoreItems.canister = new GCCoreItemCanister(GCCoreConfigManager.idItemTinCanister).setUnlocalizedName("canister");
 		GCCoreItems.airVent = new GCCoreItem(GCCoreConfigManager.idItemAirVent, "air_vent" + GalacticraftCore.TEXTURE_SUFFIX).setUnlocalizedName("airVent");
 		GCCoreItems.airFan = new GCCoreItem(GCCoreConfigManager.idItemFan, "air_fan" + GalacticraftCore.TEXTURE_SUFFIX).setUnlocalizedName("airFan");

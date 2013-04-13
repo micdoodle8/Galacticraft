@@ -35,7 +35,7 @@ public class GCCoreItemCanister extends Item
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void updateIcons(IconRegister iconRegister)
+	public void registerIcons(IconRegister iconRegister)
 	{
 		int i = 0;
 

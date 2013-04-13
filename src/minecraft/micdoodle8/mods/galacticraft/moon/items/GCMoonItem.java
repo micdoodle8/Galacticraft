@@ -25,9 +25,9 @@ public class GCMoonItem extends Item
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void updateIcons(IconRegister iconRegister)
+	public void registerIcons(IconRegister iconRegister)
 	{
-		this.iconIndex = iconRegister.registerIcon("galacticraftmoon:" + this.iconName);
+		this.itemIcon = iconRegister.registerIcon("galacticraftmoon:" + this.iconName);
 	}
 
 	@Override

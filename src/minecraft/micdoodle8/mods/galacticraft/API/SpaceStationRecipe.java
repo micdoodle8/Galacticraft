@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import micdoodle8.mods.galacticraft.core.GCLog;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
-import cpw.mods.fml.common.FMLLog;
 
 public class SpaceStationRecipe
 {
@@ -88,8 +88,6 @@ public class SpaceStationRecipe
                     }
                 }
             }
-
-            FMLLog.info("" + amountInInv);
 
             if (amountInInv >= amountRequired)
             {

@@ -53,7 +53,7 @@ public class GCCoreItemSchematic extends Item implements ISchematicItem
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void updateIcons(IconRegister iconRegister)
+	public void registerIcons(IconRegister iconRegister)
 	{
 		this.icons = new Icon[1];
 		this.icons[0] = iconRegister.registerIcon("galacticraftcore:schematic_buggy" + GalacticraftCore.TEXTURE_SUFFIX);

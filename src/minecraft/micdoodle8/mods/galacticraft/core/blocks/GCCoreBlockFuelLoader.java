@@ -60,7 +60,7 @@ public class GCCoreBlockFuelLoader extends BlockAdvanced
     }
 
 	@Override
-	public Icon getBlockTextureFromSideAndMetadata(int side, int metadata)
+	public Icon getIcon(int side, int metadata)
 	{
 		if (side == 0 || side == 1)
 		{

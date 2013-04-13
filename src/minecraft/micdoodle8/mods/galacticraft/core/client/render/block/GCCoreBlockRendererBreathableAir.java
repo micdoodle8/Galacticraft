@@ -57,27 +57,27 @@ public class GCCoreBlockRendererBreathableAir implements ISimpleBlockRenderingHa
         var0.setRenderBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         var3.startDrawingQuads();
         var3.setNormal(0.0F, -1.0F, 0.0F);
-        var0.renderBottomFace(var1, 0.0D, 0.0D, 0.0D, var1.getBlockTextureFromSideAndMetadata(0, var2));
+        var0.renderBottomFace(var1, 0.0D, 0.0D, 0.0D, var1.getIcon(0, var2));
         var3.draw();
         var3.startDrawingQuads();
         var3.setNormal(0.0F, 1.0F, 0.0F);
-        var0.renderTopFace(var1, 0.0D, 0.0D, 0.0D, var1.getBlockTextureFromSideAndMetadata(1, var2));
+        var0.renderTopFace(var1, 0.0D, 0.0D, 0.0D, var1.getIcon(1, var2));
         var3.draw();
         var3.startDrawingQuads();
         var3.setNormal(0.0F, 0.0F, -1.0F);
-        var0.renderEastFace(var1, 0.0D, 0.0D, 0.0D, var1.getBlockTextureFromSideAndMetadata(2, var2));
+        var0.renderEastFace(var1, 0.0D, 0.0D, 0.0D, var1.getIcon(2, var2));
         var3.draw();
         var3.startDrawingQuads();
         var3.setNormal(0.0F, 0.0F, 1.0F);
-        var0.renderWestFace(var1, 0.0D, 0.0D, 0.0D, var1.getBlockTextureFromSideAndMetadata(3, var2));
+        var0.renderWestFace(var1, 0.0D, 0.0D, 0.0D, var1.getIcon(3, var2));
         var3.draw();
         var3.startDrawingQuads();
         var3.setNormal(-1.0F, 0.0F, 0.0F);
-        var0.renderNorthFace(var1, 0.0D, 0.0D, 0.0D, var1.getBlockTextureFromSideAndMetadata(4, var2));
+        var0.renderNorthFace(var1, 0.0D, 0.0D, 0.0D, var1.getIcon(4, var2));
         var3.draw();
         var3.startDrawingQuads();
         var3.setNormal(1.0F, 0.0F, 0.0F);
-        var0.renderSouthFace(var1, 0.0D, 0.0D, 0.0D, var1.getBlockTextureFromSideAndMetadata(5, var2));
+        var0.renderSouthFace(var1, 0.0D, 0.0D, 0.0D, var1.getIcon(5, var2));
         var3.draw();
     }
 
@@ -114,12 +114,12 @@ public class GCCoreBlockRendererBreathableAir implements ISimpleBlockRenderingHa
 //            if (renderBlocks.renderAllFaces || var10)
 //            {
 //                var13 = true;
-//                var34 = par1Block.getBlockTextureFromSideAndMetadata(1, var23);
+//                var34 = par1Block.getIcon(1, var23);
 //                float var35 = (float)BlockFluid.getFlowDirection(var1, par2, par3, par4, var22);
 //
 //                if (var35 > -999.0F)
 //                {
-//                    var34 = par1Block.getBlockTextureFromSideAndMetadata(2, var23);
+//                    var34 = par1Block.getIcon(2, var23);
 //                }
 //
 //                var24 -= var32;
@@ -185,7 +185,7 @@ public class GCCoreBlockRendererBreathableAir implements ISimpleBlockRenderingHa
                     ++var64;
                 }
 
-//                final int var66 = par1Block.getBlockTextureFromSideAndMetadata(var34 + 2, var23);
+//                final int var66 = par1Block.getIcon(var34 + 2, var23);
                 final int var66 = 0;
                 final int var39 = (var66 & 15) << 4;
                 final int var67 = var66 & 240;
