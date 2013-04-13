@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.logging.Level;
 
 import net.minecraftforge.common.Configuration;
-import cpw.mods.fml.common.FMLLog;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -153,7 +152,7 @@ public class GCCoreConfigManager
 	public static boolean disableSpaceshipGrief;
 	public static boolean disableTutorialItemText;
 	public static boolean oxygenIndicatorLeftSide;
-	public static int oilGenFactor;
+	public static double oilGenFactor;
 	public static boolean disableLeafDecay;
 	public static boolean spaceStationsRequirePermission;
 	public static boolean canRespawnOnSpaceStations;
@@ -274,7 +273,7 @@ public class GCCoreConfigManager
 	        GCCoreConfigManager.moreStars = 							GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "More Stars",							true)		.getBoolean(true);
 	        GCCoreConfigManager.wasdMapMovement = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "WASD Map Movement", 					true)		.getBoolean(true);
 	        GCCoreConfigManager.disableOilGen = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable oil Gen on Overworld",		false)		.getBoolean(false);
-	        GCCoreConfigManager.oilGenFactor = 							GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Oil Generation Factor", 				1)			.getInt(1);
+	        GCCoreConfigManager.oilGenFactor = 							GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Oil Generation Factor", 				1.8)		.getDouble(1.8);
 	        final int[] dimensions = {0};
 	        GCCoreConfigManager.oreGenDimensions =						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "List of dimensions to generate GC ores in", 	dimensions)	.getIntList();
 	        GCCoreConfigManager.disableSpaceshipParticles = 			GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Spaceship Particles",		false)		.getBoolean(false);
@@ -291,7 +290,7 @@ public class GCCoreConfigManager
 		}
 		catch (final Exception e)
 		{
-			FMLLog.log(Level.SEVERE, e, "Galacticraft Core has a problem loading it's configuration");
+			GCLog.severe("Problem loading core config (\"core.conf\")");
 		}
 		finally
 		{

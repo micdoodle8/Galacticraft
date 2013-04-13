@@ -160,13 +160,15 @@ public class GCCoreEvents
 		{
 			return;
 		}
+		
+		double randMod = Math.min(0.5D, 0.1D * GCCoreConfigManager.oilGenFactor);
 
-		final boolean flag1 = rand.nextDouble() <= 0.1D * GCCoreConfigManager.oilGenFactor;
-		final boolean flag2 = rand.nextDouble() <= 0.1D * GCCoreConfigManager.oilGenFactor;
+		final boolean flag1 = rand.nextDouble() <= randMod;
+		final boolean flag2 = rand.nextDouble() <= randMod;
 
 		if (flag1 || flag2)
 		{
-			final int cx = x, cy = 20 + rand.nextInt(10), cz = z;
+			final int cx = x, cy = 20 + rand.nextInt(11), cz = z;
 
 			final int r = 1 + rand.nextInt(2);
 
