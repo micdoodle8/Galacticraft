@@ -12,6 +12,7 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.minecraftforge.liquids.LiquidDictionary;
 import net.minecraftforge.liquids.LiquidStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -101,7 +102,7 @@ public class GCCoreItemSpaceship extends Item
 
 	    		if (par1ItemStack.getItemDamage() == 2)
 	    		{
-	    			spaceship.spaceshipFuelTank.setLiquid(new LiquidStack(GCCoreItems.fuel.itemID, spaceship.getMaxFuel()));
+	    			spaceship.spaceshipFuelTank.fill(LiquidDictionary.getLiquid("Fuel", 2000), true);
 	    		}
     		}
     		else
