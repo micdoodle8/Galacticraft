@@ -17,12 +17,10 @@ import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.multiblock.IMultiBlock;
 import universalelectricity.prefab.multiblock.TileEntityMulti;
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreTileEntityLandingPad extends TileEntityMulti implements IMultiBlock, IFuelable
 {
-	private final int tankCapacity = 2000;
-	public LiquidTank landingPadFuelTank = new LiquidTank(this.tankCapacity);
-
 	protected long ticks = 0;
 	private IDockable dockedEntity;
 	public HashSet<TileEntity> connectedTiles = new HashSet<TileEntity>();
@@ -88,15 +86,15 @@ public class GCCoreTileEntityLandingPad extends TileEntityMulti implements IMult
 				this.dockedEntity = null;
 			}
 
-			if (this.dockedEntity != null && this.landingPadFuelTank.getLiquid() != null && this.landingPadFuelTank.getLiquid().amount > 0)
-			{
-				final LiquidStack liquid = LiquidDictionary.getLiquid("Fuel", 1);
-
-				if (liquid != null)
-				{
-					this.removeFuel(null, this.dockedEntity.addFuel(liquid, 1));
-				}
-			}
+//			if (this.dockedEntity != null && this.landingPadFuelTank.getLiquid() != null && this.landingPadFuelTank.getLiquid().amount > 0)
+//			{
+//				final LiquidStack liquid = LiquidDictionary.getLiquid("Fuel", 1);
+//
+//				if (liquid != null)
+//				{
+//					this.removeFuel(null, this.dockedEntity.addFuel(liquid, 1));
+//				}
+//			}
 		}
 	}
 
@@ -154,16 +152,11 @@ public class GCCoreTileEntityLandingPad extends TileEntityMulti implements IMult
 	}
 
 	@Override
-	public int addFuel(LiquidStack liquid, int amount)
+	public int addFuel(LiquidStack liquid, int amount, boolean doFill)
 	{
-		final LiquidStack liquidInTank = this.landingPadFuelTank.getLiquid();
-
-		if (liquid != null && LiquidDictionary.findLiquidName(liquid).equals("Fuel"))
+		if (this.dockedEntity != null)
 		{
-			if (liquidInTank == null || liquidInTank.amount + liquid.amount <= this.landingPadFuelTank.getCapacity())
-			{
-				return this.landingPadFuelTank.fill(liquid, true);
-			}
+			return this.dockedEntity.addFuel(liquid, amount, doFill);
 		}
 
 		return 0;
@@ -172,33 +165,11 @@ public class GCCoreTileEntityLandingPad extends TileEntityMulti implements IMult
 	@Override
 	public LiquidStack removeFuel(LiquidStack liquid, int amount)
 	{
-		if (liquid == null)
+		if (this.dockedEntity != null)
 		{
-			return this.landingPadFuelTank.drain(amount, true);
+			return this.dockedEntity.removeFuel(liquid, amount);
 		}
 
 		return null;
-	}
-
-	@Override
-	public void readFromNBT(NBTTagCompound tags)
-	{
-		super.readFromNBT(tags);
-
-		if (tags.hasKey("fuelTank"))
-		{
-			this.landingPadFuelTank.readFromNBT(tags.getCompoundTag("fuelTank"));
-		}
-	}
-
-	@Override
-	public void writeToNBT(NBTTagCompound tags)
-	{
-		super.writeToNBT(tags);
-
-		if (this.landingPadFuelTank.getLiquid() != null)
-		{
-			tags.setTag("fuelTank", this.landingPadFuelTank.writeToNBT(new NBTTagCompound()));
-		}
 	}
 }
