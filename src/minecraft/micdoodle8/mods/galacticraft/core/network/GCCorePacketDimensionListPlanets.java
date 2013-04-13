@@ -6,10 +6,10 @@ import java.io.DataOutputStream;
 import java.util.Collection;
 import java.util.Iterator;
 
+import micdoodle8.mods.galacticraft.core.GCLog;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 
 public class GCCorePacketDimensionListPlanets implements IGalacticraftAdvancedPacket
@@ -33,7 +33,7 @@ public class GCCorePacketDimensionListPlanets implements IGalacticraftAdvancedPa
             while (var3.hasNext())
             {
                 final Integer var4 = (Integer)var3.next();
-            	FMLLog.info("" + var4);
+            	GCLog.info("" + var4);
                 data.writeInt(var4.intValue());
             }
 

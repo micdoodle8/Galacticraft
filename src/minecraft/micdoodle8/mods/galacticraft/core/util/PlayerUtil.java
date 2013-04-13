@@ -3,11 +3,11 @@ package micdoodle8.mods.galacticraft.core.util;
 import java.util.Iterator;
 import java.util.Map;
 
+import micdoodle8.mods.galacticraft.core.GCLog;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.GCCorePlayerSP;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
 import net.minecraft.entity.player.EntityPlayer;
-import cpw.mods.fml.common.FMLLog;
 
 public class PlayerUtil
 {
@@ -30,7 +30,7 @@ public class PlayerUtil
 	        }
 	    }
 
-	    FMLLog.severe("Warning: Could not find player base server instance for player " + username);
+	    GCLog.severe("Warning: Could not find player base server instance for player " + username);
 
         return null;
 	}
@@ -59,7 +59,7 @@ public class PlayerUtil
 	        }
 	    }
 
-	    FMLLog.severe("Warning: Could not find player base server instance for player " + player.username);
+	    GCLog.severe("Warning: Could not find player base server instance for player " + player.username);
 
         return null;
 	}
@@ -88,7 +88,7 @@ public class PlayerUtil
 	        }
 	    }
 
-	    FMLLog.severe("Warning: Could not find player base client instance for player " + player.username);
+	    GCLog.severe("Warning: Could not find player base client instance for player " + player.username);
 
         return null;
 	}

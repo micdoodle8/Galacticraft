@@ -30,7 +30,6 @@ import universalelectricity.components.common.BCGuiHandler;
 
 import com.google.common.collect.Lists;
 
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -171,13 +170,13 @@ public class CommonProxyCore extends BCGuiHandler implements IGuiHandler
 		{
 			for (final ISchematicPage page : playerBase.unlockedSchematics)
 			{
-				FMLLog.info("" + ID + " " + page.getGuiID());
+				GCLog.info("" + ID + " " + page.getGuiID());
 
 				if (ID == page.getGuiID())
 				{
 					final Container container = page.getResultContainer(playerBase, x, y, z);
 
-					FMLLog.info(container.toString());
+					GCLog.info(container.toString());
 
 					return container;
 				}

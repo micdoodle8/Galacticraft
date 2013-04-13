@@ -16,6 +16,7 @@ import micdoodle8.mods.galacticraft.API.ISpaceship;
 import micdoodle8.mods.galacticraft.API.ITeleportType;
 import micdoodle8.mods.galacticraft.API.SpaceStationRecipe;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
+import micdoodle8.mods.galacticraft.core.GCLog;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreOrbitTeleportType;
@@ -47,7 +48,6 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 import universalelectricity.core.vector.Vector3;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class WorldUtil
@@ -481,7 +481,7 @@ public class WorldUtil
     	if (isStatic)
     	{
     		DimensionManager.registerDimension(planetID, planetID);
-            FMLLog.info("Registered Dimension: " + planetID);
+            GCLog.info("Registered Dimension: " + planetID);
     	}
     }
 
@@ -495,7 +495,7 @@ public class WorldUtil
             {
                 final Integer var1 = (Integer)var0.next();
                 DimensionManager.unregisterDimension(var1.intValue());
-                FMLLog.info("Unregistered Dimension: " + var1.intValue());
+                GCLog.info("Unregistered Dimension: " + var1.intValue());
             }
 
             WorldUtil.registeredPlanets = null;
@@ -694,7 +694,7 @@ public class WorldUtil
 
         	var8.playerNetServerHandler.setPlayerLocation(type.getPlayerSpawnLocation((WorldServer)var1.worldObj, (EntityPlayerMP)var1).x, type.getPlayerSpawnLocation((WorldServer)var1.worldObj, (EntityPlayerMP)var1).y, type.getPlayerSpawnLocation((WorldServer)var1.worldObj, (EntityPlayerMP)var1).z, var1.rotationYaw, var1.rotationPitch);
 
-            FMLLog.info("Server attempting to transfer player " + var8.username + " to dimension " + var0.provider.dimensionId);
+            GCLog.info("Server attempting to transfer player " + var8.username + " to dimension " + var0.provider.dimensionId);
         }
 
         var0.updateEntityWithOptionalForce(var1, false);

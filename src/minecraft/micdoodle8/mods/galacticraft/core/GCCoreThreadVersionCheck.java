@@ -7,7 +7,6 @@ import java.util.regex.Pattern;
 
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 
 public class GCCoreThreadVersionCheck extends Thread
@@ -77,7 +76,7 @@ public class GCCoreThreadVersionCheck extends Thread
 			    			}
 			    			else if (sideToCheck.equals(Side.SERVER))
 			    			{
-			    				FMLLog.severe("New Galacticraft version available! v" + String.valueOf(GalacticraftCore.remoteMajVer) + "." + String.valueOf(GalacticraftCore.remoteMinVer) + "." + String.valueOf(GalacticraftCore.remoteBuildVer) + " http://micdoodle8.com/");
+			    				GCLog.severe("New Galacticraft version available! v" + String.valueOf(GalacticraftCore.remoteMajVer) + "." + String.valueOf(GalacticraftCore.remoteMinVer) + "." + String.valueOf(GalacticraftCore.remoteBuildVer) + " http://micdoodle8.com/");
 			    			}
 			    		}
 		    		}
@@ -91,7 +90,7 @@ public class GCCoreThreadVersionCheck extends Thread
 			{
 				try
 				{
-					FMLLog.severe("Galacticraft update check failed! Trying again in 15 seconds");
+					GCLog.severe("Galacticraft update check failed! Trying again in 15 seconds");
 					Thread.sleep(15000);
 				}
 				catch (final InterruptedException e)
@@ -100,7 +99,7 @@ public class GCCoreThreadVersionCheck extends Thread
 			}
 			else
 			{
-				FMLLog.info("Galacticraft remote version found: " + GalacticraftCore.remoteMajVer + "." + GalacticraftCore.remoteMinVer + "." + GalacticraftCore.remoteBuildVer);
+				GCLog.info("Galacticraft remote version found: " + GalacticraftCore.remoteMajVer + "." + GalacticraftCore.remoteMinVer + "." + GalacticraftCore.remoteBuildVer);
 			}
 
 			count++;

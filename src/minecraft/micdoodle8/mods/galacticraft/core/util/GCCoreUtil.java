@@ -55,7 +55,7 @@ public class GCCoreUtil
 //		    			}
 //		    			else if (side.equals(Side.SERVER))
 //		    			{
-//		    				FMLLog.severe("New Galacticraft version available! v" + String.valueOf(GalacticraftCore.remoteMajVer) + "." + String.valueOf(GalacticraftCore.remoteMinVer) + "." + String.valueOf(GalacticraftCore.remoteBuildVer) + " http://micdoodle8.com/");
+//		    				GCLog.severe("New Galacticraft version available! v" + String.valueOf(GalacticraftCore.remoteMajVer) + "." + String.valueOf(GalacticraftCore.remoteMinVer) + "." + String.valueOf(GalacticraftCore.remoteBuildVer) + " http://micdoodle8.com/");
 //		    			}
 //		    		}
 //	    		}
@@ -70,7 +70,7 @@ public class GCCoreUtil
 //	    		FMLClientHandler.instance().getClient().thePlayer.addChatMessage("[Galacticraft] Update Check Failed!");
 //			}
 //
-//    		FMLLog.severe("Galacticraft Update Check Failure - MalformedURLException");
+//    		GCLog.severe("Galacticraft Update Check Failure - MalformedURLException");
 //    	}
 //    	catch (final IOException e)
 //    	{
@@ -81,7 +81,7 @@ public class GCCoreUtil
 //	    		FMLClientHandler.instance().getClient().thePlayer.addChatMessage("[Galacticraft] Update Check Failed!");
 //			}
 //
-//    		FMLLog.severe("Galacticraft Update Check Failure - IOException");
+//    		GCLog.severe("Galacticraft Update Check Failure - IOException");
 //    	}
 //    	catch (final NumberFormatException e)
 //    	{
@@ -92,7 +92,7 @@ public class GCCoreUtil
 //	    		FMLClientHandler.instance().getClient().thePlayer.addChatMessage("[Galacticraft] Update Check Failed!");
 //			}
 //
-//    		FMLLog.severe("Galacticraft Update Check Failure - NumberFormatException");
+//    		GCLog.severe("Galacticraft Update Check Failure - NumberFormatException");
 //    	}
     }
 }

@@ -1,12 +1,12 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
+import micdoodle8.mods.galacticraft.core.GCLog;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreEntityLanderChest extends Entity implements IInventory
 {
@@ -160,7 +160,7 @@ public class GCCoreEntityLanderChest extends Entity implements IInventory
     @Override
 	public boolean interact(EntityPlayer var1)
     {
-    	FMLLog.info("merp");
+    	GCLog.info("merp");
 
         if (this.worldObj.isRemote)
         {

@@ -6,6 +6,7 @@ import java.util.Random;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
 import micdoodle8.mods.galacticraft.API.SpaceStationRecipe;
+import micdoodle8.mods.galacticraft.core.GCLog;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.client.GCCorePlayerSP;
@@ -34,7 +35,6 @@ import org.lwjgl.util.glu.GLU;
 
 import universalelectricity.components.common.BasicComponents;
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
@@ -658,7 +658,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
         	}
         	else
         	{
-        		FMLLog.severe("Severe problem when trying to teleport " + this.playerToSend.username);
+        		GCLog.severe("Severe problem when trying to teleport " + this.playerToSend.username);
         	}
         	break;
         case 2:

@@ -11,8 +11,8 @@ import javax.swing.JOptionPane;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
+import micdoodle8.mods.galacticraft.core.GCLog;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.versioning.DefaultArtifactVersion;
 import cpw.mods.fml.common.versioning.VersionParser;
 import cpw.mods.fml.relauncher.FMLInjectionData;
@@ -39,7 +39,7 @@ public class GalacticraftPlugin implements IFMLLoadingPlugin, IFMLCallHook
 	{
 		final String mcVersion = (String) FMLInjectionData.data()[4];
 
-		FMLLog.info(mcVersion);
+		GCLog.info(mcVersion);
 
 		if(!VersionParser.parseRange(reqVersion).containsVersion(new DefaultArtifactVersion(mcVersion)))
 		{
@@ -96,12 +96,12 @@ public class GalacticraftPlugin implements IFMLLoadingPlugin, IFMLCallHook
 
                         final int l = a.length() + 1;
 
-                        FMLLog.info("[GCCoreTransformer]: " + "Registered Transformer " + s.substring(l));
+                        GCLog.info("[GCCoreTransformer]: " + "Registered Transformer " + s.substring(l));
                     }
                 }
                 catch (final Exception ex)
                 {
-                    FMLLog.info("[GCCoreTransformer]: " + "Error while running transformer " + s);
+                    GCLog.info("[GCCoreTransformer]: " + "Error while running transformer " + s);
                     return null;
                 }
             }
@@ -128,7 +128,7 @@ public class GalacticraftPlugin implements IFMLLoadingPlugin, IFMLCallHook
 	public void injectData(Map<String, Object> data)
 	{
 		GalacticraftPlugin.fileLocation = (File) data.get("coremodLocation");
-		FMLLog.info("[GCCoreTransformer]: " + "Patching game...");
+		GCLog.info("[GCCoreTransformer]: " + "Patching game...");
         if(data.containsKey("mcLocation"))
         	GalacticraftCore.minecraftDir = (File) data.get("mcLocation");
 	}

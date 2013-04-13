@@ -3,9 +3,9 @@ package micdoodle8.mods.galacticraft.moon;
 import java.io.File;
 import java.util.logging.Level;
 
+import micdoodle8.mods.galacticraft.core.GCLog;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.Property;
-import cpw.mods.fml.common.FMLLog;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -73,7 +73,7 @@ public class GCMoonConfigManager
 		}
 		catch (final Exception e)
 		{
-			FMLLog.log(Level.SEVERE, e, "Galacticraft Moon (core) has a problem loading it's configuration");
+			GCLog.severe("Problem loading moon config (\"moon.conf\")");
 		}
 		finally
 		{

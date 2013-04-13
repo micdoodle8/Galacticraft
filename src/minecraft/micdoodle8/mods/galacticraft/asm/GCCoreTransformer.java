@@ -3,6 +3,8 @@ package micdoodle8.mods.galacticraft.asm;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import micdoodle8.mods.galacticraft.core.GCLog;
+
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
@@ -14,7 +16,6 @@ import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.TypeInsnNode;
 import org.objectweb.asm.tree.VarInsnNode;
 
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.IClassTransformer;
 
 public class GCCoreTransformer implements IClassTransformer
@@ -125,7 +126,7 @@ public class GCCoreTransformer implements IClassTransformer
 
 	            			methodnode.instructions.set(nodeAt, overwriteNode);
 
-	            			FMLLog.info("Successfully set type insertion node with description \"NEW " + map.get("playerMP") + "\" to \"NEW micdoodle8/mods/galacticraft/core/entities/GCCorePlayerMP\" in method: " + methodnode.name);
+	            			GCLog.info("Successfully set type insertion node with description \"NEW " + map.get("playerMP") + "\" to \"NEW micdoodle8/mods/galacticraft/core/entities/GCCorePlayerMP\" in method: " + methodnode.name);
 	            		}
 	            	}
 	            	else if (list instanceof MethodInsnNode)
@@ -136,7 +137,7 @@ public class GCCoreTransformer implements IClassTransformer
 	            		{
 	            			methodnode.instructions.set(nodeAt, new MethodInsnNode(Opcodes.INVOKESPECIAL, "micdoodle8/mods/galacticraft/core/entities/GCCorePlayerMP", "<init>", "(Lnet/minecraft/server/MinecraftServer;Lnet/minecraft/world/World;Ljava/lang/String;Lnet/minecraft/item/ItemInWorldManager;)V"));
 
-	            			FMLLog.info("Successfully set method insertion node with owner \"" + map.get("playerMP") + "\" to \"micdoodle8/mods/galacticraft/core/entities/GCCorePlayerMP\" in method: " + methodnode.name);
+	            			GCLog.info("Successfully set method insertion node with owner \"" + map.get("playerMP") + "\" to \"micdoodle8/mods/galacticraft/core/entities/GCCorePlayerMP\" in method: " + methodnode.name);
 	            		}
 	            	}
 	            }
@@ -158,7 +159,7 @@ public class GCCoreTransformer implements IClassTransformer
 
 	            			methodnode.instructions.set(nodeAt, overwriteNode);
 
-	            			FMLLog.info("Successfully set type insertion node with description \"NEW " + map.get("playerMP") + "\" to \"NEW micdoodle8/mods/galacticraft/core/entities/GCCorePlayerMP\" in method: " + methodnode.name);
+	            			GCLog.info("Successfully set type insertion node with description \"NEW " + map.get("playerMP") + "\" to \"NEW micdoodle8/mods/galacticraft/core/entities/GCCorePlayerMP\" in method: " + methodnode.name);
 	            		}
 	            	}
 	            	else if (list instanceof MethodInsnNode)
@@ -169,7 +170,7 @@ public class GCCoreTransformer implements IClassTransformer
 	            		{
 	            			methodnode.instructions.set(nodeAt, new MethodInsnNode(Opcodes.INVOKESPECIAL, "micdoodle8/mods/galacticraft/core/entities/GCCorePlayerMP", "<init>", "(Lnet/minecraft/server/MinecraftServer;Lnet/minecraft/world/World;Ljava/lang/String;Lnet/minecraft/item/ItemInWorldManager;)V"));
 
-	            			FMLLog.info("Successfully set method insertion node with owner \"" + map.get("playerMP") + "\" to \"micdoodle8/mods/galacticraft/core/entities/GCCorePlayerMP\" in method: " + methodnode.name);
+	            			GCLog.info("Successfully set method insertion node with owner \"" + map.get("playerMP") + "\" to \"micdoodle8/mods/galacticraft/core/entities/GCCorePlayerMP\" in method: " + methodnode.name);
 	            		}
 	            	}
 	            }
@@ -191,7 +192,7 @@ public class GCCoreTransformer implements IClassTransformer
 
 	            			methodnode.instructions.set(nodeAt, overwriteNode);
 
-	            			FMLLog.info("[BUKKIT] Successfully set type insertion node with description \"NEW " + map.get("playerMP") + "\" to \"NEW micdoodle8/mods/galacticraft/core/entities/GCCorePlayerMP\" in method: " + methodnode.name);
+	            			GCLog.info("[BUKKIT] Successfully set type insertion node with description \"NEW " + map.get("playerMP") + "\" to \"NEW micdoodle8/mods/galacticraft/core/entities/GCCorePlayerMP\" in method: " + methodnode.name);
 	            		}
 	            	}
 	            	else if (list instanceof MethodInsnNode)
@@ -202,7 +203,7 @@ public class GCCoreTransformer implements IClassTransformer
 	            		{
 	            			methodnode.instructions.set(nodeAt, new MethodInsnNode(Opcodes.INVOKESPECIAL, "micdoodle8/mods/galacticraft/core/entities/GCCorePlayerMP", "<init>", "(Lnet/minecraft/server/MinecraftServer;Laab;Ljava/lang/String;Ljd;)V"));
 
-	            			FMLLog.info("[BUKKIT] Successfully set method insertion node with owner \"" + map.get("playerMP") + "\" to \"micdoodle8/mods/galacticraft/core/entities/GCCorePlayerMP\" in method: " + methodnode.name);
+	            			GCLog.info("[BUKKIT] Successfully set method insertion node with owner \"" + map.get("playerMP") + "\" to \"micdoodle8/mods/galacticraft/core/entities/GCCorePlayerMP\" in method: " + methodnode.name);
 	            		}
 	            	}
 	            }
@@ -244,7 +245,7 @@ public class GCCoreTransformer implements IClassTransformer
 
 	            			methodnode.instructions.set(nodeAt, overwriteNode);
 
-	            			FMLLog.info("Successfully set NEW type insertion node with description \"NEW " + map.get("playerClient") + "\" to \"NEW micdoodle8/mods/galacticraft/core/client/GCCorePlayerSP\"");
+	            			GCLog.info("Successfully set NEW type insertion node with description \"NEW " + map.get("playerClient") + "\" to \"NEW micdoodle8/mods/galacticraft/core/client/GCCorePlayerSP\"");
 	            		}
 	            	}
 	            	else if (list instanceof MethodInsnNode)
@@ -255,7 +256,7 @@ public class GCCoreTransformer implements IClassTransformer
 	            		{
 	            			methodnode.instructions.set(nodeAt, new MethodInsnNode(Opcodes.INVOKESPECIAL, "micdoodle8/mods/galacticraft/core/client/GCCorePlayerSP", "<init>", "(Lnet/minecraft/client/Minecraft;Lnet/minecraft/world/World;Lnet/minecraft/util/Session;Lnet/minecraft/client/multiplayer/NetClientHandler;)V"));
 
-	            			FMLLog.info("Successfully set INVOKESPECIAL method insertion node with owner \"" + map.get("playerClient") + "\" to \"micdoodle8/mods/galacticraft/core/client/GCCorePlayerSP\"");
+	            			GCLog.info("Successfully set INVOKESPECIAL method insertion node with owner \"" + map.get("playerClient") + "\" to \"micdoodle8/mods/galacticraft/core/client/GCCorePlayerSP\"");
 	            		}
 	            	}
 	            }
@@ -299,7 +300,7 @@ public class GCCoreTransformer implements IClassTransformer
 	            			methodnode.instructions.insertBefore(nodeAt, beforeNode);
 	            			methodnode.instructions.set(nodeAt, overwriteNode);
 
-	            			FMLLog.info("Successfully set INVOKESTATIC type insertion node with name \"micdoodle8/mods/galacticraft/core/util/WorldUtil\"");
+	            			GCLog.info("Successfully set INVOKESTATIC type insertion node with name \"micdoodle8/mods/galacticraft/core/util/WorldUtil\"");
 	            		}
 	            	}
 	            }

@@ -2,12 +2,12 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import java.util.HashSet;
 
+import micdoodle8.mods.galacticraft.core.GCLog;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import universalelectricity.core.vector.Vector3;
-import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreTileEntityAirLock extends GCCoreTileEntityAdvanced
 {
@@ -63,7 +63,7 @@ public class GCCoreTileEntityAirLock extends GCCoreTileEntityAdvanced
 
 				if (newTile == null || !newTile.equals(tile))
 				{
-					FMLLog.info("NOTEQUAL");
+					GCLog.info("NOTEQUAL");
 					this.otherAirLockBlocks.clear();
 				}
 			}

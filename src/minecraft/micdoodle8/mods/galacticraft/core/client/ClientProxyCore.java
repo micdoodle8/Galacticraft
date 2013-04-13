@@ -183,7 +183,7 @@ public class ClientProxyCore extends CommonProxyCore
 //		}
 //		catch (Exception cnfe)
 //		{
-//			FMLLog.severe("PLAYER API NOT INSTALLED!");
+//			GCLog.severe("PLAYER API NOT INSTALLED!");
 //			cnfe.printStackTrace();
 //		}
 //
@@ -194,7 +194,7 @@ public class ClientProxyCore extends CommonProxyCore
 //		}
 //		catch (Exception cnfe)
 //		{
-//			FMLLog.severe("RENDER PLAYER API NOT INSTALLED!");
+//			GCLog.severe("RENDER PLAYER API NOT INSTALLED!");
 //			cnfe.printStackTrace();
 //		}
 

@@ -633,10 +633,10 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
 //	@Override
 //	public void readSpawnData(ByteArrayDataInput data)
 //	{
-//		FMLLog.info("done1");
+//		GCLog.info("done1");
 //		if (this.worldObj instanceof WorldClient)
 //		{
-//			FMLLog.info("done");
+//			GCLog.info("done");
 //			int entityID = data.readInt();
 //			this.moduleChest = new GCCoreEntityLanderChest(this);
 //			moduleChest.entityId = entityID;
