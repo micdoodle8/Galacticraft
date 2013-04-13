@@ -10,6 +10,7 @@ import java.util.List;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
+import micdoodle8.mods.galacticraft.core.GCLog;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLaunchFlameFX;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLaunchSmokeFX;
@@ -47,6 +48,7 @@ import com.google.common.io.ByteArrayDataInput;
 
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -197,7 +199,7 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
 
     public Packet getDescriptionPacket()
 	{
-		final Packet p = GCCorePacketManager.getPacket(GalacticraftCore.CHANNEL, this, 0, this.spaceshipFuelTank.getLiquid() == null ? 0 : this.spaceshipFuelTank.getLiquid().amount);
+		final Packet p = GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.spaceshipFuelTank.getLiquid() == null ? 0 : this.spaceshipFuelTank.getLiquid().amount);
 		return p;
 	}
 
@@ -208,9 +210,7 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
 		{
 			if (this.worldObj.isRemote)
 			{
-				final int id = dataStream.readInt();
-				final int amount = dataStream.readInt();
-				this.spaceshipFuelTank.setLiquid(new LiquidStack(GCCoreItems.fuel.itemID, amount, 0));
+				this.spaceshipFuelTank.setLiquid(new LiquidStack(GCCoreItems.fuel.itemID, dataStream.readInt(), 0));
 			}
 		}
 		catch (final Exception e)
@@ -313,8 +313,21 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
 		{
 			par1NBTTagCompound.setTag("fuelTank", this.spaceshipFuelTank.writeToNBT(new NBTTagCompound()));
 		}
-
-//    	par1NBTTagCompound.setInteger("fuelLiquid", this.spaceshipFuelTank.getLiquid() == null ? 0 : this.spaceshipFuelTank.getLiquid().amount);
+		
+//		if (this.spaceshipFuelTank.getLiquid() != null)
+//		{
+//			NBTTagCompound nbt = new NBTTagCompound();
+//	        nbt.setInteger("Amount", this.spaceshipFuelTank.getLiquid().amount);
+//	        nbt.setShort("Id", (short)this.spaceshipFuelTank.getLiquid().itemID);
+//	        nbt.setShort("Meta", (short)this.spaceshipFuelTank.getLiquid().itemMeta);
+//	        nbt.setString("LiquidName", "Fuel");
+//	        if (this.spaceshipFuelTank.getLiquid().extra != null)
+//	        {
+//	            nbt.setTag("extra", this.spaceshipFuelTank.getLiquid().extra);
+//	        }
+//	        
+//			par1NBTTagCompound.setTag("fuelTank", nbt);
+//		}
     }
 
     @Override
@@ -345,8 +358,6 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
 		{
 			this.spaceshipFuelTank.readFromNBT(par1NBTTagCompound.getCompoundTag("fuelTank"));
 		}
-
-//        this.spaceshipFuelTank.setLiquid(new LiquidStack(GCCoreItems.fuel.itemID, par1NBTTagCompound.getInteger("fuelLiquid"), 0));
     }
 
 	@Override
@@ -583,15 +594,15 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
 	}
 
 	@Override
-	public int addFuel(LiquidStack liquid, int amount)
+	public int addFuel(LiquidStack liquid, int amount, boolean doFill)
 	{
 		final LiquidStack liquidInTank = this.spaceshipFuelTank.getLiquid();
-
+		
 		if (liquid != null && LiquidDictionary.findLiquidName(liquid).equals("Fuel"))
 		{
 			if (liquidInTank == null || liquidInTank.amount + liquid.amount <= this.spaceshipFuelTank.getCapacity())
 			{
-				return this.spaceshipFuelTank.fill(liquid, true);
+				return this.spaceshipFuelTank.fill(liquid, doFill);
 			}
 		}
 
