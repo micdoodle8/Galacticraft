@@ -69,6 +69,7 @@ import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.moon.GalacticraftMoon;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.WorldProviderSurface;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
@@ -284,14 +285,22 @@ public class GalacticraftCore
 		GalacticraftCore.oilStack = LiquidDictionary.getOrCreateLiquid("Oil", new LiquidStack(GCCoreBlocks.crudeOilStill, 1));
 		GalacticraftCore.fuelStack = LiquidDictionary.getOrCreateLiquid("Fuel", new LiquidStack(GCCoreItems.fuel, 1));
 
+		float f = Float.valueOf(LiquidContainerRegistry.BUCKET_VOLUME * 2.0F) / Float.valueOf(GCCoreItems.fuelCanister.getMaxDamage()); 
+		
 		for (int i = GCCoreItems.fuelCanister.getMaxDamage() - 1; i > 0; i--)
 		{
-			LiquidContainerRegistry.registerLiquid(new LiquidContainerData(LiquidDictionary.getLiquid("Fuel", LiquidContainerRegistry.BUCKET_VOLUME * 2), new ItemStack(GCCoreItems.fuelCanister, 1, i), new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.fuelCanister.getMaxDamage())));
+			float f1 = Float.valueOf((GCCoreItems.fuelCanister.getMaxDamage() - i)); 
+			
+			LiquidContainerRegistry.registerLiquid(new LiquidContainerData(LiquidDictionary.getLiquid("Fuel", i == 1 ? 2000 : MathHelper.floor_float(f * f1 * 1.017F)), new ItemStack(GCCoreItems.fuelCanister, 1, i), new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.fuelCanister.getMaxDamage())));
 		}
 
+		f = Float.valueOf(LiquidContainerRegistry.BUCKET_VOLUME * 2.0F) / Float.valueOf(GCCoreItems.oilCanister.getMaxDamage()); 
+		
 		for (int i = GCCoreItems.oilCanister.getMaxDamage() - 1; i > 0; i--)
 		{
-			LiquidContainerRegistry.registerLiquid(new LiquidContainerData(LiquidDictionary.getLiquid("Oil", LiquidContainerRegistry.BUCKET_VOLUME * 2), new ItemStack(GCCoreItems.oilCanister, 1, i), new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.oilCanister.getMaxDamage())));
+			float f1 = Float.valueOf((GCCoreItems.oilCanister.getMaxDamage() - i)); 
+			
+			LiquidContainerRegistry.registerLiquid(new LiquidContainerData(LiquidDictionary.getLiquid("Oil", MathHelper.floor_float(f * f1 * 1.017F)), new ItemStack(GCCoreItems.oilCanister, 1, i), new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.oilCanister.getMaxDamage())));
 		}
 
 		SchematicRegistry.registerSchematicRecipe(new GCCoreSchematicRocketT1());
