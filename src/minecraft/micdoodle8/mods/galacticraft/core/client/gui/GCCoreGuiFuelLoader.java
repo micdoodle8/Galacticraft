@@ -59,9 +59,9 @@ public class GCCoreGuiFuelLoader extends GuiContainer
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
     	this.fontRenderer.drawString("Fuel Loader", 60, 10, 4210752);
+        this.buttonLoadFuel.enabled = this.fuelLoaderInv.disableCooldown == 0 && !(this.fuelLoaderInv.fuelTank.getLiquid() == null || this.fuelLoaderInv.fuelTank.getLiquid().amount == 0);
     	this.buttonLoadFuel.displayString = !this.fuelLoaderInv.getDisabled() ? "Stop" : "Load Fuel";
-        this.buttonLoadFuel.enabled = !(this.fuelLoaderInv.fuelTank.getLiquid() == null || this.fuelLoaderInv.fuelTank.getLiquid().amount == 0);
-		this.fontRenderer.drawString("Status: " + this.getStatus(), 28, 45 + 23 - 46, 4210752);
+    	this.fontRenderer.drawString("Status: " + this.getStatus(), 28, 45 + 23 - 46, 4210752);
 		this.fontRenderer.drawString(ElectricityDisplay.getDisplay(GCCoreTileEntityFuelLoader.WATTS_PER_TICK * 20, ElectricUnit.WATT), 28, 56 + 23 - 46, 4210752);
 		this.fontRenderer.drawString(ElectricityDisplay.getDisplay(this.fuelLoaderInv.getVoltage(), ElectricUnit.VOLTAGE), 28, 68 + 23 - 46, 4210752);
 		this.fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 118 + 2 + 11, 4210752);
@@ -82,10 +82,10 @@ public class GCCoreGuiFuelLoader extends GuiContainer
     	{
     		return EnumColor.DARK_RED + "No Fuel to Load!";
     	}
-
-    	if (this.fuelLoaderInv.getStackInSlot(1) != null && !(this.fuelLoaderInv.getStackInSlot(1).getItem() instanceof IRefinableItem))
+    	
+    	if (this.fuelLoaderInv.getStackInSlot(0) == null && (this.fuelLoaderInv.wattsReceived == 0 || this.fuelLoaderInv.ic2WattsReceived == 0))
     	{
-    		return EnumColor.DARK_RED + "Item Cannot Be Loaded!";
+    		return EnumColor.DARK_RED + "Not Enough Power";
     	}
 
     	if (this.fuelLoaderInv.getDisabled())
