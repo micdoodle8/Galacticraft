@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.API;
 
-import net.minecraft.util.Vec3;
+import universalelectricity.core.vector.Vector3;
 
 /**
  * Implement this one per set of planets (assuming only one galaxy in your mod)
@@ -29,5 +29,5 @@ public interface IGalaxy
 	 *
 	 * @return
 	 */
-	public Vec3 getRGBRingColors();
+	public Vector3 getRGBRingColors();
 }

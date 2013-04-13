@@ -22,7 +22,6 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
 
 import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
@@ -30,6 +29,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import universalelectricity.core.vector.Vector3;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -524,8 +524,8 @@ public class GCCoreGuiGalaxyMap extends GCCoreGuiStarBackground
 
         if (this.selectedPlanet != null)
         {
-        	final Vec3 vecCol = this.selectedPlanet.getParentGalaxy().getRGBRingColors();
-            final int textCol2 = GCCoreUtil.convertTo32BitColor(255, MathHelper.floor_double(vecCol.xCoord) * 255, MathHelper.floor_double(vecCol.zCoord) * 255, MathHelper.floor_double(vecCol.yCoord) * 255);
+        	final Vector3 vecCol = this.selectedPlanet.getParentGalaxy().getRGBRingColors();
+            final int textCol2 = GCCoreUtil.convertTo32BitColor(255, MathHelper.floor_double(vecCol.x) * 255, MathHelper.floor_double(vecCol.z) * 255, MathHelper.floor_double(vecCol.y) * 255);
         	final int width = this.fontRenderer.getStringWidth(this.selectedPlanet.getSlotRenderer().getPlanetName());
             Gui.drawRect(this.width / 2 - width / 2 - 4, 4, this.width / 2 + width / 2 + 4, 15, textCol1);
             this.fontRenderer.drawString(this.selectedPlanet.getSlotRenderer().getPlanetName(), this.width / 2 - width / 2, 6, textCol2, false);
@@ -577,7 +577,7 @@ public class GCCoreGuiGalaxyMap extends GCCoreGuiStarBackground
             	float x = planet.getDistanceFromCenter() / 2F;
             	float y = 0;
 
-            	GL11.glColor4f((float)galaxy.getRGBRingColors().xCoord, (float)galaxy.getRGBRingColors().yCoord, (float)galaxy.getRGBRingColors().zCoord, 1.0F);
+            	GL11.glColor4f((float)galaxy.getRGBRingColors().x, (float)galaxy.getRGBRingColors().y, (float)galaxy.getRGBRingColors().z, 1.0F);
 
             	GL11.glBegin(GL11.GL_LINE_LOOP);
 
