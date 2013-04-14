@@ -121,37 +121,6 @@ public class OxygenUtil
 		return 0;
     }
 
-	public static boolean hasValidOxygenSetup(EntityPlayer player)
-	{
-		boolean missingComponent = false;
-
-		final GCCoreInventoryTankRefill inventory = PlayerUtil.getPlayerBaseServerFromPlayer(player).playerTankInventory;
-
-		if (inventory.getStackInSlot(0) == null || !OxygenUtil.isItemValidForPlayerTankInv(0, inventory.getStackInSlot(0)))
-		{
-			missingComponent = true;
-		}
-
-		if (inventory.getStackInSlot(1) == null || !OxygenUtil.isItemValidForPlayerTankInv(1, inventory.getStackInSlot(1)))
-		{
-			missingComponent = true;
-		}
-
-		if ((inventory.getStackInSlot(2) == null || !OxygenUtil.isItemValidForPlayerTankInv(2, inventory.getStackInSlot(2))) && (inventory.getStackInSlot(3) == null || !OxygenUtil.isItemValidForPlayerTankInv(3, inventory.getStackInSlot(3))))
-		{
-			missingComponent = true;
-		}
-
-        if (missingComponent)
-        {
-    		return false;
-        }
-        else
-        {
-        	return true;
-        }
-	}
-
 	public static boolean hasValidOxygenSetup(GCCorePlayerMP player)
 	{
 		boolean missingComponent = false;

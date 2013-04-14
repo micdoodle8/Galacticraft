@@ -18,7 +18,7 @@ public class GCMoonTeleportType implements ITeleportType
 	@Override
 	public boolean useParachute()
 	{
-		return true;
+		return false;
 	}
 
 	@Override

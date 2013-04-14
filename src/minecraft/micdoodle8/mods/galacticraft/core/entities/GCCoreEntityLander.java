@@ -26,6 +26,7 @@ import net.minecraft.world.World;
 import universalelectricity.core.vector.Vector3;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -316,7 +317,6 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
                 x = this.posX + this.motionX;
                 y = this.posY + this.motionY;
                 z = this.posZ + this.motionZ;
-        		if (this.riddenByEntity != null)
                 this.setPosition(x, y, z);
 
                 if (this.onGround)
@@ -330,7 +330,6 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
                 this.motionY *= 0.949999988079071D;
                 this.motionZ *= 0.9900000095367432D;
             }
-            return;
         }
 
         if (this.dataWatcher.getWatchableObjectInt(this.timeSinceHit) > 0)
@@ -346,11 +345,11 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
         final byte var20 = 5;
         int var4;
         
-    	if (!this.onGround && FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+    	if (this.motionY != 0 && FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
     	{
         	final double x1 = 2 * Math.cos(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D);
         	final double z1 = 2 * Math.sin(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D);
-        	double y1 = -5/*-this.motionY * Math.cos((this.rotationPitch - 180) * Math.PI / 180.0D)*/;
+        	double y1 = -5.0D;
         	
         	final double y = this.prevPosY + (this.posY - this.prevPosY);
         	
