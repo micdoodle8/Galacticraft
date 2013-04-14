@@ -33,8 +33,6 @@ import com.google.common.io.ByteArrayDataInput;
  */
 public class GCCoreTileEntityOxygenCompressor extends TileEntityElectricityRunnable implements IInventory, IPacketReceiver, IGasAcceptor, ITubeConnection, ISidedInventory
 {
-    public int currentPower;
-
     public boolean active;
 
 	private ItemStack[] containingItems = new ItemStack[2];
@@ -44,6 +42,17 @@ public class GCCoreTileEntityOxygenCompressor extends TileEntityElectricityRunna
 	private final int playersUsing = 0;
 
 	public static int timeSinceOxygenRequest;
+
+	public static final double OXYGEN_PER_TICK = 500;
+	
+	public static final int MAX_OXYGEN = 18000;
+	
+	public int storedOxygen;
+    
+    public double getPower()
+    {
+    	return this.storedOxygen / 600.0D;
+    }
 
 	@Override
 	public void updateEntity()
@@ -68,8 +77,9 @@ public class GCCoreTileEntityOxygenCompressor extends TileEntityElectricityRunna
 			}
 
 			this.wattsReceived = Math.max(this.wattsReceived - GCCoreTileEntityOxygenCompressor.WATTS_PER_TICK / 4, 0);
+			this.storedOxygen = (int) Math.max(this.storedOxygen - GCCoreTileEntityOxygenDistributor.OXYGEN_PER_TICK / 4, 0);
 
-			if (this.currentPower < 1 && this.wattsReceived > 0)
+			if (this.getPower() < 1 && this.wattsReceived > 0)
 			{
 				this.active = false;
 			}
@@ -80,7 +90,7 @@ public class GCCoreTileEntityOxygenCompressor extends TileEntityElectricityRunna
 
 			if (this.active)
 			{
-				if (!this.worldObj.isRemote && this.ticks % ((31 - Math.min(Math.floor(this.currentPower), 30)) * 5) == 0)
+				if (!this.worldObj.isRemote && this.ticks % ((31 - Math.min(Math.floor(this.getPower()), 30)) * 5) == 0)
 				{
 					final ItemStack stack = this.getStackInSlot(0);
 
@@ -110,7 +120,7 @@ public class GCCoreTileEntityOxygenCompressor extends TileEntityElectricityRunna
 	@Override
 	public Packet getDescriptionPacket()
 	{
-		return PacketManager.getPacket(BasicComponents.CHANNEL, this, this.currentPower, this.wattsReceived, this.disabledTicks);
+		return PacketManager.getPacket(BasicComponents.CHANNEL, this, this.storedOxygen, this.wattsReceived, this.disabledTicks);
 	}
 
 	@Override
@@ -120,7 +130,7 @@ public class GCCoreTileEntityOxygenCompressor extends TileEntityElectricityRunna
 		{
 			if (this.worldObj.isRemote)
 			{
-				this.currentPower = dataStream.readInt();
+				this.storedOxygen = dataStream.readInt();
 				this.wattsReceived = dataStream.readDouble();
 				this.disabledTicks = dataStream.readInt();
 			}
@@ -166,7 +176,7 @@ public class GCCoreTileEntityOxygenCompressor extends TileEntityElectricityRunna
 	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
 	{
 		super.readFromNBT(par1NBTTagCompound);
-		this.currentPower = par1NBTTagCompound.getInteger("currentPower");
+		this.storedOxygen = par1NBTTagCompound.getInteger("storedOxygen");
 
         final NBTTagList var2 = par1NBTTagCompound.getTagList("Items");
         this.containingItems = new ItemStack[this.getSizeInventory()];
@@ -187,7 +197,7 @@ public class GCCoreTileEntityOxygenCompressor extends TileEntityElectricityRunna
 	public void writeToNBT(NBTTagCompound par1NBTTagCompound)
 	{
 		super.writeToNBT(par1NBTTagCompound);
-		par1NBTTagCompound.setInteger("currentPower", this.currentPower);
+		par1NBTTagCompound.setInteger("storedOxygen", this.storedOxygen);
 
         final NBTTagList list = new NBTTagList();
 
@@ -303,27 +313,25 @@ public class GCCoreTileEntityOxygenCompressor extends TileEntityElectricityRunna
 	{
 		GCCoreTileEntityOxygenCompressor.timeSinceOxygenRequest = 20;
 
-		if (type == EnumGas.OXYGEN && this.getStackInSlot(0) != null)
+		if (this.wattsReceived > 0 && type == EnumGas.OXYGEN)
 		{
-			int rejects = 0;
-			final int neededOxygen = this.getStackInSlot(0).getItemDamage();
-
-			if (amount <= neededOxygen)
+			int rejectedOxygen = 0;
+			int requiredOxygen = MAX_OXYGEN - storedOxygen;
+			
+			if (amount <= requiredOxygen)
 			{
-				this.currentPower = amount;
+				this.storedOxygen += amount;
 			}
-			else if (amount > neededOxygen)
+			else
 			{
-				this.currentPower = neededOxygen;
-				rejects = amount - neededOxygen;
+				this.storedOxygen += requiredOxygen;
+				rejectedOxygen = amount - requiredOxygen;
 			}
-
-			return rejects;
+			
+			return rejectedOxygen;
 		}
-		else
-		{
-			return amount;
-		}
+		
+		return 0;
 	}
 
 	// ISidedInventory Implementation:

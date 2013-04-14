@@ -121,7 +121,7 @@ public class OxygenPressureProtocol
 
     			if (tileAtVec != null && tileAtVec instanceof GCCoreTileEntityOxygenSealer)
     			{
-    				var5 += ((GCCoreTileEntityOxygenSealer) tileAtVec).power * 4;
+    				var5 += ((GCCoreTileEntityOxygenSealer) tileAtVec).getPower() * (((GCCoreTileEntityOxygenSealer) tileAtVec).storedOxygen / 10.0D);
     			}
     		}
     	}

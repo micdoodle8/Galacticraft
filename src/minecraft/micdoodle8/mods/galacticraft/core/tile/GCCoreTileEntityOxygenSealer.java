@@ -41,9 +41,6 @@ import com.google.common.io.ByteArrayDataInput;
  */
 public class GCCoreTileEntityOxygenSealer extends TileEntityElectricityRunnable implements IInventory, IPacketReceiver, IGasAcceptor, ITubeConnection, ISidedInventory, IEnergySink, IDisableableMachine
 {
-	public int power;
-	public int lastPower;
-
 	public boolean sealed;
 
 	public boolean disabled = true;
@@ -62,6 +59,17 @@ public class GCCoreTileEntityOxygenSealer extends TileEntityElectricityRunnable 
 
 	public double ic2WattsReceived = 0;
 	private boolean initialized = false;
+
+	public static final double OXYGEN_PER_TICK = 500;
+	
+	public static final int MAX_OXYGEN = 18000;
+	
+	public int storedOxygen;
+    
+    public double getPower()
+    {
+    	return this.storedOxygen / 600.0D;
+    }
 
 	@Override
 	public void updateEntity()
@@ -97,8 +105,9 @@ public class GCCoreTileEntityOxygenSealer extends TileEntityElectricityRunnable 
 
 			this.wattsReceived = Math.max(this.wattsReceived - GCCoreTileEntityOxygenSealer.WATTS_PER_TICK / 4, 0);
 			this.ic2WattsReceived = Math.max(this.ic2WattsReceived - GCCoreTileEntityOxygenSealer.WATTS_PER_TICK / 4, 0);
+			this.storedOxygen = (int) Math.max(this.storedOxygen - this.storedOxygen / 40, 0);
 
-			if (this.power >= 1 && (this.wattsReceived > 0 || this.ic2WattsReceived > 0) && !this.disabled)
+			if (this.getPower() >= 1 && (this.wattsReceived > 0 || this.ic2WattsReceived > 0) && !this.disabled)
 			{
 				this.active = true;
 			}
@@ -107,11 +116,11 @@ public class GCCoreTileEntityOxygenSealer extends TileEntityElectricityRunnable 
 				this.active = false;
 			}
 
-			if (this.ticks % 50 == 0 || this.lastDisabled != this.disabled || this.power != this.lastPower)
+			if (this.ticks % 50 == 0 || this.lastDisabled != this.disabled)
 			{
 				if (this.active)
 				{
-		            this.clean(this.worldObj, this.xCoord, this.yCoord, this.zCoord, this.power * 4);
+		            this.clean(this.worldObj, this.xCoord, this.yCoord, this.zCoord, (int) (this.storedOxygen / 10.0D));
 		            this.sealed = this.isOn(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
 				}
 				else
@@ -120,17 +129,11 @@ public class GCCoreTileEntityOxygenSealer extends TileEntityElectricityRunnable 
 				}
 			}
 
-			if (this.power > 0)
-			{
-				this.power -= 1;
-			}
-
 			if (this.ticks % 3 == 0)
 			{
 				PacketManager.sendPacketToClients(this.getDescriptionPacket(), this.worldObj, new Vector3(this), 6);
 			}
 
-			this.lastPower = this.power;
 			this.lastDisabled = this.disabled;
 		}
 	}
@@ -138,7 +141,7 @@ public class GCCoreTileEntityOxygenSealer extends TileEntityElectricityRunnable 
 	@Override
 	public Packet getDescriptionPacket()
 	{
-		return PacketManager.getPacket(BasicComponents.CHANNEL, this, this.power, this.wattsReceived, this.disabled, this.ic2WattsReceived, this.sealed, this.disableCooldown);
+		return PacketManager.getPacket(BasicComponents.CHANNEL, this, this.storedOxygen, this.wattsReceived, this.disabled, this.ic2WattsReceived, this.sealed, this.disableCooldown);
 	}
 
 	@Override
@@ -148,7 +151,7 @@ public class GCCoreTileEntityOxygenSealer extends TileEntityElectricityRunnable 
 		{
 			if (this.worldObj.isRemote)
 			{
-				this.power = dataStream.readInt();
+				this.storedOxygen = dataStream.readInt();
 				this.wattsReceived = dataStream.readDouble();
 				this.disabled = dataStream.readBoolean();
 				this.ic2WattsReceived = dataStream.readDouble();
@@ -179,6 +182,7 @@ public class GCCoreTileEntityOxygenSealer extends TileEntityElectricityRunnable 
 	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
 	{
 		super.readFromNBT(par1NBTTagCompound);
+		this.storedOxygen = par1NBTTagCompound.getInteger("storedOxygen");
 
         final NBTTagList var2 = par1NBTTagCompound.getTagList("Items");
         this.containingItems = new ItemStack[this.getSizeInventory()];
@@ -201,6 +205,7 @@ public class GCCoreTileEntityOxygenSealer extends TileEntityElectricityRunnable 
 	public void writeToNBT(NBTTagCompound par1NBTTagCompound)
 	{
 		super.writeToNBT(par1NBTTagCompound);
+		par1NBTTagCompound.setInteger("storedOxygen", this.storedOxygen);
 
         final NBTTagList list = new NBTTagList();
 
@@ -227,13 +232,23 @@ public class GCCoreTileEntityOxygenSealer extends TileEntityElectricityRunnable 
 
 		if (this.wattsReceived > 0 && type == EnumGas.OXYGEN)
 		{
-			this.power = Math.max(this.power, amount);
-			return 0;
+			int rejectedOxygen = 0;
+			int requiredOxygen = MAX_OXYGEN - storedOxygen;
+			
+			if (amount <= requiredOxygen)
+			{
+				this.storedOxygen += amount;
+			}
+			else
+			{
+				this.storedOxygen += requiredOxygen;
+				rejectedOxygen = amount - requiredOxygen;
+			}
+			
+			return rejectedOxygen;
 		}
-		else
-		{
-			return amount;
-		}
+		
+		return 0;
 	}
 
 	@Override

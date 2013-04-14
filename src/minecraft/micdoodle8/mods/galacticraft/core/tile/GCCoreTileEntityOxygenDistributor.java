@@ -40,15 +40,16 @@ import com.google.common.io.ByteArrayDataInput;
  */
 public class GCCoreTileEntityOxygenDistributor extends TileEntityElectricityRunnable implements IInventory, IPacketReceiver, IGasAcceptor, ITubeConnection, ISidedInventory, IEnergySink
 {
-	public int power;
-	public int lastPower;
-
     public boolean active;
 	private ItemStack[] containingItems = new ItemStack[1];
 
-//   	public OxygenBubble bubble;
-
 	public static final double WATTS_PER_TICK = 300;
+
+	public static final double OXYGEN_PER_TICK = 50;
+	
+	public static final int MAX_OXYGEN = 6000;
+	
+	public int storedOxygen;
 
 	private int playersUsing = 0;
 
@@ -62,11 +63,11 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityElectricityRunn
     @Override
   	public void invalidate()
   	{
-    	for (int x = (int) Math.floor(this.xCoord - this.power * 1.5); x < Math.ceil(this.xCoord + this.power * 1.5); x++)
+    	for (int x = (int) Math.floor(this.xCoord - this.getPower() * 1.5); x < Math.ceil(this.xCoord + this.getPower() * 1.5); x++)
     	{
-        	for (int y = (int) Math.floor(this.yCoord - this.power * 1.5); y < Math.ceil(this.yCoord + this.power * 1.5); y++)
+        	for (int y = (int) Math.floor(this.yCoord - this.getPower() * 1.5); y < Math.ceil(this.yCoord + this.getPower() * 1.5); y++)
         	{
-            	for (int z = (int) Math.floor(this.zCoord - this.power * 1.5); z < Math.ceil(this.zCoord + this.power * 1.5); z++)
+            	for (int z = (int) Math.floor(this.zCoord - this.getPower() * 1.5); z < Math.ceil(this.zCoord + this.getPower() * 1.5); z++)
             	{
             		final TileEntity tile = this.worldObj.getBlockTileEntity(x, y, z);
 //
@@ -87,6 +88,11 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityElectricityRunn
         final double d4 = this.yCoord + 0.5D - par3;
         final double d5 = this.zCoord + 0.5D - par5;
         return d3 * d3 + d4 * d4 + d5 * d5;
+    }
+    
+    public double getPower()
+    {
+    	return this.storedOxygen / 600.0D;
     }
 
 	@Override
@@ -128,8 +134,9 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityElectricityRunn
 
 			this.wattsReceived = Math.max(this.wattsReceived - GCCoreTileEntityOxygenDistributor.WATTS_PER_TICK / 4, 0);
 			this.ic2WattsReceived = Math.max(this.ic2WattsReceived - GCCoreTileEntityOxygenDistributor.WATTS_PER_TICK / 4, 0);
+			this.storedOxygen = (int) Math.max(this.storedOxygen - GCCoreTileEntityOxygenDistributor.OXYGEN_PER_TICK / 4, 0);
 
-			if (this.power >= 1 && (this.wattsReceived > 0 || this.ic2WattsReceived > 0))
+			if (this.getPower() >= 1 && (this.wattsReceived > 0 || this.ic2WattsReceived > 0))
 			{
 				this.active = true;
 			}
@@ -137,11 +144,11 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityElectricityRunn
 			{
 				this.active = false;
 
-		    	for (int x = (int) Math.floor(this.xCoord - this.power * 1.5); x < Math.ceil(this.xCoord + this.power * 1.5); x++)
+		    	for (int x = (int) Math.floor(this.xCoord - this.getPower() * 1.5); x < Math.ceil(this.xCoord + this.getPower() * 1.5); x++)
 		    	{
-		        	for (int y = (int) Math.floor(this.yCoord - this.power * 1.5); y < Math.ceil(this.yCoord + this.power * 1.5); y++)
+		        	for (int y = (int) Math.floor(this.yCoord - this.getPower() * 1.5); y < Math.ceil(this.yCoord + this.getPower() * 1.5); y++)
 		        	{
-		            	for (int z = (int) Math.floor(this.zCoord - this.power * 1.5); z < Math.ceil(this.zCoord + this.power * 1.5); z++)
+		            	for (int z = (int) Math.floor(this.zCoord - this.getPower() * 1.5); z < Math.ceil(this.zCoord + this.getPower() * 1.5); z++)
 		            	{
 		            		final TileEntity tile = this.worldObj.getBlockTileEntity(x, y, z);
 
@@ -153,25 +160,18 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityElectricityRunn
 		        	}
 		    	}
 			}
-
-			if (this.power > 0)
-			{
-				this.power -= 1;
-			}
-
+			
 			if (this.ticks % 3 == 0)
 			{
 				PacketManager.sendPacketToClients(this.getDescriptionPacket(), this.worldObj, new Vector3(this), 6);
 			}
-
-			this.lastPower = this.power;
 		}
 	}
 
 	@Override
 	public Packet getDescriptionPacket()
 	{
-		final Packet p = PacketManager.getPacket(BasicComponents.CHANNEL, this, this.power, this.wattsReceived, this.disabledTicks, this.ic2WattsReceived);
+		final Packet p = PacketManager.getPacket(BasicComponents.CHANNEL, this, this.storedOxygen, this.wattsReceived, this.disabledTicks, this.ic2WattsReceived);
 		return p;
 	}
 
@@ -182,7 +182,7 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityElectricityRunn
 		{
 			if (this.worldObj.isRemote)
 			{
-				this.power = dataStream.readInt();
+				this.storedOxygen = dataStream.readInt();
 				this.wattsReceived = dataStream.readInt();
 				this.disabledTicks = dataStream.readInt();
 				this.ic2WattsReceived = dataStream.readDouble();
@@ -211,6 +211,7 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityElectricityRunn
 	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
 	{
 		super.readFromNBT(par1NBTTagCompound);
+		this.storedOxygen = par1NBTTagCompound.getInteger("storedOxygen");
 
         final NBTTagList var2 = par1NBTTagCompound.getTagList("Items");
         this.containingItems = new ItemStack[this.getSizeInventory()];
@@ -231,6 +232,7 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityElectricityRunn
 	public void writeToNBT(NBTTagCompound par1NBTTagCompound)
 	{
 		super.writeToNBT(par1NBTTagCompound);
+		par1NBTTagCompound.setInteger("storedOxygen", this.storedOxygen);
 
         final NBTTagList list = new NBTTagList();
 
@@ -252,16 +254,26 @@ public class GCCoreTileEntityOxygenDistributor extends TileEntityElectricityRunn
 	public int transferGasToAcceptor(int amount, EnumGas type)
 	{
 		GCCoreTileEntityOxygenDistributor.timeSinceOxygenRequest = 20;
-
+		
 		if (this.wattsReceived > 0 && type == EnumGas.OXYGEN)
 		{
-			this.power = Math.max(this.power, amount);
-			return 0;
+			int rejectedOxygen = 0;
+			int requiredOxygen = MAX_OXYGEN - storedOxygen;
+			
+			if (amount <= requiredOxygen)
+			{
+				this.storedOxygen += amount;
+			}
+			else
+			{
+				this.storedOxygen += requiredOxygen;
+				rejectedOxygen = amount - requiredOxygen;
+			}
+			
+			return rejectedOxygen;
 		}
-		else
-		{
-			return amount;
-		}
+		
+		return 0;
 	}
 
 	@Override
