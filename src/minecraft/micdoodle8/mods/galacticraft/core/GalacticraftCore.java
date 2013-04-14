@@ -116,7 +116,7 @@ import cpw.mods.fml.relauncher.Side;
 	version=GalacticraftCore.LOCALMAJVERSION + "." + GalacticraftCore.LOCALMINVERSION + "." + GalacticraftCore.LOCALBUILDVERSION,
 	useMetadata = true,
 	modid=GalacticraftCore.MODID,
-	dependencies = "required-after:Forge@[7.7.0.559,)"
+	dependencies = "required-after:Forge@[7.7.1.650,)"
 )
 @NetworkMod(
 	channels = {GalacticraftCore.CHANNEL, BasicComponents.CHANNEL},
@@ -134,7 +134,7 @@ public class GalacticraftCore
 
     public static final int LOCALMAJVERSION = 0;
     public static final int LOCALMINVERSION = 1;
-    public static final int LOCALBUILDVERSION = 33;
+    public static final int LOCALBUILDVERSION = 34;
     public static int remoteMajVer;
     public static int remoteMinVer;
     public static int remoteBuildVer;
