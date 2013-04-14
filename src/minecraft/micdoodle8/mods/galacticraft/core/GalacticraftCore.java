@@ -32,7 +32,6 @@ import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityBuggy;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityCreeper;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityFlag;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityLander;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityLanderChest;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityMeteor;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityOxygenBubble;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityParaChest;
@@ -422,7 +421,6 @@ public class GalacticraftCore
 		this.registerGalacticraftNonMobEntity(GCCoreEntityParaChest.class, "ParaChest", GCCoreConfigManager.idEntityParaChest, 150, 5, true);
 		this.registerGalacticraftNonMobEntity(GCCoreEntityOxygenBubble.class, "OxygenBubble", GCCoreConfigManager.idEntityOxygenBubble, 150, 20, false);
 		this.registerGalacticraftNonMobEntity(GCCoreEntityLander.class, "Lander", GCCoreConfigManager.idEntityLander, 150, 5, true);
-		this.registerGalacticraftNonMobEntity(GCCoreEntityLanderChest.class, "LanderChest", GCCoreConfigManager.idEntityLanderChest, 150, 5, false);
 	}
 
     public void registerGalacticraftCreature(Class var0, String var1, int id, int back, int fore)

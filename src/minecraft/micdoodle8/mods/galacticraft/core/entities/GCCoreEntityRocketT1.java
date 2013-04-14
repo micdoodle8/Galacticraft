@@ -241,7 +241,8 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
     	{
     		playerBase.rocketStacks = this.cargoItems;
     		playerBase.rocketType = this.getSpaceshipType();
-    		playerBase.fuelDamage = this.spaceshipFuelTank.getLiquid() == null ? 0 : this.spaceshipFuelTank.getLiquid().amount / MathHelper.floor_double(this.canisterToLiquidStackRatio == 0 ? 1 : this.canisterToLiquidStackRatio);
+    		int liquid = this.spaceshipFuelTank.getLiquid() == null ? 0 : this.spaceshipFuelTank.getLiquid().amount / MathHelper.floor_double(this.canisterToLiquidStackRatio == 0 ? 1 : this.canisterToLiquidStackRatio);
+    		playerBase.fuelDamage = Math.max(Math.min(GCCoreItems.fuelCanister.getMaxDamage() - liquid, GCCoreItems.fuelCanister.getMaxDamage()), 1);
         }
     }
 
@@ -504,23 +505,6 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
         		{
         			mc.effectRenderer.addEffect(fx);
         		}
-            }
-
-            if (var16 * var16 + var17 * var17 + var19 * var19 < var22 * var22)
-            {
-            	if (var1.equals("oxygen"))
-            	{
-                    var21 = new GCCoreEntityOxygenFX(mc.theWorld, var2, var4, var6, var8, var10, var12);
-                    ((EntityFX)var21).setRBGColorF((float)var13, (float)var14, (float)var15);
-            	}
-            }
-
-            if (var21 != null)
-            {
-                ((EntityFX)var21).prevPosX = ((EntityFX)var21).posX;
-                ((EntityFX)var21).prevPosY = ((EntityFX)var21).posY;
-                ((EntityFX)var21).prevPosZ = ((EntityFX)var21).posZ;
-                mc.effectRenderer.addEffect((EntityFX)var21);
             }
         }
     }

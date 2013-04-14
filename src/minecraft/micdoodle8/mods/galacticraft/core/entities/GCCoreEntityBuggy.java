@@ -116,7 +116,7 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
     }
 
 	@Override
-	public void setPositionRotationAndMotion(double x, double y, double z, float yaw, float pitch, double motX, double motY, double motZ)
+	public void setPositionRotationAndMotion(double x, double y, double z, float yaw, float pitch, double motX, double motY, double motZ, boolean onGround)
 	{
 		if(this.worldObj.isRemote)
 		{

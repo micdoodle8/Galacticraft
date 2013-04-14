@@ -745,8 +745,8 @@ public class WorldUtil
           		{
           			switch (i)
           			{
-          			case 0:
-          				var8.rocketStacks[i] = var8.fuelDamage > 0 ? new ItemStack(GCCoreItems.fuelCanister, 1, var8.fuelDamage) : null;
+          			case 24:
+          				var8.rocketStacks[i] = var8.fuelDamage > 0 && var8.fuelDamage <= GCCoreItems.fuelCanister.getMaxDamage() ? new ItemStack(GCCoreItems.fuelCanister, 1, var8.fuelDamage) : null;
           				break;
           			case 25:
           				var8.rocketStacks[i] = type instanceof GCCoreOrbitTeleportType ? null : new ItemStack(GCCoreBlocks.landingPad, 9, 0);
@@ -770,16 +770,6 @@ public class WorldUtil
                   	final double z = (var8.worldObj.rand.nextInt(2) - 1) * 3.0D;
 
                   	chest.setPosition(chestVec.x, chestVec.y, chestVec.z);
-
-//                    switch (type)
-//                    {
-//                    case TOORBIT:
-//                  		chest.setPosition(-8.5D, spawnChestHeight, -1.5D);
-//                        break;
-//                    default:
-//                  		chest.setPosition(var8.posX + x, spawnChestHeight, var8.posZ + z);
-//                        break;
-//                    }
 
                   	if (!var0.isRemote)
                   	{
@@ -818,9 +808,11 @@ public class WorldUtil
             var1.mountEntity(var6);
         }
 
-        if (var1 instanceof EntityPlayer)
+        if (var1 instanceof EntityPlayerMP)
         {
-            GameRegistry.onPlayerChangedDimension((EntityPlayer) var1);
+            GameRegistry.onPlayerChangedDimension((EntityPlayerMP) var1);
+            
+            type.onSpaceDimensionChanged(var0, (EntityPlayerMP)var1);
         }
 
         return var1;

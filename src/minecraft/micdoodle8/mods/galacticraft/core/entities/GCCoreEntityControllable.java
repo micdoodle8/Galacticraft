@@ -12,5 +12,5 @@ public abstract class GCCoreEntityControllable extends Entity
 
 	public abstract boolean pressKey(int key);
 
-	public abstract void setPositionRotationAndMotion(double x, double y, double z, float yaw, float pitch, double motX, double motY, double motZ);
+	public abstract void setPositionRotationAndMotion(double x, double y, double z, float yaw, float pitch, double motX, double motY, double motZ, boolean onGround);
 }

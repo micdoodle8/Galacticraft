@@ -1,11 +1,20 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLanderFlameFX;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketEntityUpdate;
+import micdoodle8.mods.galacticraft.core.util.PacketUtil;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -14,16 +23,20 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import universalelectricity.core.vector.Vector3;
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreEntityLander extends GCCoreEntityControllable implements IInventory
 {
     public int currentDamage;
     public int timeSinceHit;
     public int rockDirection;
-    public double speed;
-    public double actualSpeed = -5.0D;
+    public double ySpeed;
+    public double startingYSpeed;
     float maxSpeed = 0.05F;
     float minSpeed = 0.5F;
     float accel = 0.04F;
@@ -42,7 +55,8 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
 	private double lastMotionY;
 	public ItemStack[] chestContents = new ItemStack[27];
     public int numUsingPlayers;
-//	private GCCoreEntityLanderChest moduleChest;
+    public GCCorePlayerMP playerSpawnedIn;
+    private final float MAX_PITCH_ROTATION = 20.0F;
 
     public GCCoreEntityLander(World var1)
     {
@@ -52,8 +66,8 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
         this.currentDamage = 18;
         this.timeSinceHit = 19;
         this.rockDirection = 20;
-        this.speed = 0.0D;
-        this.actualSpeed = -5.0D;
+        this.ySpeed = 0.0D;
+        this.startingYSpeed = -5.0D;
         this.preventEntitySpawning = true;
         this.dataWatcher.addObject(this.currentDamage, new Integer(0));
         this.dataWatcher.addObject(this.timeSinceHit, new Integer(0));
@@ -66,6 +80,13 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
     {
         this(var1);
         this.setPosition(var2, var4 + this.yOffset, var6);
+    }
+
+    public GCCoreEntityLander(GCCorePlayerMP player)
+    {
+    	this(player.worldObj, player.posX, player.posY, player.posZ);
+    	this.playerSpawnedIn = player;
+    	this.chestContents = player.rocketStacks;
     }
 
     @Override
@@ -129,7 +150,7 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
     }
 
 	@Override
-	public void setPositionRotationAndMotion(double x, double y, double z, float yaw, float pitch, double motX, double motY, double motZ)
+	public void setPositionRotationAndMotion(double x, double y, double z, float yaw, float pitch, double motX, double motY, double motZ, boolean onGround)
 	{
 		if(this.worldObj.isRemote)
 		{
@@ -150,6 +171,8 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
 			this.motionX = motX;
 			this.motionY = motY;
 			this.motionZ = motZ;
+			if (onGround)
+				this.onGround = onGround;
 		}
 	}
 
@@ -164,7 +187,7 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
     @Override
 	public boolean attackEntityFrom(DamageSource var1, int var2)
     {
-        if (this.isDead || var1.equals(DamageSource.cactus))
+        if (this.isDead || var1.equals(DamageSource.cactus) || !this.onGround)
         {
             return true;
         }
@@ -184,7 +207,15 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
             {
                 if (this.riddenByEntity != null)
                 {
+                	if (this.riddenByEntity instanceof EntityPlayerMP)
+                	{
+                	  	final Object[] toSend2 = {0};
+                    	((EntityPlayerMP) riddenByEntity).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, toSend2));
+                    }
+                	
                     this.riddenByEntity.mountEntity(this);
+                    
+                    return false;
                 }
 
                 if (!this.worldObj.isRemote)
@@ -204,17 +235,6 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
         }
     }
 
-    @Override
-	public void setDead()
-    {
-        this.isDead = true;
-
-//        if (this.moduleChest != null)
-//        {
-//        	this.moduleChest.setDead();
-//        }
-    }
-
     public void dropLanderAsItem()
     {
     	if (this.getItemsDropped() == null)
@@ -224,24 +244,21 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
 
         for(final ItemStack item : this.getItemsDropped())
         {
-            this.entityDropItem(item, 0);
+        	if (item != null)
+        	{
+                this.entityDropItem(item, 0);
+        	}
         }
     }
 
     public List<ItemStack> getItemsDropped()
     {
         final List<ItemStack> items = new ArrayList<ItemStack>();
-
-//        if (this.moduleChest != null)
-//        {
-//            for (ItemStack stack : this.moduleChest.chestContents)
-//            {
-//            	if (stack != null)
-//            	{
-//                	items.add(stack);
-//            	}
-//            }
-//        }
+        
+        for (ItemStack stack : this.chestContents)
+        {
+        	items.add(stack);
+        }
 
     	return items;
     }
@@ -270,6 +287,11 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
 	public void onUpdate()
     {
         super.onUpdate();
+        
+        if (!this.worldObj.isRemote && this.ticksExisted < 20 && this.playerSpawnedIn != null && this.riddenByEntity == null)
+        {
+        	this.playerSpawnedIn.mountEntity(this);
+        }
 
         if(this.worldObj.isRemote && (this.riddenByEntity == null || !(this.riddenByEntity instanceof EntityPlayer) || !FMLClientHandler.instance().getClient().thePlayer.equals(this.riddenByEntity)))
         {
@@ -323,55 +345,96 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
 
         final byte var20 = 5;
         int var4;
+        
+    	if (!this.onGround && FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+    	{
+        	final double x1 = 2 * Math.cos(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D);
+        	final double z1 = 2 * Math.sin(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D);
+        	double y1 = -5/*-this.motionY * Math.cos((this.rotationPitch - 180) * Math.PI / 180.0D)*/;
+        	
+        	final double y = this.prevPosY + (this.posY - this.prevPosY);
+        	
+        	Vector3 thisVec = new Vector3(this);
 
-        for (var4 = 0; var4 < var20; ++var4)
+    		Map<Vector3, Vector3> particleMap = new HashMap<Vector3, Vector3>();
+    		float angle1 = (float) ((this.rotationYaw - 40.0F) * Math.PI / 180.0F);
+    		float angle2 = (float) ((this.rotationYaw + 40.0F) * Math.PI / 180.0F);
+    		float angle3 = (float) ((this.rotationYaw + 180 - 40.0F) * Math.PI / 180.0F);
+    		float angle4 = (float) ((this.rotationYaw + 180 + 40.0F) * Math.PI / 180.0F);
+    		float pitch = (float) Math.sin(this.rotationPitch * Math.PI / 180.0F);
+    		particleMap.put((new Vector3(this)).add(new Vector3(0.4 * Math.cos(angle1) * Math.cos(pitch), -1.5, 0.4 * Math.sin(angle1) * Math.cos(pitch))), new Vector3(x1, y1, z1));
+    		particleMap.put((new Vector3(this)).add(new Vector3(0.4 * Math.cos(angle2) * Math.cos(pitch), -1.5, 0.4 * Math.sin(angle2) * Math.cos(pitch))), new Vector3(x1, y1, z1));
+    		particleMap.put((new Vector3(this)).add(new Vector3(0.4 * Math.cos(angle3) * Math.cos(pitch), -1.5, 0.4 * Math.sin(angle3) * Math.cos(pitch))), new Vector3(x1, y1, z1));
+    		particleMap.put((new Vector3(this)).add(new Vector3(0.4 * Math.cos(angle4) * Math.cos(pitch), -1.5, 0.4 * Math.sin(angle4) * Math.cos(pitch))), new Vector3(x1, y1, z1));
+    		this.spawnParticles(particleMap);
+    	}
+        
+        if (this.worldObj.isRemote)
         {
+        	if (this.onGround)
+        	{
+        		this.rotationPitch = 0.0F;
+        	}
+        	else
+        	{
+        		if (this.rotationPitch >= MAX_PITCH_ROTATION)
+        		{
+        			this.rotationPitch = MAX_PITCH_ROTATION;
+        		}
+        		else if (this.rotationPitch <= -MAX_PITCH_ROTATION)
+        		{
+        			this.rotationPitch = -MAX_PITCH_ROTATION;
+        		}
+        	}
         }
 
-        if (this.riddenByEntity == null)
+        this.ySpeed *= 0.98D;
+
+        this.startingYSpeed += this.ySpeed * this.accel;
+
+        this.startingYSpeed = MathHelper.clamp_float((float) this.startingYSpeed, -5.0F, -0.5F);
+
+        if (this.worldObj.isRemote)
         {
-//        	this.yOffset = 5;
+            this.motionY = this.startingYSpeed;
         }
 
-
-        if (this.inWater && this.speed > 0.2D)
-        {
-            this.worldObj.playSoundEffect((float)this.posX, (float)this.posY, (float)this.posZ, "random.fizz", 0.5F, 2.6F + (this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.8F);
-        }
-
-        this.speed *= 0.98D;
-
-        this.actualSpeed += this.speed * this.accel;
-
-        this.actualSpeed = MathHelper.clamp_float((float) this.actualSpeed, -5.0F, -0.5F);
-
-        this.motionY = this.actualSpeed;
+        this.motionX = -(50 * Math.cos(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * 0.01 * Math.PI / 180.0D));
+        this.motionZ = -(50 * Math.sin(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * 0.01 * Math.PI / 180.0D));
 
 		if (this.worldObj.isRemote)
 		{
-			this.moveEntity(this.motionX, this.motionY, this.motionZ);
+			if (!this.onGround)
+			{
+				this.moveEntity(this.motionX, this.motionY, this.motionZ);
+			}
+			else
+			{
+				this.moveEntity(0.0D, 0.0D, 0.0D);
+			}
 		}
-
-//		if (this.moduleChest != null)
-//		{
-//            this.moduleChest.posX = this.posX;
-//            this.moduleChest.posY = this.posY + 5 + this.yOffset;
-//            this.moduleChest.posZ = this.posZ;
-//            this.moduleChest.rotationPitch = this.rotationPitch;
-//            this.moduleChest.rotationYaw = this.rotationYaw;
-//		}
-//		else if (this.moduleChest == null)
-//		{
-//			this.moduleChest = new GCCoreEntityLanderChest(this);
-//	        this.worldObj.spawnEntityInWorld(this.moduleChest);
-//		}
-
-		// TODO Lander Explosions
-
-//		if (this.worldObj.isRemote && this.onGround && !lastOnGround && this.lastMotionY < -0.7D)
-//		{
-//			PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 17, new Object[] {this.entityId, 5.0F, this.posX, this.posY, this.posZ}));
-//		}
+		
+		if (!this.worldObj.isRemote)
+		{
+		}
+		
+		if (!this.worldObj.isRemote)
+		{
+			if (this.onGround && !this.lastOnGround && Math.abs(this.lastMotionY) > 2.0D)
+			{
+				if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayerMP)
+				{
+            	  	final Object[] toSend2 = {0};
+                	((EntityPlayerMP) riddenByEntity).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, toSend2));
+                	
+					this.riddenByEntity.mountEntity(this);
+				}
+				
+				this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 12, true);
+				
+				this.setDead();
+			}
+		}
 
         this.prevPosX = this.posX;
         this.prevPosY = this.posY;
@@ -535,6 +598,47 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
     {
         return true;
     }
+    
+    public void spawnParticles(Map<Vector3, Vector3> points)
+    {
+    	for (Entry<Vector3, Vector3> vec : points.entrySet())
+    	{
+    		Vector3 posVec = vec.getKey();
+    		Vector3 motionVec = vec.getValue();
+    		
+    		this.spawnParticle("launchflame", posVec.x, posVec.y, posVec.z, motionVec.x, motionVec.y, motionVec.z, true);
+    	}
+    }
+
+	@SideOnly(Side.CLIENT)
+    public void spawnParticle(String var1, double var2, double var4, double var6, double var8, double var10, double var12, boolean b)
+	{
+		this.spawnParticle(var1, var2, var4, var6, var8, var10, var12, 0.0D, 0.0D, 0.0D, b);
+	}
+
+	@SideOnly(Side.CLIENT)
+	public void spawnParticle(String var1, double var2, double var4, double var6, double var8, double var10, double var12, double var13, double var14, double var15, boolean b)
+    {
+        final Minecraft mc = FMLClientHandler.instance().getClient();
+
+        if (mc != null && mc.renderViewEntity != null && mc.effectRenderer != null)
+        {
+            final double var16 = mc.renderViewEntity.posX - var2;
+            final double var17 = mc.renderViewEntity.posY - var4;
+            final double var19 = mc.renderViewEntity.posZ - var6;
+            Object var21 = null;
+            final double var22 = 64.0D;
+
+            if (var1.equals("launchflame"))
+            {
+        		final EntityFX fx = new GCCoreEntityLanderFlameFX(mc.theWorld, var2, var4, var6, var8, var10, var12);
+        		if (fx != null)
+        		{
+        			mc.effectRenderer.addEffect(fx);
+        		}
+            }
+        }
+    }
 
 	@Override
 	public void onInventoryChanged()
@@ -548,26 +652,27 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
         {
             return true;
         }
-        else if (this.riddenByEntity == null && this.isCollidedVertically)
+        else if (this.riddenByEntity == null && this.onGround)
         {
         	var1.displayGUIChest(this);
             return true;
         }
-        else
+        else if (var1 instanceof EntityPlayerMP)
         {
+    	  	final Object[] toSend2 = {0};
+        	((EntityPlayerMP) var1).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, toSend2));
             var1.mountEntity(this);
             return true;
+        }
+        else
+        {
+        	return true;
         }
     }
 
 	@Override
 	public boolean pressKey(int key)
 	{
-//    	if(this.worldObj.isRemote || key == 5)
-//    	{
-//    		PacketDispatcher.sendPacketToServer(GCCorePacketControllableEntity.buildKeyPacket(key));
-//    		return true;
-//    	}
 		switch(key)
 		{
 			case 0 : //Accelerate
@@ -608,39 +713,16 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
 			}
 			case 4 : //Space
 			{
-				this.speed += 0.05F;
+				this.ySpeed += 0.05F;
 				return true;
 			}
 			case 5 : //LShift
 			{
-				this.speed -= 0.005F;
+				this.ySpeed -= 0.005F;
 				return true;
 			}
 		}
 
 		return false;
 	}
-
-//	@Override
-//	public void writeSpawnData(ByteArrayDataOutput data)
-//	{
-//		this.moduleChest = new GCCoreEntityLanderChest(this);
-//        this.worldObj.spawnEntityInWorld(this.moduleChest);
-//
-//		data.writeInt(moduleChest.entityId);
-//	}
-//
-//	@Override
-//	public void readSpawnData(ByteArrayDataInput data)
-//	{
-//		GCLog.info("done1");
-//		if (this.worldObj instanceof WorldClient)
-//		{
-//			GCLog.info("done");
-//			int entityID = data.readInt();
-//			this.moduleChest = new GCCoreEntityLanderChest(this);
-//			moduleChest.entityId = entityID;
-//	        ((WorldClient)this.worldObj).addEntityToWorld(entityID, moduleChest);
-//		}
-//	}
 }

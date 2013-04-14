@@ -36,6 +36,7 @@ public class GCCorePacketEntityUpdate implements IGalacticraftAdvancedPacket
         	data.writeDouble(driveable.motionX);
         	data.writeDouble(driveable.motionY);
         	data.writeDouble(driveable.motionZ);
+        	data.writeBoolean(driveable.onGround);
 
         	packet.data = bytes.toByteArray();
         	packet.length = packet.data.length;
@@ -72,7 +73,7 @@ public class GCCorePacketEntityUpdate implements IGalacticraftAdvancedPacket
 
 			if(driveable != null)
 			{
-				driveable.setPositionRotationAndMotion(stream.readDouble(), stream.readDouble(), stream.readDouble(), stream.readFloat(), stream.readFloat(), stream.readDouble(), stream.readDouble(), stream.readDouble());
+				driveable.setPositionRotationAndMotion(stream.readDouble(), stream.readDouble(), stream.readDouble(), stream.readFloat(), stream.readFloat(), stream.readDouble(), stream.readDouble(), stream.readDouble(), stream.readBoolean());
 			}
 		}
         catch(final Exception e)

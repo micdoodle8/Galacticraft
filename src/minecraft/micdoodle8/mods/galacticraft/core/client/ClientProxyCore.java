@@ -72,7 +72,6 @@ import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityControllable;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityCreeper;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityFlag;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityLander;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityLanderChest;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityMeteor;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityOxygenBubble;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityParaChest;
@@ -282,7 +281,6 @@ public class ClientProxyCore extends CommonProxyCore
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityAlienVillager.class, new GCCoreRenderAlienVillager());
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityOxygenBubble.class, new GCCoreRenderOxygenBubble());
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityLander.class, new GCCoreRenderLander());
-        RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityLanderChest.class, new GCCoreRenderLanderChest());
         RenderingRegistry.addNewArmourRendererPrefix("oxygen");
         RenderingRegistry.addNewArmourRendererPrefix("sensor");
         RenderingRegistry.addNewArmourRendererPrefix("sensorox");

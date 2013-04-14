@@ -10,12 +10,14 @@ import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.client.GCCoreSkyProviderOrbit;
 import micdoodle8.mods.galacticraft.core.client.GCCoreSkyProviderOverworld;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiChoosePlanet;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreOverlayLander;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreOverlayOxygenTankIndicator;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreOverlaySensorGlasses;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreOverlaySpaceship;
 import micdoodle8.mods.galacticraft.core.client.sounds.GCCoreSoundUpdaterSpaceship;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreWorldProvider;
 import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityLander;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityRocketT1;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemSensorGlasses;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -336,6 +338,11 @@ public class GCCoreTickHandlerClient implements ITickHandler
     		if (minecraft.currentScreen == null && player != null && player.ridingEntity != null && player.ridingEntity instanceof EntitySpaceshipBase && minecraft.gameSettings.thirdPersonView != 0 && !minecraft.gameSettings.hideGUI)
     		{
     			GCCoreOverlaySpaceship.renderSpaceshipOverlay();
+    		}
+
+    		if (minecraft.currentScreen == null && player != null && player.ridingEntity != null && player.ridingEntity instanceof GCCoreEntityLander && minecraft.gameSettings.thirdPersonView != 0 && !minecraft.gameSettings.hideGUI && player.ridingEntity.motionY < -2.0)
+    		{
+    			GCCoreOverlayLander.renderLanderOverlay();
     		}
 
     		if (player != null && player.worldObj.provider instanceof IGalacticraftWorldProvider && OxygenUtil.shouldDisplayTankGui(minecraft.currentScreen))

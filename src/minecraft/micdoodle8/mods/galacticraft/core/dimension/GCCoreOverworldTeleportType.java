@@ -3,9 +3,11 @@ package micdoodle8.mods.galacticraft.core.dimension;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.API.ITeleportType;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityLander;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import universalelectricity.core.vector.Vector3;
 
@@ -41,5 +43,10 @@ public class GCCoreOverworldTeleportType implements ITeleportType
       	final double z = (rand.nextDouble() * 2 - 1.0D) * 5.0D;
 
 		return new Vector3(player.posX + x, 230.0D, player.posZ + z);
+	}
+
+	@Override
+	public void onSpaceDimensionChanged(World newWorld, EntityPlayerMP player) 
+	{
 	}
 }
