@@ -56,18 +56,24 @@ public abstract class GCDungeonRoom {
 	
 	protected void placeBlock(int[] blocks, int[] metas, int x, int y, int z, int cx, int cz, int id, int meta)
 	{
-		worldObj.setBlock(x, y, z, id);
-		cx *= 16;
-		cz *= 16;
-		x -= cx;
-		z -= cz;
-		if(x < 0 || x > 16 || z < 0 || z > 16)
+		if (GCMapGenDungeon.useArrays)
 		{
-			return;
+			cx *= 16;
+			cz *= 16;
+			x -= cx;
+			z -= cz;
+			if(x < 0 || x >= 16 || z < 0 || z >= 16)
+			{
+				return;
+			}
+			int index = getIndex(x, y, z);
+			blocks[index] = id;
+			metas[index] = meta;
 		}
-		int index = getIndex(x, y, z);
-		blocks[index] = id;
-		metas[index] = meta;
+		else
+		{
+			worldObj.setBlock(x, y, z, id, meta, 3);
+		}
 	}
 	
 	private int getIndex(int x, int y, int z)

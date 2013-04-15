@@ -48,6 +48,7 @@ public class GCMapGenDungeon {
 	public void generate(World world, int x, int y, int z, int chunkX, int chunkZ, int[] blocks, int[] metas, boolean useArrays)
 	{
 		this.useArrays = useArrays;
+		this.worldObj = world;
 		rand = new Random(worldObj.getWorldInfo().getSeed() * chunkX * chunkZ * 24789);
 		
 		List<GCDungeonBoundingBox> boundingBoxes = new ArrayList<GCDungeonBoundingBox>();
@@ -392,7 +393,7 @@ public class GCMapGenDungeon {
 			cz *= 16;
 			x -= cx;
 			z -= cz;
-			if(x < 0 || x > 16 || z < 0 || z > 16)
+			if(x < 0 || x >= 16 || z < 0 || z >= 16)
 			{
 				return;
 			}
@@ -400,7 +401,10 @@ public class GCMapGenDungeon {
 			blocks[index] = id;
 			metas[index] = meta;
 		}
-		worldObj.setBlock(x, y, z, id);
+		else
+		{
+			worldObj.setBlock(x, y, z, id, meta, 3);
+		}
 	}
 	
 	private int getOppositeDir(int dir)

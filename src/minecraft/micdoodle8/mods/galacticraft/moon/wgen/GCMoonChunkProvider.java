@@ -15,6 +15,7 @@ import micdoodle8.mods.galacticraft.core.wgen.GCCoreCraterSize;
 import micdoodle8.mods.galacticraft.core.wgen.GCCoreMapGenBaseMeta;
 import micdoodle8.mods.galacticraft.moon.GCMoonConfigManager;
 import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
+import micdoodle8.mods.galacticraft.moon.wgen.dungeon.GCMapGenDungeon;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSand;
 import net.minecraft.entity.EnumCreatureType;
@@ -61,6 +62,8 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 	private final GCMoonMapGenVillage villageGenerator = new GCMoonMapGenVillage();
 
 	private final MapGenMineshaft mineshaftGenerator = new MapGenMineshaft();
+	
+	private final GCMapGenDungeon dungeonGenerator = new GCMapGenDungeon();
 
 	private BiomeGenBase[] biomesForGeneration = {GCMoonBiomeGenBase.moonFlat};
 
@@ -223,6 +226,7 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 		this.createCraters(par1, par2, ids, meta);
 		this.replaceBlocksForBiome(par1, par2, ids, meta, this.biomesForGeneration);
         this.caveGenerator.generate(this, this.worldObj, par1, par2, ids, meta);
+//        this.dungeonGenerator.generateUsingArrays(worldObj, par1 * 16, 100, par2 * 16, par1, par2, ids, meta);
 
 		final Chunk var4 = new GCCoreChunk(this.worldObj, ids, meta, par1, par2);
 
