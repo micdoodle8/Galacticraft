@@ -345,7 +345,7 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
         final byte var20 = 5;
         int var4;
         
-    	if (this.motionY != 0 && FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+    	if (this.motionY != 0 && FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT && this.posY < 256)
     	{
         	final double x1 = 2 * Math.cos(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D);
         	final double z1 = 2 * Math.sin(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D);
