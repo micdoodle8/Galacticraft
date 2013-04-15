@@ -59,7 +59,6 @@ public class GCMoonTeleportType implements ITeleportType
 				newWorld.spawnEntityInWorld(lander);
 			}
 			
-			gcPlayer.mountEntity(lander);
     	  	final Object[] toSend2 = {1};
     	  	gcPlayer.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, toSend2));
 			
