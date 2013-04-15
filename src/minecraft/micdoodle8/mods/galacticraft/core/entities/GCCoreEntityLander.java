@@ -391,7 +391,7 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
 
         this.startingYSpeed += this.ySpeed * this.accel;
 
-        this.startingYSpeed = MathHelper.clamp_float((float) this.startingYSpeed, -5.0F, -0.5F);
+        this.startingYSpeed = this.startingYSpeed < -5.0F ? -5.0F : (this.startingYSpeed > -0.5F ? -0.5F : this.startingYSpeed);
 
         if (this.worldObj.isRemote)
         {
