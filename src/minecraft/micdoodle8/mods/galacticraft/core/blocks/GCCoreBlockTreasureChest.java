@@ -48,6 +48,7 @@ public class GCCoreBlockTreasureChest extends BlockContainer
     {
     	this.blockIcon = par1IconRegister.registerIcon("galacticraftcore:treasure_front_single");
     }
+    
 
 	@Override
     public CreativeTabs getCreativeTabToDisplayOn()

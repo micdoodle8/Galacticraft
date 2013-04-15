@@ -47,6 +47,8 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
     private int ticksSinceSync;
     private final int field_94046_i = -1;
     private String field_94045_s;
+    
+    public boolean hasKey = false;
 
     /**
      * Returns the number of slots in the inventory.

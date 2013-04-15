@@ -1,10 +1,10 @@
 package micdoodle8.mods.galacticraft.core.client.render.tile;
 
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockTreasureChest;
+import micdoodle8.mods.galacticraft.core.client.model.block.GCCoreModelTreasureChest;
+import micdoodle8.mods.galacticraft.core.client.model.block.GCCoreModelTreasureChestLarge;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
 import net.minecraft.block.Block;
-import net.minecraft.client.model.ModelChest;
-import net.minecraft.client.model.ModelLargeChest;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 
@@ -24,10 +24,10 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GCCoreTileEntityTreasureChestRenderer extends TileEntitySpecialRenderer
 {
     /** The normal small chest model. */
-    private final ModelChest chestModel = new ModelChest();
+    private final GCCoreModelTreasureChest chestModel = new GCCoreModelTreasureChest();
 
     /** The large double chest model. */
-    private final ModelChest largeChestModel = new ModelLargeChest();
+    private final GCCoreModelTreasureChestLarge largeChestModel = new GCCoreModelTreasureChestLarge();
 
     /**
      * Renders the TileEntity for the chest at a position.
@@ -56,7 +56,8 @@ public class GCCoreTileEntityTreasureChestRenderer extends TileEntitySpecialRend
 
         if (par1GCTileEntityTreasureChest.adjacentChestZNeg == null && par1GCTileEntityTreasureChest.adjacentChestXNeg == null)
         {
-            ModelChest var14;
+        	GCCoreModelTreasureChest var14 = null;
+        	GCCoreModelTreasureChestLarge var14b = null;
 
             if (par1GCTileEntityTreasureChest.adjacentChestXPos == null && par1GCTileEntityTreasureChest.adjacentChestZPosition == null)
             {
@@ -65,7 +66,7 @@ public class GCCoreTileEntityTreasureChestRenderer extends TileEntitySpecialRend
             }
             else
             {
-                var14 = this.largeChestModel;
+                var14b = this.largeChestModel;
                 this.bindTextureByName("/micdoodle8/mods/galacticraft/core/client/entities/largechest.png");
             }
 
@@ -135,8 +136,19 @@ public class GCCoreTileEntityTreasureChestRenderer extends TileEntitySpecialRend
 
             var12 = 1.0F - var12;
             var12 = 1.0F - var12 * var12 * var12;
-            var14.chestLid.rotateAngleX = -(var12 * (float)Math.PI / 4.0F);
-            var14.renderAll();
+            
+            if (var14 != null)
+            {
+                var14.chestLid.rotateAngleX = -(var12 * (float)Math.PI / 4.0F);
+                var14.renderAll(!par1GCTileEntityTreasureChest.hasKey);
+            }
+            
+            if (var14b != null)
+            {
+                var14b.chestLid.rotateAngleX = -(var12 * (float)Math.PI / 4.0F);
+                var14b.renderAll(true);
+            }
+            
             GL11.glDisable(GL12.GL_RESCALE_NORMAL);
             GL11.glPopMatrix();
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
