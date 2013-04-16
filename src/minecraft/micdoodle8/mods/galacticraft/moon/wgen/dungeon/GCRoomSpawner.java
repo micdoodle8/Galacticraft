@@ -51,10 +51,14 @@ public class GCRoomSpawner extends GCDungeonRoom {
 				}
 			}
 		}
-		placeBlock(chunk, meta, posX + 1, posY - 2, posZ + 1, cx, cz, Block.mobSpawner.blockID, 0);
-		placeBlock(chunk, meta, posX + sizeX - 1, posY - 2, posZ + sizeZ - 1, cx, cz, Block.mobSpawner.blockID, 0);
-		spawners.add(new ChunkCoordinates(posX + 1, posY - 2, posZ + 1));
-		spawners.add(new ChunkCoordinates(posX + sizeX - 1, posY - 2, posZ + sizeZ - 1));
+		if(placeBlock(chunk, meta, posX + 1, posY - 2, posZ + 1, cx, cz, Block.mobSpawner.blockID, 0))
+		{
+			spawners.add(new ChunkCoordinates(posX + 1, posY - 2, posZ + 1));
+		}
+		if(placeBlock(chunk, meta, posX + sizeX - 1, posY - 2, posZ + sizeZ - 1, cx, cz, Block.mobSpawner.blockID, 0))
+		{
+			spawners.add(new ChunkCoordinates(posX + sizeX - 1, posY - 2, posZ + sizeZ - 1));
+		}
 	}
 
 	@Override

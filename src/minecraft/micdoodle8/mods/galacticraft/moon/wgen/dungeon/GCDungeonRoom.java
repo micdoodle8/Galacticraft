@@ -54,7 +54,7 @@ public abstract class GCDungeonRoom {
 		return treasureRooms.get(rand.nextInt(treasureRooms.size())).makeRoom(worldObj, x, y, z, dir);
 	}
 	
-	protected void placeBlock(int[] blocks, int[] metas, int x, int y, int z, int cx, int cz, int id, int meta)
+	protected boolean placeBlock(int[] blocks, int[] metas, int x, int y, int z, int cx, int cz, int id, int meta)
 	{
 		if (GCMapGenDungeon.useArrays)
 		{
@@ -64,7 +64,7 @@ public abstract class GCDungeonRoom {
 			z -= cz;
 			if(x < 0 || x >= 16 || z < 0 || z >= 16)
 			{
-				return;
+				return false;
 			}
 			int index = getIndex(x, y, z);
 			blocks[index] = id;
@@ -74,6 +74,7 @@ public abstract class GCDungeonRoom {
 		{
 			worldObj.setBlock(x, y, z, id, meta, 3);
 		}
+		return true;
 	}
 	
 	private int getIndex(int x, int y, int z)

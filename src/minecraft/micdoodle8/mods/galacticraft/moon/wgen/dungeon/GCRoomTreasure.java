@@ -57,8 +57,10 @@ public class GCRoomTreasure extends GCDungeonRoom {
 		}
 		int hx = (posX + posX + sizeX) / 2;
 		int hz = (posZ + posZ + sizeZ) / 2;
-		placeBlock(chunk, meta, hx, posY, hz, cx, cz, Block.chest.blockID, 0);
-		chests.add(new ChunkCoordinates(hx, posY, hz));
+		if(placeBlock(chunk, meta, hx, posY, hz, cx, cz, Block.chest.blockID, 0))
+		{
+			chests.add(new ChunkCoordinates(hx, posY, hz));
+		}
 	}
 
 	@Override

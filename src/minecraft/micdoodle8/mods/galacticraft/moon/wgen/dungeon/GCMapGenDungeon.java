@@ -27,29 +27,31 @@ public class GCMapGenDungeon {
 	
 	public World worldObj;
 	
-	Random rand = new Random();
-	
 	private ArrayList<GCDungeonRoom> rooms = new ArrayList<GCDungeonRoom>();
 	
 	public GCMapGenDungeon()
 	{
 	}
 	
-	public void generateUsingArrays(World world, int x, int y, int z, int chunkX, int chunkZ, int[] blocks, int[] metas)
+	public void generateUsingArrays(World world, long seed, int x, int y, int z, int chunkX, int chunkZ, int[] blocks, int[] metas)
 	{
-		this.generate(world, x, y, z, chunkX, chunkZ, blocks, metas, true);
+		ChunkCoordinates dungeonCoords = this.getDungeonNear(seed, chunkX, chunkZ);
+		if(dungeonCoords != null)
+		{
+			System.out.println(dungeonCoords.posX + ", " + dungeonCoords.posZ);
+			this.generate(world, new Random(seed * dungeonCoords.posX * dungeonCoords.posZ * 24789), dungeonCoords.posX, y, dungeonCoords.posZ, chunkX, chunkZ, blocks, metas, true);
+		}
 	}
 	
 	public void generateUsingSetBlock(World world, int x, int y, int z)
 	{
-		this.generate(world, x, y, z, x, z, null, null, false);
+		this.generate(world, new Random(worldObj.getWorldInfo().getSeed() * x * z * 24789), x, y, z, x, z, null, null, false);
 	}
 	
-	public void generate(World world, int x, int y, int z, int chunkX, int chunkZ, int[] blocks, int[] metas, boolean useArrays)
+	public void generate(World world, Random rand, int x, int y, int z, int chunkX, int chunkZ, int[] blocks, int[] metas, boolean useArrays)
 	{
 		this.useArrays = useArrays;
 		this.worldObj = world;
-		rand = new Random(worldObj.getWorldInfo().getSeed() * chunkX * chunkZ * 24789);
 		
 		List<GCDungeonBoundingBox> boundingBoxes = new ArrayList<GCDungeonBoundingBox>();
 		
@@ -290,7 +292,7 @@ public class GCMapGenDungeon {
 		}
 	}
 	
-	public void handleTileEntities()
+	public void handleTileEntities(Random rand)
 	{
 		for(GCDungeonRoom room : rooms)
 		{
@@ -384,6 +386,54 @@ public class GCMapGenDungeon {
 			}
 		}
 	}
+	
+	protected boolean canGenDungeonAtCoords(long worldSeed, int i, int j)
+    {
+        byte numChunks = 32;
+        byte offsetChunks = 8;
+        int oldi = i;
+        int oldj = j;
+
+        if (i < 0)
+        {
+            i -= numChunks - 1;
+        }
+
+        if (j < 0)
+        {
+            j -= numChunks - 1;
+        }
+
+        int randX = i / numChunks;
+        int randZ = j / numChunks;
+        long dungeonSeed = (long)randX * 341873128712L + (long)randZ * 132897987541L + worldSeed + (long)4291726;
+        Random rand = new Random(dungeonSeed);
+        randX *= numChunks;
+        randZ *= numChunks;
+        randX += rand.nextInt(numChunks - offsetChunks);
+        randZ += rand.nextInt(numChunks - offsetChunks);
+
+        if (oldi == randX && oldj == randZ)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    public ChunkCoordinates getDungeonNear(long worldSeed, int i, int j) {
+        int range = 8;
+        for(int x = i - range; x <= i + range; x++) {
+            for(int z = j - range; z <= j + range; z++) {
+                if (canGenDungeonAtCoords(worldSeed, x, z)) {
+                	System.out.println("derp");
+                    return new ChunkCoordinates(x * 16 + 8, 0, z * 16 + 8);
+                }
+            }
+        }
+        
+        return null;
+    }
 	
 	private void placeBlock(int[] blocks, int[] metas, int x, int y, int z, int cx, int cz, int id, int meta)
 	{
