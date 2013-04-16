@@ -5,6 +5,8 @@ import java.util.Random;
 
 import micdoodle8.mods.galacticraft.API.IEntityBreathable;
 import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.API.IKeyItem;
+import micdoodle8.mods.galacticraft.API.IKeyable;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import net.minecraft.block.Block;
@@ -12,6 +14,7 @@ import net.minecraft.block.BlockSapling;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -21,6 +24,7 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.player.BonemealEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
 
@@ -38,6 +42,56 @@ public class GCCoreEvents
 
 		event.setCanceled(false);
 		event.setResult(Result.ALLOW);
+	}
+	
+	@ForgeSubscribe
+	public void onPlayerClicked(PlayerInteractEvent event)
+	{
+		ItemStack heldStack = event.entityPlayer.inventory.getCurrentItem();
+
+		TileEntity tileClicked = event.entityPlayer.worldObj.getBlockTileEntity(event.x, event.y, event.z);
+		
+		if (heldStack != null)
+		{
+			if (tileClicked != null && tileClicked instanceof IKeyable)
+			{
+				if (event.action.equals(PlayerInteractEvent.Action.LEFT_CLICK_BLOCK))
+				{
+					event.setCanceled(!((IKeyable) tileClicked).canBreak() && !event.entityPlayer.capabilities.isCreativeMode);
+					return;
+				}
+				else if (event.action.equals(PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK))
+				{
+					if (heldStack.getItem() instanceof IKeyItem)
+					{
+						if (((IKeyItem) heldStack.getItem()).getTier(heldStack) == -1 
+								|| ((IKeyable) tileClicked).getTierOfKeyRequired() == -1
+								|| ((IKeyItem) heldStack.getItem()).getTier(heldStack) == ((IKeyable) tileClicked).getTierOfKeyRequired())
+						{
+							 event.setCanceled(((IKeyable) tileClicked).onValidKeyActivated(event.entityPlayer, heldStack, event.face));
+						}
+						else
+						{
+							 event.setCanceled(((IKeyable) tileClicked).onActivatedWithoutKey(event.entityPlayer, event.face));
+						}
+					}
+					else
+					{
+						 event.setCanceled(((IKeyable) tileClicked).onActivatedWithoutKey(event.entityPlayer, event.face));
+					}
+				}
+			}
+		}
+		else if (tileClicked != null)
+		{
+			if (event.action.equals(PlayerInteractEvent.Action.LEFT_CLICK_BLOCK))
+			{
+				event.setCanceled(!((IKeyable) tileClicked).canBreak() && !event.entityPlayer.capabilities.isCreativeMode);
+				return;
+			}
+			
+			event.setCanceled(((IKeyable) tileClicked).onActivatedWithoutKey(event.entityPlayer, event.face));
+		}
 	}
 
 	@ForgeSubscribe

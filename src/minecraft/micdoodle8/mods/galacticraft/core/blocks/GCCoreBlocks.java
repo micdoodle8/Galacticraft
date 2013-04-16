@@ -50,7 +50,7 @@ public class GCCoreBlocks
 	public static void initBlocks()
 	{
 		GCCoreBlocks.breatheableAir = (GCCoreBlockBreathableAir)			new GCCoreBlockBreathableAir		(GCCoreConfigManager.idBlockBreatheableAir)							.setHardness(0.0F) 		.setResistance(1000F)																.setUnlocalizedName("breatheableAir");
-		GCCoreBlocks.treasureChest = 										new GCCoreBlockTreasureChest		(GCCoreConfigManager.idBlockTreasureChest)							.setHardness(1.0F)      .setResistance(10.0F)      	.setStepSound(Block.soundStoneFootstep)                 .setUnlocalizedName("treasureChest");
+		GCCoreBlocks.treasureChest = 										new GCCoreBlockT1TreasureChest		(GCCoreConfigManager.idBlockTreasureChest)							.setHardness(1.0F)      .setResistance(10.0F)      	.setStepSound(Block.soundStoneFootstep)                 .setUnlocalizedName("treasureChest");
 		GCCoreBlocks.landingPad = 											new GCCoreBlockLandingPad			(GCCoreConfigManager.idBlockLandingPad)								.setHardness(1.0F)      .setResistance(10.0F)  	   	.setStepSound(Block.soundStoneFootstep)                 .setUnlocalizedName("landingPad");
 		GCCoreBlocks.landingPadFull = 										new GCCoreBlockLandingPadFull		(GCCoreConfigManager.idBlockLandingPadFull)							.setHardness(1.0F)      .setResistance(10.0F)  	   	.setStepSound(Block.soundStoneFootstep)                 .setUnlocalizedName("landingPadFull");
 		GCCoreBlocks.unlitTorch = (GCCoreBlockUnlitTorch) 					new GCCoreBlockUnlitTorch 			(GCCoreConfigManager.idBlockUnlitTorch, false)						.setHardness(0.0F)									.setStepSound(Block.soundWoodFootstep)					.setUnlocalizedName("unlitTorch");
