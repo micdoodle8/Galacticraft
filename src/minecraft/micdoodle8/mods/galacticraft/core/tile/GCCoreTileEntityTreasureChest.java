@@ -169,6 +169,7 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
 	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readFromNBT(par1NBTTagCompound);
+        this.locked = par1NBTTagCompound.getBoolean("isLocked");
         final NBTTagList nbttaglist = par1NBTTagCompound.getTagList("Items");
         this.chestContents = new ItemStack[this.getSizeInventory()];
 
@@ -196,6 +197,7 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
 	public void writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeToNBT(par1NBTTagCompound);
+        par1NBTTagCompound.setBoolean("isLocked", this.locked);
         final NBTTagList nbttaglist = new NBTTagList();
 
         for (int i = 0; i < this.chestContents.length; ++i)
