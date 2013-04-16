@@ -82,7 +82,7 @@ public class GCCoreEvents
 				}
 			}
 		}
-		else if (tileClicked != null)
+		else if (tileClicked != null && tileClicked instanceof IKeyable)
 		{
 			if (event.action.equals(PlayerInteractEvent.Action.LEFT_CLICK_BLOCK))
 			{
