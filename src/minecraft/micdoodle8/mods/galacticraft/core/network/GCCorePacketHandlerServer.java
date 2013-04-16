@@ -352,5 +352,16 @@ public class GCCorePacketHandlerServer implements IPacketHandler
           		machine.setDisabled(!machine.getDisabled());
           	}
       	}
+        else if (packetType == 18)
+      	{
+        	final Class[] decodeAs = {Integer.class};
+          	final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
+          	
+			if (playerBase.chatCooldown == 0)
+			{
+				player.sendChatToPlayer("I'll probably need a Tier " + packetReadout[0] + " Dungeon key to unlock this!");
+				playerBase.chatCooldown = 100;
+			}
+      	}
     }
 }

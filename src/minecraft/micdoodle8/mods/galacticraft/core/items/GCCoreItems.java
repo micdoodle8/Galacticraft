@@ -55,6 +55,7 @@ public class GCCoreItems
 	public static Item oilExtractor;
 	public static Item schematic;
 	public static Item fuel;
+	public static Item key;
 
 	public static EnumArmorMaterial SENSORGLASSES = EnumHelper.addArmorMaterial("SENSORGLASSES", 200, new int[] {0, 0, 0, 0}, 0);
 	public static EnumArmorMaterial steelARMOR = EnumHelper.addArmorMaterial("steel", 30, new int[] {3, 8, 6, 3}, 12);
@@ -100,6 +101,7 @@ public class GCCoreItems
 		GCCoreItems.oilExtractor = new GCCoreItemOilExtractor(GCCoreConfigManager.idItemOilExtractor).setUnlocalizedName("oilExtractor");
 		GCCoreItems.schematic = new GCCoreItemSchematic(GCCoreConfigManager.idItemSchematic).setUnlocalizedName("schematic");
 		GCCoreItems.fuel = new GCCoreItemFuel(GCCoreConfigManager.idItemFuel).setUnlocalizedName("fuel");
+		GCCoreItems.key = new GCCoreItemKey(GCCoreConfigManager.idItemKey).setUnlocalizedName("key");
 
 		GalacticraftCore.hiddenItems.add(GCCoreItems.gravityBow.itemID);
 	}

@@ -83,6 +83,7 @@ public class GCCoreConfigManager
 	public static int idItemOilExtractor;
 	public static int idItemFuel;
 	public static int idItemSchematic;
+	public static int idItemKey;
 
 	// SCHEMATICS
 	public static int idSchematicRocketT1;
@@ -221,6 +222,7 @@ public class GCCoreConfigManager
 	        GCCoreConfigManager.idItemRocketFuelBucket = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemRocketFuelCanister", 				9879)		.getInt(9879);
 	        GCCoreConfigManager.idItemFuel = 							GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "iditemFuel",			 				9880)		.getInt(9880);
 	        GCCoreConfigManager.idItemSchematic = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemSchematic",			 			9989)		.getInt(9989);
+	        GCCoreConfigManager.idItemKey = 							GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemKey",			 					9990)		.getInt(9990);
 
 	        GCCoreConfigManager.idToolSteelSword = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idToolSteelSword", 						9980)		.getInt(9880);
 	        GCCoreConfigManager.idToolSteelPickaxe = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idToolSteelPickaxe", 					9981)		.getInt(9881);

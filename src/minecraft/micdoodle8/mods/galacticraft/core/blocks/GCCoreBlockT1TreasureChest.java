@@ -33,11 +33,11 @@ import cpw.mods.fml.relauncher.SideOnly;
  *  All rights reserved.
  *
  */
-public class GCCoreBlockTreasureChest extends BlockContainer
+public class GCCoreBlockT1TreasureChest extends BlockContainer
 {
     private final Random random = new Random();
 
-    protected GCCoreBlockTreasureChest(int par1)
+    protected GCCoreBlockT1TreasureChest(int par1)
     {
         super(par1, Material.rock);
     }
@@ -47,6 +47,12 @@ public class GCCoreBlockTreasureChest extends BlockContainer
     public void registerIcons(IconRegister par1IconRegister)
     {
     	this.blockIcon = par1IconRegister.registerIcon("galacticraftcore:treasure_front_single");
+    }
+
+	@Override
+    public float getBlockHardness(World par1World, int par2, int par3, int par4)
+    {
+    	return -1.0F;
     }
     
 
@@ -390,23 +396,23 @@ public class GCCoreBlockTreasureChest extends BlockContainer
         {
             return true;
         }
-        else if (GCCoreBlockTreasureChest.isOcelotBlockingChest(par1World, par2, par3, par4))
+        else if (GCCoreBlockT1TreasureChest.isOcelotBlockingChest(par1World, par2, par3, par4))
         {
             return true;
         }
-        else if (par1World.getBlockId(par2 - 1, par3, par4) == this.blockID && (par1World.isBlockSolidOnSide(par2 - 1, par3 + 1, par4, DOWN) || GCCoreBlockTreasureChest.isOcelotBlockingChest(par1World, par2 - 1, par3, par4)))
+        else if (par1World.getBlockId(par2 - 1, par3, par4) == this.blockID && (par1World.isBlockSolidOnSide(par2 - 1, par3 + 1, par4, DOWN) || GCCoreBlockT1TreasureChest.isOcelotBlockingChest(par1World, par2 - 1, par3, par4)))
         {
             return true;
         }
-        else if (par1World.getBlockId(par2 + 1, par3, par4) == this.blockID && (par1World.isBlockSolidOnSide(par2 + 1, par3 + 1, par4, DOWN) || GCCoreBlockTreasureChest.isOcelotBlockingChest(par1World, par2 + 1, par3, par4)))
+        else if (par1World.getBlockId(par2 + 1, par3, par4) == this.blockID && (par1World.isBlockSolidOnSide(par2 + 1, par3 + 1, par4, DOWN) || GCCoreBlockT1TreasureChest.isOcelotBlockingChest(par1World, par2 + 1, par3, par4)))
         {
             return true;
         }
-        else if (par1World.getBlockId(par2, par3, par4 - 1) == this.blockID && (par1World.isBlockSolidOnSide(par2, par3 + 1, par4 - 1, DOWN) || GCCoreBlockTreasureChest.isOcelotBlockingChest(par1World, par2, par3, par4 - 1)))
+        else if (par1World.getBlockId(par2, par3, par4 - 1) == this.blockID && (par1World.isBlockSolidOnSide(par2, par3 + 1, par4 - 1, DOWN) || GCCoreBlockT1TreasureChest.isOcelotBlockingChest(par1World, par2, par3, par4 - 1)))
         {
             return true;
         }
-        else if (par1World.getBlockId(par2, par3, par4 + 1) == this.blockID && (par1World.isBlockSolidOnSide(par2, par3 + 1, par4 + 1, DOWN) || GCCoreBlockTreasureChest.isOcelotBlockingChest(par1World, par2, par3, par4 + 1)))
+        else if (par1World.getBlockId(par2, par3, par4 + 1) == this.blockID && (par1World.isBlockSolidOnSide(par2, par3 + 1, par4 + 1, DOWN) || GCCoreBlockT1TreasureChest.isOcelotBlockingChest(par1World, par2, par3, par4 + 1)))
         {
             return true;
         }

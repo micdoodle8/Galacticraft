@@ -111,7 +111,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
 	public int teleportCooldown;
 	
-	public static int chatCooldown;
+	public int chatCooldown;
 
 	private int lastStep;
 
