@@ -126,6 +126,7 @@ public class GCCoreConfigManager
 	public static int idEntityEvolvedCreeper;
 	public static int idEntityEvolvedZombie;
 	public static int idEntityEvolvedSkeleton;
+	public static int idEntityEvolvedSkeletonBoss;
 	public static int idEntitySpaceship;
 	public static int idEntityAntiGravityArrow;
 	public static int idEntityMeteor;
@@ -257,7 +258,6 @@ public class GCCoreConfigManager
 	        GCCoreConfigManager.idEntityEvolvedSpider = 				GCCoreConfigManager.configuration.get("Entities", "idEntityEvolvedSpider", 									155)		.getInt(155);
 	        GCCoreConfigManager.idEntityEvolvedCreeper = 				GCCoreConfigManager.configuration.get("Entities", "idEntityEvolvedCreeper", 								156)		.getInt(156);
 	        GCCoreConfigManager.idEntityEvolvedZombie = 				GCCoreConfigManager.configuration.get("Entities", "idEntityEvolvedZombie", 									157)		.getInt(157);
-	        GCCoreConfigManager.idEntityEvolvedSkeleton = 				GCCoreConfigManager.configuration.get("Entities", "idEntityEvolvedSkeleton", 								158)		.getInt(158);
 	        GCCoreConfigManager.idEntitySpaceship = 					GCCoreConfigManager.configuration.get("Entities", "idEntitySpaceship", 										159)		.getInt(159);
 	        GCCoreConfigManager.idEntityAntiGravityArrow = 				GCCoreConfigManager.configuration.get("Entities", "idEntityAntiGravityArrow", 								160)		.getInt(160);
 	        GCCoreConfigManager.idEntityMeteor = 						GCCoreConfigManager.configuration.get("Entities", "idEntityMeteor", 										161)		.getInt(161);
@@ -270,6 +270,7 @@ public class GCCoreConfigManager
 	        GCCoreConfigManager.idEntityOxygenBubble = 					GCCoreConfigManager.configuration.get("Entities", "idEntityOxygenBubble", 									168)		.getInt(168);
 	        GCCoreConfigManager.idEntityLander = 						GCCoreConfigManager.configuration.get("Entities", "idEntityLander", 										169)		.getInt(169);
 	        GCCoreConfigManager.idEntityLanderChest = 					GCCoreConfigManager.configuration.get("Entities", "idEntityLanderChest", 									170)		.getInt(170);
+	        GCCoreConfigManager.idEntityEvolvedSkeletonBoss = 			GCCoreConfigManager.configuration.get("Entities", "idEntityEvolvedSkeletonBoss", 								171)		.getInt(171);
 
 	        GCCoreConfigManager.transparentBreathableAir = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Transparent Breathable Air",			true)		.getBoolean(true);
 	        GCCoreConfigManager.moreStars = 							GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "More Stars",							true)		.getBoolean(true);

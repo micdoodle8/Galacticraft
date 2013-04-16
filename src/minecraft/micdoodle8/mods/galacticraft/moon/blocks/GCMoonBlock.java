@@ -5,6 +5,7 @@ import java.util.Random;
 
 import micdoodle8.mods.galacticraft.API.IDetectableMetadataResource;
 import micdoodle8.mods.galacticraft.API.IPlantableMetadataBlock;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityDungeonSpawner;
 import micdoodle8.mods.galacticraft.moon.GalacticraftMoon;
 import micdoodle8.mods.galacticraft.moon.items.GCMoonItems;
 import net.minecraft.block.Block;
@@ -14,6 +15,7 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
@@ -188,13 +190,29 @@ public class GCMoonBlock extends Block implements IDetectableMetadataResource, I
 	@Override
     public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
     {
-        for (int var4 = 0; var4 < 6; ++var4)
+    	int var4;
+    	
+        for (var4 = 0; var4 < 6; ++var4)
         {
             par3List.add(new ItemStack(par1, 1, var4));
         }
 
-        par3List.add(new ItemStack(par1, 1, 14));
+        for (var4 = 14; var4 < 16; var4++)
+        {
+            par3List.add(new ItemStack(par1, 1, var4));
+        }
     }
+    
+	@Override
+	public TileEntity createTileEntity(World world, int metadata)
+	{
+		if (metadata == 15)
+		{
+			return new GCCoreTileEntityDungeonSpawner();
+		}
+		
+		return null;
+	}
 
 	@Override
 	public boolean isValueable(int metadata)
