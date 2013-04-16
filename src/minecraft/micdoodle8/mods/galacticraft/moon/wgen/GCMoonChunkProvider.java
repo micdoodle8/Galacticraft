@@ -53,6 +53,7 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 	public GCMoonBiomeDecorator biomedecoratorplanet = new GCMoonBiomeDecorator(GCMoonBiomeGenBase.moonFlat);
 
 	private final World worldObj;
+	private long seed;
 
 	private final boolean mapFeaturesEnabled;
 
@@ -88,6 +89,7 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 		this.worldObj = par1World;
 		this.mapFeaturesEnabled = par4;
 		this.rand = new Random(par2);
+		this.seed = par2;
 
 		this.noiseGen1 = new Gradient(this.rand.nextLong(), 4, 0.25);
 		this.noiseGen2 = new Gradient(this.rand.nextLong(), 4, 0.25);
@@ -226,7 +228,7 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 		this.createCraters(par1, par2, ids, meta);
 		this.replaceBlocksForBiome(par1, par2, ids, meta, this.biomesForGeneration);
         this.caveGenerator.generate(this, this.worldObj, par1, par2, ids, meta);
-//        this.dungeonGenerator.generateUsingArrays(worldObj, par1 * 16, 100, par2 * 16, par1, par2, ids, meta);
+        //this.dungeonGenerator.generateUsingArrays(worldObj, seed, par1 * 16, 100, par2 * 16, par1, par2, ids, meta);
 
 		final Chunk var4 = new GCCoreChunk(this.worldObj, ids, meta, par1, par2);
 
@@ -339,6 +341,8 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 		final long var9 = this.rand.nextLong() / 2L * 2L + 1L;
 		this.rand.setSeed(par2 * var7 + par3 * var9 ^ this.worldObj.getSeed());
 
+		//this.dungeonGenerator.handleTileEntities(rand);
+		
     	if (!GCMoonConfigManager.disableMoonVillageGen)
     	{
     		this.villageGenerator.generateStructuresInChunk(this.worldObj, this.rand, par2, par3);
