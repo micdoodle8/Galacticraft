@@ -19,8 +19,8 @@ import net.minecraft.world.gen.MapGenBase;
 
 public class GCMapGenDungeon {
 	
-	public static final int DUNGEON_WALL_ID = 1;
-	public static final int DUNGEON_WALL_META = 0;
+	public static final int DUNGEON_WALL_ID = GCMoonBlocks.blockMoon.blockID;
+	public static final int DUNGEON_WALL_META = 14;
 	public static final int RANGE = 8;
 	
 	public static boolean useArrays = false;
