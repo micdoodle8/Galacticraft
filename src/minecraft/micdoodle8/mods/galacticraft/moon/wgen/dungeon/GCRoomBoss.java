@@ -17,9 +17,9 @@ public class GCRoomBoss extends GCDungeonRoom {
 		if(worldObj != null)
 		{
 			rand = new Random(worldObj.getSeed() * posX * posY * 57 * posZ);
-			sizeX = rand.nextInt(6) + 9;
-			sizeY = rand.nextInt(2) + 5;
-			sizeZ = rand.nextInt(6) + 9;
+			sizeX = rand.nextInt(6) + 14;
+			sizeY = rand.nextInt(2) + 8;
+			sizeZ = rand.nextInt(6) + 14;
 		}
 	}
 
@@ -29,20 +29,25 @@ public class GCRoomBoss extends GCDungeonRoom {
 		{
 			for(int k = posZ - 1; k <= posZ + sizeZ; k++)
 			{ 
-				boolean flag = rand.nextFloat() < 0.16F;
+				boolean flag = rand.nextFloat() < 0.50F;
 				for(int j = posY - 1; j <= posY + sizeY; j++)
 				{
 					if(i == posX - 1 || i == posX + sizeX || j == posY - 1 || j == posY + sizeY || k == posZ - 1 || k == posZ + sizeZ)
 					{
 						placeBlock(chunk, meta, i, j, k, cx, cz, GCMapGenDungeon.DUNGEON_WALL_ID, GCMapGenDungeon.DUNGEON_WALL_META);
 					}
+					else if ((i == posX && k == posZ) || (i == posX + sizeX - 1 && k == posZ) || (i == posX && k == posZ + sizeZ - 1) || (i == posX + sizeX - 1 && k == posZ + sizeZ - 1))
+					{
+						placeBlock(chunk, meta, i, j, k, cx, cz, Block.lavaMoving.blockID, 0);
+					}
+					else if (((j % 3 == 0 && j >= posY + 2) && ((i == posX || i == posX + sizeX - 1 || k == posZ || k == posZ + sizeZ - 1)))
+							|| ((i == posX + 1 && k == posZ) || (i == posX && k == posZ + 1) || (i == posX + sizeX - 2 && k == posZ) || (i == posX + sizeX - 1 && k == posZ + 1) || (i == posX + 1 && k == posZ + sizeZ - 1) || (i == posX && k == posZ + sizeZ - 2) || (i == posX + sizeX - 2 && k == posZ + sizeZ - 1) || (i == posX + sizeX - 1 && k == posZ + sizeZ - 2)))
+					{
+						placeBlock(chunk, meta, i, j, k, cx, cz, Block.fenceIron.blockID, 0);
+					}
 					else
 					{
 						placeBlock(chunk, meta, i, j, k, cx, cz, 0, 0);
-						if(flag)
-						{
-							placeBlock(chunk, meta, i, j, k, cx, cz, Block.fenceIron.blockID, 0);
-						}
 					}
 				}
 			}
