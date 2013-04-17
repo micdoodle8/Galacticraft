@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.model;
 
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySkeletonBoss;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
@@ -290,6 +291,7 @@ public class GCCoreModelSkeletonBoss extends ModelBase
 	@Override
 	public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity e)
 	{
+		GCCoreEntitySkeletonBoss boss = (GCCoreEntitySkeletonBoss) e;
 		super.setRotationAngles(par1, par2, par3, par4, par5, par6, e);
     	this.UpperHead.rotateAngleY = 0;
         this.UpperHead.rotateAngleX = 0;
@@ -377,5 +379,11 @@ public class GCCoreModelSkeletonBoss extends ModelBase
         this.LeftArm.rotateAngleZ -= MathHelper.cos(par3 * 0.09F) * 0.05F + 0.05F;
         this.RightArm.rotateAngleX += MathHelper.sin(par3 * 0.067F) * 0.05F;
         this.LeftArm.rotateAngleX -= MathHelper.sin(par3 * 0.067F) * 0.05F;
+        
+        if ((boss.throwTimer + boss.postThrowDelay) > 0)
+        {
+            this.RightArm.rotateAngleX -= MathHelper.cos((boss.throwTimer + boss.postThrowDelay) * 0.05F) * 1.2F + 0.05F;
+            this.LeftArm.rotateAngleX -= MathHelper.cos((boss.throwTimer + boss.postThrowDelay) * 0.05F) * 1.2F + 0.05F;
+        }
     }
 }
