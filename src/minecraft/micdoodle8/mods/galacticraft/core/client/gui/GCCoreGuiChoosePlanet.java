@@ -670,7 +670,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
         	}
     		final Integer dim = provider.dimensionId;
     		final SpaceStationRecipe recipe = WorldUtil.getSpaceStationRecipe(dim);
-        	if (par1GuiButton.enabled && recipe.matches(this.playerToSend, false)/*this.hasCorrectMaterials(this.mc.thePlayer, RecipeUtil.getStandardSpaceStationRequirements())*/)
+        	if (recipe != null && par1GuiButton != null && par1GuiButton.enabled && recipe.matches(this.playerToSend, false)/*this.hasCorrectMaterials(this.mc.thePlayer, RecipeUtil.getStandardSpaceStationRequirements())*/)
         	{
                 final Object[] toSend = {dim};
                 PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 15, toSend));
