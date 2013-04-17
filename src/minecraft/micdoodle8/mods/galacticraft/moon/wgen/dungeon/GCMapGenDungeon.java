@@ -22,6 +22,7 @@ public class GCMapGenDungeon {
 	public static final int DUNGEON_WALL_ID = GCMoonBlocks.blockMoon.blockID;
 	public static final int DUNGEON_WALL_META = 14;
 	public static final int RANGE = 8;
+	public static final int HALLWAY_LENGTH = 16;
 	
 	public static boolean useArrays = false;
 	
@@ -74,66 +75,66 @@ public class GCMapGenDungeon {
 				switch(dir) //East = 0, North = 1, South = 2, West = 3
 				{
 					case 0: //East z++
-						offsetZ = 9 + rand.nextInt(10);
+						offsetZ = HALLWAY_LENGTH - 2 + rand.nextInt(10);
 						if(rand.nextBoolean())
 						{
 							if(rand.nextBoolean())
 							{
 								entranceDir = 1;
-								offsetX = 11 + rand.nextInt(5);
+								offsetX = HALLWAY_LENGTH + rand.nextInt(5);
 							}
 							else
 							{
 								entranceDir = 2;
-								offsetX = -11 - rand.nextInt(15);
+								offsetX = -HALLWAY_LENGTH - rand.nextInt(15);
 							}
 						}
 						break;
 					case 1: //North x++
-						offsetX = 9 + rand.nextInt(10);
+						offsetX = HALLWAY_LENGTH - 2 + rand.nextInt(10);
 						if(rand.nextBoolean())
 						{
 							if(rand.nextBoolean())
 							{
 								entranceDir = 0;
-								offsetZ = 11 + rand.nextInt(15);
+								offsetZ = HALLWAY_LENGTH + rand.nextInt(15);
 							}
 							else
 							{
 								entranceDir = 3;
-								offsetZ = -11 - rand.nextInt(15);
+								offsetZ = -HALLWAY_LENGTH - rand.nextInt(15);
 							}
 						}
 						break;
 					case 2: //South x--
-						offsetX = -11 - rand.nextInt(15);
+						offsetX = -HALLWAY_LENGTH - 2 - rand.nextInt(15);
 						if(rand.nextBoolean())
 						{
 							if(rand.nextBoolean())
 							{
 								entranceDir = 0;
-								offsetZ = 11 + rand.nextInt(15);
+								offsetZ = HALLWAY_LENGTH + rand.nextInt(15);
 							}
 							else
 							{
 								entranceDir = 3;
-								offsetZ = -11 - rand.nextInt(15);
+								offsetZ = -HALLWAY_LENGTH - rand.nextInt(15);
 							}
 						}
 						break;
 					case 3: //West z--
-						offsetZ = -9 - rand.nextInt(15);
+						offsetZ = -HALLWAY_LENGTH - 2 - rand.nextInt(15);
 						if(rand.nextBoolean())
 						{
 							if(rand.nextBoolean())
 							{
 								entranceDir = 1;
-								offsetX = 11 + rand.nextInt(15);
+								offsetX = HALLWAY_LENGTH + rand.nextInt(15);
 							}
 							else
 							{
 								entranceDir = 2;
-								offsetX = -11 - rand.nextInt(15);
+								offsetX = -HALLWAY_LENGTH - rand.nextInt(15);
 							}
 						}
 						break;
