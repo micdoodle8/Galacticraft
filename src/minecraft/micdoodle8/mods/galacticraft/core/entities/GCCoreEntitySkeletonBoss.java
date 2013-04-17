@@ -5,21 +5,16 @@ import micdoodle8.mods.galacticraft.API.IDungeonBossSpawner;
 import micdoodle8.mods.galacticraft.API.IEntityBreathable;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
-import net.minecraft.entity.ai.EntityAIFleeSun;
-import net.minecraft.entity.ai.EntityAIHurtByTarget;
-import net.minecraft.entity.ai.EntityAILookIdle;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
-import net.minecraft.entity.ai.EntityAIRestrictSun;
-import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.stats.AchievementList;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
@@ -34,19 +29,24 @@ import cpw.mods.fml.relauncher.SideOnly;
  *  All rights reserved.
  *
  */
-public class GCCoreEntitySkeletonBoss extends EntitySkeleton implements IEntityBreathable, IDungeonBoss
+public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreathable, IDungeonBoss
 {
     private static final ItemStack defaultHeldItem = new ItemStack(Item.bow, 1);
     private IDungeonBossSpawner spawner;
+    
+    public int throwTimer;
+    public int postThrowDelay = 20;
+    public Entity thrownEntity;
 
     public GCCoreEntitySkeletonBoss(World par1World)
     {
         super(par1World);
         this.setSize(1.5F, 4.0F);
+        this.isImmuneToFire = true;
         this.tasks.taskEntries.clear();
-        this.texture = "/micdoodle8/mods/galacticraft/core/client/entities/ddasdasd.png";
+        this.texture = "/micdoodle8/mods/galacticraft/core/client/entities/skeletonboss.png";
         this.moveSpeed = 0.25F;
-        this.tasks.addTask(1, new GCCoreEntityAIThrowPlayer(this));
+//        this.tasks.addTask(1, new GCCoreEntityAIThrowPlayer(this));
 //        this.tasks.addTask(1, new EntityAISwimming(this));
 //        this.tasks.addTask(2, new EntityAIRestrictSun(this));
 //        this.tasks.addTask(3, new EntityAIFleeSun(this, this.moveSpeed));
@@ -65,10 +65,47 @@ public class GCCoreEntitySkeletonBoss extends EntitySkeleton implements IEntityB
     	this.setPosition(vec.x, vec.y, vec.z);
     }
 
+    public void updateRiderPosition()
+    {
+        if (this.riddenByEntity != null)
+        {
+            if (!(this.riddenByEntity instanceof EntityPlayer) || !((EntityPlayer)this.riddenByEntity).func_71066_bF())
+            {
+                this.riddenByEntity.lastTickPosX = this.lastTickPosX;
+                this.riddenByEntity.lastTickPosY = this.lastTickPosY + this.getMountedYOffset() + this.riddenByEntity.getYOffset();
+                this.riddenByEntity.lastTickPosZ = this.lastTickPosZ;
+            }
+            
+            double offsetX = Math.sin(this.rotationYaw * Math.PI / 180.0D);
+            double offsetZ = Math.cos(this.rotationYaw * Math.PI / 180.0D);
+            double offsetY = 2 * Math.cos((this.throwTimer + this.postThrowDelay) * 0.05F);
+
+            this.riddenByEntity.setPosition(this.posX + offsetX, this.posY + this.getMountedYOffset() + this.riddenByEntity.getYOffset() + offsetY, this.posZ + offsetZ);
+        }
+    }
+    
+    @Override
+    public void onCollideWithPlayer(EntityPlayer par1EntityPlayer)
+    {
+    	if (this.riddenByEntity == null && this.postThrowDelay == 0 && this.throwTimer == 0)
+    	{
+            this.playSound("entity.bosslaugh", this.getSoundVolume(), 1.0F);
+            
+            if (!this.worldObj.isRemote)
+            {
+        		par1EntityPlayer.mountEntity(this);
+            }
+            
+    		this.throwTimer = 40;
+    	}
+    	
+    	super.onCollideWithPlayer(par1EntityPlayer);
+    }
+
     @Override
 	public boolean isAIEnabled()
     {
-        return true;
+        return false;
     }
 
     @Override
@@ -111,15 +148,66 @@ public class GCCoreEntitySkeletonBoss extends EntitySkeleton implements IEntityB
     @Override
 	public void onLivingUpdate()
     {
-        if (this.worldObj.isDaytime() && !this.worldObj.isRemote)
-        {
-            final float var1 = this.getBrightness(1.0F);
-
-            if (var1 > 0.5F && this.worldObj.canBlockSeeTheSky(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ)) && this.rand.nextFloat() * 30.0F < (var1 - 0.4F) * 2.0F)
+    	EntityPlayer player = this.worldObj.getClosestPlayer(this.posX, this.posY, this.posZ, 10.0);
+    	
+    	if (player != null)
+    	{
+    		if (this.getDistanceSqToEntity(player) < 25.0D)
+    		{
+    	        PathEntity pathentity = this.getNavigator().getPathToEntityLiving(player);
+    			this.getNavigator().setPath(pathentity, 1.4F);
+    		}
+    	}
+    	
+    	if (this.throwTimer > 0)
+    	{
+    		this.throwTimer--;
+    	}
+    	
+    	if (this.postThrowDelay > 0)
+    	{
+    		this.postThrowDelay--;
+    	}
+    	
+    	if (this.riddenByEntity != null && this.throwTimer == 0)
+    	{
+            this.postThrowDelay = 20;
+            
+            this.thrownEntity = this.riddenByEntity;
+    		
+            if (!this.worldObj.isRemote)
             {
-                this.setFire(8);
+        		this.riddenByEntity.mountEntity(this);
             }
-        }
+    	}
+    	
+    	if (this.thrownEntity != null && this.postThrowDelay == 18)
+    	{
+            double d0 = this.posX - this.thrownEntity.posX;
+            double d1;
+
+            for (d1 = this.posZ - this.thrownEntity.posZ; d0 * d0 + d1 * d1 < 1.0E-4D; d1 = (Math.random() - Math.random()) * 0.01D)
+            {
+                d0 = (Math.random() - Math.random()) * 0.01D;
+            }
+
+            ((EntityPlayer)this.thrownEntity).attackedAtYaw = (float)(Math.atan2(d1, d0) * 180.0D / Math.PI) - this.rotationYaw;
+
+            this.thrownEntity.isAirBorne = true;
+            float f = MathHelper.sqrt_double(d0 * d0 + d1 * d1);
+            float f1 = 2.4F;
+            this.thrownEntity.motionX /= 2.0D;
+            this.thrownEntity.motionY /= 2.0D;
+            this.thrownEntity.motionZ /= 2.0D;
+            this.thrownEntity.motionX -= d0 / (double)f * (double)f1;
+            this.thrownEntity.motionY += (double)f1 / 5;
+            this.thrownEntity.motionZ -= d1 / (double)f * (double)f1;
+
+            if (this.thrownEntity.motionY > 0.4000000059604645D)
+            {
+            	this.thrownEntity.motionY = 0.4000000059604645D;
+            }
+    	}
 
         super.onLivingUpdate();
     }
