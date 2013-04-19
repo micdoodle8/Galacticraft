@@ -5,5 +5,7 @@ import net.minecraft.item.ItemStack;
 
 public interface IBreathableArmor
 {
+	public boolean handleGearType(EnumGearType gearType);
+	
 	public boolean canBreathe(ItemStack helmetInSlot, EntityPlayer playerWearing, EnumGearType type);
 }

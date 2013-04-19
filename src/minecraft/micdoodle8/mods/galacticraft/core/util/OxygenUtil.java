@@ -129,61 +129,79 @@ public class OxygenUtil
 
 		if (inventory.getStackInSlot(0) == null || !OxygenUtil.isItemValidForPlayerTankInv(0, inventory.getStackInSlot(0)))
 		{
+			boolean handled = false;
+			
 			for (final ItemStack armorStack : player.inventory.armorInventory)
 			{
 				if (armorStack != null && armorStack.getItem() instanceof IBreathableArmor)
 				{
 					final IBreathableArmor breathableArmor = (IBreathableArmor) armorStack.getItem();
 
-					if (!breathableArmor.canBreathe(armorStack, player, EnumGearType.HELMET))
+					if (breathableArmor.handleGearType(EnumGearType.HELMET))
 					{
-						missingComponent = true;
+						if (breathableArmor.canBreathe(armorStack, player, EnumGearType.HELMET))
+						{
+							handled = true;
+						}
 					}
 				}
-				else
-				{
-					missingComponent = true;
-				}
+			}
+			
+			if (!handled)
+			{
+				missingComponent = true;
 			}
 		}
 
 		if (inventory.getStackInSlot(1) == null || !OxygenUtil.isItemValidForPlayerTankInv(1, inventory.getStackInSlot(1)))
 		{
+			boolean handled = false;
+			
 			for (final ItemStack armorStack : player.inventory.armorInventory)
 			{
 				if (armorStack != null && armorStack.getItem() instanceof IBreathableArmor)
 				{
 					final IBreathableArmor breathableArmor = (IBreathableArmor) armorStack.getItem();
-
-					if (!breathableArmor.canBreathe(armorStack, player, EnumGearType.GEAR))
+	
+					if (breathableArmor.handleGearType(EnumGearType.GEAR))
 					{
-						missingComponent = true;
+						if (breathableArmor.canBreathe(armorStack, player, EnumGearType.GEAR))
+						{
+							handled = true;
+						}
 					}
 				}
-				else
-				{
-					missingComponent = true;
-				}
+			}
+			
+			if (!handled)
+			{
+				missingComponent = true;
 			}
 		}
 
 		if ((inventory.getStackInSlot(2) == null || !OxygenUtil.isItemValidForPlayerTankInv(2, inventory.getStackInSlot(2))) && (inventory.getStackInSlot(3) == null || !OxygenUtil.isItemValidForPlayerTankInv(3, inventory.getStackInSlot(3))))
 		{
+			boolean handled = false;
+			
 			for (final ItemStack armorStack : player.inventory.armorInventory)
 			{
 				if (armorStack != null && armorStack.getItem() instanceof IBreathableArmor)
 				{
 					final IBreathableArmor breathableArmor = (IBreathableArmor) armorStack.getItem();
 
-					if (!breathableArmor.canBreathe(armorStack, player, EnumGearType.TANK1) && !breathableArmor.canBreathe(armorStack, player, EnumGearType.TANK2))
+					if (breathableArmor.handleGearType(EnumGearType.TANK1) || breathableArmor.handleGearType(EnumGearType.TANK2))
 					{
-						missingComponent = true;
+						if (breathableArmor.canBreathe(armorStack, player, EnumGearType.TANK1) || breathableArmor.canBreathe(armorStack, player, EnumGearType.TANK2))
+						{
+							handled = true;
+						}
 					}
 				}
-				else
-				{
-					missingComponent = true;
-				}
+			}
+			
+			if (!handled)
+			{
+				missingComponent = true;
 			}
 		}
 
