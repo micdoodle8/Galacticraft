@@ -152,7 +152,8 @@ public class GCCoreItemRendererSpaceship implements IItemRenderer
 	@Override
 	public boolean handleRenderType(ItemStack item, ItemRenderType type)
 	{
-		switch (type) {
+		switch (type) 
+		{
 		case ENTITY:
 			return true;
 		case EQUIPPED:

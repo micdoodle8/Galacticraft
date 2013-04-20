@@ -324,7 +324,7 @@ public class GalacticraftCore
 		GalacticraftCore.moon.postLoad(event);
 
 		if(Loader.isModLoaded("IC2"))
-		{
+		{ 
 			GalacticraftCore.modIC2Loaded = true;
 		}
 

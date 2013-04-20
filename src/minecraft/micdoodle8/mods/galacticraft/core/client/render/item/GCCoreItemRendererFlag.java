@@ -23,7 +23,7 @@ public class GCCoreItemRendererFlag implements IItemRenderer
 	GCCoreEntityFlag spaceship = new GCCoreEntityFlag(FMLClientHandler.instance().getClient().theWorld);
 	GCCoreModelFlag modelSpaceship = new GCCoreModelFlag();
 
-	private void renderPipeItem(ItemRenderType type, RenderBlocks render, ItemStack item, float translateX, float translateY, float translateZ)
+	private void renderFlag(ItemRenderType type, RenderBlocks render, ItemStack item, float translateX, float translateY, float translateZ)
 	{
         GL11.glPushMatrix();
         long var10 = this.spaceship.entityId * 493286711L;
@@ -139,13 +139,13 @@ public class GCCoreItemRendererFlag implements IItemRenderer
 		switch (type)
 		{
 		case EQUIPPED:
-			this.renderPipeItem(type, (RenderBlocks) data[0], item, -0.5f, -0.5f, -0.5f);
+			this.renderFlag(type, (RenderBlocks) data[0], item, -0.5f, -0.5f, -0.5f);
 			break;
 		case INVENTORY:
-			this.renderPipeItem(type, (RenderBlocks) data[0], item, -0.5f, -0.5f, -0.5f);
+			this.renderFlag(type, (RenderBlocks) data[0], item, -0.5f, -0.5f, -0.5f);
 			break;
 		case ENTITY:
-			this.renderPipeItem(type, (RenderBlocks) data[0], item, -0.5f, -0.5f, -0.5f);
+			this.renderFlag(type, (RenderBlocks) data[0], item, -0.5f, -0.5f, -0.5f);
 			break;
 		default:
 		}
