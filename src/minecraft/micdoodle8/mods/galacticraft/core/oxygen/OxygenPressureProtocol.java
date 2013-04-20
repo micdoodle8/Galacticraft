@@ -19,11 +19,13 @@ public class OxygenPressureProtocol
     private LinkedList<Vector3> checked = new LinkedList<Vector3>();
     private LinkedList<Vector3> oxygenReliantBlocks = new LinkedList<Vector3>();
     private boolean airtight;
+    private static ArrayList<Integer> vanillaPermeableBlocks = new ArrayList<Integer>();
     private static ArrayList<Integer> vanillaNonPermeableBlocks = new ArrayList<Integer>();
 
     static
     {
-    	OxygenPressureProtocol.vanillaNonPermeableBlocks.add(Block.sponge.blockID);
+    	OxygenPressureProtocol.vanillaPermeableBlocks.add(Block.sponge.blockID);
+    	OxygenPressureProtocol.vanillaNonPermeableBlocks.add(Block.thinGlass.blockID);
 //    	vanillaPermeableBlocks.add(Block.doorSteel.blockID);
 //    	vanillaPermeableBlocks.add(Block.doorWood.blockID);
 //    	vanillaPermeableBlocks.add(Block.torchWood.blockID);
@@ -309,9 +311,9 @@ public class OxygenPressureProtocol
     	return block == null
     			|| block.blockID == 0
     			|| block.blockID == GCCoreBlocks.breatheableAir.blockID
-    	    	|| OxygenPressureProtocol.vanillaNonPermeableBlocks.contains(block.blockID)
-    			|| !block.isOpaqueCube() && !(block instanceof IPartialSealedBlock)
-    			|| !block.isOpaqueCube() && block instanceof IPartialSealedBlock && !((IPartialSealedBlock) block).isSealed(var0, vec.intX(), vec.intY(), vec.intZ());
+    	    	|| OxygenPressureProtocol.vanillaPermeableBlocks.contains(block.blockID)
+    			|| (!block.isOpaqueCube() && !(block instanceof IPartialSealedBlock) && !vanillaNonPermeableBlocks.contains(block.blockID))
+    			|| (!block.isOpaqueCube() && block instanceof IPartialSealedBlock && !((IPartialSealedBlock) block).isSealed(var0, vec.intX(), vec.intY(), vec.intZ()));
     }
 
     public static boolean isBreathableAir(World var0, int var1, int var2, int var3)
