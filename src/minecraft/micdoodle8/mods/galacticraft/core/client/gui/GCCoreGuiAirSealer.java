@@ -64,7 +64,7 @@ public class GCCoreGuiAirSealer extends GuiContainer
         this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 50, 4210752);
         status = "Oxygen: " + Math.round(distributorInv.storedOxygen > 39 ? distributorInv.storedOxygen : 0);
         this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 60, 4210752);
-        status = ElectricityDisplay.getDisplay(GCCoreTileEntityOxygenSealer.WATTS_PER_TICK * 20, ElectricUnit.WATT);
+        status = ElectricityDisplay.getDisplay(this.distributorInv.ueWattsPerTick * 20, ElectricUnit.WATT);
         this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 70, 4210752);
         status = ElectricityDisplay.getDisplay(this.distributorInv.getVoltage(), ElectricUnit.VOLTAGE);
         this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 80, 4210752);
@@ -93,7 +93,7 @@ public class GCCoreGuiAirSealer extends GuiContainer
     		return EnumColor.DARK_RED + "Not Enough Oxygen";
     	}
 
-    	if (this.distributorInv.wattsReceived == 0 && this.distributorInv.ic2WattsReceived == 0)
+    	if (this.distributorInv.wattsReceived == 0 && this.distributorInv.ic2Energy == 0)
     	{
     		return EnumColor.DARK_RED + "Not Enough Power";
     	}

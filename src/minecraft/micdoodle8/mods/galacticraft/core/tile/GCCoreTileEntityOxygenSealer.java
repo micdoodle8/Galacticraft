@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import ic2.api.Direction;
 import ic2.api.energy.event.EnergyTileLoadEvent;
+import ic2.api.energy.event.EnergyTileUnloadEvent;
 import ic2.api.energy.tile.IEnergySink;
 import mekanism.api.EnumGas;
 import mekanism.api.IGasAcceptor;
@@ -39,33 +40,28 @@ import com.google.common.io.ByteArrayDataInput;
  *  All rights reserved.
  *
  */
-public class GCCoreTileEntityOxygenSealer extends TileEntityElectricityRunnable implements IInventory, IPacketReceiver, IGasAcceptor, ITubeConnection, ISidedInventory, IEnergySink, IDisableableMachine
+public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityElectric implements IInventory, IGasAcceptor, ITubeConnection, ISidedInventory
 {
 	public boolean sealed;
 
-	public boolean disabled = true;
-	public boolean lastDisabled = true;
+	public boolean lastDisabled = false;
 
     public boolean active;
 	private ItemStack[] containingItems = new ItemStack[1];
 
-	public int disableCooldown;
-
-	public static final double WATTS_PER_TICK = 300;
-
-	private int playersUsing = 0;
-
 	public static int timeSinceOxygenRequest;
-
-	public double ic2WattsReceived = 0;
-	private boolean initialized = false;
 
 	public static final double OXYGEN_PER_TICK = 500;
 	
 	public static final int MAX_OXYGEN = 18000;
 	
 	public int storedOxygen;
-    
+	
+	public GCCoreTileEntityOxygenSealer()
+	{
+		super(300, 130);
+	}
+	
     public double getPower()
     {
     	return this.storedOxygen / 600.0D;
@@ -76,38 +72,17 @@ public class GCCoreTileEntityOxygenSealer extends TileEntityElectricityRunnable 
 	{
 		super.updateEntity();
 
-		if (!this.initialized && this.worldObj != null)
-		{
-			if(GalacticraftCore.modIC2Loaded)
-			{
-				MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(this));
-			}
-
-			this.initialized = true;
-		}
-
-		if (GCCoreTileEntityOxygenSealer.timeSinceOxygenRequest > 0 && !this.disabled)
-		{
-			this.wattsReceived += ElectricItemHelper.dechargeItem(this.containingItems[0], GCCoreTileEntityOxygenSealer.WATTS_PER_TICK, this.getVoltage());
-		}
-
 		if (!this.worldObj.isRemote)
 		{
-			if (this.disableCooldown > 0)
-			{
-				this.disableCooldown--;
-			}
-
 			if (GCCoreTileEntityOxygenSealer.timeSinceOxygenRequest > 0)
 			{
 				GCCoreTileEntityOxygenSealer.timeSinceOxygenRequest--;
 			}
 
-			this.wattsReceived = Math.max(this.wattsReceived - GCCoreTileEntityOxygenSealer.WATTS_PER_TICK / 4, 0);
-			this.ic2WattsReceived = Math.max(this.ic2WattsReceived - GCCoreTileEntityOxygenSealer.WATTS_PER_TICK / 4, 0);
+			this.wattsReceived = Math.max(this.wattsReceived - this.ueWattsPerTick / 4, 0);
 			this.storedOxygen = (int) Math.max(this.storedOxygen - this.storedOxygen / 40, 0);
 
-			if (this.getPower() >= 1 && (this.wattsReceived > 0 || this.ic2WattsReceived > 0) && !this.disabled)
+			if (this.getPower() >= 1 && (this.wattsReceived > 0 || this.ic2Energy > 0) && !this.disabled)
 			{
 				this.active = true;
 			}
@@ -139,46 +114,6 @@ public class GCCoreTileEntityOxygenSealer extends TileEntityElectricityRunnable 
 	}
 
 	@Override
-	public Packet getDescriptionPacket()
-	{
-		return PacketManager.getPacket(BasicComponents.CHANNEL, this, this.storedOxygen, this.wattsReceived, this.disabled, this.ic2WattsReceived, this.sealed, this.disableCooldown);
-	}
-
-	@Override
-	public void handlePacketData(INetworkManager network, int type, Packet250CustomPayload packet, EntityPlayer player, ByteArrayDataInput dataStream)
-	{
-		try
-		{
-			if (this.worldObj.isRemote)
-			{
-				this.storedOxygen = dataStream.readInt();
-				this.wattsReceived = dataStream.readDouble();
-				this.disabled = dataStream.readBoolean();
-				this.ic2WattsReceived = dataStream.readDouble();
-				this.sealed = dataStream.readBoolean();
-				this.disableCooldown = dataStream.readInt();
-			}
-		}
-		catch (final Exception e)
-		{
-			e.printStackTrace();
-		}
-	}
-
-	@Override
-	public ElectricityPack getRequest()
-	{
-		if (GCCoreTileEntityOxygenSealer.timeSinceOxygenRequest > 0 && !this.disabled)
-		{
-			return new ElectricityPack(GCCoreTileEntityOxygenSealer.WATTS_PER_TICK / this.getVoltage(), this.getVoltage());
-		}
-		else
-		{
-			return new ElectricityPack();
-		}
-	}
-
-	@Override
 	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
 	{
 		super.readFromNBT(par1NBTTagCompound);
@@ -197,8 +132,6 @@ public class GCCoreTileEntityOxygenSealer extends TileEntityElectricityRunnable 
                 this.containingItems[var5] = ItemStack.loadItemStackFromNBT(var4);
             }
         }
-
-        this.disabled = this.lastDisabled = par1NBTTagCompound.getBoolean("sealerDisabled");
 	}
 
 	@Override
@@ -221,8 +154,6 @@ public class GCCoreTileEntityOxygenSealer extends TileEntityElectricityRunnable 
         }
 
         par1NBTTagCompound.setTag("Items", list);
-
-        par1NBTTagCompound.setBoolean("sealerDisabled", this.disabled);
 	}
 
 	@Override
@@ -261,12 +192,6 @@ public class GCCoreTileEntityOxygenSealer extends TileEntityElectricityRunnable 
 	public boolean canTubeConnect(ForgeDirection direction)
 	{
 		return direction == ForgeDirection.getOrientation(this.getBlockMetadata() + 2).getOpposite();
-	}
-
-	@Override
-	public boolean canConnect(ForgeDirection direction)
-	{
-		return direction == ForgeDirection.getOrientation(this.getBlockMetadata() + 2);
 	}
 
 	@Override
@@ -359,18 +284,11 @@ public class GCCoreTileEntityOxygenSealer extends TileEntityElectricityRunnable 
 	@Override
 	public void openChest()
 	{
-		if (!this.worldObj.isRemote)
-		{
-			PacketManager.sendPacketToClients(this.getDescriptionPacket(), this.worldObj, new Vector3(this), 15);
-		}
-
-		this.playersUsing++;
 	}
 
 	@Override
 	public void closeChest()
 	{
-		this.playersUsing--;
 	}
 
 	// ISidedInventory Implementation:
@@ -405,51 +323,6 @@ public class GCCoreTileEntityOxygenSealer extends TileEntityElectricityRunnable 
 		return slotID == 0 ? itemstack.getItem() instanceof IItemElectric : false;
 	}
 
-	// Industrial Craft 2 Implementation:
-
-	@Override
-	public int demandsEnergy()
-	{
-		return GCCoreTileEntityOxygenSealer.timeSinceOxygenRequest > 0 && !this.disabled ? (int) (GCCoreTileEntityFuelLoader.WATTS_PER_TICK / this.getVoltage() * GalacticraftCore.IC2EnergyScalar) : 0;
-	}
-
-	@Override
-	public int injectEnergy(Direction directionFrom, int amount)
-	{
-		double rejects = 0;
-    	final double neededEnergy = GCCoreTileEntityFuelLoader.WATTS_PER_TICK / this.getVoltage() * GalacticraftCore.IC2EnergyScalar;
-
-    	if(amount <= neededEnergy)
-    	{
-    		this.ic2WattsReceived += amount;
-    	}
-    	else if(amount > neededEnergy)
-    	{
-    		this.ic2WattsReceived += neededEnergy;
-    		rejects = amount - neededEnergy;
-    	}
-
-    	return (int) (rejects * GalacticraftCore.IC2EnergyScalar);
-	}
-
-	@Override
-	public int getMaxSafeInput()
-	{
-		return 2048;
-	}
-
-	@Override
-	public boolean acceptsEnergyFrom(TileEntity emitter, Direction direction)
-	{
-		return direction.toForgeDirection() == ForgeDirection.getOrientation(this.getBlockMetadata() + 2);
-	}
-
-	@Override
-	public boolean isAddedToEnergyNet()
-	{
-		return this.initialized;
-	}
-
     public boolean isOn(World var1, int var2, int var3, int var4)
     {
     	final OxygenPressureProtocol var5 = new OxygenPressureProtocol();
@@ -470,18 +343,39 @@ public class GCCoreTileEntityOxygenSealer extends TileEntityElectricityRunnable 
     }
 
 	@Override
-	public void setDisabled(boolean disabled)
+	public boolean shouldPullEnergy() 
 	{
-		if (this.disableCooldown == 0)
+		return this.timeSinceOxygenRequest > 0 && !this.disabled;
+	}
+
+	@Override
+	public void readPacket(ByteArrayDataInput data)
+	{
+		if (this.worldObj.isRemote)
 		{
-			this.disabled = disabled;
-			this.disableCooldown = 50;
+			this.storedOxygen = data.readInt();
+			this.wattsReceived = data.readDouble();
+			this.disabled = data.readBoolean();
+			this.ic2Energy = data.readDouble();
+			this.sealed = data.readBoolean();
 		}
 	}
 
 	@Override
-	public boolean getDisabled()
+	public Packet getPacket()
 	{
-		return this.disabled;
+		return PacketManager.getPacket(BasicComponents.CHANNEL, this, this.storedOxygen, this.wattsReceived, this.disabled, this.ic2Energy, this.sealed);
+	}
+
+	@Override
+	public ForgeDirection getInputDirection() 
+	{
+		return ForgeDirection.getOrientation(this.getBlockMetadata() + 2);
+	}
+
+	@Override
+	public ItemStack getBatteryInSlot() 
+	{
+		return this.getStackInSlot(0);
 	}
 }

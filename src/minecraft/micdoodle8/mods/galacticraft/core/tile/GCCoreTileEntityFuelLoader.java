@@ -38,21 +38,21 @@ import universalelectricity.prefab.tile.TileEntityElectricityRunnable;
 
 import com.google.common.io.ByteArrayDataInput;
 
-public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable implements IInventory, ISidedInventory, IPacketReceiver, IEnergySink, IDisableableMachine, ITankContainer
+public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric implements IInventory, ISidedInventory, ITankContainer
 {
 	private final int tankCapacity = 24000;
 	public LiquidTank fuelTank = new LiquidTank(this.tankCapacity);
 
 	private ItemStack[] containingItems = new ItemStack[2];
 	public static final double WATTS_PER_TICK = 300;
-	private final int playersUsing = 0;
+	
 	public IFuelable attachedFuelable;
-	public double ic2WattsReceived = 0;
-	private boolean initialized = false;
-	private boolean disabled = true;
 
-	public int disableCooldown = 0;
-
+	public GCCoreTileEntityFuelLoader() 
+	{
+		super(300, 130);
+	}
+	
 	public int getScaledFuelLevel(int i)
 	{
 		final double fuelLevel = this.fuelTank.getLiquid() == null ? 0 : this.fuelTank.getLiquid().amount;
@@ -65,28 +65,8 @@ public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable im
 	{
 		super.updateEntity();
 
-		if (!this.initialized && this.worldObj != null)
-		{
-			if(GalacticraftCore.modIC2Loaded)
-			{
-				MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(this));
-			}
-
-			this.initialized = true;
-		}
-
-		if (this.fuelTank.getLiquid() != null && this.fuelTank.getLiquid().amount > 0)
-		{
-			this.wattsReceived += ElectricItemHelper.dechargeItem(this.getStackInSlot(0), GCCoreTileEntityFuelLoader.WATTS_PER_TICK, this.getVoltage());
-		}
-
 		if (!this.worldObj.isRemote)
 		{
-			if (this.disableCooldown > 0)
-			{
-				this.disableCooldown--;
-			}
-			
 			this.wattsReceived = Math.max(this.wattsReceived - GCCoreTileEntityFuelLoader.WATTS_PER_TICK / 4, 0);
 
 			if (this.containingItems[1] != null)
@@ -157,7 +137,7 @@ public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable im
 			
 			final LiquidStack liquid = LiquidDictionary.getLiquid("Fuel", 1);
 
-			if (this.attachedFuelable != null && (this.ic2WattsReceived > 0 || this.wattsReceived > 0) && !this.disabled)
+			if (this.attachedFuelable != null && (this.ic2Energy > 0 || this.wattsReceived > 0) && !this.disabled)
 			{
 				if (liquid != null)
 				{
@@ -168,39 +148,6 @@ public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable im
 			{
 				this.disabled = true;
 			}
-
-			if (this.ticks % 3 == 0)
-			{
-				PacketManager.sendPacketToClients(this.getDescriptionPacket(), this.worldObj, new Vector3(this), 6);
-			}
-		}
-	}
-
-	@Override
-	public Packet getDescriptionPacket()
-	{
-		return PacketManager.getPacket(BasicComponents.CHANNEL, this, this.wattsReceived, this.disabledTicks, this.ic2WattsReceived, this.fuelTank.getLiquid() == null ? 0 : this.fuelTank.getLiquid().amount, this.disabled, this.disableCooldown);
-	}
-
-	@Override
-	public void handlePacketData(INetworkManager network, int packetType, Packet250CustomPayload packet, EntityPlayer player, ByteArrayDataInput dataStream)
-	{
-		try
-		{
-			if (this.worldObj.isRemote)
-			{
-				this.wattsReceived = dataStream.readDouble();
-				this.disabledTicks = dataStream.readInt();
-				this.ic2WattsReceived = dataStream.readDouble();
-				final int amount = dataStream.readInt();
-				this.fuelTank.setLiquid(new LiquidStack(GCCoreItems.fuel.itemID, amount, 0));
-				this.disabled = dataStream.readBoolean();
-				this.disableCooldown = dataStream.readInt();
-			}
-		}
-		catch (final Exception e)
-		{
-			e.printStackTrace();
 		}
 	}
 
@@ -292,8 +239,6 @@ public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable im
             }
         }
 
-        this.setDisabled(par1NBTTagCompound.getBoolean("isDisabled"));
-
 		if (par1NBTTagCompound.hasKey("fuelTank"))
 		{
 			this.fuelTank.readFromNBT(par1NBTTagCompound.getCompoundTag("fuelTank"));
@@ -319,8 +264,6 @@ public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable im
         }
 
         par1NBTTagCompound.setTag("Items", list);
-
-        par1NBTTagCompound.setBoolean("isDisabled", this.getDisabled());
 
 		if (this.fuelTank.getLiquid() != null)
 		{
@@ -357,72 +300,6 @@ public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable im
 		return this.getStackInSlot(1) != null && this.getStackInSlot(1).getItem() instanceof IFuelTank && this.getStackInSlot(1).getMaxDamage() - this.getStackInSlot(1).getItemDamage() != 0 && this.getStackInSlot(1).getItemDamage() < this.getStackInSlot(1).getMaxDamage();
 	}
 
-	// Universal Electricity Implementation:
-
-	@Override
-	public boolean canConnect(ForgeDirection direction)
-	{
-		return direction == ForgeDirection.getOrientation(this.getBlockMetadata() + 2);
-	}
-
-	@Override
-	public ElectricityPack getRequest()
-	{
-		if (this.fuelTank.getLiquid() != null && this.fuelTank.getLiquid().amount > 0)
-		{
-			return new ElectricityPack(GCCoreTileEntityFuelLoader.WATTS_PER_TICK / this.getVoltage(), this.getVoltage());
-		}
-		else
-		{
-			return new ElectricityPack();
-		}
-	}
-
-	// Industrial Craft 2 Implementation:
-
-	@Override
-	public int demandsEnergy()
-	{
-		return this.validStackInSlot() ? (int) (GCCoreTileEntityFuelLoader.WATTS_PER_TICK / this.getVoltage() * GalacticraftCore.IC2EnergyScalar) : 0;
-	}
-
-	@Override
-	public int injectEnergy(Direction directionFrom, int amount)
-	{
-		double rejects = 0;
-    	final double neededEnergy = GCCoreTileEntityFuelLoader.WATTS_PER_TICK / this.getVoltage() * GalacticraftCore.IC2EnergyScalar;
-
-    	if(amount <= neededEnergy)
-    	{
-    		this.ic2WattsReceived += amount;
-    	}
-    	else if(amount > neededEnergy)
-    	{
-    		this.ic2WattsReceived += neededEnergy;
-    		rejects = amount - neededEnergy;
-    	}
-
-    	return (int) (rejects * GalacticraftCore.IC2EnergyScalar);
-	}
-
-	@Override
-	public int getMaxSafeInput()
-	{
-		return 2048;
-	}
-
-	@Override
-	public boolean acceptsEnergyFrom(TileEntity emitter, Direction direction)
-	{
-		return direction.toForgeDirection() == ForgeDirection.getOrientation(this.getBlockMetadata() + 2);
-	}
-
-	@Override
-	public boolean isAddedToEnergyNet()
-	{
-		return this.initialized;
-	}
-
 	// ISidedInventory Implementation:
 
 	@Override
@@ -454,22 +331,6 @@ public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable im
 	{
 		return slotID == 1 ? itemstack.getItem() instanceof IFuelTank && itemstack.getMaxDamage() - itemstack.getItemDamage() != 0 && itemstack.getItemDamage() < itemstack.getMaxDamage()
 				: slotID == 0 ? itemstack.getItem() instanceof IItemElectric : false;
-	}
-
-	@Override
-	public void setDisabled(boolean disabled)
-	{
-		if (this.disableCooldown == 0)
-		{
-			this.disabled = disabled;
-			this.disableCooldown = 20;
-		}
-	}
-
-	@Override
-	public boolean getDisabled()
-	{
-		return this.disabled;
 	}
 
 	@Override
@@ -519,5 +380,43 @@ public class GCCoreTileEntityFuelLoader extends TileEntityElectricityRunnable im
 		}
 
 		return null;
+	}
+
+	@Override
+	public boolean shouldPullEnergy() 
+	{
+		return this.fuelTank.getLiquid() != null && this.fuelTank.getLiquid().amount > 0;
+	}
+
+	@Override
+	public void readPacket(ByteArrayDataInput data) 
+	{
+		if (this.worldObj.isRemote)
+		{
+			this.wattsReceived = data.readDouble();
+			this.disabledTicks = data.readInt();
+			this.ic2Energy = data.readDouble();
+			final int amount = data.readInt();
+			this.fuelTank.setLiquid(new LiquidStack(GCCoreItems.fuel.itemID, amount, 0));
+			this.disabled = data.readBoolean();
+		}
+	}
+
+	@Override
+	public Packet getPacket() 
+	{
+		return PacketManager.getPacket(BasicComponents.CHANNEL, this, this.wattsReceived, this.disabledTicks, this.ic2Energy, this.fuelTank.getLiquid() == null ? 0 : this.fuelTank.getLiquid().amount, this.disabled);
+	}
+
+	@Override
+	public ForgeDirection getInputDirection() 
+	{
+		return ForgeDirection.getOrientation(this.getBlockMetadata() + 2);
+	}
+
+	@Override
+	public ItemStack getBatteryInSlot()
+	{
+		return this.getStackInSlot(0);
 	}
 }

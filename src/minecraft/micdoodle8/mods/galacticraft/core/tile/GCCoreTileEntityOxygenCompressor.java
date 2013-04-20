@@ -1,8 +1,13 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import ic2.api.Direction;
+import ic2.api.energy.event.EnergyTileLoadEvent;
+import ic2.api.energy.event.EnergyTileUnloadEvent;
+import ic2.api.energy.tile.IEnergySink;
 import mekanism.api.EnumGas;
 import mekanism.api.IGasAcceptor;
 import mekanism.api.ITubeConnection;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenTank;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -13,7 +18,9 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.MinecraftForge;
 import universalelectricity.components.common.BasicComponents;
 import universalelectricity.core.electricity.ElectricityPack;
 import universalelectricity.core.item.ElectricItemHelper;
@@ -21,7 +28,6 @@ import universalelectricity.core.item.IItemElectric;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.IPacketReceiver;
 import universalelectricity.prefab.network.PacketManager;
-import universalelectricity.prefab.tile.TileEntityElectricityRunnable;
 
 import com.google.common.io.ByteArrayDataInput;
 
@@ -31,15 +37,11 @@ import com.google.common.io.ByteArrayDataInput;
  *  All rights reserved.
  *
  */
-public class GCCoreTileEntityOxygenCompressor extends TileEntityElectricityRunnable implements IInventory, IPacketReceiver, IGasAcceptor, ITubeConnection, ISidedInventory
+public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityElectric implements IInventory, IGasAcceptor, ITubeConnection, ISidedInventory
 {
     public boolean active;
 
 	private ItemStack[] containingItems = new ItemStack[2];
-
-	public static final double WATTS_PER_TICK = 300;
-
-	private final int playersUsing = 0;
 
 	public static int timeSinceOxygenRequest;
 
@@ -48,7 +50,12 @@ public class GCCoreTileEntityOxygenCompressor extends TileEntityElectricityRunna
 	public static final int MAX_OXYGEN = 18000;
 	
 	public int storedOxygen;
-    
+	
+	public GCCoreTileEntityOxygenCompressor()
+	{
+		super (300, 130);
+	}
+	
     public double getPower()
     {
     	return this.storedOxygen / 600.0D;
@@ -58,11 +65,6 @@ public class GCCoreTileEntityOxygenCompressor extends TileEntityElectricityRunna
 	public void updateEntity()
 	{
 		super.updateEntity();
-
-		if (this.getStackInSlot(0) != null)
-		{
-			this.wattsReceived += ElectricItemHelper.dechargeItem(this.containingItems[1], GCCoreTileEntityOxygenCompressor.WATTS_PER_TICK, this.getVoltage());
-		}
 
 		if (!this.worldObj.isRemote)
 		{
@@ -76,8 +78,8 @@ public class GCCoreTileEntityOxygenCompressor extends TileEntityElectricityRunna
 				GCCoreTileEntityOxygenCompressor.timeSinceOxygenRequest--;
 			}
 
-			this.wattsReceived = Math.max(this.wattsReceived - GCCoreTileEntityOxygenCompressor.WATTS_PER_TICK / 4, 0);
-			this.storedOxygen = (int) Math.max(this.storedOxygen - GCCoreTileEntityOxygenDistributor.OXYGEN_PER_TICK / 4, 0);
+			this.wattsReceived = Math.max(this.wattsReceived - this.ueWattsPerTick / 4, 0);
+			this.storedOxygen = (int) Math.max(this.storedOxygen - this.OXYGEN_PER_TICK / 4, 0);
 
 			if (this.getPower() < 1 && this.wattsReceived > 0)
 			{
@@ -104,53 +106,6 @@ public class GCCoreTileEntityOxygenCompressor extends TileEntityElectricityRunna
 					}
 				}
 			}
-
-			if (this.ticks % 3 == 0)
-			{
-				final Packet packet = this.getDescriptionPacket();
-
-				if (packet != null)
-				{
-					PacketManager.sendPacketToClients(this.getDescriptionPacket(), this.worldObj, new Vector3(this), 6);
-				}
-			}
-		}
-	}
-
-	@Override
-	public Packet getDescriptionPacket()
-	{
-		return PacketManager.getPacket(BasicComponents.CHANNEL, this, this.storedOxygen, this.wattsReceived, this.disabledTicks);
-	}
-
-	@Override
-	public void handlePacketData(INetworkManager network, int type, Packet250CustomPayload packet, EntityPlayer player, ByteArrayDataInput dataStream)
-	{
-		try
-		{
-			if (this.worldObj.isRemote)
-			{
-				this.storedOxygen = dataStream.readInt();
-				this.wattsReceived = dataStream.readDouble();
-				this.disabledTicks = dataStream.readInt();
-			}
-		}
-		catch (final Exception e)
-		{
-			e.printStackTrace();
-		}
-	}
-
-	@Override
-	public ElectricityPack getRequest()
-	{
-		if (this.getStackInSlot(0) != null)
-		{
-			return new ElectricityPack(GCCoreTileEntityOxygenCompressor.WATTS_PER_TICK / this.getVoltage(), this.getVoltage());
-		}
-		else
-		{
-			return new ElectricityPack();
 		}
 	}
 
@@ -164,12 +119,6 @@ public class GCCoreTileEntityOxygenCompressor extends TileEntityElectricityRunna
 	public boolean canTubeConnect(ForgeDirection direction)
 	{
 		return direction == ForgeDirection.getOrientation(this.getBlockMetadata() + 2).getOpposite();
-	}
-
-	@Override
-	public boolean canConnect(ForgeDirection direction)
-	{
-		return direction == ForgeDirection.getOrientation(this.getBlockMetadata() + 2);
 	}
 
 	@Override
@@ -364,5 +313,40 @@ public class GCCoreTileEntityOxygenCompressor extends TileEntityElectricityRunna
 	public boolean isStackValidForSlot(int slotID, ItemStack itemstack)
 	{
 		return slotID == 0 ? itemstack != null && itemstack.getItem() instanceof GCCoreItemOxygenTank && itemstack.getItemDamage() > 0 : slotID == 1 ? itemstack.getItem() instanceof IItemElectric : false;
+	}
+
+	@Override
+	public boolean shouldPullEnergy() 
+	{
+		return this.timeSinceOxygenRequest > 0 && this.getStackInSlot(0) != null;
+	}
+
+	@Override
+	public void readPacket(ByteArrayDataInput data) 
+	{
+		if (this.worldObj.isRemote)
+		{
+			this.storedOxygen = data.readInt();
+			this.wattsReceived = data.readDouble();
+			this.disabledTicks = data.readInt();
+		}
+	}
+
+	@Override
+	public Packet getPacket() 
+	{
+		return PacketManager.getPacket(BasicComponents.CHANNEL, this, this.storedOxygen, this.wattsReceived, this.disabledTicks);
+	}
+
+	@Override
+	public ForgeDirection getInputDirection()
+	{
+		return ForgeDirection.getOrientation(this.getBlockMetadata() + 2);
+	}
+
+	@Override
+	public ItemStack getBatteryInSlot() 
+	{
+		return this.getStackInSlot(1);
 	}
 }

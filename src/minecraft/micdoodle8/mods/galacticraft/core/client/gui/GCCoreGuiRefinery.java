@@ -72,7 +72,7 @@ public class GCCoreGuiRefinery extends GuiContainer
 		{
 			displayText = EnumColor.ORANGE + "Idle";
 		}
-		else if (this.tileEntity.wattsReceived < GCCoreTileEntityRefinery.WATTS_PER_TICK)
+		else if ((this.tileEntity.wattsReceived < this.tileEntity.ueWattsPerTick) || (this.tileEntity.ic2Energy < this.tileEntity.ueWattsPerTick))
 		{
 			displayText = EnumColor.ORANGE + "Heating";
 		}
@@ -87,7 +87,7 @@ public class GCCoreGuiRefinery extends GuiContainer
 
         this.buttonDisable.enabled = this.tileEntity.processTicks == 0;
 		this.fontRenderer.drawString("Status: " + displayText, 72, 45 + 23, 4210752);
-		this.fontRenderer.drawString(ElectricityDisplay.getDisplay(GCCoreTileEntityRefinery.WATTS_PER_TICK * 20, ElectricUnit.WATT), 72, 56 + 23, 4210752);
+		this.fontRenderer.drawString(ElectricityDisplay.getDisplay(this.tileEntity.ueWattsPerTick * 20, ElectricUnit.WATT), 72, 56 + 23, 4210752);
 		this.fontRenderer.drawString(ElectricityDisplay.getDisplay(this.tileEntity.getVoltage(), ElectricUnit.VOLTAGE), 72, 68 + 23, 4210752);
 		this.fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 118 + 2 + 23, 4210752);
 	}
