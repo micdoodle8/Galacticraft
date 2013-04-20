@@ -400,5 +400,21 @@ public class GCCorePacketHandlerClient implements IPacketHandler
 
 			GCCoreTickHandlerClient.zoom((Integer) packetReadout[0] == 0 ? 4.0F : 15.0F);
         }
+        else if (packetType == 23)
+        {
+            player.playSound("entity.bossdeath", 10.0F, 0.8F);
+        }
+        else if (packetType == 24)
+        {
+            player.playSound("random.explode", 10.0F, 0.7F);
+        }
+        else if (packetType == 25)
+        {
+        	player.playSound("entity.bosslaugh", 10.0F, 0.2F);
+        }
+        else if (packetType == 26)
+        {
+        	player.playSound("random.bow", 10.0F, 0.2F);
+        }
 	}
 }
