@@ -563,31 +563,35 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
 	@Override
 	public boolean onValidKeyActivated(EntityPlayer player, ItemStack key, int face) 
 	{
-		if (this.locked && !this.worldObj.isRemote)
+		if (this.locked)
 		{
 			this.locked = false;
 			
-			if (this.adjacentChestXNeg != null) this.adjacentChestXNeg.locked = false;
-			if (this.adjacentChestXPos != null) this.adjacentChestXPos.locked = false;
-			if (this.adjacentChestZNeg != null) this.adjacentChestZNeg.locked = false;
-			if (this.adjacentChestZPos != null) this.adjacentChestZPos.locked = false;
-			
-			if (!player.worldObj.isRemote)
+			if (this.worldObj.isRemote)
 			{
+				player.playSound("player.unlockchest", 1.0F, 1.0F);
+			}
+			else
+			{
+				if (this.adjacentChestXNeg != null) this.adjacentChestXNeg.locked = false;
+				if (this.adjacentChestXPos != null) this.adjacentChestXPos.locked = false;
+				if (this.adjacentChestZNeg != null) this.adjacentChestZNeg.locked = false;
+				if (this.adjacentChestZPos != null) this.adjacentChestZPos.locked = false;
+				
 				if (--player.inventory.getCurrentItem().stackSize == 0)
 				{
 					player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
 				}
+				
+				PacketManager.sendPacketToClients(this.getDescriptionPacket());
+				
+				if (this.adjacentChestXNeg != null) PacketManager.sendPacketToClients(adjacentChestXNeg.getDescriptionPacket());;
+				if (this.adjacentChestXPos != null) PacketManager.sendPacketToClients(adjacentChestXPos.getDescriptionPacket());;
+				if (this.adjacentChestZNeg != null) PacketManager.sendPacketToClients(adjacentChestZNeg.getDescriptionPacket());;
+				if (this.adjacentChestZPos != null) PacketManager.sendPacketToClients(adjacentChestZPos.getDescriptionPacket());;
+				
+				return true;
 			}
-			
-			PacketManager.sendPacketToClients(this.getDescriptionPacket());
-			
-			if (this.adjacentChestXNeg != null) PacketManager.sendPacketToClients(adjacentChestXNeg.getDescriptionPacket());;
-			if (this.adjacentChestXPos != null) PacketManager.sendPacketToClients(adjacentChestXPos.getDescriptionPacket());;
-			if (this.adjacentChestZNeg != null) PacketManager.sendPacketToClients(adjacentChestZNeg.getDescriptionPacket());;
-			if (this.adjacentChestZPos != null) PacketManager.sendPacketToClients(adjacentChestZPos.getDescriptionPacket());;
-			
-			return true;
 		}
 
 		return false;
@@ -604,7 +608,7 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
 			}
 			return true;
 		}
-		
+
 		return false;
 	}
 	
