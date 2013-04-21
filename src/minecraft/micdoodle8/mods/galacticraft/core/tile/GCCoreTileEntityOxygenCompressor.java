@@ -39,8 +39,6 @@ import com.google.common.io.ByteArrayDataInput;
  */
 public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityElectric implements IInventory, IGasAcceptor, ITubeConnection, ISidedInventory
 {
-    public boolean active;
-
 	private ItemStack[] containingItems = new ItemStack[2];
 
 	public static int timeSinceOxygenRequest;
@@ -53,12 +51,12 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityElectric i
 	
 	public GCCoreTileEntityOxygenCompressor()
 	{
-		super (300, 130);
+		super (300, 130, 1);
 	}
 	
     public double getPower()
     {
-    	return this.storedOxygen / 600.0D;
+    	return this.storedOxygen / 5.0D;
     }
 
 	@Override
@@ -68,31 +66,14 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityElectric i
 
 		if (!this.worldObj.isRemote)
 		{
-			if (this.wattsReceived >= 0.05)
-			{
-				this.wattsReceived -= 0.05;
-			}
-
 			if (GCCoreTileEntityOxygenCompressor.timeSinceOxygenRequest > 0)
 			{
 				GCCoreTileEntityOxygenCompressor.timeSinceOxygenRequest--;
 			}
 
-			this.wattsReceived = Math.max(this.wattsReceived - this.ueWattsPerTick / 4, 0);
-			this.storedOxygen = (int) Math.max(this.storedOxygen - this.OXYGEN_PER_TICK / 4, 0);
-
-			if (this.getPower() < 1 && this.wattsReceived > 0)
+			if (this.getPower() >= 1.0D && (this.wattsReceived > 0 || this.ic2Energy > 0))
 			{
-				this.active = false;
-			}
-			else
-			{
-				this.active = true;
-			}
-
-			if (this.active)
-			{
-				if (!this.worldObj.isRemote && this.ticks % ((31 - Math.min(Math.floor(this.getPower()), 30)) * 5) == 0)
+				if (!this.worldObj.isRemote && this.ticks % ((31 - Math.min(Math.floor(this.getPower()), 30)) * 3) == 0)
 				{
 					final ItemStack stack = this.getStackInSlot(0);
 
@@ -106,6 +87,8 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityElectric i
 					}
 				}
 			}
+
+			this.storedOxygen = (int) Math.max(this.storedOxygen - this.OXYGEN_PER_TICK / 4, 0);
 		}
 	}
 
@@ -262,7 +245,7 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityElectric i
 	{
 		GCCoreTileEntityOxygenCompressor.timeSinceOxygenRequest = 20;
 
-		if (this.wattsReceived > 0 && type == EnumGas.OXYGEN)
+		if ((this.wattsReceived > 0 || this.ic2Energy > 0) && type == EnumGas.OXYGEN)
 		{
 			int rejectedOxygen = 0;
 			int requiredOxygen = MAX_OXYGEN - storedOxygen;
@@ -328,14 +311,15 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityElectric i
 		{
 			this.storedOxygen = data.readInt();
 			this.wattsReceived = data.readDouble();
-			this.disabledTicks = data.readInt();
+			this.ic2Energy = data.readDouble();
+			this.disabled = data.readBoolean();
 		}
 	}
 
 	@Override
 	public Packet getPacket() 
 	{
-		return PacketManager.getPacket(BasicComponents.CHANNEL, this, this.storedOxygen, this.wattsReceived, this.disabledTicks);
+		return PacketManager.getPacket(BasicComponents.CHANNEL, this, this.storedOxygen, this.wattsReceived, this.ic2Energy, this.disabled);
 	}
 
 	@Override

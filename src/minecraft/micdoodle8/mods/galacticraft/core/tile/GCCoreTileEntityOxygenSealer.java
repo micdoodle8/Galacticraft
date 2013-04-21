@@ -59,7 +59,7 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityElectric imple
 	
 	public GCCoreTileEntityOxygenSealer()
 	{
-		super(300, 130);
+		super(300, 130, 1);
 	}
 	
     public double getPower()
@@ -79,7 +79,6 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityElectric imple
 				GCCoreTileEntityOxygenSealer.timeSinceOxygenRequest--;
 			}
 
-			this.wattsReceived = Math.max(this.wattsReceived - this.ueWattsPerTick / 4, 0);
 			this.storedOxygen = (int) Math.max(this.storedOxygen - this.storedOxygen / 40, 0);
 
 			if (this.getPower() >= 1 && (this.wattsReceived > 0 || this.ic2Energy > 0) && !this.disabled)

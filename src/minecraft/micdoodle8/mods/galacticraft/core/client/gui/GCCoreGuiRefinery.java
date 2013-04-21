@@ -68,21 +68,21 @@ public class GCCoreGuiRefinery extends GuiContainer
 		{
 			displayText = EnumColor.ORANGE + "Ready";
 		}
-		else if (this.tileEntity.wattsReceived == 0)
+		else if (this.tileEntity.wattsReceived == 0 && this.tileEntity.ic2Energy == 0)
 		{
 			displayText = EnumColor.ORANGE + "Idle";
 		}
-		else if ((this.tileEntity.wattsReceived < this.tileEntity.ueWattsPerTick) || (this.tileEntity.ic2Energy < this.tileEntity.ueWattsPerTick))
-		{
-			displayText = EnumColor.ORANGE + "Heating";
-		}
+//		else if ((this.tileEntity.wattsReceived < this.tileEntity.ueWattsPerTick) || (this.tileEntity.ic2Energy < this.tileEntity.ueWattsPerTick))
+//		{
+//			displayText = EnumColor.ORANGE + "Heating";
+//		}
 		else if (this.tileEntity.processTicks > 0)
 		{
 			displayText = EnumColor.BRIGHT_GREEN + "Refining";
 		}
 		else
 		{
-			displayText = EnumColor.ORANGE + "Idle";
+			displayText = EnumColor.RED + "Unknown";
 		}
 
         this.buttonDisable.enabled = this.tileEntity.processTicks == 0;

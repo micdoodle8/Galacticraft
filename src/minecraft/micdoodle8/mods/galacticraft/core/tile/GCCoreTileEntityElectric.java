@@ -29,6 +29,7 @@ public abstract class GCCoreTileEntityElectric extends TileEntityElectricityRunn
 	public int ueWattsPerTick;
 	public double ic2MaxEnergy;
 	public double ic2Energy;
+	public double ic2EnergyPerTick;
 
 	public boolean addedToEnergyNet = false;
 
@@ -45,10 +46,11 @@ public abstract class GCCoreTileEntityElectric extends TileEntityElectricityRunn
 	
 	public abstract ItemStack getBatteryInSlot();
 	
-	public GCCoreTileEntityElectric(int ueWattsPerTick, double ic2MaxEnergy)
+	public GCCoreTileEntityElectric(int ueWattsPerTick, double ic2MaxEnergy, double ic2EnergyPerTick)
 	{
 		this.ueWattsPerTick = ueWattsPerTick;
 		this.ic2MaxEnergy = ic2MaxEnergy;
+		this.ic2EnergyPerTick = ic2EnergyPerTick;
 	}
 
 	@Override
@@ -108,6 +110,8 @@ public abstract class GCCoreTileEntityElectric extends TileEntityElectricityRunn
 		
 		if (!this.worldObj.isRemote)
 		{
+			this.ic2Energy = Math.max(this.ic2Energy - ic2EnergyPerTick, 0);
+			
 			if (this.shouldPullEnergy())
 			{
 				this.wattsReceived += ElectricItemHelper.dechargeItem(this.getBatteryInSlot(), this.ueWattsPerTick, this.getVoltage());
@@ -122,6 +126,8 @@ public abstract class GCCoreTileEntityElectric extends TileEntityElectricityRunn
 			{
 				PacketManager.sendPacketToClients(this.getPacket(), this.worldObj, new Vector3(this), 12);
 			}
+			
+			this.wattsReceived = Math.max(this.wattsReceived - this.ueWattsPerTick / 4, 0);
 		}
 	}
 	

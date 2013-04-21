@@ -24,13 +24,13 @@ import cpw.mods.fml.common.network.PacketDispatcher;
  */
 public class GCCoreGuiAirSealer extends GuiContainer
 {
-    private final GCCoreTileEntityOxygenSealer distributorInv;
+    private final GCCoreTileEntityOxygenSealer sealer;
     private GuiButton buttonDisable;
 
 	public GCCoreGuiAirSealer(InventoryPlayer par1InventoryPlayer, GCCoreTileEntityOxygenSealer par2TileEntityAirDistributor)
 	{
         super(new GCCoreContainerAirSealer(par1InventoryPlayer, par2TileEntityAirDistributor));
-        this.distributorInv = par2TileEntityAirDistributor;
+        this.sealer = par2TileEntityAirDistributor;
         this.ySize = 200;
 	}
 
@@ -40,7 +40,7 @@ public class GCCoreGuiAirSealer extends GuiContainer
     	switch (par1GuiButton.id)
     	{
     	case 0:
-			PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 17, new Object[] {this.distributorInv.xCoord, this.distributorInv.yCoord, this.distributorInv.zCoord}));
+			PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 17, new Object[] {this.sealer.xCoord, this.sealer.yCoord, this.sealer.zCoord}));
 			break;
     	}
     }
@@ -59,41 +59,41 @@ public class GCCoreGuiAirSealer extends GuiContainer
         this.fontRenderer.drawString("Oxygen Sealer", 8, 10, 4210752);
         this.fontRenderer.drawString("In:", 90, 31, 4210752);
         String status = "Status: " + this.getStatus();
-        this.buttonDisable.enabled = this.distributorInv.disableCooldown == 0;
-        this.buttonDisable.displayString = this.distributorInv.disabled ? "Enable Seal" : "Disable Seal";
+        this.buttonDisable.enabled = this.sealer.disableCooldown == 0;
+        this.buttonDisable.displayString = this.sealer.disabled ? "Enable Seal" : "Disable Seal";
         this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 50, 4210752);
-        status = "Oxygen: " + Math.round(distributorInv.storedOxygen > 39 ? distributorInv.storedOxygen : 0);
+        status = "Oxygen: " + Math.round(sealer.storedOxygen > 39 ? sealer.storedOxygen : 0);
         this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 60, 4210752);
-        status = ElectricityDisplay.getDisplay(this.distributorInv.ueWattsPerTick * 20, ElectricUnit.WATT);
+        status = ElectricityDisplay.getDisplay(this.sealer.ueWattsPerTick * 20, ElectricUnit.WATT);
         this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 70, 4210752);
-        status = ElectricityDisplay.getDisplay(this.distributorInv.getVoltage(), ElectricUnit.VOLTAGE);
+        status = ElectricityDisplay.getDisplay(this.sealer.getVoltage(), ElectricUnit.VOLTAGE);
         this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 80, 4210752);
         this.fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 90 + 3, 4210752);
     }
 
     private String getStatus()
     {
-    	if (this.distributorInv.disabled)
+    	if (this.sealer.disabled)
     	{
     		return EnumColor.DARK_RED + "Disabled";
     	}
 
-    	if (!this.distributorInv.sealed)
+    	if (!this.sealer.sealed)
     	{
     		return EnumColor.DARK_RED + "Unsealed";
     	}
 
-    	if (this.distributorInv.sealed)
+    	if (this.sealer.sealed)
     	{
     		return EnumColor.DARK_GREEN + "Sealed";
     	}
 
-    	if (this.distributorInv.getPower() < 1)
+    	if (this.sealer.getPower() < 1)
     	{
     		return EnumColor.DARK_RED + "Not Enough Oxygen";
     	}
 
-    	if (this.distributorInv.wattsReceived == 0 && this.distributorInv.ic2Energy == 0)
+    	if (this.sealer.wattsReceived == 0 && this.sealer.ic2Energy == 0)
     	{
     		return EnumColor.DARK_RED + "Not Enough Power";
     	}
@@ -110,9 +110,9 @@ public class GCCoreGuiAirSealer extends GuiContainer
 		final int var6 = (this.height - this.ySize) / 2;
 		this.drawTexturedModalRect(var5, var6 + 5, 0, 0, this.xSize, 200);
 
-		if (this.distributorInv != null)
+		if (this.sealer != null)
 		{
-			final int scale = (int) ((double) this.distributorInv.getPower() * 3.0D);
+			final int scale = (int) ((double) this.sealer.getPower() * 3.0D);
 			this.drawTexturedModalRect(var5 + 108, var6 + 26, 176, 0, Math.min(scale, 54), 16);
 		}
 	}

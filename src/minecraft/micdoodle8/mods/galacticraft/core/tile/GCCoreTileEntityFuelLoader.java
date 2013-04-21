@@ -40,7 +40,7 @@ import com.google.common.io.ByteArrayDataInput;
 
 public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric implements IInventory, ISidedInventory, ITankContainer
 {
-	private final int tankCapacity = 24000;
+	private final int tankCapacity = 12000;
 	public LiquidTank fuelTank = new LiquidTank(this.tankCapacity);
 
 	private ItemStack[] containingItems = new ItemStack[2];
@@ -50,14 +50,14 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric impleme
 
 	public GCCoreTileEntityFuelLoader() 
 	{
-		super(300, 130);
+		super(300, 130, 1);
 	}
 	
 	public int getScaledFuelLevel(int i)
 	{
 		final double fuelLevel = this.fuelTank.getLiquid() == null ? 0 : this.fuelTank.getLiquid().amount;
 
-		return (int) (fuelLevel * i / 2000);
+		return (int) (fuelLevel * i / this.tankCapacity);
 	}
 
 	@Override
@@ -67,8 +67,6 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric impleme
 
 		if (!this.worldObj.isRemote)
 		{
-			this.wattsReceived = Math.max(this.wattsReceived - GCCoreTileEntityFuelLoader.WATTS_PER_TICK / 4, 0);
-
 			if (this.containingItems[1] != null)
 			{
 				final LiquidStack liquid = LiquidContainerRegistry.getLiquidForFilledItem(this.containingItems[1]);
@@ -385,7 +383,7 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric impleme
 	@Override
 	public boolean shouldPullEnergy() 
 	{
-		return this.fuelTank.getLiquid() != null && this.fuelTank.getLiquid().amount > 0;
+		return this.fuelTank.getLiquid() != null && this.fuelTank.getLiquid().amount > 0 && !this.disabled;
 	}
 
 	@Override
@@ -394,18 +392,17 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric impleme
 		if (this.worldObj.isRemote)
 		{
 			this.wattsReceived = data.readDouble();
-			this.disabledTicks = data.readInt();
 			this.ic2Energy = data.readDouble();
-			final int amount = data.readInt();
-			this.fuelTank.setLiquid(new LiquidStack(GCCoreItems.fuel.itemID, amount, 0));
+			this.fuelTank.setLiquid(new LiquidStack(GCCoreItems.fuel.itemID, data.readInt(), 0));
 			this.disabled = data.readBoolean();
+			this.disableCooldown = data.readInt();
 		}
 	}
 
 	@Override
 	public Packet getPacket() 
 	{
-		return PacketManager.getPacket(BasicComponents.CHANNEL, this, this.wattsReceived, this.disabledTicks, this.ic2Energy, this.fuelTank.getLiquid() == null ? 0 : this.fuelTank.getLiquid().amount, this.disabled);
+		return PacketManager.getPacket(BasicComponents.CHANNEL, this, this.wattsReceived, this.ic2Energy, this.fuelTank.getLiquid() == null ? 0 : this.fuelTank.getLiquid().amount, this.disabled, this.disableCooldown);
 	}
 
 	@Override

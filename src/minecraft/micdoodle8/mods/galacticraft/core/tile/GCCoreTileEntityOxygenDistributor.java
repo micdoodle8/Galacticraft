@@ -59,7 +59,7 @@ public class GCCoreTileEntityOxygenDistributor extends GCCoreTileEntityElectric 
 
     public GCCoreTileEntityOxygenDistributor()
     {
-		super(300, 130);
+		super(300, 130, 1);
 	}
 	
     @Override
@@ -119,8 +119,7 @@ public class GCCoreTileEntityOxygenDistributor extends GCCoreTileEntityElectric 
 				this.timeSinceOxygenRequest--;
 			}
 
-			this.wattsReceived = Math.max(this.wattsReceived - this.ueWattsPerTick / 4, 0);
-			this.storedOxygen = (int) Math.max(this.storedOxygen - GCCoreTileEntityOxygenDistributor.OXYGEN_PER_TICK / 4, 0);
+			this.storedOxygen = (int) Math.max(this.storedOxygen - this.OXYGEN_PER_TICK / 4, 0);
 
 			if (this.getPower() >= 1 && (this.wattsReceived > 0 || this.ic2Energy > 0))
 			{
@@ -197,7 +196,7 @@ public class GCCoreTileEntityOxygenDistributor extends GCCoreTileEntityElectric 
 	{
 		this.timeSinceOxygenRequest = 20;
 		
-		if (this.wattsReceived > 0 && type == EnumGas.OXYGEN)
+		if ((this.wattsReceived > 0 || this.ic2Energy > 0) && type == EnumGas.OXYGEN)
 		{
 			int rejectedOxygen = 0;
 			int requiredOxygen = MAX_OXYGEN - storedOxygen;
@@ -378,16 +377,16 @@ public class GCCoreTileEntityOxygenDistributor extends GCCoreTileEntityElectric 
 		if (this.worldObj.isRemote)
 		{
 			this.storedOxygen = data.readInt();
-			this.wattsReceived = data.readInt();
-			this.disabledTicks = data.readInt();
+			this.wattsReceived = data.readDouble();
 			this.ic2Energy = data.readDouble();
+			this.disabled = data.readBoolean();
 		}
 	}
 
 	@Override
 	public Packet getPacket() 
 	{
-		return PacketManager.getPacket(BasicComponents.CHANNEL, this, this.storedOxygen, this.wattsReceived, this.disabledTicks, this.ic2Energy);
+		return PacketManager.getPacket(BasicComponents.CHANNEL, this, this.storedOxygen, this.wattsReceived, this.ic2Energy, this.disabled);
 	}
 
 	@Override

@@ -49,7 +49,7 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
 
 	public GCCoreTileEntityRefinery() 
 	{
-		super(600, 130);
+		super(600, 130, 1);
 	}
 	
 	@Override
@@ -110,24 +110,17 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
 
 			if (this.canProcess())
 			{
-				if (this.wattsReceived >= this.ueWattsPerTick || this.ic2Energy >= this.ic2MaxEnergy)
+				if (this.processTicks == 0)
 				{
-					if (this.processTicks == 0)
-					{
-						this.processTicks = GCCoreTileEntityRefinery.PROCESS_TIME_REQUIRED;
-					}
-					else if (this.processTicks > 0)
-					{
-						this.processTicks--;
+					this.processTicks = GCCoreTileEntityRefinery.PROCESS_TIME_REQUIRED;
+				}
+				else if (this.processTicks > 0)
+				{
+					this.processTicks--;
 
-						if (this.processTicks < 1)
-						{
-							this.smeltItem();
-							this.processTicks = 0;
-						}
-					}
-					else
+					if (this.processTicks < 1)
 					{
+						this.smeltItem();
 						this.processTicks = 0;
 					}
 				}
@@ -140,8 +133,6 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
 			{
 				this.processTicks = 0;
 			}
-
-			this.wattsReceived = Math.max(this.wattsReceived - this.ueWattsPerTick / 4, 0);
 		}
 	}
 
@@ -444,7 +435,7 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
 	@Override
 	public boolean shouldPullEnergy() 
 	{
-		return this.canProcess() && !this.getDisabled();
+		return this.canProcess();
 	}
 
 	@Override
@@ -454,7 +445,6 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
 		{
 			this.wattsReceived = data.readDouble();
 			this.processTicks = data.readInt();
-			this.disabledTicks = data.readInt();
 			this.ic2Energy = data.readDouble();
 			this.oilTank.setLiquid(new LiquidStack(GCCoreBlocks.crudeOilStill.blockID, data.readInt(), 0));
 			this.fuelTank.setLiquid(new LiquidStack(GCCoreItems.fuel.itemID, data.readInt(), 0));
@@ -465,7 +455,7 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
 	@Override
 	public Packet getPacket() 
 	{
-		return PacketManager.getPacket(BasicComponents.CHANNEL, this, this.wattsReceived, this.processTicks, this.disabledTicks, this.ic2Energy, this.oilTank.getLiquid() == null ? 0 : this.oilTank.getLiquid().amount, this.fuelTank.getLiquid() == null ? 0 : this.fuelTank.getLiquid().amount, this.disabled);
+		return PacketManager.getPacket(BasicComponents.CHANNEL, this, this.wattsReceived, this.processTicks, this.ic2Energy, this.oilTank.getLiquid() == null ? 0 : this.oilTank.getLiquid().amount, this.fuelTank.getLiquid() == null ? 0 : this.fuelTank.getLiquid().amount, this.disabled);
 	}
 
 	@Override
