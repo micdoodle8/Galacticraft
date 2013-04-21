@@ -339,6 +339,8 @@ public class GalacticraftCore
             JOptionPane.showMessageDialog(null, ep, "Fatal error", JOptionPane.ERROR_MESSAGE);
 			System.exit(1);
 		}
+		
+        RecipeUtil.addCraftingRecipesPostInit();
 	}
 
 	@ServerStarted

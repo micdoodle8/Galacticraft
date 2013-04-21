@@ -11,6 +11,7 @@ import java.util.Map.Entry;
 import codechicken.nei.PositionedStack;
 
 import micdoodle8.mods.galacticraft.API.GalacticraftRegistry;
+import micdoodle8.mods.galacticraft.core.GCCoreCompatibilityManager;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryRocketBench;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemFlag;
@@ -122,16 +123,7 @@ public class RecipeUtil
 			'Y', GCCoreItems.airVent,
 			'Z', "plateSteel"
 		}));
-		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreBlocks.sealer, 1), new Object[] {
-			"WZW",
-			"YXY",
-			"WZW",
-			'V', Items.getItem("insulatedCopperCableBlock"),
-			'W', "refinedIronIngot",
-			'X', GCCoreItems.airFan,
-			'Y', GCCoreItems.airVent,
-			'Z', "refinedIronIngot"
-		}));
+		
 		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreBlocks.blockAirCollector, 1), new Object[] {
 			"WWW",
 			"YXZ",
@@ -437,10 +429,7 @@ public class RecipeUtil
 			"XYX",
 			'X', "copperWire", 'Y', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4)
 		}));
-		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreBlocks.enclosedWire, 1, 0), new Object[] {
-			"XYX",
-			'X', Items.getItem("copperCableBlock"), 'Y', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4)
-		}));
+		
 		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreBlocks.enclosedWire, 1, 1), new Object[] {
 			"XYX",
 			'X', GCCoreBlocks.oxygenPipe, 'Y', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4)
@@ -586,6 +575,31 @@ public class RecipeUtil
 			"XYX",
 			'X', "ingotRefinedIron", 'Y', "electronicCircuit"
 		}));
+	}
+	
+	public static void addCraftingRecipesPostInit()
+	{
+		if (Items.getItem("insulatedCopperCableBlock") != null)
+		{
+			CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreBlocks.sealer, 1), new Object[] {
+				"WZW",
+				"YXY",
+				"WZW",
+				'V', Items.getItem("insulatedCopperCableBlock"),
+				'W', "refinedIronIngot",
+				'X', GCCoreItems.airFan,
+				'Y', GCCoreItems.airVent,
+				'Z', "refinedIronIngot"
+			}));
+		}
+		
+		if (Items.getItem("copperCableBlock") != null)
+		{
+			CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(GCCoreBlocks.enclosedWire, 1, 0), new Object[] {
+				"XYX",
+				'X', Items.getItem("copperCableBlock"), 'Y', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4)
+			}));
+		}
 	}
 
 	public static void addSmeltingRecipes()
