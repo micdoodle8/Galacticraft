@@ -600,7 +600,6 @@ public class WorldUtil
         if (var1.ridingEntity != null && var1.ridingEntity instanceof ISpaceship)
         {
             var1.mountEntity(var1.ridingEntity);
-//            teleportEntity(var0, var1, var2, type);
         }
 
         final boolean var7 = var1.worldObj != var0;
