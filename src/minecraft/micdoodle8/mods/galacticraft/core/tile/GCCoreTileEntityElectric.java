@@ -5,6 +5,7 @@ import ic2.api.energy.event.EnergyTileLoadEvent;
 import ic2.api.energy.event.EnergyTileUnloadEvent;
 import ic2.api.energy.tile.IEnergySink;
 import micdoodle8.mods.galacticraft.API.IDisableableMachine;
+import micdoodle8.mods.galacticraft.core.GCCoreCompatibilityManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -71,7 +72,7 @@ public abstract class GCCoreTileEntityElectric extends TileEntityElectricityRunn
 	{
     	if (this.addedToEnergyNet && this.worldObj != null)
     	{
-			if(GalacticraftCore.modIC2Loaded)
+			if(GCCoreCompatibilityManager.isIc2Loaded())
 			{
 				MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent(this));
 			}
@@ -100,7 +101,7 @@ public abstract class GCCoreTileEntityElectric extends TileEntityElectricityRunn
 		
 		if (!this.addedToEnergyNet && this.worldObj != null)
 		{
-			if(GalacticraftCore.modIC2Loaded)
+			if(GCCoreCompatibilityManager.isIc2Loaded())
 			{
 				MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(this));
 			}
