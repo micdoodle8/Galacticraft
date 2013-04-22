@@ -43,7 +43,7 @@ public abstract class GCCoreTileEntityElectric extends TileEntityElectricityRunn
 	
 	public abstract Packet getPacket();
 	
-	public abstract ForgeDirection getInputDirection();
+	public abstract ForgeDirection getElectricInputDirection();
 	
 	public abstract ItemStack getBatteryInSlot();
 	
@@ -188,7 +188,7 @@ public abstract class GCCoreTileEntityElectric extends TileEntityElectricityRunn
 	@Override
 	public boolean acceptsEnergyFrom(TileEntity emitter, Direction direction) 
 	{
-		return direction.toForgeDirection() == this.getInputDirection();
+		return direction.toForgeDirection() == this.getElectricInputDirection();
 	}
 
 	@Override
@@ -206,7 +206,7 @@ public abstract class GCCoreTileEntityElectric extends TileEntityElectricityRunn
 	@Override
 	public boolean canConnect(ForgeDirection direction)
 	{
-		return direction == this.getInputDirection();
+		return direction == this.getElectricInputDirection();
 	}
 
 	@Override

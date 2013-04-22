@@ -392,7 +392,7 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric impleme
 	}
 
 	@Override
-	public ForgeDirection getInputDirection() 
+	public ForgeDirection getElectricInputDirection() 
 	{
 		return ForgeDirection.getOrientation(this.getBlockMetadata() + 2);
 	}

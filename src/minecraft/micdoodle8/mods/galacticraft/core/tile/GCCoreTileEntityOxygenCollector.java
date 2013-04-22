@@ -50,6 +50,11 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityElectric im
 		super(200, 130, 1);
 	}
     
+	public int getCappedScaledOxygenLevel(int scale)
+	{
+		return (int) Math.max(Math.min((Math.floor((double)this.power / (double)this.MAX_POWER * scale)), scale), 0);
+	}
+    
 	@Override
 	public void updateEntity()
 	{
@@ -348,7 +353,7 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityElectric im
 	}
 
 	@Override
-	public ForgeDirection getInputDirection() 
+	public ForgeDirection getElectricInputDirection() 
 	{
 		return ForgeDirection.getOrientation(this.getBlockMetadata() + 2);
 	}

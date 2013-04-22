@@ -459,7 +459,7 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
 	}
 
 	@Override
-	public ForgeDirection getInputDirection() 
+	public ForgeDirection getElectricInputDirection() 
 	{
 		return ForgeDirection.UP;
 	}
