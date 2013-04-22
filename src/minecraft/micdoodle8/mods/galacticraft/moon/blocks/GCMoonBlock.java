@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.moon.blocks;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -173,6 +174,10 @@ public class GCMoonBlock extends Block implements IDetectableMetadataResource, I
 		if (meta >= 5 && meta <= 13)
 		{
 			return 5;
+		}
+		else if (meta == 2)
+		{
+			return 0;
 		}
 		else
 		{
