@@ -23,6 +23,7 @@ public class GCMapGenDungeon {
 	public static final int DUNGEON_WALL_META = 14;
 	public static final int RANGE = 8;
 	public static final int HALLWAY_LENGTH = 16;
+	public static final int HALLWAY_HEIGHT = 3;
 	
 	public static boolean useArrays = false;
 	
@@ -75,13 +76,13 @@ public class GCMapGenDungeon {
 				switch(dir) //East = 0, North = 1, South = 2, West = 3
 				{
 					case 0: //East z++
-						offsetZ = HALLWAY_LENGTH - 2 + rand.nextInt(10);
+						offsetZ = HALLWAY_LENGTH + rand.nextInt(15);
 						if(rand.nextBoolean())
 						{
 							if(rand.nextBoolean())
 							{
 								entranceDir = 1;
-								offsetX = HALLWAY_LENGTH + rand.nextInt(5);
+								offsetX = HALLWAY_LENGTH + rand.nextInt(15);
 							}
 							else
 							{
@@ -91,7 +92,7 @@ public class GCMapGenDungeon {
 						}
 						break;
 					case 1: //North x++
-						offsetX = HALLWAY_LENGTH - 2 + rand.nextInt(10);
+						offsetX = HALLWAY_LENGTH + rand.nextInt(15);
 						if(rand.nextBoolean())
 						{
 							if(rand.nextBoolean())
@@ -107,7 +108,7 @@ public class GCMapGenDungeon {
 						}
 						break;
 					case 2: //South x--
-						offsetX = -HALLWAY_LENGTH - 2 - rand.nextInt(15);
+						offsetX = -HALLWAY_LENGTH - rand.nextInt(15);
 						if(rand.nextBoolean())
 						{
 							if(rand.nextBoolean())
@@ -123,7 +124,7 @@ public class GCMapGenDungeon {
 						}
 						break;
 					case 3: //West z--
-						offsetZ = -HALLWAY_LENGTH - 2 - rand.nextInt(15);
+						offsetZ = -HALLWAY_LENGTH - rand.nextInt(15);
 						if(rand.nextBoolean())
 						{
 							if(rand.nextBoolean())
@@ -159,22 +160,24 @@ public class GCMapGenDungeon {
 					int cz = (currentRoomBb.minZ + currentRoomBb.maxZ) / 2;
 					int px = (possibleRoomBb.minX + possibleRoomBb.maxX) / 2;
 					int pz = (possibleRoomBb.minZ + possibleRoomBb.maxZ) / 2;
+					int ax = (cx + px) / 2;
+					int az = (cz + pz) / 2;
 					if(offsetX == 0 || offsetZ == 0) //Only 1 hallway
 					{
 						GCDungeonBoundingBox corridor1 = null;
 						switch(dir) //East = 0, North = 1, South = 2, West = 3
 						{
 							case 0: //East z++
-								corridor1 = new GCDungeonBoundingBox(cx - 1, currentRoomBb.maxZ, cx, possibleRoomBb.minZ - 1);
+								corridor1 = new GCDungeonBoundingBox(ax - 1, currentRoomBb.maxZ, ax, possibleRoomBb.minZ - 1);
 								break;
 							case 1: //North x++
-								corridor1 = new GCDungeonBoundingBox(currentRoomBb.maxX, cz - 1, possibleRoomBb.minX - 1, cz);
+								corridor1 = new GCDungeonBoundingBox(currentRoomBb.maxX, az - 1, possibleRoomBb.minX - 1, az);
 								break;
 							case 2: //South x--
-								corridor1 = new GCDungeonBoundingBox(possibleRoomBb.maxX, cz - 1, currentRoomBb.minX - 1, cz);
+								corridor1 = new GCDungeonBoundingBox(possibleRoomBb.maxX, az - 1, currentRoomBb.minX - 1, az);
 								break;
 							case 3: //West z--
-								corridor1 = new GCDungeonBoundingBox(cx - 1, possibleRoomBb.maxZ, cx, currentRoomBb.minZ - 1);
+								corridor1 = new GCDungeonBoundingBox(ax - 1, possibleRoomBb.maxZ, ax, currentRoomBb.minZ - 1);
 								break;
 							default:
 								break;
@@ -293,14 +296,6 @@ public class GCMapGenDungeon {
 		}
 	}
 	
-	public void handleTileEntities(Random rand)
-	{
-		for(GCDungeonRoom room : rooms)
-		{
-			room.handleTileEntities(rand);
-		}
-	}
-	
 	private void genCorridor(GCDungeonBoundingBox corridor, Random rand, int y, int cx, int cz, int dir, int[] blocks, int[] metas, boolean doubleCorridor)
 	{
 		for(int i = corridor.minX - 1; i <= corridor.maxX + 1; i++)
@@ -308,7 +303,7 @@ public class GCMapGenDungeon {
 			for(int k = corridor.minZ - 1; k <= corridor.maxZ + 1; k++)
 			{
 			   loopj:
-				for(int j = y - 1; j <= y + 3; j++)
+				for(int j = y - 1; j <= y + HALLWAY_HEIGHT; j++)
 				{
 					boolean flag = false;
 					switch(dir)
@@ -385,6 +380,14 @@ public class GCMapGenDungeon {
 					placeBlock(blocks, metas, i, y - 1, k, cx, cz, Block.glowStone.blockID, 0);
 				}
 			}
+		}
+	}
+	
+	public void handleTileEntities(Random rand)
+	{
+		for(GCDungeonRoom room : rooms)
+		{
+			room.handleTileEntities(rand);
 		}
 	}
 	
