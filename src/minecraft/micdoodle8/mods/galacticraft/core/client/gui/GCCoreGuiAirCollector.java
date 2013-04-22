@@ -11,6 +11,7 @@ import org.lwjgl.opengl.GL11;
 
 import universalelectricity.core.electricity.ElectricityDisplay;
 import universalelectricity.core.electricity.ElectricityDisplay.ElectricUnit;
+import cpw.mods.fml.common.FMLLog;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -33,10 +34,10 @@ public class GCCoreGuiAirCollector extends GuiContainer
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
         this.fontRenderer.drawString("Oxygen Collector", 8, 10, 4210752);
-        this.fontRenderer.drawString("In:", 90, 31, 4210752);
+        this.fontRenderer.drawString("Out:", 87, 31, 4210752);
         String status = "Status: " + this.getStatus();
         this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 50, 4210752);
-        status = "Oxygen: " + this.collector.getPower();
+        status = "Oxygen Output: " + Math.round(this.collector.getPower() / this.collector.MAX_POWER * 1000.0D) / 10.0D + "%";
         this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 60, 4210752);
         status = ElectricityDisplay.getDisplay(GCCoreTileEntityOxygenCollector.WATTS_PER_TICK * 20, ElectricUnit.WATT);
         this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 70, 4210752);
@@ -76,7 +77,7 @@ public class GCCoreGuiAirCollector extends GuiContainer
 
 		if (this.collector != null)
 		{
-			final int scale = (int) (this.collector.getPower() / 50 * 54);
+			final int scale = (int) (this.collector.getPower() / 34 * 54);
 			this.drawTexturedModalRect(var5 + 108, var6 + 26, 176, 0, Math.min(scale, 54), 16);
 		}
 	}

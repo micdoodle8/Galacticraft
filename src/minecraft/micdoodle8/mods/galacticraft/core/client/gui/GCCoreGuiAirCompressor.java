@@ -37,7 +37,7 @@ public class GCCoreGuiAirCompressor extends GuiContainer
         this.fontRenderer.drawString("In:", 90, 31, 4210752);
         String status = "Status: " + this.getStatus();
         this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 50, 4210752);
-        status = "Oxygen: " + this.compressor.getPower();
+        status = "Oxygen Input: " + (double)Math.round((double)this.compressor.storedOxygen / (double)this.compressor.MAX_OXYGEN * 1000.0D) / 10.0D + "%";
         this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 60, 4210752);
         status = ElectricityDisplay.getDisplay(this.compressor.ueWattsPerTick * 20, ElectricUnit.WATT);
         this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 70, 4210752);
@@ -82,7 +82,7 @@ public class GCCoreGuiAirCompressor extends GuiContainer
 
 		if (this.compressor != null)
 		{
-			final int scale = (int) ((double) this.compressor.getPower() / (double) 31 * 54);
+			final int scale = (int) (((double) this.compressor.getPower() / (double) this.compressor.MAX_OXYGEN) * 270.0D);
 			this.drawTexturedModalRect(var5 + 108, var6 + 26, 176, 0, Math.min(scale, 54), 16);
 		}
 	}
