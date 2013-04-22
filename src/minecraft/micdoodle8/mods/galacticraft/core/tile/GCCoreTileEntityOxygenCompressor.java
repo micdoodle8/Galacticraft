@@ -45,7 +45,7 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityElectric i
 
 	public static final double OXYGEN_PER_TICK = 500;
 	
-	public static final int MAX_OXYGEN = 18000;
+	public static final int MAX_OXYGEN = 1200;
 	
 	public int storedOxygen;
 	
@@ -73,7 +73,7 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityElectric i
 
 			if (this.getPower() >= 1.0D && (this.wattsReceived > 0 || this.ic2Energy > 0))
 			{
-				if (!this.worldObj.isRemote && this.ticks % ((31 - Math.min(Math.floor(this.getPower()), 30)) * 3) == 0)
+				if (!this.worldObj.isRemote && this.ticks % ((31 - Math.min(Math.floor(this.getPower()), 30)) * 10) == 0)
 				{
 					final ItemStack stack = this.getStackInSlot(0);
 
