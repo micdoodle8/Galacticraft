@@ -1,15 +1,11 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import ic2.api.Direction;
-import ic2.api.energy.event.EnergyTileLoadEvent;
-import ic2.api.energy.tile.IEnergySink;
 import mekanism.api.EnumGas;
 import mekanism.api.GasTransmission;
 import mekanism.api.IGasAcceptor;
 import mekanism.api.ITubeConnection;
 import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,25 +14,19 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.common.MinecraftForge;
 import universalelectricity.components.common.BasicComponents;
-import universalelectricity.core.electricity.ElectricityPack;
-import universalelectricity.core.item.ElectricItemHelper;
 import universalelectricity.core.item.IItemElectric;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.core.vector.VectorHelper;
-import universalelectricity.prefab.network.IPacketReceiver;
 import universalelectricity.prefab.network.PacketManager;
-import universalelectricity.prefab.tile.TileEntityElectricityRunnable;
 
 import com.google.common.io.ByteArrayDataInput;
 
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityElectric implements ITubeConnection, IInventory, ISidedInventory
@@ -67,43 +57,6 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityElectric im
 
 		if (!this.worldObj.isRemote)
 		{
-			double power = 0;
-
-			if (this.worldObj.provider instanceof IGalacticraftWorldProvider)
-			{
-				for (int y = this.yCoord - 5; y <= this.yCoord + 5; y++)
-				{
-					for (int x = this.xCoord - 5; x <= this.xCoord + 5; x++)
-					{
-						for (int z = this.zCoord - 5; z <= this.zCoord + 5; z++)
-						{
-							final Block block = Block.blocksList[this.worldObj.getBlockId(x, y, z)];
-
-							if (block != null && block instanceof BlockLeaves)
-							{
-								if (!this.worldObj.isRemote && this.worldObj.rand.nextInt(100000) == 0 && !GCCoreConfigManager.disableLeafDecay)
-								{
-									this.worldObj.setBlockToAir(x, y, z);
-								}
-
-								power++;
-							}
-						}
-					}
-				}
-			}
-			else
-			{
-				power = 250;
-			}
-
-			this.setPower(power / 5);
-
-			if(this.getPower() > this.MAX_POWER)
-			{
-				this.setPower(this.MAX_POWER);
-			}
-
 			if(this.getPower() > 0 && !this.worldObj.isRemote)
 			{
 		    	for(final ForgeDirection orientation : ForgeDirection.values())
@@ -139,6 +92,43 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityElectric im
 		    			}
 		    		}
 		    	}
+			}
+			
+			double power = 0;
+
+			if (this.worldObj.provider instanceof IGalacticraftWorldProvider)
+			{
+				for (int y = this.yCoord - 5; y <= this.yCoord + 5; y++)
+				{
+					for (int x = this.xCoord - 5; x <= this.xCoord + 5; x++)
+					{
+						for (int z = this.zCoord - 5; z <= this.zCoord + 5; z++)
+						{
+							final Block block = Block.blocksList[this.worldObj.getBlockId(x, y, z)];
+
+							if (block != null && block instanceof BlockLeaves)
+							{
+								if (!this.worldObj.isRemote && this.worldObj.rand.nextInt(100000) == 0 && !GCCoreConfigManager.disableLeafDecay)
+								{
+									this.worldObj.setBlockToAir(x, y, z);
+								}
+
+								power++;
+							}
+						}
+					}
+				}
+				
+				this.setPower(power / 5.0D);
+			}
+			else
+			{
+				this.setPower(this.MAX_POWER);
+			}
+
+			if(this.getPower() > this.MAX_POWER)
+			{
+				this.setPower(this.MAX_POWER);
 			}
 		}
 	}
