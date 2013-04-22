@@ -32,6 +32,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -72,7 +73,31 @@ public class WorldUtil
     	{
     		return 0.08D;
     	}
+    }
 
+    public static double getItemGravity(EntityItem e)
+    {
+    	if (e.worldObj.provider instanceof IGalacticraftWorldProvider)
+    	{
+    		final IGalacticraftWorldProvider customProvider = (IGalacticraftWorldProvider) e.worldObj.provider;
+        	return 0.03999999910593033D - (customProvider instanceof IOrbitDimension ? 0.05999999910593033D : customProvider.getGravity()) / 1.75D;
+    	}
+    	else
+    	{
+    		return 0.03999999910593033D;
+    	}
+    }
+
+    public static double getItemGravity2(EntityItem e)
+    {
+    	if (e.worldObj.provider instanceof IGalacticraftWorldProvider)
+    	{
+        	return 1.0D;
+    	}
+    	else
+    	{
+    		return 0.9800000190734863D;
+    	}
     }
 
     public static boolean generateChestContents(World var1, Random var2, int var3, int var4, int var5)

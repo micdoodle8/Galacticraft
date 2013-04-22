@@ -60,6 +60,13 @@ public class GCCoreTransformer implements IClassTransformer
 		this.unObfuscatedMap.put("moveEntityDesc", "(FF)V");
 		this.obfuscatedMap.put("entityLiving", "ng");
 		this.unObfuscatedMap.put("entityLiving", "net/minecraft/entity/EntityLiving");
+
+		this.obfuscatedMap.put("entityItemClass", "rh");
+		this.unObfuscatedMap.put("entityItemClass", "net/minecraft/entity/item/EntityItem");
+		this.obfuscatedMap.put("onUpdateMethod", "l_");
+		this.unObfuscatedMap.put("onUpdateMethod", "onUpdate");
+		this.obfuscatedMap.put("onUpdateDesc", "()V");
+		this.unObfuscatedMap.put("onUpdateDesc", "()V");
 	}
 
 	@Override
@@ -90,6 +97,15 @@ public class GCCoreTransformer implements IClassTransformer
 		else if (name.replace('.', '/').equals(this.obfuscatedMap.get("entityLivingClass")))
 		{
 			bytes = this.transform3(name, bytes, this.obfuscatedMap);
+		}
+
+		if (name.replace('.', '/').equals(this.unObfuscatedMap.get("entityItemClass")))
+		{
+			bytes = this.transform4(name, bytes, this.unObfuscatedMap);
+		}
+		else if (name.replace('.', '/').equals(this.obfuscatedMap.get("entityItemClass")))
+		{
+			bytes = this.transform4(name, bytes, this.obfuscatedMap);
 		}
 
 		return bytes;
@@ -296,6 +312,61 @@ public class GCCoreTransformer implements IClassTransformer
 	            		{
 	            			final VarInsnNode beforeNode = new VarInsnNode(Opcodes.ALOAD, 0);
 	            			final MethodInsnNode overwriteNode = new MethodInsnNode(Opcodes.INVOKESTATIC, "micdoodle8/mods/galacticraft/core/util/WorldUtil", "getGravityForEntity", "(L" + map.get("entityLiving") + ";)D");
+
+	            			methodnode.instructions.insertBefore(nodeAt, beforeNode);
+	            			methodnode.instructions.set(nodeAt, overwriteNode);
+
+	            			GCLog.info("Successfully set INVOKESTATIC type insertion node with name \"micdoodle8/mods/galacticraft/core/util/WorldUtil\"");
+	            		}
+	            	}
+	            }
+			}
+		}
+
+        final ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
+        node.accept(writer);
+        bytes = writer.toByteArray();
+
+        return bytes;
+    }
+
+    public byte[] transform4(String name, byte[] bytes, HashMap<String, String> map)
+    {
+        final ClassNode node = new ClassNode();
+        final ClassReader reader = new ClassReader(bytes);
+        reader.accept(node, 0);
+
+		final Iterator<MethodNode> methods = node.methods.iterator();
+
+		while (methods.hasNext())
+		{
+			final MethodNode methodnode = methods.next();
+
+			if (methodnode.name.equals(map.get("onUpdateMethod")) && methodnode.desc.equals(map.get("onUpdateDesc")))
+			{
+	            for (int count = 0; count < methodnode.instructions.size(); count++)
+	            {
+	            	final AbstractInsnNode list = methodnode.instructions.get(count);
+
+	            	if (list instanceof LdcInsnNode)
+	            	{
+	            		final LdcInsnNode nodeAt = (LdcInsnNode) list;
+
+	            		if (nodeAt.cst.equals(Double.valueOf(0.03999999910593033D)))
+	            		{
+	            			final VarInsnNode beforeNode = new VarInsnNode(Opcodes.ALOAD, 0);
+	            			final MethodInsnNode overwriteNode = new MethodInsnNode(Opcodes.INVOKESTATIC, "micdoodle8/mods/galacticraft/core/util/WorldUtil", "getItemGravity", "(L" + map.get("entityItemClass") + ";)D");
+
+	            			methodnode.instructions.insertBefore(nodeAt, beforeNode);
+	            			methodnode.instructions.set(nodeAt, overwriteNode);
+
+	            			GCLog.info("Successfully set INVOKESTATIC type insertion node with name \"micdoodle8/mods/galacticraft/core/util/WorldUtil\"");
+	            		}
+
+	            		if (nodeAt.cst.equals(Double.valueOf(0.9800000190734863D)))
+	            		{
+	            			final VarInsnNode beforeNode = new VarInsnNode(Opcodes.ALOAD, 0);
+	            			final MethodInsnNode overwriteNode = new MethodInsnNode(Opcodes.INVOKESTATIC, "micdoodle8/mods/galacticraft/core/util/WorldUtil", "getItemGravity2", "(L" + map.get("entityItemClass") + ";)D");
 
 	            			methodnode.instructions.insertBefore(nodeAt, beforeNode);
 	            			methodnode.instructions.set(nodeAt, overwriteNode);
