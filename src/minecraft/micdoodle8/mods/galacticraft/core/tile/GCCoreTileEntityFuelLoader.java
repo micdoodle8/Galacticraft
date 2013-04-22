@@ -137,10 +137,6 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric impleme
 					this.fuelTank.drain(this.attachedFuelable.addFuel(liquid, 1, true), true);
 				}
 			}
-			else
-			{
-				this.disabled = true;
-			}
 		}
 	}
 
@@ -287,11 +283,6 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric impleme
 
 	@Override
 	public void closeChest() {}
-
-	private boolean validStackInSlot()
-	{
-		return this.getStackInSlot(1) != null && this.getStackInSlot(1).getItem() instanceof IFuelTank && this.getStackInSlot(1).getMaxDamage() - this.getStackInSlot(1).getItemDamage() != 0 && this.getStackInSlot(1).getItemDamage() < this.getStackInSlot(1).getMaxDamage();
-	}
 
 	// ISidedInventory Implementation:
 
