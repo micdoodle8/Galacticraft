@@ -16,7 +16,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.core.vector.Vector3;
-import cpw.mods.fml.common.FMLLog;
 
 public class OxygenPressureProtocol
 {
@@ -103,7 +102,7 @@ public class OxygenPressureProtocol
 
     			if (tileAtVec != null && tileAtVec instanceof GCCoreTileEntityOxygenSealer)
     			{
-    				var5 += ((GCCoreTileEntityOxygenSealer) tileAtVec).getPower() * (((GCCoreTileEntityOxygenSealer) tileAtVec).storedOxygen / 10.0D);
+    				var5 += ((GCCoreTileEntityOxygenSealer) tileAtVec).getPower() * 10.0D;
     			}
     		}
     	}
@@ -303,18 +302,15 @@ public class OxygenPressureProtocol
 
     private boolean touchingUnsealedBlock(World var1, int var2, int var3, int var4)
     {
-    	for (final ForgeDirection dir : ForgeDirection.values())
+    	for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
     	{
-    		if (dir != ForgeDirection.UNKNOWN)
-    		{
-    			Vector3 vec = new Vector3(var2, var3, var4);
-    			vec = vec.add(new Vector3(dir));
+			Vector3 vec = new Vector3(var2, var3, var4);
+			vec = vec.add(new Vector3(dir));
 
-    			if (this.canBlockPass(var1, vec) && !this.isVisited(vec))
-    			{
-    				return true;
-    			}
-    		}
+			if (this.canBlockPass(var1, vec) && !this.isVisited(vec))
+			{
+				return true;
+			}
     	}
 
     	return false;
