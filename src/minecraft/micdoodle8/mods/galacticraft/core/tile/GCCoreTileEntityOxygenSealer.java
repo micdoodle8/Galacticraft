@@ -103,11 +103,6 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityElectric imple
 				}
 			}
 
-			if (this.ticks % 3 == 0)
-			{
-				PacketManager.sendPacketToClients(this.getDescriptionPacket(), this.worldObj, new Vector3(this), 6);
-			}
-
 			this.lastDisabled = this.disabled;
 		}
 	}
