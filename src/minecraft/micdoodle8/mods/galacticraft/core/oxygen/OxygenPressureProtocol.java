@@ -26,6 +26,7 @@ public class OxygenPressureProtocol
     {
     	OxygenPressureProtocol.vanillaPermeableBlocks.add(Block.sponge.blockID);
     	OxygenPressureProtocol.vanillaNonPermeableBlocks.add(Block.thinGlass.blockID);
+    	OxygenPressureProtocol.vanillaNonPermeableBlocks.add(Block.glass.blockID);
 //    	vanillaPermeableBlocks.add(Block.doorSteel.blockID);
 //    	vanillaPermeableBlocks.add(Block.doorWood.blockID);
 //    	vanillaPermeableBlocks.add(Block.torchWood.blockID);
