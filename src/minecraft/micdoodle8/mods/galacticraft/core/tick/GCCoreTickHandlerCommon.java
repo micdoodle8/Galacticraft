@@ -29,7 +29,7 @@ public class GCCoreTickHandlerCommon implements ITickHandler
 					if (e.posY >= iiobject.getYCoordToTeleportFrom() && e.dimension != iiobject.getDimensionForTeleport())
 					{
 						final int dim = iiobject.getDimensionForTeleport();
-						WorldUtil.transferEntityToDimension(e, dim, world, false);
+						WorldUtil.transferEntityToDimension(e, dim, world);
 					}
 				}
 
@@ -42,7 +42,7 @@ public class GCCoreTickHandlerCommon implements ITickHandler
 					{
 	    	    		final Integer dim = WorldUtil.getProviderForName(dimension.getPlanetToOrbit()).dimensionId;
 
-    	    			WorldUtil.transferEntityToDimension(e, dim, world);
+    	    			WorldUtil.transferEntityToDimension(e, dim, world, false);
 					}
 				}
 			}
