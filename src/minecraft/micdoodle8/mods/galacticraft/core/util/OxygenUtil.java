@@ -79,7 +79,7 @@ public class OxygenUtil
         		{
         			final double dist = distributor.getDistanceFromServer(entity.posX, entity.posY, entity.posZ);
 
-        			if (Math.sqrt(dist) < distributor.getPower())
+        			if (Math.sqrt(dist) < distributor.storedOxygen / 600.0D)
         			{
         				return true;
         			}

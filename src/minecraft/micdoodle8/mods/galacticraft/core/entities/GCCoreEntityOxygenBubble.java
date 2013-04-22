@@ -92,7 +92,7 @@ public class GCCoreEntityOxygenBubble extends Entity implements IPacketReceiver
 
     	if (!this.worldObj.isRemote && this.distributor != null)
     	{
-    		this.size = this.distributor.getPower();
+    		this.size = this.distributor.storedOxygen / 600.0D;
 
     		final Vector3 vec = new Vector3(this.distributor);
 
