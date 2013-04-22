@@ -14,7 +14,7 @@ public class GCCoreContainerAirCompressor extends Container
     public GCCoreContainerAirCompressor(InventoryPlayer par1InventoryPlayer, GCCoreTileEntityOxygenCompressor compressor)
     {
     	this.compressor = compressor;
-        this.addSlotToContainer(new Slot(compressor, 0, 133, 68));
+        this.addSlotToContainer(new Slot(compressor, 0, 133, 71));
         this.addSlotToContainer(new Slot(compressor, 1, 32, 27));
 
 		int var3;
