@@ -1,11 +1,14 @@
 package micdoodle8.mods.galacticraft.core.oxygen;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Map;
 
 import micdoodle8.mods.galacticraft.API.IOxygenReliantBlock;
 import micdoodle8.mods.galacticraft.API.IPartialSealedBlock;
+import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenSealer;
 import net.minecraft.block.Block;
@@ -20,53 +23,29 @@ public class OxygenPressureProtocol
     private LinkedList<Vector3> oxygenReliantBlocks = new LinkedList<Vector3>();
     private boolean airtight;
     private static ArrayList<Integer> vanillaPermeableBlocks = new ArrayList<Integer>();
-    private static ArrayList<Integer> vanillaNonPermeableBlocks = new ArrayList<Integer>();
+    private static Map<Integer, ArrayList<Integer>> nonPermeableBlocks = new HashMap<Integer, ArrayList<Integer>>();
 
     static
     {
     	OxygenPressureProtocol.vanillaPermeableBlocks.add(Block.sponge.blockID);
-    	OxygenPressureProtocol.vanillaNonPermeableBlocks.add(Block.thinGlass.blockID);
-//    	vanillaPermeableBlocks.add(Block.doorSteel.blockID);
-//    	vanillaPermeableBlocks.add(Block.doorWood.blockID);
-//    	vanillaPermeableBlocks.add(Block.torchWood.blockID);
-//    	vanillaPermeableBlocks.add(Block.torchRedstoneActive.blockID);
-//    	vanillaPermeableBlocks.add(Block.torchRedstoneIdle.blockID);
-//    	vanillaPermeableBlocks.add(Block.bed.blockID);
-//    	vanillaPermeableBlocks.add(Block.blockSnow.blockID);
-//    	vanillaPermeableBlocks.add(Block.anvil.blockID);
-//    	vanillaPermeableBlocks.add(Block.fence.blockID);
-//    	vanillaPermeableBlocks.add(Block.fenceGate.blockID);
-//    	vanillaPermeableBlocks.add(Block.fenceIron.blockID);
-//    	vanillaPermeableBlocks.add(Block.crops.blockID);
-//    	vanillaPermeableBlocks.add(Block.stoneSingleSlab.blockID);
-//    	vanillaPermeableBlocks.add(Block.woodSingleSlab.blockID);
-//    	vanillaPermeableBlocks.add(Block.ladder.blockID);
-//    	vanillaPermeableBlocks.add(Block.flowerPot.blockID);
-//    	vanillaPermeableBlocks.add(Block.tallGrass.blockID);
-//    	vanillaPermeableBlocks.add(Block.melonStem.blockID);
-//    	vanillaPermeableBlocks.add(Block.pressurePlateGold.blockID);
-//    	vanillaPermeableBlocks.add(Block.pressurePlateIron.blockID);
-//    	vanillaPermeableBlocks.add(Block.pressurePlatePlanks.blockID);
-//    	vanillaPermeableBlocks.add(Block.pressurePlateStone.blockID);
-//    	vanillaPermeableBlocks.add(Block.woodenButton.blockID);
-//    	vanillaPermeableBlocks.add(Block.stoneButton.blockID);
-//    	vanillaPermeableBlocks.add(Block.waterlily.blockID);
-//    	vanillaPermeableBlocks.add(Block.sapling.blockID);
-//    	vanillaPermeableBlocks.add(Block.redstoneComparatorActive.blockID);
-//    	vanillaPermeableBlocks.add(Block.redstoneComparatorIdle.blockID);
-//    	vanillaPermeableBlocks.add(Block.redstoneRepeaterActive.blockID);
-//    	vanillaPermeableBlocks.add(Block.redstoneRepeaterIdle.blockID);
-//    	vanillaPermeableBlocks.add(Block.daylightSensor.blockID);
-//    	vanillaPermeableBlocks.add(Block.redstoneWire.blockID);
-//    	vanillaPermeableBlocks.add(Block.stairsStoneBrick.blockID);
-//    	vanillaPermeableBlocks.add(Block.stairsBrick.blockID);
-//    	vanillaPermeableBlocks.add(Block.stairsNetherBrick.blockID);
-//    	vanillaPermeableBlocks.add(Block.stairsCobblestone.blockID);
-//    	vanillaPermeableBlocks.add(Block.stairsWoodOak.blockID);
-//    	vanillaPermeableBlocks.add(Block.waterStill.blockID);
-//    	vanillaPermeableBlocks.add(Block.waterMoving.blockID);
-//    	vanillaPermeableBlocks.add(Block.lavaStill.blockID);
-//    	vanillaPermeableBlocks.add(Block.lavaMoving.blockID);
+    	
+    	for (String s : GCCoreConfigManager.sealableIDs)
+    	{
+    		String[] split = s.split(":");
+    		
+    		if (OxygenPressureProtocol.nonPermeableBlocks.containsKey(Integer.parseInt(split[0])))
+    		{
+    			ArrayList<Integer> l = OxygenPressureProtocol.nonPermeableBlocks.get(Integer.parseInt(split[0]));
+    			l.add(Integer.parseInt(split[1]));
+    			OxygenPressureProtocol.nonPermeableBlocks.put(Integer.parseInt(split[0]), l);
+    		}
+    		else
+    		{
+    			ArrayList<Integer> a = new ArrayList<Integer>();
+    			a.add(Integer.parseInt(split[1]));
+        		OxygenPressureProtocol.nonPermeableBlocks.put(Integer.parseInt(split[0]), a);
+    		}
+    	}
     }
 
     private void loopThrough(World var1, int var2, int var3, int var4, int var5)
@@ -123,7 +102,7 @@ public class OxygenPressureProtocol
 
     			if (tileAtVec != null && tileAtVec instanceof GCCoreTileEntityOxygenSealer)
     			{
-    				var5 += ((GCCoreTileEntityOxygenSealer) tileAtVec).getPower() * (((GCCoreTileEntityOxygenSealer) tileAtVec).storedOxygen / 10.0D);
+    				var5 += ((GCCoreTileEntityOxygenSealer) tileAtVec).storedOxygen / 60.0D;
     			}
     		}
     	}
@@ -307,12 +286,12 @@ public class OxygenPressureProtocol
     public boolean canBlockPass(World var0, Vector3 vec)
     {
     	final Block block = Block.blocksList[vec.getBlockID(var0)];
-
+    	
     	return block == null
     			|| block.blockID == 0
     			|| block.blockID == GCCoreBlocks.breatheableAir.blockID
     	    	|| OxygenPressureProtocol.vanillaPermeableBlocks.contains(block.blockID)
-    			|| (!block.isOpaqueCube() && !(block instanceof IPartialSealedBlock) && !vanillaNonPermeableBlocks.contains(block.blockID))
+    			|| (!block.isOpaqueCube() && !(block instanceof IPartialSealedBlock) && !(OxygenPressureProtocol.nonPermeableBlocks.containsKey(block.blockID) && OxygenPressureProtocol.nonPermeableBlocks.get(block.blockID).contains(vec.getBlockMetadata(var0))))
     			|| (!block.isOpaqueCube() && block instanceof IPartialSealedBlock && !((IPartialSealedBlock) block).isSealed(var0, vec.intX(), vec.intY(), vec.intZ()));
     }
 
@@ -323,18 +302,15 @@ public class OxygenPressureProtocol
 
     private boolean touchingUnsealedBlock(World var1, int var2, int var3, int var4)
     {
-    	for (final ForgeDirection dir : ForgeDirection.values())
+    	for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
     	{
-    		if (dir != ForgeDirection.UNKNOWN)
-    		{
-    			Vector3 vec = new Vector3(var2, var3, var4);
-    			vec = vec.add(new Vector3(dir));
+			Vector3 vec = new Vector3(var2, var3, var4);
+			vec = vec.add(new Vector3(dir));
 
-    			if (this.canBlockPass(var1, vec) && !this.isVisited(vec))
-    			{
-    				return true;
-    			}
-    		}
+			if (this.canBlockPass(var1, vec) && !this.isVisited(vec))
+			{
+				return true;
+			}
     	}
 
     	return false;

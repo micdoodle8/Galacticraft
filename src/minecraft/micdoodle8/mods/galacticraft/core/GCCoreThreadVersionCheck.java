@@ -12,6 +12,7 @@ import cpw.mods.fml.relauncher.Side;
 public class GCCoreThreadVersionCheck extends Thread
 {
 	public static GCCoreThreadVersionCheck instance = new GCCoreThreadVersionCheck();
+	private int count = 0;
 
 	public GCCoreThreadVersionCheck()
 	{
@@ -27,7 +28,6 @@ public class GCCoreThreadVersionCheck extends Thread
 	@Override
 	public void run()
 	{
-		int count = 0;
 		final Side sideToCheck = FMLCommonHandler.instance().getSide();
 
 		if (sideToCheck == null)

@@ -26,7 +26,7 @@ public class GCMoonTeleportType implements ITeleportType
 	{
 		if (player instanceof GCCorePlayerMP)
 		{
-			return new Vector3(((GCCorePlayerMP) player).coordsTeleportedFromX, 500.0, ((GCCorePlayerMP) player).coordsTeleportedFromZ);
+			return new Vector3(((GCCorePlayerMP) player).coordsTeleportedFromX, 900.0, ((GCCorePlayerMP) player).coordsTeleportedFromZ);
 		}
 
 		return null;
@@ -35,7 +35,7 @@ public class GCMoonTeleportType implements ITeleportType
 	@Override
 	public Vector3 getEntitySpawnLocation(WorldServer world, Entity entity)
 	{
-		return new Vector3(entity.posX, 500.0, entity.posZ);
+		return new Vector3(entity.posX, 900.0, entity.posZ);
 	}
 
 	@Override

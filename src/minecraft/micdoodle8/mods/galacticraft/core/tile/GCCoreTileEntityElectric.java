@@ -5,6 +5,7 @@ import ic2.api.energy.event.EnergyTileLoadEvent;
 import ic2.api.energy.event.EnergyTileUnloadEvent;
 import ic2.api.energy.tile.IEnergySink;
 import micdoodle8.mods.galacticraft.API.IDisableableMachine;
+import micdoodle8.mods.galacticraft.core.GCCoreCompatibilityManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -29,6 +30,7 @@ public abstract class GCCoreTileEntityElectric extends TileEntityElectricityRunn
 	public int ueWattsPerTick;
 	public double ic2MaxEnergy;
 	public double ic2Energy;
+	public double ic2EnergyPerTick;
 
 	public boolean addedToEnergyNet = false;
 
@@ -41,14 +43,15 @@ public abstract class GCCoreTileEntityElectric extends TileEntityElectricityRunn
 	
 	public abstract Packet getPacket();
 	
-	public abstract ForgeDirection getInputDirection();
+	public abstract ForgeDirection getElectricInputDirection();
 	
 	public abstract ItemStack getBatteryInSlot();
 	
-	public GCCoreTileEntityElectric(int ueWattsPerTick, double ic2MaxEnergy)
+	public GCCoreTileEntityElectric(int ueWattsPerTick, double ic2MaxEnergy, double ic2EnergyPerTick)
 	{
 		this.ueWattsPerTick = ueWattsPerTick;
 		this.ic2MaxEnergy = ic2MaxEnergy;
+		this.ic2EnergyPerTick = ic2EnergyPerTick;
 	}
 
 	@Override
@@ -69,7 +72,7 @@ public abstract class GCCoreTileEntityElectric extends TileEntityElectricityRunn
 	{
     	if (this.addedToEnergyNet && this.worldObj != null)
     	{
-			if(GalacticraftCore.modIC2Loaded)
+			if(GCCoreCompatibilityManager.isIc2Loaded())
 			{
 				MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent(this));
 			}
@@ -98,7 +101,7 @@ public abstract class GCCoreTileEntityElectric extends TileEntityElectricityRunn
 		
 		if (!this.addedToEnergyNet && this.worldObj != null)
 		{
-			if(GalacticraftCore.modIC2Loaded)
+			if(GCCoreCompatibilityManager.isIc2Loaded())
 			{
 				MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(this));
 			}
@@ -108,6 +111,8 @@ public abstract class GCCoreTileEntityElectric extends TileEntityElectricityRunn
 		
 		if (!this.worldObj.isRemote)
 		{
+			this.ic2Energy = Math.max(this.ic2Energy - ic2EnergyPerTick, 0);
+			
 			if (this.shouldPullEnergy())
 			{
 				this.wattsReceived += ElectricItemHelper.dechargeItem(this.getBatteryInSlot(), this.ueWattsPerTick, this.getVoltage());
@@ -122,6 +127,8 @@ public abstract class GCCoreTileEntityElectric extends TileEntityElectricityRunn
 			{
 				PacketManager.sendPacketToClients(this.getPacket(), this.worldObj, new Vector3(this), 12);
 			}
+			
+			this.wattsReceived = Math.max(this.wattsReceived - this.ueWattsPerTick / 4, 0);
 		}
 	}
 	
@@ -181,7 +188,7 @@ public abstract class GCCoreTileEntityElectric extends TileEntityElectricityRunn
 	@Override
 	public boolean acceptsEnergyFrom(TileEntity emitter, Direction direction) 
 	{
-		return direction.toForgeDirection() == this.getInputDirection();
+		return direction.toForgeDirection() == this.getElectricInputDirection();
 	}
 
 	@Override
@@ -199,7 +206,7 @@ public abstract class GCCoreTileEntityElectric extends TileEntityElectricityRunn
 	@Override
 	public boolean canConnect(ForgeDirection direction)
 	{
-		return direction == this.getInputDirection();
+		return direction == this.getElectricInputDirection();
 	}
 
 	@Override

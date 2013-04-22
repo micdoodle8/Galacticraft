@@ -79,7 +79,7 @@ public class OxygenUtil
         		{
         			final double dist = distributor.getDistanceFromServer(entity.posX, entity.posY, entity.posZ);
 
-        			if (Math.sqrt(dist) < distributor.getPower())
+        			if (Math.sqrt(dist) < distributor.storedOxygen / 600.0D)
         			{
         				return true;
         			}
@@ -189,9 +189,17 @@ public class OxygenUtil
 				{
 					final IBreathableArmor breathableArmor = (IBreathableArmor) armorStack.getItem();
 
-					if (breathableArmor.handleGearType(EnumGearType.TANK1) || breathableArmor.handleGearType(EnumGearType.TANK2))
+					if (breathableArmor.handleGearType(EnumGearType.TANK1))
 					{
-						if (breathableArmor.canBreathe(armorStack, player, EnumGearType.TANK1) || breathableArmor.canBreathe(armorStack, player, EnumGearType.TANK2))
+						if (breathableArmor.canBreathe(armorStack, player, EnumGearType.TANK1))
+						{
+							handled = true;
+						}
+					}
+
+					if (breathableArmor.handleGearType(EnumGearType.TANK2))
+					{
+						if (breathableArmor.canBreathe(armorStack, player, EnumGearType.TANK2))
 						{
 							handled = true;
 						}

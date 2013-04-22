@@ -1,13 +1,8 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import ic2.api.Direction;
-import ic2.api.energy.event.EnergyTileLoadEvent;
-import ic2.api.energy.event.EnergyTileUnloadEvent;
-import ic2.api.energy.tile.IEnergySink;
 import mekanism.api.EnumGas;
 import mekanism.api.IGasAcceptor;
 import mekanism.api.ITubeConnection;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenTank;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -15,18 +10,10 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet250CustomPayload;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.common.MinecraftForge;
 import universalelectricity.components.common.BasicComponents;
-import universalelectricity.core.electricity.ElectricityPack;
-import universalelectricity.core.item.ElectricItemHelper;
 import universalelectricity.core.item.IItemElectric;
-import universalelectricity.core.vector.Vector3;
-import universalelectricity.prefab.network.IPacketReceiver;
 import universalelectricity.prefab.network.PacketManager;
 
 import com.google.common.io.ByteArrayDataInput;
@@ -37,29 +24,14 @@ import com.google.common.io.ByteArrayDataInput;
  *  All rights reserved.
  *
  */
-public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityElectric implements IInventory, IGasAcceptor, ITubeConnection, ISidedInventory
+public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityOxygen implements IInventory, ISidedInventory
 {
-    public boolean active;
-
 	private ItemStack[] containingItems = new ItemStack[2];
-
-	public static int timeSinceOxygenRequest;
-
-	public static final double OXYGEN_PER_TICK = 500;
-	
-	public static final int MAX_OXYGEN = 18000;
-	
-	public int storedOxygen;
 	
 	public GCCoreTileEntityOxygenCompressor()
 	{
-		super (300, 130);
+		super (300, 130, 1, 1200, 125);
 	}
-	
-    public double getPower()
-    {
-    	return this.storedOxygen / 600.0D;
-    }
 
 	@Override
 	public void updateEntity()
@@ -68,31 +40,9 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityElectric i
 
 		if (!this.worldObj.isRemote)
 		{
-			if (this.wattsReceived >= 0.05)
+			if ((this.storedOxygen / 5.0D) >= 1.0D && (this.wattsReceived > 0 || this.ic2Energy > 0))
 			{
-				this.wattsReceived -= 0.05;
-			}
-
-			if (GCCoreTileEntityOxygenCompressor.timeSinceOxygenRequest > 0)
-			{
-				GCCoreTileEntityOxygenCompressor.timeSinceOxygenRequest--;
-			}
-
-			this.wattsReceived = Math.max(this.wattsReceived - this.ueWattsPerTick / 4, 0);
-			this.storedOxygen = (int) Math.max(this.storedOxygen - this.OXYGEN_PER_TICK / 4, 0);
-
-			if (this.getPower() < 1 && this.wattsReceived > 0)
-			{
-				this.active = false;
-			}
-			else
-			{
-				this.active = true;
-			}
-
-			if (this.active)
-			{
-				if (!this.worldObj.isRemote && this.ticks % ((31 - Math.min(Math.floor(this.getPower()), 30)) * 5) == 0)
+				if (!this.worldObj.isRemote && this.ticks % ((31 - Math.min(Math.floor((this.storedOxygen / 5.0D)), 30)) * 10) == 0)
 				{
 					final ItemStack stack = this.getStackInSlot(0);
 
@@ -110,22 +60,9 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityElectric i
 	}
 
 	@Override
-	public boolean canReceiveGas(ForgeDirection side, EnumGas type)
-	{
-		return side == ForgeDirection.getOrientation(this.getBlockMetadata() + 2).getOpposite() && type == EnumGas.OXYGEN;
-	}
-
-	@Override
-	public boolean canTubeConnect(ForgeDirection direction)
-	{
-		return direction == ForgeDirection.getOrientation(this.getBlockMetadata() + 2).getOpposite();
-	}
-
-	@Override
 	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
 	{
 		super.readFromNBT(par1NBTTagCompound);
-		this.storedOxygen = par1NBTTagCompound.getInteger("storedOxygen");
 
         final NBTTagList var2 = par1NBTTagCompound.getTagList("Items");
         this.containingItems = new ItemStack[this.getSizeInventory()];
@@ -146,7 +83,6 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityElectric i
 	public void writeToNBT(NBTTagCompound par1NBTTagCompound)
 	{
 		super.writeToNBT(par1NBTTagCompound);
-		par1NBTTagCompound.setInteger("storedOxygen", this.storedOxygen);
 
         final NBTTagList list = new NBTTagList();
 
@@ -257,32 +193,6 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityElectric i
 	@Override
 	public void closeChest() {}
 
-	@Override
-	public int transferGasToAcceptor(int amount, EnumGas type)
-	{
-		GCCoreTileEntityOxygenCompressor.timeSinceOxygenRequest = 20;
-
-		if (this.wattsReceived > 0 && type == EnumGas.OXYGEN)
-		{
-			int rejectedOxygen = 0;
-			int requiredOxygen = MAX_OXYGEN - storedOxygen;
-			
-			if (amount <= requiredOxygen)
-			{
-				this.storedOxygen += amount;
-			}
-			else
-			{
-				this.storedOxygen += requiredOxygen;
-				rejectedOxygen = amount - requiredOxygen;
-			}
-			
-			return rejectedOxygen;
-		}
-		
-		return 0;
-	}
-
 	// ISidedInventory Implementation:
 
 	@Override
@@ -328,18 +238,19 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityElectric i
 		{
 			this.storedOxygen = data.readInt();
 			this.wattsReceived = data.readDouble();
-			this.disabledTicks = data.readInt();
+			this.ic2Energy = data.readDouble();
+			this.disabled = data.readBoolean();
 		}
 	}
 
 	@Override
 	public Packet getPacket() 
 	{
-		return PacketManager.getPacket(BasicComponents.CHANNEL, this, this.storedOxygen, this.wattsReceived, this.disabledTicks);
+		return PacketManager.getPacket(BasicComponents.CHANNEL, this, this.storedOxygen, this.wattsReceived, this.ic2Energy, this.disabled);
 	}
 
 	@Override
-	public ForgeDirection getInputDirection()
+	public ForgeDirection getElectricInputDirection()
 	{
 		return ForgeDirection.getOrientation(this.getBlockMetadata() + 2);
 	}
@@ -348,5 +259,17 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityElectric i
 	public ItemStack getBatteryInSlot() 
 	{
 		return this.getStackInSlot(1);
+	}
+
+	@Override
+	public ForgeDirection getOxygenInputDirection()
+	{
+		return this.getElectricInputDirection().getOpposite();
+	}
+
+	@Override
+	public boolean shouldPullOxygen() 
+	{
+		return this.ic2Energy > 0 || this.wattsReceived > 0;
 	}
 }

@@ -1,25 +1,19 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import ic2.api.Direction;
-import ic2.api.energy.event.EnergyTileLoadEvent;
-import ic2.api.energy.tile.IEnergySink;
-import micdoodle8.mods.galacticraft.API.IDisableableMachine;
 import micdoodle8.mods.galacticraft.API.IFuelTank;
 import micdoodle8.mods.galacticraft.API.IFuelable;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItemFuelCanister;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.liquids.ILiquidTank;
 import net.minecraftforge.liquids.ITankContainer;
 import net.minecraftforge.liquids.LiquidContainerRegistry;
@@ -27,20 +21,16 @@ import net.minecraftforge.liquids.LiquidDictionary;
 import net.minecraftforge.liquids.LiquidStack;
 import net.minecraftforge.liquids.LiquidTank;
 import universalelectricity.components.common.BasicComponents;
-import universalelectricity.core.electricity.ElectricityPack;
-import universalelectricity.core.item.ElectricItemHelper;
 import universalelectricity.core.item.IItemElectric;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.multiblock.TileEntityMulti;
-import universalelectricity.prefab.network.IPacketReceiver;
 import universalelectricity.prefab.network.PacketManager;
-import universalelectricity.prefab.tile.TileEntityElectricityRunnable;
 
 import com.google.common.io.ByteArrayDataInput;
 
 public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric implements IInventory, ISidedInventory, ITankContainer
 {
-	private final int tankCapacity = 24000;
+	private final int tankCapacity = 12000;
 	public LiquidTank fuelTank = new LiquidTank(this.tankCapacity);
 
 	private ItemStack[] containingItems = new ItemStack[2];
@@ -50,14 +40,14 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric impleme
 
 	public GCCoreTileEntityFuelLoader() 
 	{
-		super(300, 130);
+		super(300, 130, 1);
 	}
 	
 	public int getScaledFuelLevel(int i)
 	{
 		final double fuelLevel = this.fuelTank.getLiquid() == null ? 0 : this.fuelTank.getLiquid().amount;
 
-		return (int) (fuelLevel * i / 2000);
+		return (int) (fuelLevel * i / this.tankCapacity);
 	}
 
 	@Override
@@ -67,8 +57,6 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric impleme
 
 		if (!this.worldObj.isRemote)
 		{
-			this.wattsReceived = Math.max(this.wattsReceived - GCCoreTileEntityFuelLoader.WATTS_PER_TICK / 4, 0);
-
 			if (this.containingItems[1] != null)
 			{
 				final LiquidStack liquid = LiquidContainerRegistry.getLiquidForFilledItem(this.containingItems[1]);
@@ -79,9 +67,14 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric impleme
 					{
 						this.fuelTank.fill(liquid, true);
 
-						if(liquid.itemID == GCCoreItems.fuel.itemID)
+						if(this.containingItems[1].getItem() instanceof GCCoreItemFuelCanister)
 						{
 							this.containingItems[1] = new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.oilCanister.getMaxDamage());
+						}
+						else if (LiquidContainerRegistry.isBucket(this.containingItems[1]) && LiquidContainerRegistry.isFilledContainer(this.containingItems[1]))
+						{
+							final int amount = this.containingItems[1].stackSize;
+							this.containingItems[1] = new ItemStack(Item.bucketEmpty, amount);
 						}
 						else
 						{
@@ -143,10 +136,6 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric impleme
 				{
 					this.fuelTank.drain(this.attachedFuelable.addFuel(liquid, 1, true), true);
 				}
-			}
-			else
-			{
-				this.disabled = true;
 			}
 		}
 	}
@@ -295,11 +284,6 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric impleme
 	@Override
 	public void closeChest() {}
 
-	private boolean validStackInSlot()
-	{
-		return this.getStackInSlot(1) != null && this.getStackInSlot(1).getItem() instanceof IFuelTank && this.getStackInSlot(1).getMaxDamage() - this.getStackInSlot(1).getItemDamage() != 0 && this.getStackInSlot(1).getItemDamage() < this.getStackInSlot(1).getMaxDamage();
-	}
-
 	// ISidedInventory Implementation:
 
 	@Override
@@ -385,7 +369,7 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric impleme
 	@Override
 	public boolean shouldPullEnergy() 
 	{
-		return this.fuelTank.getLiquid() != null && this.fuelTank.getLiquid().amount > 0;
+		return this.fuelTank.getLiquid() != null && this.fuelTank.getLiquid().amount > 0 && !this.disabled;
 	}
 
 	@Override
@@ -394,22 +378,21 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric impleme
 		if (this.worldObj.isRemote)
 		{
 			this.wattsReceived = data.readDouble();
-			this.disabledTicks = data.readInt();
 			this.ic2Energy = data.readDouble();
-			final int amount = data.readInt();
-			this.fuelTank.setLiquid(new LiquidStack(GCCoreItems.fuel.itemID, amount, 0));
+			this.fuelTank.setLiquid(new LiquidStack(GCCoreItems.fuel.itemID, data.readInt(), 0));
 			this.disabled = data.readBoolean();
+			this.disableCooldown = data.readInt();
 		}
 	}
 
 	@Override
 	public Packet getPacket() 
 	{
-		return PacketManager.getPacket(BasicComponents.CHANNEL, this, this.wattsReceived, this.disabledTicks, this.ic2Energy, this.fuelTank.getLiquid() == null ? 0 : this.fuelTank.getLiquid().amount, this.disabled);
+		return PacketManager.getPacket(BasicComponents.CHANNEL, this, this.wattsReceived, this.ic2Energy, this.fuelTank.getLiquid() == null ? 0 : this.fuelTank.getLiquid().amount, this.disabled, this.disableCooldown);
 	}
 
 	@Override
-	public ForgeDirection getInputDirection() 
+	public ForgeDirection getElectricInputDirection() 
 	{
 		return ForgeDirection.getOrientation(this.getBlockMetadata() + 2);
 	}

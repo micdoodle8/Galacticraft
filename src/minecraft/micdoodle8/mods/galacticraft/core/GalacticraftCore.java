@@ -179,8 +179,6 @@ public class GalacticraftCore
 
 	public static boolean usingDevVersion = false;
 
-	public static boolean modIC2Loaded = false;
-
 	public static ArrayList<Integer> hiddenItems = new ArrayList<Integer>();
 
 	public static boolean inMCP = true;
@@ -322,14 +320,27 @@ public class GalacticraftCore
 	public void postInit(FMLPostInitializationEvent event)
 	{
 		GalacticraftCore.moon.postLoad(event);
-
-		if(Loader.isModLoaded("IC2"))
-		{ 
-			GalacticraftCore.modIC2Loaded = true;
-		}
-
+		GCCoreCompatibilityManager.checkForCompatibleMods();
+		
 		GalacticraftCore.proxy.postInit(event);
 		GalacticraftCore.proxy.registerRenderInformation();
+
+		if (!GCCoreCompatibilityManager.isBCompLoaded() && !GCCoreCompatibilityManager.isIc2Loaded())
+		{
+			final String err = "<strong><h1>Galacticraft Requires Basic Components or IndustrialCraft 2!</h1></strong><br /><h3>You can enable Basic Components loader in the Galacticraft config or install IndustrialCraft 2 manually</h3>";
+			System.err.println(err);
+
+            final JEditorPane ep = new JEditorPane("text/html",
+					"<html>" + err + "</html>");
+
+            ep.setEditable(false);
+            ep.setOpaque(false);
+
+            JOptionPane.showMessageDialog(null, ep, "Fatal error", JOptionPane.ERROR_MESSAGE);
+			System.exit(1);
+		}
+		
+        RecipeUtil.addCraftingRecipesPostInit();
 	}
 
 	@ServerStarted

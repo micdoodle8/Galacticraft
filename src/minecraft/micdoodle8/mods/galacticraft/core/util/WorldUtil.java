@@ -562,6 +562,11 @@ public class WorldUtil
 
     public static void transferEntityToDimension(Entity entity, int dimensionID, WorldServer world)
     {
+    	transferEntityToDimension(entity, dimensionID, world, true);
+    }
+
+    public static void transferEntityToDimension(Entity entity, int dimensionID, WorldServer world, boolean transferInv)
+    {
         if (!world.isRemote)
         {
             if (WorldUtil.mcServer == null)
@@ -582,23 +587,23 @@ public class WorldUtil
 
                 if (type != null)
                 {
-                    WorldUtil.teleportEntity(var6, entity, dimensionID, type);
+                    WorldUtil.teleportEntity(var6, entity, dimensionID, type, transferInv);
                 }
             }
         }
     }
 
-    private static Entity teleportEntity(World var0, Entity var1, int var2, ITeleportType type)
+    private static Entity teleportEntity(World var0, Entity var1, int var2, ITeleportType type, boolean transferInv)
     {
         final Entity var6 = var1.ridingEntity;
 
         if (var1.ridingEntity != null && var1.ridingEntity instanceof ISpaceship)
         {
             var1.mountEntity(var1.ridingEntity);
-//            teleportEntity(var0, var1, var2, type);
         }
 
         final boolean var7 = var1.worldObj != var0;
+        int prevDimensionID = var1.dimension;
         var1.worldObj.updateEntityWithOptionalForce(var1, false);
         GCCorePlayerMP var8 = null;
 
@@ -741,21 +746,28 @@ public class WorldUtil
 
           	for (int i = 0; i < 27; i++)
           	{
-          		if (var8.rocketStacks[i] == null)
-          		{
-          			switch (i)
-          			{
-          			case 24:
-          				var8.rocketStacks[i] = var8.fuelDamage > 0 && var8.fuelDamage <= GCCoreItems.fuelCanister.getMaxDamage() ? new ItemStack(GCCoreItems.fuelCanister, 1, var8.fuelDamage) : null;
-          				break;
-          			case 25:
-          				var8.rocketStacks[i] = type instanceof GCCoreOrbitTeleportType ? null : new ItemStack(GCCoreBlocks.landingPad, 9, 0);
-          				break;
-          			case 26:
-          				var8.rocketStacks[i] = new ItemStack(GCCoreItems.spaceship, 1, var8.rocketType);
-          				break;
-          			}
-          		}
+                if (transferInv)
+                {
+              		if (var8.rocketStacks[i] == null)
+              		{
+              			switch (i)
+              			{
+              			case 24:
+              				var8.rocketStacks[i] = var8.fuelDamage > 0 && var8.fuelDamage <= GCCoreItems.fuelCanister.getMaxDamage() ? new ItemStack(GCCoreItems.fuelCanister, 1, var8.fuelDamage) : null;
+              				break;
+              			case 25:
+              				var8.rocketStacks[i] = type instanceof GCCoreOrbitTeleportType ? null : new ItemStack(GCCoreBlocks.landingPad, 9, 0);
+              				break;
+              			case 26:
+              				var8.rocketStacks[i] = new ItemStack(GCCoreItems.spaceship, 1, var8.rocketType);
+              				break;
+              			}
+              		}
+                }
+                else
+                {
+                	var8.rocketStacks[i] = null;
+                }
           	}
 
           	if (var8.chestSpawnCooldown == 0)

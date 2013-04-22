@@ -32,7 +32,7 @@ public class GCCoreBlockAdvancedCraftingTable extends BlockContainer
 
 	public GCCoreBlockAdvancedCraftingTable(int par1)
 	{
-		super(par1, Material.wood);
+		super(par1, Material.iron);
         this.setBlockBounds(-0.3F, 0.0F, -0.3F, 1.3F, 0.5F, 1.3F);
 	}
 

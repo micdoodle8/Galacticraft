@@ -42,7 +42,7 @@ public class GCCoreTickHandlerCommon implements ITickHandler
 					{
 	    	    		final Integer dim = WorldUtil.getProviderForName(dimension.getPlanetToOrbit()).dimensionId;
 
-    	    			WorldUtil.transferEntityToDimension(e, dim, world);
+    	    			WorldUtil.transferEntityToDimension(e, dim, world, false);
 					}
 				}
 			}

@@ -1,14 +1,8 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import ic2.api.Direction;
-import ic2.api.energy.event.EnergyTileLoadEvent;
-import ic2.api.energy.event.EnergyTileUnloadEvent;
-import ic2.api.energy.tile.IEnergySink;
 import mekanism.api.EnumGas;
 import mekanism.api.IGasAcceptor;
 import mekanism.api.ITubeConnection;
-import micdoodle8.mods.galacticraft.API.IDisableableMachine;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.oxygen.OxygenPressureProtocol;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -16,21 +10,12 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet250CustomPayload;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.common.MinecraftForge;
 import universalelectricity.components.common.BasicComponents;
-import universalelectricity.core.electricity.ElectricityPack;
-import universalelectricity.core.item.ElectricItemHelper;
 import universalelectricity.core.item.IItemElectric;
-import universalelectricity.core.vector.Vector3;
-import universalelectricity.prefab.network.IPacketReceiver;
 import universalelectricity.prefab.network.PacketManager;
-import universalelectricity.prefab.tile.TileEntityElectricityRunnable;
 
 import com.google.common.io.ByteArrayDataInput;
 
@@ -40,32 +25,20 @@ import com.google.common.io.ByteArrayDataInput;
  *  All rights reserved.
  *
  */
-public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityElectric implements IInventory, IGasAcceptor, ITubeConnection, ISidedInventory
+public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen implements IInventory, ISidedInventory
 {
 	public boolean sealed;
+	public boolean lastSealed = false;
 
 	public boolean lastDisabled = false;
 
     public boolean active;
 	private ItemStack[] containingItems = new ItemStack[1];
-
-	public static int timeSinceOxygenRequest;
-
-	public static final double OXYGEN_PER_TICK = 500;
-	
-	public static final int MAX_OXYGEN = 18000;
-	
-	public int storedOxygen;
 	
 	public GCCoreTileEntityOxygenSealer()
 	{
-		super(300, 130);
+		super(300, 130, 1, 6000, 6);
 	}
-	
-    public double getPower()
-    {
-    	return this.storedOxygen / 600.0D;
-    }
 
 	@Override
 	public void updateEntity()
@@ -74,15 +47,12 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityElectric imple
 
 		if (!this.worldObj.isRemote)
 		{
-			if (GCCoreTileEntityOxygenSealer.timeSinceOxygenRequest > 0)
+			if (this.ticks % 10 == 0)
 			{
-				GCCoreTileEntityOxygenSealer.timeSinceOxygenRequest--;
+	            this.sealed = this.checkSeal(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
 			}
 
-			this.wattsReceived = Math.max(this.wattsReceived - this.ueWattsPerTick / 4, 0);
-			this.storedOxygen = (int) Math.max(this.storedOxygen - this.storedOxygen / 40, 0);
-
-			if (this.getPower() >= 1 && (this.wattsReceived > 0 || this.ic2Energy > 0) && !this.disabled)
+			if (this.storedOxygen >= 1 && (this.wattsReceived > 0 || this.ic2Energy > 0) && !this.disabled)
 			{
 				this.active = true;
 			}
@@ -91,25 +61,20 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityElectric imple
 				this.active = false;
 			}
 
-			if (this.ticks % 50 == 0 || this.lastDisabled != this.disabled)
+			if (this.lastSealed != this.sealed || this.lastDisabled != this.disabled || this.ticks % 200 == 0)
 			{
 				if (this.active)
 				{
-		            this.clean(this.worldObj, this.xCoord, this.yCoord, this.zCoord, (int) (this.storedOxygen / 10.0D));
-		            this.sealed = this.isOn(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+		            this.sealArea(this.worldObj, this.xCoord, this.yCoord, this.zCoord, (int) (this.storedOxygen / 10.0D));
 				}
 				else
 				{
-		            this.spread(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+		            this.unSealArea(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
 				}
 			}
 
-			if (this.ticks % 3 == 0)
-			{
-				PacketManager.sendPacketToClients(this.getDescriptionPacket(), this.worldObj, new Vector3(this), 6);
-			}
-
 			this.lastDisabled = this.disabled;
+			this.lastSealed = this.sealed;
 		}
 	}
 
@@ -117,8 +82,7 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityElectric imple
 	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
 	{
 		super.readFromNBT(par1NBTTagCompound);
-		this.storedOxygen = par1NBTTagCompound.getInteger("storedOxygen");
-
+		
         final NBTTagList var2 = par1NBTTagCompound.getTagList("Items");
         this.containingItems = new ItemStack[this.getSizeInventory()];
 
@@ -138,7 +102,6 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityElectric imple
 	public void writeToNBT(NBTTagCompound par1NBTTagCompound)
 	{
 		super.writeToNBT(par1NBTTagCompound);
-		par1NBTTagCompound.setInteger("storedOxygen", this.storedOxygen);
 
         final NBTTagList list = new NBTTagList();
 
@@ -154,44 +117,6 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityElectric imple
         }
 
         par1NBTTagCompound.setTag("Items", list);
-	}
-
-	@Override
-	public int transferGasToAcceptor(int amount, EnumGas type)
-	{
-		GCCoreTileEntityOxygenSealer.timeSinceOxygenRequest = 20;
-
-		if (this.wattsReceived > 0 && type == EnumGas.OXYGEN)
-		{
-			int rejectedOxygen = 0;
-			int requiredOxygen = MAX_OXYGEN - storedOxygen;
-			
-			if (amount <= requiredOxygen)
-			{
-				this.storedOxygen += amount;
-			}
-			else
-			{
-				this.storedOxygen += requiredOxygen;
-				rejectedOxygen = amount - requiredOxygen;
-			}
-			
-			return rejectedOxygen;
-		}
-		
-		return 0;
-	}
-
-	@Override
-	public boolean canReceiveGas(ForgeDirection side, EnumGas type)
-	{
-		return side == ForgeDirection.getOrientation(this.getBlockMetadata() + 2).getOpposite();
-	}
-
-	@Override
-	public boolean canTubeConnect(ForgeDirection direction)
-	{
-		return direction == ForgeDirection.getOrientation(this.getBlockMetadata() + 2).getOpposite();
 	}
 
 	@Override
@@ -323,23 +248,22 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityElectric imple
 		return slotID == 0 ? itemstack.getItem() instanceof IItemElectric : false;
 	}
 
-    public boolean isOn(World var1, int var2, int var3, int var4)
+	private boolean checkSeal(World var1, int var2, int var3, int var4)
     {
-    	final OxygenPressureProtocol var5 = new OxygenPressureProtocol();
-        final boolean on = var5.checkSeal(var1, var2, var3, var4, 3);
-        return on;
+		OxygenPressureProtocol protocol = new OxygenPressureProtocol();
+        return protocol.checkSeal(var1, var2, var3, var4, 3);
     }
 
-    public void clean(World var1, int var2, int var3, int var4, int var5)
+    private void sealArea(World var1, int var2, int var3, int var4, int var5)
     {
-    	final OxygenPressureProtocol var6 = new OxygenPressureProtocol();
-        var6.seal(var1, var2, var3, var4, var5);
+		OxygenPressureProtocol protocol = new OxygenPressureProtocol();
+		protocol.seal(var1, var2, var3, var4, 2);
     }
 
-    private void spread(World var1, int var2, int var3, int var4)
+    private void unSealArea(World var1, int var2, int var3, int var4)
     {
-    	final OxygenPressureProtocol var5 = new OxygenPressureProtocol();
-        var5.unSeal(var1, var2, var3, var4);
+		OxygenPressureProtocol protocol = new OxygenPressureProtocol();
+		protocol.unSeal(var1, var2, var3, var4);
     }
 
 	@Override
@@ -368,7 +292,7 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityElectric imple
 	}
 
 	@Override
-	public ForgeDirection getInputDirection() 
+	public ForgeDirection getElectricInputDirection() 
 	{
 		return ForgeDirection.getOrientation(this.getBlockMetadata() + 2);
 	}
@@ -377,5 +301,17 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityElectric imple
 	public ItemStack getBatteryInSlot() 
 	{
 		return this.getStackInSlot(0);
+	}
+
+	@Override
+	public ForgeDirection getOxygenInputDirection() 
+	{
+		return this.getElectricInputDirection().getOpposite();
+	}
+
+	@Override
+	public boolean shouldPullOxygen() 
+	{
+		return this.ic2Energy > 0 || this.wattsReceived > 0;
 	}
 }

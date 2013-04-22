@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core;
 import java.io.File;
 import java.util.logging.Level;
 
+import net.minecraft.block.Block;
 import net.minecraftforge.common.Configuration;
 
 /**
@@ -149,7 +150,7 @@ public class GCCoreConfigManager
 	public static boolean disableTitaniumEarth;
 	public static boolean disableOilGen;
 	public static int oreGenFactor;
-	public static int[] oreGenDimensions;
+	public static String[] sealableIDs;
 	public static boolean disableSpaceshipParticles;
 	public static boolean disableSpaceshipGrief;
 	public static boolean disableTutorialItemText;
@@ -272,22 +273,23 @@ public class GCCoreConfigManager
 	        GCCoreConfigManager.idEntityLanderChest = 					GCCoreConfigManager.configuration.get("Entities", "idEntityLanderChest", 									170)		.getInt(170);
 	        GCCoreConfigManager.idEntityEvolvedSkeletonBoss = 			GCCoreConfigManager.configuration.get("Entities", "idEntityEvolvedSkeletonBoss", 								171)		.getInt(171);
 
-	        GCCoreConfigManager.transparentBreathableAir = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Transparent Breathable Air",			true)		.getBoolean(true);
-	        GCCoreConfigManager.moreStars = 							GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "More Stars",							true)		.getBoolean(true);
-	        GCCoreConfigManager.wasdMapMovement = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "WASD Map Movement", 					true)		.getBoolean(true);
-	        GCCoreConfigManager.disableOilGen = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable oil Gen on Overworld",		false)		.getBoolean(false);
-	        GCCoreConfigManager.oilGenFactor = 							GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Oil Generation Factor", 				1.8)		.getDouble(1.8);
-	        GCCoreConfigManager.disableSpaceshipParticles = 			GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Spaceship Particles",		false)		.getBoolean(false);
-	        GCCoreConfigManager.disableSpaceshipGrief = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Spaceship Explosion",		false)		.getBoolean(false);
-	        GCCoreConfigManager.disableTutorialItemText = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Tutorial Item Info Text",	false)		.getBoolean(false);
-	        GCCoreConfigManager.oxygenIndicatorLeftSide = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Using Minimap Mod",					false)		.getBoolean(false);
-	        GCCoreConfigManager.disableLeafDecay = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Oxygen Collector Leaf Decay",false)		.getBoolean(false);
-	        GCCoreConfigManager.spaceStationsRequirePermission = 		GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Space Stations Require Permission",	true)		.getBoolean(true);
-	        GCCoreConfigManager.canRespawnOnSpaceStations = 			GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Can players respawn on Space Stations", false)	.getBoolean(false);
-	        GCCoreConfigManager.overrideCapes = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Override Capes", 					true)		.getBoolean(true);
-	        GCCoreConfigManager.hiresTextures = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Hi-Res Textures (32x32)", 			true)		.getBoolean(true);
-	        GCCoreConfigManager.enableBCLoading =						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Load Basic Components", 				true)		.getBoolean(true);
-	        GCCoreConfigManager.spaceStationEnergyScalar = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Space Station Solar Energy Multiplier", 3.0)		.getDouble(3.0);
+	        GCCoreConfigManager.transparentBreathableAir = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Transparent Breathable Air",			true, "If you have FPS problems and wish to have solid blue breathable air blocks, set this to false")		.getBoolean(true);
+	        GCCoreConfigManager.moreStars = 							GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "More Stars",							true, "Setting this to false will revert night skies back to default minecraft star count")		.getBoolean(true);
+	        GCCoreConfigManager.wasdMapMovement = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "WASD Map Movement", 					true, "If you prefer to move the Galaxy map with your mouse, set to false")		.getBoolean(true);
+	        GCCoreConfigManager.disableOilGen = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable oil Gen on Overworld",		false, "Set to true if you do not wish for Galacticraft oil to generate.")		.getBoolean(false);
+	        GCCoreConfigManager.oilGenFactor = 							GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Oil Generation Factor", 				1.8, "Increasing this will increase amount of oil that will generate in each chunk.")		.getDouble(1.8);
+	        GCCoreConfigManager.disableSpaceshipParticles = 			GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Spaceship Particles",		false, "If you have FPS problems, setting this to true will help if spaceship particles are in your sights")		.getBoolean(false);
+	        GCCoreConfigManager.disableSpaceshipGrief = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Spaceship Explosion",		false, "Spaceships will not explode on contact if set to true")		.getBoolean(false);
+	        GCCoreConfigManager.disableTutorialItemText = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Tutorial Item Info Text",	false, "When set to true, the \"Press R to open Galacticraft Inventory\" message will not show")		.getBoolean(false);
+	        GCCoreConfigManager.oxygenIndicatorLeftSide = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Using Minimap Mod",					false, "If true, this will move the Oxygen Indicator to the left side.")		.getBoolean(false);
+	        GCCoreConfigManager.disableLeafDecay = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Oxygen Collector Leaf Decay",false, "If set to true, Oxygen Collectors will not consume leaf blocks.")		.getBoolean(false);
+	        GCCoreConfigManager.spaceStationsRequirePermission = 		GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Space Stations Require Permission",	true, "While true, space stations require you to invite other players using /ssinvite <playername>")		.getBoolean(true);
+	        GCCoreConfigManager.canRespawnOnSpaceStations = 			GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Can players respawn on Space Stations", false, "If you want to respawn on spacestations if you die there, set to true. When false beds will explode on use.")	.getBoolean(false);
+	        GCCoreConfigManager.overrideCapes = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Override Capes", 					true, "By default, Galacticraft will override capes with the mod's donor cape. Set to false to disable.")		.getBoolean(true);
+	        GCCoreConfigManager.hiresTextures = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Hi-Res Textures (32x32)", 			true, "If you prefer low-resolution textures, set this to false")		.getBoolean(true);
+	        GCCoreConfigManager.enableBCLoading =						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Load Basic Components", 				false, "Set to true if you wish Basic Components to load inside Galacticraft")		.getBoolean(false);
+	        GCCoreConfigManager.spaceStationEnergyScalar = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Space Station Solar Energy Multiplier", 3.0, "If Mekanism is installed, solar panels will work (default 3x) more effective on space stations.")		.getDouble(3.0);
+	        GCCoreConfigManager.sealableIDs = 							GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "External Sealable IDs", 				new String[] {String.valueOf(Block.glass.blockID + ":0"), String.valueOf(Block.thinGlass.blockID + ":0")}, "List IDs from other mods that the Oxygen Sealer should recognize as solid blocks. Format is ID:METADATA").getStringList();
 		}
 		catch (final Exception e)
 		{
