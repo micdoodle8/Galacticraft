@@ -1,11 +1,14 @@
 package micdoodle8.mods.galacticraft.core.oxygen;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Map;
 
 import micdoodle8.mods.galacticraft.API.IOxygenReliantBlock;
 import micdoodle8.mods.galacticraft.API.IPartialSealedBlock;
+import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenSealer;
 import net.minecraft.block.Block;
@@ -13,6 +16,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.core.vector.Vector3;
+import cpw.mods.fml.common.FMLLog;
 
 public class OxygenPressureProtocol
 {
@@ -20,13 +24,29 @@ public class OxygenPressureProtocol
     private LinkedList<Vector3> oxygenReliantBlocks = new LinkedList<Vector3>();
     private boolean airtight;
     private static ArrayList<Integer> vanillaPermeableBlocks = new ArrayList<Integer>();
-    private static ArrayList<Integer> vanillaNonPermeableBlocks = new ArrayList<Integer>();
+    private static Map<Integer, ArrayList<Integer>> nonPermeableBlocks = new HashMap<Integer, ArrayList<Integer>>();
 
     static
     {
     	OxygenPressureProtocol.vanillaPermeableBlocks.add(Block.sponge.blockID);
-    	OxygenPressureProtocol.vanillaNonPermeableBlocks.add(Block.thinGlass.blockID);
-    	OxygenPressureProtocol.vanillaNonPermeableBlocks.add(Block.glass.blockID);
+    	
+    	for (String s : GCCoreConfigManager.sealableIDs)
+    	{
+    		String[] split = s.split(":");
+    		
+    		if (OxygenPressureProtocol.nonPermeableBlocks.containsKey(Integer.parseInt(split[0])))
+    		{
+    			ArrayList<Integer> l = OxygenPressureProtocol.nonPermeableBlocks.get(Integer.parseInt(split[0]));
+    			l.add(Integer.parseInt(split[1]));
+    			OxygenPressureProtocol.nonPermeableBlocks.put(Integer.parseInt(split[0]), l);
+    		}
+    		else
+    		{
+    			ArrayList<Integer> a = new ArrayList<Integer>();
+    			a.add(Integer.parseInt(split[1]));
+        		OxygenPressureProtocol.nonPermeableBlocks.put(Integer.parseInt(split[0]), a);
+    		}
+    	}
     }
 
     private void loopThrough(World var1, int var2, int var3, int var4, int var5)
@@ -267,12 +287,12 @@ public class OxygenPressureProtocol
     public boolean canBlockPass(World var0, Vector3 vec)
     {
     	final Block block = Block.blocksList[vec.getBlockID(var0)];
-
+    	
     	return block == null
     			|| block.blockID == 0
     			|| block.blockID == GCCoreBlocks.breatheableAir.blockID
     	    	|| OxygenPressureProtocol.vanillaPermeableBlocks.contains(block.blockID)
-    			|| (!block.isOpaqueCube() && !(block instanceof IPartialSealedBlock) && !vanillaNonPermeableBlocks.contains(block.blockID))
+    			|| (!block.isOpaqueCube() && !(block instanceof IPartialSealedBlock) && !(OxygenPressureProtocol.nonPermeableBlocks.containsKey(block.blockID) && OxygenPressureProtocol.nonPermeableBlocks.get(block.blockID).contains(vec.getBlockMetadata(var0))))
     			|| (!block.isOpaqueCube() && block instanceof IPartialSealedBlock && !((IPartialSealedBlock) block).isSealed(var0, vec.intX(), vec.intY(), vec.intZ()));
     }
 
