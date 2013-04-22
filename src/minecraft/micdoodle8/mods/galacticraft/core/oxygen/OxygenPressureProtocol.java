@@ -27,47 +27,6 @@ public class OxygenPressureProtocol
     	OxygenPressureProtocol.vanillaPermeableBlocks.add(Block.sponge.blockID);
     	OxygenPressureProtocol.vanillaNonPermeableBlocks.add(Block.thinGlass.blockID);
     	OxygenPressureProtocol.vanillaNonPermeableBlocks.add(Block.glass.blockID);
-//    	vanillaPermeableBlocks.add(Block.doorSteel.blockID);
-//    	vanillaPermeableBlocks.add(Block.doorWood.blockID);
-//    	vanillaPermeableBlocks.add(Block.torchWood.blockID);
-//    	vanillaPermeableBlocks.add(Block.torchRedstoneActive.blockID);
-//    	vanillaPermeableBlocks.add(Block.torchRedstoneIdle.blockID);
-//    	vanillaPermeableBlocks.add(Block.bed.blockID);
-//    	vanillaPermeableBlocks.add(Block.blockSnow.blockID);
-//    	vanillaPermeableBlocks.add(Block.anvil.blockID);
-//    	vanillaPermeableBlocks.add(Block.fence.blockID);
-//    	vanillaPermeableBlocks.add(Block.fenceGate.blockID);
-//    	vanillaPermeableBlocks.add(Block.fenceIron.blockID);
-//    	vanillaPermeableBlocks.add(Block.crops.blockID);
-//    	vanillaPermeableBlocks.add(Block.stoneSingleSlab.blockID);
-//    	vanillaPermeableBlocks.add(Block.woodSingleSlab.blockID);
-//    	vanillaPermeableBlocks.add(Block.ladder.blockID);
-//    	vanillaPermeableBlocks.add(Block.flowerPot.blockID);
-//    	vanillaPermeableBlocks.add(Block.tallGrass.blockID);
-//    	vanillaPermeableBlocks.add(Block.melonStem.blockID);
-//    	vanillaPermeableBlocks.add(Block.pressurePlateGold.blockID);
-//    	vanillaPermeableBlocks.add(Block.pressurePlateIron.blockID);
-//    	vanillaPermeableBlocks.add(Block.pressurePlatePlanks.blockID);
-//    	vanillaPermeableBlocks.add(Block.pressurePlateStone.blockID);
-//    	vanillaPermeableBlocks.add(Block.woodenButton.blockID);
-//    	vanillaPermeableBlocks.add(Block.stoneButton.blockID);
-//    	vanillaPermeableBlocks.add(Block.waterlily.blockID);
-//    	vanillaPermeableBlocks.add(Block.sapling.blockID);
-//    	vanillaPermeableBlocks.add(Block.redstoneComparatorActive.blockID);
-//    	vanillaPermeableBlocks.add(Block.redstoneComparatorIdle.blockID);
-//    	vanillaPermeableBlocks.add(Block.redstoneRepeaterActive.blockID);
-//    	vanillaPermeableBlocks.add(Block.redstoneRepeaterIdle.blockID);
-//    	vanillaPermeableBlocks.add(Block.daylightSensor.blockID);
-//    	vanillaPermeableBlocks.add(Block.redstoneWire.blockID);
-//    	vanillaPermeableBlocks.add(Block.stairsStoneBrick.blockID);
-//    	vanillaPermeableBlocks.add(Block.stairsBrick.blockID);
-//    	vanillaPermeableBlocks.add(Block.stairsNetherBrick.blockID);
-//    	vanillaPermeableBlocks.add(Block.stairsCobblestone.blockID);
-//    	vanillaPermeableBlocks.add(Block.stairsWoodOak.blockID);
-//    	vanillaPermeableBlocks.add(Block.waterStill.blockID);
-//    	vanillaPermeableBlocks.add(Block.waterMoving.blockID);
-//    	vanillaPermeableBlocks.add(Block.lavaStill.blockID);
-//    	vanillaPermeableBlocks.add(Block.lavaMoving.blockID);
     }
 
     private void loopThrough(World var1, int var2, int var3, int var4, int var5)

@@ -49,6 +49,7 @@ import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.IChunkProvider;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -832,7 +833,8 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
 	    	if (this.damageCounter == 0)
 	    	{
-	    		final boolean flag5 = this.airRemaining <= 0 || this.airRemaining2 <= 0;
+	    		final boolean flag5 = this.airRemaining <= 0 && this.airRemaining2 <= 0;
+	    		
 	    		final boolean invalid = !OxygenUtil.hasValidOxygenSetup(this) || flag5;
 
 	    		if (invalid && !OxygenUtil.isAABBInBreathableAirBlock(this))

@@ -189,9 +189,17 @@ public class OxygenUtil
 				{
 					final IBreathableArmor breathableArmor = (IBreathableArmor) armorStack.getItem();
 
-					if (breathableArmor.handleGearType(EnumGearType.TANK1) || breathableArmor.handleGearType(EnumGearType.TANK2))
+					if (breathableArmor.handleGearType(EnumGearType.TANK1))
 					{
-						if (breathableArmor.canBreathe(armorStack, player, EnumGearType.TANK1) || breathableArmor.canBreathe(armorStack, player, EnumGearType.TANK2))
+						if (breathableArmor.canBreathe(armorStack, player, EnumGearType.TANK1))
+						{
+							handled = true;
+						}
+					}
+
+					if (breathableArmor.handleGearType(EnumGearType.TANK2))
+					{
+						if (breathableArmor.canBreathe(armorStack, player, EnumGearType.TANK2))
 						{
 							handled = true;
 						}
