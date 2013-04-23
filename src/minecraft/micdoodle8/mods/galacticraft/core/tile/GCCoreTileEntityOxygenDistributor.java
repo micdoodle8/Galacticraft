@@ -329,6 +329,6 @@ public class GCCoreTileEntityOxygenDistributor extends GCCoreTileEntityOxygen im
 	@Override
 	public boolean shouldPullOxygen() 
 	{
-		return true;
+		return this.ic2Energy > 0 || this.wattsReceived > 0;
 	}
 }
