@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import mekanism.api.EnumGas;
 import mekanism.api.IPressurizedTube;
 import mekanism.api.ITubeConnection;
 import micdoodle8.mods.galacticraft.API.IColorable;
@@ -165,5 +166,11 @@ public class GCCoreTileEntityOxygenPipe extends TileEntity implements ITubeConne
 		{
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public void onTransfer(EnumGas type) 
+	{
+		;
 	}
 }
