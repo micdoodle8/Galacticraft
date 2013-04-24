@@ -17,7 +17,7 @@ public class PacketUtil
         final DataOutputStream data = new DataOutputStream(bytes);
         try
         {
-            data.write(packetID);
+            data.writeInt(packetID);
 
             if (input != null)
             {
@@ -142,7 +142,7 @@ public class PacketUtil
 
         try
         {
-            result = data.read();
+            result = data.readInt();
         }
         catch (final IOException e)
         {
