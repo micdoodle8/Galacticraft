@@ -376,7 +376,7 @@ public class GCCoreTickHandlerClient implements ITickHandler
 				}
 			}
 
-			if (playerBaseClient != null && player.worldObj.provider instanceof IGalacticraftWorldProvider && !playerBaseClient.oxygenSetupValid && minecraft.currentScreen == null)
+			if (playerBaseClient != null && player.worldObj.provider instanceof IGalacticraftWorldProvider && !playerBaseClient.oxygenSetupValid && minecraft.currentScreen == null && !playerBaseClient.capabilities.isCreativeMode)
 			{
     			GCCoreOverlayOxygenWarning.renderOxygenWarningOverlay();
 			}
