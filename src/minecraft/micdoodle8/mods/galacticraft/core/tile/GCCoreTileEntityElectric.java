@@ -131,7 +131,10 @@ public abstract class GCCoreTileEntityElectric extends TileEntityElectricityRunn
 		{
 			this.ic2Energy = Math.max(this.ic2Energy - ic2EnergyPerTick, 0);
 			
-			this.getPowerProvider().useEnergy(0, (float) this.bcEnergyPerTick / 2.0F, true);
+			if (this.getPowerProvider() != null)
+			{
+				this.getPowerProvider().useEnergy(0, (float) this.bcEnergyPerTick / 2.0F, true);
+			}
 			
 			if (this.shouldPullEnergy())
 			{
