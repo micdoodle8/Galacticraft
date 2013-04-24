@@ -121,6 +121,9 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
 	public int spaceStationDimensionID = -1;
 
+	public boolean oxygenSetupValid;
+	public boolean lastOxygenSetupValid;
+
 	public ArrayList<ISchematicPage> unlockedSchematics = new ArrayList<ISchematicPage>();
 
     public GCCorePlayerMP(MinecraftServer par1MinecraftServer, World par2World, String par3Str, ItemInWorldManager par4ItemInWorldManager)
@@ -831,24 +834,27 @@ public class GCCorePlayerMP extends EntityPlayerMP
 				this.airRemaining2 += 1;
 			}
 
-	    	if (this.damageCounter == 0)
-	    	{
-	    		final boolean flag5 = this.airRemaining <= 0 && this.airRemaining2 <= 0;
-	    		
-	    		final boolean invalid = !OxygenUtil.hasValidOxygenSetup(this) || flag5;
+    		final boolean flag5 = this.airRemaining <= 0 && this.airRemaining2 <= 0;
+    		
+    		final boolean invalid = !OxygenUtil.hasValidOxygenSetup(this) || flag5;
 
-	    		if (invalid && !OxygenUtil.isAABBInBreathableAirBlock(this))
-				{
-	    			if (!this.worldObj.isRemote && this.isEntityAlive())
-	    			{
-	    				if (this.damageCounter == 0)
-	    	        	{
-	        				this.damageCounter = 100;
-	    		            this.attackEntityFrom(GalacticraftCore.oxygenSuffocation, 2);
-	    	        	}
-	    			}
-				}
+    		if (invalid && !OxygenUtil.isAABBInBreathableAirBlock(this))
+			{
+    			this.oxygenSetupValid = false;
+    			
+    			if (!this.worldObj.isRemote && this.isEntityAlive())
+    			{
+    				if (this.damageCounter == 0)
+    	        	{
+        				this.damageCounter = 100;
+    		            this.attackEntityFrom(GalacticraftCore.oxygenSuffocation, 2);
+    	        	}
+    			}
 			}
+    		else
+    		{
+    			this.oxygenSetupValid = true;
+    		}
 	    }
 		else if (this.tick % 20 == 0 && !this.capabilities.isCreativeMode && this.airRemaining < 90)
 		{
@@ -859,6 +865,15 @@ public class GCCorePlayerMP extends EntityPlayerMP
 		{
 			this.airRemaining = 90;
 			this.airRemaining2 = 90;
+		}
+		else
+		{
+			this.oxygenSetupValid = true;
+		}
+		
+		if (this.oxygenSetupValid != this.lastOxygenSetupValid || this.tick % 100 == 0)
+		{
+	        this.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 27, new Object[] {Boolean.valueOf(this.oxygenSetupValid)}));
 		}
 
 		if (this.timeUntilPortal > 0)
@@ -932,6 +947,8 @@ public class GCCorePlayerMP extends EntityPlayerMP
     	this.lastTankInSlot1 = this.playerTankInventory.getStackInSlot(2);
     	this.lastTankInSlot2 = this.playerTankInventory.getStackInSlot(3);
     	this.lastParachuteInSlot = this.playerTankInventory.getStackInSlot(4);
+    	
+    	this.lastOxygenSetupValid = this.oxygenSetupValid;
 	}
 
 	@Deprecated
@@ -1266,6 +1283,10 @@ public class GCCorePlayerMP extends EntityPlayerMP
 	  	{
 	          PacketDispatcher.sendPacketToAllPlayers(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 4, toSend));
 	  	}
+	}
+
+	public void sendOxygenSetupValidPacket()
+	{
 	}
 
 	public void sendPlayerParachuteTexturePacket(GCCorePlayerMP player)

@@ -7,11 +7,13 @@ import micdoodle8.mods.galacticraft.API.ISpaceship;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
+import micdoodle8.mods.galacticraft.core.client.GCCorePlayerSP;
 import micdoodle8.mods.galacticraft.core.client.GCCoreSkyProviderOrbit;
 import micdoodle8.mods.galacticraft.core.client.GCCoreSkyProviderOverworld;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiChoosePlanet;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreOverlayLander;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreOverlayOxygenTankIndicator;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreOverlayOxygenWarning;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreOverlaySensorGlasses;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreOverlaySpaceship;
 import micdoodle8.mods.galacticraft.core.client.sounds.GCCoreSoundUpdaterSpaceship;
@@ -23,6 +25,7 @@ import micdoodle8.mods.galacticraft.core.items.GCCoreItemSensorGlasses;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
+import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -279,6 +282,8 @@ public class GCCoreTickHandlerClient implements ITickHandler
 
         final EntityPlayerSP player = minecraft.thePlayer;
 
+        final GCCorePlayerSP playerBaseClient = PlayerUtil.getPlayerBaseClientFromPlayer(player);
+
         ItemStack helmetSlot = null;
 
 		if (player != null && player.inventory.armorItemInSlot(3) != null)
@@ -369,6 +374,11 @@ public class GCCoreTickHandlerClient implements ITickHandler
 				{
     				GCCoreOverlayOxygenTankIndicator.renderOxygenTankIndicatorRight(var6, var7);
 				}
+			}
+
+			if (playerBaseClient != null && player.worldObj.provider instanceof IGalacticraftWorldProvider && !playerBaseClient.oxygenSetupValid && minecraft.currentScreen == null)
+			{
+    			GCCoreOverlayOxygenWarning.renderOxygenWarningOverlay();
 			}
         }
 	}

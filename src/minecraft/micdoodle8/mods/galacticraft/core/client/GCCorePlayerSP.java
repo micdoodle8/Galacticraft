@@ -37,6 +37,7 @@ public class GCCorePlayerSP extends EntityClientPlayerMP
 	public boolean usingAdvancedGoggles;
 	private int thirdPersonView = 0;
 	public long tick;
+	public boolean oxygenSetupValid = true;
 
 	public ArrayList<ISchematicPage> unlockedSchematics = new ArrayList<ISchematicPage>();
 

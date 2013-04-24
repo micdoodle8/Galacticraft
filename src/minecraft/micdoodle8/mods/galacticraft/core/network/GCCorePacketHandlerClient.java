@@ -416,5 +416,15 @@ public class GCCorePacketHandlerClient implements IPacketHandler
         {
         	player.playSound("random.bow", 10.0F, 0.2F);
         }
+        else if (packetType == 27)
+        {
+            final Class[] decodeAs = {Boolean.class};
+            final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
+            
+            if (playerBaseClient != null)
+            {
+            	playerBaseClient.oxygenSetupValid = (Boolean) packetReadout[0];
+            }
+        }
 	}
 }

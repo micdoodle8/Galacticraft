@@ -30,7 +30,7 @@ public class GCCoreOverlayLander extends GCCoreOverlay
         final int height = scaledresolution.getScaledHeight();
         GCCoreOverlayLander.minecraft.entityRenderer.setupOverlayRendering();
         GCCoreFontRendererBig fr = new GCCoreFontRendererBig(minecraft.gameSettings, "/font/default.png", minecraft.renderEngine, false);
-        fr.drawString("WARNING!", width / 4 - (fr.getStringWidth(LanguageRegistry.instance().getStringLocalization("gui.lander.warning")) / 2), height / 8 - 20, GCCoreUtil.convertTo32BitColor(255, 255, 0, 0));
+        fr.drawString(LanguageRegistry.instance().getStringLocalization("gui.warning"), width / 4 - (fr.getStringWidth(LanguageRegistry.instance().getStringLocalization("gui.warning")) / 2), height / 8 - 20, GCCoreUtil.convertTo32BitColor(255, 255, 0, 0));
         int alpha = (int) (255 * (Math.sin(screenTicks / 20.0F)));
         String press1 = LanguageRegistry.instance().getStringLocalization("gui.lander.warning2");
         String press2 = LanguageRegistry.instance().getStringLocalization("gui.lander.warning3");
