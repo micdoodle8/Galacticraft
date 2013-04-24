@@ -27,6 +27,7 @@ CHANGELOG
 !/src/common/SP.png
 /src/minecraft/mods/galacticraftmars/
 /src/minecraft/mods/fluidmech/
+/src/minecraft/mods/buildcraft/
 
 *.bat
 *.sh
