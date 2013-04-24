@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.moon.dimension;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.API.ITeleportType;
+import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityLander;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
@@ -18,7 +19,7 @@ public class GCMoonTeleportType implements ITeleportType
 	@Override
 	public boolean useParachute()
 	{
-		return false;
+		return GCCoreConfigManager.disableLander;
 	}
 
 	@Override
@@ -26,7 +27,7 @@ public class GCMoonTeleportType implements ITeleportType
 	{
 		if (player instanceof GCCorePlayerMP)
 		{
-			return new Vector3(((GCCorePlayerMP) player).coordsTeleportedFromX, 900.0, ((GCCorePlayerMP) player).coordsTeleportedFromZ);
+			return new Vector3(((GCCorePlayerMP) player).coordsTeleportedFromX, GCCoreConfigManager.disableLander ? 250.0 : 900.0, ((GCCorePlayerMP) player).coordsTeleportedFromZ);
 		}
 
 		return null;
@@ -35,19 +36,26 @@ public class GCMoonTeleportType implements ITeleportType
 	@Override
 	public Vector3 getEntitySpawnLocation(WorldServer world, Entity entity)
 	{
-		return new Vector3(entity.posX, 900.0, entity.posZ);
+		return new Vector3(entity.posX, GCCoreConfigManager.disableLander ? 250.0 : 900.0, entity.posZ);
 	}
 
 	@Override
 	public Vector3 getParaChestSpawnLocation(WorldServer world, Entity chest, EntityPlayerMP player, Random rand)
 	{
+		if (GCCoreConfigManager.disableLander)
+		{
+			final double x = (rand.nextDouble() * 2 - 1.0D) * 5.0D;
+			final double z = (rand.nextDouble() * 2 - 1.0D) * 5.0D;
+			return new Vector3(x, 220.0D, z);
+		}
+		
 		return null;
 	}
 
 	@Override
 	public void onSpaceDimensionChanged(World newWorld, EntityPlayerMP player) 
 	{
-		if (player instanceof GCCorePlayerMP && ((GCCorePlayerMP) player).teleportCooldown <= 0)
+		if (!GCCoreConfigManager.disableLander && player instanceof GCCorePlayerMP && ((GCCorePlayerMP) player).teleportCooldown <= 0)
 		{
 			GCCorePlayerMP gcPlayer = (GCCorePlayerMP) player;
 			

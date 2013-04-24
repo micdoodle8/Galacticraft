@@ -163,6 +163,7 @@ public class GCCoreConfigManager
 	public static boolean hiresTextures;
 	public static boolean enableBCLoading;
 	public static double spaceStationEnergyScalar;
+	public static boolean disableLander;
 
 	private void setDefaultValues()
     {
@@ -290,6 +291,7 @@ public class GCCoreConfigManager
 	        GCCoreConfigManager.enableBCLoading =						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Load Basic Components", 				false, "Set to true if you wish Basic Components to load inside Galacticraft")		.getBoolean(false);
 	        GCCoreConfigManager.spaceStationEnergyScalar = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Space Station Solar Energy Multiplier", 3.0, "If Mekanism is installed, solar panels will work (default 3x) more effective on space stations.")		.getDouble(3.0);
 	        GCCoreConfigManager.sealableIDs = 							GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "External Sealable IDs", 				new String[] {String.valueOf(Block.glass.blockID + ":0"), String.valueOf(Block.thinGlass.blockID + ":0")}, "List IDs from other mods that the Oxygen Sealer should recognize as solid blocks. Format is ID:METADATA").getStringList();
+	        GCCoreConfigManager.disableLander =							GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Lander", 					false, "Set to true if you do not want to use the new Moon Lander feature, and land on the moon with a parachute instead.")		.getBoolean(false);
 		}
 		catch (final Exception e)
 		{
