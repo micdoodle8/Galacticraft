@@ -117,7 +117,7 @@ import cpw.mods.fml.relauncher.Side;
 	version=GalacticraftCore.LOCALMAJVERSION + "." + GalacticraftCore.LOCALMINVERSION + "." + GalacticraftCore.LOCALBUILDVERSION,
 	useMetadata = true,
 	modid=GalacticraftCore.MODID,
-	dependencies = "required-after:Forge@[7.7.1.650,)"
+	dependencies = "required-after:Forge@[7.7.1.662,)"
 )
 @NetworkMod(
 	channels = {GalacticraftCore.CHANNEL, BasicComponents.CHANNEL},
@@ -174,9 +174,9 @@ public class GalacticraftCore
 	public static final CustomDamageSource spaceshipCrash = (CustomDamageSource) new CustomDamageSource("spaceshipCrash").setDeathMessage("%1$s was in a spaceship crash!").setDamageBypassesArmor();
 	public static final CustomDamageSource oxygenSuffocation = (CustomDamageSource) new CustomDamageSource("oxygenSuffocation").setDeathMessage("%1$s ran out of oxygen!").setDamageBypassesArmor();
 
-	public static double BuildcraftEnergyScalar = 0.2;
-	public static double IC2EnergyScalar = 0.2;
-
+	public static double toBuildcraftEnergyScalar = 0.04D;
+	public static double fromBuildcraftEnergyScalar = 25.0D;
+	
 	public static boolean usingDevVersion = false;
 
 	public static ArrayList<Integer> hiddenItems = new ArrayList<Integer>();
