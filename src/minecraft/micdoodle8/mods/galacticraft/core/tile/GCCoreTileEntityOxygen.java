@@ -13,9 +13,9 @@ public abstract class GCCoreTileEntityOxygen extends GCCoreTileEntityElectric im
 	public int storedOxygen;
 	public static int timeSinceOxygenRequest;
 	
-	public GCCoreTileEntityOxygen(int ueWattsPerTick, double ic2MaxEnergy, double ic2EnergyPerTick, int maxOxygen, int oxygenPerTick) 
+	public GCCoreTileEntityOxygen(int ueWattsPerTick, double ic2MaxEnergy, double bcEnergyPerTick, double ic2EnergyPerTick, int maxOxygen, int oxygenPerTick) 
 	{
-		super(ueWattsPerTick, ic2MaxEnergy, ic2EnergyPerTick);
+		super(ueWattsPerTick, ic2MaxEnergy, ic2EnergyPerTick, bcEnergyPerTick);
 		this.maxOxygen = maxOxygen;
 		this.oxygenPerTick = oxygenPerTick;
 	}

@@ -47,7 +47,7 @@ public class GCCoreGuiAirDistributor extends GuiContainer
 
     private String getStatus()
     {
-    	if (this.distributor.storedOxygen >= 1 && (this.distributor.wattsReceived > 0 || this.distributor.ic2Energy > 0))
+    	if (this.distributor.storedOxygen >= 1 && (this.distributor.wattsReceived > 0 || this.distributor.ic2Energy > 0 || this.distributor.bcEnergy > 0))
     	{
     		return EnumColor.DARK_GREEN + "Active";
     	}
@@ -57,7 +57,7 @@ public class GCCoreGuiAirDistributor extends GuiContainer
     		return EnumColor.DARK_RED + "Not Enough Oxygen";
     	}
 
-    	if (this.distributor.wattsReceived == 0 && this.distributor.ic2Energy == 0)
+    	if (this.distributor.wattsReceived == 0 && this.distributor.ic2Energy == 0 && this.distributor.bcEnergy == 0)
     	{
     		return EnumColor.DARK_RED + "Not Enough Power";
     	}

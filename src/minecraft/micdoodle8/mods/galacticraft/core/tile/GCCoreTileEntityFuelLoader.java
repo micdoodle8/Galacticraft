@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import micdoodle8.mods.galacticraft.API.IFuelTank;
 import micdoodle8.mods.galacticraft.API.IFuelable;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemFuelCanister;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
@@ -40,7 +39,7 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric impleme
 
 	public GCCoreTileEntityFuelLoader() 
 	{
-		super(300, 130, 1);
+		super(300, 130, 1, 1.0D);
 	}
 	
 	public int getScaledFuelLevel(int i)
@@ -313,8 +312,7 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric impleme
 	@Override
 	public boolean isStackValidForSlot(int slotID, ItemStack itemstack)
 	{
-		return slotID == 1 ? itemstack.getItem() instanceof IFuelTank && itemstack.getMaxDamage() - itemstack.getItemDamage() != 0 && itemstack.getItemDamage() < itemstack.getMaxDamage()
-				: slotID == 0 ? itemstack.getItem() instanceof IItemElectric : false;
+		return slotID == 1 ? true : slotID == 0 ? itemstack.getItem() instanceof IItemElectric : false;
 	}
 
 	@Override
@@ -382,13 +380,14 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric impleme
 			this.fuelTank.setLiquid(new LiquidStack(GCCoreItems.fuel.itemID, data.readInt(), 0));
 			this.disabled = data.readBoolean();
 			this.disableCooldown = data.readInt();
+			this.bcEnergy = data.readDouble();
 		}
 	}
 
 	@Override
 	public Packet getPacket() 
 	{
-		return PacketManager.getPacket(BasicComponents.CHANNEL, this, this.wattsReceived, this.ic2Energy, this.fuelTank.getLiquid() == null ? 0 : this.fuelTank.getLiquid().amount, this.disabled, this.disableCooldown);
+		return PacketManager.getPacket(BasicComponents.CHANNEL, this, this.wattsReceived, this.ic2Energy, this.fuelTank.getLiquid() == null ? 0 : this.fuelTank.getLiquid().amount, this.disabled, this.disableCooldown, this.bcEnergy);
 	}
 
 	@Override

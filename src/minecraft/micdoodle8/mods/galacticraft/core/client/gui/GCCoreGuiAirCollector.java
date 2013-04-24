@@ -48,7 +48,7 @@ public class GCCoreGuiAirCollector extends GuiContainer
 
     private String getStatus()
     {
-    	if (this.collector.getPower() > 1 && (this.collector.wattsReceived > 0 || this.collector.ic2Energy > 0))
+    	if (this.collector.getPower() > 1 && (this.collector.wattsReceived > 0 || this.collector.ic2Energy > 0 || this.collector.bcEnergy > 0))
     	{
     		return EnumColor.DARK_GREEN + "Active";
     	}
@@ -58,7 +58,7 @@ public class GCCoreGuiAirCollector extends GuiContainer
     		return EnumColor.DARK_RED + "Not Enough Leaf Blocks";
     	}
 
-    	if (this.collector.wattsReceived == 0 && this.collector.ic2Energy == 0)
+    	if (this.collector.wattsReceived == 0 && this.collector.ic2Energy == 0 && this.collector.bcEnergy == 0)
     	{
     		return EnumColor.DARK_RED + "Not Enough Power";
     	}

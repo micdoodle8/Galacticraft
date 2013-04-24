@@ -83,7 +83,7 @@ public class GCCoreGuiAirSealer extends GuiContainer
     		return EnumColor.DARK_RED + "Not Enough Oxygen";
     	}
 
-    	if (this.sealer.wattsReceived == 0 && this.sealer.ic2Energy == 0)
+    	if (this.sealer.wattsReceived == 0 && this.sealer.ic2Energy == 0 && this.sealer.bcEnergy == 0)
     	{
     		return EnumColor.DARK_RED + "Not Enough Power";
     	}

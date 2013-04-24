@@ -35,7 +35,7 @@ public class GCCoreTileEntityOxygenDistributor extends GCCoreTileEntityOxygen im
 
     public GCCoreTileEntityOxygenDistributor()
     {
-		super(300, 130, 1, 6000, 12);
+		super(300, 130, 1, 0.75D, 6000, 12);
 	}
 	
     @Override
@@ -299,13 +299,14 @@ public class GCCoreTileEntityOxygenDistributor extends GCCoreTileEntityOxygen im
 			this.wattsReceived = data.readDouble();
 			this.ic2Energy = data.readDouble();
 			this.disabled = data.readBoolean();
+			this.bcEnergy = data.readDouble();
 		}
 	}
 
 	@Override
 	public Packet getPacket() 
 	{
-		return PacketManager.getPacket(BasicComponents.CHANNEL, this, this.storedOxygen, this.wattsReceived, this.ic2Energy, this.disabled);
+		return PacketManager.getPacket(BasicComponents.CHANNEL, this, this.storedOxygen, this.wattsReceived, this.ic2Energy, this.disabled, this.bcEnergy);
 	}
 
 	@Override
@@ -329,6 +330,6 @@ public class GCCoreTileEntityOxygenDistributor extends GCCoreTileEntityOxygen im
 	@Override
 	public boolean shouldPullOxygen() 
 	{
-		return this.ic2Energy > 0 || this.wattsReceived > 0;
+		return this.ic2Energy > 0 || this.wattsReceived > 0 || this.bcEnergy > 0;
 	}
 }

@@ -58,7 +58,7 @@ public class GCCoreGuiAirCompressor extends GuiContainer
     		return EnumColor.DARK_RED + "Oxygen Tank Full";
     	}
 
-    	if (this.compressor.wattsReceived == 0 && this.compressor.ic2Energy == 0)
+    	if (this.compressor.wattsReceived == 0 && this.compressor.ic2Energy == 0 && this.compressor.bcEnergy == 0)
     	{
     		return EnumColor.DARK_RED + "Not Enough Power";
     	}

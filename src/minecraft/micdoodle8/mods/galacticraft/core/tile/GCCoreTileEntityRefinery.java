@@ -49,7 +49,7 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
 
 	public GCCoreTileEntityRefinery() 
 	{
-		super(600, 130, 1);
+		super(600, 130, 1, 1.0D);
 	}
 	
 	@Override
@@ -449,13 +449,14 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
 			this.oilTank.setLiquid(new LiquidStack(GCCoreBlocks.crudeOilStill.blockID, data.readInt(), 0));
 			this.fuelTank.setLiquid(new LiquidStack(GCCoreItems.fuel.itemID, data.readInt(), 0));
 			this.disabled = data.readBoolean();
+			this.bcEnergy = data.readDouble();
 		}
 	}
 
 	@Override
 	public Packet getPacket() 
 	{
-		return PacketManager.getPacket(BasicComponents.CHANNEL, this, this.wattsReceived, this.processTicks, this.ic2Energy, this.oilTank.getLiquid() == null ? 0 : this.oilTank.getLiquid().amount, this.fuelTank.getLiquid() == null ? 0 : this.fuelTank.getLiquid().amount, this.disabled);
+		return PacketManager.getPacket(BasicComponents.CHANNEL, this, this.wattsReceived, this.processTicks, this.ic2Energy, this.oilTank.getLiquid() == null ? 0 : this.oilTank.getLiquid().amount, this.fuelTank.getLiquid() == null ? 0 : this.fuelTank.getLiquid().amount, this.disabled, this.bcEnergy);
 	}
 
 	@Override

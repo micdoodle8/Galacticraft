@@ -83,7 +83,7 @@ public class GCCoreGuiFuelLoader extends GuiContainer
     		return EnumColor.DARK_RED + "No Fuel to Load!";
     	}
     	
-    	if (this.fuelLoader.getStackInSlot(0) == null && (this.fuelLoader.wattsReceived == 0 && this.fuelLoader.ic2Energy == 0))
+    	if (this.fuelLoader.getStackInSlot(0) == null && (this.fuelLoader.wattsReceived == 0 && this.fuelLoader.ic2Energy == 0 && this.fuelLoader.bcEnergy == 0))
     	{
     		return EnumColor.DARK_RED + "Not Enough Power";
     	}
@@ -93,7 +93,7 @@ public class GCCoreGuiFuelLoader extends GuiContainer
     		return EnumColor.ORANGE + "Ready";
     	}
 
-    	if (this.fuelLoader.wattsReceived > 0 || this.fuelLoader.ic2Energy > 0)
+    	if (this.fuelLoader.wattsReceived > 0 || this.fuelLoader.ic2Energy > 0 || this.fuelLoader.bcEnergy > 0)
     	{
     		return EnumColor.DARK_GREEN + "Active";
     	}

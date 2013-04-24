@@ -37,7 +37,7 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
 	
 	public GCCoreTileEntityOxygenSealer()
 	{
-		super(300, 130, 1, 6000, 6);
+		super(300, 130, 1, 0.75D, 6000, 6);
 	}
 
 	@Override
@@ -282,13 +282,14 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
 			this.disabled = data.readBoolean();
 			this.ic2Energy = data.readDouble();
 			this.sealed = data.readBoolean();
+			this.bcEnergy = data.readDouble();
 		}
 	}
 
 	@Override
 	public Packet getPacket()
 	{
-		return PacketManager.getPacket(BasicComponents.CHANNEL, this, this.storedOxygen, this.wattsReceived, this.disabled, this.ic2Energy, this.sealed);
+		return PacketManager.getPacket(BasicComponents.CHANNEL, this, this.storedOxygen, this.wattsReceived, this.disabled, this.ic2Energy, this.sealed, this.bcEnergy);
 	}
 
 	@Override
@@ -312,6 +313,6 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
 	@Override
 	public boolean shouldPullOxygen() 
 	{
-		return this.ic2Energy > 0 || this.wattsReceived > 0;
+		return this.ic2Energy > 0 || this.wattsReceived > 0 || this.bcEnergy > 0;
 	}
 }

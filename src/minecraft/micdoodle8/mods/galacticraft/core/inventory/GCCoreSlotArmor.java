@@ -55,7 +55,7 @@ public class GCCoreSlotArmor extends Slot
     /**
      * Returns the icon index on items.png that is used as background image of the slot.
      */
-    public Icon getBackgrounditemIcon()
+    public Icon getBackgroundIconIndex()
     {
         return ItemArmor.func_94602_b(this.armorType);
     }

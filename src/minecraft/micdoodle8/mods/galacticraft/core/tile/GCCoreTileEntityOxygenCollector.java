@@ -47,7 +47,7 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityElectric im
 
     public GCCoreTileEntityOxygenCollector() 
     {
-		super(200, 130, 1);
+		super(200, 130, 1, 0.75D);
 	}
     
 	public int getCappedScaledOxygenLevel(int scale)
@@ -343,13 +343,14 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityElectric im
 			this.wattsReceived = data.readDouble();
 			this.ic2Energy = data.readDouble();
 			this.disabled = data.readBoolean();
+			this.bcEnergy = data.readDouble();
 		}
 	}
 
 	@Override
 	public Packet getPacket() 
 	{
-		return PacketManager.getPacket(BasicComponents.CHANNEL, this, this.power, this.wattsReceived, this.ic2Energy, this.disabled);
+		return PacketManager.getPacket(BasicComponents.CHANNEL, this, this.power, this.wattsReceived, this.ic2Energy, this.disabled, this.bcEnergy);
 	}
 
 	@Override

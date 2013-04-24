@@ -1,12 +1,14 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import ic2.api.Direction;
+import ic2.api.IWrenchable;
 import ic2.api.energy.event.EnergyTileLoadEvent;
 import ic2.api.energy.event.EnergyTileUnloadEvent;
 import ic2.api.energy.tile.IEnergySink;
 import micdoodle8.mods.galacticraft.API.IDisableableMachine;
 import micdoodle8.mods.galacticraft.core.GCCoreCompatibilityManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -14,6 +16,7 @@ import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.MinecraftForge;
 import universalelectricity.core.electricity.ElectricityPack;
@@ -22,15 +25,23 @@ import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.IPacketReceiver;
 import universalelectricity.prefab.network.PacketManager;
 import universalelectricity.prefab.tile.TileEntityElectricityRunnable;
+import buildcraft.api.power.IPowerProvider;
+import buildcraft.api.power.IPowerReceptor;
+import buildcraft.api.power.PowerFramework;
 
 import com.google.common.io.ByteArrayDataInput;
 
-public abstract class GCCoreTileEntityElectric extends TileEntityElectricityRunnable implements IEnergySink, IPacketReceiver, IDisableableMachine
+import cpw.mods.fml.common.FMLLog;
+
+public abstract class GCCoreTileEntityElectric extends TileEntityElectricityRunnable implements IWrenchable, IPowerReceptor, IEnergySink, IPacketReceiver, IDisableableMachine
 {
 	public int ueWattsPerTick;
-	public double ic2MaxEnergy;
+	public double maxEnergy;
 	public double ic2Energy;
 	public double ic2EnergyPerTick;
+	public IPowerProvider bcPowerProvider;
+	public double bcEnergy;
+	public double bcEnergyPerTick;
 
 	public boolean addedToEnergyNet = false;
 
@@ -47,11 +58,18 @@ public abstract class GCCoreTileEntityElectric extends TileEntityElectricityRunn
 	
 	public abstract ItemStack getBatteryInSlot();
 	
-	public GCCoreTileEntityElectric(int ueWattsPerTick, double ic2MaxEnergy, double ic2EnergyPerTick)
+	public GCCoreTileEntityElectric(int ueWattsPerTick, double maxEnergy, double ic2EnergyPerTick, double bcEnergyPerTick)
 	{
 		this.ueWattsPerTick = ueWattsPerTick;
-		this.ic2MaxEnergy = ic2MaxEnergy;
+		this.maxEnergy = maxEnergy;
 		this.ic2EnergyPerTick = ic2EnergyPerTick;
+		this.bcEnergyPerTick = bcEnergyPerTick;
+		
+		if(PowerFramework.currentFramework != null)
+		{
+			bcPowerProvider = new GCCoreLinkedPowerProvider(this);
+			bcPowerProvider.configure(20, 1, 10, 10, (int)(maxEnergy * GalacticraftCore.toBuildcraftEnergyScalar));
+		}
 	}
 
 	@Override
@@ -113,6 +131,8 @@ public abstract class GCCoreTileEntityElectric extends TileEntityElectricityRunn
 		{
 			this.ic2Energy = Math.max(this.ic2Energy - ic2EnergyPerTick, 0);
 			
+			this.getPowerProvider().useEnergy(0, (float) this.bcEnergyPerTick / 2.0F, true);
+			
 			if (this.shouldPullEnergy())
 			{
 				this.wattsReceived += ElectricItemHelper.dechargeItem(this.getBatteryInSlot(), this.ueWattsPerTick, this.getVoltage());
@@ -170,10 +190,10 @@ public abstract class GCCoreTileEntityElectric extends TileEntityElectricityRunn
 	    
 	    int rejects = 0;
 	    
-	    if (this.ic2Energy > this.ic2MaxEnergy)
+	    if (this.ic2Energy > this.maxEnergy)
 	    {
-	    	rejects = (int) (this.ic2Energy - this.ic2MaxEnergy);
-	    	this.ic2Energy = this.ic2MaxEnergy;
+	    	rejects = (int) (this.ic2Energy - this.maxEnergy);
+	    	this.ic2Energy = this.maxEnergy;
 	    }
 	    
 	    return rejects;
@@ -182,7 +202,7 @@ public abstract class GCCoreTileEntityElectric extends TileEntityElectricityRunn
 	@Override
 	public int demandsEnergy()
 	{
-		return (int) (shouldPullEnergy() ? this.ic2MaxEnergy - this.ic2Energy : 0);
+		return (int) (shouldPullEnergy() ? this.maxEnergy - this.ic2Energy : 0);
 	}
 
 	@Override
@@ -223,5 +243,84 @@ public abstract class GCCoreTileEntityElectric extends TileEntityElectricityRunn
 	public boolean getDisabled()
 	{
 		return this.disabled;
+	}
+
+	@Override
+	public void setPowerProvider(IPowerProvider provider)
+	{
+		;
+	}
+
+	@Override
+	public IPowerProvider getPowerProvider()
+	{
+		return this.bcPowerProvider;
+	}
+
+	@Override
+	public void doWork()
+	{
+		;
+	}
+
+	@Override
+	public int powerRequest(ForgeDirection from)
+	{
+		return (int)Math.min(((this.maxEnergy - this.bcEnergy) * GalacticraftCore.toBuildcraftEnergyScalar), 100);
+	}
+
+	@Override
+	public boolean wrenchCanSetFacing(EntityPlayer entityPlayer, int side)
+	{
+		return true;
+	}
+
+	@Override
+	public short getFacing()
+	{
+		return (short) this.worldObj.getBlockMetadata(MathHelper.floor_double(this.xCoord), MathHelper.floor_double(this.yCoord), MathHelper.floor_double(this.zCoord));
+	}
+
+	@Override
+	public void setFacing(short facing)
+	{
+		int change = 0;
+
+		// Re-orient the block
+		switch (this.getFacing())
+		{
+			case 0:
+				change = 3;
+				break;
+			case 3:
+				change = 1;
+				break;
+			case 1:
+				change = 2;
+				break;
+			case 2:
+				change = 0;
+				break;
+		}
+
+		this.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(this.xCoord), MathHelper.floor_double(this.yCoord), MathHelper.floor_double(this.zCoord), change, 3);
+	}
+
+	@Override
+	public boolean wrenchCanRemove(EntityPlayer entityPlayer)
+	{
+		return true;
+	}
+
+	@Override
+	public float getWrenchDropRate()
+	{
+		return 1.0F;
+	}
+
+	@Override
+	public ItemStack getWrenchDrop(EntityPlayer entityPlayer)
+	{
+		return Block.blocksList[getBlockType().blockID].getPickBlock(null, worldObj, xCoord, yCoord, zCoord);
 	}
 }
