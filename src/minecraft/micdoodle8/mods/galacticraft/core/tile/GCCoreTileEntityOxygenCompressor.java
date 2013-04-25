@@ -30,7 +30,7 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityOxygen imp
 	
 	public GCCoreTileEntityOxygenCompressor()
 	{
-		super (300, 130, 1, 0.75D, 1200, 125);
+		super (300, 130, 1, 0.75D, 1200, 12);
 	}
 
 	@Override

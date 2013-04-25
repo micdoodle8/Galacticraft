@@ -65,7 +65,7 @@ public abstract class GCCoreTileEntityElectric extends TileEntityElectricityRunn
 		this.ic2EnergyPerTick = ic2EnergyPerTick;
 		this.bcEnergyPerTick = bcEnergyPerTick;
 		
-		if(PowerFramework.currentFramework != null)
+		if (PowerFramework.currentFramework != null)
 		{
 			bcPowerProvider = new GCCoreLinkedPowerProvider(this);
 			bcPowerProvider.configure(20, 1, 10, 10, (int)(maxEnergy * GalacticraftCore.toBuildcraftEnergyScalar));

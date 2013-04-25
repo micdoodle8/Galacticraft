@@ -124,7 +124,7 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityElectric im
 					}
 				}
 				
-				this.setPower(power / 5.0D);
+				this.setPower(power / 1.2D);
 			}
 			else
 			{
