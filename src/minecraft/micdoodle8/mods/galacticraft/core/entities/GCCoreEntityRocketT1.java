@@ -150,7 +150,7 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
         	}
         }
 
-        if (this.rocketSoundUpdater != null)
+        if (this.rocketSoundUpdater != null && (this.ignite == 1 || this.getLaunched() == 1))
         {
             this.rocketSoundUpdater.update();
         }
@@ -199,7 +199,7 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
 
     public Packet getDescriptionPacket()
 	{
-		final Packet p = GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.spaceshipFuelTank.getLiquid() == null ? 0 : this.spaceshipFuelTank.getLiquid().amount);
+		final Packet p = GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.spaceshipFuelTank.getLiquid() == null ? 0 : this.spaceshipFuelTank.getLiquid().amount, this.launched, this.ignite);
 		return p;
 	}
 
@@ -211,6 +211,8 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
 			if (this.worldObj.isRemote)
 			{
 				this.spaceshipFuelTank.setLiquid(new LiquidStack(GCCoreItems.fuel.itemID, dataStream.readInt(), 0));
+				this.launched = dataStream.readBoolean();
+				this.ignite = dataStream.readInt();
 			}
 		}
 		catch (final Exception e)
