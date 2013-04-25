@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
+import icbm.api.RadarRegistry;
+
 import java.util.Iterator;
 import java.util.List;
 
@@ -44,6 +46,17 @@ public class GCCoreEntityMeteor extends Entity
     }
 
     @Override
+    public void setDead()
+    {
+    	super.setDead();
+    	
+    	if (RadarRegistry.getEntities().contains(this))
+    	{
+    		RadarRegistry.unregister(this);
+    	}
+    }
+
+    @Override
 	public void onUpdate()
     {
     	this.setRotation(this.rotationYaw + 2F, this.rotationPitch + 2F);
@@ -52,6 +65,11 @@ public class GCCoreEntityMeteor extends Entity
         this.prevPosZ = this.posZ;
         this.motionY -= 0.03999999910593033D;
         this.moveEntity(this.motionX, this.motionY, this.motionZ);
+        
+        if (this.posY <= 100 && !RadarRegistry.getEntities().contains(this))
+        {
+            RadarRegistry.register(this);
+        }
 
         if (this.worldObj.isRemote)
         {
