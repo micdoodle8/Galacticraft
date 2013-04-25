@@ -77,7 +77,7 @@ public class GCCoreGuiAirCollector extends GuiContainer
 
 		if (this.collector != null)
 		{
-			final int scale = (int) (this.collector.getPower() / 34 * 54);
+			final int scale = (int) (this.collector.getPower() / this.collector.MAX_POWER * 54);
 			this.drawTexturedModalRect(var5 + 108, var6 + 26, 176, 0, Math.min(scale, 54), 16);
 		}
 	}

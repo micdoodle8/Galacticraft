@@ -42,11 +42,6 @@ public abstract class GCCoreTileEntityOxygen extends GCCoreTileEntityElectric im
 			}
 			
 			this.storedOxygen = (int) Math.max(this.storedOxygen - this.oxygenPerTick, 0);
-			
-			if (GCCoreTileEntityOxygenCompressor.timeSinceOxygenRequest > 0)
-			{
-				GCCoreTileEntityOxygenCompressor.timeSinceOxygenRequest--;
-			}
 		}
 	}
 
