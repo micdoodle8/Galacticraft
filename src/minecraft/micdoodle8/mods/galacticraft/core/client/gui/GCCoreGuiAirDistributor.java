@@ -36,7 +36,7 @@ public class GCCoreGuiAirDistributor extends GuiContainer
         this.fontRenderer.drawString("In:", 90, 31, 4210752);
         String status = "Status: " + this.getStatus();
         this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 50, 4210752);
-        status = "Oxygen Input: " + Math.round((this.distributor.getCappedScaledOxygenLevel(100)) * 10.0D) / 10.0D + "%";
+        status = "Oxygen Input: " + Math.round((this.distributor.getCappedScaledOxygenLevel(1000)) * 10.0D) / 100.0D + "%";
         this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 60, 4210752);
         status = ElectricityDisplay.getDisplay(this.distributor.ueWattsPerTick * 20, ElectricUnit.WATT);
         this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 70, 4210752);

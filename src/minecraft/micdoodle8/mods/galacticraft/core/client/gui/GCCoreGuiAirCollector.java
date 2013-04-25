@@ -37,7 +37,7 @@ public class GCCoreGuiAirCollector extends GuiContainer
         this.fontRenderer.drawString("Out:", 87, 31, 4210752);
         String status = "Status: " + this.getStatus();
         this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 50, 4210752);
-        status = "Oxygen Output: " + Math.round(this.collector.getCappedScaledOxygenLevel(100) * 10.0D) / 10.0D + "%";
+        status = "Oxygen Output: " + Math.round(this.collector.getCappedScaledOxygenLevel(1000) * 10.0D) / 100.0D + "%";
         this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 60, 4210752);
         status = ElectricityDisplay.getDisplay(GCCoreTileEntityOxygenCollector.WATTS_PER_TICK * 20, ElectricUnit.WATT);
         this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 70, 4210752);
