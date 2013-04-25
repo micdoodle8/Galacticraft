@@ -30,7 +30,7 @@ public class GCCorePacketSpaceStationData implements IGalacticraftAdvancedPacket
 
         try
         {
-        	data.writeByte(GCCorePacketSpaceStationData.packetID);
+        	data.writeInt(GCCorePacketSpaceStationData.packetID);
         	data.writeInt(var1);
 
             final byte[] bytes2 = CompressedStreamTools.compress(var2);

@@ -26,7 +26,7 @@ public class GCCorePacketSchematicList implements IGalacticraftAdvancedPacket
 
         try
         {
-        	data.writeByte(GCCorePacketSchematicList.packetID);
+        	data.writeInt(GCCorePacketSchematicList.packetID);
         	data.writeInt(col.size());
             final Iterator var3 = col.iterator();
 

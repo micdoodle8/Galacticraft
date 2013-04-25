@@ -25,7 +25,7 @@ public class GCCorePacketDimensionListSpaceStations implements IGalacticraftAdva
 
         try
         {
-        	data.writeByte(GCCorePacketDimensionListSpaceStations.packetID);
+        	data.writeInt(GCCorePacketDimensionListSpaceStations.packetID);
         	data.writeInt(col.size());
             final Iterator var3 = col.iterator();
 

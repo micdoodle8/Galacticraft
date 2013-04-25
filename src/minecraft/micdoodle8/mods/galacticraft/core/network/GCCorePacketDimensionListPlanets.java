@@ -26,7 +26,7 @@ public class GCCorePacketDimensionListPlanets implements IGalacticraftAdvancedPa
 
         try
         {
-        	data.writeByte(GCCorePacketDimensionListPlanets.packetID);
+        	data.writeInt(GCCorePacketDimensionListPlanets.packetID);
         	data.writeInt(col.size());
             final Iterator var3 = col.iterator();
 

@@ -49,6 +49,7 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 import universalelectricity.core.vector.Vector3;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class WorldUtil
@@ -594,6 +595,20 @@ public class WorldUtil
     {
         if (!world.isRemote)
         {
+            final MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+
+            if (server != null)
+            {
+                final ArrayList array = new ArrayList();
+
+                for (int i : WorldUtil.registeredPlanets)
+                {
+                	array.add(i);
+                }
+
+                server.getConfigurationManager().sendPacketToAllPlayers(GCCorePacketDimensionListPlanets.buildDimensionListPacket(array));
+            }
+            
             if (WorldUtil.mcServer == null)
             {
                 WorldUtil.mcServer = FMLCommonHandler.instance().getMinecraftServerInstance();
@@ -816,23 +831,6 @@ public class WorldUtil
                   	var8.chestSpawnCooldown = 200;
               	}
           	}
-        }
-
-        if (var1 instanceof EntityPlayer)
-        {
-            final MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
-
-            if (server != null)
-            {
-                final ArrayList array = new ArrayList();
-
-                for (final int i : WorldUtil.registeredPlanets)
-                {
-                	array.add(i);
-                }
-
-                server.getConfigurationManager().sendPacketToAllPlayers(GCCorePacketDimensionListPlanets.buildDimensionListPacket(array));
-            }
         }
 
         if (var1 != null && var6 != null)
