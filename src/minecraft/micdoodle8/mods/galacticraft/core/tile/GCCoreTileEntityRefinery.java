@@ -151,7 +151,7 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
 	{
 		if (!this.worldObj.isRemote)
 		{
-			PacketManager.sendPacketToClients(this.getDescriptionPacket(), this.worldObj, new Vector3(this), 15);
+			PacketManager.sendPacketToClients(this.getPacket(), this.worldObj, new Vector3(this), 15);
 		}
 		this.playersUsing++;
 	}
