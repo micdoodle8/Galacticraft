@@ -13,7 +13,7 @@ import cpw.mods.fml.relauncher.Side;
 
 public class GCCorePacketControllableEntity implements IGalacticraftAdvancedPacket
 {
-	public static final byte packetID = 12;
+	public static final int packetID = 12;
 
 	public static Packet buildKeyPacket(int key)
 	{
@@ -25,7 +25,7 @@ public class GCCorePacketControllableEntity implements IGalacticraftAdvancedPack
 
         try
         {
-        	data.write(GCCorePacketControllableEntity.packetID);
+        	data.writeInt(GCCorePacketControllableEntity.packetID);
         	data.writeInt(key);
 
         	packet.data = bytes.toByteArray();

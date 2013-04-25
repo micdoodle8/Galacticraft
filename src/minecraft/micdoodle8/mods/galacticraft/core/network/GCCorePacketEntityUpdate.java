@@ -14,7 +14,7 @@ import cpw.mods.fml.relauncher.Side;
 
 public class GCCorePacketEntityUpdate implements IGalacticraftAdvancedPacket
 {
-	public static final byte packetID = 14;
+	public static final int packetID = 14;
 
 	public static Packet buildUpdatePacket(GCCoreEntityControllable driveable)
 	{
@@ -26,7 +26,7 @@ public class GCCorePacketEntityUpdate implements IGalacticraftAdvancedPacket
 
         try
         {
-        	data.write(GCCorePacketEntityUpdate.packetID);
+        	data.writeInt(GCCorePacketEntityUpdate.packetID);
         	data.writeInt(driveable.entityId);
         	data.writeDouble(driveable.posX);
         	data.writeDouble(driveable.posY);
