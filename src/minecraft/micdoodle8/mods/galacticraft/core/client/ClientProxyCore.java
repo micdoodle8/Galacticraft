@@ -101,6 +101,7 @@ import micdoodle8.mods.galacticraft.moon.client.ClientProxyMoon;
 import micdoodle8.mods.galacticraft.moon.client.GCMoonMapPlanet;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.SoundPoolEntry;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.particle.EntityFX;
@@ -172,32 +173,15 @@ public class ClientProxyCore extends CommonProxyCore
     public static float playerRotationPitch;
 
     public static int clientSpaceStationID = 0;
+    
+    private GCCoreThreadDownloadSound downloadResourcesThread;
+    
+    public static ArrayList<SoundPoolEntry> newMusic = new ArrayList<SoundPoolEntry>();
 
 	@Override
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		ClientProxyCore.moon.preInit(event);
-
-//		try
-//		{
-//			PlayerAPI.register(GalacticraftCore.MODID, GCCorePlayerBaseClient.class);
-//		}
-//		catch (Exception cnfe)
-//		{
-//			GCLog.severe("PLAYER API NOT INSTALLED!");
-//			cnfe.printStackTrace();
-//		}
-//
-//		try
-//		{
-//			ModelPlayerAPI.register(GalacticraftCore.MODID, GCCoreModelPlayer.class);
-//			RenderPlayerAPI.register(GalacticraftCore.MODID, GCCoreRenderPlayer.class);
-//		}
-//		catch (Exception cnfe)
-//		{
-//			GCLog.severe("RENDER PLAYER API NOT INSTALLED!");
-//			cnfe.printStackTrace();
-//		}
 
 		MinecraftForge.EVENT_BUS.register(new GCCoreSounds());
 		ClientProxyCore.getFirstBootTime = System.currentTimeMillis();
@@ -207,6 +191,16 @@ public class ClientProxyCore extends CommonProxyCore
 	public void init(FMLInitializationEvent event)
 	{
 		ClientProxyCore.moon.init(event);
+
+        try
+        {
+            this.downloadResourcesThread = new GCCoreThreadDownloadSound(FMLClientHandler.instance().getClient().getMinecraftDir(), FMLClientHandler.instance().getClient());
+            this.downloadResourcesThread.start();
+        }
+        catch (Exception exception)
+        {
+            ;
+        }
 
 		TickRegistry.registerTickHandler(new GCCoreTickHandlerClient(), Side.CLIENT);
 		TickRegistry.registerScheduledTickHandler(new GCCoreTickHandlerSlowClient(), Side.CLIENT);

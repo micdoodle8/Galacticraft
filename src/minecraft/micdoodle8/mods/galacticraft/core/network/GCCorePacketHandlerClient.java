@@ -402,7 +402,7 @@ public class GCCorePacketHandlerClient implements IPacketHandler
         }
         else if (packetType == 23)
         {
-            player.playSound("entity.bossdeath", 10.0F, 0.8F);
+            player.playSound("galacticraft.entity.bossdeath", 10.0F, 0.8F);
         }
         else if (packetType == 24)
         {
@@ -410,7 +410,7 @@ public class GCCorePacketHandlerClient implements IPacketHandler
         }
         else if (packetType == 25)
         {
-        	player.playSound("entity.bosslaugh", 10.0F, 0.2F);
+        	player.playSound("galacticraft.entity.bosslaugh", 10.0F, 0.2F);
         }
         else if (packetType == 26)
         {

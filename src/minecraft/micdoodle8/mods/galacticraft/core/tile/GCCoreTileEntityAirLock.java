@@ -205,7 +205,7 @@ public class GCCoreTileEntityAirLock extends GCCoreTileEntityAdvanced
 
                 if (changed)
                 {
-                	this.worldObj.playSoundEffect(var1 + var5, var2, var3 + var6 * var7, "player.openairlock", 1.0F, 1.0F);
+                	this.worldObj.playSoundEffect(var1 + var5, var2, var3 + var6 * var7, "galacticraft.player.openairlock", 1.0F, 1.0F);
                 }
 
                 return true;
@@ -236,7 +236,7 @@ public class GCCoreTileEntityAirLock extends GCCoreTileEntityAdvanced
 
                 if (changed)
                 {
-                	this.worldObj.playSoundEffect(var1 + var5, var2, var3 + var6 * var7, "player.closeairlock", 1.0F, 1.0F);
+                	this.worldObj.playSoundEffect(var1 + var5, var2, var3 + var6 * var7, "galacticraft.player.closeairlock", 1.0F, 1.0F);
                 }
 
                 return false;
