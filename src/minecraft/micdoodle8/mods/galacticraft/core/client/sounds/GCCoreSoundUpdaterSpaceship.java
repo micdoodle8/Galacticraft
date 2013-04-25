@@ -76,7 +76,7 @@ public class GCCoreSoundUpdaterSpaceship implements IUpdatePlayerListBox
 
         if (this.theSoundManager != null && this.theMinecart != null && this.theMinecart.posY < 250 && this.minecartMoveSoundVolume > 0.0F)
         {
-            this.theSoundManager.playEntitySound("shuttle.shuttle", this.theMinecart, this.minecartMoveSoundVolume, this.minecartSoundPitch, false);
+            this.theSoundManager.playEntitySound("galacticraft.shuttle.shuttle", this.theMinecart, 5.0F, this.minecartSoundPitch, false);
             this.silent = false;
             var1 = true;
         }
@@ -99,7 +99,7 @@ public class GCCoreSoundUpdaterSpaceship implements IUpdatePlayerListBox
             float var10 = MathHelper.clamp_float((float)this.minecartSpeed, 0.0F, 4.0F) / 4.0F;
             this.minecartRideSoundVolume = 0.0F + var10 * 0.75F;
             var10 = MathHelper.clamp_float(var10 * 2.0F, 0.0F, 1.0F);
-            this.minecartMoveSoundVolume = 0.0F + var10 * 0.7F;
+            this.minecartMoveSoundVolume = 0.0F + var10 * 6.7F;
 
             if (this.theMinecart.posY > 1000)
             {
