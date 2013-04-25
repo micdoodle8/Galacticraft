@@ -1,16 +1,18 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.ForgeDirection;
 import mekanism.api.EnumGas;
 import mekanism.api.IGasAcceptor;
 import mekanism.api.ITubeConnection;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.ForgeDirection;
+import cpw.mods.fml.common.FMLLog;
 
 public abstract class GCCoreTileEntityOxygen extends GCCoreTileEntityElectric implements IGasAcceptor, ITubeConnection
 {
 	public int maxOxygen;
 	public int oxygenPerTick;
 	public int storedOxygen;
+	public int lastStoredOxygen;
 	public static int timeSinceOxygenRequest;
 	
 	public GCCoreTileEntityOxygen(int ueWattsPerTick, double ic2MaxEnergy, double bcEnergyPerTick, double ic2EnergyPerTick, int maxOxygen, int oxygenPerTick) 
@@ -41,8 +43,17 @@ public abstract class GCCoreTileEntityOxygen extends GCCoreTileEntityElectric im
 				GCCoreTileEntityOxygenCompressor.timeSinceOxygenRequest--;
 			}
 			
+			this.oxygenPerTick = (int) (this.storedOxygen / 250.0F);
+			
+			if (this.storedOxygen == this.lastStoredOxygen && this.storedOxygen < 250)
+			{
+				this.oxygenPerTick = 1;
+			}
+			
 			this.storedOxygen = (int) Math.max(this.storedOxygen - this.oxygenPerTick, 0);
 		}
+		
+		this.lastStoredOxygen = this.storedOxygen;
 	}
 
 	@Override
