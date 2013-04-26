@@ -338,9 +338,9 @@ public class GalacticraftCore
 		GalacticraftCore.proxy.postInit(event);
 		GalacticraftCore.proxy.registerRenderInformation();
 
-		if (!GCCoreCompatibilityManager.isBCompLoaded() && !GCCoreCompatibilityManager.isIc2Loaded())
+		if (!GCCoreCompatibilityManager.isBCompLoaded() && !GCCoreCompatibilityManager.isIc2Loaded() && !GCCoreCompatibilityManager.isTELoaded())
 		{
-			final String err = "<strong><h1>Galacticraft Requires Basic Components or IndustrialCraft 2!</h1></strong><br /><h3>You can enable Basic Components loader in the Galacticraft config or install IndustrialCraft 2 manually</h3>";
+			final String err = "<strong><h1>Galacticraft Requires Basic Components, IndustrialCraft 2, or Thermal Expansion!</h1></strong><br /><h3>You can enable Basic Components loader in the Galacticraft config or install IndustrialCraft 2/Thermal Expansion manually</h3>";
 			System.err.println(err);
 
             final JEditorPane ep = new JEditorPane("text/html",
