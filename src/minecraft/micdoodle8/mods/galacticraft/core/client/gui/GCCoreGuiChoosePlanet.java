@@ -1,6 +1,8 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -12,7 +14,6 @@ import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.client.GCCorePlayerSP;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
-import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
@@ -417,7 +418,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
 
             int stringY = i1 + (items.size() == 0 ? 0 : 5);
 
-            for (int j2 = 0; j2 < strings.size(); ++j2)
+            for (int j2 = 0; j2 < correctAmount.size(); ++j2)
             {
                 String s = strings.get(j2);
                 final Boolean b = correctAmount.get(j2);
@@ -526,18 +527,59 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     				final List<ItemStack> items = new ArrayList();
     				final List<Boolean> hasEnough = new ArrayList();
     				ItemStack stack = null;
-    				stack = RecipeUtil.getStandardSpaceStationRequirements().get(0);
-    				strings.add("Tin: " + GCCoreGuiChoosePlanet.getItemCountInPlayerInventory(this.mc.thePlayer, stack) + " / " + GCCoreGuiChoosePlanet.getNumberRequired(stack));
-    				hasEnough.add(GCCoreGuiChoosePlanet.hasCorrectAmount(this.mc.thePlayer, stack));
-    				stack = RecipeUtil.getStandardSpaceStationRequirements().get(1);
-    				strings.add("Steel: " + GCCoreGuiChoosePlanet.getItemCountInPlayerInventory(this.mc.thePlayer, stack) + " / " + GCCoreGuiChoosePlanet.getNumberRequired(stack));
-    				hasEnough.add(GCCoreGuiChoosePlanet.hasCorrectAmount(this.mc.thePlayer, stack));
-    				stack = RecipeUtil.getStandardSpaceStationRequirements().get(2);
-    				strings.add("Iron: " + GCCoreGuiChoosePlanet.getItemCountInPlayerInventory(this.mc.thePlayer, stack) + " / " + GCCoreGuiChoosePlanet.getNumberRequired(stack));
-    				hasEnough.add(GCCoreGuiChoosePlanet.hasCorrectAmount(this.mc.thePlayer, stack));
-    				items.add(new ItemStack(BasicComponents.itemIngot, 1, 1));
-    				items.add(new ItemStack(BasicComponents.itemIngot, 1, 3));
-    				items.add(new ItemStack(Item.ingotIron, 1, 0));
+    				SpaceStationRecipe recipe = WorldUtil.getSpaceStationRecipe(this.selectedSlot);
+
+    		    	final HashMap<Object, Integer> required = new HashMap<Object, Integer>();
+    		    	required.putAll(recipe.getInput());
+    		    	
+    		        final Iterator req = recipe.getInput().keySet().iterator();
+
+    		        while (req.hasNext())
+    		        {
+    		            final Object next = req.next();
+
+    		            final int amountRequired = required.get(next);
+    		            int amountInInv = 0;
+    		            
+    		            ItemStack item = null;
+    		            
+    		            if (next instanceof ItemStack)
+    		            	item = (ItemStack)next;
+    		            
+    		            if (next instanceof ArrayList)
+    		            	item = ((ArrayList<ItemStack>)next).get(0);
+
+    		            for (int x = 0; x < this.playerToSend.inventory.getSizeInventory(); x++)
+    		            {
+    		                final ItemStack slot = this.playerToSend.inventory.getStackInSlot(x);
+
+    		                if (slot != null)
+    		                {
+    		                    if (next instanceof ItemStack)
+    		                    {
+    		                        if (SpaceStationRecipe.checkItemEquals((ItemStack)next, slot))
+    		                        {
+    		                        	amountInInv += slot.stackSize;
+    		                        }
+    		                    }
+    		                    else if (next instanceof ArrayList)
+    		                    {
+    		                        for (ItemStack item2 : (ArrayList<ItemStack>)next)
+    		                        {
+    		                            if (SpaceStationRecipe.checkItemEquals(item2, slot))
+    		                            {
+    		                            	amountInInv += slot.stackSize;
+    		                            }
+    		                        }
+    		                    }
+    		                }
+    		            }
+    		            
+    		            if (item != null) items.add(item);
+    		            if (item != null) strings.add(item.getDisplayName() + "s " + amountInInv + "/" + amountRequired);
+    		            hasEnough.add(amountInInv >= amountRequired);
+    		        }
+    				
     				this.drawItemStackTooltip(strings, items, hasEnough, this.createSpaceStationButton.xPosition + 115, this.createSpaceStationButton.yPosition + 15);
     			}
     			else

@@ -253,12 +253,6 @@ public class GalacticraftCore
 		GalacticraftRegistry.registerTeleportType(WorldProviderSurface.class, new GCCoreOverworldTeleportType());
 		GalacticraftRegistry.registerTeleportType(GCCoreWorldProvider.class, new GCCoreOrbitTeleportType());
 
-		final HashMap<Object, Integer> inputMap = new HashMap<Object, Integer>();
-		inputMap.put("ingotTin", 16);
-		inputMap.put("ingotSteel", 8);
-		inputMap.put("ingotIron", 12);
-		GalacticraftRegistry.registerSpaceStation(new SpaceStationType(GCCoreConfigManager.idDimensionOverworldOrbit, "Overworld", 0, new SpaceStationRecipe(inputMap)));
-
 		if (GCCoreConfigManager.enableBCLoading)
 		{
 			BasicComponents.register(this);
@@ -305,8 +299,8 @@ public class GalacticraftCore
 		SchematicRegistry.registerSchematicRecipe(new GCCoreSchematicRocketT1());
 		SchematicRegistry.registerSchematicRecipe(new GCCoreSchematicMoonBuggy());
 		SchematicRegistry.registerSchematicRecipe(new GCCoreSchematicAdd());
-
-        RecipeUtil.addCraftingRecipes();
+		
+		RecipeUtil.addCraftingRecipes();
         RecipeUtil.addSmeltingRecipes();
 		NetworkRegistry.instance().registerGuiHandler(this, GalacticraftCore.proxy);
 		this.registerTileEntities();
@@ -339,6 +333,12 @@ public class GalacticraftCore
             JOptionPane.showMessageDialog(null, ep, "Fatal error", JOptionPane.ERROR_MESSAGE);
 			System.exit(1);
 		}
+
+		final HashMap<Object, Integer> inputMap = new HashMap<Object, Integer>();
+		inputMap.put("ingotTin", 16);
+		inputMap.put("ingotSteel", 8);
+		inputMap.put("ingotIron", 12);
+		GalacticraftRegistry.registerSpaceStation(new SpaceStationType(GCCoreConfigManager.idDimensionOverworldOrbit, "Overworld", 0, new SpaceStationRecipe(inputMap)));
 		
         RecipeUtil.addCraftingRecipesPostInit();
 	}
