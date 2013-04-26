@@ -85,6 +85,12 @@ public class GCCoreConfigManager
 	public static int idItemFuel;
 	public static int idItemSchematic;
 	public static int idItemKey;
+	
+	// RECIPES
+	public static boolean useRecipesIC2;
+	public static boolean useRecipesGT;
+	public static boolean useRecipesTE;
+	public static boolean useRecipesUE;
 
 	// SCHEMATICS
 	public static int idSchematicRocketT1;
@@ -238,6 +244,11 @@ public class GCCoreConfigManager
 	        GCCoreConfigManager.idArmorSteelLeggings = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idArmorSteelLeggings", 					9987)		.getInt(9887);
 	        GCCoreConfigManager.idArmorSteelBoots = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idArmorSteelBoots", 					9988)		.getInt(9888);
 
+	        GCCoreConfigManager.useRecipesIC2 = 						GCCoreConfigManager.configuration.get("RECIPES", "Enable IC2 Recipes", 										true)		.getBoolean(true);
+	        GCCoreConfigManager.useRecipesGT = 							GCCoreConfigManager.configuration.get("RECIPES", "Enable Gregtech Recipes", 								true)		.getBoolean(true);
+	        GCCoreConfigManager.useRecipesUE = 							GCCoreConfigManager.configuration.get("RECIPES", "Enable Basic Components Recipes", 						true)		.getBoolean(true);
+	        GCCoreConfigManager.useRecipesTE = 							GCCoreConfigManager.configuration.get("RECIPES", "Enable Thermal Expansion Recipes", 						true)		.getBoolean(true);
+	        
 	        GCCoreConfigManager.idGuiTankRefill = 						GCCoreConfigManager.configuration.get("GUI", "idGuiTankRefill", 											128)		.getInt(128);
 	        GCCoreConfigManager.idGuiAirCompressor = 					GCCoreConfigManager.configuration.get("GUI", "idGuiAirCompressor", 											129)		.getInt(129);
 	        GCCoreConfigManager.idGuiRocketCraftingBench = 				GCCoreConfigManager.configuration.get("GUI", "idGuiRocketCraftingBench", 									130)		.getInt(130);

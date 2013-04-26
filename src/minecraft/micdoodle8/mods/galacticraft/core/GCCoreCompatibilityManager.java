@@ -10,20 +10,34 @@ public class GCCoreCompatibilityManager
 	private static boolean modBCraftLoaded = false;
 
 	private static boolean modBCompLoaded = false;
+
+	private static boolean modGTLoaded = false;
+
+	private static boolean modTELoaded = false;
 	
 	public static void checkForCompatibleMods()
 	{
-		if(Loader.isModLoaded("IC2"))
+		if (Loader.isModLoaded("GregTech_Addon"))
+		{
+			modGTLoaded = true;
+		}
+
+		if (Loader.isModLoaded("ThermalExpansion"))
+		{
+			modTELoaded = true;
+		}
+		
+		if (Loader.isModLoaded("IC2"))
 		{ 
 			modIc2Loaded = true;
 		}
 
-		if(Loader.isModLoaded("BuildCraft|Core"))
+		if (Loader.isModLoaded("BuildCraft|Core"))
 		{ 
 			modBCraftLoaded = true;
 		}
 		
-		if(BasicComponents.INITIALIZED)
+		if (BasicComponents.INITIALIZED)
 		{ 
 			modBCompLoaded = true;
 		}
@@ -42,5 +56,15 @@ public class GCCoreCompatibilityManager
 	public static boolean isBCompLoaded()
 	{
 		return modBCompLoaded;
+	}
+	
+	public static boolean isTELoaded()
+	{
+		return modTELoaded;
+	}
+	
+	public static boolean isGTLoaded()
+	{
+		return modGTLoaded;
 	}
 }

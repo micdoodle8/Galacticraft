@@ -300,7 +300,6 @@ public class GalacticraftCore
 		SchematicRegistry.registerSchematicRecipe(new GCCoreSchematicMoonBuggy());
 		SchematicRegistry.registerSchematicRecipe(new GCCoreSchematicAdd());
 		
-		RecipeUtil.addCraftingRecipes();
         RecipeUtil.addSmeltingRecipes();
 		NetworkRegistry.instance().registerGuiHandler(this, GalacticraftCore.proxy);
 		this.registerTileEntities();
@@ -315,6 +314,26 @@ public class GalacticraftCore
 	{
 		GalacticraftCore.moon.postLoad(event);
 		GCCoreCompatibilityManager.checkForCompatibleMods();
+		
+		if (GCCoreCompatibilityManager.isBCompLoaded() && GCCoreConfigManager.useRecipesUE)
+		{
+			RecipeUtil.addBasicComponentsCraftingRecipes();
+		}
+		
+		if (GCCoreCompatibilityManager.isTELoaded() && GCCoreConfigManager.useRecipesTE)
+		{
+			RecipeUtil.addThermalExpansionCraftingRecipes();
+		}
+		
+		if (GCCoreCompatibilityManager.isGTLoaded() && GCCoreConfigManager.useRecipesGT)
+		{
+			RecipeUtil.addGregTechCraftingRecipes();
+		}
+		
+		if (GCCoreCompatibilityManager.isIc2Loaded() && GCCoreConfigManager.useRecipesIC2)
+		{
+			RecipeUtil.addIndustrialcraftCraftingRecipes();
+		}
 		
 		GalacticraftCore.proxy.postInit(event);
 		GalacticraftCore.proxy.registerRenderInformation();
@@ -339,8 +358,6 @@ public class GalacticraftCore
 		inputMap.put("ingotSteel", 8);
 		inputMap.put("ingotIron", 12);
 		GalacticraftRegistry.registerSpaceStation(new SpaceStationType(GCCoreConfigManager.idDimensionOverworldOrbit, "Overworld", 0, new SpaceStationRecipe(inputMap)));
-		
-        RecipeUtil.addCraftingRecipesPostInit();
 	}
 
 	@ServerStarted
