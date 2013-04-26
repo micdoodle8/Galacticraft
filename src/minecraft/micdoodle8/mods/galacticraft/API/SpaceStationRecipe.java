@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import micdoodle8.mods.galacticraft.core.GCLog;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
+import cpw.mods.fml.common.FMLLog;
 
 public class SpaceStationRecipe
 {
@@ -39,6 +39,7 @@ public class SpaceStationRecipe
             }
             else if (obj instanceof String)
             {
+            	FMLLog.info("While registering space station recipe, found " + OreDictionary.getOres((String)obj).size() + " type(s) of " + obj);
         		this.input.put(OreDictionary.getOres((String)obj), amount);
             }
             else
@@ -52,7 +53,8 @@ public class SpaceStationRecipe
 
     public boolean matches(EntityPlayer player, boolean remove)
     {
-    	final HashMap<Object, Integer> required = new HashMap<Object, Integer>(this.input);
+    	final HashMap<Object, Integer> required = new HashMap<Object, Integer>();
+    	required.putAll(this.input);
 
         final Iterator req = this.input.keySet().iterator();
 
@@ -60,7 +62,7 @@ public class SpaceStationRecipe
         {
             final Object next = req.next();
 
-            final int amountRequired = 12;
+            final int amountRequired = required.get(next);
             int amountInInv = 0;
 
             for (int x = 0; x < player.inventory.getSizeInventory(); x++)
@@ -78,7 +80,7 @@ public class SpaceStationRecipe
                     }
                     else if (next instanceof ArrayList)
                     {
-                        for (final ItemStack item : (ArrayList<ItemStack>)next)
+                        for (ItemStack item : (ArrayList<ItemStack>)next)
                         {
                             if (this.checkItemEquals(item, slot))
                             {
@@ -154,7 +156,7 @@ public class SpaceStationRecipe
         }
     }
 
-    private boolean checkItemEquals(ItemStack target, ItemStack input)
+    public static boolean checkItemEquals(ItemStack target, ItemStack input)
     {
         return target.itemID == input.itemID && (target.getItemDamage() == OreDictionary.WILDCARD_VALUE || target.getItemDamage() == input.getItemDamage());
     }
