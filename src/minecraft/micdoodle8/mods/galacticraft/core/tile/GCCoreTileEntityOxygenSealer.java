@@ -37,7 +37,7 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
 	
 	public GCCoreTileEntityOxygenSealer()
 	{
-		super(300, 130, 1, 0.75D, 6000, 12);
+		super(300, 130, 1, 0.75D, 10000, 12);
 	}
 
 	@Override
