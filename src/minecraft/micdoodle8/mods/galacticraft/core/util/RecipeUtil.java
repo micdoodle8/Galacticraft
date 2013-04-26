@@ -237,7 +237,7 @@ public class RecipeUtil
 			'A', GregTech_API.getGregTechBlock(1, 1, 16),
 			'B', Items.getItem("electricWrench"),
 			'C', GregTech_API.getGregTechBlock(1, 1, 60),
-			'D', GregTech_API.getGregTechBlock(1, 1, 10),
+			'D', GregTech_API.getGregTechBlock(1, 0, 10),
 		});
 		
 		addRecipe(new ItemStack(GCCoreItems.heavyOxygenTank, 1, GCCoreItems.heavyOxygenTank.getMaxDamage()), new Object[] {
