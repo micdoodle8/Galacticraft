@@ -6,9 +6,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.google.common.io.ByteArrayDataInput;
+
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLanderFlameFX;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketEntityUpdate;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
@@ -19,20 +23,26 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.INetworkManager;
+import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.liquids.LiquidStack;
 import universalelectricity.core.vector.Vector3;
+import universalelectricity.prefab.network.IPacketReceiver;
+import universalelectricity.prefab.network.PacketManager;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class GCCoreEntityLander extends GCCoreEntityControllable implements IInventory
+public class GCCoreEntityLander extends GCCoreEntityControllable implements IInventory, IPacketReceiver
 {
+	protected long ticks = 0;
     public int currentDamage;
     public int timeSinceHit;
     public int rockDirection;
@@ -58,6 +68,7 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
     public int numUsingPlayers;
     public GCCorePlayerMP playerSpawnedIn;
     private final float MAX_PITCH_ROTATION = 20.0F;
+    public boolean landed;
 
     public GCCoreEntityLander(World var1)
     {
@@ -188,7 +199,7 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
     @Override
 	public boolean attackEntityFrom(DamageSource var1, int var2)
     {
-        if (this.isDead || var1.equals(DamageSource.cactus) || !this.onGround)
+        if (this.isDead || var1.equals(DamageSource.cactus) || !this.landed || var1.isExplosion())
         {
             return true;
         }
@@ -285,8 +296,24 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
     }
 
     @Override
+    public void moveEntity(double par1, double par3, double par5)
+    {
+    	if (!this.landed)
+    	{
+    		super.moveEntity(par1, par3, par5);
+    	}
+    }
+
+    @Override
 	public void onUpdate()
     {
+		if (this.ticks >= Long.MAX_VALUE)
+		{
+			this.ticks = 1;
+		}
+
+		this.ticks++;
+		
         super.onUpdate();
         
         if (!this.worldObj.isRemote && this.ticksExisted < 20 && this.playerSpawnedIn != null && this.riddenByEntity == null)
@@ -419,19 +446,24 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
 		
 		if (!this.worldObj.isRemote)
 		{
-			if (this.onGround && !this.lastOnGround && Math.abs(this.lastMotionY) > 2.0D)
+			if (this.onGround && !this.lastOnGround)
 			{
-				if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayerMP)
+				if (Math.abs(this.lastMotionY) > 2.0D)
 				{
-            	  	final Object[] toSend2 = {0};
-                	((EntityPlayerMP) riddenByEntity).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, toSend2));
-                	
-					this.riddenByEntity.mountEntity(this);
+					if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayerMP)
+					{
+	            	  	final Object[] toSend2 = {0};
+	                	((EntityPlayerMP) riddenByEntity).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, toSend2));
+	                	
+						this.riddenByEntity.mountEntity(this);
+					}
+					
+					this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 12, true);
+					
+					this.setDead();
 				}
 				
-				this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 12, true);
-				
-				this.setDead();
+				this.landed = true;
 			}
 		}
 
@@ -450,12 +482,38 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
 		{
 			PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 50, this.dimension, GCCorePacketEntityUpdate.buildUpdatePacket(this));
 		}
+
+		if (!this.worldObj.isRemote && this.ticks % 3 == 0)
+		{
+			PacketManager.sendPacketToClients(this.getDescriptionPacket(), this.worldObj, new Vector3(this), 50);
+		}
     }
 
+    public Packet getDescriptionPacket()
+	{
+		return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.landed);
+	}
+
+	@Override
+	public void handlePacketData(INetworkManager network, int packetType, Packet250CustomPayload packet, EntityPlayer player, ByteArrayDataInput dataStream)
+	{
+		try
+		{
+			if (this.worldObj.isRemote)
+			{
+				this.landed = dataStream.readBoolean();
+			}
+		}
+		catch (final Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
     @Override
-	protected void readEntityFromNBT(NBTTagCompound var1)
+	protected void readEntityFromNBT(NBTTagCompound nbt)
     {
-        final NBTTagList var2 = var1.getTagList("Items");
+        final NBTTagList var2 = nbt.getTagList("Items");
         this.chestContents = new ItemStack[this.getSizeInventory()];
 
         for (int var3 = 0; var3 < var2.tagCount(); ++var3)
@@ -468,10 +526,12 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
             	this.chestContents[var5] = ItemStack.loadItemStackFromNBT(var4);
             }
         }
+        
+        this.landed = nbt.getBoolean("landed");
     }
 
     @Override
-	protected void writeEntityToNBT(NBTTagCompound nbttagcompound)
+	protected void writeEntityToNBT(NBTTagCompound nbt)
     {
     	final NBTTagList nbttaglist = new NBTTagList();
 
@@ -486,7 +546,9 @@ public class GCCoreEntityLander extends GCCoreEntityControllable implements IInv
             }
         }
 
-        nbttagcompound.setTag("Items", nbttaglist);
+        nbt.setTag("Items", nbttaglist);
+        
+        nbt.setBoolean("landed", this.landed);
     }
 
     public int getSizeInventory()
