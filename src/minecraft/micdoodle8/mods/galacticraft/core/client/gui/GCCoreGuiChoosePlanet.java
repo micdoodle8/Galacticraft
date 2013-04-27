@@ -451,14 +451,15 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
 
     	if (this.createSpaceStationButton != null)
     	{
-        	if (this.createSpaceStationButton.enabled == false && this.canCreateSpaceStation(this.selectedSlot))
-        	{
-        		this.createSpaceStationButton.enabled = true;
-        	}
-        	else if (this.createSpaceStationButton.enabled == true && !this.canCreateSpaceStation(this.selectedSlot))
-        	{
-        		this.createSpaceStationButton.enabled = false;
-        	}
+    		this.createSpaceStationButton.enabled = WorldUtil.getSpaceStationRecipe(this.selectedSlot) != null;
+//        	if (this.createSpaceStationButton.enabled == false && this.canCreateSpaceStation(this.selectedSlot))
+//        	{
+//        		this.createSpaceStationButton.enabled = true;
+//        	}
+//        	else if (this.createSpaceStationButton.enabled == true && !this.canCreateSpaceStation(this.selectedSlot))
+//        	{
+//        		this.createSpaceStationButton.enabled = false;
+//        	}
     	}
 
         this.planetSlots.drawScreen(par1, par2, par3);
@@ -521,7 +522,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     				hasEnough.add(false);
     				this.drawItemStackTooltip(strings, items, hasEnough, this.createSpaceStationButton.xPosition + 115, this.createSpaceStationButton.yPosition + 15);
     			}
-    			else if (this.canCreateSpaceStation(this.selectedSlot))
+    			else if (this.canCreateSpaceStation(this.selectedSlot) && WorldUtil.getSpaceStationRecipe(this.selectedSlot) != null)
     			{
     				final List<String> strings = new ArrayList();
     				final List<ItemStack> items = new ArrayList();
@@ -584,6 +585,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     			}
     			else
     			{
+    				this.createSpaceStationButton.enabled = false;
     				final List<String> strings = new ArrayList();
     				final List<ItemStack> items = new ArrayList();
     				final List<Boolean> hasEnough = new ArrayList();
