@@ -1,26 +1,32 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 import micdoodle8.mods.galacticraft.API.IDungeonBoss;
 import micdoodle8.mods.galacticraft.API.IDungeonBossSpawner;
 import micdoodle8.mods.galacticraft.API.IEntityBreathable;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
+import net.minecraft.entity.ai.EntityAIHurtByTarget;
+import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.stats.AchievementList;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
@@ -52,19 +58,11 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
         super(par1World);
         this.setSize(1.5F, 4.0F);
         this.isImmuneToFire = true;
-        this.tasks.taskEntries.clear();
         this.texture = "/micdoodle8/mods/galacticraft/core/client/entities/skeletonboss.png";
         this.moveSpeed = 0.0F;
-//        this.tasks.addTask(1, new GCCoreEntityAIThrowPlayer(this));
-//        this.tasks.addTask(1, new EntityAISwimming(this));
-//        this.tasks.addTask(2, new EntityAIRestrictSun(this));
-//        this.tasks.addTask(3, new EntityAIFleeSun(this, this.moveSpeed));
-//        this.tasks.addTask(4, new GCCoreEntityAIArrowAttack(this, this.moveSpeed, 1, 20));
-        this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-//        this.tasks.addTask(6, new EntityAILookIdle(this));
-        this.targetTasks.taskEntries.clear();
-//        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-//        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 16.0F, 0, true));
+        this.tasks.addTask(4, new GCCoreEntityAIArrowAttack(this, this.moveSpeed, 1, 20));
+        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 32.0F, 0, true));
     }
     
     public GCCoreEntitySkeletonBoss(World world, Vector3 vec)
@@ -101,7 +99,7 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
     @Override
     public void onCollideWithPlayer(EntityPlayer par1EntityPlayer)
     {
-    	if (this.riddenByEntity == null && this.postThrowDelay == 0 && this.throwTimer == 0 && par1EntityPlayer.equals(this.targetEntity))
+    	if (this.riddenByEntity == null && this.postThrowDelay == 0 && this.throwTimer == 0 && par1EntityPlayer.equals(this.targetEntity) && this.deathTicks == 0)
     	{
             if (!this.worldObj.isRemote)
             {
@@ -118,13 +116,13 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
     @Override
 	public boolean isAIEnabled()
     {
-        return false;
+        return true;
     }
 
     @Override
 	public int getMaxHealth()
     {
-        return 150;
+        return 5;
     }
 
     @Override
@@ -206,6 +204,56 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
                 i -= j;
                 this.worldObj.spawnEntityInWorld(new EntityXPOrb(this.worldObj, this.posX, this.posY, this.posZ, j));
             }
+            
+            for (TileEntity tile : (List<TileEntity>)this.worldObj.loadedTileEntityList)
+            {
+            	if (tile instanceof GCCoreTileEntityTreasureChest)
+            	{
+                    double d3 = (double)tile.xCoord + 0.5D - this.posX;
+                    double d4 = (double)tile.yCoord + 0.5D - this.posY;
+                    double d5 = (double)tile.zCoord + 0.5D - this.posZ;
+                    double dSq = d3 * d3 + d4 * d4 + d5 * d5;
+                    
+            		if (dSq < Math.pow(75.0D, 2))
+            		{
+        				int amountOfGoodies = 3;
+        				
+        				if (!((GCCoreTileEntityTreasureChest) tile).locked)
+        				{
+        					((GCCoreTileEntityTreasureChest) tile).locked = true;
+        				}
+        				
+        				for(int gg = 0; gg < amountOfGoodies; gg++)
+        				{
+        					int attempts = 0;
+        					for (int r = rand.nextInt(((IInventory)tile).getSizeInventory()); attempts < 200; rand.nextInt(((IInventory)tile).getSizeInventory()))
+        					{
+        						if (((IInventory)tile).getStackInSlot(r) == null)
+        						{
+        							if (getGuaranteedLoot(gg, rand) != null)
+        							{
+                    					((IInventory)tile).setInventorySlotContents(r, getGuaranteedLoot(gg, rand));
+                    					r = rand.nextInt(((IInventory)tile).getSizeInventory());
+        							}
+        							else
+        							{
+                    					((IInventory)tile).setInventorySlotContents(r, this.getLoot(rand));
+                    					r = rand.nextInt(((IInventory)tile).getSizeInventory());
+        							}
+                					
+                					break;
+        						}
+        						
+        						attempts++;
+        					}
+        				}
+        				
+    					break;
+            		}
+            	}
+            }
+            
+            this.entityDropItem(new ItemStack(GCCoreItems.key.itemID, 1, 0), 0.5F);
         	
             super.setDead();
             
@@ -254,7 +302,7 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
     		{
     	        PathEntity pathentity = this.getNavigator().getPathToEntityLiving(player);
     	        this.targetEntity = player;
-    			this.getNavigator().setPath(pathentity, this.health >= 75.0 ? 1.4F : 5.5F);
+    			this.getNavigator().setPath(pathentity, this.health >= 75.0 ? 0.2F : 0.35F);
         		this.moveSpeed = 0.3F + (this.health >= this.getMaxHealth() / 2 ? 0.1F : 1.0F);
     		}
     	}
@@ -290,10 +338,11 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
 
 		Vector3 vec = new Vector3(this);
 		EntityPlayer closestPlayer = this.worldObj.getClosestPlayer(vec.x, vec.y, vec.z, this.getDistanceToSpawn());
-	
+		
 		if (closestPlayer == null)
 		{
 			this.setDead();
+			return;
 		}
     	
     	if (this.riddenByEntity != null && this.throwTimer == 0)
@@ -368,15 +417,12 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
     @Override
 	protected void dropFewItems(boolean par1, int par2)
     {
-        int var3 = this.rand.nextInt(3 + par2);
-        int var4;
-
-        this.entityDropItem(new ItemStack(GCCoreItems.key.itemID, 1, 0), 0.0F);
     }
     
     public EntityItem entityDropItem(ItemStack par1ItemStack, float par2)
     {
         EntityItem entityitem = new EntityItem(this.worldObj, this.posX, this.posY + (double)par2, this.posZ, par1ItemStack);
+        entityitem.motionY = -2.0D;
         entityitem.delayBeforeCanPickup = 10;
         if (captureDrops)
         {
@@ -426,5 +472,33 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
 	public void onBossSpawned(IDungeonBossSpawner spawner)
 	{
 		this.spawner = spawner;
+	}
+
+	@Override
+	public ItemStack getGuaranteedLoot(int loop, Random rand) 
+	{
+		switch (loop)
+		{
+		case 0:
+			return new ItemStack(GCCoreItems.schematic, 1, 0);
+		}
+		
+		return null;
+	}
+
+	@Override
+	public ItemStack getLoot(Random rand) 
+	{
+		int r = rand.nextInt(3);
+		
+		switch (r)
+		{
+		case 0:
+			return new ItemStack(GCCoreItems.lightOxygenTank, 1, rand.nextInt(GCCoreItems.lightOxygenTank.getMaxDamage() / 2) + 1);
+		case 1:
+			return new ItemStack(GCCoreItems.fuelCanister, 1, rand.nextInt(GCCoreItems.fuelCanister.getMaxDamage() / 2) + 1);
+		default:
+			return new ItemStack(GCCoreItems.oilCanister, 1, rand.nextInt(GCCoreItems.oilCanister.getMaxDamage() / 2) + 1);
+		}
 	}
 }

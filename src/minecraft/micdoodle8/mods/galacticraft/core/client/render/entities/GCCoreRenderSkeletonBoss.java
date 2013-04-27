@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
-import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelSkeleton;
 import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelSkeletonBoss;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySkeletonBoss;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemSensorGlasses;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -41,26 +41,28 @@ public class GCCoreRenderSkeletonBoss extends RenderLiving
     @Override
 	protected void renderEquippedItems(EntityLiving par1EntityLiving, float par2)
     {
-    	GL11.glPushMatrix();
-    	GL11.glTranslatef(-0.3F, -0.3F, -0.6F);
-    	GL11.glTranslatef(0.1F, 0.0F, 0.0F);
-    	GL11.glRotatef(41, 0.0F, 1.0F, 0.0F);
-    	GL11.glRotatef(-20, 1.0F, 0.0F, 0.0F);
-    	GL11.glRotatef(-20, 0.0F, 0.0F, 1.0F);
-    	GL11.glScalef(0.5F, 0.5F, 0.5F);
-//    	GL11.glRotatef(00, 0.0F, 0.0F, 1.0F);
-        this.renderManager.itemRenderer.renderItem(par1EntityLiving, new ItemStack(Item.bow), 0);
-        GL11.glPopMatrix();
+    	if (((GCCoreEntitySkeletonBoss) par1EntityLiving).throwTimer + ((GCCoreEntitySkeletonBoss) par1EntityLiving).postThrowDelay == 0)
+    	{
+        	GL11.glPushMatrix();
+        	GL11.glTranslatef(-0.3F, -1.6F, -1.2F);
+        	GL11.glTranslatef(0.1F, 0.0F, 0.0F);
+        	GL11.glRotatef(41, 0.0F, 1.0F, 0.0F);
+        	GL11.glRotatef(-20, 1.0F, 0.0F, 0.0F);
+        	GL11.glRotatef(-20, 0.0F, 0.0F, 1.0F);
+        	GL11.glScalef(0.7F, 0.7F, 0.7F);
+            this.renderManager.itemRenderer.renderItem(par1EntityLiving, new ItemStack(Item.bow), 0);
+            GL11.glPopMatrix();
 
-    	GL11.glPushMatrix();
-    	GL11.glTranslatef(0.11F, -0.3F, -0.6F);
-    	GL11.glTranslatef(0.1F, 0.0F, 0.0F);
-    	GL11.glRotatef(46, 0.0F, 1.0F, 0.0F);
-    	GL11.glRotatef(-20, 1.0F, 0.0F, 0.0F);
-    	GL11.glRotatef(-20, 0.0F, 0.0F, 1.0F);
-    	GL11.glScalef(0.5F, 0.5F, 0.5F);
-        this.renderManager.itemRenderer.renderItem(par1EntityLiving, new ItemStack(Item.bow), 0);
-        GL11.glPopMatrix();
+        	GL11.glPushMatrix();
+        	GL11.glTranslatef(0.11F, -1.6F, -1.2F);
+        	GL11.glTranslatef(0.1F, 0.0F, 0.0F);
+        	GL11.glRotatef(46, 0.0F, 1.0F, 0.0F);
+        	GL11.glRotatef(-20, 1.0F, 0.0F, 0.0F);
+        	GL11.glRotatef(-20, 0.0F, 0.0F, 1.0F);
+        	GL11.glScalef(0.7F, 0.7F, 0.7F);
+            this.renderManager.itemRenderer.renderItem(par1EntityLiving, new ItemStack(Item.bow), 0);
+            GL11.glPopMatrix();
+    	}
     }
 
     @Override

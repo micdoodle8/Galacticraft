@@ -40,7 +40,6 @@ public class GCMapGenDungeon {
 		ChunkCoordinates dungeonCoords = this.getDungeonNear(seed, chunkX, chunkZ);
 		if(dungeonCoords != null)
 		{
-			System.out.println(dungeonCoords.posX + ", " + dungeonCoords.posZ);
 			this.generate(world, new Random(seed * dungeonCoords.posX * dungeonCoords.posZ * 24789), dungeonCoords.posX, y, dungeonCoords.posZ, chunkX, chunkZ, blocks, metas, true);
 		}
 	}
@@ -71,7 +70,6 @@ public class GCMapGenDungeon {
 				int offsetX = 0;
 				int offsetZ = 0;
 				int dir = randDir(rand, currentRoom.entranceDir);
-				System.out.println(dir);
 				int entranceDir = dir;
 				switch(dir) //East = 0, North = 1, South = 2, West = 3
 				{

@@ -3,10 +3,12 @@ package micdoodle8.mods.galacticraft.moon.wgen.dungeon;
 import java.util.ArrayList;
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import net.minecraft.block.Block;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntityChest;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 
@@ -57,7 +59,7 @@ public class GCRoomTreasure extends GCDungeonRoom {
 		}
 		int hx = (posX + posX + sizeX) / 2;
 		int hz = (posZ + posZ + sizeZ) / 2;
-		if(placeBlock(chunk, meta, hx, posY, hz, cx, cz, Block.chest.blockID, 0))
+		if(placeBlock(chunk, meta, hx, posY, hz, cx, cz, GCCoreBlocks.treasureChest.blockID, 0))
 		{
 			chests.add(new ChunkCoordinates(hx, posY, hz));
 		}
@@ -77,13 +79,13 @@ public class GCRoomTreasure extends GCDungeonRoom {
 	protected void handleTileEntities(Random rand) {
 		for(ChunkCoordinates chestCoords : chests)
 		{
-			TileEntityChest chest = (TileEntityChest)worldObj.getBlockTileEntity(chestCoords.posX, chestCoords.posY, chestCoords.posZ);
-			if(chest != null)
+			TileEntity chest = worldObj.getBlockTileEntity(chestCoords.posX, chestCoords.posY, chestCoords.posZ);
+			if(chest != null && chest instanceof IInventory)
 			{
 				int amountOfGoodies = rand.nextInt(5) + 2;
 				for(int i = 0; i < amountOfGoodies; i++)
 				{
-					chest.setInventorySlotContents(rand.nextInt(chest.getSizeInventory()), getLoot(rand));
+					((IInventory)chest).setInventorySlotContents(rand.nextInt(((IInventory)chest).getSizeInventory()), getLoot(rand));
 				}
 			}			
 		}		

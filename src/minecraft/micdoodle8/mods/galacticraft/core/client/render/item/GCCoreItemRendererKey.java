@@ -72,6 +72,7 @@ public class GCCoreItemRendererKey implements IItemRenderer
         }
         else if (type == ItemRenderType.ENTITY)
         {
+            GL11.glTranslatef(0.0F, 2.0F, 0F);
             GL11.glScalef(3.0F, 3.0F, 3.0F);
         }
         else if (type == ItemRenderType.EQUIPPED)

@@ -8,6 +8,7 @@ import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.entity.projectile.EntitySnowball;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import cpw.mods.fml.common.FMLLog;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -83,7 +84,7 @@ public class GCCoreEntityAIArrowAttack extends EntityAIBase
     @Override
 	public boolean continueExecuting()
     {
-        return this.shouldExecute() || !this.entityHost.getNavigator().noPath();
+        return this.shouldExecute();
     }
 
     /**
@@ -114,14 +115,14 @@ public class GCCoreEntityAIArrowAttack extends EntityAIBase
             this.field_75318_f = 0;
         }
 
-        if (var3 <= var1 && this.field_75318_f >= 20)
+//        if (var3 <= var1 && this.field_75318_f >= 20)
         {
-            this.entityHost.getNavigator().clearPathEntity();
+//            this.entityHost.getNavigator().clearPathEntity();
         }
-        else
-        {
-            this.entityHost.getNavigator().tryMoveToEntityLiving(this.attackTarget, this.entityMoveSpeed);
-        }
+//        else
+//        {
+//            this.entityHost.getNavigator().tryMoveToEntityLiving(this.attackTarget, this.entityMoveSpeed);
+//        }
 
         this.entityHost.getLookHelper().setLookPositionWithEntity(this.attackTarget, 30.0F, 30.0F);
         this.rangedAttackTime = Math.max(this.rangedAttackTime - 1, 0);

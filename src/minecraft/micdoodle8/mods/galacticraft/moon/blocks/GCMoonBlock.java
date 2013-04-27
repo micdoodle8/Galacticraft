@@ -118,7 +118,7 @@ public class GCMoonBlock extends BlockAdvanced implements IDetectableMetadataRes
 			return 0.1F;
 		}
 		
-		if (meta == 15)
+		if (meta == 14 || meta == 15)
 		{
 			return -1F;
 		}
