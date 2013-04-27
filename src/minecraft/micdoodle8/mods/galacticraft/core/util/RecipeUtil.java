@@ -199,14 +199,14 @@ public class RecipeUtil
 			'W', "ingotSteel",
 			'X', GCCoreItems.airFan,
 			'Y', GCCoreItems.airVent,
-			'Z', Items.getItem("machine")
+			'Z', GregTech_API.getGregTechBlock(1, 0, 15)
 		});
 		
 		addRecipe(new ItemStack(GCCoreBlocks.sealer, 1), new Object[] {
 			"WZW",
 			"YTX",
 			"WUW",
-			'T', Items.getItem("machine"),
+			'T', GregTech_API.getGregTechBlock(1, 0, 15),
 			'V', "copperWire",
 			'W', "ingotSteel",
 			'X', GCCoreItems.airFan,
@@ -222,7 +222,7 @@ public class RecipeUtil
 			'U', GregTech_API.getGregTechItem(0, 1, 83),
 			'V', GCCoreItems.oxygenConcentrator,
 			'W', "ingotSteel",
-			'X', Items.getItem("machine"),
+			'X', GregTech_API.getGregTechBlock(1, 0, 15),
 			'Y', GCCoreItems.airFan,
 			'Z', GCCoreItems.airVent
 		});
@@ -394,21 +394,21 @@ public class RecipeUtil
 			" Z ",
 			"WYW",
 			"XVX",
-			'X', "ingotSteel", 'Y', Items.getItem("machine"), 'Z', new ItemStack(GCCoreItems.canister, 1, 1), 'W', Block.stone, 'V', GregTech_API.getGregTechItem(0, 1, 83)
+			'X', "ingotSteel", 'Y', GregTech_API.getGregTechBlock(1, 0, 15), 'Z', new ItemStack(GCCoreItems.canister, 1, 1), 'W', Block.stone, 'V', GregTech_API.getGregTechItem(0, 1, 83)
 		});
 
 		addRecipe(new ItemStack(GCCoreBlocks.compressor), new Object[] {
 			"XZX",
 			"XWX",
 			"XYX",
-			'X', "ingotSteel", 'Y', GregTech_API.getGregTechItem(0, 1, 83), 'Z', GCCoreItems.oxygenConcentrator, 'W', Items.getItem("machine")
+			'X', "ingotSteel", 'Y', GregTech_API.getGregTechItem(0, 1, 83), 'Z', GCCoreItems.oxygenConcentrator, 'W', GregTech_API.getGregTechBlock(1, 0, 15)
 		});
 
 		addRecipe(new ItemStack(GCCoreBlocks.fuelLoader), new Object[] {
 			"XZX",
 			"ZWZ",
 			"XYX",
-			'X', "ingotSteel", 'Y', GregTech_API.getGregTechItem(0, 1, 83), 'Z', Items.getItem("reinforcedGlass"), 'W', Items.getItem("machine")
+			'X', "ingotSteel", 'Y', GregTech_API.getGregTechItem(0, 1, 83), 'Z', Items.getItem("reinforcedGlass"), 'W', GregTech_API.getGregTechBlock(1, 0, 15)
 		});
 	}
 	
