@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.moon.blocks;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -9,18 +8,23 @@ import micdoodle8.mods.galacticraft.API.IPlantableMetadataBlock;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityDungeonSpawner;
 import micdoodle8.mods.galacticraft.moon.GalacticraftMoon;
 import micdoodle8.mods.galacticraft.moon.items.GCMoonItems;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockFlower;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.IPlantable;
+import universalelectricity.prefab.block.BlockAdvanced;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -30,7 +34,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  *  All rights reserved.
  *
  */
-public class GCMoonBlock extends Block implements IDetectableMetadataResource, IPlantableMetadataBlock
+public class GCMoonBlock extends BlockAdvanced implements IDetectableMetadataResource, IPlantableMetadataBlock
 {
 	// CopperMoon: 0, TinMoon: 1, CheeseStone: 2;
     @SideOnly(Side.CLIENT)
@@ -42,10 +46,32 @@ public class GCMoonBlock extends Block implements IDetectableMetadataResource, I
 	}
 
     @Override
+    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
+    {
+    	if (world.getBlockMetadata(x, y, z) == 15)
+    	{
+    		return null;
+    	}
+    	
+    	return super.getCollisionBoundingBoxFromPool(world, x, y, z);
+    }
+    
+    @Override
+    public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z)
+    {
+    	if (world.getBlockMetadata(x, y, z) == 15)
+    	{
+    		return AxisAlignedBB.getAABBPool().getAABB((double)x + 0.0D, (double)y + 0.0D, (double)z + 0.0D, (double)x + 0.0D, (double)y + 0.0D, (double)z + 0.0D);
+    	}
+    	
+    	return super.getSelectedBoundingBoxFromPool(world, x, y, z);
+    }
+
+    @Override
 	@SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister par1IconRegister)
     {
-        this.moonBlockIcons = new Icon[16];
+        this.moonBlockIcons = new Icon[17];
         this.moonBlockIcons[0] = par1IconRegister.registerIcon("galacticraftmoon:grass_top");
         this.moonBlockIcons[1] = par1IconRegister.registerIcon("galacticraftmoon:brick");
         this.moonBlockIcons[2] = par1IconRegister.registerIcon("galacticraftmoon:dirt");
@@ -62,12 +88,24 @@ public class GCMoonBlock extends Block implements IDetectableMetadataResource, I
         this.moonBlockIcons[13] = par1IconRegister.registerIcon("galacticraftmoon:moonore_tin");
         this.moonBlockIcons[14] = par1IconRegister.registerIcon("galacticraftmoon:moonore_cheese");
         this.moonBlockIcons[15] = par1IconRegister.registerIcon("galacticraftmoon:moonstone");
+        this.moonBlockIcons[16] = par1IconRegister.registerIcon("galacticraftcore:blank");
     }
 
 	@Override
     public CreativeTabs getCreativeTabToDisplayOn()
     {
         return GalacticraftMoon.galacticraftMoonTab;
+    }
+
+	@Override
+    public float getExplosionResistance(Entity par1Entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ)
+    {
+    	if (world.getBlockMetadata(x, y, z) == 15)
+    	{
+    		return 10000.0F;
+    	}
+    	
+    	return super.getExplosionResistance(par1Entity, world, x, y, z, explosionX, explosionY, explosionZ);
     }
 
 	@Override
@@ -78,6 +116,11 @@ public class GCMoonBlock extends Block implements IDetectableMetadataResource, I
 		if (meta == 3 || meta >= 5 && meta <= 13)
 		{
 			return 0.1F;
+		}
+		
+		if (meta == 15)
+		{
+			return -1F;
 		}
 
         return this.blockHardness;
@@ -148,8 +191,10 @@ public class GCMoonBlock extends Block implements IDetectableMetadataResource, I
 				return this.moonBlockIcons[15];
 			case 14:
 				return this.moonBlockIcons[1];
+			case 15:
+				return this.moonBlockIcons[16];
 			default:
-				return null;
+				return this.moonBlockIcons[16];
 			}
 		}
 
@@ -163,6 +208,8 @@ public class GCMoonBlock extends Block implements IDetectableMetadataResource, I
 		{
 		case 2:
 			return GCMoonItems.cheeseCurd.itemID;
+		case 15:
+			return 0;
 		default:
 			return this.blockID;
 		}
@@ -188,7 +235,13 @@ public class GCMoonBlock extends Block implements IDetectableMetadataResource, I
 	@Override
     public int quantityDropped(int meta, int fortune, Random random)
     {
-		return 1;
+		switch (meta)
+		{
+		case 15:
+			return 0;
+		default:
+			return 1;
+		}
     }
 
     @SideOnly(Side.CLIENT)
@@ -202,7 +255,7 @@ public class GCMoonBlock extends Block implements IDetectableMetadataResource, I
             par3List.add(new ItemStack(par1, 1, var4));
         }
 
-        for (var4 = 14; var4 < 16; var4++)
+        for (var4 = 14; var4 < 15; var4++)
         {
             par3List.add(new ItemStack(par1, 1, var4));
         }

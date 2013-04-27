@@ -452,14 +452,6 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     	if (this.createSpaceStationButton != null)
     	{
     		this.createSpaceStationButton.enabled = WorldUtil.getSpaceStationRecipe(this.selectedSlot) != null;
-//        	if (this.createSpaceStationButton.enabled == false && this.canCreateSpaceStation(this.selectedSlot))
-//        	{
-//        		this.createSpaceStationButton.enabled = true;
-//        	}
-//        	else if (this.createSpaceStationButton.enabled == true && !this.canCreateSpaceStation(this.selectedSlot))
-//        	{
-//        		this.createSpaceStationButton.enabled = false;
-//        	}
     	}
 
         this.planetSlots.drawScreen(par1, par2, par3);

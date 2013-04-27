@@ -71,7 +71,6 @@ public class GCRoomChests extends GCDungeonRoom {
 		for(ChunkCoordinates chestCoords : chests)
 		{
 			TileEntityChest chest = (TileEntityChest)worldObj.getBlockTileEntity(chestCoords.posX, chestCoords.posY, chestCoords.posZ);
-			System.out.println("Chest");
 			if(chest != null)
 			{
 				int amountOfGoodies = rand.nextInt(5) + 2;

@@ -2,7 +2,11 @@ package micdoodle8.mods.galacticraft.moon.wgen.dungeon;
 
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityDungeonSpawner;
+import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
 import net.minecraft.block.Block;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 
 public class GCRoomBoss extends GCDungeonRoom {
@@ -11,6 +15,7 @@ public class GCRoomBoss extends GCDungeonRoom {
 	int sizeY;
 	int sizeZ;
 	Random rand;
+	ChunkCoordinates spawnerCoords;
 	
 	public GCRoomBoss(World worldObj, int posX, int posY, int posZ, int entranceDir) {
 		super(worldObj, posX, posY, posZ, entranceDir);
@@ -45,6 +50,10 @@ public class GCRoomBoss extends GCDungeonRoom {
 					{
 						placeBlock(chunk, meta, i, j, k, cx, cz, Block.fenceIron.blockID, 0);
 					}
+					else if (((i == posX + 1 && k == posZ + 1) || (i == posX + sizeX - 2 && k == posZ + 1) || (i == posX + 1 && k == posZ + sizeZ - 2) || (i == posX + sizeX - 2 && k == posZ + sizeZ - 2)) && j % 3 == 0)
+					{
+						placeBlock(chunk, meta, i, j, k, cx, cz, Block.fenceIron.blockID, 0);
+					}
 					else
 					{
 						placeBlock(chunk, meta, i, j, k, cx, cz, 0, 0);
@@ -52,6 +61,10 @@ public class GCRoomBoss extends GCDungeonRoom {
 				}
 			}
 		}
+		
+		int hx = (posX + posX + sizeX) / 2;
+		int hz = (posZ + posZ + sizeZ) / 2;
+		spawnerCoords = new ChunkCoordinates(hx, posY + 2, hz);
 	}
 
 	@Override
@@ -65,9 +78,21 @@ public class GCRoomBoss extends GCDungeonRoom {
 	}
 
 	@Override
-	protected void handleTileEntities(Random rand) {
-		// TODO Auto-generated method stub
+	protected void handleTileEntities(Random rand)
+	{
+		if (this.spawnerCoords == null)
+		{
+			return;
+		}
 		
+		this.worldObj.setBlock(spawnerCoords.posX, spawnerCoords.posY, spawnerCoords.posZ, GCMoonBlocks.blockMoon.blockID, 15, 3);
+		
+		TileEntity tile = this.worldObj.getBlockTileEntity(spawnerCoords.posX, spawnerCoords.posY, spawnerCoords.posZ);
+		
+		if (tile == null || !(tile instanceof GCCoreTileEntityDungeonSpawner))
+		{
+			this.worldObj.setBlockTileEntity(spawnerCoords.posX, spawnerCoords.posY, spawnerCoords.posZ, new GCCoreTileEntityDungeonSpawner());
+		}
 	}
 	
 }

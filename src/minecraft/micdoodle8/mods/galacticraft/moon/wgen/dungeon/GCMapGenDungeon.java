@@ -385,6 +385,8 @@ public class GCMapGenDungeon {
 	
 	public void handleTileEntities(Random rand)
 	{
+		ArrayList<GCDungeonRoom> rooms = new ArrayList<GCDungeonRoom>();
+		rooms.addAll(this.rooms);
 		for(GCDungeonRoom room : rooms)
 		{
 			room.handleTileEntities(rand);
@@ -430,7 +432,6 @@ public class GCMapGenDungeon {
         for(int x = i - range; x <= i + range; x++) {
             for(int z = j - range; z <= j + range; z++) {
                 if (canGenDungeonAtCoords(worldSeed, x, z)) {
-                	System.out.println("derp");
                     return new ChunkCoordinates(x * 16 + 8, 0, z * 16 + 8);
                 }
             }

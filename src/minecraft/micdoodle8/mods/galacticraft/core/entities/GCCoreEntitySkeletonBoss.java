@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
+import java.util.List;
+
 import micdoodle8.mods.galacticraft.API.IDungeonBoss;
 import micdoodle8.mods.galacticraft.API.IDungeonBossSpawner;
 import micdoodle8.mods.galacticraft.API.IEntityBreathable;
@@ -19,6 +21,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.stats.AchievementList;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
@@ -64,10 +67,9 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
 //        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 16.0F, 0, true));
     }
     
-    public GCCoreEntitySkeletonBoss(World world, IDungeonBossSpawner spawner, Vector3 vec)
+    public GCCoreEntitySkeletonBoss(World world, Vector3 vec)
     {
     	this(world);
-    	this.spawner = spawner;
     	this.setPosition(vec.x, vec.y, vec.z);
     }
 
@@ -140,7 +142,7 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
     @Override
 	protected String getHurtSound()
     {
-        this.playSound("entity.bossliving", this.getSoundVolume(), this.getSoundPitch() + 6.0F);
+        this.playSound("galacticraft.entity.bossliving", this.getSoundVolume(), this.getSoundPitch() + 6.0F);
         return "";
     }
 
@@ -204,8 +206,15 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
                 i -= j;
                 this.worldObj.spawnEntityInWorld(new EntityXPOrb(this.worldObj, this.posX, this.posY, this.posZ, j));
             }
-
-            this.setDead();
+        	
+            super.setDead();
+            
+        	if (this.spawner != null)
+        	{
+        		this.spawner.setBossDefeated(true);
+        		this.spawner.setBoss(null);
+        		this.spawner.setBossSpawned(false);
+        	}
         }
     }
 
@@ -220,6 +229,18 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
 	public EnumCreatureAttribute getCreatureAttribute()
     {
         return EnumCreatureAttribute.UNDEAD;
+    }
+
+    public void setDead()
+    {
+    	if (this.spawner != null)
+    	{
+    		this.spawner.setBossDefeated(false);
+    		this.spawner.setBoss(null);
+    		this.spawner.setBossSpawned(false);
+    	}
+		
+    	super.setDead();
     }
 
     @Override
@@ -242,6 +263,20 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
     		this.targetEntity = null;
     		this.moveSpeed = 0.0F;
     	}
+
+    	Vector3 thisVec = new Vector3(this);
+    	List l = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, AxisAlignedBB.getBoundingBox(thisVec.x - 10, thisVec.y - 10, thisVec.z - 10, thisVec.x + 10, thisVec.y + 10, thisVec.z + 10));
+
+    	for (Entity e : (List<Entity>)l)
+    	{
+    		if (e instanceof GCCoreEntitySkeletonBoss)
+    		{
+    			if (((GCCoreEntitySkeletonBoss) e).getHealth() >= this.health)
+    			{
+    				((GCCoreEntitySkeletonBoss) e).setDead();
+    			}
+    		}
+    	}
     	
     	if (this.throwTimer > 0)
     	{
@@ -252,6 +287,14 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
     	{
     		this.postThrowDelay--;
     	}
+
+		Vector3 vec = new Vector3(this);
+		EntityPlayer closestPlayer = this.worldObj.getClosestPlayer(vec.x, vec.y, vec.z, this.getDistanceToSpawn());
+	
+		if (closestPlayer == null)
+		{
+			this.setDead();
+		}
     	
     	if (this.riddenByEntity != null && this.throwTimer == 0)
     	{
@@ -376,12 +419,12 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
 	@Override
 	public double getDistanceToSpawn() 
 	{
-		return 20.0D;
+		return 40.0D;
 	}
 
 	@Override
 	public void onBossSpawned(IDungeonBossSpawner spawner)
 	{
-		
+		this.spawner = spawner;
 	}
 }
