@@ -3,9 +3,11 @@ package micdoodle8.mods.galacticraft.core.network;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
@@ -34,6 +36,89 @@ public class GCCorePacketManager extends PacketManager implements IPacketHandler
 			}
 			return UNSPECIFIED;
 		}
+	}
+
+	public static Packet getPacket(String channelName, Entity sender, ArrayList<Object> objs)
+	{
+		final ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+		DataOutputStream data = new DataOutputStream(bytes);
+
+		try
+		{
+			data.writeInt(2);
+
+			data.writeInt(sender.entityId);
+			data = encodeDataStream(data, objs);
+
+			final Packet250CustomPayload packet = new Packet250CustomPayload();
+			packet.channel = channelName;
+			packet.data = bytes.toByteArray();
+			packet.length = packet.data.length;
+
+			return packet;
+		}
+		catch (final IOException e)
+		{
+			System.out.println("Failed to create packet.");
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	public static DataOutputStream encodeDataStream(DataOutputStream data, ArrayList<Object> sendData)
+	{
+		try
+		{
+			for (Object dataValue : sendData)
+			{
+				if (dataValue instanceof Integer)
+				{
+					data.writeInt((Integer) dataValue);
+				}
+				else if (dataValue instanceof Float)
+				{
+					data.writeFloat((Float) dataValue);
+				}
+				else if (dataValue instanceof Double)
+				{
+					data.writeDouble((Double) dataValue);
+				}
+				else if (dataValue instanceof Byte)
+				{
+					data.writeByte((Byte) dataValue);
+				}
+				else if (dataValue instanceof Boolean)
+				{
+					data.writeBoolean((Boolean) dataValue);
+				}
+				else if (dataValue instanceof String)
+				{
+					data.writeUTF((String) dataValue);
+				}
+				else if (dataValue instanceof Short)
+				{
+					data.writeShort((Short) dataValue);
+				}
+				else if (dataValue instanceof Long)
+				{
+					data.writeLong((Long) dataValue);
+				}
+				else if (dataValue instanceof NBTTagCompound)
+				{
+					writeNBTTagCompound((NBTTagCompound) dataValue, data);
+				}
+			}
+
+			return data;
+		}
+		catch (IOException e)
+		{
+			System.out.println("Packet data encoding failed.");
+			e.printStackTrace();
+		}
+
+		return data;
 	}
 
 	public static Packet getPacket(String channelName, Entity sender, Object... sendData)
