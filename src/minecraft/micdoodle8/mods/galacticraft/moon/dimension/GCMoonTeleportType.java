@@ -59,6 +59,11 @@ public class GCMoonTeleportType implements ITeleportType
 		{
 			GCCorePlayerMP gcPlayer = (GCCorePlayerMP) player;
 			
+			if (gcPlayer.capabilities.isFlying)
+			{
+				gcPlayer.capabilities.isFlying = false;
+			}
+			
 			GCCoreEntityLander lander = new GCCoreEntityLander(gcPlayer);
 			lander.setPositionAndRotation(player.posX, player.posY + 3, player.posZ, 0, 0);
 			
