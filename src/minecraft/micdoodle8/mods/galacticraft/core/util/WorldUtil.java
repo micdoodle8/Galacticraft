@@ -49,7 +49,6 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 import universalelectricity.core.vector.Vector3;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class WorldUtil
@@ -99,6 +98,26 @@ public class WorldUtil
     	{
     		return 0.9800000190734863D;
     	}
+    }
+
+    public static Vector3 getWorldColor(World world)
+    {
+    	return new Vector3(0.5, 0.5, 0.5);
+    }
+    
+    public static float getColorRed(World world)
+    {
+    	return (float) getWorldColor(world).x;
+    }
+    
+    public static float getColorGreen(World world)
+    {
+    	return (float) getWorldColor(world).y;
+    }
+    
+    public static float getColorBlue(World world)
+    {
+    	return (float) getWorldColor(world).z;
     }
 
     public static boolean generateChestContents(World var1, Random var2, int var3, int var4, int var5)

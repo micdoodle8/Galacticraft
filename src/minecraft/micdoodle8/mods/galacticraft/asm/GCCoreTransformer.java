@@ -1,5 +1,11 @@
 package micdoodle8.mods.galacticraft.asm;
 
+import static org.objectweb.asm.Opcodes.ALOAD;
+import static org.objectweb.asm.Opcodes.FLOAD;
+import static org.objectweb.asm.Opcodes.FMUL;
+import static org.objectweb.asm.Opcodes.FSTORE;
+import static org.objectweb.asm.Opcodes.INVOKESTATIC;
+
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -10,12 +16,16 @@ import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.InsnList;
+import org.objectweb.asm.tree.InsnNode;
+import org.objectweb.asm.tree.IntInsnNode;
 import org.objectweb.asm.tree.LdcInsnNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.TypeInsnNode;
 import org.objectweb.asm.tree.VarInsnNode;
 
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.IClassTransformer;
 
 public class GCCoreTransformer implements IClassTransformer
@@ -67,6 +77,15 @@ public class GCCoreTransformer implements IClassTransformer
 		this.unObfuscatedMap.put("onUpdateMethod", "onUpdate");
 		this.obfuscatedMap.put("onUpdateDesc", "()V");
 		this.unObfuscatedMap.put("onUpdateDesc", "()V");
+
+		this.obfuscatedMap.put("entityRendererClass", "bfr");
+		this.unObfuscatedMap.put("entityRendererClass", "net/minecraft/client/renderer/EntityRenderer");
+		this.obfuscatedMap.put("updateLightmapMethod", "h");
+		this.unObfuscatedMap.put("updateLightmapMethod", "updateLightmap");
+		this.obfuscatedMap.put("updateLightmapDesc", "(F)V");
+		this.unObfuscatedMap.put("updateLightmapDesc", "(F)V");
+		this.obfuscatedMap.put("worldClass", "aab");
+		this.unObfuscatedMap.put("worldClass", "net/minecraft/world/World");
 	}
 
 	@Override
@@ -106,6 +125,15 @@ public class GCCoreTransformer implements IClassTransformer
 		else if (name.replace('.', '/').equals(this.obfuscatedMap.get("entityItemClass")))
 		{
 			bytes = this.transform4(name, bytes, this.obfuscatedMap);
+		}
+
+		if (name.replace('.', '/').equals(this.unObfuscatedMap.get("entityRendererClass")))
+		{
+			bytes = this.transform5(name, bytes, this.unObfuscatedMap);
+		}
+		else if (name.replace('.', '/').equals(this.obfuscatedMap.get("entityRendererClass")))
+		{
+			bytes = this.transform5(name, bytes, this.obfuscatedMap);
 		}
 
 		return bytes;
@@ -372,6 +400,70 @@ public class GCCoreTransformer implements IClassTransformer
 	            			methodnode.instructions.set(nodeAt, overwriteNode);
 
 	            			GCLog.info("Successfully set INVOKESTATIC type insertion node with name \"micdoodle8/mods/galacticraft/core/util/WorldUtil\"");
+	            		}
+	            	}
+	            }
+			}
+		}
+
+        final ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
+        node.accept(writer);
+        bytes = writer.toByteArray();
+
+        return bytes;
+    }
+
+    public byte[] transform5(String name, byte[] bytes, HashMap<String, String> map)
+    {
+        final ClassNode node = new ClassNode();
+        final ClassReader reader = new ClassReader(bytes);
+        reader.accept(node, 0);
+
+		final Iterator<MethodNode> methods = node.methods.iterator();
+		
+		FMLLog.info("1");
+
+		while (methods.hasNext())
+		{
+			final MethodNode methodnode = methods.next();
+
+			FMLLog.info("" + methodnode.name + " " + methodnode.desc);
+			if (methodnode.name.equals(map.get("updateLightmapMethod")) && methodnode.desc.equals(map.get("updateLightmapDesc")))
+			{
+	            for (int count = 0; count < methodnode.instructions.size(); count++)
+	            {
+	            	final AbstractInsnNode list = methodnode.instructions.get(count);
+
+	        		FMLLog.info("" + list);
+	            	if (list instanceof IntInsnNode)
+	            	{
+	            		FMLLog.info("2");
+	            		final IntInsnNode nodeAt = (IntInsnNode) list;
+	            		
+	            		if (nodeAt.operand == 255)
+	            		{
+	            			InsnList nodesToAdd = new InsnList();
+
+	            			nodesToAdd.add(new VarInsnNode(FLOAD, 11));
+	            			nodesToAdd.add(new VarInsnNode(ALOAD, 2));
+	            			nodesToAdd.add(new MethodInsnNode(INVOKESTATIC, "micdoodle8/mods/galacticraft/core/util/WorldUtil", "getColorRed", "(L" + map.get("worldClass") + ";)F"));
+	            			nodesToAdd.add(new InsnNode(FMUL));
+	            			nodesToAdd.add(new VarInsnNode(FSTORE, 11));
+
+	            			nodesToAdd.add(new VarInsnNode(FLOAD, 12));
+	            			nodesToAdd.add(new VarInsnNode(ALOAD, 2));
+	            			nodesToAdd.add(new MethodInsnNode(INVOKESTATIC, "micdoodle8/mods/galacticraft/core/util/WorldUtil", "getColorGreen", "(L" + map.get("worldClass") + ";)F"));
+	            			nodesToAdd.add(new InsnNode(FMUL));
+	            			nodesToAdd.add(new VarInsnNode(FSTORE, 12));
+
+	            			nodesToAdd.add(new VarInsnNode(FLOAD, 13));
+	            			nodesToAdd.add(new VarInsnNode(ALOAD, 2));
+	            			nodesToAdd.add(new MethodInsnNode(INVOKESTATIC, "micdoodle8/mods/galacticraft/core/util/WorldUtil", "getColorBlue", "(L" + map.get("worldClass") + ";)F"));
+	            			nodesToAdd.add(new InsnNode(FMUL));
+	            			nodesToAdd.add(new VarInsnNode(FSTORE, 13));
+	            			
+	            			methodnode.instructions.insertBefore(nodeAt, nodesToAdd);
+	            			break;
 	            		}
 	            	}
 	            }
