@@ -47,7 +47,7 @@ public class GCCoreBlockFallenMeteor extends Block
 	@Override
     public int quantityDroppedWithBonus(int par1, Random par2Random)
     {
-        return par2Random.nextInt(5) == 0 ? 1 : 0;
+        return 1;
     }
 
 	@Override
