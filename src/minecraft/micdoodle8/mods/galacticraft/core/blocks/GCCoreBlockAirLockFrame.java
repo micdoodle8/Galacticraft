@@ -4,8 +4,8 @@ import java.util.Random;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAirLock;
-import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -15,10 +15,11 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.core.vector.Vector3;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvanced
+public class GCCoreBlockAirLockFrame extends BlockContainer
 {
     @SideOnly(Side.CLIENT)
     private Icon[] airLockIcons;
@@ -37,40 +38,40 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvanced
     @Override
     public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4)
     {
-    	int airLocksAround = 0;
-
-    	for(final ForgeDirection orientation : ForgeDirection.values())
-    	{
-    		if(orientation != ForgeDirection.UNKNOWN)
-    		{
-    			final Vector3 vec = new Vector3(par2, par3, par4);
-
-    			final Vector3 vec2 = vec.clone().modifyPositionFromSide(orientation);
-
-    			final TileEntity tilePos = vec2.getTileEntity(par1World);
-
-    			if (tilePos != null && tilePos instanceof GCCoreTileEntityAirLock)
-    			{
-        	    	for(final ForgeDirection orientation2 : ForgeDirection.values())
-        	    	{
-        	    		if(orientation2 != ForgeDirection.UNKNOWN)
-        	    		{
-        	    			final TileEntity tilePos2 = vec2.clone().modifyPositionFromSide(orientation2).getTileEntity(par1World);
-
-        	    			if (tilePos2 != null && tilePos2 instanceof GCCoreTileEntityAirLock)
-        	    			{
-        	    				airLocksAround++;
-        	    			}
-        	    		}
-        	    	}
-    			}
-    		}
-    	}
-
-    	if (airLocksAround > 0)
-    	{
-    		return false;
-    	}
+//    	int airLocksAround = 0;
+//
+//    	for(final ForgeDirection orientation : ForgeDirection.values())
+//    	{
+//    		if(orientation != ForgeDirection.UNKNOWN)
+//    		{
+//    			final Vector3 vec = new Vector3(par2, par3, par4);
+//
+//    			final Vector3 vec2 = vec.clone().modifyPositionFromSide(orientation);
+//
+//    			final TileEntity tilePos = vec2.getTileEntity(par1World);
+//
+//    			if (tilePos != null && tilePos instanceof GCCoreTileEntityAirLock)
+//    			{
+//        	    	for(final ForgeDirection orientation2 : ForgeDirection.values())
+//        	    	{
+//        	    		if(orientation2 != ForgeDirection.UNKNOWN)
+//        	    		{
+//        	    			final TileEntity tilePos2 = vec2.clone().modifyPositionFromSide(orientation2).getTileEntity(par1World);
+//
+//        	    			if (tilePos2 != null && tilePos2 instanceof GCCoreTileEntityAirLock)
+//        	    			{
+//        	    				airLocksAround++;
+//        	    			}
+//        	    		}
+//        	    	}
+//    			}
+//    		}
+//    	}
+//
+//    	if (airLocksAround > 0)
+//    	{
+//    		return false;
+//    	}
 
     	return true;
     }
@@ -290,15 +291,6 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvanced
                 {
             		((GCCoreTileEntityAirLock) te).active = true;
                 }
-
-                if (((GCCoreTileEntityAirLock) te).oxygenActive && !this.gettingOxygen(par1World, par2, par3, par4))
-                {
-                    par1World.scheduleBlockUpdate(par2, par3, par4, this.blockID, 4);
-                }
-                else if (!((GCCoreTileEntityAirLock) te).oxygenActive && this.gettingOxygen(par1World, par2, par3, par4))
-                {
-            		((GCCoreTileEntityAirLock) te).oxygenActive = true;
-                }
         	}
         }
     }
@@ -312,32 +304,7 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvanced
 
         	if (te instanceof GCCoreTileEntityAirLock)
         	{
-        		if (((GCCoreTileEntityAirLock) te).otherAirLockBlocks.size() > 8)
-        		{
-
-        		}
-        		else
-        		{
-            		((GCCoreTileEntityAirLock) te).updateState();
-
-                    if (!this.gettingPowered(par1World, par2, par3, par4))
-                    {
-                		((GCCoreTileEntityAirLock) te).active = false;
-                    }
-                    else
-                    {
-                		((GCCoreTileEntityAirLock) te).active = true;
-                    }
-
-                    if (!this.gettingOxygen(par1World, par2, par3, par4))
-                    {
-                		((GCCoreTileEntityAirLock) te).oxygenActive = false;
-                    }
-                    else
-                    {
-                		((GCCoreTileEntityAirLock) te).oxygenActive = true;
-                    }
-        		}
+        		((GCCoreTileEntityAirLock) te).active = this.gettingPowered(par1World, par2, par3, par4);
         	}
         }
     }
@@ -351,31 +318,23 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvanced
 
         	if (te instanceof GCCoreTileEntityAirLock)
         	{
-        		if (!this.gettingPowered(par1World, par2, par3, par4))
-                {
-            		((GCCoreTileEntityAirLock) te).active = false;
-                }
-
-        		if (!this.gettingOxygen(par1World, par2, par3, par4))
-                {
-            		((GCCoreTileEntityAirLock) te).oxygenActive = false;
-                }
+        		((GCCoreTileEntityAirLock) te).active = this.gettingPowered(par1World, par2, par3, par4);
         	}
         }
     }
 
-	@Override
-    public int onBlockPlaced(World par1World, int par2, int par3, int par4, int par5, float par6, float par7, float par8, int par9)
-    {
-    	final TileEntity te = par1World.getBlockTileEntity(par3, par4, par5);
-
-    	if (te instanceof GCCoreTileEntityAirLock)
-    	{
-    		((GCCoreTileEntityAirLock) te).updateState();
-    	}
-
-    	return par9;
-    }
+//	@Override
+//    public int onBlockPlaced(World par1World, int par2, int par3, int par4, int par5, float par6, float par7, float par8, int par9)
+//    {
+//    	final TileEntity te = par1World.getBlockTileEntity(par3, par4, par5);
+//
+//    	if (te instanceof GCCoreTileEntityAirLock)
+//    	{
+//    		((GCCoreTileEntityAirLock) te).updateState();
+//    	}
+//
+//    	return par9;
+//    }
 
 	@Override
 	public TileEntity createNewTileEntity(World var1)
@@ -421,35 +380,35 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvanced
 		}
 	}
 
-	private boolean gettingOxygen(World par1World, int x, int y, int z)
-	{
-		int var1;
-		int var2;
-    	final TileEntity te = par1World.getBlockTileEntity(x, y, z);
-
-    	if (te instanceof GCCoreTileEntityAirLock)
-    	{
-    		final GCCoreTileEntityAirLock airLock = (GCCoreTileEntityAirLock) te;
-
-    		if (airLock.index == 0 || airLock.index == 1)
-    		{
-    			var1 = airLock.orientation == 0 ? 1 : 0;
-    			var2 = airLock.orientation;
-
-    			if (OxygenUtil.isBlockGettingOxygen(par1World, x - var1, y, z - var2) || OxygenUtil.isBlockGettingOxygen(par1World, x + var1, y, z + var2))
-    			{
-    				return false;
-    			}
-    		}
-    	}
-
-		if (OxygenUtil.isBlockGettingOxygen(par1World, x, y, z))
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
+//	private boolean gettingOxygen(World par1World, int x, int y, int z)
+//	{
+//		int var1;
+//		int var2;
+//    	final TileEntity te = par1World.getBlockTileEntity(x, y, z);
+//
+//    	if (te instanceof GCCoreTileEntityAirLock)
+//    	{
+//    		final GCCoreTileEntityAirLock airLock = (GCCoreTileEntityAirLock) te;
+//
+//    		if (airLock.index == 0 || airLock.index == 1)
+//    		{
+//    			var1 = airLock.orientation == 0 ? 1 : 0;
+//    			var2 = airLock.orientation;
+//
+//    			if (OxygenUtil.isBlockGettingOxygen(par1World, x - var1, y, z - var2) || OxygenUtil.isBlockGettingOxygen(par1World, x + var1, y, z + var2))
+//    			{
+//    				return false;
+//    			}
+//    		}
+//    	}
+//
+//		if (OxygenUtil.isBlockGettingOxygen(par1World, x, y, z))
+//		{
+//			return true;
+//		}
+//		else
+//		{
+//			return false;
+//		}
+//	}
 }

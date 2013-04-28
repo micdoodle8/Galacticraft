@@ -34,7 +34,7 @@ public class GCCoreBlockAirLockWall extends BlockBreakable implements IPartialSe
         float var5;
         float var6;
 
-        if (par1IBlockAccess.getBlockId(par2 - 1, par3, par4) != GCCoreBlocks.airLockFrame.blockID && par1IBlockAccess.getBlockId(par2 + 1, par3, par4) != GCCoreBlocks.airLockFrame.blockID)
+        if (par1IBlockAccess.getBlockId(par2 - 1, par3, par4) != GCCoreBlocks.airLockFrame.blockID && par1IBlockAccess.getBlockId(par2 + 1, par3, par4) != GCCoreBlocks.airLockFrame.blockID && par1IBlockAccess.getBlockId(par2 - 1, par3, par4) != GCCoreBlocks.airLockSeal.blockID && par1IBlockAccess.getBlockId(par2 + 1, par3, par4) != GCCoreBlocks.airLockSeal.blockID)
         {
             var5 = 0.325F;
             var6 = 0.5F;
@@ -63,66 +63,6 @@ public class GCCoreBlockAirLockWall extends BlockBreakable implements IPartialSe
     @Override
     public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
     {
-        byte var6 = 0;
-        byte var7 = 1;
-
-        if (par1World.getBlockId(par2 - 1, par3, par4) == this.blockID || par1World.getBlockId(par2 + 1, par3, par4) == this.blockID)
-        {
-            var6 = 1;
-            var7 = 0;
-        }
-
-        int var8;
-
-        for (var8 = par3; par1World.getBlockId(par2, var8 - 1, par4) == this.blockID; --var8)
-        {
-            ;
-        }
-
-        if (par1World.getBlockId(par2, var8 - 1, par4) != GCCoreBlocks.airLockFrame.blockID)
-        {
-            par1World.setBlock(par2, par3, par4, 0, 0, 3);
-        }
-        else
-        {
-            int var9;
-
-            for (var9 = 1; var9 < 4 && par1World.getBlockId(par2, var8 + var9, par4) == this.blockID; ++var9)
-            {
-                ;
-            }
-
-            if (var9 == 2 && par1World.getBlockId(par2, var8 + var9, par4) == GCCoreBlocks.airLockFrame.blockID)
-            {
-                final boolean var10 = par1World.getBlockId(par2 - 1, par3, par4) == this.blockID || par1World.getBlockId(par2 + 1, par3, par4) == this.blockID;
-                final boolean var11 = par1World.getBlockId(par2, par3, par4 - 1) == this.blockID || par1World.getBlockId(par2, par3, par4 + 1) == this.blockID;
-
-                final TileEntity te = par1World.getBlockTileEntity(par2, var8 + var9, par4);
-
-        		if (te instanceof GCCoreTileEntityAirLock && ((GCCoreTileEntityAirLock) te).otherAirLockBlocks.size() > 8)
-        		{
-
-        		}
-        		else
-        		{
-                    if (var10 && var11)
-                    {
-                        par1World.setBlock(par2, par3, par4, 0, 0, 3);
-                    }
-                    else
-                    {
-                        if ((par1World.getBlockId(par2 + var6, par3, par4 + var7) != GCCoreBlocks.airLockFrame.blockID || par1World.getBlockId(par2 - var6, par3, par4 - var7) != this.blockID) && (par1World.getBlockId(par2 - var6, par3, par4 - var7) != GCCoreBlocks.airLockFrame.blockID || par1World.getBlockId(par2 + var6, par3, par4 + var7) != this.blockID))
-                        {
-                            par1World.setBlock(par2, par3, par4, 0, 0, 3);
-                        }
-                    }
-        		}
-            }
-            else
-            {
-                par1World.setBlock(par2, par3, par4, 0, 0, 3);
-            }
-        }
     }
 
     @Override
