@@ -49,7 +49,6 @@ import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.IChunkProvider;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -125,6 +124,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 	public boolean lastOxygenSetupValid;
 
 	public ArrayList<ISchematicPage> unlockedSchematics = new ArrayList<ISchematicPage>();
+	public ArrayList<ISchematicPage> lastUnlockedSchematics = new ArrayList<ISchematicPage>();
 
     public GCCorePlayerMP(MinecraftServer par1MinecraftServer, World par2World, String par3Str, ItemInWorldManager par4ItemInWorldManager)
     {
@@ -451,16 +451,10 @@ public class GCCorePlayerMP extends EntityPlayerMP
 		{
 			this.damageCounter--;
 		}
-
-		if (this.tick % 30 == 0)
+		
+		if (this.tick % 30 == 0 && this.worldObj.provider instanceof IGalacticraftWorldProvider)
 		{
 			this.sendAirRemainingPacket();
-
-			if (this.onGround)
-			{
-				this.sendParachuteRemovalPacket();
-				this.setParachute(false);
-			}
 		}
 
 		if (this.onGround && this.getParachute())
@@ -681,7 +675,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 			}
 		}
 
-		if (this.tick % 30 == 0)
+		if (this.tick % 60 == 0)
 		{
 			final Object[] toSend = {this.spaceStationDimensionID};
 	    	this.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 18, toSend));
@@ -871,7 +865,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 			this.oxygenSetupValid = true;
 		}
 		
-		if (this.oxygenSetupValid != this.lastOxygenSetupValid || this.tick % 100 == 0)
+		if (this.worldObj.provider instanceof IGalacticraftWorldProvider && (this.oxygenSetupValid != this.lastOxygenSetupValid || this.tick % 100 == 0))
 		{
 	        this.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 27, new Object[] {Boolean.valueOf(this.oxygenSetupValid)}));
 		}
@@ -937,7 +931,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
 		Collections.sort(this.unlockedSchematics);
 
-    	if (this.tick % 5 == 0)
+    	if (this.tick % 200 == 0 || (this.unlockedSchematics.size() != this.lastUnlockedSchematics.size()))
     	{
 	        this.playerNetServerHandler.sendPacketToPlayer(GCCorePacketSchematicList.buildSchematicListPacket(this.unlockedSchematics));
     	}
@@ -949,6 +943,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
     	this.lastParachuteInSlot = this.playerTankInventory.getStackInSlot(4);
     	
     	this.lastOxygenSetupValid = this.oxygenSetupValid;
+    	this.lastUnlockedSchematics = this.unlockedSchematics;
 	}
 
 	@Deprecated
@@ -1249,10 +1244,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
 	  	final Object[] toSend = {MathHelper.floor_float(this.airRemaining / f1), MathHelper.floor_float(this.airRemaining2 / f2), this.username};
 
-	  	if (FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.username) != null)
-	  	{
-	          FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.username).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 0, toSend));
-	  	}
+	  	this.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 0, toSend));
 	}
 
 	public void sendGearUpdatePacket(int i)
@@ -1261,7 +1253,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
 	  	if (FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.username) != null)
 	  	{
-	          PacketDispatcher.sendPacketToAllPlayers(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 10, toSend));
+	  		PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 50, this.worldObj.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, 10, toSend));
 	  	}
 	}
 
@@ -1271,7 +1263,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
 	  	if (FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.username) != null)
 	  	{
-	          PacketDispatcher.sendPacketToAllPlayers(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 5, toSend));
+	  		PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 50, this.worldObj.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, 5, toSend));
 	  	}
 	}
 
@@ -1281,7 +1273,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
 	  	if (FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.username) != null)
 	  	{
-	          PacketDispatcher.sendPacketToAllPlayers(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 4, toSend));
+	          PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 50, this.worldObj.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, 4, toSend));
 	  	}
 	}
 
@@ -1305,7 +1297,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
 	  	if (FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.username) != null)
 	  	{
-	          PacketDispatcher.sendPacketToAllPlayers(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 6, toSend));
+	          PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 50, this.worldObj.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, 6, toSend));
 	  	}
 	}
 

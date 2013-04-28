@@ -34,6 +34,7 @@ import net.minecraftforge.common.DimensionManager;
 import org.lwjgl.input.Keyboard;
 
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
@@ -52,6 +53,8 @@ public class GCCorePacketHandlerClient implements IPacketHandler
         final EntityPlayer player = (EntityPlayer)p;
 
         GCCorePlayerSP playerBaseClient = null;
+    	
+    	FMLLog.info("client: " + packetType);
 
         if (player != null && GalacticraftCore.playersClient.size() > 0)
         {

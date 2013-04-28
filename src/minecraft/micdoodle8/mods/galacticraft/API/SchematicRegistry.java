@@ -9,6 +9,7 @@ import java.util.TreeSet;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketSchematicList;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.item.ItemStack;
@@ -64,6 +65,8 @@ public class SchematicRegistry
 		if (!player.unlockedSchematics.contains(page))
 		{
 			player.unlockedSchematics.add(page);
+			Collections.sort(player.unlockedSchematics);
+			player.playerNetServerHandler.sendPacketToPlayer(GCCorePacketSchematicList.buildSchematicListPacket(player.unlockedSchematics));
 		}
 	}
 
