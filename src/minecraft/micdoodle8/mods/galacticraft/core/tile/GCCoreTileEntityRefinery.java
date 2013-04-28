@@ -173,6 +173,11 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
 		{
 			return false;
 		}
+		
+		if (this.ic2Energy == 0 && this.bcEnergy == 0 && this.wattsReceived == 0)
+		{
+			return false;
+		}
 
 		return true;
 	}

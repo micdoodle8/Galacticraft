@@ -62,7 +62,7 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityElectric im
 
 		if (!this.worldObj.isRemote)
 		{
-			if(this.getPower() > 0 && !this.worldObj.isRemote)
+			if(this.getPower() > 0 && !this.worldObj.isRemote && (this.ic2Energy > 0 || this.wattsReceived > 0 || this.bcEnergy > 0))
 			{
 		    	for(final ForgeDirection orientation : ForgeDirection.values())
 		    	{
@@ -101,34 +101,37 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityElectric im
 			
 			double power = 0;
 
-			if (this.worldObj.provider instanceof IGalacticraftWorldProvider)
+			if (this.ic2Energy > 0 || this.wattsReceived > 0 || this.bcEnergy > 0)
 			{
-				for (int y = this.yCoord - 5; y <= this.yCoord + 5; y++)
+				if (this.worldObj.provider instanceof IGalacticraftWorldProvider)
 				{
-					for (int x = this.xCoord - 5; x <= this.xCoord + 5; x++)
+					for (int y = this.yCoord - 5; y <= this.yCoord + 5; y++)
 					{
-						for (int z = this.zCoord - 5; z <= this.zCoord + 5; z++)
+						for (int x = this.xCoord - 5; x <= this.xCoord + 5; x++)
 						{
-							final Block block = Block.blocksList[this.worldObj.getBlockId(x, y, z)];
-
-							if (block != null && block instanceof BlockLeaves)
+							for (int z = this.zCoord - 5; z <= this.zCoord + 5; z++)
 							{
-								if (!this.worldObj.isRemote && this.worldObj.rand.nextInt(100000) == 0 && !GCCoreConfigManager.disableLeafDecay)
-								{
-									this.worldObj.setBlockToAir(x, y, z);
-								}
+								final Block block = Block.blocksList[this.worldObj.getBlockId(x, y, z)];
 
-								power++;
+								if (block != null && block instanceof BlockLeaves)
+								{
+									if (!this.worldObj.isRemote && this.worldObj.rand.nextInt(100000) == 0 && !GCCoreConfigManager.disableLeafDecay)
+									{
+										this.worldObj.setBlockToAir(x, y, z);
+									}
+
+									power++;
+								}
 							}
 						}
 					}
+					
+					this.setPower(power / 1.2D);
 				}
-				
-				this.setPower(power / 1.2D);
-			}
-			else
-			{
-				this.setPower(this.MAX_POWER);
+				else
+				{
+					this.setPower(this.MAX_POWER);
+				}
 			}
 
 			if(this.getPower() > this.MAX_POWER)
