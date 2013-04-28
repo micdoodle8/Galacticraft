@@ -570,9 +570,9 @@ public class RecipeUtil
 			"X",
 			"Y",
 			"Z",
-			'X', "plateIron",
+			'X', "ingotPlatinum",
 			'Y', "ingotInvar",
-			'Z', "plateBronze",
+			'Z', "ingotCopper",
 		});
 		
 		addRecipe(new ItemStack(GCCoreItems.rocketFins, 1), new Object[] {
@@ -587,7 +587,7 @@ public class RecipeUtil
 			"YYY",
 			"XXX",
 			'X', Block.blockIron,
-			'Y', "plateIron"
+			'Y', "ingotInvar"
 		});
 		
 		addRecipe(new ItemStack(GCCoreBlocks.airDistributor, 1), new Object[] {
@@ -633,7 +633,7 @@ public class RecipeUtil
 			'X', "ingotLead",
 			'Y', "ingotInvar",
 			'Z', Block.workbench,
-			'W', "advancedCircuit"
+			'W', "ingotElectrum"
 		});
 		
 		addRecipe(new ItemStack(GCCoreItems.heavyOxygenTank, 1, GCCoreItems.heavyOxygenTank.getMaxDamage()), new Object[] {
@@ -650,8 +650,8 @@ public class RecipeUtil
 			" Y ",
 			"ZXZ",
 			'X', Item.redstone,
-			'Y', "motor",
-			'Z', "ingotLead"
+			'Y', ItemRegistry.getItem("gearInvar", 1),
+			'Z', "ingotInvar"
 		});
 		
 		addRecipe(new ItemStack(GCCoreItems.oxygenConcentrator, 1), new Object[] {
@@ -661,14 +661,14 @@ public class RecipeUtil
 			'W', "ingotTin",
 			'X', GCCoreItems.airVent,
 			'Y', new ItemStack(GCCoreItems.canister, 1, 0),
-			'Z', "ingotLead"
+			'Z', "ingotInvar"
 		});
 		
 		addRecipe(new ItemStack(GCCoreItems.steelPickaxe, 1), new Object[] {
 			"YYY",
 			" X ",
 			" X ",
-			'Y', "ingotLead",
+			'Y', "ingotInvar",
 			'X', Item.stick
 		});
 		
@@ -676,7 +676,7 @@ public class RecipeUtil
 			"YY ",
 			"YX ",
 			" X ",
-			'Y', "ingotLead",
+			'Y', "ingotInvar",
 			'X', Item.stick
 		});
 		
@@ -684,7 +684,7 @@ public class RecipeUtil
 			" YY",
 			" XY",
 			" X ",
-			'Y', "ingotLead",
+			'Y', "ingotInvar",
 			'X', Item.stick
 		});
 		
@@ -692,7 +692,7 @@ public class RecipeUtil
 			" YY",
 			" X ",
 			" X ",
-			'Y', "ingotLead",
+			'Y', "ingotInvar",
 			'X', Item.stick
 		});
 		
@@ -700,7 +700,7 @@ public class RecipeUtil
 			"YY ",
 			" X ",
 			" X ",
-			'Y', "ingotLead",
+			'Y', "ingotInvar",
 			'X', Item.stick
 		});
 		
@@ -708,7 +708,7 @@ public class RecipeUtil
 			" Y ",
 			" X ",
 			" X ",
-			'Y', "ingotLead",
+			'Y', "ingotInvar",
 			'X', Item.stick
 		});
 		
@@ -716,40 +716,40 @@ public class RecipeUtil
 			" Y ",
 			" Y ",
 			" X ",
-			'Y', "ingotLead",
+			'Y', "ingotInvar",
 			'X', Item.stick
 		});
 		
 		addRecipe(new ItemStack(GCCoreItems.steelBoots, 1), new Object[] {
 			"X X",
 			"X X",
-			'X', "ingotLead"
+			'X', "ingotInvar"
 		});
 		
 		addRecipe(new ItemStack(GCCoreItems.steelChestplate, 1), new Object[] {
 			"X X",
 			"XXX",
 			"XXX",
-			'X', "ingotLead"
+			'X', "ingotInvar"
 		});
 		
 		addRecipe(new ItemStack(GCCoreItems.steelLeggings, 1), new Object[] {
 			"XXX",
 			"X X",
 			"X X",
-			'X', "ingotLead"
+			'X', "ingotInvar"
 		});
 		
 		addRecipe(new ItemStack(GCCoreItems.steelHelmet, 1), new Object[] {
 			"XXX",
 			"X X",
-			'X', "ingotLead"
+			'X', "ingotInvar"
 		});
 		
-		addRecipe(new ItemStack(GCCoreBlocks.enclosedWire, 1, 0), new Object[] {
-			"XYX",
-			'X', "copperWire", 'Y', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4)
-		});
+//		addRecipe(new ItemStack(GCCoreBlocks.enclosedWire, 1, 0), new Object[] {
+//			"XYX",
+//			'X', "copperWire", 'Y', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4)
+//		});
 
 		addRecipe(new ItemStack(GCCoreItems.flagPole, 2, 0), new Object[] {
 			"X",
