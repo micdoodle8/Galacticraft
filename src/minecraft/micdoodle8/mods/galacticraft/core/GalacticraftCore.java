@@ -188,6 +188,8 @@ public class GalacticraftCore
 
 	public static LiquidStack oilStack;
 	public static LiquidStack fuelStack;
+	
+	public static boolean setSpaceStationRecipe = false;
 
 	@PreInit
 	public void preInit(FMLPreInitializationEvent event)
@@ -352,12 +354,6 @@ public class GalacticraftCore
             JOptionPane.showMessageDialog(null, ep, "Fatal error", JOptionPane.ERROR_MESSAGE);
 			System.exit(1);
 		}
-
-		final HashMap<Object, Integer> inputMap = new HashMap<Object, Integer>();
-		inputMap.put("ingotTin", 16);
-		inputMap.put("ingotSteel", 8);
-		inputMap.put("ingotIron", 12);
-		GalacticraftRegistry.registerSpaceStation(new SpaceStationType(GCCoreConfigManager.idDimensionOverworldOrbit, "Overworld", 0, new SpaceStationRecipe(inputMap)));
 	}
 
 	@ServerStarted
