@@ -61,11 +61,6 @@ public class GCCoreBlockAirLockWall extends BlockBreakable implements IPartialSe
     }
 
     @Override
-    public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
-    {
-    }
-
-    @Override
     @SideOnly(Side.CLIENT)
     public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {

@@ -29,22 +29,32 @@ public class OxygenPressureProtocol
     {
     	OxygenPressureProtocol.vanillaPermeableBlocks.add(Block.sponge.blockID);
     	
-    	for (String s : GCCoreConfigManager.sealableIDs)
+    	try
     	{
-    		String[] split = s.split(":");
-    		
-    		if (OxygenPressureProtocol.nonPermeableBlocks.containsKey(Integer.parseInt(split[0])))
-    		{
-    			ArrayList<Integer> l = OxygenPressureProtocol.nonPermeableBlocks.get(Integer.parseInt(split[0]));
-    			l.add(Integer.parseInt(split[1]));
-    			OxygenPressureProtocol.nonPermeableBlocks.put(Integer.parseInt(split[0]), l);
-    		}
-    		else
-    		{
-    			ArrayList<Integer> a = new ArrayList<Integer>();
-    			a.add(Integer.parseInt(split[1]));
-        		OxygenPressureProtocol.nonPermeableBlocks.put(Integer.parseInt(split[0]), a);
-    		}
+        	for (String s : GCCoreConfigManager.sealableIDs)
+        	{
+        		String[] split = s.split(":");
+        		
+        		if (OxygenPressureProtocol.nonPermeableBlocks.containsKey(Integer.parseInt(split[0])))
+        		{
+        			ArrayList<Integer> l = OxygenPressureProtocol.nonPermeableBlocks.get(Integer.parseInt(split[0]));
+        			l.add(Integer.parseInt(split[1]));
+        			OxygenPressureProtocol.nonPermeableBlocks.put(Integer.parseInt(split[0]), l);
+        		}
+        		else
+        		{
+        			ArrayList<Integer> a = new ArrayList<Integer>();
+        			a.add(Integer.parseInt(split[1]));
+            		OxygenPressureProtocol.nonPermeableBlocks.put(Integer.parseInt(split[0]), a);
+        		}
+        	}
+    	}
+    	catch (Exception e)
+    	{
+    		System.err.println();
+    		System.err.println("Error finding sealable IDs from the Galacticraft config, check that they are listed properly!");
+    		System.err.println();
+    		e.printStackTrace();
     	}
     }
 
