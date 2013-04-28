@@ -421,23 +421,18 @@ public class GCCoreTransformer implements IClassTransformer
 
 		final Iterator<MethodNode> methods = node.methods.iterator();
 		
-		FMLLog.info("1");
-
 		while (methods.hasNext())
 		{
 			final MethodNode methodnode = methods.next();
 
-			FMLLog.info("" + methodnode.name + " " + methodnode.desc);
 			if (methodnode.name.equals(map.get("updateLightmapMethod")) && methodnode.desc.equals(map.get("updateLightmapDesc")))
 			{
 	            for (int count = 0; count < methodnode.instructions.size(); count++)
 	            {
 	            	final AbstractInsnNode list = methodnode.instructions.get(count);
 
-	        		FMLLog.info("" + list);
 	            	if (list instanceof IntInsnNode)
 	            	{
-	            		FMLLog.info("2");
 	            		final IntInsnNode nodeAt = (IntInsnNode) list;
 	            		
 	            		if (nodeAt.operand == 255)
