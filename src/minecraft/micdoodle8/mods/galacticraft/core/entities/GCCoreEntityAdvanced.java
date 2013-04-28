@@ -209,7 +209,8 @@ public abstract class GCCoreEntityAdvanced extends GCCoreEntityControllable impl
      * @return map of the particle vectors. Map key is the position and map value is the motion of the particles. Each entry will be spawned as a separate particle
      */
     public abstract Map<Vector3, Vector3> getParticleMap();
-    
+
+	@SideOnly(Side.CLIENT)
     public abstract EntityFX getParticle(Random rand, double x, double y, double z, double motX, double motY, double motZ);
 
     public abstract void tickInAir();

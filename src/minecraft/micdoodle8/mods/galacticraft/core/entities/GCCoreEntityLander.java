@@ -23,7 +23,8 @@ import universalelectricity.prefab.network.IPacketReceiver;
 
 import com.google.common.io.ByteArrayDataInput;
 
-import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInventory, IPacketReceiver
 {
@@ -350,6 +351,7 @@ public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInvento
 		return particleMap;
 	}
 
+	@SideOnly(Side.CLIENT)
 	@Override
 	public EntityFX getParticle(Random rand, double x, double y, double z, double motX, double motY, double motZ) 
 	{
@@ -389,11 +391,8 @@ public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInvento
 	@Override
 	public void onGroundHit()
 	{
-		FMLLog.info("1 " + this.motionY + " " + this.lastMotionY);
-		
 		if (Math.abs(this.lastMotionY) > 2.0D)
 		{
-			FMLLog.info("2");
 			if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayerMP)
 			{
         	  	final Object[] toSend2 = {0};
