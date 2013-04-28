@@ -10,12 +10,12 @@ import net.minecraft.world.World;
 
 public class GCMoonGenCaves extends GCCoreMapGenBaseMeta
 {
-    protected void generateLargeCaveNode(long par1, int par3, int par4, int[] blockIdArray, int[] metaArray, double par6, double par8, double par10)
+    protected void generateLargeCaveNode(long par1, int par3, int par4, short[] blockIdArray, byte[] metaArray, double par6, double par8, double par10)
     {
         this.generateCaveNode(par1, par3, par4, blockIdArray, metaArray, par6, par8, par10, 1.0F + this.rand.nextFloat() * 6.0F, 0.0F, 0.0F, -1, -1, 0.5D);
     }
 
-    protected void generateCaveNode(long par1, int par3, int par4, int[] blockIdArray, int[] metaArray, double par6, double par8, double par10, float par12, float par13, float par14, int par15, int par16, double par17)
+    protected void generateCaveNode(long par1, int par3, int par4, short[] blockIdArray, byte[] metaArray, double par6, double par8, double par10, float par12, float par13, float par14, int par15, int par16, double par17)
     {
         final double d4 = par3 * 16 + 8;
         final double d5 = par4 * 16 + 8;
@@ -197,7 +197,7 @@ public class GCMoonGenCaves extends GCCoreMapGenBaseMeta
     }
 
     @Override
-    protected void recursiveGenerate(World par1World, int par2, int par3, int par4, int par5, int[] blockIdArray, int[] metaArray)
+    protected void recursiveGenerate(World par1World, int par2, int par3, int par4, int par5, short[] blockIdArray, byte[] metaArray)
     {
         int i1 = this.rand.nextInt(this.rand.nextInt(this.rand.nextInt(40) + 1) + 1);
 

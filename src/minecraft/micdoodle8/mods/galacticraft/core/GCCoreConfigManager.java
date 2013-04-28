@@ -167,9 +167,9 @@ public class GCCoreConfigManager
 	public static boolean canRespawnOnSpaceStations;
 	public static boolean overrideCapes;
 	public static boolean hiresTextures;
-	public static boolean enableBCLoading;
 	public static double spaceStationEnergyScalar;
 	public static boolean disableLander;
+	public static boolean enableBCLoading;
 
 	private void setDefaultValues()
     {
@@ -179,8 +179,6 @@ public class GCCoreConfigManager
 
 	        GCCoreConfigManager.idDimensionOverworldOrbit = 			GCCoreConfigManager.configuration.get("DIMENSIONS",                 "idDimensionOverworldOrbit",            -27)        .getInt(-27);
 
-	        GCCoreConfigManager.idBlockSpaceStationBase = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockSpaceStationBase", 				224, "This needs to remain under 255 or Space Station will not generate properly")		.getInt(224);
-	        GCCoreConfigManager.idBlockTreasureChest = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockTieredTreasureChest", 			225, "This needs to remain under 255 or Moon will not generate properly")		.getInt(225);
 	        GCCoreConfigManager.idBlockBreatheableAir = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockCoreBreatheableAir", 			3350)		.getInt(3350);
 	        GCCoreConfigManager.idBlockLandingPad = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockLandingPad", 					3351)		.getInt(3351);
 	        GCCoreConfigManager.idBlockLandingPadFull = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockLandingPadFull", 				3352)		.getInt(3352);
@@ -203,6 +201,8 @@ public class GCCoreConfigManager
 	        GCCoreConfigManager.idBlockCrudeOilStill = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockCrudeOilStill",					3377)		.getInt(3377);
 	        GCCoreConfigManager.idBlockDummy = 							GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockDummy", 						3378)		.getInt(3378);
 	        GCCoreConfigManager.idBlockEnclosedWire = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockEnclosedWire", 					3379)		.getInt(3379);
+	        GCCoreConfigManager.idBlockSpaceStationBase = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockSpaceStationBase", 				3380, "Even though this will be generated, it can use block IDs greater than 256")		.getInt(3380);
+	        GCCoreConfigManager.idBlockTreasureChest = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockTieredTreasureChest", 			3381, "Even though this will be generated, it can use block IDs greater than 256")		.getInt(3381);
 
 	        GCCoreConfigManager.idItemSpaceship = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemSpaceship", 						9855)		.getInt(9855);
 	        GCCoreConfigManager.idItemLightOxygenTank = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemLightOxygenTank", 				9856)		.getInt(9856);
@@ -297,9 +297,9 @@ public class GCCoreConfigManager
 	        GCCoreConfigManager.disableLeafDecay = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Oxygen Collector Leaf Decay",false, "If set to true, Oxygen Collectors will not consume leaf blocks.")		.getBoolean(false);
 	        GCCoreConfigManager.spaceStationsRequirePermission = 		GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Space Stations Require Permission",	true, "While true, space stations require you to invite other players using /ssinvite <playername>")		.getBoolean(true);
 	        GCCoreConfigManager.canRespawnOnSpaceStations = 			GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Can players respawn on Space Stations", false, "If you want to respawn on spacestations if you die there, set to true. When false beds will explode on use.")	.getBoolean(false);
+	        GCCoreConfigManager.enableBCLoading =						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Load Basic Components", 				false, "Set to true if you wish Basic Components to load inside Galacticraft")		.getBoolean(false);
 	        GCCoreConfigManager.overrideCapes = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Override Capes", 					true, "By default, Galacticraft will override capes with the mod's donor cape. Set to false to disable.")		.getBoolean(true);
 	        GCCoreConfigManager.hiresTextures = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Hi-Res Textures (32x32)", 			true, "If you prefer low-resolution textures, set this to false")		.getBoolean(true);
-	        GCCoreConfigManager.enableBCLoading =						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Load Basic Components", 				false, "Set to true if you wish Basic Components to load inside Galacticraft")		.getBoolean(false);
 	        GCCoreConfigManager.spaceStationEnergyScalar = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Space Station Solar Energy Multiplier", 3.0, "If Mekanism is installed, solar panels will work (default 3x) more effective on space stations.")		.getDouble(3.0);
 	        GCCoreConfigManager.sealableIDs = 							GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "External Sealable IDs", 				new String[] {String.valueOf(Block.glass.blockID + ":0"), String.valueOf(Block.thinGlass.blockID + ":0")}, "List IDs from other mods that the Oxygen Sealer should recognize as solid blocks. Format is ID:METADATA").getStringList();
 	        GCCoreConfigManager.disableLander =							GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Lander", 					false, "Set to true if you do not want to use the new Moon Lander feature, and land on the moon with a parachute instead.")		.getBoolean(false);

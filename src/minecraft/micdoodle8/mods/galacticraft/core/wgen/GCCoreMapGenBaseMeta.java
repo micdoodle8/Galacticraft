@@ -16,7 +16,7 @@ public class GCCoreMapGenBaseMeta
     /** This world object. */
     protected World worldObj;
 
-    public void generate(IChunkProvider par1IChunkProvider, World par2World, int par3, int par4, int[] par5ArrayOfByte, int[] metaArray)
+    public void generate(IChunkProvider par1IChunkProvider, World par2World, int par3, int par4, short[] par5ArrayOfByte, byte[] metaArray)
     {
         final int var6 = this.range;
         this.worldObj = par2World;
@@ -39,5 +39,5 @@ public class GCCoreMapGenBaseMeta
     /**
      * Recursively called by generate() (generate) and optionally by itself.
      */
-    protected void recursiveGenerate(World par1World, int par2, int par3, int par4, int par5, int[] par6ArrayOfByte, int metaArray[]) {}
+    protected void recursiveGenerate(World par1World, int par2, int par3, int par4, int par5, short[] par6ArrayOfByte, byte[] metaArray) {}
 }

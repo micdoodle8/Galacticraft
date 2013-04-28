@@ -62,10 +62,10 @@ public class GCCoreChunkProviderOverworldOrbit extends ChunkProviderGenerate
 	public Chunk provideChunk(int par1, int par2)
 	{
 		this.rand.setSeed(par1 * 341873128712L + par2 * 132897987541L);
-		final int[] ids = new int[32768];
-		final int[] meta = new int[32768];
+		final short[] ids = new short[32768];
+		final byte[] meta = new byte[32768];
 
-		final Chunk var4 = new GCCoreChunk(this.worldObj, ids, meta, par1, par2);
+		final Chunk var4 = new Chunk(this.worldObj, ids, meta, par1, par2);
 
 		var4.generateSkylightMap();
 		return var4;
@@ -90,7 +90,6 @@ public class GCCoreChunkProviderOverworldOrbit extends ChunkProviderGenerate
         if (k == 0 && l == 0)
         {
             this.worldObj.setBlock(k, 64, l, GCCoreBlocks.spaceStationBase.blockID, 0, 3);
-//            this.worldObj.setBlockTileEntity(k, 64, l, new GCCoreTileEntitySpaceStationBase());
 
             final TileEntity var8 = this.worldObj.getBlockTileEntity(k, 64, l);
 
@@ -100,37 +99,6 @@ public class GCCoreChunkProviderOverworldOrbit extends ChunkProviderGenerate
             }
 
             new GCCoreWorldGenSpaceStation().generate(this.worldObj, this.rand, k - 10, 62, l - 3);
-//            for (int x = -3; x < 4; x++)
-//            {
-//            	for (int y = 0; y < 6; y++)
-//            	{
-//                    for (int z = -3; z < 4; z++)
-//                    {
-//                    	if (Math.abs(x) == 3 || Math.abs(y) == 0 || Math.abs(y) == 5 || Math.abs(z) == 3)
-//                    	{
-//                    		if (y == 2 && !(Math.abs(x) == 3 && Math.abs(z) == 3))
-//                    		{
-//                    			this.worldObj.setBlock(k + x, 63 + y, l + z, Block.thinGlass.blockID, 0, 3);
-//                    		}
-//                    		else
-//                    		{
-//                    			this.worldObj.setBlock(k + x, 63 + y, l + z, GCCoreBlocks.decorationBlocks.blockID, 4, 3);
-//                    		}
-//                    	}
-//                    }
-//            	}
-//            }
-
-//            for (int x = -2; x < 3; x++)
-//            {
-//            	for (int y = 0; y < 6; y++)
-//            	{
-//                    for (int z = -2; z < 3; z++)
-//                    {
-//                    	this.worldObj.setBlock(k + x, 63, l + z, GCCoreBlocks.decorationBlocks.blockID, 4, 3);
-//                    }
-//            	}
-//            }
         }
 		BlockSand.fallInstantly = false;
 	}

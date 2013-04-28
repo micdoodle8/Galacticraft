@@ -10,7 +10,6 @@ import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpider;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityZombie;
 import micdoodle8.mods.galacticraft.core.perlin.NoiseModule;
 import micdoodle8.mods.galacticraft.core.perlin.generator.Gradient;
-import micdoodle8.mods.galacticraft.core.wgen.GCCoreChunk;
 import micdoodle8.mods.galacticraft.core.wgen.GCCoreCraterSize;
 import micdoodle8.mods.galacticraft.core.wgen.GCCoreMapGenBaseMeta;
 import micdoodle8.mods.galacticraft.moon.GCMoonConfigManager;
@@ -36,12 +35,12 @@ import net.minecraft.world.gen.structure.MapGenMineshaft;
  */
 public class GCMoonChunkProvider extends ChunkProviderGenerate
 {
-	final int topBlockID = GCMoonBlocks.blockMoon.blockID;
-	final int topBlockMeta = 5;
-	final int fillBlockID = GCMoonBlocks.blockMoon.blockID;
-	final int fillBlockMeta = 3;
-	final int lowerBlockID = GCMoonBlocks.blockMoon.blockID;
-	final int lowerBlockMeta = 4;
+	final short topBlockID = (short) GCMoonBlocks.blockMoon.blockID;
+	final byte topBlockMeta = 5;
+	final short fillBlockID = (short) GCMoonBlocks.blockMoon.blockID;
+	final byte fillBlockMeta = 3;
+	final short lowerBlockID = (short) GCMoonBlocks.blockMoon.blockID;
+	final byte lowerBlockMeta = 4;
 
 	private final Random rand;
 
@@ -97,7 +96,7 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 		this.noiseGen4 = new Gradient(this.rand.nextLong(), 1, 0.25);
 	}
 
-	public void generateTerrain(int chunkX, int chunkZ, int[] idArray, int[] metaArray)
+	public void generateTerrain(int chunkX, int chunkZ, short[] idArray, byte[] metaArray)
 	{
 		this.noiseGen1.frequency = 0.0125;
 		this.noiseGen2.frequency = 0.015;
@@ -140,7 +139,7 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 		}
 	}
 
-	public void replaceBlocksForBiome(int par1, int par2, int[] arrayOfIDs, int[] arrayOfMeta, BiomeGenBase[] par4ArrayOfBiomeGenBase)
+	public void replaceBlocksForBiome(int par1, int par2, short[] arrayOfIDs, byte[] arrayOfMeta, BiomeGenBase[] par4ArrayOfBiomeGenBase)
 	{
 		final int var5 = 20;
 		for (int var8 = 0; var8 < 16; ++var8)
@@ -149,19 +148,19 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 			{
 				final int var12 = (int) (this.noiseGen4.getNoise(var8 + par1 * 16, var9 * par2 * 16) / 3.0D + 3.0D + this.rand.nextDouble() * 0.25D);
 				int var13 = -1;
-				int var14 = this.topBlockID;
-				int var14m = this.topBlockMeta;
-				int var15 = this.fillBlockID;
-				int var15m = this.fillBlockMeta;
+				short var14 = this.topBlockID;
+				byte var14m = this.topBlockMeta;
+				short var15 = this.fillBlockID;
+				byte var15m = this.fillBlockMeta;
 
 				for (int var16 = 127; var16 >= 0; --var16)
 				{
-					final int index = (var9 * 16 + var8) * 128 + var16;
+					final int index = this.getIndex(var8, var16, var9);
 					arrayOfMeta[index] = 0;
 
 					if (var16 <= 0 + this.rand.nextInt(5))
 					{
-						arrayOfIDs[index] = Block.bedrock.blockID;
+						arrayOfIDs[index] = (short) Block.bedrock.blockID;
 					}
 					else
 					{
@@ -221,8 +220,8 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 	public Chunk provideChunk(int par1, int par2)
 	{
 		this.rand.setSeed(par1 * 341873128712L + par2 * 132897987541L);
-		final int[] ids = new int[32768];
-		final int[] meta = new int[32768];
+		final short[] ids = new short[32768];
+		final byte[] meta = new byte[32768];
 		this.generateTerrain(par1, par2, ids, meta);
 		this.biomesForGeneration = this.worldObj.getWorldChunkManager().loadBlockGeneratorData(this.biomesForGeneration, par1 * 16, par2 * 16, 16, 16);
 		this.createCraters(par1, par2, ids, meta);
@@ -230,13 +229,13 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
         this.caveGenerator.generate(this, this.worldObj, par1, par2, ids, meta);
         //this.dungeonGenerator.generateUsingArrays(worldObj, seed, par1 * 16, 100, par2 * 16, par1, par2, ids, meta);
 
-		final Chunk var4 = new GCCoreChunk(this.worldObj, ids, meta, par1, par2);
+		final Chunk var4 = new Chunk(this.worldObj, ids, meta, par1, par2);
 
 		var4.generateSkylightMap();
 		return var4;
 	}
 
-	public void createCraters(int chunkX, int chunkZ, int[] chunkArray, int[] metaArray)
+	public void createCraters(int chunkX, int chunkZ, short[] chunkArray, byte[] metaArray)
 	{
 		for(int cx = chunkX - 2; cx <= chunkX + 2; cx++)
 		{
@@ -259,7 +258,7 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 		}
 	}
 
-	public void makeCrater(int craterX, int craterZ, int chunkX, int chunkZ, int size, int[] chunkArray, int[] metaArray)
+	public void makeCrater(int craterX, int craterZ, int chunkX, int chunkZ, int size, short[] chunkArray, byte[] metaArray)
 	{
 		for(int x = 0; x < GCMoonChunkProvider.CHUNK_SIZE_X; x++)
 		{
@@ -313,7 +312,7 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 
 	private int getIndex(int x, int y, int z)
 	{
-		return (x * 16 + z) * 128 + y;
+		return y << 8 | z << 4 | x;
 	}
 
 	private double randFromPoint(int x, int z)
