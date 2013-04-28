@@ -317,11 +317,6 @@ public class GalacticraftCore
 		GalacticraftCore.moon.postLoad(event);
 		GCCoreCompatibilityManager.checkForCompatibleMods();
 		
-		if (GCCoreCompatibilityManager.isBCompLoaded() && GCCoreConfigManager.useRecipesUE)
-		{
-			RecipeUtil.addBasicComponentsCraftingRecipes();
-		}
-		
 		if (GCCoreCompatibilityManager.isTELoaded() && GCCoreConfigManager.useRecipesTE)
 		{
 			RecipeUtil.addThermalExpansionCraftingRecipes();
@@ -335,6 +330,11 @@ public class GalacticraftCore
 		if (GCCoreCompatibilityManager.isIc2Loaded() && GCCoreConfigManager.useRecipesIC2)
 		{
 			RecipeUtil.addIndustrialcraftCraftingRecipes();
+		}
+		
+		if (GCCoreCompatibilityManager.isBCompLoaded() && GCCoreConfigManager.useRecipesUE)
+		{
+			RecipeUtil.addBasicComponentsCraftingRecipes();
 		}
 		
 		GalacticraftCore.proxy.postInit(event);

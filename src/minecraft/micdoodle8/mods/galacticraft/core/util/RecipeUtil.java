@@ -38,7 +38,7 @@ public class RecipeUtil
 			inputMap.put(GregTech_API.getGregTechItem(0, 1, 78), 4);
 			inputMap.put(GregTech_API.getGregTechItem(0, 1, 67), 8);
 			inputMap.put("ingotSteel", 14);
-			inputMap.put(GregTech_API.getGregTechBlock(1, 1, 60), 1);
+			inputMap.put(GregTech_API.getGregTechBlock(0, 1, 10), 1);
 			GalacticraftRegistry.registerSpaceStation(new SpaceStationType(GCCoreConfigManager.idDimensionOverworldOrbit, "Overworld", 0, new SpaceStationRecipe(inputMap)));
 			GalacticraftCore.setSpaceStationRecipe = true;
 		}
