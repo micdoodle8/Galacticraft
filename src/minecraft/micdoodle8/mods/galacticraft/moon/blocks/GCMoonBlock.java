@@ -72,10 +72,10 @@ public class GCMoonBlock extends BlockAdvanced implements IDetectableMetadataRes
     public void registerIcons(IconRegister par1IconRegister)
     {
         this.moonBlockIcons = new Icon[17];
-        this.moonBlockIcons[0] = par1IconRegister.registerIcon("galacticraftmoon:grass_top");
+        this.moonBlockIcons[0] = par1IconRegister.registerIcon("galacticraftmoon:top");
         this.moonBlockIcons[1] = par1IconRegister.registerIcon("galacticraftmoon:brick");
-        this.moonBlockIcons[2] = par1IconRegister.registerIcon("galacticraftmoon:dirt");
-        this.moonBlockIcons[3] = par1IconRegister.registerIcon("galacticraftmoon:grass_side");
+        this.moonBlockIcons[2] = par1IconRegister.registerIcon("galacticraftmoon:middle");
+        this.moonBlockIcons[3] = par1IconRegister.registerIcon("galacticraftmoon:top_side");
         this.moonBlockIcons[4] = par1IconRegister.registerIcon("galacticraftmoon:grass_step_1");
         this.moonBlockIcons[5] = par1IconRegister.registerIcon("galacticraftmoon:grass_step_2");
         this.moonBlockIcons[6] = par1IconRegister.registerIcon("galacticraftmoon:grass_step_3");
@@ -87,7 +87,7 @@ public class GCMoonBlock extends BlockAdvanced implements IDetectableMetadataRes
         this.moonBlockIcons[12] = par1IconRegister.registerIcon("galacticraftmoon:moonore_copper");
         this.moonBlockIcons[13] = par1IconRegister.registerIcon("galacticraftmoon:moonore_tin");
         this.moonBlockIcons[14] = par1IconRegister.registerIcon("galacticraftmoon:moonore_cheese");
-        this.moonBlockIcons[15] = par1IconRegister.registerIcon("galacticraftmoon:moonstone");
+        this.moonBlockIcons[15] = par1IconRegister.registerIcon("galacticraftmoon:bottom");
         this.moonBlockIcons[16] = par1IconRegister.registerIcon("galacticraftcore:blank");
     }
 
