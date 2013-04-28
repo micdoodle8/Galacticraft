@@ -102,7 +102,12 @@ public class WorldUtil
 
     public static Vector3 getWorldColor(World world)
     {
-    	return new Vector3(0.5, 0.5, 0.5);
+    	if (world.provider instanceof GCCoreWorldProvider)
+    	{
+        	return new Vector3(0.5, 0.5, 0.5);
+    	}
+    	
+    	return new Vector3(1, 1, 1);
     }
     
     public static float getColorRed(World world)
