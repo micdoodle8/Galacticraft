@@ -4,8 +4,14 @@ import gregtechmod.api.GregTech_API;
 import ic2.api.Items;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import micdoodle8.mods.galacticraft.API.GalacticraftRegistry;
+import micdoodle8.mods.galacticraft.API.SpaceStationRecipe;
+import micdoodle8.mods.galacticraft.API.SpaceStationType;
+import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryRocketBench;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemFlag;
@@ -26,6 +32,17 @@ public class RecipeUtil
 {
 	public static void addGregTechCraftingRecipes()
 	{
+		if (!GalacticraftCore.setSpaceStationRecipe)
+		{
+			final HashMap<Object, Integer> inputMap = new HashMap<Object, Integer>();
+			inputMap.put(GregTech_API.getGregTechItem(0, 1, 78), 4);
+			inputMap.put(GregTech_API.getGregTechItem(0, 1, 67), 8);
+			inputMap.put("ingotSteel", 14);
+			inputMap.put(GregTech_API.getGregTechBlock(1, 1, 60), 1);
+			GalacticraftRegistry.registerSpaceStation(new SpaceStationType(GCCoreConfigManager.idDimensionOverworldOrbit, "Overworld", 0, new SpaceStationRecipe(inputMap)));
+			GalacticraftCore.setSpaceStationRecipe = true;
+		}
+		
 		addRecipe(new ItemStack(GCCoreItems.rocketEngine, 1), new Object[] {
 			" V ", 
 			"XWX", 
@@ -414,6 +431,17 @@ public class RecipeUtil
 	
 	public static void addThermalExpansionCraftingRecipes()
 	{
+		if (!GalacticraftCore.setSpaceStationRecipe)
+		{
+			final HashMap<Object, Integer> inputMap = new HashMap<Object, Integer>();
+			inputMap.put("ingotTin", 16);
+			inputMap.put("ingotInvar", 24);
+			inputMap.put("ingotCopper", 8);
+			inputMap.put(ItemRegistry.getItem("powerCoilGold", 1), 1);
+			GalacticraftRegistry.registerSpaceStation(new SpaceStationType(GCCoreConfigManager.idDimensionOverworldOrbit, "Overworld", 0, new SpaceStationRecipe(inputMap)));
+			GalacticraftCore.setSpaceStationRecipe = true;
+		}
+		
 		addRecipe(new ItemStack(GCCoreItems.rocketEngine, 1), new Object[] {
 			" YV", 
 			"XWX", 
@@ -810,6 +838,16 @@ public class RecipeUtil
 	
 	public static void addBasicComponentsCraftingRecipes()
 	{
+		if (!GalacticraftCore.setSpaceStationRecipe)
+		{
+			final HashMap<Object, Integer> inputMap = new HashMap<Object, Integer>();
+			inputMap.put("ingotTin", 32);
+			inputMap.put("ingotSteel", 16);
+			inputMap.put("ingotIron", 24);
+			GalacticraftRegistry.registerSpaceStation(new SpaceStationType(GCCoreConfigManager.idDimensionOverworldOrbit, "Overworld", 0, new SpaceStationRecipe(inputMap)));
+			GalacticraftCore.setSpaceStationRecipe = true;
+		}
+		
 		addRecipe(new ItemStack(GCCoreItems.rocketEngine, 1), new Object[] {
 			" YV", 
 			"XWX", 
@@ -1201,6 +1239,16 @@ public class RecipeUtil
 	
 	public static void addIndustrialcraftCraftingRecipes()
 	{
+		if (!GalacticraftCore.setSpaceStationRecipe)
+		{
+			final HashMap<Object, Integer> inputMap = new HashMap<Object, Integer>();
+			inputMap.put(Items.getItem("machine"), 1);
+			inputMap.put("ingotTin", 24);
+			inputMap.put("ingotIron", 12);
+			GalacticraftRegistry.registerSpaceStation(new SpaceStationType(GCCoreConfigManager.idDimensionOverworldOrbit, "Overworld", 0, new SpaceStationRecipe(inputMap)));
+			GalacticraftCore.setSpaceStationRecipe = true;
+		}
+		
 		addRecipe(new ItemStack(GCCoreItems.rocketEngine, 1), new Object[] {
 			" YV", 
 			"XWX", 
