@@ -40,7 +40,7 @@ public class GCMoonMapGenVillage extends MapGenStructure
         if (i < 0)
         {
             i -= numChunks - 1;
-        }
+        } 
 
         if (j < 0)
         {
