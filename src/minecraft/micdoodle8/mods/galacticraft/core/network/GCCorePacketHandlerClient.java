@@ -54,8 +54,6 @@ public class GCCorePacketHandlerClient implements IPacketHandler
 
         GCCorePlayerSP playerBaseClient = null;
     	
-    	FMLLog.info("client: " + packetType);
-
         if (player != null && GalacticraftCore.playersClient.size() > 0)
         {
         	playerBaseClient = PlayerUtil.getPlayerBaseClientFromPlayer(player);

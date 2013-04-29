@@ -45,8 +45,6 @@ public class GCCorePacketHandlerServer implements IPacketHandler
 
     	final GCCorePlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player);
     	
-    	FMLLog.info("server: " + packetType);
-
         if (packetType == 0)
         {
             final Class[] decodeAs = {String.class};
