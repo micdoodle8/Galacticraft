@@ -1242,7 +1242,8 @@ public class RecipeUtil
 		if (!GalacticraftCore.setSpaceStationRecipe)
 		{
 			final HashMap<Object, Integer> inputMap = new HashMap<Object, Integer>();
-			inputMap.put(Items.getItem("machine"), 1);
+			if (Items.getItem("machine") != null) 
+				inputMap.put(Items.getItem("machine"), 1);
 			inputMap.put("ingotTin", 24);
 			inputMap.put("ingotIron", 12);
 			GalacticraftRegistry.registerSpaceStation(new SpaceStationType(GCCoreConfigManager.idDimensionOverworldOrbit, "Overworld", 0, new SpaceStationRecipe(inputMap)));
