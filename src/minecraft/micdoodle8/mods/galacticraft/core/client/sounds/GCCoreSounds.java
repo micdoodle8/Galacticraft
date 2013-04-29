@@ -78,7 +78,7 @@ public class GCCoreSounds
 
     		final int randInt = FMLClientHandler.instance().getClient().thePlayer.worldObj.rand.nextInt(6);
     		
-    		if (ClientProxyCore.newMusic.size() < randInt)
+    		if (randInt < ClientProxyCore.newMusic.size())
     		{
     			event.result = ClientProxyCore.newMusic.get(randInt);
     		}
