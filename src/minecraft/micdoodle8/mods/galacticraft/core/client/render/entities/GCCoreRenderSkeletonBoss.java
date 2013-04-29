@@ -7,6 +7,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.boss.BossStatus;
+import net.minecraft.entity.boss.IBossDisplayData;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
@@ -36,6 +38,14 @@ public class GCCoreRenderSkeletonBoss extends RenderLiving
     protected void preRenderCallback(EntityLiving par1EntityLiving, float par2)
     {
     	GL11.glScalef(1.2F, 1.2F, 1.2F);
+    }
+
+    @Override
+    public void doRenderLiving(EntityLiving par1EntityLiving, double par2, double par4, double par6, float par8, float par9)
+    {
+        BossStatus.func_82824_a((IBossDisplayData) par1EntityLiving, false);
+        
+    	super.doRenderLiving(par1EntityLiving, par2, par4, par6, par8, par9);
     }
 
     @Override

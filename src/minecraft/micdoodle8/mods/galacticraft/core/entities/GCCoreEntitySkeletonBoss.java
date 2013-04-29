@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.API.IDungeonBoss;
@@ -9,6 +8,7 @@ import micdoodle8.mods.galacticraft.API.IDungeonBossSpawner;
 import micdoodle8.mods.galacticraft.API.IEntityBreathable;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -16,6 +16,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.entity.boss.IBossDisplayData;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.monster.EntityMob;
@@ -24,6 +25,9 @@ import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.INetworkManager;
+import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.stats.AchievementList;
 import net.minecraft.tileentity.TileEntity;
@@ -32,6 +36,12 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import universalelectricity.core.vector.Vector3;
+import universalelectricity.prefab.network.IPacketReceiver;
+import universalelectricity.prefab.network.PacketManager;
+
+import com.google.common.io.ByteArrayDataInput;
+
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -42,8 +52,9 @@ import cpw.mods.fml.relauncher.SideOnly;
  *  All rights reserved.
  *
  */
-public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreathable, IDungeonBoss
+public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreathable, IDungeonBoss, IBossDisplayData, IPacketReceiver
 {
+	protected long ticks = 0;
     private static final ItemStack defaultHeldItem = new ItemStack(Item.bow, 1);
     private IDungeonBossSpawner spawner;
     
@@ -71,6 +82,14 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
     	this.setPosition(vec.x, vec.y, vec.z);
     }
 
+    @Override
+    public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
+    {
+		PacketManager.sendPacketToClients(this.getDescriptionPacket(), this.worldObj, new Vector3(this), 100);
+    	return super.attackEntityFrom(par1DamageSource, par2);
+    }
+
+    @Override
     public void updateRiderPosition()
     {
         if (this.riddenByEntity != null)
@@ -122,7 +141,7 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
     @Override
 	public int getMaxHealth()
     {
-        return 5;
+        return 150;
     }
 
     @Override
@@ -294,6 +313,13 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
     @Override
 	public void onLivingUpdate()
     {
+		if (this.ticks >= Long.MAX_VALUE)
+		{
+			this.ticks = 1;
+		}
+
+		this.ticks++;
+		
     	EntityPlayer player = this.worldObj.getClosestPlayer(this.posX, this.posY, this.posZ, 20.0);
     	
     	if (player != null && !player.equals(targetEntity))
@@ -386,9 +412,35 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
             	this.thrownEntity.motionY = 0.4000000059604645D;
             }
     	}
+    	
+    	if (this.ticks % 5 == 0)
+    	{
+    		PacketManager.sendPacketToClients(this.getDescriptionPacket(), this.worldObj, new Vector3(this), 100);
+    	}
 
         super.onLivingUpdate();
     }
+
+    public Packet getDescriptionPacket()
+	{
+		return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.health);
+	}
+
+	@Override
+	public void handlePacketData(INetworkManager network, int packetType, Packet250CustomPayload packet, EntityPlayer player, ByteArrayDataInput dataStream)
+	{
+		try
+		{
+			if (this.worldObj.isRemote)
+			{
+				this.health = dataStream.readInt();
+			}
+		}
+		catch (final Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
 
     @Override
 	public void onDeath(DamageSource par1DamageSource)
@@ -500,5 +552,11 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
 		default:
 			return new ItemStack(GCCoreItems.oilCanister, 1, rand.nextInt(GCCoreItems.oilCanister.getMaxDamage() / 2) + 1);
 		}
+	}
+
+	@Override
+	public int getDragonHealth() 
+	{
+		return this.health;
 	}
 }
