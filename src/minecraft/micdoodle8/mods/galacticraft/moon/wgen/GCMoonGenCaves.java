@@ -133,15 +133,8 @@ public class GCMoonGenCaves extends GCCoreMapGenBaseMeta
                         {
                             for (int i4 = k2 + 1; !flag2 && i4 >= j2 - 1; --i4)
                             {
-                                k3 = (j3 * 16 + l3) * 128 + i4;
-
                                 if (i4 >= 0 && i4 < 128)
                                 {
-                                    if (blockIdArray[k3] == Block.waterMoving.blockID || blockIdArray[k3] == Block.waterStill.blockID)
-                                    {
-                                        flag2 = true;
-                                    }
-
                                     if (i4 != j2 - 1 && j3 != l1 && j3 != i2 - 1 && l3 != l2 && l3 != i3 - 1)
                                     {
                                         i4 = j2;
@@ -153,38 +146,37 @@ public class GCMoonGenCaves extends GCCoreMapGenBaseMeta
 
                     if (!flag2)
                     {
-                        for (j3 = l1; j3 < i2; ++j3)
-                        {
-                            final double d12 = (j3 + par3 * 16 + 0.5D - par6) / d6;
-
-                            for (k3 = l2; k3 < i3; ++k3)
+                    	
+                    	for (int localY = j2; localY < k2; localY++) 
+                    	{
+                            double yfactor = (localY + 0.5D - par8) / d7;
+                            double yfactorSq = yfactor * yfactor;
+                            
+                            for (int localZ = l1; localZ < i2; localZ++)
                             {
-                                final double d13 = (k3 + par4 * 16 + 0.5D - par10) / d6;
-                                int j4 = (j3 * 16 + k3) * 128 + k2;
-                                final boolean flag3 = false;
+                            	double zfactor = (localZ + par3 * 16 + 0.5D - par6) / d6;
+                            	double zfactorSq = zfactor * zfactor;
+                              
+                            	for (int localX = l2; localX < i3; localX++) 
+                            	{
+                            		double xfactor = (localX + par4 * 16 + 0.5D - par10) / d6;
+                            		double xfactorSq = xfactor * xfactor;
 
-                                if (d12 * d12 + d13 * d13 < 1.0D)
-                                {
-                                    for (int k4 = k2 - 1; k4 >= j2; --k4)
-                                    {
-                                        final double d14 = (k4 + 0.5D - par8) / d7;
-
-                                        if (d14 > -0.7D && d12 * d12 + d14 * d14 + d13 * d13 < 1.0D)
-                                        {
-                                            final int b0 = blockIdArray[j4];
-                                            final int b1 = metaArray[j4];
-
-                                            if (b0 == GCMoonBlocks.blockMoon.blockID && (b1 == 3 || b1 == 4))
+                            		if (xfactorSq + zfactorSq < 1.0D) 
+                            		{
+                            			int coords = localY << 8 | localZ << 4 | localX;
+                            			
+                            			if ((yfactor > -0.7D) && (xfactorSq + yfactorSq + zfactorSq < 1.0D))
+                            			{
+                                            if (blockIdArray[coords] == GCMoonBlocks.blockMoon.blockID && (metaArray[coords] == 3 || metaArray[coords] == 4))
                                             {
-                                                blockIdArray[j4] = 0;
+                                                blockIdArray[coords] = 0;
                                             }
-                                        }
-
-                                        --j4;
-                                    }
-                                }
+                            			}
+                            		}
+                            	}
                             }
-                        }
+                    	}
 
                         if (flag)
                         {
