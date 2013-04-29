@@ -307,4 +307,58 @@ public class GCCoreBlockOxygenPipe extends BlockContainer
 
 		return super.collisionRayTrace(world, x, y, z, vec3d, vec3d1);
 	}
+
+    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
+    {
+		final TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
+
+		float minX = 0.35F;
+		final float minY = 0.35F;
+		float minZ = 0.35F;
+		float maxX = 0.65F;
+		final float maxY = 0.65F;
+		float maxZ = 0.65F;
+
+		if(tileEntity != null)
+		{
+			final boolean[] connectable = new boolean[] {false, false, false, false, false, false};
+			final ITubeConnection[] connections = GasTransmission.getConnections(tileEntity);
+
+			for(final ITubeConnection connection : connections)
+			{
+				if(connection !=  null)
+				{
+					final int side = Arrays.asList(connections).indexOf(connection);
+
+					if(connection.canTubeConnect(ForgeDirection.getOrientation(side).getOpposite()))
+					{
+						connectable[side] = true;
+					}
+				}
+			}
+
+			if(connectable[2])
+			{
+				minZ = 0.0F;
+			}
+			if(connectable[3])
+			{
+				maxZ = 1.0F;
+			}
+
+			if(connectable[4])
+			{
+				minX = 0.0F;
+			}
+
+			if(connectable[5])
+			{
+				maxX = 1.0F;
+			}
+			
+			this.setBlockBounds(minX, minY, minZ, maxX, maxY, maxZ);
+		}
+		
+        return AxisAlignedBB.getAABBPool().getAABB((double)x + this.minX, (double)y + this.minY, (double)z + this.minZ, (double)x + this.maxX, (double)y + this.maxY, (double)z + this.maxZ);
+    }
 }
