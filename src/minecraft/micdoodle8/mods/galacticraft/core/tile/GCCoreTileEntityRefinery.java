@@ -440,7 +440,7 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
 	@Override
 	public boolean shouldPullEnergy() 
 	{
-		return this.canProcess();
+		return !this.getDisabled() && this.oilTank.getLiquid() != null && this.oilTank.getLiquid().amount > 0;
 	}
 
 	@Override
