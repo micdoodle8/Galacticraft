@@ -66,7 +66,11 @@ public class SchematicRegistry
 		{
 			player.unlockedSchematics.add(page);
 			Collections.sort(player.unlockedSchematics);
-			player.playerNetServerHandler.sendPacketToPlayer(GCCorePacketSchematicList.buildSchematicListPacket(player.unlockedSchematics));
+			
+			if (player != null && player.playerNetServerHandler != null)
+			{
+				player.playerNetServerHandler.sendPacketToPlayer(GCCorePacketSchematicList.buildSchematicListPacket(player.unlockedSchematics));
+			}
 		}
 	}
 
