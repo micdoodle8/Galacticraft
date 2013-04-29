@@ -35,7 +35,7 @@ public class GCMapGenDungeon {
 	{
 	}
 	
-	public void generateUsingArrays(World world, long seed, int x, int y, int z, int chunkX, int chunkZ, int[] blocks, int[] metas)
+	public void generateUsingArrays(World world, long seed, int x, int y, int z, int chunkX, int chunkZ, short[] blocks, byte[] metas)
 	{
 		ChunkCoordinates dungeonCoords = this.getDungeonNear(seed, chunkX, chunkZ);
 		if(dungeonCoords != null)
@@ -49,7 +49,7 @@ public class GCMapGenDungeon {
 		this.generate(world, new Random(worldObj.getWorldInfo().getSeed() * x * z * 24789), x, y, z, x, z, null, null, false);
 	}
 	
-	public void generate(World world, Random rand, int x, int y, int z, int chunkX, int chunkZ, int[] blocks, int[] metas, boolean useArrays)
+	public void generate(World world, Random rand, int x, int y, int z, int chunkX, int chunkZ, short[] blocks, byte[] metas, boolean useArrays)
 	{
 		this.useArrays = useArrays;
 		this.worldObj = world;
@@ -294,7 +294,7 @@ public class GCMapGenDungeon {
 		}
 	}
 	
-	private void genCorridor(GCDungeonBoundingBox corridor, Random rand, int y, int cx, int cz, int dir, int[] blocks, int[] metas, boolean doubleCorridor)
+	private void genCorridor(GCDungeonBoundingBox corridor, Random rand, int y, int cx, int cz, int dir, short[] blocks, byte[] metas, boolean doubleCorridor)
 	{
 		for(int i = corridor.minX - 1; i <= corridor.maxX + 1; i++)
 		{
@@ -438,7 +438,7 @@ public class GCMapGenDungeon {
         return null;
     }
 	
-	private void placeBlock(int[] blocks, int[] metas, int x, int y, int z, int cx, int cz, int id, int meta)
+	private void placeBlock(short[] blocks, byte[] metas, int x, int y, int z, int cx, int cz, int id, int meta)
 	{
 		if(useArrays)
 		{
@@ -451,8 +451,8 @@ public class GCMapGenDungeon {
 				return;
 			}
 			int index = getIndex(x, y, z);
-			blocks[index] = id;
-			metas[index] = meta;
+			blocks[index] = (short) id;
+			metas[index] = (byte) meta;
 		}
 		else
 		{
@@ -479,7 +479,7 @@ public class GCMapGenDungeon {
 	
 	private int getIndex(int x, int y, int z)
 	{
-		return (x * 16 + z) * 128 + y;
+		return y << 8 | z << 4 | x;
 	}
 	
 	private int randDir(Random rand, int dir)

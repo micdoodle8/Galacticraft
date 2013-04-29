@@ -25,55 +25,37 @@ public class GCMoonMapGenVillage extends MapGenStructure
     public GCMoonMapGenVillage()
     {
         this.terrainType = 0;
-        this.field_82665_g = 16;
-        this.field_82666_h = 4;
-    }
-
-    public GCMoonMapGenVillage(Map par1Map)
-    {
-        this();
-        final Iterator var2 = par1Map.entrySet().iterator();
-
-        while (var2.hasNext())
-        {
-            final Entry var3 = (Entry)var2.next();
-
-            if (((String)var3.getKey()).equals("size"))
-            {
-                this.terrainType = MathHelper.parseIntWithDefaultAndMax((String)var3.getValue(), this.terrainType, 0);
-            }
-            else if (((String)var3.getKey()).equals("distance"))
-            {
-                this.field_82665_g = MathHelper.parseIntWithDefaultAndMax((String)var3.getValue(), this.field_82665_g, this.field_82666_h + 1);
-            }
-        }
+        this.field_82665_g = 32;
+        this.field_82666_h = 8;
     }
 
     @Override
-	protected boolean canSpawnStructureAtCoords(int par1, int par2)
+	protected boolean canSpawnStructureAtCoords(int i, int j)
     {
-        final int var3 = par1;
-        final int var4 = par2;
+        byte numChunks = 32;
+        byte offsetChunks = 8;
+        int oldi = i;
+        int oldj = j;
 
-        if (par1 < 0)
+        if (i < 0)
         {
-            par1 -= this.field_82665_g - 1;
+            i -= numChunks - 1;
         }
 
-        if (par2 < 0)
+        if (j < 0)
         {
-            par2 -= this.field_82665_g - 1;
+            j -= numChunks - 1;
         }
 
-        int var5 = par1 / this.field_82665_g;
-        int var6 = par2 / this.field_82665_g;
-        final Random var7 = this.worldObj.setRandomSeed(var5, var6, 10387312);
-        var5 *= this.field_82665_g;
-        var6 *= this.field_82665_g;
-        var5 += var7.nextInt(this.field_82665_g - this.field_82666_h);
-        var6 += var7.nextInt(this.field_82665_g - this.field_82666_h);
+        int randX = i / numChunks;
+        int randZ = j / numChunks;
+        Random var7 = this.worldObj.setRandomSeed(i, j, 10387312);
+        randX *= numChunks;
+        randZ *= numChunks;
+        randX += var7.nextInt(numChunks - offsetChunks);
+        randZ += var7.nextInt(numChunks - offsetChunks);
 
-        if (var3 == var5 && var4 == var6)
+        if (oldi == randX && oldj == randZ)
         {
             return true;
         }

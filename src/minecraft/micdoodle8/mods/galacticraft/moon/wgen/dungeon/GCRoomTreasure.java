@@ -32,7 +32,7 @@ public class GCRoomTreasure extends GCDungeonRoom {
 	}
 
 	@Override
-	public void generate(int[] chunk, int[] meta, int cx, int cz) {
+	public void generate(short[] chunk, byte[] meta, int cx, int cz) {
 		for(int i = posX - 1; i <= posX + sizeX; i++)
 		{
 			for(int k = posZ - 1; k <= posZ + sizeZ; k++)
