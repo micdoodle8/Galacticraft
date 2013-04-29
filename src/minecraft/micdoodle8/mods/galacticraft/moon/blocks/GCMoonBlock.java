@@ -100,7 +100,7 @@ public class GCMoonBlock extends BlockAdvanced implements IDetectableMetadataRes
 	@Override
     public float getExplosionResistance(Entity par1Entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ)
     {
-    	if (world.getBlockMetadata(x, y, z) == 15)
+    	if (world.getBlockMetadata(x, y, z) == 15 || world.getBlockMetadata(x, y, z) == 14)
     	{
     		return 10000.0F;
     	}
