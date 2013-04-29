@@ -42,14 +42,14 @@ public abstract class GCCoreEntityAdvanced extends GCCoreEntityControllable impl
     public int timeSinceHit;
     public int rockDirection;
     
-    public double boatX;
-    public double boatY;
-    public double boatZ;
-    public double boatYaw;
-    public double boatPitch;
-	public int boatPosRotationIncrements;
+    public double advancedPositionX;
+    public double advancedPositionY;
+    public double advancedPositionZ;
+    public double advancedYaw;
+    public double advancedPitch;
+	public int posRotIncrements;
 
-	private boolean lastOnGround = false;
+	private boolean lastOnGround;
 	private double lastMotionY;
 	
     public GCCoreEntityAdvanced(World world, double initialSpeed, float yOffset)
@@ -118,15 +118,15 @@ public abstract class GCCoreEntityAdvanced extends GCCoreEntityControllable impl
 	{
 		if(this.worldObj.isRemote)
 		{
-	        this.boatX = x;
-	        this.boatY = y;
-	        this.boatZ = z;
-	        this.boatYaw = yaw;
-	        this.boatPitch = pitch;
+	        this.advancedPositionX = x;
+	        this.advancedPositionY = y;
+	        this.advancedPositionZ = z;
+	        this.advancedYaw = yaw;
+	        this.advancedPitch = pitch;
 	        this.motionX = motX;
 	        this.motionY = motY;
 	        this.motionZ = motZ;
-	        this.boatPosRotationIncrements = 5;
+	        this.posRotIncrements = 5;
 		}
 		else
 		{
@@ -263,12 +263,12 @@ public abstract class GCCoreEntityAdvanced extends GCCoreEntityControllable impl
 			}
 			else
 			{
-	            this.boatPosRotationIncrements = i + 5;
-		        this.boatX = d;
-		        this.boatY = d1 + (this.riddenByEntity == null ? 1 : 0);
-		        this.boatZ = d2;
-		        this.boatYaw = f;
-		        this.boatPitch = f1;
+	            this.posRotIncrements = i + 5;
+		        this.advancedPositionX = d;
+		        this.advancedPositionY = d1 + (this.riddenByEntity == null ? 1 : 0);
+		        this.advancedPositionZ = d2;
+		        this.advancedYaw = f;
+		        this.advancedPitch = f1;
 			}
 		}
     }
@@ -300,15 +300,15 @@ public abstract class GCCoreEntityAdvanced extends GCCoreEntityControllable impl
             double y;
             double var12;
             double z;
-            if (this.boatPosRotationIncrements > 0)
+            if (this.posRotIncrements > 0)
             {
-                x = this.posX + (this.boatX - this.posX) / this.boatPosRotationIncrements;
-                y = this.posY + (this.boatY - this.posY) / this.boatPosRotationIncrements;
-                z = this.posZ + (this.boatZ - this.posZ) / this.boatPosRotationIncrements;
-                var12 = MathHelper.wrapAngleTo180_double(this.boatYaw - this.rotationYaw);
-                this.rotationYaw = (float)(this.rotationYaw + var12 / this.boatPosRotationIncrements);
-                this.rotationPitch = (float)(this.rotationPitch + (this.boatPitch - this.rotationPitch) / this.boatPosRotationIncrements);
-                --this.boatPosRotationIncrements;
+                x = this.posX + (this.advancedPositionX - this.posX) / this.posRotIncrements;
+                y = this.posY + (this.advancedPositionY - this.posY) / this.posRotIncrements;
+                z = this.posZ + (this.advancedPositionZ - this.posZ) / this.posRotIncrements;
+                var12 = MathHelper.wrapAngleTo180_double(this.advancedYaw - this.rotationYaw);
+                this.rotationYaw = (float)(this.rotationYaw + var12 / this.posRotIncrements);
+                this.rotationPitch = (float)(this.rotationPitch + (this.advancedPitch - this.rotationPitch) / this.posRotIncrements);
+                --this.posRotIncrements;
                 this.setPosition(x, y, z);
                 this.setRotation(this.rotationYaw, this.rotationPitch);
             }

@@ -23,6 +23,7 @@ import universalelectricity.prefab.network.IPacketReceiver;
 
 import com.google.common.io.ByteArrayDataInput;
 
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -361,6 +362,12 @@ public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInvento
 	@Override
 	public void tickInAir() 
 	{
+		if (this.landed)
+		{
+			this.motionY = 0;
+			return;
+		}
+		
 		if (this.rotationPitch >= MAX_PITCH_ROTATION)
 		{
 			this.rotationPitch = MAX_PITCH_ROTATION;
@@ -386,6 +393,7 @@ public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInvento
 	public void tickOnGround() 
 	{
 		this.rotationPitch = 0.0F;
+		this.rotationYaw = 0.0F;
 	}
 
 	@Override
