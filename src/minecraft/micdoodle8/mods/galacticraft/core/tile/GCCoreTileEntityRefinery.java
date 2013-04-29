@@ -47,6 +47,9 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
 	private final int canisterToTankRatio = this.tankCapacity / GCCoreItems.fuelCanister.getMaxDamage();
 	private final int canisterToLiquidStackRatio = LiquidContainerRegistry.BUCKET_VOLUME * 2 / GCCoreItems.fuelCanister.getMaxDamage();
 
+	private boolean checkOilNextTick = false;
+	private boolean lastCheckOilNextTick = false;
+	
 	public GCCoreTileEntityRefinery() 
 	{
 		super(600, 130, 1, 1.0D);
@@ -133,6 +136,17 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
 			{
 				this.processTicks = 0;
 			}
+			
+			if (this.checkOilNextTick && this.lastCheckOilNextTick)
+			{
+				if (!this.getDisabled() && (this.oilTank == null || this.oilTank.getLiquid() == null || this.oilTank.getLiquid().amount == 0))
+				{
+					this.setDisabled(true);
+					this.checkOilNextTick = false;
+				}
+			}
+				
+			this.lastCheckOilNextTick = this.checkOilNextTick;
 		}
 	}
 
@@ -194,10 +208,7 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
 			this.oilTank.drain(amountToDrain, true);
 			this.fuelTank.fill(LiquidDictionary.getLiquid("Fuel", amountToDrain), true);
 
-			if (!this.getDisabled())
-			{
-				this.setDisabled(true);
-			}
+			this.checkOilNextTick = true;
 		}
 	}
 
@@ -384,7 +395,12 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
 	@Override
 	public int fill(ForgeDirection from, LiquidStack resource, boolean doFill)
 	{
-		return this.fill(0, resource, doFill);
+		if (from.equals(ForgeDirection.getOrientation(this.getBlockMetadata() + 2).getOpposite()))
+		{
+			return this.fill(0, resource, doFill);
+		}
+		
+		return 0;
 	}
 
 	@Override
@@ -405,7 +421,12 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
 	@Override
 	public LiquidStack drain(ForgeDirection from, int maxDrain, boolean doDrain)
 	{
-		return this.drain(0, maxDrain, doDrain);
+		if (from.equals(ForgeDirection.getOrientation(this.getBlockMetadata() + 2)))
+		{
+			return this.drain(0, maxDrain, doDrain);
+		}
+		
+		return null;
 	}
 
 	@Override
