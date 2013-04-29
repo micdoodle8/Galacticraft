@@ -51,6 +51,7 @@ public class GCCoreEvents
 		ItemStack heldStack = event.entityPlayer.inventory.getCurrentItem();
 
 		TileEntity tileClicked = event.entityPlayer.worldObj.getBlockTileEntity(event.x, event.y, event.z);
+		int idClicked = event.entityPlayer.worldObj.getBlockId(event.x, event.y, event.z);
 		
 		if (heldStack != null)
 		{
@@ -85,7 +86,7 @@ public class GCCoreEvents
 			
 			if (event.entityPlayer.worldObj.provider instanceof IGalacticraftWorldProvider && heldStack.getItem() instanceof ItemFlintAndSteel)
 			{
-				if (event.action.equals(PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK))
+				if (event.action.equals(PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK) && idClicked != Block.tnt.blockID)
 				{
 					event.setCanceled(true);
 				}
