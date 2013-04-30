@@ -101,37 +101,34 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityElectric im
 			
 			double power = 0;
 
-			if (this.ic2Energy > 0 || this.wattsReceived > 0 || this.bcEnergy > 0)
+			if (this.worldObj.provider instanceof IGalacticraftWorldProvider)
 			{
-				if (this.worldObj.provider instanceof IGalacticraftWorldProvider)
+				for (int y = this.yCoord - 5; y <= this.yCoord + 5; y++)
 				{
-					for (int y = this.yCoord - 5; y <= this.yCoord + 5; y++)
+					for (int x = this.xCoord - 5; x <= this.xCoord + 5; x++)
 					{
-						for (int x = this.xCoord - 5; x <= this.xCoord + 5; x++)
+						for (int z = this.zCoord - 5; z <= this.zCoord + 5; z++)
 						{
-							for (int z = this.zCoord - 5; z <= this.zCoord + 5; z++)
+							final Block block = Block.blocksList[this.worldObj.getBlockId(x, y, z)];
+
+							if (block != null && block instanceof BlockLeaves)
 							{
-								final Block block = Block.blocksList[this.worldObj.getBlockId(x, y, z)];
-
-								if (block != null && block instanceof BlockLeaves)
+								if (!this.worldObj.isRemote && this.worldObj.rand.nextInt(100000) == 0 && !GCCoreConfigManager.disableLeafDecay)
 								{
-									if (!this.worldObj.isRemote && this.worldObj.rand.nextInt(100000) == 0 && !GCCoreConfigManager.disableLeafDecay)
-									{
-										this.worldObj.setBlockToAir(x, y, z);
-									}
-
-									power++;
+									this.worldObj.setBlockToAir(x, y, z);
 								}
+
+								power++;
 							}
 						}
 					}
-					
-					this.setPower(power / 1.2D);
 				}
-				else
-				{
-					this.setPower(this.MAX_POWER);
-				}
+				
+				this.setPower(power / 1.2D);
+			}
+			else
+			{
+				this.setPower(this.MAX_POWER);
 			}
 
 			if(this.getPower() > this.MAX_POWER)
