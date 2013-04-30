@@ -117,7 +117,8 @@ public class GCCoreInventoryTankRefill implements IInventory
         {
             if (this.tankSlotContents[var1] != null)
             {
-                this.player.dropPlayerItemWithRandomChoice(this.tankSlotContents[var1], true);
+            	if (this.player != null)
+            		this.player.dropPlayerItemWithRandomChoice(this.tankSlotContents[var1], true);
                 this.tankSlotContents[var1] = null;
             }
         }
