@@ -1,7 +1,11 @@
 package micdoodle8.mods.galacticraft.core.items;
 
+import hydraulic.api.ColorCode;
+
+import java.awt.Color;
 import java.util.List;
 
+import mekanism.api.EnumColor;
 import micdoodle8.mods.galacticraft.API.ISchematicItem;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -20,7 +24,7 @@ public class GCCoreItemSchematic extends Item implements ISchematicItem
 	protected Icon[] icons = new Icon[1];
 
 	public static final String[] names = {
-		"schematic_buggy"}; // 15
+		"schematic_buggy", "schematic_rocketT2"}; // 15
 
 	public GCCoreItemSchematic(int itemID)
 	{
@@ -55,8 +59,9 @@ public class GCCoreItemSchematic extends Item implements ISchematicItem
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister iconRegister)
 	{
-		this.icons = new Icon[1];
+		this.icons = new Icon[2];
 		this.icons[0] = iconRegister.registerIcon("galacticraftcore:schematic_buggy" + GalacticraftCore.TEXTURE_SUFFIX);
+		this.icons[1] = iconRegister.registerIcon("galacticraftcore:schematic_rocketT2" + GalacticraftCore.TEXTURE_SUFFIX);
 	}
 
 	@Override
@@ -86,6 +91,10 @@ public class GCCoreItemSchematic extends Item implements ISchematicItem
     		{
     		case 0:
     			par3List.add(LanguageRegistry.instance().getStringLocalization("schematic.moonbuggy.name"));
+    			break;
+    		case 1:
+    			par3List.add(LanguageRegistry.instance().getStringLocalization("schematic.rocketT2.name"));
+    			par3List.add(EnumColor.DARK_AQUA + "COMING SOON");
     			break;
     		}
     	}
