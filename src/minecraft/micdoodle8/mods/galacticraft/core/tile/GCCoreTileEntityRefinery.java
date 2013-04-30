@@ -31,6 +31,8 @@ import universalelectricity.core.item.IItemElectric;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.PacketManager;
 
+import buildcraft.api.power.PowerFramework;
+
 import com.google.common.io.ByteArrayDataInput;
 
 public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implements IInventory, ISidedInventory, ITankContainer
@@ -53,6 +55,12 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
 	public GCCoreTileEntityRefinery() 
 	{
 		super(600, 130, 1, 1.0D);
+		
+		if (PowerFramework.currentFramework != null)
+		{
+			bcPowerProvider = new GCCoreLinkedPowerProvider(this);
+			bcPowerProvider.configure(20, 25, 100, 25, 1000);
+		}
 	}
 	
 	@Override
