@@ -889,39 +889,49 @@ public class GCCorePlayerMP extends EntityPlayerMP
 			if (((IGalacticraftWorldProvider)this.worldObj.provider).getMeteorFrequency() > 0)
 			{
 				final double f = ((IGalacticraftWorldProvider)this.worldObj.provider).getMeteorFrequency();
-
+				
 				if (this.worldObj.rand.nextInt(MathHelper.floor_double(f * 1000)) == 0)
 				{
-					int x, y, z;
-					double motX, motZ;
-					x = this.worldObj.rand.nextInt(20) - 10;
-					y = this.worldObj.rand.nextInt(20) + 200;
-					z = this.worldObj.rand.nextInt(20) - 10;
-					motX = this.worldObj.rand.nextDouble() * 5;
-					motZ = this.worldObj.rand.nextDouble() * 5;
-
-					final GCCoreEntityMeteor meteor = new GCCoreEntityMeteor(this.worldObj, this.posX + x, this.posY + y, this.posZ + z, motX - 2.5D, 0, motZ - 2.5D, 1);
-
-					if (!this.worldObj.isRemote)
+					EntityPlayer closestPlayer = this.worldObj.getClosestPlayerToEntity(this, 100);
+					
+					if (closestPlayer == null || closestPlayer.entityId < this.entityId)
 					{
-						this.worldObj.spawnEntityInWorld(meteor);
+						int x, y, z;
+						double motX, motZ;
+						x = this.worldObj.rand.nextInt(20) - 10;
+						y = this.worldObj.rand.nextInt(20) + 200;
+						z = this.worldObj.rand.nextInt(20) - 10;
+						motX = this.worldObj.rand.nextDouble() * 5;
+						motZ = this.worldObj.rand.nextDouble() * 5;
+
+						final GCCoreEntityMeteor meteor = new GCCoreEntityMeteor(this.worldObj, this.posX + x, this.posY + y, this.posZ + z, motX - 2.5D, 0, motZ - 2.5D, 1);
+
+						if (!this.worldObj.isRemote)
+						{
+							this.worldObj.spawnEntityInWorld(meteor);
+						}
 					}
 				}
 				if (this.worldObj.rand.nextInt(MathHelper.floor_double(f * 3000)) == 0)
 				{
-					int x, y, z;
-					double motX, motZ;
-					x = this.worldObj.rand.nextInt(20) - 10;
-					y = this.worldObj.rand.nextInt(20) + 200;
-					z = this.worldObj.rand.nextInt(20) - 10;
-					motX = this.worldObj.rand.nextDouble() * 5;
-					motZ = this.worldObj.rand.nextDouble() * 5;
-
-					final GCCoreEntityMeteor meteor = new GCCoreEntityMeteor(this.worldObj, this.posX + x, this.posY + y, this.posZ + z, motX - 2.5D, 0, motZ - 2.5D, 6);
-
-					if (!this.worldObj.isRemote)
+					EntityPlayer closestPlayer = this.worldObj.getClosestPlayerToEntity(this, 100);
+					
+					if (closestPlayer == null || closestPlayer.entityId < this.entityId)
 					{
-						this.worldObj.spawnEntityInWorld(meteor);
+						int x, y, z;
+						double motX, motZ;
+						x = this.worldObj.rand.nextInt(20) - 10;
+						y = this.worldObj.rand.nextInt(20) + 200;
+						z = this.worldObj.rand.nextInt(20) - 10;
+						motX = this.worldObj.rand.nextDouble() * 5;
+						motZ = this.worldObj.rand.nextDouble() * 5;
+
+						final GCCoreEntityMeteor meteor = new GCCoreEntityMeteor(this.worldObj, this.posX + x, this.posY + y, this.posZ + z, motX - 2.5D, 0, motZ - 2.5D, 6);
+
+						if (!this.worldObj.isRemote)
+						{
+							this.worldObj.spawnEntityInWorld(meteor);
+						}
 					}
 				}
 			}
