@@ -14,7 +14,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
-import universalelectricity.components.common.BasicComponents;
 import universalelectricity.components.common.tileentity.TileEntityCopperWire;
 import universalelectricity.core.block.IConductor;
 import cpw.mods.fml.relauncher.Side;
@@ -29,9 +28,7 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
 		super(id, Material.cloth);
 		this.setStepSound(Block.soundClothFootstep);
 		this.setResistance(0.2F);
-		this.setHardness(0.1f);
-		this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-		Block.setBurnProperties(this.blockID, 30, 60);
+		this.setHardness(0.4f);
 	}
 
     @SideOnly(Side.CLIENT)
@@ -61,7 +58,7 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
 		case 1:
 			return this.enclosedIcons[1];
 		}
-
+		
 		return this.blockIcon;
     }
 

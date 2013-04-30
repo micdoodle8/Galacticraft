@@ -12,6 +12,7 @@ import micdoodle8.mods.galacticraft.API.IExitHeight;
 import micdoodle8.mods.galacticraft.API.IOrbitDimension;
 import micdoodle8.mods.galacticraft.API.ISpaceship;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
+import micdoodle8.mods.galacticraft.core.GCCoreDamageSource;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLandingPad;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLandingPadFull;
@@ -423,7 +424,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
     {
     	if (this.riddenByEntity != null)
     	{
-            this.riddenByEntity.attackEntityFrom(GalacticraftCore.spaceshipCrash, (int)(4.0D * 20 + 1.0D));
+            this.riddenByEntity.attackEntityFrom(GCCoreDamageSource.spaceshipCrash, (int)(4.0D * 20 + 1.0D));
     	}
 
     	if (!GCCoreConfigManager.disableSpaceshipGrief)

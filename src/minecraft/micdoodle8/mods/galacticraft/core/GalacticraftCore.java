@@ -16,8 +16,6 @@ import micdoodle8.mods.galacticraft.API.IGalaxy;
 import micdoodle8.mods.galacticraft.API.IMapPlanet;
 import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
 import micdoodle8.mods.galacticraft.API.SchematicRegistry;
-import micdoodle8.mods.galacticraft.API.SpaceStationRecipe;
-import micdoodle8.mods.galacticraft.API.SpaceStationType;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.client.GCCorePlayerSP;
 import micdoodle8.mods.galacticraft.core.command.GCCoreCommandSpaceStationAddOwner;
@@ -37,7 +35,6 @@ import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityOxygenBubble;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityParaChest;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityRocketT1;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySkeleton;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySkeletonBoss;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpider;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityZombie;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
@@ -79,10 +76,8 @@ import net.minecraftforge.liquids.LiquidContainerRegistry;
 import net.minecraftforge.liquids.LiquidDictionary;
 import net.minecraftforge.liquids.LiquidStack;
 import universalelectricity.components.common.BasicComponents;
-import universalelectricity.prefab.CustomDamageSource;
 import universalelectricity.prefab.TranslationHelper;
 import universalelectricity.prefab.multiblock.TileEntityMulti;
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
@@ -171,9 +166,6 @@ public class GalacticraftCore
 	public static final String CONFIG_FILE = "Galacticraft/core.conf";
 	private static final String[] LANGUAGES_SUPPORTED = new String[] { "en_US", "es_ES", "zh_CN", "fr_CA", "fr_FR", "nl_NL", "pl_PL", "de_DE", "cz_CZE" };
 
-	public static final CustomDamageSource spaceshipCrash = (CustomDamageSource) new CustomDamageSource("spaceshipCrash").setDeathMessage("%1$s was in a spaceship crash!").setDamageBypassesArmor();
-	public static final CustomDamageSource oxygenSuffocation = (CustomDamageSource) new CustomDamageSource("oxygenSuffocation").setDeathMessage("%1$s ran out of oxygen!").setDamageBypassesArmor();
-
 	public static double toBuildcraftEnergyScalar = 0.04D;
 	public static double fromBuildcraftEnergyScalar = 25.0D;
 	
@@ -254,7 +246,7 @@ public class GalacticraftCore
 
 		GalacticraftRegistry.registerTeleportType(WorldProviderSurface.class, new GCCoreOverworldTeleportType());
 		GalacticraftRegistry.registerTeleportType(GCCoreWorldProvider.class, new GCCoreOrbitTeleportType());
-
+		
 		if (GCCoreConfigManager.enableBCLoading)
 		{
 			BasicComponents.register(this);
@@ -268,7 +260,7 @@ public class GalacticraftCore
 			}
 		}
 
-		System.out.println("Galacticraft Loaded: " + TranslationHelper.loadLanguages(GalacticraftCore.LANGUAGE_PATH, GalacticraftCore.LANGUAGES_SUPPORTED) + " Languages.");
+		GCLog.info("Galacticraft Loaded: " + TranslationHelper.loadLanguages(GalacticraftCore.LANGUAGE_PATH, GalacticraftCore.LANGUAGES_SUPPORTED) + " Languages.");
 
 		GalacticraftCore.moon.load(event);
 
