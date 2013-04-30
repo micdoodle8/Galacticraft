@@ -127,7 +127,7 @@ public class GCCoreEvents
 		{
 			if ((!(event.entityLiving instanceof IEntityBreathable) || event.entityLiving instanceof IEntityBreathable && !((IEntityBreathable) event.entityLiving).canBreath()) && event.entityLiving.ticksExisted % 100 == 0)
 			{
-				event.entityLiving.attackEntityFrom(GalacticraftCore.oxygenSuffocation, 1);
+				event.entityLiving.attackEntityFrom(GCCoreDamageSource.oxygenSuffocation, 1);
 			}
 		}
 	}
