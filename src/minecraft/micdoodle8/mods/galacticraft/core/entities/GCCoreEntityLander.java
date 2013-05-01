@@ -43,6 +43,8 @@ public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInvento
     private final float MAX_PITCH_ROTATION = 25.0F;
     public boolean landed;
 
+    public float rumble;
+
     public GCCoreEntityLander(World var1)
     {
         super(var1, -5.0D, 2.5F);
@@ -68,10 +70,41 @@ public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInvento
 	public void onUpdate()
     {
         super.onUpdate();
-        
-        if (!this.worldObj.isRemote && this.ticksExisted < 20 && this.playerSpawnedIn != null && this.riddenByEntity == null)
+
+    	if (this.rumble > 0)
+    	{
+    		this.rumble--;
+    	}
+
+    	if (this.rumble < 0)
+    	{
+    		this.rumble++;
+    	}
+
+    	if (this.riddenByEntity != null)
+    	{
+    		this.riddenByEntity.posX += this.rumble * Math.abs(this.motionY) / 20F;
+    		this.riddenByEntity.posZ += this.rumble * Math.abs(this.motionY) / 20F;
+    	}
+
+        if (this.motionY != 0.0D)
         {
-        	this.playerSpawnedIn.mountEntity(this);
+            this.performHurtAnimation();
+
+        	this.rumble = (float) this.rand.nextInt(3) - 3;
+        }
+        
+        if (this.ticks < 40)
+        {
+        	if (this.riddenByEntity == null)
+        	{
+        		EntityPlayer player = this.worldObj.getClosestPlayerToEntity(this, 5);
+        		
+        		if (player != null)
+        		{
+        			player.mountEntity(this);
+        		}
+        	}
         }
         
         this.lastMotionY = this.motionY;
@@ -316,7 +349,7 @@ public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInvento
 	@Override
 	public boolean shouldMove() 
 	{
-		if (this.posY >= 780)
+		if (this.ticks < 40)
 		{
 			return this.riddenByEntity != null;
 		}
@@ -420,7 +453,7 @@ public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInvento
 	@Override
 	public Vector3 getMotionVec() 
 	{
-		return new Vector3(-(50 * Math.cos(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * 0.01 * Math.PI / 180.0D)), this.motionY, -(50 * Math.sin(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * 0.01 * Math.PI / 180.0D)));
+		return new Vector3(-(50 * Math.cos(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * 0.01 * Math.PI / 180.0D)), this.ticks < 40 ? 0 : this.motionY, -(50 * Math.sin(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * 0.01 * Math.PI / 180.0D)));
 	}
 
 	@Override

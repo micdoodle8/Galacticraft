@@ -65,7 +65,7 @@ public class GCMoonTeleportType implements ITeleportType
 			}
 			
 			GCCoreEntityLander lander = new GCCoreEntityLander(gcPlayer);
-			lander.setPositionAndRotation(player.posX, player.posY + 3, player.posZ, 0, 0);
+			lander.setPositionAndRotation(player.posX, player.posY, player.posZ, 0, 0);
 			
 			if (!newWorld.isRemote)
 			{
