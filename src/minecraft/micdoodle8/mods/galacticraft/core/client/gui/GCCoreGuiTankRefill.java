@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.stats.AchievementList;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -39,6 +40,7 @@ public class GCCoreGuiTankRefill extends GuiContainer
     {
         super(GCCoreGuiTankRefill.tank);
         this.allowUserInput = true;
+        player.addStat(AchievementList.openInventory, 1);
     }
 
     @Override
