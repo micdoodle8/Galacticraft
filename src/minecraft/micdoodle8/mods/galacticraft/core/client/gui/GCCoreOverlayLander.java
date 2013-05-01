@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityLander;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
@@ -29,11 +30,21 @@ public class GCCoreOverlayLander extends GCCoreOverlay
         final int width = scaledresolution.getScaledWidth();
         final int height = scaledresolution.getScaledHeight();
         GCCoreOverlayLander.minecraft.entityRenderer.setupOverlayRendering();
-        GCCoreFontRendererBig fr = new GCCoreFontRendererBig(minecraft.gameSettings, "/font/default.png", minecraft.renderEngine, false);
-        fr.drawString(LanguageRegistry.instance().getStringLocalization("gui.warning"), width / 4 - (fr.getStringWidth(LanguageRegistry.instance().getStringLocalization("gui.warning")) / 2), height / 8 - 20, GCCoreUtil.convertTo32BitColor(255, 255, 0, 0));
-        int alpha = (int) (255 * (Math.sin(screenTicks / 20.0F)));
-        String press1 = LanguageRegistry.instance().getStringLocalization("gui.lander.warning2");
-        String press2 = LanguageRegistry.instance().getStringLocalization("gui.lander.warning3");
-        fr.drawString(press1 + Keyboard.getKeyName(ClientProxyCore.GCKeyHandler.spaceKey.keyCode) + press2, width / 4 - (fr.getStringWidth(press1 + Keyboard.getKeyName(ClientProxyCore.GCKeyHandler.spaceKey.keyCode) + press2) / 2), height / 8, GCCoreUtil.convertTo32BitColor(alpha, alpha, alpha, alpha));
+		
+		if (minecraft.thePlayer.ridingEntity.motionY < -2.0)
+		{
+	        GCCoreFontRendererBig fr = new GCCoreFontRendererBig(minecraft.gameSettings, "/font/default.png", minecraft.renderEngine, false);
+	        fr.drawString(LanguageRegistry.instance().getStringLocalization("gui.warning"), width / 4 - (fr.getStringWidth(LanguageRegistry.instance().getStringLocalization("gui.warning")) / 2), height / 8 - 20, GCCoreUtil.convertTo32BitColor(255, 255, 0, 0));
+	        int alpha = (int) (255 * (Math.sin(screenTicks / 20.0F)));
+	        String press1 = LanguageRegistry.instance().getStringLocalization("gui.lander.warning2");
+	        String press2 = LanguageRegistry.instance().getStringLocalization("gui.lander.warning3");
+	        fr.drawString(press1 + Keyboard.getKeyName(ClientProxyCore.GCKeyHandler.spaceKey.keyCode) + press2, width / 4 - (fr.getStringWidth(press1 + Keyboard.getKeyName(ClientProxyCore.GCKeyHandler.spaceKey.keyCode) + press2) / 2), height / 8, GCCoreUtil.convertTo32BitColor(alpha, alpha, alpha, alpha));
+		}
+		
+
+		if (minecraft.thePlayer.ridingEntity.motionY != 0.0D)
+		{
+	        minecraft.fontRenderer.drawString("Entry Velocity: " + Math.round(((GCCoreEntityLander) minecraft.thePlayer.ridingEntity).motionY * 1000) / 100.0D + " m/s", width / 2 - (minecraft.fontRenderer.getStringWidth("Entry Velocity: " + Math.round(((GCCoreEntityLander) minecraft.thePlayer.ridingEntity).motionY * 1000) / 100.0D + " m/s") / 2), height / 3, GCCoreUtil.convertTo32BitColor(255, (int)Math.floor(Math.abs(minecraft.thePlayer.ridingEntity.motionY) * 51.0D), 0, 255 - (int) Math.floor(Math.abs(minecraft.thePlayer.ridingEntity.motionY) * 51.0D)));
+		}
 	}
 }
