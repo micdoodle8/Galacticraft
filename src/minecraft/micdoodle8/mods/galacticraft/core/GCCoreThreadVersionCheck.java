@@ -2,11 +2,12 @@ package micdoodle8.mods.galacticraft.core;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.regex.Pattern;
 
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 
 public class GCCoreThreadVersionCheck extends Thread
@@ -39,15 +40,16 @@ public class GCCoreThreadVersionCheck extends Thread
 		{
 			try
 			{
-				final URL url = new URL("http://micdoodle8.com/galacticraft/version.html");
-
-				final BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
-				Pattern.compile("Version=");
+				URL url = new URL("http://micdoodle8.com/galacticraft/version.html");
+				HttpURLConnection http = (HttpURLConnection) url.openConnection();
+				http.addRequestProperty("User-Agent", "Mozilla/4.76");
+				BufferedReader in = new BufferedReader(new InputStreamReader(http.getInputStream()));
 				String str;
 				String str2[] = null;
 
 				while ((str = in.readLine()) != null)
 				{
+		    		
 		    		if (str.contains("Version"))
 		    		{
 		        		str = str.replace("Version=", "");
@@ -59,11 +61,6 @@ public class GCCoreThreadVersionCheck extends Thread
 			    			GalacticraftCore.remoteMajVer = Integer.parseInt(str2[0]);
 			    			GalacticraftCore.remoteMinVer = Integer.parseInt(str2[1]);
 			    			GalacticraftCore.remoteBuildVer = Integer.parseInt(str2[2]);
-			    		}
-
-			    		if (GalacticraftCore.remoteBuildVer != 0 && GalacticraftCore.remoteBuildVer < GalacticraftCore.LOCALBUILDVERSION)
-			    		{
-			    			GalacticraftCore.usingDevVersion = true;
 			    		}
 
 			    		if (GalacticraftCore.remoteMajVer > GalacticraftCore.LOCALMAJVERSION || GalacticraftCore.remoteMajVer == GalacticraftCore.LOCALMAJVERSION && GalacticraftCore.remoteMinVer > GalacticraftCore.LOCALMINVERSION || GalacticraftCore.remoteMajVer == GalacticraftCore.LOCALMAJVERSION && GalacticraftCore.remoteMinVer == GalacticraftCore.LOCALMINVERSION && GalacticraftCore.remoteBuildVer > GalacticraftCore.LOCALBUILDVERSION)
@@ -101,7 +98,7 @@ public class GCCoreThreadVersionCheck extends Thread
 			{
 				GCLog.info("Galacticraft remote version found: " + GalacticraftCore.remoteMajVer + "." + GalacticraftCore.remoteMinVer + "." + GalacticraftCore.remoteBuildVer);
 			}
-
+			
 			count++;
 		}
 	}
