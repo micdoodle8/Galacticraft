@@ -5,9 +5,8 @@ import java.util.List;
 import micdoodle8.mods.galacticraft.API.EnumGearType;
 import micdoodle8.mods.galacticraft.API.IBreathableArmor;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockBreathableAir;
-import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiTankRefill;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryTankRefill;
+import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryPlayer;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenGear;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenMask;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenTank;
@@ -17,7 +16,6 @@ import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
@@ -38,14 +36,9 @@ public class OxygenUtil
 			return true;
 		}
 
-		if (gui instanceof GCCoreGuiTankRefill)
-		{
-			return true;
-		}
-
 		if (gui instanceof GuiInventory)
 		{
-			return true;
+			return false;
 		}
 
 		if (gui instanceof GuiChat)
@@ -125,9 +118,7 @@ public class OxygenUtil
 	{
 		boolean missingComponent = false;
 
-		final GCCoreInventoryTankRefill inventory = player.playerTankInventory;
-
-		if (inventory.getStackInSlot(0) == null || !OxygenUtil.isItemValidForPlayerTankInv(0, inventory.getStackInSlot(0)))
+		if (((GCCoreInventoryPlayer)player.inventory).tankItemInSlot(0) == null || !OxygenUtil.isItemValidForPlayerTankInv(0, ((GCCoreInventoryPlayer)player.inventory).tankItemInSlot(0)))
 		{
 			boolean handled = false;
 			
@@ -153,7 +144,7 @@ public class OxygenUtil
 			}
 		}
 
-		if (inventory.getStackInSlot(1) == null || !OxygenUtil.isItemValidForPlayerTankInv(1, inventory.getStackInSlot(1)))
+		if (((GCCoreInventoryPlayer)player.inventory).tankItemInSlot(1) == null || !OxygenUtil.isItemValidForPlayerTankInv(1, ((GCCoreInventoryPlayer)player.inventory).tankItemInSlot(1)))
 		{
 			boolean handled = false;
 			
@@ -179,7 +170,7 @@ public class OxygenUtil
 			}
 		}
 
-		if ((inventory.getStackInSlot(2) == null || !OxygenUtil.isItemValidForPlayerTankInv(2, inventory.getStackInSlot(2))) && (inventory.getStackInSlot(3) == null || !OxygenUtil.isItemValidForPlayerTankInv(3, inventory.getStackInSlot(3))))
+		if ((((GCCoreInventoryPlayer)player.inventory).tankItemInSlot(2) == null || !OxygenUtil.isItemValidForPlayerTankInv(2, ((GCCoreInventoryPlayer)player.inventory).tankItemInSlot(2))) && (((GCCoreInventoryPlayer)player.inventory).tankItemInSlot(3) == null || !OxygenUtil.isItemValidForPlayerTankInv(3, ((GCCoreInventoryPlayer)player.inventory).tankItemInSlot(3))))
 		{
 			boolean handled = false;
 			

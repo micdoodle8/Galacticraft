@@ -15,7 +15,7 @@ import micdoodle8.mods.galacticraft.core.GCCoreDamageSource;
 import micdoodle8.mods.galacticraft.core.GCLog;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryTankRefill;
+import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryPlayer;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemParachute;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketSchematicList;
@@ -65,7 +65,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
 	public ItemStack tankInSlot;
 
-	public GCCoreInventoryTankRefill playerTankInventory = new GCCoreInventoryTankRefill(this);
+//	public GCCoreInventoryTankRefill playerTankInventory = new GCCoreInventoryTankRefill(this);
 
 	public boolean inPortal;
 	public int timeUntilPortal;
@@ -137,10 +137,10 @@ public class GCCorePlayerMP extends EntityPlayerMP
     {
 		GalacticraftCore.playersServer.remove(this);
 
-        if (!this.worldObj.getGameRules().getGameRuleBooleanValue("keepInventory"))
-        {
-            this.playerTankInventory.dropAllItems();
-        }
+//        if (!this.worldObj.getGameRules().getGameRuleBooleanValue("keepInventory"))
+//        {
+//            this.playerTankInventory.dropAllItems();
+//        }
 
     	super.onDeath(var1);
     }
@@ -282,11 +282,11 @@ public class GCCorePlayerMP extends EntityPlayerMP
     		this.openPlanetSelectionGuiCooldown--;
     	}
 
-    	this.maskInSlot = this.playerTankInventory.getStackInSlot(0);
-    	this.gearInSlot = this.playerTankInventory.getStackInSlot(1);
-    	this.tankInSlot1 = this.playerTankInventory.getStackInSlot(2);
-    	this.tankInSlot2 = this.playerTankInventory.getStackInSlot(3);
-    	this.parachuteInSlot = this.playerTankInventory.getStackInSlot(4);
+    	this.maskInSlot = ((GCCoreInventoryPlayer)this.inventory).tankItemInSlot(0);
+    	this.gearInSlot = ((GCCoreInventoryPlayer)this.inventory).tankItemInSlot(1);
+    	this.tankInSlot1 = ((GCCoreInventoryPlayer)this.inventory).tankItemInSlot(2);
+    	this.tankInSlot2 = ((GCCoreInventoryPlayer)this.inventory).tankItemInSlot(3);
+    	this.parachuteInSlot = ((GCCoreInventoryPlayer)this.inventory).tankItemInSlot(4);
 
     	if (this.getParachute())
     	{
@@ -761,8 +761,8 @@ public class GCCorePlayerMP extends EntityPlayerMP
 			this.fallDistance = 0.0F;
 		}
 
-		final ItemStack tankInSlot = this.playerTankInventory.getStackInSlot(2);
-		final ItemStack tankInSlot2 = this.playerTankInventory.getStackInSlot(3);
+		final ItemStack tankInSlot = ((GCCoreInventoryPlayer)this.inventory).tankItemInSlot(2);
+		final ItemStack tankInSlot2 = ((GCCoreInventoryPlayer)this.inventory).tankItemInSlot(3);
 
 		final int drainSpacing = OxygenUtil.getDrainSpacing(tankInSlot);
 		final int drainSpacing2 = OxygenUtil.getDrainSpacing(tankInSlot2);
@@ -947,11 +947,11 @@ public class GCCorePlayerMP extends EntityPlayerMP
 	        this.playerNetServerHandler.sendPacketToPlayer(GCCorePacketSchematicList.buildSchematicListPacket(this.unlockedSchematics));
     	}
 
-    	this.lastMaskInSlot = this.playerTankInventory.getStackInSlot(0);
-    	this.lastGearInSlot = this.playerTankInventory.getStackInSlot(1);
-    	this.lastTankInSlot1 = this.playerTankInventory.getStackInSlot(2);
-    	this.lastTankInSlot2 = this.playerTankInventory.getStackInSlot(3);
-    	this.lastParachuteInSlot = this.playerTankInventory.getStackInSlot(4);
+    	this.lastMaskInSlot = ((GCCoreInventoryPlayer)this.inventory).tankItemInSlot(0);
+    	this.lastGearInSlot = ((GCCoreInventoryPlayer)this.inventory).tankItemInSlot(1);
+    	this.lastTankInSlot1 = ((GCCoreInventoryPlayer)this.inventory).tankItemInSlot(2);
+    	this.lastTankInSlot2 = ((GCCoreInventoryPlayer)this.inventory).tankItemInSlot(3);
+    	this.lastParachuteInSlot = ((GCCoreInventoryPlayer)this.inventory).tankItemInSlot(4);
     	
     	this.lastOxygenSetupValid = this.oxygenSetupValid;
     	this.lastUnlockedSchematics = this.unlockedSchematics;
@@ -1139,8 +1139,13 @@ public class GCCorePlayerMP extends EntityPlayerMP
     {
 		this.airRemaining = par1NBTTagCompound.getInteger("playerAirRemaining");
 		this.damageCounter = par1NBTTagCompound.getInteger("damageCounter");
-        final NBTTagList var2 = par1NBTTagCompound.getTagList("InventoryTankRefill");
-        this.playerTankInventory.readFromNBT(var2);
+		
+		if (par1NBTTagCompound.hasKey("InventoryTankRefill"))
+		{
+	        final NBTTagList var2 = par1NBTTagCompound.getTagList("InventoryTankRefill");
+	        ((GCCoreInventoryPlayer) this.inventory).readFromNBTOld(var2);
+		}
+		
         this.astronomyPoints = par1NBTTagCompound.getFloat("AstronomyPointsNum");
         this.astronomyPointsLevel = par1NBTTagCompound.getInteger("AstronomyPointsLevel");
         this.astronomyPointsTotal = par1NBTTagCompound.getInteger("AstronomyPointsTotal");
@@ -1181,7 +1186,6 @@ public class GCCorePlayerMP extends EntityPlayerMP
     {
     	par1NBTTagCompound.setInteger("playerAirRemaining", this.airRemaining);
     	par1NBTTagCompound.setInteger("damageCounter", this.damageCounter);
-        par1NBTTagCompound.setTag("InventoryTankRefill", this.playerTankInventory.writeToNBT(new NBTTagList()));
         par1NBTTagCompound.setFloat("AstronomyPointsNum", this.astronomyPoints);
         par1NBTTagCompound.setInteger("AstronomyPointsLevel", this.astronomyPointsLevel);
         par1NBTTagCompound.setInteger("AstronomyPointsTotal", this.astronomyPointsTotal);
@@ -1294,7 +1298,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
 	public void sendPlayerParachuteTexturePacket(GCCorePlayerMP player)
 	{
-		final ItemStack stack = player.playerTankInventory.getStackInSlot(4);
+		final ItemStack stack = ((GCCoreInventoryPlayer)this.inventory).tankItemInSlot(4);
 		String s;
 		String s2 = null;
 		if (stack != null && stack.getItem() instanceof GCCoreItemParachute)

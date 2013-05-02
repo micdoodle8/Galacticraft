@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.core;
 
-import java.util.List;
-
 import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
 import micdoodle8.mods.galacticraft.API.ISchematicPage;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityRocketT1;
@@ -13,8 +11,7 @@ import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerAirSealer;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerFuelLoader;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerRefinery;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerRocketRefill;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerTankRefill;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryTankRefill;
+import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryPlayer;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFuelLoader;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCollector;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCompressor;
@@ -24,12 +21,10 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityRefinery;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.ContainerPlayer;
 import net.minecraft.stats.StatBase;
 import net.minecraft.world.World;
 import universalelectricity.components.common.BCGuiHandler;
-
-import com.google.common.collect.Lists;
-
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -125,20 +120,17 @@ public class CommonProxyCore extends BCGuiHandler implements IGuiHandler
 
     // IGUIHANDLER IMPLEMENTATION:
 
-    GCCoreInventoryTankRefill inv = null;
-
-    public static List<GCCoreInventoryTankRefill> airTanks = Lists.newArrayList();
-
 	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
 	{
 		final GCCorePlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player);
 
+		/*
 		if (ID == GCCoreConfigManager.idGuiTankRefill && playerBase != null)
 		{
-			return new GCCoreContainerTankRefill(player, playerBase.playerTankInventory);
+			return new ContainerPlayer(player, ((GCCoreInventoryPlayer) player.inventory));
 		}
-		else if (ID == GCCoreConfigManager.idGuiSpaceshipInventory && player.ridingEntity != null && player.ridingEntity instanceof GCCoreEntityRocketT1)
+		else */if (ID == GCCoreConfigManager.idGuiSpaceshipInventory && player.ridingEntity != null && player.ridingEntity instanceof GCCoreEntityRocketT1)
 		{
 			return new GCCoreContainerRocketRefill(player.inventory, (GCCoreEntityRocketT1) player.ridingEntity, ((GCCoreEntityRocketT1) player.ridingEntity).getSpaceshipType());
 		}

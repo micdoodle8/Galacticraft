@@ -28,7 +28,6 @@ import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiFuelLoader;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiGalaxyMap;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiRefinery;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiRocketRefill;
-import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiTankRefill;
 import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelSpaceship;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererBreathableAir;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererCraftingTable;
@@ -474,7 +473,7 @@ public class ClientProxyCore extends CommonProxyCore
 
     public static class GCKeyHandler extends KeyHandler
     {
-    	public static KeyBinding tankRefill = new KeyBinding("[GC] Player Inventory", Keyboard.KEY_E);
+//    	public static KeyBinding tankRefill = new KeyBinding("[GC] Player Inventory", Keyboard.KEY_E);
     	public static KeyBinding galaxyMap = new KeyBinding("[GC] Galaxy Map", Keyboard.KEY_M);
     	public static KeyBinding openSpaceshipInv = new KeyBinding("[GC] Open Spaceship Inventory", Keyboard.KEY_F);
     	public static KeyBinding toggleAdvGoggles = new KeyBinding("[GC] Toggle Sensor Goggles Mode", Keyboard.KEY_K);
@@ -487,7 +486,7 @@ public class ClientProxyCore extends CommonProxyCore
 
         public GCKeyHandler()
         {
-            super(new KeyBinding[] {GCKeyHandler.tankRefill, GCKeyHandler.galaxyMap, GCKeyHandler.openSpaceshipInv, GCKeyHandler.toggleAdvGoggles, GCKeyHandler.accelerateKey, GCKeyHandler.decelerateKey, GCKeyHandler.leftKey, GCKeyHandler.rightKey, GCKeyHandler.spaceKey, GCKeyHandler.leftShiftKey}, new boolean[] {false, false, false, false, true, true, true, true, true, true});
+            super(new KeyBinding[] {/*GCKeyHandler.tankRefill, */GCKeyHandler.galaxyMap, GCKeyHandler.openSpaceshipInv, GCKeyHandler.toggleAdvGoggles, GCKeyHandler.accelerateKey, GCKeyHandler.decelerateKey, GCKeyHandler.leftKey, GCKeyHandler.rightKey, GCKeyHandler.spaceKey, GCKeyHandler.leftShiftKey}, new boolean[] {false, false, false, false, true, true, true, true, true, true});
         }
 
         @Override
@@ -515,6 +514,7 @@ public class ClientProxyCore extends CommonProxyCore
     			return;
         	}
 
+        	/*
         	if (kb.keyCode == GCKeyHandler.tankRefill.keyCode)
         	{
         		if (minecraft.currentScreen == null && playerBase != null && !playerBase.capabilities.isCreativeMode)
@@ -526,7 +526,7 @@ public class ClientProxyCore extends CommonProxyCore
             	    player.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiTankRefill, minecraft.theWorld, (int)player.posX, (int)player.posY, (int)player.posZ);
             	}
         	}
-        	else if (kb.keyCode == GCKeyHandler.galaxyMap.keyCode)
+        	else */if (kb.keyCode == GCKeyHandler.galaxyMap.keyCode)
         	{
         		if (minecraft.currentScreen == null)
         		{
@@ -644,11 +644,12 @@ public class ClientProxyCore extends CommonProxyCore
 	{
 		final TileEntity tile = world.getBlockTileEntity(x, y, z);
 
+		/*
 		if (ID == GCCoreConfigManager.idGuiTankRefill)
 		{
 			return new GCCoreGuiTankRefill(player);
 		}
-		else if (ID == GCCoreConfigManager.idGuiGalaxyMap)
+		else */if (ID == GCCoreConfigManager.idGuiGalaxyMap)
 		{
 			return new GCCoreGuiGalaxyMap(player);
 		}

@@ -190,20 +190,4 @@ public class GCCoreItemParachute extends Item
     {
 		return EnumRarity.uncommon;
     }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
-    {
-    	if (par2EntityPlayer.worldObj.isRemote)
-    	{
-    		final GCCorePlayerSP playerBaseCl = PlayerUtil.getPlayerBaseClientFromPlayer(par2EntityPlayer);
-
-    		if (playerBaseCl != null && playerBaseCl.getUseTutorialText())
-    		{
-            	par3List.add("Press " + Keyboard.getKeyName(ClientProxyCore.GCKeyHandler.tankRefill.keyCode) + " to access");
-            	par3List.add("     Galacticraft Inventory");
-    		}
-    	}
-    }
 }

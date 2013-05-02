@@ -1,11 +1,14 @@
 package micdoodle8.mods.galacticraft.asm;
 
+import static org.objectweb.asm.ClassWriter.COMPUTE_MAXS;
 import static org.objectweb.asm.Opcodes.ALOAD;
 import static org.objectweb.asm.Opcodes.FLOAD;
 import static org.objectweb.asm.Opcodes.FMUL;
 import static org.objectweb.asm.Opcodes.FSTORE;
 import static org.objectweb.asm.Opcodes.INVOKESTATIC;
 
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -25,8 +28,8 @@ import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.TypeInsnNode;
 import org.objectweb.asm.tree.VarInsnNode;
 
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.IClassTransformer;
+import cpw.mods.fml.relauncher.RelaunchClassLoader;
 
 public class GCCoreTransformer implements IClassTransformer
 {
@@ -86,6 +89,30 @@ public class GCCoreTransformer implements IClassTransformer
 		this.unObfuscatedMap.put("updateLightmapDesc", "(F)V");
 		this.obfuscatedMap.put("worldClass", "aab");
 		this.unObfuscatedMap.put("worldClass", "net/minecraft/world/World");
+		
+		this.obfuscatedMap.put("player", "sq");
+		this.unObfuscatedMap.put("player", "net/minecraft/entity/player/EntityPlayer");
+		this.obfuscatedMap.put("invPlayer", "bK");
+		this.unObfuscatedMap.put("invPlayer", "inventory");
+		this.obfuscatedMap.put("containerPlayer", "tz");
+		this.unObfuscatedMap.put("containerPlayer", "net/minecraft/inventory/ContainerPlayer");
+		this.obfuscatedMap.put("invPlayerClass", "so");
+		this.unObfuscatedMap.put("invPlayerClass", "net/minecraft/entity/player/InventoryPlayer");
+		
+		this.obfuscatedMap.put("minecraft", "net/minecraft/client/Minecraft");
+		this.unObfuscatedMap.put("minecraft", "net/minecraft/client/Minecraft");
+		this.obfuscatedMap.put("guiPlayer", "azg");
+		this.unObfuscatedMap.put("guiPlayer", "net/minecraft/client/gui/inventory/GuiInventory");
+		this.obfuscatedMap.put("thePlayer", "g");
+		this.unObfuscatedMap.put("thePlayer", "thePlayer");
+		this.obfuscatedMap.put("displayGui", "a");
+		this.unObfuscatedMap.put("displayGui", "displayGuiScreen");
+		this.obfuscatedMap.put("displayGuiDesc", "(Laxr;)V");
+		this.unObfuscatedMap.put("displayGuiDesc", "(Lnet/minecraft/src/GuiScreen;)V");
+		this.obfuscatedMap.put("runTick", "l");
+		this.unObfuscatedMap.put("runTick", "runTick");
+		this.obfuscatedMap.put("runTickDesc", "()V");
+		this.unObfuscatedMap.put("runTickDesc", "()V");
 	}
 
 	@Override
@@ -134,6 +161,48 @@ public class GCCoreTransformer implements IClassTransformer
 		else if (name.replace('.', '/').equals(this.obfuscatedMap.get("entityRendererClass")))
 		{
 			bytes = this.transform5(name, bytes, this.obfuscatedMap);
+		}
+		
+		boolean deobfuscated = false;
+		
+        try
+        {
+        	@SuppressWarnings("resource")
+			URLClassLoader loader = new RelaunchClassLoader(((URLClassLoader) getClass().getClassLoader()).getURLs());
+            URL classResource = loader.findResource(String.valueOf("net.minecraft.world.World").replace('.', '/').concat(".class"));
+            if (classResource == null)
+            {
+            	deobfuscated = false;
+            }
+            else
+            {
+                deobfuscated = true;
+            }
+        }
+        catch(Exception e)
+        {
+        	e.printStackTrace();
+        }
+        finally
+        {
+        }
+
+		if (deobfuscated && name.replace('.', '/').equals(this.unObfuscatedMap.get("minecraft")))
+		{
+			bytes = this.transform6(name, bytes, this.unObfuscatedMap);
+		}
+		else if (!deobfuscated && name.replace('.', '/').equals(this.obfuscatedMap.get("minecraft")))
+		{
+			bytes = this.transform6(name, bytes, this.obfuscatedMap);
+		}
+
+		if (name.replace('.', '/').equals(this.unObfuscatedMap.get("player")))
+		{
+			bytes = this.transform7(name, bytes, this.unObfuscatedMap);
+		}
+		else if (name.replace('.', '/').equals(this.obfuscatedMap.get("player")))
+		{
+			bytes = this.transform7(name, bytes, this.obfuscatedMap);
 		}
 
 		return bytes;
@@ -466,6 +535,108 @@ public class GCCoreTransformer implements IClassTransformer
 		}
 
         final ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
+        node.accept(writer);
+        bytes = writer.toByteArray();
+
+        return bytes;
+    }
+
+    public byte[] transform6(String name, byte[] bytes, HashMap<String, String> map)
+    {
+        ClassNode node = new ClassNode();
+        ClassReader reader = new ClassReader(bytes);
+        reader.accept(node, 0);
+
+		Iterator<MethodNode> methods = node.methods.iterator();
+		
+		while (methods.hasNext())
+		{
+			final MethodNode methodnode = methods.next();
+
+			if (methodnode.name.equals(map.get("runTick")) && methodnode.desc.equals(map.get("runTickDesc")))
+			{
+	            for (int count = 0; count < methodnode.instructions.size(); count++)
+	            {
+	            	final AbstractInsnNode list = methodnode.instructions.get(count);
+	            	
+	            	if (list instanceof TypeInsnNode)
+	            	{
+	            		final TypeInsnNode nodeAt = (TypeInsnNode) list;
+
+	            		if (nodeAt.getOpcode() == Opcodes.NEW && nodeAt.desc.equals(map.get("guiPlayer")))
+	            		{
+	            			methodnode.instructions.set(nodeAt, new TypeInsnNode(Opcodes.NEW, "micdoodle8/mods/galacticraft/core/client/gui/GCCoreGuiInventory"));
+	            		}
+	            	}
+	            	else if (list instanceof MethodInsnNode)
+	            	{
+	            		final MethodInsnNode nodeAt = (MethodInsnNode) list;
+
+	            		if (nodeAt.getOpcode() == Opcodes.INVOKESPECIAL && nodeAt.owner.equals(map.get("guiPlayer")))
+	            		{
+	            			methodnode.instructions.set(nodeAt, new MethodInsnNode(Opcodes.INVOKESPECIAL, "micdoodle8/mods/galacticraft/core/client/gui/GCCoreGuiInventory", "<init>", "(L" + map.get("player") + ";)V"));
+	            		}
+	            	}
+	            }
+			}
+		}
+
+        final ClassWriter writer = new ClassWriter(COMPUTE_MAXS);
+        node.accept(writer);
+        bytes = writer.toByteArray();
+
+        return bytes;
+    }
+
+    public byte[] transform7(String name, byte[] bytes, HashMap<String, String> map)
+    {
+        ClassNode node = new ClassNode();
+        ClassReader reader = new ClassReader(bytes);
+        reader.accept(node, 0);
+
+		Iterator<MethodNode> methods = node.methods.iterator();
+		
+		while (methods.hasNext())
+		{
+			final MethodNode methodnode = methods.next();
+
+			if (methodnode.name.equals("<init>"))
+			{
+	            for (int count = 0; count < methodnode.instructions.size(); count++)
+	            {
+	            	final AbstractInsnNode list = methodnode.instructions.get(count);
+	            	
+	            	if (list instanceof TypeInsnNode)
+	            	{
+	            		final TypeInsnNode nodeAt = (TypeInsnNode) list;
+
+	            		if (nodeAt.getOpcode() == Opcodes.NEW && nodeAt.desc.equals(map.get("containerPlayer")))
+	            		{
+	            			methodnode.instructions.set(nodeAt, new TypeInsnNode(Opcodes.NEW, "micdoodle8/mods/galacticraft/core/inventory/GCCoreContainerPlayer"));
+	            		}
+	            		else if (nodeAt.getOpcode() == Opcodes.NEW && nodeAt.desc.equals(map.get("invPlayerClass")))
+	            		{
+	            			methodnode.instructions.set(nodeAt, new TypeInsnNode(Opcodes.NEW, "micdoodle8/mods/galacticraft/core/inventory/GCCoreInventoryPlayer"));
+	            		}
+	            	}
+	            	else if (list instanceof MethodInsnNode)
+	            	{
+	            		final MethodInsnNode nodeAt = (MethodInsnNode) list;
+
+	            		if (nodeAt.getOpcode() == Opcodes.INVOKESPECIAL && nodeAt.owner.equals(map.get("containerPlayer")))
+	            		{
+	            			methodnode.instructions.set(nodeAt, new MethodInsnNode(Opcodes.INVOKESPECIAL, "micdoodle8/mods/galacticraft/core/inventory/GCCoreContainerPlayer", "<init>", "(L" + map.get("invPlayerClass") + ";ZL" + map.get("player") + ";)V"));
+	            		}
+	            		else if (nodeAt.getOpcode() == Opcodes.INVOKESPECIAL && nodeAt.owner.equals(map.get("invPlayerClass")))
+	            		{
+	        				methodnode.instructions.set(nodeAt, new MethodInsnNode(Opcodes.INVOKESPECIAL, "micdoodle8/mods/galacticraft/core/inventory/GCCoreInventoryPlayer", "<init>", "(L" + map.get("player") + ";)V"));
+	            		}
+	            	}
+	            }
+			}
+		}
+
+        final ClassWriter writer = new ClassWriter(COMPUTE_MAXS);
         node.accept(writer);
         bytes = writer.toByteArray();
 
