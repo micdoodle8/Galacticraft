@@ -595,12 +595,12 @@ public class RecipeUtil
         }
         
 		addRecipe(new ItemStack(GCCoreItems.heavyPlating, 2), new Object[] {
-			"X",
-			"Y",
-			"Z",
-			'X', "ingotPlatinum",
-			'Y', "ingotInvar",
-			'Z', "ingotCopper",
+			"XXX",
+			"YYY",
+			"ZZZ",
+			'X', "ingotInvar",
+			'Y', "ingotCopper",
+			'Z', "ingotTin",
 		});
 		
 		addRecipe(new ItemStack(GCCoreItems.rocketFins, 1), new Object[] {
