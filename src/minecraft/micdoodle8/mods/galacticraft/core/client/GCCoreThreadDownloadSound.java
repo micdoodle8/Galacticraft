@@ -51,6 +51,7 @@ public class GCCoreThreadDownloadSound extends Thread
             DocumentBuilder documentbuilder = documentbuilderfactory.newDocumentBuilder();
             //Add a timeout of 60 seconds to getting the list, MC stalls without sound for some users.
             URLConnection con = url.openConnection();
+            con.addRequestProperty("User-Agent", "Mozilla/4.76");
             con.setConnectTimeout(60000);
             con.setReadTimeout(60000);
             Document document = documentbuilder.parse(con.getInputStream());
@@ -170,6 +171,7 @@ public class GCCoreThreadDownloadSound extends Thread
         byte[] abyte = new byte[4096];
         //Add a timeout of 60 seconds to getting the list, MC stalls without sound for some users.
         URLConnection con = par1URL.openConnection();
+        con.addRequestProperty("User-Agent", "Mozilla/4.76");
         con.setConnectTimeout(60000);
         con.setReadTimeout(60000);
         DataInputStream datainputstream = new DataInputStream(con.getInputStream());
