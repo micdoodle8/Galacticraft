@@ -59,7 +59,7 @@ public class GCCoreContainerPlayer extends ContainerPlayer
             this.addSlotToContainer(new Slot(par1InventoryPlayer, 40 + var4 - 1, 80, 8 + (var4 - 1) * 18));
         }
 
-        this.addSlotToContainer(new Slot(par1InventoryPlayer, 44, 154, 6));
+        this.addSlotToContainer(new Slot(par1InventoryPlayer, 44, 154, 6 + 18));
 	}
 
 	@Override
