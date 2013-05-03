@@ -1,11 +1,17 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
+import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenGear;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenMask;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenTank;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItemParachute;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ContainerPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotArmor;
 import net.minecraft.inventory.SlotCrafting;
+import net.minecraft.item.ItemArmor;
+import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreContainerPlayer extends ContainerPlayer
@@ -55,4 +61,144 @@ public class GCCoreContainerPlayer extends ContainerPlayer
 
         this.addSlotToContainer(new Slot(par1InventoryPlayer, 44, 154, 6));
 	}
+
+	@Override
+    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotIndex)
+    {
+        ItemStack itemstack = null;
+        Slot slot = (Slot)this.inventorySlots.get(slotIndex);
+
+        if (slot != null && slot.getHasStack())
+        {
+            ItemStack itemstack1 = slot.getStack();
+            itemstack = itemstack1.copy();
+
+            if (slotIndex == 0)
+            {
+                if (!this.mergeItemStack(itemstack1, 9, 45, true))
+                {
+                    return null;
+                }
+
+                slot.onSlotChange(itemstack1, itemstack);
+            }
+            else if (slotIndex >= 1 && slotIndex < 5)
+            {
+                if (!this.mergeItemStack(itemstack1, 9, 45, false))
+                {
+                    return null;
+                }
+            }
+            // GC
+            else if (slotIndex >= 45 && slotIndex < 50)
+            {
+                if (!this.mergeItemStack(itemstack1, 9, 45, false))
+                {
+                    return null;
+                }
+            }
+            else if (itemstack.getItem() instanceof GCCoreItemOxygenMask && !((Slot) this.inventorySlots.get(45)).getHasStack())
+            {
+                if (!this.mergeItemStack(itemstack1, 45, 46, false))
+                {
+                    return null;
+                }
+            }
+            else if (itemstack.getItem() instanceof GCCoreItemOxygenGear && !((Slot) this.inventorySlots.get(46)).getHasStack())
+            {
+                if (!this.mergeItemStack(itemstack1, 46, 47, false))
+                {
+                    return null;
+                }
+            }
+            else if (itemstack.getItem() instanceof GCCoreItemOxygenTank && !((Slot) this.inventorySlots.get(47)).getHasStack())
+            {
+                if (!this.mergeItemStack(itemstack1, 47, 48, false))
+                {
+                    return null;
+                }
+            }
+            else if (itemstack.getItem() instanceof GCCoreItemOxygenTank && !((Slot) this.inventorySlots.get(48)).getHasStack())
+            {
+                if (!this.mergeItemStack(itemstack1, 48, 49, false))
+                {
+                    return null;
+                }
+            }
+            else if (itemstack.getItem() instanceof GCCoreItemParachute && !((Slot) this.inventorySlots.get(0)).getHasStack())
+            {
+                if (!this.mergeItemStack(itemstack1, 49, 50, false))
+                {
+                    return null;
+                }
+            }
+            // GC
+            else if (slotIndex >= 5 && slotIndex < 9)
+            {
+                if (!this.mergeItemStack(itemstack1, 9, 45, false))
+                {
+                    return null;
+                }
+            }
+            else if (itemstack.getItem() instanceof ItemArmor && !((Slot)this.inventorySlots.get(5 + ((ItemArmor)itemstack.getItem()).armorType)).getHasStack())
+            {
+                final int var6 = 5 + ((ItemArmor)itemstack.getItem()).armorType;
+
+                if (!this.mergeItemStack(itemstack1, var6, var6 + 1, false))
+                {
+                    return null;
+                }
+            }
+            else if (slotIndex >= 9 && slotIndex < 36)
+            {
+                if (!this.mergeItemStack(itemstack1, 36, 45, false))
+                {
+                    return null;
+                }
+            }
+            else if (slotIndex >= 36 && slotIndex < 45)
+            {
+                if (!this.mergeItemStack(itemstack1, 9, 36, false))
+                {
+                    return null;
+                }
+            }
+            else if (!this.mergeItemStack(itemstack1, 9, 45, false))
+            {
+                return null;
+            }
+
+            if (itemstack1.stackSize == 0)
+            {
+                slot.putStack((ItemStack)null);
+            }
+            else
+            {
+                slot.onSlotChanged();
+            }
+
+            if (itemstack1.stackSize == itemstack.stackSize)
+            {
+                return null;
+            }
+
+            if (itemstack1.stackSize == 0)
+            {
+                slot.putStack((ItemStack)null);
+            }
+            else
+            {
+                slot.onSlotChanged();
+            }
+
+            if (itemstack1.stackSize == itemstack.stackSize)
+            {
+                return null;
+            }
+
+            slot.onPickupFromSlot(par1EntityPlayer, itemstack1);
+        }
+
+        return itemstack;
+    }
 }
