@@ -2,10 +2,12 @@ package micdoodle8.mods.galacticraft.asm;
 
 import static org.objectweb.asm.ClassWriter.COMPUTE_MAXS;
 import static org.objectweb.asm.Opcodes.ALOAD;
+import static org.objectweb.asm.Opcodes.BIPUSH;
 import static org.objectweb.asm.Opcodes.FLOAD;
 import static org.objectweb.asm.Opcodes.FMUL;
 import static org.objectweb.asm.Opcodes.FSTORE;
 import static org.objectweb.asm.Opcodes.INVOKESTATIC;
+import static org.objectweb.asm.Opcodes.PUTSTATIC;
 
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -19,6 +21,7 @@ import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.FieldInsnNode;
 import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.InsnNode;
 import org.objectweb.asm.tree.IntInsnNode;
@@ -203,6 +206,15 @@ public class GCCoreTransformer implements IClassTransformer
 		else if (name.replace('.', '/').equals(this.obfuscatedMap.get("player")))
 		{
 			bytes = this.transform7(name, bytes, this.obfuscatedMap);
+		}
+		
+		if (deobfuscated && name.equals("invtweaks.InvTweaksObfuscation"))
+		{
+			bytes = this.transform8(name, bytes, unObfuscatedMap);
+		}
+		else if (!deobfuscated && name.equals("invtweaks.InvTweaksObfuscation"))
+		{
+			bytes = this.transform8(name, bytes, obfuscatedMap);
 		}
 
 		return bytes;
@@ -633,6 +645,35 @@ public class GCCoreTransformer implements IClassTransformer
 	            		}
 	            	}
 	            }
+			}
+		}
+
+        final ClassWriter writer = new ClassWriter(COMPUTE_MAXS);
+        node.accept(writer);
+        bytes = writer.toByteArray();
+
+        return bytes;
+    }
+    
+    public byte[] transform8(String name, byte[] bytes, HashMap<String, String> map)
+    {
+        ClassNode node = new ClassNode();
+        ClassReader reader = new ClassReader(bytes);
+        reader.accept(node, 0);
+
+		Iterator<MethodNode> methods = node.methods.iterator();
+		
+		while (methods.hasNext())
+		{
+			final MethodNode methodnode = methods.next();
+
+			if (methodnode.name.equals("<init>"))
+			{
+        		InsnList toAdd = new InsnList();
+        		
+        		toAdd.add(new IntInsnNode(BIPUSH, 51));
+        		toAdd.add(new FieldInsnNode(PUTSTATIC, "invtweaks/InvTweaksObfuscation", "CREATIVE_MAIN_INVENTORY_SIZE", "I"));
+        		methodnode.instructions.insertBefore(methodnode.instructions.getFirst(), toAdd);
 			}
 		}
 
