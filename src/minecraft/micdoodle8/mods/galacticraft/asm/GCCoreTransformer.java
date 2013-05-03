@@ -236,6 +236,15 @@ public class GCCoreTransformer implements IClassTransformer
 		{
 			bytes = this.transform10(name, bytes, obfuscatedMap);
 		}
+		
+		if (deobfuscated && name.equals("codechicken.nei.ContainerCreativeInv"))
+		{
+			bytes = this.transform11(name, bytes, unObfuscatedMap);
+		}
+		else if (!deobfuscated && name.equals("codechicken.nei.ContainerCreativeInv"))
+		{
+			bytes = this.transform11(name, bytes, obfuscatedMap);
+		}
 
 		return bytes;
 	}
@@ -776,6 +785,45 @@ public class GCCoreTransformer implements IClassTransformer
 	            		if (nodeAt.getOpcode() == Opcodes.INVOKESPECIAL && nodeAt.owner.equals(map.get("guiPlayer")))
 	            		{
 	            			methodnode.instructions.set(nodeAt, new MethodInsnNode(Opcodes.INVOKESPECIAL, "micdoodle8/mods/galacticraft/core/client/gui/GCCoreGuiInventory", "<init>", "(L" + map.get("player") + ";)V"));
+	            		}
+	            	}
+	            }
+			}
+		}
+
+        final ClassWriter writer = new ClassWriter(COMPUTE_MAXS);
+        node.accept(writer);
+        bytes = writer.toByteArray();
+
+        return bytes;
+    }
+    
+    public byte[] transform11(String name, byte[] bytes, HashMap<String, String> map)
+    {
+        ClassNode node = new ClassNode();
+        ClassReader reader = new ClassReader(bytes);
+        reader.accept(node, 0);
+
+		Iterator<MethodNode> methods = node.methods.iterator();
+		
+		while (methods.hasNext())
+		{
+			final MethodNode methodnode = methods.next();
+
+			if (methodnode.name.equals("<init>"))
+			{
+	            for (int count = 1; count < methodnode.instructions.size(); count++)
+	            {
+	            	final AbstractInsnNode list = methodnode.instructions.get(count);
+	            	final AbstractInsnNode prevList = methodnode.instructions.get(count - 1);
+	            	
+	            	if (list instanceof InsnNode && prevList instanceof MethodInsnNode)
+	            	{
+	            		InsnNode insn = (InsnNode) list;
+	            		
+	            		if (insn.getOpcode() == Opcodes.ICONST_1)
+	            		{
+	            			methodnode.instructions.set(insn, new IntInsnNode(Opcodes.BIPUSH, 6));
 	            		}
 	            	}
 	            }
