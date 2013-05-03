@@ -32,6 +32,7 @@ import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.TypeInsnNode;
 import org.objectweb.asm.tree.VarInsnNode;
 
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.IClassTransformer;
 import cpw.mods.fml.relauncher.RelaunchClassLoader;
 
@@ -225,6 +226,15 @@ public class GCCoreTransformer implements IClassTransformer
 		else if (!deobfuscated && name.equals("invtweaks.InvTweaksContainerManager"))
 		{
 			bytes = this.transform9(name, bytes, obfuscatedMap);
+		}
+		
+		if (deobfuscated && name.equals("codechicken.nei.NEICPH"))
+		{
+			bytes = this.transform10(name, bytes, unObfuscatedMap);
+		}
+		else if (!deobfuscated && name.equals("codechicken.nei.NEICPH"))
+		{
+			bytes = this.transform10(name, bytes, obfuscatedMap);
 		}
 
 		return bytes;
@@ -719,6 +729,53 @@ public class GCCoreTransformer implements IClassTransformer
 	            		if (nodeAt.incr == -1)
 	            		{
 	            			methodnode.instructions.set(nodeAt, new IincInsnNode(nodeAt.var, -6));
+	            		}
+	            	}
+	            }
+			}
+		}
+
+        final ClassWriter writer = new ClassWriter(COMPUTE_MAXS);
+        node.accept(writer);
+        bytes = writer.toByteArray();
+
+        return bytes;
+    }
+    
+    public byte[] transform10(String name, byte[] bytes, HashMap<String, String> map)
+    {
+        ClassNode node = new ClassNode();
+        ClassReader reader = new ClassReader(bytes);
+        reader.accept(node, 0);
+
+		Iterator<MethodNode> methods = node.methods.iterator();
+		
+		while (methods.hasNext())
+		{
+			final MethodNode methodnode = methods.next();
+
+			if (methodnode.name.equals("handlePacket"))
+			{
+	            for (int count = 0; count < methodnode.instructions.size(); count++)
+	            {
+	            	final AbstractInsnNode list = methodnode.instructions.get(count);
+	            	
+	            	if (list instanceof TypeInsnNode)
+	            	{
+	            		final TypeInsnNode nodeAt = (TypeInsnNode) list;
+
+	            		if (nodeAt.getOpcode() == Opcodes.NEW && nodeAt.desc.equals(map.get("guiPlayer")))
+	            		{
+	            			methodnode.instructions.set(nodeAt, new TypeInsnNode(Opcodes.NEW, "micdoodle8/mods/galacticraft/core/client/gui/GCCoreGuiInventory"));
+	            		}
+	            	}
+	            	else if (list instanceof MethodInsnNode)
+	            	{
+	            		final MethodInsnNode nodeAt = (MethodInsnNode) list;
+
+	            		if (nodeAt.getOpcode() == Opcodes.INVOKESPECIAL && nodeAt.owner.equals(map.get("guiPlayer")))
+	            		{
+	            			methodnode.instructions.set(nodeAt, new MethodInsnNode(Opcodes.INVOKESPECIAL, "micdoodle8/mods/galacticraft/core/client/gui/GCCoreGuiInventory", "<init>", "(L" + map.get("player") + ";)V"));
 	            		}
 	            	}
 	            }
