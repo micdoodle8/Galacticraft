@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.moon;
 
-import ic2.api.Items;
+import ic2.api.item.Items;
 import micdoodle8.mods.galacticraft.core.GCCoreCompatibilityManager;
 import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
 import micdoodle8.mods.galacticraft.moon.items.GCMoonItems;
@@ -8,6 +8,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraftforge.oredict.OreDictionary;
 import universalelectricity.components.common.BasicComponents;
 
 /**
@@ -33,16 +34,14 @@ public class GCMoonUtil
 	{
 		FurnaceRecipes.smelting().addSmelting(GCMoonItems.meteoricIronRaw.itemID, new ItemStack(GCMoonItems.meteoricIronIngot), 1.0F);
 		
-		if (GCCoreCompatibilityManager.isBCompLoaded())
+		if (OreDictionary.getOres("ingotCopper").size() > 0)
 		{
-			FurnaceRecipes.smelting().addSmelting(GCMoonBlocks.blockMoon.blockID, 0, new ItemStack(BasicComponents.itemIngot, 1, 0), 1.0F);
-			FurnaceRecipes.smelting().addSmelting(GCMoonBlocks.blockMoon.blockID, 1, new ItemStack(BasicComponents.itemIngot, 1, 1), 1.0F);
+			FurnaceRecipes.smelting().addSmelting(GCMoonBlocks.blockMoon.blockID, 0, OreDictionary.getOres("ingotCopper").get(0), 1.0F);
 		}
 		
-		if (GCCoreCompatibilityManager.isIc2Loaded())
+		if (OreDictionary.getOres("ingotTin").size() > 0)
 		{
-			FurnaceRecipes.smelting().addSmelting(GCMoonBlocks.blockMoon.blockID, 0, Items.getItem("copperIngot"), 1.0F);
-			FurnaceRecipes.smelting().addSmelting(GCMoonBlocks.blockMoon.blockID, 1, Items.getItem("tinIngot"), 1.0F);
+			FurnaceRecipes.smelting().addSmelting(GCMoonBlocks.blockMoon.blockID, 1, OreDictionary.getOres("ingotTin").get(0), 1.0F);
 		}
 		
 		FurnaceRecipes.smelting().addSmelting(GCMoonBlocks.blockMoon.blockID, 2, new ItemStack(GCMoonItems.cheeseCurd), 1.0F);
