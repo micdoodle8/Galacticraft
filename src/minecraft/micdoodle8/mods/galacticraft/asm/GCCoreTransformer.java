@@ -32,7 +32,6 @@ import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.TypeInsnNode;
 import org.objectweb.asm.tree.VarInsnNode;
 
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.IClassTransformer;
 import cpw.mods.fml.relauncher.RelaunchClassLoader;
 
@@ -244,6 +243,15 @@ public class GCCoreTransformer implements IClassTransformer
 		else if (!deobfuscated && name.equals("codechicken.nei.ContainerCreativeInv"))
 		{
 			bytes = this.transform11(name, bytes, obfuscatedMap);
+		}
+		
+		if (deobfuscated && name.equals("mithion.arsmagica.guis.GuiIngameArsMagica"))
+		{
+			bytes = this.transform12(name, bytes, unObfuscatedMap);
+		}
+		else if (!deobfuscated && name.equals("mithion.arsmagica.guis.GuiIngameArsMagica"))
+		{
+			bytes = this.transform12(name, bytes, obfuscatedMap);
 		}
 
 		return bytes;
@@ -824,6 +832,59 @@ public class GCCoreTransformer implements IClassTransformer
 	            		if (insn.getOpcode() == Opcodes.ICONST_1)
 	            		{
 	            			methodnode.instructions.set(insn, new IntInsnNode(Opcodes.BIPUSH, 6));
+	            		}
+	            	}
+	            }
+			}
+		}
+
+        final ClassWriter writer = new ClassWriter(COMPUTE_MAXS);
+        node.accept(writer);
+        bytes = writer.toByteArray();
+
+        return bytes;
+    }
+    
+    public byte[] transform12(String name, byte[] bytes, HashMap<String, String> map)
+    {
+        ClassNode node = new ClassNode();
+        ClassReader reader = new ClassReader(bytes);
+        reader.accept(node, 0);
+
+		Iterator<MethodNode> methods = node.methods.iterator();
+		
+		String manaStr = "Current Mana: ";
+		
+		int wOffset = 0;
+		
+		while (methods.hasNext())
+		{
+			final MethodNode methodnode = methods.next();
+
+			if (methodnode.name.equals("renderManaAmount"))
+			{
+	            for (int count = 0; count < methodnode.instructions.size() - 1; count++)
+	            {
+	            	final AbstractInsnNode list = methodnode.instructions.get(count);
+	            	final AbstractInsnNode prevList = methodnode.instructions.get(count + 1);
+	            	
+	            	if (list instanceof LdcInsnNode)
+	            	{
+	            		LdcInsnNode insn = (LdcInsnNode) list;
+	            		
+	            		if (insn.cst.equals("Current Mana: "))
+	            		{
+	            			methodnode.instructions.set(insn, new LdcInsnNode("Mana:"));
+	            		}
+	            	}
+	            	else if (list instanceof InsnNode && prevList instanceof VarInsnNode)
+	            	{
+	            		InsnNode insn = (InsnNode) list;
+	            		VarInsnNode insn2 = (VarInsnNode) prevList;
+	            		
+	            		if (insn.getOpcode() == Opcodes.ICONST_0 && insn2.getOpcode() == Opcodes.ISTORE)
+	            		{
+	            			methodnode.instructions.set(insn, new IntInsnNode(BIPUSH, 80));
 	            		}
 	            	}
 	            }
