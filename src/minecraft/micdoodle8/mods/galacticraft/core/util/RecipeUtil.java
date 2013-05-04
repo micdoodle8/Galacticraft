@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.util;
 
 import gregtechmod.api.GregTech_API;
-import ic2.api.Items;
+import ic2.api.item.Items;
 
 import java.util.ArrayList;
 import java.util.HashMap;

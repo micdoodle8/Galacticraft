@@ -1,10 +1,10 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import ic2.api.Direction;
-import ic2.api.IWrenchable;
 import ic2.api.energy.event.EnergyTileLoadEvent;
 import ic2.api.energy.event.EnergyTileUnloadEvent;
 import ic2.api.energy.tile.IEnergySink;
+import ic2.api.tile.IWrenchable;
 import micdoodle8.mods.galacticraft.API.IDisableableMachine;
 import micdoodle8.mods.galacticraft.core.GCCoreCompatibilityManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -30,8 +30,6 @@ import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerFramework;
 
 import com.google.common.io.ByteArrayDataInput;
-
-import cpw.mods.fml.common.FMLLog;
 
 public abstract class GCCoreTileEntityElectric extends TileEntityElectricityRunnable implements IWrenchable, IPowerReceptor, IEnergySink, IPacketReceiver, IDisableableMachine
 {
