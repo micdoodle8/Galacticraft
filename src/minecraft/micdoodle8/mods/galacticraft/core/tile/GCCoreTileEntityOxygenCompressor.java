@@ -40,7 +40,7 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityOxygen imp
 
 		if (!this.worldObj.isRemote)
 		{
-			if ((this.storedOxygen / 5.0D) >= 1.0D && (this.wattsReceived > 0 || this.ic2Energy > 0))
+			if ((this.storedOxygen / 5.0D) >= 1.0D && (this.wattsReceived > 0 || this.ic2Energy > 0 || this.bcEnergy > 0))
 			{
 				if (!this.worldObj.isRemote && this.ticks % ((31 - Math.min(Math.floor((this.storedOxygen / 5.0D)), 30)) * 10) == 0)
 				{
