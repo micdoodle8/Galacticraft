@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.API;
 
-import net.minecraft.world.World;
-import universalelectricity.core.vector.Vector3;
 
 /**
  *  Implement into tile entities that will have bosses spawn from them

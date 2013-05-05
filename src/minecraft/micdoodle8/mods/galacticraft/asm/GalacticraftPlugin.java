@@ -27,7 +27,7 @@ public class GalacticraftPlugin implements IFMLLoadingPlugin, IFMLCallHook
 	private static String transformerMain = GalacticraftPlugin.transformerDir + "GCCoreTransformer";
 	public static boolean hasRegistered = false;
     public static File fileLocation;
-	public static final String mcVersion = "[1.5.1]";
+	public static final String mcVersion = "[1.5.2]";
 
 	@Override
 	public String[] getLibraryRequestClass()

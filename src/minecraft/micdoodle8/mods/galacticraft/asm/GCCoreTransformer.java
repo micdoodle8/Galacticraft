@@ -61,13 +61,13 @@ public class GCCoreTransformer implements IClassTransformer
 		this.unObfuscatedMap.put("attemptLoginMethodBukkit", "dontfindthis");
 		this.unObfuscatedMap.put("attemptLoginDescBukkit", "dontfindthis");
 
-		this.obfuscatedMap.put("playerControllerClass", "bds");
+		this.obfuscatedMap.put("playerControllerClass", "bdr");
 		this.unObfuscatedMap.put("playerControllerClass", "net/minecraft/client/multiplayer/PlayerControllerMP");
 		this.obfuscatedMap.put("createClientPlayerMethod", "a");
 		this.unObfuscatedMap.put("createClientPlayerMethod", "func_78754_a");
 		this.obfuscatedMap.put("createClientPlayerDesc", "(Laab;)Lbdw;");
 		this.unObfuscatedMap.put("createClientPlayerDesc", "(Lnet/minecraft/world/World;)Lnet/minecraft/client/entity/EntityClientPlayerMP;");
-		this.obfuscatedMap.put("playerClient", "bdw");
+		this.obfuscatedMap.put("playerClient", "bdv");
 		this.unObfuscatedMap.put("playerClient", "net/minecraft/client/entity/EntityClientPlayerMP");
 
 		this.obfuscatedMap.put("entityLivingClass", "ng");
@@ -86,7 +86,7 @@ public class GCCoreTransformer implements IClassTransformer
 		this.obfuscatedMap.put("onUpdateDesc", "()V");
 		this.unObfuscatedMap.put("onUpdateDesc", "()V");
 
-		this.obfuscatedMap.put("entityRendererClass", "bfr");
+		this.obfuscatedMap.put("entityRendererClass", "bfq");
 		this.unObfuscatedMap.put("entityRendererClass", "net/minecraft/client/renderer/EntityRenderer");
 		this.obfuscatedMap.put("updateLightmapMethod", "h");
 		this.unObfuscatedMap.put("updateLightmapMethod", "updateLightmap");

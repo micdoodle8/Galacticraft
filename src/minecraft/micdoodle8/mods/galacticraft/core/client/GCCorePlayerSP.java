@@ -128,17 +128,17 @@ public class GCCorePlayerSP extends EntityClientPlayerMP
 
                 if (j >= 18)
                 {
-                    return Item.bow.func_94599_c(2);
+                    return Item.bow.getItemIconForUseDuration(2);
                 }
 
                 if (j > 13)
                 {
-                    return Item.bow.func_94599_c(1);
+                    return Item.bow.getItemIconForUseDuration(1);
                 }
 
                 if (j > 0)
                 {
-                    return Item.bow.func_94599_c(0);
+                    return Item.bow.getItemIconForUseDuration(0);
                 }
             }
             else

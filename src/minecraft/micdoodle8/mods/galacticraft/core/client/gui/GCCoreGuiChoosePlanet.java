@@ -24,7 +24,6 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.StringTranslate;
@@ -34,7 +33,6 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.lwjgl.util.glu.GLU;
 
-import universalelectricity.components.common.BasicComponents;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.registry.LanguageRegistry;
@@ -589,62 +587,6 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     			}
     		}
     	}
-    }
-
-    private static int getItemCountInPlayerInventory(EntityPlayer player, ItemStack itemToFind)
-    {
-    	int count = 0;
-
-    	if (player != null)
-    	{
-    		for (final ItemStack stack : player.inventory.mainInventory)
-    		{
-    			if (stack != null && itemToFind != null && stack.itemID == itemToFind.itemID && stack.getItemDamage() == itemToFind.getItemDamage())
-    			{
-    				count += stack.stackSize;
-    			}
-    		}
-    	}
-
-    	return count;
-    }
-
-    public static boolean hasCorrectMaterials(EntityPlayer player, List<ItemStack> stacks)
-    {
-    	boolean flag = true;
-
-    	for (final ItemStack stack : stacks)
-    	{
-    		if (!GCCoreGuiChoosePlanet.hasCorrectAmount(player, stack))
-    		{
-    			flag = false;
-    		}
-    	}
-
-    	return flag;
-    }
-
-    public static boolean hasCorrectAmount(EntityPlayer player, ItemStack stack)
-    {
-    	return GCCoreGuiChoosePlanet.getItemCountInPlayerInventory(player, stack) >= GCCoreGuiChoosePlanet.getNumberRequired(stack);
-    }
-
-    public static int getNumberRequired(ItemStack stack)
-    {
-    	if (stack.itemID == BasicComponents.itemIngot.itemID && stack.getItemDamage() == 1) // tin
-    	{
-    		return 16;
-    	}
-    	else if (stack.itemID == BasicComponents.itemIngot.itemID && stack.getItemDamage() == 3) // steel
-    	{
-    		return 8;
-    	}
-    	else if (stack.itemID == Item.ingotIron.itemID && stack.getItemDamage() == 0) // iron
-    	{
-    		return 12;
-    	}
-
-    	return 0;
     }
 
     public void drawBlackBackground()

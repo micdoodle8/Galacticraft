@@ -4,13 +4,13 @@ import mekanism.api.EnumGas;
 import mekanism.api.IPressurizedTube;
 import mekanism.api.ITubeConnection;
 import micdoodle8.mods.galacticraft.API.IColorable;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
-import universalelectricity.components.common.BasicComponents;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.IPacketReceiver;
 import universalelectricity.prefab.network.PacketManager;
@@ -60,7 +60,7 @@ public class GCCoreTileEntityOxygenPipe extends TileEntity implements ITubeConne
 
     	if (this.preColorCooldown == 0 && !this.worldObj.isRemote && this.preLoadColor != -1)
     	{
-            PacketManager.sendPacketToClients(PacketManager.getPacket(BasicComponents.CHANNEL, this, this.getColor(), this.preLoadColor));
+            PacketManager.sendPacketToClients(PacketManager.getPacket(GalacticraftCore.CHANNEL, this, this.getColor(), this.preLoadColor));
             this.preLoadColor = -1;
             this.setColor = true;
     	}

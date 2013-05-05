@@ -1,13 +1,9 @@
 package micdoodle8.mods.galacticraft.API;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 
 import net.minecraft.world.WorldProvider;
-import codechicken.nei.PositionedStack;
 
 public class GalacticraftRegistry
 {

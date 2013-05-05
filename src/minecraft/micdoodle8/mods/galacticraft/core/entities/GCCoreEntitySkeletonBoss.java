@@ -555,7 +555,7 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
 	}
 
 	@Override
-	public int getDragonHealth() 
+	public int getBossHealth() 
 	{
 		return this.health;
 	}

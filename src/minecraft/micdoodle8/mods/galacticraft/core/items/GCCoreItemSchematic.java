@@ -1,8 +1,5 @@
 package micdoodle8.mods.galacticraft.core.items;
 
-import hydraulic.api.ColorCode;
-
-import java.awt.Color;
 import java.util.List;
 
 import mekanism.api.EnumColor;

@@ -96,27 +96,27 @@ public class GCCoreBlockRendererOxygenPipe implements ISimpleBlockRenderingHandl
         renderer.setRenderBounds(minSize, minSize, 0.0F, maxSize, maxSize, 1.0F);
         var3.startDrawingQuads();
         var3.setNormal(0.0F, -1.0F, 0.0F);
-        renderer.renderBottomFace(block, 0.0D, 0.0D, 0.0D, block.getIcon(0, metadata));
+        renderer.renderFaceYNeg(block, 0.0D, 0.0D, 0.0D, block.getIcon(0, metadata));
         var3.draw();
         var3.startDrawingQuads();
         var3.setNormal(0.0F, 1.0F, 0.0F);
-        renderer.renderTopFace(block, 0.0D, 0.0D, 0.0D, block.getIcon(1, metadata));
+        renderer.renderFaceYPos(block, 0.0D, 0.0D, 0.0D, block.getIcon(1, metadata));
         var3.draw();
         var3.startDrawingQuads();
         var3.setNormal(0.0F, 0.0F, -1.0F);
-        renderer.renderEastFace(block, 0.0D, 0.0D, 0.0D, block.getIcon(2, metadata));
+        renderer.renderFaceXPos(block, 0.0D, 0.0D, 0.0D, block.getIcon(2, metadata));
         var3.draw();
         var3.startDrawingQuads();
         var3.setNormal(0.0F, 0.0F, 1.0F);
-        renderer.renderWestFace(block, 0.0D, 0.0D, 0.0D, block.getIcon(3, metadata));
+        renderer.renderFaceXNeg(block, 0.0D, 0.0D, 0.0D, block.getIcon(3, metadata));
         var3.draw();
         var3.startDrawingQuads();
         var3.setNormal(-1.0F, 0.0F, 0.0F);
-        renderer.renderNorthFace(block, 0.0D, 0.0D, 0.0D, block.getIcon(4, metadata));
+        renderer.renderFaceZNeg(block, 0.0D, 0.0D, 0.0D, block.getIcon(4, metadata));
         var3.draw();
         var3.startDrawingQuads();
         var3.setNormal(1.0F, 0.0F, 0.0F);
-        renderer.renderSouthFace(block, 0.0D, 0.0D, 0.0D, block.getIcon(5, metadata));
+        renderer.renderFaceZPos(block, 0.0D, 0.0D, 0.0D, block.getIcon(5, metadata));
         var3.draw();
 	}
 

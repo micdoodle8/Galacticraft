@@ -75,7 +75,6 @@ import net.minecraftforge.liquids.LiquidContainerData;
 import net.minecraftforge.liquids.LiquidContainerRegistry;
 import net.minecraftforge.liquids.LiquidDictionary;
 import net.minecraftforge.liquids.LiquidStack;
-import universalelectricity.components.common.BasicComponents;
 import universalelectricity.prefab.TranslationHelper;
 import universalelectricity.prefab.multiblock.TileEntityMulti;
 import cpw.mods.fml.common.Mod;
@@ -112,10 +111,10 @@ import cpw.mods.fml.relauncher.Side;
 	version=GalacticraftCore.LOCALMAJVERSION + "." + GalacticraftCore.LOCALMINVERSION + "." + GalacticraftCore.LOCALBUILDVERSION,
 	useMetadata = true,
 	modid=GalacticraftCore.MODID,
-	dependencies = "required-after:Forge@[7.7.1.662,)"
+	dependencies = "required-after:Forge@[7.8.0.685,)"
 )
 @NetworkMod(
-	channels = {GalacticraftCore.CHANNEL, BasicComponents.CHANNEL},
+	channels = {GalacticraftCore.CHANNEL},
 	clientSideRequired = true,
 	serverSideRequired = false,
     connectionHandler = GCCoreConnectionHandler.class,
@@ -130,7 +129,7 @@ public class GalacticraftCore
 
     public static final int LOCALMAJVERSION = 0;
     public static final int LOCALMINVERSION = 1;
-    public static final int LOCALBUILDVERSION = 34;
+    public static final int LOCALBUILDVERSION = 35;
     public static int remoteMajVer;
     public static int remoteMinVer;
     public static int remoteBuildVer;
@@ -207,22 +206,6 @@ public class GalacticraftCore
 
 		new GCCoreConfigManager(new File(event.getModConfigurationDirectory(), GalacticraftCore.CONFIG_FILE));
 
-		if (GCCoreConfigManager.enableBCLoading)
-		{
-			BasicComponents.registerOres(0, true);
-			BasicComponents.registerIngots(0, true);
-			BasicComponents.registerPlates(0, true);
-			BasicComponents.registerBronzeDust(0, true);
-			BasicComponents.registerSteelDust(0, true);
-			BasicComponents.registerBattery(0);
-			BasicComponents.registerWrench(0);
-			BasicComponents.registerCopperWire(0);
-			BasicComponents.registerMachines(0);
-			BasicComponents.registerCircuits(0);
-			BasicComponents.registerMotor(0);
-			BasicComponents.registerInfiniteBattery(0);
-		}
-
 		GalacticraftCore.TEXTURE_SUFFIX = GCCoreConfigManager.hiresTextures ? "_32" : "";
 
 		GCCoreBlocks.initBlocks();
@@ -246,11 +229,6 @@ public class GalacticraftCore
 
 		GalacticraftRegistry.registerTeleportType(WorldProviderSurface.class, new GCCoreOverworldTeleportType());
 		GalacticraftRegistry.registerTeleportType(GCCoreWorldProvider.class, new GCCoreOrbitTeleportType());
-		
-		if (GCCoreConfigManager.enableBCLoading)
-		{
-			BasicComponents.register(this);
-		}
 
 		for (final IGalacticraftSubMod mod : GalacticraftCore.subMods)
 		{
@@ -263,11 +241,6 @@ public class GalacticraftCore
 		GCLog.info("Galacticraft Loaded: " + TranslationHelper.loadLanguages(GalacticraftCore.LANGUAGE_PATH, GalacticraftCore.LANGUAGES_SUPPORTED) + " Languages.");
 
 		GalacticraftCore.moon.load(event);
-
-		if (GCCoreConfigManager.enableBCLoading)
-		{
-			BasicComponents.registerTileEntities();
-		}
 
 		GalacticraftCore.oilStack = LiquidDictionary.getOrCreateLiquid("Oil", new LiquidStack(GCCoreBlocks.crudeOilStill, 1));
 		GalacticraftCore.fuelStack = LiquidDictionary.getOrCreateLiquid("Fuel", new LiquidStack(GCCoreItems.fuel, 1));
@@ -324,17 +297,12 @@ public class GalacticraftCore
 			RecipeUtil.addIndustrialcraftCraftingRecipes();
 		}
 		
-		if (GCCoreCompatibilityManager.isBCompLoaded() && GCCoreConfigManager.useRecipesUE)
-		{
-			RecipeUtil.addBasicComponentsCraftingRecipes();
-		}
-		
 		GalacticraftCore.proxy.postInit(event);
 		GalacticraftCore.proxy.registerRenderInformation();
 
-		if (!GCCoreCompatibilityManager.isBCompLoaded() && !GCCoreCompatibilityManager.isIc2Loaded() && !GCCoreCompatibilityManager.isTELoaded())
+		if (!GCCoreConfigManager.forceLoadGC && !GCCoreCompatibilityManager.isIc2Loaded() && !GCCoreCompatibilityManager.isTELoaded())
 		{
-			final String err = "<strong><h1>Galacticraft Requires Basic Components, IndustrialCraft 2, or Thermal Expansion!</h1></strong><br /><h3>You can enable Basic Components loader in the Galacticraft config or install IndustrialCraft 2/Thermal Expansion manually</h3>";
+			final String err = "<strong><h1>Galacticraft Requires IndustrialCraft 2 or Thermal Expansion!</h1></strong><br /><h3>Install IndustrialCraft 2/Thermal Expansion separately!</h3>";
 			System.err.println(err);
 
             final JEditorPane ep = new JEditorPane("text/html",

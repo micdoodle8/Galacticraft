@@ -6,24 +6,21 @@ import net.minecraft.network.NetLoginHandler;
 import net.minecraft.network.packet.NetHandler;
 import net.minecraft.network.packet.Packet1Login;
 import net.minecraft.server.MinecraftServer;
-import universalelectricity.prefab.network.ConnectionHandler;
 import cpw.mods.fml.common.network.IConnectionHandler;
 import cpw.mods.fml.common.network.Player;
 
-public class GCCoreConnectionHandler extends ConnectionHandler implements IConnectionHandler
+public class GCCoreConnectionHandler implements IConnectionHandler
 {
     private static boolean connected = false;
 
 	@Override
 	public void playerLoggedIn(Player player, NetHandler netHandler, INetworkManager manager)
 	{
-		super.playerLoggedIn(player, netHandler, manager);
 	}
 
 	@Override
 	public String connectionReceived(NetLoginHandler netHandler, INetworkManager manager)
 	{
-		super.connectionReceived(netHandler, manager);
 		manager.addToSendQueue(GCCorePacketDimensionListSpaceStations.buildDimensionListPacket(WorldUtil.registeredSpaceStations));
 		manager.addToSendQueue(GCCorePacketDimensionListPlanets.buildDimensionListPacket(WorldUtil.registeredPlanets));
 		return null;
@@ -32,20 +29,16 @@ public class GCCoreConnectionHandler extends ConnectionHandler implements IConne
 	@Override
 	public void connectionOpened(NetHandler netClientHandler, String server, int port, INetworkManager manager)
 	{
-		super.connectionOpened(netClientHandler, server, port, manager);
 	}
 
 	@Override
 	public void connectionOpened(NetHandler netClientHandler, MinecraftServer server, INetworkManager manager)
 	{
-		super.connectionOpened(netClientHandler, server, manager);
 	}
 
 	@Override
 	public void connectionClosed(INetworkManager manager)
 	{
-		super.connectionClosed(manager);
-
         if (GCCoreConnectionHandler.connected)
         {
             WorldUtil.unregisterPlanets();
@@ -59,6 +52,5 @@ public class GCCoreConnectionHandler extends ConnectionHandler implements IConne
 	public void clientLoggedIn(NetHandler clientHandler, INetworkManager manager, Packet1Login login)
 	{
         GCCoreConnectionHandler.connected = true;
-		super.clientLoggedIn(clientHandler, manager, login);
 	}
 }

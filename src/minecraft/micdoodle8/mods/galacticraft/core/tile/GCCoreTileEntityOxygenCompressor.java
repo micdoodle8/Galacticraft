@@ -1,8 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import mekanism.api.EnumGas;
-import mekanism.api.IGasAcceptor;
-import mekanism.api.ITubeConnection;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenTank;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -12,7 +10,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.packet.Packet;
 import net.minecraftforge.common.ForgeDirection;
-import universalelectricity.components.common.BasicComponents;
 import universalelectricity.core.item.IItemElectric;
 import universalelectricity.prefab.network.PacketManager;
 
@@ -196,19 +193,19 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityOxygen imp
 	// ISidedInventory Implementation:
 
 	@Override
-	public int[] getSizeInventorySide(int side)
+	public int[] getAccessibleSlotsFromSide(int side)
 	{
 		return side == 1 || side == 0 ? new int[] {1} : new int[] {0};
 	}
 
 	@Override
-	public boolean func_102007_a(int slotID, ItemStack itemstack, int side)
+	public boolean canInsertItem(int slotID, ItemStack itemstack, int side)
 	{
 		return this.isStackValidForSlot(slotID, itemstack);
 	}
 
 	@Override
-	public boolean func_102008_b(int slotID, ItemStack itemstack, int side)
+	public boolean canExtractItem(int slotID, ItemStack itemstack, int side)
 	{
 		return slotID == 0;
 	}
@@ -247,7 +244,7 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityOxygen imp
 	@Override
 	public Packet getPacket() 
 	{
-		return PacketManager.getPacket(BasicComponents.CHANNEL, this, this.storedOxygen, this.wattsReceived, this.ic2Energy, this.disabled, this.bcEnergy);
+		return PacketManager.getPacket(GalacticraftCore.CHANNEL, this, this.storedOxygen, this.wattsReceived, this.ic2Energy, this.disabled, this.bcEnergy);
 	}
 
 	@Override

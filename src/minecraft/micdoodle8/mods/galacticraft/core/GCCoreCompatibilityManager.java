@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core;
 
-import universalelectricity.components.common.BasicComponents;
 import cpw.mods.fml.common.Loader;
 
 public class GCCoreCompatibilityManager 
@@ -8,8 +7,6 @@ public class GCCoreCompatibilityManager
 	private static boolean modIc2Loaded = false;
 
 	private static boolean modBCraftLoaded = false;
-
-	private static boolean modBCompLoaded = false;
 
 	private static boolean modGTLoaded = false;
 
@@ -36,11 +33,6 @@ public class GCCoreCompatibilityManager
 		{ 
 			modBCraftLoaded = true;
 		}
-		
-		if (BasicComponents.INITIALIZED)
-		{ 
-			modBCompLoaded = true;
-		}
 	}
 	
 	public static boolean isIc2Loaded()
@@ -51,11 +43,6 @@ public class GCCoreCompatibilityManager
 	public static boolean isBCraftLoaded()
 	{
 		return modBCraftLoaded;
-	}
-	
-	public static boolean isBCompLoaded()
-	{
-		return modBCompLoaded;
 	}
 	
 	public static boolean isTELoaded()

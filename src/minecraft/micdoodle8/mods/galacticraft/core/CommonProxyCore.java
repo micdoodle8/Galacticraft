@@ -11,7 +11,6 @@ import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerAirSealer;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerFuelLoader;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerRefinery;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerRocketRefill;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryPlayer;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFuelLoader;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCollector;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCompressor;
@@ -21,10 +20,8 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityRefinery;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ContainerPlayer;
 import net.minecraft.stats.StatBase;
 import net.minecraft.world.World;
-import universalelectricity.components.common.BCGuiHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -36,7 +33,7 @@ import cpw.mods.fml.common.network.IGuiHandler;
  *  All rights reserved.
  *
  */
-public class CommonProxyCore extends BCGuiHandler implements IGuiHandler
+public class CommonProxyCore implements IGuiHandler
 {
 	public void preInit(FMLPreInitializationEvent event)
 	{
@@ -174,7 +171,13 @@ public class CommonProxyCore extends BCGuiHandler implements IGuiHandler
 				}
 			}
 		}
+		
+		return null;
+	}
 
-		return super.getServerGuiElement(ID, player, world, x, y, z);
+	@Override
+	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
+	{
+		return null;
 	}
 }

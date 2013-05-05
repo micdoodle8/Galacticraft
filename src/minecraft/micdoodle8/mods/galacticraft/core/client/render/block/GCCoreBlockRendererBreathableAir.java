@@ -57,27 +57,27 @@ public class GCCoreBlockRendererBreathableAir implements ISimpleBlockRenderingHa
         var0.setRenderBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         var3.startDrawingQuads();
         var3.setNormal(0.0F, -1.0F, 0.0F);
-        var0.renderBottomFace(var1, 0.0D, 0.0D, 0.0D, var1.getIcon(0, var2));
+        var0.renderFaceYNeg(var1, 0.0D, 0.0D, 0.0D, var1.getIcon(0, var2));
         var3.draw();
         var3.startDrawingQuads();
         var3.setNormal(0.0F, 1.0F, 0.0F);
-        var0.renderTopFace(var1, 0.0D, 0.0D, 0.0D, var1.getIcon(1, var2));
+        var0.renderFaceYPos(var1, 0.0D, 0.0D, 0.0D, var1.getIcon(1, var2));
         var3.draw();
         var3.startDrawingQuads();
         var3.setNormal(0.0F, 0.0F, -1.0F);
-        var0.renderEastFace(var1, 0.0D, 0.0D, 0.0D, var1.getIcon(2, var2));
+        var0.renderFaceXPos(var1, 0.0D, 0.0D, 0.0D, var1.getIcon(2, var2));
         var3.draw();
         var3.startDrawingQuads();
         var3.setNormal(0.0F, 0.0F, 1.0F);
-        var0.renderWestFace(var1, 0.0D, 0.0D, 0.0D, var1.getIcon(3, var2));
+        var0.renderFaceXNeg(var1, 0.0D, 0.0D, 0.0D, var1.getIcon(3, var2));
         var3.draw();
         var3.startDrawingQuads();
         var3.setNormal(-1.0F, 0.0F, 0.0F);
-        var0.renderNorthFace(var1, 0.0D, 0.0D, 0.0D, var1.getIcon(4, var2));
+        var0.renderFaceZNeg(var1, 0.0D, 0.0D, 0.0D, var1.getIcon(4, var2));
         var3.draw();
         var3.startDrawingQuads();
         var3.setNormal(1.0F, 0.0F, 0.0F);
-        var0.renderSouthFace(var1, 0.0D, 0.0D, 0.0D, var1.getIcon(5, var2));
+        var0.renderFaceZPos(var1, 0.0D, 0.0D, 0.0D, var1.getIcon(5, var2));
         var3.draw();
     }
 
@@ -157,7 +157,7 @@ public class GCCoreBlockRendererBreathableAir implements ISimpleBlockRenderingHa
                 var5.setBrightness(par1Block.getMixedBrightnessForBlock(var1, par2, par3 - 1, par4));
                 final float var65 = 1.0F;
                 var5.setColorOpaque_F(var14 * var65, var14 * var65, var14 * var65);
-                renderBlocks.renderBottomFace(par1Block, par2, par3 + var32, par4, par1Block.getBlockTextureFromSide(0));
+                renderBlocks.renderFaceYNeg(par1Block, par2, par3 + var32, par4, par1Block.getBlockTextureFromSide(0));
             }
 
             for (var34 = 0; var34 < 4; ++var34)

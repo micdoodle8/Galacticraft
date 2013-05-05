@@ -24,10 +24,8 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import universalelectricity.components.common.BasicComponents;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.PacketManager;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -121,7 +119,7 @@ public class GCCoreBlockOxygenPipe extends BlockContainer
                         par1World.spawnEntityInWorld(entityitem);
                     }
 
-                    PacketManager.sendPacketToClients(PacketManager.getPacket(BasicComponents.CHANNEL, tileEntity, tileEntity.getColor(), -1));
+                    PacketManager.sendPacketToClients(PacketManager.getPacket(GalacticraftCore.CHANNEL, tileEntity, tileEntity.getColor(), -1));
 
             		for (final ForgeDirection dir : ForgeDirection.values())
             		{

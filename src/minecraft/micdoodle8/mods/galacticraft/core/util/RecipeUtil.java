@@ -26,7 +26,6 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import thermalexpansion.api.item.ItemRegistry;
-import universalelectricity.components.common.BasicComponents;
 
 public class RecipeUtil
 {
@@ -1708,18 +1707,6 @@ public class RecipeUtil
 
 		return null;
 	}
-
-	@Deprecated
-    public static List<ItemStack> getStandardSpaceStationRequirements()
-    {
-    	final List<ItemStack> stacks = new ArrayList<ItemStack>();
-
-    	stacks.add(new ItemStack(BasicComponents.itemIngot, 16, 1));
-    	stacks.add(new ItemStack(BasicComponents.itemIngot, 8, 3));
-    	stacks.add(new ItemStack(Item.ingotIron, 12, 0));
-
-    	return stacks;
-    }
 	
 	private static void addRecipe(ItemStack result, Object[] obj)
 	{

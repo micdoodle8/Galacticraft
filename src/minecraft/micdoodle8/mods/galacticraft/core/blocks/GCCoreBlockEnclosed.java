@@ -14,7 +14,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
-import universalelectricity.components.common.tileentity.TileEntityCopperWire;
 import universalelectricity.core.block.IConductor;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -112,8 +111,8 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
 	{
 		switch (metadata)
 		{
-		case 0:
-			return new TileEntityCopperWire();
+//		case 0:
+//			return new TileEntityCopperWire();
 		case 1:
 			return new GCCoreTileEntityOxygenPipe();
 		}

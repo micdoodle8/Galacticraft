@@ -73,12 +73,12 @@ public class GCCoreEntityLaunchSmokeFX extends EntityFX
         float f9 = f8 + 0.0624375F;
         final float f10 = 0.1F * this.particleScale;
 
-        if (this.particleTextureIndex != null)
+        if (this.particleIcon != null)
         {
-            f6 = this.particleTextureIndex.getMinU();
-            f7 = this.particleTextureIndex.getMaxU();
-            f8 = this.particleTextureIndex.getMinV();
-            f9 = this.particleTextureIndex.getMaxV();
+            f6 = this.particleIcon.getMinU();
+            f7 = this.particleIcon.getMaxU();
+            f8 = this.particleIcon.getMinV();
+            f9 = this.particleIcon.getMaxV();
         }
 
         final float f11 = (float)(this.prevPosX + (this.posX - this.prevPosX) * par2 - EntityFX.interpPosX);

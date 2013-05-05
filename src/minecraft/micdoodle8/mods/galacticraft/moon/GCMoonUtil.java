@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.moon;
 
-import ic2.api.item.Items;
-import micdoodle8.mods.galacticraft.core.GCCoreCompatibilityManager;
 import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
 import micdoodle8.mods.galacticraft.moon.items.GCMoonItems;
 import net.minecraft.item.Item;
@@ -9,7 +7,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.oredict.OreDictionary;
-import universalelectricity.components.common.BasicComponents;
 
 /**
  * Copyright 2012-2013, micdoodle8
