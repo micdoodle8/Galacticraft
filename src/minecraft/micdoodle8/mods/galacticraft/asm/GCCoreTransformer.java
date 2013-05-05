@@ -15,7 +15,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import micdoodle8.mods.galacticraft.core.GCLog;
-import net.minecraft.client.gui.inventory.GuiInventory;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
@@ -33,7 +32,7 @@ import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.TypeInsnNode;
 import org.objectweb.asm.tree.VarInsnNode;
 
-import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.IClassTransformer;
 import cpw.mods.fml.relauncher.RelaunchClassLoader;
 
@@ -256,14 +255,7 @@ public class GCCoreTransformer implements IClassTransformer
 			bytes = this.transform12(name, bytes, obfuscatedMap);
 		}
 		
-		if (deobfuscated && name.equals("mods.tinker.tconstruct.client.TProxyClient"))
-		{
-			bytes = this.transform13(name, bytes, unObfuscatedMap);
-		}
-		else if (!deobfuscated && name.equals("mods.tinker.tconstruct.client.TProxyClient"))
-		{
-			bytes = this.transform13(name, bytes, obfuscatedMap);
-		}
+		bytes = this.transform13(name, bytes, obfuscatedMap);
 
 		return bytes;
 	}
@@ -947,11 +939,6 @@ public class GCCoreTransformer implements IClassTransformer
 	            	}
 	            }
 			}
-		}
-		
-		if (FMLClientHandler.instance().getClient().currentScreen.getClass() == GuiInventory.class)
-		{
-			
 		}
 
         final ClassWriter writer = new ClassWriter(COMPUTE_MAXS);
