@@ -255,7 +255,10 @@ public class GCCoreTransformer implements IClassTransformer
 			bytes = this.transform12(name, bytes, obfuscatedMap);
 		}
 		
-		bytes = this.transform13(name, bytes, obfuscatedMap);
+		if (name.equals("mods.tinker.tconstruct.client.TProxyClient"))
+		{
+			bytes = this.transform13(name, bytes, obfuscatedMap);
+		}
 
 		return bytes;
 	}
