@@ -80,17 +80,8 @@ public class GCCoreEntityLaunchFlameFX extends EntityFX
 
         if (this.particleAge++ >= this.particleMaxAge)
         {
-            final double var16 = FMLClientHandler.instance().getClient().renderViewEntity.posX - this.posX;
-            final double var17 = FMLClientHandler.instance().getClient().renderViewEntity.posY - this.posY;
-            final double var19 = FMLClientHandler.instance().getClient().renderViewEntity.posZ - this.posZ;
-            if (var16 * var16 + var17 * var17 + var19 * var19 < 64.0D * 64.0D)
-            {
-                EntityFX var21 = new GCCoreEntityLaunchSmokeFX(FMLClientHandler.instance().getClient().theWorld, this.posX, this.posY + this.rand.nextDouble() * 2, this.posZ, this.motionX, this.motionY, this.motionZ, 1.0F, true);
-                EntityFX var21b = new GCCoreEntityLaunchSmokeFX(FMLClientHandler.instance().getClient().theWorld, this.posX, this.posY + this.rand.nextDouble() * 2, this.posZ, this.motionX, this.motionY, this.motionZ, 2.5F, true);
-                FMLClientHandler.instance().getClient().effectRenderer.addEffect(var21);
-                FMLClientHandler.instance().getClient().effectRenderer.addEffect(var21b);
-            }
-            
+        	GalacticraftCore.proxy.spawnParticle("whitesmoke", 			this.posX, 		this.posY + this.rand.nextDouble() * 2, this.posZ, this.motionX, this.motionY, this.motionZ, true);
+        	GalacticraftCore.proxy.spawnParticle("whitesmokelarge", 	this.posX, 		this.posY + this.rand.nextDouble() * 2, this.posZ, this.motionX, this.motionY, this.motionZ, true);
             this.setDead();
         }
 

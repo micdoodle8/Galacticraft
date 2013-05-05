@@ -8,11 +8,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ContainerPlayer;
 import net.minecraft.inventory.Slot;
-import net.minecraft.inventory.SlotArmor;
 import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
-import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreContainerPlayer extends ContainerPlayer
 {
@@ -38,7 +36,7 @@ public class GCCoreContainerPlayer extends ContainerPlayer
 
         for (i = 0; i < 4; ++i)
         {
-            this.addSlotToContainer(new SlotArmor(this, par1InventoryPlayer, par1InventoryPlayer.getSizeInventory() - 1 - i - 5, 8, 8 + i * 18, i));
+            this.addSlotToContainer(new GCCoreSlotArmor(this, par1InventoryPlayer, par1InventoryPlayer.getSizeInventory() - 1 - i - 5, 8, 8 + i * 18, i));
         }
 
         for (i = 0; i < 3; ++i)
