@@ -4,8 +4,10 @@ import java.util.Random;
 
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityOxygenFX;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCollector;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLiving;
@@ -17,6 +19,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.prefab.block.BlockAdvanced;
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -165,7 +168,12 @@ public class GCCoreBlockOxygenCollector extends BlockAdvanced
 		                var17 = par5Random.nextFloat() * 2.0F * var19;
 		            }
 
-		           	GalacticraftCore.proxy.spawnParticle("oxygen", var7, var9, var11, var13, var15, var17, 0.7D, 0.7D, 1.0D, false);
+		            final double var16 = FMLClientHandler.instance().getClient().renderViewEntity.posX - var7;
+		            final double var17b = FMLClientHandler.instance().getClient().renderViewEntity.posY - var9;
+		            final double var19b = FMLClientHandler.instance().getClient().renderViewEntity.posZ - var11;
+                    EntityFX var21b = new GCCoreEntityOxygenFX(FMLClientHandler.instance().getClient().theWorld, var7, var9, var11, var13, var15, var17);
+                    var21b.setRBGColorF(0.7F, 0.7F, 1.0F);
+                    FMLClientHandler.instance().getClient().effectRenderer.addEffect(var21b);
 		        }
 			}
 		}
