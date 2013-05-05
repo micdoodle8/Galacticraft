@@ -253,7 +253,7 @@ public class GCCoreTransformer implements IClassTransformer
 		else if (!deobfuscated && name.equals("mithion.arsmagica.guis.GuiIngameArsMagica"))
 		{
 			bytes = this.transform12(name, bytes, obfuscatedMap);
-		}
+		} 
 		
 		if (name.equals("mods.tinker.tconstruct.client.TProxyClient"))
 		{
