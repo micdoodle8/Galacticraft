@@ -51,6 +51,7 @@ public class GCMapGenDungeon {
 	
 	public void generate(World world, Random rand, int x, int y, int z, int chunkX, int chunkZ, short[] blocks, byte[] metas, boolean useArrays)
 	{
+		System.out.println(x + ", " + z);
 		this.useArrays = useArrays;
 		this.worldObj = world;
 		
@@ -61,6 +62,8 @@ public class GCMapGenDungeon {
 		GCDungeonRoom currentRoom = GCDungeonRoom.makeRoom(worldObj, rand, x, y, z, 4);
 		currentRoom.generate(blocks, metas, chunkX, chunkZ);
 		rooms.add(currentRoom);
+		GCDungeonBoundingBox cbb = currentRoom.getBoundingBox();
+		this.generateEntranceCrater(blocks, metas, x + ((cbb.maxX - cbb.minX) / 2), y, z + ((cbb.maxZ - cbb.minZ) / 2), chunkX, chunkZ);
 		
 		for(int i = 0; i <= length; i++)
 		{
@@ -425,6 +428,34 @@ public class GCMapGenDungeon {
         return false;
     }
 
+	public void generateEntranceCrater(short[] blocks, byte[] meta, int x, int y, int z, int cx, int cz)
+	{
+		int range = 18;
+		for(int i = x - range; i < x + range; i++)
+		{
+			for(int k = z - range; k < z + range; k++)
+			{
+				final double xDev = (i - x) / 10D;
+				final double zDev = (k - z) / 10D;
+				double distance = xDev * xDev + zDev * zDev; 
+				int depth = (int) Math.abs(2 / (distance + .00001D));
+				int helper = 0;
+				for(int j = 127; j > 0; j--)
+				{
+					if((getBlockID(blocks, i, j - 1, k, cx, cz) != 0 || getBlockID(blocks, i, j, k, cx, cz) == DUNGEON_WALL_ID) && helper <= depth)
+					{
+						placeBlock(blocks, meta, i, j, k, cx, cz, 0, 0);
+						helper++;
+					}
+					if(helper > depth || j <= y + 1)
+					{
+						break;
+					}
+				}
+			}
+		}
+	}
+	
     public ChunkCoordinates getDungeonNear(long worldSeed, int i, int j) {
         int range = 8;
         for(int x = i - range; x <= i + range; x++) {
@@ -457,6 +488,26 @@ public class GCMapGenDungeon {
 		else
 		{
 			worldObj.setBlock(x, y, z, id, meta, 3);
+		}
+	}
+	
+	private int getBlockID(short[] blocks, int x, int y, int z, int cx, int cz)
+	{
+		if(useArrays)
+		{
+			cx *= 16;
+			cz *= 16;
+			x -= cx;
+			z -= cz;
+			if(x < 0 || x >= 16 || z < 0 || z >= 16)
+			{
+				return 1;
+			}
+			return blocks[getIndex(x, y, z)];
+		}
+		else
+		{
+			return worldObj.getBlockId(x, y, z);
 		}
 	}
 	
