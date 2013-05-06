@@ -5,6 +5,7 @@ import java.util.List;
 import mekanism.api.EnumColor;
 import micdoodle8.mods.galacticraft.API.ISchematicItem;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -47,6 +48,13 @@ public class GCCoreItemSchematic extends Item implements ISchematicItem
     }
 
     @Override
+	@SideOnly(Side.CLIENT)
+    public EnumRarity getRarity(ItemStack par1ItemStack)
+    {
+        return ClientProxyCore.galacticraftItem;
+    }
+
+    @Override
     public int getMetadata(int par1)
     {
         return par1;
@@ -71,12 +79,6 @@ public class GCCoreItemSchematic extends Item implements ISchematicItem
 
 		return super.getIconFromDamage(damage);
 	}
-
-    @Override
-    public EnumRarity getRarity(ItemStack par1ItemStack)
-    {
-		return EnumRarity.epic;
-    }
 
     @Override
     @SideOnly(Side.CLIENT)

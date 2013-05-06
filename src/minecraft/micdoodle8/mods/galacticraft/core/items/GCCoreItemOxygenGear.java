@@ -27,16 +27,17 @@ public class GCCoreItemOxygenGear extends Item
 		super(par1);
 	}
 
-    @Override
-    public EnumRarity getRarity(ItemStack par1ItemStack)
-    {
-		return EnumRarity.uncommon;
-    }
-
 	@Override
     public CreativeTabs getCreativeTab()
     {
         return GalacticraftCore.galacticraftTab;
+    }
+
+    @Override
+	@SideOnly(Side.CLIENT)
+    public EnumRarity getRarity(ItemStack par1ItemStack)
+    {
+        return ClientProxyCore.galacticraftItem;
     }
 
 	@Override

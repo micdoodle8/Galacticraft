@@ -4,6 +4,7 @@ import java.util.List;
 
 import micdoodle8.mods.galacticraft.API.IRefinableItem;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -33,6 +34,13 @@ public class GCCoreItemOilCanister extends Item implements IRefinableItem
 		this.setMaxDamage(61);
 		this.setMaxStackSize(1);
 	}
+
+    @Override
+	@SideOnly(Side.CLIENT)
+    public EnumRarity getRarity(ItemStack par1ItemStack)
+    {
+        return ClientProxyCore.galacticraftItem;
+    }
 
 	@Override
     public CreativeTabs getCreativeTab()
@@ -87,12 +95,6 @@ public class GCCoreItemOilCanister extends Item implements IRefinableItem
     {
         par3List.add(new ItemStack(par1, 1, 1));
         par3List.add(new ItemStack(par1, 1, 61));
-    }
-
-    @Override
-    public EnumRarity getRarity(ItemStack par1ItemStack)
-    {
-		return EnumRarity.uncommon;
     }
 
     @Override

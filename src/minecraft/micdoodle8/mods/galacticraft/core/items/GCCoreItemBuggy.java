@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.items;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityBuggy;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -38,6 +39,13 @@ public class GCCoreItemBuggy extends Item
     public CreativeTabs getCreativeTab()
     {
         return GalacticraftCore.galacticraftTab;
+    }
+
+    @Override
+	@SideOnly(Side.CLIENT)
+    public EnumRarity getRarity(ItemStack par1ItemStack)
+    {
+        return ClientProxyCore.galacticraftItem;
     }
 
     @Override
@@ -133,12 +141,5 @@ public class GCCoreItemBuggy extends Item
                 return par1ItemStack;
             }
         }
-    }
-
-    @Override
-	@SideOnly(Side.CLIENT)
-    public EnumRarity getRarity(ItemStack par1ItemStack)
-    {
-        return EnumRarity.epic;
     }
 }

@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.items;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityFlag;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -181,7 +182,7 @@ public class GCCoreItemFlag extends Item
 	@SideOnly(Side.CLIENT)
     public EnumRarity getRarity(ItemStack par1ItemStack)
     {
-        return EnumRarity.epic;
+        return ClientProxyCore.galacticraftItem;
     }
 
 	@Override

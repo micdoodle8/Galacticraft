@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.items;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumArmorMaterial;
@@ -27,6 +28,13 @@ public class GCCoreItemArmor extends ItemArmor implements IArmorTextureProvider
     public CreativeTabs getCreativeTab()
     {
         return GalacticraftCore.galacticraftTab;
+    }
+
+    @Override
+	@SideOnly(Side.CLIENT)
+    public EnumRarity getRarity(ItemStack par1ItemStack)
+    {
+        return ClientProxyCore.galacticraftItem;
     }
 
 	@Override
@@ -56,12 +64,5 @@ public class GCCoreItemArmor extends ItemArmor implements IArmorTextureProvider
     public void registerIcons(IconRegister par1IconRegister)
     {
         this.itemIcon = par1IconRegister.registerIcon(this.getUnlocalizedName().replace("item.", "galacticraftcore:"));
-    }
-
-	@Override
-    @SideOnly(Side.CLIENT)
-    public EnumRarity getRarity(ItemStack par1ItemStack)
-    {
-        return EnumRarity.rare;
     }
 }

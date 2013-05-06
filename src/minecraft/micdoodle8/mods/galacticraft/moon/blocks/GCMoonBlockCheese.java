@@ -27,12 +27,6 @@ public class GCMoonBlockCheese extends Block
         this.disableStats();
     }
 
-	@Override
-    public CreativeTabs getCreativeTabToDisplayOn()
-    {
-        return GalacticraftMoon.galacticraftMoonTab;
-    }
-
     @Override
     public void registerIcons(IconRegister par1IconRegister)
     {

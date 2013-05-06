@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.items;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -34,6 +35,13 @@ public class GCCoreItemFuelCanister extends Item
 		this.setMaxDamage(61);
 		this.setMaxStackSize(1);
 	}
+
+    @Override
+	@SideOnly(Side.CLIENT)
+    public EnumRarity getRarity(ItemStack par1ItemStack)
+    {
+        return ClientProxyCore.galacticraftItem;
+    }
 
 	@Override
     public CreativeTabs getCreativeTab()
@@ -83,12 +91,6 @@ public class GCCoreItemFuelCanister extends Item
 
 		return super.getIconFromDamage(damage);
 	}
-
-    @Override
-    public EnumRarity getRarity(ItemStack par1ItemStack)
-    {
-		return EnumRarity.uncommon;
-    }
 
     @Override
 	public void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5)

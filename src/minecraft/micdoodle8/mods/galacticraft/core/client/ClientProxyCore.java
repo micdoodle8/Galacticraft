@@ -108,8 +108,10 @@ import net.minecraft.client.particle.EntitySmokeFX;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.client.EnumHelperClient;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -175,6 +177,8 @@ public class ClientProxyCore extends CommonProxyCore
     private GCCoreThreadDownloadSound downloadResourcesThread;
     
     public static ArrayList<SoundPoolEntry> newMusic = new ArrayList<SoundPoolEntry>();
+    
+    public static EnumRarity galacticraftItem = EnumHelperClient.addRarity("GCRarity", 9, "Space");
 
 	@Override
 	public void preInit(FMLPreInitializationEvent event)

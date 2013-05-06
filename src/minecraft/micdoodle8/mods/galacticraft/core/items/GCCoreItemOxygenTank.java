@@ -44,9 +44,10 @@ public class GCCoreItemOxygenTank extends Item
     }
 
     @Override
+	@SideOnly(Side.CLIENT)
     public EnumRarity getRarity(ItemStack par1ItemStack)
     {
-		return EnumRarity.uncommon;
+        return ClientProxyCore.galacticraftItem;
     }
 
 	@Override

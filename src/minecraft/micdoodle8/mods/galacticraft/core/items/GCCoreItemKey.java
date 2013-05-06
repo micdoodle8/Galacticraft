@@ -4,8 +4,10 @@ import java.util.List;
 
 import micdoodle8.mods.galacticraft.API.IKeyItem;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
@@ -36,6 +38,13 @@ public class GCCoreItemKey extends Item implements IKeyItem
 	{
 		return "item." + "key." + GCCoreItemKey.keyTypes[itemStack.getItemDamage()];
 	}
+
+    @Override
+	@SideOnly(Side.CLIENT)
+    public EnumRarity getRarity(ItemStack par1ItemStack)
+    {
+        return ClientProxyCore.galacticraftItem;
+    }
 
 	@Override
 	@SideOnly(Side.CLIENT)

@@ -2,12 +2,12 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlock;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockBase;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockEnclosedBlock;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemSapling;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.util.Icon;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -97,29 +97,29 @@ public class GCCoreBlocks
 	public static void registerBlocks()
 	{
 		//							Block							ItemBlock class						Block Name												Mod ID
-		GameRegistry.registerBlock(GCCoreBlocks.treasureChest, 		ItemBlock.class, 					GCCoreBlocks.treasureChest.getUnlocalizedName(), 		GalacticraftCore.MODID);
-		GameRegistry.registerBlock(GCCoreBlocks.landingPad, 		ItemBlock.class, 					GCCoreBlocks.landingPad.getUnlocalizedName(), 			GalacticraftCore.MODID);
-		GameRegistry.registerBlock(GCCoreBlocks.landingPadFull, 	ItemBlock.class, 					GCCoreBlocks.landingPadFull.getUnlocalizedName(), 		GalacticraftCore.MODID);
-		GameRegistry.registerBlock(GCCoreBlocks.unlitTorch, 		ItemBlock.class, 					GCCoreBlocks.unlitTorch.getUnlocalizedName(), 			GalacticraftCore.MODID);
-		GameRegistry.registerBlock(GCCoreBlocks.unlitTorchLit, 		ItemBlock.class, 					GCCoreBlocks.unlitTorchLit.getUnlocalizedName(), 		GalacticraftCore.MODID);
-		GameRegistry.registerBlock(GCCoreBlocks.breatheableAir, 	ItemBlock.class, 					GCCoreBlocks.breatheableAir.getUnlocalizedName(), 		GalacticraftCore.MODID);
-		GameRegistry.registerBlock(GCCoreBlocks.airDistributor, 	ItemBlock.class, 					GCCoreBlocks.airDistributor.getUnlocalizedName(), 		GalacticraftCore.MODID);
-		GameRegistry.registerBlock(GCCoreBlocks.oxygenPipe, 		ItemBlock.class, 					GCCoreBlocks.oxygenPipe.getUnlocalizedName(), 			GalacticraftCore.MODID);
-		GameRegistry.registerBlock(GCCoreBlocks.blockAirCollector, 	ItemBlock.class, 					GCCoreBlocks.blockAirCollector.getUnlocalizedName(), 	GalacticraftCore.MODID);
-		GameRegistry.registerBlock(GCCoreBlocks.rocketBench, 		ItemBlock.class, 					GCCoreBlocks.rocketBench.getUnlocalizedName(), 			GalacticraftCore.MODID);
-		GameRegistry.registerBlock(GCCoreBlocks.fallenMeteor, 		ItemBlock.class, 					GCCoreBlocks.fallenMeteor.getUnlocalizedName(), 		GalacticraftCore.MODID);
-		GameRegistry.registerBlock(GCCoreBlocks.airLockFrame, 		ItemBlock.class, 					GCCoreBlocks.airLockFrame.getUnlocalizedName(), 		GalacticraftCore.MODID);
-		GameRegistry.registerBlock(GCCoreBlocks.airLockSeal, 		ItemBlock.class, 					GCCoreBlocks.airLockSeal.getUnlocalizedName(), 			GalacticraftCore.MODID);
-		GameRegistry.registerBlock(GCCoreBlocks.crudeOilStill, 		ItemBlock.class, 					GCCoreBlocks.crudeOilStill.getUnlocalizedName(), 		GalacticraftCore.MODID);
-		GameRegistry.registerBlock(GCCoreBlocks.crudeOilMoving, 	ItemBlock.class, 					GCCoreBlocks.crudeOilMoving.getUnlocalizedName(), 		GalacticraftCore.MODID);
-		GameRegistry.registerBlock(GCCoreBlocks.refinery, 			ItemBlock.class, 					GCCoreBlocks.refinery.getUnlocalizedName(), 			GalacticraftCore.MODID);
-		GameRegistry.registerBlock(GCCoreBlocks.compressor, 		ItemBlock.class, 					GCCoreBlocks.compressor.getUnlocalizedName(), 			GalacticraftCore.MODID);
+		GameRegistry.registerBlock(GCCoreBlocks.treasureChest, 		GCCoreItemBlock.class, 				GCCoreBlocks.treasureChest.getUnlocalizedName(), 		GalacticraftCore.MODID);
+		GameRegistry.registerBlock(GCCoreBlocks.landingPad, 		GCCoreItemBlock.class, 				GCCoreBlocks.landingPad.getUnlocalizedName(), 			GalacticraftCore.MODID);
+		GameRegistry.registerBlock(GCCoreBlocks.landingPadFull, 	GCCoreItemBlock.class, 				GCCoreBlocks.landingPadFull.getUnlocalizedName(), 		GalacticraftCore.MODID);
+		GameRegistry.registerBlock(GCCoreBlocks.unlitTorch, 		GCCoreItemBlock.class, 				GCCoreBlocks.unlitTorch.getUnlocalizedName(), 			GalacticraftCore.MODID);
+		GameRegistry.registerBlock(GCCoreBlocks.unlitTorchLit, 		GCCoreItemBlock.class, 				GCCoreBlocks.unlitTorchLit.getUnlocalizedName(), 		GalacticraftCore.MODID);
+		GameRegistry.registerBlock(GCCoreBlocks.breatheableAir, 	GCCoreItemBlock.class, 				GCCoreBlocks.breatheableAir.getUnlocalizedName(), 		GalacticraftCore.MODID);
+		GameRegistry.registerBlock(GCCoreBlocks.airDistributor, 	GCCoreItemBlock.class, 				GCCoreBlocks.airDistributor.getUnlocalizedName(), 		GalacticraftCore.MODID);
+		GameRegistry.registerBlock(GCCoreBlocks.oxygenPipe, 		GCCoreItemBlock.class, 				GCCoreBlocks.oxygenPipe.getUnlocalizedName(), 			GalacticraftCore.MODID);
+		GameRegistry.registerBlock(GCCoreBlocks.blockAirCollector, 	GCCoreItemBlock.class, 				GCCoreBlocks.blockAirCollector.getUnlocalizedName(), 	GalacticraftCore.MODID);
+		GameRegistry.registerBlock(GCCoreBlocks.rocketBench, 		GCCoreItemBlock.class, 				GCCoreBlocks.rocketBench.getUnlocalizedName(), 			GalacticraftCore.MODID);
+		GameRegistry.registerBlock(GCCoreBlocks.fallenMeteor, 		GCCoreItemBlock.class, 				GCCoreBlocks.fallenMeteor.getUnlocalizedName(), 		GalacticraftCore.MODID);
+		GameRegistry.registerBlock(GCCoreBlocks.airLockFrame, 		GCCoreItemBlock.class, 				GCCoreBlocks.airLockFrame.getUnlocalizedName(), 		GalacticraftCore.MODID);
+		GameRegistry.registerBlock(GCCoreBlocks.airLockSeal, 		GCCoreItemBlock.class, 				GCCoreBlocks.airLockSeal.getUnlocalizedName(), 			GalacticraftCore.MODID);
+		GameRegistry.registerBlock(GCCoreBlocks.crudeOilStill, 		GCCoreItemBlock.class, 				GCCoreBlocks.crudeOilStill.getUnlocalizedName(), 		GalacticraftCore.MODID);
+		GameRegistry.registerBlock(GCCoreBlocks.crudeOilMoving, 	GCCoreItemBlock.class, 				GCCoreBlocks.crudeOilMoving.getUnlocalizedName(), 		GalacticraftCore.MODID);
+		GameRegistry.registerBlock(GCCoreBlocks.refinery, 			GCCoreItemBlock.class, 				GCCoreBlocks.refinery.getUnlocalizedName(), 			GalacticraftCore.MODID);
+		GameRegistry.registerBlock(GCCoreBlocks.compressor, 		GCCoreItemBlock.class, 				GCCoreBlocks.compressor.getUnlocalizedName(), 			GalacticraftCore.MODID);
 		GameRegistry.registerBlock(GCCoreBlocks.decorationBlocks, 	GCCoreItemBlockBase.class, 			GCCoreBlocks.decorationBlocks.getUnlocalizedName(), 	GalacticraftCore.MODID);
 		GameRegistry.registerBlock(GCCoreBlocks.sapling, 			GCCoreItemSapling.class, 			GCCoreBlocks.sapling.getUnlocalizedName(), 				GalacticraftCore.MODID);
-		GameRegistry.registerBlock(GCCoreBlocks.fuelLoader, 		ItemBlock.class, 					GCCoreBlocks.fuelLoader.getUnlocalizedName(), 			GalacticraftCore.MODID);
-		GameRegistry.registerBlock(GCCoreBlocks.spaceStationBase, 	ItemBlock.class, 					GCCoreBlocks.spaceStationBase.getUnlocalizedName(), 	GalacticraftCore.MODID);
-		GameRegistry.registerBlock(GCCoreBlocks.dummyBlock, 		ItemBlock.class, 					GCCoreBlocks.dummyBlock.getUnlocalizedName(), 			GalacticraftCore.MODID);
-		GameRegistry.registerBlock(GCCoreBlocks.sealer, 			ItemBlock.class, 					GCCoreBlocks.sealer.getUnlocalizedName(), 				GalacticraftCore.MODID);
+		GameRegistry.registerBlock(GCCoreBlocks.fuelLoader, 		GCCoreItemBlock.class, 				GCCoreBlocks.fuelLoader.getUnlocalizedName(), 			GalacticraftCore.MODID);
+		GameRegistry.registerBlock(GCCoreBlocks.spaceStationBase, 	GCCoreItemBlock.class, 				GCCoreBlocks.spaceStationBase.getUnlocalizedName(), 	GalacticraftCore.MODID);
+		GameRegistry.registerBlock(GCCoreBlocks.dummyBlock, 		GCCoreItemBlock.class, 				GCCoreBlocks.dummyBlock.getUnlocalizedName(), 			GalacticraftCore.MODID);
+		GameRegistry.registerBlock(GCCoreBlocks.sealer, 			GCCoreItemBlock.class, 				GCCoreBlocks.sealer.getUnlocalizedName(), 				GalacticraftCore.MODID);
 		GameRegistry.registerBlock(GCCoreBlocks.enclosedWire, 		GCCoreItemBlockEnclosedBlock.class, GCCoreBlocks.enclosedWire.getUnlocalizedName(), 		GalacticraftCore.MODID);
 	}
 }
