@@ -861,6 +861,11 @@ public class GCCorePlayerMP extends EntityPlayerMP
 				}
 			}
 		}
+		
+		if (this.worldObj.provider instanceof IGalacticraftWorldProvider || this.usingPlanetSelectionGui)
+		{
+			this.playerNetServerHandler.ticksForFloatKick = 0;
+		}
 
 		SchematicRegistry.addUnlockedPage(this, SchematicRegistry.getMatchingRecipeForID(0));
 		SchematicRegistry.addUnlockedPage(this, SchematicRegistry.getMatchingRecipeForID(Integer.MAX_VALUE));
