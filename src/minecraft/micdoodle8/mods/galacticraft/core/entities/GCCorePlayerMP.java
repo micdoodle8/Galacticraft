@@ -676,81 +676,6 @@ public class GCCorePlayerMP extends EntityPlayerMP
 			}
 		}
 
-		if (this.tick % 60 == 0)
-		{
-			final Object[] toSend = {this.spaceStationDimensionID};
-	    	this.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 18, toSend));
-
-			this.sendPlayerParachuteTexturePacket(this);
-
-			if (this.getParachute() && this.parachuteInSlot != null)
-			{
-				this.sendParachuteAddPacket();
-			}
-			else
-			{
-				this.sendParachuteRemovalPacket();
-			}
-
-			int id;
-
-			if (this.maskInSlot != null)
-			{
-				id = this.maskInSlot.itemID;
-
-				if (id == GCCoreItems.oxygenMask.itemID)
-				{
-					this.sendGearUpdatePacket(modelUpdatePacketTypes.ADDMASK.getIndex());
-				}
-			}
-
-			if (this.gearInSlot != null)
-			{
-				id = this.gearInSlot.itemID;
-
-				if (id == GCCoreItems.oxygenGear.itemID)
-				{
-					this.sendGearUpdatePacket(modelUpdatePacketTypes.ADDGEAR.getIndex());
-				}
-			}
-
-			if (this.tankInSlot1 != null)
-			{
-				id = this.tankInSlot1.itemID;
-
-				if (id == GCCoreItems.lightOxygenTank.itemID)
-				{
-					this.sendGearUpdatePacket(modelUpdatePacketTypes.ADDLEFTGREENTANK.getIndex());
-				}
-				else if (id == GCCoreItems.medOxygenTank.itemID)
-				{
-					this.sendGearUpdatePacket(modelUpdatePacketTypes.ADDLEFTORANGETANK.getIndex());
-				}
-				else if (id == GCCoreItems.heavyOxygenTank.itemID)
-				{
-					this.sendGearUpdatePacket(modelUpdatePacketTypes.ADDLEFTREDTANK.getIndex());
-				}
-			}
-
-			if (this.tankInSlot2 != null)
-			{
-				id = this.tankInSlot2.itemID;
-
-				if (id == GCCoreItems.lightOxygenTank.itemID)
-				{
-					this.sendGearUpdatePacket(modelUpdatePacketTypes.ADDRIGHTGREENTANK.getIndex());
-				}
-				else if (id == GCCoreItems.medOxygenTank.itemID)
-				{
-					this.sendGearUpdatePacket(modelUpdatePacketTypes.ADDRIGHTORANGETANK.getIndex());
-				}
-				else if (id == GCCoreItems.heavyOxygenTank.itemID)
-				{
-					this.sendGearUpdatePacket(modelUpdatePacketTypes.ADDRIGHTREDTANK.getIndex());
-				}
-			}
-		}
-
 		if (this.launchAttempts > 0 && this.ridingEntity == null)
 		{
 			this.launchAttempts = 0;
@@ -942,10 +867,10 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
 		Collections.sort(this.unlockedSchematics);
 
-    	if (this.tick % 200 == 0 || (this.unlockedSchematics.size() != this.lastUnlockedSchematics.size()))
-    	{
-	        this.playerNetServerHandler.sendPacketToPlayer(GCCorePacketSchematicList.buildSchematicListPacket(this.unlockedSchematics));
-    	}
+//    	if (this.tick % 200 == 0 || (this.unlockedSchematics.size() != this.lastUnlockedSchematics.size()))
+//    	{
+//	        this.playerNetServerHandler.sendPacketToPlayer(GCCorePacketSchematicList.buildSchematicListPacket(this.unlockedSchematics));
+//    	}
 
     	this.lastMaskInSlot = ((GCCoreInventoryPlayer)this.inventory).tankItemInSlot(0);
     	this.lastGearInSlot = ((GCCoreInventoryPlayer)this.inventory).tankItemInSlot(1);

@@ -1,5 +1,8 @@
 package micdoodle8.mods.galacticraft.core.network;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
+import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.NetLoginHandler;
@@ -7,6 +10,7 @@ import net.minecraft.network.packet.NetHandler;
 import net.minecraft.network.packet.Packet1Login;
 import net.minecraft.server.MinecraftServer;
 import cpw.mods.fml.common.network.IConnectionHandler;
+import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
 
 public class GCCoreConnectionHandler implements IConnectionHandler
@@ -16,6 +20,12 @@ public class GCCoreConnectionHandler implements IConnectionHandler
 	@Override
 	public void playerLoggedIn(Player player, NetHandler netHandler, INetworkManager manager)
 	{
+		if (player instanceof GCCorePlayerMP)
+		{
+			GCCorePlayerMP playerMP = (GCCorePlayerMP) player;
+			PacketDispatcher.sendPacketToPlayer(GCCorePacketSchematicList.buildSchematicListPacket(playerMP.unlockedSchematics), player);
+			PacketDispatcher.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 18, new Object[] {((GCCorePlayerMP) player).spaceStationDimensionID}), player);
+	    }
 	}
 
 	@Override

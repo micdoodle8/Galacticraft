@@ -471,7 +471,6 @@ public class ClientProxyCore extends CommonProxyCore
 
     public static class GCKeyHandler extends KeyHandler
     {
-//    	public static KeyBinding tankRefill = new KeyBinding("[GC] Player Inventory", Keyboard.KEY_E);
     	public static KeyBinding galaxyMap = new KeyBinding("[GC] Galaxy Map", Keyboard.KEY_M);
     	public static KeyBinding openSpaceshipInv = new KeyBinding("[GC] Open Spaceship Inventory", Keyboard.KEY_F);
     	public static KeyBinding toggleAdvGoggles = new KeyBinding("[GC] Toggle Sensor Goggles Mode", Keyboard.KEY_K);
@@ -512,20 +511,8 @@ public class ClientProxyCore extends CommonProxyCore
         	{
     			return;
         	}
-
-        	/*
-        	if (kb.keyCode == GCKeyHandler.tankRefill.keyCode)
-        	{
-        		if (minecraft.currentScreen == null && playerBase != null && !playerBase.capabilities.isCreativeMode)
-            	{
-        			playerBase.setUseTutorialText(false);
-
-                    final Object[] toSend = {player.username};
-                    PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 0, toSend));
-            	    player.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiTankRefill, minecraft.theWorld, (int)player.posX, (int)player.posY, (int)player.posZ);
-            	}
-        	}
-        	else */if (kb.keyCode == GCKeyHandler.galaxyMap.keyCode)
+        	
+        	if (kb.keyCode == GCKeyHandler.galaxyMap.keyCode)
         	{
         		if (minecraft.currentScreen == null)
         		{
