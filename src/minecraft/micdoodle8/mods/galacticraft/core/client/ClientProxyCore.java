@@ -484,7 +484,8 @@ public class ClientProxyCore extends CommonProxyCore
 
         public GCKeyHandler()
         {
-            super(new KeyBinding[] {/*GCKeyHandler.tankRefill, */GCKeyHandler.galaxyMap, GCKeyHandler.openSpaceshipInv, GCKeyHandler.toggleAdvGoggles, GCKeyHandler.accelerateKey, GCKeyHandler.decelerateKey, GCKeyHandler.leftKey, GCKeyHandler.rightKey, GCKeyHandler.spaceKey, GCKeyHandler.leftShiftKey}, new boolean[] {false, false, false, false, true, true, true, true, true, true});
+            super(new KeyBinding[] {GCKeyHandler.galaxyMap, GCKeyHandler.openSpaceshipInv, GCKeyHandler.toggleAdvGoggles, GCKeyHandler.accelerateKey, GCKeyHandler.decelerateKey, GCKeyHandler.leftKey, GCKeyHandler.rightKey, GCKeyHandler.spaceKey, GCKeyHandler.leftShiftKey}, 
+            		new boolean[] {false, false, false, true, true, true, true, true, true});
         }
 
         @Override
