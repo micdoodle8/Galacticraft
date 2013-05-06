@@ -145,6 +145,5 @@ public class GCCoreItemSpaceship extends Item
     			break;
     		}
     	}
-//    	par2List.add("Failure chance: " + String.valueOf(GCCoreUtil.getSpaceshipFailChance(FMLClientHandler.instance().getClient().thePlayer)) + "%");
     }
 }
