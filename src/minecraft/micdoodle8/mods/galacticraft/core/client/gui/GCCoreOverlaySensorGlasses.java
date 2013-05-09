@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.client.gui;
 import java.util.Iterator;
 
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
+import micdoodle8.mods.galacticraft.core.client.GCCorePlayerSP;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
@@ -92,8 +93,13 @@ public class GCCoreOverlaySensorGlasses extends GCCoreOverlay
             final int var7 = var5.getScaledHeight();
 
             boolean var2 = false;
+            
+            GCCorePlayerSP client = PlayerUtil.getPlayerBaseClientFromPlayer(GCCoreOverlaySensorGlasses.minecraft.thePlayer);
 
-			var2 = PlayerUtil.getPlayerBaseClientFromPlayer(GCCoreOverlaySensorGlasses.minecraft.thePlayer).getUsingGoggles();
+            if (client != null)
+            {
+            	var2 = client.getUsingGoggles();
+            }
 
         	GCCoreOverlaySensorGlasses.minecraft.fontRenderer.drawString("Advanced Mode: " + (var2 ? "ON" : "OFF"), var6 / 2 - 50, 4, 0x03b88f);
 
