@@ -21,9 +21,15 @@ public class GCCoreSkyProviderOrbit extends IRenderHandler
 	public int starGLCallList = GLAllocation.generateDisplayLists(3);
 	public int glSkyList;
 	public int glSkyList2;
+	private String planetToRender;
+	private boolean renderMoon;
+	private boolean renderSun;
 
-	public GCCoreSkyProviderOrbit()
+	public GCCoreSkyProviderOrbit(String planet, boolean renderMoon, boolean renderSun)
 	{
+		this.planetToRender = planet;
+		this.renderMoon = renderMoon;
+		this.renderSun = renderSun;
 		GL11.glPushMatrix();
 		GL11.glNewList(this.starGLCallList, GL11.GL_COMPILE);
 		this.renderStars();
@@ -166,30 +172,39 @@ public class GCCoreSkyProviderOrbit extends IRenderHandler
         GL11.glColor4f(1.0F, 1.0F, 1.0F, var8);
         GL11.glTranslatef(var9, var10, var11);
         GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
+        
         GL11.glRotatef(this.minecraft.theWorld.getCelestialAngle(partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
-        var12 = 30.0F;
-        FMLClientHandler.instance().getClient().renderEngine.bindTexture("/environment/sun.png");
-        var23.startDrawingQuads();
-        var23.addVertexWithUV(-var12, 100.0D, -var12, 0.0D, 0.0D);
-        var23.addVertexWithUV(var12, 100.0D, -var12, 1.0D, 0.0D);
-        var23.addVertexWithUV(var12, 100.0D, var12, 1.0D, 1.0D);
-        var23.addVertexWithUV(-var12, 100.0D, var12, 0.0D, 1.0D);
-        var23.draw();
-        var12 = 40.0F;
-        FMLClientHandler.instance().getClient().renderEngine.bindTexture("/environment/moon_phases.png");
-        final int var28 = this.minecraft.theWorld.getMoonPhase();
-        final int var30 = var28 % 4;
-        final int var29 = var28 / 4 % 2;
-        final float var16 = (var30 + 0) / 4.0F;
-        final float var17 = (var29 + 0) / 2.0F;
-        final float var18 = (var30 + 1) / 4.0F;
-        final float var19 = (var29 + 1) / 2.0F;
-        var23.startDrawingQuads();
-        var23.addVertexWithUV(-var12, -100.0D, var12, var18, var19);
-        var23.addVertexWithUV(var12, -100.0D, var12, var16, var19);
-        var23.addVertexWithUV(var12, -100.0D, -var12, var16, var17);
-        var23.addVertexWithUV(-var12, -100.0D, -var12, var18, var17);
-        var23.draw();
+        if (this.renderSun)
+        {
+	        var12 = 30.0F;
+	        FMLClientHandler.instance().getClient().renderEngine.bindTexture("/environment/sun.png");
+	        var23.startDrawingQuads();
+	        var23.addVertexWithUV(-var12, 100.0D, -var12, 0.0D, 0.0D);
+	        var23.addVertexWithUV(var12, 100.0D, -var12, 1.0D, 0.0D);
+	        var23.addVertexWithUV(var12, 100.0D, var12, 1.0D, 1.0D);
+	        var23.addVertexWithUV(-var12, 100.0D, var12, 0.0D, 1.0D);
+	        var23.draw();
+		}
+        
+        if (this.renderMoon)
+        {
+            var12 = 40.0F;
+            FMLClientHandler.instance().getClient().renderEngine.bindTexture("/environment/moon_phases.png");
+            final int var28 = this.minecraft.theWorld.getMoonPhase();
+            final int var30 = var28 % 4;
+            final int var29 = var28 / 4 % 2;
+            final float var16 = (var30 + 0) / 4.0F;
+            final float var17 = (var29 + 0) / 2.0F;
+            final float var18 = (var30 + 1) / 4.0F;
+            final float var19 = (var29 + 1) / 2.0F;
+            var23.startDrawingQuads();
+            var23.addVertexWithUV(-var12, -100.0D, var12, var18, var19);
+            var23.addVertexWithUV(var12, -100.0D, var12, var16, var19);
+            var23.addVertexWithUV(var12, -100.0D, -var12, var16, var17);
+            var23.addVertexWithUV(-var12, -100.0D, -var12, var18, var17);
+            var23.draw();
+        }
+        
         GL11.glDisable(GL11.GL_TEXTURE_2D);
 
 //        if (var20 > 0.0F)
@@ -248,33 +263,36 @@ public class GCCoreSkyProviderOrbit extends IRenderHandler
 
             if (var20 > 0.0F)
             {
-                GL11.glPushMatrix();
-                GL11.glEnable(GL11.GL_TEXTURE_2D);
-                GL11.glTranslatef(0.0F, -var20 / 10, 0.0F);
-                float scale = 100 * (0.25F - var20 / 10000.0F);
-                scale = Math.max(scale, 0.2F);
-                GL11.glScalef(scale, 0.0F, scale);
-                GL11.glTranslatef(0.0F, -var20, 0.0F);
-                this.minecraft.renderEngine.bindTexture("/micdoodle8/mods/galacticraft/core/client/planets/overworld.png");
+            	if (this.planetToRender != null)
+            	{
+                    GL11.glPushMatrix();
+                    GL11.glEnable(GL11.GL_TEXTURE_2D);
+                    GL11.glTranslatef(0.0F, -var20 / 10, 0.0F);
+                    float scale = 100 * (0.25F - var20 / 10000.0F);
+                    scale = Math.max(scale, 0.2F);
+                    GL11.glScalef(scale, 0.0F, scale);
+                    GL11.glTranslatef(0.0F, -var20, 0.0F);
+                    this.minecraft.renderEngine.bindTexture(this.planetToRender);
 
-                var10 = 1.0F;
-                var12 = -1.0F;
+                    var10 = 1.0F;
+                    var12 = -1.0F;
 
-                final float alpha = 0.5F;
-	            GL11.glColor4f(Math.min(alpha, 1.0F), Math.min(alpha, 1.0F), Math.min(alpha, 1.0F), Math.min(alpha, 1.0F));
-                var23.startDrawingQuads();
-                var23.addVertexWithUV(-var10, 0, var10, 0.0F, 1.0F);
-                var23.addVertexWithUV(var10, 0, var10, 1.0F, 1.0F);
-                var23.addVertexWithUV(var10, 0, -var10, 1.0F, 0.0F);
-                var23.addVertexWithUV(-var10, 0, -var10, 0.0F, 0.0F);
-                var23.addVertexWithUV(-var10, 0, var10, 0.0F, 1.0F);
-                var23.addVertexWithUV(var10, 0, var10, 1.0F, 1.0F);
-                var23.addVertexWithUV(var10, 0, -var10, 1.0F, 0.0F);
-                var23.addVertexWithUV(-var10, 0, -var10, 0.0F, 0.0F);
-                var23.addVertexWithUV(-var10, -50, -var10, 0.0F, 0.0F);
-                var23.draw();
-                GL11.glDisable(GL11.GL_TEXTURE_2D);
-                GL11.glPopMatrix();
+                    final float alpha = 0.5F;
+    	            GL11.glColor4f(Math.min(alpha, 1.0F), Math.min(alpha, 1.0F), Math.min(alpha, 1.0F), Math.min(alpha, 1.0F));
+                    var23.startDrawingQuads();
+                    var23.addVertexWithUV(-var10, 0, var10, 0.0F, 1.0F);
+                    var23.addVertexWithUV(var10, 0, var10, 1.0F, 1.0F);
+                    var23.addVertexWithUV(var10, 0, -var10, 1.0F, 0.0F);
+                    var23.addVertexWithUV(-var10, 0, -var10, 0.0F, 0.0F);
+                    var23.addVertexWithUV(-var10, 0, var10, 0.0F, 1.0F);
+                    var23.addVertexWithUV(var10, 0, var10, 1.0F, 1.0F);
+                    var23.addVertexWithUV(var10, 0, -var10, 1.0F, 0.0F);
+                    var23.addVertexWithUV(-var10, 0, -var10, 0.0F, 0.0F);
+                    var23.addVertexWithUV(-var10, -50, -var10, 0.0F, 0.0F);
+                    var23.draw();
+                    GL11.glDisable(GL11.GL_TEXTURE_2D);
+                    GL11.glPopMatrix();
+            	}
             }
         }
 

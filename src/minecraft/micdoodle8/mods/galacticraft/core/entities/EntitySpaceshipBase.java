@@ -250,7 +250,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
     		this.rotationPitch = 180F;
     	}
 
-    	if (this.posY > (this.worldObj.provider instanceof IExitHeight ? ((IExitHeight) this.worldObj.provider).getYCoordinateToTeleport() : 1200))
+    	if (this.posY > (this.worldObj.provider instanceof IExitHeight ? ((IExitHeight) this.worldObj.provider).getYCoordinateToTeleport() : 0))
     	{
     		this.teleport();
     	}

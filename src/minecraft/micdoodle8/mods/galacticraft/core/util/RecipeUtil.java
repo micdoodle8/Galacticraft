@@ -207,13 +207,24 @@ public class RecipeUtil
 			'Y', "plateIron"
 		});
 		
-		addRecipe(new ItemStack(GCCoreBlocks.airDistributor, 1), new Object[] {
+		addRecipe(new ItemStack(GCCoreBlocks.oxygenDetector, 1), new Object[] {
 			"WXW",
 			"YZY",
 			"WVW",
 			'V', GregTech_API.getGregTechItem(0, 1, 83),
 			'W', "ingotSteel",
 			'X', GCCoreItems.airFan,
+			'Y', GCCoreItems.airVent,
+			'Z', GregTech_API.getGregTechBlock(1, 0, 15)
+		});
+		
+		addRecipe(new ItemStack(GCCoreBlocks.airDistributor, 1), new Object[] {
+			"WWW",
+			"WZW",
+			"XVX",
+			'V', GregTech_API.getGregTechItem(0, 1, 83),
+			'W', "ingotSteel",
+			'X', Item.redstone,
 			'Y', GCCoreItems.airVent,
 			'Z', GregTech_API.getGregTechBlock(1, 0, 15)
 		});
@@ -615,6 +626,17 @@ public class RecipeUtil
 			"XXX",
 			'X', Block.blockIron,
 			'Y', "ingotInvar"
+		});
+		
+		addRecipe(new ItemStack(GCCoreBlocks.oxygenDetector, 1), new Object[] {
+			"WWW",
+			"YZY",
+			"VWV",
+			'V', Item.redstone,
+			'W', "ingotLead",
+			'X', GCCoreItems.airFan,
+			'Y', GCCoreItems.airVent,
+			'Z', ItemRegistry.getItem("machineFrame", 1)
 		});
 		
 		addRecipe(new ItemStack(GCCoreBlocks.airDistributor, 1), new Object[] {
@@ -1023,6 +1045,16 @@ public class RecipeUtil
 			'Y', "plateIron"
 		});
 		
+		addRecipe(new ItemStack(GCCoreBlocks.oxygenDetector, 1), new Object[] {
+			"WWW",
+			"YWY",
+			"ZWZ",
+			'W', "ingotSteel",
+			'X', GCCoreItems.airFan,
+			'Y', GCCoreItems.airVent,
+			'Z', Item.redstone
+		});
+		
 		addRecipe(new ItemStack(GCCoreBlocks.airDistributor, 1), new Object[] {
 			"WXW",
 			"YWY",
@@ -1420,6 +1452,15 @@ public class RecipeUtil
 			"XXX",
 			'X', Block.blockIron,
 			'Y', "carbonPlate"
+		});
+
+		addRecipe(new ItemStack(GCCoreBlocks.oxygenDetector, 1), new Object[] {
+			"WWW",
+			"YWY",
+			"WXW",
+			'W', "ingotRefinedIron",
+			'X', Item.redstone,
+			'Y', GCCoreItems.airVent
 		});
 
 		addRecipe(new ItemStack(GCCoreBlocks.airDistributor, 1), new Object[] {

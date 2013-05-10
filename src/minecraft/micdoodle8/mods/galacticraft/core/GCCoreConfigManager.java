@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core;
 
 import java.io.File;
-import java.util.logging.Level;
 
 import net.minecraft.block.Block;
 import net.minecraftforge.common.Configuration;
@@ -28,6 +27,7 @@ public class GCCoreConfigManager
 	}
 
 	public static int idDimensionOverworldOrbit;
+//	public static int idDimensionSpace;
 
 	// BLOCKS
 	public static int idBlockBreatheableAir;
@@ -54,6 +54,7 @@ public class GCCoreConfigManager
 	public static int idBlockDummy;
 	public static int idBlockOxygenSealer;
 	public static int idBlockEnclosedWire;
+	public static int idBlockOxygenDetector;
 
 	// ITEMS
 	public static int idItemLightOxygenTank;
@@ -146,6 +147,8 @@ public class GCCoreConfigManager
 	public static int idEntityOxygenBubble;
 	public static int idEntityLander;
 	public static int idEntityLanderChest;
+	public static int idEntitySun;
+	public static int idEntityOverworld;
 
 	// GENERAL
 	public static boolean transparentBreathableAir;
@@ -177,6 +180,7 @@ public class GCCoreConfigManager
 		{
 	        GCCoreConfigManager.configuration.load();
 
+//	        GCCoreConfigManager.idDimensionSpace =			 			GCCoreConfigManager.configuration.get("DIMENSIONS",                 "idDimensionSpace",           			-26)        .getInt(-26);
 	        GCCoreConfigManager.idDimensionOverworldOrbit = 			GCCoreConfigManager.configuration.get("DIMENSIONS",                 "idDimensionOverworldOrbit",            -27)        .getInt(-27);
 
 	        GCCoreConfigManager.idBlockBreatheableAir = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockCoreBreatheableAir", 			3350)		.getInt(3350);
@@ -190,6 +194,7 @@ public class GCCoreConfigManager
 	        GCCoreConfigManager.idBlockRefinery = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockRefinery",                      3358)       .getInt(3358);
 	        GCCoreConfigManager.idBlockFuelLoader = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockFuelLoader",					3359)		.getInt(3359);
 	        GCCoreConfigManager.idBlockOxygenSealer = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockOxygenSealer", 					3360)		.getInt(3360);
+	        GCCoreConfigManager.idBlockOxygenDetector  = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockOxygenDetector", 				3361)		.getInt(3361);
 	        GCCoreConfigManager.idBlockAirPipe = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockAirPipe", 						3368)		.getInt(3368);
 	        GCCoreConfigManager.idBlockSapling2 = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockSapling2", 						3369)		.getInt(3369);
 	        GCCoreConfigManager.idBlockRocketBench = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockRocketBench", 					3370)		.getInt(3370);
@@ -203,7 +208,7 @@ public class GCCoreConfigManager
 	        GCCoreConfigManager.idBlockEnclosedWire = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockEnclosedWire", 					3379)		.getInt(3379);
 	        GCCoreConfigManager.idBlockSpaceStationBase = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockSpaceStationBase", 				3380, "Even though this will be generated, it can use block IDs greater than 256")		.getInt(3380);
 	        GCCoreConfigManager.idBlockTreasureChest = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockTieredTreasureChest", 			3381, "Even though this will be generated, it can use block IDs greater than 256")		.getInt(3381);
-
+	        
 	        GCCoreConfigManager.idItemSpaceship = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemSpaceship", 						9855)		.getInt(9855);
 	        GCCoreConfigManager.idItemLightOxygenTank = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemLightOxygenTank", 				9856)		.getInt(9856);
 	        GCCoreConfigManager.idItemMedOxygenTank = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemMedOxygenTank", 					9857)		.getInt(9857);
@@ -283,7 +288,9 @@ public class GCCoreConfigManager
 	        GCCoreConfigManager.idEntityOxygenBubble = 					GCCoreConfigManager.configuration.get("Entities", "idEntityOxygenBubble", 									168)		.getInt(168);
 	        GCCoreConfigManager.idEntityLander = 						GCCoreConfigManager.configuration.get("Entities", "idEntityLander", 										169)		.getInt(169);
 	        GCCoreConfigManager.idEntityLanderChest = 					GCCoreConfigManager.configuration.get("Entities", "idEntityLanderChest", 									170)		.getInt(170);
-	        GCCoreConfigManager.idEntityEvolvedSkeletonBoss = 			GCCoreConfigManager.configuration.get("Entities", "idEntityEvolvedSkeletonBoss", 								171)		.getInt(171);
+	        GCCoreConfigManager.idEntityEvolvedSkeletonBoss = 			GCCoreConfigManager.configuration.get("Entities", "idEntityEvolvedSkeletonBoss", 							171)		.getInt(171);
+	        GCCoreConfigManager.idEntitySun = 							GCCoreConfigManager.configuration.get("Entities", "idEntitySun", 											172)		.getInt(172);
+	        GCCoreConfigManager.idEntityOverworld = 					GCCoreConfigManager.configuration.get("Entities", "idEntityOverworld", 										173)		.getInt(173);
 
 	        GCCoreConfigManager.transparentBreathableAir = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Transparent Breathable Air",			true, "If you have FPS problems and wish to have solid blue breathable air blocks, set this to false")		.getBoolean(true);
 	        GCCoreConfigManager.moreStars = 							GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "More Stars",							true, "Setting this to false will revert night skies back to default minecraft star count")		.getBoolean(true);

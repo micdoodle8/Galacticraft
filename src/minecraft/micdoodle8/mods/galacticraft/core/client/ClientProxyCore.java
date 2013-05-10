@@ -279,6 +279,9 @@ public class ClientProxyCore extends CommonProxyCore
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityAlienVillager.class, new GCCoreRenderAlienVillager());
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityOxygenBubble.class, new GCCoreRenderOxygenBubble());
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityLander.class, new GCCoreRenderLander());
+//        RenderingRegistry.registerEntityRenderingHandler(GCCoreEntitySun.class, new GCCoreRenderCelestialObject(11F * 108F, "/micdoodle8/mods/galacticraft/core/client/entities/sun.png"));
+//        RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityMoon.class, new GCCoreRenderCelestialObject(8F, "/micdoodle8/mods/galacticraft/core/client/entities/moon.png"));
+//        RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityOverworld.class, new GCCoreRenderCelestialObject(15F * 3F, "/micdoodle8/mods/galacticraft/core/client/entities/overworld.png"));
         RenderingRegistry.addNewArmourRendererPrefix("oxygen");
         RenderingRegistry.addNewArmourRendererPrefix("sensor");
         RenderingRegistry.addNewArmourRendererPrefix("sensorox");
@@ -290,6 +293,21 @@ public class ClientProxyCore extends CommonProxyCore
         MinecraftForgeClient.registerItemRenderer(GCCoreItems.buggy.itemID, new GCCoreItemRendererBuggy());
         MinecraftForgeClient.registerItemRenderer(GCCoreItems.flag.itemID, new GCCoreItemRendererFlag());
         MinecraftForgeClient.registerItemRenderer(GCCoreItems.key.itemID, new GCCoreItemRendererKey());
+	}
+	
+	public static void renderPlanets(float par3)
+	{
+//    	List<IUpdateable> planetList = new ArrayList<IUpdateable>();
+//    	planetList.addAll(WorldUtil.planets);
+//		for (IUpdateable iu : planetList)
+//		{
+//			Entity e = (Entity) iu;
+//			
+//			if (e instanceof GCCoreEntitySun)
+//			{
+//	            RenderManager.instance.renderEntity(e, par3);
+//			}
+//		}
 	}
 
 	@Override

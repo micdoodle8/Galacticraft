@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.util;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.API.EnumGearType;
@@ -20,6 +21,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import universalelectricity.core.vector.Vector3;
 import cpw.mods.fml.client.FMLClientHandler;
 
 public class OxygenUtil
@@ -51,16 +53,25 @@ public class OxygenUtil
 
     public static boolean isAABBInBreathableAirBlock(Entity entity)
     {
-        final int var3 = MathHelper.floor_double(entity.boundingBox.minX);
-        final int var4 = MathHelper.floor_double(entity.boundingBox.maxX + 1.0D);
-        final int var5 = MathHelper.floor_double(entity.boundingBox.minY);
-        final int var6 = MathHelper.floor_double(entity.boundingBox.maxY + 1.0D);
-        final int var7 = MathHelper.floor_double(entity.boundingBox.minZ);
-        final int var8 = MathHelper.floor_double(entity.boundingBox.maxZ + 1.0D);
+    	return isAABBInBreathableAirBlock(entity.worldObj, new Vector3(entity.boundingBox.minX, entity.boundingBox.minY, entity.boundingBox.minZ), new Vector3(entity.boundingBox.maxX + 1, entity.boundingBox.maxY + 1, entity.boundingBox.maxZ + 1), false);
+    }
 
-        final AxisAlignedBB box = AxisAlignedBB.getBoundingBox(entity.posX - 40, entity.posY - 40, entity.posZ - 40, entity.posX + 40, entity.posY + 40, entity.posZ + 40);
+    public static boolean isAABBInBreathableAirBlock(World world, Vector3 minVec, Vector3 maxVec, boolean testAllPoints)
+    {
+        final int var3 = MathHelper.floor_double(minVec.x);
+        final int var4 = MathHelper.floor_double(maxVec.x);
+        final int var5 = MathHelper.floor_double(minVec.y);
+        final int var6 = MathHelper.floor_double(maxVec.y);
+        final int var7 = MathHelper.floor_double(minVec.z);
+        final int var8 = MathHelper.floor_double(maxVec.z);
 
-        final List l = entity.worldObj.loadedTileEntityList;
+        final double avgX = (minVec.x + maxVec.x) / 2.0D;
+        final double avgY = (minVec.y + maxVec.y) / 2.0D;
+        final double avgZ = (minVec.z + maxVec.z) / 2.0D;
+
+        final AxisAlignedBB box = AxisAlignedBB.getBoundingBox(minVec.x - 40, minVec.y - 40, minVec.z - 40, maxVec.x + 40, maxVec.y + 40, maxVec.z + 40);
+
+        final List l = world.loadedTileEntityList;
 
         for (final Object o : l)
         {
@@ -70,11 +81,36 @@ public class OxygenUtil
 
         		if (!distributor.worldObj.isRemote)
         		{
-        			final double dist = distributor.getDistanceFromServer(entity.posX, entity.posY, entity.posZ);
-
-        			if (Math.sqrt(dist) < distributor.storedOxygen / 600.0D)
+        			if (testAllPoints)
         			{
-        				return true;
+        				ArrayList<Vector3> vecs = new ArrayList<Vector3>();
+        				vecs.add(minVec);
+        				vecs.add(new Vector3(maxVec.x, minVec.y, minVec.z));
+        				vecs.add(new Vector3(minVec.x, maxVec.y, minVec.z));
+        				vecs.add(new Vector3(maxVec.x, maxVec.y, minVec.z));
+        				vecs.add(new Vector3(minVec.x, maxVec.y, maxVec.z));
+        				vecs.add(new Vector3(maxVec.x, minVec.y, maxVec.z));
+        				vecs.add(new Vector3(maxVec.x, minVec.y, minVec.z));
+        				vecs.add(minVec);
+        				
+        				for (Vector3 vec : vecs)
+        				{
+                			final double dist = distributor.getDistanceFromServer(vec.x, vec.y, vec.z);
+
+                			if (Math.sqrt(dist) < distributor.storedOxygen / 600.0D)
+                			{
+                				return true;
+                			}
+        				}
+        			}
+        			else
+        			{
+            			final double dist = distributor.getDistanceFromServer(avgX, avgY, avgZ);
+
+            			if (Math.sqrt(dist) < distributor.storedOxygen / 600.0D)
+            			{
+            				return true;
+            			}
         			}
         		}
         	}
@@ -86,7 +122,7 @@ public class OxygenUtil
             {
                 for (int var11 = var7; var11 < var8; ++var11)
                 {
-                    final Block var12 = Block.blocksList[entity.worldObj.getBlockId(var9, var10, var11)];
+                    final Block var12 = Block.blocksList[world.getBlockId(var9, var10, var11)];
 
                     if (var12 != null && var12 instanceof GCCoreBlockBreathableAir)
                     {

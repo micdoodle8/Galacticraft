@@ -32,7 +32,6 @@ import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.TypeInsnNode;
 import org.objectweb.asm.tree.VarInsnNode;
 
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.IClassTransformer;
 import cpw.mods.fml.relauncher.RelaunchClassLoader;
 
@@ -118,6 +117,18 @@ public class GCCoreTransformer implements IClassTransformer
 		this.unObfuscatedMap.put("runTick", "runTick");
 		this.obfuscatedMap.put("runTickDesc", "()V");
 		this.unObfuscatedMap.put("runTickDesc", "()V");
+		
+		this.obfuscatedMap.put("updateEntitiesMethod", "h");
+		this.unObfuscatedMap.put("updateEntitiesMethod", "updateEntities");
+		this.obfuscatedMap.put("updateEntitiesDesc", "()V");
+		this.unObfuscatedMap.put("updateEntitiesDesc", "()V");
+
+		this.obfuscatedMap.put("renderGlobalClass", "bfy");
+		this.unObfuscatedMap.put("renderGlobalClass", "net/minecraft/client/renderer/RenderGlobal");
+		this.obfuscatedMap.put("renderEntitiesMethod", "a");
+		this.unObfuscatedMap.put("renderEntitiesMethod", "renderEntities");
+		this.obfuscatedMap.put("renderEntitiesDesc", "(Larc;Lbgh;F)V");
+		this.unObfuscatedMap.put("renderEntitiesDesc", "(Lnet/minecraft/util/Vec3;Lnet/minecraft/client/renderer/culling/ICamera;F)V");
 	}
 
 	@Override
@@ -259,6 +270,24 @@ public class GCCoreTransformer implements IClassTransformer
 		{
 			bytes = this.transform13(name, bytes, obfuscatedMap);
 		}
+
+//		if (name.replace('.', '/').equals(this.unObfuscatedMap.get("worldClass")))
+//		{
+//			bytes = this.transform14(name, bytes, this.unObfuscatedMap);
+//		}
+//		else if (name.replace('.', '/').equals(this.obfuscatedMap.get("worldClass")))
+//		{
+//			bytes = this.transform14(name, bytes, this.obfuscatedMap);
+//		}
+//
+//		if (name.replace('.', '/').equals(this.unObfuscatedMap.get("renderGlobalClass")))
+//		{
+//			bytes = this.transform15(name, bytes, this.unObfuscatedMap);
+//		}
+//		else if (name.replace('.', '/').equals(this.obfuscatedMap.get("renderGlobalClass")))
+//		{
+//			bytes = this.transform15(name, bytes, this.obfuscatedMap);
+//		}
 
 		return bytes;
 	}
@@ -938,6 +967,71 @@ public class GCCoreTransformer implements IClassTransformer
 	            		if (nodeAt.getOpcode() == Opcodes.INVOKESPECIAL && nodeAt.owner.equals(map.get("guiPlayer")))
 	            		{
 	            			methodnode.instructions.set(nodeAt, new MethodInsnNode(Opcodes.INVOKESPECIAL, "micdoodle8/mods/galacticraft/core/client/gui/GCCoreGuiInventory", "<init>", "(L" + map.get("player") + ";)V"));
+	            		}
+	            	}
+	            }
+			}
+		}
+
+        final ClassWriter writer = new ClassWriter(COMPUTE_MAXS);
+        node.accept(writer);
+        bytes = writer.toByteArray();
+
+        return bytes;
+    }
+    
+    public byte[] transform14(String name, byte[] bytes, HashMap<String, String> map)
+    {
+        ClassNode node = new ClassNode();
+        ClassReader reader = new ClassReader(bytes);
+        reader.accept(node, 0);
+        
+		Iterator<MethodNode> methods = node.methods.iterator();
+		
+		while (methods.hasNext())
+		{
+			final MethodNode methodnode = methods.next();
+
+			if (methodnode.name.equals(map.get("updateEntitiesMethod")) && methodnode.desc.equals(map.get("updateEntitiesDesc")))
+			{
+				methodnode.instructions.insertBefore(methodnode.instructions.getFirst(), new MethodInsnNode(Opcodes.INVOKESTATIC, "micdoodle8/mods/galacticraft/core/util/WorldUtil", "updatePlanets", "()V"));
+			}
+		}
+
+        final ClassWriter writer = new ClassWriter(COMPUTE_MAXS);
+        node.accept(writer);
+        bytes = writer.toByteArray();
+
+        return bytes;
+    }
+    
+    public byte[] transform15(String name, byte[] bytes, HashMap<String, String> map)
+    {
+        ClassNode node = new ClassNode();
+        ClassReader reader = new ClassReader(bytes);
+        reader.accept(node, 0);
+        
+		Iterator<MethodNode> methods = node.methods.iterator();
+
+		while (methods.hasNext())
+		{
+			final MethodNode methodnode = methods.next();
+
+			if (methodnode.name.equals(map.get("renderEntitiesMethod")) && methodnode.desc.equals(map.get("renderEntitiesDesc")))
+			{
+	            for (int count = 0; count < methodnode.instructions.size(); count++)
+	            {
+	            	final AbstractInsnNode list = methodnode.instructions.get(count);
+	            	
+	            	if (list instanceof LdcInsnNode)
+	            	{
+	            		if (((LdcInsnNode) list).cst.equals("entities"))
+	            		{
+	            			InsnList toAdd = new InsnList();
+	            			toAdd.add(new VarInsnNode(Opcodes.FLOAD, 3));
+	            			toAdd.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "micdoodle8/mods/galacticraft/core/client/ClientProxyCore", "renderPlanets", "(F)V"));
+	            			methodnode.instructions.insertBefore(methodnode.instructions.get(count - 4), toAdd);
+	            			break;
 	            		}
 	            	}
 	            }

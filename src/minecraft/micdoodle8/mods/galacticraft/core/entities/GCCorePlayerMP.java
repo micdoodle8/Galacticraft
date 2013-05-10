@@ -872,11 +872,6 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
 		Collections.sort(this.unlockedSchematics);
 
-//    	if (this.tick % 200 == 0 || (this.unlockedSchematics.size() != this.lastUnlockedSchematics.size()))
-//    	{
-//	        this.playerNetServerHandler.sendPacketToPlayer(GCCorePacketSchematicList.buildSchematicListPacket(this.unlockedSchematics));
-//    	}
-
     	this.lastMaskInSlot = ((GCCoreInventoryPlayer)this.inventory).tankItemInSlot(0);
     	this.lastGearInSlot = ((GCCoreInventoryPlayer)this.inventory).tankItemInSlot(1);
     	this.lastTankInSlot1 = ((GCCoreInventoryPlayer)this.inventory).tankItemInSlot(2);

@@ -22,7 +22,7 @@ import micdoodle8.mods.galacticraft.core.command.GCCoreCommandSpaceStationAddOwn
 import micdoodle8.mods.galacticraft.core.command.GCCoreCommandSpaceStationRemoveOwner;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreOrbitTeleportType;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreOverworldTeleportType;
-import micdoodle8.mods.galacticraft.core.dimension.GCCoreWorldProvider;
+import micdoodle8.mods.galacticraft.core.dimension.GCCoreWorldProviderSpaceStation;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityAlienVillager;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityArrow;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityAstroOrb;
@@ -54,6 +54,7 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPadSingle;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCollector;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCompressor;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenDetector;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenDistributor;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenPipe;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenSealer;
@@ -133,6 +134,9 @@ public class GalacticraftCore
     public static int remoteMajVer;
     public static int remoteMinVer;
     public static int remoteBuildVer;
+    
+//    public static float spaceScale = 4.0F;
+//    public static float spaceSpeedScale = 5.0F;
 
 	@SidedProxy(clientSide = "micdoodle8.mods.galacticraft.core.client.ClientProxyCore", serverSide = "micdoodle8.mods.galacticraft.core.CommonProxyCore")
 	public static CommonProxyCore proxy;
@@ -223,12 +227,14 @@ public class GalacticraftCore
 	{
 		GalacticraftCore.galacticraftTab = new GCCoreCreativeTab(CreativeTabs.getNextID(), GalacticraftCore.CHANNEL, GCCoreItems.spaceship.itemID, 0);
 
-		DimensionManager.registerProviderType(GCCoreConfigManager.idDimensionOverworldOrbit, GCCoreWorldProvider.class, false);
+		DimensionManager.registerProviderType(GCCoreConfigManager.idDimensionOverworldOrbit, GCCoreWorldProviderSpaceStation.class, false);
+//		DimensionManager.registerProviderType(GCCoreConfigManager.idDimensionSpace, GCCoreWorldProviderInnerSpace.class, false);
 
 		GalacticraftCore.proxy.init(event);
 
 		GalacticraftRegistry.registerTeleportType(WorldProviderSurface.class, new GCCoreOverworldTeleportType());
-		GalacticraftRegistry.registerTeleportType(GCCoreWorldProvider.class, new GCCoreOrbitTeleportType());
+		GalacticraftRegistry.registerTeleportType(GCCoreWorldProviderSpaceStation.class, new GCCoreOrbitTeleportType());
+//		GalacticraftRegistry.registerTeleportType(GCCoreWorldProviderInnerSpace.class, new GCCoreSpaceTeleportType());
 
 		for (final IGalacticraftSubMod mod : GalacticraftCore.subMods)
 		{
@@ -329,6 +335,7 @@ public class GalacticraftCore
 	@ServerStarting
 	public void serverStarting(FMLServerStartingEvent event)
 	{
+//		WorldUtil.registerPlanet(GCCoreConfigManager.idDimensionSpace, true);
 		GalacticraftCore.moon.serverStarting(event);
         event.registerServerCommand(new GCCoreCommandSpaceStationAddOwner());
         event.registerServerCommand(new GCCoreCommandSpaceStationRemoveOwner());
@@ -385,6 +392,7 @@ public class GalacticraftCore
         GameRegistry.registerTileEntity(TileEntityMulti.class, "Dummy Block");
         GameRegistry.registerTileEntity(GCCoreTileEntityOxygenSealer.class, "Air Sealer");
         GameRegistry.registerTileEntity(GCCoreTileEntityDungeonSpawner.class, "Dungeon Boss Spawner");
+        GameRegistry.registerTileEntity(GCCoreTileEntityOxygenDetector.class, "Oxygen Detector");
 	}
 
 	public void registerCreatures()
@@ -409,6 +417,9 @@ public class GalacticraftCore
 		this.registerGalacticraftNonMobEntity(GCCoreEntityParaChest.class, "ParaChest", GCCoreConfigManager.idEntityParaChest, 150, 5, true);
 		this.registerGalacticraftNonMobEntity(GCCoreEntityOxygenBubble.class, "OxygenBubble", GCCoreConfigManager.idEntityOxygenBubble, 150, 20, false);
 		this.registerGalacticraftNonMobEntity(GCCoreEntityLander.class, "Lander", GCCoreConfigManager.idEntityLander, 150, 5, true);
+//		this.registerGalacticraftNonMobEntity(GCCoreEntitySun.class, "Sun", GCCoreConfigManager.idEntitySun, 150, 5, true);
+//		this.registerGalacticraftNonMobEntity(GCCoreEntityOverworld.class, "Overworld", GCCoreConfigManager.idEntityOverworld, 150, 5, true);
+//		this.registerGalacticraftNonMobEntity(GCCoreEntityMoon.class, "Moon", GCCoreConfigManager.idEntityOverworld + 1, 150, 5, true);
 	}
 
     public void registerGalacticraftCreature(Class var0, String var1, int id, int back, int fore)

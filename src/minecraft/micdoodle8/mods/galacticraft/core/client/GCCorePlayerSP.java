@@ -12,6 +12,7 @@ import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.multiplayer.NetClientHandler;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Icon;
 import net.minecraft.util.Session;
@@ -38,6 +39,7 @@ public class GCCorePlayerSP extends EntityClientPlayerMP
 	private int thirdPersonView = 0;
 	public long tick;
 	public boolean oxygenSetupValid = true;
+	AxisAlignedBB boundingBoxBefore;
 
 	public ArrayList<ISchematicPage> unlockedSchematics = new ArrayList<ISchematicPage>();
 
@@ -68,6 +70,16 @@ public class GCCorePlayerSP extends EntityClientPlayerMP
 	@Override
 	public void onLivingUpdate()
     {
+		if (this.boundingBox != null && this.boundingBoxBefore == null/* && this.worldObj.provider instanceof GCCoreWorldProviderInnerSpace*/)
+		{
+			boundingBoxBefore = this.boundingBox;
+			this.boundingBox.setBounds(this.boundingBoxBefore.minX + 0.4, this.boundingBoxBefore.minY + 0.9, this.boundingBoxBefore.minZ + 0.4, this.boundingBoxBefore.maxX - 0.4, this.boundingBoxBefore.maxY - 0.9, this.boundingBoxBefore.maxZ - 0.4);
+		}
+		else if (this.boundingBox != null && this.boundingBoxBefore != null)
+		{
+			this.boundingBox.setBB(this.boundingBoxBefore);
+		}
+		
 		super.onLivingUpdate();
 
     	boolean changed = false;

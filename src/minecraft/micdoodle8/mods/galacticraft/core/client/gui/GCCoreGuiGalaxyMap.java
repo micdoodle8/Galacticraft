@@ -323,10 +323,10 @@ public class GCCoreGuiGalaxyMap extends GCCoreGuiStarBackground
 
 		            if (posMaps[0] != null && posMaps[1] != null)
 		            {
-		            	if (posMaps[0].get(MathHelper.floor_float(Sys.getTime() / (720F * planet.getStretchValue()) % 2880)) != null && posMaps[1].get(MathHelper.floor_float(Sys.getTime() / 720F % 2880)) != null)
+		            	if (posMaps[0].get(MathHelper.floor_float(Sys.getTime() / (720F * 1 * planet.getStretchValue()) % 2880)) != null && posMaps[1].get(MathHelper.floor_float(Sys.getTime() / 720F % 2880)) != null)
 		            	{
-		                	final int x = MathHelper.floor_float((Float) posMaps[0].get(MathHelper.floor_float((planet.getPhaseShift() + Sys.getTime() / (720F * planet.getStretchValue())) % 2880)));
-		                	final int y = MathHelper.floor_float((Float) posMaps[1].get(MathHelper.floor_float((planet.getPhaseShift() + Sys.getTime() / (720F * planet.getStretchValue())) % 2880)));
+		                	final int x = MathHelper.floor_float((Float) posMaps[0].get(MathHelper.floor_float((planet.getPhaseShift() + Sys.getTime() / (720F * 1 * planet.getStretchValue())) % 2880)));
+		                	final int y = MathHelper.floor_float((Float) posMaps[1].get(MathHelper.floor_float((planet.getPhaseShift() + Sys.getTime() / (720F * 1 * planet.getStretchValue())) % 2880)));
 
 		                	var26 = x;
 		                	var27 = y;
@@ -417,8 +417,8 @@ public class GCCoreGuiGalaxyMap extends GCCoreGuiStarBackground
 				                    {
 				                    	if (posMaps2[0].get(MathHelper.floor_float(Sys.getTime() / (720F * moon.getStretchValue()) % 2880)) != null && posMaps2[1].get(MathHelper.floor_float(Sys.getTime() / 720F % 2880)) != null)
 				                    	{
-				                        	final int x = MathHelper.floor_float((Float) posMaps2[0].get(MathHelper.floor_float((moon.getPhaseShift() + Sys.getTime() / (720F * moon.getStretchValue())) % 2880)));
-				                        	final int y = MathHelper.floor_float((Float) posMaps2[1].get(MathHelper.floor_float((moon.getPhaseShift() + Sys.getTime() / (720F * moon.getStretchValue())) % 2880)));
+				                        	final int x = MathHelper.floor_float((Float) posMaps2[0].get(MathHelper.floor_float((moon.getPhaseShift() + Sys.getTime() / (720F * 1 * moon.getStretchValue())) % 2880)));
+				                        	final int y = MathHelper.floor_float((Float) posMaps2[1].get(MathHelper.floor_float((moon.getPhaseShift() + Sys.getTime() / (720F * 1 * moon.getStretchValue())) % 2880)));
 
 				                        	var26b = x;
 				                        	var27b = y;

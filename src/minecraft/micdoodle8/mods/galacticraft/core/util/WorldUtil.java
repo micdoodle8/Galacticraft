@@ -21,9 +21,10 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreOrbitTeleportType;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreSpaceStationData;
-import micdoodle8.mods.galacticraft.core.dimension.GCCoreWorldProvider;
+import micdoodle8.mods.galacticraft.core.dimension.GCCoreWorldProviderSpaceStation;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityParaChest;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.planet.IUpdateable;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketDimensionListPlanets;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketDimensionListSpaceStations;
@@ -49,6 +50,7 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 import universalelectricity.core.vector.Vector3;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class WorldUtil
@@ -61,6 +63,18 @@ public class WorldUtil
     public static List<ItemStack> uncommon = new ArrayList();
     public static List<ItemStack> rare = new ArrayList();
     public static List<ItemStack> ultrarare = new ArrayList();
+    
+    public static List<IUpdateable> updateableObjects = new ArrayList<IUpdateable>();
+    
+    public static void updatePlanets()
+    {
+    	List<IUpdateable> planetList = new ArrayList<IUpdateable>();
+    	planetList.addAll(updateableObjects);
+    	for (IUpdateable planet : planetList)
+    	{
+    		planet.update();
+    	}
+    }
 
     public static double getGravityForEntity(EntityLiving eLiving)
     {
@@ -102,7 +116,7 @@ public class WorldUtil
 
     public static Vector3 getWorldColor(World world)
     {
-    	if (world.provider instanceof GCCoreWorldProvider)
+    	if (world.provider instanceof GCCoreWorldProviderSpaceStation)
     	{
         	return new Vector3(0.5, 0.5, 0.5);
     	}
@@ -680,7 +694,7 @@ public class WorldUtil
                 var8.dimension = var2;
                 var8.playerNetServerHandler.sendPacketToPlayer(new Packet9Respawn(var8.dimension, (byte)var8.worldObj.difficultySetting, var0.getWorldInfo().getTerrainType(), var0.getHeight(), var8.theItemInWorldManager.getGameType()));
 
-                if (var0.provider instanceof GCCoreWorldProvider && WorldUtil.registeredSpaceStations.contains(var8))
+                if (var0.provider instanceof GCCoreWorldProviderSpaceStation && WorldUtil.registeredSpaceStations.contains(var8))
                 {
                 	var8.playerNetServerHandler.sendPacketToPlayer(GCCorePacketSpaceStationData.buildSpaceStationDataPacket(var0, var0.provider.dimensionId, var8));
                 }

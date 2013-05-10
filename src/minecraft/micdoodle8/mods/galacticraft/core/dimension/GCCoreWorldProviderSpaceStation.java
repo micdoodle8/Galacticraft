@@ -20,7 +20,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  *  All rights reserved.
  *
  */
-public class GCCoreWorldProvider extends WorldProvider implements IOrbitDimension, ISolarLevel, IExitHeight
+public class GCCoreWorldProviderSpaceStation extends WorldProvider implements IOrbitDimension, ISolarLevel, IExitHeight
 {
     public int spaceStationDimensionID;
     private final float[] colorsSunriseSunset = new float[4];

@@ -18,7 +18,7 @@ import micdoodle8.mods.galacticraft.core.client.gui.GCCoreOverlayOxygenWarning;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreOverlaySensorGlasses;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreOverlaySpaceship;
 import micdoodle8.mods.galacticraft.core.client.sounds.GCCoreSoundUpdaterSpaceship;
-import micdoodle8.mods.galacticraft.core.dimension.GCCoreWorldProvider;
+import micdoodle8.mods.galacticraft.core.dimension.GCCoreWorldProviderSpaceStation;
 import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityLander;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityRocketT1;
@@ -43,7 +43,6 @@ import net.minecraft.world.WorldProviderSurface;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import cpw.mods.fml.common.TickType;
@@ -110,13 +109,23 @@ public class GCCoreTickHandlerClient implements ITickHandler
 				}
 			}
 
-			if (world != null && world.provider instanceof GCCoreWorldProvider)
+			if (world != null && world.provider instanceof GCCoreWorldProviderSpaceStation)
 			{
 				if (world.provider.getSkyRenderer() == null)
                 {
-					world.provider.setSkyRenderer(new GCCoreSkyProviderOrbit());
+					world.provider.setSkyRenderer(new GCCoreSkyProviderOrbit("/micdoodle8/mods/galacticraft/core/client/planets/overworld.png", true, true));
                 }
 			}
+
+//			if (world != null && world.provider instanceof GCCoreWorldProviderInnerSpace)
+//			{
+//				GCCoreTickHandlerClient.zoom(50.0F);
+//				
+//				if (world.provider.getSkyRenderer() == null)
+//                {
+//					world.provider.setSkyRenderer(new GCCoreSkyProviderOrbit(null, false, false));
+//                }
+//			}
 
 //			if (player != null && player.ridingEntity != null && player.ridingEntity instanceof GCCoreEntityControllable)
 //			{
