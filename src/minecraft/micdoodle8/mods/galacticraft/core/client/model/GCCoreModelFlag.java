@@ -1,15 +1,20 @@
 package micdoodle8.mods.galacticraft.core.client.model;
 
+import java.util.List;
+
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityFlag;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.ImageBufferDownload;
 import net.minecraft.client.renderer.RenderEngine;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.StringUtils;
 
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreModelFlag extends ModelBase
 {
@@ -80,44 +85,32 @@ public class GCCoreModelFlag extends ModelBase
 
 		if (((GCCoreEntityFlag)entity).getType() != 0)
 		{
+			this.bindPlayerHead((GCCoreEntityFlag)entity);
 			GL11.glScalef(0.5F, 0.5F, 0.5F);
-			this.loadDownloadableImageTexture("http://skins.minecraft.net/MinecraftSkins/" + StringUtils.stripControlCodes(((GCCoreEntityFlag)entity).getOwner()) + ".png", FMLClientHandler.instance().getClient().thePlayer.getTexture());
 			this.picSide1.render(f5);
 			this.picSide2.render(f5);
-			this.loadDownloadableImageTexture("http://skins.minecraft.net/MinecraftSkins/" + StringUtils.stripControlCodes(((GCCoreEntityFlag)entity).getOwner()) + ".png", FMLClientHandler.instance().getClient().thePlayer.getTexture());
 			this.picSide3.render(f5);
 			this.picSide4.render(f5);
 		}
 	}
-
-	public void renderFlagOnly(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
+	
+	private void bindPlayerHead(GCCoreEntityFlag e)
 	{
-		this.setRotationAngles(entity, f, f1, f2, f3, f4, f5);
-		this.flag.render(f5);
+        String s1 = "http://skins.minecraft.net/MinecraftSkins/" + StringUtils.stripControlCodes(e.getOwner()) + ".png";
 
-		if (((GCCoreEntityFlag)entity).getType() == 1)
-		{
-			GL11.glScalef(0.5F, 0.5F, 0.5F);
-			this.loadDownloadableImageTexture("http://skins.minecraft.net/MinecraftSkins/" + StringUtils.stripControlCodes(((GCCoreEntityFlag)entity).getOwner()) + ".png", FMLClientHandler.instance().getClient().thePlayer.getTexture());
-			this.picSide1.render(f5);
-			this.picSide2.render(f5);
-		}
+        if (!FMLClientHandler.instance().getClient().renderEngine.hasImageData(s1))
+        {
+        	FMLClientHandler.instance().getClient().renderEngine.obtainImageData(s1, new ImageBufferDownload());
+        }
+
+        this.bindTextureByURL(s1, "/mob/char.png");
 	}
-
-    protected boolean loadDownloadableImageTexture(String par1Str, String par2Str)
+	
+    protected void bindTextureByURL(String par1Str, String par2Str)
     {
-        final RenderEngine var3 = FMLClientHandler.instance().getClient().renderEngine;
-        final int var4 = var3.getTextureForDownloadableImage(par1Str, par2Str);
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, FMLClientHandler.instance().getClient().renderEngine.getTextureForDownloadableImage(par1Str, par2Str));
 
-        if (var4 >= 0)
-        {
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, var4);
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        FMLClientHandler.instance().getClient().renderEngine.resetBoundTexture();
     }
 
 	private void setRotation(ModelRenderer model, float x, float y, float z)
