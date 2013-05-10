@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
 import mekanism.api.EnumColor;
+import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityRocketT1;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerRocketRefill;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -43,10 +44,10 @@ public class GCCoreGuiRocketRefill extends GuiContainer
 
         this.fontRenderer.drawString(StatCollector.translateToLocal(this.upperChestInventory.getInvName()), 8, 34 + 2 + 3, 4210752);
 
-        if (this.mc.thePlayer != null && this.mc.thePlayer.ridingEntity != null && this.mc.thePlayer.ridingEntity instanceof GCCoreEntityRocketT1)
+        if (this.mc.thePlayer != null && this.mc.thePlayer.ridingEntity != null && this.mc.thePlayer.ridingEntity instanceof EntitySpaceshipBase)
         {
             this.fontRenderer.drawString("Fuel:", 125, 15 + 3, 4210752);
-    		final double percentage = ((GCCoreEntityRocketT1) this.mc.thePlayer.ridingEntity).getScaledFuelLevel(100);
+    		final double percentage = ((EntitySpaceshipBase) this.mc.thePlayer.ridingEntity).getScaledFuelLevel(100);
     		final String color = percentage > 80.0D ? EnumColor.BRIGHT_GREEN.code : percentage > 40.0D ? EnumColor.ORANGE.code : EnumColor.RED.code;
             final String str = percentage + "% full";
     		this.fontRenderer.drawString(color + str, 117 - str.length() / 2, 20 + 8, 4210752);
@@ -75,9 +76,9 @@ public class GCCoreGuiRocketRefill extends GuiContainer
         final int var6 = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(var5, var6, 0, 0, 176, 199);
 
-        if (this.mc.thePlayer != null && this.mc.thePlayer.ridingEntity != null && this.mc.thePlayer.ridingEntity instanceof GCCoreEntityRocketT1)
+        if (this.mc.thePlayer != null && this.mc.thePlayer.ridingEntity != null && this.mc.thePlayer.ridingEntity instanceof EntitySpaceshipBase)
         {
-    		final int fuelLevel = ((GCCoreEntityRocketT1) this.mc.thePlayer.ridingEntity).getScaledFuelLevel(38);
+    		final int fuelLevel = ((EntitySpaceshipBase) this.mc.thePlayer.ridingEntity).getScaledFuelLevel(38);
 
             this.drawTexturedModalRect((this.width - this.xSize) / 2 + (this.type == 1 ? 72 : 71), (this.height - this.ySize) / 2 + 45 - fuelLevel, 176, 38 - fuelLevel, 42, fuelLevel);
         }

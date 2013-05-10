@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.API.SchematicRegistry;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GCLog;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityRocketT1;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerSchematic;
@@ -99,13 +100,13 @@ public class GCCorePacketHandlerServer implements IPacketHandler
         }
         else if (packetType == 3)
         {
-            if (!player.worldObj.isRemote && !player.isDead && player.ridingEntity != null && !player.ridingEntity.isDead && player.ridingEntity instanceof GCCoreEntityRocketT1)
+            if (!player.worldObj.isRemote && !player.isDead && player.ridingEntity != null && !player.ridingEntity.isDead && player.ridingEntity instanceof EntitySpaceshipBase)
             {
-            	final GCCoreEntityRocketT1 ship = (GCCoreEntityRocketT1) player.ridingEntity;
+            	final EntitySpaceshipBase ship = (EntitySpaceshipBase) player.ridingEntity;
 
             	final ItemStack stack = ship.getStackInSlot(0);
 
-            	if (ship.hasFuelTank())
+            	if (ship.hasValidFuel())
             	{
             		ItemStack stack2 = null;
 
@@ -153,7 +154,7 @@ public class GCCorePacketHandlerServer implements IPacketHandler
             final Class[] decodeAs = {Integer.class};
             PacketUtil.readPacketData(data, decodeAs);
 
-            if (player.ridingEntity instanceof GCCoreEntityRocketT1)
+            if (player.ridingEntity instanceof EntitySpaceshipBase)
             {
             	player.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiSpaceshipInventory, player.worldObj, (int)player.posX, (int)player.posY, (int)player.posZ);
             }
@@ -163,9 +164,9 @@ public class GCCorePacketHandlerServer implements IPacketHandler
             final Class[] decodeAs = {Float.class};
             final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
 
-            if (player.ridingEntity instanceof GCCoreEntityRocketT1)
+            if (player.ridingEntity instanceof EntitySpaceshipBase)
             {
-            	final GCCoreEntityRocketT1 ship = (GCCoreEntityRocketT1) player.ridingEntity;
+            	final EntitySpaceshipBase ship = (EntitySpaceshipBase) player.ridingEntity;
 
             	if (ship != null)
             	{
@@ -178,9 +179,9 @@ public class GCCorePacketHandlerServer implements IPacketHandler
             final Class[] decodeAs = {Float.class};
             final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
 
-            if (player.ridingEntity instanceof GCCoreEntityRocketT1)
+            if (player.ridingEntity instanceof EntitySpaceshipBase)
             {
-            	final GCCoreEntityRocketT1 ship = (GCCoreEntityRocketT1) player.ridingEntity;
+            	final EntitySpaceshipBase ship = (EntitySpaceshipBase) player.ridingEntity;
 
             	if (ship != null)
             	{

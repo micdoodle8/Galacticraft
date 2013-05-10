@@ -9,12 +9,11 @@ import java.util.HashSet;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.API.IRocketType;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
-import micdoodle8.mods.galacticraft.core.GCLog;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLaunchFlameFX;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLaunchSmokeFX;
-import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityOxygenFX;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPad;
@@ -48,7 +47,6 @@ import com.google.common.io.ByteArrayDataInput;
 
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -58,7 +56,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  *  All rights reserved.
  *
  */
-public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInventory, IMissileLockable
+public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInventory, IMissileLockable, IRocketType
 {
 	private final int tankCapacity = 2000;
 	public LiquidTank spaceshipFuelTank = new LiquidTank(this.tankCapacity);
@@ -142,7 +140,7 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
         	i = 1;
         }
 
-        if ((this.getLaunched() == 1 || this.rand.nextInt(i) == 0) && !GCCoreConfigManager.disableSpaceshipParticles && this.hasFuelTank())
+        if ((this.getLaunched() == 1 || this.rand.nextInt(i) == 0) && !GCCoreConfigManager.disableSpaceshipParticles && this.hasValidFuel())
         {
         	if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
         	{
@@ -155,7 +153,7 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
             this.rocketSoundUpdater.update();
         }
 
-        if (this.launched && this.hasFuelTank())
+        if (this.launched && this.hasValidFuel())
         {
         	double d = this.timeSinceLaunch / 250;
 
@@ -183,7 +181,7 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
         		this.removeFuel(null, 1);
         	}
         }
-        else if (!this.hasFuelTank() && this.getLaunched() == 1 && !this.worldObj.isRemote)
+        else if (!this.hasValidFuel() && this.getLaunched() == 1 && !this.worldObj.isRemote)
         {
         	if (Math.abs(Math.sin(this.timeSinceLaunch / 1000)) / 10 != 0.0)
         	{
@@ -221,7 +219,7 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
 		}
 	}
 
-    public boolean hasFuelTank()
+    public boolean hasValidFuel()
     {
     	return !(this.spaceshipFuelTank.getLiquid() == null || this.spaceshipFuelTank.getLiquid().amount == 0);
     }
@@ -627,4 +625,10 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
     {
     	return this.landingPad;
     }
+
+	@Override
+	public int getType() 
+	{
+		return this.getSpaceshipType();
+	}
 }

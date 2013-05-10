@@ -78,6 +78,7 @@ import net.minecraftforge.liquids.LiquidDictionary;
 import net.minecraftforge.liquids.LiquidStack;
 import universalelectricity.prefab.TranslationHelper;
 import universalelectricity.prefab.multiblock.TileEntityMulti;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
@@ -305,21 +306,10 @@ public class GalacticraftCore
 		
 		GalacticraftCore.proxy.postInit(event);
 		GalacticraftCore.proxy.registerRenderInformation();
-
-		if (!GCCoreConfigManager.forceLoadGC && !GCCoreCompatibilityManager.isIc2Loaded() && !GCCoreCompatibilityManager.isTELoaded())
-		{
-			final String err = "<strong><h1>Galacticraft Requires IndustrialCraft 2 or Thermal Expansion!</h1></strong><br /><h3>Install IndustrialCraft 2/Thermal Expansion separately!</h3>";
-			System.err.println(err);
-
-            final JEditorPane ep = new JEditorPane("text/html",
-					"<html>" + err + "</html>");
-
-            ep.setEditable(false);
-            ep.setOpaque(false);
-
-            JOptionPane.showMessageDialog(null, ep, "Fatal error", JOptionPane.ERROR_MESSAGE);
-			System.exit(1);
-		}
+		
+		GCCoreThreadRequirementMissing.startCheck();
+		
+		FMLLog.info("done");
 	}
 
 	@ServerStarted

@@ -117,52 +117,9 @@ public class GCCoreTickHandlerClient implements ITickHandler
                 }
 			}
 
-//			if (world != null && world.provider instanceof GCCoreWorldProviderInnerSpace)
-//			{
-//				GCCoreTickHandlerClient.zoom(50.0F);
-//				
-//				if (world.provider.getSkyRenderer() == null)
-//                {
-//					world.provider.setSkyRenderer(new GCCoreSkyProviderOrbit(null, false, false));
-//                }
-//			}
-
-//			if (player != null && player.ridingEntity != null && player.ridingEntity instanceof GCCoreEntityControllable)
-//			{
-//				final GCCoreEntityControllable entityControllable = (GCCoreEntityControllable) player.ridingEntity;
-//
-//				if (minecraft.gameSettings.keyBindLeft.pressed)
-//				{
-//					entityControllable.keyPressed(2, player);
-//					final Object[] toSend = {2};
-//					PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 9, toSend));
-//				}
-//
-//				if (minecraft.gameSettings.keyBindRight.pressed)
-//				{
-//					entityControllable.keyPressed(3, player);
-//					final Object[] toSend = {3};
-//					PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 9, toSend));
-//				}
-//
-//				if (minecraft.gameSettings.keyBindForward.pressed)
-//				{
-//					entityControllable.keyPressed(0, player);
-//					final Object[] toSend = {0};
-//					PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 9, toSend));
-//				}
-//
-//				if (minecraft.gameSettings.keyBindBack.pressed)
-//				{
-//					entityControllable.keyPressed(1, player);
-//					final Object[] toSend = {1};
-//					PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 9, toSend));
-//				}
-//			}
-
-			if (player != null && player.ridingEntity != null && player.ridingEntity instanceof GCCoreEntityRocketT1)
+			if (player != null && player.ridingEntity != null && player.ridingEntity instanceof EntitySpaceshipBase)
 			{
-				final GCCoreEntityRocketT1 ship = (GCCoreEntityRocketT1) player.ridingEntity;
+				final EntitySpaceshipBase ship = (EntitySpaceshipBase) player.ridingEntity;
 
 				if (minecraft.gameSettings.keyBindLeft.pressed)
 				{

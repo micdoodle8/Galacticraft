@@ -11,6 +11,7 @@ import java.util.Set;
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
 import micdoodle8.mods.galacticraft.API.IMapPlanet;
 import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
+import micdoodle8.mods.galacticraft.API.IRocketType;
 import micdoodle8.mods.galacticraft.API.ISchematicPage;
 import micdoodle8.mods.galacticraft.API.ISchematicResultPage;
 import micdoodle8.mods.galacticraft.core.CommonProxyCore;
@@ -64,6 +65,7 @@ import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntityLand
 import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntityRefineryRenderer;
 import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntityTreasureChestRenderer;
 import micdoodle8.mods.galacticraft.core.client.sounds.GCCoreSounds;
+import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityAlienVillager;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityArrow;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityAstroOrb;
@@ -661,9 +663,9 @@ public class ClientProxyCore extends CommonProxyCore
 		{
 			return new GCCoreGuiGalaxyMap(player);
 		}
-		else if (ID == GCCoreConfigManager.idGuiSpaceshipInventory && player.ridingEntity != null && player.ridingEntity instanceof GCCoreEntityRocketT1)
+		else if (ID == GCCoreConfigManager.idGuiSpaceshipInventory && player.ridingEntity != null && player.ridingEntity instanceof EntitySpaceshipBase && player.ridingEntity instanceof IRocketType)
 		{
-			return new GCCoreGuiRocketRefill(player.inventory, (GCCoreEntityRocketT1) player.ridingEntity, ((GCCoreEntityRocketT1) player.ridingEntity).getSpaceshipType());
+			return new GCCoreGuiRocketRefill(player.inventory, (EntitySpaceshipBase) player.ridingEntity, ((IRocketType) player.ridingEntity).getType());
 		}
 		else if (ID == GCCoreConfigManager.idGuiRefinery)
 		{

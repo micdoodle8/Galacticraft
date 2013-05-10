@@ -24,6 +24,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -36,7 +37,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, IPacketReceiver, IMissileLockable, IDockable
+public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, IPacketReceiver, IMissileLockable, IDockable, IInventory
 {
 	protected long ticks = 0;
 
@@ -62,6 +63,10 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
 
     public abstract int getMaxFuel();
 
+    public abstract int getScaledFuelLevel(int i);
+
+	public abstract boolean hasValidFuel();
+    
     @Override
 	protected boolean canTriggerWalking()
     {
@@ -169,10 +174,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
         }
     }
 
-    public List<ItemStack> getItemsDropped()
-    {
-    	return null;
-    }
+    public abstract List<ItemStack> getItemsDropped();
 
     @Override
     public void performHurtAnimation()
@@ -250,7 +252,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
     		this.rotationPitch = 180F;
     	}
 
-    	if (this.posY > (this.worldObj.provider instanceof IExitHeight ? ((IExitHeight) this.worldObj.provider).getYCoordinateToTeleport() : 0))
+    	if (this.posY > (this.worldObj.provider instanceof IExitHeight ? ((IExitHeight) this.worldObj.provider).getYCoordinateToTeleport() : 1200))
     	{
     		this.teleport();
     	}

@@ -4,6 +4,7 @@ import java.io.File;
 
 import net.minecraft.block.Block;
 import net.minecraftforge.common.Configuration;
+import net.minecraftforge.common.Property;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -25,7 +26,7 @@ public class GCCoreConfigManager
 			this.setDefaultValues();
 		}
 	}
-
+	
 	public static int idDimensionOverworldOrbit;
 //	public static int idDimensionSpace;
 
@@ -172,14 +173,14 @@ public class GCCoreConfigManager
 	public static boolean hiresTextures;
 	public static double spaceStationEnergyScalar;
 	public static boolean disableLander;
-	public static boolean forceLoadGC;
+	public static Property forceLoadGC;
 
 	private void setDefaultValues()
     {
 		try
 		{
 	        GCCoreConfigManager.configuration.load();
-
+	        
 //	        GCCoreConfigManager.idDimensionSpace =			 			GCCoreConfigManager.configuration.get("DIMENSIONS",                 "idDimensionSpace",           			-26)        .getInt(-26);
 	        GCCoreConfigManager.idDimensionOverworldOrbit = 			GCCoreConfigManager.configuration.get("DIMENSIONS",                 "idDimensionOverworldOrbit",            -27)        .getInt(-27);
 
@@ -309,7 +310,7 @@ public class GCCoreConfigManager
 	        GCCoreConfigManager.spaceStationEnergyScalar = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Space Station Solar Energy Multiplier", 3.0, "If Mekanism is installed, solar panels will work (default 3x) more effective on space stations.")		.getDouble(3.0);
 	        GCCoreConfigManager.sealableIDs = 							GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "External Sealable IDs", 				new String[] {String.valueOf(Block.glass.blockID + ":0"), String.valueOf(Block.thinGlass.blockID + ":0")}, "List IDs from other mods that the Oxygen Sealer should recognize as solid blocks. Format is ID:METADATA").getStringList();
 	        GCCoreConfigManager.disableLander =							GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Lander", 					false, "Set to true if you do not want to use the new Moon Lander feature, and land on the moon with a parachute instead.")		.getBoolean(false);
-	        GCCoreConfigManager.forceLoadGC =							GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Force Load", 						false, "Bypass mod requirements and load anyway (not recommended).")		.getBoolean(false);
+	        GCCoreConfigManager.forceLoadGC =							GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Force Load", 						false, "Bypass mod requirements and load anyway (not recommended).");
 		}
 		catch (final Exception e)
 		{

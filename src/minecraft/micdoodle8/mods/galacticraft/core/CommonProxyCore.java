@@ -1,8 +1,9 @@
 package micdoodle8.mods.galacticraft.core;
 
 import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
+import micdoodle8.mods.galacticraft.API.IRocketType;
 import micdoodle8.mods.galacticraft.API.ISchematicPage;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityRocketT1;
+import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerAirCollector;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerAirCompressor;
@@ -127,14 +128,9 @@ public class CommonProxyCore implements IGuiHandler
 	{
 		final GCCorePlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player);
 
-		/*
-		if (ID == GCCoreConfigManager.idGuiTankRefill && playerBase != null)
+		if (ID == GCCoreConfigManager.idGuiSpaceshipInventory && player.ridingEntity != null && player.ridingEntity instanceof EntitySpaceshipBase && player.ridingEntity instanceof IRocketType)
 		{
-			return new ContainerPlayer(player, ((GCCoreInventoryPlayer) player.inventory));
-		}
-		else */if (ID == GCCoreConfigManager.idGuiSpaceshipInventory && player.ridingEntity != null && player.ridingEntity instanceof GCCoreEntityRocketT1)
-		{
-			return new GCCoreContainerRocketRefill(player.inventory, (GCCoreEntityRocketT1) player.ridingEntity, ((GCCoreEntityRocketT1) player.ridingEntity).getSpaceshipType());
+			return new GCCoreContainerRocketRefill(player.inventory, (EntitySpaceshipBase) player.ridingEntity, ((IRocketType) player.ridingEntity).getType());
 		}
 		else if (ID == GCCoreConfigManager.idGuiRefinery)
 		{
