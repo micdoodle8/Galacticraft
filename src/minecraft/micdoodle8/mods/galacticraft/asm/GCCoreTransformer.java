@@ -39,9 +39,32 @@ public class GCCoreTransformer implements IClassTransformer
 {
 	HashMap<String, String> obfuscatedMap = new HashMap<String, String>();
 	HashMap<String, String> unObfuscatedMap = new HashMap<String, String>();
+	private boolean deobfuscated = false;
 
 	public GCCoreTransformer()
 	{
+        try
+        {
+        	@SuppressWarnings("resource")
+			URLClassLoader loader = new RelaunchClassLoader(((URLClassLoader) getClass().getClassLoader()).getURLs());
+            URL classResource = loader.findResource(String.valueOf("net.minecraft.world.World").replace('.', '/').concat(".class"));
+            if (classResource == null)
+            {
+            	deobfuscated = false;
+            }
+            else
+            {
+                deobfuscated = true;
+            }
+        }
+        catch(Exception e)
+        {
+        	e.printStackTrace();
+        }
+        finally
+        {
+        }
+        
 		this.obfuscatedMap.put("confManagerClass", "gu");
 		this.unObfuscatedMap.put("confManagerClass", "net/minecraft/server/management/ServerConfigurationManager");
 		this.obfuscatedMap.put("createPlayerMethod", "a");
@@ -178,30 +201,6 @@ public class GCCoreTransformer implements IClassTransformer
 		{
 			bytes = this.transform5(name, bytes, this.obfuscatedMap);
 		}
-		
-		boolean deobfuscated = false;
-		
-        try
-        {
-        	@SuppressWarnings("resource")
-			URLClassLoader loader = new RelaunchClassLoader(((URLClassLoader) getClass().getClassLoader()).getURLs());
-            URL classResource = loader.findResource(String.valueOf("net.minecraft.world.World").replace('.', '/').concat(".class"));
-            if (classResource == null)
-            {
-            	deobfuscated = false;
-            }
-            else
-            {
-                deobfuscated = true;
-            }
-        }
-        catch(Exception e)
-        {
-        	e.printStackTrace();
-        }
-        finally
-        {
-        }
 
 		if (deobfuscated && name.replace('.', '/').equals(this.unObfuscatedMap.get("minecraft")))
 		{
