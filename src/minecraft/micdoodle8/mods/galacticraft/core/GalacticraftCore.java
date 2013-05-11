@@ -9,6 +9,8 @@ import java.util.Map;
 import javax.swing.JEditorPane;
 import javax.swing.JOptionPane;
 
+import basiccomponents.common.BasicComponents;
+
 import micdoodle8.mods.galacticraft.API.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubMod;
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
@@ -304,12 +306,17 @@ public class GalacticraftCore
 			RecipeUtil.addIndustrialcraftCraftingRecipes();
 		}
 		
+		if (GCCoreConfigManager.loadBC.getBoolean(false))
+		{
+			BasicComponents.registerTileEntities();
+			BasicComponents.register(instance, GalacticraftCore.CHANNEL);
+			BasicComponents.requestAll();
+		}
+		
 		GalacticraftCore.proxy.postInit(event);
 		GalacticraftCore.proxy.registerRenderInformation();
 		
 		GCCoreThreadRequirementMissing.startCheck();
-		
-		FMLLog.info("done");
 	}
 
 	@ServerStarted

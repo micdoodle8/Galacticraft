@@ -24,7 +24,7 @@ public class GCCoreThreadRequirementMissing extends Thread
 	@Override
 	public void run()
 	{
-		if (!GCCoreConfigManager.forceLoadGC.getBoolean(false) && !GCCoreCompatibilityManager.isIc2Loaded() && !GCCoreCompatibilityManager.isTELoaded())
+		if (!GCCoreConfigManager.forceLoadGC.getBoolean(false) && !GCCoreConfigManager.loadBC.getBoolean(false) && !GCCoreCompatibilityManager.isIc2Loaded() && !GCCoreCompatibilityManager.isTELoaded())
 		{
 			final String err = "<strong><h1>Galacticraft Requires IndustrialCraft 2, Thermal Expansion or Universal Electricity!</h1></strong><br /><h3>One or more of these mods is REQUIRED for crafting/gameplay. Ignore?</h3>";
 			System.out.println(err);
@@ -34,7 +34,7 @@ public class GCCoreThreadRequirementMissing extends Thread
             ep.setEditable(false);
             ep.setOpaque(false);
             
-			JOptionPane pane = new JOptionPane(ep, JOptionPane.ERROR_MESSAGE, JOptionPane.YES_NO_OPTION, null, new Object[] {"Ignore", "Exit", "Do not show again"}, null);
+			JOptionPane pane = new JOptionPane(ep, JOptionPane.ERROR_MESSAGE, JOptionPane.YES_NO_OPTION, null, new Object[] {"Ignore", "Load Basic Components", "Exit", "Do not show again"}, null);
 			JDialog dialog = pane.createDialog(null, "Missing Dependancy");	
 			dialog.setVisible(true);
 			Object selectedValue = pane.getValue();
@@ -47,6 +47,12 @@ public class GCCoreThreadRequirementMissing extends Thread
 			{
 				GCCoreConfigManager.forceLoadGC.set(true);
 				GCCoreConfigManager.configuration.save();
+			}
+			else if(selectedValue != null && selectedValue.equals("Load Basic Components"))
+			{
+				GCCoreConfigManager.loadBC.set(true);
+				GCCoreConfigManager.configuration.save();
+				JOptionPane.showMessageDialog(null, "You must restart Minecraft for this change to take effect!");
 			}
 		}
 	}

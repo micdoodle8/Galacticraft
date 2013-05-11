@@ -23,6 +23,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.stats.StatBase;
 import net.minecraft.world.World;
+import basiccomponents.common.BCGuiHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -34,7 +35,7 @@ import cpw.mods.fml.common.network.IGuiHandler;
  *  All rights reserved.
  *
  */
-public class CommonProxyCore implements IGuiHandler
+public class CommonProxyCore extends BCGuiHandler implements IGuiHandler
 {
 	public void preInit(FMLPreInitializationEvent event)
 	{
@@ -160,8 +161,6 @@ public class CommonProxyCore implements IGuiHandler
 		{
 			for (final ISchematicPage page : playerBase.unlockedSchematics)
 			{
-				GCLog.info("" + ID + " " + page.getGuiID());
-
 				if (ID == page.getGuiID())
 				{
 					final Container container = page.getResultContainer(playerBase, x, y, z);
@@ -173,12 +172,6 @@ public class CommonProxyCore implements IGuiHandler
 			}
 		}
 		
-		return null;
-	}
-
-	@Override
-	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
-	{
-		return null;
+		return super.getServerGuiElement(ID, playerBase, world, x, y, z);
 	}
 }
