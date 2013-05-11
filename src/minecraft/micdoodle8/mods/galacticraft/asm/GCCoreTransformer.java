@@ -321,8 +321,6 @@ public class GCCoreTransformer implements IClassTransformer
 	            			final TypeInsnNode overwriteNode = new TypeInsnNode(Opcodes.NEW, "micdoodle8/mods/galacticraft/core/entities/GCCorePlayerMP");
 
 	            			methodnode.instructions.set(nodeAt, overwriteNode);
-
-	            			GCLog.info("Successfully set type insertion node with description \"NEW " + map.get("playerMP") + "\" to \"NEW micdoodle8/mods/galacticraft/core/entities/GCCorePlayerMP\" in method: " + methodnode.name);
 	            		}
 	            	}
 	            	else if (list instanceof MethodInsnNode)
@@ -332,8 +330,6 @@ public class GCCoreTransformer implements IClassTransformer
 	            		if (nodeAt.owner.contains(map.get("playerMP")))
 	            		{
 	            			methodnode.instructions.set(nodeAt, new MethodInsnNode(Opcodes.INVOKESPECIAL, "micdoodle8/mods/galacticraft/core/entities/GCCorePlayerMP", "<init>", "(Lnet/minecraft/server/MinecraftServer;Lnet/minecraft/world/World;Ljava/lang/String;Lnet/minecraft/item/ItemInWorldManager;)V"));
-
-	            			GCLog.info("Successfully set method insertion node with owner \"" + map.get("playerMP") + "\" to \"micdoodle8/mods/galacticraft/core/entities/GCCorePlayerMP\" in method: " + methodnode.name);
 	            		}
 	            	}
 	            }
@@ -354,8 +350,6 @@ public class GCCoreTransformer implements IClassTransformer
 	            			final TypeInsnNode overwriteNode = new TypeInsnNode(Opcodes.NEW, "micdoodle8/mods/galacticraft/core/entities/GCCorePlayerMP");
 
 	            			methodnode.instructions.set(nodeAt, overwriteNode);
-
-	            			GCLog.info("Successfully set type insertion node with description \"NEW " + map.get("playerMP") + "\" to \"NEW micdoodle8/mods/galacticraft/core/entities/GCCorePlayerMP\" in method: " + methodnode.name);
 	            		}
 	            	}
 	            	else if (list instanceof MethodInsnNode)
@@ -365,8 +359,6 @@ public class GCCoreTransformer implements IClassTransformer
 	            		if (nodeAt.name.equals("<init>") && nodeAt.owner.equals(map.get("playerMP")))
 	            		{
 	            			methodnode.instructions.set(nodeAt, new MethodInsnNode(Opcodes.INVOKESPECIAL, "micdoodle8/mods/galacticraft/core/entities/GCCorePlayerMP", "<init>", "(Lnet/minecraft/server/MinecraftServer;Lnet/minecraft/world/World;Ljava/lang/String;Lnet/minecraft/item/ItemInWorldManager;)V"));
-
-	            			GCLog.info("Successfully set method insertion node with owner \"" + map.get("playerMP") + "\" to \"micdoodle8/mods/galacticraft/core/entities/GCCorePlayerMP\" in method: " + methodnode.name);
 	            		}
 	            	}
 	            }
@@ -387,8 +379,6 @@ public class GCCoreTransformer implements IClassTransformer
 	            			final TypeInsnNode overwriteNode = new TypeInsnNode(Opcodes.NEW, "micdoodle8/mods/galacticraft/core/entities/GCCorePlayerMP");
 
 	            			methodnode.instructions.set(nodeAt, overwriteNode);
-
-	            			GCLog.info("[BUKKIT] Successfully set type insertion node with description \"NEW " + map.get("playerMP") + "\" to \"NEW micdoodle8/mods/galacticraft/core/entities/GCCorePlayerMP\" in method: " + methodnode.name);
 	            		}
 	            	}
 	            	else if (list instanceof MethodInsnNode)
@@ -398,8 +388,6 @@ public class GCCoreTransformer implements IClassTransformer
 	            		if (nodeAt.getOpcode() == Opcodes.INVOKESPECIAL && nodeAt.name.equals("<init>") && nodeAt.owner.equals(map.get("playerMP")))
 	            		{
 	            			methodnode.instructions.set(nodeAt, new MethodInsnNode(Opcodes.INVOKESPECIAL, "micdoodle8/mods/galacticraft/core/entities/GCCorePlayerMP", "<init>", "(Lnet/minecraft/server/MinecraftServer;Laab;Ljava/lang/String;Ljd;)V"));
-
-	            			GCLog.info("[BUKKIT] Successfully set method insertion node with owner \"" + map.get("playerMP") + "\" to \"micdoodle8/mods/galacticraft/core/entities/GCCorePlayerMP\" in method: " + methodnode.name);
 	            		}
 	            	}
 	            }
@@ -409,6 +397,8 @@ public class GCCoreTransformer implements IClassTransformer
         final ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
         node.accept(writer);
         bytes = writer.toByteArray();
+        
+		System.out.println("Galacticraft successfully injected bytecode into: " + node.name);
 
         return bytes;
     }
@@ -440,8 +430,6 @@ public class GCCoreTransformer implements IClassTransformer
 	            			final TypeInsnNode overwriteNode = new TypeInsnNode(Opcodes.NEW, "micdoodle8/mods/galacticraft/core/client/GCCorePlayerSP");
 
 	            			methodnode.instructions.set(nodeAt, overwriteNode);
-
-	            			GCLog.info("Successfully set NEW type insertion node with description \"NEW " + map.get("playerClient") + "\" to \"NEW micdoodle8/mods/galacticraft/core/client/GCCorePlayerSP\"");
 	            		}
 	            	}
 	            	else if (list instanceof MethodInsnNode)
@@ -451,8 +439,6 @@ public class GCCoreTransformer implements IClassTransformer
 	            		if (nodeAt.name.equals("<init>") && nodeAt.owner.equals(map.get("playerClient")))
 	            		{
 	            			methodnode.instructions.set(nodeAt, new MethodInsnNode(Opcodes.INVOKESPECIAL, "micdoodle8/mods/galacticraft/core/client/GCCorePlayerSP", "<init>", "(Lnet/minecraft/client/Minecraft;Lnet/minecraft/world/World;Lnet/minecraft/util/Session;Lnet/minecraft/client/multiplayer/NetClientHandler;)V"));
-
-	            			GCLog.info("Successfully set INVOKESPECIAL method insertion node with owner \"" + map.get("playerClient") + "\" to \"micdoodle8/mods/galacticraft/core/client/GCCorePlayerSP\"");
 	            		}
 	            	}
 	            }
@@ -462,6 +448,8 @@ public class GCCoreTransformer implements IClassTransformer
         final ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
         node.accept(writer);
         bytes = writer.toByteArray();
+        
+		System.out.println("Galacticraft successfully injected bytecode into: " + node.name);
 
         return bytes;
     }
@@ -495,8 +483,6 @@ public class GCCoreTransformer implements IClassTransformer
 
 	            			methodnode.instructions.insertBefore(nodeAt, beforeNode);
 	            			methodnode.instructions.set(nodeAt, overwriteNode);
-
-	            			GCLog.info("Successfully set INVOKESTATIC type insertion node with name \"micdoodle8/mods/galacticraft/core/util/WorldUtil\"");
 	            		}
 	            	}
 	            }
@@ -506,6 +492,8 @@ public class GCCoreTransformer implements IClassTransformer
         final ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
         node.accept(writer);
         bytes = writer.toByteArray();
+        
+		System.out.println("Galacticraft successfully injected bytecode into: " + node.name);
 
         return bytes;
     }
@@ -539,8 +527,6 @@ public class GCCoreTransformer implements IClassTransformer
 
 	            			methodnode.instructions.insertBefore(nodeAt, beforeNode);
 	            			methodnode.instructions.set(nodeAt, overwriteNode);
-
-	            			GCLog.info("Successfully set INVOKESTATIC type insertion node with name \"micdoodle8/mods/galacticraft/core/util/WorldUtil\"");
 	            		}
 
 	            		if (nodeAt.cst.equals(Double.valueOf(0.9800000190734863D)))
@@ -550,8 +536,6 @@ public class GCCoreTransformer implements IClassTransformer
 
 	            			methodnode.instructions.insertBefore(nodeAt, beforeNode);
 	            			methodnode.instructions.set(nodeAt, overwriteNode);
-
-	            			GCLog.info("Successfully set INVOKESTATIC type insertion node with name \"micdoodle8/mods/galacticraft/core/util/WorldUtil\"");
 	            		}
 	            	}
 	            }
@@ -561,6 +545,8 @@ public class GCCoreTransformer implements IClassTransformer
         final ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
         node.accept(writer);
         bytes = writer.toByteArray();
+        
+		System.out.println("Galacticraft successfully injected bytecode into: " + node.name);
 
         return bytes;
     }
@@ -620,6 +606,8 @@ public class GCCoreTransformer implements IClassTransformer
         final ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
         node.accept(writer);
         bytes = writer.toByteArray();
+        
+		System.out.println("Galacticraft successfully injected bytecode into: " + node.name);
 
         return bytes;
     }
@@ -667,6 +655,8 @@ public class GCCoreTransformer implements IClassTransformer
         final ClassWriter writer = new ClassWriter(COMPUTE_MAXS);
         node.accept(writer);
         bytes = writer.toByteArray();
+        
+		System.out.println("Galacticraft successfully injected bytecode into: " + node.name);
 
         return bytes;
     }
@@ -722,6 +712,8 @@ public class GCCoreTransformer implements IClassTransformer
         final ClassWriter writer = new ClassWriter(COMPUTE_MAXS);
         node.accept(writer);
         bytes = writer.toByteArray();
+        
+		System.out.println("Galacticraft successfully injected bytecode into: " + node.name);
 
         return bytes;
     }
@@ -751,6 +743,8 @@ public class GCCoreTransformer implements IClassTransformer
         final ClassWriter writer = new ClassWriter(COMPUTE_MAXS);
         node.accept(writer);
         bytes = writer.toByteArray();
+        
+		System.out.println("Galacticraft successfully injected bytecode into: " + node.name);
 
         return bytes;
     }
@@ -789,6 +783,8 @@ public class GCCoreTransformer implements IClassTransformer
         final ClassWriter writer = new ClassWriter(COMPUTE_MAXS);
         node.accept(writer);
         bytes = writer.toByteArray();
+        
+		System.out.println("Galacticraft successfully injected bytecode into: " + node.name);
 
         return bytes;
     }
@@ -836,6 +832,8 @@ public class GCCoreTransformer implements IClassTransformer
         final ClassWriter writer = new ClassWriter(COMPUTE_MAXS);
         node.accept(writer);
         bytes = writer.toByteArray();
+        
+		System.out.println("Galacticraft successfully injected bytecode into: " + node.name);
 
         return bytes;
     }
@@ -875,6 +873,8 @@ public class GCCoreTransformer implements IClassTransformer
         final ClassWriter writer = new ClassWriter(COMPUTE_MAXS);
         node.accept(writer);
         bytes = writer.toByteArray();
+        
+		System.out.println("Galacticraft successfully injected bytecode into: " + node.name);
 
         return bytes;
     }
@@ -886,8 +886,6 @@ public class GCCoreTransformer implements IClassTransformer
         reader.accept(node, 0);
 
 		Iterator<MethodNode> methods = node.methods.iterator();
-		
-		String manaStr = "Current Mana: ";
 		
 		int wOffset = 0;
 		
@@ -928,6 +926,8 @@ public class GCCoreTransformer implements IClassTransformer
         final ClassWriter writer = new ClassWriter(COMPUTE_MAXS);
         node.accept(writer);
         bytes = writer.toByteArray();
+        
+		System.out.println("Galacticraft successfully injected bytecode into: " + node.name);
 
         return bytes;
     }
@@ -975,6 +975,8 @@ public class GCCoreTransformer implements IClassTransformer
         final ClassWriter writer = new ClassWriter(COMPUTE_MAXS);
         node.accept(writer);
         bytes = writer.toByteArray();
+        
+		System.out.println("Galacticraft successfully injected bytecode into: " + node.name);
 
         return bytes;
     }
@@ -1000,6 +1002,8 @@ public class GCCoreTransformer implements IClassTransformer
         final ClassWriter writer = new ClassWriter(COMPUTE_MAXS);
         node.accept(writer);
         bytes = writer.toByteArray();
+        
+		System.out.println("Galacticraft successfully injected bytecode into: " + node.name);
 
         return bytes;
     }
@@ -1040,6 +1044,8 @@ public class GCCoreTransformer implements IClassTransformer
         final ClassWriter writer = new ClassWriter(COMPUTE_MAXS);
         node.accept(writer);
         bytes = writer.toByteArray();
+        
+		System.out.println("Galacticraft successfully injected bytecode into: " + node.name);
 
         return bytes;
     }

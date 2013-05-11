@@ -54,7 +54,6 @@
 //			{
 //				if (((GCCorePairedItemID) stackPair).META1 == meta && ((GCCorePairedItemID) stackPair).ID1 == id)
 //				{
-//					FMLLog.info("" + ((GCCorePairedItemID) stackPair).stack2.getItemDamage());
 //					return (short) ((GCCorePairedItemID) stackPair).stack2.getItemDamage();
 //				}
 //			}
