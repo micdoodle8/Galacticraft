@@ -5,6 +5,7 @@ import java.util.Random;
 
 import micdoodle8.mods.galacticraft.API.ISchematicPage;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
+import micdoodle8.mods.galacticraft.core.GCLog;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import net.minecraft.client.Minecraft;
@@ -46,6 +47,11 @@ public class GCCorePlayerSP extends EntityClientPlayerMP
     public GCCorePlayerSP(Minecraft par1Minecraft, World par2World, Session par3Session, NetClientHandler par4NetClientHandler)
     {
 		super(par1Minecraft, par2World, par3Session, par4NetClientHandler);
+		
+		if (!GalacticraftCore.playersClient.containsKey(this.username))
+		{
+			GalacticraftCore.playersClient.put(this.username, this);
+		}
 	}
 
 	@Override

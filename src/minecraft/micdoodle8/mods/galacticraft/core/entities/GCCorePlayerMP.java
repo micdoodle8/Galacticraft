@@ -18,6 +18,7 @@ import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryPlayer;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemParachute;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketSchematicList;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
@@ -49,6 +50,7 @@ import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.IChunkProvider;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -129,6 +131,11 @@ public class GCCorePlayerMP extends EntityPlayerMP
     public GCCorePlayerMP(MinecraftServer par1MinecraftServer, World par2World, String par3Str, ItemInWorldManager par4ItemInWorldManager)
     {
     	super(par1MinecraftServer, par2World, par3Str, par4ItemInWorldManager);
+    	
+    	if (!GalacticraftCore.playersServer.containsKey(this.username))
+    	{
+    		GalacticraftCore.playersServer.put(this.username, this);
+    	}
     }
 
 	@Override
@@ -870,6 +877,11 @@ public class GCCorePlayerMP extends EntityPlayerMP
 		SchematicRegistry.addUnlockedPage(this, SchematicRegistry.getMatchingRecipeForID(Integer.MAX_VALUE));
 
 		Collections.sort(this.unlockedSchematics);
+		
+		if (this.playerNetServerHandler != null && this.unlockedSchematics.size() != this.lastUnlockedSchematics.size())
+		{
+			this.playerNetServerHandler.sendPacketToPlayer(GCCorePacketSchematicList.buildSchematicListPacket(this.unlockedSchematics));
+		}
 
     	this.lastMaskInSlot = ((GCCoreInventoryPlayer)this.inventory).tankItemInSlot(0);
     	this.lastGearInSlot = ((GCCoreInventoryPlayer)this.inventory).tankItemInSlot(1);

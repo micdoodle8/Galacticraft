@@ -24,6 +24,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.stats.StatBase;
 import net.minecraft.world.World;
 import basiccomponents.common.BCGuiHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -164,8 +165,6 @@ public class CommonProxyCore extends BCGuiHandler implements IGuiHandler
 				if (ID == page.getGuiID())
 				{
 					final Container container = page.getResultContainer(playerBase, x, y, z);
-
-					GCLog.info(container.toString());
 
 					return container;
 				}

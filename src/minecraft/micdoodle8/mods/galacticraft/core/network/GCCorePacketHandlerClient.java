@@ -9,7 +9,6 @@ import java.util.Collections;
 import micdoodle8.mods.galacticraft.API.ISchematicPage;
 import micdoodle8.mods.galacticraft.API.SchematicRegistry;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore.GCKeyHandler;
 import micdoodle8.mods.galacticraft.core.client.GCCorePlayerSP;
@@ -34,6 +33,7 @@ import net.minecraftforge.common.DimensionManager;
 import org.lwjgl.input.Keyboard;
 
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
@@ -53,10 +53,7 @@ public class GCCorePacketHandlerClient implements IPacketHandler
 
         GCCorePlayerSP playerBaseClient = null;
 
-        if (player != null && GalacticraftCore.playersClient.size() > 0)
-        {
-        	playerBaseClient = PlayerUtil.getPlayerBaseClientFromPlayer(player);
-        }
+    	playerBaseClient = PlayerUtil.getPlayerBaseClientFromPlayer((EntityPlayer) p);
 
         if (packetType == 0)
         {
@@ -383,7 +380,6 @@ public class GCCorePacketHandlerClient implements IPacketHandler
                         if (!playerBaseClient.unlockedSchematics.contains(SchematicRegistry.getMatchingRecipeForID(Integer.valueOf(var3))))
                         {
                         	playerBaseClient.unlockedSchematics.add(SchematicRegistry.getMatchingRecipeForID(Integer.valueOf(var3)));
-
                         }
                     }
     			}
