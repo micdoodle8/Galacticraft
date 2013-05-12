@@ -281,7 +281,7 @@ public class WorldUtil
 
 	    			if (!GCCoreConfigManager.spaceStationsRequirePermission || data.getAllowedPlayers().contains(playerBase.username.toLowerCase()) || data.getAllowedPlayers().contains(playerBase.username))
 	    			{
-	    				map.put(WorldProvider.getProviderForDimension(id).getDimensionName() + "$" + data.getOwner(), WorldProvider.getProviderForDimension(id).dimensionId);
+	    				map.put(WorldProvider.getProviderForDimension(id).getDimensionName() + "$" + data.getOwner() + "$" + data.getSpaceStationName(), WorldProvider.getProviderForDimension(id).dimensionId);
 	    			}
 	    		}
 			}

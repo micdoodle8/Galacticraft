@@ -25,15 +25,18 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ChatAllowedCharacters;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.StringTranslate;
 import net.minecraft.world.WorldProvider;
 
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.lwjgl.util.glu.GLU;
 
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
@@ -66,7 +69,14 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     public GuiSmallButton sendButton;
 
     public GuiSmallButton createSpaceStationButton;
+    public GuiSmallButton renameSpaceStationButton;
     private boolean field_74024_A;
+    
+    private String renameText = "";
+    public long timeBackspacePressed;
+    public int cursorPulse;
+    public int backspacePressed;
+    public boolean isTextFocused = false;
 
     private static final String[] titlePanoramaPaths = new String[] {"/micdoodle8/mods/galacticraft/core/client/backgrounds/bg3.png"};
 
@@ -86,9 +96,48 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     	return this.fontRenderer;
     }
 
-    // Override keyTyped so you don't accidently hit Escape and fall to your death!
     @Override
-	protected void keyTyped(char par1, int par2) {}
+	protected void keyTyped(char keyChar, int keyID) 
+    {
+    	if (!isTextFocused)
+    	{
+    		return;
+    	}
+    	
+        String oldText = this.renameText;
+        
+        if (keyID == Keyboard.KEY_BACK)
+        {
+            if(this.renameText.length() > 0)
+            {
+            	this.renameText = this.renameText.substring(0, this.renameText.length() - 1);
+                timeBackspacePressed = System.currentTimeMillis();
+            }
+        }
+        else if (keyChar == 22)
+        {
+            String pastestring = GuiScreen.getClipboardString();
+            
+            if(pastestring == null) 
+            {
+                pastestring = "";
+            }
+            
+            if(isValid(this.renameText + pastestring))
+            {
+            	this.renameText = this.renameText + pastestring;
+            }            
+        }
+        else if (isValid(this.renameText + keyChar)) 
+        {
+        	this.renameText = this.renameText + keyChar;
+        }
+    }
+
+    public boolean isValid(String string)
+    {
+        return ChatAllowedCharacters.allowedCharacters.indexOf(string.charAt(string.length() - 1)) >= 0;
+    }
 
     @Override
 	public void initGui()
@@ -113,6 +162,12 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
         	this.buttonList.add(this.createSpaceStationButton);
         }
 
+    	if (this.renameSpaceStationButton != null && this.destinations[this.selectedSlot].contains("$"))
+    	{
+			this.renameSpaceStationButton = new GuiSmallButton(3, this.width - 200, this.height - 26, 80, 20, "Rename");
+			this.buttonList.add(this.renameSpaceStationButton);
+    	}
+
         this.planetSlots.registerScrollButtons(this.buttonList, 2, 3);
     }
 
@@ -126,6 +181,27 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
 	public boolean doesGuiPauseGame()
     {
         return false;
+    }
+
+    @Override
+    protected void mouseClicked(int px, int py, int par3)
+    {
+		final int startX = 20;
+		final int startY = this.height - 26;
+		final int width = this.width - 210 - startX;
+		final int height = 20;
+        this.drawRect(startX, startY, startX + width, startY + height, 0xffA0A0A0);
+        
+        if (px >= startX && px < startX + width && py >= startY && py < startY + height)
+        {
+        	this.isTextFocused = true;
+        }
+        else
+        {
+        	this.isTextFocused = false;
+        }
+        
+        super.mouseClicked(px, py, par3);
     }
 
     private void drawPanorama2(float par1)
@@ -446,10 +522,50 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
 	public void drawScreen(int par1, int par2, float par3)
     {
     	String str = null;
+    	
+        this.cursorPulse++;
+        
+        if(this.timeBackspacePressed > 0)
+        {
+            if(Keyboard.isKeyDown(Keyboard.KEY_BACK) && this.renameText.length() > 0)
+            {
+                if(System.currentTimeMillis() - timeBackspacePressed > 200 / (1+backspacePressed * 0.3F))
+                {
+                    String oldText = this.renameText;
+                    this.renameText = this.renameText.substring(0, this.renameText.length() - 1);
+                    timeBackspacePressed = System.currentTimeMillis();
+                    backspacePressed++;
+                }
+            }
+            else
+            {
+                timeBackspacePressed = 0;
+                backspacePressed = 0;
+            }
+        }
+    	
+    	if (this.renameSpaceStationButton == null && this.destinations[this.selectedSlot].contains("$"))
+    	{
+			this.renameSpaceStationButton = new GuiSmallButton(3, this.width - 200, this.height - 26, 80, 20, "Rename");
+			this.buttonList.add(this.renameSpaceStationButton);
+    	}
+    	else if (this.renameSpaceStationButton != null && !this.destinations[this.selectedSlot].contains("$"))
+    	{
+    		this.buttonList.remove(this.renameSpaceStationButton);
+    		this.renameSpaceStationButton = null;
+    	}
 
     	if (this.createSpaceStationButton != null)
     	{
-    		this.createSpaceStationButton.enabled = WorldUtil.getSpaceStationRecipe(this.selectedSlot) != null;
+    		final String dimension = this.destinations[this.selectedSlot];
+        	final WorldProvider provider = WorldUtil.getProviderForName(dimension);
+        	if (provider == null)
+        	{
+        		throw new NullPointerException("Could not find world provider for dimension: " + dimension);
+        	}
+    		final Integer dim = provider.dimensionId;
+    		
+    		this.createSpaceStationButton.enabled = (WorldUtil.getSpaceStationRecipe(dim) != null);
     	}
 
         this.planetSlots.drawScreen(par1, par2, par3);
@@ -494,6 +610,17 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
 	    		}
 	    	}
     	}
+    	
+    	if (this.destinations[this.selectedSlot].contains("$"))
+    	{
+    		final int startX = 20;
+    		final int startY = this.height - 26;
+    		final int width = this.width - 210 - startX;
+    		final int height = 20;
+            this.drawRect(startX, startY, startX + width, startY + height, 0xffA0A0A0);
+            this.drawRect(startX + 1, startY + 1, startX + width - 1, startY + height - 1, 0xFF000000);
+            this.drawString(this.fontRenderer, this.renameText + (((this.cursorPulse / 24) % 2 == 0 && this.isTextFocused) ? "_" : ""), startX + 4, startY + 5, 0xe0e0e0);
+    	}
 
     	if (this.createSpaceStationButton != null)
     	{
@@ -501,6 +628,14 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
 
     		if (par1 >= this.createSpaceStationButton.xPosition && par2 >= this.createSpaceStationButton.yPosition && par1 < this.createSpaceStationButton.xPosition + 120 && par2 < this.createSpaceStationButton.yPosition + 20)
     		{
+        		final String dimension = this.destinations[this.selectedSlot];
+            	final WorldProvider provider = WorldUtil.getProviderForName(dimension);
+            	if (provider == null)
+            	{
+            		throw new NullPointerException("Could not find world provider for dimension: " + dimension);
+            	}
+        		final Integer dim = provider.dimensionId;
+        		
     			if (this.playerAlreadyCreatedDimension())
     			{
     				final List<String> strings = new ArrayList();
@@ -512,13 +647,13 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     				hasEnough.add(false);
     				this.drawItemStackTooltip(strings, items, hasEnough, this.createSpaceStationButton.xPosition + 115, this.createSpaceStationButton.yPosition + 15);
     			}
-    			else if (this.canCreateSpaceStation(this.selectedSlot) && WorldUtil.getSpaceStationRecipe(this.selectedSlot) != null)
+    			else if (this.canCreateSpaceStation() && WorldUtil.getSpaceStationRecipe(dim) != null)
     			{
     				final List<String> strings = new ArrayList();
     				final List<ItemStack> items = new ArrayList();
     				final List<Boolean> hasEnough = new ArrayList();
     				ItemStack stack = null;
-    				SpaceStationRecipe recipe = WorldUtil.getSpaceStationRecipe(this.selectedSlot);
+    				SpaceStationRecipe recipe = WorldUtil.getSpaceStationRecipe(dim);
 
     		    	final HashMap<Object, Integer> required = new HashMap<Object, Integer>();
     		    	required.putAll(recipe.getInput());
@@ -656,6 +791,20 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
                 return;
         	}
         	break;
+        case 3:
+        	if (par1GuiButton != null && par1GuiButton.equals(this.renameSpaceStationButton))
+        	{
+        		final String dimension2 = this.destinations[this.selectedSlot];
+            	final WorldProvider provider2 = WorldUtil.getProviderForName(dimension2);
+            	if (provider2 == null)
+            	{
+            		throw new NullPointerException("Could not find world provider for dimension: " + dimension2);
+            	}
+        		final Integer dim2 = provider2.dimensionId;
+                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 19, new Object[] {this.renameText, dim2}));
+                this.renameText = "";
+        	}
+        	break;
         }
     }
 
@@ -673,10 +822,8 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     	}
     }
 
-    public boolean canCreateSpaceStation(int i)
+    public boolean canCreateSpaceStation()
     {
-    	final String str = this.destinations[i];
-
 		if (ClientProxyCore.clientSpaceStationID == 0)
 		{
 			return true;

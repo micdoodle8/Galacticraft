@@ -37,6 +37,11 @@ public class GCCoreSpaceStationData extends WorldSavedData
 		return this.spaceStationName;
 	}
 
+	public void setSpaceStationName(String string)
+	{
+		this.spaceStationName = string;
+	}
+
 	@Override
 	public void readFromNBT(NBTTagCompound nbttagcompound)
 	{

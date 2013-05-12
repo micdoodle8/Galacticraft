@@ -46,7 +46,7 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
         GCCoreGuiChoosePlanet.getSendButton(this.choosePlanetGui).enabled = this.choosePlanetGui.isValidDestination(this.choosePlanetGui.selectedSlot);
 
         GCCoreGuiChoosePlanet.getCreateSpaceStationButton(this.choosePlanetGui).displayString = "Create Space Station";
-        GCCoreGuiChoosePlanet.getCreateSpaceStationButton(this.choosePlanetGui).enabled = this.choosePlanetGui.canCreateSpaceStation(this.choosePlanetGui.selectedSlot);
+        GCCoreGuiChoosePlanet.getCreateSpaceStationButton(this.choosePlanetGui).enabled = this.choosePlanetGui.canCreateSpaceStation();
     }
 
     @Override
@@ -92,7 +92,7 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
         			{
         				final String[] twoDimensions = str.split("\\$");
 
-        				str = twoDimensions[0];
+        				str = twoDimensions[2];
         			}
 
         			if (renderer.getPlanetName().toLowerCase().equals(str))
@@ -127,9 +127,9 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
             	if (str.contains("$"))
             	{
             		final String[] strs = str.split("\\$");
-            		str = strs[0];
-            		str = str.concat(" -\u00a73 Owner: ");
-            		str = str.concat(strs[1]);
+            		str = strs[2];
+//            		str = str.concat(" -\u00a73 Owner: ");
+//            		str = str.concat(strs[1]);
             	}
 
                 this.choosePlanetGui.drawCenteredString(this.choosePlanetGui.getFontRenderer(), str, this.choosePlanetGui.width / 2, par3 + 3, 0xEEEEEE);
@@ -152,7 +152,7 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
             	if (str.contains("$"))
             	{
             		final String[] strs = str.split("\\$");
-            		str = strs[0];
+            		str = strs[2];
             	}
 
                 this.choosePlanetGui.drawCenteredString(this.choosePlanetGui.getFontRenderer(), str, this.choosePlanetGui.width / 2, par3 + 3, 0xEEEEEE);

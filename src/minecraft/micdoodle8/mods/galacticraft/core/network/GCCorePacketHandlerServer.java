@@ -10,8 +10,8 @@ import micdoodle8.mods.galacticraft.API.SchematicRegistry;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GCLog;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.dimension.GCCoreSpaceStationData;
 import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityRocketT1;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerSchematic;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryPlayer;
@@ -29,6 +29,7 @@ import net.minecraft.network.packet.Packet9Respawn;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
@@ -362,6 +363,19 @@ public class GCCorePacketHandlerServer implements IPacketHandler
 			{
 				player.sendChatToPlayer("I'll probably need a Tier " + packetReadout[0] + " Dungeon key to unlock this!");
 				playerBase.chatCooldown = 100;
+			}
+      	}
+        else if (packetType == 19)
+      	{
+        	final Class[] decodeAs = {String.class, Integer.class};
+          	final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
+          	
+			final GCCoreSpaceStationData ssdata = GCCoreSpaceStationData.getStationData(playerBase.worldObj, (Integer) packetReadout[1], playerBase);
+			
+			if (ssdata != null)
+			{
+				ssdata.setSpaceStationName((String) packetReadout[0]);
+				ssdata.setDirty(true);
 			}
       	}
     }
