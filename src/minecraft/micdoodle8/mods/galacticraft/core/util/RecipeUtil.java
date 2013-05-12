@@ -864,7 +864,7 @@ public class RecipeUtil
 			final HashMap<Object, Integer> inputMap = new HashMap<Object, Integer>();
 			inputMap.put("ingotTin", 32); 
 			inputMap.put("ingotSteel", 16);
-			inputMap.put("ingotIron", 24);
+			inputMap.put(Item.ingotIron, 24);
 			GalacticraftRegistry.registerSpaceStation(new SpaceStationType(GCCoreConfigManager.idDimensionOverworldOrbit, "Overworld", 0, new SpaceStationRecipe(inputMap)));
 			GalacticraftCore.setSpaceStationRecipe = true;
 		}
@@ -1276,7 +1276,7 @@ public class RecipeUtil
 			if (Items.getItem("machine") != null) 
 				inputMap.put(Items.getItem("machine"), 1);
 			inputMap.put("ingotTin", 24);
-			inputMap.put("ingotIron", 12);
+			inputMap.put(Item.ingotIron, 12);
 			GalacticraftRegistry.registerSpaceStation(new SpaceStationType(GCCoreConfigManager.idDimensionOverworldOrbit, "Overworld", 0, new SpaceStationRecipe(inputMap)));
 			GalacticraftCore.setSpaceStationRecipe = true;
 		}
