@@ -78,6 +78,7 @@ import net.minecraftforge.liquids.LiquidContainerData;
 import net.minecraftforge.liquids.LiquidContainerRegistry;
 import net.minecraftforge.liquids.LiquidDictionary;
 import net.minecraftforge.liquids.LiquidStack;
+import net.minecraftforge.oredict.OreDictionary;
 import universalelectricity.prefab.TranslationHelper;
 import universalelectricity.prefab.multiblock.TileEntityMulti;
 import cpw.mods.fml.common.FMLLog;
@@ -311,6 +312,8 @@ public class GalacticraftCore
 			BasicComponents.registerTileEntities();
 			BasicComponents.register(instance, GalacticraftCore.CHANNEL);
 			BasicComponents.requestAll();
+			
+			RecipeUtil.addBasicComponentsCraftingRecipes();
 		}
 		
 		GalacticraftCore.proxy.postInit(event);
