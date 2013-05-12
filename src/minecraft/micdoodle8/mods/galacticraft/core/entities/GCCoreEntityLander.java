@@ -23,7 +23,6 @@ import universalelectricity.prefab.network.IPacketReceiver;
 
 import com.google.common.io.ByteArrayDataInput;
 
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -35,7 +34,7 @@ public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInvento
     float minSpeed = 0.3F;
     float accel = 0.04F;
     float turnFactor = 2.0F;
-	private boolean lastOnGround = false;
+	private final boolean lastOnGround = false;
 	private double lastMotionY;
 	public ItemStack[] chestContents = new ItemStack[27];
     public int numUsingPlayers;
@@ -93,23 +92,23 @@ public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInvento
 
         	this.rumble = (float) this.rand.nextInt(3) - 3;
         }
-        
+
         if (this.ticks < 40)
         {
         	if (this.riddenByEntity == null)
         	{
-        		EntityPlayer player = this.worldObj.getClosestPlayerToEntity(this, 5);
-        		
+        		final EntityPlayer player = this.worldObj.getClosestPlayerToEntity(this, 5);
+
         		if (player != null)
         		{
         			player.mountEntity(this);
         		}
         	}
         }
-        
+
         this.lastMotionY = this.motionY;
     }
-	
+
     @Override
 	protected void readEntityFromNBT(NBTTagCompound nbt)
     {
@@ -126,7 +125,7 @@ public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInvento
             	this.chestContents[var5] = ItemStack.loadItemStackFromNBT(var4);
             }
         }
-        
+
         this.landed = nbt.getBoolean("landed");
     }
 
@@ -147,21 +146,24 @@ public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInvento
         }
 
         nbt.setTag("Items", nbttaglist);
-        
+
         nbt.setBoolean("landed", this.landed);
     }
 
-    public int getSizeInventory()
+    @Override
+	public int getSizeInventory()
     {
         return this.chestContents.length;
     }
 
-    public ItemStack getStackInSlot(int par1)
+    @Override
+	public ItemStack getStackInSlot(int par1)
     {
         return this.chestContents[par1];
     }
 
-    public ItemStack decrStackSize(int par1, int par2)
+    @Override
+	public ItemStack decrStackSize(int par1, int par2)
     {
         if (this.chestContents[par1] != null)
         {
@@ -193,7 +195,8 @@ public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInvento
         }
     }
 
-    public ItemStack getStackInSlotOnClosing(int par1)
+    @Override
+	public ItemStack getStackInSlotOnClosing(int par1)
     {
         if (this.chestContents[par1] != null)
         {
@@ -207,7 +210,8 @@ public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInvento
         }
     }
 
-    public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
+    @Override
+	public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
     {
         this.chestContents[par1] = par2ItemStack;
 
@@ -219,28 +223,33 @@ public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInvento
         this.onInventoryChanged();
     }
 
-    public String getInvName()
+    @Override
+	public String getInvName()
     {
         return "container.chest";
     }
 
-    public boolean isInvNameLocalized()
+    @Override
+	public boolean isInvNameLocalized()
     {
         return false;
     }
 
-    public int getInventoryStackLimit()
+    @Override
+	public int getInventoryStackLimit()
     {
         return 64;
     }
 
-    public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
+    @Override
+	public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
     {
         return par1EntityPlayer.getDistanceSq(this.posX + 0.5D, this.posY + 0.5D, this.posZ + 0.5D) <= 64.0D;
     }
 
 
-    public void openChest()
+    @Override
+	public void openChest()
     {
         if (this.numUsingPlayers < 0)
         {
@@ -250,12 +259,14 @@ public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInvento
         ++this.numUsingPlayers;
     }
 
-    public void closeChest()
+    @Override
+	public void closeChest()
     {
         --this.numUsingPlayers;
     }
 
-    public boolean isStackValidForSlot(int par1, ItemStack par2ItemStack)
+    @Override
+	public boolean isStackValidForSlot(int par1, ItemStack par2ItemStack)
     {
         return true;
     }
@@ -347,13 +358,13 @@ public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInvento
 	}
 
 	@Override
-	public boolean shouldMove() 
+	public boolean shouldMove()
 	{
 		if (this.ticks < 40)
 		{
 			return this.riddenByEntity != null;
 		}
-		
+
 		return !this.landed;
 	}
 
@@ -364,57 +375,57 @@ public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInvento
 	}
 
 	@Override
-	public Map<Vector3, Vector3> getParticleMap() 
+	public Map<Vector3, Vector3> getParticleMap()
 	{
     	final double x1 = 2 * Math.cos(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D);
     	final double z1 = 2 * Math.sin(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D);
-    	double y1 = -5.0D;
-    	
-    	Vector3 thisVec = new Vector3(this);
+    	final double y1 = -5.0D;
 
-		Map<Vector3, Vector3> particleMap = new HashMap<Vector3, Vector3>();
-		float angle1 = (float) ((this.rotationYaw - 40.0F) * Math.PI / 180.0F);
-		float angle2 = (float) ((this.rotationYaw + 40.0F) * Math.PI / 180.0F);
-		float angle3 = (float) ((this.rotationYaw + 180 - 40.0F) * Math.PI / 180.0F);
-		float angle4 = (float) ((this.rotationYaw + 180 + 40.0F) * Math.PI / 180.0F);
-		float pitch = (float) Math.sin(this.rotationPitch * Math.PI / 180.0F);
-		particleMap.put((new Vector3(this)).add(new Vector3(0.4 * Math.cos(angle1) * Math.cos(pitch), -1.5, 0.4 * Math.sin(angle1) * Math.cos(pitch))), new Vector3(x1, y1, z1));
-		particleMap.put((new Vector3(this)).add(new Vector3(0.4 * Math.cos(angle2) * Math.cos(pitch), -1.5, 0.4 * Math.sin(angle2) * Math.cos(pitch))), new Vector3(x1, y1, z1));
-		particleMap.put((new Vector3(this)).add(new Vector3(0.4 * Math.cos(angle3) * Math.cos(pitch), -1.5, 0.4 * Math.sin(angle3) * Math.cos(pitch))), new Vector3(x1, y1, z1));
-		particleMap.put((new Vector3(this)).add(new Vector3(0.4 * Math.cos(angle4) * Math.cos(pitch), -1.5, 0.4 * Math.sin(angle4) * Math.cos(pitch))), new Vector3(x1, y1, z1));
+    	final Vector3 thisVec = new Vector3(this);
+
+		final Map<Vector3, Vector3> particleMap = new HashMap<Vector3, Vector3>();
+		final float angle1 = (float) ((this.rotationYaw - 40.0F) * Math.PI / 180.0F);
+		final float angle2 = (float) ((this.rotationYaw + 40.0F) * Math.PI / 180.0F);
+		final float angle3 = (float) ((this.rotationYaw + 180 - 40.0F) * Math.PI / 180.0F);
+		final float angle4 = (float) ((this.rotationYaw + 180 + 40.0F) * Math.PI / 180.0F);
+		final float pitch = (float) Math.sin(this.rotationPitch * Math.PI / 180.0F);
+		particleMap.put(new Vector3(this).add(new Vector3(0.4 * Math.cos(angle1) * Math.cos(pitch), -1.5, 0.4 * Math.sin(angle1) * Math.cos(pitch))), new Vector3(x1, y1, z1));
+		particleMap.put(new Vector3(this).add(new Vector3(0.4 * Math.cos(angle2) * Math.cos(pitch), -1.5, 0.4 * Math.sin(angle2) * Math.cos(pitch))), new Vector3(x1, y1, z1));
+		particleMap.put(new Vector3(this).add(new Vector3(0.4 * Math.cos(angle3) * Math.cos(pitch), -1.5, 0.4 * Math.sin(angle3) * Math.cos(pitch))), new Vector3(x1, y1, z1));
+		particleMap.put(new Vector3(this).add(new Vector3(0.4 * Math.cos(angle4) * Math.cos(pitch), -1.5, 0.4 * Math.sin(angle4) * Math.cos(pitch))), new Vector3(x1, y1, z1));
 		return particleMap;
 	}
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public EntityFX getParticle(Random rand, double x, double y, double z, double motX, double motY, double motZ) 
+	public EntityFX getParticle(Random rand, double x, double y, double z, double motX, double motY, double motZ)
 	{
 		return new GCCoreEntityLanderFlameFX(this.worldObj, x, y, z, motX,  motY, motZ);
 	}
 
 	@Override
-	public void tickInAir() 
+	public void tickInAir()
 	{
 		if (this.landed)
 		{
 			this.motionY = 0;
 			return;
 		}
-		
-		if (this.rotationPitch >= MAX_PITCH_ROTATION)
+
+		if (this.rotationPitch >= this.MAX_PITCH_ROTATION)
 		{
-			this.rotationPitch = MAX_PITCH_ROTATION;
+			this.rotationPitch = this.MAX_PITCH_ROTATION;
 		}
-		else if (this.rotationPitch <= -MAX_PITCH_ROTATION)
+		else if (this.rotationPitch <= -this.MAX_PITCH_ROTATION)
 		{
-			this.rotationPitch = -MAX_PITCH_ROTATION;
+			this.rotationPitch = -this.MAX_PITCH_ROTATION;
 		}
-		
+
         this.ySpeed *= 0.98D;
 
         this.startingYSpeed += this.ySpeed * this.accel;
 
-        this.startingYSpeed = this.startingYSpeed < -5.0F ? -5.0F : (this.startingYSpeed > -this.minSpeed ? -this.minSpeed : this.startingYSpeed);
+        this.startingYSpeed = this.startingYSpeed < -5.0F ? -5.0F : this.startingYSpeed > -this.minSpeed ? -this.minSpeed : this.startingYSpeed;
 
         if (this.worldObj.isRemote)
         {
@@ -423,7 +434,7 @@ public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInvento
 	}
 
 	@Override
-	public void tickOnGround() 
+	public void tickOnGround()
 	{
 		this.rotationPitch = 0.0F;
 		this.rotationYaw = 0.0F;
@@ -437,63 +448,63 @@ public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInvento
 			if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayerMP)
 			{
         	  	final Object[] toSend2 = {0};
-            	((EntityPlayerMP) riddenByEntity).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, toSend2));
-            	
+            	((EntityPlayerMP) this.riddenByEntity).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, toSend2));
+
 				this.riddenByEntity.mountEntity(this);
 			}
-			
+
 			this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 12, true);
-			
+
 			this.setDead();
 		}
-		
+
 		this.landed = true;
 	}
 
 	@Override
-	public Vector3 getMotionVec() 
+	public Vector3 getMotionVec()
 	{
 		return new Vector3(-(50 * Math.cos(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * 0.01 * Math.PI / 180.0D)), this.ticks < 40 ? 0 : this.motionY, -(50 * Math.sin(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * 0.01 * Math.PI / 180.0D)));
 	}
 
 	@Override
-	public ArrayList<Object> getNetworkedData() 
+	public ArrayList<Object> getNetworkedData()
 	{
-		ArrayList<Object> objList = new ArrayList<Object>();
+		final ArrayList<Object> objList = new ArrayList<Object>();
 		objList.add(this.landed);
 		return objList;
 	}
 
 	@Override
-	public int getPacketTickSpacing() 
+	public int getPacketTickSpacing()
 	{
 		return 5;
 	}
 
 	@Override
-	public double getPacketSendDistance() 
+	public double getPacketSendDistance()
 	{
 		return 50.0D;
 	}
 
 	@Override
-	public void readNetworkedData(ByteArrayDataInput dataStream) 
+	public void readNetworkedData(ByteArrayDataInput dataStream)
 	{
 		this.landed = dataStream.readBoolean();
 	}
 
 	@Override
-	public boolean allowDamageSource(DamageSource damageSource) 
+	public boolean allowDamageSource(DamageSource damageSource)
 	{
 		return this.landed && !damageSource.isExplosion();
 	}
 
 	@Override
-	public List<ItemStack> getItemsDropped() 
+	public List<ItemStack> getItemsDropped()
 	{
         final List<ItemStack> items = new ArrayList<ItemStack>();
-        
-        for (ItemStack stack : this.chestContents)
+
+        for (final ItemStack stack : this.chestContents)
         {
         	items.add(stack);
         }

@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenDetector;
 import net.minecraft.block.BlockContainer;
@@ -10,18 +8,17 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreBlockOxygenDetector extends BlockContainer
 {
 	private Icon iconSide;
 	private Icon iconTop;
-	
-	protected GCCoreBlockOxygenDetector(int id) 
+
+	protected GCCoreBlockOxygenDetector(int id)
 	{
 		super(id, Material.iron);
 	}
@@ -54,7 +51,7 @@ public class GCCoreBlockOxygenDetector extends BlockContainer
     }
 
 	@Override
-	public TileEntity createNewTileEntity(World world) 
+	public TileEntity createNewTileEntity(World world)
 	{
 		return new GCCoreTileEntityOxygenDetector();
 	}

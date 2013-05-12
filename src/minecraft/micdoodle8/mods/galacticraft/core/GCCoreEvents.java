@@ -44,15 +44,15 @@ public class GCCoreEvents
 		event.setCanceled(false);
 		event.setResult(Result.ALLOW);
 	}
-	
+
 	@ForgeSubscribe
 	public void onPlayerClicked(PlayerInteractEvent event)
 	{
-		ItemStack heldStack = event.entityPlayer.inventory.getCurrentItem();
+		final ItemStack heldStack = event.entityPlayer.inventory.getCurrentItem();
 
-		TileEntity tileClicked = event.entityPlayer.worldObj.getBlockTileEntity(event.x, event.y, event.z);
-		int idClicked = event.entityPlayer.worldObj.getBlockId(event.x, event.y, event.z);
-		
+		final TileEntity tileClicked = event.entityPlayer.worldObj.getBlockTileEntity(event.x, event.y, event.z);
+		final int idClicked = event.entityPlayer.worldObj.getBlockId(event.x, event.y, event.z);
+
 		if (heldStack != null)
 		{
 			if (tileClicked != null && tileClicked instanceof IKeyable)
@@ -66,7 +66,7 @@ public class GCCoreEvents
 				{
 					if (heldStack.getItem() instanceof IKeyItem)
 					{
-						if (((IKeyItem) heldStack.getItem()).getTier(heldStack) == -1 
+						if (((IKeyItem) heldStack.getItem()).getTier(heldStack) == -1
 								|| ((IKeyable) tileClicked).getTierOfKeyRequired() == -1
 								|| ((IKeyItem) heldStack.getItem()).getTier(heldStack) == ((IKeyable) tileClicked).getTierOfKeyRequired())
 						{
@@ -83,7 +83,7 @@ public class GCCoreEvents
 					}
 				}
 			}
-			
+
 			if (event.entityPlayer.worldObj.provider instanceof IGalacticraftWorldProvider && heldStack.getItem() instanceof ItemFlintAndSteel)
 			{
 				if (event.action.equals(PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK) && idClicked != Block.tnt.blockID)
@@ -99,7 +99,7 @@ public class GCCoreEvents
 				event.setCanceled(!((IKeyable) tileClicked).canBreak() && !event.entityPlayer.capabilities.isCreativeMode);
 				return;
 			}
-			
+
 			event.setCanceled(((IKeyable) tileClicked).onActivatedWithoutKey(event.entityPlayer, event.face));
 		}
 	}
@@ -224,8 +224,8 @@ public class GCCoreEvents
 		{
 			return;
 		}
-		
-		double randMod = Math.min(0.5D, 0.1D * GCCoreConfigManager.oilGenFactor);
+
+		final double randMod = Math.min(0.5D, 0.1D * GCCoreConfigManager.oilGenFactor);
 
 		final boolean flag1 = rand.nextDouble() <= randMod;
 		final boolean flag2 = rand.nextDouble() <= randMod;

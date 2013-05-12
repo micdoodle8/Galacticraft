@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core;
 
 import micdoodle8.mods.galacticraft.API.IGalaxy;
-import net.minecraft.util.Vec3;
 import universalelectricity.core.vector.Vector3;
 
 public class GCCoreGalaxyBlockyWay implements IGalaxy

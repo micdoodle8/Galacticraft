@@ -49,7 +49,7 @@ public class GCCoreEntityMeteor extends Entity
     public void setDead()
     {
     	super.setDead();
-    	
+
     	if (RadarRegistry.getEntities().contains(this))
     	{
     		RadarRegistry.unregister(this);
@@ -65,7 +65,7 @@ public class GCCoreEntityMeteor extends Entity
         this.prevPosZ = this.posZ;
         this.motionY -= 0.03999999910593033D;
         this.moveEntity(this.motionX, this.motionY, this.motionZ);
-        
+
         if (this.posY <= 100 && !RadarRegistry.getEntities().contains(this))
         {
             RadarRegistry.register(this);

@@ -26,7 +26,7 @@ public class GCCoreConfigManager
 			this.setDefaultValues();
 		}
 	}
-	
+
 	public static int idDimensionOverworldOrbit;
 //	public static int idDimensionSpace;
 
@@ -87,7 +87,7 @@ public class GCCoreConfigManager
 	public static int idItemFuel;
 	public static int idItemSchematic;
 	public static int idItemKey;
-	
+
 	// RECIPES
 	public static boolean useRecipesIC2;
 	public static boolean useRecipesGT;
@@ -181,7 +181,7 @@ public class GCCoreConfigManager
 		try
 		{
 	        GCCoreConfigManager.configuration.load();
-	        
+
 //	        GCCoreConfigManager.idDimensionSpace =			 			GCCoreConfigManager.configuration.get("DIMENSIONS",                 "idDimensionSpace",           			-26)        .getInt(-26);
 	        GCCoreConfigManager.idDimensionOverworldOrbit = 			GCCoreConfigManager.configuration.get("DIMENSIONS",                 "idDimensionOverworldOrbit",            -27)        .getInt(-27);
 
@@ -210,7 +210,7 @@ public class GCCoreConfigManager
 	        GCCoreConfigManager.idBlockEnclosedWire = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockEnclosedWire", 					3379)		.getInt(3379);
 	        GCCoreConfigManager.idBlockSpaceStationBase = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockSpaceStationBase", 				3380, "Even though this will be generated, it can use block IDs greater than 256")		.getInt(3380);
 	        GCCoreConfigManager.idBlockTreasureChest = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockTieredTreasureChest", 			3381, "Even though this will be generated, it can use block IDs greater than 256")		.getInt(3381);
-	        
+
 	        GCCoreConfigManager.idItemSpaceship = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemSpaceship", 						9855)		.getInt(9855);
 	        GCCoreConfigManager.idItemLightOxygenTank = 				GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemLightOxygenTank", 				9856)		.getInt(9856);
 	        GCCoreConfigManager.idItemMedOxygenTank = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemMedOxygenTank", 					9857)		.getInt(9857);
@@ -255,7 +255,7 @@ public class GCCoreConfigManager
 	        GCCoreConfigManager.useRecipesGT = 							GCCoreConfigManager.configuration.get("RECIPES", "Enable Gregtech Recipes", 								true)		.getBoolean(true);
 	        GCCoreConfigManager.useRecipesUE = 							GCCoreConfigManager.configuration.get("RECIPES", "Enable Basic Components Recipes", 						true)		.getBoolean(true);
 	        GCCoreConfigManager.useRecipesTE = 							GCCoreConfigManager.configuration.get("RECIPES", "Enable Thermal Expansion Recipes", 						true)		.getBoolean(true);
-	        
+
 	        GCCoreConfigManager.idGuiTankRefill = 						GCCoreConfigManager.configuration.get("GUI", "idGuiTankRefill", 											128)		.getInt(128);
 	        GCCoreConfigManager.idGuiAirCompressor = 					GCCoreConfigManager.configuration.get("GUI", "idGuiAirCompressor", 											129)		.getInt(129);
 	        GCCoreConfigManager.idGuiRocketCraftingBench = 				GCCoreConfigManager.configuration.get("GUI", "idGuiRocketCraftingBench", 									130)		.getInt(130);

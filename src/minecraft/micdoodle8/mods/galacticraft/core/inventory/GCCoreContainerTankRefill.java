@@ -21,7 +21,7 @@
 //public class GCCoreContainerTankRefill extends Container
 //{
 //	private EntityPlayer player;
-//	
+//
 //	public GCCoreContainerTankRefill(EntityPlayer par1EntityPlayer, GCCoreInventoryTankRefill inventorytankrefill)
 //	{
 //        this.addSlotToContainer(new SlotCrafting(par1EntityPlayer, ((ContainerPlayer)par1EntityPlayer.inventoryContainer).craftMatrix, ((ContainerPlayer)par1EntityPlayer.inventoryContainer).craftResult, 0, 116, 62));

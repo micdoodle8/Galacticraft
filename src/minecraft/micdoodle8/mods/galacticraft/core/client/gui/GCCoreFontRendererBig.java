@@ -19,7 +19,6 @@ import net.minecraft.util.ChatAllowedCharacters;
 
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -36,13 +35,13 @@ public class GCCoreFontRendererBig
     /**
      * Array of the start/end column (in upper/lower nibble) for every glyph in the /font directory.
      */
-    private byte[] glyphWidth = new byte[65536];
+    private final byte[] glyphWidth = new byte[65536];
 
     /**
      * Array of RGB triplets defining the 16 standard chat colors followed by 16 darker version of the same colors for
      * drop shadows.
      */
-    private int[] colorCode = new int[32];
+    private final int[] colorCode = new int[32];
     protected final String fontTextureName;
 
     /** The RenderEngine used to load and setup glyph textures. */
@@ -114,7 +113,7 @@ public class GCCoreFontRendererBig
 
         for (int i = 0; i < 32; ++i)
         {
-            int j = (i >> 3 & 1) * 85;
+            final int j = (i >> 3 & 1) * 85;
             int k = (i >> 2 & 1) * 170 + j;
             int l = (i >> 1 & 1) * 170 + j;
             int i1 = (i >> 0 & 1) * 170 + j;
@@ -126,9 +125,9 @@ public class GCCoreFontRendererBig
 
             if (par1GameSettings.anaglyph)
             {
-                int j1 = (k * 30 + l * 59 + i1 * 11) / 100;
-                int k1 = (k * 30 + l * 70) / 100;
-                int l1 = (k * 30 + i1 * 70) / 100;
+                final int j1 = (k * 30 + l * 59 + i1 * 11) / 100;
+                final int k1 = (k * 30 + l * 70) / 100;
+                final int l1 = (k * 30 + i1 * 70) / 100;
                 k = j1;
                 l = k1;
                 i1 = l1;
@@ -159,34 +158,34 @@ public class GCCoreFontRendererBig
         {
             bufferedimage = ImageIO.read(RenderEngine.class.getResourceAsStream(par1Str));
         }
-        catch (IOException ioexception)
+        catch (final IOException ioexception)
         {
             throw new RuntimeException(ioexception);
         }
 
-        int i = bufferedimage.getWidth();
-        int j = bufferedimage.getHeight();
-        int[] aint = new int[i * j];
+        final int i = bufferedimage.getWidth();
+        final int j = bufferedimage.getHeight();
+        final int[] aint = new int[i * j];
         bufferedimage.getRGB(0, 0, i, j, aint, 0, i);
         int k = 0;
 
         while (k < 256)
         {
-            int l = k % 16;
-            int i1 = k / 16;
+            final int l = k % 16;
+            final int i1 = k / 16;
             int j1 = 7;
 
             while (true)
             {
                 if (j1 >= 0)
                 {
-                    int k1 = l * 8 + j1;
+                    final int k1 = l * 8 + j1;
                     boolean flag = true;
 
                     for (int l1 = 0; l1 < 8 && flag; ++l1)
                     {
-                        int i2 = (i1 * 8 + l1) * i;
-                        int j2 = aint[k1 + i2] & 255;
+                        final int i2 = (i1 * 8 + l1) * i;
+                        final int j2 = aint[k1 + i2] & 255;
 
                         if (j2 > 0)
                         {
@@ -217,10 +216,10 @@ public class GCCoreFontRendererBig
     {
         try
         {
-            InputStream inputstream = Minecraft.getMinecraft().texturePackList.getSelectedTexturePack().getResourceAsStream("/font/glyph_sizes.bin");
+            final InputStream inputstream = Minecraft.getMinecraft().texturePackList.getSelectedTexturePack().getResourceAsStream("/font/glyph_sizes.bin");
             inputstream.read(this.glyphWidth);
         }
-        catch (IOException ioexception)
+        catch (final IOException ioexception)
         {
             throw new RuntimeException(ioexception);
         }
@@ -231,7 +230,7 @@ public class GCCoreFontRendererBig
      */
     private float renderCharAtPos(int par1, char par2, boolean par3)
     {
-        return par2 == 32 ? 4.0F : (par1 > 0 && !this.unicodeFlag ? this.renderDefaultChar(par1 + 32, par3) : this.renderUnicodeChar(par2, par3));
+        return par2 == 32 ? 4.0F : par1 > 0 && !this.unicodeFlag ? this.renderDefaultChar(par1 + 32, par3) : this.renderUnicodeChar(par2, par3);
     }
 
     /**
@@ -239,11 +238,11 @@ public class GCCoreFontRendererBig
      */
     private float renderDefaultChar(int par1, boolean par2)
     {
-        float f = (float)(par1 % 16 * 8);
-        float f1 = (float)(par1 / 16 * 8);
-        float f2 = par2 ? 1.0F : 0.0F;
+        final float f = (par1 % 16 * 8);
+        final float f1 = (par1 / 16 * 8);
+        final float f2 = par2 ? 1.0F : 0.0F;
         this.renderEngine.bindTexture(this.fontTextureName);
-        float f3 = (float)this.charWidth[par1] - 0.01F;
+        final float f3 = this.charWidth[par1] - 0.01F;
         GL11.glBegin(GL11.GL_TRIANGLE_STRIP);
         GL11.glTexCoord2f(f / 128.0F, f1 / 128.0F);
         GL11.glVertex3f(this.posX + f2, this.posY, 0.0F);
@@ -254,7 +253,7 @@ public class GCCoreFontRendererBig
         GL11.glTexCoord2f((f + f3) / 128.0F, (f1 + 7.99F) / 128.0F);
         GL11.glVertex3f(this.posX + f3 - f2, this.posY + 7.99F, 0.0F);
         GL11.glEnd();
-        return (float)this.charWidth[par1];
+        return this.charWidth[par1];
     }
 
     /**
@@ -262,7 +261,7 @@ public class GCCoreFontRendererBig
      */
     private void loadGlyphTexture(int par1)
     {
-        String s = String.format("/font/glyph_%02X.png", new Object[] {Integer.valueOf(par1)});
+        final String s = String.format("/font/glyph_%02X.png", new Object[] {Integer.valueOf(par1)});
         this.renderEngine.bindTexture(s);
     }
 
@@ -277,16 +276,16 @@ public class GCCoreFontRendererBig
         }
         else
         {
-            int i = par1 / 256;
+            final int i = par1 / 256;
             this.loadGlyphTexture(i);
-            int j = this.glyphWidth[par1] >>> 4;
-            int k = this.glyphWidth[par1] & 15;
-            float f = (float)j;
-            float f1 = (float)(k + 1);
-            float f2 = (float)(par1 % 16 * 16) + f;
-            float f3 = (float)((par1 & 255) / 16 * 16);
-            float f4 = f1 - f - 0.02F;
-            float f5 = par2 ? 1.0F : 0.0F;
+            final int j = this.glyphWidth[par1] >>> 4;
+            final int k = this.glyphWidth[par1] & 15;
+            final float f = j;
+            final float f1 = (k + 1);
+            final float f2 = (par1 % 16 * 16) + f;
+            final float f3 = ((par1 & 255) / 16 * 16);
+            final float f4 = f1 - f - 0.02F;
+            final float f5 = par2 ? 1.0F : 0.0F;
             GL11.glBegin(GL11.GL_TRIANGLE_STRIP);
             GL11.glTexCoord2f(f2 / 256.0F, f3 / 256.0F);
             GL11.glVertex3f(this.posX + f5, this.posY, 0.0F);
@@ -351,24 +350,24 @@ public class GCCoreFontRendererBig
     {
         if (par1Str != null && Bidi.requiresBidi(par1Str.toCharArray(), 0, par1Str.length()))
         {
-            Bidi bidi = new Bidi(par1Str, -2);
-            byte[] abyte = new byte[bidi.getRunCount()];
-            String[] astring = new String[abyte.length];
+            final Bidi bidi = new Bidi(par1Str, -2);
+            final byte[] abyte = new byte[bidi.getRunCount()];
+            final String[] astring = new String[abyte.length];
             int i;
 
             for (int j = 0; j < abyte.length; ++j)
             {
-                int k = bidi.getRunStart(j);
+                final int k = bidi.getRunStart(j);
                 i = bidi.getRunLimit(j);
-                int l = bidi.getRunLevel(j);
-                String s1 = par1Str.substring(k, i);
+                final int l = bidi.getRunLevel(j);
+                final String s1 = par1Str.substring(k, i);
                 abyte[j] = (byte)l;
                 astring[j] = s1;
             }
 
-            String[] astring1 = (String[])astring.clone();
+            final String[] astring1 = astring.clone();
             Bidi.reorderVisually(abyte, 0, astring, 0, abyte.length);
-            StringBuilder stringbuilder = new StringBuilder();
+            final StringBuilder stringbuilder = new StringBuilder();
             i = 0;
 
             while (i < astring.length)
@@ -446,7 +445,7 @@ public class GCCoreFontRendererBig
     	GL11.glScalef(2.0F, 2.0F, 0.0F);
         for (int i = 0; i < par1Str.length(); ++i)
         {
-            char c0 = par1Str.charAt(i);
+            final char c0 = par1Str.charAt(i);
             int j;
             int k;
 
@@ -474,7 +473,7 @@ public class GCCoreFontRendererBig
 
                     k = this.colorCode[j];
                     this.textColor = k;
-                    GL11.glColor4f((float)(k >> 16) / 255.0F, (float)(k >> 8 & 255) / 255.0F, (float)(k & 255) / 255.0F, this.alpha);
+                    GL11.glColor4f((k >> 16) / 255.0F, (k >> 8 & 255) / 255.0F, (k & 255) / 255.0F, this.alpha);
                 }
                 else if (j == 16)
                 {
@@ -523,8 +522,8 @@ public class GCCoreFontRendererBig
                     j = k;
                 }
 
-                float f = this.unicodeFlag ? 0.5F : 1.0F;
-                boolean flag1 = (j <= 0 || this.unicodeFlag) && par2;
+                final float f = this.unicodeFlag ? 0.5F : 1.0F;
+                final boolean flag1 = (j <= 0 || this.unicodeFlag) && par2;
 
                 if (flag1)
                 {
@@ -569,10 +568,10 @@ public class GCCoreFontRendererBig
                     tessellator = Tessellator.instance;
                     GL11.glDisable(GL11.GL_TEXTURE_2D);
                     tessellator.startDrawingQuads();
-                    tessellator.addVertex((double)this.posX, (double)(this.posY + (float)(this.FONT_HEIGHT / 2)), 0.0D);
-                    tessellator.addVertex((double)(this.posX + f1), (double)(this.posY + (float)(this.FONT_HEIGHT / 2)), 0.0D);
-                    tessellator.addVertex((double)(this.posX + f1), (double)(this.posY + (float)(this.FONT_HEIGHT / 2) - 1.0F), 0.0D);
-                    tessellator.addVertex((double)this.posX, (double)(this.posY + (float)(this.FONT_HEIGHT / 2) - 1.0F), 0.0D);
+                    tessellator.addVertex(this.posX, (this.posY + (this.FONT_HEIGHT / 2)), 0.0D);
+                    tessellator.addVertex((this.posX + f1), (this.posY + (this.FONT_HEIGHT / 2)), 0.0D);
+                    tessellator.addVertex((this.posX + f1), (this.posY + (this.FONT_HEIGHT / 2) - 1.0F), 0.0D);
+                    tessellator.addVertex(this.posX, (this.posY + (this.FONT_HEIGHT / 2) - 1.0F), 0.0D);
                     tessellator.draw();
                     GL11.glEnable(GL11.GL_TEXTURE_2D);
                 }
@@ -582,19 +581,19 @@ public class GCCoreFontRendererBig
                     tessellator = Tessellator.instance;
                     GL11.glDisable(GL11.GL_TEXTURE_2D);
                     tessellator.startDrawingQuads();
-                    int l = this.underlineStyle ? -1 : 0;
-                    tessellator.addVertex((double)(this.posX + (float)l), (double)(this.posY + (float)this.FONT_HEIGHT), 0.0D);
-                    tessellator.addVertex((double)(this.posX + f1), (double)(this.posY + (float)this.FONT_HEIGHT), 0.0D);
-                    tessellator.addVertex((double)(this.posX + f1), (double)(this.posY + (float)this.FONT_HEIGHT - 1.0F), 0.0D);
-                    tessellator.addVertex((double)(this.posX + (float)l), (double)(this.posY + (float)this.FONT_HEIGHT - 1.0F), 0.0D);
+                    final int l = this.underlineStyle ? -1 : 0;
+                    tessellator.addVertex((this.posX + l), (this.posY + this.FONT_HEIGHT), 0.0D);
+                    tessellator.addVertex((this.posX + f1), (this.posY + this.FONT_HEIGHT), 0.0D);
+                    tessellator.addVertex((this.posX + f1), (this.posY + this.FONT_HEIGHT - 1.0F), 0.0D);
+                    tessellator.addVertex((this.posX + l), (this.posY + this.FONT_HEIGHT - 1.0F), 0.0D);
                     tessellator.draw();
                     GL11.glEnable(GL11.GL_TEXTURE_2D);
                 }
 
-                this.posX += (float)((int)f1);
+                this.posX += (int)f1;
             }
         }
-        
+
         GL11.glPopMatrix();
     }
 
@@ -606,7 +605,7 @@ public class GCCoreFontRendererBig
         if (this.bidiFlag)
         {
             par1Str = this.bidiReorder(par1Str);
-            int i1 = this.getStringWidth(par1Str);
+            final int i1 = this.getStringWidth(par1Str);
             par2 = par2 + par4 - i1;
         }
 
@@ -634,13 +633,13 @@ public class GCCoreFontRendererBig
                 par4 = (par4 & 16579836) >> 2 | par4 & -16777216;
             }
 
-            this.red = (float)(par4 >> 16 & 255) / 255.0F;
-            this.blue = (float)(par4 >> 8 & 255) / 255.0F;
-            this.green = (float)(par4 & 255) / 255.0F;
-            this.alpha = (float)(par4 >> 24 & 255) / 255.0F;
+            this.red = (par4 >> 16 & 255) / 255.0F;
+            this.blue = (par4 >> 8 & 255) / 255.0F;
+            this.green = (par4 & 255) / 255.0F;
+            this.alpha = (par4 >> 24 & 255) / 255.0F;
             GL11.glColor4f(this.red, this.blue, this.green, this.alpha);
-            this.posX = (float)par2;
-            this.posY = (float)par3;
+            this.posX = par2;
+            this.posY = par3;
             this.renderStringAtPos(par1Str, par5);
             return (int)this.posX;
         }
@@ -712,7 +711,7 @@ public class GCCoreFontRendererBig
         }
         else
         {
-            int i = ChatAllowedCharacters.allowedCharacters.indexOf(par1);
+            final int i = ChatAllowedCharacters.allowedCharacters.indexOf(par1);
 
             if (i >= 0 && !this.unicodeFlag)
             {
@@ -752,17 +751,17 @@ public class GCCoreFontRendererBig
      */
     public String trimStringToWidth(String par1Str, int par2, boolean par3)
     {
-        StringBuilder stringbuilder = new StringBuilder();
+        final StringBuilder stringbuilder = new StringBuilder();
         int j = 0;
-        int k = par3 ? par1Str.length() - 1 : 0;
-        int l = par3 ? -1 : 1;
+        final int k = par3 ? par1Str.length() - 1 : 0;
+        final int l = par3 ? -1 : 1;
         boolean flag1 = false;
         boolean flag2 = false;
 
         for (int i1 = k; i1 >= 0 && i1 < par1Str.length() && j < par2; i1 += l)
         {
-            char c0 = par1Str.charAt(i1);
-            int j1 = this.getCharWidth(c0);
+            final char c0 = par1Str.charAt(i1);
+            final int j1 = this.getCharWidth(c0);
 
             if (flag1)
             {
@@ -842,11 +841,11 @@ public class GCCoreFontRendererBig
      */
     private void renderSplitString(String par1Str, int par2, int par3, int par4, boolean par5)
     {
-        List list = this.listFormattedStringToWidth(par1Str, par4);
+        final List list = this.listFormattedStringToWidth(par1Str, par4);
 
-        for (Iterator iterator = list.iterator(); iterator.hasNext(); par3 += this.FONT_HEIGHT)
+        for (final Iterator iterator = list.iterator(); iterator.hasNext(); par3 += this.FONT_HEIGHT)
         {
-            String s1 = (String)iterator.next();
+            final String s1 = (String)iterator.next();
             this.renderStringAligned(s1, par2, par3, par4, this.textColor, par5);
         }
     }
@@ -898,7 +897,7 @@ public class GCCoreFontRendererBig
      */
     String wrapFormattedStringToWidth(String par1Str, int par2)
     {
-        int j = this.sizeStringToWidth(par1Str, par2);
+        final int j = this.sizeStringToWidth(par1Str, par2);
 
         if (par1Str.length() <= j)
         {
@@ -906,10 +905,10 @@ public class GCCoreFontRendererBig
         }
         else
         {
-            String s1 = par1Str.substring(0, j);
-            char c0 = par1Str.charAt(j);
-            boolean flag = c0 == 32 || c0 == 10;
-            String s2 = getFormatFromString(s1) + par1Str.substring(j + (flag ? 1 : 0));
+            final String s1 = par1Str.substring(0, j);
+            final char c0 = par1Str.charAt(j);
+            final boolean flag = c0 == 32 || c0 == 10;
+            final String s2 = GCCoreFontRendererBig.getFormatFromString(s1) + par1Str.substring(j + (flag ? 1 : 0));
             return s1 + "\n" + this.wrapFormattedStringToWidth(s2, par2);
         }
     }
@@ -919,14 +918,14 @@ public class GCCoreFontRendererBig
      */
     private int sizeStringToWidth(String par1Str, int par2)
     {
-        int j = par1Str.length();
+        final int j = par1Str.length();
         int k = 0;
         int l = 0;
         int i1 = -1;
 
         for (boolean flag = false; l < j; ++l)
         {
-            char c0 = par1Str.charAt(l);
+            final char c0 = par1Str.charAt(l);
 
             switch (c0)
             {
@@ -937,11 +936,11 @@ public class GCCoreFontRendererBig
                     if (l < j - 1)
                     {
                         ++l;
-                        char c1 = par1Str.charAt(l);
+                        final char c1 = par1Str.charAt(l);
 
                         if (c1 != 108 && c1 != 76)
                         {
-                            if (c1 == 114 || c1 == 82 || isFormatColor(c1))
+                            if (c1 == 114 || c1 == 82 || GCCoreFontRendererBig.isFormatColor(c1))
                             {
                                 flag = false;
                             }
@@ -1003,19 +1002,19 @@ public class GCCoreFontRendererBig
     {
         String s1 = "";
         int i = -1;
-        int j = par0Str.length();
+        final int j = par0Str.length();
 
         while ((i = par0Str.indexOf(167, i + 1)) != -1)
         {
             if (i < j - 1)
             {
-                char c0 = par0Str.charAt(i + 1);
+                final char c0 = par0Str.charAt(i + 1);
 
-                if (isFormatColor(c0))
+                if (GCCoreFontRendererBig.isFormatColor(c0))
                 {
                     s1 = "\u00a7" + c0;
                 }
-                else if (isFormatSpecial(c0))
+                else if (GCCoreFontRendererBig.isFormatSpecial(c0))
                 {
                     s1 = s1 + "\u00a7" + c0;
                 }

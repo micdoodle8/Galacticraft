@@ -53,7 +53,7 @@ public class OxygenUtil
 
     public static boolean isAABBInBreathableAirBlock(Entity entity)
     {
-    	return isAABBInBreathableAirBlock(entity.worldObj, new Vector3(entity.boundingBox.minX, entity.boundingBox.minY, entity.boundingBox.minZ), new Vector3(entity.boundingBox.maxX + 1, entity.boundingBox.maxY + 1, entity.boundingBox.maxZ + 1), false);
+    	return OxygenUtil.isAABBInBreathableAirBlock(entity.worldObj, new Vector3(entity.boundingBox.minX, entity.boundingBox.minY, entity.boundingBox.minZ), new Vector3(entity.boundingBox.maxX + 1, entity.boundingBox.maxY + 1, entity.boundingBox.maxZ + 1), false);
     }
 
     public static boolean isAABBInBreathableAirBlock(World world, Vector3 minVec, Vector3 maxVec, boolean testAllPoints)
@@ -83,7 +83,7 @@ public class OxygenUtil
         		{
         			if (testAllPoints)
         			{
-        				ArrayList<Vector3> vecs = new ArrayList<Vector3>();
+        				final ArrayList<Vector3> vecs = new ArrayList<Vector3>();
         				vecs.add(minVec);
         				vecs.add(new Vector3(maxVec.x, minVec.y, minVec.z));
         				vecs.add(new Vector3(minVec.x, maxVec.y, minVec.z));
@@ -92,8 +92,8 @@ public class OxygenUtil
         				vecs.add(new Vector3(maxVec.x, minVec.y, maxVec.z));
         				vecs.add(new Vector3(maxVec.x, minVec.y, minVec.z));
         				vecs.add(minVec);
-        				
-        				for (Vector3 vec : vecs)
+
+        				for (final Vector3 vec : vecs)
         				{
                 			final double dist = distributor.getDistanceFromServer(vec.x, vec.y, vec.z);
 
@@ -157,7 +157,7 @@ public class OxygenUtil
 		if (((GCCoreInventoryPlayer)player.inventory).tankItemInSlot(0) == null || !OxygenUtil.isItemValidForPlayerTankInv(0, ((GCCoreInventoryPlayer)player.inventory).tankItemInSlot(0)))
 		{
 			boolean handled = false;
-			
+
 			for (final ItemStack armorStack : player.inventory.armorInventory)
 			{
 				if (armorStack != null && armorStack.getItem() instanceof IBreathableArmor)
@@ -173,7 +173,7 @@ public class OxygenUtil
 					}
 				}
 			}
-			
+
 			if (!handled)
 			{
 				missingComponent = true;
@@ -183,13 +183,13 @@ public class OxygenUtil
 		if (((GCCoreInventoryPlayer)player.inventory).tankItemInSlot(1) == null || !OxygenUtil.isItemValidForPlayerTankInv(1, ((GCCoreInventoryPlayer)player.inventory).tankItemInSlot(1)))
 		{
 			boolean handled = false;
-			
+
 			for (final ItemStack armorStack : player.inventory.armorInventory)
 			{
 				if (armorStack != null && armorStack.getItem() instanceof IBreathableArmor)
 				{
 					final IBreathableArmor breathableArmor = (IBreathableArmor) armorStack.getItem();
-	
+
 					if (breathableArmor.handleGearType(EnumGearType.GEAR))
 					{
 						if (breathableArmor.canBreathe(armorStack, player, EnumGearType.GEAR))
@@ -199,7 +199,7 @@ public class OxygenUtil
 					}
 				}
 			}
-			
+
 			if (!handled)
 			{
 				missingComponent = true;
@@ -209,7 +209,7 @@ public class OxygenUtil
 		if ((((GCCoreInventoryPlayer)player.inventory).tankItemInSlot(2) == null || !OxygenUtil.isItemValidForPlayerTankInv(2, ((GCCoreInventoryPlayer)player.inventory).tankItemInSlot(2))) && (((GCCoreInventoryPlayer)player.inventory).tankItemInSlot(3) == null || !OxygenUtil.isItemValidForPlayerTankInv(3, ((GCCoreInventoryPlayer)player.inventory).tankItemInSlot(3))))
 		{
 			boolean handled = false;
-			
+
 			for (final ItemStack armorStack : player.inventory.armorInventory)
 			{
 				if (armorStack != null && armorStack.getItem() instanceof IBreathableArmor)
@@ -233,7 +233,7 @@ public class OxygenUtil
 					}
 				}
 			}
-			
+
 			if (!handled)
 			{
 				missingComponent = true;

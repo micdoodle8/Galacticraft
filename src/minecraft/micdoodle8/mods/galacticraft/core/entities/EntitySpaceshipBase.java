@@ -66,7 +66,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
     public abstract int getScaledFuelLevel(int i);
 
 	public abstract boolean hasValidFuel();
-    
+
     @Override
 	protected boolean canTriggerWalking()
     {
@@ -105,14 +105,15 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
         return false;
     }
 
-    public void setDead()
+    @Override
+	public void setDead()
     {
     	if (this.riddenByEntity != null && this.riddenByEntity instanceof GCCorePlayerMP)
     	{
     		final Object[] toSend2 = {0};
         	((EntityPlayerMP) this.riddenByEntity).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, toSend2));
     	}
-    	
+
 	  	super.setDead();
     }
 
@@ -143,7 +144,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
                     {
                     	final Object[] toSend2 = {0};
                     	((EntityPlayerMP) this.riddenByEntity).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, toSend2));
-                    	
+
                         this.riddenByEntity.mountEntity(this);
                     }
 
@@ -474,7 +475,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
     	if (!this.worldObj.isRemote)
     	{
         	par1EntityPlayer.mountEntity(this);
-        	
+
             if (this.riddenByEntity != null && this.riddenByEntity instanceof GCCorePlayerMP)
             {
         	  	final Object[] toSend = {((EntityPlayerMP)this.riddenByEntity).username};

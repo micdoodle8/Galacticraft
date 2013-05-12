@@ -11,7 +11,6 @@ import org.lwjgl.opengl.GL11;
 
 import universalelectricity.core.electricity.ElectricityDisplay;
 import universalelectricity.core.electricity.ElectricityDisplay.ElectricUnit;
-import cpw.mods.fml.common.FMLLog;
 
 /**
  * Copyright 2012-2013, micdoodle8

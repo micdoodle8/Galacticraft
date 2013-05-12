@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core;
 
 import cpw.mods.fml.common.Loader;
 
-public class GCCoreCompatibilityManager 
+public class GCCoreCompatibilityManager
 {
 	private static boolean modIc2Loaded = false;
 
@@ -11,47 +11,47 @@ public class GCCoreCompatibilityManager
 	private static boolean modGTLoaded = false;
 
 	private static boolean modTELoaded = false;
-	
+
 	public static void checkForCompatibleMods()
 	{
 		if (Loader.isModLoaded("GregTech_Addon"))
 		{
-			modGTLoaded = true;
+			GCCoreCompatibilityManager.modGTLoaded = true;
 		}
 
 		if (Loader.isModLoaded("ThermalExpansion"))
 		{
-			modTELoaded = true;
+			GCCoreCompatibilityManager.modTELoaded = true;
 		}
-		
+
 		if (Loader.isModLoaded("IC2"))
-		{ 
-			modIc2Loaded = true;
+		{
+			GCCoreCompatibilityManager.modIc2Loaded = true;
 		}
 
 		if (Loader.isModLoaded("BuildCraft|Core"))
-		{ 
-			modBCraftLoaded = true;
+		{
+			GCCoreCompatibilityManager.modBCraftLoaded = true;
 		}
 	}
-	
+
 	public static boolean isIc2Loaded()
 	{
-		return modIc2Loaded;
+		return GCCoreCompatibilityManager.modIc2Loaded;
 	}
-	
+
 	public static boolean isBCraftLoaded()
 	{
-		return modBCraftLoaded;
+		return GCCoreCompatibilityManager.modBCraftLoaded;
 	}
-	
+
 	public static boolean isTELoaded()
 	{
-		return modTELoaded;
+		return GCCoreCompatibilityManager.modTELoaded;
 	}
-	
+
 	public static boolean isGTLoaded()
 	{
-		return modGTLoaded;
+		return GCCoreCompatibilityManager.modGTLoaded;
 	}
 }

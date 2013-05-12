@@ -22,7 +22,7 @@ public class GCCoreConnectionHandler implements IConnectionHandler
 	{
 		if (player instanceof GCCorePlayerMP)
 		{
-			GCCorePlayerMP playerMP = (GCCorePlayerMP) player;
+			final GCCorePlayerMP playerMP = (GCCorePlayerMP) player;
 			PacketDispatcher.sendPacketToPlayer(GCCorePacketSchematicList.buildSchematicListPacket(playerMP.unlockedSchematics), player);
 			PacketDispatcher.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 18, new Object[] {((GCCorePlayerMP) player).spaceStationDimensionID}), player);
 	    }

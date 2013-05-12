@@ -226,7 +226,8 @@ public class GCMoonWorldProvider extends WorldProvider implements IGalacticraftW
 		return 0.062F;
 	}
 
-    public int getHeight()
+    @Override
+	public int getHeight()
     {
         return 800;
     }

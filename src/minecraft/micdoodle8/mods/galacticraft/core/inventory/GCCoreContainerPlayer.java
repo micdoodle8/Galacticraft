@@ -14,10 +14,10 @@ import net.minecraft.item.ItemStack;
 
 public class GCCoreContainerPlayer extends ContainerPlayer
 {
-	public GCCoreContainerPlayer(InventoryPlayer par1InventoryPlayer, boolean par2, EntityPlayer par3EntityPlayer) 
+	public GCCoreContainerPlayer(InventoryPlayer par1InventoryPlayer, boolean par2, EntityPlayer par3EntityPlayer)
 	{
 		super(par1InventoryPlayer, par2, par3EntityPlayer);
-		
+
 		this.inventoryItemStacks.clear();
 		this.inventorySlots.clear();
 
@@ -25,7 +25,7 @@ public class GCCoreContainerPlayer extends ContainerPlayer
         this.addSlotToContainer(new SlotCrafting(par1InventoryPlayer.player, this.craftMatrix, this.craftResult, 0, 116, 62));
         int i;
         int j;
-        
+
         for (i = 0; i < 2; ++i)
         {
             for (j = 0; j < 2; ++j)
@@ -64,11 +64,11 @@ public class GCCoreContainerPlayer extends ContainerPlayer
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotIndex)
     {
         ItemStack itemstack = null;
-        Slot slot = (Slot)this.inventorySlots.get(slotIndex);
+        final Slot slot = (Slot)this.inventorySlots.get(slotIndex);
 
         if (slot != null && slot.getHasStack())
         {
-            ItemStack itemstack1 = slot.getStack();
+            final ItemStack itemstack1 = slot.getStack();
             itemstack = itemstack1.copy();
 
             if (slotIndex == 0)

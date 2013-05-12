@@ -29,7 +29,6 @@ import net.minecraft.network.packet.Packet9Respawn;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
@@ -46,7 +45,7 @@ public class GCCorePacketHandlerServer implements IPacketHandler
         final EntityPlayerMP player = (EntityPlayerMP)p;
 
     	final GCCorePlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player);
-    	
+
         if (packetType == 0)
         {
             final Class[] decodeAs = {String.class};
@@ -116,7 +115,7 @@ public class GCCorePacketHandlerServer implements IPacketHandler
             			stack2 = ((GCCoreInventoryPlayer)player.inventory).tankItemInSlot(4);
             		}
 
-    				if ((stack2 != null && stack2.getItem() instanceof GCCoreItemParachute) || (playerBase != null && playerBase.launchAttempts > 0))
+    				if (stack2 != null && stack2.getItem() instanceof GCCoreItemParachute || playerBase != null && playerBase.launchAttempts > 0)
     				{
                     	ship.ignite();
                     	playerBase.launchAttempts = 0;
@@ -358,7 +357,7 @@ public class GCCorePacketHandlerServer implements IPacketHandler
       	{
         	final Class[] decodeAs = {Integer.class};
           	final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
-          	
+
 			if (playerBase.chatCooldown == 0)
 			{
 				player.sendChatToPlayer("I'll probably need a Tier " + packetReadout[0] + " Dungeon key to unlock this!");
@@ -369,9 +368,9 @@ public class GCCorePacketHandlerServer implements IPacketHandler
       	{
         	final Class[] decodeAs = {String.class, Integer.class};
           	final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
-          	
+
 			final GCCoreSpaceStationData ssdata = GCCoreSpaceStationData.getStationData(playerBase.worldObj, (Integer) packetReadout[1], playerBase);
-			
+
 			if (ssdata != null)
 			{
 				ssdata.setSpaceStationName((String) packetReadout[0]);

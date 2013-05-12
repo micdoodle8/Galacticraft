@@ -4,7 +4,6 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
-import com.overminddl1.mods.NMT.NMTGlobal;
 import com.overminddl1.mods.NMT.NMTModelRenderer;
 
 public class GCCoreModelCelestialObject extends ModelBase
@@ -18,15 +17,15 @@ public class GCCoreModelCelestialObject extends ModelBase
 
     public GCCoreModelCelestialObject(float par1)
     {
-    	textureWidth = 128;
-    	textureHeight = 128;
+    	this.textureWidth = 128;
+    	this.textureHeight = 128;
 
-    	bubble = new NMTModelRenderer(this, 0, 0);
-    	bubble.addBox(-10F, -10F, -10F, 20, 20, 20);
-    	bubble.setRotationPoint(0F, 0F, 0F);
-    	bubble.setTextureSize(128, 128);
-    	bubble.mirror = true;
-    	setRotation(bubble, 0F, (float) Math.PI, 0F);
+    	this.bubble = new NMTModelRenderer(this, 0, 0);
+    	this.bubble.addBox(-10F, -10F, -10F, 20, 20, 20);
+    	this.bubble.setRotationPoint(0F, 0F, 0F);
+    	this.bubble.setTextureSize(128, 128);
+    	this.bubble.mirror = true;
+    	this.setRotation(this.bubble, 0F, (float) Math.PI, 0F);
     }
 
 	private void setRotation(ModelRenderer model, float x, float y, float z)

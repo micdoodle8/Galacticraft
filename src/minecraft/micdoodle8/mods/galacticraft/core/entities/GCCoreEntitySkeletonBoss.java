@@ -41,7 +41,6 @@ import universalelectricity.prefab.network.PacketManager;
 
 import com.google.common.io.ByteArrayDataInput;
 
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -57,7 +56,7 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
 	protected long ticks = 0;
     private static final ItemStack defaultHeldItem = new ItemStack(Item.bow, 1);
     private IDungeonBossSpawner spawner;
-    
+
     public int throwTimer;
     public int postThrowDelay = 20;
     public Entity thrownEntity;
@@ -75,7 +74,7 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 32.0F, 0, true));
     }
-    
+
     public GCCoreEntitySkeletonBoss(World world, Vector3 vec)
     {
     	this(world);
@@ -100,10 +99,10 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
                 this.riddenByEntity.lastTickPosY = this.lastTickPosY + this.getMountedYOffset() + this.riddenByEntity.getYOffset();
                 this.riddenByEntity.lastTickPosZ = this.lastTickPosZ;
             }
-            
-            double offsetX = Math.sin(this.rotationYaw * Math.PI / 180.0D);
-            double offsetZ = Math.cos(this.rotationYaw * Math.PI / 180.0D);
-            double offsetY = 2 * Math.cos((this.throwTimer + this.postThrowDelay) * 0.05F);
+
+            final double offsetX = Math.sin(this.rotationYaw * Math.PI / 180.0D);
+            final double offsetZ = Math.cos(this.rotationYaw * Math.PI / 180.0D);
+            final double offsetY = 2 * Math.cos((this.throwTimer + this.postThrowDelay) * 0.05F);
 
             this.riddenByEntity.setPosition(this.posX + offsetX, this.posY + this.getMountedYOffset() + this.riddenByEntity.getYOffset() + offsetY, this.posZ + offsetZ);
         }
@@ -114,7 +113,7 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
     {
     	;
     }
-    
+
     @Override
     public void onCollideWithPlayer(EntityPlayer par1EntityPlayer)
     {
@@ -125,10 +124,10 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
             	PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 40.0, this.worldObj.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, 25, new Object[] {0}));
         		par1EntityPlayer.mountEntity(this);
             }
-            
+
     		this.throwTimer = 40;
     	}
-    	
+
     	super.onCollideWithPlayer(par1EntityPlayer);
     }
 
@@ -149,7 +148,7 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
     {
         return false;
     }
-    
+
     @Override
 	protected String getLivingSound()
     {
@@ -176,10 +175,10 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
 
         if (this.deathTicks >= 180 && this.deathTicks <= 200)
         {
-            float f = (this.rand.nextFloat() - 0.5F) * 1.5F;
-            float f1 = (this.rand.nextFloat() - 0.5F) * 2.0F;
-            float f2 = (this.rand.nextFloat() - 0.5F) * 1.5F;
-            this.worldObj.spawnParticle("hugeexplosion", this.posX + (double)f, this.posY + 2.0D + (double)f1, this.posZ + (double)f2, 0.0D, 0.0D, 0.0D);
+            final float f = (this.rand.nextFloat() - 0.5F) * 1.5F;
+            final float f1 = (this.rand.nextFloat() - 0.5F) * 2.0F;
+            final float f2 = (this.rand.nextFloat() - 0.5F) * 1.5F;
+            this.worldObj.spawnParticle("hugeexplosion", this.posX + f, this.posY + 2.0D + f1, this.posZ + f2, 0.0D, 0.0D, 0.0D);
         }
 
         int i;
@@ -191,7 +190,7 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
         	{
             	PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 40.0, this.worldObj.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, 24, new Object[] {0}));
         	}
-        	
+
             if (this.deathTicks > 150 && this.deathTicks % 5 == 0)
             {
                 i = 30;
@@ -223,59 +222,59 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
                 i -= j;
                 this.worldObj.spawnEntityInWorld(new EntityXPOrb(this.worldObj, this.posX, this.posY, this.posZ, j));
             }
-            
-            for (TileEntity tile : (List<TileEntity>)this.worldObj.loadedTileEntityList)
+
+            for (final TileEntity tile : (List<TileEntity>)this.worldObj.loadedTileEntityList)
             {
             	if (tile instanceof GCCoreTileEntityTreasureChest)
             	{
-                    double d3 = (double)tile.xCoord + 0.5D - this.posX;
-                    double d4 = (double)tile.yCoord + 0.5D - this.posY;
-                    double d5 = (double)tile.zCoord + 0.5D - this.posZ;
-                    double dSq = d3 * d3 + d4 * d4 + d5 * d5;
-                    
+                    final double d3 = tile.xCoord + 0.5D - this.posX;
+                    final double d4 = tile.yCoord + 0.5D - this.posY;
+                    final double d5 = tile.zCoord + 0.5D - this.posZ;
+                    final double dSq = d3 * d3 + d4 * d4 + d5 * d5;
+
             		if (dSq < Math.pow(75.0D, 2))
             		{
-        				int amountOfGoodies = 3;
-        				
+        				final int amountOfGoodies = 3;
+
         				if (!((GCCoreTileEntityTreasureChest) tile).locked)
         				{
         					((GCCoreTileEntityTreasureChest) tile).locked = true;
         				}
-        				
+
         				for(int gg = 0; gg < amountOfGoodies; gg++)
         				{
         					int attempts = 0;
-        					for (int r = rand.nextInt(((IInventory)tile).getSizeInventory()); attempts < 200; rand.nextInt(((IInventory)tile).getSizeInventory()))
+        					for (int r = this.rand.nextInt(((IInventory)tile).getSizeInventory()); attempts < 200; this.rand.nextInt(((IInventory)tile).getSizeInventory()))
         					{
         						if (((IInventory)tile).getStackInSlot(r) == null)
         						{
-        							if (getGuaranteedLoot(gg, rand) != null)
+        							if (this.getGuaranteedLoot(gg, this.rand) != null)
         							{
-                    					((IInventory)tile).setInventorySlotContents(r, getGuaranteedLoot(gg, rand));
-                    					r = rand.nextInt(((IInventory)tile).getSizeInventory());
+                    					((IInventory)tile).setInventorySlotContents(r, this.getGuaranteedLoot(gg, this.rand));
+                    					r = this.rand.nextInt(((IInventory)tile).getSizeInventory());
         							}
         							else
         							{
-                    					((IInventory)tile).setInventorySlotContents(r, this.getLoot(rand));
-                    					r = rand.nextInt(((IInventory)tile).getSizeInventory());
+                    					((IInventory)tile).setInventorySlotContents(r, this.getLoot(this.rand));
+                    					r = this.rand.nextInt(((IInventory)tile).getSizeInventory());
         							}
-                					
+
                 					break;
         						}
-        						
+
         						attempts++;
         					}
         				}
-        				
+
     					break;
             		}
             	}
             }
-            
+
             this.entityDropItem(new ItemStack(GCCoreItems.key.itemID, 1, 0), 0.5F);
-        	
+
             super.setDead();
-            
+
         	if (this.spawner != null)
         	{
         		this.spawner.setBossDefeated(true);
@@ -298,7 +297,8 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
         return EnumCreatureAttribute.UNDEAD;
     }
 
-    public void setDead()
+    @Override
+	public void setDead()
     {
     	if (this.spawner != null)
     	{
@@ -306,7 +306,7 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
     		this.spawner.setBoss(null);
     		this.spawner.setBossSpawned(false);
     	}
-		
+
     	super.setDead();
     }
 
@@ -319,14 +319,14 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
 		}
 
 		this.ticks++;
-		
-    	EntityPlayer player = this.worldObj.getClosestPlayer(this.posX, this.posY, this.posZ, 20.0);
-    	
-    	if (player != null && !player.equals(targetEntity))
+
+    	final EntityPlayer player = this.worldObj.getClosestPlayer(this.posX, this.posY, this.posZ, 20.0);
+
+    	if (player != null && !player.equals(this.targetEntity))
     	{
     		if (this.getDistanceSqToEntity(player) < 400.0D)
     		{
-    	        PathEntity pathentity = this.getNavigator().getPathToEntityLiving(player);
+    	        final PathEntity pathentity = this.getNavigator().getPathToEntityLiving(player);
     	        this.targetEntity = player;
     			this.getNavigator().setPath(pathentity, this.health >= 75.0 ? 0.2F : 0.35F);
         		this.moveSpeed = 0.3F + (this.health >= this.getMaxHealth() / 2 ? 0.1F : 1.0F);
@@ -338,10 +338,10 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
     		this.moveSpeed = 0.0F;
     	}
 
-    	Vector3 thisVec = new Vector3(this);
-    	List l = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, AxisAlignedBB.getBoundingBox(thisVec.x - 10, thisVec.y - 10, thisVec.z - 10, thisVec.x + 10, thisVec.y + 10, thisVec.z + 10));
+    	final Vector3 thisVec = new Vector3(this);
+    	final List l = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, AxisAlignedBB.getBoundingBox(thisVec.x - 10, thisVec.y - 10, thisVec.z - 10, thisVec.x + 10, thisVec.y + 10, thisVec.z + 10));
 
-    	for (Entity e : (List<Entity>)l)
+    	for (final Entity e : (List<Entity>)l)
     	{
     		if (e instanceof GCCoreEntitySkeletonBoss)
     		{
@@ -351,38 +351,38 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
     			}
     		}
     	}
-    	
+
     	if (this.throwTimer > 0)
     	{
     		this.throwTimer--;
     	}
-    	
+
     	if (this.postThrowDelay > 0)
     	{
     		this.postThrowDelay--;
     	}
 
-		Vector3 vec = new Vector3(this);
-		EntityPlayer closestPlayer = this.worldObj.getClosestPlayer(vec.x, vec.y, vec.z, this.getDistanceToSpawn());
-		
+		final Vector3 vec = new Vector3(this);
+		final EntityPlayer closestPlayer = this.worldObj.getClosestPlayer(vec.x, vec.y, vec.z, this.getDistanceToSpawn());
+
 		if (closestPlayer == null)
 		{
 			this.setDead();
 			return;
 		}
-    	
+
     	if (this.riddenByEntity != null && this.throwTimer == 0)
     	{
             this.postThrowDelay = 20;
-            
+
             this.thrownEntity = this.riddenByEntity;
-    		
+
             if (!this.worldObj.isRemote)
             {
         		this.riddenByEntity.mountEntity(this);
             }
     	}
-    	
+
     	if (this.thrownEntity != null && this.postThrowDelay == 18)
     	{
             double d0 = this.posX - this.thrownEntity.posX;
@@ -398,21 +398,21 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
             ((EntityPlayer)this.thrownEntity).attackedAtYaw = (float)(Math.atan2(d1, d0) * 180.0D / Math.PI) - this.rotationYaw;
 
             this.thrownEntity.isAirBorne = true;
-            float f = MathHelper.sqrt_double(d0 * d0 + d1 * d1);
-            float f1 = 2.4F;
+            final float f = MathHelper.sqrt_double(d0 * d0 + d1 * d1);
+            final float f1 = 2.4F;
             this.thrownEntity.motionX /= 2.0D;
             this.thrownEntity.motionY /= 2.0D;
             this.thrownEntity.motionZ /= 2.0D;
-            this.thrownEntity.motionX -= d0 / (double)f * (double)f1;
+            this.thrownEntity.motionX -= d0 / f * f1;
             this.thrownEntity.motionY += (double)f1 / 5;
-            this.thrownEntity.motionZ -= d1 / (double)f * (double)f1;
+            this.thrownEntity.motionZ -= d1 / f * f1;
 
             if (this.thrownEntity.motionY > 0.4000000059604645D)
             {
             	this.thrownEntity.motionY = 0.4000000059604645D;
             }
     	}
-    	
+
     	if (this.ticks % 5 == 0)
     	{
     		PacketManager.sendPacketToClients(this.getDescriptionPacket(), this.worldObj, new Vector3(this), 100);
@@ -470,15 +470,16 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
 	protected void dropFewItems(boolean par1, int par2)
     {
     }
-    
-    public EntityItem entityDropItem(ItemStack par1ItemStack, float par2)
+
+    @Override
+	public EntityItem entityDropItem(ItemStack par1ItemStack, float par2)
     {
-        EntityItem entityitem = new EntityItem(this.worldObj, this.posX, this.posY + (double)par2, this.posZ, par1ItemStack);
+        final EntityItem entityitem = new EntityItem(this.worldObj, this.posX, this.posY + par2, this.posZ, par1ItemStack);
         entityitem.motionY = -2.0D;
         entityitem.delayBeforeCanPickup = 10;
-        if (captureDrops)
+        if (this.captureDrops)
         {
-            capturedDrops.add(entityitem);
+            this.capturedDrops.add(entityitem);
         }
         else
         {
@@ -509,13 +510,13 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
 	}
 
 	@Override
-	public float getExperienceToSpawn() 
+	public float getExperienceToSpawn()
 	{
 		return 50.0F;
 	}
 
 	@Override
-	public double getDistanceToSpawn() 
+	public double getDistanceToSpawn()
 	{
 		return 40.0D;
 	}
@@ -527,22 +528,22 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
 	}
 
 	@Override
-	public ItemStack getGuaranteedLoot(int loop, Random rand) 
+	public ItemStack getGuaranteedLoot(int loop, Random rand)
 	{
 		switch (loop)
 		{
 		case 0:
 			return new ItemStack(GCCoreItems.schematic, 1, 0);
 		}
-		
+
 		return null;
 	}
 
 	@Override
-	public ItemStack getLoot(Random rand) 
+	public ItemStack getLoot(Random rand)
 	{
-		int r = rand.nextInt(3);
-		
+		final int r = rand.nextInt(3);
+
 		switch (r)
 		{
 		case 0:
@@ -555,7 +556,7 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
 	}
 
 	@Override
-	public int getBossHealth() 
+	public int getBossHealth()
 	{
 		return this.health;
 	}

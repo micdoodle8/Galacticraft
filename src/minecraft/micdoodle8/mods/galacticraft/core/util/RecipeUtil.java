@@ -3,9 +3,7 @@ package micdoodle8.mods.galacticraft.core.util;
 import gregtechmod.api.GregTech_API;
 import ic2.api.item.Items;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import micdoodle8.mods.galacticraft.API.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.API.SpaceStationRecipe;
@@ -41,18 +39,18 @@ public class RecipeUtil
 			GalacticraftRegistry.registerSpaceStation(new SpaceStationType(GCCoreConfigManager.idDimensionOverworldOrbit, "Overworld", 0, new SpaceStationRecipe(inputMap)));
 			GalacticraftCore.setSpaceStationRecipe = true;
 		}
-		
-		addRecipe(new ItemStack(GCCoreItems.rocketEngine, 1), new Object[] {
-			" V ", 
-			"XWX", 
-			"XZX", 
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.rocketEngine, 1), new Object[] {
+			" V ",
+			"XWX",
+			"XZX",
 				'V', new ItemStack(GCCoreItems.canister, 1, 0),
 				'W', GregTech_API.getGregTechBlock(1, 1, 31),
 				'X', GCCoreItems.heavyPlating,
 				'Z', GregTech_API.getGregTechBlock(1, 1, 37)
 			});
-		
-		addRecipe(new ItemStack(GCCoreItems.rocketNoseCone, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.rocketNoseCone, 1), new Object[] {
 			" Z ",
 			" X ",
 			"XYX",
@@ -60,15 +58,15 @@ public class RecipeUtil
 			'Y', GregTech_API.getGregTechBlock(1, 1, 4),
 			'Z', Items.getItem("reinforcedGlass"),
 		});
-		
-		addRecipe(new ItemStack(GCCoreBlocks.oxygenPipe, 4), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.oxygenPipe, 4), new Object[] {
 			"XXX",
 			"   ",
 			"XXX",
 			'X', Block.thinGlass
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.lightOxygenTank, 1, GCCoreItems.lightOxygenTank.getMaxDamage()), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.lightOxygenTank, 1, GCCoreItems.lightOxygenTank.getMaxDamage()), new Object[] {
 			"Z",
 			"X",
 			"Y",
@@ -76,8 +74,8 @@ public class RecipeUtil
 			'Y', "ingotCopper",
 			'Z', new ItemStack(Block.cloth, 1, 5)
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.medOxygenTank, 1, GCCoreItems.medOxygenTank.getMaxDamage()), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.medOxygenTank, 1, GCCoreItems.medOxygenTank.getMaxDamage()), new Object[] {
 			"ZZ",
 			"XX",
 			"YY",
@@ -86,15 +84,15 @@ public class RecipeUtil
 			'Z', new ItemStack(Block.cloth, 1, 1)
 		});
 
-		addRecipe(new ItemStack(GCCoreItems.sensorGlasses, 1), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.sensorGlasses, 1), new Object[] {
 			"YYY",
 			"Y Y",
 			"XYX",
 			'X', GCCoreItems.sensorLens,
 			'Y', GCMoonItems.meteoricIronIngot
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.sensorLens, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.sensorLens, 1), new Object[] {
 			"ZYZ",
 			"YXY",
 			"ZYZ",
@@ -102,22 +100,22 @@ public class RecipeUtil
 			'Y', GCMoonItems.meteoricIronIngot,
 			'Z', Item.redstone
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.canister, 1, 0), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.canister, 1, 0), new Object[] {
 			"X X",
 			"X X",
 			"XXX",
 			'X', "ingotTin"
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.canister, 1, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.canister, 1, 1), new Object[] {
 			"X X",
 			"X X",
 			"XXX",
 			'X', "ingotCopper"
 		});
 
-		addRecipe(new ItemStack(GCCoreItems.oxygenMask, 1), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.oxygenMask, 1), new Object[] {
 			"XXX",
 			"XYX",
 			"XXX",
@@ -125,48 +123,48 @@ public class RecipeUtil
 			'Y', Item.helmetIron
 		});
 
-		addRecipe(new ItemStack(GCCoreItems.canvas, 1), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.canvas, 1), new Object[] {
 			" XY",
 			"XXX",
 			"YX ",
 			'Y', Item.stick, 'X', Item.silk
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.parachute, 1, 0), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.parachute, 1, 0), new Object[] {
 			"XXX",
 			"Y Y",
 			" Y ",
 			'X', GCCoreItems.canvas, 'Y', Item.silk
 		});
-		
-		addRecipe(new ItemStack(GCCoreBlocks.enclosedWire, 1, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.enclosedWire, 1, 1), new Object[] {
 			"XYX",
 			'X', GCCoreBlocks.oxygenPipe, 'Y', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4)
 		});
 
 
-		addRecipe(new ItemStack(GCCoreItems.oxygenGear), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.oxygenGear), new Object[] {
 			" Y ",
 			"YXY",
 			"Y Y",
 			'X', GCCoreItems.oxygenConcentrator, 'Y', GCCoreBlocks.oxygenPipe
 		});
 
-		addRecipe(new ItemStack(GCCoreBlocks.decorationBlocks, 4, 3), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.decorationBlocks, 4, 3), new Object[] {
 			"   ",
 			" XY",
 			"   ",
 			'X', new ItemStack(Block.stone, 4, 0), 'Y', "ingotTin"
 		});
 
-		addRecipe(new ItemStack(GCCoreBlocks.decorationBlocks, 4, 4), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.decorationBlocks, 4, 4), new Object[] {
 			"   ",
 			" X ",
 			" Y ",
 			'X', new ItemStack(Block.stone, 4, 0), 'Y', "ingotTin"
 		});
 
-		addRecipe(new ItemStack(GCCoreItems.flag, 1, 16), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.flag, 1, 16), new Object[] {
 			"XYY",
 			"XYY",
 			"X  ",
@@ -182,8 +180,8 @@ public class RecipeUtil
         {
         	CraftingManager.getInstance().addShapelessRecipe(new ItemStack(GCCoreItems.flag, 1, GCCoreItemFlag.getFlagDamageValueFromDye(var2)), new Object[] {new ItemStack(Item.dyePowder, 1, var2), new ItemStack(GCCoreItems.flag, 1, 16)});
         }
-        
-		addRecipe(new ItemStack(GCCoreItems.heavyPlating, 2), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.heavyPlating, 2), new Object[] {
 			"X",
 			"Y",
 			"Z",
@@ -191,23 +189,23 @@ public class RecipeUtil
 			'Y', GregTech_API.getGregTechItem(0, 1, 77),
 			'Z', GregTech_API.getGregTechItem(0, 1, 75),
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.rocketFins, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.rocketFins, 1), new Object[] {
 			" Y ",
 			"XYX",
 			"X X",
 			'X', GCCoreItems.heavyPlating,
 			'Y', GregTech_API.getGregTechItem(0, 1, 78)
 		});
-		
-		addRecipe(new ItemStack(GCCoreBlocks.landingPad, 9), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.landingPad, 9), new Object[] {
 			"YYY",
 			"XXX",
 			'X', Block.blockIron,
 			'Y', "plateIron"
 		});
-		
-		addRecipe(new ItemStack(GCCoreBlocks.oxygenDetector, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.oxygenDetector, 1), new Object[] {
 			"WXW",
 			"YZY",
 			"WVW",
@@ -217,8 +215,8 @@ public class RecipeUtil
 			'Y', GCCoreItems.airVent,
 			'Z', GregTech_API.getGregTechBlock(1, 0, 15)
 		});
-		
-		addRecipe(new ItemStack(GCCoreBlocks.airDistributor, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.airDistributor, 1), new Object[] {
 			"WWW",
 			"WZW",
 			"XVX",
@@ -228,8 +226,8 @@ public class RecipeUtil
 			'Y', GCCoreItems.airVent,
 			'Z', GregTech_API.getGregTechBlock(1, 0, 15)
 		});
-		
-		addRecipe(new ItemStack(GCCoreBlocks.sealer, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealer, 1), new Object[] {
 			"WZW",
 			"YTX",
 			"WUW",
@@ -241,8 +239,8 @@ public class RecipeUtil
 			'Z', GregTech_API.getGregTechItem(0, 1, 78),
 			'U', GregTech_API.getGregTechItem(0, 1, 83)
 		});
-		
-		addRecipe(new ItemStack(GCCoreBlocks.blockAirCollector, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.blockAirCollector, 1), new Object[] {
 			"WVW",
 			"YXZ",
 			"WUW",
@@ -253,8 +251,8 @@ public class RecipeUtil
 			'Y', GCCoreItems.airFan,
 			'Z', GCCoreItems.airVent
 		});
-		
-		addRecipe(new ItemStack(GCCoreBlocks.rocketBench, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.rocketBench, 1), new Object[] {
 			"X Y",
 			"ZAB",
 			"DCD",
@@ -266,8 +264,8 @@ public class RecipeUtil
 			'C', GregTech_API.getGregTechBlock(1, 1, 60),
 			'D', GregTech_API.getGregTechBlock(1, 0, 10),
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.heavyOxygenTank, 1, GCCoreItems.heavyOxygenTank.getMaxDamage()), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.heavyOxygenTank, 1, GCCoreItems.heavyOxygenTank.getMaxDamage()), new Object[] {
 			"ZZZ",
 			"XXX",
 			"YYY",
@@ -275,8 +273,8 @@ public class RecipeUtil
 			'Y', "ingotSteel",
 			'Z', new ItemStack(Block.cloth, 1, 14)
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.airFan, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.airFan, 1), new Object[] {
 			"Z Z",
 			" Y ",
 			"ZXZ",
@@ -284,8 +282,8 @@ public class RecipeUtil
 			'Y', "motor",
 			'Z', "ingotSteel"
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.oxygenConcentrator, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.oxygenConcentrator, 1), new Object[] {
 			"ZWZ",
 			"WYW",
 			"ZXZ",
@@ -294,95 +292,95 @@ public class RecipeUtil
 			'Y', new ItemStack(GCCoreItems.canister, 1, 0),
 			'Z', "ingotSteel"
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.steelPickaxe, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.steelPickaxe, 1), new Object[] {
 			"YYY",
 			" X ",
 			" X ",
 			'Y', "ingotSteel",
 			'X', Item.stick
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.steelAxe, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.steelAxe, 1), new Object[] {
 			"YY ",
 			"YX ",
 			" X ",
 			'Y', "ingotSteel",
 			'X', Item.stick
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.steelAxe, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.steelAxe, 1), new Object[] {
 			" YY",
 			" XY",
 			" X ",
 			'Y', "ingotSteel",
 			'X', Item.stick
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.steelHoe, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.steelHoe, 1), new Object[] {
 			" YY",
 			" X ",
 			" X ",
 			'Y', "ingotSteel",
 			'X', Item.stick
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.steelHoe, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.steelHoe, 1), new Object[] {
 			"YY ",
 			" X ",
 			" X ",
 			'Y', "ingotSteel",
 			'X', Item.stick
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.steelSpade, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.steelSpade, 1), new Object[] {
 			" Y ",
 			" X ",
 			" X ",
 			'Y', "ingotSteel",
 			'X', Item.stick
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.steelSword, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.steelSword, 1), new Object[] {
 			" Y ",
 			" Y ",
 			" X ",
 			'Y', "ingotSteel",
 			'X', Item.stick
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.steelBoots, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.steelBoots, 1), new Object[] {
 			"X X",
 			"X X",
 			'X', "ingotSteel"
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.steelChestplate, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.steelChestplate, 1), new Object[] {
 			"X X",
 			"XXX",
 			"XXX",
 			'X', "ingotSteel"
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.steelLeggings, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.steelLeggings, 1), new Object[] {
 			"XXX",
 			"X X",
 			"X X",
 			'X', "ingotSteel"
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.steelHelmet, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.steelHelmet, 1), new Object[] {
 			"XXX",
 			"X X",
 			'X', "ingotSteel"
 		});
-		
-		addRecipe(new ItemStack(GCCoreBlocks.enclosedWire, 1, 0), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.enclosedWire, 1, 0), new Object[] {
 			"XYX",
 			'X', "copperWire", 'Y', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4)
 		});
 
-		addRecipe(new ItemStack(GCCoreItems.flagPole, 2, 0), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.flagPole, 2, 0), new Object[] {
 			"X",
 			"X",
 			"X",
@@ -396,49 +394,49 @@ public class RecipeUtil
     		"ingotSteel"
     	}));
 
-		addRecipe(new ItemStack(GCCoreBlocks.airLockFrame, 2), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.airLockFrame, 2), new Object[] {
 			"XXX",
 			"YVY",
 			"ZWZ",
 			'V', GCCoreBlocks.oxygenPipe, 'W', Item.redstone, 'X', GCMoonItems.meteoricIronIngot, 'Y', "ingotSteel", 'Z', GCCoreItems.oxygenConcentrator
 		});
 
-		addRecipe(new ItemStack(GCCoreItems.oilExtractor), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.oilExtractor), new Object[] {
 			"X  ",
 			" XY",
 			"ZYY",
 			'X', "ingotSteel", 'Y', "ingotBronze", 'Z', Item.redstone
 		});
 
-		addRecipe(new ItemStack(GCCoreItems.oilCanister, 1, 61), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.oilCanister, 1, 61), new Object[] {
 			"WXW",
 			"WYW",
 			"WZW",
 			'X', "ingotSteel", 'Y', Block.glass, 'Z', new ItemStack(GCCoreItems.canister, 1, 0), 'W', "ingotTin"
 		});
 
-		addRecipe(new ItemStack(GCCoreBlocks.refinery), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.refinery), new Object[] {
 			" Z ",
 			"WYW",
 			"XVX",
 			'X', "ingotSteel", 'Y', GregTech_API.getGregTechBlock(1, 0, 15), 'Z', new ItemStack(GCCoreItems.canister, 1, 1), 'W', Block.stone, 'V', GregTech_API.getGregTechItem(0, 1, 83)
 		});
 
-		addRecipe(new ItemStack(GCCoreBlocks.compressor), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.compressor), new Object[] {
 			"XZX",
 			"XWX",
 			"XYX",
 			'X', "ingotSteel", 'Y', GregTech_API.getGregTechItem(0, 1, 83), 'Z', GCCoreItems.oxygenConcentrator, 'W', GregTech_API.getGregTechBlock(1, 0, 15)
 		});
 
-		addRecipe(new ItemStack(GCCoreBlocks.fuelLoader), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.fuelLoader), new Object[] {
 			"XZX",
 			"ZWZ",
 			"XYX",
 			'X', "ingotSteel", 'Y', GregTech_API.getGregTechItem(0, 1, 83), 'Z', Items.getItem("reinforcedGlass"), 'W', GregTech_API.getGregTechBlock(1, 0, 15)
 		});
 	}
-	
+
 	public static void addThermalExpansionCraftingRecipes()
 	{
 		if (!GalacticraftCore.setSpaceStationRecipe)
@@ -451,11 +449,11 @@ public class RecipeUtil
 			GalacticraftRegistry.registerSpaceStation(new SpaceStationType(GCCoreConfigManager.idDimensionOverworldOrbit, "Overworld", 0, new SpaceStationRecipe(inputMap)));
 			GalacticraftCore.setSpaceStationRecipe = true;
 		}
-		
-		addRecipe(new ItemStack(GCCoreItems.rocketEngine, 1), new Object[] {
-			" YV", 
-			"XWX", 
-			"XZX", 
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.rocketEngine, 1), new Object[] {
+			" YV",
+			"XWX",
+			"XZX",
 				'V', Block.stoneButton,
 				'W', new ItemStack(GCCoreItems.canister, 1, 0),
 				'X', GCCoreItems.heavyPlating,
@@ -463,7 +461,7 @@ public class RecipeUtil
 				'Z', GCCoreItems.airVent
 			});
 
-		addRecipe(new ItemStack(GCCoreItems.rocketEngine, 1), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.rocketEngine, 1), new Object[] {
 			"VY ",
 			"XWX",
 			"XZX",
@@ -473,23 +471,23 @@ public class RecipeUtil
 			'Y', Item.flintAndSteel,
 			'Z', GCCoreItems.airVent
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.rocketNoseCone, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.rocketNoseCone, 1), new Object[] {
 			" Y ",
 			" X ",
 			"X X",
 			'X', GCCoreItems.heavyPlating,
 			'Y', Block.torchRedstoneActive
 		});
-		
-		addRecipe(new ItemStack(GCCoreBlocks.oxygenPipe, 4), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.oxygenPipe, 4), new Object[] {
 			"XXX",
 			"   ",
 			"XXX",
 			'X', Block.thinGlass
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.lightOxygenTank, 1, GCCoreItems.lightOxygenTank.getMaxDamage()), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.lightOxygenTank, 1, GCCoreItems.lightOxygenTank.getMaxDamage()), new Object[] {
 			"Z",
 			"X",
 			"Y",
@@ -497,8 +495,8 @@ public class RecipeUtil
 			'Y', "ingotCopper",
 			'Z', new ItemStack(Block.cloth, 1, 5)
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.medOxygenTank, 1, GCCoreItems.medOxygenTank.getMaxDamage()), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.medOxygenTank, 1, GCCoreItems.medOxygenTank.getMaxDamage()), new Object[] {
 			"ZZ",
 			"XX",
 			"YY",
@@ -507,15 +505,15 @@ public class RecipeUtil
 			'Z', new ItemStack(Block.cloth, 1, 1)
 		});
 
-		addRecipe(new ItemStack(GCCoreItems.sensorGlasses, 1), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.sensorGlasses, 1), new Object[] {
 			"YYY",
 			"Y Y",
 			"XYX",
 			'X', GCCoreItems.sensorLens,
 			'Y', GCMoonItems.meteoricIronIngot
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.sensorLens, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.sensorLens, 1), new Object[] {
 			"ZYZ",
 			"YXY",
 			"ZYZ",
@@ -523,22 +521,22 @@ public class RecipeUtil
 			'Y', GCMoonItems.meteoricIronIngot,
 			'Z', Item.redstone
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.canister, 1, 0), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.canister, 1, 0), new Object[] {
 			"X X",
 			"X X",
 			"XXX",
 			'X', "ingotTin"
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.canister, 1, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.canister, 1, 1), new Object[] {
 			"X X",
 			"X X",
 			"XXX",
 			'X', "ingotCopper"
 		});
 
-		addRecipe(new ItemStack(GCCoreItems.oxygenMask, 1), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.oxygenMask, 1), new Object[] {
 			"XXX",
 			"XYX",
 			"XXX",
@@ -546,48 +544,48 @@ public class RecipeUtil
 			'Y', Item.helmetIron
 		});
 
-		addRecipe(new ItemStack(GCCoreItems.canvas, 1), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.canvas, 1), new Object[] {
 			" XY",
 			"XXX",
 			"YX ",
 			'Y', Item.stick, 'X', Item.silk
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.parachute, 1, 0), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.parachute, 1, 0), new Object[] {
 			"XXX",
 			"Y Y",
 			" Y ",
 			'X', GCCoreItems.canvas, 'Y', Item.silk
 		});
-		
-		addRecipe(new ItemStack(GCCoreBlocks.enclosedWire, 1, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.enclosedWire, 1, 1), new Object[] {
 			"XYX",
 			'X', GCCoreBlocks.oxygenPipe, 'Y', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4)
 		});
 
 
-		addRecipe(new ItemStack(GCCoreItems.oxygenGear), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.oxygenGear), new Object[] {
 			" Y ",
 			"YXY",
 			"Y Y",
 			'X', GCCoreItems.oxygenConcentrator, 'Y', GCCoreBlocks.oxygenPipe
 		});
 
-		addRecipe(new ItemStack(GCCoreBlocks.decorationBlocks, 4, 3), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.decorationBlocks, 4, 3), new Object[] {
 			"   ",
 			" XY",
 			"   ",
 			'X', new ItemStack(Block.stone, 4, 0), 'Y', "ingotTin"
 		});
 
-		addRecipe(new ItemStack(GCCoreBlocks.decorationBlocks, 4, 4), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.decorationBlocks, 4, 4), new Object[] {
 			"   ",
 			" X ",
 			" Y ",
 			'X', new ItemStack(Block.stone, 4, 0), 'Y', "ingotTin"
 		});
 
-		addRecipe(new ItemStack(GCCoreItems.flag, 1, 16), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.flag, 1, 16), new Object[] {
 			"XYY",
 			"XYY",
 			"X  ",
@@ -603,8 +601,8 @@ public class RecipeUtil
         {
         	CraftingManager.getInstance().addShapelessRecipe(new ItemStack(GCCoreItems.flag, 1, GCCoreItemFlag.getFlagDamageValueFromDye(var2)), new Object[] {new ItemStack(Item.dyePowder, 1, var2), new ItemStack(GCCoreItems.flag, 1, 16)});
         }
-        
-		addRecipe(new ItemStack(GCCoreItems.heavyPlating, 2), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.heavyPlating, 2), new Object[] {
 			"XXX",
 			"YYY",
 			"ZZZ",
@@ -612,23 +610,23 @@ public class RecipeUtil
 			'Y', "ingotCopper",
 			'Z', "ingotTin",
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.rocketFins, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.rocketFins, 1), new Object[] {
 			" Y ",
 			"XYX",
 			"X X",
 			'X', GCCoreItems.heavyPlating,
 			'Y', "ingotInvar"
 		});
-		
-		addRecipe(new ItemStack(GCCoreBlocks.landingPad, 9), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.landingPad, 9), new Object[] {
 			"YYY",
 			"XXX",
 			'X', Block.blockIron,
 			'Y', "ingotInvar"
 		});
-		
-		addRecipe(new ItemStack(GCCoreBlocks.oxygenDetector, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.oxygenDetector, 1), new Object[] {
 			"WWW",
 			"YZY",
 			"VWV",
@@ -638,8 +636,8 @@ public class RecipeUtil
 			'Y', GCCoreItems.airVent,
 			'Z', ItemRegistry.getItem("machineFrame", 1)
 		});
-		
-		addRecipe(new ItemStack(GCCoreBlocks.airDistributor, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.airDistributor, 1), new Object[] {
 			"WXW",
 			"YZY",
 			"WVW",
@@ -649,8 +647,8 @@ public class RecipeUtil
 			'Y', GCCoreItems.airVent,
 			'Z', ItemRegistry.getItem("machineFrame", 1)
 		});
-		
-		addRecipe(new ItemStack(GCCoreBlocks.sealer, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealer, 1), new Object[] {
 			"WZW",
 			"YTX",
 			"WUW",
@@ -662,8 +660,8 @@ public class RecipeUtil
 			'Z', "ingotInvar",
 			'U', ItemRegistry.getItem("powerCoilGold", 1)
 		});
-		
-		addRecipe(new ItemStack(GCCoreBlocks.blockAirCollector, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.blockAirCollector, 1), new Object[] {
 			"WVW",
 			"YXZ",
 			"WUW",
@@ -674,8 +672,8 @@ public class RecipeUtil
 			'Y', GCCoreItems.airFan,
 			'Z', GCCoreItems.airVent
 		});
-		
-		addRecipe(new ItemStack(GCCoreBlocks.rocketBench, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.rocketBench, 1), new Object[] {
 			"XXX",
 			"YZY",
 			"YWY",
@@ -684,8 +682,8 @@ public class RecipeUtil
 			'Z', Block.workbench,
 			'W', "ingotElectrum"
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.heavyOxygenTank, 1, GCCoreItems.heavyOxygenTank.getMaxDamage()), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.heavyOxygenTank, 1, GCCoreItems.heavyOxygenTank.getMaxDamage()), new Object[] {
 			"ZZZ",
 			"XXX",
 			"YYY",
@@ -693,8 +691,8 @@ public class RecipeUtil
 			'Y', "ingotLead",
 			'Z', new ItemStack(Block.cloth, 1, 14)
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.airFan, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.airFan, 1), new Object[] {
 			"Z Z",
 			" Y ",
 			"ZXZ",
@@ -702,8 +700,8 @@ public class RecipeUtil
 			'Y', ItemRegistry.getItem("gearInvar", 1),
 			'Z', "ingotInvar"
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.oxygenConcentrator, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.oxygenConcentrator, 1), new Object[] {
 			"ZWZ",
 			"WYW",
 			"ZXZ",
@@ -712,95 +710,95 @@ public class RecipeUtil
 			'Y', new ItemStack(GCCoreItems.canister, 1, 0),
 			'Z', "ingotInvar"
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.steelPickaxe, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.steelPickaxe, 1), new Object[] {
 			"YYY",
 			" X ",
 			" X ",
 			'Y', "ingotInvar",
 			'X', Item.stick
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.steelAxe, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.steelAxe, 1), new Object[] {
 			"YY ",
 			"YX ",
 			" X ",
 			'Y', "ingotInvar",
 			'X', Item.stick
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.steelAxe, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.steelAxe, 1), new Object[] {
 			" YY",
 			" XY",
 			" X ",
 			'Y', "ingotInvar",
 			'X', Item.stick
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.steelHoe, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.steelHoe, 1), new Object[] {
 			" YY",
 			" X ",
 			" X ",
 			'Y', "ingotInvar",
 			'X', Item.stick
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.steelHoe, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.steelHoe, 1), new Object[] {
 			"YY ",
 			" X ",
 			" X ",
 			'Y', "ingotInvar",
 			'X', Item.stick
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.steelSpade, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.steelSpade, 1), new Object[] {
 			" Y ",
 			" X ",
 			" X ",
 			'Y', "ingotInvar",
 			'X', Item.stick
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.steelSword, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.steelSword, 1), new Object[] {
 			" Y ",
 			" Y ",
 			" X ",
 			'Y', "ingotInvar",
 			'X', Item.stick
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.steelBoots, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.steelBoots, 1), new Object[] {
 			"X X",
 			"X X",
 			'X', "ingotInvar"
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.steelChestplate, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.steelChestplate, 1), new Object[] {
 			"X X",
 			"XXX",
 			"XXX",
 			'X', "ingotInvar"
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.steelLeggings, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.steelLeggings, 1), new Object[] {
 			"XXX",
 			"X X",
 			"X X",
 			'X', "ingotInvar"
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.steelHelmet, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.steelHelmet, 1), new Object[] {
 			"XXX",
 			"X X",
 			'X', "ingotInvar"
 		});
-		
+
 //		addRecipe(new ItemStack(GCCoreBlocks.enclosedWire, 1, 0), new Object[] {
 //			"XYX",
 //			'X', "copperWire", 'Y', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4)
 //		});
 
-		addRecipe(new ItemStack(GCCoreItems.flagPole, 2, 0), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.flagPole, 2, 0), new Object[] {
 			"X",
 			"X",
 			"X",
@@ -814,65 +812,65 @@ public class RecipeUtil
     		"ingotLead"
     	}));
 
-		addRecipe(new ItemStack(GCCoreBlocks.airLockFrame, 2), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.airLockFrame, 2), new Object[] {
 			"XXX",
 			"YVY",
 			"ZWZ",
 			'V', GCCoreBlocks.oxygenPipe, 'W', Item.redstone, 'X', GCMoonItems.meteoricIronIngot, 'Y', "ingotLead", 'Z', GCCoreItems.oxygenConcentrator
 		});
 
-		addRecipe(new ItemStack(GCCoreItems.oilExtractor), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.oilExtractor), new Object[] {
 			"X  ",
 			" XY",
 			"ZYY",
 			'X', "ingotLead", 'Y', "ingotBronze", 'Z', Item.redstone
 		});
 
-		addRecipe(new ItemStack(GCCoreItems.oilCanister, 1, 61), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.oilCanister, 1, 61), new Object[] {
 			"WXW",
 			"WYW",
 			"WZW",
 			'X', "ingotLead", 'Y', Block.glass, 'Z', new ItemStack(GCCoreItems.canister, 1, 0), 'W', "ingotTin"
 		});
 
-		addRecipe(new ItemStack(GCCoreBlocks.refinery), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.refinery), new Object[] {
 			" Z ",
 			"WYW",
 			"XVX",
 			'X', "ingotLead", 'Y', ItemRegistry.getItem("machineFrame", 1), 'Z', new ItemStack(GCCoreItems.canister, 1, 1), 'W', Block.stone, 'V', ItemRegistry.getItem("powerCoilGold", 1)
 		});
 
-		addRecipe(new ItemStack(GCCoreBlocks.compressor), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.compressor), new Object[] {
 			"XZX",
 			"XWX",
 			"XYX",
 			'X', "ingotLead", 'Y', ItemRegistry.getItem("powerCoilGold", 1), 'Z', GCCoreItems.oxygenConcentrator, 'W', ItemRegistry.getItem("machineFrame", 1)
 		});
 
-		addRecipe(new ItemStack(GCCoreBlocks.fuelLoader), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.fuelLoader), new Object[] {
 			"XZX",
 			"ZWZ",
 			"XYX",
 			'X', "ingotLead", 'Y', ItemRegistry.getItem("powerCoilGold", 1), 'Z', ItemRegistry.getItem("hardenedGlass", 1), 'W', ItemRegistry.getItem("machineFrame", 1)
 		});
 	}
-	
+
 	public static void addBasicComponentsCraftingRecipes()
 	{
 		if (!GalacticraftCore.setSpaceStationRecipe)
 		{
 			final HashMap<Object, Integer> inputMap = new HashMap<Object, Integer>();
-			inputMap.put("ingotTin", 32); 
+			inputMap.put("ingotTin", 32);
 			inputMap.put("ingotSteel", 16);
 			inputMap.put(Item.ingotIron, 24);
 			GalacticraftRegistry.registerSpaceStation(new SpaceStationType(GCCoreConfigManager.idDimensionOverworldOrbit, "Overworld", 0, new SpaceStationRecipe(inputMap)));
 			GalacticraftCore.setSpaceStationRecipe = true;
 		}
-		
-		addRecipe(new ItemStack(GCCoreItems.rocketEngine, 1), new Object[] {
-			" YV", 
-			"XWX", 
-			"XZX", 
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.rocketEngine, 1), new Object[] {
+			" YV",
+			"XWX",
+			"XZX",
 				'V', Block.stoneButton,
 				'W', new ItemStack(GCCoreItems.canister, 1, 0),
 				'X', GCCoreItems.heavyPlating,
@@ -880,7 +878,7 @@ public class RecipeUtil
 				'Z', GCCoreItems.airVent
 			});
 
-		addRecipe(new ItemStack(GCCoreItems.rocketEngine, 1), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.rocketEngine, 1), new Object[] {
 			"VY ",
 			"XWX",
 			"XZX",
@@ -890,23 +888,23 @@ public class RecipeUtil
 			'Y', Item.flintAndSteel,
 			'Z', GCCoreItems.airVent
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.rocketNoseCone, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.rocketNoseCone, 1), new Object[] {
 			" Y ",
 			" X ",
 			"X X",
 			'X', GCCoreItems.heavyPlating,
 			'Y', Block.torchRedstoneActive
 		});
-		
-		addRecipe(new ItemStack(GCCoreBlocks.oxygenPipe, 4), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.oxygenPipe, 4), new Object[] {
 			"XXX",
 			"   ",
 			"XXX",
 			'X', Block.thinGlass
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.lightOxygenTank, 1, GCCoreItems.lightOxygenTank.getMaxDamage()), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.lightOxygenTank, 1, GCCoreItems.lightOxygenTank.getMaxDamage()), new Object[] {
 			"Z",
 			"X",
 			"Y",
@@ -914,8 +912,8 @@ public class RecipeUtil
 			'Y', "ingotCopper",
 			'Z', new ItemStack(Block.cloth, 1, 5)
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.medOxygenTank, 1, GCCoreItems.medOxygenTank.getMaxDamage()), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.medOxygenTank, 1, GCCoreItems.medOxygenTank.getMaxDamage()), new Object[] {
 			"ZZ",
 			"XX",
 			"YY",
@@ -924,15 +922,15 @@ public class RecipeUtil
 			'Z', new ItemStack(Block.cloth, 1, 1)
 		});
 
-		addRecipe(new ItemStack(GCCoreItems.sensorGlasses, 1), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.sensorGlasses, 1), new Object[] {
 			"YYY",
 			"Y Y",
 			"XYX",
 			'X', GCCoreItems.sensorLens,
 			'Y', GCMoonItems.meteoricIronIngot
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.sensorLens, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.sensorLens, 1), new Object[] {
 			"ZYZ",
 			"YXY",
 			"ZYZ",
@@ -940,22 +938,22 @@ public class RecipeUtil
 			'Y', GCMoonItems.meteoricIronIngot,
 			'Z', Item.redstone
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.canister, 1, 0), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.canister, 1, 0), new Object[] {
 			"X X",
 			"X X",
 			"XXX",
 			'X', "ingotTin"
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.canister, 1, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.canister, 1, 1), new Object[] {
 			"X X",
 			"X X",
 			"XXX",
 			'X', "ingotCopper"
 		});
 
-		addRecipe(new ItemStack(GCCoreItems.oxygenMask, 1), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.oxygenMask, 1), new Object[] {
 			"XXX",
 			"XYX",
 			"XXX",
@@ -963,48 +961,48 @@ public class RecipeUtil
 			'Y', Item.helmetIron
 		});
 
-		addRecipe(new ItemStack(GCCoreItems.canvas, 1), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.canvas, 1), new Object[] {
 			" XY",
 			"XXX",
 			"YX ",
 			'Y', Item.stick, 'X', Item.silk
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.parachute, 1, 0), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.parachute, 1, 0), new Object[] {
 			"XXX",
 			"Y Y",
 			" Y ",
 			'X', GCCoreItems.canvas, 'Y', Item.silk
 		});
-		
-		addRecipe(new ItemStack(GCCoreBlocks.enclosedWire, 1, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.enclosedWire, 1, 1), new Object[] {
 			"XYX",
 			'X', GCCoreBlocks.oxygenPipe, 'Y', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4)
 		});
 
 
-		addRecipe(new ItemStack(GCCoreItems.oxygenGear), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.oxygenGear), new Object[] {
 			" Y ",
 			"YXY",
 			"Y Y",
 			'X', GCCoreItems.oxygenConcentrator, 'Y', GCCoreBlocks.oxygenPipe
 		});
 
-		addRecipe(new ItemStack(GCCoreBlocks.decorationBlocks, 4, 3), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.decorationBlocks, 4, 3), new Object[] {
 			"   ",
 			" XY",
 			"   ",
 			'X', new ItemStack(Block.stone, 4, 0), 'Y', "ingotTin"
 		});
 
-		addRecipe(new ItemStack(GCCoreBlocks.decorationBlocks, 4, 4), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.decorationBlocks, 4, 4), new Object[] {
 			"   ",
 			" X ",
 			" Y ",
 			'X', new ItemStack(Block.stone, 4, 0), 'Y', "ingotTin"
 		});
 
-		addRecipe(new ItemStack(GCCoreItems.flag, 1, 16), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.flag, 1, 16), new Object[] {
 			"XYY",
 			"XYY",
 			"X  ",
@@ -1020,8 +1018,8 @@ public class RecipeUtil
         {
         	CraftingManager.getInstance().addShapelessRecipe(new ItemStack(GCCoreItems.flag, 1, GCCoreItemFlag.getFlagDamageValueFromDye(var2)), new Object[] {new ItemStack(Item.dyePowder, 1, var2), new ItemStack(GCCoreItems.flag, 1, 16)});
         }
-        
-		addRecipe(new ItemStack(GCCoreItems.heavyPlating, 2), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.heavyPlating, 2), new Object[] {
 			"X",
 			"Y",
 			"Z",
@@ -1029,23 +1027,23 @@ public class RecipeUtil
 			'Y', "plateSteel",
 			'Z', "plateBronze",
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.rocketFins, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.rocketFins, 1), new Object[] {
 			" Y ",
 			"XYX",
 			"X X",
 			'X', GCCoreItems.heavyPlating,
 			'Y', "plateSteel"
 		});
-		
-		addRecipe(new ItemStack(GCCoreBlocks.landingPad, 9), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.landingPad, 9), new Object[] {
 			"YYY",
 			"XXX",
 			'X', Block.blockIron,
 			'Y', "plateIron"
 		});
-		
-		addRecipe(new ItemStack(GCCoreBlocks.oxygenDetector, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.oxygenDetector, 1), new Object[] {
 			"WWW",
 			"YWY",
 			"ZWZ",
@@ -1054,8 +1052,8 @@ public class RecipeUtil
 			'Y', GCCoreItems.airVent,
 			'Z', Item.redstone
 		});
-		
-		addRecipe(new ItemStack(GCCoreBlocks.airDistributor, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.airDistributor, 1), new Object[] {
 			"WXW",
 			"YWY",
 			"WXW",
@@ -1063,8 +1061,8 @@ public class RecipeUtil
 			'X', GCCoreItems.airFan,
 			'Y', GCCoreItems.airVent
 		});
-		
-		addRecipe(new ItemStack(GCCoreBlocks.sealer, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealer, 1), new Object[] {
 			"WZW",
 			"YXY",
 			"WZW",
@@ -1074,8 +1072,8 @@ public class RecipeUtil
 			'Y', GCCoreItems.airVent,
 			'Z', "plateSteel"
 		});
-		
-		addRecipe(new ItemStack(GCCoreBlocks.blockAirCollector, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.blockAirCollector, 1), new Object[] {
 			"WWW",
 			"YXZ",
 			"WVW",
@@ -1085,8 +1083,8 @@ public class RecipeUtil
 			'Y', GCCoreItems.airFan,
 			'Z', GCCoreItems.airVent
 		});
-		
-		addRecipe(new ItemStack(GCCoreBlocks.rocketBench, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.rocketBench, 1), new Object[] {
 			"XXX",
 			"YZY",
 			"YWY",
@@ -1095,8 +1093,8 @@ public class RecipeUtil
 			'Z', Block.workbench,
 			'W', "advancedCircuit"
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.heavyOxygenTank, 1, GCCoreItems.heavyOxygenTank.getMaxDamage()), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.heavyOxygenTank, 1, GCCoreItems.heavyOxygenTank.getMaxDamage()), new Object[] {
 			"ZZZ",
 			"XXX",
 			"YYY",
@@ -1104,8 +1102,8 @@ public class RecipeUtil
 			'Y', "ingotSteel",
 			'Z', new ItemStack(Block.cloth, 1, 14)
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.airFan, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.airFan, 1), new Object[] {
 			"Z Z",
 			" Y ",
 			"ZXZ",
@@ -1113,8 +1111,8 @@ public class RecipeUtil
 			'Y', "motor",
 			'Z', "ingotSteel"
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.oxygenConcentrator, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.oxygenConcentrator, 1), new Object[] {
 			"ZWZ",
 			"WYW",
 			"ZXZ",
@@ -1123,95 +1121,95 @@ public class RecipeUtil
 			'Y', new ItemStack(GCCoreItems.canister, 1, 0),
 			'Z', "ingotSteel"
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.steelPickaxe, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.steelPickaxe, 1), new Object[] {
 			"YYY",
 			" X ",
 			" X ",
 			'Y', "ingotSteel",
 			'X', Item.stick
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.steelAxe, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.steelAxe, 1), new Object[] {
 			"YY ",
 			"YX ",
 			" X ",
 			'Y', "ingotSteel",
 			'X', Item.stick
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.steelAxe, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.steelAxe, 1), new Object[] {
 			" YY",
 			" XY",
 			" X ",
 			'Y', "ingotSteel",
 			'X', Item.stick
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.steelHoe, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.steelHoe, 1), new Object[] {
 			" YY",
 			" X ",
 			" X ",
 			'Y', "ingotSteel",
 			'X', Item.stick
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.steelHoe, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.steelHoe, 1), new Object[] {
 			"YY ",
 			" X ",
 			" X ",
 			'Y', "ingotSteel",
 			'X', Item.stick
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.steelSpade, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.steelSpade, 1), new Object[] {
 			" Y ",
 			" X ",
 			" X ",
 			'Y', "ingotSteel",
 			'X', Item.stick
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.steelSword, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.steelSword, 1), new Object[] {
 			" Y ",
 			" Y ",
 			" X ",
 			'Y', "ingotSteel",
 			'X', Item.stick
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.steelBoots, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.steelBoots, 1), new Object[] {
 			"X X",
 			"X X",
 			'X', "ingotSteel"
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.steelChestplate, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.steelChestplate, 1), new Object[] {
 			"X X",
 			"XXX",
 			"XXX",
 			'X', "ingotSteel"
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.steelLeggings, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.steelLeggings, 1), new Object[] {
 			"XXX",
 			"X X",
 			"X X",
 			'X', "ingotSteel"
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.steelHelmet, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.steelHelmet, 1), new Object[] {
 			"XXX",
 			"X X",
 			'X', "ingotSteel"
 		});
-		
-		addRecipe(new ItemStack(GCCoreBlocks.enclosedWire, 1, 0), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.enclosedWire, 1, 0), new Object[] {
 			"XYX",
 			'X', "copperWire", 'Y', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4)
 		});
 
-		addRecipe(new ItemStack(GCCoreItems.flagPole, 2, 0), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.flagPole, 2, 0), new Object[] {
 			"X",
 			"X",
 			"X",
@@ -1225,66 +1223,66 @@ public class RecipeUtil
     		"ingotSteel"
     	}));
 
-		addRecipe(new ItemStack(GCCoreBlocks.airLockFrame, 2), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.airLockFrame, 2), new Object[] {
 			"XXX",
 			"YVY",
 			"ZWZ",
 			'V', GCCoreBlocks.oxygenPipe, 'W', Item.redstone, 'X', GCMoonItems.meteoricIronIngot, 'Y', "ingotSteel", 'Z', GCCoreItems.oxygenConcentrator
 		});
 
-		addRecipe(new ItemStack(GCCoreItems.oilExtractor), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.oilExtractor), new Object[] {
 			"X  ",
 			" XY",
 			"ZYY",
 			'X', "ingotSteel", 'Y', "ingotBronze", 'Z', Item.redstone
 		});
 
-		addRecipe(new ItemStack(GCCoreItems.oilCanister, 1, 61), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.oilCanister, 1, 61), new Object[] {
 			"WXW",
 			"WYW",
 			"WZW",
 			'X', "ingotSteel", 'Y', Block.glass, 'Z', new ItemStack(GCCoreItems.canister, 1, 0), 'W', "ingotTin"
 		});
 
-		addRecipe(new ItemStack(GCCoreBlocks.refinery), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.refinery), new Object[] {
 			" Z ",
 			"WZW",
 			"XYX",
 			'X', "ingotSteel", 'Y', Block.furnaceIdle, 'Z', new ItemStack(GCCoreItems.canister, 1, 1), 'W', Block.stone
 		});
 
-		addRecipe(new ItemStack(GCCoreBlocks.compressor), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.compressor), new Object[] {
 			"XXX",
 			"XZX",
 			"XYX",
 			'X', "ingotSteel", 'Y', "ingotBronze", 'Z', GCCoreItems.oxygenConcentrator
 		});
 
-		addRecipe(new ItemStack(GCCoreBlocks.fuelLoader), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.fuelLoader), new Object[] {
 			"XXX",
 			"XZX",
 			"XYX",
 			'X', "ingotSteel", 'Y', "basicCircuit", 'Z', "motor"
 		});
 	}
-	
+
 	public static void addIndustrialcraftCraftingRecipes()
 	{
 		if (!GalacticraftCore.setSpaceStationRecipe)
 		{
 			final HashMap<Object, Integer> inputMap = new HashMap<Object, Integer>();
-			if (Items.getItem("machine") != null) 
+			if (Items.getItem("machine") != null)
 				inputMap.put(Items.getItem("machine"), 1);
 			inputMap.put("ingotTin", 24);
 			inputMap.put(Item.ingotIron, 12);
 			GalacticraftRegistry.registerSpaceStation(new SpaceStationType(GCCoreConfigManager.idDimensionOverworldOrbit, "Overworld", 0, new SpaceStationRecipe(inputMap)));
 			GalacticraftCore.setSpaceStationRecipe = true;
 		}
-		
-		addRecipe(new ItemStack(GCCoreItems.rocketEngine, 1), new Object[] {
-			" YV", 
-			"XWX", 
-			"XZX", 
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.rocketEngine, 1), new Object[] {
+			" YV",
+			"XWX",
+			"XZX",
 				'V', Block.stoneButton,
 				'W', new ItemStack(GCCoreItems.canister, 1, 0),
 				'X', GCCoreItems.heavyPlating,
@@ -1292,7 +1290,7 @@ public class RecipeUtil
 				'Z', GCCoreItems.airVent
 			});
 
-		addRecipe(new ItemStack(GCCoreItems.rocketEngine, 1), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.rocketEngine, 1), new Object[] {
 			"VY ",
 			"XWX",
 			"XZX",
@@ -1302,23 +1300,23 @@ public class RecipeUtil
 			'Y', Item.flintAndSteel,
 			'Z', GCCoreItems.airVent
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.rocketNoseCone, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.rocketNoseCone, 1), new Object[] {
 			" Y ",
 			" X ",
 			"X X",
 			'X', GCCoreItems.heavyPlating,
 			'Y', Block.torchRedstoneActive
 		});
-		
-		addRecipe(new ItemStack(GCCoreBlocks.oxygenPipe, 4), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.oxygenPipe, 4), new Object[] {
 			"XXX",
 			"   ",
 			"XXX",
 			'X', Block.thinGlass
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.lightOxygenTank, 1, GCCoreItems.lightOxygenTank.getMaxDamage()), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.lightOxygenTank, 1, GCCoreItems.lightOxygenTank.getMaxDamage()), new Object[] {
 			"Z",
 			"X",
 			"Y",
@@ -1326,8 +1324,8 @@ public class RecipeUtil
 			'Y', "ingotCopper",
 			'Z', new ItemStack(Block.cloth, 1, 5)
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.medOxygenTank, 1, GCCoreItems.medOxygenTank.getMaxDamage()), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.medOxygenTank, 1, GCCoreItems.medOxygenTank.getMaxDamage()), new Object[] {
 			"ZZ",
 			"XX",
 			"YY",
@@ -1336,15 +1334,15 @@ public class RecipeUtil
 			'Z', new ItemStack(Block.cloth, 1, 1)
 		});
 
-		addRecipe(new ItemStack(GCCoreItems.sensorGlasses, 1), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.sensorGlasses, 1), new Object[] {
 			"YYY",
 			"Y Y",
 			"XYX",
 			'X', GCCoreItems.sensorLens,
 			'Y', GCMoonItems.meteoricIronIngot
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.sensorLens, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.sensorLens, 1), new Object[] {
 			"ZYZ",
 			"YXY",
 			"ZYZ",
@@ -1352,22 +1350,22 @@ public class RecipeUtil
 			'Y', GCMoonItems.meteoricIronIngot,
 			'Z', Item.redstone
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.canister, 1, 0), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.canister, 1, 0), new Object[] {
 			"X X",
 			"X X",
 			"XXX",
 			'X', "ingotTin"
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.canister, 1, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.canister, 1, 1), new Object[] {
 			"X X",
 			"X X",
 			"XXX",
 			'X', "ingotCopper"
 		});
 
-		addRecipe(new ItemStack(GCCoreItems.oxygenMask, 1), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.oxygenMask, 1), new Object[] {
 			"XXX",
 			"XYX",
 			"XXX",
@@ -1375,48 +1373,48 @@ public class RecipeUtil
 			'Y', Item.helmetIron
 		});
 
-		addRecipe(new ItemStack(GCCoreItems.canvas, 1), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.canvas, 1), new Object[] {
 			" XY",
 			"XXX",
 			"YX ",
 			'Y', Item.stick, 'X', Item.silk
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.parachute, 1, 0), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.parachute, 1, 0), new Object[] {
 			"XXX",
 			"Y Y",
 			" Y ",
 			'X', GCCoreItems.canvas, 'Y', Item.silk
 		});
-		
-		addRecipe(new ItemStack(GCCoreBlocks.enclosedWire, 1, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.enclosedWire, 1, 1), new Object[] {
 			"XYX",
 			'X', GCCoreBlocks.oxygenPipe, 'Y', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4)
 		});
 
 
-		addRecipe(new ItemStack(GCCoreItems.oxygenGear), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.oxygenGear), new Object[] {
 			" Y ",
 			"YXY",
 			"Y Y",
 			'X', GCCoreItems.oxygenConcentrator, 'Y', GCCoreBlocks.oxygenPipe
 		});
 
-		addRecipe(new ItemStack(GCCoreBlocks.decorationBlocks, 4, 3), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.decorationBlocks, 4, 3), new Object[] {
 			"   ",
 			" XY",
 			"   ",
 			'X', new ItemStack(Block.stone, 4, 0), 'Y', "ingotTin"
 		});
 
-		addRecipe(new ItemStack(GCCoreBlocks.decorationBlocks, 4, 4), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.decorationBlocks, 4, 4), new Object[] {
 			"   ",
 			" X ",
 			" Y ",
 			'X', new ItemStack(Block.stone, 4, 0), 'Y', "ingotTin"
 		});
 
-		addRecipe(new ItemStack(GCCoreItems.flag, 1, 16), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.flag, 1, 16), new Object[] {
 			"XYY",
 			"XYY",
 			"X  ",
@@ -1432,14 +1430,14 @@ public class RecipeUtil
         {
         	CraftingManager.getInstance().addShapelessRecipe(new ItemStack(GCCoreItems.flag, 1, GCCoreItemFlag.getFlagDamageValueFromDye(var2)), new Object[] {new ItemStack(Item.dyePowder, 1, var2), new ItemStack(GCCoreItems.flag, 1, 16)});
         }
-        
-		addRecipe(new ItemStack(GCCoreItems.heavyPlating, 2), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.heavyPlating, 2), new Object[] {
 			"X",
 			"X",
 			'X', "carbonPlate"
 		});
 
-		addRecipe(new ItemStack(GCCoreItems.rocketFins, 1), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.rocketFins, 1), new Object[] {
 			" Y ",
 			"XYX",
 			"X X",
@@ -1447,14 +1445,14 @@ public class RecipeUtil
 			'Y', "carbonPlate"
 		});
 
-		addRecipe(new ItemStack(GCCoreBlocks.landingPad, 9), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.landingPad, 9), new Object[] {
 			"YYY",
 			"XXX",
 			'X', Block.blockIron,
 			'Y', "carbonPlate"
 		});
 
-		addRecipe(new ItemStack(GCCoreBlocks.oxygenDetector, 1), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.oxygenDetector, 1), new Object[] {
 			"WWW",
 			"YWY",
 			"WXW",
@@ -1463,7 +1461,7 @@ public class RecipeUtil
 			'Y', GCCoreItems.airVent
 		});
 
-		addRecipe(new ItemStack(GCCoreBlocks.airDistributor, 1), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.airDistributor, 1), new Object[] {
 			"WXW",
 			"YWY",
 			"WXW",
@@ -1472,7 +1470,7 @@ public class RecipeUtil
 			'Y', GCCoreItems.airVent
 		});
 
-		addRecipe(new ItemStack(GCCoreBlocks.blockAirCollector, 1), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.blockAirCollector, 1), new Object[] {
 			"WWW",
 			"YXZ",
 			"WVW",
@@ -1483,7 +1481,7 @@ public class RecipeUtil
 			'Z', GCCoreItems.airVent
 		});
 
-		addRecipe(new ItemStack(GCCoreBlocks.rocketBench, 1), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.rocketBench, 1), new Object[] {
 			"XXX",
 			"YZY",
 			"YWY",
@@ -1493,7 +1491,7 @@ public class RecipeUtil
 			'W', "advancedCircuit"
 		});
 
-		addRecipe(new ItemStack(GCCoreItems.heavyOxygenTank, 1, GCCoreItems.heavyOxygenTank.getMaxDamage()), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.heavyOxygenTank, 1, GCCoreItems.heavyOxygenTank.getMaxDamage()), new Object[] {
 			"ZZZ",
 			"XXX",
 			"YYY",
@@ -1502,7 +1500,7 @@ public class RecipeUtil
 			'Z', new ItemStack(Block.cloth, 1, 14)
 		});
 
-		addRecipe(new ItemStack(GCCoreItems.airFan, 1), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.airFan, 1), new Object[] {
 			"Z Z",
 			" Y ",
 			"ZXZ",
@@ -1510,57 +1508,57 @@ public class RecipeUtil
 			'Y', "electronicCircuit",
 			'Z', "ingotRefinedIron"
 		});
-		
-		addRecipe(new ItemStack(GCCoreBlocks.fuelLoader), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.fuelLoader), new Object[] {
 			"XXX",
 			"X X",
 			"XYX",
 			'X', "ingotRefinedIron", 'Y', "electronicCircuit"
 		});
-		
-		addRecipe(new ItemStack(GCCoreBlocks.compressor), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.compressor), new Object[] {
 			"XXX",
 			"XZX",
 			"XYX",
 			'X', "ingotRefinedIron", 'Y', "ingotBronze", 'Z', GCCoreItems.oxygenConcentrator
 		});
-		
-		addRecipe(new ItemStack(GCCoreBlocks.refinery), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.refinery), new Object[] {
 			" Z ",
 			"WZW",
 			"XYX",
 			'X', "ingotRefinedIron", 'Y', Block.furnaceIdle, 'Z', new ItemStack(GCCoreItems.canister, 1, 1), 'W', Block.stone
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.oilCanister, 1, 61), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.oilCanister, 1, 61), new Object[] {
 			"WXW",
 			"WYW",
 			"WZW",
 			'X', "ingotRefinedIron", 'Y', Block.glass, 'Z', new ItemStack(GCCoreItems.canister, 1, 0), 'W', "ingotTin"
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.oilExtractor), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.oilExtractor), new Object[] {
 			"X  ",
 			" XY",
 			"ZYY",
 			'X', "ingotRefinedIron", 'Y', "ingotBronze", 'Z', Item.redstone
 		});
-		
-		addRecipe(new ItemStack(GCCoreBlocks.airLockFrame, 2), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.airLockFrame, 2), new Object[] {
 			"XXX",
 			"YVY",
 			"ZWZ",
 			'V', GCCoreBlocks.oxygenPipe, 'W', Item.redstone, 'X', GCMoonItems.meteoricIronIngot, 'Y', "ingotRefinedIron", 'Z', GCCoreItems.oxygenConcentrator
 		});
-    	
+
     	CraftingManager.getInstance().getRecipeList().add(new ShapelessOreRecipe(new ItemStack(GCCoreItems.airVent, 1), new Object[] {
     		"ingotTin",
     		"ingotTin",
     		"ingotTin",
     		"ingotRefinedIron"
     	}));
-		
-		addRecipe(new ItemStack(GCCoreItems.oxygenConcentrator, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.oxygenConcentrator, 1), new Object[] {
 			"ZWZ",
 			"WYW",
 			"ZXZ",
@@ -1570,89 +1568,89 @@ public class RecipeUtil
 			'Z', "ingotRefinedIron"
 		});
 
-		addRecipe(new ItemStack(GCCoreItems.steelPickaxe, 1), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.steelPickaxe, 1), new Object[] {
 			"YYY",
 			" X ",
 			" X ",
 			'Y', "ingotRefinedIron",
 			'X', Item.stick
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.steelAxe, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.steelAxe, 1), new Object[] {
 			"YY ",
 			"YX ",
 			" X ",
 			'Y', "ingotRefinedIron",
 			'X', Item.stick
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.steelAxe, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.steelAxe, 1), new Object[] {
 			" YY",
 			" XY",
 			" X ",
 			'Y', "ingotRefinedIron",
 			'X', Item.stick
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.steelHoe, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.steelHoe, 1), new Object[] {
 			" YY",
 			" X ",
 			" X ",
 			'Y', "ingotRefinedIron",
 			'X', Item.stick
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.steelHoe, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.steelHoe, 1), new Object[] {
 			"YY ",
 			" X ",
 			" X ",
 			'Y', "ingotRefinedIron",
 			'X', Item.stick
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.steelSpade, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.steelSpade, 1), new Object[] {
 			" Y ",
 			" X ",
 			" X ",
 			'Y', "ingotRefinedIron",
 			'X', Item.stick
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.steelSword, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.steelSword, 1), new Object[] {
 			" Y ",
 			" Y ",
 			" X ",
 			'Y', "ingotRefinedIron",
 			'X', Item.stick
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.steelBoots, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.steelBoots, 1), new Object[] {
 			"X X",
 			"X X",
 			'X', "ingotRefinedIron"
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.steelChestplate, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.steelChestplate, 1), new Object[] {
 			"X X",
 			"XXX",
 			"XXX",
 			'X', "ingotRefinedIron"
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.steelLeggings, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.steelLeggings, 1), new Object[] {
 			"XXX",
 			"X X",
 			"X X",
 			'X', "ingotRefinedIron"
 		});
-		
-		addRecipe(new ItemStack(GCCoreItems.steelHelmet, 1), new Object[] {
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.steelHelmet, 1), new Object[] {
 			"XXX",
 			"X X",
 			'X', "ingotRefinedIron"
 		});
 
-		addRecipe(new ItemStack(GCCoreItems.flagPole, 2, 0), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.flagPole, 2, 0), new Object[] {
 			"X",
 			"X",
 			"X",
@@ -1661,7 +1659,7 @@ public class RecipeUtil
 
 		if (Items.getItem("insulatedCopperCableBlock") != null)
 		{
-			addRecipe(new ItemStack(GCCoreBlocks.sealer, 1), new Object[] {
+			RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealer, 1), new Object[] {
 				"WZW",
 				"YXY",
 				"WZW",
@@ -1672,10 +1670,10 @@ public class RecipeUtil
 				'Z', "carbonPlate"
 			});
 		}
-		
+
 		if (Items.getItem("copperCableBlock") != null)
 		{
-			addRecipe(new ItemStack(GCCoreBlocks.enclosedWire, 1, 0), new Object[] {
+			RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.enclosedWire, 1, 0), new Object[] {
 				"XYX",
 				'X', Items.getItem("copperCableBlock"), 'Y', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4)
 			});
@@ -1748,7 +1746,7 @@ public class RecipeUtil
 
 		return null;
 	}
-	
+
 	private static void addRecipe(ItemStack result, Object[] obj)
 	{
 		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(result, obj));

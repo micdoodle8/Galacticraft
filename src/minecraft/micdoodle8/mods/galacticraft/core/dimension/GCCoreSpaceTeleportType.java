@@ -3,8 +3,6 @@ package micdoodle8.mods.galacticraft.core.dimension;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.API.ITeleportType;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityLander;
-import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
@@ -38,7 +36,7 @@ public class GCCoreSpaceTeleportType implements ITeleportType
 	}
 
 	@Override
-	public void onSpaceDimensionChanged(World newWorld, EntityPlayerMP player) 
+	public void onSpaceDimensionChanged(World newWorld, EntityPlayerMP player)
 	{
 	}
 }

@@ -27,7 +27,7 @@ import com.google.common.io.ByteArrayDataInput;
 public class GCCoreTileEntityOxygenDistributor extends GCCoreTileEntityOxygen implements IInventory, ISidedInventory
 {
 	public boolean active;
-	
+
 	private ItemStack[] containingItems = new ItemStack[1];
 
 	public GCCoreEntityOxygenBubble oxygenBubble;
@@ -36,18 +36,18 @@ public class GCCoreTileEntityOxygenDistributor extends GCCoreTileEntityOxygen im
     {
 		super(300, 130, 1, 0.75D, 6000, 12);
 	}
-	
+
     @Override
   	public void invalidate()
   	{
-    	for (int x = (int) Math.floor(this.xCoord - (this.storedOxygen / 600.0D) * 1.5); x < Math.ceil(this.xCoord + (this.storedOxygen / 600.0D) * 1.5); x++)
+    	for (int x = (int) Math.floor(this.xCoord - this.storedOxygen / 600.0D * 1.5); x < Math.ceil(this.xCoord + this.storedOxygen / 600.0D * 1.5); x++)
     	{
-        	for (int y = (int) Math.floor(this.yCoord - (this.storedOxygen / 600.0D) * 1.5); y < Math.ceil(this.yCoord + (this.storedOxygen / 600.0D) * 1.5); y++)
+        	for (int y = (int) Math.floor(this.yCoord - this.storedOxygen / 600.0D * 1.5); y < Math.ceil(this.yCoord + this.storedOxygen / 600.0D * 1.5); y++)
         	{
-            	for (int z = (int) Math.floor(this.zCoord - (this.storedOxygen / 600.0D) * 1.5); z < Math.ceil(this.zCoord + (this.storedOxygen / 600.0D) * 1.5); z++)
+            	for (int z = (int) Math.floor(this.zCoord - this.storedOxygen / 600.0D * 1.5); z < Math.ceil(this.zCoord + this.storedOxygen / 600.0D * 1.5); z++)
             	{
             		final TileEntity tile = this.worldObj.getBlockTileEntity(x, y, z);
-            		
+
             		if (tile != null && tile instanceof GCCoreTileEntityUnlitTorch)
             		{
             			tile.worldObj.setBlock(tile.xCoord, tile.yCoord, tile.zCoord, GCCoreBlocks.unlitTorch.blockID, 0, 3);
@@ -71,7 +71,7 @@ public class GCCoreTileEntityOxygenDistributor extends GCCoreTileEntityOxygen im
 	public void updateEntity()
 	{
 		super.updateEntity();
-		
+
 		if (this.oxygenBubble == null)
 		{
 			this.oxygenBubble = new GCCoreEntityOxygenBubble(this.worldObj, new Vector3(this), this);
@@ -84,7 +84,7 @@ public class GCCoreTileEntityOxygenDistributor extends GCCoreTileEntityOxygen im
 
 		if (!this.worldObj.isRemote)
 		{
-			if ((this.storedOxygen / 600.0D) >= 1 && (this.wattsReceived > 0 || this.ic2Energy > 0))
+			if (this.storedOxygen / 600.0D >= 1 && (this.wattsReceived > 0 || this.ic2Energy > 0))
 			{
 				this.active = true;
 			}
@@ -92,11 +92,11 @@ public class GCCoreTileEntityOxygenDistributor extends GCCoreTileEntityOxygen im
 			{
 				this.active = false;
 
-		    	for (int x = (int) Math.floor(this.xCoord - (this.storedOxygen / 600.0D) * 1.5); x < Math.ceil(this.xCoord + (this.storedOxygen / 600.0D) * 1.5); x++)
+		    	for (int x = (int) Math.floor(this.xCoord - this.storedOxygen / 600.0D * 1.5); x < Math.ceil(this.xCoord + this.storedOxygen / 600.0D * 1.5); x++)
 		    	{
-		        	for (int y = (int) Math.floor(this.yCoord - (this.storedOxygen / 600.0D) * 1.5); y < Math.ceil(this.yCoord + (this.storedOxygen / 600.0D) * 1.5); y++)
+		        	for (int y = (int) Math.floor(this.yCoord - this.storedOxygen / 600.0D * 1.5); y < Math.ceil(this.yCoord + this.storedOxygen / 600.0D * 1.5); y++)
 		        	{
-		            	for (int z = (int) Math.floor(this.zCoord - (this.storedOxygen / 600.0D) * 1.5); z < Math.ceil(this.zCoord + (this.storedOxygen / 600.0D) * 1.5); z++)
+		            	for (int z = (int) Math.floor(this.zCoord - this.storedOxygen / 600.0D * 1.5); z < Math.ceil(this.zCoord + this.storedOxygen / 600.0D * 1.5); z++)
 		            	{
 		            		final TileEntity tile = this.worldObj.getBlockTileEntity(x, y, z);
 
@@ -270,27 +270,27 @@ public class GCCoreTileEntityOxygenDistributor extends GCCoreTileEntityOxygen im
 	{
 		return slotID == 0 ? itemstack.getItem() instanceof IItemElectric : false;
 	}
-	
+
 	@Override
-	public void openChest() 
+	public void openChest()
 	{
-		
+
 	}
 
 	@Override
 	public void closeChest()
 	{
-		
-	}
-	
-	@Override
-	public boolean shouldPullEnergy() 
-	{
-		return this.timeSinceOxygenRequest > 0;
+
 	}
 
 	@Override
-	public void readPacket(ByteArrayDataInput data) 
+	public boolean shouldPullEnergy()
+	{
+		return GCCoreTileEntityOxygen.timeSinceOxygenRequest > 0;
+	}
+
+	@Override
+	public void readPacket(ByteArrayDataInput data)
 	{
 		if (this.worldObj.isRemote)
 		{
@@ -303,31 +303,31 @@ public class GCCoreTileEntityOxygenDistributor extends GCCoreTileEntityOxygen im
 	}
 
 	@Override
-	public Packet getPacket() 
+	public Packet getPacket()
 	{
 		return PacketManager.getPacket(GalacticraftCore.CHANNEL, this, this.storedOxygen, this.wattsReceived, this.ic2Energy, this.disabled, this.bcEnergy);
 	}
 
 	@Override
-	public ForgeDirection getElectricInputDirection() 
+	public ForgeDirection getElectricInputDirection()
 	{
 		return ForgeDirection.getOrientation(this.getBlockMetadata() + 2);
 	}
 
 	@Override
-	public ItemStack getBatteryInSlot() 
+	public ItemStack getBatteryInSlot()
 	{
 		return this.getStackInSlot(0);
 	}
 
 	@Override
-	public ForgeDirection getOxygenInputDirection() 
+	public ForgeDirection getOxygenInputDirection()
 	{
 		return this.getElectricInputDirection().getOpposite();
 	}
 
 	@Override
-	public boolean shouldPullOxygen() 
+	public boolean shouldPullOxygen()
 	{
 		return this.ic2Energy > 0 || this.wattsReceived > 0 || this.bcEnergy > 0;
 	}

@@ -57,7 +57,7 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
 		case 1:
 			return this.enclosedIcons[1];
 		}
-		
+
 		return this.blockIcon;
     }
 

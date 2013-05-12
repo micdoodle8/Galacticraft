@@ -52,7 +52,7 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 	public GCMoonBiomeDecorator biomedecoratorplanet = new GCMoonBiomeDecorator(GCMoonBiomeGenBase.moonFlat);
 
 	private final World worldObj;
-	private long seed;
+	private final long seed;
 
 	private final boolean mapFeaturesEnabled;
 
@@ -62,7 +62,7 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 	private final GCMoonMapGenVillage villageGenerator = new GCMoonMapGenVillage();
 
 	private final MapGenMineshaft mineshaftGenerator = new MapGenMineshaft();
-	
+
 	private final GCMapGenDungeon dungeonGenerator = new GCMapGenDungeon();
 
 	private BiomeGenBase[] biomesForGeneration = {GCMoonBiomeGenBase.moonFlat};
@@ -341,7 +341,7 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 		this.rand.setSeed(par2 * var7 + par3 * var9 ^ this.worldObj.getSeed());
 
 //		this.dungeonGenerator.handleTileEntities(rand);
-		
+
     	if (!GCMoonConfigManager.disableMoonVillageGen)
     	{
     		this.villageGenerator.generateStructuresInChunk(this.worldObj, this.rand, par2, par3);

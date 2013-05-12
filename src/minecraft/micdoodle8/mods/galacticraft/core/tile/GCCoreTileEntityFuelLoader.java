@@ -34,14 +34,14 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric impleme
 
 	private ItemStack[] containingItems = new ItemStack[2];
 	public static final double WATTS_PER_TICK = 300;
-	
+
 	public IFuelable attachedFuelable;
 
-	public GCCoreTileEntityFuelLoader() 
+	public GCCoreTileEntityFuelLoader()
 	{
 		super(300, 130, 1, 1.0D);
 	}
-	
+
 	public int getScaledFuelLevel(int i)
 	{
 		final double fuelLevel = this.fuelTank.getLiquid() == null ? 0 : this.fuelTank.getLiquid().amount;
@@ -126,7 +126,7 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric impleme
 					this.attachedFuelable = null;
 				}
 			}
-			
+
 			final LiquidStack liquid = LiquidDictionary.getLiquid("Fuel", 1);
 
 			if (this.attachedFuelable != null && (this.ic2Energy > 0 || this.wattsReceived > 0 || this.bcEnergy > 0) && !this.disabled)
@@ -365,13 +365,13 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric impleme
 	}
 
 	@Override
-	public boolean shouldPullEnergy() 
+	public boolean shouldPullEnergy()
 	{
 		return this.fuelTank.getLiquid() != null && this.fuelTank.getLiquid().amount > 0 && !this.disabled;
 	}
 
 	@Override
-	public void readPacket(ByteArrayDataInput data) 
+	public void readPacket(ByteArrayDataInput data)
 	{
 		if (this.worldObj.isRemote)
 		{
@@ -385,13 +385,13 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric impleme
 	}
 
 	@Override
-	public Packet getPacket() 
+	public Packet getPacket()
 	{
 		return PacketManager.getPacket(GalacticraftCore.CHANNEL, this, this.wattsReceived, this.ic2Energy, this.fuelTank.getLiquid() == null ? 0 : this.fuelTank.getLiquid().amount, this.disabled, this.disableCooldown, this.bcEnergy);
 	}
 
 	@Override
-	public ForgeDirection getElectricInputDirection() 
+	public ForgeDirection getElectricInputDirection()
 	{
 		return ForgeDirection.getOrientation(this.getBlockMetadata() + 2);
 	}

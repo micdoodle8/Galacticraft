@@ -44,19 +44,19 @@ public class GCCoreBlockOxygenPipe extends BlockContainer
 	@Override
     public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6)
     {
-    	GCCoreTileEntityOxygenPipe tile = (GCCoreTileEntityOxygenPipe) par1World.getBlockTileEntity(par2, par3, par4);
-    	
+    	final GCCoreTileEntityOxygenPipe tile = (GCCoreTileEntityOxygenPipe) par1World.getBlockTileEntity(par2, par3, par4);
+
     	if (tile.getColor() != 15)
     	{
             final float f = 0.7F;
-            final double d0 = (par1World.rand.nextFloat() * f) + (1.0F - f) * 0.5D;
-            final double d1 = (par1World.rand.nextFloat() * f) + (1.0F - f) * 0.2D + 0.6D;
-            final double d2 = (par1World.rand.nextFloat() * f) + (1.0F - f) * 0.5D;
+            final double d0 = par1World.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+            final double d1 = par1World.rand.nextFloat() * f + (1.0F - f) * 0.2D + 0.6D;
+            final double d2 = par1World.rand.nextFloat() * f + (1.0F - f) * 0.5D;
             final EntityItem entityitem = new EntityItem(par1World, par2 + d0, par3 + d1, par4 + d2, new ItemStack(Item.dyePowder, 1, tile.getColor()));
             entityitem.delayBeforeCanPickup = 10;
             par1World.spawnEntityInWorld(entityitem);
     	}
-    	
+
     	super.breakBlock(par1World, par2, par3, par4, par5, par6);
     }
 
@@ -111,9 +111,9 @@ public class GCCoreBlockOxygenPipe extends BlockContainer
                     if (colorBefore != (byte) dyeColor && colorBefore != 15)
                     {
                         final float f = 0.7F;
-                        final double d0 = (par1World.rand.nextFloat() * f) + (1.0F - f) * 0.5D;
-                        final double d1 = (par1World.rand.nextFloat() * f) + (1.0F - f) * 0.2D + 0.6D;
-                        final double d2 = (par1World.rand.nextFloat() * f) + (1.0F - f) * 0.5D;
+                        final double d0 = par1World.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+                        final double d1 = par1World.rand.nextFloat() * f + (1.0F - f) * 0.2D + 0.6D;
+                        final double d2 = par1World.rand.nextFloat() * f + (1.0F - f) * 0.5D;
                         final EntityItem entityitem = new EntityItem(par1World, x + d0, y + d1, z + d2, new ItemStack(Item.dyePowder, 1, colorBefore));
                         entityitem.delayBeforeCanPickup = 10;
                         par1World.spawnEntityInWorld(entityitem);
@@ -306,7 +306,8 @@ public class GCCoreBlockOxygenPipe extends BlockContainer
 		return super.collisionRayTrace(world, x, y, z, vec3d, vec3d1);
 	}
 
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
+    @Override
+	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
     {
 		final TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
 
@@ -353,10 +354,10 @@ public class GCCoreBlockOxygenPipe extends BlockContainer
 			{
 				maxX = 1.0F;
 			}
-			
+
 			this.setBlockBounds(minX, minY, minZ, maxX, maxY, maxZ);
 		}
-		
-        return AxisAlignedBB.getAABBPool().getAABB((double)x + this.minX, (double)y + this.minY, (double)z + this.minZ, (double)x + this.maxX, (double)y + this.maxY, (double)z + this.maxZ);
+
+        return AxisAlignedBB.getAABBPool().getAABB(x + this.minX, y + this.minY, z + this.minZ, x + this.maxX, y + this.maxY, z + this.maxZ);
     }
 }

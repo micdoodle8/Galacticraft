@@ -30,17 +30,17 @@ public class GCMoonUtil
 	public static void addSmeltingRecipes()
 	{
 		FurnaceRecipes.smelting().addSmelting(GCMoonItems.meteoricIronRaw.itemID, new ItemStack(GCMoonItems.meteoricIronIngot), 1.0F);
-		
+
 		if (OreDictionary.getOres("ingotCopper").size() > 0)
 		{
 			FurnaceRecipes.smelting().addSmelting(GCMoonBlocks.blockMoon.blockID, 0, OreDictionary.getOres("ingotCopper").get(0), 1.0F);
 		}
-		
+
 		if (OreDictionary.getOres("ingotTin").size() > 0)
 		{
 			FurnaceRecipes.smelting().addSmelting(GCMoonBlocks.blockMoon.blockID, 1, OreDictionary.getOres("ingotTin").get(0), 1.0F);
 		}
-		
+
 		FurnaceRecipes.smelting().addSmelting(GCMoonBlocks.blockMoon.blockID, 2, new ItemStack(GCMoonItems.cheeseCurd), 1.0F);
 	}
 }

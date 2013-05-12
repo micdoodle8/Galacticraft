@@ -31,7 +31,7 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
 
     public boolean active;
 	private ItemStack[] containingItems = new ItemStack[1];
-	
+
 	public GCCoreTileEntityOxygenSealer()
 	{
 		super(300, 130, 1, 0.75D, 10000, 12);
@@ -79,7 +79,7 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
 	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
 	{
 		super.readFromNBT(par1NBTTagCompound);
-		
+
         final NBTTagList var2 = par1NBTTagCompound.getTagList("Items");
         this.containingItems = new ItemStack[this.getSizeInventory()];
 
@@ -247,26 +247,26 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
 
 	private boolean checkSeal(World var1, int var2, int var3, int var4)
     {
-		OxygenPressureProtocol protocol = new OxygenPressureProtocol();
+		final OxygenPressureProtocol protocol = new OxygenPressureProtocol();
         return protocol.checkSeal(var1, var2, var3, var4, 3);
     }
 
     private void sealArea(World var1, int var2, int var3, int var4, int var5)
     {
-		OxygenPressureProtocol protocol = new OxygenPressureProtocol();
+		final OxygenPressureProtocol protocol = new OxygenPressureProtocol();
 		protocol.seal(var1, var2, var3, var4, 2);
     }
 
     private void unSealArea(World var1, int var2, int var3, int var4)
     {
-		OxygenPressureProtocol protocol = new OxygenPressureProtocol();
+		final OxygenPressureProtocol protocol = new OxygenPressureProtocol();
 		protocol.unSeal(var1, var2, var3, var4);
     }
 
 	@Override
-	public boolean shouldPullEnergy() 
+	public boolean shouldPullEnergy()
 	{
-		return this.timeSinceOxygenRequest > 0 && !this.disabled;
+		return GCCoreTileEntityOxygen.timeSinceOxygenRequest > 0 && !this.disabled;
 	}
 
 	@Override
@@ -290,25 +290,25 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
 	}
 
 	@Override
-	public ForgeDirection getElectricInputDirection() 
+	public ForgeDirection getElectricInputDirection()
 	{
 		return ForgeDirection.getOrientation(this.getBlockMetadata() + 2);
 	}
 
 	@Override
-	public ItemStack getBatteryInSlot() 
+	public ItemStack getBatteryInSlot()
 	{
 		return this.getStackInSlot(0);
 	}
 
 	@Override
-	public ForgeDirection getOxygenInputDirection() 
+	public ForgeDirection getOxygenInputDirection()
 	{
 		return this.getElectricInputDirection().getOpposite();
 	}
 
 	@Override
-	public boolean shouldPullOxygen() 
+	public boolean shouldPullOxygen()
 	{
 		return this.ic2Energy > 0 || this.wattsReceived > 0 || this.bcEnergy > 0;
 	}

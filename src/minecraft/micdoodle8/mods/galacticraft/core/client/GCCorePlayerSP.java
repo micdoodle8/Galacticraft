@@ -72,14 +72,14 @@ public class GCCorePlayerSP extends EntityClientPlayerMP
     {
 		if (this.boundingBox != null && this.boundingBoxBefore == null/* && this.worldObj.provider instanceof GCCoreWorldProviderInnerSpace*/)
 		{
-			boundingBoxBefore = this.boundingBox;
+			this.boundingBoxBefore = this.boundingBox;
 			this.boundingBox.setBounds(this.boundingBoxBefore.minX + 0.4, this.boundingBoxBefore.minY + 0.9, this.boundingBoxBefore.minZ + 0.4, this.boundingBoxBefore.maxX - 0.4, this.boundingBoxBefore.maxY - 0.9, this.boundingBoxBefore.maxZ - 0.4);
 		}
 		else if (this.boundingBox != null && this.boundingBoxBefore != null)
 		{
 			this.boundingBox.setBB(this.boundingBoxBefore);
 		}
-		
+
 		super.onLivingUpdate();
 
     	boolean changed = false;

@@ -13,7 +13,6 @@ import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -93,7 +92,7 @@ public class GCCoreEntityLanderFlameFX extends EntityFX
             this.motionX *= 1.1D;
             this.motionZ *= 1.1D;
         }
-        
+
         this.particleScale *= 0.9599999785423279D;
 
         this.motionX *= 0.9599999785423279D;

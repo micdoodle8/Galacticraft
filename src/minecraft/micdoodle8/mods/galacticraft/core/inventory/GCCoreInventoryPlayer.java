@@ -5,17 +5,16 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreInventoryPlayer extends InventoryPlayer
 {
 	public ItemStack[] tankSlotContents = new ItemStack[5];
-	
-	public GCCoreInventoryPlayer(EntityPlayer par1EntityPlayer) 
+
+	public GCCoreInventoryPlayer(EntityPlayer par1EntityPlayer)
 	{
 		super(par1EntityPlayer);
 	}
-	
+
     public ItemStack tankItemInSlot(int par1)
     {
     	switch (par1)
@@ -136,7 +135,7 @@ public class GCCoreInventoryPlayer extends InventoryPlayer
 
         if (aitemstack[par1] != null)
         {
-            ItemStack itemstack = aitemstack[par1];
+            final ItemStack itemstack = aitemstack[par1];
             aitemstack[par1] = null;
             return itemstack;
         }
@@ -219,9 +218,9 @@ public class GCCoreInventoryPlayer extends InventoryPlayer
 
         for (int i = 0; i < par1NBTTagList.tagCount(); ++i)
         {
-            NBTTagCompound nbttagcompound = (NBTTagCompound)par1NBTTagList.tagAt(i);
-            int j = nbttagcompound.getByte("Slot") & 255;
-            ItemStack itemstack = ItemStack.loadItemStackFromNBT(nbttagcompound);
+            final NBTTagCompound nbttagcompound = (NBTTagCompound)par1NBTTagList.tagAt(i);
+            final int j = nbttagcompound.getByte("Slot") & 255;
+            final ItemStack itemstack = ItemStack.loadItemStackFromNBT(nbttagcompound);
 
             if (itemstack != null)
             {
@@ -242,7 +241,7 @@ public class GCCoreInventoryPlayer extends InventoryPlayer
             }
         }
     }
-	
+
 	public void readFromNBTOld(NBTTagList par1NBTTagList)
 	{
 		this.tankSlotContents = new ItemStack[5];

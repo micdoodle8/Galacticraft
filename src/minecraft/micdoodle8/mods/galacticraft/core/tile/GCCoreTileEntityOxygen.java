@@ -13,21 +13,21 @@ public abstract class GCCoreTileEntityOxygen extends GCCoreTileEntityElectric im
 	public int storedOxygen;
 	public int lastStoredOxygen;
 	public static int timeSinceOxygenRequest;
-	
-	public GCCoreTileEntityOxygen(int ueWattsPerTick, double ic2MaxEnergy, double bcEnergyPerTick, double ic2EnergyPerTick, int maxOxygen, int oxygenPerTick) 
+
+	public GCCoreTileEntityOxygen(int ueWattsPerTick, double ic2MaxEnergy, double bcEnergyPerTick, double ic2EnergyPerTick, int maxOxygen, int oxygenPerTick)
 	{
 		super(ueWattsPerTick, ic2MaxEnergy, ic2EnergyPerTick, bcEnergyPerTick);
 		this.maxOxygen = maxOxygen;
 		this.oxygenPerTick = oxygenPerTick;
 	}
-	
+
 	public abstract ForgeDirection getOxygenInputDirection();
-	
+
 	public abstract boolean shouldPullOxygen();
-	
+
 	public int getCappedScaledOxygenLevel(int scale)
 	{
-		return (int) Math.max(Math.min((Math.floor((double)this.storedOxygen / (double)this.maxOxygen * scale)), scale), 0);
+		return (int) Math.max(Math.min(Math.floor((double)this.storedOxygen / (double)this.maxOxygen * scale), scale), 0);
 	}
 
 	@Override
@@ -37,21 +37,21 @@ public abstract class GCCoreTileEntityOxygen extends GCCoreTileEntityElectric im
 
 		if (!this.worldObj.isRemote)
 		{
-			if (GCCoreTileEntityOxygenCompressor.timeSinceOxygenRequest > 0)
+			if (GCCoreTileEntityOxygen.timeSinceOxygenRequest > 0)
 			{
-				GCCoreTileEntityOxygenCompressor.timeSinceOxygenRequest--;
+				GCCoreTileEntityOxygen.timeSinceOxygenRequest--;
 			}
-			
+
 			this.oxygenPerTick = (int) (this.storedOxygen / 250.0F);
-			
+
 			if (this.storedOxygen == this.lastStoredOxygen && this.storedOxygen < 250)
 			{
 				this.oxygenPerTick = 1;
 			}
-			
-			this.storedOxygen = (int) Math.max(this.storedOxygen - this.oxygenPerTick, 0);
+
+			this.storedOxygen = Math.max(this.storedOxygen - this.oxygenPerTick, 0);
 		}
-		
+
 		this.lastStoredOxygen = this.storedOxygen;
 	}
 
@@ -66,17 +66,17 @@ public abstract class GCCoreTileEntityOxygen extends GCCoreTileEntityElectric im
 	{
 		return direction == this.getOxygenInputDirection();
 	}
-	
+
 	@Override
 	public int transferGasToAcceptor(int amount, EnumGas type)
 	{
-		this.timeSinceOxygenRequest = 20;
+		GCCoreTileEntityOxygen.timeSinceOxygenRequest = 20;
 
 		if (this.shouldPullOxygen() && type == EnumGas.OXYGEN)
 		{
 			int rejectedOxygen = 0;
-			int requiredOxygen = this.maxOxygen - this.storedOxygen;
-			
+			final int requiredOxygen = this.maxOxygen - this.storedOxygen;
+
 			if (amount <= requiredOxygen)
 			{
 				this.storedOxygen += amount;
@@ -86,10 +86,10 @@ public abstract class GCCoreTileEntityOxygen extends GCCoreTileEntityElectric im
 				this.storedOxygen += requiredOxygen;
 				rejectedOxygen = amount - requiredOxygen;
 			}
-			
+
 			return rejectedOxygen;
 		}
-		
+
 		return amount;
 	}
 

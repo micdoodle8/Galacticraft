@@ -4,8 +4,6 @@ import javax.swing.JDialog;
 import javax.swing.JEditorPane;
 import javax.swing.JOptionPane;
 
-import cpw.mods.fml.common.FMLLog;
-
 public class GCCoreThreadRequirementMissing extends Thread
 {
 	public static GCCoreThreadRequirementMissing instance = new GCCoreThreadRequirementMissing();
@@ -30,15 +28,15 @@ public class GCCoreThreadRequirementMissing extends Thread
 			System.out.println(err);
             final JEditorPane ep = new JEditorPane("text/html",
 					"<html>" + err + "</html>");
-            
+
             ep.setEditable(false);
             ep.setOpaque(false);
-            
-			JOptionPane pane = new JOptionPane(ep, JOptionPane.ERROR_MESSAGE, JOptionPane.YES_NO_OPTION, null, new Object[] {"Ignore", "Load Basic Components", "Exit", "Do not show again"}, null);
-			JDialog dialog = pane.createDialog(null, "Missing Dependancy");	
+
+			final JOptionPane pane = new JOptionPane(ep, JOptionPane.ERROR_MESSAGE, JOptionPane.YES_NO_OPTION, null, new Object[] {"Ignore", "Load Basic Components", "Exit", "Do not show again"}, null);
+			final JDialog dialog = pane.createDialog(null, "Missing Dependancy");
 			dialog.setVisible(true);
-			Object selectedValue = pane.getValue();
-			
+			final Object selectedValue = pane.getValue();
+
 			if(selectedValue != null && selectedValue.equals("Exit"))
 			{
 				System.exit(-1);

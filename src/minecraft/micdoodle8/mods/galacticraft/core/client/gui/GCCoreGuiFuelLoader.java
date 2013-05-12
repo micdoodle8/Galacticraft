@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
 import mekanism.api.EnumColor;
-import micdoodle8.mods.galacticraft.API.IRefinableItem;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerFuelLoader;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFuelLoader;
@@ -82,8 +81,8 @@ public class GCCoreGuiFuelLoader extends GuiContainer
     	{
     		return EnumColor.DARK_RED + "No Fuel to Load!";
     	}
-    	
-    	if (this.fuelLoader.getStackInSlot(0) == null && (this.fuelLoader.wattsReceived == 0 && this.fuelLoader.ic2Energy == 0 && this.fuelLoader.bcEnergy == 0))
+
+    	if (this.fuelLoader.getStackInSlot(0) == null && this.fuelLoader.wattsReceived == 0 && this.fuelLoader.ic2Energy == 0 && this.fuelLoader.bcEnergy == 0)
     	{
     		return EnumColor.DARK_RED + "Not Enough Power";
     	}

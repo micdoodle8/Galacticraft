@@ -25,10 +25,10 @@
 //    private final GCCoreModelCelestialObject objectModel = new GCCoreModelCelestialObject();
 //    private final String texture;
 //    private final float size;
-//    
+//
 //    private static float lightmapLastX;
 //    private static float lightmapLastY;
-//    
+//
 //    public GCCoreRenderCelestialObject(float size, String texture)
 //    {
 //    	this.size = size;

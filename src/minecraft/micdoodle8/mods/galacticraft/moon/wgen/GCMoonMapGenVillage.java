@@ -1,13 +1,9 @@
 package micdoodle8.mods.galacticraft.moon.wgen;
 
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Random;
 
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.gen.structure.MapGenStructure;
 import net.minecraft.world.gen.structure.StructureStart;
@@ -18,8 +14,8 @@ public class GCMoonMapGenVillage extends MapGenStructure
     public static List villageSpawnBiomes = Arrays.asList(new BiomeGenBase[] {GCMoonBiomeGenBase.moonFlat});
 
     /** World terrain type, 0 for normal, 1 for flat map */
-    private int terrainType;
-    private int field_82665_g;
+    private final int terrainType;
+    private final int field_82665_g;
     private final int field_82666_h;
 
     public GCMoonMapGenVillage()
@@ -32,15 +28,15 @@ public class GCMoonMapGenVillage extends MapGenStructure
     @Override
 	protected boolean canSpawnStructureAtCoords(int i, int j)
     {
-        byte numChunks = 32;
-        byte offsetChunks = 8;
-        int oldi = i;
-        int oldj = j;
+        final byte numChunks = 32;
+        final byte offsetChunks = 8;
+        final int oldi = i;
+        final int oldj = j;
 
         if (i < 0)
         {
             i -= numChunks - 1;
-        } 
+        }
 
         if (j < 0)
         {
@@ -49,7 +45,7 @@ public class GCMoonMapGenVillage extends MapGenStructure
 
         int randX = i / numChunks;
         int randZ = j / numChunks;
-        Random var7 = this.worldObj.setRandomSeed(i, j, 10387312);
+        final Random var7 = this.worldObj.setRandomSeed(i, j, 10387312);
         randX *= numChunks;
         randZ *= numChunks;
         randX += var7.nextInt(numChunks - offsetChunks);

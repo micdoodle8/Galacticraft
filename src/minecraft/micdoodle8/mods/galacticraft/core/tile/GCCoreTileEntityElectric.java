@@ -45,28 +45,28 @@ public abstract class GCCoreTileEntityElectric extends TileEntityElectricityRunn
 
 	public boolean disabled = true;
 	public int disableCooldown = 0;
-	
+
 	public abstract boolean shouldPullEnergy();
-	
+
 	public abstract void readPacket(ByteArrayDataInput data);
-	
+
 	public abstract Packet getPacket();
-	
+
 	public abstract ForgeDirection getElectricInputDirection();
-	
+
 	public abstract ItemStack getBatteryInSlot();
-	
+
 	public GCCoreTileEntityElectric(int ueWattsPerTick, double maxEnergy, double ic2EnergyPerTick, double bcEnergyPerTick)
 	{
 		this.ueWattsPerTick = ueWattsPerTick;
 		this.maxEnergy = maxEnergy;
 		this.ic2EnergyPerTick = ic2EnergyPerTick;
 		this.bcEnergyPerTick = bcEnergyPerTick;
-		
+
 		if (PowerFramework.currentFramework != null)
 		{
-			bcPowerProvider = new GCCoreLinkedPowerProvider(this);
-			bcPowerProvider.configure(20, 1, 10, 10, 1000);
+			this.bcPowerProvider = new GCCoreLinkedPowerProvider(this);
+			this.bcPowerProvider.configure(20, 1, 10, 10, 1000);
 		}
 	}
 
@@ -76,14 +76,14 @@ public abstract class GCCoreTileEntityElectric extends TileEntityElectricityRunn
     	this.unloadIC2();
 		super.invalidate();
     }
-	
+
 	@Override
     public void onChunkUnload()
     {
     	this.unloadIC2();
     	super.onChunkUnload();
     }
-	
+
 	private void unloadIC2()
 	{
     	if (this.addedToEnergyNet && this.worldObj != null)
@@ -92,7 +92,7 @@ public abstract class GCCoreTileEntityElectric extends TileEntityElectricityRunn
 			{
 				MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent(this));
 			}
-			
+
 			this.addedToEnergyNet = false;
     	}
 	}
@@ -109,12 +109,12 @@ public abstract class GCCoreTileEntityElectric extends TileEntityElectricityRunn
 			return new ElectricityPack();
 		}
 	}
-	
+
 	@Override
 	public void updateEntity()
 	{
 		super.updateEntity();
-		
+
 		if (!this.addedToEnergyNet && this.worldObj != null)
 		{
 			if(GCCoreCompatibilityManager.isIc2Loaded())
@@ -124,40 +124,40 @@ public abstract class GCCoreTileEntityElectric extends TileEntityElectricityRunn
 
 			this.addedToEnergyNet = true;
 		}
-		
+
 		if (!this.worldObj.isRemote)
 		{
-			this.ic2Energy = Math.max(this.ic2Energy - ic2EnergyPerTick, 0);
-			
+			this.ic2Energy = Math.max(this.ic2Energy - this.ic2EnergyPerTick, 0);
+
 			if (this.getPowerProvider() != null && this.shouldPullEnergy())
 			{
 				this.getPowerProvider().useEnergy(0, (float) this.bcEnergyPerTick / 2.0F, true);
 			}
-			
+
 			if (this.shouldPullEnergy())
 			{
 				this.wattsReceived += ElectricItemHelper.dechargeItem(this.getBatteryInSlot(), this.ueWattsPerTick, this.getVoltage());
 			}
-			
+
 			if (this.disableCooldown > 0)
 			{
 				this.disableCooldown--;
 			}
-			
+
 			if (this.ticks % 3 == 0)
 			{
 				PacketManager.sendPacketToClients(this.getPacket(), this.worldObj, new Vector3(this), 12);
 			}
-			
+
 			this.wattsReceived = Math.max(this.wattsReceived - this.ueWattsPerTick / 4, 0);
 		}
 	}
-	
+
 	@Override
 	public void writeToNBT(NBTTagCompound nbt)
 	{
 		super.writeToNBT(nbt);
-		
+
 		nbt.setDouble("ic2Energy", this.ic2Energy);
 		nbt.setBoolean("isDisabled", this.getDisabled());
 	}
@@ -166,11 +166,11 @@ public abstract class GCCoreTileEntityElectric extends TileEntityElectricityRunn
 	public void readFromNBT(NBTTagCompound nbt)
 	{
 		super.readFromNBT(nbt);
-		
+
 		this.ic2Energy = nbt.getDouble("ic2Energy");
 		this.setDisabled(nbt.getBoolean("isDisabled"));
 	}
-	
+
 	@Override
 	public void handlePacketData(INetworkManager network, int type, Packet250CustomPayload packet, EntityPlayer player, ByteArrayDataInput dataStream)
 	{
@@ -188,32 +188,32 @@ public abstract class GCCoreTileEntityElectric extends TileEntityElectricityRunn
 	public int injectEnergy(Direction directionFrom, int amount)
 	{
 	    this.ic2Energy += amount;
-	    
+
 	    int rejects = 0;
-	    
+
 	    if (this.ic2Energy > this.maxEnergy)
 	    {
 	    	rejects = (int) (this.ic2Energy - this.maxEnergy);
 	    	this.ic2Energy = this.maxEnergy;
 	    }
-	    
+
 	    return rejects;
 	}
 
 	@Override
 	public int demandsEnergy()
 	{
-		return (int) (shouldPullEnergy() ? this.maxEnergy - this.ic2Energy : 0);
+		return (int) (this.shouldPullEnergy() ? this.maxEnergy - this.ic2Energy : 0);
 	}
 
 	@Override
-	public boolean acceptsEnergyFrom(TileEntity emitter, Direction direction) 
+	public boolean acceptsEnergyFrom(TileEntity emitter, Direction direction)
 	{
 		return direction.toForgeDirection() == this.getElectricInputDirection();
 	}
 
 	@Override
-	public boolean isAddedToEnergyNet() 
+	public boolean isAddedToEnergyNet()
 	{
 		return this.addedToEnergyNet;
 	}
@@ -267,7 +267,7 @@ public abstract class GCCoreTileEntityElectric extends TileEntityElectricityRunn
 	@Override
 	public int powerRequest(ForgeDirection from)
 	{
-		return (int)Math.min(((this.maxEnergy - this.bcEnergy) * GalacticraftCore.toBuildcraftEnergyScalar), 100);
+		return (int)Math.min((this.maxEnergy - this.bcEnergy) * GalacticraftCore.toBuildcraftEnergyScalar, 100);
 	}
 
 	@Override
@@ -322,6 +322,6 @@ public abstract class GCCoreTileEntityElectric extends TileEntityElectricityRunn
 	@Override
 	public ItemStack getWrenchDrop(EntityPlayer entityPlayer)
 	{
-		return Block.blocksList[getBlockType().blockID].getPickBlock(null, worldObj, xCoord, yCoord, zCoord);
+		return Block.blocksList[this.getBlockType().blockID].getPickBlock(null, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
 	}
 }

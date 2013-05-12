@@ -4,7 +4,6 @@ import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockOxygenDetector;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.tile.TileEntityAdvanced;
-import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreTileEntityOxygenDetector extends TileEntityAdvanced
 {
@@ -12,7 +11,7 @@ public class GCCoreTileEntityOxygenDetector extends TileEntityAdvanced
     public void updateEntity()
     {
 		super.updateEntity();
-		
+
         if (this.worldObj != null && !this.worldObj.isRemote && this.ticks % 50 == 0)
         {
             this.blockType = this.getBlockType();

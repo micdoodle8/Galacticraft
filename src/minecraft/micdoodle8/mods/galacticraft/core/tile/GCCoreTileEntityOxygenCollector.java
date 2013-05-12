@@ -44,16 +44,16 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityElectric im
 
 	private ItemStack[] containingItems = new ItemStack[1];
 
-    public GCCoreTileEntityOxygenCollector() 
+    public GCCoreTileEntityOxygenCollector()
     {
 		super(200, 130, 1, 0.75D);
 	}
-    
+
 	public int getCappedScaledOxygenLevel(int scale)
 	{
-		return (int) Math.max(Math.min((Math.floor((double)this.power / (double)this.MAX_POWER * scale)), scale), 0);
+		return (int) Math.max(Math.min(Math.floor(this.power / this.MAX_POWER * scale), scale), 0);
 	}
-    
+
 	@Override
 	public void updateEntity()
 	{
@@ -97,7 +97,7 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityElectric im
 		    		}
 		    	}
 			}
-			
+
 			double power = 0;
 
 			if (this.worldObj.provider instanceof IGalacticraftWorldProvider)
@@ -122,7 +122,7 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityElectric im
 						}
 					}
 				}
-				
+
 				this.setPower(power / 1.2D);
 			}
 			else
@@ -328,7 +328,7 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityElectric im
 	}
 
 	@Override
-	public boolean shouldPullEnergy() 
+	public boolean shouldPullEnergy()
 	{
 		return this.getPower() > 0;
 	}
@@ -347,19 +347,19 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityElectric im
 	}
 
 	@Override
-	public Packet getPacket() 
+	public Packet getPacket()
 	{
 		return PacketManager.getPacket(GalacticraftCore.CHANNEL, this, this.power, this.wattsReceived, this.ic2Energy, this.disabled, this.bcEnergy);
 	}
 
 	@Override
-	public ForgeDirection getElectricInputDirection() 
+	public ForgeDirection getElectricInputDirection()
 	{
 		return ForgeDirection.getOrientation(this.getBlockMetadata() + 2);
 	}
 
 	@Override
-	public ItemStack getBatteryInSlot() 
+	public ItemStack getBatteryInSlot()
 	{
 		return this.getStackInSlot(0);
 	}

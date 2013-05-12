@@ -14,7 +14,7 @@ public class GCCoreSlotRendererSun implements IPlanetSlotRenderer
 	@Override
 	public String getPlanetName()
 	{
-		return "Sun"; 
+		return "Sun";
 	}
 
 	@Override

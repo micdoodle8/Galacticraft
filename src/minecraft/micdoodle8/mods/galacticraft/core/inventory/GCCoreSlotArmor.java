@@ -33,7 +33,8 @@ public class GCCoreSlotArmor extends Slot
      * Returns the maximum stack size for a given slot (usually the same as getInventoryStackLimit(), but 1 in the case
      * of armor slots)
      */
-    public int getSlotStackLimit()
+    @Override
+	public int getSlotStackLimit()
     {
         return 1;
     }
@@ -41,13 +42,15 @@ public class GCCoreSlotArmor extends Slot
     /**
      * Check if the stack is a valid item for this slot. Always true beside for the armor slots.
      */
-    public boolean isItemValid(ItemStack par1ItemStack)
+    @Override
+	public boolean isItemValid(ItemStack par1ItemStack)
     {
-        Item item = (par1ItemStack == null ? null : par1ItemStack.getItem());
-        return item != null && item.isValidArmor(par1ItemStack, armorType);
+        final Item item = par1ItemStack == null ? null : par1ItemStack.getItem();
+        return item != null && item.isValidArmor(par1ItemStack, this.armorType);
     }
 
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
 
     /**
      * Returns the icon index on items.png that is used as background image of the slot.

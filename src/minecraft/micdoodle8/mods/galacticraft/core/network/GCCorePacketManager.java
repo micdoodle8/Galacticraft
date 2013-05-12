@@ -48,7 +48,7 @@ public class GCCorePacketManager extends PacketManager implements IPacketHandler
 			data.writeInt(2);
 
 			data.writeInt(sender.entityId);
-			data = encodeDataStream(data, objs);
+			data = GCCorePacketManager.encodeDataStream(data, objs);
 
 			final Packet250CustomPayload packet = new Packet250CustomPayload();
 			packet.channel = channelName;
@@ -70,7 +70,7 @@ public class GCCorePacketManager extends PacketManager implements IPacketHandler
 	{
 		try
 		{
-			for (Object dataValue : sendData)
+			for (final Object dataValue : sendData)
 			{
 				if (dataValue instanceof Integer)
 				{
@@ -106,13 +106,13 @@ public class GCCorePacketManager extends PacketManager implements IPacketHandler
 				}
 				else if (dataValue instanceof NBTTagCompound)
 				{
-					writeNBTTagCompound((NBTTagCompound) dataValue, data);
+					PacketManager.writeNBTTagCompound((NBTTagCompound) dataValue, data);
 				}
 			}
 
 			return data;
 		}
-		catch (IOException e)
+		catch (final IOException e)
 		{
 			System.out.println("Packet data encoding failed.");
 			e.printStackTrace();

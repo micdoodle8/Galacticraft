@@ -50,7 +50,6 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 import universalelectricity.core.vector.Vector3;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class WorldUtil
@@ -63,14 +62,14 @@ public class WorldUtil
     public static List<ItemStack> uncommon = new ArrayList();
     public static List<ItemStack> rare = new ArrayList();
     public static List<ItemStack> ultrarare = new ArrayList();
-    
+
     public static List<IUpdateable> updateableObjects = new ArrayList<IUpdateable>();
-    
+
     public static void updatePlanets()
     {
-    	List<IUpdateable> planetList = new ArrayList<IUpdateable>();
-    	planetList.addAll(updateableObjects);
-    	for (IUpdateable planet : planetList)
+    	final List<IUpdateable> planetList = new ArrayList<IUpdateable>();
+    	planetList.addAll(WorldUtil.updateableObjects);
+    	for (final IUpdateable planet : planetList)
     	{
     		planet.update();
     	}
@@ -120,23 +119,23 @@ public class WorldUtil
     	{
         	return new Vector3(0.5, 0.5, 0.5);
     	}
-    	
+
     	return new Vector3(1, 1, 1);
     }
-    
+
     public static float getColorRed(World world)
     {
-    	return (float) getWorldColor(world).x;
+    	return (float) WorldUtil.getWorldColor(world).x;
     }
-    
+
     public static float getColorGreen(World world)
     {
-    	return (float) getWorldColor(world).y;
+    	return (float) WorldUtil.getWorldColor(world).y;
     }
-    
+
     public static float getColorBlue(World world)
     {
-    	return (float) getWorldColor(world).z;
+    	return (float) WorldUtil.getWorldColor(world).z;
     }
 
     public static boolean generateChestContents(World var1, Random var2, int var3, int var4, int var5)
@@ -625,7 +624,7 @@ public class WorldUtil
 
     public static void transferEntityToDimension(Entity entity, int dimensionID, WorldServer world)
     {
-    	transferEntityToDimension(entity, dimensionID, world, true);
+    	WorldUtil.transferEntityToDimension(entity, dimensionID, world, true);
     }
 
     public static void transferEntityToDimension(Entity entity, int dimensionID, WorldServer world, boolean transferInv)
@@ -638,14 +637,14 @@ public class WorldUtil
             {
                 final ArrayList array = new ArrayList();
 
-                for (int i : WorldUtil.registeredPlanets)
+                for (final int i : WorldUtil.registeredPlanets)
                 {
                 	array.add(i);
                 }
 
                 server.getConfigurationManager().sendPacketToAllPlayers(GCCorePacketDimensionListPlanets.buildDimensionListPacket(array));
             }
-            
+
             if (WorldUtil.mcServer == null)
             {
                 WorldUtil.mcServer = FMLCommonHandler.instance().getMinecraftServerInstance();
@@ -680,7 +679,7 @@ public class WorldUtil
         }
 
         final boolean var7 = var1.worldObj != var0;
-        int prevDimensionID = var1.dimension;
+        final int prevDimensionID = var1.dimension;
         var1.worldObj.updateEntityWithOptionalForce(var1, false);
         GCCorePlayerMP var8 = null;
 
@@ -883,7 +882,7 @@ public class WorldUtil
         if (var1 instanceof EntityPlayerMP)
         {
             GameRegistry.onPlayerChangedDimension((EntityPlayerMP) var1);
-            
+
             type.onSpaceDimensionChanged(var0, (EntityPlayerMP)var1);
         }
 

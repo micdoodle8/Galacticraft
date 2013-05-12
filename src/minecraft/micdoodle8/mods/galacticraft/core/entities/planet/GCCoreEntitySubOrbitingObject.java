@@ -24,16 +24,16 @@
 //{
 //	public GCCoreEntityCelestialObject orbitingObject = null;
 //    private final Map[] posMaps = this.computePlanetPos(0, 0, (float) (GalacticraftCore.spaceScale * this.getDistanceFromCenter() / 20), 2880);
-//	
-//	public GCCoreEntitySubOrbitingObject(World par1World) 
+//
+//	public GCCoreEntitySubOrbitingObject(World par1World)
 //	{
 //		super(par1World);
 //		this.setPosition(0, 200, 0);
 //		this.ignoreFrustumCheck = true;
 //	}
-//	
+//
 //	public abstract void onPlayerCollide(EntityPlayer player);
-//	
+//
 //	public abstract float getPlanetSize();
 //
 //	public abstract float getDistanceFromCenter();
@@ -67,7 +67,7 @@
 //	@Override
 //	protected void writeEntityToNBT(NBTTagCompound nbttagcompound)
 //	{
-//		
+//
 //	}
 //
 //	@Override
@@ -81,45 +81,45 @@
 //    {
 //    	this.updatePlanetPos();
 //    }
-//    
+//
 //    private void updatePlanetPos()
 //    {
 //    	if (orbitingObject == null || this.posMaps == null)
 //    	{
 //    		return;
 //    	}
-//    	
+//
 //        if (posMaps[0] != null && posMaps[1] != null)
 //        {
 //        	float x = 0;
-//        	float z = 0; 
-//        	
+//        	float z = 0;
+//
 //        	Object o1 = posMaps[0].get(MathHelper.floor_float((this.getPhaseShift() + Sys.getTime() / (720F * GalacticraftCore.spaceSpeedScale * this.getStretchValue())) % 2880));
 //        	Object o2 = posMaps[1].get(MathHelper.floor_float((this.getPhaseShift() + Sys.getTime() / (720F * GalacticraftCore.spaceSpeedScale * this.getStretchValue())) % 2880));
-//        	
+//
 //        	if (o1 != null && o2 != null)
 //        	{
 //            	x = (Float) o1;
 //            	z = (Float) o2;
 //        	}
-//        	
+//
 //        	this.rotationYaw -= 0.05F;
-//        	
+//
 //        	this.posX = x + this.orbitingObject.posX;
 //        	this.posZ = z + this.orbitingObject.posZ;
 //        	this.posY = 200;
 //        }
-//        
+//
 //        for (Object o : this.worldObj.loadedEntityList)
 //        {
 //        	Entity e = (Entity)o;
-//        	
+//
 //        	if (e.getDistanceToEntity(this) == 0.0 && this.entityId < e.entityId && this.getClass().isAssignableFrom(e.getClass()))
 //        	{
 //        		super.setDead();
 //        	}
 //        }
-//        
+//
 //        this.prevPosX = this.posX;
 //        this.prevPosY = this.posY;
 //        this.prevPosZ = this.posZ;
@@ -158,7 +158,7 @@
 //    }
 //
 //    @Override
-//    public void onCollideWithPlayer(EntityPlayer par1EntityPlayer) 
+//    public void onCollideWithPlayer(EntityPlayer par1EntityPlayer)
 //    {
 //    	this.onPlayerCollide(par1EntityPlayer);
 //    }

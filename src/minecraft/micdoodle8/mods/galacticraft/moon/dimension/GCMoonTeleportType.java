@@ -48,33 +48,33 @@ public class GCMoonTeleportType implements ITeleportType
 			final double z = (rand.nextDouble() * 2 - 1.0D) * 5.0D;
 			return new Vector3(x, 220.0D, z);
 		}
-		
+
 		return null;
 	}
 
 	@Override
-	public void onSpaceDimensionChanged(World newWorld, EntityPlayerMP player) 
+	public void onSpaceDimensionChanged(World newWorld, EntityPlayerMP player)
 	{
 		if (!GCCoreConfigManager.disableLander && player instanceof GCCorePlayerMP && ((GCCorePlayerMP) player).teleportCooldown <= 0)
 		{
-			GCCorePlayerMP gcPlayer = (GCCorePlayerMP) player;
-			
+			final GCCorePlayerMP gcPlayer = (GCCorePlayerMP) player;
+
 			if (gcPlayer.capabilities.isFlying)
 			{
 				gcPlayer.capabilities.isFlying = false;
 			}
-			
-			GCCoreEntityLander lander = new GCCoreEntityLander(gcPlayer);
+
+			final GCCoreEntityLander lander = new GCCoreEntityLander(gcPlayer);
 			lander.setPositionAndRotation(player.posX, player.posY, player.posZ, 0, 0);
-			
+
 			if (!newWorld.isRemote)
 			{
 				newWorld.spawnEntityInWorld(lander);
 			}
-			
+
     	  	final Object[] toSend2 = {1};
     	  	gcPlayer.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, toSend2));
-			
+
 			gcPlayer.teleportCooldown = 10;
 		}
 	}

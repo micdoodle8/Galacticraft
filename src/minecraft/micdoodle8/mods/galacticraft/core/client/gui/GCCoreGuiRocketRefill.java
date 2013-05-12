@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.client.gui;
 
 import mekanism.api.EnumColor;
 import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityRocketT1;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerRocketRefill;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.IInventory;

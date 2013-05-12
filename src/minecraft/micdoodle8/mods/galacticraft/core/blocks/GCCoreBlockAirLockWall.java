@@ -3,11 +3,9 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.API.IPartialSealedBlock;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAirLock;
 import net.minecraft.block.BlockBreakable;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;

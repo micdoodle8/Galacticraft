@@ -11,54 +11,54 @@ import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 
 public class GCRoomChests extends GCDungeonRoom {
-	
+
 	int sizeX;
 	int sizeY;
 	int sizeZ;
-	
-	private ArrayList<ChunkCoordinates> chests = new ArrayList<ChunkCoordinates>();
-	
+
+	private final ArrayList<ChunkCoordinates> chests = new ArrayList<ChunkCoordinates>();
+
 	public GCRoomChests(World worldObj, int posX, int posY, int posZ, int entranceDir) {
 		super(worldObj, posX, posY, posZ, entranceDir);
 		if(worldObj != null)
 		{
-			Random rand = new Random(worldObj.getSeed() * posX * posY * 57 * posZ);
-			sizeX = rand.nextInt(5) + 6;
-			sizeY = rand.nextInt(2) + 4;
-			sizeZ = rand.nextInt(5) + 6;
+			final Random rand = new Random(worldObj.getSeed() * posX * posY * 57 * posZ);
+			this.sizeX = rand.nextInt(5) + 6;
+			this.sizeY = rand.nextInt(2) + 4;
+			this.sizeZ = rand.nextInt(5) + 6;
 		}
 	}
 
 	@Override
 	public void generate(short[] chunk, byte[] meta, int cx, int cz) {
-		for(int i = posX - 1; i <= posX + sizeX; i++)
+		for(int i = this.posX - 1; i <= this.posX + this.sizeX; i++)
 		{
-			for(int j = posY - 1; j <= posY + sizeY; j++)
+			for(int j = this.posY - 1; j <= this.posY + this.sizeY; j++)
 			{
-				for(int k = posZ - 1; k <= posZ + sizeZ; k++)
+				for(int k = this.posZ - 1; k <= this.posZ + this.sizeZ; k++)
 				{
-					if(i == posX - 1 || i == posX + sizeX || j == posY - 1 || j == posY + sizeY || k == posZ - 1 || k == posZ + sizeZ)
+					if(i == this.posX - 1 || i == this.posX + this.sizeX || j == this.posY - 1 || j == this.posY + this.sizeY || k == this.posZ - 1 || k == this.posZ + this.sizeZ)
 					{
-						placeBlock(chunk, meta, i, j, k, cx, cz, GCMapGenDungeon.DUNGEON_WALL_ID, GCMapGenDungeon.DUNGEON_WALL_META);
+						this.placeBlock(chunk, meta, i, j, k, cx, cz, GCMapGenDungeon.DUNGEON_WALL_ID, GCMapGenDungeon.DUNGEON_WALL_META);
 					}
 					else
 					{
-						placeBlock(chunk, meta, i, j, k, cx, cz, 0, 0);
+						this.placeBlock(chunk, meta, i, j, k, cx, cz, 0, 0);
 					}
 				}
 			}
 		}
-		int hx = (posX + posX + sizeX) / 2;
-		int hz = (posZ + posZ + sizeZ) / 2;
-		if(placeBlock(chunk, meta, hx, posY, hz, cx, cz, Block.chest.blockID, 0))
-		{	
-			chests.add(new ChunkCoordinates(hx, posY, hz));
+		final int hx = (this.posX + this.posX + this.sizeX) / 2;
+		final int hz = (this.posZ + this.posZ + this.sizeZ) / 2;
+		if(this.placeBlock(chunk, meta, hx, this.posY, hz, cx, cz, Block.chest.blockID, 0))
+		{
+			this.chests.add(new ChunkCoordinates(hx, this.posY, hz));
 		}
 	}
 
 	@Override
 	public GCDungeonBoundingBox getBoundingBox() {
-		return new GCDungeonBoundingBox(posX, posZ, posX + sizeX, posZ + sizeZ);
+		return new GCDungeonBoundingBox(this.posX, this.posZ, this.posX + this.sizeX, this.posZ + this.sizeZ);
 	}
 
 	@Override
@@ -68,21 +68,21 @@ public class GCRoomChests extends GCDungeonRoom {
 
 	@Override
 	protected void handleTileEntities(Random rand) {
-		for(ChunkCoordinates chestCoords : chests)
+		for(final ChunkCoordinates chestCoords : this.chests)
 		{
-			TileEntityChest chest = (TileEntityChest)worldObj.getBlockTileEntity(chestCoords.posX, chestCoords.posY, chestCoords.posZ);
+			final TileEntityChest chest = (TileEntityChest)this.worldObj.getBlockTileEntity(chestCoords.posX, chestCoords.posY, chestCoords.posZ);
 			if(chest != null)
 			{
-				int amountOfGoodies = rand.nextInt(5) + 2;
+				final int amountOfGoodies = rand.nextInt(5) + 2;
 				for(int i = 0; i < amountOfGoodies; i++)
 				{
-					chest.setInventorySlotContents(rand.nextInt(chest.getSizeInventory()), getLoot(rand));
+					chest.setInventorySlotContents(rand.nextInt(chest.getSizeInventory()), this.getLoot(rand));
 				}
-			}			
-		}		
+			}
+		}
 	}
 
-	private ItemStack getLoot(Random rand) 
+	private ItemStack getLoot(Random rand)
 	{
 		return new ItemStack(Item.appleRed, 1, 0);
 	}

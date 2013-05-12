@@ -7,7 +7,6 @@ import java.net.URL;
 
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 
 public class GCCoreThreadVersionCheck extends Thread
@@ -36,20 +35,20 @@ public class GCCoreThreadVersionCheck extends Thread
 			return;
 		}
 
-		while (count < 3 && GalacticraftCore.remoteBuildVer == 0)
+		while (this.count < 3 && GalacticraftCore.remoteBuildVer == 0)
 		{
 			try
 			{
-				URL url = new URL("http://micdoodle8.com/galacticraft/version.html");
-				HttpURLConnection http = (HttpURLConnection) url.openConnection();
+				final URL url = new URL("http://micdoodle8.com/galacticraft/version.html");
+				final HttpURLConnection http = (HttpURLConnection) url.openConnection();
 				http.addRequestProperty("User-Agent", "Mozilla/4.76");
-				BufferedReader in = new BufferedReader(new InputStreamReader(http.getInputStream()));
+				final BufferedReader in = new BufferedReader(new InputStreamReader(http.getInputStream()));
 				String str;
 				String str2[] = null;
 
 				while ((str = in.readLine()) != null)
 				{
-		    		
+
 		    		if (str.contains("Version"))
 		    		{
 		        		str = str.replace("Version=", "");
@@ -98,8 +97,8 @@ public class GCCoreThreadVersionCheck extends Thread
 			{
 				GCLog.info("Galacticraft remote version found: " + GalacticraftCore.remoteMajVer + "." + GalacticraftCore.remoteMinVer + "." + GalacticraftCore.remoteBuildVer);
 			}
-			
-			count++;
+
+			this.count++;
 		}
 	}
 }

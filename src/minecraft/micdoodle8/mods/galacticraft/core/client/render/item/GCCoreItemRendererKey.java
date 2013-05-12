@@ -1,11 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.render.item;
 
-import java.util.Random;
-
 import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelKey;
 import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
@@ -15,7 +11,6 @@ import org.lwjgl.Sys;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLLog;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -55,18 +50,18 @@ public class GCCoreItemRendererKey implements IItemRenderer
 //                GL11.glTranslatef(0F, -(var14b * 0.2F), 0F);
 //            }
 //        }
-        
+
         EntityItem entityItem = null;
-        
+
         if (data.length == 2 && data[1] instanceof EntityItem)
         {
         	entityItem = (EntityItem) data[1];
         }
-        
+
         if (type == ItemRenderType.INVENTORY)
         {
             GL11.glTranslatef(8.0F, 8.0F, 0F);
-            GL11.glRotatef((MathHelper.sin((Sys.getTime() / 90F) / 20.0F) - 55.0F) * 50.0F, 0, 0, 1);
+            GL11.glRotatef((MathHelper.sin(Sys.getTime() / 90F / 20.0F) - 55.0F) * 50.0F, 0, 0, 1);
             GL11.glScalef(5.0F, 5.0F, 5.0F);
             GL11.glScalef(1.5F, 1.5F, 1.5F);
         }
@@ -82,14 +77,14 @@ public class GCCoreItemRendererKey implements IItemRenderer
             GL11.glTranslatef(3.0F, 2.0F, -0.6F);
             GL11.glScalef(3.0F, 3.0F, 3.0F);
         }
-        
+
         GL11.glRotatef(45, 0, 0, 1);
-        
+
         if (entityItem != null)
         {
-            float f2 = MathHelper.sin(((float)entityItem.age + 1) / 10.0F + entityItem.hoverStart) * 0.1F + 0.1F;
+            final float f2 = MathHelper.sin(((float)entityItem.age + 1) / 10.0F + entityItem.hoverStart) * 0.1F + 0.1F;
             GL11.glRotatef(f2 * 90F - 45F, 0, 0, 1);
-            GL11.glRotatef((float) (Math.sin(((float)(entityItem.age + 1) / 100.0F)) * 180.0F), 0, 1, 0);
+            GL11.glRotatef((float) (Math.sin((entityItem.age + 1) / 100.0F) * 180.0F), 0, 1, 0);
         }
 
     	switch (item.getItemDamage())
@@ -109,7 +104,7 @@ public class GCCoreItemRendererKey implements IItemRenderer
 	@Override
 	public boolean handleRenderType(ItemStack item, ItemRenderType type)
 	{
-		switch (type) 
+		switch (type)
 		{
 		case ENTITY:
 			return true;

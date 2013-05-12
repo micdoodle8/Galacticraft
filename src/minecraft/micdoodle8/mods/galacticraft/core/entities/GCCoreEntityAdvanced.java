@@ -37,11 +37,11 @@ import cpw.mods.fml.relauncher.SideOnly;
 public abstract class GCCoreEntityAdvanced extends GCCoreEntityControllable implements IPacketReceiver
 {
 	protected long ticks = 0;
-	
+
     public int currentDamage;
     public int timeSinceHit;
     public int rockDirection;
-    
+
     public double advancedPositionX;
     public double advancedPositionY;
     public double advancedPositionZ;
@@ -51,7 +51,7 @@ public abstract class GCCoreEntityAdvanced extends GCCoreEntityControllable impl
 
 	private boolean lastOnGround;
 	private double lastMotionY;
-	
+
     public GCCoreEntityAdvanced(World world, double initialSpeed, float yOffset)
     {
     	super(world);
@@ -174,11 +174,11 @@ public abstract class GCCoreEntityAdvanced extends GCCoreEntityControllable impl
                 	if (this.riddenByEntity instanceof EntityPlayerMP)
                 	{
                 	  	final Object[] toSend2 = {0};
-                    	((EntityPlayerMP) riddenByEntity).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, toSend2));
+                    	((EntityPlayerMP) this.riddenByEntity).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, toSend2));
                     }
-                	
+
                     this.riddenByEntity.mountEntity(this);
-                    
+
                     return false;
                 }
 
@@ -198,13 +198,13 @@ public abstract class GCCoreEntityAdvanced extends GCCoreEntityControllable impl
             return true;
         }
     }
-    
+
     public abstract List<ItemStack> getItemsDropped();
-    
+
     public abstract boolean shouldMove();
-    
+
     public abstract boolean shouldSpawnParticles();
-    
+
     /**
      * @return map of the particle vectors. Map key is the position and map value is the motion of the particles. Each entry will be spawned as a separate particle
      */
@@ -214,15 +214,15 @@ public abstract class GCCoreEntityAdvanced extends GCCoreEntityControllable impl
     public abstract EntityFX getParticle(Random rand, double x, double y, double z, double motX, double motY, double motZ);
 
     public abstract void tickInAir();
-    
+
     public abstract void tickOnGround();
-    
+
     public abstract void onGroundHit();
-    
+
     public abstract Vector3 getMotionVec();
-    
+
     public abstract ArrayList<Object> getNetworkedData();
-    
+
     /**
      * @return ticks between packets being sent to client
      */
@@ -232,11 +232,11 @@ public abstract class GCCoreEntityAdvanced extends GCCoreEntityControllable impl
      * @return players within this distance will recieve packets from this entity
      */
     public abstract double getPacketSendDistance();
-    
+
     public abstract void readNetworkedData(ByteArrayDataInput dataStream);
-    
+
     public abstract boolean allowDamageSource(DamageSource damageSource);
-    
+
     public void dropItems()
     {
     	if (this.getItemsDropped() == null)
@@ -291,7 +291,7 @@ public abstract class GCCoreEntityAdvanced extends GCCoreEntityControllable impl
 		}
 
 		this.ticks++;
-		
+
 		super.onUpdate();
 
         if(this.worldObj.isRemote && (this.riddenByEntity == null || !(this.riddenByEntity instanceof EntityPlayer) || !FMLClientHandler.instance().getClient().thePlayer.equals(this.riddenByEntity)))
@@ -331,7 +331,7 @@ public abstract class GCCoreEntityAdvanced extends GCCoreEntityControllable impl
                 this.motionZ *= 0.9900000095367432D;
             }
         }
-        
+
         if (this.timeSinceHit > 0)
         {
             this.timeSinceHit--;
@@ -341,12 +341,12 @@ public abstract class GCCoreEntityAdvanced extends GCCoreEntityControllable impl
         {
             this.currentDamage--;
         }
-        
+
         if (this.shouldSpawnParticles() && FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
         {
         	this.spawnParticles(this.getParticleMap());
         }
-        
+
         if (this.onGround)
         {
         	this.tickOnGround();
@@ -413,15 +413,15 @@ public abstract class GCCoreEntityAdvanced extends GCCoreEntityControllable impl
 			e.printStackTrace();
 		}
 	}
-    
+
     @SideOnly(Side.CLIENT)
     public void spawnParticles(Map<Vector3, Vector3> points)
     {
-    	for (Entry<Vector3, Vector3> vec : points.entrySet())
+    	for (final Entry<Vector3, Vector3> vec : points.entrySet())
     	{
-    		Vector3 posVec = vec.getKey();
-    		Vector3 motionVec = vec.getValue();
-    		
+    		final Vector3 posVec = vec.getKey();
+    		final Vector3 motionVec = vec.getValue();
+
     		this.spawnParticle(this.getParticle(this.rand, posVec.x, posVec.y, posVec.z, motionVec.x, motionVec.y, motionVec.z));
     	}
     }

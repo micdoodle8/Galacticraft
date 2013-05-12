@@ -1,70 +1,62 @@
 package micdoodle8.mods.galacticraft.moon.wgen.dungeon;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
-import micdoodle8.mods.galacticraft.moon.wgen.GCMoonBiomeGenBase;
 import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntityChest;
-import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.IChunkProvider;
-import net.minecraft.world.gen.MapGenBase;
 
 public class GCMapGenDungeon {
-	
+
 	public static final int DUNGEON_WALL_ID = GCMoonBlocks.blockMoon.blockID;
 	public static final int DUNGEON_WALL_META = 14;
 	public static final int RANGE = 8;
 	public static final int HALLWAY_LENGTH = 16;
 	public static final int HALLWAY_HEIGHT = 3;
-	
+
 	public static boolean useArrays = false;
-	
+
 	public World worldObj;
-	
-	private ArrayList<GCDungeonRoom> rooms = new ArrayList<GCDungeonRoom>();
-	
+
+	private final ArrayList<GCDungeonRoom> rooms = new ArrayList<GCDungeonRoom>();
+
 	public GCMapGenDungeon()
 	{
 	}
-	
+
 	public void generateUsingArrays(World world, long seed, int x, int y, int z, int chunkX, int chunkZ, short[] blocks, byte[] metas)
 	{
-		ChunkCoordinates dungeonCoords = this.getDungeonNear(seed, chunkX, chunkZ);
+		final ChunkCoordinates dungeonCoords = this.getDungeonNear(seed, chunkX, chunkZ);
 		if(dungeonCoords != null)
 		{
 			this.generate(world, new Random(seed * dungeonCoords.posX * dungeonCoords.posZ * 24789), dungeonCoords.posX, y, dungeonCoords.posZ, chunkX, chunkZ, blocks, metas, true);
 		}
 	}
-	
+
 	public void generateUsingSetBlock(World world, int x, int y, int z)
 	{
-		this.generate(world, new Random(worldObj.getWorldInfo().getSeed() * x * z * 24789), x, y, z, x, z, null, null, false);
+		this.generate(world, new Random(this.worldObj.getWorldInfo().getSeed() * x * z * 24789), x, y, z, x, z, null, null, false);
 	}
-	
+
 	public void generate(World world, Random rand, int x, int y, int z, int chunkX, int chunkZ, short[] blocks, byte[] metas, boolean useArrays)
 	{
 		System.out.println(x + ", " + z);
-		this.useArrays = useArrays;
+		GCMapGenDungeon.useArrays = useArrays;
 		this.worldObj = world;
-		
-		List<GCDungeonBoundingBox> boundingBoxes = new ArrayList<GCDungeonBoundingBox>();
-		
-		int length = rand.nextInt(4) + 5;
-		
-		GCDungeonRoom currentRoom = GCDungeonRoom.makeRoom(worldObj, rand, x, y, z, 4);
+
+		final List<GCDungeonBoundingBox> boundingBoxes = new ArrayList<GCDungeonBoundingBox>();
+
+		final int length = rand.nextInt(4) + 5;
+
+		GCDungeonRoom currentRoom = GCDungeonRoom.makeRoom(this.worldObj, rand, x, y, z, 4);
 		currentRoom.generate(blocks, metas, chunkX, chunkZ);
-		rooms.add(currentRoom);
-		GCDungeonBoundingBox cbb = currentRoom.getBoundingBox();
-		this.generateEntranceCrater(blocks, metas, x + ((cbb.maxX - cbb.minX) / 2), y, z + ((cbb.maxZ - cbb.minZ) / 2), chunkX, chunkZ);
-		
+		this.rooms.add(currentRoom);
+		final GCDungeonBoundingBox cbb = currentRoom.getBoundingBox();
+		this.generateEntranceCrater(blocks, metas, x + (cbb.maxX - cbb.minX) / 2, y, z + (cbb.maxZ - cbb.minZ) / 2, chunkX, chunkZ);
+
 		for(int i = 0; i <= length; i++)
 		{
 		   tryLoop:
@@ -72,97 +64,97 @@ public class GCMapGenDungeon {
 			{
 				int offsetX = 0;
 				int offsetZ = 0;
-				int dir = randDir(rand, currentRoom.entranceDir);
+				final int dir = this.randDir(rand, currentRoom.entranceDir);
 				int entranceDir = dir;
 				switch(dir) //East = 0, North = 1, South = 2, West = 3
 				{
 					case 0: //East z++
-						offsetZ = HALLWAY_LENGTH + rand.nextInt(15);
+						offsetZ = GCMapGenDungeon.HALLWAY_LENGTH + rand.nextInt(15);
 						if(rand.nextBoolean())
 						{
 							if(rand.nextBoolean())
 							{
 								entranceDir = 1;
-								offsetX = HALLWAY_LENGTH + rand.nextInt(15);
+								offsetX = GCMapGenDungeon.HALLWAY_LENGTH + rand.nextInt(15);
 							}
 							else
 							{
 								entranceDir = 2;
-								offsetX = -HALLWAY_LENGTH - rand.nextInt(15);
+								offsetX = -GCMapGenDungeon.HALLWAY_LENGTH - rand.nextInt(15);
 							}
 						}
 						break;
 					case 1: //North x++
-						offsetX = HALLWAY_LENGTH + rand.nextInt(15);
+						offsetX = GCMapGenDungeon.HALLWAY_LENGTH + rand.nextInt(15);
 						if(rand.nextBoolean())
 						{
 							if(rand.nextBoolean())
 							{
 								entranceDir = 0;
-								offsetZ = HALLWAY_LENGTH + rand.nextInt(15);
+								offsetZ = GCMapGenDungeon.HALLWAY_LENGTH + rand.nextInt(15);
 							}
 							else
 							{
 								entranceDir = 3;
-								offsetZ = -HALLWAY_LENGTH - rand.nextInt(15);
+								offsetZ = -GCMapGenDungeon.HALLWAY_LENGTH - rand.nextInt(15);
 							}
 						}
 						break;
 					case 2: //South x--
-						offsetX = -HALLWAY_LENGTH - rand.nextInt(15);
+						offsetX = -GCMapGenDungeon.HALLWAY_LENGTH - rand.nextInt(15);
 						if(rand.nextBoolean())
 						{
 							if(rand.nextBoolean())
 							{
 								entranceDir = 0;
-								offsetZ = HALLWAY_LENGTH + rand.nextInt(15);
+								offsetZ = GCMapGenDungeon.HALLWAY_LENGTH + rand.nextInt(15);
 							}
 							else
 							{
 								entranceDir = 3;
-								offsetZ = -HALLWAY_LENGTH - rand.nextInt(15);
+								offsetZ = -GCMapGenDungeon.HALLWAY_LENGTH - rand.nextInt(15);
 							}
 						}
 						break;
 					case 3: //West z--
-						offsetZ = -HALLWAY_LENGTH - rand.nextInt(15);
+						offsetZ = -GCMapGenDungeon.HALLWAY_LENGTH - rand.nextInt(15);
 						if(rand.nextBoolean())
 						{
 							if(rand.nextBoolean())
 							{
 								entranceDir = 1;
-								offsetX = HALLWAY_LENGTH + rand.nextInt(15);
+								offsetX = GCMapGenDungeon.HALLWAY_LENGTH + rand.nextInt(15);
 							}
 							else
 							{
 								entranceDir = 2;
-								offsetX = -HALLWAY_LENGTH - rand.nextInt(15);
+								offsetX = -GCMapGenDungeon.HALLWAY_LENGTH - rand.nextInt(15);
 							}
 						}
 						break;
 					default:
 						break;
 				}
-				
-				GCDungeonRoom possibleRoom = GCDungeonRoom.makeRoom(worldObj, rand, currentRoom.posX + offsetX, y, currentRoom.posZ + offsetZ, getOppositeDir(entranceDir));
+
+				GCDungeonRoom possibleRoom = GCDungeonRoom.makeRoom(this.worldObj, rand, currentRoom.posX + offsetX, y, currentRoom.posZ + offsetZ, this.getOppositeDir(entranceDir));
 				if(i == length - 1)
 				{
-					possibleRoom = GCDungeonRoom.makeBossRoom(worldObj, rand, currentRoom.posX + offsetX, y, currentRoom.posZ + offsetZ, getOppositeDir(entranceDir));
+					possibleRoom = GCDungeonRoom.makeBossRoom(this.worldObj, rand, currentRoom.posX + offsetX, y, currentRoom.posZ + offsetZ, this.getOppositeDir(entranceDir));
 				}
 				if(i == length)
 				{
-					possibleRoom = GCDungeonRoom.makeTreasureRoom(worldObj, rand, currentRoom.posX + offsetX, y, currentRoom.posZ + offsetZ, getOppositeDir(entranceDir));
+					possibleRoom = GCDungeonRoom.makeTreasureRoom(this.worldObj, rand, currentRoom.posX + offsetX, y, currentRoom.posZ + offsetZ, this.getOppositeDir(entranceDir));
 				}
-				GCDungeonBoundingBox possibleRoomBb = possibleRoom.getBoundingBox();
-				GCDungeonBoundingBox currentRoomBb = currentRoom.getBoundingBox();
-				if(!isIntersecting(possibleRoomBb, boundingBoxes))
+				final GCDungeonBoundingBox possibleRoomBb = possibleRoom.getBoundingBox();
+				final GCDungeonBoundingBox currentRoomBb = currentRoom.getBoundingBox();
+				if(!this.isIntersecting(possibleRoomBb, boundingBoxes))
 				{
-					int cx = (currentRoomBb.minX + currentRoomBb.maxX) / 2;
-					int cz = (currentRoomBb.minZ + currentRoomBb.maxZ) / 2;
-					int px = (possibleRoomBb.minX + possibleRoomBb.maxX) / 2;
-					int pz = (possibleRoomBb.minZ + possibleRoomBb.maxZ) / 2;
-					int ax = (cx + px) / 2;
-					int az = (cz + pz) / 2;
+					final int cx = (currentRoomBb.minX + currentRoomBb.maxX) / 2;
+					final int cz = (currentRoomBb.minZ + currentRoomBb.maxZ) / 2;
+					final int px = (possibleRoomBb.minX + possibleRoomBb.maxX) / 2;
+					final int pz = (possibleRoomBb.minZ + possibleRoomBb.maxZ) / 2;
+					final int ax = (cx + px) / 2;
+					final int az = (cz + pz) / 2;
 					if(offsetX == 0 || offsetZ == 0) //Only 1 hallway
 					{
 						GCDungeonBoundingBox corridor1 = null;
@@ -183,16 +175,16 @@ public class GCMapGenDungeon {
 							default:
 								break;
 						}
-						if(!isIntersecting(corridor1, boundingBoxes))
+						if(!this.isIntersecting(corridor1, boundingBoxes))
 						{
 							boundingBoxes.add(possibleRoomBb);
 							boundingBoxes.add(corridor1);
 							currentRoom = possibleRoom;
 							currentRoom.generate(blocks, metas, chunkX, chunkZ);
-							rooms.add(currentRoom);
+							this.rooms.add(currentRoom);
 							if(corridor1 != null)
 							{
-								genCorridor(corridor1, rand, possibleRoom.posY, chunkX, chunkZ, dir, blocks, metas, false);
+								this.genCorridor(corridor1, rand, possibleRoom.posY, chunkX, chunkZ, dir, blocks, metas, false);
 							}
 							break;
 						}
@@ -268,25 +260,25 @@ public class GCMapGenDungeon {
 							default:
 								break;
 						}
-						if(!isIntersecting(corridor1, boundingBoxes) && !isIntersecting(corridor2, boundingBoxes))
+						if(!this.isIntersecting(corridor1, boundingBoxes) && !this.isIntersecting(corridor2, boundingBoxes))
 						{
 							boundingBoxes.add(possibleRoomBb);
 							boundingBoxes.add(corridor1);
 							boundingBoxes.add(corridor2);
 							currentRoom = possibleRoom;
 							currentRoom.generate(blocks, metas, chunkX, chunkZ);
-							rooms.add(currentRoom);
+							this.rooms.add(currentRoom);
 							if(corridor1 != null && corridor2 != null)
 							{
-								genCorridor(corridor2, rand, possibleRoom.posY, chunkX, chunkZ, dir2, blocks, metas, true);
-								genCorridor(corridor1, rand, possibleRoom.posY, chunkX, chunkZ, dir, blocks, metas, false);
+								this.genCorridor(corridor2, rand, possibleRoom.posY, chunkX, chunkZ, dir2, blocks, metas, true);
+								this.genCorridor(corridor1, rand, possibleRoom.posY, chunkX, chunkZ, dir, blocks, metas, false);
 							}
 							break;
 						}
 						else
 						{
 							continue tryLoop;
-						}				
+						}
 					}
 				}
 				else
@@ -296,7 +288,7 @@ public class GCMapGenDungeon {
 			}
 		}
 	}
-	
+
 	private void genCorridor(GCDungeonBoundingBox corridor, Random rand, int y, int cx, int cz, int dir, short[] blocks, byte[] metas, boolean doubleCorridor)
 	{
 		for(int i = corridor.minX - 1; i <= corridor.maxX + 1; i++)
@@ -304,13 +296,13 @@ public class GCMapGenDungeon {
 			for(int k = corridor.minZ - 1; k <= corridor.maxZ + 1; k++)
 			{
 			   loopj:
-				for(int j = y - 1; j <= y + HALLWAY_HEIGHT; j++)
+				for(int j = y - 1; j <= y + GCMapGenDungeon.HALLWAY_HEIGHT; j++)
 				{
 					boolean flag = false;
 					switch(dir)
 					{
 						case 0:
-							if((k == corridor.minZ - 1 && !doubleCorridor) || k == corridor.maxZ + 1)
+							if(k == corridor.minZ - 1 && !doubleCorridor || k == corridor.maxZ + 1)
 							{
 								break loopj;
 							}
@@ -324,7 +316,7 @@ public class GCMapGenDungeon {
 							}
 							break;
 						case 3:
-							if(k == corridor.minZ - 1 || (k == corridor.maxZ + 1 && !doubleCorridor))
+							if(k == corridor.minZ - 1 || k == corridor.maxZ + 1 && !doubleCorridor)
 							{
 								break loopj;
 							}
@@ -338,7 +330,7 @@ public class GCMapGenDungeon {
 							}
 							break;
 						case 1:
-							if((i == corridor.minX - 1 && !doubleCorridor) || i == corridor.maxX + 1)
+							if(i == corridor.minX - 1 && !doubleCorridor || i == corridor.maxX + 1)
 							{
 								break loopj;
 							}
@@ -352,7 +344,7 @@ public class GCMapGenDungeon {
 							}
 							break;
 						case 2:
-							if(i == corridor.minX - 1 || (i == corridor.maxX + 1 && !doubleCorridor))
+							if(i == corridor.minX - 1 || i == corridor.maxX + 1 && !doubleCorridor)
 							{
 								break loopj;
 							}
@@ -368,38 +360,38 @@ public class GCMapGenDungeon {
 					}
 					if(!flag)
 					{
-						placeBlock(blocks, metas, i, j, k, cx, cz, 0, 0);
+						this.placeBlock(blocks, metas, i, j, k, cx, cz, 0, 0);
 					}
 					else
 					{
-						placeBlock(blocks, metas, i, j, k, cx, cz, DUNGEON_WALL_ID, DUNGEON_WALL_META);
+						this.placeBlock(blocks, metas, i, j, k, cx, cz, GCMapGenDungeon.DUNGEON_WALL_ID, GCMapGenDungeon.DUNGEON_WALL_META);
 					}
 				}
-				
+
 				if(rand.nextInt(50) == 0)
 				{
-					placeBlock(blocks, metas, i, y - 1, k, cx, cz, Block.glowStone.blockID, 0);
+					this.placeBlock(blocks, metas, i, y - 1, k, cx, cz, Block.glowStone.blockID, 0);
 				}
 			}
 		}
 	}
-	
+
 	public void handleTileEntities(Random rand)
 	{
-		ArrayList<GCDungeonRoom> rooms = new ArrayList<GCDungeonRoom>();
+		final ArrayList<GCDungeonRoom> rooms = new ArrayList<GCDungeonRoom>();
 		rooms.addAll(this.rooms);
-		for(GCDungeonRoom room : rooms)
+		for(final GCDungeonRoom room : rooms)
 		{
 			room.handleTileEntities(rand);
 		}
 	}
-	
+
 	protected boolean canGenDungeonAtCoords(long worldSeed, int i, int j)
     {
-        byte numChunks = 32;
-        byte offsetChunks = 8;
-        int oldi = i;
-        int oldj = j;
+        final byte numChunks = 32;
+        final byte offsetChunks = 8;
+        final int oldi = i;
+        final int oldj = j;
 
         if (i < 0)
         {
@@ -413,8 +405,8 @@ public class GCMapGenDungeon {
 
         int randX = i / numChunks;
         int randZ = j / numChunks;
-        long dungeonSeed = (long)randX * 341873128712L + (long)randZ * 132897987541L + worldSeed + (long)4291726;
-        Random rand = new Random(dungeonSeed);
+        final long dungeonSeed = randX * 341873128712L + randZ * 132897987541L + worldSeed + 4291726;
+        final Random rand = new Random(dungeonSeed);
         randX *= numChunks;
         randZ *= numChunks;
         randX += rand.nextInt(numChunks - offsetChunks);
@@ -430,21 +422,21 @@ public class GCMapGenDungeon {
 
 	public void generateEntranceCrater(short[] blocks, byte[] meta, int x, int y, int z, int cx, int cz)
 	{
-		int range = 18;
+		final int range = 18;
 		for(int i = x - range; i < x + range; i++)
 		{
 			for(int k = z - range; k < z + range; k++)
 			{
 				final double xDev = (i - x) / 10D;
 				final double zDev = (k - z) / 10D;
-				double distance = xDev * xDev + zDev * zDev; 
-				int depth = (int) Math.abs(2 / (distance + .00001D));
+				final double distance = xDev * xDev + zDev * zDev;
+				final int depth = (int) Math.abs(2 / (distance + .00001D));
 				int helper = 0;
 				for(int j = 127; j > 0; j--)
 				{
-					if((getBlockID(blocks, i, j - 1, k, cx, cz) != 0 || getBlockID(blocks, i, j, k, cx, cz) == DUNGEON_WALL_ID) && helper <= depth)
+					if((this.getBlockID(blocks, i, j - 1, k, cx, cz) != 0 || this.getBlockID(blocks, i, j, k, cx, cz) == GCMapGenDungeon.DUNGEON_WALL_ID) && helper <= depth)
 					{
-						placeBlock(blocks, meta, i, j, k, cx, cz, 0, 0);
+						this.placeBlock(blocks, meta, i, j, k, cx, cz, 0, 0);
 						helper++;
 					}
 					if(helper > depth || j <= y + 1)
@@ -455,23 +447,23 @@ public class GCMapGenDungeon {
 			}
 		}
 	}
-	
+
     public ChunkCoordinates getDungeonNear(long worldSeed, int i, int j) {
-        int range = 8;
+        final int range = 8;
         for(int x = i - range; x <= i + range; x++) {
             for(int z = j - range; z <= j + range; z++) {
-                if (canGenDungeonAtCoords(worldSeed, x, z)) {
+                if (this.canGenDungeonAtCoords(worldSeed, x, z)) {
                     return new ChunkCoordinates(x * 16 + 8, 0, z * 16 + 8);
                 }
             }
         }
-        
+
         return null;
     }
-	
+
 	private void placeBlock(short[] blocks, byte[] metas, int x, int y, int z, int cx, int cz, int id, int meta)
 	{
-		if(useArrays)
+		if(GCMapGenDungeon.useArrays)
 		{
 			cx *= 16;
 			cz *= 16;
@@ -481,19 +473,19 @@ public class GCMapGenDungeon {
 			{
 				return;
 			}
-			int index = getIndex(x, y, z);
+			final int index = this.getIndex(x, y, z);
 			blocks[index] = (short) id;
 			metas[index] = (byte) meta;
 		}
 		else
 		{
-			worldObj.setBlock(x, y, z, id, meta, 3);
+			this.worldObj.setBlock(x, y, z, id, meta, 3);
 		}
 	}
-	
+
 	private int getBlockID(short[] blocks, int x, int y, int z, int cx, int cz)
 	{
-		if(useArrays)
+		if(GCMapGenDungeon.useArrays)
 		{
 			cx *= 16;
 			cz *= 16;
@@ -503,14 +495,14 @@ public class GCMapGenDungeon {
 			{
 				return 1;
 			}
-			return blocks[getIndex(x, y, z)];
+			return blocks[this.getIndex(x, y, z)];
 		}
 		else
 		{
-			return worldObj.getBlockId(x, y, z);
+			return this.worldObj.getBlockId(x, y, z);
 		}
 	}
-	
+
 	private int getOppositeDir(int dir)
 	{
 		switch(dir)
@@ -527,15 +519,15 @@ public class GCMapGenDungeon {
 				return 5;
 		}
 	}
-	
+
 	private int getIndex(int x, int y, int z)
 	{
 		return y << 8 | z << 4 | x;
 	}
-	
+
 	private int randDir(Random rand, int dir)
 	{
-		int[] dirHelper = new int[dir < 4 ? 3 : 4];
+		final int[] dirHelper = new int[dir < 4 ? 3 : 4];
 		int k = 0;
 		for(int i = 0; i < 4; i++)
 		{
@@ -547,10 +539,10 @@ public class GCMapGenDungeon {
 		}
 		return dirHelper[rand.nextInt(dirHelper.length)];
 	}
-	
+
 	private boolean isIntersecting(GCDungeonBoundingBox bb, List<GCDungeonBoundingBox> dungeonBbs)
 	{
-		for(GCDungeonBoundingBox bb2 : dungeonBbs)
+		for(final GCDungeonBoundingBox bb2 : dungeonBbs)
 		{
 			if(bb.isOverlapping(bb2))
 			{
@@ -559,5 +551,5 @@ public class GCMapGenDungeon {
 		}
 		return false;
 	}
-	
+
 }

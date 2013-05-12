@@ -9,8 +9,6 @@ import java.util.Map;
 import javax.swing.JEditorPane;
 import javax.swing.JOptionPane;
 
-import basiccomponents.common.BasicComponents;
-
 import micdoodle8.mods.galacticraft.API.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubMod;
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
@@ -78,10 +76,9 @@ import net.minecraftforge.liquids.LiquidContainerData;
 import net.minecraftforge.liquids.LiquidContainerRegistry;
 import net.minecraftforge.liquids.LiquidDictionary;
 import net.minecraftforge.liquids.LiquidStack;
-import net.minecraftforge.oredict.OreDictionary;
 import universalelectricity.prefab.TranslationHelper;
 import universalelectricity.prefab.multiblock.TileEntityMulti;
-import cpw.mods.fml.common.FMLLog;
+import basiccomponents.common.BasicComponents;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
@@ -138,7 +135,7 @@ public class GalacticraftCore
     public static int remoteMajVer;
     public static int remoteMinVer;
     public static int remoteBuildVer;
-    
+
 //    public static float spaceScale = 4.0F;
 //    public static float spaceSpeedScale = 5.0F;
 
@@ -175,7 +172,7 @@ public class GalacticraftCore
 
 	public static double toBuildcraftEnergyScalar = 0.04D;
 	public static double fromBuildcraftEnergyScalar = 25.0D;
-	
+
 	public static boolean usingDevVersion = false;
 
 	public static ArrayList<Integer> hiddenItems = new ArrayList<Integer>();
@@ -187,7 +184,7 @@ public class GalacticraftCore
 
 	public static LiquidStack oilStack;
 	public static LiquidStack fuelStack;
-	
+
 	public static boolean setSpaceStationRecipe = false;
 
 	@PreInit
@@ -255,28 +252,28 @@ public class GalacticraftCore
 		GalacticraftCore.oilStack = LiquidDictionary.getOrCreateLiquid("Oil", new LiquidStack(GCCoreBlocks.crudeOilStill, 1));
 		GalacticraftCore.fuelStack = LiquidDictionary.getOrCreateLiquid("Fuel", new LiquidStack(GCCoreItems.fuel, 1));
 
-		float f = Float.valueOf(LiquidContainerRegistry.BUCKET_VOLUME * 2.0F) / Float.valueOf(GCCoreItems.fuelCanister.getMaxDamage()); 
-		
+		float f = Float.valueOf(LiquidContainerRegistry.BUCKET_VOLUME * 2.0F) / Float.valueOf(GCCoreItems.fuelCanister.getMaxDamage());
+
 		for (int i = GCCoreItems.fuelCanister.getMaxDamage() - 1; i > 0; i--)
 		{
-			float f1 = Float.valueOf((GCCoreItems.fuelCanister.getMaxDamage() - i)); 
-			
+			final float f1 = Float.valueOf(GCCoreItems.fuelCanister.getMaxDamage() - i);
+
 			LiquidContainerRegistry.registerLiquid(new LiquidContainerData(LiquidDictionary.getLiquid("Fuel", i == 1 ? 2000 : MathHelper.floor_float(f * f1 * 1.017F)), new ItemStack(GCCoreItems.fuelCanister, 1, i), new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.fuelCanister.getMaxDamage())));
 		}
 
-		f = Float.valueOf(LiquidContainerRegistry.BUCKET_VOLUME * 2.0F) / Float.valueOf(GCCoreItems.oilCanister.getMaxDamage()); 
-		
+		f = Float.valueOf(LiquidContainerRegistry.BUCKET_VOLUME * 2.0F) / Float.valueOf(GCCoreItems.oilCanister.getMaxDamage());
+
 		for (int i = GCCoreItems.oilCanister.getMaxDamage() - 1; i > 0; i--)
 		{
-			float f1 = Float.valueOf((GCCoreItems.oilCanister.getMaxDamage() - i)); 
-			
+			final float f1 = Float.valueOf(GCCoreItems.oilCanister.getMaxDamage() - i);
+
 			LiquidContainerRegistry.registerLiquid(new LiquidContainerData(LiquidDictionary.getLiquid("Oil", MathHelper.floor_float(f * f1 * 1.017F)), new ItemStack(GCCoreItems.oilCanister, 1, i), new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.oilCanister.getMaxDamage())));
 		}
 
 		SchematicRegistry.registerSchematicRecipe(new GCCoreSchematicRocketT1());
 		SchematicRegistry.registerSchematicRecipe(new GCCoreSchematicMoonBuggy());
 		SchematicRegistry.registerSchematicRecipe(new GCCoreSchematicAdd());
-		
+
         RecipeUtil.addSmeltingRecipes();
 		NetworkRegistry.instance().registerGuiHandler(this, GalacticraftCore.proxy);
 		this.registerTileEntities();
@@ -291,34 +288,34 @@ public class GalacticraftCore
 	{
 		GalacticraftCore.moon.postLoad(event);
 		GCCoreCompatibilityManager.checkForCompatibleMods();
-		
+
 		if (GCCoreCompatibilityManager.isTELoaded() && GCCoreConfigManager.useRecipesTE)
 		{
 			RecipeUtil.addThermalExpansionCraftingRecipes();
 		}
-		
+
 		if (GCCoreCompatibilityManager.isGTLoaded() && GCCoreConfigManager.useRecipesGT)
 		{
 			RecipeUtil.addGregTechCraftingRecipes();
 		}
-		
+
 		if (GCCoreCompatibilityManager.isIc2Loaded() && GCCoreConfigManager.useRecipesIC2)
 		{
 			RecipeUtil.addIndustrialcraftCraftingRecipes();
 		}
-		
+
 		if (GCCoreConfigManager.loadBC.getBoolean(false))
 		{
 			BasicComponents.registerTileEntities();
-			BasicComponents.register(instance, GalacticraftCore.CHANNEL);
+			BasicComponents.register(GalacticraftCore.instance, GalacticraftCore.CHANNEL);
 			BasicComponents.requestAll();
-			
+
 			RecipeUtil.addBasicComponentsCraftingRecipes();
 		}
-		
+
 		GalacticraftCore.proxy.postInit(event);
 		GalacticraftCore.proxy.registerRenderInformation();
-		
+
 		GCCoreThreadRequirementMissing.startCheck();
 	}
 

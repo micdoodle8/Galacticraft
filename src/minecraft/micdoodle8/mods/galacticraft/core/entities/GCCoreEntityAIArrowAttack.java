@@ -8,7 +8,6 @@ import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.entity.projectile.EntitySnowball;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.FMLLog;
 
 /**
  * Copyright 2012-2013, micdoodle8

@@ -77,6 +77,7 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
     	super(par1World);
     }
 
+	@Override
 	public int getScaledFuelLevel(int i)
 	{
 		final double fuelLevel = this.spaceshipFuelTank.getLiquid() == null ? 0 : this.spaceshipFuelTank.getLiquid().amount;
@@ -219,7 +220,8 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
 		}
 	}
 
-    public boolean hasValidFuel()
+    @Override
+	public boolean hasValidFuel()
     {
     	return !(this.spaceshipFuelTank.getLiquid() == null || this.spaceshipFuelTank.getLiquid().amount == 0);
     }
@@ -241,7 +243,7 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
     	{
     		playerBase.rocketStacks = this.cargoItems;
     		playerBase.rocketType = this.getSpaceshipType();
-    		int liquid = this.spaceshipFuelTank.getLiquid() == null ? 0 : this.spaceshipFuelTank.getLiquid().amount / MathHelper.floor_double(this.canisterToLiquidStackRatio == 0 ? 1 : this.canisterToLiquidStackRatio);
+    		final int liquid = this.spaceshipFuelTank.getLiquid() == null ? 0 : this.spaceshipFuelTank.getLiquid().amount / MathHelper.floor_double(this.canisterToLiquidStackRatio == 0 ? 1 : this.canisterToLiquidStackRatio);
     		playerBase.fuelDamage = Math.max(Math.min(GCCoreItems.fuelCanister.getMaxDamage() - liquid, GCCoreItems.fuelCanister.getMaxDamage()), 1);
         }
     }
@@ -314,7 +316,7 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
 		{
 			par1NBTTagCompound.setTag("fuelTank", this.spaceshipFuelTank.writeToNBT(new NBTTagCompound()));
 		}
-		
+
 //		if (this.spaceshipFuelTank.getLiquid() != null)
 //		{
 //			NBTTagCompound nbt = new NBTTagCompound();
@@ -326,7 +328,7 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
 //	        {
 //	            nbt.setTag("extra", this.spaceshipFuelTank.getLiquid().extra);
 //	        }
-//	        
+//
 //			par1NBTTagCompound.setTag("fuelTank", nbt);
 //		}
     }
@@ -471,7 +473,7 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
             final double var16 = mc.renderViewEntity.posX - var2;
             final double var17 = mc.renderViewEntity.posY - var4;
             final double var19 = mc.renderViewEntity.posZ - var6;
-            Object var21 = null;
+            final Object var21 = null;
             final double var22 = 64.0D;
 
             if (var1.equals("whitesmoke"))
@@ -581,7 +583,7 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
 	public int addFuel(LiquidStack liquid, int amount, boolean doFill)
 	{
 		final LiquidStack liquidInTank = this.spaceshipFuelTank.getLiquid();
-		
+
 		if (liquid != null && LiquidDictionary.findLiquidName(liquid).equals("Fuel"))
 		{
 			if (liquidInTank == null || liquidInTank.amount + liquid.amount <= this.spaceshipFuelTank.getCapacity())
@@ -627,7 +629,7 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
     }
 
 	@Override
-	public int getType() 
+	public int getType()
 	{
 		return this.getSpaceshipType();
 	}

@@ -10,66 +10,66 @@ import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 
 public class GCRoomBoss extends GCDungeonRoom {
-	
+
 	int sizeX;
 	int sizeY;
 	int sizeZ;
 	Random rand;
 	ChunkCoordinates spawnerCoords;
-	
+
 	public GCRoomBoss(World worldObj, int posX, int posY, int posZ, int entranceDir) {
 		super(worldObj, posX, posY, posZ, entranceDir);
 		if(worldObj != null)
 		{
-			rand = new Random(worldObj.getSeed() * posX * posY * 57 * posZ);
-			sizeX = rand.nextInt(6) + 14;
-			sizeY = rand.nextInt(2) + 8;
-			sizeZ = rand.nextInt(6) + 14;
+			this.rand = new Random(worldObj.getSeed() * posX * posY * 57 * posZ);
+			this.sizeX = this.rand.nextInt(6) + 14;
+			this.sizeY = this.rand.nextInt(2) + 8;
+			this.sizeZ = this.rand.nextInt(6) + 14;
 		}
 	}
 
 	@Override
 	public void generate(short[] chunk, byte[] meta, int cx, int cz) {
-		for(int i = posX - 1; i <= posX + sizeX; i++)
+		for(int i = this.posX - 1; i <= this.posX + this.sizeX; i++)
 		{
-			for(int k = posZ - 1; k <= posZ + sizeZ; k++)
-			{ 
-				boolean flag = rand.nextFloat() < 0.50F;
-				for(int j = posY - 1; j <= posY + sizeY; j++)
+			for(int k = this.posZ - 1; k <= this.posZ + this.sizeZ; k++)
+			{
+				final boolean flag = this.rand.nextFloat() < 0.50F;
+				for(int j = this.posY - 1; j <= this.posY + this.sizeY; j++)
 				{
-					if(i == posX - 1 || i == posX + sizeX || j == posY - 1 || j == posY + sizeY || k == posZ - 1 || k == posZ + sizeZ)
+					if(i == this.posX - 1 || i == this.posX + this.sizeX || j == this.posY - 1 || j == this.posY + this.sizeY || k == this.posZ - 1 || k == this.posZ + this.sizeZ)
 					{
-						placeBlock(chunk, meta, i, j, k, cx, cz, GCMapGenDungeon.DUNGEON_WALL_ID, GCMapGenDungeon.DUNGEON_WALL_META);
+						this.placeBlock(chunk, meta, i, j, k, cx, cz, GCMapGenDungeon.DUNGEON_WALL_ID, GCMapGenDungeon.DUNGEON_WALL_META);
 					}
-					else if ((i == posX && k == posZ) || (i == posX + sizeX - 1 && k == posZ) || (i == posX && k == posZ + sizeZ - 1) || (i == posX + sizeX - 1 && k == posZ + sizeZ - 1))
+					else if (i == this.posX && k == this.posZ || i == this.posX + this.sizeX - 1 && k == this.posZ || i == this.posX && k == this.posZ + this.sizeZ - 1 || i == this.posX + this.sizeX - 1 && k == this.posZ + this.sizeZ - 1)
 					{
-						placeBlock(chunk, meta, i, j, k, cx, cz, Block.lavaMoving.blockID, 0);
+						this.placeBlock(chunk, meta, i, j, k, cx, cz, Block.lavaMoving.blockID, 0);
 					}
-					else if (((j % 3 == 0 && j >= posY + 2) && ((i == posX || i == posX + sizeX - 1 || k == posZ || k == posZ + sizeZ - 1)))
-							|| ((i == posX + 1 && k == posZ) || (i == posX && k == posZ + 1) || (i == posX + sizeX - 2 && k == posZ) || (i == posX + sizeX - 1 && k == posZ + 1) || (i == posX + 1 && k == posZ + sizeZ - 1) || (i == posX && k == posZ + sizeZ - 2) || (i == posX + sizeX - 2 && k == posZ + sizeZ - 1) || (i == posX + sizeX - 1 && k == posZ + sizeZ - 2)))
+					else if (j % 3 == 0 && j >= this.posY + 2 && (i == this.posX || i == this.posX + this.sizeX - 1 || k == this.posZ || k == this.posZ + this.sizeZ - 1)
+							|| i == this.posX + 1 && k == this.posZ || i == this.posX && k == this.posZ + 1 || i == this.posX + this.sizeX - 2 && k == this.posZ || i == this.posX + this.sizeX - 1 && k == this.posZ + 1 || i == this.posX + 1 && k == this.posZ + this.sizeZ - 1 || i == this.posX && k == this.posZ + this.sizeZ - 2 || i == this.posX + this.sizeX - 2 && k == this.posZ + this.sizeZ - 1 || i == this.posX + this.sizeX - 1 && k == this.posZ + this.sizeZ - 2)
 					{
-						placeBlock(chunk, meta, i, j, k, cx, cz, Block.fenceIron.blockID, 0);
+						this.placeBlock(chunk, meta, i, j, k, cx, cz, Block.fenceIron.blockID, 0);
 					}
-					else if (((i == posX + 1 && k == posZ + 1) || (i == posX + sizeX - 2 && k == posZ + 1) || (i == posX + 1 && k == posZ + sizeZ - 2) || (i == posX + sizeX - 2 && k == posZ + sizeZ - 2)) && j % 3 == 0)
+					else if ((i == this.posX + 1 && k == this.posZ + 1 || i == this.posX + this.sizeX - 2 && k == this.posZ + 1 || i == this.posX + 1 && k == this.posZ + this.sizeZ - 2 || i == this.posX + this.sizeX - 2 && k == this.posZ + this.sizeZ - 2) && j % 3 == 0)
 					{
-						placeBlock(chunk, meta, i, j, k, cx, cz, Block.fenceIron.blockID, 0);
+						this.placeBlock(chunk, meta, i, j, k, cx, cz, Block.fenceIron.blockID, 0);
 					}
 					else
 					{
-						placeBlock(chunk, meta, i, j, k, cx, cz, 0, 0);
+						this.placeBlock(chunk, meta, i, j, k, cx, cz, 0, 0);
 					}
 				}
 			}
 		}
-		
-		int hx = (posX + posX + sizeX) / 2;
-		int hz = (posZ + posZ + sizeZ) / 2;
-		spawnerCoords = new ChunkCoordinates(hx, posY + 2, hz);
+
+		final int hx = (this.posX + this.posX + this.sizeX) / 2;
+		final int hz = (this.posZ + this.posZ + this.sizeZ) / 2;
+		this.spawnerCoords = new ChunkCoordinates(hx, this.posY + 2, hz);
 	}
 
 	@Override
 	public GCDungeonBoundingBox getBoundingBox() {
-		return new GCDungeonBoundingBox(posX, posZ, posX + sizeX, posZ + sizeZ);
+		return new GCDungeonBoundingBox(this.posX, this.posZ, this.posX + this.sizeX, this.posZ + this.sizeZ);
 	}
 
 	@Override
@@ -84,15 +84,15 @@ public class GCRoomBoss extends GCDungeonRoom {
 		{
 			return;
 		}
-		
-		this.worldObj.setBlock(spawnerCoords.posX, spawnerCoords.posY, spawnerCoords.posZ, GCMoonBlocks.blockMoon.blockID, 15, 3);
-		
-		TileEntity tile = this.worldObj.getBlockTileEntity(spawnerCoords.posX, spawnerCoords.posY, spawnerCoords.posZ);
-		
+
+		this.worldObj.setBlock(this.spawnerCoords.posX, this.spawnerCoords.posY, this.spawnerCoords.posZ, GCMoonBlocks.blockMoon.blockID, 15, 3);
+
+		final TileEntity tile = this.worldObj.getBlockTileEntity(this.spawnerCoords.posX, this.spawnerCoords.posY, this.spawnerCoords.posZ);
+
 		if (tile == null || !(tile instanceof GCCoreTileEntityDungeonSpawner))
 		{
-			this.worldObj.setBlockTileEntity(spawnerCoords.posX, spawnerCoords.posY, spawnerCoords.posZ, new GCCoreTileEntityDungeonSpawner());
+			this.worldObj.setBlockTileEntity(this.spawnerCoords.posX, this.spawnerCoords.posY, this.spawnerCoords.posZ, new GCCoreTileEntityDungeonSpawner());
 		}
 	}
-	
+
 }

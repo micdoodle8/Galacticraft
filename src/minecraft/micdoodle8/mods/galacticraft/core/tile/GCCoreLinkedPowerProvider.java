@@ -8,10 +8,10 @@ import buildcraft.api.power.PowerProvider;
 public class GCCoreLinkedPowerProvider extends PowerProvider
 {
 	public GCCoreTileEntityElectric electricTile;
-	
+
 	public GCCoreLinkedPowerProvider(GCCoreTileEntityElectric tile)
 	{
-		electricTile = tile;
+		this.electricTile = tile;
 	}
 
 	@Override
@@ -19,28 +19,28 @@ public class GCCoreLinkedPowerProvider extends PowerProvider
 	{
 		return true;
 	}
-	
+
 	@Override
-	public float useEnergy(float min, float max, boolean doUse) 
+	public float useEnergy(float min, float max, boolean doUse)
 	{
 		float result = 0;
 
-		if(this.electricTile.bcEnergy * GalacticraftCore.toBuildcraftEnergyScalar >= min) 
+		if(this.electricTile.bcEnergy * GalacticraftCore.toBuildcraftEnergyScalar >= min)
 		{
-			if(this.electricTile.bcEnergy * GalacticraftCore.toBuildcraftEnergyScalar <= max) 
+			if(this.electricTile.bcEnergy * GalacticraftCore.toBuildcraftEnergyScalar <= max)
 			{
-				result = (float)(electricTile.bcEnergy * GalacticraftCore.toBuildcraftEnergyScalar);
-				
+				result = (float)(this.electricTile.bcEnergy * GalacticraftCore.toBuildcraftEnergyScalar);
+
 				if(doUse)
 				{
 					this.electricTile.bcEnergy = 0;
 				}
-			} 
-			else 
+			}
+			else
 			{
 				result = max;
-				
-				if(doUse) 
+
+				if(doUse)
 				{
 					this.electricTile.bcEnergy -= max * GalacticraftCore.fromBuildcraftEnergyScalar;
 				}
@@ -49,10 +49,10 @@ public class GCCoreLinkedPowerProvider extends PowerProvider
 
 		return result;
 	}
-	
+
 	@Override
-	public void receiveEnergy(float quantity, ForgeDirection from) 
+	public void receiveEnergy(float quantity, ForgeDirection from)
 	{
-		this.electricTile.bcEnergy = Math.max(Math.min(electricTile.bcEnergy + (quantity * GalacticraftCore.fromBuildcraftEnergyScalar), this.electricTile.maxEnergy), 0);
+		this.electricTile.bcEnergy = Math.max(Math.min(this.electricTile.bcEnergy + quantity * GalacticraftCore.fromBuildcraftEnergyScalar, this.electricTile.maxEnergy), 0);
 	}
 }

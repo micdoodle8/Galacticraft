@@ -18,8 +18,8 @@ public class GCCoreItemKey extends Item implements IKeyItem
 {
 	public static String[] keyTypes = new String[] {"T1"};
 	public Icon[] keyIcons = new Icon[1];
-	
-	public GCCoreItemKey(int par1) 
+
+	public GCCoreItemKey(int par1)
 	{
 		super(par1);
 		this.setMaxStackSize(1);
@@ -85,7 +85,7 @@ public class GCCoreItemKey extends Item implements IKeyItem
     }
 
 	@Override
-	public int getTier(ItemStack keyStack) 
+	public int getTier(ItemStack keyStack)
 	{
 		return keyStack.getItemDamage() + 1;
 	}

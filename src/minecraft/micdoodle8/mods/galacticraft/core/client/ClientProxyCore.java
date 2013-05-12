@@ -175,11 +175,11 @@ public class ClientProxyCore extends CommonProxyCore
     public static float playerRotationPitch;
 
     public static int clientSpaceStationID = 0;
-    
+
     private GCCoreThreadDownloadSound downloadResourcesThread;
-    
+
     public static ArrayList<SoundPoolEntry> newMusic = new ArrayList<SoundPoolEntry>();
-    
+
     public static EnumRarity galacticraftItem = EnumHelperClient.addRarity("GCRarity", 9, "Space");
 
 	@Override
@@ -198,10 +198,11 @@ public class ClientProxyCore extends CommonProxyCore
 
         try
         {
-            this.downloadResourcesThread = new GCCoreThreadDownloadSound(FMLClientHandler.instance().getClient().getMinecraftDir(), FMLClientHandler.instance().getClient());
+            FMLClientHandler.instance().getClient();
+			this.downloadResourcesThread = new GCCoreThreadDownloadSound(Minecraft.getMinecraftDir(), FMLClientHandler.instance().getClient());
             this.downloadResourcesThread.start();
         }
-        catch (Exception exception)
+        catch (final Exception exception)
         {
             ;
         }
@@ -296,7 +297,7 @@ public class ClientProxyCore extends CommonProxyCore
         MinecraftForgeClient.registerItemRenderer(GCCoreItems.flag.itemID, new GCCoreItemRendererFlag());
         MinecraftForgeClient.registerItemRenderer(GCCoreItems.key.itemID, new GCCoreItemRendererKey());
 	}
-	
+
 	public static void renderPlanets(float par3)
 	{
 //    	List<IUpdateable> planetList = new ArrayList<IUpdateable>();
@@ -304,7 +305,7 @@ public class ClientProxyCore extends CommonProxyCore
 //		for (IUpdateable iu : planetList)
 //		{
 //			Entity e = (Entity) iu;
-//			
+//
 //			if (e instanceof GCCoreEntitySun)
 //			{
 //	            RenderManager.instance.renderEntity(e, par3);
@@ -507,7 +508,7 @@ public class ClientProxyCore extends CommonProxyCore
 
         public GCKeyHandler()
         {
-            super(new KeyBinding[] {GCKeyHandler.galaxyMap, GCKeyHandler.openSpaceshipInv, GCKeyHandler.toggleAdvGoggles, GCKeyHandler.accelerateKey, GCKeyHandler.decelerateKey, GCKeyHandler.leftKey, GCKeyHandler.rightKey, GCKeyHandler.spaceKey, GCKeyHandler.leftShiftKey}, 
+            super(new KeyBinding[] {GCKeyHandler.galaxyMap, GCKeyHandler.openSpaceshipInv, GCKeyHandler.toggleAdvGoggles, GCKeyHandler.accelerateKey, GCKeyHandler.decelerateKey, GCKeyHandler.leftKey, GCKeyHandler.rightKey, GCKeyHandler.spaceKey, GCKeyHandler.leftShiftKey},
             		new boolean[] {false, false, false, true, true, true, true, true, true});
         }
 
@@ -535,7 +536,7 @@ public class ClientProxyCore extends CommonProxyCore
         	{
     			return;
         	}
-        	
+
         	if (kb.keyCode == GCKeyHandler.galaxyMap.keyCode)
         	{
         		if (minecraft.currentScreen == null)

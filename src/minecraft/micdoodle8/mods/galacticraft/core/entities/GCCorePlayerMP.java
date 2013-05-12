@@ -18,7 +18,6 @@ import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryPlayer;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemParachute;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
-import micdoodle8.mods.galacticraft.core.network.GCCorePacketSchematicList;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
@@ -111,7 +110,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 	public int chestSpawnCooldown;
 
 	public int teleportCooldown;
-	
+
 	public int chatCooldown;
 
 	private int lastStep;
@@ -271,7 +270,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
     	{
     		this.teleportCooldown--;
     	}
-    	
+
     	if (this.chatCooldown > 0)
     	{
     		this.chatCooldown--;
@@ -452,7 +451,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 		{
 			this.damageCounter--;
 		}
-		
+
 		if (this.tick % 30 == 0 && this.worldObj.provider instanceof IGalacticraftWorldProvider)
 		{
 			this.sendAirRemainingPacket();
@@ -755,13 +754,13 @@ public class GCCorePlayerMP extends EntityPlayerMP
 			}
 
     		final boolean flag5 = this.airRemaining <= 0 && this.airRemaining2 <= 0;
-    		
+
     		final boolean invalid = !OxygenUtil.hasValidOxygenSetup(this) || flag5;
 
     		if (invalid && !OxygenUtil.isAABBInBreathableAirBlock(this))
 			{
     			this.oxygenSetupValid = false;
-    			
+
     			if (!this.worldObj.isRemote && this.isEntityAlive())
     			{
     				if (this.damageCounter == 0)
@@ -790,7 +789,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 		{
 			this.oxygenSetupValid = true;
 		}
-		
+
 		if (this.worldObj.provider instanceof IGalacticraftWorldProvider && (this.oxygenSetupValid != this.lastOxygenSetupValid || this.tick % 100 == 0))
 		{
 	        this.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 27, new Object[] {Boolean.valueOf(this.oxygenSetupValid)}));
@@ -814,11 +813,11 @@ public class GCCorePlayerMP extends EntityPlayerMP
 			if (((IGalacticraftWorldProvider)this.worldObj.provider).getMeteorFrequency() > 0)
 			{
 				final double f = ((IGalacticraftWorldProvider)this.worldObj.provider).getMeteorFrequency();
-				
+
 				if (this.worldObj.rand.nextInt(MathHelper.floor_double(f * 1000)) == 0)
 				{
-					EntityPlayer closestPlayer = this.worldObj.getClosestPlayerToEntity(this, 100);
-					
+					final EntityPlayer closestPlayer = this.worldObj.getClosestPlayerToEntity(this, 100);
+
 					if (closestPlayer == null || closestPlayer.entityId < this.entityId)
 					{
 						int x, y, z;
@@ -839,8 +838,8 @@ public class GCCorePlayerMP extends EntityPlayerMP
 				}
 				if (this.worldObj.rand.nextInt(MathHelper.floor_double(f * 3000)) == 0)
 				{
-					EntityPlayer closestPlayer = this.worldObj.getClosestPlayerToEntity(this, 100);
-					
+					final EntityPlayer closestPlayer = this.worldObj.getClosestPlayerToEntity(this, 100);
+
 					if (closestPlayer == null || closestPlayer.entityId < this.entityId)
 					{
 						int x, y, z;
@@ -861,7 +860,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 				}
 			}
 		}
-		
+
 		if (this.worldObj.provider instanceof IGalacticraftWorldProvider || this.usingPlanetSelectionGui)
 		{
 			this.playerNetServerHandler.ticksForFloatKick = 0;
@@ -877,7 +876,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
     	this.lastTankInSlot1 = ((GCCoreInventoryPlayer)this.inventory).tankItemInSlot(2);
     	this.lastTankInSlot2 = ((GCCoreInventoryPlayer)this.inventory).tankItemInSlot(3);
     	this.lastParachuteInSlot = ((GCCoreInventoryPlayer)this.inventory).tankItemInSlot(4);
-    	
+
     	this.lastOxygenSetupValid = this.oxygenSetupValid;
     	this.lastUnlockedSchematics = this.unlockedSchematics;
 	}
@@ -1064,13 +1063,13 @@ public class GCCorePlayerMP extends EntityPlayerMP
     {
 		this.airRemaining = par1NBTTagCompound.getInteger("playerAirRemaining");
 		this.damageCounter = par1NBTTagCompound.getInteger("damageCounter");
-		
+
 		if (par1NBTTagCompound.hasKey("InventoryTankRefill"))
 		{
 	        final NBTTagList var2 = par1NBTTagCompound.getTagList("InventoryTankRefill");
 	        ((GCCoreInventoryPlayer) this.inventory).readFromNBTOld(var2);
 		}
-		
+
         this.astronomyPoints = par1NBTTagCompound.getFloat("AstronomyPointsNum");
         this.astronomyPointsLevel = par1NBTTagCompound.getInteger("AstronomyPointsLevel");
         this.astronomyPointsTotal = par1NBTTagCompound.getInteger("AstronomyPointsTotal");

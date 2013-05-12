@@ -38,7 +38,7 @@
 //	{
 //		return GalacticraftCore.LOCALMAJVERSION + "." + GalacticraftCore.LOCALMINVERSION + "." + GalacticraftCore.LOCALBUILDVERSION;
 //	}
-//	
+//
 //	public void registerRocketBenchRecipe(ArrayList<PositionedStack> input, PositionedStack output)
 //	{
 //		rocketBenchRecipes.put(input, output);
@@ -48,11 +48,11 @@
 //	{
 //		return rocketBenchRecipes.entrySet();
 //	}
-//	
+//
 //	public void registerRocketBenchRecipes()
 //	{
 //        final int changey = 23;
-//        
+//
 //		final ArrayList<PositionedStack> input1 = new ArrayList<PositionedStack>();
 //		input1.add(new PositionedStack(new ItemStack(GCCoreItems.rocketNoseCone), 45, -8 + changey));
 //		input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlating), 36, -6 + 0 * 18 + 16 + changey));

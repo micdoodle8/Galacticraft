@@ -7,14 +7,14 @@
 //import net.minecraft.nbt.NBTTagCompound;
 //import cpw.mods.fml.common.FMLLog;
 //
-//public class GCCoreIDChecker 
+//public class GCCoreIDChecker
 //{
 //	public static ArrayList oldIDs = new ArrayList();
-//	
+//
 //	public static short checkID(NBTTagCompound nbt)
 //	{
 //		short id = nbt.getShort("id");
-//		
+//
 //		for (Object stackPair : oldIDs)
 //		{
 //			if (stackPair instanceof GCCorePairedItemStack)
@@ -32,7 +32,7 @@
 //				}
 //			}
 //		}
-//		
+//
 //		return id;
 //	}
 //
@@ -58,7 +58,7 @@
 //				}
 //			}
 //		}
-//		
+//
 //		return meta;
 //	}
 //}

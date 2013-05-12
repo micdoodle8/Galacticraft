@@ -28,28 +28,28 @@ public class OxygenPressureProtocol
     static
     {
     	OxygenPressureProtocol.vanillaPermeableBlocks.add(Block.sponge.blockID);
-    	
+
     	try
     	{
-        	for (String s : GCCoreConfigManager.sealableIDs)
+        	for (final String s : GCCoreConfigManager.sealableIDs)
         	{
-        		String[] split = s.split(":");
-        		
+        		final String[] split = s.split(":");
+
         		if (OxygenPressureProtocol.nonPermeableBlocks.containsKey(Integer.parseInt(split[0])))
         		{
-        			ArrayList<Integer> l = OxygenPressureProtocol.nonPermeableBlocks.get(Integer.parseInt(split[0]));
+        			final ArrayList<Integer> l = OxygenPressureProtocol.nonPermeableBlocks.get(Integer.parseInt(split[0]));
         			l.add(Integer.parseInt(split[1]));
         			OxygenPressureProtocol.nonPermeableBlocks.put(Integer.parseInt(split[0]), l);
         		}
         		else
         		{
-        			ArrayList<Integer> a = new ArrayList<Integer>();
+        			final ArrayList<Integer> a = new ArrayList<Integer>();
         			a.add(Integer.parseInt(split[1]));
             		OxygenPressureProtocol.nonPermeableBlocks.put(Integer.parseInt(split[0]), a);
         		}
         	}
     	}
-    	catch (Exception e)
+    	catch (final Exception e)
     	{
     		System.err.println();
     		System.err.println("Error finding sealable IDs from the Galacticraft config, check that they are listed properly!");
@@ -296,13 +296,13 @@ public class OxygenPressureProtocol
     public boolean canBlockPass(World var0, Vector3 vec)
     {
     	final Block block = Block.blocksList[vec.getBlockID(var0)];
-    	
+
     	return block == null
     			|| block.blockID == 0
     			|| block.blockID == GCCoreBlocks.breatheableAir.blockID
     	    	|| OxygenPressureProtocol.vanillaPermeableBlocks.contains(block.blockID)
-    			|| (!block.isOpaqueCube() && !(block instanceof IPartialSealedBlock) && !(OxygenPressureProtocol.nonPermeableBlocks.containsKey(block.blockID) && OxygenPressureProtocol.nonPermeableBlocks.get(block.blockID).contains(vec.getBlockMetadata(var0))))
-    			|| (!block.isOpaqueCube() && block instanceof IPartialSealedBlock && !((IPartialSealedBlock) block).isSealed(var0, vec.intX(), vec.intY(), vec.intZ()));
+    			|| !block.isOpaqueCube() && !(block instanceof IPartialSealedBlock) && !(OxygenPressureProtocol.nonPermeableBlocks.containsKey(block.blockID) && OxygenPressureProtocol.nonPermeableBlocks.get(block.blockID).contains(vec.getBlockMetadata(var0)))
+    			|| !block.isOpaqueCube() && block instanceof IPartialSealedBlock && !((IPartialSealedBlock) block).isSealed(var0, vec.intX(), vec.intY(), vec.intZ());
     }
 
     public static boolean isBreathableAir(World var0, int var1, int var2, int var3)
@@ -312,7 +312,7 @@ public class OxygenPressureProtocol
 
     private boolean touchingUnsealedBlock(World var1, int var2, int var3, int var4)
     {
-    	for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+    	for (final ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
     	{
 			Vector3 vec = new Vector3(var2, var3, var4);
 			vec = vec.add(new Vector3(dir));

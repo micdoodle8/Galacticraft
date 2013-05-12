@@ -34,7 +34,6 @@ import net.minecraftforge.common.DimensionManager;
 import org.lwjgl.input.Keyboard;
 
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
@@ -53,7 +52,7 @@ public class GCCorePacketHandlerClient implements IPacketHandler
         final EntityPlayer player = (EntityPlayer)p;
 
         GCCorePlayerSP playerBaseClient = null;
-    	
+
         if (player != null && GalacticraftCore.playersClient.size() > 0)
         {
         	playerBaseClient = PlayerUtil.getPlayerBaseClientFromPlayer(player);
@@ -421,7 +420,7 @@ public class GCCorePacketHandlerClient implements IPacketHandler
         {
             final Class[] decodeAs = {Boolean.class};
             final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
-            
+
             if (playerBaseClient != null)
             {
             	playerBaseClient.oxygenSetupValid = (Boolean) packetReadout[0];

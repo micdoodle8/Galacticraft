@@ -73,16 +73,16 @@ public class SpaceStationRecipe
                 {
                     if (next instanceof ItemStack)
                     {
-                        if (this.checkItemEquals((ItemStack)next, slot))
+                        if (SpaceStationRecipe.checkItemEquals((ItemStack)next, slot))
                         {
                         	amountInInv += slot.stackSize;
                         }
                     }
                     else if (next instanceof ArrayList)
                     {
-                        for (ItemStack item : (ArrayList<ItemStack>)next)
+                        for (final ItemStack item : (ArrayList<ItemStack>)next)
                         {
-                            if (this.checkItemEquals(item, slot))
+                            if (SpaceStationRecipe.checkItemEquals(item, slot))
                             {
                             	amountInInv += slot.stackSize;
                             }
@@ -128,7 +128,7 @@ public class SpaceStationRecipe
 
                     if (next instanceof ItemStack)
                     {
-                        if (this.checkItemEquals((ItemStack)next, slot))
+                        if (SpaceStationRecipe.checkItemEquals((ItemStack)next, slot))
                         {
                         	final int amountToRemove = Math.min(slot.stackSize, amountRemaining);
                         	final ItemStack newStack = slot.copy();
@@ -141,7 +141,7 @@ public class SpaceStationRecipe
                     {
                         for (final ItemStack item : (ArrayList<ItemStack>)next)
                         {
-                            if (this.checkItemEquals(item, slot))
+                            if (SpaceStationRecipe.checkItemEquals(item, slot))
                             {
                             	final int amountToRemove = Math.min(slot.stackSize, amountRemaining);
                             	final ItemStack newStack = slot.copy();

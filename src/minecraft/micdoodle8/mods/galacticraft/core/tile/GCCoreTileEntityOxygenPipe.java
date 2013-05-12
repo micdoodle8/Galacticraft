@@ -106,6 +106,7 @@ public class GCCoreTileEntityOxygenPipe extends TileEntity implements ITubeConne
 		return this.pipeColor;
 	}
 
+	@Override
 	public void onAdjacentColorChanged(Vector3 thisVec, Vector3 updatedVec)
 	{
 		this.worldObj.markBlockForUpdate(thisVec.intX(), thisVec.intY(), thisVec.intZ());
@@ -169,7 +170,7 @@ public class GCCoreTileEntityOxygenPipe extends TileEntity implements ITubeConne
 	}
 
 	@Override
-	public void onTransfer(EnumGas type) 
+	public void onTransfer(EnumGas type)
 	{
 		;
 	}

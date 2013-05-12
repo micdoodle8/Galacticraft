@@ -93,8 +93,8 @@ public class GCCoreOverlaySensorGlasses extends GCCoreOverlay
             final int var7 = var5.getScaledHeight();
 
             boolean var2 = false;
-            
-            GCCorePlayerSP client = PlayerUtil.getPlayerBaseClientFromPlayer(GCCoreOverlaySensorGlasses.minecraft.thePlayer);
+
+            final GCCorePlayerSP client = PlayerUtil.getPlayerBaseClientFromPlayer(GCCoreOverlaySensorGlasses.minecraft.thePlayer);
 
             if (client != null)
             {

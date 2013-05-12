@@ -31,7 +31,7 @@ import cpw.mods.fml.common.network.PacketDispatcher;
 public class GCCoreTileEntityTreasureChest extends TileEntity implements IInventory, IKeyable, IPacketReceiver
 {
     private ItemStack[] chestContents = new ItemStack[36];
-    
+
 	protected long ticks = 0;
 
     /** Determines if the check for adjacent chests has taken place. */
@@ -62,7 +62,7 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
     private int ticksSinceSync;
     private final int field_94046_i = -1;
     private String field_94045_s;
-    
+
     public boolean locked = true;
 
     /**
@@ -443,7 +443,7 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
                 this.lidAngle = 0.0F;
             }
         }
-        
+
         if (!this.worldObj.isRemote)
         {
     		if (this.ticks >= Long.MAX_VALUE)
@@ -452,7 +452,7 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
     		}
 
     		this.ticks++;
-			
+
 			if (this.ticks % 40 == 0)
 			{
 				PacketManager.sendPacketToClients(this.getDescriptionPacket(), this.worldObj, new Vector3(this), 6);
@@ -547,24 +547,25 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
 		return "Treasure Chest";
 	}
 
-    public boolean isStackValidForSlot(int par1, ItemStack par2ItemStack)
+    @Override
+	public boolean isStackValidForSlot(int par1, ItemStack par2ItemStack)
     {
         return true;
     }
 
 	@Override
-	public int getTierOfKeyRequired() 
+	public int getTierOfKeyRequired()
 	{
 		return 1;
 	}
 
 	@Override
-	public boolean onValidKeyActivated(EntityPlayer player, ItemStack key, int face) 
+	public boolean onValidKeyActivated(EntityPlayer player, ItemStack key, int face)
 	{
 		if (this.locked)
 		{
 			this.locked = false;
-			
+
 			if (this.worldObj.isRemote)
 			{
 				player.playSound("galacticraft.player.unlockchest", 1.0F, 1.0F);
@@ -575,19 +576,19 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
 				if (this.adjacentChestXPos != null) this.adjacentChestXPos.locked = false;
 				if (this.adjacentChestZNeg != null) this.adjacentChestZNeg.locked = false;
 				if (this.adjacentChestZPos != null) this.adjacentChestZPos.locked = false;
-				
+
 				if (--player.inventory.getCurrentItem().stackSize == 0)
 				{
 					player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
 				}
-				
+
 				PacketManager.sendPacketToClients(this.getDescriptionPacket());
-				
-				if (this.adjacentChestXNeg != null) PacketManager.sendPacketToClients(adjacentChestXNeg.getDescriptionPacket());;
-				if (this.adjacentChestXPos != null) PacketManager.sendPacketToClients(adjacentChestXPos.getDescriptionPacket());;
-				if (this.adjacentChestZNeg != null) PacketManager.sendPacketToClients(adjacentChestZNeg.getDescriptionPacket());;
-				if (this.adjacentChestZPos != null) PacketManager.sendPacketToClients(adjacentChestZPos.getDescriptionPacket());;
-				
+
+				if (this.adjacentChestXNeg != null) PacketManager.sendPacketToClients(this.adjacentChestXNeg.getDescriptionPacket());;
+				if (this.adjacentChestXPos != null) PacketManager.sendPacketToClients(this.adjacentChestXPos.getDescriptionPacket());;
+				if (this.adjacentChestZNeg != null) PacketManager.sendPacketToClients(this.adjacentChestZNeg.getDescriptionPacket());;
+				if (this.adjacentChestZPos != null) PacketManager.sendPacketToClients(this.adjacentChestZPos.getDescriptionPacket());;
+
 				return true;
 			}
 		}
@@ -596,7 +597,7 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
 	}
 
 	@Override
-	public boolean onActivatedWithoutKey(EntityPlayer player, int face) 
+	public boolean onActivatedWithoutKey(EntityPlayer player, int face)
 	{
 		if (this.locked)
 		{
@@ -609,7 +610,7 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
 
 		return false;
 	}
-	
+
 	@Override
 	public boolean canBreak()
 	{

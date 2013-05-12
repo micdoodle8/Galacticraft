@@ -4,7 +4,6 @@ import java.util.Random;
 
 import micdoodle8.mods.galacticraft.core.wgen.GCCoreMapGenBaseMeta;
 import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
-import net.minecraft.block.Block;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
@@ -123,9 +122,9 @@ public class GCMoonGenCaves extends GCCoreMapGenBaseMeta
                         i3 = 16;
                     }
 
-                    boolean flag2 = false;
+                    final boolean flag2 = false;
                     int j3;
-                    int k3;
+                    final int k3;
 
                     for (j3 = l1; !flag2 && j3 < i2; ++j3)
                     {
@@ -146,27 +145,27 @@ public class GCMoonGenCaves extends GCCoreMapGenBaseMeta
 
                     if (!flag2)
                     {
-                    	
-                    	for (int localY = j2; localY < k2; localY++) 
+
+                    	for (int localY = j2; localY < k2; localY++)
                     	{
-                            double yfactor = (localY + 0.5D - par8) / d7;
-                            double yfactorSq = yfactor * yfactor;
-                            
+                            final double yfactor = (localY + 0.5D - par8) / d7;
+                            final double yfactorSq = yfactor * yfactor;
+
                             for (int localZ = l1; localZ < i2; localZ++)
                             {
-                            	double zfactor = (localZ + par3 * 16 + 0.5D - par6) / d6;
-                            	double zfactorSq = zfactor * zfactor;
-                              
-                            	for (int localX = l2; localX < i3; localX++) 
-                            	{
-                            		double xfactor = (localX + par4 * 16 + 0.5D - par10) / d6;
-                            		double xfactorSq = xfactor * xfactor;
+                            	final double zfactor = (localZ + par3 * 16 + 0.5D - par6) / d6;
+                            	final double zfactorSq = zfactor * zfactor;
 
-                            		if (xfactorSq + zfactorSq < 1.0D) 
+                            	for (int localX = l2; localX < i3; localX++)
+                            	{
+                            		final double xfactor = (localX + par4 * 16 + 0.5D - par10) / d6;
+                            		final double xfactorSq = xfactor * xfactor;
+
+                            		if (xfactorSq + zfactorSq < 1.0D)
                             		{
-                            			int coords = localY << 8 | localZ << 4 | localX;
-                            			
-                            			if ((yfactor > -0.7D) && (xfactorSq + yfactorSq + zfactorSq < 1.0D))
+                            			final int coords = localY << 8 | localZ << 4 | localX;
+
+                            			if (yfactor > -0.7D && xfactorSq + yfactorSq + zfactorSq < 1.0D)
                             			{
                                             if (blockIdArray[coords] == GCMoonBlocks.blockMoon.blockID && (metaArray[coords] == 3 || metaArray[coords] == 4))
                                             {

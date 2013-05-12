@@ -1,20 +1,9 @@
 package micdoodle8.mods.galacticraft.asm;
 
-import static org.objectweb.asm.ClassWriter.COMPUTE_MAXS;
-import static org.objectweb.asm.Opcodes.ALOAD;
-import static org.objectweb.asm.Opcodes.BIPUSH;
-import static org.objectweb.asm.Opcodes.FLOAD;
-import static org.objectweb.asm.Opcodes.FMUL;
-import static org.objectweb.asm.Opcodes.FSTORE;
-import static org.objectweb.asm.Opcodes.INVOKESTATIC;
-import static org.objectweb.asm.Opcodes.PUTSTATIC;
-
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.HashMap;
 import java.util.Iterator;
-
-import micdoodle8.mods.galacticraft.core.GCLog;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
@@ -46,25 +35,26 @@ public class GCCoreTransformer implements IClassTransformer
         try
         {
         	@SuppressWarnings("resource")
-			URLClassLoader loader = new RelaunchClassLoader(((URLClassLoader) getClass().getClassLoader()).getURLs());
-            URL classResource = loader.findResource(String.valueOf("net.minecraft.world.World").replace('.', '/').concat(".class"));
+			final
+			URLClassLoader loader = new RelaunchClassLoader(((URLClassLoader) this.getClass().getClassLoader()).getURLs());
+            final URL classResource = loader.findResource(String.valueOf("net.minecraft.world.World").replace('.', '/').concat(".class"));
             if (classResource == null)
             {
-            	deobfuscated = false;
+            	this.deobfuscated = false;
             }
             else
             {
-                deobfuscated = true;
+                this.deobfuscated = true;
             }
         }
-        catch(Exception e)
+        catch(final Exception e)
         {
         	e.printStackTrace();
         }
         finally
         {
         }
-        
+
 		this.obfuscatedMap.put("confManagerClass", "gu");
 		this.unObfuscatedMap.put("confManagerClass", "net/minecraft/server/management/ServerConfigurationManager");
 		this.obfuscatedMap.put("createPlayerMethod", "a");
@@ -116,7 +106,7 @@ public class GCCoreTransformer implements IClassTransformer
 		this.unObfuscatedMap.put("updateLightmapDesc", "(F)V");
 		this.obfuscatedMap.put("worldClass", "aab");
 		this.unObfuscatedMap.put("worldClass", "net/minecraft/world/World");
-		
+
 		this.obfuscatedMap.put("player", "sq");
 		this.unObfuscatedMap.put("player", "net/minecraft/entity/player/EntityPlayer");
 		this.obfuscatedMap.put("invPlayer", "bK");
@@ -125,7 +115,7 @@ public class GCCoreTransformer implements IClassTransformer
 		this.unObfuscatedMap.put("containerPlayer", "net/minecraft/inventory/ContainerPlayer");
 		this.obfuscatedMap.put("invPlayerClass", "so");
 		this.unObfuscatedMap.put("invPlayerClass", "net/minecraft/entity/player/InventoryPlayer");
-		
+
 		this.obfuscatedMap.put("minecraft", "net/minecraft/client/Minecraft");
 		this.unObfuscatedMap.put("minecraft", "net/minecraft/client/Minecraft");
 		this.obfuscatedMap.put("guiPlayer", "azg");
@@ -140,7 +130,7 @@ public class GCCoreTransformer implements IClassTransformer
 		this.unObfuscatedMap.put("runTick", "runTick");
 		this.obfuscatedMap.put("runTickDesc", "()V");
 		this.unObfuscatedMap.put("runTickDesc", "()V");
-		
+
 		this.obfuscatedMap.put("updateEntitiesMethod", "h");
 		this.unObfuscatedMap.put("updateEntitiesMethod", "updateEntities");
 		this.obfuscatedMap.put("updateEntitiesDesc", "()V");
@@ -202,11 +192,11 @@ public class GCCoreTransformer implements IClassTransformer
 			bytes = this.transform5(name, bytes, this.obfuscatedMap);
 		}
 
-		if (deobfuscated && name.replace('.', '/').equals(this.unObfuscatedMap.get("minecraft")))
+		if (this.deobfuscated && name.replace('.', '/').equals(this.unObfuscatedMap.get("minecraft")))
 		{
 			bytes = this.transform6(name, bytes, this.unObfuscatedMap);
 		}
-		else if (!deobfuscated && name.replace('.', '/').equals(this.obfuscatedMap.get("minecraft")))
+		else if (!this.deobfuscated && name.replace('.', '/').equals(this.obfuscatedMap.get("minecraft")))
 		{
 			bytes = this.transform6(name, bytes, this.obfuscatedMap);
 		}
@@ -219,55 +209,55 @@ public class GCCoreTransformer implements IClassTransformer
 		{
 			bytes = this.transform7(name, bytes, this.obfuscatedMap);
 		}
-		
-		if (deobfuscated && name.equals("invtweaks.InvTweaksObfuscation"))
+
+		if (this.deobfuscated && name.equals("invtweaks.InvTweaksObfuscation"))
 		{
-			bytes = this.transform8(name, bytes, unObfuscatedMap);
+			bytes = this.transform8(name, bytes, this.unObfuscatedMap);
 		}
-		else if (!deobfuscated && name.equals("invtweaks.InvTweaksObfuscation"))
+		else if (!this.deobfuscated && name.equals("invtweaks.InvTweaksObfuscation"))
 		{
-			bytes = this.transform8(name, bytes, obfuscatedMap);
+			bytes = this.transform8(name, bytes, this.obfuscatedMap);
 		}
-		
-		if (deobfuscated && name.equals("invtweaks.InvTweaksContainerManager"))
+
+		if (this.deobfuscated && name.equals("invtweaks.InvTweaksContainerManager"))
 		{
-			bytes = this.transform9(name, bytes, unObfuscatedMap);
+			bytes = this.transform9(name, bytes, this.unObfuscatedMap);
 		}
-		else if (!deobfuscated && name.equals("invtweaks.InvTweaksContainerManager"))
+		else if (!this.deobfuscated && name.equals("invtweaks.InvTweaksContainerManager"))
 		{
-			bytes = this.transform9(name, bytes, obfuscatedMap);
+			bytes = this.transform9(name, bytes, this.obfuscatedMap);
 		}
-		
-		if (deobfuscated && name.equals("codechicken.nei.NEICPH"))
+
+		if (this.deobfuscated && name.equals("codechicken.nei.NEICPH"))
 		{
-			bytes = this.transform10(name, bytes, unObfuscatedMap);
+			bytes = this.transform10(name, bytes, this.unObfuscatedMap);
 		}
-		else if (!deobfuscated && name.equals("codechicken.nei.NEICPH"))
+		else if (!this.deobfuscated && name.equals("codechicken.nei.NEICPH"))
 		{
-			bytes = this.transform10(name, bytes, obfuscatedMap);
+			bytes = this.transform10(name, bytes, this.obfuscatedMap);
 		}
-		
-		if (deobfuscated && name.equals("codechicken.nei.ContainerCreativeInv"))
+
+		if (this.deobfuscated && name.equals("codechicken.nei.ContainerCreativeInv"))
 		{
-			bytes = this.transform11(name, bytes, unObfuscatedMap);
+			bytes = this.transform11(name, bytes, this.unObfuscatedMap);
 		}
-		else if (!deobfuscated && name.equals("codechicken.nei.ContainerCreativeInv"))
+		else if (!this.deobfuscated && name.equals("codechicken.nei.ContainerCreativeInv"))
 		{
-			bytes = this.transform11(name, bytes, obfuscatedMap);
+			bytes = this.transform11(name, bytes, this.obfuscatedMap);
 		}
-		
-		if (deobfuscated && name.equals("mithion.arsmagica.guis.GuiIngameArsMagica"))
+
+		if (this.deobfuscated && name.equals("mithion.arsmagica.guis.GuiIngameArsMagica"))
 		{
-			bytes = this.transform12(name, bytes, unObfuscatedMap);
+			bytes = this.transform12(name, bytes, this.unObfuscatedMap);
 		}
-		else if (!deobfuscated && name.equals("mithion.arsmagica.guis.GuiIngameArsMagica"))
+		else if (!this.deobfuscated && name.equals("mithion.arsmagica.guis.GuiIngameArsMagica"))
 		{
-			bytes = this.transform12(name, bytes, obfuscatedMap);
-		} 
-		
+			bytes = this.transform12(name, bytes, this.obfuscatedMap);
+		}
+
 		if (name.equals("mods.tinker.tconstruct.client.TProxyClient"))
 		{
-			bytes = this.transform13(name, bytes, obfuscatedMap);
+			bytes = this.transform13(name, bytes, this.obfuscatedMap);
 		}
 
 //		if (name.replace('.', '/').equals(this.unObfuscatedMap.get("worldClass")))
@@ -397,7 +387,7 @@ public class GCCoreTransformer implements IClassTransformer
         final ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
         node.accept(writer);
         bytes = writer.toByteArray();
-        
+
 		System.out.println("Galacticraft successfully injected bytecode into: " + node.name);
 
         return bytes;
@@ -448,7 +438,7 @@ public class GCCoreTransformer implements IClassTransformer
         final ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
         node.accept(writer);
         bytes = writer.toByteArray();
-        
+
 		System.out.println("Galacticraft successfully injected bytecode into: " + node.name);
 
         return bytes;
@@ -492,7 +482,7 @@ public class GCCoreTransformer implements IClassTransformer
         final ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
         node.accept(writer);
         bytes = writer.toByteArray();
-        
+
 		System.out.println("Galacticraft successfully injected bytecode into: " + node.name);
 
         return bytes;
@@ -545,7 +535,7 @@ public class GCCoreTransformer implements IClassTransformer
         final ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
         node.accept(writer);
         bytes = writer.toByteArray();
-        
+
 		System.out.println("Galacticraft successfully injected bytecode into: " + node.name);
 
         return bytes;
@@ -558,7 +548,7 @@ public class GCCoreTransformer implements IClassTransformer
         reader.accept(node, 0);
 
 		final Iterator<MethodNode> methods = node.methods.iterator();
-		
+
 		while (methods.hasNext())
 		{
 			final MethodNode methodnode = methods.next();
@@ -572,29 +562,29 @@ public class GCCoreTransformer implements IClassTransformer
 	            	if (list instanceof IntInsnNode)
 	            	{
 	            		final IntInsnNode nodeAt = (IntInsnNode) list;
-	            		
+
 	            		if (nodeAt.operand == 255)
 	            		{
-	            			InsnList nodesToAdd = new InsnList();
+	            			final InsnList nodesToAdd = new InsnList();
 
-	            			nodesToAdd.add(new VarInsnNode(FLOAD, 11));
-	            			nodesToAdd.add(new VarInsnNode(ALOAD, 2));
-	            			nodesToAdd.add(new MethodInsnNode(INVOKESTATIC, "micdoodle8/mods/galacticraft/core/util/WorldUtil", "getColorRed", "(L" + map.get("worldClass") + ";)F"));
-	            			nodesToAdd.add(new InsnNode(FMUL));
-	            			nodesToAdd.add(new VarInsnNode(FSTORE, 11));
+	            			nodesToAdd.add(new VarInsnNode(Opcodes.FLOAD, 11));
+	            			nodesToAdd.add(new VarInsnNode(Opcodes.ALOAD, 2));
+	            			nodesToAdd.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "micdoodle8/mods/galacticraft/core/util/WorldUtil", "getColorRed", "(L" + map.get("worldClass") + ";)F"));
+	            			nodesToAdd.add(new InsnNode(Opcodes.FMUL));
+	            			nodesToAdd.add(new VarInsnNode(Opcodes.FSTORE, 11));
 
-	            			nodesToAdd.add(new VarInsnNode(FLOAD, 12));
-	            			nodesToAdd.add(new VarInsnNode(ALOAD, 2));
-	            			nodesToAdd.add(new MethodInsnNode(INVOKESTATIC, "micdoodle8/mods/galacticraft/core/util/WorldUtil", "getColorGreen", "(L" + map.get("worldClass") + ";)F"));
-	            			nodesToAdd.add(new InsnNode(FMUL));
-	            			nodesToAdd.add(new VarInsnNode(FSTORE, 12));
+	            			nodesToAdd.add(new VarInsnNode(Opcodes.FLOAD, 12));
+	            			nodesToAdd.add(new VarInsnNode(Opcodes.ALOAD, 2));
+	            			nodesToAdd.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "micdoodle8/mods/galacticraft/core/util/WorldUtil", "getColorGreen", "(L" + map.get("worldClass") + ";)F"));
+	            			nodesToAdd.add(new InsnNode(Opcodes.FMUL));
+	            			nodesToAdd.add(new VarInsnNode(Opcodes.FSTORE, 12));
 
-	            			nodesToAdd.add(new VarInsnNode(FLOAD, 13));
-	            			nodesToAdd.add(new VarInsnNode(ALOAD, 2));
-	            			nodesToAdd.add(new MethodInsnNode(INVOKESTATIC, "micdoodle8/mods/galacticraft/core/util/WorldUtil", "getColorBlue", "(L" + map.get("worldClass") + ";)F"));
-	            			nodesToAdd.add(new InsnNode(FMUL));
-	            			nodesToAdd.add(new VarInsnNode(FSTORE, 13));
-	            			
+	            			nodesToAdd.add(new VarInsnNode(Opcodes.FLOAD, 13));
+	            			nodesToAdd.add(new VarInsnNode(Opcodes.ALOAD, 2));
+	            			nodesToAdd.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "micdoodle8/mods/galacticraft/core/util/WorldUtil", "getColorBlue", "(L" + map.get("worldClass") + ";)F"));
+	            			nodesToAdd.add(new InsnNode(Opcodes.FMUL));
+	            			nodesToAdd.add(new VarInsnNode(Opcodes.FSTORE, 13));
+
 	            			methodnode.instructions.insertBefore(nodeAt, nodesToAdd);
 	            			break;
 	            		}
@@ -606,7 +596,7 @@ public class GCCoreTransformer implements IClassTransformer
         final ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
         node.accept(writer);
         bytes = writer.toByteArray();
-        
+
 		System.out.println("Galacticraft successfully injected bytecode into: " + node.name);
 
         return bytes;
@@ -614,12 +604,12 @@ public class GCCoreTransformer implements IClassTransformer
 
     public byte[] transform6(String name, byte[] bytes, HashMap<String, String> map)
     {
-        ClassNode node = new ClassNode();
-        ClassReader reader = new ClassReader(bytes);
+        final ClassNode node = new ClassNode();
+        final ClassReader reader = new ClassReader(bytes);
         reader.accept(node, 0);
 
-		Iterator<MethodNode> methods = node.methods.iterator();
-		
+		final Iterator<MethodNode> methods = node.methods.iterator();
+
 		while (methods.hasNext())
 		{
 			final MethodNode methodnode = methods.next();
@@ -629,7 +619,7 @@ public class GCCoreTransformer implements IClassTransformer
 	            for (int count = 0; count < methodnode.instructions.size(); count++)
 	            {
 	            	final AbstractInsnNode list = methodnode.instructions.get(count);
-	            	
+
 	            	if (list instanceof TypeInsnNode)
 	            	{
 	            		final TypeInsnNode nodeAt = (TypeInsnNode) list;
@@ -652,10 +642,10 @@ public class GCCoreTransformer implements IClassTransformer
 			}
 		}
 
-        final ClassWriter writer = new ClassWriter(COMPUTE_MAXS);
+        final ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
         node.accept(writer);
         bytes = writer.toByteArray();
-        
+
 		System.out.println("Galacticraft successfully injected bytecode into: " + node.name);
 
         return bytes;
@@ -663,12 +653,12 @@ public class GCCoreTransformer implements IClassTransformer
 
     public byte[] transform7(String name, byte[] bytes, HashMap<String, String> map)
     {
-        ClassNode node = new ClassNode();
-        ClassReader reader = new ClassReader(bytes);
+        final ClassNode node = new ClassNode();
+        final ClassReader reader = new ClassReader(bytes);
         reader.accept(node, 0);
 
-		Iterator<MethodNode> methods = node.methods.iterator();
-		
+		final Iterator<MethodNode> methods = node.methods.iterator();
+
 		while (methods.hasNext())
 		{
 			final MethodNode methodnode = methods.next();
@@ -678,7 +668,7 @@ public class GCCoreTransformer implements IClassTransformer
 	            for (int count = 0; count < methodnode.instructions.size(); count++)
 	            {
 	            	final AbstractInsnNode list = methodnode.instructions.get(count);
-	            	
+
 	            	if (list instanceof TypeInsnNode)
 	            	{
 	            		final TypeInsnNode nodeAt = (TypeInsnNode) list;
@@ -709,53 +699,53 @@ public class GCCoreTransformer implements IClassTransformer
 			}
 		}
 
-        final ClassWriter writer = new ClassWriter(COMPUTE_MAXS);
+        final ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
         node.accept(writer);
         bytes = writer.toByteArray();
-        
+
 		System.out.println("Galacticraft successfully injected bytecode into: " + node.name);
 
         return bytes;
     }
-    
+
     public byte[] transform8(String name, byte[] bytes, HashMap<String, String> map)
     {
-        ClassNode node = new ClassNode();
-        ClassReader reader = new ClassReader(bytes);
+        final ClassNode node = new ClassNode();
+        final ClassReader reader = new ClassReader(bytes);
         reader.accept(node, 0);
 
-		Iterator<MethodNode> methods = node.methods.iterator();
-		
+		final Iterator<MethodNode> methods = node.methods.iterator();
+
 		while (methods.hasNext())
 		{
 			final MethodNode methodnode = methods.next();
 
 			if (methodnode.name.equals("<init>"))
 			{
-        		InsnList toAdd = new InsnList();
-        		
-        		toAdd.add(new IntInsnNode(BIPUSH, 51));
-        		toAdd.add(new FieldInsnNode(PUTSTATIC, "invtweaks/InvTweaksObfuscation", "CREATIVE_MAIN_INVENTORY_SIZE", "I"));
+        		final InsnList toAdd = new InsnList();
+
+        		toAdd.add(new IntInsnNode(Opcodes.BIPUSH, 51));
+        		toAdd.add(new FieldInsnNode(Opcodes.PUTSTATIC, "invtweaks/InvTweaksObfuscation", "CREATIVE_MAIN_INVENTORY_SIZE", "I"));
         		methodnode.instructions.insertBefore(methodnode.instructions.getFirst(), toAdd);
 			}
 		}
 
-        final ClassWriter writer = new ClassWriter(COMPUTE_MAXS);
+        final ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
         node.accept(writer);
         bytes = writer.toByteArray();
-        
+
 		System.out.println("Galacticraft successfully injected bytecode into: " + node.name);
 
         return bytes;
     }
-    
+
     public byte[] transform9(String name, byte[] bytes, HashMap<String, String> map)
     {
-        ClassNode node = new ClassNode();
-        ClassReader reader = new ClassReader(bytes);
+        final ClassNode node = new ClassNode();
+        final ClassReader reader = new ClassReader(bytes);
         reader.accept(node, 0);
 
-		Iterator<MethodNode> methods = node.methods.iterator();
+		final Iterator<MethodNode> methods = node.methods.iterator();
 
 		while (methods.hasNext())
 		{
@@ -766,7 +756,7 @@ public class GCCoreTransformer implements IClassTransformer
 	            for (int count = 0; count < methodnode.instructions.size(); count++)
 	            {
 	            	final AbstractInsnNode list = methodnode.instructions.get(count);
-	            	
+
 	            	if (list instanceof IincInsnNode)
 	            	{
 	            		final IincInsnNode nodeAt = (IincInsnNode) list;
@@ -780,23 +770,23 @@ public class GCCoreTransformer implements IClassTransformer
 			}
 		}
 
-        final ClassWriter writer = new ClassWriter(COMPUTE_MAXS);
+        final ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
         node.accept(writer);
         bytes = writer.toByteArray();
-        
+
 		System.out.println("Galacticraft successfully injected bytecode into: " + node.name);
 
         return bytes;
     }
-    
+
     public byte[] transform10(String name, byte[] bytes, HashMap<String, String> map)
     {
-        ClassNode node = new ClassNode();
-        ClassReader reader = new ClassReader(bytes);
+        final ClassNode node = new ClassNode();
+        final ClassReader reader = new ClassReader(bytes);
         reader.accept(node, 0);
 
-		Iterator<MethodNode> methods = node.methods.iterator();
-		
+		final Iterator<MethodNode> methods = node.methods.iterator();
+
 		while (methods.hasNext())
 		{
 			final MethodNode methodnode = methods.next();
@@ -806,7 +796,7 @@ public class GCCoreTransformer implements IClassTransformer
 	            for (int count = 0; count < methodnode.instructions.size(); count++)
 	            {
 	            	final AbstractInsnNode list = methodnode.instructions.get(count);
-	            	
+
 	            	if (list instanceof TypeInsnNode)
 	            	{
 	            		final TypeInsnNode nodeAt = (TypeInsnNode) list;
@@ -829,23 +819,23 @@ public class GCCoreTransformer implements IClassTransformer
 			}
 		}
 
-        final ClassWriter writer = new ClassWriter(COMPUTE_MAXS);
+        final ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
         node.accept(writer);
         bytes = writer.toByteArray();
-        
+
 		System.out.println("Galacticraft successfully injected bytecode into: " + node.name);
 
         return bytes;
     }
-    
+
     public byte[] transform11(String name, byte[] bytes, HashMap<String, String> map)
     {
-        ClassNode node = new ClassNode();
-        ClassReader reader = new ClassReader(bytes);
+        final ClassNode node = new ClassNode();
+        final ClassReader reader = new ClassReader(bytes);
         reader.accept(node, 0);
 
-		Iterator<MethodNode> methods = node.methods.iterator();
-		
+		final Iterator<MethodNode> methods = node.methods.iterator();
+
 		while (methods.hasNext())
 		{
 			final MethodNode methodnode = methods.next();
@@ -856,11 +846,11 @@ public class GCCoreTransformer implements IClassTransformer
 	            {
 	            	final AbstractInsnNode list = methodnode.instructions.get(count);
 	            	final AbstractInsnNode prevList = methodnode.instructions.get(count - 1);
-	            	
+
 	            	if (list instanceof InsnNode && prevList instanceof MethodInsnNode)
 	            	{
-	            		InsnNode insn = (InsnNode) list;
-	            		
+	            		final InsnNode insn = (InsnNode) list;
+
 	            		if (insn.getOpcode() == Opcodes.ICONST_1)
 	            		{
 	            			methodnode.instructions.set(insn, new IntInsnNode(Opcodes.BIPUSH, 6));
@@ -870,25 +860,25 @@ public class GCCoreTransformer implements IClassTransformer
 			}
 		}
 
-        final ClassWriter writer = new ClassWriter(COMPUTE_MAXS);
+        final ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
         node.accept(writer);
         bytes = writer.toByteArray();
-        
+
 		System.out.println("Galacticraft successfully injected bytecode into: " + node.name);
 
         return bytes;
     }
-    
+
     public byte[] transform12(String name, byte[] bytes, HashMap<String, String> map)
     {
-        ClassNode node = new ClassNode();
-        ClassReader reader = new ClassReader(bytes);
+        final ClassNode node = new ClassNode();
+        final ClassReader reader = new ClassReader(bytes);
         reader.accept(node, 0);
 
-		Iterator<MethodNode> methods = node.methods.iterator();
-		
-		int wOffset = 0;
-		
+		final Iterator<MethodNode> methods = node.methods.iterator();
+
+		final int wOffset = 0;
+
 		while (methods.hasNext())
 		{
 			final MethodNode methodnode = methods.next();
@@ -899,11 +889,11 @@ public class GCCoreTransformer implements IClassTransformer
 	            {
 	            	final AbstractInsnNode list = methodnode.instructions.get(count);
 	            	final AbstractInsnNode prevList = methodnode.instructions.get(count + 1);
-	            	
+
 	            	if (list instanceof LdcInsnNode)
 	            	{
-	            		LdcInsnNode insn = (LdcInsnNode) list;
-	            		
+	            		final LdcInsnNode insn = (LdcInsnNode) list;
+
 	            		if (insn.cst.equals("Current Mana: "))
 	            		{
 	            			methodnode.instructions.set(insn, new LdcInsnNode("Mana:"));
@@ -911,35 +901,35 @@ public class GCCoreTransformer implements IClassTransformer
 	            	}
 	            	else if (list instanceof InsnNode && prevList instanceof VarInsnNode)
 	            	{
-	            		InsnNode insn = (InsnNode) list;
-	            		VarInsnNode insn2 = (VarInsnNode) prevList;
-	            		
+	            		final InsnNode insn = (InsnNode) list;
+	            		final VarInsnNode insn2 = (VarInsnNode) prevList;
+
 	            		if (insn.getOpcode() == Opcodes.ICONST_0 && insn2.getOpcode() == Opcodes.ISTORE)
 	            		{
-	            			methodnode.instructions.set(insn, new IntInsnNode(BIPUSH, 80));
+	            			methodnode.instructions.set(insn, new IntInsnNode(Opcodes.BIPUSH, 80));
 	            		}
 	            	}
 	            }
 			}
 		}
 
-        final ClassWriter writer = new ClassWriter(COMPUTE_MAXS);
+        final ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
         node.accept(writer);
         bytes = writer.toByteArray();
-        
+
 		System.out.println("Galacticraft successfully injected bytecode into: " + node.name);
 
         return bytes;
     }
-    
+
     public byte[] transform13(String name, byte[] bytes, HashMap<String, String> map)
     {
-        ClassNode node = new ClassNode();
-        ClassReader reader = new ClassReader(bytes);
+        final ClassNode node = new ClassNode();
+        final ClassReader reader = new ClassReader(bytes);
         reader.accept(node, 0);
 
-		Iterator<MethodNode> methods = node.methods.iterator();
-		
+		final Iterator<MethodNode> methods = node.methods.iterator();
+
 		while (methods.hasNext())
 		{
 			final MethodNode methodnode = methods.next();
@@ -949,7 +939,7 @@ public class GCCoreTransformer implements IClassTransformer
 	            for (int count = 0; count < methodnode.instructions.size(); count++)
 	            {
 	            	final AbstractInsnNode list = methodnode.instructions.get(count);
-	            	
+
 	            	if (list instanceof TypeInsnNode)
 	            	{
 	            		final TypeInsnNode nodeAt = (TypeInsnNode) list;
@@ -972,23 +962,23 @@ public class GCCoreTransformer implements IClassTransformer
 			}
 		}
 
-        final ClassWriter writer = new ClassWriter(COMPUTE_MAXS);
+        final ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
         node.accept(writer);
         bytes = writer.toByteArray();
-        
+
 		System.out.println("Galacticraft successfully injected bytecode into: " + node.name);
 
         return bytes;
     }
-    
+
     public byte[] transform14(String name, byte[] bytes, HashMap<String, String> map)
     {
-        ClassNode node = new ClassNode();
-        ClassReader reader = new ClassReader(bytes);
+        final ClassNode node = new ClassNode();
+        final ClassReader reader = new ClassReader(bytes);
         reader.accept(node, 0);
-        
-		Iterator<MethodNode> methods = node.methods.iterator();
-		
+
+		final Iterator<MethodNode> methods = node.methods.iterator();
+
 		while (methods.hasNext())
 		{
 			final MethodNode methodnode = methods.next();
@@ -999,22 +989,22 @@ public class GCCoreTransformer implements IClassTransformer
 			}
 		}
 
-        final ClassWriter writer = new ClassWriter(COMPUTE_MAXS);
+        final ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
         node.accept(writer);
         bytes = writer.toByteArray();
-        
+
 		System.out.println("Galacticraft successfully injected bytecode into: " + node.name);
 
         return bytes;
     }
-    
+
     public byte[] transform15(String name, byte[] bytes, HashMap<String, String> map)
     {
-        ClassNode node = new ClassNode();
-        ClassReader reader = new ClassReader(bytes);
+        final ClassNode node = new ClassNode();
+        final ClassReader reader = new ClassReader(bytes);
         reader.accept(node, 0);
-        
-		Iterator<MethodNode> methods = node.methods.iterator();
+
+		final Iterator<MethodNode> methods = node.methods.iterator();
 
 		while (methods.hasNext())
 		{
@@ -1025,12 +1015,12 @@ public class GCCoreTransformer implements IClassTransformer
 	            for (int count = 0; count < methodnode.instructions.size(); count++)
 	            {
 	            	final AbstractInsnNode list = methodnode.instructions.get(count);
-	            	
+
 	            	if (list instanceof LdcInsnNode)
 	            	{
 	            		if (((LdcInsnNode) list).cst.equals("entities"))
 	            		{
-	            			InsnList toAdd = new InsnList();
+	            			final InsnList toAdd = new InsnList();
 	            			toAdd.add(new VarInsnNode(Opcodes.FLOAD, 3));
 	            			toAdd.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "micdoodle8/mods/galacticraft/core/client/ClientProxyCore", "renderPlanets", "(F)V"));
 	            			methodnode.instructions.insertBefore(methodnode.instructions.get(count - 4), toAdd);
@@ -1041,10 +1031,10 @@ public class GCCoreTransformer implements IClassTransformer
 			}
 		}
 
-        final ClassWriter writer = new ClassWriter(COMPUTE_MAXS);
+        final ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
         node.accept(writer);
         bytes = writer.toByteArray();
-        
+
 		System.out.println("Galacticraft successfully injected bytecode into: " + node.name);
 
         return bytes;

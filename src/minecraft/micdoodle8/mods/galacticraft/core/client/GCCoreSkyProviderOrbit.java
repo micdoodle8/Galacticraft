@@ -21,9 +21,9 @@ public class GCCoreSkyProviderOrbit extends IRenderHandler
 	public int starGLCallList = GLAllocation.generateDisplayLists(3);
 	public int glSkyList;
 	public int glSkyList2;
-	private String planetToRender;
-	private boolean renderMoon;
-	private boolean renderSun;
+	private final String planetToRender;
+	private final boolean renderMoon;
+	private final boolean renderSun;
 
 	public GCCoreSkyProviderOrbit(String planet, boolean renderMoon, boolean renderSun)
 	{
@@ -172,7 +172,7 @@ public class GCCoreSkyProviderOrbit extends IRenderHandler
         GL11.glColor4f(1.0F, 1.0F, 1.0F, var8);
         GL11.glTranslatef(var9, var10, var11);
         GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
-        
+
         GL11.glRotatef(this.minecraft.theWorld.getCelestialAngle(partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
         if (this.renderSun)
         {
@@ -185,7 +185,7 @@ public class GCCoreSkyProviderOrbit extends IRenderHandler
 	        var23.addVertexWithUV(-var12, 100.0D, var12, 0.0D, 1.0D);
 	        var23.draw();
 		}
-        
+
         if (this.renderMoon)
         {
             var12 = 40.0F;
@@ -204,7 +204,7 @@ public class GCCoreSkyProviderOrbit extends IRenderHandler
             var23.addVertexWithUV(-var12, -100.0D, -var12, var18, var17);
             var23.draw();
         }
-        
+
         GL11.glDisable(GL11.GL_TEXTURE_2D);
 
 //        if (var20 > 0.0F)

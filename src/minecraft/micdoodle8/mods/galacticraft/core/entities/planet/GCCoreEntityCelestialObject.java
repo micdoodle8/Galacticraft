@@ -24,21 +24,21 @@
 //public abstract class GCCoreEntityCelestialObject extends Entity implements IUpdateable
 //{
 //    private final Map[] posMaps = this.computePlanetPos(0, 0, (float) (GalacticraftCore.spaceScale * this.getDistanceFromCenter() / 2), 2880);
-//    
-//	public GCCoreEntityCelestialObject(World par1World) 
+//
+//	public GCCoreEntityCelestialObject(World par1World)
 //	{
 //		super(par1World);
 //		this.setPosition(0, 200, 0);
 //		this.ignoreFrustumCheck = true;
 //	}
-//    
+//
 //    public static void spawnCelestialObject(GCCoreEntityCelestialObject mainObject, GCCoreEntitySubOrbitingObject... orbitingObjects)
 //    {
 //    	if (!WorldUtil.updateableObjects.contains(mainObject))
 //    	{
 //    		WorldUtil.updateableObjects.add(mainObject);
 //    	}
-//    	
+//
 //    	if (orbitingObjects != null && orbitingObjects.length > 0)
 //    	{
 //        	for (GCCoreEntitySubOrbitingObject object : orbitingObjects)
@@ -50,9 +50,9 @@
 //        	}
 //    	}
 //    }
-//	
+//
 //	public abstract void onPlayerCollide(EntityPlayer player);
-//	
+//
 //	public abstract float getPlanetSize();
 //
 //	public abstract float getDistanceFromCenter();
@@ -78,7 +78,7 @@
 //	@Override
 //	protected void writeEntityToNBT(NBTTagCompound nbttagcompound)
 //	{
-//		
+//
 //	}
 //
 //	@Override
@@ -92,38 +92,38 @@
 //    {
 //    	this.updatePlanetPos();
 //    }
-//    
+//
 //    private void updatePlanetPos()
 //    {
 //        if (this.posMaps != null && posMaps[0] != null && posMaps[1] != null)
 //        {
 //        	float x = 0;
-//        	float z = 0; 
-//        	
+//        	float z = 0;
+//
 //        	Object o1 = posMaps[0].get(MathHelper.floor_float((this.getPhaseShift() + Sys.getTime() / (720F * GalacticraftCore.spaceSpeedScale * this.getStretchValue())) % 2880));
 //        	Object o2 = posMaps[1].get(MathHelper.floor_float((this.getPhaseShift() + Sys.getTime() / (720F * GalacticraftCore.spaceSpeedScale * this.getStretchValue())) % 2880));
-//        	
+//
 //        	if (o1 != null && o2 != null)
 //        	{
 //            	x = (Float) o1;
 //            	z = (Float) o2;
 //        	}
-//        	
+//
 //        	this.posX = x / 10.0F;
 //        	this.posZ = z / 10.0F;
 //        	this.posY = 200;
 //        }
-//        
+//
 //        for (Object o : this.worldObj.loadedEntityList)
 //        {
 //        	Entity e = (Entity)o;
-//        	
+//
 //        	if (e.getDistanceToEntity(this) < 0.2 && this.entityId < e.entityId && this.getClass().isAssignableFrom(e.getClass()))
 //        	{
 //        		this.setDead();
 //        	}
 //        }
-//        
+//
 //        List<IUpdateable> l = new ArrayList<IUpdateable>();
 //        l.addAll(WorldUtil.updateableObjects);
 //        for (IUpdateable planet : l)
@@ -139,7 +139,7 @@
 //        	this.rotationYaw += 0.02F;
 //            this.rotationPitch = 23F;
 //    	}
-//        
+//
 //        this.prevPosX = this.posX;
 //        this.prevPosY = this.posY;
 //        this.prevPosZ = this.posZ;
@@ -178,7 +178,7 @@
 //    }
 //
 //    @Override
-//    public void onCollideWithPlayer(EntityPlayer par1EntityPlayer) 
+//    public void onCollideWithPlayer(EntityPlayer par1EntityPlayer)
 //    {
 //    	this.onPlayerCollide(par1EntityPlayer);
 //    }

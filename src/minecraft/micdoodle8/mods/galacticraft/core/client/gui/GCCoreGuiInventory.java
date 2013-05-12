@@ -16,8 +16,8 @@ public class GCCoreGuiInventory extends GuiInventory
 	private float xSize_lo_2;
 	private float ySize_lo_2;
 	private float rotation;
-	
-    public GCCoreGuiInventory(EntityPlayer par1EntityPlayer) 
+
+    public GCCoreGuiInventory(EntityPlayer par1EntityPlayer)
     {
 		super(par1EntityPlayer);
 	}
@@ -26,19 +26,19 @@ public class GCCoreGuiInventory extends GuiInventory
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
     }
-    
+
     @Override
     public void initGui()
     {
     	super.initGui();
     	this.rotation = 0;
     }
-    
+
 	@Override
 	protected void actionPerformed(GuiButton par1GuiButton)
 	{
 		super.actionPerformed(par1GuiButton);
-		
+
 		switch (par1GuiButton.id)
 		{
 		case 0:
@@ -55,8 +55,8 @@ public class GCCoreGuiInventory extends GuiInventory
     {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.renderEngine.bindTexture("/micdoodle8/mods/galacticraft/core/client/gui/airtank.png");
-        int k = this.guiLeft;
-        int l = this.guiTop;
+        final int k = this.guiLeft;
+        final int l = this.guiTop;
         this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);
         this.drawPlayerOnGui2(this.mc, k + 51, l + 75 + 1, 34, k + 51 - this.xSize_lo_2, l + 75 - 50 - this.ySize_lo_2);
     }
@@ -65,10 +65,10 @@ public class GCCoreGuiInventory extends GuiInventory
     public void drawScreen(int par1, int par2, float par3)
     {
         super.drawScreen(par1, par2, par3);
-        this.xSize_lo_2 = (float)par1;
-        this.ySize_lo_2 = (float)par2;
+        this.xSize_lo_2 = par1;
+        this.ySize_lo_2 = par2;
     }
-    
+
     public void drawPlayerOnGui2(Minecraft par0Minecraft, int par1, int par2, int par3, float par4, float par5)
     {
     	final float pitchBefore = par0Minecraft.thePlayer.rotationPitch;

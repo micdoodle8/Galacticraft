@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.moon.wgen.dungeon;
 
 import java.util.Random;
 
-import net.minecraft.block.Block;
 import net.minecraft.world.World;
 
 public class GCRoomEmpty extends GCDungeonRoom {
@@ -10,33 +9,33 @@ public class GCRoomEmpty extends GCDungeonRoom {
 	int sizeX;
 	int sizeY;
 	int sizeZ;
-	
+
 	public GCRoomEmpty(World worldObj, int posX, int posY, int posZ, int entranceDir) {
 		super(worldObj, posX, posY, posZ, entranceDir);
 		if(worldObj != null)
 		{
-			Random rand = new Random(worldObj.getSeed() * posX * posY * 57 * posZ);
-			sizeX = rand.nextInt(4) + 5;
-			sizeY = rand.nextInt(2) + 4;
-			sizeZ = rand.nextInt(4) + 5;
+			final Random rand = new Random(worldObj.getSeed() * posX * posY * 57 * posZ);
+			this.sizeX = rand.nextInt(4) + 5;
+			this.sizeY = rand.nextInt(2) + 4;
+			this.sizeZ = rand.nextInt(4) + 5;
 		}
 	}
 
 	@Override
 	public void generate(short[] chunk, byte[] meta, int cx, int cz) {
-		for(int i = posX - 1; i <= posX + sizeX; i++)
+		for(int i = this.posX - 1; i <= this.posX + this.sizeX; i++)
 		{
-			for(int j = posY - 1; j <= posY + sizeY; j++)
+			for(int j = this.posY - 1; j <= this.posY + this.sizeY; j++)
 			{
-				for(int k = posZ - 1; k <= posZ + sizeZ; k++)
+				for(int k = this.posZ - 1; k <= this.posZ + this.sizeZ; k++)
 				{
-					if(i == posX - 1 || i == posX + sizeX || j == posY - 1 || j == posY + sizeY || k == posZ - 1 || k == posZ + sizeZ)
+					if(i == this.posX - 1 || i == this.posX + this.sizeX || j == this.posY - 1 || j == this.posY + this.sizeY || k == this.posZ - 1 || k == this.posZ + this.sizeZ)
 					{
-						placeBlock(chunk, meta, i, j, k, cx, cz, GCMapGenDungeon.DUNGEON_WALL_ID, GCMapGenDungeon.DUNGEON_WALL_META);
+						this.placeBlock(chunk, meta, i, j, k, cx, cz, GCMapGenDungeon.DUNGEON_WALL_ID, GCMapGenDungeon.DUNGEON_WALL_META);
 					}
 					else
 					{
-						placeBlock(chunk, meta, i, j, k, cx, cz, 0, 0);
+						this.placeBlock(chunk, meta, i, j, k, cx, cz, 0, 0);
 					}
 				}
 			}
@@ -45,7 +44,7 @@ public class GCRoomEmpty extends GCDungeonRoom {
 
 	@Override
 	public GCDungeonBoundingBox getBoundingBox() {
-		return new GCDungeonBoundingBox(posX, posZ, posX + sizeX, posZ + sizeZ);
+		return new GCDungeonBoundingBox(this.posX, this.posZ, this.posX + this.sizeX, this.posZ + this.sizeZ);
 	}
 
 	@Override
@@ -56,7 +55,7 @@ public class GCRoomEmpty extends GCDungeonRoom {
 	@Override
 	protected void handleTileEntities(Random rand) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

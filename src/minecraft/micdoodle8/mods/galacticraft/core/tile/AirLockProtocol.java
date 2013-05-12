@@ -6,18 +6,18 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import universalelectricity.core.vector.Vector3;
 
-public class AirLockProtocol 
+public class AirLockProtocol
 {
 	ArrayList<GCCoreTileEntityAirLock> adjacentAirLocks;
 	private final World worldObj;
 	private final TileEntity head;
 	private final int maxLoops;
-	
+
 	public int airLocksVerticalMin = 0;
 	public int airLocksVerticalMax = 0;
 	public int airLocksHorizontalMin = 0;
 	public int airLocksHorizontalMax = 0;
-	
+
 	public int minX = 6000000;
 	public int maxX = -6000000;
 	public int minY = 6000000;
@@ -27,12 +27,12 @@ public class AirLockProtocol
 
 	public AirLockProtocol(TileEntity head, int maxLoops)
 	{
-		adjacentAirLocks = new ArrayList<GCCoreTileEntityAirLock>();
+		this.adjacentAirLocks = new ArrayList<GCCoreTileEntityAirLock>();
 		this.worldObj = head.worldObj;
 		this.head = head;
 		this.maxLoops = maxLoops;
 	}
-	
+
 	public void loopThrough(TileEntity tile2, int loops)
 	{
 		if (loops > 0)
@@ -43,14 +43,14 @@ public class AirLockProtocol
 				{
 					for (int z = -1; z <= 1; z++)
 					{
-						TileEntity tile = this.worldObj.getBlockTileEntity(tile2.xCoord + x, tile2.yCoord + y, tile2.zCoord + z);
-						Vector3 vec = new Vector3(this.head).add(new Vector3(x, y, z));
-						
+						final TileEntity tile = this.worldObj.getBlockTileEntity(tile2.xCoord + x, tile2.yCoord + y, tile2.zCoord + z);
+						final Vector3 vec = new Vector3(this.head).add(new Vector3(x, y, z));
+
 						if (!(x == 0 && y == 0 && z == 0))
 						{
-							if (tile != null && tile instanceof GCCoreTileEntityAirLock && !this.adjacentAirLocks.contains((GCCoreTileEntityAirLock) tile))
+							if (tile != null && tile instanceof GCCoreTileEntityAirLock && !this.adjacentAirLocks.contains(tile))
 							{
-								adjacentAirLocks.add((GCCoreTileEntityAirLock) tile);
+								this.adjacentAirLocks.add((GCCoreTileEntityAirLock) tile);
 								this.loopThrough(tile, loops - 1);
 							}
 						}
@@ -66,128 +66,128 @@ public class AirLockProtocol
 		{
 			return null;
 		}
-		
-		adjacentAirLocks = new ArrayList<GCCoreTileEntityAirLock>();
-		
+
+		this.adjacentAirLocks = new ArrayList<GCCoreTileEntityAirLock>();
+
 		this.loopThrough(this.head, this.maxLoops);
-		
-		for (GCCoreTileEntityAirLock airLock : this.adjacentAirLocks)
+
+		for (final GCCoreTileEntityAirLock airLock : this.adjacentAirLocks)
 		{
-			Vector3 vecAt = new Vector3(airLock);
-			
-			if (vecAt.intX() < minX)
+			final Vector3 vecAt = new Vector3(airLock);
+
+			if (vecAt.intX() < this.minX)
 			{
-				minX = vecAt.intX();
+				this.minX = vecAt.intX();
 			}
-			
-			if (vecAt.intX() > maxX)
+
+			if (vecAt.intX() > this.maxX)
 			{
-				maxX = vecAt.intX();
+				this.maxX = vecAt.intX();
 			}
-			
-			if (vecAt.intY() < minY)
+
+			if (vecAt.intY() < this.minY)
 			{
-				minY = vecAt.intY();
+				this.minY = vecAt.intY();
 			}
-			
-			if (vecAt.intY() > maxY)
+
+			if (vecAt.intY() > this.maxY)
 			{
-				maxY = vecAt.intY();
+				this.maxY = vecAt.intY();
 			}
-			
-			if (vecAt.intZ() < minZ)
+
+			if (vecAt.intZ() < this.minZ)
 			{
-				minZ = vecAt.intZ();
+				this.minZ = vecAt.intZ();
 			}
-			
-			if (vecAt.intZ() > maxZ)
+
+			if (vecAt.intZ() > this.maxZ)
 			{
-				maxZ = vecAt.intZ();
+				this.maxZ = vecAt.intZ();
 			}
 		}
-		
-		int count = (maxX - minX) + (maxZ - minZ) + (maxY - minY);
-		
-		if (count > 16 || ((maxX - minX) == 0 && (maxZ - minZ) == 0))
+
+		final int count = this.maxX - this.minX + this.maxZ - this.minZ + this.maxY - this.minY;
+
+		if (count > 16 || this.maxX - this.minX == 0 && this.maxZ - this.minZ == 0)
 		{
 			return null;
 		}
-		
-		airLocksVerticalMin = 0;
-		airLocksVerticalMax = 0;
-		airLocksHorizontalMin = 0;
-		airLocksHorizontalMax = 0;
-		
-		for (int y = minY; y <= maxY; y++)
+
+		this.airLocksVerticalMin = 0;
+		this.airLocksVerticalMax = 0;
+		this.airLocksHorizontalMin = 0;
+		this.airLocksHorizontalMax = 0;
+
+		for (int y = this.minY; y <= this.maxY; y++)
 		{
-			TileEntity tileAt = new Vector3(minX, y, minZ).getTileEntity(this.worldObj);
-			
+			final TileEntity tileAt = new Vector3(this.minX, y, this.minZ).getTileEntity(this.worldObj);
+
 			if (tileAt instanceof GCCoreTileEntityAirLock)
 			{
-				airLocksVerticalMin++;
+				this.airLocksVerticalMin++;
 			}
 		}
-		
-		for (int y = minY; y <= maxY; y++)
+
+		for (int y = this.minY; y <= this.maxY; y++)
 		{
-			TileEntity tileAt = new Vector3(maxX, y, maxZ).getTileEntity(this.worldObj);
-			
+			final TileEntity tileAt = new Vector3(this.maxX, y, this.maxZ).getTileEntity(this.worldObj);
+
 			if (tileAt instanceof GCCoreTileEntityAirLock)
 			{
-				airLocksVerticalMax++;
+				this.airLocksVerticalMax++;
 			}
 		}
-		
-		if (minX != maxX)
+
+		if (this.minX != this.maxX)
 		{
-			for (int x = minX; x <= maxX; x++)
+			for (int x = this.minX; x <= this.maxX; x++)
 			{
-				TileEntity tileAt = new Vector3(x, maxY, maxZ).getTileEntity(this.worldObj);
-				
+				final TileEntity tileAt = new Vector3(x, this.maxY, this.maxZ).getTileEntity(this.worldObj);
+
 				if (tileAt instanceof GCCoreTileEntityAirLock)
 				{
-					airLocksHorizontalMax++;
+					this.airLocksHorizontalMax++;
 				}
 			}
 
-			for (int x = minX; x <= maxX; x++)
+			for (int x = this.minX; x <= this.maxX; x++)
 			{
-				TileEntity tileAt = new Vector3(x, minY, maxZ).getTileEntity(this.worldObj);
-				
+				final TileEntity tileAt = new Vector3(x, this.minY, this.maxZ).getTileEntity(this.worldObj);
+
 				if (tileAt instanceof GCCoreTileEntityAirLock)
 				{
-					airLocksHorizontalMin++;
+					this.airLocksHorizontalMin++;
 				}
 			}
 		}
-		else if (minZ != maxZ)
+		else if (this.minZ != this.maxZ)
 		{
-			for (int z = minZ; z <= maxZ; z++)
+			for (int z = this.minZ; z <= this.maxZ; z++)
 			{
-				TileEntity tileAt = new Vector3(maxX, maxY, z).getTileEntity(this.worldObj);
-				
+				final TileEntity tileAt = new Vector3(this.maxX, this.maxY, z).getTileEntity(this.worldObj);
+
 				if (tileAt instanceof GCCoreTileEntityAirLock)
 				{
-					airLocksHorizontalMax++;
+					this.airLocksHorizontalMax++;
 				}
 			}
 
-			for (int z = minZ; z <= maxZ; z++)
+			for (int z = this.minZ; z <= this.maxZ; z++)
 			{
-				TileEntity tileAt = new Vector3(maxX, minY, z).getTileEntity(this.worldObj);
-				
+				final TileEntity tileAt = new Vector3(this.maxX, this.minY, z).getTileEntity(this.worldObj);
+
 				if (tileAt instanceof GCCoreTileEntityAirLock)
 				{
-					airLocksHorizontalMin++;
+					this.airLocksHorizontalMin++;
 				}
 			}
 		}
-		
-		if (airLocksHorizontalMax == 0 || airLocksHorizontalMin == 0 || airLocksVerticalMin == 0 || airLocksVerticalMax == 0 || (airLocksHorizontalMax != airLocksHorizontalMin) || (airLocksVerticalMax != airLocksVerticalMin))
+
+		if (this.airLocksHorizontalMax == 0 || this.airLocksHorizontalMin == 0 || this.airLocksVerticalMin == 0 || this.airLocksVerticalMax == 0 || this.airLocksHorizontalMax != this.airLocksHorizontalMin || this.airLocksVerticalMax != this.airLocksVerticalMin)
 		{
 			return null;
 		}
-			
+
 		return this.adjacentAirLocks;
 	}
 }

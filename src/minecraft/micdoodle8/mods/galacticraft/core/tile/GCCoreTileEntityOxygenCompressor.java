@@ -24,7 +24,7 @@ import com.google.common.io.ByteArrayDataInput;
 public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityOxygen implements IInventory, ISidedInventory
 {
 	private ItemStack[] containingItems = new ItemStack[2];
-	
+
 	public GCCoreTileEntityOxygenCompressor()
 	{
 		super (300, 130, 1, 0.75D, 1200, 12);
@@ -37,9 +37,9 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityOxygen imp
 
 		if (!this.worldObj.isRemote)
 		{
-			if ((this.storedOxygen / 5.0D) >= 1.0D && (this.wattsReceived > 0 || this.ic2Energy > 0 || this.bcEnergy > 0))
+			if (this.storedOxygen / 5.0D >= 1.0D && (this.wattsReceived > 0 || this.ic2Energy > 0 || this.bcEnergy > 0))
 			{
-				if (!this.worldObj.isRemote && this.ticks % ((31 - Math.min(Math.floor((this.storedOxygen / 5.0D)), 30)) * 10) == 0)
+				if (!this.worldObj.isRemote && this.ticks % ((31 - Math.min(Math.floor(this.storedOxygen / 5.0D), 30)) * 10) == 0)
 				{
 					final ItemStack stack = this.getStackInSlot(0);
 
@@ -223,13 +223,13 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityOxygen imp
 	}
 
 	@Override
-	public boolean shouldPullEnergy() 
+	public boolean shouldPullEnergy()
 	{
-		return this.timeSinceOxygenRequest > 0 && this.getStackInSlot(0) != null;
+		return GCCoreTileEntityOxygen.timeSinceOxygenRequest > 0 && this.getStackInSlot(0) != null;
 	}
 
 	@Override
-	public void readPacket(ByteArrayDataInput data) 
+	public void readPacket(ByteArrayDataInput data)
 	{
 		if (this.worldObj.isRemote)
 		{
@@ -242,7 +242,7 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityOxygen imp
 	}
 
 	@Override
-	public Packet getPacket() 
+	public Packet getPacket()
 	{
 		return PacketManager.getPacket(GalacticraftCore.CHANNEL, this, this.storedOxygen, this.wattsReceived, this.ic2Energy, this.disabled, this.bcEnergy);
 	}
@@ -254,7 +254,7 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityOxygen imp
 	}
 
 	@Override
-	public ItemStack getBatteryInSlot() 
+	public ItemStack getBatteryInSlot()
 	{
 		return this.getStackInSlot(1);
 	}
@@ -266,7 +266,7 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityOxygen imp
 	}
 
 	@Override
-	public boolean shouldPullOxygen() 
+	public boolean shouldPullOxygen()
 	{
 		return this.ic2Energy > 0 || this.wattsReceived > 0 || this.bcEnergy > 0;
 	}

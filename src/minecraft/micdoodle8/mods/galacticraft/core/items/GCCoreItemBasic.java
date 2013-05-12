@@ -14,7 +14,7 @@
 //public class GCCoreItemBasic extends Item
 //{
 //	protected Icon[] icons = new Icon[256];
-//	
+//
 //	public static final String[] names = {
 //		"canister_tin",
 //		"canister_copper",
@@ -29,7 +29,7 @@
 //		"air_fan",
 //		"air_vent"};
 //
-//	public GCCoreItemBasic(int id) 
+//	public GCCoreItemBasic(int id)
 //	{
 //		super(id);
 //        this.setMaxDamage(0);

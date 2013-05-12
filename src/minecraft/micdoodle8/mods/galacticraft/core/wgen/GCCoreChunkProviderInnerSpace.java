@@ -91,7 +91,7 @@
 //        final long i1 = this.rand.nextLong() / 2L * 2L + 1L;
 //        final long j1 = this.rand.nextLong() / 2L * 2L + 1L;
 //        this.rand.setSeed(par2 * i1 + par3 * j1 ^ this.worldObj.getSeed());
-//        
+//
 //        if (par2 == 0 && par3 == 0 && WorldUtil.updateableObjects.isEmpty())
 //        {
 //        	GCCoreEntityCelestialObject.spawnCelestialObject(new GCCoreEntityOverworld(this.worldObj), new GCCoreEntityMoon(this.worldObj));
@@ -102,7 +102,7 @@
 //        		this.worldObj.spawnEntityInWorld((Entity) planet);
 //        	}
 //        }
-//        
+//
 //		BlockSand.fallInstantly = false;
 //	}
 //

@@ -43,18 +43,18 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
 
 	private boolean checkOilNextTick = false;
 	private boolean lastCheckOilNextTick = false;
-	
-	public GCCoreTileEntityRefinery() 
+
+	public GCCoreTileEntityRefinery()
 	{
 		super(600, 130, 1, 1.0D);
-		
+
 		if (PowerFramework.currentFramework != null)
 		{
-			bcPowerProvider = new GCCoreLinkedPowerProvider(this);
-			bcPowerProvider.configure(20, 25, 100, 25, 1000);
+			this.bcPowerProvider = new GCCoreLinkedPowerProvider(this);
+			this.bcPowerProvider.configure(20, 25, 100, 25, 1000);
 		}
 	}
-	
+
 	@Override
 	public void updateEntity()
 	{
@@ -136,7 +136,7 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
 			{
 				this.processTicks = 0;
 			}
-			
+
 			if (this.checkOilNextTick && this.lastCheckOilNextTick)
 			{
 				if (!this.getDisabled() && (this.oilTank == null || this.oilTank.getLiquid() == null || this.oilTank.getLiquid().amount == 0))
@@ -145,7 +145,7 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
 					this.checkOilNextTick = false;
 				}
 			}
-				
+
 			this.lastCheckOilNextTick = this.checkOilNextTick;
 		}
 	}
@@ -187,7 +187,7 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
 		{
 			return false;
 		}
-		
+
 		if (this.ic2Energy == 0 && this.bcEnergy == 0 && this.wattsReceived == 0)
 		{
 			return false;
@@ -399,7 +399,7 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
 		{
 			return this.fill(0, resource, doFill);
 		}
-		
+
 		return 0;
 	}
 
@@ -425,7 +425,7 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
 		{
 			return this.drain(0, maxDrain, doDrain);
 		}
-		
+
 		return null;
 	}
 
@@ -459,13 +459,13 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
 	}
 
 	@Override
-	public boolean shouldPullEnergy() 
+	public boolean shouldPullEnergy()
 	{
 		return !this.getDisabled() && this.oilTank.getLiquid() != null && this.oilTank.getLiquid().amount > 0;
 	}
 
 	@Override
-	public void readPacket(ByteArrayDataInput data) 
+	public void readPacket(ByteArrayDataInput data)
 	{
 		if (this.worldObj.isRemote)
 		{
@@ -480,19 +480,19 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
 	}
 
 	@Override
-	public Packet getPacket() 
+	public Packet getPacket()
 	{
 		return PacketManager.getPacket(GalacticraftCore.CHANNEL, this, this.wattsReceived, this.processTicks, this.ic2Energy, this.oilTank.getLiquid() == null ? 0 : this.oilTank.getLiquid().amount, this.fuelTank.getLiquid() == null ? 0 : this.fuelTank.getLiquid().amount, this.disabled, this.bcEnergy);
 	}
 
 	@Override
-	public ForgeDirection getElectricInputDirection() 
+	public ForgeDirection getElectricInputDirection()
 	{
 		return ForgeDirection.UP;
 	}
 
 	@Override
-	public ItemStack getBatteryInSlot() 
+	public ItemStack getBatteryInSlot()
 	{
 		return this.getStackInSlot(0);
 	}

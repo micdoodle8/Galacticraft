@@ -7,7 +7,6 @@ import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SoundPoolEntry;
 import net.minecraftforge.client.event.sound.PlayBackgroundMusicEvent;
-import net.minecraftforge.client.event.sound.SoundLoadEvent;
 import net.minecraftforge.event.ForgeSubscribe;
 import cpw.mods.fml.client.FMLClientHandler;
 
@@ -77,7 +76,7 @@ public class GCCoreSounds
     		}
 
     		final int randInt = FMLClientHandler.instance().getClient().thePlayer.worldObj.rand.nextInt(6);
-    		
+
     		if (randInt < ClientProxyCore.newMusic.size())
     		{
     			event.result = ClientProxyCore.newMusic.get(randInt);

@@ -19,18 +19,18 @@ public class GCCoreTileEntityDungeonSpawner extends TileEntityAdvanced implement
 	private boolean isBossDefeated = false;
 	private boolean playerInRange;
 	private boolean lastPlayerInRange;
-    
+
 	@Override
 	public void updateEntity()
 	{
 		super.updateEntity();
-		
+
 		if (!this.worldObj.isRemote)
 		{
-	    	Vector3 thisVec = new Vector3(this);
-	    	List l = this.worldObj.getEntitiesWithinAABB(GCCoreEntitySkeletonBoss.class, AxisAlignedBB.getBoundingBox(thisVec.x - 15, thisVec.y - 15, thisVec.z - 15, thisVec.x + 15, thisVec.y + 15, thisVec.z + 15));
-			
-	    	for (Entity e : (List<Entity>)l)
+	    	final Vector3 thisVec = new Vector3(this);
+	    	final List l = this.worldObj.getEntitiesWithinAABB(GCCoreEntitySkeletonBoss.class, AxisAlignedBB.getBoundingBox(thisVec.x - 15, thisVec.y - 15, thisVec.z - 15, thisVec.x + 15, thisVec.y + 15, thisVec.z + 15));
+
+	    	for (final Entity e : (List<Entity>)l)
 	    	{
 	    		if (e instanceof GCCoreEntitySkeletonBoss)
 	    		{
@@ -42,17 +42,17 @@ public class GCCoreTileEntityDungeonSpawner extends TileEntityAdvanced implement
 	    			}
 	    		}
 	    	}
-	    	
+
 			if (this.boss == null && !this.getBossDefeated())
 			{
 				this.setBoss(new GCCoreEntitySkeletonBoss(this.worldObj, new Vector3(this).add(new Vector3(0.0D, 1.0D, 0.0D))));
 			}
-			
+
 			EntityPlayer closestPlayer = null;
-	    	
-			Vector3 vec = new Vector3(this);
+
+			final Vector3 vec = new Vector3(this);
 			closestPlayer = this.worldObj.getClosestPlayer(vec.x, vec.y, vec.z, 40.0D);
-			
+
 			this.playerInRange = closestPlayer != null;
 
 			if (this.playerInRange && !this.lastPlayerInRange)
@@ -72,24 +72,25 @@ public class GCCoreTileEntityDungeonSpawner extends TileEntityAdvanced implement
 			{
 				this.setBossDefeated(false);
 			}
-	    	
+
 			this.lastPlayerInRange = this.playerInRange;
 		}
 	}
 
 	@Override
-	public void setBossDefeated(boolean defeated) 
+	public void setBossDefeated(boolean defeated)
 	{
 		this.isBossDefeated = defeated;
 	}
 
 	@Override
-	public boolean getBossDefeated() 
+	public boolean getBossDefeated()
 	{
 		return this.isBossDefeated;
 	}
 
-    public void readFromNBT(NBTTagCompound nbt)
+    @Override
+	public void readFromNBT(NBTTagCompound nbt)
     {
     	super.readFromNBT(nbt);
 
@@ -98,35 +99,36 @@ public class GCCoreTileEntityDungeonSpawner extends TileEntityAdvanced implement
     	this.setBossDefeated(nbt.getBoolean("defeated"));
     }
 
-    public void writeToNBT(NBTTagCompound nbt)
+    @Override
+	public void writeToNBT(NBTTagCompound nbt)
     {
     	super.writeToNBT(nbt);
-    	
+
     	nbt.setBoolean("spawned", this.getBossSpawned());
     	nbt.setBoolean("playerInRange", this.playerInRange);
     	nbt.setBoolean("defeated", this.getBossDefeated());
     }
 
 	@Override
-	public void setBossSpawned(boolean spawned) 
+	public void setBossSpawned(boolean spawned)
 	{
 		this.spawned = spawned;
 	}
 
 	@Override
-	public boolean getBossSpawned() 
+	public boolean getBossSpawned()
 	{
 		return this.spawned;
 	}
 
 	@Override
-	public void setBoss(IDungeonBoss boss) 
+	public void setBoss(IDungeonBoss boss)
 	{
 		this.boss = boss;
 	}
 
 	@Override
-	public IDungeonBoss getBoss() 
+	public IDungeonBoss getBoss()
 	{
 		return this.boss;
 	}

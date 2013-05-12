@@ -6,7 +6,7 @@ public class GCDungeonBoundingBox {
 	int minZ;
 	int maxX;
 	int maxZ;
-	
+
 	public GCDungeonBoundingBox(int minX, int minZ, int maxX, int maxZ)
 	{
 		this.minX = minX;
@@ -14,10 +14,10 @@ public class GCDungeonBoundingBox {
 		this.maxX = maxX;
 		this.maxZ = maxZ;
 	}
-	
+
 	public boolean isOverlapping(GCDungeonBoundingBox bb)
 	{
-		return (minX < bb.maxX) && (minZ < bb.maxZ) && (maxX > bb.minX) && (maxZ > bb.minZ);
+		return this.minX < bb.maxX && this.minZ < bb.maxZ && this.maxX > bb.minX && this.maxZ > bb.minZ;
 	}
-	
+
 }

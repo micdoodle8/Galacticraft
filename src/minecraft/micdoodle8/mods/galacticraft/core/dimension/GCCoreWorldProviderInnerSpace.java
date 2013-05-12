@@ -200,13 +200,13 @@
 //	}
 //
 //	@Override
-//	public float getGravity() 
+//	public float getGravity()
 //	{
 //		return 0.065F;
 //	}
 //
 //	@Override
-//	public double getMeteorFrequency() 
+//	public double getMeteorFrequency()
 //	{
 //		return 0;
 //	}

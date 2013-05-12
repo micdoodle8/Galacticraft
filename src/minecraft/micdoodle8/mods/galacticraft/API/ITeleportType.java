@@ -48,6 +48,6 @@ public interface ITeleportType
 	 * @return a vector3 object containing the coordinates to be spawned into the world with. Return null for no spawn
 	 */
 	public Vector3 getParaChestSpawnLocation(WorldServer world, Entity chest, EntityPlayerMP player, Random rand);
-	
+
 	public void onSpaceDimensionChanged(World newWorld, EntityPlayerMP player);
 }

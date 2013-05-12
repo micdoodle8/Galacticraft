@@ -18,13 +18,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.IPlantable;
 import universalelectricity.prefab.block.BlockAdvanced;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -52,18 +49,18 @@ public class GCMoonBlock extends BlockAdvanced implements IDetectableMetadataRes
     	{
     		return null;
     	}
-    	
+
     	return super.getCollisionBoundingBoxFromPool(world, x, y, z);
     }
-    
+
     @Override
     public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z)
     {
     	if (world.getBlockMetadata(x, y, z) == 15)
     	{
-    		return AxisAlignedBB.getAABBPool().getAABB((double)x + 0.0D, (double)y + 0.0D, (double)z + 0.0D, (double)x + 0.0D, (double)y + 0.0D, (double)z + 0.0D);
+    		return AxisAlignedBB.getAABBPool().getAABB(x + 0.0D, y + 0.0D, z + 0.0D, x + 0.0D, y + 0.0D, z + 0.0D);
     	}
-    	
+
     	return super.getSelectedBoundingBoxFromPool(world, x, y, z);
     }
 
@@ -104,7 +101,7 @@ public class GCMoonBlock extends BlockAdvanced implements IDetectableMetadataRes
     	{
     		return 10000.0F;
     	}
-    	
+
     	return super.getExplosionResistance(par1Entity, world, x, y, z, explosionX, explosionY, explosionZ);
     }
 
@@ -117,7 +114,7 @@ public class GCMoonBlock extends BlockAdvanced implements IDetectableMetadataRes
 		{
 			return 0.1F;
 		}
-		
+
 		if (meta == 14 || meta == 15)
 		{
 			return -1F;
@@ -249,7 +246,7 @@ public class GCMoonBlock extends BlockAdvanced implements IDetectableMetadataRes
     public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
     {
     	int var4;
-    	
+
         for (var4 = 0; var4 < 6; ++var4)
         {
             par3List.add(new ItemStack(par1, 1, var4));
@@ -260,7 +257,7 @@ public class GCMoonBlock extends BlockAdvanced implements IDetectableMetadataRes
             par3List.add(new ItemStack(par1, 1, var4));
         }
     }
-    
+
 	@Override
 	public TileEntity createTileEntity(World world, int metadata)
 	{
@@ -268,7 +265,7 @@ public class GCMoonBlock extends BlockAdvanced implements IDetectableMetadataRes
 		{
 			return new GCCoreTileEntityDungeonSpawner();
 		}
-		
+
 		return null;
 	}
 
