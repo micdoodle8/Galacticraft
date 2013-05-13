@@ -11,6 +11,7 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldInsnNode;
+import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.IincInsnNode;
 import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.InsnNode;
@@ -744,29 +745,43 @@ public class GCCoreTransformer implements IClassTransformer
         final ClassNode node = new ClassNode();
         final ClassReader reader = new ClassReader(bytes);
         reader.accept(node, 0);
+        
+        boolean foundField = false;
+        
+        for (FieldNode fNode : node.fields)
+        {
+        	if (fNode.name.equals("CREATIVE_MAIN_INVENTORY_SIZE"))
+        	{
+        		foundField = true;
+        		break;
+        	}
+        }
 
 		final Iterator<MethodNode> methods = node.methods.iterator();
 
-		while (methods.hasNext())
+		if (foundField)
 		{
-			final MethodNode methodnode = methods.next();
-
-			if (methodnode.name.equals("<init>"))
+			while (methods.hasNext())
 			{
-	            for (int count = 0; count < methodnode.instructions.size(); count++)
-	            {
-	            	final AbstractInsnNode list = methodnode.instructions.get(count);
+				final MethodNode methodnode = methods.next();
 
-	            	if (list instanceof IincInsnNode)
-	            	{
-	            		final IincInsnNode nodeAt = (IincInsnNode) list;
+				if (methodnode.name.equals("<init>"))
+				{
+		            for (int count = 0; count < methodnode.instructions.size(); count++)
+		            {
+		            	final AbstractInsnNode list = methodnode.instructions.get(count);
 
-	            		if (nodeAt.incr == -1)
-	            		{
-	            			methodnode.instructions.set(nodeAt, new IincInsnNode(nodeAt.var, -6));
-	            		}
-	            	}
-	            }
+		            	if (list instanceof IincInsnNode)
+		            	{
+		            		final IincInsnNode nodeAt = (IincInsnNode) list;
+
+		            		if (nodeAt.incr == -1)
+		            		{
+		            			methodnode.instructions.set(nodeAt, new IincInsnNode(nodeAt.var, -6));
+		            		}
+		            	}
+		            }
+				}
 			}
 		}
 
