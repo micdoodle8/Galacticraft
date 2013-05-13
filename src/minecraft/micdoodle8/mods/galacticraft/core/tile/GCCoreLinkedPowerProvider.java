@@ -1,8 +1,5 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import net.minecraftforge.common.ForgeDirection;
-import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerProvider;
 
 public class GCCoreLinkedPowerProvider extends PowerProvider

@@ -286,7 +286,7 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
 	@Override
 	public Packet getPacket()
 	{
-		return PacketManager.getPacket(GalacticraftCore.CHANNEL, this, this.storedOxygen, this.wattsReceived, this.disabled, this.ic2Energy, this.sealed, this.getPowerProvider() != null ? (double)this.getPowerProvider().getEnergyStored() : 0.0D);
+		return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.storedOxygen, this.wattsReceived, this.disabled, this.ic2Energy, this.sealed, this.getPowerProvider() != null ? (double)this.getPowerProvider().getEnergyStored() : 0.0D);
 	}
 
 	@Override

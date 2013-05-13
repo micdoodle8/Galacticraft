@@ -71,10 +71,6 @@ public class GCCorePacketHandlerClient implements IPacketHandler
         }
         else if (packetType == 1)
         {
-            final Class[] decodeAs = {Float.class};
-            final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
-
-            FMLClientHandler.instance().getClient().thePlayer.timeInPortal = (Float) packetReadout[0];
         }
         else if (packetType == 2)
         {

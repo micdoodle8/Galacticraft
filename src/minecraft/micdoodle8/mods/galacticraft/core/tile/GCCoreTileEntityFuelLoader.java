@@ -387,7 +387,7 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric impleme
 	@Override
 	public Packet getPacket()
 	{
-		return PacketManager.getPacket(GalacticraftCore.CHANNEL, this, this.wattsReceived, this.ic2Energy, this.fuelTank.getLiquid() == null ? 0 : this.fuelTank.getLiquid().amount, this.disabled, this.disableCooldown, this.getPowerProvider() != null ? (double)this.getPowerProvider().getEnergyStored() : 0.0D);
+		return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.wattsReceived, this.ic2Energy, this.fuelTank.getLiquid() == null ? 0 : this.fuelTank.getLiquid().amount, this.disabled, this.disableCooldown, this.getPowerProvider() != null ? (double)this.getPowerProvider().getEnergyStored() : 0.0D);
 	}
 
 	@Override

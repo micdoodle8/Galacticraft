@@ -463,7 +463,7 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
 	@Override
 	public Packet getDescriptionPacket()
 	{
-		return PacketManager.getPacket(GalacticraftCore.CHANNEL, this, this.locked);
+		return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.locked);
 	}
 
 	@Override
