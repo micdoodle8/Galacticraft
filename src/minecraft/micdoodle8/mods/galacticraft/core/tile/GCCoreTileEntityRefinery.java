@@ -188,7 +188,7 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
 			return false;
 		}
 
-		if (this.ic2Energy == 0 && this.getPowerProvider().getEnergyStored() == 0 && this.wattsReceived == 0)
+		if (this.ic2Energy == 0 && (this.getPowerProvider() == null || this.getPowerProvider().getEnergyStored() == 0) && this.wattsReceived == 0)
 		{
 			return false;
 		}
@@ -482,7 +482,7 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
 	@Override
 	public Packet getPacket()
 	{
-		return PacketManager.getPacket(GalacticraftCore.CHANNEL, this, this.wattsReceived, this.processTicks, this.ic2Energy, this.oilTank.getLiquid() == null ? 0 : this.oilTank.getLiquid().amount, this.fuelTank.getLiquid() == null ? 0 : this.fuelTank.getLiquid().amount, this.disabled, (double)this.getPowerProvider().getEnergyStored());
+		return PacketManager.getPacket(GalacticraftCore.CHANNEL, this, this.wattsReceived, this.processTicks, this.ic2Energy, this.oilTank.getLiquid() == null ? 0 : this.oilTank.getLiquid().amount, this.fuelTank.getLiquid() == null ? 0 : this.fuelTank.getLiquid().amount, this.disabled, this.getPowerProvider() != null ? (double)this.getPowerProvider().getEnergyStored() : 0.0D);
 	}
 
 	@Override

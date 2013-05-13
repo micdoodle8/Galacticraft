@@ -349,7 +349,7 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityElectric im
 	@Override
 	public Packet getPacket()
 	{
-		return PacketManager.getPacket(GalacticraftCore.CHANNEL, this, this.power, this.wattsReceived, this.ic2Energy, this.disabled, (double)this.getPowerProvider().getEnergyStored());
+		return PacketManager.getPacket(GalacticraftCore.CHANNEL, this, this.power, this.wattsReceived, this.ic2Energy, this.disabled, this.getPowerProvider() != null ? (double)this.getPowerProvider().getEnergyStored() : 0.0D);
 	}
 
 	@Override
