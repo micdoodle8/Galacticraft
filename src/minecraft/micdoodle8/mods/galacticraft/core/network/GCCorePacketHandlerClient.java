@@ -9,6 +9,7 @@ import java.util.Collections;
 import micdoodle8.mods.galacticraft.API.ISchematicPage;
 import micdoodle8.mods.galacticraft.API.SchematicRegistry;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
+import micdoodle8.mods.galacticraft.core.GCLog;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore.GCKeyHandler;
 import micdoodle8.mods.galacticraft.core.client.GCCorePlayerSP;
@@ -71,6 +72,7 @@ public class GCCorePacketHandlerClient implements IPacketHandler
         }
         else if (packetType == 1)
         {
+        	GCLog.severe("Found inccorect packet! Please report this as a bug.");
         }
         else if (packetType == 2)
         {

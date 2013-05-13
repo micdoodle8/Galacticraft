@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
+import java.util.List;
+
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenDistributor;
@@ -18,6 +20,10 @@ import universalelectricity.prefab.network.IPacketReceiver;
 import universalelectricity.prefab.network.PacketManager;
 
 import com.google.common.io.ByteArrayDataInput;
+
+import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreEntityOxygenBubble extends Entity implements IPacketReceiver
 {
@@ -38,10 +44,17 @@ public class GCCoreEntityOxygenBubble extends Entity implements IPacketReceiver
 
 	public GCCoreEntityOxygenBubble(World world)
 	{
-		super (world);
+		super(world);
+		this.noClip = true;
 		this.isImmuneToFire = true;
 		this.ignoreFrustumCheck = true;
 	}
+
+    @Override
+    protected boolean pushOutOfBlocks(double par1, double par3, double par5)
+    {
+    	return false;
+    }
 
     @Override
 	public AxisAlignedBB getBoundingBox()
@@ -56,6 +69,20 @@ public class GCCoreEntityOxygenBubble extends Entity implements IPacketReceiver
     }
 
     @Override
+    public void moveEntity(double par1, double par3, double par5)
+    {
+    	;
+    }
+    
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void setPositionAndRotation2(double par1, double par3, double par5, float par7, float par8, int par9)
+    {
+        this.setPosition(par1, par3, par5);
+        this.setRotation(par7, par8);
+    }
+
+    @Override
     public void onEntityUpdate()
     {
 		if (this.ticks >= Long.MAX_VALUE)
@@ -65,11 +92,21 @@ public class GCCoreEntityOxygenBubble extends Entity implements IPacketReceiver
 
 		this.ticks++;
 
+    	if (this.distributor != null)
+		{
+    		final Vector3 vec = new Vector3(this.distributor);
+
+    		this.posX = vec.x + 0.5D;
+    		this.posY = vec.y + 1.0D;
+    		this.posZ = vec.z + 0.5D;
+		}
+
     	super.onEntityUpdate();
 
+    	FMLLog.info("" + MathHelper.floor_double(this.posY - 1.0));
     	final TileEntity tileAt = this.worldObj.getBlockTileEntity(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 1.0), MathHelper.floor_double(this.posZ));
 
-    	if (tileAt instanceof GCCoreTileEntityOxygenDistributor && !this.worldObj.isRemote)
+    	if (tileAt instanceof GCCoreTileEntityOxygenDistributor)
     	{
     		final GCCoreTileEntityOxygenDistributor distributor = (GCCoreTileEntityOxygenDistributor) tileAt;
 
@@ -93,13 +130,16 @@ public class GCCoreEntityOxygenBubble extends Entity implements IPacketReceiver
     	if (!this.worldObj.isRemote && this.distributor != null)
     	{
     		this.size = this.distributor.storedOxygen / 600.0D;
+    	}
 
+    	if (this.distributor != null)
+		{
     		final Vector3 vec = new Vector3(this.distributor);
 
     		this.posX = vec.x + 0.5D;
     		this.posY = vec.y + 1.0D;
     		this.posZ = vec.z + 0.5D;
-    	}
+		}
 
 		if (!this.worldObj.isRemote && this.ticks % 5 == 0)
 		{
