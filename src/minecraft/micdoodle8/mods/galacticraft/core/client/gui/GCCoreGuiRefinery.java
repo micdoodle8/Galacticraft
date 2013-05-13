@@ -68,7 +68,7 @@ public class GCCoreGuiRefinery extends GuiContainer
 		{
 			displayText = EnumColor.ORANGE + "Ready";
 		}
-		else if (this.tileEntity.wattsReceived == 0 && this.tileEntity.ic2Energy == 0)
+		else if (this.tileEntity.wattsReceived == 0 && this.tileEntity.ic2Energy == 0 && this.tileEntity.bcEnergy == 0)
 		{
 			displayText = EnumColor.ORANGE + "Idle";
 		}

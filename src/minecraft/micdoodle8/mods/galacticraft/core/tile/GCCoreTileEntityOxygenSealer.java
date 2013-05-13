@@ -34,7 +34,7 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
 
 	public GCCoreTileEntityOxygenSealer()
 	{
-		super(300, 130, 1, 0.75D, 10000, 12);
+		super(300, 130, 1, 1.0D, 10000, 12);
 	}
 
 	@Override
@@ -49,7 +49,7 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
 	            this.sealed = this.checkSeal(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
 			}
 
-			if (this.storedOxygen >= 1 && (this.wattsReceived > 0 || this.ic2Energy > 0 || this.bcEnergy > 0) && !this.disabled)
+			if (this.storedOxygen >= 1 && (this.wattsReceived > 0 || this.ic2Energy > 0 || this.getPowerProvider().getEnergyStored() > 0) && !this.disabled)
 			{
 				this.active = true;
 			}
@@ -286,7 +286,7 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
 	@Override
 	public Packet getPacket()
 	{
-		return PacketManager.getPacket(GalacticraftCore.CHANNEL, this, this.storedOxygen, this.wattsReceived, this.disabled, this.ic2Energy, this.sealed, this.bcEnergy);
+		return PacketManager.getPacket(GalacticraftCore.CHANNEL, this, this.storedOxygen, this.wattsReceived, this.disabled, this.ic2Energy, this.sealed, (double)this.getPowerProvider().getEnergyStored());
 	}
 
 	@Override
@@ -310,6 +310,6 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
 	@Override
 	public boolean shouldPullOxygen()
 	{
-		return this.ic2Energy > 0 || this.wattsReceived > 0 || this.bcEnergy > 0;
+		return this.ic2Energy > 0 || this.wattsReceived > 0 || this.getPowerProvider().getEnergyStored() > 0;
 	}
 }

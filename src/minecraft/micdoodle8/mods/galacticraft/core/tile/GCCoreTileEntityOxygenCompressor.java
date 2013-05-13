@@ -27,7 +27,7 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityOxygen imp
 
 	public GCCoreTileEntityOxygenCompressor()
 	{
-		super (300, 130, 1, 0.75D, 1200, 12);
+		super (300, 130, 1, 1.0D, 1200, 12);
 	}
 
 	@Override
@@ -37,7 +37,7 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityOxygen imp
 
 		if (!this.worldObj.isRemote)
 		{
-			if (this.storedOxygen / 5.0D >= 1.0D && (this.wattsReceived > 0 || this.ic2Energy > 0 || this.bcEnergy > 0))
+			if (this.storedOxygen / 5.0D >= 1.0D && (this.wattsReceived > 0 || this.ic2Energy > 0 || this.getPowerProvider().getEnergyStored() > 0))
 			{
 				if (!this.worldObj.isRemote && this.ticks % ((31 - Math.min(Math.floor(this.storedOxygen / 5.0D), 30)) * 10) == 0)
 				{
@@ -244,7 +244,7 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityOxygen imp
 	@Override
 	public Packet getPacket()
 	{
-		return PacketManager.getPacket(GalacticraftCore.CHANNEL, this, this.storedOxygen, this.wattsReceived, this.ic2Energy, this.disabled, this.bcEnergy);
+		return PacketManager.getPacket(GalacticraftCore.CHANNEL, this, this.storedOxygen, this.wattsReceived, this.ic2Energy, this.disabled, (double)this.getPowerProvider().getEnergyStored());
 	}
 
 	@Override
@@ -268,6 +268,6 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityOxygen imp
 	@Override
 	public boolean shouldPullOxygen()
 	{
-		return this.ic2Energy > 0 || this.wattsReceived > 0 || this.bcEnergy > 0;
+		return this.ic2Energy > 0 || this.wattsReceived > 0 || this.getPowerProvider().getEnergyStored() > 0;
 	}
 }

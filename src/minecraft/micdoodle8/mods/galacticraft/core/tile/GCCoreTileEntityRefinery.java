@@ -46,12 +46,12 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
 
 	public GCCoreTileEntityRefinery()
 	{
-		super(600, 130, 1, 1.0D);
+		super(600, 130, 1, 1.5D);
 
 		if (PowerFramework.currentFramework != null)
 		{
 			this.bcPowerProvider = new GCCoreLinkedPowerProvider(this);
-			this.bcPowerProvider.configure(20, 25, 100, 25, 1000);
+			this.bcPowerProvider.configure(20, 15, 100, 25, 1000);
 		}
 	}
 
@@ -188,7 +188,7 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
 			return false;
 		}
 
-		if (this.ic2Energy == 0 && this.bcEnergy == 0 && this.wattsReceived == 0)
+		if (this.ic2Energy == 0 && this.getPowerProvider().getEnergyStored() == 0 && this.wattsReceived == 0)
 		{
 			return false;
 		}
@@ -482,7 +482,7 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
 	@Override
 	public Packet getPacket()
 	{
-		return PacketManager.getPacket(GalacticraftCore.CHANNEL, this, this.wattsReceived, this.processTicks, this.ic2Energy, this.oilTank.getLiquid() == null ? 0 : this.oilTank.getLiquid().amount, this.fuelTank.getLiquid() == null ? 0 : this.fuelTank.getLiquid().amount, this.disabled, this.bcEnergy);
+		return PacketManager.getPacket(GalacticraftCore.CHANNEL, this, this.wattsReceived, this.processTicks, this.ic2Energy, this.oilTank.getLiquid() == null ? 0 : this.oilTank.getLiquid().amount, this.fuelTank.getLiquid() == null ? 0 : this.fuelTank.getLiquid().amount, this.disabled, (double)this.getPowerProvider().getEnergyStored());
 	}
 
 	@Override

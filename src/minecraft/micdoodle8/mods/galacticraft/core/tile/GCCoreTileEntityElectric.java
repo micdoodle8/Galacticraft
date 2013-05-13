@@ -31,6 +31,9 @@ import buildcraft.api.power.PowerFramework;
 
 import com.google.common.io.ByteArrayDataInput;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 public abstract class GCCoreTileEntityElectric extends TileEntityElectricityRunnable implements IWrenchable, IPowerReceptor, IEnergySink, IPacketReceiver, IDisableableMachine
 {
 	public int ueWattsPerTick;
@@ -38,6 +41,7 @@ public abstract class GCCoreTileEntityElectric extends TileEntityElectricityRunn
 	public double ic2Energy;
 	public double ic2EnergyPerTick;
 	public IPowerProvider bcPowerProvider;
+	@SideOnly(Side.CLIENT)
 	public double bcEnergy;
 	public double bcEnergyPerTick;
 
@@ -131,7 +135,7 @@ public abstract class GCCoreTileEntityElectric extends TileEntityElectricityRunn
 
 			if (this.getPowerProvider() != null && this.shouldPullEnergy())
 			{
-				this.getPowerProvider().useEnergy(0, (float) this.bcEnergyPerTick / 2.0F, true);
+				this.getPowerProvider().useEnergy((float) this.bcEnergyPerTick / 2.0F, (float) this.bcEnergyPerTick / 2.0F, true);
 			}
 
 			if (this.shouldPullEnergy())
@@ -267,7 +271,7 @@ public abstract class GCCoreTileEntityElectric extends TileEntityElectricityRunn
 	@Override
 	public int powerRequest(ForgeDirection from)
 	{
-		return (int)Math.min((this.maxEnergy - this.bcEnergy) * GalacticraftCore.toBuildcraftEnergyScalar, 100);
+		return (int)Math.min((this.getPowerProvider().getMaxEnergyStored() - this.getPowerProvider().getEnergyStored()) * GalacticraftCore.toBuildcraftEnergyScalar, this.getPowerProvider().getMaxEnergyReceived());
 	}
 
 	@Override
