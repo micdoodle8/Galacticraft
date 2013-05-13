@@ -77,7 +77,7 @@ public class GCCoreTransformer implements IClassTransformer
 		this.unObfuscatedMap.put("playerControllerClass", "net/minecraft/client/multiplayer/PlayerControllerMP");
 		this.obfuscatedMap.put("createClientPlayerMethod", "a");
 		this.unObfuscatedMap.put("createClientPlayerMethod", "func_78754_a");
-		this.obfuscatedMap.put("createClientPlayerDesc", "(Laab;)Lbdw;");
+		this.obfuscatedMap.put("createClientPlayerDesc", "(Laab;)Lbdv;");
 		this.unObfuscatedMap.put("createClientPlayerDesc", "(Lnet/minecraft/world/World;)Lnet/minecraft/client/entity/EntityClientPlayerMP;");
 		this.obfuscatedMap.put("playerClient", "bdv");
 		this.unObfuscatedMap.put("playerClient", "net/minecraft/client/entity/EntityClientPlayerMP");

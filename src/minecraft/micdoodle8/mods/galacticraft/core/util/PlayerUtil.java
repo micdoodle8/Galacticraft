@@ -82,7 +82,7 @@ public class PlayerUtil
 	    {
 	        final Map.Entry entry = (Map.Entry)it.next();
 
-	        if (entry.getKey().equals(player.username))
+	        if (entry.getKey() != null && entry.getKey().equals(player.username))
 	        {
 	        	return (GCCorePlayerSP) entry.getValue();
 	        }

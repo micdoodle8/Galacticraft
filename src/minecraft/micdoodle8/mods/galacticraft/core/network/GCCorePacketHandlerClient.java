@@ -53,7 +53,10 @@ public class GCCorePacketHandlerClient implements IPacketHandler
 
         GCCorePlayerSP playerBaseClient = null;
 
-    	playerBaseClient = PlayerUtil.getPlayerBaseClientFromPlayer((EntityPlayer) p);
+        if (player != null)
+        {
+        	playerBaseClient = PlayerUtil.getPlayerBaseClientFromPlayer(player);
+        }
 
         if (packetType == 0)
         {
