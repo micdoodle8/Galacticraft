@@ -31,7 +31,7 @@ public class RocketT1RecipeHandler extends TemplateRecipeHandler
 
 	public Set<Entry<ArrayList<PositionedStack>, PositionedStack>> getRecipes()
 	{
-		return NEIGalacticraftConfig.rocketBenchRecipes.entrySet();
+		return NEIGalacticraftConfig.getRocketBenchRecipes();
 	}
 
 	@Override

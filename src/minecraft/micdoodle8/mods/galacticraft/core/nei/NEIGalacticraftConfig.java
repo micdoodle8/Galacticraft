@@ -2,29 +2,31 @@ package micdoodle8.mods.galacticraft.core.nei;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
-import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
 
 public class NEIGalacticraftConfig implements IConfigureNEI
 {
-	public static HashMap<ArrayList<PositionedStack>, PositionedStack> rocketBenchRecipes = new HashMap<ArrayList<PositionedStack>, PositionedStack>();
+	private static HashMap<ArrayList<PositionedStack>, PositionedStack> rocketBenchRecipes = new HashMap<ArrayList<PositionedStack>, PositionedStack>();
+	private static HashMap<PositionedStack, PositionedStack> refineryRecipes = new HashMap<PositionedStack, PositionedStack>();
 
 	@Override
 	public void loadConfig()
 	{
-		this.registerRocketBenchRecipes();
+		this.registerRecipes();
 		API.hideItems(GalacticraftCore.hiddenItems);
 		API.registerRecipeHandler(new RocketT1RecipeHandler());
 		API.registerUsageHandler(new RocketT1RecipeHandler());
+		API.registerRecipeHandler(new RefineryRecipeHandler());
+		API.registerUsageHandler(new RefineryRecipeHandler());
 	}
 
 	@Override
@@ -44,14 +46,26 @@ public class NEIGalacticraftConfig implements IConfigureNEI
 		rocketBenchRecipes.put(input, output);
 	}
 
-	public Set<Entry<ArrayList<PositionedStack>, PositionedStack>> getRocketBenchRecipes()
+	public void registerRefineryRecipe(PositionedStack input, PositionedStack output)
+	{
+		refineryRecipes.put(input, output);
+	}
+
+	public static Set<Entry<ArrayList<PositionedStack>, PositionedStack>> getRocketBenchRecipes()
 	{
 		return rocketBenchRecipes.entrySet();
 	}
 
-	public void registerRocketBenchRecipes()
+	public static Set<Entry<PositionedStack, PositionedStack>> getRefineryRecipes()
+	{
+		return refineryRecipes.entrySet();
+	}
+
+	public void registerRecipes()
 	{
         final int changey = 23;
+        
+		this.registerRefineryRecipe(new PositionedStack(new ItemStack(GCCoreItems.oilCanister, 1, 1), 2, 3), new PositionedStack(new ItemStack(GCCoreItems.fuelCanister, 1, 1), 148, 3));
 
 		final ArrayList<PositionedStack> input1 = new ArrayList<PositionedStack>();
 		input1.add(new PositionedStack(new ItemStack(GCCoreItems.rocketNoseCone), 45, -8 + changey));

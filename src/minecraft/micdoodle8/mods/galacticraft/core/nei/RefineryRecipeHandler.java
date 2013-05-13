@@ -29,43 +29,12 @@ public class RefineryRecipeHandler extends TemplateRecipeHandler
     @Override
     public int recipiesPerPage()
     {
-        return 1;
+        return 2;
     }
 
-	public Set<Entry<ArrayList<PositionedStack>, PositionedStack>> getRecipes()
+	public Set<Entry<PositionedStack, PositionedStack>> getRecipes()
 	{
-		final HashMap<ArrayList<PositionedStack>, PositionedStack> recipes = new HashMap<ArrayList<PositionedStack>, PositionedStack>();
-
-        final int changex = -3;
-        final int changey = 23;
-
-		// Spaceship T1
-		final ArrayList<PositionedStack> input1 = new ArrayList<PositionedStack>();
-		input1.add(new PositionedStack(new ItemStack(GCCoreItems.rocketNoseCone), 48 + changex, -8 + changey));
-		input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlating), 39 + changex, -6 + 0 * 18 + 16 + changey));
-		input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlating), 39 + changex, -6 + 1 * 18 + 16 + changey));
-		recipes.put(input1, new PositionedStack(new ItemStack(GCCoreItems.spaceship, 1, 0), 142 + changex, 69 + changey));
-
-		// Spaceship T1 with 27 storage space
-		final ArrayList<PositionedStack> input2 = new ArrayList<PositionedStack>();
-		input2.add(new PositionedStack(new ItemStack(GCCoreItems.rocketNoseCone), 48 + changex, -8 + changey));
-		input2.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlating), 39 + changex, -6 + 0 * 18 + 16 + changey));
-		input2.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlating), 39 + changex, -6 + 1 * 18 + 16 + changey));
-		input2.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlating), 39 + changex, -6 + 2 * 18 + 16 + changey));
-		input2.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlating), 39 + changex, -6 + 3 * 18 + 16 + changey));
-		input2.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlating), 57 + changex, -6 + 0 * 18 + 16 + changey));
-		input2.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlating), 57 + changex, -6 + 1 * 18 + 16 + changey));
-		input2.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlating), 57 + changex, -6 + 2 * 18 + 16 + changey));
-		input2.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlating), 57 + changex, -6 + 3 * 18 + 16 + changey));
-		input2.add(new PositionedStack(new ItemStack(GCCoreItems.rocketEngine), 48 + changex, 82 + changey));
-		input2.add(new PositionedStack(new ItemStack(GCCoreItems.rocketFins), 21 + changex, 64 + changey));
-		input2.add(new PositionedStack(new ItemStack(GCCoreItems.rocketFins), 21 + changex, 82 + changey));
-		input2.add(new PositionedStack(new ItemStack(GCCoreItems.rocketFins), 75 + changex, 64 + changey));
-		input2.add(new PositionedStack(new ItemStack(GCCoreItems.rocketFins), 75 + changex, 82 + changey));
-		input2.add(new PositionedStack(new ItemStack(Block.chest), 93 + 0 * 26 + changex, -15 + changey));
-		recipes.put(input2, new PositionedStack(new ItemStack(GCCoreItems.spaceship, 1, 1), 142 + changex, 69 + changey));
-
-		return recipes.entrySet();
+		return NEIGalacticraftConfig.getRefineryRecipes();
 	}
 
 	@Override
@@ -73,12 +42,22 @@ public class RefineryRecipeHandler extends TemplateRecipeHandler
 	{
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		guimanager.bindTexture(this.getGuiTexture());
-		guimanager.drawTexturedModalRect(0, 0, 3, 4, 168, 130);
+		guimanager.drawTexturedModalRect(-2, 0, 3, 4, 168, 64);
+		if ((this.ticksPassed % 144) < 124 && (this.ticksPassed % 144) > 10)
+		{
+			guimanager.drawTexturedModalRect(2, 42, 176, 6, 16, 20);
+		}
+		else if ((this.ticksPassed % 144) < 134)
+		{
+			guimanager.drawTexturedModalRect(148, 42, 176 + 16, 6, 16, 20);
+		}
+		guimanager.drawTexturedModalRect(21, 21, 0, 186, (this.ticksPassed % 144), 20);
 	}
 
 	@Override
 	public void onUpdate()
 	{
+		this.ticksPassed += 2;
 		super.onUpdate();
 	}
 
@@ -128,6 +107,34 @@ public class RefineryRecipeHandler extends TemplateRecipeHandler
 		}
 	}
 
+	@Override
+    public ArrayList<PositionedStack> getIngredientStacks(int recipe)
+    {
+		if ((this.ticksPassed % 144) > 10)
+		{
+			ArrayList<PositionedStack> stacks = new ArrayList<PositionedStack>();
+			stacks.add(new PositionedStack(new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.oilCanister.getMaxDamage()), arecipes.get(recipe).getIngredients().get(0).relx, arecipes.get(recipe).getIngredients().get(0).rely));
+	        return stacks;
+		}
+		else
+		{
+	        return arecipes.get(recipe).getIngredients();
+		}
+    }
+
+	@Override
+    public PositionedStack getResultStack(int recipe)
+    {
+		if ((this.ticksPassed % 144) < 134)
+		{
+	        return new PositionedStack(new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.oilCanister.getMaxDamage()), arecipes.get(recipe).getResult().relx, arecipes.get(recipe).getResult().rely);
+		}
+		else
+		{
+	        return arecipes.get(recipe).getResult();
+		}
+    }
+
 	public class CachedRefineryRecipe extends TemplateRecipeHandler.CachedRecipe
 	{
 		public PositionedStack input;
@@ -161,12 +168,12 @@ public class RefineryRecipeHandler extends TemplateRecipeHandler
 	@Override
 	public String getRecipeName()
 	{
-		return "Rocket T1";
+		return "Refinery";
 	}
 
 	@Override
 	public String getGuiTexture()
 	{
-		return "/micdoodle8/mods/galacticraft/core/client/gui/rocketbench.png";
+		return "/micdoodle8/mods/galacticraft/core/client/gui/refinery.png";
 	}
 }
