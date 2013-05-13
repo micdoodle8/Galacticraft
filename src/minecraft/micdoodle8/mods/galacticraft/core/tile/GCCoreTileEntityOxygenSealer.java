@@ -49,7 +49,7 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
 	            this.sealed = this.checkSeal(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
 			}
 
-			if (this.storedOxygen >= 1 && (this.wattsReceived > 0 || this.ic2Energy > 0) && !this.disabled)
+			if (this.storedOxygen >= 1 && (this.wattsReceived > 0 || this.ic2Energy > 0 || this.bcEnergy > 0) && !this.disabled)
 			{
 				this.active = true;
 			}
