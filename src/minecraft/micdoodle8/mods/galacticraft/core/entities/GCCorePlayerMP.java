@@ -820,8 +820,8 @@ public class GCCorePlayerMP extends EntityPlayerMP
 			if (((IGalacticraftWorldProvider)this.worldObj.provider).getMeteorFrequency() > 0)
 			{
 				final double f = ((IGalacticraftWorldProvider)this.worldObj.provider).getMeteorFrequency();
-
-				if (this.worldObj.rand.nextInt(MathHelper.floor_double(f * 1000)) == 0)
+				
+				if (this.worldObj.rand.nextInt(MathHelper.floor_double(f * 100)) == 0)
 				{
 					final EntityPlayer closestPlayer = this.worldObj.getClosestPlayerToEntity(this, 100);
 
@@ -843,10 +843,10 @@ public class GCCorePlayerMP extends EntityPlayerMP
 						}
 					}
 				}
-				if (this.worldObj.rand.nextInt(MathHelper.floor_double(f * 3000)) == 0)
+				if (this.worldObj.rand.nextInt(MathHelper.floor_double(f * 300)) == 0)
 				{
 					final EntityPlayer closestPlayer = this.worldObj.getClosestPlayerToEntity(this, 100);
-
+					
 					if (closestPlayer == null || closestPlayer.entityId < this.entityId)
 					{
 						int x, y, z;
