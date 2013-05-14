@@ -223,9 +223,9 @@ public class RecipeUtil
 		});
 
 		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.buggyMaterial, 1, 1), new Object[] {
+			"  Y",
+			" ZY",
 			"XXX",
-			"XYX",
-			"XZX",
 			'X', GregTech_API.getGregTechItem(0, 1, 26),
 			'Y', GregTech_API.getGregTechItem(0, 1, 78),
 			'Z', GregTech_API.getGregTechItem(0, 1, 64)
