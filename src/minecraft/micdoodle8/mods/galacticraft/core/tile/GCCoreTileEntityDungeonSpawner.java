@@ -5,6 +5,7 @@ import java.util.List;
 import micdoodle8.mods.galacticraft.API.IDungeonBoss;
 import micdoodle8.mods.galacticraft.API.IDungeonBossSpawner;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySkeletonBoss;
+import micdoodle8.mods.galacticraft.moon.wgen.dungeon.GCRoomBoss;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -19,6 +20,7 @@ public class GCCoreTileEntityDungeonSpawner extends TileEntityAdvanced implement
 	private boolean isBossDefeated = false;
 	private boolean playerInRange;
 	private boolean lastPlayerInRange;
+	private GCRoomBoss room;
 
 	@Override
 	public void updateEntity()
@@ -37,6 +39,7 @@ public class GCCoreTileEntityDungeonSpawner extends TileEntityAdvanced implement
 	    			if (!e.isDead)
 	    			{
 		    			this.boss = (IDungeonBoss) e;
+		    			((GCCoreEntitySkeletonBoss) this.boss).setRoom(this.room);
 		    			this.setBossSpawned(true);
 		    			this.setBossDefeated(false);
 	    			}
@@ -46,6 +49,7 @@ public class GCCoreTileEntityDungeonSpawner extends TileEntityAdvanced implement
 			if (this.boss == null && !this.getBossDefeated())
 			{
 				this.setBoss(new GCCoreEntitySkeletonBoss(this.worldObj, new Vector3(this).add(new Vector3(0.0D, 1.0D, 0.0D))));
+    			((GCCoreEntitySkeletonBoss) this.boss).setRoom(this.room);
 			}
 
 			EntityPlayer closestPlayer = null;
@@ -64,6 +68,7 @@ public class GCCoreTileEntityDungeonSpawner extends TileEntityAdvanced implement
 						this.worldObj.spawnEntityInWorld((Entity)this.boss);
 						this.setBossSpawned(true);
 						this.boss.onBossSpawned(this);
+		    			((GCCoreEntitySkeletonBoss) this.boss).setRoom(this.room);
 					}
 				}
 			}
@@ -75,6 +80,11 @@ public class GCCoreTileEntityDungeonSpawner extends TileEntityAdvanced implement
 
 			this.lastPlayerInRange = this.playerInRange;
 		}
+	}
+	
+	public void setRoom(GCRoomBoss room)
+	{
+		this.room = room;
 	}
 
 	@Override

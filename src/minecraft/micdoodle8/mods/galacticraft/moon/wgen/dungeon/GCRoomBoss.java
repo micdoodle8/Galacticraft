@@ -11,9 +11,9 @@ import net.minecraft.world.World;
 
 public class GCRoomBoss extends GCDungeonRoom {
 
-	int sizeX;
-	int sizeY;
-	int sizeZ;
+	public int sizeX;
+	public int sizeY;
+	public int sizeZ;
 	Random rand;
 	ChunkCoordinates spawnerCoords;
 
@@ -91,7 +91,13 @@ public class GCRoomBoss extends GCDungeonRoom {
 
 		if (tile == null || !(tile instanceof GCCoreTileEntityDungeonSpawner))
 		{
-			this.worldObj.setBlockTileEntity(this.spawnerCoords.posX, this.spawnerCoords.posY, this.spawnerCoords.posZ, new GCCoreTileEntityDungeonSpawner());
+			GCCoreTileEntityDungeonSpawner spawner = new GCCoreTileEntityDungeonSpawner();
+			spawner.setRoom(this);
+			this.worldObj.setBlockTileEntity(this.spawnerCoords.posX, this.spawnerCoords.posY, this.spawnerCoords.posZ, spawner);
+		}
+		else if (tile instanceof GCCoreTileEntityDungeonSpawner)
+		{
+			((GCCoreTileEntityDungeonSpawner) tile).setRoom(this);
 		}
 	}
 

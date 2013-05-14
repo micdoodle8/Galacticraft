@@ -11,6 +11,7 @@ import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
+import micdoodle8.mods.galacticraft.moon.wgen.dungeon.GCRoomBoss;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -62,6 +63,8 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
     public Entity thrownEntity;
     public Entity targetEntity;
     public int deathTicks = 0;
+    
+	private GCRoomBoss room;
 
     public GCCoreEntitySkeletonBoss(World par1World)
     {
@@ -80,6 +83,11 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
     	this(world);
     	this.setPosition(vec.x, vec.y, vec.z);
     }
+	
+	public void setRoom(GCRoomBoss room)
+	{
+		this.room = room;
+	}
 
     @Override
     public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
@@ -363,12 +371,16 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
     	}
 
 		final Vector3 vec = new Vector3(this);
-		final EntityPlayer closestPlayer = this.worldObj.getClosestPlayer(vec.x, vec.y, vec.z, this.getDistanceToSpawn());
-
-		if (closestPlayer == null)
+		
+		if (this.room != null)
 		{
-			this.setDead();
-			return;
+			List<Entity> entitiesWithin = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getAABBPool().getAABB(this.room.posX - 1, this.room.posX - 1, this.room.posZ, this.room.posX + this.room.sizeX, this.room.posY + this.room.sizeY, this.room.posZ + this.room.sizeZ));
+			
+			if (entitiesWithin.size() == 0)
+			{
+				this.setDead();
+				return;
+			}
 		}
 
     	if (this.riddenByEntity != null && this.throwTimer == 0)

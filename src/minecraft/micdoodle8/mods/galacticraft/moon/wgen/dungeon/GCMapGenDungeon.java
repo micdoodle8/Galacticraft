@@ -43,7 +43,6 @@ public class GCMapGenDungeon {
 
 	public void generate(World world, Random rand, int x, int y, int z, int chunkX, int chunkZ, short[] blocks, byte[] metas, boolean useArrays)
 	{
-		System.out.println(x + ", " + z);
 		GCMapGenDungeon.useArrays = useArrays;
 		this.worldObj = world;
 
