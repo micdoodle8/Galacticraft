@@ -55,6 +55,15 @@ public class GCCoreItemBuggy extends Item
         this.itemIcon = null;
     }
 
+    @Override
+    public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
+    {
+    	for (int i = 0; i < 4; i++)
+    	{
+            par3List.add(new ItemStack(par1, 1, i));
+    	}
+    }
+
 	@Override
 	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
@@ -131,6 +140,8 @@ public class GCCoreItemBuggy extends Item
                     {
                         par2World.spawnEntityInWorld(var35);
                     }
+                    
+                    var35.setBuggyType(par1ItemStack.getItemDamage());
 
                     if (!par3EntityPlayer.capabilities.isCreativeMode)
                     {
@@ -141,5 +152,15 @@ public class GCCoreItemBuggy extends Item
                 return par1ItemStack;
             }
         }
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void addInformation(ItemStack par1ItemStack, EntityPlayer player, List par2List, boolean b)
+    {
+    	if (par1ItemStack.getItemDamage() != 0)
+    	{
+			par2List.add("Storage Space: " + par1ItemStack.getItemDamage() * 18);
+    	}
     }
 }
