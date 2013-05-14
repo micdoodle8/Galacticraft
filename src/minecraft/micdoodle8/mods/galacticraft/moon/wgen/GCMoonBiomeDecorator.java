@@ -30,15 +30,15 @@ public class GCMoonBiomeDecorator
 
 	protected WorldGenerator cheeseGen;
 
-	protected WorldGenerator aluminumGen;
+	protected WorldGenerator copperGen;
 
-	protected WorldGenerator ironGen;
+	protected WorldGenerator tinGen;
 
 	public GCMoonBiomeDecorator(BiomeGenBase par1BiomeGenBase)
 	{
-		this.aluminumGen = new GCCoreWorldGenMinableMeta(GCMoonBlocks.blockMoon.blockID, 7, 0, true, GCMoonBlocks.blockMoon.blockID, 4);
-		this.ironGen = new GCCoreWorldGenMinableMeta(GCMoonBlocks.blockMoon.blockID, 8, 1, true, GCMoonBlocks.blockMoon.blockID, 4);
-		this.cheeseGen = new GCCoreWorldGenMinableMeta(GCMoonBlocks.blockMoon.blockID, 10, 2, true, GCMoonBlocks.blockMoon.blockID, 4);
+		this.copperGen = new GCCoreWorldGenMinableMeta(GCMoonBlocks.blockMoon.blockID, 4, 0, true, GCMoonBlocks.blockMoon.blockID, 4);
+		this.tinGen = new GCCoreWorldGenMinableMeta(GCMoonBlocks.blockMoon.blockID, 4, 1, true, GCMoonBlocks.blockMoon.blockID, 4);
+		this.cheeseGen = new GCCoreWorldGenMinableMeta(GCMoonBlocks.blockMoon.blockID, 3, 2, true, GCMoonBlocks.blockMoon.blockID, 4);
 		this.dirtGen = new GCCoreWorldGenMinableMeta(GCMoonBlocks.blockMoon.blockID, 32, 3, true, GCMoonBlocks.blockMoon.blockID, 4);
 		this.biome = par1BiomeGenBase;
 	}
@@ -75,8 +75,8 @@ public class GCMoonBiomeDecorator
 	protected void generateOres()
 	{
 		this.genStandardOre1(20, this.dirtGen, 0, 200);
-//        this.genStandardOre1(3, this.aluminumGen, 0, 14);
-        this.genStandardOre1(8, this.ironGen, 0, 34);
+        this.genStandardOre1(26, this.copperGen, 0, 60);
+        this.genStandardOre1(23, this.tinGen, 0, 60);
         this.genStandardOre1(12, this.cheeseGen, 0, 128);
 	}
 }
