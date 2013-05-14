@@ -675,7 +675,6 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
 		{
 			if (liquidInTank == null || liquidInTank.amount + liquid.amount <= this.buggyFuelTank.getCapacity())
 			{
-				FMLLog.info("filling");
 				return this.buggyFuelTank.fill(liquid, doDrain);
 			}
 		}

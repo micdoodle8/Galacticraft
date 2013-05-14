@@ -5,8 +5,6 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerBuggy;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
-import buildcraft.core.network.PacketHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 
 public class GCCoreUtil
@@ -31,7 +29,6 @@ public class GCCoreUtil
 		player.closeInventory();
 		int id = player.currentWindowId;
 		player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 28, new Object[] {id}));
-    	FMLLog.info("OPENED SERVER");
 		player.openContainer = new GCCoreContainerBuggy(player.inventory, buggyInv, type);
 		player.openContainer.windowId = id;
 		player.openContainer.addCraftingToCrafters(player);

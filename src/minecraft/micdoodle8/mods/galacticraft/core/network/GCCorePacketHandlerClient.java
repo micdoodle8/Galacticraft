@@ -432,7 +432,6 @@ public class GCCorePacketHandlerClient implements IPacketHandler
 
             if (player.ridingEntity instanceof GCCoreEntityBuggy)
             {
-            	FMLLog.info("OPENED CLIENT");
                 FMLClientHandler.instance().getClient().displayGuiScreen(new GCCoreGuiBuggy(player.inventory, (GCCoreEntityBuggy) player.ridingEntity, ((GCCoreEntityBuggy) player.ridingEntity).getType()));
                 player.openContainer.windowId = (Integer) packetReadout[0];
             }
