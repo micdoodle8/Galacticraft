@@ -11,6 +11,7 @@ import micdoodle8.mods.galacticraft.API.SpaceStationType;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
+import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryBuggyBench;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryRocketBench;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemFlag;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemParachute;
@@ -24,6 +25,7 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import thermalexpansion.api.item.ItemRegistry;
+import cpw.mods.fml.common.FMLLog;
 
 public class RecipeUtil
 {
@@ -198,11 +200,44 @@ public class RecipeUtil
 			'Y', GregTech_API.getGregTechItem(0, 1, 78)
 		});
 
-		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.landingPad, 9), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.landingPad, 9, 0), new Object[] {
 			"YYY",
 			"XXX",
 			'X', Block.blockIron,
 			'Y', "plateIron"
+		});
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.landingPad, 9, 1), new Object[] {
+			"YYY",
+			"XXX",
+			'X', Block.blockIron,
+			'Y', GregTech_API.getGregTechItem(0, 1, 78)
+		});
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.buggyMaterial, 0), new Object[] {
+			"WWW",
+			"WXW",
+			"WWW",
+			'W', Item.leather,
+			'X', GregTech_API.getGregTechItem(0, 1, 65)
+		});
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.buggyMaterial, 1), new Object[] {
+			"XXX",
+			"XYX",
+			"XZX",
+			'X', GregTech_API.getGregTechItem(0, 1, 26),
+			'Y', GregTech_API.getGregTechItem(0, 1, 78),
+			'Z', GregTech_API.getGregTechItem(0, 1, 64)
+		});
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.buggyMaterial, 2), new Object[] {
+			"XXX",
+			"YZY",
+			"XXX",
+			'X', GregTech_API.getGregTechItem(0, 1, 66),
+			'Y', GregTech_API.getGregTechItem(0, 1, 78),
+			'Z', Block.chest
 		});
 
 		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.oxygenDetector, 1), new Object[] {
@@ -619,11 +654,43 @@ public class RecipeUtil
 			'Y', "ingotInvar"
 		});
 
-		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.landingPad, 9), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.landingPad, 9, 0), new Object[] {
 			"YYY",
 			"XXX",
 			'X', Block.blockIron,
 			'Y', "ingotInvar"
+		});
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.landingPad, 9, 1), new Object[] {
+			"YYY",
+			"XXX",
+			'X', Block.blockIron,
+			'Y', "ingotLead"
+		});
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.buggyMaterial, 0), new Object[] {
+			"WWW",
+			"WXW",
+			"WWW",
+			'W', Item.leather,
+			'X', "ingotInvar"
+		});
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.buggyMaterial, 1), new Object[] {
+			"  X",
+			" YX",
+			"XXX",
+			'X', "ingotInvar",
+			'Y', Item.ingotIron
+		});
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.buggyMaterial, 2), new Object[] {
+			"XXX",
+			"YZY",
+			"XXX",
+			'X', "ingotInvar",
+			'Y', "ingotLead",
+			'Z', Block.chest
 		});
 
 		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.oxygenDetector, 1), new Object[] {
@@ -1036,11 +1103,44 @@ public class RecipeUtil
 			'Y', "plateSteel"
 		});
 
-		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.landingPad, 9), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.landingPad, 9, 0), new Object[] {
 			"YYY",
 			"XXX",
 			'X', Block.blockIron,
 			'Y', "plateIron"
+		});
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.landingPad, 9, 1), new Object[] {
+			"YYY",
+			"XXX",
+			'X', Block.blockIron,
+			'Y', "plateSteel"
+		});
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.buggyMaterial, 0), new Object[] {
+			"WWW",
+			"WXW",
+			"WWW",
+			'W', Item.leather,
+			'X', "ingotSteel"
+		});
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.buggyMaterial, 1), new Object[] {
+			"  Y",
+			" ZY",
+			"XXX",
+			'X', "ingotSteel",
+			'Y', "plateSteel",
+			'Z', Item.ingotIron
+		});
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.buggyMaterial, 2), new Object[] {
+			"XXX",
+			"YZY",
+			"XXX",
+			'X', "plateSteel",
+			'Y', "plateIron",
+			'Z', Block.chest
 		});
 
 		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.oxygenDetector, 1), new Object[] {
@@ -1445,11 +1545,43 @@ public class RecipeUtil
 			'Y', "carbonPlate"
 		});
 
-		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.landingPad, 9), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.landingPad, 9, 0), new Object[] {
+			"YYY",
+			"XXX",
+			'X', Block.blockIron,
+			'Y', "ingotRefinedIron"
+		});
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.landingPad, 9, 1), new Object[] {
 			"YYY",
 			"XXX",
 			'X', Block.blockIron,
 			'Y', "carbonPlate"
+		});
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.buggyMaterial, 0), new Object[] {
+			"WWW",
+			"WXW",
+			"WWW",
+			'W', Item.leather,
+			'X', "ingotRefinedIron"
+		});
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.buggyMaterial, 1), new Object[] {
+			"  X",
+			" YX",
+			"XXX",
+			'X', "ingotRefinedIron",
+			'Y', Item.ingotIron
+		});
+
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.buggyMaterial, 2), new Object[] {
+			"XXX",
+			"YZY",
+			"XXX",
+			'X', "ingotRefinedIron",
+			'Y', "carbonPlate",
+			'Z', Block.chest
 		});
 
 		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.oxygenDetector, 1), new Object[] {
@@ -1682,6 +1814,62 @@ public class RecipeUtil
 
 	public static void addSmeltingRecipes()
 	{
+	}
+
+	public static ItemStack findMatchingBuggy(GCCoreInventoryBuggyBench benchStacks)
+	{
+		final ItemStack[] slots = new ItemStack[benchStacks.getSizeInventory()];
+
+		for (int i = 0; i < benchStacks.getSizeInventory(); i++)
+		{
+			slots[i] = benchStacks.getStackInSlot(i + 1);
+		}
+
+		if (slots[0] != null && slots[1] != null && slots[2] != null && slots[3] != null && slots[4] != null && slots[5] != null && slots[6] != null && slots[7] != null && slots[8] != null && slots[9] != null && slots[10] != null && slots[11] != null && slots[12] != null && slots[13] != null && slots[14] != null && slots[15] != null)
+		{
+			if (slots[5].getItem().itemID == GCCoreItems.buggyMaterial.itemID && slots[5].getItemDamage() == 1)
+			{
+				int platesInPlace = 0;
+
+				for (int i = 0; i < 12; i++)
+				{
+					if (i != 5 && slots[i].getItem().itemID == GCCoreItems.heavyPlating.itemID)
+					{
+						platesInPlace++;
+					}
+				}
+
+				if (platesInPlace == 11)
+				{
+					int wheels = 0;
+
+					for (int i = 12; i < 16; i++)
+					{
+						if (slots[i].getItem().itemID == GCCoreItems.buggyMaterial.itemID && slots[i].getItemDamage() == 0)
+						{
+							wheels++;
+						}
+					}
+					
+					if (wheels == 4)
+					{
+						int type = 0;
+
+						for (int i = 16; i < 19; i++)
+						{
+							if (slots[i] != null && slots[i].getItem().itemID == GCCoreItems.buggyMaterial.itemID && slots[i].getItemDamage() == 2)
+							{
+								type++;
+							}
+						}
+
+						return new ItemStack(GCCoreItems.buggy, 1, type);
+					}
+				}
+			}
+		}
+
+		return null;
 	}
 
 	public static ItemStack findMatchingSpaceshipRecipe(GCCoreInventoryRocketBench inventoryRocketBench)
