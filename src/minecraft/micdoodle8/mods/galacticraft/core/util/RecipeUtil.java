@@ -214,15 +214,15 @@ public class RecipeUtil
 			'Y', GregTech_API.getGregTechItem(0, 1, 78)
 		});
 
-		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.buggyMaterial, 0), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.buggyMaterial, 1, 0), new Object[] {
 			"WWW",
 			"WXW",
 			"WWW",
 			'W', Item.leather,
-			'X', GregTech_API.getGregTechItem(0, 1, 65)
+			'X', GregTech_API.getGregTechItem(0, 1, 66)
 		});
 
-		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.buggyMaterial, 1), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.buggyMaterial, 1, 1), new Object[] {
 			"XXX",
 			"XYX",
 			"XZX",
@@ -231,7 +231,7 @@ public class RecipeUtil
 			'Z', GregTech_API.getGregTechItem(0, 1, 64)
 		});
 
-		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.buggyMaterial, 2), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.buggyMaterial, 1, 2), new Object[] {
 			"XXX",
 			"YZY",
 			"XXX",
@@ -668,7 +668,7 @@ public class RecipeUtil
 			'Y', "ingotLead"
 		});
 
-		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.buggyMaterial, 0), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.buggyMaterial, 1, 0), new Object[] {
 			"WWW",
 			"WXW",
 			"WWW",
@@ -676,7 +676,7 @@ public class RecipeUtil
 			'X', "ingotInvar"
 		});
 
-		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.buggyMaterial, 1), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.buggyMaterial, 1, 1), new Object[] {
 			"  X",
 			" YX",
 			"XXX",
@@ -684,7 +684,7 @@ public class RecipeUtil
 			'Y', Item.ingotIron
 		});
 
-		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.buggyMaterial, 2), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.buggyMaterial, 1, 2), new Object[] {
 			"XXX",
 			"YZY",
 			"XXX",
@@ -1117,7 +1117,7 @@ public class RecipeUtil
 			'Y', "plateSteel"
 		});
 
-		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.buggyMaterial, 0), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.buggyMaterial, 1, 0), new Object[] {
 			"WWW",
 			"WXW",
 			"WWW",
@@ -1125,7 +1125,7 @@ public class RecipeUtil
 			'X', "ingotSteel"
 		});
 
-		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.buggyMaterial, 1), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.buggyMaterial, 1, 1), new Object[] {
 			"  Y",
 			" ZY",
 			"XXX",
@@ -1134,7 +1134,7 @@ public class RecipeUtil
 			'Z', Item.ingotIron
 		});
 
-		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.buggyMaterial, 2), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.buggyMaterial, 1, 2), new Object[] {
 			"XXX",
 			"YZY",
 			"XXX",
@@ -1559,7 +1559,7 @@ public class RecipeUtil
 			'Y', "carbonPlate"
 		});
 
-		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.buggyMaterial, 0), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.buggyMaterial, 1, 0), new Object[] {
 			"WWW",
 			"WXW",
 			"WWW",
@@ -1567,7 +1567,7 @@ public class RecipeUtil
 			'X', "ingotRefinedIron"
 		});
 
-		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.buggyMaterial, 1), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.buggyMaterial, 1, 1), new Object[] {
 			"  X",
 			" YX",
 			"XXX",
@@ -1575,7 +1575,7 @@ public class RecipeUtil
 			'Y', Item.ingotIron
 		});
 
-		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.buggyMaterial, 2), new Object[] {
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.buggyMaterial, 1, 2), new Object[] {
 			"XXX",
 			"YZY",
 			"XXX",
