@@ -13,7 +13,7 @@ public class GCCoreInventoryBuggyBench implements IInventory
 
     public GCCoreInventoryBuggyBench(Container par1Container)
     {
-        final int var4 = 30;
+        final int var4 = 32;
         this.stackList = new ItemStack[var4];
         this.eventHandler = par1Container;
         this.inventoryWidth = 5;

@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlock;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockBase;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockEnclosedBlock;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockLandingPad;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemSapling;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -100,7 +101,7 @@ public class GCCoreBlocks
 	{
 		//							Block							ItemBlock class						Block Name												Mod ID
 		GameRegistry.registerBlock(GCCoreBlocks.treasureChest, 		GCCoreItemBlock.class, 				GCCoreBlocks.treasureChest.getUnlocalizedName(), 		GalacticraftCore.MODID);
-		GameRegistry.registerBlock(GCCoreBlocks.landingPad, 		GCCoreItemBlock.class, 				GCCoreBlocks.landingPad.getUnlocalizedName(), 			GalacticraftCore.MODID);
+		GameRegistry.registerBlock(GCCoreBlocks.landingPad, 		GCCoreItemBlockLandingPad.class, 	GCCoreBlocks.landingPad.getUnlocalizedName(), 			GalacticraftCore.MODID);
 		GameRegistry.registerBlock(GCCoreBlocks.landingPadFull, 	GCCoreItemBlock.class, 				GCCoreBlocks.landingPadFull.getUnlocalizedName(), 		GalacticraftCore.MODID);
 		GameRegistry.registerBlock(GCCoreBlocks.unlitTorch, 		GCCoreItemBlock.class, 				GCCoreBlocks.unlitTorch.getUnlocalizedName(), 			GalacticraftCore.MODID);
 		GameRegistry.registerBlock(GCCoreBlocks.unlitTorchLit, 		GCCoreItemBlock.class, 				GCCoreBlocks.unlitTorchLit.getUnlocalizedName(), 		GalacticraftCore.MODID);

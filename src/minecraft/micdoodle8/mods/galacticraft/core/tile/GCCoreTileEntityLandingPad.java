@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.API.IDockable;
+import micdoodle8.mods.galacticraft.API.IFuelDock;
 import micdoodle8.mods.galacticraft.API.IFuelable;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,7 +16,7 @@ import universalelectricity.prefab.multiblock.IMultiBlock;
 import universalelectricity.prefab.multiblock.TileEntityMulti;
 import cpw.mods.fml.client.FMLClientHandler;
 
-public class GCCoreTileEntityLandingPad extends TileEntityMulti implements IMultiBlock, IFuelable
+public class GCCoreTileEntityLandingPad extends TileEntityMulti implements IMultiBlock, IFuelable, IFuelDock
 {
 	protected long ticks = 0;
 	private IDockable dockedEntity;
@@ -68,12 +69,15 @@ public class GCCoreTileEntityLandingPad extends TileEntityMulti implements IMult
 				if (o != null && o instanceof IDockable && !this.worldObj.isRemote)
 				{
 					final IDockable fuelable = (IDockable) o;
+					
+					if (fuelable.isDockValid(this))
+					{
+						this.dockedEntity = fuelable;
 
-					this.dockedEntity = fuelable;
-
-					this.dockedEntity.setLandingPad(this);
-
-					changed = true;
+						this.dockedEntity.setPad(this);
+						
+						changed = true;
+					}
 				}
 			}
 
@@ -81,16 +85,6 @@ public class GCCoreTileEntityLandingPad extends TileEntityMulti implements IMult
 			{
 				this.dockedEntity = null;
 			}
-
-//			if (this.dockedEntity != null && this.landingPadFuelTank.getLiquid() != null && this.landingPadFuelTank.getLiquid().amount > 0)
-//			{
-//				final LiquidStack liquid = LiquidDictionary.getLiquid("Fuel", 1);
-//
-//				if (liquid != null)
-//				{
-//					this.removeFuel(null, this.dockedEntity.addFuel(liquid, 1));
-//				}
-//			}
 		}
 	}
 
@@ -167,5 +161,11 @@ public class GCCoreTileEntityLandingPad extends TileEntityMulti implements IMult
 		}
 
 		return null;
+	}
+
+	@Override
+	public HashSet<TileEntity> getConnectedTiles() 
+	{
+		return this.connectedTiles;
 	}
 }

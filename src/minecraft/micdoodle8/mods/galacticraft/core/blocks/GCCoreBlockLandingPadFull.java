@@ -2,12 +2,17 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.Random;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityBuggyFueler;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPad;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import universalelectricity.prefab.block.BlockAdvanced;
@@ -21,6 +26,8 @@ import universalelectricity.prefab.multiblock.IMultiBlock;
  */
 public class GCCoreBlockLandingPadFull extends BlockAdvanced
 {
+	private Icon[] icons = new Icon[3];
+	
 	public GCCoreBlockLandingPadFull(int i)
 	{
 		super(i, Material.rock);
@@ -51,17 +58,29 @@ public class GCCoreBlockLandingPadFull extends BlockAdvanced
         return GCCoreBlocks.landingPad.blockID;
     }
 
-	@Override
-    public AxisAlignedBB getSelectedBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
+    @Override
+    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
     {
-        return super.getSelectedBoundingBoxFromPool(par1World, par2, par3, par4);
+    	switch (world.getBlockMetadata(x, y, z))
+    	{
+    	case 0:
+            return AxisAlignedBB.getAABBPool().getAABB((double)x + this.minX, (double)y + this.minY, (double)z + this.minZ, (double)x + this.maxX, (double)y + this.maxY, (double)z + this.maxZ);
+    	default:
+            return AxisAlignedBB.getAABBPool().getAABB((double)x + 0.0D, (double)y + 0.0D, (double)z + 0.0D, (double)x + 1.0D, (double)y + 0.2D, (double)z + 1.0D);
+    	}
     }
-
-	@Override
-	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z)
-	{
-		super.setBlockBoundsBasedOnState(world, x, y, z);
-	}
+    
+    @SideOnly(Side.CLIENT)
+    public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z)
+    {
+    	switch (world.getBlockMetadata(x, y, z))
+    	{
+    	case 0:
+            return AxisAlignedBB.getAABBPool().getAABB((double)x + this.minX, (double)y + this.minY, (double)z + this.minZ, (double)x + this.maxX, (double)y + this.maxY, (double)z + this.maxZ);
+    	default:
+            return AxisAlignedBB.getAABBPool().getAABB((double)x + 0.0D, (double)y + 0.0D, (double)z + 0.0D, (double)x + 1.0D, (double)y + 0.2D, (double)z + 1.0D);
+    	}
+    }
 
 	@Override
 	public int getRenderType()
@@ -72,7 +91,27 @@ public class GCCoreBlockLandingPadFull extends BlockAdvanced
     @Override
     public void registerIcons(IconRegister par1IconRegister)
     {
+    	icons[0] = par1IconRegister.registerIcon("galacticraftcore:launch_pad");
+    	icons[1] = par1IconRegister.registerIcon("galacticraftcore:buggy_fueler");
+    	icons[2] = par1IconRegister.registerIcon("galacticraftcore:buggy_fueler_blank");
     	this.blockIcon = par1IconRegister.registerIcon("galacticraftcore:launch_pad");
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public Icon getIcon(int par1, int par2)
+    {
+    	switch (par2)
+    	{
+    	case 0:
+    		return this.icons[0];
+    	case 1:
+    		return this.icons[1];
+    	case 2:
+    		return this.icons[2];
+    	}
+    	
+        return this.blockIcon;
     }
 
 	@Override
@@ -100,9 +139,15 @@ public class GCCoreBlockLandingPadFull extends BlockAdvanced
 	}
 
 	@Override
-	public TileEntity createTileEntity(World world, int meta)
+	public TileEntity createTileEntity(World world, int metadata)
 	{
-		return new GCCoreTileEntityLandingPad();
+		switch (metadata)
+		{
+		case 0:
+			return new GCCoreTileEntityLandingPad();
+		default:
+			return new GCCoreTileEntityBuggyFueler();
+		}
 	}
 
 	@Override

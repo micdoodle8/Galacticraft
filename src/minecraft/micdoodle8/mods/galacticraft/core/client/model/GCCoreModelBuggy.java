@@ -4,9 +4,12 @@ import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityBuggy;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
+import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreModelBuggy extends ModelBase
 {
+	public int type;
+	
 	public ModelRenderer wheel1e;
 	public ModelRenderer body;
 	public ModelRenderer wheel1a;
@@ -29,8 +32,6 @@ public class GCCoreModelBuggy extends ModelBase
 	public ModelRenderer wheel3e;
 	public ModelRenderer wheel3b;
 	public ModelRenderer frontFlap;
-	public ModelRenderer radarPole;
-	public ModelRenderer radarCenter;
 	public ModelRenderer back3;
 	public ModelRenderer back1;
 	public ModelRenderer back2;
@@ -181,18 +182,6 @@ public class GCCoreModelBuggy extends ModelBase
 		this.frontFlap.setTextureSize(512, 256);
 		this.frontFlap.mirror = true;
 		this.setRotation(this.frontFlap, 0F, 0F, 0F);
-		this.radarPole = new ModelRenderer(this, 302, 0);
-		this.radarPole.addBox(-0.5F, -21F, -0.5F, 1, 21, 1);
-		this.radarPole.setRotationPoint(-9F, 17F, -19F);
-		this.radarPole.setTextureSize(512, 256);
-		this.radarPole.mirror = true;
-		this.setRotation(this.radarPole, 0F, 0F, 0F);
-		this.radarCenter = new ModelRenderer(this, 266, 0);
-		this.radarCenter.addBox(-4.5F, -0.5F, -4.5F, 9, 1, 9);
-		this.radarCenter.setRotationPoint(-9F, -4F, -19F);
-		this.radarCenter.setTextureSize(512, 256);
-		this.radarCenter.mirror = true;
-		this.setRotation(this.radarCenter, 0.3717861F, 0F, 0F);
 		this.back3 = new ModelRenderer(this, 240, 0);
 		this.back3.addBox(-4F, -14F, -2.5F, 8, 14, 5);
 		this.back3.setRotationPoint(-10F, 16.5F, 21F);
@@ -282,11 +271,21 @@ public class GCCoreModelBuggy extends ModelBase
 		this.wheel3e.render(f5);
 		this.wheel3b.render(f5);
 		this.frontFlap.render(f5);
-		this.radarPole.render(f5);
-		this.radarCenter.render(f5);
-		this.back3.render(f5);
-		this.back1.render(f5);
-		this.back2.render(f5);
+		
+		if (this.type >= 1)
+		{
+			this.back2.render(f5);
+			
+			if (this.type >= 2)
+			{
+				this.back3.render(f5);
+				
+				if (this.type >= 3)
+				{
+					this.back1.render(f5);
+				}
+			}
+		}
 		this.seatBack.render(f5);
 		this.seatBottom.render(f5);
 		this.seatArmRight1.render(f5);
@@ -306,8 +305,6 @@ public class GCCoreModelBuggy extends ModelBase
 	public void setRotationAngles(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
 	{
 		super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-
-        this.radarCenter.rotateAngleY += 0.01F;
 
         if (entity instanceof GCCoreEntityBuggy && entity.riddenByEntity != null)
         {
@@ -334,29 +331,33 @@ public class GCCoreModelBuggy extends ModelBase
         	this.wheel3e.rotateAngleY = buggy.turnProgress;
         	this.wheel4e.rotateAngleY = buggy.turnProgress;
 
+        	float speed = (float) (buggy.motionX * buggy.motionX + buggy.motionZ + buggy.motionZ);
 
-        	this.wheel1a.rotateAngleX += (float) buggy.speed / 20F;
-        	this.wheel2a.rotateAngleX += (float) buggy.speed / 20F;
-        	this.wheel3a.rotateAngleX += (float) buggy.speed / 20F;
-        	this.wheel4a.rotateAngleX += (float) buggy.speed / 20F;
-        	this.wheel1b.rotateAngleX += (float) buggy.speed / 20F;
-        	this.wheel2b.rotateAngleX += (float) buggy.speed / 20F;
-        	this.wheel3b.rotateAngleX += (float) buggy.speed / 20F;
-        	this.wheel4b.rotateAngleX += (float) buggy.speed / 20F;
-        	this.wheel1c.rotateAngleX += (float) buggy.speed / 20F;
-        	this.wheel2c.rotateAngleX += (float) buggy.speed / 20F;
-        	this.wheel3c.rotateAngleX += (float) buggy.speed / 20F;
-        	this.wheel4c.rotateAngleX += (float) buggy.speed / 20F;
-        	this.wheel1d.rotateAngleX += (float) buggy.speed / 20F;
-        	this.wheel2d.rotateAngleX += (float) buggy.speed / 20F;
-        	this.wheel3d.rotateAngleX += (float) buggy.speed / 20F;
-        	this.wheel4d.rotateAngleX += (float) buggy.speed / 20F;
-        	this.wheel1e.rotateAngleX += (float) buggy.speed / 20F;
-        	this.wheel2e.rotateAngleX += (float) buggy.speed / 20F;
-        	this.wheel3e.rotateAngleX += (float) buggy.speed / 20F;
-        	this.wheel4e.rotateAngleX += (float) buggy.speed / 20F;
+        	this.wheel1a.rotateAngleX += (float) speed / 20F;
+        	this.wheel2a.rotateAngleX += (float) speed / 20F;
+        	this.wheel3a.rotateAngleX += (float) speed / 20F;
+        	this.wheel4a.rotateAngleX += (float) speed / 20F;
+        	this.wheel1b.rotateAngleX += (float) speed / 20F;
+        	this.wheel2b.rotateAngleX += (float) speed / 20F;
+        	this.wheel3b.rotateAngleX += (float) speed / 20F;
+        	this.wheel4b.rotateAngleX += (float) speed / 20F;
+        	this.wheel1c.rotateAngleX += (float) speed / 20F;
+        	this.wheel2c.rotateAngleX += (float) speed / 20F;
+        	this.wheel3c.rotateAngleX += (float) speed / 20F;
+        	this.wheel4c.rotateAngleX += (float) speed / 20F;
+        	this.wheel1d.rotateAngleX += (float) speed / 20F;
+        	this.wheel2d.rotateAngleX += (float) speed / 20F;
+        	this.wheel3d.rotateAngleX += (float) speed / 20F;
+        	this.wheel4d.rotateAngleX += (float) speed / 20F;
+        	this.wheel1e.rotateAngleX += (float) speed / 20F;
+        	this.wheel2e.rotateAngleX += (float) speed / 20F;
+        	this.wheel3e.rotateAngleX += (float) speed / 20F;
+        	this.wheel4e.rotateAngleX += (float) speed / 20F;
         }
-
-//        this.radarCenter.rotateAngleY += 0.01F;
+	}
+	
+	public void setType(int type)
+	{
+		this.type = type;
 	}
 }

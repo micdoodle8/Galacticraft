@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import micdoodle8.mods.galacticraft.API.IFuelDock;
 import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.API.IRocketType;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
@@ -67,7 +68,7 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
 
     private int type;
 
-    private GCCoreTileEntityLandingPad landingPad;
+    private IFuelDock landingPad;
 
     public int canisterToTankRatio = this.tankCapacity / GCCoreItems.fuelCanister.getMaxDamage();
 	public double canisterToLiquidStackRatio = LiquidContainerRegistry.BUCKET_VOLUME * 2.0D / GCCoreItems.fuelCanister.getMaxDamage();
@@ -617,13 +618,13 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
 	}
 
 	@Override
-    public void setLandingPad(GCCoreTileEntityLandingPad pad)
+    public void setPad(IFuelDock pad)
     {
     	this.landingPad = pad;
     }
 
 	@Override
-    public GCCoreTileEntityLandingPad getLandingPad()
+    public IFuelDock getLandingPad()
     {
     	return this.landingPad;
     }
@@ -632,5 +633,11 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
 	public int getType()
 	{
 		return this.getSpaceshipType();
+	}
+
+	@Override
+	public boolean isDockValid(IFuelDock dock) 
+	{
+		return dock instanceof GCCoreTileEntityLandingPad;
 	}
 }

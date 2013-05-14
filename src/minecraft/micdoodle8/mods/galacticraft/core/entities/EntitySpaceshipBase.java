@@ -209,9 +209,9 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
 
     	super.onUpdate();
 
-    	if (!this.worldObj.isRemote && this.getLandingPad() != null && this.getLandingPad().connectedTiles != null)
+    	if (!this.worldObj.isRemote && this.getLandingPad() != null && this.getLandingPad().getConnectedTiles() != null)
     	{
-    		for (final TileEntity tile : this.getLandingPad().connectedTiles)
+    		for (final TileEntity tile : this.getLandingPad().getConnectedTiles())
     		{
     			if (this.worldObj.getBlockTileEntity(tile.xCoord, tile.yCoord, tile.zCoord) == null || !(this.worldObj.getBlockTileEntity(tile.xCoord, tile.yCoord, tile.zCoord) instanceof GCCoreTileEntityFuelLoader))
     			{
@@ -225,7 +225,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
 
         				if (this.launched)
         				{
-        					this.setLandingPad(null);
+        					this.setPad(null);
         				}
         			}
     			}

@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.render.block;
 
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLandingPadFull;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -87,26 +88,27 @@ public class GCCoreBlockRendererLandingPad implements ISimpleBlockRenderingHandl
     {
         final int var5 = var1.getBlockMetadata(par2, par3, par4);
         final int var6 = var5 & 3;
-
-//        if (var6 == 0)
-//        {
-//        	renderBlocks.uvRotateTop = 3;
-//        }
-//        else if (var6 == 3)
-//        {
-//        	renderBlocks.uvRotateTop = 1;
-//        }
-//        else if (var6 == 1)
-//        {
-//        	renderBlocks.uvRotateTop = 2;
-//        }
-//        FMLClientHandler.instance().getClient().renderEngine.func_98187_b("/micdoodle8/mods/galacticraft/core/client/entities/meteor.png");
-
-        renderBlocks.setRenderBounds(0F, 0F, 0F, 1F, 0.4F, 1F);
-        renderBlocks.renderStandardBlock(par1Block, par2, par3, par4);
+        
+        if (var1.getBlockMetadata(par2, par3, par4) == 1)
+        {
+            renderBlocks.setOverrideBlockTexture(((GCCoreBlockLandingPadFull)par1Block).getIcon(0, 1));
+        }
 
         renderBlocks.setRenderBounds(-1F, 0F, -1F, 2F, 0.2F, 2F);
         renderBlocks.renderStandardBlock(par1Block, par2, par3, par4);
+
+        if (var1.getBlockMetadata(par2, par3, par4) == 1)
+        {
+            renderBlocks.setOverrideBlockTexture(((GCCoreBlockLandingPadFull)par1Block).getIcon(0, 2));
+        }
+
+        if (var1.getBlockMetadata(par2, par3, par4) == 0)
+        {
+            renderBlocks.setRenderBounds(-0.5F, 0.2F, -0.5F, 1.5F, 0.3F, 1.5F);
+            renderBlocks.renderStandardBlock(par1Block, par2, par3, par4);
+            renderBlocks.setRenderBounds(0F, 0.3F, 0F, 1F, 0.4F, 1F);
+            renderBlocks.renderStandardBlock(par1Block, par2, par3, par4);
+        }
 
         // +X left
         if (var1.getBlockId(par2 + 2, par3, par4 - 1) == GCCoreBlocks.fuelLoader.blockID)
@@ -191,9 +193,6 @@ public class GCCoreBlockRendererLandingPad implements ISimpleBlockRenderingHandl
             renderBlocks.setRenderBounds(-0.9F, 0.2F, -1.0F, -0.1F, 0.901F, -0.5F);
             renderBlocks.renderStandardBlock(par1Block, par2, par3, par4);
         }
-
-//        renderBlocks.setRenderBounds(-1F, 0.4F, -1F, 2F, 0.4F, 2F);
-//        renderBlocks.renderStandardBlock(par1Block, par2, par3, par4);
 
         renderBlocks.clearOverrideBlockTexture();
         par1Block.setBlockBoundsForItemRender();

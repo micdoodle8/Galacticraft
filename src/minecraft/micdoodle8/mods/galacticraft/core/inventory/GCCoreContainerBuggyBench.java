@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
+import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -28,7 +29,7 @@ public class GCCoreContainerBuggyBench extends Container
         {
             for (var7 = 0; var7 < 3; ++var7)
             {
-                this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, var7 * 4 + var6 + 1, 39 + var7 * 18, 14 + var6 * 18 + change, x, y, z, par1InventoryPlayer.player));
+                this.addSlotToContainer(new GCCoreSlotBuggyBench(this.craftMatrix, var7 * 4 + var6 + 1, 39 + var7 * 18, 14 + var6 * 18 + change, x, y, z, par1InventoryPlayer.player));
             }
         }
 
@@ -36,14 +37,14 @@ public class GCCoreContainerBuggyBench extends Container
         {
             for (var7 = 0; var7 < 2; ++var7)
             {
-                this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, var7 * 2 + var6 + 13, 21 + var7 * 72, 14 + var6 * 54 + change, x, y, z, par1InventoryPlayer.player));
+                this.addSlotToContainer(new GCCoreSlotBuggyBench(this.craftMatrix, var7 * 2 + var6 + 13, 21 + var7 * 72, 14 + var6 * 54 + change, x, y, z, par1InventoryPlayer.player));
             }
         }
 
         // Addons
         for (int var8 = 0; var8 < 3; var8++)
         {
-            this.addSlotToContainer(new GCCoreSlotRocketBench(this.craftMatrix, 17 + var8, 93 + var8 * 26, -15 + change, x, y, z, par1InventoryPlayer.player));
+            this.addSlotToContainer(new GCCoreSlotBuggyBench(this.craftMatrix, 17 + var8, 93 + var8 * 26, -15 + change, x, y, z, par1InventoryPlayer.player));
         }
 
         // Player inv:
@@ -86,7 +87,7 @@ public class GCCoreContainerBuggyBench extends Container
     @Override
 	public void onCraftMatrixChanged(IInventory par1IInventory)
     {
-//        this.craftResult.setInventorySlotContents(0, GCCoreUtil.findMatchingSpaceshipRecipe(craftMatrix)); TODO
+        this.craftResult.setInventorySlotContents(0, RecipeUtil.findMatchingBuggy(this.craftMatrix));
     }
 
     @Override

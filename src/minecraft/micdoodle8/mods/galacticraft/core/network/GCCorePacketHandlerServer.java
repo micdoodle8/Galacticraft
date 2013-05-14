@@ -12,10 +12,12 @@ import micdoodle8.mods.galacticraft.core.GCLog;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreSpaceStationData;
 import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityBuggy;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerSchematic;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryPlayer;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemParachute;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
@@ -29,6 +31,7 @@ import net.minecraft.network.packet.Packet9Respawn;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
@@ -154,10 +157,7 @@ public class GCCorePacketHandlerServer implements IPacketHandler
             final Class[] decodeAs = {Integer.class};
             PacketUtil.readPacketData(data, decodeAs);
 
-            if (player.ridingEntity instanceof EntitySpaceshipBase)
-            {
-            	player.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiSpaceshipInventory, player.worldObj, (int)player.posX, (int)player.posY, (int)player.posZ);
-            }
+        	player.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiSpaceshipInventory, player.worldObj, (int)player.posX, (int)player.posY, (int)player.posZ);
         }
         else if (packetType == 7)
         {
@@ -376,6 +376,13 @@ public class GCCorePacketHandlerServer implements IPacketHandler
 				ssdata.setSpaceStationName((String) packetReadout[0]);
 				ssdata.setDirty(true);
 			}
+      	}
+        else if (packetType == 20)
+      	{
+        	if (player.ridingEntity instanceof GCCoreEntityBuggy)
+        	{
+            	GCCoreUtil.openBuggyInv(player, (GCCoreEntityBuggy)player.ridingEntity, ((GCCoreEntityBuggy)player.ridingEntity).getType());
+        	}
       	}
     }
 }

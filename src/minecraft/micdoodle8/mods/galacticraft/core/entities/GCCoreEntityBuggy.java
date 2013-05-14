@@ -3,24 +3,49 @@ package micdoodle8.mods.galacticraft.core.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.lwjgl.input.Keyboard;
+
+import micdoodle8.mods.galacticraft.API.IDockable;
+import micdoodle8.mods.galacticraft.API.IFuelDock;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.ClientProxyCore.GCKeyHandler;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketControllableEntity;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketEntityUpdate;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityBuggyFueler;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.INetworkManager;
+import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.liquids.LiquidDictionary;
+import net.minecraftforge.liquids.LiquidStack;
+import net.minecraftforge.liquids.LiquidTank;
+import universalelectricity.core.vector.Vector3;
+import universalelectricity.prefab.network.IPacketReceiver;
+import universalelectricity.prefab.network.PacketManager;
+
+import com.google.common.io.ByteArrayDataInput;
+
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 
-public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInventory
+public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInventory, IPacketReceiver, IDockable
 {
+	private final int tankCapacity = 1000;
+	public LiquidTank buggyFuelTank = new LiquidTank(this.tankCapacity);
+	protected long ticks = 0;
+	public int buggyType;
     public int fuel;
     public int currentDamage;
     public int timeSinceHit;
@@ -40,13 +65,14 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
     public double boatYaw;
     public double boatPitch;
 	public int boatPosRotationIncrements;
+    private IFuelDock landingPad;
 
     public GCCoreEntityBuggy(World var1)
     {
         super(var1);
         this.setSize(0.98F, 0.7F);
         this.yOffset = 2.5F;
-        this.cargoItems = new ItemStack[36];
+        this.cargoItems = new ItemStack[60];
         this.fuel = 0;
         this.currentDamage = 18;
         this.timeSinceHit = 19;
@@ -66,9 +92,21 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
         this.setPosition(var2, var4 + this.yOffset, var6);
     }
 
+	public int getScaledFuelLevel(int i)
+	{
+		final double fuelLevel = this.buggyFuelTank.getLiquid() == null ? 0 : this.buggyFuelTank.getLiquid().amount;
+
+		return (int) (fuelLevel * i / this.tankCapacity);
+	}
+
     public ModelBase getModel()
     {
         return null;
+    }
+    
+    public int getType()
+    {
+    	return this.buggyType;
     }
 
     @Override
@@ -102,6 +140,11 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
 	public boolean canBeCollidedWith()
     {
         return !this.isDead;
+    }
+
+    public void setBuggyType(int par1)
+    {
+    	this.buggyType = par1;
     }
 
     @Override
@@ -207,7 +250,16 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
     public List<ItemStack> getItemsDropped()
     {
         final List<ItemStack> items = new ArrayList<ItemStack>();
-        items.add(new ItemStack(GCCoreItems.buggy));
+        items.add(new ItemStack(GCCoreItems.buggy, 1, this.buggyType));
+        
+        for (ItemStack item : this.cargoItems)
+        {
+        	if (item != null)
+        	{
+            	items.add(item);
+        	}
+        }
+        
     	return items;
     }
 
@@ -234,6 +286,13 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
     @Override
 	public void onUpdate()
     {
+		if (this.ticks >= Long.MAX_VALUE)
+		{
+			this.ticks = 1;
+		}
+
+		this.ticks++;
+		
         super.onUpdate();
 
         if(this.worldObj.isRemote && (this.riddenByEntity == null || !(this.riddenByEntity instanceof EntityPlayer) || !FMLClientHandler.instance().getClient().thePlayer.equals(this.riddenByEntity)))
@@ -322,36 +381,80 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
             this.motionY = 0.1D;
         }
 
-        this.motionX = -(this.speed * Math.cos((this.rotationYaw - 90F) * Math.PI / 180.0D ));
-        this.motionZ = -(this.speed * Math.sin((this.rotationYaw - 90F) * Math.PI / 180.0D ));
-
+        if (this.worldObj.isRemote && this.buggyFuelTank.getLiquid() != null && this.buggyFuelTank.getLiquid().amount > 0)
+        {
+            this.motionX = -(this.speed * Math.cos((this.rotationYaw - 90F) * Math.PI / 180.0D ));
+            this.motionZ = -(this.speed * Math.sin((this.rotationYaw - 90F) * Math.PI / 180.0D ));
+        }
 
 		if (this.worldObj.isRemote)
 		{
 			this.moveEntity(this.motionX, this.motionY, this.motionZ);
 		}
 
+        if (Math.abs(this.motionX * this.motionZ) > 0.000001)
+        {
+        	double d = this.motionX * this.motionX + this.motionZ * this.motionZ;
+        	if (!this.worldObj.isRemote && d != 0 && this.ticks % MathHelper.floor_double(2 / d) == 0)
+        	{
+        		this.removeFuel(null, 1);
+        	}
+        }
+
         this.prevPosX = this.posX;
         this.prevPosY = this.posY;
         this.prevPosZ = this.posZ;
 
-		if(this.worldObj.isRemote && this.riddenByEntity instanceof EntityPlayer && FMLClientHandler.instance().getClient().thePlayer.equals(this.riddenByEntity))
+		if(this.worldObj.isRemote)
 		{
 			PacketDispatcher.sendPacketToServer(GCCorePacketEntityUpdate.buildUpdatePacket(this));
 		}
 
-		if(!this.worldObj.isRemote && this.ticksExisted % 5 == 0)
+		if(!this.worldObj.isRemote && this.ticks % 5 == 0)
 		{
 			PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 50, this.dimension, GCCorePacketEntityUpdate.buildUpdatePacket(this));
 		}
+
+		if (!this.worldObj.isRemote && this.ticks % 5 == 0)
+		{
+			PacketManager.sendPacketToClients(this.getDescriptionPacket(), this.worldObj, new Vector3(this), 50);
+		}
     }
+
+    public Packet getDescriptionPacket()
+	{
+		return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.buggyType, this.buggyFuelTank.getLiquid() != null ? this.buggyFuelTank.getLiquid().amount : 0);
+	}
+
+	@Override
+	public void handlePacketData(INetworkManager network, int packetType, Packet250CustomPayload packet, EntityPlayer player, ByteArrayDataInput dataStream)
+	{
+		try
+		{
+			if (this.worldObj.isRemote)
+			{
+				this.buggyType = dataStream.readInt();
+				this.buggyFuelTank.setLiquid(new LiquidStack(GCCoreItems.fuel.itemID, dataStream.readInt(), 0));
+			}
+		}
+		catch (final Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
 
     @Override
 	protected void readEntityFromNBT(NBTTagCompound var1)
     {
         this.fuel = var1.getInteger("Fuel");
+        this.buggyType = var1.getInteger("buggyType");
         final NBTTagList var2 = var1.getTagList("Items");
         this.cargoItems = new ItemStack[this.getSizeInventory()];
+
+		if (var1.hasKey("fuelTank"))
+		{
+			this.buggyFuelTank.readFromNBT(var1.getCompoundTag("fuelTank"));
+		}
 
         for (int var3 = 0; var3 < var2.tagCount(); ++var3)
         {
@@ -369,7 +472,13 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
 	protected void writeEntityToNBT(NBTTagCompound var1)
     {
         var1.setInteger("fuel", this.fuel);
+        var1.setInteger("buggyType", this.buggyType);
         final NBTTagList var2 = new NBTTagList();
+
+		if (this.buggyFuelTank.getLiquid() != null)
+		{
+			var1.setTag("fuelTank", this.buggyFuelTank.writeToNBT(new NBTTagCompound()));
+		}
 
         for (int var3 = 0; var3 < this.cargoItems.length; ++var3)
         {
@@ -388,7 +497,7 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
     @Override
 	public int getSizeInventory()
     {
-        return 27;
+        return 60;
     }
 
     @Override
@@ -497,6 +606,15 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
         else
         {
             var1.mountEntity(this);
+            
+            if (this.riddenByEntity != null)
+            {
+            	var1.sendChatToPlayer("A / D  - Turn left-right");
+            	var1.sendChatToPlayer("W       - Accelerate");
+            	var1.sendChatToPlayer("S       - Decelerate");
+            	var1.sendChatToPlayer(Keyboard.getKeyName(GCKeyHandler.openSpaceshipInv.keyCode) + "       - Inventory / Fuel");
+            }
+            
             return true;
         }
     }
@@ -537,14 +655,66 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
 	}
 
 	@Override
-	public boolean isInvNameLocalized() {
-		// TODO Auto-generated method stub
+	public boolean isInvNameLocalized() 
+	{
+		return true;
+	}
+
+	@Override
+	public boolean isStackValidForSlot(int i, ItemStack itemstack) 
+	{
 		return false;
 	}
 
 	@Override
-	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
-		// TODO Auto-generated method stub
-		return false;
+	public int addFuel(LiquidStack liquid, int amount, boolean doDrain) 
+	{
+		final LiquidStack liquidInTank = this.buggyFuelTank.getLiquid();
+
+		if (liquid != null && LiquidDictionary.findLiquidName(liquid).equals("Fuel") && this.landingPad != null)
+		{
+			if (liquidInTank == null || liquidInTank.amount + liquid.amount <= this.buggyFuelTank.getCapacity())
+			{
+				FMLLog.info("filling");
+				return this.buggyFuelTank.fill(liquid, doDrain);
+			}
+		}
+
+		return 0;
+	}
+
+	@Override
+	public LiquidStack removeFuel(LiquidStack liquid, int amount)
+	{
+		if (liquid == null)
+		{
+			return this.buggyFuelTank.drain(amount, true);
+		}
+
+		return null;
+	}
+
+	@Override
+	public void setPad(IFuelDock pad) 
+	{
+		this.landingPad = pad;
+	}
+
+	@Override
+	public IFuelDock getLandingPad() 
+	{
+		return this.landingPad;
+	}
+
+	@Override
+	public void onPadDestroyed()
+	{
+		
+	}
+
+	@Override
+	public boolean isDockValid(IFuelDock dock) 
+	{
+		return dock instanceof GCCoreTileEntityBuggyFueler;
 	}
 }

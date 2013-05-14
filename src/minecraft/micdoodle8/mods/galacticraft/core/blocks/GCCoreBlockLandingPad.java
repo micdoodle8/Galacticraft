@@ -1,11 +1,18 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
+import java.util.List;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityBuggyFuelerSingle;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPadSingle;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import universalelectricity.prefab.block.BlockAdvanced;
 
@@ -17,6 +24,8 @@ import universalelectricity.prefab.block.BlockAdvanced;
  */
 public class GCCoreBlockLandingPad extends BlockAdvanced
 {
+	private Icon[] icons = new Icon[2];
+	
 	public GCCoreBlockLandingPad(int i)
 	{
 		super(i, Material.iron);
@@ -30,9 +39,36 @@ public class GCCoreBlockLandingPad extends BlockAdvanced
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
+    public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
+    {
+    	for (int i = 0; i < 2; i++)
+    	{
+            par3List.add(new ItemStack(par1, 1, i));
+    	}
+    }
+
+    @Override
     public void registerIcons(IconRegister par1IconRegister)
     {
+    	icons[0] = par1IconRegister.registerIcon("galacticraftcore:launch_pad");
+    	icons[1] = par1IconRegister.registerIcon("galacticraftcore:buggy_fueler_blank");
     	this.blockIcon = par1IconRegister.registerIcon("galacticraftcore:launch_pad");
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public Icon getIcon(int par1, int par2)
+    {
+    	switch (par2)
+    	{
+    	case 0:
+    		return this.icons[0];
+    	case 1:
+    		return this.icons[1];
+    	}
+    	
+        return this.blockIcon;
     }
 
     @Override
@@ -70,6 +106,18 @@ public class GCCoreBlockLandingPad extends BlockAdvanced
     	}
     }
 
+	@Override
+	public TileEntity createTileEntity(World world, int metadata)
+	{
+		switch (metadata)
+		{
+		case 0:
+			return new GCCoreTileEntityLandingPadSingle();
+		default:
+			return new GCCoreTileEntityBuggyFuelerSingle();
+		}
+	}
+
     @Override
 	public boolean isOpaqueCube()
     {
@@ -81,10 +129,4 @@ public class GCCoreBlockLandingPad extends BlockAdvanced
     {
         return false;
     }
-
-	@Override
-	public TileEntity createNewTileEntity(World world)
-	{
-		return new GCCoreTileEntityLandingPadSingle();
-	}
 }

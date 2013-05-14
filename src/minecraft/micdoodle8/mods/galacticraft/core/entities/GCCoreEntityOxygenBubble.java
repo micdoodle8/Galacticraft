@@ -103,7 +103,6 @@ public class GCCoreEntityOxygenBubble extends Entity implements IPacketReceiver
 
     	super.onEntityUpdate();
 
-    	FMLLog.info("" + MathHelper.floor_double(this.posY - 1.0));
     	final TileEntity tileAt = this.worldObj.getBlockTileEntity(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 1.0), MathHelper.floor_double(this.posZ));
 
     	if (tileAt instanceof GCCoreTileEntityOxygenDistributor)

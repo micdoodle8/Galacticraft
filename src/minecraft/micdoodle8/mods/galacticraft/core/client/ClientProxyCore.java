@@ -124,7 +124,6 @@ import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry.KeyHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -548,8 +547,12 @@ public class ClientProxyCore extends CommonProxyCore
         	else if (kb.keyCode == GCKeyHandler.openSpaceshipInv.keyCode)
         	{
                 final Object[] toSend = {player.username};
-                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 6, toSend));
-        	    player.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiSpaceshipInventory, minecraft.theWorld, (int)player.posX, (int)player.posY, (int)player.posZ);
+                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, player.ridingEntity instanceof EntitySpaceshipBase ? 6 : (player.ridingEntity instanceof GCCoreEntityBuggy ? 20 : -1), toSend));
+                
+                if (player.ridingEntity instanceof EntitySpaceshipBase)
+                {
+            	    player.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiSpaceshipInventory, minecraft.theWorld, (int)player.posX, (int)player.posY, (int)player.posZ);
+                }
         	}
         	else if (kb.keyCode == GCKeyHandler.toggleAdvGoggles.keyCode)
         	{
@@ -656,12 +659,7 @@ public class ClientProxyCore extends CommonProxyCore
 	{
 		final TileEntity tile = world.getBlockTileEntity(x, y, z);
 
-		/*
-		if (ID == GCCoreConfigManager.idGuiTankRefill)
-		{
-			return new GCCoreGuiTankRefill(player);
-		}
-		else */if (ID == GCCoreConfigManager.idGuiGalaxyMap)
+		if (ID == GCCoreConfigManager.idGuiGalaxyMap)
 		{
 			return new GCCoreGuiGalaxyMap(player);
 		}

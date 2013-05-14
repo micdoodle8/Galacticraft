@@ -14,9 +14,11 @@ import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore.GCKeyHandler;
 import micdoodle8.mods.galacticraft.core.client.GCCorePlayerSP;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityWeldingSmoke;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiBuggy;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiChoosePlanet;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiGalaxyMap;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreSpaceStationData;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityBuggy;
 import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerClient;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
@@ -421,6 +423,18 @@ public class GCCorePacketHandlerClient implements IPacketHandler
             if (playerBaseClient != null)
             {
             	playerBaseClient.oxygenSetupValid = (Boolean) packetReadout[0];
+            }
+        }
+        else if (packetType == 28)
+        {
+            final Class[] decodeAs = {Integer.class};
+            final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
+
+            if (player.ridingEntity instanceof GCCoreEntityBuggy)
+            {
+            	FMLLog.info("OPENED CLIENT");
+                FMLClientHandler.instance().getClient().displayGuiScreen(new GCCoreGuiBuggy(player.inventory, (GCCoreEntityBuggy) player.ridingEntity, ((GCCoreEntityBuggy) player.ridingEntity).getType()));
+                player.openContainer.windowId = (Integer) packetReadout[0];
             }
         }
 	}

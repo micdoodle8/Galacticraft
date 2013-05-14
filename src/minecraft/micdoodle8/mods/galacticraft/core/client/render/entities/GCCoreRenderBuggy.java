@@ -7,6 +7,7 @@ import net.minecraft.entity.Entity;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -40,6 +41,7 @@ public class GCCoreRenderBuggy extends Render
 
         this.loadTexture("/micdoodle8/mods/galacticraft/core/client/entities/buggy.png");
         GL11.glScalef(-1.0F, -1.0F, 1.0F);
+        this.modelSpaceship.setType(entity.buggyType);
         this.modelSpaceship.render(entity, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
         GL11.glPopMatrix();
     }

@@ -87,6 +87,7 @@ public class GCCoreConfigManager
 	public static int idItemFuel;
 	public static int idItemSchematic;
 	public static int idItemKey;
+	public static int idItemBuggyMaterial;
 
 	// RECIPES
 	public static boolean useRecipesIC2;
@@ -239,6 +240,7 @@ public class GCCoreConfigManager
 	        GCCoreConfigManager.idItemFuel = 							GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "iditemFuel",			 				9880)		.getInt(9880);
 	        GCCoreConfigManager.idItemSchematic = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemSchematic",			 			9989)		.getInt(9989);
 	        GCCoreConfigManager.idItemKey = 							GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemKey",			 					9990)		.getInt(9990);
+	        GCCoreConfigManager.idItemBuggyMaterial = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemBuggyMaterial", 					9991)		.getInt(9991);
 
 	        GCCoreConfigManager.idToolSteelSword = 						GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idToolSteelSword", 						9980)		.getInt(9880);
 	        GCCoreConfigManager.idToolSteelPickaxe = 					GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idToolSteelPickaxe", 					9981)		.getInt(9881);
@@ -268,7 +270,7 @@ public class GCCoreConfigManager
 	        GCCoreConfigManager.idGuiFuelLoader =						GCCoreConfigManager.configuration.get("GUI", "idGuiFuelLoader", 											137)		.getInt(137);
 	        GCCoreConfigManager.idGuiAddSchematic = 					GCCoreConfigManager.configuration.get("GUI", "idGuiAddSchematic", 											138)		.getInt(138);
 	        GCCoreConfigManager.idGuiAirSealer = 						GCCoreConfigManager.configuration.get("GUI", "idGuiAirSealer", 												139)		.getInt(139);
-
+	        
 	        GCCoreConfigManager.idSchematicRocketT1 = 					GCCoreConfigManager.configuration.get("Schematic", "idSchematicRocketT1", 									0)			.getInt(0);
 	        GCCoreConfigManager.idSchematicMoonBuggy = 					GCCoreConfigManager.configuration.get("Schematic", "idSchematicMoonBuggy", 									1)			.getInt(1);
 	        GCCoreConfigManager.idSchematicAddSchematic = 				GCCoreConfigManager.configuration.get("Schematic", "idSchematicAddSchematic", 						Integer.MAX_VALUE)	.getInt(Integer.MAX_VALUE);
