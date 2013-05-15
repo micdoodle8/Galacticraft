@@ -61,7 +61,7 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityElectric im
 
 		if (!this.worldObj.isRemote)
 		{
-			if(this.getPower() > 0 && !this.worldObj.isRemote && (this.ic2Energy > 0 || this.wattsReceived > 0 || this.getPowerProvider().getEnergyStored() > 0))
+			if(this.getPower() > 0 && !this.worldObj.isRemote && (this.ic2Energy > 0 || this.wattsReceived > 0 || (this.getPowerProvider() != null && this.getPowerProvider().getEnergyStored() > 0)))
 			{
 		    	for(final ForgeDirection orientation : ForgeDirection.values())
 		    	{

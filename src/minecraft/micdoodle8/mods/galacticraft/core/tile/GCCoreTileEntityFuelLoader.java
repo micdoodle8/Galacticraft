@@ -129,7 +129,7 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric impleme
 
 			final LiquidStack liquid = LiquidDictionary.getLiquid("Fuel", 1);
 
-			if (this.attachedFuelable != null && (this.ic2Energy > 0 || this.wattsReceived > 0 || this.getPowerProvider().getEnergyStored() > 0) && !this.disabled)
+			if (this.attachedFuelable != null && (this.ic2Energy > 0 || this.wattsReceived > 0 || (this.getPowerProvider() != null && this.getPowerProvider().getEnergyStored() > 0)) && !this.disabled)
 			{
 				if (liquid != null)
 				{

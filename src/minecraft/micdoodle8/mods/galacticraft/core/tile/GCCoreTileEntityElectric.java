@@ -271,6 +271,11 @@ public abstract class GCCoreTileEntityElectric extends TileEntityElectricityRunn
 	@Override
 	public int powerRequest(ForgeDirection from)
 	{
+		if (this.getPowerProvider() == null)
+		{
+			return 0;
+		}
+		
 		return (int)Math.min((this.getPowerProvider().getMaxEnergyStored() - this.getPowerProvider().getEnergyStored()) * GalacticraftCore.toBuildcraftEnergyScalar, this.getPowerProvider().getMaxEnergyReceived());
 	}
 
