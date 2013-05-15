@@ -92,7 +92,14 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
         			{
         				final String[] twoDimensions = str.split("\\$");
 
-        				str = twoDimensions[2];
+        				if (twoDimensions.length > 2)
+        				{
+            				str = twoDimensions[2];
+        				}
+                		else
+                		{
+                			str = "";
+                		}
         			}
 
         			if (renderer.getPlanetName().toLowerCase().equals(str))
@@ -127,9 +134,15 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
             	if (str.contains("$"))
             	{
             		final String[] strs = str.split("\\$");
-            		str = strs[2];
-//            		str = str.concat(" -\u00a73 Owner: ");
-//            		str = str.concat(strs[1]);
+            		
+            		if (strs.length > 2)
+            		{
+                		str = strs[2];
+            		}
+            		else
+            		{
+            			str = "";
+            		}
             	}
 
                 this.choosePlanetGui.drawCenteredString(this.choosePlanetGui.getFontRenderer(), str, this.choosePlanetGui.width / 2, par3 + 3, 0xEEEEEE);
@@ -144,7 +157,6 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
     	}
     	else
     	{
-
         	if (this.choosePlanetGui.isValidDestination(par1))
         	{
         		String str = GCCoreGuiChoosePlanet.getDestinations(this.choosePlanetGui)[par1];
@@ -152,7 +164,15 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
             	if (str.contains("$"))
             	{
             		final String[] strs = str.split("\\$");
-            		str = strs[2];
+            		
+            		if (strs.length > 2)
+            		{
+                		str = strs[2];
+            		}
+            		else
+            		{
+            			str = "";
+            		}
             	}
 
                 this.choosePlanetGui.drawCenteredString(this.choosePlanetGui.getFontRenderer(), str, this.choosePlanetGui.width / 2, par3 + 3, 0xEEEEEE);
