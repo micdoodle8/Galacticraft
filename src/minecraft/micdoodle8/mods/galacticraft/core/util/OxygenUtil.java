@@ -6,6 +6,7 @@ import java.util.List;
 import micdoodle8.mods.galacticraft.API.EnumGearType;
 import micdoodle8.mods.galacticraft.API.IBreathableArmor;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockBreathableAir;
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryPlayer;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenGear;
@@ -116,17 +117,32 @@ public class OxygenUtil
         	}
         }
 
-        for (int var9 = var3; var9 < var4; ++var9)
-        {
-            for (int var10 = var5; var10 < var6; ++var10)
-            {
-                for (int var11 = var7; var11 < var8; ++var11)
-                {
-                    final Block var12 = Block.blocksList[world.getBlockId(var9, var10, var11)];
+        return isInOxygenBlock(world, AxisAlignedBB.getAABBPool().getAABB(minVec.x, minVec.y, minVec.z, maxVec.x, maxVec.y, maxVec.z).contract(0.001D, 0.001D, 0.001D));
+    }
+    
+    public static boolean isInOxygenBlock(World world, AxisAlignedBB bb)
+    {
+        int i = MathHelper.floor_double(bb.minX);
+        int j = MathHelper.floor_double(bb.maxX + 1.0D);
+        int k = MathHelper.floor_double(bb.minY);
+        int l = MathHelper.floor_double(bb.maxY + 1.0D);
+        int i1 = MathHelper.floor_double(bb.minZ);
+        int j1 = MathHelper.floor_double(bb.maxZ + 1.0D);
 
-                    if (var12 != null && var12 instanceof GCCoreBlockBreathableAir)
+        if (world.checkChunksExist(i, k, i1, j, l, j1))
+        {
+            for (int k1 = i; k1 < j; ++k1)
+            {
+                for (int l1 = k; l1 < l; ++l1)
+                {
+                    for (int i2 = i1; i2 < j1; ++i2)
                     {
-                        return true;
+                        int j2 = world.getBlockId(k1, l1, i2);
+
+                        if (j2 == GCCoreBlocks.breatheableAir.blockID)
+                        {
+                            return true;
+                        }
                     }
                 }
             }
