@@ -5,6 +5,8 @@ import ic2.api.item.Items;
 
 import java.util.HashMap;
 
+import basiccomponents.common.BasicComponents;
+
 import micdoodle8.mods.galacticraft.API.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.API.SpaceStationRecipe;
 import micdoodle8.mods.galacticraft.API.SpaceStationType;
@@ -1044,9 +1046,13 @@ public class RecipeUtil
 
 		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.enclosedWire, 1, 1), new Object[] {
 			"XYX",
-			'X', GCCoreBlocks.oxygenPipe, 'Y', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4)
+			'Y', GCCoreBlocks.oxygenPipe, 'X', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4)
 		});
 
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.enclosedWire, 1, 0), new Object[] {
+			"XYX",
+			'Y', "copperWire", 'X', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4)
+		});
 
 		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.oxygenGear), new Object[] {
 			" Y ",
@@ -1304,11 +1310,6 @@ public class RecipeUtil
 			'X', "ingotSteel"
 		});
 
-		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.enclosedWire, 1, 0), new Object[] {
-			"XYX",
-			'X', "copperWire", 'Y', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4)
-		});
-
 		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.flagPole, 2, 0), new Object[] {
 			"X",
 			"X",
@@ -1491,7 +1492,6 @@ public class RecipeUtil
 			"XYX",
 			'X', GCCoreBlocks.oxygenPipe, 'Y', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4)
 		});
-
 
 		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.oxygenGear), new Object[] {
 			" Y ",

@@ -2,7 +2,11 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.List;
 
+import basiccomponents.common.BasicComponents;
+import basiccomponents.common.tileentity.TileEntityCopperWire;
+
 import micdoodle8.mods.galacticraft.API.IPartialSealedBlock;
+import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenPipe;
 import net.minecraft.block.Block;
@@ -34,7 +38,7 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
 	@Override
     public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
     {
-        for (int var4 = 1; var4 < 2; ++var4)
+        for (int var4 = BasicComponents.blockCopperWire != null ? 0 : 1; var4 < 2; ++var4)
         {
             par3List.add(new ItemStack(par1, 1, var4));
         }
@@ -61,6 +65,12 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
 		return this.blockIcon;
     }
 
+	@Override
+    public int damageDropped(int meta)
+    {
+        return meta;
+    }
+    
 	@Override
 	public void registerIcons(IconRegister par1IconRegister)
 	{
@@ -111,8 +121,8 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
 	{
 		switch (metadata)
 		{
-//		case 0:
-//			return new TileEntityCopperWire();
+		case 0:
+			return new TileEntityCopperWire();
 		case 1:
 			return new GCCoreTileEntityOxygenPipe();
 		}
