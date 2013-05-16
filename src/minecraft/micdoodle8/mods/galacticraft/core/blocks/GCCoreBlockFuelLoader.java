@@ -18,7 +18,7 @@ import universalelectricity.prefab.block.BlockAdvanced;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class GCCoreBlockFuelLoader extends BlockAdvanced
+public class GCCoreBlockFuelLoader extends GCCoreBlockAdvanced
 {
 	private Icon iconMachineSide;
 	private Icon iconInput;

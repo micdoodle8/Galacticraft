@@ -5,6 +5,7 @@ import java.util.Random;
 
 import micdoodle8.mods.galacticraft.API.IDetectableMetadataResource;
 import micdoodle8.mods.galacticraft.API.IPlantableMetadataBlock;
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockAdvanced;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityDungeonSpawner;
 import micdoodle8.mods.galacticraft.moon.GalacticraftMoon;
 import micdoodle8.mods.galacticraft.moon.items.GCMoonItems;
@@ -21,7 +22,6 @@ import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.IPlantable;
-import universalelectricity.prefab.block.BlockAdvanced;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -31,7 +31,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  *  All rights reserved.
  *
  */
-public class GCMoonBlock extends BlockAdvanced implements IDetectableMetadataResource, IPlantableMetadataBlock
+public class GCMoonBlock extends GCCoreBlockAdvanced implements IDetectableMetadataResource, IPlantableMetadataBlock
 {
 	// CopperMoon: 0, TinMoon: 1, CheeseStone: 2;
     @SideOnly(Side.CLIENT)

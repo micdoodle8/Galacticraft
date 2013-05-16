@@ -22,7 +22,7 @@ import universalelectricity.prefab.block.BlockAdvanced;
  *  All rights reserved.
  *
  */
-public class GCCoreBlockLandingPad extends BlockAdvanced
+public class GCCoreBlockLandingPad extends GCCoreBlockAdvanced
 {
 	private Icon[] icons = new Icon[2];
 	

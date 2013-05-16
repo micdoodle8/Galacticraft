@@ -22,7 +22,7 @@ import universalelectricity.prefab.block.BlockAdvanced;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class GCCoreBlockRefinery extends BlockAdvanced
+public class GCCoreBlockRefinery extends GCCoreBlockAdvanced
 {
     private final Random refineryRand = new Random();
 

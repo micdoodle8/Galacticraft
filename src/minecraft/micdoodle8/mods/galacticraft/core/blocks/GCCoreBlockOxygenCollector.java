@@ -20,7 +20,7 @@ import universalelectricity.prefab.block.BlockAdvanced;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class GCCoreBlockOxygenCollector extends BlockAdvanced
+public class GCCoreBlockOxygenCollector extends GCCoreBlockAdvanced
 {
     @SideOnly(Side.CLIENT)
     private Icon[] collectorIcons;

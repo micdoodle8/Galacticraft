@@ -24,7 +24,7 @@ import universalelectricity.prefab.multiblock.IMultiBlock;
  *  All rights reserved.
  *
  */
-public class GCCoreBlockLandingPadFull extends BlockAdvanced
+public class GCCoreBlockLandingPadFull extends GCCoreBlockAdvanced
 {
 	private Icon[] icons = new Icon[3];
 	

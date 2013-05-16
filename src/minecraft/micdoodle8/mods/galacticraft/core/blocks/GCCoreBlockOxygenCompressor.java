@@ -26,7 +26,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  *  All rights reserved.
  *
  */
-public class GCCoreBlockOxygenCompressor extends BlockAdvanced
+public class GCCoreBlockOxygenCompressor extends GCCoreBlockAdvanced
 {
     private final Random distributorRand = new Random();
 
