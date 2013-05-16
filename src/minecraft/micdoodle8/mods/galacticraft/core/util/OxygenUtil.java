@@ -59,18 +59,9 @@ public class OxygenUtil
 
     public static boolean isAABBInBreathableAirBlock(World world, Vector3 minVec, Vector3 maxVec, boolean testAllPoints)
     {
-        final int var3 = MathHelper.floor_double(minVec.x);
-        final int var4 = MathHelper.floor_double(maxVec.x);
-        final int var5 = MathHelper.floor_double(minVec.y);
-        final int var6 = MathHelper.floor_double(maxVec.y);
-        final int var7 = MathHelper.floor_double(minVec.z);
-        final int var8 = MathHelper.floor_double(maxVec.z);
-
         final double avgX = (minVec.x + maxVec.x) / 2.0D;
         final double avgY = (minVec.y + maxVec.y) / 2.0D;
         final double avgZ = (minVec.z + maxVec.z) / 2.0D;
-
-        final AxisAlignedBB box = AxisAlignedBB.getBoundingBox(minVec.x - 40, minVec.y - 40, minVec.z - 40, maxVec.x + 40, maxVec.y + 40, maxVec.z + 40);
 
         final List l = world.loadedTileEntityList;
 
@@ -82,36 +73,11 @@ public class OxygenUtil
 
         		if (!distributor.worldObj.isRemote)
         		{
-        			if (testAllPoints)
+        			final double dist = distributor.getDistanceFromServer(avgX, avgY, avgZ);
+
+        			if (dist < (distributor.storedOxygen / 600.0D) * (distributor.storedOxygen / 600.0D))
         			{
-        				final ArrayList<Vector3> vecs = new ArrayList<Vector3>();
-        				vecs.add(minVec);
-        				vecs.add(new Vector3(maxVec.x, minVec.y, minVec.z));
-        				vecs.add(new Vector3(minVec.x, maxVec.y, minVec.z));
-        				vecs.add(new Vector3(maxVec.x, maxVec.y, minVec.z));
-        				vecs.add(new Vector3(minVec.x, maxVec.y, maxVec.z));
-        				vecs.add(new Vector3(maxVec.x, minVec.y, maxVec.z));
-        				vecs.add(new Vector3(maxVec.x, minVec.y, minVec.z));
-        				vecs.add(minVec);
-
-        				for (final Vector3 vec : vecs)
-        				{
-                			final double dist = distributor.getDistanceFromServer(vec.x, vec.y, vec.z);
-
-                			if (Math.sqrt(dist) < distributor.storedOxygen / 600.0D)
-                			{
-                				return true;
-                			}
-        				}
-        			}
-        			else
-        			{
-            			final double dist = distributor.getDistanceFromServer(avgX, avgY, avgZ);
-
-            			if (Math.sqrt(dist) < distributor.storedOxygen / 600.0D)
-            			{
-            				return true;
-            			}
+        				return true;
         			}
         		}
         	}

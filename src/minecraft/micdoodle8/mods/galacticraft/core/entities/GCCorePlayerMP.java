@@ -700,6 +700,8 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
 		if (this.worldObj.provider instanceof IGalacticraftWorldProvider && !this.capabilities.isCreativeMode)
 	    {
+			boolean inAir = OxygenUtil.isAABBInBreathableAirBlock(this);
+			
 			if (tankInSlot == null)
 			{
 				this.airRemaining = 0;
@@ -720,22 +722,22 @@ public class GCCorePlayerMP extends EntityPlayerMP
 	    		this.airRemaining2 = tankInSlot2.getMaxDamage() - tankInSlot2.getItemDamage();
 			}
 
-			if (drainSpacing > 0 && this.tick % drainSpacing == 0 && !OxygenUtil.isAABBInBreathableAirBlock(this) && tankInSlot.getMaxDamage() - tankInSlot.getItemDamage() > 0)
+			if (drainSpacing > 0 && this.tick % drainSpacing == 0 && !inAir && tankInSlot.getMaxDamage() - tankInSlot.getItemDamage() > 0)
 	    	{
 	    		tankInSlot.damageItem(1, this);
 	    	}
 
-			if (drainSpacing2 > 0 && this.tick % drainSpacing2 == 0 && !OxygenUtil.isAABBInBreathableAirBlock(this) && tankInSlot2.getMaxDamage() - tankInSlot2.getItemDamage() > 0)
+			if (drainSpacing2 > 0 && this.tick % drainSpacing2 == 0 && !inAir && tankInSlot2.getMaxDamage() - tankInSlot2.getItemDamage() > 0)
 	    	{
 	    		tankInSlot2.damageItem(1, this);
 	    	}
 
-			if (drainSpacing == 0 && this.tick % 60 == 0 && !OxygenUtil.isAABBInBreathableAirBlock(this) && this.airRemaining > 0)
+			if (drainSpacing == 0 && this.tick % 60 == 0 && !inAir && this.airRemaining > 0)
 			{
 	    		this.airRemaining -= 1;
 			}
 
-			if (drainSpacing2 == 0 && this.tick % 60 == 0 && !OxygenUtil.isAABBInBreathableAirBlock(this) && this.airRemaining2 > 0)
+			if (drainSpacing2 == 0 && this.tick % 60 == 0 && !inAir && this.airRemaining2 > 0)
 			{
 	    		this.airRemaining2 -= 1;
 			}
@@ -750,21 +752,19 @@ public class GCCorePlayerMP extends EntityPlayerMP
 				this.airRemaining2 = 0;
 			}
 
-			if (this.tick % 60 == 0 && OxygenUtil.isAABBInBreathableAirBlock(this) && this.airRemaining < 90 && tankInSlot != null)
+			if (this.tick % 60 == 0 && inAir && this.airRemaining < 90 && tankInSlot != null)
 			{
 				this.airRemaining += 1;
 			}
 
-			if (this.tick % 60 == 0 && OxygenUtil.isAABBInBreathableAirBlock(this) && this.airRemaining2 < 90 && tankInSlot2 != null)
+			if (this.tick % 60 == 0 && inAir && this.airRemaining2 < 90 && tankInSlot2 != null)
 			{
 				this.airRemaining2 += 1;
 			}
 
-    		final boolean flag5 = this.airRemaining <= 0 && this.airRemaining2 <= 0;
+    		final boolean airEmpty = this.airRemaining <= 0 && this.airRemaining2 <= 0;
 
-    		final boolean invalid = !OxygenUtil.hasValidOxygenSetup(this) || flag5;
-
-    		if (invalid && !OxygenUtil.isAABBInBreathableAirBlock(this))
+    		if ((!OxygenUtil.hasValidOxygenSetup(this) || airEmpty) && !inAir)
 			{
     			this.oxygenSetupValid = false;
 
