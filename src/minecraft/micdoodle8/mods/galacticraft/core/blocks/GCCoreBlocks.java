@@ -73,8 +73,8 @@ public class GCCoreBlocks
 		GCCoreBlocks.fuelLoader = 											new GCCoreBlockFuelLoader			(GCCoreConfigManager.idBlockFuelLoader)								.setHardness(3.0F)       							.setStepSound(Block.soundMetalFootstep)					.setUnlocalizedName("fuelLoader");
 		GCCoreBlocks.spaceStationBase = 									new GCCoreBlockSpaceStationBase		(GCCoreConfigManager.idBlockSpaceStationBase)						.setHardness(3.0F)       							.setStepSound(Block.soundMetalFootstep)					.setUnlocalizedName("spaceStationBase");
 		GCCoreBlocks.dummyBlock = (GCCoreBlockMulti) 						new GCCoreBlockMulti				(GCCoreConfigManager.idBlockDummy)																						.setStepSound(Block.soundMetalFootstep)					.setUnlocalizedName("dummyblock");
-		GCCoreBlocks.sealer = new GCCoreBlockOxygenSealer			(GCCoreConfigManager.idBlockOxygenSealer)																		.setHardness(3.5F)									.setStepSound(Block.soundStoneFootstep)					.setUnlocalizedName("sealer");
-		GCCoreBlocks.enclosedWire = 										new GCCoreBlockEnclosed			(GCCoreConfigManager.idBlockEnclosedWire)								.setHardness(3.5F)									.setStepSound(Block.soundStoneFootstep)					.setUnlocalizedName("enclosed");
+		GCCoreBlocks.sealer = 												new GCCoreBlockOxygenSealer			(GCCoreConfigManager.idBlockOxygenSealer)																		.setHardness(3.5F)									.setStepSound(Block.soundStoneFootstep)					.setUnlocalizedName("sealer");
+		GCCoreBlocks.enclosedWire = 										new GCCoreBlockEnclosed				(GCCoreConfigManager.idBlockEnclosedWire)								.setHardness(3.5F)									.setStepSound(Block.soundStoneFootstep)					.setUnlocalizedName("enclosed");
 		GCCoreBlocks.oxygenDetector = 										new GCCoreBlockOxygenDetector 		(GCCoreConfigManager.idBlockOxygenDetector)							.setHardness(3.0F)									.setStepSound(Block.soundStoneFootstep)					.setUnlocalizedName("oxygenDetector");
 
 		// Hide certain items from NEI
