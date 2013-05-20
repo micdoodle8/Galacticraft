@@ -1,7 +1,7 @@
 Galacticraft
 ============
 
-An advanced space exploration mod for Minecraft 1.4
+An advanced space exploration mod for Minecraft.
 
 Galacticraft License
 =======
