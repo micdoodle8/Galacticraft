@@ -597,6 +597,14 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
 
         if (this.worldObj.isRemote)
         {
+            if (this.riddenByEntity == null)
+            {
+            	var1.sendChatToPlayer("A / D  - Turn left-right");
+            	var1.sendChatToPlayer("W       - Accelerate");
+            	var1.sendChatToPlayer("S       - Decelerate");
+            	var1.sendChatToPlayer(Keyboard.getKeyName(GCKeyHandler.openSpaceshipInv.keyCode) + "       - Inventory / Fuel");
+            }
+        	
             return true;
         }
         else if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayer && this.riddenByEntity != var1)
@@ -605,15 +613,7 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
         }
         else
         {
-            var1.mountEntity(this);
-            
-            if (this.riddenByEntity != null)
-            {
-            	var1.sendChatToPlayer("A / D  - Turn left-right");
-            	var1.sendChatToPlayer("W       - Accelerate");
-            	var1.sendChatToPlayer("S       - Decelerate");
-            	var1.sendChatToPlayer(Keyboard.getKeyName(GCKeyHandler.openSpaceshipInv.keyCode) + "       - Inventory / Fuel");
-            }
+            var1.mountEntity(this); 
             
             return true;
         }
