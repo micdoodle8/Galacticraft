@@ -6,6 +6,7 @@ import java.util.List;
 import micdoodle8.mods.galacticraft.API.IDockable;
 import micdoodle8.mods.galacticraft.API.IFuelDock;
 import micdoodle8.mods.galacticraft.API.IFuelable;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -21,6 +22,11 @@ public class GCCoreTileEntityLandingPad extends TileEntityMulti implements IMult
 	protected long ticks = 0;
 	private IDockable dockedEntity;
 	public HashSet<TileEntity> connectedTiles = new HashSet<TileEntity>();
+	
+	public GCCoreTileEntityLandingPad()
+	{
+		super(GalacticraftCore.CHANNEL);
+	}
 
 	@Override
 	public void updateEntity()
