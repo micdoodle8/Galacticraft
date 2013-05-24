@@ -15,6 +15,11 @@ public class GCCoreTileEntityAdvancedCraftingTable extends TileEntityMulti imple
 {
     public GCCoreModelAssemblyTable model = new GCCoreModelAssemblyTable();
 
+	public GCCoreTileEntityAdvancedCraftingTable()
+	{
+		super(GalacticraftCore.CHANNEL);
+	}
+	
     @Override
   	public void validate()
   	{
