@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import java.util.ArrayList;
+import codechicken.core.alg.MathHelper;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import net.minecraft.nbt.NBTTagCompound;
 import universalelectricity.prefab.tile.TileEntityAdvanced;
@@ -36,11 +37,20 @@ public class GCCoreTileEntityAirLock extends TileEntityAdvanced
 
             if (this.active && (this.otherAirLocks != null || this.otherAirLocks != null && this.lastOtherAirLocks != null && this.otherAirLocks != this.lastOtherAirLocks || this.otherAirLocks != null && this.lastOtherAirLocks != null && this.otherAirLocks.size() != this.lastOtherAirLocks.size()))
             {
+                int x = this.lastProtocol.minX + (this.lastProtocol.maxX - this.lastProtocol.minX) / 2;
+                int y = this.lastProtocol.minY + (this.lastProtocol.maxY - this.lastProtocol.minY) / 2;
+                int z = this.lastProtocol.minZ + (this.lastProtocol.maxZ - this.lastProtocol.minZ) / 2;
+                
+                if (this.worldObj.getBlockId(x, y, z) != GCCoreBlocks.airLockSeal.blockID)
+                {
+                    this.worldObj.playSoundEffect((double)x, (double)y, (double)z, "galacticraft.player.openairlock", 1.0F, 1.0F);
+                }
+                
                 if (this.protocol.minX != this.protocol.maxX)
                 {
-                    for (int x = this.protocol.minX + 1; x <= this.protocol.maxX - 1; x++)
+                    for (x = this.protocol.minX + 1; x <= this.protocol.maxX - 1; x++)
                     {
-                        for (int y = this.protocol.minY + 1; y <= this.protocol.maxY - 1; y++)
+                        for (y = this.protocol.minY + 1; y <= this.protocol.maxY - 1; y++)
                         {
                             this.worldObj.setBlock(x, y, this.protocol.minZ, GCCoreBlocks.airLockSeal.blockID, 0, 3);
                         }
@@ -48,9 +58,9 @@ public class GCCoreTileEntityAirLock extends TileEntityAdvanced
                 }
                 else if (this.protocol.minZ != this.protocol.maxZ)
                 {
-                    for (int z = this.protocol.minZ + 1; z <= this.protocol.maxZ - 1; z++)
+                    for (z = this.protocol.minZ + 1; z <= this.protocol.maxZ - 1; z++)
                     {
-                        for (int y = this.protocol.minY + 1; y <= this.protocol.maxY - 1; y++)
+                        for (y = this.protocol.minY + 1; y <= this.protocol.maxY - 1; y++)
                         {
                             this.worldObj.setBlock(this.protocol.minX, y, z, GCCoreBlocks.airLockSeal.blockID, 0, 3);
                         }
@@ -59,11 +69,20 @@ public class GCCoreTileEntityAirLock extends TileEntityAdvanced
             }
             else if (!this.active && this.lastActive || this.otherAirLocks == null && this.lastOtherAirLocks != null)
             {
+                int x = this.lastProtocol.minX + (this.lastProtocol.maxX - this.lastProtocol.minX) / 2;
+                int y = this.lastProtocol.minY + (this.lastProtocol.maxY - this.lastProtocol.minY) / 2;
+                int z = this.lastProtocol.minZ + (this.lastProtocol.maxZ - this.lastProtocol.minZ) / 2;
+                
+                if (this.worldObj.getBlockId(x, y, z) != 0)
+                {
+                    this.worldObj.playSoundEffect((double)x, (double)y, (double)z, "galacticraft.player.closeairlock", 1.0F, 1.0F);
+                }
+                
                 if (this.lastProtocol.minX != this.lastProtocol.maxX)
                 {
-                    for (int x = this.lastProtocol.minX + 1; x <= this.lastProtocol.maxX - 1; x++)
+                    for (x = this.lastProtocol.minX + 1; x <= this.lastProtocol.maxX - 1; x++)
                     {
-                        for (int y = this.lastProtocol.minY + 1; y <= this.lastProtocol.maxY - 1; y++)
+                        for (y = this.lastProtocol.minY + 1; y <= this.lastProtocol.maxY - 1; y++)
                         {
                             this.worldObj.setBlockToAir(x, y, this.lastProtocol.minZ);
                         }
@@ -71,9 +90,9 @@ public class GCCoreTileEntityAirLock extends TileEntityAdvanced
                 }
                 else if (this.lastProtocol.minZ != this.lastProtocol.maxZ)
                 {
-                    for (int z = this.lastProtocol.minZ + 1; z <= this.lastProtocol.maxZ - 1; z++)
+                    for (z = this.lastProtocol.minZ + 1; z <= this.lastProtocol.maxZ - 1; z++)
                     {
-                        for (int y = this.lastProtocol.minY + 1; y <= this.lastProtocol.maxY - 1; y++)
+                        for (y = this.lastProtocol.minY + 1; y <= this.lastProtocol.maxY - 1; y++)
                         {
                             this.worldObj.setBlockToAir(this.lastProtocol.minX, y, z);
                         }
