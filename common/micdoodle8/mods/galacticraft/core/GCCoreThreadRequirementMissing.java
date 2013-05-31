@@ -24,7 +24,7 @@ public class GCCoreThreadRequirementMissing extends Thread
     {
         if (!GCCoreConfigManager.forceLoadGC.getBoolean(false) && !GCCoreConfigManager.loadBC.getBoolean(false) && !GCCoreCompatibilityManager.isIc2Loaded() && !GCCoreCompatibilityManager.isTELoaded())
         {
-            final String err = "<strong><h1>Galacticraft Requires IndustrialCraft 2, Thermal Expansion or Universal Electricity!</h1></strong><br /><h3>One or more of these mods is REQUIRED for crafting/gameplay. Ignore?</h3>";
+            final String err = "<strong><h1>Galacticraft Requires IndustrialCraft 2, Thermal Expansion or Basic Components!</h1></strong><br /><h3>One or more of these mods is REQUIRED for crafting/gameplay. Ignore?</h3>";
             System.out.println(err);
             final JEditorPane ep = new JEditorPane("text/html", "<html>" + err + "</html>");
 
