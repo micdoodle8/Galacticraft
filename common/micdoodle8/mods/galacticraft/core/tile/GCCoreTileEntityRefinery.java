@@ -25,6 +25,7 @@ import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.PacketManager;
 import buildcraft.api.power.PowerFramework;
 import com.google.common.io.ByteArrayDataInput;
+import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implements IInventory, ISidedInventory, ITankContainer
 {
@@ -35,8 +36,6 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
     public static final int PROCESS_TIME_REQUIRED = 1000;
     public int processTicks = 0;
     private ItemStack[] containingItems = new ItemStack[3];
-    private final int canisterToTankRatio = this.tankCapacity / GCCoreItems.fuelCanister.getMaxDamage();
-    private final int canisterToLiquidStackRatio = LiquidContainerRegistry.BUCKET_VOLUME * 2 / GCCoreItems.fuelCanister.getMaxDamage();
 
     private boolean checkOilNextTick = false;
     private boolean lastCheckOilNextTick = false;
@@ -93,16 +92,31 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
 
             if (this.containingItems[2] != null && LiquidContainerRegistry.isContainer(this.containingItems[2]))
             {
+                FMLLog.info("1");
                 final LiquidStack liquid = this.fuelTank.getLiquid();
 
                 if (liquid != null && this.fuelTank.getLiquidName() != null && this.fuelTank.getLiquidName().equals("Fuel"))
                 {
+                    FMLLog.info("2");
                     if (LiquidContainerRegistry.isEmptyContainer(this.containingItems[2]))
                     {
-                        final int amountToFill = this.containingItems[2].isItemEqual(new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.oilCanister.getMaxDamage())) ? LiquidContainerRegistry.BUCKET_VOLUME * 2 : LiquidContainerRegistry.BUCKET_VOLUME;
+                        FMLLog.info("3");
+                        boolean isCanister = this.containingItems[2].isItemEqual(new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.oilCanister.getMaxDamage()));
+                        final int amountToFill = isCanister ? LiquidContainerRegistry.BUCKET_VOLUME * 2 : LiquidContainerRegistry.BUCKET_VOLUME;
 
-                        this.containingItems[2] = LiquidContainerRegistry.fillLiquidContainer(liquid, this.containingItems[2]);
+                        if (isCanister)
+                        {
+                            float f = Float.valueOf(LiquidContainerRegistry.BUCKET_VOLUME * 2.0F) / Float.valueOf(GCCoreItems.fuelCanister.getMaxDamage());
+                            FMLLog.info("a" + (liquid.amount / f));
+                            int dam = GCCoreItems.fuelCanister.getMaxDamage() - Math.min(Math.max((int)Math.floor(liquid.amount / f), 1), 60);
+                            this.containingItems[2] = new ItemStack(GCCoreItems.fuelCanister, 1, dam);
+                        }
+                        else
+                        {
+                            this.containingItems[2] = LiquidContainerRegistry.fillLiquidContainer(liquid, this.containingItems[2]);
+                        }
 
+                        FMLLog.info("4 " + amountToFill);
                         this.fuelTank.drain(amountToFill, true);
                     }
                 }

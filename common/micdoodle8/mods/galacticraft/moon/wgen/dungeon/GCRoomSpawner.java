@@ -9,7 +9,6 @@ import net.minecraft.world.World;
 
 public class GCRoomSpawner extends GCDungeonRoom
 {
-
     int sizeX;
     int sizeY;
     int sizeZ;
