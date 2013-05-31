@@ -879,7 +879,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
         Collections.sort(this.unlockedSchematics);
 
-        if (this.playerNetServerHandler != null && this.unlockedSchematics.size() != this.lastUnlockedSchematics.size())
+        if (this.playerNetServerHandler != null && (this.unlockedSchematics.size() != this.lastUnlockedSchematics.size() || this.tick % 100 == 0))
         {
             this.playerNetServerHandler.sendPacketToPlayer(GCCorePacketSchematicList.buildSchematicListPacket(this.unlockedSchematics));
         }

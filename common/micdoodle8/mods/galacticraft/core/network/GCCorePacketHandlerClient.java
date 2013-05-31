@@ -71,7 +71,7 @@ public class GCCorePacketHandlerClient implements IPacketHandler
         }
         else if (packetType == 1)
         {
-            GCLog.severe("Found inccorect packet! Please report this as a bug.");
+            GCLog.severe("Found incorrect packet! Please report this as a bug.");
         }
         else if (packetType == 2)
         {
