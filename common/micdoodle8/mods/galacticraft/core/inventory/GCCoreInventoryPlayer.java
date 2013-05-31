@@ -8,23 +8,23 @@ import net.minecraft.nbt.NBTTagList;
 
 public class GCCoreInventoryPlayer extends InventoryPlayer
 {
-	public ItemStack[] tankSlotContents = new ItemStack[5];
+    public ItemStack[] tankSlotContents = new ItemStack[5];
 
-	public GCCoreInventoryPlayer(EntityPlayer par1EntityPlayer)
-	{
-		super(par1EntityPlayer);
-	}
+    public GCCoreInventoryPlayer(EntityPlayer par1EntityPlayer)
+    {
+        super(par1EntityPlayer);
+    }
 
     public ItemStack tankItemInSlot(int par1)
     {
-    	switch (par1)
-    	{
-    	default:
-    		return this.tankSlotContents[par1];
-    	}
+        switch (par1)
+        {
+        default:
+            return this.tankSlotContents[par1];
+        }
     }
 
-	@Override
+    @Override
     public int clearInventory(int par1, int par2)
     {
         int k = 0;
@@ -67,7 +67,7 @@ public class GCCoreInventoryPlayer extends InventoryPlayer
         return k;
     }
 
-	@Override
+    @Override
     public ItemStack decrStackSize(int par1, int par2)
     {
         ItemStack[] aitemstack = this.mainInventory;
@@ -114,7 +114,7 @@ public class GCCoreInventoryPlayer extends InventoryPlayer
         }
     }
 
-	@Override
+    @Override
     public ItemStack getStackInSlotOnClosing(int par1)
     {
         ItemStack[] aitemstack = this.mainInventory;
@@ -145,7 +145,7 @@ public class GCCoreInventoryPlayer extends InventoryPlayer
         }
     }
 
-	@Override
+    @Override
     public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
     {
         ItemStack[] aitemstack = this.mainInventory;
@@ -167,7 +167,7 @@ public class GCCoreInventoryPlayer extends InventoryPlayer
         aitemstack[par1] = par2ItemStack;
     }
 
-	@Override
+    @Override
     public NBTTagList writeToNBT(NBTTagList par1NBTTagList)
     {
         int i;
@@ -178,7 +178,7 @@ public class GCCoreInventoryPlayer extends InventoryPlayer
             if (this.mainInventory[i] != null)
             {
                 nbttagcompound = new NBTTagCompound();
-                nbttagcompound.setByte("Slot", (byte)i);
+                nbttagcompound.setByte("Slot", (byte) i);
                 this.mainInventory[i].writeToNBT(nbttagcompound);
                 par1NBTTagList.appendTag(nbttagcompound);
             }
@@ -189,7 +189,7 @@ public class GCCoreInventoryPlayer extends InventoryPlayer
             if (this.armorInventory[i] != null)
             {
                 nbttagcompound = new NBTTagCompound();
-                nbttagcompound.setByte("Slot", (byte)(i + 100));
+                nbttagcompound.setByte("Slot", (byte) (i + 100));
                 this.armorInventory[i].writeToNBT(nbttagcompound);
                 par1NBTTagList.appendTag(nbttagcompound);
             }
@@ -200,7 +200,7 @@ public class GCCoreInventoryPlayer extends InventoryPlayer
             if (this.tankSlotContents[i] != null)
             {
                 nbttagcompound = new NBTTagCompound();
-                nbttagcompound.setByte("Slot", (byte)(i + 200));
+                nbttagcompound.setByte("Slot", (byte) (i + 200));
                 this.tankSlotContents[i].writeToNBT(nbttagcompound);
                 par1NBTTagList.appendTag(nbttagcompound);
             }
@@ -209,16 +209,16 @@ public class GCCoreInventoryPlayer extends InventoryPlayer
         return par1NBTTagList;
     }
 
-	@Override
+    @Override
     public void readFromNBT(NBTTagList par1NBTTagList)
     {
         this.mainInventory = new ItemStack[36];
         this.armorInventory = new ItemStack[4];
-    	this.tankSlotContents = new ItemStack[5];
+        this.tankSlotContents = new ItemStack[5];
 
         for (int i = 0; i < par1NBTTagList.tagCount(); ++i)
         {
-            final NBTTagCompound nbttagcompound = (NBTTagCompound)par1NBTTagList.tagAt(i);
+            final NBTTagCompound nbttagcompound = (NBTTagCompound) par1NBTTagList.tagAt(i);
             final int j = nbttagcompound.getByte("Slot") & 255;
             final ItemStack itemstack = ItemStack.loadItemStackFromNBT(nbttagcompound);
 
@@ -242,33 +242,33 @@ public class GCCoreInventoryPlayer extends InventoryPlayer
         }
     }
 
-	public void readFromNBTOld(NBTTagList par1NBTTagList)
-	{
-		this.tankSlotContents = new ItemStack[5];
+    public void readFromNBTOld(NBTTagList par1NBTTagList)
+    {
+        this.tankSlotContents = new ItemStack[5];
 
-		for (int var2 = 0; var2 < par1NBTTagList.tagCount(); ++var2)
-		{
-			final NBTTagCompound var3 = (NBTTagCompound)par1NBTTagList.tagAt(var2);
-			final int var4 = var3.getByte("Slot") & 255;
-			final ItemStack var5 = ItemStack.loadItemStackFromNBT(var3);
+        for (int var2 = 0; var2 < par1NBTTagList.tagCount(); ++var2)
+        {
+            final NBTTagCompound var3 = (NBTTagCompound) par1NBTTagList.tagAt(var2);
+            final int var4 = var3.getByte("Slot") & 255;
+            final ItemStack var5 = ItemStack.loadItemStackFromNBT(var3);
 
-			if (var5 != null)
-			{
-				if (var4 >= 0 && var4 < this.tankSlotContents.length)
-				{
-					this.tankSlotContents[var4] = var5;
-				}
-			}
-		}
-	}
+            if (var5 != null)
+            {
+                if (var4 >= 0 && var4 < this.tankSlotContents.length)
+                {
+                    this.tankSlotContents[var4] = var5;
+                }
+            }
+        }
+    }
 
-	@Override
+    @Override
     public int getSizeInventory()
     {
         return this.mainInventory.length + this.armorInventory.length + this.tankSlotContents.length;
     }
 
-	@Override
+    @Override
     public ItemStack getStackInSlot(int par1)
     {
         ItemStack[] aitemstack = this.mainInventory;
@@ -290,7 +290,7 @@ public class GCCoreInventoryPlayer extends InventoryPlayer
         return aitemstack[par1];
     }
 
-	@Override
+    @Override
     public void dropAllItems()
     {
         int i;
@@ -323,7 +323,7 @@ public class GCCoreInventoryPlayer extends InventoryPlayer
         }
     }
 
-	@Override
+    @Override
     public boolean hasItemStack(ItemStack par1ItemStack)
     {
         int i;
@@ -355,7 +355,7 @@ public class GCCoreInventoryPlayer extends InventoryPlayer
         return false;
     }
 
-	@Override
+    @Override
     public void copyInventory(InventoryPlayer par1InventoryPlayer)
     {
         int i;

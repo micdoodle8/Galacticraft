@@ -40,7 +40,8 @@ public class GCCoreBlockCrudeOilMoving extends BlockFluid implements ILiquid
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister par1IconRegister)
     {
-        this.fluidIcons = new Icon[] { par1IconRegister.registerIcon("galacticraftcore:oil"), par1IconRegister.registerIcon("galacticraftcore:oil_flow") };
+        this.fluidIcons = new Icon[]
+        { par1IconRegister.registerIcon("galacticraftcore:oil"), par1IconRegister.registerIcon("galacticraftcore:oil_flow") };
     }
 
     @SideOnly(Side.CLIENT)
@@ -85,7 +86,8 @@ public class GCCoreBlockCrudeOilMoving extends BlockFluid implements ILiquid
                 if (decayAbove >= 8)
                 {
                     flowDecay = decayAbove;
-                } else
+                }
+                else
                 {
                     flowDecay = decayAbove + 8;
                 }
@@ -105,21 +107,24 @@ public class GCCoreBlockCrudeOilMoving extends BlockFluid implements ILiquid
                 {
                     this.updateFlow(world, x, y, z);
                 }
-            } else
+            }
+            else
             {
                 lastDecay = flowDecay;
 
                 if (flowDecay < 0)
                 {
                     world.setBlockToAir(x, y, z);
-                } else
+                }
+                else
                 {
                     world.setBlockMetadataWithNotify(x, y, z, flowDecay, 2);
                     world.scheduleBlockUpdate(x, y, z, this.blockID, this.tickRate(world));
                     world.notifyBlocksOfNeighborChange(x, y, z, this.blockID);
                 }
             }
-        } else
+        }
+        else
         {
             this.updateFlow(world, x, y, z);
         }
@@ -129,11 +134,13 @@ public class GCCoreBlockCrudeOilMoving extends BlockFluid implements ILiquid
             if (lastDecay >= 8)
             {
                 this.flowIntoBlock(world, x, y - 1, z, lastDecay);
-            } else
+            }
+            else
             {
                 this.flowIntoBlock(world, x, y - 1, z, lastDecay + 8);
             }
-        } else if (lastDecay >= 0 && (lastDecay == 0 || this.blockBlocksFlow(world, x, y - 1, z)))
+        }
+        else if (lastDecay >= 0 && (lastDecay == 0 || this.blockBlocksFlow(world, x, y - 1, z)))
         {
             boolean[] flowDirection = this.getOptimalFlowDirections(world, x, y, z);
             flowDecay = lastDecay + viscosity;
@@ -276,7 +283,7 @@ public class GCCoreBlockCrudeOilMoving extends BlockFluid implements ILiquid
             if (!this.blockBlocksFlow(world, x2, y2 - 1, z2))
             {
                 this.flowCost[count] = 0;
-            } 
+            }
             else
             {
                 this.flowCost[count] = this.calculateFlowCost(world, x2, y2, z2, 1, count);
@@ -284,7 +291,7 @@ public class GCCoreBlockCrudeOilMoving extends BlockFluid implements ILiquid
         }
 
         int i1 = this.flowCost[0];
-        
+
         for (int k1 = 1; k1 < 4; k1++)
         {
             if (this.flowCost[k1] < i1)
@@ -347,7 +354,8 @@ public class GCCoreBlockCrudeOilMoving extends BlockFluid implements ILiquid
         if (material == this.blockMaterial)
         {
             return false;
-        } else
+        }
+        else
         {
             return !this.blockBlocksFlow(world, i, j, k);
         }
@@ -514,7 +522,8 @@ public class GCCoreBlockCrudeOilMoving extends BlockFluid implements ILiquid
             {
                 // par1World.spawnParticle("dripWater", var21, var22, var23,
                 // 0.0D, 0.0D, 0.0D);
-            } else
+            }
+            else
             {
                 // par1World.spawnParticle("dripLava", var21, var22, var23,
                 // 0.0D, 0.0D, 0.0D);

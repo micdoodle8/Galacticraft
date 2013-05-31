@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -36,7 +35,7 @@ public abstract class GCCoreMapGenStructure extends GCCoreMapGenBase
 
         while (var8.hasNext())
         {
-        	final StructureStart var9 = (StructureStart)var8.next();
+            final StructureStart var9 = (StructureStart) var8.next();
 
             if (var9 != null && var9.isSizeableStructure() && var9.getBoundingBox().intersectsWith(var5, var6, var5 + 15, var6 + 15))
             {

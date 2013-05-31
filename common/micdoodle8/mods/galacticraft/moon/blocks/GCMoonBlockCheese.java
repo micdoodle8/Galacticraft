@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.moon.blocks;
 
 import java.util.Random;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -16,7 +15,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCMoonBlockCheese extends Block
 {
-	Icon[] cheeseIcons;
+    Icon[] cheeseIcons;
 
     protected GCMoonBlockCheese(int par1)
     {
@@ -28,17 +27,18 @@ public class GCMoonBlockCheese extends Block
     @Override
     public void registerIcons(IconRegister par1IconRegister)
     {
-    	this.cheeseIcons = new Icon[3];
-    	this.cheeseIcons[0] = par1IconRegister.registerIcon("galacticraftmoon:cheese_1");
-    	this.cheeseIcons[1] = par1IconRegister.registerIcon("galacticraftmoon:cheese_2");
-    	this.cheeseIcons[2] = par1IconRegister.registerIcon("galacticraftmoon:cheese_3");
+        this.cheeseIcons = new Icon[3];
+        this.cheeseIcons[0] = par1IconRegister.registerIcon("galacticraftmoon:cheese_1");
+        this.cheeseIcons[1] = par1IconRegister.registerIcon("galacticraftmoon:cheese_2");
+        this.cheeseIcons[2] = par1IconRegister.registerIcon("galacticraftmoon:cheese_3");
     }
 
     /**
-     * Updates the blocks bounds based on its current state. Args: world, x, y, z
+     * Updates the blocks bounds based on its current state. Args: world, x, y,
+     * z
      */
     @Override
-	public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
+    public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
         final int var5 = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
         final float var6 = 0.0625F;
@@ -51,7 +51,7 @@ public class GCMoonBlockCheese extends Block
      * Sets the block's bounds for rendering it as an item
      */
     @Override
-	public void setBlockBoundsForItemRender()
+    public void setBlockBoundsForItemRender()
     {
         final float var1 = 0.0625F;
         final float var2 = 0.5F;
@@ -59,11 +59,11 @@ public class GCMoonBlockCheese extends Block
     }
 
     /**
-     * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been
-     * cleared to be reused)
+     * Returns a bounding box from the pool of bounding boxes (this means this
+     * box can change after the pool has been cleared to be reused)
      */
     @Override
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
+    public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
     {
         final int var5 = par1World.getBlockMetadata(par2, par3, par4);
         final float var6 = 0.0625F;
@@ -73,8 +73,7 @@ public class GCMoonBlockCheese extends Block
     }
 
     @Override
-	@SideOnly(Side.CLIENT)
-
+    @SideOnly(Side.CLIENT)
     /**
      * Returns the bounding box of the wired rectangular prism to render.
      */
@@ -88,29 +87,32 @@ public class GCMoonBlockCheese extends Block
     }
 
     /**
-     * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
+     * From the specified side and block metadata retrieves the blocks texture.
+     * Args: side, metadata
      */
     @Override
-	public Icon getIcon(int par1, int par2)
+    public Icon getIcon(int par1, int par2)
     {
         return par1 == 1 ? this.cheeseIcons[0] : par1 == 0 ? this.cheeseIcons[0] : par2 > 0 && par1 == 4 ? this.cheeseIcons[2] : this.cheeseIcons[1];
     }
 
     /**
-     * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
+     * If this block doesn't render as an ordinary block it will return False
+     * (examples: signs, buttons, stairs, etc)
      */
     @Override
-	public boolean renderAsNormalBlock()
+    public boolean renderAsNormalBlock()
     {
         return false;
     }
 
     /**
-     * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
+     * Is this block (a) opaque and (b) a full 1m cube? This determines whether
+     * or not to render the shared face of two adjacent blocks and also whether
+     * the player can attach torches, redstone wire, etc to this block.
      */
     @Override
-	public boolean isOpaqueCube()
+    public boolean isOpaqueCube()
     {
         return false;
     }
@@ -119,7 +121,7 @@ public class GCMoonBlockCheese extends Block
      * Called upon block activation (right click on the block.)
      */
     @Override
-	public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
+    public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
     {
         this.eatCakeSlice(par1World, par2, par3, par4, par5EntityPlayer);
         return true;
@@ -129,7 +131,7 @@ public class GCMoonBlockCheese extends Block
      * Called when the block is clicked by a player. Args: x, y, z, entityPlayer
      */
     @Override
-	public void onBlockClicked(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer)
+    public void onBlockClicked(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer)
     {
         this.eatCakeSlice(par1World, par2, par3, par4, par5EntityPlayer);
     }
@@ -156,20 +158,22 @@ public class GCMoonBlockCheese extends Block
     }
 
     /**
-     * Checks to see if its valid to put this block at the specified coordinates. Args: world, x, y, z
+     * Checks to see if its valid to put this block at the specified
+     * coordinates. Args: world, x, y, z
      */
     @Override
-	public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4)
+    public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4)
     {
         return !super.canPlaceBlockAt(par1World, par2, par3, par4) ? false : this.canBlockStay(par1World, par2, par3, par4);
     }
 
     /**
-     * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
-     * their own) Args: x, y, z, neighbor blockID
+     * Lets the block know when one of its neighbor changes. Doesn't know which
+     * neighbor changed (coordinates passed are their own) Args: x, y, z,
+     * neighbor blockID
      */
     @Override
-	public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
+    public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
     {
         if (!this.canBlockStay(par1World, par2, par3, par4))
         {
@@ -178,10 +182,11 @@ public class GCMoonBlockCheese extends Block
     }
 
     /**
-     * Can this block stay at this position.  Similar to canPlaceBlockAt except gets checked often with plants.
+     * Can this block stay at this position. Similar to canPlaceBlockAt except
+     * gets checked often with plants.
      */
     @Override
-	public boolean canBlockStay(World par1World, int par2, int par3, int par4)
+    public boolean canBlockStay(World par1World, int par2, int par3, int par4)
     {
         return par1World.getBlockMaterial(par2, par3 - 1, par4).isSolid();
     }
@@ -190,7 +195,7 @@ public class GCMoonBlockCheese extends Block
      * Returns the quantity of items to drop on block destruction.
      */
     @Override
-	public int quantityDropped(Random par1Random)
+    public int quantityDropped(Random par1Random)
     {
         return 0;
     }
@@ -199,14 +204,13 @@ public class GCMoonBlockCheese extends Block
      * Returns the ID of the items to drop on destruction.
      */
     @Override
-	public int idDropped(int par1, Random par2Random, int par3)
+    public int idDropped(int par1, Random par2Random, int par3)
     {
         return 0;
     }
 
     @Override
-	@SideOnly(Side.CLIENT)
-
+    @SideOnly(Side.CLIENT)
     /**
      * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
      */

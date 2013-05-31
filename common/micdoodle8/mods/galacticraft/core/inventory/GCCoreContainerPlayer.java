@@ -14,12 +14,12 @@ import net.minecraft.item.ItemStack;
 
 public class GCCoreContainerPlayer extends ContainerPlayer
 {
-	public GCCoreContainerPlayer(InventoryPlayer par1InventoryPlayer, boolean par2, EntityPlayer par3EntityPlayer)
-	{
-		super(par1InventoryPlayer, par2, par3EntityPlayer);
+    public GCCoreContainerPlayer(InventoryPlayer par1InventoryPlayer, boolean par2, EntityPlayer par3EntityPlayer)
+    {
+        super(par1InventoryPlayer, par2, par3EntityPlayer);
 
-		this.inventoryItemStacks.clear();
-		this.inventorySlots.clear();
+        this.inventoryItemStacks.clear();
+        this.inventorySlots.clear();
 
         this.isLocalWorld = par2;
         this.addSlotToContainer(new SlotCrafting(par1InventoryPlayer.player, this.craftMatrix, this.craftResult, 0, 116, 62));
@@ -58,13 +58,13 @@ public class GCCoreContainerPlayer extends ContainerPlayer
         }
 
         this.addSlotToContainer(new Slot(par1InventoryPlayer, 44, 154, 6 + 18));
-	}
+    }
 
-	@Override
+    @Override
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotIndex)
     {
         ItemStack itemstack = null;
-        final Slot slot = (Slot)this.inventorySlots.get(slotIndex);
+        final Slot slot = (Slot) this.inventorySlots.get(slotIndex);
 
         if (slot != null && slot.getHasStack())
         {
@@ -138,9 +138,9 @@ public class GCCoreContainerPlayer extends ContainerPlayer
                     return null;
                 }
             }
-            else if (itemstack.getItem() instanceof ItemArmor && !((Slot)this.inventorySlots.get(5 + ((ItemArmor)itemstack.getItem()).armorType)).getHasStack())
+            else if (itemstack.getItem() instanceof ItemArmor && !((Slot) this.inventorySlots.get(5 + ((ItemArmor) itemstack.getItem()).armorType)).getHasStack())
             {
-                final int var6 = 5 + ((ItemArmor)itemstack.getItem()).armorType;
+                final int var6 = 5 + ((ItemArmor) itemstack.getItem()).armorType;
 
                 if (!this.mergeItemStack(itemstack1, var6, var6 + 1, false))
                 {
@@ -168,7 +168,7 @@ public class GCCoreContainerPlayer extends ContainerPlayer
 
             if (itemstack1.stackSize == 0)
             {
-                slot.putStack((ItemStack)null);
+                slot.putStack((ItemStack) null);
             }
             else
             {
@@ -182,7 +182,7 @@ public class GCCoreContainerPlayer extends ContainerPlayer
 
             if (itemstack1.stackSize == 0)
             {
-                slot.putStack((ItemStack)null);
+                slot.putStack((ItemStack) null);
             }
             else
             {

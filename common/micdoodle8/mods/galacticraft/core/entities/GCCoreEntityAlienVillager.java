@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
 import java.util.Iterator;
-
 import micdoodle8.mods.galacticraft.API.IEntityBreathable;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
@@ -33,9 +32,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityBreathable
 {
-	public GCCoreEntityAlienVillager(World par1World)
-	{
-		super(par1World);
+    public GCCoreEntityAlienVillager(World par1World)
+    {
+        super(par1World);
         this.randomTickDivider = 0;
         this.isMating = false;
         this.isPlaying = false;
@@ -54,13 +53,13 @@ public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityB
         this.tasks.addTask(9, new EntityAIWatchClosest2(this, EntityVillager.class, 15.0F, 0.05F));
         this.tasks.addTask(9, new EntityAIWander(this, 0.3F));
         this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityLiving.class, 15.0F));
-	}
+    }
 
-	@Override
+    @Override
     @SideOnly(Side.CLIENT)
     public String getTexture()
     {
-		return "/micdoodle8/mods/galacticraft/core/client/entities/villager_1.png";
+        return "/micdoodle8/mods/galacticraft/core/client/entities/villager_1.png";
     }
 
     private int randomTickDivider;
@@ -83,11 +82,12 @@ public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityB
     private String lastBuyingPlayer;
     private boolean field_82190_bM;
     private float field_82191_bN;
+
     /**
      * Returns true if the newer Entity AI code should be run
      */
     @Override
-	public boolean isAIEnabled()
+    public boolean isAIEnabled()
     {
         return true;
     }
@@ -96,7 +96,7 @@ public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityB
      * main AI tick function, replaces updateEntityActionState
      */
     @Override
-	protected void updateAITick()
+    protected void updateAITick()
     {
         if (--this.randomTickDivider <= 0)
         {
@@ -111,7 +111,7 @@ public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityB
             else
             {
                 final ChunkCoordinates chunkcoordinates = this.villageObj.getCenter();
-                this.setHomeArea(chunkcoordinates.posX, chunkcoordinates.posY, chunkcoordinates.posZ, (int)(this.villageObj.getVillageRadius() * 0.6F));
+                this.setHomeArea(chunkcoordinates.posX, chunkcoordinates.posY, chunkcoordinates.posZ, (int) (this.villageObj.getVillageRadius() * 0.6F));
 
                 if (this.field_82190_bM)
                 {
@@ -135,7 +135,7 @@ public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityB
 
                         while (iterator.hasNext())
                         {
-                            final MerchantRecipe merchantrecipe = (MerchantRecipe)iterator.next();
+                            final MerchantRecipe merchantrecipe = (MerchantRecipe) iterator.next();
 
                             if (merchantrecipe.func_82784_g())
                             {
@@ -148,7 +148,7 @@ public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityB
 
                     if (this.villageObj != null && this.lastBuyingPlayer != null)
                     {
-                        this.worldObj.setEntityState(this, (byte)14);
+                        this.worldObj.setEntityState(this, (byte) 14);
                         this.villageObj.setReputationForPlayer(this.lastBuyingPlayer, 1);
                     }
                 }
@@ -161,14 +161,14 @@ public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityB
     }
 
     @Override
-	protected void entityInit()
+    protected void entityInit()
     {
         super.entityInit();
         this.dataWatcher.addObject(16, Integer.valueOf(0));
     }
 
     @Override
-	public int getMaxHealth()
+    public int getMaxHealth()
     {
         return 20;
     }
@@ -177,7 +177,7 @@ public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityB
      * (abstract) Protected helper method to write subclass entity data to NBT.
      */
     @Override
-	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
+    public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeEntityToNBT(par1NBTTagCompound);
         par1NBTTagCompound.setInteger("Profession", this.getProfession());
@@ -193,7 +193,7 @@ public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityB
      * (abstract) Protected helper method to read subclass entity data from NBT.
      */
     @Override
-	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
+    public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readEntityFromNBT(par1NBTTagCompound);
         this.setProfession(par1NBTTagCompound.getInteger("Profession"));
@@ -210,7 +210,7 @@ public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityB
      * Determines if an entity can be despawned, used on idle far away entities
      */
     @Override
-	protected boolean canDespawn()
+    protected boolean canDespawn()
     {
         return false;
     }
@@ -219,7 +219,7 @@ public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityB
      * Returns the sound this mob makes while it's alive.
      */
     @Override
-	protected String getLivingSound()
+    protected String getLivingSound()
     {
         return "mob.villager.default";
     }
@@ -228,7 +228,7 @@ public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityB
      * Returns the sound this mob makes when it is hurt.
      */
     @Override
-	protected String getHurtSound()
+    protected String getHurtSound()
     {
         return "mob.villager.defaulthurt";
     }
@@ -237,7 +237,7 @@ public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityB
      * Returns the sound this mob makes on death.
      */
     @Override
-	protected String getDeathSound()
+    protected String getDeathSound()
     {
         return "mob.villager.defaultdeath";
     }
@@ -273,7 +273,7 @@ public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityB
     }
 
     @Override
-	public void setRevengeTarget(EntityLiving par1EntityLiving)
+    public void setRevengeTarget(EntityLiving par1EntityLiving)
     {
         super.setRevengeTarget(par1EntityLiving);
 
@@ -290,11 +290,11 @@ public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityB
                     b0 = -3;
                 }
 
-                this.villageObj.setReputationForPlayer(((EntityPlayer)par1EntityLiving).getCommandSenderName(), b0);
+                this.villageObj.setReputationForPlayer(((EntityPlayer) par1EntityLiving).getCommandSenderName(), b0);
 
                 if (this.isEntityAlive())
                 {
-                    this.worldObj.setEntityState(this, (byte)13);
+                    this.worldObj.setEntityState(this, (byte) 13);
                 }
             }
         }
@@ -304,7 +304,7 @@ public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityB
      * Called when the mob's health reaches 0.
      */
     @Override
-	public void onDeath(DamageSource par1DamageSource)
+    public void onDeath(DamageSource par1DamageSource)
     {
         if (this.villageObj != null)
         {
@@ -314,7 +314,7 @@ public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityB
             {
                 if (entity instanceof EntityPlayer)
                 {
-                    this.villageObj.setReputationForPlayer(((EntityPlayer)entity).getCommandSenderName(), -2);
+                    this.villageObj.setReputationForPlayer(((EntityPlayer) entity).getCommandSenderName(), -2);
                 }
                 else if (entity instanceof IMob)
                 {
@@ -354,7 +354,7 @@ public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityB
     {
         par1MerchantRecipe.incrementToolUses();
 
-        if (par1MerchantRecipe.hasSameIDsAs((MerchantRecipe)this.buyingList.get(this.buyingList.size() - 1)))
+        if (par1MerchantRecipe.hasSameIDsAs((MerchantRecipe) this.buyingList.get(this.buyingList.size() - 1)))
         {
             this.timeUntilReset = 40;
             this.needsInitilization = true;
@@ -375,14 +375,8 @@ public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityB
         }
     }
 
-    private float func_82188_j(float par1)
-    {
-        final float f1 = par1 + this.field_82191_bN;
-        return f1 > 0.9F ? 0.9F - (f1 - 0.9F) : f1;
-    }
-
     @Override
-	@SideOnly(Side.CLIENT)
+    @SideOnly(Side.CLIENT)
     public void handleHealthUpdate(byte par1)
     {
         if (par1 == 12)
@@ -416,7 +410,7 @@ public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityB
     }
 
     @Override
-	public void initCreature()
+    public void initCreature()
     {
     }
 
@@ -433,14 +427,14 @@ public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityB
     }
 
     @Override
-	public EntityAgeable createChild(EntityAgeable par1EntityAgeable)
+    public EntityAgeable createChild(EntityAgeable par1EntityAgeable)
     {
         return this.func_90012_b(par1EntityAgeable);
     }
 
-	@Override
-	public boolean canBreath()
-	{
-		return true;
-	}
+    @Override
+    public boolean canBreath()
+    {
+        return true;
+    }
 }

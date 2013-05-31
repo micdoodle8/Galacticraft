@@ -13,28 +13,25 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreItemHoe extends ItemHoe
 {
-	private final EnumToolMaterial material;
+    public GCCoreItemHoe(int par1, EnumToolMaterial par2EnumToolMaterial)
+    {
+        super(par1, par2EnumToolMaterial);
+    }
 
-	public GCCoreItemHoe(int par1, EnumToolMaterial par2EnumToolMaterial)
-	{
-		super(par1, par2EnumToolMaterial);
-		this.material = par2EnumToolMaterial;
-	}
-
-	@Override
+    @Override
     public CreativeTabs getCreativeTab()
     {
         return GalacticraftCore.galacticraftTab;
     }
 
     @Override
-	@SideOnly(Side.CLIENT)
+    @SideOnly(Side.CLIENT)
     public EnumRarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;
     }
 
-	@Override
+    @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister par1IconRegister)
     {

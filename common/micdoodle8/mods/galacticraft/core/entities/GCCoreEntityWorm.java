@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
 import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -31,18 +30,7 @@ public class GCCoreEntityWorm extends EntityMob implements IEntityMultiPart
     {
         super(par1World);
         this.wormPartArray = new GCCoreEntityWormPart[]
-        {
-        		this.wormPartHead = new GCCoreEntityWormPart(this, "head", 2.0F, 2.0F),
-				this.wormPartBody1 = new GCCoreEntityWormPart(this, "body", 8.0F, 8.0F),
-				this.wormPartBody2 = new GCCoreEntityWormPart(this, "body", 4.0F, 4.0F),
-				this.wormPartBody3 = new GCCoreEntityWormPart(this, "body", 4.0F, 4.0F),
-				this.wormPartBody4 = new GCCoreEntityWormPart(this, "body", 4.0F, 4.0F),
-				this.wormPartBody5 = new GCCoreEntityWormPart(this, "body", 4.0F, 4.0F),
-				this.wormPartBody6 = new GCCoreEntityWormPart(this, "body", 4.0F, 4.0F),
-				this.wormPartBody7 = new GCCoreEntityWormPart(this, "body", 4.0F, 4.0F),
-				this.wormPartBody8 = new GCCoreEntityWormPart(this, "body", 4.0F, 4.0F),
-				this.wormPartBody9 = new GCCoreEntityWormPart(this, "body", 4.0F, 4.0F)
-        };
+        { this.wormPartHead = new GCCoreEntityWormPart(this, "head", 2.0F, 2.0F), this.wormPartBody1 = new GCCoreEntityWormPart(this, "body", 8.0F, 8.0F), this.wormPartBody2 = new GCCoreEntityWormPart(this, "body", 4.0F, 4.0F), this.wormPartBody3 = new GCCoreEntityWormPart(this, "body", 4.0F, 4.0F), this.wormPartBody4 = new GCCoreEntityWormPart(this, "body", 4.0F, 4.0F), this.wormPartBody5 = new GCCoreEntityWormPart(this, "body", 4.0F, 4.0F), this.wormPartBody6 = new GCCoreEntityWormPart(this, "body", 4.0F, 4.0F), this.wormPartBody7 = new GCCoreEntityWormPart(this, "body", 4.0F, 4.0F), this.wormPartBody8 = new GCCoreEntityWormPart(this, "body", 4.0F, 4.0F), this.wormPartBody9 = new GCCoreEntityWormPart(this, "body", 4.0F, 4.0F) };
         this.texture = "/micdoodle8/mods/galacticraft/core/client/entities/worm.png";
         this.setSize(2F, 2F);
         this.moveSpeed = 1F / 15F;
@@ -51,51 +39,51 @@ public class GCCoreEntityWorm extends EntityMob implements IEntityMultiPart
     }
 
     @Override
-	protected void entityInit()
+    protected void entityInit()
     {
-    	super.entityInit();
+        super.entityInit();
         this.dataWatcher.addObject(16, Integer.valueOf(this.rand.nextInt(4)));
         this.dataWatcher.addObject(17, Integer.valueOf(0));
     }
 
     @Override
-	public AxisAlignedBB getCollisionBox(Entity var1)
+    public AxisAlignedBB getCollisionBox(Entity var1)
     {
         return var1.boundingBox;
     }
 
     @Override
-	public AxisAlignedBB getBoundingBox()
+    public AxisAlignedBB getBoundingBox()
     {
         return this.boundingBox;
     }
 
     @Override
-	public int getMaxHealth()
+    public int getMaxHealth()
     {
         return 80;
     }
 
     @Override
-	protected String getLivingSound()
+    protected String getLivingSound()
     {
         return "mob.silverfish.say";
     }
 
     @Override
-	protected String getHurtSound()
+    protected String getHurtSound()
     {
         return "mob.silverfish.hit";
     }
 
     @Override
-	protected String getDeathSound()
+    protected String getDeathSound()
     {
         return "mob.silverfish.kill";
     }
 
     @Override
-	protected void playStepSound(int par1, int par2, int par3, int par4)
+    protected void playStepSound(int par1, int par2, int par3, int par4)
     {
         this.playSound("mob.silverfish.step", 0.15F, 1.0F);
     }
@@ -112,140 +100,170 @@ public class GCCoreEntityWorm extends EntityMob implements IEntityMultiPart
     }
 
     @Override
-	protected int getDropItemId()
+    protected int getDropItemId()
     {
         return 0;
     }
 
     @Override
-	public void onUpdate()
+    public void onUpdate()
     {
         super.onUpdate();
     }
 
     @Override
-	protected void updateEntityActionState()
+    protected void updateEntityActionState()
     {
         super.updateEntityActionState();
     }
 
     @Override
-	public void onLivingUpdate()
+    public void onLivingUpdate()
     {
-    	if (!this.worldObj.isRemote && this.rand.nextInt(150) == 0)
-    	{
-    		this.turn();
-    	}
+        if (!this.worldObj.isRemote && this.rand.nextInt(150) == 0)
+        {
+            this.turn();
+        }
 
-		this.rotationYaw = this.getRotationIndex() % 4 * 90F + 45F;
+        this.rotationYaw = this.getRotationIndex() % 4 * 90F + 45F;
 
-//    	if (this.worldObj.isBlockSolidOnSide((int)this.posX, (int)this.posY - 3, (int)this.posZ, ForgeDirection.UP))
-//    	{
-//
-//    	}
-//    	else
-//    	{
-//    	}
+        // if (this.worldObj.isBlockSolidOnSide((int)this.posX, (int)this.posY -
+        // 3, (int)this.posZ, ForgeDirection.UP))
+        // {
+        //
+        // }
+        // else
+        // {
+        // }
 
-		int xOffset = 0;
-		int zOffset = 0;
+        int xOffset = 0;
+        int zOffset = 0;
 
-		switch (this.getRotationIndex() % 4)
-		{
-		case 0:
-			xOffset = -4;
-			break;
-		case 1:
-			zOffset = -4;
-			break;
-		case 2:
-			xOffset = 4;
-			break;
-		case 3:
-			zOffset = 4;
-			break;
-		}
+        switch (this.getRotationIndex() % 4)
+        {
+        case 0:
+            xOffset = -4;
+            break;
+        case 1:
+            zOffset = -4;
+            break;
+        case 2:
+            xOffset = 4;
+            break;
+        case 3:
+            zOffset = 4;
+            break;
+        }
 
-//    	for (int i = -1; i < 2; i++)
-//    	{
-//    		for (int j = -1; j < 2; j++)
-//    		{
-//            	for (int k = -1; k < 2; k++)
-//            	{
-//            		int id = this.worldObj.getBlockId(MathHelper.floor_double(this.posX + xOffset + i), MathHelper.floor_double(this.posY + j), MathHelper.floor_double(this.posZ + zOffset + k));
-//
-//            		if (id > 0 && id != Block.waterMoving.blockID && id != Block.waterStill.blockID && id != Block.bedrock.blockID)
-//            		{
-//                		Block block = Block.blocksList[id];
-//
-//                		if (block != null)
-//                		{
-//                    		block.dropBlockAsItemWithChance(worldObj, MathHelper.floor_double(this.posX + xOffset + i), MathHelper.floor_double(this.posY + j), MathHelper.floor_double(this.posZ + zOffset + k), worldObj.getBlockMetadata(MathHelper.floor_double(this.posX + xOffset + i), MathHelper.floor_double(this.posY + j), MathHelper.floor_double(this.posZ + zOffset + k)), 1F, 0);
-//                		}
-//
-//                        if (this.worldObj.setBlockAndMetadataWithUpdate(MathHelper.floor_double(this.posX + xOffset + i), MathHelper.floor_double(this.posY + j), MathHelper.floor_double(this.posZ + zOffset + k), 0, 0, this.worldObj.isRemote))
-//                        {
-//                            this.worldObj.notifyBlocksOfNeighborChange(MathHelper.floor_double(this.posX + xOffset + i), MathHelper.floor_double(this.posY + j), MathHelper.floor_double(this.posZ + zOffset + k), 0);
-//                        }
-//            		}
-//
-//            		if (id == Block.bedrock.blockID)
-//            		{
-//            			turn();
-//            		}
-//            	}
-//    		}
-//    	}
-//
-//    	for (int i = -1; i < 2; i++)
-//    	{
-//    		for (int j = -1; j < 2; j++)
-//    		{
-//            	for (int k = -1; k < 2; k++)
-//            	{
-//            		int id = this.worldObj.getBlockId(MathHelper.floor_double(this.posX - (xOffset / 6) + i), MathHelper.floor_double(this.posY + j), MathHelper.floor_double(this.posZ - (zOffset / 6) + k));
-//
-//            		if (id > 0 && id != Block.waterMoving.blockID && id != Block.waterStill.blockID && id != Block.bedrock.blockID)
-//            		{
-//                		Block block = Block.blocksList[id];
-//
-//                		if (block != null)
-//                		{
-//                    		block.dropBlockAsItemWithChance(worldObj, MathHelper.floor_double(this.posX - (xOffset / 6) + i), MathHelper.floor_double(this.posY + j), MathHelper.floor_double(this.posZ - (zOffset / 6) + k), worldObj.getBlockMetadata(MathHelper.floor_double(this.posX - (xOffset / 6) + i), MathHelper.floor_double(this.posY + j), MathHelper.floor_double(this.posZ - (zOffset / 6) + k)), 1F, 0);
-//                		}
-//
-//                        if (this.worldObj.setBlockAndMetadataWithUpdate(MathHelper.floor_double(this.posX - (xOffset / 6) + i), MathHelper.floor_double(this.posY + j), MathHelper.floor_double(this.posZ - (zOffset / 6) + k), 0, 0, this.worldObj.isRemote))
-//                        {
-//                            this.worldObj.notifyBlocksOfNeighborChange(MathHelper.floor_double(this.posX - (xOffset / 6) + i), MathHelper.floor_double(this.posY + j), MathHelper.floor_double(this.posZ - (zOffset / 6) + k), 0);
-//                        }
-//            		}
-//            	}
-//    		}
+        // for (int i = -1; i < 2; i++)
+        // {
+        // for (int j = -1; j < 2; j++)
+        // {
+        // for (int k = -1; k < 2; k++)
+        // {
+        // int id = this.worldObj.getBlockId(MathHelper.floor_double(this.posX +
+        // xOffset + i), MathHelper.floor_double(this.posY + j),
+        // MathHelper.floor_double(this.posZ + zOffset + k));
+        //
+        // if (id > 0 && id != Block.waterMoving.blockID && id !=
+        // Block.waterStill.blockID && id != Block.bedrock.blockID)
+        // {
+        // Block block = Block.blocksList[id];
+        //
+        // if (block != null)
+        // {
+        // block.dropBlockAsItemWithChance(worldObj,
+        // MathHelper.floor_double(this.posX + xOffset + i),
+        // MathHelper.floor_double(this.posY + j),
+        // MathHelper.floor_double(this.posZ + zOffset + k),
+        // worldObj.getBlockMetadata(MathHelper.floor_double(this.posX + xOffset
+        // + i), MathHelper.floor_double(this.posY + j),
+        // MathHelper.floor_double(this.posZ + zOffset + k)), 1F, 0);
+        // }
+        //
+        // if
+        // (this.worldObj.setBlockAndMetadataWithUpdate(MathHelper.floor_double(this.posX
+        // + xOffset + i), MathHelper.floor_double(this.posY + j),
+        // MathHelper.floor_double(this.posZ + zOffset + k), 0, 0,
+        // this.worldObj.isRemote))
+        // {
+        // this.worldObj.notifyBlocksOfNeighborChange(MathHelper.floor_double(this.posX
+        // + xOffset + i), MathHelper.floor_double(this.posY + j),
+        // MathHelper.floor_double(this.posZ + zOffset + k), 0);
+        // }
+        // }
+        //
+        // if (id == Block.bedrock.blockID)
+        // {
+        // turn();
+        // }
+        // }
+        // }
+        // }
+        //
+        // for (int i = -1; i < 2; i++)
+        // {
+        // for (int j = -1; j < 2; j++)
+        // {
+        // for (int k = -1; k < 2; k++)
+        // {
+        // int id = this.worldObj.getBlockId(MathHelper.floor_double(this.posX -
+        // (xOffset / 6) + i), MathHelper.floor_double(this.posY + j),
+        // MathHelper.floor_double(this.posZ - (zOffset / 6) + k));
+        //
+        // if (id > 0 && id != Block.waterMoving.blockID && id !=
+        // Block.waterStill.blockID && id != Block.bedrock.blockID)
+        // {
+        // Block block = Block.blocksList[id];
+        //
+        // if (block != null)
+        // {
+        // block.dropBlockAsItemWithChance(worldObj,
+        // MathHelper.floor_double(this.posX - (xOffset / 6) + i),
+        // MathHelper.floor_double(this.posY + j),
+        // MathHelper.floor_double(this.posZ - (zOffset / 6) + k),
+        // worldObj.getBlockMetadata(MathHelper.floor_double(this.posX -
+        // (xOffset / 6) + i), MathHelper.floor_double(this.posY + j),
+        // MathHelper.floor_double(this.posZ - (zOffset / 6) + k)), 1F, 0);
+        // }
+        //
+        // if
+        // (this.worldObj.setBlockAndMetadataWithUpdate(MathHelper.floor_double(this.posX
+        // - (xOffset / 6) + i), MathHelper.floor_double(this.posY + j),
+        // MathHelper.floor_double(this.posZ - (zOffset / 6) + k), 0, 0,
+        // this.worldObj.isRemote))
+        // {
+        // this.worldObj.notifyBlocksOfNeighborChange(MathHelper.floor_double(this.posX
+        // - (xOffset / 6) + i), MathHelper.floor_double(this.posY + j),
+        // MathHelper.floor_double(this.posZ - (zOffset / 6) + k), 0);
+        // }
+        // }
+        // }
+        // }
 
-
-        final float var5 = this.rotationYaw * (float)Math.PI / 180.0F;
+        final float var5 = this.rotationYaw * (float) Math.PI / 180.0F;
         MathHelper.sin(var5);
         MathHelper.cos(var5);
 
-		this.wormPartHead.onUpdate();
+        this.wormPartHead.onUpdate();
         this.wormPartHead.setLocationAndAngles(this.posX + xOffset, this.posY - 0.5, this.posZ + zOffset, 0.0F, 0.0F);
 
-    	final int id = this.worldObj.getBlockId(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 3), MathHelper.floor_double(this.posZ));
+        final int id = this.worldObj.getBlockId(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 3), MathHelper.floor_double(this.posZ));
 
-    	if (id == Block.waterMoving.blockID || id == Block.waterStill.blockID || id == 0)
-    	{
-    		this.motionY -= 0.062D;
-    	}
+        if (id == Block.waterMoving.blockID || id == Block.waterStill.blockID || id == 0)
+        {
+            this.motionY -= 0.062D;
+        }
 
-        final List var9 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, AxisAlignedBB.getAABBPool().getAABB((double)MathHelper.floor_double(this.posX) - 2 + xOffset, (double)MathHelper.floor_double(this.posY) - 2, (double)MathHelper.floor_double(this.posZ) - 2 + zOffset, (double)MathHelper.floor_double(this.posX) + 2 + xOffset, (double)MathHelper.floor_double(this.posY) + 2, (double)MathHelper.floor_double(this.posZ) + 2 + zOffset));
+        final List var9 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, AxisAlignedBB.getAABBPool().getAABB((double) MathHelper.floor_double(this.posX) - 2 + xOffset, (double) MathHelper.floor_double(this.posY) - 2, (double) MathHelper.floor_double(this.posZ) - 2 + zOffset, (double) MathHelper.floor_double(this.posX) + 2 + xOffset, (double) MathHelper.floor_double(this.posY) + 2, (double) MathHelper.floor_double(this.posZ) + 2 + zOffset));
 
         for (int var11 = 0; var11 < var9.size(); ++var11)
         {
-            final Entity var32 = (Entity)var9.get(var11);
+            final Entity var32 = (Entity) var9.get(var11);
 
             if (var32 != null && !(var32 instanceof EntityItem))
             {
-            	var32.attackEntityFrom(DamageSource.cactus, 1);
+                var32.attackEntityFrom(DamageSource.cactus, 1);
             }
         }
 
@@ -270,13 +288,13 @@ public class GCCoreEntityWorm extends EntityMob implements IEntityMultiPart
     }
 
     @Override
-	protected boolean isValidLightLevel()
+    protected boolean isValidLightLevel()
     {
         return true;
     }
 
     @Override
-	public boolean getCanSpawnHere()
+    public boolean getCanSpawnHere()
     {
         if (super.getCanSpawnHere())
         {
@@ -290,75 +308,75 @@ public class GCCoreEntityWorm extends EntityMob implements IEntityMultiPart
     }
 
     @Override
-	public int getAttackStrength(Entity par1Entity)
+    public int getAttackStrength(Entity par1Entity)
     {
         return 1;
     }
 
     public int getRotationIndex()
     {
-    	return this.dataWatcher.getWatchableObjectInt(16);
+        return this.dataWatcher.getWatchableObjectInt(16);
     }
 
     public void setRotationIndex(int i)
     {
-    	this.dataWatcher.updateObject(16, Integer.valueOf(i));
+        this.dataWatcher.updateObject(16, Integer.valueOf(i));
     }
 
     public int getSlowed()
     {
-    	return this.dataWatcher.getWatchableObjectInt(17);
+        return this.dataWatcher.getWatchableObjectInt(17);
     }
 
     public void setSlowed(boolean b)
     {
-    	if (b)
-    	{
-    		this.setSlowed(1);
-    	}
-    	else
-    	{
-    		this.setSlowed(0);
-    	}
+        if (b)
+        {
+            this.setSlowed(1);
+        }
+        else
+        {
+            this.setSlowed(0);
+        }
     }
 
     public void setSlowed(int i)
     {
-    	this.dataWatcher.updateObject(17, Integer.valueOf(i));
+        this.dataWatcher.updateObject(17, Integer.valueOf(i));
     }
 
     private void turn()
     {
-		this.setRotationIndex(this.getRotationIndex() + 1);
+        this.setRotationIndex(this.getRotationIndex() + 1);
     }
 
-	@Override
-	public World getWorld()
-	{
+    @Override
+    public World getWorld()
+    {
         return this.worldObj;
-	}
+    }
 
-	@Override
+    @Override
     public Entity[] getParts()
     {
         return this.wormPartArray;
     }
 
-	@Override
+    @Override
     public boolean canBeCollidedWith()
     {
         return false;
     }
 
-	@Override
+    @Override
     public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
     {
         return false;
     }
 
-	@Override
-	public boolean attackEntityFromPart(GCCoreEntityWormPart var1, DamageSource par2DamageSource, int par3)
-	{
+    @Override
+    public boolean attackEntityFromPart(GCCoreEntityWormPart var1, DamageSource par2DamageSource, int par3)
+    {
         if (var1 != this.wormPartHead)
         {
             par3 = par3 / 4 + 1;
@@ -366,11 +384,11 @@ public class GCCoreEntityWorm extends EntityMob implements IEntityMultiPart
 
         if (par2DamageSource.getEntity() instanceof EntityPlayer)
         {
-        	super.attackEntityFrom(par2DamageSource, par3);
+            super.attackEntityFrom(par2DamageSource, par3);
         }
 
         return true;
-	}
+    }
 
     private boolean destroyBlocksInAABB(AxisAlignedBB par1AxisAlignedBB)
     {

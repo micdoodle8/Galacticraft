@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.wgen;
 
 import java.util.Random;
-
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 
@@ -39,5 +38,7 @@ public class GCCoreMapGenBaseMeta
     /**
      * Recursively called by generate() (generate) and optionally by itself.
      */
-    protected void recursiveGenerate(World par1World, int par2, int par3, int par4, int par5, short[] par6ArrayOfByte, byte[] metaArray) {}
+    protected void recursiveGenerate(World par1World, int par2, int par3, int par4, int par5, short[] par6ArrayOfByte, byte[] metaArray)
+    {
+    }
 }

@@ -6,12 +6,11 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import net.minecraft.network.packet.Packet250CustomPayload;
 
 public class PacketUtil
 {
-	public static Packet250CustomPayload createPacket(String channel, int packetID, Object[] input)
+    public static Packet250CustomPayload createPacket(String channel, int packetID, Object[] input)
     {
         final ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         final DataOutputStream data = new DataOutputStream(bytes);
@@ -23,7 +22,7 @@ public class PacketUtil
             {
                 for (final Object obj : input)
                 {
-                	PacketUtil.writeObjectToStream(obj, data);
+                    PacketUtil.writeObjectToStream(obj, data);
                 }
             }
 

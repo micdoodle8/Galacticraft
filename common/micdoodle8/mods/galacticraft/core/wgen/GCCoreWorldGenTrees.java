@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.wgen;
 
 import java.util.Random;
-
 import micdoodle8.mods.galacticraft.API.IPlantableBlock;
 import micdoodle8.mods.galacticraft.API.IPlantableMetadataBlock;
 import net.minecraft.block.Block;
@@ -40,7 +39,7 @@ public class GCCoreWorldGenTrees extends WorldGenerator
     }
 
     @Override
-	public boolean generate(World par1World, Random par2Random, int par3, int par4, int par5)
+    public boolean generate(World par1World, Random par2Random, int par3, int par4, int par5)
     {
         final int var6 = par2Random.nextInt(3) + this.minTreeHeight;
         boolean var7 = true;
@@ -77,11 +76,7 @@ public class GCCoreWorldGenTrees extends WorldGenerator
 
                             final Block block = Block.blocksList[var12];
 
-                            if (var12 != 0 &&
-                               !block.isLeaves(par1World, var10, var8, var11) &&
-                                var12 != Block.grass.blockID &&
-                                var12 != Block.dirt.blockID &&
-                               !block.isWood(par1World, var10, var8, var11))
+                            if (var12 != 0 && !block.isLeaves(par1World, var10, var8, var11) && var12 != Block.grass.blockID && var12 != Block.dirt.blockID && !block.isWood(par1World, var10, var8, var11))
                             {
                                 var7 = false;
                             }
@@ -110,23 +105,23 @@ public class GCCoreWorldGenTrees extends WorldGenerator
                 {
                     for (int j = -4; j < 5; j++)
                     {
-                        if(par1World.getBlockId(par3 + i, par4 - 1, par5 + j) == Block.waterMoving.blockID || par1World.getBlockId(par3 + i, par4 - 1, par5 + j) == Block.waterStill.blockID)
+                        if (par1World.getBlockId(par3 + i, par4 - 1, par5 + j) == Block.waterMoving.blockID || par1World.getBlockId(par3 + i, par4 - 1, par5 + j) == Block.waterStill.blockID)
                         {
-                        	waterBlocksNearby++;
+                            waterBlocksNearby++;
                         }
                     }
                 }
 
                 if (Block.blocksList[var8] != null)
                 {
-                	final boolean flag = Block.blocksList[var8] instanceof IPlantableBlock || Block.blocksList[var8] instanceof IPlantableMetadataBlock && ((IPlantableMetadataBlock) Block.blocksList[var8]).isPlantable(var10);
-                	final boolean flag2 = Block.blocksList[var8] instanceof IPlantableBlock && waterBlocksNearby >= ((IPlantableBlock)Block.blocksList[var8]).requiredLiquidBlocksNearby() || Block.blocksList[var8] instanceof IPlantableMetadataBlock && waterBlocksNearby >= ((IPlantableMetadataBlock)Block.blocksList[var8]).requiredLiquidBlocksNearby();
-                	final boolean flag3 = par4 < 256 - var6 - 1;
-                	final boolean flag4 = (Block.blocksList[var8] instanceof BlockGrass || Block.blocksList[var8] instanceof BlockDirt) && waterBlocksNearby >= 4;
+                    final boolean flag = Block.blocksList[var8] instanceof IPlantableBlock || Block.blocksList[var8] instanceof IPlantableMetadataBlock && ((IPlantableMetadataBlock) Block.blocksList[var8]).isPlantable(var10);
+                    final boolean flag2 = Block.blocksList[var8] instanceof IPlantableBlock && waterBlocksNearby >= ((IPlantableBlock) Block.blocksList[var8]).requiredLiquidBlocksNearby() || Block.blocksList[var8] instanceof IPlantableMetadataBlock && waterBlocksNearby >= ((IPlantableMetadataBlock) Block.blocksList[var8]).requiredLiquidBlocksNearby();
+                    final boolean flag3 = par4 < 256 - var6 - 1;
+                    final boolean flag4 = (Block.blocksList[var8] instanceof BlockGrass || Block.blocksList[var8] instanceof BlockDirt) && waterBlocksNearby >= 4;
 
-                	if (flag && flag2 && flag3 || flag4)
-                	{
-                		var9 = 3;
+                    if (flag && flag2 && flag3 || flag4)
+                    {
+                        var9 = 3;
                         final byte var18 = 0;
                         int var13;
                         int var14;
@@ -147,8 +142,7 @@ public class GCCoreWorldGenTrees extends WorldGenerator
 
                                     final Block block = Block.blocksList[par1World.getBlockId(var14, var11, var16)];
 
-                                    if ((Math.abs(var15) != var13 || Math.abs(var17) != var13 || par2Random.nextInt(2) != 0 && var12 != 0) &&
-                                        (block == null || block.canBeReplacedByLeaves(par1World, var14, var11, var16)))
+                                    if ((Math.abs(var15) != var13 || Math.abs(var17) != var13 || par2Random.nextInt(2) != 0 && var12 != 0) && (block == null || block.canBeReplacedByLeaves(par1World, var14, var11, var16)))
                                     {
                                         this.setBlockAndMetadata(par1World, var14, var11, var16, Block.leaves.blockID, this.metaLeaves);
                                     }
@@ -246,11 +240,11 @@ public class GCCoreWorldGenTrees extends WorldGenerator
                         }
 
                         return true;
-                	}
-                	else
-                	{
-                		return false;
-                	}
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
                 else
                 {
@@ -265,7 +259,8 @@ public class GCCoreWorldGenTrees extends WorldGenerator
     }
 
     /**
-     * Grows vines downward from the given block for a given length. Args: World, x, starty, z, vine-length
+     * Grows vines downward from the given block for a given length. Args:
+     * World, x, starty, z, vine-length
      */
     private void growVines(World par1World, int par2, int par3, int par4, int par5)
     {

@@ -104,16 +104,20 @@ public class GCCoreBlockOxygenCompressor extends GCCoreBlockAdvanced
         if (side == 0 || side == 1)
         {
             return this.iconMachineSide;
-        } else if (side == metadata + 2)
+        }
+        else if (side == metadata + 2)
         {
             return this.iconOutput;
-        } else if (side == ForgeDirection.getOrientation(metadata + 2).getOpposite().ordinal())
+        }
+        else if (side == ForgeDirection.getOrientation(metadata + 2).getOpposite().ordinal())
         {
             return this.iconInput;
-        } else if (metadata == 0 && side == 5 || metadata == 3 && side == 3 || metadata == 1 && side == 4 || metadata == 2 && side == 2)
+        }
+        else if (metadata == 0 && side == 5 || metadata == 3 && side == 3 || metadata == 1 && side == 4 || metadata == 2 && side == 2)
         {
             return this.iconCompressor2;
-        } else
+        }
+        else
         {
             return this.iconCompressor1;
         }

@@ -34,15 +34,15 @@ public class GCCoreEntityAstroOrb extends Entity
         this.setSize(0.25F, 0.25F);
         this.yOffset = this.height / 2.0F;
         this.setPosition(par2, par4, par6);
-        this.rotationYaw = (float)(Math.random() * 360.0D);
-        this.motionX = (float)(Math.random() * 0.20000000298023224D - 0.10000000149011612D) * 2.0F;
-        this.motionY = (float)(Math.random() * 0.2D) * 2.0F;
-        this.motionZ = (float)(Math.random() * 0.20000000298023224D - 0.10000000149011612D) * 2.0F;
+        this.rotationYaw = (float) (Math.random() * 360.0D);
+        this.motionX = (float) (Math.random() * 0.20000000298023224D - 0.10000000149011612D) * 2.0F;
+        this.motionY = (float) (Math.random() * 0.2D) * 2.0F;
+        this.motionZ = (float) (Math.random() * 0.20000000298023224D - 0.10000000149011612D) * 2.0F;
         this.xpValue = 1;
     }
 
     @Override
-	protected boolean canTriggerWalking()
+    protected boolean canTriggerWalking()
     {
         return false;
     }
@@ -55,10 +55,12 @@ public class GCCoreEntityAstroOrb extends Entity
     }
 
     @Override
-	protected void entityInit() {}
+    protected void entityInit()
+    {
+    }
 
     @Override
-	@SideOnly(Side.CLIENT)
+    @SideOnly(Side.CLIENT)
     public int getBrightnessForRender(float par1)
     {
         float var2 = 0.5F;
@@ -76,7 +78,7 @@ public class GCCoreEntityAstroOrb extends Entity
         final int var3 = super.getBrightnessForRender(par1);
         int var4 = var3 & 255;
         final int var5 = var3 >> 16 & 255;
-        var4 += (int)(var2 * 15.0F * 16.0F);
+        var4 += (int) (var2 * 15.0F * 16.0F);
 
         if (var4 > 240)
         {
@@ -87,7 +89,7 @@ public class GCCoreEntityAstroOrb extends Entity
     }
 
     @Override
-	public void onUpdate()
+    public void onUpdate()
     {
         super.onUpdate();
 
@@ -172,19 +174,19 @@ public class GCCoreEntityAstroOrb extends Entity
     }
 
     @Override
-	public boolean handleWaterMovement()
+    public boolean handleWaterMovement()
     {
         return this.worldObj.handleMaterialAcceleration(this.boundingBox, Material.water, this);
     }
 
     @Override
-	protected void dealFireDamage(int par1)
+    protected void dealFireDamage(int par1)
     {
         this.attackEntityFrom(DamageSource.inFire, par1);
     }
 
     @Override
-	public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
+    public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
     {
         if (this.isEntityInvulnerable())
         {
@@ -205,15 +207,15 @@ public class GCCoreEntityAstroOrb extends Entity
     }
 
     @Override
-	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
+    public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
-        par1NBTTagCompound.setShort("Health", (byte)this.xpOrbHealth);
-        par1NBTTagCompound.setShort("Age", (short)this.xpOrbAge);
-        par1NBTTagCompound.setShort("Value", (short)this.xpValue);
+        par1NBTTagCompound.setShort("Health", (byte) this.xpOrbHealth);
+        par1NBTTagCompound.setShort("Age", (short) this.xpOrbAge);
+        par1NBTTagCompound.setShort("Value", (short) this.xpValue);
     }
 
     @Override
-	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
+    public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         this.xpOrbHealth = par1NBTTagCompound.getShort("Health") & 255;
         this.xpOrbAge = par1NBTTagCompound.getShort("Age");
@@ -221,7 +223,7 @@ public class GCCoreEntityAstroOrb extends Entity
     }
 
     @Override
-	public void onCollideWithPlayer(EntityPlayer par1EntityPlayer)
+    public void onCollideWithPlayer(EntityPlayer par1EntityPlayer)
     {
         if (!this.worldObj.isRemote)
         {
@@ -256,7 +258,7 @@ public class GCCoreEntityAstroOrb extends Entity
     }
 
     @Override
-	public boolean canAttackWithItem()
+    public boolean canAttackWithItem()
     {
         return false;
     }

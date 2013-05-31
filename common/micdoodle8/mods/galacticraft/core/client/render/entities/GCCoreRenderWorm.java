@@ -8,18 +8,16 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.item.ItemStack;
-
 import org.lwjgl.opengl.GL11;
-
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
- *
- *  All rights reserved.
- *
+ * 
+ * All rights reserved.
+ * 
  */
 @SideOnly(Side.CLIENT)
 public class GCCoreRenderWorm extends RenderLiving
@@ -33,18 +31,18 @@ public class GCCoreRenderWorm extends RenderLiving
     }
 
     @Override
-	protected int shouldRenderPass(EntityLiving par1EntityLiving, int par2, float par3)
+    protected int shouldRenderPass(EntityLiving par1EntityLiving, int par2, float par3)
     {
-    	final Minecraft minecraft = FMLClientHandler.instance().getClient();
+        final Minecraft minecraft = FMLClientHandler.instance().getClient();
 
         final EntityPlayerSP player = minecraft.thePlayer;
 
         ItemStack helmetSlot = null;
 
-		if (player != null && player.inventory.armorItemInSlot(3) != null)
-		{
-			helmetSlot = player.inventory.armorItemInSlot(3);
-		}
+        if (player != null && player.inventory.armorItemInSlot(3) != null)
+        {
+            helmetSlot = player.inventory.armorItemInSlot(3);
+        }
 
         if (helmetSlot != null && helmetSlot.getItem() instanceof GCCoreItemSensorGlasses && minecraft.currentScreen == null)
         {

@@ -15,9 +15,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
- *
- *  All rights reserved.
- *
+ * 
+ * All rights reserved.
+ * 
  */
 public class GCCoreEntitySpider extends EntitySpider implements IEntityBreathable
 {
@@ -30,7 +30,7 @@ public class GCCoreEntitySpider extends EntitySpider implements IEntityBreathabl
     }
 
     @Override
-	protected void entityInit()
+    protected void entityInit()
     {
         super.entityInit();
     }
@@ -39,7 +39,7 @@ public class GCCoreEntitySpider extends EntitySpider implements IEntityBreathabl
      * Called to update the entity's position/logic.
      */
     @Override
-	public void onUpdate()
+    public void onUpdate()
     {
         super.onUpdate();
 
@@ -49,33 +49,35 @@ public class GCCoreEntitySpider extends EntitySpider implements IEntityBreathabl
         }
     }
 
-	@Override
+    @Override
     public void fall(float var1)
     {
-		;
+        ;
     }
 
     @Override
-	public int getMaxHealth()
+    public int getMaxHealth()
     {
         return 22;
     }
 
     /**
-     * Returns the Y offset from the entity's position for any entity riding this one.
+     * Returns the Y offset from the entity's position for any entity riding
+     * this one.
      */
     @Override
-	public double getMountedYOffset()
+    public double getMountedYOffset()
     {
         return this.height * 0.75D - 0.5D;
     }
 
     /**
-     * Finds the closest player within 16 blocks to attack, or null if this Entity isn't interested in attacking
-     * (Animals, Spiders at day, peaceful PigZombies).
+     * Finds the closest player within 16 blocks to attack, or null if this
+     * Entity isn't interested in attacking (Animals, Spiders at day, peaceful
+     * PigZombies).
      */
     @Override
-	protected Entity findPlayerToAttack()
+    protected Entity findPlayerToAttack()
     {
         final float var1 = this.getBrightness(1.0F);
 
@@ -94,7 +96,7 @@ public class GCCoreEntitySpider extends EntitySpider implements IEntityBreathabl
      * Returns the sound this mob makes while it's alive.
      */
     @Override
-	protected String getLivingSound()
+    protected String getLivingSound()
     {
         return "mob.spider.say";
     }
@@ -103,7 +105,7 @@ public class GCCoreEntitySpider extends EntitySpider implements IEntityBreathabl
      * Returns the sound this mob makes when it is hurt.
      */
     @Override
-	protected String getHurtSound()
+    protected String getHurtSound()
     {
         return "mob.spider.say";
     }
@@ -112,7 +114,7 @@ public class GCCoreEntitySpider extends EntitySpider implements IEntityBreathabl
      * Returns the sound this mob makes on death.
      */
     @Override
-	protected String getDeathSound()
+    protected String getDeathSound()
     {
         return "mob.spider.death";
     }
@@ -121,16 +123,17 @@ public class GCCoreEntitySpider extends EntitySpider implements IEntityBreathabl
      * Plays step sound at given x, y, z for the entity
      */
     @Override
-	protected void playStepSound(int par1, int par2, int par3, int par4)
+    protected void playStepSound(int par1, int par2, int par3, int par4)
     {
         this.playSound("mob.spider.step", 0.15F, 1.0F);
     }
 
     /**
-     * Basic mob attack. Default to touch of death in EntityCreature. Overridden by each mob to define their attack.
+     * Basic mob attack. Default to touch of death in EntityCreature. Overridden
+     * by each mob to define their attack.
      */
     @Override
-	protected void attackEntity(Entity par1Entity, float par2)
+    protected void attackEntity(Entity par1Entity, float par2)
     {
         final float var3 = this.getBrightness(1.0F);
 
@@ -163,7 +166,7 @@ public class GCCoreEntitySpider extends EntitySpider implements IEntityBreathabl
      * Returns the item ID for the item the mob drops on death.
      */
     @Override
-	protected int getDropItemId()
+    protected int getDropItemId()
     {
         return Item.silk.itemID;
     }
@@ -172,7 +175,7 @@ public class GCCoreEntitySpider extends EntitySpider implements IEntityBreathabl
      * Drop 0-2 items of this living's type
      */
     @Override
-	protected void dropFewItems(boolean par1, int par2)
+    protected void dropFewItems(boolean par1, int par2)
     {
         super.dropFewItems(par1, par2);
 
@@ -186,7 +189,7 @@ public class GCCoreEntitySpider extends EntitySpider implements IEntityBreathabl
      * returns true if this entity is by a ladder, false otherwise
      */
     @Override
-	public boolean isOnLadder()
+    public boolean isOnLadder()
     {
         return this.isBesideClimbableBlock();
     }
@@ -195,11 +198,12 @@ public class GCCoreEntitySpider extends EntitySpider implements IEntityBreathabl
      * Sets the Entity inside a web block.
      */
     @Override
-	public void setInWeb() {}
+    public void setInWeb()
+    {
+    }
 
     @Override
-	@SideOnly(Side.CLIENT)
-
+    @SideOnly(Side.CLIENT)
     /**
      * How large the spider should be scaled.
      */
@@ -212,39 +216,39 @@ public class GCCoreEntitySpider extends EntitySpider implements IEntityBreathabl
      * Get this Entity's EnumCreatureAttribute
      */
     @Override
-	public EnumCreatureAttribute getCreatureAttribute()
+    public EnumCreatureAttribute getCreatureAttribute()
     {
         return EnumCreatureAttribute.ARTHROPOD;
     }
 
     @Override
-	public boolean isPotionApplicable(PotionEffect par1PotionEffect)
+    public boolean isPotionApplicable(PotionEffect par1PotionEffect)
     {
         return par1PotionEffect.getPotionID() == Potion.poison.id ? false : super.isPotionApplicable(par1PotionEffect);
     }
 
     /**
-     * Returns true if the WatchableObject (Byte) is 0x01 otherwise returns false. The WatchableObject is updated using
-     * setBesideClimableBlock.
+     * Returns true if the WatchableObject (Byte) is 0x01 otherwise returns
+     * false. The WatchableObject is updated using setBesideClimableBlock.
      */
     @Override
-	public boolean isBesideClimbableBlock()
+    public boolean isBesideClimbableBlock()
     {
         return (this.dataWatcher.getWatchableObjectByte(16) & 1) != 0;
     }
 
     /**
-     * Updates the WatchableObject (Byte) created in entityInit(), setting it to 0x01 if par1 is true or 0x00 if it is
-     * false.
+     * Updates the WatchableObject (Byte) created in entityInit(), setting it to
+     * 0x01 if par1 is true or 0x00 if it is false.
      */
     @Override
-	public void setBesideClimbableBlock(boolean par1)
+    public void setBesideClimbableBlock(boolean par1)
     {
         byte var2 = this.dataWatcher.getWatchableObjectByte(16);
 
         if (par1)
         {
-            var2 = (byte)(var2 | 1);
+            var2 = (byte) (var2 | 1);
         }
         else
         {
@@ -258,7 +262,7 @@ public class GCCoreEntitySpider extends EntitySpider implements IEntityBreathabl
      * Initialize this creature.
      */
     @Override
-	public void initCreature()
+    public void initCreature()
     {
         if (this.worldObj.rand.nextInt(100) == 0)
         {
@@ -270,9 +274,9 @@ public class GCCoreEntitySpider extends EntitySpider implements IEntityBreathabl
         }
     }
 
-	@Override
-	public boolean canBreath()
-	{
-		return true;
-	}
+    @Override
+    public boolean canBreath()
+    {
+        return true;
+    }
 }

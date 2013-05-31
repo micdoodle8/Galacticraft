@@ -9,9 +9,7 @@ import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.item.ItemStack;
-
 import org.lwjgl.opengl.GL11;
-
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -26,7 +24,7 @@ public class GCCoreRenderAlienVillager extends RenderLiving
     public GCCoreRenderAlienVillager()
     {
         super(new GCCoreModelVillager(0.0F), 0.5F);
-        this.villagerModel = (GCCoreModelVillager)this.mainModel;
+        this.villagerModel = (GCCoreModelVillager) this.mainModel;
         this.villagerModel2 = new GCCoreModelVillager(0.5F);
     }
 
@@ -49,18 +47,18 @@ public class GCCoreRenderAlienVillager extends RenderLiving
     }
 
     @Override
-	protected int shouldRenderPass(EntityLiving par1EntityLiving, int par2, float par3)
+    protected int shouldRenderPass(EntityLiving par1EntityLiving, int par2, float par3)
     {
-		final Minecraft minecraft = FMLClientHandler.instance().getClient();
+        final Minecraft minecraft = FMLClientHandler.instance().getClient();
 
         final EntityPlayerSP player = minecraft.thePlayer;
 
         ItemStack helmetSlot = null;
 
-		if (player != null && player.inventory.armorItemInSlot(3) != null)
-		{
-			helmetSlot = player.inventory.armorItemInSlot(3);
-		}
+        if (player != null && player.inventory.armorItemInSlot(3) != null)
+        {
+            helmetSlot = player.inventory.armorItemInSlot(3);
+        }
 
         if (helmetSlot != null && helmetSlot.getItem() instanceof GCCoreItemSensorGlasses && minecraft.currentScreen == null)
         {
@@ -102,7 +100,7 @@ public class GCCoreRenderAlienVillager extends RenderLiving
 
         if (par1EntityVillager.getGrowingAge() < 0)
         {
-            f1 = (float)(f1 * 0.5D);
+            f1 = (float) (f1 * 0.5D);
             this.shadowSize = 0.25F;
         }
         else
@@ -114,36 +112,38 @@ public class GCCoreRenderAlienVillager extends RenderLiving
     }
 
     /**
-     * Allows the render to do any OpenGL state modifications necessary before the model is rendered. Args:
-     * entityLiving, partialTickTime
+     * Allows the render to do any OpenGL state modifications necessary before
+     * the model is rendered. Args: entityLiving, partialTickTime
      */
     @Override
-	protected void preRenderCallback(EntityLiving par1EntityLiving, float par2)
+    protected void preRenderCallback(EntityLiving par1EntityLiving, float par2)
     {
-        this.preRenderVillager((GCCoreEntityAlienVillager)par1EntityLiving, par2);
+        this.preRenderVillager((GCCoreEntityAlienVillager) par1EntityLiving, par2);
     }
 
     @Override
-	protected void renderEquippedItems(EntityLiving par1EntityLiving, float par2)
+    protected void renderEquippedItems(EntityLiving par1EntityLiving, float par2)
     {
-        this.renderVillagerEquipedItems((GCCoreEntityAlienVillager)par1EntityLiving, par2);
+        this.renderVillagerEquipedItems((GCCoreEntityAlienVillager) par1EntityLiving, par2);
     }
 
     @Override
-	public void doRenderLiving(EntityLiving par1EntityLiving, double par2, double par4, double par6, float par8, float par9)
+    public void doRenderLiving(EntityLiving par1EntityLiving, double par2, double par4, double par6, float par8, float par9)
     {
-        this.renderVillager((GCCoreEntityAlienVillager)par1EntityLiving, par2, par4, par6, par8, par9);
+        this.renderVillager((GCCoreEntityAlienVillager) par1EntityLiving, par2, par4, par6, par8, par9);
     }
 
     /**
-     * Actually renders the given argument. This is a synthetic bridge method, always casting down its argument and then
-     * handing it off to a worker function which does the actual work. In all probabilty, the class Render is generic
-     * (Render<T extends Entity) and this method has signature public void doRender(T entity, double d, double d1,
-     * double d2, float f, float f1). But JAD is pre 1.5 so doesn't do that.
+     * Actually renders the given argument. This is a synthetic bridge method,
+     * always casting down its argument and then handing it off to a worker
+     * function which does the actual work. In all probabilty, the class Render
+     * is generic (Render<T extends Entity) and this method has signature public
+     * void doRender(T entity, double d, double d1, double d2, float f, float
+     * f1). But JAD is pre 1.5 so doesn't do that.
      */
     @Override
-	public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
+    public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
     {
-        this.renderVillager((GCCoreEntityAlienVillager)par1Entity, par2, par4, par6, par8, par9);
+        this.renderVillager((GCCoreEntityAlienVillager) par1Entity, par2, par4, par6, par8, par9);
     }
 }

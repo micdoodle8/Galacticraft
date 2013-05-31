@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.moon;
 
 import java.io.File;
 import java.util.EnumSet;
-
 import micdoodle8.mods.galacticraft.API.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubMod;
 import micdoodle8.mods.galacticraft.API.IGalaxy;
@@ -28,108 +27,112 @@ import cpw.mods.fml.relauncher.Side;
 
 /**
  * Copyright 2012-2013, micdoodle8
- *
- *  All rights reserved.
- *
+ * 
+ * All rights reserved.
+ * 
  */
 public class GalacticraftMoon implements IGalacticraftSubMod
 {
-//	public static Map<String, GCMoonPlayerBase> playersServer = new HashMap<String, GCMoonPlayerBase>();
+    // public static Map<String, GCMoonPlayerBase> playersServer = new
+    // HashMap<String, GCMoonPlayerBase>();
 
-	public static final String NAME = "Galacticraft Moon";
-	public static final String MODID = "GalacticraftMoon";
+    public static final String NAME = "Galacticraft Moon";
+    public static final String MODID = "GalacticraftMoon";
 
-	public static final String FILE_PATH = "/micdoodle8/mods/galacticraft/moon/";
-	public static final String CLIENT_PATH = "client/";
-	public static final String LANGUAGE_PATH = GalacticraftMoon.FILE_PATH + GalacticraftMoon.CLIENT_PATH + "lang/";
-	public static final String BLOCK_TEXTURE_FILE = GalacticraftMoon.FILE_PATH + GalacticraftMoon.CLIENT_PATH + "blocks/moon.png";
-	public static final String ITEM_TEXTURE_FILE = GalacticraftMoon.FILE_PATH + GalacticraftMoon.CLIENT_PATH + "items/moon.png";
-	public static final String CONFIG_FILE = "Galacticraft/moon.conf";
-	private static final String[] LANGUAGES_SUPPORTED = new String[] { "en_US", "es_ES", "zh_CN", "fr_CA", "fr_FR", "nl_NL", "ja_JP", "pl_PL", "de_DE", "cz_CZE" };
+    public static final String FILE_PATH = "/micdoodle8/mods/galacticraft/moon/";
+    public static final String CLIENT_PATH = "client/";
+    public static final String LANGUAGE_PATH = GalacticraftMoon.FILE_PATH + GalacticraftMoon.CLIENT_PATH + "lang/";
+    public static final String BLOCK_TEXTURE_FILE = GalacticraftMoon.FILE_PATH + GalacticraftMoon.CLIENT_PATH + "blocks/moon.png";
+    public static final String ITEM_TEXTURE_FILE = GalacticraftMoon.FILE_PATH + GalacticraftMoon.CLIENT_PATH + "items/moon.png";
+    public static final String CONFIG_FILE = "Galacticraft/moon.conf";
+    private static final String[] LANGUAGES_SUPPORTED = new String[]
+    { "en_US", "es_ES", "zh_CN", "fr_CA", "fr_FR", "nl_NL", "ja_JP", "pl_PL", "de_DE", "cz_CZE" };
 
-	public static GCCoreCreativeTab galacticraftMoonTab;
+    public static GCCoreCreativeTab galacticraftMoonTab;
 
-	public void preLoad(FMLPreInitializationEvent event)
-	{
-		new GCMoonConfigManager(new File(event.getModConfigurationDirectory(), GalacticraftMoon.CONFIG_FILE));
+    public void preLoad(FMLPreInitializationEvent event)
+    {
+        new GCMoonConfigManager(new File(event.getModConfigurationDirectory(), GalacticraftMoon.CONFIG_FILE));
 
-		GCMoonBlocks.initBlocks();
-		GCMoonBlocks.registerBlocks();
-		GCMoonBlocks.setHarvestLevels();
+        GCMoonBlocks.initBlocks();
+        GCMoonBlocks.registerBlocks();
+        GCMoonBlocks.setHarvestLevels();
 
-		GCMoonItems.initItems();
-	}
+        GCMoonItems.initItems();
+    }
 
-	public void load(FMLInitializationEvent event)
-	{
-		GalacticraftMoon.galacticraftMoonTab = new GCCoreCreativeTab(CreativeTabs.getNextID(), GalacticraftMoon.MODID, GCMoonBlocks.blockMoon.blockID, 5);
+    public void load(FMLInitializationEvent event)
+    {
+        GalacticraftMoon.galacticraftMoonTab = new GCCoreCreativeTab(CreativeTabs.getNextID(), GalacticraftMoon.MODID, GCMoonBlocks.blockMoon.blockID, 5);
 
-		DimensionManager.registerProviderType(GCMoonConfigManager.dimensionIDMoon, GCMoonWorldProvider.class, false);
+        DimensionManager.registerProviderType(GCMoonConfigManager.dimensionIDMoon, GCMoonWorldProvider.class, false);
 
-		System.out.println("Galacticraft Moon Loaded: " + TranslationHelper.loadLanguages(GalacticraftMoon.LANGUAGE_PATH, GalacticraftMoon.LANGUAGES_SUPPORTED) + " Languages.");
+        System.out.println("Galacticraft Moon Loaded: " + TranslationHelper.loadLanguages(GalacticraftMoon.LANGUAGE_PATH, GalacticraftMoon.LANGUAGES_SUPPORTED) + " Languages.");
 
-		GalacticraftRegistry.registerTeleportType(GCMoonWorldProvider.class, new GCMoonTeleportType());
+        GalacticraftRegistry.registerTeleportType(GCMoonWorldProvider.class, new GCMoonTeleportType());
 
         GCMoonUtil.addCraftingRecipes();
         GCMoonUtil.addSmeltingRecipes();
-	}
+    }
 
-	public void postLoad(FMLPostInitializationEvent event)
-	{
+    public void postLoad(FMLPostInitializationEvent event)
+    {
 
-	}
+    }
 
-	public void serverInit(FMLServerStartedEvent event)
-	{
+    public void serverInit(FMLServerStartedEvent event)
+    {
         TickRegistry.registerTickHandler(new CommonTickHandler(), Side.SERVER);
-	}
+    }
 
-	public void serverStarting(FMLServerStartingEvent event)
-	{
-		WorldUtil.registerPlanet(GCMoonConfigManager.dimensionIDMoon, true);
-	}
+    public void serverStarting(FMLServerStartingEvent event)
+    {
+        WorldUtil.registerPlanet(GCMoonConfigManager.dimensionIDMoon, true);
+    }
 
-	public class CommonTickHandler implements ITickHandler
-	{
-		@Override
-		public void tickStart(EnumSet<TickType> type, Object... tickData)
-		{
-			if (type.equals(EnumSet.of(TickType.WORLD)))
+    public class CommonTickHandler implements ITickHandler
+    {
+        @Override
+        public void tickStart(EnumSet<TickType> type, Object... tickData)
+        {
+            if (type.equals(EnumSet.of(TickType.WORLD)))
             {
             }
-		}
+        }
 
-		@Override
-		public void tickEnd(EnumSet<TickType> type, Object... tickData) { }
+        @Override
+        public void tickEnd(EnumSet<TickType> type, Object... tickData)
+        {
+        }
 
-		@Override
-		public EnumSet<TickType> ticks()
-		{
-			return EnumSet.of(TickType.WORLD);
-		}
+        @Override
+        public EnumSet<TickType> ticks()
+        {
+            return EnumSet.of(TickType.WORLD);
+        }
 
-		@Override
-		public String getLabel()
-		{
-			return "Galacticraft Moon Common";
-		}
-	}
+        @Override
+        public String getLabel()
+        {
+            return "Galacticraft Moon Common";
+        }
+    }
 
-	@Override
-	public String getDimensionName()
-	{
-		return "Moon";
-	}
+    @Override
+    public String getDimensionName()
+    {
+        return "Moon";
+    }
 
-	@Override
-	public boolean reachableDestination()
-	{
-		return true;
-	}
+    @Override
+    public boolean reachableDestination()
+    {
+        return true;
+    }
 
-	@Override
-	public IGalaxy getParentGalaxy()
-	{
-		return GalacticraftCore.galaxyMilkyWay;
-	}
+    @Override
+    public IGalaxy getParentGalaxy()
+    {
+        return GalacticraftCore.galaxyMilkyWay;
+    }
 }

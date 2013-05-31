@@ -16,17 +16,16 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
- *
- *  All rights reserved.
- *
+ * 
+ * All rights reserved.
+ * 
  */
 public class GCCoreWorldProviderSpaceStation extends WorldProvider implements IOrbitDimension, ISolarLevel, IExitHeight
 {
     public int spaceStationDimensionID;
-    private final float[] colorsSunriseSunset = new float[4];
 
     @Override
-	public void setDimension(int var1)
+    public void setDimension(int var1)
     {
         this.spaceStationDimensionID = var1;
         this.dimensionId = var1;
@@ -34,12 +33,12 @@ public class GCCoreWorldProviderSpaceStation extends WorldProvider implements IO
     }
 
     @Override
-	public IChunkProvider createChunkGenerator()
+    public IChunkProvider createChunkGenerator()
     {
-    	return new GCCoreChunkProviderOverworldOrbit(this.worldObj, this.worldObj.getSeed(), this.worldObj.getWorldInfo().isMapFeaturesEnabled());
+        return new GCCoreChunkProviderOverworldOrbit(this.worldObj, this.worldObj.getSeed(), this.worldObj.getWorldInfo().isMapFeaturesEnabled());
     }
 
-	@Override
+    @Override
     protected void generateLightBrightnessTable()
     {
         final float var1 = 0.0F;
@@ -51,29 +50,29 @@ public class GCCoreWorldProviderSpaceStation extends WorldProvider implements IO
         }
     }
 
-	@Override
+    @Override
     public float[] calcSunriseSunsetColors(float var1, float var2)
     {
-		return null;
+        return null;
     }
 
-	@SideOnly(Side.CLIENT)
-	@Override
+    @SideOnly(Side.CLIENT)
+    @Override
     public Vec3 getFogColor(float var1, float var2)
     {
-		return this.worldObj.getWorldVec3Pool().getVecFromPool((double)0F / 255F, (double)0F / 255F, (double)0F / 255F);
+        return this.worldObj.getWorldVec3Pool().getVecFromPool((double) 0F / 255F, (double) 0F / 255F, (double) 0F / 255F);
     }
 
-	@Override
+    @Override
     public Vec3 getSkyColor(Entity cameraEntity, float partialTicks)
     {
         return this.worldObj.getWorldVec3Pool().getVecFromPool(0, 0, 0);
     }
 
-	@Override
+    @Override
     public float calculateCelestialAngle(long par1, float par3)
     {
-        final int var4 = (int)(par1 % 24000L);
+        final int var4 = (int) (par1 % 24000L);
         float var5 = (var4 + par3) / 24000.0F - 0.25F;
 
         if (var5 < 0.0F)
@@ -87,17 +86,17 @@ public class GCCoreWorldProviderSpaceStation extends WorldProvider implements IO
         }
 
         final float var6 = var5;
-        var5 = 1.0F - (float)((Math.cos(var5 * Math.PI) + 1.0D) / 2.0D);
+        var5 = 1.0F - (float) ((Math.cos(var5 * Math.PI) + 1.0D) / 2.0D);
         var5 = var6 + (var5 - var6) / 3.0F;
         return var5;
     }
 
     @Override
-	@SideOnly(Side.CLIENT)
+    @SideOnly(Side.CLIENT)
     public float getStarBrightness(float par1)
     {
         final float var2 = this.worldObj.getCelestialAngle(par1);
-        float var3 = 1.0F - (MathHelper.cos(var2 * (float)Math.PI * 2.0F) * 2.0F + 0.25F);
+        float var3 = 1.0F - (MathHelper.cos(var2 * (float) Math.PI * 2.0F) * 2.0F + 0.25F);
 
         if (var3 < 0.0F)
         {
@@ -112,45 +111,45 @@ public class GCCoreWorldProviderSpaceStation extends WorldProvider implements IO
         return var3 * var3 * 0.5F + 0.3F;
     }
 
-	public float calculatePhobosAngle(long par1, float par3)
-	{
-		return this.calculateCelestialAngle(par1, par3) * 3000;
-	}
+    public float calculatePhobosAngle(long par1, float par3)
+    {
+        return this.calculateCelestialAngle(par1, par3) * 3000;
+    }
 
-	public float calculateDeimosAngle(long par1, float par3)
-	{
-		return this.calculatePhobosAngle(par1, par3) * 0.0000000001F;
-	}
+    public float calculateDeimosAngle(long par1, float par3)
+    {
+        return this.calculatePhobosAngle(par1, par3) * 0.0000000001F;
+    }
 
-	@Override
-	public void updateWeather()
-	{
+    @Override
+    public void updateWeather()
+    {
         this.worldObj.getWorldInfo().setRainTime(0);
         this.worldObj.getWorldInfo().setRaining(false);
         this.worldObj.getWorldInfo().setThunderTime(0);
         this.worldObj.getWorldInfo().setThundering(false);
-	}
+    }
 
     @Override
-	public boolean isSkyColored()
+    public boolean isSkyColored()
     {
         return false;
     }
 
     @Override
-	public double getHorizon()
+    public double getHorizon()
     {
-    	return 44.0D;
+        return 44.0D;
     }
 
     @Override
-	public int getAverageGroundLevel()
+    public int getAverageGroundLevel()
     {
         return 44;
     }
 
     @Override
-	public boolean isSurfaceWorld()
+    public boolean isSurfaceWorld()
     {
         return false;
     }
@@ -158,7 +157,7 @@ public class GCCoreWorldProviderSpaceStation extends WorldProvider implements IO
     @Override
     public boolean canCoordinateBeSpawn(int var1, int var2)
     {
-    	return false;
+        return false;
     }
 
     @Override
@@ -168,92 +167,92 @@ public class GCCoreWorldProviderSpaceStation extends WorldProvider implements IO
     }
 
     @Override
-	public String getWelcomeMessage()
+    public String getWelcomeMessage()
     {
         return "Entering Earth Orbit";
     }
 
     @Override
-	public String getDepartMessage()
+    public String getDepartMessage()
     {
         return "Leaving Earth Orbit";
     }
 
-	@Override
-	public String getDimensionName()
-	{
-		return "Space Station " + this.spaceStationDimensionID;
-	}
+    @Override
+    public String getDimensionName()
+    {
+        return "Space Station " + this.spaceStationDimensionID;
+    }
 
-	@Override
+    @Override
     public boolean canSnowAt(int x, int y, int z)
     {
         return false;
     }
 
-	@Override
+    @Override
     public boolean canBlockFreeze(int x, int y, int z, boolean byWater)
     {
         return false;
     }
 
     @Override
-	public boolean canDoLightning(Chunk chunk)
+    public boolean canDoLightning(Chunk chunk)
     {
         return false;
     }
 
     @Override
-	public boolean canDoRainSnowIce(Chunk chunk)
+    public boolean canDoRainSnowIce(Chunk chunk)
     {
         return false;
     }
 
-	@Override
-	public float getGravity()
-	{
-		return 0.073F;
-	}
-
-	@Override
-	public double getMeteorFrequency()
-	{
-		return 0;
-	}
-
-	@Override
-	public double getFuelUsageMultiplier()
-	{
-		return 0.5D;
-	}
-
-	@Override
-	public String getPlanetToOrbit()
-	{
-		return "Overworld";
-	}
-
-	@Override
-	public int getYCoordToTeleportToPlanet()
-	{
-		return 30;
-	}
+    @Override
+    public float getGravity()
+    {
+        return 0.073F;
+    }
 
     @Override
-	public String getSaveFolder()
+    public double getMeteorFrequency()
+    {
+        return 0;
+    }
+
+    @Override
+    public double getFuelUsageMultiplier()
+    {
+        return 0.5D;
+    }
+
+    @Override
+    public String getPlanetToOrbit()
+    {
+        return "Overworld";
+    }
+
+    @Override
+    public int getYCoordToTeleportToPlanet()
+    {
+        return 30;
+    }
+
+    @Override
+    public String getSaveFolder()
     {
         return "DIM_SPACESTATION" + this.spaceStationDimensionID;
     }
 
-	@Override
-	public double getSolorEnergyMultiplier()
-	{
-		return GCCoreConfigManager.spaceStationEnergyScalar;
-	}
+    @Override
+    public double getSolorEnergyMultiplier()
+    {
+        return GCCoreConfigManager.spaceStationEnergyScalar;
+    }
 
-	@Override
-	public double getYCoordinateToTeleport()
-	{
-		return 120;
-	}
+    @Override
+    public double getYCoordinateToTeleport()
+    {
+        return 120;
+    }
 }

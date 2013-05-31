@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core.network;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityControllable;
 import net.minecraft.entity.Entity;
@@ -14,77 +13,77 @@ import cpw.mods.fml.relauncher.Side;
 
 public class GCCorePacketEntityUpdate implements IGalacticraftAdvancedPacket
 {
-	public static final int packetID = 14;
+    public static final int packetID = 14;
 
-	public static Packet buildUpdatePacket(GCCoreEntityControllable driveable)
-	{
-		final Packet250CustomPayload packet = new Packet250CustomPayload();
-		packet.channel = GalacticraftCore.CHANNEL;
+    public static Packet buildUpdatePacket(GCCoreEntityControllable driveable)
+    {
+        final Packet250CustomPayload packet = new Packet250CustomPayload();
+        packet.channel = GalacticraftCore.CHANNEL;
 
         final ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         final DataOutputStream data = new DataOutputStream(bytes);
 
         try
         {
-        	data.writeInt(GCCorePacketEntityUpdate.packetID);
-        	data.writeInt(driveable.entityId);
-        	data.writeDouble(driveable.posX);
-        	data.writeDouble(driveable.posY);
-        	data.writeDouble(driveable.posZ);
-        	data.writeFloat(driveable.rotationYaw);
-        	data.writeFloat(driveable.rotationPitch);
-        	data.writeDouble(driveable.motionX);
-        	data.writeDouble(driveable.motionY);
-        	data.writeDouble(driveable.motionZ);
-        	data.writeBoolean(driveable.onGround);
+            data.writeInt(GCCorePacketEntityUpdate.packetID);
+            data.writeInt(driveable.entityId);
+            data.writeDouble(driveable.posX);
+            data.writeDouble(driveable.posY);
+            data.writeDouble(driveable.posZ);
+            data.writeFloat(driveable.rotationYaw);
+            data.writeFloat(driveable.rotationPitch);
+            data.writeDouble(driveable.motionX);
+            data.writeDouble(driveable.motionY);
+            data.writeDouble(driveable.motionZ);
+            data.writeBoolean(driveable.onGround);
 
-        	packet.data = bytes.toByteArray();
-        	packet.length = packet.data.length;
+            packet.data = bytes.toByteArray();
+            packet.length = packet.data.length;
 
-        	data.close();
-        	bytes.close();
+            data.close();
+            bytes.close();
         }
-        catch(final Exception e)
+        catch (final Exception e)
         {
             e.printStackTrace();
         }
 
         return packet;
-	}
+    }
 
-	@Override
-	public void handlePacket(DataInputStream stream, Object[] extradata, Side side)
-	{
-		try
-		{
-			final EntityPlayer player =  (EntityPlayer)extradata[0];
-
-			final int entityId = stream.readInt();
-			GCCoreEntityControllable driveable = null;
-
-			for(final Object obj : player.worldObj.loadedEntityList)
-			{
-				if(obj instanceof GCCoreEntityControllable && ((Entity)obj).entityId == entityId)
-				{
-					driveable = (GCCoreEntityControllable)obj;
-					break;
-				}
-			}
-
-			if(driveable != null)
-			{
-				driveable.setPositionRotationAndMotion(stream.readDouble(), stream.readDouble(), stream.readDouble(), stream.readFloat(), stream.readFloat(), stream.readDouble(), stream.readDouble(), stream.readDouble(), stream.readBoolean());
-			}
-		}
-        catch(final Exception e)
+    @Override
+    public void handlePacket(DataInputStream stream, Object[] extradata, Side side)
+    {
+        try
         {
-        	e.printStackTrace();
-        }
-	}
+            final EntityPlayer player = (EntityPlayer) extradata[0];
 
-	@Override
-	public byte getPacketID()
-	{
-		return GCCorePacketEntityUpdate.packetID;
-	}
+            final int entityId = stream.readInt();
+            GCCoreEntityControllable driveable = null;
+
+            for (final Object obj : player.worldObj.loadedEntityList)
+            {
+                if (obj instanceof GCCoreEntityControllable && ((Entity) obj).entityId == entityId)
+                {
+                    driveable = (GCCoreEntityControllable) obj;
+                    break;
+                }
+            }
+
+            if (driveable != null)
+            {
+                driveable.setPositionRotationAndMotion(stream.readDouble(), stream.readDouble(), stream.readDouble(), stream.readFloat(), stream.readFloat(), stream.readDouble(), stream.readDouble(), stream.readDouble(), stream.readBoolean());
+            }
+        }
+        catch (final Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public byte getPacketID()
+    {
+        return GCCorePacketEntityUpdate.packetID;
+    }
 }

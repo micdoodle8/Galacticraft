@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.moon.blocks;
 
 import java.util.List;
 import java.util.Random;
-
 import micdoodle8.mods.galacticraft.API.IDetectableMetadataResource;
 import micdoodle8.mods.galacticraft.API.IPlantableMetadataBlock;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockAdvanced;
@@ -27,45 +26,45 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
- *
- *  All rights reserved.
- *
+ * 
+ * All rights reserved.
+ * 
  */
 public class GCMoonBlock extends GCCoreBlockAdvanced implements IDetectableMetadataResource, IPlantableMetadataBlock
 {
-	// CopperMoon: 0, TinMoon: 1, CheeseStone: 2;
+    // CopperMoon: 0, TinMoon: 1, CheeseStone: 2;
     @SideOnly(Side.CLIENT)
     private Icon[] moonBlockIcons;
 
-	public GCMoonBlock(int i)
-	{
-		super(i, Material.rock);
-	}
+    public GCMoonBlock(int i)
+    {
+        super(i, Material.rock);
+    }
 
     @Override
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
     {
-    	if (world.getBlockMetadata(x, y, z) == 15)
-    	{
-    		return null;
-    	}
+        if (world.getBlockMetadata(x, y, z) == 15)
+        {
+            return null;
+        }
 
-    	return super.getCollisionBoundingBoxFromPool(world, x, y, z);
+        return super.getCollisionBoundingBoxFromPool(world, x, y, z);
     }
 
     @Override
     public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z)
     {
-    	if (world.getBlockMetadata(x, y, z) == 15)
-    	{
-    		return AxisAlignedBB.getAABBPool().getAABB(x + 0.0D, y + 0.0D, z + 0.0D, x + 0.0D, y + 0.0D, z + 0.0D);
-    	}
+        if (world.getBlockMetadata(x, y, z) == 15)
+        {
+            return AxisAlignedBB.getAABBPool().getAABB(x + 0.0D, y + 0.0D, z + 0.0D, x + 0.0D, y + 0.0D, z + 0.0D);
+        }
 
-    	return super.getSelectedBoundingBoxFromPool(world, x, y, z);
+        return super.getSelectedBoundingBoxFromPool(world, x, y, z);
     }
 
     @Override
-	@SideOnly(Side.CLIENT)
+    @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister par1IconRegister)
     {
         this.moonBlockIcons = new Icon[17];
@@ -88,164 +87,164 @@ public class GCMoonBlock extends GCCoreBlockAdvanced implements IDetectableMetad
         this.moonBlockIcons[16] = par1IconRegister.registerIcon("galacticraftcore:blank");
     }
 
-	@Override
+    @Override
     public CreativeTabs getCreativeTabToDisplayOn()
     {
         return GalacticraftMoon.galacticraftMoonTab;
     }
 
-	@Override
+    @Override
     public float getExplosionResistance(Entity par1Entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ)
     {
-    	if (world.getBlockMetadata(x, y, z) == 15 || world.getBlockMetadata(x, y, z) == 14)
-    	{
-    		return 10000.0F;
-    	}
+        if (world.getBlockMetadata(x, y, z) == 15 || world.getBlockMetadata(x, y, z) == 14)
+        {
+            return 10000.0F;
+        }
 
-    	return super.getExplosionResistance(par1Entity, world, x, y, z, explosionX, explosionY, explosionZ);
+        return super.getExplosionResistance(par1Entity, world, x, y, z, explosionX, explosionY, explosionZ);
     }
 
-	@Override
+    @Override
     public float getBlockHardness(World par1World, int par2, int par3, int par4)
     {
-    	final int meta = par1World.getBlockMetadata(par2, par3, par4);
+        final int meta = par1World.getBlockMetadata(par2, par3, par4);
 
-		if (meta == 3 || meta >= 5 && meta <= 13)
-		{
-			return 0.1F;
-		}
+        if (meta == 3 || meta >= 5 && meta <= 13)
+        {
+            return 0.1F;
+        }
 
-		if (meta == 14 || meta == 15)
-		{
-			return -1F;
-		}
+        if (meta == 14 || meta == 15)
+        {
+            return -1F;
+        }
 
         return this.blockHardness;
     }
 
-	@Override
+    @Override
     public boolean canHarvestBlock(EntityPlayer player, int meta)
     {
-		if (meta == 3 || meta >= 5 && meta <= 13)
-		{
-			return true;
-		}
+        if (meta == 3 || meta >= 5 && meta <= 13)
+        {
+            return true;
+        }
 
-    	return super.canHarvestBlock(player, meta);
+        return super.canHarvestBlock(player, meta);
     }
 
-	@Override
+    @Override
     public Icon getIcon(int side, int meta)
     {
-		if (meta >= 5 && meta <= 13)
-		{
-			if (side == 1)
-			{
-				switch (meta - 5)
-				{
-				case 0:
-					return this.moonBlockIcons[0];
-				case 1:
-					return this.moonBlockIcons[4];
-				case 2:
-					return this.moonBlockIcons[5];
-				case 3:
-					return this.moonBlockIcons[6];
-				case 4:
-					return this.moonBlockIcons[7];
-				case 5:
-					return this.moonBlockIcons[8];
-				case 6:
-					return this.moonBlockIcons[9];
-				case 7:
-					return this.moonBlockIcons[10];
-				case 8:
-					return this.moonBlockIcons[11];
-				}
-			}
-			else if (side == 0)
-			{
-				return this.moonBlockIcons[2];
-			}
-			else
-			{
-				return this.moonBlockIcons[3];
-			}
-		}
-		else
-		{
-			switch (meta)
-			{
-			case 0:
-				return this.moonBlockIcons[12];
-			case 1:
-				return this.moonBlockIcons[13];
-			case 2:
-				return this.moonBlockIcons[14];
-			case 3:
-				return this.moonBlockIcons[2];
-			case 4:
-				return this.moonBlockIcons[15];
-			case 14:
-				return this.moonBlockIcons[1];
-			case 15:
-				return this.moonBlockIcons[16];
-			default:
-				return this.moonBlockIcons[16];
-			}
-		}
+        if (meta >= 5 && meta <= 13)
+        {
+            if (side == 1)
+            {
+                switch (meta - 5)
+                {
+                case 0:
+                    return this.moonBlockIcons[0];
+                case 1:
+                    return this.moonBlockIcons[4];
+                case 2:
+                    return this.moonBlockIcons[5];
+                case 3:
+                    return this.moonBlockIcons[6];
+                case 4:
+                    return this.moonBlockIcons[7];
+                case 5:
+                    return this.moonBlockIcons[8];
+                case 6:
+                    return this.moonBlockIcons[9];
+                case 7:
+                    return this.moonBlockIcons[10];
+                case 8:
+                    return this.moonBlockIcons[11];
+                }
+            }
+            else if (side == 0)
+            {
+                return this.moonBlockIcons[2];
+            }
+            else
+            {
+                return this.moonBlockIcons[3];
+            }
+        }
+        else
+        {
+            switch (meta)
+            {
+            case 0:
+                return this.moonBlockIcons[12];
+            case 1:
+                return this.moonBlockIcons[13];
+            case 2:
+                return this.moonBlockIcons[14];
+            case 3:
+                return this.moonBlockIcons[2];
+            case 4:
+                return this.moonBlockIcons[15];
+            case 14:
+                return this.moonBlockIcons[1];
+            case 15:
+                return this.moonBlockIcons[16];
+            default:
+                return this.moonBlockIcons[16];
+            }
+        }
 
-		return null;
+        return null;
     }
 
-	@Override
-	public int idDropped(int meta, Random random, int par3)
-	{
-		switch (meta)
-		{
-		case 2:
-			return GCMoonItems.cheeseCurd.itemID;
-		case 15:
-			return 0;
-		default:
-			return this.blockID;
-		}
-	}
+    @Override
+    public int idDropped(int meta, Random random, int par3)
+    {
+        switch (meta)
+        {
+        case 2:
+            return GCMoonItems.cheeseCurd.itemID;
+        case 15:
+            return 0;
+        default:
+            return this.blockID;
+        }
+    }
 
-	@Override
+    @Override
     public int damageDropped(int meta)
     {
-		if (meta >= 5 && meta <= 13)
-		{
-			return 5;
-		}
-		else if (meta == 2)
-		{
-			return 0;
-		}
-		else
-		{
-			return meta;
-		}
+        if (meta >= 5 && meta <= 13)
+        {
+            return 5;
+        }
+        else if (meta == 2)
+        {
+            return 0;
+        }
+        else
+        {
+            return meta;
+        }
     }
 
-	@Override
+    @Override
     public int quantityDropped(int meta, int fortune, Random random)
     {
-		switch (meta)
-		{
-		case 15:
-			return 0;
-		default:
-			return 1;
-		}
+        switch (meta)
+        {
+        case 15:
+            return 0;
+        default:
+            return 1;
+        }
     }
 
     @SideOnly(Side.CLIENT)
-	@Override
+    @Override
     public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
     {
-    	int var4;
+        int var4;
 
         for (var4 = 0; var4 < 6; ++var4)
         {
@@ -258,42 +257,42 @@ public class GCMoonBlock extends GCCoreBlockAdvanced implements IDetectableMetad
         }
     }
 
-	@Override
-	public TileEntity createTileEntity(World world, int metadata)
-	{
-		if (metadata == 15)
-		{
-			return new GCCoreTileEntityDungeonSpawner();
-		}
+    @Override
+    public TileEntity createTileEntity(World world, int metadata)
+    {
+        if (metadata == 15)
+        {
+            return new GCCoreTileEntityDungeonSpawner();
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	@Override
-	public boolean isValueable(int metadata)
-	{
-		switch (metadata)
-		{
-		case 0:
-			return true;
-		case 1:
-			return true;
-		case 2:
-			return true;
-		default:
-			return false;
-		}
-	}
+    @Override
+    public boolean isValueable(int metadata)
+    {
+        switch (metadata)
+        {
+        case 0:
+            return true;
+        case 1:
+            return true;
+        case 2:
+            return true;
+        default:
+            return false;
+        }
+    }
 
-	@Override
+    @Override
     public boolean canSustainPlant(World world, int x, int y, int z, ForgeDirection direction, IPlantable plant)
     {
-		final int metadata = world.getBlockMetadata(x, y, z);
+        final int metadata = world.getBlockMetadata(x, y, z);
 
-		if (metadata < 5 && metadata > 13)
-		{
-			return false;
-		}
+        if (metadata < 5 && metadata > 13)
+        {
+            return false;
+        }
 
         plant.getPlantID(world, x, y + 1, z);
 
@@ -305,20 +304,20 @@ public class GCMoonBlock extends GCCoreBlockAdvanced implements IDetectableMetad
         return false;
     }
 
-	@Override
-	public int requiredLiquidBlocksNearby()
-	{
-		return 4;
-	}
+    @Override
+    public int requiredLiquidBlocksNearby()
+    {
+        return 4;
+    }
 
-	@Override
-	public boolean isPlantable(int metadata)
-	{
-		if (metadata >= 5 && metadata <= 13)
-		{
-			return true;
-		}
+    @Override
+    public boolean isPlantable(int metadata)
+    {
+        if (metadata >= 5 && metadata <= 13)
+        {
+            return true;
+        }
 
-		return false;
-	}
+        return false;
+    }
 }

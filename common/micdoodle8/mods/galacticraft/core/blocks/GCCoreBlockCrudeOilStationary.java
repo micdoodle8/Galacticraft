@@ -35,7 +35,8 @@ public class GCCoreBlockCrudeOilStationary extends BlockStationary implements IL
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister par1IconRegister)
     {
-        this.fluidIcons = new Icon[] { par1IconRegister.registerIcon("galacticraftcore:oil"), par1IconRegister.registerIcon("galacticraftcore:oil_flow") };
+        this.fluidIcons = new Icon[]
+        { par1IconRegister.registerIcon("galacticraftcore:oil"), par1IconRegister.registerIcon("galacticraftcore:oil_flow") };
     }
 
     @SideOnly(Side.CLIENT)
@@ -198,7 +199,8 @@ public class GCCoreBlockCrudeOilStationary extends BlockStationary implements IL
             {
                 // par1World.spawnParticle("dripWater", var21, var22, var23,
                 // 0.0D, 0.0D, 0.0D);
-            } else
+            }
+            else
             {
                 // par1World.spawnParticle("dripLava", var21, var22, var23,
                 // 0.0D, 0.0D, 0.0D);

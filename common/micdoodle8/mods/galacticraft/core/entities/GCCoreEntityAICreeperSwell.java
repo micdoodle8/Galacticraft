@@ -5,9 +5,9 @@ import net.minecraft.entity.ai.EntityAIBase;
 
 /**
  * Copyright 2012-2013, micdoodle8
- *
- *  All rights reserved.
- *
+ * 
+ * All rights reserved.
+ * 
  */
 public class GCCoreEntityAICreeperSwell extends EntityAIBase
 {
@@ -15,7 +15,8 @@ public class GCCoreEntityAICreeperSwell extends EntityAIBase
     GCCoreEntityCreeper swellingCreeper;
 
     /**
-     * The creeper's attack target. This is used for the changing of the creeper's state.
+     * The creeper's attack target. This is used for the changing of the
+     * creeper's state.
      */
     EntityLiving creeperAttackTarget;
 
@@ -29,7 +30,7 @@ public class GCCoreEntityAICreeperSwell extends EntityAIBase
      * Returns whether the EntityAIBase should begin execution.
      */
     @Override
-	public boolean shouldExecute()
+    public boolean shouldExecute()
     {
         final EntityLiving var1 = this.swellingCreeper.getAttackTarget();
         return this.swellingCreeper.getCreeperState() > 0 || var1 != null && this.swellingCreeper.getDistanceSqToEntity(var1) < 9.0D;
@@ -39,7 +40,7 @@ public class GCCoreEntityAICreeperSwell extends EntityAIBase
      * Execute a one shot task or start executing a continuous task
      */
     @Override
-	public void startExecuting()
+    public void startExecuting()
     {
         this.swellingCreeper.getNavigator().clearPathEntity();
         this.creeperAttackTarget = this.swellingCreeper.getAttackTarget();
@@ -49,7 +50,7 @@ public class GCCoreEntityAICreeperSwell extends EntityAIBase
      * Resets the task
      */
     @Override
-	public void resetTask()
+    public void resetTask()
     {
         this.creeperAttackTarget = null;
     }
@@ -58,7 +59,7 @@ public class GCCoreEntityAICreeperSwell extends EntityAIBase
      * Updates the task
      */
     @Override
-	public void updateTask()
+    public void updateTask()
     {
         if (this.creeperAttackTarget == null)
         {

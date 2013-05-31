@@ -1,12 +1,10 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
 import icbm.api.IMissileLockable;
-
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import micdoodle8.mods.galacticraft.API.IDockable;
 import micdoodle8.mods.galacticraft.API.IExitHeight;
 import micdoodle8.mods.galacticraft.API.IOrbitDimension;
@@ -39,7 +37,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, IPacketReceiver, IMissileLockable, IDockable, IInventory
 {
-	protected long ticks = 0;
+    protected long ticks = 0;
 
     protected double dragAir;
 
@@ -65,18 +63,18 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
 
     public abstract int getScaledFuelLevel(int i);
 
-	public abstract boolean hasValidFuel();
+    public abstract boolean hasValidFuel();
 
     @Override
-	protected boolean canTriggerWalking()
+    protected boolean canTriggerWalking()
     {
         return false;
     }
 
     @Override
-	protected void entityInit()
+    protected void entityInit()
     {
-        this.dataWatcher.addObject(16, new Byte((byte)0));
+        this.dataWatcher.addObject(16, new Byte((byte) 0));
         this.dataWatcher.addObject(17, new Integer(0));
         this.dataWatcher.addObject(18, new Integer(1));
         this.dataWatcher.addObject(19, new Integer(0));
@@ -88,37 +86,38 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
     }
 
     @Override
-	public AxisAlignedBB getCollisionBox(Entity par1Entity)
+    public AxisAlignedBB getCollisionBox(Entity par1Entity)
     {
         return null;
     }
 
     @Override
-	public AxisAlignedBB getBoundingBox()
+    public AxisAlignedBB getBoundingBox()
     {
-    	return null;
+        return null;
     }
 
     @Override
-	public boolean canBePushed()
+    public boolean canBePushed()
     {
         return false;
     }
 
     @Override
-	public void setDead()
+    public void setDead()
     {
-    	if (this.riddenByEntity != null && this.riddenByEntity instanceof GCCorePlayerMP)
-    	{
-    		final Object[] toSend2 = {0};
-        	((EntityPlayerMP) this.riddenByEntity).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, toSend2));
-    	}
+        if (this.riddenByEntity != null && this.riddenByEntity instanceof GCCorePlayerMP)
+        {
+            final Object[] toSend2 =
+            { 0 };
+            ((EntityPlayerMP) this.riddenByEntity).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, toSend2));
+        }
 
-	  	super.setDead();
+        super.setDead();
     }
 
     @Override
-	public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
+    public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
     {
         if (!this.worldObj.isRemote && !this.isDead)
         {
@@ -133,7 +132,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
                 this.setBeenAttacked();
                 this.setDamage(this.getDamage() + par2 * 10);
 
-                if (par1DamageSource.getEntity() instanceof EntityPlayer && ((EntityPlayer)par1DamageSource.getEntity()).capabilities.isCreativeMode)
+                if (par1DamageSource.getEntity() instanceof EntityPlayer && ((EntityPlayer) par1DamageSource.getEntity()).capabilities.isCreativeMode)
                 {
                     this.setDamage(100);
                 }
@@ -142,8 +141,9 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
                 {
                     if (this.riddenByEntity != null)
                     {
-                    	final Object[] toSend2 = {0};
-                    	((EntityPlayerMP) this.riddenByEntity).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, toSend2));
+                        final Object[] toSend2 =
+                        { 0 };
+                        ((EntityPlayerMP) this.riddenByEntity).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, toSend2));
 
                         this.riddenByEntity.mountEntity(this);
                     }
@@ -164,12 +164,12 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
 
     public void dropShipAsItem()
     {
-    	if (this.getItemsDropped() == null || this.worldObj.isRemote)
-    	{
-    		return;
-    	}
+        if (this.getItemsDropped() == null || this.worldObj.isRemote)
+        {
+            return;
+        }
 
-        for(final ItemStack item : this.getItemsDropped())
+        for (final ItemStack item : this.getItemsDropped())
         {
             this.entityDropItem(item, 0);
         }
@@ -186,79 +186,77 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
     }
 
     @Override
-	public boolean canBeCollidedWith()
+    public boolean canBeCollidedWith()
     {
         return !this.isDead;
     }
 
     @Override
-	public boolean shouldRiderSit()
+    public boolean shouldRiderSit()
     {
         return false;
     }
 
     @Override
-	public void onUpdate()
+    public void onUpdate()
     {
-		if (this.ticks >= Long.MAX_VALUE)
-		{
-			this.ticks = 1;
-		}
+        if (this.ticks >= Long.MAX_VALUE)
+        {
+            this.ticks = 1;
+        }
 
-		this.ticks++;
+        this.ticks++;
 
-    	super.onUpdate();
+        super.onUpdate();
 
-    	if (!this.worldObj.isRemote && this.getLandingPad() != null && this.getLandingPad().getConnectedTiles() != null)
-    	{
-    		for (final TileEntity tile : this.getLandingPad().getConnectedTiles())
-    		{
-    			if (this.worldObj.getBlockTileEntity(tile.xCoord, tile.yCoord, tile.zCoord) == null || !(this.worldObj.getBlockTileEntity(tile.xCoord, tile.yCoord, tile.zCoord) instanceof GCCoreTileEntityFuelLoader))
-    			{
+        if (!this.worldObj.isRemote && this.getLandingPad() != null && this.getLandingPad().getConnectedTiles() != null)
+        {
+            for (final TileEntity tile : this.getLandingPad().getConnectedTiles())
+            {
+                if (this.worldObj.getBlockTileEntity(tile.xCoord, tile.yCoord, tile.zCoord) == null || !(this.worldObj.getBlockTileEntity(tile.xCoord, tile.yCoord, tile.zCoord) instanceof GCCoreTileEntityFuelLoader))
+                {
 
-    			}
-    			else
-    			{
-        			if (tile instanceof GCCoreTileEntityFuelLoader && ((GCCoreTileEntityFuelLoader) tile).wattsReceived > 0)
-        			{
-        				final GCCoreTileEntityFuelLoader loader = (GCCoreTileEntityFuelLoader) tile;
+                }
+                else
+                {
+                    if (tile instanceof GCCoreTileEntityFuelLoader && ((GCCoreTileEntityFuelLoader) tile).wattsReceived > 0)
+                    {
+                        if (this.launched)
+                        {
+                            this.setPad(null);
+                        }
+                    }
+                }
+            }
+        }
 
-        				if (this.launched)
-        				{
-        					this.setPad(null);
-        				}
-        			}
-    			}
-    		}
-    	}
+        if (this.rumble > 0)
+        {
+            this.rumble--;
+        }
 
-    	if (this.rumble > 0)
-    	{
-    		this.rumble--;
-    	}
+        if (this.rumble < 0)
+        {
+            this.rumble++;
+        }
 
-    	if (this.rumble < 0)
-    	{
-    		this.rumble++;
-    	}
+        if (this.riddenByEntity != null)
+        {
+            this.riddenByEntity.posX += this.rumble / 30F;
+            this.riddenByEntity.posZ += this.rumble / 30F;
+        }
 
-    	if (this.riddenByEntity != null)
-    	{
-    		this.riddenByEntity.posX += this.rumble / 30F;
-    		this.riddenByEntity.posZ += this.rumble / 30F;
-    	}
+        if (this.getReversed() == 1)
+        {
+            this.rotationPitch = 180F;
+        }
 
-    	if (this.getReversed() == 1)
-    	{
-    		this.rotationPitch = 180F;
-    	}
+        if (this.posY > (this.worldObj.provider instanceof IExitHeight ? ((IExitHeight) this.worldObj.provider).getYCoordinateToTeleport() : 1200))
+        {
+            this.teleport();
+        }
 
-    	if (this.posY > (this.worldObj.provider instanceof IExitHeight ? ((IExitHeight) this.worldObj.provider).getYCoordinateToTeleport() : 1200))
-    	{
-    		this.teleport();
-    	}
-
-    	if (this.getRollingAmplitude() > 0)
+        if (this.getRollingAmplitude() > 0)
         {
             this.setRollingAmplitude(this.getRollingAmplitude() - 1);
         }
@@ -275,26 +273,26 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
 
         if (this.ignite == 0)
         {
-        	this.timeUntilLaunch = this.getPreLaunchWait();
+            this.timeUntilLaunch = this.getPreLaunchWait();
         }
 
         if (this.launched)
         {
-        	this.timeSinceLaunch++;
+            this.timeSinceLaunch++;
         }
         else
         {
-        	this.timeSinceLaunch = 0;
+            this.timeSinceLaunch = 0;
         }
 
         if (!this.worldObj.isRemote)
         {
-            this.setTimeSinceLaunch((int)this.timeSinceLaunch);
+            this.setTimeSinceLaunch((int) this.timeSinceLaunch);
         }
 
         if (this.timeUntilLaunch > 0 && this.ignite == 1)
         {
-        	this.timeUntilLaunch--;
+            this.timeUntilLaunch--;
         }
 
         AxisAlignedBB box = null;
@@ -307,7 +305,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
         {
             for (int var52 = 0; var52 < var15.size(); ++var52)
             {
-                final Entity var17 = (Entity)var15.get(var52);
+                final Entity var17 = (Entity) var15.get(var52);
 
                 if (var17 != this.riddenByEntity)
                 {
@@ -320,70 +318,70 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
 
         if (this.timeUntilLaunch == 0 && this.ignite == 1 || this.getReversed() == 1)
         {
-        	this.launched = true;
-        	this.setLaunched(1);
-        	this.ignite = 0;
-        	this.onLaunch();
+            this.launched = true;
+            this.setLaunched(1);
+            this.ignite = 0;
+            this.onLaunch();
 
-        	if (!this.worldObj.isRemote)
-        	{
-        		if (!(this.worldObj.provider instanceof IOrbitDimension) && this.riddenByEntity != null && this.riddenByEntity instanceof GCCorePlayerMP)
-        		{
-        	        ((GCCorePlayerMP) this.riddenByEntity).coordsTeleportedFromX = this.riddenByEntity.posX;
-        	        ((GCCorePlayerMP) this.riddenByEntity).coordsTeleportedFromZ = this.riddenByEntity.posZ;
-        		}
+            if (!this.worldObj.isRemote)
+            {
+                if (!(this.worldObj.provider instanceof IOrbitDimension) && this.riddenByEntity != null && this.riddenByEntity instanceof GCCorePlayerMP)
+                {
+                    ((GCCorePlayerMP) this.riddenByEntity).coordsTeleportedFromX = this.riddenByEntity.posX;
+                    ((GCCorePlayerMP) this.riddenByEntity).coordsTeleportedFromZ = this.riddenByEntity.posZ;
+                }
 
-        		int amountRemoved = 0;
+                int amountRemoved = 0;
 
-        		for (int x = MathHelper.floor_double(this.posX) - 1; x <= MathHelper.floor_double(this.posX) + 1; x++)
-        		{
-            		for (int y = MathHelper.floor_double(this.posY) - 3; y <= MathHelper.floor_double(this.posY) + 1; y++)
-            		{
-                		for (int z = MathHelper.floor_double(this.posZ) - 1; z <= MathHelper.floor_double(this.posZ) + 1; z++)
-                		{
-                			final int id = this.worldObj.getBlockId(x, y, z);
-                			final Block block = Block.blocksList[id];
+                for (int x = MathHelper.floor_double(this.posX) - 1; x <= MathHelper.floor_double(this.posX) + 1; x++)
+                {
+                    for (int y = MathHelper.floor_double(this.posY) - 3; y <= MathHelper.floor_double(this.posY) + 1; y++)
+                    {
+                        for (int z = MathHelper.floor_double(this.posZ) - 1; z <= MathHelper.floor_double(this.posZ) + 1; z++)
+                        {
+                            final int id = this.worldObj.getBlockId(x, y, z);
+                            final Block block = Block.blocksList[id];
 
-                			if (block != null && block instanceof GCCoreBlockLandingPadFull)
-                			{
-                				if (amountRemoved < 9)
-                				{
-                    				this.worldObj.setBlockToAir(x, y, z);
-                    				amountRemoved = 9;
-                				}
-                			}
+                            if (block != null && block instanceof GCCoreBlockLandingPadFull)
+                            {
+                                if (amountRemoved < 9)
+                                {
+                                    this.worldObj.setBlockToAir(x, y, z);
+                                    amountRemoved = 9;
+                                }
+                            }
 
-                			if (block != null && block instanceof GCCoreBlockLandingPad)
-                			{
-                    			if (amountRemoved < 9)
-                    			{
-                    				this.worldObj.setBlockToAir(x, y, z);
-                    				amountRemoved++;
-                    			}
-                			}
-                		}
-            		}
-        		}
+                            if (block != null && block instanceof GCCoreBlockLandingPad)
+                            {
+                                if (amountRemoved < 9)
+                                {
+                                    this.worldObj.setBlockToAir(x, y, z);
+                                    amountRemoved++;
+                                }
+                            }
+                        }
+                    }
+                }
 
                 this.playSound("random.pop", 0.2F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
-        	}
+            }
         }
 
         if (this.ignite == 1 || this.launched)
         {
             this.performHurtAnimation();
 
-        	this.rumble = (float) this.rand.nextInt(3) - 3;
+            this.rumble = (float) this.rand.nextInt(3) - 3;
         }
 
         if (this.rotationPitch > 90)
         {
-        	this.rotationPitch = 90;
+            this.rotationPitch = 90;
         }
 
         if (this.rotationPitch < -90)
         {
-        	this.rotationPitch = -90;
+            this.rotationPitch = -90;
         }
 
         this.motionX = -(50 * Math.cos(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * 0.01 * Math.PI / 180.0D));
@@ -391,12 +389,12 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
 
         if (this.timeSinceLaunch > 50 && this.onGround)
         {
-        	this.failRocket();
+            this.failRocket();
         }
 
         if (this.getLaunched() != 1)
         {
-        	this.motionX = this.motionY = this.motionZ = 0.0F;
+            this.motionX = this.motionY = this.motionZ = 0.0F;
         }
 
         this.moveEntity(this.motionX, this.motionY, this.motionZ);
@@ -413,88 +411,92 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
         this.prevPosZ = this.posZ;
     }
 
-    public void turnYaw (float f)
+    public void turnYaw(float f)
     {
-		this.rotationYaw += f;
+        this.rotationYaw += f;
     }
 
-    public void turnPitch (float f)
+    public void turnPitch(float f)
     {
-		this.rotationPitch += f;
+        this.rotationPitch += f;
     }
 
     private void failRocket()
     {
-    	if (this.riddenByEntity != null)
-    	{
-            this.riddenByEntity.attackEntityFrom(GCCoreDamageSource.spaceshipCrash, (int)(4.0D * 20 + 1.0D));
-    	}
+        if (this.riddenByEntity != null)
+        {
+            this.riddenByEntity.attackEntityFrom(GCCoreDamageSource.spaceshipCrash, (int) (4.0D * 20 + 1.0D));
+        }
 
-    	if (!GCCoreConfigManager.disableSpaceshipGrief)
-    	{
-      		this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 5, true);
-    	}
+        if (!GCCoreConfigManager.disableSpaceshipGrief)
+        {
+            this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 5, true);
+        }
 
-  		this.setDead();
+        this.setDead();
     }
 
     @Override
-	@SideOnly(Side.CLIENT)
+    @SideOnly(Side.CLIENT)
     public void setPositionAndRotation2(double par1, double par3, double par5, float par7, float par8, int par9)
     {
-    	this.setRotation(par7, par8);
+        this.setRotation(par7, par8);
     }
 
     @Override
-	protected void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
+    protected void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
-    	par1NBTTagCompound.setBoolean("launched", this.launched);
-    	par1NBTTagCompound.setInteger("timeUntilLaunch", this.timeUntilLaunch);
-    	par1NBTTagCompound.setInteger("ignite", this.ignite);
+        par1NBTTagCompound.setBoolean("launched", this.launched);
+        par1NBTTagCompound.setInteger("timeUntilLaunch", this.timeUntilLaunch);
+        par1NBTTagCompound.setInteger("ignite", this.ignite);
     }
 
     @Override
-	protected void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
+    protected void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
-		this.launched = par1NBTTagCompound.getBoolean("launched");
-		if (par1NBTTagCompound.getBoolean("launched"))
-		{
-			this.setLaunched(1);
-		}
-		else
-		{
-			this.setLaunched(0);
-		}
-		this.timeUntilLaunch = par1NBTTagCompound.getInteger("timeUntilLaunch");
-		this.ignite = par1NBTTagCompound.getInteger("ignite");
+        this.launched = par1NBTTagCompound.getBoolean("launched");
+        if (par1NBTTagCompound.getBoolean("launched"))
+        {
+            this.setLaunched(1);
+        }
+        else
+        {
+            this.setLaunched(0);
+        }
+        this.timeUntilLaunch = par1NBTTagCompound.getInteger("timeUntilLaunch");
+        this.ignite = par1NBTTagCompound.getInteger("ignite");
     }
 
     @Override
-	public boolean interact(EntityPlayer par1EntityPlayer)
+    public boolean interact(EntityPlayer par1EntityPlayer)
     {
-    	if (!this.worldObj.isRemote)
-    	{
-        	par1EntityPlayer.mountEntity(this);
+        if (!this.worldObj.isRemote)
+        {
+            par1EntityPlayer.mountEntity(this);
 
             if (this.riddenByEntity != null && this.riddenByEntity instanceof GCCorePlayerMP)
             {
-        	  	final Object[] toSend = {((EntityPlayerMP)this.riddenByEntity).username};
-            	((EntityPlayerMP) this.riddenByEntity).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 8, toSend));
-        	  	final Object[] toSend2 = {1};
-            	((EntityPlayerMP) par1EntityPlayer).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, toSend2));
-            	((GCCorePlayerMP) par1EntityPlayer).chatCooldown = 0;
+                final Object[] toSend =
+                { ((EntityPlayerMP) this.riddenByEntity).username };
+                ((EntityPlayerMP) this.riddenByEntity).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 8, toSend));
+                final Object[] toSend2 =
+                { 1 };
+                ((EntityPlayerMP) par1EntityPlayer).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, toSend2));
+                ((GCCorePlayerMP) par1EntityPlayer).chatCooldown = 0;
             }
             else if (par1EntityPlayer instanceof GCCorePlayerMP)
             {
-        	  	final Object[] toSend = {par1EntityPlayer.username};
-            	((EntityPlayerMP) par1EntityPlayer).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 13, toSend));
-        	  	final Object[] toSend2 = {0};
-            	((EntityPlayerMP) par1EntityPlayer).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, toSend2));
-            	((GCCorePlayerMP) par1EntityPlayer).chatCooldown = 0;
+                final Object[] toSend =
+                { par1EntityPlayer.username };
+                ((EntityPlayerMP) par1EntityPlayer).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 13, toSend));
+                final Object[] toSend2 =
+                { 0 };
+                ((EntityPlayerMP) par1EntityPlayer).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, toSend2));
+                ((GCCorePlayerMP) par1EntityPlayer).chatCooldown = 0;
             }
 
-        	return true;
-    	}
+            return true;
+        }
 
         return false;
     }
@@ -551,98 +553,105 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
 
     public void setLaunched(int par1)
     {
-    	this.dataWatcher.updateObject(22, par1);
+        this.dataWatcher.updateObject(22, par1);
     }
 
     public int getLaunched()
     {
-    	return this.dataWatcher.getWatchableObjectInt(22);
+        return this.dataWatcher.getWatchableObjectInt(22);
     }
 
     public void setTimeUntilLaunch(int par1)
     {
-    	if (!this.worldObj.isRemote)
-    	{
-        	this.dataWatcher.updateObject(23, par1);
-    	}
+        if (!this.worldObj.isRemote)
+        {
+            this.dataWatcher.updateObject(23, par1);
+        }
     }
 
     public int getTimeUntilLaunch()
     {
-    	return this.dataWatcher.getWatchableObjectInt(23);
+        return this.dataWatcher.getWatchableObjectInt(23);
     }
 
     public void setTimeSinceLaunch(int par1)
     {
-    	this.dataWatcher.updateObject(24, par1);
+        this.dataWatcher.updateObject(24, par1);
     }
 
     public int getTimeSinceLaunch()
     {
-    	return this.dataWatcher.getWatchableObjectInt(24);
+        return this.dataWatcher.getWatchableObjectInt(24);
     }
 
     public void ignite()
     {
-    	this.ignite = 1;
+        this.ignite = 1;
     }
 
     @Override
-	public double getMountedYOffset()
+    public double getMountedYOffset()
     {
         return -1.0D;
     }
 
     public void teleport()
     {
-    	if (this.riddenByEntity != null)
-    	{
-    		if (this.riddenByEntity instanceof EntityPlayerMP)
+        if (this.riddenByEntity != null)
+        {
+            if (this.riddenByEntity instanceof EntityPlayerMP)
             {
-		        final GCCorePlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer((EntityPlayerMP)this.riddenByEntity);
+                final GCCorePlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer((EntityPlayerMP) this.riddenByEntity);
 
-        		final EntityPlayerMP entityplayermp = (EntityPlayerMP)this.riddenByEntity;
+                final EntityPlayerMP entityplayermp = (EntityPlayerMP) this.riddenByEntity;
 
-				final Integer[] ids = WorldUtil.getArrayOfPossibleDimensions();
+                final Integer[] ids = WorldUtil.getArrayOfPossibleDimensions();
 
-		    	final Set set = WorldUtil.getArrayOfPossibleDimensions(ids, playerBase).entrySet();
-		    	final Iterator i = set.iterator();
+                final Set set = WorldUtil.getArrayOfPossibleDimensions(ids, playerBase).entrySet();
+                final Iterator i = set.iterator();
 
-		    	String temp = "";
+                String temp = "";
 
-		    	for (int k = 0; i.hasNext(); k++)
-		    	{
-		    		final Map.Entry entry = (Map.Entry)i.next();
-		    		temp = k == 0 ? temp.concat(String.valueOf(entry.getKey())) : temp.concat("." + String.valueOf(entry.getKey()));
-		    	}
+                for (int k = 0; i.hasNext(); k++)
+                {
+                    final Map.Entry entry = (Map.Entry) i.next();
+                    temp = k == 0 ? temp.concat(String.valueOf(entry.getKey())) : temp.concat("." + String.valueOf(entry.getKey()));
+                }
 
-		    	final Object[] toSend = {entityplayermp.username, temp};
-		        FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(entityplayermp.username).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 2, toSend));
+                final Object[] toSend =
+                { entityplayermp.username, temp };
+                FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(entityplayermp.username).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 2, toSend));
 
-		        if (playerBase != null)
-		        {
-		        	playerBase.setUsingPlanetGui();
-		        }
+                if (playerBase != null)
+                {
+                    playerBase.setUsingPlanetGui();
+                }
 
-		        this.onTeleport(entityplayermp);
+                this.onTeleport(entityplayermp);
 
-				if (this.riddenByEntity != null)
-				{
-            		this.riddenByEntity.mountEntity(this);
-    			}
+                if (this.riddenByEntity != null)
+                {
+                    this.riddenByEntity.mountEntity(this);
+                }
 
-				if (!this.isDead)
-				{
-					this.setDead();
-				}
+                if (!this.isDead)
+                {
+                    this.setDead();
+                }
             }
-    	}
+        }
     }
 
-    public void onLaunch() {}
+    public void onLaunch()
+    {
+    }
 
-    public void onTeleport(EntityPlayerMP player) {}
+    public void onTeleport(EntityPlayerMP player)
+    {
+    }
 
-	@SideOnly(Side.CLIENT)
-	public void spawnParticle(String var1, double var2, double var4, double var6, double var8, double var10, double var12) {}
+    @SideOnly(Side.CLIENT)
+    public void spawnParticle(String var1, double var2, double var4, double var6, double var8, double var10, double var12)
+    {
+    }
 }

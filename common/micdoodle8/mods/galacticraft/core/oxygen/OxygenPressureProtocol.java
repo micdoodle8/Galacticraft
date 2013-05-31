@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
-
 import micdoodle8.mods.galacticraft.API.IOxygenReliantBlock;
 import micdoodle8.mods.galacticraft.API.IPartialSealedBlock;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
@@ -27,40 +26,40 @@ public class OxygenPressureProtocol
 
     static
     {
-    	OxygenPressureProtocol.vanillaPermeableBlocks.add(Block.sponge.blockID);
+        OxygenPressureProtocol.vanillaPermeableBlocks.add(Block.sponge.blockID);
 
-    	try
-    	{
-        	for (final String s : GCCoreConfigManager.sealableIDs)
-        	{
-        		final String[] split = s.split(":");
+        try
+        {
+            for (final String s : GCCoreConfigManager.sealableIDs)
+            {
+                final String[] split = s.split(":");
 
-        		if (OxygenPressureProtocol.nonPermeableBlocks.containsKey(Integer.parseInt(split[0])))
-        		{
-        			final ArrayList<Integer> l = OxygenPressureProtocol.nonPermeableBlocks.get(Integer.parseInt(split[0]));
-        			l.add(Integer.parseInt(split[1]));
-        			OxygenPressureProtocol.nonPermeableBlocks.put(Integer.parseInt(split[0]), l);
-        		}
-        		else
-        		{
-        			final ArrayList<Integer> a = new ArrayList<Integer>();
-        			a.add(Integer.parseInt(split[1]));
-            		OxygenPressureProtocol.nonPermeableBlocks.put(Integer.parseInt(split[0]), a);
-        		}
-        	}
-    	}
-    	catch (final Exception e)
-    	{
-    		System.err.println();
-    		System.err.println("Error finding sealable IDs from the Galacticraft config, check that they are listed properly!");
-    		System.err.println();
-    		e.printStackTrace();
-    	}
+                if (OxygenPressureProtocol.nonPermeableBlocks.containsKey(Integer.parseInt(split[0])))
+                {
+                    final ArrayList<Integer> l = OxygenPressureProtocol.nonPermeableBlocks.get(Integer.parseInt(split[0]));
+                    l.add(Integer.parseInt(split[1]));
+                    OxygenPressureProtocol.nonPermeableBlocks.put(Integer.parseInt(split[0]), l);
+                }
+                else
+                {
+                    final ArrayList<Integer> a = new ArrayList<Integer>();
+                    a.add(Integer.parseInt(split[1]));
+                    OxygenPressureProtocol.nonPermeableBlocks.put(Integer.parseInt(split[0]), a);
+                }
+            }
+        }
+        catch (final Exception e)
+        {
+            System.err.println();
+            System.err.println("Error finding sealable IDs from the Galacticraft config, check that they are listed properly!");
+            System.err.println();
+            e.printStackTrace();
+        }
     }
 
     private void loopThrough(World var1, int var2, int var3, int var4, int var5)
     {
-    	final Vector3 vecAt = new Vector3(var2, var3, var4);
+        final Vector3 vecAt = new Vector3(var2, var3, var4);
 
         this.checked.add(vecAt);
 
@@ -89,57 +88,57 @@ public class OxygenPressureProtocol
 
     private void nextVec(World var1, int var2, int var3, int var4, int var5)
     {
-    	for (final ForgeDirection dir : ForgeDirection.values())
-    	{
-    		if (dir != ForgeDirection.UNKNOWN)
-    		{
-    			Vector3 vec = new Vector3(var2, var3, var4);
-    			vec = vec.add(new Vector3(dir));
+        for (final ForgeDirection dir : ForgeDirection.values())
+        {
+            if (dir != ForgeDirection.UNKNOWN)
+            {
+                Vector3 vec = new Vector3(var2, var3, var4);
+                vec = vec.add(new Vector3(dir));
 
-    			if (this.canBlockPass(var1, vec) && !this.isVisited(vec))
-    			{
-    				this.loopThrough(var1, vec.intX(), vec.intY(), vec.intZ(), var5 - 1);
-    			}
+                if (this.canBlockPass(var1, vec) && !this.isVisited(vec))
+                {
+                    this.loopThrough(var1, vec.intX(), vec.intY(), vec.intZ(), var5 - 1);
+                }
 
-    			final int idAtVec = vec.getBlockID(var1);
+                final int idAtVec = vec.getBlockID(var1);
 
-    			if (idAtVec != 0 && Block.blocksList[idAtVec] instanceof IOxygenReliantBlock)
-    			{
-    				this.oxygenReliantBlocks.add(vec);
-    			}
+                if (idAtVec != 0 && Block.blocksList[idAtVec] instanceof IOxygenReliantBlock)
+                {
+                    this.oxygenReliantBlocks.add(vec);
+                }
 
-    			final TileEntity tileAtVec = vec.getTileEntity(var1);
+                final TileEntity tileAtVec = vec.getTileEntity(var1);
 
-    			if (tileAtVec != null && tileAtVec instanceof GCCoreTileEntityOxygenSealer)
-    			{
-    				var5 += ((GCCoreTileEntityOxygenSealer) tileAtVec).storedOxygen / 25.0D;
-    			}
-    		}
-    	}
+                if (tileAtVec != null && tileAtVec instanceof GCCoreTileEntityOxygenSealer)
+                {
+                    var5 += ((GCCoreTileEntityOxygenSealer) tileAtVec).storedOxygen / 25.0D;
+                }
+            }
+        }
     }
 
     private void nextVecD(World var1, int var2, int var3, int var4)
     {
-    	for (final ForgeDirection dir : ForgeDirection.values())
-    	{
-    		if (dir != ForgeDirection.UNKNOWN)
-    		{
-    			Vector3 vec = new Vector3(var2, var3, var4);
-    			vec = vec.add(new Vector3(dir));
+        for (final ForgeDirection dir : ForgeDirection.values())
+        {
+            if (dir != ForgeDirection.UNKNOWN)
+            {
+                Vector3 vec = new Vector3(var2, var3, var4);
+                vec = vec.add(new Vector3(dir));
 
-    			if (OxygenPressureProtocol.isBreathableAir(var1, vec.intX(), vec.intY(), vec.intZ()) && !this.isVisited(vec))
-    			{
-    				this.checkAtVec(var1, vec);
-    			}
+                if (OxygenPressureProtocol.isBreathableAir(var1, vec.intX(), vec.intY(), vec.intZ()) && !this.isVisited(vec))
+                {
+                    this.checkAtVec(var1, vec);
+                }
 
-    			final int idAtVec = vec.getBlockID(var1);
+                final int idAtVec = vec.getBlockID(var1);
 
-    			if (idAtVec != 0 && Block.blocksList[idAtVec] instanceof IOxygenReliantBlock)
-    			{
-    				this.oxygenReliantBlocks.add(vec);
-    			}
-    		}
-    	}
+                if (idAtVec != 0 && Block.blocksList[idAtVec] instanceof IOxygenReliantBlock)
+                {
+                    this.oxygenReliantBlocks.add(vec);
+                }
+            }
+        }
     }
 
     public boolean seal(World var1, int var2, int var3, int var4, int var5)
@@ -154,7 +153,7 @@ public class OxygenPressureProtocol
 
             while (var6.hasNext())
             {
-                var7 = (Vector3)var6.next();
+                var7 = (Vector3) var6.next();
 
                 if (!this.getIsSealed(var1, var7.intX(), var7.intY(), var7.intZ()))
                 {
@@ -166,13 +165,13 @@ public class OxygenPressureProtocol
 
             while (var6.hasNext())
             {
-                var7 = (Vector3)var6.next();
+                var7 = (Vector3) var6.next();
 
                 final Block block = Block.blocksList[var7.getBlockID(var1)];
 
                 if (block != null && block instanceof IOxygenReliantBlock)
                 {
-                	((IOxygenReliantBlock) block).onOxygenAdded(var1, var7.intX(), var7.intY(), var7.intZ());
+                    ((IOxygenReliantBlock) block).onOxygenAdded(var1, var7.intX(), var7.intY(), var7.intZ());
                 }
             }
 
@@ -180,7 +179,7 @@ public class OxygenPressureProtocol
 
             while (var6.hasNext())
             {
-                var7 = (Vector3)var6.next();
+                var7 = (Vector3) var6.next();
 
                 if (var7.getBlockID(var1) == 0)
                 {
@@ -219,7 +218,7 @@ public class OxygenPressureProtocol
 
             while (var6.hasNext())
             {
-            	final Vector3 var7 = (Vector3)var6.next();
+                final Vector3 var7 = (Vector3) var6.next();
 
                 if (!this.getIsSealed(var1, var7.intX(), var7.intY(), var7.intZ()))
                 {
@@ -240,11 +239,11 @@ public class OxygenPressureProtocol
 
         while (var5.hasNext())
         {
-            var6 = (Vector3)var5.next();
+            var6 = (Vector3) var5.next();
 
             if (this.canBlockPass(var1, var6))
             {
-                final int var9 = var1.getBlockId(var6.intX(), var6.intY(), var6.intZ());
+                var1.getBlockId(var6.intX(), var6.intY(), var6.intZ());
 
                 Block.blocksList[var1.getBlockId(var6.intX(), var6.intY(), var6.intZ())].dropBlockAsItem(var1, var6.intX(), var6.intY(), var6.intZ(), var1.getBlockMetadata(var6.intX(), var6.intY(), var6.intZ()), 0);
                 var1.setBlock(var6.intX(), var6.intY(), var6.intZ(), 0, 0, 2);
@@ -255,7 +254,7 @@ public class OxygenPressureProtocol
 
         while (var5.hasNext())
         {
-            var6 = (Vector3)var5.next();
+            var6 = (Vector3) var5.next();
 
             if (var1.getBlockId(var6.intX(), var6.intY(), var6.intZ()) == GCCoreBlocks.breatheableAir.blockID)
             {
@@ -267,7 +266,7 @@ public class OxygenPressureProtocol
 
         while (var5.hasNext())
         {
-            var6 = (Vector3)var5.next();
+            var6 = (Vector3) var5.next();
 
             final int idAt = var6.getBlockID(var1);
 
@@ -281,7 +280,7 @@ public class OxygenPressureProtocol
 
         while (var5.hasNext())
         {
-            var6 = (Vector3)var5.next();
+            var6 = (Vector3) var5.next();
 
             if (var6.getBlockID(var1) == 0)
             {
@@ -295,14 +294,9 @@ public class OxygenPressureProtocol
 
     public boolean canBlockPass(World var0, Vector3 vec)
     {
-    	final Block block = Block.blocksList[vec.getBlockID(var0)];
+        final Block block = Block.blocksList[vec.getBlockID(var0)];
 
-    	return block == null
-    			|| block.blockID == 0
-    			|| block.blockID == GCCoreBlocks.breatheableAir.blockID
-    	    	|| OxygenPressureProtocol.vanillaPermeableBlocks.contains(block.blockID)
-    			|| !block.isOpaqueCube() && !(block instanceof IPartialSealedBlock) && !(OxygenPressureProtocol.nonPermeableBlocks.containsKey(block.blockID) && OxygenPressureProtocol.nonPermeableBlocks.get(block.blockID).contains(vec.getBlockMetadata(var0)))
-    			|| !block.isOpaqueCube() && block instanceof IPartialSealedBlock && !((IPartialSealedBlock) block).isSealed(var0, vec.intX(), vec.intY(), vec.intZ());
+        return block == null || block.blockID == 0 || block.blockID == GCCoreBlocks.breatheableAir.blockID || OxygenPressureProtocol.vanillaPermeableBlocks.contains(block.blockID) || !block.isOpaqueCube() && !(block instanceof IPartialSealedBlock) && !(OxygenPressureProtocol.nonPermeableBlocks.containsKey(block.blockID) && OxygenPressureProtocol.nonPermeableBlocks.get(block.blockID).contains(vec.getBlockMetadata(var0))) || !block.isOpaqueCube() && block instanceof IPartialSealedBlock && !((IPartialSealedBlock) block).isSealed(var0, vec.intX(), vec.intY(), vec.intZ());
     }
 
     public static boolean isBreathableAir(World var0, int var1, int var2, int var3)
@@ -312,69 +306,67 @@ public class OxygenPressureProtocol
 
     private boolean touchingUnsealedBlock(World var1, int var2, int var3, int var4)
     {
-    	for (final ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
-    	{
-			Vector3 vec = new Vector3(var2, var3, var4);
-			vec = vec.add(new Vector3(dir));
+        for (final ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+        {
+            Vector3 vec = new Vector3(var2, var3, var4);
+            vec = vec.add(new Vector3(dir));
 
-			if (this.canBlockPass(var1, vec) && !this.isVisited(vec))
-			{
-				return true;
-			}
-    	}
+            if (this.canBlockPass(var1, vec) && !this.isVisited(vec))
+            {
+                return true;
+            }
+        }
 
-    	return false;
+        return false;
     }
 
     private boolean getIsSealed(World var1, int var2, int var3, int var4)
     {
-    	for (final ForgeDirection dir : ForgeDirection.values())
-    	{
-    		if (dir != ForgeDirection.UNKNOWN)
-    		{
-    			Vector3 vec = new Vector3(var2, var3, var4);
-    			vec = vec.add(new Vector3(dir));
+        for (final ForgeDirection dir : ForgeDirection.values())
+        {
+            if (dir != ForgeDirection.UNKNOWN)
+            {
+                Vector3 vec = new Vector3(var2, var3, var4);
+                vec = vec.add(new Vector3(dir));
 
-    			if (vec.getBlockID(var1) == 0 && !this.isVisited(vec))
-    			{
-    				return false;
-    			}
-    		}
-    	}
+                if (vec.getBlockID(var1) == 0 && !this.isVisited(vec))
+                {
+                    return false;
+                }
+            }
+        }
 
-    	return true;
+        return true;
     }
 
     private boolean isTouchingBreathableAir(World var1, int var2, int var3, int var4)
     {
-    	for (final ForgeDirection dir : ForgeDirection.values())
-    	{
-    		if (dir != ForgeDirection.UNKNOWN)
-    		{
-    			Vector3 vec = new Vector3(var2, var3, var4);
-    			vec = vec.add(new Vector3(dir));
+        for (final ForgeDirection dir : ForgeDirection.values())
+        {
+            if (dir != ForgeDirection.UNKNOWN)
+            {
+                Vector3 vec = new Vector3(var2, var3, var4);
+                vec = vec.add(new Vector3(dir));
 
-    			if (OxygenPressureProtocol.isBreathableAir(var1, vec.intX(), vec.intY(), vec.intZ()) && !this.isVisited(vec))
-    			{
-    				return true;
-    			}
-    		}
-    	}
+                if (OxygenPressureProtocol.isBreathableAir(var1, vec.intX(), vec.intY(), vec.intZ()) && !this.isVisited(vec))
+                {
+                    return true;
+                }
+            }
+        }
 
-    	return false;
+        return false;
     }
 
     private boolean isVisited(Vector3 var1)
     {
-        final Iterator var2 = this.checked.iterator();
-        final Vector3 var3;
-
+        this.checked.iterator();
         for (final Vector3 vec : this.checked)
         {
-        	if (vec.equals(var1))
-        	{
-        		return true;
-        	}
+            if (vec.equals(var1))
+            {
+                return true;
+            }
         }
 
         return false;

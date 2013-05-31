@@ -10,41 +10,41 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreItemBlockLandingPad extends ItemBlock
 {
-	public GCCoreItemBlockLandingPad(int id)
-	{
-		super(id);
-		this.setMaxDamage(0);
-		this.setHasSubtypes(true);
-	}
-
-    @Override
-	public String getUnlocalizedName(ItemStack par1ItemStack)
+    public GCCoreItemBlockLandingPad(int id)
     {
-    	String name = "";
-
-    	switch (par1ItemStack.getItemDamage())
-    	{
-    	case 0:
-    		name = "landingPad";
-    		break;
-    	case 1:
-    		name = "buggyFueler";
-    		break;
-    	}
-
-		return Block.blocksList[this.getBlockID()].getUnlocalizedName() + "." + name;
+        super(id);
+        this.setMaxDamage(0);
+        this.setHasSubtypes(true);
     }
 
     @Override
-	@SideOnly(Side.CLIENT)
+    public String getUnlocalizedName(ItemStack par1ItemStack)
+    {
+        String name = "";
+
+        switch (par1ItemStack.getItemDamage())
+        {
+        case 0:
+            name = "landingPad";
+            break;
+        case 1:
+            name = "buggyFueler";
+            break;
+        }
+
+        return Block.blocksList[this.getBlockID()].getUnlocalizedName() + "." + name;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
     public EnumRarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;
     }
 
-	@Override
-	public int getMetadata(int damage)
-	{
-		return damage;
-	}
+    @Override
+    public int getMetadata(int damage)
+    {
+        return damage;
+    }
 }

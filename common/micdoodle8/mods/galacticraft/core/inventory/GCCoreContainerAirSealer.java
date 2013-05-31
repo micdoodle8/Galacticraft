@@ -11,11 +11,8 @@ import universalelectricity.prefab.SlotSpecific;
 
 public class GCCoreContainerAirSealer extends Container
 {
-	private final GCCoreTileEntityOxygenSealer sealer;
-
     public GCCoreContainerAirSealer(InventoryPlayer par1InventoryPlayer, GCCoreTileEntityOxygenSealer distributor)
     {
-    	this.sealer = distributor;
         this.addSlotToContainer(new SlotSpecific(distributor, 0, 32, 27, IItemElectric.class));
 
         int var6;
@@ -37,17 +34,17 @@ public class GCCoreContainerAirSealer extends Container
         }
     }
 
-	@Override
-	public boolean canInteractWith(EntityPlayer var1)
-	{
-		return true;
-	}
+    @Override
+    public boolean canInteractWith(EntityPlayer var1)
+    {
+        return true;
+    }
 
-	@Override
-	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2)
+    @Override
+    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2)
     {
         ItemStack var3 = null;
-        final Slot var4 = (Slot)this.inventorySlots.get(par2);
+        final Slot var4 = (Slot) this.inventorySlots.get(par2);
 
         if (var4 != null && var4.getHasStack())
         {
@@ -68,7 +65,7 @@ public class GCCoreContainerAirSealer extends Container
 
             if (var5.stackSize == 0)
             {
-                var4.putStack((ItemStack)null);
+                var4.putStack((ItemStack) null);
             }
             else
             {

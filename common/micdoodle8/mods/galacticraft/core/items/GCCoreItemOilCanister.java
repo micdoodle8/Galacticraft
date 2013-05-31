@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.items;
 
 import java.util.List;
-
 import micdoodle8.mods.galacticraft.API.IRefinableItem;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
@@ -17,77 +16,77 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreItemOilCanister extends Item implements IRefinableItem
 {
-	protected Icon[] icons = new Icon[256];
+    protected Icon[] icons = new Icon[256];
 
-	public static final String[] names = {
-		"liquidcan_oil_6", // 0
-		"liquidcan_oil_5", // 0
-		"liquidcan_oil_4", // 1
-		"liquidcan_oil_3", // 2
-		"liquidcan_oil_2", // 3
-		"liquidcan_oil_1", // 4
-		"liquidcan_empty"}; // 5
+    public static final String[] names =
+    { "liquidcan_oil_6", // 0
+    "liquidcan_oil_5", // 0
+    "liquidcan_oil_4", // 1
+    "liquidcan_oil_3", // 2
+    "liquidcan_oil_2", // 3
+    "liquidcan_oil_1", // 4
+    "liquidcan_empty" }; // 5
 
-	public GCCoreItemOilCanister(int par1)
-	{
-		super(par1);
-		this.setMaxDamage(61);
-		this.setMaxStackSize(1);
-	}
+    public GCCoreItemOilCanister(int par1)
+    {
+        super(par1);
+        this.setMaxDamage(61);
+        this.setMaxStackSize(1);
+    }
 
     @Override
-	@SideOnly(Side.CLIENT)
+    @SideOnly(Side.CLIENT)
     public EnumRarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;
     }
 
-	@Override
+    @Override
     public CreativeTabs getCreativeTab()
     {
         return GalacticraftCore.galacticraftTab;
     }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister iconRegister)
-	{
-		int i = 0;
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IconRegister iconRegister)
+    {
+        int i = 0;
 
-		for (final String name : GCCoreItemOilCanister.names)
-		{
-			this.icons[i++] = iconRegister.registerIcon("galacticraftcore:" + name);
-		}
-	}
+        for (final String name : GCCoreItemOilCanister.names)
+        {
+            this.icons[i++] = iconRegister.registerIcon("galacticraftcore:" + name);
+        }
+    }
 
-	@Override
-	public String getUnlocalizedName(ItemStack itemStack)
-	{
-		if (itemStack.getMaxDamage() - itemStack.getItemDamage() == 0)
-		{
-			return "item.emptyLiquidCanister";
-		}
+    @Override
+    public String getUnlocalizedName(ItemStack itemStack)
+    {
+        if (itemStack.getMaxDamage() - itemStack.getItemDamage() == 0)
+        {
+            return "item.emptyLiquidCanister";
+        }
 
-		if (itemStack.getItemDamage() == 1)
-		{
-			return "item.oilCanister";
-		}
+        if (itemStack.getItemDamage() == 1)
+        {
+            return "item.oilCanister";
+        }
 
-		return "item.oilCanisterPartial";
-	}
+        return "item.oilCanisterPartial";
+    }
 
-	@Override
-	public Icon getIconFromDamage(int par1)
-	{
-    	final int damage = (int) Math.floor(par1 / 10);
+    @Override
+    public Icon getIconFromDamage(int par1)
+    {
+        final int damage = (int) Math.floor(par1 / 10);
 
-		if (this.icons.length > damage)
-		{
-			return this.icons[damage];
-		}
+        if (this.icons.length > damage)
+        {
+            return this.icons[damage];
+        }
 
-		return super.getIconFromDamage(damage);
-	}
+        return super.getIconFromDamage(damage);
+    }
 
     @Override
     @SideOnly(Side.CLIENT)
@@ -101,31 +100,31 @@ public class GCCoreItemOilCanister extends Item implements IRefinableItem
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
     {
-    	if (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage() > 0)
-    	{
-        	par3List.add("Oil: " + (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage()));
-    	}
+        if (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage() > 0)
+        {
+            par3List.add("Oil: " + (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage()));
+        }
     }
 
-	@Override
-	public boolean canSmeltItem(ItemStack originalStack)
-	{
-		if (originalStack.getMaxDamage() - originalStack.getItemDamage() > 0)
-		{
-			return true;
-		}
+    @Override
+    public boolean canSmeltItem(ItemStack originalStack)
+    {
+        if (originalStack.getMaxDamage() - originalStack.getItemDamage() > 0)
+        {
+            return true;
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	@Override
-	public ItemStack getResultItem(ItemStack originalStack)
-	{
-		if (originalStack.getMaxDamage() - originalStack.getItemDamage() > 0)
-		{
-			return new ItemStack(GCCoreItems.fuelCanister.itemID, 1, originalStack.getItemDamage() == 0 ? 1 : originalStack.getItemDamage());
-		}
+    @Override
+    public ItemStack getResultItem(ItemStack originalStack)
+    {
+        if (originalStack.getMaxDamage() - originalStack.getItemDamage() > 0)
+        {
+            return new ItemStack(GCCoreItems.fuelCanister.itemID, 1, originalStack.getItemDamage() == 0 ? 1 : originalStack.getItemDamage());
+        }
 
-		return null;
-	}
+        return null;
+    }
 }

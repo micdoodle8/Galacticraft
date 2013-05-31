@@ -6,10 +6,8 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
-
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -25,7 +23,7 @@ public class GCCoreRenderAstroOrb extends Render
     public void renderTheXPOrb(GCCoreEntityAstroOrb par1EntityXPOrb, double par2, double par4, double par6, float par8, float par9)
     {
         GL11.glPushMatrix();
-        GL11.glTranslatef((float)par2, (float)par4, (float)par6);
+        GL11.glTranslatef((float) par2, (float) par4, (float) par6);
         final int var10 = par1EntityXPOrb.getTextureByXP();
         this.loadTexture("/item/xporb.png");
         final Tessellator var11 = Tessellator.instance;
@@ -43,8 +41,8 @@ public class GCCoreRenderAstroOrb extends Render
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         final float var26 = 255.0F;
         final float var27 = (par1EntityXPOrb.xpColor + par9) / 2.0F;
-        var21 = (int)((MathHelper.sin(var27 + 0.0F) + 1.0F) * 0.0F * var26);
-        final int var22 = (int)var26;
+        var21 = (int) ((MathHelper.sin(var27 + 0.0F) + 1.0F) * 0.0F * var26);
+        final int var22 = (int) var26;
         final int var24 = var21 / 2 << 16 | var22 / 2 << 8 | 255;
         GL11.glRotatef(180.0F - this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
         GL11.glRotatef(-this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
@@ -64,14 +62,16 @@ public class GCCoreRenderAstroOrb extends Render
     }
 
     /**
-     * Actually renders the given argument. This is a synthetic bridge method, always casting down its argument and then
-     * handing it off to a worker function which does the actual work. In all probabilty, the class Render is generic
-     * (Render<T extends Entity) and this method has signature public void doRender(T entity, double d, double d1,
-     * double d2, float f, float f1). But JAD is pre 1.5 so doesn't do that.
+     * Actually renders the given argument. This is a synthetic bridge method,
+     * always casting down its argument and then handing it off to a worker
+     * function which does the actual work. In all probabilty, the class Render
+     * is generic (Render<T extends Entity) and this method has signature public
+     * void doRender(T entity, double d, double d1, double d2, float f, float
+     * f1). But JAD is pre 1.5 so doesn't do that.
      */
     @Override
-	public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
+    public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
     {
-        this.renderTheXPOrb((GCCoreEntityAstroOrb)par1Entity, par2, par4, par6, par8, par9);
+        this.renderTheXPOrb((GCCoreEntityAstroOrb) par1Entity, par2, par4, par6, par8, par9);
     }
 }

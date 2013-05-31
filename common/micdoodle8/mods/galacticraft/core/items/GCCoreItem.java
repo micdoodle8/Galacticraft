@@ -12,35 +12,35 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
- *
- *  All rights reserved.
- *
+ * 
+ * All rights reserved.
+ * 
  */
 public class GCCoreItem extends Item
 {
-	private final String iconName;
+    private final String iconName;
 
-	public GCCoreItem(int par1, String iconName)
-	{
-		super(par1);
-		this.iconName = iconName;
-	}
+    public GCCoreItem(int par1, String iconName)
+    {
+        super(par1);
+        this.iconName = iconName;
+    }
 
     @Override
-	@SideOnly(Side.CLIENT)
+    @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister par1IconRegister)
     {
         this.itemIcon = par1IconRegister.registerIcon("galacticraftcore:" + this.iconName);
     }
 
-	@Override
+    @Override
     public CreativeTabs getCreativeTab()
     {
         return GalacticraftCore.galacticraftTab;
     }
 
     @Override
-	@SideOnly(Side.CLIENT)
+    @SideOnly(Side.CLIENT)
     public EnumRarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;

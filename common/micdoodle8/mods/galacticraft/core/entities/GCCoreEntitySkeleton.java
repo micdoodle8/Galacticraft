@@ -25,9 +25,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
- *
- *  All rights reserved.
- *
+ * 
+ * All rights reserved.
+ * 
  */
 public class GCCoreEntitySkeleton extends EntitySkeleton implements IEntityBreathable
 {
@@ -49,29 +49,29 @@ public class GCCoreEntitySkeleton extends EntitySkeleton implements IEntityBreat
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 16.0F, 0, true));
     }
 
-	@Override
+    @Override
     public void onUpdate()
     {
         super.onUpdate();
     }
 
-	@Override
+    @Override
     public void fall(float var1)
     {
-		;
+        ;
     }
 
     /**
      * Returns true if the newer Entity AI code should be run
      */
     @Override
-	public boolean isAIEnabled()
+    public boolean isAIEnabled()
     {
         return true;
     }
 
     @Override
-	public int getMaxHealth()
+    public int getMaxHealth()
     {
         return 25;
     }
@@ -80,7 +80,7 @@ public class GCCoreEntitySkeleton extends EntitySkeleton implements IEntityBreat
      * Returns the sound this mob makes while it's alive.
      */
     @Override
-	protected String getLivingSound()
+    protected String getLivingSound()
     {
         return "mob.skeleton";
     }
@@ -89,7 +89,7 @@ public class GCCoreEntitySkeleton extends EntitySkeleton implements IEntityBreat
      * Returns the sound this mob makes when it is hurt.
      */
     @Override
-	protected String getHurtSound()
+    protected String getHurtSound()
     {
         return "mob.skeletonhurt";
     }
@@ -98,14 +98,13 @@ public class GCCoreEntitySkeleton extends EntitySkeleton implements IEntityBreat
      * Returns the sound this mob makes on death.
      */
     @Override
-	protected String getDeathSound()
+    protected String getDeathSound()
     {
         return "mob.skeletonhurt";
     }
 
     @Override
-	@SideOnly(Side.CLIENT)
-
+    @SideOnly(Side.CLIENT)
     /**
      * Returns the item that this EntityLiving is holding, if any.
      */
@@ -118,17 +117,18 @@ public class GCCoreEntitySkeleton extends EntitySkeleton implements IEntityBreat
      * Get this Entity's EnumCreatureAttribute
      */
     @Override
-	public EnumCreatureAttribute getCreatureAttribute()
+    public EnumCreatureAttribute getCreatureAttribute()
     {
         return EnumCreatureAttribute.UNDEAD;
     }
 
     /**
-     * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
-     * use this to react to sunlight and start to burn.
+     * Called frequently so the entity can update its state every tick as
+     * required. For example, zombies and skeletons use this to react to
+     * sunlight and start to burn.
      */
     @Override
-	public void onLivingUpdate()
+    public void onLivingUpdate()
     {
         if (this.worldObj.isDaytime() && !this.worldObj.isRemote)
         {
@@ -147,13 +147,13 @@ public class GCCoreEntitySkeleton extends EntitySkeleton implements IEntityBreat
      * Called when the mob's health reaches 0.
      */
     @Override
-	public void onDeath(DamageSource par1DamageSource)
+    public void onDeath(DamageSource par1DamageSource)
     {
         super.onDeath(par1DamageSource);
 
         if (par1DamageSource.getSourceOfDamage() instanceof EntityArrow && par1DamageSource.getEntity() instanceof EntityPlayer)
         {
-            final EntityPlayer var2 = (EntityPlayer)par1DamageSource.getEntity();
+            final EntityPlayer var2 = (EntityPlayer) par1DamageSource.getEntity();
             final double var3 = var2.posX - this.posX;
             final double var5 = var2.posZ - this.posZ;
 
@@ -168,7 +168,7 @@ public class GCCoreEntitySkeleton extends EntitySkeleton implements IEntityBreat
      * Returns the item ID for the item the mob drops on death.
      */
     @Override
-	protected int getDropItemId()
+    protected int getDropItemId()
     {
         return Item.arrow.itemID;
     }
@@ -177,7 +177,7 @@ public class GCCoreEntitySkeleton extends EntitySkeleton implements IEntityBreat
      * Drop 0-2 items of this living's type
      */
     @Override
-	protected void dropFewItems(boolean par1, int par2)
+    protected void dropFewItems(boolean par1, int par2)
     {
         int var3 = this.rand.nextInt(3 + par2);
         int var4;
@@ -196,7 +196,7 @@ public class GCCoreEntitySkeleton extends EntitySkeleton implements IEntityBreat
     }
 
     @Override
-	protected void dropRareDrop(int par1)
+    protected void dropRareDrop(int par1)
     {
         if (par1 > 0)
         {
@@ -210,9 +210,9 @@ public class GCCoreEntitySkeleton extends EntitySkeleton implements IEntityBreat
         }
     }
 
-	@Override
-	public boolean canBreath()
-	{
-		return true;
-	}
+    @Override
+    public boolean canBreath()
+    {
+        return true;
+    }
 }

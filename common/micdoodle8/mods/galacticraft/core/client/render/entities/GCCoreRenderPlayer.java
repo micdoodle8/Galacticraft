@@ -12,33 +12,32 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
-
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 public class GCCoreRenderPlayer extends RenderPlayer
 {
-	public GCCoreRenderPlayer()
-	{
-		super();
-		this.mainModel = new GCCoreModelPlayer(0.0F);
+    public GCCoreRenderPlayer()
+    {
+        super();
+        this.mainModel = new GCCoreModelPlayer(0.0F);
         this.modelBipedMain = (GCCoreModelPlayer) this.mainModel;
         this.modelArmorChestplate = new GCCoreModelPlayer(1.0F);
-        this.modelArmor =  new GCCoreModelPlayer(0.5F);
-	}
+        this.modelArmor = new GCCoreModelPlayer(0.5F);
+    }
 
-	public ModelBiped getModel()
-	{
-		return this.modelBipedMain;
-	}
+    public ModelBiped getModel()
+    {
+        return this.modelBipedMain;
+    }
 
     @Override
-	protected void renderEquippedItems(EntityLiving par1EntityLiving, float par2)
+    protected void renderEquippedItems(EntityLiving par1EntityLiving, float par2)
     {
         final ItemStack itemstack = par1EntityLiving.getHeldItem();
         float f2;
 
-    	if (itemstack != null && itemstack.getItem() instanceof GCCoreItemBow)
+        if (itemstack != null && itemstack.getItem() instanceof GCCoreItemBow)
         {
             GL11.glPushMatrix();
 
@@ -64,14 +63,14 @@ public class GCCoreRenderPlayer extends RenderPlayer
 
             GL11.glPopMatrix();
         }
-    	else
-    	{
-        	super.renderEquippedItems(par1EntityLiving, par2);
-    	}
+        else
+        {
+            super.renderEquippedItems(par1EntityLiving, par2);
+        }
     }
 
     @Override
-	public void renderPlayer(EntityPlayer par1EntityPlayer, double par2, double par4, double par6, float par8, float par9)
+    public void renderPlayer(EntityPlayer par1EntityPlayer, double par2, double par4, double par6, float par8, float par9)
     {
         final float f2 = 1.0F;
         GL11.glColor3f(f2, f2, f2);
@@ -124,7 +123,7 @@ public class GCCoreRenderPlayer extends RenderPlayer
     }
 
     @Override
-	public void doRenderLiving(EntityLiving par1EntityLiving, double par2, double par4, double par6, float par8, float par9)
+    public void doRenderLiving(EntityLiving par1EntityLiving, double par2, double par4, double par6, float par8, float par9)
     {
         GL11.glPushMatrix();
         GL11.glDisable(GL11.GL_CULL_FACE);

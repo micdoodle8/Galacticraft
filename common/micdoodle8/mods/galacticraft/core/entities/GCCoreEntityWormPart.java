@@ -17,28 +17,34 @@ public class GCCoreEntityWormPart extends Entity
         this.name = par2;
     }
 
-	@Override
-	protected void entityInit(){}
+    @Override
+    protected void entityInit()
+    {
+    }
 
-	@Override
-	protected void readEntityFromNBT(NBTTagCompound var1){}
+    @Override
+    protected void readEntityFromNBT(NBTTagCompound var1)
+    {
+    }
 
-	@Override
-	protected void writeEntityToNBT(NBTTagCompound var1){}
+    @Override
+    protected void writeEntityToNBT(NBTTagCompound var1)
+    {
+    }
 
-	@Override
+    @Override
     public boolean canBeCollidedWith()
     {
         return true;
     }
 
-	@Override
+    @Override
     public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
     {
         return this.isEntityInvulnerable() ? false : this.entityWormObj.attackEntityFromPart(this, par1DamageSource, par2);
     }
 
-	@Override
+    @Override
     public boolean isEntityEqual(Entity par1Entity)
     {
         return this == par1Entity || this.entityWormObj == par1Entity;

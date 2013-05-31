@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.wgen;
 
 import java.util.List;
 import java.util.Random;
-
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import net.minecraft.block.BlockSand;
 import net.minecraft.entity.EnumCreatureType;
@@ -17,70 +16,70 @@ import universalelectricity.prefab.multiblock.IMultiBlock;
 
 /**
  * Copyright 2012-2013, micdoodle8
- *
- *  All rights reserved.
- *
+ * 
+ * All rights reserved.
+ * 
  */
 public class GCCoreChunkProviderOverworldOrbit extends ChunkProviderGenerate
 {
-	private final Random rand;
+    private final Random rand;
 
-	private final World worldObj;
+    private final World worldObj;
 
-	public GCCoreChunkProviderOverworldOrbit(World par1World, long par2, boolean par4)
-	{
-		super(par1World, par2, par4);
-		this.rand = new Random(par2);
-		this.worldObj = par1World;
-	}
+    public GCCoreChunkProviderOverworldOrbit(World par1World, long par2, boolean par4)
+    {
+        super(par1World, par2, par4);
+        this.rand = new Random(par2);
+        this.worldObj = par1World;
+    }
 
-	@Override
+    @Override
     public boolean unloadQueuedChunks()
     {
         return false;
     }
 
-	@Override
+    @Override
     public int getLoadedChunkCount()
     {
         return 0;
     }
 
-	@Override
+    @Override
     public boolean saveChunks(boolean var1, IProgressUpdate var2)
     {
         return true;
     }
 
-	@Override
+    @Override
     public boolean canSave()
     {
         return true;
     }
 
-	@Override
-	public Chunk provideChunk(int par1, int par2)
-	{
-		this.rand.setSeed(par1 * 341873128712L + par2 * 132897987541L);
-		final short[] ids = new short[32768];
-		final byte[] meta = new byte[32768];
+    @Override
+    public Chunk provideChunk(int par1, int par2)
+    {
+        this.rand.setSeed(par1 * 341873128712L + par2 * 132897987541L);
+        final short[] ids = new short[32768];
+        final byte[] meta = new byte[32768];
 
-		final Chunk var4 = new Chunk(this.worldObj, ids, meta, par1, par2);
+        final Chunk var4 = new Chunk(this.worldObj, ids, meta, par1, par2);
 
-		var4.generateSkylightMap();
-		return var4;
-	}
+        var4.generateSkylightMap();
+        return var4;
+    }
 
-	@Override
-	public boolean chunkExists(int par1, int par2)
-	{
-		return true;
-	}
+    @Override
+    public boolean chunkExists(int par1, int par2)
+    {
+        return true;
+    }
 
-	@Override
-	public void populate(IChunkProvider par1IChunkProvider, int par2, int par3)
-	{
-		BlockSand.fallInstantly = true;
+    @Override
+    public void populate(IChunkProvider par1IChunkProvider, int par2, int par3)
+    {
+        BlockSand.fallInstantly = true;
         final int k = par2 * 16;
         final int l = par3 * 16;
         this.rand.setSeed(this.worldObj.getSeed());
@@ -95,23 +94,23 @@ public class GCCoreChunkProviderOverworldOrbit extends ChunkProviderGenerate
 
             if (var8 instanceof IMultiBlock)
             {
-                ((IMultiBlock)var8).onCreate(new Vector3(k, 64, l));
+                ((IMultiBlock) var8).onCreate(new Vector3(k, 64, l));
             }
 
             new GCCoreWorldGenSpaceStation().generate(this.worldObj, this.rand, k - 10, 62, l - 3);
         }
-		BlockSand.fallInstantly = false;
-	}
+        BlockSand.fallInstantly = false;
+    }
 
-	@Override
-	public String makeString()
-	{
-		return "OrbitLevelSource";
-	}
+    @Override
+    public String makeString()
+    {
+        return "OrbitLevelSource";
+    }
 
-	@Override
-	public List getPossibleCreatures(EnumCreatureType par1EnumCreatureType,	int i, int j, int k)
-	{
-		return null;
-	}
+    @Override
+    public List getPossibleCreatures(EnumCreatureType par1EnumCreatureType, int i, int j, int k)
+    {
+        return null;
+    }
 }

@@ -8,18 +8,16 @@ import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-
 import org.lwjgl.opengl.GL11;
-
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
- *
- *  All rights reserved.
- *
+ * 
+ * All rights reserved.
+ * 
  */
 @SideOnly(Side.CLIENT)
 public class GCCoreRenderSkeleton extends RenderLiving
@@ -34,47 +32,47 @@ public class GCCoreRenderSkeleton extends RenderLiving
     @Override
     protected void preRenderCallback(EntityLiving par1EntityLiving, float par2)
     {
-    	GL11.glScalef(1.2F, 1.2F, 1.2F);
+        GL11.glScalef(1.2F, 1.2F, 1.2F);
     }
 
     @Override
-	protected void renderEquippedItems(EntityLiving par1EntityLiving, float par2)
+    protected void renderEquippedItems(EntityLiving par1EntityLiving, float par2)
     {
-    	GL11.glPushMatrix();
-    	GL11.glTranslatef(-0.3F, -0.3F, -0.6F);
-    	GL11.glTranslatef(0.1F, 0.0F, 0.0F);
-    	GL11.glRotatef(41, 0.0F, 1.0F, 0.0F);
-    	GL11.glRotatef(-20, 1.0F, 0.0F, 0.0F);
-    	GL11.glRotatef(-20, 0.0F, 0.0F, 1.0F);
-    	GL11.glScalef(0.5F, 0.5F, 0.5F);
-//    	GL11.glRotatef(00, 0.0F, 0.0F, 1.0F);
+        GL11.glPushMatrix();
+        GL11.glTranslatef(-0.3F, -0.3F, -0.6F);
+        GL11.glTranslatef(0.1F, 0.0F, 0.0F);
+        GL11.glRotatef(41, 0.0F, 1.0F, 0.0F);
+        GL11.glRotatef(-20, 1.0F, 0.0F, 0.0F);
+        GL11.glRotatef(-20, 0.0F, 0.0F, 1.0F);
+        GL11.glScalef(0.5F, 0.5F, 0.5F);
+        // GL11.glRotatef(00, 0.0F, 0.0F, 1.0F);
         this.renderManager.itemRenderer.renderItem(par1EntityLiving, new ItemStack(Item.bow), 0);
         GL11.glPopMatrix();
 
-    	GL11.glPushMatrix();
-    	GL11.glTranslatef(0.11F, -0.3F, -0.6F);
-    	GL11.glTranslatef(0.1F, 0.0F, 0.0F);
-    	GL11.glRotatef(46, 0.0F, 1.0F, 0.0F);
-    	GL11.glRotatef(-20, 1.0F, 0.0F, 0.0F);
-    	GL11.glRotatef(-20, 0.0F, 0.0F, 1.0F);
-    	GL11.glScalef(0.5F, 0.5F, 0.5F);
+        GL11.glPushMatrix();
+        GL11.glTranslatef(0.11F, -0.3F, -0.6F);
+        GL11.glTranslatef(0.1F, 0.0F, 0.0F);
+        GL11.glRotatef(46, 0.0F, 1.0F, 0.0F);
+        GL11.glRotatef(-20, 1.0F, 0.0F, 0.0F);
+        GL11.glRotatef(-20, 0.0F, 0.0F, 1.0F);
+        GL11.glScalef(0.5F, 0.5F, 0.5F);
         this.renderManager.itemRenderer.renderItem(par1EntityLiving, new ItemStack(Item.bow), 0);
         GL11.glPopMatrix();
     }
 
     @Override
-	protected int shouldRenderPass(EntityLiving par1EntityLiving, int par2, float par3)
+    protected int shouldRenderPass(EntityLiving par1EntityLiving, int par2, float par3)
     {
-    	final Minecraft minecraft = FMLClientHandler.instance().getClient();
+        final Minecraft minecraft = FMLClientHandler.instance().getClient();
 
         final EntityPlayerSP player = minecraft.thePlayer;
 
         ItemStack helmetSlot = null;
 
-		if (player != null && player.inventory.armorItemInSlot(3) != null)
-		{
-			helmetSlot = player.inventory.armorItemInSlot(3);
-		}
+        if (player != null && player.inventory.armorItemInSlot(3) != null)
+        {
+            helmetSlot = player.inventory.armorItemInSlot(3);
+        }
 
         if (helmetSlot != null && helmetSlot.getItem() instanceof GCCoreItemSensorGlasses && minecraft.currentScreen == null)
         {

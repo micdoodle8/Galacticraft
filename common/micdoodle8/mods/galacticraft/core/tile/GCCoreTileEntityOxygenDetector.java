@@ -7,10 +7,10 @@ import universalelectricity.prefab.tile.TileEntityAdvanced;
 
 public class GCCoreTileEntityOxygenDetector extends TileEntityAdvanced
 {
-	@Override
+    @Override
     public void updateEntity()
     {
-		super.updateEntity();
+        super.updateEntity();
 
         if (this.worldObj != null && !this.worldObj.isRemote && this.ticks % 50 == 0)
         {
@@ -18,7 +18,7 @@ public class GCCoreTileEntityOxygenDetector extends TileEntityAdvanced
 
             if (this.blockType != null && this.blockType instanceof GCCoreBlockOxygenDetector)
             {
-                ((GCCoreBlockOxygenDetector)this.blockType).updateOxygenState(this.worldObj, this.xCoord, this.yCoord, this.zCoord, OxygenUtil.isAABBInBreathableAirBlock(this.worldObj, new Vector3(this), new Vector3(this).add(new Vector3(1, 1, 1)), true));
+                ((GCCoreBlockOxygenDetector) this.blockType).updateOxygenState(this.worldObj, this.xCoord, this.yCoord, this.zCoord, OxygenUtil.isAABBInBreathableAirBlock(this.worldObj, new Vector3(this), new Vector3(this).add(new Vector3(1, 1, 1)), true));
             }
         }
     }

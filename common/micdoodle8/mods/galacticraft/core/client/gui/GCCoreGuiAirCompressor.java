@@ -7,28 +7,26 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCompressor;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.StatCollector;
-
 import org.lwjgl.opengl.GL11;
-
 import universalelectricity.core.electricity.ElectricityDisplay;
 import universalelectricity.core.electricity.ElectricityDisplay.ElectricUnit;
 
 /**
  * Copyright 2012-2013, micdoodle8
- *
- *  All rights reserved.
- *
+ * 
+ * All rights reserved.
+ * 
  */
 public class GCCoreGuiAirCompressor extends GuiContainer
 {
     private final GCCoreTileEntityOxygenCompressor compressor;
 
-	public GCCoreGuiAirCompressor(InventoryPlayer par1InventoryPlayer, GCCoreTileEntityOxygenCompressor par2TileEntityAirDistributor)
-	{
+    public GCCoreGuiAirCompressor(InventoryPlayer par1InventoryPlayer, GCCoreTileEntityOxygenCompressor par2TileEntityAirDistributor)
+    {
         super(new GCCoreContainerAirCompressor(par1InventoryPlayer, par2TileEntityAirDistributor));
         this.compressor = par2TileEntityAirDistributor;
         this.ySize = 180;
-	}
+    }
 
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
@@ -48,41 +46,41 @@ public class GCCoreGuiAirCompressor extends GuiContainer
 
     private String getStatus()
     {
-    	if (this.compressor.getStackInSlot(0) == null || !(this.compressor.getStackInSlot(0).getItem() instanceof GCCoreItemOxygenTank))
-    	{
-    		return EnumColor.DARK_RED + "No Valid Oxygen Tank";
-    	}
+        if (this.compressor.getStackInSlot(0) == null || !(this.compressor.getStackInSlot(0).getItem() instanceof GCCoreItemOxygenTank))
+        {
+            return EnumColor.DARK_RED + "No Valid Oxygen Tank";
+        }
 
-    	if (this.compressor.getStackInSlot(0) != null && this.compressor.getStackInSlot(0).getItemDamage() == 0)
-    	{
-    		return EnumColor.DARK_RED + "Oxygen Tank Full";
-    	}
+        if (this.compressor.getStackInSlot(0) != null && this.compressor.getStackInSlot(0).getItemDamage() == 0)
+        {
+            return EnumColor.DARK_RED + "Oxygen Tank Full";
+        }
 
-    	if (this.compressor.wattsReceived == 0 && this.compressor.ic2Energy == 0 && this.compressor.bcEnergy == 0)
-    	{
-    		return EnumColor.DARK_RED + "Not Enough Power";
-    	}
+        if (this.compressor.wattsReceived == 0 && this.compressor.ic2Energy == 0 && this.compressor.bcEnergy == 0)
+        {
+            return EnumColor.DARK_RED + "Not Enough Power";
+        }
 
-    	if (this.compressor.storedOxygen < 1.0D)
-    	{
-    		return EnumColor.DARK_RED + "Not Enough Oxygen";
-    	}
+        if (this.compressor.storedOxygen < 1.0D)
+        {
+            return EnumColor.DARK_RED + "Not Enough Oxygen";
+        }
 
-		return EnumColor.DARK_GREEN + "Active";
+        return EnumColor.DARK_GREEN + "Active";
     }
 
-	@Override
-	protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3)
-	{
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		this.mc.renderEngine.bindTexture("/mods/galacticraftcore/textures/gui/compressor.png");
-		final int var5 = (this.width - this.xSize) / 2;
-		final int var6 = (this.height - this.ySize) / 2;
-		this.drawTexturedModalRect(var5, var6 + 5, 0, 0, this.xSize, 181);
+    @Override
+    protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3)
+    {
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        this.mc.renderEngine.bindTexture("/mods/galacticraftcore/textures/gui/compressor.png");
+        final int var5 = (this.width - this.xSize) / 2;
+        final int var6 = (this.height - this.ySize) / 2;
+        this.drawTexturedModalRect(var5, var6 + 5, 0, 0, this.xSize, 181);
 
-		if (this.compressor != null)
-		{
-			this.drawTexturedModalRect(var5 + 108, var6 + 26, 176, 0, this.compressor.getCappedScaledOxygenLevel(54), 16);
-		}
-	}
+        if (this.compressor != null)
+        {
+            this.drawTexturedModalRect(var5 + 108, var6 + 26, 176, 0, this.compressor.getCappedScaledOxygenLevel(54), 16);
+        }
+    }
 }

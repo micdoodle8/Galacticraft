@@ -95,7 +95,8 @@ public class GCCoreBlockOxygenCollector extends GCCoreBlockAdvanced
         if (side == metadata + 2)
         {
             return this.iconOutput;
-        } else if (side == ForgeDirection.getOrientation(metadata + 2).getOpposite().ordinal())
+        }
+        else if (side == ForgeDirection.getOrientation(metadata + 2).getOpposite().ordinal())
         {
             return this.iconInput;
         }
@@ -155,7 +156,8 @@ public class GCCoreBlockOxygenCollector extends GCCoreBlockAdvanced
                     {
                         var7 = par2 + 0.5D + 0.25D * var19;
                         var13 = par5Random.nextFloat() * 2.0F * var19;
-                    } else
+                    }
+                    else
                     {
                         var11 = par4 + 0.5D + 0.25D * var19;
                         var17 = par5Random.nextFloat() * 2.0F * var19;

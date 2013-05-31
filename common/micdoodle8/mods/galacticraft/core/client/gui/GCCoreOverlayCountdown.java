@@ -11,18 +11,18 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GCCoreOverlayCountdown extends GCCoreOverlay
 {
-	private static Minecraft minecraft = FMLClientHandler.instance().getClient();
+    private static Minecraft minecraft = FMLClientHandler.instance().getClient();
 
-	/**
-	 * Render the GUI when player is in inventory
-	 */
-	public static void renderCountdownOverlay()
-	{
-		int count = ((EntitySpaceshipBase)GCCoreOverlayCountdown.minecraft.thePlayer.ridingEntity).timeUntilLaunch / 2;
+    /**
+     * Render the GUI when player is in inventory
+     */
+    public static void renderCountdownOverlay()
+    {
+        int count = ((EntitySpaceshipBase) GCCoreOverlayCountdown.minecraft.thePlayer.ridingEntity).timeUntilLaunch / 2;
 
-		count = Math.round(count / 10);
+        count = Math.round(count / 10);
 
-		final ScaledResolution scaledresolution = new ScaledResolution(GCCoreOverlayCountdown.minecraft.gameSettings, GCCoreOverlayCountdown.minecraft.displayWidth, GCCoreOverlayCountdown.minecraft.displayHeight);
+        final ScaledResolution scaledresolution = new ScaledResolution(GCCoreOverlayCountdown.minecraft.gameSettings, GCCoreOverlayCountdown.minecraft.displayWidth, GCCoreOverlayCountdown.minecraft.displayHeight);
         final int width = scaledresolution.getScaledWidth();
         final int height = scaledresolution.getScaledHeight();
         GCCoreOverlayCountdown.minecraft.entityRenderer.setupOverlayRendering();
@@ -34,7 +34,7 @@ public class GCCoreOverlayCountdown extends GCCoreOverlay
         }
         else
         {
-        	GCCoreOverlayCountdown.minecraft.fontRenderer.drawString(String.valueOf(count), width / 2 - fr.getStringWidth(String.valueOf(count)) / 2, height / 8, GCCoreUtil.convertTo32BitColor(255, 255, 0, 0));
+            GCCoreOverlayCountdown.minecraft.fontRenderer.drawString(String.valueOf(count), width / 2 - fr.getStringWidth(String.valueOf(count)) / 2, height / 8, GCCoreUtil.convertTo32BitColor(255, 255, 0, 0));
         }
-	}
+    }
 }

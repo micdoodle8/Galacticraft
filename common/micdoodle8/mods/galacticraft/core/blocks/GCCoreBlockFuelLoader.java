@@ -64,13 +64,16 @@ public class GCCoreBlockFuelLoader extends GCCoreBlockAdvanced
         if (side == 0 || side == 1)
         {
             return this.iconMachineSide;
-        } else if (side == metadata + 2)
+        }
+        else if (side == metadata + 2)
         {
             return this.iconInput;
-        } else if (side == ForgeDirection.getOrientation(metadata + 2).getOpposite().ordinal())
+        }
+        else if (side == ForgeDirection.getOrientation(metadata + 2).getOpposite().ordinal())
         {
             return this.iconFuelInput;
-        } else
+        }
+        else
         {
             return this.iconFront;
         }

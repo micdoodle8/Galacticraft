@@ -77,7 +77,8 @@ public class GCCoreBlockMulti extends BlockMulti
         if (meta == 2)
         {
             this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.2F, 1.0F);
-        } else
+        }
+        else
         {
             this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         }

@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.items;
 
 import java.util.List;
-
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityBuggy;
@@ -24,32 +23,32 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
- *
- *  All rights reserved.
- *
+ * 
+ * All rights reserved.
+ * 
  */
 public class GCCoreItemBuggy extends Item
 {
-	public GCCoreItemBuggy(int par1)
-	{
-		super(par1);
-	}
+    public GCCoreItemBuggy(int par1)
+    {
+        super(par1);
+    }
 
-	@Override
+    @Override
     public CreativeTabs getCreativeTab()
     {
         return GalacticraftCore.galacticraftTab;
     }
 
     @Override
-	@SideOnly(Side.CLIENT)
+    @SideOnly(Side.CLIENT)
     public EnumRarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;
     }
 
     @Override
-	@SideOnly(Side.CLIENT)
+    @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister par1IconRegister)
     {
         this.itemIcon = null;
@@ -58,14 +57,14 @@ public class GCCoreItemBuggy extends Item
     @Override
     public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
     {
-    	for (int i = 0; i < 4; i++)
-    	{
+        for (int i = 0; i < 4; i++)
+        {
             par3List.add(new ItemStack(par1, 1, i));
-    	}
+        }
     }
 
-	@Override
-	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
+    @Override
+    public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
         final float var4 = 1.0F;
         final float var5 = par3EntityPlayer.prevRotationPitch + (par3EntityPlayer.rotationPitch - par3EntityPlayer.prevRotationPitch) * var4;
@@ -74,8 +73,8 @@ public class GCCoreItemBuggy extends Item
         final double var9 = par3EntityPlayer.prevPosY + (par3EntityPlayer.posY - par3EntityPlayer.prevPosY) * var4 + 1.62D - par3EntityPlayer.yOffset;
         final double var11 = par3EntityPlayer.prevPosZ + (par3EntityPlayer.posZ - par3EntityPlayer.prevPosZ) * var4;
         final Vec3 var13 = par2World.getWorldVec3Pool().getVecFromPool(var7, var9, var11);
-        final float var14 = MathHelper.cos(-var6 * 0.017453292F - (float)Math.PI);
-        final float var15 = MathHelper.sin(-var6 * 0.017453292F - (float)Math.PI);
+        final float var14 = MathHelper.cos(-var6 * 0.017453292F - (float) Math.PI);
+        final float var15 = MathHelper.sin(-var6 * 0.017453292F - (float) Math.PI);
         final float var16 = -MathHelper.cos(-var5 * 0.017453292F);
         final float var17 = MathHelper.sin(-var5 * 0.017453292F);
         final float var18 = var15 * var16;
@@ -98,7 +97,7 @@ public class GCCoreItemBuggy extends Item
 
             for (var29 = 0; var29 < var28.size(); ++var29)
             {
-                final Entity var30 = (Entity)var28.get(var29);
+                final Entity var30 = (Entity) var28.get(var29);
 
                 if (var30.canBeCollidedWith())
                 {
@@ -140,7 +139,7 @@ public class GCCoreItemBuggy extends Item
                     {
                         par2World.spawnEntityInWorld(var35);
                     }
-                    
+
                     var35.setBuggyType(par1ItemStack.getItemDamage());
 
                     if (!par3EntityPlayer.capabilities.isCreativeMode)
@@ -158,9 +157,9 @@ public class GCCoreItemBuggy extends Item
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack par1ItemStack, EntityPlayer player, List par2List, boolean b)
     {
-    	if (par1ItemStack.getItemDamage() != 0)
-    	{
-			par2List.add("Storage Space: " + par1ItemStack.getItemDamage() * 18);
-    	}
+        if (par1ItemStack.getItemDamage() != 0)
+        {
+            par2List.add("Storage Space: " + par1ItemStack.getItemDamage() * 18);
+        }
     }
 }

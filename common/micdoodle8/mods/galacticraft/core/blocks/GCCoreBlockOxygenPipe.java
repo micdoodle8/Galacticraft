@@ -198,7 +198,8 @@ public class GCCoreBlockOxygenPipe extends BlockContainer
 
         if (tileEntity != null)
         {
-            final boolean[] connectable = new boolean[] { false, false, false, false, false, false };
+            final boolean[] connectable = new boolean[]
+            { false, false, false, false, false, false };
             final ITubeConnection[] connections = GasTransmission.getConnections(tileEntity);
 
             for (final ITubeConnection connection : connections)
@@ -258,7 +259,8 @@ public class GCCoreBlockOxygenPipe extends BlockContainer
 
         if (tileEntity != null)
         {
-            final boolean[] connectable = new boolean[] { false, false, false, false, false, false };
+            final boolean[] connectable = new boolean[]
+            { false, false, false, false, false, false };
             final ITubeConnection[] connections = GasTransmission.getConnections(tileEntity);
 
             for (final ITubeConnection connection : connections)
@@ -314,7 +316,8 @@ public class GCCoreBlockOxygenPipe extends BlockContainer
 
         if (tileEntity != null)
         {
-            final boolean[] connectable = new boolean[] { false, false, false, false, false, false };
+            final boolean[] connectable = new boolean[]
+            { false, false, false, false, false, false };
             final ITubeConnection[] connections = GasTransmission.getConnections(tileEntity);
 
             for (final ITubeConnection connection : connections)

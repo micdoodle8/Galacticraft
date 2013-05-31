@@ -113,38 +113,47 @@ public class GCCoreBlockAirLockFrame extends BlockContainer
                         if (side == 0)
                         {
                             return this.airLockIcons[1];
-                        } else if (side == 1)
+                        }
+                        else if (side == 1)
                         {
                             return this.airLockIcons[0];
-                        } else
+                        }
+                        else
                         {
                             return this.airLockIcons[2];
                         }
-                    } else if (orientation.offsetY == 1)
+                    }
+                    else if (orientation.offsetY == 1)
                     {
                         if (side == 0)
                         {
                             return this.airLockIcons[0];
-                        } else if (side == 1)
+                        }
+                        else if (side == 1)
                         {
                             return this.airLockIcons[1];
-                        } else
+                        }
+                        else
                         {
                             return this.airLockIcons[3];
                         }
-                    } else if (orientation.ordinal() == side)
+                    }
+                    else if (orientation.ordinal() == side)
                     {
                         if (side == 0)
                         {
                             return this.airLockIcons[0];
-                        } else if (side == 1)
+                        }
+                        else if (side == 1)
                         {
                             return this.airLockIcons[1];
-                        } else
+                        }
+                        else
                         {
                             return this.airLockIcons[3];
                         }
-                    } else if (orientation.getOpposite().ordinal() == side)
+                    }
+                    else if (orientation.getOpposite().ordinal() == side)
                     {
                         return this.airLockIcons[0];
                     }
@@ -159,58 +168,73 @@ public class GCCoreBlockAirLockFrame extends BlockContainer
                             if (side == 0)
                             {
                                 return this.airLockIcons[4];
-                            } else if (side == 1)
+                            }
+                            else if (side == 1)
                             {
                                 return this.airLockIcons[4];
-                            } else if (side == 3)
+                            }
+                            else if (side == 3)
                             {
                                 return this.airLockIcons[4];
-                            } else if (side == 2)
+                            }
+                            else if (side == 2)
                             {
                                 return this.airLockIcons[5];
                             }
-                        } else if (orientation.offsetX == -1)
+                        }
+                        else if (orientation.offsetX == -1)
                         {
                             if (side == 0)
                             {
                                 return this.airLockIcons[5];
-                            } else if (side == 1)
+                            }
+                            else if (side == 1)
                             {
                                 return this.airLockIcons[5];
-                            } else if (side == 3)
+                            }
+                            else if (side == 3)
                             {
                                 return this.airLockIcons[5];
-                            } else if (side == 2)
+                            }
+                            else if (side == 2)
                             {
                                 return this.airLockIcons[4];
                             }
-                        } else if (orientation.offsetZ == 1)
+                        }
+                        else if (orientation.offsetZ == 1)
                         {
                             if (side == 0)
                             {
                                 return this.airLockIcons[2];
-                            } else if (side == 1)
+                            }
+                            else if (side == 1)
                             {
                                 return this.airLockIcons[2];
-                            } else if (side == 4)
+                            }
+                            else if (side == 4)
                             {
                                 return this.airLockIcons[4];
-                            } else if (side == 5)
+                            }
+                            else if (side == 5)
                             {
                                 return this.airLockIcons[5];
                             }
-                        } else if (orientation.offsetZ == -1)
+                        }
+                        else if (orientation.offsetZ == -1)
                         {
                             if (side == 0)
                             {
                                 return this.airLockIcons[3];
-                            } else if (side == 1)
+                            }
+                            else if (side == 1)
                             {
                                 return this.airLockIcons[3];
-                            } else if (side == 4)
+                            }
+                            else if (side == 4)
                             {
                                 return this.airLockIcons[5];
-                            } else if (side == 5)
+                            }
+                            else if (side == 5)
                             {
                                 return this.airLockIcons[4];
                             }
@@ -261,7 +285,8 @@ public class GCCoreBlockAirLockFrame extends BlockContainer
                 if (((GCCoreTileEntityAirLock) te).active && !this.gettingPowered(par1World, par2, par3, par4))
                 {
                     par1World.scheduleBlockUpdate(par2, par3, par4, this.blockID, 4);
-                } else if (!((GCCoreTileEntityAirLock) te).active && this.gettingPowered(par1World, par2, par3, par4))
+                }
+                else if (!((GCCoreTileEntityAirLock) te).active && this.gettingPowered(par1World, par2, par3, par4))
                 {
                     ((GCCoreTileEntityAirLock) te).active = true;
                 }
@@ -347,7 +372,8 @@ public class GCCoreBlockAirLockFrame extends BlockContainer
         if (par1World.isBlockIndirectlyGettingPowered(x, y, z) || par1World.isBlockIndirectlyGettingPowered(x, y, z))
         {
             return true;
-        } else
+        }
+        else
         {
             return false;
         }

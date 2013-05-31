@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.entities;
 
 import java.util.Iterator;
 import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -22,9 +21,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
- *
- *  All rights reserved.
- *
+ * 
+ * All rights reserved.
+ * 
  */
 public class GCCoreEntityArrow extends Entity
 {
@@ -82,13 +81,13 @@ public class GCCoreEntityArrow extends Entity
 
         if (var12 >= 1.0E-7D)
         {
-            final float var14 = (float)(Math.atan2(var10, var6) * 180.0D / Math.PI) - 90.0F;
-            final float var15 = (float)-(Math.atan2(var8, var12) * 180.0D / Math.PI);
+            final float var14 = (float) (Math.atan2(var10, var6) * 180.0D / Math.PI) - 90.0F;
+            final float var15 = (float) -(Math.atan2(var8, var12) * 180.0D / Math.PI);
             final double var16 = var6 / var12;
             final double var18 = var10 / var12;
             this.setLocationAndAngles(par2EntityLiving.posX + var16, this.posY, par2EntityLiving.posZ + var18, var14, var15);
             this.yOffset = 0.0F;
-            final float var20 = (float)var12 * 0.2F;
+            final float var20 = (float) var12 * 0.2F;
             this.setArrowHeading(var6, var8 + var20, var10, par4, par5);
         }
     }
@@ -105,26 +104,27 @@ public class GCCoreEntityArrow extends Entity
 
         this.setSize(0.5F, 0.5F);
         this.setLocationAndAngles(par2EntityLiving.posX, par2EntityLiving.posY + par2EntityLiving.getEyeHeight(), par2EntityLiving.posZ, par2EntityLiving.rotationYaw, par2EntityLiving.rotationPitch);
-        this.posX -= MathHelper.cos(this.rotationYaw / 180.0F * (float)Math.PI) * 0.16F;
+        this.posX -= MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F;
         this.posY -= 0.10000000149011612D;
-        this.posZ -= MathHelper.sin(this.rotationYaw / 180.0F * (float)Math.PI) * 0.16F;
+        this.posZ -= MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F;
         this.setPosition(this.posX, this.posY, this.posZ);
         this.yOffset = 0.0F;
-        this.motionX = -MathHelper.sin(this.rotationYaw / 180.0F * (float)Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float)Math.PI);
-        this.motionZ = MathHelper.cos(this.rotationYaw / 180.0F * (float)Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float)Math.PI);
-        this.motionY = -MathHelper.sin(this.rotationPitch / 180.0F * (float)Math.PI);
+        this.motionX = -MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI);
+        this.motionZ = MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI);
+        this.motionY = -MathHelper.sin(this.rotationPitch / 180.0F * (float) Math.PI);
         this.setArrowHeading(this.motionX, this.motionY, this.motionZ, par3 * 1.5F, 1.0F);
     }
 
     @Override
-	protected void entityInit()
+    protected void entityInit()
     {
-        this.dataWatcher.addObject(16, Byte.valueOf((byte)0));
+        this.dataWatcher.addObject(16, Byte.valueOf((byte) 0));
     }
 
     /**
-     * Uses the provided coordinates as a heading and determines the velocity from it with the set force and random
-     * variance. Args: x, y, z, force, forceVariation
+     * Uses the provided coordinates as a heading and determines the velocity
+     * from it with the set force and random variance. Args: x, y, z, force,
+     * forceVariation
      */
     public void setArrowHeading(double par1, double par3, double par5, float par7, float par8)
     {
@@ -142,14 +142,13 @@ public class GCCoreEntityArrow extends Entity
         this.motionY = par3;
         this.motionZ = par5;
         final float var10 = MathHelper.sqrt_double(par1 * par1 + par5 * par5);
-        this.prevRotationYaw = this.rotationYaw = (float)(Math.atan2(par1, par5) * 180.0D / Math.PI);
-        this.prevRotationPitch = this.rotationPitch = (float)(Math.atan2(par3, var10) * 180.0D / Math.PI);
+        this.prevRotationYaw = this.rotationYaw = (float) (Math.atan2(par1, par5) * 180.0D / Math.PI);
+        this.prevRotationPitch = this.rotationPitch = (float) (Math.atan2(par3, var10) * 180.0D / Math.PI);
         this.ticksInGround = 0;
     }
 
     @Override
-	@SideOnly(Side.CLIENT)
-
+    @SideOnly(Side.CLIENT)
     /**
      * Sets the position and rotation. Only difference from the other one is no bounding on the rotation. Args: posX,
      * posY, posZ, yaw, pitch
@@ -161,8 +160,7 @@ public class GCCoreEntityArrow extends Entity
     }
 
     @Override
-	@SideOnly(Side.CLIENT)
-
+    @SideOnly(Side.CLIENT)
     /**
      * Sets the velocity to the args. Args: x, y, z
      */
@@ -175,8 +173,8 @@ public class GCCoreEntityArrow extends Entity
         if (this.prevRotationPitch == 0.0F && this.prevRotationYaw == 0.0F)
         {
             final float var7 = MathHelper.sqrt_double(par1 * par1 + par5 * par5);
-            this.prevRotationYaw = this.rotationYaw = (float)(Math.atan2(par1, par5) * 180.0D / Math.PI);
-            this.prevRotationPitch = this.rotationPitch = (float)(Math.atan2(par3, var7) * 180.0D / Math.PI);
+            this.prevRotationYaw = this.rotationYaw = (float) (Math.atan2(par1, par5) * 180.0D / Math.PI);
+            this.prevRotationPitch = this.rotationPitch = (float) (Math.atan2(par3, var7) * 180.0D / Math.PI);
             this.prevRotationPitch = this.rotationPitch;
             this.prevRotationYaw = this.rotationYaw;
             this.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
@@ -188,15 +186,15 @@ public class GCCoreEntityArrow extends Entity
      * Called to update the entity's position/logic.
      */
     @Override
-	public void onUpdate()
+    public void onUpdate()
     {
         super.onUpdate();
 
         if (this.prevRotationPitch == 0.0F && this.prevRotationYaw == 0.0F)
         {
             final float var1 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
-            this.prevRotationYaw = this.rotationYaw = (float)(Math.atan2(this.motionX, this.motionZ) * 180.0D / Math.PI);
-            this.prevRotationPitch = this.rotationPitch = (float)(Math.atan2(this.motionY, var1) * 180.0D / Math.PI);
+            this.prevRotationYaw = this.rotationYaw = (float) (Math.atan2(this.motionX, this.motionZ) * 180.0D / Math.PI);
+            this.prevRotationPitch = this.rotationPitch = (float) (Math.atan2(this.motionY, var1) * 180.0D / Math.PI);
         }
 
         final int var16 = this.worldObj.getBlockId(this.xTile, this.yTile, this.zTile);
@@ -263,7 +261,7 @@ public class GCCoreEntityArrow extends Entity
 
             while (var9.hasNext())
             {
-                final Entity var10 = (Entity)var9.next();
+                final Entity var10 = (Entity) var9.next();
 
                 if (var10.canBeCollidedWith() && (var10 != this.shootingEntity || this.ticksInAir >= 5))
                 {
@@ -323,7 +321,7 @@ public class GCCoreEntityArrow extends Entity
                     {
                         if (var4.entityHit instanceof EntityLiving)
                         {
-                            ++((EntityLiving)var4.entityHit).arrowHitTimer;
+                            ++((EntityLiving) var4.entityHit).arrowHitTimer;
 
                             if (this.knockbackStrength > 0)
                             {
@@ -356,9 +354,9 @@ public class GCCoreEntityArrow extends Entity
                     this.zTile = var4.blockZ;
                     this.inTile = this.worldObj.getBlockId(this.xTile, this.yTile, this.zTile);
                     this.inData = this.worldObj.getBlockMetadata(this.xTile, this.yTile, this.zTile);
-                    this.motionX = (float)(var4.hitVec.xCoord - this.posX);
-                    this.motionY = (float)(var4.hitVec.yCoord - this.posY);
-                    this.motionZ = (float)(var4.hitVec.zCoord - this.posZ);
+                    this.motionX = (float) (var4.hitVec.xCoord - this.posX);
+                    this.motionY = (float) (var4.hitVec.yCoord - this.posY);
+                    this.motionZ = (float) (var4.hitVec.zCoord - this.posZ);
                     var20 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
                     this.posX -= this.motionX / var20 * 0.05000000074505806D;
                     this.posY -= this.motionY / var20 * 0.05000000074505806D;
@@ -382,9 +380,9 @@ public class GCCoreEntityArrow extends Entity
             this.posY += this.motionY;
             this.posZ += this.motionZ;
             var20 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
-            this.rotationYaw = (float)(Math.atan2(this.motionX, this.motionZ) * 180.0D / Math.PI);
+            this.rotationYaw = (float) (Math.atan2(this.motionX, this.motionZ) * 180.0D / Math.PI);
 
-            for (this.rotationPitch = (float)(Math.atan2(this.motionY, var20) * 180.0D / Math.PI); this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F)
+            for (this.rotationPitch = (float) (Math.atan2(this.motionY, var20) * 180.0D / Math.PI); this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F)
             {
                 ;
             }
@@ -438,16 +436,16 @@ public class GCCoreEntityArrow extends Entity
      * (abstract) Protected helper method to write subclass entity data to NBT.
      */
     @Override
-	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
+    public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
-        par1NBTTagCompound.setShort("xTile", (short)this.xTile);
-        par1NBTTagCompound.setShort("yTile", (short)this.yTile);
-        par1NBTTagCompound.setShort("zTile", (short)this.zTile);
-        par1NBTTagCompound.setByte("inTile", (byte)this.inTile);
-        par1NBTTagCompound.setByte("inData", (byte)this.inData);
-        par1NBTTagCompound.setByte("shake", (byte)this.arrowShake);
-        par1NBTTagCompound.setByte("inGround", (byte)(this.inGround ? 1 : 0));
-        par1NBTTagCompound.setByte("pickup", (byte)this.canBePickedUp);
+        par1NBTTagCompound.setShort("xTile", (short) this.xTile);
+        par1NBTTagCompound.setShort("yTile", (short) this.yTile);
+        par1NBTTagCompound.setShort("zTile", (short) this.zTile);
+        par1NBTTagCompound.setByte("inTile", (byte) this.inTile);
+        par1NBTTagCompound.setByte("inData", (byte) this.inData);
+        par1NBTTagCompound.setByte("shake", (byte) this.arrowShake);
+        par1NBTTagCompound.setByte("inGround", (byte) (this.inGround ? 1 : 0));
+        par1NBTTagCompound.setByte("pickup", (byte) this.canBePickedUp);
         par1NBTTagCompound.setDouble("damage", this.damage);
     }
 
@@ -455,7 +453,7 @@ public class GCCoreEntityArrow extends Entity
      * (abstract) Protected helper method to read subclass entity data from NBT.
      */
     @Override
-	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
+    public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         this.xTile = par1NBTTagCompound.getShort("xTile");
         this.yTile = par1NBTTagCompound.getShort("yTile");
@@ -484,7 +482,7 @@ public class GCCoreEntityArrow extends Entity
      * Called by a player entity when they collide with an entity
      */
     @Override
-	public void onCollideWithPlayer(EntityPlayer par1EntityPlayer)
+    public void onCollideWithPlayer(EntityPlayer par1EntityPlayer)
     {
         if (!this.worldObj.isRemote && this.inGround && this.arrowShake <= 0)
         {
@@ -505,7 +503,7 @@ public class GCCoreEntityArrow extends Entity
     }
 
     @Override
-	@SideOnly(Side.CLIENT)
+    @SideOnly(Side.CLIENT)
     public float getShadowSize()
     {
         return 0.0F;
@@ -533,13 +531,14 @@ public class GCCoreEntityArrow extends Entity
      * If returns false, the item will not inflict any damage against entities.
      */
     @Override
-	public boolean canAttackWithItem()
+    public boolean canAttackWithItem()
     {
         return false;
     }
 
     /**
-     * Whether the arrow has a stream of critical hit particles flying behind it.
+     * Whether the arrow has a stream of critical hit particles flying behind
+     * it.
      */
     public void setIsCritical(boolean par1)
     {
@@ -547,16 +546,17 @@ public class GCCoreEntityArrow extends Entity
 
         if (par1)
         {
-            this.dataWatcher.updateObject(16, Byte.valueOf((byte)(var2 | 1)));
+            this.dataWatcher.updateObject(16, Byte.valueOf((byte) (var2 | 1)));
         }
         else
         {
-            this.dataWatcher.updateObject(16, Byte.valueOf((byte)(var2 & -2)));
+            this.dataWatcher.updateObject(16, Byte.valueOf((byte) (var2 & -2)));
         }
     }
 
     /**
-     * Whether the arrow has a stream of critical hit particles flying behind it.
+     * Whether the arrow has a stream of critical hit particles flying behind
+     * it.
      */
     public boolean getIsCritical()
     {

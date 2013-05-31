@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.moon.wgen;
 
 import java.util.List;
 import java.util.Random;
-
 import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.util.MathHelper;
@@ -23,10 +22,11 @@ public class GCMoonComponentVillagePathGen extends GCMoonComponentVillageRoadPie
     }
 
     /**
-     * Initiates construction of the Structure Component picked, at the current Location of StructGen
+     * Initiates construction of the Structure Component picked, at the current
+     * Location of StructGen
      */
     @Override
-	public void buildComponent(StructureComponent par1StructureComponent, List par2List, Random par3Random)
+    public void buildComponent(StructureComponent par1StructureComponent, List par2List, Random par3Random)
     {
         boolean var4 = false;
         int var5;
@@ -34,7 +34,7 @@ public class GCMoonComponentVillagePathGen extends GCMoonComponentVillageRoadPie
 
         for (var5 = par3Random.nextInt(5); var5 < this.averageGroundLevel - 8; var5 += 2 + par3Random.nextInt(5))
         {
-            var6 = this.getNextComponentNN((GCMoonComponentVillageStartPiece)par1StructureComponent, par2List, par3Random, 0, var5);
+            var6 = this.getNextComponentNN((GCMoonComponentVillageStartPiece) par1StructureComponent, par2List, par3Random, 0, var5);
 
             if (var6 != null)
             {
@@ -45,7 +45,7 @@ public class GCMoonComponentVillagePathGen extends GCMoonComponentVillageRoadPie
 
         for (var5 = par3Random.nextInt(5); var5 < this.averageGroundLevel - 8; var5 += 2 + par3Random.nextInt(5))
         {
-            var6 = this.getNextComponentPP((GCMoonComponentVillageStartPiece)par1StructureComponent, par2List, par3Random, 0, var5);
+            var6 = this.getNextComponentPP((GCMoonComponentVillageStartPiece) par1StructureComponent, par2List, par3Random, 0, var5);
 
             if (var6 != null)
             {
@@ -58,17 +58,17 @@ public class GCMoonComponentVillagePathGen extends GCMoonComponentVillageRoadPie
         {
             switch (this.coordBaseMode)
             {
-                case 0:
-                    GCMoonStructureVillagePieces.getNextStructureComponentVillagePath((GCMoonComponentVillageStartPiece)par1StructureComponent, par2List, par3Random, this.boundingBox.minX - 1, this.boundingBox.minY, this.boundingBox.maxZ - 2, 1, this.getComponentType());
-                    break;
-                case 1:
-                    GCMoonStructureVillagePieces.getNextStructureComponentVillagePath((GCMoonComponentVillageStartPiece)par1StructureComponent, par2List, par3Random, this.boundingBox.minX, this.boundingBox.minY, this.boundingBox.minZ - 1, 2, this.getComponentType());
-                    break;
-                case 2:
-                    GCMoonStructureVillagePieces.getNextStructureComponentVillagePath((GCMoonComponentVillageStartPiece)par1StructureComponent, par2List, par3Random, this.boundingBox.minX - 1, this.boundingBox.minY, this.boundingBox.minZ, 1, this.getComponentType());
-                    break;
-                case 3:
-                    GCMoonStructureVillagePieces.getNextStructureComponentVillagePath((GCMoonComponentVillageStartPiece)par1StructureComponent, par2List, par3Random, this.boundingBox.maxX - 2, this.boundingBox.minY, this.boundingBox.minZ - 1, 2, this.getComponentType());
+            case 0:
+                GCMoonStructureVillagePieces.getNextStructureComponentVillagePath((GCMoonComponentVillageStartPiece) par1StructureComponent, par2List, par3Random, this.boundingBox.minX - 1, this.boundingBox.minY, this.boundingBox.maxZ - 2, 1, this.getComponentType());
+                break;
+            case 1:
+                GCMoonStructureVillagePieces.getNextStructureComponentVillagePath((GCMoonComponentVillageStartPiece) par1StructureComponent, par2List, par3Random, this.boundingBox.minX, this.boundingBox.minY, this.boundingBox.minZ - 1, 2, this.getComponentType());
+                break;
+            case 2:
+                GCMoonStructureVillagePieces.getNextStructureComponentVillagePath((GCMoonComponentVillageStartPiece) par1StructureComponent, par2List, par3Random, this.boundingBox.minX - 1, this.boundingBox.minY, this.boundingBox.minZ, 1, this.getComponentType());
+                break;
+            case 3:
+                GCMoonStructureVillagePieces.getNextStructureComponentVillagePath((GCMoonComponentVillageStartPiece) par1StructureComponent, par2List, par3Random, this.boundingBox.maxX - 2, this.boundingBox.minY, this.boundingBox.minZ - 1, 2, this.getComponentType());
             }
         }
 
@@ -76,17 +76,17 @@ public class GCMoonComponentVillagePathGen extends GCMoonComponentVillageRoadPie
         {
             switch (this.coordBaseMode)
             {
-                case 0:
-                    GCMoonStructureVillagePieces.getNextStructureComponentVillagePath((GCMoonComponentVillageStartPiece)par1StructureComponent, par2List, par3Random, this.boundingBox.maxX + 1, this.boundingBox.minY, this.boundingBox.maxZ - 2, 3, this.getComponentType());
-                    break;
-                case 1:
-                    GCMoonStructureVillagePieces.getNextStructureComponentVillagePath((GCMoonComponentVillageStartPiece)par1StructureComponent, par2List, par3Random, this.boundingBox.minX, this.boundingBox.minY, this.boundingBox.maxZ + 1, 0, this.getComponentType());
-                    break;
-                case 2:
-                    GCMoonStructureVillagePieces.getNextStructureComponentVillagePath((GCMoonComponentVillageStartPiece)par1StructureComponent, par2List, par3Random, this.boundingBox.maxX + 1, this.boundingBox.minY, this.boundingBox.minZ, 3, this.getComponentType());
-                    break;
-                case 3:
-                    GCMoonStructureVillagePieces.getNextStructureComponentVillagePath((GCMoonComponentVillageStartPiece)par1StructureComponent, par2List, par3Random, this.boundingBox.maxX - 2, this.boundingBox.minY, this.boundingBox.maxZ + 1, 0, this.getComponentType());
+            case 0:
+                GCMoonStructureVillagePieces.getNextStructureComponentVillagePath((GCMoonComponentVillageStartPiece) par1StructureComponent, par2List, par3Random, this.boundingBox.maxX + 1, this.boundingBox.minY, this.boundingBox.maxZ - 2, 3, this.getComponentType());
+                break;
+            case 1:
+                GCMoonStructureVillagePieces.getNextStructureComponentVillagePath((GCMoonComponentVillageStartPiece) par1StructureComponent, par2List, par3Random, this.boundingBox.minX, this.boundingBox.minY, this.boundingBox.maxZ + 1, 0, this.getComponentType());
+                break;
+            case 2:
+                GCMoonStructureVillagePieces.getNextStructureComponentVillagePath((GCMoonComponentVillageStartPiece) par1StructureComponent, par2List, par3Random, this.boundingBox.maxX + 1, this.boundingBox.minY, this.boundingBox.minZ, 3, this.getComponentType());
+                break;
+            case 3:
+                GCMoonStructureVillagePieces.getNextStructureComponentVillagePath((GCMoonComponentVillageStartPiece) par1StructureComponent, par2List, par3Random, this.boundingBox.maxX - 2, this.boundingBox.minY, this.boundingBox.maxZ + 1, 0, this.getComponentType());
             }
         }
     }
@@ -107,11 +107,11 @@ public class GCMoonComponentVillagePathGen extends GCMoonComponentVillageRoadPie
     }
 
     /**
-     * second Part of Structure generating, this for example places Spiderwebs, Mob Spawners, it closes Mineshafts at
-     * the end, it adds Fences...
+     * second Part of Structure generating, this for example places Spiderwebs,
+     * Mob Spawners, it closes Mineshafts at the end, it adds Fences...
      */
     @Override
-	public boolean addComponentParts(World par1World, Random par2Random, StructureBoundingBox par3StructureBoundingBox)
+    public boolean addComponentParts(World par1World, Random par2Random, StructureBoundingBox par3StructureBoundingBox)
     {
         final int var4 = this.getBiomeSpecificBlock(Block.planks.blockID, 0);
 

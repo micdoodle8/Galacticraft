@@ -24,20 +24,21 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
- *
- *  All rights reserved.
- *
+ * 
+ * All rights reserved.
+ * 
  */
 public class GCCoreEntityCreeper extends EntityCreeper implements IEntityBreathable
 {
     /**
-     * The amount of time since the creeper was close enough to the player to ignite
+     * The amount of time since the creeper was close enough to the player to
+     * ignite
      */
     int timeSinceIgnited2;
 
     /**
-     * Time when this creeper was last in an active state (Messed up code here, probably causes creeper animation to go
-     * weird)
+     * Time when this creeper was last in an active state (Messed up code here,
+     * probably causes creeper animation to go weird)
      */
     int lastActiveTime;
 
@@ -62,19 +63,19 @@ public class GCCoreEntityCreeper extends EntityCreeper implements IEntityBreatha
      * Returns true if the newer Entity AI code should be run
      */
     @Override
-	public boolean isAIEnabled()
+    public boolean isAIEnabled()
     {
         return true;
     }
 
     @Override
-	public int getMaxHealth()
+    public int getMaxHealth()
     {
         return 25;
     }
 
     @Override
-	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
+    public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeEntityToNBT(par1NBTTagCompound);
 
@@ -88,17 +89,17 @@ public class GCCoreEntityCreeper extends EntityCreeper implements IEntityBreatha
      * (abstract) Protected helper method to read subclass entity data from NBT.
      */
     @Override
-	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
+    public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readEntityFromNBT(par1NBTTagCompound);
-        this.dataWatcher.updateObject(17, Byte.valueOf((byte)(par1NBTTagCompound.getBoolean("powered") ? 1 : 0)));
+        this.dataWatcher.updateObject(17, Byte.valueOf((byte) (par1NBTTagCompound.getBoolean("powered") ? 1 : 0)));
     }
 
     /**
      * Called to update the entity's position/logic.
      */
     @Override
-	public void onUpdate()
+    public void onUpdate()
     {
         if (this.isEntityAlive())
         {
@@ -142,17 +143,17 @@ public class GCCoreEntityCreeper extends EntityCreeper implements IEntityBreatha
         super.onUpdate();
     }
 
-	@Override
+    @Override
     public void fall(float var1)
     {
-		;
+        ;
     }
 
     /**
      * Returns the sound this mob makes when it is hurt.
      */
     @Override
-	protected String getHurtSound()
+    protected String getHurtSound()
     {
         return "mob.creeper";
     }
@@ -161,7 +162,7 @@ public class GCCoreEntityCreeper extends EntityCreeper implements IEntityBreatha
      * Returns the sound this mob makes on death.
      */
     @Override
-	protected String getDeathSound()
+    protected String getDeathSound()
     {
         return "mob.creeperdeath";
     }
@@ -170,7 +171,7 @@ public class GCCoreEntityCreeper extends EntityCreeper implements IEntityBreatha
      * Called when the mob's health reaches 0.
      */
     @Override
-	public void onDeath(DamageSource par1DamageSource)
+    public void onDeath(DamageSource par1DamageSource)
     {
         super.onDeath(par1DamageSource);
 
@@ -181,19 +182,18 @@ public class GCCoreEntityCreeper extends EntityCreeper implements IEntityBreatha
     }
 
     @Override
-	public boolean attackEntityAsMob(Entity par1Entity)
+    public boolean attackEntityAsMob(Entity par1Entity)
     {
         return true;
     }
 
-	@Override
-	public boolean getPowered()
+    @Override
+    public boolean getPowered()
     {
         return this.dataWatcher.getWatchableObjectByte(17) == 1;
     }
 
     @SideOnly(Side.CLIENT)
-
     /**
      * Connects the the creeper flashes to the creeper's color multiplier
      */
@@ -206,36 +206,36 @@ public class GCCoreEntityCreeper extends EntityCreeper implements IEntityBreatha
      * Returns the item ID for the item the mob drops on death.
      */
     @Override
-	protected int getDropItemId()
+    protected int getDropItemId()
     {
         return Item.gunpowder.itemID;
     }
 
-	@Override
-	public int getCreeperState()
+    @Override
+    public int getCreeperState()
     {
         return this.dataWatcher.getWatchableObjectByte(16);
     }
 
-	@Override
-	public void setCreeperState(int par1)
+    @Override
+    public void setCreeperState(int par1)
     {
-        this.dataWatcher.updateObject(16, Byte.valueOf((byte)par1));
+        this.dataWatcher.updateObject(16, Byte.valueOf((byte) par1));
     }
 
     /**
      * Called when a lightning bolt hits the entity.
      */
     @Override
-	public void onStruckByLightning(EntityLightningBolt par1EntityLightningBolt)
+    public void onStruckByLightning(EntityLightningBolt par1EntityLightningBolt)
     {
         super.onStruckByLightning(par1EntityLightningBolt);
-        this.dataWatcher.updateObject(17, Byte.valueOf((byte)1));
+        this.dataWatcher.updateObject(17, Byte.valueOf((byte) 1));
     }
 
-	@Override
-	public boolean canBreath()
-	{
-		return true;
-	}
+    @Override
+    public boolean canBreath()
+    {
+        return true;
+    }
 }

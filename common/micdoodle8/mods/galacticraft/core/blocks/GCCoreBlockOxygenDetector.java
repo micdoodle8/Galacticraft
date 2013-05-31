@@ -37,7 +37,8 @@ public class GCCoreBlockOxygenDetector extends BlockContainer
         if (side == 0 || side == 1)
         {
             return this.iconTop;
-        } else
+        }
+        else
         {
             return this.iconSide;
         }
@@ -60,7 +61,8 @@ public class GCCoreBlockOxygenDetector extends BlockContainer
         if (valid)
         {
             par1World.setBlockMetadataWithNotify(x, y, z, 1, 3);
-        } else
+        }
+        else
         {
             par1World.setBlockMetadataWithNotify(x, y, z, 0, 3);
         }

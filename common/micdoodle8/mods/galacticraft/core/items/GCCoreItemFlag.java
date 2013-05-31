@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.items;
 
 import java.util.List;
-
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityFlag;
@@ -22,57 +21,57 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
- *
- *  All rights reserved.
- *
+ * 
+ * All rights reserved.
+ * 
  */
 public class GCCoreItemFlag extends Item
 {
-	public static final String[] names = {
-			"american", // 0
-			"black", // 1
-			"blue", // 2
-			"green", // 3
-			"brown", // 4
-			"darkblue", // 5
-			"darkgray", // 6
-			"darkgreen", // 7
-			"gray", // 8
-			"magenta", // 9
-			"orange", // 10
-			"pink", // 11
-			"purple", // 12
-			"red", // 13
-			"teal", // 14
-			"yellow", // 15
-			"white"}; // 16
-	public int placeProgress;
+    public static final String[] names =
+    { "american", // 0
+    "black", // 1
+    "blue", // 2
+    "green", // 3
+    "brown", // 4
+    "darkblue", // 5
+    "darkgray", // 6
+    "darkgreen", // 7
+    "gray", // 8
+    "magenta", // 9
+    "orange", // 10
+    "pink", // 11
+    "purple", // 12
+    "red", // 13
+    "teal", // 14
+    "yellow", // 15
+    "white" }; // 16
+    public int placeProgress;
 
-	public GCCoreItemFlag(int par1)
-	{
-		super(par1);
-		this.setMaxDamage(0);
-		this.setHasSubtypes(true);
-		this.setMaxStackSize(1);
-	}
+    public GCCoreItemFlag(int par1)
+    {
+        super(par1);
+        this.setMaxDamage(0);
+        this.setHasSubtypes(true);
+        this.setMaxStackSize(1);
+    }
 
     @Override
     public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
     {
-    	for (int i = 0; i < 17; i++)
-    	{
+        for (int i = 0; i < 17; i++)
+        {
             par3List.add(new ItemStack(par1, 1, i));
-    	}
+        }
     }
 
     @Override
-	@SideOnly(Side.CLIENT)
+    @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister par1IconRegister)
     {
         this.itemIcon = null;
     }
 
-	@Override
+    @Override
     public CreativeTabs getCreativeTab()
     {
         return GalacticraftCore.galacticraftTab;
@@ -103,19 +102,19 @@ public class GCCoreItemFlag extends Item
 
             if (!par2World.isRemote)
             {
-            	final GCCoreEntityFlag flag = new GCCoreEntityFlag(par2World, x + 0.5F, y + 1.0F, z + 0.5F, par3EntityPlayer.rotationYaw - 90F);
+                final GCCoreEntityFlag flag = new GCCoreEntityFlag(par2World, x + 0.5F, y + 1.0F, z + 0.5F, par3EntityPlayer.rotationYaw - 90F);
 
-            	if (par2World.getEntitiesWithinAABB(GCCoreEntityFlag.class, AxisAlignedBB.getAABBPool().getAABB(x, y, z, x + 1, y + 3, z + 1)).size() == 0)
-            	{
-                	par2World.spawnEntityInWorld(flag);
+                if (par2World.getEntitiesWithinAABB(GCCoreEntityFlag.class, AxisAlignedBB.getAABBPool().getAABB(x, y, z, x + 1, y + 3, z + 1)).size() == 0)
+                {
+                    par2World.spawnEntityInWorld(flag);
                     flag.setType(par1ItemStack.getItemDamage());
                     flag.setOwner(par3EntityPlayer.username);
                     placed = true;
-            	}
-            	else
-            	{
-            		par3EntityPlayer.sendChatToPlayer("Flag already placed here!");
-            	}
+                }
+                else
+                {
+                    par3EntityPlayer.sendChatToPlayer("Flag already placed here!");
+                }
             }
 
             if (placed)
@@ -126,7 +125,7 @@ public class GCCoreItemFlag extends Item
                 {
                     if (--par3EntityPlayer.inventory.mainInventory[var2].stackSize <= 0)
                     {
-                    	par3EntityPlayer.inventory.mainInventory[var2] = null;
+                        par3EntityPlayer.inventory.mainInventory[var2] = null;
                     }
                 }
             }
@@ -179,62 +178,62 @@ public class GCCoreItemFlag extends Item
     }
 
     @Override
-	@SideOnly(Side.CLIENT)
+    @SideOnly(Side.CLIENT)
     public EnumRarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;
     }
 
-	@Override
-	public String getUnlocalizedName(ItemStack itemStack)
-	{
-		return "item.flag." + GCCoreItemFlag.names[itemStack.getItemDamage()];
-	}
+    @Override
+    public String getUnlocalizedName(ItemStack itemStack)
+    {
+        return "item.flag." + GCCoreItemFlag.names[itemStack.getItemDamage()];
+    }
 
-	@Override
-	public Icon getIconFromDamage(int damage)
-	{
-		return super.getIconFromDamage(damage);
-	}
+    @Override
+    public Icon getIconFromDamage(int damage)
+    {
+        return super.getIconFromDamage(damage);
+    }
 
     public static int getFlagDamageValueFromDye(int meta)
     {
-    	switch (meta)
-    	{
-    	case 0:
-    		return 1;
-    	case 1:
-    		return 13;
-    	case 2:
-    		return 7;
-    	case 3:
-    		return 4;
-    	case 4:
-    		return 5;
-    	case 5:
-    		return 12;
-    	case 6:
-    		return 14;
-    	case 7:
-    		return 8;
-    	case 8:
-    		return 6;
-    	case 9:
-    		return 11;
-    	case 10:
-    		return 3;
-    	case 11:
-    		return 15;
-    	case 12:
-    		return 2;
-    	case 13:
-    		return 9;
-    	case 14:
-    		return 10;
-    	case 15:
-    		return 16;
-    	}
+        switch (meta)
+        {
+        case 0:
+            return 1;
+        case 1:
+            return 13;
+        case 2:
+            return 7;
+        case 3:
+            return 4;
+        case 4:
+            return 5;
+        case 5:
+            return 12;
+        case 6:
+            return 14;
+        case 7:
+            return 8;
+        case 8:
+            return 6;
+        case 9:
+            return 11;
+        case 10:
+            return 3;
+        case 11:
+            return 15;
+        case 12:
+            return 2;
+        case 13:
+            return 9;
+        case 14:
+            return 10;
+        case 15:
+            return 16;
+        }
 
-    	return -1;
+        return -1;
     }
 }

@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.moon.wgen;
 
 import java.util.List;
 import java.util.Random;
-
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
@@ -27,11 +26,11 @@ public class GCMoonComponentVillageTorch extends GCMoonComponentVillage
     }
 
     /**
-     * second Part of Structure generating, this for example places Spiderwebs, Mob Spawners, it closes Mineshafts at
-     * the end, it adds Fences...
+     * second Part of Structure generating, this for example places Spiderwebs,
+     * Mob Spawners, it closes Mineshafts at the end, it adds Fences...
      */
     @Override
-	public boolean addComponentParts(World par1World, Random par2Random, StructureBoundingBox par3StructureBoundingBox)
+    public boolean addComponentParts(World par1World, Random par2Random, StructureBoundingBox par3StructureBoundingBox)
     {
         if (this.averageGroundLevel < 0)
         {

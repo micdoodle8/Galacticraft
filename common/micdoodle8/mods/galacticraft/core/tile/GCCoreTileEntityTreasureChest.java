@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import java.util.Iterator;
 import java.util.List;
-
 import micdoodle8.mods.galacticraft.API.IKeyable;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockT1TreasureChest;
@@ -23,16 +22,14 @@ import net.minecraft.util.AxisAlignedBB;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.IPacketReceiver;
 import universalelectricity.prefab.network.PacketManager;
-
 import com.google.common.io.ByteArrayDataInput;
-
 import cpw.mods.fml.common.network.PacketDispatcher;
 
 public class GCCoreTileEntityTreasureChest extends TileEntity implements IInventory, IKeyable, IPacketReceiver
 {
     private ItemStack[] chestContents = new ItemStack[36];
 
-	protected long ticks = 0;
+    protected long ticks = 0;
 
     /** Determines if the check for adjacent chests has taken place. */
     public boolean adjacentChestChecked = false;
@@ -60,7 +57,6 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
 
     /** Server sync counter (once per 20 ticks) */
     private int ticksSinceSync;
-    private final int field_94046_i = -1;
     private String field_94045_s;
 
     public boolean locked = true;
@@ -69,7 +65,7 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
      * Returns the number of slots in the inventory.
      */
     @Override
-	public int getSizeInventory()
+    public int getSizeInventory()
     {
         return 27;
     }
@@ -78,17 +74,17 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
      * Returns the stack in slot i
      */
     @Override
-	public ItemStack getStackInSlot(int par1)
+    public ItemStack getStackInSlot(int par1)
     {
         return this.chestContents[par1];
     }
 
     /**
-     * Removes from an inventory slot (first arg) up to a specified number (second arg) of items and returns them in a
-     * new stack.
+     * Removes from an inventory slot (first arg) up to a specified number
+     * (second arg) of items and returns them in a new stack.
      */
     @Override
-	public ItemStack decrStackSize(int par1, int par2)
+    public ItemStack decrStackSize(int par1, int par2)
     {
         if (this.chestContents[par1] != null)
         {
@@ -121,11 +117,12 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
     }
 
     /**
-     * When some containers are closed they call this on each slot, then drop whatever it returns as an EntityItem -
-     * like when you close a workbench GUI.
+     * When some containers are closed they call this on each slot, then drop
+     * whatever it returns as an EntityItem - like when you close a workbench
+     * GUI.
      */
     @Override
-	public ItemStack getStackInSlotOnClosing(int par1)
+    public ItemStack getStackInSlotOnClosing(int par1)
     {
         if (this.chestContents[par1] != null)
         {
@@ -140,10 +137,11 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
     }
 
     /**
-     * Sets the given item stack to the specified slot in the inventory (can be crafting or armor sections).
+     * Sets the given item stack to the specified slot in the inventory (can be
+     * crafting or armor sections).
      */
     @Override
-	public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
+    public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
     {
         this.chestContents[par1] = par2ItemStack;
 
@@ -164,7 +162,7 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
      * Reads a tile entity from NBT.
      */
     @Override
-	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
+    public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readFromNBT(par1NBTTagCompound);
         this.locked = par1NBTTagCompound.getBoolean("isLocked");
@@ -178,7 +176,7 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
 
         for (int i = 0; i < nbttaglist.tagCount(); ++i)
         {
-            final NBTTagCompound nbttagcompound1 = (NBTTagCompound)nbttaglist.tagAt(i);
+            final NBTTagCompound nbttagcompound1 = (NBTTagCompound) nbttaglist.tagAt(i);
             final int j = nbttagcompound1.getByte("Slot") & 255;
 
             if (j >= 0 && j < this.chestContents.length)
@@ -192,7 +190,7 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
      * Writes a tile entity to NBT.
      */
     @Override
-	public void writeToNBT(NBTTagCompound par1NBTTagCompound)
+    public void writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeToNBT(par1NBTTagCompound);
         par1NBTTagCompound.setBoolean("isLocked", this.locked);
@@ -203,7 +201,7 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
             if (this.chestContents[i] != null)
             {
                 final NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-                nbttagcompound1.setByte("Slot", (byte)i);
+                nbttagcompound1.setByte("Slot", (byte) i);
                 this.chestContents[i].writeToNBT(nbttagcompound1);
                 nbttaglist.appendTag(nbttagcompound1);
             }
@@ -213,30 +211,32 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
     }
 
     /**
-     * Returns the maximum stack size for a inventory slot. Seems to always be 64, possibly will be extended. *Isn't
-     * this more of a set than a get?*
+     * Returns the maximum stack size for a inventory slot. Seems to always be
+     * 64, possibly will be extended. *Isn't this more of a set than a get?*
      */
     @Override
-	public int getInventoryStackLimit()
+    public int getInventoryStackLimit()
     {
         return 64;
     }
 
     /**
-     * Do not make give this method the name canInteractWith because it clashes with Container
+     * Do not make give this method the name canInteractWith because it clashes
+     * with Container
      */
     @Override
-	public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
+    public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
     {
         return this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : par1EntityPlayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
     }
 
     /**
-     * Causes the TileEntity to reset all it's cached values for it's container block, blockID, metaData and in the case
-     * of chests, the adjcacent chest check
+     * Causes the TileEntity to reset all it's cached values for it's container
+     * block, blockID, metaData and in the case of chests, the adjcacent chest
+     * check
      */
     @Override
-	public void updateContainingBlockInfo()
+    public void updateContainingBlockInfo()
     {
         super.updateContainingBlockInfo();
         this.adjacentChestChecked = false;
@@ -252,38 +252,39 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
         {
             switch (par2)
             {
-                case 0:
-                    if (this.adjacentChestZPos != par1TileEntityChest)
-                    {
-                        this.adjacentChestChecked = false;
-                    }
+            case 0:
+                if (this.adjacentChestZPos != par1TileEntityChest)
+                {
+                    this.adjacentChestChecked = false;
+                }
 
-                    break;
-                case 1:
-                    if (this.adjacentChestXNeg != par1TileEntityChest)
-                    {
-                        this.adjacentChestChecked = false;
-                    }
+                break;
+            case 1:
+                if (this.adjacentChestXNeg != par1TileEntityChest)
+                {
+                    this.adjacentChestChecked = false;
+                }
 
-                    break;
-                case 2:
-                    if (this.adjacentChestZNeg != par1TileEntityChest)
-                    {
-                        this.adjacentChestChecked = false;
-                    }
+                break;
+            case 2:
+                if (this.adjacentChestZNeg != par1TileEntityChest)
+                {
+                    this.adjacentChestChecked = false;
+                }
 
-                    break;
-                case 3:
-                    if (this.adjacentChestXPos != par1TileEntityChest)
-                    {
-                        this.adjacentChestChecked = false;
-                    }
+                break;
+            case 3:
+                if (this.adjacentChestXPos != par1TileEntityChest)
+                {
+                    this.adjacentChestChecked = false;
+                }
             }
         }
     }
 
     /**
-     * Performs the check for adjacent chests to determine if this chest is double or not.
+     * Performs the check for adjacent chests to determine if this chest is
+     * double or not.
      */
     public void checkForAdjacentChests()
     {
@@ -297,22 +298,22 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
 
             if (this.func_94044_a(this.xCoord - 1, this.yCoord, this.zCoord))
             {
-                this.adjacentChestXNeg = (GCCoreTileEntityTreasureChest)this.worldObj.getBlockTileEntity(this.xCoord - 1, this.yCoord, this.zCoord);
+                this.adjacentChestXNeg = (GCCoreTileEntityTreasureChest) this.worldObj.getBlockTileEntity(this.xCoord - 1, this.yCoord, this.zCoord);
             }
 
             if (this.func_94044_a(this.xCoord + 1, this.yCoord, this.zCoord))
             {
-                this.adjacentChestXPos = (GCCoreTileEntityTreasureChest)this.worldObj.getBlockTileEntity(this.xCoord + 1, this.yCoord, this.zCoord);
+                this.adjacentChestXPos = (GCCoreTileEntityTreasureChest) this.worldObj.getBlockTileEntity(this.xCoord + 1, this.yCoord, this.zCoord);
             }
 
             if (this.func_94044_a(this.xCoord, this.yCoord, this.zCoord - 1))
             {
-                this.adjacentChestZNeg = (GCCoreTileEntityTreasureChest)this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord - 1);
+                this.adjacentChestZNeg = (GCCoreTileEntityTreasureChest) this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord - 1);
             }
 
             if (this.func_94044_a(this.xCoord, this.yCoord, this.zCoord + 1))
             {
-                this.adjacentChestZPos = (GCCoreTileEntityTreasureChest)this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord + 1);
+                this.adjacentChestZPos = (GCCoreTileEntityTreasureChest) this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord + 1);
             }
 
             if (this.adjacentChestZNeg != null)
@@ -344,11 +345,12 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
     }
 
     /**
-     * Allows the entity to update its state. Overridden in most subclasses, e.g. the mob spawner uses this to count
-     * ticks and creates a new spawn inside its implementation.
+     * Allows the entity to update its state. Overridden in most subclasses,
+     * e.g. the mob spawner uses this to count ticks and creates a new spawn
+     * inside its implementation.
      */
     @Override
-	public void updateEntity()
+    public void updateEntity()
     {
         super.updateEntity();
         this.checkForAdjacentChests();
@@ -364,13 +366,13 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
 
             while (iterator.hasNext())
             {
-                final EntityPlayer entityplayer = (EntityPlayer)iterator.next();
+                final EntityPlayer entityplayer = (EntityPlayer) iterator.next();
 
                 if (entityplayer.openContainer instanceof ContainerChest)
                 {
-                    final IInventory iinventory = ((ContainerChest)entityplayer.openContainer).getLowerChestInventory();
+                    final IInventory iinventory = ((ContainerChest) entityplayer.openContainer).getLowerChestInventory();
 
-                    if (iinventory == this || iinventory instanceof InventoryLargeChest && ((InventoryLargeChest)iinventory).isPartOfLargeChest(this))
+                    if (iinventory == this || iinventory instanceof InventoryLargeChest && ((InventoryLargeChest) iinventory).isPartOfLargeChest(this))
                     {
                         ++this.numUsingPlayers;
                     }
@@ -446,47 +448,48 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
 
         if (!this.worldObj.isRemote)
         {
-    		if (this.ticks >= Long.MAX_VALUE)
-    		{
-    			this.ticks = 1;
-    		}
+            if (this.ticks >= Long.MAX_VALUE)
+            {
+                this.ticks = 1;
+            }
 
-    		this.ticks++;
+            this.ticks++;
 
-			if (this.ticks % 40 == 0)
-			{
-				PacketManager.sendPacketToClients(this.getDescriptionPacket(), this.worldObj, new Vector3(this), 6);
-			}
+            if (this.ticks % 40 == 0)
+            {
+                PacketManager.sendPacketToClients(this.getDescriptionPacket(), this.worldObj, new Vector3(this), 6);
+            }
         }
     }
 
-	@Override
-	public Packet getDescriptionPacket()
-	{
-		return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.locked);
-	}
+    @Override
+    public Packet getDescriptionPacket()
+    {
+        return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.locked);
+    }
 
-	@Override
-	public void handlePacketData(INetworkManager network, int type, Packet250CustomPayload packet, EntityPlayer player, ByteArrayDataInput dataStream)
-	{
-		try
-		{
-			if (this.worldObj.isRemote)
-			{
-				this.locked = dataStream.readBoolean();
-			}
-		}
-		catch (final Exception e)
-		{
-			e.printStackTrace();
-		}
-	}
+    @Override
+    public void handlePacketData(INetworkManager network, int type, Packet250CustomPayload packet, EntityPlayer player, ByteArrayDataInput dataStream)
+    {
+        try
+        {
+            if (this.worldObj.isRemote)
+            {
+                this.locked = dataStream.readBoolean();
+            }
+        }
+        catch (final Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
 
     /**
-     * Called when a client event is received with the event number and argument, see World.sendClientEvent
+     * Called when a client event is received with the event number and
+     * argument, see World.sendClientEvent
      */
     @Override
-	public boolean receiveClientEvent(int par1, int par2)
+    public boolean receiveClientEvent(int par1, int par2)
     {
         if (par1 == 1)
         {
@@ -500,7 +503,7 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
     }
 
     @Override
-	public void openChest()
+    public void openChest()
     {
         if (this.numUsingPlayers < 0)
         {
@@ -514,7 +517,7 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
     }
 
     @Override
-	public void closeChest()
+    public void closeChest()
     {
         if (this.getBlockType() != null && this.getBlockType() instanceof GCCoreBlockT1TreasureChest)
         {
@@ -525,95 +528,125 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
         }
     }
 
-	@Override
-	public boolean isInvNameLocalized()
-	{
-		return true;
-	}
+    @Override
+    public boolean isInvNameLocalized()
+    {
+        return true;
+    }
+
     /**
      * invalidates a tile entity
      */
     @Override
-	public void invalidate()
+    public void invalidate()
     {
         super.invalidate();
         this.updateContainingBlockInfo();
         this.checkForAdjacentChests();
     }
 
-	@Override
-	public String getInvName()
-	{
-		return "Treasure Chest";
-	}
+    @Override
+    public String getInvName()
+    {
+        return "Treasure Chest";
+    }
 
     @Override
-	public boolean isStackValidForSlot(int par1, ItemStack par2ItemStack)
+    public boolean isStackValidForSlot(int par1, ItemStack par2ItemStack)
     {
         return true;
     }
 
-	@Override
-	public int getTierOfKeyRequired()
-	{
-		return 1;
-	}
+    @Override
+    public int getTierOfKeyRequired()
+    {
+        return 1;
+    }
 
-	@Override
-	public boolean onValidKeyActivated(EntityPlayer player, ItemStack key, int face)
-	{
-		if (this.locked)
-		{
-			this.locked = false;
+    @Override
+    public boolean onValidKeyActivated(EntityPlayer player, ItemStack key, int face)
+    {
+        if (this.locked)
+        {
+            this.locked = false;
 
-			if (this.worldObj.isRemote)
-			{
-				player.playSound("galacticraft.player.unlockchest", 1.0F, 1.0F);
-			}
-			else
-			{
-				if (this.adjacentChestXNeg != null) this.adjacentChestXNeg.locked = false;
-				if (this.adjacentChestXPos != null) this.adjacentChestXPos.locked = false;
-				if (this.adjacentChestZNeg != null) this.adjacentChestZNeg.locked = false;
-				if (this.adjacentChestZPos != null) this.adjacentChestZPos.locked = false;
+            if (this.worldObj.isRemote)
+            {
+                player.playSound("galacticraft.player.unlockchest", 1.0F, 1.0F);
+            }
+            else
+            {
+                if (this.adjacentChestXNeg != null)
+                {
+                    this.adjacentChestXNeg.locked = false;
+                }
+                if (this.adjacentChestXPos != null)
+                {
+                    this.adjacentChestXPos.locked = false;
+                }
+                if (this.adjacentChestZNeg != null)
+                {
+                    this.adjacentChestZNeg.locked = false;
+                }
+                if (this.adjacentChestZPos != null)
+                {
+                    this.adjacentChestZPos.locked = false;
+                }
 
-				if (--player.inventory.getCurrentItem().stackSize == 0)
-				{
-					player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
-				}
+                if (--player.inventory.getCurrentItem().stackSize == 0)
+                {
+                    player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
+                }
 
-				PacketManager.sendPacketToClients(this.getDescriptionPacket());
+                PacketManager.sendPacketToClients(this.getDescriptionPacket());
 
-				if (this.adjacentChestXNeg != null) PacketManager.sendPacketToClients(this.adjacentChestXNeg.getDescriptionPacket());;
-				if (this.adjacentChestXPos != null) PacketManager.sendPacketToClients(this.adjacentChestXPos.getDescriptionPacket());;
-				if (this.adjacentChestZNeg != null) PacketManager.sendPacketToClients(this.adjacentChestZNeg.getDescriptionPacket());;
-				if (this.adjacentChestZPos != null) PacketManager.sendPacketToClients(this.adjacentChestZPos.getDescriptionPacket());;
+                if (this.adjacentChestXNeg != null)
+                {
+                    PacketManager.sendPacketToClients(this.adjacentChestXNeg.getDescriptionPacket());
+                }
+                ;
+                if (this.adjacentChestXPos != null)
+                {
+                    PacketManager.sendPacketToClients(this.adjacentChestXPos.getDescriptionPacket());
+                }
+                ;
+                if (this.adjacentChestZNeg != null)
+                {
+                    PacketManager.sendPacketToClients(this.adjacentChestZNeg.getDescriptionPacket());
+                }
+                ;
+                if (this.adjacentChestZPos != null)
+                {
+                    PacketManager.sendPacketToClients(this.adjacentChestZPos.getDescriptionPacket());
+                }
+                ;
 
-				return true;
-			}
-		}
+                return true;
+            }
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	@Override
-	public boolean onActivatedWithoutKey(EntityPlayer player, int face)
-	{
-		if (this.locked)
-		{
-			if (player.worldObj.isRemote)
-			{
-				PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 18, new Object[] {this.getTierOfKeyRequired()}));
-			}
-			return true;
-		}
+    @Override
+    public boolean onActivatedWithoutKey(EntityPlayer player, int face)
+    {
+        if (this.locked)
+        {
+            if (player.worldObj.isRemote)
+            {
+                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 18, new Object[]
+                { this.getTierOfKeyRequired() }));
+            }
+            return true;
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	@Override
-	public boolean canBreak()
-	{
-		return false;
-	}
+    @Override
+    public boolean canBreak()
+    {
+        return false;
+    }
 }

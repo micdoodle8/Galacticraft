@@ -6,16 +6,14 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.world.IBlockAccess;
-
 import org.lwjgl.opengl.GL11;
-
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 /**
  * Copyright 2012-2013, micdoodle8
- *
- *  All rights reserved.
- *
+ * 
+ * All rights reserved.
+ * 
  */
 public class GCCoreBlockRendererLandingPad implements ISimpleBlockRenderingHandler
 {
@@ -26,21 +24,21 @@ public class GCCoreBlockRendererLandingPad implements ISimpleBlockRenderingHandl
         this.renderID = var1;
     }
 
-	@Override
+    @Override
     public boolean renderWorldBlock(IBlockAccess var1, int var2, int var3, int var4, Block var5, int var6, RenderBlocks var7)
     {
-    	this.renderBlockLandingPad(var7, var5, var1, var2, var3, var4);
+        this.renderBlockLandingPad(var7, var5, var1, var2, var3, var4);
         return true;
     }
 
     @Override
-	public boolean shouldRender3DInInventory()
+    public boolean shouldRender3DInInventory()
     {
         return true;
     }
 
     @Override
-	public int getRenderId()
+    public int getRenderId()
     {
         return this.renderID;
     }
@@ -50,7 +48,7 @@ public class GCCoreBlockRendererLandingPad implements ISimpleBlockRenderingHandl
         final Tessellator var3 = Tessellator.instance;
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-//        FMLClientHandler.instance().getClient().renderEngine.func_98187_b("/micdoodle8/mods/galacticraft/core/client/entities/meteor.png");
+        // FMLClientHandler.instance().getClient().renderEngine.func_98187_b("/micdoodle8/mods/galacticraft/core/client/entities/meteor.png");
         var0.setRenderBounds(0.15F, 0.15F, 0.15F, 0.85F, 0.85F, 0.85F);
         var3.startDrawingQuads();
         var3.setNormal(0.0F, -0.8F, 0.0F);
@@ -78,20 +76,18 @@ public class GCCoreBlockRendererLandingPad implements ISimpleBlockRenderingHandl
         var3.draw();
     }
 
-	@Override
-	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer)
-	{
-    	GCCoreBlockRendererLandingPad.renderInvNormalBlock(renderer, block, metadata);
-	}
+    @Override
+    public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer)
+    {
+        GCCoreBlockRendererLandingPad.renderInvNormalBlock(renderer, block, metadata);
+    }
 
     public void renderBlockLandingPad(RenderBlocks renderBlocks, Block par1Block, IBlockAccess var1, int par2, int par3, int par4)
     {
         final int var5 = var1.getBlockMetadata(par2, par3, par4);
-        final int var6 = var5 & 3;
-        
         if (var1.getBlockMetadata(par2, par3, par4) == 1)
         {
-            renderBlocks.setOverrideBlockTexture(((GCCoreBlockLandingPadFull)par1Block).getIcon(0, 1));
+            renderBlocks.setOverrideBlockTexture(((GCCoreBlockLandingPadFull) par1Block).getIcon(0, 1));
         }
 
         renderBlocks.setRenderBounds(-1F, 0F, -1F, 2F, 0.2F, 2F);
@@ -99,7 +95,7 @@ public class GCCoreBlockRendererLandingPad implements ISimpleBlockRenderingHandl
 
         if (var1.getBlockMetadata(par2, par3, par4) == 1)
         {
-            renderBlocks.setOverrideBlockTexture(((GCCoreBlockLandingPadFull)par1Block).getIcon(0, 2));
+            renderBlocks.setOverrideBlockTexture(((GCCoreBlockLandingPadFull) par1Block).getIcon(0, 2));
         }
 
         if (var1.getBlockMetadata(par2, par3, par4) == 0)

@@ -5,25 +5,23 @@ import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityBuggy;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
-
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.GL11;
-
 import cpw.mods.fml.client.FMLClientHandler;
 
 /**
  * Copyright 2012-2013, micdoodle8
- *
- *  All rights reserved.
- *
+ * 
+ * All rights reserved.
+ * 
  */
 public class GCCoreItemRendererBuggy implements IItemRenderer
 {
-	GCCoreEntityBuggy spaceship = new GCCoreEntityBuggy(FMLClientHandler.instance().getClient().theWorld);
-	GCCoreModelBuggy modelSpaceship = new GCCoreModelBuggy();
+    GCCoreEntityBuggy spaceship = new GCCoreEntityBuggy(FMLClientHandler.instance().getClient().theWorld);
+    GCCoreModelBuggy modelSpaceship = new GCCoreModelBuggy();
 
-	private void renderPipeItem(ItemRenderType type, RenderBlocks render, ItemStack item, float translateX, float translateY, float translateZ)
-	{
+    private void renderPipeItem(ItemRenderType type, RenderBlocks render, ItemStack item, float translateX, float translateY, float translateZ)
+    {
         GL11.glPushMatrix();
         long var10 = this.spaceship.entityId * 493286711L;
         var10 = var10 * var10 * 4392167121L + var10 * 98761L;
@@ -41,69 +39,69 @@ public class GCCoreItemRendererBuggy implements IItemRenderer
         GL11.glScalef(-0.4F, -0.4F, 0.4F);
         if (type == ItemRenderType.INVENTORY || type == ItemRenderType.ENTITY)
         {
-        	if (type == ItemRenderType.INVENTORY)
-        	{
+            if (type == ItemRenderType.INVENTORY)
+            {
                 GL11.glScalef(0.7F, 0.7F, 0.7F);
-            	GL11.glRotatef(0F, 1F, 0F, 1F);
-            	GL11.glRotatef(10F, 1F, 0F, 0F);
-            	GL11.glRotatef(30F, 0F, 0F, 1F);
-        	}
-        	else
-        	{
-            	GL11.glTranslatef(0, -0.9F, 0);
-            	GL11.glScalef(0.5F, 0.5F, 0.5F);
-        	}
+                GL11.glRotatef(0F, 1F, 0F, 1F);
+                GL11.glRotatef(10F, 1F, 0F, 0F);
+                GL11.glRotatef(30F, 0F, 0F, 1F);
+            }
+            else
+            {
+                GL11.glTranslatef(0, -0.9F, 0);
+                GL11.glScalef(0.5F, 0.5F, 0.5F);
+            }
 
-        	GL11.glScalef(1.3F, 1.3F, 1.3F);
-        	GL11.glTranslatef(0, -0.6F, 0);
-        	GL11.glRotatef(Sys.getTime() / 90F % 360F, 0F, 1F, 0F);
+            GL11.glScalef(1.3F, 1.3F, 1.3F);
+            GL11.glTranslatef(0, -0.6F, 0);
+            GL11.glRotatef(Sys.getTime() / 90F % 360F, 0F, 1F, 0F);
         }
         FMLClientHandler.instance().getClient().renderEngine.bindTexture("/micdoodle8/mods/galacticraft/core/client/entities/buggy.png");
         this.modelSpaceship.setType(item.getItemDamage());
         this.modelSpaceship.render(this.spaceship, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
         GL11.glPopMatrix();
-	}
+    }
 
+    /** IItemRenderer implementation **/
 
-	/** IItemRenderer implementation **/
+    @Override
+    public boolean handleRenderType(ItemStack item, ItemRenderType type)
+    {
+        switch (type)
+        {
+        case ENTITY:
+            return true;
+        case EQUIPPED:
+            return true;
+        case INVENTORY:
+            return true;
+        default:
+            return false;
+        }
+    }
 
-	@Override
-	public boolean handleRenderType(ItemStack item, ItemRenderType type)
-	{
-		switch (type) {
-		case ENTITY:
-			return true;
-		case EQUIPPED:
-			return true;
-		case INVENTORY:
-			return true;
-		default:
-			return false;
-		}
-	}
+    @Override
+    public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper)
+    {
+        return true;
+    }
 
-	@Override
-	public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper)
-	{
-		return true;
-	}
-
-	@Override
-	public void renderItem(ItemRenderType type, ItemStack item, Object... data)
-	{
-		switch (type)
-		{
-		case EQUIPPED:
-			this.renderPipeItem(type, (RenderBlocks) data[0], item, -0.5f, -0.5f, -0.5f);
-			break;
-		case INVENTORY:
-			this.renderPipeItem(type, (RenderBlocks) data[0], item, -0.5f, -0.5f, -0.5f);
-			break;
-		case ENTITY:
-			this.renderPipeItem(type, (RenderBlocks) data[0], item, -0.5f, -0.5f, -0.5f);
-			break;
-		default:
-		}
-	}
+    @Override
+    public void renderItem(ItemRenderType type, ItemStack item, Object... data)
+    {
+        switch (type)
+        {
+        case EQUIPPED:
+            this.renderPipeItem(type, (RenderBlocks) data[0], item, -0.5f, -0.5f, -0.5f);
+            break;
+        case INVENTORY:
+            this.renderPipeItem(type, (RenderBlocks) data[0], item, -0.5f, -0.5f, -0.5f);
+            break;
+        case ENTITY:
+            this.renderPipeItem(type, (RenderBlocks) data[0], item, -0.5f, -0.5f, -0.5f);
+            break;
+        default:
+        }
+    }
 
 }

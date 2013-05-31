@@ -14,38 +14,38 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
- *
- *  All rights reserved.
- *
+ * 
+ * All rights reserved.
+ * 
  */
 public class GCCoreItemSensorGlasses extends ItemArmor implements IArmorTextureProvider
 {
-	public GCCoreItemSensorGlasses(int par1, EnumArmorMaterial material, int i, int j)
-	{
-		super(par1, material, i, j);
-	}
+    public GCCoreItemSensorGlasses(int par1, EnumArmorMaterial material, int i, int j)
+    {
+        super(par1, material, i, j);
+    }
 
-	@Override
+    @Override
     public CreativeTabs getCreativeTab()
     {
         return GalacticraftCore.galacticraftTab;
     }
 
     @Override
-	@SideOnly(Side.CLIENT)
+    @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister par1IconRegister)
     {
         this.itemIcon = par1IconRegister.registerIcon("galacticraftcore:sensor_glasses" + GalacticraftCore.TEXTURE_SUFFIX);
     }
 
     @Override
-	public String getArmorTextureFile(ItemStack itemstack)
+    public String getArmorTextureFile(ItemStack itemstack)
     {
-    	return "/micdoodle8/mods/galacticraft/core/client/armor/sensor_1_alt.png";
+        return "/micdoodle8/mods/galacticraft/core/client/armor/sensor_1_alt.png";
     }
 
     @Override
-	@SideOnly(Side.CLIENT)
+    @SideOnly(Side.CLIENT)
     public EnumRarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;

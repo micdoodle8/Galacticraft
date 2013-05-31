@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.items;
 
 import java.util.List;
-
 import mekanism.api.EnumColor;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import net.minecraft.block.BlockSapling;
@@ -17,15 +16,15 @@ public class GCCoreItemSapling extends ItemMultiTextureTile
         super(par1, GCCoreBlocks.sapling, BlockSapling.WOOD_TYPES);
     }
 
-	@Override
+    @Override
     public CreativeTabs getCreativeTab()
     {
         return null;
     }
 
     @Override
-	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
+    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
     {
-    	par3List.add(EnumColor.RED + "Requires 4 blocks of water nearby to grow");
+        par3List.add(EnumColor.RED + "Requires 4 blocks of water nearby to grow");
     }
 }

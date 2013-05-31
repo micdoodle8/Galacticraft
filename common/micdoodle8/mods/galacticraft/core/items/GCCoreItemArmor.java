@@ -14,52 +14,52 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreItemArmor extends ItemArmor implements IArmorTextureProvider
 {
-	public boolean attachedMask;
-	private final EnumArmorMaterial material;
+    public boolean attachedMask;
+    private final EnumArmorMaterial material;
 
-	public GCCoreItemArmor(int par1, EnumArmorMaterial par2EnumArmorMaterial, int par3, int par4, boolean breathable)
-	{
-		super(par1, par2EnumArmorMaterial, par3, par4);
-		this.material = par2EnumArmorMaterial;
-		this.attachedMask = breathable;
-	}
+    public GCCoreItemArmor(int par1, EnumArmorMaterial par2EnumArmorMaterial, int par3, int par4, boolean breathable)
+    {
+        super(par1, par2EnumArmorMaterial, par3, par4);
+        this.material = par2EnumArmorMaterial;
+        this.attachedMask = breathable;
+    }
 
-	@Override
+    @Override
     public CreativeTabs getCreativeTab()
     {
         return GalacticraftCore.galacticraftTab;
     }
 
     @Override
-	@SideOnly(Side.CLIENT)
+    @SideOnly(Side.CLIENT)
     public EnumRarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;
     }
 
-	@Override
+    @Override
     public String getArmorTextureFile(ItemStack itemstack)
     {
-    	if (this.material == GCCoreItems.steelARMOR)
-    	{
-    		if (itemstack.getItem().itemID == GCCoreItems.steelHelmet.itemID)
-    		{
-    			return "/micdoodle8/mods/galacticraft/core/client/armor/titanium_1.png";
-    		}
-    		else if (itemstack.getItem().itemID == GCCoreItems.steelChestplate.itemID || itemstack.getItem().itemID == GCCoreItems.steelBoots.itemID)
-    		{
-    			return "/micdoodle8/mods/galacticraft/core/client/armor/titanium_2.png";
-    		}
-    		else if (itemstack.getItem().itemID == GCCoreItems.steelLeggings.itemID)
-    		{
-    			return "/micdoodle8/mods/galacticraft/core/client/armor/titanium_3.png";
-    		}
-    	}
+        if (this.material == GCCoreItems.steelARMOR)
+        {
+            if (itemstack.getItem().itemID == GCCoreItems.steelHelmet.itemID)
+            {
+                return "/micdoodle8/mods/galacticraft/core/client/armor/titanium_1.png";
+            }
+            else if (itemstack.getItem().itemID == GCCoreItems.steelChestplate.itemID || itemstack.getItem().itemID == GCCoreItems.steelBoots.itemID)
+            {
+                return "/micdoodle8/mods/galacticraft/core/client/armor/titanium_2.png";
+            }
+            else if (itemstack.getItem().itemID == GCCoreItems.steelLeggings.itemID)
+            {
+                return "/micdoodle8/mods/galacticraft/core/client/armor/titanium_3.png";
+            }
+        }
 
-    	return null;
+        return null;
     }
 
-	@Override
+    @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister par1IconRegister)
     {

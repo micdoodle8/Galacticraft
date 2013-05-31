@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.items;
 
 import java.lang.reflect.Field;
-
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
@@ -23,35 +22,35 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreItemOilExtractor extends Item
 {
-	protected Icon[] icons = new Icon[5];
+    protected Icon[] icons = new Icon[5];
 
-	public static final String[] names = {
-		"extactor_1", // 0
-		"extactor_2", // 1
-		"extactor_3", // 2
-		"extactor_4", // 3
-		"extactor_5"}; // 4
+    public static final String[] names =
+    { "extactor_1", // 0
+    "extactor_2", // 1
+    "extactor_3", // 2
+    "extactor_4", // 3
+    "extactor_5" }; // 4
 
-	public GCCoreItemOilExtractor(int par1)
-	{
-		super(par1);
-		this.setMaxStackSize(1);
-	}
+    public GCCoreItemOilExtractor(int par1)
+    {
+        super(par1);
+        this.setMaxStackSize(1);
+    }
 
-	@Override
+    @Override
     public CreativeTabs getCreativeTab()
     {
         return GalacticraftCore.galacticraftTab;
     }
 
     @Override
-	@SideOnly(Side.CLIENT)
+    @SideOnly(Side.CLIENT)
     public EnumRarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;
     }
 
-	@Override
+    @Override
     public EnumAction getItemUseAction(ItemStack par1ItemStack)
     {
         return EnumAction.bow;
@@ -60,77 +59,77 @@ public class GCCoreItemOilExtractor extends Item
     @Override
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
-    	if (this.getNearestOilBlock(par3EntityPlayer) != null)
+        if (this.getNearestOilBlock(par3EntityPlayer) != null)
         {
-        	if (this.openCanister(par3EntityPlayer) != null)
-        	{
+            if (this.openCanister(par3EntityPlayer) != null)
+            {
                 par3EntityPlayer.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
-        	}
+            }
         }
 
         return par1ItemStack;
     }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister iconRegister)
-	{
-		this.icons = new Icon[5];
-		this.icons[0] = iconRegister.registerIcon("galacticraftcore:extractor_1" + GalacticraftCore.TEXTURE_SUFFIX);
-		this.icons[1] = iconRegister.registerIcon("galacticraftcore:extractor_2" + GalacticraftCore.TEXTURE_SUFFIX);
-		this.icons[2] = iconRegister.registerIcon("galacticraftcore:extractor_3" + GalacticraftCore.TEXTURE_SUFFIX);
-		this.icons[3] = iconRegister.registerIcon("galacticraftcore:extractor_4" + GalacticraftCore.TEXTURE_SUFFIX);
-		this.icons[4] = iconRegister.registerIcon("galacticraftcore:extractor_5" + GalacticraftCore.TEXTURE_SUFFIX);
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IconRegister iconRegister)
+    {
+        this.icons = new Icon[5];
+        this.icons[0] = iconRegister.registerIcon("galacticraftcore:extractor_1" + GalacticraftCore.TEXTURE_SUFFIX);
+        this.icons[1] = iconRegister.registerIcon("galacticraftcore:extractor_2" + GalacticraftCore.TEXTURE_SUFFIX);
+        this.icons[2] = iconRegister.registerIcon("galacticraftcore:extractor_3" + GalacticraftCore.TEXTURE_SUFFIX);
+        this.icons[3] = iconRegister.registerIcon("galacticraftcore:extractor_4" + GalacticraftCore.TEXTURE_SUFFIX);
+        this.icons[4] = iconRegister.registerIcon("galacticraftcore:extractor_5" + GalacticraftCore.TEXTURE_SUFFIX);
 
-		this.itemIcon = this.icons[0];
-	}
+        this.itemIcon = this.icons[0];
+    }
 
-	@Override
-	public String getUnlocalizedName(ItemStack itemStack)
-	{
-		return "item.oilExtractor";
-	}
+    @Override
+    public String getUnlocalizedName(ItemStack itemStack)
+    {
+        return "item.oilExtractor";
+    }
 
     @Override
     public void onUsingItemTick(ItemStack par1ItemStack, EntityPlayer par3EntityPlayer, int count)
     {
-    	Vector3 blockHit = null;
+        Vector3 blockHit = null;
 
         if ((blockHit = this.getNearestOilBlock(par3EntityPlayer)) != null)
         {
-    		final int x = MathHelper.floor_double(blockHit.x), y = MathHelper.floor_double(blockHit.y), z = MathHelper.floor_double(blockHit.z);
+            final int x = MathHelper.floor_double(blockHit.x), y = MathHelper.floor_double(blockHit.y), z = MathHelper.floor_double(blockHit.z);
 
-    		if (this.isOilBlock(par3EntityPlayer, par3EntityPlayer.worldObj, x, y, z))
-    		{
-        		par3EntityPlayer.worldObj.setBlock(x, y, z, 0);
+            if (this.isOilBlock(par3EntityPlayer, par3EntityPlayer.worldObj, x, y, z))
+            {
+                par3EntityPlayer.worldObj.setBlock(x, y, z, 0);
 
-            	if (this.openCanister(par3EntityPlayer) != null)
-            	{
-                	final ItemStack canister = this.openCanister(par3EntityPlayer);
+                if (this.openCanister(par3EntityPlayer) != null)
+                {
+                    final ItemStack canister = this.openCanister(par3EntityPlayer);
 
-                	if (canister != null && count % 5 == 0 && canister.getItemDamage() > 5)
-                	{
-                		canister.setItemDamage(canister.getItemDamage() - 5);
-                	}
-            	}
-    		}
+                    if (canister != null && count % 5 == 0 && canister.getItemDamage() > 5)
+                    {
+                        canister.setItemDamage(canister.getItemDamage() - 5);
+                    }
+                }
+            }
         }
     }
 
     private ItemStack openCanister(EntityPlayer player)
     {
-    	for (final ItemStack stack : player.inventory.mainInventory)
-    	{
-    		if (stack != null && stack.getItem() instanceof GCCoreItemOilCanister)
-    		{
-    			if (stack.getMaxDamage() - stack.getItemDamage() >= 0 && stack.getMaxDamage() - stack.getItemDamage() < 60)
-    			{
-    				return stack;
-    			}
-    		}
-    	}
+        for (final ItemStack stack : player.inventory.mainInventory)
+        {
+            if (stack != null && stack.getItem() instanceof GCCoreItemOilCanister)
+            {
+                if (stack.getMaxDamage() - stack.getItemDamage() >= 0 && stack.getMaxDamage() - stack.getItemDamage() < 60)
+                {
+                    return stack;
+                }
+            }
+        }
 
-    	return null;
+        return null;
     }
 
     @Override
@@ -146,76 +145,76 @@ public class GCCoreItemOilExtractor extends Item
     }
 
     @Override
-	public Icon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining)
+    public Icon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining)
     {
-		final int count2 = useRemaining / 2;
+        final int count2 = useRemaining / 2;
 
-		switch (count2 % 5)
-		{
-		case 0:
-			if (useRemaining == 0)
-			{
-				return this.icons[0];
-			}
-			return this.icons[4];
-		case 1:
-			return this.icons[3];
-		case 2:
-			return this.icons[2];
-		case 3:
-			return this.icons[1];
-		case 4:
-			return this.icons[0];
-		}
+        switch (count2 % 5)
+        {
+        case 0:
+            if (useRemaining == 0)
+            {
+                return this.icons[0];
+            }
+            return this.icons[4];
+        case 1:
+            return this.icons[3];
+        case 2:
+            return this.icons[2];
+        case 3:
+            return this.icons[1];
+        case 4:
+            return this.icons[0];
+        }
 
-		return this.icons[0];
+        return this.icons[0];
     }
 
     @Override
-	public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4)
+    public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4)
     {
-    	if (par2World.isRemote)
-    	{
-        	this.itemIcon = this.icons[0];
-    	}
+        if (par2World.isRemote)
+        {
+            this.itemIcon = this.icons[0];
+        }
     }
 
-	private boolean isOilBlock(EntityPlayer player, World world, int x, int y, int z)
-	{
-		Class buildCraftClass = null;
+    private boolean isOilBlock(EntityPlayer player, World world, int x, int y, int z)
+    {
+        Class buildCraftClass = null;
 
-		try
-		{
-			if ((buildCraftClass = Class.forName("buildcraft.BuildCraftEnergy")) != null)
-			{
-				for (final Field f : buildCraftClass.getFields())
-				{
-					if (f.getName().equals("oilMoving") || f.getName().equals("oilStill"))
-					{
-						final Block block = (Block) f.get(null);
+        try
+        {
+            if ((buildCraftClass = Class.forName("buildcraft.BuildCraftEnergy")) != null)
+            {
+                for (final Field f : buildCraftClass.getFields())
+                {
+                    if (f.getName().equals("oilMoving") || f.getName().equals("oilStill"))
+                    {
+                        final Block block = (Block) f.get(null);
 
-						if (world.getBlockId(x, y, z) == block.blockID && world.getBlockMetadata(x, y, z) == 0)
-						{
-							return true;
-						}
-					}
-				}
-			}
-		}
-		catch (final Throwable cnfe)
-		{
-		}
+                        if (world.getBlockId(x, y, z) == block.blockID && world.getBlockMetadata(x, y, z) == 0)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        catch (final Throwable cnfe)
+        {
+        }
 
-		if ((world.getBlockId(x, y, z) == GCCoreBlocks.crudeOilMoving.blockID || world.getBlockId(x, y, z) == GCCoreBlocks.crudeOilStill.blockID) && world.getBlockMetadata(x, y, z) == 0)
-		{
-			return true;
-		}
+        if ((world.getBlockId(x, y, z) == GCCoreBlocks.crudeOilMoving.blockID || world.getBlockId(x, y, z) == GCCoreBlocks.crudeOilStill.blockID) && world.getBlockMetadata(x, y, z) == 0)
+        {
+            return true;
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	private Vector3 getNearestOilBlock(EntityPlayer par1EntityPlayer)
-	{
+    private Vector3 getNearestOilBlock(EntityPlayer par1EntityPlayer)
+    {
         final float var4 = 1.0F;
         final float var5 = par1EntityPlayer.prevRotationPitch + (par1EntityPlayer.rotationPitch - par1EntityPlayer.prevRotationPitch) * var4;
         final float var6 = par1EntityPlayer.prevRotationYaw + (par1EntityPlayer.rotationYaw - par1EntityPlayer.prevRotationYaw) * var4;
@@ -223,8 +222,8 @@ public class GCCoreItemOilExtractor extends Item
         final double var9 = par1EntityPlayer.prevPosY + (par1EntityPlayer.posY - par1EntityPlayer.prevPosY) * var4 + 1.62D - par1EntityPlayer.yOffset;
         final double var11 = par1EntityPlayer.prevPosZ + (par1EntityPlayer.posZ - par1EntityPlayer.prevPosZ) * var4;
         final Vector3 var13 = new Vector3(var7, var9, var11);
-        final float var14 = MathHelper.cos(-var6 * 0.017453292F - (float)Math.PI);
-        final float var15 = MathHelper.sin(-var6 * 0.017453292F - (float)Math.PI);
+        final float var14 = MathHelper.cos(-var6 * 0.017453292F - (float) Math.PI);
+        final float var15 = MathHelper.sin(-var6 * 0.017453292F - (float) Math.PI);
         final float var16 = -MathHelper.cos(-var5 * 0.017453292F);
         final float var17 = MathHelper.sin(-var5 * 0.017453292F);
         final float var18 = var15 * var16;
@@ -233,7 +232,7 @@ public class GCCoreItemOilExtractor extends Item
 
         if (par1EntityPlayer instanceof EntityPlayerMP)
         {
-            var21 = ((EntityPlayerMP)par1EntityPlayer).theItemInWorldManager.getBlockReachDistance();
+            var21 = ((EntityPlayerMP) par1EntityPlayer).theItemInWorldManager.getBlockReachDistance();
         }
 
         for (double dist = 0.0; dist <= var21; dist += 1D)
@@ -242,10 +241,10 @@ public class GCCoreItemOilExtractor extends Item
 
             if (this.isOilBlock(par1EntityPlayer, par1EntityPlayer.worldObj, MathHelper.floor_double(var23.x), MathHelper.floor_double(var23.y), MathHelper.floor_double(var23.z)))
             {
-            	return var23;
+                return var23;
             }
         }
 
         return null;
-	}
+    }
 }

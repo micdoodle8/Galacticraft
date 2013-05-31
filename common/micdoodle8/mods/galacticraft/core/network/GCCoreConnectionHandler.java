@@ -17,38 +17,39 @@ public class GCCoreConnectionHandler implements IConnectionHandler
 {
     private static boolean connected = false;
 
-	@Override
-	public void playerLoggedIn(Player player, NetHandler netHandler, INetworkManager manager)
-	{
-		if (player instanceof GCCorePlayerMP)
-		{
-			final GCCorePlayerMP playerMP = (GCCorePlayerMP) player;
-			PacketDispatcher.sendPacketToPlayer(GCCorePacketSchematicList.buildSchematicListPacket(playerMP.unlockedSchematics), player);
-			PacketDispatcher.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 18, new Object[] {((GCCorePlayerMP) player).spaceStationDimensionID}), player);
-	    }
-	}
+    @Override
+    public void playerLoggedIn(Player player, NetHandler netHandler, INetworkManager manager)
+    {
+        if (player instanceof GCCorePlayerMP)
+        {
+            final GCCorePlayerMP playerMP = (GCCorePlayerMP) player;
+            PacketDispatcher.sendPacketToPlayer(GCCorePacketSchematicList.buildSchematicListPacket(playerMP.unlockedSchematics), player);
+            PacketDispatcher.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 18, new Object[]
+            { ((GCCorePlayerMP) player).spaceStationDimensionID }), player);
+        }
+    }
 
-	@Override
-	public String connectionReceived(NetLoginHandler netHandler, INetworkManager manager)
-	{
-		manager.addToSendQueue(GCCorePacketDimensionListSpaceStations.buildDimensionListPacket(WorldUtil.registeredSpaceStations));
-		manager.addToSendQueue(GCCorePacketDimensionListPlanets.buildDimensionListPacket(WorldUtil.registeredPlanets));
-		return null;
-	}
+    @Override
+    public String connectionReceived(NetLoginHandler netHandler, INetworkManager manager)
+    {
+        manager.addToSendQueue(GCCorePacketDimensionListSpaceStations.buildDimensionListPacket(WorldUtil.registeredSpaceStations));
+        manager.addToSendQueue(GCCorePacketDimensionListPlanets.buildDimensionListPacket(WorldUtil.registeredPlanets));
+        return null;
+    }
 
-	@Override
-	public void connectionOpened(NetHandler netClientHandler, String server, int port, INetworkManager manager)
-	{
-	}
+    @Override
+    public void connectionOpened(NetHandler netClientHandler, String server, int port, INetworkManager manager)
+    {
+    }
 
-	@Override
-	public void connectionOpened(NetHandler netClientHandler, MinecraftServer server, INetworkManager manager)
-	{
-	}
+    @Override
+    public void connectionOpened(NetHandler netClientHandler, MinecraftServer server, INetworkManager manager)
+    {
+    }
 
-	@Override
-	public void connectionClosed(INetworkManager manager)
-	{
+    @Override
+    public void connectionClosed(INetworkManager manager)
+    {
         if (GCCoreConnectionHandler.connected)
         {
             WorldUtil.unregisterPlanets();
@@ -56,11 +57,11 @@ public class GCCoreConnectionHandler implements IConnectionHandler
         }
 
         GCCoreConnectionHandler.connected = false;
-	}
+    }
 
-	@Override
-	public void clientLoggedIn(NetHandler clientHandler, INetworkManager manager, Packet1Login login)
-	{
+    @Override
+    public void clientLoggedIn(NetHandler clientHandler, INetworkManager manager, Packet1Login login)
+    {
         GCCoreConnectionHandler.connected = true;
-	}
+    }
 }

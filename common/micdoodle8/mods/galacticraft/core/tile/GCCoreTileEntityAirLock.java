@@ -1,19 +1,18 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import java.util.ArrayList;
-
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import net.minecraft.nbt.NBTTagCompound;
 import universalelectricity.prefab.tile.TileEntityAdvanced;
 
 public class GCCoreTileEntityAirLock extends TileEntityAdvanced
 {
-	public boolean active;
-	public boolean lastActive;
-	public ArrayList<GCCoreTileEntityAirLock> otherAirLocks;
-	public ArrayList<GCCoreTileEntityAirLock> lastOtherAirLocks;
-	private AirLockProtocol protocol;
-	private AirLockProtocol lastProtocol = this.protocol;
+    public boolean active;
+    public boolean lastActive;
+    public ArrayList<GCCoreTileEntityAirLock> otherAirLocks;
+    public ArrayList<GCCoreTileEntityAirLock> lastOtherAirLocks;
+    private AirLockProtocol protocol;
+    private AirLockProtocol lastProtocol = this.protocol;
 
     @Override
     public boolean canUpdate()
@@ -22,85 +21,85 @@ public class GCCoreTileEntityAirLock extends TileEntityAdvanced
     }
 
     @Override
-	public void updateEntity()
+    public void updateEntity()
     {
-    	super.updateEntity();
+        super.updateEntity();
 
-    	if (this.protocol == null)
-    	{
-    		this.protocol = this.lastProtocol = new AirLockProtocol(this, 40);
-    	}
+        if (this.protocol == null)
+        {
+            this.protocol = this.lastProtocol = new AirLockProtocol(this, 40);
+        }
 
-    	if (this.ticks % 10 == 0 && !this.worldObj.isRemote)
-    	{
-    		this.otherAirLocks = this.protocol.calculate();
+        if (this.ticks % 10 == 0 && !this.worldObj.isRemote)
+        {
+            this.otherAirLocks = this.protocol.calculate();
 
-    		if (this.active && (this.otherAirLocks != null || this.otherAirLocks != null && this.lastOtherAirLocks != null && this.otherAirLocks != this.lastOtherAirLocks ||this.otherAirLocks != null && this.lastOtherAirLocks != null && this.otherAirLocks.size() != this.lastOtherAirLocks.size()))
-    		{
-        		if (this.protocol.minX != this.protocol.maxX)
-        		{
-        			for (int x = this.protocol.minX + 1; x <= this.protocol.maxX - 1; x++)
-        			{
-            			for (int y = this.protocol.minY + 1; y <= this.protocol.maxY - 1; y++)
-            			{
-            				this.worldObj.setBlock(x, y, this.protocol.minZ, GCCoreBlocks.airLockSeal.blockID, 0, 3);
-            			}
-        			}
-        		}
-        		else if (this.protocol.minZ != this.protocol.maxZ)
-        		{
-        			for (int z = this.protocol.minZ + 1; z <= this.protocol.maxZ - 1; z++)
-        			{
-            			for (int y = this.protocol.minY + 1; y <= this.protocol.maxY - 1; y++)
-            			{
-            				this.worldObj.setBlock(this.protocol.minX, y, z, GCCoreBlocks.airLockSeal.blockID, 0, 3);
-            			}
-        			}
-        		}
-    		}
-    		else if (!this.active && this.lastActive || this.otherAirLocks == null && this.lastOtherAirLocks != null)
-    		{
-        		if (this.lastProtocol.minX != this.lastProtocol.maxX)
-        		{
-        			for (int x = this.lastProtocol.minX + 1; x <= this.lastProtocol.maxX - 1; x++)
-        			{
-            			for (int y = this.lastProtocol.minY + 1; y <= this.lastProtocol.maxY - 1; y++)
-            			{
-            				this.worldObj.setBlockToAir(x, y, this.lastProtocol.minZ);
-            			}
-        			}
-        		}
-        		else if (this.lastProtocol.minZ != this.lastProtocol.maxZ)
-        		{
-        			for (int z = this.lastProtocol.minZ + 1; z <= this.lastProtocol.maxZ - 1; z++)
-        			{
-            			for (int y = this.lastProtocol.minY + 1; y <= this.lastProtocol.maxY - 1; y++)
-            			{
-            				this.worldObj.setBlockToAir(this.lastProtocol.minX, y, z);
-            			}
-        			}
-        		}
-    		}
+            if (this.active && (this.otherAirLocks != null || this.otherAirLocks != null && this.lastOtherAirLocks != null && this.otherAirLocks != this.lastOtherAirLocks || this.otherAirLocks != null && this.lastOtherAirLocks != null && this.otherAirLocks.size() != this.lastOtherAirLocks.size()))
+            {
+                if (this.protocol.minX != this.protocol.maxX)
+                {
+                    for (int x = this.protocol.minX + 1; x <= this.protocol.maxX - 1; x++)
+                    {
+                        for (int y = this.protocol.minY + 1; y <= this.protocol.maxY - 1; y++)
+                        {
+                            this.worldObj.setBlock(x, y, this.protocol.minZ, GCCoreBlocks.airLockSeal.blockID, 0, 3);
+                        }
+                    }
+                }
+                else if (this.protocol.minZ != this.protocol.maxZ)
+                {
+                    for (int z = this.protocol.minZ + 1; z <= this.protocol.maxZ - 1; z++)
+                    {
+                        for (int y = this.protocol.minY + 1; y <= this.protocol.maxY - 1; y++)
+                        {
+                            this.worldObj.setBlock(this.protocol.minX, y, z, GCCoreBlocks.airLockSeal.blockID, 0, 3);
+                        }
+                    }
+                }
+            }
+            else if (!this.active && this.lastActive || this.otherAirLocks == null && this.lastOtherAirLocks != null)
+            {
+                if (this.lastProtocol.minX != this.lastProtocol.maxX)
+                {
+                    for (int x = this.lastProtocol.minX + 1; x <= this.lastProtocol.maxX - 1; x++)
+                    {
+                        for (int y = this.lastProtocol.minY + 1; y <= this.lastProtocol.maxY - 1; y++)
+                        {
+                            this.worldObj.setBlockToAir(x, y, this.lastProtocol.minZ);
+                        }
+                    }
+                }
+                else if (this.lastProtocol.minZ != this.lastProtocol.maxZ)
+                {
+                    for (int z = this.lastProtocol.minZ + 1; z <= this.lastProtocol.maxZ - 1; z++)
+                    {
+                        for (int y = this.lastProtocol.minY + 1; y <= this.lastProtocol.maxY - 1; y++)
+                        {
+                            this.worldObj.setBlockToAir(this.lastProtocol.minX, y, z);
+                        }
+                    }
+                }
+            }
 
-        	this.lastActive = this.active;
-        	this.lastOtherAirLocks = this.otherAirLocks;
-        	this.lastProtocol = this.protocol;
-    	}
+            this.lastActive = this.active;
+            this.lastOtherAirLocks = this.otherAirLocks;
+            this.lastProtocol = this.protocol;
+        }
     }
 
     @Override
     public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
-    	super.readFromNBT(par1NBTTagCompound);
-    	this.active = par1NBTTagCompound.getBoolean("active");
-    	this.lastActive = par1NBTTagCompound.getBoolean("lastActive");
+        super.readFromNBT(par1NBTTagCompound);
+        this.active = par1NBTTagCompound.getBoolean("active");
+        this.lastActive = par1NBTTagCompound.getBoolean("lastActive");
     }
 
     @Override
     public void writeToNBT(NBTTagCompound nbt)
     {
-    	super.writeToNBT(nbt);
-    	nbt.setBoolean("active", this.active);
-    	nbt.setBoolean("lastActive", this.lastActive);
+        super.writeToNBT(nbt);
+        nbt.setBoolean("active", this.active);
+        nbt.setBoolean("lastActive", this.lastActive);
     }
 }

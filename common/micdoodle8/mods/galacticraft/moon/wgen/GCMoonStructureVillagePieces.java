@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
-
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -22,7 +21,7 @@ public class GCMoonStructureVillagePieces
 
         while (var3.hasNext())
         {
-            if (((GCMoonStructureVillagePieceWeight)var3.next()).villagePiecesLimit == 0)
+            if (((GCMoonStructureVillagePieceWeight) var3.next()).villagePiecesLimit == 0)
             {
                 var3.remove();
             }
@@ -39,7 +38,7 @@ public class GCMoonStructureVillagePieces
 
         for (final Iterator var3 = par0List.iterator(); var3.hasNext(); var2 += var4.villagePieceWeight)
         {
-            var4 = (GCMoonStructureVillagePieceWeight)var3.next();
+            var4 = (GCMoonStructureVillagePieceWeight) var3.next();
 
             if (var4.villagePiecesLimit > 0 && var4.villagePiecesSpawned < var4.villagePiecesLimit)
             {
@@ -68,7 +67,7 @@ public class GCMoonStructureVillagePieces
             var10 = GCMoonComponentVillageHouse3.func_74921_a(par0ComponentVillageStartPiece, par2List, par3Random, par4, par5, par6, par7, par8);
         }
 
-        return (GCMoonComponentVillage)var10;
+        return (GCMoonComponentVillage) var10;
     }
 
     /**
@@ -94,7 +93,7 @@ public class GCMoonStructureVillagePieces
 
                 while (var11.hasNext())
                 {
-                    final GCMoonStructureVillagePieceWeight var12 = (GCMoonStructureVillagePieceWeight)var11.next();
+                    final GCMoonStructureVillagePieceWeight var12 = (GCMoonStructureVillagePieceWeight) var11.next();
                     var10 -= var12.villagePieceWeight;
 
                     if (var10 < 0)
@@ -136,7 +135,8 @@ public class GCMoonStructureVillagePieces
     }
 
     /**
-     * attempts to find a next Structure Component to be spawned, private Village function
+     * attempts to find a next Structure Component to be spawned, private
+     * Village function
      */
     private static StructureComponent getNextVillageStructureComponent(GCMoonComponentVillageStartPiece par0ComponentVillageStartPiece, List par1List, Random par2Random, int par3, int par4, int par5, int par6, int par7)
     {
@@ -150,9 +150,10 @@ public class GCMoonStructureVillagePieces
 
             if (var8 != null)
             {
-                final int var11 = var8.getBoundingBox().maxX - var8.getBoundingBox().minX;
-                final int var12 = var8.getBoundingBox().maxZ - var8.getBoundingBox().minZ;
-                //                if (par0ComponentVillageStartPiece.getWorldChunkManager().areBiomesViable(var9, var10, var13 / 2 + 4, GCMoonMapGenVillage.villageSpawnBiomes))
+                // if
+                // (par0ComponentVillageStartPiece.getWorldChunkManager().areBiomesViable(var9,
+                // var10, var13 / 2 + 4,
+                // GCMoonMapGenVillage.villageSpawnBiomes))
                 {
                     par1List.add(var8);
                     par0ComponentVillageStartPiece.field_74932_i.add(var8);
@@ -181,9 +182,10 @@ public class GCMoonStructureVillagePieces
             if (var8 != null && var8.minY > 10)
             {
                 final GCMoonComponentVillagePathGen var9 = new GCMoonComponentVillagePathGen(par0ComponentVillageStartPiece, par7, par2Random, var8, par6);
-                final int var12 = var9.getBoundingBox().maxX - var9.getBoundingBox().minX;
-                final int var13 = var9.getBoundingBox().maxZ - var9.getBoundingBox().minZ;
-                //                if (par0ComponentVillageStartPiece.getWorldChunkManager().areBiomesViable(var10, var11, var14 / 2 + 4, GCMoonMapGenVillage.villageSpawnBiomes))
+                // if
+                // (par0ComponentVillageStartPiece.getWorldChunkManager().areBiomesViable(var10,
+                // var11, var14 / 2 + 4,
+                // GCMoonMapGenVillage.villageSpawnBiomes))
                 {
                     par1List.add(var9);
                     par0ComponentVillageStartPiece.field_74930_j.add(var9);

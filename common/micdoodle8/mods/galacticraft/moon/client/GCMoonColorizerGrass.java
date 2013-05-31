@@ -16,13 +16,14 @@ public class GCMoonColorizerGrass
     }
 
     /**
-     * Gets grass color from temperature and humidity. Args: temperature, humidity
+     * Gets grass color from temperature and humidity. Args: temperature,
+     * humidity
      */
     public static int getGrassColor(double par0, double par2)
     {
         par2 *= par0;
-        int var4 = (int)(65536 - par0);
-        int var5 = (int)(65536 - par2);
+        int var4 = (int) (65536 - par0);
+        int var5 = (int) (65536 - par2);
         var4 = MathHelper.clamp_int(var4, 0, 65536);
         var5 = MathHelper.clamp_int(var5, 0, 65536);
         return GCMoonColorizerGrass.grassBuffer[var4];

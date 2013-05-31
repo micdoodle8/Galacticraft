@@ -11,13 +11,10 @@ import universalelectricity.prefab.SlotSpecific;
 
 public class GCCoreContainerFuelLoader extends Container
 {
-	private final GCCoreTileEntityFuelLoader fuelLoader;
-
     public GCCoreContainerFuelLoader(InventoryPlayer par1InventoryPlayer, GCCoreTileEntityFuelLoader fuelLoader)
     {
-    	this.fuelLoader = fuelLoader;
-		this.addSlotToContainer(new SlotSpecific(fuelLoader, 0, 51, 55, IItemElectric.class));
-		this.addSlotToContainer(new Slot(fuelLoader, 1, 7, 12));
+        this.addSlotToContainer(new SlotSpecific(fuelLoader, 0, 51, 55, IItemElectric.class));
+        this.addSlotToContainer(new Slot(fuelLoader, 1, 7, 12));
 
         int var6;
         int var7;
@@ -38,17 +35,17 @@ public class GCCoreContainerFuelLoader extends Container
         }
     }
 
-	@Override
-	public boolean canInteractWith(EntityPlayer var1)
-	{
-		return true;
-	}
+    @Override
+    public boolean canInteractWith(EntityPlayer var1)
+    {
+        return true;
+    }
 
-	@Override
-	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2)
+    @Override
+    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2)
     {
         ItemStack var3 = null;
-        final Slot var4 = (Slot)this.inventorySlots.get(par2);
+        final Slot var4 = (Slot) this.inventorySlots.get(par2);
 
         if (var4 != null && var4.getHasStack())
         {
@@ -69,7 +66,7 @@ public class GCCoreContainerFuelLoader extends Container
 
             if (var5.stackSize == 0)
             {
-                var4.putStack((ItemStack)null);
+                var4.putStack((ItemStack) null);
             }
             else
             {

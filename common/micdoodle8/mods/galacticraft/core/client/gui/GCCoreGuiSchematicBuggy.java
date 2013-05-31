@@ -7,12 +7,11 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.StatCollector;
-
 import org.lwjgl.opengl.GL11;
 
 public class GCCoreGuiSchematicBuggy extends GuiContainer implements ISchematicResultPage
 {
-	private int pageIndex;
+    private int pageIndex;
 
     public GCCoreGuiSchematicBuggy(InventoryPlayer par1InventoryPlayer)
     {
@@ -23,7 +22,7 @@ public class GCCoreGuiSchematicBuggy extends GuiContainer implements ISchematicR
     @Override
     public void initGui()
     {
-    	super.initGui();
+        super.initGui();
         this.buttonList.clear();
         this.buttonList.add(new GuiButton(0, this.width / 2 - 130, this.height / 2 - 30 + 27, 40, 20, "Back"));
         this.buttonList.add(new GuiButton(1, this.width / 2 + 90, this.height / 2 - 30 + 27, 40, 20, "Next"));
@@ -34,16 +33,14 @@ public class GCCoreGuiSchematicBuggy extends GuiContainer implements ISchematicR
     {
         if (par1GuiButton.enabled)
         {
-        	final Object[] toSend;
-
             switch (par1GuiButton.id)
             {
             case 0:
-            	SchematicRegistry.flipToLastPage(this.pageIndex);
+                SchematicRegistry.flipToLastPage(this.pageIndex);
                 break;
             case 1:
-            	SchematicRegistry.flipToNextPage(this.pageIndex);
-            	break;
+                SchematicRegistry.flipToNextPage(this.pageIndex);
+                break;
             }
         }
     }
@@ -65,9 +62,9 @@ public class GCCoreGuiSchematicBuggy extends GuiContainer implements ISchematicR
         this.drawTexturedModalRect(var5, var6, 0, 0, this.xSize, 220);
     }
 
-	@Override
-	public void setPageIndex(int index)
-	{
-		this.pageIndex = index;
-	}
+    @Override
+    public void setPageIndex(int index)
+    {
+        this.pageIndex = index;
+    }
 }

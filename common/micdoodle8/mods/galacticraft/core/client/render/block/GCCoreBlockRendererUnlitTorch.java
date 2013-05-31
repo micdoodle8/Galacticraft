@@ -7,16 +7,14 @@ import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
-
 import org.lwjgl.opengl.GL11;
-
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 /**
  * Copyright 2012-2013, micdoodle8
- *
- *  All rights reserved.
- *
+ * 
+ * All rights reserved.
+ * 
  */
 public class GCCoreBlockRendererUnlitTorch implements ISimpleBlockRenderingHandler
 {
@@ -28,29 +26,29 @@ public class GCCoreBlockRendererUnlitTorch implements ISimpleBlockRenderingHandl
     }
 
     @Override
-	public boolean renderWorldBlock(IBlockAccess var1, int var2, int var3, int var4, Block var5, int var6, RenderBlocks var7)
+    public boolean renderWorldBlock(IBlockAccess var1, int var2, int var3, int var4, Block var5, int var6, RenderBlocks var7)
     {
-    	GCCoreBlockRendererUnlitTorch.renderGCUnlitTorch(var7, var5, var1, var2, var3, var4);
+        GCCoreBlockRendererUnlitTorch.renderGCUnlitTorch(var7, var5, var1, var2, var3, var4);
         return true;
     }
 
     @Override
-	public boolean shouldRender3DInInventory()
+    public boolean shouldRender3DInInventory()
     {
         return false;
     }
 
     @Override
-	public int getRenderId()
+    public int getRenderId()
     {
         return this.renderID;
     }
 
-	@Override
-	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer)
-	{
+    @Override
+    public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer)
+    {
         GCCoreBlockRendererUnlitTorch.renderTorchAtAngle(renderer, block, 0, 0, 0, 0.0D, 0.0D);
-	}
+    }
 
     public static void renderInvNormalBlock(RenderBlocks var0, Block var1, int var2)
     {
@@ -86,7 +84,7 @@ public class GCCoreBlockRendererUnlitTorch implements ISimpleBlockRenderingHandl
 
     public static void renderGCUnlitTorch(RenderBlocks renderBlocks, Block par1Block, IBlockAccess var1, int par2, int par3, int par4)
     {
-    	final int var5 = var1.getBlockMetadata(par2, par3, par4);
+        final int var5 = var1.getBlockMetadata(par2, par3, par4);
         final Tessellator var6 = Tessellator.instance;
         var6.setBrightness(par1Block.getMixedBrightnessForBlock(var1, par2, par3, par4));
         var6.setColorOpaque_F(1.0F, 1.0F, 1.0F);
@@ -118,19 +116,19 @@ public class GCCoreBlockRendererUnlitTorch implements ISimpleBlockRenderingHandl
 
     public static void renderTorchAtAngle(RenderBlocks renderBlocks, Block par1Block, double par2, double par4, double par6, double par8, double par10)
     {
-    	if (par1Block instanceof GCCoreBlockUnlitTorch)
-    	{
+        if (par1Block instanceof GCCoreBlockUnlitTorch)
+        {
             final Tessellator tessellator = Tessellator.instance;
             Icon icon = renderBlocks.getBlockIconFromSideAndMetadata(par1Block, 0, 0);
 
             if (par1Block.blockID == GCCoreBlocks.unlitTorch.blockID)
             {
-            	icon = GCCoreBlockUnlitTorch.torchIcons[1];
+                icon = GCCoreBlockUnlitTorch.torchIcons[1];
             }
 
             if (par1Block.blockID == GCCoreBlocks.unlitTorchLit.blockID)
             {
-            	icon = GCCoreBlockUnlitTorch.torchIcons[0];
+                icon = GCCoreBlockUnlitTorch.torchIcons[0];
             }
 
             final double d5 = icon.getMinU();
@@ -177,7 +175,7 @@ public class GCCoreBlockRendererUnlitTorch implements ISimpleBlockRenderingHandl
             tessellator.addVertexWithUV(d18 + par8, par4 + 0.0D, par6 - d21 + par10, d5, d8);
             tessellator.addVertexWithUV(d17 + par8, par4 + 0.0D, par6 - d21 + par10, d7, d8);
             tessellator.addVertexWithUV(d17, par4 + 1.0D, par6 - d21, d7, d6);
-    	}
+        }
 
     }
 }

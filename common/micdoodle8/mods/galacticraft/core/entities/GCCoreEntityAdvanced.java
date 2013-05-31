@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
-
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketEntityUpdate;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
@@ -25,9 +24,7 @@ import net.minecraft.world.World;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.IPacketReceiver;
 import universalelectricity.prefab.network.PacketManager;
-
 import com.google.common.io.ByteArrayDataInput;
-
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.PacketDispatcher;
@@ -36,7 +33,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public abstract class GCCoreEntityAdvanced extends GCCoreEntityControllable implements IPacketReceiver
 {
-	protected long ticks = 0;
+    protected long ticks = 0;
 
     public int currentDamage;
     public int timeSinceHit;
@@ -47,14 +44,13 @@ public abstract class GCCoreEntityAdvanced extends GCCoreEntityControllable impl
     public double advancedPositionZ;
     public double advancedYaw;
     public double advancedPitch;
-	public int posRotIncrements;
+    public int posRotIncrements;
 
-	private boolean lastOnGround;
-	private double lastMotionY;
+    private boolean lastOnGround;
 
     public GCCoreEntityAdvanced(World world, double initialSpeed, float yOffset)
     {
-    	super(world);
+        super(world);
         this.preventEntitySpawning = true;
         this.ignoreFrustumCheck = true;
         this.isImmuneToFire = true;
@@ -64,46 +60,48 @@ public abstract class GCCoreEntityAdvanced extends GCCoreEntityControllable impl
 
     public GCCoreEntityAdvanced(World world, double initialSpeed, float yOffset, double var2, double var4, double var6)
     {
-    	this(world, initialSpeed, yOffset);
+        this(world, initialSpeed, yOffset);
         this.yOffset = yOffset;
         this.setPosition(var2, var4 + this.yOffset, var6);
     }
 
     @Override
-	protected void entityInit() {}
+    protected void entityInit()
+    {
+    }
 
     @Override
-	protected boolean canTriggerWalking()
+    protected boolean canTriggerWalking()
     {
         return false;
     }
 
     @Override
-	public AxisAlignedBB getBoundingBox()
+    public AxisAlignedBB getBoundingBox()
     {
         return this.boundingBox;
     }
 
     @Override
-	public boolean canBePushed()
+    public boolean canBePushed()
     {
         return false;
     }
 
     @Override
-	public double getMountedYOffset()
+    public double getMountedYOffset()
     {
         return this.height - 1.0D;
     }
 
     @Override
-	public boolean canBeCollidedWith()
+    public boolean canBeCollidedWith()
     {
         return !this.isDead;
     }
 
     @Override
-	public void updateRiderPosition()
+    public void updateRiderPosition()
     {
         if (this.riddenByEntity != null)
         {
@@ -113,43 +111,45 @@ public abstract class GCCoreEntityAdvanced extends GCCoreEntityControllable impl
         }
     }
 
-	@Override
-	public void setPositionRotationAndMotion(double x, double y, double z, float yaw, float pitch, double motX, double motY, double motZ, boolean onGround)
-	{
-		if(this.worldObj.isRemote)
-		{
-	        this.advancedPositionX = x;
-	        this.advancedPositionY = y;
-	        this.advancedPositionZ = z;
-	        this.advancedYaw = yaw;
-	        this.advancedPitch = pitch;
-	        this.motionX = motX;
-	        this.motionY = motY;
-	        this.motionZ = motZ;
-	        this.posRotIncrements = 5;
-		}
-		else
-		{
-			this.setPosition(x, y, z);
-			this.setRotation(yaw, pitch);
-			this.motionX = motX;
-			this.motionY = motY;
-			this.motionZ = motZ;
-			if (onGround)
-				this.onGround = onGround;
-		}
-	}
+    @Override
+    public void setPositionRotationAndMotion(double x, double y, double z, float yaw, float pitch, double motX, double motY, double motZ, boolean onGround)
+    {
+        if (this.worldObj.isRemote)
+        {
+            this.advancedPositionX = x;
+            this.advancedPositionY = y;
+            this.advancedPositionZ = z;
+            this.advancedYaw = yaw;
+            this.advancedPitch = pitch;
+            this.motionX = motX;
+            this.motionY = motY;
+            this.motionZ = motZ;
+            this.posRotIncrements = 5;
+        }
+        else
+        {
+            this.setPosition(x, y, z);
+            this.setRotation(yaw, pitch);
+            this.motionX = motX;
+            this.motionY = motY;
+            this.motionZ = motZ;
+            if (onGround)
+            {
+                this.onGround = onGround;
+            }
+        }
+    }
 
     @Override
-	public void performHurtAnimation()
+    public void performHurtAnimation()
     {
-    	this.rockDirection = -this.rockDirection;
+        this.rockDirection = -this.rockDirection;
         this.timeSinceHit = 10;
         this.currentDamage *= 5;
     }
 
     @Override
-	public boolean attackEntityFrom(DamageSource var1, int var2)
+    public boolean attackEntityFrom(DamageSource var1, int var2)
     {
         if (this.isDead || var1.equals(DamageSource.cactus) || !this.allowDamageSource(var1))
         {
@@ -157,12 +157,12 @@ public abstract class GCCoreEntityAdvanced extends GCCoreEntityControllable impl
         }
         else
         {
-        	this.rockDirection = -this.rockDirection;
+            this.rockDirection = -this.rockDirection;
             this.timeSinceHit = 10;
             this.currentDamage = this.currentDamage + var2 * 10;
             this.setBeenAttacked();
 
-            if (var1.getEntity() instanceof EntityPlayer && ((EntityPlayer)var1.getEntity()).capabilities.isCreativeMode)
+            if (var1.getEntity() instanceof EntityPlayer && ((EntityPlayer) var1.getEntity()).capabilities.isCreativeMode)
             {
                 this.currentDamage = 100;
             }
@@ -171,10 +171,11 @@ public abstract class GCCoreEntityAdvanced extends GCCoreEntityControllable impl
             {
                 if (this.riddenByEntity != null)
                 {
-                	if (this.riddenByEntity instanceof EntityPlayerMP)
-                	{
-                	  	final Object[] toSend2 = {0};
-                    	((EntityPlayerMP) this.riddenByEntity).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, toSend2));
+                    if (this.riddenByEntity instanceof EntityPlayerMP)
+                    {
+                        final Object[] toSend2 =
+                        { 0 };
+                        ((EntityPlayerMP) this.riddenByEntity).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, toSend2));
                     }
 
                     this.riddenByEntity.mountEntity(this);
@@ -206,11 +207,13 @@ public abstract class GCCoreEntityAdvanced extends GCCoreEntityControllable impl
     public abstract boolean shouldSpawnParticles();
 
     /**
-     * @return map of the particle vectors. Map key is the position and map value is the motion of the particles. Each entry will be spawned as a separate particle
+     * @return map of the particle vectors. Map key is the position and map
+     *         value is the motion of the particles. Each entry will be spawned
+     *         as a separate particle
      */
     public abstract Map<Vector3, Vector3> getParticleMap();
 
-	@SideOnly(Side.CLIENT)
+    @SideOnly(Side.CLIENT)
     public abstract EntityFX getParticle(Random rand, double x, double y, double z, double motX, double motY, double motZ);
 
     public abstract void tickInAir();
@@ -229,7 +232,8 @@ public abstract class GCCoreEntityAdvanced extends GCCoreEntityControllable impl
     public abstract int getPacketTickSpacing();
 
     /**
-     * @return players within this distance will recieve packets from this entity
+     * @return players within this distance will recieve packets from this
+     *         entity
      */
     public abstract double getPacketSendDistance();
 
@@ -239,62 +243,62 @@ public abstract class GCCoreEntityAdvanced extends GCCoreEntityControllable impl
 
     public void dropItems()
     {
-    	if (this.getItemsDropped() == null)
-    	{
-    		return;
-    	}
-
-        for(final ItemStack item : this.getItemsDropped())
+        if (this.getItemsDropped() == null)
         {
-        	if (item != null)
-        	{
+            return;
+        }
+
+        for (final ItemStack item : this.getItemsDropped())
+        {
+            if (item != null)
+            {
                 this.entityDropItem(item, 0);
-        	}
+            }
         }
     }
 
-	@Override
+    @Override
     public void setPositionAndRotation2(double d, double d1, double d2, float f, float f1, int i)
     {
-		if (this.riddenByEntity != null)
-		{
-			if(this.riddenByEntity instanceof EntityPlayer && FMLClientHandler.instance().getClient().thePlayer.equals(this.riddenByEntity))
-			{
-			}
-			else
-			{
-	            this.posRotIncrements = i + 5;
-		        this.advancedPositionX = d;
-		        this.advancedPositionY = d1 + (this.riddenByEntity == null ? 1 : 0);
-		        this.advancedPositionZ = d2;
-		        this.advancedYaw = f;
-		        this.advancedPitch = f1;
-			}
-		}
+        if (this.riddenByEntity != null)
+        {
+            if (this.riddenByEntity instanceof EntityPlayer && FMLClientHandler.instance().getClient().thePlayer.equals(this.riddenByEntity))
+            {
+            }
+            else
+            {
+                this.posRotIncrements = i + 5;
+                this.advancedPositionX = d;
+                this.advancedPositionY = d1 + (this.riddenByEntity == null ? 1 : 0);
+                this.advancedPositionZ = d2;
+                this.advancedYaw = f;
+                this.advancedPitch = f1;
+            }
+        }
     }
 
     @Override
     public void moveEntity(double par1, double par3, double par5)
     {
-    	if (this.shouldMove())
-    	{
-    		super.moveEntity(par1, par3, par5);
-    	}
+        if (this.shouldMove())
+        {
+            super.moveEntity(par1, par3, par5);
+        }
     }
 
     @Override
-	public void onUpdate()
+    public void onUpdate()
     {
-		if (this.ticks >= Long.MAX_VALUE)
-		{
-			this.ticks = 1;
-		}
+        if (this.ticks >= Long.MAX_VALUE)
+        {
+            this.ticks = 1;
+        }
 
-		this.ticks++;
+        this.ticks++;
 
-		super.onUpdate();
+        super.onUpdate();
 
-        if(this.worldObj.isRemote && (this.riddenByEntity == null || !(this.riddenByEntity instanceof EntityPlayer) || !FMLClientHandler.instance().getClient().thePlayer.equals(this.riddenByEntity)))
+        if (this.worldObj.isRemote && (this.riddenByEntity == null || !(this.riddenByEntity instanceof EntityPlayer) || !FMLClientHandler.instance().getClient().thePlayer.equals(this.riddenByEntity)))
         {
             double x;
             double y;
@@ -306,8 +310,8 @@ public abstract class GCCoreEntityAdvanced extends GCCoreEntityControllable impl
                 y = this.posY + (this.advancedPositionY - this.posY) / this.posRotIncrements;
                 z = this.posZ + (this.advancedPositionZ - this.posZ) / this.posRotIncrements;
                 var12 = MathHelper.wrapAngleTo180_double(this.advancedYaw - this.rotationYaw);
-                this.rotationYaw = (float)(this.rotationYaw + var12 / this.posRotIncrements);
-                this.rotationPitch = (float)(this.rotationPitch + (this.advancedPitch - this.rotationPitch) / this.posRotIncrements);
+                this.rotationYaw = (float) (this.rotationYaw + var12 / this.posRotIncrements);
+                this.rotationPitch = (float) (this.rotationPitch + (this.advancedPitch - this.rotationPitch) / this.posRotIncrements);
                 --this.posRotIncrements;
                 this.setPosition(x, y, z);
                 this.setRotation(this.rotationYaw, this.rotationPitch);
@@ -344,48 +348,48 @@ public abstract class GCCoreEntityAdvanced extends GCCoreEntityControllable impl
 
         if (this.shouldSpawnParticles() && FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
         {
-        	this.spawnParticles(this.getParticleMap());
+            this.spawnParticles(this.getParticleMap());
         }
 
         if (this.onGround)
         {
-        	this.tickOnGround();
+            this.tickOnGround();
         }
         else
         {
-        	this.tickInAir();
+            this.tickInAir();
         }
 
-		if (this.worldObj.isRemote)
-		{
-			this.motionX = this.getMotionVec().x;
-			this.motionY = this.getMotionVec().y;
-			this.motionZ = this.getMotionVec().z;
-			this.moveEntity(this.motionX, this.motionY, this.motionZ);
-		}
+        if (this.worldObj.isRemote)
+        {
+            this.motionX = this.getMotionVec().x;
+            this.motionY = this.getMotionVec().y;
+            this.motionZ = this.getMotionVec().z;
+            this.moveEntity(this.motionX, this.motionY, this.motionZ);
+        }
 
-		if (!this.worldObj.isRemote)
-		{
-			if (this.onGround && !this.lastOnGround)
-			{
-				this.onGroundHit();
-			}
-		}
+        if (!this.worldObj.isRemote)
+        {
+            if (this.onGround && !this.lastOnGround)
+            {
+                this.onGroundHit();
+            }
+        }
 
-		if (this.worldObj.isRemote)
-		{
-			PacketDispatcher.sendPacketToServer(GCCorePacketEntityUpdate.buildUpdatePacket(this));
-		}
+        if (this.worldObj.isRemote)
+        {
+            PacketDispatcher.sendPacketToServer(GCCorePacketEntityUpdate.buildUpdatePacket(this));
+        }
 
-		if (!this.worldObj.isRemote && this.ticksExisted % 5 == 0)
-		{
-			PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 50, this.dimension, GCCorePacketEntityUpdate.buildUpdatePacket(this));
-		}
+        if (!this.worldObj.isRemote && this.ticksExisted % 5 == 0)
+        {
+            PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 50, this.dimension, GCCorePacketEntityUpdate.buildUpdatePacket(this));
+        }
 
-		if (!this.worldObj.isRemote && this.ticks % this.getPacketTickSpacing() == 0)
-		{
-			PacketManager.sendPacketToClients(this.getDescriptionPacket(), this.worldObj, new Vector3(this), this.getPacketSendDistance());
-		}
+        if (!this.worldObj.isRemote && this.ticks % this.getPacketTickSpacing() == 0)
+        {
+            PacketManager.sendPacketToClients(this.getDescriptionPacket(), this.worldObj, new Vector3(this), this.getPacketSendDistance());
+        }
 
         this.prevPosX = this.posX;
         this.prevPosY = this.posY;
@@ -394,49 +398,49 @@ public abstract class GCCoreEntityAdvanced extends GCCoreEntityControllable impl
     }
 
     public Packet getDescriptionPacket()
-	{
-		return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getNetworkedData());
-	}
+    {
+        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getNetworkedData());
+    }
 
-	@Override
-	public void handlePacketData(INetworkManager network, int packetType, Packet250CustomPayload packet, EntityPlayer player, ByteArrayDataInput dataStream)
-	{
-		try
-		{
-			if (this.worldObj.isRemote)
-			{
-				this.readNetworkedData(dataStream);
-			}
-		}
-		catch (final Exception e)
-		{
-			e.printStackTrace();
-		}
-	}
+    @Override
+    public void handlePacketData(INetworkManager network, int packetType, Packet250CustomPayload packet, EntityPlayer player, ByteArrayDataInput dataStream)
+    {
+        try
+        {
+            if (this.worldObj.isRemote)
+            {
+                this.readNetworkedData(dataStream);
+            }
+        }
+        catch (final Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
 
     @SideOnly(Side.CLIENT)
     public void spawnParticles(Map<Vector3, Vector3> points)
     {
-    	for (final Entry<Vector3, Vector3> vec : points.entrySet())
-    	{
-    		final Vector3 posVec = vec.getKey();
-    		final Vector3 motionVec = vec.getValue();
+        for (final Entry<Vector3, Vector3> vec : points.entrySet())
+        {
+            final Vector3 posVec = vec.getKey();
+            final Vector3 motionVec = vec.getValue();
 
-    		this.spawnParticle(this.getParticle(this.rand, posVec.x, posVec.y, posVec.z, motionVec.x, motionVec.y, motionVec.z));
-    	}
+            this.spawnParticle(this.getParticle(this.rand, posVec.x, posVec.y, posVec.z, motionVec.x, motionVec.y, motionVec.z));
+        }
     }
 
-	@SideOnly(Side.CLIENT)
-	public void spawnParticle(EntityFX fx)
+    @SideOnly(Side.CLIENT)
+    public void spawnParticle(EntityFX fx)
     {
         final Minecraft mc = FMLClientHandler.instance().getClient();
 
         if (mc != null && mc.renderViewEntity != null && mc.effectRenderer != null)
         {
-    		if (fx != null)
-    		{
-    			mc.effectRenderer.addEffect(fx);
-    		}
+            if (fx != null)
+            {
+                mc.effectRenderer.addEffect(fx);
+            }
         }
     }
 }

@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.moon.wgen;
 
 import java.util.List;
 import java.util.Random;
-
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
@@ -27,23 +26,23 @@ public class GCMoonComponentVillageHouse3 extends GCMoonComponentVillage
     }
 
     /**
-     * second Part of Structure generating, this for example places Spiderwebs, Mob Spawners, it closes Mineshafts at
-     * the end, it adds Fences...
+     * second Part of Structure generating, this for example places Spiderwebs,
+     * Mob Spawners, it closes Mineshafts at the end, it adds Fences...
      */
     @Override
-	public boolean addComponentParts(World par1World, Random par2Random, StructureBoundingBox par3StructureBoundingBox)
+    public boolean addComponentParts(World par1World, Random par2Random, StructureBoundingBox par3StructureBoundingBox)
     {
-    	if (this.averageGroundLevel < 0)
-	    {
-	        this.averageGroundLevel = this.getAverageGroundLevel(par1World, par3StructureBoundingBox);
+        if (this.averageGroundLevel < 0)
+        {
+            this.averageGroundLevel = this.getAverageGroundLevel(par1World, par3StructureBoundingBox);
 
-	        if (this.averageGroundLevel < 0)
-	        {
-	            return true;
-	        }
+            if (this.averageGroundLevel < 0)
+            {
+                return true;
+            }
 
-	        this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.maxY + 9 - 1, 0);
-	    }
+            this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.maxY + 9 - 1, 0);
+        }
 
         this.fillWithAir(par1World, par3StructureBoundingBox, 3, 0, 3, 13, 9, 13);
         this.fillWithAir(par1World, par3StructureBoundingBox, 5, 0, 2, 11, 9, 14);
@@ -51,26 +50,26 @@ public class GCMoonComponentVillageHouse3 extends GCMoonComponentVillage
 
         for (int i = 3; i <= 13; i++)
         {
-        	for (int j = 3; j <= 13; j++)
-        	{
+            for (int j = 3; j <= 13; j++)
+            {
                 this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 3, i, 0, j, par3StructureBoundingBox);
-        	}
+            }
         }
 
         for (int i = 5; i <= 11; i++)
         {
-        	for (int j = 2; j <= 14; j++)
-        	{
+            for (int j = 2; j <= 14; j++)
+            {
                 this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 3, i, 0, j, par3StructureBoundingBox);
-        	}
+            }
         }
 
         for (int i = 2; i <= 14; i++)
         {
-        	for (int j = 5; j <= 11; j++)
-        	{
+            for (int j = 5; j <= 11; j++)
+            {
                 this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 3, i, 0, j, par3StructureBoundingBox);
-        	}
+            }
         }
 
         int yLevel = 0;
@@ -419,10 +418,10 @@ public class GCMoonComponentVillageHouse3 extends GCMoonComponentVillage
 
         for (int i = 5; i <= 11; i++)
         {
-        	for (int j = 5; j <= 11; j++)
-        	{
-        		if (!(j == 5 && i == 5 || j == 5 && i == 11 || j == 11 && i == 5 || j == 11 && i == 11))
-        		{
+            for (int j = 5; j <= 11; j++)
+            {
+                if (!(j == 5 && i == 5 || j == 5 && i == 11 || j == 11 && i == 5 || j == 11 && i == 11))
+                {
                     if (i >= 7 && i <= 9 && j >= 7 && j <= 9)
                     {
                         this.placeBlockAtCurrentPosition(par1World, Block.glass.blockID, 0, i, yLevel, j, par3StructureBoundingBox);
@@ -431,8 +430,8 @@ public class GCMoonComponentVillageHouse3 extends GCMoonComponentVillage
                     {
                         this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, i, yLevel, j, par3StructureBoundingBox);
                     }
-        		}
-        	}
+                }
+            }
         }
 
         this.spawnVillagers(par1World, par3StructureBoundingBox, 6, 5, 6, 4);

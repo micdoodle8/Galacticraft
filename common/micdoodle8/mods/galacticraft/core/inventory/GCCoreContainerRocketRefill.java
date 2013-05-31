@@ -22,14 +22,14 @@ public class GCCoreContainerRocketRefill extends Container
         switch (type)
         {
         case 0:
-        	this.addSlotsForType1();
-        	break;
+            this.addSlotsForType1();
+            break;
         case 1:
-        	this.addSlotsForType2();
-        	break;
+            this.addSlotsForType2();
+            break;
         case 2:
-        	this.addSlotsForType1();
-        	break;
+            this.addSlotsForType1();
+            break;
         }
     }
 
@@ -43,11 +43,11 @@ public class GCCoreContainerRocketRefill extends Container
         switch (this.type)
         {
         case 0:
-        	offset = 0;
-        	break;
+            offset = 0;
+            break;
         case 2:
-        	offset = 0;
-        	break;
+            offset = 0;
+            break;
         }
 
         for (var4 = 0; var4 < 3; ++var4)
@@ -73,17 +73,17 @@ public class GCCoreContainerRocketRefill extends Container
         {
             for (var5 = 0; var5 < 9; ++var5)
             {
-            	if (!(var4 == 2 && var5 == 8 || var4 == 2  && var5 == 7 || var4 == 2  && var5 == 6))
-            	{
-            		int offset = 0;
+                if (!(var4 == 2 && var5 == 8 || var4 == 2 && var5 == 7 || var4 == 2 && var5 == 6))
+                {
+                    int offset = 0;
 
-            		if (var4 == 2)
-            		{
-            			offset = 28;
-            		}
+                    if (var4 == 2)
+                    {
+                        offset = 28;
+                    }
 
                     this.addSlotToContainer(new Slot(this.spaceshipInv, var5 + var4 * 9 + 1, 8 + var5 * 18 + offset, 50 + var4 * 18));
-            	}
+                }
             }
         }
 
@@ -102,19 +102,20 @@ public class GCCoreContainerRocketRefill extends Container
     }
 
     @Override
-	public boolean canInteractWith(EntityPlayer par1EntityPlayer)
+    public boolean canInteractWith(EntityPlayer par1EntityPlayer)
     {
         return this.lowerChestInventory.isUseableByPlayer(par1EntityPlayer);
     }
 
     /**
-     * Called when a player shift-clicks on a slot. You must override this or you will crash when someone does that.
+     * Called when a player shift-clicks on a slot. You must override this or
+     * you will crash when someone does that.
      */
     @Override
-	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2)
+    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2)
     {
         ItemStack var3 = null;
-        final Slot var4 = (Slot)this.inventorySlots.get(par2);
+        final Slot var4 = (Slot) this.inventorySlots.get(par2);
 
         if (var4 != null && var4.getHasStack())
         {
@@ -135,7 +136,7 @@ public class GCCoreContainerRocketRefill extends Container
 
             if (var5.stackSize == 0)
             {
-                var4.putStack((ItemStack)null);
+                var4.putStack((ItemStack) null);
             }
             else
             {
@@ -150,7 +151,7 @@ public class GCCoreContainerRocketRefill extends Container
      * Callback for when the crafting gui is closed.
      */
     @Override
-	public void onCraftGuiClosed(EntityPlayer par1EntityPlayer)
+    public void onCraftGuiClosed(EntityPlayer par1EntityPlayer)
     {
         super.onCraftGuiClosed(par1EntityPlayer);
         this.lowerChestInventory.closeChest();

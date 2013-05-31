@@ -9,11 +9,8 @@ import net.minecraft.item.ItemStack;
 
 public class GCCoreContainerAirDistributor extends Container
 {
-	private final GCCoreTileEntityOxygenDistributor distributor;
-
     public GCCoreContainerAirDistributor(InventoryPlayer par1InventoryPlayer, GCCoreTileEntityOxygenDistributor distributor)
     {
-    	this.distributor = distributor;
         this.addSlotToContainer(new Slot(distributor, 0, 32, 27));
 
         int var6;
@@ -35,17 +32,17 @@ public class GCCoreContainerAirDistributor extends Container
         }
     }
 
-	@Override
-	public boolean canInteractWith(EntityPlayer var1)
-	{
-		return true;
-	}
+    @Override
+    public boolean canInteractWith(EntityPlayer var1)
+    {
+        return true;
+    }
 
-	@Override
-	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2)
+    @Override
+    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2)
     {
         ItemStack var3 = null;
-        final Slot var4 = (Slot)this.inventorySlots.get(par2);
+        final Slot var4 = (Slot) this.inventorySlots.get(par2);
 
         if (var4 != null && var4.getHasStack())
         {
@@ -66,7 +63,7 @@ public class GCCoreContainerAirDistributor extends Container
 
             if (var5.stackSize == 0)
             {
-                var4.putStack((ItemStack)null);
+                var4.putStack((ItemStack) null);
             }
             else
             {

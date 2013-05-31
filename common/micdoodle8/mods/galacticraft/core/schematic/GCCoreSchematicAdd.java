@@ -13,54 +13,54 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreSchematicAdd implements ISchematicPage
 {
-	@Override
-	public int getPageID()
-	{
-		return GCCoreConfigManager.idSchematicAddSchematic;
-	}
+    @Override
+    public int getPageID()
+    {
+        return GCCoreConfigManager.idSchematicAddSchematic;
+    }
 
-	@Override
-	public int getGuiID()
-	{
-		return GCCoreConfigManager.idGuiAddSchematic;
-	}
+    @Override
+    public int getGuiID()
+    {
+        return GCCoreConfigManager.idGuiAddSchematic;
+    }
 
-	@Override
-	public ItemStack getRequiredItem()
-	{
-		return null;
-	}
+    @Override
+    public ItemStack getRequiredItem()
+    {
+        return null;
+    }
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public String getTitle()
-	{
-		return "Add Schematic";
-	}
+    @SideOnly(Side.CLIENT)
+    @Override
+    public String getTitle()
+    {
+        return "Add Schematic";
+    }
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public GuiScreen getResultScreen(EntityPlayer player, int x, int y, int z)
-	{
-		return new GCCoreGuiSchematicInput(player.inventory, x, y, z);
-	}
+    @SideOnly(Side.CLIENT)
+    @Override
+    public GuiScreen getResultScreen(EntityPlayer player, int x, int y, int z)
+    {
+        return new GCCoreGuiSchematicInput(player.inventory, x, y, z);
+    }
 
-	@Override
-	public Container getResultContainer(EntityPlayer player, int x, int y, int z)
-	{
-		return new GCCoreContainerSchematic(player.inventory, x, y, z);
-	}
+    @Override
+    public Container getResultContainer(EntityPlayer player, int x, int y, int z)
+    {
+        return new GCCoreContainerSchematic(player.inventory, x, y, z);
+    }
 
-	@Override
-	public int compareTo(ISchematicPage o)
-	{
-		if (this.getPageID() > o.getPageID())
-		{
-			return 1;
-		}
-		else
-		{
-			return -1;
-		}
-	}
+    @Override
+    public int compareTo(ISchematicPage o)
+    {
+        if (this.getPageID() > o.getPageID())
+        {
+            return 1;
+        }
+        else
+        {
+            return -1;
+        }
+    }
 }

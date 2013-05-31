@@ -4,7 +4,6 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.MathHelper;
-
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
@@ -54,27 +53,26 @@ public abstract class GCCoreGuiStarBackground extends GuiScreen
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
         final byte var5 = 1;
 
-
         for (int var6 = 0; var6 < var5 * var5; ++var6)
         {
             GL11.glPushMatrix();
-            final float var7 = ((float)(var6 % var5) / (float)var5 - 0.5F) / 128.0F;
-            final float var8 = ((float)(var6 / var5) / (float)var5 - 0.5F) / 128.0F;
+            final float var7 = ((float) (var6 % var5) / (float) var5 - 0.5F) / 128.0F;
+            final float var8 = ((float) (var6 / var5) / (float) var5 - 0.5F) / 128.0F;
             final float var9 = 0.0F;
 
-        	float mY;
-        	float mX;
+            float mY;
+            float mX;
 
-    	  	if (Mouse.getY() < this.height)
-    	  	{
-    	  		mY = (-this.height + Mouse.getY()) / 100F;
-    	  	}
-    	  	else
-    	  	{
-      			mY = (-this.height + Mouse.getY()) / 100F;
-      		}
+            if (Mouse.getY() < this.height)
+            {
+                mY = (-this.height + Mouse.getY()) / 100F;
+            }
+            else
+            {
+                mY = (-this.height + Mouse.getY()) / 100F;
+            }
 
-      		mX = (this.width - Mouse.getX()) / 100F;
+            mX = (this.width - Mouse.getX()) / 100F;
 
             this.doCustomTranslation(0, var7, var8, var9, mX, mY);
 
@@ -84,42 +82,42 @@ public abstract class GCCoreGuiStarBackground extends GuiScreen
 
                 if (var10 == 1)
                 {
-                	GL11.glTranslatef(1.96F, 0.0F, 0.0F);
+                    GL11.glTranslatef(1.96F, 0.0F, 0.0F);
                 }
 
                 if (var10 == 2)
                 {
-                	GL11.glTranslatef(-1.96F, 0.0F, 0.0F);
+                    GL11.glTranslatef(-1.96F, 0.0F, 0.0F);
                 }
 
                 if (var10 == 3)
                 {
-                	GL11.glTranslatef(0.0F, 1.96F, 0.0F);
+                    GL11.glTranslatef(0.0F, 1.96F, 0.0F);
                 }
 
                 if (var10 == 4)
                 {
-                	GL11.glTranslatef(0.0F, -1.96F, 0.0F);
+                    GL11.glTranslatef(0.0F, -1.96F, 0.0F);
                 }
 
                 if (var10 == 5)
                 {
-                	GL11.glTranslatef(-1.96F, -1.96F, 0.0F);
+                    GL11.glTranslatef(-1.96F, -1.96F, 0.0F);
                 }
 
                 if (var10 == 6)
                 {
-                	GL11.glTranslatef(-1.96F, 1.96F, 0.0F);
+                    GL11.glTranslatef(-1.96F, 1.96F, 0.0F);
                 }
 
                 if (var10 == 7)
                 {
-                	GL11.glTranslatef(1.96F, -1.96F, 0.0F);
+                    GL11.glTranslatef(1.96F, -1.96F, 0.0F);
                 }
 
                 if (var10 == 8)
                 {
-                	GL11.glTranslatef(1.96F, 1.96F, 0.0F);
+                    GL11.glTranslatef(1.96F, 1.96F, 0.0F);
                 }
 
                 GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/backgrounds/bg3.png"));
@@ -166,27 +164,26 @@ public abstract class GCCoreGuiStarBackground extends GuiScreen
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
         final byte var5 = 1;
 
-
         for (int var6 = 0; var6 < var5 * var5; ++var6)
         {
             GL11.glPushMatrix();
-            final float var7 = ((float)(var6 % var5) / (float)var5 - 0.5F) / 64.0F;
-            final float var8 = ((float)(var6 / var5) / (float)var5 - 0.5F) / 64.0F;
+            final float var7 = ((float) (var6 % var5) / (float) var5 - 0.5F) / 64.0F;
+            final float var8 = ((float) (var6 / var5) / (float) var5 - 0.5F) / 64.0F;
             final float var9 = 0.0F;
 
-        	float mY;
-        	float mX;
+            float mY;
+            float mX;
 
-    	  	if (Mouse.getY() < this.height)
-    	  	{
-    	  		mY = (-this.height + Mouse.getY()) / 100F;
-    	  	}
-    	  	else
-    	  	{
-      			mY = (-this.height + Mouse.getY()) / 100F;
-      		}
+            if (Mouse.getY() < this.height)
+            {
+                mY = (-this.height + Mouse.getY()) / 100F;
+            }
+            else
+            {
+                mY = (-this.height + Mouse.getY()) / 100F;
+            }
 
-      		mX = (this.width - Mouse.getX()) / 100F;
+            mX = (this.width - Mouse.getX()) / 100F;
 
             this.doCustomTranslation(1, var7, var8, var9, mX, mY);
 
@@ -197,7 +194,6 @@ public abstract class GCCoreGuiStarBackground extends GuiScreen
             for (int var10 = 0; var10 < 6; ++var10)
             {
                 GL11.glPushMatrix();
-
 
                 if (var10 == 1)
                 {

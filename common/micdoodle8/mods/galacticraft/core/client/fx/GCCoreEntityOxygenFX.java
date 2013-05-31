@@ -28,13 +28,13 @@ public class GCCoreEntityOxygenFX extends EntityFX
         this.particleRed = this.particleGreen = this.particleBlue = 1.0F * var14;
         this.particleGreen *= 0.3F;
         this.particleRed *= 0.9F;
-        this.particleMaxAge = (int)(Math.random() * 10.0D) + 40;
+        this.particleMaxAge = (int) (Math.random() * 10.0D) + 40;
         this.noClip = true;
-        this.setParticleTextureIndex((int)(Math.random() * 8.0D));
+        this.setParticleTextureIndex((int) (Math.random() * 8.0D));
     }
 
     @Override
-	public void renderParticle(Tessellator par1Tessellator, float par2, float par3, float par4, float par5, float par6, float par7)
+    public void renderParticle(Tessellator par1Tessellator, float par2, float par3, float par4, float par5, float par6, float par7)
     {
         float var8 = (this.particleAge + par2) / this.particleMaxAge;
         var8 = 1.0F - var8;
@@ -45,15 +45,15 @@ public class GCCoreEntityOxygenFX extends EntityFX
     }
 
     @Override
-	public int getBrightnessForRender(float par1)
+    public int getBrightnessForRender(float par1)
     {
         final int var2 = super.getBrightnessForRender(par1);
-        float var3 = (float)this.particleAge / (float)this.particleMaxAge;
+        float var3 = (float) this.particleAge / (float) this.particleMaxAge;
         var3 *= var3;
         var3 *= var3;
         final int var4 = var2 & 255;
         int var5 = var2 >> 16 & 255;
-        var5 += (int)(var3 * 15.0F * 16.0F);
+        var5 += (int) (var3 * 15.0F * 16.0F);
 
         if (var5 > 240)
         {
@@ -67,10 +67,10 @@ public class GCCoreEntityOxygenFX extends EntityFX
      * Gets how bright this entity is.
      */
     @Override
-	public float getBrightness(float par1)
+    public float getBrightness(float par1)
     {
         final float var2 = super.getBrightness(par1);
-        float var3 = (float)this.particleAge / (float)this.particleMaxAge;
+        float var3 = (float) this.particleAge / (float) this.particleMaxAge;
         var3 = var3 * var3 * var3 * var3;
         return var2 * (1.0F - var3) + var3;
     }
@@ -79,12 +79,12 @@ public class GCCoreEntityOxygenFX extends EntityFX
      * Called to update the entity's position/logic.
      */
     @Override
-	public void onUpdate()
+    public void onUpdate()
     {
         this.prevPosX = this.posX;
         this.prevPosY = this.posY;
         this.prevPosZ = this.posZ;
-        float var1 = (float)this.particleAge / (float)this.particleMaxAge;
+        float var1 = (float) this.particleAge / (float) this.particleMaxAge;
         final float var2 = var1;
         var1 = -var1 + var1 * var1 * 2.0F;
         var1 = 1.0F - var1;

@@ -20,13 +20,13 @@ public class GCCoreInventoryBuggyBench implements IInventory
     }
 
     @Override
-	public int getSizeInventory()
+    public int getSizeInventory()
     {
         return this.stackList.length;
     }
 
     @Override
-	public ItemStack getStackInSlot(int par1)
+    public ItemStack getStackInSlot(int par1)
     {
         return par1 >= this.getSizeInventory() ? null : this.stackList[par1];
     }
@@ -45,13 +45,13 @@ public class GCCoreInventoryBuggyBench implements IInventory
     }
 
     @Override
-	public String getInvName()
+    public String getInvName()
     {
         return "container.crafting";
     }
 
     @Override
-	public ItemStack getStackInSlotOnClosing(int par1)
+    public ItemStack getStackInSlotOnClosing(int par1)
     {
         if (this.stackList[par1] != null)
         {
@@ -66,7 +66,7 @@ public class GCCoreInventoryBuggyBench implements IInventory
     }
 
     @Override
-	public ItemStack decrStackSize(int par1, int par2)
+    public ItemStack decrStackSize(int par1, int par2)
     {
         if (this.stackList[par1] != null)
         {
@@ -99,42 +99,50 @@ public class GCCoreInventoryBuggyBench implements IInventory
     }
 
     @Override
-	public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
+    public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
     {
         this.stackList[par1] = par2ItemStack;
         this.eventHandler.onCraftMatrixChanged(this);
     }
 
     @Override
-	public int getInventoryStackLimit()
+    public int getInventoryStackLimit()
     {
         return 64;
     }
 
     @Override
-	public void onInventoryChanged() {}
+    public void onInventoryChanged()
+    {
+    }
 
     @Override
-	public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
+    public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
     {
         return true;
     }
 
     @Override
-	public void openChest() {}
+    public void openChest()
+    {
+    }
 
     @Override
-	public void closeChest() {}
+    public void closeChest()
+    {
+    }
 
-	@Override
-	public boolean isInvNameLocalized() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    @Override
+    public boolean isInvNameLocalized()
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
 
-	@Override
-	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    @Override
+    public boolean isStackValidForSlot(int i, ItemStack itemstack)
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
 }

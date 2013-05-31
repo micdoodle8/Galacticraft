@@ -15,7 +15,7 @@ import universalelectricity.core.vector.Vector3;
 
 public class GCCoreEntityFlag extends Entity
 {
-	public EntityLiving entityPlacedBy;
+    public EntityLiving entityPlacedBy;
     public int facingDirection;
     public double xPosition;
     public double yPosition;
@@ -24,7 +24,7 @@ public class GCCoreEntityFlag extends Entity
 
     public GCCoreEntityFlag(World world)
     {
-    	super(world);
+        super(world);
         this.yOffset = 1.5F;
         this.setSize(0.4F, 3F);
         this.ignoreFrustumCheck = true;
@@ -41,7 +41,7 @@ public class GCCoreEntityFlag extends Entity
     }
 
     @Override
-	public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
+    public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
     {
         if (!this.worldObj.isRemote && !this.isDead && !this.indestructable)
         {
@@ -54,7 +54,7 @@ public class GCCoreEntityFlag extends Entity
                 this.setBeenAttacked();
                 this.setDamage(this.getDamage() + par2 * 10);
 
-                if (par1DamageSource.getEntity() instanceof EntityPlayer && ((EntityPlayer)par1DamageSource.getEntity()).capabilities.isCreativeMode)
+                if (par1DamageSource.getEntity() instanceof EntityPlayer && ((EntityPlayer) par1DamageSource.getEntity()).capabilities.isCreativeMode)
                 {
                     this.setDamage(100);
                 }
@@ -86,63 +86,63 @@ public class GCCoreEntityFlag extends Entity
 
     public void setIndestructable()
     {
-    	this.indestructable = true;
+        this.indestructable = true;
     }
 
     public int getWidth()
     {
-    	return 25;
+        return 25;
     }
 
     public int getHeight()
     {
-    	return 40;
+        return 40;
     }
 
-	@Override
+    @Override
     public boolean canBeCollidedWith()
     {
         return true;
     }
 
     @Override
-	protected boolean canTriggerWalking()
+    protected boolean canTriggerWalking()
     {
         return false;
     }
 
     @Override
-	public AxisAlignedBB getCollisionBox(Entity par1Entity)
+    public AxisAlignedBB getCollisionBox(Entity par1Entity)
     {
         return par1Entity.boundingBox;
     }
 
     @Override
-	public AxisAlignedBB getBoundingBox()
+    public AxisAlignedBB getBoundingBox()
     {
         return this.boundingBox;
     }
 
     @Override
-	public boolean canBePushed()
+    public boolean canBePushed()
     {
         return false;
     }
 
-	@Override
-	protected void entityInit()
-	{
+    @Override
+    protected void entityInit()
+    {
         this.dataWatcher.addObject(16, new Integer(-1));
         this.dataWatcher.addObject(17, new String(""));
         this.dataWatcher.addObject(18, new Integer(0));
-	}
+    }
 
-	@Override
+    @Override
     public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
-		this.setOwner(par1NBTTagCompound.getString("Owner"));
-		this.setType(par1NBTTagCompound.getInteger("Type"));
-		this.indestructable = par1NBTTagCompound.getBoolean("Indestructable");
+        this.setOwner(par1NBTTagCompound.getString("Owner"));
+        this.setType(par1NBTTagCompound.getInteger("Type"));
+        this.indestructable = par1NBTTagCompound.getBoolean("Indestructable");
 
         this.xPosition = par1NBTTagCompound.getDouble("TileX");
         this.yPosition = par1NBTTagCompound.getDouble("TileY");
@@ -150,17 +150,17 @@ public class GCCoreEntityFlag extends Entity
         this.setDirection(this.facingDirection);
     }
 
-	@Override
-	protected void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
-	{
+    @Override
+    protected void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
+    {
         par1NBTTagCompound.setString("Owner", String.valueOf(this.getOwner()));
         par1NBTTagCompound.setInteger("Type", Integer.valueOf(this.getType()));
         par1NBTTagCompound.setBoolean("Indestructable", this.indestructable);
-        par1NBTTagCompound.setByte("Direction", (byte)this.facingDirection);
+        par1NBTTagCompound.setByte("Direction", (byte) this.facingDirection);
         par1NBTTagCompound.setDouble("TileX", this.xPosition);
         par1NBTTagCompound.setDouble("TileY", this.yPosition);
         par1NBTTagCompound.setDouble("TileZ", this.zPosition);
-	}
+    }
 
     public void dropItemStack()
     {
@@ -168,31 +168,31 @@ public class GCCoreEntityFlag extends Entity
     }
 
     @Override
-	public void onUpdate()
+    public void onUpdate()
     {
-    	Vector3 vec = new Vector3(this);
-    	vec = Vector3.add(vec, new Vector3(0, -1, 0));
-    	final Block blockAt = Block.blocksList[vec.getBlockID(this.worldObj)];
+        Vector3 vec = new Vector3(this);
+        vec = Vector3.add(vec, new Vector3(0, -1, 0));
+        final Block blockAt = Block.blocksList[vec.getBlockID(this.worldObj)];
 
-    	if (blockAt != null)
-    	{
-    		if (blockAt instanceof BlockFence)
-    		{
+        if (blockAt != null)
+        {
+            if (blockAt instanceof BlockFence)
+            {
 
-    		}
-    		else if (blockAt.isAirBlock(this.worldObj, vec.intX(), vec.intY(), vec.intZ()))
-    		{
-            	this.motionY -= 0.02F;
-    		}
-    	}
+            }
+            else if (blockAt.isAirBlock(this.worldObj, vec.intX(), vec.intY(), vec.intZ()))
+            {
+                this.motionY -= 0.02F;
+            }
+        }
 
-    	this.moveEntity(this.motionX, this.motionY, this.motionZ);
+        this.moveEntity(this.motionX, this.motionY, this.motionZ);
     }
 
     @Override
     public boolean interact(EntityPlayer par1EntityPlayer)
     {
-    	this.setDirection(this.rotationYaw + 3F);
+        this.setDirection(this.rotationYaw + 3F);
 
         return true;
     }

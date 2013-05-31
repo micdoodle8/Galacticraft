@@ -8,9 +8,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
- *
- *  All rights reserved.
- *
+ * 
+ * All rights reserved.
+ * 
  */
 public class GCMoonBiomeGenBase extends BiomeGenBase
 {
@@ -26,19 +26,19 @@ public class GCMoonBiomeGenBase extends BiomeGenBase
     }
 
     @Override
-	public GCMoonBiomeGenBase setColor(int var1)
+    public GCMoonBiomeGenBase setColor(int var1)
     {
-        return (GCMoonBiomeGenBase)super.setColor(var1);
+        return (GCMoonBiomeGenBase) super.setColor(var1);
     }
 
     @Override
-	public float getSpawningChance()
+    public float getSpawningChance()
     {
         return 0.1F;
     }
 
     @Override
-	@SideOnly(Side.CLIENT)
+    @SideOnly(Side.CLIENT)
     public int getBiomeGrassColor()
     {
         final double var3 = MathHelper.clamp_float(this.maxHeight, 0.0F, 1.0F);

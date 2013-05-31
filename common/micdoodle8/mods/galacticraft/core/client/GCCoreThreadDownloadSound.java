@@ -7,18 +7,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SoundPoolEntry;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -43,14 +39,15 @@ public class GCCoreThreadDownloadSound extends Thread
     }
 
     @Override
-	public void run()
+    public void run()
     {
         try
         {
             final URL url = new URL("http://micdoodle8.com/galacticraft/sounds/downloadsounds.xml");
             final DocumentBuilderFactory documentbuilderfactory = DocumentBuilderFactory.newInstance();
             final DocumentBuilder documentbuilder = documentbuilderfactory.newDocumentBuilder();
-            //Add a timeout of 60 seconds to getting the list, MC stalls without sound for some users.
+            // Add a timeout of 60 seconds to getting the list, MC stalls
+            // without sound for some users.
             final URLConnection con = url.openConnection();
             con.addRequestProperty("User-Agent", "Mozilla/4.76");
             con.setConnectTimeout(60000);
@@ -66,7 +63,7 @@ public class GCCoreThreadDownloadSound extends Thread
 
                     if (node.getNodeType() == 1)
                     {
-                        final Element element = (Element)node;
+                        final Element element = (Element) node;
                         final String s = element.getElementsByTagName("Key").item(0).getChildNodes().item(0).getNodeValue();
                         final long k = Long.parseLong(element.getElementsByTagName("Size").item(0).getChildNodes().item(0).getNodeValue());
 
@@ -99,21 +96,21 @@ public class GCCoreThreadDownloadSound extends Thread
     {
         final File[] afile = par1File.listFiles();
 
-        for (int i = 0; i < afile.length; ++i)
+        for (File element : afile)
         {
-            if (afile[i].isDirectory())
+            if (element.isDirectory())
             {
-                this.loadResource(afile[i], par2Str + afile[i].getName() + "/");
+                this.loadResource(element, par2Str + element.getName() + "/");
             }
             else
             {
                 try
                 {
-                    this.mc.installResource(par2Str + afile[i].getName(), afile[i]);
+                    this.mc.installResource(par2Str + element.getName(), element);
                 }
                 catch (final Exception exception)
                 {
-                    this.mc.getLogAgent().logWarning("Failed to add " + par2Str + afile[i].getName() + " in resources");
+                    this.mc.getLogAgent().logWarning("Failed to add " + par2Str + element.getName() + " in resources");
                 }
             }
         }
@@ -158,7 +155,7 @@ public class GCCoreThreadDownloadSound extends Thread
             }
             else
             {
-            	ClientProxyCore.newMusic.add(new SoundPoolEntry(par2Str, file1.toURI().toURL()));
+                ClientProxyCore.newMusic.add(new SoundPoolEntry(par2Str, file1.toURI().toURL()));
             }
         }
         catch (final Exception exception)
@@ -170,15 +167,14 @@ public class GCCoreThreadDownloadSound extends Thread
     private void downloadResource(URL par1URL, File par2File, long par3) throws IOException
     {
         final byte[] abyte = new byte[4096];
-        //Add a timeout of 60 seconds to getting the list, MC stalls without sound for some users.
+        // Add a timeout of 60 seconds to getting the list, MC stalls without
+        // sound for some users.
         final URLConnection con = par1URL.openConnection();
         con.addRequestProperty("User-Agent", "Mozilla/4.76");
         con.setConnectTimeout(60000);
         con.setReadTimeout(60000);
         final DataInputStream datainputstream = new DataInputStream(con.getInputStream());
         final DataOutputStream dataoutputstream = new DataOutputStream(new FileOutputStream(par2File));
-        final boolean flag = false;
-
         do
         {
             int j;

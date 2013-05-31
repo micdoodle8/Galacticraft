@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.wgen;
 
 import java.util.Random;
-
 import micdoodle8.mods.galacticraft.API.IPlantableBlock;
 import micdoodle8.mods.galacticraft.API.IPlantableMetadataBlock;
 import net.minecraft.block.Block;
@@ -18,7 +17,7 @@ public class GCCoreWorldGenTaiga2 extends WorldGenerator
     }
 
     @Override
-	public boolean generate(World par1World, Random par2Random, int par3, int par4, int par5)
+    public boolean generate(World par1World, Random par2Random, int par3, int par4, int par5)
     {
         final int var6 = par2Random.nextInt(4) + 6;
         final int var7 = 1 + par2Random.nextInt(2);
@@ -84,21 +83,21 @@ public class GCCoreWorldGenTaiga2 extends WorldGenerator
                 {
                     for (int j = -4; j < 5; j++)
                     {
-                        if(par1World.getBlockId(par3 + i, par4 - 1, par5 + j) == Block.waterMoving.blockID || par1World.getBlockId(par3 + i, par4 - 1, par5 + j) == Block.waterStill.blockID)
+                        if (par1World.getBlockId(par3 + i, par4 - 1, par5 + j) == Block.waterMoving.blockID || par1World.getBlockId(par3 + i, par4 - 1, par5 + j) == Block.waterStill.blockID)
                         {
-                        	waterBlocksNearby++;
+                            waterBlocksNearby++;
                         }
                     }
                 }
 
                 if (Block.blocksList[var11] != null)
                 {
-                	final boolean flag = Block.blocksList[var11] instanceof IPlantableBlock || Block.blocksList[var11] instanceof IPlantableMetadataBlock && ((IPlantableMetadataBlock) Block.blocksList[var11]).isPlantable(var10a);
-                	final boolean flag2 = Block.blocksList[var11] instanceof IPlantableBlock && waterBlocksNearby >= ((IPlantableBlock)Block.blocksList[var11]).requiredLiquidBlocksNearby() || Block.blocksList[var11] instanceof IPlantableMetadataBlock && waterBlocksNearby >= ((IPlantableMetadataBlock)Block.blocksList[var11]).requiredLiquidBlocksNearby();
-                	final boolean flag3 = (Block.blocksList[var11] instanceof BlockGrass || Block.blocksList[var11] instanceof BlockDirt) && waterBlocksNearby >= 4;
+                    final boolean flag = Block.blocksList[var11] instanceof IPlantableBlock || Block.blocksList[var11] instanceof IPlantableMetadataBlock && ((IPlantableMetadataBlock) Block.blocksList[var11]).isPlantable(var10a);
+                    final boolean flag2 = Block.blocksList[var11] instanceof IPlantableBlock && waterBlocksNearby >= ((IPlantableBlock) Block.blocksList[var11]).requiredLiquidBlocksNearby() || Block.blocksList[var11] instanceof IPlantableMetadataBlock && waterBlocksNearby >= ((IPlantableMetadataBlock) Block.blocksList[var11]).requiredLiquidBlocksNearby();
+                    final boolean flag3 = (Block.blocksList[var11] instanceof BlockGrass || Block.blocksList[var11] instanceof BlockDirt) && waterBlocksNearby >= 4;
 
-                	if (flag && flag2 || flag3)
-                	{
+                    if (flag && flag2 || flag3)
+                    {
                         var21 = par2Random.nextInt(2);
                         var13 = 1;
                         byte var22 = 0;
@@ -119,8 +118,7 @@ public class GCCoreWorldGenTaiga2 extends WorldGenerator
 
                                     final Block block = Block.blocksList[par1World.getBlockId(var17, var16, var19)];
 
-                                    if ((Math.abs(var18) != var21 || Math.abs(var20) != var21 || var21 <= 0) &&
-                                        (block == null || block.canBeReplacedByLeaves(par1World, var17, var16, var19)))
+                                    if ((Math.abs(var18) != var21 || Math.abs(var20) != var21 || var21 <= 0) && (block == null || block.canBeReplacedByLeaves(par1World, var17, var16, var19)))
                                     {
                                         this.setBlockAndMetadata(par1World, var17, var16, var19, Block.leaves.blockID, 1);
                                     }
@@ -159,11 +157,11 @@ public class GCCoreWorldGenTaiga2 extends WorldGenerator
                         }
 
                         return true;
-                	}
-                	else
-                	{
-                		return false;
-                	}
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
                 else
                 {

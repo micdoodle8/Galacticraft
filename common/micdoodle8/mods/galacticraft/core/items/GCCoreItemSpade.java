@@ -13,21 +13,18 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreItemSpade extends ItemSpade
 {
-	private final EnumToolMaterial material;
+    public GCCoreItemSpade(int par1, EnumToolMaterial par2EnumToolMaterial)
+    {
+        super(par1, par2EnumToolMaterial);
+    }
 
-	public GCCoreItemSpade(int par1, EnumToolMaterial par2EnumToolMaterial)
-	{
-		super(par1, par2EnumToolMaterial);
-		this.material = par2EnumToolMaterial;
-	}
-
-	@Override
+    @Override
     public CreativeTabs getCreativeTab()
     {
         return GalacticraftCore.galacticraftTab;
     }
 
-	@Override
+    @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister par1IconRegister)
     {
@@ -35,7 +32,7 @@ public class GCCoreItemSpade extends ItemSpade
     }
 
     @Override
-	@SideOnly(Side.CLIENT)
+    @SideOnly(Side.CLIENT)
     public EnumRarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;

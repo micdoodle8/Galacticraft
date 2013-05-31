@@ -11,7 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import universalelectricity.prefab.SlotSpecific;
 
-public class GCCoreContainerSchematic  extends Container
+public class GCCoreContainerSchematic extends Container
 {
     public GCCoreInventorySchematic craftMatrix = new GCCoreInventorySchematic(this);
     public IInventory craftResult = new InventoryCraftResult();
@@ -19,8 +19,8 @@ public class GCCoreContainerSchematic  extends Container
 
     public GCCoreContainerSchematic(InventoryPlayer par1InventoryPlayer, int x, int y, int z)
     {
-		this.worldObj = par1InventoryPlayer.player.worldObj;
-		this.addSlotToContainer(new SlotSpecific(this.craftMatrix, 0, 80, 1, ISchematicItem.class));
+        this.worldObj = par1InventoryPlayer.player.worldObj;
+        this.addSlotToContainer(new SlotSpecific(this.craftMatrix, 0, 80, 1, ISchematicItem.class));
         int var6;
         int var7;
 
@@ -43,7 +43,7 @@ public class GCCoreContainerSchematic  extends Container
     }
 
     @Override
-	public void onCraftGuiClosed(EntityPlayer par1EntityPlayer)
+    public void onCraftGuiClosed(EntityPlayer par1EntityPlayer)
     {
         super.onCraftGuiClosed(par1EntityPlayer);
 
@@ -61,17 +61,17 @@ public class GCCoreContainerSchematic  extends Container
         }
     }
 
-	@Override
-	public boolean canInteractWith(EntityPlayer entityplayer)
-	{
-		return true;
-	}
+    @Override
+    public boolean canInteractWith(EntityPlayer entityplayer)
+    {
+        return true;
+    }
 
-	@Override
-	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2)
+    @Override
+    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2)
     {
         ItemStack var3 = null;
-        final Slot var4 = (Slot)this.inventorySlots.get(par2);
+        final Slot var4 = (Slot) this.inventorySlots.get(par2);
 
         if (var4 != null && var4.getHasStack())
         {
@@ -92,7 +92,7 @@ public class GCCoreContainerSchematic  extends Container
 
             if (var5.stackSize == 0)
             {
-                var4.putStack((ItemStack)null);
+                var4.putStack((ItemStack) null);
             }
             else
             {

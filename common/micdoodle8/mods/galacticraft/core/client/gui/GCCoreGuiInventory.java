@@ -7,20 +7,19 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.player.EntityPlayer;
-
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 public class GCCoreGuiInventory extends GuiInventory
 {
-	private float xSize_lo_2;
-	private float ySize_lo_2;
-	private float rotation;
+    private float xSize_lo_2;
+    private float ySize_lo_2;
+    private float rotation;
 
     public GCCoreGuiInventory(EntityPlayer par1EntityPlayer)
     {
-		super(par1EntityPlayer);
-	}
+        super(par1EntityPlayer);
+    }
 
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
@@ -30,25 +29,25 @@ public class GCCoreGuiInventory extends GuiInventory
     @Override
     public void initGui()
     {
-    	super.initGui();
-    	this.rotation = 0;
+        super.initGui();
+        this.rotation = 0;
     }
 
-	@Override
-	protected void actionPerformed(GuiButton par1GuiButton)
-	{
-		super.actionPerformed(par1GuiButton);
+    @Override
+    protected void actionPerformed(GuiButton par1GuiButton)
+    {
+        super.actionPerformed(par1GuiButton);
 
-		switch (par1GuiButton.id)
-		{
-		case 0:
-			this.rotation -= 10;
-			break;
-		case 1:
-			this.rotation += 10;
-			break;
-		}
-	}
+        switch (par1GuiButton.id)
+        {
+        case 0:
+            this.rotation -= 10;
+            break;
+        case 1:
+            this.rotation += 10;
+            break;
+        }
+    }
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
@@ -71,7 +70,7 @@ public class GCCoreGuiInventory extends GuiInventory
 
     public void drawPlayerOnGui2(Minecraft par0Minecraft, int par1, int par2, int par3, float par4, float par5)
     {
-    	final float pitchBefore = par0Minecraft.thePlayer.rotationPitch;
+        final float pitchBefore = par0Minecraft.thePlayer.rotationPitch;
         GL11.glEnable(GL11.GL_COLOR_MATERIAL);
         GL11.glPushMatrix();
         GL11.glTranslatef(par1, par2, 50.0F);
@@ -82,7 +81,7 @@ public class GCCoreGuiInventory extends GuiInventory
         GL11.glRotatef(135.0F, 0.0F, 1.0F, 0.0F);
         RenderHelper.enableStandardItemLighting();
         GL11.glRotatef(-135.0F, 0.0F, 1.0F, 0.0F);
-        GL11.glRotatef(-((float)Math.atan(this.rotation / 40.0F)) * 00.0F, 1.0F, 0.0F, 0.0F);
+        GL11.glRotatef(-((float) Math.atan(this.rotation / 40.0F)) * 00.0F, 1.0F, 0.0F, 0.0F);
         par0Minecraft.thePlayer.renderYawOffset = this.rotation;
         par0Minecraft.thePlayer.rotationYaw = this.rotation;
         par0Minecraft.thePlayer.rotationPitch = 0;

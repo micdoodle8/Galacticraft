@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
 import java.util.Calendar;
-
 import micdoodle8.mods.galacticraft.API.IEntityBreathable;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -55,52 +54,54 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityVillager.class, 16.0F, 0, false));
     }
 
-	@Override
+    @Override
     public void fall(float var1)
     {
-		;
+        ;
     }
 
     @Override
-	protected int func_96121_ay()
+    protected int func_96121_ay()
     {
         return 40;
     }
 
     /**
-     * This method returns a value to be applied directly to entity speed, this factor is less than 1 when a slowdown
-     * potion effect is applied, more than 1 when a haste potion effect is applied and 2 for fleeing entities.
+     * This method returns a value to be applied directly to entity speed, this
+     * factor is less than 1 when a slowdown potion effect is applied, more than
+     * 1 when a haste potion effect is applied and 2 for fleeing entities.
      */
     @Override
-	public float getSpeedModifier()
+    public float getSpeedModifier()
     {
         return super.getSpeedModifier() * (this.isChild() ? 1.5F : 1.0F);
     }
 
     @Override
-	protected void entityInit()
+    protected void entityInit()
     {
         super.entityInit();
     }
 
     @Override
-	@SideOnly(Side.CLIENT)
+    @SideOnly(Side.CLIENT)
     public String getTexture()
     {
         return "/micdoodle8/mods/galacticraft/core/client/entities/zombie.png";
     }
 
     @Override
-	public int getMaxHealth()
+    public int getMaxHealth()
     {
         return 30;
     }
 
     /**
-     * Returns the current armor value as determined by a call to InventoryPlayer.getTotalArmorValue
+     * Returns the current armor value as determined by a call to
+     * InventoryPlayer.getTotalArmorValue
      */
     @Override
-	public int getTotalArmorValue()
+    public int getTotalArmorValue()
     {
         int i = super.getTotalArmorValue() + 2;
 
@@ -116,7 +117,7 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
      * Returns true if the newer Entity AI code should be run
      */
     @Override
-	public boolean isAIEnabled()
+    public boolean isAIEnabled()
     {
         return true;
     }
@@ -125,7 +126,7 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
      * If Animal, checks if the age timer is negative
      */
     @Override
-	public boolean isChild()
+    public boolean isChild()
     {
         return this.getDataWatcher().getWatchableObjectByte(12) == 1;
     }
@@ -134,16 +135,16 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
      * Set whether this zombie is a child.
      */
     @Override
-	public void setChild(boolean par1)
+    public void setChild(boolean par1)
     {
-        this.getDataWatcher().updateObject(12, Byte.valueOf((byte)1));
+        this.getDataWatcher().updateObject(12, Byte.valueOf((byte) 1));
     }
 
     /**
      * Return whether this zombie is a villager.
      */
     @Override
-	public boolean isVillager()
+    public boolean isVillager()
     {
         return this.getDataWatcher().getWatchableObjectByte(13) == 1;
     }
@@ -152,17 +153,18 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
      * Set whether this zombie is a villager.
      */
     @Override
-	public void setVillager(boolean par1)
+    public void setVillager(boolean par1)
     {
-        this.getDataWatcher().updateObject(13, Byte.valueOf((byte)(par1 ? 1 : 0)));
+        this.getDataWatcher().updateObject(13, Byte.valueOf((byte) (par1 ? 1 : 0)));
     }
 
     /**
-     * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
-     * use this to react to sunlight and start to burn.
+     * Called frequently so the entity can update its state every tick as
+     * required. For example, zombies and skeletons use this to react to
+     * sunlight and start to burn.
      */
     @Override
-	public void onLivingUpdate()
+    public void onLivingUpdate()
     {
         if (this.worldObj.isDaytime() && !this.worldObj.isRemote && !this.isChild())
         {
@@ -182,7 +184,7 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
                         if (itemstack.getItemDamageForDisplay() >= itemstack.getMaxDamage())
                         {
                             this.renderBrokenItemStack(itemstack);
-                            this.setCurrentItemOrArmor(4, (ItemStack)null);
+                            this.setCurrentItemOrArmor(4, (ItemStack) null);
                         }
                     }
 
@@ -203,7 +205,7 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
      * Called to update the entity's position/logic.
      */
     @Override
-	public void onUpdate()
+    public void onUpdate()
     {
         if (!this.worldObj.isRemote && this.isConverting())
         {
@@ -220,7 +222,7 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
     }
 
     @Override
-	public boolean attackEntityAsMob(Entity par1Entity)
+    public boolean attackEntityAsMob(Entity par1Entity)
     {
         final boolean flag = super.attackEntityAsMob(par1Entity);
 
@@ -236,10 +238,10 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
      * Returns the amount of damage a mob should deal.
      */
     @Override
-	public int getAttackStrength(Entity par1Entity)
+    public int getAttackStrength(Entity par1Entity)
     {
         final ItemStack itemstack = this.getHeldItem();
-        final float f = (float)(this.getMaxHealth() - this.getHealth()) / (float)this.getMaxHealth();
+        final float f = (float) (this.getMaxHealth() - this.getHealth()) / (float) this.getMaxHealth();
         int i = 3 + MathHelper.floor_float(f * 4.0F);
 
         if (itemstack != null)
@@ -254,7 +256,7 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
      * Returns the sound this mob makes while it's alive.
      */
     @Override
-	protected String getLivingSound()
+    protected String getLivingSound()
     {
         return "mob.zombie.say";
     }
@@ -263,7 +265,7 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
      * Returns the sound this mob makes when it is hurt.
      */
     @Override
-	protected String getHurtSound()
+    protected String getHurtSound()
     {
         return "mob.zombie.hurt";
     }
@@ -272,7 +274,7 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
      * Returns the sound this mob makes on death.
      */
     @Override
-	protected String getDeathSound()
+    protected String getDeathSound()
     {
         return "mob.zombie.death";
     }
@@ -281,7 +283,7 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
      * Plays step sound at given x, y, z for the entity
      */
     @Override
-	protected void playStepSound(int par1, int par2, int par3, int par4)
+    protected void playStepSound(int par1, int par2, int par3, int par4)
     {
         this.playSound("mob.zombie.step", 0.15F, 1.0F);
     }
@@ -290,7 +292,7 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
      * Returns the item ID for the item the mob drops on death.
      */
     @Override
-	protected int getDropItemId()
+    protected int getDropItemId()
     {
         return Item.rottenFlesh.itemID;
     }
@@ -299,24 +301,24 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
      * Get this Entity's EnumCreatureAttribute
      */
     @Override
-	public EnumCreatureAttribute getCreatureAttribute()
+    public EnumCreatureAttribute getCreatureAttribute()
     {
         return EnumCreatureAttribute.UNDEAD;
     }
 
     @Override
-	protected void dropRareDrop(int par1)
+    protected void dropRareDrop(int par1)
     {
         switch (this.rand.nextInt(3))
         {
-            case 0:
-                this.dropItem(Item.ingotIron.itemID, 1);
-                break;
-            case 1:
-                this.dropItem(Item.carrot.itemID, 1);
-                break;
-            case 2:
-                this.dropItem(Item.potato.itemID, 1);
+        case 0:
+            this.dropItem(Item.ingotIron.itemID, 1);
+            break;
+        case 1:
+            this.dropItem(Item.carrot.itemID, 1);
+            break;
+        case 2:
+            this.dropItem(Item.potato.itemID, 1);
         }
     }
 
@@ -324,7 +326,7 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
      * Makes entity wear random armor based on difficulty
      */
     @Override
-	protected void addRandomArmor()
+    protected void addRandomArmor()
     {
         super.addRandomArmor();
 
@@ -347,7 +349,7 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
      * (abstract) Protected helper method to write subclass entity data to NBT.
      */
     @Override
-	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
+    public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeEntityToNBT(par1NBTTagCompound);
 
@@ -368,7 +370,7 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
      * (abstract) Protected helper method to read subclass entity data from NBT.
      */
     @Override
-	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
+    public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readEntityFromNBT(par1NBTTagCompound);
 
@@ -392,7 +394,7 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
      * This method gets called when the entity kills another one.
      */
     @Override
-	public void onKillEntity(EntityLiving par1EntityLiving)
+    public void onKillEntity(EntityLiving par1EntityLiving)
     {
         super.onKillEntity(par1EntityLiving);
 
@@ -415,7 +417,7 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
             }
 
             this.worldObj.spawnEntityInWorld(entityzombie);
-            this.worldObj.playAuxSFXAtEntity((EntityPlayer)null, 1016, (int)this.posX, (int)this.posY, (int)this.posZ, 0);
+            this.worldObj.playAuxSFXAtEntity((EntityPlayer) null, 1016, (int) this.posX, (int) this.posY, (int) this.posZ, 0);
         }
     }
 
@@ -423,7 +425,7 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
      * Initialize this creature.
      */
     @Override
-	public void initCreature()
+    public void initCreature()
     {
         this.setCanPickUpLoot(this.rand.nextFloat() < EntityLiving.pickUpLootProability[this.worldObj.difficultySetting]);
 
@@ -448,10 +450,11 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
     }
 
     /**
-     * Called when a player interacts with a mob. e.g. gets milk from a cow, gets into the saddle on a pig.
+     * Called when a player interacts with a mob. e.g. gets milk from a cow,
+     * gets into the saddle on a pig.
      */
     @Override
-	public boolean interact(EntityPlayer par1EntityPlayer)
+    public boolean interact(EntityPlayer par1EntityPlayer)
     {
         final ItemStack itemstack = par1EntityPlayer.getCurrentEquippedItem();
 
@@ -464,7 +467,7 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
 
             if (itemstack.stackSize <= 0)
             {
-                par1EntityPlayer.inventory.setInventorySlotContents(par1EntityPlayer.inventory.currentItem, (ItemStack)null);
+                par1EntityPlayer.inventory.setInventorySlotContents(par1EntityPlayer.inventory.currentItem, (ItemStack) null);
             }
 
             if (!this.worldObj.isRemote)
@@ -481,21 +484,21 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
     }
 
     /**
-     * Starts converting this zombie into a villager. The zombie converts into a villager after the specified time in
-     * ticks.
+     * Starts converting this zombie into a villager. The zombie converts into a
+     * villager after the specified time in ticks.
      */
     @Override
-	protected void startConversion(int par1)
+    protected void startConversion(int par1)
     {
         this.conversionTime = par1;
-        this.getDataWatcher().updateObject(14, Byte.valueOf((byte)1));
+        this.getDataWatcher().updateObject(14, Byte.valueOf((byte) 1));
         this.removePotionEffect(Potion.weakness.id);
         this.addPotionEffect(new PotionEffect(Potion.damageBoost.id, par1, Math.min(this.worldObj.difficultySetting - 1, 0)));
-        this.worldObj.setEntityState(this, (byte)16);
+        this.worldObj.setEntityState(this, (byte) 16);
     }
 
     @Override
-	@SideOnly(Side.CLIENT)
+    @SideOnly(Side.CLIENT)
     public void handleHealthUpdate(byte par1)
     {
         if (par1 == 16)
@@ -512,7 +515,7 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
      * Returns whether this zombie is in the process of converting to a villager
      */
     @Override
-	public boolean isConverting()
+    public boolean isConverting()
     {
         return this.getDataWatcher().getWatchableObjectByte(14) == 1;
     }
@@ -521,7 +524,7 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
      * Convert this zombie into a villager.
      */
     @Override
-	protected void convertToVillager()
+    protected void convertToVillager()
     {
         final EntityVillager entityvillager = new EntityVillager(this.worldObj);
         entityvillager.func_82149_j(this);
@@ -536,14 +539,14 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
         this.worldObj.removeEntity(this);
         this.worldObj.spawnEntityInWorld(entityvillager);
         entityvillager.addPotionEffect(new PotionEffect(Potion.confusion.id, 200, 0));
-        this.worldObj.playAuxSFXAtEntity((EntityPlayer)null, 1017, (int)this.posX, (int)this.posY, (int)this.posZ, 0);
+        this.worldObj.playAuxSFXAtEntity((EntityPlayer) null, 1017, (int) this.posX, (int) this.posY, (int) this.posZ, 0);
     }
 
     /**
      * Return the amount of time decremented from conversionTime every tick.
      */
     @Override
-	protected int getConversionTimeBoost()
+    protected int getConversionTimeBoost()
     {
         int i = 1;
 
@@ -551,11 +554,11 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
         {
             int j = 0;
 
-            for (int k = (int)this.posX - 4; k < (int)this.posX + 4 && j < 14; ++k)
+            for (int k = (int) this.posX - 4; k < (int) this.posX + 4 && j < 14; ++k)
             {
-                for (int l = (int)this.posY - 4; l < (int)this.posY + 4 && j < 14; ++l)
+                for (int l = (int) this.posY - 4; l < (int) this.posY + 4 && j < 14; ++l)
                 {
-                    for (int i1 = (int)this.posZ - 4; i1 < (int)this.posZ + 4 && j < 14; ++i1)
+                    for (int i1 = (int) this.posZ - 4; i1 < (int) this.posZ + 4 && j < 14; ++i1)
                     {
                         final int j1 = this.worldObj.getBlockId(k, l, i1);
 
@@ -576,9 +579,9 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
         return i;
     }
 
-	@Override
-	public boolean canBreath()
-	{
-		return true;
-	}
+    @Override
+    public boolean canBreath()
+    {
+        return true;
+    }
 }

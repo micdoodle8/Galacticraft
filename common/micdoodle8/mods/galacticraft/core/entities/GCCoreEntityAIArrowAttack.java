@@ -11,9 +11,9 @@ import net.minecraft.world.World;
 
 /**
  * Copyright 2012-2013, micdoodle8
- *
- *  All rights reserved.
- *
+ * 
+ * All rights reserved.
+ * 
  */
 public class GCCoreEntityAIArrowAttack extends EntityAIBase
 {
@@ -24,20 +24,22 @@ public class GCCoreEntityAIArrowAttack extends EntityAIBase
     EntityLiving attackTarget;
 
     /**
-     * A decrementing tick that spawns a ranged attack once this value reaches 0. It is then set back to the
-     * maxRangedAttackTime.
+     * A decrementing tick that spawns a ranged attack once this value reaches
+     * 0. It is then set back to the maxRangedAttackTime.
      */
     int rangedAttackTime = 0;
     float entityMoveSpeed;
     int field_75318_f = 0;
 
     /**
-     * The ID of this ranged attack AI. This chooses which entity is to be used as a ranged attack.
+     * The ID of this ranged attack AI. This chooses which entity is to be used
+     * as a ranged attack.
      */
     int rangedAttackID;
 
     /**
-     * The maximum time the AI has to wait before peforming another ranged attack.
+     * The maximum time the AI has to wait before peforming another ranged
+     * attack.
      */
     int maxRangedAttackTime;
 
@@ -62,7 +64,7 @@ public class GCCoreEntityAIArrowAttack extends EntityAIBase
      * Returns whether the EntityAIBase should begin execution.
      */
     @Override
-	public boolean shouldExecute()
+    public boolean shouldExecute()
     {
         final EntityLiving var1 = this.entityHost.getAttackTarget();
 
@@ -81,7 +83,7 @@ public class GCCoreEntityAIArrowAttack extends EntityAIBase
      * Returns whether an in-progress EntityAIBase should continue executing
      */
     @Override
-	public boolean continueExecuting()
+    public boolean continueExecuting()
     {
         return this.shouldExecute();
     }
@@ -90,7 +92,7 @@ public class GCCoreEntityAIArrowAttack extends EntityAIBase
      * Resets the task
      */
     @Override
-	public void resetTask()
+    public void resetTask()
     {
         this.attackTarget = null;
     }
@@ -99,7 +101,7 @@ public class GCCoreEntityAIArrowAttack extends EntityAIBase
      * Updates the task
      */
     @Override
-	public void updateTask()
+    public void updateTask()
     {
         final double var1 = 100.0D;
         final double var3 = this.entityHost.getDistanceSq(this.attackTarget.posX, this.attackTarget.boundingBox.minY, this.attackTarget.posZ);
@@ -114,14 +116,15 @@ public class GCCoreEntityAIArrowAttack extends EntityAIBase
             this.field_75318_f = 0;
         }
 
-//        if (var3 <= var1 && this.field_75318_f >= 20)
+        // if (var3 <= var1 && this.field_75318_f >= 20)
         {
-//            this.entityHost.getNavigator().clearPathEntity();
+            // this.entityHost.getNavigator().clearPathEntity();
         }
-//        else
-//        {
-//            this.entityHost.getNavigator().tryMoveToEntityLiving(this.attackTarget, this.entityMoveSpeed);
-//        }
+        // else
+        // {
+        // this.entityHost.getNavigator().tryMoveToEntityLiving(this.attackTarget,
+        // this.entityMoveSpeed);
+        // }
 
         this.entityHost.getLookHelper().setLookPositionWithEntity(this.attackTarget, 30.0F, 30.0F);
         this.rangedAttackTime = Math.max(this.rangedAttackTime - 1, 0);
@@ -143,16 +146,16 @@ public class GCCoreEntityAIArrowAttack extends EntityAIBase
     {
         if (this.rangedAttackID == 1)
         {
-        	Entity var1;
+            Entity var1;
 
-        	if (this.worldObj.provider instanceof IGalacticraftWorldProvider)
-        	{
-        		var1 = new GCCoreEntityArrow(this.worldObj, this.entityHost, this.attackTarget, 0.3F, 12.0F);
-        	}
-        	else
-        	{
+            if (this.worldObj.provider instanceof IGalacticraftWorldProvider)
+            {
+                var1 = new GCCoreEntityArrow(this.worldObj, this.entityHost, this.attackTarget, 0.3F, 12.0F);
+            }
+            else
+            {
                 var1 = new EntityArrow(this.worldObj, this.entityHost, this.attackTarget, 1.6F, 12.0F);
-        	}
+            }
 
             this.worldObj.playSoundAtEntity(this.entityHost, "random.bow", 1.0F, 1.0F / (this.entityHost.getRNG().nextFloat() * 0.4F + 0.8F));
             this.worldObj.spawnEntityInWorld(var1);

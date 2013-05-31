@@ -14,54 +14,54 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreSchematicMoonBuggy implements ISchematicPage
 {
-	@Override
-	public int getPageID()
-	{
-		return GCCoreConfigManager.idSchematicMoonBuggy;
-	}
+    @Override
+    public int getPageID()
+    {
+        return GCCoreConfigManager.idSchematicMoonBuggy;
+    }
 
-	@Override
-	public int getGuiID()
-	{
-		return GCCoreConfigManager.idGuiBuggyCraftingBench;
-	}
+    @Override
+    public int getGuiID()
+    {
+        return GCCoreConfigManager.idGuiBuggyCraftingBench;
+    }
 
-	@Override
-	public ItemStack getRequiredItem()
-	{
-		return new ItemStack(GCCoreItems.schematic, 1, 0);
-	}
+    @Override
+    public ItemStack getRequiredItem()
+    {
+        return new ItemStack(GCCoreItems.schematic, 1, 0);
+    }
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public String getTitle()
-	{
-		return "Moon Buggy";
-	}
+    @SideOnly(Side.CLIENT)
+    @Override
+    public String getTitle()
+    {
+        return "Moon Buggy";
+    }
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public GuiScreen getResultScreen(EntityPlayer player, int x, int y, int z)
-	{
-		return new GCCoreGuiSchematicBuggy(player.inventory);
-	}
+    @SideOnly(Side.CLIENT)
+    @Override
+    public GuiScreen getResultScreen(EntityPlayer player, int x, int y, int z)
+    {
+        return new GCCoreGuiSchematicBuggy(player.inventory);
+    }
 
-	@Override
-	public Container getResultContainer(EntityPlayer player, int x, int y, int z)
-	{
-		return new GCCoreContainerBuggyBench(player.inventory, x, y, z);
-	}
+    @Override
+    public Container getResultContainer(EntityPlayer player, int x, int y, int z)
+    {
+        return new GCCoreContainerBuggyBench(player.inventory, x, y, z);
+    }
 
-	@Override
-	public int compareTo(ISchematicPage o)
-	{
-		if (this.getPageID() > o.getPageID())
-		{
-			return 1;
-		}
-		else
-		{
-			return -1;
-		}
-	}
+    @Override
+    public int compareTo(ISchematicPage o)
+    {
+        if (this.getPageID() > o.getPageID())
+        {
+            return 1;
+        }
+        else
+        {
+            return -1;
+        }
+    }
 }

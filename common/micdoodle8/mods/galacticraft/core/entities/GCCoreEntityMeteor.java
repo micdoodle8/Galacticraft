@@ -1,10 +1,8 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
 import icbm.api.RadarRegistry;
-
 import java.util.Iterator;
 import java.util.List;
-
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import net.minecraft.entity.Entity;
@@ -23,18 +21,15 @@ public class GCCoreEntityMeteor extends Entity
 {
     public EntityLiving shootingEntity;
     public int size;
-    private int xTile = -1;
-    private int yTile = -1;
-    private int zTile = -1;
 
-	public GCCoreEntityMeteor(World world)
-	{
-		super(world);
-	}
+    public GCCoreEntityMeteor(World world)
+    {
+        super(world);
+    }
 
     public GCCoreEntityMeteor(World world, double x, double y, double z, double motX, double motY, double motZ, int size)
     {
-    	this(world);
+        this(world);
         this.size = size;
         this.setSize(1.0F, 1.0F);
         this.setLocationAndAngles(x, y, z, this.rotationYaw, this.rotationPitch);
@@ -48,18 +43,18 @@ public class GCCoreEntityMeteor extends Entity
     @Override
     public void setDead()
     {
-    	super.setDead();
+        super.setDead();
 
-    	if (RadarRegistry.getEntities().contains(this))
-    	{
-    		RadarRegistry.unregister(this);
-    	}
+        if (RadarRegistry.getEntities().contains(this))
+        {
+            RadarRegistry.unregister(this);
+        }
     }
 
     @Override
-	public void onUpdate()
+    public void onUpdate()
     {
-    	this.setRotation(this.rotationYaw + 2F, this.rotationPitch + 2F);
+        this.setRotation(this.rotationYaw + 2F, this.rotationPitch + 2F);
         this.prevPosX = this.posX;
         this.prevPosY = this.posY;
         this.prevPosZ = this.posZ;
@@ -73,7 +68,7 @@ public class GCCoreEntityMeteor extends Entity
 
         if (this.worldObj.isRemote)
         {
-        	this.spawnParticles();
+            this.spawnParticles();
         }
 
         Vec3 var15 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
@@ -94,7 +89,7 @@ public class GCCoreEntityMeteor extends Entity
 
         while (var8.hasNext())
         {
-            final Entity var9 = (Entity)var8.next();
+            final Entity var9 = (Entity) var8.next();
 
             if (var9.canBeCollidedWith() && !var9.isEntityEqual(this.shootingEntity))
             {
@@ -122,46 +117,42 @@ public class GCCoreEntityMeteor extends Entity
 
         if (var3 != null)
         {
-            this.xTile = var3.blockX;
-            this.yTile = var3.blockY;
-            this.zTile = var3.blockZ;
-
             this.onImpact(var3);
         }
 
         if (this.posY <= -20 || this.posY >= 400)
         {
-        	this.setDead();
+            this.setDead();
         }
     }
 
     protected void spawnParticles()
     {
-    	GalacticraftCore.proxy.spawnParticle("distancesmoke", this.posX, this.posY + 1D + Math.random(), this.posZ, 0.0D, 0.0D, 0.0D, false);
-    	GalacticraftCore.proxy.spawnParticle("distancesmoke", this.posX + Math.random() / 2, this.posY + 1D + Math.random() / 2, this.posZ, 0.0D, 0.0D, 0.0D, false);
-    	GalacticraftCore.proxy.spawnParticle("distancesmoke", this.posX, this.posY + 1D + Math.random(), this.posZ + Math.random(), 0.0D, 0.0D, 0.0D, false);
-    	GalacticraftCore.proxy.spawnParticle("distancesmoke", this.posX - Math.random() / 2, this.posY + 1D + Math.random() / 2, this.posZ, 0.0D, 0.0D, 0.0D, false);
-    	GalacticraftCore.proxy.spawnParticle("distancesmoke", this.posX, this.posY + 1D + Math.random(), this.posZ - Math.random(), 0.0D, 0.0D, 0.0D, false);
+        GalacticraftCore.proxy.spawnParticle("distancesmoke", this.posX, this.posY + 1D + Math.random(), this.posZ, 0.0D, 0.0D, 0.0D, false);
+        GalacticraftCore.proxy.spawnParticle("distancesmoke", this.posX + Math.random() / 2, this.posY + 1D + Math.random() / 2, this.posZ, 0.0D, 0.0D, 0.0D, false);
+        GalacticraftCore.proxy.spawnParticle("distancesmoke", this.posX, this.posY + 1D + Math.random(), this.posZ + Math.random(), 0.0D, 0.0D, 0.0D, false);
+        GalacticraftCore.proxy.spawnParticle("distancesmoke", this.posX - Math.random() / 2, this.posY + 1D + Math.random() / 2, this.posZ, 0.0D, 0.0D, 0.0D, false);
+        GalacticraftCore.proxy.spawnParticle("distancesmoke", this.posX, this.posY + 1D + Math.random(), this.posZ - Math.random(), 0.0D, 0.0D, 0.0D, false);
     }
 
     protected void onImpact(MovingObjectPosition par1MovingObjectPosition)
     {
         if (!this.worldObj.isRemote)
         {
-        	if (par1MovingObjectPosition != null)
-        	{
-        		if (this.worldObj.getBlockId(par1MovingObjectPosition.blockX, par1MovingObjectPosition.blockY + 1, par1MovingObjectPosition.blockZ) == 0)
-        		{
-            		this.worldObj.setBlock(par1MovingObjectPosition.blockX, par1MovingObjectPosition.blockY + 1, par1MovingObjectPosition.blockZ, GCCoreBlocks.fallenMeteor.blockID, 0, 3);
-        		}
+            if (par1MovingObjectPosition != null)
+            {
+                if (this.worldObj.getBlockId(par1MovingObjectPosition.blockX, par1MovingObjectPosition.blockY + 1, par1MovingObjectPosition.blockZ) == 0)
+                {
+                    this.worldObj.setBlock(par1MovingObjectPosition.blockX, par1MovingObjectPosition.blockY + 1, par1MovingObjectPosition.blockZ, GCCoreBlocks.fallenMeteor.blockID, 0, 3);
+                }
 
                 if (par1MovingObjectPosition.entityHit != null)
                 {
                     par1MovingObjectPosition.entityHit.attackEntityFrom(GCCoreEntityMeteor.causeMeteorDamage(this, this.shootingEntity), 6);
                 }
-        	}
+            }
 
-            this.worldObj.newExplosion((Entity)null, this.posX, this.posY, this.posZ, this.size / 3 + 2, false, true);
+            this.worldObj.newExplosion((Entity) null, this.posX, this.posY, this.posZ, this.size / 3 + 2, false, true);
         }
 
         this.setDead();
@@ -169,19 +160,19 @@ public class GCCoreEntityMeteor extends Entity
 
     public static DamageSource causeMeteorDamage(GCCoreEntityMeteor par0EntityMeteor, Entity par1Entity)
     {
-    	if (par1Entity != null && par1Entity instanceof EntityPlayer)
-    	{
-            StatCollector.translateToLocalFormatted("death." + "meteor", ((EntityPlayer)par1Entity).username + " was hit by a meteor! That's gotta hurt!");
-    	}
+        if (par1Entity != null && par1Entity instanceof EntityPlayer)
+        {
+            StatCollector.translateToLocalFormatted("death." + "meteor", ((EntityPlayer) par1Entity).username + " was hit by a meteor! That's gotta hurt!");
+        }
         return new EntityDamageSourceIndirect("explosion", par0EntityMeteor, par1Entity).setProjectile();
     }
 
-	@Override
-	protected void entityInit()
-	{
+    @Override
+    protected void entityInit()
+    {
         this.dataWatcher.addObject(16, this.size);
         this.noClip = true;
-	}
+    }
 
     public int getSize()
     {
@@ -196,13 +187,13 @@ public class GCCoreEntityMeteor extends Entity
         this.dataWatcher.updateObject(16, Integer.valueOf(par1));
     }
 
-	@Override
-	protected void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
-	{
-	}
+    @Override
+    protected void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
+    {
+    }
 
-	@Override
-	protected void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
-	{
-	}
+    @Override
+    protected void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
+    {
+    }
 }

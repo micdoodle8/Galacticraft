@@ -19,7 +19,7 @@ public class GCCoreContainerBuggyBench extends Container
     public GCCoreContainerBuggyBench(InventoryPlayer par1InventoryPlayer, int x, int y, int z)
     {
         final int change = 27;
-    	this.worldObj = par1InventoryPlayer.player.worldObj;
+        this.worldObj = par1InventoryPlayer.player.worldObj;
         this.addSlotToContainer(new GCCoreSlotRocketBenchResult(par1InventoryPlayer.player, this.craftMatrix, this.craftResult, 0, 142, 79 + change));
         int var6;
         int var7;
@@ -66,7 +66,7 @@ public class GCCoreContainerBuggyBench extends Container
     }
 
     @Override
-	public void onCraftGuiClosed(EntityPlayer par1EntityPlayer)
+    public void onCraftGuiClosed(EntityPlayer par1EntityPlayer)
     {
         super.onCraftGuiClosed(par1EntityPlayer);
 
@@ -85,25 +85,26 @@ public class GCCoreContainerBuggyBench extends Container
     }
 
     @Override
-	public void onCraftMatrixChanged(IInventory par1IInventory)
+    public void onCraftMatrixChanged(IInventory par1IInventory)
     {
         this.craftResult.setInventorySlotContents(0, RecipeUtil.findMatchingBuggy(this.craftMatrix));
     }
 
     @Override
-	public boolean canInteractWith(EntityPlayer par1EntityPlayer)
+    public boolean canInteractWith(EntityPlayer par1EntityPlayer)
     {
         return true;
     }
 
     /**
-     * Called to transfer a stack from one inventory to the other eg. when shift clicking.
+     * Called to transfer a stack from one inventory to the other eg. when shift
+     * clicking.
      */
     @Override
-	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par1)
+    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par1)
     {
         ItemStack var2 = null;
-        final Slot var3 = (Slot)this.inventorySlots.get(par1);
+        final Slot var3 = (Slot) this.inventorySlots.get(par1);
 
         if (var3 != null && var3.getHasStack())
         {
@@ -140,7 +141,7 @@ public class GCCoreContainerBuggyBench extends Container
 
             if (var4.stackSize == 0)
             {
-                var3.putStack((ItemStack)null);
+                var3.putStack((ItemStack) null);
             }
             else
             {

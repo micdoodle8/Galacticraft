@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
  */
 public interface IRefinableItem
 {
-	public boolean canSmeltItem(ItemStack originalStack);
+    public boolean canSmeltItem(ItemStack originalStack);
 
-	public ItemStack getResultItem(ItemStack originalStack);
+    public ItemStack getResultItem(ItemStack originalStack);
 }

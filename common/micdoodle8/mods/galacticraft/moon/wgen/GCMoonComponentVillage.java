@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.moon.wgen;
 
 import java.util.List;
 import java.util.Random;
-
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityAlienVillager;
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
@@ -27,48 +26,51 @@ public abstract class GCMoonComponentVillage extends StructureComponent
     }
 
     /**
-     * Gets the next village component, with the bounding box shifted -1 in the X and Z direction.
+     * Gets the next village component, with the bounding box shifted -1 in the
+     * X and Z direction.
      */
     protected StructureComponent getNextComponentNN(GCMoonComponentVillageStartPiece par1ComponentVillageStartPiece, List par2List, Random par3Random, int par4, int par5)
     {
         switch (this.coordBaseMode)
         {
-            case 0:
-                return GCMoonStructureVillagePieces.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.minX - 1, this.boundingBox.minY + par4, this.boundingBox.minZ + par5, 1, this.getComponentType());
-            case 1:
-                return GCMoonStructureVillagePieces.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.minX + par5, this.boundingBox.minY + par4, this.boundingBox.minZ - 1, 2, this.getComponentType());
-            case 2:
-                return GCMoonStructureVillagePieces.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.minX - 1, this.boundingBox.minY + par4, this.boundingBox.minZ + par5, 1, this.getComponentType());
-            case 3:
-                return GCMoonStructureVillagePieces.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.minX + par5, this.boundingBox.minY + par4, this.boundingBox.minZ - 1, 2, this.getComponentType());
-            default:
-                return null;
+        case 0:
+            return GCMoonStructureVillagePieces.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.minX - 1, this.boundingBox.minY + par4, this.boundingBox.minZ + par5, 1, this.getComponentType());
+        case 1:
+            return GCMoonStructureVillagePieces.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.minX + par5, this.boundingBox.minY + par4, this.boundingBox.minZ - 1, 2, this.getComponentType());
+        case 2:
+            return GCMoonStructureVillagePieces.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.minX - 1, this.boundingBox.minY + par4, this.boundingBox.minZ + par5, 1, this.getComponentType());
+        case 3:
+            return GCMoonStructureVillagePieces.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.minX + par5, this.boundingBox.minY + par4, this.boundingBox.minZ - 1, 2, this.getComponentType());
+        default:
+            return null;
         }
     }
 
     /**
-     * Gets the next village component, with the bounding box shifted +1 in the X and Z direction.
+     * Gets the next village component, with the bounding box shifted +1 in the
+     * X and Z direction.
      */
     protected StructureComponent getNextComponentPP(GCMoonComponentVillageStartPiece par1ComponentVillageStartPiece, List par2List, Random par3Random, int par4, int par5)
     {
         switch (this.coordBaseMode)
         {
-            case 0:
-                return GCMoonStructureVillagePieces.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.maxX + 1, this.boundingBox.minY + par4, this.boundingBox.minZ + par5, 3, this.getComponentType());
-            case 1:
-                return GCMoonStructureVillagePieces.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.minX + par5, this.boundingBox.minY + par4, this.boundingBox.maxZ + 1, 0, this.getComponentType());
-            case 2:
-                return GCMoonStructureVillagePieces.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.maxX + 1, this.boundingBox.minY + par4, this.boundingBox.minZ + par5, 3, this.getComponentType());
-            case 3:
-                return GCMoonStructureVillagePieces.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.minX + par5, this.boundingBox.minY + par4, this.boundingBox.maxZ + 1, 0, this.getComponentType());
-            default:
-                return null;
+        case 0:
+            return GCMoonStructureVillagePieces.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.maxX + 1, this.boundingBox.minY + par4, this.boundingBox.minZ + par5, 3, this.getComponentType());
+        case 1:
+            return GCMoonStructureVillagePieces.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.minX + par5, this.boundingBox.minY + par4, this.boundingBox.maxZ + 1, 0, this.getComponentType());
+        case 2:
+            return GCMoonStructureVillagePieces.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.maxX + 1, this.boundingBox.minY + par4, this.boundingBox.minZ + par5, 3, this.getComponentType());
+        case 3:
+            return GCMoonStructureVillagePieces.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.minX + par5, this.boundingBox.minY + par4, this.boundingBox.maxZ + 1, 0, this.getComponentType());
+        default:
+            return null;
         }
     }
 
     /**
-     * Discover the y coordinate that will serve as the ground level of the supplied BoundingBox. (A median of all the
-     * levels in the BB's horizontal rectangle).
+     * Discover the y coordinate that will serve as the ground level of the
+     * supplied BoundingBox. (A median of all the levels in the BB's horizontal
+     * rectangle).
      */
     protected int getAverageGroundLevel(World par1World, StructureBoundingBox par2StructureBoundingBox)
     {
@@ -103,8 +105,8 @@ public abstract class GCMoonComponentVillage extends StructureComponent
     }
 
     /**
-     * Spawns a number of villagers in this component. Parameters: world, component bounding box, x offset, y offset, z
-     * offset, number of villagers
+     * Spawns a number of villagers in this component. Parameters: world,
+     * component bounding box, x offset, y offset, z offset, number of villagers
      */
     protected void spawnVillagers(World par1World, StructureBoundingBox par2StructureBoundingBox, int par3, int par4, int par5, int par6)
     {
@@ -133,7 +135,8 @@ public abstract class GCMoonComponentVillage extends StructureComponent
     }
 
     /**
-     * Returns the villager type to spawn in this component, based on the number of villagers already spawned.
+     * Returns the villager type to spawn in this component, based on the number
+     * of villagers already spawned.
      */
     protected int getVillagerType(int par1)
     {
@@ -147,7 +150,10 @@ public abstract class GCMoonComponentVillage extends StructureComponent
     {
         final BiomeEvent.GetVillageBlockID event = new BiomeEvent.GetVillageBlockID(this.startPiece.biome, par1, par2);
         MinecraftForge.TERRAIN_GEN_BUS.post(event);
-        if (event.getResult() == Result.DENY) return event.replacement;
+        if (event.getResult() == Result.DENY)
+        {
+            return event.replacement;
+        }
 
         return par1;
     }
@@ -159,7 +165,10 @@ public abstract class GCMoonComponentVillage extends StructureComponent
     {
         final BiomeEvent.GetVillageBlockMeta event = new BiomeEvent.GetVillageBlockMeta(this.startPiece.biome, par1, par2);
         MinecraftForge.TERRAIN_GEN_BUS.post(event);
-        if (event.getResult() == Result.DENY) return event.replacement;
+        if (event.getResult() == Result.DENY)
+        {
+            return event.replacement;
+        }
 
         if (this.startPiece.inDesert)
         {
@@ -183,10 +192,11 @@ public abstract class GCMoonComponentVillage extends StructureComponent
     }
 
     /**
-     * current Position depends on currently set Coordinates mode, is computed here
+     * current Position depends on currently set Coordinates mode, is computed
+     * here
      */
     @Override
-	protected void placeBlockAtCurrentPosition(World par1World, int par2, int par3, int par4, int par5, int par6, StructureBoundingBox par7StructureBoundingBox)
+    protected void placeBlockAtCurrentPosition(World par1World, int par2, int par3, int par4, int par5, int par6, StructureBoundingBox par7StructureBoundingBox)
     {
         final int var8 = this.getBiomeSpecificBlock(par2, par3);
         final int var9 = this.getBiomeSpecificBlockMetadata(par2, par3);
@@ -194,11 +204,12 @@ public abstract class GCMoonComponentVillage extends StructureComponent
     }
 
     /**
-     * arguments: (World worldObj, StructureBoundingBox structBB, int minX, int minY, int minZ, int maxX, int maxY, int
-     * maxZ, int placeBlockId, int replaceBlockId, boolean alwaysreplace)
+     * arguments: (World worldObj, StructureBoundingBox structBB, int minX, int
+     * minY, int minZ, int maxX, int maxY, int maxZ, int placeBlockId, int
+     * replaceBlockId, boolean alwaysreplace)
      */
     @Override
-	protected void fillWithBlocks(World par1World, StructureBoundingBox par2StructureBoundingBox, int par3, int par4, int par5, int par6, int par7, int par8, int par9, int par10, boolean par11)
+    protected void fillWithBlocks(World par1World, StructureBoundingBox par2StructureBoundingBox, int par3, int par4, int par5, int par6, int par7, int par8, int par9, int par10, boolean par11)
     {
         final int var12 = this.getBiomeSpecificBlock(par9, 0);
         final int var13 = this.getBiomeSpecificBlockMetadata(par9, 0);
@@ -208,10 +219,11 @@ public abstract class GCMoonComponentVillage extends StructureComponent
     }
 
     /**
-     * Overwrites air and liquids from selected position downwards, stops at hitting anything else.
+     * Overwrites air and liquids from selected position downwards, stops at
+     * hitting anything else.
      */
     @Override
-	protected void fillCurrentPositionBlocksDownwards(World par1World, int par2, int par3, int par4, int par5, int par6, StructureBoundingBox par7StructureBoundingBox)
+    protected void fillCurrentPositionBlocksDownwards(World par1World, int par2, int par3, int par4, int par5, int par6, StructureBoundingBox par7StructureBoundingBox)
     {
         final int var8 = this.getBiomeSpecificBlock(par2, par3);
         final int var9 = this.getBiomeSpecificBlockMetadata(par2, par3);

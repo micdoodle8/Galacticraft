@@ -3,17 +3,15 @@ package micdoodle8.mods.galacticraft.core.client.fx;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.world.World;
-
 import org.lwjgl.opengl.GL11;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
- *
- *  All rights reserved.
- *
+ * 
+ * All rights reserved.
+ * 
  */
 @SideOnly(Side.CLIENT)
 public class GCCoreEntityLaunchSmokeFX extends EntityFX
@@ -31,29 +29,29 @@ public class GCCoreEntityLaunchSmokeFX extends EntityFX
         this.motionY += par10;
         this.motionZ += par12;
         this.particleAlpha = 1.0F;
-        this.particleRed = this.particleGreen = this.particleBlue = (float)(Math.random() * 0.30000001192092896D) + 0.6F;
+        this.particleRed = this.particleGreen = this.particleBlue = (float) (Math.random() * 0.30000001192092896D) + 0.6F;
         this.particleScale *= 0.75F;
         this.particleScale *= par14 * 3;
         this.smokeParticleScale = this.particleScale;
         if (b)
         {
-            this.particleMaxAge = (int)50.0D;
-            this.particleMaxAge = (int)(this.particleMaxAge * par14);
+            this.particleMaxAge = (int) 50.0D;
+            this.particleMaxAge = (int) (this.particleMaxAge * par14);
         }
         else
         {
-            this.particleMaxAge = (int)2.0D;
+            this.particleMaxAge = (int) 2.0D;
             this.particleMaxAge = 1;
         }
         this.noClip = false;
     }
 
     @Override
-	public void renderParticle(Tessellator par1Tessellator, float par2, float par3, float par4, float par5, float par6, float par7)
+    public void renderParticle(Tessellator par1Tessellator, float par2, float par3, float par4, float par5, float par6, float par7)
     {
-    	GL11.glPushMatrix();
-    	GL11.glDepthMask(false);
-    	GL11.glDisable(GL11.GL_DEPTH_TEST);
+        GL11.glPushMatrix();
+        GL11.glDepthMask(false);
+        GL11.glDisable(GL11.GL_DEPTH_TEST);
         float var8 = (this.particleAge + par2) / this.particleMaxAge * 32.0F;
 
         if (var8 < 0.0F)
@@ -81,9 +79,9 @@ public class GCCoreEntityLaunchSmokeFX extends EntityFX
             f9 = this.particleIcon.getMaxV();
         }
 
-        final float f11 = (float)(this.prevPosX + (this.posX - this.prevPosX) * par2 - EntityFX.interpPosX);
-        final float f12 = (float)(this.prevPosY + (this.posY - this.prevPosY) * par2 - EntityFX.interpPosY);
-        final float f13 = (float)(this.prevPosZ + (this.posZ - this.prevPosZ) * par2 - EntityFX.interpPosZ);
+        final float f11 = (float) (this.prevPosX + (this.posX - this.prevPosX) * par2 - EntityFX.interpPosX);
+        final float f12 = (float) (this.prevPosY + (this.posY - this.prevPosY) * par2 - EntityFX.interpPosY);
+        final float f13 = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * par2 - EntityFX.interpPosZ);
         final float f14 = 1.0F;
         par1Tessellator.setColorRGBA_F(this.particleRed * f14, this.particleGreen * f14, this.particleBlue * f14, this.particleAlpha);
         par1Tessellator.addVertexWithUV(f11 - par3 * f10 - par6 * f10, f12 - par4 * f10, f13 - par5 * f10 - par7 * f10, f7, f9);
@@ -91,13 +89,13 @@ public class GCCoreEntityLaunchSmokeFX extends EntityFX
         par1Tessellator.addVertexWithUV(f11 + par3 * f10 + par6 * f10, f12 + par4 * f10, f13 + par5 * f10 + par7 * f10, f6, f8);
         par1Tessellator.addVertexWithUV(f11 + par3 * f10 - par6 * f10, f12 - par4 * f10, f13 + par5 * f10 - par7 * f10, f6, f9);
 
-    	GL11.glEnable(GL11.GL_DEPTH_TEST);
-    	GL11.glDepthMask(true);
+        GL11.glEnable(GL11.GL_DEPTH_TEST);
+        GL11.glDepthMask(true);
         GL11.glPopMatrix();
     }
 
     @Override
-	public void onUpdate()
+    public void onUpdate()
     {
         this.prevPosX = this.posX;
         this.prevPosY = this.posY;
@@ -124,10 +122,10 @@ public class GCCoreEntityLaunchSmokeFX extends EntityFX
 
         if (this.onGround)
         {
-        	this.motionX = (this.rand.nextFloat() * 2.0F * this.rand.nextInt(2) * 2 - 1) / 4.0;
-        	this.motionZ = (this.rand.nextFloat() * 2.0F * this.rand.nextInt(2) * 2 - 1) / 4.0;
+            this.motionX = (this.rand.nextFloat() * 2.0F * this.rand.nextInt(2) * 2 - 1) / 4.0;
+            this.motionZ = (this.rand.nextFloat() * 2.0F * this.rand.nextInt(2) * 2 - 1) / 4.0;
 
-        	this.motionX *= 0.699999988079071D;
+            this.motionX *= 0.699999988079071D;
             this.motionZ *= 0.699999988079071D;
         }
     }

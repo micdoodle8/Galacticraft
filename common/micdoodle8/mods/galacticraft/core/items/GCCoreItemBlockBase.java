@@ -10,68 +10,68 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreItemBlockBase extends ItemBlock
 {
-	public GCCoreItemBlockBase(int i)
-	{
-		super(i);
+    public GCCoreItemBlockBase(int i)
+    {
+        super(i);
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
-	}
+    }
 
-	@Override
-	public int getMetadata(int meta)
+    @Override
+    public int getMetadata(int meta)
     {
         return meta;
     }
 
     @Override
-	@SideOnly(Side.CLIENT)
+    @SideOnly(Side.CLIENT)
     public EnumRarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;
     }
 
-	@Override
-	public String getUnlocalizedName(ItemStack itemstack)
-	{
-		String name = "";
+    @Override
+    public String getUnlocalizedName(ItemStack itemstack)
+    {
+        String name = "";
 
-		switch(itemstack.getItemDamage())
-		{
-		case 0:
-		{
-			name = "copperblock";
-			break;
-		}
-		case 1:
-		{
-			name = "aluminiumblock";
-			break;
-		}
-		case 2:
-		{
-			name = "titaniumblock";
-			break;
-		}
-		case 3:
-		{
-			name = "decoblock1";
-			break;
-		}
-		case 4:
-		{
-			name = "decoblock2";
-			break;
-		}
-		default:
-			name = "null";
-		}
+        switch (itemstack.getItemDamage())
+        {
+        case 0:
+        {
+            name = "copperblock";
+            break;
+        }
+        case 1:
+        {
+            name = "aluminiumblock";
+            break;
+        }
+        case 2:
+        {
+            name = "titaniumblock";
+            break;
+        }
+        case 3:
+        {
+            name = "decoblock1";
+            break;
+        }
+        case 4:
+        {
+            name = "decoblock2";
+            break;
+        }
+        default:
+            name = "null";
+        }
 
-		return Block.blocksList[this.getBlockID()].getUnlocalizedName() + "." + name;
-	}
+        return Block.blocksList[this.getBlockID()].getUnlocalizedName() + "." + name;
+    }
 
-	@Override
-	public String getUnlocalizedName()
-	{
-		return Block.blocksList[this.getBlockID()].getUnlocalizedName() + ".0";
-	}
+    @Override
+    public String getUnlocalizedName()
+    {
+        return Block.blocksList[this.getBlockID()].getUnlocalizedName() + ".0";
+    }
 }

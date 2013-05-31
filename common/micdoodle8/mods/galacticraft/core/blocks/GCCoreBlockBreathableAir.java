@@ -92,7 +92,8 @@ public class GCCoreBlockBreathableAir extends Block
         if (par1IBlockAccess.getBlockId(par2, par3, par4) == this.blockID)
         {
             return false;
-        } else
+        }
+        else
         {
             final int i = par1IBlockAccess.getBlockId(par2, par3, par4);
             boolean var6 = false;
@@ -107,22 +108,28 @@ public class GCCoreBlockBreathableAir extends Block
             if ((var6 || var7) && par5 == 3 && !var6)
             {
                 return true;
-            } else if ((var6 || var7) && par5 == 4 && !var6)
+            }
+            else if ((var6 || var7) && par5 == 4 && !var6)
             {
                 return true;
-            } else if ((var6 || var7) && par5 == 5 && !var6)
+            }
+            else if ((var6 || var7) && par5 == 5 && !var6)
             {
                 return true;
-            } else if ((var6 || var7) && par5 == 2 && !var6)
+            }
+            else if ((var6 || var7) && par5 == 2 && !var6)
             {
                 return true;
-            } else if ((var6 || var7) && par5 == 0 && !var6)
+            }
+            else if ((var6 || var7) && par5 == 0 && !var6)
             {
                 return true;
-            } else if ((var6 || var7) && par5 == 1 && !var6)
+            }
+            else if ((var6 || var7) && par5 == 1 && !var6)
             {
                 return true;
-            } else
+            }
+            else
             {
                 return false;
             }

@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import java.util.HashSet;
 import java.util.List;
-
 import micdoodle8.mods.galacticraft.API.IDockable;
 import micdoodle8.mods.galacticraft.API.IFuelDock;
 import micdoodle8.mods.galacticraft.API.IFuelable;
@@ -16,168 +15,169 @@ import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.multiblock.IMultiBlock;
 import universalelectricity.prefab.multiblock.TileEntityMulti;
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreTileEntityBuggyFueler extends TileEntityMulti implements IMultiBlock, IFuelable, IFuelDock
 {
-	protected long ticks = 0;
-	private IDockable dockedEntity;
-	public HashSet<TileEntity> connectedTiles = new HashSet<TileEntity>();
-	
-	public GCCoreTileEntityBuggyFueler()
-	{
-		super(GalacticraftCore.CHANNEL);
-	}
+    protected long ticks = 0;
+    private IDockable dockedEntity;
+    public HashSet<TileEntity> connectedTiles = new HashSet<TileEntity>();
 
-	@Override
-	public void updateEntity()
-	{
-		super.updateEntity();
+    public GCCoreTileEntityBuggyFueler()
+    {
+        super(GalacticraftCore.CHANNEL);
+    }
 
-		if (!this.worldObj.isRemote)
-		{
-			for (int x = -2; x < 3; x++)
-			{
-				for (int z = -2; z < 3; z++)
-				{
-					if (x == -2 || x == 2 || z == -2 || z == 2)
-					{
-						if (Math.abs(x) != Math.abs(z))
-						{
-							final TileEntity tile = this.worldObj.getBlockTileEntity(this.xCoord + x, this.yCoord, this.zCoord + z);
+    @Override
+    public void updateEntity()
+    {
+        super.updateEntity();
 
-							if (tile != null && tile instanceof GCCoreTileEntityFuelLoader)
-							{
-								this.connectedTiles.add(tile);
-							}
-						}
-					}
-				}
-			}
+        if (!this.worldObj.isRemote)
+        {
+            for (int x = -2; x < 3; x++)
+            {
+                for (int z = -2; z < 3; z++)
+                {
+                    if (x == -2 || x == 2 || z == -2 || z == 2)
+                    {
+                        if (Math.abs(x) != Math.abs(z))
+                        {
+                            final TileEntity tile = this.worldObj.getBlockTileEntity(this.xCoord + x, this.yCoord, this.zCoord + z);
 
-			for (final TileEntity tile : this.connectedTiles)
-			{
-				final GCCoreTileEntityFuelLoader loader = (GCCoreTileEntityFuelLoader) tile;
+                            if (tile != null && tile instanceof GCCoreTileEntityFuelLoader)
+                            {
+                                this.connectedTiles.add(tile);
+                            }
+                        }
+                    }
+                }
+            }
 
-				final TileEntity newTile = this.worldObj.getBlockTileEntity(loader.xCoord, loader.yCoord, loader.zCoord);
+            for (final TileEntity tile : this.connectedTiles)
+            {
+                final GCCoreTileEntityFuelLoader loader = (GCCoreTileEntityFuelLoader) tile;
 
-				if (newTile == null || !(newTile instanceof GCCoreTileEntityFuelLoader))
-				{
-					this.connectedTiles.remove(newTile);
-				}
-			}
+                final TileEntity newTile = this.worldObj.getBlockTileEntity(loader.xCoord, loader.yCoord, loader.zCoord);
 
-			final List list = this.worldObj.getEntitiesWithinAABB(IFuelable.class, AxisAlignedBB.getAABBPool().getAABB(this.xCoord - 1.5D, this.yCoord - 2.0, this.zCoord - 1.5D, this.xCoord + 1.5D, this.yCoord + 4.0, this.zCoord + 1.5D));
+                if (newTile == null || !(newTile instanceof GCCoreTileEntityFuelLoader))
+                {
+                    this.connectedTiles.remove(newTile);
+                }
+            }
 
-			boolean changed = false;
+            final List list = this.worldObj.getEntitiesWithinAABB(IFuelable.class, AxisAlignedBB.getAABBPool().getAABB(this.xCoord - 1.5D, this.yCoord - 2.0, this.zCoord - 1.5D, this.xCoord + 1.5D, this.yCoord + 4.0, this.zCoord + 1.5D));
 
-			for (final Object o : list)
-			{
-				if (o != null && o instanceof IDockable && !this.worldObj.isRemote)
-				{
-					final IDockable fuelable = (IDockable) o;
-					
-					if (fuelable.isDockValid(this))
-					{
-						this.dockedEntity = fuelable;
+            boolean changed = false;
 
-						this.dockedEntity.setPad(this);
-						
-						changed = true;
-					}
-				}
-			}
+            for (final Object o : list)
+            {
+                if (o != null && o instanceof IDockable && !this.worldObj.isRemote)
+                {
+                    final IDockable fuelable = (IDockable) o;
 
-			if (!changed)
-			{
-				if (this.dockedEntity != null)
-				{
-					this.dockedEntity.setPad(null);
-				}
-				
-				this.dockedEntity = null;
-			}
-		}
-	}
+                    if (fuelable.isDockValid(this))
+                    {
+                        this.dockedEntity = fuelable;
 
-	@Override
-	public boolean canUpdate()
-	{
-		return true;
-	}
+                        this.dockedEntity.setPad(this);
 
-	@Override
-	public boolean onActivated(EntityPlayer entityPlayer)
-	{
-		return false;
-	}
+                        changed = true;
+                    }
+                }
+            }
 
-	@Override
-	public void onCreate(Vector3 placedPosition)
-	{
-		this.mainBlockPosition = placedPosition;
+            if (!changed)
+            {
+                if (this.dockedEntity != null)
+                {
+                    this.dockedEntity.setPad(null);
+                }
 
-		for (int x = -1; x < 2; x++)
-		{
-			for (int z = -1; z < 2; z++)
-			{
-				final Vector3 vecToAdd = Vector3.add(placedPosition, new Vector3(x, 0, z));
+                this.dockedEntity = null;
+            }
+        }
+    }
 
-				if (!vecToAdd.equals(placedPosition))
-				{
-					GCCoreBlocks.dummyBlock.makeFakeBlock(this.worldObj, vecToAdd, placedPosition, 2);
-				}
-			}
-		}
-	}
+    @Override
+    public boolean canUpdate()
+    {
+        return true;
+    }
 
-	@Override
-	public void onDestroy(TileEntity callingBlock)
-	{
-		final Vector3 thisBlock = new Vector3(this);
+    @Override
+    public boolean onActivated(EntityPlayer entityPlayer)
+    {
+        return false;
+    }
 
-		for (int x = -1; x < 2; x++)
-		{
-			for (int z = -1; z < 2; z++)
-			{
-				if (this.worldObj.isRemote && this.worldObj.rand.nextDouble() < 0.1D)
-					FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.intX() + x, thisBlock.intY(), thisBlock.intZ() + z, GCCoreBlocks.landingPad.blockID & 4095, GCCoreBlocks.landingPad.blockID >> 12 & 255);
-				this.worldObj.setBlock(thisBlock.intX() + x, thisBlock.intY(), thisBlock.intZ() + z, 0, 0, 3);
-			}
-		}
+    @Override
+    public void onCreate(Vector3 placedPosition)
+    {
+        this.mainBlockPosition = placedPosition;
 
-		if (this.dockedEntity != null)
-		{
-			this.dockedEntity.onPadDestroyed();
-			this.dockedEntity = null;
-		}
-	}
+        for (int x = -1; x < 2; x++)
+        {
+            for (int z = -1; z < 2; z++)
+            {
+                final Vector3 vecToAdd = Vector3.add(placedPosition, new Vector3(x, 0, z));
 
-	@Override
-	public int addFuel(LiquidStack liquid, int amount, boolean doFill)
-	{
-		if (this.dockedEntity != null)
-		{
-			return this.dockedEntity.addFuel(liquid, amount, doFill);
-		}
+                if (!vecToAdd.equals(placedPosition))
+                {
+                    GCCoreBlocks.dummyBlock.makeFakeBlock(this.worldObj, vecToAdd, placedPosition, 2);
+                }
+            }
+        }
+    }
 
-		return 0;
-	}
+    @Override
+    public void onDestroy(TileEntity callingBlock)
+    {
+        final Vector3 thisBlock = new Vector3(this);
 
-	@Override
-	public LiquidStack removeFuel(LiquidStack liquid, int amount)
-	{
-		if (this.dockedEntity != null)
-		{
-			return this.dockedEntity.removeFuel(liquid, amount);
-		}
+        for (int x = -1; x < 2; x++)
+        {
+            for (int z = -1; z < 2; z++)
+            {
+                if (this.worldObj.isRemote && this.worldObj.rand.nextDouble() < 0.1D)
+                {
+                    FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.intX() + x, thisBlock.intY(), thisBlock.intZ() + z, GCCoreBlocks.landingPad.blockID & 4095, GCCoreBlocks.landingPad.blockID >> 12 & 255);
+                }
+                this.worldObj.setBlock(thisBlock.intX() + x, thisBlock.intY(), thisBlock.intZ() + z, 0, 0, 3);
+            }
+        }
 
-		return null;
-	}
+        if (this.dockedEntity != null)
+        {
+            this.dockedEntity.onPadDestroyed();
+            this.dockedEntity = null;
+        }
+    }
 
-	@Override
-	public HashSet<TileEntity> getConnectedTiles() 
-	{
-		return this.connectedTiles;
-	}
+    @Override
+    public int addFuel(LiquidStack liquid, int amount, boolean doFill)
+    {
+        if (this.dockedEntity != null)
+        {
+            return this.dockedEntity.addFuel(liquid, amount, doFill);
+        }
+
+        return 0;
+    }
+
+    @Override
+    public LiquidStack removeFuel(LiquidStack liquid, int amount)
+    {
+        if (this.dockedEntity != null)
+        {
+            return this.dockedEntity.removeFuel(liquid, amount);
+        }
+
+        return null;
+    }
+
+    @Override
+    public HashSet<TileEntity> getConnectedTiles()
+    {
+        return this.connectedTiles;
+    }
 }

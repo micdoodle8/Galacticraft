@@ -35,7 +35,7 @@ public class GCCoreSoundUpdaterSpaceship implements IUpdatePlayerListBox
      * Updates the JList with a new model.
      */
     @Override
-	public void update()
+    public void update()
     {
         boolean var1 = false;
         final boolean var2 = this.playerSPRidingMinecart;
@@ -83,8 +83,8 @@ public class GCCoreSoundUpdaterSpaceship implements IUpdatePlayerListBox
 
         if (this.theMinecart.getTimeUntilLaunch() <= this.theMinecart.getPreLaunchWait())
         {
-        	if (this.theMinecart.getTimeUntilLaunch() < this.theMinecart.getPreLaunchWait())
-        	{
+            if (this.theMinecart.getTimeUntilLaunch() < this.theMinecart.getPreLaunchWait())
+            {
                 if (this.minecartSoundPitch < 1.0F)
                 {
                     this.minecartSoundPitch += 0.0025F;
@@ -94,17 +94,17 @@ public class GCCoreSoundUpdaterSpaceship implements IUpdatePlayerListBox
                 {
                     this.minecartSoundPitch = 1.0F;
                 }
-        	}
+            }
 
-            float var10 = MathHelper.clamp_float((float)this.minecartSpeed, 0.0F, 4.0F) / 4.0F;
+            float var10 = MathHelper.clamp_float((float) this.minecartSpeed, 0.0F, 4.0F) / 4.0F;
             this.minecartRideSoundVolume = 0.0F + var10 * 0.75F;
             var10 = MathHelper.clamp_float(var10 * 2.0F, 0.0F, 1.0F);
             this.minecartMoveSoundVolume = 0.0F + var10 * 6.7F;
 
             if (this.theMinecart.posY > 1000)
             {
-            	this.minecartMoveSoundVolume = 0F;
-            	this.minecartRideSoundVolume = 0F;
+                this.minecartMoveSoundVolume = 0F;
+                this.minecartRideSoundVolume = 0F;
             }
         }
         else if (var4)

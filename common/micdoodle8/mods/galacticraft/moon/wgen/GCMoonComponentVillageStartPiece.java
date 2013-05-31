@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.moon.wgen;
 
 import java.util.ArrayList;
 import java.util.Random;
-
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.WorldChunkManager;
 
@@ -19,8 +18,8 @@ public class GCMoonComponentVillageStartPiece extends GCMoonComponentVillageWell
     public GCMoonStructureVillagePieceWeight structVillagePieceWeight;
 
     /**
-     * Contains List of all spawnable Structure Piece Weights. If no more Pieces of a type can be spawned, they are
-     * removed from this list
+     * Contains List of all spawnable Structure Piece Weights. If no more Pieces
+     * of a type can be spawned, they are removed from this list
      */
     public ArrayList structureVillageWeightedPieceList;
     public ArrayList field_74932_i = new ArrayList();
@@ -28,7 +27,7 @@ public class GCMoonComponentVillageStartPiece extends GCMoonComponentVillageWell
 
     public GCMoonComponentVillageStartPiece(WorldChunkManager par1WorldChunkManager, int par2, Random par3Random, int par4, int par5, ArrayList par6ArrayList, int par7)
     {
-        super((GCMoonComponentVillageStartPiece)null, 0, par3Random, par4, par5);
+        super((GCMoonComponentVillageStartPiece) null, 0, par3Random, par4, par5);
         this.worldChunkMngr = par1WorldChunkManager;
         this.structureVillageWeightedPieceList = par6ArrayList;
         this.terrainType = par7;

@@ -6,17 +6,15 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.world.IBlockAccess;
-
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 /**
  * Copyright 2012-2013, micdoodle8
- *
- *  All rights reserved.
- *
+ * 
+ * All rights reserved.
+ * 
  */
 public class GCCoreRenderBlockTreasureChest implements ISimpleBlockRenderingHandler
 {
@@ -28,7 +26,7 @@ public class GCCoreRenderBlockTreasureChest implements ISimpleBlockRenderingHand
     }
 
     @Override
-	public void renderInventoryBlock(Block var1, int var2, int var3, RenderBlocks var4)
+    public void renderInventoryBlock(Block var1, int var2, int var3, RenderBlocks var4)
     {
         GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
@@ -37,19 +35,19 @@ public class GCCoreRenderBlockTreasureChest implements ISimpleBlockRenderingHand
     }
 
     @Override
-	public boolean renderWorldBlock(IBlockAccess var1, int var2, int var3, int var4, Block var5, int var6, RenderBlocks var7)
+    public boolean renderWorldBlock(IBlockAccess var1, int var2, int var3, int var4, Block var5, int var6, RenderBlocks var7)
     {
-    	return false;
+        return false;
     }
 
     @Override
-	public boolean shouldRender3DInInventory()
+    public boolean shouldRender3DInInventory()
     {
         return true;
     }
 
     @Override
-	public int getRenderId()
+    public int getRenderId()
     {
         return this.renderID;
     }

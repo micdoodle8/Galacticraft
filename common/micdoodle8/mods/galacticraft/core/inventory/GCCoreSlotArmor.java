@@ -13,12 +13,14 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GCCoreSlotArmor extends Slot
 {
     /**
-     * The armor type that can be placed on that slot, it uses the same values of armorType field on ItemArmor.
+     * The armor type that can be placed on that slot, it uses the same values
+     * of armorType field on ItemArmor.
      */
     final int armorType;
 
     /**
-     * The parent class of this clot, ContainerPlayer, SlotArmor is a Anon inner class.
+     * The parent class of this clot, ContainerPlayer, SlotArmor is a Anon inner
+     * class.
      */
     final ContainerPlayer parent;
 
@@ -30,28 +32,28 @@ public class GCCoreSlotArmor extends Slot
     }
 
     /**
-     * Returns the maximum stack size for a given slot (usually the same as getInventoryStackLimit(), but 1 in the case
-     * of armor slots)
+     * Returns the maximum stack size for a given slot (usually the same as
+     * getInventoryStackLimit(), but 1 in the case of armor slots)
      */
     @Override
-	public int getSlotStackLimit()
+    public int getSlotStackLimit()
     {
         return 1;
     }
 
     /**
-     * Check if the stack is a valid item for this slot. Always true beside for the armor slots.
+     * Check if the stack is a valid item for this slot. Always true beside for
+     * the armor slots.
      */
     @Override
-	public boolean isItemValid(ItemStack par1ItemStack)
+    public boolean isItemValid(ItemStack par1ItemStack)
     {
         final Item item = par1ItemStack == null ? null : par1ItemStack.getItem();
         return item != null && item.isValidArmor(par1ItemStack, this.armorType);
     }
 
     @Override
-	@SideOnly(Side.CLIENT)
-
+    @SideOnly(Side.CLIENT)
     /**
      * Returns the icon index on items.png that is used as background image of the slot.
      */

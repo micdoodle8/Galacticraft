@@ -18,17 +18,17 @@ public class GCCoreEntityAIThrowPlayer extends EntityAIBase
     @Override
     public boolean shouldExecute()
     {
-    	final EntityPlayer player = this.skeletonBoss.worldObj.getClosestPlayerToEntity(this.skeletonBoss, 5.0F);
+        final EntityPlayer player = this.skeletonBoss.worldObj.getClosestPlayerToEntity(this.skeletonBoss, 5.0F);
 
-    	if (player == null)
-    	{
-    		return false;
-    	}
-    	else
-    	{
-    		this.targetPlayer = player;
-    		return true;
-    	}
+        if (player == null)
+        {
+            return false;
+        }
+        else
+        {
+            this.targetPlayer = player;
+            return true;
+        }
     }
 
     @Override
@@ -36,7 +36,7 @@ public class GCCoreEntityAIThrowPlayer extends EntityAIBase
     {
         this.skeletonBoss.setAttackTarget(this.targetPlayer);
 
-//        if (this.skeletonBoss.getDistanceToEntity(this.targetPlayer) <= 5.0F)
+        // if (this.skeletonBoss.getDistanceToEntity(this.targetPlayer) <= 5.0F)
         {
             double d0 = this.skeletonBoss.posX - this.targetPlayer.posX;
             double d1;
@@ -46,9 +46,9 @@ public class GCCoreEntityAIThrowPlayer extends EntityAIBase
                 d0 = (Math.random() - Math.random()) * 0.01D;
             }
 
-            this.targetPlayer.attackedAtYaw = (float)(Math.atan2(d1, d0) * 180.0D / Math.PI) - this.targetPlayer.rotationYaw;
+            this.targetPlayer.attackedAtYaw = (float) (Math.atan2(d1, d0) * 180.0D / Math.PI) - this.targetPlayer.rotationYaw;
 
-        	this.targetPlayer.knockBack(this.skeletonBoss, 20, d0, d1);
+            this.targetPlayer.knockBack(this.skeletonBoss, 20, d0, d1);
         }
 
         super.startExecuting();

@@ -55,4 +55,4 @@
 //	{
 //		return GalacticraftCore.galaxyMilkyWay;
 //	}
-//}
+// }

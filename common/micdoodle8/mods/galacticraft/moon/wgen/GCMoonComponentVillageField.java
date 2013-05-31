@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.moon.wgen;
 
 import java.util.List;
 import java.util.Random;
-
 import net.minecraft.block.Block;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
@@ -43,12 +42,12 @@ public class GCMoonComponentVillageField extends GCMoonComponentVillage
     {
         switch (par1Random.nextInt(5))
         {
-            case 0:
-                return Block.carrot.blockID;
-            case 1:
-                return Block.potato.blockID;
-            default:
-                return Block.crops.blockID;
+        case 0:
+            return Block.carrot.blockID;
+        case 1:
+            return Block.potato.blockID;
+        default:
+            return Block.crops.blockID;
         }
     }
 
@@ -59,23 +58,23 @@ public class GCMoonComponentVillageField extends GCMoonComponentVillage
     }
 
     /**
-     * second Part of Structure generating, this for example places Spiderwebs, Mob Spawners, it closes Mineshafts at
-     * the end, it adds Fences...
+     * second Part of Structure generating, this for example places Spiderwebs,
+     * Mob Spawners, it closes Mineshafts at the end, it adds Fences...
      */
     @Override
-	public boolean addComponentParts(World par1World, Random par2Random, StructureBoundingBox par3StructureBoundingBox)
+    public boolean addComponentParts(World par1World, Random par2Random, StructureBoundingBox par3StructureBoundingBox)
     {
-    	if (this.averageGroundLevel < 0)
-	    {
-	        this.averageGroundLevel = this.getAverageGroundLevel(par1World, par3StructureBoundingBox);
+        if (this.averageGroundLevel < 0)
+        {
+            this.averageGroundLevel = this.getAverageGroundLevel(par1World, par3StructureBoundingBox);
 
-	        if (this.averageGroundLevel < 0)
-	        {
-	            return true;
-	        }
+            if (this.averageGroundLevel < 0)
+            {
+                return true;
+            }
 
-	        this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.maxY + 7 - 1, 0);
-	    }
+            this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.maxY + 7 - 1, 0);
+        }
 
         this.fillWithBlocks(par1World, par3StructureBoundingBox, 0, 1, 0, 12, 4, 8, 0, 0, false);
         this.fillWithBlocks(par1World, par3StructureBoundingBox, 1, 0, 1, 2, 0, 7, Block.dirt.blockID, Block.dirt.blockID, false);
@@ -93,20 +92,20 @@ public class GCMoonComponentVillageField extends GCMoonComponentVillage
 
         for (var4 = 1; var4 <= 7; ++var4)
         {
-        	for (int i = 1; i < 12; i++)
-        	{
-        		if (i % 3 == 0)
-        		{
-        			;
-        		}
-        		else
-        		{
-        			if (par2Random.nextInt(3) == 0)
-        			{
-        				this.placeBlockAtCurrentPosition(par1World, Block.sapling.blockID, MathHelper.getRandomIntegerInRange(par2Random, 0, 2), i, 1, var4, par3StructureBoundingBox);
-        			}
-        		}
-        	}
+            for (int i = 1; i < 12; i++)
+            {
+                if (i % 3 == 0)
+                {
+                    ;
+                }
+                else
+                {
+                    if (par2Random.nextInt(3) == 0)
+                    {
+                        this.placeBlockAtCurrentPosition(par1World, Block.sapling.blockID, MathHelper.getRandomIntegerInRange(par2Random, 0, 2), i, 1, var4, par3StructureBoundingBox);
+                    }
+                }
+            }
         }
 
         for (var4 = 0; var4 < 9; ++var4)

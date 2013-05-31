@@ -15,89 +15,93 @@ public class GCCoreTileEntityAdvancedCraftingTable extends TileEntityMulti imple
 {
     public GCCoreModelAssemblyTable model = new GCCoreModelAssemblyTable();
 
-	public GCCoreTileEntityAdvancedCraftingTable()
-	{
-		super(GalacticraftCore.CHANNEL);
-	}
-	
+    public GCCoreTileEntityAdvancedCraftingTable()
+    {
+        super(GalacticraftCore.CHANNEL);
+    }
+
     @Override
-  	public void validate()
-  	{
-   		super.validate();
+    public void validate()
+    {
+        super.validate();
 
-   		if (!this.isInvalid() && this.worldObj != null)
-      	{
-   		   	this.model = new GCCoreModelAssemblyTable();
-      	}
-  	}
+        if (!this.isInvalid() && this.worldObj != null)
+        {
+            this.model = new GCCoreModelAssemblyTable();
+        }
+    }
 
-	@Override
-	public boolean onActivated(EntityPlayer entityPlayer)
-	{
-		entityPlayer.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiRocketCraftingBench, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
-		return true;
-	}
+    @Override
+    public boolean onActivated(EntityPlayer entityPlayer)
+    {
+        entityPlayer.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiRocketCraftingBench, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+        return true;
+    }
 
-	@Override
-	public void onCreate(Vector3 placedPosition)
-	{
-		this.mainBlockPosition = placedPosition;
+    @Override
+    public void onCreate(Vector3 placedPosition)
+    {
+        this.mainBlockPosition = placedPosition;
 
-		for (int x = -1; x < 2; x++)
-		{
-			for (int y = 0; y < 4; y++)
-			{
-				for (int z = -1; z < 2; z++)
-				{
-					final Vector3 vecToAdd = Vector3.add(placedPosition, new Vector3(x, y, z));
+        for (int x = -1; x < 2; x++)
+        {
+            for (int y = 0; y < 4; y++)
+            {
+                for (int z = -1; z < 2; z++)
+                {
+                    final Vector3 vecToAdd = Vector3.add(placedPosition, new Vector3(x, y, z));
 
-					if (!vecToAdd.equals(placedPosition))
-					{
-						if (Math.abs(x) != 1 || Math.abs(z) != 1)
-						{
-							if ((y == 0 || y == 3) && x == 0 && z == 0)
-							{
-								GCCoreBlocks.dummyBlock.makeFakeBlock(this.worldObj, vecToAdd, placedPosition, 3);
-							}
-							else if (y != 0 && y != 3)
-							{
-								GCCoreBlocks.dummyBlock.makeFakeBlock(this.worldObj, vecToAdd, placedPosition, 3);
-							}
-						}
-					}
-				}
-			}
-		}
-	}
+                    if (!vecToAdd.equals(placedPosition))
+                    {
+                        if (Math.abs(x) != 1 || Math.abs(z) != 1)
+                        {
+                            if ((y == 0 || y == 3) && x == 0 && z == 0)
+                            {
+                                GCCoreBlocks.dummyBlock.makeFakeBlock(this.worldObj, vecToAdd, placedPosition, 3);
+                            }
+                            else if (y != 0 && y != 3)
+                            {
+                                GCCoreBlocks.dummyBlock.makeFakeBlock(this.worldObj, vecToAdd, placedPosition, 3);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
-	@Override
-	public void onDestroy(TileEntity callingBlock)
-	{
-		final Vector3 thisBlock = new Vector3(this);
+    @Override
+    public void onDestroy(TileEntity callingBlock)
+    {
+        final Vector3 thisBlock = new Vector3(this);
 
-		for (int x = -1; x < 2; x++)
-		{
-			for (int y = 0; y < 4; y++)
-			{
-				for (int z = -1; z < 2; z++)
-				{
-					if (Math.abs(x) != 1 || Math.abs(z) != 1)
-					{
-						if ((y == 0 || y == 3) && x == 0 && z == 0)
-						{
-							if (this.worldObj.isRemote && this.worldObj.rand.nextDouble() < 0.05D)
-								FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z, GCCoreBlocks.rocketBench.blockID & 4095, GCCoreBlocks.rocketBench.blockID >> 12 & 255);
-							this.worldObj.setBlock(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z, 0, 0, 3);
-						}
-						else if (y != 0 && y != 3)
-						{
-							if (this.worldObj.isRemote && this.worldObj.rand.nextDouble() < 0.05D)
-								FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z, GCCoreBlocks.rocketBench.blockID & 4095, GCCoreBlocks.rocketBench.blockID >> 12 & 255);
-							this.worldObj.setBlock(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z, 0, 0, 3);
-						}
-					}
-				}
-			}
-		}
-	}
+        for (int x = -1; x < 2; x++)
+        {
+            for (int y = 0; y < 4; y++)
+            {
+                for (int z = -1; z < 2; z++)
+                {
+                    if (Math.abs(x) != 1 || Math.abs(z) != 1)
+                    {
+                        if ((y == 0 || y == 3) && x == 0 && z == 0)
+                        {
+                            if (this.worldObj.isRemote && this.worldObj.rand.nextDouble() < 0.05D)
+                            {
+                                FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z, GCCoreBlocks.rocketBench.blockID & 4095, GCCoreBlocks.rocketBench.blockID >> 12 & 255);
+                            }
+                            this.worldObj.setBlock(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z, 0, 0, 3);
+                        }
+                        else if (y != 0 && y != 3)
+                        {
+                            if (this.worldObj.isRemote && this.worldObj.rand.nextDouble() < 0.05D)
+                            {
+                                FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z, GCCoreBlocks.rocketBench.blockID & 4095, GCCoreBlocks.rocketBench.blockID >> 12 & 255);
+                            }
+                            this.worldObj.setBlock(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z, 0, 0, 3);
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

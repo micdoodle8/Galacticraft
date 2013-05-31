@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.moon.wgen;
 
 import java.util.List;
 import java.util.Random;
-
 import net.minecraft.block.Block;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
@@ -43,12 +42,12 @@ public class GCMoonComponentVillageField2 extends GCMoonComponentVillage
     {
         switch (par1Random.nextInt(5))
         {
-            case 0:
-                return Block.carrot.blockID;
-            case 1:
-                return Block.potato.blockID;
-            default:
-                return Block.crops.blockID;
+        case 0:
+            return Block.carrot.blockID;
+        case 1:
+            return Block.potato.blockID;
+        default:
+            return Block.crops.blockID;
         }
     }
 
@@ -59,11 +58,11 @@ public class GCMoonComponentVillageField2 extends GCMoonComponentVillage
     }
 
     /**
-     * second Part of Structure generating, this for example places Spiderwebs, Mob Spawners, it closes Mineshafts at
-     * the end, it adds Fences...
+     * second Part of Structure generating, this for example places Spiderwebs,
+     * Mob Spawners, it closes Mineshafts at the end, it adds Fences...
      */
     @Override
-	public boolean addComponentParts(World par1World, Random par2Random, StructureBoundingBox par3StructureBoundingBox)
+    public boolean addComponentParts(World par1World, Random par2Random, StructureBoundingBox par3StructureBoundingBox)
     {
         if (this.averageGroundLevel < 0)
         {

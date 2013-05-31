@@ -10,18 +10,16 @@ import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
-
 import org.lwjgl.opengl.GL11;
-
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
- *
- *  All rights reserved.
- *
+ * 
+ * All rights reserved.
+ * 
  */
 @SideOnly(Side.CLIENT)
 public class GCCoreRenderCreeper extends RenderLiving
@@ -56,19 +54,20 @@ public class GCCoreRenderCreeper extends RenderLiving
     }
 
     /**
-     * Updates color multiplier based on creeper state called by getColorMultiplier
+     * Updates color multiplier based on creeper state called by
+     * getColorMultiplier
      */
     protected int updateCreeperColorMultiplier(GCCoreEntityCreeper par1GCEntityCreeper, float par2, float par3)
     {
         final float var5 = par1GCEntityCreeper.setCreeperFlashTime(par3);
 
-        if ((int)(var5 * 10.0F) % 2 == 0)
+        if ((int) (var5 * 10.0F) % 2 == 0)
         {
             return 0;
         }
         else
         {
-            int var6 = (int)(var5 * 0.2F * 255.0F);
+            int var6 = (int) (var5 * 0.2F * 255.0F);
 
             if (var6 < 0)
             {
@@ -92,16 +91,16 @@ public class GCCoreRenderCreeper extends RenderLiving
      */
     protected int renderCreeperPassModel(GCCoreEntityCreeper par1GCEntityCreeper, int par2, float par3)
     {
-		final Minecraft minecraft = FMLClientHandler.instance().getClient();
+        final Minecraft minecraft = FMLClientHandler.instance().getClient();
 
         final EntityPlayerSP player = minecraft.thePlayer;
 
         ItemStack helmetSlot = null;
 
-		if (player != null && player.inventory.armorItemInSlot(3) != null)
-		{
-			helmetSlot = player.inventory.armorItemInSlot(3);
-		}
+        if (player != null && player.inventory.armorItemInSlot(3) != null)
+        {
+            helmetSlot = player.inventory.armorItemInSlot(3);
+        }
 
         if (helmetSlot != null && helmetSlot.getItem() instanceof GCCoreItemSensorGlasses && minecraft.currentScreen == null)
         {
@@ -143,36 +142,37 @@ public class GCCoreRenderCreeper extends RenderLiving
     }
 
     /**
-     * Allows the render to do any OpenGL state modifications necessary before the model is rendered. Args:
-     * entityLiving, partialTickTime
+     * Allows the render to do any OpenGL state modifications necessary before
+     * the model is rendered. Args: entityLiving, partialTickTime
      */
     @Override
-	protected void preRenderCallback(EntityLiving par1EntityLiving, float par2)
+    protected void preRenderCallback(EntityLiving par1EntityLiving, float par2)
     {
-        this.updateCreeperScale((GCCoreEntityCreeper)par1EntityLiving, par2);
+        this.updateCreeperScale((GCCoreEntityCreeper) par1EntityLiving, par2);
     }
 
     /**
-     * Returns an ARGB int color back. Args: entityLiving, lightBrightness, partialTickTime
+     * Returns an ARGB int color back. Args: entityLiving, lightBrightness,
+     * partialTickTime
      */
     @Override
-	protected int getColorMultiplier(EntityLiving par1EntityLiving, float par2, float par3)
+    protected int getColorMultiplier(EntityLiving par1EntityLiving, float par2, float par3)
     {
-        return this.updateCreeperColorMultiplier((GCCoreEntityCreeper)par1EntityLiving, par2, par3);
+        return this.updateCreeperColorMultiplier((GCCoreEntityCreeper) par1EntityLiving, par2, par3);
     }
 
     /**
      * Queries whether should render the specified pass or not.
      */
     @Override
-	protected int shouldRenderPass(EntityLiving par1EntityLiving, int par2, float par3)
+    protected int shouldRenderPass(EntityLiving par1EntityLiving, int par2, float par3)
     {
-        return this.renderCreeperPassModel((GCCoreEntityCreeper)par1EntityLiving, par2, par3);
+        return this.renderCreeperPassModel((GCCoreEntityCreeper) par1EntityLiving, par2, par3);
     }
 
     @Override
-	protected int inheritRenderPass(EntityLiving par1EntityLiving, int par2, float par3)
+    protected int inheritRenderPass(EntityLiving par1EntityLiving, int par2, float par3)
     {
-        return this.func_77061_b((GCCoreEntityCreeper)par1EntityLiving, par2, par3);
+        return this.func_77061_b((GCCoreEntityCreeper) par1EntityLiving, par2, par3);
     }
 }

@@ -6,16 +6,16 @@ import net.minecraftforge.common.ForgeDirection;
 
 public abstract class GCCoreTileEntityAdvanced extends TileEntity
 {
-	public int direction;
+    public int direction;
 
     @Override
     public void validate()
     {
-     	super.validate();
+        super.validate();
 
         if (!this.isInvalid() && this.worldObj != null)
         {
-        	this.onTileEntityCreation();
+            this.onTileEntityCreation();
         }
     }
 
@@ -24,29 +24,29 @@ public abstract class GCCoreTileEntityAdvanced extends TileEntity
     @Override
     public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
-    	super.readFromNBT(par1NBTTagCompound);
-    	this.direction = par1NBTTagCompound.getInteger("direction");
+        super.readFromNBT(par1NBTTagCompound);
+        this.direction = par1NBTTagCompound.getInteger("direction");
     }
 
     @Override
     public void writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
-    	super.writeToNBT(par1NBTTagCompound);
-    	par1NBTTagCompound.setInteger("direction", this.direction);
+        super.writeToNBT(par1NBTTagCompound);
+        par1NBTTagCompound.setInteger("direction", this.direction);
     }
 
     public int getDirection()
     {
-    	return this.direction;
+        return this.direction;
     }
 
     public ForgeDirection getForgeDirection()
     {
-    	return ForgeDirection.getOrientation(this.direction);
+        return ForgeDirection.getOrientation(this.direction);
     }
 
-    public void setDirection (int dir)
+    public void setDirection(int dir)
     {
-    	this.direction = dir;
+        this.direction = dir;
     }
 }

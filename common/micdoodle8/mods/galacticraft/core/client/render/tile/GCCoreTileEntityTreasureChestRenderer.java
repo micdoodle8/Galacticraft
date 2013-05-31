@@ -7,18 +7,16 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
-
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
- *
- *  All rights reserved.
- *
+ * 
+ * All rights reserved.
+ * 
  */
 @SideOnly(Side.CLIENT)
 public class GCCoreTileEntityTreasureChestRenderer extends TileEntitySpecialRenderer
@@ -47,7 +45,7 @@ public class GCCoreTileEntityTreasureChestRenderer extends TileEntitySpecialRend
 
             if (var10 != null && var9 == 0)
             {
-                ((GCCoreBlockT1TreasureChest)var10).unifyAdjacentChests(par1GCTileEntityTreasureChest.getWorldObj(), par1GCTileEntityTreasureChest.xCoord, par1GCTileEntityTreasureChest.yCoord, par1GCTileEntityTreasureChest.zCoord);
+                ((GCCoreBlockT1TreasureChest) var10).unifyAdjacentChests(par1GCTileEntityTreasureChest.getWorldObj(), par1GCTileEntityTreasureChest.xCoord, par1GCTileEntityTreasureChest.yCoord, par1GCTileEntityTreasureChest.zCoord);
                 var9 = par1GCTileEntityTreasureChest.getBlockMetadata();
             }
 
@@ -56,8 +54,8 @@ public class GCCoreTileEntityTreasureChestRenderer extends TileEntitySpecialRend
 
         if (par1GCTileEntityTreasureChest.adjacentChestZNeg == null && par1GCTileEntityTreasureChest.adjacentChestXNeg == null)
         {
-        	GCCoreModelTreasureChest var14 = null;
-        	GCCoreModelTreasureChestLarge var14b = null;
+            GCCoreModelTreasureChest var14 = null;
+            GCCoreModelTreasureChestLarge var14b = null;
 
             if (par1GCTileEntityTreasureChest.adjacentChestXPos == null && par1GCTileEntityTreasureChest.adjacentChestZPos == null)
             {
@@ -73,7 +71,7 @@ public class GCCoreTileEntityTreasureChestRenderer extends TileEntitySpecialRend
             GL11.glPushMatrix();
             GL11.glEnable(GL12.GL_RESCALE_NORMAL);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            GL11.glTranslatef((float)par2, (float)par4 + 1.0F, (float)par6 + 1.0F);
+            GL11.glTranslatef((float) par2, (float) par4 + 1.0F, (float) par6 + 1.0F);
             GL11.glScalef(1.0F, -1.0F, -1.0F);
             GL11.glTranslatef(0.5F, 0.5F, 0.5F);
             short var11 = 0;
@@ -139,13 +137,13 @@ public class GCCoreTileEntityTreasureChestRenderer extends TileEntitySpecialRend
 
             if (var14 != null)
             {
-                var14.chestLid.rotateAngleX = -(var12 * (float)Math.PI / 4.0F);
+                var14.chestLid.rotateAngleX = -(var12 * (float) Math.PI / 4.0F);
                 var14.renderAll(!par1GCTileEntityTreasureChest.locked);
             }
 
             if (var14b != null)
             {
-                var14b.chestLid.rotateAngleX = -(var12 * (float)Math.PI / 4.0F);
+                var14b.chestLid.rotateAngleX = -(var12 * (float) Math.PI / 4.0F);
                 var14b.renderAll(!par1GCTileEntityTreasureChest.locked);
             }
 
@@ -156,8 +154,8 @@ public class GCCoreTileEntityTreasureChestRenderer extends TileEntitySpecialRend
     }
 
     @Override
-	public void renderTileEntityAt(TileEntity par1TileEntity, double par2, double par4, double par6, float par8)
+    public void renderTileEntityAt(TileEntity par1TileEntity, double par2, double par4, double par6, float par8)
     {
-        this.renderGCTileEntityTreasureChestAt((GCCoreTileEntityTreasureChest)par1TileEntity, par2, par4, par6, par8);
+        this.renderGCTileEntityTreasureChestAt((GCCoreTileEntityTreasureChest) par1TileEntity, par2, par4, par6, par8);
     }
 }

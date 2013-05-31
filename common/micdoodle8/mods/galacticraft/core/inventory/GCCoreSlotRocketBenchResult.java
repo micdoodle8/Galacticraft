@@ -19,13 +19,13 @@ public class GCCoreSlotRocketBenchResult extends Slot
     }
 
     @Override
-	public boolean isItemValid(ItemStack par1ItemStack)
+    public boolean isItemValid(ItemStack par1ItemStack)
     {
         return false;
     }
 
     @Override
-	public ItemStack decrStackSize(int par1)
+    public ItemStack decrStackSize(int par1)
     {
         if (this.getHasStack())
         {

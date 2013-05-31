@@ -11,37 +11,36 @@ import net.minecraft.util.Icon;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
 public class GCCoreItemOxygenGear extends Item
 {
-	public GCCoreItemOxygenGear(int par1)
-	{
-		super(par1);
-	}
+    public GCCoreItemOxygenGear(int par1)
+    {
+        super(par1);
+    }
 
-	@Override
+    @Override
     public CreativeTabs getCreativeTab()
     {
         return GalacticraftCore.galacticraftTab;
     }
 
     @Override
-	@SideOnly(Side.CLIENT)
+    @SideOnly(Side.CLIENT)
     public EnumRarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;
     }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister iconRegister)
-	{
-		this.itemIcon = iconRegister.registerIcon("galacticraftcore:oxygen_gear" + GalacticraftCore.TEXTURE_SUFFIX);
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IconRegister iconRegister)
+    {
+        this.itemIcon = iconRegister.registerIcon("galacticraftcore:oxygen_gear" + GalacticraftCore.TEXTURE_SUFFIX);
+    }
 
-	@Override
-	public Icon getIconFromDamage(int damage)
-	{
-		return super.getIconFromDamage(damage);
-	}
+    @Override
+    public Icon getIconFromDamage(int damage)
+    {
+        return super.getIconFromDamage(damage);
+    }
 }

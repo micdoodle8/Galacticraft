@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.dimension;
 
 import java.util.ArrayList;
-
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -17,36 +16,36 @@ public class GCCoreSpaceStationData extends WorldSavedData
     private ArrayList<String> allowedPlayers = new ArrayList<String>();
     private NBTTagCompound dataCompound;
 
-	public GCCoreSpaceStationData(String par1Str)
-	{
-		super(par1Str);
-	}
+    public GCCoreSpaceStationData(String par1Str)
+    {
+        super(par1Str);
+    }
 
-	public ArrayList<String> getAllowedPlayers()
-	{
-		return this.allowedPlayers;
-	}
+    public ArrayList<String> getAllowedPlayers()
+    {
+        return this.allowedPlayers;
+    }
 
-	public String getOwner()
-	{
-		return this.owner;
-	}
+    public String getOwner()
+    {
+        return this.owner;
+    }
 
-	public String getSpaceStationName()
-	{
-		return this.spaceStationName;
-	}
+    public String getSpaceStationName()
+    {
+        return this.spaceStationName;
+    }
 
-	public void setSpaceStationName(String string)
-	{
-		this.spaceStationName = string;
-	}
+    public void setSpaceStationName(String string)
+    {
+        this.spaceStationName = string;
+    }
 
-	@Override
-	public void readFromNBT(NBTTagCompound nbttagcompound)
-	{
-		this.owner = nbttagcompound.getString("owner").toLowerCase();
-		this.spaceStationName = nbttagcompound.getString("spaceStationName");
+    @Override
+    public void readFromNBT(NBTTagCompound nbttagcompound)
+    {
+        this.owner = nbttagcompound.getString("owner").toLowerCase();
+        this.spaceStationName = nbttagcompound.getString("spaceStationName");
 
         if (nbttagcompound.hasKey("dataCompound"))
         {
@@ -62,7 +61,7 @@ public class GCCoreSpaceStationData extends WorldSavedData
 
         for (int var3 = 0; var3 < var2.tagCount(); ++var3)
         {
-            final NBTTagCompound var4 = (NBTTagCompound)var2.tagAt(var3);
+            final NBTTagCompound var4 = (NBTTagCompound) var2.tagAt(var3);
             final String var5 = var4.getString("allowedPlayer");
 
             if (!this.allowedPlayers.contains(var5.toLowerCase()))
@@ -70,20 +69,20 @@ public class GCCoreSpaceStationData extends WorldSavedData
                 this.allowedPlayers.add(var5.toLowerCase());
             }
         }
-	}
+    }
 
-	@Override
-	public void writeToNBT(NBTTagCompound nbttagcompound)
-	{
-		nbttagcompound.setString("owner", this.owner);
-		nbttagcompound.setString("spaceStationName", this.spaceStationName);
-		nbttagcompound.setCompoundTag("dataCompound", this.dataCompound);
+    @Override
+    public void writeToNBT(NBTTagCompound nbttagcompound)
+    {
+        nbttagcompound.setString("owner", this.owner);
+        nbttagcompound.setString("spaceStationName", this.spaceStationName);
+        nbttagcompound.setCompoundTag("dataCompound", this.dataCompound);
 
         final NBTTagList var2 = new NBTTagList();
 
         for (int var3 = 0; var3 < this.allowedPlayers.size(); ++var3)
         {
-        	final String player = this.allowedPlayers.get(var3);
+            final String player = this.allowedPlayers.get(var3);
 
             if (player != null)
             {
@@ -94,10 +93,10 @@ public class GCCoreSpaceStationData extends WorldSavedData
         }
 
         nbttagcompound.setTag("allowedPlayers", var2);
-	}
+    }
 
-	public static GCCoreSpaceStationData getStationData(World var0, int var1, EntityPlayer player)
-	{
+    public static GCCoreSpaceStationData getStationData(World var0, int var1, EntityPlayer player)
+    {
         if (DimensionManager.getProviderType(var1) != GCCoreConfigManager.idDimensionOverworldOrbit)
         {
             return null;
@@ -105,7 +104,7 @@ public class GCCoreSpaceStationData extends WorldSavedData
         else
         {
             final String var2 = GCCoreSpaceStationData.getSpaceStationID(var1);
-            GCCoreSpaceStationData var3 = (GCCoreSpaceStationData)var0.loadItemData(GCCoreSpaceStationData.class, var2);
+            GCCoreSpaceStationData var3 = (GCCoreSpaceStationData) var0.loadItemData(GCCoreSpaceStationData.class, var2);
 
             if (var3 == null)
             {
@@ -131,12 +130,12 @@ public class GCCoreSpaceStationData extends WorldSavedData
 
             return var3;
         }
-	}
+    }
 
     public static GCCoreSpaceStationData getMPSpaceStationData(World var0, int var1, EntityPlayer player)
     {
         final String var2 = GCCoreSpaceStationData.getSpaceStationID(var1);
-        GCCoreSpaceStationData var3 = (GCCoreSpaceStationData)var0.loadItemData(GCCoreSpaceStationData.class, var2);
+        GCCoreSpaceStationData var3 = (GCCoreSpaceStationData) var0.loadItemData(GCCoreSpaceStationData.class, var2);
 
         if (var3 == null)
         {
@@ -163,8 +162,8 @@ public class GCCoreSpaceStationData extends WorldSavedData
         return var3;
     }
 
-	public static String getSpaceStationID(int dimID)
-	{
-		return "spacestation_" + dimID;
-	}
+    public static String getSpaceStationID(int dimID)
+    {
+        return "spacestation_" + dimID;
+    }
 }

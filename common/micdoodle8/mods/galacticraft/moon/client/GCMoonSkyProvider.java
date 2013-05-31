@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.moon.client;
 
 import java.util.Random;
-
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;
 import net.minecraft.client.Minecraft;
@@ -12,82 +11,84 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.client.IRenderHandler;
-
 import org.lwjgl.opengl.GL11;
-
 import cpw.mods.fml.client.FMLClientHandler;
 
 /**
  * Copyright 2012-2013, micdoodle8
- *
- *  All rights reserved.
- *
+ * 
+ * All rights reserved.
+ * 
  */
 public class GCMoonSkyProvider extends IRenderHandler
 {
-	public int starGLCallList = GLAllocation.generateDisplayLists(3);
-	public int glSkyList;
-	public int glSkyList2;
+    public int starGLCallList = GLAllocation.generateDisplayLists(3);
+    public int glSkyList;
+    public int glSkyList2;
 
-	public GCMoonSkyProvider()
-	{
-		GL11.glPushMatrix();
-		GL11.glNewList(this.starGLCallList, GL11.GL_COMPILE);
-		this.renderStars();
-		GL11.glEndList();
-		GL11.glPopMatrix();
-		final Tessellator tessellator = Tessellator.instance;
-		this.glSkyList = this.starGLCallList + 1;
-		GL11.glNewList(this.glSkyList, GL11.GL_COMPILE);
-		final byte byte2 = 64;
-		final int i = 256 / byte2 + 2;
-		float f = 16F;
+    public GCMoonSkyProvider()
+    {
+        GL11.glPushMatrix();
+        GL11.glNewList(this.starGLCallList, GL11.GL_COMPILE);
+        this.renderStars();
+        GL11.glEndList();
+        GL11.glPopMatrix();
+        final Tessellator tessellator = Tessellator.instance;
+        this.glSkyList = this.starGLCallList + 1;
+        GL11.glNewList(this.glSkyList, GL11.GL_COMPILE);
+        final byte byte2 = 64;
+        final int i = 256 / byte2 + 2;
+        float f = 16F;
 
-		for (int j = -byte2 * i; j <= byte2 * i; j += byte2) {
-			for (int l = -byte2 * i; l <= byte2 * i; l += byte2) {
-				tessellator.startDrawingQuads();
-				tessellator.addVertex(j + 0, f, l + 0);
-				tessellator.addVertex(j + byte2, f, l + 0);
-				tessellator.addVertex(j + byte2, f, l + byte2);
-				tessellator.addVertex(j + 0, f, l + byte2);
-				tessellator.draw();
-			}
-		}
+        for (int j = -byte2 * i; j <= byte2 * i; j += byte2)
+        {
+            for (int l = -byte2 * i; l <= byte2 * i; l += byte2)
+            {
+                tessellator.startDrawingQuads();
+                tessellator.addVertex(j + 0, f, l + 0);
+                tessellator.addVertex(j + byte2, f, l + 0);
+                tessellator.addVertex(j + byte2, f, l + byte2);
+                tessellator.addVertex(j + 0, f, l + byte2);
+                tessellator.draw();
+            }
+        }
 
-		GL11.glEndList();
-		this.glSkyList2 = this.starGLCallList + 2;
-		GL11.glNewList(this.glSkyList2, GL11.GL_COMPILE);
-		f = -16F;
-		tessellator.startDrawingQuads();
+        GL11.glEndList();
+        this.glSkyList2 = this.starGLCallList + 2;
+        GL11.glNewList(this.glSkyList2, GL11.GL_COMPILE);
+        f = -16F;
+        tessellator.startDrawingQuads();
 
-		for (int k = -byte2 * i; k <= byte2 * i; k += byte2) {
-			for (int i1 = -byte2 * i; i1 <= byte2 * i; i1 += byte2) {
-				tessellator.addVertex(k + byte2, f, i1 + 0);
-				tessellator.addVertex(k + 0, f, i1 + 0);
-				tessellator.addVertex(k + 0, f, i1 + byte2);
-				tessellator.addVertex(k + byte2, f, i1 + byte2);
-			}
-		}
+        for (int k = -byte2 * i; k <= byte2 * i; k += byte2)
+        {
+            for (int i1 = -byte2 * i; i1 <= byte2 * i; i1 += byte2)
+            {
+                tessellator.addVertex(k + byte2, f, i1 + 0);
+                tessellator.addVertex(k + 0, f, i1 + 0);
+                tessellator.addVertex(k + 0, f, i1 + byte2);
+                tessellator.addVertex(k + byte2, f, i1 + byte2);
+            }
+        }
 
-		tessellator.draw();
-		GL11.glEndList();
-	}
+        tessellator.draw();
+        GL11.glEndList();
+    }
 
-	@Override
-	public void render(float partialTicks, WorldClient world, Minecraft mc)
-	{
-		GCMoonWorldProvider gcProvider = null;
+    @Override
+    public void render(float partialTicks, WorldClient world, Minecraft mc)
+    {
+        GCMoonWorldProvider gcProvider = null;
 
-		if (world.provider instanceof GCMoonWorldProvider)
-		{
-			gcProvider = (GCMoonWorldProvider)world.provider;
-		}
+        if (world.provider instanceof GCMoonWorldProvider)
+        {
+            gcProvider = (GCMoonWorldProvider) world.provider;
+        }
 
-		GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
         final Vec3 var2 = this.getCustomSkyColor();
-        float var3 = (float)var2.xCoord * (1 - world.getStarBrightness(partialTicks) * 2);
-        float var4 = (float)var2.yCoord * (1 - world.getStarBrightness(partialTicks) * 2);
-        float var5 = (float)var2.zCoord * (1 - world.getStarBrightness(partialTicks) * 2);
+        float var3 = (float) var2.xCoord * (1 - world.getStarBrightness(partialTicks) * 2);
+        float var4 = (float) var2.yCoord * (1 - world.getStarBrightness(partialTicks) * 2);
+        float var5 = (float) var2.zCoord * (1 - world.getStarBrightness(partialTicks) * 2);
         float var8;
 
         if (mc.gameSettings.anaglyph)
@@ -162,7 +163,7 @@ public class GCMoonSkyProvider extends IRenderHandler
         GL11.glRotatef(200F, 1.0F, 0.0F, 0.0F);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1F);
         FMLClientHandler.instance().getClient().renderEngine.bindTexture("/micdoodle8/mods/galacticraft/core/client/planets/overworld.png");
-        final int var28 = world.getMoonPhase();
+        world.getMoonPhase();
         var23.startDrawingQuads();
         var23.addVertexWithUV(-var12, -100.0D, var12, 0, 1);
         var23.addVertexWithUV(var12, -100.0D, var12, 1, 1);
@@ -186,7 +187,7 @@ public class GCMoonSkyProvider extends IRenderHandler
             GL11.glCallList(this.glSkyList2);
             GL11.glPopMatrix();
             var10 = 1.0F;
-            var11 = -((float)(var25 + 65.0D));
+            var11 = -((float) (var25 + 65.0D));
             var12 = -var10;
             var23.startDrawingQuads();
             var23.setColorRGBA_I(0, 255);
@@ -216,16 +217,16 @@ public class GCMoonSkyProvider extends IRenderHandler
         GL11.glColor3f(70F / 256F, 70F / 256F, 70F / 256F);
 
         GL11.glPushMatrix();
-        GL11.glTranslatef(0.0F, -((float)(var25 - 16.0D)), 0.0F);
+        GL11.glTranslatef(0.0F, -((float) (var25 - 16.0D)), 0.0F);
         GL11.glCallList(this.glSkyList2);
         GL11.glPopMatrix();
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glDepthMask(true);
-	}
+    }
 
     private void renderStars()
     {
-    	final Random var1 = new Random(10842L);
+        final Random var1 = new Random(10842L);
         final Tessellator var2 = Tessellator.instance;
         var2.startDrawingQuads();
 
@@ -283,7 +284,7 @@ public class GCMoonSkyProvider extends IRenderHandler
     public float getSkyBrightness(float par1)
     {
         final float var2 = FMLClientHandler.instance().getClient().theWorld.getCelestialAngle(par1);
-        float var3 = 1.0F - (MathHelper.sin(var2 * (float)Math.PI * 2.0F) * 2.0F + 0.25F);
+        float var3 = 1.0F - (MathHelper.sin(var2 * (float) Math.PI * 2.0F) * 2.0F + 0.25F);
 
         if (var3 < 0.0F)
         {

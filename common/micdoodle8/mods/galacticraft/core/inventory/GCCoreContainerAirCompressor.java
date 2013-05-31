@@ -9,43 +9,40 @@ import net.minecraft.item.ItemStack;
 
 public class GCCoreContainerAirCompressor extends Container
 {
-	private final GCCoreTileEntityOxygenCompressor compressor;
-
     public GCCoreContainerAirCompressor(InventoryPlayer par1InventoryPlayer, GCCoreTileEntityOxygenCompressor compressor)
     {
-    	this.compressor = compressor;
         this.addSlotToContainer(new Slot(compressor, 0, 133, 71));
         this.addSlotToContainer(new Slot(compressor, 1, 32, 27));
 
-		int var3;
+        int var3;
 
-		for (var3 = 0; var3 < 3; ++var3)
-		{
-			for (int var4 = 0; var4 < 9; ++var4)
-			{
-				this.addSlotToContainer(new Slot(par1InventoryPlayer, var4 + var3 * 9 + 9, 8 + var4 * 18, 20 + 84 + var3 * 18));
-			}
-		}
+        for (var3 = 0; var3 < 3; ++var3)
+        {
+            for (int var4 = 0; var4 < 9; ++var4)
+            {
+                this.addSlotToContainer(new Slot(par1InventoryPlayer, var4 + var3 * 9 + 9, 8 + var4 * 18, 20 + 84 + var3 * 18));
+            }
+        }
 
-		for (var3 = 0; var3 < 9; ++var3)
-		{
-			this.addSlotToContainer(new Slot(par1InventoryPlayer, var3, 8 + var3 * 18, 20 + 142));
-		}
+        for (var3 = 0; var3 < 9; ++var3)
+        {
+            this.addSlotToContainer(new Slot(par1InventoryPlayer, var3, 8 + var3 * 18, 20 + 142));
+        }
 
-		compressor.openChest();
+        compressor.openChest();
     }
 
-	@Override
-	public boolean canInteractWith(EntityPlayer var1)
-	{
-		return true;
-	}
+    @Override
+    public boolean canInteractWith(EntityPlayer var1)
+    {
+        return true;
+    }
 
-	@Override
-	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2)
+    @Override
+    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2)
     {
         ItemStack var3 = null;
-        final Slot var4 = (Slot)this.inventorySlots.get(par2);
+        final Slot var4 = (Slot) this.inventorySlots.get(par2);
 
         if (var4 != null && var4.getHasStack())
         {
@@ -66,7 +63,7 @@ public class GCCoreContainerAirCompressor extends Container
 
             if (var5.stackSize == 0)
             {
-                var4.putStack((ItemStack)null);
+                var4.putStack((ItemStack) null);
             }
             else
             {

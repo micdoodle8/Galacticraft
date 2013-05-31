@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client;
 
 import java.util.Random;
-
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
@@ -11,86 +10,86 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.client.IRenderHandler;
-
 import org.lwjgl.opengl.GL11;
-
 import cpw.mods.fml.client.FMLClientHandler;
 
 public class GCCoreSkyProviderOrbit extends IRenderHandler
 {
-	public int starGLCallList = GLAllocation.generateDisplayLists(3);
-	public int glSkyList;
-	public int glSkyList2;
-	private final String planetToRender;
-	private final boolean renderMoon;
-	private final boolean renderSun;
+    public int starGLCallList = GLAllocation.generateDisplayLists(3);
+    public int glSkyList;
+    public int glSkyList2;
+    private final String planetToRender;
+    private final boolean renderMoon;
+    private final boolean renderSun;
 
-	public GCCoreSkyProviderOrbit(String planet, boolean renderMoon, boolean renderSun)
-	{
-		this.planetToRender = planet;
-		this.renderMoon = renderMoon;
-		this.renderSun = renderSun;
-		GL11.glPushMatrix();
-		GL11.glNewList(this.starGLCallList, GL11.GL_COMPILE);
-		this.renderStars();
-		GL11.glEndList();
-		GL11.glPopMatrix();
-		final Tessellator tessellator = Tessellator.instance;
-		this.glSkyList = this.starGLCallList + 1;
-		GL11.glNewList(this.glSkyList, GL11.GL_COMPILE);
-		final byte byte2 = 64;
-		final int i = 256 / byte2 + 2;
-		float f = 16F;
+    public GCCoreSkyProviderOrbit(String planet, boolean renderMoon, boolean renderSun)
+    {
+        this.planetToRender = planet;
+        this.renderMoon = renderMoon;
+        this.renderSun = renderSun;
+        GL11.glPushMatrix();
+        GL11.glNewList(this.starGLCallList, GL11.GL_COMPILE);
+        this.renderStars();
+        GL11.glEndList();
+        GL11.glPopMatrix();
+        final Tessellator tessellator = Tessellator.instance;
+        this.glSkyList = this.starGLCallList + 1;
+        GL11.glNewList(this.glSkyList, GL11.GL_COMPILE);
+        final byte byte2 = 64;
+        final int i = 256 / byte2 + 2;
+        float f = 16F;
 
-		for (int j = -byte2 * i; j <= byte2 * i; j += byte2) {
-			for (int l = -byte2 * i; l <= byte2 * i; l += byte2) {
-				tessellator.startDrawingQuads();
-				tessellator.addVertex(j + 0, f, l + 0);
-				tessellator.addVertex(j + byte2, f, l + 0);
-				tessellator.addVertex(j + byte2, f, l + byte2);
-				tessellator.addVertex(j + 0, f, l + byte2);
-				tessellator.draw();
-			}
-		}
+        for (int j = -byte2 * i; j <= byte2 * i; j += byte2)
+        {
+            for (int l = -byte2 * i; l <= byte2 * i; l += byte2)
+            {
+                tessellator.startDrawingQuads();
+                tessellator.addVertex(j + 0, f, l + 0);
+                tessellator.addVertex(j + byte2, f, l + 0);
+                tessellator.addVertex(j + byte2, f, l + byte2);
+                tessellator.addVertex(j + 0, f, l + byte2);
+                tessellator.draw();
+            }
+        }
 
-		GL11.glEndList();
-		this.glSkyList2 = this.starGLCallList + 2;
-		GL11.glNewList(this.glSkyList2, GL11.GL_COMPILE);
-		f = -16F;
-		tessellator.startDrawingQuads();
+        GL11.glEndList();
+        this.glSkyList2 = this.starGLCallList + 2;
+        GL11.glNewList(this.glSkyList2, GL11.GL_COMPILE);
+        f = -16F;
+        tessellator.startDrawingQuads();
 
-		for (int k = -byte2 * i; k <= byte2 * i; k += byte2)
-		{
-			for (int i1 = -byte2 * i; i1 <= byte2 * i; i1 += byte2)
-			{
-				tessellator.addVertex(k + byte2, f, i1 + 0);
-				tessellator.addVertex(k + 0, f, i1 + 0);
-				tessellator.addVertex(k + 0, f, i1 + byte2);
-				tessellator.addVertex(k + byte2, f, i1 + byte2);
-			}
-		}
+        for (int k = -byte2 * i; k <= byte2 * i; k += byte2)
+        {
+            for (int i1 = -byte2 * i; i1 <= byte2 * i; i1 += byte2)
+            {
+                tessellator.addVertex(k + byte2, f, i1 + 0);
+                tessellator.addVertex(k + 0, f, i1 + 0);
+                tessellator.addVertex(k + 0, f, i1 + byte2);
+                tessellator.addVertex(k + byte2, f, i1 + byte2);
+            }
+        }
 
-		tessellator.draw();
-		GL11.glEndList();
-	}
+        tessellator.draw();
+        GL11.glEndList();
+    }
 
-	private final Minecraft minecraft = FMLClientHandler.instance().getClient();
+    private final Minecraft minecraft = FMLClientHandler.instance().getClient();
 
-	@Override
-	public void render(float partialTicks, WorldClient world, Minecraft mc)
-	{
+    @Override
+    public void render(float partialTicks, WorldClient world, Minecraft mc)
+    {
         final float var20 = 400.0F;
 
-//        if (this.minecraft.thePlayer.ridingEntity != null)
+        // if (this.minecraft.thePlayer.ridingEntity != null)
         {
-//            var20 = (float) (this.minecraft.thePlayer.posY - 200.0F);
+            // var20 = (float) (this.minecraft.thePlayer.posY - 200.0F);
         }
 
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         final Vec3 var2 = this.minecraft.theWorld.getSkyColor(this.minecraft.renderViewEntity, partialTicks);
-        float var3 = (float)var2.xCoord;
-        float var4 = (float)var2.yCoord;
-        float var5 = (float)var2.zCoord;
+        float var3 = (float) var2.xCoord;
+        float var4 = (float) var2.yCoord;
+        float var5 = (float) var2.zCoord;
         float var8;
 
         if (this.minecraft.gameSettings.anaglyph)
@@ -151,7 +150,7 @@ public class GCCoreSkyProviderOrbit extends IRenderHandler
 
             for (int var27 = 0; var27 <= var26; ++var27)
             {
-                var13 = var27 * (float)Math.PI * 2.0F / var26;
+                var13 = var27 * (float) Math.PI * 2.0F / var26;
                 final float var14 = MathHelper.sin(var13);
                 final float var15 = MathHelper.cos(var13);
                 var23.addVertex(var14 * 120.0F, var15 * 120.0F, -var15 * 40.0F * var24[3]);
@@ -176,15 +175,15 @@ public class GCCoreSkyProviderOrbit extends IRenderHandler
         GL11.glRotatef(this.minecraft.theWorld.getCelestialAngle(partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
         if (this.renderSun)
         {
-	        var12 = 30.0F;
-	        FMLClientHandler.instance().getClient().renderEngine.bindTexture("/environment/sun.png");
-	        var23.startDrawingQuads();
-	        var23.addVertexWithUV(-var12, 100.0D, -var12, 0.0D, 0.0D);
-	        var23.addVertexWithUV(var12, 100.0D, -var12, 1.0D, 0.0D);
-	        var23.addVertexWithUV(var12, 100.0D, var12, 1.0D, 1.0D);
-	        var23.addVertexWithUV(-var12, 100.0D, var12, 0.0D, 1.0D);
-	        var23.draw();
-		}
+            var12 = 30.0F;
+            FMLClientHandler.instance().getClient().renderEngine.bindTexture("/environment/sun.png");
+            var23.startDrawingQuads();
+            var23.addVertexWithUV(-var12, 100.0D, -var12, 0.0D, 0.0D);
+            var23.addVertexWithUV(var12, 100.0D, -var12, 1.0D, 0.0D);
+            var23.addVertexWithUV(var12, 100.0D, var12, 1.0D, 1.0D);
+            var23.addVertexWithUV(-var12, 100.0D, var12, 0.0D, 1.0D);
+            var23.draw();
+        }
 
         if (this.renderMoon)
         {
@@ -207,7 +206,7 @@ public class GCCoreSkyProviderOrbit extends IRenderHandler
 
         GL11.glDisable(GL11.GL_TEXTURE_2D);
 
-//        if (var20 > 0.0F)
+        // if (var20 > 0.0F)
         {
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             GL11.glCallList(this.starGLCallList);
@@ -223,48 +222,48 @@ public class GCCoreSkyProviderOrbit extends IRenderHandler
 
         double var25 = 0.0D;
 
-//        if (this.minecraft.thePlayer.ridingEntity != null)
+        // if (this.minecraft.thePlayer.ridingEntity != null)
         {
             var25 = this.minecraft.thePlayer.posY - 64;
 
             if (var25 < 0.0D)
             {
-//                GL11.glPushMatrix();
-//                GL11.glTranslatef(0.0F, 12.0F, 0.0F);
-//                GL11.glCallList(this.glSkyList2);
-//                GL11.glPopMatrix();
-//                var10 = 1.0F;
-//                var11 = -((float)(var25 + 65.0D));
-//                var12 = -var10;
-//                var23.startDrawingQuads();
-//                var23.setColorRGBA_I(0, 255);
-//                var23.addVertex(-var10, var11, var10);
-//                var23.addVertex(var10, var11, var10);
-//                var23.addVertex(var10, var12, var10);
-//                var23.addVertex(-var10, var12, var10);
-//                var23.addVertex(-var10, var12, -var10);
-//                var23.addVertex(var10, var12, -var10);
-//                var23.addVertex(var10, var11, -var10);
-//                var23.addVertex(-var10, var11, -var10);
-//                var23.addVertex(var10, var12, -var10);
-//                var23.addVertex(var10, var12, var10);
-//                var23.addVertex(var10, var11, var10);
-//                var23.addVertex(var10, var11, -var10);
-//                var23.addVertex(-var10, var11, -var10);
-//                var23.addVertex(-var10, var11, var10);
-//                var23.addVertex(-var10, var12, var10);
-//                var23.addVertex(-var10, var12, -var10);
-//                var23.addVertex(-var10, var12, -var10);
-//                var23.addVertex(-var10, var12, var10);
-//                var23.addVertex(var10, var12, var10);
-//                var23.addVertex(var10, var12, -var10);
-//                var23.draw();
+                // GL11.glPushMatrix();
+                // GL11.glTranslatef(0.0F, 12.0F, 0.0F);
+                // GL11.glCallList(this.glSkyList2);
+                // GL11.glPopMatrix();
+                // var10 = 1.0F;
+                // var11 = -((float)(var25 + 65.0D));
+                // var12 = -var10;
+                // var23.startDrawingQuads();
+                // var23.setColorRGBA_I(0, 255);
+                // var23.addVertex(-var10, var11, var10);
+                // var23.addVertex(var10, var11, var10);
+                // var23.addVertex(var10, var12, var10);
+                // var23.addVertex(-var10, var12, var10);
+                // var23.addVertex(-var10, var12, -var10);
+                // var23.addVertex(var10, var12, -var10);
+                // var23.addVertex(var10, var11, -var10);
+                // var23.addVertex(-var10, var11, -var10);
+                // var23.addVertex(var10, var12, -var10);
+                // var23.addVertex(var10, var12, var10);
+                // var23.addVertex(var10, var11, var10);
+                // var23.addVertex(var10, var11, -var10);
+                // var23.addVertex(-var10, var11, -var10);
+                // var23.addVertex(-var10, var11, var10);
+                // var23.addVertex(-var10, var12, var10);
+                // var23.addVertex(-var10, var12, -var10);
+                // var23.addVertex(-var10, var12, -var10);
+                // var23.addVertex(-var10, var12, var10);
+                // var23.addVertex(var10, var12, var10);
+                // var23.addVertex(var10, var12, -var10);
+                // var23.draw();
             }
 
             if (var20 > 0.0F)
             {
-            	if (this.planetToRender != null)
-            	{
+                if (this.planetToRender != null)
+                {
                     GL11.glPushMatrix();
                     GL11.glEnable(GL11.GL_TEXTURE_2D);
                     GL11.glTranslatef(0.0F, -var20 / 10, 0.0F);
@@ -278,7 +277,7 @@ public class GCCoreSkyProviderOrbit extends IRenderHandler
                     var12 = -1.0F;
 
                     final float alpha = 0.5F;
-    	            GL11.glColor4f(Math.min(alpha, 1.0F), Math.min(alpha, 1.0F), Math.min(alpha, 1.0F), Math.min(alpha, 1.0F));
+                    GL11.glColor4f(Math.min(alpha, 1.0F), Math.min(alpha, 1.0F), Math.min(alpha, 1.0F), Math.min(alpha, 1.0F));
                     var23.startDrawingQuads();
                     var23.addVertexWithUV(-var10, 0, var10, 0.0F, 1.0F);
                     var23.addVertexWithUV(var10, 0, var10, 1.0F, 1.0F);
@@ -292,7 +291,7 @@ public class GCCoreSkyProviderOrbit extends IRenderHandler
                     var23.draw();
                     GL11.glDisable(GL11.GL_TEXTURE_2D);
                     GL11.glPopMatrix();
-            	}
+                }
             }
         }
 
@@ -307,15 +306,15 @@ public class GCCoreSkyProviderOrbit extends IRenderHandler
         GL11.glColor3f(0.0f, 0.0f, 0.0f);
 
         GL11.glPushMatrix();
-        GL11.glTranslatef(0.0F, -((float)(var25 - 16.0D)), 0.0F);
+        GL11.glTranslatef(0.0F, -((float) (var25 - 16.0D)), 0.0F);
         GL11.glPopMatrix();
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glDepthMask(true);
-	}
+    }
 
     private void renderStars()
     {
-    	final Random var1 = new Random(10842L);
+        final Random var1 = new Random(10842L);
         final Tessellator var2 = Tessellator.instance;
         var2.startDrawingQuads();
 

@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.moon.wgen;
 
 import java.util.Random;
-
 import micdoodle8.mods.galacticraft.core.wgen.GCCoreMapGenBaseMeta;
 import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
 import net.minecraft.util.MathHelper;
@@ -40,7 +39,7 @@ public class GCMoonGenCaves extends GCCoreMapGenBaseMeta
 
         for (final boolean flag1 = random.nextInt(6) == 0; par15 < par16; ++par15)
         {
-            final double d6 = 1.5D + MathHelper.sin(par15 * (float)Math.PI / par16) * par12 * 1.0F;
+            final double d6 = 1.5D + MathHelper.sin(par15 * (float) Math.PI / par16) * par12 * 1.0F;
             final double d7 = d6 * par17;
             final float f5 = MathHelper.cos(par14);
             final float f6 = MathHelper.sin(par14);
@@ -66,8 +65,8 @@ public class GCMoonGenCaves extends GCCoreMapGenBaseMeta
 
             if (!flag && par15 == k1 && par12 > 1.0F && par16 > 0)
             {
-                this.generateCaveNode(random.nextLong(), par3, par4, blockIdArray, metaArray, par6, par8, par10, random.nextFloat() * 0.5F + 0.5F, par13 - (float)Math.PI / 2F, par14 / 3.0F, par15, par16, 1.0D);
-                this.generateCaveNode(random.nextLong(), par3, par4, blockIdArray, metaArray, par6, par8, par10, random.nextFloat() * 0.5F + 0.5F, par13 + (float)Math.PI / 2F, par14 / 3.0F, par15, par16, 1.0D);
+                this.generateCaveNode(random.nextLong(), par3, par4, blockIdArray, metaArray, par6, par8, par10, random.nextFloat() * 0.5F + 0.5F, par13 - (float) Math.PI / 2F, par14 / 3.0F, par15, par16, 1.0D);
+                this.generateCaveNode(random.nextLong(), par3, par4, blockIdArray, metaArray, par6, par8, par10, random.nextFloat() * 0.5F + 0.5F, par13 + (float) Math.PI / 2F, par14 / 3.0F, par15, par16, 1.0D);
                 return;
             }
 
@@ -124,8 +123,6 @@ public class GCMoonGenCaves extends GCCoreMapGenBaseMeta
 
                     final boolean flag2 = false;
                     int j3;
-                    final int k3;
-
                     for (j3 = l1; !flag2 && j3 < i2; ++j3)
                     {
                         for (int l3 = l2; !flag2 && l3 < i3; ++l3)
@@ -146,36 +143,36 @@ public class GCMoonGenCaves extends GCCoreMapGenBaseMeta
                     if (!flag2)
                     {
 
-                    	for (int localY = j2; localY < k2; localY++)
-                    	{
+                        for (int localY = j2; localY < k2; localY++)
+                        {
                             final double yfactor = (localY + 0.5D - par8) / d7;
                             final double yfactorSq = yfactor * yfactor;
 
                             for (int localZ = l1; localZ < i2; localZ++)
                             {
-                            	final double zfactor = (localZ + par3 * 16 + 0.5D - par6) / d6;
-                            	final double zfactorSq = zfactor * zfactor;
+                                final double zfactor = (localZ + par3 * 16 + 0.5D - par6) / d6;
+                                final double zfactorSq = zfactor * zfactor;
 
-                            	for (int localX = l2; localX < i3; localX++)
-                            	{
-                            		final double xfactor = (localX + par4 * 16 + 0.5D - par10) / d6;
-                            		final double xfactorSq = xfactor * xfactor;
+                                for (int localX = l2; localX < i3; localX++)
+                                {
+                                    final double xfactor = (localX + par4 * 16 + 0.5D - par10) / d6;
+                                    final double xfactorSq = xfactor * xfactor;
 
-                            		if (xfactorSq + zfactorSq < 1.0D)
-                            		{
-                            			final int coords = localY << 8 | localZ << 4 | localX;
+                                    if (xfactorSq + zfactorSq < 1.0D)
+                                    {
+                                        final int coords = localY << 8 | localZ << 4 | localX;
 
-                            			if (yfactor > -0.7D && xfactorSq + yfactorSq + zfactorSq < 1.0D)
-                            			{
+                                        if (yfactor > -0.7D && xfactorSq + yfactorSq + zfactorSq < 1.0D)
+                                        {
                                             if (blockIdArray[coords] == GCMoonBlocks.blockMoon.blockID && (metaArray[coords] == 3 || metaArray[coords] == 4))
                                             {
                                                 blockIdArray[coords] = 0;
                                             }
-                            			}
-                            		}
-                            	}
+                                        }
+                                    }
+                                }
                             }
-                    	}
+                        }
 
                         if (flag)
                         {
@@ -212,7 +209,7 @@ public class GCMoonGenCaves extends GCCoreMapGenBaseMeta
 
             for (int l1 = 0; l1 < k1; ++l1)
             {
-                final float f = this.rand.nextFloat() * (float)Math.PI * 2.0F;
+                final float f = this.rand.nextFloat() * (float) Math.PI * 2.0F;
                 final float f1 = (this.rand.nextFloat() - 0.5F) * 2.0F / 8.0F;
                 float f2 = this.rand.nextFloat() * 2.0F + this.rand.nextFloat();
 

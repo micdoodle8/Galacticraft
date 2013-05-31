@@ -10,19 +10,19 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
- *
- *  All rights reserved.
- *
+ * 
+ * All rights reserved.
+ * 
  */
 public class GCCoreItemFuel extends Item
 {
-	public GCCoreItemFuel(int par1)
-	{
-		super(par1);
-		this.setUnlocalizedName("fuel");
-	}
+    public GCCoreItemFuel(int par1)
+    {
+        super(par1);
+        this.setUnlocalizedName("fuel");
+    }
 
-	@Override
+    @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister par1IconRegister)
     {
@@ -30,7 +30,7 @@ public class GCCoreItemFuel extends Item
     }
 
     @Override
-	@SideOnly(Side.CLIENT)
+    @SideOnly(Side.CLIENT)
     public EnumRarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;

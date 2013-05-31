@@ -4,40 +4,45 @@ import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityRocketT1;
 import net.minecraft.client.renderer.RenderEngine;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
-
 import org.lwjgl.opengl.GL11;
-
 import cpw.mods.fml.client.FMLClientHandler;
 
 public class GCCoreOverlay
 {
-	/**
-	 * Get the player's spaceship height off ground
-	 *
-	 * @param player thePlayer
-	 * @return position of player's spaceship
-	 */
-	protected static int getPlayerPositionY(EntityPlayer player)
-	{
-		if (player.ridingEntity != null && player.ridingEntity instanceof GCCoreEntityRocketT1)
-		{
-			return (int) Math.floor(((GCCoreEntityRocketT1) player.ridingEntity).posY);
-		}
+    /**
+     * Get the player's spaceship height off ground
+     * 
+     * @param player
+     *            thePlayer
+     * @return position of player's spaceship
+     */
+    protected static int getPlayerPositionY(EntityPlayer player)
+    {
+        if (player.ridingEntity != null && player.ridingEntity instanceof GCCoreEntityRocketT1)
+        {
+            return (int) Math.floor(((GCCoreEntityRocketT1) player.ridingEntity).posY);
+        }
 
-		return (int) Math.floor(player.posY);
-	}
+        return (int) Math.floor(player.posY);
+    }
 
     /**
      * Draw a textured rectangle at the specified position
-     *
-     * @param par1 xpos
-     * @param par2 ypos
-     * @param par3 u
-     * @param par4 v
-     * @param par5 width
-     * @param par6 height
+     * 
+     * @param par1
+     *            xpos
+     * @param par2
+     *            ypos
+     * @param par3
+     *            u
+     * @param par4
+     *            v
+     * @param par5
+     *            width
+     * @param par6
+     *            height
      */
-	protected static void drawTexturedModalRect(int par1, int par2, int par3, int par4, int par5, int par6)
+    protected static void drawTexturedModalRect(int par1, int par2, int par3, int par4, int par5, int par6)
     {
         final float var7 = 0.00390625F;
         final float var8 = 0.00390625F;
@@ -52,9 +57,11 @@ public class GCCoreOverlay
 
     /**
      * Downloads image and binds it
-     *
-     * @param par1Str texture to download and bind
-     * @param par2Str if fails, use this one
+     * 
+     * @param par1Str
+     *            texture to download and bind
+     * @param par2Str
+     *            if fails, use this one
      */
     protected static boolean loadDownloadableImageTexture(String par1Str, String par2Str)
     {
@@ -74,12 +81,17 @@ public class GCCoreOverlay
 
     /**
      * Draws a rectangle with middle at point specified
-     *
-     * @param var1 x
-     * @param var3 y
-     * @param var5 depth
-     * @param var7 width
-     * @param var9 height
+     * 
+     * @param var1
+     *            x
+     * @param var3
+     *            y
+     * @param var5
+     *            depth
+     * @param var7
+     *            width
+     * @param var9
+     *            height
      */
     protected static void drawCenteringRectangle(double var1, double var3, double var5, double var7, double var9)
     {

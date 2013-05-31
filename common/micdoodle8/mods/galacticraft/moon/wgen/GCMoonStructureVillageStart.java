@@ -3,16 +3,12 @@ package micdoodle8.mods.galacticraft.moon.wgen;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
-
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.StructureStart;
 
 class GCMoonStructureVillageStart extends StructureStart
 {
-    /** well ... thats what it does */
-    private boolean hasMoreThanTwoComponents = false;
-
     public GCMoonStructureVillageStart(World par1World, Random par2Random, int par3, int par4, int par5)
     {
         final ArrayList var6 = GCMoonStructureVillagePieces.getStructureVillageWeightedPieceList(par2Random, par5);
@@ -30,13 +26,13 @@ class GCMoonStructureVillageStart extends StructureStart
             if (var8.isEmpty())
             {
                 var10 = par2Random.nextInt(var9.size());
-                var11 = (StructureComponent)var9.remove(var10);
+                var11 = (StructureComponent) var9.remove(var10);
                 var11.buildComponent(var7, this.components, par2Random);
             }
             else
             {
                 var10 = par2Random.nextInt(var8.size());
-                var11 = (StructureComponent)var8.remove(var10);
+                var11 = (StructureComponent) var8.remove(var10);
                 var11.buildComponent(var7, this.components, par2Random);
             }
         }
@@ -47,22 +43,21 @@ class GCMoonStructureVillageStart extends StructureStart
 
         while (var13.hasNext())
         {
-            final StructureComponent var12 = (StructureComponent)var13.next();
+            final StructureComponent var12 = (StructureComponent) var13.next();
 
             if (!(var12 instanceof GCMoonComponentVillageRoadPiece))
             {
                 ++var10;
             }
         }
-
-        this.hasMoreThanTwoComponents = var10 > 2;
     }
 
     /**
-     * currently only defined for Villages, returns true if Village has more than 2 non-road components
+     * currently only defined for Villages, returns true if Village has more
+     * than 2 non-road components
      */
     @Override
-	public boolean isSizeableStructure()
+    public boolean isSizeableStructure()
     {
         return true;
     }
