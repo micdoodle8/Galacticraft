@@ -158,7 +158,7 @@ public class GalacticraftCore
     public static final String ITEM_TEXTURE_FILE = GalacticraftCore.FILE_PATH + GalacticraftCore.CLIENT_PATH + "items/core.png";
     public static final String CONFIG_FILE = "Galacticraft/core.conf";
     private static final String[] LANGUAGES_SUPPORTED = new String[]
-    { "en_US", "es_ES", "zh_CN", "fr_CA", "fr_FR", "nl_NL", "pl_PL", "de_DE", "cz_CZE" };
+    { "cz_CZE", "de_DE", "en_GB", "en_US", "es_ES", "fr_CA", "fr_FR", "nl_NL", "pl_PL", "ru_RU", "zh_CN" };
 
     public static double toBuildcraftEnergyScalar = 0.04D;
     public static double fromBuildcraftEnergyScalar = 25.0D;
