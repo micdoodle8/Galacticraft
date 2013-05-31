@@ -1,4 +1,4 @@
-package micdoodle8.mods.galacticraft.core;
+package micdoodle8.mods.galacticraft.core.util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
