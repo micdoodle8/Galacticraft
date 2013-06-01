@@ -57,6 +57,7 @@ public class GCCoreConfigManager
     public static int idBlockOxygenDetector;
 
     // ITEMS
+    public static int idItemKnowledgeBook;
     public static int idItemLightOxygenTank;
     public static int idItemMedOxygenTank;
     public static int idItemHeavyOxygenTank;
@@ -127,6 +128,7 @@ public class GCCoreConfigManager
     public static int idGuiFuelLoader;
     public static int idGuiAddSchematic;
     public static int idGuiAirSealer;
+    public static int idGuiKnowledgeBook;
 
     // ACHIEVEMENTS
     public static int idAchievBase;
@@ -175,6 +177,7 @@ public class GCCoreConfigManager
     public static boolean disableLander;
     public static Property forceLoadGC;
     public static Property loadBC;
+    public static boolean enableKnowledgeBook;
 
     private void setDefaultValues()
     {
@@ -213,6 +216,7 @@ public class GCCoreConfigManager
             GCCoreConfigManager.idBlockSpaceStationBase = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockSpaceStationBase", 3380, "Even though this will be generated, it can use block IDs greater than 256").getInt(3380);
             GCCoreConfigManager.idBlockTreasureChest = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockTieredTreasureChest", 3381, "Even though this will be generated, it can use block IDs greater than 256").getInt(3381);
 
+            GCCoreConfigManager.idItemKnowledgeBook = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemKnowledgeBook", 9854).getInt(9854);
             GCCoreConfigManager.idItemSpaceship = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemSpaceship", 9855).getInt(9855);
             GCCoreConfigManager.idItemLightOxygenTank = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemLightOxygenTank", 9856).getInt(9856);
             GCCoreConfigManager.idItemMedOxygenTank = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemMedOxygenTank", 9857).getInt(9857);
@@ -271,6 +275,7 @@ public class GCCoreConfigManager
             GCCoreConfigManager.idGuiFuelLoader = GCCoreConfigManager.configuration.get("GUI", "idGuiFuelLoader", 137).getInt(137);
             GCCoreConfigManager.idGuiAddSchematic = GCCoreConfigManager.configuration.get("GUI", "idGuiAddSchematic", 138).getInt(138);
             GCCoreConfigManager.idGuiAirSealer = GCCoreConfigManager.configuration.get("GUI", "idGuiAirSealer", 139).getInt(139);
+            GCCoreConfigManager.idGuiKnowledgeBook = GCCoreConfigManager.configuration.get("GUI", "idGuiKnowledgeBook", 140).getInt(140);
 
             GCCoreConfigManager.idSchematicRocketT1 = GCCoreConfigManager.configuration.get("Schematic", "idSchematicRocketT1", 0).getInt(0);
             GCCoreConfigManager.idSchematicMoonBuggy = GCCoreConfigManager.configuration.get("Schematic", "idSchematicMoonBuggy", 1).getInt(1);
@@ -317,6 +322,7 @@ public class GCCoreConfigManager
             GCCoreConfigManager.disableLander = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Lander", false, "Set to true if you do not want to use the new Moon Lander feature, and land on the moon with a parachute instead.").getBoolean(false);
             GCCoreConfigManager.forceLoadGC = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Force Load", false, "Bypass mod requirements and load anyway (not recommended).");
             GCCoreConfigManager.loadBC = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Load Basic Components", false, "Set to true to load the required Basic Components items from Galacticraft.");
+            GCCoreConfigManager.enableKnowledgeBook = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Enable Knowledge Book", true, "Set to false if you do not wish to have the book of knowledge item").getBoolean(true);
         }
         catch (final Exception e)
         {

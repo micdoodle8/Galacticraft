@@ -26,6 +26,7 @@ import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiAirDistributor;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiAirSealer;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiFuelLoader;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiGalaxyMap;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiKnowledgeBook;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiRefinery;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiRocketRefill;
 import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelSpaceship;
@@ -690,6 +691,10 @@ public class ClientProxyCore extends CommonProxyCore
             {
                 return null;
             }
+        }
+        else if (ID == GCCoreConfigManager.idGuiKnowledgeBook)
+        {
+            return new GCCoreGuiKnowledgeBook();
         }
         else
         {

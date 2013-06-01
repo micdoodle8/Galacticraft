@@ -54,6 +54,7 @@ public class GCCoreItems
     public static Item fuel;
     public static Item key;
     public static Item buggyMaterial;
+    public static Item knowledgeBook;
 
     public static EnumArmorMaterial SENSORGLASSES = EnumHelper.addArmorMaterial("SENSORGLASSES", 200, new int[]
     { 0, 0, 0, 0 }, 0);
@@ -101,6 +102,7 @@ public class GCCoreItems
         GCCoreItems.fuel = new GCCoreItemFuel(GCCoreConfigManager.idItemFuel).setUnlocalizedName("fuel");
         GCCoreItems.key = new GCCoreItemKey(GCCoreConfigManager.idItemKey).setUnlocalizedName("key");
         GCCoreItems.buggyMaterial = new GCCoreItemBuggyMaterial(GCCoreConfigManager.idItemBuggyMaterial).setUnlocalizedName("buggymat");
+        GCCoreItems.knowledgeBook = new GCCoreItemKnowledgeBook(GCCoreConfigManager.idItemKnowledgeBook).setUnlocalizedName("knowledgeBook");
 
         GalacticraftCore.hiddenItems.add(GCCoreItems.gravityBow.itemID);
     }
