@@ -24,7 +24,7 @@ public class GCCoreTileEntityLandingPad extends TileEntityMulti implements IMult
 
     public GCCoreTileEntityLandingPad()
     {
-        super(GalacticraftCore.CHANNEL);
+        super(GalacticraftCore.CHANNELENTITIES);
     }
 
     @Override

@@ -24,7 +24,7 @@ public class GCCoreTileEntityBuggyFueler extends TileEntityMulti implements IMul
 
     public GCCoreTileEntityBuggyFueler()
     {
-        super(GalacticraftCore.CHANNEL);
+        super(GalacticraftCore.CHANNELENTITIES);
     }
 
     @Override

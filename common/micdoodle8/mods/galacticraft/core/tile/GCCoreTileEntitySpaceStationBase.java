@@ -15,7 +15,7 @@ public class GCCoreTileEntitySpaceStationBase extends TileEntityMulti implements
 
     public GCCoreTileEntitySpaceStationBase()
     {
-        super(GalacticraftCore.CHANNEL);
+        super(GalacticraftCore.CHANNELENTITIES);
     }
 
     @Override

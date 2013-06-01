@@ -17,7 +17,7 @@ public class GCCoreTileEntityAdvancedCraftingTable extends TileEntityMulti imple
 
     public GCCoreTileEntityAdvancedCraftingTable()
     {
-        super(GalacticraftCore.CHANNEL);
+        super(GalacticraftCore.CHANNELENTITIES);
     }
 
     @Override
