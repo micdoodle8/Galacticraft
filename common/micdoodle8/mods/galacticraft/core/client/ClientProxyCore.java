@@ -447,51 +447,6 @@ public class ClientProxyCore extends CommonProxyCore
         }
     }
 
-    // @Override
-    // public void addStat(EntityPlayer player, StatBase stat, int i)
-    // {
-    // if (stat != null)
-    // {
-    // if (stat instanceof AdvancedAchievement)
-    // {
-    // final AdvancedAchievement achiev = (AdvancedAchievement) stat;
-    //
-    // int amountOfCompletedAchievements = 0;
-    //
-    // if (achiev.parentAchievements != null)
-    // {
-    // for (int j = 0; i < achiev.parentAchievements.length; j++)
-    // {
-    // if
-    // (FMLClientHandler.instance().getClient().statFileWriter.hasAchievementUnlocked(achiev.parentAchievements[j]))
-    // {
-    // amountOfCompletedAchievements++;
-    // }
-    // }
-    //
-    // if (amountOfCompletedAchievements >= achiev.parentAchievements.length)
-    // {
-    // if
-    // (!FMLClientHandler.instance().getClient().statFileWriter.hasAchievementUnlocked(achiev))
-    // {
-    // FMLClientHandler.instance().getClient().guiAchievement.queueTakenAchievement(achiev);
-    // }
-    // }
-    // }
-    // else
-    // {
-    // player.addStat(stat, i);
-    // }
-    //
-    // FMLClientHandler.instance().getClient().statFileWriter.readStat(stat, i);
-    // }
-    // else
-    // {
-    // player.addStat(stat, i);
-    // }
-    // }
-    // }
-
     public static boolean handleWaterMovement(EntityPlayer player)
     {
         return player.worldObj.isMaterialInBB(player.boundingBox.expand(-0.10000000149011612D, -0.4000000059604645D, -0.10000000149011612D), Material.water);

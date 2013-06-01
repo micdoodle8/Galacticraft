@@ -31,13 +31,13 @@ public class GCCoreGuiInventory extends GuiInventory
     {
         super.initGui();
         this.rotation = 0;
+        this.buttonList.add(new GuiButton(0, (this.width - this.xSize) / 2 + 36, (this.height - this.ySize) / 2 + 71, 7, 7, ""));
+        this.buttonList.add(new GuiButton(1, (this.width - this.xSize) / 2 + 60, (this.height - this.ySize) / 2 + 71, 7, 7, ""));
     }
 
     @Override
     protected void actionPerformed(GuiButton par1GuiButton)
     {
-        super.actionPerformed(par1GuiButton);
-
         switch (par1GuiButton.id)
         {
         case 0:
