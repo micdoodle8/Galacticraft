@@ -217,8 +217,7 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
     @Override
     public int[] getAccessibleSlotsFromSide(int side)
     {
-        return new int[]
-        { 0 };
+        return new int[] { 0 };
     }
 
     @Override

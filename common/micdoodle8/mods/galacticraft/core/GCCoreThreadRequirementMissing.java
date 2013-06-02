@@ -31,8 +31,7 @@ public class GCCoreThreadRequirementMissing extends Thread
             ep.setEditable(false);
             ep.setOpaque(false);
 
-            final JOptionPane pane = new JOptionPane(ep, JOptionPane.ERROR_MESSAGE, JOptionPane.YES_NO_OPTION, null, new Object[]
-            { "Ignore", "Load Basic Components", "Exit", "Do not show again" }, null);
+            final JOptionPane pane = new JOptionPane(ep, JOptionPane.ERROR_MESSAGE, JOptionPane.YES_NO_OPTION, null, new Object[] { "Ignore", "Load Basic Components", "Exit", "Do not show again" }, null);
             final JDialog dialog = pane.createDialog(null, "Missing Dependancy");
             dialog.setVisible(true);
             final Object selectedValue = pane.getValue();

@@ -49,24 +49,21 @@ public class GCCorePacketHandlerServer implements IPacketHandler
 
         if (packetType == 0)
         {
-            final Class[] decodeAs =
-            { String.class };
+            final Class[] decodeAs = { String.class };
             PacketUtil.readPacketData(data, decodeAs);
 
             player.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiTankRefill, player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ);
         }
         else if (packetType == 1)
         {
-            final Class[] decodeAs =
-            { String.class };
+            final Class[] decodeAs = { String.class };
             PacketUtil.readPacketData(data, decodeAs);
 
             player.playerNetServerHandler.sendPacketToPlayer(new Packet9Respawn(player.dimension, (byte) player.worldObj.difficultySetting, player.worldObj.getWorldInfo().getTerrainType(), player.worldObj.getHeight(), player.theItemInWorldManager.getGameType()));
         }
         else if (packetType == 2)
         {
-            final Class[] decodeAs =
-            { String.class };
+            final Class[] decodeAs = { String.class };
             final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
 
             if (playerBase != null)
@@ -92,8 +89,7 @@ public class GCCorePacketHandlerServer implements IPacketHandler
                     }
 
                     playerBase.teleportCooldown = 300;
-                    final Object[] toSend =
-                    { player.username };
+                    final Object[] toSend = { player.username };
                     player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 12, toSend));
                 }
                 catch (final Exception e)
@@ -141,8 +137,7 @@ public class GCCorePacketHandlerServer implements IPacketHandler
         }
         else if (packetType == 4)
         {
-            final Class[] decodeAs =
-            { Integer.class };
+            final Class[] decodeAs = { Integer.class };
             final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
 
             if (player != null)
@@ -157,16 +152,14 @@ public class GCCorePacketHandlerServer implements IPacketHandler
         }
         else if (packetType == 6)
         {
-            final Class[] decodeAs =
-            { Integer.class };
+            final Class[] decodeAs = { Integer.class };
             PacketUtil.readPacketData(data, decodeAs);
 
             player.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiSpaceshipInventory, player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ);
         }
         else if (packetType == 7)
         {
-            final Class[] decodeAs =
-            { Float.class };
+            final Class[] decodeAs = { Float.class };
             final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
 
             if (player.ridingEntity instanceof EntitySpaceshipBase)
@@ -181,8 +174,7 @@ public class GCCorePacketHandlerServer implements IPacketHandler
         }
         else if (packetType == 8)
         {
-            final Class[] decodeAs =
-            { Float.class };
+            final Class[] decodeAs = { Float.class };
             final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
 
             if (player.ridingEntity instanceof EntitySpaceshipBase)
@@ -214,8 +206,7 @@ public class GCCorePacketHandlerServer implements IPacketHandler
         // }
         else if (packetType == 10)
         {
-            final Class[] decodeAs =
-            { Integer.class };
+            final Class[] decodeAs = { Integer.class };
             final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
 
             for (final Object object : player.worldObj.loadedEntityList)
@@ -233,8 +224,7 @@ public class GCCorePacketHandlerServer implements IPacketHandler
         }
         else if (packetType == 11)
         {
-            final Class[] decodeAs =
-            { Integer.class, Integer.class, Integer.class };
+            final Class[] decodeAs = { Integer.class, Integer.class, Integer.class };
             final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
 
             player.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiRefinery, player.worldObj, (Integer) packetReadout[0], (Integer) packetReadout[1], (Integer) packetReadout[2]);
@@ -243,8 +233,7 @@ public class GCCorePacketHandlerServer implements IPacketHandler
         {
             try
             {
-                new GCCorePacketControllableEntity().handlePacket(data, new Object[]
-                { player }, Side.SERVER);
+                new GCCorePacketControllableEntity().handlePacket(data, new Object[] { player }, Side.SERVER);
             }
             catch (final Exception e)
             {
@@ -258,8 +247,7 @@ public class GCCorePacketHandlerServer implements IPacketHandler
         {
             try
             {
-                new GCCorePacketEntityUpdate().handlePacket(data, new Object[]
-                { player }, Side.SERVER);
+                new GCCorePacketEntityUpdate().handlePacket(data, new Object[] { player }, Side.SERVER);
             }
             catch (final Exception e)
             {
@@ -268,8 +256,7 @@ public class GCCorePacketHandlerServer implements IPacketHandler
         }
         else if (packetType == 15)
         {
-            final Class[] decodeAs =
-            { Integer.class };
+            final Class[] decodeAs = { Integer.class };
             final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
 
             if (playerBase.spaceStationDimensionID == -1 || playerBase.spaceStationDimensionID == 0)
@@ -330,8 +317,7 @@ public class GCCorePacketHandlerServer implements IPacketHandler
                         schematicContainer.craftMatrix.setInventorySlotContents(0, stack);
                         schematicContainer.craftMatrix.onInventoryChanged();
 
-                        player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 20, new Object[]
-                        { page.getPageID() }));
+                        player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 20, new Object[] { page.getPageID() }));
                     }
                 }
             }
@@ -362,8 +348,7 @@ public class GCCorePacketHandlerServer implements IPacketHandler
         // }
         else if (packetType == 17)
         {
-            final Class[] decodeAs =
-            { Integer.class, Integer.class, Integer.class };
+            final Class[] decodeAs = { Integer.class, Integer.class, Integer.class };
             final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
 
             final TileEntity tileAt = player.worldObj.getBlockTileEntity((Integer) packetReadout[0], (Integer) packetReadout[1], (Integer) packetReadout[2]);
@@ -377,8 +362,7 @@ public class GCCorePacketHandlerServer implements IPacketHandler
         }
         else if (packetType == 18)
         {
-            final Class[] decodeAs =
-            { Integer.class };
+            final Class[] decodeAs = { Integer.class };
             final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
 
             if (playerBase.chatCooldown == 0)
@@ -389,8 +373,7 @@ public class GCCorePacketHandlerServer implements IPacketHandler
         }
         else if (packetType == 19)
         {
-            final Class[] decodeAs =
-            { String.class, Integer.class };
+            final Class[] decodeAs = { String.class, Integer.class };
             final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
 
             final GCCoreSpaceStationData ssdata = GCCoreSpaceStationData.getStationData(playerBase.worldObj, (Integer) packetReadout[1], playerBase);

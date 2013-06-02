@@ -57,8 +57,7 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 
     private final GCMapGenDungeon dungeonGenerator = new GCMapGenDungeon();
 
-    private BiomeGenBase[] biomesForGeneration =
-    { GCMoonBiomeGenBase.moonFlat };
+    private BiomeGenBase[] biomesForGeneration = { GCMoonBiomeGenBase.moonFlat };
 
     private final GCCoreMapGenBaseMeta caveGenerator = new GCMoonGenCaves();
 

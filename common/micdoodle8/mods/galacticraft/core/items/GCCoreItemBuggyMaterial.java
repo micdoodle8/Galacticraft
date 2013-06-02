@@ -14,8 +14,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreItemBuggyMaterial extends Item
 {
-    public static final String[] names =
-    { "wheel", // 0
+    public static final String[] names = { "wheel", // 0
     "seat", // 1
     "storage" }; // 2
 

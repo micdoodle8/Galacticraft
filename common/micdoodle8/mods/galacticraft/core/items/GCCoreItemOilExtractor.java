@@ -24,8 +24,7 @@ public class GCCoreItemOilExtractor extends Item
 {
     protected Icon[] icons = new Icon[5];
 
-    public static final String[] names =
-    { "extactor_1", // 0
+    public static final String[] names = { "extactor_1", // 0
     "extactor_2", // 1
     "extactor_3", // 2
     "extactor_4", // 3

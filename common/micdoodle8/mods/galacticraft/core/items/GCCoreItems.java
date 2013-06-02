@@ -56,10 +56,8 @@ public class GCCoreItems
     public static Item buggyMaterial;
     public static Item knowledgeBook;
 
-    public static EnumArmorMaterial SENSORGLASSES = EnumHelper.addArmorMaterial("SENSORGLASSES", 200, new int[]
-    { 0, 0, 0, 0 }, 0);
-    public static EnumArmorMaterial steelARMOR = EnumHelper.addArmorMaterial("steel", 30, new int[]
-    { 3, 8, 6, 3 }, 12);
+    public static EnumArmorMaterial SENSORGLASSES = EnumHelper.addArmorMaterial("SENSORGLASSES", 200, new int[] { 0, 0, 0, 0 }, 0);
+    public static EnumArmorMaterial steelARMOR = EnumHelper.addArmorMaterial("steel", 30, new int[] { 3, 8, 6, 3 }, 12);
     public static EnumToolMaterial TOOLsteel = EnumHelper.addToolMaterial("steel", 3, 768, 5.0F, 2, 8);
 
     public static void initItems()

@@ -20,8 +20,7 @@ public class GCCoreItemSchematic extends Item implements ISchematicItem
 {
     protected Icon[] icons = new Icon[1];
 
-    public static final String[] names =
-    { "schematic_buggy", "schematic_rocketT2" }; // 15
+    public static final String[] names = { "schematic_buggy", "schematic_rocketT2" }; // 15
 
     public GCCoreItemSchematic(int itemID)
     {

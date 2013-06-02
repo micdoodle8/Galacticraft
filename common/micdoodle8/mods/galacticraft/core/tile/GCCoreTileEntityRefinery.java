@@ -25,7 +25,6 @@ import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.PacketManager;
 import buildcraft.api.power.PowerFramework;
 import com.google.common.io.ByteArrayDataInput;
-import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implements IInventory, ISidedInventory, ITankContainer
 {
@@ -104,7 +103,7 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
                         if (isCanister)
                         {
                             float f = Float.valueOf(LiquidContainerRegistry.BUCKET_VOLUME * 2.0F) / Float.valueOf(GCCoreItems.fuelCanister.getMaxDamage());
-                            int dam = GCCoreItems.fuelCanister.getMaxDamage() - Math.min(Math.max((int)Math.floor(liquid.amount / f), 1), 60);
+                            int dam = GCCoreItems.fuelCanister.getMaxDamage() - Math.min(Math.max((int) Math.floor(liquid.amount / f), 1), 60);
                             this.containingItems[2] = new ItemStack(GCCoreItems.fuelCanister, 1, dam);
                         }
                         else
@@ -381,10 +380,7 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
     @Override
     public int[] getAccessibleSlotsFromSide(int side)
     {
-        return side == 1 ? new int[]
-        { 1 } : side == 0 ? new int[]
-        { 0 } : new int[]
-        { 2 };
+        return side == 1 ? new int[] { 1 } : side == 0 ? new int[] { 0 } : new int[] { 2 };
     }
 
     @Override
@@ -445,8 +441,7 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
     @Override
     public ILiquidTank[] getTanks(ForgeDirection direction)
     {
-        return new ILiquidTank[]
-        { this.oilTank, this.fuelTank };
+        return new ILiquidTank[] { this.oilTank, this.fuelTank };
     }
 
     @Override

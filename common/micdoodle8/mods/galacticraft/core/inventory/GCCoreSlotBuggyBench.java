@@ -30,8 +30,7 @@ public class GCCoreSlotBuggyBench extends Slot
     {
         if (this.player instanceof EntityPlayerMP)
         {
-            final Object[] toSend =
-            { this.x, this.y, this.z };
+            final Object[] toSend = { this.x, this.y, this.z };
 
             for (int var12 = 0; var12 < this.player.worldObj.playerEntities.size(); ++var12)
             {

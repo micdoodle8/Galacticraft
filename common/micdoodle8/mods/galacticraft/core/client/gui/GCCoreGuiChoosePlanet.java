@@ -68,8 +68,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     public int backspacePressed;
     public boolean isTextFocused = false;
 
-    private static final String[] titlePanoramaPaths = new String[]
-    { "/micdoodle8/mods/galacticraft/core/client/backgrounds/bg3.png" };
+    private static final String[] titlePanoramaPaths = new String[] { "/micdoodle8/mods/galacticraft/core/client/backgrounds/bg3.png" };
 
     public GCCoreGuiChoosePlanet(EntityPlayer player, String[] listOfDestinations)
     {
@@ -740,8 +739,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
             if (par1GuiButton.enabled)
             {
                 final String dimension = this.destinations[this.selectedSlot];
-                final Object[] toSend =
-                { dimension };
+                final Object[] toSend = { dimension };
                 if (dimension.contains("$"))
                 {
                     this.mc.gameSettings.thirdPersonView = 0;
@@ -775,8 +773,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
                                                                                                                              * )
                                                                                                                              */)
             {
-                final Object[] toSend =
-                { this.getDimensionIdFromSlot() };
+                final Object[] toSend = { this.getDimensionIdFromSlot() };
                 PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 15, toSend));
                 par1GuiButton.enabled = false;
                 return;
@@ -785,8 +782,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
         case 3:
             if (par1GuiButton != null && par1GuiButton.equals(this.renameSpaceStationButton))
             {
-                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 19, new Object[]
-                { this.renameText, this.getDimensionIdFromSlot() }));
+                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 19, new Object[] { this.renameText, this.getDimensionIdFromSlot() }));
                 this.renameText = "";
             }
             break;

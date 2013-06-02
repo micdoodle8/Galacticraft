@@ -108,8 +108,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
     {
         if (this.riddenByEntity != null && this.riddenByEntity instanceof GCCorePlayerMP)
         {
-            final Object[] toSend2 =
-            { 0 };
+            final Object[] toSend2 = { 0 };
             ((EntityPlayerMP) this.riddenByEntity).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, toSend2));
         }
 
@@ -141,8 +140,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
                 {
                     if (this.riddenByEntity != null)
                     {
-                        final Object[] toSend2 =
-                        { 0 };
+                        final Object[] toSend2 = { 0 };
                         ((EntityPlayerMP) this.riddenByEntity).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, toSend2));
 
                         this.riddenByEntity.mountEntity(this);
@@ -476,21 +474,17 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
 
             if (this.riddenByEntity != null && this.riddenByEntity instanceof GCCorePlayerMP)
             {
-                final Object[] toSend =
-                { ((EntityPlayerMP) this.riddenByEntity).username };
+                final Object[] toSend = { ((EntityPlayerMP) this.riddenByEntity).username };
                 ((EntityPlayerMP) this.riddenByEntity).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 8, toSend));
-                final Object[] toSend2 =
-                { 1 };
+                final Object[] toSend2 = { 1 };
                 ((EntityPlayerMP) par1EntityPlayer).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, toSend2));
                 ((GCCorePlayerMP) par1EntityPlayer).chatCooldown = 0;
             }
             else if (par1EntityPlayer instanceof GCCorePlayerMP)
             {
-                final Object[] toSend =
-                { par1EntityPlayer.username };
+                final Object[] toSend = { par1EntityPlayer.username };
                 ((EntityPlayerMP) par1EntityPlayer).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 13, toSend));
-                final Object[] toSend2 =
-                { 0 };
+                final Object[] toSend2 = { 0 };
                 ((EntityPlayerMP) par1EntityPlayer).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, toSend2));
                 ((GCCorePlayerMP) par1EntityPlayer).chatCooldown = 0;
             }
@@ -618,8 +612,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
                     temp = k == 0 ? temp.concat(String.valueOf(entry.getKey())) : temp.concat("." + String.valueOf(entry.getKey()));
                 }
 
-                final Object[] toSend =
-                { entityplayermp.username, temp };
+                final Object[] toSend = { entityplayermp.username, temp };
                 FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(entityplayermp.username).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 2, toSend));
 
                 if (playerBase != null)

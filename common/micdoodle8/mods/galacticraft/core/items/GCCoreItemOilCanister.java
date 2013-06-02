@@ -18,8 +18,7 @@ public class GCCoreItemOilCanister extends Item implements IRefinableItem
 {
     protected Icon[] icons = new Icon[256];
 
-    public static final String[] names =
-    { "liquidcan_oil_6", // 0
+    public static final String[] names = { "liquidcan_oil_6", // 0
     "liquidcan_oil_5", // 0
     "liquidcan_oil_4", // 1
     "liquidcan_oil_3", // 2

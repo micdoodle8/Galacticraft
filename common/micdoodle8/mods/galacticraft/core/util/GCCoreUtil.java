@@ -28,8 +28,7 @@ public class GCCoreUtil
         player.incrementWindowID();
         player.closeInventory();
         int id = player.currentWindowId;
-        player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 28, new Object[]
-        { id }));
+        player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 28, new Object[] { id }));
         player.openContainer = new GCCoreContainerBuggy(player.inventory, buggyInv, type);
         player.openContainer.windowId = id;
         player.openContainer.addCraftingToCrafters(player);

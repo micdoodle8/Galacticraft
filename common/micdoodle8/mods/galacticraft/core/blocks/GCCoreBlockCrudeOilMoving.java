@@ -40,8 +40,7 @@ public class GCCoreBlockCrudeOilMoving extends BlockFluid implements ILiquid
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister par1IconRegister)
     {
-        this.fluidIcons = new Icon[]
-        { par1IconRegister.registerIcon("galacticraftcore:oil"), par1IconRegister.registerIcon("galacticraftcore:oil_flow") };
+        this.fluidIcons = new Icon[] { par1IconRegister.registerIcon("galacticraftcore:oil"), par1IconRegister.registerIcon("galacticraftcore:oil_flow") };
     }
 
     @SideOnly(Side.CLIENT)

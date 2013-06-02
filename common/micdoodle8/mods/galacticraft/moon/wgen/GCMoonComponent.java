@@ -62,12 +62,7 @@ public abstract class GCMoonComponent extends StructureComponent
         final int var6 = this.getXWithOffset(var1, var3);
         final int var7 = this.getYWithOffset(var2);
         final int var8 = this.getZWithOffset(var1, var3);
-        return var5 == 0 ? new int[]
-        { var6 + 1, var7 - 1, var8 - var4 / 2 } : var5 == 1 ? new int[]
-        { var6 + var4 / 2, var7 - 1, var8 + 1 } : var5 == 2 ? new int[]
-        { var6 - 1, var7 - 1, var8 + var4 / 2 } : var5 == 3 ? new int[]
-        { var6 - var4 / 2, var7 - 1, var8 - 1 } : new int[]
-        { var1, var2, var3 };
+        return var5 == 0 ? new int[] { var6 + 1, var7 - 1, var8 - var4 / 2 } : var5 == 1 ? new int[] { var6 + var4 / 2, var7 - 1, var8 + 1 } : var5 == 2 ? new int[] { var6 - 1, var7 - 1, var8 + var4 / 2 } : var5 == 3 ? new int[] { var6 - var4 / 2, var7 - 1, var8 - 1 } : new int[] { var1, var2, var3 };
     }
 
     public int[] getOffsetAsIfRotated(int[] var1, int var2)

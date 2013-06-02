@@ -29,8 +29,7 @@ public class GCCoreEntityWorm extends EntityMob implements IEntityMultiPart
     public GCCoreEntityWorm(World par1World)
     {
         super(par1World);
-        this.wormPartArray = new GCCoreEntityWormPart[]
-        { this.wormPartHead = new GCCoreEntityWormPart(this, "head", 2.0F, 2.0F), this.wormPartBody1 = new GCCoreEntityWormPart(this, "body", 8.0F, 8.0F), this.wormPartBody2 = new GCCoreEntityWormPart(this, "body", 4.0F, 4.0F), this.wormPartBody3 = new GCCoreEntityWormPart(this, "body", 4.0F, 4.0F), this.wormPartBody4 = new GCCoreEntityWormPart(this, "body", 4.0F, 4.0F), this.wormPartBody5 = new GCCoreEntityWormPart(this, "body", 4.0F, 4.0F), this.wormPartBody6 = new GCCoreEntityWormPart(this, "body", 4.0F, 4.0F), this.wormPartBody7 = new GCCoreEntityWormPart(this, "body", 4.0F, 4.0F), this.wormPartBody8 = new GCCoreEntityWormPart(this, "body", 4.0F, 4.0F), this.wormPartBody9 = new GCCoreEntityWormPart(this, "body", 4.0F, 4.0F) };
+        this.wormPartArray = new GCCoreEntityWormPart[] { this.wormPartHead = new GCCoreEntityWormPart(this, "head", 2.0F, 2.0F), this.wormPartBody1 = new GCCoreEntityWormPart(this, "body", 8.0F, 8.0F), this.wormPartBody2 = new GCCoreEntityWormPart(this, "body", 4.0F, 4.0F), this.wormPartBody3 = new GCCoreEntityWormPart(this, "body", 4.0F, 4.0F), this.wormPartBody4 = new GCCoreEntityWormPart(this, "body", 4.0F, 4.0F), this.wormPartBody5 = new GCCoreEntityWormPart(this, "body", 4.0F, 4.0F), this.wormPartBody6 = new GCCoreEntityWormPart(this, "body", 4.0F, 4.0F), this.wormPartBody7 = new GCCoreEntityWormPart(this, "body", 4.0F, 4.0F), this.wormPartBody8 = new GCCoreEntityWormPart(this, "body", 4.0F, 4.0F), this.wormPartBody9 = new GCCoreEntityWormPart(this, "body", 4.0F, 4.0F) };
         this.texture = "/micdoodle8/mods/galacticraft/core/client/entities/worm.png";
         this.setSize(2F, 2F);
         this.moveSpeed = 1F / 15F;

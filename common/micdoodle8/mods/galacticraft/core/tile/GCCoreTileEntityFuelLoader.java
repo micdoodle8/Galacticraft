@@ -291,9 +291,7 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric impleme
     @Override
     public int[] getAccessibleSlotsFromSide(int side)
     {
-        return side == 1 || side == 0 ? new int[]
-        { 0 } : new int[]
-        { 1 };
+        return side == 1 || side == 0 ? new int[] { 0 } : new int[] { 1 };
     }
 
     @Override
@@ -355,8 +353,7 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric impleme
     @Override
     public ILiquidTank[] getTanks(ForgeDirection direction)
     {
-        return new ILiquidTank[]
-        { this.fuelTank };
+        return new ILiquidTank[] { this.fuelTank };
     }
 
     @Override

@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.mars.wgen;
 
-
 /**
  * Copyright 2012-2013, micdoodle8
  * 

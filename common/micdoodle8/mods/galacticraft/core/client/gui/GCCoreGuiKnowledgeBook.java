@@ -16,7 +16,7 @@ public class GCCoreGuiKnowledgeBook extends GuiScreen
     public final int lastPage = 2;
     GCCoreGuiNextPage nextButton;
     GCCoreGuiNextPage previousButton;
-    
+
     @Override
     public void initGui()
     {
@@ -24,13 +24,13 @@ public class GCCoreGuiKnowledgeBook extends GuiScreen
         this.buttonList.clear();
         this.guiLeft = (this.width - this.xSize) / 2;
         this.guiTop = (this.height - this.ySize) / 2;
-        
+
         if (this.currentPage != this.firstPage)
         {
             this.previousButton = new GCCoreGuiNextPage(1, this.guiLeft + 2, this.guiTop + this.ySize - 23, 1);
             this.buttonList.add(this.previousButton);
         }
-        
+
         if (this.currentPage != this.lastPage)
         {
             this.nextButton = new GCCoreGuiNextPage(2, this.guiLeft + this.xSize - 17, this.guiTop + this.ySize - 23, 0);
@@ -39,7 +39,7 @@ public class GCCoreGuiKnowledgeBook extends GuiScreen
     }
 
     @Override
-    protected void actionPerformed(GuiButton buttonClicked) 
+    protected void actionPerformed(GuiButton buttonClicked)
     {
         if (buttonClicked.equals(this.previousButton))
         {
@@ -62,23 +62,24 @@ public class GCCoreGuiKnowledgeBook extends GuiScreen
         this.mc.renderEngine.bindTexture("/mods/galacticraftcore/textures/gui/knowledge.png");
         this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
         GL11.glPopMatrix();
-        
+
         this.fontRenderer.drawString("Page " + (this.currentPage + 1), this.guiLeft + 30, this.guiTop + this.ySize - 18, 10526880);
         this.fontRenderer.drawString("Page " + (this.currentPage + 2), this.guiLeft + this.xSize - 65, this.guiTop + this.ySize - 18, 10526880);
-        
+
         super.drawScreen(par1, par2, par3);
     }
-    
+
     class GCCoreGuiNextPage extends GuiButton
     {
         private final int side;
-        
+
         public GCCoreGuiNextPage(int par1, int par2, int par3, int side)
         {
             super(par1, par2, par3, 15, 15, "");
             this.side = side;
         }
 
+        @Override
         public void drawButton(Minecraft par1Minecraft, int par2, int par3)
         {
             if (this.drawButton)
@@ -86,7 +87,7 @@ public class GCCoreGuiKnowledgeBook extends GuiScreen
                 par1Minecraft.renderEngine.bindTexture("/mods/galacticraftcore/textures/gui/knowledge.png");
                 GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
                 this.field_82253_i = par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + this.width && par3 < this.yPosition + this.height;
-                this.drawTexturedModalRect(this.xPosition, this.yPosition, 176 + (side * this.width), 0, this.width, this.height);
+                this.drawTexturedModalRect(this.xPosition, this.yPosition, 176 + this.side * this.width, 0, this.width, this.height);
                 this.mouseDragged(par1Minecraft, par2, par3);
             }
         }

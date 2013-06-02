@@ -18,8 +18,7 @@ import cpw.mods.fml.relauncher.IFMLCallHook;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.TransformerExclusions;
 
-@TransformerExclusions(value =
-{ "micdoodle8.mods.galacticraft.asm" })
+@TransformerExclusions(value = { "micdoodle8.mods.galacticraft.asm" })
 public class GalacticraftPlugin implements IFMLLoadingPlugin, IFMLCallHook
 {
     private static String transformerDir = "micdoodle8.mods.galacticraft.asm.";
@@ -76,8 +75,7 @@ public class GalacticraftPlugin implements IFMLLoadingPlugin, IFMLCallHook
     public String[] getASMTransformerClass()
     {
         GalacticraftPlugin.versionCheck(GalacticraftPlugin.mcVersion, "GalacticraftCore");
-        final String[] asmStrings = new String[]
-        { GalacticraftPlugin.transformerMain };
+        final String[] asmStrings = new String[] { GalacticraftPlugin.transformerMain };
 
         if (!GalacticraftPlugin.hasRegistered)
         {

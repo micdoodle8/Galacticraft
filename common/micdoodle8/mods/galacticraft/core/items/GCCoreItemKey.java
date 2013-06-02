@@ -15,8 +15,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreItemKey extends Item implements IKeyItem
 {
-    public static String[] keyTypes = new String[]
-    { "T1" };
+    public static String[] keyTypes = new String[] { "T1" };
     public Icon[] keyIcons = new Icon[1];
 
     public GCCoreItemKey(int par1)

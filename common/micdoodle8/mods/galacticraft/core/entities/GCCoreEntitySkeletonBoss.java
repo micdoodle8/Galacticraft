@@ -126,8 +126,7 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
         {
             if (!this.worldObj.isRemote)
             {
-                PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 40.0, this.worldObj.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, 25, new Object[]
-                { 0 }));
+                PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 40.0, this.worldObj.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, 25, new Object[] { 0 }));
                 par1EntityPlayer.mountEntity(this);
             }
 
@@ -194,8 +193,7 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
         {
             if (this.deathTicks >= 180 && this.deathTicks % 5 == 0)
             {
-                PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 40.0, this.worldObj.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, 24, new Object[]
-                { 0 }));
+                PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 40.0, this.worldObj.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, 24, new Object[] { 0 }));
             }
 
             if (this.deathTicks > 150 && this.deathTicks % 5 == 0)
@@ -212,8 +210,7 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
 
             if (this.deathTicks == 1)
             {
-                PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 40.0, this.worldObj.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, 23, new Object[]
-                { 0 }));
+                PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 40.0, this.worldObj.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, 23, new Object[] { 0 }));
             }
         }
 
@@ -405,8 +402,7 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
                 d0 = (Math.random() - Math.random()) * 0.01D;
             }
 
-            PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 40.0, this.worldObj.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, 26, new Object[]
-            { 0 }));
+            PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 40.0, this.worldObj.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, 26, new Object[] { 0 }));
 
             ((EntityPlayer) this.thrownEntity).attackedAtYaw = (float) (Math.atan2(d1, d0) * 180.0D / Math.PI) - this.rotationYaw;
 

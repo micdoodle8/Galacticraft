@@ -58,8 +58,7 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 
     private final MapGenMineshaft mineshaftGenerator = new MapGenMineshaft();
 
-    private BiomeGenBase[] biomesForGeneration =
-    { GCMarsBiomeGenBase.marsFlat };
+    private BiomeGenBase[] biomesForGeneration = { GCMarsBiomeGenBase.marsFlat };
 
     double[] noise1;
     double[] noise2;

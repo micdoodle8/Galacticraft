@@ -109,8 +109,7 @@ public class GCCoreEntityLanderFlameFX extends EntityFX
                     if (!var5.isDead && !var5.isBurning() && !var5.equals(FMLClientHandler.instance().getClient().thePlayer))
                     {
                         var5.setFire(3);
-                        final Object[] toSend =
-                        { var5.entityId };
+                        final Object[] toSend = { var5.entityId };
                         PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 10, toSend));
                     }
                 }

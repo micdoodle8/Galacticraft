@@ -268,8 +268,7 @@ public class GCMarsEntityProjectileTNT extends Entity
         par1NBTTagCompound.setShort("zTile", (short) this.zTile);
         par1NBTTagCompound.setByte("inTile", (byte) this.inTile);
         par1NBTTagCompound.setByte("inGround", (byte) (this.inGround ? 1 : 0));
-        par1NBTTagCompound.setTag("direction", this.newDoubleNBTList(new double[]
-        { this.motionX, this.motionY, this.motionZ }));
+        par1NBTTagCompound.setTag("direction", this.newDoubleNBTList(new double[] { this.motionX, this.motionY, this.motionZ }));
     }
 
     /**

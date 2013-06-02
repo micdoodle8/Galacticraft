@@ -14,8 +14,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreItemCanister extends Item
 {
-    public static final String[] names =
-    { "tin", // 0
+    public static final String[] names = { "tin", // 0
     "copper" }; // 1
 
     protected Icon[] icons = new Icon[256];

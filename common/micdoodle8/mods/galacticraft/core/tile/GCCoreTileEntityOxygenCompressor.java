@@ -198,9 +198,7 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityOxygen imp
     @Override
     public int[] getAccessibleSlotsFromSide(int side)
     {
-        return side == 1 || side == 0 ? new int[]
-        { 1 } : new int[]
-        { 0 };
+        return side == 1 || side == 0 ? new int[] { 1 } : new int[] { 0 };
     }
 
     @Override

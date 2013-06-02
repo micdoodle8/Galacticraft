@@ -59,8 +59,7 @@ public class GCCorePacketHandlerClient implements IPacketHandler
 
         if (packetType == 0)
         {
-            final Class[] decodeAs =
-            { Integer.class, Integer.class, String.class };
+            final Class[] decodeAs = { Integer.class, Integer.class, String.class };
             final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
 
             if (String.valueOf(packetReadout[2]).equals(String.valueOf(FMLClientHandler.instance().getClient().thePlayer.username)))
@@ -75,8 +74,7 @@ public class GCCorePacketHandlerClient implements IPacketHandler
         }
         else if (packetType == 2)
         {
-            final Class[] decodeAs =
-            { String.class, String.class };
+            final Class[] decodeAs = { String.class, String.class };
             final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
 
             if (String.valueOf(packetReadout[0]).equals(FMLClientHandler.instance().getClient().thePlayer.username))
@@ -98,40 +96,35 @@ public class GCCorePacketHandlerClient implements IPacketHandler
         }
         else if (packetType == 4)
         {
-            final Class[] decodeAs =
-            { String.class };
+            final Class[] decodeAs = { String.class };
             final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
 
             ClientProxyCore.playersUsingParachutes.add((String) packetReadout[0]);
         }
         else if (packetType == 5)
         {
-            final Class[] decodeAs =
-            { String.class };
+            final Class[] decodeAs = { String.class };
             final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
 
             ClientProxyCore.playersUsingParachutes.remove(packetReadout[0]);
         }
         else if (packetType == 6)
         {
-            final Class[] decodeAs =
-            { String.class, String.class };
+            final Class[] decodeAs = { String.class, String.class };
             final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
 
             ClientProxyCore.parachuteTextures.put((String) packetReadout[0], (String) packetReadout[1]);
         }
         else if (packetType == 7)
         {
-            final Class[] decodeAs =
-            { String.class, String.class };
+            final Class[] decodeAs = { String.class, String.class };
             final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
 
             ClientProxyCore.parachuteTextures.remove(packetReadout[0]);
         }
         else if (packetType == 8)
         {
-            final Class[] decodeAs =
-            { String.class };
+            final Class[] decodeAs = { String.class };
             PacketUtil.readPacketData(data, decodeAs);
 
             if (playerBaseClient != null)
@@ -148,8 +141,7 @@ public class GCCorePacketHandlerClient implements IPacketHandler
         }
         else if (packetType == 9)
         {
-            final Class[] decodeAs =
-            { Integer.class, Integer.class, Integer.class };
+            final Class[] decodeAs = { Integer.class, Integer.class, Integer.class };
             final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
 
             int x, y, z;
@@ -171,8 +163,7 @@ public class GCCorePacketHandlerClient implements IPacketHandler
         }
         else if (packetType == 10)
         {
-            final Class[] decodeAs =
-            { String.class, Integer.class };
+            final Class[] decodeAs = { String.class, Integer.class };
             final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
 
             final int type = (Integer) packetReadout[1];
@@ -231,24 +222,21 @@ public class GCCorePacketHandlerClient implements IPacketHandler
         }
         else if (packetType == 11)
         {
-            final Class[] decodeAs =
-            { String.class };
+            final Class[] decodeAs = { String.class };
             final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
 
             this.mc.thePlayer.cloakUrl = (String) packetReadout[0];
         }
         else if (packetType == 12)
         {
-            final Class[] decodeAs =
-            { String.class };
+            final Class[] decodeAs = { String.class };
             PacketUtil.readPacketData(data, decodeAs);
 
             FMLClientHandler.instance().getClient().displayGuiScreen(null);
         }
         else if (packetType == 13)
         {
-            final Class[] decodeAs =
-            { String.class };
+            final Class[] decodeAs = { String.class };
             PacketUtil.readPacketData(data, decodeAs);
 
             if (playerBaseClient != null)
@@ -260,8 +248,7 @@ public class GCCorePacketHandlerClient implements IPacketHandler
         {
             try
             {
-                new GCCorePacketEntityUpdate().handlePacket(data, new Object[]
-                { player }, Side.SERVER);
+                new GCCorePacketEntityUpdate().handlePacket(data, new Object[] { player }, Side.SERVER);
             }
             catch (final Exception e)
             {
@@ -328,8 +315,7 @@ public class GCCorePacketHandlerClient implements IPacketHandler
         }
         else if (packetType == 18)
         {
-            final Class[] decodeAs =
-            { Integer.class };
+            final Class[] decodeAs = { Integer.class };
             final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
 
             ClientProxyCore.clientSpaceStationID = (Integer) packetReadout[0];
@@ -363,8 +349,7 @@ public class GCCorePacketHandlerClient implements IPacketHandler
         }
         else if (packetType == 20)
         {
-            final Class[] decodeAs =
-            { Integer.class };
+            final Class[] decodeAs = { Integer.class };
             final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
 
             if (playerBaseClient != null)
@@ -405,8 +390,7 @@ public class GCCorePacketHandlerClient implements IPacketHandler
         }
         else if (packetType == 22)
         {
-            final Class[] decodeAs =
-            { Integer.class };
+            final Class[] decodeAs = { Integer.class };
             final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
 
             GCCoreTickHandlerClient.zoom((Integer) packetReadout[0] == 0 ? 4.0F : 15.0F);
@@ -429,8 +413,7 @@ public class GCCorePacketHandlerClient implements IPacketHandler
         }
         else if (packetType == 27)
         {
-            final Class[] decodeAs =
-            { Boolean.class };
+            final Class[] decodeAs = { Boolean.class };
             final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
 
             if (playerBaseClient != null)
@@ -440,8 +423,7 @@ public class GCCorePacketHandlerClient implements IPacketHandler
         }
         else if (packetType == 28)
         {
-            final Class[] decodeAs =
-            { Integer.class };
+            final Class[] decodeAs = { Integer.class };
             final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
 
             if (player.ridingEntity instanceof GCCoreEntityBuggy)

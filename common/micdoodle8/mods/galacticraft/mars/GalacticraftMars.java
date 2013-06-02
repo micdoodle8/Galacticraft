@@ -54,8 +54,7 @@ import cpw.mods.fml.relauncher.Side;
  * 
  */
 @Mod(name = GalacticraftMars.NAME, version = GalacticraftMars.LOCALMAJVERSION + "." + GalacticraftMars.LOCALMINVERSION + "." + GalacticraftMars.LOCALBUILDVERSION, useMetadata = true, modid = GalacticraftMars.MODID, dependencies = "required-after:Forge@[7.8.0.685,)")
-@NetworkMod(channels =
-{ GalacticraftMars.CHANNEL }, clientSideRequired = true, serverSideRequired = false, connectionHandler = GCCoreConnectionHandler.class, packetHandler = GCCorePacketManager.class)
+@NetworkMod(channels = { GalacticraftMars.CHANNEL }, clientSideRequired = true, serverSideRequired = false, connectionHandler = GCCoreConnectionHandler.class, packetHandler = GCCorePacketManager.class)
 public class GalacticraftMars implements IGalacticraftSubMod
 {
     public static final String NAME = "Galacticraft Mars";
@@ -66,8 +65,7 @@ public class GalacticraftMars implements IGalacticraftSubMod
     public static final String FILE_PATH = "/micdoodle8/mods/galacticraft/mars/";
     public static final String CLIENT_PATH = "client/";
     public static final String LANGUAGE_PATH = GalacticraftMars.FILE_PATH + GalacticraftMars.CLIENT_PATH + "lang/";
-    private static final String[] LANGUAGES_SUPPORTED = new String[]
-    { "en_US" };
+    private static final String[] LANGUAGES_SUPPORTED = new String[] { "en_US" };
 
     public static final int LOCALMAJVERSION = 0;
     public static final int LOCALMINVERSION = 1;

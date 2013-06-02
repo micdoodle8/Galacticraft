@@ -424,8 +424,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
                 temp = k == 0 ? temp.concat(String.valueOf(entry.getKey())) : temp.concat("." + String.valueOf(entry.getKey()));
             }
 
-            final Object[] toSend =
-            { this.username, temp };
+            final Object[] toSend = { this.username, temp };
 
             this.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 2, toSend));
 
@@ -448,8 +447,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
                 temp = k == 0 ? temp.concat(String.valueOf(entry.getKey())) : temp.concat("." + String.valueOf(entry.getKey()));
             }
 
-            final Object[] toSend =
-            { this.username, temp };
+            final Object[] toSend = { this.username, temp };
 
             this.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 2, toSend));
         }
@@ -799,8 +797,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
         if (this.worldObj.provider instanceof IGalacticraftWorldProvider && (this.oxygenSetupValid != this.lastOxygenSetupValid || this.tick % 100 == 0))
         {
-            this.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 27, new Object[]
-            { Boolean.valueOf(this.oxygenSetupValid) }));
+            this.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 27, new Object[] { Boolean.valueOf(this.oxygenSetupValid) }));
         }
 
         if (this.timeUntilPortal > 0)
@@ -1194,16 +1191,14 @@ public class GCCorePlayerMP extends EntityPlayerMP
         final float f1 = Float.valueOf(this.tankInSlot1 == null ? 0.0F : this.tankInSlot1.getMaxDamage() / 90.0F);
         final float f2 = Float.valueOf(this.tankInSlot2 == null ? 0.0F : this.tankInSlot2.getMaxDamage() / 90.0F);
 
-        final Object[] toSend =
-        { MathHelper.floor_float(this.airRemaining / f1), MathHelper.floor_float(this.airRemaining2 / f2), this.username };
+        final Object[] toSend = { MathHelper.floor_float(this.airRemaining / f1), MathHelper.floor_float(this.airRemaining2 / f2), this.username };
 
         this.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 0, toSend));
     }
 
     public void sendGearUpdatePacket(int i)
     {
-        final Object[] toSend =
-        { this.username, i };
+        final Object[] toSend = { this.username, i };
 
         if (FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.username) != null)
         {
@@ -1213,8 +1208,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
     public void sendParachuteRemovalPacket()
     {
-        final Object[] toSend =
-        { this.username };
+        final Object[] toSend = { this.username };
 
         if (FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.username) != null)
         {
@@ -1224,8 +1218,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
     public void sendParachuteAddPacket()
     {
-        final Object[] toSend =
-        { this.username };
+        final Object[] toSend = { this.username };
 
         if (FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.username) != null)
         {
@@ -1249,8 +1242,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
             s2 = s.replace("item.parachute_", "");
         }
 
-        final Object[] toSend =
-        { this.username, stack == null ? "none" : String.valueOf(s2) };
+        final Object[] toSend = { this.username, stack == null ? "none" : String.valueOf(s2) };
 
         if (FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.username) != null)
         {

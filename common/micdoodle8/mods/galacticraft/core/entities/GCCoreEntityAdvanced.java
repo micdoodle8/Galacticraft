@@ -173,8 +173,7 @@ public abstract class GCCoreEntityAdvanced extends GCCoreEntityControllable impl
                 {
                     if (this.riddenByEntity instanceof EntityPlayerMP)
                     {
-                        final Object[] toSend2 =
-                        { 0 };
+                        final Object[] toSend2 = { 0 };
                         ((EntityPlayerMP) this.riddenByEntity).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, toSend2));
                     }
 

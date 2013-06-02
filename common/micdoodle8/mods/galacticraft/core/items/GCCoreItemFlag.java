@@ -27,8 +27,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GCCoreItemFlag extends Item
 {
-    public static final String[] names =
-    { "american", // 0
+    public static final String[] names = { "american", // 0
     "black", // 1
     "blue", // 2
     "green", // 3

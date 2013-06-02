@@ -469,9 +469,7 @@ public class ClientProxyCore extends CommonProxyCore
 
         public GCKeyHandler()
         {
-            super(new KeyBinding[]
-            { GCKeyHandler.galaxyMap, GCKeyHandler.openSpaceshipInv, GCKeyHandler.toggleAdvGoggles, GCKeyHandler.accelerateKey, GCKeyHandler.decelerateKey, GCKeyHandler.leftKey, GCKeyHandler.rightKey, GCKeyHandler.spaceKey, GCKeyHandler.leftShiftKey }, new boolean[]
-            { false, false, false, true, true, true, true, true, true });
+            super(new KeyBinding[] { GCKeyHandler.galaxyMap, GCKeyHandler.openSpaceshipInv, GCKeyHandler.toggleAdvGoggles, GCKeyHandler.accelerateKey, GCKeyHandler.decelerateKey, GCKeyHandler.leftKey, GCKeyHandler.rightKey, GCKeyHandler.spaceKey, GCKeyHandler.leftShiftKey }, new boolean[] { false, false, false, true, true, true, true, true, true });
         }
 
         @Override
@@ -508,8 +506,7 @@ public class ClientProxyCore extends CommonProxyCore
             }
             else if (kb.keyCode == GCKeyHandler.openSpaceshipInv.keyCode)
             {
-                final Object[] toSend =
-                { player.username };
+                final Object[] toSend = { player.username };
                 PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, player.ridingEntity instanceof EntitySpaceshipBase ? 6 : player.ridingEntity instanceof GCCoreEntityBuggy ? 20 : -1, toSend));
 
                 if (player.ridingEntity instanceof EntitySpaceshipBase)

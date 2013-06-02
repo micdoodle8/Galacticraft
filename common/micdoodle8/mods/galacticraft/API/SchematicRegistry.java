@@ -201,8 +201,7 @@ public class SchematicRegistry
             final int nextID = page.getPageID();
             final int nextGuiID = page.getGuiID();
 
-            final Object[] toSend =
-            { nextID };
+            final Object[] toSend = { nextID };
             FMLClientHandler.instance().getClient().currentScreen = null;
 
             PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 4, toSend));
@@ -220,8 +219,7 @@ public class SchematicRegistry
             final int nextID = page.getPageID();
             final int nextGuiID = page.getGuiID();
 
-            final Object[] toSend =
-            { nextID };
+            final Object[] toSend = { nextID };
             FMLClientHandler.instance().getClient().currentScreen = null;
 
             PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 4, toSend));

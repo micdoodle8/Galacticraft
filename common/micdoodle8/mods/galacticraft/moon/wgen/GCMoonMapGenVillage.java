@@ -10,8 +10,7 @@ import net.minecraft.world.gen.structure.StructureStart;
 public class GCMoonMapGenVillage extends MapGenStructure
 {
     /** A list of all the biomes villages can spawn in. */
-    public static List villageSpawnBiomes = Arrays.asList(new BiomeGenBase[]
-    { GCMoonBiomeGenBase.moonFlat });
+    public static List villageSpawnBiomes = Arrays.asList(new BiomeGenBase[] { GCMoonBiomeGenBase.moonFlat });
 
     /** World terrain type, 0 for normal, 1 for flat map */
     private final int terrainType;

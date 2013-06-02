@@ -17,8 +17,7 @@ public class GCCoreItemParachute extends Item
 {
     protected Icon[] icons = new Icon[256];
 
-    public static final String[] names =
-    { "plain", // 0
+    public static final String[] names = { "plain", // 0
     "black", // 1
     "blue", // 2
     "lime", // 3

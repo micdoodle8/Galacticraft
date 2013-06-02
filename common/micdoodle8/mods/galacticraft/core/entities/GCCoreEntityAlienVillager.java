@@ -81,7 +81,6 @@ public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityB
     /** Last player to trade with this villager, used for aggressivity. */
     private String lastBuyingPlayer;
     private boolean field_82190_bM;
-    private float field_82191_bN;
 
     /**
      * Returns true if the newer Entity AI code should be run

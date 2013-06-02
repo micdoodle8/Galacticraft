@@ -285,8 +285,7 @@ public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInvento
         }
         else if (var1 instanceof EntityPlayerMP)
         {
-            final Object[] toSend2 =
-            { 0 };
+            final Object[] toSend2 = { 0 };
             ((EntityPlayerMP) var1).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, toSend2));
             var1.mountEntity(this);
             return true;
@@ -443,8 +442,7 @@ public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInvento
         {
             if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayerMP)
             {
-                final Object[] toSend2 =
-                { 0 };
+                final Object[] toSend2 = { 0 };
                 ((EntityPlayerMP) this.riddenByEntity).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, toSend2));
 
                 this.riddenByEntity.mountEntity(this);

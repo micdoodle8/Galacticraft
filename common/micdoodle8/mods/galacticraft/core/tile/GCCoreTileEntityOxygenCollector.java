@@ -296,8 +296,7 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityElectric im
     @Override
     public int[] getAccessibleSlotsFromSide(int side)
     {
-        return new int[]
-        { 0 };
+        return new int[] { 0 };
     }
 
     @Override

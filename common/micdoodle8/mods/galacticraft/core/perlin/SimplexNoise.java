@@ -6,12 +6,7 @@ public class SimplexNoise
 {
     int[] perm = new int[512];
 
-    public int[][] grad2d = new int[][]
-    {
-    { 0, 0 },
-    { 0, 1 },
-    { 1, 1 },
-    { 1, 0 } };
+    public int[][] grad2d = new int[][] { { 0, 0 }, { 0, 1 }, { 1, 1 }, { 1, 0 } };
 
     public SimplexNoise(long seed)
     {

@@ -84,7 +84,7 @@ public class GCCoreBlockRendererLandingPad implements ISimpleBlockRenderingHandl
 
     public void renderBlockLandingPad(RenderBlocks renderBlocks, Block par1Block, IBlockAccess var1, int par2, int par3, int par4)
     {
-        final int var5 = var1.getBlockMetadata(par2, par3, par4);
+        var1.getBlockMetadata(par2, par3, par4);
         if (var1.getBlockMetadata(par2, par3, par4) == 1)
         {
             renderBlocks.setOverrideBlockTexture(((GCCoreBlockLandingPadFull) par1Block).getIcon(0, 1));

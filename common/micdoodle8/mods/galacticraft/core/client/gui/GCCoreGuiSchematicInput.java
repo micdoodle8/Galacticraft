@@ -49,8 +49,7 @@ public class GCCoreGuiSchematicInput extends GuiContainer implements ISchematicR
                 SchematicRegistry.flipToNextPage(this.pageIndex);
                 break;
             case 2:
-                final Object[] toSend2 =
-                { 0 };
+                final Object[] toSend2 = { 0 };
                 PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 16, toSend2));
                 break;
             }

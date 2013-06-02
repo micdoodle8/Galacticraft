@@ -25,11 +25,10 @@ public class GCMarsUtil
         // 'X', Item.bucketEmpty,
         // 'Z', GCMarsItems.ingotQuandrium
         // });
-        CraftingManager.getInstance().addRecipe(new ItemStack(GCMarsItems.heavyBoots, 1), new Object[]
-        { " Z ", "ZXZ", " Y ", 'Z', GCMarsItems.ingotDesh, 'X', GCMarsItems.deshBoots, 'Y', Block.blockIron // TODO
-                                                                                                            // :
-                                                                                                            // Desh
-                                                                                                            // block
+        CraftingManager.getInstance().addRecipe(new ItemStack(GCMarsItems.heavyBoots, 1), new Object[] { " Z ", "ZXZ", " Y ", 'Z', GCMarsItems.ingotDesh, 'X', GCMarsItems.deshBoots, 'Y', Block.blockIron // TODO
+                                                                                                                                                                                                           // :
+                                                                                                                                                                                                           // Desh
+                                                                                                                                                                                                           // block
         });
         // CraftingManager.getInstance().addRecipe(new
         // ItemStack(GCMarsItems.jetpack, 1), new Object[] {

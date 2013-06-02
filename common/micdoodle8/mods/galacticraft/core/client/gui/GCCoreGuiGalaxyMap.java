@@ -675,8 +675,7 @@ public class GCCoreGuiGalaxyMap extends GCCoreGuiStarBackground
             y = s * t + c * y;
         }
 
-        return new Map[]
-        { mapX, mapY };
+        return new Map[] { mapX, mapY };
     }
 
     @Override

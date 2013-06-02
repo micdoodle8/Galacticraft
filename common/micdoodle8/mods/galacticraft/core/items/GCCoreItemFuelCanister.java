@@ -19,8 +19,7 @@ public class GCCoreItemFuelCanister extends Item
 {
     protected Icon[] icons = new Icon[256];
 
-    public static final String[] names =
-    { "liquidcan_fuel_6", // 0
+    public static final String[] names = { "liquidcan_fuel_6", // 0
     "liquidcan_fuel_5", // 0
     "liquidcan_fuel_4", // 1
     "liquidcan_fuel_3", // 2

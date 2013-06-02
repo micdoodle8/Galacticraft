@@ -43,8 +43,7 @@ public class GCCoreTickHandlerSlowClient implements IScheduledTickHandler
 
                             if (block != null && (block instanceof BlockOre || block instanceof IDetectableResource || block instanceof IDetectableMetadataResource && ((IDetectableMetadataResource) block).isValueable(player.worldObj.getBlockMetadata(x, y, z))))
                             {
-                                final int[] blockPos =
-                                { x, y, z };
+                                final int[] blockPos = { x, y, z };
 
                                 if (!this.alreadyContainsBlock(x, y, z))
                                 {

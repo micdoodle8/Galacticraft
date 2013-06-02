@@ -263,8 +263,7 @@ public class GCCoreFontRendererBig
      */
     private void loadGlyphTexture(int par1)
     {
-        final String s = String.format("/font/glyph_%02X.png", new Object[]
-        { Integer.valueOf(par1) });
+        final String s = String.format("/font/glyph_%02X.png", new Object[] { Integer.valueOf(par1) });
         this.renderEngine.bindTexture(s);
     }
 

@@ -86,11 +86,9 @@ public class GCCoreTickHandlerClient implements ITickHandler
 
             if (player != null && player.ridingEntity != null && player.ridingEntity instanceof ISpaceship)
             {
-                final Object[] toSend =
-                { player.ridingEntity.rotationPitch };
+                final Object[] toSend = { player.ridingEntity.rotationPitch };
                 PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 8, toSend));
-                final Object[] toSend2 =
-                { player.ridingEntity.rotationYaw };
+                final Object[] toSend2 = { player.ridingEntity.rotationYaw };
                 PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 7, toSend2));
             }
 
@@ -121,16 +119,14 @@ public class GCCoreTickHandlerClient implements ITickHandler
                 if (minecraft.gameSettings.keyBindLeft.pressed)
                 {
                     ship.turnYaw(-1.0F);
-                    final Object[] toSend =
-                    { ship.rotationYaw };
+                    final Object[] toSend = { ship.rotationYaw };
                     PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 7, toSend));
                 }
 
                 if (minecraft.gameSettings.keyBindRight.pressed)
                 {
                     ship.turnYaw(1.0F);
-                    final Object[] toSend =
-                    { ship.rotationYaw };
+                    final Object[] toSend = { ship.rotationYaw };
                     PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 7, toSend));
                 }
 
@@ -139,8 +135,7 @@ public class GCCoreTickHandlerClient implements ITickHandler
                     if (ship.getLaunched() == 1)
                     {
                         ship.turnPitch(-0.7F);
-                        final Object[] toSend =
-                        { ship.rotationPitch };
+                        final Object[] toSend = { ship.rotationPitch };
                         PacketDispatcher.sendPacketToServer(PacketUtil.createPacket("Galacticraft", 8, toSend));
                     }
                 }
@@ -150,8 +145,7 @@ public class GCCoreTickHandlerClient implements ITickHandler
                     if (ship.getLaunched() == 1)
                     {
                         ship.turnPitch(0.7F);
-                        final Object[] toSend =
-                        { ship.rotationPitch };
+                        final Object[] toSend = { ship.rotationPitch };
                         PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 8, toSend));
                     }
                 }
@@ -195,8 +189,7 @@ public class GCCoreTickHandlerClient implements ITickHandler
 
             if (player != null && player.ridingEntity != null && minecraft.gameSettings.keyBindJump.pressed && !ClientProxyCore.lastSpacebarDown)
             {
-                final Object[] toSend =
-                { 0 };
+                final Object[] toSend = { 0 };
                 PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 3, toSend));
                 ClientProxyCore.lastSpacebarDown = true;
             }

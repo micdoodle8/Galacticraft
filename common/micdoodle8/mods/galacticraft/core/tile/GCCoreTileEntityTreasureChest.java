@@ -635,8 +635,7 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
         {
             if (player.worldObj.isRemote)
             {
-                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 18, new Object[]
-                { this.getTierOfKeyRequired() }));
+                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 18, new Object[] { this.getTierOfKeyRequired() }));
             }
             return true;
         }
