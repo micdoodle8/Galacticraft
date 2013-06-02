@@ -49,14 +49,13 @@ public class GCCoreItemKnowledgeBook extends Item
     }
 
     @Override
-    public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int x, int y, int z, int par7, float par8, float par9, float par10)
+    public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
-        if (par3World.isRemote)
+        if (par2World.isRemote)
         {
-            par2EntityPlayer.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiKnowledgeBook, par3World, x, y, z);
-            return true;
+            par3EntityPlayer.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiKnowledgeBook, par2World, (int)par3EntityPlayer.posX, (int)par3EntityPlayer.posY, (int)par3EntityPlayer.posZ);
         }
-
-        return false;
+        
+        return par1ItemStack;
     }
 }

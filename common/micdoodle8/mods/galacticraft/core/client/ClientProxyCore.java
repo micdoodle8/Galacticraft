@@ -58,6 +58,7 @@ import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderZomb
 import micdoodle8.mods.galacticraft.core.client.render.item.GCCoreItemRendererBuggy;
 import micdoodle8.mods.galacticraft.core.client.render.item.GCCoreItemRendererFlag;
 import micdoodle8.mods.galacticraft.core.client.render.item.GCCoreItemRendererKey;
+import micdoodle8.mods.galacticraft.core.client.render.item.GCCoreItemRendererKnowledgeBook;
 import micdoodle8.mods.galacticraft.core.client.render.item.GCCoreItemRendererSpaceship;
 import micdoodle8.mods.galacticraft.core.client.render.item.GCCoreItemRendererUnlitTorch;
 import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntityAdvancedCraftingTableRenderer;
@@ -300,6 +301,7 @@ public class ClientProxyCore extends CommonProxyCore
         MinecraftForgeClient.registerItemRenderer(GCCoreItems.buggy.itemID, new GCCoreItemRendererBuggy());
         MinecraftForgeClient.registerItemRenderer(GCCoreItems.flag.itemID, new GCCoreItemRendererFlag());
         MinecraftForgeClient.registerItemRenderer(GCCoreItems.key.itemID, new GCCoreItemRendererKey());
+        MinecraftForgeClient.registerItemRenderer(GCCoreItems.knowledgeBook.itemID, new GCCoreItemRendererKnowledgeBook());
     }
 
     public static void renderPlanets(float par3)
