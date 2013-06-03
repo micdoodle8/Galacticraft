@@ -97,7 +97,7 @@ public class GCCoreSounds
         }
         else
         {
-            event.result = null;
+            return;
         }
     }
 }
