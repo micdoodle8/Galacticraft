@@ -98,7 +98,7 @@ public class GCRoomTreasure extends GCDungeonRoom
 
     private ItemStack getLoot(Random rand)
     {
-        return new ItemStack(Item.appleRed, 1, 0);
+        return null;
     }
 
 }

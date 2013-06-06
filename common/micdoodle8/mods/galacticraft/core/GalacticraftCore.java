@@ -33,6 +33,7 @@ import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityOxygenBubble;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityParaChest;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityRocketT1;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySkeleton;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySkeletonBoss;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpider;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityZombie;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
@@ -388,9 +389,7 @@ public class GalacticraftCore
         this.registerGalacticraftCreature(GCCoreEntityZombie.class, "Evolved Zombie", GCCoreConfigManager.idEntityEvolvedZombie, 44975, 7969893);
         this.registerGalacticraftCreature(GCCoreEntityCreeper.class, "Evolved Creeper", GCCoreConfigManager.idEntityEvolvedCreeper, 894731, 0);
         this.registerGalacticraftCreature(GCCoreEntitySkeleton.class, "Evolved Skeleton", GCCoreConfigManager.idEntityEvolvedSkeleton, 12698049, 4802889);
-        // this.registerGalacticraftCreature(GCCoreEntitySkeletonBoss.class,
-        // "Evolved Skeleton Boss",
-        // GCCoreConfigManager.idEntityEvolvedSkeletonBoss, 12698049, 4802889);
+         this.registerGalacticraftCreature(GCCoreEntitySkeletonBoss.class, "Evolved Skeleton Boss", GCCoreConfigManager.idEntityEvolvedSkeletonBoss, 12698049, 4802889);
         // this.registerGalacticraftCreature(GCCoreEntityWorm.class,
         // "Giant Worm", GCCoreConfigManager.idEntityGiantWorm, 12698049,
         // 4802889);

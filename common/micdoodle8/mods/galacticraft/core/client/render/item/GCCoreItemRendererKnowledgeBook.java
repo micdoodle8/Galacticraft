@@ -46,7 +46,7 @@ public class GCCoreItemRendererKnowledgeBook implements IItemRenderer
         if (type.equals(ItemRenderType.INVENTORY))
         {
             GL11.glTranslatef(0F, 1.64F, -5.2F);
-            GL11.glRotatef(-19.0F, 0.0F, 0.0F, 1.0F);
+            GL11.glRotatef(-18.861F, 0.0F, 0.0F, 1.0F);
             GL11.glScalef(3F, 2.2F, 3F);
             GL11.glRotatef(-130, 0F, 1F, 0F);
         }

@@ -211,8 +211,7 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
         this.createCraters(par1, par2, ids, meta);
         this.replaceBlocksForBiome(par1, par2, ids, meta, this.biomesForGeneration);
         this.caveGenerator.generate(this, this.worldObj, par1, par2, ids, meta);
-        // this.dungeonGenerator.generateUsingArrays(worldObj, seed, par1 * 16,
-        // 25 + this.rand.nextInt(10), par2 * 16, par1, par2, ids, meta);
+        this.dungeonGenerator.generateUsingArrays(worldObj, this.worldObj.getSeed(), par1 * 16, 25, par2 * 16, par1, par2, ids, meta);
 
         final Chunk var4 = new Chunk(this.worldObj, ids, meta, par1, par2);
 
@@ -325,7 +324,7 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
         final long var9 = this.rand.nextLong() / 2L * 2L + 1L;
         this.rand.setSeed(par2 * var7 + par3 * var9 ^ this.worldObj.getSeed());
 
-        // this.dungeonGenerator.handleTileEntities(rand);
+        this.dungeonGenerator.handleTileEntities(rand);
 
         if (!GCMoonConfigManager.disableMoonVillageGen)
         {

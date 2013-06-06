@@ -25,6 +25,7 @@ import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
@@ -39,6 +40,7 @@ import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.IPacketReceiver;
 import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -60,8 +62,12 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
     public Entity thrownEntity;
     public Entity targetEntity;
     public int deathTicks = 0;
+    
+    public int entitiesWithin;
+    public int entitiesWithinLast;
 
-    private GCRoomBoss room;
+    private Vector3 roomCoords;
+    private Vector3 roomSize;
 
     public GCCoreEntitySkeletonBoss(World par1World)
     {
@@ -81,9 +87,10 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
         this.setPosition(vec.x, vec.y, vec.z);
     }
 
-    public void setRoom(GCRoomBoss room)
+    public void setRoom(Vector3 coords, Vector3 size)
     {
-        this.room = room;
+        this.roomCoords = coords;
+        this.roomSize = size;
     }
 
     @Override
@@ -369,15 +376,32 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
 
         new Vector3(this);
 
-        if (this.room != null)
+        if (this.roomCoords != null && this.roomSize != null)
         {
-            List<Entity> entitiesWithin = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getAABBPool().getAABB(this.room.posX - 1, this.room.posX - 1, this.room.posZ, this.room.posX + this.room.sizeX, this.room.posY + this.room.sizeY, this.room.posZ + this.room.sizeZ));
+            List<Entity> entitiesWithin = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getAABBPool().getAABB(this.roomCoords.intX() - 1, this.roomCoords.intY() - 1, this.roomCoords.intZ() - 1, this.roomCoords.intX() + this.roomSize.intX(), this.roomCoords.intY() + this.roomSize.intY(), this.roomCoords.intZ() + this.roomSize.intZ()));
 
-            if (entitiesWithin.size() == 0)
+            this.entitiesWithin = entitiesWithin.size();
+            
+            if (this.entitiesWithin == 0 && this.entitiesWithinLast != 0)
             {
+                List<EntityPlayer> entitiesWithin2 = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getAABBPool().getAABB(this.roomCoords.intX() - 11, this.roomCoords.intY() - 11, this.roomCoords.intZ() - 11, this.roomCoords.intX() + this.roomSize.intX() + 10, this.roomCoords.intY() + this.roomSize.intY() + 10, this.roomCoords.intZ() + this.roomSize.intZ() + 10));
+
+                for (EntityPlayer p : entitiesWithin2)
+                {
+                    p.sendChatToPlayer("Boss despawned, don't leave the boss room while fighting! Re-enter room to respawn boss.");
+                }
+                
                 this.setDead();
+                
+                if (this.spawner != null)
+                {
+                    this.spawner.setPlayerCheated();
+                }
+                
                 return;
             }
+            
+            this.entitiesWithinLast = this.entitiesWithin;
         }
 
         if (this.riddenByEntity != null && this.throwTimer == 0)
@@ -539,10 +563,15 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
     @Override
     public ItemStack getGuaranteedLoot(int loop, Random rand)
     {
-        switch (loop)
+        if (loop == 0)
         {
-        case 0:
-            return new ItemStack(GCCoreItems.schematic, 1, 0);
+            switch (rand.nextInt(2))
+            {
+            case 0:
+                return new ItemStack(GCCoreItems.schematic, 1, 0);
+            case 1:
+                return new ItemStack(GCCoreItems.schematic, 1, 1);
+            }
         }
 
         return null;
@@ -556,11 +585,11 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
         switch (r)
         {
         case 0:
-            return new ItemStack(GCCoreItems.lightOxygenTank, 1, rand.nextInt(GCCoreItems.lightOxygenTank.getMaxDamage() / 2) + 1);
+            return new ItemStack(GCCoreItems.lightOxygenTank, 1, GCCoreItems.lightOxygenTank.getMaxDamage() - rand.nextInt(GCCoreItems.lightOxygenTank.getMaxDamage() / 2) + 1);
         case 1:
-            return new ItemStack(GCCoreItems.fuelCanister, 1, rand.nextInt(GCCoreItems.fuelCanister.getMaxDamage() / 2) + 1);
+            return new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.oilCanister.getMaxDamage() - rand.nextInt(GCCoreItems.oilCanister.getMaxDamage() / 2) + 1);
         default:
-            return new ItemStack(GCCoreItems.oilCanister, 1, rand.nextInt(GCCoreItems.oilCanister.getMaxDamage() / 2) + 1);
+            return new ItemStack(GCCoreItems.oilCanister, 1, 61);
         }
     }
 
@@ -568,5 +597,31 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
     public int getBossHealth()
     {
         return this.health;
+    }
+
+    @Override
+    public void writeEntityToNBT(NBTTagCompound nbt)
+    {
+        super.writeEntityToNBT(nbt);
+        nbt.setDouble("roomCoordsX", this.roomCoords.x);
+        nbt.setDouble("roomCoordsY", this.roomCoords.y);
+        nbt.setDouble("roomCoordsZ", this.roomCoords.z);
+        nbt.setDouble("roomSizeX", this.roomSize.x);
+        nbt.setDouble("roomSizeY", this.roomSize.y);
+        nbt.setDouble("roomSizeZ", this.roomSize.z);
+    }
+
+    @Override
+    public void readEntityFromNBT(NBTTagCompound nbt)
+    {
+        super.readEntityFromNBT(nbt);
+        this.roomCoords = new Vector3();
+        this.roomCoords.x = nbt.getDouble("roomCoordsX");
+        this.roomCoords.y = nbt.getDouble("roomCoordsY");
+        this.roomCoords.z = nbt.getDouble("roomCoordsZ");
+        this.roomSize = new Vector3();
+        this.roomSize.x = nbt.getDouble("roomSizeX");
+        this.roomSize.y = nbt.getDouble("roomSizeY");
+        this.roomSize.z = nbt.getDouble("roomSizeZ");
     }
 }

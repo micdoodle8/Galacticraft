@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.moon.wgen.dungeon;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.util.ChunkCoordinates;
@@ -306,6 +307,7 @@ public class GCMapGenDungeon
                 for (int j = y - 1; j <= y + GCMapGenDungeon.HALLWAY_HEIGHT; j++)
                 {
                     boolean flag = false;
+                    int flag2 = -1;
                     switch (dir)
                     {
                     case 0:
@@ -321,6 +323,10 @@ public class GCMapGenDungeon
                         {
                             flag = true;
                         }
+                        if ((i == corridor.minX || i == corridor.maxX) && k % 4 == 0 && j == y + 2)
+                        {
+                            flag2 = i == corridor.minX ? 2 : 1;
+                        }
                         break;
                     case 3:
                         if (k == corridor.minZ - 1 || k == corridor.maxZ + 1 && !doubleCorridor)
@@ -334,6 +340,10 @@ public class GCMapGenDungeon
                         if (i == corridor.minX - 1 || i == corridor.maxX + 1 || j == y - 1 || j == y + 3)
                         {
                             flag = true;
+                        }
+                        if ((i == corridor.minX || i == corridor.maxX) && k % 4 == 0 && j == y + 2)
+                        {
+                            flag2 = i == corridor.minX ? 2 : 1;
                         }
                         break;
                     case 1:
@@ -349,6 +359,10 @@ public class GCMapGenDungeon
                         {
                             flag = true;
                         }
+                        if ((k == corridor.minZ || k == corridor.maxZ) && i % 4 == 0 && j == y + 2)
+                        {
+                            flag2 = k == corridor.minZ ? 4 : 3;
+                        }
                         break;
                     case 2:
                         if (i == corridor.minX - 1 || i == corridor.maxX + 1 && !doubleCorridor)
@@ -363,9 +377,18 @@ public class GCMapGenDungeon
                         {
                             flag = true;
                         }
+                        if ((k == corridor.minZ || k == corridor.maxZ) && i % 4 == 0 && j == y + 2)
+                        {
+                            flag2 = k == corridor.minZ ? 4 : 3;
+                        }
                         break;
                     }
-                    if (!flag)
+                    if (flag2 != -1)
+                    {
+                        this.placeBlock(blocks, metas, i, j, k, cx, cz, GCCoreBlocks.unlitTorch.blockID, 0);
+                        this.worldObj.scheduleBlockUpdateFromLoad(i, j, k, GCCoreBlocks.unlitTorch.blockID, 40, 0);
+                    }
+                    else if (!flag)
                     {
                         this.placeBlock(blocks, metas, i, j, k, cx, cz, 0, 0);
                     }
@@ -373,11 +396,6 @@ public class GCMapGenDungeon
                     {
                         this.placeBlock(blocks, metas, i, j, k, cx, cz, GCMapGenDungeon.DUNGEON_WALL_ID, GCMapGenDungeon.DUNGEON_WALL_META);
                     }
-                }
-
-                if (rand.nextInt(50) == 0)
-                {
-                    this.placeBlock(blocks, metas, i, y - 1, k, cx, cz, Block.glowStone.blockID, 0);
                 }
             }
         }

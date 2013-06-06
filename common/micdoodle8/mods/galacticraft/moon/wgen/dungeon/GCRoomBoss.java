@@ -7,6 +7,7 @@ import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
+import universalelectricity.core.vector.Vector3;
 
 public class GCRoomBoss extends GCDungeonRoom
 {
@@ -94,12 +95,12 @@ public class GCRoomBoss extends GCDungeonRoom
         if (tile == null || !(tile instanceof GCCoreTileEntityDungeonSpawner))
         {
             GCCoreTileEntityDungeonSpawner spawner = new GCCoreTileEntityDungeonSpawner();
-            spawner.setRoom(this);
+            spawner.setRoom(new Vector3(this.posX, this.posY, this.posZ), new Vector3(this.sizeX, this.sizeY, this.sizeZ));
             this.worldObj.setBlockTileEntity(this.spawnerCoords.posX, this.spawnerCoords.posY, this.spawnerCoords.posZ, spawner);
         }
         else if (tile instanceof GCCoreTileEntityDungeonSpawner)
         {
-            ((GCCoreTileEntityDungeonSpawner) tile).setRoom(this);
+            ((GCCoreTileEntityDungeonSpawner) tile).setRoom(new Vector3(this.posX, this.posY, this.posZ), new Vector3(this.sizeX, this.sizeY, this.sizeZ));
         }
     }
 

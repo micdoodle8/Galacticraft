@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.moon.wgen.dungeon;
 
 import java.util.ArrayList;
 import java.util.Random;
+import micdoodle8.mods.galacticraft.moon.items.GCMoonItems;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -89,6 +90,25 @@ public class GCRoomChests extends GCDungeonRoom
 
     private ItemStack getLoot(Random rand)
     {
-        return new ItemStack(Item.appleRed, 1, 0);
+        if (rand.nextInt(27) < 5)
+        {
+            int r = rand.nextInt(5);
+            
+            switch (r)
+            {
+            case 0:
+                return new ItemStack(Item.appleRed, 1, 0);
+            case 1:
+                return new ItemStack(Item.ingotIron, rand.nextInt(8) + 2, 0);
+            case 2:
+                return new ItemStack(Item.arrow, rand.nextInt(14) + 2, 0);
+            case 3:
+                return new ItemStack(GCMoonItems.meteoricIronRaw, 1 + rand.nextInt(2), 0);
+            case 4:
+                return new ItemStack(Item.bucketWater, rand.nextInt(2) + 1, 0);
+            }
+        }
+        
+        return null;
     }
 }
