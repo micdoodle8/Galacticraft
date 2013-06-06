@@ -383,14 +383,18 @@ public class GCMapGenDungeon
                         }
                         break;
                     }
-                    if (flag2 != -1)
+
+                    if (!flag)
                     {
-                        this.placeBlock(blocks, metas, i, j, k, cx, cz, GCCoreBlocks.unlitTorch.blockID, 0);
-                        this.worldObj.scheduleBlockUpdateFromLoad(i, j, k, GCCoreBlocks.unlitTorch.blockID, 40, 0);
-                    }
-                    else if (!flag)
-                    {
-                        this.placeBlock(blocks, metas, i, j, k, cx, cz, 0, 0);
+                        if (flag2 != -1)
+                        {
+                            this.placeBlock(blocks, metas, i, j, k, cx, cz, GCCoreBlocks.unlitTorch.blockID, 0);
+                            this.worldObj.scheduleBlockUpdateFromLoad(i, j, k, GCCoreBlocks.unlitTorch.blockID, 40, 0);
+                        }
+                        else
+                        {
+                            this.placeBlock(blocks, metas, i, j, k, cx, cz, 0, 0);
+                        }
                     }
                     else
                     {
