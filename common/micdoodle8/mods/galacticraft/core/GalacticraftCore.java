@@ -123,7 +123,7 @@ public class GalacticraftCore
     public static final int LOCALBUILDVERSION = 35;
     public static int remoteMajVer;
     public static int remoteMinVer;
-    public static int remoteBuildVer;
+    public static int remoteBuildVer; 
 
     // public static float spaceScale = 4.0F;
     // public static float spaceSpeedScale = 5.0F;
