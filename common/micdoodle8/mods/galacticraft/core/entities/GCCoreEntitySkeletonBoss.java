@@ -226,7 +226,7 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
 
         if (this.deathTicks == 200 && !this.worldObj.isRemote)
         {
-            i = 2000;
+            i = 200;
 
             while (i > 0)
             {
