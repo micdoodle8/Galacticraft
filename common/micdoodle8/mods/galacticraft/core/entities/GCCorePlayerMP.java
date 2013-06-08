@@ -834,7 +834,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
                         motX = this.worldObj.rand.nextDouble() * 5;
                         motZ = this.worldObj.rand.nextDouble() * 5;
 
-                        final GCCoreEntityMeteor meteor = new GCCoreEntityMeteor(this.worldObj, this.posX + x, 100, this.posZ + z, motX - 2.5D, 0, motZ - 2.5D, 1);
+                        final GCCoreEntityMeteor meteor = new GCCoreEntityMeteor(this.worldObj, this.posX + x, this.posY + y, this.posZ + z, motX - 2.5D, 0, motZ - 2.5D, 1);
 
                         if (!this.worldObj.isRemote)
                         {
@@ -857,7 +857,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
                         motX = this.worldObj.rand.nextDouble() * 5;
                         motZ = this.worldObj.rand.nextDouble() * 5;
 
-                        final GCCoreEntityMeteor meteor = new GCCoreEntityMeteor(this.worldObj, this.posX + x, 100, this.posZ + z, motX - 2.5D, 0, motZ - 2.5D, 6);
+                        final GCCoreEntityMeteor meteor = new GCCoreEntityMeteor(this.worldObj, this.posX + x, this.posY + y, this.posZ + z, motX - 2.5D, 0, motZ - 2.5D, 6);
 
                         if (!this.worldObj.isRemote)
                         {
