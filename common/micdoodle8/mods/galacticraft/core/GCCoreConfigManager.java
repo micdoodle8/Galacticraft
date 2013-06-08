@@ -178,6 +178,7 @@ public class GCCoreConfigManager
     public static Property forceLoadGC;
     public static Property loadBC;
     public static boolean enableKnowledgeBook;
+    public static double dungeonBossHealthMod;
 
     private void setDefaultValues()
     {
@@ -323,6 +324,7 @@ public class GCCoreConfigManager
             GCCoreConfigManager.forceLoadGC = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Force Load", false, "Bypass mod requirements and load anyway (not recommended).");
             GCCoreConfigManager.loadBC = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Load Basic Components", false, "Set to true to load the required Basic Components items from Galacticraft.");
             GCCoreConfigManager.enableKnowledgeBook = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Enable Knowledge Book", true, "Set to false if you do not wish to have the book of knowledge item").getBoolean(true);
+            GCCoreConfigManager.dungeonBossHealthMod = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Dungeon Boss Health Modifier", 1.0D, "Change this is you wish to balance the mod (if you have more powerful weapon mods)").getDouble(1.0D);
         }
         catch (final Exception e)
         {

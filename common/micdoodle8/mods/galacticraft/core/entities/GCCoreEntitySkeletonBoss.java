@@ -5,6 +5,7 @@ import java.util.Random;
 import micdoodle8.mods.galacticraft.API.IDungeonBoss;
 import micdoodle8.mods.galacticraft.API.IDungeonBossSpawner;
 import micdoodle8.mods.galacticraft.API.IEntityBreathable;
+import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
@@ -152,7 +153,7 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
     @Override
     public int getMaxHealth()
     {
-        return 150;
+        return (int)Math.floor(150 * GCCoreConfigManager.dungeonBossHealthMod);
     }
 
     @Override
@@ -226,7 +227,7 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
 
         if (this.deathTicks == 200 && !this.worldObj.isRemote)
         {
-            i = 200;
+            i = 80;
 
             while (i > 0)
             {
