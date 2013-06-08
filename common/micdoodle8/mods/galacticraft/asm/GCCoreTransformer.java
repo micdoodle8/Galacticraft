@@ -717,18 +717,31 @@ public class GCCoreTransformer implements IClassTransformer
         reader.accept(node, 0);
 
         final Iterator<MethodNode> methods = node.methods.iterator();
-
-        while (methods.hasNext())
+        
+        boolean foundField = false;
+        
+        for (FieldNode fNode : node.fields)
         {
-            final MethodNode methodnode = methods.next();
-
-            if (methodnode.name.equals("<init>"))
+            if (fNode.name.equals("CREATIVE_MAIN_INVENTORY_SIZE"))
             {
-                final InsnList toAdd = new InsnList();
+                foundField = true;
+            }
+        }
 
-                toAdd.add(new IntInsnNode(Opcodes.BIPUSH, 51));
-                toAdd.add(new FieldInsnNode(Opcodes.PUTSTATIC, "invtweaks/InvTweaksObfuscation", "CREATIVE_MAIN_INVENTORY_SIZE", "I"));
-                methodnode.instructions.insertBefore(methodnode.instructions.getFirst(), toAdd);
+        if (foundField)
+        {
+            while (methods.hasNext())
+            {
+                final MethodNode methodnode = methods.next();
+
+                if (methodnode.name.equals("<init>"))
+                {
+                    final InsnList toAdd = new InsnList();
+
+                    toAdd.add(new IntInsnNode(Opcodes.BIPUSH, 51));
+                    toAdd.add(new FieldInsnNode(Opcodes.PUTSTATIC, "invtweaks/InvTweaksObfuscation", "CREATIVE_MAIN_INVENTORY_SIZE", "I"));
+                    methodnode.instructions.insertBefore(methodnode.instructions.getFirst(), toAdd);
+                }
             }
         }
 
