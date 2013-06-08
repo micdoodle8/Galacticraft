@@ -15,7 +15,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.tile.TileEntityAdvanced;
-import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreTileEntityDungeonSpawner extends TileEntityAdvanced implements IDungeonBossSpawner
 {
@@ -38,7 +37,7 @@ public class GCCoreTileEntityDungeonSpawner extends TileEntityAdvanced implement
             final Vector3 thisVec = new Vector3(this);
             final List<Entity> l = this.worldObj.getEntitiesWithinAABB(GCCoreEntitySkeletonBoss.class, AxisAlignedBB.getBoundingBox(thisVec.x - 15, thisVec.y - 15, thisVec.z - 15, thisVec.x + 15, thisVec.y + 15, thisVec.z + 15));
 
-            for (final Entity e : (List<Entity>) l)
+            for (final Entity e : l)
             {
                 if (e instanceof GCCoreEntitySkeletonBoss)
                 {
@@ -61,7 +60,7 @@ public class GCCoreTileEntityDungeonSpawner extends TileEntityAdvanced implement
                     mob.setDead();
                 }
             }
-            
+
             if (this.boss == null && !this.getBossDefeated())
             {
                 this.setBoss(new GCCoreEntitySkeletonBoss(this.worldObj, new Vector3(this).add(new Vector3(0.0D, 1.0D, 0.0D))));

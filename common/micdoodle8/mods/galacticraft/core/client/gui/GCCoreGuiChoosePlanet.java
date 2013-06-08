@@ -443,7 +443,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
 
                 if (i1 > k)
                 {
-                    k = i1 + (items.size() == 0 ? 0 : 34);
+                    k = i1 + (items.isEmpty() ? 0 : 34);
                 }
             }
 
@@ -453,7 +453,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
 
             if (strings.size() > 1)
             {
-                j1 += 2 + (strings.size() - 1) * (items.size() == 0 ? 10 : 16);
+                j1 += 2 + (strings.size() - 1) * (items.isEmpty() ? 10 : 16);
             }
 
             if ((this.height - 500) / 2 + i1 + j1 + 6 > this.height)
@@ -477,7 +477,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
             this.drawGradientRect(l - 3, i1 - 3, l + k + 3, i1 - 3 + 1, l1, l1);
             this.drawGradientRect(l - 3, i1 + j1 + 2, l + k + 3, i1 + j1 + 3, i2, i2);
 
-            int stringY = i1 + (items.size() == 0 ? 0 : 5);
+            int stringY = i1 + (items.isEmpty() ? 0 : 5);
 
             for (int j2 = 0; j2 < correctAmount.size(); ++j2)
             {
@@ -486,7 +486,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
 
                 s = "\u00a7" + Integer.toHexString(b ? 10 : 4) + s;
 
-                this.fontRenderer.drawStringWithShadow(s, l + (items.size() == 0 ? 0 : 19), stringY, -1);
+                this.fontRenderer.drawStringWithShadow(s, l + (items.isEmpty() ? 0 : 19), stringY, -1);
 
                 stringY += items.size() > 0 ? 16 : 14;
             }

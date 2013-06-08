@@ -11,7 +11,6 @@ import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
-import micdoodle8.mods.galacticraft.moon.wgen.dungeon.GCRoomBoss;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -41,7 +40,6 @@ import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.IPacketReceiver;
 import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -63,7 +61,7 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
     public Entity thrownEntity;
     public Entity targetEntity;
     public int deathTicks = 0;
-    
+
     public int entitiesWithin;
     public int entitiesWithinLast;
 
@@ -153,7 +151,7 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
     @Override
     public int getMaxHealth()
     {
-        return (int)Math.floor(150 * GCCoreConfigManager.dungeonBossHealthMod);
+        return (int) Math.floor(150 * GCCoreConfigManager.dungeonBossHealthMod);
     }
 
     @Override
@@ -382,7 +380,7 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
             List<Entity> entitiesWithin = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getAABBPool().getAABB(this.roomCoords.intX() - 1, this.roomCoords.intY() - 1, this.roomCoords.intZ() - 1, this.roomCoords.intX() + this.roomSize.intX(), this.roomCoords.intY() + this.roomSize.intY(), this.roomCoords.intZ() + this.roomSize.intZ()));
 
             this.entitiesWithin = entitiesWithin.size();
-            
+
             if (this.entitiesWithin == 0 && this.entitiesWithinLast != 0)
             {
                 List<EntityPlayer> entitiesWithin2 = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getAABBPool().getAABB(this.roomCoords.intX() - 11, this.roomCoords.intY() - 11, this.roomCoords.intZ() - 11, this.roomCoords.intX() + this.roomSize.intX() + 10, this.roomCoords.intY() + this.roomSize.intY() + 10, this.roomCoords.intZ() + this.roomSize.intZ() + 10));
@@ -391,17 +389,17 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
                 {
                     p.sendChatToPlayer("Boss despawned, don't leave the boss room while fighting! Re-enter room to respawn boss.");
                 }
-                
+
                 this.setDead();
-                
+
                 if (this.spawner != null)
                 {
                     this.spawner.setPlayerCheated();
                 }
-                
+
                 return;
             }
-            
+
             this.entitiesWithinLast = this.entitiesWithin;
         }
 

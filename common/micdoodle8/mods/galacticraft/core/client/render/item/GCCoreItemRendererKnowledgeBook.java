@@ -8,11 +8,10 @@ import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.FMLClientHandler;
 
-
 public class GCCoreItemRendererKnowledgeBook implements IItemRenderer
 {
     private ModelBook bookModel = new ModelBook();
-    
+
     @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type)
     {
@@ -20,7 +19,7 @@ public class GCCoreItemRendererKnowledgeBook implements IItemRenderer
         {
             return true;
         }
-        
+
         return false;
     }
 
@@ -37,12 +36,12 @@ public class GCCoreItemRendererKnowledgeBook implements IItemRenderer
         {
             return;
         }
-        
+
         GL11.glPushMatrix();
         GL11.glTranslatef(2.7F, 2.3F, -0.9F);
         GL11.glRotatef(200.0F, 0.0F, 0.0F, 1.0F);
         GL11.glRotatef(270.0F, 0.0F, 1.0F, 0.0F);
-        
+
         if (type.equals(ItemRenderType.INVENTORY))
         {
             GL11.glTranslatef(0F, 1.64F, -5.2F);
@@ -54,10 +53,10 @@ public class GCCoreItemRendererKnowledgeBook implements IItemRenderer
         {
             GL11.glScalef(5F, 5F, 5F);
         }
-        
+
         FMLClientHandler.instance().getClient().renderEngine.bindTexture("/micdoodle8/mods/galacticraft/core/client/entities/book.png");
         GL11.glEnable(GL11.GL_CULL_FACE);
-        this.bookModel.render((Entity)null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+        this.bookModel.render((Entity) null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
         GL11.glPopMatrix();
     }
 }

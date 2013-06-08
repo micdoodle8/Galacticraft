@@ -123,7 +123,7 @@ public class GalacticraftCore
     public static final int LOCALBUILDVERSION = 35;
     public static int remoteMajVer;
     public static int remoteMinVer;
-    public static int remoteBuildVer; 
+    public static int remoteBuildVer;
 
     // public static float spaceScale = 4.0F;
     // public static float spaceSpeedScale = 5.0F;
@@ -389,7 +389,7 @@ public class GalacticraftCore
         this.registerGalacticraftCreature(GCCoreEntityZombie.class, "Evolved Zombie", GCCoreConfigManager.idEntityEvolvedZombie, 44975, 7969893);
         this.registerGalacticraftCreature(GCCoreEntityCreeper.class, "Evolved Creeper", GCCoreConfigManager.idEntityEvolvedCreeper, 894731, 0);
         this.registerGalacticraftCreature(GCCoreEntitySkeleton.class, "Evolved Skeleton", GCCoreConfigManager.idEntityEvolvedSkeleton, 12698049, 4802889);
-         this.registerGalacticraftCreature(GCCoreEntitySkeletonBoss.class, "Evolved Skeleton Boss", GCCoreConfigManager.idEntityEvolvedSkeletonBoss, 12698049, 4802889);
+        this.registerGalacticraftCreature(GCCoreEntitySkeletonBoss.class, "Evolved Skeleton Boss", GCCoreConfigManager.idEntityEvolvedSkeletonBoss, 12698049, 4802889);
         // this.registerGalacticraftCreature(GCCoreEntityWorm.class,
         // "Giant Worm", GCCoreConfigManager.idEntityGiantWorm, 12698049,
         // 4802889);

@@ -93,7 +93,7 @@ public class GCRoomChests extends GCDungeonRoom
         if (rand.nextInt(27) < 5)
         {
             int r = rand.nextInt(5);
-            
+
             switch (r)
             {
             case 0:
@@ -108,7 +108,7 @@ public class GCRoomChests extends GCDungeonRoom
                 return new ItemStack(Item.bucketWater, rand.nextInt(2) + 1, 0);
             }
         }
-        
+
         return null;
     }
 }

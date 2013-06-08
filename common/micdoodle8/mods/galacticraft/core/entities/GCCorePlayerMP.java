@@ -49,7 +49,6 @@ import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.IChunkProvider;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -842,7 +841,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
                         }
                     }
                 }
-                
+
                 if (this.worldObj.rand.nextInt(MathHelper.floor_double(f * 3000)) == 0)
                 {
                     final EntityPlayer closestPlayer = this.worldObj.getClosestPlayerToEntity(this, 100);

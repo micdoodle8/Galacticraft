@@ -16,6 +16,6 @@ public interface IDungeonBossSpawner
     public void setBoss(IDungeonBoss boss);
 
     public IDungeonBoss getBoss();
-    
+
     public void setPlayerCheated();
 }

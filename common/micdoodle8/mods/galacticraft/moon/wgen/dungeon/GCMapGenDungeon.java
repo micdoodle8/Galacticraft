@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Random;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
-import net.minecraft.block.Block;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 

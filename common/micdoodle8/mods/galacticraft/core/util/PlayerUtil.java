@@ -12,7 +12,7 @@ public class PlayerUtil
 {
     public static GCCorePlayerMP getPlayerBaseServerFromPlayerUsername(String username)
     {
-        if (GalacticraftCore.playersServer.size() == 0)
+        if (GalacticraftCore.playersServer.isEmpty())
         {
             // new EmptyStackException().printStackTrace();
         }
@@ -41,7 +41,7 @@ public class PlayerUtil
             return null;
         }
 
-        if (GalacticraftCore.playersServer.size() == 0)
+        if (GalacticraftCore.playersServer.isEmpty())
         {
             // new EmptyStackException().printStackTrace();
         }
@@ -70,7 +70,7 @@ public class PlayerUtil
             return null;
         }
 
-        if (GalacticraftCore.playersClient.size() == 0)
+        if (GalacticraftCore.playersClient.isEmpty())
         {
             return null;
         }
