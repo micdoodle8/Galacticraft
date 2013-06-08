@@ -36,7 +36,7 @@ public class GCCoreTileEntityDungeonSpawner extends TileEntityAdvanced implement
         if (!this.worldObj.isRemote)
         {
             final Vector3 thisVec = new Vector3(this);
-            final List l = this.worldObj.getEntitiesWithinAABB(GCCoreEntitySkeletonBoss.class, AxisAlignedBB.getBoundingBox(thisVec.x - 15, thisVec.y - 15, thisVec.z - 15, thisVec.x + 15, thisVec.y + 15, thisVec.z + 15));
+            final List<Entity> l = this.worldObj.getEntitiesWithinAABB(GCCoreEntitySkeletonBoss.class, AxisAlignedBB.getBoundingBox(thisVec.x - 15, thisVec.y - 15, thisVec.z - 15, thisVec.x + 15, thisVec.y + 15, thisVec.z + 15));
 
             for (final Entity e : (List<Entity>) l)
             {
@@ -67,12 +67,12 @@ public class GCCoreTileEntityDungeonSpawner extends TileEntityAdvanced implement
                 this.setBoss(new GCCoreEntitySkeletonBoss(this.worldObj, new Vector3(this).add(new Vector3(0.0D, 1.0D, 0.0D))));
                 ((GCCoreEntitySkeletonBoss) this.boss).setRoom(this.roomCoords, this.roomSize);
             }
-            
+
+            entitiesWithin = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getAABBPool().getAABB(this.roomCoords.intX() - 1, this.roomCoords.intY() - 1, this.roomCoords.intZ() - 1, this.roomCoords.intX() + this.roomSize.intX(), this.roomCoords.intY() + this.roomSize.intY(), this.roomCoords.intZ() + this.roomSize.intZ()));
+
             if (this.playerCheated)
             {
-                entitiesWithin = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getAABBPool().getAABB(this.roomCoords.intX() - 1, this.roomCoords.intY() - 1, this.roomCoords.intZ() - 1, this.roomCoords.intX() + this.roomSize.intX(), this.roomCoords.intY() + this.roomSize.intY(), this.roomCoords.intZ() + this.roomSize.intZ()));
-
-                if (entitiesWithin.size() > 0)
+                if (!entitiesWithin.isEmpty())
                 {
                     this.setBossSpawned(false);
                     this.setBossDefeated(false);
@@ -81,18 +81,13 @@ public class GCCoreTileEntityDungeonSpawner extends TileEntityAdvanced implement
                 }
             }
 
-            EntityPlayer closestPlayer = null;
-
-            final Vector3 vec = new Vector3(this);
-            closestPlayer = this.worldObj.getClosestPlayer(vec.x, vec.y, vec.z, 75.0D);
-
-            this.playerInRange = closestPlayer != null;
+            this.playerInRange = !entitiesWithin.isEmpty();
 
             if (this.playerInRange && !this.lastPlayerInRange)
             {
                 if (this.getBoss() != null && !this.getBossSpawned())
                 {
-                    if (closestPlayer != null && this.boss instanceof Entity)
+                    if (this.boss instanceof Entity)
                     {
                         this.worldObj.spawnEntityInWorld((Entity) this.boss);
                         this.setBossSpawned(true);
