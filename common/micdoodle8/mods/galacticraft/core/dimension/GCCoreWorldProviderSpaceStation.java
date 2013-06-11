@@ -245,7 +245,7 @@ public class GCCoreWorldProviderSpaceStation extends WorldProvider implements IO
     }
 
     @Override
-    public double getSolorEnergyMultiplier()
+    public double getSolarEnergyMultiplier()
     {
         return GCCoreConfigManager.spaceStationEnergyScalar;
     }
