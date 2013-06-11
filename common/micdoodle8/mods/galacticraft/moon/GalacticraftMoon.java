@@ -42,7 +42,7 @@ public class GalacticraftMoon implements IGalacticraftSubMod
     public static final String BLOCK_TEXTURE_FILE = GalacticraftMoon.FILE_PATH + GalacticraftMoon.CLIENT_PATH + "blocks/moon.png";
     public static final String ITEM_TEXTURE_FILE = GalacticraftMoon.FILE_PATH + GalacticraftMoon.CLIENT_PATH + "items/moon.png";
     public static final String CONFIG_FILE = "Galacticraft/moon.conf";
-    private static final String[] LANGUAGES_SUPPORTED = new String[] { "cz_CZE", "de_DE", "en_GB", "en_US", "es_ES", "fr_FR", "ja_JP", "nl_NL", "pl_PL", "ru_RU", "zh_CN" };
+    private static final String[] LANGUAGES_SUPPORTED = new String[] { "cz_CZE", "de_DE", "en_GB", "en_US", "es_ES", "fi_FI", "fr_FR", "ja_JP", "nl_NL", "pl_PL", "ru_RU", "zh_CN" };
 
     public static GCCoreCreativeTab galacticraftMoonTab;
 
