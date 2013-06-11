@@ -93,12 +93,12 @@ public class GalacticraftPlugin implements IFMLLoadingPlugin, IFMLCallHook
 
                         final int l = a.length() + 1;
 
-                        GCLog.info("[GCCoreTransformer]: " + "Registered Transformer " + s.substring(l));
+                        GCLog.info("Successfully Registered Transformer");
                     }
                 }
                 catch (final Exception ex)
                 {
-                    GCLog.info("[GCCoreTransformer]: " + "Error while running transformer " + s);
+                    GCLog.info("Error while running transformer " + s);
                     return null;
                 }
             }
