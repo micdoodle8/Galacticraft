@@ -146,12 +146,16 @@ public class GCCoreTileEntityDungeonSpawner extends TileEntityAdvanced implement
         nbt.setBoolean("playerInRange", this.playerInRange);
         nbt.setBoolean("defeated", this.getBossDefeated());
         nbt.setBoolean("playerCheated", this.playerCheated);
-        nbt.setDouble("roomCoordsX", this.roomCoords.x);
-        nbt.setDouble("roomCoordsY", this.roomCoords.y);
-        nbt.setDouble("roomCoordsZ", this.roomCoords.z);
-        nbt.setDouble("roomSizeX", this.roomSize.x);
-        nbt.setDouble("roomSizeY", this.roomSize.y);
-        nbt.setDouble("roomSizeZ", this.roomSize.z);
+
+        if (this.roomCoords != null)
+        {
+            nbt.setDouble("roomCoordsX", this.roomCoords.x);
+            nbt.setDouble("roomCoordsY", this.roomCoords.y);
+            nbt.setDouble("roomCoordsZ", this.roomCoords.z);
+            nbt.setDouble("roomSizeX", this.roomSize.x);
+            nbt.setDouble("roomSizeY", this.roomSize.y);
+            nbt.setDouble("roomSizeZ", this.roomSize.z);
+        }
     }
 
     @Override

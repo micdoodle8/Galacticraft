@@ -602,12 +602,16 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
     public void writeEntityToNBT(NBTTagCompound nbt)
     {
         super.writeEntityToNBT(nbt);
-        nbt.setDouble("roomCoordsX", this.roomCoords.x);
-        nbt.setDouble("roomCoordsY", this.roomCoords.y);
-        nbt.setDouble("roomCoordsZ", this.roomCoords.z);
-        nbt.setDouble("roomSizeX", this.roomSize.x);
-        nbt.setDouble("roomSizeY", this.roomSize.y);
-        nbt.setDouble("roomSizeZ", this.roomSize.z);
+        
+        if (this.roomCoords != null)
+        {
+            nbt.setDouble("roomCoordsX", this.roomCoords.x);
+            nbt.setDouble("roomCoordsY", this.roomCoords.y);
+            nbt.setDouble("roomCoordsZ", this.roomCoords.z);
+            nbt.setDouble("roomSizeX", this.roomSize.x);
+            nbt.setDouble("roomSizeY", this.roomSize.y);
+            nbt.setDouble("roomSizeZ", this.roomSize.z);
+        }
     }
 
     @Override
