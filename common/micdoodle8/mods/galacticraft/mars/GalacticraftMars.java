@@ -65,7 +65,7 @@ public class GalacticraftMars implements IGalacticraftSubMod
     public static final String FILE_PATH = "/micdoodle8/mods/galacticraft/mars/";
     public static final String CLIENT_PATH = "client/";
     public static final String LANGUAGE_PATH = GalacticraftMars.FILE_PATH + GalacticraftMars.CLIENT_PATH + "lang/";
-    private static final String[] LANGUAGES_SUPPORTED = new String[] { "en_US", "fi_FI" };
+    private static final String[] LANGUAGES_SUPPORTED = new String[] { "en_US", "fi_FI", "ru_RU" };
 
     public static final int LOCALMAJVERSION = 0;
     public static final int LOCALMINVERSION = 1;
