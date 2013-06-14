@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.API.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.API.SpaceStationRecipe;
 import micdoodle8.mods.galacticraft.API.SpaceStationType;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
+import micdoodle8.mods.galacticraft.core.GCLog;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryBuggyBench;
@@ -31,17 +32,17 @@ public class RecipeUtil
         if (!GalacticraftCore.setSpaceStationRecipe)
         {
             final HashMap<Object, Integer> inputMap = new HashMap<Object, Integer>();
-            inputMap.put(GregTech_API.getGregTechItem(0, 1, 78), 4);
-            inputMap.put(GregTech_API.getGregTechItem(0, 1, 67), 8);
+            inputMap.put(RecipeUtil.getGregtechItem(0, 1, 78), 4);
+            inputMap.put(RecipeUtil.getGregtechItem(0, 1, 67), 8);
             inputMap.put("ingotSteel", 14);
-            inputMap.put(GregTech_API.getGregTechBlock(0, 1, 10), 1);
+            inputMap.put(RecipeUtil.getGregtechBlock(0, 1, 10), 1);
             GalacticraftRegistry.registerSpaceStation(new SpaceStationType(GCCoreConfigManager.idDimensionOverworldOrbit, "Overworld", 0, new SpaceStationRecipe(inputMap)));
             GalacticraftCore.setSpaceStationRecipe = true;
         }
 
-        RecipeUtil.addRecipe(new ItemStack(GCCoreItems.rocketEngine, 1), new Object[] { " V ", "XWX", "XZX", 'V', new ItemStack(GCCoreItems.canister, 1, 0), 'W', GregTech_API.getGregTechBlock(1, 1, 31), 'X', GCCoreItems.heavyPlating, 'Z', GregTech_API.getGregTechBlock(1, 1, 37) });
+        RecipeUtil.addRecipe(new ItemStack(GCCoreItems.rocketEngine, 1), new Object[] { " V ", "XWX", "XZX", 'V', new ItemStack(GCCoreItems.canister, 1, 0), 'W', RecipeUtil.getGregtechBlock(1, 1, 31), 'X', GCCoreItems.heavyPlating, 'Z', RecipeUtil.getGregtechBlock(1, 1, 37) });
 
-        RecipeUtil.addRecipe(new ItemStack(GCCoreItems.rocketNoseCone, 1), new Object[] { " Z ", " X ", "XYX", 'X', GCCoreItems.heavyPlating, 'Y', GregTech_API.getGregTechBlock(1, 1, 4), 'Z', Items.getItem("reinforcedGlass"), });
+        RecipeUtil.addRecipe(new ItemStack(GCCoreItems.rocketNoseCone, 1), new Object[] { " Z ", " X ", "XYX", 'X', GCCoreItems.heavyPlating, 'Y', RecipeUtil.getGregtechBlock(1, 1, 4), 'Z', Items.getItem("reinforcedGlass"), });
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.oxygenPipe, 4), new Object[] { "XXX", "   ", "XXX", 'X', Block.thinGlass });
 
@@ -83,29 +84,29 @@ public class RecipeUtil
             CraftingManager.getInstance().addShapelessRecipe(new ItemStack(GCCoreItems.flag, 1, GCCoreItemFlag.getFlagDamageValueFromDye(var2)), new Object[] { new ItemStack(Item.dyePowder, 1, var2), new ItemStack(GCCoreItems.flag, 1, 16) });
         }
 
-        RecipeUtil.addRecipe(new ItemStack(GCCoreItems.heavyPlating, 2), new Object[] { "X", "Y", "Z", 'X', GregTech_API.getGregTechItem(0, 1, 83), 'Y', GregTech_API.getGregTechItem(0, 1, 77), 'Z', GregTech_API.getGregTechItem(0, 1, 75), });
+        RecipeUtil.addRecipe(new ItemStack(GCCoreItems.heavyPlating, 2), new Object[] { "X", "Y", "Z", 'X', RecipeUtil.getGregtechItem(0, 1, 83), 'Y', RecipeUtil.getGregtechItem(0, 1, 77), 'Z', RecipeUtil.getGregtechItem(0, 1, 75), });
 
-        RecipeUtil.addRecipe(new ItemStack(GCCoreItems.rocketFins, 1), new Object[] { " Y ", "XYX", "X X", 'X', GCCoreItems.heavyPlating, 'Y', GregTech_API.getGregTechItem(0, 1, 78) });
+        RecipeUtil.addRecipe(new ItemStack(GCCoreItems.rocketFins, 1), new Object[] { " Y ", "XYX", "X X", 'X', GCCoreItems.heavyPlating, 'Y', RecipeUtil.getGregtechItem(0, 1, 78) });
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.landingPad, 9, 0), new Object[] { "YYY", "XXX", 'X', Block.blockIron, 'Y', "plateIron" });
 
-        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.landingPad, 9, 1), new Object[] { "YYY", "XXX", 'X', Block.blockIron, 'Y', GregTech_API.getGregTechItem(0, 1, 78) });
+        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.landingPad, 9, 1), new Object[] { "YYY", "XXX", 'X', Block.blockIron, 'Y', RecipeUtil.getGregtechItem(0, 1, 78) });
 
-        RecipeUtil.addRecipe(new ItemStack(GCCoreItems.buggyMaterial, 1, 0), new Object[] { "WWW", "WXW", "WWW", 'W', Item.leather, 'X', GregTech_API.getGregTechItem(0, 1, 66) });
+        RecipeUtil.addRecipe(new ItemStack(GCCoreItems.buggyMaterial, 1, 0), new Object[] { "WWW", "WXW", "WWW", 'W', Item.leather, 'X', RecipeUtil.getGregtechItem(0, 1, 66) });
 
-        RecipeUtil.addRecipe(new ItemStack(GCCoreItems.buggyMaterial, 1, 1), new Object[] { "  Y", " ZY", "XXX", 'X', GregTech_API.getGregTechItem(0, 1, 26), 'Y', GregTech_API.getGregTechItem(0, 1, 78), 'Z', GregTech_API.getGregTechItem(0, 1, 64) });
+        RecipeUtil.addRecipe(new ItemStack(GCCoreItems.buggyMaterial, 1, 1), new Object[] { "  Y", " ZY", "XXX", 'X', RecipeUtil.getGregtechItem(0, 1, 26), 'Y', RecipeUtil.getGregtechItem(0, 1, 78), 'Z', RecipeUtil.getGregtechItem(0, 1, 64) });
 
-        RecipeUtil.addRecipe(new ItemStack(GCCoreItems.buggyMaterial, 1, 2), new Object[] { "XXX", "YZY", "XXX", 'X', GregTech_API.getGregTechItem(0, 1, 66), 'Y', GregTech_API.getGregTechItem(0, 1, 78), 'Z', Block.chest });
+        RecipeUtil.addRecipe(new ItemStack(GCCoreItems.buggyMaterial, 1, 2), new Object[] { "XXX", "YZY", "XXX", 'X', RecipeUtil.getGregtechItem(0, 1, 66), 'Y', RecipeUtil.getGregtechItem(0, 1, 78), 'Z', Block.chest });
 
-        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.oxygenDetector, 1), new Object[] { "WXW", "YZY", "WVW", 'V', GregTech_API.getGregTechItem(0, 1, 83), 'W', "ingotSteel", 'X', GCCoreItems.airFan, 'Y', GCCoreItems.airVent, 'Z', GregTech_API.getGregTechBlock(1, 0, 15) });
+        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.oxygenDetector, 1), new Object[] { "WXW", "YZY", "WVW", 'V', RecipeUtil.getGregtechItem(0, 1, 83), 'W', "ingotSteel", 'X', GCCoreItems.airFan, 'Y', GCCoreItems.airVent, 'Z', RecipeUtil.getGregtechBlock(1, 0, 15) });
 
-        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.airDistributor, 1), new Object[] { "WWW", "WZW", "XVX", 'V', GregTech_API.getGregTechItem(0, 1, 83), 'W', "ingotSteel", 'X', Item.redstone, 'Y', GCCoreItems.airVent, 'Z', GregTech_API.getGregTechBlock(1, 0, 15) });
+        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.airDistributor, 1), new Object[] { "WWW", "WZW", "XVX", 'V', RecipeUtil.getGregtechItem(0, 1, 83), 'W', "ingotSteel", 'X', Item.redstone, 'Y', GCCoreItems.airVent, 'Z', RecipeUtil.getGregtechBlock(1, 0, 15) });
 
-        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealer, 1), new Object[] { "WZW", "YTX", "WUW", 'T', GregTech_API.getGregTechBlock(1, 0, 15), 'V', "copperWire", 'W', "ingotSteel", 'X', GCCoreItems.airFan, 'Y', GCCoreItems.airVent, 'Z', GregTech_API.getGregTechItem(0, 1, 78), 'U', GregTech_API.getGregTechItem(0, 1, 83) });
+        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealer, 1), new Object[] { "WZW", "YTX", "WUW", 'T', RecipeUtil.getGregtechBlock(1, 0, 15), 'V', "copperWire", 'W', "ingotSteel", 'X', GCCoreItems.airFan, 'Y', GCCoreItems.airVent, 'Z', RecipeUtil.getGregtechItem(0, 1, 78), 'U', RecipeUtil.getGregtechItem(0, 1, 83) });
 
-        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.blockAirCollector, 1), new Object[] { "WVW", "YXZ", "WUW", 'U', GregTech_API.getGregTechItem(0, 1, 83), 'V', GCCoreItems.oxygenConcentrator, 'W', "ingotSteel", 'X', GregTech_API.getGregTechBlock(1, 0, 15), 'Y', GCCoreItems.airFan, 'Z', GCCoreItems.airVent });
+        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.blockAirCollector, 1), new Object[] { "WVW", "YXZ", "WUW", 'U', RecipeUtil.getGregtechItem(0, 1, 83), 'V', GCCoreItems.oxygenConcentrator, 'W', "ingotSteel", 'X', RecipeUtil.getGregtechBlock(1, 0, 15), 'Y', GCCoreItems.airFan, 'Z', GCCoreItems.airVent });
 
-        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.rocketBench, 1), new Object[] { "X Y", "ZAB", "DCD", 'X', GregTech_API.getGregTechItem(42, 1, 1), 'Y', GregTech_API.getGregTechItem(46, 1, 1), 'Z', Items.getItem("diamondDrill"), 'A', GregTech_API.getGregTechBlock(1, 1, 16), 'B', Items.getItem("electricWrench"), 'C', GregTech_API.getGregTechBlock(1, 1, 60), 'D', GregTech_API.getGregTechBlock(1, 0, 10), });
+        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.rocketBench, 1), new Object[] { "X Y", "ZAB", "DCD", 'X', RecipeUtil.getGregtechItem(42, 1, 1), 'Y', RecipeUtil.getGregtechItem(46, 1, 1), 'Z', Items.getItem("diamondDrill"), 'A', RecipeUtil.getGregtechBlock(1, 1, 16), 'B', Items.getItem("electricWrench"), 'C', RecipeUtil.getGregtechBlock(1, 1, 60), 'D', RecipeUtil.getGregtechBlock(1, 0, 10), });
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreItems.heavyOxygenTank, 1, GCCoreItems.heavyOxygenTank.getMaxDamage()), new Object[] { "ZZZ", "XXX", "YYY", 'X', new ItemStack(GCCoreItems.canister, 1, 0), 'Y', "ingotSteel", 'Z', new ItemStack(Block.cloth, 1, 14) });
 
@@ -147,11 +148,11 @@ public class RecipeUtil
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreItems.oilCanister, 1, 61), new Object[] { "WXW", "WYW", "WZW", 'X', "ingotSteel", 'Y', Block.glass, 'Z', new ItemStack(GCCoreItems.canister, 1, 0), 'W', "ingotTin" });
 
-        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.refinery), new Object[] { " Z ", "WYW", "XVX", 'X', "ingotSteel", 'Y', GregTech_API.getGregTechBlock(1, 0, 15), 'Z', new ItemStack(GCCoreItems.canister, 1, 1), 'W', Block.stone, 'V', GregTech_API.getGregTechItem(0, 1, 83) });
+        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.refinery), new Object[] { " Z ", "WYW", "XVX", 'X', "ingotSteel", 'Y', RecipeUtil.getGregtechBlock(1, 0, 15), 'Z', new ItemStack(GCCoreItems.canister, 1, 1), 'W', Block.stone, 'V', RecipeUtil.getGregtechItem(0, 1, 83) });
 
-        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.compressor), new Object[] { "XZX", "XWX", "XYX", 'X', "ingotSteel", 'Y', GregTech_API.getGregTechItem(0, 1, 83), 'Z', GCCoreItems.oxygenConcentrator, 'W', GregTech_API.getGregTechBlock(1, 0, 15) });
+        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.compressor), new Object[] { "XZX", "XWX", "XYX", 'X', "ingotSteel", 'Y', RecipeUtil.getGregtechItem(0, 1, 83), 'Z', GCCoreItems.oxygenConcentrator, 'W', RecipeUtil.getGregtechBlock(1, 0, 15) });
 
-        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.fuelLoader), new Object[] { "XZX", "ZWZ", "XYX", 'X', "ingotSteel", 'Y', GregTech_API.getGregTechItem(0, 1, 83), 'Z', Items.getItem("reinforcedGlass"), 'W', GregTech_API.getGregTechBlock(1, 0, 15) });
+        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.fuelLoader), new Object[] { "XZX", "ZWZ", "XYX", 'X', "ingotSteel", 'Y', RecipeUtil.getGregtechItem(0, 1, 83), 'Z', Items.getItem("reinforcedGlass"), 'W', RecipeUtil.getGregtechBlock(1, 0, 15) });
     }
 
     public static void addThermalExpansionCraftingRecipes()
@@ -682,5 +683,31 @@ public class RecipeUtil
     private static void addRecipe(ItemStack result, Object[] obj)
     {
         CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(result, obj));
+    }
+    
+    public static ItemStack getGregtechBlock(int index, int amount, int metadata)
+    {
+        ItemStack stack = GregTech_API.getGregTechBlock(index, amount, metadata);
+        
+        if (stack != null)
+        {
+            return stack;
+        }
+
+        GCLog.severe("Failed to load Gregtech block for recipe, ensure Gregtech has loaded properly");
+        return stack;
+    }
+    
+    public static ItemStack getGregtechItem(int index, int amount, int metadata)
+    {
+        ItemStack stack = GregTech_API.getGregTechItem(index, index, metadata);
+        
+        if (stack != null)
+        {
+            return stack;
+        }
+
+        GCLog.severe("Failed to load Gregtech item for recipe, ensure Gregtech has loaded properly");
+        return stack;
     }
 }
