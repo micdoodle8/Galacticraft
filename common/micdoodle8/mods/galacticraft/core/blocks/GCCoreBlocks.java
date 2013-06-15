@@ -8,7 +8,9 @@ import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockEnclosedBlock;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockLandingPad;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemSapling;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.material.MaterialLiquid;
 import net.minecraft.util.Icon;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -35,8 +37,8 @@ public class GCCoreBlocks
     public static Block decorationBlocks;
     public static Block airLockFrame;
     public static Block airLockSeal;
-    public static GCCoreBlockCrudeOilMoving crudeOilMoving;
-    public static GCCoreBlockCrudeOilStationary crudeOilStill;
+    public static GCCoreBlockCrudeOil crudeOilMoving;
+    public static GCCoreBlockCrudeOil crudeOilStill;
     public static Block refinery;
     public static Block compressor;
     public static Block fuelLoader;
@@ -48,6 +50,8 @@ public class GCCoreBlocks
     public static Block oxygenDetector;
 
     public static Icon[] blockIcons;
+    
+    public static Material crudeOil = new MaterialLiquid(MapColor.foliageColor);
 
     public static void initBlocks()
     {
@@ -66,8 +70,8 @@ public class GCCoreBlocks
         GCCoreBlocks.decorationBlocks = new GCCoreBlock(GCCoreConfigManager.idBlockDecorationBlock).setHardness(3.0F).setUnlocalizedName("decorationblock");
         GCCoreBlocks.airLockFrame = new GCCoreBlockAirLockFrame(GCCoreConfigManager.idBlockAirLockFrame).setHardness(3.0F).setStepSound(Block.soundMetalFootstep).setUnlocalizedName("airLockFrame");
         GCCoreBlocks.airLockSeal = new GCCoreBlockAirLockWall(GCCoreConfigManager.idBlockAirLockSeal).setHardness(100.0F).setStepSound(Block.soundMetalFootstep).setUnlocalizedName("airLockSeal");
-        GCCoreBlocks.crudeOilStill = (GCCoreBlockCrudeOilStationary) new GCCoreBlockCrudeOilStationary(GCCoreConfigManager.idBlockCrudeOilStill, Material.water).setHardness(3.0F).setUnlocalizedName("crudeOilStill");
-        GCCoreBlocks.crudeOilMoving = (GCCoreBlockCrudeOilMoving) new GCCoreBlockCrudeOilMoving(GCCoreConfigManager.idBlockCrudeOilMoving, Material.water).setHardness(3.0F).setUnlocalizedName("crudeOilMoving");
+        GCCoreBlocks.crudeOilStill = (GCCoreBlockCrudeOil) new GCCoreBlockCrudeOil(GCCoreConfigManager.idBlockCrudeOilStill, GCCoreBlocks.crudeOil).setHardness(3.0F).setUnlocalizedName("crudeOilStill");
+        GCCoreBlocks.crudeOilMoving = (GCCoreBlockCrudeOil) new GCCoreBlockCrudeOil(GCCoreConfigManager.idBlockCrudeOilMoving, GCCoreBlocks.crudeOil).setHardness(3.0F).setUnlocalizedName("crudeOilMoving");
         GCCoreBlocks.refinery = new GCCoreBlockRefinery(GCCoreConfigManager.idBlockRefinery, 0).setHardness(3.0F).setStepSound(Block.soundMetalFootstep).setUnlocalizedName("refinery");
         GCCoreBlocks.compressor = new GCCoreBlockOxygenCompressor(GCCoreConfigManager.idBlockAirCompressor, false).setHardness(3.5F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("oxygenCompressor");
         GCCoreBlocks.fuelLoader = new GCCoreBlockFuelLoader(GCCoreConfigManager.idBlockFuelLoader).setHardness(3.0F).setStepSound(Block.soundMetalFootstep).setUnlocalizedName("fuelLoader");
