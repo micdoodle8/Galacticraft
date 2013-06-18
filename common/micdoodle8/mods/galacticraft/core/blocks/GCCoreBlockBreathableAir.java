@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreBlockBreathableAir extends Block
 {
@@ -82,7 +83,8 @@ public class GCCoreBlockBreathableAir extends Block
     {
         if (var1.getBlockMetadata(var2, var3, var4) == 5)
         {
-            this.spread(var1, var2, var3, var4);
+            final OxygenPressureProtocol protocol = new OxygenPressureProtocol();
+            this.spread(protocol, var1, var2, var3, var4);
         }
     }
 
@@ -139,15 +141,16 @@ public class GCCoreBlockBreathableAir extends Block
     @Override
     public void onNeighborBlockChange(World var1, int var2, int var3, int var4, int var5)
     {
+        final OxygenPressureProtocol protocol = new OxygenPressureProtocol();
+        
         if (var5 != 0 && var5 != GCCoreBlocks.breatheableAir.blockID)
         {
-            this.spread(var1, var2, var3, var4);
+            this.spread(protocol, var1, var2, var3, var4);
         }
     }
 
-    private void spread(World var1, int var2, int var3, int var4)
+    private void spread(OxygenPressureProtocol var5, World var1, int var2, int var3, int var4)
     {
-        final OxygenPressureProtocol var5 = new OxygenPressureProtocol();
-        var5.unSeal(var1, var2, var3, var4);
+        var5.seal(var1, var2, var3, var4, 2);
     }
 }
