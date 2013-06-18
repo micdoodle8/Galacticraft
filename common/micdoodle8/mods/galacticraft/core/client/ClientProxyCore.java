@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Set;
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
@@ -119,6 +120,7 @@ import net.minecraftforge.client.EnumHelperClient;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
 import org.lwjgl.input.Keyboard;
+import cofh.api.core.RegistryAccess;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
@@ -268,6 +270,12 @@ public class ClientProxyCore extends CommonProxyCore
         capeMap.put("TerraGenome", capeString);
         capeMap.put("X_angelz_X", capeString);
         capeMap.put("Yangjo123", capeString);
+        
+        // Add to CoFH cape registry as well
+        for (Entry<String, String> e : capeMap.entrySet())
+        {
+            RegistryAccess.capeRegistry.register(e.getKey(), e.getValue());
+        }
     }
 
     @Override
