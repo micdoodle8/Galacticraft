@@ -297,7 +297,7 @@ public class GalacticraftCore
         if (GCCoreConfigManager.loadBC.getBoolean(false))
         {
             BasicComponents.registerTileEntities();
-            BasicComponents.register(GalacticraftCore.instance, GalacticraftCore.CHANNEL);
+            BasicComponents.register(GalacticraftCore.instance, GalacticraftCore.CHANNELENTITIES);
             BasicComponents.requestAll();
 
             RecipeUtil.addBasicComponentsCraftingRecipes();

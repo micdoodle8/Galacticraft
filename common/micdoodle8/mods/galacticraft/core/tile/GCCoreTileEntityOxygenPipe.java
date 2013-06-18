@@ -59,7 +59,7 @@ public class GCCoreTileEntityOxygenPipe extends TileEntity implements ITubeConne
 
         if (this.preColorCooldown == 0 && !this.worldObj.isRemote && this.preLoadColor != -1)
         {
-            PacketManager.sendPacketToClients(PacketManager.getPacket(GalacticraftCore.CHANNEL, this, this.getColor(), this.preLoadColor));
+            PacketManager.sendPacketToClients(PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getColor(), this.preLoadColor));
             this.preLoadColor = -1;
             this.setColor = true;
         }
