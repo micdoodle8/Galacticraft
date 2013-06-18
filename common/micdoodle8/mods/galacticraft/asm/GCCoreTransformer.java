@@ -628,25 +628,16 @@ public class GCCoreTransformer implements IClassTransformer
             }
             else if (methodnode.name.equals(map.get("clickMiddleMouseButton")) && methodnode.desc.equals(map.get("clickMiddleMouseButtonDesc")))
             {
-                FMLLog.info("======================");
-                FMLLog.info("FOUND METHOD");
-                FMLLog.info("======================");
                 for (int count = 0; count < methodnode.instructions.size(); count++)
                 {
                     final AbstractInsnNode list = methodnode.instructions.get(count);
 
                     if (list instanceof IntInsnNode)
                     {
-                        FMLLog.info("======================");
-                        FMLLog.info("FOUND INSN NODE");
-                        FMLLog.info("======================");
                         IntInsnNode nodeAt = (IntInsnNode)list;
                         
                         if (nodeAt.operand == 9)
                         {
-                            FMLLog.info("======================");
-                            FMLLog.info("FOUND CORRECT INSN NODE");
-                            FMLLog.info("======================");
                             methodnode.instructions.set(nodeAt, new IntInsnNode(Opcodes.BIPUSH, 14));
                         }
                     }
