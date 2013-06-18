@@ -20,6 +20,7 @@ import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.TypeInsnNode;
 import org.objectweb.asm.tree.VarInsnNode;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.IClassTransformer;
 import cpw.mods.fml.relauncher.RelaunchClassLoader;
 
@@ -128,6 +129,10 @@ public class GCCoreTransformer implements IClassTransformer
         this.unObfuscatedMap.put("runTick", "runTick");
         this.obfuscatedMap.put("runTickDesc", "()V");
         this.unObfuscatedMap.put("runTickDesc", "()V");
+        this.obfuscatedMap.put("clickMiddleMouseButton", "O");
+        this.unObfuscatedMap.put("clickMiddleMouseButton", "clickMiddleMouseButton");
+        this.obfuscatedMap.put("clickMiddleMouseButtonDesc", "()V");
+        this.unObfuscatedMap.put("clickMiddleMouseButtonDesc", "()V");
 
         this.obfuscatedMap.put("updateEntitiesMethod", "h");
         this.unObfuscatedMap.put("updateEntitiesMethod", "updateEntities");
@@ -257,28 +262,6 @@ public class GCCoreTransformer implements IClassTransformer
         {
             bytes = this.transform13(name, bytes, this.obfuscatedMap);
         }
-
-        // if (name.replace('.',
-        // '/').equals(this.unObfuscatedMap.get("worldClass")))
-        // {
-        // bytes = this.transform14(name, bytes, this.unObfuscatedMap);
-        // }
-        // else if (name.replace('.',
-        // '/').equals(this.obfuscatedMap.get("worldClass")))
-        // {
-        // bytes = this.transform14(name, bytes, this.obfuscatedMap);
-        // }
-        //
-        // if (name.replace('.',
-        // '/').equals(this.unObfuscatedMap.get("renderGlobalClass")))
-        // {
-        // bytes = this.transform15(name, bytes, this.unObfuscatedMap);
-        // }
-        // else if (name.replace('.',
-        // '/').equals(this.obfuscatedMap.get("renderGlobalClass")))
-        // {
-        // bytes = this.transform15(name, bytes, this.obfuscatedMap);
-        // }
 
         return bytes;
     }
@@ -616,6 +599,7 @@ public class GCCoreTransformer implements IClassTransformer
         {
             final MethodNode methodnode = methods.next();
 
+            FMLLog.info("" + methodnode.name + " " + methodnode.desc);
             if (methodnode.name.equals(map.get("runTick")) && methodnode.desc.equals(map.get("runTickDesc")))
             {
                 for (int count = 0; count < methodnode.instructions.size(); count++)
@@ -638,6 +622,32 @@ public class GCCoreTransformer implements IClassTransformer
                         if (nodeAt.getOpcode() == Opcodes.INVOKESPECIAL && nodeAt.owner.equals(map.get("guiPlayer")))
                         {
                             methodnode.instructions.set(nodeAt, new MethodInsnNode(Opcodes.INVOKESPECIAL, "micdoodle8/mods/galacticraft/core/client/gui/GCCoreGuiInventory", "<init>", "(L" + map.get("player") + ";)V"));
+                        }
+                    }
+                }
+            }
+            else if (methodnode.name.equals(map.get("clickMiddleMouseButton")) && methodnode.desc.equals(map.get("clickMiddleMouseButtonDesc")))
+            {
+                FMLLog.info("======================");
+                FMLLog.info("FOUND METHOD");
+                FMLLog.info("======================");
+                for (int count = 0; count < methodnode.instructions.size(); count++)
+                {
+                    final AbstractInsnNode list = methodnode.instructions.get(count);
+
+                    if (list instanceof IntInsnNode)
+                    {
+                        FMLLog.info("======================");
+                        FMLLog.info("FOUND INSN NODE");
+                        FMLLog.info("======================");
+                        IntInsnNode nodeAt = (IntInsnNode)list;
+                        
+                        if (nodeAt.operand == 9)
+                        {
+                            FMLLog.info("======================");
+                            FMLLog.info("FOUND CORRECT INSN NODE");
+                            FMLLog.info("======================");
+                            methodnode.instructions.set(nodeAt, new IntInsnNode(Opcodes.BIPUSH, 14));
                         }
                     }
                 }
