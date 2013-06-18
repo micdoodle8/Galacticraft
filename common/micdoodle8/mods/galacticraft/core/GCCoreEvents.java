@@ -245,7 +245,7 @@ public class GCCoreEvents
 
                         if (d2 <= r2)
                         {
-                            world.setBlock(bx + cx, by + cy, bz + cz, GCCoreBlocks.crudeOilStill.blockID);
+                            world.setBlock(bx + cx, by + cy, bz + cz, GCCoreBlocks.crudeOilStill.blockID, 0, d2 == r2 ? 3 : 2);
                         }
                     }
                 }
