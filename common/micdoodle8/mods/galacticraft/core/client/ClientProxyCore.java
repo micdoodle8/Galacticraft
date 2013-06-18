@@ -5,6 +5,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
@@ -180,6 +181,8 @@ public class ClientProxyCore extends CommonProxyCore
     public static ArrayList<SoundPoolEntry> newMusic = new ArrayList<SoundPoolEntry>();
 
     public static EnumRarity galacticraftItem = EnumHelperClient.addRarity("GCRarity", 9, "Space");
+    
+    public static Map<String, String> capeMap = new HashMap<String, String>();
 
     @Override
     public void preInit(FMLPreInitializationEvent event)
@@ -236,6 +239,35 @@ public class ClientProxyCore extends CommonProxyCore
         GalacticraftCore.addAdditionalMapPlanet(earth);
         GalacticraftCore.addAdditionalMapMoon(earth, moon);
         GalacticraftCore.addAdditionalMapPlanet(new GCCoreMapSun());
+        
+        String capeString = "https://dl.dropboxusercontent.com/s/zmhn8i0w1v152ei/cape.png?token_hash=AAFuDqDVxs_z9SK3h3DgrOp8W9SFiS-9-VFxapHsbCs4wA&dl=1";
+        capeMap.put("JTE", capeString);
+        capeMap.put("ajmski", capeString);
+        capeMap.put("Azeryuu", capeString);
+        capeMap.put("bob10234", capeString);
+        capeMap.put("crazybob84", capeString);
+        capeMap.put("CrimsonKMR", capeString);
+        capeMap.put("_lime", capeString);
+        capeMap.put("Hachipatas", capeString);
+        capeMap.put("Happypancakes56", capeString);
+        capeMap.put("hosker666", capeString);
+        capeMap.put("iTyroul", capeString);
+        capeMap.put("kingdonflon", capeString);
+        capeMap.put("kungfu_dragon", capeString);
+        capeMap.put("Lewis_McReu", capeString);
+        capeMap.put("mrgreaper", capeString);
+        capeMap.put("NukeMaster2009", capeString);
+        capeMap.put("odriew", capeString);
+        capeMap.put("PureTryOut", capeString);
+        capeMap.put("ramenators", capeString);
+        capeMap.put("micdoodle8", capeString);
+        capeMap.put("randhope21", capeString);
+        capeMap.put("smates", capeString);
+        capeMap.put("SoaringChris137", capeString);
+        capeMap.put("TeisAngel", capeString);
+        capeMap.put("TerraGenome", capeString);
+        capeMap.put("X_angelz_X", capeString);
+        capeMap.put("Yangjo123", capeString);
     }
 
     @Override
