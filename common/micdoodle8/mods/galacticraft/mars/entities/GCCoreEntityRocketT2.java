@@ -11,6 +11,7 @@ import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.API.IRocketType;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLanderFlameFX;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLaunchFlameFX;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLaunchSmokeFX;
 import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
@@ -251,9 +252,9 @@ public class GCCoreEntityRocketT2 extends EntitySpaceshipBase implements IInvent
 
     protected void spawnParticles(boolean launched)
     {
-        final double x1 = 2 * Math.cos(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D);
-        final double z1 = 2 * Math.sin(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D);
-        double y1 = 2 * Math.cos((this.rotationPitch - 180) * Math.PI / 180.0D) + (this.getReversed() == 1 ? 10D : 0D) - 1.5;
+        final double x1 = 2.9 * Math.cos(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D);
+        final double z1 = 2.9 * Math.sin(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D);
+        double y1 = 2.9 * Math.cos((this.rotationPitch - 180) * Math.PI / 180.0D);
 
         if (this.getLaunched() == 0)
         {
@@ -273,6 +274,10 @@ public class GCCoreEntityRocketT2 extends EntitySpaceshipBase implements IInvent
             this.spawnParticle("launchflame", this.posX - 0.4 + x1, y - 0.0D + y1, this.posZ + z1, x1, y1, z1, this.getLaunched() == 1);
             this.spawnParticle("launchflame", this.posX + x1, y - 0.0D + y1, this.posZ + 0.4D + z1, x1, y1, z1, this.getLaunched() == 1);
             this.spawnParticle("launchflame", this.posX + x1, y - 0.0D + y1, this.posZ - 0.4D + z1, x1, y1, z1, this.getLaunched() == 1);
+            this.spawnParticle("blueflame", this.posX + x1 - 0.8, y - 0.0D + y1, this.posZ + z1, x1, y1, z1, this.getLaunched() == 1);
+            this.spawnParticle("blueflame", this.posX + x1 + 0.8, y - 0.0D + y1, this.posZ + z1, x1, y1, z1, this.getLaunched() == 1);
+            this.spawnParticle("blueflame", this.posX + x1, y - 0.0D + y1, this.posZ + z1 - 0.8, x1, y1, z1, this.getLaunched() == 1);
+            this.spawnParticle("blueflame", this.posX + x1, y - 0.0D + y1, this.posZ + z1 + 0.8, x1, y1, z1, this.getLaunched() == 1);
         }
     }
 
@@ -317,22 +322,6 @@ public class GCCoreEntityRocketT2 extends EntitySpaceshipBase implements IInvent
         {
             par1NBTTagCompound.setTag("fuelTank", this.spaceshipFuelTank.writeToNBT(new NBTTagCompound()));
         }
-
-        // if (this.spaceshipFuelTank.getLiquid() != null)
-        // {
-        // NBTTagCompound nbt = new NBTTagCompound();
-        // nbt.setInteger("Amount", this.spaceshipFuelTank.getLiquid().amount);
-        // nbt.setShort("Id", (short)this.spaceshipFuelTank.getLiquid().itemID);
-        // nbt.setShort("Meta",
-        // (short)this.spaceshipFuelTank.getLiquid().itemMeta);
-        // nbt.setString("LiquidName", "Fuel");
-        // if (this.spaceshipFuelTank.getLiquid().extra != null)
-        // {
-        // nbt.setTag("extra", this.spaceshipFuelTank.getLiquid().extra);
-        // }
-        //
-        // par1NBTTagCompound.setTag("fuelTank", nbt);
-        // }
     }
 
     @Override
@@ -510,6 +499,14 @@ public class GCCoreEntityRocketT2 extends EntitySpaceshipBase implements IInvent
             else if (var1.equals("distancesmoke") && var16 * var16 + var17 * var17 + var19 * var19 < var22 * var22 * 1.7)
             {
                 final EntityFX fx = new EntitySmokeFX(mc.theWorld, var2, var4, var6, var8, var10, var12, 2.5F);
+                if (fx != null)
+                {
+                    mc.effectRenderer.addEffect(fx);
+                }
+            }
+            else if (var1.equals("blueflame"))
+            {
+                final EntityFX fx = new GCCoreEntityLanderFlameFX(mc.theWorld, var2, var4, var6, var8, var10, var12, 0.2F);
                 if (fx != null)
                 {
                     mc.effectRenderer.addEffect(fx);

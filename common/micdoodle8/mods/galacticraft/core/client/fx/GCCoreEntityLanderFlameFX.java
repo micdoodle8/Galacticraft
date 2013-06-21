@@ -25,7 +25,12 @@ public class GCCoreEntityLanderFlameFX extends EntityFX
 {
     float smokeParticleScale;
 
-    public GCCoreEntityLanderFlameFX(World par1World, double par2, double par4, double par6, double par8, double par10, double par12)
+    public GCCoreEntityLanderFlameFX(World world, double x, double y, double z, double mX, double mY, double mZ)
+    {
+        this(world, x, y, z, mX, mY, mZ, 1.0F);
+    }
+
+    public GCCoreEntityLanderFlameFX(World par1World, double par2, double par4, double par6, double par8, double par10, double par12, float scale)
     {
         super(par1World, par2, par4, par6, par8, par10, par12);
         this.motionX *= 0.10000000149011612D;
@@ -36,8 +41,7 @@ public class GCCoreEntityLanderFlameFX extends EntityFX
         this.particleRed = 200F / 255F;
         this.particleGreen = 200F / 255F;
         this.particleBlue = 200F / 255F + this.rand.nextFloat() / 3;
-        this.particleScale *= 4F;
-        this.particleScale *= 2;
+        this.particleScale *= 8F * scale;
         this.smokeParticleScale = this.particleScale;
         this.particleMaxAge = (int) 5.0D;
         this.noClip = false;
