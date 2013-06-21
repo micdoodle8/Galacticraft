@@ -249,7 +249,7 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
     {
         final double x1 = 2 * Math.cos(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D);
         final double z1 = 2 * Math.sin(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D);
-        double y1 = 2 * Math.cos((this.rotationPitch - 180) * Math.PI / 180.0D) + (this.getReversed() == 1 ? 10D : 0D);
+        double y1 = 2 * Math.cos((this.rotationPitch - 180) * Math.PI / 180.0D);
 
         if (this.getLaunched() == 0)
         {

@@ -79,7 +79,6 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
         this.dataWatcher.addObject(18, new Integer(1));
         this.dataWatcher.addObject(19, new Integer(0));
         this.dataWatcher.addObject(20, new Integer(0));
-        this.dataWatcher.addObject(21, new Integer(0));
         this.dataWatcher.addObject(22, new Integer(0));
         this.dataWatcher.addObject(23, new Integer(0));
         this.dataWatcher.addObject(24, new Integer(0));
@@ -244,11 +243,6 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
             this.riddenByEntity.posZ += this.rumble / 30F;
         }
 
-        if (this.getReversed() == 1)
-        {
-            this.rotationPitch = 180F;
-        }
-
         if (this.posY > (this.worldObj.provider instanceof IExitHeight ? ((IExitHeight) this.worldObj.provider).getYCoordinateToTeleport() : 1200))
         {
             this.teleport();
@@ -314,7 +308,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
 
         this.setTimeUntilLaunch(this.timeUntilLaunch);
 
-        if (this.timeUntilLaunch == 0 && this.ignite == 1 || this.getReversed() == 1)
+        if (this.timeUntilLaunch == 0 && this.ignite == 1)
         {
             this.launched = true;
             this.setLaunched(1);
@@ -538,11 +532,6 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
     public int getFailedLaunch()
     {
         return this.dataWatcher.getWatchableObjectInt(20);
-    }
-
-    public int getReversed()
-    {
-        return this.dataWatcher.getWatchableObjectInt(21);
     }
 
     public void setLaunched(int par1)

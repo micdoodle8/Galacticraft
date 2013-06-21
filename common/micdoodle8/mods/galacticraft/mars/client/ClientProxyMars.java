@@ -10,7 +10,9 @@ import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderArrow;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderSpaceship;
+import micdoodle8.mods.galacticraft.core.client.sounds.GCCoreSoundUpdaterSpaceship;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityArrow;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityRocketT1;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.mars.CommonProxyMars;
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
@@ -28,6 +30,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.particle.EntityFX;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
@@ -188,20 +191,41 @@ public class ClientProxyMars extends CommonProxyMars implements IGalacticraftSub
 
             if (type.equals(EnumSet.of(TickType.CLIENT)))
             {
-                if (player != null && world != null && player.inventory.armorItemInSlot(2) != null && player.inventory.armorItemInSlot(2).getItem().itemID == GCMarsItems.jetpack.itemID && FMLClientHandler.instance().getClient().gameSettings.keyBindJump.pressed && player.posY < 125)
+                if (world != null)
                 {
-                    ((GCMarsItemJetpack) player.inventory.armorItemInSlot(2).getItem()).setActive();
-                    player.motionY -= 0.062D;
-                    player.motionY += 0.07 + player.rotationPitch * 2 / 180 * 0.07;
-                    player.fallDistance = 0;
-                    world.spawnParticle("largesmoke", player.posX, player.posY - 1D, player.posZ, 0, -0.1, 0);
-                }
-
-                if (world != null && world.provider instanceof GCMarsWorldProvider)
-                {
-                    if (world.provider.getSkyRenderer() == null)
+                    if (world != null && player.inventory.armorItemInSlot(2) != null && player.inventory.armorItemInSlot(2).getItem().itemID == GCMarsItems.jetpack.itemID && FMLClientHandler.instance().getClient().gameSettings.keyBindJump.pressed && player.posY < 125)
                     {
-                        world.provider.setSkyRenderer(new GCMarsSkyProvider());
+                        ((GCMarsItemJetpack) player.inventory.armorItemInSlot(2).getItem()).setActive();
+                        player.motionY -= 0.062D;
+                        player.motionY += 0.07 + player.rotationPitch * 2 / 180 * 0.07;
+                        player.fallDistance = 0;
+                        world.spawnParticle("largesmoke", player.posX, player.posY - 1D, player.posZ, 0, -0.1, 0);
+                    }
+                    
+                    if (world.provider instanceof GCMarsWorldProvider)
+                    {
+                        if (world.provider.getSkyRenderer() == null)
+                        {
+                            world.provider.setSkyRenderer(new GCMarsSkyProvider());
+                        }
+                    }
+                    
+                    for (int i = 0; i < world.loadedEntityList.size(); i++)
+                    {
+                        final Entity e = (Entity) world.loadedEntityList.get(i);
+
+                        if (e != null)
+                        {
+                            if (e instanceof GCCoreEntityRocketT2)
+                            {
+                                final GCCoreEntityRocketT2 eship = (GCCoreEntityRocketT2) e;
+
+                                if (eship.rocketSoundUpdater == null)
+                                {
+                                    eship.rocketSoundUpdater = new GCCoreSoundUpdaterSpaceship(FMLClientHandler.instance().getClient().sndManager, eship, FMLClientHandler.instance().getClient().thePlayer);
+                                }
+                            }
+                        }
                     }
                 }
             }

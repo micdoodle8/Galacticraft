@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.sounds;
 
+import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityRocketT1;
 import net.minecraft.client.audio.SoundManager;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -10,10 +11,8 @@ public class GCCoreSoundUpdaterSpaceship implements IUpdatePlayerListBox
 {
     private final SoundManager theSoundManager;
 
-    /** Minecart which sound is being updated. */
-    private final GCCoreEntityRocketT1 theMinecart;
+    private final EntitySpaceshipBase theMinecart;
 
-    /** The player that is getting the minecart sound updates. */
     private final EntityPlayerSP thePlayer;
     private boolean playerSPRidingMinecart = false;
     private boolean minecartIsDead = false;
@@ -24,7 +23,7 @@ public class GCCoreSoundUpdaterSpaceship implements IUpdatePlayerListBox
     private float minecartRideSoundVolume = 0.0F;
     private double minecartSpeed = 0.0D;
 
-    public GCCoreSoundUpdaterSpaceship(SoundManager par1SoundManager, GCCoreEntityRocketT1 par2EntityMinecart, EntityPlayerSP par3EntityPlayerSP)
+    public GCCoreSoundUpdaterSpaceship(SoundManager par1SoundManager, EntitySpaceshipBase par2EntityMinecart, EntityPlayerSP par3EntityPlayerSP)
     {
         this.theSoundManager = par1SoundManager;
         this.theMinecart = par2EntityMinecart;
