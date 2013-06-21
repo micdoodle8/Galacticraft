@@ -103,6 +103,7 @@ public class GCCoreItems
         GCCoreItems.knowledgeBook = new GCCoreItemKnowledgeBook(GCCoreConfigManager.idItemKnowledgeBook).setUnlocalizedName("knowledgeBook");
 
         GalacticraftCore.hiddenItems.add(GCCoreItems.gravityBow.itemID);
+        GalacticraftCore.hiddenItems.add(GCCoreItems.knowledgeBook.itemID);
     }
 
     public static void registerHarvestLevels()

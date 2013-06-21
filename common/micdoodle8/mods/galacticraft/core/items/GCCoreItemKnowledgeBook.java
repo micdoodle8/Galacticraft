@@ -4,7 +4,6 @@ import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
@@ -19,12 +18,6 @@ public class GCCoreItemKnowledgeBook extends Item
     {
         super(i);
         this.maxStackSize = 1;
-    }
-
-    @Override
-    public CreativeTabs getCreativeTab()
-    {
-        return GalacticraftCore.galacticraftTab;
     }
 
     @Override
