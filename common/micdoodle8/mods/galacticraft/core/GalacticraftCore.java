@@ -242,20 +242,20 @@ public class GalacticraftCore
         GalacticraftCore.oilStack = LiquidDictionary.getOrCreateLiquid("Oil", new LiquidStack(GCCoreBlocks.crudeOilStill, 1));
         GalacticraftCore.fuelStack = LiquidDictionary.getOrCreateLiquid("Fuel", new LiquidStack(GCCoreItems.fuel, 1));
 
-        float f = Float.valueOf(LiquidContainerRegistry.BUCKET_VOLUME * 2.0F) / Float.valueOf(GCCoreItems.fuelCanister.getMaxDamage());
+        float f = LiquidContainerRegistry.BUCKET_VOLUME * 2.0F / GCCoreItems.fuelCanister.getMaxDamage();
 
         for (int i = GCCoreItems.fuelCanister.getMaxDamage() - 1; i > 0; i--)
         {
-            final float f1 = Float.valueOf(GCCoreItems.fuelCanister.getMaxDamage() - i);
+            final float f1 = GCCoreItems.fuelCanister.getMaxDamage() - i;
 
             LiquidContainerRegistry.registerLiquid(new LiquidContainerData(LiquidDictionary.getLiquid("Fuel", i == 1 ? 2000 : MathHelper.floor_float(f * f1 * 1.017F)), new ItemStack(GCCoreItems.fuelCanister, 1, i), new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.fuelCanister.getMaxDamage())));
         }
 
-        f = Float.valueOf(LiquidContainerRegistry.BUCKET_VOLUME * 2.0F) / Float.valueOf(GCCoreItems.oilCanister.getMaxDamage());
+        f = LiquidContainerRegistry.BUCKET_VOLUME * 2.0F / GCCoreItems.oilCanister.getMaxDamage();
 
         for (int i = GCCoreItems.oilCanister.getMaxDamage() - 1; i > 0; i--)
         {
-            final float f1 = Float.valueOf(GCCoreItems.oilCanister.getMaxDamage() - i);
+            final float f1 = GCCoreItems.oilCanister.getMaxDamage() - i;
 
             LiquidContainerRegistry.registerLiquid(new LiquidContainerData(LiquidDictionary.getLiquid("Oil", MathHelper.floor_float(f * f1 * 1.017F)), new ItemStack(GCCoreItems.oilCanister, 1, i), new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.oilCanister.getMaxDamage())));
         }
@@ -266,7 +266,6 @@ public class GalacticraftCore
 
         RecipeUtil.addSmeltingRecipes();
         NetworkRegistry.instance().registerGuiHandler(this, GalacticraftCore.proxy);
-        this.registerTileEntities();
         this.registerCreatures();
         this.registerOtherEntities();
         MinecraftForge.EVENT_BUS.register(new GCCoreEvents());
@@ -278,6 +277,8 @@ public class GalacticraftCore
     {
         GalacticraftCore.moon.postLoad(event);
         GCCoreCompatibilityManager.checkForCompatibleMods();
+
+        this.registerTileEntities();
 
         if (GCCoreCompatibilityManager.isTELoaded() && GCCoreConfigManager.useRecipesTE)
         {
@@ -363,7 +364,7 @@ public class GalacticraftCore
 
     public void registerTileEntities()
     {
-        GameRegistry.registerTileEntity(GCCoreTileEntityTreasureChest.class, "Treasure Chest");
+        GameRegistry.registerTileEntity(GCCoreTileEntityTreasureChest.class, GCCoreCompatibilityManager.isAIILoaded() ? "Space Treasure Chest" : "Treasure Chest");
         GameRegistry.registerTileEntity(GCCoreTileEntityOxygenDistributor.class, "Air Distributor");
         GameRegistry.registerTileEntity(GCCoreTileEntityOxygenCollector.class, "Air Collector");
         GameRegistry.registerTileEntity(GCCoreTileEntityOxygenPipe.class, "Oxygen Pipe");
@@ -390,9 +391,6 @@ public class GalacticraftCore
         this.registerGalacticraftCreature(GCCoreEntityCreeper.class, "Evolved Creeper", GCCoreConfigManager.idEntityEvolvedCreeper, 894731, 0);
         this.registerGalacticraftCreature(GCCoreEntitySkeleton.class, "Evolved Skeleton", GCCoreConfigManager.idEntityEvolvedSkeleton, 12698049, 4802889);
         this.registerGalacticraftCreature(GCCoreEntitySkeletonBoss.class, "Evolved Skeleton Boss", GCCoreConfigManager.idEntityEvolvedSkeletonBoss, 12698049, 4802889);
-        // this.registerGalacticraftCreature(GCCoreEntityWorm.class,
-        // "Giant Worm", GCCoreConfigManager.idEntityGiantWorm, 12698049,
-        // 4802889);
         this.registerGalacticraftCreature(GCCoreEntityAlienVillager.class, "Alien Villager", GCCoreConfigManager.idEntityAlienVillager, GCCoreUtil.convertTo32BitColor(255, 103, 181, 145), 12422002);
     }
 
@@ -407,12 +405,6 @@ public class GalacticraftCore
         this.registerGalacticraftNonMobEntity(GCCoreEntityParaChest.class, "ParaChest", GCCoreConfigManager.idEntityParaChest, 150, 5, true);
         this.registerGalacticraftNonMobEntity(GCCoreEntityOxygenBubble.class, "OxygenBubble", GCCoreConfigManager.idEntityOxygenBubble, 150, 20, false);
         this.registerGalacticraftNonMobEntity(GCCoreEntityLander.class, "Lander", GCCoreConfigManager.idEntityLander, 150, 5, true);
-        // this.registerGalacticraftNonMobEntity(GCCoreEntitySun.class, "Sun",
-        // GCCoreConfigManager.idEntitySun, 150, 5, true);
-        // this.registerGalacticraftNonMobEntity(GCCoreEntityOverworld.class,
-        // "Overworld", GCCoreConfigManager.idEntityOverworld, 150, 5, true);
-        // this.registerGalacticraftNonMobEntity(GCCoreEntityMoon.class, "Moon",
-        // GCCoreConfigManager.idEntityOverworld + 1, 150, 5, true);
     }
 
     public void registerGalacticraftCreature(Class var0, String var1, int id, int back, int fore)
