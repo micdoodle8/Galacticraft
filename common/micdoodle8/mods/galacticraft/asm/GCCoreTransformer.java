@@ -20,7 +20,6 @@ import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.TypeInsnNode;
 import org.objectweb.asm.tree.VarInsnNode;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.IClassTransformer;
 import cpw.mods.fml.relauncher.RelaunchClassLoader;
 
@@ -599,7 +598,6 @@ public class GCCoreTransformer implements IClassTransformer
         {
             final MethodNode methodnode = methods.next();
 
-            FMLLog.info("" + methodnode.name + " " + methodnode.desc);
             if (methodnode.name.equals(map.get("runTick")) && methodnode.desc.equals(map.get("runTickDesc")))
             {
                 for (int count = 0; count < methodnode.instructions.size(); count++)
@@ -635,7 +633,7 @@ public class GCCoreTransformer implements IClassTransformer
                     if (list instanceof IntInsnNode)
                     {
                         IntInsnNode nodeAt = (IntInsnNode)list;
-                        
+
                         if (nodeAt.operand == 9)
                         {
                             methodnode.instructions.set(nodeAt, new IntInsnNode(Opcodes.BIPUSH, 14));
