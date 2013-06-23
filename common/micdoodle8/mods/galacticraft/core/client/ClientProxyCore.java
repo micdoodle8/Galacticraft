@@ -26,6 +26,8 @@ import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiAirCollector;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiAirCompressor;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiAirDistributor;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiAirSealer;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiCargoLoader;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiCargoUnloader;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiFuelLoader;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiGalaxyMap;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiKnowledgeBook;
@@ -91,6 +93,8 @@ import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient;
 import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerClient;
 import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerSlowClient;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAdvancedCraftingTable;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoLoader;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoUnloader;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFuelLoader;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCollector;
@@ -120,6 +124,8 @@ import net.minecraftforge.client.EnumHelperClient;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
 import org.lwjgl.input.Keyboard;
+import basiccomponents.client.RenderCopperWire;
+import basiccomponents.common.tileentity.TileEntityCopperWire;
 import cofh.api.core.RegistryAccess;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
@@ -199,6 +205,8 @@ public class ClientProxyCore extends CommonProxyCore
     public void init(FMLInitializationEvent event)
     {
         ClientProxyCore.moon.init(event);
+
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCopperWire.class, new RenderCopperWire());
 
         try
         {
@@ -725,6 +733,24 @@ public class ClientProxyCore extends CommonProxyCore
             if (tile != null && tile instanceof GCCoreTileEntityOxygenSealer)
             {
                 return new GCCoreGuiAirSealer(player.inventory, (GCCoreTileEntityOxygenSealer) tile);
+            }
+            else
+            {
+                return null;
+            }
+        }
+        else if (ID == GCCoreConfigManager.idGuiCargoLoader)
+        {
+            if (tile != null)
+            {
+                if (tile instanceof GCCoreTileEntityCargoLoader)
+                {
+                    return new GCCoreGuiCargoLoader(player.inventory, (GCCoreTileEntityCargoLoader) tile);
+                }
+                else if (tile instanceof GCCoreTileEntityCargoUnloader)
+                {
+                    return new GCCoreGuiCargoUnloader(player.inventory, (GCCoreTileEntityCargoUnloader) tile);
+                }
             }
             else
             {
