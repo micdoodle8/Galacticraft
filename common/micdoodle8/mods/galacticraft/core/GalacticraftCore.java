@@ -222,15 +222,11 @@ public class GalacticraftCore
         GalacticraftCore.galacticraftTab = new GCCoreCreativeTab(CreativeTabs.getNextID(), GalacticraftCore.CHANNEL, GCCoreItems.spaceship.itemID, 0);
 
         DimensionManager.registerProviderType(GCCoreConfigManager.idDimensionOverworldOrbit, GCCoreWorldProviderSpaceStation.class, false);
-        // DimensionManager.registerProviderType(GCCoreConfigManager.idDimensionSpace,
-        // GCCoreWorldProviderInnerSpace.class, false);
 
         GalacticraftCore.proxy.init(event);
 
         GalacticraftRegistry.registerTeleportType(WorldProviderSurface.class, new GCCoreOverworldTeleportType());
         GalacticraftRegistry.registerTeleportType(GCCoreWorldProviderSpaceStation.class, new GCCoreOrbitTeleportType());
-        // GalacticraftRegistry.registerTeleportType(GCCoreWorldProviderInnerSpace.class,
-        // new GCCoreSpaceTeleportType());
 
         for (final IGalacticraftSubMod mod : GalacticraftCore.subMods)
         {
