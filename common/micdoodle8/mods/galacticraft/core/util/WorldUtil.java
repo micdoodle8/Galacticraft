@@ -493,8 +493,8 @@ public class WorldUtil
     {
         final int newID = DimensionManager.getNextFreeDimId();
         final GCCoreSpaceStationData data = WorldUtil.createSpaceStation(var0, newID, player);
-        final Object[] toSend = { newID };
-        player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 18, toSend));
+        player.spaceStationDimensionID = newID;
+        player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 18, new Object[] { newID }));
         return data;
     }
 

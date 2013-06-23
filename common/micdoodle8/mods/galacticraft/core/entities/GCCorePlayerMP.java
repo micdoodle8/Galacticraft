@@ -140,12 +140,6 @@ public class GCCorePlayerMP extends EntityPlayerMP
     {
         GalacticraftCore.playersServer.remove(this);
 
-        // if
-        // (!this.worldObj.getGameRules().getGameRuleBooleanValue("keepInventory"))
-        // {
-        // this.playerTankInventory.dropAllItems();
-        // }
-
         super.onDeath(var1);
     }
 
