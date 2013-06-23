@@ -11,6 +11,8 @@ import micdoodle8.mods.galacticraft.core.network.GCCorePacketControllableEntity;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketEntityUpdate;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityBuggyFueler;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoLoader.EnumCargoLoadingState;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoLoader.RemovalResult;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -50,7 +52,7 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
     float accel = 0.2F;
     float turnFactor = 3.0F;
     public String texture;
-    ItemStack[] cargoItems;
+    ItemStack[] cargoItems = new ItemStack[60];
     public float turnProgress = 0;
     public float rotationYawBuggy;
     public double boatX;
@@ -66,7 +68,6 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
         super(var1);
         this.setSize(0.98F, 0.7F);
         this.yOffset = 2.5F;
-        this.cargoItems = new ItemStack[60];
         this.fuel = 0;
         this.currentDamage = 18;
         this.timeSinceHit = 19;
@@ -80,10 +81,12 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
         this.isImmuneToFire = true;
     }
 
-    public GCCoreEntityBuggy(World var1, double var2, double var4, double var6)
+    public GCCoreEntityBuggy(World var1, double var2, double var4, double var6, int type)
     {
         this(var1);
         this.setPosition(var2, var4 + this.yOffset, var6);
+        this.setBuggyType(type);
+        this.cargoItems = new ItemStack[this.buggyType * 18];
     }
 
     public int getScaledFuelLevel(int i)
@@ -495,7 +498,7 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
     @Override
     public int getSizeInventory()
     {
-        return 60;
+        return this.buggyType * 18;
     }
 
     @Override
@@ -695,6 +698,70 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
         }
 
         return null;
+    }
+
+    @Override
+    public EnumCargoLoadingState addCargo(ItemStack stack, boolean doAdd)
+    {
+        if (this.buggyType == 0)
+        {
+            return EnumCargoLoadingState.NOINVENTORY;
+        }
+        
+        int count = 0;
+        
+        for (count = 0; count < this.cargoItems.length; count++)
+        {
+            ItemStack stackAt = this.cargoItems[count];
+            
+            if (stackAt != null && stackAt.itemID == stack.itemID && stackAt.getItemDamage() == stack.getItemDamage() && stackAt.stackSize < stackAt.getMaxStackSize())
+            {
+                if (doAdd)
+                {
+                    this.cargoItems[count].stackSize += stack.stackSize;
+                }
+                
+                return EnumCargoLoadingState.SUCCESS;
+            }
+        }
+
+        for (count = 0; count < this.cargoItems.length; count++)
+        {
+            ItemStack stackAt = this.cargoItems[count];
+            
+            if (stackAt == null)
+            {
+                if (doAdd)
+                {
+                    this.cargoItems[count] = stack;
+                }
+                
+                return EnumCargoLoadingState.SUCCESS;
+            }
+        }
+        
+        return EnumCargoLoadingState.FULL;
+    }
+
+    @Override
+    public RemovalResult removeCargo(boolean doRemove)
+    {
+        for (int i = 0; i < this.cargoItems.length; i++)
+        {
+            ItemStack stackAt = this.cargoItems[i];
+            
+            if (stackAt != null)
+            {
+                if (doRemove && --this.cargoItems[i].stackSize <= 0)
+                {
+                    this.cargoItems[i] = null;
+                }
+
+                return new RemovalResult(EnumCargoLoadingState.SUCCESS, new ItemStack(stackAt.itemID, 1, stackAt.getItemDamage()));
+            }
+        }
+
+        return new RemovalResult(EnumCargoLoadingState.EMPTY, null);
     }
 
     @Override

@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.API;
 
-public interface IDockable extends IFuelable
+public interface IDockable extends IFuelable, ICargoEntity
 {
     public void setPad(IFuelDock pad);
 

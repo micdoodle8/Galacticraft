@@ -8,9 +8,9 @@ import net.minecraft.item.ItemStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class GCCoreItemBlockLandingPad extends ItemBlock
+public class GCCoreItemBlockCargoLoader extends ItemBlock
 {
-    public GCCoreItemBlockLandingPad(int id)
+    public GCCoreItemBlockCargoLoader(int id)
     {
         super(id);
         this.setMaxDamage(0);
@@ -21,18 +21,14 @@ public class GCCoreItemBlockLandingPad extends ItemBlock
     public String getUnlocalizedName(ItemStack par1ItemStack)
     {
         String name = "";
-
-        switch (par1ItemStack.getItemDamage())
+        
+        if (par1ItemStack.getItemDamage() < 4)
         {
-        case 0:
-            name = "landingPad";
-            break;
-        case 1:
-            name = "buggyFueler";
-            break;
-        case 2:
-            name = "cargoPad";
-            break;
+            name = "loader";
+        }
+        else
+        {
+            name = "unloader";
         }
 
         return Block.blocksList[this.getBlockID()].getUnlocalizedName() + "." + name;

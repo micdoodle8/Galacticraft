@@ -82,7 +82,7 @@ public class GCCoreContainerRocketRefill extends Container
                         offset = 28;
                     }
 
-                    this.addSlotToContainer(new Slot(this.spaceshipInv, var5 + var4 * 9 + 1, 8 + var5 * 18 + offset, 50 + var4 * 18));
+                    this.addSlotToContainer(new Slot(this.spaceshipInv, var5 + var4 * 9, 8 + var5 * 18 + offset, 50 + var4 * 18));
                 }
             }
         }

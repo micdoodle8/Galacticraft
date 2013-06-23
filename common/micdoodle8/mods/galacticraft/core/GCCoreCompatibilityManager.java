@@ -4,13 +4,15 @@ import cpw.mods.fml.common.Loader;
 
 public class GCCoreCompatibilityManager
 {
-    private static boolean modIc2Loaded = false;
+    private static boolean modIc2Loaded;
 
-    private static boolean modBCraftLoaded = false;
+    private static boolean modBCraftLoaded;
 
-    private static boolean modGTLoaded = false;
+    private static boolean modGTLoaded;
 
-    private static boolean modTELoaded = false;
+    private static boolean modTELoaded;
+    
+    private static boolean modAetherIILoaded;
 
     public static void checkForCompatibleMods()
     {
@@ -33,6 +35,11 @@ public class GCCoreCompatibilityManager
         {
             GCCoreCompatibilityManager.modBCraftLoaded = true;
         }
+        
+        if (Loader.isModLoaded("Aether II"))
+        {
+            GCCoreCompatibilityManager.modAetherIILoaded = true;
+        }
     }
 
     public static boolean isIc2Loaded()
@@ -53,5 +60,10 @@ public class GCCoreCompatibilityManager
     public static boolean isGTLoaded()
     {
         return GCCoreCompatibilityManager.modGTLoaded;
+    }
+
+    public static boolean isAIILoaded()
+    {
+        return GCCoreCompatibilityManager.modAetherIILoaded;
     }
 }

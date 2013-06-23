@@ -2,12 +2,16 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import java.util.HashSet;
 import java.util.List;
+import micdoodle8.mods.galacticraft.API.ICargoEntity;
 import micdoodle8.mods.galacticraft.API.IDockable;
 import micdoodle8.mods.galacticraft.API.IFuelDock;
 import micdoodle8.mods.galacticraft.API.IFuelable;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoLoader.EnumCargoLoadingState;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoLoader.RemovalResult;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.liquids.LiquidStack;
@@ -16,7 +20,7 @@ import universalelectricity.prefab.multiblock.IMultiBlock;
 import universalelectricity.prefab.multiblock.TileEntityMulti;
 import cpw.mods.fml.client.FMLClientHandler;
 
-public class GCCoreTileEntityLandingPad extends TileEntityMulti implements IMultiBlock, IFuelable, IFuelDock
+public class GCCoreTileEntityLandingPad extends TileEntityMulti implements IMultiBlock, IFuelable, IFuelDock, ICargoEntity
 {
     protected long ticks = 0;
     private IDockable dockedEntity;
@@ -174,5 +178,27 @@ public class GCCoreTileEntityLandingPad extends TileEntityMulti implements IMult
     public HashSet<TileEntity> getConnectedTiles()
     {
         return this.connectedTiles;
+    }
+
+    @Override
+    public EnumCargoLoadingState addCargo(ItemStack stack, boolean doAdd)
+    {
+        if (this.dockedEntity != null)
+        {
+            return this.dockedEntity.addCargo(stack, doAdd);
+        }
+        
+        return EnumCargoLoadingState.NOTARGET;
+    }
+
+    @Override
+    public RemovalResult removeCargo(boolean doRemove)
+    {
+        if (this.dockedEntity != null)
+        {
+            return this.dockedEntity.removeCargo(doRemove);
+        }
+
+        return new RemovalResult(EnumCargoLoadingState.NOTARGET, null);
     }
 }

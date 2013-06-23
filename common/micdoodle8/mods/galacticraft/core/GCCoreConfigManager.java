@@ -55,6 +55,7 @@ public class GCCoreConfigManager
     public static int idBlockOxygenSealer;
     public static int idBlockEnclosedWire;
     public static int idBlockOxygenDetector;
+    public static int idBlockCargoLoader;
 
     // ITEMS
     public static int idItemKnowledgeBook;
@@ -129,6 +130,7 @@ public class GCCoreConfigManager
     public static int idGuiAddSchematic;
     public static int idGuiAirSealer;
     public static int idGuiKnowledgeBook;
+    public static int idGuiCargoLoader;
 
     // ACHIEVEMENTS
     public static int idAchievBase;
@@ -203,6 +205,7 @@ public class GCCoreConfigManager
             GCCoreConfigManager.idBlockFuelLoader = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockFuelLoader", 3359).getInt(3359);
             GCCoreConfigManager.idBlockOxygenSealer = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockOxygenSealer", 3360).getInt(3360);
             GCCoreConfigManager.idBlockOxygenDetector = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockOxygenDetector", 3361).getInt(3361);
+            GCCoreConfigManager.idBlockCargoLoader = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockCargoLoader", 3362).getInt(3362);
             GCCoreConfigManager.idBlockAirPipe = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockAirPipe", 3368).getInt(3368);
             GCCoreConfigManager.idBlockSapling2 = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockSapling2", 3369).getInt(3369);
             GCCoreConfigManager.idBlockRocketBench = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockRocketBench", 3370).getInt(3370);
@@ -277,6 +280,7 @@ public class GCCoreConfigManager
             GCCoreConfigManager.idGuiAddSchematic = GCCoreConfigManager.configuration.get("GUI", "idGuiAddSchematic", 138).getInt(138);
             GCCoreConfigManager.idGuiAirSealer = GCCoreConfigManager.configuration.get("GUI", "idGuiAirSealer", 139).getInt(139);
             GCCoreConfigManager.idGuiKnowledgeBook = GCCoreConfigManager.configuration.get("GUI", "idGuiKnowledgeBook", 140).getInt(140);
+            GCCoreConfigManager.idGuiCargoLoader = GCCoreConfigManager.configuration.get("GUI", "idGuiCargoLoader", 141).getInt(141);
 
             GCCoreConfigManager.idSchematicRocketT1 = GCCoreConfigManager.configuration.get("Schematic", "idSchematicRocketT1", 0).getInt(0);
             GCCoreConfigManager.idSchematicMoonBuggy = GCCoreConfigManager.configuration.get("Schematic", "idSchematicMoonBuggy", 1).getInt(1);

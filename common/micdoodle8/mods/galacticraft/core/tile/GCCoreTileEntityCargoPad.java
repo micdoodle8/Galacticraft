@@ -20,13 +20,13 @@ import universalelectricity.prefab.multiblock.IMultiBlock;
 import universalelectricity.prefab.multiblock.TileEntityMulti;
 import cpw.mods.fml.client.FMLClientHandler;
 
-public class GCCoreTileEntityBuggyFueler extends TileEntityMulti implements IMultiBlock, IFuelable, IFuelDock, ICargoEntity
+public class GCCoreTileEntityCargoPad extends TileEntityMulti implements IMultiBlock, IFuelable, IFuelDock, ICargoEntity
 {
     protected long ticks = 0;
     private IDockable dockedEntity;
     public HashSet<TileEntity> connectedTiles = new HashSet<TileEntity>();
 
-    public GCCoreTileEntityBuggyFueler()
+    public GCCoreTileEntityCargoPad()
     {
         super(GalacticraftCore.CHANNELENTITIES);
     }
@@ -48,7 +48,7 @@ public class GCCoreTileEntityBuggyFueler extends TileEntityMulti implements IMul
                         {
                             final TileEntity tile = this.worldObj.getBlockTileEntity(this.xCoord + x, this.yCoord, this.zCoord + z);
 
-                            if (tile != null && tile instanceof GCCoreTileEntityFuelLoader)
+                            if (tile != null && tile instanceof GCCoreTileEntityCargoLoader)
                             {
                                 this.connectedTiles.add(tile);
                             }
@@ -59,11 +59,11 @@ public class GCCoreTileEntityBuggyFueler extends TileEntityMulti implements IMul
 
             for (final TileEntity tile : this.connectedTiles)
             {
-                final GCCoreTileEntityFuelLoader loader = (GCCoreTileEntityFuelLoader) tile;
+                final GCCoreTileEntityCargoLoader loader = (GCCoreTileEntityCargoLoader) tile;
 
                 final TileEntity newTile = this.worldObj.getBlockTileEntity(loader.xCoord, loader.yCoord, loader.zCoord);
 
-                if (newTile == null || !(newTile instanceof GCCoreTileEntityFuelLoader))
+                if (newTile == null || !(newTile instanceof GCCoreTileEntityCargoLoader))
                 {
                     this.connectedTiles.remove(newTile);
                 }

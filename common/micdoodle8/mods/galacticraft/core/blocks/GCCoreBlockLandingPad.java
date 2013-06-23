@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import java.util.List;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityBuggyFuelerSingle;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoPadSingle;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPadSingle;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -22,7 +23,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GCCoreBlockLandingPad extends GCCoreBlockAdvanced
 {
-    private Icon[] icons = new Icon[2];
+    private Icon[] icons = new Icon[3];
 
     public GCCoreBlockLandingPad(int i)
     {
@@ -51,6 +52,7 @@ public class GCCoreBlockLandingPad extends GCCoreBlockAdvanced
     {
         this.icons[0] = par1IconRegister.registerIcon("galacticraftcore:launch_pad");
         this.icons[1] = par1IconRegister.registerIcon("galacticraftcore:buggy_fueler_blank");
+        this.icons[2] = par1IconRegister.registerIcon("galacticraftcore:cargo_pad");
         this.blockIcon = par1IconRegister.registerIcon("galacticraftcore:launch_pad");
     }
 
@@ -58,15 +60,12 @@ public class GCCoreBlockLandingPad extends GCCoreBlockAdvanced
     @SideOnly(Side.CLIENT)
     public Icon getIcon(int par1, int par2)
     {
-        switch (par2)
+        if (par2 < 0 || par2 > this.icons.length)
         {
-        case 0:
-            return this.icons[0];
-        case 1:
-            return this.icons[1];
+            return this.blockIcon;
         }
-
-        return this.blockIcon;
+        
+        return this.icons[par2];
     }
 
     @Override
@@ -111,8 +110,12 @@ public class GCCoreBlockLandingPad extends GCCoreBlockAdvanced
         {
         case 0:
             return new GCCoreTileEntityLandingPadSingle();
-        default:
+        case 1:
             return new GCCoreTileEntityBuggyFuelerSingle();
+        case 2:
+            return new GCCoreTileEntityCargoPadSingle();
+        default:
+            return null;
         }
     }
 

@@ -9,7 +9,6 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreBlockBreathableAir extends Block
 {

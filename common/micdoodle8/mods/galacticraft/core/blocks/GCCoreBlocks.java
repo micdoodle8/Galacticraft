@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlock;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockBase;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockCargoLoader;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockEnclosedBlock;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockLandingPad;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemSapling;
@@ -48,6 +49,7 @@ public class GCCoreBlocks
     public static Block sealer;
     public static Block enclosedWire;
     public static Block oxygenDetector;
+    public static Block cargoLoader;
 
     public static Icon[] blockIcons;
     
@@ -80,7 +82,8 @@ public class GCCoreBlocks
         GCCoreBlocks.sealer = new GCCoreBlockOxygenSealer(GCCoreConfigManager.idBlockOxygenSealer).setHardness(3.5F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("sealer");
         GCCoreBlocks.enclosedWire = new GCCoreBlockEnclosed(GCCoreConfigManager.idBlockEnclosedWire).setHardness(3.5F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("enclosed");
         GCCoreBlocks.oxygenDetector = new GCCoreBlockOxygenDetector(GCCoreConfigManager.idBlockOxygenDetector).setHardness(3.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("oxygenDetector");
-
+        GCCoreBlocks.cargoLoader = new GCCoreBlockCargoLoader(GCCoreConfigManager.idBlockCargoLoader).setHardness(3.0F).setStepSound(Block.soundMetalFootstep).setUnlocalizedName("cargo");
+        
         // Hide certain items from NEI
         GalacticraftCore.hiddenItems.add(GCCoreBlocks.airLockSeal.blockID);
         GalacticraftCore.hiddenItems.add(GCCoreBlocks.sapling.blockID);
@@ -129,5 +132,6 @@ public class GCCoreBlocks
         GameRegistry.registerBlock(GCCoreBlocks.sealer, GCCoreItemBlock.class, GCCoreBlocks.sealer.getUnlocalizedName(), GalacticraftCore.MODID);
         GameRegistry.registerBlock(GCCoreBlocks.enclosedWire, GCCoreItemBlockEnclosedBlock.class, GCCoreBlocks.enclosedWire.getUnlocalizedName(), GalacticraftCore.MODID);
         GameRegistry.registerBlock(GCCoreBlocks.oxygenDetector, GCCoreItemBlock.class, GCCoreBlocks.oxygenDetector.getUnlocalizedName(), GalacticraftCore.MODID);
+        GameRegistry.registerBlock(GCCoreBlocks.cargoLoader, GCCoreItemBlockCargoLoader.class, GCCoreBlocks.cargoLoader.getUnlocalizedName(), GalacticraftCore.MODID);
     }
 }

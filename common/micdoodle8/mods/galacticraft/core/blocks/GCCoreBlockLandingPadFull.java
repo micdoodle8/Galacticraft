@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import java.util.Random;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityBuggyFueler;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoPad;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPad;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -61,6 +62,8 @@ public class GCCoreBlockLandingPadFull extends GCCoreBlockAdvanced
         {
         case 0:
             return AxisAlignedBB.getAABBPool().getAABB(x + this.minX, y + this.minY, z + this.minZ, x + this.maxX, y + this.maxY, z + this.maxZ);
+        case 2:
+            return AxisAlignedBB.getAABBPool().getAABB(x + this.minX, y + this.minY, z + this.minZ, x + this.maxX, y + this.maxY, z + this.maxZ);
         default:
             return AxisAlignedBB.getAABBPool().getAABB(x + 0.0D, y + 0.0D, z + 0.0D, x + 1.0D, y + 0.2D, z + 1.0D);
         }
@@ -73,6 +76,8 @@ public class GCCoreBlockLandingPadFull extends GCCoreBlockAdvanced
         switch (world.getBlockMetadata(x, y, z))
         {
         case 0:
+            return AxisAlignedBB.getAABBPool().getAABB(x + this.minX, y + this.minY, z + this.minZ, x + this.maxX, y + this.maxY, z + this.maxZ);
+        case 2:
             return AxisAlignedBB.getAABBPool().getAABB(x + this.minX, y + this.minY, z + this.minZ, x + this.maxX, y + this.maxY, z + this.maxZ);
         default:
             return AxisAlignedBB.getAABBPool().getAABB(x + 0.0D, y + 0.0D, z + 0.0D, x + 1.0D, y + 0.2D, z + 1.0D);
@@ -142,8 +147,12 @@ public class GCCoreBlockLandingPadFull extends GCCoreBlockAdvanced
         {
         case 0:
             return new GCCoreTileEntityLandingPad();
-        default:
+        case 1:
             return new GCCoreTileEntityBuggyFueler();
+        case 2:
+            return new GCCoreTileEntityCargoPad();
+        default:
+            return null;
         }
     }
 

@@ -15,6 +15,9 @@ import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLaunchFlameFX;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLaunchSmokeFX;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoLoader.EnumCargoLoadingState;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoLoader.RemovalResult;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoPad;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
@@ -313,22 +316,6 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
         {
             par1NBTTagCompound.setTag("fuelTank", this.spaceshipFuelTank.writeToNBT(new NBTTagCompound()));
         }
-
-        // if (this.spaceshipFuelTank.getLiquid() != null)
-        // {
-        // NBTTagCompound nbt = new NBTTagCompound();
-        // nbt.setInteger("Amount", this.spaceshipFuelTank.getLiquid().amount);
-        // nbt.setShort("Id", (short)this.spaceshipFuelTank.getLiquid().itemID);
-        // nbt.setShort("Meta",
-        // (short)this.spaceshipFuelTank.getLiquid().itemMeta);
-        // nbt.setString("LiquidName", "Fuel");
-        // if (this.spaceshipFuelTank.getLiquid().extra != null)
-        // {
-        // nbt.setTag("extra", this.spaceshipFuelTank.getLiquid().extra);
-        // }
-        //
-        // par1NBTTagCompound.setTag("fuelTank", nbt);
-        // }
     }
 
     @Override
@@ -612,6 +599,70 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
     }
 
     @Override
+    public EnumCargoLoadingState addCargo(ItemStack stack, boolean doAdd)
+    {
+        if (this.getSpaceshipType() != 1)
+        {
+            return EnumCargoLoadingState.NOINVENTORY;
+        }
+        
+        int count = 0;
+        
+        for (count = 0; count < this.cargoItems.length - 3; count++)
+        {
+            ItemStack stackAt = this.cargoItems[count];
+            
+            if (stackAt != null && stackAt.itemID == stack.itemID && stackAt.getItemDamage() == stack.getItemDamage() && stackAt.stackSize < stackAt.getMaxStackSize())
+            {
+                if (doAdd)
+                {
+                    this.cargoItems[count].stackSize += stack.stackSize;
+                }
+                
+                return EnumCargoLoadingState.SUCCESS;
+            }
+        }
+
+        for (count = 0; count < this.cargoItems.length - 3; count++)
+        {
+            ItemStack stackAt = this.cargoItems[count];
+            
+            if (stackAt == null)
+            {
+                if (doAdd)
+                {
+                    this.cargoItems[count] = stack;
+                }
+                
+                return EnumCargoLoadingState.SUCCESS;
+            }
+        }
+
+        return EnumCargoLoadingState.FULL;
+    }
+
+    @Override
+    public RemovalResult removeCargo(boolean doRemove)
+    {
+        for (int i = 0; i < this.cargoItems.length - 3; i++)
+        {
+            ItemStack stackAt = this.cargoItems[i];
+            
+            if (stackAt != null)
+            {
+                if (doRemove && --this.cargoItems[i].stackSize <= 0)
+                {
+                    this.cargoItems[i] = null;
+                }
+
+                return new RemovalResult(EnumCargoLoadingState.SUCCESS, new ItemStack(stackAt.itemID, 1, stackAt.getItemDamage()));
+            }
+        }
+
+        return new RemovalResult(EnumCargoLoadingState.EMPTY, null);
+    }
+
+    @Override
     public void onPadDestroyed()
     {
         if (!this.isDead && !this.launched)
@@ -642,6 +693,6 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
     @Override
     public boolean isDockValid(IFuelDock dock)
     {
-        return dock instanceof GCCoreTileEntityLandingPad;
+        return dock instanceof GCCoreTileEntityLandingPad || dock instanceof GCCoreTileEntityCargoPad;
     }
 }

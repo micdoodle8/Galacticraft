@@ -18,6 +18,8 @@ import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoLoader.EnumCargoLoadingState;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoLoader.RemovalResult;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
@@ -611,6 +613,70 @@ public class GCCoreEntityRocketT2 extends EntitySpaceshipBase implements IInvent
         }
 
         return null;
+    }
+
+    @Override
+    public EnumCargoLoadingState addCargo(ItemStack stack, boolean doAdd)
+    {
+        if (this.type != 1)
+        {
+            return EnumCargoLoadingState.NOINVENTORY;
+        }
+        
+        int count = 0;
+        
+        for (count = 0; count < this.cargoItems.length - 3; count++)
+        {
+            ItemStack stackAt = this.cargoItems[count];
+            
+            if (stackAt != null && stackAt.itemID == stack.itemID && stackAt.getItemDamage() == stack.getItemDamage() && stackAt.stackSize < stackAt.getMaxStackSize())
+            {
+                if (doAdd)
+                {
+                    this.cargoItems[count].stackSize += stack.stackSize;
+                }
+                
+                return EnumCargoLoadingState.SUCCESS;
+            }
+        }
+
+        for (count = 0; count < this.cargoItems.length - 3; count++)
+        {
+            ItemStack stackAt = this.cargoItems[count];
+            
+            if (stackAt == null)
+            {
+                if (doAdd)
+                {
+                    this.cargoItems[count] = stack;
+                }
+                
+                return EnumCargoLoadingState.SUCCESS;
+            }
+        }
+        
+        return EnumCargoLoadingState.FULL;
+    }
+
+    @Override
+    public RemovalResult removeCargo(boolean doRemove)
+    {
+        for (int i = 0; i < this.cargoItems.length - 3; i++)
+        {
+            ItemStack stackAt = this.cargoItems[i];
+            
+            if (stackAt != null)
+            {
+                if (doRemove && --this.cargoItems[i].stackSize <= 0)
+                {
+                    this.cargoItems[i] = null;
+                }
+
+                return new RemovalResult(EnumCargoLoadingState.SUCCESS, new ItemStack(stackAt.itemID, 1, stackAt.getItemDamage()));
+            }
+        }
+
+        return new RemovalResult(EnumCargoLoadingState.EMPTY, null);
     }
 
     @Override
