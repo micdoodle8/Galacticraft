@@ -462,7 +462,7 @@ public class ClientProxyCore extends CommonProxyCore
             }
             else if (var1.equals("launchflame"))
             {
-                final EntityFX fx = new GCCoreEntityLaunchFlameFX(mc.theWorld, var2, var4, var6, var8, var10, var12, 1F);
+                final EntityFX fx = new GCCoreEntityLaunchFlameFX(mc.theWorld, var2, var4, var6, var8, var10, var12, 1F, b);
                 if (fx != null)
                 {
                     mc.effectRenderer.addEffect(fx);

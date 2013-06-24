@@ -24,8 +24,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GCCoreEntityLaunchFlameFX extends EntityFX
 {
     float smokeParticleScale;
+    boolean spawnSmokeShort;
 
-    public GCCoreEntityLaunchFlameFX(World par1World, double par2, double par4, double par6, double par8, double par10, double par12, float par14)
+    public GCCoreEntityLaunchFlameFX(World par1World, double par2, double par4, double par6, double par8, double par10, double par12, float par14, boolean spawnSmokeShort)
     {
         super(par1World, par2, par4, par6, 0.0D, 0.0D, 0.0D);
         this.motionX *= 0.10000000149011612D;
@@ -43,6 +44,7 @@ public class GCCoreEntityLaunchFlameFX extends EntityFX
         this.particleMaxAge = (int) 5.0D;
         this.particleMaxAge = (int) (this.particleMaxAge * par14);
         this.noClip = false;
+        this.spawnSmokeShort = spawnSmokeShort;
     }
 
     @Override
@@ -77,8 +79,8 @@ public class GCCoreEntityLaunchFlameFX extends EntityFX
 
         if (this.particleAge++ >= this.particleMaxAge)
         {
-            GalacticraftCore.proxy.spawnParticle("whitesmoke", this.posX, this.posY + this.rand.nextDouble() * 2, this.posZ, this.motionX, this.motionY, this.motionZ, true);
-            GalacticraftCore.proxy.spawnParticle("whitesmokelarge", this.posX, this.posY + this.rand.nextDouble() * 2, this.posZ, this.motionX, this.motionY, this.motionZ, true);
+            GalacticraftCore.proxy.spawnParticle("whitesmoke", this.posX, this.posY + this.rand.nextDouble() * 2, this.posZ, this.motionX, this.motionY, this.motionZ, this.spawnSmokeShort);
+            GalacticraftCore.proxy.spawnParticle("whitesmokelarge", this.posX, this.posY + this.rand.nextDouble() * 2, this.posZ, this.motionX, this.motionY, this.motionZ, this.spawnSmokeShort);
             this.setDead();
         }
 
@@ -117,17 +119,6 @@ public class GCCoreEntityLaunchFlameFX extends EntityFX
                 }
             }
         }
-
-        // if (this.onGround)
-        // {
-        // this.motionX = ((double)(this.rand.nextFloat() * 2.0F * (float)
-        // this.rand.nextInt(2) * 2 - 1)) / 4.0;
-        // this.motionZ = ((double)(this.rand.nextFloat() * 2.0F * (float)
-        // this.rand.nextInt(2) * 2 - 1)) / 4.0;
-        //
-        // this.motionX *= 0.699999988079071D;
-        // this.motionZ *= 0.699999988079071D;
-        // }
     }
 
     @Override

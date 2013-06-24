@@ -267,19 +267,19 @@ public class GCCoreEntityRocketT2 extends EntitySpaceshipBase implements IInvent
 
         if (!this.isDead)
         {
-            this.spawnParticle("launchflame", this.posX + 0.4 - this.rand.nextDouble() / 10 + x1, y - 0.0D + y1, this.posZ + 0.4 - this.rand.nextDouble() / 10 + z1, x1, y1, z1, this.getLaunched() == 1);
-            this.spawnParticle("launchflame", this.posX - 0.4 + this.rand.nextDouble() / 10 + x1, y - 0.0D + y1, this.posZ + 0.4 - this.rand.nextDouble() / 10 + z1, x1, y1, z1, this.getLaunched() == 1);
-            this.spawnParticle("launchflame", this.posX - 0.4 + this.rand.nextDouble() / 10 + x1, y - 0.0D + y1, this.posZ - 0.4 + this.rand.nextDouble() / 10 + z1, x1, y1, z1, this.getLaunched() == 1);
-            this.spawnParticle("launchflame", this.posX + 0.4 - this.rand.nextDouble() / 10 + x1, y - 0.0D + y1, this.posZ - 0.4 + this.rand.nextDouble() / 10 + z1, x1, y1, z1, this.getLaunched() == 1);
-            this.spawnParticle("launchflame", this.posX + x1, y - 0.0D + y1, this.posZ + z1, x1, y1, z1, this.getLaunched() == 1);
-            this.spawnParticle("launchflame", this.posX + 0.4 + x1, y - 0.0D + y1, this.posZ + z1, x1, y1, z1, this.getLaunched() == 1);
-            this.spawnParticle("launchflame", this.posX - 0.4 + x1, y - 0.0D + y1, this.posZ + z1, x1, y1, z1, this.getLaunched() == 1);
-            this.spawnParticle("launchflame", this.posX + x1, y - 0.0D + y1, this.posZ + 0.4D + z1, x1, y1, z1, this.getLaunched() == 1);
-            this.spawnParticle("launchflame", this.posX + x1, y - 0.0D + y1, this.posZ - 0.4D + z1, x1, y1, z1, this.getLaunched() == 1);
-            this.spawnParticle("blueflame", this.posX + x1 - 0.8, y - 0.0D + y1, this.posZ + z1, x1, y1, z1, this.getLaunched() == 1);
-            this.spawnParticle("blueflame", this.posX + x1 + 0.8, y - 0.0D + y1, this.posZ + z1, x1, y1, z1, this.getLaunched() == 1);
-            this.spawnParticle("blueflame", this.posX + x1, y - 0.0D + y1, this.posZ + z1 - 0.8, x1, y1, z1, this.getLaunched() == 1);
-            this.spawnParticle("blueflame", this.posX + x1, y - 0.0D + y1, this.posZ + z1 + 0.8, x1, y1, z1, this.getLaunched() == 1);
+            GalacticraftCore.proxy.spawnParticle("launchflame", this.posX + 0.4 - this.rand.nextDouble() / 10 + x1, y - 0.0D + y1, this.posZ + 0.4 - this.rand.nextDouble() / 10 + z1, x1, y1, z1, this.getLaunched() == 1);
+            GalacticraftCore.proxy.spawnParticle("launchflame", this.posX - 0.4 + this.rand.nextDouble() / 10 + x1, y - 0.0D + y1, this.posZ + 0.4 - this.rand.nextDouble() / 10 + z1, x1, y1, z1, this.getLaunched() == 1);
+            GalacticraftCore.proxy.spawnParticle("launchflame", this.posX - 0.4 + this.rand.nextDouble() / 10 + x1, y - 0.0D + y1, this.posZ - 0.4 + this.rand.nextDouble() / 10 + z1, x1, y1, z1, this.getLaunched() == 1);
+            GalacticraftCore.proxy.spawnParticle("launchflame", this.posX + 0.4 - this.rand.nextDouble() / 10 + x1, y - 0.0D + y1, this.posZ - 0.4 + this.rand.nextDouble() / 10 + z1, x1, y1, z1, this.getLaunched() == 1);
+            GalacticraftCore.proxy.spawnParticle("launchflame", this.posX + x1, y - 0.0D + y1, this.posZ + z1, x1, y1, z1, this.getLaunched() == 1);
+            GalacticraftCore.proxy.spawnParticle("launchflame", this.posX + 0.4 + x1, y - 0.0D + y1, this.posZ + z1, x1, y1, z1, this.getLaunched() == 1);
+            GalacticraftCore.proxy.spawnParticle("launchflame", this.posX - 0.4 + x1, y - 0.0D + y1, this.posZ + z1, x1, y1, z1, this.getLaunched() == 1);
+            GalacticraftCore.proxy.spawnParticle("launchflame", this.posX + x1, y - 0.0D + y1, this.posZ + 0.4D + z1, x1, y1, z1, this.getLaunched() == 1);
+            GalacticraftCore.proxy.spawnParticle("launchflame", this.posX + x1, y - 0.0D + y1, this.posZ - 0.4D + z1, x1, y1, z1, this.getLaunched() == 1);
+            GalacticraftCore.proxy.spawnParticle("blueflame", this.posX + x1 - 0.8, y - 0.0D + y1, this.posZ + z1, x1, y1, z1, this.getLaunched() == 1);
+            GalacticraftCore.proxy.spawnParticle("blueflame", this.posX + x1 + 0.8, y - 0.0D + y1, this.posZ + z1, x1, y1, z1, this.getLaunched() == 1);
+            GalacticraftCore.proxy.spawnParticle("blueflame", this.posX + x1, y - 0.0D + y1, this.posZ + z1 - 0.8, x1, y1, z1, this.getLaunched() == 1);
+            GalacticraftCore.proxy.spawnParticle("blueflame", this.posX + x1, y - 0.0D + y1, this.posZ + z1 + 0.8, x1, y1, z1, this.getLaunched() == 1);
         }
     }
 
@@ -454,67 +454,6 @@ public class GCCoreEntityRocketT2 extends EntitySpaceshipBase implements IInvent
     @Override
     public void closeChest()
     {
-    }
-
-    @SideOnly(Side.CLIENT)
-    public void spawnParticle(String var1, double var2, double var4, double var6, double var8, double var10, double var12, boolean b)
-    {
-        this.spawnParticle(var1, var2, var4, var6, var8, var10, var12, 0.0D, 0.0D, 0.0D, b);
-    }
-
-    @SideOnly(Side.CLIENT)
-    public void spawnParticle(String var1, double var2, double var4, double var6, double var8, double var10, double var12, double var13, double var14, double var15, boolean b)
-    {
-        final Minecraft mc = FMLClientHandler.instance().getClient();
-
-        if (mc != null && mc.renderViewEntity != null && mc.effectRenderer != null)
-        {
-            final double var16 = mc.renderViewEntity.posX - var2;
-            final double var17 = mc.renderViewEntity.posY - var4;
-            final double var19 = mc.renderViewEntity.posZ - var6;
-            final double var22 = 64.0D;
-
-            if (var1.equals("whitesmoke"))
-            {
-                final EntityFX fx = new GCCoreEntityLaunchSmokeFX(mc.theWorld, var2, var4, var6, var8, var10, var12, 1.0F, b);
-                if (fx != null)
-                {
-                    mc.effectRenderer.addEffect(fx);
-                }
-            }
-            else if (var1.equals("whitesmokelarge"))
-            {
-                final EntityFX fx = new GCCoreEntityLaunchSmokeFX(mc.theWorld, var2, var4, var6, var8, var10, var12, 2.5F, b);
-                if (fx != null)
-                {
-                    mc.effectRenderer.addEffect(fx);
-                }
-            }
-            else if (var1.equals("launchflame"))
-            {
-                final EntityFX fx = new GCCoreEntityLaunchFlameFX(mc.theWorld, var2, var4, var6, var8, var10, var12, 1F);
-                if (fx != null)
-                {
-                    mc.effectRenderer.addEffect(fx);
-                }
-            }
-            else if (var1.equals("distancesmoke") && var16 * var16 + var17 * var17 + var19 * var19 < var22 * var22 * 1.7)
-            {
-                final EntityFX fx = new EntitySmokeFX(mc.theWorld, var2, var4, var6, var8, var10, var12, 2.5F);
-                if (fx != null)
-                {
-                    mc.effectRenderer.addEffect(fx);
-                }
-            }
-            else if (var1.equals("blueflame"))
-            {
-                final EntityFX fx = new GCCoreEntityLanderFlameFX(mc.theWorld, var2, var4, var6, var8, var10, var12, 0.2F);
-                if (fx != null)
-                {
-                    mc.effectRenderer.addEffect(fx);
-                }
-            }
-        }
     }
 
     @Override
