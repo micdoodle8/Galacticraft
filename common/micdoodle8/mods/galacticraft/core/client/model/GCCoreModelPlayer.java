@@ -767,7 +767,7 @@ public class GCCoreModelPlayer extends ModelBiped
             {
                 final GCCoreEntityRocketT1 ship = (GCCoreEntityRocketT1) e;
 
-                if (ship.riddenByEntity != null && !((EntityPlayer) ship.riddenByEntity).username.equals(player.username) && (ship.getLaunched() == 1 || ship.getTimeUntilLaunch() < 390))
+                if (ship.riddenByEntity != null && !((EntityPlayer) ship.riddenByEntity).username.equals(player.username) && (ship.getLaunched() || ship.timeUntilLaunch < 390))
                 {
                     this.bipedRightArm.rotateAngleZ -= (float) (Math.PI / 8) + MathHelper.sin(par3 * 0.9F) * 0.2F;
                     this.bipedRightArm.rotateAngleX = (float) Math.PI;

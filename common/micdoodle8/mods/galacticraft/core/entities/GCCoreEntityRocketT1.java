@@ -65,7 +65,7 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
 
     public IUpdatePlayerListBox rocketSoundUpdater;
 
-    private int type;
+    public int spaceshipType;
 
     private IFuelDock landingPad;
 
@@ -107,8 +107,6 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
     protected void entityInit()
     {
         super.entityInit();
-        this.dataWatcher.addObject(25, new Integer(0));
-        this.setSpaceshipType(this.type);
         RadarRegistry.register(this);
     }
 
@@ -141,20 +139,20 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
             i = 1;
         }
 
-        if ((this.getLaunched() == 1 || (this.ignite == 1 && this.rand.nextInt(i) == 0)) && !GCCoreConfigManager.disableSpaceshipParticles && this.hasValidFuel())
+        if ((this.getLaunched() || (this.launchPhase == EnumLaunchPhase.IGNITED.getPhase() && this.rand.nextInt(i) == 0)) && !GCCoreConfigManager.disableSpaceshipParticles && this.hasValidFuel())
         {
             if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
             {
-                this.spawnParticles(this.getLaunched() == 1);
+                this.spawnParticles(this.getLaunched());
             }
         }
 
-        if (this.rocketSoundUpdater != null && (this.ignite == 1 || this.getLaunched() == 1))
+        if (this.rocketSoundUpdater != null && (this.launchPhase == EnumLaunchPhase.IGNITED.getPhase() || this.getLaunched()))
         {
             this.rocketSoundUpdater.update();
         }
 
-        if (this.launched && this.hasValidFuel())
+        if (this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase() && this.hasValidFuel())
         {
             double d = this.timeSinceLaunch / 250;
 
@@ -182,42 +180,28 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
                 this.removeFuel(null, 1);
             }
         }
-        else if (!this.hasValidFuel() && this.getLaunched() == 1 && !this.worldObj.isRemote)
+        else if (!this.hasValidFuel() && this.getLaunched() && !this.worldObj.isRemote)
         {
             if (Math.abs(Math.sin(this.timeSinceLaunch / 1000)) / 10 != 0.0)
             {
                 this.motionY -= Math.abs(Math.sin(this.timeSinceLaunch / 1000)) / 20;
             }
         }
-
-        if (!this.worldObj.isRemote && this.ticks % 3 == 0)
-        {
-            PacketManager.sendPacketToClients(this.getDescriptionPacket(), this.worldObj, new Vector3(this), 50);
-        }
     }
-
-    public Packet getDescriptionPacket()
+    
+    public void readNetworkedData(ByteArrayDataInput dataStream)
     {
-        final Packet p = GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.spaceshipFuelTank.getLiquid() == null ? 0 : this.spaceshipFuelTank.getLiquid().amount, this.launched, this.ignite);
-        return p;
+        super.readNetworkedData(dataStream);
+        this.spaceshipFuelTank.setLiquid(new LiquidStack(GCCoreItems.fuel.itemID, dataStream.readInt(), 0));
+        this.spaceshipType = dataStream.readInt();
     }
-
-    @Override
-    public void handlePacketData(INetworkManager network, int packetType, Packet250CustomPayload packet, EntityPlayer player, ByteArrayDataInput dataStream)
+    
+    public ArrayList getNetworkedData(ArrayList list)
     {
-        try
-        {
-            if (this.worldObj.isRemote)
-            {
-                this.spaceshipFuelTank.setLiquid(new LiquidStack(GCCoreItems.fuel.itemID, dataStream.readInt(), 0));
-                this.launched = dataStream.readBoolean();
-                this.ignite = dataStream.readInt();
-            }
-        }
-        catch (final Exception e)
-        {
-            e.printStackTrace();
-        }
+        super.getNetworkedData(list);
+        list.add(this.spaceshipFuelTank.getLiquid() == null ? 0 : this.spaceshipFuelTank.getLiquid().amount);
+        list.add(this.spaceshipType);
+        return list;
     }
 
     @Override
@@ -242,7 +226,7 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
         if (playerBase != null)
         {
             playerBase.rocketStacks = this.cargoItems;
-            playerBase.rocketType = this.getSpaceshipType();
+            playerBase.rocketType = this.spaceshipType;
             final int liquid = this.spaceshipFuelTank.getLiquid() == null ? 0 : this.spaceshipFuelTank.getLiquid().amount / MathHelper.floor_double(this.canisterToLiquidStackRatio == 0 ? 1 : this.canisterToLiquidStackRatio);
             playerBase.fuelDamage = Math.max(Math.min(GCCoreItems.fuelCanister.getMaxDamage() - liquid, GCCoreItems.fuelCanister.getMaxDamage()), 1);
         }
@@ -258,15 +242,15 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
 
         if (!this.isDead)
         {
-            GalacticraftCore.proxy.spawnParticle("launchflame", this.posX + 0.4 - this.rand.nextDouble() / 10 + x1, y - 0.0D + y1, this.posZ + 0.4 - this.rand.nextDouble() / 10 + z1, x1, y1, z1, this.getLaunched() == 1);
-            GalacticraftCore.proxy.spawnParticle("launchflame", this.posX - 0.4 + this.rand.nextDouble() / 10 + x1, y - 0.0D + y1, this.posZ + 0.4 - this.rand.nextDouble() / 10 + z1, x1, y1, z1, this.getLaunched() == 1);
-            GalacticraftCore.proxy.spawnParticle("launchflame", this.posX - 0.4 + this.rand.nextDouble() / 10 + x1, y - 0.0D + y1, this.posZ - 0.4 + this.rand.nextDouble() / 10 + z1, x1, y1, z1, this.getLaunched() == 1);
-            GalacticraftCore.proxy.spawnParticle("launchflame", this.posX + 0.4 - this.rand.nextDouble() / 10 + x1, y - 0.0D + y1, this.posZ - 0.4 + this.rand.nextDouble() / 10 + z1, x1, y1, z1, this.getLaunched() == 1);
-            GalacticraftCore.proxy.spawnParticle("launchflame", this.posX + x1, y - 0.0D + y1, this.posZ + z1, x1, y1, z1, this.getLaunched() == 1);
-            GalacticraftCore.proxy.spawnParticle("launchflame", this.posX + 0.4 + x1, y - 0.0D + y1, this.posZ + z1, x1, y1, z1, this.getLaunched() == 1);
-            GalacticraftCore.proxy.spawnParticle("launchflame", this.posX - 0.4 + x1, y - 0.0D + y1, this.posZ + z1, x1, y1, z1, this.getLaunched() == 1);
-            GalacticraftCore.proxy.spawnParticle("launchflame", this.posX + x1, y - 0.0D + y1, this.posZ + 0.4D + z1, x1, y1, z1, this.getLaunched() == 1);
-            GalacticraftCore.proxy.spawnParticle("launchflame", this.posX + x1, y - 0.0D + y1, this.posZ - 0.4D + z1, x1, y1, z1, this.getLaunched() == 1);
+            GalacticraftCore.proxy.spawnParticle("launchflame", this.posX + 0.4 - this.rand.nextDouble() / 10 + x1, y - 0.0D + y1, this.posZ + 0.4 - this.rand.nextDouble() / 10 + z1, x1, y1, z1, this.getLaunched());
+            GalacticraftCore.proxy.spawnParticle("launchflame", this.posX - 0.4 + this.rand.nextDouble() / 10 + x1, y - 0.0D + y1, this.posZ + 0.4 - this.rand.nextDouble() / 10 + z1, x1, y1, z1, this.getLaunched());
+            GalacticraftCore.proxy.spawnParticle("launchflame", this.posX - 0.4 + this.rand.nextDouble() / 10 + x1, y - 0.0D + y1, this.posZ - 0.4 + this.rand.nextDouble() / 10 + z1, x1, y1, z1, this.getLaunched());
+            GalacticraftCore.proxy.spawnParticle("launchflame", this.posX + 0.4 - this.rand.nextDouble() / 10 + x1, y - 0.0D + y1, this.posZ - 0.4 + this.rand.nextDouble() / 10 + z1, x1, y1, z1, this.getLaunched());
+            GalacticraftCore.proxy.spawnParticle("launchflame", this.posX + x1, y - 0.0D + y1, this.posZ + z1, x1, y1, z1, this.getLaunched());
+            GalacticraftCore.proxy.spawnParticle("launchflame", this.posX + 0.4 + x1, y - 0.0D + y1, this.posZ + z1, x1, y1, z1, this.getLaunched());
+            GalacticraftCore.proxy.spawnParticle("launchflame", this.posX - 0.4 + x1, y - 0.0D + y1, this.posZ + z1, x1, y1, z1, this.getLaunched());
+            GalacticraftCore.proxy.spawnParticle("launchflame", this.posX + x1, y - 0.0D + y1, this.posZ + 0.4D + z1, x1, y1, z1, this.getLaunched());
+            GalacticraftCore.proxy.spawnParticle("launchflame", this.posX + x1, y - 0.0D + y1, this.posZ - 0.4D + z1, x1, y1, z1, this.getLaunched());
         }
     }
 
@@ -287,7 +271,7 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
     {
         super.writeEntityToNBT(par1NBTTagCompound);
 
-        par1NBTTagCompound.setInteger("Type", this.getSpaceshipType());
+        par1NBTTagCompound.setInteger("Type", this.spaceshipType);
 
         if (this.getSizeInventory() > 0)
         {
@@ -318,7 +302,7 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
     {
         super.readEntityFromNBT(par1NBTTagCompound);
 
-        this.setSpaceshipType(par1NBTTagCompound.getInteger("Type"));
+        this.spaceshipType = par1NBTTagCompound.getInteger("Type");
 
         if (this.getSizeInventory() > 0)
         {
@@ -406,16 +390,6 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
         }
     }
 
-    public void setSpaceshipType(int par1)
-    {
-        this.dataWatcher.updateObject(25, par1);
-    }
-
-    public int getSpaceshipType()
-    {
-        return this.dataWatcher.getWatchableObjectInt(25);
-    }
-
     @Override
     public String getInvName()
     {
@@ -468,7 +442,7 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
     public List<ItemStack> getItemsDropped()
     {
         final List<ItemStack> items = new ArrayList<ItemStack>();
-        items.add(new ItemStack(GCCoreItems.spaceship, 1, this.getSpaceshipType()));
+        items.add(new ItemStack(GCCoreItems.spaceship, 1, this.spaceshipType));
 
         for (final ItemStack item : this.cargoItems)
         {
@@ -543,7 +517,7 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
     @Override
     public EnumCargoLoadingState addCargo(ItemStack stack, boolean doAdd)
     {
-        if (this.getSpaceshipType() != 1)
+        if (this.spaceshipType != 1)
         {
             return EnumCargoLoadingState.NOINVENTORY;
         }
@@ -607,7 +581,7 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
     @Override
     public void onPadDestroyed()
     {
-        if (!this.isDead && !this.launched)
+        if (!this.isDead && this.launchPhase != EnumLaunchPhase.LAUNCHED.getPhase())
         {
             this.dropShipAsItem();
             this.setDead();
@@ -629,7 +603,7 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
     @Override
     public int getType()
     {
-        return this.getSpaceshipType();
+        return this.spaceshipType;
     }
 
     @Override

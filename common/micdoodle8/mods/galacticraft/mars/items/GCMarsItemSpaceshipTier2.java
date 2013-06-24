@@ -99,7 +99,7 @@ public class GCMarsItemSpaceshipTier2 extends Item implements IHoldableItem
                 {
                     par2EntityPlayer.inventory.consumeInventoryItem(par1ItemStack.getItem().itemID);
                 }
-                spaceship.setSpaceshipType(par1ItemStack.getItemDamage());
+                spaceship.spaceshipType = par1ItemStack.getItemDamage();
 
                 if (par1ItemStack.getItemDamage() == 2)
                 {

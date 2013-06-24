@@ -128,7 +128,7 @@ public class GCCorePacketManager extends PacketManager implements IPacketHandler
             data.writeInt(2);
 
             data.writeInt(sender.entityId);
-            data = PacketManager.encodeDataStream(data, sendData);
+            data = GCCorePacketManager.encodeDataStream(data, sendData);
 
             final Packet250CustomPayload packet = new Packet250CustomPayload();
             packet.channel = channelName;
@@ -144,6 +144,103 @@ public class GCCorePacketManager extends PacketManager implements IPacketHandler
         }
 
         return null;
+    }
+
+    public static DataOutputStream encodeDataStream(DataOutputStream data, Object... sendData)
+    {
+        try
+        {
+            for (Object dataValue : sendData)
+            {
+                if (dataValue instanceof Integer)
+                {
+                    data.writeInt((Integer) dataValue);
+                }
+                else if (dataValue instanceof Float)
+                {
+                    data.writeFloat((Float) dataValue);
+                }
+                else if (dataValue instanceof Double)
+                {
+                    data.writeDouble((Double) dataValue);
+                }
+                else if (dataValue instanceof Byte)
+                {
+                    data.writeByte((Byte) dataValue);
+                }
+                else if (dataValue instanceof Boolean)
+                {
+                    data.writeBoolean((Boolean) dataValue);
+                }
+                else if (dataValue instanceof String)
+                {
+                    data.writeUTF((String) dataValue);
+                }
+                else if (dataValue instanceof Short)
+                {
+                    data.writeShort((Short) dataValue);
+                }
+                else if (dataValue instanceof Long)
+                {
+                    data.writeLong((Long) dataValue);
+                }
+                else if (dataValue instanceof NBTTagCompound)
+                {
+                    writeNBTTagCompound((NBTTagCompound) dataValue, data);
+                }
+                else if (dataValue instanceof ArrayList)
+                {
+                    for (Object dataValue2 : (ArrayList)dataValue)
+                    {
+                        if (dataValue instanceof Integer)
+                        {
+                            data.writeInt((Integer) dataValue);
+                        }
+                        else if (dataValue instanceof Float)
+                        {
+                            data.writeFloat((Float) dataValue);
+                        }
+                        else if (dataValue instanceof Double)
+                        {
+                            data.writeDouble((Double) dataValue);
+                        }
+                        else if (dataValue instanceof Byte)
+                        {
+                            data.writeByte((Byte) dataValue);
+                        }
+                        else if (dataValue instanceof Boolean)
+                        {
+                            data.writeBoolean((Boolean) dataValue);
+                        }
+                        else if (dataValue instanceof String)
+                        {
+                            data.writeUTF((String) dataValue);
+                        }
+                        else if (dataValue instanceof Short)
+                        {
+                            data.writeShort((Short) dataValue);
+                        }
+                        else if (dataValue instanceof Long)
+                        {
+                            data.writeLong((Long) dataValue);
+                        }
+                        else if (dataValue instanceof NBTTagCompound)
+                        {
+                            writeNBTTagCompound((NBTTagCompound) dataValue, data);
+                        }
+                    }
+                }
+            }
+
+            return data;
+        }
+        catch (IOException e)
+        {
+            System.out.println("Packet data encoding failed.");
+            e.printStackTrace();
+        }
+
+        return data;
     }
 
     @Override

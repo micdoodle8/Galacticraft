@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
 import icbm.api.IMissileLockable;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,8 @@ import micdoodle8.mods.galacticraft.core.GCCoreDamageSource;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLandingPad;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLandingPadFull;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFuelLoader;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
@@ -25,29 +28,53 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.INetworkManager;
+import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.liquids.LiquidStack;
+import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.IPacketReceiver;
+import universalelectricity.prefab.network.PacketManager;
+import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, IPacketReceiver, IMissileLockable, IDockable, IInventory
 {
+    public static enum EnumLaunchPhase
+    {
+        UNIGNITED(1),
+        IGNITED(2),
+        LAUNCHED(3);
+        
+        private int phase;
+        
+        private EnumLaunchPhase(int phase)
+        {
+            this.phase = phase;
+        }
+        
+        public int getPhase()
+        {
+            return this.phase;
+        }
+    }
+    
+    public int launchPhase = EnumLaunchPhase.UNIGNITED.getPhase();
+    
     protected long ticks = 0;
-
     protected double dragAir;
-
-    protected int ignite;
     public int timeUntilLaunch;
-    public boolean launched;
-
     public float timeSinceLaunch;
-
     public float rumble;
+    public float rollAmplitude;
+    public float shipDamage;
 
     public EntitySpaceshipBase(World par1World)
     {
@@ -74,14 +101,6 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
     @Override
     protected void entityInit()
     {
-        this.dataWatcher.addObject(16, new Byte((byte) 0));
-        this.dataWatcher.addObject(17, new Integer(0));
-        this.dataWatcher.addObject(18, new Integer(1));
-        this.dataWatcher.addObject(19, new Integer(0));
-        this.dataWatcher.addObject(20, new Integer(0));
-        this.dataWatcher.addObject(22, new Integer(0));
-        this.dataWatcher.addObject(23, new Integer(0));
-        this.dataWatcher.addObject(24, new Integer(0));
     }
 
     @Override
@@ -125,17 +144,16 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
             }
             else
             {
-                this.setRollingDirection(-this.getRollingDirection());
-                this.setRollingAmplitude(10);
+                this.rollAmplitude = 10;
                 this.setBeenAttacked();
-                this.setDamage(this.getDamage() + par2 * 10);
+                this.shipDamage += par2 * 10;
 
                 if (par1DamageSource.getEntity() instanceof EntityPlayer && ((EntityPlayer) par1DamageSource.getEntity()).capabilities.isCreativeMode)
                 {
-                    this.setDamage(100);
+                    this.shipDamage = 100;
                 }
 
-                if (this.getDamage() > 90 && !this.worldObj.isRemote)
+                if (this.shipDamage > 90 && !this.worldObj.isRemote)
                 {
                     if (this.riddenByEntity != null)
                     {
@@ -177,9 +195,8 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
     @Override
     public void performHurtAnimation()
     {
-        this.setRollingDirection(-this.getRollingDirection());
-        this.setRollingAmplitude(5);
-        this.setDamage(this.getDamage() + this.getDamage() * 10);
+        this.rollAmplitude = 5;
+        this.shipDamage += this.shipDamage * 10;
     }
 
     @Override
@@ -218,7 +235,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
                 {
                     if (tile instanceof GCCoreTileEntityFuelLoader && ((GCCoreTileEntityFuelLoader) tile).wattsReceived > 0)
                     {
-                        if (this.launched)
+                        if (this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase())
                         {
                             this.setPad(null);
                         }
@@ -248,14 +265,14 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
             this.teleport();
         }
 
-        if (this.getRollingAmplitude() > 0)
+        if (this.rollAmplitude > 0)
         {
-            this.setRollingAmplitude(this.getRollingAmplitude() - 1);
+            this.rollAmplitude--;
         }
-
-        if (this.getDamage() > 0)
+        
+        if (this.shipDamage > 0)
         {
-            this.setDamage(this.getDamage() - 1);
+            this.shipDamage--;
         }
 
         if (this.posY < 0.0D || this.posY > (this.worldObj.provider instanceof IExitHeight ? ((IExitHeight) this.worldObj.provider).getYCoordinateToTeleport() : 1200) + 10)
@@ -263,12 +280,12 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
             this.kill();
         }
 
-        if (this.ignite == 0)
+        if (this.launchPhase == EnumLaunchPhase.UNIGNITED.getPhase())
         {
             this.timeUntilLaunch = this.getPreLaunchWait();
         }
 
-        if (this.launched)
+        if (this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase())
         {
             this.timeSinceLaunch++;
         }
@@ -277,12 +294,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
             this.timeSinceLaunch = 0;
         }
 
-        if (!this.worldObj.isRemote)
-        {
-            this.setTimeSinceLaunch((int) this.timeSinceLaunch);
-        }
-
-        if (this.timeUntilLaunch > 0 && this.ignite == 1)
+        if (this.timeUntilLaunch > 0 && this.launchPhase == EnumLaunchPhase.IGNITED.getPhase())
         {
             this.timeUntilLaunch--;
         }
@@ -306,13 +318,9 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
             }
         }
 
-        this.setTimeUntilLaunch(this.timeUntilLaunch);
-
-        if (this.timeUntilLaunch == 0 && this.ignite == 1)
+        if (this.timeUntilLaunch == 0 && this.launchPhase == EnumLaunchPhase.IGNITED.getPhase())
         {
-            this.launched = true;
-            this.setLaunched(1);
-            this.ignite = 0;
+            this.launchPhase = EnumLaunchPhase.LAUNCHED.getPhase();
             this.onLaunch();
 
             if (!this.worldObj.isRemote)
@@ -359,7 +367,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
             }
         }
 
-        if (this.ignite == 1 || this.launched)
+        if (this.launchPhase == EnumLaunchPhase.IGNITED.getPhase() || this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase())
         {
             this.performHurtAnimation();
 
@@ -384,7 +392,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
             this.failRocket();
         }
 
-        if (this.getLaunched() != 1)
+        if (this.launchPhase != EnumLaunchPhase.LAUNCHED.getPhase())
         {
             this.motionX = this.motionY = this.motionZ = 0.0F;
         }
@@ -401,6 +409,42 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
         this.prevPosX = this.posX;
         this.prevPosY = this.posY;
         this.prevPosZ = this.posZ;
+        
+        if (!this.worldObj.isRemote && this.ticks % 3 == 0)
+        {
+            PacketManager.sendPacketToClients(GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getNetworkedData(new ArrayList())), this.worldObj, new Vector3(this), 50);
+        }
+    }
+
+    @Override
+    public void handlePacketData(INetworkManager network, int packetType, Packet250CustomPayload packet, EntityPlayer player, ByteArrayDataInput dataStream)
+    {
+        try
+        {
+            if (this.worldObj.isRemote)
+            {
+                this.readNetworkedData(dataStream);
+            }
+        }
+        catch (final Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    
+    public void readNetworkedData(ByteArrayDataInput dataStream)
+    {
+        this.launchPhase = dataStream.readInt();
+        this.timeSinceLaunch = dataStream.readFloat();
+        this.timeUntilLaunch = dataStream.readInt();
+    }
+    
+    public ArrayList getNetworkedData(ArrayList list)
+    {
+        list.add(this.launchPhase);
+        list.add(this.timeSinceLaunch);
+        list.add(this.timeUntilLaunch);
+        return list;
     }
 
     public void turnYaw(float f)
@@ -436,27 +480,62 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
     }
 
     @Override
-    protected void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
+    protected void writeEntityToNBT(NBTTagCompound nbt)
     {
-        par1NBTTagCompound.setBoolean("launched", this.launched);
-        par1NBTTagCompound.setInteger("timeUntilLaunch", this.timeUntilLaunch);
-        par1NBTTagCompound.setInteger("ignite", this.ignite);
+        nbt.setInteger("launchPhase", this.launchPhase);
+        nbt.setInteger("timeUntilLaunch", this.timeUntilLaunch);
     }
 
     @Override
-    protected void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
+    protected void readEntityFromNBT(NBTTagCompound nbt)
     {
-        this.launched = par1NBTTagCompound.getBoolean("launched");
-        if (par1NBTTagCompound.getBoolean("launched"))
+        this.timeUntilLaunch = nbt.getInteger("timeUntilLaunch");
+        
+        boolean hasOldTags = false;
+        
+        // Backwards compatibility:
+        if (nbt.getTags().contains("launched"))
         {
-            this.setLaunched(1);
+            hasOldTags = true;
+            
+            boolean launched = nbt.getBoolean("launched");
+            
+            if (launched)
+            {
+                this.launchPhase = EnumLaunchPhase.LAUNCHED.getPhase();
+            }
+        }
+
+        // Backwards compatibility:
+        if (nbt.getTags().contains("ignite"))
+        {
+            hasOldTags = true;
+            
+            int ignite = nbt.getInteger("ignite");
+            
+            if (ignite == 1)
+            {
+                this.launchPhase = EnumLaunchPhase.IGNITED.getPhase();
+            }
+        }
+
+        // Backwards compatibility:
+        if (hasOldTags)
+        {
+            if (this.launchPhase != EnumLaunchPhase.LAUNCHED.getPhase() && this.launchPhase != EnumLaunchPhase.IGNITED.getPhase())
+            {
+                this.launchPhase = EnumLaunchPhase.UNIGNITED.getPhase();
+            }
         }
         else
         {
-            this.setLaunched(0);
+            this.launchPhase = nbt.getInteger("launchPhase");
         }
-        this.timeUntilLaunch = par1NBTTagCompound.getInteger("timeUntilLaunch");
-        this.ignite = par1NBTTagCompound.getInteger("ignite");
+    }
+    
+    public boolean getLaunched()
+    {
+        return this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase();
     }
 
     @Override
@@ -494,82 +573,9 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
         return false;
     }
 
-    public void setDamage(int par1)
-    {
-        this.dataWatcher.updateObject(19, Integer.valueOf(par1));
-    }
-
-    public int getDamage()
-    {
-        return this.dataWatcher.getWatchableObjectInt(19);
-    }
-
-    public void setRollingAmplitude(int par1)
-    {
-        this.dataWatcher.updateObject(17, Integer.valueOf(par1));
-    }
-
-    public int getRollingAmplitude()
-    {
-        return this.dataWatcher.getWatchableObjectInt(17);
-    }
-
-    public void setRollingDirection(int par1)
-    {
-        this.dataWatcher.updateObject(18, Integer.valueOf(par1));
-    }
-
-    public int getRollingDirection()
-    {
-        return this.dataWatcher.getWatchableObjectInt(18);
-    }
-
-    public void setFailedLaunch(int par1)
-    {
-        this.dataWatcher.updateObject(20, Integer.valueOf(par1));
-    }
-
-    public int getFailedLaunch()
-    {
-        return this.dataWatcher.getWatchableObjectInt(20);
-    }
-
-    public void setLaunched(int par1)
-    {
-        this.dataWatcher.updateObject(22, par1);
-    }
-
-    public int getLaunched()
-    {
-        return this.dataWatcher.getWatchableObjectInt(22);
-    }
-
-    public void setTimeUntilLaunch(int par1)
-    {
-        if (!this.worldObj.isRemote)
-        {
-            this.dataWatcher.updateObject(23, par1);
-        }
-    }
-
-    public int getTimeUntilLaunch()
-    {
-        return this.dataWatcher.getWatchableObjectInt(23);
-    }
-
-    public void setTimeSinceLaunch(int par1)
-    {
-        this.dataWatcher.updateObject(24, par1);
-    }
-
-    public int getTimeSinceLaunch()
-    {
-        return this.dataWatcher.getWatchableObjectInt(24);
-    }
-
     public void ignite()
     {
-        this.ignite = 1;
+        this.launchPhase = EnumLaunchPhase.IGNITED.getPhase();
     }
 
     @Override

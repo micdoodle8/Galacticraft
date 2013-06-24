@@ -80,9 +80,9 @@ public class GCCoreSoundUpdaterSpaceship implements IUpdatePlayerListBox
             var1 = true;
         }
 
-        if (this.theMinecart.getTimeUntilLaunch() <= this.theMinecart.getPreLaunchWait())
+        if (this.theMinecart.timeUntilLaunch <= this.theMinecart.getPreLaunchWait())
         {
-            if (this.theMinecart.getTimeUntilLaunch() < this.theMinecart.getPreLaunchWait())
+            if (this.theMinecart.timeUntilLaunch < this.theMinecart.getPreLaunchWait())
             {
                 if (this.minecartSoundPitch < 1.0F)
                 {

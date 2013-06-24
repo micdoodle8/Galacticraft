@@ -19,6 +19,7 @@ import micdoodle8.mods.galacticraft.core.client.gui.GCCoreOverlaySpaceship;
 import micdoodle8.mods.galacticraft.core.client.sounds.GCCoreSoundUpdaterSpaceship;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreWorldProviderSpaceStation;
 import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
+import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase.EnumLaunchPhase;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityLander;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityRocketT1;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemSensorGlasses;
@@ -132,7 +133,7 @@ public class GCCoreTickHandlerClient implements ITickHandler
 
                 if (minecraft.gameSettings.keyBindForward.pressed)
                 {
-                    if (ship.getLaunched() == 1)
+                    if (ship.getLaunched())
                     {
                         ship.turnPitch(-0.7F);
                         final Object[] toSend = { ship.rotationPitch };
@@ -142,7 +143,7 @@ public class GCCoreTickHandlerClient implements ITickHandler
 
                 if (minecraft.gameSettings.keyBindBack.pressed)
                 {
-                    if (ship.getLaunched() == 1)
+                    if (ship.getLaunched())
                     {
                         ship.turnPitch(0.7F);
                         final Object[] toSend = { ship.rotationPitch };
@@ -240,7 +241,7 @@ public class GCCoreTickHandlerClient implements ITickHandler
 
             if (player != null && player.ridingEntity != null && player.ridingEntity instanceof GCCoreEntityRocketT1)
             {
-                float f = (((GCCoreEntityRocketT1) player.ridingEntity).getTimeSinceLaunch() - 250F) / 175F;
+                float f = (((GCCoreEntityRocketT1) player.ridingEntity).timeSinceLaunch - 250F) / 175F;
 
                 if (f < 0)
                 {
@@ -284,7 +285,7 @@ public class GCCoreTickHandlerClient implements ITickHandler
                 GCCoreOverlayLander.renderLanderOverlay();
             }
 
-            if (minecraft.currentScreen == null && player != null && player.ridingEntity != null && player.ridingEntity instanceof EntitySpaceshipBase && minecraft.gameSettings.thirdPersonView != 0 && !minecraft.gameSettings.hideGUI && !((EntitySpaceshipBase) minecraft.thePlayer.ridingEntity).launched)
+            if (minecraft.currentScreen == null && player != null && player.ridingEntity != null && player.ridingEntity instanceof EntitySpaceshipBase && minecraft.gameSettings.thirdPersonView != 0 && !minecraft.gameSettings.hideGUI && ((EntitySpaceshipBase) minecraft.thePlayer.ridingEntity).launchPhase != EnumLaunchPhase.LAUNCHED.getPhase())
             {
                 GCCoreOverlayCountdown.renderCountdownOverlay();
             }
