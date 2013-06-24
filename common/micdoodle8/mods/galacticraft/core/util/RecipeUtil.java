@@ -372,7 +372,16 @@ public class RecipeUtil
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.blockAirCollector, 1), new Object[] { "WWW", "YXZ", "WVW", 'V', GCCoreItems.oxygenConcentrator, 'W', "ingotSteel", 'X', new ItemStack(GCCoreItems.canister, 1, 0), 'Y', GCCoreItems.airFan, 'Z', GCCoreItems.airVent });
 
-        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.rocketBench, 1), new Object[] { "XXX", "YZY", "YWY", 'X', "ingotSteel", 'Y', "plateSteel", 'Z', Block.workbench, 'W', "advancedCircuit" });
+        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.rocketBench, 1), new Object[] 
+                { 
+            "XXX", 
+            "YZY", 
+            "YWY", 
+            'X', "ingotSteel", 
+            'Y', "plateSteel", 
+            'Z', Block.workbench, 
+            'W', "circuitAdvanced" 
+            });
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreItems.heavyOxygenTank, 1, GCCoreItems.heavyOxygenTank.getMaxDamage()), new Object[] { "ZZZ", "XXX", "YYY", 'X', new ItemStack(GCCoreItems.canister, 1, 0), 'Y', "ingotSteel", 'Z', new ItemStack(Block.cloth, 1, 14) });
 
@@ -416,7 +425,7 @@ public class RecipeUtil
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.compressor), new Object[] { "XXX", "XZX", "XYX", 'X', "ingotSteel", 'Y', "ingotBronze", 'Z', GCCoreItems.oxygenConcentrator });
 
-        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.fuelLoader), new Object[] { "XXX", "XZX", "XYX", 'X', "ingotSteel", 'Y', "basicCircuit", 'Z', "motor" });
+        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.fuelLoader), new Object[] { "XXX", "XZX", "XYX", 'X', "ingotSteel", 'Y', "circuitBasic", 'Z', "motor" });
     }
 
     public static void addIndustrialcraftCraftingRecipes()
