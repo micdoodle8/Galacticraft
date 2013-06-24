@@ -1,9 +1,11 @@
 package micdoodle8.mods.galacticraft.mars.items;
 
 import java.util.List;
+import mekanism.api.EnumColor;
 import micdoodle8.mods.galacticraft.API.IHoldableItem;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
+import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase.EnumRocketType;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import micdoodle8.mods.galacticraft.mars.entities.GCCoreEntityRocketT2;
 import net.minecraft.creativetab.CreativeTabs;
@@ -92,15 +94,14 @@ public class GCMarsItemSpaceshipTier2 extends Item implements IHoldableItem
 
             if (amountOfCorrectBlocks == 9)
             {
-                final GCCoreEntityRocketT2 spaceship = new GCCoreEntityRocketT2(par3World, centerX, centerY + 0.2D, centerZ, par1ItemStack.getItemDamage());
+                final GCCoreEntityRocketT2 spaceship = new GCCoreEntityRocketT2(par3World, centerX, centerY + 0.2D, centerZ, EnumRocketType.values()[par1ItemStack.getItemDamage()]);
 
                 par3World.spawnEntityInWorld(spaceship);
                 if (!par2EntityPlayer.capabilities.isCreativeMode)
                 {
                     par2EntityPlayer.inventory.consumeInventoryItem(par1ItemStack.getItem().itemID);
                 }
-                spaceship.spaceshipType = par1ItemStack.getItemDamage();
-
+                
                 if (par1ItemStack.getItemDamage() == 2)
                 {
                     spaceship.spaceshipFuelTank.fill(LiquidDictionary.getLiquid("Fuel", 2000), true);
@@ -117,7 +118,7 @@ public class GCMarsItemSpaceshipTier2 extends Item implements IHoldableItem
     @Override
     public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
     {
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < EnumRocketType.values().length; i++)
         {
             par3List.add(new ItemStack(par1, 1, i));
         }
@@ -127,17 +128,16 @@ public class GCMarsItemSpaceshipTier2 extends Item implements IHoldableItem
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack par1ItemStack, EntityPlayer player, List par2List, boolean b)
     {
-        if (par1ItemStack.getItemDamage() != 0)
+        EnumRocketType type = EnumRocketType.values()[par1ItemStack.getItemDamage()];
+        
+        if (!type.getTooltip().isEmpty())
         {
-            switch (par1ItemStack.getItemDamage())
-            {
-            case 1:
-                par2List.add("Storage Space: 27");
-                break;
-            case 2:
-                par2List.add("Pre-fueled");
-                break;
-            }
+            par2List.add(type.getTooltip());
+        }
+        
+        if (type.getPreFueled())
+        {
+            par2List.add(EnumColor.RED + "\u00a7o" + "Creative Only");
         }
     }
 

@@ -3,6 +3,8 @@ package micdoodle8.mods.galacticraft.core.client.render.item;
 import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelSpaceship;
 import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityRocketT1;
+import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase.EnumRocketType;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelChest;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -103,7 +105,8 @@ public class GCCoreItemRendererSpaceship implements IItemRenderer
 
         if (type == ItemRenderType.INVENTORY)
         {
-            if (item.getItemDamage() == 1)
+            int index = Math.min(Math.max(item.getItemDamage(), 0), EnumRocketType.values().length - 1);
+            if (EnumRocketType.values()[index].getInventorySpace() > 0)
             {
                 final ModelChest modelChest = this.chestModel;
                 FMLClientHandler.instance().getClient().renderEngine.bindTexture("/item/chest.png");

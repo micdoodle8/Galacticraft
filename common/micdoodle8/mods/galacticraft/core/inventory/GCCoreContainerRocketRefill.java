@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
+import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase.EnumRocketType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
@@ -10,74 +11,67 @@ public class GCCoreContainerRocketRefill extends Container
 {
     private final IInventory lowerChestInventory;
     private final IInventory spaceshipInv;
-    private final int type;
+    private final EnumRocketType rocketType;
 
-    public GCCoreContainerRocketRefill(IInventory par1IInventory, IInventory par2IInventory, int type)
+    public GCCoreContainerRocketRefill(IInventory par1IInventory, IInventory par2IInventory, EnumRocketType rocketType)
     {
         this.lowerChestInventory = par1IInventory;
         this.spaceshipInv = par2IInventory;
-        this.type = type;
+        this.rocketType = rocketType;
         par2IInventory.openChest();
 
-        switch (type)
+        switch (rocketType.getInventorySpace())
         {
         case 0:
-            this.addSlotsForType1();
+            this.addSlotsNoInventory();
             break;
-        case 1:
-            this.addSlotsForType2();
+        case 18:
+            this.addSlotsWithInventory(rocketType.getInventorySpace());
             break;
-        case 2:
-            this.addSlotsForType1();
+        case 36:
+            this.addSlotsWithInventory(rocketType.getInventorySpace());
+            break;
+        case 54:
+            this.addSlotsWithInventory(rocketType.getInventorySpace());
             break;
         }
     }
 
-    private void addSlotsForType1()
+    private void addSlotsNoInventory()
     {
         int var4;
         int var5;
-
-        int offset = 0;
-
-        switch (this.type)
-        {
-        case 0:
-            offset = 0;
-            break;
-        case 2:
-            offset = 0;
-            break;
-        }
 
         for (var4 = 0; var4 < 3; ++var4)
         {
             for (var5 = 0; var5 < 9; ++var5)
             {
-                this.addSlotToContainer(new Slot(this.lowerChestInventory, var5 + (var4 + 1) * 9, 8 + var5 * 18, offset + 84 + var4 * 18 - 34));
+                this.addSlotToContainer(new Slot(this.lowerChestInventory, var5 + (var4 + 1) * 9, 8 + var5 * 18, 84 + var4 * 18 - 34));
             }
         }
 
         for (var4 = 0; var4 < 9; ++var4)
         {
-            this.addSlotToContainer(new Slot(this.lowerChestInventory, var4, 8 + var4 * 18, offset + 142 - 34));
+            this.addSlotToContainer(new Slot(this.lowerChestInventory, var4, 8 + var4 * 18, 142 - 34));
         }
     }
 
-    private void addSlotsForType2()
+    private void addSlotsWithInventory(int slotCount)
     {
         int var4;
         int var5;
+        int lastRow = slotCount / 9 - 1;
+        int ySize = 145 + rocketType.getInventorySpace() * 2;
 
-        for (var4 = 0; var4 < 3; ++var4)
+        for (var4 = 0; var4 < lastRow + 1; ++var4)
         {
             for (var5 = 0; var5 < 9; ++var5)
             {
-                if (!(var4 == 2 && var5 == 8 || var4 == 2 && var5 == 7 || var4 == 2 && var5 == 6))
+                if (var4 != lastRow || var5 < 6)
                 {
                     int offset = 0;
 
-                    if (var4 == 2)
+                    if (var4 == lastRow)
                     {
                         offset = 28;
                     }
@@ -91,13 +85,13 @@ public class GCCoreContainerRocketRefill extends Container
         {
             for (var5 = 0; var5 < 9; ++var5)
             {
-                this.addSlotToContainer(new Slot(this.lowerChestInventory, var5 + var4 * 9 + 9, 8 + var5 * 18, 103 + var4 * 18 + 14));
+                this.addSlotToContainer(new Slot(this.lowerChestInventory, var5 + var4 * 9 + 9, 8 + var5 * 18, ySize - 82 + var4 * 18));
             }
         }
 
         for (var4 = 0; var4 < 9; ++var4)
         {
-            this.addSlotToContainer(new Slot(this.lowerChestInventory, var4, 8 + var4 * 18, 161 + 14));
+            this.addSlotToContainer(new Slot(this.lowerChestInventory, var4, 8 + var4 * 18, ySize - 24));
         }
     }
 
@@ -107,10 +101,6 @@ public class GCCoreContainerRocketRefill extends Container
         return this.lowerChestInventory.isUseableByPlayer(par1EntityPlayer);
     }
 
-    /**
-     * Called when a player shift-clicks on a slot. You must override this or
-     * you will crash when someone does that.
-     */
     @Override
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2)
     {

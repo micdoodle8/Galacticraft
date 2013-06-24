@@ -8,13 +8,9 @@ import java.util.HashSet;
 import java.util.List;
 import micdoodle8.mods.galacticraft.API.IFuelDock;
 import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
-import micdoodle8.mods.galacticraft.API.IRocketType;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLaunchFlameFX;
-import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLaunchSmokeFX;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
-import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoLoader.EnumCargoLoadingState;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoLoader.RemovalResult;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoPad;
@@ -22,9 +18,6 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.moon.GCMoonConfigManager;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.EntityFX;
-import net.minecraft.client.particle.EntitySmokeFX;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -32,9 +25,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
@@ -43,12 +33,10 @@ import net.minecraftforge.liquids.LiquidDictionary;
 import net.minecraftforge.liquids.LiquidStack;
 import net.minecraftforge.liquids.LiquidTank;
 import universalelectricity.core.vector.Vector3;
-import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
-import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -56,16 +44,14 @@ import cpw.mods.fml.relauncher.SideOnly;
  * All rights reserved.
  * 
  */
-public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInventory, IMissileLockable, IRocketType
+public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInventory, IMissileLockable
 {
     private final int tankCapacity = 2000;
     public LiquidTank spaceshipFuelTank = new LiquidTank(this.tankCapacity);
 
-    protected ItemStack[] cargoItems = new ItemStack[27];
+    protected ItemStack[] cargoItems;
 
     public IUpdatePlayerListBox rocketSoundUpdater;
-
-    public int spaceshipType;
 
     private IFuelDock landingPad;
 
@@ -85,7 +71,7 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
         return (int) (fuelLevel * i / 2000);
     }
 
-    public GCCoreEntityRocketT1(World par1World, double par2, double par4, double par6, int type)
+    public GCCoreEntityRocketT1(World par1World, double par2, double par4, double par6, EnumRocketType rocketType)
     {
         super(par1World);
         this.setPosition(par2, par4 + this.yOffset, par6);
@@ -95,12 +81,8 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
         this.prevPosX = par2;
         this.prevPosY = par4;
         this.prevPosZ = par6;
-    }
-
-    public GCCoreEntityRocketT1(World par1World, double par2, double par4, double par6, boolean reversed, int type, ItemStack[] inv)
-    {
-        this(par1World, par2, par4, par6, type);
-        this.cargoItems = inv;
+        this.rocketType = rocketType;
+        this.cargoItems = new ItemStack[this.getSizeInventory()];
     }
 
     @Override
@@ -193,14 +175,17 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
     {
         super.readNetworkedData(dataStream);
         this.spaceshipFuelTank.setLiquid(new LiquidStack(GCCoreItems.fuel.itemID, dataStream.readInt(), 0));
-        this.spaceshipType = dataStream.readInt();
+        
+        if (this.cargoItems == null)
+        {
+            this.cargoItems = new ItemStack[this.getSizeInventory()];
+        }
     }
     
     public ArrayList getNetworkedData(ArrayList list)
     {
         super.getNetworkedData(list);
         list.add(this.spaceshipFuelTank.getLiquid() == null ? 0 : this.spaceshipFuelTank.getLiquid().amount);
-        list.add(this.spaceshipType);
         return list;
     }
 
@@ -226,7 +211,7 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
         if (playerBase != null)
         {
             playerBase.rocketStacks = this.cargoItems;
-            playerBase.rocketType = this.spaceshipType;
+            playerBase.rocketType = this.rocketType.getIndex();
             final int liquid = this.spaceshipFuelTank.getLiquid() == null ? 0 : this.spaceshipFuelTank.getLiquid().amount / MathHelper.floor_double(this.canisterToLiquidStackRatio == 0 ? 1 : this.canisterToLiquidStackRatio);
             playerBase.fuelDamage = Math.max(Math.min(GCCoreItems.fuelCanister.getMaxDamage() - liquid, GCCoreItems.fuelCanister.getMaxDamage()), 1);
         }
@@ -263,15 +248,13 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
     @Override
     public int getSizeInventory()
     {
-        return 27;
+        return this.rocketType.getInventorySpace();
     }
 
     @Override
     protected void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeEntityToNBT(par1NBTTagCompound);
-
-        par1NBTTagCompound.setInteger("Type", this.spaceshipType);
 
         if (this.getSizeInventory() > 0)
         {
@@ -301,8 +284,6 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
     protected void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readEntityFromNBT(par1NBTTagCompound);
-
-        this.spaceshipType = par1NBTTagCompound.getInteger("Type");
 
         if (this.getSizeInventory() > 0)
         {
@@ -442,7 +423,7 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
     public List<ItemStack> getItemsDropped()
     {
         final List<ItemStack> items = new ArrayList<ItemStack>();
-        items.add(new ItemStack(GCCoreItems.spaceship, 1, this.spaceshipType));
+        items.add(new ItemStack(GCCoreItems.spaceship, 1, this.rocketType.getIndex()));
 
         for (final ItemStack item : this.cargoItems)
         {
@@ -517,7 +498,7 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
     @Override
     public EnumCargoLoadingState addCargo(ItemStack stack, boolean doAdd)
     {
-        if (this.spaceshipType != 1)
+        if (this.rocketType.getInventorySpace() == 0)
         {
             return EnumCargoLoadingState.NOINVENTORY;
         }
@@ -598,12 +579,6 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
     public IFuelDock getLandingPad()
     {
         return this.landingPad;
-    }
-
-    @Override
-    public int getType()
-    {
-        return this.spaceshipType;
     }
 
     @Override

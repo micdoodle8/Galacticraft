@@ -9,6 +9,7 @@ import java.util.Set;
 import micdoodle8.mods.galacticraft.API.IDockable;
 import micdoodle8.mods.galacticraft.API.IExitHeight;
 import micdoodle8.mods.galacticraft.API.IOrbitDimension;
+import micdoodle8.mods.galacticraft.API.IRocketType;
 import micdoodle8.mods.galacticraft.API.ISpaceship;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GCCoreDamageSource;
@@ -45,7 +46,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, IPacketReceiver, IMissileLockable, IDockable, IInventory
+public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, IPacketReceiver, IMissileLockable, IDockable, IInventory, IRocketType
 {
     public static enum EnumLaunchPhase
     {
@@ -66,6 +67,48 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
         }
     }
     
+    public static enum EnumRocketType
+    {
+        DEFAULT(0, "", false, 0),
+        INVENTORY27(1, "Storage Space: 18", false, 18),
+        INVENTORY36(2, "Storage Space: 36", false, 36),
+        INVENTORY54(3, "Storage Space: 54", false, 54),
+        PREFUELED(4, "Pre-fueled", true, 0);
+        
+        private int index;
+        private String tooltip;
+        private boolean preFueled;
+        private int inventorySpace;
+
+        private EnumRocketType(int index, String tooltip, boolean preFueled, int inventorySpace)
+        {
+            this.index = index;
+            this.tooltip = tooltip;
+            this.preFueled = preFueled;
+            this.inventorySpace = inventorySpace;
+        }
+        
+        public String getTooltip()
+        {
+            return this.tooltip;
+        }
+        
+        public int getIndex()
+        {
+            return this.index;
+        }
+        
+        public int getInventorySpace()
+        {
+            return this.inventorySpace;
+        }
+        
+        public boolean getPreFueled()
+        {
+            return this.preFueled;
+        }
+    }
+    
     public int launchPhase = EnumLaunchPhase.UNIGNITED.getPhase();
     
     protected long ticks = 0;
@@ -75,6 +118,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
     public float rumble;
     public float rollAmplitude;
     public float shipDamage;
+    public EnumRocketType rocketType;
 
     public EntitySpaceshipBase(World par1World)
     {
@@ -437,6 +481,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
         this.launchPhase = dataStream.readInt();
         this.timeSinceLaunch = dataStream.readFloat();
         this.timeUntilLaunch = dataStream.readInt();
+        this.rocketType = EnumRocketType.values()[dataStream.readInt()];
     }
     
     public ArrayList getNetworkedData(ArrayList list)
@@ -444,6 +489,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
         list.add(this.launchPhase);
         list.add(this.timeSinceLaunch);
         list.add(this.timeUntilLaunch);
+        list.add(this.rocketType != null ? this.rocketType.getIndex() : 0);
         return list;
     }
 
@@ -484,12 +530,14 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
     {
         nbt.setInteger("launchPhase", this.launchPhase);
         nbt.setInteger("timeUntilLaunch", this.timeUntilLaunch);
+        nbt.setInteger("Type", this.rocketType.getIndex());
     }
 
     @Override
     protected void readEntityFromNBT(NBTTagCompound nbt)
     {
         this.timeUntilLaunch = nbt.getInteger("timeUntilLaunch");
+        this.rocketType = EnumRocketType.values()[nbt.getInteger("Type")];
         
         boolean hasOldTags = false;
         
@@ -641,5 +689,11 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
     @SideOnly(Side.CLIENT)
     public void spawnParticle(String var1, double var2, double var4, double var6, double var8, double var10, double var12)
     {
+    }
+
+    @Override
+    public EnumRocketType getType()
+    {
+        return this.rocketType;
     }
 }

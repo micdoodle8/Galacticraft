@@ -671,8 +671,7 @@ public class RecipeUtil
 
                                             if (block != null && block instanceof BlockChest)
                                             {
-                                                type = 1;
-                                                break;
+                                                type++;
                                             }
                                         }
                                     }
