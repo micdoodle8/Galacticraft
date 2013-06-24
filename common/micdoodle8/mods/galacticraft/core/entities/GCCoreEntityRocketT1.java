@@ -258,15 +258,15 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
 
         if (!this.isDead)
         {
-            for (int i = 0; i < 4; i++)
-            {
-                GalacticraftCore.proxy.spawnParticle("launchflame", this.posX + (i > 0 && i < 3 ? -0.4 : 0.4) - this.rand.nextDouble() / 10 + x1, y - 0.0D + y1, this.posZ + (i < 2 ? 0.4 : -0.4) - this.rand.nextDouble() / 10 + z1, x1, y1, z1, this.getLaunched() == 1);
-            }
-            
-            for (int i = 0; i < 5; i++)
-            {
-                GalacticraftCore.proxy.spawnParticle("launchflame", this.posX + (i > 1 ? 0.4 : (i < 2 ? -0.4 : 0.0)) + x1, y - 0.0D + y1, this.posZ + (i == 2 ? 0.4 : (i == 3 ? -0.4 : 0.0)) + z1, x1, y1, z1, this.getLaunched() == 1);
-            }
+            GalacticraftCore.proxy.spawnParticle("launchflame", this.posX + 0.4 - this.rand.nextDouble() / 10 + x1, y - 0.0D + y1, this.posZ + 0.4 - this.rand.nextDouble() / 10 + z1, x1, y1, z1, this.getLaunched() == 1);
+            GalacticraftCore.proxy.spawnParticle("launchflame", this.posX - 0.4 + this.rand.nextDouble() / 10 + x1, y - 0.0D + y1, this.posZ + 0.4 - this.rand.nextDouble() / 10 + z1, x1, y1, z1, this.getLaunched() == 1);
+            GalacticraftCore.proxy.spawnParticle("launchflame", this.posX - 0.4 + this.rand.nextDouble() / 10 + x1, y - 0.0D + y1, this.posZ - 0.4 + this.rand.nextDouble() / 10 + z1, x1, y1, z1, this.getLaunched() == 1);
+            GalacticraftCore.proxy.spawnParticle("launchflame", this.posX + 0.4 - this.rand.nextDouble() / 10 + x1, y - 0.0D + y1, this.posZ - 0.4 + this.rand.nextDouble() / 10 + z1, x1, y1, z1, this.getLaunched() == 1);
+            GalacticraftCore.proxy.spawnParticle("launchflame", this.posX + x1, y - 0.0D + y1, this.posZ + z1, x1, y1, z1, this.getLaunched() == 1);
+            GalacticraftCore.proxy.spawnParticle("launchflame", this.posX + 0.4 + x1, y - 0.0D + y1, this.posZ + z1, x1, y1, z1, this.getLaunched() == 1);
+            GalacticraftCore.proxy.spawnParticle("launchflame", this.posX - 0.4 + x1, y - 0.0D + y1, this.posZ + z1, x1, y1, z1, this.getLaunched() == 1);
+            GalacticraftCore.proxy.spawnParticle("launchflame", this.posX + x1, y - 0.0D + y1, this.posZ + 0.4D + z1, x1, y1, z1, this.getLaunched() == 1);
+            GalacticraftCore.proxy.spawnParticle("launchflame", this.posX + x1, y - 0.0D + y1, this.posZ - 0.4D + z1, x1, y1, z1, this.getLaunched() == 1);
         }
     }
 
