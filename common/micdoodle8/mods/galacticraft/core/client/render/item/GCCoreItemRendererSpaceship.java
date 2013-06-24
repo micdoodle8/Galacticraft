@@ -1,7 +1,9 @@
 package micdoodle8.mods.galacticraft.core.client.render.item;
 
 import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelSpaceship;
+import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityRocketT1;
+import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelChest;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.entity.RenderItem;
@@ -20,11 +22,20 @@ import cpw.mods.fml.client.FMLClientHandler;
  */
 public class GCCoreItemRendererSpaceship implements IItemRenderer
 {
-    GCCoreEntityRocketT1 spaceship = new GCCoreEntityRocketT1(FMLClientHandler.instance().getClient().theWorld);
-    GCCoreModelSpaceship modelSpaceship = new GCCoreModelSpaceship();
+    EntitySpaceshipBase spaceship;
+    ModelBase modelSpaceship;
     private final ModelChest chestModel = new ModelChest();
 
     public static RenderItem drawItems = new RenderItem();
+    
+    public String texture;
+    
+    public GCCoreItemRendererSpaceship(EntitySpaceshipBase spaceship, ModelBase model, String texture)
+    {
+        this.spaceship = spaceship;
+        this.modelSpaceship = model;
+        this.texture = texture;
+    }
 
     private void renderSpaceship(ItemRenderType type, RenderBlocks render, ItemStack item, float translateX, float translateY, float translateZ)
     {
@@ -86,7 +97,7 @@ public class GCCoreItemRendererSpaceship implements IItemRenderer
             GL11.glRotatef(Sys.getTime() / 90F % 360F, 0F, 1F, 0F);
         }
 
-        FMLClientHandler.instance().getClient().renderEngine.bindTexture("/micdoodle8/mods/galacticraft/core/client/entities/spaceship1.png");
+        FMLClientHandler.instance().getClient().renderEngine.bindTexture(this.texture);
         this.modelSpaceship.render(this.spaceship, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
         GL11.glPopMatrix();
 

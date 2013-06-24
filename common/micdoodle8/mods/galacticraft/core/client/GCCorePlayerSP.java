@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.client;
 
 import java.util.ArrayList;
 import java.util.Random;
+import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.API.ISchematicPage;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -74,15 +75,7 @@ public class GCCorePlayerSP extends EntityClientPlayerMP
     @Override
     public void onLivingUpdate()
     {
-        if (this.boundingBox != null && this.boundingBoxBefore == null/*
-                                                                       * &&
-                                                                       * this.
-                                                                       * worldObj
-                                                                       * .
-                                                                       * provider
-                                                                       * instanceof
-                                                                       * GCCoreWorldProviderInnerSpace
-                                                                       */)
+        if (this.boundingBox != null && this.boundingBoxBefore == null)
         {
             this.boundingBoxBefore = this.boundingBox;
             this.boundingBox.setBounds(this.boundingBoxBefore.minX + 0.4, this.boundingBoxBefore.minY + 0.9, this.boundingBoxBefore.minZ + 0.4, this.boundingBoxBefore.maxX - 0.4, this.boundingBoxBefore.maxY - 0.9, this.boundingBoxBefore.maxZ - 0.4);

@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.client.model;
 
 import java.util.List;
 import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.API.IHoldableItem;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.client.GCCorePlayerSP;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderPlayer;
@@ -543,7 +544,7 @@ public class GCCoreModelPlayer extends ModelBiped
             this.bipedLeftArm.rotateAngleX -= MathHelper.sin(par3 * 0.067F) * 0.05F;
         }
 
-        if (!((EntityPlayer) par7Entity).onGround && ((EntityPlayer) par7Entity).worldObj.provider instanceof IGalacticraftWorldProvider && !(((EntityPlayer) par7Entity).inventory.getCurrentItem() != null && ((EntityPlayer) par7Entity).inventory.getCurrentItem().getItem() instanceof GCCoreItemSpaceship))
+        if (!((EntityPlayer) par7Entity).onGround && ((EntityPlayer) par7Entity).worldObj.provider instanceof IGalacticraftWorldProvider && !((((EntityPlayer) par7Entity).inventory.getCurrentItem() != null && ((EntityPlayer) par7Entity).inventory.getCurrentItem().getItem() instanceof IHoldableItem) && (((IHoldableItem) ((EntityPlayer) par7Entity).inventory.getCurrentItem().getItem()).shouldHoldAboveHead((EntityPlayer) par7Entity))))
         {
             this.bipedHead.rotateAngleY = par4 / (180F / (float) Math.PI);
             this.bipedHead.rotateAngleX = par5 / (180F / (float) Math.PI);
@@ -720,7 +721,7 @@ public class GCCoreModelPlayer extends ModelBiped
         {
             final EntityPlayer player = (EntityPlayer) par7Entity;
 
-            if (player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() instanceof GCCoreItemSpaceship)
+            if (player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() instanceof IHoldableItem && ((IHoldableItem) player.inventory.getCurrentItem().getItem()).shouldHoldAboveHead(player))
             {
                 this.bipedLeftArm.rotateAngleX = 0;
                 this.bipedLeftArm.rotateAngleZ = 0;
