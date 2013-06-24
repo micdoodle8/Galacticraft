@@ -266,7 +266,6 @@ public class GalacticraftCore
         SchematicRegistry.registerSchematicRecipe(new GCCoreSchematicAdd());
 
         RecipeUtil.addSmeltingRecipes();
-        NetworkRegistry.instance().registerGuiHandler(this, GalacticraftCore.proxy);
         this.registerCreatures();
         this.registerOtherEntities();
         MinecraftForge.EVENT_BUS.register(new GCCoreEvents());
@@ -299,11 +298,13 @@ public class GalacticraftCore
         if (GCCoreConfigManager.loadBC.getBoolean(false))
         {
             BasicComponents.registerTileEntities();
-            BasicComponents.register(GalacticraftCore.instance, GalacticraftCore.CHANNELENTITIES);
-            BasicComponents.requestAll();
+            BasicComponents.requestAll(GalacticraftCore.instance);
+            BasicComponents.register(GalacticraftCore.CHANNELENTITIES);
 
             RecipeUtil.addBasicComponentsCraftingRecipes();
         }
+        
+        NetworkRegistry.instance().registerGuiHandler(this, GalacticraftCore.proxy);
 
         GalacticraftCore.proxy.postInit(event);
         GalacticraftCore.proxy.registerRenderInformation();

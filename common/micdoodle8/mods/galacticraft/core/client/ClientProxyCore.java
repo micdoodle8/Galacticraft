@@ -206,8 +206,6 @@ public class ClientProxyCore extends CommonProxyCore
     {
         ClientProxyCore.moon.init(event);
 
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCopperWire.class, new RenderCopperWire());
-
         try
         {
             FMLClientHandler.instance().getClient();
