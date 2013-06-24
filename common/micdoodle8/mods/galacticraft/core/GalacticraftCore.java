@@ -118,7 +118,7 @@ import cpw.mods.fml.relauncher.Side;
 @NetworkMod(channels = { GalacticraftCore.CHANNEL }, clientSideRequired = true, serverSideRequired = false, connectionHandler = GCCoreConnectionHandler.class, packetHandler = GCCorePacketManager.class)
 public class GalacticraftCore
 {
-    public static final String NAME = "Galacticraft Core";
+    public static final String NAME = "Galacticraft Core"; 
     public static final String MODID = "GalacticraftCore";
     public static final String CHANNEL = "GalacticraftCore";
     public static final String CHANNELENTITIES = "GCCoreEntities";
