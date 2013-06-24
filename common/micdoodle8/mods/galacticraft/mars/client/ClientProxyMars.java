@@ -10,20 +10,18 @@ import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderArrow;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderSpaceship;
+import micdoodle8.mods.galacticraft.core.client.render.item.GCCoreItemRendererSpaceship;
 import micdoodle8.mods.galacticraft.core.client.sounds.GCCoreSoundUpdaterSpaceship;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityArrow;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityRocketT1;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.mars.CommonProxyMars;
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
 import micdoodle8.mods.galacticraft.mars.client.model.GCMarsModelSpaceshipTier2;
-import micdoodle8.mods.galacticraft.mars.client.render.item.GCMarsItemRendererSpaceshipTier2;
 import micdoodle8.mods.galacticraft.mars.dimension.GCMarsWorldProvider;
 import micdoodle8.mods.galacticraft.mars.entities.GCCoreEntityRocketT2;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityCreeperBoss;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityProjectileTNT;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntitySludgeling;
-import micdoodle8.mods.galacticraft.mars.items.GCMarsItemJetpack;
 import micdoodle8.mods.galacticraft.mars.items.GCMarsItems;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
@@ -100,7 +98,7 @@ public class ClientProxyMars extends CommonProxyMars implements IGalacticraftSub
         RenderingRegistry.addNewArmourRendererPrefix("jetpack");
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityArrow.class, new GCCoreRenderArrow());
         RenderingRegistry.registerEntityRenderingHandler(GCMarsEntityProjectileTNT.class, new GCMarsRenderProjectileTNT());
-        MinecraftForgeClient.registerItemRenderer(GCMarsItems.spaceship.itemID, new GCMarsItemRendererSpaceshipTier2());
+        MinecraftForgeClient.registerItemRenderer(GCMarsItems.spaceship.itemID, new GCCoreItemRendererSpaceship(new GCCoreEntityRocketT2(FMLClientHandler.instance().getClient().theWorld), new GCMarsModelSpaceshipTier2(), "/micdoodle8/mods/galacticraft/mars/client/entities/spaceshipTier2.png"));
         MinecraftForgeClient.preloadTexture("/micdoodle8/mods/galacticraft/mars/client/blocks/mars.png");
         MinecraftForgeClient.preloadTexture("/micdoodle8/mods/galacticraft/mars/client/items/mars.png");
     }
@@ -193,15 +191,6 @@ public class ClientProxyMars extends CommonProxyMars implements IGalacticraftSub
             {
                 if (world != null)
                 {
-                    if (world != null && player.inventory.armorItemInSlot(2) != null && player.inventory.armorItemInSlot(2).getItem().itemID == GCMarsItems.jetpack.itemID && FMLClientHandler.instance().getClient().gameSettings.keyBindJump.pressed && player.posY < 125)
-                    {
-                        ((GCMarsItemJetpack) player.inventory.armorItemInSlot(2).getItem()).setActive();
-                        player.motionY -= 0.062D;
-                        player.motionY += 0.07 + player.rotationPitch * 2 / 180 * 0.07;
-                        player.fallDistance = 0;
-                        world.spawnParticle("largesmoke", player.posX, player.posY - 1D, player.posZ, 0, -0.1, 0);
-                    }
-                    
                     if (world.provider instanceof GCMarsWorldProvider)
                     {
                         if (world.provider.getSkyRenderer() == null)

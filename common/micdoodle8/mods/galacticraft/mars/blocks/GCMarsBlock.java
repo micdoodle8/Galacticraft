@@ -5,6 +5,7 @@ import java.util.Random;
 import micdoodle8.mods.galacticraft.API.IDetectableMetadataResource;
 import micdoodle8.mods.galacticraft.API.IPlantableMetadataBlock;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
+import micdoodle8.mods.galacticraft.mars.items.GCMarsItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFlower;
 import net.minecraft.block.material.Material;
@@ -114,6 +115,11 @@ public class GCMarsBlock extends Block implements IDetectableMetadataResource, I
     @Override
     public int idDropped(int meta, Random random, int par3)
     {
+        if (meta == 2)
+        {
+            return GCMarsItems.rawDesh.itemID;
+        }
+        
         return this.blockID;
     }
 
@@ -123,6 +129,10 @@ public class GCMarsBlock extends Block implements IDetectableMetadataResource, I
         if (meta == 3)
         {
             return 4;
+        }
+        else if (meta == 2)
+        {
+            return 0;
         }
         else
         {

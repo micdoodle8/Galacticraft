@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.mars.items;
 
 import java.util.List;
+import micdoodle8.mods.galacticraft.API.IHoldableItem;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
@@ -8,6 +9,7 @@ import micdoodle8.mods.galacticraft.mars.entities.GCCoreEntityRocketT2;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.liquids.LiquidDictionary;
@@ -20,7 +22,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * All rights reserved.
  * 
  */
-public class GCMarsItemSpaceshipTier2 extends GCMarsItem
+public class GCMarsItemSpaceshipTier2 extends Item implements IHoldableItem
 {
     public GCMarsItemSpaceshipTier2(int par1)
     {
@@ -28,6 +30,13 @@ public class GCMarsItemSpaceshipTier2 extends GCMarsItem
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
         this.setMaxStackSize(1);
+    }
+    
+    @Override
+    @SideOnly(Side.CLIENT)
+    public EnumRarity getRarity(ItemStack par1ItemStack)
+    {
+        return ClientProxyCore.galacticraftItem;
     }
 
     @Override
@@ -116,13 +125,6 @@ public class GCMarsItemSpaceshipTier2 extends GCMarsItem
 
     @Override
     @SideOnly(Side.CLIENT)
-    public EnumRarity getRarity(ItemStack par1ItemStack)
-    {
-        return ClientProxyCore.galacticraftItem;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack par1ItemStack, EntityPlayer player, List par2List, boolean b)
     {
         if (par1ItemStack.getItemDamage() != 0)
@@ -137,5 +139,11 @@ public class GCMarsItemSpaceshipTier2 extends GCMarsItem
                 break;
             }
         }
+    }
+
+    @Override
+    public boolean shouldHoldAboveHead(EntityPlayer player)
+    {
+        return true;
     }
 }

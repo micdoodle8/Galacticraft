@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.mars.client;
 
 import java.util.Random;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
-import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;
+import micdoodle8.mods.galacticraft.mars.dimension.GCMarsWorldProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.GLAllocation;
@@ -77,11 +77,11 @@ public class GCMarsSkyProvider extends IRenderHandler
     @Override
     public void render(float partialTicks, WorldClient world, Minecraft mc)
     {
-        GCMoonWorldProvider gcProvider = null;
+        GCMarsWorldProvider gcProvider = null;
 
-        if (world.provider instanceof GCMoonWorldProvider)
+        if (world.provider instanceof GCMarsWorldProvider)
         {
-            gcProvider = (GCMoonWorldProvider) world.provider;
+            gcProvider = (GCMarsWorldProvider) world.provider;
         }
 
         GL11.glDisable(GL11.GL_TEXTURE_2D);

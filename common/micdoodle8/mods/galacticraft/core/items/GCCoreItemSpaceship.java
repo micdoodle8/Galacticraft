@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.items;
 
 import java.util.List;
+import micdoodle8.mods.galacticraft.API.IHoldableItem;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
@@ -22,7 +23,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * All rights reserved.
  * 
  */
-public class GCCoreItemSpaceship extends Item
+public class GCCoreItemSpaceship extends Item implements IHoldableItem
 {
     public GCCoreItemSpaceship(int par1)
     {
@@ -146,5 +147,11 @@ public class GCCoreItemSpaceship extends Item
                 break;
             }
         }
+    }
+
+    @Override
+    public boolean shouldHoldAboveHead(EntityPlayer player)
+    {
+        return true;
     }
 }

@@ -1,6 +1,9 @@
 package micdoodle8.mods.galacticraft.mars.items;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
+import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
+import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumArmorMaterial;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemArmor;
@@ -18,29 +21,13 @@ public class GCMarsItemArmor extends ItemArmor implements IArmorTextureProvider
     {
         super(par1, par2EnumArmorMaterial, par3, par4);
         this.material = par2EnumArmorMaterial;
-        this.setCreativeTab(GalacticraftCore.galacticraftTab);
         this.attachedMask = breathable;
     }
 
     @Override
     public String getArmorTextureFile(ItemStack itemstack)
     {
-        if (this.material == GCMarsItems.QUANDRIUMARMOR)
-        {
-            if (itemstack.getItem().itemID == GCMarsItems.quandriumHelmet.itemID)
-            {
-                return "/micdoodle8/mods/galacticraft/mars/client/armor/quandrium_1.png";
-            }
-            else if (itemstack.getItem().itemID == GCMarsItems.quandriumChestplate.itemID || itemstack.getItem().itemID == GCMarsItems.quandriumBoots.itemID)
-            {
-                return "/micdoodle8/mods/galacticraft/mars/client/armor/quandrium_2.png";
-            }
-            else if (itemstack.getItem().itemID == GCMarsItems.quandriumLeggings.itemID)
-            {
-                return "/micdoodle8/mods/galacticraft/mars/client/armor/quandrium_3.png";
-            }
-        }
-        else if (this.material == GCMarsItems.ARMORDESH)
+        if (this.material == GCMarsItems.ARMORDESH)
         {
             if (itemstack.getItem().itemID == GCMarsItems.deshHelmet.itemID)
             {
@@ -55,26 +42,27 @@ public class GCMarsItemArmor extends ItemArmor implements IArmorTextureProvider
                 return "/micdoodle8/mods/galacticraft/mars/client/armor/desh_3.png";
             }
         }
-        else if (this.material == GCMarsItems.ARMORHEAVY)
-        {
-            if (itemstack.getItem().itemID == GCMarsItems.heavyBoots.itemID)
-            {
-                return "/micdoodle8/mods/galacticraft/mars/client/armor/heavy_1.png";
-            }
-        }
 
         return null;
+    }
+
+    @Override
+    public CreativeTabs getCreativeTab()
+    {
+        return GalacticraftMars.galacticraftMarsTab;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public EnumRarity getRarity(ItemStack par1ItemStack)
     {
-        if (this.material == GCMarsItems.QUANDRIUMARMOR)
-        {
-            return EnumRarity.epic;
-        }
+        return ClientProxyCore.galacticraftItem;
+    }
 
-        return EnumRarity.rare;
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IconRegister par1IconRegister)
+    {
+        this.itemIcon = par1IconRegister.registerIcon(this.getUnlocalizedName().replace("item.", "galacticraftmars:"));
     }
 }

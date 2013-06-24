@@ -1,6 +1,9 @@
 package micdoodle8.mods.galacticraft.mars.items;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
+import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
+import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.EnumToolMaterial;
 import net.minecraft.item.ItemAxe;
@@ -16,18 +19,25 @@ public class GCMarsItemAxe extends ItemAxe
     {
         super(par1, par2EnumToolMaterial);
         this.material = par2EnumToolMaterial;
-        this.setCreativeTab(GalacticraftCore.galacticraftTab);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public EnumRarity getRarity(ItemStack par1ItemStack)
     {
-        if (this.material == GCMarsItems.TOOLQUANDRIUM)
-        {
-            return EnumRarity.epic;
-        }
+        return ClientProxyCore.galacticraftItem;
+    }
 
-        return EnumRarity.rare;
+    @Override
+    public CreativeTabs getCreativeTab()
+    {
+        return GalacticraftMars.galacticraftMarsTab;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IconRegister par1IconRegister)
+    {
+        this.itemIcon = par1IconRegister.registerIcon(this.getUnlocalizedName().replace("item.", "galacticraftmars:"));
     }
 }
