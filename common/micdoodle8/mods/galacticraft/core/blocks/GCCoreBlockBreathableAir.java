@@ -141,7 +141,7 @@ public class GCCoreBlockBreathableAir extends Block
     public void onNeighborBlockChange(World var1, int var2, int var3, int var4, int var5)
     {
         final OxygenPressureProtocol protocol = new OxygenPressureProtocol();
-        
+
         if (var5 != 0 && var5 != GCCoreBlocks.breatheableAir.blockID)
         {
             this.spread(protocol, var1, var2, var3, var4);
@@ -150,6 +150,15 @@ public class GCCoreBlockBreathableAir extends Block
 
     private void spread(OxygenPressureProtocol var5, World var1, int var2, int var3, int var4)
     {
-        var5.seal(var1, var2, var3, var4, 2);
+        boolean sealed = var5.checkSeal(var1, var2, var3, var4, 200);
+        
+        if (sealed)
+        {
+            var5.seal(var1, var2, var3, var4, 2);
+        }
+        else
+        {
+            var5.unSeal(var1, var2, var3, var4);
+        }
     }
 }
