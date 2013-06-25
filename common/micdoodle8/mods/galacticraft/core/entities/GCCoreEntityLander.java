@@ -109,7 +109,7 @@ public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInvento
     protected void readEntityFromNBT(NBTTagCompound nbt)
     {
         final NBTTagList var2 = nbt.getTagList("Items");
-        this.chestContents = new ItemStack[this.getSizeInventory()];
+        this.chestContents = new ItemStack[nbt.getInteger("rocketStacksLength")];
 
         for (int var3 = 0; var3 < var2.tagCount(); ++var3)
         {
@@ -129,6 +129,8 @@ public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInvento
     protected void writeEntityToNBT(NBTTagCompound nbt)
     {
         final NBTTagList nbttaglist = new NBTTagList();
+        
+        nbt.setInteger("rocketStacksLength", this.chestContents.length);
 
         for (int i = 0; i < this.chestContents.length; ++i)
         {

@@ -78,7 +78,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
     public float astronomyPoints;
 
-    public ItemStack[] rocketStacks = new ItemStack[27];
+    public ItemStack[] rocketStacks = new ItemStack[3];
     public int rocketType;
     public int fuelDamage;
 
@@ -927,37 +927,37 @@ public class GCCorePlayerMP extends EntityPlayerMP
     }
 
     @Override
-    public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
+    public void readEntityFromNBT(NBTTagCompound nbt)
     {
-        this.airRemaining = par1NBTTagCompound.getInteger("playerAirRemaining");
-        this.damageCounter = par1NBTTagCompound.getInteger("damageCounter");
+        this.airRemaining = nbt.getInteger("playerAirRemaining");
+        this.damageCounter = nbt.getInteger("damageCounter");
 
-        if (par1NBTTagCompound.hasKey("InventoryTankRefill"))
+        if (nbt.hasKey("InventoryTankRefill"))
         {
-            final NBTTagList var2 = par1NBTTagCompound.getTagList("InventoryTankRefill");
+            final NBTTagList var2 = nbt.getTagList("InventoryTankRefill");
             ((GCCoreInventoryPlayer) this.inventory).readFromNBTOld(var2);
         }
 
-        this.astronomyPoints = par1NBTTagCompound.getFloat("AstronomyPointsNum");
-        this.astronomyPointsLevel = par1NBTTagCompound.getInteger("AstronomyPointsLevel");
-        this.astronomyPointsTotal = par1NBTTagCompound.getInteger("AstronomyPointsTotal");
-        this.setParachute(par1NBTTagCompound.getBoolean("usingParachute2"));
-        this.usingPlanetSelectionGui = par1NBTTagCompound.getBoolean("usingPlanetSelectionGui");
-        this.teleportCooldown = par1NBTTagCompound.getInteger("teleportCooldown");
-        this.coordsTeleportedFromX = par1NBTTagCompound.getDouble("coordsTeleportedFromX");
-        this.coordsTeleportedFromZ = par1NBTTagCompound.getDouble("coordsTeleportedFromZ");
-        this.spaceStationDimensionID = par1NBTTagCompound.getInteger("spaceStationDimensionID");
+        this.astronomyPoints = nbt.getFloat("AstronomyPointsNum");
+        this.astronomyPointsLevel = nbt.getInteger("AstronomyPointsLevel");
+        this.astronomyPointsTotal = nbt.getInteger("AstronomyPointsTotal");
+        this.setParachute(nbt.getBoolean("usingParachute2"));
+        this.usingPlanetSelectionGui = nbt.getBoolean("usingPlanetSelectionGui");
+        this.teleportCooldown = nbt.getInteger("teleportCooldown");
+        this.coordsTeleportedFromX = nbt.getDouble("coordsTeleportedFromX");
+        this.coordsTeleportedFromZ = nbt.getDouble("coordsTeleportedFromZ");
+        this.spaceStationDimensionID = nbt.getInteger("spaceStationDimensionID");
 
-        final NBTTagList schematics = par1NBTTagCompound.getTagList("Schematics");
+        final NBTTagList schematics = nbt.getTagList("Schematics");
         SchematicRegistry.readFromNBT(this, schematics);
 
-        if (par1NBTTagCompound.getBoolean("usingPlanetSelectionGui"))
+        if (nbt.getBoolean("usingPlanetSelectionGui"))
         {
             this.openPlanetSelectionGuiCooldown = 20;
         }
 
-        final NBTTagList var23 = par1NBTTagCompound.getTagList("RocketItems");
-        this.rocketStacks = new ItemStack[27];
+        final NBTTagList var23 = nbt.getTagList("RocketItems");
+        this.rocketStacks = new ItemStack[nbt.getInteger("rocketStacksLength")];
 
         for (int var3 = 0; var3 < var23.tagCount(); ++var3)
         {
@@ -970,24 +970,26 @@ public class GCCorePlayerMP extends EntityPlayerMP
             }
         }
 
-        super.readEntityFromNBT(par1NBTTagCompound);
+        super.readEntityFromNBT(nbt);
     }
 
     @Override
-    public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
+    public void writeEntityToNBT(NBTTagCompound nbt)
     {
-        par1NBTTagCompound.setInteger("playerAirRemaining", this.airRemaining);
-        par1NBTTagCompound.setInteger("damageCounter", this.damageCounter);
-        par1NBTTagCompound.setFloat("AstronomyPointsNum", this.astronomyPoints);
-        par1NBTTagCompound.setInteger("AstronomyPointsLevel", this.astronomyPointsLevel);
-        par1NBTTagCompound.setInteger("AstronomyPointsTotal", this.astronomyPointsTotal);
-        par1NBTTagCompound.setBoolean("usingParachute2", this.getParachute());
-        par1NBTTagCompound.setBoolean("usingPlanetSelectionGui", this.usingPlanetSelectionGui);
-        par1NBTTagCompound.setInteger("teleportCooldown", this.teleportCooldown);
-        par1NBTTagCompound.setDouble("coordsTeleportedFromX", this.coordsTeleportedFromX);
-        par1NBTTagCompound.setDouble("coordsTeleportedFromZ", this.coordsTeleportedFromZ);
-        par1NBTTagCompound.setInteger("spaceStationDimensionID", this.spaceStationDimensionID);
-        par1NBTTagCompound.setTag("Schematics", SchematicRegistry.writeToNBT(this, new NBTTagList()));
+        nbt.setInteger("playerAirRemaining", this.airRemaining);
+        nbt.setInteger("damageCounter", this.damageCounter);
+        nbt.setFloat("AstronomyPointsNum", this.astronomyPoints);
+        nbt.setInteger("AstronomyPointsLevel", this.astronomyPointsLevel);
+        nbt.setInteger("AstronomyPointsTotal", this.astronomyPointsTotal);
+        nbt.setBoolean("usingParachute2", this.getParachute());
+        nbt.setBoolean("usingPlanetSelectionGui", this.usingPlanetSelectionGui);
+        nbt.setInteger("teleportCooldown", this.teleportCooldown);
+        nbt.setDouble("coordsTeleportedFromX", this.coordsTeleportedFromX);
+        nbt.setDouble("coordsTeleportedFromZ", this.coordsTeleportedFromZ);
+        nbt.setInteger("spaceStationDimensionID", this.spaceStationDimensionID);
+        nbt.setTag("Schematics", SchematicRegistry.writeToNBT(this, new NBTTagList()));
+        
+        nbt.setInteger("rocketStacksLength", this.rocketStacks.length);
 
         final NBTTagList var2 = new NBTTagList();
 
@@ -1002,9 +1004,9 @@ public class GCCorePlayerMP extends EntityPlayerMP
             }
         }
 
-        par1NBTTagCompound.setTag("RocketItems", var2);
+        nbt.setTag("RocketItems", var2);
 
-        super.writeEntityToNBT(par1NBTTagCompound);
+        super.writeEntityToNBT(nbt);
     }
 
     public void addExperience2(int par1)
