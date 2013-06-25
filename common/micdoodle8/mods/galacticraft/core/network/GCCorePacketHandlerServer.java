@@ -105,8 +105,6 @@ public class GCCorePacketHandlerServer implements IPacketHandler
             {
                 final EntitySpaceshipBase ship = (EntitySpaceshipBase) player.ridingEntity;
 
-                ship.getStackInSlot(0);
-
                 if (ship.hasValidFuel())
                 {
                     ItemStack stack2 = null;

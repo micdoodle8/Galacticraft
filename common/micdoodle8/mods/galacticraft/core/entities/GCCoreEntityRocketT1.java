@@ -425,11 +425,14 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
         final List<ItemStack> items = new ArrayList<ItemStack>();
         items.add(new ItemStack(GCCoreItems.spaceship, 1, this.rocketType.getIndex()));
 
-        for (final ItemStack item : this.cargoItems)
+        if (this.cargoItems != null)
         {
-            if (item != null)
+            for (final ItemStack item : this.cargoItems)
             {
-                items.add(item);
+                if (item != null)
+                {
+                    items.add(item);
+                }
             }
         }
 
