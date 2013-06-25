@@ -185,21 +185,6 @@ public class GCCorePlayerSP extends EntityClientPlayerMP
             this.motionX *= 0.5F;
             this.motionZ *= 0.5F;
         }
-        
-        if (this.tick % 200 == 0 && this.worldObj instanceof WorldClient)
-        {
-            WorldClient world = (WorldClient) this.worldObj;
-            
-            for (int i = 0; i < world.playerEntities.size(); i++)
-            {
-                EntityPlayer player = (EntityPlayer) world.playerEntities.get(i);
-                
-                if (!ClientProxyCore.parachuteTextures.containsKey(player.username))
-                {
-                    ClientProxyCore.parachuteTextures.put(player.username, "none");
-                }
-            }
-        }
 
         super.onUpdate();
     }

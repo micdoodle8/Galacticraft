@@ -194,7 +194,7 @@ public class GCCoreModelPlayer extends ModelBiped
                 }
             }
 
-            if (!changed || ClientProxyCore.parachuteTextures.get(player.username).equals("none"))
+            if (!changed || ClientProxyCore.parachuteTextures.get(player.username) == null || ClientProxyCore.parachuteTextures.get(player.username).equals("none"))
             {
                 this.usingParachute = false;
             }
