@@ -645,6 +645,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
                 final Integer[] ids = WorldUtil.getArrayOfPossibleDimensions();
 
                 final Set set = WorldUtil.getArrayOfPossibleDimensions(ids, playerBase).entrySet();
+                
                 final Iterator i = set.iterator();
 
                 String temp = "";
@@ -676,6 +677,12 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
                 }
             }
         }
+    }
+    
+    public ArrayList<Integer> getListOfPossibleDimension(ArrayList<Integer> list)
+    {
+        list.add(0);
+        return list;
     }
 
     public void onLaunch()

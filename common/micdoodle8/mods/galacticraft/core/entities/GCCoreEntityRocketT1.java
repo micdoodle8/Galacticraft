@@ -171,6 +171,13 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
         }
     }
     
+    public ArrayList<Integer> getListOfPossibleDimension(ArrayList<Integer> list)
+    {
+        super.getListOfPossibleDimension(list);
+        list.add(GCMoonConfigManager.dimensionIDMoon);
+        return list;
+    }
+    
     public void readNetworkedData(ByteArrayDataInput dataStream)
     {
         super.readNetworkedData(dataStream);
