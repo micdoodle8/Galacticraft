@@ -1,10 +1,8 @@
 package micdoodle8.mods.galacticraft.core.client.render.item;
 
-import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelSpaceship;
 import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityRocketT1;
 import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase.EnumRocketType;
-import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityRocketT1;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelChest;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -24,13 +22,13 @@ import cpw.mods.fml.client.FMLClientHandler;
  */
 public class GCCoreItemRendererSpaceship implements IItemRenderer
 {
-    EntitySpaceshipBase spaceship;
-    ModelBase modelSpaceship;
-    private final ModelChest chestModel = new ModelChest();
+    protected EntitySpaceshipBase spaceship;
+    protected ModelBase modelSpaceship;
+    protected final ModelChest chestModel = new ModelChest();
 
-    public static RenderItem drawItems = new RenderItem();
+    protected static RenderItem drawItems = new RenderItem();
     
-    public String texture;
+    protected String texture;
     
     public GCCoreItemRendererSpaceship(EntitySpaceshipBase spaceship, ModelBase model, String texture)
     {
@@ -41,9 +39,49 @@ public class GCCoreItemRendererSpaceship implements IItemRenderer
 
     private void renderSpaceship(ItemRenderType type, RenderBlocks render, ItemStack item, float translateX, float translateY, float translateZ)
     {
-        final EntityPlayer player = FMLClientHandler.instance().getClient().thePlayer;
-
         GL11.glPushMatrix();
+        
+        this.transform(type);
+
+        FMLClientHandler.instance().getClient().renderEngine.bindTexture(this.texture);
+        this.modelSpaceship.render(this.spaceship, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+        GL11.glPopMatrix();
+
+        if (type == ItemRenderType.INVENTORY)
+        {
+            int index = Math.min(Math.max(item.getItemDamage(), 0), EnumRocketType.values().length - 1);
+            if (EnumRocketType.values()[index].getInventorySpace() > 0)
+            {
+                final ModelChest modelChest = this.chestModel;
+                FMLClientHandler.instance().getClient().renderEngine.bindTexture("/item/chest.png");
+
+                GL11.glPushMatrix();
+                GL11.glDisable(GL11.GL_DEPTH_TEST);
+                GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+                GL11.glScalef(0.5F, -0.5F, -0.5F);
+                GL11.glTranslatef(1.5F, 1.95F, 1.7F);
+                final short short1 = 0;
+
+                GL11.glRotatef(short1, 0.0F, 1.0F, 0.0F);
+                GL11.glTranslatef(-1.5F, -1.5F, -1.5F);
+                float f1 = 0;
+                f1 = 1.0F - f1;
+                f1 = 1.0F - f1 * f1 * f1;
+                modelChest.chestLid.rotateAngleX = -(f1 * (float) Math.PI / 2.0F);
+
+                modelChest.chestBelow.render(0.0625F);
+                modelChest.chestLid.render(0.0625F);
+                modelChest.chestKnob.render(0.0625F);
+                GL11.glEnable(GL11.GL_DEPTH_TEST);
+                GL11.glPopMatrix();
+                GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            }
+        }
+    }
+    
+    public void transform(ItemRenderType type)
+    {
+        final EntityPlayer player = FMLClientHandler.instance().getClient().thePlayer;
         long var10 = this.spaceship.entityId * 493286711L;
         var10 = var10 * var10 * 4392167121L + var10 * 98761L;
         final float var12 = (((var10 >> 16 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
@@ -85,8 +123,9 @@ public class GCCoreItemRendererSpaceship implements IItemRenderer
         {
             if (type == ItemRenderType.INVENTORY)
             {
-                GL11.glRotatef(80F, 1F, 0F, 1F);
+                GL11.glRotatef(85F, 1F, 0F, 1F);
                 GL11.glRotatef(20F, 1F, 0F, 0F);
+                GL11.glScalef(0.9F, 0.9F, 0.9F);
             }
             else
             {
@@ -97,41 +136,6 @@ public class GCCoreItemRendererSpaceship implements IItemRenderer
             GL11.glScalef(1.3F, 1.3F, 1.3F);
             GL11.glTranslatef(0, -0.6F, 0);
             GL11.glRotatef(Sys.getTime() / 90F % 360F, 0F, 1F, 0F);
-        }
-
-        FMLClientHandler.instance().getClient().renderEngine.bindTexture(this.texture);
-        this.modelSpaceship.render(this.spaceship, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
-        GL11.glPopMatrix();
-
-        if (type == ItemRenderType.INVENTORY)
-        {
-            int index = Math.min(Math.max(item.getItemDamage(), 0), EnumRocketType.values().length - 1);
-            if (EnumRocketType.values()[index].getInventorySpace() > 0)
-            {
-                final ModelChest modelChest = this.chestModel;
-                FMLClientHandler.instance().getClient().renderEngine.bindTexture("/item/chest.png");
-
-                GL11.glPushMatrix();
-                GL11.glDisable(GL11.GL_DEPTH_TEST);
-                GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-                GL11.glScalef(0.5F, -0.5F, -0.5F);
-                GL11.glTranslatef(1.5F, 1.95F, 1.7F);
-                final short short1 = 0;
-
-                GL11.glRotatef(short1, 0.0F, 1.0F, 0.0F);
-                GL11.glTranslatef(-1.5F, -1.5F, -1.5F);
-                float f1 = 0;
-                f1 = 1.0F - f1;
-                f1 = 1.0F - f1 * f1 * f1;
-                modelChest.chestLid.rotateAngleX = -(f1 * (float) Math.PI / 2.0F);
-
-                modelChest.chestBelow.render(0.0625F);
-                modelChest.chestLid.render(0.0625F);
-                modelChest.chestKnob.render(0.0625F);
-                GL11.glEnable(GL11.GL_DEPTH_TEST);
-                GL11.glPopMatrix();
-                GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            }
         }
     }
 
