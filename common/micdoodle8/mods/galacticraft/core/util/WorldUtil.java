@@ -732,29 +732,32 @@ public class WorldUtil
         {
             var8 = (GCCorePlayerMP) var1;
 
-            for (int i = 0; i < 27; i++)
+            if (var8.rocketStacks != null && var8.rocketStacks.length > 0)
             {
-                if (transferInv)
+                for (int i = 0; i < var8.rocketStacks.length; i++)
                 {
-                    if (var8.rocketStacks[i] == null)
+                    if (transferInv)
                     {
-                        switch (i)
+                        if (var8.rocketStacks[i] == null)
                         {
-                        case 24:
-                            var8.rocketStacks[i] = var8.fuelDamage > 0 && var8.fuelDamage <= GCCoreItems.fuelCanister.getMaxDamage() ? new ItemStack(GCCoreItems.fuelCanister, 1, var8.fuelDamage) : null;
-                            break;
-                        case 25:
-                            var8.rocketStacks[i] = type instanceof GCCoreOrbitTeleportType ? null : new ItemStack(GCCoreBlocks.landingPad, 9, 0);
-                            break;
-                        case 26:
-                            var8.rocketStacks[i] = new ItemStack(GCCoreItems.spaceship, 1, var8.rocketType);
-                            break;
+                            if (i == var8.rocketStacks.length - 1)
+                            {
+                                var8.rocketStacks[i] = new ItemStack(GCCoreItems.spaceship, 1, var8.rocketType);
+                            }
+                            else if (i == var8.rocketStacks.length - 2)
+                            {
+                                var8.rocketStacks[i] = new ItemStack(GCCoreBlocks.landingPad, 9, 0);
+                            }
+                            else if (i == var8.rocketStacks.length - 3)
+                            {
+                                var8.rocketStacks[i] = var8.fuelDamage > 0 && var8.fuelDamage <= GCCoreItems.fuelCanister.getMaxDamage() ? new ItemStack(GCCoreItems.fuelCanister, 1, var8.fuelDamage) : null;
+                            }
                         }
                     }
-                }
-                else
-                {
-                    var8.rocketStacks[i] = null;
+                    else
+                    {
+                        var8.rocketStacks[i] = null;
+                    }
                 }
             }
 
