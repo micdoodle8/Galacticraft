@@ -28,6 +28,7 @@ import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketDimensionListPlanets;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketDimensionListSpaceStations;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketSpaceStationData;
+import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -43,12 +44,14 @@ import net.minecraft.network.packet.Packet9Respawn;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntityChest;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 import universalelectricity.core.vector.Vector3;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class WorldUtil
@@ -114,9 +117,23 @@ public class WorldUtil
 
     public static Vector3 getWorldColor(World world)
     {
-        if (world.provider instanceof GCCoreWorldProviderSpaceStation)
+        if (world.provider instanceof GCMoonWorldProvider)
         {
-            return new Vector3(0.5, 0.5, 0.5);
+            float f1 = world.getCelestialAngle(1);
+            float f2 = 1.0F - (MathHelper.cos(f1 * (float)Math.PI * 2.0F) * 2.0F + 0.25F);
+
+            if (f2 < 0.0F)
+            {
+                f2 = 0.0F;
+            }
+
+            if (f2 > 1.0F)
+            {
+                f2 = 1.0F;
+            }
+            
+            double d = 1.0 - (f2 * f2 * 0.7);
+            return new Vector3(d, d, d);
         }
 
         return new Vector3(1, 1, 1);
