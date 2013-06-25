@@ -55,16 +55,6 @@ public class GCCoreWorldGenSpaceStation extends WorldGenerator
         world.setBlock(i + 3, j + 0, k + 6, GCCoreBlocks.decorationBlocks.blockID, 4, 3);
         world.setBlock(i + 3, j + 1, k + 0, GCCoreBlocks.decorationBlocks.blockID, 4, 3);
 
-        world.setBlock(i + 3, j + 1, k + 3, GCCoreBlocks.landingPadFull.blockID, 0, 3);
-        world.setBlockTileEntity(i + 3, j + 1, k + 3, new GCCoreTileEntityLandingPad());
-
-        final TileEntity var8 = world.getBlockTileEntity(i + 3, j + 1, k + 3);
-
-        if (var8 instanceof IMultiBlock)
-        {
-            ((IMultiBlock) var8).onCreate(new Vector3(i + 3, j + 1, k + 3));
-        }
-
         world.setBlock(i + 3, j + 1, k + 6, GCCoreBlocks.decorationBlocks.blockID, 4, 3);
         world.setBlock(i + 4, j + 0, k + 0, GCCoreBlocks.decorationBlocks.blockID, 4, 3);
         world.setBlock(i + 4, j + 0, k + 1, GCCoreBlocks.decorationBlocks.blockID, 4, 3);
