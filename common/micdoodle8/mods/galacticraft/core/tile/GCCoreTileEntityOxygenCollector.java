@@ -8,7 +8,7 @@ import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockLeaves;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -18,7 +18,9 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
+import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.IPlantable;
 import universalelectricity.core.item.IItemElectric;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.core.vector.VectorHelper;
@@ -106,14 +108,22 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityElectric im
                         {
                             final Block block = Block.blocksList[this.worldObj.getBlockId(x, y, z)];
 
-                            if (block != null && block instanceof BlockLeaves)
+                            if (block != null)
                             {
-                                if (!this.worldObj.isRemote && this.worldObj.rand.nextInt(100000) == 0 && !GCCoreConfigManager.disableLeafDecay)
+                                if (this.worldObj.getBlockMaterial(x, y, z) == Material.leaves)
                                 {
-                                    this.worldObj.setBlockToAir(x, y, z);
-                                }
+                                    if (!this.worldObj.isRemote && this.worldObj.rand.nextInt(100000) == 0 && !GCCoreConfigManager.disableLeafDecay)
+                                    {
+                                        this.worldObj.setBlockToAir(x, y, z);
+                                    }
 
-                                power++;
+                                    power++;
+                                }
+                                else if (block instanceof IPlantable && ((IPlantable) block).getPlantType(this.worldObj, x, y, z) == EnumPlantType.Crop)
+                                {
+                                    // Add two, since leaves can be packed into an area much easier than crops can.
+                                    power += 2.0;
+                                }
                             }
                         }
                     }
