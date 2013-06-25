@@ -730,10 +730,13 @@ public class WorldUtil
 
         if (var1 instanceof GCCorePlayerMP)
         {
+            FMLLog.info("Teleport Entity: 1");
             var8 = (GCCorePlayerMP) var1;
 
+            FMLLog.info("Teleport Entity: 2 " + var8.rocketStacks);
             if (var8.rocketStacks != null && var8.rocketStacks.length > 0)
             {
+                FMLLog.info("Teleport Entity: 3 " + var8.rocketStacks.length);
                 for (int i = 0; i < var8.rocketStacks.length; i++)
                 {
                     if (transferInv)
@@ -761,21 +764,25 @@ public class WorldUtil
                 }
             }
 
+            FMLLog.info("Teleport Entity: 4 " + var8.chestSpawnCooldown);
             if (var8.chestSpawnCooldown == 0)
             {
                 final GCCoreEntityParaChest chest = new GCCoreEntityParaChest(var0, var8.rocketStacks);
 
                 final Vector3 chestVec = type.getParaChestSpawnLocation((WorldServer) var1.worldObj, chest, var8, new Random());
 
+                FMLLog.info("Teleport Entity: 5 " + chestVec);
                 if (chestVec != null)
                 {
                     chest.setPosition(chestVec.x, chestVec.y, chestVec.z);
 
                     if (!var0.isRemote)
                     {
+                        FMLLog.info("Teleport Entity: 6");
                         var0.spawnEntityInWorld(chest);
                     }
 
+                    FMLLog.info("Teleport Entity: 7");
                     var8.chestSpawnCooldown = 200;
                 }
             }
