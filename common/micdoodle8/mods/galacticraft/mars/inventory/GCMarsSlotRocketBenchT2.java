@@ -1,4 +1,4 @@
-package micdoodle8.mods.galacticraft.core.inventory;
+package micdoodle8.mods.galacticraft.mars.inventory;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
@@ -9,13 +9,13 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-public class GCCoreSlotRocketBench extends Slot
+public class GCMarsSlotRocketBenchT2 extends Slot
 {
     private final int index;
     private final int x, y, z;
     private final EntityPlayer player;
 
-    public GCCoreSlotRocketBench(IInventory par2IInventory, int par3, int par4, int par5, int x, int y, int z, EntityPlayer player)
+    public GCMarsSlotRocketBenchT2(IInventory par2IInventory, int par3, int par4, int par5, int x, int y, int z, EntityPlayer player)
     {
         super(par2IInventory, par3, par4, par5);
         this.index = par3;
@@ -75,20 +75,28 @@ public class GCCoreSlotRocketBench extends Slot
         case 9:
             return par1ItemStack.getItem().itemID == GCCoreItems.heavyPlating.itemID ? true : false;
         case 10:
-            return par1ItemStack.getItem().itemID == GCCoreItems.rocketFins.itemID ? true : false;
+            return par1ItemStack.getItem().itemID == GCCoreItems.heavyPlating.itemID ? true : false;
         case 11:
-            return par1ItemStack.getItem().itemID == GCCoreItems.rocketFins.itemID ? true : false;
+            return par1ItemStack.getItem().itemID == GCCoreItems.heavyPlating.itemID ? true : false;
         case 12:
-            return par1ItemStack.getItem().itemID == GCCoreItems.rocketEngine.itemID && par1ItemStack.getItemDamage() == 0 ? true : false;
+            return par1ItemStack.getItem().itemID == GCCoreItems.rocketEngine.itemID && par1ItemStack.getItemDamage() == 1 ? true : false;
         case 13:
             return par1ItemStack.getItem().itemID == GCCoreItems.rocketFins.itemID ? true : false;
         case 14:
             return par1ItemStack.getItem().itemID == GCCoreItems.rocketFins.itemID ? true : false;
         case 15:
-            return true;
+            return par1ItemStack.getItem().itemID == GCCoreItems.rocketEngine.itemID && par1ItemStack.getItemDamage() == 0 ? true : false;
         case 16:
-            return true;
+            return par1ItemStack.getItem().itemID == GCCoreItems.rocketEngine.itemID && par1ItemStack.getItemDamage() == 1 ? true : false;
         case 17:
+            return par1ItemStack.getItem().itemID == GCCoreItems.rocketFins.itemID ? true : false;
+        case 18:
+            return par1ItemStack.getItem().itemID == GCCoreItems.rocketFins.itemID ? true : false;
+        case 19:
+            return true;
+        case 20:
+            return true;
+        case 21:
             return true;
         }
 

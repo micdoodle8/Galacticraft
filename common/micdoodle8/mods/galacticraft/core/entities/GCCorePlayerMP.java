@@ -401,11 +401,6 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
         if (!this.hasOpenedPlanetSelectionGui && this.openPlanetSelectionGuiCooldown == 1)
         {
-            // if (this.spaceStationDimensionID == -1)
-            // {
-            // WorldUtil.bindSpaceStationToNewDimension(this.worldObj, this);
-            // }
-
             final Integer[] ids = WorldUtil.getArrayOfPossibleDimensions();
 
             final Set set = WorldUtil.getArrayOfPossibleDimensions(ids, this).entrySet();

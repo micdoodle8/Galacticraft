@@ -17,7 +17,6 @@ import micdoodle8.mods.galacticraft.mars.dimension.GCMarsWorldProvider;
 import micdoodle8.mods.galacticraft.mars.entities.GCCoreEntityRocketT2;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityCreeperBoss;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityProjectileTNT;
-import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntitySludgeling;
 import micdoodle8.mods.galacticraft.mars.items.GCMarsItems;
 import micdoodle8.mods.galacticraft.moon.dimension.GCMoonTeleportType;
 import net.minecraft.creativetab.CreativeTabs;
@@ -110,6 +109,7 @@ public class GalacticraftMars implements IGalacticraftSubMod
         this.registerCreatures();
         this.registerOtherEntities();
         GalacticraftMars.proxy.init(event);
+//        SchematicRegistry.registerSchematicRecipe(new GCMarsSchematicRocketT2());
     }
 
     @ServerStarting
@@ -126,7 +126,6 @@ public class GalacticraftMars implements IGalacticraftSubMod
     public void registerCreatures()
     {
         this.registerGalacticraftCreature(GCMarsEntityCreeperBoss.class, "Creeper Boss", GCMarsConfigManager.idEntityCreeperBoss, 894731, 0);
-        this.registerGalacticraftCreature(GCMarsEntitySludgeling.class, "Sludgeling", GCMarsConfigManager.idEntitySludgeling, 25600, 0);
     }
 
     public void registerOtherEntities()

@@ -24,7 +24,7 @@ public class GCMarsBlocks
 
     public static void initBlocks()
     {
-        GCMarsBlocks.marsBlock = new GCMarsBlock(GCMarsConfigManager.idBlockMarsCobblestone).setHardness(2.2F).setUnlocalizedName("mars");
+        GCMarsBlocks.marsBlock = new GCMarsBlock(GCMarsConfigManager.idBlockMars).setHardness(2.2F).setUnlocalizedName("mars");
     }
 
     public static void setHarvestLevels()

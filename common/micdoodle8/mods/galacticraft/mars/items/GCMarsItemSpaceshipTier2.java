@@ -101,8 +101,8 @@ public class GCMarsItemSpaceshipTier2 extends Item implements IHoldableItem
                 {
                     par2EntityPlayer.inventory.consumeInventoryItem(par1ItemStack.getItem().itemID);
                 }
-                
-                if (par1ItemStack.getItemDamage() == 2)
+
+                if (spaceship.rocketType.getPreFueled())
                 {
                     spaceship.spaceshipFuelTank.fill(LiquidDictionary.getLiquid("Fuel", 2000), true);
                 }
