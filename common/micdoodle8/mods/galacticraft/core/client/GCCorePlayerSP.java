@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.client;
 
 import java.util.ArrayList;
 import java.util.Random;
-import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.API.ISchematicPage;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -10,13 +9,14 @@ import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.multiplayer.NetClientHandler;
+import net.minecraft.client.multiplayer.WorldClient;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Icon;
 import net.minecraft.util.Session;
-import net.minecraft.util.StringUtils;
 import net.minecraft.world.World;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -184,6 +184,21 @@ public class GCCorePlayerSP extends EntityClientPlayerMP
             this.motionY = -0.5D;
             this.motionX *= 0.5F;
             this.motionZ *= 0.5F;
+        }
+        
+        if (this.tick % 200 == 0 && this.worldObj instanceof WorldClient)
+        {
+            WorldClient world = (WorldClient) this.worldObj;
+            
+            for (int i = 0; i < world.playerEntities.size(); i++)
+            {
+                EntityPlayer player = (EntityPlayer) world.playerEntities.get(i);
+                
+                if (!ClientProxyCore.parachuteTextures.containsKey(player.username))
+                {
+                    ClientProxyCore.parachuteTextures.put(player.username, "none");
+                }
+            }
         }
 
         super.onUpdate();
