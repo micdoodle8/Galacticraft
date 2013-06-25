@@ -181,6 +181,8 @@ public class GCCoreConfigManager
     public static Property loadBC;
     public static boolean enableKnowledgeBook;
     public static double dungeonBossHealthMod;
+    public static int suffocationCooldown;
+    public static int suffocationDamage;
 
     private void setDefaultValues()
     {
@@ -329,6 +331,8 @@ public class GCCoreConfigManager
             GCCoreConfigManager.loadBC = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Load Basic Components", false, "Set to true to load the required Basic Components items from Galacticraft.");
             GCCoreConfigManager.enableKnowledgeBook = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Enable Knowledge Book", true, "Set to false if you do not wish to have the book of knowledge item").getBoolean(true);
             GCCoreConfigManager.dungeonBossHealthMod = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Dungeon Boss Health Modifier", 1.0D, "Change this is you wish to balance the mod (if you have more powerful weapon mods)").getDouble(1.0D);
+            GCCoreConfigManager.suffocationCooldown = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Suffocation Cooldown", 100, "Lower/Raise this value to change time between suffocation damage ticks").getInt(100);
+            GCCoreConfigManager.suffocationDamage = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Suffocation Damage", 2, "Change this value to modify the damage taken per suffocation tick").getInt(2);
         }
         catch (final Exception e)
         {

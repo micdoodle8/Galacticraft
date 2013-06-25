@@ -10,6 +10,7 @@ import java.util.Set;
 import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.API.ISchematicPage;
 import micdoodle8.mods.galacticraft.API.SchematicRegistry;
+import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GCCoreDamageSource;
 import micdoodle8.mods.galacticraft.core.GCLog;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -764,8 +765,8 @@ public class GCCorePlayerMP extends EntityPlayerMP
                 {
                     if (this.damageCounter == 0)
                     {
-                        this.damageCounter = 100;
-                        this.attackEntityFrom(GCCoreDamageSource.oxygenSuffocation, 2);
+                        this.damageCounter = GCCoreConfigManager.suffocationCooldown;
+                        this.attackEntityFrom(GCCoreDamageSource.oxygenSuffocation, GCCoreConfigManager.suffocationDamage);
                     }
                 }
             }
