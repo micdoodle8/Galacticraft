@@ -45,7 +45,7 @@ public class GCCoreTileEntityCargoUnloader extends GCCoreTileEntityElectric impl
             {
                 this.checkForCargoEntity();
             }
-            
+
             if (this.attachedFuelable != null)
             {
                 this.noTarget = false;
@@ -54,11 +54,11 @@ public class GCCoreTileEntityCargoUnloader extends GCCoreTileEntityElectric impl
                 if (result.resultStack != null)
                 {
                     this.targetEmpty = false;
-                    
+
                     EnumCargoLoadingState state = this.addCargo(result.resultStack, false);
 
                     this.targetEmpty = state == EnumCargoLoadingState.EMPTY;
-                    
+
                     if (this.ticks % 15 == 0 && state == EnumCargoLoadingState.SUCCESS && !this.disabled && (this.ic2Energy > 0 || this.wattsReceived > 0 || this.getPowerProvider() != null && this.getPowerProvider().getEnergyStored() > 0))
                     {
                         this.addCargo(this.attachedFuelable.removeCargo(true).resultStack, true);
@@ -77,11 +77,11 @@ public class GCCoreTileEntityCargoUnloader extends GCCoreTileEntityElectric impl
             }
         }
     }
-    
+
     public void checkForCargoEntity()
     {
         boolean foundFuelable = false;
-        
+
         for (final ForgeDirection dir : ForgeDirection.values())
         {
             if (dir != ForgeDirection.UNKNOWN)
@@ -94,7 +94,7 @@ public class GCCoreTileEntityCargoUnloader extends GCCoreTileEntityElectric impl
                 if (pad != null && pad instanceof TileEntityMulti)
                 {
                     final TileEntity mainTile = ((TileEntityMulti) pad).mainBlockPosition.getTileEntity(this.worldObj);
-                    
+
                     if (mainTile != null && mainTile instanceof ICargoEntity)
                     {
                         this.attachedFuelable = (ICargoEntity) mainTile;
@@ -283,7 +283,7 @@ public class GCCoreTileEntityCargoUnloader extends GCCoreTileEntityElectric impl
                 return true;
             }
         }
-        
+
         return false;
     }
 
@@ -350,18 +350,18 @@ public class GCCoreTileEntityCargoUnloader extends GCCoreTileEntityElectric impl
     public EnumCargoLoadingState addCargo(ItemStack stack, boolean doAdd)
     {
         int count = 1;
-        
+
         for (count = 1; count < this.containingItems.length; count++)
         {
             ItemStack stackAt = this.containingItems[count];
-            
+
             if (stackAt != null && stackAt.itemID == stack.itemID && stackAt.getItemDamage() == stack.getItemDamage() && stackAt.stackSize < stackAt.getMaxStackSize())
             {
                 if (doAdd)
                 {
                     this.containingItems[count].stackSize += stack.stackSize;
                 }
-                
+
                 return EnumCargoLoadingState.SUCCESS;
             }
         }
@@ -369,18 +369,18 @@ public class GCCoreTileEntityCargoUnloader extends GCCoreTileEntityElectric impl
         for (count = 1; count < this.containingItems.length; count++)
         {
             ItemStack stackAt = this.containingItems[count];
-            
+
             if (stackAt == null)
             {
                 if (doAdd)
                 {
                     this.containingItems[count] = stack;
                 }
-                
+
                 return EnumCargoLoadingState.SUCCESS;
             }
         }
-        
+
         return EnumCargoLoadingState.FULL;
     }
 
@@ -390,7 +390,7 @@ public class GCCoreTileEntityCargoUnloader extends GCCoreTileEntityElectric impl
         for (int i = 1; i < this.containingItems.length; i++)
         {
             ItemStack stackAt = this.containingItems[i];
-            
+
             if (stackAt != null)
             {
                 if (doRemove && --this.containingItems[i].stackSize <= 0)

@@ -121,11 +121,11 @@ public class BlockFluidClassic extends BlockFluidRoot
 
                 expQuanta = maxQuanta - 1;
             }
-            
+
             if (expQuanta != quantaRemaining)
             {
                 quantaRemaining = expQuanta;
-                
+
                 if (expQuanta <= 0)
                 {
                     world.setBlockToAir(x, y, z);
@@ -150,7 +150,7 @@ public class BlockFluidClassic extends BlockFluidRoot
         }
 
         int flowMeta = quantaRemaining - 2;
-        
+
         if (flowMeta < 0)
         {
             return;
@@ -226,7 +226,7 @@ public class BlockFluidClassic extends BlockFluidRoot
         }
 
         int min = this.flowCost[0];
-        
+
         for (int side = 1; side < 4; side++)
         {
             if (this.flowCost[side] < min)
@@ -234,12 +234,12 @@ public class BlockFluidClassic extends BlockFluidRoot
                 min = this.flowCost[side];
             }
         }
-        
+
         for (int side = 0; side < 4; side++)
         {
             this.isOptimalFlowDirection[side] = this.flowCost[side] == min;
         }
-        
+
         return this.isOptimalFlowDirection;
     }
 
@@ -278,24 +278,24 @@ public class BlockFluidClassic extends BlockFluidRoot
             {
                 continue;
             }
-            
+
             if (this.canFlowInto(world, x2, y2 + this.densityDir, z2))
             {
                 return recurseDepth;
             }
-            
+
             if (recurseDepth >= 4)
             {
                 continue;
             }
-            
+
             int min = this.calculateFlowCost(world, x2, y2, z2, recurseDepth + 1, adjSide);
             if (min < cost)
             {
                 cost = min;
             }
         }
-        
+
         return cost;
     }
 
@@ -310,29 +310,29 @@ public class BlockFluidClassic extends BlockFluidRoot
     protected boolean canFlowInto(IBlockAccess world, int x, int y, int z)
     {
         int bId = world.getBlockId(x, y, z);
-        
+
         if (bId == 0)
         {
             return true;
         }
-        
+
         if (bId == this.blockID)
         {
             return true;
         }
-        
+
         if (BlockFluidRoot.displacementIds.containsKey(bId))
         {
             return BlockFluidRoot.displacementIds.get(bId);
         }
-        
+
         Material material = Block.blocksList[bId].blockMaterial;
-        
+
         if (material.blocksMovement() || material == Material.water || material == Material.lava || material == Material.portal)
         {
             return false;
         }
-        
+
         return true;
     }
 
@@ -344,7 +344,7 @@ public class BlockFluidClassic extends BlockFluidRoot
         {
             return compare;
         }
-        
+
         return quantaRemaining >= compare ? quantaRemaining : compare;
     }
 

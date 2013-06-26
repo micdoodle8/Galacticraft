@@ -17,9 +17,9 @@ public class RecipeUtilMars
         {
             slots[i] = inventoryRocketBench.getStackInSlot(i + 1);
         }
-        
+
         boolean valid = true;
-        
+
         for (int i = 0; i < 18; i++)
         {
             if (slots[i] == null)

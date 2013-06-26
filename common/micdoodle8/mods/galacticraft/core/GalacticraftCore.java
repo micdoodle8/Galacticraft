@@ -301,7 +301,7 @@ public class GalacticraftCore
 
             RecipeUtil.addBasicComponentsCraftingRecipes();
         }
-        
+
         NetworkRegistry.instance().registerGuiHandler(this, GalacticraftCore.proxy);
 
         GalacticraftCore.proxy.postInit(event);

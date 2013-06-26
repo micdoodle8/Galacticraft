@@ -18,7 +18,6 @@ import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GCLog;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
-import micdoodle8.mods.galacticraft.core.dimension.GCCoreOrbitTeleportType;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreSpaceStationData;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreWorldProviderSpaceStation;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityParaChest;
@@ -51,7 +50,6 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 import universalelectricity.core.vector.Vector3;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class WorldUtil
@@ -120,7 +118,7 @@ public class WorldUtil
         if (world.provider instanceof GCMoonWorldProvider)
         {
             float f1 = world.getCelestialAngle(1);
-            float f2 = 1.0F - (MathHelper.cos(f1 * (float)Math.PI * 2.0F) * 2.0F + 0.25F);
+            float f2 = 1.0F - (MathHelper.cos(f1 * (float) Math.PI * 2.0F) * 2.0F + 0.25F);
 
             if (f2 < 0.0F)
             {
@@ -131,8 +129,8 @@ public class WorldUtil
             {
                 f2 = 1.0F;
             }
-            
-            double d = 1.0 - (f2 * f2 * 0.7);
+
+            double d = 1.0 - f2 * f2 * 0.7;
             return new Vector3(d, d, d);
         }
 

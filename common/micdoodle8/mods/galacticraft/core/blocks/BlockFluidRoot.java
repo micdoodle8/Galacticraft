@@ -63,7 +63,7 @@ public class BlockFluidRoot extends Block
         {
             density = 1;
         }
-        
+
         this.density = density;
         this.densityDir = density > 0 ? -1 : 1;
         return this;
@@ -75,7 +75,7 @@ public class BlockFluidRoot extends Block
         {
             tickRate = 20;
         }
-        
+
         this.tickRate = tickRate;
         return this;
     }
@@ -95,46 +95,46 @@ public class BlockFluidRoot extends Block
     public boolean canDisplace(IBlockAccess world, int x, int y, int z)
     {
         int bId = world.getBlockId(x, y, z);
-        
+
         if (bId == 0)
         {
             return true;
         }
-        
+
         if (bId == this.blockID)
         {
             return false;
         }
-        
+
         if (BlockFluidRoot.displacementIds.containsKey(bId))
         {
             return BlockFluidRoot.displacementIds.get(bId);
         }
-        
+
         Material material = Block.blocksList[bId].blockMaterial;
-        
+
         if (material.blocksMovement() || material == Material.portal)
         {
             return false;
         }
-        
+
         return true;
     }
 
     public boolean displaceIfPossible(World world, int x, int y, int z)
     {
         int bId = world.getBlockId(x, y, z);
-        
+
         if (bId == 0)
         {
             return true;
         }
-        
+
         if (bId == this.blockID)
         {
             return false;
         }
-        
+
         if (BlockFluidRoot.displacementIds.containsKey(bId))
         {
             if (BlockFluidRoot.displacementIds.get(bId))
@@ -142,19 +142,19 @@ public class BlockFluidRoot extends Block
                 Block.blocksList[bId].dropBlockAsItem(world, x, y, z, world.getBlockMetadata(x, y, z), 0);
                 return true;
             }
-            
+
             return false;
         }
-        
+
         Material material = Block.blocksList[bId].blockMaterial;
-        
+
         if (material.blocksMovement() || material == Material.portal)
         {
             return false;
         }
-        
+
         Block.blocksList[bId].dropBlockAsItem(world, x, y, z, world.getBlockMetadata(x, y, z), 0);
-        
+
         return true;
     }
 
@@ -220,7 +220,7 @@ public class BlockFluidRoot extends Block
         {
             return;
         }
-        
+
         Vec3 vec_flow = this.getFlowVector(world, x, y, z);
         vec.xCoord += vec_flow.xCoord * (this.quantaPerBlock * 4);
         vec.yCoord += vec_flow.yCoord * (this.quantaPerBlock * 4);
@@ -234,9 +234,9 @@ public class BlockFluidRoot extends Block
         {
             return super.getLightValue(world, x, y, z);
         }
-        
+
         int data = world.getBlockMetadata(x, y, z);
-        
+
         return (int) (data / this.quantaPerBlockFloat * this.maxScaledLight);
     }
 
@@ -297,7 +297,7 @@ public class BlockFluidRoot extends Block
         {
             return !world.isBlockOpaqueCube(x, y, z);
         }
-        
+
         Material mat = world.getBlockMaterial(x, y, z);
         return mat == this.blockMaterial ? false : super.shouldSideBeRendered(world, x, y, z, side);
     }
@@ -305,12 +305,12 @@ public class BlockFluidRoot extends Block
     public static final int getDensity(IBlockAccess world, int x, int y, int z)
     {
         Block block = Block.blocksList[world.getBlockId(x, y, z)];
-        
+
         if (!(block instanceof BlockFluidRoot))
         {
             return Integer.MAX_VALUE;
         }
-        
+
         return ((BlockFluidRoot) block).density;
     }
 
@@ -318,12 +318,12 @@ public class BlockFluidRoot extends Block
     public static double getFlowDirection(IBlockAccess world, int x, int y, int z)
     {
         Block block = Block.blocksList[world.getBlockId(x, y, z)];
-        
+
         if (!(Block.blocksList[world.getBlockId(x, y, z)] instanceof BlockFluidRoot))
         {
             return -1000.0;
         }
-        
+
         Vec3 vec = ((BlockFluidRoot) block).getFlowVector(world, x, y, z);
 
         return vec.xCoord == 0.0D && vec.zCoord == 0.0D ? -1000.0D : Math.atan2(vec.zCoord, vec.xCoord) - Math.PI / 2D;
@@ -335,45 +335,45 @@ public class BlockFluidRoot extends Block
         {
             return 0;
         }
-        
+
         if (world.getBlockId(x, y, z) != this.blockID)
         {
             return -1;
         }
-        
+
         int quantaRemaining = world.getBlockMetadata(x, y, z) + 1;
-        
+
         return quantaRemaining;
     }
 
     public final int getQuantaValueBelow(IBlockAccess world, int x, int y, int z, int belowThis)
     {
         int quantaRemaining = this.getQuantaValue(world, x, y, z);
-        
+
         if (quantaRemaining >= belowThis)
         {
             return -1;
         }
-        
+
         return quantaRemaining;
     }
 
     public final int getQuantaValueAbove(IBlockAccess world, int x, int y, int z, int aboveThis)
     {
         int quantaRemaining = this.getQuantaValue(world, x, y, z);
-        
+
         if (quantaRemaining <= aboveThis)
         {
             return -1;
         }
-        
+
         return quantaRemaining;
     }
 
     public final float getQuantaPercentage(IBlockAccess world, int x, int y, int z)
     {
         int quantaRemaining = this.getQuantaValue(world, x, y, z);
-        
+
         return quantaRemaining / this.quantaPerBlockFloat;
     }
 
@@ -466,7 +466,7 @@ public class BlockFluidRoot extends Block
                 vec = vec.normalize().addVector(0.0D, -6.0D, 0.0D);
             }
         }
-        
+
         vec = vec.normalize();
         return vec;
     }

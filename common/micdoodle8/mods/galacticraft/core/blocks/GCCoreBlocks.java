@@ -53,7 +53,7 @@ public class GCCoreBlocks
     public static Block parachest;
 
     public static Icon[] blockIcons;
-    
+
     public static Material crudeOil = new MaterialLiquid(MapColor.foliageColor);
 
     public static void initBlocks()
@@ -85,7 +85,7 @@ public class GCCoreBlocks
         GCCoreBlocks.oxygenDetector = new GCCoreBlockOxygenDetector(GCCoreConfigManager.idBlockOxygenDetector).setHardness(3.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("oxygenDetector");
         GCCoreBlocks.cargoLoader = new GCCoreBlockCargoLoader(GCCoreConfigManager.idBlockCargoLoader).setHardness(3.0F).setStepSound(Block.soundMetalFootstep).setUnlocalizedName("cargo");
         GCCoreBlocks.parachest = new GCCoreBlockParachest(GCCoreConfigManager.idBlockParachest).setHardness(3.0F).setStepSound(Block.soundWoodFootstep).setUnlocalizedName("parachest");
-        
+
         // Hide certain items from NEI
         GalacticraftCore.hiddenItems.add(GCCoreBlocks.airLockSeal.blockID);
         GalacticraftCore.hiddenItems.add(GCCoreBlocks.sapling.blockID);

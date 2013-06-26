@@ -16,7 +16,6 @@ import micdoodle8.mods.galacticraft.core.GCCoreDamageSource;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLandingPad;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLandingPadFull;
-import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFuelLoader;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
@@ -30,14 +29,12 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.liquids.LiquidStack;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.IPacketReceiver;
 import universalelectricity.prefab.network.PacketManager;
@@ -50,31 +47,25 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
 {
     public static enum EnumLaunchPhase
     {
-        UNIGNITED(1),
-        IGNITED(2),
-        LAUNCHED(3);
-        
+        UNIGNITED(1), IGNITED(2), LAUNCHED(3);
+
         private int phase;
-        
+
         private EnumLaunchPhase(int phase)
         {
             this.phase = phase;
         }
-        
+
         public int getPhase()
         {
             return this.phase;
         }
     }
-    
+
     public static enum EnumRocketType
     {
-        DEFAULT(0, "", false, 3),
-        INVENTORY27(1, "Storage Space: 18", false, 21),
-        INVENTORY36(2, "Storage Space: 36", false, 39),
-        INVENTORY54(3, "Storage Space: 54", false, 57),
-        PREFUELED(4, "Pre-fueled", true, 3);
-        
+        DEFAULT(0, "", false, 3), INVENTORY27(1, "Storage Space: 18", false, 21), INVENTORY36(2, "Storage Space: 36", false, 39), INVENTORY54(3, "Storage Space: 54", false, 57), PREFUELED(4, "Pre-fueled", true, 3);
+
         private int index;
         private String tooltip;
         private boolean preFueled;
@@ -87,30 +78,30 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
             this.preFueled = preFueled;
             this.inventorySpace = inventorySpace;
         }
-        
+
         public String getTooltip()
         {
             return this.tooltip;
         }
-        
+
         public int getIndex()
         {
             return this.index;
         }
-        
+
         public int getInventorySpace()
         {
             return this.inventorySpace;
         }
-        
+
         public boolean getPreFueled()
         {
             return this.preFueled;
         }
     }
-    
+
     public int launchPhase = EnumLaunchPhase.UNIGNITED.getPhase();
-    
+
     protected long ticks = 0;
     protected double dragAir;
     public int timeUntilLaunch;
@@ -313,7 +304,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
         {
             this.rollAmplitude--;
         }
-        
+
         if (this.shipDamage > 0)
         {
             this.shipDamage--;
@@ -453,7 +444,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
         this.prevPosX = this.posX;
         this.prevPosY = this.posY;
         this.prevPosZ = this.posZ;
-        
+
         if (!this.worldObj.isRemote && this.ticks % 3 == 0)
         {
             PacketManager.sendPacketToClients(GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getNetworkedData(new ArrayList())), this.worldObj, new Vector3(this), 50);
@@ -475,7 +466,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
             e.printStackTrace();
         }
     }
-    
+
     public void readNetworkedData(ByteArrayDataInput dataStream)
     {
         this.launchPhase = dataStream.readInt();
@@ -483,7 +474,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
         this.timeUntilLaunch = dataStream.readInt();
         this.rocketType = EnumRocketType.values()[dataStream.readInt()];
     }
-    
+
     public ArrayList getNetworkedData(ArrayList list)
     {
         list.add(this.launchPhase);
@@ -538,16 +529,16 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
     {
         this.timeUntilLaunch = nbt.getInteger("timeUntilLaunch");
         this.rocketType = EnumRocketType.values()[nbt.getInteger("Type")];
-        
+
         boolean hasOldTags = false;
-        
+
         // Backwards compatibility:
         if (nbt.getTags().contains("launched"))
         {
             hasOldTags = true;
-            
+
             boolean launched = nbt.getBoolean("launched");
-            
+
             if (launched)
             {
                 this.launchPhase = EnumLaunchPhase.LAUNCHED.getPhase();
@@ -558,9 +549,9 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
         if (nbt.getTags().contains("ignite"))
         {
             hasOldTags = true;
-            
+
             int ignite = nbt.getInteger("ignite");
-            
+
             if (ignite == 1)
             {
                 this.launchPhase = EnumLaunchPhase.IGNITED.getPhase();
@@ -580,7 +571,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
             this.launchPhase = nbt.getInteger("launchPhase");
         }
     }
-    
+
     public boolean getLaunched()
     {
         return this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase();
@@ -645,7 +636,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
                 final Integer[] ids = WorldUtil.getArrayOfPossibleDimensions();
 
                 final Set set = WorldUtil.getArrayOfPossibleDimensions(ids, playerBase).entrySet();
-                
+
                 final Iterator i = set.iterator();
 
                 String temp = "";
@@ -678,7 +669,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
             }
         }
     }
-    
+
     public ArrayList<Integer> getListOfPossibleDimension(ArrayList<Integer> list)
     {
         list.add(0);

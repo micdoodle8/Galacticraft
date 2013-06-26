@@ -61,7 +61,7 @@ public class GCCoreContainerRocketRefill extends Container
         int var4;
         int var5;
         int lastRow = slotCount / 9 - 1;
-        int ySize = 145 + (rocketType.getInventorySpace() - 3) * 2;
+        int ySize = 145 + (this.rocketType.getInventorySpace() - 3) * 2;
 
         for (var4 = 0; var4 < lastRow + 1; ++var4)
         {

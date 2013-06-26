@@ -51,9 +51,9 @@ public class GCCoreBlockCargoLoader extends GCCoreBlockAdvanced
     public void onBlockAdded(World world, int x, int y, int z)
     {
         super.onBlockAdded(world, x, y, z);
-        
+
         TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
-        
+
         if (tileEntity != null)
         {
             if (tileEntity instanceof GCCoreTileEntityCargoLoader)
@@ -90,7 +90,7 @@ public class GCCoreBlockCargoLoader extends GCCoreBlockAdvanced
     public Icon getIcon(int side, int metadata)
     {
         int shiftedMeta = metadata >= 4 ? metadata - 4 : metadata;
-        
+
         if (side == 0 || side == 1)
         {
             return this.iconMachineSide;
@@ -120,7 +120,7 @@ public class GCCoreBlockCargoLoader extends GCCoreBlockAdvanced
         {
             return new GCCoreTileEntityCargoUnloader();
         }
-        
+
         return null;
     }
 

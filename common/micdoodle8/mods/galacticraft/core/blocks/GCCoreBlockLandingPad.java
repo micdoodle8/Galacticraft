@@ -64,7 +64,7 @@ public class GCCoreBlockLandingPad extends GCCoreBlockAdvanced
         {
             return this.blockIcon;
         }
-        
+
         return this.icons[par2];
     }
 

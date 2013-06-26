@@ -186,7 +186,7 @@ public class GCCoreTileEntityCargoPad extends TileEntityMulti implements IMultiB
         {
             return this.dockedEntity.addCargo(stack, doAdd);
         }
-        
+
         return EnumCargoLoadingState.NOTARGET;
     }
 

@@ -13,12 +13,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCMarsItemPickaxe extends ItemPickaxe
 {
-    private final EnumToolMaterial material;
-
     public GCMarsItemPickaxe(int par1, EnumToolMaterial par2EnumToolMaterial)
     {
         super(par1, par2EnumToolMaterial);
-        this.material = par2EnumToolMaterial;
     }
 
     @Override

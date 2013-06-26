@@ -258,7 +258,7 @@ public class GCCoreBlockRendererCrudeOil implements ISimpleBlockRenderingHandler
                         d19 = z;
                         d20 = z + 1;
                     }
-                    
+
                     float f11 = icon1.getInterpolatedU(0.0D);
                     f8 = icon1.getInterpolatedU(8.0D);
                     f7 = icon1.getInterpolatedV((1.0D - d15) * 16.0D * 0.5D);
@@ -275,7 +275,7 @@ public class GCCoreBlockRendererCrudeOil implements ISimpleBlockRenderingHandler
                     {
                         f14 *= f6;
                     }
-                    
+
                     tessellator.setColorOpaque_F(f4 * f14 * red, f4 * f14 * green, f4 * f14 * blue);
 
                     if (!rises)
@@ -315,7 +315,7 @@ public class GCCoreBlockRendererCrudeOil implements ISimpleBlockRenderingHandler
                 return 0.875F;
             }
         }
-        
+
         return !world.getBlockMaterial(x, y, z).isSolid() && world.getBlockId(x, y - block.densityDir, z) == block.blockID ? 1 : block.getQuantaPercentage(world, x, y, z) * 0.875F;
     }
 
@@ -331,7 +331,7 @@ public class GCCoreBlockRendererCrudeOil implements ISimpleBlockRenderingHandler
             {
                 return element;
             }
-            
+
             if (element >= 0)
             {
                 total += element;

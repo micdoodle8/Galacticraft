@@ -20,22 +20,25 @@ import net.minecraft.world.World;
 public class GCCoreBlockParachest extends BlockChest
 {
     private final Random random = new Random();
-    
+
     protected GCCoreBlockParachest(int par1)
     {
         super(par1, 0);
     }
 
+    @Override
     public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
         this.setBlockBounds(0.0625F, 0.0F, 0.0625F, 0.9375F, 0.875F, 0.9375F);
     }
 
+    @Override
     public void onBlockAdded(World par1World, int par2, int par3, int par4)
     {
         ;
     }
 
+    @Override
     public void unifyAdjacentChests(World par1World, int par2, int par3, int par4)
     {
         ;
@@ -54,31 +57,34 @@ public class GCCoreBlockParachest extends BlockChest
 
             if (iinventory != null && par5EntityPlayer instanceof EntityPlayerMP)
             {
-                GCCoreUtil.openParachestInv((EntityPlayerMP)par5EntityPlayer, iinventory);
+                GCCoreUtil.openParachestInv((EntityPlayerMP) par5EntityPlayer, iinventory);
             }
 
             return true;
         }
     }
 
+    @Override
     public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLiving par5EntityLiving, ItemStack par6ItemStack)
     {
         if (par6ItemStack.hasDisplayName())
         {
-            ((GCCoreTileEntityParachest)par1World.getBlockTileEntity(par2, par3, par4)).func_94043_a(par6ItemStack.getDisplayName());
+            ((GCCoreTileEntityParachest) par1World.getBlockTileEntity(par2, par3, par4)).func_94043_a(par6ItemStack.getDisplayName());
         }
     }
 
+    @Override
     public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
     {
-        GCCoreTileEntityParachest tileentitychest = (GCCoreTileEntityParachest)par1World.getBlockTileEntity(par2, par3, par4);
+        GCCoreTileEntityParachest tileentitychest = (GCCoreTileEntityParachest) par1World.getBlockTileEntity(par2, par3, par4);
 
         if (tileentitychest != null)
         {
             tileentitychest.updateContainingBlockInfo();
         }
     }
-    
+
+    @Override
     public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4)
     {
         int l = par1World.getBlockId(par2, par3, par4);
@@ -86,9 +92,10 @@ public class GCCoreBlockParachest extends BlockChest
         return block == null || block.isBlockReplaceable(par1World, par2, par3, par4);
     }
 
+    @Override
     public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6)
     {
-        GCCoreTileEntityParachest tileentitychest = (GCCoreTileEntityParachest)par1World.getBlockTileEntity(par2, par3, par4);
+        GCCoreTileEntityParachest tileentitychest = (GCCoreTileEntityParachest) par1World.getBlockTileEntity(par2, par3, par4);
 
         if (tileentitychest != null)
         {
@@ -112,15 +119,15 @@ public class GCCoreBlockParachest extends BlockChest
                         }
 
                         itemstack.stackSize -= k1;
-                        entityitem = new EntityItem(par1World, (double)((float)par2 + f), (double)((float)par3 + f1), (double)((float)par4 + f2), new ItemStack(itemstack.itemID, k1, itemstack.getItemDamage()));
+                        entityitem = new EntityItem(par1World, par2 + f, par3 + f1, par4 + f2, new ItemStack(itemstack.itemID, k1, itemstack.getItemDamage()));
                         float f3 = 0.05F;
-                        entityitem.motionX = (double)((float)this.random.nextGaussian() * f3);
-                        entityitem.motionY = (double)((float)this.random.nextGaussian() * f3 + 0.2F);
-                        entityitem.motionZ = (double)((float)this.random.nextGaussian() * f3);
+                        entityitem.motionX = (float) this.random.nextGaussian() * f3;
+                        entityitem.motionY = (float) this.random.nextGaussian() * f3 + 0.2F;
+                        entityitem.motionZ = (float) this.random.nextGaussian() * f3;
 
                         if (itemstack.hasTagCompound())
                         {
-                            entityitem.getEntityItem().setTagCompound((NBTTagCompound)itemstack.getTagCompound().copy());
+                            entityitem.getEntityItem().setTagCompound((NBTTagCompound) itemstack.getTagCompound().copy());
                         }
                     }
                 }
@@ -132,9 +139,10 @@ public class GCCoreBlockParachest extends BlockChest
         par1World.removeBlockTileEntity(par2, par3, par4);
     }
 
+    @Override
     public IInventory getInventory(World par1World, int par2, int par3, int par4)
     {
-        Object object = (GCCoreTileEntityParachest)par1World.getBlockTileEntity(par2, par3, par4);
+        Object object = par1World.getBlockTileEntity(par2, par3, par4);
 
         if (object == null)
         {
@@ -144,47 +152,51 @@ public class GCCoreBlockParachest extends BlockChest
         {
             return null;
         }
-        else if (isOcelotBlockingChest(par1World, par2, par3, par4))
+        else if (BlockChest.isOcelotBlockingChest(par1World, par2, par3, par4))
         {
             return null;
         }
-        else if (par1World.getBlockId(par2 - 1, par3, par4) == this.blockID && (par1World.isBlockSolidOnSide(par2 - 1, par3 + 1, par4, DOWN) || isOcelotBlockingChest(par1World, par2 - 1, par3, par4)))
+        else if (par1World.getBlockId(par2 - 1, par3, par4) == this.blockID && (par1World.isBlockSolidOnSide(par2 - 1, par3 + 1, par4, DOWN) || BlockChest.isOcelotBlockingChest(par1World, par2 - 1, par3, par4)))
         {
             return null;
         }
-        else if (par1World.getBlockId(par2 + 1, par3, par4) == this.blockID && (par1World.isBlockSolidOnSide(par2 + 1, par3 + 1, par4, DOWN) || isOcelotBlockingChest(par1World, par2 + 1, par3, par4)))
+        else if (par1World.getBlockId(par2 + 1, par3, par4) == this.blockID && (par1World.isBlockSolidOnSide(par2 + 1, par3 + 1, par4, DOWN) || BlockChest.isOcelotBlockingChest(par1World, par2 + 1, par3, par4)))
         {
             return null;
         }
-        else if (par1World.getBlockId(par2, par3, par4 - 1) == this.blockID && (par1World.isBlockSolidOnSide(par2, par3 + 1, par4 - 1, DOWN) || isOcelotBlockingChest(par1World, par2, par3, par4 - 1)))
+        else if (par1World.getBlockId(par2, par3, par4 - 1) == this.blockID && (par1World.isBlockSolidOnSide(par2, par3 + 1, par4 - 1, DOWN) || BlockChest.isOcelotBlockingChest(par1World, par2, par3, par4 - 1)))
         {
             return null;
         }
-        else if (par1World.getBlockId(par2, par3, par4 + 1) == this.blockID && (par1World.isBlockSolidOnSide(par2, par3 + 1, par4 + 1, DOWN) || isOcelotBlockingChest(par1World, par2, par3, par4 + 1)))
+        else if (par1World.getBlockId(par2, par3, par4 + 1) == this.blockID && (par1World.isBlockSolidOnSide(par2, par3 + 1, par4 + 1, DOWN) || BlockChest.isOcelotBlockingChest(par1World, par2, par3, par4 + 1)))
         {
             return null;
         }
         else
         {
-            return (IInventory)object;
+            return (IInventory) object;
         }
     }
 
+    @Override
     public TileEntity createNewTileEntity(World par1World)
     {
         return new GCCoreTileEntityParachest(57);
     }
 
+    @Override
     public boolean canProvidePower()
     {
         return false;
     }
 
+    @Override
     public int isProvidingWeakPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {
         return 0;
     }
 
+    @Override
     public int isProvidingStrongPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {
         return 0;

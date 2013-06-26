@@ -7,7 +7,6 @@ import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.client.GCCorePlayerSP;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderPlayer;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityRocketT1;
-import micdoodle8.mods.galacticraft.core.items.GCCoreItemSpaceship;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.RenderEngine;
@@ -544,7 +543,7 @@ public class GCCoreModelPlayer extends ModelBiped
             this.bipedLeftArm.rotateAngleX -= MathHelper.sin(par3 * 0.067F) * 0.05F;
         }
 
-        if (!((EntityPlayer) par7Entity).onGround && ((EntityPlayer) par7Entity).worldObj.provider instanceof IGalacticraftWorldProvider && !((((EntityPlayer) par7Entity).inventory.getCurrentItem() != null && ((EntityPlayer) par7Entity).inventory.getCurrentItem().getItem() instanceof IHoldableItem) && (((IHoldableItem) ((EntityPlayer) par7Entity).inventory.getCurrentItem().getItem()).shouldHoldAboveHead((EntityPlayer) par7Entity))))
+        if (!((EntityPlayer) par7Entity).onGround && ((EntityPlayer) par7Entity).worldObj.provider instanceof IGalacticraftWorldProvider && !(((EntityPlayer) par7Entity).inventory.getCurrentItem() != null && ((EntityPlayer) par7Entity).inventory.getCurrentItem().getItem() instanceof IHoldableItem && ((IHoldableItem) ((EntityPlayer) par7Entity).inventory.getCurrentItem().getItem()).shouldHoldAboveHead((EntityPlayer) par7Entity)))
         {
             this.bipedHead.rotateAngleY = par4 / (180F / (float) Math.PI);
             this.bipedHead.rotateAngleX = par5 / (180F / (float) Math.PI);

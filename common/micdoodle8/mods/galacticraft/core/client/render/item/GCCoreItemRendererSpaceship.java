@@ -27,9 +27,9 @@ public class GCCoreItemRendererSpaceship implements IItemRenderer
     protected final ModelChest chestModel = new ModelChest();
 
     protected static RenderItem drawItems = new RenderItem();
-    
+
     protected String texture;
-    
+
     public GCCoreItemRendererSpaceship(EntitySpaceshipBase spaceship, ModelBase model, String texture)
     {
         this.spaceship = spaceship;
@@ -40,7 +40,7 @@ public class GCCoreItemRendererSpaceship implements IItemRenderer
     private void renderSpaceship(ItemRenderType type, RenderBlocks render, ItemStack item, float translateX, float translateY, float translateZ)
     {
         GL11.glPushMatrix();
-        
+
         this.transform(type);
 
         FMLClientHandler.instance().getClient().renderEngine.bindTexture(this.texture);
@@ -78,7 +78,7 @@ public class GCCoreItemRendererSpaceship implements IItemRenderer
             }
         }
     }
-    
+
     public void transform(ItemRenderType type)
     {
         final EntityPlayer player = FMLClientHandler.instance().getClient().thePlayer;

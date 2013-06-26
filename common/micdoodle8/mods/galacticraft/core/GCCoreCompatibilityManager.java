@@ -11,7 +11,7 @@ public class GCCoreCompatibilityManager
     private static boolean modGTLoaded;
 
     private static boolean modTELoaded;
-    
+
     private static boolean modAetherIILoaded;
 
     public static void checkForCompatibleMods()
@@ -35,7 +35,7 @@ public class GCCoreCompatibilityManager
         {
             GCCoreCompatibilityManager.modBCraftLoaded = true;
         }
-        
+
         if (Loader.isModLoaded("Aether II"))
         {
             GCCoreCompatibilityManager.modAetherIILoaded = true;

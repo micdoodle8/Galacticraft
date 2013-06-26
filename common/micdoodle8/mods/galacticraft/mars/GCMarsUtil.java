@@ -2,9 +2,7 @@ package micdoodle8.mods.galacticraft.mars;
 
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
 import micdoodle8.mods.galacticraft.mars.items.GCMarsItems;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
 
 /**
@@ -17,14 +15,15 @@ public class GCMarsUtil
 {
     public static void addCraftingRecipes()
     {
-//         CraftingManager.getInstance().addRecipe(new ItemStack(GCMarsItems.reinforcedBucketEmpty, 1), new Object[] {
-//         " Y ",
-//         "ZXZ",
-//         " Z ",
-//         'Y', GCMarsItems.ingotDesh,
-//         'X', Item.bucketEmpty,
-//         'Z', GCMarsItems.ingotDesh
-//         });
+        // CraftingManager.getInstance().addRecipe(new
+        // ItemStack(GCMarsItems.reinforcedBucketEmpty, 1), new Object[] {
+        // " Y ",
+        // "ZXZ",
+        // " Z ",
+        // 'Y', GCMarsItems.ingotDesh,
+        // 'X', Item.bucketEmpty,
+        // 'Z', GCMarsItems.ingotDesh
+        // });
     }
 
     public static void addSmeltingRecipes()

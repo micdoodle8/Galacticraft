@@ -124,7 +124,7 @@ public class CommonProxyCore extends BCGuiHandler implements IGuiHandler
     {
         ;
     }
-    
+
     public void displayParachestGui(EntityPlayer player, IInventory lander)
     {
         ;

@@ -602,7 +602,7 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
     public void writeEntityToNBT(NBTTagCompound nbt)
     {
         super.writeEntityToNBT(nbt);
-        
+
         if (this.roomCoords != null)
         {
             nbt.setDouble("roomCoordsX", this.roomCoords.x);

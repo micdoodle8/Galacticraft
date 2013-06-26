@@ -27,14 +27,11 @@ import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.inventory.ContainerChest;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemInWorldManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.packet.Packet100OpenWindow;
 import net.minecraft.network.packet.Packet16BlockItemSwitch;
 import net.minecraft.network.packet.Packet4UpdateTime;
 import net.minecraft.network.packet.Packet70GameEvent;
@@ -977,7 +974,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
         nbt.setDouble("coordsTeleportedFromZ", this.coordsTeleportedFromZ);
         nbt.setInteger("spaceStationDimensionID", this.spaceStationDimensionID);
         nbt.setTag("Schematics", SchematicRegistry.writeToNBT(this, new NBTTagList()));
-        
+
         nbt.setInteger("rocketStacksLength", this.rocketStacks.length);
 
         final NBTTagList var2 = new NBTTagList();

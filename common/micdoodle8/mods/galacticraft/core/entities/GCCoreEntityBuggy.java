@@ -707,20 +707,20 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
         {
             return EnumCargoLoadingState.NOINVENTORY;
         }
-        
+
         int count = 0;
-        
+
         for (count = 0; count < this.cargoItems.length; count++)
         {
             ItemStack stackAt = this.cargoItems[count];
-            
+
             if (stackAt != null && stackAt.itemID == stack.itemID && stackAt.getItemDamage() == stack.getItemDamage() && stackAt.stackSize < stackAt.getMaxStackSize())
             {
                 if (doAdd)
                 {
                     this.cargoItems[count].stackSize += stack.stackSize;
                 }
-                
+
                 return EnumCargoLoadingState.SUCCESS;
             }
         }
@@ -728,18 +728,18 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
         for (count = 0; count < this.cargoItems.length; count++)
         {
             ItemStack stackAt = this.cargoItems[count];
-            
+
             if (stackAt == null)
             {
                 if (doAdd)
                 {
                     this.cargoItems[count] = stack;
                 }
-                
+
                 return EnumCargoLoadingState.SUCCESS;
             }
         }
-        
+
         return EnumCargoLoadingState.FULL;
     }
 
@@ -749,7 +749,7 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
         for (int i = 0; i < this.cargoItems.length; i++)
         {
             ItemStack stackAt = this.cargoItems[i];
-            
+
             if (stackAt != null)
             {
                 if (doRemove && --this.cargoItems[i].stackSize <= 0)

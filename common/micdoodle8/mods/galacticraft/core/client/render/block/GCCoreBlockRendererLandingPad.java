@@ -198,9 +198,9 @@ public class GCCoreBlockRendererLandingPad implements ISimpleBlockRenderingHandl
             tessellator.setBrightness(Block.hopperBlock.getMixedBrightnessForBlock(var1, par2, par3, par4));
             float f1 = 1.0F;
             int j1 = Block.hopperBlock.colorMultiplier(var1, par2, par3, par4);
-            float f = (float)(j1 >> 16 & 255) / 255.0F;
-            float f2 = (float)(j1 >> 8 & 255) / 255.0F;
-            float f3 = (float)(j1 & 255) / 255.0F;
+            float f = (j1 >> 16 & 255) / 255.0F;
+            float f2 = (j1 >> 8 & 255) / 255.0F;
+            float f3 = (j1 & 255) / 255.0F;
 
             if (EntityRenderer.anaglyphEnable)
             {
@@ -213,39 +213,39 @@ public class GCCoreBlockRendererLandingPad implements ISimpleBlockRenderingHandl
             }
 
             tessellator.setColorOpaque_F(f1 * f, f1 * f2, f1 * f3);
-            
+
             renderBlocks.clearOverrideBlockTexture();
-            
+
             Icon icon = BlockHopper.getHopperIcon("hopper");
-            Icon icon1 = BlockHopper.getHopperIcon("hopper_inside");
+            BlockHopper.getHopperIcon("hopper_inside");
 
             f = 0.125F;
             double d0 = 0.625D;
 
             renderBlocks.setOverrideBlockTexture(icon);
-            
+
             renderBlocks.setRenderBounds(0.0D, d0, 0.0D, 1.0D, 0.9D, 1.0D);
             renderBlocks.renderStandardBlock(Block.hopperBlock, par2, par3, par4);
 
             renderBlocks.setOverrideBlockTexture(((GCCoreBlockLandingPadFull) par1Block).getIcon(0, 0));
-            
+
             renderBlocks.setRenderBounds(-0.1D, 0.0D, -0.1D, 0.0D, 1.0D, 0.0D);
             renderBlocks.renderStandardBlock(Block.hopperBlock, par2, par3, par4);
-            
+
             renderBlocks.setRenderBounds(-0.1D, 0.0D, 1.0D, 0.0D, 1.0D, 1.1D);
             renderBlocks.renderStandardBlock(Block.hopperBlock, par2, par3, par4);
-            
+
             renderBlocks.setRenderBounds(1.0D, 0.0D, -0.1D, 1.1D, 1.0D, 0.0D);
             renderBlocks.renderStandardBlock(Block.hopperBlock, par2, par3, par4);
-            
+
             renderBlocks.setRenderBounds(1.0D, 0.0D, 1.0D, 1.1D, 1.0D, 1.1D);
             renderBlocks.renderStandardBlock(Block.hopperBlock, par2, par3, par4);
-            
+
             renderBlocks.setRenderBounds(0.0D, 0.9D, 0.0D, 1.0D, 1.0D, 1.0D);
             renderBlocks.renderStandardBlock(par1Block, par2, par3, par4);
 
             renderBlocks.setOverrideBlockTexture(icon);
-            
+
             double d1 = 0.1D;
             double d2 = 0.1D;
             renderBlocks.setRenderBounds(d1, d2, d1, 1.0D - d1, d0 - 0.002D, 1.0D - d1);

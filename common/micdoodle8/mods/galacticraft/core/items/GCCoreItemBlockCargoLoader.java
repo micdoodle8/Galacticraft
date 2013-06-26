@@ -21,7 +21,7 @@ public class GCCoreItemBlockCargoLoader extends ItemBlock
     public String getUnlocalizedName(ItemStack par1ItemStack)
     {
         String name = "";
-        
+
         if (par1ItemStack.getItemDamage() < 4)
         {
             name = "loader";

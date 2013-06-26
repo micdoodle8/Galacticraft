@@ -186,7 +186,7 @@ public class GCCoreTileEntityBuggyFueler extends TileEntityMulti implements IMul
         {
             return this.dockedEntity.addCargo(stack, doAdd);
         }
-        
+
         return EnumCargoLoadingState.NOTARGET;
     }
 

@@ -187,7 +187,7 @@ public class GCCoreTileEntityLandingPad extends TileEntityMulti implements IMult
         {
             return this.dockedEntity.addCargo(stack, doAdd);
         }
-        
+
         return EnumCargoLoadingState.NOTARGET;
     }
 

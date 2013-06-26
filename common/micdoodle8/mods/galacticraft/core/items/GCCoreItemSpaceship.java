@@ -98,7 +98,7 @@ public class GCCoreItemSpaceship extends Item implements IHoldableItem
                 final GCCoreEntityRocketT1 spaceship = new GCCoreEntityRocketT1(par3World, centerX, centerY + 0.2D, centerZ, EnumRocketType.values()[par1ItemStack.getItemDamage()]);
 
                 par3World.spawnEntityInWorld(spaceship);
-                
+
                 if (!par2EntityPlayer.capabilities.isCreativeMode)
                 {
                     par2EntityPlayer.inventory.consumeInventoryItem(par1ItemStack.getItem().itemID);
@@ -138,12 +138,12 @@ public class GCCoreItemSpaceship extends Item implements IHoldableItem
     public void addInformation(ItemStack par1ItemStack, EntityPlayer player, List par2List, boolean b)
     {
         EnumRocketType type = EnumRocketType.values()[par1ItemStack.getItemDamage()];
-        
+
         if (!type.getTooltip().isEmpty())
         {
             par2List.add(type.getTooltip());
         }
-        
+
         if (type.getPreFueled())
         {
             par2List.add(EnumColor.RED + "\u00a7o" + "Creative Only");

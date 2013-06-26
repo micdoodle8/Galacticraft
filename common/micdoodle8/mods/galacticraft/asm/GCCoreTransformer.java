@@ -632,7 +632,7 @@ public class GCCoreTransformer implements IClassTransformer
 
                     if (list instanceof IntInsnNode)
                     {
-                        IntInsnNode nodeAt = (IntInsnNode)list;
+                        IntInsnNode nodeAt = (IntInsnNode) list;
 
                         if (nodeAt.operand == 9)
                         {
@@ -716,9 +716,9 @@ public class GCCoreTransformer implements IClassTransformer
         reader.accept(node, 0);
 
         final Iterator<MethodNode> methods = node.methods.iterator();
-        
+
         boolean foundField = false;
-        
+
         for (FieldNode fNode : node.fields)
         {
             if (fNode.name.equals("CREATIVE_MAIN_INVENTORY_SIZE"))

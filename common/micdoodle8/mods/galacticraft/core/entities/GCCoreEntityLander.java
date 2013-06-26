@@ -130,7 +130,7 @@ public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInvento
     protected void writeEntityToNBT(NBTTagCompound nbt)
     {
         final NBTTagList nbttaglist = new NBTTagList();
-        
+
         nbt.setInteger("rocketStacksLength", this.chestContents.length);
 
         for (int i = 0; i < this.chestContents.length; ++i)
@@ -283,7 +283,7 @@ public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInvento
         }
         else if (this.riddenByEntity == null && this.onGround && var1 instanceof EntityPlayerMP)
         {
-            GCCoreUtil.openParachestInv((EntityPlayerMP)var1, this);
+            GCCoreUtil.openParachestInv((EntityPlayerMP) var1, this);
             return true;
         }
         else if (var1 instanceof EntityPlayerMP)

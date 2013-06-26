@@ -16,6 +16,7 @@ public class GCMarsItemRendererSpaceshipT2 extends GCCoreItemRendererSpaceship
         super(spaceship, model, texture);
     }
 
+    @Override
     public void transform(ItemRenderType type)
     {
         final EntityPlayer player = FMLClientHandler.instance().getClient().thePlayer;

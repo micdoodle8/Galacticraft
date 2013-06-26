@@ -35,7 +35,6 @@ import net.minecraftforge.liquids.LiquidTank;
 import universalelectricity.core.vector.Vector3;
 import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 
 /**
@@ -121,7 +120,7 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
             i = 1;
         }
 
-        if ((this.getLaunched() || (this.launchPhase == EnumLaunchPhase.IGNITED.getPhase() && this.rand.nextInt(i) == 0)) && !GCCoreConfigManager.disableSpaceshipParticles && this.hasValidFuel())
+        if ((this.getLaunched() || this.launchPhase == EnumLaunchPhase.IGNITED.getPhase() && this.rand.nextInt(i) == 0) && !GCCoreConfigManager.disableSpaceshipParticles && this.hasValidFuel())
         {
             if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
             {
@@ -170,25 +169,28 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
             }
         }
     }
-    
+
+    @Override
     public ArrayList<Integer> getListOfPossibleDimension(ArrayList<Integer> list)
     {
         super.getListOfPossibleDimension(list);
         list.add(GCMoonConfigManager.dimensionIDMoon);
         return list;
     }
-    
+
+    @Override
     public void readNetworkedData(ByteArrayDataInput dataStream)
     {
         super.readNetworkedData(dataStream);
         this.spaceshipFuelTank.setLiquid(new LiquidStack(GCCoreItems.fuel.itemID, dataStream.readInt(), 0));
-        
+
         if (this.cargoItems == null)
         {
             this.cargoItems = new ItemStack[this.getSizeInventory()];
         }
     }
-    
+
+    @Override
     public ArrayList getNetworkedData(ArrayList list)
     {
         super.getNetworkedData(list);
@@ -225,7 +227,7 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
             {
                 playerBase.rocketStacks = this.cargoItems;
             }
-            
+
             playerBase.rocketType = this.rocketType.getIndex();
             final int liquid = this.spaceshipFuelTank.getLiquid() == null ? 0 : this.spaceshipFuelTank.getLiquid().amount / MathHelper.floor_double(this.canisterToLiquidStackRatio == 0 ? 1 : this.canisterToLiquidStackRatio);
             playerBase.fuelDamage = Math.max(Math.min(GCCoreItems.fuelCanister.getMaxDamage() - liquid, GCCoreItems.fuelCanister.getMaxDamage()), 1);
@@ -520,20 +522,20 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
         {
             return EnumCargoLoadingState.NOINVENTORY;
         }
-        
+
         int count = 0;
-        
+
         for (count = 0; count < this.cargoItems.length - 3; count++)
         {
             ItemStack stackAt = this.cargoItems[count];
-            
+
             if (stackAt != null && stackAt.itemID == stack.itemID && stackAt.getItemDamage() == stack.getItemDamage() && stackAt.stackSize < stackAt.getMaxStackSize())
             {
                 if (doAdd)
                 {
                     this.cargoItems[count].stackSize += stack.stackSize;
                 }
-                
+
                 return EnumCargoLoadingState.SUCCESS;
             }
         }
@@ -541,14 +543,14 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
         for (count = 0; count < this.cargoItems.length - 3; count++)
         {
             ItemStack stackAt = this.cargoItems[count];
-            
+
             if (stackAt == null)
             {
                 if (doAdd)
                 {
                     this.cargoItems[count] = stack;
                 }
-                
+
                 return EnumCargoLoadingState.SUCCESS;
             }
         }
@@ -562,7 +564,7 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
         for (int i = 0; i < this.cargoItems.length - 3; i++)
         {
             ItemStack stackAt = this.cargoItems[i];
-            
+
             if (stackAt != null)
             {
                 if (doRemove && --this.cargoItems[i].stackSize <= 0)

@@ -91,8 +91,6 @@ public class GalacticraftPlugin implements IFMLLoadingPlugin, IFMLCallHook
                     {
                         final String a = GalacticraftPlugin.transformerDir + "Transformer";
 
-                        final int l = a.length() + 1;
-
                         GCLog.info("Successfully Registered Transformer");
                     }
                 }

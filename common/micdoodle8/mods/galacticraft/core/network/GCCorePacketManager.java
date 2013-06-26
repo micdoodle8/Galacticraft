@@ -186,11 +186,11 @@ public class GCCorePacketManager extends PacketManager implements IPacketHandler
                 }
                 else if (dataValue instanceof NBTTagCompound)
                 {
-                    writeNBTTagCompound((NBTTagCompound) dataValue, data);
+                    PacketManager.writeNBTTagCompound((NBTTagCompound) dataValue, data);
                 }
                 else if (dataValue instanceof ArrayList)
                 {
-                    for (Object dataValue2 : (ArrayList)dataValue)
+                    for (Object dataValue2 : (ArrayList) dataValue)
                     {
                         if (dataValue instanceof Integer)
                         {
@@ -226,7 +226,7 @@ public class GCCorePacketManager extends PacketManager implements IPacketHandler
                         }
                         else if (dataValue instanceof NBTTagCompound)
                         {
-                            writeNBTTagCompound((NBTTagCompound) dataValue, data);
+                            PacketManager.writeNBTTagCompound((NBTTagCompound) dataValue, data);
                         }
                     }
                 }

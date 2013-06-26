@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.mars;
 
 import java.io.File;
 import java.util.logging.Level;
-import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import net.minecraftforge.common.Configuration;
 import cpw.mods.fml.common.FMLLog;
 
@@ -59,7 +58,7 @@ public class GCMarsConfigManager
 
     // GUI
     public static int idGuiRocketCraftingBenchT2;
-    
+
     // SCHEMATIC
     public static int idSchematicRocketT2;
 
@@ -70,7 +69,7 @@ public class GCMarsConfigManager
             GCMarsConfigManager.configuration.load();
 
             GCMarsConfigManager.dimensionIDMars = GCMarsConfigManager.configuration.get("Dimensions", "Mars Dimension ID", -29).getInt(-29);
-            
+
             GCMarsConfigManager.idBlockMars = GCMarsConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockMars", 3390, "Even though this will be generated, it can use block IDs greater than 256").getInt(3390);
 
             GCMarsConfigManager.idItemRawDesh = GCMarsConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemRawDesh", 9905).getInt(9905);
@@ -91,9 +90,9 @@ public class GCMarsConfigManager
             GCMarsConfigManager.idEntityCreeperBoss = GCMarsConfigManager.configuration.get("Entities", "idEntityCreeperBoss", 162).getInt(162);
             GCMarsConfigManager.idEntityProjectileTNT = GCMarsConfigManager.configuration.get("Entities", "idEntityProjectileTNT", 164).getInt(164);
             GCMarsConfigManager.idEntitySpaceshipTier2 = GCMarsConfigManager.configuration.get("Entities", "idEntitySpaceshipTier2", 167).getInt(167);
-            
+
             GCMarsConfigManager.idGuiRocketCraftingBenchT2 = GCMarsConfigManager.configuration.get("GUI", "idGuiRocketCraftingBenchT2", 142).getInt(142);
-            
+
             GCMarsConfigManager.idSchematicRocketT2 = GCMarsConfigManager.configuration.get("Schematic", "idSchematicRocketT2", 2).getInt(2);
         }
         catch (final Exception e)

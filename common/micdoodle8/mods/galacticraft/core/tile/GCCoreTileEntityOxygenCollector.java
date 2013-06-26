@@ -121,7 +121,8 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityElectric im
                                 }
                                 else if (block instanceof IPlantable && ((IPlantable) block).getPlantType(this.worldObj, x, y, z) == EnumPlantType.Crop)
                                 {
-                                    // Add two, since leaves can be packed into an area much easier than crops can.
+                                    // Add two, since leaves can be packed into
+                                    // an area much easier than crops can.
                                     power += 2.0;
                                 }
                             }

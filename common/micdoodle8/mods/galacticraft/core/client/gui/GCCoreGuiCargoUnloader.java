@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core.client.gui;
 import mekanism.api.EnumColor;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerCargoLoader;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoLoader;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoUnloader;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFuelLoader;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
@@ -74,7 +73,7 @@ public class GCCoreGuiCargoUnloader extends GuiContainer
         {
             return EnumColor.DARK_RED + "No Target to Unload!";
         }
-        
+
         if (this.fuelLoader.targetEmpty)
         {
             return EnumColor.DARK_RED + "Target is Empty!";

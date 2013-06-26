@@ -44,7 +44,7 @@ public class GCCoreTileEntityCargoLoader extends GCCoreTileEntityElectric implem
             {
                 this.checkForCargoEntity();
             }
-            
+
             if (this.attachedFuelable != null)
             {
                 this.noTarget = false;
@@ -53,13 +53,13 @@ public class GCCoreTileEntityCargoLoader extends GCCoreTileEntityElectric implem
                 if (stack != null)
                 {
                     this.outOfItems = false;
-                    
+
                     EnumCargoLoadingState state = this.attachedFuelable.addCargo(stack, false);
-                    
+
                     this.targetFull = state == EnumCargoLoadingState.FULL;
                     this.targetNoInventory = state == EnumCargoLoadingState.NOINVENTORY;
                     this.noTarget = state == EnumCargoLoadingState.NOTARGET;
-                    
+
                     if (this.ticks % 15 == 0 && state == EnumCargoLoadingState.SUCCESS && !this.disabled && (this.ic2Energy > 0 || this.wattsReceived > 0 || this.getPowerProvider() != null && this.getPowerProvider().getEnergyStored() > 0))
                     {
                         this.attachedFuelable.addCargo(this.removeCargo(true).resultStack, true);
@@ -76,11 +76,11 @@ public class GCCoreTileEntityCargoLoader extends GCCoreTileEntityElectric implem
             }
         }
     }
-    
+
     public void checkForCargoEntity()
     {
         boolean foundFuelable = false;
-        
+
         for (final ForgeDirection dir : ForgeDirection.values())
         {
             if (dir != ForgeDirection.UNKNOWN)
@@ -93,7 +93,7 @@ public class GCCoreTileEntityCargoLoader extends GCCoreTileEntityElectric implem
                 if (pad != null && pad instanceof TileEntityMulti)
                 {
                     final TileEntity mainTile = ((TileEntityMulti) pad).mainBlockPosition.getTileEntity(this.worldObj);
-                    
+
                     if (mainTile != null && mainTile instanceof ICargoEntity)
                     {
                         this.attachedFuelable = (ICargoEntity) mainTile;
@@ -276,7 +276,7 @@ public class GCCoreTileEntityCargoLoader extends GCCoreTileEntityElectric implem
                 return true;
             }
         }
-        
+
         return false;
     }
 
@@ -350,18 +350,18 @@ public class GCCoreTileEntityCargoLoader extends GCCoreTileEntityElectric implem
     public EnumCargoLoadingState addCargo(ItemStack stack, boolean doAdd)
     {
         int count = 1;
-        
+
         for (count = 1; count < this.containingItems.length; count++)
         {
             ItemStack stackAt = this.containingItems[count];
-            
+
             if (stackAt != null && stackAt.itemID == stack.itemID && stackAt.getItemDamage() == stack.getItemDamage() && stackAt.stackSize < stackAt.getMaxStackSize())
             {
                 if (doAdd)
                 {
                     this.containingItems[count].stackSize += stack.stackSize;
                 }
-                
+
                 return EnumCargoLoadingState.SUCCESS;
             }
         }
@@ -369,18 +369,18 @@ public class GCCoreTileEntityCargoLoader extends GCCoreTileEntityElectric implem
         for (count = 1; count < this.containingItems.length; count++)
         {
             ItemStack stackAt = this.containingItems[count];
-            
+
             if (stackAt == null)
             {
                 if (doAdd)
                 {
                     this.containingItems[count] = stack;
                 }
-                
+
                 return EnumCargoLoadingState.SUCCESS;
             }
         }
-        
+
         return EnumCargoLoadingState.FULL;
     }
 
@@ -390,35 +390,31 @@ public class GCCoreTileEntityCargoLoader extends GCCoreTileEntityElectric implem
         for (int i = 1; i < this.containingItems.length; i++)
         {
             ItemStack stackAt = this.containingItems[i];
-            
+
             if (stackAt != null)
             {
                 if (doRemove && --this.containingItems[i].stackSize <= 0)
                 {
                     this.containingItems[i] = null;
                 }
-                
+
                 return new RemovalResult(EnumCargoLoadingState.SUCCESS, new ItemStack(stackAt.itemID, 1, stackAt.getItemDamage()));
             }
         }
-        
+
         return new RemovalResult(EnumCargoLoadingState.EMPTY, null);
     }
-    
+
     public static enum EnumCargoLoadingState
     {
-        FULL,
-        EMPTY,
-        NOTARGET,
-        NOINVENTORY,
-        SUCCESS;
+        FULL, EMPTY, NOTARGET, NOINVENTORY, SUCCESS;
     }
-    
+
     public static class RemovalResult
     {
         public final EnumCargoLoadingState resultState;
         public final ItemStack resultStack;
-        
+
         public RemovalResult(EnumCargoLoadingState resultState, ItemStack resultStack)
         {
             this.resultState = resultState;

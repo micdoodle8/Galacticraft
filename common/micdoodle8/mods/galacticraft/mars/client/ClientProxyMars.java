@@ -25,7 +25,6 @@ import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntitySludgeling;
 import micdoodle8.mods.galacticraft.mars.items.GCMarsItems;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.Entity;
@@ -176,8 +175,6 @@ public class ClientProxyMars extends CommonProxyMars implements IGalacticraftSub
 
             final WorldClient world = minecraft.theWorld;
 
-            final EntityClientPlayerMP player = minecraft.thePlayer;
-
             if (type.equals(EnumSet.of(TickType.CLIENT)))
             {
                 if (world != null)
@@ -189,7 +186,7 @@ public class ClientProxyMars extends CommonProxyMars implements IGalacticraftSub
                             world.provider.setSkyRenderer(new GCMarsSkyProvider());
                         }
                     }
-                    
+
                     for (int i = 0; i < world.loadedEntityList.size(); i++)
                     {
                         final Entity e = (Entity) world.loadedEntityList.get(i);

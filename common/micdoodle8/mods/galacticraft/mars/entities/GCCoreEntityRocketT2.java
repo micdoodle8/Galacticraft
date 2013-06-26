@@ -11,15 +11,9 @@ import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.API.IRocketType;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLanderFlameFX;
-import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLaunchFlameFX;
-import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLaunchSmokeFX;
 import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
-import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase.EnumLaunchPhase;
-import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase.EnumRocketType;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
-import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoLoader.EnumCargoLoadingState;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoLoader.RemovalResult;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPad;
@@ -28,9 +22,6 @@ import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.mars.GCMarsConfigManager;
 import micdoodle8.mods.galacticraft.mars.items.GCMarsItems;
 import micdoodle8.mods.galacticraft.moon.GCMoonConfigManager;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.EntityFX;
-import net.minecraft.client.particle.EntitySmokeFX;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -38,9 +29,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
@@ -49,12 +37,9 @@ import net.minecraftforge.liquids.LiquidDictionary;
 import net.minecraftforge.liquids.LiquidStack;
 import net.minecraftforge.liquids.LiquidTank;
 import universalelectricity.core.vector.Vector3;
-import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
-import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -194,7 +179,8 @@ public class GCCoreEntityRocketT2 extends EntitySpaceshipBase implements IInvent
             }
         }
     }
-    
+
+    @Override
     public ArrayList<Integer> getListOfPossibleDimension(ArrayList<Integer> list)
     {
         super.getListOfPossibleDimension(list);
@@ -202,7 +188,8 @@ public class GCCoreEntityRocketT2 extends EntitySpaceshipBase implements IInvent
         list.add(GCMarsConfigManager.dimensionIDMars);
         return list;
     }
-    
+
+    @Override
     public void readNetworkedData(ByteArrayDataInput dataStream)
     {
         super.readNetworkedData(dataStream);
@@ -213,7 +200,8 @@ public class GCCoreEntityRocketT2 extends EntitySpaceshipBase implements IInvent
             this.cargoItems = new ItemStack[this.getSizeInventory()];
         }
     }
-    
+
+    @Override
     public ArrayList getNetworkedData(ArrayList list)
     {
         super.getNetworkedData(list);
@@ -250,7 +238,7 @@ public class GCCoreEntityRocketT2 extends EntitySpaceshipBase implements IInvent
             {
                 playerBase.rocketStacks = this.cargoItems;
             }
-            
+
             playerBase.rocketType = this.rocketType.getIndex();
             final int liquid = this.spaceshipFuelTank.getLiquid() == null ? 0 : this.spaceshipFuelTank.getLiquid().amount / MathHelper.floor_double(this.canisterToLiquidStackRatio == 0 ? 1 : this.canisterToLiquidStackRatio);
             playerBase.fuelDamage = Math.max(Math.min(GCCoreItems.fuelCanister.getMaxDamage() - liquid, GCCoreItems.fuelCanister.getMaxDamage()), 1);
@@ -550,20 +538,20 @@ public class GCCoreEntityRocketT2 extends EntitySpaceshipBase implements IInvent
         {
             return EnumCargoLoadingState.NOINVENTORY;
         }
-        
+
         int count = 0;
-        
+
         for (count = 0; count < this.cargoItems.length - 3; count++)
         {
             ItemStack stackAt = this.cargoItems[count];
-            
+
             if (stackAt != null && stackAt.itemID == stack.itemID && stackAt.getItemDamage() == stack.getItemDamage() && stackAt.stackSize < stackAt.getMaxStackSize())
             {
                 if (doAdd)
                 {
                     this.cargoItems[count].stackSize += stack.stackSize;
                 }
-                
+
                 return EnumCargoLoadingState.SUCCESS;
             }
         }
@@ -571,18 +559,18 @@ public class GCCoreEntityRocketT2 extends EntitySpaceshipBase implements IInvent
         for (count = 0; count < this.cargoItems.length - 3; count++)
         {
             ItemStack stackAt = this.cargoItems[count];
-            
+
             if (stackAt == null)
             {
                 if (doAdd)
                 {
                     this.cargoItems[count] = stack;
                 }
-                
+
                 return EnumCargoLoadingState.SUCCESS;
             }
         }
-        
+
         return EnumCargoLoadingState.FULL;
     }
 
@@ -592,7 +580,7 @@ public class GCCoreEntityRocketT2 extends EntitySpaceshipBase implements IInvent
         for (int i = 0; i < this.cargoItems.length - 3; i++)
         {
             ItemStack stackAt = this.cargoItems[i];
-            
+
             if (stackAt != null)
             {
                 if (doRemove && --this.cargoItems[i].stackSize <= 0)

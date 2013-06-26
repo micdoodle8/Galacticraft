@@ -372,16 +372,7 @@ public class RecipeUtil
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.blockAirCollector, 1), new Object[] { "WWW", "YXZ", "WVW", 'V', GCCoreItems.oxygenConcentrator, 'W', "ingotSteel", 'X', new ItemStack(GCCoreItems.canister, 1, 0), 'Y', GCCoreItems.airFan, 'Z', GCCoreItems.airVent });
 
-        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.rocketBench, 1), new Object[] 
-                { 
-            "XXX", 
-            "YZY", 
-            "YWY", 
-            'X', "ingotSteel", 
-            'Y', "plateSteel", 
-            'Z', Block.workbench, 
-            'W', "circuitAdvanced" 
-            });
+        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.rocketBench, 1), new Object[] { "XXX", "YZY", "YWY", 'X', "ingotSteel", 'Y', "plateSteel", 'Z', Block.workbench, 'W', "circuitAdvanced" });
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreItems.heavyOxygenTank, 1, GCCoreItems.heavyOxygenTank.getMaxDamage()), new Object[] { "ZZZ", "XXX", "YYY", 'X', new ItemStack(GCCoreItems.canister, 1, 0), 'Y', "ingotSteel", 'Z', new ItemStack(Block.cloth, 1, 14) });
 
@@ -692,11 +683,11 @@ public class RecipeUtil
     {
         CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(result, obj));
     }
-    
+
     public static ItemStack getGregtechBlock(int index, int amount, int metadata)
     {
         ItemStack stack = GregTech_API.getGregTechBlock(index, amount, metadata);
-        
+
         if (stack != null)
         {
             return stack;
@@ -705,11 +696,11 @@ public class RecipeUtil
         GCLog.severe("Failed to load Gregtech block for recipe, ensure Gregtech has loaded properly");
         return stack;
     }
-    
+
     public static ItemStack getGregtechItem(int index, int amount, int metadata)
     {
         ItemStack stack = GregTech_API.getGregTechItem(index, index, metadata);
-        
+
         if (stack != null)
         {
             return stack;

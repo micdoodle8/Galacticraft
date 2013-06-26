@@ -20,7 +20,7 @@ public class GCCoreBlockCrudeOil extends BlockFluidClassic
         this.setTickRate(15);
         this.setRenderPass(1);
         this.needsRandomTick = true;
-        displacementIds.put(Integer.valueOf(par1), Boolean.valueOf(false));
+        BlockFluidRoot.displacementIds.put(Integer.valueOf(par1), Boolean.valueOf(false));
     }
 
     @Override
@@ -29,7 +29,7 @@ public class GCCoreBlockCrudeOil extends BlockFluidClassic
     {
         return par1 != 0 && par1 != 1 ? this.fluidIcons[1] : this.fluidIcons[0];
     }
-    
+
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister par1IconRegister)
@@ -43,11 +43,12 @@ public class GCCoreBlockCrudeOil extends BlockFluidClassic
         super.updateTick(world, x, y, z, rand);
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
-    public void randomDisplayTick(World world, int x, int y, int z, Random rand) 
+    public void randomDisplayTick(World world, int x, int y, int z, Random rand)
     {
         super.randomDisplayTick(world, x, y, z, rand);
-        
+
         if (rand.nextInt(1200) == 0)
         {
             world.playSound(x + 0.5F, y + 0.5F, z + 0.5F, "liquid.lava", rand.nextFloat() * 0.25F + 0.75F, 0.00001F + rand.nextFloat() * 0.5F, false);

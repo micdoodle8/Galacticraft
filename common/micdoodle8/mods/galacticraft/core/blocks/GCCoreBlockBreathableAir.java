@@ -151,7 +151,7 @@ public class GCCoreBlockBreathableAir extends Block
     private void spread(OxygenPressureProtocol var5, World var1, int var2, int var3, int var4)
     {
         boolean sealed = var5.checkSeal(var1, var2, var3, var4, 200);
-        
+
         if (sealed)
         {
             var5.seal(var1, var2, var3, var4, 2);

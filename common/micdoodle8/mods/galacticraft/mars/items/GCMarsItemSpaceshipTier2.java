@@ -33,7 +33,7 @@ public class GCMarsItemSpaceshipTier2 extends Item implements IHoldableItem
         this.setHasSubtypes(true);
         this.setMaxStackSize(1);
     }
-    
+
     @Override
     @SideOnly(Side.CLIENT)
     public EnumRarity getRarity(ItemStack par1ItemStack)
@@ -129,12 +129,12 @@ public class GCMarsItemSpaceshipTier2 extends Item implements IHoldableItem
     public void addInformation(ItemStack par1ItemStack, EntityPlayer player, List par2List, boolean b)
     {
         EnumRocketType type = EnumRocketType.values()[par1ItemStack.getItemDamage()];
-        
+
         if (!type.getTooltip().isEmpty())
         {
             par2List.add(type.getTooltip());
         }
-        
+
         if (type.getPreFueled())
         {
             par2List.add(EnumColor.RED + "\u00a7o" + "Creative Only");

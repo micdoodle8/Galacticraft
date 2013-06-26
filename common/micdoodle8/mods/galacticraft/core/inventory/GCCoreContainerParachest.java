@@ -5,7 +5,6 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreContainerParachest extends Container
 {
@@ -28,7 +27,7 @@ public class GCCoreContainerParachest extends Container
                 this.addSlotToContainer(new Slot(par2IInventory, k + j * 9, 8 + k * 18, 18 + j * 18));
             }
         }
-        
+
         for (k = 3; k < 6; ++k)
         {
             this.addSlotToContainer(new Slot(par2IInventory, k + j * 9 - 3, 8 + k * 18, 21 + j * 18));
@@ -48,15 +47,17 @@ public class GCCoreContainerParachest extends Container
         }
     }
 
+    @Override
     public boolean canInteractWith(EntityPlayer par1EntityPlayer)
     {
         return this.lowerChestInventory.isUseableByPlayer(par1EntityPlayer);
     }
 
+    @Override
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2)
     {
         ItemStack itemstack = null;
-        Slot slot = (Slot)this.inventorySlots.get(par2);
+        Slot slot = (Slot) this.inventorySlots.get(par2);
 
         if (slot != null && slot.getHasStack())
         {
@@ -77,7 +78,7 @@ public class GCCoreContainerParachest extends Container
 
             if (itemstack1.stackSize == 0)
             {
-                slot.putStack((ItemStack)null);
+                slot.putStack((ItemStack) null);
             }
             else
             {
@@ -91,6 +92,7 @@ public class GCCoreContainerParachest extends Container
     /**
      * Callback for when the crafting gui is closed.
      */
+    @Override
     public void onCraftGuiClosed(EntityPlayer par1EntityPlayer)
     {
         super.onCraftGuiClosed(par1EntityPlayer);

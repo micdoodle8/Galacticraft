@@ -191,7 +191,7 @@ public class ClientProxyCore extends CommonProxyCore
     public static ArrayList<SoundPoolEntry> newMusic = new ArrayList<SoundPoolEntry>();
 
     public static EnumRarity galacticraftItem = EnumHelperClient.addRarity("GCRarity", 9, "Space");
-    
+
     public static Map<String, String> capeMap = new HashMap<String, String>();
 
     @Override
@@ -250,38 +250,38 @@ public class ClientProxyCore extends CommonProxyCore
         GalacticraftCore.addAdditionalMapPlanet(earth);
         GalacticraftCore.addAdditionalMapMoon(earth, moon);
         GalacticraftCore.addAdditionalMapPlanet(new GCCoreMapSun());
-        
+
         String capeString = "https://dl.dropboxusercontent.com/s/zmhn8i0w1v152ei/cape.png?token_hash=AAFuDqDVxs_z9SK3h3DgrOp8W9SFiS-9-VFxapHsbCs4wA&dl=1";
-        capeMap.put("JTE", capeString);
-        capeMap.put("ajmski", capeString);
-        capeMap.put("Azeryuu", capeString);
-        capeMap.put("bob10234", capeString);
-        capeMap.put("crazybob84", capeString);
-        capeMap.put("CrimsonKMR", capeString);
-        capeMap.put("_lime", capeString);
-        capeMap.put("Hachipatas", capeString);
-        capeMap.put("Happypancakes56", capeString);
-        capeMap.put("hosker666", capeString);
-        capeMap.put("iTyroul", capeString);
-        capeMap.put("kingdonflon", capeString);
-        capeMap.put("kungfu_dragon", capeString);
-        capeMap.put("Lewis_McReu", capeString);
-        capeMap.put("mrgreaper", capeString);
-        capeMap.put("NukeMaster2009", capeString);
-        capeMap.put("odriew", capeString);
-        capeMap.put("PureTryOut", capeString);
-        capeMap.put("ramenators", capeString);
-        capeMap.put("micdoodle8", capeString);
-        capeMap.put("randhope21", capeString);
-        capeMap.put("smates", capeString);
-        capeMap.put("SoaringChris137", capeString);
-        capeMap.put("TeisAngel", capeString);
-        capeMap.put("TerraGenome", capeString);
-        capeMap.put("X_angelz_X", capeString);
-        capeMap.put("Yangjo123", capeString);
-        
+        ClientProxyCore.capeMap.put("JTE", capeString);
+        ClientProxyCore.capeMap.put("ajmski", capeString);
+        ClientProxyCore.capeMap.put("Azeryuu", capeString);
+        ClientProxyCore.capeMap.put("bob10234", capeString);
+        ClientProxyCore.capeMap.put("crazybob84", capeString);
+        ClientProxyCore.capeMap.put("CrimsonKMR", capeString);
+        ClientProxyCore.capeMap.put("_lime", capeString);
+        ClientProxyCore.capeMap.put("Hachipatas", capeString);
+        ClientProxyCore.capeMap.put("Happypancakes56", capeString);
+        ClientProxyCore.capeMap.put("hosker666", capeString);
+        ClientProxyCore.capeMap.put("iTyroul", capeString);
+        ClientProxyCore.capeMap.put("kingdonflon", capeString);
+        ClientProxyCore.capeMap.put("kungfu_dragon", capeString);
+        ClientProxyCore.capeMap.put("Lewis_McReu", capeString);
+        ClientProxyCore.capeMap.put("mrgreaper", capeString);
+        ClientProxyCore.capeMap.put("NukeMaster2009", capeString);
+        ClientProxyCore.capeMap.put("odriew", capeString);
+        ClientProxyCore.capeMap.put("PureTryOut", capeString);
+        ClientProxyCore.capeMap.put("ramenators", capeString);
+        ClientProxyCore.capeMap.put("micdoodle8", capeString);
+        ClientProxyCore.capeMap.put("randhope21", capeString);
+        ClientProxyCore.capeMap.put("smates", capeString);
+        ClientProxyCore.capeMap.put("SoaringChris137", capeString);
+        ClientProxyCore.capeMap.put("TeisAngel", capeString);
+        ClientProxyCore.capeMap.put("TerraGenome", capeString);
+        ClientProxyCore.capeMap.put("X_angelz_X", capeString);
+        ClientProxyCore.capeMap.put("Yangjo123", capeString);
+
         // Add to CoFH cape registry as well
-        for (Entry<String, String> e : capeMap.entrySet())
+        for (Entry<String, String> e : ClientProxyCore.capeMap.entrySet())
         {
             RegistryAccess.capeRegistry.register(e.getKey(), e.getValue());
         }
