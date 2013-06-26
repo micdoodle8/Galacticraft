@@ -13,9 +13,6 @@ public class GCCoreOverlayCountdown extends GCCoreOverlay
 {
     private static Minecraft minecraft = FMLClientHandler.instance().getClient();
 
-    /**
-     * Render the GUI when player is in inventory
-     */
     public static void renderCountdownOverlay()
     {
         int count = ((EntitySpaceshipBase) GCCoreOverlayCountdown.minecraft.thePlayer.ridingEntity).timeUntilLaunch / 2;

@@ -24,6 +24,7 @@ import universalelectricity.prefab.network.IPacketReceiver;
 import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class GCCoreTileEntityTreasureChest extends TileEntity implements IInventory, IKeyable, IPacketReceiver
 {
@@ -548,7 +549,7 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
     @Override
     public String getInvName()
     {
-        return "Treasure Chest";
+        return LanguageRegistry.instance().getStringLocalization("container.treasurechest.name");
     }
 
     @Override

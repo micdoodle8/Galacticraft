@@ -13,6 +13,7 @@ import org.lwjgl.opengl.GL11;
 import universalelectricity.core.electricity.ElectricityDisplay;
 import universalelectricity.core.electricity.ElectricityDisplay.ElectricUnit;
 import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -48,19 +49,19 @@ public class GCCoreGuiAirSealer extends GuiContainer
     {
         super.initGui();
 
-        this.buttonList.add(this.buttonDisable = new GuiButton(0, this.width / 2 - 38, this.height / 2 - 30 + 21, 76, 20, "Enable Seal"));
+        this.buttonList.add(this.buttonDisable = new GuiButton(0, this.width / 2 - 38, this.height / 2 - 30 + 21, 76, 20, LanguageRegistry.instance().getStringLocalization("gui.button.enableseal.name")));
     }
 
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRenderer.drawString("Oxygen Sealer", 8, 10, 4210752);
-        this.fontRenderer.drawString("In:", 90, 31, 4210752);
-        String status = "Status: " + this.getStatus();
+        this.fontRenderer.drawString(this.sealer.getInvName(), 8, 10, 4210752);
+        this.fontRenderer.drawString(LanguageRegistry.instance().getStringLocalization("gui.message.in.name") + ":", 90, 31, 4210752);
+        String status = LanguageRegistry.instance().getStringLocalization("gui.message.status.name") + ": " + this.getStatus();
         this.buttonDisable.enabled = this.sealer.disableCooldown == 0;
-        this.buttonDisable.displayString = this.sealer.disabled ? "Enable Seal" : "Disable Seal";
+        this.buttonDisable.displayString = this.sealer.disabled ? LanguageRegistry.instance().getStringLocalization("gui.button.enableseal.name") : LanguageRegistry.instance().getStringLocalization("gui.button.disableseal.name");
         this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 50, 4210752);
-        status = "Oxygen Input: " + Math.round(this.sealer.getCappedScaledOxygenLevel(1000) * 10.0D) / 100.0D + "%";
+        status = LanguageRegistry.instance().getStringLocalization("gui.message.oxinput.name") + ": " + Math.round(this.sealer.getCappedScaledOxygenLevel(1000) * 10.0D) / 100.0D + "%";
         this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 60, 4210752);
         status = ElectricityDisplay.getDisplay(this.sealer.ueWattsPerTick * 20, ElectricUnit.WATT);
         this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 70, 4210752);
@@ -73,30 +74,30 @@ public class GCCoreGuiAirSealer extends GuiContainer
     {
         if (this.sealer.disabled)
         {
-            return EnumColor.DARK_RED + "Disabled";
+            return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.disabled.name");
         }
 
         if (this.sealer.storedOxygen < 1)
         {
-            return EnumColor.DARK_RED + "Not Enough Oxygen";
+            return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.missingoxygen.name");
         }
 
         if (this.sealer.wattsReceived == 0 && this.sealer.ic2Energy == 0 && this.sealer.bcEnergy == 0)
         {
-            return EnumColor.DARK_RED + "Not Enough Power";
+            return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.missingpower.name");
         }
 
         if (!this.sealer.sealed)
         {
-            return EnumColor.DARK_RED + "Unsealed";
+            return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.unsealed.name");
         }
 
         if (this.sealer.sealed)
         {
-            return EnumColor.DARK_GREEN + "Sealed";
+            return EnumColor.DARK_GREEN + LanguageRegistry.instance().getStringLocalization("gui.status.sealed.name");
         }
 
-        return EnumColor.DARK_RED + "Unknown";
+        return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.unknown.name");
     }
 
     @Override

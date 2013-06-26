@@ -8,6 +8,7 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class GCCoreGuiSchematicRocketT1 extends GuiContainer implements ISchematicResultPage
 {
@@ -26,8 +27,8 @@ public class GCCoreGuiSchematicRocketT1 extends GuiContainer implements ISchemat
     {
         super.initGui();
         this.buttonList.clear();
-        this.buttonList.add(this.backButton = new GuiButton(0, this.width / 2 - 130, this.height / 2 - 30 + 27, 40, 20, "Back"));
-        this.buttonList.add(this.nextButton = new GuiButton(1, this.width / 2 + 90, this.height / 2 - 30 + 27, 40, 20, "Next"));
+        this.buttonList.add(this.backButton = new GuiButton(0, this.width / 2 - 130, this.height / 2 - 30 + 27, 40, 20, LanguageRegistry.instance().getStringLocalization("gui.button.back.name")));
+        this.buttonList.add(this.nextButton = new GuiButton(1, this.width / 2 + 90, this.height / 2 - 30 + 27, 40, 20, LanguageRegistry.instance().getStringLocalization("gui.button.next.name")));
         this.backButton.enabled = false;
     }
 
@@ -51,7 +52,7 @@ public class GCCoreGuiSchematicRocketT1 extends GuiContainer implements ISchemat
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRenderer.drawString("Tier 1 Rocket", 7, -20 + 27, 4210752);
+        this.fontRenderer.drawString(LanguageRegistry.instance().getStringLocalization("schematic.rocketT2.name"), 7, -20 + 27, 4210752);
         this.fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, 202 - 104 + 2 + 27, 4210752);
     }
 

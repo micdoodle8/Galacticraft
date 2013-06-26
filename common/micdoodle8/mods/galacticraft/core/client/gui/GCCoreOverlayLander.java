@@ -41,7 +41,9 @@ public class GCCoreOverlayLander extends GCCoreOverlay
 
         if (GCCoreOverlayLander.minecraft.thePlayer.ridingEntity.motionY != 0.0D)
         {
-            GCCoreOverlayLander.minecraft.fontRenderer.drawString("Entry Velocity: " + Math.round(((GCCoreEntityLander) GCCoreOverlayLander.minecraft.thePlayer.ridingEntity).motionY * 1000) / 100.0D + " m/s", width / 2 - GCCoreOverlayLander.minecraft.fontRenderer.getStringWidth("Entry Velocity: " + Math.round(((GCCoreEntityLander) GCCoreOverlayLander.minecraft.thePlayer.ridingEntity).motionY * 1000) / 100.0D + " m/s") / 2, height / 3, GCCoreUtil.convertTo32BitColor(255, (int) Math.floor(Math.abs(GCCoreOverlayLander.minecraft.thePlayer.ridingEntity.motionY) * 51.0D), 0, 255 - (int) Math.floor(Math.abs(GCCoreOverlayLander.minecraft.thePlayer.ridingEntity.motionY) * 51.0D)));
+            String string = LanguageRegistry.instance().getStringLocalization("gui.lander.velocity") + ": " + Math.round(((GCCoreEntityLander) GCCoreOverlayLander.minecraft.thePlayer.ridingEntity).motionY * 1000) / 100.0D + " " + LanguageRegistry.instance().getStringLocalization("gui.lander.velocityu");
+            int color = GCCoreUtil.convertTo32BitColor(255, (int) Math.floor(Math.abs(GCCoreOverlayLander.minecraft.thePlayer.ridingEntity.motionY) * 51.0D), 0, 255 - (int) Math.floor(Math.abs(GCCoreOverlayLander.minecraft.thePlayer.ridingEntity.motionY) * 51.0D));
+            GCCoreOverlayLander.minecraft.fontRenderer.drawString(string, width / 2 - GCCoreOverlayLander.minecraft.fontRenderer.getStringWidth(string) / 2, height / 3, color);
         }
     }
 }

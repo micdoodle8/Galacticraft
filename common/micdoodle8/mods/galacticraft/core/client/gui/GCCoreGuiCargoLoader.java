@@ -14,6 +14,7 @@ import org.lwjgl.opengl.GL11;
 import universalelectricity.core.electricity.ElectricityDisplay;
 import universalelectricity.core.electricity.ElectricityDisplay.ElectricUnit;
 import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -50,7 +51,7 @@ public class GCCoreGuiCargoLoader extends GuiContainer
     {
         super.initGui();
 
-        this.buttonList.add(this.buttonLoadItems = new GuiButton(0, this.width / 2 - 1, this.height / 2 - 23, 76, 20, "Load Items"));
+        this.buttonList.add(this.buttonLoadItems = new GuiButton(0, this.width / 2 - 1, this.height / 2 - 23, 76, 20, LanguageRegistry.instance().getStringLocalization("gui.button.loaditems.name")));
     }
 
     @Override
@@ -58,10 +59,10 @@ public class GCCoreGuiCargoLoader extends GuiContainer
     {
         int offsetX = -17;
         int offsetY = 45;
-        this.fontRenderer.drawString("Cargo Loader", 60, 12, 4210752);
+        this.fontRenderer.drawString(this.fuelLoader.getInvName(), 60, 12, 4210752);
         this.buttonLoadItems.enabled = this.fuelLoader.disableCooldown == 0;
-        this.buttonLoadItems.displayString = !this.fuelLoader.getDisabled() ? "Stop Loading" : "Load Items";
-        this.fontRenderer.drawString("Status: " + this.getStatus(), 28 + offsetX, 45 + 23 - 46 + offsetY, 4210752);
+        this.buttonLoadItems.displayString = !this.fuelLoader.getDisabled() ? LanguageRegistry.instance().getStringLocalization("gui.button.stoploading.name") : LanguageRegistry.instance().getStringLocalization("gui.button.loaditems.name");
+        this.fontRenderer.drawString(LanguageRegistry.instance().getStringLocalization("gui.message.status.name") + ": " + this.getStatus(), 28 + offsetX, 45 + 23 - 46 + offsetY, 4210752);
         this.fontRenderer.drawString(ElectricityDisplay.getDisplay(GCCoreTileEntityFuelLoader.WATTS_PER_TICK * 20, ElectricUnit.WATT), 28 + offsetX, 56 + 23 - 46 + offsetY, 4210752);
         this.fontRenderer.drawString(ElectricityDisplay.getDisplay(this.fuelLoader.getVoltage(), ElectricUnit.VOLTAGE), 28 + offsetX, 68 + 23 - 46 + offsetY, 4210752);
         this.fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 90, 4210752);
@@ -71,40 +72,40 @@ public class GCCoreGuiCargoLoader extends GuiContainer
     {
         if (this.fuelLoader.outOfItems)
         {
-            return EnumColor.DARK_RED + "No Items to Load!";
+            return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.noitems.name");
         }
 
         if (this.fuelLoader.noTarget)
         {
-            return EnumColor.DARK_RED + "No Target to Load Into!";
+            return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.notargetload.name");
         }
 
         if (this.fuelLoader.targetNoInventory)
         {
-            return EnumColor.DARK_RED + "No Inventory on Target!";
+            return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.noinvtarget.name");
         }
 
         if (this.fuelLoader.targetFull)
         {
-            return EnumColor.DARK_RED + "Target Vehicle is Full!";
+            return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.targetfull.name");
         }
 
         if (this.fuelLoader.getStackInSlot(0) == null && this.fuelLoader.wattsReceived == 0 && this.fuelLoader.ic2Energy == 0 && this.fuelLoader.bcEnergy == 0)
         {
-            return EnumColor.DARK_RED + "Not Enough Power";
+            return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.missingpower.name");
         }
 
         if (this.fuelLoader.getDisabled())
         {
-            return EnumColor.ORANGE + "Ready";
+            return EnumColor.ORANGE + LanguageRegistry.instance().getStringLocalization("gui.status.ready.name");
         }
 
         if (this.fuelLoader.wattsReceived > 0 || this.fuelLoader.ic2Energy > 0 || this.fuelLoader.bcEnergy > 0)
         {
-            return EnumColor.DARK_GREEN + "Active";
+            return EnumColor.DARK_GREEN + LanguageRegistry.instance().getStringLocalization("gui.status.active.name");
         }
 
-        return EnumColor.ORANGE + "Ready";
+        return EnumColor.ORANGE + LanguageRegistry.instance().getStringLocalization("gui.status.ready.name");
     }
 
     @Override

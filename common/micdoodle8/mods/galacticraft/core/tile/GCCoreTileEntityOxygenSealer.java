@@ -14,6 +14,7 @@ import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.core.item.IItemElectric;
 import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -187,7 +188,7 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
     @Override
     public String getInvName()
     {
-        return "Oxygen Distributor";
+        return LanguageRegistry.instance().getStringLocalization("container.oxygensealer.name");
     }
 
     @Override

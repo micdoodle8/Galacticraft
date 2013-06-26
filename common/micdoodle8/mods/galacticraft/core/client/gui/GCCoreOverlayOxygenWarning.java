@@ -26,7 +26,7 @@ public class GCCoreOverlayOxygenWarning extends GCCoreOverlay
         final int height = scaledresolution.getScaledHeight();
         GCCoreOverlayOxygenWarning.minecraft.entityRenderer.setupOverlayRendering();
         final GCCoreFontRendererBig fr = new GCCoreFontRendererBig(GCCoreOverlayOxygenWarning.minecraft.gameSettings, "/font/default.png", GCCoreOverlayOxygenWarning.minecraft.renderEngine, false);
-        fr.drawString("WARNING!", width / 4 - fr.getStringWidth(LanguageRegistry.instance().getStringLocalization("gui.warning")) / 2, height / 8 - 20, GCCoreUtil.convertTo32BitColor(255, 255, 0, 0));
+        fr.drawString(LanguageRegistry.instance().getStringLocalization("gui.warning"), width / 4 - fr.getStringWidth(LanguageRegistry.instance().getStringLocalization("gui.warning")) / 2, height / 8 - 20, GCCoreUtil.convertTo32BitColor(255, 255, 0, 0));
         final int alpha = (int) (255 * Math.sin(GCCoreOverlayOxygenWarning.screenTicks / 20.0F));
         fr.drawString(LanguageRegistry.instance().getStringLocalization("gui.oxygen.warning"), width / 4 - fr.getStringWidth(LanguageRegistry.instance().getStringLocalization("gui.oxygen.warning")) / 2, height / 8, GCCoreUtil.convertTo32BitColor(alpha, alpha, alpha, alpha));
     }

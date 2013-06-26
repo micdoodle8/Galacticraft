@@ -8,6 +8,7 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class GCCoreGuiSchematicBuggy extends GuiContainer implements ISchematicResultPage
 {
@@ -24,8 +25,8 @@ public class GCCoreGuiSchematicBuggy extends GuiContainer implements ISchematicR
     {
         super.initGui();
         this.buttonList.clear();
-        this.buttonList.add(new GuiButton(0, this.width / 2 - 130, this.height / 2 - 30 + 27, 40, 20, "Back"));
-        this.buttonList.add(new GuiButton(1, this.width / 2 + 90, this.height / 2 - 30 + 27, 40, 20, "Next"));
+        this.buttonList.add(new GuiButton(0, this.width / 2 - 130, this.height / 2 - 30 + 27, 40, 20, LanguageRegistry.instance().getStringLocalization("gui.button.back.name")));
+        this.buttonList.add(new GuiButton(1, this.width / 2 + 90, this.height / 2 - 30 + 27, 40, 20, LanguageRegistry.instance().getStringLocalization("gui.button.next.name")));
     }
 
     @Override
@@ -48,7 +49,7 @@ public class GCCoreGuiSchematicBuggy extends GuiContainer implements ISchematicR
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRenderer.drawString("Moon Buggy", 7, -20 + 27, 4210752);
+        this.fontRenderer.drawString(LanguageRegistry.instance().getStringLocalization("schematic.moonbuggy.name"), 7, -20 + 27, 4210752);
         this.fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, 202 - 104 + 2 + 27, 4210752);
     }
 

@@ -21,6 +21,7 @@ import net.minecraft.world.World;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.IPacketReceiver;
 import com.google.common.io.ByteArrayDataInput;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -225,13 +226,13 @@ public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInvento
     @Override
     public String getInvName()
     {
-        return "container.chest";
+        return LanguageRegistry.instance().getStringLocalization("container.lander");
     }
 
     @Override
     public boolean isInvNameLocalized()
     {
-        return false;
+        return true;
     }
 
     @Override

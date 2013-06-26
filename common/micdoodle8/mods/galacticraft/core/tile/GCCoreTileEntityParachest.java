@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import java.util.Iterator;
 import java.util.List;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockParachest;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -120,13 +121,13 @@ public class GCCoreTileEntityParachest extends TileEntity implements IInventory
     @Override
     public String getInvName()
     {
-        return this.isInvNameLocalized() ? this.field_94045_s : "container.chest";
+        return LanguageRegistry.instance().getStringLocalization("container.parachest.name");
     }
 
     @Override
     public boolean isInvNameLocalized()
     {
-        return this.field_94045_s != null && this.field_94045_s.length() > 0;
+        return true;
     }
 
     public void func_94043_a(String par1Str)

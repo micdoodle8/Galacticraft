@@ -55,9 +55,6 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
     public ItemStack tankInSlot;
 
-    // public GCCoreInventoryTankRefill playerTankInventory = new
-    // GCCoreInventoryTankRefill(this);
-
     public boolean inPortal;
     public int timeUntilPortal;
 

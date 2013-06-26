@@ -13,6 +13,7 @@ import org.lwjgl.opengl.GL11;
 import universalelectricity.core.electricity.ElectricityDisplay;
 import universalelectricity.core.electricity.ElectricityDisplay.ElectricUnit;
 import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -38,7 +39,7 @@ public class GCCoreGuiRefinery extends GuiContainer
     {
         super.initGui();
 
-        this.buttonList.add(this.buttonDisable = new GuiButton(0, this.width / 2 - 38, this.height / 2 - 49, 76, 20, "Refine"));
+        this.buttonList.add(this.buttonDisable = new GuiButton(0, this.width / 2 - 38, this.height / 2 - 49, 76, 20, LanguageRegistry.instance().getStringLocalization("gui.button.refine.name")));
     }
 
     @Override
@@ -55,38 +56,33 @@ public class GCCoreGuiRefinery extends GuiContainer
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRenderer.drawString("Refinery", 68, 5, 4210752);
+        this.fontRenderer.drawString(this.tileEntity.getInvName(), 68, 5, 4210752);
         String displayText = "";
 
         if (this.tileEntity.oilTank.getLiquid() == null || this.tileEntity.oilTank.getLiquid().amount == 0)
         {
-            displayText = EnumColor.RED + "No Oil";
+            displayText = EnumColor.RED + LanguageRegistry.instance().getStringLocalization("gui.status.nooil.name");
         }
         else if (this.tileEntity.oilTank.getLiquid().amount > 0 && this.tileEntity.disabled)
         {
-            displayText = EnumColor.ORANGE + "Ready";
+            displayText = EnumColor.ORANGE + LanguageRegistry.instance().getStringLocalization("gui.status.ready.name");
         }
         else if (this.tileEntity.wattsReceived == 0 && this.tileEntity.ic2Energy == 0 && this.tileEntity.bcEnergy == 0)
         {
-            displayText = EnumColor.ORANGE + "Idle";
+            displayText = EnumColor.ORANGE + LanguageRegistry.instance().getStringLocalization("gui.status.idle.name");
         }
-        // else if ((this.tileEntity.wattsReceived <
-        // this.tileEntity.ueWattsPerTick) || (this.tileEntity.ic2Energy <
-        // this.tileEntity.ueWattsPerTick))
-        // {
-        // displayText = EnumColor.ORANGE + "Heating";
-        // }
+        
         else if (this.tileEntity.processTicks > 0)
         {
-            displayText = EnumColor.BRIGHT_GREEN + "Refining";
+            displayText = EnumColor.BRIGHT_GREEN + LanguageRegistry.instance().getStringLocalization("gui.status.refining.name");
         }
         else
         {
-            displayText = EnumColor.RED + "Unknown";
+            displayText = EnumColor.RED + LanguageRegistry.instance().getStringLocalization("gui.status.unknown.name");
         }
 
         this.buttonDisable.enabled = this.tileEntity.processTicks == 0;
-        this.fontRenderer.drawString("Status: " + displayText, 72, 45 + 23, 4210752);
+        this.fontRenderer.drawString(LanguageRegistry.instance().getStringLocalization("gui.message.status.name") + ": " + displayText, 72, 45 + 23, 4210752);
         this.fontRenderer.drawString(ElectricityDisplay.getDisplay(this.tileEntity.ueWattsPerTick * 20, ElectricUnit.WATT), 72, 56 + 23, 4210752);
         this.fontRenderer.drawString(ElectricityDisplay.getDisplay(this.tileEntity.getVoltage(), ElectricUnit.VOLTAGE), 72, 68 + 23, 4210752);
         this.fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 118 + 2 + 23, 4210752);

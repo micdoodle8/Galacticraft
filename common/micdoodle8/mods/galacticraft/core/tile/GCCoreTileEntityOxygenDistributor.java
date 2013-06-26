@@ -16,6 +16,7 @@ import universalelectricity.core.item.IItemElectric;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -223,7 +224,7 @@ public class GCCoreTileEntityOxygenDistributor extends GCCoreTileEntityOxygen im
     @Override
     public String getInvName()
     {
-        return "Oxygen Distributor";
+        return LanguageRegistry.instance().getStringLocalization("container.oxygendistributor.name");
     }
 
     @Override

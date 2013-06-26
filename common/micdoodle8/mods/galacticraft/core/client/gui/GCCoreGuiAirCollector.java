@@ -7,6 +7,7 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import universalelectricity.core.electricity.ElectricityDisplay;
 import universalelectricity.core.electricity.ElectricityDisplay.ElectricUnit;
 
@@ -30,11 +31,11 @@ public class GCCoreGuiAirCollector extends GuiContainer
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRenderer.drawString("Oxygen Collector", 8, 10, 4210752);
-        this.fontRenderer.drawString("Out:", 87, 31, 4210752);
-        String status = "Status: " + this.getStatus();
+        this.fontRenderer.drawString(collector.getInvName(), 8, 10, 4210752);
+        this.fontRenderer.drawString(LanguageRegistry.instance().getStringLocalization("gui.message.out.name") + ":", 87, 31, 4210752);
+        String status = LanguageRegistry.instance().getStringLocalization("gui.message.status.name") + ": " + this.getStatus();
         this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 50, 4210752);
-        status = "Oxygen Output: " + Math.round(this.collector.getCappedScaledOxygenLevel(1000) * 10.0D) / 100.0D + "%";
+        status = LanguageRegistry.instance().getStringLocalization("gui.message.oxoutput.name") + ": " + Math.round(this.collector.getCappedScaledOxygenLevel(1000) * 10.0D) / 100.0D + "%";
         this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 60, 4210752);
         status = ElectricityDisplay.getDisplay(GCCoreTileEntityOxygenCollector.WATTS_PER_TICK * 20, ElectricUnit.WATT);
         this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 70, 4210752);
@@ -47,20 +48,20 @@ public class GCCoreGuiAirCollector extends GuiContainer
     {
         if (this.collector.getPower() > 1 && (this.collector.wattsReceived > 0 || this.collector.ic2Energy > 0 || this.collector.bcEnergy > 0))
         {
-            return EnumColor.DARK_GREEN + "Active";
+            return EnumColor.DARK_GREEN + LanguageRegistry.instance().getStringLocalization("gui.status.active.name");
         }
 
         if (this.collector.getPower() < 1)
         {
-            return EnumColor.DARK_RED + "Not Enough Leaf Blocks";
+            return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.missingleaves.name");
         }
 
         if (this.collector.wattsReceived == 0 && this.collector.ic2Energy == 0 && this.collector.bcEnergy == 0)
         {
-            return EnumColor.DARK_RED + "Not Enough Power";
+            return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.missingpower.name");
         }
 
-        return EnumColor.DARK_RED + "Unknown";
+        return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.unknown.name");
     }
 
     @Override

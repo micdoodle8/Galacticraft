@@ -140,11 +140,11 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
         StringTranslate.getInstance();
         this.buttonList.clear();
         this.buttonList.add(new GCCoreGuiTexturedButton(0, this.width - 28, 5, 22, 22, "/mods/galacticraftcore/textures/gui/button1.png", 22, 22));
-        this.buttonList.add(this.sendButton = new GuiSmallButton(1, this.width - 110, this.height - 26, 105, 20, "Send To Dimension"));
+        this.buttonList.add(this.sendButton = new GuiSmallButton(1, this.width - 110, this.height - 26, 105, 20, LanguageRegistry.instance().getStringLocalization("gui.button.sendtodim.name")));
 
         if (this.createSpaceStationButton == null)
         {
-            this.buttonList.add(this.createSpaceStationButton = new GuiSmallButton(2, this.width / 2 - 60, 4, 120, 20, "Create Space Station"));
+            this.buttonList.add(this.createSpaceStationButton = new GuiSmallButton(2, this.width / 2 - 60, 4, 120, 20, LanguageRegistry.instance().getStringLocalization("gui.button.createsstation.name")));
             this.createSpaceStationButton.enabled = true;
         }
         else
@@ -154,7 +154,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
 
         if (this.renameSpaceStationButton != null && this.destinations[this.selectedSlot].contains("$"))
         {
-            this.renameSpaceStationButton = new GuiSmallButton(3, this.width - 200, this.height - 26, 80, 20, "Rename");
+            this.renameSpaceStationButton = new GuiSmallButton(3, this.width - 200, this.height - 26, 80, 20, LanguageRegistry.instance().getStringLocalization("gui.button.rename.name"));
             this.buttonList.add(this.renameSpaceStationButton);
         }
 
@@ -611,8 +611,8 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
                     final List<String> strings = new ArrayList();
                     final List<ItemStack> items = new ArrayList();
                     final List<Boolean> hasEnough = new ArrayList();
-                    strings.add("Space Station Already");
-                    strings.add("        Created!");
+                    strings.add(LanguageRegistry.instance().getStringLocalization("gui.chooseplanet.alreadycreated1.name"));
+                    strings.add("        " + LanguageRegistry.instance().getStringLocalization("gui.chooseplanet.alreadycreated2.name"));
                     hasEnough.add(false);
                     hasEnough.add(false);
                     this.drawItemStackTooltip(strings, items, hasEnough, this.createSpaceStationButton.xPosition + 115, this.createSpaceStationButton.yPosition + 15);
@@ -693,8 +693,8 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
                     final List<String> strings = new ArrayList();
                     final List<ItemStack> items = new ArrayList();
                     final List<Boolean> hasEnough = new ArrayList();
-                    strings.add("Cannot create Space");
-                    strings.add("     Station here!");
+                    strings.add(LanguageRegistry.instance().getStringLocalization("gui.chooseplanet.cannotcreate1.name"));
+                    strings.add("     " + LanguageRegistry.instance().getStringLocalization("gui.chooseplanet.cannotcreate2.name"));
                     hasEnough.add(false);
                     hasEnough.add(false);
                     this.drawItemStackTooltip(strings, items, hasEnough, this.createSpaceStationButton.xPosition + 115, this.createSpaceStationButton.yPosition + 15);
@@ -754,24 +754,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
             break;
         case 2:
             final SpaceStationRecipe recipe = WorldUtil.getSpaceStationRecipe(this.getDimensionIdFromSlot());
-            if (recipe != null && par1GuiButton != null && par1GuiButton.enabled && recipe.matches(this.playerToSend, false)/*
-                                                                                                                             * this
-                                                                                                                             * .
-                                                                                                                             * hasCorrectMaterials
-                                                                                                                             * (
-                                                                                                                             * this
-                                                                                                                             * .
-                                                                                                                             * mc
-                                                                                                                             * .
-                                                                                                                             * thePlayer
-                                                                                                                             * ,
-                                                                                                                             * RecipeUtil
-                                                                                                                             * .
-                                                                                                                             * getStandardSpaceStationRequirements
-                                                                                                                             * (
-                                                                                                                             * )
-                                                                                                                             * )
-                                                                                                                             */)
+            if (recipe != null && par1GuiButton != null && par1GuiButton.enabled && recipe.matches(this.playerToSend, false))
             {
                 final Object[] toSend = { this.getDimensionIdFromSlot() };
                 PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 15, toSend));

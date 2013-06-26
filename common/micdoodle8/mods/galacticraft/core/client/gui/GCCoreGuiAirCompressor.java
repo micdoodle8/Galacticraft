@@ -8,6 +8,7 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import universalelectricity.core.electricity.ElectricityDisplay;
 import universalelectricity.core.electricity.ElectricityDisplay.ElectricUnit;
 
@@ -31,11 +32,11 @@ public class GCCoreGuiAirCompressor extends GuiContainer
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRenderer.drawString("Oxygen Compressor", 8, 10, 4210752);
-        this.fontRenderer.drawString("In:", 90, 31, 4210752);
-        String status = "Status: " + this.getStatus();
+        this.fontRenderer.drawString(compressor.getInvName(), 8, 10, 4210752);
+        this.fontRenderer.drawString(LanguageRegistry.instance().getStringLocalization("gui.message.in.name") + ":", 90, 31, 4210752);
+        String status = LanguageRegistry.instance().getStringLocalization("gui.message.status.name") + ": " + this.getStatus();
         this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 50, 4210752);
-        status = "Oxygen Input: " + Math.round(this.compressor.getCappedScaledOxygenLevel(1000) * 10.0D) / 100.0D + "%";
+        status = LanguageRegistry.instance().getStringLocalization("gui.message.oxinput.name") + ": " + Math.round(this.compressor.getCappedScaledOxygenLevel(1000) * 10.0D) / 100.0D + "%";
         this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 60, 4210752);
         status = ElectricityDisplay.getDisplay(this.compressor.ueWattsPerTick * 20, ElectricUnit.WATT);
         this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 70, 4210752);
@@ -48,25 +49,25 @@ public class GCCoreGuiAirCompressor extends GuiContainer
     {
         if (this.compressor.getStackInSlot(0) == null || !(this.compressor.getStackInSlot(0).getItem() instanceof GCCoreItemOxygenTank))
         {
-            return EnumColor.DARK_RED + "No Valid Oxygen Tank";
+            return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.missingtank.name");
         }
 
         if (this.compressor.getStackInSlot(0) != null && this.compressor.getStackInSlot(0).getItemDamage() == 0)
         {
-            return EnumColor.DARK_RED + "Oxygen Tank Full";
+            return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.fulltank.name");
         }
 
         if (this.compressor.wattsReceived == 0 && this.compressor.ic2Energy == 0 && this.compressor.bcEnergy == 0)
         {
-            return EnumColor.DARK_RED + "Not Enough Power";
+            return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.missingpower.name");
         }
 
         if (this.compressor.storedOxygen < 1.0D)
         {
-            return EnumColor.DARK_RED + "Not Enough Oxygen";
+            return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.missingoxygen.name");
         }
 
-        return EnumColor.DARK_GREEN + "Active";
+        return EnumColor.DARK_GREEN + LanguageRegistry.instance().getStringLocalization("gui.status.active.name");
     }
 
     @Override

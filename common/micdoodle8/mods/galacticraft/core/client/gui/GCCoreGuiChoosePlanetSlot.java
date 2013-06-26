@@ -6,6 +6,7 @@ import net.minecraft.client.gui.GuiSlot;
 import net.minecraft.client.renderer.Tessellator;
 import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -40,10 +41,10 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
             GCCoreGuiChoosePlanet.setSelectedDimension(this.choosePlanetGui, par1);
         }
 
-        GCCoreGuiChoosePlanet.getSendButton(this.choosePlanetGui).displayString = "Send To Dimension";
+        GCCoreGuiChoosePlanet.getSendButton(this.choosePlanetGui).displayString = LanguageRegistry.instance().getStringLocalization("gui.button.sendtodim.name");
         GCCoreGuiChoosePlanet.getSendButton(this.choosePlanetGui).enabled = this.choosePlanetGui.isValidDestination(this.choosePlanetGui.selectedSlot);
 
-        GCCoreGuiChoosePlanet.getCreateSpaceStationButton(this.choosePlanetGui).displayString = "Create Space Station";
+        GCCoreGuiChoosePlanet.getCreateSpaceStationButton(this.choosePlanetGui).displayString = LanguageRegistry.instance().getStringLocalization("gui.button.createsstation.name");
         GCCoreGuiChoosePlanet.getCreateSpaceStationButton(this.choosePlanetGui).enabled = this.choosePlanetGui.canCreateSpaceStation();
     }
 
@@ -142,6 +143,10 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
                         str = "";
                     }
                 }
+                else
+                {
+                    str = LanguageRegistry.instance().getStringLocalization("dimension." + str + ".name");
+                }
 
                 this.choosePlanetGui.drawCenteredString(this.choosePlanetGui.getFontRenderer(), str, this.choosePlanetGui.width / 2, par3 + 3, 0xEEEEEE);
             }
@@ -171,6 +176,10 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
                     {
                         str = "";
                     }
+                }
+                else
+                {
+                    str = LanguageRegistry.instance().getStringLocalization("dimension." + str + ".name");
                 }
 
                 this.choosePlanetGui.drawCenteredString(this.choosePlanetGui.getFontRenderer(), str, this.choosePlanetGui.width / 2, par3 + 3, 0xEEEEEE);

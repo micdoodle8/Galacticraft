@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import org.lwjgl.opengl.GL11;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class GCCoreGuiKnowledgeBook extends GuiScreen
 {
@@ -63,8 +64,8 @@ public class GCCoreGuiKnowledgeBook extends GuiScreen
         this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
         GL11.glPopMatrix();
 
-        this.fontRenderer.drawString("Page " + (this.currentPage + 1), this.guiLeft + 30, this.guiTop + this.ySize - 18, 10526880);
-        this.fontRenderer.drawString("Page " + (this.currentPage + 2), this.guiLeft + this.xSize - 65, this.guiTop + this.ySize - 18, 10526880);
+        this.fontRenderer.drawString(LanguageRegistry.instance().getStringLocalization("gui.message.page.name") + " " + (this.currentPage + 1), this.guiLeft + 30, this.guiTop + this.ySize - 18, 10526880);
+        this.fontRenderer.drawString(LanguageRegistry.instance().getStringLocalization("gui.message.page.name") + " " + (this.currentPage + 2), this.guiLeft + this.xSize - 65, this.guiTop + this.ySize - 18, 10526880);
 
         super.drawScreen(par1, par2, par3);
     }

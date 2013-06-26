@@ -13,6 +13,7 @@ import org.lwjgl.opengl.GL11;
 import universalelectricity.core.electricity.ElectricityDisplay;
 import universalelectricity.core.electricity.ElectricityDisplay.ElectricUnit;
 import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -49,68 +50,44 @@ public class GCCoreGuiFuelLoader extends GuiContainer
     {
         super.initGui();
 
-        this.buttonList.add(this.buttonLoadFuel = new GuiButton(0, this.width / 2 + 2, this.height / 2 - 49, 76, 20, "Load Fuel"));
+        this.buttonList.add(this.buttonLoadFuel = new GuiButton(0, this.width / 2 + 2, this.height / 2 - 49, 76, 20, LanguageRegistry.instance().getStringLocalization("gui.button.loadfuel.name")));
     }
 
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRenderer.drawString("Fuel Loader", 60, 10, 4210752);
+        this.fontRenderer.drawString(this.fuelLoader.getInvName(), 60, 10, 4210752);
         this.buttonLoadFuel.enabled = this.fuelLoader.disableCooldown == 0 && !(this.fuelLoader.fuelTank.getLiquid() == null || this.fuelLoader.fuelTank.getLiquid().amount == 0);
-        this.buttonLoadFuel.displayString = !this.fuelLoader.getDisabled() ? "Stop" : "Load Fuel";
-        this.fontRenderer.drawString("Status: " + this.getStatus(), 28, 45 + 23 - 46, 4210752);
+        this.buttonLoadFuel.displayString = !this.fuelLoader.getDisabled() ? LanguageRegistry.instance().getStringLocalization("gui.button.stoploading.name") : LanguageRegistry.instance().getStringLocalization("gui.button.loadfuel.name");
+        this.fontRenderer.drawString(LanguageRegistry.instance().getStringLocalization("gui.message.status.name") + ": " + this.getStatus(), 28, 45 + 23 - 46, 4210752);
         this.fontRenderer.drawString(ElectricityDisplay.getDisplay(GCCoreTileEntityFuelLoader.WATTS_PER_TICK * 20, ElectricUnit.WATT), 28, 56 + 23 - 46, 4210752);
         this.fontRenderer.drawString(ElectricityDisplay.getDisplay(this.fuelLoader.getVoltage(), ElectricUnit.VOLTAGE), 28, 68 + 23 - 46, 4210752);
         this.fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 118 + 2 + 11, 4210752);
-        // String status = "Status: ";
-        // this.fontRenderer.drawString(status, this.xSize / 2 -
-        // this.fontRenderer.getStringWidth(status) / 2 + 35, 30, 4210752);
-        // status = this.getStatus();
-        // this.fontRenderer.drawString(status, this.xSize / 2 -
-        // this.fontRenderer.getStringWidth(status) / 2 + 35, 40, 4210752);
-        // status =
-        // ElectricityDisplay.getDisplay(this.fuelLoaderInv.WATTS_PER_TICK * 20,
-        // ElectricUnit.WATT);
-        // this.fontRenderer.drawString(status, this.xSize / 2 -
-        // this.fontRenderer.getStringWidth(status) / 2 + 35, 50, 4210752);
-        // status =
-        // ElectricityDisplay.getDisplay(this.fuelLoaderInv.getVoltage(),
-        // ElectricUnit.VOLTAGE);
-        // this.fontRenderer.drawString(status, this.xSize / 2 -
-        // this.fontRenderer.getStringWidth(status) / 2 + 35, 60, 4210752);
-        // this.fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"),
-        // 8, this.ySize - 102, 4210752);
     }
 
     private String getStatus()
     {
         if (this.fuelLoader.fuelTank.getLiquid() == null || this.fuelLoader.fuelTank.getLiquid().amount == 0)
         {
-            return EnumColor.DARK_RED + "No Fuel to Load!";
+            return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.nofuel.name");
         }
 
         if (this.fuelLoader.getStackInSlot(0) == null && this.fuelLoader.wattsReceived == 0 && this.fuelLoader.ic2Energy == 0 && this.fuelLoader.bcEnergy == 0)
         {
-            return EnumColor.DARK_RED + "Not Enough Power";
+            return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.missingpower.name");
         }
 
         if (this.fuelLoader.getDisabled())
         {
-            return EnumColor.ORANGE + "Ready";
+            return EnumColor.ORANGE + LanguageRegistry.instance().getStringLocalization("gui.status.ready.name");
         }
 
         if (this.fuelLoader.wattsReceived > 0 || this.fuelLoader.ic2Energy > 0 || this.fuelLoader.bcEnergy > 0)
         {
-            return EnumColor.DARK_GREEN + "Active";
+            return EnumColor.DARK_GREEN + LanguageRegistry.instance().getStringLocalization("gui.status.active.name");
         }
-
-        // if (this.fuelLoaderInv.wattsReceived == 0 &&
-        // this.fuelLoaderInv.ic2WattsReceived == 0)
-        // {
-        // return EnumColor.DARK_RED + "Not Enough Power";
-        // }
-
-        return EnumColor.ORANGE + "Ready";
+        
+        return EnumColor.ORANGE + LanguageRegistry.instance().getStringLocalization("gui.status.ready.name");
     }
 
     @Override
@@ -121,11 +98,6 @@ public class GCCoreGuiFuelLoader extends GuiContainer
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(var5, var6 + 5, 0, 0, this.xSize, 181);
-
-        // final int fuelLevel = this.fuelLoaderInv.fuelTank.getLiquid() == null
-        // ? 0 : (this.fuelLoaderInv.fuelTank.getLiquid().amount /
-        // MathHelper.floor_double((2000.0D /
-        // GCCoreItems.fuelCanister.getMaxDamage() + 1)));
 
         final int fuelLevel = this.fuelLoader.getScaledFuelLevel(38);
         this.drawTexturedModalRect((this.width - this.xSize) / 2 + 7, (this.height - this.ySize) / 2 + 17 + 54 - fuelLevel, 176, 38 - fuelLevel, 16, fuelLevel);

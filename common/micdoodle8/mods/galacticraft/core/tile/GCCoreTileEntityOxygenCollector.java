@@ -275,7 +275,7 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityElectric im
     @Override
     public String getInvName()
     {
-        return LanguageRegistry.instance().getStringLocalization("tile.bcMachine.2.name");
+        return LanguageRegistry.instance().getStringLocalization("container.oxygencollector.name");
     }
 
     @Override

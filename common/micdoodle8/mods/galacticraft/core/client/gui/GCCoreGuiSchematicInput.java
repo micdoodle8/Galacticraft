@@ -11,6 +11,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class GCCoreGuiSchematicInput extends GuiContainer implements ISchematicResultPage
 {
@@ -29,9 +30,9 @@ public class GCCoreGuiSchematicInput extends GuiContainer implements ISchematicR
     {
         super.initGui();
         this.buttonList.clear();
-        this.buttonList.add(this.backButton = new GuiButton(0, this.width / 2 - 130, this.height / 2 - 30 + 27, 40, 20, "Back"));
-        this.buttonList.add(this.nextButton = new GuiButton(1, this.width / 2 + 90, this.height / 2 - 30 + 27, 40, 20, "Next"));
-        this.buttonList.add(this.unlockButton = new GuiButton(2, this.width / 2 - 46, this.height / 2 - 52, 92, 20, "Unlock Schematic"));
+        this.buttonList.add(this.backButton = new GuiButton(0, this.width / 2 - 130, this.height / 2 - 30 + 27, 40, 20, LanguageRegistry.instance().getStringLocalization("gui.button.back.name")));
+        this.buttonList.add(this.nextButton = new GuiButton(1, this.width / 2 + 90, this.height / 2 - 30 + 27, 40, 20, LanguageRegistry.instance().getStringLocalization("gui.button.next.name")));
+        this.buttonList.add(this.unlockButton = new GuiButton(2, this.width / 2 - 46, this.height / 2 - 52, 92, 20, LanguageRegistry.instance().getStringLocalization("gui.button.unlockschematic.name")));
         this.nextButton.enabled = false;
     }
 
@@ -59,7 +60,7 @@ public class GCCoreGuiSchematicInput extends GuiContainer implements ISchematicR
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRenderer.drawString("Add New Schematic", 7, -22, 4210752);
+        this.fontRenderer.drawString(LanguageRegistry.instance().getStringLocalization("gui.message.addnewsch.name"), 7, -22, 4210752);
         this.fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, 56, 4210752);
     }
 

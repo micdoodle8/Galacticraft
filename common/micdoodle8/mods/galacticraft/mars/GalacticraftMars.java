@@ -111,7 +111,7 @@ public class GalacticraftMars implements IGalacticraftSubMod
         this.registerCreatures();
         this.registerOtherEntities();
         GalacticraftMars.proxy.init(event);
-        //SchematicRegistry.registerSchematicRecipe(new GCMarsSchematicRocketT2());
+        SchematicRegistry.registerSchematicRecipe(new GCMarsSchematicRocketT2());
     }
 
     @ServerStarting
@@ -127,7 +127,7 @@ public class GalacticraftMars implements IGalacticraftSubMod
 
     public void registerCreatures()
     {
-        this.registerGalacticraftCreature(GCMarsEntityCreeperBoss.class, "Creeper Boss", GCMarsConfigManager.idEntityCreeperBoss, 894731, 0);
+//        this.registerGalacticraftCreature(GCMarsEntityCreeperBoss.class, "Creeper Boss", GCMarsConfigManager.idEntityCreeperBoss, 894731, 0);
     }
 
     public void registerOtherEntities()

@@ -14,6 +14,7 @@ import org.lwjgl.opengl.GL11;
 import universalelectricity.core.electricity.ElectricityDisplay;
 import universalelectricity.core.electricity.ElectricityDisplay.ElectricUnit;
 import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -50,7 +51,7 @@ public class GCCoreGuiCargoUnloader extends GuiContainer
     {
         super.initGui();
 
-        this.buttonList.add(this.buttonLoadItems = new GuiButton(0, this.width / 2 - 1, this.height / 2 - 23, 76, 20, "Unload Items"));
+        this.buttonList.add(this.buttonLoadItems = new GuiButton(0, this.width / 2 - 1, this.height / 2 - 23, 76, 20, LanguageRegistry.instance().getStringLocalization("gui.button.unloaditems.name")));
     }
 
     @Override
@@ -58,10 +59,10 @@ public class GCCoreGuiCargoUnloader extends GuiContainer
     {
         int offsetX = -17;
         int offsetY = 45;
-        this.fontRenderer.drawString("Cargo Unloader", 60, 12, 4210752);
+        this.fontRenderer.drawString(this.fuelLoader.getInvName(), 60, 12, 4210752);
         this.buttonLoadItems.enabled = this.fuelLoader.disableCooldown == 0;
-        this.buttonLoadItems.displayString = !this.fuelLoader.getDisabled() ? "Stop Unloading" : "Unload Items";
-        this.fontRenderer.drawString("Status: " + this.getStatus(), 28 + offsetX, 45 + 23 - 46 + offsetY, 4210752);
+        this.buttonLoadItems.displayString = !this.fuelLoader.getDisabled() ? LanguageRegistry.instance().getStringLocalization("gui.button.stopunloading.name") : LanguageRegistry.instance().getStringLocalization("gui.button.unloaditems.name");
+        this.fontRenderer.drawString(LanguageRegistry.instance().getStringLocalization("gui.message.status.name") + ": " + this.getStatus(), 28 + offsetX, 45 + 23 - 46 + offsetY, 4210752);
         this.fontRenderer.drawString(ElectricityDisplay.getDisplay(GCCoreTileEntityFuelLoader.WATTS_PER_TICK * 20, ElectricUnit.WATT), 28 + offsetX, 56 + 23 - 46 + offsetY, 4210752);
         this.fontRenderer.drawString(ElectricityDisplay.getDisplay(this.fuelLoader.getVoltage(), ElectricUnit.VOLTAGE), 28 + offsetX, 68 + 23 - 46 + offsetY, 4210752);
         this.fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 90, 4210752);
@@ -71,35 +72,35 @@ public class GCCoreGuiCargoUnloader extends GuiContainer
     {
         if (this.fuelLoader.noTarget)
         {
-            return EnumColor.DARK_RED + "No Target to Unload!";
+            return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.notargetunload.name");
         }
 
         if (this.fuelLoader.targetEmpty)
         {
-            return EnumColor.DARK_RED + "Target is Empty!";
+            return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.targetempty.name");
         }
 
         if (this.fuelLoader.targetNoInventory)
         {
-            return EnumColor.DARK_RED + "No Inventory on Target!";
+            return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.noinvtarget.name");
         }
 
         if (this.fuelLoader.getStackInSlot(0) == null && this.fuelLoader.wattsReceived == 0 && this.fuelLoader.ic2Energy == 0 && this.fuelLoader.bcEnergy == 0)
         {
-            return EnumColor.DARK_RED + "Not Enough Power";
+            return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.missingpower.name");
         }
 
         if (this.fuelLoader.getDisabled())
         {
-            return EnumColor.ORANGE + "Ready";
+            return EnumColor.ORANGE + LanguageRegistry.instance().getStringLocalization("gui.status.ready.name");
         }
 
         if (this.fuelLoader.wattsReceived > 0 || this.fuelLoader.ic2Energy > 0 || this.fuelLoader.bcEnergy > 0)
         {
-            return EnumColor.DARK_GREEN + "Active";
+            return EnumColor.DARK_GREEN + LanguageRegistry.instance().getStringLocalization("gui.status.active.name");
         }
 
-        return EnumColor.ORANGE + "Ready";
+        return EnumColor.ORANGE + LanguageRegistry.instance().getStringLocalization("gui.status.ready.name");
     }
 
     @Override

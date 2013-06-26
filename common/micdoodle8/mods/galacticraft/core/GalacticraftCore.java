@@ -23,7 +23,6 @@ import micdoodle8.mods.galacticraft.core.dimension.GCCoreOverworldTeleportType;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreWorldProviderSpaceStation;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityAlienVillager;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityArrow;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityAstroOrb;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityBuggy;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityCreeper;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityFlag;
@@ -105,7 +104,6 @@ import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 
@@ -323,7 +321,6 @@ public class GalacticraftCore
     @ServerStarting
     public void serverStarting(FMLServerStartingEvent event)
     {
-        // WorldUtil.registerPlanet(GCCoreConfigManager.idDimensionSpace, true);
         GalacticraftCore.moon.serverStarting(event);
         event.registerServerCommand(new GCCoreCommandSpaceStationAddOwner());
         event.registerServerCommand(new GCCoreCommandSpaceStationRemoveOwner());
@@ -392,22 +389,21 @@ public class GalacticraftCore
 
     public void registerCreatures()
     {
-        this.registerGalacticraftCreature(GCCoreEntitySpider.class, "Evolved Spider", GCCoreConfigManager.idEntityEvolvedSpider, 3419431, 11013646);
-        this.registerGalacticraftCreature(GCCoreEntityZombie.class, "Evolved Zombie", GCCoreConfigManager.idEntityEvolvedZombie, 44975, 7969893);
-        this.registerGalacticraftCreature(GCCoreEntityCreeper.class, "Evolved Creeper", GCCoreConfigManager.idEntityEvolvedCreeper, 894731, 0);
-        this.registerGalacticraftCreature(GCCoreEntitySkeleton.class, "Evolved Skeleton", GCCoreConfigManager.idEntityEvolvedSkeleton, 12698049, 4802889);
-        this.registerGalacticraftCreature(GCCoreEntitySkeletonBoss.class, "Evolved Skeleton Boss", GCCoreConfigManager.idEntityEvolvedSkeletonBoss, 12698049, 4802889);
-        this.registerGalacticraftCreature(GCCoreEntityAlienVillager.class, "Alien Villager", GCCoreConfigManager.idEntityAlienVillager, GCCoreUtil.convertTo32BitColor(255, 103, 181, 145), 12422002);
+        this.registerGalacticraftCreature(GCCoreEntitySpider.class, "EvolvedSpider", GCCoreConfigManager.idEntityEvolvedSpider, 3419431, 11013646);
+        this.registerGalacticraftCreature(GCCoreEntityZombie.class, "EvolvedZombie", GCCoreConfigManager.idEntityEvolvedZombie, 44975, 7969893);
+        this.registerGalacticraftCreature(GCCoreEntityCreeper.class, "EvolvedCreeper", GCCoreConfigManager.idEntityEvolvedCreeper, 894731, 0);
+        this.registerGalacticraftCreature(GCCoreEntitySkeleton.class, "EvolvedSkeleton", GCCoreConfigManager.idEntityEvolvedSkeleton, 12698049, 4802889);
+        this.registerGalacticraftCreature(GCCoreEntitySkeletonBoss.class, "EvolvedSkeletonBoss", GCCoreConfigManager.idEntityEvolvedSkeletonBoss, 12698049, 4802889);
+        this.registerGalacticraftCreature(GCCoreEntityAlienVillager.class, "AlienVillager", GCCoreConfigManager.idEntityAlienVillager, GCCoreUtil.convertTo32BitColor(255, 103, 181, 145), 12422002);
     }
 
     public void registerOtherEntities()
     {
         this.registerGalacticraftNonMobEntity(GCCoreEntityRocketT1.class, "Spaceship", GCCoreConfigManager.idEntitySpaceship, 150, 1, true);
-        this.registerGalacticraftNonMobEntity(GCCoreEntityArrow.class, "Gravity Arrow", GCCoreConfigManager.idEntityAntiGravityArrow, 150, 5, true);
+        this.registerGalacticraftNonMobEntity(GCCoreEntityArrow.class, "GravityArrow", GCCoreConfigManager.idEntityAntiGravityArrow, 150, 5, true);
         this.registerGalacticraftNonMobEntity(GCCoreEntityMeteor.class, "Meteor", GCCoreConfigManager.idEntityMeteor, 150, 5, true);
         this.registerGalacticraftNonMobEntity(GCCoreEntityBuggy.class, "Buggy", GCCoreConfigManager.idEntityBuggy, 150, 5, true);
         this.registerGalacticraftNonMobEntity(GCCoreEntityFlag.class, "Flag", GCCoreConfigManager.idEntityFlag, 150, 5, true);
-        this.registerGalacticraftNonMobEntity(GCCoreEntityAstroOrb.class, "AstroOrb", GCCoreConfigManager.idEntityAstroOrb, 150, 5, true);
         this.registerGalacticraftNonMobEntity(GCCoreEntityParaChest.class, "ParaChest", GCCoreConfigManager.idEntityParaChest, 150, 5, true);
         this.registerGalacticraftNonMobEntity(GCCoreEntityOxygenBubble.class, "OxygenBubble", GCCoreConfigManager.idEntityOxygenBubble, 150, 20, false);
         this.registerGalacticraftNonMobEntity(GCCoreEntityLander.class, "Lander", GCCoreConfigManager.idEntityLander, 150, 5, true);
@@ -417,7 +413,6 @@ public class GalacticraftCore
     {
         EntityRegistry.registerGlobalEntityID(var0, var1, id, back, fore);
         EntityRegistry.registerModEntity(var0, var1, id, GalacticraftCore.instance, 80, 3, true);
-        LanguageRegistry.instance().addStringLocalization("entity." + var1 + ".name", "en_US", var1);
     }
 
     public void registerGalacticraftNonMobEntity(Class var0, String var1, int id, int trackingDistance, int updateFreq, boolean sendVel)

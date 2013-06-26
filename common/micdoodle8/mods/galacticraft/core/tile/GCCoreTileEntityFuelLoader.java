@@ -25,6 +25,7 @@ import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.multiblock.TileEntityMulti;
 import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric implements IInventory, ISidedInventory, ITankContainer
 {
@@ -261,7 +262,7 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric impleme
     @Override
     public String getInvName()
     {
-        return "Fuel Loader";
+        return LanguageRegistry.instance().getStringLocalization("container.fuelloader.name");
     }
 
     @Override

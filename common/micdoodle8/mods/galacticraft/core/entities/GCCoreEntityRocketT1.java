@@ -35,6 +35,7 @@ import net.minecraftforge.liquids.LiquidTank;
 import universalelectricity.core.vector.Vector3;
 import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 
 /**
@@ -391,7 +392,7 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
     @Override
     public String getInvName()
     {
-        return "container.spaceship";
+        return LanguageRegistry.instance().getStringLocalization("container.spaceship.name");
     }
 
     @Override

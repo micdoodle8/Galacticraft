@@ -16,6 +16,7 @@ import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.multiblock.TileEntityMulti;
 import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class GCCoreTileEntityCargoLoader extends GCCoreTileEntityElectric implements IInventory, ISidedInventory, ICargoEntity
 {
@@ -229,7 +230,7 @@ public class GCCoreTileEntityCargoLoader extends GCCoreTileEntityElectric implem
     @Override
     public String getInvName()
     {
-        return "Cargo Loader";
+        return LanguageRegistry.instance().getStringLocalization("container.cargoloader.name");
     }
 
     @Override

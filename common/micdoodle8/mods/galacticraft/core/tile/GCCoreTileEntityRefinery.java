@@ -25,6 +25,7 @@ import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.PacketManager;
 import buildcraft.api.power.PowerFramework;
 import com.google.common.io.ByteArrayDataInput;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implements IInventory, ISidedInventory, ITankContainer
 {
@@ -348,7 +349,7 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
     @Override
     public String getInvName()
     {
-        return "Refinery";
+        return LanguageRegistry.instance().getStringLocalization("container.refinery.name");
     }
 
     @Override

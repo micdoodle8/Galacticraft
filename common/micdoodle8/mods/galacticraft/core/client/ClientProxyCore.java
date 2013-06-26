@@ -44,7 +44,6 @@ import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRenderer
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererUnlitTorch;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderAlienVillager;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderArrow;
-import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderAstroOrb;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderBlockTreasureChest;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderBuggy;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderCreeper;
@@ -75,7 +74,6 @@ import micdoodle8.mods.galacticraft.core.client.sounds.GCCoreSounds;
 import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityAlienVillager;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityArrow;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityAstroOrb;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityBuggy;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityControllable;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityCreeper;
@@ -140,6 +138,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 
@@ -323,27 +322,15 @@ public class ClientProxyCore extends CommonProxyCore
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityMeteor.class, new GCCoreRenderMeteor());
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityBuggy.class, new GCCoreRenderBuggy());
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityFlag.class, new GCCoreRenderFlag());
-        RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityAstroOrb.class, new GCCoreRenderAstroOrb());
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityWorm.class, new GCCoreRenderWorm());
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityParaChest.class, new GCCoreRenderParaChest());
         RenderingRegistry.registerEntityRenderingHandler(EntityPlayer.class, new GCCoreRenderPlayer());
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityAlienVillager.class, new GCCoreRenderAlienVillager());
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityOxygenBubble.class, new GCCoreRenderOxygenBubble());
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityLander.class, new GCCoreRenderLander());
-        // RenderingRegistry.registerEntityRenderingHandler(GCCoreEntitySun.class,
-        // new GCCoreRenderCelestialObject(11F * 108F,
-        // "/micdoodle8/mods/galacticraft/core/client/entities/sun.png"));
-        // RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityMoon.class,
-        // new GCCoreRenderCelestialObject(8F,
-        // "/micdoodle8/mods/galacticraft/core/client/entities/moon.png"));
-        // RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityOverworld.class,
-        // new GCCoreRenderCelestialObject(15F * 3F,
-        // "/micdoodle8/mods/galacticraft/core/client/entities/overworld.png"));
         RenderingRegistry.addNewArmourRendererPrefix("oxygen");
         RenderingRegistry.addNewArmourRendererPrefix("sensor");
-        RenderingRegistry.addNewArmourRendererPrefix("sensorox");
         RenderingRegistry.addNewArmourRendererPrefix("titanium");
-        RenderingRegistry.addNewArmourRendererPrefix("titaniumox");
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityArrow.class, new GCCoreRenderArrow());
         MinecraftForgeClient.registerItemRenderer(GCCoreBlocks.unlitTorch.blockID, new GCCoreItemRendererUnlitTorch());
         MinecraftForgeClient.registerItemRenderer(GCCoreItems.spaceship.itemID, new GCCoreItemRendererSpaceship(new GCCoreEntityRocketT1(FMLClientHandler.instance().getClient().theWorld), new GCCoreModelSpaceship(), "/micdoodle8/mods/galacticraft/core/client/entities/spaceship1.png"));
@@ -355,17 +342,6 @@ public class ClientProxyCore extends CommonProxyCore
 
     public static void renderPlanets(float par3)
     {
-        // List<IUpdateable> planetList = new ArrayList<IUpdateable>();
-        // planetList.addAll(WorldUtil.planets);
-        // for (IUpdateable iu : planetList)
-        // {
-        // Entity e = (Entity) iu;
-        //
-        // if (e instanceof GCCoreEntitySun)
-        // {
-        // RenderManager.instance.renderEntity(e, par3);
-        // }
-        // }
     }
 
     @Override
@@ -514,15 +490,15 @@ public class ClientProxyCore extends CommonProxyCore
 
     public static class GCKeyHandler extends KeyHandler
     {
-        public static KeyBinding galaxyMap = new KeyBinding("[GC] Galaxy Map", Keyboard.KEY_M);
-        public static KeyBinding openSpaceshipInv = new KeyBinding("[GC] Open Spaceship Inventory", Keyboard.KEY_F);
-        public static KeyBinding toggleAdvGoggles = new KeyBinding("[GC] Toggle Sensor Goggles Mode", Keyboard.KEY_K);
-        public static KeyBinding accelerateKey = new KeyBinding("[GC] Vehicle Forward Key", Keyboard.KEY_W);
-        public static KeyBinding decelerateKey = new KeyBinding("[GC] Vehicle Backward Key", Keyboard.KEY_S);
-        public static KeyBinding leftKey = new KeyBinding("[GC] Vehicle Left Key", Keyboard.KEY_A);
-        public static KeyBinding rightKey = new KeyBinding("[GC] Vehicle Right Key", Keyboard.KEY_D);
-        public static KeyBinding spaceKey = new KeyBinding("[GC] Vehicle Up Key", Keyboard.KEY_SPACE);
-        public static KeyBinding leftShiftKey = new KeyBinding("[GC] Vehicle Down Key", Keyboard.KEY_LSHIFT);
+        public static KeyBinding galaxyMap = new KeyBinding(LanguageRegistry.instance().getStringLocalization("keybind.map.name"), Keyboard.KEY_M);
+        public static KeyBinding openSpaceshipInv = new KeyBinding(LanguageRegistry.instance().getStringLocalization("keybind.spaceshipinv.name"), Keyboard.KEY_F);
+        public static KeyBinding toggleAdvGoggles = new KeyBinding(LanguageRegistry.instance().getStringLocalization("keybind.sensortoggle.name"), Keyboard.KEY_K);
+        public static KeyBinding accelerateKey = new KeyBinding(LanguageRegistry.instance().getStringLocalization("keybind.vehicleforward.name"), Keyboard.KEY_W);
+        public static KeyBinding decelerateKey = new KeyBinding(LanguageRegistry.instance().getStringLocalization("keybind.vehiclebackward.name"), Keyboard.KEY_S);
+        public static KeyBinding leftKey = new KeyBinding(LanguageRegistry.instance().getStringLocalization("keybind.vehicleleft.name"), Keyboard.KEY_A);
+        public static KeyBinding rightKey = new KeyBinding(LanguageRegistry.instance().getStringLocalization("keybind.vehicleright.name"), Keyboard.KEY_D);
+        public static KeyBinding spaceKey = new KeyBinding(LanguageRegistry.instance().getStringLocalization("keybind.vehicleup.name"), Keyboard.KEY_SPACE);
+        public static KeyBinding leftShiftKey = new KeyBinding(LanguageRegistry.instance().getStringLocalization("keybind.vehicledown.name"), Keyboard.KEY_LSHIFT);
 
         public GCKeyHandler()
         {

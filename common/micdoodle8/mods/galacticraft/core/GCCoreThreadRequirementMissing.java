@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core;
 import javax.swing.JDialog;
 import javax.swing.JEditorPane;
 import javax.swing.JOptionPane;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class GCCoreThreadRequirementMissing extends Thread
 {
@@ -24,28 +25,28 @@ public class GCCoreThreadRequirementMissing extends Thread
     {
         if (!GCCoreConfigManager.forceLoadGC.getBoolean(false) && !GCCoreConfigManager.loadBC.getBoolean(false) && !GCCoreCompatibilityManager.isIc2Loaded() && !GCCoreCompatibilityManager.isTELoaded())
         {
-            final String err = "<strong><h1>Galacticraft Requires IndustrialCraft 2, Thermal Expansion or Basic Components!</h1></strong><br /><h3>One or more of these mods is REQUIRED for crafting/gameplay. Ignore?</h3>";
+            final String err = "<strong><h1>" + LanguageRegistry.instance().getStringLocalization("message.warning1.name") + "</h1></strong><br /><h3>" + LanguageRegistry.instance().getStringLocalization("message.warning2.name") + "</h3>";
             System.out.println(err);
             final JEditorPane ep = new JEditorPane("text/html", "<html>" + err + "</html>");
 
             ep.setEditable(false);
             ep.setOpaque(false);
 
-            final JOptionPane pane = new JOptionPane(ep, JOptionPane.ERROR_MESSAGE, JOptionPane.YES_NO_OPTION, null, new Object[] { "Ignore", "Load Basic Components", "Exit", "Do not show again" }, null);
+            final JOptionPane pane = new JOptionPane(ep, JOptionPane.ERROR_MESSAGE, JOptionPane.YES_NO_OPTION, null, new Object[] { LanguageRegistry.instance().getStringLocalization("message.button1.name"), LanguageRegistry.instance().getStringLocalization("message.button2.name"), LanguageRegistry.instance().getStringLocalization("message.button3.name"), LanguageRegistry.instance().getStringLocalization("message.button4.name") }, null);
             final JDialog dialog = pane.createDialog(null, "Missing Dependancy");
             dialog.setVisible(true);
             final Object selectedValue = pane.getValue();
 
-            if (selectedValue != null && selectedValue.equals("Exit"))
+            if (selectedValue != null && selectedValue.equals(LanguageRegistry.instance().getStringLocalization("message.button3.name")))
             {
                 System.exit(-1);
             }
-            else if (selectedValue != null && selectedValue.equals("Do not show again"))
+            else if (selectedValue != null && selectedValue.equals(LanguageRegistry.instance().getStringLocalization("message.button4.name")))
             {
                 GCCoreConfigManager.forceLoadGC.set(true);
                 GCCoreConfigManager.configuration.save();
             }
-            else if (selectedValue != null && selectedValue.equals("Load Basic Components"))
+            else if (selectedValue != null && selectedValue.equals(LanguageRegistry.instance().getStringLocalization("message.button2.name")))
             {
                 GCCoreConfigManager.loadBC.set(true);
                 GCCoreConfigManager.configuration.save();

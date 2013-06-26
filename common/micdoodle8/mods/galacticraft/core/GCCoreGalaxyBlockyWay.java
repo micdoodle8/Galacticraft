@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core;
 
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import micdoodle8.mods.galacticraft.API.IGalaxy;
 import universalelectricity.core.vector.Vector3;
 
@@ -8,7 +9,7 @@ public class GCCoreGalaxyBlockyWay implements IGalaxy
     @Override
     public String getGalaxyName()
     {
-        return "The Blocky Way";
+        return LanguageRegistry.instance().getStringLocalization("galaxy.blockyway.name");
     }
 
     @Override

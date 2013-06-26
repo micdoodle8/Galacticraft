@@ -7,6 +7,7 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -28,16 +29,16 @@ public class GCCoreGuiBuggy extends GuiContainer
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRenderer.drawString(StatCollector.translateToLocal("Fuel"), 8, 2 + 3, 4210752);
+        this.fontRenderer.drawString(LanguageRegistry.instance().getStringLocalization("gui.message.fuel.name"), 8, 2 + 3, 4210752);
 
         this.fontRenderer.drawString(StatCollector.translateToLocal(this.upperChestInventory.getInvName()), 8, this.type == 0 ? 50 : 39, 4210752);
 
         if (this.mc.thePlayer != null && this.mc.thePlayer.ridingEntity != null && this.mc.thePlayer.ridingEntity instanceof GCCoreEntityBuggy)
         {
-            this.fontRenderer.drawString("Fuel:", 125, 15 + 3, 4210752);
+            this.fontRenderer.drawString(LanguageRegistry.instance().getStringLocalization("gui.message.fuel.name") + ":", 125, 15 + 3, 4210752);
             final double percentage = ((GCCoreEntityBuggy) this.mc.thePlayer.ridingEntity).getScaledFuelLevel(100);
             final String color = percentage > 80.0D ? EnumColor.BRIGHT_GREEN.code : percentage > 40.0D ? EnumColor.ORANGE.code : EnumColor.RED.code;
-            final String str = percentage + "% full";
+            final String str = percentage + "% " + LanguageRegistry.instance().getStringLocalization("gui.message.full.name");
             this.fontRenderer.drawString(color + str, 117 - str.length() / 2, 20 + 8, 4210752);
         }
     }
