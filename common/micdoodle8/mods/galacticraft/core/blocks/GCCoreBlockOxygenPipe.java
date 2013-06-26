@@ -42,7 +42,7 @@ public class GCCoreBlockOxygenPipe extends BlockContainer
     {
         final GCCoreTileEntityOxygenPipe tile = (GCCoreTileEntityOxygenPipe) par1World.getBlockTileEntity(par2, par3, par4);
 
-        if (tile.getColor() != 15)
+        if (tile != null && tile.getColor() != 15)
         {
             final float f = 0.7F;
             final double d0 = par1World.rand.nextFloat() * f + (1.0F - f) * 0.5D;
