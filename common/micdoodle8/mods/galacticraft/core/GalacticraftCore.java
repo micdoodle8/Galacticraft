@@ -125,13 +125,10 @@ public class GalacticraftCore
 
     public static final int LOCALMAJVERSION = 0;
     public static final int LOCALMINVERSION = 1;
-    public static final int LOCALBUILDVERSION = 35;
+    public static final int LOCALBUILDVERSION = 36;
     public static int remoteMajVer;
     public static int remoteMinVer;
     public static int remoteBuildVer;
-
-    // public static float spaceScale = 4.0F;
-    // public static float spaceSpeedScale = 5.0F;
 
     @SidedProxy(clientSide = "micdoodle8.mods.galacticraft.core.client.ClientProxyCore", serverSide = "micdoodle8.mods.galacticraft.core.CommonProxyCore")
     public static CommonProxyCore proxy;
