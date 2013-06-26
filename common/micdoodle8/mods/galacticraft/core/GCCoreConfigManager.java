@@ -56,6 +56,7 @@ public class GCCoreConfigManager
     public static int idBlockEnclosedWire;
     public static int idBlockOxygenDetector;
     public static int idBlockCargoLoader;
+    public static int idBlockParachest;
 
     // ITEMS
     public static int idItemKnowledgeBook;
@@ -131,6 +132,7 @@ public class GCCoreConfigManager
     public static int idGuiAirSealer;
     public static int idGuiKnowledgeBook;
     public static int idGuiCargoLoader;
+    public static int idGuiParachest;
 
     // ACHIEVEMENTS
     public static int idAchievBase;
@@ -221,7 +223,8 @@ public class GCCoreConfigManager
             GCCoreConfigManager.idBlockEnclosedWire = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockEnclosedWire", 3379).getInt(3379);
             GCCoreConfigManager.idBlockSpaceStationBase = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockSpaceStationBase", 3380, "Even though this will be generated, it can use block IDs greater than 256").getInt(3380);
             GCCoreConfigManager.idBlockTreasureChest = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockTieredTreasureChest", 3381, "Even though this will be generated, it can use block IDs greater than 256").getInt(3381);
-            // 3382 - Mars Base Block
+            GCCoreConfigManager.idBlockParachest = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockParachest", 3382).getInt(3382);
+            // 3390 - Mars Base Block
             
             GCCoreConfigManager.idItemSpaceship = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemSpaceship", 9855).getInt(9855);
             GCCoreConfigManager.idItemLightOxygenTank = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemLightOxygenTank", 9856).getInt(9856);
@@ -284,6 +287,7 @@ public class GCCoreConfigManager
             GCCoreConfigManager.idGuiAirSealer = GCCoreConfigManager.configuration.get("GUI", "idGuiAirSealer", 139).getInt(139);
             GCCoreConfigManager.idGuiKnowledgeBook = GCCoreConfigManager.configuration.get("GUI", "idGuiKnowledgeBook", 140).getInt(140);
             GCCoreConfigManager.idGuiCargoLoader = GCCoreConfigManager.configuration.get("GUI", "idGuiCargoLoader", 141).getInt(141);
+            GCCoreConfigManager.idGuiParachest = GCCoreConfigManager.configuration.get("GUI", "idGuiParachest", 142).getInt(142);
             // 142 - Tier 2 Rocket Bench GUI
 
             GCCoreConfigManager.idSchematicRocketT1 = GCCoreConfigManager.configuration.get("Schematic", "idSchematicRocketT1", 0).getInt(0);

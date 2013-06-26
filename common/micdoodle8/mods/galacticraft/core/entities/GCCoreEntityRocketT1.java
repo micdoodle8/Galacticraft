@@ -219,7 +219,7 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
         {
             if (this.cargoItems == null || this.cargoItems.length == 0)
             {
-                playerBase.rocketStacks = new ItemStack[3];
+                playerBase.rocketStacks = new ItemStack[9];
             }
             else
             {
@@ -516,7 +516,7 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
     @Override
     public EnumCargoLoadingState addCargo(ItemStack stack, boolean doAdd)
     {
-        if (this.rocketType.getInventorySpace() == 0)
+        if (this.rocketType.getInventorySpace() <= 3)
         {
             return EnumCargoLoadingState.NOINVENTORY;
         }

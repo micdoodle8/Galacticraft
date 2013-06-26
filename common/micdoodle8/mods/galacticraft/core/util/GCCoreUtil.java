@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.util;
 import micdoodle8.mods.galacticraft.core.GCCoreThreadVersionCheck;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerBuggy;
+import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerParachest;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import cpw.mods.fml.relauncher.Side;
@@ -28,8 +29,20 @@ public class GCCoreUtil
         player.incrementWindowID();
         player.closeInventory();
         int id = player.currentWindowId;
-        player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 28, new Object[] { id }));
+        player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 28, new Object[] { id, 0 }));
         player.openContainer = new GCCoreContainerBuggy(player.inventory, buggyInv, type);
+        player.openContainer.windowId = id;
+        player.openContainer.addCraftingToCrafters(player);
+    }
+
+    public static void openParachestInv(EntityPlayerMP player, IInventory landerInv)
+    {
+        player.incrementWindowID();
+        player.closeInventory();
+        int id = player.currentWindowId;
+        GalacticraftCore.proxy.displayParachestGui(player, landerInv);
+        player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 28, new Object[] { id, 1 }));
+        player.openContainer = new GCCoreContainerParachest(player.inventory, landerInv);
         player.openContainer.windowId = id;
         player.openContainer.addCraftingToCrafters(player);
     }

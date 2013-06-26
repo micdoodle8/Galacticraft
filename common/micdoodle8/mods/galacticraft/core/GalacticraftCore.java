@@ -63,6 +63,7 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenDetector;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenDistributor;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenPipe;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenSealer;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityParachest;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityRefinery;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntitySpaceStationBase;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
@@ -386,6 +387,7 @@ public class GalacticraftCore
         GameRegistry.registerTileEntity(GCCoreTileEntityCargoPadSingle.class, "Cargo Pad");
         GameRegistry.registerTileEntity(GCCoreTileEntityCargoLoader.class, "Cargo Loader");
         GameRegistry.registerTileEntity(GCCoreTileEntityCargoUnloader.class, "Cargo Unloader");
+        GameRegistry.registerTileEntity(GCCoreTileEntityParachest.class, "Parachest Tile");
     }
 
     public void registerCreatures()

@@ -546,7 +546,7 @@ public class GCCoreEntityRocketT2 extends EntitySpaceshipBase implements IInvent
     @Override
     public EnumCargoLoadingState addCargo(ItemStack stack, boolean doAdd)
     {
-        if (this.rocketType.getInventorySpace() == 0)
+        if (this.rocketType.getInventorySpace() <= 3)
         {
             return EnumCargoLoadingState.NOINVENTORY;
         }

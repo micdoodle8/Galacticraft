@@ -11,6 +11,7 @@ import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerAirDistributor
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerAirSealer;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerCargoLoader;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerFuelLoader;
+import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerParachest;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerRefinery;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerRocketRefill;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFuelLoader;
@@ -123,6 +124,11 @@ public class CommonProxyCore extends BCGuiHandler implements IGuiHandler
     {
         ;
     }
+    
+    public void displayParachestGui(EntityPlayer player, IInventory lander)
+    {
+        ;
+    }
 
     // IGUIHANDLER IMPLEMENTATION:
 
@@ -162,6 +168,10 @@ public class CommonProxyCore extends BCGuiHandler implements IGuiHandler
         else if (ID == GCCoreConfigManager.idGuiCargoLoader)
         {
             return new GCCoreContainerCargoLoader(player.inventory, (IInventory) world.getBlockTileEntity(x, y, z));
+        }
+        else if (ID == GCCoreConfigManager.idGuiParachest)
+        {
+            return new GCCoreContainerParachest(player.inventory, (IInventory) world.getBlockTileEntity(x, y, z));
         }
         else
         {

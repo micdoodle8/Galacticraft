@@ -71,7 +71,7 @@ public class GCMarsConfigManager
 
             GCMarsConfigManager.dimensionIDMars = GCMarsConfigManager.configuration.get("Dimensions", "Mars Dimension ID", -29).getInt(-29);
             
-            GCMarsConfigManager.idBlockMars = GCMarsConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockMars", 3382, "Even though this will be generated, it can use block IDs greater than 256").getInt(3382);
+            GCMarsConfigManager.idBlockMars = GCMarsConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockMars", 3390, "Even though this will be generated, it can use block IDs greater than 256").getInt(3390);
 
             GCMarsConfigManager.idItemRawDesh = GCMarsConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemRawDesh", 9905).getInt(9905);
             GCMarsConfigManager.idItemDeshStick = GCMarsConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemDeshStick", 9906).getInt(9906);

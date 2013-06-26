@@ -69,11 +69,11 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
     
     public static enum EnumRocketType
     {
-        DEFAULT(0, "", false, 0),
-        INVENTORY27(1, "Storage Space: 18", false, 18),
-        INVENTORY36(2, "Storage Space: 36", false, 36),
-        INVENTORY54(3, "Storage Space: 54", false, 54),
-        PREFUELED(4, "Pre-fueled", true, 0);
+        DEFAULT(0, "", false, 3),
+        INVENTORY27(1, "Storage Space: 18", false, 21),
+        INVENTORY36(2, "Storage Space: 36", false, 39),
+        INVENTORY54(3, "Storage Space: 54", false, 57),
+        PREFUELED(4, "Pre-fueled", true, 3);
         
         private int index;
         private String tooltip;

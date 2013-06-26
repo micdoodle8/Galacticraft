@@ -29,7 +29,7 @@ public class GCCoreGuiRocketRefill extends GuiContainer
         this.upperChestInventory = par1IInventory;
         this.allowUserInput = false;
         this.inventoryRows = par2IInventory.getSizeInventory() / 9;
-        this.ySize = rocketType.getInventorySpace() == 0 ? 132 : 145 + rocketType.getInventorySpace() * 2;
+        this.ySize = rocketType.getInventorySpace() <= 3 ? 132 : 145 + rocketType.getInventorySpace() * 2;
         this.rocketType = rocketType;
     }
 
@@ -53,7 +53,7 @@ public class GCCoreGuiRocketRefill extends GuiContainer
     @Override
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
-        this.mc.renderEngine.bindTexture("/mods/galacticraftcore/textures/gui/rocket_" + this.rocketType.getInventorySpace() + ".png");
+        this.mc.renderEngine.bindTexture("/mods/galacticraftcore/textures/gui/rocket_" + (this.rocketType.getInventorySpace() - 3) + ".png");
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         final int var5 = (this.width - this.xSize) / 2;
@@ -64,7 +64,7 @@ public class GCCoreGuiRocketRefill extends GuiContainer
         {
             final int fuelLevel = ((EntitySpaceshipBase) this.mc.thePlayer.ridingEntity).getScaledFuelLevel(38);
 
-            this.drawTexturedModalRect((this.width - this.xSize) / 2 + 72, (this.height - this.ySize) / 2 + 45 - fuelLevel, 176, 38 - fuelLevel, 42, fuelLevel);
+            this.drawTexturedModalRect((this.width - this.xSize) / 2 + (((EntitySpaceshipBase) this.mc.thePlayer.ridingEntity).rocketType.getInventorySpace() == 3 ? 71 : 72), (this.height - this.ySize) / 2 + 45 - fuelLevel, 176, 38 - fuelLevel, 42, fuelLevel);
         }
     }
 }

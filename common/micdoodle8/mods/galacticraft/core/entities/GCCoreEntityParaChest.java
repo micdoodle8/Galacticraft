@@ -1,15 +1,16 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
-import net.minecraft.block.Block;
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityParachest;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreEntityParaChest extends Entity
 {
@@ -129,20 +130,15 @@ public class GCCoreEntityParaChest extends Entity
 
     private boolean placeChest(int x, int y, int z)
     {
-        this.worldObj.setBlock(x, y, z, Block.chest.blockID, 0, 3);
+        this.worldObj.setBlock(x, y, z, GCCoreBlocks.parachest.blockID, 0, 3);
         final TileEntity te = this.worldObj.getBlockTileEntity(x, y, z);
 
-        if (te instanceof TileEntityChest && this.cargo != null && this.cargo.length > 0)
+        if (te instanceof GCCoreTileEntityParachest && this.cargo != null)
         {
-            final TileEntityChest chest = (TileEntityChest) te;
+            final GCCoreTileEntityParachest chest = (GCCoreTileEntityParachest) te;
 
-            for (int i = 0; i < this.cargo.length; i++)
-            {
-                if (i < chest.getSizeInventory())
-                {
-                    chest.setInventorySlotContents(i, this.cargo[i]);
-                }
-            }
+            chest.chestContents = new ItemStack[this.cargo.length];
+            chest.chestContents = this.cargo;
 
             return true;
         }

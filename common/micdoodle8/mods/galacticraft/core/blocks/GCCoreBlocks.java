@@ -50,6 +50,7 @@ public class GCCoreBlocks
     public static Block enclosedWire;
     public static Block oxygenDetector;
     public static Block cargoLoader;
+    public static Block parachest;
 
     public static Icon[] blockIcons;
     
@@ -83,6 +84,7 @@ public class GCCoreBlocks
         GCCoreBlocks.enclosedWire = new GCCoreBlockEnclosed(GCCoreConfigManager.idBlockEnclosedWire).setHardness(3.5F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("enclosed");
         GCCoreBlocks.oxygenDetector = new GCCoreBlockOxygenDetector(GCCoreConfigManager.idBlockOxygenDetector).setHardness(3.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("oxygenDetector");
         GCCoreBlocks.cargoLoader = new GCCoreBlockCargoLoader(GCCoreConfigManager.idBlockCargoLoader).setHardness(3.0F).setStepSound(Block.soundMetalFootstep).setUnlocalizedName("cargo");
+        GCCoreBlocks.parachest = new GCCoreBlockParachest(GCCoreConfigManager.idBlockParachest).setHardness(3.0F).setStepSound(Block.soundWoodFootstep).setUnlocalizedName("parachest");
         
         // Hide certain items from NEI
         GalacticraftCore.hiddenItems.add(GCCoreBlocks.airLockSeal.blockID);
@@ -133,5 +135,6 @@ public class GCCoreBlocks
         GameRegistry.registerBlock(GCCoreBlocks.enclosedWire, GCCoreItemBlockEnclosedBlock.class, GCCoreBlocks.enclosedWire.getUnlocalizedName(), GalacticraftCore.MODID);
         GameRegistry.registerBlock(GCCoreBlocks.oxygenDetector, GCCoreItemBlock.class, GCCoreBlocks.oxygenDetector.getUnlocalizedName(), GalacticraftCore.MODID);
         GameRegistry.registerBlock(GCCoreBlocks.cargoLoader, GCCoreItemBlockCargoLoader.class, GCCoreBlocks.cargoLoader.getUnlocalizedName(), GalacticraftCore.MODID);
+        GameRegistry.registerBlock(GCCoreBlocks.parachest, GCCoreItemBlock.class, GCCoreBlocks.parachest.getUnlocalizedName(), GalacticraftCore.MODID);
     }
 }

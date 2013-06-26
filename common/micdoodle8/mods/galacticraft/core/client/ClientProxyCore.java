@@ -31,6 +31,7 @@ import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiCargoUnloader;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiFuelLoader;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiGalaxyMap;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiKnowledgeBook;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiParachest;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiRefinery;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiRocketRefill;
 import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelSpaceship;
@@ -67,6 +68,7 @@ import micdoodle8.mods.galacticraft.core.client.render.item.GCCoreItemRendererSp
 import micdoodle8.mods.galacticraft.core.client.render.item.GCCoreItemRendererUnlitTorch;
 import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntityAdvancedCraftingTableRenderer;
 import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntityLandingPadRenderer;
+import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntityParachestRenderer;
 import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntityRefineryRenderer;
 import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntityTreasureChestRenderer;
 import micdoodle8.mods.galacticraft.core.client.sounds.GCCoreSounds;
@@ -101,6 +103,7 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCollector;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCompressor;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenDistributor;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenSealer;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityParachest;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityRefinery;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
@@ -117,6 +120,7 @@ import net.minecraft.client.particle.EntitySmokeFX;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -124,8 +128,6 @@ import net.minecraftforge.client.EnumHelperClient;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
 import org.lwjgl.input.Keyboard;
-import basiccomponents.client.RenderCopperWire;
-import basiccomponents.common.tileentity.TileEntityCopperWire;
 import cofh.api.core.RegistryAccess;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
@@ -223,6 +225,7 @@ public class ClientProxyCore extends CommonProxyCore
         NetworkRegistry.instance().registerChannel(new GCCorePacketHandlerClient(), GalacticraftCore.CHANNEL, Side.CLIENT);
 
         ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityTreasureChest.class, new GCCoreTileEntityTreasureChestRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityParachest.class, new GCCoreTileEntityParachestRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityAdvancedCraftingTable.class, new GCCoreTileEntityAdvancedCraftingTableRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityRefinery.class, new GCCoreTileEntityRefineryRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityLandingPad.class, new GCCoreTileEntityLandingPadRenderer());
@@ -496,6 +499,12 @@ public class ClientProxyCore extends CommonProxyCore
         }
     }
 
+    @Override
+    public void displayParachestGui(EntityPlayer player, IInventory lander)
+    {
+        FMLClientHandler.instance().getClient().displayGuiScreen(new GCCoreGuiParachest(player.inventory, lander));
+    }
+
     public static boolean handleWaterMovement(EntityPlayer player)
     {
         return player.worldObj.isMaterialInBB(player.boundingBox.expand(-0.10000000149011612D, -0.4000000059604645D, -0.10000000149011612D), Material.water);
@@ -749,6 +758,17 @@ public class ClientProxyCore extends CommonProxyCore
                 {
                     return new GCCoreGuiCargoUnloader(player.inventory, (GCCoreTileEntityCargoUnloader) tile);
                 }
+            }
+            else
+            {
+                return null;
+            }
+        }
+        else if (ID == GCCoreConfigManager.idGuiParachest)
+        {
+            if (tile != null && tile instanceof GCCoreTileEntityParachest)
+            {
+                return new GCCoreGuiParachest(player.inventory, (GCCoreTileEntityParachest) tile);
             }
             else
             {

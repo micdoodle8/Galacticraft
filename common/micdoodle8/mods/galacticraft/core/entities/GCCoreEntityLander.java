@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Random;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLanderFlameFX;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.player.EntityPlayer;
@@ -280,9 +281,9 @@ public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInvento
         {
             return true;
         }
-        else if (this.riddenByEntity == null && this.onGround)
+        else if (this.riddenByEntity == null && this.onGround && var1 instanceof EntityPlayerMP)
         {
-            var1.displayGUIChest(this);
+            GCCoreUtil.openParachestInv((EntityPlayerMP)var1, this);
             return true;
         }
         else if (var1 instanceof EntityPlayerMP)

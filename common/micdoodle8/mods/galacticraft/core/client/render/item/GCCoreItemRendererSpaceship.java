@@ -50,7 +50,7 @@ public class GCCoreItemRendererSpaceship implements IItemRenderer
         if (type == ItemRenderType.INVENTORY)
         {
             int index = Math.min(Math.max(item.getItemDamage(), 0), EnumRocketType.values().length - 1);
-            if (EnumRocketType.values()[index].getInventorySpace() > 0)
+            if (EnumRocketType.values()[index].getInventorySpace() > 3)
             {
                 final ModelChest modelChest = this.chestModel;
                 FMLClientHandler.instance().getClient().renderEngine.bindTexture("/item/chest.png");
