@@ -6,6 +6,7 @@ import java.io.File;
 import micdoodle8.mods.galacticraft.API.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubMod;
 import micdoodle8.mods.galacticraft.API.IGalaxy;
+import micdoodle8.mods.galacticraft.API.SchematicRegistry;
 import micdoodle8.mods.galacticraft.core.GCCoreCreativeTab;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.GCCoreConnectionHandler;
@@ -18,6 +19,7 @@ import micdoodle8.mods.galacticraft.mars.entities.GCCoreEntityRocketT2;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityCreeperBoss;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityProjectileTNT;
 import micdoodle8.mods.galacticraft.mars.items.GCMarsItems;
+import micdoodle8.mods.galacticraft.mars.schematic.GCMarsSchematicRocketT2;
 import micdoodle8.mods.galacticraft.moon.dimension.GCMoonTeleportType;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.network.INetworkManager;
@@ -109,8 +111,7 @@ public class GalacticraftMars implements IGalacticraftSubMod
         this.registerCreatures();
         this.registerOtherEntities();
         GalacticraftMars.proxy.init(event);
-        // SchematicRegistry.registerSchematicRecipe(new
-        // GCMarsSchematicRocketT2());
+        //SchematicRegistry.registerSchematicRecipe(new GCMarsSchematicRocketT2());
     }
 
     @ServerStarting

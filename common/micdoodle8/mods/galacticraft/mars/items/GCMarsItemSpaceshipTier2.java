@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase.EnumRocketType;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import micdoodle8.mods.galacticraft.mars.entities.GCCoreEntityRocketT2;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
@@ -145,5 +146,10 @@ public class GCMarsItemSpaceshipTier2 extends Item implements IHoldableItem
     public boolean shouldHoldAboveHead(EntityPlayer player)
     {
         return true;
+    }
+    
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IconRegister par1IconRegister)
+    {
     }
 }

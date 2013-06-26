@@ -31,7 +31,6 @@ public class GCCoreItemKnowledgeBook extends Item
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister par1IconRegister)
     {
-        this.itemIcon = par1IconRegister.registerIcon("galacticraftcore:knowledge_book" + GalacticraftCore.TEXTURE_SUFFIX);
     }
 
     @Override
