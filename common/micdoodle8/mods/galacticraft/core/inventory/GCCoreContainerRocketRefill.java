@@ -60,24 +60,14 @@ public class GCCoreContainerRocketRefill extends Container
     {
         int var4;
         int var5;
-        int lastRow = slotCount / 9 - 1;
+        int lastRow = slotCount / 9;
         int ySize = 145 + (this.rocketType.getInventorySpace() - 3) * 2;
 
-        for (var4 = 0; var4 < lastRow + 1; ++var4)
+        for (var4 = 0; var4 < lastRow; ++var4)
         {
             for (var5 = 0; var5 < 9; ++var5)
             {
-                if (var4 != lastRow || var5 < 6)
-                {
-                    int offset = 0;
-
-                    if (var4 == lastRow)
-                    {
-                        offset = 28;
-                    }
-
-                    this.addSlotToContainer(new Slot(this.spaceshipInv, var5 + var4 * 9, 8 + var5 * 18 + offset, 50 + var4 * 18));
-                }
+                this.addSlotToContainer(new Slot(this.spaceshipInv, var5 + var4 * 9, 8 + var5 * 18, 50 + var4 * 18));
             }
         }
 
