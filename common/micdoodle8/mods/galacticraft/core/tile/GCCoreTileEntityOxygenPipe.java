@@ -1,8 +1,10 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import mekanism.api.EnumGas;
+import mekanism.api.GasNetwork;
 import mekanism.api.IPressurizedTube;
 import mekanism.api.ITubeConnection;
+import mekanism.api.Object3D;
 import micdoodle8.mods.galacticraft.API.IColorable;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,31 +24,86 @@ public class GCCoreTileEntityOxygenPipe extends TileEntity implements ITubeConne
     private byte preLoadColor;
     private byte preColorCooldown;
     private boolean setColor = false;
+    
+    public GasNetwork gasNetwork;
 
     @Override
-    public boolean canTransferGas(TileEntity fromTile)
+    public boolean canTransferGas()
     {
-        if (fromTile instanceof IColorable)
-        {
-            if (this.getColor() == ((IColorable) fromTile).getColor())
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        else
-        {
+//        if (fromTile instanceof IColorable)
+//        {
+//            if (this.getColor() == ((IColorable) fromTile).getColor())
+//            {
+//                return true;
+//            }
+//            else
+//            {
+//                return false;
+//            }
+//        }
+//        else
+//        {
             return true;
-        }
+//        }
     }
 
     @Override
     public boolean canUpdate()
     {
         return !this.setColor;
+    }
+    
+    public GasNetwork getNetwork()
+    {
+        if (this.gasNetwork == null)
+        {
+            this.gasNetwork = new GasNetwork();
+        }
+        
+        return this.gasNetwork;
+    }
+
+    @Override
+    public void invalidate()
+    {
+        if(!worldObj.isRemote)
+        {
+            this.getNetwork().split(this);
+        }
+
+        super.invalidate();
+    }
+
+    @Override
+    public void setNetwork(GasNetwork network)
+    {
+        this.gasNetwork = network;
+    }
+
+    @Override
+    public void refreshNetwork() 
+    {
+        if(!worldObj.isRemote)
+        {
+            if(canTransferGas())
+            {
+                for(ForgeDirection side : ForgeDirection.VALID_DIRECTIONS)
+                {
+                    TileEntity tileEntity = Object3D.get(this).getFromSide(side).getTileEntity(worldObj);
+
+                    if(tileEntity instanceof IPressurizedTube && ((IPressurizedTube)tileEntity).canTransferGas())
+                    {
+                        this.getNetwork().merge(((IPressurizedTube)tileEntity).getNetwork());
+                    }
+                }
+
+                this.getNetwork().refresh();
+            }
+            else 
+            {
+                this.getNetwork().split(this);
+            }
+        }
     }
 
     @Override

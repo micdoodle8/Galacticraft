@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import javax.swing.JEditorPane;
 import javax.swing.JOptionPane;
+import mekanism.api.GasTransmission;
 import micdoodle8.mods.galacticraft.API.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubMod;
 import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
@@ -260,6 +261,8 @@ public class GalacticraftCore
         SchematicRegistry.registerSchematicRecipe(new GCCoreSchematicRocketT1());
         SchematicRegistry.registerSchematicRecipe(new GCCoreSchematicMoonBuggy());
         SchematicRegistry.registerSchematicRecipe(new GCCoreSchematicAdd());
+        
+        GasTransmission.register();
 
         RecipeUtil.addSmeltingRecipes();
         this.registerCreatures();
