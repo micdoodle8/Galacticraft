@@ -15,6 +15,7 @@ import codechicken.nei.api.IConfigureNEI;
 public class NEIGalacticraftConfig implements IConfigureNEI
 {
     private static HashMap<ArrayList<PositionedStack>, PositionedStack> rocketBenchRecipes = new HashMap<ArrayList<PositionedStack>, PositionedStack>();
+    private static HashMap<ArrayList<PositionedStack>, PositionedStack> buggyBenchRecipes = new HashMap<ArrayList<PositionedStack>, PositionedStack>();
     private static HashMap<PositionedStack, PositionedStack> refineryRecipes = new HashMap<PositionedStack, PositionedStack>();
 
     @Override
@@ -24,6 +25,8 @@ public class NEIGalacticraftConfig implements IConfigureNEI
         API.hideItems(GalacticraftCore.hiddenItems);
         API.registerRecipeHandler(new RocketT1RecipeHandler());
         API.registerUsageHandler(new RocketT1RecipeHandler());
+        API.registerRecipeHandler(new BuggyRecipeHandler());
+        API.registerUsageHandler(new BuggyRecipeHandler());
         API.registerRecipeHandler(new RefineryRecipeHandler());
         API.registerUsageHandler(new RefineryRecipeHandler());
     }
@@ -45,6 +48,11 @@ public class NEIGalacticraftConfig implements IConfigureNEI
         NEIGalacticraftConfig.rocketBenchRecipes.put(input, output);
     }
 
+    public void registerBuggyBenchRecipe(ArrayList<PositionedStack> input, PositionedStack output)
+    {
+        NEIGalacticraftConfig.buggyBenchRecipes.put(input, output);
+    }
+
     public void registerRefineryRecipe(PositionedStack input, PositionedStack output)
     {
         NEIGalacticraftConfig.refineryRecipes.put(input, output);
@@ -53,6 +61,11 @@ public class NEIGalacticraftConfig implements IConfigureNEI
     public static Set<Entry<ArrayList<PositionedStack>, PositionedStack>> getRocketBenchRecipes()
     {
         return NEIGalacticraftConfig.rocketBenchRecipes.entrySet();
+    }
+
+    public static Set<Entry<ArrayList<PositionedStack>, PositionedStack>> getBuggyBenchRecipes()
+    {
+        return NEIGalacticraftConfig.buggyBenchRecipes.entrySet();
     }
 
     public static Set<Entry<PositionedStack, PositionedStack>> getRefineryRecipes()
@@ -213,5 +226,185 @@ public class NEIGalacticraftConfig implements IConfigureNEI
         input1.add(new PositionedStack(new ItemStack(Block.chest), 90 + 1 * 26, -15 + changey));
         input1.add(new PositionedStack(new ItemStack(Block.chest), 90 + 2 * 26, -15 + changey));
         this.registerRocketBenchRecipe(input1, new PositionedStack(new ItemStack(GCCoreItems.spaceship, 1, 3), 139, 69 + changey));
+
+        input1 = new ArrayList<PositionedStack>();
+        input1.add(new PositionedStack(new ItemStack(GCCoreItems.buggyMaterial, 1, 0), 18, 37));
+        input1.add(new PositionedStack(new ItemStack(GCCoreItems.buggyMaterial, 1, 0), 18, 91));
+        input1.add(new PositionedStack(new ItemStack(GCCoreItems.buggyMaterial, 1, 0), 90, 37));
+        input1.add(new PositionedStack(new ItemStack(GCCoreItems.buggyMaterial, 1, 0), 90, 91));
+        for (int x = 0; x < 3; x++)
+        {
+            for (int y = 0; y < 4; y++)
+            {
+                if (x == 1 && y == 1)
+                {
+                    input1.add(new PositionedStack(new ItemStack(GCCoreItems.buggyMaterial, 1, 1), 36 + x * 18, 37 + y * 18));
+                }
+                else
+                {
+                    input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlating), 36 + x * 18, 37 + y * 18));
+                }
+            }
+        }
+        this.registerBuggyBenchRecipe(input1, new PositionedStack(new ItemStack(GCCoreItems.buggy, 1, 0), 139, 78 + changey));
+
+        input1 = new ArrayList<PositionedStack>();
+        input1.add(new PositionedStack(new ItemStack(GCCoreItems.buggyMaterial, 1, 0), 18, 37));
+        input1.add(new PositionedStack(new ItemStack(GCCoreItems.buggyMaterial, 1, 0), 18, 91));
+        input1.add(new PositionedStack(new ItemStack(GCCoreItems.buggyMaterial, 1, 0), 90, 37));
+        input1.add(new PositionedStack(new ItemStack(GCCoreItems.buggyMaterial, 1, 0), 90, 91));
+        for (int x = 0; x < 3; x++)
+        {
+            for (int y = 0; y < 4; y++)
+            {
+                if (x == 1 && y == 1)
+                {
+                    input1.add(new PositionedStack(new ItemStack(GCCoreItems.buggyMaterial, 1, 1), 36 + x * 18, 37 + y * 18));
+                }
+                else
+                {
+                    input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlating), 36 + x * 18, 37 + y * 18));
+                }
+            }
+        }
+        input1.add(new PositionedStack(new ItemStack(GCCoreItems.buggyMaterial, 1, 2), 90 + 0 * 26, -15 + changey));
+        this.registerBuggyBenchRecipe(input1, new PositionedStack(new ItemStack(GCCoreItems.buggy, 1, 1), 139, 78 + changey));
+
+        input1 = new ArrayList<PositionedStack>();
+        input1.add(new PositionedStack(new ItemStack(GCCoreItems.buggyMaterial, 1, 0), 18, 37));
+        input1.add(new PositionedStack(new ItemStack(GCCoreItems.buggyMaterial, 1, 0), 18, 91));
+        input1.add(new PositionedStack(new ItemStack(GCCoreItems.buggyMaterial, 1, 0), 90, 37));
+        input1.add(new PositionedStack(new ItemStack(GCCoreItems.buggyMaterial, 1, 0), 90, 91));
+        for (int x = 0; x < 3; x++)
+        {
+            for (int y = 0; y < 4; y++)
+            {
+                if (x == 1 && y == 1)
+                {
+                    input1.add(new PositionedStack(new ItemStack(GCCoreItems.buggyMaterial, 1, 1), 36 + x * 18, 37 + y * 18));
+                }
+                else
+                {
+                    input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlating), 36 + x * 18, 37 + y * 18));
+                }
+            }
+        }
+        input1.add(new PositionedStack(new ItemStack(GCCoreItems.buggyMaterial, 1, 2), 90 + 1 * 26, -15 + changey));
+        this.registerBuggyBenchRecipe(input1, new PositionedStack(new ItemStack(GCCoreItems.buggy, 1, 1), 139, 78 + changey));
+
+        input1 = new ArrayList<PositionedStack>();
+        input1.add(new PositionedStack(new ItemStack(GCCoreItems.buggyMaterial, 1, 0), 18, 37));
+        input1.add(new PositionedStack(new ItemStack(GCCoreItems.buggyMaterial, 1, 0), 18, 91));
+        input1.add(new PositionedStack(new ItemStack(GCCoreItems.buggyMaterial, 1, 0), 90, 37));
+        input1.add(new PositionedStack(new ItemStack(GCCoreItems.buggyMaterial, 1, 0), 90, 91));
+        for (int x = 0; x < 3; x++)
+        {
+            for (int y = 0; y < 4; y++)
+            {
+                if (x == 1 && y == 1)
+                {
+                    input1.add(new PositionedStack(new ItemStack(GCCoreItems.buggyMaterial, 1, 1), 36 + x * 18, 37 + y * 18));
+                }
+                else
+                {
+                    input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlating), 36 + x * 18, 37 + y * 18));
+                }
+            }
+        }
+        input1.add(new PositionedStack(new ItemStack(GCCoreItems.buggyMaterial, 1, 2), 90 + 2 * 26, -15 + changey));
+        this.registerBuggyBenchRecipe(input1, new PositionedStack(new ItemStack(GCCoreItems.buggy, 1, 1), 139, 78 + changey));
+
+        input1 = new ArrayList<PositionedStack>();
+        input1.add(new PositionedStack(new ItemStack(GCCoreItems.buggyMaterial, 1, 0), 18, 37));
+        input1.add(new PositionedStack(new ItemStack(GCCoreItems.buggyMaterial, 1, 0), 18, 91));
+        input1.add(new PositionedStack(new ItemStack(GCCoreItems.buggyMaterial, 1, 0), 90, 37));
+        input1.add(new PositionedStack(new ItemStack(GCCoreItems.buggyMaterial, 1, 0), 90, 91));
+        for (int x = 0; x < 3; x++)
+        {
+            for (int y = 0; y < 4; y++)
+            {
+                if (x == 1 && y == 1)
+                {
+                    input1.add(new PositionedStack(new ItemStack(GCCoreItems.buggyMaterial, 1, 1), 36 + x * 18, 37 + y * 18));
+                }
+                else
+                {
+                    input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlating), 36 + x * 18, 37 + y * 18));
+                }
+            }
+        }
+        input1.add(new PositionedStack(new ItemStack(GCCoreItems.buggyMaterial, 1, 2), 90 + 0 * 26, -15 + changey));
+        input1.add(new PositionedStack(new ItemStack(GCCoreItems.buggyMaterial, 1, 2), 90 + 1 * 26, -15 + changey));
+        this.registerBuggyBenchRecipe(input1, new PositionedStack(new ItemStack(GCCoreItems.buggy, 1, 2), 139, 78 + changey));
+
+        input1 = new ArrayList<PositionedStack>();
+        input1.add(new PositionedStack(new ItemStack(GCCoreItems.buggyMaterial, 1, 0), 18, 37));
+        input1.add(new PositionedStack(new ItemStack(GCCoreItems.buggyMaterial, 1, 0), 18, 91));
+        input1.add(new PositionedStack(new ItemStack(GCCoreItems.buggyMaterial, 1, 0), 90, 37));
+        input1.add(new PositionedStack(new ItemStack(GCCoreItems.buggyMaterial, 1, 0), 90, 91));
+        for (int x = 0; x < 3; x++)
+        {
+            for (int y = 0; y < 4; y++)
+            {
+                if (x == 1 && y == 1)
+                {
+                    input1.add(new PositionedStack(new ItemStack(GCCoreItems.buggyMaterial, 1, 1), 36 + x * 18, 37 + y * 18));
+                }
+                else
+                {
+                    input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlating), 36 + x * 18, 37 + y * 18));
+                }
+            }
+        }
+        input1.add(new PositionedStack(new ItemStack(GCCoreItems.buggyMaterial, 1, 2), 90 + 1 * 26, -15 + changey));
+        input1.add(new PositionedStack(new ItemStack(GCCoreItems.buggyMaterial, 1, 2), 90 + 2 * 26, -15 + changey));
+        this.registerBuggyBenchRecipe(input1, new PositionedStack(new ItemStack(GCCoreItems.buggy, 1, 2), 139, 78 + changey));
+
+        input1 = new ArrayList<PositionedStack>();
+        input1.add(new PositionedStack(new ItemStack(GCCoreItems.buggyMaterial, 1, 0), 18, 37));
+        input1.add(new PositionedStack(new ItemStack(GCCoreItems.buggyMaterial, 1, 0), 18, 91));
+        input1.add(new PositionedStack(new ItemStack(GCCoreItems.buggyMaterial, 1, 0), 90, 37));
+        input1.add(new PositionedStack(new ItemStack(GCCoreItems.buggyMaterial, 1, 0), 90, 91));
+        for (int x = 0; x < 3; x++)
+        {
+            for (int y = 0; y < 4; y++)
+            {
+                if (x == 1 && y == 1)
+                {
+                    input1.add(new PositionedStack(new ItemStack(GCCoreItems.buggyMaterial, 1, 1), 36 + x * 18, 37 + y * 18));
+                }
+                else
+                {
+                    input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlating), 36 + x * 18, 37 + y * 18));
+                }
+            }
+        }
+        input1.add(new PositionedStack(new ItemStack(GCCoreItems.buggyMaterial, 1, 2), 90 + 0 * 26, -15 + changey));
+        input1.add(new PositionedStack(new ItemStack(GCCoreItems.buggyMaterial, 1, 2), 90 + 2 * 26, -15 + changey));
+        this.registerBuggyBenchRecipe(input1, new PositionedStack(new ItemStack(GCCoreItems.buggy, 1, 2), 139, 78 + changey));
+
+        input1 = new ArrayList<PositionedStack>();
+        input1.add(new PositionedStack(new ItemStack(GCCoreItems.buggyMaterial, 1, 0), 18, 37));
+        input1.add(new PositionedStack(new ItemStack(GCCoreItems.buggyMaterial, 1, 0), 18, 91));
+        input1.add(new PositionedStack(new ItemStack(GCCoreItems.buggyMaterial, 1, 0), 90, 37));
+        input1.add(new PositionedStack(new ItemStack(GCCoreItems.buggyMaterial, 1, 0), 90, 91));
+        for (int x = 0; x < 3; x++)
+        {
+            for (int y = 0; y < 4; y++)
+            {
+                if (x == 1 && y == 1)
+                {
+                    input1.add(new PositionedStack(new ItemStack(GCCoreItems.buggyMaterial, 1, 1), 36 + x * 18, 37 + y * 18));
+                }
+                else
+                {
+                    input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlating), 36 + x * 18, 37 + y * 18));
+                }
+            }
+        }
+        input1.add(new PositionedStack(new ItemStack(GCCoreItems.buggyMaterial, 1, 2), 90 + 0 * 26, -15 + changey));
+        input1.add(new PositionedStack(new ItemStack(GCCoreItems.buggyMaterial, 1, 2), 90 + 1 * 26, -15 + changey));
+        input1.add(new PositionedStack(new ItemStack(GCCoreItems.buggyMaterial, 1, 2), 90 + 2 * 26, -15 + changey));
+        this.registerBuggyBenchRecipe(input1, new PositionedStack(new ItemStack(GCCoreItems.buggy, 1, 3), 139, 78 + changey));
     }
 }
