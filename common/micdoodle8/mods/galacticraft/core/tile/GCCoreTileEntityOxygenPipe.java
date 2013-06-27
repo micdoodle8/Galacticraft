@@ -30,21 +30,25 @@ public class GCCoreTileEntityOxygenPipe extends TileEntity implements ITubeConne
     @Override
     public boolean canTransferGas()
     {
-//        if (fromTile instanceof IColorable)
-//        {
-//            if (this.getColor() == ((IColorable) fromTile).getColor())
-//            {
-//                return true;
-//            }
-//            else
-//            {
-//                return false;
-//            }
-//        }
-//        else
-//        {
-            return true;
-//        }
+        return true;
+    }
+
+    @Override
+    public boolean canTransferGasToTube(TileEntity tile)
+    {
+        if (tile instanceof IColorable)
+        {
+            if (this.getColor() == ((IColorable) tile).getColor())
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        
+        return true;
     }
 
     @Override
