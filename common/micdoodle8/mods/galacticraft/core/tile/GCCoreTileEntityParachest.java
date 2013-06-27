@@ -33,7 +33,6 @@ public class GCCoreTileEntityParachest extends TileEntity implements IInventory
 
     private int ticksSinceSync;
     private int field_94046_i = -1;
-    private String field_94045_s;
 
     public GCCoreTileEntityParachest()
     {
@@ -130,22 +129,12 @@ public class GCCoreTileEntityParachest extends TileEntity implements IInventory
         return true;
     }
 
-    public void func_94043_a(String par1Str)
-    {
-        this.field_94045_s = par1Str;
-    }
-
     @Override
     public void readFromNBT(NBTTagCompound nbt)
     {
         super.readFromNBT(nbt);
         NBTTagList nbttaglist = nbt.getTagList("Items");
         this.chestContents = new ItemStack[nbt.getInteger("chestContentLength")];
-
-        if (nbt.hasKey("CustomName"))
-        {
-            this.field_94045_s = nbt.getString("CustomName");
-        }
 
         for (int i = 0; i < nbttaglist.tagCount(); ++i)
         {
@@ -180,11 +169,6 @@ public class GCCoreTileEntityParachest extends TileEntity implements IInventory
         }
 
         nbt.setTag("Items", nbttaglist);
-
-        if (this.isInvNameLocalized())
-        {
-            nbt.setString("CustomName", this.field_94045_s);
-        }
     }
 
     @Override
