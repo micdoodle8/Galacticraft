@@ -634,7 +634,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
             this.chestSpawnCooldown--;
         }
         
-        if (this.chestSpawnCooldown == 100)
+        if (this.chestSpawnCooldown == 180)
         {
             if (this.chestSpawnVector != null)
             {
