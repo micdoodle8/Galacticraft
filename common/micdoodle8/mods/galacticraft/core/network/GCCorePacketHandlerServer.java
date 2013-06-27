@@ -1,7 +1,10 @@
 package micdoodle8.mods.galacticraft.core.network;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import micdoodle8.mods.galacticraft.API.IDisableableMachine;
 import micdoodle8.mods.galacticraft.API.IOrbitDimension;
 import micdoodle8.mods.galacticraft.API.ISchematicPage;
@@ -12,6 +15,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreSpaceStationData;
 import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityBuggy;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityLander;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerSchematic;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryPlayer;
@@ -20,16 +24,19 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.INetworkManager;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.network.packet.Packet9Respawn;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
@@ -320,30 +327,6 @@ public class GCCorePacketHandlerServer implements IPacketHandler
                 }
             }
         }
-        // else if (packetType == ) TODO
-        // {
-        // final Class[] decodeAs = {Integer.class, Float.class, Double.class,
-        // Double.class, Double.class};
-        // final Object[] packetReadout = PacketUtil.readPacketData(data,
-        // decodeAs);
-        //
-        // for (final Object object : player.worldObj.loadedEntityList)
-        // {
-        // if (object instanceof GCCoreEntityLander)
-        // {
-        // final GCCoreEntityLander entity = (GCCoreEntityLander) object;
-        //
-        // if (entity.entityId == (Integer) packetReadout[0])
-        // {
-        // entity.worldObj.createExplosion(entity, (Double) packetReadout[2],
-        // (Double) packetReadout[3], (Double) packetReadout[4], (Float)
-        // packetReadout[1], false);
-        //
-        // entity.setDead();
-        // }
-        // }
-        // }
-        // }
         else if (packetType == 17)
         {
             final Class[] decodeAs = { Integer.class, Integer.class, Integer.class };
@@ -387,6 +370,44 @@ public class GCCorePacketHandlerServer implements IPacketHandler
             if (player.ridingEntity instanceof GCCoreEntityBuggy)
             {
                 GCCoreUtil.openBuggyInv(player, (GCCoreEntityBuggy) player.ridingEntity, ((GCCoreEntityBuggy) player.ridingEntity).getType());
+            }
+        }
+        else if (packetType == 21)
+        {
+            final Class[] decodeAs = { Integer.class };
+            final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
+            Entity e = player.worldObj.getEntityByID((Integer) packetReadout[0]);
+            
+            if (e != null && e instanceof GCCoreEntityLander)
+            {
+                GCCoreEntityLander lander = (GCCoreEntityLander) e;
+
+                final ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                final DataOutputStream packetData = new DataOutputStream(bytes);
+                
+                try
+                {
+                    packetData.writeInt(29);
+                    packetData.writeInt(lander.entityId);
+                    packetData.writeInt(lander.getSizeInventory());
+                    
+                    for (int i = 0; i < lander.getSizeInventory(); i++)
+                    {
+                        ItemStack stackAt = lander.getStackInSlot(i);
+                        Packet.writeItemStack(stackAt, packetData);
+                    }
+
+                    final Packet250CustomPayload pkt = new Packet250CustomPayload();
+                    pkt.channel = GalacticraftCore.CHANNEL;
+                    pkt.data = bytes.toByteArray();
+                    pkt.length = packet.data.length;
+                    
+                    player.playerNetServerHandler.sendPacketToPlayer(pkt);
+                }
+                catch (final IOException ex)
+                {
+                    ex.printStackTrace();
+                }
             }
         }
     }

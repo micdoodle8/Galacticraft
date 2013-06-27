@@ -21,6 +21,8 @@ import net.minecraft.world.World;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.IPacketReceiver;
 import com.google.common.io.ByteArrayDataInput;
+import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -34,7 +36,7 @@ public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInvento
     float accel = 0.04F;
     float turnFactor = 2.0F;
     private double lastMotionY;
-    public ItemStack[] chestContents = new ItemStack[27];
+    public ItemStack[] chestContents;
     public int numUsingPlayers;
     public GCCorePlayerMP playerSpawnedIn;
     private final float MAX_PITCH_ROTATION = 25.0F;
@@ -280,6 +282,11 @@ public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInvento
     {
         if (this.worldObj.isRemote)
         {
+            if (this.riddenByEntity != null)
+            {
+                this.riddenByEntity.mountEntity(this);
+            }
+            
             return true;
         }
         else if (this.riddenByEntity == null && this.onGround && var1 instanceof EntityPlayerMP)
@@ -289,8 +296,7 @@ public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInvento
         }
         else if (var1 instanceof EntityPlayerMP)
         {
-            final Object[] toSend2 = { 0 };
-            ((EntityPlayerMP) var1).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, toSend2));
+            ((EntityPlayerMP) var1).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, new Object[] { 0 }));
             var1.mountEntity(this);
             return true;
         }
@@ -471,6 +477,7 @@ public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInvento
     {
         final ArrayList<Object> objList = new ArrayList<Object>();
         objList.add(this.landed);
+        objList.add(this.chestContents != null ? this.chestContents.length : 0);
         return objList;
     }
 
@@ -490,6 +497,13 @@ public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInvento
     public void readNetworkedData(ByteArrayDataInput dataStream)
     {
         this.landed = dataStream.readBoolean();
+        
+        int cargoLength = dataStream.readInt();
+        if (this.chestContents == null || this.chestContents.length == 0)
+        {
+            this.chestContents = new ItemStack[cargoLength];
+            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 21, new Object[] {this.entityId}));
+        }
     }
 
     @Override

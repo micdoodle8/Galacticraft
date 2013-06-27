@@ -16,8 +16,10 @@ import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityWeldingSmoke;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiBuggy;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiChoosePlanet;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiGalaxyMap;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiParachest;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreSpaceStationData;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityBuggy;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityLander;
 import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerClient;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
@@ -25,14 +27,18 @@ import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.moon.GCMoonConfigManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraftforge.common.DimensionManager;
 import org.lwjgl.input.Keyboard;
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
@@ -423,7 +429,7 @@ public class GCCorePacketHandlerClient implements IPacketHandler
         }
         else if (packetType == 28)
         {
-            final Class[] decodeAs = { Integer.class, Integer.class };
+            final Class[] decodeAs = { Integer.class, Integer.class, Integer.class };
             final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
 
             int gui = (Integer) packetReadout[1];
@@ -438,10 +444,41 @@ public class GCCorePacketHandlerClient implements IPacketHandler
                 }
                 break;
             case 1:
+                int entityID = (Integer) packetReadout[2];
+                Entity entity = player.worldObj.getEntityByID(entityID);
                 player.openContainer.windowId = (Integer) packetReadout[0];
+                
+                if (entity != null && entity instanceof GCCoreEntityLander)
+                {
+                    FMLClientHandler.instance().getClient().displayGuiScreen(new GCCoreGuiParachest(player.inventory, (GCCoreEntityLander)entity));
+                }
                 break;
             }
-
+        }
+        else if (packetType == 29)
+        {
+            try
+            {
+                int entityID = data.readInt();
+                Entity e = player.worldObj.getEntityByID(entityID);
+                int length = data.readInt();
+                
+                if (e != null && e instanceof GCCoreEntityLander)
+                {
+                    GCCoreEntityLander lander = (GCCoreEntityLander)e;
+                    lander.chestContents = new ItemStack[length];
+                    
+                    for (int i = 0; i < length; i++)
+                    {
+                        ItemStack stack = Packet.readItemStack(data);
+                        lander.setInventorySlotContents(i, stack);
+                    }
+                }
+            }
+            catch (IOException e1)
+            {
+                e1.printStackTrace();
+            }
         }
     }
 }

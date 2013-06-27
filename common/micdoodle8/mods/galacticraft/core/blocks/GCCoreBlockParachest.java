@@ -2,6 +2,8 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import static net.minecraftforge.common.ForgeDirection.DOWN;
 import java.util.Random;
+import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityParachest;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
@@ -57,7 +59,7 @@ public class GCCoreBlockParachest extends BlockChest
 
             if (iinventory != null && par5EntityPlayer instanceof EntityPlayerMP)
             {
-                GCCoreUtil.openParachestInv((EntityPlayerMP) par5EntityPlayer, iinventory);
+                par5EntityPlayer.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiParachest, par1World, par2, par3, par4);
             }
 
             return true;
