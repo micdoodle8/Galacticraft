@@ -35,7 +35,7 @@ public class GCCoreOverworldTeleportType implements ITeleportType
     }
 
     @Override
-    public Vector3 getParaChestSpawnLocation(WorldServer world, Entity chest, EntityPlayerMP player, Random rand)
+    public Vector3 getParaChestSpawnLocation(WorldServer world, EntityPlayerMP player, Random rand)
     {
         final double x = (rand.nextDouble() * 2 - 1.0D) * 5.0D;
         final double z = (rand.nextDouble() * 2 - 1.0D) * 5.0D;

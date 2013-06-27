@@ -39,7 +39,7 @@ public class GCMoonTeleportType implements ITeleportType
     }
 
     @Override
-    public Vector3 getParaChestSpawnLocation(WorldServer world, Entity chest, EntityPlayerMP player, Random rand)
+    public Vector3 getParaChestSpawnLocation(WorldServer world, EntityPlayerMP player, Random rand)
     {
         if (GCCoreConfigManager.disableLander)
         {

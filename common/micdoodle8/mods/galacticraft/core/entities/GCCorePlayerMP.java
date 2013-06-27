@@ -40,6 +40,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import universalelectricity.core.vector.Vector3;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
@@ -95,6 +96,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
     private boolean hasOpenedPlanetSelectionGui = false;
 
     public int chestSpawnCooldown;
+    public Vector3 chestSpawnVector;
 
     public int teleportCooldown;
 
@@ -630,6 +632,21 @@ public class GCCorePlayerMP extends EntityPlayerMP
         if (this.chestSpawnCooldown > 0)
         {
             this.chestSpawnCooldown--;
+        }
+        
+        if (this.chestSpawnCooldown == 100)
+        {
+            if (this.chestSpawnVector != null)
+            {
+                GCCoreEntityParaChest chest = new GCCoreEntityParaChest(this.worldObj, this.rocketStacks);
+                
+                chest.setPosition(this.chestSpawnVector.x, this.chestSpawnVector.y, this.chestSpawnVector.z);
+
+                if (!this.worldObj.isRemote)
+                {
+                    this.worldObj.spawnEntityInWorld(chest);
+                }
+            }
         }
 
         //

@@ -761,21 +761,8 @@ public class WorldUtil
 
             if (var8.chestSpawnCooldown == 0)
             {
-                final GCCoreEntityParaChest chest = new GCCoreEntityParaChest(var0, var8.rocketStacks);
-
-                final Vector3 chestVec = type.getParaChestSpawnLocation((WorldServer) var1.worldObj, chest, var8, new Random());
-
-                if (chestVec != null)
-                {
-                    chest.setPosition(chestVec.x, chestVec.y, chestVec.z);
-
-                    if (!var0.isRemote)
-                    {
-                        var0.spawnEntityInWorld(chest);
-                    }
-
-                    var8.chestSpawnCooldown = 200;
-                }
+                var8.chestSpawnVector = type.getParaChestSpawnLocation((WorldServer) var1.worldObj, var8, new Random());
+                var8.chestSpawnCooldown = 200;
             }
         }
 
