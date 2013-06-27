@@ -2,8 +2,9 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import java.util.Iterator;
 import java.util.List;
-import cpw.mods.fml.common.registry.LanguageRegistry;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockParachest;
+import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ContainerChest;
@@ -14,6 +15,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class GCCoreTileEntityParachest extends TileEntity implements IInventory
 {
@@ -37,6 +41,17 @@ public class GCCoreTileEntityParachest extends TileEntity implements IInventory
     public GCCoreTileEntityParachest()
     {
         this(3);
+    }
+    
+    @Override
+    public void validate()
+    {
+        super.validate();
+        
+        if (this.worldObj != null && this.worldObj.isRemote)
+        {
+            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, new Object[] {this.xCoord, this.yCoord, this.zCoord}));
+        }
     }
 
     public GCCoreTileEntityParachest(int slots)

@@ -20,6 +20,7 @@ import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerSchematic;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryPlayer;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemParachute;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityParachest;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
@@ -394,6 +395,46 @@ public class GCCorePacketHandlerServer implements IPacketHandler
                     for (int i = 0; i < lander.getSizeInventory(); i++)
                     {
                         ItemStack stackAt = lander.getStackInSlot(i);
+                        Packet.writeItemStack(stackAt, packetData);
+                    }
+
+                    final Packet250CustomPayload pkt = new Packet250CustomPayload();
+                    pkt.channel = GalacticraftCore.CHANNEL;
+                    pkt.data = bytes.toByteArray();
+                    pkt.length = packet.data.length;
+                    
+                    player.playerNetServerHandler.sendPacketToPlayer(pkt);
+                }
+                catch (final IOException ex)
+                {
+                    ex.printStackTrace();
+                }
+            }
+        }
+        else if (packetType == 22)
+        {
+            final Class[] decodeAs = { Integer.class, Integer.class, Integer.class };
+            final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
+            TileEntity tile = player.worldObj.getBlockTileEntity((Integer)packetReadout[0], (Integer)packetReadout[1], (Integer)packetReadout[2]);
+            
+            if (tile != null && tile instanceof GCCoreTileEntityParachest)
+            {
+                GCCoreTileEntityParachest chest = (GCCoreTileEntityParachest) tile;
+
+                final ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                final DataOutputStream packetData = new DataOutputStream(bytes);
+                
+                try
+                {
+                    packetData.writeInt(30);
+                    packetData.writeInt(chest.xCoord);
+                    packetData.writeInt(chest.yCoord);
+                    packetData.writeInt(chest.zCoord);
+                    packetData.writeInt(chest.getSizeInventory());
+                    
+                    for (int i = 0; i < chest.getSizeInventory(); i++)
+                    {
+                        ItemStack stackAt = chest.getStackInSlot(i);
                         Packet.writeItemStack(stackAt, packetData);
                     }
 
