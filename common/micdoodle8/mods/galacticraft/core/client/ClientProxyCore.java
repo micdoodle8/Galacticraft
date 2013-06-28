@@ -221,7 +221,6 @@ public class ClientProxyCore extends CommonProxyCore
 
         TickRegistry.registerTickHandler(new GCCoreTickHandlerClient(), Side.CLIENT);
         TickRegistry.registerScheduledTickHandler(new GCCoreTickHandlerSlowClient(), Side.CLIENT);
-        KeyBindingRegistry.registerKeyBinding(new GCKeyHandler());
         NetworkRegistry.instance().registerChannel(new GCCorePacketHandlerClient(), GalacticraftCore.CHANNEL, Side.CLIENT);
 
         ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityTreasureChest.class, new GCCoreTileEntityTreasureChestRenderer());
@@ -307,6 +306,8 @@ public class ClientProxyCore extends CommonProxyCore
                 }
             }
         }
+        
+        KeyBindingRegistry.registerKeyBinding(new GCKeyHandler());
     }
 
     @Override
