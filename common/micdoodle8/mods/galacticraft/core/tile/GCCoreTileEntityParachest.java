@@ -37,11 +37,6 @@ public class GCCoreTileEntityParachest extends TileEntity implements IInventory
 
     private int ticksSinceSync;
     private int field_94046_i = -1;
-
-    public GCCoreTileEntityParachest()
-    {
-        this(3);
-    }
     
     @Override
     public void validate()
@@ -52,11 +47,6 @@ public class GCCoreTileEntityParachest extends TileEntity implements IInventory
         {
             PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, new Object[] {this.xCoord, this.yCoord, this.zCoord}));
         }
-    }
-
-    public GCCoreTileEntityParachest(int slots)
-    {
-        this.chestContents = new ItemStack[slots];
     }
 
     @Override
@@ -310,6 +300,11 @@ public class GCCoreTileEntityParachest extends TileEntity implements IInventory
         this.checkForAdjacentChests();
         ++this.ticksSinceSync;
         float f;
+        
+        if (this.worldObj.isRemote && this.chestContents == null)
+        {
+//            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, new Object[] {this.xCoord, this.yCoord, this.zCoord}));
+        }
 
         if (!this.worldObj.isRemote && this.numUsingPlayers != 0 && (this.ticksSinceSync + this.xCoord + this.yCoord + this.zCoord) % 200 == 0)
         {

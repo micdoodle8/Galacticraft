@@ -37,7 +37,6 @@ import net.minecraft.network.packet.Packet9Respawn;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
@@ -419,36 +418,7 @@ public class GCCorePacketHandlerServer implements IPacketHandler
             
             if (tile != null && tile instanceof GCCoreTileEntityParachest)
             {
-                GCCoreTileEntityParachest chest = (GCCoreTileEntityParachest) tile;
-
-                final ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-                final DataOutputStream packetData = new DataOutputStream(bytes);
-                
-                try
-                {
-                    packetData.writeInt(30);
-                    packetData.writeInt(chest.xCoord);
-                    packetData.writeInt(chest.yCoord);
-                    packetData.writeInt(chest.zCoord);
-                    packetData.writeInt(chest.getSizeInventory());
-                    
-                    for (int i = 0; i < chest.getSizeInventory(); i++)
-                    {
-                        ItemStack stackAt = chest.getStackInSlot(i);
-                        Packet.writeItemStack(stackAt, packetData);
-                    }
-
-                    final Packet250CustomPayload pkt = new Packet250CustomPayload();
-                    pkt.channel = GalacticraftCore.CHANNEL;
-                    pkt.data = bytes.toByteArray();
-                    pkt.length = packet.data.length;
-                    
-                    player.playerNetServerHandler.sendPacketToPlayer(pkt);
-                }
-                catch (final IOException ex)
-                {
-                    ex.printStackTrace();
-                }
+                player.playerNetServerHandler.sendPacketToPlayer(new GCCorePacketParachestUpdate().buildKeyPacket((GCCoreTileEntityParachest)tile));
             }
         }
     }

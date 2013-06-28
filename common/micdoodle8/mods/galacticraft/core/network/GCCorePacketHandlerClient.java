@@ -21,7 +21,6 @@ import micdoodle8.mods.galacticraft.core.dimension.GCCoreSpaceStationData;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityBuggy;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityLander;
 import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerClient;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityParachest;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
@@ -36,11 +35,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.DimensionManager;
 import org.lwjgl.input.Keyboard;
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
@@ -486,27 +483,11 @@ public class GCCorePacketHandlerClient implements IPacketHandler
         {
             try
             {
-                int xCoord = data.readInt();
-                int yCoord = data.readInt();
-                int zCoord = data.readInt();
-                TileEntity tile = player.worldObj.getBlockTileEntity(xCoord, yCoord, zCoord);
-                int length = data.readInt();
-                
-                if (tile != null && tile instanceof GCCoreTileEntityParachest)
-                {
-                    GCCoreTileEntityParachest chest = (GCCoreTileEntityParachest)tile;
-                    chest.chestContents = new ItemStack[length];
-                    
-                    for (int i = 0; i < length; i++)
-                    {
-                        ItemStack stack = Packet.readItemStack(data);
-                        chest.setInventorySlotContents(i, stack);
-                    }
-                }
+                new GCCorePacketParachestUpdate().handlePacket(data, new Object[] { player }, Side.CLIENT);
             }
-            catch (IOException e1)
+            catch (final Exception e)
             {
-                e1.printStackTrace();
+                e.printStackTrace();
             }
         }
     }

@@ -180,7 +180,7 @@ public class GCCoreBlockParachest extends BlockChest
     @Override
     public TileEntity createNewTileEntity(World par1World)
     {
-        return new GCCoreTileEntityParachest(57);
+        return new GCCoreTileEntityParachest();
     }
 
     @Override
