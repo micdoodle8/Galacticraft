@@ -18,9 +18,9 @@ import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GCLog;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
+import micdoodle8.mods.galacticraft.core.client.GCCorePlayerSP;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreSpaceStationData;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreWorldProviderSpaceStation;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityParaChest;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.planet.IUpdateable;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
@@ -50,6 +50,7 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 import universalelectricity.core.vector.Vector3;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class WorldUtil
@@ -80,7 +81,26 @@ public class WorldUtil
         if (eLiving.worldObj.provider instanceof IGalacticraftWorldProvider)
         {
             final IGalacticraftWorldProvider customProvider = (IGalacticraftWorldProvider) eLiving.worldObj.provider;
-            return 0.08D - customProvider.getGravity();
+            
+            if (eLiving instanceof EntityPlayer)
+            {
+                if (eLiving instanceof GCCorePlayerSP)
+                {
+                    return ((GCCorePlayerSP)eLiving).touchedGround ? 0.08D - customProvider.getGravity() : 0.08D;
+                }
+                else if (eLiving instanceof GCCorePlayerMP)
+                {
+                    return ((GCCorePlayerMP)eLiving).touchedGround ? 0.08D - customProvider.getGravity() : 0.08D;
+                }
+                else
+                {
+                    return 0.08D;
+                }
+            }
+            else
+            {
+                return 0.08D - customProvider.getGravity();
+            }
         }
         else
         {
@@ -759,7 +779,7 @@ public class WorldUtil
                 }
             }
 
-            if (var8.chestSpawnCooldown == 0)
+            if (transferInv && var8.chestSpawnCooldown == 0)
             {
                 var8.chestSpawnVector = type.getParaChestSpawnLocation((WorldServer) var1.worldObj, var8, new Random());
                 var8.chestSpawnCooldown = 200;

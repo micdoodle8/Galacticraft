@@ -17,6 +17,7 @@ import net.minecraft.util.Icon;
 import net.minecraft.util.Session;
 import net.minecraft.world.World;
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -38,6 +39,8 @@ public class GCCorePlayerSP extends EntityClientPlayerMP
     public long tick;
     public boolean oxygenSetupValid = true;
     AxisAlignedBB boundingBoxBefore;
+    public boolean touchedGround = false;
+    public boolean lastOnGround;
 
     public ArrayList<ISchematicPage> unlockedSchematics = new ArrayList<ISchematicPage>();
 
@@ -84,6 +87,11 @@ public class GCCorePlayerSP extends EntityClientPlayerMP
         }
 
         super.onLivingUpdate();
+        
+        if (!this.onGround && this.lastOnGround)
+        {
+            this.touchedGround = true;
+        }
 
         boolean changed = false;
 
@@ -118,6 +126,7 @@ public class GCCorePlayerSP extends EntityClientPlayerMP
         }
 
         this.lastUsingParachute = this.usingParachute;
+        this.lastOnGround = this.onGround;
     }
 
     @Override

@@ -112,6 +112,9 @@ public class GCCorePlayerMP extends EntityPlayerMP
     public boolean oxygenSetupValid;
     public boolean lastOxygenSetupValid;
 
+    public boolean touchedGround = false;
+    public boolean lastOnGround;
+    
     public ArrayList<ISchematicPage> unlockedSchematics = new ArrayList<ISchematicPage>();
     public ArrayList<ISchematicPage> lastUnlockedSchematics = new ArrayList<ISchematicPage>();
 
@@ -152,6 +155,11 @@ public class GCCorePlayerMP extends EntityPlayerMP
         if (!GalacticraftCore.playersServer.containsKey(this.username) || this.tick % 360 == 0)
         {
             GalacticraftCore.playersServer.put(this.username, this);
+        }
+        
+        if (!this.onGround && this.lastOnGround)
+        {
+            this.touchedGround = true;
         }
 
         this.tick++;
@@ -884,6 +892,8 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
         this.lastOxygenSetupValid = this.oxygenSetupValid;
         this.lastUnlockedSchematics = this.unlockedSchematics;
+        
+        this.lastOnGround = this.onGround;
     }
 
     public void updateTimeAndWeatherForPlayer(EntityPlayerMP par1EntityPlayerMP, WorldServer par2WorldServer)
