@@ -61,7 +61,7 @@ public class GCCoreTileEntityOxygenPipe extends TileEntity implements ITubeConne
     {
         if (this.gasNetwork == null)
         {
-            this.gasNetwork = new GasNetwork();
+            this.gasNetwork = new GasNetwork(this);
         }
         
         return this.gasNetwork;
@@ -87,17 +87,25 @@ public class GCCoreTileEntityOxygenPipe extends TileEntity implements ITubeConne
     @Override
     public void refreshNetwork() 
     {
-        if(!worldObj.isRemote)
+        if (!worldObj.isRemote)
         {
-            if(canTransferGas())
+            if (canTransferGas())
             {
-                for(ForgeDirection side : ForgeDirection.VALID_DIRECTIONS)
+                for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS)
                 {
                     TileEntity tileEntity = Object3D.get(this).getFromSide(side).getTileEntity(worldObj);
-
-                    if(tileEntity instanceof IPressurizedTube && ((IPressurizedTube)tileEntity).canTransferGas())
+                    
+                    if (tileEntity instanceof IPressurizedTube)
                     {
-                        this.getNetwork().merge(((IPressurizedTube)tileEntity).getNetwork());
+                        if (((IPressurizedTube)tileEntity).canTransferGasToTube(this) && this.canTransferGasToTube(tileEntity))
+                        {
+                            this.getNetwork().merge(((IPressurizedTube)tileEntity).getNetwork());
+                        }
+                        else
+                        {
+                            ((IPressurizedTube) tileEntity).getNetwork().split(this);
+                            this.getNetwork().split(((IPressurizedTube) tileEntity));
+                        }
                     }
                 }
 

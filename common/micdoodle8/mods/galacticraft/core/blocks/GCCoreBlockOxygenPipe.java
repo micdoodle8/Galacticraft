@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.Arrays;
 import mekanism.api.GasTransmission;
+import mekanism.api.IPressurizedTube;
 import mekanism.api.ITubeConnection;
 import micdoodle8.mods.galacticraft.API.IColorable;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -60,6 +61,28 @@ public class GCCoreBlockOxygenPipe extends BlockContainer
     public CreativeTabs getCreativeTabToDisplayOn()
     {
         return GalacticraftCore.galacticraftTab;
+    }
+
+    @Override
+    public void onBlockAdded(World world, int x, int y, int z)
+    {
+        TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
+
+        if (!world.isRemote && tileEntity instanceof IPressurizedTube)
+        {
+            ((IPressurizedTube)tileEntity).refreshNetwork();
+        }
+    }
+
+    @Override
+    public void onNeighborBlockChange(World world, int x, int y, int z, int blockID)
+    {
+        TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
+
+        if (!world.isRemote && tileEntity instanceof IPressurizedTube)
+        {
+            ((IPressurizedTube)tileEntity).refreshNetwork();
+        }
     }
 
     @Override
@@ -126,6 +149,11 @@ public class GCCoreBlockOxygenPipe extends BlockContainer
                         if (tileAt != null && tileAt instanceof IColorable)
                         {
                             ((IColorable) tileAt).onAdjacentColorChanged(new Vector3(tileAt), new Vector3(tileEntity));
+                        }
+
+                        if (!par1World.isRemote && tileAt instanceof IPressurizedTube)
+                        {
+                            ((IPressurizedTube)tileAt).refreshNetwork();
                         }
                     }
 
