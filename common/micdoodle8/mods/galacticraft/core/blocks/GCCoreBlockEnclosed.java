@@ -140,15 +140,15 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
             {
                 Class clazz = Class.forName("ic2.core.block.wiring.TileEntityCable");
                 Constructor[] constructor = clazz.getConstructors();
-                FMLLog.info("" + clazz.getName());
+                FMLLog.info("class " + clazz.getName() + " " + clazz.toString());
                 
                 Object o = null;
                 
                 for (Constructor c : constructor)
                 {
-                    FMLLog.info("" + c.getName() + " " + c.getParameterTypes());
+                    FMLLog.info("const " + c.toString() + " " + c.toGenericString() + " " + c.getParameterTypes());
                     
-                    if (c.getParameterTypes()[0] == Short.class)
+                    if (c.getParameterTypes().length > 0 && c.getParameterTypes()[0] == Short.class)
                     {
                         o = c.newInstance((short)0);
                     }
