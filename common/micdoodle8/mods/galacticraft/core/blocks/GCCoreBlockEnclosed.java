@@ -18,6 +18,7 @@ import net.minecraft.world.World;
 import universalelectricity.core.block.IConductor;
 import basiccomponents.common.BasicComponents;
 import basiccomponents.common.tileentity.TileEntityCopperWire;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -138,8 +139,21 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
             try
             {
                 Class clazz = Class.forName("ic2.core.block.wiring.TileEntityCable");
-                Constructor constructor = clazz.getConstructor(new Class[] { Short.class });
-                Object o = constructor.newInstance(new Object[] {0});
+                Constructor[] constructor = clazz.getConstructors();
+                FMLLog.info("" + clazz.getName());
+                
+                Object o = null;
+                
+                for (Constructor c : constructor)
+                {
+                    FMLLog.info("" + c.getName() + " " + c.getParameterTypes());
+                    
+                    if (c.getParameterTypes()[0] == Short.class)
+                    {
+                        o = c.newInstance((short)0);
+                    }
+                }
+                
                 return (TileEntity) o;
             }
             catch (Exception e)
