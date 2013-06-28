@@ -64,14 +64,14 @@ public class GCCoreContainerParachest extends Container
             ItemStack itemstack1 = slot.getStack();
             itemstack = itemstack1.copy();
 
-            if (par2 < this.numRows * 9)
+            if (par2 < this.lowerChestInventory.getSizeInventory())
             {
                 if (!this.mergeItemStack(itemstack1, this.numRows * 9, this.inventorySlots.size(), true))
                 {
                     return null;
                 }
             }
-            else if (!this.mergeItemStack(itemstack1, 0, this.numRows * 9, false))
+            else if (!this.mergeItemStack(itemstack1, 0, this.lowerChestInventory.getSizeInventory(), false))
             {
                 return null;
             }
