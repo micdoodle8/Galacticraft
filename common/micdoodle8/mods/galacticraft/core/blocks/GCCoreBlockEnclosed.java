@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 import java.util.List;
 import micdoodle8.mods.galacticraft.API.IPartialSealedBlock;
 import micdoodle8.mods.galacticraft.core.GCCoreCompatibilityManager;
@@ -96,10 +97,34 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
         super.onBlockAdded(world, x, y, z);
 
         final TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
+        Class clazz = null;
+        
+        try
+        {
+            clazz = Class.forName("ic2.core.block.wiring.TileEntityCable");
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
 
         if (tileEntity instanceof IConductor)
         {
             ((IConductor) tileEntity).updateAdjacentConnections();
+        }
+        else if (clazz != null && clazz.isInstance(tileEntity))
+        {
+            FMLLog.info("1");
+            try
+            {
+                Method method = clazz.getMethod("onNeighborBlockChange");
+                method.invoke(tileEntity);
+                FMLLog.info("2");
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -107,10 +132,32 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
     public void onNeighborBlockChange(World world, int x, int y, int z, int blockID)
     {
         final TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
+        Class clazz = null;
+        
+        try
+        {
+            clazz = Class.forName("ic2.core.block.wiring.TileEntityCable");
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
 
         if (tileEntity instanceof IConductor)
         {
             ((IConductor) tileEntity).updateAdjacentConnections();
+        }
+        else if (clazz != null && clazz.isInstance(tileEntity))
+        {
+            try
+            {
+                Method method = clazz.getMethod("onNeighborBlockChange");
+                method.invoke(tileEntity);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
         }
     }
 
