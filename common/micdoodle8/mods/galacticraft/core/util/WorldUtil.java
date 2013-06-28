@@ -52,6 +52,7 @@ import universalelectricity.core.vector.Vector3;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
 
 public class WorldUtil
 {
@@ -84,7 +85,7 @@ public class WorldUtil
             
             if (eLiving instanceof EntityPlayer)
             {
-                if (eLiving instanceof GCCorePlayerSP)
+                if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT && eLiving instanceof GCCorePlayerSP)
                 {
                     return ((GCCorePlayerSP)eLiving).touchedGround ? 0.08D - customProvider.getGravity() : 0.08D;
                 }
