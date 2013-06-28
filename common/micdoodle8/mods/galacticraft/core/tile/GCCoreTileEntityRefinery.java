@@ -37,9 +37,6 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
     public int processTicks = 0;
     private ItemStack[] containingItems = new ItemStack[3];
 
-    private boolean checkOilNextTick = false;
-    private boolean lastCheckOilNextTick = false;
-
     public GCCoreTileEntityRefinery()
     {
         super(600, 130, 1, 1.5D);
@@ -142,17 +139,6 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
             {
                 this.processTicks = 0;
             }
-
-            if (this.checkOilNextTick && this.lastCheckOilNextTick)
-            {
-                if (!this.getDisabled() && (this.oilTank == null || this.oilTank.getLiquid() == null || this.oilTank.getLiquid().amount == 0))
-                {
-                    this.setDisabled(true);
-                    this.checkOilNextTick = false;
-                }
-            }
-
-            this.lastCheckOilNextTick = this.checkOilNextTick;
         }
     }
 
@@ -211,8 +197,6 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
 
             this.oilTank.drain(amountToDrain, true);
             this.fuelTank.fill(LiquidDictionary.getLiquid("Fuel", amountToDrain), true);
-
-            this.checkOilNextTick = true;
         }
     }
 
