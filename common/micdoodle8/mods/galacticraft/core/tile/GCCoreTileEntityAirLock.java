@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import java.util.ArrayList;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
-import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import universalelectricity.prefab.tile.TileEntityAdvanced;
 
@@ -54,17 +53,10 @@ public class GCCoreTileEntityAirLock extends TileEntityAdvanced
                         {
                             int id = this.worldObj.getBlockId(x, y, z);
 
-                            if (id != 0 && id != GCCoreBlocks.airLockSeal.blockID)
+                            if (id == 0)
                             {
-                                Block block = Block.blocksList[id];
-
-                                if (block != null)
-                                {
-                                    block.dropBlockAsItem(this.worldObj, x, y, z, this.worldObj.getBlockMetadata(x, y, z), 0);
-                                }
+                                this.worldObj.setBlock(x, y, this.protocol.minZ, GCCoreBlocks.airLockSeal.blockID, 0, 3);
                             }
-
-                            this.worldObj.setBlock(x, y, this.protocol.minZ, GCCoreBlocks.airLockSeal.blockID, 0, 3);
                         }
                     }
                 }
@@ -76,17 +68,10 @@ public class GCCoreTileEntityAirLock extends TileEntityAdvanced
                         {
                             int id = this.worldObj.getBlockId(x, y, z);
 
-                            if (id != 0 && id != GCCoreBlocks.airLockSeal.blockID)
+                            if (id == 0)
                             {
-                                Block block = Block.blocksList[id];
-
-                                if (block != null)
-                                {
-                                    block.dropBlockAsItem(this.worldObj, x, y, z, this.worldObj.getBlockMetadata(x, y, z), 0);
-                                }
+                                this.worldObj.setBlock(this.protocol.minX, y, z, GCCoreBlocks.airLockSeal.blockID, 0, 3);
                             }
-
-                            this.worldObj.setBlock(this.protocol.minX, y, z, GCCoreBlocks.airLockSeal.blockID, 0, 3);
                         }
                     }
                 }
@@ -110,17 +95,10 @@ public class GCCoreTileEntityAirLock extends TileEntityAdvanced
                         {
                             int id = this.worldObj.getBlockId(x, y, z);
 
-                            if (id != 0 && id != GCCoreBlocks.airLockSeal.blockID)
+                            if (id == GCCoreBlocks.airLockSeal.blockID)
                             {
-                                Block block = Block.blocksList[id];
-
-                                if (block != null)
-                                {
-                                    block.dropBlockAsItem(this.worldObj, x, y, z, this.worldObj.getBlockMetadata(x, y, z), 0);
-                                }
+                                this.worldObj.setBlockToAir(x, y, this.lastProtocol.minZ);
                             }
-
-                            this.worldObj.setBlockToAir(x, y, this.lastProtocol.minZ);
                         }
                     }
                 }
@@ -132,17 +110,10 @@ public class GCCoreTileEntityAirLock extends TileEntityAdvanced
                         {
                             int id = this.worldObj.getBlockId(x, y, z);
 
-                            if (id != 0 && id != GCCoreBlocks.airLockSeal.blockID)
+                            if (id == GCCoreBlocks.airLockSeal.blockID)
                             {
-                                Block block = Block.blocksList[id];
-
-                                if (block != null)
-                                {
-                                    block.dropBlockAsItem(this.worldObj, x, y, z, this.worldObj.getBlockMetadata(x, y, z), 0);
-                                }
+                                this.worldObj.setBlockToAir(this.lastProtocol.minX, y, z);
                             }
-
-                            this.worldObj.setBlockToAir(this.lastProtocol.minX, y, z);
                         }
                     }
                 }
