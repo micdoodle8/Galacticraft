@@ -1,7 +1,10 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import micdoodle8.mods.galacticraft.API.IPartialSealedBlock;
+import micdoodle8.mods.galacticraft.core.GCCoreCompatibilityManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenPipe;
 import net.minecraft.block.Block;
@@ -35,9 +38,16 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
     @Override
     public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
     {
-        for (int var4 = BasicComponents.blockCopperWire != null ? 0 : 1; var4 < 2; ++var4)
+        if (BasicComponents.blockCopperWire != null)
         {
-            par3List.add(new ItemStack(par1, 1, var4));
+            par3List.add(new ItemStack(par1, 1, 0));
+        }
+        
+        par3List.add(new ItemStack(par1, 1, 1));
+        
+        if (GCCoreCompatibilityManager.isIc2Loaded())
+        {
+            par3List.add(new ItemStack(par1, 1, 2));
         }
     }
 
@@ -57,6 +67,8 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
             return this.enclosedIcons[0];
         case 1:
             return this.enclosedIcons[1];
+        case 2:
+            return this.enclosedIcons[2];
         }
 
         return this.blockIcon;
@@ -71,9 +83,10 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
     @Override
     public void registerIcons(IconRegister par1IconRegister)
     {
-        this.enclosedIcons = new Icon[2];
+        this.enclosedIcons = new Icon[3];
         this.enclosedIcons[0] = par1IconRegister.registerIcon("galacticraftcore:enclosed_copper_wire");
         this.enclosedIcons[1] = par1IconRegister.registerIcon("galacticraftcore:enclosed_oxygen_pipe");
+        this.enclosedIcons[2] = par1IconRegister.registerIcon("galacticraftcore:enclosed_cobber_cable");
         this.blockIcon = par1IconRegister.registerIcon("galacticraftcore:enclosed_copper_wire");
     }
 
@@ -122,6 +135,19 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
             return new TileEntityCopperWire();
         case 1:
             return new GCCoreTileEntityOxygenPipe();
+        case 2:
+            try
+            {
+                Class clazz = Class.forName("ic2.core.block.wiring.TileEntityCable");
+                Constructor constructor = clazz.getConstructor(new Class[] { Integer.class });
+                Object o = constructor.newInstance(new Object[] {0});
+                return (TileEntity) o;
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+            break;
         }
 
         return null;

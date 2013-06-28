@@ -30,6 +30,9 @@ public class GCCoreItemBlockEnclosedBlock extends ItemBlock
         case 1:
             name = "oxygenPipe";
             break;
+        case 2:
+            name = "copperCable";
+            break;
         }
 
         return Block.blocksList[this.getBlockID()].getUnlocalizedName() + "." + name;
