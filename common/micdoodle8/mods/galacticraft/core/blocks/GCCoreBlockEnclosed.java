@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import micdoodle8.mods.galacticraft.API.IPartialSealedBlock;
 import micdoodle8.mods.galacticraft.core.GCCoreCompatibilityManager;
@@ -86,7 +85,7 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
         this.enclosedIcons = new Icon[3];
         this.enclosedIcons[0] = par1IconRegister.registerIcon("galacticraftcore:enclosed_copper_wire");
         this.enclosedIcons[1] = par1IconRegister.registerIcon("galacticraftcore:enclosed_oxygen_pipe");
-        this.enclosedIcons[2] = par1IconRegister.registerIcon("galacticraftcore:enclosed_cobber_cable");
+        this.enclosedIcons[2] = par1IconRegister.registerIcon("galacticraftcore:enclosed_copper_cable");
         this.blockIcon = par1IconRegister.registerIcon("galacticraftcore:enclosed_copper_wire");
     }
 
@@ -139,7 +138,7 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
             try
             {
                 Class clazz = Class.forName("ic2.core.block.wiring.TileEntityCable");
-                Constructor constructor = clazz.getConstructor(new Class[] { Integer.class });
+                Constructor constructor = clazz.getConstructor(new Class[] { Short.class });
                 Object o = constructor.newInstance(new Object[] {0});
                 return (TileEntity) o;
             }
