@@ -21,7 +21,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class GCCoreTileEntityParachest extends TileEntity implements IInventory
 {
-    public ItemStack[] chestContents;
+    public ItemStack[] chestContents = new ItemStack[3];
 
     public boolean adjacentChestChecked = false;
     public GCCoreTileEntityParachest adjacentChestZNeg;
