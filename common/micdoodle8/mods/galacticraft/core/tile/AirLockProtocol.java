@@ -47,7 +47,7 @@ public class AirLockProtocol
 
                         if (!(x == 0 && y == 0 && z == 0))
                         {
-                            if (tile != null && tile instanceof GCCoreTileEntityAirLock && !this.adjacentAirLocks.contains(tile))
+                            if (tile != null && tile instanceof GCCoreTileEntityAirLock && !this.adjacentAirLocks.contains(tile) && (tile.xCoord == this.head.xCoord || tile.zCoord == this.head.zCoord))
                             {
                                 this.adjacentAirLocks.add((GCCoreTileEntityAirLock) tile);
                                 this.loopThrough(tile, loops - 1);
