@@ -180,7 +180,7 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
         {
             
         }
-        else if (metadata <= EnumEnclosedBlock.IC2_COPPER_CABLE.getMetadata())
+        else if (metadata <= EnumEnclosedBlock.IC2_LV_CABLE.getMetadata())
         {
             if (GCCoreCompatibilityManager.isIc2Loaded())
             {
@@ -231,7 +231,7 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
         {
             
         }
-        else if (metadata <= EnumEnclosedBlock.IC2_COPPER_CABLE.getMetadata())
+        else if (metadata <= EnumEnclosedBlock.IC2_LV_CABLE.getMetadata())
         {
             if (GCCoreCompatibilityManager.isIc2Loaded())
             {
@@ -314,7 +314,7 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
         {
             return new GCCoreTileEntityOxygenPipe();
         }
-        else if (metadata <= EnumEnclosedBlock.IC2_COPPER_CABLE.getMetadata())
+        else if (metadata <= EnumEnclosedBlock.IC2_LV_CABLE.getMetadata())
         {
             if (GCCoreCompatibilityManager.isIc2Loaded())
             {
