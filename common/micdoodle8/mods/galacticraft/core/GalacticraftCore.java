@@ -284,6 +284,11 @@ public class GalacticraftCore
             RecipeUtil.addThermalExpansionCraftingRecipes();
         }
 
+        if (GCCoreCompatibilityManager.isBCraftLoaded())
+        {
+            RecipeUtil.addBuildCraftCraftingRecipes();
+        }
+
         if (GCCoreCompatibilityManager.isGTLoaded() && GCCoreConfigManager.useRecipesGT)
         {
             RecipeUtil.addGregTechCraftingRecipes();
