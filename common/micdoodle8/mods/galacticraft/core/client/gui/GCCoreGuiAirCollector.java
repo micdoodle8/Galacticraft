@@ -51,14 +51,14 @@ public class GCCoreGuiAirCollector extends GuiContainer
             return EnumColor.DARK_GREEN + LanguageRegistry.instance().getStringLocalization("gui.status.active.name");
         }
 
-        if (this.collector.getPower() < 1)
-        {
-            return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.missingleaves.name");
-        }
-
         if (this.collector.wattsReceived == 0 && this.collector.ic2Energy == 0 && this.collector.bcEnergy == 0)
         {
             return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.missingpower.name");
+        }
+
+        if (this.collector.getPower() < 1)
+        {
+            return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.missingleaves.name");
         }
 
         return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.unknown.name");

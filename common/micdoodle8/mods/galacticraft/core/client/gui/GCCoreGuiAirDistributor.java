@@ -51,14 +51,14 @@ public class GCCoreGuiAirDistributor extends GuiContainer
             return EnumColor.DARK_GREEN + LanguageRegistry.instance().getStringLocalization("gui.status.active.name");
         }
 
-        if (this.distributor.storedOxygen < 1)
-        {
-            return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.missingoxygen.name");
-        }
-
         if (this.distributor.wattsReceived == 0 && this.distributor.ic2Energy == 0 && this.distributor.bcEnergy == 0)
         {
             return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.missingpower.name");
+        }
+
+        if (this.distributor.storedOxygen < 1)
+        {
+            return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.missingoxygen.name");
         }
 
         return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.unknown.name");

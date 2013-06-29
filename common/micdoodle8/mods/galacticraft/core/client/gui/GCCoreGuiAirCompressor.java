@@ -47,6 +47,11 @@ public class GCCoreGuiAirCompressor extends GuiContainer
 
     private String getStatus()
     {
+        if (this.compressor.wattsReceived == 0 && this.compressor.ic2Energy == 0 && this.compressor.bcEnergy == 0)
+        {
+            return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.missingpower.name");
+        }
+        
         if (this.compressor.getStackInSlot(0) == null || !(this.compressor.getStackInSlot(0).getItem() instanceof GCCoreItemOxygenTank))
         {
             return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.missingtank.name");
@@ -55,11 +60,6 @@ public class GCCoreGuiAirCompressor extends GuiContainer
         if (this.compressor.getStackInSlot(0) != null && this.compressor.getStackInSlot(0).getItemDamage() == 0)
         {
             return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.fulltank.name");
-        }
-
-        if (this.compressor.wattsReceived == 0 && this.compressor.ic2Energy == 0 && this.compressor.bcEnergy == 0)
-        {
-            return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.missingpower.name");
         }
 
         if (this.compressor.storedOxygen < 1.0D)
