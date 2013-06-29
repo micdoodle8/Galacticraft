@@ -21,7 +21,6 @@ import basiccomponents.common.BasicComponents;
 import basiccomponents.common.tileentity.TileEntityCopperWire;
 import buildcraft.transport.BlockGenericPipe;
 import buildcraft.transport.Pipe;
-import buildcraft.transport.TileGenericPipe;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -334,7 +333,31 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
         {
             if (GCCoreCompatibilityManager.isBCraftLoaded())
             {
-                return new TileGenericPipe();
+
+                try
+                {
+                    Class clazz = Class.forName("buildcraft.transport.TileGenericPipe");
+                    Constructor[] constructors = clazz.getDeclaredConstructors();
+                    Constructor constructor = null;
+                    
+                    for (int i = 0; i < constructors.length; i++)
+                    {
+                        constructor = constructors[i];
+                        
+                        if (constructor.getGenericParameterTypes().length == 0)
+                        {
+                            break;
+                        }
+                    }
+                    
+                    constructor.setAccessible(true);
+                    
+                    return (TileEntity) constructor.newInstance();
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
             }
         }
 
