@@ -19,8 +19,7 @@ import net.minecraft.world.World;
 import universalelectricity.core.block.IConductor;
 import basiccomponents.common.BasicComponents;
 import basiccomponents.common.tileentity.TileEntityCopperWire;
-import buildcraft.transport.BlockGenericPipe;
-import buildcraft.transport.Pipe;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -210,15 +209,6 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
         }
         else if (metadata <= EnumEnclosedBlock.BC_POWER_GOLDPIPE.getMetadata())
         {
-            if (GCCoreCompatibilityManager.isBCraftLoaded())
-            {
-                Pipe pipe = BlockGenericPipe.getPipe(world, x, y, z);
-
-                if (BlockGenericPipe.isValid(pipe)) 
-                {
-                    pipe.onBlockPlaced();
-                }
-            }
         }
     }
 
@@ -272,11 +262,36 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
         {
             if (GCCoreCompatibilityManager.isBCraftLoaded())
             {
-                Pipe pipe = BlockGenericPipe.getPipe(world, x, y, z);
-
-                if (BlockGenericPipe.isValid(pipe)) 
+                try
                 {
-                    pipe.container.scheduleNeighborChange();
+                    Class clazzPipe = Class.forName("buildcraft.transport.Pipe");
+                    Class clazzPipeTile = Class.forName("buildcraft.transport.TileGenericPipe");
+                    Class clazzPipeBlock = Class.forName("buildcraft.transport.BlockGenericPipe");
+
+                    Method getPipe = null;
+                    
+                    for (Method m : clazzPipeBlock.getDeclaredMethods())
+                    {
+                        if (m.getName().equals("getPipe"))
+                        {
+                            getPipe = m;
+                        }
+                    }
+                    
+                    Object pipe = getPipe.invoke(null, world, x, y, z);
+                    Method isValid = clazzPipeBlock.getMethod("isValid", clazzPipe);
+                    Boolean valid = (Boolean) isValid.invoke(null, pipe);
+                    
+                    if (valid)
+                    {
+                        Method schedule = clazzPipeTile.getMethod("scheduleNeighborChange");
+                        Object container = clazzPipe.getField("container").get(pipe);
+                        schedule.invoke(container);
+                    }
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
                 }
             }
         }
@@ -351,8 +366,10 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
                     }
                     
                     constructor.setAccessible(true);
-                    
-                    return (TileEntity) constructor.newInstance();
+
+                    TileEntity te = (TileEntity) constructor.newInstance();
+                    FMLLog.info("" + te);
+                    return te;
                 }
                 catch (Exception e)
                 {
