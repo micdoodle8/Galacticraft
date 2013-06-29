@@ -546,14 +546,14 @@ public class RecipeUtil
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreItems.flagPole, 2, 0), new Object[] { "X", "X", "X", 'X', "ingotRefinedIron" });
 
-        if (Items.getItem("insulatedCopperCableBlock") != null)
+        if (Items.getItem("insulatedCopperCableItem") != null)
         {
-            RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealer, 1), new Object[] { "WZW", "YXY", "WZW", 'V', Items.getItem("insulatedCopperCableBlock"), 'W', "refinedIronIngot", 'X', GCCoreItems.airFan, 'Y', GCCoreItems.airVent, 'Z', "carbonPlate" });
+            RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealer, 1), new Object[] { "WZW", "YXY", "WZW", 'V', Items.getItem("insulatedCopperCableItem"), 'W', "refinedIronIngot", 'X', GCCoreItems.airFan, 'Y', GCCoreItems.airVent, 'Z', "carbonPlate" });
         }
 
-        if (Items.getItem("copperCableBlock") != null)
+        if (Items.getItem("copperCableItem") != null)
         {
-            RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.enclosedWire, 1, 2), new Object[] { "XYX", 'Y', Items.getItem("copperCableBlock"), 'X', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4) });
+            RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.enclosedWire, 1, 2), new Object[] { "XYX", 'Y', Items.getItem("copperCableItem"), 'X', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4) });
         }
     }
 
