@@ -19,14 +19,79 @@ import net.minecraft.world.World;
 import universalelectricity.core.block.IConductor;
 import basiccomponents.common.BasicComponents;
 import basiccomponents.common.tileentity.TileEntityCopperWire;
-import cpw.mods.fml.common.FMLLog;
+import buildcraft.transport.BlockGenericPipe;
+import buildcraft.transport.Pipe;
+import buildcraft.transport.TileGenericPipe;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSealedBlock
 {
     private Icon[] enclosedIcons;
+    
+    public enum EnumEnclosedBlock
+    {
+        COPPERWIRE(0, -1, null, "enclosed_copper_wire"),
+        OXYGENPIPE(1, -1, null, "enclosed_oxygen_pipe"),
+        IC2_COPPER_CABLE(2, 0, null, "enclosed_copper_cable"),
+        IC2_GOLD_CABLE(3, 3, null, "enclosed_gold_cable"),
+        IC2_HV_CABLE(4, 6, null, "enclosed_hv_cable"),
+        IC2_GLASS_FIBRE_CABLE(5, 9, null, "enclosed_glassfibre_cable"),
+        IC2_LV_CABLE(6, 10, null, "enclosed_lv_cable"),
+        BC_ITEM_STONEPIPE(7, -1, "PipeItemsStone", "enclosed_itempipe_stone"),
+        BC_ITEM_COBBLESTONEPIPE(8, -1, "PipeItemsCobblestone", "enclosed_itempipe_cobblestone"),
+        BC_LIQUID_STONEPIPE(9, -1, "PipeLiquidsStone", "enclosed_liquidpipe_stone"),
+        BC_LIQUID_COBBLESTONEPIPE(10, -1, "PipeLiquidsCobblestone", "enclosed_liquidpipe_cobblestone"),
+        BC_POWER_STONEPIPE(11, -1, "PipePowerStone", "enclosed_powerpipe_stone"),
+        BC_POWER_GOLDPIPE(12, -1, "PipePowerGold", "enclosed_powerpipe_gold");
+        
+        int metadata;
+        int ic2CableMeta;
+        String pipeClass;
+        String texture;
+        
+        EnumEnclosedBlock(int metadata, int ic2CableMeta, String pipeClass, String texture)
+        {
+            this.metadata = metadata;
+            this.ic2CableMeta = ic2CableMeta;
+            this.pipeClass = pipeClass;
+            this.texture = texture;
+        }
+        
+        public int getMetadata()
+        {
+            return this.metadata;
+        }
 
+        public int getIC2CableMeta()
+        {
+            return this.ic2CableMeta;
+        }
+        
+        public String getPipeClass()
+        {
+            return this.pipeClass;
+        }
+        
+        public String getTexture()
+        {
+            return this.texture;
+        }
+    }
+    
+    public static EnumEnclosedBlock getTypeFromMeta(int metadata)
+    {
+        for (EnumEnclosedBlock type : EnumEnclosedBlock.values())
+        {
+            if (type.getMetadata() == metadata)
+            {
+                return type;
+            }
+        }
+        
+        return null;
+    }
+    
     public GCCoreBlockEnclosed(int id)
     {
         super(id, Material.cloth);
@@ -48,7 +113,21 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
         
         if (GCCoreCompatibilityManager.isIc2Loaded())
         {
-            par3List.add(new ItemStack(par1, 1, 2));
+            par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.IC2_COPPER_CABLE.getMetadata()));
+            par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.IC2_GOLD_CABLE.getMetadata()));
+            par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.IC2_HV_CABLE.getMetadata()));
+            par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.IC2_GLASS_FIBRE_CABLE.getMetadata()));
+            par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.IC2_LV_CABLE.getMetadata()));
+        }
+        
+        if (GCCoreCompatibilityManager.isBCraftLoaded())
+        {
+            par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.BC_ITEM_COBBLESTONEPIPE.getMetadata()));
+            par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.BC_ITEM_STONEPIPE.getMetadata()));
+            par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.BC_LIQUID_COBBLESTONEPIPE.getMetadata()));
+            par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.BC_LIQUID_STONEPIPE.getMetadata()));
+            par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.BC_POWER_STONEPIPE.getMetadata()));
+            par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.BC_POWER_GOLDPIPE.getMetadata()));
         }
     }
 
@@ -62,17 +141,7 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
     @SideOnly(Side.CLIENT)
     public Icon getIcon(int par1, int par2)
     {
-        switch (par2)
-        {
-        case 0:
-            return this.enclosedIcons[0];
-        case 1:
-            return this.enclosedIcons[1];
-        case 2:
-            return this.enclosedIcons[2];
-        }
-
-        return this.blockIcon;
+        return par2 >= this.enclosedIcons.length ? this.blockIcon : this.enclosedIcons[par2];
     }
 
     @Override
@@ -84,11 +153,14 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
     @Override
     public void registerIcons(IconRegister par1IconRegister)
     {
-        this.enclosedIcons = new Icon[3];
-        this.enclosedIcons[0] = par1IconRegister.registerIcon("galacticraftcore:enclosed_copper_wire");
-        this.enclosedIcons[1] = par1IconRegister.registerIcon("galacticraftcore:enclosed_oxygen_pipe");
-        this.enclosedIcons[2] = par1IconRegister.registerIcon("galacticraftcore:enclosed_copper_cable");
-        this.blockIcon = par1IconRegister.registerIcon("galacticraftcore:enclosed_copper_wire");
+        this.enclosedIcons = new Icon[EnumEnclosedBlock.values().length];
+        
+        for (EnumEnclosedBlock type : EnumEnclosedBlock.values())
+        {
+            this.enclosedIcons[type.ordinal()] = par1IconRegister.registerIcon("galacticraftcore:" + type.getTexture());
+        }
+        
+        this.blockIcon = par1IconRegister.registerIcon("galacticraftcore:" + EnumEnclosedBlock.COPPERWIRE.getTexture());
     }
 
     @Override
@@ -96,79 +168,119 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
     {
         super.onBlockAdded(world, x, y, z);
         
+        int metadata = world.getBlockMetadata(x, y, z);
         final TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
         
-        if (GCCoreCompatibilityManager.isIc2Loaded())
+        if (metadata <= EnumEnclosedBlock.COPPERWIRE.getMetadata())
         {
-            try
+            if (tileEntity instanceof IConductor)
             {
-                Class clazz = Class.forName("ic2.core.block.wiring.TileEntityCable");
-
-                if (clazz != null && clazz.isInstance(tileEntity))
-                {
-                    try
-                    {
-                        Method method = clazz.getMethod("onNeighborBlockChange");
-                        method.invoke(tileEntity);
-                    }
-                    catch (Exception e)
-                    {
-                        e.printStackTrace();
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
+                ((IConductor) tileEntity).updateAdjacentConnections();
             }
         }
-
-        if (tileEntity instanceof IConductor)
+        else if (metadata <= EnumEnclosedBlock.OXYGENPIPE.getMetadata())
         {
-            ((IConductor) tileEntity).updateAdjacentConnections();
+            
+        }
+        else if (metadata <= EnumEnclosedBlock.IC2_COPPER_CABLE.getMetadata())
+        {
+            if (GCCoreCompatibilityManager.isIc2Loaded())
+            {
+                try
+                {
+                    Class clazz = Class.forName("ic2.core.block.wiring.TileEntityCable");
+
+                    if (clazz != null && clazz.isInstance(tileEntity))
+                    {
+                        try
+                        {
+                            Method method = clazz.getMethod("onNeighborBlockChange");
+                            method.invoke(tileEntity);
+                        }
+                        catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+        else if (metadata <= EnumEnclosedBlock.BC_POWER_GOLDPIPE.getMetadata())
+        {
+            if (GCCoreCompatibilityManager.isBCraftLoaded())
+            {
+                Pipe pipe = BlockGenericPipe.getPipe(world, x, y, z);
+
+                if (BlockGenericPipe.isValid(pipe)) 
+                {
+                    pipe.onBlockPlaced();
+                }
+            }
         }
     }
 
     @Override
     public void onNeighborBlockChange(World world, int x, int y, int z, int blockID)
     {
+        super.onNeighborBlockChange(world, x, y, z, blockID);
+        
+        int metadata = world.getBlockMetadata(x, y, z);
         final TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
         
-        if (GCCoreCompatibilityManager.isIc2Loaded())
+        if (metadata <= EnumEnclosedBlock.COPPERWIRE.getMetadata())
         {
-            try
+            if (tileEntity instanceof IConductor)
             {
-                Class clazz = Class.forName("ic2.core.block.wiring.TileEntityCable");
-
-                if (clazz != null && clazz.isInstance(tileEntity))
+                ((IConductor) tileEntity).updateAdjacentConnections();
+            }
+        }
+        else if (metadata <= EnumEnclosedBlock.OXYGENPIPE.getMetadata())
+        {
+            
+        }
+        else if (metadata <= EnumEnclosedBlock.IC2_COPPER_CABLE.getMetadata())
+        {
+            if (GCCoreCompatibilityManager.isIc2Loaded())
+            {
+                try
                 {
-                    try
+                    Class clazz = Class.forName("ic2.core.block.wiring.TileEntityCable");
+
+                    if (clazz != null && clazz.isInstance(tileEntity))
                     {
-                        Method method = clazz.getMethod("onNeighborBlockChange");
-                        method.invoke(tileEntity);
-                    }
-                    catch (Exception e)
-                    {
-                        e.printStackTrace();
+                        try
+                        {
+                            Method method = clazz.getMethod("onNeighborBlockChange");
+                            method.invoke(tileEntity);
+                        }
+                        catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }
                     }
                 }
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
             }
         }
-
-        if (tileEntity instanceof IConductor)
+        else if (metadata <= EnumEnclosedBlock.BC_POWER_GOLDPIPE.getMetadata())
         {
-            ((IConductor) tileEntity).updateAdjacentConnections();
-        }
-    }
+            if (GCCoreCompatibilityManager.isBCraftLoaded())
+            {
+                Pipe pipe = BlockGenericPipe.getPipe(world, x, y, z);
 
-    @Override
-    public int getRenderType()
-    {
-        return 0;
+                if (BlockGenericPipe.isValid(pipe)) 
+                {
+                    pipe.container.scheduleNeighborChange();
+                }
+            }
+        }
     }
 
     @Override
@@ -180,13 +292,16 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
     @Override
     public TileEntity createTileEntity(World world, int metadata)
     {
-        switch (metadata)
+        if (metadata <= EnumEnclosedBlock.COPPERWIRE.getMetadata())
         {
-        case 0:
             return new TileEntityCopperWire();
-        case 1:
+        }
+        else if (metadata <= EnumEnclosedBlock.OXYGENPIPE.getMetadata())
+        {
             return new GCCoreTileEntityOxygenPipe();
-        case 2:
+        }
+        else if (metadata <= EnumEnclosedBlock.IC2_COPPER_CABLE.getMetadata())
+        {
             if (GCCoreCompatibilityManager.isIc2Loaded())
             {
                 try
@@ -207,14 +322,20 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
                     
                     constructor.setAccessible(true);
                     
-                    return (TileEntity) constructor.newInstance((short)0);
+                    return (TileEntity) constructor.newInstance((short)GCCoreBlockEnclosed.getTypeFromMeta(metadata).getIC2CableMeta());
                 }
                 catch (Exception e)
                 {
                     e.printStackTrace();
                 }
             }
-            break;
+        }
+        else if (metadata <= EnumEnclosedBlock.BC_POWER_GOLDPIPE.getMetadata())
+        {
+            if (GCCoreCompatibilityManager.isBCraftLoaded())
+            {
+                return new TileGenericPipe();
+            }
         }
 
         return null;
