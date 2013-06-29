@@ -1,10 +1,7 @@
 package micdoodle8.mods.galacticraft.core.network;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import micdoodle8.mods.galacticraft.API.IDisableableMachine;
 import micdoodle8.mods.galacticraft.API.IOrbitDimension;
 import micdoodle8.mods.galacticraft.API.ISchematicPage;
@@ -31,7 +28,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.network.packet.Packet9Respawn;
 import net.minecraft.tileentity.TileEntity;
@@ -380,34 +376,7 @@ public class GCCorePacketHandlerServer implements IPacketHandler
             
             if (e != null && e instanceof GCCoreEntityLander)
             {
-                GCCoreEntityLander lander = (GCCoreEntityLander) e;
-
-                final ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-                final DataOutputStream packetData = new DataOutputStream(bytes);
-                
-                try
-                {
-                    packetData.writeInt(29);
-                    packetData.writeInt(lander.entityId);
-                    packetData.writeInt(lander.getSizeInventory());
-                    
-                    for (int i = 0; i < lander.getSizeInventory(); i++)
-                    {
-                        ItemStack stackAt = lander.getStackInSlot(i);
-                        Packet.writeItemStack(stackAt, packetData);
-                    }
-
-                    final Packet250CustomPayload pkt = new Packet250CustomPayload();
-                    pkt.channel = GalacticraftCore.CHANNEL;
-                    pkt.data = bytes.toByteArray();
-                    pkt.length = packet.data.length;
-                    
-                    player.playerNetServerHandler.sendPacketToPlayer(pkt);
-                }
-                catch (final IOException ex)
-                {
-                    ex.printStackTrace();
-                }
+                player.playerNetServerHandler.sendPacketToPlayer(new GCCorePacketLanderUpdate().buildKeyPacket((GCCoreEntityLander)e));
             }
         }
         else if (packetType == 22)

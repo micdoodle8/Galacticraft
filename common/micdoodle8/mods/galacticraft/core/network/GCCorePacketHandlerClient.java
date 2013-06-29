@@ -29,11 +29,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraftforge.common.DimensionManager;
 import org.lwjgl.input.Keyboard;
@@ -458,23 +456,9 @@ public class GCCorePacketHandlerClient implements IPacketHandler
         {
             try
             {
-                int entityID = data.readInt();
-                Entity e = player.worldObj.getEntityByID(entityID);
-                int length = data.readInt();
-                
-                if (e != null && e instanceof GCCoreEntityLander)
-                {
-                    GCCoreEntityLander lander = (GCCoreEntityLander)e;
-                    lander.chestContents = new ItemStack[length];
-                    
-                    for (int i = 0; i < length; i++)
-                    {
-                        ItemStack stack = Packet.readItemStack(data);
-                        lander.setInventorySlotContents(i, stack);
-                    }
-                }
+                new GCCorePacketLanderUpdate().handlePacket(data, new Object[] { player }, Side.CLIENT);
             }
-            catch (IOException e1)
+            catch (Exception e1)
             {
                 e1.printStackTrace();
             }
@@ -485,7 +469,7 @@ public class GCCorePacketHandlerClient implements IPacketHandler
             {
                 new GCCorePacketParachestUpdate().handlePacket(data, new Object[] { player }, Side.CLIENT);
             }
-            catch (final Exception e)
+            catch (Exception e)
             {
                 e.printStackTrace();
             }

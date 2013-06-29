@@ -1,0 +1,88 @@
+package micdoodle8.mods.galacticraft.core.network;
+
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityLander;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.Packet250CustomPayload;
+import cpw.mods.fml.relauncher.Side;
+
+public class GCCorePacketLanderUpdate implements IGalacticraftAdvancedPacket
+{
+    public static final int packetID = 29;
+
+    public static Packet buildKeyPacket(GCCoreEntityLander lander)
+    {
+        final Packet250CustomPayload packet = new Packet250CustomPayload();
+        packet.channel = GalacticraftCore.CHANNEL;
+
+        final ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        final DataOutputStream data = new DataOutputStream(bytes);
+
+        try
+        {
+            data.writeInt(GCCorePacketLanderUpdate.packetID);
+            data.writeInt(lander.entityId);
+            data.writeInt(lander.getSizeInventory());
+            
+            for (int i = 0; i < lander.getSizeInventory(); i++)
+            {
+                ItemStack stackAt = lander.getStackInSlot(i);
+                Packet.writeItemStack(stackAt, data);
+            }
+
+            packet.data = bytes.toByteArray();
+            packet.length = packet.data.length;
+
+            data.close();
+            bytes.close();
+        }
+        catch (final Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return packet;
+    }
+
+    @Override
+    public byte getPacketID()
+    {
+        return GCCorePacketLanderUpdate.packetID;
+    }
+
+    @Override
+    public void handlePacket(DataInputStream stream, Object[] extraData, Side side)
+    {
+        try
+        {
+            final EntityPlayer player = (EntityPlayer) extraData[0];
+
+            int entityID = stream.readInt();
+            Entity e = player.worldObj.getEntityByID(entityID);
+            int length = stream.readInt();
+            
+            if (e != null && e instanceof GCCoreEntityLander)
+            {
+                GCCoreEntityLander lander = (GCCoreEntityLander)e;
+                lander.chestContents = new ItemStack[length];
+                
+                for (int i = 0; i < length; i++)
+                {
+                    ItemStack stack = Packet.readItemStack(stream);
+                    lander.setInventorySlotContents(i, stack);
+                }
+            }
+
+        }
+        catch (final Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+}
