@@ -16,6 +16,7 @@ import universalelectricity.prefab.network.IPacketReceiver;
 import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.Player;
 
@@ -246,6 +247,12 @@ public class GCCorePacketManager extends PacketManager implements IPacketHandler
     @Override
     public void onPacketData(INetworkManager network, Packet250CustomPayload packet, Player player)
     {
+        if (packet == null || packet.data == null)
+        {
+            FMLLog.severe("Packet data received as null!");
+            return;
+        }
+        
         try
         {
             final ByteArrayDataInput data = ByteStreams.newDataInput(packet.data);
