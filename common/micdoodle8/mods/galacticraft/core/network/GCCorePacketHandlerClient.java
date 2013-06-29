@@ -36,6 +36,7 @@ import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraftforge.common.DimensionManager;
 import org.lwjgl.input.Keyboard;
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
@@ -47,6 +48,12 @@ public class GCCorePacketHandlerClient implements IPacketHandler
     @Override
     public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player p)
     {
+        if (packet == null || packet.data == null)
+        {
+            FMLLog.severe("Packet data received as null!");
+            return;
+        }
+        
         final DataInputStream data = new DataInputStream(new ByteArrayInputStream(packet.data));
 
         final int packetType = PacketUtil.readPacketID(data);

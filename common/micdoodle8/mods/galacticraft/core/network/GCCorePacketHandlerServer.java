@@ -33,6 +33,7 @@ import net.minecraft.network.packet.Packet9Respawn;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
@@ -42,6 +43,12 @@ public class GCCorePacketHandlerServer implements IPacketHandler
     @Override
     public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player p)
     {
+        if (packet == null || packet.data == null)
+        {
+            FMLLog.severe("Packet data received as null!");
+            return;
+        }
+        
         final DataInputStream data = new DataInputStream(new ByteArrayInputStream(packet.data));
 
         final int packetType = PacketUtil.readPacketID(data);
