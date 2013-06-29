@@ -553,7 +553,7 @@ public class RecipeUtil
 
         if (Items.getItem("copperCableBlock") != null)
         {
-            RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.enclosedWire, 1, 0), new Object[] { "XYX", 'X', Items.getItem("copperCableBlock"), 'Y', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4) });
+            RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.enclosedWire, 1, 2), new Object[] { "XYX", 'Y', Items.getItem("copperCableBlock"), 'X', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4) });
         }
     }
 

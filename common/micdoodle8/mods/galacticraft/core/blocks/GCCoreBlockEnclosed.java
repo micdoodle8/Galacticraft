@@ -95,36 +95,37 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
     public void onBlockAdded(World world, int x, int y, int z)
     {
         super.onBlockAdded(world, x, y, z);
-
-        final TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
-        Class clazz = null;
         
-        try
+        final TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
+        
+        if (GCCoreCompatibilityManager.isIc2Loaded())
         {
-            clazz = Class.forName("ic2.core.block.wiring.TileEntityCable");
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-
-        if (tileEntity instanceof IConductor)
-        {
-            ((IConductor) tileEntity).updateAdjacentConnections();
-        }
-        else if (clazz != null && clazz.isInstance(tileEntity))
-        {
-            FMLLog.info("1");
             try
             {
-                Method method = clazz.getMethod("onNeighborBlockChange");
-                method.invoke(tileEntity);
-                FMLLog.info("2");
+                Class clazz = Class.forName("ic2.core.block.wiring.TileEntityCable");
+
+                if (clazz != null && clazz.isInstance(tileEntity))
+                {
+                    try
+                    {
+                        Method method = clazz.getMethod("onNeighborBlockChange");
+                        method.invoke(tileEntity);
+                    }
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
             }
             catch (Exception e)
             {
                 e.printStackTrace();
             }
+        }
+
+        if (tileEntity instanceof IConductor)
+        {
+            ((IConductor) tileEntity).updateAdjacentConnections();
         }
     }
 
@@ -132,32 +133,35 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
     public void onNeighborBlockChange(World world, int x, int y, int z, int blockID)
     {
         final TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
-        Class clazz = null;
         
-        try
-        {
-            clazz = Class.forName("ic2.core.block.wiring.TileEntityCable");
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-
-        if (tileEntity instanceof IConductor)
-        {
-            ((IConductor) tileEntity).updateAdjacentConnections();
-        }
-        else if (clazz != null && clazz.isInstance(tileEntity))
+        if (GCCoreCompatibilityManager.isIc2Loaded())
         {
             try
             {
-                Method method = clazz.getMethod("onNeighborBlockChange");
-                method.invoke(tileEntity);
+                Class clazz = Class.forName("ic2.core.block.wiring.TileEntityCable");
+
+                if (clazz != null && clazz.isInstance(tileEntity))
+                {
+                    try
+                    {
+                        Method method = clazz.getMethod("onNeighborBlockChange");
+                        method.invoke(tileEntity);
+                    }
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
             }
             catch (Exception e)
             {
                 e.printStackTrace();
             }
+        }
+
+        if (tileEntity instanceof IConductor)
+        {
+            ((IConductor) tileEntity).updateAdjacentConnections();
         }
     }
 
@@ -183,29 +187,32 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
         case 1:
             return new GCCoreTileEntityOxygenPipe();
         case 2:
-            try
+            if (GCCoreCompatibilityManager.isIc2Loaded())
             {
-                Class clazz = Class.forName("ic2.core.block.wiring.TileEntityCable");
-                Constructor[] constructor = clazz.getConstructors();
-                FMLLog.info("class " + clazz.getName() + " " + clazz.toString());
-                
-                Object o = null;
-                
-                for (Constructor c : constructor)
+                try
                 {
-                    FMLLog.info("const " + c.toString() + " " + c.toGenericString() + " " + c.getParameterTypes());
+                    Class clazz = Class.forName("ic2.core.block.wiring.TileEntityCable");
+                    Constructor[] constructors = clazz.getDeclaredConstructors();
+                    Constructor constructor = null;
                     
-                    if (c.getParameterTypes().length > 0 && c.getParameterTypes()[0] == Short.class)
+                    for (int i = 0; i < constructors.length; i++)
                     {
-                        o = c.newInstance((short)0);
+                        constructor = constructors[i];
+                        
+                        if (constructor.getGenericParameterTypes().length == 1)
+                        {
+                            break;
+                        }
                     }
+                    
+                    constructor.setAccessible(true);
+                    
+                    return (TileEntity) constructor.newInstance((short)0);
                 }
-                
-                return (TileEntity) o;
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
             }
             break;
         }
