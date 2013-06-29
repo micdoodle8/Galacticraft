@@ -680,7 +680,8 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
                         }
                         if (item != null)
                         {
-                            strings.add(item.getDisplayName() + "s " + amountInInv + "/" + amountRequired);
+                            String displayName = item.getDisplayName();
+                            strings.add(displayName + (displayName.equals("Tin") ? " " : "s ") + amountInInv + "/" + amountRequired);
                         }
                         hasEnough.add(amountInInv >= amountRequired);
                     }
