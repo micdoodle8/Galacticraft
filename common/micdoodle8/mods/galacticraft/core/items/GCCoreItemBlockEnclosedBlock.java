@@ -41,6 +41,18 @@ public class GCCoreItemBlockEnclosedBlock extends ItemBlock
         case 2:
             name = "copperCable";
             break;
+        case 3:
+            name = "goldCable";
+            break;
+        case 4:
+            name = "hvCable";
+            break;
+        case 5:
+            name = "glassFibreCable";
+            break;
+        case 6:
+            name = "lvCable";
+            break;
         default:
             name = GCCoreBlockEnclosed.getTypeFromMeta(par1ItemStack.getItemDamage()).getPipeClass();
             break;
