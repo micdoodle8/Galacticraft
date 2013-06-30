@@ -16,7 +16,6 @@ import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
 import micdoodle8.mods.galacticraft.mars.dimension.GCMarsWorldProvider;
 import micdoodle8.mods.galacticraft.mars.entities.GCCoreEntityRocketT2;
-import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityCreeperBoss;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityProjectileTNT;
 import micdoodle8.mods.galacticraft.mars.items.GCMarsItems;
 import micdoodle8.mods.galacticraft.mars.schematic.GCMarsSchematicRocketT2;
@@ -127,7 +126,8 @@ public class GalacticraftMars implements IGalacticraftSubMod
 
     public void registerCreatures()
     {
-//        this.registerGalacticraftCreature(GCMarsEntityCreeperBoss.class, "Creeper Boss", GCMarsConfigManager.idEntityCreeperBoss, 894731, 0);
+        // this.registerGalacticraftCreature(GCMarsEntityCreeperBoss.class,
+        // "Creeper Boss", GCMarsConfigManager.idEntityCreeperBoss, 894731, 0);
     }
 
     public void registerOtherEntities()

@@ -285,7 +285,7 @@ public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInvento
             {
                 this.riddenByEntity.mountEntity(this);
             }
-            
+
             return true;
         }
         else if (this.riddenByEntity == null && this.onGround && var1 instanceof EntityPlayerMP)
@@ -497,12 +497,12 @@ public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInvento
     public void readNetworkedData(ByteArrayDataInput dataStream)
     {
         this.landed = dataStream.readBoolean();
-        
+
         int cargoLength = dataStream.readInt();
         if (this.chestContents == null || this.chestContents.length == 0)
         {
             this.chestContents = new ItemStack[cargoLength];
-            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 21, new Object[] {this.entityId}));
+            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 21, new Object[] { this.entityId }));
         }
     }
 

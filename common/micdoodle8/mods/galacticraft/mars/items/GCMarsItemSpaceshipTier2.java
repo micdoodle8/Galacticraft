@@ -147,7 +147,8 @@ public class GCMarsItemSpaceshipTier2 extends Item implements IHoldableItem
     {
         return true;
     }
-    
+
+    @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister par1IconRegister)
     {

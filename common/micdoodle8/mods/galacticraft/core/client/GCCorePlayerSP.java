@@ -17,7 +17,6 @@ import net.minecraft.util.Icon;
 import net.minecraft.util.Session;
 import net.minecraft.world.World;
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -87,7 +86,7 @@ public class GCCorePlayerSP extends EntityClientPlayerMP
         }
 
         super.onLivingUpdate();
-        
+
         if (!this.onGround && this.lastOnGround)
         {
             this.touchedGround = true;

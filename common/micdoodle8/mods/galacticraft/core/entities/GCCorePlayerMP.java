@@ -114,7 +114,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
     public boolean touchedGround = false;
     public boolean lastOnGround;
-    
+
     public ArrayList<ISchematicPage> unlockedSchematics = new ArrayList<ISchematicPage>();
     public ArrayList<ISchematicPage> lastUnlockedSchematics = new ArrayList<ISchematicPage>();
 
@@ -156,7 +156,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
         {
             GalacticraftCore.playersServer.put(this.username, this);
         }
-        
+
         if (!this.onGround && this.lastOnGround)
         {
             this.touchedGround = true;
@@ -641,13 +641,13 @@ public class GCCorePlayerMP extends EntityPlayerMP
         {
             this.chestSpawnCooldown--;
         }
-        
+
         if (this.chestSpawnCooldown == 180)
         {
             if (this.chestSpawnVector != null)
             {
                 GCCoreEntityParaChest chest = new GCCoreEntityParaChest(this.worldObj, this.rocketStacks);
-                
+
                 chest.setPosition(this.chestSpawnVector.x, this.chestSpawnVector.y, this.chestSpawnVector.z);
 
                 if (!this.worldObj.isRemote)
@@ -892,7 +892,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
         this.lastOxygenSetupValid = this.oxygenSetupValid;
         this.lastUnlockedSchematics = this.unlockedSchematics;
-        
+
         this.lastOnGround = this.onGround;
     }
 

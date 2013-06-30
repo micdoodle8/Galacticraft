@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core;
 
 import net.minecraft.util.DamageSource;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class GCCoreDamageSource extends DamageSource
 {

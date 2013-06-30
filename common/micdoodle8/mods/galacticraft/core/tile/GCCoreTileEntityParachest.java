@@ -15,7 +15,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
@@ -37,15 +36,15 @@ public class GCCoreTileEntityParachest extends TileEntity implements IInventory
 
     private int ticksSinceSync;
     private int field_94046_i = -1;
-    
+
     @Override
     public void validate()
     {
         super.validate();
-        
+
         if (this.worldObj != null && this.worldObj.isRemote)
         {
-            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, new Object[] {this.xCoord, this.yCoord, this.zCoord}));
+            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, new Object[] { this.xCoord, this.yCoord, this.zCoord }));
         }
     }
 
@@ -300,10 +299,11 @@ public class GCCoreTileEntityParachest extends TileEntity implements IInventory
         this.checkForAdjacentChests();
         ++this.ticksSinceSync;
         float f;
-        
+
         if (this.worldObj.isRemote && this.chestContents == null)
         {
-//            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, new Object[] {this.xCoord, this.yCoord, this.zCoord}));
+            // PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL,
+            // 22, new Object[] {this.xCoord, this.yCoord, this.zCoord}));
         }
 
         if (!this.worldObj.isRemote && this.numUsingPlayers != 0 && (this.ticksSinceSync + this.xCoord + this.yCoord + this.zCoord) % 200 == 0)

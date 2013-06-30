@@ -70,7 +70,7 @@ public class GCCoreBlockOxygenPipe extends BlockContainer
 
         if (!world.isRemote && tileEntity instanceof IPressurizedTube)
         {
-            ((IPressurizedTube)tileEntity).refreshNetwork();
+            ((IPressurizedTube) tileEntity).refreshNetwork();
         }
     }
 
@@ -81,7 +81,7 @@ public class GCCoreBlockOxygenPipe extends BlockContainer
 
         if (!world.isRemote && tileEntity instanceof IPressurizedTube)
         {
-            ((IPressurizedTube)tileEntity).refreshNetwork();
+            ((IPressurizedTube) tileEntity).refreshNetwork();
         }
     }
 
@@ -153,7 +153,7 @@ public class GCCoreBlockOxygenPipe extends BlockContainer
 
                         if (!par1World.isRemote && tileAt instanceof IPressurizedTube)
                         {
-                            ((IPressurizedTube)tileAt).refreshNetwork();
+                            ((IPressurizedTube) tileAt).refreshNetwork();
                         }
                     }
 

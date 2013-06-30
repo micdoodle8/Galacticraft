@@ -8,9 +8,9 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import universalelectricity.core.electricity.ElectricityDisplay;
 import universalelectricity.core.electricity.ElectricityDisplay.ElectricUnit;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -32,7 +32,7 @@ public class GCCoreGuiAirCompressor extends GuiContainer
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRenderer.drawString(compressor.getInvName(), 8, 10, 4210752);
+        this.fontRenderer.drawString(this.compressor.getInvName(), 8, 10, 4210752);
         this.fontRenderer.drawString(LanguageRegistry.instance().getStringLocalization("gui.message.in.name") + ":", 90, 31, 4210752);
         String status = LanguageRegistry.instance().getStringLocalization("gui.message.status.name") + ": " + this.getStatus();
         this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 50, 4210752);
@@ -51,7 +51,7 @@ public class GCCoreGuiAirCompressor extends GuiContainer
         {
             return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.missingpower.name");
         }
-        
+
         if (this.compressor.getStackInSlot(0) == null || !(this.compressor.getStackInSlot(0).getItem() instanceof GCCoreItemOxygenTank))
         {
             return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.missingtank.name");

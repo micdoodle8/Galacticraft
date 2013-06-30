@@ -29,7 +29,7 @@ public class GCCorePacketLanderUpdate implements IGalacticraftAdvancedPacket
             data.writeInt(GCCorePacketLanderUpdate.packetID);
             data.writeInt(lander.entityId);
             data.writeInt(lander.getSizeInventory());
-            
+
             for (int i = 0; i < lander.getSizeInventory(); i++)
             {
                 ItemStack stackAt = lander.getStackInSlot(i);
@@ -66,12 +66,12 @@ public class GCCorePacketLanderUpdate implements IGalacticraftAdvancedPacket
             int entityID = stream.readInt();
             Entity e = player.worldObj.getEntityByID(entityID);
             int length = stream.readInt();
-            
+
             if (e != null && e instanceof GCCoreEntityLander)
             {
-                GCCoreEntityLander lander = (GCCoreEntityLander)e;
+                GCCoreEntityLander lander = (GCCoreEntityLander) e;
                 lander.chestContents = new ItemStack[length];
-                
+
                 for (int i = 0; i < length; i++)
                 {
                     ItemStack stack = Packet.readItemStack(stream);

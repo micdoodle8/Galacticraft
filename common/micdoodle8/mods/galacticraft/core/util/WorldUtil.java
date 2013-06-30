@@ -50,7 +50,6 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 import universalelectricity.core.vector.Vector3;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 
@@ -82,16 +81,16 @@ public class WorldUtil
         if (eLiving.worldObj.provider instanceof IGalacticraftWorldProvider)
         {
             final IGalacticraftWorldProvider customProvider = (IGalacticraftWorldProvider) eLiving.worldObj.provider;
-            
+
             if (eLiving instanceof EntityPlayer)
             {
                 if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT && eLiving instanceof GCCorePlayerSP)
                 {
-                    return ((GCCorePlayerSP)eLiving).touchedGround ? 0.08D - customProvider.getGravity() : 0.08D;
+                    return ((GCCorePlayerSP) eLiving).touchedGround ? 0.08D - customProvider.getGravity() : 0.08D;
                 }
                 else if (eLiving instanceof GCCorePlayerMP)
                 {
-                    return ((GCCorePlayerMP)eLiving).touchedGround ? 0.08D - customProvider.getGravity() : 0.08D;
+                    return ((GCCorePlayerMP) eLiving).touchedGround ? 0.08D - customProvider.getGravity() : 0.08D;
                 }
                 else
                 {

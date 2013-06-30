@@ -48,13 +48,13 @@ public class GCCorePacketHandlerServer implements IPacketHandler
             FMLLog.severe("Packet received as null!");
             return;
         }
-        
+
         if (packet.data == null)
         {
             FMLLog.severe("Packet data received as null! ID " + packet.getPacketId());
             return;
         }
-        
+
         final DataInputStream data = new DataInputStream(new ByteArrayInputStream(packet.data));
 
         final int packetType = PacketUtil.readPacketID(data);
@@ -386,21 +386,23 @@ public class GCCorePacketHandlerServer implements IPacketHandler
             final Class[] decodeAs = { Integer.class };
             final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
             Entity e = player.worldObj.getEntityByID((Integer) packetReadout[0]);
-            
+
             if (e != null && e instanceof GCCoreEntityLander)
             {
-                player.playerNetServerHandler.sendPacketToPlayer(new GCCorePacketLanderUpdate().buildKeyPacket((GCCoreEntityLander)e));
+                new GCCorePacketLanderUpdate();
+                player.playerNetServerHandler.sendPacketToPlayer(GCCorePacketLanderUpdate.buildKeyPacket((GCCoreEntityLander) e));
             }
         }
         else if (packetType == 22)
         {
             final Class[] decodeAs = { Integer.class, Integer.class, Integer.class };
             final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
-            TileEntity tile = player.worldObj.getBlockTileEntity((Integer)packetReadout[0], (Integer)packetReadout[1], (Integer)packetReadout[2]);
-            
+            TileEntity tile = player.worldObj.getBlockTileEntity((Integer) packetReadout[0], (Integer) packetReadout[1], (Integer) packetReadout[2]);
+
             if (tile != null && tile instanceof GCCoreTileEntityParachest)
             {
-                player.playerNetServerHandler.sendPacketToPlayer(new GCCorePacketParachestUpdate().buildKeyPacket((GCCoreTileEntityParachest)tile));
+                new GCCorePacketParachestUpdate();
+                player.playerNetServerHandler.sendPacketToPlayer(GCCorePacketParachestUpdate.buildKeyPacket((GCCoreTileEntityParachest) tile));
             }
         }
     }

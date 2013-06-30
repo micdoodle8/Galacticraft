@@ -10,7 +10,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 
 public class GCCorePacketParachestUpdate implements IGalacticraftAdvancedPacket
@@ -32,7 +31,7 @@ public class GCCorePacketParachestUpdate implements IGalacticraftAdvancedPacket
             data.writeInt(chest.yCoord);
             data.writeInt(chest.zCoord);
             data.writeInt(chest.getSizeInventory());
-            
+
             for (int i = 0; i < chest.getSizeInventory(); i++)
             {
                 ItemStack stackAt = chest.getStackInSlot(i);
@@ -71,12 +70,12 @@ public class GCCorePacketParachestUpdate implements IGalacticraftAdvancedPacket
             int zCoord = stream.readInt();
             TileEntity tile = player.worldObj.getBlockTileEntity(xCoord, yCoord, zCoord);
             int length = stream.readInt();
-            
+
             if (tile != null && tile instanceof GCCoreTileEntityParachest)
             {
-                GCCoreTileEntityParachest chest = (GCCoreTileEntityParachest)tile;
+                GCCoreTileEntityParachest chest = (GCCoreTileEntityParachest) tile;
                 chest.chestContents = new ItemStack[length];
-                
+
                 for (int i = 0; i < length; i++)
                 {
                     ItemStack stack = Packet.readItemStack(stream);

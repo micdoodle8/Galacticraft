@@ -19,35 +19,22 @@ import net.minecraft.world.World;
 import universalelectricity.core.block.IConductor;
 import basiccomponents.common.BasicComponents;
 import basiccomponents.common.tileentity.TileEntityCopperWire;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSealedBlock
 {
     private Icon[] enclosedIcons;
-    
+
     public enum EnumEnclosedBlock
     {
-        COPPERWIRE(0, -1, null, "enclosed_copper_wire"),
-        OXYGENPIPE(1, -1, null, "enclosed_oxygen_pipe"),
-        IC2_COPPER_CABLE(2, 0, null, "enclosed_copper_cable"),
-        IC2_GOLD_CABLE(3, 3, null, "enclosed_gold_cable"),
-        IC2_HV_CABLE(4, 6, null, "enclosed_hv_cable"),
-        IC2_GLASS_FIBRE_CABLE(5, 9, null, "enclosed_glassfibre_cable"),
-        IC2_LV_CABLE(6, 10, null, "enclosed_lv_cable"),
-        BC_ITEM_STONEPIPE(7, -1, "PipeItemsStone", "enclosed_itempipe_stone"),
-        BC_ITEM_COBBLESTONEPIPE(8, -1, "PipeItemsCobblestone", "enclosed_itempipe_cobblestone"),
-        BC_LIQUID_STONEPIPE(9, -1, "PipeLiquidsStone", "enclosed_liquidpipe_stone"),
-        BC_LIQUID_COBBLESTONEPIPE(10, -1, "PipeLiquidsCobblestone", "enclosed_liquidpipe_cobblestone"),
-        BC_POWER_STONEPIPE(11, -1, "PipePowerStone", "enclosed_powerpipe_stone"),
-        BC_POWER_GOLDPIPE(12, -1, "PipePowerGold", "enclosed_powerpipe_gold");
-        
+        COPPERWIRE(0, -1, null, "enclosed_copper_wire"), OXYGENPIPE(1, -1, null, "enclosed_oxygen_pipe"), IC2_COPPER_CABLE(2, 0, null, "enclosed_copper_cable"), IC2_GOLD_CABLE(3, 3, null, "enclosed_gold_cable"), IC2_HV_CABLE(4, 6, null, "enclosed_hv_cable"), IC2_GLASS_FIBRE_CABLE(5, 9, null, "enclosed_glassfibre_cable"), IC2_LV_CABLE(6, 10, null, "enclosed_lv_cable"), BC_ITEM_STONEPIPE(7, -1, "PipeItemsStone", "enclosed_itempipe_stone"), BC_ITEM_COBBLESTONEPIPE(8, -1, "PipeItemsCobblestone", "enclosed_itempipe_cobblestone"), BC_LIQUID_STONEPIPE(9, -1, "PipeLiquidsStone", "enclosed_liquidpipe_stone"), BC_LIQUID_COBBLESTONEPIPE(10, -1, "PipeLiquidsCobblestone", "enclosed_liquidpipe_cobblestone"), BC_POWER_STONEPIPE(11, -1, "PipePowerStone", "enclosed_powerpipe_stone"), BC_POWER_GOLDPIPE(12, -1, "PipePowerGold", "enclosed_powerpipe_gold");
+
         int metadata;
         int ic2CableMeta;
         String pipeClass;
         String texture;
-        
+
         EnumEnclosedBlock(int metadata, int ic2CableMeta, String pipeClass, String texture)
         {
             this.metadata = metadata;
@@ -55,7 +42,7 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
             this.pipeClass = pipeClass;
             this.texture = texture;
         }
-        
+
         public int getMetadata()
         {
             return this.metadata;
@@ -65,18 +52,18 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
         {
             return this.ic2CableMeta;
         }
-        
+
         public String getPipeClass()
         {
             return this.pipeClass;
         }
-        
+
         public String getTexture()
         {
             return this.texture;
         }
     }
-    
+
     public static EnumEnclosedBlock getTypeFromMeta(int metadata)
     {
         for (EnumEnclosedBlock type : EnumEnclosedBlock.values())
@@ -86,10 +73,10 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
                 return type;
             }
         }
-        
+
         return null;
     }
-    
+
     public GCCoreBlockEnclosed(int id)
     {
         super(id, Material.cloth);
@@ -106,9 +93,9 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
         {
             par3List.add(new ItemStack(par1, 1, 0));
         }
-        
+
         par3List.add(new ItemStack(par1, 1, 1));
-        
+
         if (GCCoreCompatibilityManager.isIc2Loaded())
         {
             par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.IC2_COPPER_CABLE.getMetadata()));
@@ -117,7 +104,7 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
             par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.IC2_GLASS_FIBRE_CABLE.getMetadata()));
             par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.IC2_LV_CABLE.getMetadata()));
         }
-        
+
         if (GCCoreCompatibilityManager.isBCraftLoaded())
         {
             par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.BC_ITEM_COBBLESTONEPIPE.getMetadata()));
@@ -152,12 +139,12 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
     public void registerIcons(IconRegister par1IconRegister)
     {
         this.enclosedIcons = new Icon[EnumEnclosedBlock.values().length];
-        
+
         for (EnumEnclosedBlock type : EnumEnclosedBlock.values())
         {
             this.enclosedIcons[type.ordinal()] = par1IconRegister.registerIcon("galacticraftcore:" + type.getTexture());
         }
-        
+
         this.blockIcon = par1IconRegister.registerIcon("galacticraftcore:" + EnumEnclosedBlock.COPPERWIRE.getTexture());
     }
 
@@ -165,10 +152,10 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
     public void onBlockAdded(World world, int x, int y, int z)
     {
         super.onBlockAdded(world, x, y, z);
-        
+
         int metadata = world.getBlockMetadata(x, y, z);
         final TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
-        
+
         if (metadata <= EnumEnclosedBlock.COPPERWIRE.getMetadata())
         {
             if (tileEntity instanceof IConductor)
@@ -178,7 +165,7 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
         }
         else if (metadata <= EnumEnclosedBlock.OXYGENPIPE.getMetadata())
         {
-            
+
         }
         else if (metadata <= EnumEnclosedBlock.IC2_LV_CABLE.getMetadata())
         {
@@ -216,10 +203,10 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
     public void onNeighborBlockChange(World world, int x, int y, int z, int blockID)
     {
         super.onNeighborBlockChange(world, x, y, z, blockID);
-        
+
         int metadata = world.getBlockMetadata(x, y, z);
         final TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
-        
+
         if (metadata <= EnumEnclosedBlock.COPPERWIRE.getMetadata())
         {
             if (tileEntity instanceof IConductor)
@@ -229,7 +216,7 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
         }
         else if (metadata <= EnumEnclosedBlock.OXYGENPIPE.getMetadata())
         {
-            
+
         }
         else if (metadata <= EnumEnclosedBlock.IC2_LV_CABLE.getMetadata())
         {
@@ -269,7 +256,7 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
                     Class clazzPipeBlock = Class.forName("buildcraft.transport.BlockGenericPipe");
 
                     Method getPipe = null;
-                    
+
                     for (Method m : clazzPipeBlock.getDeclaredMethods())
                     {
                         if (m.getName().equals("getPipe"))
@@ -277,11 +264,11 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
                             getPipe = m;
                         }
                     }
-                    
+
                     Object pipe = getPipe.invoke(null, world, x, y, z);
                     Method isValid = clazzPipeBlock.getMethod("isValid", clazzPipe);
                     Boolean valid = (Boolean) isValid.invoke(null, pipe);
-                    
+
                     if (valid)
                     {
                         Method schedule = clazzPipeTile.getMethod("scheduleNeighborChange");
@@ -323,20 +310,20 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
                     Class clazz = Class.forName("ic2.core.block.wiring.TileEntityCable");
                     Constructor[] constructors = clazz.getDeclaredConstructors();
                     Constructor constructor = null;
-                    
-                    for (int i = 0; i < constructors.length; i++)
+
+                    for (Constructor constructor2 : constructors)
                     {
-                        constructor = constructors[i];
-                        
+                        constructor = constructor2;
+
                         if (constructor.getGenericParameterTypes().length == 1)
                         {
                             break;
                         }
                     }
-                    
+
                     constructor.setAccessible(true);
-                    
-                    return (TileEntity) constructor.newInstance((short)GCCoreBlockEnclosed.getTypeFromMeta(metadata).getIC2CableMeta());
+
+                    return (TileEntity) constructor.newInstance((short) GCCoreBlockEnclosed.getTypeFromMeta(metadata).getIC2CableMeta());
                 }
                 catch (Exception e)
                 {
@@ -354,22 +341,20 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
                     Class clazz = Class.forName("buildcraft.transport.TileGenericPipe");
                     Constructor[] constructors = clazz.getDeclaredConstructors();
                     Constructor constructor = null;
-                    
-                    for (int i = 0; i < constructors.length; i++)
+
+                    for (Constructor constructor2 : constructors)
                     {
-                        constructor = constructors[i];
-                        
+                        constructor = constructor2;
+
                         if (constructor.getGenericParameterTypes().length == 0)
                         {
                             break;
                         }
                     }
-                    
+
                     constructor.setAccessible(true);
 
-                    TileEntity te = (TileEntity) constructor.newInstance();
-                    FMLLog.info("" + te);
-                    return te;
+                    return (TileEntity) constructor.newInstance();
                 }
                 catch (Exception e)
                 {

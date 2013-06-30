@@ -53,13 +53,13 @@ public class GCCorePacketHandlerClient implements IPacketHandler
             FMLLog.severe("Packet received as null!");
             return;
         }
-        
+
         if (packet.data == null)
         {
             FMLLog.severe("Packet data received as null! ID " + packet.getPacketId());
             return;
         }
-        
+
         final DataInputStream data = new DataInputStream(new ByteArrayInputStream(packet.data));
 
         final int packetType = PacketUtil.readPacketID(data);
@@ -456,12 +456,12 @@ public class GCCorePacketHandlerClient implements IPacketHandler
             case 1:
                 int entityID = (Integer) packetReadout[2];
                 Entity entity = player.worldObj.getEntityByID(entityID);
-                
+
                 if (entity != null && entity instanceof GCCoreEntityLander)
                 {
-                    FMLClientHandler.instance().getClient().displayGuiScreen(new GCCoreGuiParachest(player.inventory, (GCCoreEntityLander)entity));
+                    FMLClientHandler.instance().getClient().displayGuiScreen(new GCCoreGuiParachest(player.inventory, (GCCoreEntityLander) entity));
                 }
-                
+
                 player.openContainer.windowId = (Integer) packetReadout[0];
                 break;
             }

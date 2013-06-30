@@ -86,7 +86,7 @@ public class GCCoreGuiFuelLoader extends GuiContainer
         {
             return EnumColor.DARK_GREEN + LanguageRegistry.instance().getStringLocalization("gui.status.active.name");
         }
-        
+
         return EnumColor.ORANGE + LanguageRegistry.instance().getStringLocalization("gui.status.ready.name");
     }
 

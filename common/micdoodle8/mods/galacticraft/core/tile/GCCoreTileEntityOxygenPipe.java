@@ -24,7 +24,7 @@ public class GCCoreTileEntityOxygenPipe extends TileEntity implements ITubeConne
     private byte preLoadColor;
     private byte preColorCooldown;
     private boolean setColor = false;
-    
+
     public GasNetwork gasNetwork;
 
     @Override
@@ -47,7 +47,7 @@ public class GCCoreTileEntityOxygenPipe extends TileEntity implements ITubeConne
                 return false;
             }
         }
-        
+
         return true;
     }
 
@@ -56,21 +56,22 @@ public class GCCoreTileEntityOxygenPipe extends TileEntity implements ITubeConne
     {
         return !this.setColor;
     }
-    
+
+    @Override
     public GasNetwork getNetwork()
     {
         if (this.gasNetwork == null)
         {
             this.gasNetwork = new GasNetwork(this);
         }
-        
+
         return this.gasNetwork;
     }
 
     @Override
     public void invalidate()
     {
-        if(!worldObj.isRemote)
+        if (!this.worldObj.isRemote)
         {
             this.getNetwork().split(this);
         }
@@ -85,33 +86,33 @@ public class GCCoreTileEntityOxygenPipe extends TileEntity implements ITubeConne
     }
 
     @Override
-    public void refreshNetwork() 
+    public void refreshNetwork()
     {
-        if (!worldObj.isRemote)
+        if (!this.worldObj.isRemote)
         {
-            if (canTransferGas())
+            if (this.canTransferGas())
             {
                 for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS)
                 {
-                    TileEntity tileEntity = Object3D.get(this).getFromSide(side).getTileEntity(worldObj);
-                    
+                    TileEntity tileEntity = Object3D.get(this).getFromSide(side).getTileEntity(this.worldObj);
+
                     if (tileEntity instanceof IPressurizedTube)
                     {
-                        if (((IPressurizedTube)tileEntity).canTransferGasToTube(this) && this.canTransferGasToTube(tileEntity))
+                        if (((IPressurizedTube) tileEntity).canTransferGasToTube(this) && this.canTransferGasToTube(tileEntity))
                         {
-                            this.getNetwork().merge(((IPressurizedTube)tileEntity).getNetwork());
+                            this.getNetwork().merge(((IPressurizedTube) tileEntity).getNetwork());
                         }
                         else
                         {
                             ((IPressurizedTube) tileEntity).getNetwork().split(this);
-                            this.getNetwork().split(((IPressurizedTube) tileEntity));
+                            this.getNetwork().split((IPressurizedTube) tileEntity);
                         }
                     }
                 }
 
                 this.getNetwork().refresh();
             }
-            else 
+            else
             {
                 this.getNetwork().split(this);
             }

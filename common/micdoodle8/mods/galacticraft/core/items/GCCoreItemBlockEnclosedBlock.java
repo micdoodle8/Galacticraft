@@ -109,21 +109,21 @@ public class GCCoreItemBlockEnclosedBlock extends ItemBlock
             {
                 return false;
             }
-            
+
             if (entityplayer.canCurrentToolHarvestBlock(i, j, k) && world.canPlaceEntityOnSide(blockID, i, j, k, false, side, entityplayer, itemstack))
             {
                 try
                 {
                     String name = Character.toLowerCase(type.getPipeClass().charAt(0)) + type.getPipeClass().substring(1);
-                    
+
                     Class clazz = Class.forName("buildcraft.BuildCraftCore");
                     Class clazzConfig = Class.forName("net.minecraftforge.common.Configuration");
                     Class clazzBlockPipe = Class.forName("buildcraft.transport.BlockGenericPipe");
-                    
+
                     Object mainConfiguration = clazz.getField("mainConfiguration").get(null);
 
                     Method getItem = null;
-                    
+
                     for (Method m : clazzConfig.getDeclaredMethods())
                     {
                         if (m.getName().equals("getItem") && m.getParameterTypes().length == 2)
@@ -134,11 +134,11 @@ public class GCCoreItemBlockEnclosedBlock extends ItemBlock
 
                     // -1 is safe since they will have already been set
                     Property prop = (Property) getItem.invoke(mainConfiguration, name + ".id", -1);
-                    
+
                     int pipeID = prop.getInt(-1);
 
                     Method createPipe = null;
-                    
+
                     for (Method m : clazzBlockPipe.getDeclaredMethods())
                     {
                         if (m.getName().equals("createPipe") && m.getParameterTypes().length == 1)
@@ -146,9 +146,9 @@ public class GCCoreItemBlockEnclosedBlock extends ItemBlock
                             createPipe = m;
                         }
                     }
-                    
+
                     Object pipe = createPipe.invoke(null, pipeID + 256);
-                    
+
                     if (pipe == null)
                     {
                         FMLLog.info("Pipe failed to create during placement at " + i + "," + j + "," + k);
@@ -156,7 +156,7 @@ public class GCCoreItemBlockEnclosedBlock extends ItemBlock
                     }
 
                     Method placePipe = null;
-                    
+
                     for (Method m : clazzBlockPipe.getDeclaredMethods())
                     {
                         if (m.getName().equals("placePipe") && m.getParameterTypes().length == 7)
@@ -164,23 +164,23 @@ public class GCCoreItemBlockEnclosedBlock extends ItemBlock
                             placePipe = m;
                         }
                     }
-                    
+
                     Boolean b = (Boolean) placePipe.invoke(null, pipe, world, i, j, k, blockID, type.getMetadata());
-                    
+
                     if (b)
                     {
                         Block.blocksList[blockID].onBlockPlacedBy(world, i, j, k, entityplayer, itemstack);
                         world.playSoundEffect(i + 0.5F, j + 0.5F, k + 0.5F, block.stepSound.getPlaceSound(), (block.stepSound.getVolume() + 1.0F) / 2.0F, block.stepSound.getPitch() * 0.8F);
                         itemstack.stackSize--;
                     }
-                    
+
                     return true;
                 }
                 catch (Exception e)
                 {
                     e.printStackTrace();
                 }
-                
+
                 return false;
             }
             else

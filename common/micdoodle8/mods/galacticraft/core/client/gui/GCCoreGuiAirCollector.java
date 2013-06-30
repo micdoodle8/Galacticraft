@@ -7,9 +7,9 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import universalelectricity.core.electricity.ElectricityDisplay;
 import universalelectricity.core.electricity.ElectricityDisplay.ElectricUnit;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -31,7 +31,7 @@ public class GCCoreGuiAirCollector extends GuiContainer
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRenderer.drawString(collector.getInvName(), 8, 10, 4210752);
+        this.fontRenderer.drawString(this.collector.getInvName(), 8, 10, 4210752);
         this.fontRenderer.drawString(LanguageRegistry.instance().getStringLocalization("gui.message.out.name") + ":", 87, 31, 4210752);
         String status = LanguageRegistry.instance().getStringLocalization("gui.message.status.name") + ": " + this.getStatus();
         this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 50, 4210752);

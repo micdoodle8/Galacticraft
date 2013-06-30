@@ -71,7 +71,7 @@ public class GCCoreGuiRefinery extends GuiContainer
         {
             displayText = EnumColor.ORANGE + LanguageRegistry.instance().getStringLocalization("gui.status.idle.name");
         }
-        
+
         else if (this.tileEntity.processTicks > 0)
         {
             displayText = EnumColor.BRIGHT_GREEN + LanguageRegistry.instance().getStringLocalization("gui.status.refining.name");
