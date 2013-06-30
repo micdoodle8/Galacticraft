@@ -456,12 +456,13 @@ public class GCCorePacketHandlerClient implements IPacketHandler
             case 1:
                 int entityID = (Integer) packetReadout[2];
                 Entity entity = player.worldObj.getEntityByID(entityID);
-                player.openContainer.windowId = (Integer) packetReadout[0];
                 
                 if (entity != null && entity instanceof GCCoreEntityLander)
                 {
                     FMLClientHandler.instance().getClient().displayGuiScreen(new GCCoreGuiParachest(player.inventory, (GCCoreEntityLander)entity));
                 }
+                
+                player.openContainer.windowId = (Integer) packetReadout[0];
                 break;
             }
         }

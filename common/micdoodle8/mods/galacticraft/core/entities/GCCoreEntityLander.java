@@ -21,7 +21,6 @@ import net.minecraft.world.World;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.IPacketReceiver;
 import com.google.common.io.ByteArrayDataInput;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -36,7 +35,7 @@ public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInvento
     float accel = 0.04F;
     float turnFactor = 2.0F;
     private double lastMotionY;
-    public ItemStack[] chestContents;
+    public ItemStack[] chestContents = new ItemStack[0];
     public int numUsingPlayers;
     public GCCorePlayerMP playerSpawnedIn;
     private final float MAX_PITCH_ROTATION = 25.0F;
@@ -477,7 +476,8 @@ public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInvento
     {
         final ArrayList<Object> objList = new ArrayList<Object>();
         objList.add(this.landed);
-        objList.add(this.chestContents != null ? this.chestContents.length : 0);
+        Integer cargoLength = this.chestContents != null ? this.chestContents.length : 0;
+        objList.add(cargoLength);
         return objList;
     }
 
