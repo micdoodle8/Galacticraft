@@ -247,9 +247,15 @@ public class GCCorePacketManager extends PacketManager implements IPacketHandler
     @Override
     public void onPacketData(INetworkManager network, Packet250CustomPayload packet, Player player)
     {
-        if (packet == null || packet.data == null)
+        if (packet == null)
         {
-            FMLLog.severe("Packet data received as null!");
+            FMLLog.severe("Packet received as null!");
+            return;
+        }
+        
+        if (packet.data == null)
+        {
+            FMLLog.severe("Packet data received as null! ID " + packet.getPacketId());
             return;
         }
         
