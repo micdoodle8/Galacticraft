@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.network;
 
+import java.util.ArrayList;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
@@ -9,13 +10,14 @@ import net.minecraft.network.NetLoginHandler;
 import net.minecraft.network.packet.NetHandler;
 import net.minecraft.network.packet.Packet1Login;
 import net.minecraft.server.MinecraftServer;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.IConnectionHandler;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
 
 public class GCCoreConnectionHandler implements IConnectionHandler
 {
-    private static boolean connected = false;
+    private static ArrayList<INetworkManager> managers = new ArrayList<INetworkManager>();
 
     @Override
     public void playerLoggedIn(Player player, NetHandler netHandler, INetworkManager manager)
@@ -49,18 +51,24 @@ public class GCCoreConnectionHandler implements IConnectionHandler
     @Override
     public void connectionClosed(INetworkManager manager)
     {
-        if (GCCoreConnectionHandler.connected)
+        if (managers.contains(manager))
         {
-            WorldUtil.unregisterPlanets();
-            WorldUtil.unregisterSpaceStations();
+            managers.remove(manager);
+            
+            if (managers.size() == 0)
+            {
+                WorldUtil.unregisterPlanets();
+                WorldUtil.unregisterSpaceStations();
+            }
         }
-
-        GCCoreConnectionHandler.connected = false;
     }
 
     @Override
     public void clientLoggedIn(NetHandler clientHandler, INetworkManager manager, Packet1Login login)
     {
-        GCCoreConnectionHandler.connected = true;
+        if (!managers.contains(manager))
+        {
+            managers.add(manager);
+        }
     }
 }
