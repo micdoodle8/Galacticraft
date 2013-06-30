@@ -85,6 +85,7 @@ import net.minecraftforge.liquids.LiquidDictionary;
 import net.minecraftforge.liquids.LiquidStack;
 import universalelectricity.prefab.TranslationHelper;
 import universalelectricity.prefab.multiblock.TileEntityMulti;
+import universalelectricity.prefab.ore.OreGenerator;
 import basiccomponents.common.BasicComponents;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
@@ -304,6 +305,16 @@ public class GalacticraftCore
             BasicComponents.registerTileEntities();
             BasicComponents.requestAll(GalacticraftCore.instance);
             BasicComponents.register(GalacticraftCore.CHANNELENTITIES);
+            
+            if (GCCoreConfigManager.disableOreGenTin && BasicComponents.generationOreTin != null)
+            {
+                OreGenerator.removeOre(BasicComponents.generationOreTin);
+            }
+            
+            if (GCCoreConfigManager.disableOreGenCopper && BasicComponents.generationOreCopper != null)
+            {
+                OreGenerator.removeOre(BasicComponents.generationOreCopper);
+            }
 
             RecipeUtil.addBasicComponentsCraftingRecipes();
         }

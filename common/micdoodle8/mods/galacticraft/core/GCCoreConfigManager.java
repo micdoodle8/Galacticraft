@@ -161,11 +161,9 @@ public class GCCoreConfigManager
     public static boolean transparentBreathableAir;
     public static boolean moreStars;
     public static boolean wasdMapMovement;
-    public static boolean disableAluminiumEarth;
-    public static boolean disableCopperEarth;
-    public static boolean disableTitaniumEarth;
+    public static boolean disableOreGenTin;
+    public static boolean disableOreGenCopper;
     public static boolean disableOilGen;
-    public static int oreGenFactor;
     public static String[] sealableIDs;
     public static boolean disableSpaceshipParticles;
     public static boolean disableSpaceshipGrief;
@@ -317,6 +315,8 @@ public class GCCoreConfigManager
             GCCoreConfigManager.idEntitySun = GCCoreConfigManager.configuration.get("Entities", "idEntitySun", 172).getInt(172);
             GCCoreConfigManager.idEntityOverworld = GCCoreConfigManager.configuration.get("Entities", "idEntityOverworld", 173).getInt(173);
 
+            GCCoreConfigManager.disableOreGenCopper = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Copper Generation", false, "Copper Ore won't generate if set to true").getBoolean(false);
+            GCCoreConfigManager.disableOreGenTin = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Tin Generation", false, "Tin Ore won't generate if set to true").getBoolean(false);
             GCCoreConfigManager.transparentBreathableAir = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Transparent Breathable Air", true, "If you have FPS problems and wish to have solid blue breathable air blocks, set this to false").getBoolean(true);
             GCCoreConfigManager.moreStars = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "More Stars", true, "Setting this to false will revert night skies back to default minecraft star count").getBoolean(true);
             GCCoreConfigManager.wasdMapMovement = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "WASD Map Movement", true, "If you prefer to move the Galaxy map with your mouse, set to false").getBoolean(true);
