@@ -65,6 +65,7 @@ public class GCCoreTransformer implements IClassTransformer
 
             this.nodemap.put("playerControllerClass", "net/minecraft/client/multiplayer/PlayerControllerMP");
             this.nodemap.put("playerClient", "net/minecraft/client/entity/EntityClientPlayerMP");
+            this.nodemap.put("netClientHandler", "net/minecraft/client/multiplayer/NetClientHandler");
             this.nodemap.put("createClientPlayerMethod", "func_78754_a");
             this.nodemap.put("createClientPlayerDesc", "(L" + this.nodemap.get("worldClass") + ";)L" + this.nodemap.get("playerClient") + ";");
 
