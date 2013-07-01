@@ -175,7 +175,7 @@ public class GCCoreTransformer implements IClassTransformer
         {
             bytes = this.transform5(name, bytes, this.nodemap);
         }
-        else if (this.deobfuscated && name.replace('.', '/').equals(this.nodemap.get("minecraft")))
+        else if (name.replace('.', '/').equals(this.nodemap.get("minecraft")))
         {
             bytes = this.transform6(name, bytes, this.nodemap);
         }
@@ -187,11 +187,11 @@ public class GCCoreTransformer implements IClassTransformer
         {
             bytes = this.transform10(name, bytes, this.nodemap);
         }
-        else if (this.deobfuscated && name.equals("codechicken.nei.ContainerCreativeInv"))
+        else if (name.equals("codechicken.nei.ContainerCreativeInv"))
         {
             bytes = this.transform11(name, bytes, this.nodemap);
         }
-        else if (this.deobfuscated && name.equals("mithion.arsmagica.guis.GuiIngameArsMagica"))
+        else if (name.equals("mithion.arsmagica.guis.GuiIngameArsMagica"))
         {
             bytes = this.transform12(name, bytes, this.nodemap);
         }
