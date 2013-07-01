@@ -165,7 +165,7 @@ public class GalacticraftCore
 
     @PreInit
     public void preInit(FMLPreInitializationEvent event)
-    {
+    { 
         if (!this.checkForCoremod())
         {
             final String err = "Galacticraft Core is not placed in the coremods folder!";
