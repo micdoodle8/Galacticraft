@@ -405,21 +405,4 @@ public class GCCoreTileEntityCargoLoader extends GCCoreTileEntityElectric implem
 
         return new RemovalResult(EnumCargoLoadingState.EMPTY, null);
     }
-
-    public static enum EnumCargoLoadingState
-    {
-        FULL, EMPTY, NOTARGET, NOINVENTORY, SUCCESS;
-    }
-
-    public static class RemovalResult
-    {
-        public final EnumCargoLoadingState resultState;
-        public final ItemStack resultStack;
-
-        public RemovalResult(EnumCargoLoadingState resultState, ItemStack resultStack)
-        {
-            this.resultState = resultState;
-            this.resultStack = resultStack;
-        }
-    }
 }

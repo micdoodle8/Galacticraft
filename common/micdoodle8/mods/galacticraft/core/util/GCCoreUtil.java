@@ -7,6 +7,8 @@ import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerBuggy;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerParachest;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
+import cpw.mods.fml.common.registry.EntityRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 
 public class GCCoreUtil
@@ -45,5 +47,18 @@ public class GCCoreUtil
         player.openContainer = new GCCoreContainerParachest(player.inventory, landerInv);
         player.openContainer.windowId = windowId;
         player.openContainer.addCraftingToCrafters(player);
+    }
+
+    public static void registerGalacticraftCreature(Class var0, String var1, int id, int back, int fore)
+    {
+        LanguageRegistry.instance().addStringLocalization("entity." + var1 + ".name", LanguageRegistry.instance().getStringLocalization("entity.GalacticraftCore." + var1 + ".name"));
+        EntityRegistry.registerGlobalEntityID(var0, var1, id, back, fore);
+        EntityRegistry.registerModEntity(var0, var1, id, GalacticraftCore.instance, 80, 3, true);
+    }
+
+    public static void registerGalacticraftNonMobEntity(Class var0, String var1, int id, int trackingDistance, int updateFreq, boolean sendVel)
+    {
+        LanguageRegistry.instance().addStringLocalization("entity." + var1 + ".name", LanguageRegistry.instance().getStringLocalization("entity.GalacticraftCore." + var1 + ".name"));
+        EntityRegistry.registerModEntity(var0, var1, id, GalacticraftCore.instance, trackingDistance, updateFreq, sendVel);
     }
 }

@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import micdoodle8.mods.galacticraft.API.IGalacticraftSubMod;
-import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
 import micdoodle8.mods.galacticraft.API.IGalaxy;
 import micdoodle8.mods.galacticraft.API.IMapPlanet;
 import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
@@ -713,27 +711,27 @@ public class GCCoreGuiGalaxyMap extends GCCoreGuiStarBackground
         }
     }
 
-    public float getLargestOrbit(IGalaxy galaxy)
-    {
-        float orbit = -1F;
-
-        for (final IGalacticraftSubMod mod : GalacticraftCore.subMods)
-        {
-            if (mod.getParentGalaxy() == galaxy)
-            {
-                for (final IGalacticraftSubModClient client : GalacticraftCore.clientSubMods)
-                {
-                    if (mod.getDimensionName().equals(client.getDimensionName()))
-                    {
-                        if (client.getPlanetForMap().getDistanceFromCenter() > orbit)
-                        {
-                            orbit = client.getPlanetForMap().getDistanceFromCenter();
-                        }
-                    }
-                }
-            }
-        }
-
-        return orbit;
-    }
+//    public float getLargestOrbit(IGalaxy galaxy)
+//    {
+//        float orbit = -1F;
+//
+//        for (final IGalacticraftSubMod mod : GalacticraftCore.subMods)
+//        {
+//            if (mod.getParentGalaxy() == galaxy)
+//            {
+//                for (final IGalacticraftSubModClient client : GalacticraftCore.clientSubMods)
+//                {
+//                    if (mod.getDimensionName().equals(client.getDimensionName()))
+//                    {
+//                        if (client.getPlanetForMap().getDistanceFromCenter() > orbit)
+//                        {
+//                            orbit = client.getPlanetForMap().getDistanceFromCenter();
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//
+//        return orbit;
+//    }
 }

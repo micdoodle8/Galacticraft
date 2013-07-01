@@ -8,8 +8,6 @@ import micdoodle8.mods.galacticraft.API.IFuelDock;
 import micdoodle8.mods.galacticraft.API.IFuelable;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoLoader.EnumCargoLoadingState;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoLoader.RemovalResult;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;

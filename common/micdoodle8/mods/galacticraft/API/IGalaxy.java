@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.API;
 
 import universalelectricity.core.vector.Vector3;
 
+
 /**
  * Implement this one per set of planets (assuming only one galaxy in your mod)
  * 

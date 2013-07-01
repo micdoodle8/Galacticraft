@@ -3,10 +3,8 @@ package micdoodle8.mods.galacticraft.moon;
 import java.io.File;
 import java.util.EnumSet;
 import micdoodle8.mods.galacticraft.API.GalacticraftRegistry;
-import micdoodle8.mods.galacticraft.API.IGalacticraftSubMod;
-import micdoodle8.mods.galacticraft.API.IGalaxy;
+import micdoodle8.mods.galacticraft.API.IMoon;
 import micdoodle8.mods.galacticraft.core.GCCoreCreativeTab;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
 import micdoodle8.mods.galacticraft.moon.dimension.GCMoonTeleportType;
@@ -31,7 +29,7 @@ import cpw.mods.fml.relauncher.Side;
  * All rights reserved.
  * 
  */
-public class GalacticraftMoon implements IGalacticraftSubMod
+public class GalacticraftMoon
 {
     public static final String NAME = "Galacticraft Moon";
     public static final String MODID = "GalacticraftMoon";
@@ -45,6 +43,8 @@ public class GalacticraftMoon implements IGalacticraftSubMod
     private static final String[] LANGUAGES_SUPPORTED = new String[] { "cz_CZE", "de_DE", "en_GB", "en_US", "es_ES", "fi_FI", "fr_FR", "ja_JP", "nl_NL", "pl_PL", "ru_RU", "zh_CN" };
 
     public static GCCoreCreativeTab galacticraftMoonTab;
+    
+    public static IMoon celestialBodyMoon;
 
     public void preLoad(FMLPreInitializationEvent event)
     {
@@ -60,6 +60,9 @@ public class GalacticraftMoon implements IGalacticraftSubMod
     public void load(FMLInitializationEvent event)
     {
         GalacticraftMoon.galacticraftMoonTab = new GCCoreCreativeTab(CreativeTabs.getNextID(), GalacticraftMoon.MODID, GCMoonBlocks.blockMoon.blockID, 5);
+        
+        GalacticraftMoon.celestialBodyMoon = new GCMoonCelestialBody();
+        GalacticraftRegistry.registerCelestialBody(GalacticraftMoon.celestialBodyMoon);
 
         DimensionManager.registerProviderType(GCMoonConfigManager.dimensionIDMoon, GCMoonWorldProvider.class, false);
 
@@ -112,23 +115,5 @@ public class GalacticraftMoon implements IGalacticraftSubMod
         {
             return "Galacticraft Moon Common";
         }
-    }
-
-    @Override
-    public String getDimensionName()
-    {
-        return "Moon";
-    }
-
-    @Override
-    public boolean reachableDestination()
-    {
-        return true;
-    }
-
-    @Override
-    public IGalaxy getParentGalaxy()
-    {
-        return GalacticraftCore.galaxyMilkyWay;
     }
 }

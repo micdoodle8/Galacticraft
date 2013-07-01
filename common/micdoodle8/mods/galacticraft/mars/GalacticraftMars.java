@@ -4,11 +4,8 @@ import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.File;
 import micdoodle8.mods.galacticraft.API.GalacticraftRegistry;
-import micdoodle8.mods.galacticraft.API.IGalacticraftSubMod;
-import micdoodle8.mods.galacticraft.API.IGalaxy;
 import micdoodle8.mods.galacticraft.API.SchematicRegistry;
 import micdoodle8.mods.galacticraft.core.GCCoreCreativeTab;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.GCCoreConnectionHandler;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
@@ -55,7 +52,7 @@ import cpw.mods.fml.relauncher.Side;
  */
 @Mod(name = GalacticraftMars.NAME, version = GalacticraftMars.LOCALMAJVERSION + "." + GalacticraftMars.LOCALMINVERSION + "." + GalacticraftMars.LOCALBUILDVERSION, useMetadata = true, modid = GalacticraftMars.MODID, dependencies = "required-after:Forge@[7.8.0.685,)")
 @NetworkMod(channels = { GalacticraftMars.CHANNEL }, clientSideRequired = true, serverSideRequired = false, connectionHandler = GCCoreConnectionHandler.class, packetHandler = GCCorePacketManager.class)
-public class GalacticraftMars implements IGalacticraftSubMod
+public class GalacticraftMars
 {
     public static final String NAME = "Galacticraft Mars";
     public static final String MODID = "GalacticraftMars";
@@ -84,8 +81,6 @@ public class GalacticraftMars implements IGalacticraftSubMod
     @PreInit
     public void preInit(FMLPreInitializationEvent event)
     {
-        GalacticraftCore.registerSubMod(this);
-
         new GCMarsConfigManager(new File(event.getModConfigurationDirectory(), "Galacticraft/mars.conf"));
 
         GCMarsBlocks.initBlocks();
@@ -106,6 +101,7 @@ public class GalacticraftMars implements IGalacticraftSubMod
         MinecraftForge.EVENT_BUS.register(new GCMarsEvents());
         GalacticraftRegistry.registerTeleportType(GCMarsWorldProvider.class, new GCMoonTeleportType());
         GCMarsUtil.addSmeltingRecipes();
+        GalacticraftRegistry.registerCelestialBody(new GCMarsPlanet());
         this.registerTileEntities();
         this.registerCreatures();
         this.registerOtherEntities();
@@ -174,23 +170,5 @@ public class GalacticraftMars implements IGalacticraftSubMod
 
             }
         }
-    }
-
-    @Override
-    public String getDimensionName()
-    {
-        return "Mars";
-    }
-
-    @Override
-    public boolean reachableDestination()
-    {
-        return true;
-    }
-
-    @Override
-    public IGalaxy getParentGalaxy()
-    {
-        return GalacticraftCore.galaxyMilkyWay;
     }
 }

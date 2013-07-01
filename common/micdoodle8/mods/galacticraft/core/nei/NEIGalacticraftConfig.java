@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Set;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
@@ -22,7 +23,8 @@ public class NEIGalacticraftConfig implements IConfigureNEI
     public void loadConfig()
     {
         this.registerRecipes();
-        API.hideItems(GalacticraftCore.hiddenItems);
+        API.hideItems(GCCoreItems.hiddenItems);
+        API.hideItems(GCCoreBlocks.hiddenBlocks);
         API.registerRecipeHandler(new RocketT1RecipeHandler());
         API.registerUsageHandler(new RocketT1RecipeHandler());
         API.registerRecipeHandler(new BuggyRecipeHandler());

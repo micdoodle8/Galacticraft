@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
+import java.util.ArrayList;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlock;
@@ -55,6 +56,7 @@ public class GCCoreBlocks
     public static Icon[] blockIcons;
 
     public static Material crudeOil = new MaterialLiquid(MapColor.foliageColor);
+    public static ArrayList<Integer> hiddenBlocks = new ArrayList<Integer>();
 
     public static void initBlocks()
     {
@@ -87,14 +89,14 @@ public class GCCoreBlocks
         GCCoreBlocks.parachest = new GCCoreBlockParachest(GCCoreConfigManager.idBlockParachest).setHardness(3.0F).setStepSound(Block.soundWoodFootstep).setUnlocalizedName("parachest");
 
         // Hide certain items from NEI
-        GalacticraftCore.hiddenItems.add(GCCoreBlocks.airLockSeal.blockID);
-        GalacticraftCore.hiddenItems.add(GCCoreBlocks.sapling.blockID);
-        GalacticraftCore.hiddenItems.add(GCCoreBlocks.breatheableAir.blockID);
-        GalacticraftCore.hiddenItems.add(GCCoreBlocks.unlitTorch.blockID);
-        GalacticraftCore.hiddenItems.add(GCCoreBlocks.unlitTorchLit.blockID);
-        GalacticraftCore.hiddenItems.add(GCCoreBlocks.landingPadFull.blockID);
-        GalacticraftCore.hiddenItems.add(GCCoreBlocks.dummyBlock.blockID);
-        GalacticraftCore.hiddenItems.add(GCCoreBlocks.spaceStationBase.blockID);
+        GCCoreBlocks.hiddenBlocks.add(GCCoreBlocks.airLockSeal.blockID);
+        GCCoreBlocks.hiddenBlocks.add(GCCoreBlocks.sapling.blockID);
+        GCCoreBlocks.hiddenBlocks.add(GCCoreBlocks.breatheableAir.blockID);
+        GCCoreBlocks.hiddenBlocks.add(GCCoreBlocks.unlitTorch.blockID);
+        GCCoreBlocks.hiddenBlocks.add(GCCoreBlocks.unlitTorchLit.blockID);
+        GCCoreBlocks.hiddenBlocks.add(GCCoreBlocks.landingPadFull.blockID);
+        GCCoreBlocks.hiddenBlocks.add(GCCoreBlocks.dummyBlock.blockID);
+        GCCoreBlocks.hiddenBlocks.add(GCCoreBlocks.spaceStationBase.blockID);
     }
 
     public static void setHarvestLevels()

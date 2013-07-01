@@ -11,8 +11,6 @@ import micdoodle8.mods.galacticraft.core.network.GCCorePacketControllableEntity;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketEntityUpdate;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityBuggyFueler;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoLoader.EnumCargoLoadingState;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoLoader.RemovalResult;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;

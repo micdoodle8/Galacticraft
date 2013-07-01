@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import micdoodle8.mods.galacticraft.API.GalacticraftRegistry;
+import micdoodle8.mods.galacticraft.API.ICelestialBody;
 import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.API.IMapPlanet;
 import micdoodle8.mods.galacticraft.API.IOrbitDimension;
@@ -319,12 +320,14 @@ public class WorldUtil
                 }
             }
         }
-
-        for (int j = 0; j < GalacticraftCore.subMods.size(); j++)
+        
+        for (int j = 0; j < GalacticraftRegistry.getCelestialBodies().size(); j++)
         {
-            if (!GalacticraftCore.subMods.get(j).reachableDestination())
+            ICelestialBody object = GalacticraftRegistry.getCelestialBodies().get(j);
+            
+            if (!object.isReachable())
             {
-                map.put(GalacticraftCore.subMods.get(j).getDimensionName() + "*", 0);
+                map.put(object.getName() + "*", 0);
             }
         }
 

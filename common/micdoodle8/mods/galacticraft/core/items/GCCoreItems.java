@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.items;
 
+import java.util.ArrayList;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.item.EnumArmorMaterial;
@@ -60,6 +61,8 @@ public class GCCoreItems
     public static EnumArmorMaterial steelARMOR = EnumHelper.addArmorMaterial("steel", 30, new int[] { 3, 8, 6, 3 }, 12);
     public static EnumToolMaterial TOOLsteel = EnumHelper.addToolMaterial("steel", 3, 768, 5.0F, 2, 8);
 
+    public static ArrayList<Integer> hiddenItems = new ArrayList<Integer>();
+
     public static void initItems()
     {
         GCCoreItems.lightOxygenTank = new GCCoreItemOxygenTank(GCCoreConfigManager.idItemLightOxygenTank).setMaxDamage(90).setUnlocalizedName("oxygenTankLightFull");
@@ -102,8 +105,8 @@ public class GCCoreItems
         GCCoreItems.buggyMaterial = new GCCoreItemBuggyMaterial(GCCoreConfigManager.idItemBuggyMaterial).setUnlocalizedName("buggymat");
         GCCoreItems.knowledgeBook = new GCCoreItemKnowledgeBook(GCCoreConfigManager.idItemKnowledgeBook).setUnlocalizedName("knowledgeBook");
 
-        GalacticraftCore.hiddenItems.add(GCCoreItems.gravityBow.itemID);
-        GalacticraftCore.hiddenItems.add(GCCoreItems.knowledgeBook.itemID);
+        GCCoreItems.hiddenItems.add(GCCoreItems.gravityBow.itemID);
+        GCCoreItems.hiddenItems.add(GCCoreItems.knowledgeBook.itemID);
     }
 
     public static void registerHarvestLevels()
