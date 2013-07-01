@@ -1,5 +1,8 @@
 package micdoodle8.mods.galacticraft.API;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 public interface ICelestialBody
 {
     /**
@@ -15,4 +18,18 @@ public interface ICelestialBody
      *         planet
      */
     public boolean isReachable();
+    
+    /**
+     * The Map Object for this planet/moon
+     * 
+     * @return an instance of a class which implements IMapObject
+     */
+    public IMapObject getMapObject();
+    
+    /**
+     * Whether or not this celestial body should be added to the list of dimensions when player leaves orbit
+     * 
+     * @return whether or not this celestial body should be added to the list of dimensions when player leaves orbit
+     */
+    public boolean addToList();
 }

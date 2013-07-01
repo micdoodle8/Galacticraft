@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
-import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
 import micdoodle8.mods.galacticraft.API.SpaceStationRecipe;
 import micdoodle8.mods.galacticraft.core.GCLog;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -266,7 +265,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
                     GL11.glTranslatef(1.96F, 1.96F, 0.0F);
                 }
 
-                GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture(GCCoreGuiChoosePlanet.titlePanoramaPaths[var10 - var10]));
+                this.mc.renderEngine.bindTexture(GCCoreGuiChoosePlanet.titlePanoramaPaths[var10 - var10]);
                 var4.startDrawingQuads();
                 var4.setColorRGBA_I(16777215, 255 / (var6 + 1));
                 var4.addVertexWithUV(-1.0D, -1.0D, 1.0D, 0.0F + 1, 0.0F + 1);
@@ -351,7 +350,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
                     GL11.glRotatef(-90.0F, 1.0F, 0.0F, 0.0F);
                 }
 
-                GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture(GCCoreGuiChoosePlanet.titlePanoramaPaths[0]));
+                this.mc.renderEngine.bindTexture(GCCoreGuiChoosePlanet.titlePanoramaPaths[0]);
                 var4.startDrawingQuads();
                 var4.setColorRGBA_I(16777215, 255 / (var6 + 1));
                 var4.addVertexWithUV(-1.0D, -1.0D, 1.0D, 0.0F + 1, 0.0F + 1);
@@ -382,7 +381,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
      */
     private void rotateAndBlurSkybox()
     {
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture(GCCoreGuiChoosePlanet.titlePanoramaPaths[0]));
+        this.mc.renderEngine.bindTexture(GCCoreGuiChoosePlanet.titlePanoramaPaths[0]);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glColorMask(true, true, true, false);
@@ -549,25 +548,19 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
         this.planetSlots.drawScreen(par1, par2, par3);
         super.drawScreen(par1, par2, par3);
 
-        for (final IGalacticraftSubModClient mod : GalacticraftCore.clientSubMods)
+        String dest = this.destinations[this.selectedSlot].toLowerCase();
+
+        if (dest.contains("*"))
         {
-            String dest = this.destinations[this.selectedSlot].toLowerCase();
-
-            if (dest.contains("*"))
-            {
-                dest = dest.replace("*", "");
-            }
-
-            if (mod.getDimensionName().toLowerCase().equals(dest))
-            {
-                str = LanguageRegistry.instance().getStringLocalization("gui.choosePlanet.desc." + dest);
-            }
+            dest = dest.replace("*", "");
         }
+        
+        str = LanguageRegistry.instance().getStringLocalization("gui.choosePlanet.desc." + dest);
 
-        if (this.destinations[this.selectedSlot].toLowerCase().equals("overworld"))
-        {
-            str = LanguageRegistry.instance().getStringLocalization("gui.choosePlanet.desc.overworld");
-        }
+//        if (this.destinations[this.selectedSlot].toLowerCase().equals("overworld"))
+//        {
+//            str = LanguageRegistry.instance().getStringLocalization("gui.choosePlanet.desc.overworld");
+//        }
 
         if (str != null)
         {
@@ -714,7 +707,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/backgrounds/black.png"));
+        this.mc.renderEngine.bindTexture("/micdoodle8/mods/galacticraft/core/client/backgrounds/black.png");
         final Tessellator var3 = Tessellator.instance;
         var3.startDrawingQuads();
         var3.addVertexWithUV(0.0D, var7, -90.0D, 0.0D, 1.0D);
@@ -775,7 +768,8 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
 
     private int getDimensionIdFromSlot()
     {
-        final String dimension = this.destinations[this.selectedSlot];
+        String dimension = this.destinations[this.selectedSlot];
+        dimension = dimension.replace("*", "");
         final WorldProvider provider = WorldUtil.getProviderForName(dimension);
 
         if (provider == null)

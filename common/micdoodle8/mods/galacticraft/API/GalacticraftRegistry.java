@@ -11,6 +11,7 @@ public class GalacticraftRegistry
     private static Map<Class<? extends IOrbitDimension>, SpaceStationRecipe> spaceStationRecipes = new HashMap<Class<? extends IOrbitDimension>, SpaceStationRecipe>();
     private static Map<Integer, SpaceStationType> spaceStations = new HashMap<Integer, SpaceStationType>();
     private static ArrayList<ICelestialBody> celestialBodies = new ArrayList<ICelestialBody>();
+    private static ArrayList<IGalaxy> galaxies = new ArrayList<IGalaxy>();
 
     /**
      * Register a new Teleport type for the world provider passed
@@ -43,6 +44,19 @@ public class GalacticraftRegistry
         }
     }
 
+    /**
+     * Register a new Galaxy. This is not fully implemented yet.
+     * 
+     * @param celestial body object. Must implement IPlanet or IMoon to function as intended
+     */
+    public static void registerGalaxy(IGalaxy galaxy)
+    {
+        if (!GalacticraftRegistry.galaxies.contains(galaxy))
+        {
+            GalacticraftRegistry.galaxies.add(galaxy);
+        }
+    }
+
     public static ITeleportType getTeleportTypeForDimension(Class<? extends WorldProvider> clazz)
     {
         return GalacticraftRegistry.teleportTypeMap.get(clazz);
@@ -66,5 +80,10 @@ public class GalacticraftRegistry
     public static ArrayList<ICelestialBody> getCelestialBodies()
     {
         return GalacticraftRegistry.celestialBodies;
+    }
+
+    public static ArrayList<IGalaxy> getGalaxyList()
+    {
+        return GalacticraftRegistry.galaxies;
     }
 }

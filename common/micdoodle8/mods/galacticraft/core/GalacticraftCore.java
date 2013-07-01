@@ -9,10 +9,9 @@ import javax.swing.JEditorPane;
 import javax.swing.JOptionPane;
 import mekanism.api.GasTransmission;
 import micdoodle8.mods.galacticraft.API.GalacticraftRegistry;
-import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
 import micdoodle8.mods.galacticraft.API.IGalaxy;
-import micdoodle8.mods.galacticraft.API.IMapPlanet;
-import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
+import micdoodle8.mods.galacticraft.API.IMoon;
+import micdoodle8.mods.galacticraft.API.IPlanet;
 import micdoodle8.mods.galacticraft.API.SchematicRegistry;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.client.GCCorePlayerSP;
@@ -68,7 +67,6 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityRefinery;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntitySpaceStationBase;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityUnlitTorch;
-import micdoodle8.mods.galacticraft.core.util.DupKeyHashMap;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.moon.GalacticraftMoon;
@@ -140,13 +138,8 @@ public class GalacticraftCore
     public static Map<String, GCCorePlayerSP> playersClient = new HashMap<String, GCCorePlayerSP>();
     public static Map<String, GCCorePlayerMP> playersServer = new HashMap<String, GCCorePlayerMP>();
 
-//    public static List<IGalacticraftSubMod> subMods = new ArrayList<IGalacticraftSubMod>();
-    public static List<IGalacticraftSubModClient> clientSubMods = new ArrayList<IGalacticraftSubModClient>();
-
-    public static List<IGalaxy> galaxies = new ArrayList<IGalaxy>();
-
-    public static List<IMapPlanet> mapPlanets = new ArrayList<IMapPlanet>();
-    public static DupKeyHashMap mapMoons = new DupKeyHashMap();
+    public static List<IPlanet> mapPlanets = new ArrayList<IPlanet>();
+    public static HashMap<IPlanet, ArrayList<IMoon>> mapMoons = new HashMap<IPlanet, ArrayList<IMoon>>();
 
     public static CreativeTabs galacticraftTab;
 
@@ -166,6 +159,9 @@ public class GalacticraftCore
     public static String TEXTURE_SUFFIX;
 
     public static boolean setSpaceStationRecipe = false;
+    
+    public static GCCorePlanetOverworld overworld;
+    public static GCCorePlanetSun sun;
 
     @PreInit
     public void preInit(FMLPreInitializationEvent event)
@@ -204,6 +200,12 @@ public class GalacticraftCore
     public void init(FMLInitializationEvent event)
     {
         GalacticraftCore.galacticraftTab = new GCCoreCreativeTab(CreativeTabs.getNextID(), GalacticraftCore.CHANNEL, GCCoreItems.spaceship.itemID, 0);
+        
+        GalacticraftCore.overworld = new GCCorePlanetOverworld();
+        GalacticraftRegistry.registerCelestialBody(GalacticraftCore.overworld);
+        GalacticraftCore.sun = new GCCorePlanetSun();
+        GalacticraftRegistry.registerCelestialBody(GalacticraftCore.sun);
+        GalacticraftRegistry.registerGalaxy(GalacticraftCore.galaxyMilkyWay);
 
         DimensionManager.registerProviderType(GCCoreConfigManager.idDimensionOverworldOrbit, GCCoreWorldProviderSpaceStation.class, false);
 
@@ -211,14 +213,6 @@ public class GalacticraftCore
 
         GalacticraftRegistry.registerTeleportType(WorldProviderSurface.class, new GCCoreOverworldTeleportType());
         GalacticraftRegistry.registerTeleportType(GCCoreWorldProviderSpaceStation.class, new GCCoreOrbitTeleportType());
-
-//        for (final IGalacticraftSubMod mod : GalacticraftCore.subMods)
-//        {
-//            if (mod.getParentGalaxy() != null && !GalacticraftCore.galaxies.contains(mod.getParentGalaxy()))
-//            {
-//                GalacticraftCore.galaxies.add(mod.getParentGalaxy());
-//            }
-//        }
 
         GCLog.info("Galacticraft Loaded: " + TranslationHelper.loadLanguages(GalacticraftCore.LANGUAGE_PATH, GalacticraftCore.LANGUAGES_SUPPORTED) + " Languages.");
 
@@ -316,26 +310,6 @@ public class GalacticraftCore
     {
         WorldUtil.unregisterPlanets();
         WorldUtil.unregisterSpaceStations();
-    }
-
-    public static void registerSlotRenderer(IPlanetSlotRenderer renderer)
-    {
-        GalacticraftCore.proxy.addSlotRenderer(renderer);
-    }
-
-    public static void registerClientSubMod(IGalacticraftSubModClient mod)
-    {
-        GalacticraftCore.clientSubMods.add(mod);
-    }
-
-    public static void addAdditionalMapPlanet(IMapPlanet planet)
-    {
-        GalacticraftCore.mapPlanets.add(planet);
-    }
-
-    public static void addAdditionalMapMoon(IMapPlanet planet, IMapPlanet moon)
-    {
-        GalacticraftCore.mapMoons.put(planet, moon);
     }
 
     public void registerTileEntities()

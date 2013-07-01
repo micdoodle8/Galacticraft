@@ -1,6 +1,9 @@
 package micdoodle8.mods.galacticraft.API;
 
-public interface IMapPlanet
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
+public interface IMapObject
 {
     /**
      * Used for rendering planet on map.
@@ -32,7 +35,8 @@ public interface IMapPlanet
      */
     public float getStretchValue();
 
-    public IPlanetSlotRenderer getSlotRenderer();
+    @SideOnly(Side.CLIENT)
+    public ICelestialBodyRenderer getSlotRenderer();
 
     /**
      * @return IGalaxy object for the parent Galaxy

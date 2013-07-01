@@ -1,9 +1,9 @@
 package micdoodle8.mods.galacticraft.core.client;
 
-import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
+import micdoodle8.mods.galacticraft.API.ICelestialBodyRenderer;
 import net.minecraft.client.renderer.Tessellator;
 
-public class GCCoreSlotRendererSun implements IPlanetSlotRenderer
+public class GCCoreSlotRendererSun implements ICelestialBodyRenderer
 {
     @Override
     public String getPlanetSprite()

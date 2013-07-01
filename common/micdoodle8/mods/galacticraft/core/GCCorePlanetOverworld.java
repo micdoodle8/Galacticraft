@@ -1,0 +1,41 @@
+package micdoodle8.mods.galacticraft.core;
+
+import micdoodle8.mods.galacticraft.API.IGalaxy;
+import micdoodle8.mods.galacticraft.API.IMapObject;
+import micdoodle8.mods.galacticraft.API.IPlanet;
+import micdoodle8.mods.galacticraft.core.client.GCCoreMapPlanetOverworld;
+
+public class GCCorePlanetOverworld implements IPlanet
+{
+    private final IMapObject overworld = new GCCoreMapPlanetOverworld();
+    
+    @Override
+    public String getName()
+    {
+        return "Overworld";
+    }
+
+    @Override
+    public boolean isReachable()
+    {
+        return true;
+    }
+
+    @Override
+    public IMapObject getMapObject()
+    {
+        return this.overworld;
+    }
+
+    @Override
+    public IGalaxy getParentGalaxy()
+    {
+        return GalacticraftCore.galaxyMilkyWay;
+    }
+
+    @Override
+    public boolean addToList()
+    {
+        return true;
+    }
+}

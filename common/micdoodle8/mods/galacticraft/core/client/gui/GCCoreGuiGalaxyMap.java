@@ -1,12 +1,17 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import micdoodle8.mods.galacticraft.API.GalacticraftRegistry;
+import micdoodle8.mods.galacticraft.API.ICelestialBody;
+import micdoodle8.mods.galacticraft.API.ICelestialBodyRenderer;
 import micdoodle8.mods.galacticraft.API.IGalaxy;
-import micdoodle8.mods.galacticraft.API.IMapPlanet;
-import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
+import micdoodle8.mods.galacticraft.API.IMapObject;
+import micdoodle8.mods.galacticraft.API.IMoon;
+import micdoodle8.mods.galacticraft.API.IPlanet;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -25,6 +30,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import universalelectricity.core.vector.Vector3;
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -56,7 +62,7 @@ public class GCCoreGuiGalaxyMap extends GCCoreGuiStarBackground
 
     EntityPlayer player;
 
-    private IMapPlanet selectedPlanet = null;
+    private ICelestialBody selectedPlanet = null;
 
     private String[] listOfDimensions;
 
@@ -296,16 +302,20 @@ public class GCCoreGuiGalaxyMap extends GCCoreGuiStarBackground
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-        for (final IGalaxy galaxy : GalacticraftCore.galaxies)
+        for (IGalaxy galaxy : GalacticraftRegistry.getGalaxyList())
         {
             final int var10 = -var4 + galaxy.getXCoord() * 10000;
             final int var11 = -var5 + galaxy.getYCoord() * 10000;
 
             this.drawCircles(galaxy, var10 + var10, var11 + var11);
+            
+            FMLLog.info("" + GalacticraftCore.mapPlanets);
 
-            for (final IMapPlanet planet : GalacticraftCore.mapPlanets)
+            for (IPlanet thePlanet : GalacticraftCore.mapPlanets)
             {
-                if (planet.getParentGalaxy() != null && planet.getParentGalaxy() == galaxy)
+                IMapObject planet = thePlanet.getMapObject();
+                
+                if (thePlanet.getParentGalaxy() != null && thePlanet.getParentGalaxy() == galaxy)
                 {
                     var26 = 0;
                     var27 = 0;
@@ -327,7 +337,7 @@ public class GCCoreGuiGalaxyMap extends GCCoreGuiStarBackground
                     var42 = var10 + var26;
                     var41 = var11 + var27;
 
-                    final IPlanetSlotRenderer renderer = planet.getSlotRenderer();
+                    final ICelestialBodyRenderer renderer = planet.getSlotRenderer();
 
                     GL11.glDisable(GL11.GL_BLEND);
 
@@ -358,12 +368,12 @@ public class GCCoreGuiGalaxyMap extends GCCoreGuiStarBackground
                                 {
                                     if (!GalacticraftCore.mapMoons.containsValue(planet))
                                     {
-                                        this.selectedPlanet = planet;
+                                        this.selectedPlanet = thePlanet;
                                     }
                                 }
                                 else
                                 {
-                                    this.selectedPlanet = planet;
+                                    this.selectedPlanet = thePlanet;
                                 }
                             }
                         }
@@ -376,7 +386,7 @@ public class GCCoreGuiGalaxyMap extends GCCoreGuiStarBackground
                         this.mc.renderEngine.bindTexture(renderer.getPlanetSprite());
                         renderer.renderSlot(0, var42, var41, planet.getPlanetSize() + 1 / this.zoom * 3F, var3);
 
-                        if (this.selectedPlanet != null && planet.getSlotRenderer().getPlanetName().equals(this.selectedPlanet.getSlotRenderer().getPlanetName()))
+                        if (this.selectedPlanet != null && planet.getSlotRenderer().getPlanetName().equals(this.selectedPlanet.getMapObject().getSlotRenderer().getPlanetName()))
                         {
                             renderer.renderSlot(0, var42, var41, planet.getPlanetSize() + 1 / this.zoom * 3F, var3);
                         }
@@ -384,14 +394,16 @@ public class GCCoreGuiGalaxyMap extends GCCoreGuiStarBackground
 
                     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-                    for (final Map.Entry e : GalacticraftCore.mapMoons.entrySet())
+                    for (final Map.Entry<IPlanet, ArrayList<IMoon>> e : GalacticraftCore.mapMoons.entrySet())
                     {
-                        if (e.getKey().equals(planet))
+                        if (e.getKey().equals(thePlanet))
                         {
-                            final List<IMapPlanet> moonList = (List<IMapPlanet>) e.getValue();
+                            final List<IMoon> moonList = (List<IMoon>) e.getValue();
 
-                            for (final IMapPlanet moon : moonList)
+                            for (final IMoon theMoon : moonList)
                             {
+                                IMapObject moon = theMoon.getMapObject();
+                                
                                 int var26b = 0;
                                 int var27b = 0;
 
@@ -432,24 +444,24 @@ public class GCCoreGuiGalaxyMap extends GCCoreGuiStarBackground
 
                                         if ((pointerMaxX >= planetMinX && pointerMinX <= planetMinX || pointerMinX <= planetMinX && pointerMaxY >= planetMaxX || pointerMinX >= planetMinX && pointerMinX <= planetMaxX) && (pointerMaxY >= planetMinY && pointerMinY <= planetMinY || pointerMinY <= planetMinY && pointerMaxY >= planetMaxY || pointerMinY >= planetMinY && pointerMinY <= planetMaxY))
                                         {
-                                            this.selectedPlanet = moon;
+                                            this.selectedPlanet = theMoon;
                                         }
                                     }
 
-                                    final IPlanetSlotRenderer moonRenderer = moon.getSlotRenderer();
+                                    final ICelestialBodyRenderer moonRenderer = moon.getSlotRenderer();
 
                                     if (moonRenderer != null)
                                     {
                                         this.mc.renderEngine.bindTexture(moonRenderer.getPlanetSprite());
                                         moonRenderer.renderSlot(0, var42b, var41b, (float) (moon.getPlanetSize() + 1 / Math.pow(this.zoom, -2)), var3);
 
-                                        if (this.selectedPlanet != null && moon.getSlotRenderer().getPlanetName().equals(this.selectedPlanet.getSlotRenderer().getPlanetName()))
+                                        if (this.selectedPlanet != null && moon.getSlotRenderer().getPlanetName().equals(this.selectedPlanet.getMapObject().getSlotRenderer().getPlanetName()))
                                         {
                                             moonRenderer.renderSlot(0, var42b, var41b, (float) (moon.getPlanetSize() + 1 / Math.pow(this.zoom, -2)), var3);
                                         }
                                     }
 
-                                    if (this.selectedPlanet != null && moon.getSlotRenderer().getPlanetName().equals(this.selectedPlanet.getSlotRenderer().getPlanetName()))
+                                    if (this.selectedPlanet != null && moon.getSlotRenderer().getPlanetName().equals(this.selectedPlanet.getMapObject().getSlotRenderer().getPlanetName()))
                                     {
                                         this.drawInfoBox(var42b, var41b, moon);
                                     }
@@ -464,7 +476,7 @@ public class GCCoreGuiGalaxyMap extends GCCoreGuiStarBackground
                     {
                     }
 
-                    if (this.selectedPlanet != null && planet.getSlotRenderer().getPlanetName().equals(this.selectedPlanet.getSlotRenderer().getPlanetName()))
+                    if (this.selectedPlanet != null && planet.getSlotRenderer().getPlanetName().equals(this.selectedPlanet.getMapObject().getSlotRenderer().getPlanetName()))
                     {
                         this.drawInfoBox(var42, var41, planet);
                     }
@@ -487,7 +499,7 @@ public class GCCoreGuiGalaxyMap extends GCCoreGuiStarBackground
         GL11.glEnable(GL11.GL_TEXTURE_2D);
 
         // this.mc.renderEngine.bindTexture(this.mc.renderEngine.getTexture());
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/mods/galacticraftcore/textures/gui/gui.png"));
+        this.mc.renderEngine.bindTexture("/mods/galacticraftcore/textures/gui/gui.png");
         this.drawTexturedModalRect(this.width / 2 - 5, this.height / 2 - 5, 123, 0, 10, 10);
 
         final int col = GCCoreUtil.convertTo32BitColor(255, 198, 198, 198);
@@ -512,27 +524,27 @@ public class GCCoreGuiGalaxyMap extends GCCoreGuiStarBackground
 
         if (this.selectedPlanet != null)
         {
-            final Vector3 vecCol = this.selectedPlanet.getParentGalaxy().getRGBRingColors();
+            final Vector3 vecCol = this.selectedPlanet.getMapObject().getParentGalaxy().getRGBRingColors();
             final int textCol2 = GCCoreUtil.convertTo32BitColor(255, MathHelper.floor_double(vecCol.x) * 255, MathHelper.floor_double(vecCol.z) * 255, MathHelper.floor_double(vecCol.y) * 255);
-            final int width = this.fontRenderer.getStringWidth(this.selectedPlanet.getSlotRenderer().getPlanetName());
+            final int width = this.fontRenderer.getStringWidth(this.selectedPlanet.getMapObject().getSlotRenderer().getPlanetName());
             Gui.drawRect(this.width / 2 - width / 2 - 4, 4, this.width / 2 + width / 2 + 4, 15, textCol1);
-            this.fontRenderer.drawString(this.selectedPlanet.getSlotRenderer().getPlanetName(), this.width / 2 - width / 2, 6, textCol2, false);
+            this.fontRenderer.drawString(this.selectedPlanet.getMapObject().getSlotRenderer().getPlanetName(), this.width / 2 - width / 2, 6, textCol2, false);
 
             for (int j = 0; j < GalacticraftCore.mapPlanets.size(); j++)
             {
-                final IMapPlanet planet = GalacticraftCore.mapPlanets.get(j);
+                IPlanet planet = GalacticraftCore.mapPlanets.get(j);
 
                 if (planet != null)
                 {
-                    for (final Map.Entry e : GalacticraftCore.mapMoons.entrySet())
+                    for (final Map.Entry<IPlanet, ArrayList<IMoon>> e : GalacticraftCore.mapMoons.entrySet())
                     {
-                        final List<IMapPlanet> moonList = (List<IMapPlanet>) e.getValue();
+                        final List<IMoon> moonList = (List<IMoon>) e.getValue();
 
-                        for (final IMapPlanet moon : moonList)
+                        for (IMoon moon : moonList)
                         {
                             if (this.selectedPlanet.equals(moon) && e.getKey().equals(planet))
                             {
-                                this.fontRenderer.drawString("Moon of " + planet.getSlotRenderer().getPlanetName(), this.width / 2 - width / 2 + width + 10, 6, textCol2, false);
+                                this.fontRenderer.drawString("Moon of " + planet.getMapObject().getSlotRenderer().getPlanetName(), this.width / 2 - width / 2 + width + 10, 6, textCol2, false);
                             }
                         }
                     }
@@ -558,11 +570,11 @@ public class GCCoreGuiGalaxyMap extends GCCoreGuiStarBackground
         GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 
-        for (final IMapPlanet planet : GalacticraftCore.mapPlanets)
+        for (IPlanet planet : GalacticraftCore.mapPlanets)
         {
-            if (planet.getParentGalaxy() == galaxy)
+            if (planet.getMapObject().getParentGalaxy() == galaxy)
             {
-                float x = planet.getDistanceFromCenter() / 2F;
+                float x = planet.getMapObject().getDistanceFromCenter() / 2F;
                 float y = 0;
 
                 GL11.glColor4f((float) galaxy.getRGBRingColors().x, (float) galaxy.getRGBRingColors().y, (float) galaxy.getRGBRingColors().z, 1.0F);
@@ -634,7 +646,7 @@ public class GCCoreGuiGalaxyMap extends GCCoreGuiStarBackground
         }
     }
 
-    private void drawInfoBox(int cx, int cy, IMapPlanet planet)
+    private void drawInfoBox(int cx, int cy, IMapObject planet)
     {
         // for (final IMapPlanet planet : GalacticraftCore.mapPlanets)
         {

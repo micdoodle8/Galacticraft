@@ -1,11 +1,13 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
-import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.API.GalacticraftRegistry;
+import micdoodle8.mods.galacticraft.API.ICelestialBody;
+import micdoodle8.mods.galacticraft.API.ICelestialBodyRenderer;
 import net.minecraft.client.gui.GuiSlot;
 import net.minecraft.client.renderer.Tessellator;
 import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -74,11 +76,13 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
 
         if (this.isSelected(par1))
         {
-            for (int i = 0; i < GalacticraftCore.clientSubMods.size(); i++)
+            for (int i = 0; i < GalacticraftRegistry.getCelestialBodies().size(); i++)
             {
-                if (GalacticraftCore.clientSubMods.get(i) != null && GalacticraftCore.clientSubMods.get(i).getSlotRenderer() != null)
+                ICelestialBody celestialBody = GalacticraftRegistry.getCelestialBodies().get(i);
+                
+                if (celestialBody != null && celestialBody.getMapObject().getSlotRenderer() != null)
                 {
-                    final IPlanetSlotRenderer renderer = GalacticraftCore.clientSubMods.get(i).getSlotRenderer();
+                    ICelestialBodyRenderer renderer = celestialBody.getMapObject().getSlotRenderer();
 
                     String str = GCCoreGuiChoosePlanet.getDestinations(this.choosePlanetGui)[par1].toLowerCase();
 
@@ -105,26 +109,27 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
                     {
                         FMLClientHandler.instance().getClient().renderEngine.bindTexture(renderer.getPlanetSprite());
 
-                        renderer.renderSlot(par1, par2 - 18, par3 + 7, par4, par5Tessellator);
+                        FMLLog.info("" + par4 + " " + this.slotHeight);
+                        renderer.renderSlot(par1, par2 - 18, par3 + 9, par4 + 3, par5Tessellator);
 
                         FMLClientHandler.instance().getClient().renderEngine.resetBoundTexture();
                     }
                 }
             }
 
-            if (GCCoreGuiChoosePlanet.getDestinations(this.choosePlanetGui)[par1].equals("Overworld"))
-            {
-                FMLClientHandler.instance().getClient().renderEngine.bindTexture("/micdoodle8/mods/galacticraft/core/client/planets/overworld.png");
-
-                var3.startDrawingQuads();
-                var3.addVertexWithUV(par2 - 10 - this.slotHeight * 0.9, par3 - 1 + this.slotHeight * 0.9, -90.0D, 0.0, 1.0);
-                var3.addVertexWithUV(par2 - 10, par3 - 1 + this.slotHeight * 0.9, -90.0D, 1.0, 1.0);
-                var3.addVertexWithUV(par2 - 10, par3 - 1, -90.0D, 1.0, 0.0);
-                var3.addVertexWithUV(par2 - 10 - this.slotHeight * 0.9, par3 - 1, -90.0D, 0.0, 0.0);
-                var3.draw();
-
-                FMLClientHandler.instance().getClient().renderEngine.resetBoundTexture();
-            }
+//            if (GCCoreGuiChoosePlanet.getDestinations(this.choosePlanetGui)[par1].equals("Overworld"))
+//            {
+//                FMLClientHandler.instance().getClient().renderEngine.bindTexture("/micdoodle8/mods/galacticraft/core/client/planets/overworld.png");
+//
+//                var3.startDrawingQuads();
+//                var3.addVertexWithUV(par2 - 10 - this.slotHeight * 0.9, par3 - 1 + this.slotHeight * 0.9, -90.0D, 0.0, 1.0);
+//                var3.addVertexWithUV(par2 - 10, par3 - 1 + this.slotHeight * 0.9, -90.0D, 1.0, 1.0);
+//                var3.addVertexWithUV(par2 - 10, par3 - 1, -90.0D, 1.0, 0.0);
+//                var3.addVertexWithUV(par2 - 10 - this.slotHeight * 0.9, par3 - 1, -90.0D, 0.0, 0.0);
+//                var3.draw();
+//
+//                FMLClientHandler.instance().getClient().renderEngine.resetBoundTexture();
+//            }
 
             if (this.choosePlanetGui.isValidDestination(par1))
             {

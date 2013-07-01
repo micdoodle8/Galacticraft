@@ -1,10 +1,8 @@
 package micdoodle8.mods.galacticraft.moon.client;
 
 import java.util.EnumSet;
-import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
-import micdoodle8.mods.galacticraft.API.IMapPlanet;
-import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.API.ICelestialBodyRenderer;
+import micdoodle8.mods.galacticraft.API.IMapObject;
 import micdoodle8.mods.galacticraft.moon.CommonProxyMoon;
 import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;
 import net.minecraft.client.Minecraft;
@@ -17,12 +15,11 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 
-public class ClientProxyMoon extends CommonProxyMoon implements IGalacticraftSubModClient
+public class ClientProxyMoon extends CommonProxyMoon
 {
     @Override
     public void init(FMLInitializationEvent event)
     {
-        GalacticraftCore.registerClientSubMod(this);
         TickRegistry.registerTickHandler(new TickHandlerClient(), Side.CLIENT);
     }
 
@@ -79,41 +76,5 @@ public class ClientProxyMoon extends CommonProxyMoon implements IGalacticraftSub
         {
             return EnumSet.of(TickType.CLIENT);
         }
-    }
-
-    @Override
-    public String getDimensionName()
-    {
-        return "Moon";
-    }
-
-    @Override
-    public String getPlanetSpriteDirectory()
-    {
-        return "/micdoodle8/mods/galacticraft/moon/client/planets/";
-    }
-
-    @Override
-    public IPlanetSlotRenderer getSlotRenderer()
-    {
-        return new GCMoonSlotRenderer();
-    }
-
-    @Override
-    public IMapPlanet getPlanetForMap()
-    {
-        return null;
-    }
-
-    @Override
-    public IMapPlanet[] getChildMapPlanets()
-    {
-        return null;
-    }
-
-    @Override
-    public String getPathToMusicFile()
-    {
-        return null;
     }
 }

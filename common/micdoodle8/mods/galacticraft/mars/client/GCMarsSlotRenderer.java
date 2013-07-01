@@ -1,9 +1,9 @@
 package micdoodle8.mods.galacticraft.mars.client;
 
-import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
+import micdoodle8.mods.galacticraft.API.ICelestialBodyRenderer;
 import net.minecraft.client.renderer.Tessellator;
 
-public class GCMarsSlotRenderer implements IPlanetSlotRenderer
+public class GCMarsSlotRenderer implements ICelestialBodyRenderer
 {
 
     @Override

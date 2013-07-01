@@ -45,9 +45,6 @@ public class GCCoreTransformer implements IClassTransformer
         {
             e.printStackTrace();
         }
-        finally
-        {
-        }
         
         if (this.deobfuscated)
         {

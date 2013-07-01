@@ -1,11 +1,11 @@
 package micdoodle8.mods.galacticraft.core.client;
 
 import micdoodle8.mods.galacticraft.API.IGalaxy;
-import micdoodle8.mods.galacticraft.API.IMapPlanet;
-import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
+import micdoodle8.mods.galacticraft.API.IMapObject;
+import micdoodle8.mods.galacticraft.API.ICelestialBodyRenderer;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 
-public class GCCoreMapPlanetOverworld implements IMapPlanet
+public class GCCoreMapPlanetOverworld implements IMapObject
 {
     @Override
     public float getPlanetSize()
@@ -32,7 +32,7 @@ public class GCCoreMapPlanetOverworld implements IMapPlanet
     }
 
     @Override
-    public IPlanetSlotRenderer getSlotRenderer()
+    public ICelestialBodyRenderer getSlotRenderer()
     {
         return new GCCoreSlotRendererOverworld();
     }

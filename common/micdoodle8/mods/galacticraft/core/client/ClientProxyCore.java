@@ -9,14 +9,17 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Set;
-import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
-import micdoodle8.mods.galacticraft.API.IMapPlanet;
-import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
+import micdoodle8.mods.galacticraft.API.GalacticraftRegistry;
+import micdoodle8.mods.galacticraft.API.ICelestialBody;
+import micdoodle8.mods.galacticraft.API.ICelestialBodyRenderer;
+import micdoodle8.mods.galacticraft.API.IMoon;
+import micdoodle8.mods.galacticraft.API.IPlanet;
 import micdoodle8.mods.galacticraft.API.IRocketType;
 import micdoodle8.mods.galacticraft.API.ISchematicPage;
 import micdoodle8.mods.galacticraft.API.ISchematicResultPage;
 import micdoodle8.mods.galacticraft.core.CommonProxyCore;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
+import micdoodle8.mods.galacticraft.core.GCCorePlanetSun;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLaunchFlameFX;
@@ -107,7 +110,6 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.moon.client.ClientProxyMoon;
-import micdoodle8.mods.galacticraft.moon.client.GCMoonMapPlanet;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SoundPoolEntry;
@@ -163,7 +165,7 @@ public class ClientProxyCore extends CommonProxyCore
     public static long slowTick;
     private final Random rand = new Random();
     public static ClientProxyMoon moon = new ClientProxyMoon();
-    public static List<IPlanetSlotRenderer> slotRenderers = new ArrayList<IPlanetSlotRenderer>();
+    public static List<ICelestialBodyRenderer> slotRenderers = new ArrayList<ICelestialBodyRenderer>();
     public static List<int[]> valueableBlocks = new ArrayList<int[]>();
 
     public static Set<String> playersUsingParachutes = new HashSet<String>();
@@ -243,11 +245,6 @@ public class ClientProxyCore extends CommonProxyCore
         RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererCrudeOil(ClientProxyCore.crudeOilRenderID));
         ClientProxyCore.fullLandingPadRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererLandingPad(ClientProxyCore.fullLandingPadRenderID));
-        final IMapPlanet earth = new GCCoreMapPlanetOverworld();
-        final IMapPlanet moon = new GCMoonMapPlanet();
-        GalacticraftCore.addAdditionalMapPlanet(earth);
-        GalacticraftCore.addAdditionalMapMoon(earth, moon);
-        GalacticraftCore.addAdditionalMapPlanet(new GCCoreMapSun());
 
         String capeString = "https://dl.dropboxusercontent.com/s/zmhn8i0w1v152ei/cape.png?token_hash=AAFuDqDVxs_z9SK3h3DgrOp8W9SFiS-9-VFxapHsbCs4wA&dl=1";
         ClientProxyCore.capeMap.put("JTE", capeString);
@@ -290,19 +287,24 @@ public class ClientProxyCore extends CommonProxyCore
     {
         ClientProxyCore.moon.postInit(event);
 
-        for (final IGalacticraftSubModClient client : GalacticraftCore.clientSubMods)
+        for (ICelestialBody celestialObject : GalacticraftRegistry.getCelestialBodies())
         {
-            if (client.getPlanetForMap() != null)
+            if (celestialObject.getMapObject() != null && celestialObject instanceof IPlanet)
             {
-                GalacticraftCore.mapPlanets.add(client.getPlanetForMap());
+                GalacticraftCore.mapPlanets.add((IPlanet) celestialObject);
+                GalacticraftCore.mapMoons.put((IPlanet) celestialObject, new ArrayList<IMoon>());
             }
+        }
 
-            if (client.getChildMapPlanets() != null && client.getPlanetForMap() != null)
+        for (ICelestialBody celestialObject : GalacticraftRegistry.getCelestialBodies())
+        {
+            if (celestialObject.getMapObject() != null && celestialObject instanceof IMoon)
             {
-                for (final IMapPlanet planet : client.getChildMapPlanets())
-                {
-                    GalacticraftCore.mapMoons.put(client.getPlanetForMap(), planet);
-                }
+                ArrayList<IMoon> list = GalacticraftCore.mapMoons.get(((IMoon) celestialObject).getParentPlanet());
+                
+                list.add((IMoon) celestialObject);
+                
+                GalacticraftCore.mapMoons.put(((IMoon) celestialObject).getParentPlanet(), list);
             }
         }
 
@@ -346,7 +348,7 @@ public class ClientProxyCore extends CommonProxyCore
     }
 
     @Override
-    public void addSlotRenderer(IPlanetSlotRenderer slotRenderer)
+    public void addSlotRenderer(ICelestialBodyRenderer slotRenderer)
     {
         ClientProxyCore.slotRenderers.add(slotRenderer);
     }

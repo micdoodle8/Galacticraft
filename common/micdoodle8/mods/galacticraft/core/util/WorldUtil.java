@@ -10,7 +10,7 @@ import java.util.Random;
 import micdoodle8.mods.galacticraft.API.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.API.ICelestialBody;
 import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
-import micdoodle8.mods.galacticraft.API.IMapPlanet;
+import micdoodle8.mods.galacticraft.API.IMapObject;
 import micdoodle8.mods.galacticraft.API.IOrbitDimension;
 import micdoodle8.mods.galacticraft.API.ISpaceship;
 import micdoodle8.mods.galacticraft.API.ITeleportType;
@@ -325,7 +325,7 @@ public class WorldUtil
         {
             ICelestialBody object = GalacticraftRegistry.getCelestialBodies().get(j);
             
-            if (!object.isReachable())
+            if (!object.isReachable() && object.addToList())
             {
                 map.put(object.getName() + "*", 0);
             }
@@ -390,7 +390,7 @@ public class WorldUtil
         return var5;
     }
 
-    public static List getPlayersOnPlanet(IMapPlanet planet)
+    public static List getPlayersOnPlanet(IMapObject planet)
     {
         final List list = new ArrayList();
 

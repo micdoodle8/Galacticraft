@@ -4,10 +4,8 @@ import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.util.EnumSet;
 import java.util.Random;
-import micdoodle8.mods.galacticraft.API.IGalacticraftSubModClient;
-import micdoodle8.mods.galacticraft.API.IMapPlanet;
-import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.API.ICelestialBodyRenderer;
+import micdoodle8.mods.galacticraft.API.IMapObject;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderArrow;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderSpaceship;
 import micdoodle8.mods.galacticraft.core.client.sounds.GCCoreSoundUpdaterSpaceship;
@@ -52,7 +50,7 @@ import cpw.mods.fml.relauncher.Side;
  * All rights reserved.
  * 
  */
-public class ClientProxyMars extends CommonProxyMars implements IGalacticraftSubModClient
+public class ClientProxyMars extends CommonProxyMars
 {
     private static int fluidRenderID;
     public static long getFirstBootTime;
@@ -69,7 +67,6 @@ public class ClientProxyMars extends CommonProxyMars implements IGalacticraftSub
     @Override
     public void init(FMLInitializationEvent event)
     {
-        GalacticraftCore.registerClientSubMod(this);
         TickRegistry.registerTickHandler(new TickHandlerClient(), Side.CLIENT);
         NetworkRegistry.instance().registerChannel(new ClientPacketHandler(), "GalacticraftMars", Side.CLIENT);
         ClientProxyMars.fluidRenderID = RenderingRegistry.getNextAvailableRenderId();
@@ -224,44 +221,5 @@ public class ClientProxyMars extends CommonProxyMars implements IGalacticraftSub
         {
             return EnumSet.of(TickType.CLIENT);
         }
-    }
-
-    @Override
-    public String getDimensionName()
-    {
-        return "Mars";
-    }
-
-    @Override
-    public String getPlanetSpriteDirectory()
-    {
-        return "/micdoodle8/mods/galacticraft/mars/client/planets/";
-    }
-
-    @Override
-    public IPlanetSlotRenderer getSlotRenderer()
-    {
-        return new GCMarsSlotRenderer();
-    }
-
-    @Override
-    public IMapPlanet getPlanetForMap()
-    {
-        return new GCMarsMapPlanet();
-    }
-
-    @Override
-    public IMapPlanet[] getChildMapPlanets()
-    {
-        // IMapPlanet[] moonMapPlanet = {new GCCallistoMapPlanet(), new
-        // GCEuropaMapPlanet(), new GCIoMapPlanet()};
-        // TODO
-        return null;
-    }
-
-    @Override
-    public String getPathToMusicFile()
-    {
-        return "/micdoodle8/mods/galacticraft/mars/client/sounds/music";
     }
 }

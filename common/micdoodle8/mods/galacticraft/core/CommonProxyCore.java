@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core;
 
-import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
+import micdoodle8.mods.galacticraft.API.ICelestialBodyRenderer;
 import micdoodle8.mods.galacticraft.API.IRocketType;
 import micdoodle8.mods.galacticraft.API.ISchematicPage;
 import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
@@ -110,7 +110,7 @@ public class CommonProxyCore extends BCGuiHandler implements IGuiHandler
         return null;
     }
 
-    public void addSlotRenderer(IPlanetSlotRenderer slotRenderer)
+    public void addSlotRenderer(ICelestialBodyRenderer slotRenderer)
     {
         ;
     }
