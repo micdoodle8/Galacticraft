@@ -20,7 +20,7 @@ public abstract class GCCoreGuiStarBackground extends GuiScreen
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/backgrounds/black.png"));
+        this.mc.renderEngine.bindTexture("/micdoodle8/mods/galacticraft/core/client/backgrounds/black.png");
         final Tessellator var3 = Tessellator.instance;
         var3.startDrawingQuads();
         var3.addVertexWithUV(0.0D, var7, -90.0D, 0.0D, 1.0D);
@@ -120,7 +120,7 @@ public abstract class GCCoreGuiStarBackground extends GuiScreen
                     GL11.glTranslatef(1.96F, 1.96F, 0.0F);
                 }
 
-                GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/backgrounds/bg3.png"));
+                this.mc.renderEngine.bindTexture("/micdoodle8/mods/galacticraft/core/client/backgrounds/bg3.png");
                 var4.startDrawingQuads();
                 var4.setColorRGBA_I(16777215, 255 / (var6 + 1));
                 var4.addVertexWithUV(-1.0D, -1.0D, 1.0D, 0.0F + 1, 0.0F + 1);
@@ -220,7 +220,7 @@ public abstract class GCCoreGuiStarBackground extends GuiScreen
                     GL11.glRotatef(-90.0F, 1.0F, 0.0F, 0.0F);
                 }
 
-                GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/backgrounds/bg3.png"));
+                this.mc.renderEngine.bindTexture("/micdoodle8/mods/galacticraft/core/client/backgrounds/bg3.png");
                 var4.startDrawingQuads();
                 var4.setColorRGBA_I(16777215, 255 / (var6 + 1));
                 var4.addVertexWithUV(-1.0D, -1.0D, 1.0D, 0.0F + 1, 0.0F + 1);
@@ -247,7 +247,7 @@ public abstract class GCCoreGuiStarBackground extends GuiScreen
 
     private void rotateAndBlurSkybox()
     {
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/micdoodle8/mods/galacticraft/core/client/backgrounds/bg3.png"));
+        this.mc.renderEngine.bindTexture("/micdoodle8/mods/galacticraft/core/client/backgrounds/bg3.png");
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glColorMask(true, true, true, false);

@@ -45,7 +45,7 @@ public class GCCoreOverlaySensorGlasses extends GCCoreOverlay
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, GCCoreOverlaySensorGlasses.minecraft.renderEngine.getTexture("/mods/galacticraftcore/textures/gui/hud.png"));
+        FMLClientHandler.instance().getClient().renderEngine.bindTexture("/mods/galacticraftcore/textures/gui/hud.png");
         final Tessellator tessellator = Tessellator.instance;
 
         tessellator.startDrawingQuads();
@@ -108,7 +108,7 @@ public class GCCoreOverlaySensorGlasses extends GCCoreOverlay
                 if (var20 < 4.0D)
                 {
                     GL11.glColor4f(0.0F, 255F / 255F, 198F / 255F, (float) Math.min(1.0D, Math.max(0.2D, (var20 - 1.0D) * 0.1D)));
-                    GL11.glBindTexture(GL11.GL_TEXTURE_2D, GCCoreOverlaySensorGlasses.minecraft.renderEngine.getTexture("/mods/galacticraftcore/textures/gui/indicator.png"));
+                    GCCoreOverlaySensorGlasses.minecraft.renderEngine.bindTexture("/mods/galacticraftcore/textures/gui/indicator.png");
                     GL11.glRotatef(-var60 - ClientProxyCore.playerRotationYaw + 180.0F, 0.0F, 0.0F, 1.0F);
                     GL11.glTranslated(0.0D, var2 ? -var20 * 16 : -var21 * 16, 0.0D);
                     GL11.glRotatef(-(-var60 - ClientProxyCore.playerRotationYaw + 180.0F), 0.0F, 0.0F, 1.0F);

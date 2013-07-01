@@ -29,7 +29,7 @@ public class GCCoreOverlaySpaceship extends GCCoreOverlay
         GCCoreOverlaySpaceship.minecraft.entityRenderer.setupOverlayRendering();
         GL11.glDepthMask(true);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, GCCoreOverlaySpaceship.minecraft.renderEngine.getTexture("/mods/galacticraftcore/textures/gui/spaceshipgui.png"));
+        minecraft.renderEngine.bindTexture("/mods/galacticraftcore/textures/gui/spaceshipgui.png");
 
         float var1 = 0F;
         float var2 = height / 2 - 170 / 2;

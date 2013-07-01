@@ -5,6 +5,7 @@ import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraftforge.client.IRenderHandler;
 import org.lwjgl.opengl.GL11;
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -64,7 +65,7 @@ public abstract class GCSkyProvider extends IRenderHandler
                 GL11.glRotatef(rotateX, 1.0F, 0.0F, 0.0F);
                 GL11.glRotatef(rotateY, 0.0F, 1.0F, 0.0F);
                 GL11.glRotatef(rotateZ, 0.0F, 0.0F, 1.0F);
-                GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture(this.getSpritesForRender()[i]));
+                FMLClientHandler.instance().getClient().renderEngine.bindTexture(this.getSpritesForRender()[i]);
                 var23.startDrawingQuads();
                 var23.addVertexWithUV(-size, 150.0D, -size, 0.0D, 0.0D);
                 var23.addVertexWithUV(size, 150.0D, -size, 1.0D, 0.0D);
