@@ -27,6 +27,7 @@ import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
+import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreEvents
 {
@@ -210,7 +211,7 @@ public class GCCoreEvents
         final int worldX = event.chunkX << 4;
         final int worldZ = event.chunkZ << 4;
 
-        GCCoreEvents.doPopulate(event.world, event.rand, worldX, worldZ);
+        GCCoreEvents.doPopulate(event.world, event.rand, worldX + event.rand.nextInt(16), worldZ + event.rand.nextInt(16));
     }
 
     public static void doPopulate(World world, Random rand, int x, int z)
@@ -222,7 +223,7 @@ public class GCCoreEvents
             return;
         }
 
-        final double randMod = Math.min(0.5D, 0.1D * GCCoreConfigManager.oilGenFactor);
+        final double randMod = Math.min(0.5D, 0.15D * GCCoreConfigManager.oilGenFactor);
 
         final boolean flag1 = rand.nextDouble() <= randMod;
         final boolean flag2 = rand.nextDouble() <= randMod;
@@ -245,7 +246,7 @@ public class GCCoreEvents
 
                         if (d2 <= r2)
                         {
-                            world.setBlock(bx + cx, by + cy, bz + cz, GCCoreBlocks.crudeOilStill.blockID, 0, d2 == r2 ? 3 : 2);
+                            world.setBlock(bx + cx, by + cy, bz + cz, GCCoreBlocks.crudeOilStill.blockID, 2, 2);
                         }
                     }
                 }
