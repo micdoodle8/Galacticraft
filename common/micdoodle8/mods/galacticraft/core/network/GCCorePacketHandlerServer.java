@@ -368,7 +368,7 @@ public class GCCorePacketHandlerServer implements IPacketHandler
 
             final GCCoreSpaceStationData ssdata = GCCoreSpaceStationData.getStationData(playerBase.worldObj, (Integer) packetReadout[1], playerBase);
 
-            if (ssdata != null)
+            if (ssdata != null && ssdata.getOwner().equalsIgnoreCase(player.username))
             {
                 ssdata.setSpaceStationName((String) packetReadout[0]);
                 ssdata.setDirty(true);
