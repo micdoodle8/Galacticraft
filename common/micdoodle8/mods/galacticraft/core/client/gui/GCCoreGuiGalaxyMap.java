@@ -320,7 +320,7 @@ public class GCCoreGuiGalaxyMap extends GCCoreGuiStarBackground
                     var26 = 0;
                     var27 = 0;
 
-                    final Map[] posMaps = this.computePlanetPos(var10, var11, planet.getDistanceFromCenter() / 2, 2880);
+                    final Map[] posMaps = this.computePlanetPos(var10, var11, planet.getDistanceFromCenter() * 750.0F, 2880);
 
                     if (posMaps[0] != null && posMaps[1] != null)
                     {
@@ -347,7 +347,7 @@ public class GCCoreGuiGalaxyMap extends GCCoreGuiStarBackground
                     GL11.glEnable(GL11.GL_BLEND);
                     GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
 
-                    int width = (int) (planet.getPlanetSize() + 1 / this.zoom * 3F);
+                    int width = (int) (planet.getPlanetSize() * 15.0F + 1 / this.zoom * 3F);
 
                     if (Mouse.isButtonDown(0))
                     {
@@ -384,11 +384,11 @@ public class GCCoreGuiGalaxyMap extends GCCoreGuiStarBackground
                     if (renderer != null)
                     {
                         this.mc.renderEngine.bindTexture(renderer.getPlanetSprite());
-                        renderer.renderSlot(0, var42, var41, planet.getPlanetSize() + 1 / this.zoom * 3F, var3);
+                        renderer.renderSlot(0, var42, var41, planet.getPlanetSize() * 15.0F + 1 / this.zoom * 3F, var3);
 
                         if (this.selectedPlanet != null && planet.getSlotRenderer().getPlanetName().equals(this.selectedPlanet.getMapObject().getSlotRenderer().getPlanetName()))
                         {
-                            renderer.renderSlot(0, var42, var41, planet.getPlanetSize() + 1 / this.zoom * 3F, var3);
+                            renderer.renderSlot(0, var42, var41, planet.getPlanetSize() * 15.0F + 1 / this.zoom * 3F, var3);
                         }
                     }
 
@@ -453,11 +453,11 @@ public class GCCoreGuiGalaxyMap extends GCCoreGuiStarBackground
                                     if (moonRenderer != null)
                                     {
                                         this.mc.renderEngine.bindTexture(moonRenderer.getPlanetSprite());
-                                        moonRenderer.renderSlot(0, var42b, var41b, (float) (moon.getPlanetSize() + 1 / Math.pow(this.zoom, -2)), var3);
+                                        moonRenderer.renderSlot(0, var42b, var41b, (float) (moon.getPlanetSize() * 15.0F + 1 / Math.pow(this.zoom, -2)), var3);
 
                                         if (this.selectedPlanet != null && moon.getSlotRenderer().getPlanetName().equals(this.selectedPlanet.getMapObject().getSlotRenderer().getPlanetName()))
                                         {
-                                            moonRenderer.renderSlot(0, var42b, var41b, (float) (moon.getPlanetSize() + 1 / Math.pow(this.zoom, -2)), var3);
+                                            moonRenderer.renderSlot(0, var42b, var41b, (float) (moon.getPlanetSize() * 15.0F + 1 / Math.pow(this.zoom, -2)), var3);
                                         }
                                     }
 
@@ -574,7 +574,7 @@ public class GCCoreGuiGalaxyMap extends GCCoreGuiStarBackground
         {
             if (planet.getMapObject().getParentGalaxy() == galaxy)
             {
-                float x = planet.getMapObject().getDistanceFromCenter() / 2F;
+                float x = planet.getMapObject().getDistanceFromCenter() * 750.0F;
                 float y = 0;
 
                 GL11.glColor4f((float) galaxy.getRGBRingColors().x, (float) galaxy.getRGBRingColors().y, (float) galaxy.getRGBRingColors().z, 1.0F);
@@ -650,13 +650,13 @@ public class GCCoreGuiGalaxyMap extends GCCoreGuiStarBackground
     {
         // for (final IMapPlanet planet : GalacticraftCore.mapPlanets)
         {
-            this.drawGradientRect(cx + MathHelper.floor_float(planet.getPlanetSize()), cy - 3, cx + MathHelper.floor_float(planet.getPlanetSize()) + 8 * 10, cy + 10, GCCoreUtil.convertTo32BitColor(100, 50, 50, 50), GCCoreUtil.convertTo32BitColor(100, 50, 50, 50));
-            this.fontRenderer.drawStringWithShadow(planet.getSlotRenderer().getPlanetName(), cx + MathHelper.floor_float(planet.getPlanetSize()) + 3, cy - 1, GCCoreUtil.convertTo32BitColor(255, 200, 200, 200));
+            this.drawGradientRect(cx + MathHelper.floor_float(planet.getPlanetSize() * 15.0F), cy - 3, cx + MathHelper.floor_float(planet.getPlanetSize() * 15.0F) + 8 * 10, cy + 10, GCCoreUtil.convertTo32BitColor(100, 50, 50, 50), GCCoreUtil.convertTo32BitColor(100, 50, 50, 50));
+            this.fontRenderer.drawStringWithShadow(planet.getSlotRenderer().getPlanetName(), cx + MathHelper.floor_float(planet.getPlanetSize() * 15.0F) + 3, cy - 1, GCCoreUtil.convertTo32BitColor(255, 200, 200, 200));
 
             for (int i = 0; i < WorldUtil.getPlayersOnPlanet(planet).size(); i++)
             {
-                this.drawGradientRect(cx + MathHelper.floor_float(planet.getPlanetSize()), cy + 10 * (i + 1), cx + MathHelper.floor_float(planet.getPlanetSize()) + 80, cy + 10 * (i + 1) + 10, GCCoreUtil.convertTo32BitColor(255, 50, 50, 50), GCCoreUtil.convertTo32BitColor(255, 50, 50, 50));
-                this.fontRenderer.drawStringWithShadow(String.valueOf(WorldUtil.getPlayersOnPlanet(planet).get(i)), cx + MathHelper.floor_float(planet.getPlanetSize() * 2), cy + 1 + 10 * (i + 1), GCCoreUtil.convertTo32BitColor(255, 220, 220, 220));
+                this.drawGradientRect(cx + MathHelper.floor_float(planet.getPlanetSize() * 15.0F), cy + 10 * (i + 1), cx + MathHelper.floor_float(planet.getPlanetSize() * 15.0F) + 80, cy + 10 * (i + 1) + 10, GCCoreUtil.convertTo32BitColor(255, 50, 50, 50), GCCoreUtil.convertTo32BitColor(255, 50, 50, 50));
+                this.fontRenderer.drawStringWithShadow(String.valueOf(WorldUtil.getPlayersOnPlanet(planet).get(i)), cx + MathHelper.floor_float(planet.getPlanetSize() * 30.0F), cy + 1 + 10 * (i + 1), GCCoreUtil.convertTo32BitColor(255, 220, 220, 220));
                 this.width = Math.max(this.width, String.valueOf(WorldUtil.getPlayersOnPlanet(planet).get(i)).length());
             }
         }

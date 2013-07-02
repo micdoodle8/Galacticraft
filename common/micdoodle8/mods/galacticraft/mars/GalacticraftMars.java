@@ -97,7 +97,6 @@ public class GalacticraftMars
     {
         System.out.println("Galacticraft Mars Loaded: " + TranslationHelper.loadLanguages(GalacticraftMars.LANGUAGE_PATH, GalacticraftMars.LANGUAGES_SUPPORTED) + " Languages.");
         GalacticraftMars.galacticraftMarsTab = new GCCoreCreativeTab(CreativeTabs.getNextID(), GalacticraftMars.MODID, GCMarsItems.spaceship.itemID, 5);
-        DimensionManager.registerProviderType(GCMarsConfigManager.dimensionIDMars, GCMarsWorldProvider.class, false);
         MinecraftForge.EVENT_BUS.register(new GCMarsEvents());
         GalacticraftRegistry.registerTeleportType(GCMarsWorldProvider.class, new GCMoonTeleportType());
         GCMarsUtil.addSmeltingRecipes();
@@ -112,7 +111,6 @@ public class GalacticraftMars
     @ServerStarting
     public void serverStarting(FMLServerStartingEvent event)
     {
-        WorldUtil.registerPlanet(GCMarsConfigManager.dimensionIDMars, true);
     }
 
     public void registerTileEntities()

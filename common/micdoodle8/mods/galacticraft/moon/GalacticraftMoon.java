@@ -64,8 +64,6 @@ public class GalacticraftMoon
         GalacticraftMoon.celestialBodyMoon = new GCMoonCelestialBody();
         GalacticraftRegistry.registerCelestialBody(GalacticraftMoon.celestialBodyMoon);
 
-        DimensionManager.registerProviderType(GCMoonConfigManager.dimensionIDMoon, GCMoonWorldProvider.class, false);
-
         System.out.println("Galacticraft Moon Loaded: " + TranslationHelper.loadLanguages(GalacticraftMoon.LANGUAGE_PATH, GalacticraftMoon.LANGUAGES_SUPPORTED) + " Languages.");
 
         GalacticraftRegistry.registerTeleportType(GCMoonWorldProvider.class, new GCMoonTeleportType());
@@ -86,7 +84,6 @@ public class GalacticraftMoon
 
     public void serverStarting(FMLServerStartingEvent event)
     {
-        WorldUtil.registerPlanet(GCMoonConfigManager.dimensionIDMoon, true);
     }
 
     public class CommonTickHandler implements ITickHandler

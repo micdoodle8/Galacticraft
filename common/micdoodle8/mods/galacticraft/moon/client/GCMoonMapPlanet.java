@@ -10,19 +10,19 @@ public class GCMoonMapPlanet implements IMapObject
     @Override
     public float getPlanetSize()
     {
-        return 4;
+        return 0.26666666666666666666666666666667F;
     }
 
     @Override
     public float getDistanceFromCenter()
     {
-        return 1500F / 15F;
+        return 40.0F;
     }
 
     @Override
     public float getPhaseShift()
     {
-        return 0;
+        return 0.0F;
     }
 
     @Override

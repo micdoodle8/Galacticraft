@@ -10,13 +10,13 @@ public class GCCoreMapPlanetOverworld implements IMapObject
     @Override
     public float getPlanetSize()
     {
-        return 15;
+        return 1.0F;
     }
 
     @Override
     public float getDistanceFromCenter()
     {
-        return 1500F;
+        return 1.0F;
     }
 
     @Override
@@ -28,7 +28,7 @@ public class GCCoreMapPlanetOverworld implements IMapObject
     @Override
     public float getStretchValue()
     {
-        return 1F;
+        return 1.0F;
     }
 
     @Override

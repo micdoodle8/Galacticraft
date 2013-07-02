@@ -9,6 +9,7 @@ import javax.swing.JEditorPane;
 import javax.swing.JOptionPane;
 import mekanism.api.GasTransmission;
 import micdoodle8.mods.galacticraft.API.GalacticraftRegistry;
+import micdoodle8.mods.galacticraft.API.ICelestialBody;
 import micdoodle8.mods.galacticraft.API.IGalaxy;
 import micdoodle8.mods.galacticraft.API.IMoon;
 import micdoodle8.mods.galacticraft.API.IPlanet;
@@ -255,6 +256,15 @@ public class GalacticraftCore
     public void postInit(FMLPostInitializationEvent event)
     {
         GalacticraftCore.moon.postLoad(event);
+        
+        for (ICelestialBody celestialBody : GalacticraftRegistry.getCelestialBodies())
+        {
+            if (celestialBody.autoRegister())
+            {
+                DimensionManager.registerProviderType(celestialBody.getDimensionID(), celestialBody.getWorldProvider(), false);
+            }
+        }
+        
         GCCoreCompatibilityManager.checkForCompatibleMods();
 
         this.registerTileEntities();
@@ -303,6 +313,14 @@ public class GalacticraftCore
         event.registerServerCommand(new GCCoreCommandSpaceStationAddOwner());
         event.registerServerCommand(new GCCoreCommandSpaceStationRemoveOwner());
         WorldUtil.registerSpaceStations(event.getServer().worldServerForDimension(0).getSaveHandler().getMapFileFromName("dummy").getParentFile());
+
+        for (ICelestialBody celestialBody : GalacticraftRegistry.getCelestialBodies())
+        {
+            if (celestialBody.autoRegister())
+            {
+                WorldUtil.registerPlanet(celestialBody.getDimensionID(), true);
+            }
+        }
     }
 
     @ServerStopped

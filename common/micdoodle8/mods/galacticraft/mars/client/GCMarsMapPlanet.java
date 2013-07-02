@@ -10,19 +10,19 @@ public class GCMarsMapPlanet implements IMapObject
     @Override
     public float getPlanetSize()
     {
-        return 15F / 1.88F;
+        return 0.53191489361702127659574468085106F;
     }
 
     @Override
     public float getDistanceFromCenter()
     {
-        return 2280F;
+        return 1.52F;
     }
 
     @Override
     public float getPhaseShift()
     {
-        return 2880F / 6F;
+        return 480.0F;
     }
 
     @Override

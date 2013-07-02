@@ -13,7 +13,7 @@ public interface IKeyItem
     /**
      * Gets the tier of this object
      * 
-     * @return - The tier
+     * @return - The item's tier
      */
     public int getTier(ItemStack stack);
 }

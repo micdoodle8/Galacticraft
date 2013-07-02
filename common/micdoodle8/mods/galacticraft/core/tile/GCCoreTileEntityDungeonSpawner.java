@@ -1,14 +1,13 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import java.util.List;
-import micdoodle8.mods.galacticraft.API.IDungeonBoss;
-import micdoodle8.mods.galacticraft.API.IDungeonBossSpawner;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityCreeper;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySkeleton;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySkeletonBoss;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpider;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityZombie;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -16,14 +15,14 @@ import net.minecraft.util.AxisAlignedBB;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.tile.TileEntityAdvanced;
 
-public class GCCoreTileEntityDungeonSpawner extends TileEntityAdvanced implements IDungeonBossSpawner
+public class GCCoreTileEntityDungeonSpawner extends TileEntityAdvanced
 {
-    private IDungeonBoss boss;
-    private boolean spawned;
-    private boolean isBossDefeated;
-    private boolean playerInRange;
-    private boolean lastPlayerInRange;
-    private boolean playerCheated;
+    public GCCoreEntitySkeletonBoss boss;
+    public boolean spawned;
+    public boolean isBossDefeated;
+    public boolean playerInRange;
+    public boolean lastPlayerInRange;
+    public boolean playerCheated;
     private Vector3 roomCoords;
     private Vector3 roomSize;
 
@@ -43,10 +42,10 @@ public class GCCoreTileEntityDungeonSpawner extends TileEntityAdvanced implement
                 {
                     if (!e.isDead)
                     {
-                        this.boss = (IDungeonBoss) e;
+                        this.boss = (GCCoreEntitySkeletonBoss) e;
                         ((GCCoreEntitySkeletonBoss) this.boss).setRoom(this.roomCoords, this.roomSize);
-                        this.setBossSpawned(true);
-                        this.setBossDefeated(false);
+                        this.spawned = true;
+                        this.isBossDefeated = false;
                     }
                 }
             }
@@ -61,9 +60,9 @@ public class GCCoreTileEntityDungeonSpawner extends TileEntityAdvanced implement
                 }
             }
 
-            if (this.boss == null && !this.getBossDefeated())
+            if (this.boss == null && !this.isBossDefeated)
             {
-                this.setBoss(new GCCoreEntitySkeletonBoss(this.worldObj, new Vector3(this).add(new Vector3(0.0D, 1.0D, 0.0D))));
+                this.boss = new GCCoreEntitySkeletonBoss(this.worldObj, new Vector3(this).add(new Vector3(0.0D, 1.0D, 0.0D)));
                 ((GCCoreEntitySkeletonBoss) this.boss).setRoom(this.roomCoords, this.roomSize);
             }
 
@@ -73,8 +72,8 @@ public class GCCoreTileEntityDungeonSpawner extends TileEntityAdvanced implement
             {
                 if (!entitiesWithin.isEmpty())
                 {
-                    this.setBossSpawned(false);
-                    this.setBossDefeated(false);
+                    this.isBossDefeated = false;
+                    this.spawned = false;
                     this.lastPlayerInRange = false;
                     this.playerCheated = false;
                 }
@@ -84,12 +83,12 @@ public class GCCoreTileEntityDungeonSpawner extends TileEntityAdvanced implement
 
             if (this.playerInRange && !this.lastPlayerInRange)
             {
-                if (this.getBoss() != null && !this.getBossSpawned())
+                if (this.boss != null && !this.spawned)
                 {
                     if (this.boss instanceof Entity)
                     {
                         this.worldObj.spawnEntityInWorld((Entity) this.boss);
-                        this.setBossSpawned(true);
+                        this.spawned = true;
                         this.boss.onBossSpawned(this);
                         ((GCCoreEntitySkeletonBoss) this.boss).setRoom(this.roomCoords, this.roomSize);
                     }
@@ -107,25 +106,13 @@ public class GCCoreTileEntityDungeonSpawner extends TileEntityAdvanced implement
     }
 
     @Override
-    public void setBossDefeated(boolean defeated)
-    {
-        this.isBossDefeated = defeated;
-    }
-
-    @Override
-    public boolean getBossDefeated()
-    {
-        return this.isBossDefeated;
-    }
-
-    @Override
     public void readFromNBT(NBTTagCompound nbt)
     {
         super.readFromNBT(nbt);
 
-        this.setBossSpawned(nbt.getBoolean("spawned"));
+        this.spawned = nbt.getBoolean("spawned");
         this.playerInRange = this.lastPlayerInRange = nbt.getBoolean("playerInRange");
-        this.setBossDefeated(nbt.getBoolean("defeated"));
+        this.isBossDefeated = nbt.getBoolean("defeated");
         this.playerCheated = nbt.getBoolean("playerCheated");
         this.roomCoords = new Vector3();
         this.roomCoords.x = nbt.getDouble("roomCoordsX");
@@ -142,9 +129,9 @@ public class GCCoreTileEntityDungeonSpawner extends TileEntityAdvanced implement
     {
         super.writeToNBT(nbt);
 
-        nbt.setBoolean("spawned", this.getBossSpawned());
+        nbt.setBoolean("spawned", this.spawned);
         nbt.setBoolean("playerInRange", this.playerInRange);
-        nbt.setBoolean("defeated", this.getBossDefeated());
+        nbt.setBoolean("defeated", this.isBossDefeated);
         nbt.setBoolean("playerCheated", this.playerCheated);
 
         if (this.roomCoords != null)
@@ -156,35 +143,5 @@ public class GCCoreTileEntityDungeonSpawner extends TileEntityAdvanced implement
             nbt.setDouble("roomSizeY", this.roomSize.y);
             nbt.setDouble("roomSizeZ", this.roomSize.z);
         }
-    }
-
-    @Override
-    public void setBossSpawned(boolean spawned)
-    {
-        this.spawned = spawned;
-    }
-
-    @Override
-    public boolean getBossSpawned()
-    {
-        return this.spawned;
-    }
-
-    @Override
-    public void setBoss(IDungeonBoss boss)
-    {
-        this.boss = boss;
-    }
-
-    @Override
-    public IDungeonBoss getBoss()
-    {
-        return this.boss;
-    }
-
-    @Override
-    public void setPlayerCheated()
-    {
-        this.playerCheated = true;
     }
 }

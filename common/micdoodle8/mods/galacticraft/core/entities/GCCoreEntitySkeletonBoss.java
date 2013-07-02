@@ -2,13 +2,12 @@ package micdoodle8.mods.galacticraft.core.entities;
 
 import java.util.List;
 import java.util.Random;
-import micdoodle8.mods.galacticraft.API.IDungeonBoss;
-import micdoodle8.mods.galacticraft.API.IDungeonBossSpawner;
 import micdoodle8.mods.galacticraft.API.IEntityBreathable;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityDungeonSpawner;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -50,11 +49,11 @@ import cpw.mods.fml.relauncher.SideOnly;
  * All rights reserved.
  * 
  */
-public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreathable, IDungeonBoss, IBossDisplayData, IPacketReceiver
+public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreathable, IBossDisplayData, IPacketReceiver
 {
     protected long ticks = 0;
     private static final ItemStack defaultHeldItem = new ItemStack(Item.bow, 1);
-    private IDungeonBossSpawner spawner;
+    private GCCoreTileEntityDungeonSpawner spawner;
 
     public int throwTimer;
     public int postThrowDelay = 20;
@@ -288,9 +287,9 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
 
             if (this.spawner != null)
             {
-                this.spawner.setBossDefeated(true);
-                this.spawner.setBoss(null);
-                this.spawner.setBossSpawned(false);
+                this.spawner.isBossDefeated = true;
+                this.spawner.boss = null;
+                this.spawner.spawned = false;
             }
         }
     }
@@ -313,9 +312,9 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
     {
         if (this.spawner != null)
         {
-            this.spawner.setBossDefeated(false);
-            this.spawner.setBoss(null);
-            this.spawner.setBossSpawned(false);
+            this.spawner.isBossDefeated = false;
+            this.spawner.boss = null;
+            this.spawner.spawned = false;
         }
 
         super.setDead();
@@ -394,7 +393,7 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
 
                 if (this.spawner != null)
                 {
-                    this.spawner.setPlayerCheated();
+                    this.spawner.playerCheated = true;
                 }
 
                 return;
@@ -541,25 +540,21 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
         return true;
     }
 
-    @Override
     public float getExperienceToSpawn()
     {
         return 50.0F;
     }
 
-    @Override
     public double getDistanceToSpawn()
     {
         return 40.0D;
     }
 
-    @Override
-    public void onBossSpawned(IDungeonBossSpawner spawner)
+    public void onBossSpawned(GCCoreTileEntityDungeonSpawner spawner)
     {
         this.spawner = spawner;
     }
 
-    @Override
     public ItemStack getGuaranteedLoot(int loop, Random rand)
     {
         if (loop == 0)
@@ -576,7 +571,6 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
         return null;
     }
 
-    @Override
     public ItemStack getLoot(Random rand)
     {
         final int r = rand.nextInt(3);

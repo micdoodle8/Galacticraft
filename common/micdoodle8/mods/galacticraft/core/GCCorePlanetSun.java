@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core;
 
+import net.minecraft.world.WorldProvider;
 import micdoodle8.mods.galacticraft.API.IGalaxy;
 import micdoodle8.mods.galacticraft.API.IMapObject;
 import micdoodle8.mods.galacticraft.API.IPlanet;
@@ -35,8 +36,26 @@ public class GCCorePlanetSun implements IPlanet
     }
 
     @Override
+    public boolean autoRegister()
+    {
+        return false;
+    }
+
+    @Override
     public boolean addToList()
     {
         return false;
+    }
+
+    @Override
+    public Class<? extends WorldProvider> getWorldProvider()
+    {
+        return null;
+    }
+
+    @Override
+    public int getDimensionID()
+    {
+        return -1;
     }
 }
