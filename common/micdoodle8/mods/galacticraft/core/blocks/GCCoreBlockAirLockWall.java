@@ -7,6 +7,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -22,6 +23,7 @@ public class GCCoreBlockAirLockWall extends BlockBreakable implements IPartialSe
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister par1IconRegister)
     {
+        FMLLog.info("done2");
         this.blockIcon = par1IconRegister.registerIcon("galacticraftcore:deco_aluminium_4");
     }
 

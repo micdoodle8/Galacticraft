@@ -19,7 +19,6 @@ import micdoodle8.mods.galacticraft.API.ISchematicPage;
 import micdoodle8.mods.galacticraft.API.ISchematicResultPage;
 import micdoodle8.mods.galacticraft.core.CommonProxyCore;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
-import micdoodle8.mods.galacticraft.core.GCCorePlanetSun;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLaunchFlameFX;
@@ -33,7 +32,6 @@ import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiCargoLoader;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiCargoUnloader;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiFuelLoader;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiGalaxyMap;
-import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiKnowledgeBook;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiParachest;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiRefinery;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiRocketRefill;
@@ -45,9 +43,9 @@ import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRenderer
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererMeteor;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererOxygenPipe;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererUnlitTorch;
+import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererTreasureChest;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderAlienVillager;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderArrow;
-import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderBlockTreasureChest;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderBuggy;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderCreeper;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderFlag;
@@ -60,18 +58,14 @@ import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderSkel
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderSkeletonBoss;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderSpaceship;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderSpider;
-import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderWorm;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderZombie;
 import micdoodle8.mods.galacticraft.core.client.render.item.GCCoreItemRendererBuggy;
 import micdoodle8.mods.galacticraft.core.client.render.item.GCCoreItemRendererFlag;
 import micdoodle8.mods.galacticraft.core.client.render.item.GCCoreItemRendererKey;
-import micdoodle8.mods.galacticraft.core.client.render.item.GCCoreItemRendererKnowledgeBook;
 import micdoodle8.mods.galacticraft.core.client.render.item.GCCoreItemRendererSpaceship;
 import micdoodle8.mods.galacticraft.core.client.render.item.GCCoreItemRendererUnlitTorch;
 import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntityAdvancedCraftingTableRenderer;
-import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntityLandingPadRenderer;
 import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntityParachestRenderer;
-import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntityRefineryRenderer;
 import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntityTreasureChestRenderer;
 import micdoodle8.mods.galacticraft.core.client.sounds.GCCoreSounds;
 import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
@@ -89,7 +83,6 @@ import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityRocketT1;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySkeleton;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySkeletonBoss;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpider;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityWorm;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityZombie;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient;
@@ -99,7 +92,6 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAdvancedCraftingTa
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoLoader;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoUnloader;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFuelLoader;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCollector;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCompressor;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenDistributor;
@@ -117,6 +109,7 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.particle.EntitySmokeFX;
+import net.minecraft.client.resources.ResourceLocation;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -169,7 +162,7 @@ public class ClientProxyCore extends CommonProxyCore
     public static List<int[]> valueableBlocks = new ArrayList<int[]>();
 
     public static Set<String> playersUsingParachutes = new HashSet<String>();
-    public static HashMap<String, String> parachuteTextures = new HashMap<String, String>();
+    public static HashMap<String, ResourceLocation> parachuteTextures = new HashMap<String, ResourceLocation>();
     public static Set<String> playersWithOxygenMask = new HashSet<String>();
     public static Set<String> playersWithOxygenGear = new HashSet<String>();
     public static Set<String> playersWithOxygenTankLeftRed = new HashSet<String>();
@@ -212,7 +205,7 @@ public class ClientProxyCore extends CommonProxyCore
         try
         {
             FMLClientHandler.instance().getClient();
-            this.downloadResourcesThread = new GCCoreThreadDownloadSound(Minecraft.getMinecraftDir(), FMLClientHandler.instance().getClient());
+            this.downloadResourcesThread = new GCCoreThreadDownloadSound(FMLClientHandler.instance().getClient().mcDataDir, FMLClientHandler.instance().getClient());
             this.downloadResourcesThread.start();
         }
         catch (final Exception exception)
@@ -227,10 +220,8 @@ public class ClientProxyCore extends CommonProxyCore
         ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityTreasureChest.class, new GCCoreTileEntityTreasureChestRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityParachest.class, new GCCoreTileEntityParachestRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityAdvancedCraftingTable.class, new GCCoreTileEntityAdvancedCraftingTableRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityRefinery.class, new GCCoreTileEntityRefineryRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityLandingPad.class, new GCCoreTileEntityLandingPadRenderer());
         ClientProxyCore.treasureChestRenderID = RenderingRegistry.getNextAvailableRenderId();
-        RenderingRegistry.registerBlockHandler(new GCCoreRenderBlockTreasureChest(ClientProxyCore.treasureChestRenderID));
+        RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererTreasureChest(ClientProxyCore.treasureChestRenderID));
         ClientProxyCore.torchRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererUnlitTorch(ClientProxyCore.torchRenderID));
         ClientProxyCore.breathableAirRenderID = RenderingRegistry.getNextAvailableRenderId();
@@ -316,7 +307,7 @@ public class ClientProxyCore extends CommonProxyCore
     {
         ClientProxyCore.moon.registerRenderInformation();
 
-        RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityRocketT1.class, new GCCoreRenderSpaceship(new GCCoreModelSpaceship(), "/micdoodle8/mods/galacticraft/core/client/entities/spaceship1.png"));
+        RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityRocketT1.class, new GCCoreRenderSpaceship(new GCCoreModelSpaceship(), GalacticraftCore.TEXTURE_DOMAIN, "rocketT1"));
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntitySpider.class, new GCCoreRenderSpider());
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityZombie.class, new GCCoreRenderZombie());
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityCreeper.class, new GCCoreRenderCreeper());
@@ -325,7 +316,6 @@ public class ClientProxyCore extends CommonProxyCore
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityMeteor.class, new GCCoreRenderMeteor());
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityBuggy.class, new GCCoreRenderBuggy());
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityFlag.class, new GCCoreRenderFlag());
-        RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityWorm.class, new GCCoreRenderWorm());
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityParaChest.class, new GCCoreRenderParaChest());
         RenderingRegistry.registerEntityRenderingHandler(EntityPlayer.class, new GCCoreRenderPlayer());
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityAlienVillager.class, new GCCoreRenderAlienVillager());
@@ -336,11 +326,10 @@ public class ClientProxyCore extends CommonProxyCore
         RenderingRegistry.addNewArmourRendererPrefix("titanium");
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityArrow.class, new GCCoreRenderArrow());
         MinecraftForgeClient.registerItemRenderer(GCCoreBlocks.unlitTorch.blockID, new GCCoreItemRendererUnlitTorch());
-        MinecraftForgeClient.registerItemRenderer(GCCoreItems.spaceship.itemID, new GCCoreItemRendererSpaceship(new GCCoreEntityRocketT1(FMLClientHandler.instance().getClient().theWorld), new GCCoreModelSpaceship(), "/micdoodle8/mods/galacticraft/core/client/entities/spaceship1.png"));
+        MinecraftForgeClient.registerItemRenderer(GCCoreItems.spaceship.itemID, new GCCoreItemRendererSpaceship(new GCCoreEntityRocketT1(FMLClientHandler.instance().getClient().theWorld), new GCCoreModelSpaceship(), new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/rocketT1.png")));
         MinecraftForgeClient.registerItemRenderer(GCCoreItems.buggy.itemID, new GCCoreItemRendererBuggy());
         MinecraftForgeClient.registerItemRenderer(GCCoreItems.flag.itemID, new GCCoreItemRendererFlag());
         MinecraftForgeClient.registerItemRenderer(GCCoreItems.key.itemID, new GCCoreItemRendererKey());
-        MinecraftForgeClient.registerItemRenderer(GCCoreItems.knowledgeBook.itemID, new GCCoreItemRendererKnowledgeBook());
     }
 
     public static void renderPlanets(float par3)
@@ -755,10 +744,10 @@ public class ClientProxyCore extends CommonProxyCore
                 return null;
             }
         }
-        else if (ID == GCCoreConfigManager.idGuiKnowledgeBook)
-        {
-            return new GCCoreGuiKnowledgeBook();
-        }
+//        else if (ID == GCCoreConfigManager.idGuiKnowledgeBook)
+//        {
+//            return new GCCoreGuiKnowledgeBook();
+//        }
         else
         {
             final GCCorePlayerSP playerClient = PlayerUtil.getPlayerBaseClientFromPlayer(player);
@@ -781,7 +770,7 @@ public class ClientProxyCore extends CommonProxyCore
                 }
             }
         }
-
+        
         return super.getClientGuiElement(ID, player, world, x, y, z);
     }
 }

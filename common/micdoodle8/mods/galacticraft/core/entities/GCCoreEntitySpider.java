@@ -2,7 +2,9 @@ package micdoodle8.mods.galacticraft.core.entities;
 
 import micdoodle8.mods.galacticraft.API.IEntityBreathable;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingData;
 import net.minecraft.entity.EnumCreatureAttribute;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.item.Item;
@@ -10,8 +12,6 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -24,9 +24,15 @@ public class GCCoreEntitySpider extends EntitySpider implements IEntityBreathabl
     public GCCoreEntitySpider(World par1World)
     {
         super(par1World);
-        this.texture = "/micdoodle8/mods/galacticraft/core/client/entities/spider.png";
         this.setSize(1.4F, 0.9F);
-        this.moveSpeed = 1F;
+    }
+
+    @Override
+    protected void func_110147_ax()
+    {
+        super.func_110147_ax();
+        this.func_110148_a(SharedMonsterAttributes.field_111267_a).func_111128_a(22.0D);
+        this.func_110148_a(SharedMonsterAttributes.field_111263_d).func_111128_a(1.0F);
     }
 
     @Override
@@ -53,12 +59,6 @@ public class GCCoreEntitySpider extends EntitySpider implements IEntityBreathabl
     public void fall(float var1)
     {
         ;
-    }
-
-    @Override
-    public int getMaxHealth()
-    {
-        return 22;
     }
 
     /**
@@ -202,16 +202,6 @@ public class GCCoreEntitySpider extends EntitySpider implements IEntityBreathabl
     {
     }
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    /**
-     * How large the spider should be scaled.
-     */
-    public float spiderScaleAmount()
-    {
-        return 1.0F;
-    }
-
     /**
      * Get this Entity's EnumCreatureAttribute
      */
@@ -262,16 +252,20 @@ public class GCCoreEntitySpider extends EntitySpider implements IEntityBreathabl
      * Initialize this creature.
      */
     @Override
-    public void initCreature()
+    public EntityLivingData func_110161_a(EntityLivingData par1EntityLivingData)
     {
+        EntityLivingData par1EntityLivingData1 = super.func_110161_a(par1EntityLivingData);
+        
         if (this.worldObj.rand.nextInt(100) == 0)
         {
-            final EntitySkeleton var1 = new EntitySkeleton(this.worldObj);
-            var1.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
-            var1.initCreature();
-            this.worldObj.spawnEntityInWorld(var1);
-            var1.mountEntity(this);
+            EntitySkeleton entityskeleton = new EntitySkeleton(this.worldObj);
+            entityskeleton.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
+            entityskeleton.func_110161_a((EntityLivingData)null);
+            this.worldObj.spawnEntityInWorld(entityskeleton);
+            entityskeleton.mountEntity(this);
         }
+        
+        return par1EntityLivingData1;
     }
 
     @Override

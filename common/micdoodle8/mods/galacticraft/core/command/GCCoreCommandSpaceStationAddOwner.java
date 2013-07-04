@@ -7,6 +7,7 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
+import net.minecraft.util.ChatMessageComponent;
 
 public class GCCoreCommandSpaceStationAddOwner extends CommandBase
 {
@@ -63,7 +64,7 @@ public class GCCoreCommandSpaceStationAddOwner extends CommandBase
 
                     if (playerToAdd != null)
                     {
-                        playerToAdd.sendChatToPlayer("You've been added to " + playerBase.username + "\'s Space Station accepted players!");
+                        playerToAdd.sendChatToPlayer(ChatMessageComponent.func_111066_d("You've been added to " + playerBase.username + "\'s Space Station accepted players!"));
                     }
                 }
             }
@@ -80,7 +81,7 @@ public class GCCoreCommandSpaceStationAddOwner extends CommandBase
 
         if (playerBase != null)
         {
-            playerBase.sendChatToPlayer("Successfully added " + var3 + " to Space Station list!");
+            playerBase.sendChatToPlayer(ChatMessageComponent.func_111066_d("Successfully added " + var3 + " to Space Station list!"));
         }
     }
 }

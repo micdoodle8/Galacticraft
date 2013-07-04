@@ -1,8 +1,10 @@
 package micdoodle8.mods.galacticraft.core.client.render.item;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelBuggy;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityBuggy;
 import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.resources.ResourceLocation;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.Sys;
@@ -17,6 +19,8 @@ import cpw.mods.fml.client.FMLClientHandler;
  */
 public class GCCoreItemRendererBuggy implements IItemRenderer
 {
+    private static final ResourceLocation buggyTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/buggy.png");
+    
     GCCoreEntityBuggy spaceship = new GCCoreEntityBuggy(FMLClientHandler.instance().getClient().theWorld);
     GCCoreModelBuggy modelSpaceship = new GCCoreModelBuggy();
 
@@ -56,7 +60,7 @@ public class GCCoreItemRendererBuggy implements IItemRenderer
             GL11.glTranslatef(0, -0.6F, 0);
             GL11.glRotatef(Sys.getTime() / 90F % 360F, 0F, 1F, 0F);
         }
-        FMLClientHandler.instance().getClient().renderEngine.bindTexture("/micdoodle8/mods/galacticraft/core/client/entities/buggy.png");
+        FMLClientHandler.instance().getClient().renderEngine.func_110577_a(buggyTexture);
         this.modelSpaceship.setType(item.getItemDamage());
         this.modelSpaceship.render(this.spaceship, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
         GL11.glPopMatrix();

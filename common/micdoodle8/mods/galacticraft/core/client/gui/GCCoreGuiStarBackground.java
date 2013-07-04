@@ -1,8 +1,10 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.resources.ResourceLocation;
 import net.minecraft.util.MathHelper;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -10,6 +12,9 @@ import org.lwjgl.util.glu.GLU;
 
 public abstract class GCCoreGuiStarBackground extends GuiScreen
 {
+    private static final ResourceLocation backgroundTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/stars.png");
+    private static final ResourceLocation blackTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/black.png");
+    
     public void drawBlackBackground()
     {
         final ScaledResolution var5 = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
@@ -20,7 +25,7 @@ public abstract class GCCoreGuiStarBackground extends GuiScreen
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
-        this.mc.renderEngine.bindTexture("/micdoodle8/mods/galacticraft/core/client/backgrounds/black.png");
+        this.mc.func_110434_K().func_110577_a(blackTexture);
         final Tessellator var3 = Tessellator.instance;
         var3.startDrawingQuads();
         var3.addVertexWithUV(0.0D, var7, -90.0D, 0.0D, 1.0D);
@@ -120,7 +125,7 @@ public abstract class GCCoreGuiStarBackground extends GuiScreen
                     GL11.glTranslatef(1.96F, 1.96F, 0.0F);
                 }
 
-                this.mc.renderEngine.bindTexture("/micdoodle8/mods/galacticraft/core/client/backgrounds/bg3.png");
+                this.mc.func_110434_K().func_110577_a(backgroundTexture);
                 var4.startDrawingQuads();
                 var4.setColorRGBA_I(16777215, 255 / (var6 + 1));
                 var4.addVertexWithUV(-1.0D, -1.0D, 1.0D, 0.0F + 1, 0.0F + 1);
@@ -220,7 +225,7 @@ public abstract class GCCoreGuiStarBackground extends GuiScreen
                     GL11.glRotatef(-90.0F, 1.0F, 0.0F, 0.0F);
                 }
 
-                this.mc.renderEngine.bindTexture("/micdoodle8/mods/galacticraft/core/client/backgrounds/bg3.png");
+                this.mc.func_110434_K().func_110577_a(backgroundTexture);
                 var4.startDrawingQuads();
                 var4.setColorRGBA_I(16777215, 255 / (var6 + 1));
                 var4.addVertexWithUV(-1.0D, -1.0D, 1.0D, 0.0F + 1, 0.0F + 1);
@@ -247,7 +252,7 @@ public abstract class GCCoreGuiStarBackground extends GuiScreen
 
     private void rotateAndBlurSkybox()
     {
-        this.mc.renderEngine.bindTexture("/micdoodle8/mods/galacticraft/core/client/backgrounds/bg3.png");
+        this.mc.func_110434_K().func_110577_a(backgroundTexture);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glColorMask(true, true, true, false);

@@ -21,6 +21,7 @@ import net.minecraft.world.World;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.IPacketReceiver;
 import com.google.common.io.ByteArrayDataInput;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -277,7 +278,7 @@ public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInvento
     }
 
     @Override
-    public boolean interact(EntityPlayer var1)
+    public boolean func_130002_c(EntityPlayer var1)
     {
         if (this.worldObj.isRemote)
         {
@@ -295,8 +296,9 @@ public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInvento
         }
         else if (var1 instanceof EntityPlayerMP)
         {
+            FMLLog.info("done");
             ((EntityPlayerMP) var1).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, new Object[] { 0 }));
-            var1.mountEntity(this);
+            var1.mountEntity(null);
             return true;
         }
         else

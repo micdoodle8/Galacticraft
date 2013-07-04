@@ -896,16 +896,6 @@ public class GCCorePlayerMP extends EntityPlayerMP
         this.lastOnGround = this.onGround;
     }
 
-    public void updateTimeAndWeatherForPlayer(EntityPlayerMP par1EntityPlayerMP, WorldServer par2WorldServer)
-    {
-        par1EntityPlayerMP.playerNetServerHandler.sendPacketToPlayer(new Packet4UpdateTime(par2WorldServer.getTotalWorldTime(), par2WorldServer.getWorldTime()));
-
-        if (par2WorldServer.isRaining())
-        {
-            par1EntityPlayerMP.playerNetServerHandler.sendPacketToPlayer(new Packet70GameEvent(1, 0));
-        }
-    }
-
     public void syncPlayerInventory(EntityPlayerMP par1EntityPlayerMP)
     {
         par1EntityPlayerMP.sendContainerToPlayer(par1EntityPlayerMP.inventoryContainer);

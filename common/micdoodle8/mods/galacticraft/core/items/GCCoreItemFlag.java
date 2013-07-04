@@ -12,6 +12,7 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ChatMessageComponent;
 import net.minecraft.util.EnumMovingObjectType;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
@@ -112,7 +113,7 @@ public class GCCoreItemFlag extends Item
                 }
                 else
                 {
-                    par3EntityPlayer.sendChatToPlayer("Flag already placed here!");
+                    par3EntityPlayer.sendChatToPlayer(ChatMessageComponent.func_111066_d("Flag already placed here!"));
                 }
             }
 

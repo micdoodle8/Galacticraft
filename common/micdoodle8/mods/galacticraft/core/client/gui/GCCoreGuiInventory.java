@@ -1,17 +1,21 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.resources.ResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 public class GCCoreGuiInventory extends GuiInventory
 {
+    private static final ResourceLocation inventoryTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/inventory.png");
+    
     private float xSize_lo_2;
     private float ySize_lo_2;
     private float rotation;
@@ -53,7 +57,7 @@ public class GCCoreGuiInventory extends GuiInventory
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.renderEngine.bindTexture("/mods/galacticraftcore/textures/gui/airtank.png");
+        this.mc.func_110434_K().func_110577_a(inventoryTexture);
         final int k = this.guiLeft;
         final int l = this.guiTop;
         this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);

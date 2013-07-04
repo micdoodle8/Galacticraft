@@ -7,6 +7,7 @@ import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.resources.ResourceLocation;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.client.IRenderHandler;
@@ -15,14 +16,17 @@ import cpw.mods.fml.client.FMLClientHandler;
 
 public class GCCoreSkyProviderOrbit extends IRenderHandler
 {
+    private static final ResourceLocation moonTexture = new ResourceLocation("textures/environment/moon_phases.png");
+    private static final ResourceLocation sunTexture = new ResourceLocation("textures/environment/sun.png");
+    
     public int starGLCallList = GLAllocation.generateDisplayLists(3);
     public int glSkyList;
     public int glSkyList2;
-    private final String planetToRender;
+    private final ResourceLocation planetToRender;
     private final boolean renderMoon;
     private final boolean renderSun;
 
-    public GCCoreSkyProviderOrbit(String planet, boolean renderMoon, boolean renderSun)
+    public GCCoreSkyProviderOrbit(ResourceLocation planet, boolean renderMoon, boolean renderSun)
     {
         this.planetToRender = planet;
         this.renderMoon = renderMoon;
@@ -176,7 +180,7 @@ public class GCCoreSkyProviderOrbit extends IRenderHandler
         if (this.renderSun)
         {
             var12 = 30.0F;
-            FMLClientHandler.instance().getClient().renderEngine.bindTexture("/environment/sun.png");
+            this.minecraft.renderEngine.func_110577_a(sunTexture);
             var23.startDrawingQuads();
             var23.addVertexWithUV(-var12, 100.0D, -var12, 0.0D, 0.0D);
             var23.addVertexWithUV(var12, 100.0D, -var12, 1.0D, 0.0D);
@@ -188,10 +192,10 @@ public class GCCoreSkyProviderOrbit extends IRenderHandler
         if (this.renderMoon)
         {
             var12 = 40.0F;
-            FMLClientHandler.instance().getClient().renderEngine.bindTexture("/environment/moon_phases.png");
-            final int var28 = this.minecraft.theWorld.getMoonPhase();
-            final int var30 = var28 % 4;
-            final int var29 = var28 / 4 % 2;
+            this.minecraft.renderEngine.func_110577_a(moonTexture);
+            float var28 = this.minecraft.theWorld.func_130001_d();
+            final int var30 = (int) (var28 % 4);
+            final int var29 = (int) (var28 / 4 % 2);
             final float var16 = (var30 + 0) / 4.0F;
             final float var17 = (var29 + 0) / 2.0F;
             final float var18 = (var30 + 1) / 4.0F;
@@ -271,7 +275,7 @@ public class GCCoreSkyProviderOrbit extends IRenderHandler
                     scale = Math.max(scale, 0.2F);
                     GL11.glScalef(scale, 0.0F, scale);
                     GL11.glTranslatef(0.0F, -var20, 0.0F);
-                    this.minecraft.renderEngine.bindTexture(this.planetToRender);
+                    this.minecraft.renderEngine.func_110577_a(this.planetToRender);
 
                     var10 = 1.0F;
                     var12 = -1.0F;

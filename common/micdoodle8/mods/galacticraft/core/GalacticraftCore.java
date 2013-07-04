@@ -81,16 +81,16 @@ import net.minecraftforge.liquids.LiquidContainerData;
 import net.minecraftforge.liquids.LiquidContainerRegistry;
 import net.minecraftforge.liquids.LiquidDictionary;
 import net.minecraftforge.liquids.LiquidStack;
-import universalelectricity.prefab.TranslationHelper;
 import universalelectricity.prefab.multiblock.TileEntityMulti;
 import universalelectricity.prefab.ore.OreGenerator;
 import basiccomponents.common.BasicComponents;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.Mod.PostInit;
 import cpw.mods.fml.common.Mod.PreInit;
-import cpw.mods.fml.common.Mod.ServerStarted;
 import cpw.mods.fml.common.Mod.ServerStarting;
 import cpw.mods.fml.common.Mod.ServerStopped;
 import cpw.mods.fml.common.SidedProxy;
@@ -103,6 +103,7 @@ import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 
@@ -123,7 +124,7 @@ public class GalacticraftCore
 
     public static final int LOCALMAJVERSION = 0;
     public static final int LOCALMINVERSION = 1;
-    public static final int LOCALBUILDVERSION = 36;
+    public static final int LOCALBUILDVERSION = 37;
     public static int remoteMajVer;
     public static int remoteMinVer;
     public static int remoteBuildVer;
@@ -148,7 +149,7 @@ public class GalacticraftCore
 
     public static final String FILE_PATH = "/micdoodle8/mods/galacticraft/core/";
     public static final String CLIENT_PATH = "client/";
-    public static final String LANGUAGE_PATH = GalacticraftCore.FILE_PATH + GalacticraftCore.CLIENT_PATH + "lang/";
+    public static final String LANGUAGE_PATH = "/assets/galacticraftcore/lang/";
     public static final String BLOCK_TEXTURE_FILE = GalacticraftCore.FILE_PATH + GalacticraftCore.CLIENT_PATH + "blocks/core.png";
     public static final String ITEM_TEXTURE_FILE = GalacticraftCore.FILE_PATH + GalacticraftCore.CLIENT_PATH + "items/core.png";
     public static final String CONFIG_FILE = "Galacticraft/core.conf";
@@ -157,6 +158,7 @@ public class GalacticraftCore
     public static double toBuildcraftEnergyScalar = 0.04D;
     public static double fromBuildcraftEnergyScalar = 25.0D;
 
+    public static String TEXTURE_DOMAIN = "galacticraftcore";
     public static String TEXTURE_SUFFIX;
 
     public static boolean setSpaceStationRecipe = false;
@@ -164,7 +166,7 @@ public class GalacticraftCore
     public static GCCorePlanetOverworld overworld;
     public static GCCorePlanetSun sun;
 
-    @PreInit
+    @EventHandler
     public void preInit(FMLPreInitializationEvent event)
     { 
         if (!this.checkForCoremod())
@@ -194,10 +196,27 @@ public class GalacticraftCore
         GCCoreItems.initItems();
         GCCoreItems.registerHarvestLevels();
 
+        if (GCCoreConfigManager.loadBC.getBoolean(false))
+        {
+            BasicComponents.registerTileEntities();
+            BasicComponents.requestAll(GalacticraftCore.instance);
+            BasicComponents.register(GalacticraftCore.CHANNELENTITIES);
+            
+            if (GCCoreConfigManager.disableOreGenTin && BasicComponents.generationOreTin != null)
+            {
+                OreGenerator.removeOre(BasicComponents.generationOreTin);
+            }
+            
+            if (GCCoreConfigManager.disableOreGenCopper && BasicComponents.generationOreCopper != null)
+            {
+                OreGenerator.removeOre(BasicComponents.generationOreCopper);
+            }
+        }
+
         GalacticraftCore.proxy.preInit(event);
     }
 
-    @Init
+    @EventHandler
     public void init(FMLInitializationEvent event)
     {
         GalacticraftCore.galacticraftTab = new GCCoreCreativeTab(CreativeTabs.getNextID(), GalacticraftCore.CHANNEL, GCCoreItems.spaceship.itemID, 0);
@@ -214,8 +233,39 @@ public class GalacticraftCore
 
         GalacticraftRegistry.registerTeleportType(WorldProviderSurface.class, new GCCoreOverworldTeleportType());
         GalacticraftRegistry.registerTeleportType(GCCoreWorldProviderSpaceStation.class, new GCCoreOrbitTeleportType());
+        
+        int languages = 0;
 
-        GCLog.info("Galacticraft Loaded: " + TranslationHelper.loadLanguages(GalacticraftCore.LANGUAGE_PATH, GalacticraftCore.LANGUAGES_SUPPORTED) + " Languages.");
+        for (String language : GalacticraftCore.LANGUAGES_SUPPORTED)
+        {
+            LanguageRegistry.instance().loadLocalization(GalacticraftCore.LANGUAGE_PATH + language + ".lang", language, false);
+
+            if (LanguageRegistry.instance().getStringLocalization("children", language) != "")
+            {
+                try
+                {
+                    String[] children = LanguageRegistry.instance().getStringLocalization("children", language).split(",");
+
+                    for (String child : children)
+                    {
+                        if (child != "" || child != null)
+                        {
+                            LanguageRegistry.instance().loadLocalization(GalacticraftCore.LANGUAGE_PATH + language + ".lang", child, false);
+                            languages++;
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    FMLLog.severe("Failed to load a child language file.");
+                    e.printStackTrace();
+                }
+            }
+
+            languages++;
+        }
+
+        GCLog.info("Galacticraft Loaded: " + languages + " Languages.");
 
         GalacticraftCore.moon.load(event);
 
@@ -252,7 +302,7 @@ public class GalacticraftCore
         NetworkRegistry.instance().registerChannel(new GCCorePacketManager(), GalacticraftCore.CHANNELENTITIES, Side.CLIENT);
     }
 
-    @PostInit
+    @EventHandler
     public void postInit(FMLPostInitializationEvent event)
     {
         GalacticraftCore.moon.postLoad(event);
@@ -268,23 +318,6 @@ public class GalacticraftCore
         GCCoreCompatibilityManager.checkForCompatibleMods();
 
         this.registerTileEntities();
-
-        if (GCCoreConfigManager.loadBC.getBoolean(false))
-        {
-            BasicComponents.registerTileEntities();
-            BasicComponents.requestAll(GalacticraftCore.instance);
-            BasicComponents.register(GalacticraftCore.CHANNELENTITIES);
-            
-            if (GCCoreConfigManager.disableOreGenTin && BasicComponents.generationOreTin != null)
-            {
-                OreGenerator.removeOre(BasicComponents.generationOreTin);
-            }
-            
-            if (GCCoreConfigManager.disableOreGenCopper && BasicComponents.generationOreCopper != null)
-            {
-                OreGenerator.removeOre(BasicComponents.generationOreCopper);
-            }
-        }
         
         GCCoreRecipeManager.loadRecipes();
 
@@ -296,7 +329,7 @@ public class GalacticraftCore
         GCCoreThreadRequirementMissing.startCheck();
     }
 
-    @ServerStarted
+    @EventHandler
     public void serverInit(FMLServerStartedEvent event)
     {
         GalacticraftCore.moon.serverInit(event);
@@ -306,7 +339,7 @@ public class GalacticraftCore
         NetworkRegistry.instance().registerChannel(new GCCorePacketHandlerServer(), GalacticraftCore.CHANNEL, Side.SERVER);
     }
 
-    @ServerStarting
+    @EventHandler
     public void serverStarting(FMLServerStartingEvent event)
     {
         GalacticraftCore.moon.serverStarting(event);
@@ -323,7 +356,7 @@ public class GalacticraftCore
         }
     }
 
-    @ServerStopped
+    @EventHandler
     public void unregisterDims(FMLServerStoppedEvent var1)
     {
         WorldUtil.unregisterPlanets();
@@ -386,7 +419,7 @@ public class GalacticraftCore
     {
         if (GalacticraftCore.minecraftDir != null)
         {
-            final File modsDir = new File(GalacticraftCore.minecraftDir, "coremods");
+            final File modsDir = new File(GalacticraftCore.minecraftDir, "mods");
 
             if (!modsDir.exists())
             {

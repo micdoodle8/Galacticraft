@@ -1,8 +1,10 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.resources.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -11,6 +13,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GCCoreOverlayOxygenTankIndicator extends GCCoreOverlay
 {
+    private final static ResourceLocation guiTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/gui.png");
+    
     private static Minecraft minecraft = FMLClientHandler.instance().getClient();
 
     /**
@@ -28,7 +32,7 @@ public class GCCoreOverlayOxygenTankIndicator extends GCCoreOverlay
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
-        FMLClientHandler.instance().getClient().renderEngine.bindTexture("/mods/galacticraftcore/textures/gui/gui.png");
+        FMLClientHandler.instance().getClient().renderEngine.func_110577_a(guiTexture);
         final Tessellator tessellator = Tessellator.instance;
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
@@ -102,7 +106,7 @@ public class GCCoreOverlayOxygenTankIndicator extends GCCoreOverlay
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
-        FMLClientHandler.instance().getClient().renderEngine.bindTexture("/mods/galacticraftcore/textures/gui/gui.png");
+        FMLClientHandler.instance().getClient().renderEngine.func_110577_a(guiTexture);
         final Tessellator tessellator = Tessellator.instance;
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glEnable(GL11.GL_ALPHA_TEST);

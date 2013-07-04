@@ -1,12 +1,14 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
 import java.util.Iterator;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.client.GCCorePlayerSP;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.resources.ResourceLocation;
 import net.minecraft.util.MathHelper;
 import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.FMLClientHandler;
@@ -17,6 +19,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GCCoreOverlaySensorGlasses extends GCCoreOverlay
 {
+    private static final ResourceLocation hudTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/hud.png");
+    private static final ResourceLocation indicatorTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/indicator.png");
+    
     private static Minecraft minecraft = FMLClientHandler.instance().getClient();
 
     private static int zoom = 0;
@@ -45,7 +50,7 @@ public class GCCoreOverlaySensorGlasses extends GCCoreOverlay
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
-        FMLClientHandler.instance().getClient().renderEngine.bindTexture("/mods/galacticraftcore/textures/gui/hud.png");
+        FMLClientHandler.instance().getClient().renderEngine.func_110577_a(hudTexture);
         final Tessellator tessellator = Tessellator.instance;
 
         tessellator.startDrawingQuads();
@@ -108,7 +113,7 @@ public class GCCoreOverlaySensorGlasses extends GCCoreOverlay
                 if (var20 < 4.0D)
                 {
                     GL11.glColor4f(0.0F, 255F / 255F, 198F / 255F, (float) Math.min(1.0D, Math.max(0.2D, (var20 - 1.0D) * 0.1D)));
-                    GCCoreOverlaySensorGlasses.minecraft.renderEngine.bindTexture("/mods/galacticraftcore/textures/gui/indicator.png");
+                    FMLClientHandler.instance().getClient().renderEngine.func_110577_a(indicatorTexture);
                     GL11.glRotatef(-var60 - ClientProxyCore.playerRotationYaw + 180.0F, 0.0F, 0.0F, 1.0F);
                     GL11.glTranslated(0.0D, var2 ? -var20 * 16 : -var21 * 16, 0.0D);
                     GL11.glRotatef(-(-var60 - ClientProxyCore.playerRotationYaw + 180.0F), 0.0F, 0.0F, 1.0F);

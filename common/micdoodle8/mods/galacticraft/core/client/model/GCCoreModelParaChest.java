@@ -1,11 +1,15 @@
 package micdoodle8.mods.galacticraft.core.client.model;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.client.model.ModelChest;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.resources.ResourceLocation;
 import cpw.mods.fml.client.FMLClientHandler;
 
 public class GCCoreModelParaChest extends ModelChest
 {
+    private static final ResourceLocation grayParachuteTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/parachute/gray.png");
+    
     public ModelRenderer[] parachute = new ModelRenderer[3];
     public ModelRenderer[] parachuteStrings = new ModelRenderer[4];
 
@@ -47,7 +51,7 @@ public class GCCoreModelParaChest extends ModelChest
     {
         super.renderAll();
 
-        FMLClientHandler.instance().getClient().renderEngine.bindTexture("/micdoodle8/mods/galacticraft/core/client/entities/parachute/gray.png");
+        FMLClientHandler.instance().getClient().renderEngine.func_110577_a(grayParachuteTexture);
 
         this.chestLid.rotateAngleX = (float) Math.PI;
         this.chestBelow.rotateAngleX = (float) Math.PI;
@@ -62,8 +66,6 @@ public class GCCoreModelParaChest extends ModelChest
         this.chestBelow.rotationPointX = 2.0F;
         this.chestBelow.rotationPointY = 8.0F;
         this.chestBelow.rotationPointZ = 8.0F;
-
-        FMLClientHandler.instance().getClient().renderEngine.bindTexture("/micdoodle8/mods/galacticraft/core/client/entities/parachute/gray.png");
 
         int i;
 

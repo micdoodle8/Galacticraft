@@ -169,7 +169,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
     }
 
     @Override
-    public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
+    public boolean attackEntityFrom(DamageSource par1DamageSource, float par2)
     {
         if (!this.worldObj.isRemote && !this.isDead)
         {
@@ -578,27 +578,27 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
     }
 
     @Override
-    public boolean interact(EntityPlayer par1EntityPlayer)
+    public boolean func_130002_c(EntityPlayer par1EntityPlayer)
     {
         if (!this.worldObj.isRemote)
         {
-            par1EntityPlayer.mountEntity(this);
-
             if (this.riddenByEntity != null && this.riddenByEntity instanceof GCCorePlayerMP)
             {
                 final Object[] toSend = { ((EntityPlayerMP) this.riddenByEntity).username };
-                ((EntityPlayerMP) this.riddenByEntity).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 8, toSend));
-                final Object[] toSend2 = { 1 };
+                ((EntityPlayerMP) this.riddenByEntity).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 13, toSend));
+                final Object[] toSend2 = { 0 };
                 ((EntityPlayerMP) par1EntityPlayer).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, toSend2));
                 ((GCCorePlayerMP) par1EntityPlayer).chatCooldown = 0;
+                par1EntityPlayer.mountEntity(null);
             }
             else if (par1EntityPlayer instanceof GCCorePlayerMP)
             {
                 final Object[] toSend = { par1EntityPlayer.username };
-                ((EntityPlayerMP) par1EntityPlayer).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 13, toSend));
-                final Object[] toSend2 = { 0 };
+                ((EntityPlayerMP) par1EntityPlayer).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 8, toSend));
+                final Object[] toSend2 = { 1 };
                 ((EntityPlayerMP) par1EntityPlayer).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, toSend2));
                 ((GCCorePlayerMP) par1EntityPlayer).chatCooldown = 0;
+                par1EntityPlayer.mountEntity(this);
             }
 
             return true;

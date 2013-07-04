@@ -31,6 +31,7 @@ import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.network.packet.Packet9Respawn;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatMessageComponent;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
 import cpw.mods.fml.common.FMLLog;
@@ -137,14 +138,14 @@ public class GCCorePacketHandlerServer implements IPacketHandler
                     }
                     else if (playerBase.chatCooldown == 0 && playerBase.launchAttempts == 0)
                     {
-                        player.sendChatToPlayer("I don't have a parachute! If I press launch again, there's no going back!");
+                        player.sendChatToPlayer(ChatMessageComponent.func_111066_d("I don't have a parachute! If I press launch again, there's no going back!"));
                         playerBase.chatCooldown = 250;
                         playerBase.launchAttempts = 1;
                     }
                 }
                 else if (playerBase.chatCooldown == 0)
                 {
-                    player.sendChatToPlayer("I'll need to load in some rocket fuel first!");
+                    player.sendChatToPlayer(ChatMessageComponent.func_111066_d("I'll need to load in some rocket fuel first!"));
                     playerBase.chatCooldown = 250;
                 }
             }
@@ -357,7 +358,7 @@ public class GCCorePacketHandlerServer implements IPacketHandler
 
             if (playerBase.chatCooldown == 0)
             {
-                player.sendChatToPlayer("I'll probably need a Tier " + packetReadout[0] + " Dungeon key to unlock this!");
+                player.sendChatToPlayer(ChatMessageComponent.func_111066_d("I'll probably need a Tier " + packetReadout[0] + " Dungeon key to unlock this!"));
                 playerBase.chatCooldown = 100;
             }
         }

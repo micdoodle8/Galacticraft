@@ -18,7 +18,6 @@ import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import universalelectricity.core.block.IConductor;
 import basiccomponents.common.BasicComponents;
-import basiccomponents.common.tileentity.TileEntityCopperWire;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -295,7 +294,7 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
     {
         if (metadata <= EnumEnclosedBlock.COPPERWIRE.getMetadata())
         {
-            return new TileEntityCopperWire();
+            return null/*new  TODO TileEntityCopperWire()*/;
         }
         else if (metadata <= EnumEnclosedBlock.OXYGENPIPE.getMetadata())
         {

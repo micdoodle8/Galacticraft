@@ -35,7 +35,7 @@ public abstract class GCCoreEntityAdvanced extends GCCoreEntityControllable impl
 {
     protected long ticks = 0;
 
-    public int currentDamage;
+    public float currentDamage;
     public int timeSinceHit;
     public int rockDirection;
 
@@ -149,7 +149,7 @@ public abstract class GCCoreEntityAdvanced extends GCCoreEntityControllable impl
     }
 
     @Override
-    public boolean attackEntityFrom(DamageSource var1, int var2)
+    public boolean attackEntityFrom(DamageSource var1, float var2)
     {
         if (this.isDead || var1.equals(DamageSource.cactus) || !this.allowDamageSource(var1))
         {

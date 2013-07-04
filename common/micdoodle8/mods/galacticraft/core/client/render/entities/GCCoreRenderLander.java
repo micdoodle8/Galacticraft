@@ -1,8 +1,12 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelLander;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityLander;
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.resources.ResourceLocation;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.projectile.EntityArrow;
 import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -16,41 +20,42 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GCCoreRenderLander extends Render
 {
-    protected GCCoreModelLander modelSpaceship;
-
-    float turn = 0;
+    private static final ResourceLocation landerTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/lander.png");
+    
+    protected GCCoreModelLander landerModel;
 
     public GCCoreRenderLander()
     {
         this.shadowSize = 2F;
-        this.modelSpaceship = new GCCoreModelLander();
+        this.landerModel = new GCCoreModelLander();
     }
 
-    public void renderLander(Entity entity, double par2, double par4, double par6, float par8, float par9)
+    protected ResourceLocation func_110779_a(GCCoreEntityLander par1EntityArrow)
+    {
+        return landerTexture;
+    }
+
+    protected ResourceLocation func_110775_a(Entity par1Entity)
+    {
+        return this.func_110779_a((GCCoreEntityLander)par1Entity);
+    }
+
+    public void renderLander(GCCoreEntityLander entity, double par2, double par4, double par6, float par8, float par9)
     {
         GL11.glPushMatrix();
         final float var24 = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * par9;
         GL11.glTranslatef((float) par2, (float) par4 - 0.93F, (float) par6);
         GL11.glRotatef(180.0F - par8, 0.0F, 1.0F, 0.0F);
         GL11.glRotatef(-var24, 0.0F, 0.0F, 1.0F);
-
-        this.loadTexture("/micdoodle8/mods/galacticraft/core/client/entities/lander.png");
+        this.func_110777_b(entity);
         GL11.glScalef(-1.0F, -1.0F, 1.0F);
-        this.modelSpaceship.render(entity, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+        this.landerModel.render(entity, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
         GL11.glPopMatrix();
     }
 
-    /**
-     * Actually renders the given argument. This is a synthetic bridge method,
-     * always casting down its argument and then handing it off to a worker
-     * function which does the actual work. In all probabilty, the class Render
-     * is generic (Render<T extends Entity) and this method has signature public
-     * void doRender(T entity, double d, double d1, double d2, float f, float
-     * f1). But JAD is pre 1.5 so doesn't do that.
-     */
     @Override
     public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
     {
-        this.renderLander(par1Entity, par2, par4, par6, par8, par9);
+        this.renderLander((GCCoreEntityLander)par1Entity, par2, par4, par6, par8, par9);
     }
 }

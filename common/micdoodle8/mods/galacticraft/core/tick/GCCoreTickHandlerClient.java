@@ -34,6 +34,7 @@ import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.EntityRenderer;
+import net.minecraft.client.resources.ResourceLocation;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.WorldProviderSurface;
@@ -109,7 +110,7 @@ public class GCCoreTickHandlerClient implements ITickHandler
             {
                 if (world.provider.getSkyRenderer() == null)
                 {
-                    world.provider.setSkyRenderer(new GCCoreSkyProviderOrbit("/micdoodle8/mods/galacticraft/core/client/planets/overworld.png", true, true));
+                    world.provider.setSkyRenderer(new GCCoreSkyProviderOrbit(new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/planets/overworld.png"), true, true));
                 }
             }
 
@@ -201,8 +202,8 @@ public class GCCoreTickHandlerClient implements ITickHandler
     {
         try
         {
-            ObfuscationReflectionHelper.setPrivateValue(EntityRenderer.class, FMLClientHandler.instance().getClient().entityRenderer, value, 13);
-            ObfuscationReflectionHelper.setPrivateValue(EntityRenderer.class, FMLClientHandler.instance().getClient().entityRenderer, value, 14);
+            ObfuscationReflectionHelper.setPrivateValue(EntityRenderer.class, FMLClientHandler.instance().getClient().entityRenderer, value, 15);
+            ObfuscationReflectionHelper.setPrivateValue(EntityRenderer.class, FMLClientHandler.instance().getClient().entityRenderer, value, 16);
         }
         catch (final Exception ex)
         {

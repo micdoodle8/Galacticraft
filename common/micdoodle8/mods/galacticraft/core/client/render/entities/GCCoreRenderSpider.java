@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelSpider;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpider;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemSensorGlasses;
@@ -8,7 +9,9 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.entity.RenderLiving;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.client.resources.ResourceLocation;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.FMLClientHandler;
@@ -24,6 +27,10 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GCCoreRenderSpider extends RenderLiving
 {
+    private static final ResourceLocation spiderTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/spider.png");
+    private static final ResourceLocation powerTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/power.png");
+    private static final ResourceLocation spiderEyesTexture = new ResourceLocation("textures/entity/spider/spider.png");
+    
     private final ModelBase model = new GCCoreModelSpider(0.2F);
 
     public GCCoreRenderSpider()
@@ -32,19 +39,29 @@ public class GCCoreRenderSpider extends RenderLiving
         this.setRenderPassModel(new GCCoreModelSpider());
     }
 
+    protected ResourceLocation func_110779_a(GCCoreEntitySpider par1EntityArrow)
+    {
+        return spiderTexture;
+    }
+
+    protected ResourceLocation func_110775_a(Entity par1Entity)
+    {
+        return this.func_110779_a((GCCoreEntitySpider)par1Entity);
+    }
+
     protected float setSpiderDeathMaxRotation(GCCoreEntitySpider par1EntitySpider)
     {
         return 180.0F;
     }
 
     @Override
-    protected void preRenderCallback(EntityLiving par1EntityLiving, float par2)
+    protected void preRenderCallback(EntityLivingBase par1EntityLiving, float par2)
     {
         GL11.glScalef(1.2F, 1.2F, 1.2F);
     }
 
     @Override
-    protected int shouldRenderPass(EntityLiving par1EntityLiving, int par2, float par3)
+    protected int shouldRenderPass(EntityLivingBase par1EntityLiving, int par2, float par3)
     {
         final Minecraft minecraft = FMLClientHandler.instance().getClient();
 
@@ -62,7 +79,7 @@ public class GCCoreRenderSpider extends RenderLiving
             if (par2 == 1)
             {
                 final float var4 = par1EntityLiving.ticksExisted * 2 + par3;
-                this.loadTexture("/micdoodle8/mods/galacticraft/core/client/entities/power.png");
+                this.func_110776_a(powerTexture);
                 GL11.glMatrixMode(GL11.GL_TEXTURE);
                 GL11.glLoadIdentity();
                 final float var5 = var4 * 0.01F;
@@ -90,7 +107,7 @@ public class GCCoreRenderSpider extends RenderLiving
 
         if (par2 == 0)
         {
-            this.loadTexture("/mob/spider_eyes.png");
+            this.func_110776_a(spiderEyesTexture);
             final float var4 = 1.0F;
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glDisable(GL11.GL_ALPHA_TEST);
@@ -108,7 +125,7 @@ public class GCCoreRenderSpider extends RenderLiving
     }
 
     @Override
-    protected float getDeathMaxRotation(EntityLiving par1EntityLiving)
+    protected float getDeathMaxRotation(EntityLivingBase par1EntityLiving)
     {
         return this.setSpiderDeathMaxRotation((GCCoreEntitySpider) par1EntityLiving);
     }

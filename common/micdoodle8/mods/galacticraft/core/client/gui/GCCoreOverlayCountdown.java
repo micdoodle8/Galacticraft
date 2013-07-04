@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.resources.ResourceLocation;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -23,7 +24,7 @@ public class GCCoreOverlayCountdown extends GCCoreOverlay
         final int width = scaledresolution.getScaledWidth();
         final int height = scaledresolution.getScaledHeight();
         GCCoreOverlayCountdown.minecraft.entityRenderer.setupOverlayRendering();
-        final GCCoreFontRendererBig fr = new GCCoreFontRendererBig(GCCoreOverlayCountdown.minecraft.gameSettings, "/font/default.png", GCCoreOverlayCountdown.minecraft.renderEngine, false);
+        final GCCoreFontRendererLarge fr = new GCCoreFontRendererLarge(GCCoreOverlayCountdown.minecraft.gameSettings, new ResourceLocation("textures/font/ascii.png"), GCCoreOverlayCountdown.minecraft.renderEngine, false);
 
         if (count <= 10)
         {

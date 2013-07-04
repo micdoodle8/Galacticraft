@@ -1,9 +1,11 @@
 package micdoodle8.mods.galacticraft.core.client.render.item;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelFlag;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityFlag;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemFlag;
 import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.resources.ResourceLocation;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.client.IItemRenderer;
@@ -18,6 +20,18 @@ import cpw.mods.fml.client.FMLClientHandler;
  */
 public class GCCoreItemRendererFlag implements IItemRenderer
 {
+    private static ResourceLocation[] flagTextures;
+    
+    static
+    {
+        flagTextures = new ResourceLocation[GCCoreItemFlag.names.length];
+        
+        for (int i = 0; i < GCCoreItemFlag.names.length; i++)
+        {
+            flagTextures[i] = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/flag/" + GCCoreItemFlag.names[i] + ".png");
+        }
+    }
+    
     GCCoreEntityFlag spaceship = new GCCoreEntityFlag(FMLClientHandler.instance().getClient().theWorld);
     GCCoreModelFlag modelSpaceship = new GCCoreModelFlag();
 
@@ -96,12 +110,7 @@ public class GCCoreItemRendererFlag implements IItemRenderer
             GL11.glTranslatef(0, -0.6F, 0);
         }
 
-        switch (item.getItemDamage())
-        {
-        default:
-            FMLClientHandler.instance().getClient().renderEngine.bindTexture("/micdoodle8/mods/galacticraft/core/client/entities/flag/" + GCCoreItemFlag.names[item.getItemDamage()] + ".png");
-            break;
-        }
+        FMLClientHandler.instance().getClient().renderEngine.func_110577_a(flagTextures[item.getItemDamage()]);
 
         this.modelSpaceship.render(this.spaceship, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
         GL11.glPopMatrix();
@@ -117,6 +126,8 @@ public class GCCoreItemRendererFlag implements IItemRenderer
         case ENTITY:
             return true;
         case EQUIPPED:
+            return true;
+        case EQUIPPED_FIRST_PERSON:
             return true;
         case INVENTORY:
             return true;
@@ -137,6 +148,9 @@ public class GCCoreItemRendererFlag implements IItemRenderer
         switch (type)
         {
         case EQUIPPED:
+            this.renderFlag(type, (RenderBlocks) data[0], item, -0.5f, -0.5f, -0.5f);
+            break;
+        case EQUIPPED_FIRST_PERSON:
             this.renderFlag(type, (RenderBlocks) data[0], item, -0.5f, -0.5f, -0.5f);
             break;
         case INVENTORY:

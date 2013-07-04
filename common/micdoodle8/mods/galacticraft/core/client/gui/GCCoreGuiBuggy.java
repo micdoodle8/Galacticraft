@@ -1,9 +1,11 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
 import mekanism.api.EnumColor;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityBuggy;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerBuggy;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.resources.ResourceLocation;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
@@ -14,6 +16,16 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GCCoreGuiBuggy extends GuiContainer
 {
+    private static ResourceLocation[] sealerTexture = new ResourceLocation[4];
+    
+    static
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            sealerTexture[i] = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/buggy_" + i * 18 + ".png");
+        }
+    }
+    
     private final IInventory upperChestInventory;
     private final int type;
 
@@ -46,9 +58,7 @@ public class GCCoreGuiBuggy extends GuiContainer
     @Override
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
-        String var4 = "/mods/galacticraftcore/textures/gui/buggy_" + this.type * 18 + ".png";
-
-        this.mc.renderEngine.bindTexture(var4);
+        this.mc.func_110434_K().func_110577_a(sealerTexture[this.type]);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         final int var5 = (this.width - this.xSize) / 2;

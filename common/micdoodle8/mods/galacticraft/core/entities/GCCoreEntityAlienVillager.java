@@ -1,12 +1,13 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
-import java.util.Iterator;
 import micdoodle8.mods.galacticraft.API.IEntityBreathable;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIMoveIndoors;
-import net.minecraft.entity.ai.EntityAIMoveTwardsRestriction;
+import net.minecraft.entity.ai.EntityAIMoveTowardsRestriction;
 import net.minecraft.entity.ai.EntityAIOpenDoor;
 import net.minecraft.entity.ai.EntityAIRestrictOpenDoor;
 import net.minecraft.entity.ai.EntityAISwimming;
@@ -18,8 +19,6 @@ import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
@@ -39,8 +38,6 @@ public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityB
         this.isMating = false;
         this.isPlaying = false;
         this.villageObj = null;
-        this.texture = "/micdoodle8/mods/galacticraft/core/client/entities/villager_1.png";
-        this.moveSpeed = 0.3F;
         this.setSize(0.6F, 1.8F);
         this.getNavigator().setBreakDoors(true);
         this.getNavigator().setAvoidsWater(true);
@@ -48,7 +45,7 @@ public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityB
         this.tasks.addTask(2, new EntityAIMoveIndoors(this));
         this.tasks.addTask(3, new EntityAIRestrictOpenDoor(this));
         this.tasks.addTask(4, new EntityAIOpenDoor(this, true));
-        this.tasks.addTask(5, new EntityAIMoveTwardsRestriction(this, 0.3F));
+        this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 0.3F));
         this.tasks.addTask(9, new EntityAIWatchClosest2(this, EntityPlayer.class, 15.0F, 1.0F));
         this.tasks.addTask(9, new EntityAIWatchClosest2(this, EntityVillager.class, 15.0F, 0.05F));
         this.tasks.addTask(9, new EntityAIWander(this, 0.3F));
@@ -56,10 +53,10 @@ public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityB
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public String getTexture()
+    protected void func_110147_ax()
     {
-        return "/micdoodle8/mods/galacticraft/core/client/entities/villager_1.png";
+        super.func_110147_ax();
+        this.func_110148_a(SharedMonsterAttributes.field_111263_d).func_111128_a(0.5D);
     }
 
     private int randomTickDivider;
@@ -105,54 +102,18 @@ public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityB
 
             if (this.villageObj == null)
             {
-                this.detachHome();
+                this.func_110177_bN();
             }
             else
             {
-                final ChunkCoordinates chunkcoordinates = this.villageObj.getCenter();
-                this.setHomeArea(chunkcoordinates.posX, chunkcoordinates.posY, chunkcoordinates.posZ, (int) (this.villageObj.getVillageRadius() * 0.6F));
+                ChunkCoordinates chunkcoordinates = this.villageObj.getCenter();
+                this.func_110171_b(chunkcoordinates.posX, chunkcoordinates.posY, chunkcoordinates.posZ, (int)((float)this.villageObj.getVillageRadius() * 0.6F));
 
                 if (this.field_82190_bM)
                 {
                     this.field_82190_bM = false;
                     this.villageObj.func_82683_b(5);
                 }
-            }
-        }
-
-        if (!this.isTrading() && this.timeUntilReset > 0)
-        {
-            --this.timeUntilReset;
-
-            if (this.timeUntilReset <= 0)
-            {
-                if (this.needsInitilization)
-                {
-                    if (this.buyingList.size() > 1)
-                    {
-                        final Iterator iterator = this.buyingList.iterator();
-
-                        while (iterator.hasNext())
-                        {
-                            final MerchantRecipe merchantrecipe = (MerchantRecipe) iterator.next();
-
-                            if (merchantrecipe.func_82784_g())
-                            {
-                                merchantrecipe.func_82783_a(this.rand.nextInt(6) + this.rand.nextInt(6) + 2);
-                            }
-                        }
-                    }
-
-                    this.needsInitilization = false;
-
-                    if (this.villageObj != null && this.lastBuyingPlayer != null)
-                    {
-                        this.worldObj.setEntityState(this, (byte) 14);
-                        this.villageObj.setReputationForPlayer(this.lastBuyingPlayer, 1);
-                    }
-                }
-
-                this.addPotionEffect(new PotionEffect(Potion.regeneration.id, 200, 0));
             }
         }
 
@@ -167,15 +128,6 @@ public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityB
     }
 
     @Override
-    public int getMaxHealth()
-    {
-        return 20;
-    }
-
-    /**
-     * (abstract) Protected helper method to write subclass entity data to NBT.
-     */
-    @Override
     public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeEntityToNBT(par1NBTTagCompound);
@@ -188,9 +140,6 @@ public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityB
         }
     }
 
-    /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
     @Override
     public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
@@ -272,7 +221,7 @@ public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityB
     }
 
     @Override
-    public void setRevengeTarget(EntityLiving par1EntityLiving)
+    public void setRevengeTarget(EntityLivingBase par1EntityLiving)
     {
         super.setRevengeTarget(par1EntityLiving);
 
@@ -408,11 +357,6 @@ public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityB
         }
     }
 
-    @Override
-    public void initCreature()
-    {
-    }
-
     public void func_82187_q()
     {
         this.field_82190_bM = true;
@@ -421,7 +365,6 @@ public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityB
     public GCCoreEntityAlienVillager func_90012_b(EntityAgeable par1EntityAgeable)
     {
         final GCCoreEntityAlienVillager entityvillager = new GCCoreEntityAlienVillager(this.worldObj);
-        entityvillager.initCreature();
         return entityvillager;
     }
 

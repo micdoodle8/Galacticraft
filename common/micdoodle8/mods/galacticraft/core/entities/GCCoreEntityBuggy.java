@@ -21,6 +21,7 @@ import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ChatMessageComponent;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
@@ -190,7 +191,7 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
     }
 
     @Override
-    public boolean attackEntityFrom(DamageSource var1, int var2)
+    public boolean attackEntityFrom(DamageSource var1, float var2)
     {
         if (this.isDead || var1.equals(DamageSource.cactus))
         {
@@ -200,7 +201,7 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
         {
             this.dataWatcher.updateObject(this.rockDirection, Integer.valueOf(-this.dataWatcher.getWatchableObjectInt(this.rockDirection)));
             this.dataWatcher.updateObject(this.timeSinceHit, Integer.valueOf(10));
-            this.dataWatcher.updateObject(this.currentDamage, Integer.valueOf(this.dataWatcher.getWatchableObjectInt(this.currentDamage) + var2 * 10));
+//            this.dataWatcher.updateObject(this.currentDamage, Integer.valueOf(this.dataWatcher.getWatchableObjectInt(this.currentDamage) + var2 * 10)); TODO
             this.setBeenAttacked();
 
             if (var1.getEntity() instanceof EntityPlayer && ((EntityPlayer) var1.getEntity()).capabilities.isCreativeMode)
@@ -597,7 +598,7 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
     }
 
     @Override
-    public boolean interact(EntityPlayer var1)
+    public boolean func_130002_c(EntityPlayer var1)
     {
         var1.inventory.getCurrentItem();
 
@@ -605,10 +606,10 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
         {
             if (this.riddenByEntity == null)
             {
-                var1.sendChatToPlayer(Keyboard.getKeyName(GCKeyHandler.leftKey.keyCode) + " / " + Keyboard.getKeyName(GCKeyHandler.rightKey.keyCode) + "  - " + LanguageRegistry.instance().getStringLocalization("gui.buggy.turn.name"));
-                var1.sendChatToPlayer(Keyboard.getKeyName(GCKeyHandler.accelerateKey.keyCode) + "       - " + LanguageRegistry.instance().getStringLocalization("gui.buggy.accel.name"));
-                var1.sendChatToPlayer(Keyboard.getKeyName(GCKeyHandler.decelerateKey.keyCode) + "       - " + LanguageRegistry.instance().getStringLocalization("gui.buggy.decel.name"));
-                var1.sendChatToPlayer(Keyboard.getKeyName(GCKeyHandler.openSpaceshipInv.keyCode) + "       - " + LanguageRegistry.instance().getStringLocalization("gui.buggy.inv.name"));
+                var1.sendChatToPlayer(ChatMessageComponent.func_111066_d(Keyboard.getKeyName(GCKeyHandler.leftKey.keyCode) + " / " + Keyboard.getKeyName(GCKeyHandler.rightKey.keyCode) + "  - " + LanguageRegistry.instance().getStringLocalization("gui.buggy.turn.name")));
+                var1.sendChatToPlayer(ChatMessageComponent.func_111066_d(Keyboard.getKeyName(GCKeyHandler.accelerateKey.keyCode) + "       - " + LanguageRegistry.instance().getStringLocalization("gui.buggy.accel.name")));
+                var1.sendChatToPlayer(ChatMessageComponent.func_111066_d(Keyboard.getKeyName(GCKeyHandler.decelerateKey.keyCode) + "       - " + LanguageRegistry.instance().getStringLocalization("gui.buggy.decel.name")));
+                var1.sendChatToPlayer(ChatMessageComponent.func_111066_d(Keyboard.getKeyName(GCKeyHandler.openSpaceshipInv.keyCode) + "       - " + LanguageRegistry.instance().getStringLocalization("gui.buggy.inv.name")));
             }
 
             return true;

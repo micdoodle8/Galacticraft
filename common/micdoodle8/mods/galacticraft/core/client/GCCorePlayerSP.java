@@ -9,6 +9,8 @@ import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.multiplayer.NetClientHandler;
+import net.minecraft.client.renderer.ThreadDownloadImageData;
+import net.minecraft.client.resources.ResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
@@ -40,6 +42,8 @@ public class GCCorePlayerSP extends EntityClientPlayerMP
     AxisAlignedBB boundingBoxBefore;
     public boolean touchedGround = false;
     public boolean lastOnGround;
+    private ResourceLocation galacticraftCape;
+    private ThreadDownloadImageData galacticraftCapeImageData;
 
     public ArrayList<ISchematicPage> unlockedSchematics = new ArrayList<ISchematicPage>();
 
@@ -53,15 +57,25 @@ public class GCCorePlayerSP extends EntityClientPlayerMP
         }
     }
 
-    @Override
-    public void updateCloak()
+    protected void func_110302_j()
     {
-        super.updateCloak();
+        super.func_110302_j();
 
         if (GCCoreConfigManager.overrideCapes)
         {
-            this.cloakUrl = ClientProxyCore.capeMap.get(this.username);
+            this.galacticraftCape = func_110299_g(this.username);
+            this.galacticraftCapeImageData = func_110307_b(this.galacticraftCape, this.username);
         }
+    }
+
+    public ResourceLocation func_110303_q()
+    {
+        return this.galacticraftCape;
+    }
+
+    public ThreadDownloadImageData func_110310_o()
+    {
+        return this.galacticraftCapeImageData;
     }
 
     @Override

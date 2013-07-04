@@ -7,6 +7,7 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelChest;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.client.resources.ResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
@@ -22,15 +23,17 @@ import cpw.mods.fml.client.FMLClientHandler;
  */
 public class GCCoreItemRendererSpaceship implements IItemRenderer
 {
+    private static final ResourceLocation chestTexture = new ResourceLocation("textures/entity/chest/normal.png");
+    
     protected EntitySpaceshipBase spaceship;
     protected ModelBase modelSpaceship;
     protected final ModelChest chestModel = new ModelChest();
 
     protected static RenderItem drawItems = new RenderItem();
 
-    protected String texture;
+    protected ResourceLocation texture;
 
-    public GCCoreItemRendererSpaceship(EntitySpaceshipBase spaceship, ModelBase model, String texture)
+    public GCCoreItemRendererSpaceship(EntitySpaceshipBase spaceship, ModelBase model, ResourceLocation texture)
     {
         this.spaceship = spaceship;
         this.modelSpaceship = model;
@@ -43,7 +46,7 @@ public class GCCoreItemRendererSpaceship implements IItemRenderer
 
         this.transform(type);
 
-        FMLClientHandler.instance().getClient().renderEngine.bindTexture(this.texture);
+        FMLClientHandler.instance().getClient().renderEngine.func_110577_a(this.texture);
         this.modelSpaceship.render(this.spaceship, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
         GL11.glPopMatrix();
 
@@ -53,7 +56,7 @@ public class GCCoreItemRendererSpaceship implements IItemRenderer
             if (EnumRocketType.values()[index].getInventorySpace() > 3)
             {
                 final ModelChest modelChest = this.chestModel;
-                FMLClientHandler.instance().getClient().renderEngine.bindTexture("/item/chest.png");
+                FMLClientHandler.instance().getClient().renderEngine.func_110577_a(chestTexture);
 
                 GL11.glPushMatrix();
                 GL11.glDisable(GL11.GL_DEPTH_TEST);

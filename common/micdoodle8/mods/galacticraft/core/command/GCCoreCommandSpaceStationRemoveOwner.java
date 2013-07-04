@@ -7,6 +7,7 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
+import net.minecraft.util.ChatMessageComponent;
 
 public class GCCoreCommandSpaceStationRemoveOwner extends CommandBase
 {
@@ -77,7 +78,7 @@ public class GCCoreCommandSpaceStationRemoveOwner extends CommandBase
 
         if (playerBase != null)
         {
-            playerBase.sendChatToPlayer("Successfully removed " + var3 + " from Space Station list!");
+            playerBase.sendChatToPlayer(ChatMessageComponent.func_111066_d("Successfully removed " + var3 + " from Space Station list!"));
         }
     }
 }

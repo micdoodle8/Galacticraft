@@ -5,6 +5,7 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -63,7 +64,7 @@ public class GCCoreEntityArrow extends Entity
         this.yOffset = 0.0F;
     }
 
-    public GCCoreEntityArrow(World par1World, EntityLiving par2EntityLiving, EntityLiving par3EntityLiving, float par4, float par5)
+    public GCCoreEntityArrow(World par1World, EntityLivingBase par2EntityLiving, EntityLivingBase par3EntityLiving, float par4, float par5)
     {
         super(par1World);
         this.shootingEntity = par2EntityLiving;
@@ -92,7 +93,7 @@ public class GCCoreEntityArrow extends Entity
         }
     }
 
-    public GCCoreEntityArrow(World par1World, EntityLiving par2EntityLiving, float par3)
+    public GCCoreEntityArrow(World par1World, EntityLivingBase par2EntityLiving, float par3)
     {
         super(par1World);
         this.shootingEntity = par2EntityLiving;

@@ -1,11 +1,15 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelSkeleton;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySkeleton;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemSensorGlasses;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.entity.RenderLiving;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.client.resources.ResourceLocation;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import org.lwjgl.opengl.GL11;
@@ -22,6 +26,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GCCoreRenderSkeleton extends RenderLiving
 {
+    private static final ResourceLocation skeletonTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/skeleton.png");
+    private static final ResourceLocation powerTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/power.png");
+    
     private final GCCoreModelSkeleton model = new GCCoreModelSkeleton(0.2F);
 
     public GCCoreRenderSkeleton()
@@ -29,14 +36,24 @@ public class GCCoreRenderSkeleton extends RenderLiving
         super(new GCCoreModelSkeleton(), 1.0F);
     }
 
+    protected ResourceLocation func_110779_a(GCCoreEntitySkeleton par1EntityArrow)
+    {
+        return skeletonTexture;
+    }
+
+    protected ResourceLocation func_110775_a(Entity par1Entity)
+    {
+        return this.func_110779_a((GCCoreEntitySkeleton)par1Entity);
+    }
+
     @Override
-    protected void preRenderCallback(EntityLiving par1EntityLiving, float par2)
+    protected void preRenderCallback(EntityLivingBase par1EntityLiving, float par2)
     {
         GL11.glScalef(1.2F, 1.2F, 1.2F);
     }
 
     @Override
-    protected void renderEquippedItems(EntityLiving par1EntityLiving, float par2)
+    protected void renderEquippedItems(EntityLivingBase par1EntityLiving, float par2)
     {
         GL11.glPushMatrix();
         GL11.glTranslatef(-0.3F, -0.3F, -0.6F);
@@ -45,7 +62,6 @@ public class GCCoreRenderSkeleton extends RenderLiving
         GL11.glRotatef(-20, 1.0F, 0.0F, 0.0F);
         GL11.glRotatef(-20, 0.0F, 0.0F, 1.0F);
         GL11.glScalef(0.5F, 0.5F, 0.5F);
-        // GL11.glRotatef(00, 0.0F, 0.0F, 1.0F);
         this.renderManager.itemRenderer.renderItem(par1EntityLiving, new ItemStack(Item.bow), 0);
         GL11.glPopMatrix();
 
@@ -61,7 +77,7 @@ public class GCCoreRenderSkeleton extends RenderLiving
     }
 
     @Override
-    protected int shouldRenderPass(EntityLiving par1EntityLiving, int par2, float par3)
+    protected int shouldRenderPass(EntityLivingBase par1EntityLiving, int par2, float par3)
     {
         final Minecraft minecraft = FMLClientHandler.instance().getClient();
 
@@ -79,7 +95,7 @@ public class GCCoreRenderSkeleton extends RenderLiving
             if (par2 == 1)
             {
                 final float var4 = par1EntityLiving.ticksExisted * 2 + par3;
-                this.loadTexture("/micdoodle8/mods/galacticraft/core/client/entities/power.png");
+                this.func_110776_a(powerTexture);
                 GL11.glMatrixMode(GL11.GL_TEXTURE);
                 GL11.glLoadIdentity();
                 final float var5 = var4 * 0.01F;

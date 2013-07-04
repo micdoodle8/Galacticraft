@@ -1,12 +1,17 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelZombie;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySkeleton;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityZombie;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemSensorGlasses;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.RenderLiving;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.client.resources.ResourceLocation;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.FMLClientHandler;
@@ -22,6 +27,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GCCoreRenderZombie extends RenderLiving
 {
+    private static final ResourceLocation zombieTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/zombie.png");
+    private static final ResourceLocation powerTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/power.png");
+    
     private final ModelBase model = new GCCoreModelZombie(0.2F);
 
     public GCCoreRenderZombie()
@@ -29,14 +37,24 @@ public class GCCoreRenderZombie extends RenderLiving
         super(new GCCoreModelZombie(), 1.0F);
     }
 
+    protected ResourceLocation func_110779_a(GCCoreEntityZombie par1EntityArrow)
+    {
+        return zombieTexture;
+    }
+
+    protected ResourceLocation func_110775_a(Entity par1Entity)
+    {
+        return this.func_110779_a((GCCoreEntityZombie)par1Entity);
+    }
+
     @Override
-    protected void preRenderCallback(EntityLiving par1EntityLiving, float par2)
+    protected void preRenderCallback(EntityLivingBase par1EntityLiving, float par2)
     {
         GL11.glScalef(1.2F, 1.2F, 1.2F);
     }
 
     @Override
-    protected int shouldRenderPass(EntityLiving par1EntityLiving, int par2, float par3)
+    protected int shouldRenderPass(EntityLivingBase par1EntityLiving, int par2, float par3)
     {
         final Minecraft minecraft = FMLClientHandler.instance().getClient();
 
@@ -54,7 +72,7 @@ public class GCCoreRenderZombie extends RenderLiving
             if (par2 == 1)
             {
                 final float var4 = par1EntityLiving.ticksExisted * 2 + par3;
-                this.loadTexture("/micdoodle8/mods/galacticraft/core/client/entities/power.png");
+                this.func_110776_a(powerTexture);
                 GL11.glMatrixMode(GL11.GL_TEXTURE);
                 GL11.glLoadIdentity();
                 final float var5 = var4 * 0.01F;

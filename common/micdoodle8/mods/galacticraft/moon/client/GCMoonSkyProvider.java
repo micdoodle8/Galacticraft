@@ -2,12 +2,14 @@ package micdoodle8.mods.galacticraft.moon.client;
 
 import java.util.Random;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.resources.ResourceLocation;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.client.IRenderHandler;
@@ -22,6 +24,9 @@ import cpw.mods.fml.client.FMLClientHandler;
  */
 public class GCMoonSkyProvider extends IRenderHandler
 {
+    private static final ResourceLocation overworldTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/planets/overworld.png");
+    private static final ResourceLocation sunTexture = new ResourceLocation("textures/environment/sun.png");
+    
     public int starGLCallList = GLAllocation.generateDisplayLists(3);
     public int glSkyList;
     public int glSkyList2;
@@ -141,7 +146,7 @@ public class GCMoonSkyProvider extends IRenderHandler
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 5F);
         GL11.glRotatef(world.getCelestialAngle(partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
         var12 = 30.0F;
-        FMLClientHandler.instance().getClient().renderEngine.bindTexture("/environment/sun.png");
+        FMLClientHandler.instance().getClient().renderEngine.func_110577_a(sunTexture);
         var23.startDrawingQuads();
         var23.addVertexWithUV(-var12, 150.0D, -var12, 0.0D, 0.0D);
         var23.addVertexWithUV(var12, 150.0D, -var12, 1.0D, 0.0D);
@@ -162,7 +167,7 @@ public class GCMoonSkyProvider extends IRenderHandler
         GL11.glRotatef(earthRotation, 1.0F, 0.0F, 0.0F);
         GL11.glRotatef(200F, 1.0F, 0.0F, 0.0F);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1F);
-        FMLClientHandler.instance().getClient().renderEngine.bindTexture("/micdoodle8/mods/galacticraft/core/client/planets/overworld.png");
+        FMLClientHandler.instance().getClient().renderEngine.func_110577_a(overworldTexture);
         world.getMoonPhase();
         var23.startDrawingQuads();
         var23.addVertexWithUV(-var12, -100.0D, var12, 0, 1);

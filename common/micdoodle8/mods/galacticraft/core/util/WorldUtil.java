@@ -32,7 +32,7 @@ import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -77,7 +77,7 @@ public class WorldUtil
         }
     }
 
-    public static double getGravityForEntity(EntityLiving eLiving)
+    public static double getGravityForEntity(EntityLivingBase eLiving)
     {
         if (eLiving.worldObj.provider instanceof IGalacticraftWorldProvider)
         {

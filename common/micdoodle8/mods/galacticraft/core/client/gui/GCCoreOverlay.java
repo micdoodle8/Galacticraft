@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityRocketT1;
-import net.minecraft.client.renderer.RenderEngine;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
 import org.lwjgl.opengl.GL11;
@@ -53,30 +52,6 @@ public class GCCoreOverlay
         var9.addVertexWithUV(par1 + par5, par2 + 0, 0.0, (par3 + par5) * var7, (par4 + 0) * var8);
         var9.addVertexWithUV(par1 + 0, par2 + 0, 0.0, (par3 + 0) * var7, (par4 + 0) * var8);
         var9.draw();
-    }
-
-    /**
-     * Downloads image and binds it
-     * 
-     * @param par1Str
-     *            texture to download and bind
-     * @param par2Str
-     *            if fails, use this one
-     */
-    protected static boolean loadDownloadableImageTexture(String par1Str, String par2Str)
-    {
-        final RenderEngine var3 = FMLClientHandler.instance().getClient().renderEngine;
-        final int var4 = var3.getTextureForDownloadableImage(par1Str, par2Str);
-
-        if (var4 >= 0)
-        {
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, var4);
-            return true;
-        }
-        else
-        {
-            return false;
-        }
     }
 
     /**

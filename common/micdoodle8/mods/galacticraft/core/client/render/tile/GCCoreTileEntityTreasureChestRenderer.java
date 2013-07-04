@@ -1,11 +1,13 @@
 package micdoodle8.mods.galacticraft.core.client.render.tile;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockT1TreasureChest;
 import micdoodle8.mods.galacticraft.core.client.model.block.GCCoreModelTreasureChest;
 import micdoodle8.mods.galacticraft.core.client.model.block.GCCoreModelTreasureChestLarge;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.client.resources.ResourceLocation;
 import net.minecraft.tileentity.TileEntity;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -21,6 +23,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GCCoreTileEntityTreasureChestRenderer extends TileEntitySpecialRenderer
 {
+    private static final ResourceLocation treasureChestTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/treasure.png");
+    private static final ResourceLocation treasureLargeChestTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/treasurelarge.png");
+    
     /** The normal small chest model. */
     private final GCCoreModelTreasureChest chestModel = new GCCoreModelTreasureChest();
 
@@ -60,12 +65,12 @@ public class GCCoreTileEntityTreasureChestRenderer extends TileEntitySpecialRend
             if (par1GCTileEntityTreasureChest.adjacentChestXPos == null && par1GCTileEntityTreasureChest.adjacentChestZPos == null)
             {
                 var14 = this.chestModel;
-                this.bindTextureByName("/micdoodle8/mods/galacticraft/core/client/entities/chest.png");
+                this.func_110628_a(treasureChestTexture);
             }
             else
             {
                 var14b = this.largeChestModel;
-                this.bindTextureByName("/micdoodle8/mods/galacticraft/core/client/entities/largechest.png");
+                this.func_110628_a(treasureLargeChestTexture);
             }
 
             GL11.glPushMatrix();

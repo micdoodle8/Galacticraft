@@ -3,14 +3,15 @@ package micdoodle8.mods.galacticraft.core.client.gui;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.resources.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 public class GCCoreGuiTexturedButton extends GuiButton
 {
-    private final String texture;
+    private final ResourceLocation texture;
     private final int bWidth, bHeight;
 
-    public GCCoreGuiTexturedButton(int par1, int par2, int par3, int par4, int par5, String texture, int width, int height)
+    public GCCoreGuiTexturedButton(int par1, int par2, int par3, int par4, int par5, ResourceLocation texture, int width, int height)
     {
         super(par1, par2, par3, par4, par5, "");
         this.texture = texture;
@@ -27,11 +28,8 @@ public class GCCoreGuiTexturedButton extends GuiButton
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             this.field_82253_i = par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + this.width && par3 < this.yPosition + this.height;
             this.getHoverState(this.field_82253_i);
-            par1Minecraft.renderEngine.bindTexture(this.texture);
+            par1Minecraft.renderEngine.func_110577_a(this.texture);
             this.drawTexturedModalRect(this.xPosition, this.yPosition, 0, 0, this.bWidth, this.bHeight);
-            // this.drawTexturedModalRect(this.xPosition + this.width / 2,
-            // this.yPosition, 200 - this.width / 2, 46 + var5 * 20, this.width
-            // / 2, this.height);
             this.mouseDragged(par1Minecraft, par2, par3);
             int var6 = 14737632;
 

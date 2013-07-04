@@ -9,6 +9,7 @@ import micdoodle8.mods.galacticraft.API.ISchematicPage;
 import micdoodle8.mods.galacticraft.API.SchematicRegistry;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GCLog;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore.GCKeyHandler;
 import micdoodle8.mods.galacticraft.core.client.GCCorePlayerSP;
@@ -27,12 +28,14 @@ import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.moon.GCMoonConfigManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
+import net.minecraft.client.resources.ResourceLocation;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
+import net.minecraft.util.ChatMessageComponent;
 import net.minecraftforge.common.DimensionManager;
 import org.lwjgl.input.Keyboard;
 import cpw.mods.fml.client.FMLClientHandler;
@@ -129,7 +132,7 @@ public class GCCorePacketHandlerClient implements IPacketHandler
             final Class[] decodeAs = { String.class, String.class };
             final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
 
-            ClientProxyCore.parachuteTextures.put((String) packetReadout[0], (String) packetReadout[1]);
+            ClientProxyCore.parachuteTextures.put((String) packetReadout[0], new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, (String) packetReadout[1]));
         }
         else if (packetType == 7)
         {
@@ -150,10 +153,10 @@ public class GCCorePacketHandlerClient implements IPacketHandler
 
             FMLClientHandler.instance().getClient().gameSettings.thirdPersonView = 1;
 
-            player.sendChatToPlayer("SPACE - Launch");
-            player.sendChatToPlayer("A / D  - Turn left-right");
-            player.sendChatToPlayer("W / S  - Turn up-down");
-            player.sendChatToPlayer(Keyboard.getKeyName(GCKeyHandler.openSpaceshipInv.keyCode) + "       - Inventory / Fuel");
+            player.sendChatToPlayer(ChatMessageComponent.func_111066_d("SPACE - Launch"));
+            player.sendChatToPlayer(ChatMessageComponent.func_111066_d("A / D  - Turn left-right"));
+            player.sendChatToPlayer(ChatMessageComponent.func_111066_d("W / S  - Turn up-down"));
+            player.sendChatToPlayer(ChatMessageComponent.func_111066_d(Keyboard.getKeyName(GCKeyHandler.openSpaceshipInv.keyCode) + "       - Inventory / Fuel"));
         }
         else if (packetType == 9)
         {
@@ -235,13 +238,6 @@ public class GCCorePacketHandlerClient implements IPacketHandler
                 ClientProxyCore.playersWithOxygenTankRightGreen.remove(packetReadout[0]);
                 break;
             }
-        }
-        else if (packetType == 11)
-        {
-            final Class[] decodeAs = { String.class };
-            final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
-
-            this.mc.thePlayer.cloakUrl = (String) packetReadout[0];
         }
         else if (packetType == 12)
         {

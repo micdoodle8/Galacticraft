@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFuelLoader;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.resources.ResourceLocation;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
@@ -24,6 +25,8 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
  */
 public class GCCoreGuiCargoLoader extends GuiContainer
 {
+    private static final ResourceLocation loaderTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/cargo_loader.png");
+    
     private final GCCoreTileEntityCargoLoader fuelLoader;
 
     private GuiButton buttonLoadItems;
@@ -112,7 +115,7 @@ public class GCCoreGuiCargoLoader extends GuiContainer
     protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3)
     {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.renderEngine.bindTexture("/mods/galacticraftcore/textures/gui/cargo_loader.png");
+        this.mc.func_110434_K().func_110577_a(loaderTexture);
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(var5, var6 + 5, 0, 0, this.xSize, this.ySize);

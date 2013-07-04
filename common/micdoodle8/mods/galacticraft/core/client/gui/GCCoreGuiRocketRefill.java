@@ -1,10 +1,12 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
 import mekanism.api.EnumColor;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase.EnumRocketType;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerRocketRefill;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.resources.ResourceLocation;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
@@ -15,6 +17,16 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GCCoreGuiRocketRefill extends GuiContainer
 {
+    private static ResourceLocation[] rocketTextures = new ResourceLocation[4];
+    
+    static
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            rocketTextures[i] = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/rocket_" + i * 18 + ".png");
+        }
+    }
+    
     private final IInventory upperChestInventory;
 
     private final EnumRocketType rocketType;
@@ -48,7 +60,7 @@ public class GCCoreGuiRocketRefill extends GuiContainer
     @Override
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
-        this.mc.renderEngine.bindTexture("/mods/galacticraftcore/textures/gui/rocket_" + (this.rocketType.getInventorySpace() - 3) + ".png");
+        this.mc.func_110434_K().func_110577_a(rocketTextures[(this.rocketType.getInventorySpace() - 3) / 18]);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         final int var5 = (this.width - this.xSize) / 2;

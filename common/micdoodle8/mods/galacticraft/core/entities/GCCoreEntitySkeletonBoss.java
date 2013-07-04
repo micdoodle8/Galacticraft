@@ -3,18 +3,27 @@ package micdoodle8.mods.galacticraft.core.entities;
 import java.util.List;
 import java.util.Random;
 import micdoodle8.mods.galacticraft.API.IEntityBreathable;
+import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
-import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityDungeonSpawner;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
+import net.minecraft.entity.IRangedAttackMob;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
+import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.entity.ai.EntityAISwimming;
+import net.minecraft.entity.ai.EntityAIWander;
+import net.minecraft.entity.ai.EntityAIWatchClosest;
+import net.minecraft.entity.ai.attributes.AttributeInstance;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.boss.IBossDisplayData;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
@@ -25,20 +34,15 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.stats.AchievementList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ChatMessageComponent;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import universalelectricity.core.vector.Vector3;
-import universalelectricity.prefab.network.IPacketReceiver;
-import universalelectricity.prefab.network.PacketManager;
-import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -49,10 +53,11 @@ import cpw.mods.fml.relauncher.SideOnly;
  * All rights reserved.
  * 
  */
-public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreathable, IBossDisplayData, IPacketReceiver
+public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreathable, IBossDisplayData, IRangedAttackMob
 {
     protected long ticks = 0;
     private static final ItemStack defaultHeldItem = new ItemStack(Item.bow, 1);
+    private static final AttributeModifier skeleBossEnrage = (new AttributeModifier("Drinking speed penalty", 0.15D, 0)).func_111168_a(false);
     private GCCoreTileEntityDungeonSpawner spawner;
 
     public int throwTimer;
@@ -72,11 +77,21 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
         super(par1World);
         this.setSize(1.5F, 4.0F);
         this.isImmuneToFire = true;
-        this.texture = "/micdoodle8/mods/galacticraft/core/client/entities/skeletonboss.png";
-        this.moveSpeed = 0.0F;
-        this.tasks.addTask(4, new GCCoreEntityAIArrowAttack(this, this.moveSpeed, 1, 20));
+        this.tasks.addTask(1, new EntityAISwimming(this));
+        this.tasks.addTask(2, new GCCoreEntityAIArrowAttack(this, 1.0D, 25, 10.0F));
+        this.tasks.addTask(2, new EntityAIWander(this, 1.0D));
+        this.tasks.addTask(3, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+        this.tasks.addTask(3, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 32.0F, 0, true));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
+    }
+
+    @Override
+    protected void func_110147_ax()
+    {
+        super.func_110147_ax();
+        this.func_110148_a(SharedMonsterAttributes.field_111267_a).func_111128_a(150.0F * GCCoreConfigManager.dungeonBossHealthMod);
+        this.func_110148_a(SharedMonsterAttributes.field_111263_d).func_111128_a(0.25F);
     }
 
     public GCCoreEntitySkeletonBoss(World world, Vector3 vec)
@@ -91,25 +106,18 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
         this.roomSize = size;
     }
 
-    @Override
-    public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
-    {
-        PacketManager.sendPacketToClients(this.getDescriptionPacket(), this.worldObj, new Vector3(this), 100);
-        return super.attackEntityFrom(par1DamageSource, par2);
-    }
+//    @Override
+//    public boolean attackEntityFrom(DamageSource par1DamageSource, float par2)
+//    {
+////        PacketManager.sendPacketToClients(this.getDescriptionPacket(), this.worldObj, new Vector3(this), 100);
+//        return super.attackEntityFrom(par1DamageSource, par2);
+//    }
 
     @Override
     public void updateRiderPosition()
     {
         if (this.riddenByEntity != null)
         {
-            if (!(this.riddenByEntity instanceof EntityPlayer) || !((EntityPlayer) this.riddenByEntity).func_71066_bF())
-            {
-                this.riddenByEntity.lastTickPosX = this.lastTickPosX;
-                this.riddenByEntity.lastTickPosY = this.lastTickPosY + this.getMountedYOffset() + this.riddenByEntity.getYOffset();
-                this.riddenByEntity.lastTickPosZ = this.lastTickPosZ;
-            }
-
             final double offsetX = Math.sin(this.rotationYaw * Math.PI / 180.0D);
             final double offsetZ = Math.cos(this.rotationYaw * Math.PI / 180.0D);
             final double offsetY = 2 * Math.cos((this.throwTimer + this.postThrowDelay) * 0.05F);
@@ -119,7 +127,7 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
     }
 
     @Override
-    public void knockBack(Entity par1Entity, int par2, double par3, double par5)
+    public void knockBack(Entity par1Entity, float par2, double par3, double par5)
     {
         ;
     }
@@ -145,12 +153,6 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
     public boolean isAIEnabled()
     {
         return true;
-    }
-
-    @Override
-    public int getMaxHealth()
-    {
-        return (int) Math.floor(150 * GCCoreConfigManager.dungeonBossHealthMod);
     }
 
     @Override
@@ -329,6 +331,13 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
         }
 
         this.ticks++;
+        
+        if (!this.worldObj.isRemote && this.func_110143_aJ() <= (150.0F * GCCoreConfigManager.dungeonBossHealthMod) / 2)
+        {
+            AttributeInstance attributeinstance = this.func_110148_a(SharedMonsterAttributes.field_111263_d);
+//            attributeinstance.func_111124_b(skeleBossEnrage);
+//            attributeinstance.func_111121_a(skeleBossEnrage);
+        }
 
         final EntityPlayer player = this.worldObj.getClosestPlayer(this.posX, this.posY, this.posZ, 20.0);
 
@@ -338,15 +347,20 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
             {
                 final PathEntity pathentity = this.getNavigator().getPathToEntityLiving(player);
                 this.targetEntity = player;
-                this.getNavigator().setPath(pathentity, this.health >= 75.0 ? 0.2F : 0.35F);
-                this.moveSpeed = 0.3F + (this.health >= this.getMaxHealth() / 2 ? 0.1F : 1.0F);
+//                this.getNavigator().setPath(pathentity, this.health >= 75.0 ? 0.2F : 0.35F);
+//                this.moveSpeed = 0.3F + (this.health >= this.getMaxHealth() / 2 ? 0.1F : 1.0F);
             }
         }
         else
         {
             this.targetEntity = null;
-            this.moveSpeed = 0.0F;
+//            this.moveSpeed = 0.0F;
         }
+        
+//        if (this.targetEntity != null)
+//        {
+//            this.getNavigator().tryMoveToEntityLiving(this.targetEntity, 0.3F + (this.func_110143_aJ() <= (150.0F * GCCoreConfigManager.dungeonBossHealthMod) / 2 ? 0.1F : 1.0F));
+//        }
 
         final Vector3 thisVec = new Vector3(this);
         final List l = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, AxisAlignedBB.getBoundingBox(thisVec.x - 10, thisVec.y - 10, thisVec.z - 10, thisVec.x + 10, thisVec.y + 10, thisVec.z + 10));
@@ -355,10 +369,10 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
         {
             if (e instanceof GCCoreEntitySkeletonBoss)
             {
-                if (((GCCoreEntitySkeletonBoss) e).getHealth() >= this.health)
-                {
-                    ((GCCoreEntitySkeletonBoss) e).setDead();
-                }
+//                if (((GCCoreEntitySkeletonBoss) e).getHealth() >= this.health)
+//                {
+//                    ((GCCoreEntitySkeletonBoss) e).setDead();
+//                }
             }
         }
 
@@ -386,7 +400,7 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
 
                 for (EntityPlayer p : entitiesWithin2)
                 {
-                    p.sendChatToPlayer("Boss despawned, don't leave the boss room while fighting! Re-enter room to respawn boss.");
+                    p.sendChatToPlayer(ChatMessageComponent.func_111066_d("Boss despawned, don't leave the boss room while fighting! Re-enter room to respawn boss."));
                 }
 
                 this.setDead();
@@ -410,7 +424,7 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
 
             if (!this.worldObj.isRemote)
             {
-                this.riddenByEntity.mountEntity(this);
+                this.riddenByEntity.mountEntity(null);
             }
         }
 
@@ -444,34 +458,34 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
             }
         }
 
-        if (this.ticks % 5 == 0)
-        {
-            PacketManager.sendPacketToClients(this.getDescriptionPacket(), this.worldObj, new Vector3(this), 100);
-        }
+//        if (this.ticks % 5 == 0)
+//        {
+//            PacketManager.sendPacketToClients(this.getDescriptionPacket(), this.worldObj, new Vector3(this), 100);
+//        }
 
         super.onLivingUpdate();
     }
 
-    public Packet getDescriptionPacket()
-    {
-        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.health);
-    }
-
-    @Override
-    public void handlePacketData(INetworkManager network, int packetType, Packet250CustomPayload packet, EntityPlayer player, ByteArrayDataInput dataStream)
-    {
-        try
-        {
-            if (this.worldObj.isRemote)
-            {
-                this.health = dataStream.readInt();
-            }
-        }
-        catch (final Exception e)
-        {
-            e.printStackTrace();
-        }
-    }
+//    public Packet getDescriptionPacket()
+//    {
+//        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.health);
+//    }
+//
+//    @Override
+//    public void handlePacketData(INetworkManager network, int packetType, Packet250CustomPayload packet, EntityPlayer player, ByteArrayDataInput dataStream)
+//    {
+//        try
+//        {
+//            if (this.worldObj.isRemote)
+//            {
+//                this.health = dataStream.readFloat();
+//            }
+//        }
+//        catch (final Exception e)
+//        {
+//            e.printStackTrace();
+//        }
+//    }
 
     @Override
     public void onDeath(DamageSource par1DamageSource)
@@ -587,12 +601,6 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
     }
 
     @Override
-    public int getBossHealth()
-    {
-        return this.health;
-    }
-
-    @Override
     public void writeEntityToNBT(NBTTagCompound nbt)
     {
         super.writeEntityToNBT(nbt);
@@ -620,5 +628,28 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
         this.roomSize.x = nbt.getDouble("roomSizeX");
         this.roomSize.y = nbt.getDouble("roomSizeY");
         this.roomSize.z = nbt.getDouble("roomSizeZ");
+    }
+
+    @Override
+    public void attackEntityWithRangedAttack(EntityLivingBase entitylivingbase, float f)
+    {
+        if (this.riddenByEntity != null)
+        {
+            return;
+        }
+        
+        Entity var1;
+
+        if (this.worldObj.provider instanceof IGalacticraftWorldProvider)
+        {
+            var1 = new GCCoreEntityArrow(this.worldObj, this, entitylivingbase, 0.3F, 12.0F);
+        }
+        else
+        {
+            var1 = new EntityArrow(this.worldObj, this, entitylivingbase, 1.6F, 12.0F);
+        }
+
+        this.worldObj.playSoundAtEntity(this, "random.bow", 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+        this.worldObj.spawnEntityInWorld(var1);
     }
 }

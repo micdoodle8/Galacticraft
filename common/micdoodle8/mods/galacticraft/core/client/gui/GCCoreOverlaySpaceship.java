@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderSpaceship;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityRocketT1;
 import net.minecraft.client.Minecraft;
@@ -7,6 +8,7 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.resources.ResourceLocation;
 import net.minecraft.util.StringUtils;
 import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.FMLClientHandler;
@@ -16,6 +18,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GCCoreOverlaySpaceship extends GCCoreOverlay
 {
+    private final static ResourceLocation guiTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/spaceshipgui.png");
+    
     private static Minecraft minecraft = FMLClientHandler.instance().getClient();
 
     /**
@@ -29,7 +33,7 @@ public class GCCoreOverlaySpaceship extends GCCoreOverlay
         GCCoreOverlaySpaceship.minecraft.entityRenderer.setupOverlayRendering();
         GL11.glDepthMask(true);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        minecraft.renderEngine.bindTexture("/mods/galacticraftcore/textures/gui/spaceshipgui.png");
+        FMLClientHandler.instance().getClient().renderEngine.func_110577_a(guiTexture);
 
         float var1 = 0F;
         float var2 = height / 2 - 170 / 2;
@@ -78,7 +82,7 @@ public class GCCoreOverlaySpaceship extends GCCoreOverlay
         spaceship.renderSpaceship(new GCCoreEntityRocketT1(GCCoreOverlaySpaceship.minecraft.theWorld), 0, 0, 0, 0, 0);
         GL11.glPopMatrix();
 
-        GCCoreOverlay.loadDownloadableImageTexture("http://skins.minecraft.net/MinecraftSkins/" + StringUtils.stripControlCodes(GCCoreOverlaySpaceship.minecraft.thePlayer.username) + ".png", FMLClientHandler.instance().getClient().thePlayer.getTexture());
+//        GCCoreOverlay.loadDownloadableImageTexture("http://skins.minecraft.net/MinecraftSkins/" + StringUtils.stripControlCodes(GCCoreOverlaySpaceship.minecraft.thePlayer.username) + ".png", FMLClientHandler.instance().getClient().thePlayer.getTexture());
 
         GL11.glTranslatef(0F, 0F, 60F);
 

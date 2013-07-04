@@ -3,15 +3,17 @@ package micdoodle8.mods.galacticraft.core.client.model;
 import java.util.List;
 import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.API.IHoldableItem;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.client.GCCorePlayerSP;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderPlayer;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityRocketT1;
+import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.client.renderer.RenderEngine;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.resources.ResourceLocation;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
@@ -21,6 +23,9 @@ import cpw.mods.fml.client.FMLClientHandler;
 
 public class GCCoreModelPlayer extends ModelBiped
 {
+    private static final ResourceLocation oxygenMaskTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/oxygen.png");
+    private static final ResourceLocation playerTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/player.png");
+    
     public ModelRenderer[] parachute = new ModelRenderer[3];
     public ModelRenderer[] parachuteStrings = new ModelRenderer[4];
     public ModelRenderer[][] tubes = new ModelRenderer[2][7];
@@ -179,7 +184,7 @@ public class GCCoreModelPlayer extends ModelBiped
 
         this.setRotationAngles(var2, var3, var4, var5, var6, var7, var1);
 
-        if (var1 instanceof EntityPlayer && this.equals(modelBipedMain))
+        if (var1 instanceof EntityClientPlayerMP && this.equals(modelBipedMain))
         {
             final EntityPlayer player = (EntityPlayer) var1;
             boolean changed = false;
@@ -200,7 +205,7 @@ public class GCCoreModelPlayer extends ModelBiped
 
             //
 
-            FMLClientHandler.instance().getClient().renderEngine.bindTexture("/micdoodle8/mods/galacticraft/core/client/armor/sensorox_1_alt.png");
+            FMLClientHandler.instance().getClient().renderEngine.func_110577_a(oxygenMaskTexture);
 
             changed = false;
 
@@ -229,7 +234,7 @@ public class GCCoreModelPlayer extends ModelBiped
 
             //
 
-            FMLClientHandler.instance().getClient().renderEngine.bindTexture("/micdoodle8/mods/galacticraft/core/client/entities/player.png");
+            FMLClientHandler.instance().getClient().renderEngine.func_110577_a(playerTexture);
 
             changed = false;
 
@@ -400,8 +405,8 @@ public class GCCoreModelPlayer extends ModelBiped
 
             if (this.usingParachute)
             {
-                FMLClientHandler.instance().getClient().renderEngine.bindTexture("/micdoodle8/mods/galacticraft/core/client/entities/parachute/" + ClientProxyCore.parachuteTextures.get(player.username) + ".png");
-
+                FMLClientHandler.instance().getClient().renderEngine.func_110577_a(ClientProxyCore.parachuteTextures.get(player.username));
+                
                 this.parachute[0].render(var7);
                 this.parachute[1].render(var7);
                 this.parachute[2].render(var7);
@@ -411,27 +416,11 @@ public class GCCoreModelPlayer extends ModelBiped
                 this.parachuteStrings[2].render(var7);
                 this.parachuteStrings[3].render(var7);
             }
-
-            this.loadDownloadableImageTexture(var1.skinUrl, var1.getTexture());
+            
+            FMLClientHandler.instance().getClient().renderEngine.func_110577_a(((EntityClientPlayerMP) player).func_110306_p());
         }
 
         super.render(var1, var2, var3, var4, var5, var6, var7);
-    }
-
-    protected boolean loadDownloadableImageTexture(String par1Str, String par2Str)
-    {
-        final RenderEngine var3 = RenderManager.instance.renderEngine;
-        final int var4 = var3.getTextureForDownloadableImage(par1Str, par2Str);
-
-        if (var4 >= 0)
-        {
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, var4);
-            return true;
-        }
-        else
-        {
-            return false;
-        }
     }
 
     @Override

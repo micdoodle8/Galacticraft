@@ -1,9 +1,13 @@
 package micdoodle8.mods.galacticraft.core.client.render.tile;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.model.block.GCCoreModelParachestTile;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityLander;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityParachest;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.client.resources.ResourceLocation;
+import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -19,6 +23,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GCCoreTileEntityParachestRenderer extends TileEntitySpecialRenderer
 {
+    private static final ResourceLocation parachestTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/parachest.png");
+    
     private final GCCoreModelParachestTile chestModel = new GCCoreModelParachestTile();
 
     public void renderGCTileEntityTreasureChestAt(GCCoreTileEntityParachest tile, double par2, double par4, double par6, float par8)
@@ -40,7 +46,7 @@ public class GCCoreTileEntityParachestRenderer extends TileEntitySpecialRenderer
             }
         }
 
-        this.bindTextureByName("/micdoodle8/mods/galacticraft/core/client/entities/parachest.png");
+        this.func_110628_a(parachestTexture);
 
         GL11.glPushMatrix();
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);

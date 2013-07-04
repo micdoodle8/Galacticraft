@@ -1,13 +1,18 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelCreeper;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityCreeper;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityLander;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemSensorGlasses;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.RenderLiving;
+import net.minecraft.client.resources.ResourceLocation;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import org.lwjgl.opengl.GL11;
@@ -24,11 +29,24 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GCCoreRenderCreeper extends RenderLiving
 {
+    private static final ResourceLocation creeperTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/creeper.png");
+    private static final ResourceLocation powerTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/power.png");
+    
     private final ModelBase creeperModel = new GCCoreModelCreeper(0.2F);
 
     public GCCoreRenderCreeper()
     {
         super(new GCCoreModelCreeper(), 0.5F);
+    }
+
+    protected ResourceLocation func_110779_a(GCCoreEntityCreeper par1EntityArrow)
+    {
+        return creeperTexture;
+    }
+
+    protected ResourceLocation func_110775_a(Entity par1Entity)
+    {
+        return this.func_110779_a((GCCoreEntityCreeper)par1Entity);
     }
 
     protected void updateCreeperScale(GCCoreEntityCreeper par1GCEntityCreeper, float par2)
@@ -53,10 +71,6 @@ public class GCCoreRenderCreeper extends RenderLiving
         GL11.glScalef(0.2F + var6, 0.2F + var7, 0.2F + var6);
     }
 
-    /**
-     * Updates color multiplier based on creeper state called by
-     * getColorMultiplier
-     */
     protected int updateCreeperColorMultiplier(GCCoreEntityCreeper par1GCEntityCreeper, float par2, float par3)
     {
         final float var5 = par1GCEntityCreeper.setCreeperFlashTime(par3);
@@ -86,9 +100,6 @@ public class GCCoreRenderCreeper extends RenderLiving
         }
     }
 
-    /**
-     * A method used to render a creeper's powered form as a pass model.
-     */
     protected int renderCreeperPassModel(GCCoreEntityCreeper par1GCEntityCreeper, int par2, float par3)
     {
         final Minecraft minecraft = FMLClientHandler.instance().getClient();
@@ -107,7 +118,7 @@ public class GCCoreRenderCreeper extends RenderLiving
             if (par2 == 1)
             {
                 final float var4 = par1GCEntityCreeper.ticksExisted * 2 + par3;
-                this.loadTexture("/micdoodle8/mods/galacticraft/core/client/entities/power.png");
+                this.func_110776_a(powerTexture);
                 GL11.glMatrixMode(GL11.GL_TEXTURE);
                 GL11.glLoadIdentity();
                 final float var5 = var4 * 0.01F;
@@ -141,37 +152,26 @@ public class GCCoreRenderCreeper extends RenderLiving
         return -1;
     }
 
-    /**
-     * Allows the render to do any OpenGL state modifications necessary before
-     * the model is rendered. Args: entityLiving, partialTickTime
-     */
     @Override
-    protected void preRenderCallback(EntityLiving par1EntityLiving, float par2)
+    protected void preRenderCallback(EntityLivingBase par1EntityLiving, float par2)
     {
         this.updateCreeperScale((GCCoreEntityCreeper) par1EntityLiving, par2);
     }
 
-    /**
-     * Returns an ARGB int color back. Args: entityLiving, lightBrightness,
-     * partialTickTime
-     */
     @Override
-    protected int getColorMultiplier(EntityLiving par1EntityLiving, float par2, float par3)
+    protected int getColorMultiplier(EntityLivingBase par1EntityLiving, float par2, float par3)
     {
         return this.updateCreeperColorMultiplier((GCCoreEntityCreeper) par1EntityLiving, par2, par3);
     }
 
-    /**
-     * Queries whether should render the specified pass or not.
-     */
     @Override
-    protected int shouldRenderPass(EntityLiving par1EntityLiving, int par2, float par3)
+    protected int shouldRenderPass(EntityLivingBase par1EntityLiving, int par2, float par3)
     {
         return this.renderCreeperPassModel((GCCoreEntityCreeper) par1EntityLiving, par2, par3);
     }
 
     @Override
-    protected int inheritRenderPass(EntityLiving par1EntityLiving, int par2, float par3)
+    protected int inheritRenderPass(EntityLivingBase par1EntityLiving, int par2, float par3)
     {
         return this.func_77061_b((GCCoreEntityCreeper) par1EntityLiving, par2, par3);
     }

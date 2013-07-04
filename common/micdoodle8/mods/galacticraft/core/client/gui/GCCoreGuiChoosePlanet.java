@@ -21,6 +21,7 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.client.resources.ResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatAllowedCharacters;
@@ -67,7 +68,8 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     public int backspacePressed;
     public boolean isTextFocused = false;
 
-    private static final String[] titlePanoramaPaths = new String[] { "/micdoodle8/mods/galacticraft/core/client/backgrounds/bg3.png" };
+    private static final ResourceLocation backgroundTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/stars.png");
+    private static final ResourceLocation blackTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/black.png");
 
     public GCCoreGuiChoosePlanet(EntityPlayer player, String[] listOfDestinations)
     {
@@ -136,9 +138,8 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
 
         this.planetSlots = new GCCoreGuiChoosePlanetSlot(this);
 
-        StringTranslate.getInstance();
         this.buttonList.clear();
-        this.buttonList.add(new GCCoreGuiTexturedButton(0, this.width - 28, 5, 22, 22, "/mods/galacticraftcore/textures/gui/button1.png", 22, 22));
+        this.buttonList.add(new GCCoreGuiTexturedButton(0, this.width - 28, 5, 22, 22, new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/map_button.png"), 22, 22));
         this.buttonList.add(this.sendButton = new GuiSmallButton(1, this.width - 110, this.height - 26, 105, 20, LanguageRegistry.instance().getStringLocalization("gui.button.sendtodim.name")));
 
         if (this.createSpaceStationButton == null)
@@ -157,7 +158,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
             this.buttonList.add(this.renameSpaceStationButton);
         }
 
-        this.planetSlots.registerScrollButtons(this.buttonList, 2, 3);
+        this.planetSlots.registerScrollButtons(2, 3);
     }
 
     @Override
@@ -265,7 +266,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
                     GL11.glTranslatef(1.96F, 1.96F, 0.0F);
                 }
 
-                this.mc.renderEngine.bindTexture(GCCoreGuiChoosePlanet.titlePanoramaPaths[var10 - var10]);
+                this.mc.func_110434_K().func_110577_a(backgroundTexture);
                 var4.startDrawingQuads();
                 var4.setColorRGBA_I(16777215, 255 / (var6 + 1));
                 var4.addVertexWithUV(-1.0D, -1.0D, 1.0D, 0.0F + 1, 0.0F + 1);
@@ -350,7 +351,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
                     GL11.glRotatef(-90.0F, 1.0F, 0.0F, 0.0F);
                 }
 
-                this.mc.renderEngine.bindTexture(GCCoreGuiChoosePlanet.titlePanoramaPaths[0]);
+                this.mc.func_110434_K().func_110577_a(backgroundTexture);
                 var4.startDrawingQuads();
                 var4.setColorRGBA_I(16777215, 255 / (var6 + 1));
                 var4.addVertexWithUV(-1.0D, -1.0D, 1.0D, 0.0F + 1, 0.0F + 1);
@@ -381,7 +382,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
      */
     private void rotateAndBlurSkybox()
     {
-        this.mc.renderEngine.bindTexture(GCCoreGuiChoosePlanet.titlePanoramaPaths[0]);
+        this.mc.func_110434_K().func_110577_a(backgroundTexture);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glColorMask(true, true, true, false);
@@ -420,7 +421,6 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
         var4.draw();
         GL11.glPopMatrix();
         GL11.glColorMask(true, true, true, true);
-        this.mc.renderEngine.resetBoundTexture();
     }
 
     protected void drawItemStackTooltip(List<String> strings, List<ItemStack> items, List<Boolean> correctAmount, int par2, int par3)
@@ -495,7 +495,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
             for (final ItemStack stack : items)
             {
                 GCCoreGuiChoosePlanet.drawItems.renderItemAndEffectIntoGUI(this.fontRenderer, this.mc.renderEngine, stack, l, itemY);
-
+                
                 itemY += 16;
             }
 
@@ -707,7 +707,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
-        this.mc.renderEngine.bindTexture("/micdoodle8/mods/galacticraft/core/client/backgrounds/black.png");
+        this.mc.func_110434_K().func_110577_a(blackTexture);
         final Tessellator var3 = Tessellator.instance;
         var3.startDrawingQuads();
         var3.addVertexWithUV(0.0D, var7, -90.0D, 0.0D, 1.0D);

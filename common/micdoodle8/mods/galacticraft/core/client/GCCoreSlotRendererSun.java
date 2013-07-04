@@ -1,14 +1,16 @@
 package micdoodle8.mods.galacticraft.core.client;
 
 import micdoodle8.mods.galacticraft.API.ICelestialBodyRenderer;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.resources.ResourceLocation;
 
 public class GCCoreSlotRendererSun implements ICelestialBodyRenderer
 {
     @Override
-    public String getPlanetSprite()
+    public ResourceLocation getPlanetSprite()
     {
-        return "/environment/sun.png";
+        return new ResourceLocation("textures/environment/sun.png");
     }
 
     @Override

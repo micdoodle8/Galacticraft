@@ -15,6 +15,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -30,7 +31,7 @@ public class GCCoreThreadDownloadSound extends Thread
         this.mc = par2Minecraft;
         this.setName("GC Resource download thread");
         this.setDaemon(true);
-        this.resourcesFolder = new File(par1File, "resources/");
+        this.resourcesFolder = new File(par1File, "assets/sound/");
 
         if (!this.resourcesFolder.exists() && !this.resourcesFolder.mkdirs())
         {
@@ -106,7 +107,7 @@ public class GCCoreThreadDownloadSound extends Thread
             {
                 try
                 {
-                    this.mc.installResource(par2Str + element.getName(), element);
+                    this.mc.sndManager.addSound(par2Str + element.getName());
                 }
                 catch (final Exception exception)
                 {
@@ -151,7 +152,7 @@ public class GCCoreThreadDownloadSound extends Thread
 
             if (!par2Str.contains("music"))
             {
-                this.mc.sndManager.addSound(par2Str, file1);
+                this.mc.sndManager.addSound(par2Str);
             }
             else
             {

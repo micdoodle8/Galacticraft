@@ -5,17 +5,21 @@ import micdoodle8.mods.galacticraft.API.IEntityBreathable;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EntityLivingData;
 import net.minecraft.entity.EnumCreatureAttribute;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAIBreakDoor;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAIMoveThroughVillage;
-import net.minecraft.entity.ai.EntityAIMoveTwardsRestriction;
+import net.minecraft.entity.ai.EntityAIMoveTowardsRestriction;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
@@ -37,21 +41,28 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
     {
         super(par1World);
         this.tasks.taskEntries.clear();
-        this.texture = "/micdoodle8/mods/galacticraft/core/client/entities/zombie.png";
-        this.moveSpeed = 0.36F;
         this.getNavigator().setBreakDoors(true);
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIBreakDoor(this));
-        this.tasks.addTask(2, new EntityAIAttackOnCollide(this, EntityPlayer.class, this.moveSpeed, false));
-        this.tasks.addTask(3, new EntityAIAttackOnCollide(this, EntityVillager.class, this.moveSpeed, true));
-        this.tasks.addTask(4, new EntityAIMoveTwardsRestriction(this, this.moveSpeed));
-        this.tasks.addTask(5, new EntityAIMoveThroughVillage(this, this.moveSpeed, false));
-        this.tasks.addTask(6, new EntityAIWander(this, this.moveSpeed));
+        this.tasks.addTask(2, new EntityAIAttackOnCollide(this, EntityPlayer.class, 0.36F, false));
+        this.tasks.addTask(3, new EntityAIAttackOnCollide(this, EntityVillager.class, 0.36F, true));
+        this.tasks.addTask(4, new EntityAIMoveTowardsRestriction(this, 0.36F));
+        this.tasks.addTask(5, new EntityAIMoveThroughVillage(this, 0.36F, false));
+        this.tasks.addTask(6, new EntityAIWander(this, 0.36F));
         this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(7, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 16.0F, 0, true));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityVillager.class, 16.0F, 0, false));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityVillager.class, 0, false));
+    }
+
+    @Override
+    protected void func_110147_ax()
+    {
+        super.func_110147_ax();
+        this.func_110148_a(SharedMonsterAttributes.field_111267_a).func_111128_a(30.0D);
+        this.func_110148_a(SharedMonsterAttributes.field_111263_d).func_111128_a(0.96F);
+        this.func_110148_a(SharedMonsterAttributes.field_111264_e).func_111128_a(3.0D);
     }
 
     @Override
@@ -61,39 +72,9 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
     }
 
     @Override
-    protected int func_96121_ay()
-    {
-        return 40;
-    }
-
-    /**
-     * This method returns a value to be applied directly to entity speed, this
-     * factor is less than 1 when a slowdown potion effect is applied, more than
-     * 1 when a haste potion effect is applied and 2 for fleeing entities.
-     */
-    @Override
-    public float getSpeedModifier()
-    {
-        return super.getSpeedModifier() * (this.isChild() ? 1.5F : 1.0F);
-    }
-
-    @Override
     protected void entityInit()
     {
         super.entityInit();
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public String getTexture()
-    {
-        return "/micdoodle8/mods/galacticraft/core/client/entities/zombie.png";
-    }
-
-    @Override
-    public int getMaxHealth()
-    {
-        return 30;
     }
 
     /**
@@ -232,24 +213,6 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
         }
 
         return flag;
-    }
-
-    /**
-     * Returns the amount of damage a mob should deal.
-     */
-    @Override
-    public int getAttackStrength(Entity par1Entity)
-    {
-        final ItemStack itemstack = this.getHeldItem();
-        final float f = (float) (this.getMaxHealth() - this.getHealth()) / (float) this.getMaxHealth();
-        int i = 3 + MathHelper.floor_float(f * 4.0F);
-
-        if (itemstack != null)
-        {
-            i += itemstack.getDamageVsEntity(this);
-        }
-
-        return i;
     }
 
     /**
@@ -394,7 +357,7 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
      * This method gets called when the entity kills another one.
      */
     @Override
-    public void onKillEntity(EntityLiving par1EntityLiving)
+    public void onKillEntity(EntityLivingBase par1EntityLiving)
     {
         super.onKillEntity(par1EntityLiving);
 
@@ -408,7 +371,7 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
             final EntityZombie entityzombie = new EntityZombie(this.worldObj);
             entityzombie.func_82149_j(par1EntityLiving);
             this.worldObj.removeEntity(par1EntityLiving);
-            entityzombie.initCreature();
+            entityzombie.func_110161_a((EntityLivingData)null);
             entityzombie.setVillager(true);
 
             if (par1EntityLiving.isChild())
@@ -421,13 +384,11 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
         }
     }
 
-    /**
-     * Initialize this creature.
-     */
-    @Override
-    public void initCreature()
+    public EntityLivingData func_110161_a(EntityLivingData par1EntityLivingData)
     {
-        this.setCanPickUpLoot(this.rand.nextFloat() < EntityLiving.pickUpLootProability[this.worldObj.difficultySetting]);
+        par1EntityLivingData = super.func_110161_a(par1EntityLivingData);
+        float f = this.worldObj.func_110746_b(this.posX, this.posY, this.posZ);
+        this.setCanPickUpLoot(this.rand.nextFloat() < 0.55F * f);
 
         if (this.worldObj.rand.nextFloat() < 0.05F)
         {
@@ -439,7 +400,7 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
 
         if (this.getCurrentItemOrArmor(4) == null)
         {
-            final Calendar calendar = this.worldObj.getCurrentDate();
+            Calendar calendar = this.worldObj.getCurrentDate();
 
             if (calendar.get(2) + 1 == 10 && calendar.get(5) == 31 && this.rand.nextFloat() < 0.25F)
             {
@@ -447,6 +408,17 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
                 this.equipmentDropChances[4] = 0.0F;
             }
         }
+
+        this.func_110148_a(SharedMonsterAttributes.field_111266_c).func_111121_a(new AttributeModifier("Random spawn bonus", this.rand.nextDouble() * 0.05000000074505806D, 0));
+        this.func_110148_a(SharedMonsterAttributes.field_111265_b).func_111121_a(new AttributeModifier("Random zombie-spawn bonus", this.rand.nextDouble() * 1.5D, 2));
+
+        if (this.rand.nextFloat() < f * 0.05F)
+        {
+            this.func_110148_a(field_110186_bp).func_111121_a(new AttributeModifier("Leader zombie bonus", this.rand.nextDouble() * 0.25D + 0.5D, 0));
+            this.func_110148_a(SharedMonsterAttributes.field_111267_a).func_111121_a(new AttributeModifier("Leader zombie bonus", this.rand.nextDouble() * 3.0D + 1.0D, 2));
+        }
+
+        return par1EntityLivingData;
     }
 
     /**
@@ -528,7 +500,7 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
     {
         final EntityVillager entityvillager = new EntityVillager(this.worldObj);
         entityvillager.func_82149_j(this);
-        entityvillager.initCreature();
+        entityvillager.func_110161_a((EntityLivingData)null);
         entityvillager.func_82187_q();
 
         if (this.isChild())

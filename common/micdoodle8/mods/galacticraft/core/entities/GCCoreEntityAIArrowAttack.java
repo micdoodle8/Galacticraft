@@ -1,80 +1,67 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
-import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.entity.projectile.EntitySnowball;
 import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
+import cpw.mods.fml.common.FMLLog;
 
-/**
- * Copyright 2012-2013, micdoodle8
- * 
- * All rights reserved.
- * 
- */
 public class GCCoreEntityAIArrowAttack extends EntityAIBase
 {
-    World worldObj;
+    private final EntityLiving entityHost;
 
-    /** The entity the AI instance has been applied to */
-    EntityLiving entityHost;
-    EntityLiving attackTarget;
+    private final IRangedAttackMob rangedAttackEntityHost;
+    private EntityLivingBase attackTarget;
 
-    /**
-     * A decrementing tick that spawns a ranged attack once this value reaches
-     * 0. It is then set back to the maxRangedAttackTime.
-     */
-    int rangedAttackTime = 0;
-    float entityMoveSpeed;
-    int field_75318_f = 0;
+    private int rangedAttackTime;
+    private double entityMoveSpeed;
+    private int field_96561_g;
 
-    /**
-     * The ID of this ranged attack AI. This chooses which entity is to be used
-     * as a ranged attack.
-     */
-    int rangedAttackID;
+    private int maxRangedAttackTime;
+    private float field_96562_i;
+    private float field_82642_h;
 
-    /**
-     * The maximum time the AI has to wait before peforming another ranged
-     * attack.
-     */
-    int maxRangedAttackTime;
-
-    public GCCoreEntityAIArrowAttack(EntityLiving par1EntityLiving, float par2, int par3, int par4)
+    public GCCoreEntityAIArrowAttack(IRangedAttackMob par1IRangedAttackMob, double par2, int par4, float par5)
     {
-        this.entityHost = par1EntityLiving;
-        this.worldObj = par1EntityLiving.worldObj;
-        this.entityMoveSpeed = par2;
-        this.rangedAttackID = par3;
-        if (par4 == 20 && this.worldObj != null && this.worldObj.provider instanceof IGalacticraftWorldProvider)
+        this(par1IRangedAttackMob, par2, par4, par4, par5);
+    }
+
+    public GCCoreEntityAIArrowAttack(IRangedAttackMob par1IRangedAttackMob, double par2, int par4, int par5, float par6)
+    {
+        this.rangedAttackTime = -1;
+
+        if (!(par1IRangedAttackMob instanceof EntityLivingBase))
         {
-            this.maxRangedAttackTime = par4;
+            throw new IllegalArgumentException("ArrowAttackGoal requires Mob implements RangedAttackMob");
         }
         else
         {
-            this.maxRangedAttackTime = par4 * 6;
+            this.rangedAttackEntityHost = par1IRangedAttackMob;
+            this.entityHost = (EntityLiving)par1IRangedAttackMob;
+            this.entityMoveSpeed = par2;
+            this.field_96561_g = par4;
+            this.maxRangedAttackTime = par5;
+            this.field_96562_i = par6;
+            this.field_82642_h = par6 * par6;
+            this.setMutexBits(3);
         }
-        this.setMutexBits(3);
     }
 
     /**
      * Returns whether the EntityAIBase should begin execution.
      */
-    @Override
     public boolean shouldExecute()
     {
-        final EntityLiving var1 = this.entityHost.getAttackTarget();
+        EntityLivingBase entitylivingbase = this.entityHost.getAttackTarget();
 
-        if (var1 == null)
+        if (entitylivingbase == null)
         {
             return false;
         }
         else
         {
-            this.attackTarget = var1;
+            this.attackTarget = entitylivingbase;
             return true;
         }
     }
@@ -82,94 +69,60 @@ public class GCCoreEntityAIArrowAttack extends EntityAIBase
     /**
      * Returns whether an in-progress EntityAIBase should continue executing
      */
-    @Override
     public boolean continueExecuting()
     {
-        return this.shouldExecute();
+        return this.shouldExecute() || !this.entityHost.getNavigator().noPath();
     }
 
     /**
      * Resets the task
      */
-    @Override
     public void resetTask()
     {
         this.attackTarget = null;
+        this.rangedAttackTime = -1;
     }
 
     /**
      * Updates the task
      */
-    @Override
     public void updateTask()
     {
-        final double var1 = 100.0D;
-        final double var3 = this.entityHost.getDistanceSq(this.attackTarget.posX, this.attackTarget.boundingBox.minY, this.attackTarget.posZ);
-        final boolean var5 = this.entityHost.getEntitySenses().canSee(this.attackTarget);
+        double d0 = this.entityHost.getDistanceSq(this.attackTarget.posX, this.attackTarget.boundingBox.minY, this.attackTarget.posZ);
+        boolean flag = this.entityHost.getEntitySenses().canSee(this.attackTarget);
 
-        if (var5)
-        {
-            ++this.field_75318_f;
-        }
-        else
-        {
-            this.field_75318_f = 0;
-        }
-
-        // if (var3 <= var1 && this.field_75318_f >= 20)
-        {
-            // this.entityHost.getNavigator().clearPathEntity();
-        }
-        // else
-        // {
-        // this.entityHost.getNavigator().tryMoveToEntityLiving(this.attackTarget,
-        // this.entityMoveSpeed);
-        // }
+        this.entityHost.getNavigator().tryMoveToEntityLiving(this.attackTarget, this.entityMoveSpeed);
 
         this.entityHost.getLookHelper().setLookPositionWithEntity(this.attackTarget, 30.0F, 30.0F);
-        this.rangedAttackTime = Math.max(this.rangedAttackTime - 1, 0);
+        float f;
 
-        if (this.rangedAttackTime <= 0)
+        if (--this.rangedAttackTime == 0)
         {
-            if (var3 <= var1 && var5)
+            if (d0 > (double)this.field_82642_h || !flag)
             {
-                this.doRangedAttack();
-                this.rangedAttackTime = this.maxRangedAttackTime;
+                return;
             }
+
+            f = MathHelper.sqrt_double(d0) / this.field_96562_i;
+            float f1 = f;
+
+            if (f < 0.1F)
+            {
+                f1 = 0.1F;
+            }
+
+            if (f1 > 1.0F)
+            {
+                f1 = 1.0F;
+            }
+
+            this.rangedAttackEntityHost.attackEntityWithRangedAttack(this.attackTarget, f1);
+            this.rangedAttackTime = MathHelper.floor_float(f * (float)(this.maxRangedAttackTime - this.field_96561_g) + (float)this.field_96561_g);
         }
-    }
-
-    /**
-     * Performs a ranged attack according to the AI's rangedAttackID.
-     */
-    private void doRangedAttack()
-    {
-        if (this.rangedAttackID == 1)
+        else if (this.rangedAttackTime < 0)
         {
-            Entity var1;
-
-            if (this.worldObj.provider instanceof IGalacticraftWorldProvider)
-            {
-                var1 = new GCCoreEntityArrow(this.worldObj, this.entityHost, this.attackTarget, 0.3F, 12.0F);
-            }
-            else
-            {
-                var1 = new EntityArrow(this.worldObj, this.entityHost, this.attackTarget, 1.6F, 12.0F);
-            }
-
-            this.worldObj.playSoundAtEntity(this.entityHost, "random.bow", 1.0F, 1.0F / (this.entityHost.getRNG().nextFloat() * 0.4F + 0.8F));
-            this.worldObj.spawnEntityInWorld(var1);
-        }
-        else if (this.rangedAttackID == 2)
-        {
-            final EntitySnowball var9 = new EntitySnowball(this.worldObj, this.entityHost);
-            final double var2 = this.attackTarget.posX - this.entityHost.posX;
-            final double var4 = this.attackTarget.posY + this.attackTarget.getEyeHeight() - 1.100000023841858D - var9.posY;
-            final double var6 = this.attackTarget.posZ - this.entityHost.posZ;
-            final float var8 = MathHelper.sqrt_double(var2 * var2 + var6 * var6) * 0.2F;
-            var9.setThrowableHeading(var2, var4 + var8, var6, 1.6F, 12.0F);
-            this.worldObj.playSoundAtEntity(this.entityHost, "random.bow", 1.0F, 1.0F / (this.entityHost.getRNG().nextFloat() * 0.4F + 0.8F));
-            this.worldObj.spawnEntityInWorld(var9);
+            f = MathHelper.sqrt_double(d0) / this.field_96562_i;
+            this.rangedAttackTime = MathHelper.floor_float(f * (float)(this.maxRangedAttackTime - this.field_96561_g) + (float)this.field_96561_g);
         }
     }
 }

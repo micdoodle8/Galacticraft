@@ -4,6 +4,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.HashMap;
 import java.util.Iterator;
+import net.minecraft.launchwrapper.LaunchClassLoader;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
@@ -17,10 +18,8 @@ import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.TypeInsnNode;
 import org.objectweb.asm.tree.VarInsnNode;
-import cpw.mods.fml.relauncher.IClassTransformer;
-import cpw.mods.fml.relauncher.RelaunchClassLoader;
 
-public class GCCoreTransformer implements IClassTransformer
+public class GCCoreTransformer implements net.minecraft.launchwrapper.IClassTransformer
 {
     HashMap<String, String> nodemap = new HashMap<String, String>();
     private boolean deobfuscated = true;
@@ -30,7 +29,7 @@ public class GCCoreTransformer implements IClassTransformer
         try
         {
             @SuppressWarnings("resource")
-            final URLClassLoader loader = new RelaunchClassLoader(((URLClassLoader) this.getClass().getClassLoader()).getURLs());
+            final URLClassLoader loader = new LaunchClassLoader(((URLClassLoader) this.getClass().getClassLoader()).getURLs());
             final URL classResource = loader.findResource(String.valueOf("net.minecraft.world.World").replace('.', '/').concat(".class"));
             if (classResource == null)
             {
@@ -66,10 +65,9 @@ public class GCCoreTransformer implements IClassTransformer
             this.nodemap.put("createClientPlayerMethod", "func_78754_a");
             this.nodemap.put("createClientPlayerDesc", "(L" + this.nodemap.get("worldClass") + ";)L" + this.nodemap.get("playerClient") + ";");
 
-            this.nodemap.put("entityLivingClass", "net/minecraft/entity/EntityLiving");
+            this.nodemap.put("entityLivingClass", "net/minecraft/entity/EntityLivingBase");
             this.nodemap.put("moveEntityMethod", "moveEntityWithHeading");
             this.nodemap.put("moveEntityDesc", "(FF)V");
-            this.nodemap.put("entityLiving", "net/minecraft/entity/EntityLiving");
 
             this.nodemap.put("entityItemClass", "net/minecraft/entity/item/EntityItem");
             this.nodemap.put("onUpdateMethod", "onUpdate");
@@ -80,7 +78,6 @@ public class GCCoreTransformer implements IClassTransformer
             this.nodemap.put("updateLightmapDesc", "(F)V");
 
             this.nodemap.put("player", "net/minecraft/entity/player/EntityPlayer");
-            this.nodemap.put("invPlayer", "inventory");
             this.nodemap.put("containerPlayer", "net/minecraft/inventory/ContainerPlayer");
             this.nodemap.put("invPlayerClass", "net/minecraft/entity/player/InventoryPlayer");
 
@@ -98,11 +95,11 @@ public class GCCoreTransformer implements IClassTransformer
         }
         else
         {
-            this.nodemap.put("worldClass", "aab");
+            this.nodemap.put("worldClass", "abr");
 
-            this.nodemap.put("playerMP", "jc");
-            this.nodemap.put("netLoginHandler", "jf");
-            this.nodemap.put("confManagerClass", "gu");
+            this.nodemap.put("playerMP", "js");
+            this.nodemap.put("netLoginHandler", "jv");
+            this.nodemap.put("confManagerClass", "hk");
             this.nodemap.put("createPlayerMethod", "a");
             this.nodemap.put("createPlayerDesc", "(Ljava/lang/String;)L" + this.nodemap.get("playerMP") + ";");
             this.nodemap.put("respawnPlayerMethod", "a");
@@ -111,36 +108,34 @@ public class GCCoreTransformer implements IClassTransformer
             this.nodemap.put("attemptLoginMethodBukkit", "attemptLogin");
             this.nodemap.put("attemptLoginDescBukkit", "(L" + this.nodemap.get("netLoginHandler") + ";Ljava/lang/String;Ljava/lang/String;)L" + this.nodemap.get("playerMP") + ";");
 
-            this.nodemap.put("playerControllerClass", "bdr");
-            this.nodemap.put("playerClient", "bdv");
-            this.nodemap.put("netClientHandler", "bdk");
+            this.nodemap.put("playerControllerClass", "bct");
+            this.nodemap.put("playerClient", "bcx");
+            this.nodemap.put("netClientHandler", "bcn");
             this.nodemap.put("createClientPlayerMethod", "a");
             this.nodemap.put("createClientPlayerDesc", "(L" + this.nodemap.get("worldClass") + ";)L" + this.nodemap.get("playerClient") + ";");
 
-            this.nodemap.put("entityLivingClass", "ng");
+            this.nodemap.put("entityLivingClass", "oc");
             this.nodemap.put("moveEntityMethod", "e");
             this.nodemap.put("moveEntityDesc", "(FF)V");
-            this.nodemap.put("entityLiving", "ng");
 
-            this.nodemap.put("entityItemClass", "rh");
+            this.nodemap.put("entityItemClass", "sp");
             this.nodemap.put("onUpdateMethod", "l_");
             this.nodemap.put("onUpdateDesc", "()V");
 
-            this.nodemap.put("entityRendererClass", "bfq");
+            this.nodemap.put("entityRendererClass", "bet");
             this.nodemap.put("updateLightmapMethod", "h");
             this.nodemap.put("updateLightmapDesc", "(F)V");
 
-            this.nodemap.put("player", "sq");
-            this.nodemap.put("invPlayer", "bK");
-            this.nodemap.put("containerPlayer", "tz");
-            this.nodemap.put("invPlayerClass", "so");
+            this.nodemap.put("player", "ua");
+            this.nodemap.put("containerPlayer", "vq");
+            this.nodemap.put("invPlayerClass", "ty");
 
             this.nodemap.put("minecraft", "net/minecraft/client/Minecraft");
-            this.nodemap.put("session", "awf");
-            this.nodemap.put("guiPlayer", "azg");
+            this.nodemap.put("session", "auj");
+            this.nodemap.put("guiPlayer", "axm");
             this.nodemap.put("thePlayer", "g");
             this.nodemap.put("displayGui", "a");
-            this.nodemap.put("guiScreen", "axr");
+            this.nodemap.put("guiScreen", "avv");
             this.nodemap.put("displayGuiDesc", "(L" + this.nodemap.get("guiScreen") + ";)V");
             this.nodemap.put("runTick", "l");
             this.nodemap.put("runTickDesc", "()V");
@@ -240,7 +235,7 @@ public class GCCoreTransformer implements IClassTransformer
                     {
                         final MethodInsnNode nodeAt = (MethodInsnNode) list;
 
-                        if (nodeAt.owner.contains(map.get("playerMP")))
+                        if (nodeAt.owner.contains(map.get("playerMP")) && nodeAt.getOpcode() == Opcodes.INVOKESPECIAL)
                         {
                             methodnode.instructions.set(nodeAt, new MethodInsnNode(Opcodes.INVOKESPECIAL, "micdoodle8/mods/galacticraft/core/entities/GCCorePlayerMP", "<init>", "(Lnet/minecraft/server/MinecraftServer;Lnet/minecraft/world/World;Ljava/lang/String;Lnet/minecraft/item/ItemInWorldManager;)V"));
                             injectionCount++;
@@ -405,7 +400,7 @@ public class GCCoreTransformer implements IClassTransformer
                         if (nodeAt.cst.equals(Double.valueOf(0.08D)))
                         {
                             final VarInsnNode beforeNode = new VarInsnNode(Opcodes.ALOAD, 0);
-                            final MethodInsnNode overwriteNode = new MethodInsnNode(Opcodes.INVOKESTATIC, "micdoodle8/mods/galacticraft/core/util/WorldUtil", "getGravityForEntity", "(L" + map.get("entityLiving") + ";)D");
+                            final MethodInsnNode overwriteNode = new MethodInsnNode(Opcodes.INVOKESTATIC, "micdoodle8/mods/galacticraft/core/util/WorldUtil", "getGravityForEntity", "(L" + map.get("entityLivingClass") + ";)D");
 
                             methodnode.instructions.insertBefore(nodeAt, beforeNode);
                             methodnode.instructions.set(nodeAt, overwriteNode);

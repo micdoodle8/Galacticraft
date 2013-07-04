@@ -1,10 +1,12 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
 import mekanism.api.EnumColor;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerAirCompressor;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenTank;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCompressor;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.resources.ResourceLocation;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
@@ -20,6 +22,8 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
  */
 public class GCCoreGuiAirCompressor extends GuiContainer
 {
+    private static final ResourceLocation compressorTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/compressor.png");
+    
     private final GCCoreTileEntityOxygenCompressor compressor;
 
     public GCCoreGuiAirCompressor(InventoryPlayer par1InventoryPlayer, GCCoreTileEntityOxygenCompressor par2TileEntityAirDistributor)
@@ -74,7 +78,7 @@ public class GCCoreGuiAirCompressor extends GuiContainer
     protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3)
     {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.renderEngine.bindTexture("/mods/galacticraftcore/textures/gui/compressor.png");
+        this.mc.func_110434_K().func_110577_a(compressorTexture);
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(var5, var6 + 5, 0, 0, this.xSize, 181);

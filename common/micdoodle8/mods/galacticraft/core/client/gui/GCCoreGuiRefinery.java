@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityRefinery;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.resources.ResourceLocation;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
@@ -20,6 +21,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GCCoreGuiRefinery extends GuiContainer
 {
+    private static final ResourceLocation refineryTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/refinery.png");
+    
     private final GCCoreTileEntityRefinery tileEntity;
 
     private GuiButton buttonDisable;
@@ -91,7 +94,7 @@ public class GCCoreGuiRefinery extends GuiContainer
     @Override
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
-        this.mc.renderEngine.bindTexture("/mods/galacticraftcore/textures/gui/refinery.png");
+        this.mc.renderEngine.func_110577_a(refineryTexture);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         this.containerWidth = (this.width - this.xSize) / 2;

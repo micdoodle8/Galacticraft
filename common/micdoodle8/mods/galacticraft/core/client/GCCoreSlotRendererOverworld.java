@@ -1,14 +1,16 @@
 package micdoodle8.mods.galacticraft.core.client;
 
 import micdoodle8.mods.galacticraft.API.ICelestialBodyRenderer;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.resources.ResourceLocation;
 
 public class GCCoreSlotRendererOverworld implements ICelestialBodyRenderer
 {
     @Override
-    public String getPlanetSprite()
+    public ResourceLocation getPlanetSprite()
     {
-        return "/micdoodle8/mods/galacticraft/core/client/planets/overworld.png";
+        return new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/planets/overworld.png");
     }
 
     @Override

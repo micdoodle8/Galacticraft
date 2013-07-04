@@ -1,13 +1,17 @@
 package micdoodle8.mods.galacticraft.core.client.render.tile;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAdvancedCraftingTable;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.client.resources.ResourceLocation;
 import net.minecraft.tileentity.TileEntity;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 public class GCCoreTileEntityAdvancedCraftingTableRenderer extends TileEntitySpecialRenderer
 {
+    private static final ResourceLocation assemblyTableTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/assembly.png");
+    
     @Override
     public void renderTileEntityAt(TileEntity var1, double par2, double par4, double par6, float var8)
     {
@@ -20,7 +24,7 @@ public class GCCoreTileEntityAdvancedCraftingTableRenderer extends TileEntitySpe
         GL11.glTranslatef(0.5F, 3.0F, 0.5F);
         GL11.glScalef(1.3F, -1.3F, -1.3F);
 
-        this.bindTextureByName("/micdoodle8/mods/galacticraft/core/client/entities/assembly.png");
+        this.func_110628_a(assemblyTableTexture);
 
         table.model.renderAll();
 
