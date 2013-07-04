@@ -24,7 +24,6 @@ public class GalacticraftPlugin implements IFMLLoadingPlugin, IFMLCallHook
     private static String transformerDir = "micdoodle8.mods.galacticraft.asm.";
     private static String transformerMain = GalacticraftPlugin.transformerDir + "GCCoreTransformer";
     public static boolean hasRegistered = false;
-    public static File fileLocation;
     public static final String mcVersion = "[1.6.1]";
 
     @Override
@@ -120,12 +119,7 @@ public class GalacticraftPlugin implements IFMLLoadingPlugin, IFMLCallHook
     @Override
     public void injectData(Map<String, Object> data)
     {
-        GalacticraftPlugin.fileLocation = (File) data.get("coremodLocation");
         GCLog.info("[GCCoreTransformer]: " + "Patching game...");
-        if (data.containsKey("mcLocation"))
-        {
-            GalacticraftCore.minecraftDir = (File) data.get("mcLocation");
-        }
     }
 
     @Override

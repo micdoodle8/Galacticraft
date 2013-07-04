@@ -168,21 +168,7 @@ public class GalacticraftCore
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
-    { 
-        if (!this.checkForCoremod())
-        {
-            final String err = "Galacticraft Core is not placed in the coremods folder!";
-            System.err.println(err);
-
-            final JEditorPane ep = new JEditorPane("text/html", "<html>" + err + "</html>");
-
-            ep.setEditable(false);
-            ep.setOpaque(false);
-
-            JOptionPane.showMessageDialog(null, ep, "Fatal error", JOptionPane.ERROR_MESSAGE);
-            System.exit(1);
-        }
-
+    {
         GalacticraftCore.moon.preLoad(event);
 
         new GCCoreConfigManager(new File(event.getModConfigurationDirectory(), GalacticraftCore.CONFIG_FILE));
@@ -411,30 +397,5 @@ public class GalacticraftCore
         GCCoreUtil.registerGalacticraftNonMobEntity(GCCoreEntityParaChest.class, "ParaChest", GCCoreConfigManager.idEntityParaChest, 150, 5, true);
         GCCoreUtil.registerGalacticraftNonMobEntity(GCCoreEntityOxygenBubble.class, "OxygenBubble", GCCoreConfigManager.idEntityOxygenBubble, 150, 20, false);
         GCCoreUtil.registerGalacticraftNonMobEntity(GCCoreEntityLander.class, "Lander", GCCoreConfigManager.idEntityLander, 150, 5, true);
-    }
-
-    public static File minecraftDir;
-
-    private boolean checkForCoremod()
-    {
-        if (GalacticraftCore.minecraftDir != null)
-        {
-            final File modsDir = new File(GalacticraftCore.minecraftDir, "mods");
-
-            if (!modsDir.exists())
-            {
-                return false;
-            }
-
-            for (final File file : modsDir.listFiles())
-            {
-                if (file.getName().endsWith(".jar") && file.getName().toLowerCase().contains("galacticraft"))
-                {
-                    return true;
-                }
-            }
-        }
-
-        return false;
     }
 }
