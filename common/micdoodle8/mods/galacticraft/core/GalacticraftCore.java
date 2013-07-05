@@ -113,7 +113,7 @@ import cpw.mods.fml.relauncher.Side;
  * All rights reserved.
  * 
  */
-@Mod(name = GalacticraftCore.NAME, version = GalacticraftCore.LOCALMAJVERSION + "." + GalacticraftCore.LOCALMINVERSION + "." + GalacticraftCore.LOCALBUILDVERSION, useMetadata = true, modid = GalacticraftCore.MODID, dependencies = "required-after:Forge@[7.8.0.685,)")
+//@Mod(name = GalacticraftCore.NAME, version = GalacticraftCore.LOCALMAJVERSION + "." + GalacticraftCore.LOCALMINVERSION + "." + GalacticraftCore.LOCALBUILDVERSION, useMetadata = true, modid = GalacticraftCore.MODID, dependencies = "required-after:Forge@[7.8.0.685,)")
 @NetworkMod(channels = { GalacticraftCore.CHANNEL }, clientSideRequired = true, serverSideRequired = false, connectionHandler = GCCoreConnectionHandler.class, packetHandler = GCCorePacketManager.class)
 public class GalacticraftCore
 {
@@ -153,7 +153,7 @@ public class GalacticraftCore
     public static final String BLOCK_TEXTURE_FILE = GalacticraftCore.FILE_PATH + GalacticraftCore.CLIENT_PATH + "blocks/core.png";
     public static final String ITEM_TEXTURE_FILE = GalacticraftCore.FILE_PATH + GalacticraftCore.CLIENT_PATH + "items/core.png";
     public static final String CONFIG_FILE = "Galacticraft/core.conf";
-    private static final String[] LANGUAGES_SUPPORTED = new String[] { "cz_CZE", "de_DE", "en_GB", "en_US", "es_ES", "fi_FI", "fr_CA", "fr_FR", "nl_NL", "pl_PL", "ru_RU", "zh_CN" };
+    public static final String[] LANGUAGES_SUPPORTED = new String[] { "cz_CZE", "de_DE", "en_GB", "en_US", "es_ES", "fi_FI", "fr_CA", "fr_FR", "nl_NL", "pl_PL", "ru_RU", "zh_CN" };
 
     public static double toBuildcraftEnergyScalar = 0.04D;
     public static double fromBuildcraftEnergyScalar = 25.0D;
@@ -166,190 +166,7 @@ public class GalacticraftCore
     public static GCCorePlanetOverworld overworld;
     public static GCCorePlanetSun sun;
 
-    @EventHandler
-    public void preInit(FMLPreInitializationEvent event)
-    {
-        GalacticraftCore.moon.preLoad(event);
-
-        new GCCoreConfigManager(new File(event.getModConfigurationDirectory(), GalacticraftCore.CONFIG_FILE));
-
-        GalacticraftCore.TEXTURE_SUFFIX = GCCoreConfigManager.hiresTextures ? "_32" : "";
-
-        GCCoreBlocks.initBlocks();
-        GCCoreBlocks.registerBlocks();
-        GCCoreBlocks.setHarvestLevels();
-
-        GCCoreItems.initItems();
-        GCCoreItems.registerHarvestLevels();
-
-        if (GCCoreConfigManager.loadBC.getBoolean(false))
-        {
-            BasicComponents.registerTileEntities();
-            BasicComponents.requestAll(GalacticraftCore.instance);
-            BasicComponents.register(GalacticraftCore.CHANNELENTITIES);
-            
-            if (GCCoreConfigManager.disableOreGenTin && BasicComponents.generationOreTin != null)
-            {
-                OreGenerator.removeOre(BasicComponents.generationOreTin);
-            }
-            
-            if (GCCoreConfigManager.disableOreGenCopper && BasicComponents.generationOreCopper != null)
-            {
-                OreGenerator.removeOre(BasicComponents.generationOreCopper);
-            }
-        }
-
-        GalacticraftCore.proxy.preInit(event);
-    }
-
-    @EventHandler
-    public void init(FMLInitializationEvent event)
-    {
-        GalacticraftCore.galacticraftTab = new GCCoreCreativeTab(CreativeTabs.getNextID(), GalacticraftCore.CHANNEL, GCCoreItems.spaceship.itemID, 0);
-        
-        GalacticraftCore.overworld = new GCCorePlanetOverworld();
-        GalacticraftRegistry.registerCelestialBody(GalacticraftCore.overworld);
-        GalacticraftCore.sun = new GCCorePlanetSun();
-        GalacticraftRegistry.registerCelestialBody(GalacticraftCore.sun);
-        GalacticraftRegistry.registerGalaxy(GalacticraftCore.galaxyMilkyWay);
-
-        DimensionManager.registerProviderType(GCCoreConfigManager.idDimensionOverworldOrbit, GCCoreWorldProviderSpaceStation.class, false);
-
-        GalacticraftCore.proxy.init(event);
-
-        GalacticraftRegistry.registerTeleportType(WorldProviderSurface.class, new GCCoreOverworldTeleportType());
-        GalacticraftRegistry.registerTeleportType(GCCoreWorldProviderSpaceStation.class, new GCCoreOrbitTeleportType());
-        
-        int languages = 0;
-
-        for (String language : GalacticraftCore.LANGUAGES_SUPPORTED)
-        {
-            LanguageRegistry.instance().loadLocalization(GalacticraftCore.LANGUAGE_PATH + language + ".lang", language, false);
-
-            if (LanguageRegistry.instance().getStringLocalization("children", language) != "")
-            {
-                try
-                {
-                    String[] children = LanguageRegistry.instance().getStringLocalization("children", language).split(",");
-
-                    for (String child : children)
-                    {
-                        if (child != "" || child != null)
-                        {
-                            LanguageRegistry.instance().loadLocalization(GalacticraftCore.LANGUAGE_PATH + language + ".lang", child, false);
-                            languages++;
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    FMLLog.severe("Failed to load a child language file.");
-                    e.printStackTrace();
-                }
-            }
-
-            languages++;
-        }
-
-        GCLog.info("Galacticraft Loaded: " + languages + " Languages.");
-
-        GalacticraftCore.moon.load(event);
-
-        LiquidDictionary.getOrCreateLiquid("Oil", new LiquidStack(GCCoreBlocks.crudeOilStill, 1));
-        LiquidDictionary.getOrCreateLiquid("Fuel", new LiquidStack(GCCoreItems.fuel, 1));
-
-        float f = LiquidContainerRegistry.BUCKET_VOLUME * 2.0F / GCCoreItems.fuelCanister.getMaxDamage();
-
-        for (int i = GCCoreItems.fuelCanister.getMaxDamage() - 1; i > 0; i--)
-        {
-            final float f1 = GCCoreItems.fuelCanister.getMaxDamage() - i;
-
-            LiquidContainerRegistry.registerLiquid(new LiquidContainerData(LiquidDictionary.getLiquid("Fuel", i == 1 ? 2000 : MathHelper.floor_float(f * f1 * 1.017F)), new ItemStack(GCCoreItems.fuelCanister, 1, i), new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.fuelCanister.getMaxDamage())));
-        }
-
-        f = LiquidContainerRegistry.BUCKET_VOLUME * 2.0F / GCCoreItems.oilCanister.getMaxDamage();
-
-        for (int i = GCCoreItems.oilCanister.getMaxDamage() - 1; i > 0; i--)
-        {
-            final float f1 = GCCoreItems.oilCanister.getMaxDamage() - i;
-
-            LiquidContainerRegistry.registerLiquid(new LiquidContainerData(LiquidDictionary.getLiquid("Oil", MathHelper.floor_float(f * f1 * 1.017F)), new ItemStack(GCCoreItems.oilCanister, 1, i), new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.oilCanister.getMaxDamage())));
-        }
-
-        SchematicRegistry.registerSchematicRecipe(new GCCoreSchematicRocketT1());
-        SchematicRegistry.registerSchematicRecipe(new GCCoreSchematicMoonBuggy());
-        SchematicRegistry.registerSchematicRecipe(new GCCoreSchematicAdd());
-
-        GasTransmission.register();
-
-        this.registerCreatures();
-        this.registerOtherEntities();
-        MinecraftForge.EVENT_BUS.register(new GCCoreEvents());
-        NetworkRegistry.instance().registerChannel(new GCCorePacketManager(), GalacticraftCore.CHANNELENTITIES, Side.CLIENT);
-    }
-
-    @EventHandler
-    public void postInit(FMLPostInitializationEvent event)
-    {
-        GalacticraftCore.moon.postLoad(event);
-        
-        for (ICelestialBody celestialBody : GalacticraftRegistry.getCelestialBodies())
-        {
-            if (celestialBody.autoRegister())
-            {
-                DimensionManager.registerProviderType(celestialBody.getDimensionID(), celestialBody.getWorldProvider(), false);
-            }
-        }
-        
-        GCCoreCompatibilityManager.checkForCompatibleMods();
-
-        this.registerTileEntities();
-        
-        GCCoreRecipeManager.loadRecipes();
-
-        NetworkRegistry.instance().registerGuiHandler(this, GalacticraftCore.proxy);
-
-        GalacticraftCore.proxy.postInit(event);
-        GalacticraftCore.proxy.registerRenderInformation();
-
-        GCCoreThreadRequirementMissing.startCheck();
-    }
-
-    @EventHandler
-    public void serverInit(FMLServerStartedEvent event)
-    {
-        GalacticraftCore.moon.serverInit(event);
-
-        GCCoreUtil.checkVersion(Side.SERVER);
-        TickRegistry.registerTickHandler(new GCCoreTickHandlerCommon(), Side.SERVER);
-        NetworkRegistry.instance().registerChannel(new GCCorePacketHandlerServer(), GalacticraftCore.CHANNEL, Side.SERVER);
-    }
-
-    @EventHandler
-    public void serverStarting(FMLServerStartingEvent event)
-    {
-        GalacticraftCore.moon.serverStarting(event);
-        event.registerServerCommand(new GCCoreCommandSpaceStationAddOwner());
-        event.registerServerCommand(new GCCoreCommandSpaceStationRemoveOwner());
-        WorldUtil.registerSpaceStations(event.getServer().worldServerForDimension(0).getSaveHandler().getMapFileFromName("dummy").getParentFile());
-
-        for (ICelestialBody celestialBody : GalacticraftRegistry.getCelestialBodies())
-        {
-            if (celestialBody.autoRegister())
-            {
-                WorldUtil.registerPlanet(celestialBody.getDimensionID(), true);
-            }
-        }
-    }
-
-    @EventHandler
-    public void unregisterDims(FMLServerStoppedEvent var1)
-    {
-        WorldUtil.unregisterPlanets();
-        WorldUtil.unregisterSpaceStations();
-    }
-
-    public void registerTileEntities()
+    public static void registerTileEntities()
     {
         GameRegistry.registerTileEntity(GCCoreTileEntityTreasureChest.class, GCCoreCompatibilityManager.isAIILoaded() ? "Space Treasure Chest" : "Treasure Chest");
         GameRegistry.registerTileEntity(GCCoreTileEntityOxygenDistributor.class, "Air Distributor");
@@ -377,7 +194,7 @@ public class GalacticraftCore
         GameRegistry.registerTileEntity(GCCoreTileEntityParachest.class, "Parachest Tile");
     }
 
-    public void registerCreatures()
+    public static void registerCreatures()
     {
         GCCoreUtil.registerGalacticraftCreature(GCCoreEntitySpider.class, "EvolvedSpider", GCCoreConfigManager.idEntityEvolvedSpider, 3419431, 11013646);
         GCCoreUtil.registerGalacticraftCreature(GCCoreEntityZombie.class, "EvolvedZombie", GCCoreConfigManager.idEntityEvolvedZombie, 44975, 7969893);
@@ -387,7 +204,7 @@ public class GalacticraftCore
         GCCoreUtil.registerGalacticraftCreature(GCCoreEntityAlienVillager.class, "AlienVillager", GCCoreConfigManager.idEntityAlienVillager, GCCoreUtil.convertTo32BitColor(255, 103, 181, 145), 12422002);
     }
 
-    public void registerOtherEntities()
+    public static void registerOtherEntities()
     {
         GCCoreUtil.registerGalacticraftNonMobEntity(GCCoreEntityRocketT1.class, "Spaceship", GCCoreConfigManager.idEntitySpaceship, 150, 1, true);
         GCCoreUtil.registerGalacticraftNonMobEntity(GCCoreEntityArrow.class, "GravityArrow", GCCoreConfigManager.idEntityAntiGravityArrow, 150, 5, true);

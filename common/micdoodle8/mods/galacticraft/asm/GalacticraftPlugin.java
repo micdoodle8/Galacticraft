@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.asm;
 
 import java.awt.Desktop;
-import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -10,7 +9,6 @@ import javax.swing.JOptionPane;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import micdoodle8.mods.galacticraft.core.GCLog;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import cpw.mods.fml.common.versioning.DefaultArtifactVersion;
 import cpw.mods.fml.common.versioning.VersionParser;
 import cpw.mods.fml.relauncher.FMLInjectionData;
@@ -107,7 +105,7 @@ public class GalacticraftPlugin implements IFMLLoadingPlugin, IFMLCallHook
     @Override
     public String getModContainerClass()
     {
-        return null;
+        return "micdoodle8.mods.galacticraft.asm.GalacticraftModContainer";
     }
 
     @Override
