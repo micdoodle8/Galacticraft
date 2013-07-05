@@ -647,7 +647,7 @@ public class WorldUtil
             if (var1 instanceof EntityPlayerMP)
             {
                 var1.setLocationAndAngles(type.getPlayerSpawnLocation((WorldServer) var1.worldObj, (EntityPlayerMP) var1).x, type.getPlayerSpawnLocation((WorldServer) var1.worldObj, (EntityPlayerMP) var1).y, type.getPlayerSpawnLocation((WorldServer) var1.worldObj, (EntityPlayerMP) var1).z, var1.rotationYaw, var1.rotationPitch);
-                ((WorldServer) var0).theChunkProviderServer.loadChunk(var0.getChunkFromChunkCoords(type.getPlayerSpawnLocation((WorldServer) var1.worldObj, (EntityPlayerMP) var1).intX(), type.getPlayerSpawnLocation((WorldServer) var1.worldObj, (EntityPlayerMP) var1).intZ()).getChunkCoordIntPair().chunkXPos, var0.getChunkFromChunkCoords(type.getPlayerSpawnLocation((WorldServer) var1.worldObj, (EntityPlayerMP) var1).intX(), type.getPlayerSpawnLocation((WorldServer) var1.worldObj, (EntityPlayerMP) var1).intZ()).getChunkCoordIntPair().chunkZPos);
+                ((WorldServer) var0).theChunkProviderServer.loadChunk(var0.getChunkFromChunkCoords(type.getPlayerSpawnLocation((WorldServer) var1.worldObj, (EntityPlayerMP) var1).getIntX(), type.getPlayerSpawnLocation((WorldServer) var1.worldObj, (EntityPlayerMP) var1).getIntZ()).getChunkCoordIntPair().chunkXPos, var0.getChunkFromChunkCoords(type.getPlayerSpawnLocation((WorldServer) var1.worldObj, (EntityPlayerMP) var1).getIntX(), type.getPlayerSpawnLocation((WorldServer) var1.worldObj, (EntityPlayerMP) var1).getIntZ()).getChunkCoordIntPair().chunkZPos);
             }
         }
 

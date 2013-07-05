@@ -1,11 +1,11 @@
 package micdoodle8.mods.galacticraft.API.world;
 
 import java.util.Random;
+import micdoodle8.mods.galacticraft.API.vector.Vector.Vector3;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-import universalelectricity.core.vector.Vector3;
 
 /**
  * Implement into WorldProvider for customizing spawning players and other

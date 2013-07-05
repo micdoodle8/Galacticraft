@@ -36,42 +36,6 @@ public class GCCoreBlockAirLockFrame extends BlockContainer
     @Override
     public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4)
     {
-        // int airLocksAround = 0;
-        //
-        // for(final ForgeDirection orientation : ForgeDirection.values())
-        // {
-        // if(orientation != ForgeDirection.UNKNOWN)
-        // {
-        // final Vector3 vec = new Vector3(par2, par3, par4);
-        //
-        // final Vector3 vec2 = vec.clone().modifyPositionFromSide(orientation);
-        //
-        // final TileEntity tilePos = vec2.getTileEntity(par1World);
-        //
-        // if (tilePos != null && tilePos instanceof GCCoreTileEntityAirLock)
-        // {
-        // for(final ForgeDirection orientation2 : ForgeDirection.values())
-        // {
-        // if(orientation2 != ForgeDirection.UNKNOWN)
-        // {
-        // final TileEntity tilePos2 =
-        // vec2.clone().modifyPositionFromSide(orientation2).getTileEntity(par1World);
-        //
-        // if (tilePos2 != null && tilePos2 instanceof GCCoreTileEntityAirLock)
-        // {
-        // airLocksAround++;
-        // }
-        // }
-        // }
-        // }
-        // }
-        // }
-        //
-        // if (airLocksAround > 0)
-        // {
-        // return false;
-        // }
-
         return true;
     }
 
@@ -103,7 +67,7 @@ public class GCCoreBlockAirLockFrame extends BlockContainer
             if (orientation != ForgeDirection.UNKNOWN)
             {
                 final Vector3 vector = new Vector3(par2, par3, par4);
-                Vector3 blockVec = this.modifyPositionFromSide(vector.clone(), orientation, 1);
+                Vector3 blockVec = this.modifyPositionFromSide((Vector3) vector.clone(), orientation, 1);
                 Block connection = Block.blocksList[blockVec.getBlockID(par1IBlockAccess)];
 
                 if (connection != null && connection.equals(GCCoreBlocks.airLockSeal))

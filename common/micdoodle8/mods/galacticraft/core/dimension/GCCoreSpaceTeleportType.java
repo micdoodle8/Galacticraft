@@ -6,7 +6,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-import universalelectricity.core.vector.Vector3;
+import micdoodle8.mods.galacticraft.API.vector.Vector.Vector3;
 
 public class GCCoreSpaceTeleportType implements ITeleportType
 {

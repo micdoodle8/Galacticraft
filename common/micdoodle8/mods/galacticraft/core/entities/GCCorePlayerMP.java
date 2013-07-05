@@ -94,7 +94,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
     private boolean hasOpenedPlanetSelectionGui = false;
 
     public int chestSpawnCooldown;
-    public Vector3 chestSpawnVector;
+    public micdoodle8.mods.galacticraft.API.vector.Vector.Vector3 chestSpawnVector;
 
     public int teleportCooldown;
 
