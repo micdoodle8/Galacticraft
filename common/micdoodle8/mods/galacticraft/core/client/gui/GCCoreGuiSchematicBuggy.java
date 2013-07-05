@@ -15,7 +15,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 public class GCCoreGuiSchematicBuggy extends GuiContainer implements ISchematicResultPage
 {
     private static final ResourceLocation buggyBenchTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/buggybench.png");
-    
+
     private int pageIndex;
 
     public GCCoreGuiSchematicBuggy(InventoryPlayer par1InventoryPlayer)

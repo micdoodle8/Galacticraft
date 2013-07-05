@@ -20,7 +20,7 @@ public interface ICargoEntity
             this.resultStack = resultStack;
         }
     }
-    
+
     public EnumCargoLoadingState addCargo(ItemStack stack, boolean doAdd);
 
     public RemovalResult removeCargo(boolean doRemove);

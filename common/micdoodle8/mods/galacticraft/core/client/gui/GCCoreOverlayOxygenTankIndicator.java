@@ -14,7 +14,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GCCoreOverlayOxygenTankIndicator extends GCCoreOverlay
 {
     private final static ResourceLocation guiTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/gui.png");
-    
+
     private static Minecraft minecraft = FMLClientHandler.instance().getClient();
 
     /**

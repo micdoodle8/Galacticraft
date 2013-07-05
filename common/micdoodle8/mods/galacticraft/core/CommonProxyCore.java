@@ -185,7 +185,7 @@ public class CommonProxyCore extends BCGuiHandler implements IGuiHandler
                 }
             }
         }
-        
+
         return super.getServerGuiElement(ID, playerBase, world, x, y, z);
     }
 }

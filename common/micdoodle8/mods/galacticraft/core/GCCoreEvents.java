@@ -27,7 +27,6 @@ import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
-import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreEvents
 {

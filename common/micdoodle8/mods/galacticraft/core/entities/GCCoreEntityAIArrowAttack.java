@@ -5,7 +5,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.util.MathHelper;
-import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreEntityAIArrowAttack extends EntityAIBase
 {
@@ -38,7 +37,7 @@ public class GCCoreEntityAIArrowAttack extends EntityAIBase
         else
         {
             this.rangedAttackEntityHost = par1IRangedAttackMob;
-            this.entityHost = (EntityLiving)par1IRangedAttackMob;
+            this.entityHost = (EntityLiving) par1IRangedAttackMob;
             this.entityMoveSpeed = par2;
             this.field_96561_g = par4;
             this.maxRangedAttackTime = par5;
@@ -98,7 +97,7 @@ public class GCCoreEntityAIArrowAttack extends EntityAIBase
 
         if (--this.rangedAttackTime == 0)
         {
-            if (d0 > (double)this.field_82642_h || !flag)
+            if (d0 > (double) this.field_82642_h || !flag)
             {
                 return;
             }
@@ -117,12 +116,12 @@ public class GCCoreEntityAIArrowAttack extends EntityAIBase
             }
 
             this.rangedAttackEntityHost.attackEntityWithRangedAttack(this.attackTarget, f1);
-            this.rangedAttackTime = MathHelper.floor_float(f * (float)(this.maxRangedAttackTime - this.field_96561_g) + (float)this.field_96561_g);
+            this.rangedAttackTime = MathHelper.floor_float(f * (float) (this.maxRangedAttackTime - this.field_96561_g) + (float) this.field_96561_g);
         }
         else if (this.rangedAttackTime < 0)
         {
             f = MathHelper.sqrt_double(d0) / this.field_96562_i;
-            this.rangedAttackTime = MathHelper.floor_float(f * (float)(this.maxRangedAttackTime - this.field_96561_g) + (float)this.field_96561_g);
+            this.rangedAttackTime = MathHelper.floor_float(f * (float) (this.maxRangedAttackTime - this.field_96561_g) + (float) this.field_96561_g);
         }
     }
 }

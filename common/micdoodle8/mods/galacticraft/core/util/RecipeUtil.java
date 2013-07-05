@@ -175,7 +175,8 @@ public class RecipeUtil
         {
             try
             {
-                // Might as well, since it'll NPE when trying to add the recipe anyway.
+                // Might as well, since it'll NPE when trying to add the recipe
+                // anyway.
                 throw new Exception("Failed to load IC2 item for recipe (" + indentifier + "), ensure it has loaded properly and isn't disabled.");
             }
             catch (Exception e)

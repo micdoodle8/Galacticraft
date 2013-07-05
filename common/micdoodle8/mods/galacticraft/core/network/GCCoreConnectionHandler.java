@@ -53,7 +53,7 @@ public class GCCoreConnectionHandler implements IConnectionHandler
         if (managers.contains(manager))
         {
             managers.remove(manager);
-            
+
             if (managers.size() == 0)
             {
                 WorldUtil.unregisterPlanets();

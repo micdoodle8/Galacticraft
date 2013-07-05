@@ -11,7 +11,7 @@ import org.lwjgl.opengl.GL12;
 public class GCCoreTileEntityAdvancedCraftingTableRenderer extends TileEntitySpecialRenderer
 {
     private static final ResourceLocation assemblyTableTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/assembly.png");
-    
+
     @Override
     public void renderTileEntityAt(TileEntity var1, double par2, double par4, double par6, float var8)
     {

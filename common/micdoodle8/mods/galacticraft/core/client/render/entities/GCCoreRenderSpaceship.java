@@ -1,8 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySkeletonBoss;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.resources.ResourceLocation;
@@ -22,7 +20,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GCCoreRenderSpaceship extends Render
 {
     private static ResourceLocation spaceshipTexture;
-    
+
     protected ModelBase modelSpaceship;
     protected String texture;
 
@@ -41,7 +39,7 @@ public class GCCoreRenderSpaceship extends Render
 
     protected ResourceLocation func_110775_a(Entity par1Entity)
     {
-        return this.func_110779_a((Entity)par1Entity);
+        return this.func_110779_a((Entity) par1Entity);
     }
 
     public void renderSpaceship(EntitySpaceshipBase entity, double par2, double par4, double par6, float par8, float par9)

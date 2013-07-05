@@ -2,9 +2,7 @@ package micdoodle8.mods.galacticraft.core.client.render.entities;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelMeteor;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityLander;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityMeteor;
-import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.resources.ResourceLocation;
 import net.minecraft.entity.Entity;
@@ -16,7 +14,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GCCoreRenderMeteor extends Render
 {
     private static final ResourceLocation meteorTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/meteor.png");
-    
+
     private final GCCoreModelMeteor modelMeteor;
 
     public GCCoreRenderMeteor()
@@ -32,7 +30,7 @@ public class GCCoreRenderMeteor extends Render
 
     protected ResourceLocation func_110775_a(Entity par1Entity)
     {
-        return this.func_110779_a((GCCoreEntityMeteor)par1Entity);
+        return this.func_110779_a((GCCoreEntityMeteor) par1Entity);
     }
 
     public void doRenderMeteor(GCCoreEntityMeteor entity, double par2, double par4, double par6, float par8, float par9)

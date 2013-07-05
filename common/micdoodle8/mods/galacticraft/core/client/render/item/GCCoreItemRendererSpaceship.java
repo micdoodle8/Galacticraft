@@ -24,7 +24,7 @@ import cpw.mods.fml.client.FMLClientHandler;
 public class GCCoreItemRendererSpaceship implements IItemRenderer
 {
     private static final ResourceLocation chestTexture = new ResourceLocation("textures/entity/chest/normal.png");
-    
+
     protected EntitySpaceshipBase spaceship;
     protected ModelBase modelSpaceship;
     protected final ModelChest chestModel = new ModelChest();

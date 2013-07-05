@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core.client.render.entities;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelFlag;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityFlag;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityLander;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemFlag;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.resources.ResourceLocation;
@@ -22,17 +21,17 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GCCoreRenderFlag extends Render
 {
     private static ResourceLocation[] flagTextures;
-    
+
     static
     {
         flagTextures = new ResourceLocation[GCCoreItemFlag.names.length];
-        
+
         for (int i = 0; i < GCCoreItemFlag.names.length; i++)
         {
             flagTextures[i] = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/flag/" + GCCoreItemFlag.names[i] + ".png");
         }
     }
-    
+
     protected GCCoreModelFlag modelSpaceship;
 
     public GCCoreRenderFlag()
@@ -47,13 +46,13 @@ public class GCCoreRenderFlag extends Render
         {
             return null;
         }
-        
+
         return flagTextures[entity.getType()];
     }
 
     protected ResourceLocation func_110775_a(Entity entity)
     {
-        return this.func_110779_a((GCCoreEntityFlag)entity);
+        return this.func_110779_a((GCCoreEntityFlag) entity);
     }
 
     public void renderSpaceship(GCCoreEntityFlag entity, double par2, double par4, double par6, float par8, float par9)

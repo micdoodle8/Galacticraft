@@ -22,7 +22,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 public class GCCoreGuiAirCollector extends GuiContainer
 {
     private static final ResourceLocation collectorTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/oxygen.png");
-    
+
     private final GCCoreTileEntityOxygenCollector collector;
 
     public GCCoreGuiAirCollector(InventoryPlayer par1InventoryPlayer, GCCoreTileEntityOxygenCollector par2TileEntityAirDistributor)

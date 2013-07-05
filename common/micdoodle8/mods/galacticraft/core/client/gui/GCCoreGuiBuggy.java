@@ -17,7 +17,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GCCoreGuiBuggy extends GuiContainer
 {
     private static ResourceLocation[] sealerTexture = new ResourceLocation[4];
-    
+
     static
     {
         for (int i = 0; i < 4; i++)
@@ -25,7 +25,7 @@ public class GCCoreGuiBuggy extends GuiContainer
             sealerTexture[i] = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/buggy_" + i * 18 + ".png");
         }
     }
-    
+
     private final IInventory upperChestInventory;
     private final int type;
 

@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.core.client;
 
+import micdoodle8.mods.galacticraft.API.ICelestialBodyRenderer;
 import micdoodle8.mods.galacticraft.API.IGalaxy;
 import micdoodle8.mods.galacticraft.API.IMapObject;
-import micdoodle8.mods.galacticraft.API.ICelestialBodyRenderer;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 
 public class GCCoreMapSun implements IMapObject

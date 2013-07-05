@@ -20,7 +20,7 @@ import cpw.mods.fml.client.FMLClientHandler;
 public class GCCoreItemRendererBuggy implements IItemRenderer
 {
     private static final ResourceLocation buggyTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/buggy.png");
-    
+
     GCCoreEntityBuggy spaceship = new GCCoreEntityBuggy(FMLClientHandler.instance().getClient().theWorld);
     GCCoreModelBuggy modelSpaceship = new GCCoreModelBuggy();
 

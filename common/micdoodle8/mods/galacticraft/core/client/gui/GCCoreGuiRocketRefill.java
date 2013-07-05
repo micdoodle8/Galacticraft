@@ -18,7 +18,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GCCoreGuiRocketRefill extends GuiContainer
 {
     private static ResourceLocation[] rocketTextures = new ResourceLocation[4];
-    
+
     static
     {
         for (int i = 0; i < 4; i++)
@@ -26,7 +26,7 @@ public class GCCoreGuiRocketRefill extends GuiContainer
             rocketTextures[i] = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/rocket_" + i * 18 + ".png");
         }
     }
-    
+
     private final IInventory upperChestInventory;
 
     private final EnumRocketType rocketType;

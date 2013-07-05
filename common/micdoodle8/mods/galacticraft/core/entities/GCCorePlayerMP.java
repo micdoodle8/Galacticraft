@@ -33,8 +33,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.packet.Packet16BlockItemSwitch;
-import net.minecraft.network.packet.Packet4UpdateTime;
-import net.minecraft.network.packet.Packet70GameEvent;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;

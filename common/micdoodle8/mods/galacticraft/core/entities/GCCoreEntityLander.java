@@ -296,7 +296,6 @@ public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInvento
         }
         else if (var1 instanceof EntityPlayerMP)
         {
-            FMLLog.info("done");
             ((EntityPlayerMP) var1).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, new Object[] { 0 }));
             var1.mountEntity(null);
             return true;

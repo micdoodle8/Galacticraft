@@ -320,11 +320,11 @@ public class WorldUtil
                 }
             }
         }
-        
+
         for (int j = 0; j < GalacticraftRegistry.getCelestialBodies().size(); j++)
         {
             ICelestialBody object = GalacticraftRegistry.getCelestialBodies().get(j);
-            
+
             if (!object.isReachable() && object.addToList())
             {
                 map.put(object.getName() + "*", 0);

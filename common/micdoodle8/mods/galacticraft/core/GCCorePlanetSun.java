@@ -1,10 +1,10 @@
 package micdoodle8.mods.galacticraft.core;
 
-import net.minecraft.world.WorldProvider;
 import micdoodle8.mods.galacticraft.API.IGalaxy;
 import micdoodle8.mods.galacticraft.API.IMapObject;
 import micdoodle8.mods.galacticraft.API.IPlanet;
 import micdoodle8.mods.galacticraft.core.client.GCCoreMapSun;
+import net.minecraft.world.WorldProvider;
 
 /**
  * Yes, I know it's not a planet...

@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.List;
 import micdoodle8.mods.galacticraft.API.SchematicRegistry;
+import micdoodle8.mods.galacticraft.asm.GalacticraftModContainer;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAdvancedCraftingTable;
 import net.minecraft.block.Block;

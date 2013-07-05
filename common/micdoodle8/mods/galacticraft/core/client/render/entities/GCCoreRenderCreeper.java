@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core.client.render.entities;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelCreeper;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityCreeper;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityLander;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemSensorGlasses;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -11,7 +10,6 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.resources.ResourceLocation;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
@@ -31,7 +29,7 @@ public class GCCoreRenderCreeper extends RenderLiving
 {
     private static final ResourceLocation creeperTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/creeper.png");
     private static final ResourceLocation powerTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/power.png");
-    
+
     private final ModelBase creeperModel = new GCCoreModelCreeper(0.2F);
 
     public GCCoreRenderCreeper()
@@ -46,7 +44,7 @@ public class GCCoreRenderCreeper extends RenderLiving
 
     protected ResourceLocation func_110775_a(Entity par1Entity)
     {
-        return this.func_110779_a((GCCoreEntityCreeper)par1Entity);
+        return this.func_110779_a((GCCoreEntityCreeper) par1Entity);
     }
 
     protected void updateCreeperScale(GCCoreEntityCreeper par1GCEntityCreeper, float par2)

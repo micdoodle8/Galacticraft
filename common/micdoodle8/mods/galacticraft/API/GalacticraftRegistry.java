@@ -34,7 +34,9 @@ public class GalacticraftRegistry
     /**
      * Register a Galacticraft Body. See @IPlanet and @IMoon
      * 
-     * @param celestial body object. Must implement IPlanet or IMoon to function as intended
+     * @param celestial
+     *            body object. Must implement IPlanet or IMoon to function as
+     *            intended
      */
     public static void registerCelestialBody(ICelestialBody body)
     {
@@ -47,7 +49,9 @@ public class GalacticraftRegistry
     /**
      * Register a new Galaxy. This is not fully implemented yet.
      * 
-     * @param celestial body object. Must implement IPlanet or IMoon to function as intended
+     * @param celestial
+     *            body object. Must implement IPlanet or IMoon to function as
+     *            intended
      */
     public static void registerGalaxy(IGalaxy galaxy)
     {

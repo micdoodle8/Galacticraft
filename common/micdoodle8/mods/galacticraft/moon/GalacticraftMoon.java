@@ -5,13 +5,11 @@ import java.util.EnumSet;
 import micdoodle8.mods.galacticraft.API.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.API.IMoon;
 import micdoodle8.mods.galacticraft.core.GCCoreCreativeTab;
-import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
 import micdoodle8.mods.galacticraft.moon.dimension.GCMoonTeleportType;
 import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;
 import micdoodle8.mods.galacticraft.moon.items.GCMoonItems;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraftforge.common.DimensionManager;
 import universalelectricity.prefab.TranslationHelper;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
@@ -43,7 +41,7 @@ public class GalacticraftMoon
     private static final String[] LANGUAGES_SUPPORTED = new String[] { "cz_CZE", "de_DE", "en_GB", "en_US", "es_ES", "fi_FI", "fr_FR", "ja_JP", "nl_NL", "pl_PL", "ru_RU", "zh_CN" };
 
     public static GCCoreCreativeTab galacticraftMoonTab;
-    
+
     public static IMoon celestialBodyMoon;
 
     public void preLoad(FMLPreInitializationEvent event)
@@ -60,7 +58,7 @@ public class GalacticraftMoon
     public void load(FMLInitializationEvent event)
     {
         GalacticraftMoon.galacticraftMoonTab = new GCCoreCreativeTab(CreativeTabs.getNextID(), GalacticraftMoon.MODID, GCMoonBlocks.blockMoon.blockID, 5);
-        
+
         GalacticraftMoon.celestialBodyMoon = new GCMoonCelestialBody();
         GalacticraftRegistry.registerCelestialBody(GalacticraftMoon.celestialBodyMoon);
 

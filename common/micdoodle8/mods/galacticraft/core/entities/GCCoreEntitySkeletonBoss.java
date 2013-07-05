@@ -106,12 +106,14 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
         this.roomSize = size;
     }
 
-//    @Override
-//    public boolean attackEntityFrom(DamageSource par1DamageSource, float par2)
-//    {
-////        PacketManager.sendPacketToClients(this.getDescriptionPacket(), this.worldObj, new Vector3(this), 100);
-//        return super.attackEntityFrom(par1DamageSource, par2);
-//    }
+    // @Override
+    // public boolean attackEntityFrom(DamageSource par1DamageSource, float
+    // par2)
+    // {
+    // // PacketManager.sendPacketToClients(this.getDescriptionPacket(),
+    // this.worldObj, new Vector3(this), 100);
+    // return super.attackEntityFrom(par1DamageSource, par2);
+    // }
 
     @Override
     public void updateRiderPosition()
@@ -331,12 +333,12 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
         }
 
         this.ticks++;
-        
+
         if (!this.worldObj.isRemote && this.func_110143_aJ() <= (150.0F * GCCoreConfigManager.dungeonBossHealthMod) / 2)
         {
             AttributeInstance attributeinstance = this.func_110148_a(SharedMonsterAttributes.field_111263_d);
-//            attributeinstance.func_111124_b(skeleBossEnrage);
-//            attributeinstance.func_111121_a(skeleBossEnrage);
+            // attributeinstance.func_111124_b(skeleBossEnrage);
+            // attributeinstance.func_111121_a(skeleBossEnrage);
         }
 
         final EntityPlayer player = this.worldObj.getClosestPlayer(this.posX, this.posY, this.posZ, 20.0);
@@ -347,20 +349,24 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
             {
                 final PathEntity pathentity = this.getNavigator().getPathToEntityLiving(player);
                 this.targetEntity = player;
-//                this.getNavigator().setPath(pathentity, this.health >= 75.0 ? 0.2F : 0.35F);
-//                this.moveSpeed = 0.3F + (this.health >= this.getMaxHealth() / 2 ? 0.1F : 1.0F);
+                // this.getNavigator().setPath(pathentity, this.health >= 75.0 ?
+                // 0.2F : 0.35F);
+                // this.moveSpeed = 0.3F + (this.health >= this.getMaxHealth() /
+                // 2 ? 0.1F : 1.0F);
             }
         }
         else
         {
             this.targetEntity = null;
-//            this.moveSpeed = 0.0F;
+            // this.moveSpeed = 0.0F;
         }
-        
-//        if (this.targetEntity != null)
-//        {
-//            this.getNavigator().tryMoveToEntityLiving(this.targetEntity, 0.3F + (this.func_110143_aJ() <= (150.0F * GCCoreConfigManager.dungeonBossHealthMod) / 2 ? 0.1F : 1.0F));
-//        }
+
+        // if (this.targetEntity != null)
+        // {
+        // this.getNavigator().tryMoveToEntityLiving(this.targetEntity, 0.3F +
+        // (this.func_110143_aJ() <= (150.0F *
+        // GCCoreConfigManager.dungeonBossHealthMod) / 2 ? 0.1F : 1.0F));
+        // }
 
         final Vector3 thisVec = new Vector3(this);
         final List l = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, AxisAlignedBB.getBoundingBox(thisVec.x - 10, thisVec.y - 10, thisVec.z - 10, thisVec.x + 10, thisVec.y + 10, thisVec.z + 10));
@@ -369,10 +375,11 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
         {
             if (e instanceof GCCoreEntitySkeletonBoss)
             {
-//                if (((GCCoreEntitySkeletonBoss) e).getHealth() >= this.health)
-//                {
-//                    ((GCCoreEntitySkeletonBoss) e).setDead();
-//                }
+                // if (((GCCoreEntitySkeletonBoss) e).getHealth() >=
+                // this.health)
+                // {
+                // ((GCCoreEntitySkeletonBoss) e).setDead();
+                // }
             }
         }
 
@@ -458,34 +465,38 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
             }
         }
 
-//        if (this.ticks % 5 == 0)
-//        {
-//            PacketManager.sendPacketToClients(this.getDescriptionPacket(), this.worldObj, new Vector3(this), 100);
-//        }
+        // if (this.ticks % 5 == 0)
+        // {
+        // PacketManager.sendPacketToClients(this.getDescriptionPacket(),
+        // this.worldObj, new Vector3(this), 100);
+        // }
 
         super.onLivingUpdate();
     }
 
-//    public Packet getDescriptionPacket()
-//    {
-//        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.health);
-//    }
-//
-//    @Override
-//    public void handlePacketData(INetworkManager network, int packetType, Packet250CustomPayload packet, EntityPlayer player, ByteArrayDataInput dataStream)
-//    {
-//        try
-//        {
-//            if (this.worldObj.isRemote)
-//            {
-//                this.health = dataStream.readFloat();
-//            }
-//        }
-//        catch (final Exception e)
-//        {
-//            e.printStackTrace();
-//        }
-//    }
+    // public Packet getDescriptionPacket()
+    // {
+    // return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES,
+    // this, this.health);
+    // }
+    //
+    // @Override
+    // public void handlePacketData(INetworkManager network, int packetType,
+    // Packet250CustomPayload packet, EntityPlayer player, ByteArrayDataInput
+    // dataStream)
+    // {
+    // try
+    // {
+    // if (this.worldObj.isRemote)
+    // {
+    // this.health = dataStream.readFloat();
+    // }
+    // }
+    // catch (final Exception e)
+    // {
+    // e.printStackTrace();
+    // }
+    // }
 
     @Override
     public void onDeath(DamageSource par1DamageSource)
@@ -637,7 +648,7 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
         {
             return;
         }
-        
+
         Entity var1;
 
         if (this.worldObj.provider instanceof IGalacticraftWorldProvider)

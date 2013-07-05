@@ -9,7 +9,6 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.resources.ResourceLocation;
-import net.minecraft.util.StringUtils;
 import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -19,7 +18,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GCCoreOverlaySpaceship extends GCCoreOverlay
 {
     private final static ResourceLocation guiTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/spaceshipgui.png");
-    
+
     private static Minecraft minecraft = FMLClientHandler.instance().getClient();
 
     /**
@@ -82,7 +81,11 @@ public class GCCoreOverlaySpaceship extends GCCoreOverlay
         spaceship.renderSpaceship(new GCCoreEntityRocketT1(GCCoreOverlaySpaceship.minecraft.theWorld), 0, 0, 0, 0, 0);
         GL11.glPopMatrix();
 
-//        GCCoreOverlay.loadDownloadableImageTexture("http://skins.minecraft.net/MinecraftSkins/" + StringUtils.stripControlCodes(GCCoreOverlaySpaceship.minecraft.thePlayer.username) + ".png", FMLClientHandler.instance().getClient().thePlayer.getTexture());
+        // GCCoreOverlay.loadDownloadableImageTexture("http://skins.minecraft.net/MinecraftSkins/"
+        // +
+        // StringUtils.stripControlCodes(GCCoreOverlaySpaceship.minecraft.thePlayer.username)
+        // + ".png",
+        // FMLClientHandler.instance().getClient().thePlayer.getTexture());
 
         GL11.glTranslatef(0F, 0F, 60F);
 

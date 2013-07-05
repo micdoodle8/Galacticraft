@@ -23,7 +23,6 @@ public class GCCoreBlockAirLockWall extends BlockBreakable implements IPartialSe
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister par1IconRegister)
     {
-        FMLLog.info("done2");
         this.blockIcon = par1IconRegister.registerIcon("galacticraftcore:deco_aluminium_4");
     }
 

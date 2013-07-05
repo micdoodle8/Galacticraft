@@ -26,7 +26,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatAllowedCharacters;
 import net.minecraft.util.MathHelper;
-import net.minecraft.util.StringTranslate;
 import net.minecraft.world.WorldProvider;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
@@ -495,7 +494,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
             for (final ItemStack stack : items)
             {
                 GCCoreGuiChoosePlanet.drawItems.renderItemAndEffectIntoGUI(this.fontRenderer, this.mc.renderEngine, stack, l, itemY);
-                
+
                 itemY += 16;
             }
 
@@ -554,13 +553,15 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
         {
             dest = dest.replace("*", "");
         }
-        
+
         str = LanguageRegistry.instance().getStringLocalization("gui.choosePlanet.desc." + dest);
 
-//        if (this.destinations[this.selectedSlot].toLowerCase().equals("overworld"))
-//        {
-//            str = LanguageRegistry.instance().getStringLocalization("gui.choosePlanet.desc.overworld");
-//        }
+        // if
+        // (this.destinations[this.selectedSlot].toLowerCase().equals("overworld"))
+        // {
+        // str =
+        // LanguageRegistry.instance().getStringLocalization("gui.choosePlanet.desc.overworld");
+        // }
 
         if (str != null)
         {

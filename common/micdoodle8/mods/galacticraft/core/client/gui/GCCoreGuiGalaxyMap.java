@@ -39,7 +39,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GCCoreGuiGalaxyMap extends GCCoreGuiStarBackground
 {
     private static final ResourceLocation guiTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/gui.png");
-    
+
     private static int guiMapMinX;
 
     private static int guiMapMinY;
@@ -311,13 +311,11 @@ public class GCCoreGuiGalaxyMap extends GCCoreGuiStarBackground
             final int var11 = -var5 + galaxy.getYCoord() * 10000;
 
             this.drawCircles(galaxy, var10 + var10, var11 + var11);
-            
-            FMLLog.info("" + GalacticraftCore.mapPlanets);
 
             for (IPlanet thePlanet : GalacticraftCore.mapPlanets)
             {
                 IMapObject planet = thePlanet.getMapObject();
-                
+
                 if (thePlanet.getParentGalaxy() != null && thePlanet.getParentGalaxy() == galaxy)
                 {
                     var26 = 0;
@@ -406,7 +404,7 @@ public class GCCoreGuiGalaxyMap extends GCCoreGuiStarBackground
                             for (final IMoon theMoon : moonList)
                             {
                                 IMapObject moon = theMoon.getMapObject();
-                                
+
                                 int var26b = 0;
                                 int var27b = 0;
 
@@ -725,27 +723,28 @@ public class GCCoreGuiGalaxyMap extends GCCoreGuiStarBackground
         }
     }
 
-//    public float getLargestOrbit(IGalaxy galaxy)
-//    {
-//        float orbit = -1F;
-//
-//        for (final IGalacticraftSubMod mod : GalacticraftCore.subMods)
-//        {
-//            if (mod.getParentGalaxy() == galaxy)
-//            {
-//                for (final IGalacticraftSubModClient client : GalacticraftCore.clientSubMods)
-//                {
-//                    if (mod.getDimensionName().equals(client.getDimensionName()))
-//                    {
-//                        if (client.getPlanetForMap().getDistanceFromCenter() > orbit)
-//                        {
-//                            orbit = client.getPlanetForMap().getDistanceFromCenter();
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//
-//        return orbit;
-//    }
+    // public float getLargestOrbit(IGalaxy galaxy)
+    // {
+    // float orbit = -1F;
+    //
+    // for (final IGalacticraftSubMod mod : GalacticraftCore.subMods)
+    // {
+    // if (mod.getParentGalaxy() == galaxy)
+    // {
+    // for (final IGalacticraftSubModClient client :
+    // GalacticraftCore.clientSubMods)
+    // {
+    // if (mod.getDimensionName().equals(client.getDimensionName()))
+    // {
+    // if (client.getPlanetForMap().getDistanceFromCenter() > orbit)
+    // {
+    // orbit = client.getPlanetForMap().getDistanceFromCenter();
+    // }
+    // }
+    // }
+    // }
+    // }
+    //
+    // return orbit;
+    // }
 }

@@ -255,16 +255,16 @@ public class GCCoreEntitySpider extends EntitySpider implements IEntityBreathabl
     public EntityLivingData func_110161_a(EntityLivingData par1EntityLivingData)
     {
         EntityLivingData par1EntityLivingData1 = super.func_110161_a(par1EntityLivingData);
-        
+
         if (this.worldObj.rand.nextInt(100) == 0)
         {
             EntitySkeleton entityskeleton = new EntitySkeleton(this.worldObj);
             entityskeleton.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
-            entityskeleton.func_110161_a((EntityLivingData)null);
+            entityskeleton.func_110161_a((EntityLivingData) null);
             this.worldObj.spawnEntityInWorld(entityskeleton);
             entityskeleton.mountEntity(this);
         }
-        
+
         return par1EntityLivingData1;
     }
 

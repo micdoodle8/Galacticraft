@@ -51,7 +51,7 @@ public class GCCoreRecipeManager
             GCCoreRecipeManager.addBasicComponentsCraftingRecipes();
         }
     }
-    
+
     private static void addGregTechCraftingRecipes()
     {
         if (!GalacticraftCore.setSpaceStationRecipe)
@@ -590,7 +590,7 @@ public class GCCoreRecipeManager
         RecipeUtil.addRecipe(new ItemStack(GCCoreItems.flagPole, 2, 0), new Object[] { "X", "X", "X", 'X', "ingotRefinedIron" });
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealer, 1), new Object[] { "WZW", "YXY", "WZW", 'V', RecipeUtil.getIndustrialCraftItem("insulatedCopperCableItem"), 'W', "refinedIronIngot", 'X', GCCoreItems.airFan, 'Y', GCCoreItems.airVent, 'Z', "carbonPlate" });
-        
+
         RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.enclosedWire, 1, 2), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("insulatedCopperCableItem"), 'X', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4) });
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.enclosedWire, 1, EnumEnclosedBlock.IC2_GOLD_CABLE.getMetadata()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("insulatedGoldCableItem"), 'X', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4) });
@@ -598,7 +598,7 @@ public class GCCoreRecipeManager
         RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.enclosedWire, 1, EnumEnclosedBlock.IC2_HV_CABLE.getMetadata()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("insulatedIronCableItem"), 'X', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4) });
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.enclosedWire, 1, EnumEnclosedBlock.IC2_GLASS_FIBRE_CABLE.getMetadata()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("glassFiberCableItem"), 'X', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4) });
-        
+
         RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.enclosedWire, 1, EnumEnclosedBlock.IC2_LV_CABLE.getMetadata()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("tinCableItem"), 'X', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4) });
     }
 }

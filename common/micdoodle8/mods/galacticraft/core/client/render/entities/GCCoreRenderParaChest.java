@@ -14,7 +14,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GCCoreRenderParaChest extends Render
 {
     private static final ResourceLocation parachestTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/parachest.png");
-    
+
     private final GCCoreModelParaChest chestModel;
 
     public GCCoreRenderParaChest()
@@ -37,9 +37,9 @@ public class GCCoreRenderParaChest extends Render
     {
         GL11.glPushMatrix();
         GL11.glTranslatef((float) par2, (float) par4, (float) par6);
-        
+
         this.func_110777_b(entity);
-        
+
         if (!entity.isDead)
         {
             this.chestModel.renderAll();

@@ -6,7 +6,6 @@ import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityLander;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.resources.ResourceLocation;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.projectile.EntityArrow;
 import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -21,7 +20,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GCCoreRenderLander extends Render
 {
     private static final ResourceLocation landerTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/lander.png");
-    
+
     protected GCCoreModelLander landerModel;
 
     public GCCoreRenderLander()
@@ -37,7 +36,7 @@ public class GCCoreRenderLander extends Render
 
     protected ResourceLocation func_110775_a(Entity par1Entity)
     {
-        return this.func_110779_a((GCCoreEntityLander)par1Entity);
+        return this.func_110779_a((GCCoreEntityLander) par1Entity);
     }
 
     public void renderLander(GCCoreEntityLander entity, double par2, double par4, double par6, float par8, float par9)
@@ -56,6 +55,6 @@ public class GCCoreRenderLander extends Render
     @Override
     public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
     {
-        this.renderLander((GCCoreEntityLander)par1Entity, par2, par4, par6, par8, par9);
+        this.renderLander((GCCoreEntityLander) par1Entity, par2, par4, par6, par8, par9);
     }
 }

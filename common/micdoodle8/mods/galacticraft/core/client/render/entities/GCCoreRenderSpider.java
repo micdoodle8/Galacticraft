@@ -30,7 +30,7 @@ public class GCCoreRenderSpider extends RenderLiving
     private static final ResourceLocation spiderTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/spider.png");
     private static final ResourceLocation powerTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/power.png");
     private static final ResourceLocation spiderEyesTexture = new ResourceLocation("textures/entity/spider/spider.png");
-    
+
     private final ModelBase model = new GCCoreModelSpider(0.2F);
 
     public GCCoreRenderSpider()
@@ -46,7 +46,7 @@ public class GCCoreRenderSpider extends RenderLiving
 
     protected ResourceLocation func_110775_a(Entity par1Entity)
     {
-        return this.func_110779_a((GCCoreEntitySpider)par1Entity);
+        return this.func_110779_a((GCCoreEntitySpider) par1Entity);
     }
 
     protected float setSpiderDeathMaxRotation(GCCoreEntitySpider par1EntitySpider)

@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.Random;
+import micdoodle8.mods.galacticraft.asm.GalacticraftModContainer;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.moon.items.GCMoonItems;
 import net.minecraft.block.Block;

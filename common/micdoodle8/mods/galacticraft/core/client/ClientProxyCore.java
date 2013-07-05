@@ -42,8 +42,8 @@ import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRenderer
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererLandingPad;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererMeteor;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererOxygenPipe;
-import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererUnlitTorch;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererTreasureChest;
+import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererUnlitTorch;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderAlienVillager;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderArrow;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderBuggy;
@@ -292,9 +292,9 @@ public class ClientProxyCore extends CommonProxyCore
             if (celestialObject.getMapObject() != null && celestialObject instanceof IMoon)
             {
                 ArrayList<IMoon> list = GalacticraftCore.mapMoons.get(((IMoon) celestialObject).getParentPlanet());
-                
+
                 list.add((IMoon) celestialObject);
-                
+
                 GalacticraftCore.mapMoons.put(((IMoon) celestialObject).getParentPlanet(), list);
             }
         }
@@ -744,10 +744,10 @@ public class ClientProxyCore extends CommonProxyCore
                 return null;
             }
         }
-//        else if (ID == GCCoreConfigManager.idGuiKnowledgeBook)
-//        {
-//            return new GCCoreGuiKnowledgeBook();
-//        }
+        // else if (ID == GCCoreConfigManager.idGuiKnowledgeBook)
+        // {
+        // return new GCCoreGuiKnowledgeBook();
+        // }
         else
         {
             final GCCorePlayerSP playerClient = PlayerUtil.getPlayerBaseClientFromPlayer(player);
@@ -770,7 +770,7 @@ public class ClientProxyCore extends CommonProxyCore
                 }
             }
         }
-        
+
         return super.getClientGuiElement(ID, player, world, x, y, z);
     }
 }

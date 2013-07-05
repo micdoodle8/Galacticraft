@@ -17,7 +17,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 public class GCCoreGuiSchematicInput extends GuiContainer implements ISchematicResultPage
 {
     private static final ResourceLocation schematicInputTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/schematicpage.png");
-    
+
     private GuiButton backButton;
     private GuiButton nextButton;
     private GuiButton unlockButton;

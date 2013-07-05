@@ -15,7 +15,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 public class GCCoreGuiSchematicRocketT1 extends GuiContainer implements ISchematicResultPage
 {
     private static final ResourceLocation rocketBenchTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/rocketbench.png");
-    
+
     private GuiButton backButton;
     private GuiButton nextButton;
     private int pageIndex;

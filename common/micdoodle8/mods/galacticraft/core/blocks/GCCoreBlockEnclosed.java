@@ -294,7 +294,7 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
     {
         if (metadata <= EnumEnclosedBlock.COPPERWIRE.getMetadata())
         {
-            return null/*new  TODO TileEntityCopperWire()*/;
+            return null/* new TODO TileEntityCopperWire() */;
         }
         else if (metadata <= EnumEnclosedBlock.OXYGENPIPE.getMetadata())
         {

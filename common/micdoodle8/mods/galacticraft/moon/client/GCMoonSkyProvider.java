@@ -26,7 +26,7 @@ public class GCMoonSkyProvider extends IRenderHandler
 {
     private static final ResourceLocation overworldTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/planets/overworld.png");
     private static final ResourceLocation sunTexture = new ResourceLocation("textures/environment/sun.png");
-    
+
     public int starGLCallList = GLAllocation.generateDisplayLists(3);
     public int glSkyList;
     public int glSkyList2;

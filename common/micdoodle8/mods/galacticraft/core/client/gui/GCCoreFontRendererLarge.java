@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,6 +16,8 @@ import net.minecraft.client.resources.ResourceLocation;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.util.ChatAllowedCharacters;
 import org.lwjgl.opengl.GL11;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class GCCoreFontRendererLarge
@@ -32,13 +32,14 @@ public class GCCoreFontRendererLarge
     public Random fontRandom = new Random();
 
     /**
-     * Array of the start/end column (in upper/lower nibble) for every glyph in the /font directory.
+     * Array of the start/end column (in upper/lower nibble) for every glyph in
+     * the /font directory.
      */
     private byte[] glyphWidth = new byte[65536];
 
     /**
-     * Array of RGB triplets defining the 16 standard chat colors followed by 16 darker version of the same colors for
-     * drop shadows.
+     * Array of RGB triplets defining the 16 standard chat colors followed by 16
+     * darker version of the same colors for drop shadows.
      */
     private int[] colorCode = new int[32];
     private final ResourceLocation field_111273_g;
@@ -53,12 +54,14 @@ public class GCCoreFontRendererLarge
     private float posY;
 
     /**
-     * If true, strings should be rendered with Unicode fonts instead of the default.png font
+     * If true, strings should be rendered with Unicode fonts instead of the
+     * default.png font
      */
     private boolean unicodeFlag;
 
     /**
-     * If true, the Unicode Bidirectional Algorithm should be run before rendering any string.
+     * If true, the Unicode Bidirectional Algorithm should be run before
+     * rendering any string.
      */
     private boolean bidiFlag;
 
@@ -92,7 +95,8 @@ public class GCCoreFontRendererLarge
     private boolean underlineStyle;
 
     /**
-     * Set if the "m" style (strikethrough) is active in currently rendering string
+     * Set if the "m" style (strikethrough) is active in currently rendering
+     * string
      */
     private boolean strikethroughStyle;
 
@@ -227,15 +231,16 @@ public class GCCoreFontRendererLarge
     }
 
     /**
-     * Render a single character with the default.png font at current (posX,posY) location...
+     * Render a single character with the default.png font at current
+     * (posX,posY) location...
      */
     private float renderDefaultChar(int par1, boolean par2)
     {
-        float f = (float)(par1 % 16 * 8);
-        float f1 = (float)(par1 / 16 * 8);
+        float f = (float) (par1 % 16 * 8);
+        float f1 = (float) (par1 / 16 * 8);
         float f2 = par2 ? 1.0F : 0.0F;
         this.renderEngine.func_110577_a(this.field_111273_g);
-        float f3 = (float)this.charWidth[par1] - 0.01F;
+        float f3 = (float) this.charWidth[par1] - 0.01F;
         GL11.glBegin(GL11.GL_TRIANGLE_STRIP);
         GL11.glTexCoord2f(f / 128.0F, f1 / 128.0F);
         GL11.glVertex3f(this.posX + f2, this.posY, 0.0F);
@@ -246,21 +251,22 @@ public class GCCoreFontRendererLarge
         GL11.glTexCoord2f((f + f3) / 128.0F, (f1 + 7.99F) / 128.0F);
         GL11.glVertex3f(this.posX + f3 - f2, this.posY + 7.99F, 0.0F);
         GL11.glEnd();
-        return (float)this.charWidth[par1];
+        return (float) this.charWidth[par1];
     }
 
     private ResourceLocation func_111271_a(int par1)
     {
         if (field_111274_c[par1] == null)
         {
-            field_111274_c[par1] = new ResourceLocation(String.format("textures/font/unicode_page_%02x.png", new Object[] {Integer.valueOf(par1)}));
+            field_111274_c[par1] = new ResourceLocation(String.format("textures/font/unicode_page_%02x.png", new Object[] { Integer.valueOf(par1) }));
         }
 
         return field_111274_c[par1];
     }
 
     /**
-     * Load one of the /font/glyph_XX.png into a new GL texture and store the texture ID in glyphTextureName array.
+     * Load one of the /font/glyph_XX.png into a new GL texture and store the
+     * texture ID in glyphTextureName array.
      */
     private void loadGlyphTexture(int par1)
     {
@@ -268,7 +274,8 @@ public class GCCoreFontRendererLarge
     }
 
     /**
-     * Render a single Unicode character at current (posX,posY) location using one of the /font/glyph_XX.png files...
+     * Render a single Unicode character at current (posX,posY) location using
+     * one of the /font/glyph_XX.png files...
      */
     private float renderUnicodeChar(char par1, boolean par2)
     {
@@ -282,10 +289,10 @@ public class GCCoreFontRendererLarge
             this.loadGlyphTexture(i);
             int j = this.glyphWidth[par1] >>> 4;
             int k = this.glyphWidth[par1] & 15;
-            float f = (float)j;
-            float f1 = (float)(k + 1);
-            float f2 = (float)(par1 % 16 * 16) + f;
-            float f3 = (float)((par1 & 255) / 16 * 16);
+            float f = (float) j;
+            float f1 = (float) (k + 1);
+            float f2 = (float) (par1 % 16 * 16) + f;
+            float f3 = (float) ((par1 & 255) / 16 * 16);
             float f4 = f1 - f - 0.02F;
             float f5 = par2 ? 1.0F : 0.0F;
             GL11.glBegin(GL11.GL_TRIANGLE_STRIP);
@@ -346,7 +353,8 @@ public class GCCoreFontRendererLarge
     }
 
     /**
-     * Apply Unicode Bidirectional Algorithm to string and return a new possibly reordered string for visual rendering.
+     * Apply Unicode Bidirectional Algorithm to string and return a new possibly
+     * reordered string for visual rendering.
      */
     private String bidiReorder(String par1Str)
     {
@@ -363,11 +371,11 @@ public class GCCoreFontRendererLarge
                 i = bidi.getRunLimit(j);
                 int l = bidi.getRunLevel(j);
                 String s1 = par1Str.substring(k, i);
-                abyte[j] = (byte)l;
+                abyte[j] = (byte) l;
                 astring[j] = s1;
             }
 
-            String[] astring1 = (String[])astring.clone();
+            String[] astring1 = (String[]) astring.clone();
             Bidi.reorderVisually(abyte, 0, astring, 0, abyte.length);
             StringBuilder stringbuilder = new StringBuilder();
             i = 0;
@@ -427,7 +435,8 @@ public class GCCoreFontRendererLarge
     }
 
     /**
-     * Reset all style flag fields in the class to false; called at the start of string rendering
+     * Reset all style flag fields in the class to false; called at the start of
+     * string rendering
      */
     private void resetStyles()
     {
@@ -445,7 +454,7 @@ public class GCCoreFontRendererLarge
     {
         GL11.glPushMatrix();
         GL11.glScalef(2.0F, 2.0F, 2.0F);
-        
+
         for (int i = 0; i < par1Str.length(); ++i)
         {
             char c0 = par1Str.charAt(i);
@@ -476,7 +485,7 @@ public class GCCoreFontRendererLarge
 
                     k = this.colorCode[j];
                     this.textColor = k;
-                    GL11.glColor4f((float)(k >> 16) / 255.0F, (float)(k >> 8 & 255) / 255.0F, (float)(k & 255) / 255.0F, this.alpha);
+                    GL11.glColor4f((float) (k >> 16) / 255.0F, (float) (k >> 8 & 255) / 255.0F, (float) (k & 255) / 255.0F, this.alpha);
                 }
                 else if (j == 16)
                 {
@@ -571,10 +580,10 @@ public class GCCoreFontRendererLarge
                     tessellator = Tessellator.instance;
                     GL11.glDisable(GL11.GL_TEXTURE_2D);
                     tessellator.startDrawingQuads();
-                    tessellator.addVertex((double)this.posX, (double)(this.posY + (float)(this.FONT_HEIGHT / 2)), 0.0D);
-                    tessellator.addVertex((double)(this.posX + f1), (double)(this.posY + (float)(this.FONT_HEIGHT / 2)), 0.0D);
-                    tessellator.addVertex((double)(this.posX + f1), (double)(this.posY + (float)(this.FONT_HEIGHT / 2) - 1.0F), 0.0D);
-                    tessellator.addVertex((double)this.posX, (double)(this.posY + (float)(this.FONT_HEIGHT / 2) - 1.0F), 0.0D);
+                    tessellator.addVertex((double) this.posX, (double) (this.posY + (float) (this.FONT_HEIGHT / 2)), 0.0D);
+                    tessellator.addVertex((double) (this.posX + f1), (double) (this.posY + (float) (this.FONT_HEIGHT / 2)), 0.0D);
+                    tessellator.addVertex((double) (this.posX + f1), (double) (this.posY + (float) (this.FONT_HEIGHT / 2) - 1.0F), 0.0D);
+                    tessellator.addVertex((double) this.posX, (double) (this.posY + (float) (this.FONT_HEIGHT / 2) - 1.0F), 0.0D);
                     tessellator.draw();
                     GL11.glEnable(GL11.GL_TEXTURE_2D);
                 }
@@ -585,18 +594,18 @@ public class GCCoreFontRendererLarge
                     GL11.glDisable(GL11.GL_TEXTURE_2D);
                     tessellator.startDrawingQuads();
                     int l = this.underlineStyle ? -1 : 0;
-                    tessellator.addVertex((double)(this.posX + (float)l), (double)(this.posY + (float)this.FONT_HEIGHT), 0.0D);
-                    tessellator.addVertex((double)(this.posX + f1), (double)(this.posY + (float)this.FONT_HEIGHT), 0.0D);
-                    tessellator.addVertex((double)(this.posX + f1), (double)(this.posY + (float)this.FONT_HEIGHT - 1.0F), 0.0D);
-                    tessellator.addVertex((double)(this.posX + (float)l), (double)(this.posY + (float)this.FONT_HEIGHT - 1.0F), 0.0D);
+                    tessellator.addVertex((double) (this.posX + (float) l), (double) (this.posY + (float) this.FONT_HEIGHT), 0.0D);
+                    tessellator.addVertex((double) (this.posX + f1), (double) (this.posY + (float) this.FONT_HEIGHT), 0.0D);
+                    tessellator.addVertex((double) (this.posX + f1), (double) (this.posY + (float) this.FONT_HEIGHT - 1.0F), 0.0D);
+                    tessellator.addVertex((double) (this.posX + (float) l), (double) (this.posY + (float) this.FONT_HEIGHT - 1.0F), 0.0D);
                     tessellator.draw();
                     GL11.glEnable(GL11.GL_TEXTURE_2D);
                 }
 
-                this.posX += (float)((int)f1);
+                this.posX += (float) ((int) f1);
             }
         }
-        
+
         GL11.glPopMatrix();
     }
 
@@ -616,7 +625,8 @@ public class GCCoreFontRendererLarge
     }
 
     /**
-     * Render single line string by setting GL color, current (posX,posY), and calling renderStringAtPos()
+     * Render single line string by setting GL color, current (posX,posY), and
+     * calling renderStringAtPos()
      */
     private int renderString(String par1Str, int par2, int par3, int par4, boolean par5)
     {
@@ -636,20 +646,21 @@ public class GCCoreFontRendererLarge
                 par4 = (par4 & 16579836) >> 2 | par4 & -16777216;
             }
 
-            this.red = (float)(par4 >> 16 & 255) / 255.0F;
-            this.blue = (float)(par4 >> 8 & 255) / 255.0F;
-            this.green = (float)(par4 & 255) / 255.0F;
-            this.alpha = (float)(par4 >> 24 & 255) / 255.0F;
+            this.red = (float) (par4 >> 16 & 255) / 255.0F;
+            this.blue = (float) (par4 >> 8 & 255) / 255.0F;
+            this.green = (float) (par4 & 255) / 255.0F;
+            this.alpha = (float) (par4 >> 24 & 255) / 255.0F;
             GL11.glColor4f(this.red, this.blue, this.green, this.alpha);
-            this.posX = (float)par2;
-            this.posY = (float)par3;
+            this.posX = (float) par2;
+            this.posY = (float) par3;
             this.renderStringAtPos(par1Str, par5);
-            return (int)this.posX;
+            return (int) this.posX;
         }
     }
 
     /**
-     * Returns the width of this string. Equivalent of FontMetrics.stringWidth(String s).
+     * Returns the width of this string. Equivalent of
+     * FontMetrics.stringWidth(String s).
      */
     public int getStringWidth(String par1Str)
     {
@@ -839,8 +850,8 @@ public class GCCoreFontRendererLarge
     }
 
     /**
-     * Perform actual work of rendering a multi-line string with wordwrap and with darker drop shadow color if flag is
-     * set
+     * Perform actual work of rendering a multi-line string with wordwrap and
+     * with darker drop shadow color if flag is set
      */
     private void renderSplitString(String par1Str, int par2, int par3, int par4, boolean par5)
     {
@@ -848,13 +859,14 @@ public class GCCoreFontRendererLarge
 
         for (Iterator iterator = list.iterator(); iterator.hasNext(); par3 += this.FONT_HEIGHT)
         {
-            String s1 = (String)iterator.next();
+            String s1 = (String) iterator.next();
             this.renderStringAligned(s1, par2, par3, par4, this.textColor, par5);
         }
     }
 
     /**
-     * Returns the width of the wordwrapped String (maximum length is parameter k)
+     * Returns the width of the wordwrapped String (maximum length is parameter
+     * k)
      */
     public int splitStringWidth(String par1Str, int par2)
     {
@@ -862,8 +874,8 @@ public class GCCoreFontRendererLarge
     }
 
     /**
-     * Set unicodeFlag controlling whether strings should be rendered with Unicode fonts instead of the default.png
-     * font.
+     * Set unicodeFlag controlling whether strings should be rendered with
+     * Unicode fonts instead of the default.png font.
      */
     public void setUnicodeFlag(boolean par1)
     {
@@ -871,8 +883,8 @@ public class GCCoreFontRendererLarge
     }
 
     /**
-     * Get unicodeFlag controlling whether strings should be rendered with Unicode fonts instead of the default.png
-     * font.
+     * Get unicodeFlag controlling whether strings should be rendered with
+     * Unicode fonts instead of the default.png font.
      */
     public boolean getUnicodeFlag()
     {
@@ -880,7 +892,8 @@ public class GCCoreFontRendererLarge
     }
 
     /**
-     * Set bidiFlag to control if the Unicode Bidirectional Algorithm should be run before rendering any string.
+     * Set bidiFlag to control if the Unicode Bidirectional Algorithm should be
+     * run before rendering any string.
      */
     public void setBidiFlag(boolean par1)
     {
@@ -896,7 +909,8 @@ public class GCCoreFontRendererLarge
     }
 
     /**
-     * Inserts newline and formatting into a string to wrap it within the specified width.
+     * Inserts newline and formatting into a string to wrap it within the
+     * specified width.
      */
     String wrapFormattedStringToWidth(String par1Str, int par2)
     {
@@ -917,7 +931,8 @@ public class GCCoreFontRendererLarge
     }
 
     /**
-     * Determines how many characters from the string will fit into the specified width.
+     * Determines how many characters from the string will fit into the
+     * specified width.
      */
     private int sizeStringToWidth(String par1Str, int par2)
     {
@@ -932,38 +947,38 @@ public class GCCoreFontRendererLarge
 
             switch (c0)
             {
-                case 10:
-                    --l;
-                    break;
-                case 167:
-                    if (l < j - 1)
-                    {
-                        ++l;
-                        char c1 = par1Str.charAt(l);
+            case 10:
+                --l;
+                break;
+            case 167:
+                if (l < j - 1)
+                {
+                    ++l;
+                    char c1 = par1Str.charAt(l);
 
-                        if (c1 != 108 && c1 != 76)
+                    if (c1 != 108 && c1 != 76)
+                    {
+                        if (c1 == 114 || c1 == 82 || isFormatColor(c1))
                         {
-                            if (c1 == 114 || c1 == 82 || isFormatColor(c1))
-                            {
-                                flag = false;
-                            }
-                        }
-                        else
-                        {
-                            flag = true;
+                            flag = false;
                         }
                     }
-
-                    break;
-                case 32:
-                    i1 = l;
-                default:
-                    k += this.getCharWidth(c0);
-
-                    if (flag)
+                    else
                     {
-                        ++k;
+                        flag = true;
                     }
+                }
+
+                break;
+            case 32:
+                i1 = l;
+            default:
+                k += this.getCharWidth(c0);
+
+                if (flag)
+                {
+                    ++k;
+                }
             }
 
             if (c0 == 10)
@@ -991,7 +1006,8 @@ public class GCCoreFontRendererLarge
     }
 
     /**
-     * Checks if the char code is O-K...lLrRk-o... used to set special formatting.
+     * Checks if the char code is O-K...lLrRk-o... used to set special
+     * formatting.
      */
     private static boolean isFormatSpecial(char par0)
     {
@@ -999,7 +1015,8 @@ public class GCCoreFontRendererLarge
     }
 
     /**
-     * Digests a string for nonprinting formatting characters then returns a string containing only that formatting.
+     * Digests a string for nonprinting formatting characters then returns a
+     * string containing only that formatting.
      */
     private static String getFormatFromString(String par0Str)
     {
@@ -1028,7 +1045,8 @@ public class GCCoreFontRendererLarge
     }
 
     /**
-     * Get bidiFlag that controls if the Unicode Bidirectional Algorithm should be run before rendering any string
+     * Get bidiFlag that controls if the Unicode Bidirectional Algorithm should
+     * be run before rendering any string
      */
     public boolean getBidiFlag()
     {

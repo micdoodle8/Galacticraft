@@ -107,7 +107,7 @@ public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityB
             else
             {
                 ChunkCoordinates chunkcoordinates = this.villageObj.getCenter();
-                this.func_110171_b(chunkcoordinates.posX, chunkcoordinates.posY, chunkcoordinates.posZ, (int)((float)this.villageObj.getVillageRadius() * 0.6F));
+                this.func_110171_b(chunkcoordinates.posX, chunkcoordinates.posY, chunkcoordinates.posZ, (int) ((float) this.villageObj.getVillageRadius() * 0.6F));
 
                 if (this.field_82190_bM)
                 {

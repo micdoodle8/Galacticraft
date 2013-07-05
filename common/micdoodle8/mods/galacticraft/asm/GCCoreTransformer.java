@@ -44,7 +44,7 @@ public class GCCoreTransformer implements net.minecraft.launchwrapper.IClassTran
         {
             e.printStackTrace();
         }
-        
+
         if (this.deobfuscated)
         {
             this.nodemap.put("respawnPlayerMethod", "respawnPlayer");
@@ -203,7 +203,7 @@ public class GCCoreTransformer implements net.minecraft.launchwrapper.IClassTran
         final ClassNode node = new ClassNode();
         final ClassReader reader = new ClassReader(bytes);
         reader.accept(node, 0);
-        
+
         int operationCount = 6;
         int injectionCount = 0;
 
@@ -321,7 +321,7 @@ public class GCCoreTransformer implements net.minecraft.launchwrapper.IClassTran
         final ClassNode node = new ClassNode();
         final ClassReader reader = new ClassReader(bytes);
         reader.accept(node, 0);
-        
+
         int operationCount = 2;
         int injectionCount = 0;
 
@@ -377,7 +377,7 @@ public class GCCoreTransformer implements net.minecraft.launchwrapper.IClassTran
         final ClassNode node = new ClassNode();
         final ClassReader reader = new ClassReader(bytes);
         reader.accept(node, 0);
-        
+
         int operationCount = 1;
         int injectionCount = 0;
 
@@ -425,7 +425,7 @@ public class GCCoreTransformer implements net.minecraft.launchwrapper.IClassTran
         final ClassNode node = new ClassNode();
         final ClassReader reader = new ClassReader(bytes);
         reader.accept(node, 0);
-        
+
         int operationCount = 2;
         int injectionCount = 0;
 
@@ -483,7 +483,7 @@ public class GCCoreTransformer implements net.minecraft.launchwrapper.IClassTran
         final ClassNode node = new ClassNode();
         final ClassReader reader = new ClassReader(bytes);
         reader.accept(node, 0);
-        
+
         int operationCount = 1;
         int injectionCount = 0;
 
@@ -548,7 +548,7 @@ public class GCCoreTransformer implements net.minecraft.launchwrapper.IClassTran
         final ClassNode node = new ClassNode();
         final ClassReader reader = new ClassReader(bytes);
         reader.accept(node, 0);
-        
+
         int operationCount = 3;
         int injectionCount = 0;
 
@@ -620,7 +620,7 @@ public class GCCoreTransformer implements net.minecraft.launchwrapper.IClassTran
         final ClassNode node = new ClassNode();
         final ClassReader reader = new ClassReader(bytes);
         reader.accept(node, 0);
-        
+
         int operationCount = 4;
         int injectionCount = 0;
 
@@ -684,7 +684,7 @@ public class GCCoreTransformer implements net.minecraft.launchwrapper.IClassTran
         final ClassNode node = new ClassNode();
         final ClassReader reader = new ClassReader(bytes);
         reader.accept(node, 0);
-        
+
         int operationCount = 2;
         int injectionCount = 0;
 
@@ -738,7 +738,7 @@ public class GCCoreTransformer implements net.minecraft.launchwrapper.IClassTran
         final ClassNode node = new ClassNode();
         final ClassReader reader = new ClassReader(bytes);
         reader.accept(node, 0);
-        
+
         int operationCount = 1;
         int injectionCount = 0;
 
@@ -783,7 +783,7 @@ public class GCCoreTransformer implements net.minecraft.launchwrapper.IClassTran
         final ClassNode node = new ClassNode();
         final ClassReader reader = new ClassReader(bytes);
         reader.accept(node, 0);
-        
+
         int operationCount = 2;
         int injectionCount = 0;
 
@@ -839,7 +839,7 @@ public class GCCoreTransformer implements net.minecraft.launchwrapper.IClassTran
         final ClassNode node = new ClassNode();
         final ClassReader reader = new ClassReader(bytes);
         reader.accept(node, 0);
-        
+
         int operationCount = 2;
         int injectionCount = 0;
 

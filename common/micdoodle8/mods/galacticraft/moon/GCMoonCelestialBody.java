@@ -11,7 +11,7 @@ import net.minecraft.world.WorldProvider;
 public class GCMoonCelestialBody implements IMoon
 {
     private final IMapObject moon = new GCMoonMapPlanet();
-    
+
     @Override
     public String getName()
     {
@@ -23,7 +23,7 @@ public class GCMoonCelestialBody implements IMoon
     {
         return true;
     }
-    
+
     @Override
     public IPlanet getParentPlanet()
     {

@@ -15,7 +15,7 @@ import org.lwjgl.opengl.GL12;
 public class GCCoreGuiInventory extends GuiInventory
 {
     private static final ResourceLocation inventoryTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/inventory.png");
-    
+
     private float xSize_lo_2;
     private float ySize_lo_2;
     private float rotation;

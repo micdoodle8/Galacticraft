@@ -14,7 +14,7 @@ public abstract class GCCoreGuiStarBackground extends GuiScreen
 {
     private static final ResourceLocation backgroundTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/stars.png");
     private static final ResourceLocation blackTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/black.png");
-    
+
     public void drawBlackBackground()
     {
         final ScaledResolution var5 = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);

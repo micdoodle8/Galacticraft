@@ -14,7 +14,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GCCoreGuiParachest extends GuiContainer
 {
     private static ResourceLocation[] parachestTexture = new ResourceLocation[4];
-    
+
     static
     {
         for (int i = 0; i < 4; i++)
@@ -22,7 +22,7 @@ public class GCCoreGuiParachest extends GuiContainer
             parachestTexture[i] = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/chest_" + i * 18 + ".png");
         }
     }
-    
+
     private IInventory upperChestInventory;
     private IInventory lowerChestInventory;
 

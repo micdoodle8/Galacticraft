@@ -15,7 +15,7 @@ public class GCCorePacketSchematicList implements IGalacticraftAdvancedPacket
 {
     public static byte packetID = 21;
 
-    public static Packet buildSchematicListPacket(Collection col)
+    public static Packet buildSchematicListPacket(Collection<ISchematicPage> col)
     {
         final Packet250CustomPayload packet = new Packet250CustomPayload();
         packet.channel = GalacticraftCore.CHANNEL;
@@ -27,7 +27,7 @@ public class GCCorePacketSchematicList implements IGalacticraftAdvancedPacket
         {
             data.writeInt(GCCorePacketSchematicList.packetID);
             data.writeInt(col.size());
-            final Iterator var3 = col.iterator();
+            final Iterator<ISchematicPage> var3 = col.iterator();
 
             while (var3.hasNext())
             {

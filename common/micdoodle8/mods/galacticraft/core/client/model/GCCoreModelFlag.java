@@ -3,11 +3,8 @@ package micdoodle8.mods.galacticraft.core.client.model;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityFlag;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.client.renderer.ImageBufferDownload;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.StringUtils;
 import org.lwjgl.opengl.GL11;
-import cpw.mods.fml.client.FMLClientHandler;
 
 public class GCCoreModelFlag extends ModelBase
 {
@@ -89,21 +86,26 @@ public class GCCoreModelFlag extends ModelBase
 
     private void bindPlayerHead(GCCoreEntityFlag e)
     {
-//        final String s1 = "http://skins.minecraft.net/MinecraftSkins/" + StringUtils.stripControlCodes(e.getOwner()) + ".png";
-//
-//        if (!FMLClientHandler.instance().getClient().renderEngine.hasImageData(s1))
-//        {
-//            FMLClientHandler.instance().getClient().renderEngine.obtainImageData(s1, new ImageBufferDownload());
-//        }
-//
-//        this.bindTextureByURL(s1, "/mob/char.png");
+        // final String s1 = "http://skins.minecraft.net/MinecraftSkins/" +
+        // StringUtils.stripControlCodes(e.getOwner()) + ".png";
+        //
+        // if
+        // (!FMLClientHandler.instance().getClient().renderEngine.hasImageData(s1))
+        // {
+        // FMLClientHandler.instance().getClient().renderEngine.obtainImageData(s1,
+        // new ImageBufferDownload());
+        // }
+        //
+        // this.bindTextureByURL(s1, "/mob/char.png");
     }
 
     protected void bindTextureByURL(String par1Str, String par2Str)
     {
-//        GL11.glBindTexture(GL11.GL_TEXTURE_2D, FMLClientHandler.instance().getClient().renderEngine.getTextureForDownloadableImage(par1Str, par2Str));
-//
-//        FMLClientHandler.instance().getClient().renderEngine.resetBoundTexture();
+        // GL11.glBindTexture(GL11.GL_TEXTURE_2D,
+        // FMLClientHandler.instance().getClient().renderEngine.getTextureForDownloadableImage(par1Str,
+        // par2Str));
+        //
+        // FMLClientHandler.instance().getClient().renderEngine.resetBoundTexture();
     }
 
     private void setRotation(ModelRenderer model, float x, float y, float z)

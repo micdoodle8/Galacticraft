@@ -25,7 +25,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 public class GCCoreGuiFuelLoader extends GuiContainer
 {
     private static final ResourceLocation fuelLoaderTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/fuel_loader.png");
-    
+
     private final GCCoreTileEntityFuelLoader fuelLoader;
 
     private GuiButton buttonLoadFuel;

@@ -4,7 +4,6 @@ import java.util.Calendar;
 import micdoodle8.mods.galacticraft.API.IEntityBreathable;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EntityLivingData;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -371,7 +370,7 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
             final EntityZombie entityzombie = new EntityZombie(this.worldObj);
             entityzombie.func_82149_j(par1EntityLiving);
             this.worldObj.removeEntity(par1EntityLiving);
-            entityzombie.func_110161_a((EntityLivingData)null);
+            entityzombie.func_110161_a((EntityLivingData) null);
             entityzombie.setVillager(true);
 
             if (par1EntityLiving.isChild())
@@ -500,7 +499,7 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
     {
         final EntityVillager entityvillager = new EntityVillager(this.worldObj);
         entityvillager.func_82149_j(this);
-        entityvillager.func_110161_a((EntityLivingData)null);
+        entityvillager.func_110161_a((EntityLivingData) null);
         entityvillager.func_82187_q();
 
         if (this.isChild())

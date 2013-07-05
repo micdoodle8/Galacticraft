@@ -25,7 +25,7 @@ public class GCCoreModelPlayer extends ModelBiped
 {
     private static final ResourceLocation oxygenMaskTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/oxygen.png");
     private static final ResourceLocation playerTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/player.png");
-    
+
     public ModelRenderer[] parachute = new ModelRenderer[3];
     public ModelRenderer[] parachuteStrings = new ModelRenderer[4];
     public ModelRenderer[][] tubes = new ModelRenderer[2][7];
@@ -406,7 +406,7 @@ public class GCCoreModelPlayer extends ModelBiped
             if (this.usingParachute)
             {
                 FMLClientHandler.instance().getClient().renderEngine.func_110577_a(ClientProxyCore.parachuteTextures.get(player.username));
-                
+
                 this.parachute[0].render(var7);
                 this.parachute[1].render(var7);
                 this.parachute[2].render(var7);
@@ -416,7 +416,7 @@ public class GCCoreModelPlayer extends ModelBiped
                 this.parachuteStrings[2].render(var7);
                 this.parachuteStrings[3].render(var7);
             }
-            
+
             FMLClientHandler.instance().getClient().renderEngine.func_110577_a(((EntityClientPlayerMP) player).func_110306_p());
         }
 

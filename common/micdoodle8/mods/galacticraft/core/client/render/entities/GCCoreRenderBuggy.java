@@ -21,7 +21,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GCCoreRenderBuggy extends Render
 {
     private static final ResourceLocation buggyTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/buggy.png");
-    
+
     protected GCCoreModelBuggy modelSpaceship;
 
     public GCCoreRenderBuggy()
@@ -37,7 +37,7 @@ public class GCCoreRenderBuggy extends Render
 
     protected ResourceLocation func_110775_a(Entity par1Entity)
     {
-        return this.func_110779_a((GCCoreEntityLander)par1Entity);
+        return this.func_110779_a((GCCoreEntityLander) par1Entity);
     }
 
     public void renderSpaceship(GCCoreEntityBuggy entity, double par2, double par4, double par6, float par8, float par9)

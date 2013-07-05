@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.API;
 
 import universalelectricity.core.vector.Vector3;
 
-
 /**
  * Implement this one per set of planets (assuming only one galaxy in your mod)
  */
@@ -26,9 +25,7 @@ public interface IGalaxy
     /**
      * The color will appear on the map, as the galaxy's orbital ring color
      * 
-     * x - red value
-     * y - green value
-     * z - blue value
+     * x - red value y - green value z - blue value
      * 
      * @return
      */

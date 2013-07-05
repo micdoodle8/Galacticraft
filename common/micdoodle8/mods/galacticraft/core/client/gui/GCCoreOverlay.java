@@ -3,8 +3,6 @@ package micdoodle8.mods.galacticraft.core.client.gui;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityRocketT1;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
-import org.lwjgl.opengl.GL11;
-import cpw.mods.fml.client.FMLClientHandler;
 
 public class GCCoreOverlay
 {

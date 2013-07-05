@@ -7,7 +7,6 @@ import net.minecraft.client.gui.GuiSlot;
 import net.minecraft.client.renderer.Tessellator;
 import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -79,7 +78,7 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
             for (int i = 0; i < GalacticraftRegistry.getCelestialBodies().size(); i++)
             {
                 ICelestialBody celestialBody = GalacticraftRegistry.getCelestialBodies().get(i);
-                
+
                 if (celestialBody != null && celestialBody.getMapObject().getSlotRenderer() != null)
                 {
                     ICelestialBodyRenderer renderer = celestialBody.getMapObject().getSlotRenderer();

@@ -18,7 +18,7 @@ public class GCCoreSkyProviderOrbit extends IRenderHandler
 {
     private static final ResourceLocation moonTexture = new ResourceLocation("textures/environment/moon_phases.png");
     private static final ResourceLocation sunTexture = new ResourceLocation("textures/environment/sun.png");
-    
+
     public int starGLCallList = GLAllocation.generateDisplayLists(3);
     public int glSkyList;
     public int glSkyList2;

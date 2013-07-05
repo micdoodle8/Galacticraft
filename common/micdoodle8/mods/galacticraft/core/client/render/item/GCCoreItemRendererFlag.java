@@ -21,17 +21,17 @@ import cpw.mods.fml.client.FMLClientHandler;
 public class GCCoreItemRendererFlag implements IItemRenderer
 {
     private static ResourceLocation[] flagTextures;
-    
+
     static
     {
         flagTextures = new ResourceLocation[GCCoreItemFlag.names.length];
-        
+
         for (int i = 0; i < GCCoreItemFlag.names.length; i++)
         {
             flagTextures[i] = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/flag/" + GCCoreItemFlag.names[i] + ".png");
         }
     }
-    
+
     GCCoreEntityFlag spaceship = new GCCoreEntityFlag(FMLClientHandler.instance().getClient().theWorld);
     GCCoreModelFlag modelSpaceship = new GCCoreModelFlag();
 

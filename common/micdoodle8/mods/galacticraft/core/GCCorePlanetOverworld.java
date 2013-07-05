@@ -1,15 +1,15 @@
 package micdoodle8.mods.galacticraft.core;
 
-import net.minecraft.world.WorldProvider;
 import micdoodle8.mods.galacticraft.API.IGalaxy;
 import micdoodle8.mods.galacticraft.API.IMapObject;
 import micdoodle8.mods.galacticraft.API.IPlanet;
 import micdoodle8.mods.galacticraft.core.client.GCCoreMapPlanetOverworld;
+import net.minecraft.world.WorldProvider;
 
 public class GCCorePlanetOverworld implements IPlanet
 {
     private final IMapObject overworld = new GCCoreMapPlanetOverworld();
-    
+
     @Override
     public String getName()
     {

@@ -2,14 +2,12 @@ package micdoodle8.mods.galacticraft.core.client.render.entities;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelOxygenBubble;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityLander;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityOxygenBubble;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.resources.ResourceLocation;
 import net.minecraft.entity.Entity;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -23,7 +21,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GCCoreRenderOxygenBubble extends Render
 {
     private static final ResourceLocation oxygenBubbleTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/bubble.png");
-    
+
     private final GCCoreModelOxygenBubble oxygenBubbleModel = new GCCoreModelOxygenBubble();
 
     protected ResourceLocation func_110779_a(Entity par1EntityArrow)
@@ -43,7 +41,7 @@ public class GCCoreRenderOxygenBubble extends Render
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glTranslatef((float) d0, (float) d1, (float) d2);
-        
+
         this.func_110777_b(entity);
 
         GL11.glEnable(GL11.GL_BLEND);

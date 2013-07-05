@@ -22,7 +22,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 public class GCCoreGuiAirDistributor extends GuiContainer
 {
     private static final ResourceLocation distributorTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/compressor.png");
-    
+
     private final GCCoreTileEntityOxygenDistributor distributor;
 
     public GCCoreGuiAirDistributor(InventoryPlayer par1InventoryPlayer, GCCoreTileEntityOxygenDistributor par2TileEntityAirDistributor)

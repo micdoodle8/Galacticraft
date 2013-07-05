@@ -43,40 +43,42 @@ public class GCCoreEntityFlag extends Entity
     @Override
     public boolean attackEntityFrom(DamageSource par1DamageSource, float par2)
     {
-//        if (!this.worldObj.isRemote && !this.isDead && !this.indestructable)
-//        {
-//            if (this.isEntityInvulnerable())
-//            {
-//                return false;
-//            }
-//            else
-//            {
-//                this.setBeenAttacked();
-//                this.setDamage(this.getDamage() + par2 * 10);
-//
-//                if (par1DamageSource.getEntity() instanceof EntityPlayer && ((EntityPlayer) par1DamageSource.getEntity()).capabilities.isCreativeMode)
-//                {
-//                    this.setDamage(100);
-//                }
-//
-//                if (this.getDamage() > 40)
-//                {
-//                    if (this.riddenByEntity != null)
-//                    {
-//                        this.riddenByEntity.mountEntity(this);
-//                    }
-//
-//                    this.setDead();
-//                    this.dropItemStack();
-//                }
-//
-//                return true;
-//            }
-//        }
-//        else
-//        {
-//            return true;
-//        }
+        // if (!this.worldObj.isRemote && !this.isDead && !this.indestructable)
+        // {
+        // if (this.isEntityInvulnerable())
+        // {
+        // return false;
+        // }
+        // else
+        // {
+        // this.setBeenAttacked();
+        // this.setDamage(this.getDamage() + par2 * 10);
+        //
+        // if (par1DamageSource.getEntity() instanceof EntityPlayer &&
+        // ((EntityPlayer)
+        // par1DamageSource.getEntity()).capabilities.isCreativeMode)
+        // {
+        // this.setDamage(100);
+        // }
+        //
+        // if (this.getDamage() > 40)
+        // {
+        // if (this.riddenByEntity != null)
+        // {
+        // this.riddenByEntity.mountEntity(this);
+        // }
+        //
+        // this.setDead();
+        // this.dropItemStack();
+        // }
+        //
+        // return true;
+        // }
+        // }
+        // else
+        // {
+        // return true;
+        // }
         return true;
     }
 

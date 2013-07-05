@@ -22,7 +22,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GCCoreGuiRefinery extends GuiContainer
 {
     private static final ResourceLocation refineryTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/refinery.png");
-    
+
     private final GCCoreTileEntityRefinery tileEntity;
 
     private GuiButton buttonDisable;

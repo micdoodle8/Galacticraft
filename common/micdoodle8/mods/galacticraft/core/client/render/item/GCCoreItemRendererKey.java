@@ -21,7 +21,7 @@ import cpw.mods.fml.client.FMLClientHandler;
 public class GCCoreItemRendererKey implements IItemRenderer
 {
     private static final ResourceLocation treasureChestTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/treasure.png");
-    
+
     GCCoreModelKey keyModel = new GCCoreModelKey();
 
     private void renderKey(ItemRenderType type, RenderBlocks render, ItemStack item, float translateX, float translateY, float translateZ, Object... data)

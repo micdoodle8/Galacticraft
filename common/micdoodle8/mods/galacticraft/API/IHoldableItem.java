@@ -12,7 +12,8 @@ public interface IHoldableItem
      * 
      * Use player.inventory.getCurrentItem() to get the itemstack
      * 
-     * @param player the player holding the item
+     * @param player
+     *            the player holding the item
      * @return true if player should hold the item above their head
      */
     public boolean shouldHoldAboveHead(EntityPlayer player);

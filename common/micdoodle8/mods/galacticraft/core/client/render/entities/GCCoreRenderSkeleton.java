@@ -28,7 +28,7 @@ public class GCCoreRenderSkeleton extends RenderLiving
 {
     private static final ResourceLocation skeletonTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/skeleton.png");
     private static final ResourceLocation powerTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/power.png");
-    
+
     private final GCCoreModelSkeleton model = new GCCoreModelSkeleton(0.2F);
 
     public GCCoreRenderSkeleton()
@@ -43,7 +43,7 @@ public class GCCoreRenderSkeleton extends RenderLiving
 
     protected ResourceLocation func_110775_a(Entity par1Entity)
     {
-        return this.func_110779_a((GCCoreEntitySkeleton)par1Entity);
+        return this.func_110779_a((GCCoreEntitySkeleton) par1Entity);
     }
 
     @Override
