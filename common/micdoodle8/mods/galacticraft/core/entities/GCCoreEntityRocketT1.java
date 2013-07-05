@@ -598,4 +598,22 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
     {
         return dock instanceof GCCoreTileEntityLandingPad || dock instanceof GCCoreTileEntityCargoPad;
     }
+
+    @Override
+    public void destroyCraft()
+    {
+        this.setDead();
+    }
+
+    @Override
+    public int doDamage(int damage)
+    {
+        return (int) (this.shipDamage += damage);
+    }
+
+    @Override
+    public boolean canBeTargeted(Object entity)
+    {
+        return this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase() && this.timeSinceLaunch > 50;
+    }
 }
