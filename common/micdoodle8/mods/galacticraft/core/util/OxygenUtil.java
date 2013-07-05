@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.core.util;
 
 import java.util.List;
-import micdoodle8.mods.galacticraft.API.item.EnumGearType;
 import micdoodle8.mods.galacticraft.API.item.IBreathableArmor;
+import micdoodle8.mods.galacticraft.API.item.IBreathableArmor.EnumGearType;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryPlayer;

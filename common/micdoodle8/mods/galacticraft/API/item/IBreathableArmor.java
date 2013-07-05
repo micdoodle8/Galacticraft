@@ -10,6 +10,11 @@ import net.minecraft.item.ItemStack;
  */
 public interface IBreathableArmor
 {
+    public enum EnumGearType
+    {
+        HELMET, GEAR, TANK1, TANK2;
+    }
+    
     /**
      * 
      * @param gearType
