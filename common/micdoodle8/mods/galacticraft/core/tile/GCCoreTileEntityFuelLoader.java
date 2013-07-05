@@ -129,7 +129,7 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric impleme
 
             final LiquidStack liquid = LiquidDictionary.getLiquid("Fuel", 1);
 
-            if (this.attachedFuelable != null && (this.ic2Energy > 0 || this.wattsReceived > 0 || this.getPowerProvider() != null && this.getPowerProvider().getEnergyStored() > 0) && !this.disabled)
+            if (this.attachedFuelable != null && (this.ic2Energy > 0 || this.ueWattsReceived > 0 || this.getPowerProvider() != null && this.getPowerProvider().getEnergyStored() > 0) && !this.disabled)
             {
                 if (liquid != null)
                 {
@@ -379,7 +379,7 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric impleme
     {
         if (this.worldObj.isRemote)
         {
-            this.wattsReceived = data.readDouble();
+            this.ueWattsReceived = data.readDouble();
             this.ic2Energy = data.readDouble();
             this.fuelTank.setLiquid(new LiquidStack(GCCoreItems.fuel.itemID, data.readInt(), 0));
             this.disabled = data.readBoolean();
@@ -391,7 +391,7 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric impleme
     @Override
     public Packet getPacket()
     {
-        return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.wattsReceived, this.ic2Energy, this.fuelTank.getLiquid() == null ? 0 : this.fuelTank.getLiquid().amount, this.disabled, this.disableCooldown, this.getPowerProvider() != null ? (double) this.getPowerProvider().getEnergyStored() : 0.0D);
+        return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.ueWattsReceived, this.ic2Energy, this.fuelTank.getLiquid() == null ? 0 : this.fuelTank.getLiquid().amount, this.disabled, this.disableCooldown, this.getPowerProvider() != null ? (double) this.getPowerProvider().getEnergyStored() : 0.0D);
     }
 
     @Override

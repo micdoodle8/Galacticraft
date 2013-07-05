@@ -50,12 +50,12 @@ public class GCCoreGuiAirCollector extends GuiContainer
 
     private String getStatus()
     {
-        if (this.collector.getPower() > 1 && (this.collector.wattsReceived > 0 || this.collector.ic2Energy > 0 || this.collector.bcEnergy > 0))
+        if (this.collector.getPower() > 1 && (this.collector.ueWattsReceived > 0 || this.collector.ic2Energy > 0 || this.collector.bcEnergy > 0))
         {
             return EnumColor.DARK_GREEN + LanguageRegistry.instance().getStringLocalization("gui.status.active.name");
         }
 
-        if (this.collector.wattsReceived == 0 && this.collector.ic2Energy == 0 && this.collector.bcEnergy == 0)
+        if (this.collector.ueWattsReceived == 0 && this.collector.ic2Energy == 0 && this.collector.bcEnergy == 0)
         {
             return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.missingpower.name");
         }

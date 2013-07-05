@@ -268,7 +268,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
                 }
                 else
                 {
-                    if (tile instanceof GCCoreTileEntityFuelLoader && ((GCCoreTileEntityFuelLoader) tile).wattsReceived > 0)
+                    if (tile instanceof GCCoreTileEntityFuelLoader && ((GCCoreTileEntityFuelLoader) tile).ueWattsReceived > 0)
                     {
                         if (this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase())
                         {

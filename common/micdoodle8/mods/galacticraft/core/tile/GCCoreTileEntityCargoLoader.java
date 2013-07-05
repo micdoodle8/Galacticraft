@@ -61,7 +61,7 @@ public class GCCoreTileEntityCargoLoader extends GCCoreTileEntityElectric implem
                     this.targetNoInventory = state == EnumCargoLoadingState.NOINVENTORY;
                     this.noTarget = state == EnumCargoLoadingState.NOTARGET;
 
-                    if (this.ticks % 15 == 0 && state == EnumCargoLoadingState.SUCCESS && !this.disabled && (this.ic2Energy > 0 || this.wattsReceived > 0 || this.getPowerProvider() != null && this.getPowerProvider().getEnergyStored() > 0))
+                    if (this.ticks % 15 == 0 && state == EnumCargoLoadingState.SUCCESS && !this.disabled && (this.ic2Energy > 0 || this.ueWattsReceived > 0 || this.getPowerProvider() != null && this.getPowerProvider().getEnergyStored() > 0))
                     {
                         this.attachedFuelable.addCargo(this.removeCargo(true).resultStack, true);
                     }
@@ -317,7 +317,7 @@ public class GCCoreTileEntityCargoLoader extends GCCoreTileEntityElectric implem
     {
         if (this.worldObj.isRemote)
         {
-            this.wattsReceived = data.readDouble();
+            this.ueWattsReceived = data.readDouble();
             this.ic2Energy = data.readDouble();
             this.disabled = data.readBoolean();
             this.disableCooldown = data.readInt();
@@ -332,7 +332,7 @@ public class GCCoreTileEntityCargoLoader extends GCCoreTileEntityElectric implem
     @Override
     public Packet getPacket()
     {
-        return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.wattsReceived, this.ic2Energy, this.disabled, this.disableCooldown, this.getPowerProvider() != null ? (double) this.getPowerProvider().getEnergyStored() : 0.0D, this.targetFull, this.outOfItems, this.noTarget, this.targetNoInventory);
+        return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.ueWattsReceived, this.ic2Energy, this.disabled, this.disableCooldown, this.getPowerProvider() != null ? (double) this.getPowerProvider().getEnergyStored() : 0.0D, this.targetFull, this.outOfItems, this.noTarget, this.targetNoInventory);
     }
 
     @Override
