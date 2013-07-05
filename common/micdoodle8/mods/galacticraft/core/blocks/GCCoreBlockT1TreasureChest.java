@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import static net.minecraftforge.common.ForgeDirection.DOWN;
 import java.util.Iterator;
 import java.util.Random;
-import micdoodle8.mods.galacticraft.asm.GalacticraftModContainer;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
 import net.minecraft.block.Block;

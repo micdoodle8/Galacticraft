@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.fx;
 
 import java.util.List;
-import micdoodle8.mods.galacticraft.asm.GalacticraftModContainer;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import net.minecraft.client.particle.EntityFX;

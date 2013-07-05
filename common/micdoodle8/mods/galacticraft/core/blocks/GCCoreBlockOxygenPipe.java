@@ -5,7 +5,6 @@ import mekanism.api.GasTransmission;
 import mekanism.api.IPressurizedTube;
 import mekanism.api.ITubeConnection;
 import micdoodle8.mods.galacticraft.API.IColorable;
-import micdoodle8.mods.galacticraft.asm.GalacticraftModContainer;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenPipe;
 import net.minecraft.block.BlockContainer;
