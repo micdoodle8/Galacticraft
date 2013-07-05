@@ -159,7 +159,7 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
         {
             if (tileEntity instanceof IConductor)
             {
-                ((IConductor) tileEntity).updateAdjacentConnections();
+                ((IConductor) tileEntity).refresh();
             }
         }
         else if (metadata <= EnumEnclosedBlock.OXYGENPIPE.getMetadata())
@@ -210,7 +210,7 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
         {
             if (tileEntity instanceof IConductor)
             {
-                ((IConductor) tileEntity).updateAdjacentConnections();
+                ((IConductor) tileEntity).refresh();
             }
         }
         else if (metadata <= EnumEnclosedBlock.OXYGENPIPE.getMetadata())

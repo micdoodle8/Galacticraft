@@ -80,7 +80,7 @@ public class GCCoreGuiAirSealer extends GuiContainer
             return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.disabled.name");
         }
 
-        if (this.sealer.wattsReceived == 0 && this.sealer.ic2Energy == 0 && this.sealer.bcEnergy == 0)
+        if (this.sealer.ueWattsReceived == 0 && this.sealer.ic2Energy == 0 && this.sealer.bcEnergy == 0)
         {
             return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.missingpower.name");
         }

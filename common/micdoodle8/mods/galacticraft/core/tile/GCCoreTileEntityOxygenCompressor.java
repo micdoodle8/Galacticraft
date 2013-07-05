@@ -37,7 +37,7 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityOxygen imp
 
         if (!this.worldObj.isRemote)
         {
-            if (this.storedOxygen / 5.0D >= 1.0D && (this.wattsReceived > 0 || this.ic2Energy > 0 || this.getPowerProvider() != null && this.getPowerProvider().getEnergyStored() > 0))
+            if (this.storedOxygen / 5.0D >= 1.0D && (this.ueWattsReceived > 0 || this.ic2Energy > 0 || this.getPowerProvider() != null && this.getPowerProvider().getEnergyStored() > 0))
             {
                 if (!this.worldObj.isRemote && this.ticks % ((31 - Math.min(Math.floor(this.storedOxygen / 5.0D), 30)) * 10) == 0)
                 {
@@ -238,7 +238,7 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityOxygen imp
         if (this.worldObj.isRemote)
         {
             this.storedOxygen = data.readInt();
-            this.wattsReceived = data.readDouble();
+            this.ueWattsReceived = data.readDouble();
             this.ic2Energy = data.readDouble();
             this.disabled = data.readBoolean();
             this.bcEnergy = data.readDouble();
@@ -248,7 +248,7 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityOxygen imp
     @Override
     public Packet getPacket()
     {
-        return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.storedOxygen, this.wattsReceived, this.ic2Energy, this.disabled, this.getPowerProvider() != null ? (double) this.getPowerProvider().getEnergyStored() : 0.0D);
+        return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.storedOxygen, this.ueWattsReceived, this.ic2Energy, this.disabled, this.getPowerProvider() != null ? (double) this.getPowerProvider().getEnergyStored() : 0.0D);
     }
 
     @Override
@@ -272,6 +272,6 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityOxygen imp
     @Override
     public boolean shouldPullOxygen()
     {
-        return this.ic2Energy > 0 || this.wattsReceived > 0 || this.getPowerProvider() != null && this.getPowerProvider().getEnergyStored() > 0;
+        return this.ic2Energy > 0 || this.ueWattsReceived > 0 || this.getPowerProvider() != null && this.getPowerProvider().getEnergyStored() > 0;
     }
 }

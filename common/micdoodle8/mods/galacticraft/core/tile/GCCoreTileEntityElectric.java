@@ -19,12 +19,13 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.MinecraftForge;
+import universalelectricity.core.block.IElectrical;
 import universalelectricity.core.electricity.ElectricityPack;
 import universalelectricity.core.item.ElectricItemHelper;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.IPacketReceiver;
 import universalelectricity.prefab.network.PacketManager;
-import universalelectricity.prefab.tile.TileEntityElectricityRunnable;
+import universalelectricity.prefab.tile.TileEntityDisableable;
 import buildcraft.api.power.IPowerProvider;
 import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerFramework;
@@ -32,7 +33,7 @@ import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public abstract class GCCoreTileEntityElectric extends TileEntityElectricityRunnable implements IWrenchable, IPowerReceptor, IEnergySink, IPacketReceiver, IDisableableMachine
+public abstract class GCCoreTileEntityElectric extends TileEntityDisableable implements IWrenchable, IPowerReceptor, IEnergySink, IPacketReceiver, IDisableableMachine, IElectrical
 {
     public int ueWattsPerTick;
     public double maxEnergy;
@@ -42,6 +43,7 @@ public abstract class GCCoreTileEntityElectric extends TileEntityElectricityRunn
     @SideOnly(Side.CLIENT)
     public double bcEnergy;
     public double bcEnergyPerTick;
+    public double ueWattsReceived;
 
     public boolean addedToEnergyNet = false;
 
@@ -100,15 +102,15 @@ public abstract class GCCoreTileEntityElectric extends TileEntityElectricityRunn
     }
 
     @Override
-    public ElectricityPack getRequest()
+    public float getRequest(ForgeDirection direction)
     {
         if (this.shouldPullEnergy())
         {
-            return new ElectricityPack(this.ueWattsPerTick / this.getVoltage(), this.getVoltage());
+            return this.ueWattsPerTick;
         }
         else
         {
-            return new ElectricityPack();
+            return 0;
         }
     }
 
@@ -138,7 +140,7 @@ public abstract class GCCoreTileEntityElectric extends TileEntityElectricityRunn
 
             if (this.shouldPullEnergy())
             {
-                this.wattsReceived += ElectricItemHelper.dechargeItem(this.getBatteryInSlot(), this.ueWattsPerTick, this.getVoltage());
+                this.ueWattsReceived += ElectricItemHelper.dechargeItem(this.getBatteryInSlot(), this.ueWattsPerTick, this.getVoltage());
             }
 
             if (this.disableCooldown > 0)
@@ -151,7 +153,7 @@ public abstract class GCCoreTileEntityElectric extends TileEntityElectricityRunn
                 PacketManager.sendPacketToClients(this.getPacket(), this.worldObj, new Vector3(this), 12);
             }
 
-            this.wattsReceived = Math.max(this.wattsReceived - this.ueWattsPerTick / 4, 0);
+            this.ueWattsReceived = Math.max(this.ueWattsReceived - this.ueWattsPerTick / 4, 0);
         }
     }
 
@@ -330,5 +332,25 @@ public abstract class GCCoreTileEntityElectric extends TileEntityElectricityRunn
     public ItemStack getWrenchDrop(EntityPlayer entityPlayer)
     {
         return Block.blocksList[this.getBlockType().blockID].getPickBlock(null, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+    }
+
+    @Override
+    public float getVoltage()
+    {
+        return 120;
+    }
+
+    @Override
+    public float receiveElectricity(ElectricityPack electricityPack, boolean doReceive)
+    {
+        float energyReceived = electricityPack.getWatts();
+        double energyUsed = Math.min(this.ueWattsPerTick - this.ueWattsReceived, energyReceived);
+
+        if (doReceive)
+        {
+            this.ueWattsReceived += energyUsed;
+        }
+
+        return (float) energyUsed;
     }
 }
