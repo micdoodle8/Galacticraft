@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.List;
-import micdoodle8.mods.galacticraft.API.IPartialSealedBlock;
+import micdoodle8.mods.galacticraft.API.block.IPartialSealedBlock;
 import micdoodle8.mods.galacticraft.core.GCCoreCompatibilityManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenPipe;

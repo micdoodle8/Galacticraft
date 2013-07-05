@@ -25,9 +25,10 @@ public class GCCoreRenderParaChest extends Render
 
     protected ResourceLocation func_110779_a(Entity par1EntityArrow)
     {
-        return parachestTexture;
+        return GCCoreRenderParaChest.parachestTexture;
     }
 
+    @Override
     protected ResourceLocation func_110775_a(Entity par1Entity)
     {
         return this.func_110779_a(par1Entity);

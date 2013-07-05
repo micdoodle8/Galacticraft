@@ -50,11 +50,11 @@ public class GCCoreConnectionHandler implements IConnectionHandler
     @Override
     public void connectionClosed(INetworkManager manager)
     {
-        if (managers.contains(manager))
+        if (GCCoreConnectionHandler.managers.contains(manager))
         {
-            managers.remove(manager);
+            GCCoreConnectionHandler.managers.remove(manager);
 
-            if (managers.size() == 0)
+            if (GCCoreConnectionHandler.managers.size() == 0)
             {
                 WorldUtil.unregisterPlanets();
                 WorldUtil.unregisterSpaceStations();
@@ -65,9 +65,9 @@ public class GCCoreConnectionHandler implements IConnectionHandler
     @Override
     public void clientLoggedIn(NetHandler clientHandler, INetworkManager manager, Packet1Login login)
     {
-        if (!managers.contains(manager))
+        if (!GCCoreConnectionHandler.managers.contains(manager))
         {
-            managers.add(manager);
+            GCCoreConnectionHandler.managers.add(manager);
         }
     }
 }

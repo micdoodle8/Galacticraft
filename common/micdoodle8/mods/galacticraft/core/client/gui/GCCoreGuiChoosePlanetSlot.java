@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
 import micdoodle8.mods.galacticraft.API.GalacticraftRegistry;
-import micdoodle8.mods.galacticraft.API.ICelestialBody;
-import micdoodle8.mods.galacticraft.API.ICelestialBodyRenderer;
+import micdoodle8.mods.galacticraft.API.world.ICelestialBody;
+import micdoodle8.mods.galacticraft.API.world.ICelestialBodyRenderer;
 import net.minecraft.client.gui.GuiSlot;
 import net.minecraft.client.renderer.Tessellator;
 import org.lwjgl.opengl.GL11;
@@ -71,8 +71,6 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
         GCCoreGuiChoosePlanet.getDestinations(this.choosePlanetGui)[par1].toLowerCase();
-        final Tessellator var3 = Tessellator.instance;
-
         if (this.isSelected(par1))
         {
             for (int i = 0; i < GalacticraftRegistry.getCelestialBodies().size(); i++)

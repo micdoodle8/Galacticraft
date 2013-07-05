@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.core.client.model;
 
 import java.util.List;
-import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
-import micdoodle8.mods.galacticraft.API.IHoldableItem;
+import micdoodle8.mods.galacticraft.API.item.IHoldableItem;
+import micdoodle8.mods.galacticraft.API.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.client.GCCorePlayerSP;
@@ -205,7 +205,7 @@ public class GCCoreModelPlayer extends ModelBiped
 
             //
 
-            FMLClientHandler.instance().getClient().renderEngine.func_110577_a(oxygenMaskTexture);
+            FMLClientHandler.instance().getClient().renderEngine.func_110577_a(GCCoreModelPlayer.oxygenMaskTexture);
 
             changed = false;
 
@@ -234,7 +234,7 @@ public class GCCoreModelPlayer extends ModelBiped
 
             //
 
-            FMLClientHandler.instance().getClient().renderEngine.func_110577_a(playerTexture);
+            FMLClientHandler.instance().getClient().renderEngine.func_110577_a(GCCoreModelPlayer.playerTexture);
 
             changed = false;
 

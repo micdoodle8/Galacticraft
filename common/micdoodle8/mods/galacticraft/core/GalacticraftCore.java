@@ -7,11 +7,11 @@ import java.util.List;
 import java.util.Map;
 import mekanism.api.GasTransmission;
 import micdoodle8.mods.galacticraft.API.GalacticraftRegistry;
-import micdoodle8.mods.galacticraft.API.ICelestialBody;
-import micdoodle8.mods.galacticraft.API.IGalaxy;
-import micdoodle8.mods.galacticraft.API.IMoon;
-import micdoodle8.mods.galacticraft.API.IPlanet;
-import micdoodle8.mods.galacticraft.API.SchematicRegistry;
+import micdoodle8.mods.galacticraft.API.recipe.SchematicRegistry;
+import micdoodle8.mods.galacticraft.API.world.ICelestialBody;
+import micdoodle8.mods.galacticraft.API.world.IGalaxy;
+import micdoodle8.mods.galacticraft.API.world.IMoon;
+import micdoodle8.mods.galacticraft.API.world.IPlanet;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.client.GCCorePlayerSP;
 import micdoodle8.mods.galacticraft.core.command.GCCoreCommandSpaceStationAddOwner;
@@ -113,7 +113,7 @@ public class GalacticraftCore
     public static final String NAME = "Galacticraft Core";
     public static final String MODID = "GalacticraftCore";
     public static final String CHANNEL = "GalacticraftCore";
-    public static final String CHANNELENTITIES = "GCCoreEntities"; 
+    public static final String CHANNELENTITIES = "GCCoreEntities";
 
     public static final int LOCALMAJVERSION = 0;
     public static final int LOCALMINVERSION = 1;

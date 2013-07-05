@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.core;
 
-import micdoodle8.mods.galacticraft.API.ICelestialBodyRenderer;
-import micdoodle8.mods.galacticraft.API.IRocketType;
-import micdoodle8.mods.galacticraft.API.ISchematicPage;
+import micdoodle8.mods.galacticraft.API.entity.IRocketType;
+import micdoodle8.mods.galacticraft.API.recipe.ISchematicPage;
+import micdoodle8.mods.galacticraft.API.world.ICelestialBodyRenderer;
 import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerAirCollector;

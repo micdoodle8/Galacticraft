@@ -25,9 +25,10 @@ public class GCCoreRenderMeteor extends Render
 
     protected ResourceLocation func_110779_a(GCCoreEntityMeteor entity)
     {
-        return meteorTexture;
+        return GCCoreRenderMeteor.meteorTexture;
     }
 
+    @Override
     protected ResourceLocation func_110775_a(Entity par1Entity)
     {
         return this.func_110779_a((GCCoreEntityMeteor) par1Entity);

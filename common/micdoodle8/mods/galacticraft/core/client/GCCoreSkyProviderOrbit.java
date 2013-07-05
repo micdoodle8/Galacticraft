@@ -180,7 +180,7 @@ public class GCCoreSkyProviderOrbit extends IRenderHandler
         if (this.renderSun)
         {
             var12 = 30.0F;
-            this.minecraft.renderEngine.func_110577_a(sunTexture);
+            this.minecraft.renderEngine.func_110577_a(GCCoreSkyProviderOrbit.sunTexture);
             var23.startDrawingQuads();
             var23.addVertexWithUV(-var12, 100.0D, -var12, 0.0D, 0.0D);
             var23.addVertexWithUV(var12, 100.0D, -var12, 1.0D, 0.0D);
@@ -192,7 +192,7 @@ public class GCCoreSkyProviderOrbit extends IRenderHandler
         if (this.renderMoon)
         {
             var12 = 40.0F;
-            this.minecraft.renderEngine.func_110577_a(moonTexture);
+            this.minecraft.renderEngine.func_110577_a(GCCoreSkyProviderOrbit.moonTexture);
             float var28 = this.minecraft.theWorld.func_130001_d();
             final int var30 = (int) (var28 % 4);
             final int var29 = (int) (var28 / 4 % 2);

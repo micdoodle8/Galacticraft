@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.core;
 
-import micdoodle8.mods.galacticraft.API.IGalaxy;
-import micdoodle8.mods.galacticraft.API.IMapObject;
-import micdoodle8.mods.galacticraft.API.IPlanet;
+import micdoodle8.mods.galacticraft.API.world.IGalaxy;
+import micdoodle8.mods.galacticraft.API.world.IMapObject;
+import micdoodle8.mods.galacticraft.API.world.IPlanet;
 import micdoodle8.mods.galacticraft.core.client.GCCoreMapPlanetOverworld;
 import net.minecraft.world.WorldProvider;
 

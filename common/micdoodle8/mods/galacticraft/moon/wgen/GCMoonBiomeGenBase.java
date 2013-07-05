@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.moon.wgen;
 
-import micdoodle8.mods.galacticraft.moon.client.GCMoonColorizerGrass;
 import net.minecraft.util.MathHelper;
+import net.minecraft.world.ColorizerGrass;
 import net.minecraft.world.biome.BiomeGenBase;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -41,7 +41,8 @@ public class GCMoonBiomeGenBase extends BiomeGenBase
     @SideOnly(Side.CLIENT)
     public int getBiomeGrassColor()
     {
-        final double var3 = MathHelper.clamp_float(this.maxHeight, 0.0F, 1.0F);
-        return GCMoonColorizerGrass.getGrassColor(var3, var3);
+        double d0 = MathHelper.clamp_float(this.getFloatTemperature(), 0.0F, 1.0F);
+        double d1 = MathHelper.clamp_float(this.getFloatRainfall(), 0.0F, 1.0F);
+        return this.getModdedBiomeGrassColor(ColorizerGrass.getGrassColor(d0, d1));
     }
 }

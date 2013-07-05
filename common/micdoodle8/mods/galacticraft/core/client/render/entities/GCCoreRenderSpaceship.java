@@ -26,7 +26,7 @@ public class GCCoreRenderSpaceship extends Render
 
     public GCCoreRenderSpaceship(ModelBase spaceshipModel, String textureDomain, String texture)
     {
-        this.spaceshipTexture = new ResourceLocation(textureDomain, "textures/model/" + texture + ".png");
+        GCCoreRenderSpaceship.spaceshipTexture = new ResourceLocation(textureDomain, "textures/model/" + texture + ".png");
         this.shadowSize = 2F;
         this.modelSpaceship = spaceshipModel;
         this.texture = texture;
@@ -34,12 +34,13 @@ public class GCCoreRenderSpaceship extends Render
 
     protected ResourceLocation func_110779_a(Entity par1EntityArrow)
     {
-        return spaceshipTexture;
+        return GCCoreRenderSpaceship.spaceshipTexture;
     }
 
+    @Override
     protected ResourceLocation func_110775_a(Entity par1Entity)
     {
-        return this.func_110779_a((Entity) par1Entity);
+        return this.func_110779_a(par1Entity);
     }
 
     public void renderSpaceship(EntitySpaceshipBase entity, double par2, double par4, double par6, float par8, float par9)

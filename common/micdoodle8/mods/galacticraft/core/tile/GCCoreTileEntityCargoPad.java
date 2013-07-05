@@ -2,10 +2,10 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import java.util.HashSet;
 import java.util.List;
-import micdoodle8.mods.galacticraft.API.ICargoEntity;
-import micdoodle8.mods.galacticraft.API.IDockable;
-import micdoodle8.mods.galacticraft.API.IFuelDock;
-import micdoodle8.mods.galacticraft.API.IFuelable;
+import micdoodle8.mods.galacticraft.API.entity.ICargoEntity;
+import micdoodle8.mods.galacticraft.API.entity.IDockable;
+import micdoodle8.mods.galacticraft.API.entity.IFuelable;
+import micdoodle8.mods.galacticraft.API.tile.IFuelDock;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import net.minecraft.entity.player.EntityPlayer;

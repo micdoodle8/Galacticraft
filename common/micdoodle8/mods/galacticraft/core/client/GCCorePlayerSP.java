@@ -2,11 +2,12 @@ package micdoodle8.mods.galacticraft.core.client;
 
 import java.util.ArrayList;
 import java.util.Random;
-import micdoodle8.mods.galacticraft.API.ISchematicPage;
+import micdoodle8.mods.galacticraft.API.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.multiplayer.NetClientHandler;
 import net.minecraft.client.renderer.ThreadDownloadImageData;
@@ -57,22 +58,25 @@ public class GCCorePlayerSP extends EntityClientPlayerMP
         }
     }
 
+    @Override
     protected void func_110302_j()
     {
         super.func_110302_j();
 
         if (GCCoreConfigManager.overrideCapes)
         {
-            this.galacticraftCape = func_110299_g(this.username);
-            this.galacticraftCapeImageData = func_110307_b(this.galacticraftCape, this.username);
+            this.galacticraftCape = AbstractClientPlayer.func_110299_g(this.username);
+            this.galacticraftCapeImageData = AbstractClientPlayer.func_110307_b(this.galacticraftCape, this.username);
         }
     }
 
+    @Override
     public ResourceLocation func_110303_q()
     {
         return this.galacticraftCape;
     }
 
+    @Override
     public ThreadDownloadImageData func_110310_o()
     {
         return this.galacticraftCapeImageData;

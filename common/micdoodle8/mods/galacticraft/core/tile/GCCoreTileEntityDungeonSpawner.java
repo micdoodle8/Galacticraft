@@ -42,7 +42,7 @@ public class GCCoreTileEntityDungeonSpawner extends TileEntityAdvanced
                     if (!e.isDead)
                     {
                         this.boss = (GCCoreEntitySkeletonBoss) e;
-                        ((GCCoreEntitySkeletonBoss) this.boss).setRoom(this.roomCoords, this.roomSize);
+                        this.boss.setRoom(this.roomCoords, this.roomSize);
                         this.spawned = true;
                         this.isBossDefeated = false;
                     }
@@ -62,7 +62,7 @@ public class GCCoreTileEntityDungeonSpawner extends TileEntityAdvanced
             if (this.boss == null && !this.isBossDefeated)
             {
                 this.boss = new GCCoreEntitySkeletonBoss(this.worldObj, new Vector3(this).add(new Vector3(0.0D, 1.0D, 0.0D)));
-                ((GCCoreEntitySkeletonBoss) this.boss).setRoom(this.roomCoords, this.roomSize);
+                this.boss.setRoom(this.roomCoords, this.roomSize);
             }
 
             entitiesWithin = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getAABBPool().getAABB(this.roomCoords.intX() - 1, this.roomCoords.intY() - 1, this.roomCoords.intZ() - 1, this.roomCoords.intX() + this.roomSize.intX(), this.roomCoords.intY() + this.roomSize.intY(), this.roomCoords.intZ() + this.roomSize.intZ()));
@@ -86,10 +86,10 @@ public class GCCoreTileEntityDungeonSpawner extends TileEntityAdvanced
                 {
                     if (this.boss instanceof Entity)
                     {
-                        this.worldObj.spawnEntityInWorld((Entity) this.boss);
+                        this.worldObj.spawnEntityInWorld(this.boss);
                         this.spawned = true;
                         this.boss.onBossSpawned(this);
-                        ((GCCoreEntitySkeletonBoss) this.boss).setRoom(this.roomCoords, this.roomSize);
+                        this.boss.setRoom(this.roomCoords, this.roomSize);
                     }
                 }
             }

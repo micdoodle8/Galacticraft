@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core;
 
-import micdoodle8.mods.galacticraft.API.IGalaxy;
+import micdoodle8.mods.galacticraft.API.world.IGalaxy;
 import universalelectricity.core.vector.Vector3;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 

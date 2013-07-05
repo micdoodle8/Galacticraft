@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
-import micdoodle8.mods.galacticraft.API.ISchematicItem;
+import micdoodle8.mods.galacticraft.API.recipe.ISchematicItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;

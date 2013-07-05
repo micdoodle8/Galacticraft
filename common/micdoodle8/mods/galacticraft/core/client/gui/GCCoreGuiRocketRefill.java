@@ -23,7 +23,7 @@ public class GCCoreGuiRocketRefill extends GuiContainer
     {
         for (int i = 0; i < 4; i++)
         {
-            rocketTextures[i] = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/rocket_" + i * 18 + ".png");
+            GCCoreGuiRocketRefill.rocketTextures[i] = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/rocket_" + i * 18 + ".png");
         }
     }
 
@@ -60,7 +60,7 @@ public class GCCoreGuiRocketRefill extends GuiContainer
     @Override
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
-        this.mc.func_110434_K().func_110577_a(rocketTextures[(this.rocketType.getInventorySpace() - 3) / 18]);
+        this.mc.func_110434_K().func_110577_a(GCCoreGuiRocketRefill.rocketTextures[(this.rocketType.getInventorySpace() - 3) / 18]);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         final int var5 = (this.width - this.xSize) / 2;

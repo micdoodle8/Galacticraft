@@ -227,7 +227,7 @@ public class GCCoreFontRendererLarge
      */
     private float renderCharAtPos(int par1, char par2, boolean par3)
     {
-        return par2 == 32 ? 4.0F : (par1 > 0 && !this.unicodeFlag ? this.renderDefaultChar(par1 + 32, par3) : this.renderUnicodeChar(par2, par3));
+        return par2 == 32 ? 4.0F : par1 > 0 && !this.unicodeFlag ? this.renderDefaultChar(par1 + 32, par3) : this.renderUnicodeChar(par2, par3);
     }
 
     /**
@@ -236,11 +236,11 @@ public class GCCoreFontRendererLarge
      */
     private float renderDefaultChar(int par1, boolean par2)
     {
-        float f = (float) (par1 % 16 * 8);
-        float f1 = (float) (par1 / 16 * 8);
+        float f = par1 % 16 * 8;
+        float f1 = par1 / 16 * 8;
         float f2 = par2 ? 1.0F : 0.0F;
         this.renderEngine.func_110577_a(this.field_111273_g);
-        float f3 = (float) this.charWidth[par1] - 0.01F;
+        float f3 = this.charWidth[par1] - 0.01F;
         GL11.glBegin(GL11.GL_TRIANGLE_STRIP);
         GL11.glTexCoord2f(f / 128.0F, f1 / 128.0F);
         GL11.glVertex3f(this.posX + f2, this.posY, 0.0F);
@@ -251,17 +251,17 @@ public class GCCoreFontRendererLarge
         GL11.glTexCoord2f((f + f3) / 128.0F, (f1 + 7.99F) / 128.0F);
         GL11.glVertex3f(this.posX + f3 - f2, this.posY + 7.99F, 0.0F);
         GL11.glEnd();
-        return (float) this.charWidth[par1];
+        return this.charWidth[par1];
     }
 
     private ResourceLocation func_111271_a(int par1)
     {
-        if (field_111274_c[par1] == null)
+        if (GCCoreFontRendererLarge.field_111274_c[par1] == null)
         {
-            field_111274_c[par1] = new ResourceLocation(String.format("textures/font/unicode_page_%02x.png", new Object[] { Integer.valueOf(par1) }));
+            GCCoreFontRendererLarge.field_111274_c[par1] = new ResourceLocation(String.format("textures/font/unicode_page_%02x.png", new Object[] { Integer.valueOf(par1) }));
         }
 
-        return field_111274_c[par1];
+        return GCCoreFontRendererLarge.field_111274_c[par1];
     }
 
     /**
@@ -289,10 +289,10 @@ public class GCCoreFontRendererLarge
             this.loadGlyphTexture(i);
             int j = this.glyphWidth[par1] >>> 4;
             int k = this.glyphWidth[par1] & 15;
-            float f = (float) j;
-            float f1 = (float) (k + 1);
-            float f2 = (float) (par1 % 16 * 16) + f;
-            float f3 = (float) ((par1 & 255) / 16 * 16);
+            float f = j;
+            float f1 = k + 1;
+            float f2 = par1 % 16 * 16 + f;
+            float f3 = (par1 & 255) / 16 * 16;
             float f4 = f1 - f - 0.02F;
             float f5 = par2 ? 1.0F : 0.0F;
             GL11.glBegin(GL11.GL_TRIANGLE_STRIP);
@@ -375,7 +375,7 @@ public class GCCoreFontRendererLarge
                 astring[j] = s1;
             }
 
-            String[] astring1 = (String[]) astring.clone();
+            String[] astring1 = astring.clone();
             Bidi.reorderVisually(abyte, 0, astring, 0, abyte.length);
             StringBuilder stringbuilder = new StringBuilder();
             i = 0;
@@ -485,7 +485,7 @@ public class GCCoreFontRendererLarge
 
                     k = this.colorCode[j];
                     this.textColor = k;
-                    GL11.glColor4f((float) (k >> 16) / 255.0F, (float) (k >> 8 & 255) / 255.0F, (float) (k & 255) / 255.0F, this.alpha);
+                    GL11.glColor4f((k >> 16) / 255.0F, (k >> 8 & 255) / 255.0F, (k & 255) / 255.0F, this.alpha);
                 }
                 else if (j == 16)
                 {
@@ -580,10 +580,10 @@ public class GCCoreFontRendererLarge
                     tessellator = Tessellator.instance;
                     GL11.glDisable(GL11.GL_TEXTURE_2D);
                     tessellator.startDrawingQuads();
-                    tessellator.addVertex((double) this.posX, (double) (this.posY + (float) (this.FONT_HEIGHT / 2)), 0.0D);
-                    tessellator.addVertex((double) (this.posX + f1), (double) (this.posY + (float) (this.FONT_HEIGHT / 2)), 0.0D);
-                    tessellator.addVertex((double) (this.posX + f1), (double) (this.posY + (float) (this.FONT_HEIGHT / 2) - 1.0F), 0.0D);
-                    tessellator.addVertex((double) this.posX, (double) (this.posY + (float) (this.FONT_HEIGHT / 2) - 1.0F), 0.0D);
+                    tessellator.addVertex(this.posX, this.posY + this.FONT_HEIGHT / 2, 0.0D);
+                    tessellator.addVertex(this.posX + f1, this.posY + this.FONT_HEIGHT / 2, 0.0D);
+                    tessellator.addVertex(this.posX + f1, this.posY + this.FONT_HEIGHT / 2 - 1.0F, 0.0D);
+                    tessellator.addVertex(this.posX, this.posY + this.FONT_HEIGHT / 2 - 1.0F, 0.0D);
                     tessellator.draw();
                     GL11.glEnable(GL11.GL_TEXTURE_2D);
                 }
@@ -594,15 +594,15 @@ public class GCCoreFontRendererLarge
                     GL11.glDisable(GL11.GL_TEXTURE_2D);
                     tessellator.startDrawingQuads();
                     int l = this.underlineStyle ? -1 : 0;
-                    tessellator.addVertex((double) (this.posX + (float) l), (double) (this.posY + (float) this.FONT_HEIGHT), 0.0D);
-                    tessellator.addVertex((double) (this.posX + f1), (double) (this.posY + (float) this.FONT_HEIGHT), 0.0D);
-                    tessellator.addVertex((double) (this.posX + f1), (double) (this.posY + (float) this.FONT_HEIGHT - 1.0F), 0.0D);
-                    tessellator.addVertex((double) (this.posX + (float) l), (double) (this.posY + (float) this.FONT_HEIGHT - 1.0F), 0.0D);
+                    tessellator.addVertex(this.posX + l, this.posY + this.FONT_HEIGHT, 0.0D);
+                    tessellator.addVertex(this.posX + f1, this.posY + this.FONT_HEIGHT, 0.0D);
+                    tessellator.addVertex(this.posX + f1, this.posY + this.FONT_HEIGHT - 1.0F, 0.0D);
+                    tessellator.addVertex(this.posX + l, this.posY + this.FONT_HEIGHT - 1.0F, 0.0D);
                     tessellator.draw();
                     GL11.glEnable(GL11.GL_TEXTURE_2D);
                 }
 
-                this.posX += (float) ((int) f1);
+                this.posX += (int) f1;
             }
         }
 
@@ -646,13 +646,13 @@ public class GCCoreFontRendererLarge
                 par4 = (par4 & 16579836) >> 2 | par4 & -16777216;
             }
 
-            this.red = (float) (par4 >> 16 & 255) / 255.0F;
-            this.blue = (float) (par4 >> 8 & 255) / 255.0F;
-            this.green = (float) (par4 & 255) / 255.0F;
-            this.alpha = (float) (par4 >> 24 & 255) / 255.0F;
+            this.red = (par4 >> 16 & 255) / 255.0F;
+            this.blue = (par4 >> 8 & 255) / 255.0F;
+            this.green = (par4 & 255) / 255.0F;
+            this.alpha = (par4 >> 24 & 255) / 255.0F;
             GL11.glColor4f(this.red, this.blue, this.green, this.alpha);
-            this.posX = (float) par2;
-            this.posY = (float) par3;
+            this.posX = par2;
+            this.posY = par3;
             this.renderStringAtPos(par1Str, par5);
             return (int) this.posX;
         }
@@ -925,7 +925,7 @@ public class GCCoreFontRendererLarge
             String s1 = par1Str.substring(0, j);
             char c0 = par1Str.charAt(j);
             boolean flag = c0 == 32 || c0 == 10;
-            String s2 = getFormatFromString(s1) + par1Str.substring(j + (flag ? 1 : 0));
+            String s2 = GCCoreFontRendererLarge.getFormatFromString(s1) + par1Str.substring(j + (flag ? 1 : 0));
             return s1 + "\n" + this.wrapFormattedStringToWidth(s2, par2);
         }
     }
@@ -958,7 +958,7 @@ public class GCCoreFontRendererLarge
 
                     if (c1 != 108 && c1 != 76)
                     {
-                        if (c1 == 114 || c1 == 82 || isFormatColor(c1))
+                        if (c1 == 114 || c1 == 82 || GCCoreFontRendererLarge.isFormatColor(c1))
                         {
                             flag = false;
                         }
@@ -1030,11 +1030,11 @@ public class GCCoreFontRendererLarge
             {
                 char c0 = par0Str.charAt(i + 1);
 
-                if (isFormatColor(c0))
+                if (GCCoreFontRendererLarge.isFormatColor(c0))
                 {
                     s1 = "\u00a7" + c0;
                 }
-                else if (isFormatSpecial(c0))
+                else if (GCCoreFontRendererLarge.isFormatSpecial(c0))
                 {
                     s1 = s1 + "\u00a7" + c0;
                 }

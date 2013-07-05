@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.core.dimension;
 
-import micdoodle8.mods.galacticraft.API.IExitHeight;
-import micdoodle8.mods.galacticraft.API.IOrbitDimension;
-import micdoodle8.mods.galacticraft.API.ISolarLevel;
+import micdoodle8.mods.galacticraft.API.world.IExitHeight;
+import micdoodle8.mods.galacticraft.API.world.IOrbitDimension;
+import micdoodle8.mods.galacticraft.API.world.ISolarLevel;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.wgen.GCCoreChunkProviderOverworldOrbit;
 import net.minecraft.entity.Entity;

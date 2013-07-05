@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.core.tick;
 
 import java.util.EnumSet;
-import micdoodle8.mods.galacticraft.API.IInterplanetaryObject;
-import micdoodle8.mods.galacticraft.API.IOrbitDimension;
+import micdoodle8.mods.galacticraft.API.entity.IInterplanetaryObject;
+import micdoodle8.mods.galacticraft.API.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.WorldServer;

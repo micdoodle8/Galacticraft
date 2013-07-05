@@ -50,6 +50,7 @@ public class GCCoreEntityAIArrowAttack extends EntityAIBase
     /**
      * Returns whether the EntityAIBase should begin execution.
      */
+    @Override
     public boolean shouldExecute()
     {
         EntityLivingBase entitylivingbase = this.entityHost.getAttackTarget();
@@ -68,6 +69,7 @@ public class GCCoreEntityAIArrowAttack extends EntityAIBase
     /**
      * Returns whether an in-progress EntityAIBase should continue executing
      */
+    @Override
     public boolean continueExecuting()
     {
         return this.shouldExecute() || !this.entityHost.getNavigator().noPath();
@@ -76,6 +78,7 @@ public class GCCoreEntityAIArrowAttack extends EntityAIBase
     /**
      * Resets the task
      */
+    @Override
     public void resetTask()
     {
         this.attackTarget = null;
@@ -85,6 +88,7 @@ public class GCCoreEntityAIArrowAttack extends EntityAIBase
     /**
      * Updates the task
      */
+    @Override
     public void updateTask()
     {
         double d0 = this.entityHost.getDistanceSq(this.attackTarget.posX, this.attackTarget.boundingBox.minY, this.attackTarget.posZ);
@@ -97,7 +101,7 @@ public class GCCoreEntityAIArrowAttack extends EntityAIBase
 
         if (--this.rangedAttackTime == 0)
         {
-            if (d0 > (double) this.field_82642_h || !flag)
+            if (d0 > this.field_82642_h || !flag)
             {
                 return;
             }
@@ -116,12 +120,12 @@ public class GCCoreEntityAIArrowAttack extends EntityAIBase
             }
 
             this.rangedAttackEntityHost.attackEntityWithRangedAttack(this.attackTarget, f1);
-            this.rangedAttackTime = MathHelper.floor_float(f * (float) (this.maxRangedAttackTime - this.field_96561_g) + (float) this.field_96561_g);
+            this.rangedAttackTime = MathHelper.floor_float(f * (this.maxRangedAttackTime - this.field_96561_g) + this.field_96561_g);
         }
         else if (this.rangedAttackTime < 0)
         {
             f = MathHelper.sqrt_double(d0) / this.field_96562_i;
-            this.rangedAttackTime = MathHelper.floor_float(f * (float) (this.maxRangedAttackTime - this.field_96561_g) + (float) this.field_96561_g);
+            this.rangedAttackTime = MathHelper.floor_float(f * (this.maxRangedAttackTime - this.field_96561_g) + this.field_96561_g);
         }
     }
 }

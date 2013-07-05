@@ -2,10 +2,10 @@ package micdoodle8.mods.galacticraft.core;
 
 import java.lang.reflect.Field;
 import java.util.Random;
-import micdoodle8.mods.galacticraft.API.IEntityBreathable;
-import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
-import micdoodle8.mods.galacticraft.API.IKeyItem;
-import micdoodle8.mods.galacticraft.API.IKeyable;
+import micdoodle8.mods.galacticraft.API.entity.IEntityBreathable;
+import micdoodle8.mods.galacticraft.API.item.IKeyItem;
+import micdoodle8.mods.galacticraft.API.item.IKeyable;
+import micdoodle8.mods.galacticraft.API.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import net.minecraft.block.Block;

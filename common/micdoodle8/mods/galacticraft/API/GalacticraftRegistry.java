@@ -3,6 +3,12 @@ package micdoodle8.mods.galacticraft.API;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import micdoodle8.mods.galacticraft.API.recipe.SpaceStationRecipe;
+import micdoodle8.mods.galacticraft.API.world.ICelestialBody;
+import micdoodle8.mods.galacticraft.API.world.IGalaxy;
+import micdoodle8.mods.galacticraft.API.world.IOrbitDimension;
+import micdoodle8.mods.galacticraft.API.world.ITeleportType;
+import micdoodle8.mods.galacticraft.API.world.SpaceStationType;
 import net.minecraft.world.WorldProvider;
 
 public class GalacticraftRegistry

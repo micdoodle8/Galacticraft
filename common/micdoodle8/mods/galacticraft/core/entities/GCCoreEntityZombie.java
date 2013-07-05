@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
 import java.util.Calendar;
-import micdoodle8.mods.galacticraft.API.IEntityBreathable;
+import micdoodle8.mods.galacticraft.API.entity.IEntityBreathable;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -383,6 +383,7 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
         }
     }
 
+    @Override
     public EntityLivingData func_110161_a(EntityLivingData par1EntityLivingData)
     {
         par1EntityLivingData = super.func_110161_a(par1EntityLivingData);
@@ -413,7 +414,7 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
 
         if (this.rand.nextFloat() < f * 0.05F)
         {
-            this.func_110148_a(field_110186_bp).func_111121_a(new AttributeModifier("Leader zombie bonus", this.rand.nextDouble() * 0.25D + 0.5D, 0));
+            this.func_110148_a(EntityZombie.field_110186_bp).func_111121_a(new AttributeModifier("Leader zombie bonus", this.rand.nextDouble() * 0.25D + 0.5D, 0));
             this.func_110148_a(SharedMonsterAttributes.field_111267_a).func_111121_a(new AttributeModifier("Leader zombie bonus", this.rand.nextDouble() * 3.0D + 1.0D, 2));
         }
 

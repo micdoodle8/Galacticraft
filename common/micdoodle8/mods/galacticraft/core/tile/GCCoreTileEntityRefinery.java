@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import micdoodle8.mods.galacticraft.API.IRefinableItem;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemOilCanister;
@@ -357,7 +356,7 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
     @Override
     public boolean isStackValidForSlot(int slotID, ItemStack itemstack)
     {
-        return slotID == 1 ? itemstack.getItem() instanceof IRefinableItem && ((IRefinableItem) itemstack.getItem()).canSmeltItem(itemstack) : slotID == 0 ? itemstack.getItem() instanceof IItemElectric : slotID == 2 ? true : false;
+        return slotID == 0 ? itemstack.getItem() instanceof IItemElectric : true;
     }
 
     // ISidedInventory Implementation:

@@ -57,7 +57,7 @@ public class GCCoreGuiInventory extends GuiInventory
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.func_110434_K().func_110577_a(inventoryTexture);
+        this.mc.func_110434_K().func_110577_a(GCCoreGuiInventory.inventoryTexture);
         final int k = this.guiLeft;
         final int l = this.guiTop;
         this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);

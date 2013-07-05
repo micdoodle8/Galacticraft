@@ -19,7 +19,7 @@ public class GCCoreGuiParachest extends GuiContainer
     {
         for (int i = 0; i < 4; i++)
         {
-            parachestTexture[i] = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/chest_" + i * 18 + ".png");
+            GCCoreGuiParachest.parachestTexture[i] = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/chest_" + i * 18 + ".png");
         }
     }
 
@@ -51,7 +51,7 @@ public class GCCoreGuiParachest extends GuiContainer
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.func_110434_K().func_110577_a(parachestTexture[(this.inventorySlots - 3) / 18]);
+        this.mc.func_110434_K().func_110577_a(GCCoreGuiParachest.parachestTexture[(this.inventorySlots - 3) / 18]);
         int k = (this.width - this.xSize) / 2;
         int l = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);

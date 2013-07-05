@@ -6,12 +6,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import micdoodle8.mods.galacticraft.API.GalacticraftRegistry;
-import micdoodle8.mods.galacticraft.API.ICelestialBody;
-import micdoodle8.mods.galacticraft.API.ICelestialBodyRenderer;
-import micdoodle8.mods.galacticraft.API.IGalaxy;
-import micdoodle8.mods.galacticraft.API.IMapObject;
-import micdoodle8.mods.galacticraft.API.IMoon;
-import micdoodle8.mods.galacticraft.API.IPlanet;
+import micdoodle8.mods.galacticraft.API.world.ICelestialBody;
+import micdoodle8.mods.galacticraft.API.world.ICelestialBodyRenderer;
+import micdoodle8.mods.galacticraft.API.world.IGalaxy;
+import micdoodle8.mods.galacticraft.API.world.IMapObject;
+import micdoodle8.mods.galacticraft.API.world.IMoon;
+import micdoodle8.mods.galacticraft.API.world.IPlanet;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -398,7 +398,7 @@ public class GCCoreGuiGalaxyMap extends GCCoreGuiStarBackground
                     {
                         if (e.getKey().equals(thePlanet))
                         {
-                            final List<IMoon> moonList = (List<IMoon>) e.getValue();
+                            final List<IMoon> moonList = e.getValue();
 
                             for (final IMoon theMoon : moonList)
                             {
@@ -498,7 +498,7 @@ public class GCCoreGuiGalaxyMap extends GCCoreGuiStarBackground
         GL11.glDisable(GL11.GL_DEPTH_TEST);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
 
-        this.mc.func_110434_K().func_110577_a(guiTexture);
+        this.mc.func_110434_K().func_110577_a(GCCoreGuiGalaxyMap.guiTexture);
         this.drawTexturedModalRect(this.width / 2 - 5, this.height / 2 - 5, 123, 0, 10, 10);
 
         final int col = GCCoreUtil.convertTo32BitColor(255, 198, 198, 198);
@@ -537,7 +537,7 @@ public class GCCoreGuiGalaxyMap extends GCCoreGuiStarBackground
                 {
                     for (final Map.Entry<IPlanet, ArrayList<IMoon>> e : GalacticraftCore.mapMoons.entrySet())
                     {
-                        final List<IMoon> moonList = (List<IMoon>) e.getValue();
+                        final List<IMoon> moonList = e.getValue();
 
                         for (IMoon moon : moonList)
                         {

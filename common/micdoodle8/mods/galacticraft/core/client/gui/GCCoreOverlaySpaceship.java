@@ -32,7 +32,7 @@ public class GCCoreOverlaySpaceship extends GCCoreOverlay
         GCCoreOverlaySpaceship.minecraft.entityRenderer.setupOverlayRendering();
         GL11.glDepthMask(true);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        FMLClientHandler.instance().getClient().renderEngine.func_110577_a(guiTexture);
+        FMLClientHandler.instance().getClient().renderEngine.func_110577_a(GCCoreOverlaySpaceship.guiTexture);
 
         float var1 = 0F;
         float var2 = height / 2 - 170 / 2;

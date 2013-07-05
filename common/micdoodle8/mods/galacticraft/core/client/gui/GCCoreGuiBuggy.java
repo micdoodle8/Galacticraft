@@ -22,7 +22,7 @@ public class GCCoreGuiBuggy extends GuiContainer
     {
         for (int i = 0; i < 4; i++)
         {
-            sealerTexture[i] = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/buggy_" + i * 18 + ".png");
+            GCCoreGuiBuggy.sealerTexture[i] = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/buggy_" + i * 18 + ".png");
         }
     }
 
@@ -58,7 +58,7 @@ public class GCCoreGuiBuggy extends GuiContainer
     @Override
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
-        this.mc.func_110434_K().func_110577_a(sealerTexture[this.type]);
+        this.mc.func_110434_K().func_110577_a(GCCoreGuiBuggy.sealerTexture[this.type]);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         final int var5 = (this.width - this.xSize) / 2;

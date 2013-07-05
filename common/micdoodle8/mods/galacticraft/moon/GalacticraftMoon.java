@@ -3,13 +3,18 @@ package micdoodle8.mods.galacticraft.moon;
 import java.io.File;
 import java.util.EnumSet;
 import micdoodle8.mods.galacticraft.API.GalacticraftRegistry;
-import micdoodle8.mods.galacticraft.API.IMoon;
+import micdoodle8.mods.galacticraft.API.world.IMoon;
 import micdoodle8.mods.galacticraft.core.GCCoreCreativeTab;
 import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
 import micdoodle8.mods.galacticraft.moon.dimension.GCMoonTeleportType;
 import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;
 import micdoodle8.mods.galacticraft.moon.items.GCMoonItems;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraftforge.oredict.OreDictionary;
 import universalelectricity.prefab.TranslationHelper;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
@@ -66,8 +71,8 @@ public class GalacticraftMoon
 
         GalacticraftRegistry.registerTeleportType(GCMoonWorldProvider.class, new GCMoonTeleportType());
 
-        GCMoonUtil.addCraftingRecipes();
-        GCMoonUtil.addSmeltingRecipes();
+        GalacticraftMoon.addCraftingRecipes();
+        GalacticraftMoon.addSmeltingRecipes();
     }
 
     public void postLoad(FMLPostInitializationEvent event)
@@ -82,6 +87,28 @@ public class GalacticraftMoon
 
     public void serverStarting(FMLServerStartingEvent event)
     {
+    }
+
+    public static void addCraftingRecipes()
+    {
+        CraftingManager.getInstance().addRecipe(new ItemStack(GCMoonItems.cheeseBlock, 1), new Object[] { "YYY", "YXY", "YYY", 'X', Item.bucketMilk, 'Y', GCMoonItems.cheeseCurd });
+    }
+
+    public static void addSmeltingRecipes()
+    {
+        FurnaceRecipes.smelting().addSmelting(GCMoonItems.meteoricIronRaw.itemID, new ItemStack(GCMoonItems.meteoricIronIngot), 1.0F);
+
+        if (OreDictionary.getOres("ingotCopper").size() > 0)
+        {
+            FurnaceRecipes.smelting().addSmelting(GCMoonBlocks.blockMoon.blockID, 0, OreDictionary.getOres("ingotCopper").get(0), 1.0F);
+        }
+
+        if (OreDictionary.getOres("ingotTin").size() > 0)
+        {
+            FurnaceRecipes.smelting().addSmelting(GCMoonBlocks.blockMoon.blockID, 1, OreDictionary.getOres("ingotTin").get(0), 1.0F);
+        }
+
+        FurnaceRecipes.smelting().addSmelting(GCMoonBlocks.blockMoon.blockID, 2, new ItemStack(GCMoonItems.cheeseCurd), 1.0F);
     }
 
     public class CommonTickHandler implements ITickHandler

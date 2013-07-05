@@ -24,11 +24,11 @@ public class GCCoreRenderFlag extends Render
 
     static
     {
-        flagTextures = new ResourceLocation[GCCoreItemFlag.names.length];
+        GCCoreRenderFlag.flagTextures = new ResourceLocation[GCCoreItemFlag.names.length];
 
         for (int i = 0; i < GCCoreItemFlag.names.length; i++)
         {
-            flagTextures[i] = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/flag/" + GCCoreItemFlag.names[i] + ".png");
+            GCCoreRenderFlag.flagTextures[i] = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/flag/" + GCCoreItemFlag.names[i] + ".png");
         }
     }
 
@@ -47,9 +47,10 @@ public class GCCoreRenderFlag extends Render
             return null;
         }
 
-        return flagTextures[entity.getType()];
+        return GCCoreRenderFlag.flagTextures[entity.getType()];
     }
 
+    @Override
     protected ResourceLocation func_110775_a(Entity entity)
     {
         return this.func_110779_a((GCCoreEntityFlag) entity);

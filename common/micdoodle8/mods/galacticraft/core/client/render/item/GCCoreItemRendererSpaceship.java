@@ -56,7 +56,7 @@ public class GCCoreItemRendererSpaceship implements IItemRenderer
             if (EnumRocketType.values()[index].getInventorySpace() > 3)
             {
                 final ModelChest modelChest = this.chestModel;
-                FMLClientHandler.instance().getClient().renderEngine.func_110577_a(chestTexture);
+                FMLClientHandler.instance().getClient().renderEngine.func_110577_a(GCCoreItemRendererSpaceship.chestTexture);
 
                 GL11.glPushMatrix();
                 GL11.glDisable(GL11.GL_DEPTH_TEST);

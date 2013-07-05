@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.moon;
 
-import micdoodle8.mods.galacticraft.API.IMapObject;
-import micdoodle8.mods.galacticraft.API.IMoon;
-import micdoodle8.mods.galacticraft.API.IPlanet;
+import micdoodle8.mods.galacticraft.API.world.IMapObject;
+import micdoodle8.mods.galacticraft.API.world.IMoon;
+import micdoodle8.mods.galacticraft.API.world.IPlanet;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.moon.client.GCMoonMapPlanet;
 import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;

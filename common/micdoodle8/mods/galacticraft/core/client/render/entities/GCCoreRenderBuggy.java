@@ -32,9 +32,10 @@ public class GCCoreRenderBuggy extends Render
 
     protected ResourceLocation func_110779_a(GCCoreEntityLander par1EntityArrow)
     {
-        return buggyTexture;
+        return GCCoreRenderBuggy.buggyTexture;
     }
 
+    @Override
     protected ResourceLocation func_110775_a(Entity par1Entity)
     {
         return this.func_110779_a((GCCoreEntityLander) par1Entity);

@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.Random;
-import micdoodle8.mods.galacticraft.API.IPartialSealedBlock;
+import micdoodle8.mods.galacticraft.API.block.IPartialSealedBlock;
 import net.minecraft.block.BlockBreakable;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;

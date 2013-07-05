@@ -24,11 +24,11 @@ public class GCCoreItemRendererFlag implements IItemRenderer
 
     static
     {
-        flagTextures = new ResourceLocation[GCCoreItemFlag.names.length];
+        GCCoreItemRendererFlag.flagTextures = new ResourceLocation[GCCoreItemFlag.names.length];
 
         for (int i = 0; i < GCCoreItemFlag.names.length; i++)
         {
-            flagTextures[i] = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/flag/" + GCCoreItemFlag.names[i] + ".png");
+            GCCoreItemRendererFlag.flagTextures[i] = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/flag/" + GCCoreItemFlag.names[i] + ".png");
         }
     }
 
@@ -110,7 +110,7 @@ public class GCCoreItemRendererFlag implements IItemRenderer
             GL11.glTranslatef(0, -0.6F, 0);
         }
 
-        FMLClientHandler.instance().getClient().renderEngine.func_110577_a(flagTextures[item.getItemDamage()]);
+        FMLClientHandler.instance().getClient().renderEngine.func_110577_a(GCCoreItemRendererFlag.flagTextures[item.getItemDamage()]);
 
         this.modelSpaceship.render(this.spaceship, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
         GL11.glPopMatrix();

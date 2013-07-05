@@ -4,7 +4,7 @@ import java.util.Arrays;
 import mekanism.api.GasTransmission;
 import mekanism.api.IPressurizedTube;
 import mekanism.api.ITubeConnection;
-import micdoodle8.mods.galacticraft.API.IColorable;
+import micdoodle8.mods.galacticraft.API.tile.IColorable;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenPipe;
 import net.minecraft.block.BlockContainer;

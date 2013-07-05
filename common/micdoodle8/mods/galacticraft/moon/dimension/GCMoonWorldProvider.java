@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.moon.dimension;
 
-import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
-import micdoodle8.mods.galacticraft.API.ISolarLevel;
+import micdoodle8.mods.galacticraft.API.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.API.world.ISolarLevel;
 import micdoodle8.mods.galacticraft.moon.GCMoonConfigManager;
 import micdoodle8.mods.galacticraft.moon.wgen.GCMoonChunkProvider;
 import micdoodle8.mods.galacticraft.moon.wgen.GCMoonWorldChunkManager;

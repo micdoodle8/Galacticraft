@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
-import micdoodle8.mods.galacticraft.API.IEntityBreathable;
+import micdoodle8.mods.galacticraft.API.entity.IEntityBreathable;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLiving;
@@ -69,10 +69,6 @@ public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityB
 
     /** Initialises the MerchantRecipeList.java */
     private MerchantRecipeList buyingList;
-    private int timeUntilReset;
-
-    /** addDefaultEquipmentAndRecipies is called if this is true */
-    private boolean needsInitilization;
     private int wealth;
 
     /** Last player to trade with this villager, used for aggressivity. */
@@ -107,7 +103,7 @@ public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityB
             else
             {
                 ChunkCoordinates chunkcoordinates = this.villageObj.getCenter();
-                this.func_110171_b(chunkcoordinates.posX, chunkcoordinates.posY, chunkcoordinates.posZ, (int) ((float) this.villageObj.getVillageRadius() * 0.6F));
+                this.func_110171_b(chunkcoordinates.posX, chunkcoordinates.posY, chunkcoordinates.posZ, (int) (this.villageObj.getVillageRadius() * 0.6F));
 
                 if (this.field_82190_bM)
                 {
@@ -304,9 +300,6 @@ public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityB
 
         if (par1MerchantRecipe.hasSameIDsAs((MerchantRecipe) this.buyingList.get(this.buyingList.size() - 1)))
         {
-            this.timeUntilReset = 40;
-            this.needsInitilization = true;
-
             if (this.buyingPlayer != null)
             {
                 this.lastBuyingPlayer = this.buyingPlayer.getCommandSenderName();

@@ -41,9 +41,10 @@ public class GCCoreRenderSpider extends RenderLiving
 
     protected ResourceLocation func_110779_a(GCCoreEntitySpider par1EntityArrow)
     {
-        return spiderTexture;
+        return GCCoreRenderSpider.spiderTexture;
     }
 
+    @Override
     protected ResourceLocation func_110775_a(Entity par1Entity)
     {
         return this.func_110779_a((GCCoreEntitySpider) par1Entity);
@@ -79,7 +80,7 @@ public class GCCoreRenderSpider extends RenderLiving
             if (par2 == 1)
             {
                 final float var4 = par1EntityLiving.ticksExisted * 2 + par3;
-                this.func_110776_a(powerTexture);
+                this.func_110776_a(GCCoreRenderSpider.powerTexture);
                 GL11.glMatrixMode(GL11.GL_TEXTURE);
                 GL11.glLoadIdentity();
                 final float var5 = var4 * 0.01F;
@@ -107,7 +108,7 @@ public class GCCoreRenderSpider extends RenderLiving
 
         if (par2 == 0)
         {
-            this.func_110776_a(spiderEyesTexture);
+            this.func_110776_a(GCCoreRenderSpider.spiderEyesTexture);
             final float var4 = 1.0F;
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glDisable(GL11.GL_ALPHA_TEST);

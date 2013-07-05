@@ -37,7 +37,7 @@ public class GCCoreRenderAlienVillager extends RenderLiving
 
     protected ResourceLocation func_110902_a(EntityVillager par1EntityVillager)
     {
-        return villagerTexture;
+        return GCCoreRenderAlienVillager.villagerTexture;
     }
 
     protected void renderVillagerEquipedItems(EntityVillager par1EntityVillager, float par2)
@@ -51,7 +51,7 @@ public class GCCoreRenderAlienVillager extends RenderLiving
 
         if (par1EntityVillager.getGrowingAge() < 0)
         {
-            f1 = (float) ((double) f1 * 0.5D);
+            f1 = (float) (f1 * 0.5D);
             this.shadowSize = 0.25F;
         }
         else
@@ -62,36 +62,43 @@ public class GCCoreRenderAlienVillager extends RenderLiving
         GL11.glScalef(f1, f1, f1);
     }
 
+    @Override
     public void doRenderLiving(EntityLiving par1EntityLiving, double par2, double par4, double par6, float par8, float par9)
     {
         this.renderVillager((EntityVillager) par1EntityLiving, par2, par4, par6, par8, par9);
     }
 
+    @Override
     protected void preRenderCallback(EntityLivingBase par1EntityLivingBase, float par2)
     {
         this.preRenderVillager((EntityVillager) par1EntityLivingBase, par2);
     }
 
+    @Override
     protected int shouldRenderPass(EntityLivingBase par1EntityLivingBase, int par2, float par3)
     {
         return this.shouldVillagerRenderPass((EntityVillager) par1EntityLivingBase, par2, par3);
     }
 
+    @Override
     protected void renderEquippedItems(EntityLivingBase par1EntityLivingBase, float par2)
     {
         this.renderVillagerEquipedItems((EntityVillager) par1EntityLivingBase, par2);
     }
 
+    @Override
     public void renderPlayer(EntityLivingBase par1EntityLivingBase, double par2, double par4, double par6, float par8, float par9)
     {
         this.renderVillager((EntityVillager) par1EntityLivingBase, par2, par4, par6, par8, par9);
     }
 
+    @Override
     protected ResourceLocation func_110775_a(Entity par1Entity)
     {
         return this.func_110902_a((EntityVillager) par1Entity);
     }
 
+    @Override
     public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
     {
         this.renderVillager((EntityVillager) par1Entity, par2, par4, par6, par8, par9);

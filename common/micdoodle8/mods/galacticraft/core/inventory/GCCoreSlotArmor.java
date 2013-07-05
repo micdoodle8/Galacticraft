@@ -49,7 +49,7 @@ public class GCCoreSlotArmor extends Slot
     public boolean isItemValid(ItemStack par1ItemStack)
     {
         final Item item = par1ItemStack == null ? null : par1ItemStack.getItem();
-        return item != null && item.isValidArmor(par1ItemStack, armorType, parent.thePlayer);
+        return item != null && item.isValidArmor(par1ItemStack, this.armorType, this.parent.thePlayer);
     }
 
     @Override

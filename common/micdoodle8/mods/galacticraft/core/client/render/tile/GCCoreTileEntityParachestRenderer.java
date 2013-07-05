@@ -44,7 +44,7 @@ public class GCCoreTileEntityParachestRenderer extends TileEntitySpecialRenderer
             }
         }
 
-        this.func_110628_a(parachestTexture);
+        this.func_110628_a(GCCoreTileEntityParachestRenderer.parachestTexture);
 
         GL11.glPushMatrix();
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);

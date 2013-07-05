@@ -2,8 +2,8 @@ package micdoodle8.mods.galacticraft.core.entities;
 
 import java.util.List;
 import java.util.Random;
-import micdoodle8.mods.galacticraft.API.IEntityBreathable;
-import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.API.entity.IEntityBreathable;
+import micdoodle8.mods.galacticraft.API.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
@@ -22,7 +22,6 @@ import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
-import net.minecraft.entity.ai.attributes.AttributeInstance;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.boss.IBossDisplayData;
 import net.minecraft.entity.item.EntityItem;
@@ -34,7 +33,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.stats.AchievementList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -57,7 +55,7 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
 {
     protected long ticks = 0;
     private static final ItemStack defaultHeldItem = new ItemStack(Item.bow, 1);
-    private static final AttributeModifier skeleBossEnrage = (new AttributeModifier("Drinking speed penalty", 0.15D, 0)).func_111168_a(false);
+    private static final AttributeModifier skeleBossEnrage = new AttributeModifier("Drinking speed penalty", 0.15D, 0).func_111168_a(false);
     private GCCoreTileEntityDungeonSpawner spawner;
 
     public int throwTimer;
@@ -334,11 +332,9 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
 
         this.ticks++;
 
-        if (!this.worldObj.isRemote && this.func_110143_aJ() <= (150.0F * GCCoreConfigManager.dungeonBossHealthMod) / 2)
+        if (!this.worldObj.isRemote && this.func_110143_aJ() <= 150.0F * GCCoreConfigManager.dungeonBossHealthMod / 2)
         {
-            AttributeInstance attributeinstance = this.func_110148_a(SharedMonsterAttributes.field_111263_d);
-            // attributeinstance.func_111124_b(skeleBossEnrage);
-            // attributeinstance.func_111121_a(skeleBossEnrage);
+            this.func_110148_a(SharedMonsterAttributes.field_111263_d);
         }
 
         final EntityPlayer player = this.worldObj.getClosestPlayer(this.posX, this.posY, this.posZ, 20.0);
@@ -347,7 +343,7 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
         {
             if (this.getDistanceSqToEntity(player) < 400.0D)
             {
-                final PathEntity pathentity = this.getNavigator().getPathToEntityLiving(player);
+                this.getNavigator().getPathToEntityLiving(player);
                 this.targetEntity = player;
                 // this.getNavigator().setPath(pathentity, this.health >= 75.0 ?
                 // 0.2F : 0.35F);

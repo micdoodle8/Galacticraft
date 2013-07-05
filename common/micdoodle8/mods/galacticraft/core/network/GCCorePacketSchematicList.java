@@ -5,7 +5,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.util.Collection;
 import java.util.Iterator;
-import micdoodle8.mods.galacticraft.API.ISchematicPage;
+import micdoodle8.mods.galacticraft.API.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
@@ -31,7 +31,7 @@ public class GCCorePacketSchematicList implements IGalacticraftAdvancedPacket
 
             while (var3.hasNext())
             {
-                final ISchematicPage var4 = (ISchematicPage) var3.next();
+                final ISchematicPage var4 = var3.next();
                 data.writeInt(var4.getPageID());
             }
 

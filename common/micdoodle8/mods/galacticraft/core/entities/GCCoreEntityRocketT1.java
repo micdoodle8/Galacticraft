@@ -6,8 +6,8 @@ import icbm.api.RadarRegistry;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import micdoodle8.mods.galacticraft.API.IFuelDock;
-import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.API.tile.IFuelDock;
+import micdoodle8.mods.galacticraft.API.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
@@ -16,7 +16,6 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.moon.GCMoonConfigManager;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
@@ -412,12 +411,6 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
     @Override
     public void closeChest()
     {
-    }
-
-    @Override
-    public Entity[] getSpaceshipParts()
-    {
-        return null;
     }
 
     @Override
