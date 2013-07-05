@@ -55,12 +55,13 @@ public class SpaceStationRecipe
         return this.input.size();
     }
 
+    @SuppressWarnings("unchecked")
     public boolean matches(EntityPlayer player, boolean remove)
     {
         final HashMap<Object, Integer> required = new HashMap<Object, Integer>();
         required.putAll(this.input);
 
-        final Iterator req = this.input.keySet().iterator();
+        final Iterator<Object> req = this.input.keySet().iterator();
 
         while (req.hasNext())
         {
@@ -109,11 +110,12 @@ public class SpaceStationRecipe
         return required.isEmpty();
     }
 
+    @SuppressWarnings("unchecked")
     public void removeItems(EntityPlayer player)
     {
         final HashMap<Object, Integer> required = new HashMap<Object, Integer>(this.input);
 
-        final Iterator req = required.keySet().iterator();
+        final Iterator<Object> req = required.keySet().iterator();
 
         while (req.hasNext())
         {

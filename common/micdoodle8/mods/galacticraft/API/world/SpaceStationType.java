@@ -2,6 +2,9 @@ package micdoodle8.mods.galacticraft.API.world;
 
 import micdoodle8.mods.galacticraft.API.recipe.SpaceStationRecipe;
 
+/**
+ *  Currently only used internally, not guaranteed to work.
+ */
 public class SpaceStationType
 {
     private final int spaceStationID;

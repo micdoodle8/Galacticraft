@@ -176,9 +176,9 @@ public class GCCoreTileEntityOxygenPipe extends TileEntity implements ITubeConne
     }
 
     @Override
-    public void onAdjacentColorChanged(Vector3 thisVec, Vector3 updatedVec)
+    public void onAdjacentColorChanged(ForgeDirection direction)
     {
-        this.worldObj.markBlockForUpdate(thisVec.intX(), thisVec.intY(), thisVec.intZ());
+        this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
     }
 
     @Override

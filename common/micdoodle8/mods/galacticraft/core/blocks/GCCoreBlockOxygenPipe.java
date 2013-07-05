@@ -148,7 +148,7 @@ public class GCCoreBlockOxygenPipe extends BlockContainer
 
                         if (tileAt != null && tileAt instanceof IColorable)
                         {
-                            ((IColorable) tileAt).onAdjacentColorChanged(new Vector3(tileAt), new Vector3(tileEntity));
+                            ((IColorable) tileAt).onAdjacentColorChanged(dir);
                         }
 
                         if (!par1World.isRemote && tileAt instanceof IPressurizedTube)

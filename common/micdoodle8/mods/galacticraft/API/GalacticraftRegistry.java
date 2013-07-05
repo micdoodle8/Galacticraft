@@ -3,10 +3,8 @@ package micdoodle8.mods.galacticraft.API;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import micdoodle8.mods.galacticraft.API.recipe.SpaceStationRecipe;
 import micdoodle8.mods.galacticraft.API.world.ICelestialBody;
 import micdoodle8.mods.galacticraft.API.world.IGalaxy;
-import micdoodle8.mods.galacticraft.API.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.API.world.ITeleportType;
 import micdoodle8.mods.galacticraft.API.world.SpaceStationType;
 import net.minecraft.world.WorldProvider;
@@ -14,7 +12,6 @@ import net.minecraft.world.WorldProvider;
 public class GalacticraftRegistry
 {
     private static Map<Class<? extends WorldProvider>, ITeleportType> teleportTypeMap = new HashMap<Class<? extends WorldProvider>, ITeleportType>();
-    private static Map<Class<? extends IOrbitDimension>, SpaceStationRecipe> spaceStationRecipes = new HashMap<Class<? extends IOrbitDimension>, SpaceStationRecipe>();
     private static Map<Integer, SpaceStationType> spaceStations = new HashMap<Integer, SpaceStationType>();
     private static ArrayList<ICelestialBody> celestialBodies = new ArrayList<ICelestialBody>();
     private static ArrayList<IGalaxy> galaxies = new ArrayList<IGalaxy>();
@@ -40,9 +37,7 @@ public class GalacticraftRegistry
     /**
      * Register a Galacticraft Body. See @IPlanet and @IMoon
      * 
-     * @param celestial
-     *            body object. Must implement IPlanet or IMoon to function as
-     *            intended
+     * @param body celestial body object. Must implement IPlanet or IMoon to function as intended
      */
     public static void registerCelestialBody(ICelestialBody body)
     {
@@ -55,9 +50,7 @@ public class GalacticraftRegistry
     /**
      * Register a new Galaxy. This is not fully implemented yet.
      * 
-     * @param celestial
-     *            body object. Must implement IPlanet or IMoon to function as
-     *            intended
+     * @param galaxy the Galaxy object to add to the list of all galaxies
      */
     public static void registerGalaxy(IGalaxy galaxy)
     {

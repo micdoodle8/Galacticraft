@@ -23,6 +23,9 @@ public class SchematicRegistry
 {
     public static ArrayList<ISchematicPage> schematicRecipes = new ArrayList<ISchematicPage>();
 
+    /**
+     * Register a new schematic page
+     */
     public static void registerSchematicRecipe(ISchematicPage page)
     {
         if (!SchematicRegistry.schematicRecipes.contains(page))
@@ -31,6 +34,12 @@ public class SchematicRegistry
         }
     }
 
+    /**
+     * Finds the recipe for the given itemstack
+     * 
+     * @param stack the itemstack to be searched with
+     * @return the recipe that requires the provided itemstack
+     */
     public static ISchematicPage getMatchingRecipeForItemStack(ItemStack stack)
     {
         for (final ISchematicPage schematic : SchematicRegistry.schematicRecipes)
@@ -46,6 +55,12 @@ public class SchematicRegistry
         return null;
     }
 
+    /**
+     * Finds the recipe for the given recipe ID
+     * 
+     * @param id the ID to be searched with
+     * @return the recipe that has and ID equal to the one provided
+     */
     public static ISchematicPage getMatchingRecipeForID(int id)
     {
         for (final ISchematicPage schematic : SchematicRegistry.schematicRecipes)
@@ -59,6 +74,12 @@ public class SchematicRegistry
         return null;
     }
 
+    /**
+     * Called when a player unlocks a page. Used internally.
+     * 
+     * @param player the player that unlocked the schematic
+     * @param page the schematic page to be unlocked
+     */
     public static void addUnlockedPage(GCCorePlayerMP player, ISchematicPage page)
     {
         if (!player.unlockedSchematics.contains(page))
@@ -73,6 +94,13 @@ public class SchematicRegistry
         }
     }
 
+    /**
+     * Called when a player unlocks a page. Used internally.
+     * 
+     * @param player the player that unlocked the schematic
+     * @param stack the itemstack the player has provided 
+     * @return the schematic page that was unlocked
+     */
     public static ISchematicPage unlockNewPage(GCCorePlayerMP player, ItemStack stack)
     {
         if (stack != null)
@@ -90,6 +118,9 @@ public class SchematicRegistry
         return null;
     }
 
+    /**
+     * Writes the list to NBT
+     */
     public static NBTTagList writeToNBT(GCCorePlayerMP player, NBTTagList par1NBTTagList)
     {
         Collections.sort(player.unlockedSchematics);
@@ -107,6 +138,9 @@ public class SchematicRegistry
         return par1NBTTagList;
     }
 
+    /**
+     * Reads the list to NBT
+     */
     public static void readFromNBT(GCCorePlayerMP player, NBTTagList par1NBTTagList)
     {
         player.unlockedSchematics = new ArrayList<ISchematicPage>();
@@ -123,6 +157,9 @@ public class SchematicRegistry
         Collections.sort(player.unlockedSchematics);
     }
 
+    /**
+     * Used internally to find the schematic to use when next is pressed
+     */
     @SideOnly(Side.CLIENT)
     private static ISchematicPage getNextSchematic(int currentIndex)
     {
@@ -157,6 +194,9 @@ public class SchematicRegistry
         return null;
     }
 
+    /**
+     * Used internally to find the schematic to use when back is pressed
+     */
     @SideOnly(Side.CLIENT)
     private static ISchematicPage getLastSchematic(int currentIndex)
     {
@@ -191,6 +231,12 @@ public class SchematicRegistry
         return null;
     }
 
+    /**
+     * Finds the correct schematic when player presses NEXT
+     * 
+     * @param currentIndex the current index of unlocked schematics the player is viewing
+     * @return the schematic page that will be shown when the player clicks NEXT
+     */
     @SideOnly(Side.CLIENT)
     public static void flipToNextPage(int currentIndex)
     {
@@ -209,6 +255,12 @@ public class SchematicRegistry
         }
     }
 
+    /**
+     * Finds the correct schematic when player presses BACK
+     * 
+     * @param currentIndex the current index of unlocked schematics the player is viewing
+     * @return the schematic page that will be shown when the player clicks BACK
+     */
     @SideOnly(Side.CLIENT)
     public static void flipToLastPage(int currentIndex)
     {

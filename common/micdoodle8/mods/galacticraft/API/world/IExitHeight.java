@@ -8,5 +8,8 @@ package micdoodle8.mods.galacticraft.API.world;
  */
 public interface IExitHeight
 {
+    /**
+     * @return y-coordinate that spacecraft leaves the dimension
+     */
     public double getYCoordinateToTeleport();
 }
