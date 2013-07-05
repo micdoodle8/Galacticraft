@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
@@ -27,8 +28,8 @@ public class GCCoreBlockMulti extends BlockMulti
     public void registerIcons(IconRegister par1IconRegister)
     {
         this.fakeIcons = new Icon[2];
-        this.fakeIcons[0] = par1IconRegister.registerIcon("galacticraftcore:launch_pad");
-        this.fakeIcons[1] = par1IconRegister.registerIcon("galacticraftcore:workbench_nasa_top");
+        this.fakeIcons[0] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "launch_pad");
+        this.fakeIcons[1] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "workbench_nasa_top");
     }
 
     @Override

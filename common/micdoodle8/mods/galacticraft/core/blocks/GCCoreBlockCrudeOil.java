@@ -1,8 +1,10 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.Random;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
@@ -24,6 +26,12 @@ public class GCCoreBlockCrudeOil extends BlockFluidClassic
     }
 
     @Override
+    public CreativeTabs getCreativeTabToDisplayOn()
+    {
+        return GalacticraftCore.galacticraftTab;
+    }
+
+    @Override
     @SideOnly(Side.CLIENT)
     public Icon getIcon(int par1, int par2)
     {
@@ -34,7 +42,7 @@ public class GCCoreBlockCrudeOil extends BlockFluidClassic
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister par1IconRegister)
     {
-        this.fluidIcons = new Icon[] { par1IconRegister.registerIcon("galacticraftcore:oil"), par1IconRegister.registerIcon("galacticraftcore:oil_flow") };
+        this.fluidIcons = new Icon[] { par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "oil"), par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "oil_flow") };
     }
 
     @Override

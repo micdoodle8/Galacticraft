@@ -40,10 +40,10 @@ public class GCCoreBlock extends Block
     public void registerIcons(IconRegister par1IconRegister)
     {
         this.iconBuffer = new Icon[5][3];
-        this.iconBuffer[3][0] = par1IconRegister.registerIcon("galacticraftcore:deco_aluminium_2");
-        this.iconBuffer[3][1] = par1IconRegister.registerIcon("galacticraftcore:deco_aluminium_4");
-        this.iconBuffer[3][2] = par1IconRegister.registerIcon("galacticraftcore:deco_aluminium_1");
-        this.iconBuffer[4][0] = par1IconRegister.registerIcon("galacticraftcore:deco_aluminium_4");
+        this.iconBuffer[3][0] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "deco_aluminium_2");
+        this.iconBuffer[3][1] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "deco_aluminium_4");
+        this.iconBuffer[3][2] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "deco_aluminium_1");
+        this.iconBuffer[4][0] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "deco_aluminium_4");
     }
 
     @Override

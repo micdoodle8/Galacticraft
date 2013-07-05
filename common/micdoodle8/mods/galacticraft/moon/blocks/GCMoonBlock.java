@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 import micdoodle8.mods.galacticraft.API.block.IDetectableMetadataResource;
 import micdoodle8.mods.galacticraft.API.block.IPlantableMetadataBlock;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockAdvanced;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityDungeonSpawner;
 import micdoodle8.mods.galacticraft.moon.GalacticraftMoon;
@@ -84,7 +85,7 @@ public class GCMoonBlock extends GCCoreBlockAdvanced implements IDetectableMetad
         this.moonBlockIcons[13] = par1IconRegister.registerIcon("galacticraftmoon:moonore_tin");
         this.moonBlockIcons[14] = par1IconRegister.registerIcon("galacticraftmoon:moonore_cheese");
         this.moonBlockIcons[15] = par1IconRegister.registerIcon("galacticraftmoon:bottom");
-        this.moonBlockIcons[16] = par1IconRegister.registerIcon("galacticraftcore:blank");
+        this.moonBlockIcons[16] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "blank");
     }
 
     @Override

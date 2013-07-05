@@ -50,7 +50,7 @@
 //
 //		for (final String name : GCCoreItemBasic.names)
 //		{
-//			this.icons[i++] = iconRegister.registerIcon("galacticraftcore:" + name + GalacticraftCore.TEXTURE_SUFFIX);
+//			this.icons[i++] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "" + name + GalacticraftCore.TEXTURE_SUFFIX);
 //		}
 //	}
 //

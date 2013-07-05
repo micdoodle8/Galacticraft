@@ -35,6 +35,6 @@ public class GCCoreItemPickaxe extends ItemPickaxe
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister par1IconRegister)
     {
-        this.itemIcon = par1IconRegister.registerIcon(this.getUnlocalizedName().replace("item.", "galacticraftcore:"));
+        this.itemIcon = par1IconRegister.registerIcon(this.getUnlocalizedName().replace("item.", GalacticraftCore.TEXTURE_PREFIX + ""));
     }
 }

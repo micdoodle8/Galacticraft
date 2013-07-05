@@ -141,10 +141,10 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
 
         for (EnumEnclosedBlock type : EnumEnclosedBlock.values())
         {
-            this.enclosedIcons[type.ordinal()] = par1IconRegister.registerIcon("galacticraftcore:" + type.getTexture());
+            this.enclosedIcons[type.ordinal()] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "" + type.getTexture());
         }
 
-        this.blockIcon = par1IconRegister.registerIcon("galacticraftcore:" + EnumEnclosedBlock.COPPERWIRE.getTexture());
+        this.blockIcon = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "" + EnumEnclosedBlock.COPPERWIRE.getTexture());
     }
 
     @Override

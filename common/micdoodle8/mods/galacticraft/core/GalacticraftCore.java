@@ -152,6 +152,7 @@ public class GalacticraftCore
     public static double fromBuildcraftEnergyScalar = 25.0D;
 
     public static String TEXTURE_DOMAIN = "galacticraftcore";
+    public static String TEXTURE_PREFIX = TEXTURE_DOMAIN + ":";
     public static String TEXTURE_SUFFIX;
 
     public static boolean setSpaceStationRecipe = false;

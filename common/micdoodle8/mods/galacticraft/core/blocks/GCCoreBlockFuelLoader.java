@@ -39,10 +39,10 @@ public class GCCoreBlockFuelLoader extends GCCoreBlockAdvanced
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister par1IconRegister)
     {
-        this.iconInput = par1IconRegister.registerIcon("galacticraftcore:machine_power_input");
-        this.iconMachineSide = par1IconRegister.registerIcon("galacticraftcore:machine_blank");
-        this.iconFront = par1IconRegister.registerIcon("galacticraftcore:machine_fuelloader");
-        this.iconFuelInput = par1IconRegister.registerIcon("galacticraftcore:machine_fuel_input");
+        this.iconInput = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_power_input");
+        this.iconMachineSide = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_blank");
+        this.iconFront = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_fuelloader");
+        this.iconFuelInput = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_fuel_input");
     }
 
     @Override

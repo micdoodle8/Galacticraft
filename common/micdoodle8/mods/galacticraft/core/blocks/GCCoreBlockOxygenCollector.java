@@ -42,9 +42,9 @@ public class GCCoreBlockOxygenCollector extends GCCoreBlockAdvanced
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister par1IconRegister)
     {
-        this.iconMachineSide = par1IconRegister.registerIcon("galacticraftcore:machine_collector_fan");
-        this.iconInput = par1IconRegister.registerIcon("galacticraftcore:machine_power_input");
-        this.iconOutput = par1IconRegister.registerIcon("galacticraftcore:machine_oxygen_input");
+        this.iconMachineSide = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_collector_fan");
+        this.iconInput = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_power_input");
+        this.iconOutput = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_oxygen_input");
     }
 
     @Override

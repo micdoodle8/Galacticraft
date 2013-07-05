@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntitySpaceStationBase;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -31,8 +32,8 @@ public class GCCoreBlockSpaceStationBase extends BlockContainer
     public void registerIcons(IconRegister par1IconRegister)
     {
         this.spaceStationIcons = new Icon[2];
-        this.spaceStationIcons[0] = par1IconRegister.registerIcon("galacticraftcore:space_station_top");
-        this.spaceStationIcons[1] = par1IconRegister.registerIcon("galacticraftcore:space_station_side");
+        this.spaceStationIcons[0] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "space_station_top");
+        this.spaceStationIcons[1] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "space_station_side");
     }
 
     @Override

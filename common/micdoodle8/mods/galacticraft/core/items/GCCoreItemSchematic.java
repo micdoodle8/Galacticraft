@@ -63,8 +63,8 @@ public class GCCoreItemSchematic extends Item implements ISchematicItem
     public void registerIcons(IconRegister iconRegister)
     {
         this.icons = new Icon[2];
-        this.icons[0] = iconRegister.registerIcon("galacticraftcore:schematic_buggy" + GalacticraftCore.TEXTURE_SUFFIX);
-        this.icons[1] = iconRegister.registerIcon("galacticraftcore:schematic_rocketT2" + GalacticraftCore.TEXTURE_SUFFIX);
+        this.icons[0] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "schematic_buggy" + GalacticraftCore.TEXTURE_SUFFIX);
+        this.icons[1] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "schematic_rocketT2" + GalacticraftCore.TEXTURE_SUFFIX);
     }
 
     @Override

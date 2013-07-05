@@ -70,8 +70,8 @@ public class GCCoreBlockUnlitTorch extends BlockContainer implements IOxygenReli
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister par1IconRegister)
     {
-        GCCoreBlockUnlitTorch.torchIcons[0] = par1IconRegister.registerIcon("galacticraftcore:torch_lit");
-        GCCoreBlockUnlitTorch.torchIcons[1] = par1IconRegister.registerIcon("galacticraftcore:torch_unlit");
+        GCCoreBlockUnlitTorch.torchIcons[0] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "torch_lit");
+        GCCoreBlockUnlitTorch.torchIcons[1] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "torch_unlit");
     }
 
     @Override

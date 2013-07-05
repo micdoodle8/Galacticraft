@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.Random;
 import micdoodle8.mods.galacticraft.API.block.IPartialSealedBlock;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.block.BlockBreakable;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -14,7 +15,7 @@ public class GCCoreBlockAirLockWall extends BlockBreakable implements IPartialSe
 {
     public GCCoreBlockAirLockWall(int par1)
     {
-        super(par1, "galacticraftcore:oxygentile_3", Material.portal, false);
+        super(par1, GalacticraftCore.TEXTURE_PREFIX + "oxygentile_3", Material.portal, false);
         this.setTickRandomly(true);
     }
 
@@ -22,7 +23,7 @@ public class GCCoreBlockAirLockWall extends BlockBreakable implements IPartialSe
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister par1IconRegister)
     {
-        this.blockIcon = par1IconRegister.registerIcon("galacticraftcore:deco_aluminium_4");
+        this.blockIcon = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "deco_aluminium_4");
     }
 
     @Override

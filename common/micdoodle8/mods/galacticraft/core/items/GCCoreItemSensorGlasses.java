@@ -35,7 +35,7 @@ public class GCCoreItemSensorGlasses extends ItemArmor
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister par1IconRegister)
     {
-        this.itemIcon = par1IconRegister.registerIcon("galacticraftcore:sensor_glasses" + GalacticraftCore.TEXTURE_SUFFIX);
+        this.itemIcon = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "sensor_glasses" + GalacticraftCore.TEXTURE_SUFFIX);
     }
 
     @Override

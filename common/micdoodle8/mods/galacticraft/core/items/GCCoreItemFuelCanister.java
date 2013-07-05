@@ -62,7 +62,7 @@ public class GCCoreItemFuelCanister extends Item
 
         for (final String name : GCCoreItemFuelCanister.names)
         {
-            this.icons[i++] = iconRegister.registerIcon("galacticraftcore:" + name);
+            this.icons[i++] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "" + name);
         }
     }
 

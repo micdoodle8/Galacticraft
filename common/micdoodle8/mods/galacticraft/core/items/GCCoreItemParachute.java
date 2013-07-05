@@ -72,7 +72,7 @@ public class GCCoreItemParachute extends Item
 
         for (final ItemStack itemStack : list)
         {
-            this.icons[list.indexOf(itemStack)] = iconRegister.registerIcon(this.getUnlocalizedName(itemStack).replace("item.", "galacticraftcore:"));
+            this.icons[list.indexOf(itemStack)] = iconRegister.registerIcon(this.getUnlocalizedName(itemStack).replace("item.", GalacticraftCore.TEXTURE_PREFIX + ""));
         }
     }
 

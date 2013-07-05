@@ -30,7 +30,7 @@ public class GCCoreItem extends Item
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister par1IconRegister)
     {
-        this.itemIcon = par1IconRegister.registerIcon("galacticraftcore:" + this.iconName);
+        this.itemIcon = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "" + this.iconName);
     }
 
     @Override

@@ -48,7 +48,7 @@ public class GCCoreItemRocketEngine extends Item
 
         for (final String name : GCCoreItemRocketEngine.names)
         {
-            this.icons[i++] = iconRegister.registerIcon("galacticraftcore:engine_" + name + GalacticraftCore.TEXTURE_SUFFIX);
+            this.icons[i++] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "engine_" + name + GalacticraftCore.TEXTURE_SUFFIX);
         }
     }
 

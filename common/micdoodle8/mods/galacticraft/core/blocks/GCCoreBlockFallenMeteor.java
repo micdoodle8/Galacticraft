@@ -28,7 +28,7 @@ public class GCCoreBlockFallenMeteor extends Block
     @Override
     public void registerIcons(IconRegister par1IconRegister)
     {
-        this.blockIcon = par1IconRegister.registerIcon("galacticraftcore:fallen_meteor");
+        this.blockIcon = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "fallen_meteor");
     }
 
     @Override

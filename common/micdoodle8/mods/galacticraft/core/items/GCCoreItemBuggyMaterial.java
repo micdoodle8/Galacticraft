@@ -49,7 +49,7 @@ public class GCCoreItemBuggyMaterial extends Item
 
         for (final String name : GCCoreItemBuggyMaterial.names)
         {
-            this.icons[i++] = iconRegister.registerIcon("galacticraftcore:buggy_" + name + GalacticraftCore.TEXTURE_SUFFIX);
+            this.icons[i++] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "buggy_" + name + GalacticraftCore.TEXTURE_SUFFIX);
         }
     }
 

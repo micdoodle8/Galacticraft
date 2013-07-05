@@ -182,7 +182,7 @@ public class GCCoreBlockOxygenPipe extends BlockContainer
 
         for (int count = 0; count < ItemDye.dyeColorNames.length; count++)
         {
-            this.pipeIcons[count] = par1IconRegister.registerIcon("galacticraftcore:pipe_oxygen_" + ItemDye.dyeColorNames[count]);
+            this.pipeIcons[count] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "pipe_oxygen_" + ItemDye.dyeColorNames[count]);
         }
 
         this.blockIcon = this.pipeIcons[15];

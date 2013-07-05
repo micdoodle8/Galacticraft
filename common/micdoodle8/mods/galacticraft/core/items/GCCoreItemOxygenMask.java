@@ -33,7 +33,7 @@ public class GCCoreItemOxygenMask extends Item
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister par1IconRegister)
     {
-        this.itemIcon = par1IconRegister.registerIcon("galacticraftcore:oxygen_mask" + GalacticraftCore.TEXTURE_SUFFIX);
+        this.itemIcon = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "oxygen_mask" + GalacticraftCore.TEXTURE_SUFFIX);
     }
 
     @Override

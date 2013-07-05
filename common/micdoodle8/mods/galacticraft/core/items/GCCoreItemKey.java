@@ -53,7 +53,7 @@ public class GCCoreItemKey extends Item implements IKeyItem
 
         for (final String name : GCCoreItemKey.keyTypes)
         {
-            this.keyIcons[i++] = iconRegister.registerIcon("galacticraftcore:key_" + name + GalacticraftCore.TEXTURE_SUFFIX);
+            this.keyIcons[i++] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "key_" + name + GalacticraftCore.TEXTURE_SUFFIX);
         }
     }
 

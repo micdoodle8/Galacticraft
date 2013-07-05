@@ -44,12 +44,12 @@ public class GCCoreBlockAirLockFrame extends BlockContainer
     public void registerIcons(IconRegister par1IconRegister)
     {
         this.airLockIcons = new Icon[6];
-        this.airLockIcons[0] = par1IconRegister.registerIcon("galacticraftcore:airlock_off");
-        this.airLockIcons[1] = par1IconRegister.registerIcon("galacticraftcore:airlock_on_1");
-        this.airLockIcons[2] = par1IconRegister.registerIcon("galacticraftcore:airlock_on_2");
-        this.airLockIcons[3] = par1IconRegister.registerIcon("galacticraftcore:airlock_on_3");
-        this.airLockIcons[4] = par1IconRegister.registerIcon("galacticraftcore:airlock_on_4");
-        this.airLockIcons[5] = par1IconRegister.registerIcon("galacticraftcore:airlock_on_5");
+        this.airLockIcons[0] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "airlock_off");
+        this.airLockIcons[1] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "airlock_on_1");
+        this.airLockIcons[2] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "airlock_on_2");
+        this.airLockIcons[3] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "airlock_on_3");
+        this.airLockIcons[4] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "airlock_on_4");
+        this.airLockIcons[5] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "airlock_on_5");
     }
 
     @Override

@@ -74,11 +74,11 @@ public class GCCoreItemOilExtractor extends Item
     public void registerIcons(IconRegister iconRegister)
     {
         this.icons = new Icon[5];
-        this.icons[0] = iconRegister.registerIcon("galacticraftcore:extractor_1" + GalacticraftCore.TEXTURE_SUFFIX);
-        this.icons[1] = iconRegister.registerIcon("galacticraftcore:extractor_2" + GalacticraftCore.TEXTURE_SUFFIX);
-        this.icons[2] = iconRegister.registerIcon("galacticraftcore:extractor_3" + GalacticraftCore.TEXTURE_SUFFIX);
-        this.icons[3] = iconRegister.registerIcon("galacticraftcore:extractor_4" + GalacticraftCore.TEXTURE_SUFFIX);
-        this.icons[4] = iconRegister.registerIcon("galacticraftcore:extractor_5" + GalacticraftCore.TEXTURE_SUFFIX);
+        this.icons[0] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "extractor_1" + GalacticraftCore.TEXTURE_SUFFIX);
+        this.icons[1] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "extractor_2" + GalacticraftCore.TEXTURE_SUFFIX);
+        this.icons[2] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "extractor_3" + GalacticraftCore.TEXTURE_SUFFIX);
+        this.icons[3] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "extractor_4" + GalacticraftCore.TEXTURE_SUFFIX);
+        this.icons[4] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "extractor_5" + GalacticraftCore.TEXTURE_SUFFIX);
 
         this.itemIcon = this.icons[0];
     }
