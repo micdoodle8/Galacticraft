@@ -82,7 +82,6 @@ public class GCCoreOverlaySpaceship extends GCCoreOverlay
         spaceship.renderSpaceship(new GCCoreEntityRocketT1(GCCoreOverlaySpaceship.minecraft.theWorld), 0, 0, 0, 0, 0);
         GL11.glPopMatrix();
         
-
         ResourceLocation resourcelocation = AbstractClientPlayer.field_110314_b;
         resourcelocation = AbstractClientPlayer.func_110305_h(GCCoreOverlaySpaceship.minecraft.thePlayer.username);
         AbstractClientPlayer.func_110304_a(resourcelocation, GCCoreOverlaySpaceship.minecraft.thePlayer.username);
