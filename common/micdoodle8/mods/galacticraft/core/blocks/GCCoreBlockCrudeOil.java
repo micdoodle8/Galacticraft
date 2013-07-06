@@ -4,9 +4,9 @@ import java.util.Random;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.BlockFluidClassic;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -17,18 +17,11 @@ public class GCCoreBlockCrudeOil extends BlockFluidClassic
 
     public GCCoreBlockCrudeOil(int par1, Material par2Material)
     {
-        super(par1, par2Material);
+        super(par1, GCCoreBlocks.CRUDEOIL, par2Material);
         this.setQuantaPerBlock(3);
         this.setTickRate(15);
         this.setRenderPass(1);
         this.needsRandomTick = true;
-        BlockFluidRoot.displacementIds.put(Integer.valueOf(par1), Boolean.valueOf(false));
-    }
-
-    @Override
-    public CreativeTabs getCreativeTabToDisplayOn()
-    {
-        return GalacticraftCore.galacticraftTab;
     }
 
     @Override
@@ -43,6 +36,8 @@ public class GCCoreBlockCrudeOil extends BlockFluidClassic
     public void registerIcons(IconRegister par1IconRegister)
     {
         this.fluidIcons = new Icon[] { par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "oil"), par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "oil_flow") };
+        GCCoreBlocks.CRUDEOIL.setStillIcon(this.fluidIcons[0]);
+        GCCoreBlocks.CRUDEOIL.setFlowingIcon(this.fluidIcons[1]);
     }
 
     @Override

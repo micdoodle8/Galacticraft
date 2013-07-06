@@ -38,7 +38,6 @@ import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiRocketRefill;
 import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelSpaceship;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererBreathableAir;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererCraftingTable;
-import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererCrudeOil;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererLandingPad;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererMeteor;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererOxygenPipe;
@@ -151,7 +150,6 @@ public class ClientProxyCore extends CommonProxyCore
     private static int oxygenPipeRenderID;
     private static int meteorRenderID;
     private static int craftingTableID;
-    private static int crudeOilRenderID;
     private static int fullLandingPadRenderID;
     public static long getFirstBootTime;
     public static long getCurrentTime;
@@ -232,8 +230,6 @@ public class ClientProxyCore extends CommonProxyCore
         RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererMeteor(ClientProxyCore.meteorRenderID));
         ClientProxyCore.craftingTableID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererCraftingTable(ClientProxyCore.craftingTableID));
-        ClientProxyCore.crudeOilRenderID = RenderingRegistry.getNextAvailableRenderId();
-        RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererCrudeOil(ClientProxyCore.crudeOilRenderID));
         ClientProxyCore.fullLandingPadRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererLandingPad(ClientProxyCore.fullLandingPadRenderID));
 
@@ -382,12 +378,6 @@ public class ClientProxyCore extends CommonProxyCore
     public int getGCCraftingTableRenderID()
     {
         return ClientProxyCore.craftingTableID;
-    }
-
-    @Override
-    public int getGCCrudeOilRenderID()
-    {
-        return ClientProxyCore.crudeOilRenderID;
     }
 
     @Override

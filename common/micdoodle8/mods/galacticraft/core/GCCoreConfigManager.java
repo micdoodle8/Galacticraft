@@ -46,7 +46,6 @@ public class GCCoreConfigManager
     public static int idBlockAirLockFrame;
     public static int idBlockAirLockSeal;
     public static int idBlockCrudeOilStill;
-    public static int idBlockCrudeOilMoving;
     public static int idBlockRefinery;
     public static int idBlockAirCompressor;
     public static int idBlockFuelLoader;
@@ -148,14 +147,11 @@ public class GCCoreConfigManager
     public static int idEntityBuggy;
     public static int idEntityFlag;
     public static int idEntityAstroOrb;
-    public static int idEntityGiantWorm;
     public static int idEntityParaChest;
     public static int idEntityAlienVillager;
     public static int idEntityOxygenBubble;
     public static int idEntityLander;
     public static int idEntityLanderChest;
-    public static int idEntitySun;
-    public static int idEntityOverworld;
 
     // GENERAL
     public static boolean transparentBreathableAir;
@@ -215,7 +211,6 @@ public class GCCoreConfigManager
             GCCoreConfigManager.idBlockDecorationBlock = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockDecorationBlock", 3372).getInt(3372);
             GCCoreConfigManager.idBlockAirLockFrame = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockAirLockFrame", 3373).getInt(3373);
             GCCoreConfigManager.idBlockAirLockSeal = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockAirLockSeal", 3374).getInt(3374);
-            GCCoreConfigManager.idBlockCrudeOilMoving = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockCrudeOilMoving", 3376).getInt(3376);
             GCCoreConfigManager.idBlockCrudeOilStill = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockCrudeOilStill", 3377).getInt(3377);
             GCCoreConfigManager.idBlockDummy = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockDummy", 3378).getInt(3378);
             GCCoreConfigManager.idBlockEnclosedWire = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockEnclosedWire", 3379).getInt(3379);
@@ -305,15 +300,12 @@ public class GCCoreConfigManager
             GCCoreConfigManager.idEntityBuggy = GCCoreConfigManager.configuration.get("Entities", "idEntityBuggy", 162).getInt(162);
             GCCoreConfigManager.idEntityFlag = GCCoreConfigManager.configuration.get("Entities", "idEntityFlag", 163).getInt(163);
             GCCoreConfigManager.idEntityAstroOrb = GCCoreConfigManager.configuration.get("Entities", "idEntityAstroOrb", 164).getInt(164);
-            GCCoreConfigManager.idEntityGiantWorm = GCCoreConfigManager.configuration.get("Entities", "idEntityGiantWorm", 165).getInt(165);
             GCCoreConfigManager.idEntityParaChest = GCCoreConfigManager.configuration.get("Entities", "idEntityParaChest", 166).getInt(166);
             GCCoreConfigManager.idEntityAlienVillager = GCCoreConfigManager.configuration.get("Entities", "idEntityAlienVillager", 167).getInt(167);
             GCCoreConfigManager.idEntityOxygenBubble = GCCoreConfigManager.configuration.get("Entities", "idEntityOxygenBubble", 168).getInt(168);
             GCCoreConfigManager.idEntityLander = GCCoreConfigManager.configuration.get("Entities", "idEntityLander", 169).getInt(169);
             GCCoreConfigManager.idEntityLanderChest = GCCoreConfigManager.configuration.get("Entities", "idEntityLanderChest", 170).getInt(170);
             GCCoreConfigManager.idEntityEvolvedSkeletonBoss = GCCoreConfigManager.configuration.get("Entities", "idEntityEvolvedSkeletonBoss", 171).getInt(171);
-            GCCoreConfigManager.idEntitySun = GCCoreConfigManager.configuration.get("Entities", "idEntitySun", 172).getInt(172);
-            GCCoreConfigManager.idEntityOverworld = GCCoreConfigManager.configuration.get("Entities", "idEntityOverworld", 173).getInt(173);
 
             GCCoreConfigManager.disableOreGenCopper = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Copper Generation", false, "Copper Ore won't generate if set to true").getBoolean(false);
             GCCoreConfigManager.disableOreGenTin = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Tin Generation", false, "Tin Ore won't generate if set to true").getBoolean(false);

@@ -204,7 +204,7 @@ public class GCCoreItemOilExtractor extends Item
         {
         }
 
-        if ((world.getBlockId(x, y, z) == GCCoreBlocks.crudeOilMoving.blockID || world.getBlockId(x, y, z) == GCCoreBlocks.crudeOilStill.blockID) && world.getBlockMetadata(x, y, z) == 0)
+        if ((/*world.getBlockId(x, y, z) == GCCoreBlocks.crudeOilMoving.blockID ||*/ world.getBlockId(x, y, z) == GCCoreBlocks.crudeOilStill.blockID) && world.getBlockMetadata(x, y, z) == 0)
         {
             return true;
         }

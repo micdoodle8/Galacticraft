@@ -95,11 +95,6 @@ public class CommonProxyCore extends BCGuiHandler implements IGuiHandler
         return -1;
     }
 
-    public int getGCCrudeOilRenderID()
-    {
-        return -1;
-    }
-
     public int getGCFullLandingPadRenderID()
     {
         return -1;
