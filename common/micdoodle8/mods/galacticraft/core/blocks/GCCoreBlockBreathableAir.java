@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreBlockBreathableAir extends Block
 {
@@ -155,7 +156,7 @@ public class GCCoreBlockBreathableAir extends Block
 
         if (sealed)
         {
-            var5.seal(var1, var2, var3, var4, 2);
+            var5.seal(var1, var2, var3, var4, 200);
         }
         else
         {

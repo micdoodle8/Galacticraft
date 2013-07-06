@@ -14,6 +14,7 @@ import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.core.item.IItemElectric;
 import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 /**
@@ -58,7 +59,7 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
                 this.active = false;
             }
 
-            if (this.lastSealed != this.sealed || this.lastDisabled != this.disabled || this.ticks % 200 == 0)
+            if (this.lastSealed != this.sealed || this.lastDisabled != this.disabled || this.ticks % 400 == 0)
             {
                 if (this.active)
                 {

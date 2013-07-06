@@ -183,12 +183,12 @@ public class OxygenPressureProtocol
 
                 if (var7.getBlockID(var1) == 0)
                 {
-                    if (var1.getBlockId(var7.intX(), var7.intY() + 1, var7.intZ()) == 64)
+                    if (var1.getBlockId(var7.intX(), var7.intY() + 1, var7.intZ()) == Block.doorWood.blockID)
                     {
                         var1.setBlock(var7.intX(), var7.intY() + 1, var7.intZ(), GCCoreBlocks.breatheableAir.blockID);
                     }
 
-                    if (var1.getBlockId(var7.intX(), var7.intY() - 1, var7.intZ()) == 64 && var1.getBlockId(var7.intX(), var7.intY() - 2, var7.intZ()) != 64)
+                    if (var1.getBlockId(var7.intX(), var7.intY() - 1, var7.intZ()) == Block.doorWood.blockID && var1.getBlockId(var7.intX(), var7.intY() - 2, var7.intZ()) != Block.doorWood.blockID)
                     {
                         var1.setBlock(var7.intX(), var7.intY() - 1, var7.intZ(), GCCoreBlocks.breatheableAir.blockID);
                     }
