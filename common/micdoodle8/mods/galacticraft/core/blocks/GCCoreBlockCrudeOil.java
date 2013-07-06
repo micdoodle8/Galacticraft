@@ -13,13 +13,14 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GCCoreBlockCrudeOil extends BlockFluidClassic
 {
     @SideOnly(Side.CLIENT)
-    public Icon[] fluidIcons;
+    Icon stillIcon;
+    @SideOnly(Side.CLIENT)
+    Icon flowingIcon;
 
     public GCCoreBlockCrudeOil(int par1, Material par2Material)
     {
-        super(par1, GCCoreBlocks.CRUDEOIL, par2Material);
+        super(par1, GalacticraftCore.CRUDEOIL, par2Material);
         this.setQuantaPerBlock(3);
-        this.setTickRate(15);
         this.setRenderPass(1);
         this.needsRandomTick = true;
     }
@@ -28,22 +29,17 @@ public class GCCoreBlockCrudeOil extends BlockFluidClassic
     @SideOnly(Side.CLIENT)
     public Icon getIcon(int par1, int par2)
     {
-        return par1 != 0 && par1 != 1 ? this.fluidIcons[1] : this.fluidIcons[0];
+        return par1 == 0 ? this.stillIcon : this.flowingIcon;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister par1IconRegister)
     {
-        this.fluidIcons = new Icon[] { par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "oil"), par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "oil_flow") };
-        GCCoreBlocks.CRUDEOIL.setStillIcon(this.fluidIcons[0]);
-        GCCoreBlocks.CRUDEOIL.setFlowingIcon(this.fluidIcons[1]);
-    }
-
-    @Override
-    public void updateTick(World world, int x, int y, int z, Random rand)
-    {
-        super.updateTick(world, x, y, z, rand);
+        this.stillIcon = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "oil");
+        this.flowingIcon = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "oil_flow");
+        GalacticraftCore.CRUDEOIL.setStillIcon(this.stillIcon);
+        GalacticraftCore.CRUDEOIL.setFlowingIcon(this.flowingIcon);
     }
 
     @Override

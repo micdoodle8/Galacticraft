@@ -56,17 +56,12 @@ public class GCCoreBlocks
     public static Block parachest;
 
     public static Icon[] blockIcons;
-    
-    public static Fluid CRUDEOIL;
 
     public static Material crudeOil = new MaterialLiquid(MapColor.foliageColor);
     public static ArrayList<Integer> hiddenBlocks = new ArrayList<Integer>();
 
     public static void initBlocks()
     {
-        CRUDEOIL = new Fluid("oil").setBlockID(GCCoreConfigManager.idBlockCrudeOilStill);
-        FluidRegistry.registerFluid(CRUDEOIL);
-        
         GCCoreBlocks.breatheableAir = (GCCoreBlockBreathableAir) new GCCoreBlockBreathableAir(GCCoreConfigManager.idBlockBreatheableAir).setHardness(0.0F).setResistance(1000F).setUnlocalizedName("breatheableAir");
         GCCoreBlocks.treasureChest = new GCCoreBlockT1TreasureChest(GCCoreConfigManager.idBlockTreasureChest).setHardness(1.0F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("treasureChest");
         GCCoreBlocks.landingPad = new GCCoreBlockLandingPad(GCCoreConfigManager.idBlockLandingPad).setHardness(1.0F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("landingPad");
@@ -82,7 +77,7 @@ public class GCCoreBlocks
         GCCoreBlocks.decorationBlocks = new GCCoreBlock(GCCoreConfigManager.idBlockDecorationBlock).setHardness(3.0F).setUnlocalizedName("decorationblock");
         GCCoreBlocks.airLockFrame = new GCCoreBlockAirLockFrame(GCCoreConfigManager.idBlockAirLockFrame).setHardness(3.0F).setStepSound(Block.soundMetalFootstep).setUnlocalizedName("airLockFrame");
         GCCoreBlocks.airLockSeal = new GCCoreBlockAirLockWall(GCCoreConfigManager.idBlockAirLockSeal).setHardness(100.0F).setStepSound(Block.soundMetalFootstep).setUnlocalizedName("airLockSeal");
-        GCCoreBlocks.crudeOilStill = (GCCoreBlockCrudeOil) new GCCoreBlockCrudeOil(CRUDEOIL.getBlockID(), GCCoreBlocks.crudeOil).setHardness(3.0F).setUnlocalizedName("crudeOilStill");
+        GCCoreBlocks.crudeOilStill = (GCCoreBlockCrudeOil) new GCCoreBlockCrudeOil(GalacticraftCore.CRUDEOIL.getBlockID(), GCCoreBlocks.crudeOil).setHardness(3.0F).setUnlocalizedName("crudeOilStill");
         GCCoreBlocks.refinery = new GCCoreBlockRefinery(GCCoreConfigManager.idBlockRefinery, 0).setHardness(3.0F).setStepSound(Block.soundMetalFootstep).setUnlocalizedName("refinery");
         GCCoreBlocks.compressor = new GCCoreBlockOxygenCompressor(GCCoreConfigManager.idBlockAirCompressor, false).setHardness(3.5F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("oxygenCompressor");
         GCCoreBlocks.fuelLoader = new GCCoreBlockFuelLoader(GCCoreConfigManager.idBlockFuelLoader).setHardness(3.0F).setStepSound(Block.soundMetalFootstep).setUnlocalizedName("fuelLoader");

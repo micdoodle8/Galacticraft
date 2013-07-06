@@ -75,6 +75,8 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.WorldProviderSurface;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.liquids.LiquidContainerData;
 import net.minecraftforge.liquids.LiquidContainerRegistry;
 import net.minecraftforge.liquids.LiquidDictionary;
@@ -159,6 +161,9 @@ public class GalacticraftCore
 
     public static GCCorePlanetOverworld overworld;
     public static GCCorePlanetSun sun;
+    
+    public static Fluid CRUDEOIL;
+    public static Fluid FUEL;
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
@@ -168,6 +173,17 @@ public class GalacticraftCore
         new GCCoreConfigManager(new File(event.getModConfigurationDirectory(), GalacticraftCore.CONFIG_FILE));
 
         GalacticraftCore.TEXTURE_SUFFIX = GCCoreConfigManager.hiresTextures ? "_32" : "";
+
+        GalacticraftCore.CRUDEOIL = new Fluid("oil").setBlockID(GCCoreConfigManager.idBlockCrudeOilStill).setViscosity(3000);
+        if (!FluidRegistry.registerFluid(GalacticraftCore.CRUDEOIL))
+        {
+            GCLog.info("\"oil\" has already been registered as a fluid, ignoring...");
+        }
+        GalacticraftCore.FUEL = new Fluid("fuel").setViscosity(800);
+        if (!FluidRegistry.registerFluid(GalacticraftCore.FUEL))
+        {
+            GCLog.info("\"fuel\" has already been registered as a fluid, ignoring...");
+        }
 
         GCCoreBlocks.initBlocks();
         GCCoreBlocks.registerBlocks();
