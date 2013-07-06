@@ -25,9 +25,9 @@ import net.minecraft.util.ChatMessageComponent;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.liquids.LiquidDictionary;
-import net.minecraftforge.liquids.LiquidStack;
-import net.minecraftforge.liquids.LiquidTank;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
 import org.lwjgl.input.Keyboard;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.IPacketReceiver;
@@ -40,7 +40,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInventory, IPacketReceiver, IDockable
 {
     private final int tankCapacity = 1000;
-    public LiquidTank buggyFuelTank = new LiquidTank(this.tankCapacity);
+    public FluidTank buggyFuelTank = new FluidTank(this.tankCapacity);
     protected long ticks = 0;
     public int buggyType;
     public int fuel;
@@ -91,7 +91,7 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
 
     public int getScaledFuelLevel(int i)
     {
-        final double fuelLevel = this.buggyFuelTank.getLiquid() == null ? 0 : this.buggyFuelTank.getLiquid().amount;
+        final double fuelLevel = this.buggyFuelTank.getFluid() == null ? 0 : this.buggyFuelTank.getFluid().amount;
 
         return (int) (fuelLevel * i / this.tankCapacity);
     }
@@ -384,7 +384,7 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
             this.motionY = 0.1D;
         }
 
-        if (this.worldObj.isRemote && this.buggyFuelTank.getLiquid() != null && this.buggyFuelTank.getLiquid().amount > 0)
+        if (this.worldObj.isRemote && this.buggyFuelTank.getFluid() != null && this.buggyFuelTank.getFluid().amount > 0)
         {
             this.motionX = -(this.speed * Math.cos((this.rotationYaw - 90F) * Math.PI / 180.0D));
             this.motionZ = -(this.speed * Math.sin((this.rotationYaw - 90F) * Math.PI / 180.0D));
@@ -426,7 +426,7 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
 
     public Packet getDescriptionPacket()
     {
-        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.buggyType, this.buggyFuelTank.getLiquid() != null ? this.buggyFuelTank.getLiquid().amount : 0);
+        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.buggyType, this.buggyFuelTank.getFluid() != null ? this.buggyFuelTank.getFluid().amount : 0);
     }
 
     @Override
@@ -437,7 +437,7 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
             if (this.worldObj.isRemote)
             {
                 this.buggyType = dataStream.readInt();
-                this.buggyFuelTank.setLiquid(new LiquidStack(GCCoreItems.fuel.itemID, dataStream.readInt(), 0));
+                this.buggyFuelTank.setFluid(new FluidStack(GalacticraftCore.FUEL, dataStream.readInt()));
             }
         }
         catch (final Exception e)
@@ -478,7 +478,7 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
         var1.setInteger("buggyType", this.buggyType);
         final NBTTagList var2 = new NBTTagList();
 
-        if (this.buggyFuelTank.getLiquid() != null)
+        if (this.buggyFuelTank.getFluid() != null)
         {
             var1.setTag("fuelTank", this.buggyFuelTank.writeToNBT(new NBTTagCompound()));
         }
@@ -676,11 +676,11 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
     }
 
     @Override
-    public int addFuel(LiquidStack liquid, int amount, boolean doDrain)
+    public int addFuel(FluidStack liquid, int amount, boolean doDrain)
     {
-        final LiquidStack liquidInTank = this.buggyFuelTank.getLiquid();
+        final FluidStack liquidInTank = this.buggyFuelTank.getFluid();
 
-        if (liquid != null && LiquidDictionary.findLiquidName(liquid).equals("Fuel") && this.landingPad != null)
+        if (liquid != null && FluidRegistry.getFluidName(liquid).equalsIgnoreCase("Fuel") && this.landingPad != null)
         {
             if (liquidInTank == null || liquidInTank.amount + liquid.amount <= this.buggyFuelTank.getCapacity())
             {
@@ -692,7 +692,7 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
     }
 
     @Override
-    public LiquidStack removeFuel(LiquidStack liquid, int amount)
+    public FluidStack removeFuel(FluidStack liquid, int amount)
     {
         if (liquid == null)
         {

@@ -62,11 +62,11 @@ public class GCCoreGuiRefinery extends GuiContainer
         this.fontRenderer.drawString(this.tileEntity.getInvName(), 68, 5, 4210752);
         String displayText = "";
 
-        if (this.tileEntity.oilTank.getLiquid() == null || this.tileEntity.oilTank.getLiquid().amount == 0)
+        if (this.tileEntity.oilTank.getFluid() == null || this.tileEntity.oilTank.getFluidAmount() == 0)
         {
             displayText = EnumColor.RED + LanguageRegistry.instance().getStringLocalization("gui.status.nooil.name");
         }
-        else if (this.tileEntity.oilTank.getLiquid().amount > 0 && this.tileEntity.disabled)
+        else if (this.tileEntity.oilTank.getFluidAmount() > 0 && this.tileEntity.disabled)
         {
             displayText = EnumColor.ORANGE + LanguageRegistry.instance().getStringLocalization("gui.status.ready.name");
         }

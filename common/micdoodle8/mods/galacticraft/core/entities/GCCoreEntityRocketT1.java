@@ -25,10 +25,10 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.liquids.LiquidContainerRegistry;
-import net.minecraftforge.liquids.LiquidDictionary;
-import net.minecraftforge.liquids.LiquidStack;
-import net.minecraftforge.liquids.LiquidTank;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
 import universalelectricity.core.vector.Vector3;
 import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -44,7 +44,7 @@ import cpw.mods.fml.relauncher.Side;
 public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInventory, IMissileLockable
 {
     private final int tankCapacity = 2000;
-    public LiquidTank spaceshipFuelTank = new LiquidTank(this.tankCapacity);
+    public FluidTank spaceshipFuelTank = new FluidTank(this.tankCapacity);
 
     protected ItemStack[] cargoItems;
 
@@ -53,7 +53,7 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
     private IFuelDock landingPad;
 
     public int canisterToTankRatio = this.tankCapacity / GCCoreItems.fuelCanister.getMaxDamage();
-    public double canisterToLiquidStackRatio = LiquidContainerRegistry.BUCKET_VOLUME * 2.0D / GCCoreItems.fuelCanister.getMaxDamage();
+    public double canisterToFluidStackRatio = FluidContainerRegistry.BUCKET_VOLUME * 2.0D / GCCoreItems.fuelCanister.getMaxDamage();
 
     public GCCoreEntityRocketT1(World par1World)
     {
@@ -63,7 +63,7 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
     @Override
     public int getScaledFuelLevel(int i)
     {
-        final double fuelLevel = this.spaceshipFuelTank.getLiquid() == null ? 0 : this.spaceshipFuelTank.getLiquid().amount;
+        final double fuelLevel = this.spaceshipFuelTank.getFluid() == null ? 0 : this.spaceshipFuelTank.getFluid().amount;
 
         return (int) (fuelLevel * i / 2000);
     }
@@ -180,7 +180,7 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
     public void readNetworkedData(ByteArrayDataInput dataStream)
     {
         super.readNetworkedData(dataStream);
-        this.spaceshipFuelTank.setLiquid(new LiquidStack(GCCoreItems.fuel.itemID, dataStream.readInt(), 0));
+        this.spaceshipFuelTank.setFluid(new FluidStack(GalacticraftCore.FUEL, dataStream.readInt()));
 
         if (this.cargoItems == null)
         {
@@ -192,14 +192,14 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
     public ArrayList getNetworkedData(ArrayList list)
     {
         super.getNetworkedData(list);
-        list.add(this.spaceshipFuelTank.getLiquid() == null ? 0 : this.spaceshipFuelTank.getLiquid().amount);
+        list.add(this.spaceshipFuelTank.getFluid() == null ? 0 : this.spaceshipFuelTank.getFluid().amount);
         return list;
     }
 
     @Override
     public boolean hasValidFuel()
     {
-        return !(this.spaceshipFuelTank.getLiquid() == null || this.spaceshipFuelTank.getLiquid().amount == 0);
+        return !(this.spaceshipFuelTank.getFluid() == null || this.spaceshipFuelTank.getFluid().amount == 0);
     }
 
     @Override
@@ -227,7 +227,7 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
             }
 
             playerBase.rocketType = this.rocketType.getIndex();
-            final int liquid = this.spaceshipFuelTank.getLiquid() == null ? 0 : this.spaceshipFuelTank.getLiquid().amount / MathHelper.floor_double(this.canisterToLiquidStackRatio == 0 ? 1 : this.canisterToLiquidStackRatio);
+            final int liquid = this.spaceshipFuelTank.getFluid() == null ? 0 : this.spaceshipFuelTank.getFluid().amount / MathHelper.floor_double(this.canisterToFluidStackRatio == 0 ? 1 : this.canisterToFluidStackRatio);
             playerBase.fuelDamage = Math.max(Math.min(GCCoreItems.fuelCanister.getMaxDamage() - liquid, GCCoreItems.fuelCanister.getMaxDamage()), 1);
         }
     }
@@ -289,7 +289,7 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
             par1NBTTagCompound.setTag("Items", var2);
         }
 
-        if (this.spaceshipFuelTank.getLiquid() != null)
+        if (this.spaceshipFuelTank.getFluid() != null)
         {
             par1NBTTagCompound.setTag("fuelTank", this.spaceshipFuelTank.writeToNBT(new NBTTagCompound()));
         }
@@ -481,11 +481,11 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
     }
 
     @Override
-    public int addFuel(LiquidStack liquid, int amount, boolean doFill)
+    public int addFuel(FluidStack liquid, int amount, boolean doFill)
     {
-        final LiquidStack liquidInTank = this.spaceshipFuelTank.getLiquid();
+        final FluidStack liquidInTank = this.spaceshipFuelTank.getFluid();
 
-        if (liquid != null && LiquidDictionary.findLiquidName(liquid).equals("Fuel"))
+        if (liquid != null && FluidRegistry.getFluidName(liquid).equalsIgnoreCase("Fuel"))
         {
             if (liquidInTank == null || liquidInTank.amount + liquid.amount <= this.spaceshipFuelTank.getCapacity())
             {
@@ -497,7 +497,7 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
     }
 
     @Override
-    public LiquidStack removeFuel(LiquidStack liquid, int amount)
+    public FluidStack removeFuel(FluidStack liquid, int amount)
     {
         if (liquid == null)
         {

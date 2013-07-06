@@ -15,7 +15,7 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import net.minecraftforge.liquids.LiquidDictionary;
+import net.minecraftforge.fluids.FluidStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -106,7 +106,7 @@ public class GCCoreItemSpaceship extends Item implements IHoldableItem
 
                 if (spaceship.rocketType.getPreFueled())
                 {
-                    spaceship.spaceshipFuelTank.fill(LiquidDictionary.getLiquid("Fuel", 2000), true);
+                    spaceship.spaceshipFuelTank.fill(new FluidStack(GalacticraftCore.FUEL, 2000), true);
                 }
             }
             else

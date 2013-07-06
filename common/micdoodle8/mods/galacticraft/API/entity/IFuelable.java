@@ -1,10 +1,10 @@
 package micdoodle8.mods.galacticraft.API.entity;
 
-import net.minecraftforge.liquids.LiquidStack;
+import net.minecraftforge.fluids.FluidStack;
 
 public interface IFuelable
 {
-    public int addFuel(LiquidStack liquid, int amount, boolean doDrain);
+    public int addFuel(FluidStack liquid, int amount, boolean doDrain);
 
-    public LiquidStack removeFuel(LiquidStack liquid, int amount);
+    public FluidStack removeFuel(FluidStack liquid, int amount);
 }

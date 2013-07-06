@@ -14,23 +14,25 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.liquids.ILiquidTank;
-import net.minecraftforge.liquids.ITankContainer;
-import net.minecraftforge.liquids.LiquidContainerRegistry;
-import net.minecraftforge.liquids.LiquidDictionary;
-import net.minecraftforge.liquids.LiquidStack;
-import net.minecraftforge.liquids.LiquidTank;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
 import universalelectricity.core.item.IItemElectric;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.multiblock.TileEntityMulti;
 import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric implements IInventory, ISidedInventory, ITankContainer
+public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric implements IInventory, ISidedInventory, IFluidHandler
 {
     private final int tankCapacity = 12000;
-    public LiquidTank fuelTank = new LiquidTank(this.tankCapacity);
+    public FluidTank fuelTank = new FluidTank(this.tankCapacity);
 
     private ItemStack[] containingItems = new ItemStack[2];
     public static final double WATTS_PER_TICK = 300;
@@ -44,7 +46,7 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric impleme
 
     public int getScaledFuelLevel(int i)
     {
-        final double fuelLevel = this.fuelTank.getLiquid() == null ? 0 : this.fuelTank.getLiquid().amount;
+        final double fuelLevel = this.fuelTank.getFluid() == null ? 0 : this.fuelTank.getFluid().amount;
 
         return (int) (fuelLevel * i / this.tankCapacity);
     }
@@ -58,11 +60,11 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric impleme
         {
             if (this.containingItems[1] != null)
             {
-                final LiquidStack liquid = LiquidContainerRegistry.getLiquidForFilledItem(this.containingItems[1]);
+                final FluidStack liquid = FluidContainerRegistry.getFluidForFilledItem(this.containingItems[1]);
 
-                if (liquid != null && LiquidDictionary.findLiquidName(liquid).equals("Fuel"))
+                if (liquid != null && FluidRegistry.getFluidName(liquid).equalsIgnoreCase("Fuel"))
                 {
-                    if (this.fuelTank.getLiquid() == null || this.fuelTank.getLiquid().amount + liquid.amount <= this.fuelTank.getCapacity())
+                    if (this.fuelTank.getFluid() == null || this.fuelTank.getFluid().amount + liquid.amount <= this.fuelTank.getCapacity())
                     {
                         this.fuelTank.fill(liquid, true);
 
@@ -70,7 +72,7 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric impleme
                         {
                             this.containingItems[1] = new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.oilCanister.getMaxDamage());
                         }
-                        else if (LiquidContainerRegistry.isBucket(this.containingItems[1]) && LiquidContainerRegistry.isFilledContainer(this.containingItems[1]))
+                        else if (FluidContainerRegistry.isBucket(this.containingItems[1]) && FluidContainerRegistry.isFilledContainer(this.containingItems[1]))
                         {
                             final int amount = this.containingItems[1].stackSize;
                             this.containingItems[1] = new ItemStack(Item.bucketEmpty, amount);
@@ -127,13 +129,13 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric impleme
                 }
             }
 
-            final LiquidStack liquid = LiquidDictionary.getLiquid("Fuel", 1);
+            final FluidStack liquid = new FluidStack(GalacticraftCore.FUEL, 2);
 
             if (this.attachedFuelable != null && (this.ic2Energy > 0 || this.ueWattsReceived > 0 || this.getPowerProvider() != null && this.getPowerProvider().getEnergyStored() > 0) && !this.disabled)
             {
                 if (liquid != null)
                 {
-                    this.fuelTank.drain(this.attachedFuelable.addFuel(liquid, 1, true), true);
+                    this.fuelTank.drain(this.attachedFuelable.addFuel(liquid, 2, true), true);
                 }
             }
         }
@@ -253,7 +255,7 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric impleme
 
         par1NBTTagCompound.setTag("Items", list);
 
-        if (this.fuelTank.getLiquid() != null)
+        if (this.fuelTank.getFluid() != null)
         {
             par1NBTTagCompound.setTag("fuelTank", this.fuelTank.writeToNBT(new NBTTagCompound()));
         }
@@ -320,58 +322,57 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric impleme
     }
 
     @Override
-    public int fill(ForgeDirection from, LiquidStack resource, boolean doFill)
+    public boolean canDrain(ForgeDirection from, Fluid fluid)
     {
-        return this.fill(0, resource, doFill);
+        return false;
     }
 
     @Override
-    public int fill(int tankIndex, LiquidStack resource, boolean doFill)
+    public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain)
+    {
+        return null;
+    }
+
+    @Override
+    public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain)
+    {
+        return null;
+    }
+
+    @Override
+    public boolean canFill(ForgeDirection from, Fluid fluid)
+    {
+        return this.fuelTank.getFluid() == null || (this.fuelTank.getFluidAmount() < this.fuelTank.getCapacity());
+    }
+
+    @Override
+    public int fill(ForgeDirection from, FluidStack resource, boolean doFill)
     {
         int used = 0;
-        final String liquidName = LiquidDictionary.findLiquidName(resource);
-
-        if (tankIndex == 0 && liquidName != null && liquidName.equals("Fuel"))
+        
+        if (from.equals(ForgeDirection.getOrientation(this.getBlockMetadata() + 2).getOpposite()))
         {
-            used = this.fuelTank.fill(resource, doFill);
+            final String liquidName = FluidRegistry.getFluidName(resource);
+
+            if (liquidName != null && liquidName.equalsIgnoreCase("Fuel"))
+            {
+                used = this.fuelTank.fill(resource, doFill);
+            }
         }
 
         return used;
     }
 
     @Override
-    public LiquidStack drain(ForgeDirection from, int maxDrain, boolean doDrain)
+    public FluidTankInfo[] getTankInfo(ForgeDirection from)
     {
-        return null;
-    }
-
-    @Override
-    public LiquidStack drain(int tankIndex, int maxDrain, boolean doDrain)
-    {
-        return null;
-    }
-
-    @Override
-    public ILiquidTank[] getTanks(ForgeDirection direction)
-    {
-        return new ILiquidTank[] { this.fuelTank };
-    }
-
-    @Override
-    public ILiquidTank getTank(ForgeDirection direction, LiquidStack type)
-    {
-        if (direction == ForgeDirection.getOrientation(this.getBlockMetadata() + 2))
-        {
-            return this.fuelTank;
-        }
-
-        return null;
+        return new FluidTankInfo[] {new FluidTankInfo(this.fuelTank)};
     }
 
     @Override
     public boolean shouldPullEnergy()
     {
-        return this.fuelTank.getLiquid() != null && this.fuelTank.getLiquid().amount > 0 && !this.disabled;
+        return this.fuelTank.getFluid() != null && this.fuelTank.getFluid().amount > 0 && !this.disabled;
     }
 
     @Override
@@ -381,7 +382,7 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric impleme
         {
             this.ueWattsReceived = data.readDouble();
             this.ic2Energy = data.readDouble();
-            this.fuelTank.setLiquid(new LiquidStack(GCCoreItems.fuel.itemID, data.readInt(), 0));
+            this.fuelTank.setFluid(new FluidStack(GalacticraftCore.FUEL, data.readInt()));
             this.disabled = data.readBoolean();
             this.disableCooldown = data.readInt();
             this.bcEnergy = data.readDouble();
@@ -391,7 +392,7 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric impleme
     @Override
     public Packet getPacket()
     {
-        return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.ueWattsReceived, this.ic2Energy, this.fuelTank.getLiquid() == null ? 0 : this.fuelTank.getLiquid().amount, this.disabled, this.disableCooldown, this.getPowerProvider() != null ? (double) this.getPowerProvider().getEnergyStored() : 0.0D);
+        return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.ueWattsReceived, this.ic2Energy, this.fuelTank.getFluid() == null ? 0 : this.fuelTank.getFluid().amount, this.disabled, this.disableCooldown, this.getPowerProvider() != null ? (double) this.getPowerProvider().getEnergyStored() : 0.0D);
     }
 
     @Override

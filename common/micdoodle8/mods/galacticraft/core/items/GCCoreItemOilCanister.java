@@ -10,6 +10,8 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -28,7 +30,7 @@ public class GCCoreItemOilCanister extends Item
     public GCCoreItemOilCanister(int par1)
     {
         super(par1);
-        this.setMaxDamage(61);
+        this.setMaxDamage(FluidContainerRegistry.BUCKET_VOLUME + 1);
         this.setMaxStackSize(1);
     }
 
@@ -76,8 +78,8 @@ public class GCCoreItemOilCanister extends Item
     @Override
     public Icon getIconFromDamage(int par1)
     {
-        final int damage = (int) Math.floor(par1 / 10);
-
+        final int damage = 6 * (int) Math.floor(par1 / (this.getMaxDamage()));
+        
         if (this.icons.length > damage)
         {
             return this.icons[damage];
@@ -91,7 +93,7 @@ public class GCCoreItemOilCanister extends Item
     public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
     {
         par3List.add(new ItemStack(par1, 1, 1));
-        par3List.add(new ItemStack(par1, 1, 61));
+        par3List.add(new ItemStack(par1, 1, this.getMaxDamage()));
     }
 
     @Override

@@ -17,6 +17,7 @@ import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import universalelectricity.core.vector.Vector3;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -100,15 +101,16 @@ public class GCCoreItemOilExtractor extends Item
 
             if (this.isOilBlock(par3EntityPlayer, par3EntityPlayer.worldObj, x, y, z))
             {
+                
                 par3EntityPlayer.worldObj.setBlock(x, y, z, 0);
 
                 if (this.openCanister(par3EntityPlayer) != null)
                 {
                     final ItemStack canister = this.openCanister(par3EntityPlayer);
 
-                    if (canister != null && count % 5 == 0 && canister.getItemDamage() > 5)
+                    if (canister != null && count % 5 == 0 && canister.getItemDamage() > 25)
                     {
-                        canister.setItemDamage(canister.getItemDamage() - 5);
+                        canister.setItemDamage(canister.getItemDamage() - 25);
                     }
                 }
             }
@@ -121,7 +123,7 @@ public class GCCoreItemOilExtractor extends Item
         {
             if (stack != null && stack.getItem() instanceof GCCoreItemOilCanister)
             {
-                if (stack.getMaxDamage() - stack.getItemDamage() >= 0 && stack.getMaxDamage() - stack.getItemDamage() < 60)
+                if (stack.getMaxDamage() - stack.getItemDamage() >= 0 && stack.getMaxDamage() - stack.getItemDamage() < GCCoreItems.oilCanister.getMaxDamage() - 1)
                 {
                     return stack;
                 }
@@ -240,6 +242,7 @@ public class GCCoreItemOilExtractor extends Item
 
             if (this.isOilBlock(par1EntityPlayer, par1EntityPlayer.worldObj, MathHelper.floor_double(var23.x), MathHelper.floor_double(var23.y), MathHelper.floor_double(var23.z)))
             {
+                FMLLog.info("yep " + var23);
                 return var23;
             }
         }

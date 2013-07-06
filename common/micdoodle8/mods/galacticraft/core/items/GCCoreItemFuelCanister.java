@@ -12,6 +12,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidContainerRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -30,7 +31,7 @@ public class GCCoreItemFuelCanister extends Item
     public GCCoreItemFuelCanister(int par1)
     {
         super(par1);
-        this.setMaxDamage(61);
+        this.setMaxDamage(FluidContainerRegistry.BUCKET_VOLUME + 1);
         this.setMaxStackSize(1);
     }
 
@@ -80,7 +81,7 @@ public class GCCoreItemFuelCanister extends Item
     @Override
     public Icon getIconFromDamage(int par1)
     {
-        final int damage = (int) Math.floor(par1 / 10);
+        final int damage = (int) Math.floor(par1 / 166.666666666666666666666666666666666666666666666666667);
 
         if (this.icons.length > damage)
         {

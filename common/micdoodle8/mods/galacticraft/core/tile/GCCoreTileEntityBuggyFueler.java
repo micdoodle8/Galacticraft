@@ -12,6 +12,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.liquids.LiquidStack;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.multiblock.IMultiBlock;
@@ -156,7 +157,7 @@ public class GCCoreTileEntityBuggyFueler extends TileEntityMulti implements IMul
     }
 
     @Override
-    public int addFuel(LiquidStack liquid, int amount, boolean doFill)
+    public int addFuel(FluidStack liquid, int amount, boolean doFill)
     {
         if (this.dockedEntity != null)
         {
@@ -167,7 +168,7 @@ public class GCCoreTileEntityBuggyFueler extends TileEntityMulti implements IMul
     }
 
     @Override
-    public LiquidStack removeFuel(LiquidStack liquid, int amount)
+    public FluidStack removeFuel(FluidStack liquid, int amount)
     {
         if (this.dockedEntity != null)
         {
