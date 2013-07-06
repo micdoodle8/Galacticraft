@@ -385,12 +385,15 @@ public class GCCorePacketHandlerClient implements IPacketHandler
                     for (int var2 = 0; var2 < var1; ++var2)
                     {
                         final int var3 = data.readInt();
-
-                        Collections.sort(playerBaseClient.unlockedSchematics);
-
-                        if (!playerBaseClient.unlockedSchematics.contains(SchematicRegistry.getMatchingRecipeForID(Integer.valueOf(var3))))
+                        
+                        if (var3 != -2)
                         {
-                            playerBaseClient.unlockedSchematics.add(SchematicRegistry.getMatchingRecipeForID(Integer.valueOf(var3)));
+                            Collections.sort(playerBaseClient.unlockedSchematics);
+
+                            if (!playerBaseClient.unlockedSchematics.contains(SchematicRegistry.getMatchingRecipeForID(Integer.valueOf(var3))))
+                            {
+                                playerBaseClient.unlockedSchematics.add(SchematicRegistry.getMatchingRecipeForID(Integer.valueOf(var3)));
+                            }
                         }
                     }
                 }

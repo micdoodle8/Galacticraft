@@ -32,7 +32,7 @@ public class GCCorePacketSchematicList implements IGalacticraftAdvancedPacket
             while (var3.hasNext())
             {
                 final ISchematicPage var4 = var3.next();
-                data.writeInt(var4.getPageID());
+                data.writeInt(var4 != null ? var4.getPageID() : -2);
             }
 
             packet.data = bytes.toByteArray();
