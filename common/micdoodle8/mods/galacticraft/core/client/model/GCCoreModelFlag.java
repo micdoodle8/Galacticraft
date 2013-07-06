@@ -1,10 +1,13 @@
 package micdoodle8.mods.galacticraft.core.client.model;
 
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityFlag;
+import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.resources.ResourceLocation;
 import net.minecraft.entity.Entity;
 import org.lwjgl.opengl.GL11;
+import cpw.mods.fml.client.FMLClientHandler;
 
 public class GCCoreModelFlag extends ModelBase
 {
@@ -75,37 +78,23 @@ public class GCCoreModelFlag extends ModelBase
 
         if (((GCCoreEntityFlag) entity).getType() != 0)
         {
-            this.bindPlayerHead((GCCoreEntityFlag) entity);
+            GCCoreEntityFlag flag = (GCCoreEntityFlag) entity;
+            ResourceLocation resourcelocation = AbstractClientPlayer.field_110314_b;
+
+            if (flag.getOwner() != null && flag.getOwner().length() > 0)
+            {
+                resourcelocation = AbstractClientPlayer.func_110305_h(flag.getOwner());
+                AbstractClientPlayer.func_110304_a(resourcelocation, flag.getOwner());
+            }
+
+            FMLClientHandler.instance().getClient().renderEngine.func_110577_a(resourcelocation);
+            
             GL11.glScalef(0.5F, 0.5F, 0.5F);
             this.picSide1.render(f5);
             this.picSide2.render(f5);
             this.picSide3.render(f5);
             this.picSide4.render(f5);
         }
-    }
-
-    private void bindPlayerHead(GCCoreEntityFlag e)
-    {
-        // final String s1 = "http://skins.minecraft.net/MinecraftSkins/" +
-        // StringUtils.stripControlCodes(e.getOwner()) + ".png";
-        //
-        // if
-        // (!FMLClientHandler.instance().getClient().renderEngine.hasImageData(s1))
-        // {
-        // FMLClientHandler.instance().getClient().renderEngine.obtainImageData(s1,
-        // new ImageBufferDownload());
-        // }
-        //
-        // this.bindTextureByURL(s1, "/mob/char.png");
-    }
-
-    protected void bindTextureByURL(String par1Str, String par2Str)
-    {
-        // GL11.glBindTexture(GL11.GL_TEXTURE_2D,
-        // FMLClientHandler.instance().getClient().renderEngine.getTextureForDownloadableImage(par1Str,
-        // par2Str));
-        //
-        // FMLClientHandler.instance().getClient().renderEngine.resetBoundTexture();
     }
 
     private void setRotation(ModelRenderer model, float x, float y, float z)

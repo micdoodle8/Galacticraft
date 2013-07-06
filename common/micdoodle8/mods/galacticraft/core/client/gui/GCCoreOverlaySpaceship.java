@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderSpaceship;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityRocketT1;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
@@ -80,12 +81,13 @@ public class GCCoreOverlaySpaceship extends GCCoreOverlay
         GL11.glRotatef(90F, 0, 1, 0);
         spaceship.renderSpaceship(new GCCoreEntityRocketT1(GCCoreOverlaySpaceship.minecraft.theWorld), 0, 0, 0, 0, 0);
         GL11.glPopMatrix();
+        
 
-        // GCCoreOverlay.loadDownloadableImageTexture("http://skins.minecraft.net/MinecraftSkins/"
-        // +
-        // StringUtils.stripControlCodes(GCCoreOverlaySpaceship.minecraft.thePlayer.username)
-        // + ".png",
-        // FMLClientHandler.instance().getClient().thePlayer.getTexture());
+        ResourceLocation resourcelocation = AbstractClientPlayer.field_110314_b;
+        resourcelocation = AbstractClientPlayer.func_110305_h(GCCoreOverlaySpaceship.minecraft.thePlayer.username);
+        AbstractClientPlayer.func_110304_a(resourcelocation, GCCoreOverlaySpaceship.minecraft.thePlayer.username);
+
+        FMLClientHandler.instance().getClient().renderEngine.func_110577_a(resourcelocation);
 
         GL11.glTranslatef(0F, 0F, 60F);
 
