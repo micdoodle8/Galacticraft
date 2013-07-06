@@ -144,7 +144,19 @@ public class GCMarsItemSpaceshipTier2 extends Item implements IHoldableItem
     }
 
     @Override
-    public boolean shouldHoldAboveHead(EntityPlayer player)
+    public boolean shouldHoldLeftHandUp(EntityPlayer player)
+    {
+        return true;
+    }
+
+    @Override
+    public boolean shouldHoldRightHandUp(EntityPlayer player)
+    {
+        return true;
+    }
+
+    @Override
+    public boolean shouldCrouch(EntityPlayer player)
     {
         return true;
     }

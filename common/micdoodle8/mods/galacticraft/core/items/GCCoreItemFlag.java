@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.items;
 
 import java.util.List;
+import micdoodle8.mods.galacticraft.API.item.IHoldableItem;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityFlag;
@@ -26,7 +27,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * All rights reserved.
  * 
  */
-public class GCCoreItemFlag extends Item
+public class GCCoreItemFlag extends Item implements IHoldableItem
 {
     public static final String[] names = { "american", // 0
     "black", // 1
@@ -235,5 +236,23 @@ public class GCCoreItemFlag extends Item
         }
 
         return -1;
+    }
+
+    @Override
+    public boolean shouldHoldLeftHandUp(EntityPlayer player)
+    {
+        return false;
+    }
+
+    @Override
+    public boolean shouldHoldRightHandUp(EntityPlayer player)
+    {
+        return true;
+    }
+
+    @Override
+    public boolean shouldCrouch(EntityPlayer player)
+    {
+        return false;
     }
 }

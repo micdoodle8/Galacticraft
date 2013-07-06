@@ -1,11 +1,13 @@
 package micdoodle8.mods.galacticraft.core.client.render.item;
 
+import micdoodle8.mods.galacticraft.API.item.IHoldableItem;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelFlag;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityFlag;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemFlag;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.resources.ResourceLocation;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.client.IItemRenderer;
@@ -47,19 +49,26 @@ public class GCCoreItemRendererFlag implements IItemRenderer
         this.spaceship.setType(item.getItemDamage());
         this.spaceship.setOwner(FMLClientHandler.instance().getClient().thePlayer.username);
 
-        if (type == ItemRenderType.EQUIPPED)
+        if (type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON)
         {
             GL11.glScalef(7F, 7F, 7F);
             GL11.glTranslatef(0.0F, 0.7F, 0.1F);
-
+        }
+        
+        if (type == ItemRenderType.EQUIPPED)
+        {
+            GL11.glRotatef(170F, 0F, 0F, 1F);
+            GL11.glRotatef(-10F, 1F, 0F, 0F);
+            GL11.glTranslatef(-0.25F, 1.3F, 0.15F);
+            GL11.glRotatef(-145F, 0F, 1F, 0F);
+        }
+        
+        if (type == ItemRenderType.EQUIPPED_FIRST_PERSON)
+        {
             if (FMLClientHandler.instance().getClient().thePlayer.getItemInUseCount() > 0)
             {
                 float var13b;
                 float var14b;
-                // GL11.glRotatef(-18.0F, 0.0F, 0.0F, 1.0F);
-                // GL11.glRotatef(-12.0F, 0.0F, 1.0F, 0.0F);
-                // GL11.glRotatef(-8.0F, 1.0F, 0.0F, 0.0F);
-                // GL11.glTranslatef(-0.9F, 0.2F, 0.0F);
                 var13b = item.getMaxItemUseDuration() - (FMLClientHandler.instance().getClient().thePlayer.getItemInUseCount() + 1.0F);
                 var14b = var13b / 20.0F;
                 var14b = (var14b * var14b + var14b * 2.0F) / 3.0F;
@@ -69,21 +78,10 @@ public class GCCoreItemRendererFlag implements IItemRenderer
                     var14b = 1.0F;
                 }
 
-                // if (var14b > 0.1F)
-                {
-                    GL11.glRotatef(MathHelper.sin((var13b - 0.1F) * 0.3F) * 0.01F * (var14b - 0.1F) * 60, 1F, 0F, 0F);
-                }
+                GL11.glRotatef(MathHelper.sin((var13b - 0.1F) * 0.3F) * 0.01F * (var14b - 0.1F) * 60, 1F, 0F, 0F);
 
-                GL11.glRotatef(var14b * 30F, 1F, 0F, 1F);
+                GL11.glRotatef(var14b * 60F, 1F, 0F, 1F);
                 GL11.glTranslatef(0F, -(var14b * 0.2F), 0F);
-                // GL11.glRotatef(-335.0F, 0.0F, 0.0F, 1.0F);
-                // GL11.glRotatef(-50.0F, 0.0F, 1.0F, 0.0F);
-                // GL11.glTranslatef(0.0F, 0.5F, 0.0F);
-                // var15 = 1.0F + var14b * 0.2F;
-                // GL11.glScalef(1.0F, 1.0F, var15);
-                // GL11.glTranslatef(0.0F, -0.5F, 0.0F);
-                // GL11.glRotatef(50.0F, 0.0F, 1.0F, 0.0F);
-                // GL11.glRotatef(335.0F, 0.0F, 0.0F, 1.0F);
             }
         }
 
@@ -97,8 +95,6 @@ public class GCCoreItemRendererFlag implements IItemRenderer
                 GL11.glRotatef(30F, 1F, 0F, 1F);
                 GL11.glRotatef(110F, 0F, 1F, 0F);
                 GL11.glTranslatef(-0.5F, 0.3F, 0);
-                // GL11.glRotatef(10F, 1F, 0F, 0F);
-                // GL11.glRotatef(30F, 0F, 0F, 1F);
             }
             else
             {
@@ -162,5 +158,4 @@ public class GCCoreItemRendererFlag implements IItemRenderer
         default:
         }
     }
-
 }

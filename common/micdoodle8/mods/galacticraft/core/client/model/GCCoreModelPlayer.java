@@ -20,6 +20,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreModelPlayer extends ModelBiped
 {
@@ -532,7 +533,7 @@ public class GCCoreModelPlayer extends ModelBiped
             this.bipedLeftArm.rotateAngleX -= MathHelper.sin(par3 * 0.067F) * 0.05F;
         }
 
-        if (!((EntityPlayer) par7Entity).onGround && ((EntityPlayer) par7Entity).worldObj.provider instanceof IGalacticraftWorldProvider && !(((EntityPlayer) par7Entity).inventory.getCurrentItem() != null && ((EntityPlayer) par7Entity).inventory.getCurrentItem().getItem() instanceof IHoldableItem && ((IHoldableItem) ((EntityPlayer) par7Entity).inventory.getCurrentItem().getItem()).shouldHoldAboveHead((EntityPlayer) par7Entity)))
+        if (!((EntityPlayer) par7Entity).onGround && ((EntityPlayer) par7Entity).worldObj.provider instanceof IGalacticraftWorldProvider && !(((EntityPlayer) par7Entity).inventory.getCurrentItem() != null && ((EntityPlayer) par7Entity).inventory.getCurrentItem().getItem() instanceof IHoldableItem))
         {
             this.bipedHead.rotateAngleY = par4 / (180F / (float) Math.PI);
             this.bipedHead.rotateAngleX = par5 / (180F / (float) Math.PI);
@@ -709,25 +710,40 @@ public class GCCoreModelPlayer extends ModelBiped
         {
             final EntityPlayer player = (EntityPlayer) par7Entity;
 
-            if (player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() instanceof IHoldableItem && ((IHoldableItem) player.inventory.getCurrentItem().getItem()).shouldHoldAboveHead(player))
+            if (player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() instanceof IHoldableItem)
             {
-                this.bipedLeftArm.rotateAngleX = 0;
-                this.bipedLeftArm.rotateAngleZ = 0;
-                this.bipedRightArm.rotateAngleX = 0;
-                this.bipedRightArm.rotateAngleZ = 0;
+                FMLLog.info("done");
+                
+                IHoldableItem holdableItem = ((IHoldableItem) player.inventory.getCurrentItem().getItem());
+                
+                if (holdableItem.shouldHoldLeftHandUp(player))
+                {
+                    this.bipedLeftArm.rotateAngleX = 0;
+                    this.bipedLeftArm.rotateAngleZ = 0;
+                    
+                    this.bipedLeftArm.rotateAngleX += (float) Math.PI + 0.3;
+                    this.bipedLeftArm.rotateAngleZ += (float) Math.PI / 10;
+                }
+                
+                if (holdableItem.shouldHoldRightHandUp(player))
+                {
+                    this.bipedRightArm.rotateAngleX = 0;
+                    this.bipedRightArm.rotateAngleZ = 0;
 
-                this.bipedLeftArm.rotateAngleX += (float) Math.PI + 0.3;
-                this.bipedLeftArm.rotateAngleZ += (float) Math.PI / 10;
-                this.bipedRightArm.rotateAngleX += (float) Math.PI + 0.3;
-                this.bipedRightArm.rotateAngleZ -= (float) Math.PI / 10;
-
-                this.bipedBody.rotateAngleX = 0.5F;
-                this.bipedRightLeg.rotationPointZ = 4.0F;
-                this.bipedLeftLeg.rotationPointZ = 4.0F;
-                this.bipedRightLeg.rotationPointY = 9.0F;
-                this.bipedLeftLeg.rotationPointY = 9.0F;
-                this.bipedHead.rotationPointY = 1.0F;
-                this.bipedHeadwear.rotationPointY = 1.0F;
+                    this.bipedRightArm.rotateAngleX += (float) Math.PI + 0.3;
+                    this.bipedRightArm.rotateAngleZ -= (float) Math.PI / 10;
+                }
+                
+                if (holdableItem.shouldCrouch(player))
+                {
+                    this.bipedBody.rotateAngleX = 0.5F;
+                    this.bipedRightLeg.rotationPointZ = 4.0F;
+                    this.bipedLeftLeg.rotationPointZ = 4.0F;
+                    this.bipedRightLeg.rotationPointY = 9.0F;
+                    this.bipedLeftLeg.rotationPointY = 9.0F;
+                    this.bipedHead.rotationPointY = 1.0F;
+                    this.bipedHeadwear.rotationPointY = 1.0F;
+                }
             }
         }
 
