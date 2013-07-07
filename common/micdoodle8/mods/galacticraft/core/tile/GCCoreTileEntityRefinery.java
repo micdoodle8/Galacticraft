@@ -395,13 +395,14 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
             this.fuelTank.setFluid(new FluidStack(GalacticraftCore.FUEL, data.readInt()));
             this.disabled = data.readBoolean();
             this.bcEnergy = data.readDouble();
+            this.disableCooldown = data.readInt();
         }
     }
 
     @Override
     public Packet getPacket()
     {
-        return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.ueWattsReceived, this.processTicks, this.ic2Energy, this.oilTank.getFluid() == null ? 0 : this.oilTank.getFluid().amount, this.fuelTank.getFluid() == null ? 0 : this.fuelTank.getFluid().amount, this.disabled, this.getPowerProvider() != null ? (double) this.getPowerProvider().getEnergyStored() : 0.0D);
+        return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.ueWattsReceived, this.processTicks, this.ic2Energy, this.oilTank.getFluid() == null ? 0 : this.oilTank.getFluid().amount, this.fuelTank.getFluid() == null ? 0 : this.fuelTank.getFluid().amount, this.disabled, this.getPowerProvider() != null ? (double) this.getPowerProvider().getEnergyStored() : 0.0D, this.disableCooldown);
     }
 
     @Override

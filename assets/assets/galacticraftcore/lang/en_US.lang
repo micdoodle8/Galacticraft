@@ -242,6 +242,7 @@ gui.button.refine.name=Refine
 gui.button.back.name=Back
 gui.button.next.name=Next
 gui.button.unlockschematic.name=Unlock Schematic
+gui.button.stoprefine.name=Stop Refining
 
 gui.choosePlanet.desc.overworld=Full of Life#Habitable#Gravity: 100%
 gui.warning=WARNING!
