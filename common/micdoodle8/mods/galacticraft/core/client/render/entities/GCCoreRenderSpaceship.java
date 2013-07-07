@@ -19,14 +19,14 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GCCoreRenderSpaceship extends Render
 {
-    private static ResourceLocation spaceshipTexture;
+    private ResourceLocation spaceshipTexture;
 
     protected ModelBase modelSpaceship;
     protected String texture;
 
     public GCCoreRenderSpaceship(ModelBase spaceshipModel, String textureDomain, String texture)
     {
-        GCCoreRenderSpaceship.spaceshipTexture = new ResourceLocation(textureDomain, "textures/model/" + texture + ".png");
+        this.spaceshipTexture = new ResourceLocation(textureDomain, "textures/model/" + texture + ".png");
         this.shadowSize = 2F;
         this.modelSpaceship = spaceshipModel;
         this.texture = texture;
@@ -34,7 +34,7 @@ public class GCCoreRenderSpaceship extends Render
 
     protected ResourceLocation func_110779_a(Entity par1EntityArrow)
     {
-        return GCCoreRenderSpaceship.spaceshipTexture;
+        return this.spaceshipTexture;
     }
 
     @Override
