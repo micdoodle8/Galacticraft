@@ -103,7 +103,7 @@ public class GalacticraftMars
         this.registerCreatures();
         this.registerOtherEntities();
         GalacticraftMars.proxy.init(event);
-        SchematicRegistry.registerSchematicRecipe(new GCMarsSchematicRocketT2());
+//        SchematicRegistry.registerSchematicRecipe(new GCMarsSchematicRocketT2());
     }
 
     @ServerStarting
