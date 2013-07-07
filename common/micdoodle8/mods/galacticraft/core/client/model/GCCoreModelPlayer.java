@@ -20,7 +20,6 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreModelPlayer extends ModelBiped
 {
@@ -712,17 +711,17 @@ public class GCCoreModelPlayer extends ModelBiped
 
             if (player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() instanceof IHoldableItem)
             {
-                IHoldableItem holdableItem = ((IHoldableItem) player.inventory.getCurrentItem().getItem());
-                
+                IHoldableItem holdableItem = (IHoldableItem) player.inventory.getCurrentItem().getItem();
+
                 if (holdableItem.shouldHoldLeftHandUp(player))
                 {
                     this.bipedLeftArm.rotateAngleX = 0;
                     this.bipedLeftArm.rotateAngleZ = 0;
-                    
+
                     this.bipedLeftArm.rotateAngleX += (float) Math.PI + 0.3;
                     this.bipedLeftArm.rotateAngleZ += (float) Math.PI / 10;
                 }
-                
+
                 if (holdableItem.shouldHoldRightHandUp(player))
                 {
                     this.bipedRightArm.rotateAngleX = 0;
@@ -731,7 +730,7 @@ public class GCCoreModelPlayer extends ModelBiped
                     this.bipedRightArm.rotateAngleX += (float) Math.PI + 0.3;
                     this.bipedRightArm.rotateAngleZ -= (float) Math.PI / 10;
                 }
-                
+
                 if (holdableItem.shouldCrouch(player))
                 {
                     this.bipedBody.rotateAngleX = 0.5F;

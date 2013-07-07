@@ -77,10 +77,13 @@ public class ClientProxyMars extends CommonProxyMars
     public void registerRenderInformation()
     {
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityRocketT2.class, new GCCoreRenderSpaceship(new GCMarsModelSpaceshipTier2(), GalacticraftMars.TEXTURE_DOMAIN, "rocketT2"));
-//        RenderingRegistry.registerEntityRenderingHandler(GCMarsEntityCreeperBoss.class, new GCMarsRenderCreeperBoss(new GCMarsModelCreeperBoss(), 10.0F));
-//        RenderingRegistry.registerEntityRenderingHandler(GCMarsEntitySludgeling.class, new GCMarsRenderSludgeling());
+        // RenderingRegistry.registerEntityRenderingHandler(GCMarsEntityCreeperBoss.class,
+        // new GCMarsRenderCreeperBoss(new GCMarsModelCreeperBoss(), 10.0F));
+        // RenderingRegistry.registerEntityRenderingHandler(GCMarsEntitySludgeling.class,
+        // new GCMarsRenderSludgeling());
         RenderingRegistry.addNewArmourRendererPrefix("desh");
-//        RenderingRegistry.registerEntityRenderingHandler(GCMarsEntityProjectileTNT.class, new GCMarsRenderProjectileTNT());
+        // RenderingRegistry.registerEntityRenderingHandler(GCMarsEntityProjectileTNT.class,
+        // new GCMarsRenderProjectileTNT());
         MinecraftForgeClient.registerItemRenderer(GCMarsItems.spaceship.itemID, new GCMarsItemRendererSpaceshipT2(new GCCoreEntityRocketT2(FMLClientHandler.instance().getClient().theWorld), new GCMarsModelSpaceshipTier2(), new ResourceLocation(GalacticraftMars.TEXTURE_DOMAIN, "textures/model/rocketT2.png")));
     }
 

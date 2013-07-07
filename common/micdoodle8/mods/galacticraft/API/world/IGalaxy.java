@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.API.world;
 
 import micdoodle8.mods.galacticraft.API.vector.Vector.Vector3;
 
-
 /**
  * Implement this one per set of planets (assuming only one galaxy in your mod)
  */

@@ -41,7 +41,9 @@ public class GalacticraftRegistry
     /**
      * Register a Galacticraft Body. See @IPlanet and @IMoon
      * 
-     * @param body celestial body object. Must implement IPlanet or IMoon to function as intended
+     * @param body
+     *            celestial body object. Must implement IPlanet or IMoon to
+     *            function as intended
      */
     public static void registerCelestialBody(ICelestialBody body)
     {
@@ -54,7 +56,8 @@ public class GalacticraftRegistry
     /**
      * Register a new Galaxy. This is not fully implemented yet.
      * 
-     * @param galaxy the Galaxy object to add to the list of all galaxies
+     * @param galaxy
+     *            the Galaxy object to add to the list of all galaxies
      */
     public static void registerGalaxy(IGalaxy galaxy)
     {
@@ -63,12 +66,12 @@ public class GalacticraftRegistry
             GalacticraftRegistry.galaxies.add(galaxy);
         }
     }
-    
+
     public static void addT1RocketRecipe(INasaWorkbenchRecipe recipe)
     {
         GalacticraftRegistry.rocketBenchRecipes.add(recipe);
     }
-    
+
     public static void addMoonBuggyRecipe(INasaWorkbenchRecipe recipe)
     {
         GalacticraftRegistry.buggyBenchRecipes.add(recipe);

@@ -5,9 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 import micdoodle8.mods.galacticraft.API.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.API.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.API.world.IGalacticraftWorldProvider;
@@ -401,14 +399,14 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
             String temp = "";
             int count = 0;
-            
+
             for (Entry<String, Integer> entry : map.entrySet())
             {
                 temp = temp.concat(entry.getKey() + (count < map.entrySet().size() - 1 ? "." : ""));
                 count++;
             }
-            
-            this.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 2, new Object[] {this.username, temp}));
+
+            this.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 2, new Object[] { this.username, temp }));
             this.setUsingPlanetGui();
             this.hasOpenedPlanetSelectionGui = true;
         }
@@ -419,14 +417,14 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
             String temp = "";
             int count = 0;
-            
+
             for (Entry<String, Integer> entry : map.entrySet())
             {
                 temp = temp.concat(entry.getKey() + (count < map.entrySet().size() - 1 ? "." : ""));
                 count++;
             }
-            
-            this.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 2, new Object[] {this.username, temp}));
+
+            this.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 2, new Object[] { this.username, temp }));
         }
 
         if (this.damageCounter > 0)
@@ -927,7 +925,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
             final NBTTagList var2 = nbt.getTagList("InventoryTankRefill");
             ((GCCoreInventoryPlayer) this.inventory).readFromNBTOld(var2);
         }
-        
+
         if (nbt.hasKey("SpaceshipTier"))
         {
             this.spaceshipTier = nbt.getInteger("SpaceshipTier");

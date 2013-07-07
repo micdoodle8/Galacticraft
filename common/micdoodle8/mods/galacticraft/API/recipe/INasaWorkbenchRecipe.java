@@ -7,10 +7,10 @@ import net.minecraft.item.ItemStack;
 public interface INasaWorkbenchRecipe
 {
     public boolean matches(IInventory inventory);
-    
+
     public int getRecipeSize();
-    
+
     public ItemStack getRecipeOutput();
-    
+
     public HashMap<Integer, ItemStack> getRecipeInput();
 }

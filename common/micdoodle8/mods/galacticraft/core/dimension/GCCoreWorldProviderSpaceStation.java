@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.dimension;
 
-import micdoodle8.mods.galacticraft.API.entity.ISpaceship;
 import micdoodle8.mods.galacticraft.API.world.IExitHeight;
 import micdoodle8.mods.galacticraft.API.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.API.world.ISolarLevel;

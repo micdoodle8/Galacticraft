@@ -185,7 +185,12 @@ public class GCCoreEvents
 
         final int blockID = world.getBlockId(pos.blockX, pos.blockY, pos.blockZ);
 
-        if ((blockID == bcOilID1 || blockID == bcOilID2 /*|| blockID == GCCoreBlocks.crudeOilMoving.blockID*/ || blockID == GCCoreBlocks.crudeOilStill.blockID) && world.getBlockMetadata(pos.blockX, pos.blockY, pos.blockZ) == 0 && bcOilBucket != null)
+        if ((blockID == bcOilID1 || blockID == bcOilID2 /*
+                                                         * || blockID ==
+                                                         * GCCoreBlocks
+                                                         * .crudeOilMoving
+                                                         * .blockID
+                                                         */|| blockID == GCCoreBlocks.crudeOilStill.blockID) && world.getBlockMetadata(pos.blockX, pos.blockY, pos.blockZ) == 0 && bcOilBucket != null)
         {
             world.setBlockToAir(pos.blockX, pos.blockY, pos.blockZ);
 

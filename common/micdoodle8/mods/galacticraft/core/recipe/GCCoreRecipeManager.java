@@ -24,7 +24,7 @@ import thermalexpansion.api.item.ItemRegistry;
 
 public class GCCoreRecipeManager
 {
-    
+
     public static void loadRecipes()
     {
         if (GCCoreCompatibilityManager.isTELoaded() && GCCoreConfigManager.useRecipesTE)
@@ -51,10 +51,10 @@ public class GCCoreRecipeManager
         {
             GCCoreRecipeManager.addBasicComponentsCraftingRecipes();
         }
-        
+
         GCCoreRecipeManager.addUniversalRecipes();
     }
-    
+
     private static void addUniversalRecipes()
     {
         HashMap<Integer, ItemStack> input = new HashMap<Integer, ItemStack>();
@@ -118,9 +118,9 @@ public class GCCoreRecipeManager
         input2.put(16, new ItemStack(Block.chest));
         input2.put(17, new ItemStack(Block.chest));
         RecipeUtil.addRocketBenchRecipe(new ItemStack(GCCoreItems.spaceship, 1, 3), input2);
-        
+
         //
-        
+
         input = new HashMap<Integer, ItemStack>();
         input.put(1, new ItemStack(GCCoreItems.heavyPlating));
         input.put(2, new ItemStack(GCCoreItems.heavyPlating));

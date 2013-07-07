@@ -101,7 +101,7 @@ public class GCCoreItemOilExtractor extends Item
 
             if (this.isOilBlock(par3EntityPlayer, par3EntityPlayer.worldObj, x, y, z))
             {
-                
+
                 par3EntityPlayer.worldObj.setBlock(x, y, z, 0);
 
                 if (this.openCanister(par3EntityPlayer) != null)
@@ -206,7 +206,7 @@ public class GCCoreItemOilExtractor extends Item
         {
         }
 
-        if ((/*world.getBlockId(x, y, z) == GCCoreBlocks.crudeOilMoving.blockID ||*/ world.getBlockId(x, y, z) == GCCoreBlocks.crudeOilStill.blockID) && world.getBlockMetadata(x, y, z) == 0)
+        if (world.getBlockId(x, y, z) == GCCoreBlocks.crudeOilStill.blockID && world.getBlockMetadata(x, y, z) == 0)
         {
             return true;
         }
@@ -242,7 +242,6 @@ public class GCCoreItemOilExtractor extends Item
 
             if (this.isOilBlock(par1EntityPlayer, par1EntityPlayer.worldObj, MathHelper.floor_double(var23.x), MathHelper.floor_double(var23.y), MathHelper.floor_double(var23.z)))
             {
-                FMLLog.info("yep " + var23);
                 return var23;
             }
         }

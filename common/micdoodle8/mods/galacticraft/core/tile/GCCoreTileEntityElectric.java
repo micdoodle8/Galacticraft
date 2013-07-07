@@ -348,7 +348,7 @@ public abstract class GCCoreTileEntityElectric extends TileEntityDisableable imp
 
         if (doReceive)
         {
-            this.ueWattsReceived += energyUsed; 
+            this.ueWattsReceived += energyUsed;
         }
 
         return (float) energyUsed;

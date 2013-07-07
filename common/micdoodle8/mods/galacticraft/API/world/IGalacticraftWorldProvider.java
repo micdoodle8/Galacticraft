@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.API.world;
 
-
 public interface IGalacticraftWorldProvider
 {
     /**
@@ -29,6 +28,6 @@ public interface IGalacticraftWorldProvider
      *         Lower fuel usage (multiplier less than zero)
      */
     public double getFuelUsageMultiplier();
-    
+
     public boolean canSpaceshipTierPass(int tier);
 }

@@ -633,13 +633,13 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
 
                 String temp = "";
                 int count = 0;
-                
+
                 for (Entry<String, Integer> entry : map.entrySet())
                 {
                     temp = temp.concat(entry.getKey() + (count < map.entrySet().size() - 1 ? "." : ""));
                     count++;
                 }
-                
+
                 player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 2, new Object[] { player.username, temp }));
                 player.spaceshipTier = this.getRocketTier();
                 player.setUsingPlanetGui();

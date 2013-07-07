@@ -1,10 +1,9 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
-import org.lwjgl.opengl.GL11;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.resources.ResourceLocation;
+import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -27,16 +26,19 @@ public class GCCoreOverlayOxygenWarning extends GCCoreOverlay
         final int width = scaledresolution.getScaledWidth();
         final int height = scaledresolution.getScaledHeight();
         GCCoreOverlayOxygenWarning.minecraft.entityRenderer.setupOverlayRendering();
-//        final GCCoreFontRendererLarge fr = new GCCoreFontRendererLarge(GCCoreOverlayOxygenWarning.minecraft.gameSettings, new ResourceLocation("textures/font/ascii.png"), GCCoreOverlayOxygenWarning.minecraft.renderEngine, false);
+        // final GCCoreFontRendererLarge fr = new
+        // GCCoreFontRendererLarge(GCCoreOverlayOxygenWarning.minecraft.gameSettings,
+        // new ResourceLocation("textures/font/ascii.png"),
+        // GCCoreOverlayOxygenWarning.minecraft.renderEngine, false);
 
         GL11.glPushMatrix();
-        
+
         GL11.glScalef(2.0F, 2.0F, 0.0F);
-        
-        minecraft.fontRenderer.drawString(LanguageRegistry.instance().getStringLocalization("gui.warning"), width / 4 - minecraft.fontRenderer.getStringWidth(LanguageRegistry.instance().getStringLocalization("gui.warning")) / 2, height / 8 - 20, GCCoreUtil.convertTo32BitColor(255, 255, 0, 0));
+
+        GCCoreOverlayOxygenWarning.minecraft.fontRenderer.drawString(LanguageRegistry.instance().getStringLocalization("gui.warning"), width / 4 - GCCoreOverlayOxygenWarning.minecraft.fontRenderer.getStringWidth(LanguageRegistry.instance().getStringLocalization("gui.warning")) / 2, height / 8 - 20, GCCoreUtil.convertTo32BitColor(255, 255, 0, 0));
         final int alpha = (int) (255 * Math.sin(GCCoreOverlayOxygenWarning.screenTicks / 20.0F));
-        minecraft.fontRenderer.drawString(LanguageRegistry.instance().getStringLocalization("gui.oxygen.warning"), width / 4 - minecraft.fontRenderer.getStringWidth(LanguageRegistry.instance().getStringLocalization("gui.oxygen.warning")) / 2, height / 8, GCCoreUtil.convertTo32BitColor(alpha, alpha, alpha, alpha));
-    
+        GCCoreOverlayOxygenWarning.minecraft.fontRenderer.drawString(LanguageRegistry.instance().getStringLocalization("gui.oxygen.warning"), width / 4 - GCCoreOverlayOxygenWarning.minecraft.fontRenderer.getStringWidth(LanguageRegistry.instance().getStringLocalization("gui.oxygen.warning")) / 2, height / 8, GCCoreUtil.convertTo32BitColor(alpha, alpha, alpha, alpha));
+
         GL11.glPopMatrix();
     }
 }

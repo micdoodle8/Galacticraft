@@ -1,13 +1,11 @@
 package micdoodle8.mods.galacticraft.core.client.render.item;
 
-import micdoodle8.mods.galacticraft.API.item.IHoldableItem;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelFlag;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityFlag;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemFlag;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.resources.ResourceLocation;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.client.IItemRenderer;
@@ -54,7 +52,7 @@ public class GCCoreItemRendererFlag implements IItemRenderer
             GL11.glScalef(7F, 7F, 7F);
             GL11.glTranslatef(0.0F, 0.7F, 0.1F);
         }
-        
+
         if (type == ItemRenderType.EQUIPPED)
         {
             GL11.glRotatef(170F, 0F, 0F, 1F);
@@ -62,7 +60,7 @@ public class GCCoreItemRendererFlag implements IItemRenderer
             GL11.glTranslatef(-0.25F, 1.3F, 0.15F);
             GL11.glRotatef(-145F, 0F, 1F, 0F);
         }
-        
+
         if (type == ItemRenderType.EQUIPPED_FIRST_PERSON)
         {
             if (FMLClientHandler.instance().getClient().thePlayer.getItemInUseCount() > 0)

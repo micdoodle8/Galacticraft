@@ -37,7 +37,7 @@ public class RecipeUtil
                 return recipe.getRecipeOutput();
             }
         }
-        
+
         return null;
     }
 

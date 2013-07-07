@@ -26,7 +26,6 @@ import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.multiblock.TileEntityMulti;
 import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric implements IInventory, ISidedInventory, IFluidHandler
@@ -342,14 +341,14 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric impleme
     @Override
     public boolean canFill(ForgeDirection from, Fluid fluid)
     {
-        return this.fuelTank.getFluid() == null || (this.fuelTank.getFluidAmount() < this.fuelTank.getCapacity());
+        return this.fuelTank.getFluid() == null || this.fuelTank.getFluidAmount() < this.fuelTank.getCapacity();
     }
 
     @Override
     public int fill(ForgeDirection from, FluidStack resource, boolean doFill)
     {
         int used = 0;
-        
+
         if (from.equals(ForgeDirection.getOrientation(this.getBlockMetadata() + 2).getOpposite()))
         {
             final String liquidName = FluidRegistry.getFluidName(resource);
@@ -366,7 +365,7 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric impleme
     @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection from)
     {
-        return new FluidTankInfo[] {new FluidTankInfo(this.fuelTank)};
+        return new FluidTankInfo[] { new FluidTankInfo(this.fuelTank) };
     }
 
     @Override

@@ -88,7 +88,7 @@ public class GCCoreModelFlag extends ModelBase
             }
 
             FMLClientHandler.instance().getClient().renderEngine.func_110577_a(resourcelocation);
-            
+
             GL11.glScalef(0.5F, 0.5F, 0.5F);
             this.picSide1.render(f5);
             this.picSide2.render(f5);

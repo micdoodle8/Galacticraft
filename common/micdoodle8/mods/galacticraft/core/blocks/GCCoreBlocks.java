@@ -15,8 +15,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialLiquid;
 import net.minecraft.util.Icon;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 /**
@@ -41,7 +39,7 @@ public class GCCoreBlocks
     public static Block decorationBlocks;
     public static Block airLockFrame;
     public static Block airLockSeal;
-//    public static GCCoreBlockCrudeOil crudeOilMoving;
+    // public static GCCoreBlockCrudeOil crudeOilMoving;
     public static GCCoreBlockCrudeOil crudeOilStill;
     public static Block refinery;
     public static Block compressor;
@@ -88,8 +86,7 @@ public class GCCoreBlocks
         GCCoreBlocks.oxygenDetector = new GCCoreBlockOxygenDetector(GCCoreConfigManager.idBlockOxygenDetector).setHardness(3.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("oxygenDetector");
         GCCoreBlocks.cargoLoader = new GCCoreBlockCargoLoader(GCCoreConfigManager.idBlockCargoLoader).setHardness(3.0F).setStepSound(Block.soundMetalFootstep).setUnlocalizedName("cargo");
         GCCoreBlocks.parachest = new GCCoreBlockParachest(GCCoreConfigManager.idBlockParachest).setHardness(3.0F).setStepSound(Block.soundWoodFootstep).setUnlocalizedName("parachest");
-        
-        
+
         // Hide certain items from NEI
         GCCoreBlocks.hiddenBlocks.add(GCCoreBlocks.airLockSeal.blockID);
         GCCoreBlocks.hiddenBlocks.add(GCCoreBlocks.sapling.blockID);
@@ -127,7 +124,10 @@ public class GCCoreBlocks
         GameRegistry.registerBlock(GCCoreBlocks.airLockFrame, GCCoreItemBlock.class, GCCoreBlocks.airLockFrame.getUnlocalizedName(), GalacticraftCore.MODID);
         GameRegistry.registerBlock(GCCoreBlocks.airLockSeal, GCCoreItemBlock.class, GCCoreBlocks.airLockSeal.getUnlocalizedName(), GalacticraftCore.MODID);
         GameRegistry.registerBlock(GCCoreBlocks.crudeOilStill, GCCoreItemBlock.class, GCCoreBlocks.crudeOilStill.getUnlocalizedName(), GalacticraftCore.MODID);
-//        GameRegistry.registerBlock(GCCoreBlocks.crudeOilMoving, GCCoreItemBlock.class, GCCoreBlocks.crudeOilMoving.getUnlocalizedName(), GalacticraftCore.MODID);
+        // GameRegistry.registerBlock(GCCoreBlocks.crudeOilMoving,
+        // GCCoreItemBlock.class,
+        // GCCoreBlocks.crudeOilMoving.getUnlocalizedName(),
+        // GalacticraftCore.MODID);
         GameRegistry.registerBlock(GCCoreBlocks.refinery, GCCoreItemBlock.class, GCCoreBlocks.refinery.getUnlocalizedName(), GalacticraftCore.MODID);
         GameRegistry.registerBlock(GCCoreBlocks.compressor, GCCoreItemBlock.class, GCCoreBlocks.compressor.getUnlocalizedName(), GalacticraftCore.MODID);
         GameRegistry.registerBlock(GCCoreBlocks.decorationBlocks, GCCoreItemBlockBase.class, GCCoreBlocks.decorationBlocks.getUnlocalizedName(), GalacticraftCore.MODID);

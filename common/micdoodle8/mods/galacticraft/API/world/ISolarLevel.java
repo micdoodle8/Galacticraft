@@ -9,8 +9,8 @@ package micdoodle8.mods.galacticraft.API.world;
  * 
  * for example:
  * 
- * if (worldObj.provider instanceof ISolarLevel)
- *          solarStrength *= ((ISolarLevel) worldObj.provider).getSolarEnergyMultiplier();
+ * if (worldObj.provider instanceof ISolarLevel) solarStrength *= ((ISolarLevel)
+ * worldObj.provider).getSolarEnergyMultiplier();
  */
 public interface ISolarLevel
 {

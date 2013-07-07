@@ -5,6 +5,6 @@ import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase.EnumRocket
 public interface IRocketType
 {
     public EnumRocketType getType();
-    
+
     public int getRocketTier();
 }

@@ -11,7 +11,7 @@ public class GCCoreNasaWorkbenchRecipe implements INasaWorkbenchRecipe
 {
     private ItemStack output;
     private HashMap<Integer, ItemStack> input;
-    
+
     public GCCoreNasaWorkbenchRecipe(ItemStack output, HashMap<Integer, ItemStack> input)
     {
         this.output = output;
@@ -24,13 +24,13 @@ public class GCCoreNasaWorkbenchRecipe implements INasaWorkbenchRecipe
         for (Entry<Integer, ItemStack> entry : this.input.entrySet())
         {
             ItemStack stackAt = inventory.getStackInSlot(entry.getKey());
-            
-            if (!checkItemEquals(stackAt, entry.getValue()))
+
+            if (!this.checkItemEquals(stackAt, entry.getValue()))
             {
                 return false;
             }
         }
-        
+
         return true;
     }
 
@@ -40,7 +40,7 @@ public class GCCoreNasaWorkbenchRecipe implements INasaWorkbenchRecipe
         {
             return false;
         }
-        return target == null && input == null || (target.itemID == input.itemID && (target.getItemDamage() == OreDictionary.WILDCARD_VALUE|| target.getItemDamage() == input.getItemDamage()));
+        return target == null && input == null || target.itemID == input.itemID && (target.getItemDamage() == OreDictionary.WILDCARD_VALUE || target.getItemDamage() == input.getItemDamage());
     }
 
     @Override
@@ -54,7 +54,7 @@ public class GCCoreNasaWorkbenchRecipe implements INasaWorkbenchRecipe
     {
         return this.output;
     }
-    
+
     @Override
     public HashMap<Integer, ItemStack> getRecipeInput()
     {

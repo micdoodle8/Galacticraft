@@ -24,7 +24,6 @@ import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.PacketManager;
 import buildcraft.api.power.PowerFramework;
 import com.google.common.io.ByteArrayDataInput;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implements IInventory, ISidedInventory, IFluidHandler
@@ -424,7 +423,7 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
         {
             return this.fuelTank.getFluid() != null && this.fuelTank.getFluidAmount() > 0;
         }
-        
+
         return false;
     }
 
@@ -435,7 +434,7 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
         {
             return this.fuelTank.drain(resource.amount, doDrain);
         }
-        
+
         return null;
     }
 
@@ -455,9 +454,9 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
     {
         if (from.equals(ForgeDirection.getOrientation(this.getBlockMetadata() + 2).getOpposite()))
         {
-            return this.oilTank.getFluid() == null || (this.oilTank.getFluidAmount() < this.oilTank.getCapacity());
+            return this.oilTank.getFluid() == null || this.oilTank.getFluidAmount() < this.oilTank.getCapacity();
         }
-        
+
         return false;
     }
 
@@ -465,7 +464,7 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
     public int fill(ForgeDirection from, FluidStack resource, boolean doFill)
     {
         int used = 0;
-        
+
         if (from.equals(ForgeDirection.getOrientation(this.getBlockMetadata() + 2).getOpposite()))
         {
             final String liquidName = FluidRegistry.getFluidName(resource);
@@ -483,16 +482,16 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
     public FluidTankInfo[] getTankInfo(ForgeDirection from)
     {
         FluidTankInfo[] tankInfo = new FluidTankInfo[] {};
-        
+
         if (from == ForgeDirection.getOrientation(this.getBlockMetadata() + 2).getOpposite())
         {
-            tankInfo = new FluidTankInfo[] {new FluidTankInfo(this.oilTank)};
+            tankInfo = new FluidTankInfo[] { new FluidTankInfo(this.oilTank) };
         }
         else if (from == ForgeDirection.getOrientation(this.getBlockMetadata() + 2))
         {
-            tankInfo = new FluidTankInfo[] {new FluidTankInfo(this.fuelTank)};
+            tankInfo = new FluidTankInfo[] { new FluidTankInfo(this.fuelTank) };
         }
-        
+
         return tankInfo;
     }
 }

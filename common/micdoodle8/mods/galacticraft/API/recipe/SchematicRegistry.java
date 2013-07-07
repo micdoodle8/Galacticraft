@@ -15,7 +15,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -38,7 +37,8 @@ public class SchematicRegistry
     /**
      * Finds the recipe for the given itemstack
      * 
-     * @param stack the itemstack to be searched with
+     * @param stack
+     *            the itemstack to be searched with
      * @return the recipe that requires the provided itemstack
      */
     public static ISchematicPage getMatchingRecipeForItemStack(ItemStack stack)
@@ -59,7 +59,8 @@ public class SchematicRegistry
     /**
      * Finds the recipe for the given recipe ID
      * 
-     * @param id the ID to be searched with
+     * @param id
+     *            the ID to be searched with
      * @return the recipe that has and ID equal to the one provided
      */
     public static ISchematicPage getMatchingRecipeForID(int id)
@@ -78,8 +79,10 @@ public class SchematicRegistry
     /**
      * Called when a player unlocks a page. Used internally.
      * 
-     * @param player the player that unlocked the schematic
-     * @param page the schematic page to be unlocked
+     * @param player
+     *            the player that unlocked the schematic
+     * @param page
+     *            the schematic page to be unlocked
      */
     public static void addUnlockedPage(GCCorePlayerMP player, ISchematicPage page)
     {
@@ -98,8 +101,10 @@ public class SchematicRegistry
     /**
      * Called when a player unlocks a page. Used internally.
      * 
-     * @param player the player that unlocked the schematic
-     * @param stack the itemstack the player has provided 
+     * @param player
+     *            the player that unlocked the schematic
+     * @param stack
+     *            the itemstack the player has provided
      * @return the schematic page that was unlocked
      */
     public static ISchematicPage unlockNewPage(GCCorePlayerMP player, ItemStack stack)
@@ -235,7 +240,8 @@ public class SchematicRegistry
     /**
      * Finds the correct schematic when player presses NEXT
      * 
-     * @param currentIndex the current index of unlocked schematics the player is viewing
+     * @param currentIndex
+     *            the current index of unlocked schematics the player is viewing
      * @return the schematic page that will be shown when the player clicks NEXT
      */
     @SideOnly(Side.CLIENT)
@@ -259,7 +265,8 @@ public class SchematicRegistry
     /**
      * Finds the correct schematic when player presses BACK
      * 
-     * @param currentIndex the current index of unlocked schematics the player is viewing
+     * @param currentIndex
+     *            the current index of unlocked schematics the player is viewing
      * @return the schematic page that will be shown when the player clicks BACK
      */
     @SideOnly(Side.CLIENT)

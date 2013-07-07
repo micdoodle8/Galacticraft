@@ -71,7 +71,6 @@ import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.moon.GalacticraftMoon;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.WorldProviderSurface;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
@@ -80,10 +79,6 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.liquids.LiquidContainerData;
-import net.minecraftforge.liquids.LiquidContainerRegistry;
-import net.minecraftforge.liquids.LiquidDictionary;
-import net.minecraftforge.liquids.LiquidStack;
 import universalelectricity.prefab.multiblock.TileEntityMulti;
 import universalelectricity.prefab.ore.OreGenerator;
 import basiccomponents.common.BasicComponents;
@@ -157,14 +152,14 @@ public class GalacticraftCore
     public static double fromBuildcraftEnergyScalar = 25.0D;
 
     public static String TEXTURE_DOMAIN = "galacticraftcore";
-    public static String TEXTURE_PREFIX = TEXTURE_DOMAIN + ":";
+    public static String TEXTURE_PREFIX = GalacticraftCore.TEXTURE_DOMAIN + ":";
     public static String TEXTURE_SUFFIX;
 
     public static boolean setSpaceStationRecipe = false;
 
     public static GCCorePlanetOverworld overworld;
     public static GCCorePlanetSun sun;
-    
+
     public static Fluid CRUDEOIL;
     public static Fluid FUEL;
 

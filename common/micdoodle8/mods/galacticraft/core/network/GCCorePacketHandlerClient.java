@@ -385,7 +385,7 @@ public class GCCorePacketHandlerClient implements IPacketHandler
                     for (int var2 = 0; var2 < var1; ++var2)
                     {
                         final int var3 = data.readInt();
-                        
+
                         if (var3 != -2)
                         {
                             Collections.sort(playerBaseClient.unlockedSchematics);

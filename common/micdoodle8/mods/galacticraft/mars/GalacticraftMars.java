@@ -4,7 +4,6 @@ import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.File;
 import micdoodle8.mods.galacticraft.API.GalacticraftRegistry;
-import micdoodle8.mods.galacticraft.API.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.core.GCCoreCreativeTab;
 import micdoodle8.mods.galacticraft.core.network.GCCoreConnectionHandler;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
@@ -13,7 +12,6 @@ import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
 import micdoodle8.mods.galacticraft.mars.dimension.GCMarsWorldProvider;
 import micdoodle8.mods.galacticraft.mars.entities.GCCoreEntityRocketT2;
 import micdoodle8.mods.galacticraft.mars.items.GCMarsItems;
-import micdoodle8.mods.galacticraft.mars.schematic.GCMarsSchematicRocketT2;
 import micdoodle8.mods.galacticraft.moon.dimension.GCMoonTeleportType;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.network.INetworkManager;
@@ -74,7 +72,7 @@ public class GalacticraftMars
     public static GCCoreCreativeTab galacticraftMarsTab;
 
     public static final String TEXTURE_DOMAIN = "galacticraftmars";
-    public static final String MARS_TEXTURE_PREFIX = TEXTURE_DOMAIN + ":";
+    public static final String MARS_TEXTURE_PREFIX = GalacticraftMars.TEXTURE_DOMAIN + ":";
 
     @PreInit
     public void preInit(FMLPreInitializationEvent event)
@@ -103,7 +101,8 @@ public class GalacticraftMars
         this.registerCreatures();
         this.registerOtherEntities();
         GalacticraftMars.proxy.init(event);
-//        SchematicRegistry.registerSchematicRecipe(new GCMarsSchematicRocketT2());
+        // SchematicRegistry.registerSchematicRecipe(new
+        // GCMarsSchematicRocketT2());
     }
 
     @ServerStarting
@@ -124,7 +123,9 @@ public class GalacticraftMars
 
     public void registerOtherEntities()
     {
-//        this.registerGalacticraftNonMobEntity(GCMarsEntityProjectileTNT.class, "Projectile TNT", GCMarsConfigManager.idEntityProjectileTNT, 150, 5, true);
+        // this.registerGalacticraftNonMobEntity(GCMarsEntityProjectileTNT.class,
+        // "Projectile TNT", GCMarsConfigManager.idEntityProjectileTNT, 150, 5,
+        // true);
         this.registerGalacticraftNonMobEntity(GCCoreEntityRocketT2.class, "SpaceshipT2", GCMarsConfigManager.idEntitySpaceshipTier2, 150, 1, true);
     }
 

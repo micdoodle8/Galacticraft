@@ -67,7 +67,7 @@ public class GCCoreBlockAirLockFrame extends BlockContainer
             if (orientation != ForgeDirection.UNKNOWN)
             {
                 final Vector3 vector = new Vector3(par2, par3, par4);
-                Vector3 blockVec = this.modifyPositionFromSide((Vector3) vector.clone(), orientation, 1);
+                Vector3 blockVec = this.modifyPositionFromSide(vector.clone(), orientation, 1);
                 Block connection = Block.blocksList[blockVec.getBlockID(par1IBlockAccess)];
 
                 if (connection != null && connection.equals(GCCoreBlocks.airLockSeal))

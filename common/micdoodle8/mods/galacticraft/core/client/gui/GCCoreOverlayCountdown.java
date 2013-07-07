@@ -1,11 +1,10 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
-import org.lwjgl.opengl.GL11;
 import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.resources.ResourceLocation;
+import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -25,22 +24,22 @@ public class GCCoreOverlayCountdown extends GCCoreOverlay
         final int width = scaledresolution.getScaledWidth();
         final int height = scaledresolution.getScaledHeight();
         GCCoreOverlayCountdown.minecraft.entityRenderer.setupOverlayRendering();
-        
+
         GL11.glPushMatrix();
-        
+
         if (count <= 10)
         {
             GL11.glScalef(4.0F, 4.0F, 0.0F);
-            
-            minecraft.fontRenderer.drawString(String.valueOf(count), width / 8 - minecraft.fontRenderer.getStringWidth(String.valueOf(count)) / 2, height / 20, GCCoreUtil.convertTo32BitColor(255, 255, 0, 0));
+
+            GCCoreOverlayCountdown.minecraft.fontRenderer.drawString(String.valueOf(count), width / 8 - GCCoreOverlayCountdown.minecraft.fontRenderer.getStringWidth(String.valueOf(count)) / 2, height / 20, GCCoreUtil.convertTo32BitColor(255, 255, 0, 0));
         }
         else
         {
             GL11.glScalef(2.0F, 2.0F, 0.0F);
-            
-            GCCoreOverlayCountdown.minecraft.fontRenderer.drawString(String.valueOf(count), width / 4 - minecraft.fontRenderer.getStringWidth(String.valueOf(count)) / 2, height / 8, GCCoreUtil.convertTo32BitColor(255, 255, 0, 0));
+
+            GCCoreOverlayCountdown.minecraft.fontRenderer.drawString(String.valueOf(count), width / 4 - GCCoreOverlayCountdown.minecraft.fontRenderer.getStringWidth(String.valueOf(count)) / 2, height / 8, GCCoreUtil.convertTo32BitColor(255, 255, 0, 0));
         }
-        
+
         GL11.glPopMatrix();
     }
 }

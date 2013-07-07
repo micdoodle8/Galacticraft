@@ -146,4 +146,4 @@
 //    {
 //        return EnumCreatureAttribute.ARTHROPOD;
 //    }
-//}
+// }

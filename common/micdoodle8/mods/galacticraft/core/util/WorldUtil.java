@@ -296,13 +296,13 @@ public class WorldUtil
     public static List<Integer> getPossibleDimensionsForSpaceshipTier(int tier)
     {
         List<Integer> temp = new ArrayList<Integer>();
-        
+
         temp.add(0);
 
         for (Integer element : WorldUtil.registeredPlanets)
         {
             WorldProvider provider = WorldProvider.getProviderForDimension(element);
-            
+
             if (provider != null)
             {
                 if (provider instanceof IGalacticraftWorldProvider)
@@ -322,7 +322,7 @@ public class WorldUtil
         for (Integer element : WorldUtil.registeredSpaceStations)
         {
             WorldProvider provider = WorldProvider.getProviderForDimension(element);
-            
+
             if (provider != null)
             {
                 if (provider instanceof IGalacticraftWorldProvider)
@@ -338,7 +338,7 @@ public class WorldUtil
                 }
             }
         }
-        
+
         return temp;
     }
 
@@ -349,7 +349,7 @@ public class WorldUtil
 
     public static HashMap<String, Integer> getArrayOfPossibleDimensions(Integer[] ids, GCCorePlayerMP playerBase)
     {
-        return getArrayOfPossibleDimensions(Arrays.asList(ids), playerBase);
+        return WorldUtil.getArrayOfPossibleDimensions(Arrays.asList(ids), playerBase);
     }
 
     public static HashMap<String, Integer> getArrayOfPossibleDimensions(List<Integer> ids, GCCorePlayerMP playerBase)
@@ -555,7 +555,8 @@ public class WorldUtil
     }
 
     /**
-     * This does NOT take into account if player is using the correct rocket, this is just a total list of all space dimensions.
+     * This does NOT take into account if player is using the correct rocket,
+     * this is just a total list of all space dimensions.
      */
     public static Integer[] getArrayOfPossibleDimensions()
     {

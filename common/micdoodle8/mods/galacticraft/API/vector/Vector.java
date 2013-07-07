@@ -12,11 +12,11 @@ import cpw.mods.fml.common.FMLLog;
 public abstract class Vector implements Cloneable
 {
     public abstract List<Double> getCoords();
-    
+
     public abstract void setCoords(List<Double> coords) throws IndexOutOfBoundsException;
-    
+
     public abstract Vector add(Vector vec);
-    
+
     public void writeToNBT(NBTTagList list)
     {
         for (Double coord : this.getCoords())
@@ -26,11 +26,11 @@ public abstract class Vector implements Cloneable
             list.appendTag(nbt);
         }
     }
-    
+
     public static Vector readFromNBT(NBTTagList list)
     {
         Vector vec;
-        
+
         switch (list.tagCount())
         {
         case 2:
@@ -43,15 +43,15 @@ public abstract class Vector implements Cloneable
             FMLLog.severe("FAILED TO LOAD VECTOR FROM NBT");
             return null;
         }
-        
+
         List<Double> coordList = new ArrayList<Double>();
-        
+
         for (int i = 0; i < list.tagCount(); ++i)
         {
             NBTTagCompound nbt = (NBTTagCompound) list.tagAt(i);
             coordList.add(nbt.getDouble("Coordinate"));
         }
-        
+
         try
         {
             vec.setCoords(coordList);
@@ -61,21 +61,21 @@ public abstract class Vector implements Cloneable
             FMLLog.severe("FAILED TO LOAD VECTOR FROM NBT");
             return null;
         }
-        
+
         return vec;
     }
-    
+
     public static class Vector3 extends Vector
     {
         public double x;
         public double y;
         public double z;
-        
+
         public Vector3()
         {
-            
+
         }
-        
+
         public Vector3(double x, double y, double z)
         {
             this.x = x;
@@ -86,22 +86,22 @@ public abstract class Vector implements Cloneable
         @Override
         public List<Double> getCoords()
         {
-            return Arrays.asList(new Double[] {this.x, this.y, this.z});
+            return Arrays.asList(new Double[] { this.x, this.y, this.z });
         }
-        
+
         public int getIntX()
         {
-            return (int)Math.floor(this.x);
+            return (int) Math.floor(this.x);
         }
-        
+
         public int getIntY()
         {
-            return (int)Math.floor(this.y);
+            return (int) Math.floor(this.y);
         }
-        
+
         public int getIntZ()
         {
-            return (int)Math.floor(this.z);
+            return (int) Math.floor(this.z);
         }
 
         @Override
@@ -131,7 +131,7 @@ public abstract class Vector implements Cloneable
             {
                 FMLLog.severe("CANNOT ADD VECTOR2 to VECTOR3");
             }
-            
+
             return this;
         }
 
@@ -139,7 +139,7 @@ public abstract class Vector implements Cloneable
         {
             return blockAccess.getBlockId(this.getIntX(), this.getIntY(), this.getIntZ());
         }
-        
+
         public Object toUEVector3()
         {
             try
@@ -155,17 +155,17 @@ public abstract class Vector implements Cloneable
             }
         }
     }
-    
+
     public static class Vector2 extends Vector
     {
         public double x;
         public double y;
-        
+
         public Vector2()
         {
-            
+
         }
-        
+
         public Vector2(double x, double y)
         {
             this.x = x;
@@ -175,7 +175,7 @@ public abstract class Vector implements Cloneable
         @Override
         public List<Double> getCoords()
         {
-            return Arrays.asList(new Double[] {this.x, this.y});
+            return Arrays.asList(new Double[] { this.x, this.y });
         }
 
         @Override
@@ -203,7 +203,7 @@ public abstract class Vector implements Cloneable
             {
                 FMLLog.severe("CANNOT ADD VECTOR3 to VECTOR2");
             }
-            
+
             return this;
         }
     }

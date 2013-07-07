@@ -11,7 +11,7 @@ import net.minecraft.world.WorldProvider;
 public class GCMarsPlanet implements IPlanet
 {
     private final IMapObject mars = new GCMarsMapPlanet();
-    
+
     @Override
     public String getName()
     {

@@ -5,7 +5,6 @@ import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityLander;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.resources.ResourceLocation;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.FMLClientHandler;
@@ -32,18 +31,18 @@ public class GCCoreOverlayLander extends GCCoreOverlay
         GCCoreOverlayLander.minecraft.entityRenderer.setupOverlayRendering();
 
         GL11.glPushMatrix();
-        
+
         GL11.glScalef(2.0F, 2.0F, 0.0F);
-        
+
         if (GCCoreOverlayLander.minecraft.thePlayer.ridingEntity.motionY < -2.0)
         {
-            minecraft.fontRenderer.drawString(LanguageRegistry.instance().getStringLocalization("gui.warning"), width / 4 - minecraft.fontRenderer.getStringWidth(LanguageRegistry.instance().getStringLocalization("gui.warning")) / 2, height / 8 - 20, GCCoreUtil.convertTo32BitColor(255, 255, 0, 0));
+            GCCoreOverlayLander.minecraft.fontRenderer.drawString(LanguageRegistry.instance().getStringLocalization("gui.warning"), width / 4 - GCCoreOverlayLander.minecraft.fontRenderer.getStringWidth(LanguageRegistry.instance().getStringLocalization("gui.warning")) / 2, height / 8 - 20, GCCoreUtil.convertTo32BitColor(255, 255, 0, 0));
             final int alpha = (int) (255 * Math.sin(GCCoreOverlayLander.screenTicks / 20.0F));
             final String press1 = LanguageRegistry.instance().getStringLocalization("gui.lander.warning2");
             final String press2 = LanguageRegistry.instance().getStringLocalization("gui.lander.warning3");
-            minecraft.fontRenderer.drawString(press1 + Keyboard.getKeyName(ClientProxyCore.GCKeyHandler.spaceKey.keyCode) + press2, width / 4 - minecraft.fontRenderer.getStringWidth(press1 + Keyboard.getKeyName(ClientProxyCore.GCKeyHandler.spaceKey.keyCode) + press2) / 2, height / 8, GCCoreUtil.convertTo32BitColor(alpha, alpha, alpha, alpha));
+            GCCoreOverlayLander.minecraft.fontRenderer.drawString(press1 + Keyboard.getKeyName(ClientProxyCore.GCKeyHandler.spaceKey.keyCode) + press2, width / 4 - GCCoreOverlayLander.minecraft.fontRenderer.getStringWidth(press1 + Keyboard.getKeyName(ClientProxyCore.GCKeyHandler.spaceKey.keyCode) + press2) / 2, height / 8, GCCoreUtil.convertTo32BitColor(alpha, alpha, alpha, alpha));
         }
-        
+
         GL11.glPopMatrix();
 
         if (GCCoreOverlayLander.minecraft.thePlayer.ridingEntity.motionY != 0.0D)

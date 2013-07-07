@@ -11,7 +11,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraftforge.fluids.FluidContainerRegistry;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -78,8 +77,8 @@ public class GCCoreItemOilCanister extends Item
     @Override
     public Icon getIconFromDamage(int par1)
     {
-        final int damage = 6 * (int) Math.floor(par1 / (this.getMaxDamage()));
-        
+        final int damage = 6 * (int) Math.floor(par1 / this.getMaxDamage());
+
         if (this.icons.length > damage)
         {
             return this.icons[damage];

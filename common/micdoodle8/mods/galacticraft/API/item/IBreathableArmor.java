@@ -14,7 +14,7 @@ public interface IBreathableArmor
     {
         HELMET, GEAR, TANK1, TANK2;
     }
-    
+
     /**
      * 
      * @param gearType

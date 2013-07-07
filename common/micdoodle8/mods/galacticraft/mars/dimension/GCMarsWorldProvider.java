@@ -1,9 +1,7 @@
 package micdoodle8.mods.galacticraft.mars.dimension;
 
-import micdoodle8.mods.galacticraft.API.entity.ISpaceship;
 import micdoodle8.mods.galacticraft.API.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.mars.GCMarsConfigManager;
-import micdoodle8.mods.galacticraft.mars.entities.GCCoreEntityRocketT2;
 import micdoodle8.mods.galacticraft.mars.wgen.GCMarsChunkProvider;
 import micdoodle8.mods.galacticraft.mars.wgen.GCMarsWorldChunkManager;
 import net.minecraft.entity.Entity;

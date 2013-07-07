@@ -151,7 +151,7 @@ public class GCCoreItemBlockEnclosedBlock extends ItemBlock
 
                     if (pipe == null)
                     {
-                        FMLLog.info("Pipe failed to create during placement at " + i + "," + j + "," + k);
+                        FMLLog.severe("Pipe failed to create during placement at " + i + "," + j + "," + k);
                         return true;
                     }
 

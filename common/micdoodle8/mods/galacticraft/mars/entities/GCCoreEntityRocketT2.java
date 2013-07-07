@@ -623,7 +623,7 @@ public class GCCoreEntityRocketT2 extends EntitySpaceshipBase implements IInvent
     {
         return this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase() && this.timeSinceLaunch > 50;
     }
-    
+
     @Override
     public int getRocketTier()
     {

@@ -171,7 +171,7 @@ public class GCCoreEntityFlag extends Entity
     public void onUpdate()
     {
         Vector3 vec = new Vector3(this.posX, this.posY, this.posZ);
-        vec = (Vector3) vec.add(new Vector3(0, -1, 0));
+        vec = vec.add(new Vector3(0, -1, 0));
         final Block blockAt = Block.blocksList[vec.getBlockID(this.worldObj)];
 
         if (blockAt != null)
