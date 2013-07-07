@@ -1,4 +1,4 @@
-package micdoodle8.mods.galacticraft.API.recipe;
+package micdoodle8.mods.galacticraft.api.recipe;
 
 /**
  * Implement into GUI classes for the unlocked pages

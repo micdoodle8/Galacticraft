@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.schematic;
 
-import micdoodle8.mods.galacticraft.API.recipe.ISchematicPage;
+import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiSchematicRocketT1;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerRocketBench;

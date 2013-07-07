@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.sounds;
 
-import micdoodle8.mods.galacticraft.API.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.sound.PlayBackgroundMusicEvent;

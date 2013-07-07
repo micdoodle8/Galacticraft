@@ -1,4 +1,4 @@
-package micdoodle8.mods.galacticraft.API.vector;
+package micdoodle8.mods.galacticraft.api.vector;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;

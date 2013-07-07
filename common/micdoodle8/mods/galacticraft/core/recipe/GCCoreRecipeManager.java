@@ -2,9 +2,9 @@ package micdoodle8.mods.galacticraft.core.recipe;
 
 import ic2.api.item.Items;
 import java.util.HashMap;
-import micdoodle8.mods.galacticraft.API.GalacticraftRegistry;
-import micdoodle8.mods.galacticraft.API.recipe.SpaceStationRecipe;
-import micdoodle8.mods.galacticraft.API.world.SpaceStationType;
+import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
+import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
+import micdoodle8.mods.galacticraft.api.world.SpaceStationType;
 import micdoodle8.mods.galacticraft.core.GCCoreCompatibilityManager;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;

@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.items;
 
 import java.util.List;
 import mekanism.api.EnumColor;
-import micdoodle8.mods.galacticraft.API.recipe.ISchematicItem;
+import micdoodle8.mods.galacticraft.api.recipe.ISchematicItem;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import net.minecraft.client.renderer.texture.IconRegister;

@@ -1,4 +1,4 @@
-package micdoodle8.mods.galacticraft.API.world;
+package micdoodle8.mods.galacticraft.api.world;
 
 /**
  * Used to change the solar multiplier of certain world providers

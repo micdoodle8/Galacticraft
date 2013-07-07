@@ -5,7 +5,7 @@ import mekanism.api.GasNetwork;
 import mekanism.api.IPressurizedTube;
 import mekanism.api.ITubeConnection;
 import mekanism.api.Object3D;
-import micdoodle8.mods.galacticraft.API.tile.IColorable;
+import micdoodle8.mods.galacticraft.api.tile.IColorable;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;

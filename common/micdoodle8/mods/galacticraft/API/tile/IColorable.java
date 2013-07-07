@@ -1,4 +1,4 @@
-package micdoodle8.mods.galacticraft.API.tile;
+package micdoodle8.mods.galacticraft.api.tile;
 
 import net.minecraftforge.common.ForgeDirection;
 

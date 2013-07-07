@@ -1,4 +1,4 @@
-package micdoodle8.mods.galacticraft.API.item;
+package micdoodle8.mods.galacticraft.api.item;
 
 import net.minecraft.entity.player.EntityPlayer;
 

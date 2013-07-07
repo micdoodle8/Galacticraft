@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.moon.client;
 
-import micdoodle8.mods.galacticraft.API.world.ICelestialBodyRenderer;
-import micdoodle8.mods.galacticraft.API.world.IGalaxy;
-import micdoodle8.mods.galacticraft.API.world.IMapObject;
+import micdoodle8.mods.galacticraft.api.world.ICelestialBodyRenderer;
+import micdoodle8.mods.galacticraft.api.world.IGalaxy;
+import micdoodle8.mods.galacticraft.api.world.IMapObject;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 
 public class GCMoonMapPlanet implements IMapObject

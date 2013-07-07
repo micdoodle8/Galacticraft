@@ -2,10 +2,10 @@ package micdoodle8.mods.galacticraft.core.network;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
-import micdoodle8.mods.galacticraft.API.recipe.ISchematicPage;
-import micdoodle8.mods.galacticraft.API.recipe.SchematicRegistry;
-import micdoodle8.mods.galacticraft.API.tile.IDisableableMachine;
-import micdoodle8.mods.galacticraft.API.world.IOrbitDimension;
+import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
+import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
+import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
+import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GCLog;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;

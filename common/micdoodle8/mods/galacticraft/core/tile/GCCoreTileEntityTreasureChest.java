@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import java.util.Iterator;
 import java.util.List;
-import micdoodle8.mods.galacticraft.API.item.IKeyable;
+import micdoodle8.mods.galacticraft.api.item.IKeyable;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockT1TreasureChest;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;

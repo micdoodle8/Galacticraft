@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
 import java.util.Calendar;
-import micdoodle8.mods.galacticraft.API.entity.IEntityBreathable;
+import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;

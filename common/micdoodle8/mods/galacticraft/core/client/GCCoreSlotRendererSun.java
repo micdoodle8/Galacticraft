@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client;
 
-import micdoodle8.mods.galacticraft.API.world.ICelestialBodyRenderer;
+import micdoodle8.mods.galacticraft.api.world.ICelestialBodyRenderer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.resources.ResourceLocation;
 

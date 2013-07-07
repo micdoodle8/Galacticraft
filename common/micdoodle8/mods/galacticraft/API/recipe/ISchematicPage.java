@@ -1,4 +1,4 @@
-package micdoodle8.mods.galacticraft.API.recipe;
+package micdoodle8.mods.galacticraft.api.recipe;
 
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;

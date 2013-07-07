@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.core.dimension;
 
 import java.util.Random;
-import micdoodle8.mods.galacticraft.API.vector.Vector.Vector3;
-import micdoodle8.mods.galacticraft.API.world.ITeleportType;
+import micdoodle8.mods.galacticraft.api.vector.Vector.Vector3;
+import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;

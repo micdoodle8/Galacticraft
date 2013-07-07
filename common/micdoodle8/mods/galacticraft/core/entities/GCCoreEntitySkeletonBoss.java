@@ -2,8 +2,8 @@ package micdoodle8.mods.galacticraft.core.entities;
 
 import java.util.List;
 import java.util.Random;
-import micdoodle8.mods.galacticraft.API.entity.IEntityBreathable;
-import micdoodle8.mods.galacticraft.API.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;

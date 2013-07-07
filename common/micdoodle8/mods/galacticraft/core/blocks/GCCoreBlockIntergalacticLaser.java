@@ -2,7 +2,7 @@
 //
 //import java.util.List;
 //
-//import micdoodle8.mods.galacticraft.API.SchematicRegistry;
+//import micdoodle8.mods.galacticraft.api.SchematicRegistry;
 //import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 //import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 //import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAdvancedCraftingTable;

@@ -2,8 +2,8 @@ package micdoodle8.mods.galacticraft.moon.blocks;
 
 import java.util.List;
 import java.util.Random;
-import micdoodle8.mods.galacticraft.API.block.IDetectableMetadataResource;
-import micdoodle8.mods.galacticraft.API.block.IPlantableMetadataBlock;
+import micdoodle8.mods.galacticraft.api.block.IDetectableMetadataResource;
+import micdoodle8.mods.galacticraft.api.block.IPlantableMetadataBlock;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockAdvanced;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityDungeonSpawner;

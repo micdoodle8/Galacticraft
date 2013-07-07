@@ -1,4 +1,4 @@
-package micdoodle8.mods.galacticraft.API.world;
+package micdoodle8.mods.galacticraft.api.world;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

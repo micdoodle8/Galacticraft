@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
-import micdoodle8.mods.galacticraft.API.GalacticraftRegistry;
-import micdoodle8.mods.galacticraft.API.world.ICelestialBody;
-import micdoodle8.mods.galacticraft.API.world.ICelestialBodyRenderer;
+import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
+import micdoodle8.mods.galacticraft.api.world.ICelestialBody;
+import micdoodle8.mods.galacticraft.api.world.ICelestialBodyRenderer;
 import net.minecraft.client.gui.GuiSlot;
 import net.minecraft.client.renderer.Tessellator;
 import org.lwjgl.opengl.GL11;

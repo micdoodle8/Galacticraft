@@ -2,8 +2,10 @@ package micdoodle8.mods.galacticraft.core.entities;
 
 import java.util.ArrayList;
 import java.util.List;
-import micdoodle8.mods.galacticraft.API.entity.IDockable;
-import micdoodle8.mods.galacticraft.API.tile.IFuelDock;
+import micdoodle8.mods.galacticraft.api.entity.ICargoEntity.EnumCargoLoadingState;
+import micdoodle8.mods.galacticraft.api.entity.ICargoEntity.RemovalResult;
+import micdoodle8.mods.galacticraft.api.entity.IDockable;
+import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore.GCKeyHandler;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;

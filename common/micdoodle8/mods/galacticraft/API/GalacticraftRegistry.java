@@ -1,14 +1,14 @@
-package micdoodle8.mods.galacticraft.API;
+package micdoodle8.mods.galacticraft.api;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import micdoodle8.mods.galacticraft.API.recipe.INasaWorkbenchRecipe;
-import micdoodle8.mods.galacticraft.API.world.ICelestialBody;
-import micdoodle8.mods.galacticraft.API.world.IGalaxy;
-import micdoodle8.mods.galacticraft.API.world.ITeleportType;
-import micdoodle8.mods.galacticraft.API.world.SpaceStationType;
+import micdoodle8.mods.galacticraft.api.recipe.INasaWorkbenchRecipe;
+import micdoodle8.mods.galacticraft.api.world.ICelestialBody;
+import micdoodle8.mods.galacticraft.api.world.IGalaxy;
+import micdoodle8.mods.galacticraft.api.world.ITeleportType;
+import micdoodle8.mods.galacticraft.api.world.SpaceStationType;
 import net.minecraft.world.WorldProvider;
 
 public class GalacticraftRegistry

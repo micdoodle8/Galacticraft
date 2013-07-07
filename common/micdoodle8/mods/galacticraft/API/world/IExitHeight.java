@@ -1,4 +1,4 @@
-package micdoodle8.mods.galacticraft.API.world;
+package micdoodle8.mods.galacticraft.api.world;
 
 /**
  * For world providers where you would like to specify height for spacecraft to

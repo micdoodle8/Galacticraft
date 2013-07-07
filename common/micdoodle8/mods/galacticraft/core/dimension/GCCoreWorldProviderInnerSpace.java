@@ -1,8 +1,8 @@
 //package micdoodle8.mods.galacticraft.core.dimension;
 //
-//import micdoodle8.mods.galacticraft.API.IExitHeight;
-//import micdoodle8.mods.galacticraft.API.IGalacticraftWorldProvider;
-//import micdoodle8.mods.galacticraft.API.ISolarLevel;
+//import micdoodle8.mods.galacticraft.api.IExitHeight;
+//import micdoodle8.mods.galacticraft.api.IGalacticraftWorldProvider;
+//import micdoodle8.mods.galacticraft.api.ISolarLevel;
 //import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 //import micdoodle8.mods.galacticraft.core.wgen.GCCoreChunkProviderInnerSpace;
 //import net.minecraft.entity.Entity;

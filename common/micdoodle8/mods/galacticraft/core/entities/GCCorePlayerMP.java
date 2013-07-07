@@ -6,9 +6,9 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map.Entry;
-import micdoodle8.mods.galacticraft.API.recipe.ISchematicPage;
-import micdoodle8.mods.galacticraft.API.recipe.SchematicRegistry;
-import micdoodle8.mods.galacticraft.API.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
+import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GCCoreDamageSource;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -93,7 +93,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
     private boolean hasOpenedPlanetSelectionGui = false;
 
     public int chestSpawnCooldown;
-    public micdoodle8.mods.galacticraft.API.vector.Vector.Vector3 chestSpawnVector;
+    public micdoodle8.mods.galacticraft.api.vector.Vector.Vector3 chestSpawnVector;
 
     public int teleportCooldown;
 

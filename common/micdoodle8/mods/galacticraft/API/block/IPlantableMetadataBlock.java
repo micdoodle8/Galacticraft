@@ -1,4 +1,4 @@
-package micdoodle8.mods.galacticraft.API.block;
+package micdoodle8.mods.galacticraft.api.block;
 
 /**
  * Extend this block to allow planting of saplings on it. Requires

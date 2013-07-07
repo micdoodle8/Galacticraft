@@ -4,7 +4,7 @@ import mekanism.api.EnumGas;
 import mekanism.api.GasTransmission;
 import mekanism.api.IGasAcceptor;
 import mekanism.api.ITubeConnection;
-import micdoodle8.mods.galacticraft.API.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.block.Block;

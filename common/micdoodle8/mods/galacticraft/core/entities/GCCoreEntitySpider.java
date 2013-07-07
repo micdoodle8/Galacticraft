@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
-import micdoodle8.mods.galacticraft.API.entity.IEntityBreathable;
+import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingData;
 import net.minecraft.entity.EnumCreatureAttribute;

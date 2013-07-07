@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.client;
 
 import java.util.ArrayList;
 import java.util.Random;
-import micdoodle8.mods.galacticraft.API.recipe.ISchematicPage;
+import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;

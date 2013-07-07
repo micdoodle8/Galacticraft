@@ -2,8 +2,8 @@ package micdoodle8.mods.galacticraft.moon;
 
 import java.io.File;
 import java.util.EnumSet;
-import micdoodle8.mods.galacticraft.API.GalacticraftRegistry;
-import micdoodle8.mods.galacticraft.API.world.IMoon;
+import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
+import micdoodle8.mods.galacticraft.api.world.IMoon;
 import micdoodle8.mods.galacticraft.core.GCCoreCreativeTab;
 import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
 import micdoodle8.mods.galacticraft.moon.dimension.GCMoonTeleportType;

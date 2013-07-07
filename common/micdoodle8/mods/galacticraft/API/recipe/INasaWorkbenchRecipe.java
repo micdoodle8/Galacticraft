@@ -1,4 +1,4 @@
-package micdoodle8.mods.galacticraft.API.recipe;
+package micdoodle8.mods.galacticraft.api.recipe;
 
 import java.util.HashMap;
 import net.minecraft.inventory.IInventory;

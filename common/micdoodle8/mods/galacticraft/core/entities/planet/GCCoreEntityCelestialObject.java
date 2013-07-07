@@ -5,8 +5,8 @@
 //import java.util.List;
 //import java.util.Map;
 //
-//import micdoodle8.mods.galacticraft.API.IGalaxy;
-//import micdoodle8.mods.galacticraft.API.IPlanetSlotRenderer;
+//import micdoodle8.mods.galacticraft.api.IGalaxy;
+//import micdoodle8.mods.galacticraft.api.IPlanetSlotRenderer;
 //import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 //import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 //import net.minecraft.entity.Entity;

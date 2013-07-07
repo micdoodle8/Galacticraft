@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
-import micdoodle8.mods.galacticraft.API.recipe.ISchematicResultPage;
-import micdoodle8.mods.galacticraft.API.recipe.SchematicRegistry;
+import micdoodle8.mods.galacticraft.api.recipe.ISchematicResultPage;
+import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerRocketBench;
 import net.minecraft.client.gui.GuiButton;

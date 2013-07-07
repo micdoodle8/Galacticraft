@@ -1,4 +1,4 @@
-package micdoodle8.mods.galacticraft.API.entity;
+package micdoodle8.mods.galacticraft.api.entity;
 
 import net.minecraft.item.ItemStack;
 

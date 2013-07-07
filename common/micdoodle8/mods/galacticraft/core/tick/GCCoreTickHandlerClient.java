@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.core.tick;
 
 import java.util.EnumSet;
-import micdoodle8.mods.galacticraft.API.entity.ISpaceship;
-import micdoodle8.mods.galacticraft.API.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.api.entity.ISpaceship;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;

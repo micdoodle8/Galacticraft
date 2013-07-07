@@ -1,4 +1,4 @@
-package micdoodle8.mods.galacticraft.API.tile;
+package micdoodle8.mods.galacticraft.api.tile;
 
 /**
  * Currently only used internally when enable/disable buttons are clicked

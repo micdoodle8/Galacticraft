@@ -1,4 +1,4 @@
-package micdoodle8.mods.galacticraft.API.world;
+package micdoodle8.mods.galacticraft.api.world;
 
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.resources.ResourceLocation;

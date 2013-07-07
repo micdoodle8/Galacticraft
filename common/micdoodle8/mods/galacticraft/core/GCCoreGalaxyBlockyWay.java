@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core;
 
-import micdoodle8.mods.galacticraft.API.vector.Vector.Vector3;
-import micdoodle8.mods.galacticraft.API.world.IGalaxy;
+import micdoodle8.mods.galacticraft.api.vector.Vector.Vector3;
+import micdoodle8.mods.galacticraft.api.world.IGalaxy;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class GCCoreGalaxyBlockyWay implements IGalaxy

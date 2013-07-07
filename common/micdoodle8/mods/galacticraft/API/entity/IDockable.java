@@ -1,6 +1,6 @@
-package micdoodle8.mods.galacticraft.API.entity;
+package micdoodle8.mods.galacticraft.api.entity;
 
-import micdoodle8.mods.galacticraft.API.tile.IFuelDock;
+import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
 
 public interface IDockable extends IFuelable, ICargoEntity
 {

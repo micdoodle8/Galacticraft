@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.List;
-import micdoodle8.mods.galacticraft.API.recipe.SchematicRegistry;
+import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAdvancedCraftingTable;
 import net.minecraft.block.Block;

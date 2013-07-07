@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.core.client.model;
 
 import java.util.List;
-import micdoodle8.mods.galacticraft.API.item.IHoldableItem;
-import micdoodle8.mods.galacticraft.API.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.client.GCCorePlayerSP;

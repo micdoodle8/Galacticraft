@@ -1,6 +1,6 @@
-package micdoodle8.mods.galacticraft.API.world;
+package micdoodle8.mods.galacticraft.api.world;
 
-import micdoodle8.mods.galacticraft.API.recipe.SpaceStationRecipe;
+import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
 
 /**
  * Currently only used internally, not guaranteed to work.
