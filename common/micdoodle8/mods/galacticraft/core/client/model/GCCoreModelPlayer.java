@@ -712,8 +712,6 @@ public class GCCoreModelPlayer extends ModelBiped
 
             if (player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() instanceof IHoldableItem)
             {
-                FMLLog.info("done");
-                
                 IHoldableItem holdableItem = ((IHoldableItem) player.inventory.getCurrentItem().getItem());
                 
                 if (holdableItem.shouldHoldLeftHandUp(player))
