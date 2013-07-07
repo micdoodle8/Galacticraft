@@ -15,6 +15,7 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoPad;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.moon.GCMoonConfigManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -25,6 +26,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldProvider;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -166,14 +168,6 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
                 this.motionY -= Math.abs(Math.sin(this.timeSinceLaunch / 1000)) / 20;
             }
         }
-    }
-
-    @Override
-    public ArrayList<Integer> getListOfPossibleDimension(ArrayList<Integer> list)
-    {
-        super.getListOfPossibleDimension(list);
-        list.add(GCMoonConfigManager.dimensionIDMoon);
-        return list;
     }
 
     @Override
@@ -615,5 +609,11 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
     public boolean canBeTargeted(Object entity)
     {
         return this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase() && this.timeSinceLaunch > 50;
+    }
+    
+    @Override
+    public int getRocketTier()
+    {
+        return 1;
     }
 }

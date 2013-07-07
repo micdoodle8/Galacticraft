@@ -178,15 +178,6 @@ public class GCCoreEntityRocketT2 extends EntitySpaceshipBase implements IInvent
     }
 
     @Override
-    public ArrayList<Integer> getListOfPossibleDimension(ArrayList<Integer> list)
-    {
-        super.getListOfPossibleDimension(list);
-        list.add(GCMoonConfigManager.dimensionIDMoon);
-        list.add(GCMarsConfigManager.dimensionIDMars);
-        return list;
-    }
-
-    @Override
     public void readNetworkedData(ByteArrayDataInput dataStream)
     {
         super.readNetworkedData(dataStream);
@@ -631,5 +622,11 @@ public class GCCoreEntityRocketT2 extends EntitySpaceshipBase implements IInvent
     public boolean canBeTargeted(Object entity)
     {
         return this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase() && this.timeSinceLaunch > 50;
+    }
+    
+    @Override
+    public int getRocketTier()
+    {
+        return 2;
     }
 }

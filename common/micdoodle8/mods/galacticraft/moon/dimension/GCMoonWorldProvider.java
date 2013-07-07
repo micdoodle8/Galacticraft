@@ -248,4 +248,10 @@ public class GCMoonWorldProvider extends WorldProvider implements IGalacticraftW
     {
         return 1.4D;
     }
+
+    @Override
+    public boolean canSpaceshipTierPass(int tier)
+    {
+        return tier > 0;
+    }
 }

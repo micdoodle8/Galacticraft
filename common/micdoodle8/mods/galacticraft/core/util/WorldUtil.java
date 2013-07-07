@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.util;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -292,16 +293,70 @@ public class WorldUtil
         return amount;
     }
 
-    public static HashMap getArrayOfPossibleDimensions(Integer[] ids)
+    public static List<Integer> getPossibleDimensionsForSpaceshipTier(int tier)
+    {
+        List<Integer> temp = new ArrayList<Integer>();
+        
+        temp.add(0);
+
+        for (Integer element : WorldUtil.registeredPlanets)
+        {
+            WorldProvider provider = WorldProvider.getProviderForDimension(element);
+            
+            if (provider != null)
+            {
+                if (provider instanceof IGalacticraftWorldProvider)
+                {
+                    if (((IGalacticraftWorldProvider) provider).canSpaceshipTierPass(tier))
+                    {
+                        temp.add(element);
+                    }
+                }
+                else
+                {
+                    temp.add(element);
+                }
+            }
+        }
+
+        for (Integer element : WorldUtil.registeredSpaceStations)
+        {
+            WorldProvider provider = WorldProvider.getProviderForDimension(element);
+            
+            if (provider != null)
+            {
+                if (provider instanceof IGalacticraftWorldProvider)
+                {
+                    if (((IGalacticraftWorldProvider) provider).canSpaceshipTierPass(tier))
+                    {
+                        temp.add(element);
+                    }
+                }
+                else
+                {
+                    temp.add(element);
+                }
+            }
+        }
+        
+        return temp;
+    }
+
+    public static HashMap<String, Integer> getArrayOfPossibleDimensions(Integer[] ids)
     {
         return WorldUtil.getArrayOfPossibleDimensions(ids, null);
     }
 
-    public static HashMap getArrayOfPossibleDimensions(Integer[] ids, GCCorePlayerMP playerBase)
+    public static HashMap<String, Integer> getArrayOfPossibleDimensions(Integer[] ids, GCCorePlayerMP playerBase)
     {
-        final HashMap map = new HashMap();
+        return getArrayOfPossibleDimensions(Arrays.asList(ids), playerBase);
+    }
 
-        for (final Integer id : ids)
+    public static HashMap<String, Integer> getArrayOfPossibleDimensions(List<Integer> ids, GCCorePlayerMP playerBase)
+    {
+        final HashMap<String, Integer> map = new HashMap<String, Integer>();
+
+        for (Integer id : ids)
         {
             if (WorldProvider.getProviderForDimension(id) != null)
             {
@@ -499,6 +554,9 @@ public class WorldUtil
         }
     }
 
+    /**
+     * This does NOT take into account if player is using the correct rocket, this is just a total list of all space dimensions.
+     */
     public static Integer[] getArrayOfPossibleDimensions()
     {
         final ArrayList<Integer> temp = new ArrayList<Integer>();

@@ -3,10 +3,9 @@ package micdoodle8.mods.galacticraft.core.entities;
 import icbm.api.IMissileLockable;
 import icbm.api.sentry.IAATarget;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.Map.Entry;
 import micdoodle8.mods.galacticraft.API.entity.IDockable;
 import micdoodle8.mods.galacticraft.API.entity.IRocketType;
 import micdoodle8.mods.galacticraft.API.entity.ISpaceship;
@@ -20,7 +19,6 @@ import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLandingPadFull;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFuelLoader;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
-import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -40,7 +38,6 @@ import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.IPacketReceiver;
 import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -628,40 +625,27 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
     {
         if (this.riddenByEntity != null)
         {
-            if (this.riddenByEntity instanceof EntityPlayerMP)
+            if (this.riddenByEntity instanceof GCCorePlayerMP)
             {
-                final GCCorePlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer((EntityPlayerMP) this.riddenByEntity);
+                GCCorePlayerMP player = (GCCorePlayerMP) this.riddenByEntity;
 
-                final EntityPlayerMP entityplayermp = (EntityPlayerMP) this.riddenByEntity;
-
-                final Integer[] ids = WorldUtil.getArrayOfPossibleDimensions();
-
-                final Set set = WorldUtil.getArrayOfPossibleDimensions(ids, playerBase).entrySet();
-
-                final Iterator i = set.iterator();
+                HashMap<String, Integer> map = WorldUtil.getArrayOfPossibleDimensions(WorldUtil.getPossibleDimensionsForSpaceshipTier(this.getRocketTier()), player);
 
                 String temp = "";
-
-                for (int k = 0; i.hasNext(); k++)
+                int count = 0;
+                
+                for (Entry<String, Integer> entry : map.entrySet())
                 {
-                    final Map.Entry entry = (Map.Entry) i.next();
-                    temp = k == 0 ? temp.concat(String.valueOf(entry.getKey())) : temp.concat("." + String.valueOf(entry.getKey()));
+                    temp = temp.concat(entry.getKey() + (count < map.entrySet().size() - 1 ? "." : ""));
+                    count++;
                 }
+                
+                player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 2, new Object[] { player.username, temp }));
+                player.spaceshipTier = this.getRocketTier();
+                player.setUsingPlanetGui();
 
-                final Object[] toSend = { entityplayermp.username, temp };
-                FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(entityplayermp.username).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 2, toSend));
-
-                if (playerBase != null)
-                {
-                    playerBase.setUsingPlanetGui();
-                }
-
-                this.onTeleport(entityplayermp);
-
-                if (this.riddenByEntity != null)
-                {
-                    this.riddenByEntity.mountEntity(this);
-                }
+                this.onTeleport(player);
+                player.mountEntity(this);
 
                 if (!this.isDead)
                 {
@@ -669,12 +653,6 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
                 }
             }
         }
-    }
-
-    public ArrayList<Integer> getListOfPossibleDimension(ArrayList<Integer> list)
-    {
-        list.add(0);
-        return list;
     }
 
     public void onLaunch()

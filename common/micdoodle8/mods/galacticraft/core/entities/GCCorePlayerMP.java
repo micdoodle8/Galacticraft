@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.entities;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
@@ -64,6 +65,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
     public float astronomyPoints;
 
+    public int spaceshipTier = 1;
     public ItemStack[] rocketStacks = new ItemStack[9];
     public int rocketType;
     public int fuelDamage;
@@ -395,45 +397,36 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
         if (!this.hasOpenedPlanetSelectionGui && this.openPlanetSelectionGuiCooldown == 1)
         {
-            final Integer[] ids = WorldUtil.getArrayOfPossibleDimensions();
-
-            final Set set = WorldUtil.getArrayOfPossibleDimensions(ids, this).entrySet();
-            final Iterator i = set.iterator();
+            HashMap<String, Integer> map = WorldUtil.getArrayOfPossibleDimensions(WorldUtil.getPossibleDimensionsForSpaceshipTier(this.spaceshipTier), this);
 
             String temp = "";
-
-            for (int k = 0; i.hasNext(); k++)
+            int count = 0;
+            
+            for (Entry<String, Integer> entry : map.entrySet())
             {
-                final Map.Entry entry = (Map.Entry) i.next();
-                temp = k == 0 ? temp.concat(String.valueOf(entry.getKey())) : temp.concat("." + String.valueOf(entry.getKey()));
+                temp = temp.concat(entry.getKey() + (count < map.entrySet().size() - 1 ? "." : ""));
+                count++;
             }
-
-            final Object[] toSend = { this.username, temp };
-
-            this.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 2, toSend));
-
+            
+            this.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 2, new Object[] {this.username, temp}));
             this.setUsingPlanetGui();
             this.hasOpenedPlanetSelectionGui = true;
         }
 
         if (this.usingPlanetSelectionGui)
         {
-            final Integer[] ids = WorldUtil.getArrayOfPossibleDimensions();
-
-            final Set set = WorldUtil.getArrayOfPossibleDimensions(ids, this).entrySet();
-            final Iterator i = set.iterator();
+            HashMap<String, Integer> map = WorldUtil.getArrayOfPossibleDimensions(WorldUtil.getPossibleDimensionsForSpaceshipTier(this.spaceshipTier), this);
 
             String temp = "";
-
-            for (int k = 0; i.hasNext(); k++)
+            int count = 0;
+            
+            for (Entry<String, Integer> entry : map.entrySet())
             {
-                final Map.Entry entry = (Map.Entry) i.next();
-                temp = k == 0 ? temp.concat(String.valueOf(entry.getKey())) : temp.concat("." + String.valueOf(entry.getKey()));
+                temp = temp.concat(entry.getKey() + (count < map.entrySet().size() - 1 ? "." : ""));
+                count++;
             }
-
-            final Object[] toSend = { this.username, temp };
-
-            this.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 2, toSend));
+            
+            this.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 2, new Object[] {this.username, temp}));
         }
 
         if (this.damageCounter > 0)
@@ -934,6 +927,11 @@ public class GCCorePlayerMP extends EntityPlayerMP
             final NBTTagList var2 = nbt.getTagList("InventoryTankRefill");
             ((GCCoreInventoryPlayer) this.inventory).readFromNBTOld(var2);
         }
+        
+        if (nbt.hasKey("SpaceshipTier"))
+        {
+            this.spaceshipTier = nbt.getInteger("SpaceshipTier");
+        }
 
         this.astronomyPoints = nbt.getFloat("AstronomyPointsNum");
         this.astronomyPointsLevel = nbt.getInteger("AstronomyPointsLevel");
@@ -987,6 +985,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
         nbt.setTag("Schematics", SchematicRegistry.writeToNBT(this, new NBTTagList()));
 
         nbt.setInteger("rocketStacksLength", this.rocketStacks.length);
+        nbt.setInteger("SpaceshipTier", this.spaceshipTier);
 
         final NBTTagList var2 = new NBTTagList();
 
