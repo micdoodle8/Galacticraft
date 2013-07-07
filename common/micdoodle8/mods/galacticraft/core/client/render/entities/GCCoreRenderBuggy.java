@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core.client.render.entities;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelBuggy;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityBuggy;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityLander;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.resources.ResourceLocation;
 import net.minecraft.entity.Entity;
@@ -30,7 +29,7 @@ public class GCCoreRenderBuggy extends Render
         this.modelSpaceship = new GCCoreModelBuggy();
     }
 
-    protected ResourceLocation func_110779_a(GCCoreEntityLander par1EntityArrow)
+    protected ResourceLocation func_110779_a(GCCoreEntityBuggy par1EntityArrow)
     {
         return GCCoreRenderBuggy.buggyTexture;
     }
@@ -38,7 +37,7 @@ public class GCCoreRenderBuggy extends Render
     @Override
     protected ResourceLocation func_110775_a(Entity par1Entity)
     {
-        return this.func_110779_a((GCCoreEntityLander) par1Entity);
+        return this.func_110779_a((GCCoreEntityBuggy) par1Entity);
     }
 
     public void renderSpaceship(GCCoreEntityBuggy entity, double par2, double par4, double par6, float par8, float par9)
