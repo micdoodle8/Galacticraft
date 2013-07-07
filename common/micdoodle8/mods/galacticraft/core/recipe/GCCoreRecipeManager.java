@@ -24,6 +24,7 @@ import thermalexpansion.api.item.ItemRegistry;
 
 public class GCCoreRecipeManager
 {
+    
     public static void loadRecipes()
     {
         if (GCCoreCompatibilityManager.isTELoaded() && GCCoreConfigManager.useRecipesTE)
@@ -50,6 +51,139 @@ public class GCCoreRecipeManager
         {
             GCCoreRecipeManager.addBasicComponentsCraftingRecipes();
         }
+        
+        GCCoreRecipeManager.addUniversalRecipes();
+    }
+    
+    private static void addUniversalRecipes()
+    {
+        HashMap<Integer, ItemStack> input = new HashMap<Integer, ItemStack>();
+        input.put(1, new ItemStack(GCCoreItems.rocketNoseCone));
+        input.put(2, new ItemStack(GCCoreItems.heavyPlating));
+        input.put(3, new ItemStack(GCCoreItems.heavyPlating));
+        input.put(4, new ItemStack(GCCoreItems.heavyPlating));
+        input.put(5, new ItemStack(GCCoreItems.heavyPlating));
+        input.put(6, new ItemStack(GCCoreItems.heavyPlating));
+        input.put(7, new ItemStack(GCCoreItems.heavyPlating));
+        input.put(8, new ItemStack(GCCoreItems.heavyPlating));
+        input.put(9, new ItemStack(GCCoreItems.heavyPlating));
+        input.put(10, new ItemStack(GCCoreItems.rocketFins));
+        input.put(11, new ItemStack(GCCoreItems.rocketFins));
+        input.put(12, new ItemStack(GCCoreItems.rocketEngine));
+        input.put(13, new ItemStack(GCCoreItems.rocketFins));
+        input.put(14, new ItemStack(GCCoreItems.rocketFins));
+        input.put(15, null);
+        input.put(16, null);
+        input.put(17, null);
+        RecipeUtil.addRocketBenchRecipe(new ItemStack(GCCoreItems.spaceship, 1, 0), input);
+
+        HashMap<Integer, ItemStack> input2 = new HashMap<Integer, ItemStack>(input);
+        input2.put(15, new ItemStack(Block.chest));
+        input2.put(16, null);
+        input2.put(17, null);
+        RecipeUtil.addRocketBenchRecipe(new ItemStack(GCCoreItems.spaceship, 1, 1), input2);
+
+        input2 = new HashMap<Integer, ItemStack>(input);
+        input2.put(15, null);
+        input2.put(16, new ItemStack(Block.chest));
+        input2.put(17, null);
+        RecipeUtil.addRocketBenchRecipe(new ItemStack(GCCoreItems.spaceship, 1, 1), input2);
+
+        input2 = new HashMap<Integer, ItemStack>(input);
+        input2.put(15, null);
+        input2.put(16, null);
+        input2.put(17, new ItemStack(Block.chest));
+        RecipeUtil.addRocketBenchRecipe(new ItemStack(GCCoreItems.spaceship, 1, 1), input2);
+
+        input2 = new HashMap<Integer, ItemStack>(input);
+        input2.put(15, new ItemStack(Block.chest));
+        input2.put(16, new ItemStack(Block.chest));
+        input2.put(17, null);
+        RecipeUtil.addRocketBenchRecipe(new ItemStack(GCCoreItems.spaceship, 1, 2), input2);
+
+        input2 = new HashMap<Integer, ItemStack>(input);
+        input2.put(15, new ItemStack(Block.chest));
+        input2.put(16, null);
+        input2.put(17, new ItemStack(Block.chest));
+        RecipeUtil.addRocketBenchRecipe(new ItemStack(GCCoreItems.spaceship, 1, 2), input2);
+
+        input2 = new HashMap<Integer, ItemStack>(input);
+        input2.put(15, null);
+        input2.put(16, new ItemStack(Block.chest));
+        input2.put(17, new ItemStack(Block.chest));
+        RecipeUtil.addRocketBenchRecipe(new ItemStack(GCCoreItems.spaceship, 1, 2), input2);
+
+        input2 = new HashMap<Integer, ItemStack>(input);
+        input2.put(15, new ItemStack(Block.chest));
+        input2.put(16, new ItemStack(Block.chest));
+        input2.put(17, new ItemStack(Block.chest));
+        RecipeUtil.addRocketBenchRecipe(new ItemStack(GCCoreItems.spaceship, 1, 3), input2);
+        
+        //
+        
+        input = new HashMap<Integer, ItemStack>();
+        input.put(1, new ItemStack(GCCoreItems.heavyPlating));
+        input.put(2, new ItemStack(GCCoreItems.heavyPlating));
+        input.put(3, new ItemStack(GCCoreItems.heavyPlating));
+        input.put(4, new ItemStack(GCCoreItems.heavyPlating));
+        input.put(5, new ItemStack(GCCoreItems.heavyPlating));
+        input.put(6, new ItemStack(GCCoreItems.buggyMaterial, 1, 1));
+        input.put(7, new ItemStack(GCCoreItems.heavyPlating));
+        input.put(8, new ItemStack(GCCoreItems.heavyPlating));
+        input.put(9, new ItemStack(GCCoreItems.heavyPlating));
+        input.put(10, new ItemStack(GCCoreItems.heavyPlating));
+        input.put(11, new ItemStack(GCCoreItems.heavyPlating));
+        input.put(12, new ItemStack(GCCoreItems.heavyPlating));
+        input.put(13, new ItemStack(GCCoreItems.buggyMaterial));
+        input.put(14, new ItemStack(GCCoreItems.buggyMaterial));
+        input.put(15, new ItemStack(GCCoreItems.buggyMaterial));
+        input.put(16, new ItemStack(GCCoreItems.buggyMaterial));
+        input.put(17, null);
+        input.put(18, null);
+        input.put(19, null);
+        RecipeUtil.addBuggyBenchRecipe(new ItemStack(GCCoreItems.buggy, 1, 0), input);
+
+        input2 = new HashMap<Integer, ItemStack>(input);
+        input2.put(17, new ItemStack(GCCoreItems.buggyMaterial, 1, 2));
+        input2.put(18, null);
+        input2.put(19, null);
+        RecipeUtil.addBuggyBenchRecipe(new ItemStack(GCCoreItems.buggy, 1, 1), input2);
+
+        input2 = new HashMap<Integer, ItemStack>(input);
+        input2.put(17, null);
+        input2.put(18, new ItemStack(GCCoreItems.buggyMaterial, 1, 2));
+        input2.put(19, null);
+        RecipeUtil.addBuggyBenchRecipe(new ItemStack(GCCoreItems.buggy, 1, 1), input2);
+
+        input2 = new HashMap<Integer, ItemStack>(input);
+        input2.put(17, null);
+        input2.put(18, null);
+        input2.put(19, new ItemStack(GCCoreItems.buggyMaterial, 1, 2));
+        RecipeUtil.addBuggyBenchRecipe(new ItemStack(GCCoreItems.buggy, 1, 1), input2);
+
+        input2 = new HashMap<Integer, ItemStack>(input);
+        input2.put(17, new ItemStack(GCCoreItems.buggyMaterial, 1, 2));
+        input2.put(18, new ItemStack(GCCoreItems.buggyMaterial, 1, 2));
+        input2.put(19, null);
+        RecipeUtil.addBuggyBenchRecipe(new ItemStack(GCCoreItems.buggy, 1, 2), input2);
+
+        input2 = new HashMap<Integer, ItemStack>(input);
+        input2.put(17, new ItemStack(GCCoreItems.buggyMaterial, 1, 2));
+        input2.put(18, null);
+        input2.put(19, new ItemStack(GCCoreItems.buggyMaterial, 1, 2));
+        RecipeUtil.addBuggyBenchRecipe(new ItemStack(GCCoreItems.buggy, 1, 2), input2);
+
+        input2 = new HashMap<Integer, ItemStack>(input);
+        input2.put(17, null);
+        input2.put(18, new ItemStack(GCCoreItems.buggyMaterial, 1, 2));
+        input2.put(19, new ItemStack(GCCoreItems.buggyMaterial, 1, 2));
+        RecipeUtil.addBuggyBenchRecipe(new ItemStack(GCCoreItems.buggy, 1, 2), input2);
+
+        input2 = new HashMap<Integer, ItemStack>(input);
+        input2.put(17, new ItemStack(GCCoreItems.buggyMaterial, 1, 2));
+        input2.put(18, new ItemStack(GCCoreItems.buggyMaterial, 1, 2));
+        input2.put(19, new ItemStack(GCCoreItems.buggyMaterial, 1, 2));
+        RecipeUtil.addBuggyBenchRecipe(new ItemStack(GCCoreItems.buggy, 1, 3), input2);
     }
 
     private static void addGregTechCraftingRecipes()

@@ -2,7 +2,9 @@ package micdoodle8.mods.galacticraft.API;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import micdoodle8.mods.galacticraft.API.recipe.INasaWorkbenchRecipe;
 import micdoodle8.mods.galacticraft.API.world.ICelestialBody;
 import micdoodle8.mods.galacticraft.API.world.IGalaxy;
 import micdoodle8.mods.galacticraft.API.world.ITeleportType;
@@ -13,8 +15,10 @@ public class GalacticraftRegistry
 {
     private static Map<Class<? extends WorldProvider>, ITeleportType> teleportTypeMap = new HashMap<Class<? extends WorldProvider>, ITeleportType>();
     private static Map<Integer, SpaceStationType> spaceStations = new HashMap<Integer, SpaceStationType>();
-    private static ArrayList<ICelestialBody> celestialBodies = new ArrayList<ICelestialBody>();
-    private static ArrayList<IGalaxy> galaxies = new ArrayList<IGalaxy>();
+    private static List<ICelestialBody> celestialBodies = new ArrayList<ICelestialBody>();
+    private static List<IGalaxy> galaxies = new ArrayList<IGalaxy>();
+    private static List<INasaWorkbenchRecipe> rocketBenchRecipes = new ArrayList<INasaWorkbenchRecipe>();
+    private static List<INasaWorkbenchRecipe> buggyBenchRecipes = new ArrayList<INasaWorkbenchRecipe>();
 
     /**
      * Register a new Teleport type for the world provider passed
@@ -59,6 +63,16 @@ public class GalacticraftRegistry
             GalacticraftRegistry.galaxies.add(galaxy);
         }
     }
+    
+    public static void addT1RocketRecipe(INasaWorkbenchRecipe recipe)
+    {
+        GalacticraftRegistry.rocketBenchRecipes.add(recipe);
+    }
+    
+    public static void addMoonBuggyRecipe(INasaWorkbenchRecipe recipe)
+    {
+        GalacticraftRegistry.buggyBenchRecipes.add(recipe);
+    }
 
     public static ITeleportType getTeleportTypeForDimension(Class<? extends WorldProvider> clazz)
     {
@@ -80,13 +94,23 @@ public class GalacticraftRegistry
         return GalacticraftRegistry.spaceStations;
     }
 
-    public static ArrayList<ICelestialBody> getCelestialBodies()
+    public static List<ICelestialBody> getCelestialBodies()
     {
         return GalacticraftRegistry.celestialBodies;
     }
 
-    public static ArrayList<IGalaxy> getGalaxyList()
+    public static List<IGalaxy> getGalaxyList()
     {
         return GalacticraftRegistry.galaxies;
+    }
+
+    public static List<INasaWorkbenchRecipe> getRocketT1Recipes()
+    {
+        return GalacticraftRegistry.rocketBenchRecipes;
+    }
+
+    public static List<INasaWorkbenchRecipe> getBuggyBenchRecipes()
+    {
+        return GalacticraftRegistry.buggyBenchRecipes;
     }
 }

@@ -2,12 +2,13 @@ package micdoodle8.mods.galacticraft.core.util;
 
 import gregtechmod.api.GregTech_API;
 import ic2.api.item.Items;
+import java.util.HashMap;
+import micdoodle8.mods.galacticraft.API.GalacticraftRegistry;
+import micdoodle8.mods.galacticraft.API.recipe.INasaWorkbenchRecipe;
 import micdoodle8.mods.galacticraft.core.GCLog;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryBuggyBench;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryRocketBench;
-import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockChest;
+import micdoodle8.mods.galacticraft.core.recipe.GCCoreNasaWorkbenchRecipe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraftforge.oredict.ShapedOreRecipe;
@@ -16,54 +17,11 @@ public class RecipeUtil
 {
     public static ItemStack findMatchingBuggy(GCCoreInventoryBuggyBench benchStacks)
     {
-        final ItemStack[] slots = new ItemStack[benchStacks.getSizeInventory()];
-
-        for (int i = 0; i < benchStacks.getSizeInventory(); i++)
+        for (INasaWorkbenchRecipe recipe : GalacticraftRegistry.getBuggyBenchRecipes())
         {
-            slots[i] = benchStacks.getStackInSlot(i + 1);
-        }
-
-        if (slots[0] != null && slots[1] != null && slots[2] != null && slots[3] != null && slots[4] != null && slots[5] != null && slots[6] != null && slots[7] != null && slots[8] != null && slots[9] != null && slots[10] != null && slots[11] != null && slots[12] != null && slots[13] != null && slots[14] != null && slots[15] != null)
-        {
-            if (slots[5].getItem().itemID == GCCoreItems.buggyMaterial.itemID && slots[5].getItemDamage() == 1)
+            if (recipe.matches(benchStacks))
             {
-                int platesInPlace = 0;
-
-                for (int i = 0; i < 12; i++)
-                {
-                    if (i != 5 && slots[i].getItem().itemID == GCCoreItems.heavyPlating.itemID)
-                    {
-                        platesInPlace++;
-                    }
-                }
-
-                if (platesInPlace == 11)
-                {
-                    int wheels = 0;
-
-                    for (int i = 12; i < 16; i++)
-                    {
-                        if (slots[i].getItem().itemID == GCCoreItems.buggyMaterial.itemID && slots[i].getItemDamage() == 0)
-                        {
-                            wheels++;
-                        }
-                    }
-
-                    if (wheels == 4)
-                    {
-                        int type = 0;
-
-                        for (int i = 16; i < 19; i++)
-                        {
-                            if (slots[i] != null && slots[i].getItem().itemID == GCCoreItems.buggyMaterial.itemID && slots[i].getItemDamage() == 2)
-                            {
-                                type++;
-                            }
-                        }
-
-                        return new ItemStack(GCCoreItems.buggy, 1, type);
-                    }
-                }
+                return recipe.getRecipeOutput();
             }
         }
 
@@ -72,69 +30,30 @@ public class RecipeUtil
 
     public static ItemStack findMatchingSpaceshipRecipe(GCCoreInventoryRocketBench inventoryRocketBench)
     {
-        final ItemStack[] slots = new ItemStack[18];
-
-        for (int i = 0; i < 18; i++)
+        for (INasaWorkbenchRecipe recipe : GalacticraftRegistry.getRocketT1Recipes())
         {
-            slots[i] = inventoryRocketBench.getStackInSlot(i + 1);
-        }
-
-        if (slots[0] != null && slots[1] != null && slots[2] != null && slots[3] != null && slots[4] != null && slots[5] != null && slots[6] != null && slots[7] != null && slots[8] != null && slots[9] != null && slots[10] != null && slots[11] != null && slots[12] != null && slots[13] != null)
-        {
-            if (slots[0].getItem().itemID == GCCoreItems.rocketNoseCone.itemID)
+            if (recipe.matches(inventoryRocketBench))
             {
-                int platesInPlace = 0;
-
-                for (int i = 1; i < 9; i++)
-                {
-                    if (slots[i].getItem().itemID == GCCoreItems.heavyPlating.itemID)
-                    {
-                        platesInPlace++;
-                    }
-                }
-
-                if (platesInPlace == 8)
-                {
-                    if (slots[9].getItem().itemID == GCCoreItems.rocketFins.itemID && slots[10].getItem().itemID == GCCoreItems.rocketFins.itemID)
-                    {
-                        if (slots[12].getItem().itemID == GCCoreItems.rocketFins.itemID && slots[13].getItem().itemID == GCCoreItems.rocketFins.itemID)
-                        {
-                            if (slots[11].getItem().itemID == GCCoreItems.rocketEngine.itemID)
-                            {
-                                int type = 0;
-
-                                for (int i = 14; i < 17; i++)
-                                {
-                                    if (slots[i] != null)
-                                    {
-                                        final int id = slots[i].itemID;
-
-                                        if (id < Block.blocksList.length)
-                                        {
-                                            final Block block = Block.blocksList[id];
-
-                                            if (block != null && block instanceof BlockChest)
-                                            {
-                                                type++;
-                                            }
-                                        }
-                                    }
-                                }
-
-                                return new ItemStack(GCCoreItems.spaceship, 1, type);
-                            }
-                        }
-                    }
-                }
+                return recipe.getRecipeOutput();
             }
         }
-
+        
         return null;
     }
 
     public static void addRecipe(ItemStack result, Object[] obj)
     {
         CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(result, obj));
+    }
+
+    public static void addRocketBenchRecipe(ItemStack result, HashMap<Integer, ItemStack> input)
+    {
+        GalacticraftRegistry.addT1RocketRecipe(new GCCoreNasaWorkbenchRecipe(result, input));
+    }
+
+    public static void addBuggyBenchRecipe(ItemStack result, HashMap<Integer, ItemStack> input)
+    {
+        GalacticraftRegistry.addMoonBuggyRecipe(new GCCoreNasaWorkbenchRecipe(result, input));
     }
 
     public static ItemStack getGregtechBlock(int index, int amount, int metadata)
