@@ -43,43 +43,40 @@ public class GCCoreEntityFlag extends Entity
     @Override
     public boolean attackEntityFrom(DamageSource par1DamageSource, float par2)
     {
-        // if (!this.worldObj.isRemote && !this.isDead && !this.indestructable)
-        // {
-        // if (this.isEntityInvulnerable())
-        // {
-        // return false;
-        // }
-        // else
-        // {
-        // this.setBeenAttacked();
-        // this.setDamage(this.getDamage() + par2 * 10);
-        //
-        // if (par1DamageSource.getEntity() instanceof EntityPlayer &&
-        // ((EntityPlayer)
-        // par1DamageSource.getEntity()).capabilities.isCreativeMode)
-        // {
-        // this.setDamage(100);
-        // }
-        //
-        // if (this.getDamage() > 40)
-        // {
-        // if (this.riddenByEntity != null)
-        // {
-        // this.riddenByEntity.mountEntity(this);
-        // }
-        //
-        // this.setDead();
-        // this.dropItemStack();
-        // }
-        //
-        // return true;
-        // }
-        // }
-        // else
-        // {
-        // return true;
-        // }
-        return true;
+        if (!this.worldObj.isRemote && !this.isDead && !this.indestructable)
+        {
+            if (this.isEntityInvulnerable())
+            {
+                return false;
+            }
+            else
+            {
+                this.setBeenAttacked();
+                this.setDamage(this.getDamage() + par2 * 10);
+
+                if (par1DamageSource.getEntity() instanceof EntityPlayer && ((EntityPlayer) par1DamageSource.getEntity()).capabilities.isCreativeMode)
+                {
+                    this.setDamage(100.0F);
+                }
+
+                if (this.getDamage() > 40)
+                {
+                    if (this.riddenByEntity != null)
+                    {
+                        this.riddenByEntity.mountEntity(this);
+                    }
+
+                    this.setDead();
+                    this.dropItemStack();
+                }
+
+                return true;
+            }
+        }
+        else
+        {
+            return true;
+        }
     }
 
     public void setDirection(float par1)
@@ -137,7 +134,7 @@ public class GCCoreEntityFlag extends Entity
     {
         this.dataWatcher.addObject(16, new Integer(-1));
         this.dataWatcher.addObject(17, new String(""));
-        this.dataWatcher.addObject(18, new Integer(0));
+        this.dataWatcher.addObject(18, new Float(0.0F));
     }
 
     @Override
@@ -220,13 +217,13 @@ public class GCCoreEntityFlag extends Entity
         return this.dataWatcher.getWatchableObjectString(17);
     }
 
-    public void setDamage(int par1)
+    public void setDamage(float par1)
     {
-        this.dataWatcher.updateObject(18, Integer.valueOf(par1));
+        this.dataWatcher.updateObject(18, Float.valueOf(par1));
     }
 
-    public int getDamage()
+    public float getDamage()
     {
-        return this.dataWatcher.getWatchableObjectInt(18);
+        return this.dataWatcher.func_111145_d(18);
     }
 }
