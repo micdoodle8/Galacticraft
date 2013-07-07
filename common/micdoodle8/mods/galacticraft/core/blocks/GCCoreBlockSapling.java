@@ -8,12 +8,21 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockSapling;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreBlockSapling extends BlockSapling
 {
     protected GCCoreBlockSapling(int par1)
     {
         super(par1);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    protected String func_111023_E()
+    {
+        return "sapling";
     }
 
     @Override
