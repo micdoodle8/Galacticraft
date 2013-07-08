@@ -580,6 +580,11 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
     {
         if (!this.worldObj.isRemote)
         {
+            if (this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase())
+            {
+                return false;
+            }
+            
             if (this.riddenByEntity != null && this.riddenByEntity instanceof GCCorePlayerMP)
             {
                 final Object[] toSend = { ((EntityPlayerMP) this.riddenByEntity).username };
