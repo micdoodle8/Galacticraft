@@ -400,7 +400,8 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
         if (Math.abs(this.motionX * this.motionZ) > 0.000001)
         {
             double d = this.motionX * this.motionX + this.motionZ * this.motionZ;
-            if (!this.worldObj.isRemote && d != 0 && this.ticks % MathHelper.floor_double(2 / d) == 0)
+            
+            if (d != 0 && !this.worldObj.isRemote && d != 0 && this.ticks % MathHelper.floor_double(2 / d) == 0)
             {
                 this.removeFuel(null, 1);
             }
