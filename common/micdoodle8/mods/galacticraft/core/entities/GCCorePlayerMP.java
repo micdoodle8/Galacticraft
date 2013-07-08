@@ -443,7 +443,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
             this.setParachute(false);
         }
 
-        if (this.maskInSlot != null && this.lastMaskInSlot == null)
+        if (this.maskInSlot != null && this.lastMaskInSlot == null && this.maskInSlot.getItem().itemID == GCCoreItems.oxygenMask.itemID)
         {
             this.sendGearUpdatePacket(modelUpdatePacketTypes.ADDMASK.getIndex());
         }
@@ -455,7 +455,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
         //
 
-        if (this.gearInSlot != null && this.lastGearInSlot == null)
+        if (this.gearInSlot != null && this.lastGearInSlot == null && this.gearInSlot.getItem().itemID == GCCoreItems.oxygenGear.itemID)
         {
             this.sendGearUpdatePacket(modelUpdatePacketTypes.ADDGEAR.getIndex());
         }
