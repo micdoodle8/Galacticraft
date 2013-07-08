@@ -148,6 +148,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
         }
         else
         {
+            this.createSpaceStationButton.xPosition = this.width / 2 - 60;
             this.buttonList.add(this.createSpaceStationButton);
         }
 
