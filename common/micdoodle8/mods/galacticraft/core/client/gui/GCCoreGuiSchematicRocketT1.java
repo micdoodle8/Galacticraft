@@ -56,7 +56,7 @@ public class GCCoreGuiSchematicRocketT1 extends GuiContainer implements ISchemat
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRenderer.drawString(LanguageRegistry.instance().getStringLocalization("schematic.rocketT2.name"), 7, -20 + 27, 4210752);
+        this.fontRenderer.drawString(LanguageRegistry.instance().getStringLocalization("schematic.rocketT1.name"), 7, -20 + 27, 4210752);
         this.fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, 202 - 104 + 2 + 27, 4210752);
     }
 
