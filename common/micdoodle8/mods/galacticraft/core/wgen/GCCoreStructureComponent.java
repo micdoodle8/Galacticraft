@@ -55,7 +55,7 @@ public abstract class GCCoreStructureComponent extends StructureComponent
 
             if (var11 != null)
             {
-                var11.func_98049_a().setMobID(var6);
+                var11.getSpawnerLogic().setMobID(var6);
             }
         }
     }

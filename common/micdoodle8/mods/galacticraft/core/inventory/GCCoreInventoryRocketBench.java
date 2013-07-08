@@ -135,14 +135,12 @@ public class GCCoreInventoryRocketBench implements IInventory
     @Override
     public boolean isInvNameLocalized()
     {
-        // TODO Auto-generated method stub
         return false;
     }
 
     @Override
-    public boolean isStackValidForSlot(int i, ItemStack itemstack)
+    public boolean isItemValidForSlot(int i, ItemStack itemstack)
     {
-        // TODO Auto-generated method stub
         return false;
     }
 }

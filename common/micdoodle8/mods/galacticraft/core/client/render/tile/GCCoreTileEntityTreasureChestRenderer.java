@@ -39,7 +39,7 @@ public class GCCoreTileEntityTreasureChestRenderer extends TileEntitySpecialRend
     {
         int var9;
 
-        if (!par1GCTileEntityTreasureChest.func_70309_m())
+        if (!par1GCTileEntityTreasureChest.hasWorldObj())
         {
             var9 = 0;
         }

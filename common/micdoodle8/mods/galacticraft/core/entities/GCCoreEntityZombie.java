@@ -368,7 +368,7 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
             }
 
             final EntityZombie entityzombie = new EntityZombie(this.worldObj);
-            entityzombie.func_82149_j(par1EntityLiving);
+            entityzombie.copyLocationAndAnglesFrom(par1EntityLiving);
             this.worldObj.removeEntity(par1EntityLiving);
             entityzombie.func_110161_a((EntityLivingData) null);
             entityzombie.setVillager(true);
@@ -396,7 +396,7 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
         }
 
         this.addRandomArmor();
-        this.func_82162_bC();
+        this.enchantEquipment();
 
         if (this.getCurrentItemOrArmor(4) == null)
         {
@@ -499,7 +499,7 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
     protected void convertToVillager()
     {
         final EntityVillager entityvillager = new EntityVillager(this.worldObj);
-        entityvillager.func_82149_j(this);
+        entityvillager.copyLocationAndAnglesFrom(this);
         entityvillager.func_110161_a((EntityLivingData) null);
         entityvillager.func_82187_q();
 

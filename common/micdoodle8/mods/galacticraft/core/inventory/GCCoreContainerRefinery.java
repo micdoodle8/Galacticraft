@@ -7,9 +7,8 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.liquids.LiquidContainerRegistry;
-import net.minecraftforge.liquids.LiquidDictionary;
-import net.minecraftforge.liquids.LiquidStack;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
 import universalelectricity.core.item.IItemElectric;
 import universalelectricity.prefab.SlotSpecific;
 
@@ -48,9 +47,9 @@ public class GCCoreContainerRefinery extends Container
     }
 
     @Override
-    public void onCraftGuiClosed(EntityPlayer entityplayer)
+    public void onContainerClosed(EntityPlayer entityplayer)
     {
-        super.onCraftGuiClosed(entityplayer);
+        super.onContainerClosed(entityplayer);
         this.tileEntity.closeChest();
     }
 
@@ -93,7 +92,7 @@ public class GCCoreContainerRefinery extends Container
                         return null;
                     }
                 }
-                else if (LiquidContainerRegistry.isLiquid(var4) || LiquidContainerRegistry.containsLiquid(var4, LiquidDictionary.getOrCreateLiquid("Fuel", new LiquidStack(GCCoreItems.fuel, LiquidContainerRegistry.BUCKET_VOLUME * 2))))
+                else if (FluidContainerRegistry.isContainer(var4) || FluidContainerRegistry.containsFluid(var4, FluidRegistry.getFluidStack("fuel", 1)))
                 {
                     if (!this.mergeItemStack(var4, 1, 2, false))
                     {

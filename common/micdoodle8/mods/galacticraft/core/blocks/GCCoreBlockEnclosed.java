@@ -9,6 +9,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenPipe;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -21,7 +22,7 @@ import basiccomponents.common.BasicComponents;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSealedBlock
+public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSealedBlock, ITileEntityProvider
 {
     private Icon[] enclosedIcons;
 

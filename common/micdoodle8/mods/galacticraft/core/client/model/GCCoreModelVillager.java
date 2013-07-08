@@ -19,10 +19,10 @@ public class GCCoreModelVillager extends ModelVillager
         this.villagerHead = new ModelRenderer(this).setTextureSize(par3, par4);
         this.villagerHead.setRotationPoint(0.0F, 0.0F + par2, 0.0F);
         this.villagerHead.setTextureOffset(0, 0).addBox(-4.0F, -10.0F, -4.0F, 8, 10, 8, par1 + 0.001F);
-        this.field_82898_f = new ModelRenderer(this).setTextureSize(par3, par4);
-        this.field_82898_f.setRotationPoint(0.0F, par2 - 2.0F, 0.0F);
-        this.field_82898_f.setTextureOffset(24, 0).addBox(-1.0F, -1.0F, -6.0F, 2, 4, 2, par1 + 0.002F);
-        this.villagerHead.addChild(this.field_82898_f);
+        this.villagerNose = new ModelRenderer(this).setTextureSize(par3, par4);
+        this.villagerNose.setRotationPoint(0.0F, par2 - 2.0F, 0.0F);
+        this.villagerNose.setTextureOffset(24, 0).addBox(-1.0F, -1.0F, -6.0F, 2, 4, 2, par1 + 0.002F);
+        this.villagerHead.addChild(this.villagerNose);
         this.villagerBody = new ModelRenderer(this).setTextureSize(par3, par4);
         this.villagerBody.setRotationPoint(0.0F, 0.0F + par2, 0.0F);
         this.villagerBody.setTextureOffset(16, 20).addBox(-4.0F, 0.0F, -3.0F, 8, 12, 6, par1 + 0.003F);

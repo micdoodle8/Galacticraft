@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import net.minecraft.tileentity.TileEntity;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.multiblock.IMultiBlock;
+import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreTileEntityCargoPadSingle extends TileEntity
 {

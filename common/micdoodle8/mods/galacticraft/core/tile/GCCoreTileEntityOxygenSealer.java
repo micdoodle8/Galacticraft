@@ -224,7 +224,7 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
     @Override
     public boolean canInsertItem(int slotID, ItemStack itemstack, int side)
     {
-        return this.isStackValidForSlot(slotID, itemstack);
+        return this.isItemValidForSlot(slotID, itemstack);
     }
 
     @Override
@@ -240,7 +240,7 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
     }
 
     @Override
-    public boolean isStackValidForSlot(int slotID, ItemStack itemstack)
+    public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
     {
         return slotID == 0 ? itemstack.getItem() instanceof IItemElectric : false;
     }

@@ -93,7 +93,7 @@ public class GCCoreBlockOxygenCompressor extends GCCoreBlockAdvanced
     }
 
     @Override
-    public TileEntity createNewTileEntity(World var1)
+    public TileEntity createTileEntity(World world, int metadata)
     {
         return new GCCoreTileEntityOxygenCompressor();
     }

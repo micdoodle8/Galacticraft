@@ -29,7 +29,7 @@ public class GCCoreTileEntityParachestRenderer extends TileEntitySpecialRenderer
     {
         int var9;
 
-        if (!tile.func_70309_m())
+        if (!tile.hasWorldObj())
         {
             var9 = 0;
         }

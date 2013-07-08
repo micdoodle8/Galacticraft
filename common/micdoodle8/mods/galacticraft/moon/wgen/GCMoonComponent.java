@@ -50,7 +50,7 @@ public abstract class GCMoonComponent extends StructureComponent
 
             if (var8 != null)
             {
-                var8.func_98049_a().setMobID(var6);
+                var8.getSpawnerLogic().setMobID(var6);
             }
         }
 

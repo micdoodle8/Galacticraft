@@ -266,9 +266,9 @@ public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInvento
     }
 
     @Override
-    public boolean isStackValidForSlot(int par1, ItemStack par2ItemStack)
+    public boolean isItemValidForSlot(int par1, ItemStack par2ItemStack)
     {
-        return true;
+        return false;
     }
 
     @Override

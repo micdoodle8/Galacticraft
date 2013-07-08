@@ -296,7 +296,7 @@ public class GCCoreTileEntityCargoLoader extends GCCoreTileEntityElectric implem
     }
 
     @Override
-    public boolean isStackValidForSlot(int slotID, ItemStack itemstack)
+    public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
     {
         if (slotID == 0)
         {

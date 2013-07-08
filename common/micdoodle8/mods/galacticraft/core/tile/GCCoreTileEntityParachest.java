@@ -431,7 +431,7 @@ public class GCCoreTileEntityParachest extends TileEntity implements IInventory
     }
 
     @Override
-    public boolean isStackValidForSlot(int par1, ItemStack par2ItemStack)
+    public boolean isItemValidForSlot(int par1, ItemStack par2ItemStack)
     {
         return true;
     }

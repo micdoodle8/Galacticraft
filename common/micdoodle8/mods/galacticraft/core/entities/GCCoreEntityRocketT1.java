@@ -6,8 +6,6 @@ import icbm.api.RadarRegistry;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import micdoodle8.mods.galacticraft.api.entity.ICargoEntity.EnumCargoLoadingState;
-import micdoodle8.mods.galacticraft.api.entity.ICargoEntity.RemovalResult;
 import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
@@ -445,14 +443,12 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
     @Override
     public boolean isInvNameLocalized()
     {
-        // TODO Auto-generated method stub
         return false;
     }
 
     @Override
-    public boolean isStackValidForSlot(int i, ItemStack itemstack)
+    public boolean isItemValidForSlot(int i, ItemStack itemstack)
     {
-        // TODO Auto-generated method stub
         return false;
     }
 

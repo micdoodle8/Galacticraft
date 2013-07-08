@@ -110,7 +110,19 @@ public class GCCoreItemBlockEnclosedBlock extends ItemBlock
                 return false;
             }
 
-            if (entityplayer.canCurrentToolHarvestBlock(i, j, k) && world.canPlaceEntityOnSide(blockID, i, j, k, false, side, entityplayer, itemstack))
+            if (itemstack.stackSize == 0)
+            {
+                return false;
+            }
+            else if (!entityplayer.canPlayerEdit(i, j, k, side, itemstack))
+            {
+                return false;
+            }
+            else if (j == 255 && Block.blocksList[this.getBlockID()].blockMaterial.isSolid())
+            {
+                return false;
+            }
+            else if (world.canPlaceEntityOnSide(blockID, i, j, k, false, side, entityplayer, itemstack))
             {
                 try
                 {

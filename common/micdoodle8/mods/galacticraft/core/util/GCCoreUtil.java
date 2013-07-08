@@ -31,7 +31,7 @@ public class GCCoreUtil
     public static void openBuggyInv(EntityPlayerMP player, IInventory buggyInv, int type)
     {
         player.incrementWindowID();
-        player.closeInventory();
+        player.closeContainer();
         int id = player.currentWindowId;
         player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 28, new Object[] { id, 0, 0 }));
         player.openContainer = new GCCoreContainerBuggy(player.inventory, buggyInv, type);
@@ -42,7 +42,7 @@ public class GCCoreUtil
     public static void openParachestInv(EntityPlayerMP player, GCCoreEntityLander landerInv)
     {
         player.incrementWindowID();
-        player.closeInventory();
+        player.closeContainer();
         int windowId = player.currentWindowId;
         player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 28, new Object[] { windowId, 1, landerInv.entityId }));
         player.openContainer = new GCCoreContainerParachest(player.inventory, landerInv);

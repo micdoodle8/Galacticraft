@@ -122,7 +122,7 @@ public class GCCoreBlockRefinery extends GCCoreBlockAdvanced
     }
 
     @Override
-    public TileEntity createNewTileEntity(World par1World)
+    public TileEntity createTileEntity(World world, int metadata)
     {
         return new GCCoreTileEntityRefinery();
     }

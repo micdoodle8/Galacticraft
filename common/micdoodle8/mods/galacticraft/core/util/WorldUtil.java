@@ -886,7 +886,7 @@ public class WorldUtil
             }
 
             var0.loadedEntityList.remove(var1);
-            var0.releaseEntitySkin(var1);
+            var0.onEntityRemoved(var1);
         }
 
         var1.isDead = false;

@@ -553,7 +553,7 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
     }
 
     @Override
-    public boolean isStackValidForSlot(int par1, ItemStack par2ItemStack)
+    public boolean isItemValidForSlot(int par1, ItemStack par2ItemStack)
     {
         return true;
     }

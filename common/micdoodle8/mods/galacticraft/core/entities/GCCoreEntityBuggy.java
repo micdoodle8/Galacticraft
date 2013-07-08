@@ -672,7 +672,7 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
     }
 
     @Override
-    public boolean isStackValidForSlot(int i, ItemStack itemstack)
+    public boolean isItemValidForSlot(int i, ItemStack itemstack)
     {
         return false;
     }

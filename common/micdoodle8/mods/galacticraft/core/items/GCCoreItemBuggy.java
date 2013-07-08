@@ -81,7 +81,7 @@ public class GCCoreItemBuggy extends Item
         final float var20 = var14 * var16;
         final double var21 = 5.0D;
         final Vec3 var23 = var13.addVector(var18 * var21, var17 * var21, var20 * var21);
-        final MovingObjectPosition var24 = par2World.rayTraceBlocks_do(var13, var23, true);
+        final MovingObjectPosition var24 = par2World.clip(var13, var23, true);
 
         if (var24 == null)
         {

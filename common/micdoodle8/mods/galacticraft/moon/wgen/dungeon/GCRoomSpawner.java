@@ -82,7 +82,7 @@ public class GCRoomSpawner extends GCDungeonRoom
             final TileEntityMobSpawner spawner = (TileEntityMobSpawner) this.worldObj.getBlockTileEntity(spawnerCoords.posX, spawnerCoords.posY, spawnerCoords.posZ);
             if (spawner != null)
             {
-                spawner.func_98049_a().setMobID(GCRoomSpawner.getMob(rand));
+                spawner.getSpawnerLogic().setMobID(GCRoomSpawner.getMob(rand));
             }
         }
     }
