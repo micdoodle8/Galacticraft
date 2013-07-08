@@ -99,6 +99,16 @@ public class CommonProxyCore extends BCGuiHandler implements IGuiHandler
     {
         return -1;
     }
+    
+    public int getTitaniumArmorRenderIndex()
+    {
+        return 0;
+    }
+    
+    public int getSensorArmorRenderIndex()
+    {
+        return 0;
+    }
 
     public World getClientWorld()
     {

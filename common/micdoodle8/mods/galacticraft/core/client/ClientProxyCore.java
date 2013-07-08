@@ -151,10 +151,11 @@ public class ClientProxyCore extends CommonProxyCore
     private static int meteorRenderID;
     private static int craftingTableID;
     private static int fullLandingPadRenderID;
+    private static int titaniumArmorRenderIndex;
+    private static int sensorArmorRenderIndex;
     public static long getFirstBootTime;
     public static long getCurrentTime;
     public static long slowTick;
-    private final Random rand = new Random();
     public static ClientProxyMoon moon = new ClientProxyMoon();
     public static List<ICelestialBodyRenderer> slotRenderers = new ArrayList<ICelestialBodyRenderer>();
     public static List<int[]> valueableBlocks = new ArrayList<int[]>();
@@ -193,6 +194,9 @@ public class ClientProxyCore extends CommonProxyCore
 
         MinecraftForge.EVENT_BUS.register(new GCCoreSounds());
         ClientProxyCore.getFirstBootTime = System.currentTimeMillis();
+        
+        ClientProxyCore.sensorArmorRenderIndex = RenderingRegistry.addNewArmourRendererPrefix("sensor");
+        ClientProxyCore.titaniumArmorRenderIndex = RenderingRegistry.addNewArmourRendererPrefix("titanium");
     }
 
     @Override
@@ -317,9 +321,6 @@ public class ClientProxyCore extends CommonProxyCore
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityAlienVillager.class, new GCCoreRenderAlienVillager());
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityOxygenBubble.class, new GCCoreRenderOxygenBubble());
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityLander.class, new GCCoreRenderLander());
-        RenderingRegistry.addNewArmourRendererPrefix("oxygen");
-        RenderingRegistry.addNewArmourRendererPrefix("sensor");
-        RenderingRegistry.addNewArmourRendererPrefix("titanium");
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityArrow.class, new GCCoreRenderArrow());
         MinecraftForgeClient.registerItemRenderer(GCCoreBlocks.unlitTorch.blockID, new GCCoreItemRendererUnlitTorch());
         MinecraftForgeClient.registerItemRenderer(GCCoreItems.spaceship.itemID, new GCCoreItemRendererSpaceship(new GCCoreEntityRocketT1(FMLClientHandler.instance().getClient().theWorld), new GCCoreModelSpaceship(), new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/rocketT1.png")));
@@ -384,6 +385,18 @@ public class ClientProxyCore extends CommonProxyCore
     public int getGCFullLandingPadRenderID()
     {
         return ClientProxyCore.fullLandingPadRenderID;
+    }
+
+    @Override
+    public int getTitaniumArmorRenderIndex()
+    {
+        return ClientProxyCore.titaniumArmorRenderIndex;
+    }
+
+    @Override
+    public int getSensorArmorRenderIndex()
+    {
+        return ClientProxyCore.sensorArmorRenderIndex;
     }
 
     @Override

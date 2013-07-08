@@ -44,15 +44,15 @@ public class GCCoreItemArmor extends ItemArmor
         {
             if (stack.getItem().itemID == GCCoreItems.steelHelmet.itemID)
             {
-                return "/micdoodle8/mods/galacticraft/core/client/armor/titanium_1.png";
+                return "textures/model/armor/titanium_1.png";
             }
             else if (stack.getItem().itemID == GCCoreItems.steelChestplate.itemID || stack.getItem().itemID == GCCoreItems.steelBoots.itemID)
             {
-                return "/micdoodle8/mods/galacticraft/core/client/armor/titanium_2.png";
+                return "textures/model/armor/titanium_2.png";
             }
             else if (stack.getItem().itemID == GCCoreItems.steelLeggings.itemID)
             {
-                return "/micdoodle8/mods/galacticraft/core/client/armor/titanium_3.png";
+                return "textures/model/armor/titanium_3.png";
             }
         }
 

@@ -41,7 +41,7 @@ public class GCCoreItemSensorGlasses extends ItemArmor
     @Override
     public String getArmorTexture(ItemStack stack, Entity entity, int slot, int layer)
     {
-        return "/micdoodle8/mods/galacticraft/core/client/armor/sensor_1_alt.png";
+        return "textures/model/armor/sensor_1.png";
     }
 
     @Override

@@ -167,6 +167,7 @@ public class GalacticraftCore
     public void preInit(FMLPreInitializationEvent event)
     {
         GalacticraftCore.moon.preLoad(event);
+        GalacticraftCore.proxy.preInit(event);
 
         new GCCoreConfigManager(new File(event.getModConfigurationDirectory(), GalacticraftCore.CONFIG_FILE));
 
@@ -206,8 +207,6 @@ public class GalacticraftCore
                 OreGenerator.removeOre(BasicComponents.generationOreCopper);
             }
         }
-
-        GalacticraftCore.proxy.preInit(event);
     }
 
     @EventHandler
