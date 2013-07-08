@@ -10,9 +10,13 @@ import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.multiblock.IMultiBlock;
 import universalelectricity.prefab.multiblock.TileEntityMulti;
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreTileEntityAdvancedCraftingTable extends TileEntityMulti implements IMultiBlock
 {
+    @SideOnly(Side.CLIENT)
     public GCCoreModelAssemblyTable model = new GCCoreModelAssemblyTable();
 
     public GCCoreTileEntityAdvancedCraftingTable()
@@ -25,7 +29,7 @@ public class GCCoreTileEntityAdvancedCraftingTable extends TileEntityMulti imple
     {
         super.validate();
 
-        if (!this.isInvalid() && this.worldObj != null)
+        if (!this.isInvalid() && this.worldObj != null && FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
         {
             this.model = new GCCoreModelAssemblyTable();
         }
