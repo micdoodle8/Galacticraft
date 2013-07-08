@@ -5,7 +5,6 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.resources.ResourceLocation;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.util.MathHelper;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -84,7 +83,7 @@ public class GCCoreRenderArrow extends Render
         GL11.glPopMatrix();
     }
 
-    protected ResourceLocation func_110779_a(EntityArrow par1EntityArrow)
+    protected ResourceLocation func_110779_a(GCCoreEntityArrow par1EntityArrow)
     {
         return GCCoreRenderArrow.arrowTexture;
     }
@@ -92,7 +91,7 @@ public class GCCoreRenderArrow extends Render
     @Override
     protected ResourceLocation func_110775_a(Entity par1Entity)
     {
-        return this.func_110779_a((EntityArrow) par1Entity);
+        return this.func_110779_a((GCCoreEntityArrow) par1Entity);
     }
 
     @Override
