@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.client.gui;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerParachest;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.ResourceLocation;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.util.StatCollector;
@@ -11,7 +10,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class GCCoreGuiParachest extends GuiContainer
+public class GCCoreGuiParachest extends GCCoreGuiContainer
 {
     private static ResourceLocation[] parachestTexture = new ResourceLocation[4];
 

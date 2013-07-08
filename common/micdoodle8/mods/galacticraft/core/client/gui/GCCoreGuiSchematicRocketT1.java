@@ -1,18 +1,19 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
+import java.util.ArrayList;
+import java.util.List;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicResultPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerRocketBench;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.ResourceLocation;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-public class GCCoreGuiSchematicRocketT1 extends GuiContainer implements ISchematicResultPage
+public class GCCoreGuiSchematicRocketT1 extends GCCoreGuiContainer implements ISchematicResultPage
 {
     private static final ResourceLocation rocketBenchTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/rocketbench.png");
 
@@ -30,7 +31,6 @@ public class GCCoreGuiSchematicRocketT1 extends GuiContainer implements ISchemat
     public void initGui()
     {
         super.initGui();
-        this.buttonList.clear();
         this.buttonList.add(this.backButton = new GuiButton(0, this.width / 2 - 130, this.height / 2 - 30 + 27, 40, 20, LanguageRegistry.instance().getStringLocalization("gui.button.back.name")));
         this.buttonList.add(this.nextButton = new GuiButton(1, this.width / 2 + 90, this.height / 2 - 30 + 27, 40, 20, LanguageRegistry.instance().getStringLocalization("gui.button.next.name")));
         this.backButton.enabled = false;

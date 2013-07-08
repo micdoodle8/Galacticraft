@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
+import java.util.ArrayList;
+import java.util.List;
 import mekanism.api.EnumColor;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerCargoLoader;
@@ -7,7 +9,6 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoLoader;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFuelLoader;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.ResourceLocation;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.StatCollector;
@@ -23,7 +24,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
  * All rights reserved.
  * 
  */
-public class GCCoreGuiCargoLoader extends GuiContainer
+public class GCCoreGuiCargoLoader extends GCCoreGuiContainer
 {
     private static final ResourceLocation loaderTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/cargo_loader.png");
 
@@ -53,7 +54,10 @@ public class GCCoreGuiCargoLoader extends GuiContainer
     public void initGui()
     {
         super.initGui();
-
+        List<String> batterySlotDesc = new ArrayList<String>();
+        batterySlotDesc.add("Cargo Loader battery slot, place battery here");
+        batterySlotDesc.add("if not using a connected power source");
+        this.infoRegions.add(new GCCoreInfoRegion((this.width - this.xSize) / 2 + 9, (this.height - this.ySize) / 2 + 26, 18, 18, batterySlotDesc, this.width, this.height));
         this.buttonList.add(this.buttonLoadItems = new GuiButton(0, this.width / 2 - 1, this.height / 2 - 23, 76, 20, LanguageRegistry.instance().getStringLocalization("gui.button.loaditems.name")));
     }
 

@@ -2,8 +2,6 @@ package micdoodle8.mods.galacticraft.core.entities;
 
 import java.util.ArrayList;
 import java.util.List;
-import micdoodle8.mods.galacticraft.api.entity.ICargoEntity.EnumCargoLoadingState;
-import micdoodle8.mods.galacticraft.api.entity.ICargoEntity.RemovalResult;
 import micdoodle8.mods.galacticraft.api.entity.IDockable;
 import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -36,6 +34,7 @@ import universalelectricity.prefab.network.IPacketReceiver;
 import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
@@ -605,8 +604,6 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
     @Override
     public boolean func_130002_c(EntityPlayer var1)
     {
-        var1.inventory.getCurrentItem();
-
         if (this.worldObj.isRemote)
         {
             if (this.riddenByEntity == null)
@@ -619,15 +616,18 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
 
             return true;
         }
-        else if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayer && this.riddenByEntity != var1)
-        {
-            return true;
-        }
         else
         {
-            var1.mountEntity(this);
-
-            return true;
+            if (this.riddenByEntity != null)
+            {
+                var1.mountEntity(null);
+                return true;
+            }
+            else
+            {
+                var1.mountEntity(this);
+                return true;
+            }
         }
     }
 

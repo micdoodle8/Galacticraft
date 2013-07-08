@@ -1,12 +1,14 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
+import java.util.ArrayList;
+import java.util.List;
 import mekanism.api.EnumColor;
+import micdoodle8.mods.galacticraft.core.GCCoreCompatibilityManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerFuelLoader;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFuelLoader;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.ResourceLocation;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.StatCollector;
@@ -22,7 +24,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
  * All rights reserved.
  * 
  */
-public class GCCoreGuiFuelLoader extends GuiContainer
+public class GCCoreGuiFuelLoader extends GCCoreGuiContainer
 {
     private static final ResourceLocation fuelLoaderTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/fuel_loader.png");
 
@@ -52,7 +54,19 @@ public class GCCoreGuiFuelLoader extends GuiContainer
     public void initGui()
     {
         super.initGui();
-
+        List<String> fuelTankDesc = new ArrayList<String>();
+        fuelTankDesc.add("The fuel loader fuel tank");
+        this.infoRegions.add(new GCCoreInfoRegion((this.width - this.xSize) / 2 + 7, (this.height - this.ySize) / 2 + 33, 16, 38, fuelTankDesc, this.width, this.height));
+        List<String> batterySlotDesc = new ArrayList<String>();
+        batterySlotDesc.add("Fuel Loader battery slot, place");
+        batterySlotDesc.add("battery here if not using a");
+        batterySlotDesc.add("connected power source");
+        this.infoRegions.add(new GCCoreInfoRegion((this.width - this.xSize) / 2 + 50, (this.height - this.ySize) / 2 + 54, 18, 18, batterySlotDesc, this.width, this.height));
+        List<String> oilSlotDesc = new ArrayList<String>();
+        oilSlotDesc.add("Fuel Loader fuel input. Place");
+        oilSlotDesc.add("fuel canisters " + (GCCoreCompatibilityManager.isBCraftLoaded() ? "or fuel buckets " : "") + "into this slot");
+        oilSlotDesc.add("to load it into the fuel tank");
+        this.infoRegions.add(new GCCoreInfoRegion((this.width - this.xSize) / 2 + 6, (this.height - this.ySize) / 2 + 11, 18, 18, oilSlotDesc, this.width, this.height));
         this.buttonList.add(this.buttonLoadFuel = new GuiButton(0, this.width / 2 + 2, this.height / 2 - 49, 76, 20, LanguageRegistry.instance().getStringLocalization("gui.button.loadfuel.name")));
     }
 

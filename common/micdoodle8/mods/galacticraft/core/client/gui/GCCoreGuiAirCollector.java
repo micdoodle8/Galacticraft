@@ -1,10 +1,11 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
+import java.util.ArrayList;
+import java.util.List;
 import mekanism.api.EnumColor;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerAirCollector;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCollector;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.ResourceLocation;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.StatCollector;
@@ -19,7 +20,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
  * All rights reserved.
  * 
  */
-public class GCCoreGuiAirCollector extends GuiContainer
+public class GCCoreGuiAirCollector extends GCCoreGuiContainer
 {
     private static final ResourceLocation collectorTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/oxygen.png");
 
@@ -30,6 +31,19 @@ public class GCCoreGuiAirCollector extends GuiContainer
         super(new GCCoreContainerAirCollector(par1InventoryPlayer, par2TileEntityAirDistributor));
         this.collector = par2TileEntityAirDistributor;
         this.ySize = 180;
+    }
+
+    @Override
+    public void initGui()
+    {
+        super.initGui();
+        List<String> batterySlotDesc = new ArrayList<String>();
+        batterySlotDesc.add("Collector battery slot, place battery here");
+        batterySlotDesc.add("if not using a connected power source");
+        this.infoRegions.add(new GCCoreInfoRegion((this.width - this.xSize) / 2 + 31, (this.height - this.ySize) / 2 + 26, 18, 18, batterySlotDesc, this.width, this.height));
+        List<String> oxygenDesc = new ArrayList<String>();
+        oxygenDesc.add("Oxygen output from the collector");
+        this.infoRegions.add(new GCCoreInfoRegion((this.width - this.xSize) / 2 + 107, (this.height - this.ySize) / 2 + 25, 56, 18, oxygenDesc, this.width, this.height));
     }
 
     @Override

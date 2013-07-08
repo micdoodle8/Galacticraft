@@ -5,14 +5,13 @@ import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerBuggyBench;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.ResourceLocation;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-public class GCCoreGuiSchematicBuggy extends GuiContainer implements ISchematicResultPage
+public class GCCoreGuiSchematicBuggy extends GCCoreGuiContainer implements ISchematicResultPage
 {
     private static final ResourceLocation buggyBenchTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/buggybench.png");
 

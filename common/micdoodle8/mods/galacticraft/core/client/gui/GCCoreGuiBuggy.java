@@ -1,10 +1,12 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
+import java.util.ArrayList;
+import java.util.List;
 import mekanism.api.EnumColor;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityBuggy;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerBuggy;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.ResourceLocation;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.util.StatCollector;
@@ -14,7 +16,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class GCCoreGuiBuggy extends GuiContainer
+public class GCCoreGuiBuggy extends GCCoreGuiContainer
 {
     private static ResourceLocation[] sealerTexture = new ResourceLocation[4];
 
@@ -36,6 +38,16 @@ public class GCCoreGuiBuggy extends GuiContainer
         this.allowUserInput = false;
         this.type = type;
         this.ySize = 145 + this.type * 36;
+    }
+
+    @Override
+    public void initGui()
+    {
+        super.initGui();
+        List<String> oxygenDesc = new ArrayList<String>();
+        oxygenDesc.add("Buggy fuel tank. Requires");
+        oxygenDesc.add("fuel loader to fill");
+        this.infoRegions.add(new GCCoreInfoRegion((this.width - this.xSize) / 2 + 71, (this.height - this.ySize) / 2 + 6, 36, 40, oxygenDesc, this.width, this.height));
     }
 
     @Override

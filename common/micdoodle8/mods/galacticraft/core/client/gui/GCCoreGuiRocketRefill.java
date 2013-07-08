@@ -1,11 +1,12 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
+import java.util.ArrayList;
+import java.util.List;
 import mekanism.api.EnumColor;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase.EnumRocketType;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerRocketRefill;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.ResourceLocation;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.util.StatCollector;
@@ -15,7 +16,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class GCCoreGuiRocketRefill extends GuiContainer
+public class GCCoreGuiRocketRefill extends GCCoreGuiContainer
 {
     private static ResourceLocation[] rocketTextures = new ResourceLocation[4];
 
@@ -28,7 +29,6 @@ public class GCCoreGuiRocketRefill extends GuiContainer
     }
 
     private final IInventory upperChestInventory;
-
     private final EnumRocketType rocketType;
 
     public GCCoreGuiRocketRefill(IInventory par1IInventory, IInventory par2IInventory, EnumRocketType rocketType)
@@ -38,6 +38,16 @@ public class GCCoreGuiRocketRefill extends GuiContainer
         this.allowUserInput = false;
         this.ySize = rocketType.getInventorySpace() <= 3 ? 132 : 145 + rocketType.getInventorySpace() * 2;
         this.rocketType = rocketType;
+    }
+
+    @Override
+    public void initGui()
+    {
+        super.initGui();
+        List<String> oxygenDesc = new ArrayList<String>();
+        oxygenDesc.add("Rocket fuel tank. Requires");
+        oxygenDesc.add("fuel loader to fill");
+        this.infoRegions.add(new GCCoreInfoRegion((this.width - this.xSize) / 2 + (((EntitySpaceshipBase) this.mc.thePlayer.ridingEntity).rocketType.getInventorySpace() == 3 ? 70 : 71), (this.height - this.ySize) / 2 + 6, 36, 40, oxygenDesc, this.width, this.height));
     }
 
     @Override

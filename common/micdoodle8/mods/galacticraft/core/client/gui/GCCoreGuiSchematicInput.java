@@ -1,12 +1,13 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
+import java.util.ArrayList;
+import java.util.List;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicResultPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerSchematic;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.ResourceLocation;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.StatCollector;
@@ -14,7 +15,7 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-public class GCCoreGuiSchematicInput extends GuiContainer implements ISchematicResultPage
+public class GCCoreGuiSchematicInput extends GCCoreGuiContainer implements ISchematicResultPage
 {
     private static final ResourceLocation schematicInputTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/schematicpage.png");
 
@@ -32,7 +33,12 @@ public class GCCoreGuiSchematicInput extends GuiContainer implements ISchematicR
     public void initGui()
     {
         super.initGui();
-        this.buttonList.clear();
+        List<String> schematicSlotDesc = new ArrayList<String>();
+        schematicSlotDesc.add("New schematic slot. You");
+        schematicSlotDesc.add("can find new schematics");
+        schematicSlotDesc.add("by completing dungeons");
+        schematicSlotDesc.add("on planets and moons");
+        this.infoRegions.add(new GCCoreInfoRegion((this.width - this.xSize) / 2 + 79, (this.height - this.ySize) / 2, 18, 18, schematicSlotDesc, this.width, this.height));
         this.buttonList.add(this.backButton = new GuiButton(0, this.width / 2 - 130, this.height / 2 - 30 + 27, 40, 20, LanguageRegistry.instance().getStringLocalization("gui.button.back.name")));
         this.buttonList.add(this.nextButton = new GuiButton(1, this.width / 2 + 90, this.height / 2 - 30 + 27, 40, 20, LanguageRegistry.instance().getStringLocalization("gui.button.next.name")));
         this.buttonList.add(this.unlockButton = new GuiButton(2, this.width / 2 - 46, this.height / 2 - 52, 92, 20, LanguageRegistry.instance().getStringLocalization("gui.button.unlockschematic.name")));

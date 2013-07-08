@@ -1,25 +1,28 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
+import java.util.ArrayList;
+import java.util.List;
 import mekanism.api.EnumColor;
+import micdoodle8.mods.galacticraft.core.GCCoreCompatibilityManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerRefinery;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityRefinery;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.ResourceLocation;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
 import universalelectricity.core.electricity.ElectricityDisplay;
 import universalelectricity.core.electricity.ElectricityDisplay.ElectricUnit;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class GCCoreGuiRefinery extends GuiContainer
+public class GCCoreGuiRefinery extends GCCoreGuiContainer
 {
     private static final ResourceLocation refineryTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/refinery.png");
 
@@ -41,7 +44,25 @@ public class GCCoreGuiRefinery extends GuiContainer
     public void initGui()
     {
         super.initGui();
-
+        List<String> oilTankDesc = new ArrayList<String>();
+        oilTankDesc.add("The refinery oil tank");
+        this.infoRegions.add(new GCCoreInfoRegion((this.width - this.xSize) / 2 + 7, (this.height - this.ySize) / 2 + 28, 16, 38, oilTankDesc, this.width, this.height));
+        List<String> batterySlotDesc = new ArrayList<String>();
+        batterySlotDesc.add("Refinery battery slot, place battery here");
+        batterySlotDesc.add("if not using a connected power source");
+        this.infoRegions.add(new GCCoreInfoRegion((this.width - this.xSize) / 2 + 49, (this.height - this.ySize) / 2 + 68, 18, 18, batterySlotDesc, this.width, this.height));
+        List<String> fuelTankDesc = new ArrayList<String>();
+        fuelTankDesc.add("The refinery fuel tank");
+        this.infoRegions.add(new GCCoreInfoRegion((this.width - this.xSize) / 2 + 153, (this.height - this.ySize) / 2 + 28, 16, 38, fuelTankDesc, this.width, this.height));
+        List<String> oilSlotDesc = new ArrayList<String>();
+        oilSlotDesc.add("Refinery oil input. Place oil canisters" + (GCCoreCompatibilityManager.isBCraftLoaded() ? " or oil buckets" : ""));
+        oilSlotDesc.add("into this slot to load it into the oil tank.");
+        this.infoRegions.add(new GCCoreInfoRegion((this.width - this.xSize) / 2 + 6, (this.height - this.ySize) / 2 + 6, 18, 18, oilSlotDesc, this.width, this.height));
+        List<String> fuelSlotDesc = new ArrayList<String>();
+        fuelSlotDesc.add("Refinery fuel output. Place empty liquid");
+        fuelSlotDesc.add("canisters into this slot to fill them");
+        fuelSlotDesc.add("from the fuel tank.");
+        this.infoRegions.add(new GCCoreInfoRegion((this.width - this.xSize) / 2 + 152, (this.height - this.ySize) / 2 + 6, 18, 18, fuelSlotDesc, this.width, this.height));
         this.buttonList.add(this.buttonDisable = new GuiButton(0, this.width / 2 - 38, this.height / 2 - 49, 76, 20, LanguageRegistry.instance().getStringLocalization("gui.button.refine.name")));
     }
 
