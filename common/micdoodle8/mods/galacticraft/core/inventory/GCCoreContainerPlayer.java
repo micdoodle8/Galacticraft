@@ -54,10 +54,10 @@ public class GCCoreContainerPlayer extends ContainerPlayer
 
         for (int var4 = 1; var4 < 5; ++var4)
         {
-            this.addSlotToContainer(new Slot(par1InventoryPlayer, 40 + var4 - 1, 80, 8 + (var4 - 1) * 18));
+            this.addSlotToContainer(new GCCoreSlotPlayer(par1InventoryPlayer, 40 + var4 - 1, 80, 8 + (var4 - 1) * 18));
         }
 
-        this.addSlotToContainer(new Slot(par1InventoryPlayer, 44, 154, 6 + 18));
+        this.addSlotToContainer(new GCCoreSlotPlayer(par1InventoryPlayer, 44, 154, 6 + 18));
     }
 
     @Override
