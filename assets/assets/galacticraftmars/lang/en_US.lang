@@ -39,3 +39,5 @@ tile.mars.marsdungeon.name=Dungeon Wall
 gui.choosePlanet.desc.mars=Habitable#No Oxygen#Gravity: 38%
 
 itemGroup.GalacticraftMars=Galacticraft Mars
+
+dimension.Mars.name=Mars

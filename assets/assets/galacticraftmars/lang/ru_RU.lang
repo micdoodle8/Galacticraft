@@ -1,0 +1,41 @@
+# Galacticraft Mars Language File = Russia Russian
+
+# GENERAL ITEMS
+item.reinfocedBucket.name=Закаленное ведро
+item.reinfocedBucketMilk.name=Закаленное ведро молока
+item.reinfocedBucketWater.name=Закаленное ведро воды
+item.reinfocedBucketLava.name=Закаленное ведро лавы
+item.reinfocedBucketSludge.name=Закаленное ведро с бактериальным осадком
+item.rawDesh.name=Необработанный деш
+item.deshStick.name=Палка из деш
+item.ingotDesh.name=Слиток деш
+item.spaceshipTier2.name=Ракета Tier 2
+
+# TOOLS
+item.deshPick.name=Кирка из деш
+item.deshAxe.name=Топор из деш
+item.deshHoe.name=Мотыга из деш
+item.deshSpade.name=Лопата из деш
+item.deshSword.name=Меч из деш
+
+# ARMOR
+item.deshHelmet.name=Шлем из деш
+item.deshChestplate.name=Кираса из деш
+item.deshLeggings.name=Поножи из деш
+item.deshBoots.name=Ботинки из деш
+
+# BLOCKS
+tile.mars.deshmars.name=Руда деш
+tile.mars.coppermars.name=Медная руда
+tile.mars.tinmars.name=Оловянная руда
+tile.mars.marscobblestone.name=Марсианский булыжник
+tile.mars.marsstone.name=Марсианский камень
+tile.mars.marsdirt.name=Марсианский грунт
+tile.mars.marsgrass.name=Марсианский дерн
+tile.mars.marsdeco.name=Декорационный блок деш
+tile.mars.marsdungeon.name=Стена подземелья
+
+# GUI
+gui.choosePlanet.desc.mars=Обитаем#Кислород отсутствует#Гравитация: 38%
+
+itemGroup.GalacticraftMars=Марс Galacticraft
