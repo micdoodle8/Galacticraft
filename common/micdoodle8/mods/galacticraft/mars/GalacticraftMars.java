@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.mars;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.File;
-import micdoodle8.mods.galacticraft.API.GalacticraftRegistry;
+import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.core.GCCoreCreativeTab;
 import micdoodle8.mods.galacticraft.core.GCLog;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -19,6 +19,8 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -66,13 +68,21 @@ public class GalacticraftMars
     public static GCCoreCreativeTab galacticraftMarsTab;
 
     public static final String TEXTURE_DOMAIN = "galacticraftmars";
-    public static final String MARS_TEXTURE_PREFIX = GalacticraftMars.TEXTURE_DOMAIN + ":";
+    public static final String TEXTURE_PREFIX = GalacticraftMars.TEXTURE_DOMAIN + ":";
 
+    public static Fluid SLUDGE;
+    
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
         new GCMarsConfigManager(new File(event.getModConfigurationDirectory(), "Galacticraft/mars.conf"));
 
+        GalacticraftMars.SLUDGE = new Fluid("bacterialsludge").setBlockID(GCMarsConfigManager.idBlockBacterialSludge).setViscosity(3000);
+        if (!FluidRegistry.registerFluid(GalacticraftMars.SLUDGE))
+        {
+            GCLog.info("\"bacterialsludge\" has already been registered as a fluid, ignoring...");
+        }
+        
         GCMarsBlocks.initBlocks();
         GCMarsBlocks.registerBlocks();
         GCMarsBlocks.setHarvestLevels();

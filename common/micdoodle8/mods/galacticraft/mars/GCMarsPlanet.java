@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.mars;
 
-import micdoodle8.mods.galacticraft.API.world.IGalaxy;
-import micdoodle8.mods.galacticraft.API.world.IMapObject;
-import micdoodle8.mods.galacticraft.API.world.IPlanet;
+import micdoodle8.mods.galacticraft.api.world.IGalaxy;
+import micdoodle8.mods.galacticraft.api.world.IMapObject;
+import micdoodle8.mods.galacticraft.api.world.IPlanet;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.mars.client.GCMarsMapPlanet;
 import micdoodle8.mods.galacticraft.mars.dimension.GCMarsWorldProvider;

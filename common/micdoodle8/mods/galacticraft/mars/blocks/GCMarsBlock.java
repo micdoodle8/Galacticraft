@@ -2,8 +2,8 @@ package micdoodle8.mods.galacticraft.mars.blocks;
 
 import java.util.List;
 import java.util.Random;
-import micdoodle8.mods.galacticraft.API.block.IDetectableMetadataResource;
-import micdoodle8.mods.galacticraft.API.block.IPlantableMetadataBlock;
+import micdoodle8.mods.galacticraft.api.block.IDetectableMetadataResource;
+import micdoodle8.mods.galacticraft.api.block.IPlantableMetadataBlock;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import micdoodle8.mods.galacticraft.mars.items.GCMarsItems;
 import net.minecraft.block.Block;
@@ -43,15 +43,15 @@ public class GCMarsBlock extends Block implements IDetectableMetadataResource, I
     public void registerIcons(IconRegister par1IconRegister)
     {
         this.marsBlockIcons = new Icon[16];
-        this.marsBlockIcons[0] = par1IconRegister.registerIcon(GalacticraftMars.MARS_TEXTURE_PREFIX + "cobblestone");
-        this.marsBlockIcons[1] = par1IconRegister.registerIcon(GalacticraftMars.MARS_TEXTURE_PREFIX + "decoration_desh");
-        this.marsBlockIcons[2] = par1IconRegister.registerIcon(GalacticraftMars.MARS_TEXTURE_PREFIX + "middle");
-        this.marsBlockIcons[3] = par1IconRegister.registerIcon(GalacticraftMars.MARS_TEXTURE_PREFIX + "brick");
-        this.marsBlockIcons[4] = par1IconRegister.registerIcon(GalacticraftMars.MARS_TEXTURE_PREFIX + "top");
-        this.marsBlockIcons[5] = par1IconRegister.registerIcon(GalacticraftMars.MARS_TEXTURE_PREFIX + "copper");
-        this.marsBlockIcons[6] = par1IconRegister.registerIcon(GalacticraftMars.MARS_TEXTURE_PREFIX + "desh");
-        this.marsBlockIcons[7] = par1IconRegister.registerIcon(GalacticraftMars.MARS_TEXTURE_PREFIX + "tin");
-        this.marsBlockIcons[8] = par1IconRegister.registerIcon(GalacticraftMars.MARS_TEXTURE_PREFIX + "bottom");
+        this.marsBlockIcons[0] = par1IconRegister.registerIcon(GalacticraftMars.TEXTURE_PREFIX + "cobblestone");
+        this.marsBlockIcons[1] = par1IconRegister.registerIcon(GalacticraftMars.TEXTURE_PREFIX + "decoration_desh");
+        this.marsBlockIcons[2] = par1IconRegister.registerIcon(GalacticraftMars.TEXTURE_PREFIX + "middle");
+        this.marsBlockIcons[3] = par1IconRegister.registerIcon(GalacticraftMars.TEXTURE_PREFIX + "brick");
+        this.marsBlockIcons[4] = par1IconRegister.registerIcon(GalacticraftMars.TEXTURE_PREFIX + "top");
+        this.marsBlockIcons[5] = par1IconRegister.registerIcon(GalacticraftMars.TEXTURE_PREFIX + "copper");
+        this.marsBlockIcons[6] = par1IconRegister.registerIcon(GalacticraftMars.TEXTURE_PREFIX + "desh");
+        this.marsBlockIcons[7] = par1IconRegister.registerIcon(GalacticraftMars.TEXTURE_PREFIX + "tin");
+        this.marsBlockIcons[8] = par1IconRegister.registerIcon(GalacticraftMars.TEXTURE_PREFIX + "bottom");
     }
 
     @Override

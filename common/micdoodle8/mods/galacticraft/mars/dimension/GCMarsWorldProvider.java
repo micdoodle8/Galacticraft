@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.mars.dimension;
 
-import micdoodle8.mods.galacticraft.API.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.mars.GCMarsConfigManager;
 import micdoodle8.mods.galacticraft.mars.wgen.GCMarsChunkProvider;
 import micdoodle8.mods.galacticraft.mars.wgen.GCMarsWorldChunkManager;

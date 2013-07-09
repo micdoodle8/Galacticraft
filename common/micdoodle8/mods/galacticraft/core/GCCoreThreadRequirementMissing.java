@@ -1,10 +1,8 @@
 package micdoodle8.mods.galacticraft.core;
 
-import java.awt.Dialog.ModalityType;
 import javax.swing.JDialog;
 import javax.swing.JEditorPane;
 import javax.swing.JOptionPane;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 

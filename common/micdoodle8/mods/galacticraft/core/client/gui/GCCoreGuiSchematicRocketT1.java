@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
-import java.util.ArrayList;
-import java.util.List;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicResultPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;

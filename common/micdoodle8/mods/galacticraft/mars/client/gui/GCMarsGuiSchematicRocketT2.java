@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.mars.client.gui;
 
-import micdoodle8.mods.galacticraft.API.recipe.ISchematicResultPage;
-import micdoodle8.mods.galacticraft.API.recipe.SchematicRegistry;
+import micdoodle8.mods.galacticraft.api.recipe.ISchematicResultPage;
+import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import micdoodle8.mods.galacticraft.mars.inventory.GCMarsContainerRocketBenchT2;
 import net.minecraft.client.gui.GuiButton;

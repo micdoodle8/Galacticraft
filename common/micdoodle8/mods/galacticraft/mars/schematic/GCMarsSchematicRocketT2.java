@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.mars.schematic;
 
-import micdoodle8.mods.galacticraft.API.recipe.ISchematicPage;
+import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.mars.GCMarsConfigManager;
 import micdoodle8.mods.galacticraft.mars.client.gui.GCMarsGuiSchematicRocketT2;
