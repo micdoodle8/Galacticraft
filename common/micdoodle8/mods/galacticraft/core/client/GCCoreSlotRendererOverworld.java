@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.client;
 import micdoodle8.mods.galacticraft.api.world.ICelestialBodyRenderer;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.resources.ResourceLocation;
+import net.minecraft.util.ResourceLocation;
 
 public class GCCoreSlotRendererOverworld implements ICelestialBodyRenderer
 {

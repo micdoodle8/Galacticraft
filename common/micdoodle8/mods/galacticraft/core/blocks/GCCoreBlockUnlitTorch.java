@@ -16,6 +16,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -110,7 +111,7 @@ public class GCCoreBlockUnlitTorch extends BlockContainer implements IOxygenReli
     @Override
     public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4)
     {
-        return par1World.isBlockSolidOnSide(par2 - 1, par3, par4, EAST, true) || par1World.isBlockSolidOnSide(par2 + 1, par3, par4, WEST, true) || par1World.isBlockSolidOnSide(par2, par3, par4 - 1, SOUTH, true) || par1World.isBlockSolidOnSide(par2, par3, par4 + 1, NORTH, true) || this.canPlaceTorchOn(par1World, par2, par3 - 1, par4);
+        return par1World.isBlockSolidOnSide(par2 - 1, par3, par4, ForgeDirection.EAST, true) || par1World.isBlockSolidOnSide(par2 + 1, par3, par4, ForgeDirection.WEST, true) || par1World.isBlockSolidOnSide(par2, par3, par4 - 1, ForgeDirection.SOUTH, true) || par1World.isBlockSolidOnSide(par2, par3, par4 + 1, ForgeDirection.NORTH, true) || this.canPlaceTorchOn(par1World, par2, par3 - 1, par4);
     }
 
     @Override
@@ -123,22 +124,22 @@ public class GCCoreBlockUnlitTorch extends BlockContainer implements IOxygenReli
             var10 = 5;
         }
 
-        if (par5 == 2 && par1World.isBlockSolidOnSide(par2, par3, par4 + 1, NORTH, true))
+        if (par5 == 2 && par1World.isBlockSolidOnSide(par2, par3, par4 + 1, ForgeDirection.NORTH, true))
         {
             var10 = 4;
         }
 
-        if (par5 == 3 && par1World.isBlockSolidOnSide(par2, par3, par4 - 1, SOUTH, true))
+        if (par5 == 3 && par1World.isBlockSolidOnSide(par2, par3, par4 - 1, ForgeDirection.SOUTH, true))
         {
             var10 = 3;
         }
 
-        if (par5 == 4 && par1World.isBlockSolidOnSide(par2 + 1, par3, par4, WEST, true))
+        if (par5 == 4 && par1World.isBlockSolidOnSide(par2 + 1, par3, par4, ForgeDirection.WEST, true))
         {
             var10 = 2;
         }
 
-        if (par5 == 5 && par1World.isBlockSolidOnSide(par2 - 1, par3, par4, EAST, true))
+        if (par5 == 5 && par1World.isBlockSolidOnSide(par2 - 1, par3, par4, ForgeDirection.EAST, true))
         {
             var10 = 1;
         }
@@ -162,19 +163,19 @@ public class GCCoreBlockUnlitTorch extends BlockContainer implements IOxygenReli
     {
         if (par1World.getBlockMetadata(par2, par3, par4) == 0)
         {
-            if (par1World.isBlockSolidOnSide(par2 - 1, par3, par4, EAST, true))
+            if (par1World.isBlockSolidOnSide(par2 - 1, par3, par4, ForgeDirection.EAST, true))
             {
                 par1World.setBlockMetadataWithNotify(par2, par3, par4, 1, 2);
             }
-            else if (par1World.isBlockSolidOnSide(par2 + 1, par3, par4, WEST, true))
+            else if (par1World.isBlockSolidOnSide(par2 + 1, par3, par4, ForgeDirection.WEST, true))
             {
                 par1World.setBlockMetadataWithNotify(par2, par3, par4, 2, 2);
             }
-            else if (par1World.isBlockSolidOnSide(par2, par3, par4 - 1, SOUTH, true))
+            else if (par1World.isBlockSolidOnSide(par2, par3, par4 - 1, ForgeDirection.SOUTH, true))
             {
                 par1World.setBlockMetadataWithNotify(par2, par3, par4, 3, 2);
             }
-            else if (par1World.isBlockSolidOnSide(par2, par3, par4 + 1, NORTH, true))
+            else if (par1World.isBlockSolidOnSide(par2, par3, par4 + 1, ForgeDirection.NORTH, true))
             {
                 par1World.setBlockMetadataWithNotify(par2, par3, par4, 4, 2);
             }
@@ -200,22 +201,22 @@ public class GCCoreBlockUnlitTorch extends BlockContainer implements IOxygenReli
             final int var6 = par1World.getBlockMetadata(par2, par3, par4);
             boolean var7 = false;
 
-            if (!par1World.isBlockSolidOnSide(par2 - 1, par3, par4, EAST, true) && var6 == 1)
+            if (!par1World.isBlockSolidOnSide(par2 - 1, par3, par4, ForgeDirection.EAST, true) && var6 == 1)
             {
                 var7 = true;
             }
 
-            if (!par1World.isBlockSolidOnSide(par2 + 1, par3, par4, WEST, true) && var6 == 2)
+            if (!par1World.isBlockSolidOnSide(par2 + 1, par3, par4, ForgeDirection.WEST, true) && var6 == 2)
             {
                 var7 = true;
             }
 
-            if (!par1World.isBlockSolidOnSide(par2, par3, par4 - 1, SOUTH, true) && var6 == 3)
+            if (!par1World.isBlockSolidOnSide(par2, par3, par4 - 1, ForgeDirection.SOUTH, true) && var6 == 3)
             {
                 var7 = true;
             }
 
-            if (!par1World.isBlockSolidOnSide(par2, par3, par4 + 1, NORTH, true) && var6 == 4)
+            if (!par1World.isBlockSolidOnSide(par2, par3, par4 + 1, ForgeDirection.NORTH, true) && var6 == 4)
             {
                 var7 = true;
             }

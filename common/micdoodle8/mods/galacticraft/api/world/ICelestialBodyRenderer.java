@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.api.world;
 
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.resources.ResourceLocation;
+import net.minecraft.util.ResourceLocation;
 
 /**
  * Used for rendering planet on the Galaxy Map, as well as the planet selection
