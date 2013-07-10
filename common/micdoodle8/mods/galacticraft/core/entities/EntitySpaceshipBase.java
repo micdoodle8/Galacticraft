@@ -16,7 +16,6 @@ import micdoodle8.mods.galacticraft.core.GCCoreDamageSource;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLandingPad;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLandingPadFull;
-import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFuelLoader;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
@@ -445,7 +444,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
 
         if (!this.worldObj.isRemote && this.ticks % 3 == 0)
         {
-            PacketManager.sendPacketToClients(GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getNetworkedData(new ArrayList())), this.worldObj, new Vector3(this), 50);
+            PacketManager.sendPacketToClients(PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getNetworkedData(new ArrayList())), this.worldObj, new Vector3(this), 50);
         }
     }
 
@@ -584,7 +583,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
             {
                 return false;
             }
-            
+
             if (this.riddenByEntity != null && this.riddenByEntity instanceof GCCorePlayerMP)
             {
                 final Object[] toSend = { ((EntityPlayerMP) this.riddenByEntity).username };

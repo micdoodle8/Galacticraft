@@ -37,7 +37,7 @@ public class GCCoreSlotPlayer extends Slot
         case 44:
             return itemstack.getItem() instanceof GCCoreItemParachute;
         }
-        
+
         return super.isItemValid(itemstack);
     }
 }

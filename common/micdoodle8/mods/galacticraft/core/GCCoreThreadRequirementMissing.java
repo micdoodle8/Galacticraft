@@ -24,7 +24,7 @@ public class GCCoreThreadRequirementMissing extends Thread
     @Override
     public void start()
     {
-        
+
     }
 
     @Override
@@ -32,7 +32,7 @@ public class GCCoreThreadRequirementMissing extends Thread
     {
         JEditorPane ep = null;
         JOptionPane pane = null;
-        
+
         if (!Loader.isModLoaded("Micdoodlecore"))
         {
             final String err = "<strong><p>MicdoodleCore not found in mods folder. Galacticraft will not load.</p></strong>";
@@ -41,7 +41,7 @@ public class GCCoreThreadRequirementMissing extends Thread
 
             ep.setEditable(false);
             ep.setOpaque(false);
-            
+
             pane = new JOptionPane(ep, JOptionPane.ERROR_MESSAGE, JOptionPane.YES_NO_OPTION, null, new Object[] { LanguageRegistry.instance().getStringLocalization("message.button3.name") }, null);
             final JDialog dialog = pane.createDialog(null, "Missing Dependancy");
             dialog.setVisible(true);

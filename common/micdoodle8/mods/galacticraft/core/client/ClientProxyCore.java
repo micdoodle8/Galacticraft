@@ -193,7 +193,7 @@ public class ClientProxyCore extends CommonProxyCore
 
         MinecraftForge.EVENT_BUS.register(new GCCoreSounds());
         ClientProxyCore.getFirstBootTime = System.currentTimeMillis();
-        
+
         ClientProxyCore.sensorArmorRenderIndex = RenderingRegistry.addNewArmourRendererPrefix("sensor");
         ClientProxyCore.titaniumArmorRenderIndex = RenderingRegistry.addNewArmourRendererPrefix("titanium");
     }

@@ -7,7 +7,6 @@ import java.util.Map.Entry;
 import java.util.Random;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketEntityUpdate;
-import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
@@ -398,7 +397,7 @@ public abstract class GCCoreEntityAdvanced extends GCCoreEntityControllable impl
 
     public Packet getDescriptionPacket()
     {
-        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getNetworkedData());
+        return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getNetworkedData());
     }
 
     @Override

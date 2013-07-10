@@ -60,7 +60,7 @@ public class GCCoreInfoRegion extends Gui
     public void drawRegion(int par2, int par3)
     {
         this.withinRegion = par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + this.width && par3 < this.yPosition + this.height;
-        
+
         if (this.drawRegion)
         {
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -75,11 +75,11 @@ public class GCCoreInfoRegion extends Gui
             GL11.glDisable(GL11.GL_LIGHTING);
             GL11.glDisable(GL11.GL_DEPTH_TEST);
             int k = 0;
-            Iterator<String> iterator = tooltipStrings.iterator();
+            Iterator<String> iterator = this.tooltipStrings.iterator();
 
             while (iterator.hasNext())
             {
-                String s = (String)iterator.next();
+                String s = iterator.next();
                 int l = FMLClientHandler.instance().getClient().fontRenderer.getStringWidth(s);
 
                 if (l > k)
@@ -108,7 +108,7 @@ public class GCCoreInfoRegion extends Gui
             }
 
             this.zLevel = 300.0F;
-            itemRenderer.zLevel = 300.0F;
+            GCCoreInfoRegion.itemRenderer.zLevel = 300.0F;
             int l1 = -267386864;
             this.drawGradientRect(i1 - 3, j1 - 4, i1 + k + 3, j1 - 3, l1, l1);
             this.drawGradientRect(i1 - 3, j1 + k1 + 3, i1 + k + 3, j1 + k1 + 4, l1, l1);
@@ -124,14 +124,14 @@ public class GCCoreInfoRegion extends Gui
 
             for (int k2 = 0; k2 < this.tooltipStrings.size(); ++k2)
             {
-                String s1 = (String)this.tooltipStrings.get(k2);
+                String s1 = this.tooltipStrings.get(k2);
                 FMLClientHandler.instance().getClient().fontRenderer.drawStringWithShadow(s1, i1, j1, -1);
 
                 j1 += 10;
             }
 
             this.zLevel = 0.0F;
-            itemRenderer.zLevel = 0.0F;
+            GCCoreInfoRegion.itemRenderer.zLevel = 0.0F;
             GL11.glEnable(GL11.GL_LIGHTING);
             GL11.glEnable(GL11.GL_DEPTH_TEST);
             RenderHelper.enableStandardItemLighting();

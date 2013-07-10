@@ -56,7 +56,7 @@ public class GCCoreUtil
         {
             LanguageRegistry.instance().addStringLocalization("entity." + var1 + ".name", LanguageRegistry.instance().getStringLocalization("entity.GalacticraftCore." + var1 + ".name"));
         }
-        
+
         EntityRegistry.registerGlobalEntityID(var0, var1, id, back, fore);
         EntityRegistry.registerModEntity(var0, var1, id, GalacticraftCore.instance, 80, 3, true);
     }
@@ -67,7 +67,7 @@ public class GCCoreUtil
         {
             LanguageRegistry.instance().addStringLocalization("entity." + var1 + ".name", LanguageRegistry.instance().getStringLocalization("entity.GalacticraftCore." + var1 + ".name"));
         }
-        
+
         EntityRegistry.registerModEntity(var0, var1, id, GalacticraftCore.instance, trackingDistance, updateFreq, sendVel);
     }
 }
