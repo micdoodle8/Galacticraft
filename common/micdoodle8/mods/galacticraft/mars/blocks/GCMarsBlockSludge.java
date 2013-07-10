@@ -8,11 +8,11 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.BlockFluidClassic;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -28,6 +28,11 @@ public class GCMarsBlockSludge extends BlockFluidClassic
     {
         if (!world.isRemote)
         {
+            if ((entity instanceof EntityPlayer && ((EntityPlayer) entity).capabilities.isFlying) || entity instanceof GCMarsEntitySludgeling)
+            {
+                return;
+            }
+            
             int range = 5;
             List<?> l = world.getEntitiesWithinAABB(GCMarsEntitySludgeling.class, AxisAlignedBB.getBoundingBox(x - range, y - range, z - range, x + range, y + range, z + range));
             
