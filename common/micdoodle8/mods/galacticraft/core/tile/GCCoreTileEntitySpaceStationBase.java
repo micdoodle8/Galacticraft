@@ -6,8 +6,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import universalelectricity.core.vector.Vector3;
-import universalelectricity.prefab.multiblock.IMultiBlock;
-import universalelectricity.prefab.multiblock.TileEntityMulti;
 
 public class GCCoreTileEntitySpaceStationBase extends TileEntityMulti implements IMultiBlock
 {

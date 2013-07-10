@@ -25,7 +25,7 @@ import universalelectricity.core.item.ElectricItemHelper;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.IPacketReceiver;
 import universalelectricity.prefab.network.PacketManager;
-import universalelectricity.prefab.tile.TileEntityDisableable;
+import universalelectricity.prefab.tile.TileEntityAdvanced;
 import buildcraft.api.power.IPowerProvider;
 import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerFramework;
@@ -33,7 +33,7 @@ import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public abstract class GCCoreTileEntityElectric extends TileEntityDisableable implements IWrenchable, IPowerReceptor, IEnergySink, IPacketReceiver, IDisableableMachine, IElectrical
+public abstract class GCCoreTileEntityElectric extends TileEntityAdvanced implements IWrenchable, IPowerReceptor, IEnergySink, IPacketReceiver, IDisableableMachine, IElectrical
 {
     public int ueWattsPerTick;
     public double maxEnergy;
@@ -140,7 +140,7 @@ public abstract class GCCoreTileEntityElectric extends TileEntityDisableable imp
 
             if (this.shouldPullEnergy())
             {
-                this.ueWattsReceived += ElectricItemHelper.dechargeItem(this.getBatteryInSlot(), this.ueWattsPerTick, this.getVoltage());
+                this.ueWattsReceived += ElectricItemHelper.dischargeItem(this.getBatteryInSlot(), this.ueWattsPerTick);
             }
 
             if (this.disableCooldown > 0)
@@ -341,7 +341,7 @@ public abstract class GCCoreTileEntityElectric extends TileEntityDisableable imp
     }
 
     @Override
-    public float receiveElectricity(ElectricityPack electricityPack, boolean doReceive)
+    public float receiveElectricity(ForgeDirection from, ElectricityPack electricityPack, boolean doReceive)
     {
         float energyReceived = electricityPack.getWatts();
         double energyUsed = Math.min(this.ueWattsPerTick - this.ueWattsReceived, energyReceived);
@@ -352,5 +352,17 @@ public abstract class GCCoreTileEntityElectric extends TileEntityDisableable imp
         }
 
         return (float) energyUsed;
+    }
+
+    @Override
+    public ElectricityPack provideElectricity(ForgeDirection from, ElectricityPack request, boolean doProvide)
+    {
+        return null;
+    }
+
+    @Override
+    public float getProvide(ForgeDirection direction)
+    {
+        return 0;
     }
 }

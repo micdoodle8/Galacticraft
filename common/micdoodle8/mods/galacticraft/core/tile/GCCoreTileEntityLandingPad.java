@@ -14,8 +14,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.fluids.FluidStack;
 import universalelectricity.core.vector.Vector3;
-import universalelectricity.prefab.multiblock.IMultiBlock;
-import universalelectricity.prefab.multiblock.TileEntityMulti;
 import cpw.mods.fml.client.FMLClientHandler;
 
 public class GCCoreTileEntityLandingPad extends TileEntityMulti implements IMultiBlock, IFuelable, IFuelDock, ICargoEntity

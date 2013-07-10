@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import net.minecraft.tileentity.TileEntity;
 import universalelectricity.core.vector.Vector3;
-import universalelectricity.prefab.multiblock.IMultiBlock;
 
 public class GCCoreTileEntityCargoPadSingle extends TileEntity
 {

@@ -7,8 +7,6 @@ import micdoodle8.mods.galacticraft.core.client.model.block.GCCoreModelAssemblyT
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import universalelectricity.core.vector.Vector3;
-import universalelectricity.prefab.multiblock.IMultiBlock;
-import universalelectricity.prefab.multiblock.TileEntityMulti;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
