@@ -1,5 +1,10 @@
 package micdoodle8.mods.galacticraft.mars.entities;
 
+import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityCreeper;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySkeleton;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpider;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityZombie;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -10,15 +15,18 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
-public class GCMarsEntitySludgeling extends EntityMob
+public class GCMarsEntitySludgeling extends EntityMob implements IEntityBreathable
 {
     public GCMarsEntitySludgeling(World par1World)
     {
         super(par1World);
         this.setSize(0.2F, 0.2F);
         this.tasks.addTask(1, new EntityAIAttackOnCollide(this, 0.25F, true));
-        this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityMob.class, 0, false, true));
         this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, false, true));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, GCCoreEntityZombie.class, 0, false, true));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, GCCoreEntitySkeleton.class, 0, false, true));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, GCCoreEntitySpider.class, 0, false, true));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, GCCoreEntityCreeper.class, 0, false, true));
     }
 
     @Override
@@ -139,5 +147,11 @@ public class GCMarsEntitySludgeling extends EntityMob
     public EnumCreatureAttribute getCreatureAttribute()
     {
         return EnumCreatureAttribute.ARTHROPOD;
+    }
+
+    @Override
+    public boolean canBreath()
+    {
+        return true;
     }
 }

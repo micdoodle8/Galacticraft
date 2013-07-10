@@ -15,6 +15,8 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IShearable;
@@ -32,6 +34,12 @@ public class GCMarsBlockVine extends Block implements IShearable
         super(blockID, Material.vine);
         this.setLightValue(1.0F);
         this.setTickRandomly(true);
+    }
+
+    @Override
+    public MovingObjectPosition collisionRayTrace(World world, int x, int y, int z, Vec3 vec3d, Vec3 vec3d1)
+    {
+        return null;
     }
 
     @Override
@@ -106,7 +114,8 @@ public class GCMarsBlockVine extends Block implements IShearable
         return false;
     }
 
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
+    @Override
+    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
     {
         return null;
     }
