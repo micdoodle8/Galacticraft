@@ -35,9 +35,7 @@ public class GCMarsConfigManager
     public static int idBlockVine;
 
     // ITEMS
-    public static int idItemRawDesh;
-    public static int idItemDeshStick;
-    public static int idItemIngotDesh;
+    public static int idItemMarsBasic;
     public static int idItemSpaceshipTier2;
 
     // ARMOR
@@ -77,26 +75,24 @@ public class GCMarsConfigManager
             GCMarsConfigManager.idBlockBacterialSludge = GCMarsConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockBacterialSludge", 3391, "Even though this will be generated, it can use block IDs greater than 256").getInt(3391);
             GCMarsConfigManager.idBlockVine = GCMarsConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockVine", 3392, "Even though this will be generated, it can use block IDs greater than 256").getInt(3392);
 
-            GCMarsConfigManager.idItemRawDesh = GCMarsConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemRawDesh", 9905).getInt(9905);
-            GCMarsConfigManager.idItemDeshStick = GCMarsConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemDeshStick", 9906).getInt(9906);
-            GCMarsConfigManager.idItemIngotDesh = GCMarsConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemIngotDesh", 9908).getInt(9908);
-            GCMarsConfigManager.idItemSpaceshipTier2 = GCMarsConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemSpaceshipTier2", 9936).getInt(9936);
+            GCMarsConfigManager.idItemMarsBasic = GCMarsConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemMarsBasic", 9905).getInt(9905);
+            GCMarsConfigManager.idItemSpaceshipTier2 = GCMarsConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemSpaceshipTier2", 9906).getInt(9906);
 
-            GCMarsConfigManager.idToolDeshSword = GCMarsConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idToolDeshSword", 9914).getInt(9914);
-            GCMarsConfigManager.idToolDeshPickaxe = GCMarsConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idToolDeshPickaxe", 9915).getInt(9915);
-            GCMarsConfigManager.idToolDeshSpade = GCMarsConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idToolDeshSpade", 9916).getInt(9916);
-            GCMarsConfigManager.idToolDeshHoe = GCMarsConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idToolDeshHoe", 9917).getInt(9917);
-            GCMarsConfigManager.idToolDeshAxe = GCMarsConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idToolDeshAxe", 9918).getInt(9918);
+            GCMarsConfigManager.idToolDeshSword = GCMarsConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idToolDeshSword", 9907).getInt(9907);
+            GCMarsConfigManager.idToolDeshPickaxe = GCMarsConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idToolDeshPickaxe", 9908).getInt(9908);
+            GCMarsConfigManager.idToolDeshSpade = GCMarsConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idToolDeshSpade", 9909).getInt(9909);
+            GCMarsConfigManager.idToolDeshHoe = GCMarsConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idToolDeshHoe", 9910).getInt(9910);
+            GCMarsConfigManager.idToolDeshAxe = GCMarsConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idToolDeshAxe", 9911).getInt(9911);
 
-            GCMarsConfigManager.idArmorDeshHelmet = GCMarsConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idArmorDeshHelmet", 9929).getInt(9929);
-            GCMarsConfigManager.idArmorDeshChestplate = GCMarsConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idArmorDeshChestplate", 9930).getInt(9930);
-            GCMarsConfigManager.idArmorDeshLeggings = GCMarsConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idArmorDeshLeggings", 9931).getInt(9931);
-            GCMarsConfigManager.idArmorDeshBoots = GCMarsConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idArmorDeshBoots", 9932).getInt(9932);
+            GCMarsConfigManager.idArmorDeshHelmet = GCMarsConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idArmorDeshHelmet", 9912).getInt(9912);
+            GCMarsConfigManager.idArmorDeshChestplate = GCMarsConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idArmorDeshChestplate", 9913).getInt(9913);
+            GCMarsConfigManager.idArmorDeshLeggings = GCMarsConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idArmorDeshLeggings", 9914).getInt(9914);
+            GCMarsConfigManager.idArmorDeshBoots = GCMarsConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idArmorDeshBoots", 9915).getInt(9915);
 
-            GCMarsConfigManager.idEntityCreeperBoss = GCMarsConfigManager.configuration.get("Entities", "idEntityCreeperBoss", 162).getInt(162);
-            GCMarsConfigManager.idEntityProjectileTNT = GCMarsConfigManager.configuration.get("Entities", "idEntityProjectileTNT", 164).getInt(164);
-            GCMarsConfigManager.idEntitySpaceshipTier2 = GCMarsConfigManager.configuration.get("Entities", "idEntitySpaceshipTier2", 167).getInt(167);
-            GCMarsConfigManager.idEntitySludgeling = GCMarsConfigManager.configuration.get("Entities", "idEntitySludgeling", 168).getInt(168); 
+            GCMarsConfigManager.idEntityCreeperBoss = GCMarsConfigManager.configuration.get("Entities", "idEntityCreeperBoss", 171).getInt(171);
+            GCMarsConfigManager.idEntityProjectileTNT = GCMarsConfigManager.configuration.get("Entities", "idEntityProjectileTNT", 172).getInt(172);
+            GCMarsConfigManager.idEntitySpaceshipTier2 = GCMarsConfigManager.configuration.get("Entities", "idEntitySpaceshipTier2", 173).getInt(173);
+            GCMarsConfigManager.idEntitySludgeling = GCMarsConfigManager.configuration.get("Entities", "idEntitySludgeling", 174).getInt(174); 
 
             GCMarsConfigManager.idGuiRocketCraftingBenchT2 = GCMarsConfigManager.configuration.get("GUI", "idGuiRocketCraftingBenchT2", 143).getInt(143);
 
@@ -104,7 +100,7 @@ public class GCMarsConfigManager
         }
         catch (final Exception e)
         {
-            FMLLog.log(Level.SEVERE, e, "Galacticraft has a problem loading it's configuration");
+            FMLLog.log(Level.SEVERE, e, "Galacticraft Mars has a problem loading it's configuration");
         }
         finally
         {
