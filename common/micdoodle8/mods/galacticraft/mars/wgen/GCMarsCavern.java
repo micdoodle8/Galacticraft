@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.mars.wgen;
 
 import java.util.Random;
-import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlock;
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
@@ -10,8 +9,8 @@ import net.minecraft.world.chunk.IChunkProvider;
 /**
  * Copyright 2012, micdoodle8
  * 
- *  All rights reserved.
- *
+ * All rights reserved.
+ * 
  */
 public class GCMarsCavern
 {
@@ -28,7 +27,7 @@ public class GCMarsCavern
         this.rand.setSeed(par2World.getSeed());
         final long var7 = this.rand.nextLong();
         final long var9 = this.rand.nextLong();
-        
+
         for (int var11 = par3 - var6; var11 <= par3 + var6; ++var11)
         {
             for (int var12 = par4 - var6; var12 <= par4 + var6; ++var12)
@@ -46,12 +45,12 @@ public class GCMarsCavern
         if (this.rand.nextInt(35) == 0)
         {
             final double xPos = xChunkCoord * 16 + this.rand.nextInt(16);
-            final double yPos = (double)this.rand.nextInt(10) + 15;
+            final double yPos = (double) this.rand.nextInt(10) + 15;
             final double zPos = zChunkCoord * 16 + this.rand.nextInt(16);
             this.generateLargeCaveNode(this.rand.nextLong(), origXChunkCoord, origZChunkCoord, arrayOfIDs, arrayOfMeta, xPos, yPos, zPos);
         }
     }
-    
+
     protected void generateLargeCaveNode(long par1, int origXChunkCoord, int origZChunkCoord, short[] arrayOfIDs, byte[] arrayOfMeta, double xPos, double yPos, double zPos)
     {
         this.generateCaveNode(par1, origXChunkCoord, origZChunkCoord, arrayOfIDs, arrayOfMeta, xPos, yPos, zPos, 1.0F + this.rand.nextFloat() * 6.0F, 10.0F, 10.0F, -1, -1, 0.2D);
@@ -119,7 +118,7 @@ public class GCMarsCavern
                     return;
                 }
 
-                if (xPos >= var19 - 16.0D - caveWidth * 2.0D && zPos >= var21 - 16.0D - caveWidth * 2.0D && xPos <= var19 + 16.0D + caveWidth * 2.0D && zPos <= var21 + 16.0D + caveWidth * 2.0D) //CHECKED
+                if (xPos >= var19 - 16.0D - caveWidth * 2.0D && zPos >= var21 - 16.0D - caveWidth * 2.0D && xPos <= var19 + 16.0D + caveWidth * 2.0D && zPos <= var21 + 16.0D + caveWidth * 2.0D) // CHECKED
                 {
                     int caveMinX = MathHelper.floor_double(xPos - caveWidth) - origXChunkCoord * 16 - 1;
                     int caveMaxX = MathHelper.floor_double(xPos + caveWidth) - origXChunkCoord * 16 + 1;
@@ -130,32 +129,32 @@ public class GCMarsCavern
 
                     if (caveMinX < 0)
                     {
-                    	caveMinX = 0;
+                        caveMinX = 0;
                     }
 
                     if (caveMaxX > 16)
                     {
-                    	caveMaxX = 16;
+                        caveMaxX = 16;
                     }
 
                     if (caveMinY < 1)
                     {
-                    	caveMinY = 1;
+                        caveMinY = 1;
                     }
 
                     if (caveMaxY > 65)
                     {
-                    	caveMaxY = 65;
+                        caveMaxY = 65;
                     }
 
                     if (caveMinZ < 0)
                     {
-                    	caveMinZ = 0;
+                        caveMinZ = 0;
                     }
 
                     if (caveMaxZ > 16)
                     {
-                    	caveMaxZ = 16;
+                        caveMaxZ = 16;
                     }
 
                     boolean isBlockWater = false;
@@ -180,7 +179,7 @@ public class GCMarsCavern
                             }
                         }
                     }
-                    
+
                     for (var42 = caveMinX; var42 < caveMaxX; ++var42)
                     {
                         final double var59 = (var42 + origXChunkCoord * 16 + 0.5D - xPos) / caveWidth;
@@ -200,7 +199,7 @@ public class GCMarsCavern
                                         if (var51 > -0.7D)
                                         {
                                             int coords = var50 << 8 | var45 << 4 | var42;
-                                            
+
                                             if (arrayOfIDs[coords] == GCMarsBlocks.marsBlock.blockID || arrayOfIDs[coords] == GCMarsBlocks.blockSludge.blockID || arrayOfIDs[coords] == GCMarsBlocks.vine.blockID)
                                             {
                                                 arrayOfIDs[coords] = 0;
@@ -212,7 +211,6 @@ public class GCMarsCavern
                         }
                     }
 
-                    
                     for (var42 = caveMinX; var42 < caveMaxX; ++var42)
                     {
                         final double var59 = (var42 + origXChunkCoord * 16 + 0.5D - xPos) / caveWidth;
@@ -232,21 +230,21 @@ public class GCMarsCavern
                                         if (var51 > -0.7D)
                                         {
                                             int coords = var50 << 8 | var45 << 4 | var42;
-                                            int coordsAbove = (var50 + 1) << 8 | var45 << 4 | var42;
-                                            int coordsBelow = (var50 - 1) << 8 | var45 << 4 | var42;
-                                            
+                                            int coordsAbove = var50 + 1 << 8 | var45 << 4 | var42;
+                                            int coordsBelow = var50 - 1 << 8 | var45 << 4 | var42;
+
                                             if (arrayOfIDs[coords] == 0)
                                             {
                                                 if (arrayOfIDs[coordsAbove] == GCMarsBlocks.marsBlock.blockID && this.rand.nextInt(1200) == 0)
                                                 {
                                                     int modifier = 0;
-                                                    
+
                                                     while (arrayOfIDs[coordsBelow] == 0)
                                                     {
-                                                        arrayOfIDs[((var50 + modifier) << 8 | var45 << 4 | var42)] = (short) GCMarsBlocks.vine.blockID;
-                                                        arrayOfMeta[((var50 + modifier) << 8 | var45 << 4 | var42)] = (byte) (Math.abs(modifier) % 3);
+                                                        arrayOfIDs[var50 + modifier << 8 | var45 << 4 | var42] = (short) GCMarsBlocks.vine.blockID;
+                                                        arrayOfMeta[var50 + modifier << 8 | var45 << 4 | var42] = (byte) (Math.abs(modifier) % 3);
                                                         modifier--;
-                                                        coordsBelow = (var50 - 1 + modifier) << 8 | var45 << 4 | var42;
+                                                        coordsBelow = var50 - 1 + modifier << 8 | var45 << 4 | var42;
                                                     }
                                                 }
                                                 else if (arrayOfIDs[coordsBelow] == GCMarsBlocks.marsBlock.blockID && this.rand.nextInt(32000) == 0)

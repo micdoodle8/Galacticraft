@@ -42,13 +42,13 @@ public class GCMarsEntitySludgeling extends EntityMob implements IEntityBreathab
     {
         return true;
     }
-    
+
     @Override
     protected boolean canTriggerWalking()
     {
         return false;
     }
-    
+
     @Override
     protected Entity findPlayerToAttack()
     {
@@ -73,7 +73,7 @@ public class GCMarsEntitySludgeling extends EntityMob implements IEntityBreathab
     {
         return "mob.silverfish.kill";
     }
-    
+
     public EntityPlayer getClosestEntityToAttack(double par1, double par3, double par5, double par7)
     {
         double var9 = -1.0D;
@@ -81,7 +81,7 @@ public class GCMarsEntitySludgeling extends EntityMob implements IEntityBreathab
 
         for (int var12 = 0; var12 < this.worldObj.loadedEntityList.size(); ++var12)
         {
-            EntityPlayer var13 = (EntityPlayer)this.worldObj.loadedEntityList.get(var12);
+            EntityPlayer var13 = (EntityPlayer) this.worldObj.loadedEntityList.get(var12);
             double var14 = var13.getDistanceSq(par1, par3, par5);
 
             if ((par7 < 0.0D || var14 < par7 * par7) && (var9 == -1.0D || var14 < var9))
@@ -115,7 +115,7 @@ public class GCMarsEntitySludgeling extends EntityMob implements IEntityBreathab
     {
         return 0;
     }
-    
+
     @Override
     public void onUpdate()
     {

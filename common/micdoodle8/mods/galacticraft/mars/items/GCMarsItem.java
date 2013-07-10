@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.mars.items;
 
 import java.util.List;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -21,9 +20,9 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GCMarsItem extends Item
 {
-    public static String[] names = {"rawDesh", "deshStick", "ingotDesh"};
-    protected Icon[] icons = new Icon[names.length];
-    
+    public static String[] names = { "rawDesh", "deshStick", "ingotDesh" };
+    protected Icon[] icons = new Icon[GCMarsItem.names.length];
+
     public GCMarsItem(int par1)
     {
         super(par1);
@@ -84,7 +83,7 @@ public class GCMarsItem extends Item
         {
             return "item." + GCMarsItem.names[par1ItemStack.getItemDamage()];
         }
-        
+
         return "unnamed";
     }
 

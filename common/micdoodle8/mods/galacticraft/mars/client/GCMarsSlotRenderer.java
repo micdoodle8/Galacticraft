@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.mars.client;
 import micdoodle8.mods.galacticraft.api.world.ICelestialBodyRenderer;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.resources.ResourceLocation;
+import net.minecraft.util.ResourceLocation;
 
 public class GCMarsSlotRenderer implements ICelestialBodyRenderer
 {

@@ -508,7 +508,7 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
         {
             return null;
         }
-        
+
         if (j < 64 && par1EnumCreatureType == EnumCreatureType.monster)
         {
             final List monsters = new ArrayList();

@@ -73,7 +73,7 @@ public class GalacticraftMars
     public static final String TEXTURE_PREFIX = GalacticraftMars.TEXTURE_DOMAIN + ":";
 
     public static Fluid SLUDGE;
-    
+
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
@@ -84,7 +84,7 @@ public class GalacticraftMars
         {
             GCLog.info("\"bacterialsludge\" has already been registered as a fluid, ignoring...");
         }
-        
+
         GCMarsBlocks.initBlocks();
         GCMarsBlocks.registerBlocks();
         GCMarsBlocks.setHarvestLevels();
@@ -130,7 +130,7 @@ public class GalacticraftMars
         }
 
         GCLog.info("Galacticraft Mars Loaded: " + languages + " Languages.");
-        
+
         GalacticraftMars.galacticraftMarsTab = new GCCoreCreativeTab(CreativeTabs.getNextID(), GalacticraftMars.MODID, GCMarsItems.spaceship.itemID, 5);
         MinecraftForge.EVENT_BUS.register(new GCMarsEvents());
         GalacticraftRegistry.registerTeleportType(GCMarsWorldProvider.class, new GCMoonTeleportType());

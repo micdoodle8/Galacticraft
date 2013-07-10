@@ -24,18 +24,18 @@ public class GCMarsBlockSludge extends BlockFluidClassic
     Icon flowingIcon;
 
     @Override
-    public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) 
+    public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity)
     {
         if (!world.isRemote)
         {
-            if ((entity instanceof EntityPlayer && ((EntityPlayer) entity).capabilities.isFlying) || entity instanceof GCMarsEntitySludgeling)
+            if (entity instanceof EntityPlayer && ((EntityPlayer) entity).capabilities.isFlying || entity instanceof GCMarsEntitySludgeling)
             {
                 return;
             }
-            
+
             int range = 5;
             List<?> l = world.getEntitiesWithinAABB(GCMarsEntitySludgeling.class, AxisAlignedBB.getBoundingBox(x - range, y - range, z - range, x + range, y + range, z + range));
-            
+
             if (l.size() < 3)
             {
                 GCMarsEntitySludgeling sludgeling = new GCMarsEntitySludgeling(world);
@@ -43,7 +43,7 @@ public class GCMarsBlockSludge extends BlockFluidClassic
                 world.spawnEntityInWorld(sludgeling);
             }
         }
-        
+
         super.onEntityCollidedWithBlock(world, x, y, z, entity);
     }
 

@@ -28,7 +28,7 @@ public class GCMarsBlocks
     public static void initBlocks()
     {
         GCMarsBlocks.marsBlock = new GCMarsBlock(GCMarsConfigManager.idBlockMars).setHardness(2.2F).setUnlocalizedName("mars");
-        GCMarsBlocks.blockSludge = new GCMarsBlockSludge(GalacticraftMars.SLUDGE.getBlockID(), bacterialSludge).setUnlocalizedName("sludge");
+        GCMarsBlocks.blockSludge = new GCMarsBlockSludge(GalacticraftMars.SLUDGE.getBlockID(), GCMarsBlocks.bacterialSludge).setUnlocalizedName("sludge");
         GCMarsBlocks.vine = new GCMarsBlockVine(GCMarsConfigManager.idBlockVine).setHardness(0.1F).setUnlocalizedName("vine");
     }
 
