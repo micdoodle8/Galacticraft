@@ -9,6 +9,7 @@ import micdoodle8.mods.galacticraft.core.GCLog;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.GCCoreConnectionHandler;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
 import micdoodle8.mods.galacticraft.mars.dimension.GCMarsWorldProvider;
@@ -155,7 +156,7 @@ public class GalacticraftMars
 
     public void registerCreatures()
     {
-        this.registerGalacticraftCreature(GCMarsEntitySludgeling.class, "Sludgeling", GCMarsConfigManager.idEntitySludgeling, 51241, 12013);
+        this.registerGalacticraftCreature(GCMarsEntitySludgeling.class, "Sludgeling", GCMarsConfigManager.idEntitySludgeling, GCCoreUtil.convertTo32BitColor(255, 0, 0, 50), GCCoreUtil.convertTo32BitColor(255, 0, 0, 150));
         // this.registerGalacticraftCreature(GCMarsEntityCreeperBoss.class,
         // "Creeper Boss", GCMarsConfigManager.idEntityCreeperBoss, 894731, 0);
     }
