@@ -12,6 +12,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.BlockFluidClassic;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -30,9 +31,11 @@ public class GCMarsBlockSludge extends BlockFluidClassic
             int range = 5;
             List<?> l = world.getEntitiesWithinAABB(GCMarsEntitySludgeling.class, AxisAlignedBB.getBoundingBox(x - range, y - range, z - range, x + range, y + range, z + range));
             
-            if (l.size() == 0)
+            if (l.size() < 3)
             {
-                world.spawnEntityInWorld(new GCMarsEntitySludgeling(world));
+                GCMarsEntitySludgeling sludgeling = new GCMarsEntitySludgeling(world);
+                sludgeling.setPosition(x + world.rand.nextInt(5) - 2, y, z + world.rand.nextInt(5) - 2);
+                world.spawnEntityInWorld(sludgeling);
             }
         }
         

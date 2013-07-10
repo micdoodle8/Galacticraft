@@ -13,6 +13,7 @@ import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
 import micdoodle8.mods.galacticraft.mars.dimension.GCMarsWorldProvider;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityRocketT2;
+import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntitySludgeling;
 import micdoodle8.mods.galacticraft.mars.items.GCMarsItems;
 import micdoodle8.mods.galacticraft.moon.dimension.GCMoonTeleportType;
 import net.minecraft.creativetab.CreativeTabs;
@@ -154,6 +155,7 @@ public class GalacticraftMars
 
     public void registerCreatures()
     {
+        this.registerGalacticraftCreature(GCMarsEntitySludgeling.class, "Sludgeling", GCMarsConfigManager.idEntitySludgeling, 51241, 12013);
         // this.registerGalacticraftCreature(GCMarsEntityCreeperBoss.class,
         // "Creeper Boss", GCMarsConfigManager.idEntityCreeperBoss, 894731, 0);
     }

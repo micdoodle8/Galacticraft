@@ -57,6 +57,7 @@ public class GCMarsConfigManager
     public static int idEntityCreeperBoss;
     public static int idEntityProjectileTNT;
     public static int idEntitySpaceshipTier2;
+    public static int idEntitySludgeling;
 
     // GUI
     public static int idGuiRocketCraftingBenchT2;
@@ -95,6 +96,7 @@ public class GCMarsConfigManager
             GCMarsConfigManager.idEntityCreeperBoss = GCMarsConfigManager.configuration.get("Entities", "idEntityCreeperBoss", 162).getInt(162);
             GCMarsConfigManager.idEntityProjectileTNT = GCMarsConfigManager.configuration.get("Entities", "idEntityProjectileTNT", 164).getInt(164);
             GCMarsConfigManager.idEntitySpaceshipTier2 = GCMarsConfigManager.configuration.get("Entities", "idEntitySpaceshipTier2", 167).getInt(167);
+            GCMarsConfigManager.idEntitySludgeling = GCMarsConfigManager.configuration.get("Entities", "idEntitySludgeling", 168).getInt(168); 
 
             GCMarsConfigManager.idGuiRocketCraftingBenchT2 = GCMarsConfigManager.configuration.get("GUI", "idGuiRocketCraftingBenchT2", 143).getInt(143);
 

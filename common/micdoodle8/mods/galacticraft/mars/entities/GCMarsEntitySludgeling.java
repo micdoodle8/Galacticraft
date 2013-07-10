@@ -26,7 +26,7 @@ public class GCMarsEntitySludgeling extends EntityMob
     {
         super.func_110147_ax();
         this.func_110148_a(SharedMonsterAttributes.field_111267_a).func_111128_a(7.0D);
-        this.func_110148_a(SharedMonsterAttributes.field_111263_d).func_111128_a(0.6F);
+        this.func_110148_a(SharedMonsterAttributes.field_111263_d).func_111128_a(1.0F);
     }
 
     @Override
