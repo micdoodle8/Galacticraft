@@ -168,7 +168,6 @@ public class GCCoreConfigManager
     public static double oilGenFactor;
     public static boolean disableLeafDecay;
     public static boolean spaceStationsRequirePermission;
-    public static boolean canRespawnOnSpaceStations;
     public static boolean overrideCapes;
     public static boolean hiresTextures;
     public static double spaceStationEnergyScalar;
@@ -320,7 +319,6 @@ public class GCCoreConfigManager
             GCCoreConfigManager.oxygenIndicatorLeftSide = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Using Minimap Mod", false, "If true, this will move the Oxygen Indicator to the left side.").getBoolean(false);
             GCCoreConfigManager.disableLeafDecay = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Oxygen Collector Leaf Decay", false, "If set to true, Oxygen Collectors will not consume leaf blocks.").getBoolean(false);
             GCCoreConfigManager.spaceStationsRequirePermission = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Space Stations Require Permission", true, "While true, space stations require you to invite other players using /ssinvite <playername>").getBoolean(true);
-            GCCoreConfigManager.canRespawnOnSpaceStations = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Can players respawn on Space Stations", false, "If you want to respawn on spacestations if you die there, set to true. When false beds will explode on use.").getBoolean(false);
             GCCoreConfigManager.overrideCapes = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Override Capes", true, "By default, Galacticraft will override capes with the mod's donor cape. Set to false to disable.").getBoolean(true);
             GCCoreConfigManager.hiresTextures = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Hi-Res Textures (32x32)", true, "If you prefer low-resolution textures, set this to false").getBoolean(true);
             GCCoreConfigManager.spaceStationEnergyScalar = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Space Station Solar Energy Multiplier", 3.0, "If Mekanism is installed, solar panels will work (default 3x) more effective on space stations.").getDouble(3.0);

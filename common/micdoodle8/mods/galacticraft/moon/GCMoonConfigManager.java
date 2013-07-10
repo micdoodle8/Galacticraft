@@ -36,7 +36,6 @@ public class GCMoonConfigManager
     public static boolean disableAluminiumMoon;
     public static boolean disableIronMoon;
     public static boolean generateOtherMods;
-    public static boolean canRespawnOnMoon;
     public static boolean disableMoonVillageGen;
 
     public GCMoonConfigManager(File file)
@@ -66,7 +65,6 @@ public class GCMoonConfigManager
 
             GCMoonConfigManager.disableCheeseMoon = GCMoonConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Cheese Ore Gen on Moon", false).getBoolean(false);
             GCMoonConfigManager.generateOtherMods = GCMoonConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Generate other mod's features on Moon", false).getBoolean(false);
-            GCMoonConfigManager.canRespawnOnMoon = GCMoonConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Can players respawn on Moon", false).getBoolean(false);
             GCMoonConfigManager.disableMoonVillageGen = GCMoonConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Moon Village Gen", false).getBoolean(false);
         }
         catch (final Exception e)

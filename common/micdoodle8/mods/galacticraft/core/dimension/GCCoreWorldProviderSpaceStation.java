@@ -151,19 +151,19 @@ public class GCCoreWorldProviderSpaceStation extends WorldProvider implements IO
     @Override
     public boolean isSurfaceWorld()
     {
-        return false;
+        return true;
     }
 
     @Override
     public boolean canCoordinateBeSpawn(int var1, int var2)
     {
-        return false;
+        return true;
     }
 
     @Override
     public boolean canRespawnHere()
     {
-        return GCCoreConfigManager.canRespawnOnSpaceStations;
+        return true;
     }
 
     @Override

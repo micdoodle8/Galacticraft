@@ -439,8 +439,6 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
         {
             this.setPosition(this.posX, this.posY, this.posZ);
         }
-        
-        FMLLog.info("" + this.entityId);
 
         this.prevPosX = this.posX;
         this.prevPosY = this.posY;

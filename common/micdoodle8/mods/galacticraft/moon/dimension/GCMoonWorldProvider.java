@@ -156,7 +156,7 @@ public class GCMoonWorldProvider extends WorldProvider implements IGalacticraftW
     @Override
     public boolean isSurfaceWorld()
     {
-        return false;
+        return true;
     }
 
     @Override
@@ -168,7 +168,7 @@ public class GCMoonWorldProvider extends WorldProvider implements IGalacticraftW
     @Override
     public boolean canRespawnHere()
     {
-        return GCMoonConfigManager.canRespawnOnMoon;
+        return true;
     }
 
     @Override
