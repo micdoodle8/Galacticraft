@@ -256,10 +256,10 @@ public class GCCoreConfigManager
             GCCoreConfigManager.idToolSteelHoe = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idToolSteelHoe", 9888).getInt(9888);
             GCCoreConfigManager.idToolSteelAxe = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idToolSteelAxe", 9889).getInt(9889);
 
-            GCCoreConfigManager.idArmorSteelHelmet = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idArmorSteelHelmet", 9985).getInt(9885);
-            GCCoreConfigManager.idArmorSteelChestplate = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idArmorSteelChestplate", 9986).getInt(9886);
-            GCCoreConfigManager.idArmorSteelLeggings = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idArmorSteelLeggings", 9987).getInt(9887);
-            GCCoreConfigManager.idArmorSteelBoots = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idArmorSteelBoots", 9988).getInt(9888);
+            GCCoreConfigManager.idArmorSteelHelmet = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idArmorSteelHelmet", 9890).getInt(9890);
+            GCCoreConfigManager.idArmorSteelChestplate = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idArmorSteelChestplate", 9891).getInt(9891);
+            GCCoreConfigManager.idArmorSteelLeggings = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idArmorSteelLeggings", 9892).getInt(9892);
+            GCCoreConfigManager.idArmorSteelBoots = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idArmorSteelBoots", 9893).getInt(9893);
 
             GCCoreConfigManager.useRecipesIC2 = GCCoreConfigManager.configuration.get("RECIPES", "Enable IC2 Recipes", true).getBoolean(true);
             GCCoreConfigManager.useRecipesGT = GCCoreConfigManager.configuration.get("RECIPES", "Enable Gregtech Recipes", true).getBoolean(true);
