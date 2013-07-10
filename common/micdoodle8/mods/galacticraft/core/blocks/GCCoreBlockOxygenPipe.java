@@ -6,6 +6,7 @@ import mekanism.api.IPressurizedTube;
 import mekanism.api.ITubeConnection;
 import micdoodle8.mods.galacticraft.api.tile.IColorable;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenPipe;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.ITileEntityProvider;
@@ -139,7 +140,7 @@ public class GCCoreBlockOxygenPipe extends BlockContainer implements ITileEntity
                         par1World.spawnEntityInWorld(entityitem);
                     }
 
-                    PacketManager.sendPacketToClients(PacketManager.getPacket(GalacticraftCore.CHANNEL, tileEntity, tileEntity.getColor(), -1));
+                    PacketManager.sendPacketToClients(GCCorePacketManager.getPacket(GalacticraftCore.CHANNEL, tileEntity, tileEntity.getColor(), -1));
 
                     for (final ForgeDirection dir : ForgeDirection.values())
                     {

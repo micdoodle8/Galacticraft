@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemOilCanister;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -402,7 +403,7 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
     @Override
     public Packet getPacket()
     {
-        return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.ueWattsReceived, this.processTicks, this.ic2Energy, this.oilTank.getFluid() == null ? 0 : this.oilTank.getFluid().amount, this.fuelTank.getFluid() == null ? 0 : this.fuelTank.getFluid().amount, this.disabled, this.getPowerProvider() != null ? (double) this.getPowerProvider().getEnergyStored() : 0.0D, this.disableCooldown);
+        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.ueWattsReceived, this.processTicks, this.ic2Energy, this.oilTank.getFluid() == null ? 0 : this.oilTank.getFluid().amount, this.fuelTank.getFluid() == null ? 0 : this.fuelTank.getFluid().amount, this.disabled, this.getPowerProvider() != null ? (double) this.getPowerProvider().getEnergyStored() : 0.0D, this.disableCooldown);
     }
 
     @Override

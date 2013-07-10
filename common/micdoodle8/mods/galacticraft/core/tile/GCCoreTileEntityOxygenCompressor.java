@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenTank;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -11,7 +12,6 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.packet.Packet;
 import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.core.item.IItemElectric;
-import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
@@ -248,7 +248,7 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityOxygen imp
     @Override
     public Packet getPacket()
     {
-        return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.storedOxygen, this.ueWattsReceived, this.ic2Energy, this.disabled, this.getPowerProvider() != null ? (double) this.getPowerProvider().getEnergyStored() : 0.0D);
+        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.storedOxygen, this.ueWattsReceived, this.ic2Energy, this.disabled, this.getPowerProvider() != null ? (double) this.getPowerProvider().getEnergyStored() : 0.0D);
     }
 
     @Override

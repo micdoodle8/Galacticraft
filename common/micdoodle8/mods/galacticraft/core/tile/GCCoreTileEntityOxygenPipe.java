@@ -7,6 +7,7 @@ import mekanism.api.ITubeConnection;
 import mekanism.api.Object3D;
 import micdoodle8.mods.galacticraft.api.tile.IColorable;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;
@@ -129,7 +130,7 @@ public class GCCoreTileEntityOxygenPipe extends TileEntity implements ITubeConne
 
         if (this.preColorCooldown == 0 && !this.worldObj.isRemote && this.preLoadColor != -1)
         {
-            PacketManager.sendPacketToClients(PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getColor(), this.preLoadColor));
+            GCCorePacketManager.sendPacketToClients(PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getColor(), this.preLoadColor));
             this.preLoadColor = -1;
             this.setColor = true;
         }

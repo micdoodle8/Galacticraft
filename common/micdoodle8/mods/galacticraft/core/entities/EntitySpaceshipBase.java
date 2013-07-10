@@ -16,6 +16,7 @@ import micdoodle8.mods.galacticraft.core.GCCoreDamageSource;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLandingPad;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLandingPadFull;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFuelLoader;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
@@ -37,6 +38,7 @@ import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.IPacketReceiver;
 import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -437,6 +439,8 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
         {
             this.setPosition(this.posX, this.posY, this.posZ);
         }
+        
+        FMLLog.info("" + this.entityId);
 
         this.prevPosX = this.posX;
         this.prevPosY = this.posY;
@@ -444,7 +448,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
 
         if (!this.worldObj.isRemote && this.ticks % 3 == 0)
         {
-            PacketManager.sendPacketToClients(PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getNetworkedData(new ArrayList())), this.worldObj, new Vector3(this), 50);
+            PacketManager.sendPacketToClients(GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getNetworkedData(new ArrayList())), this.worldObj, new Vector3(this), 50);
         }
     }
 
@@ -577,14 +581,14 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
     @Override
     public boolean func_130002_c(EntityPlayer par1EntityPlayer)
     {
-        if (!this.worldObj.isRemote)
+        if (this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase())
         {
-            if (this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase())
-            {
-                return false;
-            }
+            return false;
+        }
 
-            if (this.riddenByEntity != null && this.riddenByEntity instanceof GCCorePlayerMP)
+        if (this.riddenByEntity != null && this.riddenByEntity instanceof GCCorePlayerMP)
+        {
+            if (!this.worldObj.isRemote)
             {
                 final Object[] toSend = { ((EntityPlayerMP) this.riddenByEntity).username };
                 ((EntityPlayerMP) this.riddenByEntity).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 13, toSend));
@@ -593,7 +597,12 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
                 ((GCCorePlayerMP) par1EntityPlayer).chatCooldown = 0;
                 par1EntityPlayer.mountEntity(null);
             }
-            else if (par1EntityPlayer instanceof GCCorePlayerMP)
+            
+            return true;
+        }
+        else if (par1EntityPlayer instanceof GCCorePlayerMP)
+        {
+            if (!this.worldObj.isRemote)
             {
                 final Object[] toSend = { par1EntityPlayer.username };
                 ((EntityPlayerMP) par1EntityPlayer).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 8, toSend));
@@ -602,7 +611,7 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
                 ((GCCorePlayerMP) par1EntityPlayer).chatCooldown = 0;
                 par1EntityPlayer.mountEntity(this);
             }
-
+            
             return true;
         }
 
@@ -676,5 +685,11 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
     public EnumRocketType getType()
     {
         return this.rocketType;
+    }
+    
+    @Override
+    public boolean canRiderInteract()
+    {
+        return true;
     }
 }

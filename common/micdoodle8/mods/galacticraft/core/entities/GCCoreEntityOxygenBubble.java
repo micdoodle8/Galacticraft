@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenDistributor;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -142,7 +143,7 @@ public class GCCoreEntityOxygenBubble extends Entity implements IPacketReceiver
 
     public Packet getDescriptionPacket()
     {
-        final Packet p = PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.size);
+        final Packet p = GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.size);
         return p;
     }
 

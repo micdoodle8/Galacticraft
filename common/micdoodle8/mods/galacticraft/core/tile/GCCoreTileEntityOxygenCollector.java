@@ -7,6 +7,7 @@ import mekanism.api.ITubeConnection;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,7 +25,6 @@ import net.minecraftforge.common.IPlantable;
 import universalelectricity.core.item.IItemElectric;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.core.vector.VectorHelper;
-import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
@@ -356,7 +356,7 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityElectric im
     @Override
     public Packet getPacket()
     {
-        return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.power, this.ueWattsReceived, this.ic2Energy, this.disabled, this.getPowerProvider() != null ? (double) this.getPowerProvider().getEnergyStored() : 0.0D);
+        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.power, this.ueWattsReceived, this.ic2Energy, this.disabled, this.getPowerProvider() != null ? (double) this.getPowerProvider().getEnergyStored() : 0.0D);
     }
 
     @Override
