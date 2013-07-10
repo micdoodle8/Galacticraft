@@ -117,7 +117,7 @@ public class GCMarsBlock extends Block implements IDetectableMetadataResource, I
     {
         if (meta == 2)
         {
-            return GCMarsItems.rawDesh.itemID;
+            return GCMarsItems.marsItemBasic.itemID;
         }
 
         return this.blockID;

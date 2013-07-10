@@ -15,7 +15,7 @@ import net.minecraftforge.common.MinecraftForge;
  */
 public class GCMarsItems
 {
-    public static Item rawDesh;
+    public static Item marsItemBasic;
     public static Item deshPickaxe;
     public static Item deshAxe;
     public static Item deshHoe;
@@ -25,8 +25,6 @@ public class GCMarsItems
     public static Item deshChestplate;
     public static Item deshLeggings;
     public static Item deshBoots;
-    public static Item deshStick;
-    public static Item ingotDesh;
     public static Item spaceship;
 
     public static EnumArmorMaterial ARMORDESH = EnumHelper.addArmorMaterial("DESH", 42, new int[] { 4, 9, 7, 4 }, 12);
@@ -34,7 +32,7 @@ public class GCMarsItems
 
     public static void initItems()
     {
-        GCMarsItems.rawDesh = new GCMarsItem(GCMarsConfigManager.idItemRawDesh).setUnlocalizedName("rawDesh");
+        GCMarsItems.marsItemBasic = new GCMarsItem(GCMarsConfigManager.idItemMarsBasic);
         GCMarsItems.deshPickaxe = new GCMarsItemPickaxe(GCMarsConfigManager.idToolDeshPickaxe, GCMarsItems.TOOLDESH).setUnlocalizedName("deshPick");
         GCMarsItems.deshAxe = new GCMarsItemAxe(GCMarsConfigManager.idToolDeshAxe, GCMarsItems.TOOLDESH).setUnlocalizedName("deshAxe");
         GCMarsItems.deshHoe = new GCMarsItemHoe(GCMarsConfigManager.idToolDeshHoe, GCMarsItems.TOOLDESH).setUnlocalizedName("deshHoe");
@@ -44,8 +42,6 @@ public class GCMarsItems
         GCMarsItems.deshChestplate = new GCMarsItemArmor(GCMarsConfigManager.idArmorDeshChestplate, GCMarsItems.ARMORDESH, 7, 1, false).setUnlocalizedName("deshChestplate");
         GCMarsItems.deshLeggings = new GCMarsItemArmor(GCMarsConfigManager.idArmorDeshLeggings, GCMarsItems.ARMORDESH, 7, 2, false).setUnlocalizedName("deshLeggings");
         GCMarsItems.deshBoots = new GCMarsItemArmor(GCMarsConfigManager.idArmorDeshBoots, GCMarsItems.ARMORDESH, 7, 3, false).setUnlocalizedName("deshBoots");
-        GCMarsItems.deshStick = new GCMarsItem(GCMarsConfigManager.idItemDeshStick).setUnlocalizedName("deshStick");
-        GCMarsItems.ingotDesh = new GCMarsItem(GCMarsConfigManager.idItemIngotDesh).setUnlocalizedName("ingotDesh");
         GCMarsItems.spaceship = new GCMarsItemSpaceshipTier2(GCMarsConfigManager.idItemSpaceshipTier2).setUnlocalizedName("spaceshipTier2");
     }
 
