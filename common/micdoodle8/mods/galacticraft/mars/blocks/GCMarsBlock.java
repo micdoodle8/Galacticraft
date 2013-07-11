@@ -42,7 +42,7 @@ public class GCMarsBlock extends Block implements IDetectableMetadataResource, I
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister par1IconRegister)
     {
-        this.marsBlockIcons = new Icon[16];
+        this.marsBlockIcons = new Icon[10];
         this.marsBlockIcons[0] = par1IconRegister.registerIcon(GalacticraftMars.TEXTURE_PREFIX + "cobblestone");
         this.marsBlockIcons[1] = par1IconRegister.registerIcon(GalacticraftMars.TEXTURE_PREFIX + "decoration_desh");
         this.marsBlockIcons[2] = par1IconRegister.registerIcon(GalacticraftMars.TEXTURE_PREFIX + "middle");
@@ -52,6 +52,7 @@ public class GCMarsBlock extends Block implements IDetectableMetadataResource, I
         this.marsBlockIcons[6] = par1IconRegister.registerIcon(GalacticraftMars.TEXTURE_PREFIX + "desh");
         this.marsBlockIcons[7] = par1IconRegister.registerIcon(GalacticraftMars.TEXTURE_PREFIX + "tin");
         this.marsBlockIcons[8] = par1IconRegister.registerIcon(GalacticraftMars.TEXTURE_PREFIX + "bottom");
+        this.marsBlockIcons[9] = par1IconRegister.registerIcon(GalacticraftMars.TEXTURE_PREFIX + "iron");
     }
 
     @Override
@@ -65,7 +66,7 @@ public class GCMarsBlock extends Block implements IDetectableMetadataResource, I
     {
         final int meta = par1World.getBlockMetadata(par2, par3, par4);
 
-        if (meta == 3 || meta == 5)
+        if (meta == 9 || meta == 5)
         {
             return 0.1F;
         }
@@ -76,7 +77,7 @@ public class GCMarsBlock extends Block implements IDetectableMetadataResource, I
     @Override
     public boolean canHarvestBlock(EntityPlayer player, int meta)
     {
-        if (meta == 3 || meta == 5)
+        if (meta == 9 || meta == 5)
         {
             return true;
         }
@@ -96,7 +97,7 @@ public class GCMarsBlock extends Block implements IDetectableMetadataResource, I
         case 2:
             return this.marsBlockIcons[6];
         case 3:
-            return this.marsBlockIcons[8];
+            return this.marsBlockIcons[9];
         case 4:
             return this.marsBlockIcons[0];
         case 5:
@@ -107,6 +108,8 @@ public class GCMarsBlock extends Block implements IDetectableMetadataResource, I
             return this.marsBlockIcons[3];
         case 8:
             return this.marsBlockIcons[1];
+        case 9:
+            return this.marsBlockIcons[8];
         }
 
         return this.marsBlockIcons[1];
@@ -126,7 +129,7 @@ public class GCMarsBlock extends Block implements IDetectableMetadataResource, I
     @Override
     public int damageDropped(int meta)
     {
-        if (meta == 3)
+        if (meta == 9)
         {
             return 4;
         }
@@ -157,7 +160,7 @@ public class GCMarsBlock extends Block implements IDetectableMetadataResource, I
     {
         int var4;
 
-        for (var4 = 0; var4 < 9; ++var4)
+        for (var4 = 0; var4 < 10; ++var4)
         {
             par3List.add(new ItemStack(par1, 1, var4));
         }
@@ -173,6 +176,8 @@ public class GCMarsBlock extends Block implements IDetectableMetadataResource, I
         case 1:
             return true;
         case 2:
+            return true;
+        case 3:
             return true;
         default:
             return false;

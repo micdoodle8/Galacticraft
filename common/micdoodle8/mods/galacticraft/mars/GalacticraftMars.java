@@ -140,8 +140,6 @@ public class GalacticraftMars
         this.registerCreatures();
         this.registerOtherEntities();
         GalacticraftMars.proxy.init(event);
-        // SchematicRegistry.registerSchematicRecipe(new
-        // GCMarsSchematicRocketT2());
     }
 
     @EventHandler
@@ -157,19 +155,14 @@ public class GalacticraftMars
     public void registerCreatures()
     {
         this.registerGalacticraftCreature(GCMarsEntitySludgeling.class, "Sludgeling", GCMarsConfigManager.idEntitySludgeling, GCCoreUtil.convertTo32BitColor(255, 0, 0, 50), GCCoreUtil.convertTo32BitColor(255, 0, 0, 150));
-        // this.registerGalacticraftCreature(GCMarsEntityCreeperBoss.class,
-        // "Creeper Boss", GCMarsConfigManager.idEntityCreeperBoss, 894731, 0);
     }
 
     public void registerOtherEntities()
     {
-        // this.registerGalacticraftNonMobEntity(GCMarsEntityProjectileTNT.class,
-        // "Projectile TNT", GCMarsConfigManager.idEntityProjectileTNT, 150, 5,
-        // true);
         this.registerGalacticraftNonMobEntity(GCMarsEntityRocketT2.class, "SpaceshipT2", GCMarsConfigManager.idEntitySpaceshipTier2, 150, 1, true);
     }
 
-    @PostInit
+    @EventHandler
     public void postLoad(FMLPostInitializationEvent event)
     {
         GalacticraftMars.proxy.postInit(event);
@@ -177,7 +170,7 @@ public class GalacticraftMars
         GCMarsUtil.addCraftingRecipes();
     }
 
-    @ServerStarted
+    @EventHandler
     public void serverInit(FMLServerStartedEvent event)
     {
         NetworkRegistry.instance().registerChannel(new ServerPacketHandler(), "GalacticraftMars", Side.SERVER);

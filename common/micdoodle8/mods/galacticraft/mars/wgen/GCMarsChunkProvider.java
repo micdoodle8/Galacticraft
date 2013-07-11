@@ -20,8 +20,6 @@ import net.minecraft.world.biome.SpawnListEntry;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.ChunkProviderGenerate;
-import net.minecraft.world.gen.structure.MapGenMineshaft;
-import net.minecraft.world.gen.structure.MapGenVillage;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -36,7 +34,7 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
     final short fillBlockID = (short) GCMarsBlocks.marsBlock.blockID;
     final byte fillBlockMeta = 6;
     final short lowerBlockID = (short) GCMarsBlocks.marsBlock.blockID;
-    final byte lowerBlockMeta = 3;
+    final byte lowerBlockMeta = 9;
 
     private final Random rand;
 
@@ -47,16 +45,12 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
     private final Gradient noiseGen5;
     private final Gradient noiseGen6;
     private final Gradient noiseGen7;
-    public GCMarsBiomeDecorator biomedecoratorplanet = new GCMarsBiomeDecorator(GCMarsBiomeGenBase.marsFlat);
+    public GCMarsBiomeDecorator biomedecoratorplanet = new GCMarsBiomeDecorator();
 
     private final World worldObj;
 
     private final GCMarsCavern caveGenerator = new GCMarsCavern();
     private final GCMarsCaveGen caveGenerator2 = new GCMarsCaveGen();
-
-    private final MapGenVillage villageGenerator = new MapGenVillage();
-
-    private final MapGenMineshaft mineshaftGenerator = new MapGenMineshaft();
 
     private BiomeGenBase[] biomesForGeneration = { GCMarsBiomeGenBase.marsFlat };
 
