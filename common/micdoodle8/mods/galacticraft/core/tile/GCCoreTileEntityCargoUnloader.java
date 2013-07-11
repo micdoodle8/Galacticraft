@@ -15,6 +15,7 @@ import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.core.item.IItemElectric;
 import universalelectricity.core.vector.Vector3;
 import com.google.common.io.ByteArrayDataInput;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class GCCoreTileEntityCargoUnloader extends GCCoreTileEntityElectric implements IInventory, ISidedInventory, ICargoEntity
@@ -335,7 +336,7 @@ public class GCCoreTileEntityCargoUnloader extends GCCoreTileEntityElectric impl
     @Override
     public ForgeDirection getElectricInputDirection()
     {
-        return ForgeDirection.getOrientation(this.getBlockMetadata() + 2);
+        return ForgeDirection.getOrientation(this.getBlockMetadata() - 2);
     }
 
     @Override
