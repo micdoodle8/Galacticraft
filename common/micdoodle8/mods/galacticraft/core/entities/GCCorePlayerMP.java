@@ -701,12 +701,12 @@ public class GCCorePlayerMP extends EntityPlayerMP
             {
                 if (this.tick % drainSpacing == 0 && !OxygenUtil.isAABBInBreathableAirBlock(this))
                 {
-                    if (tankInSlot.getMaxDamage() - tankInSlot.getItemDamage() > 0)
+                    if (tankInSlot != null && tankInSlot.getMaxDamage() - tankInSlot.getItemDamage() > 0)
                     {
                         tankInSlot.damageItem(1, this);
                     }
                     
-                    if (tankInSlot2.getMaxDamage() - tankInSlot2.getItemDamage() > 0)
+                    if (tankInSlot2 != null && tankInSlot2.getMaxDamage() - tankInSlot2.getItemDamage() > 0)
                     {
                         tankInSlot2.damageItem(1, this);
                     }

@@ -116,7 +116,7 @@ public class OxygenUtil
     public static int getDrainSpacing(ItemStack tank, ItemStack tank2)
     {
         boolean tank1Valid = tank != null ? (tank.getItem() instanceof GCCoreItemOxygenTank && tank.getMaxDamage() - tank.getItemDamage() > 0) : false;
-        boolean tank2Valid = tank2 != null ? (tank2.getItem() instanceof GCCoreItemOxygenTank && tank.getMaxDamage() - tank.getItemDamage() > 0) : false;
+        boolean tank2Valid = tank2 != null ? (tank2.getItem() instanceof GCCoreItemOxygenTank && tank2.getMaxDamage() - tank2.getItemDamage() > 0) : false;
         
         if (!tank1Valid && !tank2Valid)
         {
@@ -125,10 +125,10 @@ public class OxygenUtil
         
         if ((tank1Valid && !tank2Valid) || (!tank1Valid && tank2Valid))
         {
-            return 180;
+            return 90;
         }
         
-        return 360;
+        return 180;
     }
 
     public static boolean hasValidOxygenSetup(GCCorePlayerMP player)
