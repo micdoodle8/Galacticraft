@@ -114,9 +114,11 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
             if (this.isValid(this.renameText + pastestring))
             {
                 this.renameText = this.renameText + pastestring;
+                this.renameText = this.renameText.replace('$', ' ');
+                this.renameText = this.renameText.replace('.', ' ');
             }
         }
-        else if (this.isValid(this.renameText + keyChar))
+        else if (this.isValid(this.renameText + keyChar) && keyID != Keyboard.KEY_PERIOD && keyChar != '$')
         {
             this.renameText = this.renameText + keyChar;
         }
