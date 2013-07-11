@@ -1,9 +1,11 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import micdoodle8.mods.galacticraft.api.block.IOxygenReliantBlock;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityOxygenBubble;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -27,6 +29,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 public class GCCoreTileEntityOxygenDistributor extends GCCoreTileEntityOxygen implements IInventory, ISidedInventory
 {
     public boolean active;
+    public boolean lastActive;
 
     private ItemStack[] containingItems = new ItemStack[1];
 
@@ -40,11 +43,11 @@ public class GCCoreTileEntityOxygenDistributor extends GCCoreTileEntityOxygen im
     @Override
     public void invalidate()
     {
-        for (int x = (int) Math.floor(this.xCoord - this.storedOxygen / 600.0D * 1.5); x < Math.ceil(this.xCoord + this.storedOxygen / 600.0D * 1.5); x++)
+        for (int x = (int) Math.floor(this.xCoord - this.oxygenBubble.getSize()); x < Math.ceil(this.xCoord + this.oxygenBubble.getSize()); x++)
         {
-            for (int y = (int) Math.floor(this.yCoord - this.storedOxygen / 600.0D * 1.5); y < Math.ceil(this.yCoord + this.storedOxygen / 600.0D * 1.5); y++)
+            for (int y = (int) Math.floor(this.yCoord - this.oxygenBubble.getSize()); y < Math.ceil(this.yCoord + this.oxygenBubble.getSize()); y++)
             {
-                for (int z = (int) Math.floor(this.zCoord - this.storedOxygen / 600.0D * 1.5); z < Math.ceil(this.zCoord + this.storedOxygen / 600.0D * 1.5); z++)
+                for (int z = (int) Math.floor(this.zCoord - this.oxygenBubble.getSize()); z < Math.ceil(this.zCoord + this.oxygenBubble.getSize()); z++)
                 {
                     final TileEntity tile = this.worldObj.getBlockTileEntity(x, y, z);
 
@@ -84,31 +87,51 @@ public class GCCoreTileEntityOxygenDistributor extends GCCoreTileEntityOxygen im
 
         if (!this.worldObj.isRemote)
         {
-            if (this.storedOxygen / 600.0D >= 1 && (this.ueWattsReceived > 0 || this.ic2Energy > 0))
+            if (this.oxygenBubble.getSize() >= 1 && (this.ueWattsReceived > 0 || this.ic2Energy > 0 || this.bcEnergy > 0))
             {
                 this.active = true;
             }
             else
             {
                 this.active = false;
-
-                for (int x = (int) Math.floor(this.xCoord - this.storedOxygen / 600.0D * 1.5); x < Math.ceil(this.xCoord + this.storedOxygen / 600.0D * 1.5); x++)
+            }
+        }
+        
+        if (!this.worldObj.isRemote && (this.active != this.lastActive || this.ticks % 20 == 0))
+        {
+            if (this.active)
+            {
+                for (int x = (int) Math.floor(this.xCoord - this.oxygenBubble.getSize() - 4); x < Math.ceil(this.xCoord + this.oxygenBubble.getSize() + 4); x++)
                 {
-                    for (int y = (int) Math.floor(this.yCoord - this.storedOxygen / 600.0D * 1.5); y < Math.ceil(this.yCoord + this.storedOxygen / 600.0D * 1.5); y++)
+                    for (int y = (int) Math.floor(this.yCoord - this.oxygenBubble.getSize() - 4); y < Math.ceil(this.yCoord + this.oxygenBubble.getSize() + 4); y++)
                     {
-                        for (int z = (int) Math.floor(this.zCoord - this.storedOxygen / 600.0D * 1.5); z < Math.ceil(this.zCoord + this.storedOxygen / 600.0D * 1.5); z++)
+                        for (int z = (int) Math.floor(this.zCoord - this.oxygenBubble.getSize() - 4); z < Math.ceil(this.zCoord + this.oxygenBubble.getSize() + 4); z++)
                         {
-                            final TileEntity tile = this.worldObj.getBlockTileEntity(x, y, z);
-
-                            if (tile != null && tile instanceof GCCoreTileEntityUnlitTorch)
+                            int blockID = this.worldObj.getBlockId(x, y, z);
+                            
+                            if (blockID > 0)
                             {
-                                tile.worldObj.setBlock(tile.xCoord, tile.yCoord, tile.zCoord, GCCoreBlocks.unlitTorch.blockID, 0, 3);
+                                Block block = Block.blocksList[blockID];
+                                
+                                if (block instanceof IOxygenReliantBlock)
+                                {
+                                    if (this.getDistanceFromServer(x, y, z) < Math.pow(this.oxygenBubble.getSize() - 0.5D, 2))
+                                    {
+                                        ((IOxygenReliantBlock) block).onOxygenAdded(this.worldObj, x, y, z);
+                                    }
+                                    else
+                                    {
+                                        ((IOxygenReliantBlock) block).onOxygenRemoved(this.worldObj, x, y, z);
+                                    }
+                                }
                             }
                         }
                     }
                 }
             }
         }
+        
+        this.lastActive = this.active;
     }
 
     @Override
