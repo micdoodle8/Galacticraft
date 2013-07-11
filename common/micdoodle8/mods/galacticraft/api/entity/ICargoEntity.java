@@ -2,6 +2,9 @@ package micdoodle8.mods.galacticraft.api.entity;
 
 import net.minecraft.item.ItemStack;
 
+/**
+ * Implement into entities that can be loaded with cargo
+ */
 public interface ICargoEntity
 {
     public static enum EnumCargoLoadingState

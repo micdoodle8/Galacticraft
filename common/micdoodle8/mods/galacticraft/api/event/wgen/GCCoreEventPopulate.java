@@ -7,7 +7,8 @@ import net.minecraftforge.event.Event;
 /**
  * Event is thrown when a chunk is populated on planets.
  * 
- * If you're adding your own dimensions, make sure you post these two events to the forge event bus when decorating your planet/moon
+ * If you're adding your own dimensions, make sure you post these two events to
+ * the forge event bus when decorating your planet/moon
  */
 public class GCCoreEventPopulate extends Event
 {
@@ -15,7 +16,7 @@ public class GCCoreEventPopulate extends Event
     public final Random rand;
     public final int chunkX;
     public final int chunkZ;
-    
+
     public GCCoreEventPopulate(World worldObj, Random rand, int chunkX, int chunkZ)
     {
         this.worldObj = worldObj;
@@ -23,7 +24,7 @@ public class GCCoreEventPopulate extends Event
         this.chunkX = chunkX;
         this.chunkZ = chunkZ;
     }
-    
+
     public static class Pre extends GCCoreEventPopulate
     {
         public Pre(World world, Random rand, int worldX, int worldZ)
@@ -31,7 +32,7 @@ public class GCCoreEventPopulate extends Event
             super(world, rand, worldX, worldZ);
         }
     }
-    
+
     public static class Post extends GCCoreEventPopulate
     {
         public Post(World world, Random rand, int worldX, int worldZ)

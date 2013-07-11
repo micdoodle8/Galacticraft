@@ -195,7 +195,7 @@ public class GCCoreRecipeManager
             inputMap.put(RecipeUtil.getGregtechItem(0, 1, 67), 8);
             inputMap.put("ingotSteel", 14);
             inputMap.put(RecipeUtil.getGregtechBlock(0, 1, 10), 1);
-            GalacticraftRegistry.registerSpaceStation(new SpaceStationType(GCCoreConfigManager.idDimensionOverworldOrbit, "Overworld", 0, new SpaceStationRecipe(inputMap)));
+            GalacticraftRegistry.registerSpaceStation(new SpaceStationType(GCCoreConfigManager.idDimensionOverworldOrbit, 0, new SpaceStationRecipe(inputMap)));
             GalacticraftCore.setSpaceStationRecipe = true;
         }
 
@@ -351,7 +351,7 @@ public class GCCoreRecipeManager
             inputMap.put("ingotInvar", 24);
             inputMap.put("ingotCopper", 8);
             inputMap.put(ItemRegistry.getItem("powerCoilGold", 1), 1);
-            GalacticraftRegistry.registerSpaceStation(new SpaceStationType(GCCoreConfigManager.idDimensionOverworldOrbit, "Overworld", 0, new SpaceStationRecipe(inputMap)));
+            GalacticraftRegistry.registerSpaceStation(new SpaceStationType(GCCoreConfigManager.idDimensionOverworldOrbit, 0, new SpaceStationRecipe(inputMap)));
             GalacticraftCore.setSpaceStationRecipe = true;
         }
 
@@ -478,7 +478,7 @@ public class GCCoreRecipeManager
             inputMap.put("ingotTin", 32);
             inputMap.put("ingotSteel", 16);
             inputMap.put(Item.ingotIron, 24);
-            GalacticraftRegistry.registerSpaceStation(new SpaceStationType(GCCoreConfigManager.idDimensionOverworldOrbit, "Overworld", 0, new SpaceStationRecipe(inputMap)));
+            GalacticraftRegistry.registerSpaceStation(new SpaceStationType(GCCoreConfigManager.idDimensionOverworldOrbit, 0, new SpaceStationRecipe(inputMap)));
             GalacticraftCore.setSpaceStationRecipe = true;
         }
 
@@ -607,7 +607,7 @@ public class GCCoreRecipeManager
             inputMap.put(RecipeUtil.getIndustrialCraftItem("machine"), 1);
             inputMap.put("ingotTin", 24);
             inputMap.put(Item.ingotIron, 12);
-            GalacticraftRegistry.registerSpaceStation(new SpaceStationType(GCCoreConfigManager.idDimensionOverworldOrbit, "Overworld", 0, new SpaceStationRecipe(inputMap)));
+            GalacticraftRegistry.registerSpaceStation(new SpaceStationType(GCCoreConfigManager.idDimensionOverworldOrbit, 0, new SpaceStationRecipe(inputMap)));
             GalacticraftCore.setSpaceStationRecipe = true;
         }
 

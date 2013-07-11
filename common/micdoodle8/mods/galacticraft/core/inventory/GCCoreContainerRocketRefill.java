@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
-import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase.EnumRocketType;
+import micdoodle8.mods.galacticraft.api.entity.IRocketType.EnumRocketType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;

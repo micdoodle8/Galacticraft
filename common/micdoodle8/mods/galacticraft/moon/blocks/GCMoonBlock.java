@@ -2,8 +2,8 @@ package micdoodle8.mods.galacticraft.moon.blocks;
 
 import java.util.List;
 import java.util.Random;
-import micdoodle8.mods.galacticraft.api.block.IDetectableMetadataResource;
-import micdoodle8.mods.galacticraft.api.block.IPlantableMetadataBlock;
+import micdoodle8.mods.galacticraft.api.block.IDetectableResource;
+import micdoodle8.mods.galacticraft.api.block.IPlantableBlock;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockAdvanced;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityDungeonSpawner;
@@ -31,7 +31,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * All rights reserved.
  * 
  */
-public class GCMoonBlock extends GCCoreBlockAdvanced implements IDetectableMetadataResource, IPlantableMetadataBlock
+public class GCMoonBlock extends GCCoreBlockAdvanced implements IDetectableResource, IPlantableBlock
 {
     // CopperMoon: 0, TinMoon: 1, CheeseStone: 2;
     @SideOnly(Side.CLIENT)

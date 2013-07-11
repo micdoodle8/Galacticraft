@@ -5,8 +5,6 @@ import net.minecraft.item.ItemStack;
 
 /**
  * Implement into Armor items
- * 
- * CONFIRMED WORKING
  */
 public interface IBreathableArmor
 {

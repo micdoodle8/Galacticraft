@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.wgen;
 
 import java.util.Random;
 import micdoodle8.mods.galacticraft.api.block.IPlantableBlock;
-import micdoodle8.mods.galacticraft.api.block.IPlantableMetadataBlock;
+import micdoodle8.mods.galacticraft.api.block.IPlantableBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirt;
 import net.minecraft.block.BlockGrass;
@@ -92,8 +92,8 @@ public class GCCoreWorldGenTaiga2 extends WorldGenerator
 
                 if (Block.blocksList[var11] != null)
                 {
-                    final boolean flag = Block.blocksList[var11] instanceof IPlantableBlock || Block.blocksList[var11] instanceof IPlantableMetadataBlock && ((IPlantableMetadataBlock) Block.blocksList[var11]).isPlantable(var10a);
-                    final boolean flag2 = Block.blocksList[var11] instanceof IPlantableBlock && waterBlocksNearby >= ((IPlantableBlock) Block.blocksList[var11]).requiredLiquidBlocksNearby() || Block.blocksList[var11] instanceof IPlantableMetadataBlock && waterBlocksNearby >= ((IPlantableMetadataBlock) Block.blocksList[var11]).requiredLiquidBlocksNearby();
+                    final boolean flag = Block.blocksList[var11] instanceof IPlantableBlock || Block.blocksList[var11] instanceof IPlantableBlock && ((IPlantableBlock) Block.blocksList[var11]).isPlantable(var10a);
+                    final boolean flag2 = Block.blocksList[var11] instanceof IPlantableBlock && waterBlocksNearby >= ((IPlantableBlock) Block.blocksList[var11]).requiredLiquidBlocksNearby() || Block.blocksList[var11] instanceof IPlantableBlock && waterBlocksNearby >= ((IPlantableBlock) Block.blocksList[var11]).requiredLiquidBlocksNearby();
                     final boolean flag3 = (Block.blocksList[var11] instanceof BlockGrass || Block.blocksList[var11] instanceof BlockDirt) && waterBlocksNearby >= 4;
 
                     if (flag && flag2 || flag3)

@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tick;
 
 import java.util.EnumSet;
-import micdoodle8.mods.galacticraft.api.entity.ISpaceship;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -86,7 +85,7 @@ public class GCCoreTickHandlerClient implements ITickHandler
                 GCCoreTickHandlerClient.checkedVersion = false;
             }
 
-            if (player != null && player.ridingEntity != null && player.ridingEntity instanceof ISpaceship)
+            if (player != null && player.ridingEntity != null && player.ridingEntity instanceof EntitySpaceshipBase)
             {
                 final Object[] toSend = { player.ridingEntity.rotationPitch };
                 PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 8, toSend));

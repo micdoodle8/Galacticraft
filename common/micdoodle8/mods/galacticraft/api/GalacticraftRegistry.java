@@ -14,7 +14,7 @@ import net.minecraft.world.WorldProvider;
 public class GalacticraftRegistry
 {
     private static Map<Class<? extends WorldProvider>, ITeleportType> teleportTypeMap = new HashMap<Class<? extends WorldProvider>, ITeleportType>();
-    private static Map<Integer, SpaceStationType> spaceStations = new HashMap<Integer, SpaceStationType>();
+    private static List<SpaceStationType> spaceStations = new ArrayList<SpaceStationType>();
     private static List<ICelestialBody> celestialBodies = new ArrayList<ICelestialBody>();
     private static List<IGalaxy> galaxies = new ArrayList<IGalaxy>();
     private static List<INasaWorkbenchRecipe> rocketBenchRecipes = new ArrayList<INasaWorkbenchRecipe>();
@@ -84,7 +84,7 @@ public class GalacticraftRegistry
 
     public static void registerSpaceStation(SpaceStationType type)
     {
-        GalacticraftRegistry.spaceStations.put(type.getWorldToOrbitID(), type);
+        GalacticraftRegistry.spaceStations.add(type);
     }
 
     public SpaceStationType getTypeFromPlanetID(int planetID)
@@ -92,7 +92,7 @@ public class GalacticraftRegistry
         return GalacticraftRegistry.spaceStations.get(planetID);
     }
 
-    public static Map<Integer, SpaceStationType> getSpaceStationData()
+    public static List<SpaceStationType> getSpaceStationData()
     {
         return GalacticraftRegistry.spaceStations;
     }

@@ -10,4 +10,9 @@ public interface IPlantableBlock
      *         default.
      */
     public int requiredLiquidBlocksNearby();
+
+    /**
+     * @return array of metadata values that are considered valueable.
+     */
+    public boolean isPlantable(int metadata);
 }

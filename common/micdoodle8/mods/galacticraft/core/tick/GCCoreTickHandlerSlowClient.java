@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tick;
 
 import java.util.EnumSet;
-import micdoodle8.mods.galacticraft.api.block.IDetectableMetadataResource;
+import micdoodle8.mods.galacticraft.api.block.IDetectableResource;
 import micdoodle8.mods.galacticraft.api.block.IDetectableResource;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import net.minecraft.block.Block;
@@ -41,7 +41,7 @@ public class GCCoreTickHandlerSlowClient implements IScheduledTickHandler
                         {
                             final Block block = Block.blocksList[id];
 
-                            if (block != null && (block instanceof BlockOre || block instanceof IDetectableResource || block instanceof IDetectableMetadataResource && ((IDetectableMetadataResource) block).isValueable(player.worldObj.getBlockMetadata(x, y, z))))
+                            if (block != null && (block instanceof BlockOre || block instanceof IDetectableResource || block instanceof IDetectableResource && ((IDetectableResource) block).isValueable(player.worldObj.getBlockMetadata(x, y, z))))
                             {
                                 final int[] blockPos = { x, y, z };
 

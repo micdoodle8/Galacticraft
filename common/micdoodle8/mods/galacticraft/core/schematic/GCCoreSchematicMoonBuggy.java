@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.schematic;
 
-import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
+import micdoodle8.mods.galacticraft.api.recipe.SchematicPage;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiSchematicBuggy;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerBuggyBench;
@@ -12,7 +12,7 @@ import net.minecraft.item.ItemStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class GCCoreSchematicMoonBuggy implements ISchematicPage
+public class GCCoreSchematicMoonBuggy extends SchematicPage
 {
     @Override
     public int getPageID()
@@ -34,13 +34,6 @@ public class GCCoreSchematicMoonBuggy implements ISchematicPage
 
     @SideOnly(Side.CLIENT)
     @Override
-    public String getTitle()
-    {
-        return "Moon Buggy";
-    }
-
-    @SideOnly(Side.CLIENT)
-    @Override
     public GuiScreen getResultScreen(EntityPlayer player, int x, int y, int z)
     {
         return new GCCoreGuiSchematicBuggy(player.inventory);
@@ -50,18 +43,5 @@ public class GCCoreSchematicMoonBuggy implements ISchematicPage
     public Container getResultContainer(EntityPlayer player, int x, int y, int z)
     {
         return new GCCoreContainerBuggyBench(player.inventory, x, y, z);
-    }
-
-    @Override
-    public int compareTo(ISchematicPage o)
-    {
-        if (this.getPageID() > o.getPageID())
-        {
-            return 1;
-        }
-        else
-        {
-            return -1;
-        }
     }
 }

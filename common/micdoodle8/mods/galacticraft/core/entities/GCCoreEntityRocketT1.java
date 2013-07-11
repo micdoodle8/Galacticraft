@@ -153,7 +153,7 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
 
             if (this.timeSinceLaunch % MathHelper.floor_double(3 * (1 / multiplier)) == 0)
             {
-                this.removeFuel(null, 1);
+                this.removeFuel(1);
             }
         }
         else if (!this.hasValidFuel() && this.getLaunched() && !this.worldObj.isRemote)
@@ -403,15 +403,6 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
     }
 
     @Override
-    public HashSet<Integer> getPossiblePlanets()
-    {
-        final HashSet<Integer> dimensions = new HashSet<Integer>();
-        dimensions.add(0);
-        dimensions.add(GCMoonConfigManager.dimensionIDMoon);
-        return dimensions;
-    }
-
-    @Override
     public int getPreLaunchWait()
     {
         return 400;
@@ -468,7 +459,7 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
     }
 
     @Override
-    public int addFuel(FluidStack liquid, int amount, boolean doFill)
+    public int addFuel(FluidStack liquid, boolean doFill)
     {
         final FluidStack liquidInTank = this.spaceshipFuelTank.getFluid();
 
@@ -484,14 +475,9 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
     }
 
     @Override
-    public FluidStack removeFuel(FluidStack liquid, int amount)
+    public FluidStack removeFuel(int amount)
     {
-        if (liquid == null)
-        {
-            return this.spaceshipFuelTank.drain(amount, true);
-        }
-
-        return null;
+        return this.spaceshipFuelTank.drain(amount, true);
     }
 
     @Override

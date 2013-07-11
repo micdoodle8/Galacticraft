@@ -8,33 +8,35 @@ import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
 public class SpaceStationType
 {
     private final int spaceStationID;
-    private final String planetToOrbit;
     private final int planetID;
     private final SpaceStationRecipe recipe;
 
-    public SpaceStationType(int spaceStationID, String planetToOrbit, int planetID, SpaceStationRecipe recipe)
+    public SpaceStationType(int spaceStationID, int planetID, SpaceStationRecipe recipe)
     {
         this.spaceStationID = spaceStationID;
-        this.planetToOrbit = planetToOrbit;
         this.planetID = planetID;
         this.recipe = recipe;
     }
 
+    /**
+     * Dimension ID of the space station
+     */
     public int getSpaceStationID()
     {
         return this.spaceStationID;
     }
 
-    public String getWorldToOrbit()
-    {
-        return this.planetToOrbit;
-    }
-
+    /**
+     * Dimension ID of the planet this space station is orbiting
+     */
     public int getWorldToOrbitID()
     {
         return this.planetID;
     }
 
+    /**
+     * The recipe to create this space station
+     */
     public SpaceStationRecipe getRecipeForSpaceStation()
     {
         return this.recipe;

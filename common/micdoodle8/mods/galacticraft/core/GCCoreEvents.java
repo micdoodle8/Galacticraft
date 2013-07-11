@@ -1,13 +1,26 @@
 package micdoodle8.mods.galacticraft.core;
 
 import java.lang.reflect.Field;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Random;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
 import micdoodle8.mods.galacticraft.api.item.IKeyItem;
 import micdoodle8.mods.galacticraft.api.item.IKeyable;
+import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
+import micdoodle8.mods.galacticraft.api.recipe.SchematicEvent.FlipPage;
+import micdoodle8.mods.galacticraft.api.recipe.SchematicEvent.Unlock;
+import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
+import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketSchematicList;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
+import micdoodle8.mods.galacticraft.core.util.PacketUtil;
+import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSapling;
 import net.minecraft.entity.player.EntityPlayer;
@@ -27,6 +40,10 @@ import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
+import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreEvents
 {
@@ -145,7 +162,7 @@ public class GCCoreEvents
 
     public ItemStack fillCustomBucket(World world, MovingObjectPosition pos)
     {
-        Class buildCraftClass = null;
+        Class<?> buildCraftClass = null;
 
         int bcOilID1 = -1;
         int bcOilID2 = -1;
@@ -251,5 +268,113 @@ public class GCCoreEvents
                 }
             }
         }
+    }
+    
+    @ForgeSubscribe
+    public void schematicUnlocked(Unlock event)
+    {
+        GCCorePlayerMP player = (GCCorePlayerMP) event.player;
+
+        if (!player.unlockedSchematics.contains(event.page))
+        {
+            player.unlockedSchematics.add(event.page);
+            Collections.sort(player.unlockedSchematics);
+
+            if (player != null && player.playerNetServerHandler != null)
+            {
+                player.playerNetServerHandler.sendPacketToPlayer(GCCorePacketSchematicList.buildSchematicListPacket(player.unlockedSchematics));
+            }
+        }
+    }
+    
+    @SideOnly(Side.CLIENT)
+    @ForgeSubscribe
+    public void schematicFlipEvent(FlipPage event)
+    {
+        ISchematicPage page = null;
+        
+        switch (event.direction)
+        {
+        case 1:
+            page = getNextSchematic(event.index);
+            break;
+        case -1:
+            page = getLastSchematic(event.index);
+            break;
+        }
+        
+        if (page != null)
+        {
+            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 4, new Object[] { page.getPageID() }));
+            FMLClientHandler.instance().getClient().thePlayer.openGui(GalacticraftCore.instance, page.getGuiID(), FMLClientHandler.instance().getClient().thePlayer.worldObj, (int) FMLClientHandler.instance().getClient().thePlayer.posX, (int) FMLClientHandler.instance().getClient().thePlayer.posY, (int) FMLClientHandler.instance().getClient().thePlayer.posZ);
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    private static ISchematicPage getNextSchematic(int currentIndex)
+    {
+        final HashMap<Integer, Integer> idList = new HashMap<Integer, Integer>();
+
+        for (int i = 0; i < PlayerUtil.getPlayerBaseClientFromPlayer(FMLClientHandler.instance().getClient().thePlayer).unlockedSchematics.size(); i++)
+        {
+            idList.put(i, PlayerUtil.getPlayerBaseClientFromPlayer(FMLClientHandler.instance().getClient().thePlayer).unlockedSchematics.get(i).getPageID());
+        }
+
+        final SortedSet<Integer> keys = new TreeSet<Integer>(idList.keySet());
+        final Iterator<Integer> iterator = keys.iterator();
+
+        for (int count = 0; count < keys.size(); count++)
+        {
+            final int i = (Integer) iterator.next();
+            final ISchematicPage page = SchematicRegistry.getMatchingRecipeForID(idList.get(i));
+
+            if (page.getPageID() == currentIndex)
+            {
+                if (count + 1 < PlayerUtil.getPlayerBaseClientFromPlayer(FMLClientHandler.instance().getClient().thePlayer).unlockedSchematics.size())
+                {
+                    return PlayerUtil.getPlayerBaseClientFromPlayer(FMLClientHandler.instance().getClient().thePlayer).unlockedSchematics.get(count + 1);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    @SideOnly(Side.CLIENT)
+    private static ISchematicPage getLastSchematic(int currentIndex)
+    {
+        final HashMap<Integer, Integer> idList = new HashMap<Integer, Integer>();
+
+        for (int i = 0; i < PlayerUtil.getPlayerBaseClientFromPlayer(FMLClientHandler.instance().getClient().thePlayer).unlockedSchematics.size(); i++)
+        {
+            idList.put(i, PlayerUtil.getPlayerBaseClientFromPlayer(FMLClientHandler.instance().getClient().thePlayer).unlockedSchematics.get(i).getPageID());
+        }
+
+        final SortedSet<Integer> keys = new TreeSet<Integer>(idList.keySet());
+        final Iterator<Integer> iterator = keys.iterator();
+
+        for (int count = 0; count < keys.size(); count++)
+        {
+            final int i = (Integer) iterator.next();
+            final ISchematicPage page = SchematicRegistry.getMatchingRecipeForID(idList.get(i));
+
+            if (page.getPageID() == currentIndex)
+            {
+                if (count - 1 >= 0)
+                {
+                    return PlayerUtil.getPlayerBaseClientFromPlayer(FMLClientHandler.instance().getClient().thePlayer).unlockedSchematics.get(count - 1);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
+        return null;
     }
 }

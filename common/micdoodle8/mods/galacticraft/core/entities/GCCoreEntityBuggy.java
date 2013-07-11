@@ -401,7 +401,7 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
 
             if (d != 0 && !this.worldObj.isRemote && d != 0 && this.ticks % MathHelper.floor_double(2 / d) == 0)
             {
-                this.removeFuel(null, 1);
+                this.removeFuel(1);
             }
         }
 
@@ -678,7 +678,7 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
     }
 
     @Override
-    public int addFuel(FluidStack liquid, int amount, boolean doDrain)
+    public int addFuel(FluidStack liquid, boolean doDrain)
     {
         final FluidStack liquidInTank = this.buggyFuelTank.getFluid();
 
@@ -694,14 +694,9 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
     }
 
     @Override
-    public FluidStack removeFuel(FluidStack liquid, int amount)
+    public FluidStack removeFuel(int amount)
     {
-        if (liquid == null)
-        {
-            return this.buggyFuelTank.drain(amount, true);
-        }
-
-        return null;
+        return this.buggyFuelTank.drain(amount, true);
     }
 
     @Override

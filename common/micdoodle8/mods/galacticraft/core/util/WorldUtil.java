@@ -9,13 +9,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
-import micdoodle8.mods.galacticraft.api.entity.ISpaceship;
 import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
 import micdoodle8.mods.galacticraft.api.world.ICelestialBody;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.IMapObject;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
+import micdoodle8.mods.galacticraft.api.world.SpaceStationType;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GCLog;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -23,6 +23,7 @@ import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.client.GCCorePlayerSP;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreSpaceStationData;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreWorldProviderSpaceStation;
+import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.planet.IUpdateable;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
@@ -52,7 +53,6 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 import universalelectricity.core.vector.Vector3;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 
@@ -667,7 +667,7 @@ public class WorldUtil
     {
         final Entity var6 = var1.ridingEntity;
 
-        if (var1.ridingEntity != null && var1.ridingEntity instanceof ISpaceship)
+        if (var1.ridingEntity != null && var1.ridingEntity instanceof EntitySpaceshipBase)
         {
             var1.mountEntity(var1.ridingEntity);
         }
@@ -895,15 +895,11 @@ public class WorldUtil
 
     public static SpaceStationRecipe getSpaceStationRecipe(int planetID)
     {
-        final Iterator i = GalacticraftRegistry.getSpaceStationData().keySet().iterator();
-
-        while (i.hasNext())
+        for (SpaceStationType type : GalacticraftRegistry.getSpaceStationData())
         {
-            final Integer type = (Integer) i.next();
-
-            if (type != null && type == planetID)
+            if (type.getWorldToOrbitID() == planetID)
             {
-                return GalacticraftRegistry.getSpaceStationData().get(type).getRecipeForSpaceStation();
+                return type.getRecipeForSpaceStation();
             }
         }
 

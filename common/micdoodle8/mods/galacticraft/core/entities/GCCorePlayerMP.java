@@ -944,9 +944,6 @@ public class GCCorePlayerMP extends EntityPlayerMP
         this.coordsTeleportedFromZ = nbt.getDouble("coordsTeleportedFromZ");
         this.spaceStationDimensionID = nbt.getInteger("spaceStationDimensionID");
 
-        final NBTTagList schematics = nbt.getTagList("Schematics");
-        SchematicRegistry.readFromNBT(this, schematics);
-
         if (nbt.getBoolean("usingPlanetSelectionGui"))
         {
             this.openPlanetSelectionGuiCooldown = 20;
@@ -966,6 +963,19 @@ public class GCCorePlayerMP extends EntityPlayerMP
             }
         }
 
+        this.unlockedSchematics = new ArrayList<ISchematicPage>();
+
+        for (int i = 0; i < nbt.getTagList("Schematics").tagCount(); ++i)
+        {
+            final NBTTagCompound nbttagcompound = (NBTTagCompound) nbt.getTagList("Schematics").tagAt(i);
+
+            final int j = nbttagcompound.getInteger("UnlockedPage");
+
+            SchematicRegistry.addUnlockedPage(this, SchematicRegistry.getMatchingRecipeForID(j));
+        }
+
+        Collections.sort(this.unlockedSchematics);
+
         super.readEntityFromNBT(nbt);
     }
 
@@ -983,7 +993,22 @@ public class GCCorePlayerMP extends EntityPlayerMP
         nbt.setDouble("coordsTeleportedFromX", this.coordsTeleportedFromX);
         nbt.setDouble("coordsTeleportedFromZ", this.coordsTeleportedFromZ);
         nbt.setInteger("spaceStationDimensionID", this.spaceStationDimensionID);
-        nbt.setTag("Schematics", SchematicRegistry.writeToNBT(this, new NBTTagList()));
+        
+        Collections.sort(this.unlockedSchematics);
+        
+        NBTTagList tagList = new NBTTagList();
+        
+        for (ISchematicPage page : this.unlockedSchematics)
+        {
+            if (page != null)
+            {
+                final NBTTagCompound nbttagcompound = new NBTTagCompound();
+                nbttagcompound.setInteger("UnlockedPage", page.getPageID());
+                tagList.appendTag(nbttagcompound);
+            }
+        }
+        
+        nbt.setTag("Schematics", tagList);
 
         nbt.setInteger("rocketStacksLength", this.rocketStacks.length);
         nbt.setInteger("SpaceshipTier", this.spaceshipTier);

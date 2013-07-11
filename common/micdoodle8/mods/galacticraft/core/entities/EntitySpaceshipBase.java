@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map.Entry;
 import micdoodle8.mods.galacticraft.api.entity.IDockable;
 import micdoodle8.mods.galacticraft.api.entity.IRocketType;
-import micdoodle8.mods.galacticraft.api.entity.ISpaceship;
 import micdoodle8.mods.galacticraft.api.world.IExitHeight;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
@@ -38,11 +37,10 @@ import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.IPacketReceiver;
 import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, IPacketReceiver, IMissileLockable, IAATarget, IDockable, IInventory, IRocketType
+public abstract class EntitySpaceshipBase extends Entity implements IPacketReceiver, IMissileLockable, IAATarget, IDockable, IInventory, IRocketType
 {
     public static enum EnumLaunchPhase
     {
@@ -58,44 +56,6 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
         public int getPhase()
         {
             return this.phase;
-        }
-    }
-
-    public static enum EnumRocketType
-    {
-        DEFAULT(0, "", false, 3), INVENTORY27(1, "Storage Space: 18", false, 21), INVENTORY36(2, "Storage Space: 36", false, 39), INVENTORY54(3, "Storage Space: 54", false, 57), PREFUELED(4, "Pre-fueled", true, 3);
-
-        private int index;
-        private String tooltip;
-        private boolean preFueled;
-        private int inventorySpace;
-
-        private EnumRocketType(int index, String tooltip, boolean preFueled, int inventorySpace)
-        {
-            this.index = index;
-            this.tooltip = tooltip;
-            this.preFueled = preFueled;
-            this.inventorySpace = inventorySpace;
-        }
-
-        public String getTooltip()
-        {
-            return this.tooltip;
-        }
-
-        public int getIndex()
-        {
-            return this.index;
-        }
-
-        public int getInventorySpace()
-        {
-            return this.inventorySpace;
-        }
-
-        public boolean getPreFueled()
-        {
-            return this.preFueled;
         }
     }
 
@@ -125,6 +85,8 @@ public abstract class EntitySpaceshipBase extends Entity implements ISpaceship, 
     public abstract int getScaledFuelLevel(int i);
 
     public abstract boolean hasValidFuel();
+    
+    public abstract int getPreLaunchWait();
 
     @Override
     protected boolean canTriggerWalking()

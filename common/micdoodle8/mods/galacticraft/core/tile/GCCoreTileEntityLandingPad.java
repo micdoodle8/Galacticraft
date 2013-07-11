@@ -149,22 +149,22 @@ public class GCCoreTileEntityLandingPad extends TileEntityMulti implements IMult
     }
 
     @Override
-    public int addFuel(FluidStack liquid, int amount, boolean doFill)
+    public int addFuel(FluidStack liquid, boolean doFill)
     {
         if (this.dockedEntity != null)
         {
-            return this.dockedEntity.addFuel(liquid, amount, doFill);
+            return this.dockedEntity.addFuel(liquid, doFill);
         }
 
         return 0;
     }
 
     @Override
-    public FluidStack removeFuel(FluidStack liquid, int amount)
+    public FluidStack removeFuel(int amount)
     {
         if (this.dockedEntity != null)
         {
-            return this.dockedEntity.removeFuel(liquid, amount);
+            return this.dockedEntity.removeFuel(amount);
         }
 
         return null;

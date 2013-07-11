@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.api.world;
 
+import micdoodle8.mods.galacticraft.api.entity.IRocketType;
+
 public interface IGalacticraftWorldProvider
 {
     /**
@@ -29,5 +31,14 @@ public interface IGalacticraftWorldProvider
      */
     public double getFuelUsageMultiplier();
 
+    /**
+     * Whether or not the spaceship tier from {@link IRocketType} can enter this
+     * dimension
+     * 
+     * @param tier
+     *            The tier of the spaceship entering this dimension
+     * @return Whether or not the spaceship with given tier can enter this
+     *         dimension
+     */
     public boolean canSpaceshipTierPass(int tier);
 }

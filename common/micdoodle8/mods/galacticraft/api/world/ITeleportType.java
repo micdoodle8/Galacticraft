@@ -61,5 +61,13 @@ public interface ITeleportType
      */
     public Vector3 getParaChestSpawnLocation(WorldServer world, EntityPlayerMP player, Random rand);
 
+    /**
+     * Called when player is transferred to a space dimension
+     * 
+     * @param newWorld
+     *            The world object of the entered world
+     * @param player
+     *            The player that has transferred dimensions
+     */
     public void onSpaceDimensionChanged(World newWorld, EntityPlayerMP player);
 }

@@ -133,7 +133,7 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric impleme
             {
                 if (liquid != null)
                 {
-                    this.fuelTank.drain(this.attachedFuelable.addFuel(liquid, 2, true), true);
+                    this.fuelTank.drain(this.attachedFuelable.addFuel(liquid, true), true);
                 }
             }
         }
