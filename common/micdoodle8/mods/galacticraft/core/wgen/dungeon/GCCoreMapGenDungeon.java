@@ -6,7 +6,6 @@ import java.util.Random;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreMapGenDungeon
 {
@@ -48,7 +47,6 @@ public class GCCoreMapGenDungeon
 
     public void generate(World world, Random rand, int x, int y, int z, int chunkX, int chunkZ, short[] blocks, byte[] metas, boolean useArrays)
     {
-        FMLLog.info("" + x + " " + y + " " + z);
         GCCoreMapGenDungeon.useArrays = useArrays;
         this.worldObj = world;
 
