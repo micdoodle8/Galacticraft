@@ -194,7 +194,31 @@ public class GalacticraftCore
         if (GCCoreConfigManager.loadBC.getBoolean(false))
         {
             BasicComponents.registerTileEntities();
-            BasicComponents.requestAll(GalacticraftCore.instance);
+
+            BasicComponents.requestItem("ingotCopper", 0);
+            BasicComponents.requestItem("ingotTin", 0);
+            BasicComponents.requestBlock("oreCopper", 0);
+            BasicComponents.requestBlock("oreTin", 0);
+            BasicComponents.requestItem("ingotSteel", 0);
+            BasicComponents.requestItem("dustSteel", 0);
+            BasicComponents.requestItem("ingotBronze", 0);
+            BasicComponents.requestItem("dustBronze", 0);
+            BasicComponents.requestItem("plateBronze", 0);
+            BasicComponents.requestItem("plateCopper", 0);
+            BasicComponents.requestItem("plateTin", 0);
+            BasicComponents.requestItem("plateIron", 0);
+            BasicComponents.requestItem("plateGold", 0);
+            BasicComponents.requestBlock("copperWire", 0);
+            BasicComponents.requestItem("circuitBasic", 0);
+            BasicComponents.requestItem("circuitAdvanced", 0);
+            BasicComponents.requestItem("circuitElite", 0);
+            BasicComponents.requestItem("motor", 0);
+            BasicComponents.requestItem("wrench", 0);
+            BasicComponents.requestItem("battery", 0);
+            BasicComponents.requestItem("infiniteBattery", 0);
+            BasicComponents.requireMachines(GalacticraftCore.instance, 0);
+            BasicComponents.registerTileEntities();
+            
             BasicComponents.register(GalacticraftCore.CHANNELENTITIES);
 
             if (GCCoreConfigManager.disableOreGenTin && BasicComponents.generationOreTin != null)
@@ -302,6 +326,12 @@ public class GalacticraftCore
         this.registerTileEntities();
 
         GCCoreRecipeManager.loadRecipes();
+
+        // Register steel plate after, so the heavy duty boots recipe is added to recipe list first, allowing it to be crafted.
+        if (GCCoreConfigManager.loadBC.getBoolean(false))
+        {
+            BasicComponents.requestItem("plateSteel", 0);
+        }
 
         NetworkRegistry.instance().registerGuiHandler(this, GalacticraftCore.proxy);
 
