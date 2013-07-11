@@ -185,12 +185,7 @@ public class GCCoreEvents
 
         final int blockID = world.getBlockId(pos.blockX, pos.blockY, pos.blockZ);
 
-        if ((blockID == bcOilID1 || blockID == bcOilID2 /*
-                                                         * || blockID ==
-                                                         * GCCoreBlocks
-                                                         * .crudeOilMoving
-                                                         * .blockID
-                                                         */|| blockID == GCCoreBlocks.crudeOilStill.blockID) && world.getBlockMetadata(pos.blockX, pos.blockY, pos.blockZ) == 0 && bcOilBucket != null)
+        if ((blockID == bcOilID1 || blockID == bcOilID2 || blockID == GCCoreBlocks.crudeOilStill.blockID) && world.getBlockMetadata(pos.blockX, pos.blockY, pos.blockZ) == 0 && bcOilBucket != null)
         {
             world.setBlockToAir(pos.blockX, pos.blockY, pos.blockZ);
 
@@ -227,7 +222,7 @@ public class GCCoreEvents
             return;
         }
 
-        final double randMod = Math.min(0.5D, 0.15D * GCCoreConfigManager.oilGenFactor);
+        final double randMod = Math.min(0.5D, 0.2D * GCCoreConfigManager.oilGenFactor);
 
         final boolean flag1 = rand.nextDouble() <= randMod;
         final boolean flag2 = rand.nextDouble() <= randMod;
@@ -236,7 +231,7 @@ public class GCCoreEvents
         {
             final int cx = x, cy = 20 + rand.nextInt(11), cz = z;
 
-            final int r = 1 + rand.nextInt(2);
+            final int r = 2 + rand.nextInt(2);
 
             final int r2 = r * r;
 
@@ -250,7 +245,7 @@ public class GCCoreEvents
 
                         if (d2 <= r2)
                         {
-                            world.setBlock(bx + cx, by + cy, bz + cz, GCCoreBlocks.crudeOilStill.blockID, 2, 2);
+                            world.setBlock(bx + cx, by + cy, bz + cz, GCCoreBlocks.crudeOilStill.blockID, 0, 2);
                         }
                     }
                 }
