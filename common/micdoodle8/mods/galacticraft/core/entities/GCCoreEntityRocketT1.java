@@ -25,13 +25,13 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import universalelectricity.core.vector.Vector3;
 import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 
@@ -51,9 +51,6 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
     public IUpdatePlayerListBox rocketSoundUpdater;
 
     private IFuelDock landingPad;
-
-    public int canisterToTankRatio = this.tankCapacity / GCCoreItems.fuelCanister.getMaxDamage();
-    public double canisterToFluidStackRatio = FluidContainerRegistry.BUCKET_VOLUME * 2.0D / GCCoreItems.fuelCanister.getMaxDamage();
 
     public GCCoreEntityRocketT1(World par1World)
     {
@@ -219,7 +216,7 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
             }
 
             playerBase.rocketType = this.rocketType.getIndex();
-            final int liquid = this.spaceshipFuelTank.getFluid() == null ? 0 : this.spaceshipFuelTank.getFluid().amount / MathHelper.floor_double(this.canisterToFluidStackRatio == 0 ? 1 : this.canisterToFluidStackRatio);
+            int liquid = (int) Math.floor((this.spaceshipFuelTank.getFluid() == null ? 0 : this.spaceshipFuelTank.getFluid().amount) / 2.0D);
             playerBase.fuelDamage = Math.max(Math.min(GCCoreItems.fuelCanister.getMaxDamage() - liquid, GCCoreItems.fuelCanister.getMaxDamage()), 1);
         }
     }

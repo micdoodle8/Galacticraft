@@ -52,6 +52,7 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 import universalelectricity.core.vector.Vector3;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 
@@ -830,7 +831,7 @@ public class WorldUtil
                             }
                             else if (i == var8.rocketStacks.length - 3)
                             {
-                                var8.rocketStacks[i] = var8.fuelDamage > 0 && var8.fuelDamage <= GCCoreItems.fuelCanister.getMaxDamage() ? new ItemStack(GCCoreItems.fuelCanister, 1, var8.fuelDamage) : null;
+                                var8.rocketStacks[i] = new ItemStack(GCCoreItems.fuelCanister, 1, var8.fuelDamage);
                             }
                         }
                     }
