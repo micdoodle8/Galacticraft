@@ -3,8 +3,12 @@ package micdoodle8.mods.galacticraft.api.event.wgen;
 import java.util.Random;
 import net.minecraft.world.World;
 import net.minecraftforge.event.Event;
-import net.minecraftforge.event.terraingen.DecorateBiomeEvent;
 
+/**
+ * Event is thrown when a chunk is populated on planets.
+ * 
+ * If you're adding your own dimensions, make sure you post these two events to the forge event bus when decorating your planet/moon
+ */
 public class GCCoreEventPopulate extends Event
 {
     public final World worldObj;
@@ -20,7 +24,7 @@ public class GCCoreEventPopulate extends Event
         this.chunkZ = chunkZ;
     }
     
-    public static class Pre extends DecorateBiomeEvent
+    public static class Pre extends GCCoreEventPopulate
     {
         public Pre(World world, Random rand, int worldX, int worldZ)
         {
@@ -28,7 +32,7 @@ public class GCCoreEventPopulate extends Event
         }
     }
     
-    public static class Post extends DecorateBiomeEvent
+    public static class Post extends GCCoreEventPopulate
     {
         public Post(World world, Random rand, int worldX, int worldZ)
         {
