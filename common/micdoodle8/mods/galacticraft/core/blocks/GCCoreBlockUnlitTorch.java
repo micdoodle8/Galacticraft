@@ -4,12 +4,9 @@ import java.util.Random;
 import micdoodle8.mods.galacticraft.api.block.IOxygenReliantBlock;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityUnlitTorch;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
@@ -26,7 +23,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * All rights reserved.
  * 
  */
-public class GCCoreBlockUnlitTorch extends BlockContainer implements IOxygenReliantBlock
+public class GCCoreBlockUnlitTorch extends Block implements IOxygenReliantBlock
 {
     public boolean lit;
 
@@ -329,12 +326,6 @@ public class GCCoreBlockUnlitTorch extends BlockContainer implements IOxygenReli
                 par1World.spawnParticle("smoke", var7, var9, var11, 0.0D, 0.0D, 0.0D);
             }
         }
-    }
-
-    @Override
-    public TileEntity createNewTileEntity(World world)
-    {
-        return new GCCoreTileEntityUnlitTorch();
     }
 
     @Override

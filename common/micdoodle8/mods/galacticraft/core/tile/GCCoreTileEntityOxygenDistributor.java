@@ -49,11 +49,16 @@ public class GCCoreTileEntityOxygenDistributor extends GCCoreTileEntityOxygen im
             {
                 for (int z = (int) Math.floor(this.zCoord - this.oxygenBubble.getSize()); z < Math.ceil(this.zCoord + this.oxygenBubble.getSize()); z++)
                 {
-                    final TileEntity tile = this.worldObj.getBlockTileEntity(x, y, z);
-
-                    if (tile != null && tile instanceof GCCoreTileEntityUnlitTorch)
+                    int blockID = this.worldObj.getBlockId(x, y, z);
+                    
+                    if (blockID > 0)
                     {
-                        tile.worldObj.setBlock(tile.xCoord, tile.yCoord, tile.zCoord, GCCoreBlocks.unlitTorch.blockID, 0, 3);
+                        Block block = Block.blocksList[blockID];
+                        
+                        if (block instanceof IOxygenReliantBlock)
+                        {
+                            ((IOxygenReliantBlock) block).onOxygenRemoved(this.worldObj, x, y, z);
+                        }
                     }
                 }
             }

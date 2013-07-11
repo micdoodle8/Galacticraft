@@ -65,7 +65,6 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityParachest;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityRefinery;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntitySpaceStationBase;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityUnlitTorch;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
@@ -388,7 +387,6 @@ public class GalacticraftCore
         GameRegistry.registerTileEntity(GCCoreTileEntityFuelLoader.class, "Fuel Loader");
         GameRegistry.registerTileEntity(GCCoreTileEntityLandingPadSingle.class, "Landing Pad");
         GameRegistry.registerTileEntity(GCCoreTileEntityLandingPad.class, "Landing Pad Full");
-        GameRegistry.registerTileEntity(GCCoreTileEntityUnlitTorch.class, "Unlit Torch");
         GameRegistry.registerTileEntity(GCCoreTileEntitySpaceStationBase.class, "Space Station");
         GameRegistry.registerTileEntity(TileEntityMulti.class, "Dummy Block");
         GameRegistry.registerTileEntity(GCCoreTileEntityOxygenSealer.class, "Air Sealer");
