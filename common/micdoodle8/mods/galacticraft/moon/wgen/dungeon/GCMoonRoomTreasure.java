@@ -3,6 +3,9 @@ package micdoodle8.mods.galacticraft.moon.wgen.dungeon;
 import java.util.ArrayList;
 import java.util.Random;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
+import micdoodle8.mods.galacticraft.core.wgen.dungeon.GCCoreDungeonBoundingBox;
+import micdoodle8.mods.galacticraft.core.wgen.dungeon.GCCoreDungeonRoom;
+import micdoodle8.mods.galacticraft.core.wgen.dungeon.GCCoreMapGenDungeon;
 import net.minecraft.block.Block;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -10,7 +13,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 
-public class GCRoomTreasure extends GCDungeonRoom
+public class GCMoonRoomTreasure extends GCCoreDungeonRoom
 {
 
     int sizeX;
@@ -19,9 +22,9 @@ public class GCRoomTreasure extends GCDungeonRoom
 
     private final ArrayList<ChunkCoordinates> chests = new ArrayList<ChunkCoordinates>();
 
-    public GCRoomTreasure(World worldObj, int posX, int posY, int posZ, int entranceDir)
+    public GCMoonRoomTreasure(GCCoreMapGenDungeon dungeon, int posX, int posY, int posZ, int entranceDir)
     {
-        super(worldObj, posX, posY, posZ, entranceDir);
+        super(dungeon, posX, posY, posZ, entranceDir);
         if (worldObj != null)
         {
             final Random rand = new Random(worldObj.getSeed() * posX * posY * 57 * posZ);
@@ -42,7 +45,7 @@ public class GCRoomTreasure extends GCDungeonRoom
                 {
                     if (i == this.posX - 1 || i == this.posX + this.sizeX || j == this.posY - 1 || j == this.posY + this.sizeY || k == this.posZ - 1 || k == this.posZ + this.sizeZ)
                     {
-                        this.placeBlock(chunk, meta, i, j, k, cx, cz, GCMapGenDungeon.DUNGEON_WALL_ID, GCMapGenDungeon.DUNGEON_WALL_META);
+                        this.placeBlock(chunk, meta, i, j, k, cx, cz, this.dungeonInstance.DUNGEON_WALL_ID, this.dungeonInstance.DUNGEON_WALL_META);
                     }
                     else
                     {
@@ -67,15 +70,15 @@ public class GCRoomTreasure extends GCDungeonRoom
     }
 
     @Override
-    public GCDungeonBoundingBox getBoundingBox()
+    public GCCoreDungeonBoundingBox getBoundingBox()
     {
-        return new GCDungeonBoundingBox(this.posX, this.posZ, this.posX + this.sizeX, this.posZ + this.sizeZ);
+        return new GCCoreDungeonBoundingBox(this.posX, this.posZ, this.posX + this.sizeX, this.posZ + this.sizeZ);
     }
 
     @Override
-    protected GCDungeonRoom makeRoom(World worldObj, int x, int y, int z, int dir)
+    protected GCCoreDungeonRoom makeRoom(GCCoreMapGenDungeon dungeon, int x, int y, int z, int dir)
     {
-        return new GCRoomTreasure(worldObj, x, y, z, dir);
+        return new GCMoonRoomTreasure(dungeon, x, y, z, dir);
     }
 
     @Override

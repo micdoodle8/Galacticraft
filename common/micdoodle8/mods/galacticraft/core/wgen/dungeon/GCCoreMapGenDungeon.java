@@ -1,30 +1,35 @@
-package micdoodle8.mods.galacticraft.moon.wgen.dungeon;
+package micdoodle8.mods.galacticraft.core.wgen.dungeon;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
-import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
+import cpw.mods.fml.common.FMLLog;
 
-public class GCMapGenDungeon
+public class GCCoreMapGenDungeon
 {
 
-    public static final int DUNGEON_WALL_ID = GCMoonBlocks.blockMoon.blockID;
-    public static final int DUNGEON_WALL_META = 14;
-    public static final int RANGE = 8;
-    public static final int HALLWAY_LENGTH = 16;
-    public static final int HALLWAY_HEIGHT = 3;
+    public final int DUNGEON_WALL_ID;
+    public final int DUNGEON_WALL_META;
+    public final int RANGE;
+    public final int HALLWAY_LENGTH;
+    public final int HALLWAY_HEIGHT;
 
     public static boolean useArrays = false;
 
     public World worldObj;
 
-    private final ArrayList<GCDungeonRoom> rooms = new ArrayList<GCDungeonRoom>();
+    private final ArrayList<GCCoreDungeonRoom> rooms = new ArrayList<GCCoreDungeonRoom>();
 
-    public GCMapGenDungeon()
+    public GCCoreMapGenDungeon(int wallID, int wallMeta, int range, int hallwayLength, int hallwayHeight)
     {
+        this.DUNGEON_WALL_ID = wallID;
+        this.DUNGEON_WALL_META = wallMeta;
+        this.RANGE = range;
+        this.HALLWAY_LENGTH = hallwayLength;
+        this.HALLWAY_HEIGHT = hallwayHeight;
     }
 
     public void generateUsingArrays(World world, long seed, int x, int y, int z, int chunkX, int chunkZ, short[] blocks, byte[] metas)
@@ -43,17 +48,18 @@ public class GCMapGenDungeon
 
     public void generate(World world, Random rand, int x, int y, int z, int chunkX, int chunkZ, short[] blocks, byte[] metas, boolean useArrays)
     {
-        GCMapGenDungeon.useArrays = useArrays;
+        FMLLog.info("" + x + " " + y + " " + z);
+        GCCoreMapGenDungeon.useArrays = useArrays;
         this.worldObj = world;
 
-        final List<GCDungeonBoundingBox> boundingBoxes = new ArrayList<GCDungeonBoundingBox>();
+        final List<GCCoreDungeonBoundingBox> boundingBoxes = new ArrayList<GCCoreDungeonBoundingBox>();
 
         final int length = rand.nextInt(4) + 5;
 
-        GCDungeonRoom currentRoom = GCDungeonRoom.makeRoom(this.worldObj, rand, x, y, z, 4);
+        GCCoreDungeonRoom currentRoom = GCCoreDungeonRoom.makeRoom(this, rand, x, y, z, 4);
         currentRoom.generate(blocks, metas, chunkX, chunkZ);
         this.rooms.add(currentRoom);
-        final GCDungeonBoundingBox cbb = currentRoom.getBoundingBox();
+        final GCCoreDungeonBoundingBox cbb = currentRoom.getBoundingBox();
         this.generateEntranceCrater(blocks, metas, x + (cbb.maxX - cbb.minX) / 2, y, z + (cbb.maxZ - cbb.minZ) / 2, chunkX, chunkZ);
 
         for (int i = 0; i <= length; i++)
@@ -69,66 +75,66 @@ public class GCMapGenDungeon
                 // East = 0, North = 1, South = 2, West = 3
                 {
                 case 0: // East z++
-                    offsetZ = GCMapGenDungeon.HALLWAY_LENGTH + rand.nextInt(15);
+                    offsetZ = this.HALLWAY_LENGTH + rand.nextInt(15);
                     if (rand.nextBoolean())
                     {
                         if (rand.nextBoolean())
                         {
                             entranceDir = 1;
-                            offsetX = GCMapGenDungeon.HALLWAY_LENGTH + rand.nextInt(15);
+                            offsetX = this.HALLWAY_LENGTH + rand.nextInt(15);
                         }
                         else
                         {
                             entranceDir = 2;
-                            offsetX = -GCMapGenDungeon.HALLWAY_LENGTH - rand.nextInt(15);
+                            offsetX = -this.HALLWAY_LENGTH - rand.nextInt(15);
                         }
                     }
                     break;
                 case 1: // North x++
-                    offsetX = GCMapGenDungeon.HALLWAY_LENGTH + rand.nextInt(15);
+                    offsetX = this.HALLWAY_LENGTH + rand.nextInt(15);
                     if (rand.nextBoolean())
                     {
                         if (rand.nextBoolean())
                         {
                             entranceDir = 0;
-                            offsetZ = GCMapGenDungeon.HALLWAY_LENGTH + rand.nextInt(15);
+                            offsetZ = this.HALLWAY_LENGTH + rand.nextInt(15);
                         }
                         else
                         {
                             entranceDir = 3;
-                            offsetZ = -GCMapGenDungeon.HALLWAY_LENGTH - rand.nextInt(15);
+                            offsetZ = -this.HALLWAY_LENGTH - rand.nextInt(15);
                         }
                     }
                     break;
                 case 2: // South x--
-                    offsetX = -GCMapGenDungeon.HALLWAY_LENGTH - rand.nextInt(15);
+                    offsetX = -this.HALLWAY_LENGTH - rand.nextInt(15);
                     if (rand.nextBoolean())
                     {
                         if (rand.nextBoolean())
                         {
                             entranceDir = 0;
-                            offsetZ = GCMapGenDungeon.HALLWAY_LENGTH + rand.nextInt(15);
+                            offsetZ = this.HALLWAY_LENGTH + rand.nextInt(15);
                         }
                         else
                         {
                             entranceDir = 3;
-                            offsetZ = -GCMapGenDungeon.HALLWAY_LENGTH - rand.nextInt(15);
+                            offsetZ = -this.HALLWAY_LENGTH - rand.nextInt(15);
                         }
                     }
                     break;
                 case 3: // West z--
-                    offsetZ = -GCMapGenDungeon.HALLWAY_LENGTH - rand.nextInt(15);
+                    offsetZ = -this.HALLWAY_LENGTH - rand.nextInt(15);
                     if (rand.nextBoolean())
                     {
                         if (rand.nextBoolean())
                         {
                             entranceDir = 1;
-                            offsetX = GCMapGenDungeon.HALLWAY_LENGTH + rand.nextInt(15);
+                            offsetX = this.HALLWAY_LENGTH + rand.nextInt(15);
                         }
                         else
                         {
                             entranceDir = 2;
-                            offsetX = -GCMapGenDungeon.HALLWAY_LENGTH - rand.nextInt(15);
+                            offsetX = -this.HALLWAY_LENGTH - rand.nextInt(15);
                         }
                     }
                     break;
@@ -136,17 +142,17 @@ public class GCMapGenDungeon
                     break;
                 }
 
-                GCDungeonRoom possibleRoom = GCDungeonRoom.makeRoom(this.worldObj, rand, currentRoom.posX + offsetX, y, currentRoom.posZ + offsetZ, this.getOppositeDir(entranceDir));
+                GCCoreDungeonRoom possibleRoom = GCCoreDungeonRoom.makeRoom(this, rand, currentRoom.posX + offsetX, y, currentRoom.posZ + offsetZ, this.getOppositeDir(entranceDir));
                 if (i == length - 1)
                 {
-                    possibleRoom = GCDungeonRoom.makeBossRoom(this.worldObj, rand, currentRoom.posX + offsetX, y, currentRoom.posZ + offsetZ, this.getOppositeDir(entranceDir));
+                    possibleRoom = GCCoreDungeonRoom.makeBossRoom(this, rand, currentRoom.posX + offsetX, y, currentRoom.posZ + offsetZ, this.getOppositeDir(entranceDir));
                 }
                 if (i == length)
                 {
-                    possibleRoom = GCDungeonRoom.makeTreasureRoom(this.worldObj, rand, currentRoom.posX + offsetX, y, currentRoom.posZ + offsetZ, this.getOppositeDir(entranceDir));
+                    possibleRoom = GCCoreDungeonRoom.makeTreasureRoom(this, rand, currentRoom.posX + offsetX, y, currentRoom.posZ + offsetZ, this.getOppositeDir(entranceDir));
                 }
-                final GCDungeonBoundingBox possibleRoomBb = possibleRoom.getBoundingBox();
-                final GCDungeonBoundingBox currentRoomBb = currentRoom.getBoundingBox();
+                final GCCoreDungeonBoundingBox possibleRoomBb = possibleRoom.getBoundingBox();
+                final GCCoreDungeonBoundingBox currentRoomBb = currentRoom.getBoundingBox();
                 if (!this.isIntersecting(possibleRoomBb, boundingBoxes))
                 {
                     final int cx = (currentRoomBb.minX + currentRoomBb.maxX) / 2;
@@ -157,21 +163,21 @@ public class GCMapGenDungeon
                     final int az = (cz + pz) / 2;
                     if (offsetX == 0 || offsetZ == 0) // Only 1 hallway
                     {
-                        GCDungeonBoundingBox corridor1 = null;
+                        GCCoreDungeonBoundingBox corridor1 = null;
                         switch (dir)
                         // East = 0, North = 1, South = 2, West = 3
                         {
                         case 0: // East z++
-                            corridor1 = new GCDungeonBoundingBox(ax - 1, currentRoomBb.maxZ, ax, possibleRoomBb.minZ - 1);
+                            corridor1 = new GCCoreDungeonBoundingBox(ax - 1, currentRoomBb.maxZ, ax, possibleRoomBb.minZ - 1);
                             break;
                         case 1: // North x++
-                            corridor1 = new GCDungeonBoundingBox(currentRoomBb.maxX, az - 1, possibleRoomBb.minX - 1, az);
+                            corridor1 = new GCCoreDungeonBoundingBox(currentRoomBb.maxX, az - 1, possibleRoomBb.minX - 1, az);
                             break;
                         case 2: // South x--
-                            corridor1 = new GCDungeonBoundingBox(possibleRoomBb.maxX, az - 1, currentRoomBb.minX - 1, az);
+                            corridor1 = new GCCoreDungeonBoundingBox(possibleRoomBb.maxX, az - 1, currentRoomBb.minX - 1, az);
                             break;
                         case 3: // West z--
-                            corridor1 = new GCDungeonBoundingBox(ax - 1, possibleRoomBb.maxZ, ax, currentRoomBb.minZ - 1);
+                            corridor1 = new GCCoreDungeonBoundingBox(ax - 1, possibleRoomBb.maxZ, ax, currentRoomBb.minZ - 1);
                             break;
                         default:
                             break;
@@ -197,8 +203,8 @@ public class GCMapGenDungeon
                     else
                     // Two Hallways
                     {
-                        GCDungeonBoundingBox corridor1 = null;
-                        GCDungeonBoundingBox corridor2 = null;
+                        GCCoreDungeonBoundingBox corridor1 = null;
+                        GCCoreDungeonBoundingBox corridor2 = null;
                         int dir2 = 0;
                         int extraLength = 0;
                         if (rand.nextInt(6) == 0)
@@ -209,58 +215,58 @@ public class GCMapGenDungeon
                         // East = 0, North = 1, South = 2, West = 3
                         {
                         case 0: // East z++
-                            corridor1 = new GCDungeonBoundingBox(cx - 1, currentRoomBb.maxZ, cx + 1, pz - 1);
+                            corridor1 = new GCCoreDungeonBoundingBox(cx - 1, currentRoomBb.maxZ, cx + 1, pz - 1);
                             if (offsetX > 0) // x++
                             {
-                                corridor2 = new GCDungeonBoundingBox(corridor1.minX - extraLength, corridor1.maxZ + 1, possibleRoomBb.minX, corridor1.maxZ + 3);
+                                corridor2 = new GCCoreDungeonBoundingBox(corridor1.minX - extraLength, corridor1.maxZ + 1, possibleRoomBb.minX, corridor1.maxZ + 3);
                                 dir2 = 1;
                             }
                             else
                             // x--
                             {
-                                corridor2 = new GCDungeonBoundingBox(possibleRoomBb.maxX, corridor1.maxZ + 1, corridor1.maxX + extraLength, corridor1.maxZ + 3);
+                                corridor2 = new GCCoreDungeonBoundingBox(possibleRoomBb.maxX, corridor1.maxZ + 1, corridor1.maxX + extraLength, corridor1.maxZ + 3);
                                 dir2 = 2;
                             }
                             break;
                         case 1: // North x++
-                            corridor1 = new GCDungeonBoundingBox(currentRoomBb.maxX, cz - 1, px - 1, cz + 1);
+                            corridor1 = new GCCoreDungeonBoundingBox(currentRoomBb.maxX, cz - 1, px - 1, cz + 1);
                             if (offsetZ > 0) // z++
                             {
-                                corridor2 = new GCDungeonBoundingBox(corridor1.maxX + 1, corridor1.minZ - extraLength, corridor1.maxX + 4, possibleRoomBb.minZ);
+                                corridor2 = new GCCoreDungeonBoundingBox(corridor1.maxX + 1, corridor1.minZ - extraLength, corridor1.maxX + 4, possibleRoomBb.minZ);
                                 dir2 = 0;
                             }
                             else
                             // z--
                             {
-                                corridor2 = new GCDungeonBoundingBox(corridor1.maxX + 1, possibleRoomBb.maxZ, corridor1.maxX + 4, corridor1.maxZ + extraLength);
+                                corridor2 = new GCCoreDungeonBoundingBox(corridor1.maxX + 1, possibleRoomBb.maxZ, corridor1.maxX + 4, corridor1.maxZ + extraLength);
                                 dir2 = 3;
                             }
                             break;
                         case 2: // South x--
-                            corridor1 = new GCDungeonBoundingBox(px + 1, cz - 1, currentRoomBb.minX - 1, cz + 1);
+                            corridor1 = new GCCoreDungeonBoundingBox(px + 1, cz - 1, currentRoomBb.minX - 1, cz + 1);
                             if (offsetZ > 0) // z++
                             {
-                                corridor2 = new GCDungeonBoundingBox(corridor1.minX - 3, corridor1.minZ - extraLength, corridor1.minX - 1, possibleRoomBb.minZ);
+                                corridor2 = new GCCoreDungeonBoundingBox(corridor1.minX - 3, corridor1.minZ - extraLength, corridor1.minX - 1, possibleRoomBb.minZ);
                                 dir2 = 0;
                             }
                             else
                             // z--
                             {
-                                corridor2 = new GCDungeonBoundingBox(corridor1.minX - 3, possibleRoomBb.maxZ, corridor1.minX - 1, corridor1.maxZ + extraLength);
+                                corridor2 = new GCCoreDungeonBoundingBox(corridor1.minX - 3, possibleRoomBb.maxZ, corridor1.minX - 1, corridor1.maxZ + extraLength);
                                 dir2 = 3;
                             }
                             break;
                         case 3: // West z--
-                            corridor1 = new GCDungeonBoundingBox(cx - 1, pz + 1, cx + 1, currentRoomBb.minZ - 1);
+                            corridor1 = new GCCoreDungeonBoundingBox(cx - 1, pz + 1, cx + 1, currentRoomBb.minZ - 1);
                             if (offsetX > 0) // x++
                             {
-                                corridor2 = new GCDungeonBoundingBox(corridor1.minX - extraLength, corridor1.minZ - 3, possibleRoomBb.minX, corridor1.minZ - 1);
+                                corridor2 = new GCCoreDungeonBoundingBox(corridor1.minX - extraLength, corridor1.minZ - 3, possibleRoomBb.minX, corridor1.minZ - 1);
                                 dir2 = 1;
                             }
                             else
                             // x--
                             {
-                                corridor2 = new GCDungeonBoundingBox(possibleRoomBb.maxX, corridor1.minZ - 3, corridor1.maxX + extraLength, corridor1.minZ - 1);
+                                corridor2 = new GCCoreDungeonBoundingBox(possibleRoomBb.maxX, corridor1.minZ - 3, corridor1.maxX + extraLength, corridor1.minZ - 1);
                                 dir2 = 2;
                             }
                             break;
@@ -296,14 +302,14 @@ public class GCMapGenDungeon
         }
     }
 
-    private void genCorridor(GCDungeonBoundingBox corridor, Random rand, int y, int cx, int cz, int dir, short[] blocks, byte[] metas, boolean doubleCorridor)
+    private void genCorridor(GCCoreDungeonBoundingBox corridor, Random rand, int y, int cx, int cz, int dir, short[] blocks, byte[] metas, boolean doubleCorridor)
     {
         for (int i = corridor.minX - 1; i <= corridor.maxX + 1; i++)
         {
             for (int k = corridor.minZ - 1; k <= corridor.maxZ + 1; k++)
             {
                 loopj:
-                for (int j = y - 1; j <= y + GCMapGenDungeon.HALLWAY_HEIGHT; j++)
+                for (int j = y - 1; j <= y + this.HALLWAY_HEIGHT; j++)
                 {
                     boolean flag = false;
                     int flag2 = -1;
@@ -397,7 +403,7 @@ public class GCMapGenDungeon
                     }
                     else
                     {
-                        this.placeBlock(blocks, metas, i, j, k, cx, cz, GCMapGenDungeon.DUNGEON_WALL_ID, GCMapGenDungeon.DUNGEON_WALL_META);
+                        this.placeBlock(blocks, metas, i, j, k, cx, cz, this.DUNGEON_WALL_ID, this.DUNGEON_WALL_META);
                     }
                 }
             }
@@ -406,9 +412,9 @@ public class GCMapGenDungeon
 
     public void handleTileEntities(Random rand)
     {
-        final ArrayList<GCDungeonRoom> rooms = new ArrayList<GCDungeonRoom>();
+        final ArrayList<GCCoreDungeonRoom> rooms = new ArrayList<GCCoreDungeonRoom>();
         rooms.addAll(this.rooms);
-        for (final GCDungeonRoom room : rooms)
+        for (final GCCoreDungeonRoom room : rooms)
         {
             room.handleTileEntities(rand);
         }
@@ -462,7 +468,7 @@ public class GCMapGenDungeon
                 int helper = 0;
                 for (int j = 127; j > 0; j--)
                 {
-                    if ((this.getBlockID(blocks, i, j - 1, k, cx, cz) != 0 || this.getBlockID(blocks, i, j, k, cx, cz) == GCMapGenDungeon.DUNGEON_WALL_ID) && helper <= depth)
+                    if ((this.getBlockID(blocks, i, j - 1, k, cx, cz) != 0 || this.getBlockID(blocks, i, j, k, cx, cz) == this.DUNGEON_WALL_ID) && helper <= depth)
                     {
                         this.placeBlock(blocks, meta, i, j, k, cx, cz, 0, 0);
                         helper++;
@@ -495,7 +501,7 @@ public class GCMapGenDungeon
 
     private void placeBlock(short[] blocks, byte[] metas, int x, int y, int z, int cx, int cz, int id, int meta)
     {
-        if (GCMapGenDungeon.useArrays)
+        if (GCCoreMapGenDungeon.useArrays)
         {
             cx *= 16;
             cz *= 16;
@@ -517,7 +523,7 @@ public class GCMapGenDungeon
 
     private int getBlockID(short[] blocks, int x, int y, int z, int cx, int cz)
     {
-        if (GCMapGenDungeon.useArrays)
+        if (GCCoreMapGenDungeon.useArrays)
         {
             cx *= 16;
             cz *= 16;
@@ -572,9 +578,9 @@ public class GCMapGenDungeon
         return dirHelper[rand.nextInt(dirHelper.length)];
     }
 
-    private boolean isIntersecting(GCDungeonBoundingBox bb, List<GCDungeonBoundingBox> dungeonBbs)
+    private boolean isIntersecting(GCCoreDungeonBoundingBox bb, List<GCCoreDungeonBoundingBox> dungeonBbs)
     {
-        for (final GCDungeonBoundingBox bb2 : dungeonBbs)
+        for (final GCCoreDungeonBoundingBox bb2 : dungeonBbs)
         {
             if (bb.isOverlapping(bb2))
             {

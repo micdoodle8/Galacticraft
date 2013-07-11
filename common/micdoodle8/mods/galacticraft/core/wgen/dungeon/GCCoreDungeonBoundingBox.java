@@ -1,6 +1,6 @@
-package micdoodle8.mods.galacticraft.moon.wgen.dungeon;
+package micdoodle8.mods.galacticraft.core.wgen.dungeon;
 
-public class GCDungeonBoundingBox
+public class GCCoreDungeonBoundingBox
 {
 
     int minX;
@@ -8,7 +8,7 @@ public class GCDungeonBoundingBox
     int maxX;
     int maxZ;
 
-    public GCDungeonBoundingBox(int minX, int minZ, int maxX, int maxZ)
+    public GCCoreDungeonBoundingBox(int minX, int minZ, int maxX, int maxZ)
     {
         this.minX = minX;
         this.minZ = minZ;
@@ -16,7 +16,7 @@ public class GCDungeonBoundingBox
         this.maxZ = maxZ;
     }
 
-    public boolean isOverlapping(GCDungeonBoundingBox bb)
+    public boolean isOverlapping(GCCoreDungeonBoundingBox bb)
     {
         return this.minX < bb.maxX && this.minZ < bb.maxZ && this.maxX > bb.minX && this.maxZ > bb.minZ;
     }

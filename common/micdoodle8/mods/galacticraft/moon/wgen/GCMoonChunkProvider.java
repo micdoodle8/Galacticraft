@@ -11,9 +11,9 @@ import micdoodle8.mods.galacticraft.core.perlin.NoiseModule;
 import micdoodle8.mods.galacticraft.core.perlin.generator.Gradient;
 import micdoodle8.mods.galacticraft.core.wgen.GCCoreCraterSize;
 import micdoodle8.mods.galacticraft.core.wgen.GCCoreMapGenBaseMeta;
+import micdoodle8.mods.galacticraft.core.wgen.dungeon.GCCoreMapGenDungeon;
 import micdoodle8.mods.galacticraft.moon.GCMoonConfigManager;
 import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
-import micdoodle8.mods.galacticraft.moon.wgen.dungeon.GCMapGenDungeon;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSand;
 import net.minecraft.entity.EnumCreatureType;
@@ -55,7 +55,7 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 
     private final MapGenMineshaft mineshaftGenerator = new MapGenMineshaft();
 
-    private final GCMapGenDungeon dungeonGenerator = new GCMapGenDungeon();
+    private final GCCoreMapGenDungeon dungeonGenerator = new GCCoreMapGenDungeon(GCMoonBlocks.blockMoon.blockID, 14, 8, 16, 3);
 
     private BiomeGenBase[] biomesForGeneration = { GCMoonBiomeGenBase.moonFlat };
 
