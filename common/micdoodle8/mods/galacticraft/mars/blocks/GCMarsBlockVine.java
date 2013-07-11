@@ -19,6 +19,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.IShearable;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -38,7 +39,25 @@ public class GCMarsBlockVine extends Block implements IShearable
     @Override
     public MovingObjectPosition collisionRayTrace(World world, int x, int y, int z, Vec3 vec3d, Vec3 vec3d1)
     {
-        return null;
+        return super.collisionRayTrace(world, x, y, z, vec3d, vec3d1);
+    }
+
+    @Override
+    public boolean removeBlockByPlayer(World world, EntityPlayer player, int x, int y, int z)
+    {
+        if (world.setBlockToAir(x, y, z))
+        {
+            int y2 = y - 1;
+            while (world.getBlockId(x, y2, z) == this.blockID)
+            {
+                world.setBlockToAir(x, y2, z);
+                y2--;
+            }
+            
+            return true;
+        }
+        
+        return false;
     }
 
     @Override
@@ -125,12 +144,7 @@ public class GCMarsBlockVine extends Block implements IShearable
     @Override
     public boolean canPlaceBlockOnSide(World world, int x, int y, int z, int side)
     {
-        return side == 0 && this.canBePlacedOn(world.getBlockId(x, y + 1, z), world.getBlockMetadata(x, y + 1, z));
-    }
-
-    private boolean canBePlacedOn(int blockID, int meta)
-    {
-        return blockID == GCMarsBlocks.marsBlock.blockID && (meta == 6 || meta == 5 || meta == 3);
+        return ForgeDirection.getOrientation(side) == ForgeDirection.DOWN && Block.blocksList[blockID].isBlockSolid(world, x, y + 1, z, side);
     }
 
     public int getVineLength(IBlockAccess world, int x, int y, int z)
