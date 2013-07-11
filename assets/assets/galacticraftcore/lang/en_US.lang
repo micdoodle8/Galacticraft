@@ -120,7 +120,6 @@ tile.enclosed.goldCable.name=Sealable Gold Cable
 tile.enclosed.hvCable.name=Sealable HV Cable
 tile.enclosed.glassFibreCable.name=Sealable Glass Fibre Cable
 tile.enclosed.lvCable.name=Sealable Ultra-Low-Current Cable
-tile.enclosed.copperCable.name=Sealable Copper Cable
 tile.enclosed.PipeItemsCobblestone.name=Sealable Cobblestone Transport Pipe
 tile.enclosed.PipeItemsStone.name=Sealable Stone Transport Pipe
 tile.enclosed.PipeLiquidsCobblestone.name=Sealable Cobblestone Waterproof Pipe
