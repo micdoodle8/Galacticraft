@@ -107,6 +107,7 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.particle.EntitySmokeFX;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -119,6 +120,7 @@ import net.minecraftforge.client.EnumHelperClient;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.GL11;
 import cofh.api.core.RegistryAccess;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
@@ -774,5 +776,45 @@ public class ClientProxyCore extends CommonProxyCore
         }
 
         return super.getClientGuiElement(ID, player, world, x, y, z);
+    }
+
+    private static final ResourceLocation underOilTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/misc/underoil.png");
+    
+    public static void renderLiquidOverlays(float partialTicks)
+    {
+        Minecraft minecraft = FMLClientHandler.instance().getClient();
+        
+        if (minecraft.thePlayer.isInsideOfMaterial(GCCoreBlocks.crudeOil))
+        {
+            minecraft.func_110434_K().func_110577_a(underOilTexture);
+        }
+        else
+        {
+            return;
+        }
+        
+        Tessellator tessellator = Tessellator.instance;
+        float f1 = minecraft.thePlayer.getBrightness(partialTicks) / 3.0F;
+        GL11.glColor4f(f1, f1, f1, 1.0F);
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glPushMatrix();
+        float f2 = 4.0F;
+        float f3 = -1.0F;
+        float f4 = 1.0F;
+        float f5 = -1.0F;
+        float f6 = 1.0F;
+        float f7 = -0.5F;
+        float f8 = -minecraft.thePlayer.rotationYaw / 64.0F;
+        float f9 = minecraft.thePlayer.rotationPitch / 64.0F;
+        tessellator.startDrawingQuads();
+        tessellator.addVertexWithUV((double)f3, (double)f5, (double)f7, (double)(f2 + f8), (double)(f2 + f9));
+        tessellator.addVertexWithUV((double)f4, (double)f5, (double)f7, (double)(0.0F + f8), (double)(f2 + f9));
+        tessellator.addVertexWithUV((double)f4, (double)f6, (double)f7, (double)(0.0F + f8), (double)(0.0F + f9));
+        tessellator.addVertexWithUV((double)f3, (double)f6, (double)f7, (double)(f2 + f8), (double)(0.0F + f9));
+        tessellator.draw();
+        GL11.glPopMatrix();
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        GL11.glDisable(GL11.GL_BLEND);
     }
 }
