@@ -147,6 +147,7 @@ entity.GalacticraftCore.Lander.name=Space Lander
 # Schematics
 schematic.moonbuggy.name=Moon Buggy
 schematic.rocketT1.name=Tier 1 Rocket
+schematic.rocketT2.name=Tier 2 Rocket
 
 # DEATH MESSAGES
 death.attack.spaceshipExplosion=%1$s's rocket malfunctioned!
