@@ -683,13 +683,10 @@ public class GCCorePlayerMP extends EntityPlayerMP
         final ItemStack tankInSlot = ((GCCoreInventoryPlayer) this.inventory).tankItemInSlot(2);
         final ItemStack tankInSlot2 = ((GCCoreInventoryPlayer) this.inventory).tankItemInSlot(3);
 
-        final int drainSpacing = OxygenUtil.getDrainSpacing(tankInSlot);
-        final int drainSpacing2 = OxygenUtil.getDrainSpacing(tankInSlot2);
+        final int drainSpacing = OxygenUtil.getDrainSpacing(tankInSlot, tankInSlot2);
 
         if (this.worldObj.provider instanceof IGalacticraftWorldProvider && !this.capabilities.isCreativeMode)
         {
-            boolean inAir = OxygenUtil.isAABBInBreathableAirBlock(this);
-
             if (tankInSlot == null)
             {
                 this.airRemaining = 0;
@@ -699,60 +696,66 @@ public class GCCorePlayerMP extends EntityPlayerMP
             {
                 this.airRemaining2 = 0;
             }
-
-            if (drainSpacing > 0 && tankInSlot != null)
+            
+            if (drainSpacing > 0)
             {
-                this.airRemaining = tankInSlot.getMaxDamage() - tankInSlot.getItemDamage();
+                if (this.tick % drainSpacing == 0 && !OxygenUtil.isAABBInBreathableAirBlock(this))
+                {
+                    if (tankInSlot.getMaxDamage() - tankInSlot.getItemDamage() > 0)
+                    {
+                        tankInSlot.damageItem(1, this);
+                    }
+                    
+                    if (tankInSlot2.getMaxDamage() - tankInSlot2.getItemDamage() > 0)
+                    {
+                        tankInSlot2.damageItem(1, this);
+                    }
+                }
+                
+                if (tankInSlot != null)
+                {
+                    this.airRemaining = tankInSlot.getMaxDamage() - tankInSlot.getItemDamage();
+                }
+                
+                if (tankInSlot2 != null)
+                {
+                    this.airRemaining2 = tankInSlot2.getMaxDamage() - tankInSlot2.getItemDamage();
+                }
             }
-
-            if (drainSpacing2 > 0 && tankInSlot2 != null)
+            else
             {
-                this.airRemaining2 = tankInSlot2.getMaxDamage() - tankInSlot2.getItemDamage();
-            }
+                if (this.tick % 60 == 0)
+                {
+                    if (OxygenUtil.isAABBInBreathableAirBlock(this))
+                    {
+                        if (this.airRemaining < 90 && tankInSlot != null)
+                        {
+                            this.airRemaining = Math.min(this.airRemaining + 1, tankInSlot.getMaxDamage() - tankInSlot.getItemDamage());
+                        }
 
-            if (drainSpacing > 0 && this.tick % drainSpacing == 0 && !inAir && tankInSlot.getMaxDamage() - tankInSlot.getItemDamage() > 0)
-            {
-                tankInSlot.damageItem(1, this);
-            }
-
-            if (drainSpacing2 > 0 && this.tick % drainSpacing2 == 0 && !inAir && tankInSlot2.getMaxDamage() - tankInSlot2.getItemDamage() > 0)
-            {
-                tankInSlot2.damageItem(1, this);
-            }
-
-            if (drainSpacing == 0 && this.tick % 60 == 0 && !inAir && this.airRemaining > 0)
-            {
-                this.airRemaining -= 1;
-            }
-
-            if (drainSpacing2 == 0 && this.tick % 60 == 0 && !inAir && this.airRemaining2 > 0)
-            {
-                this.airRemaining2 -= 1;
-            }
-
-            if (this.airRemaining < 0)
-            {
-                this.airRemaining = 0;
-            }
-
-            if (this.airRemaining2 < 0)
-            {
-                this.airRemaining2 = 0;
-            }
-
-            if (this.tick % 60 == 0 && inAir && this.airRemaining < 90 && tankInSlot != null)
-            {
-                this.airRemaining += 1;
-            }
-
-            if (this.tick % 60 == 0 && inAir && this.airRemaining2 < 90 && tankInSlot2 != null)
-            {
-                this.airRemaining2 += 1;
+                        if (this.airRemaining2 < 90 && tankInSlot2 != null)
+                        {
+                            this.airRemaining2 = Math.min(this.airRemaining2 + 1, tankInSlot2.getMaxDamage() - tankInSlot2.getItemDamage());
+                        }
+                    }
+                    else
+                    {
+                        if (this.airRemaining > 0)
+                        {
+                            this.airRemaining = Math.max(this.airRemaining - 1, 0);
+                        }
+                        
+                        if (this.airRemaining2 > 0)
+                        {
+                            this.airRemaining2 = Math.max(this.airRemaining2 - 1, 0);
+                        }
+                    }
+                }
             }
 
             final boolean airEmpty = this.airRemaining <= 0 && this.airRemaining2 <= 0;
 
-            if ((!OxygenUtil.hasValidOxygenSetup(this) || airEmpty) && !inAir)
+            if ((!OxygenUtil.hasValidOxygenSetup(this) || airEmpty) && !OxygenUtil.isAABBInBreathableAirBlock(this))
             {
                 this.oxygenSetupValid = false;
 

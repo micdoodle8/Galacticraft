@@ -113,19 +113,22 @@ public class OxygenUtil
         return false;
     }
 
-    public static int getDrainSpacing(ItemStack tank)
+    public static int getDrainSpacing(ItemStack tank, ItemStack tank2)
     {
-        if (tank == null)
+        boolean tank1Valid = tank != null ? (tank.getItem() instanceof GCCoreItemOxygenTank && tank.getMaxDamage() - tank.getItemDamage() > 0) : false;
+        boolean tank2Valid = tank2 != null ? (tank2.getItem() instanceof GCCoreItemOxygenTank && tank.getMaxDamage() - tank.getItemDamage() > 0) : false;
+        
+        if (!tank1Valid && !tank2Valid)
         {
             return 0;
         }
-
-        if (tank.getItem() instanceof GCCoreItemOxygenTank)
+        
+        if ((tank1Valid && !tank2Valid) || (!tank1Valid && tank2Valid))
         {
-            return 360;
+            return 180;
         }
-
-        return 0;
+        
+        return 360;
     }
 
     public static boolean hasValidOxygenSetup(GCCorePlayerMP player)
@@ -230,41 +233,11 @@ public class OxygenUtil
         case 1:
             return stack.getItem() instanceof GCCoreItemOxygenGear;
         case 2:
-            return OxygenUtil.getDrainSpacing(stack) > 0;
+            return stack.getItem() instanceof GCCoreItemOxygenTank;
         case 3:
-            return OxygenUtil.getDrainSpacing(stack) > 0;
+            return stack.getItem() instanceof GCCoreItemOxygenTank;
         }
 
         return false;
     }
-
-    public static boolean isBlockGettingOxygen(World world, int par1, int par2, int par3)
-    {
-        return true; // TODO
-        // return isBlockProvidingOxygenTo(world, par1, par2 - 1, par3, 0) ?
-        // true : isBlockProvidingOxygenTo(world, par1, par2 + 1, par3, 1) ?
-        // true : isBlockProvidingOxygenTo(world, par1, par2, par3 - 1, 2) ?
-        // true : isBlockProvidingOxygenTo(world, par1, par2, par3 + 1, 3) ?
-        // true : isBlockProvidingOxygenTo(world, par1 - 1, par2, par3, 4) ?
-        // true : isBlockProvidingOxygenTo(world, par1 + 1, par2, par3, 5);
-    }
-
-    // public static boolean isBlockProvidingOxygenTo(World world, int par1, int
-    // par2, int par3, int par4)
-    // {
-    // final TileEntity te = world.getBlockTileEntity(par1, par2, par3);
-    //
-    // if (te != null && te instanceof TileEntityOxygenTransmitter)
-    // {
-    // final TileEntityOxygenTransmitter teot = (TileEntityOxygenTransmitter)
-    // te;
-    //
-    // if (teot.getOxygenInTransmitter() > 1.0D)
-    // {
-    // return true;
-    // }
-    // }
-    //
-    // return false;
-    // }
 }
