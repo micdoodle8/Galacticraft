@@ -68,11 +68,11 @@ public class GCCoreThreadVersionCheck extends Thread
 
                             if (sideToCheck.equals(Side.CLIENT))
                             {
-                                FMLClientHandler.instance().getClient().thePlayer.addChatMessage(LanguageRegistry.instance().getStringLocalization("newversion.message1.name") + String.valueOf(GalacticraftCore.remoteMajVer) + "." + String.valueOf(GalacticraftCore.remoteMinVer) + "." + String.valueOf(GalacticraftCore.remoteBuildVer) + " \u00a71http://micdoodle8.com/");
+                                FMLClientHandler.instance().getClient().thePlayer.addChatMessage(LanguageRegistry.instance().getStringLocalization("newversion.message1.name", "en_US") + String.valueOf(GalacticraftCore.remoteMajVer) + "." + String.valueOf(GalacticraftCore.remoteMinVer) + "." + String.valueOf(GalacticraftCore.remoteBuildVer) + " \u00a71http://micdoodle8.com/");
                             }
                             else if (sideToCheck.equals(Side.SERVER))
                             {
-                                GCLog.severe(LanguageRegistry.instance().getStringLocalization("newversion.message2.name") + String.valueOf(GalacticraftCore.remoteMajVer) + "." + String.valueOf(GalacticraftCore.remoteMinVer) + "." + String.valueOf(GalacticraftCore.remoteBuildVer) + " http://micdoodle8.com/");
+                                GCLog.severe(LanguageRegistry.instance().getStringLocalization("newversion.message2.name", "en_US") + String.valueOf(GalacticraftCore.remoteMajVer) + "." + String.valueOf(GalacticraftCore.remoteMinVer) + "." + String.valueOf(GalacticraftCore.remoteBuildVer) + " http://micdoodle8.com/");
                             }
                         }
                     }
@@ -86,7 +86,7 @@ public class GCCoreThreadVersionCheck extends Thread
             {
                 try
                 {
-                    GCLog.severe(LanguageRegistry.instance().getStringLocalization("newversion.failed.name"));
+                    GCLog.severe(LanguageRegistry.instance().getStringLocalization("newversion.failed.name", "en_US"));
                     Thread.sleep(15000);
                 }
                 catch (final InterruptedException e)
@@ -95,7 +95,7 @@ public class GCCoreThreadVersionCheck extends Thread
             }
             else
             {
-                GCLog.info(LanguageRegistry.instance().getStringLocalization("newversion.success.name") + " " + GalacticraftCore.remoteMajVer + "." + GalacticraftCore.remoteMinVer + "." + GalacticraftCore.remoteBuildVer);
+                GCLog.info(LanguageRegistry.instance().getStringLocalization("newversion.success.name", "en_US") + " " + GalacticraftCore.remoteMajVer + "." + GalacticraftCore.remoteMinVer + "." + GalacticraftCore.remoteBuildVer);
             }
 
             this.count++;
