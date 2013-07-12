@@ -2,11 +2,11 @@ package micdoodle8.mods.galacticraft.mars.items;
 
 import java.util.List;
 import mekanism.api.EnumColor;
+import micdoodle8.mods.galacticraft.api.entity.IRocketType.EnumRocketType;
 import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
-import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase.EnumRocketType;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityRocketT2;
 import net.minecraft.client.renderer.texture.IconRegister;

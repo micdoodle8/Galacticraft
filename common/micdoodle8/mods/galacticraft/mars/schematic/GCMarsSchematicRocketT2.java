@@ -34,13 +34,6 @@ public class GCMarsSchematicRocketT2 implements ISchematicPage
 
     @SideOnly(Side.CLIENT)
     @Override
-    public String getTitle()
-    {
-        return "T2 Rocket";
-    }
-
-    @SideOnly(Side.CLIENT)
-    @Override
     public GuiScreen getResultScreen(EntityPlayer player, int x, int y, int z)
     {
         return new GCMarsGuiSchematicRocketT2(player.inventory, x, y, z);

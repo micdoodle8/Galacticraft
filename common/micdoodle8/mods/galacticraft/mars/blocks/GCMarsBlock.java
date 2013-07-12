@@ -2,8 +2,8 @@ package micdoodle8.mods.galacticraft.mars.blocks;
 
 import java.util.List;
 import java.util.Random;
-import micdoodle8.mods.galacticraft.api.block.IDetectableMetadataResource;
-import micdoodle8.mods.galacticraft.api.block.IPlantableMetadataBlock;
+import micdoodle8.mods.galacticraft.api.block.IDetectableResource;
+import micdoodle8.mods.galacticraft.api.block.IPlantableBlock;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import micdoodle8.mods.galacticraft.mars.items.GCMarsItems;
 import net.minecraft.block.Block;
@@ -26,7 +26,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * All rights reserved.
  * 
  */
-public class GCMarsBlock extends Block implements IDetectableMetadataResource, IPlantableMetadataBlock
+public class GCMarsBlock extends Block implements IDetectableResource, IPlantableBlock
 {
     // Copper Ore Mars, Tin Ore Mars, Desh Ore, Stone, Cobblestone, Grass, Dirt,
     // Dungeon Wall, Decoration Block
