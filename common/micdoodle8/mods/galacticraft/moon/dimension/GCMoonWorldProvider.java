@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.moon.dimension;
 
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
-import micdoodle8.mods.galacticraft.core.client.GCCoreCloudRenderer;
 import micdoodle8.mods.galacticraft.moon.GCMoonConfigManager;
 import micdoodle8.mods.galacticraft.moon.wgen.GCMoonChunkProvider;
 import micdoodle8.mods.galacticraft.moon.wgen.GCMoonWorldChunkManager;
@@ -28,7 +27,6 @@ public class GCMoonWorldProvider extends WorldProvider implements IGalacticraftW
     {
         this.dimensionId = var1;
         super.setDimension(var1);
-        this.setCloudRenderer(new GCCoreCloudRenderer());
     }
 
     @Override

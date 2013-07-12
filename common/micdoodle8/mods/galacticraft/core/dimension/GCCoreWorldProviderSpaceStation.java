@@ -4,7 +4,6 @@ import micdoodle8.mods.galacticraft.api.world.IExitHeight;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
-import micdoodle8.mods.galacticraft.core.client.GCCoreCloudRenderer;
 import micdoodle8.mods.galacticraft.core.wgen.GCCoreChunkProviderOverworldOrbit;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
@@ -31,7 +30,6 @@ public class GCCoreWorldProviderSpaceStation extends WorldProvider implements IO
         this.spaceStationDimensionID = var1;
         this.dimensionId = var1;
         super.setDimension(var1);
-        this.setCloudRenderer(new GCCoreCloudRenderer());
     }
 
     @Override
