@@ -96,11 +96,11 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
                     if (FluidContainerRegistry.isEmptyContainer(this.containingItems[2]))
                     {
                         boolean isCanister = this.containingItems[2].isItemEqual(new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.oilCanister.getMaxDamage()));
-                        final int amountToFill = isCanister ? FluidContainerRegistry.BUCKET_VOLUME * 2 : FluidContainerRegistry.BUCKET_VOLUME;
+                        final int amountToFill = Math.min(liquid.amount, isCanister ? GCCoreItems.fuelCanister.getMaxDamage() - 1 : FluidContainerRegistry.BUCKET_VOLUME);
 
                         if (isCanister)
                         {
-                            this.containingItems[2] = new ItemStack(GCCoreItems.fuelCanister, 1, GCCoreItems.fuelCanister.getMaxDamage() - liquid.amount);
+                            this.containingItems[2] = new ItemStack(GCCoreItems.fuelCanister, 1, GCCoreItems.fuelCanister.getMaxDamage() - amountToFill);
                         }
                         else
                         {
