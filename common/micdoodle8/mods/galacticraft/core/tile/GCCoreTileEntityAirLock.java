@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import java.util.ArrayList;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
+import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import universalelectricity.prefab.tile.TileEntityAdvanced;
 
@@ -53,7 +54,7 @@ public class GCCoreTileEntityAirLock extends TileEntityAdvanced
                         {
                             int id = this.worldObj.getBlockId(x, y, z);
 
-                            if (id == 0)
+                            if (id == 0 || Block.blocksList[id].isAirBlock(this.worldObj, x, y, z))
                             {
                                 this.worldObj.setBlock(x, y, this.protocol.minZ, GCCoreBlocks.airLockSeal.blockID, 0, 3);
                             }
@@ -68,7 +69,7 @@ public class GCCoreTileEntityAirLock extends TileEntityAdvanced
                         {
                             int id = this.worldObj.getBlockId(x, y, z);
 
-                            if (id == 0)
+                            if (id == 0 || Block.blocksList[id].isAirBlock(this.worldObj, x, y, z))
                             {
                                 this.worldObj.setBlock(this.protocol.minX, y, z, GCCoreBlocks.airLockSeal.blockID, 0, 3);
                             }
