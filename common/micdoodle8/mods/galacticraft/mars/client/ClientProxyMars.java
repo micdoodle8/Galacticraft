@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.util.EnumSet;
 import java.util.Random;
+import micdoodle8.mods.galacticraft.core.client.GCCoreCloudRenderer;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderSpaceship;
 import micdoodle8.mods.galacticraft.core.client.sounds.GCCoreSoundUpdaterSpaceship;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
@@ -176,6 +177,11 @@ public class ClientProxyMars extends CommonProxyMars
                         if (world.provider.getSkyRenderer() == null)
                         {
                             world.provider.setSkyRenderer(new GCMarsSkyProvider());
+                        }
+                        
+                        if (world.provider.getCloudRenderer() == null)
+                        {
+                            world.provider.setCloudRenderer(new GCCoreCloudRenderer());
                         }
                     }
 
