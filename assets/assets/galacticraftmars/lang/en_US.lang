@@ -28,6 +28,7 @@ item.deshBoots.name=Desh Boots
 tile.mars.deshmars.name=Desh Ore
 tile.mars.coppermars.name=Copper Ore
 tile.mars.tinmars.name=Tin Ore
+tile.mars.ironmars.name=Iron Ore
 tile.mars.marscobblestone.name=Cobblestone
 tile.mars.marsstone.name=Stone
 tile.mars.marsdirt.name=Dirt

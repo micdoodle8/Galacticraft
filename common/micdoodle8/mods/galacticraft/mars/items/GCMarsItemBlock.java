@@ -49,14 +49,14 @@ public class GCMarsItemBlock extends ItemBlock
             name = "tinmars";
             break;
         }
+        case 3:
+        {
+            name = "ironmars";
+            break;
+        }
         case 2:
         {
             name = "deshmars";
-            break;
-        }
-        case 3:
-        {
-            name = "marsstone";
             break;
         }
         case 4:
@@ -82,6 +82,11 @@ public class GCMarsItemBlock extends ItemBlock
         case 8:
         {
             name = "marsdeco";
+            break;
+        }
+        case 9:
+        {
+            name = "marsstone";
             break;
         }
         default:
