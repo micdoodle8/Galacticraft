@@ -3,20 +3,13 @@ package micdoodle8.mods.galacticraft.core.tile;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
-import micdoodle8.mods.galacticraft.core.client.model.block.GCCoreModelAssemblyTable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import universalelectricity.core.vector.Vector3;
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreTileEntityAdvancedCraftingTable extends TileEntityMulti implements IMultiBlock
 {
-    @SideOnly(Side.CLIENT)
-    public GCCoreModelAssemblyTable model = new GCCoreModelAssemblyTable();
-
     public GCCoreTileEntityAdvancedCraftingTable()
     {
         super(GalacticraftCore.CHANNELENTITIES);
@@ -26,11 +19,6 @@ public class GCCoreTileEntityAdvancedCraftingTable extends TileEntityMulti imple
     public void validate()
     {
         super.validate();
-
-        if (!this.isInvalid() && this.worldObj != null && FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
-        {
-            this.model = new GCCoreModelAssemblyTable();
-        }
     }
 
     @Override

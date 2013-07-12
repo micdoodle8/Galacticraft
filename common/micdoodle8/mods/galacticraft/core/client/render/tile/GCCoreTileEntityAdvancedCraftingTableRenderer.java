@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.render.tile;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAdvancedCraftingTable;
+import micdoodle8.mods.galacticraft.core.client.model.block.GCCoreModelAssemblyTable;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
@@ -11,12 +11,11 @@ import org.lwjgl.opengl.GL12;
 public class GCCoreTileEntityAdvancedCraftingTableRenderer extends TileEntitySpecialRenderer
 {
     private static final ResourceLocation assemblyTableTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/assembly.png");
+    public GCCoreModelAssemblyTable model = new GCCoreModelAssemblyTable();
 
     @Override
     public void renderTileEntityAt(TileEntity var1, double par2, double par4, double par6, float var8)
     {
-        final GCCoreTileEntityAdvancedCraftingTable table = (GCCoreTileEntityAdvancedCraftingTable) var1;
-
         GL11.glPushMatrix();
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -26,7 +25,7 @@ public class GCCoreTileEntityAdvancedCraftingTableRenderer extends TileEntitySpe
 
         this.func_110628_a(GCCoreTileEntityAdvancedCraftingTableRenderer.assemblyTableTexture);
 
-        table.model.renderAll();
+        this.model.renderAll();
 
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);
         GL11.glPopMatrix();
