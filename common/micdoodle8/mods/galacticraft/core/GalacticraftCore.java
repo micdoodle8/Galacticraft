@@ -81,6 +81,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import universalelectricity.prefab.ore.OreGenerator;
 import basiccomponents.common.BasicComponents;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -337,7 +338,7 @@ public class GalacticraftCore
         GalacticraftCore.proxy.postInit(event);
         GalacticraftCore.proxy.registerRenderInformation();
 
-        GCCoreThreadRequirementMissing.startCheck();
+        GCCoreThreadRequirementMissing.startCheck(FMLCommonHandler.instance().getEffectiveSide());
     }
 
     @EventHandler
