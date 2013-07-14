@@ -1,0 +1,123 @@
+# Galacticraft Core Language File = JAPANESE
+
+# GENERAL ITEMS
+item.oxygenTankLightFull.name=軽い酸素タンク
+item.oxygenTankLightEmpty.name=空の軽い酸素タンク
+item.oxygenTankMedFull.name=中型酸素タンク
+item.oxygenTankMedEmpty.name=空の中型酸素タンク
+item.oxygenTankHeavyFull.name=重い酸素タンク
+item.oxygenTankHeavyEmpty.name=空の重い酸素タンク
+item.oxygenMask.name=酸素マスク
+item.spaceship.name=宇宙機
+item.sensorGlasses.name=センサーゴーグル
+item.sensorGlassesWithOxygenMask.name=センサーゴーグルと酸素マスク
+item.jetpack.name=ジェットパック
+item.canister.tin.name=鈴缶
+item.canister.copper.name=銅缶
+item.airVent.name=換気口
+item.airFan.name=換気扇
+item.oxygenConcentrator.name=酸素濃縮器
+item.heavyPlating.name=ヘビーデューティーメッキ
+item.rocketEngine.name=ロケットエンジン
+item.rocketFins.name=ロケットフィン
+item.noseCone.name=ノーズコーン
+item.sensorLens.name=センサーレンズ
+item.oxygenGear.name=酸素ギア
+item.flag.american.name=アメリカの旗
+item.flag.black.name=黒色の旗
+item.flag.blue.name=空色の旗
+item.flag.green.name=黄緑色の旗
+item.flag.brown.name=茶色の旗
+item.flag.darkblue.name=青色の旗
+item.flag.darkgray.name=灰色の旗
+item.flag.darkgreen.name=緑色の旗
+item.flag.gray.name=薄灰色の旗
+item.flag.magenta.name=赤紫色の旗
+item.flag.orange.name=橙色の旗
+item.flag.pink.name=桃色の旗
+item.flag.purple.name=紫色の旗
+item.flag.red.name=赤色の旗
+item.flag.teal.name=水色の旗
+item.flag.yellow.name=黄色の旗
+item.flag.white.name=旗
+item.parachute_plain.name=パラシュート
+item.parachute_black.name=黒色のパラシュート 
+item.parachute_blue.name=空色のパラシュート 
+item.parachute_lime.name=黄緑色のパラシュート
+item.parachute_brown.name=茶色のパラシュート
+item.parachute_darkblue.name=青色のパラシュート
+item.parachute_darkgray.name=灰色のパラシュート
+item.parachute_darkgreen.name=緑色のパラシュート
+item.parachute_gray.name=薄灰色のパラシュート
+item.parachute_magenta.name=赤紫色のパラシュート
+item.parachute_orange.name=橙色のパラシュート
+item.parachute_pink.name=桃色のパラシュート
+item.parachute_purple.name=紫色のパラシュート
+item.parachute_red.name=赤色のパラシュート
+item.parachute_teal.name=水色のパラシュート
+item.parachute_yellow.name=黄色のパラシュート
+item.flagPole.name=旗竿
+item.canvas.name=キャンバス
+item.buggy.name=ムーンバギー
+item.emptyLiquidCanister.name=空の液体缶
+item.oilCanisterPartial.name=部分的にフルな燃油缶
+item.fuelCanisterPartial.name=部分的にフルな燃料缶
+item.oilCanister.name=フルな油缶
+item.fuelCanister.name=フルな燃料缶
+item.oilExtractor.name=ポータブルの油抽出器
+
+# TOOLS
+item.steel_pickaxe.name=鋼のツルハシ
+item.steel_axe.name=鋼の斧
+item.steel_hoe.name=鋼のクワ
+item.steel_shovel.name=鋼のシャベル
+item.steel_sword.name=鋼の剣
+
+# ARMOR
+item.steel_helmet.name=鋼のヘルメット
+item.steel_chestplate.name=鋼のチェストプレート
+item.steel_leggings.name=鋼のレギンス
+item.steel_boots.name=鋼のブーツ
+
+# BLOCKS
+tile.treasureChest.name=宝物箱
+tile.landingPad.name=ロケット発射台
+tile.unlitTorch.name=松明
+tile.unlitTorchLit.name=松明
+tile.distributor.name=酸素拡散機
+tile.oxygenPipe.name=酸素パイプ
+tile.oxygenCollector.name=酸素コレクター
+tile.fallenMeteor.name=落ちた流星
+tile.rocketWorkbench.name=ロケット作業台
+tile.decorationblock.decoblock1.name=鈴ブロック
+tile.decorationblock.decoblock2.name=鈴ブロック
+tile.airLockFrame.name=エアロック枠
+tile.airLockSeal.name=エアロック封
+tile.crudeOilStill.name=原油
+tile.crudeOilMoving.name=原油
+tile.refinery.name=精製所
+tile.fuelLoader.name=燃料積込機
+tile.oxygenCompressor.name=酸素圧縮機
+tile.sapling2.oak.name=樫の苗木
+tile.sapling2.spruce.name=松の苗木
+tile.sapling2.birch.name=白樺の苗木
+tile.sapling2.jungle.name=ジャングルの苗木
+
+# Entities
+
+entity.GalacticraftCore.Spaceship.name=宇宙機
+
+# DEATH MESSAGES
+
+death.spaceshipExplosion=%1$s のロケットが故障してしまった
+death.spaceshipExplosionB=%1$s あいにく宇宙機の事故で死んでしまった
+death.oxygenSuffocation=%1$s の酸素が不足してしまった
+
+# CREATIVE TABS
+itemGroup.GalacticraftCore=Galacticraft
+
+# GUI
+gui.spaceshipFailureChance=故障確率
+gui.choosePlanet.desc.overworld=生命の完全#住みやすい#重力: 100%
+
+# </file>
