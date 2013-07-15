@@ -67,7 +67,7 @@ public class CommonProxyCore extends BCGuiHandler implements IGuiHandler
 
     public int getGCUnlitTorchRenderID()
     {
-        return -1;
+        return -1; 
     }
 
     public int getGCBreathableAirRenderID()
