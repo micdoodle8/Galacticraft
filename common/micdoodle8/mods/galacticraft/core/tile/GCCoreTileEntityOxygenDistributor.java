@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.block.IOxygenReliantBlock;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityOxygenBubble;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import net.minecraft.block.Block;
@@ -13,7 +12,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.packet.Packet;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.core.item.IItemElectric;
 import universalelectricity.core.vector.Vector3;
@@ -92,7 +90,7 @@ public class GCCoreTileEntityOxygenDistributor extends GCCoreTileEntityOxygen im
 
         if (!this.worldObj.isRemote)
         {
-            if (this.oxygenBubble.getSize() >= 1 && (this.ueWattsReceived > 0 || this.ic2Energy > 0 || this.bcEnergy > 0))
+            if (this.oxygenBubble.getSize() >= 1 && (this.ueWattsReceived > 0 || this.ic2Energy > 0 || (this.getPowerProvider() != null && this.getPowerProvider().getEnergyStored() > 0)))
             {
                 this.active = true;
             }
