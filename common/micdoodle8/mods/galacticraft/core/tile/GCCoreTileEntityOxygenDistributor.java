@@ -41,21 +41,24 @@ public class GCCoreTileEntityOxygenDistributor extends GCCoreTileEntityOxygen im
     @Override
     public void invalidate()
     {
-        for (int x = (int) Math.floor(this.xCoord - this.oxygenBubble.getSize()); x < Math.ceil(this.xCoord + this.oxygenBubble.getSize()); x++)
+        if (this.oxygenBubble != null)
         {
-            for (int y = (int) Math.floor(this.yCoord - this.oxygenBubble.getSize()); y < Math.ceil(this.yCoord + this.oxygenBubble.getSize()); y++)
+            for (int x = (int) Math.floor(this.xCoord - this.oxygenBubble.getSize()); x < Math.ceil(this.xCoord + this.oxygenBubble.getSize()); x++)
             {
-                for (int z = (int) Math.floor(this.zCoord - this.oxygenBubble.getSize()); z < Math.ceil(this.zCoord + this.oxygenBubble.getSize()); z++)
+                for (int y = (int) Math.floor(this.yCoord - this.oxygenBubble.getSize()); y < Math.ceil(this.yCoord + this.oxygenBubble.getSize()); y++)
                 {
-                    int blockID = this.worldObj.getBlockId(x, y, z);
-                    
-                    if (blockID > 0)
+                    for (int z = (int) Math.floor(this.zCoord - this.oxygenBubble.getSize()); z < Math.ceil(this.zCoord + this.oxygenBubble.getSize()); z++)
                     {
-                        Block block = Block.blocksList[blockID];
+                        int blockID = this.worldObj.getBlockId(x, y, z);
                         
-                        if (block instanceof IOxygenReliantBlock)
+                        if (blockID > 0)
                         {
-                            ((IOxygenReliantBlock) block).onOxygenRemoved(this.worldObj, x, y, z);
+                            Block block = Block.blocksList[blockID];
+                            
+                            if (block instanceof IOxygenReliantBlock)
+                            {
+                                ((IOxygenReliantBlock) block).onOxygenRemoved(this.worldObj, x, y, z);
+                            }
                         }
                     }
                 }
