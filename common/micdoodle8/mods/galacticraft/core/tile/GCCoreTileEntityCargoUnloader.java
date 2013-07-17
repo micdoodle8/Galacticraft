@@ -58,7 +58,7 @@ public class GCCoreTileEntityCargoUnloader extends GCCoreTileEntityElectric impl
 
                     this.targetEmpty = state == EnumCargoLoadingState.EMPTY;
 
-                    if (this.ticks % 15 == 0 && state == EnumCargoLoadingState.SUCCESS && !this.disabled && (this.ic2Energy > 0 || this.ueWattsReceived > 0 || this.getPowerProvider() != null && this.getPowerProvider().getEnergyStored() > 0))
+                    if (this.ticks % 15 == 0 && state == EnumCargoLoadingState.SUCCESS && !this.disabled && (this.ic2Energy > 0 || this.ueWattsReceived > 0 || this.getPowerReceiver(this.getElectricInputDirection()) != null && this.getPowerReceiver(this.getElectricInputDirection()).getEnergyStored() > 0))
                     {
                         this.addCargo(this.attachedFuelable.removeCargo(true).resultStack, true);
                     }
@@ -330,7 +330,7 @@ public class GCCoreTileEntityCargoUnloader extends GCCoreTileEntityElectric impl
     @Override
     public Packet getPacket()
     {
-        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.ueWattsReceived, this.ic2Energy, this.disabled, this.disableCooldown, this.getPowerProvider() != null ? (double) this.getPowerProvider().getEnergyStored() : 0.0D, this.targetEmpty, this.noTarget, this.targetNoInventory);
+        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.ueWattsReceived, this.ic2Energy, this.disabled, this.disableCooldown, this.getPowerReceiver(this.getElectricInputDirection()) != null ? (double) this.getPowerReceiver(this.getElectricInputDirection()).getEnergyStored() : 0.0D, this.targetEmpty, this.noTarget, this.targetNoInventory);
     }
 
     @Override

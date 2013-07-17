@@ -23,7 +23,6 @@ import net.minecraftforge.fluids.IFluidHandler;
 import universalelectricity.core.item.IItemElectric;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.PacketManager;
-import buildcraft.api.power.PowerFramework;
 import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
@@ -41,11 +40,11 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
     {
         super(600, 130, 1, 1.5D);
 
-        if (PowerFramework.currentFramework != null)
+        /*if (PowerFramework.currentFramework != null)
         {
             this.bcPowerProvider = new GCCoreLinkedPowerProvider(this);
             this.bcPowerProvider.configure(20, 15, 100, 25, 1000);
-        }
+        }*/
     }
 
     @Override
@@ -176,7 +175,7 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
             return false;
         }
 
-        if (this.ic2Energy == 0 && (this.getPowerProvider() == null || this.getPowerProvider().getEnergyStored() == 0) && this.ueWattsReceived == 0)
+        if (this.ic2Energy == 0 && (this.getPowerReceiver(this.getElectricInputDirection()) == null || this.getPowerReceiver(this.getElectricInputDirection()).getEnergyStored() == 0) && this.ueWattsReceived == 0)
         {
             return false;
         }
@@ -445,7 +444,7 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
     @Override
     public Packet getPacket()
     {
-        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.ueWattsReceived, this.processTicks, this.ic2Energy, this.oilTank.getFluid() == null ? 0 : this.oilTank.getFluid().amount, this.fuelTank.getFluid() == null ? 0 : this.fuelTank.getFluid().amount, this.disabled, this.getPowerProvider() != null ? (double) this.getPowerProvider().getEnergyStored() : 0.0D, this.disableCooldown);
+        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.ueWattsReceived, this.processTicks, this.ic2Energy, this.oilTank.getFluid() == null ? 0 : this.oilTank.getFluid().amount, this.fuelTank.getFluid() == null ? 0 : this.fuelTank.getFluid().amount, this.disabled, this.getPowerReceiver(this.getElectricInputDirection()) != null ? (double) this.getPowerReceiver(this.getElectricInputDirection()).getEnergyStored() : 0.0D, this.disableCooldown);
     }
 
     @Override

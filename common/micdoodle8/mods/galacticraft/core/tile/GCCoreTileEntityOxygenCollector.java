@@ -59,7 +59,7 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityElectric im
 
         if (!this.worldObj.isRemote)
         {
-            if (this.getPower() > 0 && !this.worldObj.isRemote && (this.ic2Energy > 0 || this.ueWattsReceived > 0 || this.getPowerProvider() != null && this.getPowerProvider().getEnergyStored() > 0))
+            if (this.getPower() > 0 && !this.worldObj.isRemote && (this.ic2Energy > 0 || this.ueWattsReceived > 0 || this.getPowerReceiver(this.getElectricInputDirection()) != null && this.getPowerReceiver(this.getElectricInputDirection()).getEnergyStored() > 0))
             {
                 for (final ForgeDirection orientation : ForgeDirection.values())
                 {
@@ -356,7 +356,7 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityElectric im
     @Override
     public Packet getPacket()
     {
-        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.power, this.ueWattsReceived, this.ic2Energy, this.disabled, this.getPowerProvider() != null ? (double) this.getPowerProvider().getEnergyStored() : 0.0D);
+        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.power, this.ueWattsReceived, this.ic2Energy, this.disabled, this.getPowerReceiver(this.getElectricInputDirection()) != null ? (double) this.getPowerReceiver(this.getElectricInputDirection()).getEnergyStored() : 0.0D);
     }
 
     @Override

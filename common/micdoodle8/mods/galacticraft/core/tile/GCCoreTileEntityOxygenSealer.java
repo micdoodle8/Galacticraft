@@ -49,7 +49,7 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
                 this.sealed = this.checkSeal(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
             }
 
-            if (this.storedOxygen >= 1 && (this.ueWattsReceived > 0 || this.ic2Energy > 0 || this.getPowerProvider() != null && this.getPowerProvider().getEnergyStored() > 0) && !this.disabled)
+            if (this.storedOxygen >= 1 && (this.ueWattsReceived > 0 || this.ic2Energy > 0 || this.getPowerReceiver(this.getElectricInputDirection()) != null && this.getPowerReceiver(this.getElectricInputDirection()).getEnergyStored() > 0) && !this.disabled)
             {
                 this.active = true;
             }
@@ -286,7 +286,7 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
     @Override
     public Packet getPacket()
     {
-        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.storedOxygen, this.ueWattsReceived, this.disabled, this.ic2Energy, this.sealed, this.getPowerProvider() != null ? (double) this.getPowerProvider().getEnergyStored() : 0.0D);
+        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.storedOxygen, this.ueWattsReceived, this.disabled, this.ic2Energy, this.sealed, this.getPowerReceiver(this.getElectricInputDirection()) != null ? (double) this.getPowerReceiver(this.getElectricInputDirection()).getEnergyStored() : 0.0D);
     }
 
     @Override
@@ -310,6 +310,6 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
     @Override
     public boolean shouldPullOxygen()
     {
-        return this.ic2Energy > 0 || this.ueWattsReceived > 0 || this.getPowerProvider() != null && this.getPowerProvider().getEnergyStored() > 0;
+        return this.ic2Energy > 0 || this.ueWattsReceived > 0 || this.getPowerReceiver(this.getElectricInputDirection()) != null && this.getPowerReceiver(this.getElectricInputDirection()).getEnergyStored() > 0;
     }
 }

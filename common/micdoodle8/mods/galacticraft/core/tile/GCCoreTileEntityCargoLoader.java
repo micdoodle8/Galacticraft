@@ -11,9 +11,12 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.core.item.IItemElectric;
 import universalelectricity.core.vector.Vector3;
+import buildcraft.api.power.PowerHandler;
+import buildcraft.api.power.PowerHandler.PowerReceiver;
 import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
@@ -60,7 +63,7 @@ public class GCCoreTileEntityCargoLoader extends GCCoreTileEntityElectric implem
                     this.targetNoInventory = state == EnumCargoLoadingState.NOINVENTORY;
                     this.noTarget = state == EnumCargoLoadingState.NOTARGET;
 
-                    if (this.ticks % 15 == 0 && state == EnumCargoLoadingState.SUCCESS && !this.disabled && (this.ic2Energy > 0 || this.ueWattsReceived > 0 || this.getPowerProvider() != null && this.getPowerProvider().getEnergyStored() > 0))
+                    if (this.ticks % 15 == 0 && state == EnumCargoLoadingState.SUCCESS && !this.disabled && (this.ic2Energy > 0 || this.ueWattsReceived > 0 || this.getPowerReceiver(this.getElectricInputDirection()) != null && this.getPowerReceiver(this.getElectricInputDirection()).getEnergyStored() > 0))
                     {
                         this.attachedFuelable.addCargo(this.removeCargo(true).resultStack, true);
                     }
@@ -331,7 +334,7 @@ public class GCCoreTileEntityCargoLoader extends GCCoreTileEntityElectric implem
     @Override
     public Packet getPacket()
     {
-        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.ueWattsReceived, this.ic2Energy, this.disabled, this.disableCooldown, this.getPowerProvider() != null ? (double) this.getPowerProvider().getEnergyStored() : 0.0D, this.targetFull, this.outOfItems, this.noTarget, this.targetNoInventory);
+        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.ueWattsReceived, this.ic2Energy, this.disabled, this.disableCooldown, this.getPowerReceiver(this.getElectricInputDirection()) != null ? (double) this.getPowerReceiver(this.getElectricInputDirection()).getEnergyStored() : 0.0D, this.targetFull, this.outOfItems, this.noTarget, this.targetNoInventory);
     }
 
     @Override
