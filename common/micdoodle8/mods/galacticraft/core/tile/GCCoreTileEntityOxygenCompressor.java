@@ -199,31 +199,63 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityOxygen imp
     @Override
     public int[] getAccessibleSlotsFromSide(int side)
     {
-        return side == 1 || side == 0 ? new int[] { 1 } : new int[] { 0 };
+        return new int[] { 0, 1 };
     }
 
     @Override
     public boolean canInsertItem(int slotID, ItemStack itemstack, int side)
     {
-        return this.isItemValidForSlot(slotID, itemstack);
+        if (this.isItemValidForSlot(slotID, itemstack))
+        {
+            switch (slotID)
+            {
+            case 0:
+                return itemstack.getItemDamage() > 1;
+            case 1:
+                return ((IItemElectric) itemstack.getItem()).getElectricityStored(itemstack) > 0;
+            default:
+                return false;
+            }
+        }
+        return false;
     }
 
     @Override
     public boolean canExtractItem(int slotID, ItemStack itemstack, int side)
     {
-        return slotID == 0;
+        if (this.isItemValidForSlot(slotID, itemstack))
+        {
+            switch (slotID)
+            {
+            case 0:
+                return itemstack.getItemDamage() == 0;
+            case 1:
+                return ((IItemElectric) itemstack.getItem()).getElectricityStored(itemstack) <= 0 || !this.shouldPullEnergy();
+            default:
+                return false;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
+    {
+        switch (slotID)
+        {
+        case 0:
+            return itemstack.getItem() instanceof GCCoreItemOxygenTank;
+        case 1:
+            return itemstack.getItem() instanceof IItemElectric;
+        }
+        
+        return false;
     }
 
     @Override
     public boolean isInvNameLocalized()
     {
         return true;
-    }
-
-    @Override
-    public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
-    {
-        return slotID == 0 ? itemstack != null && itemstack.getItem() instanceof GCCoreItemOxygenTank && itemstack.getItemDamage() > 0 : slotID == 1 ? itemstack.getItem() instanceof IItemElectric : false;
     }
 
     @Override

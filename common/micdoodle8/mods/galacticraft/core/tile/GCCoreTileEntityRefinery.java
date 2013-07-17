@@ -352,30 +352,72 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
         return true;
     }
 
-    @Override
-    public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
-    {
-        return slotID == 0 ? itemstack.getItem() instanceof IItemElectric : true;
-    }
-
     // ISidedInventory Implementation:
 
     @Override
     public int[] getAccessibleSlotsFromSide(int side)
     {
-        return side == 1 ? new int[] { 1 } : side == 0 ? new int[] { 0 } : new int[] { 2 };
+        return new int[] { 0, 1, 2 };
     }
 
     @Override
     public boolean canInsertItem(int slotID, ItemStack itemstack, int side)
     {
-        return this.isItemValidForSlot(slotID, itemstack);
+        if (this.isItemValidForSlot(slotID, itemstack))
+        {
+            switch (slotID)
+            {
+            case 0:
+                return ((IItemElectric) itemstack.getItem()).getElectricityStored(itemstack) > 0;
+            case 1:
+                FluidStack stack = FluidContainerRegistry.getFluidForFilledItem(itemstack);
+                return (stack != null && stack.getFluid() != null && stack.getFluid().getName().equalsIgnoreCase("oil"));
+            case 2:
+                return FluidContainerRegistry.isEmptyContainer(itemstack);
+            default:
+                return false;
+            }
+        }
+        return false;
     }
 
     @Override
     public boolean canExtractItem(int slotID, ItemStack itemstack, int side)
     {
-        return slotID == 2;
+        if (this.isItemValidForSlot(slotID, itemstack))
+        {
+            switch (slotID)
+            {
+            case 0:
+                return ((IItemElectric) itemstack.getItem()).getElectricityStored(itemstack) <= 0 || !this.shouldPullEnergy();
+            case 1:
+                return FluidContainerRegistry.isEmptyContainer(itemstack);
+            case 2:
+                FluidStack stack = FluidContainerRegistry.getFluidForFilledItem(itemstack);
+                return (stack != null && stack.getFluid() != null && stack.getFluid().getName().equalsIgnoreCase("fuel"));
+            default:
+                return false;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
+    {
+        switch (slotID)
+        {
+        case 0:
+            return itemstack.getItem() instanceof IItemElectric;
+        case 1:
+            FluidStack stack = FluidContainerRegistry.getFluidForFilledItem(itemstack);
+            return (stack != null && stack.getFluid() != null && stack.getFluid().getName().equalsIgnoreCase("oil")) || FluidContainerRegistry.isContainer(itemstack);
+        case 2:
+            FluidStack stack2 = FluidContainerRegistry.getFluidForFilledItem(itemstack);
+            return (stack2 != null && stack2.getFluid() != null && stack2.getFluid().getName().equalsIgnoreCase("fuel")) || FluidContainerRegistry.isContainer(itemstack);
+        }
+        
+        return false;
     }
 
     @Override
