@@ -20,7 +20,7 @@ public class GCCoreContainerRefinery extends Container
         this.tileEntity = tileEntity;
 
         // Electric Input Slot
-        this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 50, 69, IItemElectric.class));
+        this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 50, 51, IItemElectric.class));
 
         // To be smelted
         this.addSlotToContainer(new Slot(tileEntity, 1, 7, 7));
@@ -33,13 +33,13 @@ public class GCCoreContainerRefinery extends Container
         {
             for (int var4 = 0; var4 < 9; ++var4)
             {
-                this.addSlotToContainer(new Slot(par1InventoryPlayer, var4 + var3 * 9 + 9, 8 + var4 * 18, 104 + var3 * 18));
+                this.addSlotToContainer(new Slot(par1InventoryPlayer, var4 + var3 * 9 + 9, 8 + var4 * 18, 104 + var3 * 18 - 18));
             }
         }
 
         for (var3 = 0; var3 < 9; ++var3)
         {
-            this.addSlotToContainer(new Slot(par1InventoryPlayer, var3, 8 + var3 * 18, 162));
+            this.addSlotToContainer(new Slot(par1InventoryPlayer, var3, 8 + var3 * 18, 144));
         }
 
         tileEntity.openChest();

@@ -31,7 +31,8 @@ public class GCCoreGuiCargoUnloader extends GCCoreGuiContainer
     private final GCCoreTileEntityCargoUnloader fuelLoader;
 
     private GuiButton buttonLoadItems;
-
+    private GCCoreInfoRegion electricInfoRegion = new GCCoreInfoRegion((this.width - this.xSize) / 2 + 107, (this.height - this.ySize) / 2 + 101, 56, 9, new ArrayList<String>(), this.width, this.height);
+    
     public GCCoreGuiCargoUnloader(InventoryPlayer par1InventoryPlayer, GCCoreTileEntityCargoUnloader par2TileEntityAirDistributor)
     {
         super(new GCCoreContainerCargoLoader(par1InventoryPlayer, par2TileEntityAirDistributor));
@@ -54,6 +55,15 @@ public class GCCoreGuiCargoUnloader extends GCCoreGuiContainer
     public void initGui()
     {
         super.initGui();
+        List<String> electricityDesc = new ArrayList<String>();
+        electricityDesc.add("Electrical Storage");
+        electricityDesc.add(EnumColor.YELLOW + "Energy: " + ((int) Math.floor(this.fuelLoader.getEnergyStored()) + " / " + ((int) Math.floor(this.fuelLoader.getMaxEnergyStored()))));
+        electricInfoRegion.tooltipStrings = electricityDesc;
+        electricInfoRegion.xPosition = (this.width - this.xSize) / 2 + 107;
+        electricInfoRegion.yPosition = (this.height - this.ySize) / 2 + 101;
+        electricInfoRegion.parentWidth = this.width;
+        electricInfoRegion.parentHeight = this.height;
+        this.infoRegions.add(this.electricInfoRegion);
         List<String> batterySlotDesc = new ArrayList<String>();
         batterySlotDesc.add("Cargo Unloader battery slot, place battery");
         batterySlotDesc.add("here if not using a connected power source");
@@ -92,7 +102,7 @@ public class GCCoreGuiCargoUnloader extends GCCoreGuiContainer
             return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.noinvtarget.name");
         }
 
-        if (this.fuelLoader.getStackInSlot(0) == null && this.fuelLoader.ueWattsReceived == 0 && this.fuelLoader.ic2Energy == 0 && this.fuelLoader.bcEnergy == 0)
+        if (this.fuelLoader.getStackInSlot(0) == null && this.fuelLoader.getEnergyStored() == 0)
         {
             return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.missingpower.name");
         }
@@ -102,7 +112,7 @@ public class GCCoreGuiCargoUnloader extends GCCoreGuiContainer
             return EnumColor.ORANGE + LanguageRegistry.instance().getStringLocalization("gui.status.ready.name");
         }
 
-        if (this.fuelLoader.ueWattsReceived > 0 || this.fuelLoader.ic2Energy > 0 || this.fuelLoader.bcEnergy > 0)
+        if (this.fuelLoader.getEnergyStored() > 0)
         {
             return EnumColor.DARK_GREEN + LanguageRegistry.instance().getStringLocalization("gui.status.active.name");
         }
@@ -118,5 +128,17 @@ public class GCCoreGuiCargoUnloader extends GCCoreGuiContainer
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(var5, var6 + 5, 0, 0, this.xSize, this.ySize);
+
+        List<String> electricityDesc = new ArrayList<String>();
+        electricityDesc.add("Electrical Storage");
+        electricityDesc.add(EnumColor.YELLOW + "Energy: " + ((int) Math.floor(this.fuelLoader.getEnergyStored()) + " / " + ((int) Math.floor(this.fuelLoader.getMaxEnergyStored()))));
+        electricInfoRegion.tooltipStrings = electricityDesc;
+
+        if (this.fuelLoader.getEnergyStored() > 0)
+        {
+            this.drawTexturedModalRect(var5 + 94, var6 + 101, 176, 0, 11, 10);
+        }
+        
+        this.drawTexturedModalRect(var5 + 108, var6 + 102, 187, 0, Math.min(this.fuelLoader.getScaledElecticalLevel(54), 54), 7);
     }
 }

@@ -5,6 +5,7 @@ import mekanism.api.IGasAcceptor;
 import mekanism.api.ITubeConnection;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.ForgeDirection;
+import cpw.mods.fml.common.FMLLog;
 
 public abstract class GCCoreTileEntityOxygen extends GCCoreTileEntityElectric implements IGasAcceptor, ITubeConnection
 {
@@ -14,9 +15,9 @@ public abstract class GCCoreTileEntityOxygen extends GCCoreTileEntityElectric im
     public int lastStoredOxygen;
     public static int timeSinceOxygenRequest;
 
-    public GCCoreTileEntityOxygen(int ueWattsPerTick, double ic2MaxEnergy, double bcEnergyPerTick, double ic2EnergyPerTick, int maxOxygen, int oxygenPerTick)
+    public GCCoreTileEntityOxygen(float wattsPerTick, float maxEnergy, int maxOxygen, int oxygenPerTick)
     {
-        super(ueWattsPerTick, ic2MaxEnergy, ic2EnergyPerTick, bcEnergyPerTick);
+        super(wattsPerTick, maxEnergy);
         this.maxOxygen = maxOxygen;
         this.oxygenPerTick = oxygenPerTick;
     }

@@ -13,6 +13,7 @@ import net.minecraft.network.packet.Packet;
 import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.core.item.IItemElectric;
 import com.google.common.io.ByteArrayDataInput;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 /**
@@ -25,9 +26,11 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityOxygen imp
 {
     private ItemStack[] containingItems = new ItemStack[2];
 
+    public static final double WATTS_PER_TICK = 200;
+    
     public GCCoreTileEntityOxygenCompressor()
     {
-        super(300, 130, 1, 1.0D, 1200, 12);
+        super((float) WATTS_PER_TICK, 50000, 1200, 12);
     }
 
     @Override
@@ -37,7 +40,7 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityOxygen imp
 
         if (!this.worldObj.isRemote)
         {
-            if (this.storedOxygen / 5.0D >= 1.0D && (this.ueWattsReceived > 0 || this.ic2Energy > 0 || this.getPowerReceiver(this.getElectricInputDirection()) != null && this.getPowerReceiver(this.getElectricInputDirection()).getEnergyStored() > 0))
+            if (this.storedOxygen / 5.0D >= 1.0D && (this.getEnergyStored() > 0))
             {
                 if (!this.worldObj.isRemote && this.ticks % ((31 - Math.min(Math.floor(this.storedOxygen / 5.0D), 30)) * 10) == 0)
                 {
@@ -261,6 +264,12 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityOxygen imp
     @Override
     public boolean shouldPullEnergy()
     {
+        return this.getEnergyStored() <= this.getMaxEnergyStored() - this.ueWattsPerTick;
+    }
+
+    @Override
+    public boolean shouldUseEnergy()
+    {
         return GCCoreTileEntityOxygen.timeSinceOxygenRequest > 0 && this.getStackInSlot(0) != null;
     }
 
@@ -270,17 +279,15 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityOxygen imp
         if (this.worldObj.isRemote)
         {
             this.storedOxygen = data.readInt();
-            this.ueWattsReceived = data.readDouble();
-            this.ic2Energy = data.readDouble();
+            this.setEnergyStored(data.readFloat());
             this.disabled = data.readBoolean();
-            this.bcEnergy = data.readDouble();
         }
     }
 
     @Override
     public Packet getPacket()
     {
-        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.storedOxygen, this.ueWattsReceived, this.ic2Energy, this.disabled, this.getPowerReceiver(this.getElectricInputDirection()) != null ? (double) this.getPowerReceiver(this.getElectricInputDirection()).getEnergyStored() : 0.0D);
+        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.storedOxygen, this.getEnergyStored(), this.disabled);
     }
 
     @Override
@@ -304,6 +311,6 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityOxygen imp
     @Override
     public boolean shouldPullOxygen()
     {
-        return this.ic2Energy > 0 || this.ueWattsReceived > 0 || this.getPowerReceiver(this.getElectricInputDirection()) != null && this.getPowerReceiver(this.getElectricInputDirection()).getEnergyStored() > 0;
+        return this.getEnergyStored() > 0;
     }
 }

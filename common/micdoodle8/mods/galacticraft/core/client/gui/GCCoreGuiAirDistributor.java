@@ -26,6 +26,9 @@ public class GCCoreGuiAirDistributor extends GCCoreGuiContainer
 
     private final GCCoreTileEntityOxygenDistributor distributor;
 
+    private GCCoreInfoRegion oxygenInfoRegion = new GCCoreInfoRegion((this.width - this.xSize) / 2 + 112, (this.height - this.ySize) / 2 + 24, 56, 9, new ArrayList<String>(), this.width, this.height);
+    private GCCoreInfoRegion electricInfoRegion = new GCCoreInfoRegion((this.width - this.xSize) / 2 + 112, (this.height - this.ySize) / 2 + 37, 56, 9, new ArrayList<String>(), this.width, this.height);
+
     public GCCoreGuiAirDistributor(InventoryPlayer par1InventoryPlayer, GCCoreTileEntityOxygenDistributor par2TileEntityAirDistributor)
     {
         super(new GCCoreContainerAirDistributor(par1InventoryPlayer, par2TileEntityAirDistributor));
@@ -42,15 +45,31 @@ public class GCCoreGuiAirDistributor extends GCCoreGuiContainer
         batterySlotDesc.add("if not using a connected power source");
         this.infoRegions.add(new GCCoreInfoRegion((this.width - this.xSize) / 2 + 31, (this.height - this.ySize) / 2 + 26, 18, 18, batterySlotDesc, this.width, this.height));
         List<String> oxygenDesc = new ArrayList<String>();
-        oxygenDesc.add("Oxygen input into the distributor");
-        this.infoRegions.add(new GCCoreInfoRegion((this.width - this.xSize) / 2 + 107, (this.height - this.ySize) / 2 + 25, 56, 18, oxygenDesc, this.width, this.height));
+        oxygenDesc.add("Oxygen Storage");
+        oxygenDesc.add(EnumColor.YELLOW + "Oxygen: " + ((int) Math.floor(this.distributor.storedOxygen) + " / " + ((int) Math.floor(this.distributor.maxOxygen))));
+        oxygenInfoRegion.tooltipStrings = oxygenDesc;
+        oxygenInfoRegion.xPosition = (this.width - this.xSize) / 2 + 112;
+        oxygenInfoRegion.yPosition = (this.height - this.ySize) / 2 + 24;
+        oxygenInfoRegion.parentWidth = this.width;
+        oxygenInfoRegion.parentHeight = this.height;
+        this.infoRegions.add(this.oxygenInfoRegion);
+        List<String> electricityDesc = new ArrayList<String>();
+        electricityDesc.add("Electrical Storage");
+        electricityDesc.add(EnumColor.YELLOW + "Energy: " + ((int) Math.floor(this.distributor.getEnergyStored()) + " / " + ((int) Math.floor(this.distributor.getMaxEnergyStored()))));
+        electricInfoRegion.tooltipStrings = electricityDesc;
+        electricInfoRegion.xPosition = (this.width - this.xSize) / 2 + 112;
+        electricInfoRegion.yPosition = (this.height - this.ySize) / 2 + 37;
+        electricInfoRegion.parentWidth = this.width;
+        electricInfoRegion.parentHeight = this.height;
+        this.infoRegions.add(this.electricInfoRegion);
     }
 
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
         this.fontRenderer.drawString(this.distributor.getInvName(), 8, 10, 4210752);
-        this.fontRenderer.drawString(LanguageRegistry.instance().getStringLocalization("gui.message.in.name") + ":", 90, 31, 4210752);
+        this.fontRenderer.drawString(LanguageRegistry.instance().getStringLocalization("gui.message.in.name") + ":", 87, 26, 4210752);
+        this.fontRenderer.drawString(LanguageRegistry.instance().getStringLocalization("gui.message.in.name") + ":", 87, 38, 4210752);
         String status = LanguageRegistry.instance().getStringLocalization("gui.message.status.name") + ": " + this.getStatus();
         this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 50, 4210752);
         status = LanguageRegistry.instance().getStringLocalization("gui.message.oxinput.name") + ": " + Math.round(this.distributor.getCappedScaledOxygenLevel(1000) * 10.0D) / 100.0D + "%";
@@ -64,12 +83,12 @@ public class GCCoreGuiAirDistributor extends GCCoreGuiContainer
 
     private String getStatus()
     {
-        if (this.distributor.storedOxygen >= 1 && (this.distributor.ueWattsReceived > 0 || this.distributor.ic2Energy > 0 || this.distributor.bcEnergy > 0))
+        if (this.distributor.storedOxygen >= 1 && (this.distributor.getEnergyStored() > 0))
         {
             return EnumColor.DARK_GREEN + LanguageRegistry.instance().getStringLocalization("gui.status.active.name");
         }
 
-        if (this.distributor.ueWattsReceived == 0 && this.distributor.ic2Energy == 0 && this.distributor.bcEnergy == 0)
+        if (this.distributor.getEnergyStored() == 0)
         {
             return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.missingpower.name");
         }
@@ -93,7 +112,30 @@ public class GCCoreGuiAirDistributor extends GCCoreGuiContainer
 
         if (this.distributor != null)
         {
-            this.drawTexturedModalRect(var5 + 108, var6 + 26, 176, 0, this.distributor.getCappedScaledOxygenLevel(54), 16);
+            int scale = this.distributor.getCappedScaledOxygenLevel(54);
+            this.drawTexturedModalRect(var5 + 113, var6 + 25, 197, 7, Math.min(scale, 54), 7);
+            scale = this.distributor.getScaledElecticalLevel(54);
+            this.drawTexturedModalRect(var5 + 113, var6 + 38, 197, 0, Math.min(scale, 54), 7);
+            
+            if (this.distributor.getEnergyStored() > 0)
+            {
+                this.drawTexturedModalRect(var5 + 99, var6 + 37, 176, 0, 11, 10);
+            }
+            
+            if (this.distributor.storedOxygen > 0)
+            {
+                this.drawTexturedModalRect(var5 + 100, var6 + 24, 187, 0, 10, 10);
+            }
+
+            List<String> oxygenDesc = new ArrayList<String>();
+            oxygenDesc.add("Oxygen Storage");
+            oxygenDesc.add(EnumColor.YELLOW + "Oxygen: " + ((int) Math.floor(this.distributor.storedOxygen) + " / " + ((int) Math.floor(this.distributor.maxOxygen))));
+            oxygenInfoRegion.tooltipStrings = oxygenDesc;
+
+            List<String> electricityDesc = new ArrayList<String>();
+            electricityDesc.add("Electrical Storage");
+            electricityDesc.add(EnumColor.YELLOW + "Energy: " + ((int) Math.floor(this.distributor.getEnergyStored()) + " / " + ((int) Math.floor(this.distributor.getMaxEnergyStored()))));
+            electricInfoRegion.tooltipStrings = electricityDesc;
         }
     }
 }

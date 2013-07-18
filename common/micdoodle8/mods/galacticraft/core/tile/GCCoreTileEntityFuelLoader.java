@@ -33,13 +33,13 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric impleme
     public FluidTank fuelTank = new FluidTank(this.tankCapacity);
 
     private ItemStack[] containingItems = new ItemStack[2];
-    public static final double WATTS_PER_TICK = 300;
+    public static final double WATTS_PER_TICK = 250;
 
     public IFuelable attachedFuelable;
 
     public GCCoreTileEntityFuelLoader()
     {
-        super(300, 130, 1, 1.0D);
+        super((float) WATTS_PER_TICK, 50000);
     }
 
     public int getScaledFuelLevel(int i)
@@ -129,7 +129,7 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric impleme
 
             final FluidStack liquid = new FluidStack(GalacticraftCore.FUEL, 2);
 
-            if (this.attachedFuelable != null && (this.ic2Energy > 0 || this.ueWattsReceived > 0 || this.getPowerReceiver(this.getElectricInputDirection()) != null && this.getPowerReceiver(this.getElectricInputDirection()).getEnergyStored() > 0) && !this.disabled)
+            if (this.attachedFuelable != null && (this.getEnergyStored() > 0) && !this.disabled)
             {
                 if (liquid != null)
                 {
@@ -370,7 +370,13 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric impleme
     @Override
     public boolean shouldPullEnergy()
     {
-        return this.fuelTank.getFluid() != null && this.fuelTank.getFluid().amount > 0 && !this.disabled;
+        return this.getEnergyStored() <= this.getMaxEnergyStored() - this.ueWattsPerTick;
+    }
+
+    @Override
+    public boolean shouldUseEnergy()
+    {
+        return this.fuelTank.getFluid() != null && this.fuelTank.getFluid().amount > 0 && !this.getDisabled();
     }
 
     @Override
@@ -378,19 +384,17 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric impleme
     {
         if (this.worldObj.isRemote)
         {
-            this.ueWattsReceived = data.readDouble();
-            this.ic2Energy = data.readDouble();
+            this.setEnergyStored(data.readFloat());
             this.fuelTank.setFluid(new FluidStack(GalacticraftCore.FUEL, data.readInt()));
             this.disabled = data.readBoolean();
             this.disableCooldown = data.readInt();
-            this.bcEnergy = data.readDouble();
         }
     }
 
     @Override
     public Packet getPacket()
     {
-        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.ueWattsReceived, this.ic2Energy, this.fuelTank.getFluid() == null ? 0 : this.fuelTank.getFluid().amount, this.disabled, this.disableCooldown, this.getPowerReceiver(this.getElectricInputDirection()) != null ? (double) this.getPowerReceiver(this.getElectricInputDirection()).getEnergyStored() : 0.0D);
+        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getEnergyStored(), this.fuelTank.getFluid() == null ? 0 : this.fuelTank.getFluid().amount, this.disabled, this.disableCooldown);
     }
 
     @Override

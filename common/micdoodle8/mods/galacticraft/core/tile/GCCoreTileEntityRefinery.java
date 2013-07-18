@@ -24,6 +24,7 @@ import universalelectricity.core.item.IItemElectric;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implements IInventory, ISidedInventory, IFluidHandler
@@ -32,13 +33,15 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
     public FluidTank oilTank = new FluidTank(this.tankCapacity);
     public FluidTank fuelTank = new FluidTank(this.tankCapacity);
 
-    public static final int PROCESS_TIME_REQUIRED = 1000;
+    public static final double WATTS_PER_TICK = 400;
+    public static final int PROCESS_TIME_REQUIRED = 2;
+    public static final int OUTPUT_PER_SECOND = 1;
     public int processTicks = 0;
     private ItemStack[] containingItems = new ItemStack[3];
 
     public GCCoreTileEntityRefinery()
     {
-        super(600, 130, 1, 1.5D);
+        super((float) WATTS_PER_TICK, 50000);
 
         /*if (PowerFramework.currentFramework != null)
         {
@@ -175,7 +178,7 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
             return false;
         }
 
-        if (this.ic2Energy == 0 && (this.getPowerReceiver(this.getElectricInputDirection()) == null || this.getPowerReceiver(this.getElectricInputDirection()).getEnergyStored() == 0) && this.ueWattsReceived == 0)
+        if (this.getEnergyStored() == 0)
         {
             return false;
         }
@@ -190,8 +193,8 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
             final int oilAmount = this.oilTank.getFluid().amount;
             final int fuelSpace = this.fuelTank.getCapacity() - (this.fuelTank.getFluid() == null ? 0 : this.fuelTank.getFluid().amount);
 
-            final int amountToDrain = Math.min(oilAmount, fuelSpace);
-
+            final int amountToDrain = Math.min(Math.min(oilAmount, fuelSpace), OUTPUT_PER_SECOND);
+            
             this.oilTank.drain(amountToDrain, true);
             this.fuelTank.fill(FluidRegistry.getFluidStack("fuel", amountToDrain), true);
         }
@@ -422,7 +425,13 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
     @Override
     public boolean shouldPullEnergy()
     {
-        return !this.getDisabled() && this.oilTank.getFluid() != null && this.oilTank.getFluid().amount > 0;
+        return this.getEnergyStored() <= this.getMaxEnergyStored() - this.ueWattsPerTick;
+    }
+
+    @Override
+    public boolean shouldUseEnergy()
+    {
+        return this.canProcess();
     }
 
     @Override
@@ -430,13 +439,11 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
     {
         if (this.worldObj.isRemote)
         {
-            this.ueWattsReceived = data.readDouble();
+            this.setEnergyStored(data.readFloat());
             this.processTicks = data.readInt();
-            this.ic2Energy = data.readDouble();
             this.oilTank.setFluid(new FluidStack(GalacticraftCore.CRUDEOIL, data.readInt()));
             this.fuelTank.setFluid(new FluidStack(GalacticraftCore.FUEL, data.readInt()));
             this.disabled = data.readBoolean();
-            this.bcEnergy = data.readDouble();
             this.disableCooldown = data.readInt();
         }
     }
@@ -444,7 +451,7 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
     @Override
     public Packet getPacket()
     {
-        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.ueWattsReceived, this.processTicks, this.ic2Energy, this.oilTank.getFluid() == null ? 0 : this.oilTank.getFluid().amount, this.fuelTank.getFluid() == null ? 0 : this.fuelTank.getFluid().amount, this.disabled, this.getPowerReceiver(this.getElectricInputDirection()) != null ? (double) this.getPowerReceiver(this.getElectricInputDirection()).getEnergyStored() : 0.0D, this.disableCooldown);
+        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getEnergyStored(), this.processTicks, this.oilTank.getFluid() == null ? 0 : this.oilTank.getFluid().amount, this.fuelTank.getFluid() == null ? 0 : this.fuelTank.getFluid().amount, this.disabled, this.disableCooldown);
     }
 
     @Override

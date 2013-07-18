@@ -15,13 +15,12 @@ import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.core.item.IItemElectric;
 import universalelectricity.core.vector.Vector3;
 import com.google.common.io.ByteArrayDataInput;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class GCCoreTileEntityCargoUnloader extends GCCoreTileEntityElectric implements IInventory, ISidedInventory, ICargoEntity
 {
     private ItemStack[] containingItems = new ItemStack[15];
-    public static final double WATTS_PER_TICK = 300;
+    public static final double WATTS_PER_TICK = 150;
     public boolean targetEmpty;
     public boolean targetNoInventory;
     public boolean noTarget;
@@ -30,7 +29,7 @@ public class GCCoreTileEntityCargoUnloader extends GCCoreTileEntityElectric impl
 
     public GCCoreTileEntityCargoUnloader()
     {
-        super(300, 130, 1, 1.0D);
+        super((float) WATTS_PER_TICK, 50000);
     }
 
     @Override
@@ -58,7 +57,7 @@ public class GCCoreTileEntityCargoUnloader extends GCCoreTileEntityElectric impl
 
                     this.targetEmpty = state == EnumCargoLoadingState.EMPTY;
 
-                    if (this.ticks % 15 == 0 && state == EnumCargoLoadingState.SUCCESS && !this.disabled && (this.ic2Energy > 0 || this.ueWattsReceived > 0 || this.getPowerReceiver(this.getElectricInputDirection()) != null && this.getPowerReceiver(this.getElectricInputDirection()).getEnergyStored() > 0))
+                    if (this.ticks % 15 == 0 && state == EnumCargoLoadingState.SUCCESS && !this.disabled && (this.getEnergyStored() > 0))
                     {
                         this.addCargo(this.attachedFuelable.removeCargo(true).resultStack, true);
                     }
@@ -308,7 +307,13 @@ public class GCCoreTileEntityCargoUnloader extends GCCoreTileEntityElectric impl
     @Override
     public boolean shouldPullEnergy()
     {
-        return !this.disabled;
+        return this.getEnergyStored() <= this.getMaxEnergyStored() - this.ueWattsPerTick;
+    }
+
+    @Override
+    public boolean shouldUseEnergy()
+    {
+        return !this.getDisabled();
     }
 
     @Override
@@ -316,11 +321,9 @@ public class GCCoreTileEntityCargoUnloader extends GCCoreTileEntityElectric impl
     {
         if (this.worldObj.isRemote)
         {
-            this.ueWattsReceived = data.readDouble();
-            this.ic2Energy = data.readDouble();
+            this.setEnergyStored(data.readFloat());
             this.disabled = data.readBoolean();
             this.disableCooldown = data.readInt();
-            this.bcEnergy = data.readDouble();
             this.targetEmpty = data.readBoolean();
             this.noTarget = data.readBoolean();
             this.targetNoInventory = data.readBoolean();
@@ -330,7 +333,7 @@ public class GCCoreTileEntityCargoUnloader extends GCCoreTileEntityElectric impl
     @Override
     public Packet getPacket()
     {
-        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.ueWattsReceived, this.ic2Energy, this.disabled, this.disableCooldown, this.getPowerReceiver(this.getElectricInputDirection()) != null ? (double) this.getPowerReceiver(this.getElectricInputDirection()).getEnergyStored() : 0.0D, this.targetEmpty, this.noTarget, this.targetNoInventory);
+        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getEnergyStored(), this.disabled, this.disableCooldown, this.targetEmpty, this.noTarget, this.targetNoInventory);
     }
 
     @Override

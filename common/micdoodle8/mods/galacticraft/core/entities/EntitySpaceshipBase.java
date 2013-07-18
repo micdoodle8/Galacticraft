@@ -229,7 +229,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
                 }
                 else
                 {
-                    if (tile instanceof GCCoreTileEntityFuelLoader && ((GCCoreTileEntityFuelLoader) tile).ueWattsReceived > 0)
+                    if (tile instanceof GCCoreTileEntityFuelLoader && ((GCCoreTileEntityFuelLoader) tile).getEnergyStored() > 0)
                     {
                         if (this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase())
                         {

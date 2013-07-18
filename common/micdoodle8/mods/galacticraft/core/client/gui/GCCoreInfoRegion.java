@@ -24,8 +24,8 @@ public class GCCoreInfoRegion extends Gui
     public boolean withinRegion;
     public List<String> tooltipStrings;
     protected static RenderItem itemRenderer = new RenderItem();
-    public final int parentWidth;
-    public final int parentHeight;
+    public int parentWidth;
+    public int parentHeight;
 
     public GCCoreInfoRegion(int par2, int par3, int par4, int par5, List<String> tooltipStrings, int parentWidth, int parentHeight)
     {

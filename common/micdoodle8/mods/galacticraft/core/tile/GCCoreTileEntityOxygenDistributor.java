@@ -29,13 +29,15 @@ public class GCCoreTileEntityOxygenDistributor extends GCCoreTileEntityOxygen im
     public boolean active;
     public boolean lastActive;
 
+    public static final double WATTS_PER_TICK = 200;
+    
     private ItemStack[] containingItems = new ItemStack[1];
 
     public GCCoreEntityOxygenBubble oxygenBubble;
 
     public GCCoreTileEntityOxygenDistributor()
     {
-        super(300, 130, 1, 1.0D, 6000, 12);
+        super((float) WATTS_PER_TICK, 50000, 6000, 12);
     }
 
     @Override
@@ -93,7 +95,7 @@ public class GCCoreTileEntityOxygenDistributor extends GCCoreTileEntityOxygen im
 
         if (!this.worldObj.isRemote)
         {
-            if (this.oxygenBubble.getSize() >= 1 && (this.ueWattsReceived > 0 || this.ic2Energy > 0 || (this.getPowerReceiver(this.getElectricInputDirection()) != null && this.getPowerReceiver(this.getElectricInputDirection()).getEnergyStored() > 0)))
+            if (this.oxygenBubble.getSize() >= 1 && (this.getEnergyStored() > 0))
             {
                 this.active = true;
             }
@@ -315,6 +317,12 @@ public class GCCoreTileEntityOxygenDistributor extends GCCoreTileEntityOxygen im
     @Override
     public boolean shouldPullEnergy()
     {
+        return this.getEnergyStored() <= this.getMaxEnergyStored() - this.ueWattsPerTick;
+    }
+
+    @Override
+    public boolean shouldUseEnergy()
+    {
         return GCCoreTileEntityOxygen.timeSinceOxygenRequest > 0;
     }
 
@@ -324,17 +332,15 @@ public class GCCoreTileEntityOxygenDistributor extends GCCoreTileEntityOxygen im
         if (this.worldObj.isRemote)
         {
             this.storedOxygen = data.readInt();
-            this.ueWattsReceived = data.readDouble();
-            this.ic2Energy = data.readDouble();
+            this.setEnergyStored(data.readFloat());
             this.disabled = data.readBoolean();
-            this.bcEnergy = data.readDouble();
         }
     }
 
     @Override
     public Packet getPacket()
     {
-        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.storedOxygen, this.ueWattsReceived, this.ic2Energy, this.disabled, this.getPowerReceiver(this.getElectricInputDirection()) != null ? (double) this.getPowerReceiver(this.getElectricInputDirection()).getEnergyStored() : 0.0D);
+        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.storedOxygen, this.getEnergyStored(), this.disabled);
     }
 
     @Override
@@ -358,6 +364,6 @@ public class GCCoreTileEntityOxygenDistributor extends GCCoreTileEntityOxygen im
     @Override
     public boolean shouldPullOxygen()
     {
-        return this.ic2Energy > 0 || this.ueWattsReceived > 0 || this.getPowerReceiver(this.getElectricInputDirection()) != null && this.getPowerReceiver(this.getElectricInputDirection()).getEnergyStored() > 0;
+        return this.getEnergyStored() > 0;
     }
 }

@@ -22,10 +22,12 @@ import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.IPlantable;
+import universalelectricity.core.item.ElectricItemHelper;
 import universalelectricity.core.item.IItemElectric;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.core.vector.VectorHelper;
 import com.google.common.io.ByteArrayDataInput;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityElectric implements ITubeConnection, IInventory, ISidedInventory
@@ -44,7 +46,7 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityElectric im
 
     public GCCoreTileEntityOxygenCollector()
     {
-        super(200, 130, 1, 0.75D);
+        super((float) WATTS_PER_TICK, 50000);
     }
 
     public int getCappedScaledOxygenLevel(int scale)
@@ -59,15 +61,17 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityElectric im
 
         if (!this.worldObj.isRemote)
         {
-            if (this.getPower() > 0 && !this.worldObj.isRemote && (this.ic2Energy > 0 || this.ueWattsReceived > 0 || this.getPowerReceiver(this.getElectricInputDirection()) != null && this.getPowerReceiver(this.getElectricInputDirection()).getEnergyStored() > 0))
+            this.setEnergyStored(this.getEnergyStored() + ElectricItemHelper.dischargeItem(this.containingItems[0], 2500));
+
+            if (this.getEnergyStored() > 0)
             {
-                for (final ForgeDirection orientation : ForgeDirection.values())
+                if (this.getPower() > 0)
                 {
-                    if (orientation != ForgeDirection.UNKNOWN)
+                    for (final ForgeDirection orientation : ForgeDirection.VALID_DIRECTIONS)
                     {
                         if (orientation == ForgeDirection.getOrientation(this.getBlockMetadata() + 2).getOpposite())
                         {
-                            this.setPower(this.getPower() - (Math.min(this.getPower(), this.outputSpeed) - GasTransmission.emitGasToNetwork(EnumGas.OXYGEN, (int) Math.min(this.getPower(), this.outputSpeed), this, orientation)));
+                            GasTransmission.emitGasToNetwork(EnumGas.OXYGEN, (int) Math.min(this.getPower(), this.outputSpeed), this, orientation);
 
                             final TileEntity tileEntity = VectorHelper.getTileEntityFromSide(this.worldObj, new Vector3(this), orientation);
 
@@ -87,8 +91,6 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityElectric im
                                     }
 
                                     final int rejects = ((IGasAcceptor) tileEntity).transferGasToAcceptor(MathHelper.floor_double(sendingGas), EnumGas.OXYGEN);
-
-                                    this.setPower(this.getPower() - (sendingGas - rejects));
                                 }
                             }
                         }
@@ -98,49 +100,65 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityElectric im
 
             double power = 0;
 
-            if (this.worldObj.provider instanceof IGalacticraftWorldProvider)
+            if (this.getEnergyStored() > 0)
             {
-                for (int y = this.yCoord - 5; y <= this.yCoord + 5; y++)
+                if (this.worldObj.provider instanceof IGalacticraftWorldProvider)
                 {
-                    for (int x = this.xCoord - 5; x <= this.xCoord + 5; x++)
+                    for (int y = this.yCoord - 5; y <= this.yCoord + 5; y++)
                     {
-                        for (int z = this.zCoord - 5; z <= this.zCoord + 5; z++)
+                        for (int x = this.xCoord - 5; x <= this.xCoord + 5; x++)
                         {
-                            final Block block = Block.blocksList[this.worldObj.getBlockId(x, y, z)];
-
-                            if (block != null)
+                            for (int z = this.zCoord - 5; z <= this.zCoord + 5; z++)
                             {
-                                if (this.worldObj.getBlockMaterial(x, y, z) == Material.leaves)
-                                {
-                                    if (!this.worldObj.isRemote && this.worldObj.rand.nextInt(100000) == 0 && !GCCoreConfigManager.disableLeafDecay)
-                                    {
-                                        this.worldObj.setBlockToAir(x, y, z);
-                                    }
+                                final Block block = Block.blocksList[this.worldObj.getBlockId(x, y, z)];
 
-                                    power++;
-                                }
-                                else if (block instanceof IPlantable && ((IPlantable) block).getPlantType(this.worldObj, x, y, z) == EnumPlantType.Crop)
+                                if (block != null)
                                 {
-                                    // Add two, since leaves can be packed into
-                                    // an area much easier than crops can.
-                                    power += 2.0;
+                                    if (this.worldObj.getBlockMaterial(x, y, z) == Material.leaves)
+                                    {
+                                        if (!this.worldObj.isRemote && this.worldObj.rand.nextInt(100000) == 0 && !GCCoreConfigManager.disableLeafDecay)
+                                        {
+                                            this.worldObj.setBlockToAir(x, y, z);
+                                        }
+
+                                        power++;
+                                    }
+                                    else if (block instanceof IPlantable && ((IPlantable) block).getPlantType(this.worldObj, x, y, z) == EnumPlantType.Crop)
+                                    {
+                                        // Add two, since leaves can be packed into
+                                        // an area much easier than crops can.
+                                        power += 2.0;
+                                    }
                                 }
                             }
                         }
                     }
+                    
+                    power /= 1.2D;
                 }
-
-                this.setPower(power / 1.2D);
+                else
+                {
+                    power = this.MAX_POWER;
+                }
+                
+                if (power < this.getPower())
+                {
+                    this.setPower(this.getPower() - 1);
+                }
+                else if (power > this.getPower())
+                {
+                    this.setPower(this.getPower() + 1);
+                }
             }
-            else
+            
+            if (!this.worldObj.isRemote && this.getEnergyStored() == 0)
             {
-                this.setPower(this.MAX_POWER);
+                this.setPower(Math.min(this.MAX_POWER, Math.max(this.getPower() - 1, 0)));
             }
+            
+            FMLLog.info("" + this.getPower());
 
-            if (this.getPower() > this.MAX_POWER)
-            {
-                this.setPower(this.MAX_POWER);
-            }
+            this.setPower(Math.min(this.MAX_POWER, Math.max(this.getPower(), 0)));
         }
     }
 
@@ -337,6 +355,12 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityElectric im
     @Override
     public boolean shouldPullEnergy()
     {
+        return this.getEnergyStored() <= this.getMaxEnergyStored() - this.ueWattsPerTick;
+    }
+
+    @Override
+    public boolean shouldUseEnergy()
+    {
         return this.getPower() > 0;
     }
 
@@ -346,17 +370,15 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityElectric im
         if (this.worldObj.isRemote)
         {
             this.setPower(data.readDouble());
-            this.ueWattsReceived = data.readDouble();
-            this.ic2Energy = data.readDouble();
+            this.setEnergyStored(data.readFloat());
             this.disabled = data.readBoolean();
-            this.bcEnergy = data.readDouble();
         }
     }
 
     @Override
     public Packet getPacket()
     {
-        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.power, this.ueWattsReceived, this.ic2Energy, this.disabled, this.getPowerReceiver(this.getElectricInputDirection()) != null ? (double) this.getPowerReceiver(this.getElectricInputDirection()).getEnergyStored() : 0.0D);
+        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.power, this.getEnergyStored(), this.disabled);
     }
 
     @Override

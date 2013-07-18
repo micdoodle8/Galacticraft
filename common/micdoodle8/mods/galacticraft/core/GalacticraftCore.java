@@ -191,7 +191,7 @@ public class GalacticraftCore
         GCCoreItems.initItems();
         GCCoreItems.registerHarvestLevels();
 
-        if (GCCoreConfigManager.loadBC.getBoolean(false))
+        if (GCCoreConfigManager.loadBC.getBoolean(true))
         {
             BasicComponents.registerTileEntities();
 
@@ -328,7 +328,7 @@ public class GalacticraftCore
         GCCoreRecipeManager.loadRecipes();
 
         // Register steel plate after, so the heavy duty boots recipe is added to recipe list first, allowing it to be crafted.
-        if (GCCoreConfigManager.loadBC.getBoolean(false))
+        if (GCCoreConfigManager.loadBC.getBoolean(true))
         {
             BasicComponents.requestItem("plateSteel", 0);
         }
