@@ -15,7 +15,7 @@ public class GCMoonBlocks
 
     public static void initBlocks()
     {
-        GCMoonBlocks.blockMoon = new GCMoonBlock(GCMoonConfigManager.idBlock).setHardness(3.0F).setUnlocalizedName("moonBlock");
+        GCMoonBlocks.blockMoon = new GCMoonBlock(GCMoonConfigManager.idBlock);
         GCMoonBlocks.cheeseBlock = new GCMoonBlockCheese(GCMoonConfigManager.idBlockCheese).setHardness(0.5F).setStepSound(Block.soundClothFootstep).setUnlocalizedName("cheeseBlock");
     }
 

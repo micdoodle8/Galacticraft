@@ -40,6 +40,8 @@ public class GCMoonBlock extends GCCoreBlockAdvanced implements IDetectableResou
     public GCMoonBlock(int i)
     {
         super(i, Material.rock);
+        this.blockHardness = 3.0F;
+        this.setUnlocalizedName("moonBlock");
     }
 
     @Override
@@ -53,6 +55,7 @@ public class GCMoonBlock extends GCCoreBlockAdvanced implements IDetectableResou
         return super.getCollisionBoundingBoxFromPool(world, x, y, z);
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z)
     {
@@ -88,6 +91,7 @@ public class GCMoonBlock extends GCCoreBlockAdvanced implements IDetectableResou
         this.moonBlockIcons[16] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "blank");
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public CreativeTabs getCreativeTabToDisplayOn()
     {
@@ -134,6 +138,7 @@ public class GCMoonBlock extends GCCoreBlockAdvanced implements IDetectableResou
         return super.canHarvestBlock(player, meta);
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public Icon getIcon(int side, int meta)
     {
