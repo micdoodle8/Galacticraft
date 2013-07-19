@@ -127,13 +127,16 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric impleme
                 }
             }
 
-            final FluidStack liquid = new FluidStack(GalacticraftCore.FUEL, 2);
-
-            if (this.attachedFuelable != null && (this.getEnergyStored() > 0) && !this.disabled)
+            if (this.fuelTank != null && this.fuelTank.getFluid() != null && this.fuelTank.getFluid().amount > 0)
             {
-                if (liquid != null)
+                final FluidStack liquid = new FluidStack(GalacticraftCore.FUEL, 2);
+
+                if (this.attachedFuelable != null && this.getEnergyStored() > 0 && !this.disabled)
                 {
-                    this.fuelTank.drain(this.attachedFuelable.addFuel(liquid, true), true);
+                    if (liquid != null)
+                    {
+                        this.fuelTank.drain(this.attachedFuelable.addFuel(liquid, true), true);
+                    }
                 }
             }
         }
