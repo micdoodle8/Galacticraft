@@ -22,12 +22,10 @@ import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.IPlantable;
-import universalelectricity.core.item.ElectricItemHelper;
 import universalelectricity.core.item.IItemElectric;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.core.vector.VectorHelper;
 import com.google.common.io.ByteArrayDataInput;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityElectric implements ITubeConnection, IInventory, ISidedInventory
@@ -61,8 +59,6 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityElectric im
 
         if (!this.worldObj.isRemote)
         {
-            this.setEnergyStored(this.getEnergyStored() + ElectricItemHelper.dischargeItem(this.containingItems[0], 2500));
-
             if (this.getEnergyStored() > 0)
             {
                 if (this.getPower() > 0)
@@ -156,8 +152,6 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityElectric im
                 this.setPower(Math.min(this.MAX_POWER, Math.max(this.getPower() - 1, 0)));
             }
             
-            FMLLog.info("" + this.getPower());
-
             this.setPower(Math.min(this.MAX_POWER, Math.max(this.getPower(), 0)));
         }
     }

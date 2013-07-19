@@ -15,6 +15,8 @@ import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.MinecraftForge;
 import universalelectricity.compatibility.TileEntityUniversalElectrical;
+import universalelectricity.core.electricity.ElectricityPack;
+import universalelectricity.core.item.ElectricItemHelper;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.IPacketReceiver;
 import universalelectricity.prefab.network.PacketManager;
@@ -81,6 +83,11 @@ public abstract class GCCoreTileEntityElectric extends TileEntityUniversalElectr
     @Override
     public void updateEntity()
     {
+        if (this.shouldPullEnergy() && this.getEnergyStored() < this.getMaxEnergyStored())
+        {
+            this.receiveElectricity(this.getInputDirection(), ElectricityPack.getFromWatts(ElectricItemHelper.dischargeItem(this.getBatteryInSlot(), this.getRequest(this.getInputDirection())), this.getVoltage()), true);
+        }
+        
         if (!this.worldObj.isRemote && this.shouldUseEnergy())
         {
             this.setEnergyStored(this.getEnergyStored() - this.ueWattsPerTick);
