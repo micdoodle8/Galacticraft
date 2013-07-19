@@ -34,6 +34,7 @@ import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiGalaxyMap;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiParachest;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiRefinery;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiRocketRefill;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiSolar;
 import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelSpaceship;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererBreathableAir;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererCraftingTable;
@@ -64,6 +65,7 @@ import micdoodle8.mods.galacticraft.core.client.render.item.GCCoreItemRendererSp
 import micdoodle8.mods.galacticraft.core.client.render.item.GCCoreItemRendererUnlitTorch;
 import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntityAdvancedCraftingTableRenderer;
 import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntityParachestRenderer;
+import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntitySolarPanelRenderer;
 import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntityTreasureChestRenderer;
 import micdoodle8.mods.galacticraft.core.client.sounds.GCCoreSounds;
 import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
@@ -96,6 +98,7 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenDistributor;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenSealer;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityParachest;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityRefinery;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntitySolar;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
@@ -223,6 +226,7 @@ public class ClientProxyCore extends CommonProxyCore
         ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityTreasureChest.class, new GCCoreTileEntityTreasureChestRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityParachest.class, new GCCoreTileEntityParachestRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityAdvancedCraftingTable.class, new GCCoreTileEntityAdvancedCraftingTableRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntitySolar.class, new GCCoreTileEntitySolarPanelRenderer());
         ClientProxyCore.treasureChestRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererTreasureChest(ClientProxyCore.treasureChestRenderID));
         ClientProxyCore.torchRenderID = RenderingRegistry.getNextAvailableRenderId();
@@ -748,10 +752,17 @@ public class ClientProxyCore extends CommonProxyCore
                 return null;
             }
         }
-        // else if (ID == GCCoreConfigManager.idGuiKnowledgeBook)
-        // {
-        // return new GCCoreGuiKnowledgeBook();
-        // }
+        else if (ID == GCCoreConfigManager.idGuiSolarPanel)
+        {
+            if (tile != null && tile instanceof GCCoreTileEntitySolar)
+            {
+                return new GCCoreGuiSolar(player.inventory, (GCCoreTileEntitySolar) tile);
+            }
+            else
+            {
+                return null;
+            }
+        }
         else
         {
             final GCCorePlayerSP playerClient = PlayerUtil.getPlayerBaseClientFromPlayer(player);

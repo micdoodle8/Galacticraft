@@ -27,7 +27,6 @@ public class GCCoreConfigManager
     }
 
     public static int idDimensionOverworldOrbit;
-    // public static int idDimensionSpace;
 
     // BLOCKS
     public static int idBlockBreatheableAir;
@@ -56,6 +55,7 @@ public class GCCoreConfigManager
     public static int idBlockOxygenDetector;
     public static int idBlockCargoLoader;
     public static int idBlockParachest;
+    public static int idBlockSolarPanel;
 
     // ITEMS
     public static int idItemKnowledgeBook;
@@ -89,6 +89,7 @@ public class GCCoreConfigManager
     public static int idItemSchematic;
     public static int idItemKey;
     public static int idItemBuggyMaterial;
+    public static int idItemBasic;
 
     // RECIPES
     public static boolean useRecipesIC2;
@@ -132,6 +133,7 @@ public class GCCoreConfigManager
     public static int idGuiKnowledgeBook;
     public static int idGuiCargoLoader;
     public static int idGuiParachest;
+    public static int idGuiSolarPanel;
 
     // ACHIEVEMENTS
     public static int idAchievBase;
@@ -178,6 +180,7 @@ public class GCCoreConfigManager
     public static double dungeonBossHealthMod;
     public static int suffocationCooldown;
     public static int suffocationDamage;
+//    public static boolean disableExternalModGen;
 
     private void setDefaultValues()
     {
@@ -185,9 +188,6 @@ public class GCCoreConfigManager
         {
             GCCoreConfigManager.configuration.load();
 
-            // GCCoreConfigManager.idDimensionSpace =
-            // GCCoreConfigManager.configuration.get("DIMENSIONS",
-            // "idDimensionSpace", -26) .getInt(-26);
             GCCoreConfigManager.idDimensionOverworldOrbit = GCCoreConfigManager.configuration.get("DIMENSIONS", "idDimensionOverworldOrbit", -27).getInt(-27);
 
             GCCoreConfigManager.idBlockBreatheableAir = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockCoreBreatheableAir", 3350).getInt(3350);
@@ -216,6 +216,7 @@ public class GCCoreConfigManager
             GCCoreConfigManager.idBlockSpaceStationBase = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockSpaceStationBase", 3380, "Even though this will be generated, it can use block IDs greater than 256").getInt(3380);
             GCCoreConfigManager.idBlockTreasureChest = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockTieredTreasureChest", 3381, "Even though this will be generated, it can use block IDs greater than 256").getInt(3381);
             GCCoreConfigManager.idBlockParachest = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockParachest", 3382).getInt(3382);
+            GCCoreConfigManager.idBlockSolarPanel = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockSolarPanel", 3383).getInt(3383);
             // 3390 - Mars Base Block
 
             GCCoreConfigManager.idItemSpaceship = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemSpaceship", 9855).getInt(9855);
@@ -248,6 +249,7 @@ public class GCCoreConfigManager
             GCCoreConfigManager.idItemSchematic = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemSchematic", 9882).getInt(9882);
             GCCoreConfigManager.idItemKey = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemKey", 9883).getInt(9883);
             GCCoreConfigManager.idItemBuggyMaterial = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemBuggyMaterial", 9884).getInt(9884);
+            GCCoreConfigManager.idItemBasic = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemBasic", 9894).getInt(9894);
 
             GCCoreConfigManager.idToolSteelSword = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idToolSteelSword", 9885).getInt(9885);
             GCCoreConfigManager.idToolSteelPickaxe = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idToolSteelPickaxe", 9886).getInt(9886);
@@ -280,6 +282,7 @@ public class GCCoreConfigManager
             GCCoreConfigManager.idGuiKnowledgeBook = GCCoreConfigManager.configuration.get("GUI", "idGuiKnowledgeBook", 140).getInt(140);
             GCCoreConfigManager.idGuiCargoLoader = GCCoreConfigManager.configuration.get("GUI", "idGuiCargoLoader", 141).getInt(141);
             GCCoreConfigManager.idGuiParachest = GCCoreConfigManager.configuration.get("GUI", "idGuiParachest", 142).getInt(142);
+            GCCoreConfigManager.idGuiSolarPanel = GCCoreConfigManager.configuration.get("GUI", "idGuiSolarPanel", 144).getInt(144);
             // 143 - Tier 2 Rocket Bench GUI
 
             GCCoreConfigManager.idSchematicRocketT1 = GCCoreConfigManager.configuration.get("Schematic", "idSchematicRocketT1", 0).getInt(0);
@@ -325,11 +328,12 @@ public class GCCoreConfigManager
             GCCoreConfigManager.sealableIDs = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "External Sealable IDs", new String[] { String.valueOf(Block.glass.blockID + ":0"), String.valueOf(Block.thinGlass.blockID + ":0") }, "List IDs from other mods that the Oxygen Sealer should recognize as solid blocks. Format is ID:METADATA").getStringList();
             GCCoreConfigManager.disableLander = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Lander", false, "Set to true if you do not want to use the new Moon Lander feature, and land on the moon with a parachute instead.").getBoolean(false);
             GCCoreConfigManager.forceLoadGC = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Force Load", false, "Bypass mod requirements and load anyway (not recommended).");
-            GCCoreConfigManager.loadBC = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Load Basic Components", false, "Set to true to load the required Basic Components items from Galacticraft.");
+            GCCoreConfigManager.loadBC = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Load Basic Components", true, "Set to true to load the required Basic Components items from Galacticraft.");
             GCCoreConfigManager.enableKnowledgeBook = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Enable Knowledge Book", true, "Set to false if you do not wish to have the book of knowledge item").getBoolean(true);
             GCCoreConfigManager.dungeonBossHealthMod = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Dungeon Boss Health Modifier", 1.0D, "Change this is you wish to balance the mod (if you have more powerful weapon mods)").getDouble(1.0D);
             GCCoreConfigManager.suffocationCooldown = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Suffocation Cooldown", 100, "Lower/Raise this value to change time between suffocation damage ticks").getInt(100);
             GCCoreConfigManager.suffocationDamage = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Suffocation Damage", 2, "Change this value to modify the damage taken per suffocation tick").getInt(2);
+//            GCCoreConfigManager.disableExternalModGen = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable External Mod Gen", true, "Set to false if you want to allow other mods to generate ores, flowers, battle towers, etc on planets/moons").getBoolean(true);
         }
         catch (final Exception e)
         {

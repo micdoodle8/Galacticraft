@@ -55,7 +55,7 @@ item.parachute_purple.name=Purple Parachute
 item.parachute_red.name=Red Parachute
 item.parachute_teal.name=Cyan Parachute
 item.parachute_yellow.name=Yellow Parachute
-item.flagPole.name=Flag Pole
+item.steelPole.name=Steel Pole
 item.canvas.name=Canvas
 item.buggy.name=Buggy
 item.emptyLiquidCanister.name=Empty Liquid Canister
@@ -70,6 +70,8 @@ item.key.T1.name=Tier 1 Dungeon Key
 item.buggymat.wheel.name=Buggy Wheel
 item.buggymat.seat.name=Buggy Seat
 item.buggymat.storage.name=Buggy Storage Box
+item.basicItem.solar_module_0.name=Single Solar Module
+item.basicItem.solar_module_1.name=Full Solar Panel
 
 # TOOLS
 item.steel_pickaxe.name=Heavy Duty Pickaxe
@@ -126,6 +128,8 @@ tile.enclosed.PipeLiquidsCobblestone.name=Sealable Cobblestone Waterproof Pipe
 tile.enclosed.PipeLiquidsStone.name=Sealable Stone Waterproof Pipe
 tile.enclosed.PipePowerStone.name=Sealable Stone Conductive Pipe
 tile.enclosed.PipePowerGold.name=Sealable Golden Conductive Pipe
+tile.solar.basic.name=Basic Solar Panel
+tile.solar.advanced.name=Advanced Solar Panel
 
 # ENTITIES
 entity.GalacticraftCore.EvolvedSpider.name=Evolved Spider
@@ -195,6 +199,8 @@ container.refinery.name=Refinery
 container.treasurechest.name=Treasure Chest
 container.lander.name=Space Lander
 container.spaceship.name=Tier 1 Rocket
+container.solarbasic.name=Basic Solar Panel
+container.solaradvanced.name=Advanced Solar Panel
 
 gui.message.out.name=Out
 gui.message.in.name=In
@@ -205,6 +211,8 @@ gui.message.fuel.name=Fuel
 gui.message.full.name=full
 gui.message.page.name=Page
 gui.message.addnewsch.name=Add New Schematic
+gui.message.generating.name=Generating
+gui.message.environment.name=Environmental Boost
 
 gui.status.active.name=Active
 gui.status.missingleaves.name=Not Enough Leaf Blocks
@@ -227,6 +235,10 @@ gui.status.ready.name=Ready
 gui.status.refining.name=Refining
 gui.status.idle.name=Idle
 gui.status.nooil.name=No Oil
+gui.status.raining.name=Raining
+gui.status.blockedpartial.name=Sun Partially Visible
+gui.status.blockedfully.name=Sun is Not Visible
+gui.status.collectingenergy.name=Collecting Energy
 
 gui.button.enableseal.name=Enable Seal
 gui.button.disableseal.name=Disable Seal
@@ -243,6 +255,8 @@ gui.button.back.name=Back
 gui.button.next.name=Next
 gui.button.unlockschematic.name=Unlock Schematic
 gui.button.stoprefine.name=Stop Refining
+gui.button.enable.name=Enable
+gui.button.disable.name=Disable
 
 gui.choosePlanet.desc.overworld=Full of Life#Habitable#Gravity: 100%
 gui.warning=WARNING!

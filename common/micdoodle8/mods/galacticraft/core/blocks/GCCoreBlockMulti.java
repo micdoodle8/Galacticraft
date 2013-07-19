@@ -26,9 +26,10 @@ public class GCCoreBlockMulti extends BlockMulti
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister par1IconRegister)
     {
-        this.fakeIcons = new Icon[2];
+        this.fakeIcons = new Icon[3];
         this.fakeIcons[0] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "launch_pad");
         this.fakeIcons[1] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "workbench_nasa_top");
+        this.fakeIcons[2] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "solar_basic_0");
     }
 
     @Override
@@ -41,6 +42,8 @@ public class GCCoreBlockMulti extends BlockMulti
             return this.fakeIcons[0];
         case 3:
             return this.fakeIcons[1];
+        case 4:
+            return this.fakeIcons[2];
         default:
             return this.fakeIcons[0];
         }
@@ -50,23 +53,6 @@ public class GCCoreBlockMulti extends BlockMulti
     public boolean isOpaqueCube()
     {
         return false;
-    }
-
-    @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
-    {
-        world.getBlockMetadata(x, y, z);
-
-        return super.getCollisionBoundingBoxFromPool(world, x, y, z);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z)
-    {
-        world.getBlockMetadata(x, y, z);
-
-        return super.getSelectedBoundingBoxFromPool(world, x, y, z);
     }
 
     @Override

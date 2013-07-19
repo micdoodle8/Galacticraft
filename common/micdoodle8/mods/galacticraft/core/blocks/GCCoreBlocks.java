@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockBase;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockCargoLoader;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockEnclosedBlock;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockLandingPad;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockSolar;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemSapling;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
@@ -52,6 +53,7 @@ public class GCCoreBlocks
     public static Block oxygenDetector;
     public static Block cargoLoader;
     public static Block parachest;
+    public static Block solarPanel;
 
     public static Icon[] blockIcons;
 
@@ -86,6 +88,7 @@ public class GCCoreBlocks
         GCCoreBlocks.oxygenDetector = new GCCoreBlockOxygenDetector(GCCoreConfigManager.idBlockOxygenDetector).setHardness(3.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("oxygenDetector");
         GCCoreBlocks.cargoLoader = new GCCoreBlockCargoLoader(GCCoreConfigManager.idBlockCargoLoader).setHardness(3.0F).setStepSound(Block.soundMetalFootstep).setUnlocalizedName("cargo");
         GCCoreBlocks.parachest = new GCCoreBlockParachest(GCCoreConfigManager.idBlockParachest).setHardness(3.0F).setStepSound(Block.soundWoodFootstep).setUnlocalizedName("parachest");
+        GCCoreBlocks.solarPanel = new GCCoreBlockSolar(GCCoreConfigManager.idBlockSolarPanel).setHardness(3.0F).setStepSound(Block.soundMetalFootstep).setUnlocalizedName("solar");
 
         // Hide certain items from NEI
         GCCoreBlocks.hiddenBlocks.add(GCCoreBlocks.airLockSeal.blockID);
@@ -140,5 +143,6 @@ public class GCCoreBlocks
         GameRegistry.registerBlock(GCCoreBlocks.oxygenDetector, GCCoreItemBlock.class, GCCoreBlocks.oxygenDetector.getUnlocalizedName(), GalacticraftCore.MODID);
         GameRegistry.registerBlock(GCCoreBlocks.cargoLoader, GCCoreItemBlockCargoLoader.class, GCCoreBlocks.cargoLoader.getUnlocalizedName(), GalacticraftCore.MODID);
         GameRegistry.registerBlock(GCCoreBlocks.parachest, GCCoreItemBlock.class, GCCoreBlocks.parachest.getUnlocalizedName(), GalacticraftCore.MODID);
+        GameRegistry.registerBlock(GCCoreBlocks.solarPanel, GCCoreItemBlockSolar.class, GCCoreBlocks.solarPanel.getUnlocalizedName(), GalacticraftCore.MODID);
     }
 }
