@@ -84,7 +84,7 @@ public abstract class GCCoreTileEntityElectric extends TileEntityUniversalElectr
     {
         if (this.shouldPullEnergy() && this.getEnergyStored() < this.getMaxEnergyStored())
         {
-            this.receiveElectricity(this.getInputDirection(), ElectricityPack.getFromWatts(ElectricItemHelper.dischargeItem(this.getBatteryInSlot(), this.getRequest(this.getInputDirection())), this.getVoltage()), true);
+            this.receiveElectricity(this.getInputDirection(), ElectricityPack.getFromWatts(ElectricItemHelper.dischargeItem(this.getBatteryInSlot(), this.getRequest(ForgeDirection.UNKNOWN)), this.getVoltage()), true);
         }
 
         if (!this.worldObj.isRemote && this.shouldUseEnergy())
@@ -223,7 +223,7 @@ public abstract class GCCoreTileEntityElectric extends TileEntityUniversalElectr
     {
         return this.getElectricInputDirection();
     }
-
+    
     @Override
     public ForgeDirection getOutputDirection()
     {

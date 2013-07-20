@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import java.util.HashSet;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockSolar;
@@ -82,11 +83,11 @@ public class GCCoreTileEntitySolar extends TileEntityUniversalElectrical impleme
             {
                 this.solarStrength = 0;
 
-                if (this.worldObj.isDaytime() && !this.worldObj.isRaining() && !this.worldObj.isThundering())
+                if (this.worldObj.isDaytime() && (this.worldObj.provider instanceof IGalacticraftWorldProvider || (!this.worldObj.isRaining() && !this.worldObj.isThundering())))
                 {
                     double distance = 100.0D;
                     double sinA = -Math.sin((this.currentAngle - 77.5D) * Math.PI / 180.0D);
-                    double cosA = Math.cos((this.currentAngle - 77.5D) * Math.PI / 180.0D);
+                    double cosA = Math.abs(Math.cos((this.currentAngle - 77.5D) * Math.PI / 180.0D));
 
                     for (int x = -1; x <= 1; x++)
                     {
@@ -209,12 +210,15 @@ public class GCCoreTileEntitySolar extends TileEntityUniversalElectrical impleme
         {
             return 0.0F;
         }
-
-        float celestialAngle = (this.worldObj.getCelestialAngle(1.0F) + (this.worldObj.getCelestialAngle(1.0F) - 0.784690560F) < 0 ? 1.0F - 0.784690560F : -0.784690560F) * 360.0F % 360;
-
-        float difference = (180.0F - Math.abs(this.currentAngle % 360 - celestialAngle)) / 180.0F;
-
-        return difference * difference * (this.solarStrength * (difference * 500.0F)) * this.getSolarBoost();
+        
+        float angle = (this.worldObj.getCelestialAngle(1.0F) - 0.784690560F) < 0 ? 1.0F - 0.784690560F : -0.784690560F;
+        float celestialAngle = ((this.worldObj.getCelestialAngle(1.0F) + angle) * 360.0F);
+        
+        celestialAngle %= 360;
+        
+        float difference = (180.0F - Math.abs(((this.currentAngle % 180) - (celestialAngle)))) / 180.0F;
+        
+        return difference * difference * (this.solarStrength * (Math.abs(difference) * 500.0F)) * this.getSolarBoost();
     }
 
     public float getSolarBoost()

@@ -32,7 +32,7 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityElectric im
 {
     public boolean active;
 
-    public static final double WATTS_PER_TICK = 200;
+    public static final int WATTS_PER_TICK = 200;
 
     public double power;
 
