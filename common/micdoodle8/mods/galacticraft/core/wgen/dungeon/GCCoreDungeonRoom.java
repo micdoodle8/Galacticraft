@@ -2,11 +2,6 @@ package micdoodle8.mods.galacticraft.core.wgen.dungeon;
 
 import java.util.ArrayList;
 import java.util.Random;
-import micdoodle8.mods.galacticraft.moon.wgen.dungeon.GCMoonRoomBoss;
-import micdoodle8.mods.galacticraft.moon.wgen.dungeon.GCMoonRoomChests;
-import micdoodle8.mods.galacticraft.moon.wgen.dungeon.GCMoonRoomEmpty;
-import micdoodle8.mods.galacticraft.moon.wgen.dungeon.GCMoonRoomSpawner;
-import micdoodle8.mods.galacticraft.moon.wgen.dungeon.GCMoonRoomTreasure;
 import net.minecraft.world.World;
 
 public abstract class GCCoreDungeonRoom
@@ -23,9 +18,9 @@ public abstract class GCCoreDungeonRoom
     // North is z++, East is x++.
     public int entranceDir;
 
-    private static ArrayList<GCCoreDungeonRoom> rooms = new ArrayList<GCCoreDungeonRoom>();
-    private static ArrayList<GCCoreDungeonRoom> bossRooms = new ArrayList<GCCoreDungeonRoom>();
-    private static ArrayList<GCCoreDungeonRoom> treasureRooms = new ArrayList<GCCoreDungeonRoom>();
+    public static ArrayList<GCCoreDungeonRoom> rooms = new ArrayList<GCCoreDungeonRoom>();
+    public static ArrayList<GCCoreDungeonRoom> bossRooms = new ArrayList<GCCoreDungeonRoom>();
+    public static ArrayList<GCCoreDungeonRoom> treasureRooms = new ArrayList<GCCoreDungeonRoom>();
 
     public GCCoreDungeonRoom(GCCoreMapGenDungeon dungeon, int posX, int posY, int posZ, int entranceDir)
     {
@@ -86,22 +81,5 @@ public abstract class GCCoreDungeonRoom
     private int getIndex(int x, int y, int z)
     {
         return y << 8 | z << 4 | x;
-    }
-
-    static
-    {
-        GCCoreDungeonRoom.rooms.add(new GCMoonRoomEmpty(null, 0, 0, 0, 0));
-        GCCoreDungeonRoom.rooms.add(new GCMoonRoomSpawner(null, 0, 0, 0, 0));
-        GCCoreDungeonRoom.rooms.add(new GCMoonRoomSpawner(null, 0, 0, 0, 0));
-        GCCoreDungeonRoom.rooms.add(new GCMoonRoomSpawner(null, 0, 0, 0, 0));
-        GCCoreDungeonRoom.rooms.add(new GCMoonRoomSpawner(null, 0, 0, 0, 0));
-        GCCoreDungeonRoom.rooms.add(new GCMoonRoomSpawner(null, 0, 0, 0, 0));
-        GCCoreDungeonRoom.rooms.add(new GCMoonRoomSpawner(null, 0, 0, 0, 0));
-        GCCoreDungeonRoom.rooms.add(new GCMoonRoomSpawner(null, 0, 0, 0, 0));
-        GCCoreDungeonRoom.rooms.add(new GCMoonRoomSpawner(null, 0, 0, 0, 0));
-        GCCoreDungeonRoom.rooms.add(new GCMoonRoomChests(null, 0, 0, 0, 0));
-        GCCoreDungeonRoom.rooms.add(new GCMoonRoomChests(null, 0, 0, 0, 0));
-        GCCoreDungeonRoom.bossRooms.add(new GCMoonRoomBoss(null, 0, 0, 0, 0));
-        GCCoreDungeonRoom.treasureRooms.add(new GCMoonRoomTreasure(null, 0, 0, 0, 0));
     }
 }

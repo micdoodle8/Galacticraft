@@ -11,9 +11,15 @@ import micdoodle8.mods.galacticraft.core.perlin.NoiseModule;
 import micdoodle8.mods.galacticraft.core.perlin.generator.Gradient;
 import micdoodle8.mods.galacticraft.core.wgen.GCCoreCraterSize;
 import micdoodle8.mods.galacticraft.core.wgen.GCCoreMapGenBaseMeta;
+import micdoodle8.mods.galacticraft.core.wgen.dungeon.GCCoreDungeonRoom;
 import micdoodle8.mods.galacticraft.core.wgen.dungeon.GCCoreMapGenDungeon;
 import micdoodle8.mods.galacticraft.moon.GCMoonConfigManager;
 import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
+import micdoodle8.mods.galacticraft.moon.wgen.dungeon.GCMoonRoomBoss;
+import micdoodle8.mods.galacticraft.moon.wgen.dungeon.GCMoonRoomChests;
+import micdoodle8.mods.galacticraft.moon.wgen.dungeon.GCMoonRoomEmpty;
+import micdoodle8.mods.galacticraft.moon.wgen.dungeon.GCMoonRoomSpawner;
+import micdoodle8.mods.galacticraft.moon.wgen.dungeon.GCMoonRoomTreasure;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSand;
 import net.minecraft.entity.EnumCreatureType;
@@ -56,6 +62,23 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
     private final MapGenMineshaft mineshaftGenerator = new MapGenMineshaft();
 
     private final GCCoreMapGenDungeon dungeonGenerator = new GCCoreMapGenDungeon(GCMoonBlocks.blockMoon.blockID, 14, 8, 16, 3);
+    
+    static
+    {
+        GCCoreDungeonRoom.rooms.add(new GCMoonRoomEmpty(null, 0, 0, 0, 0));
+        GCCoreDungeonRoom.rooms.add(new GCMoonRoomSpawner(null, 0, 0, 0, 0));
+        GCCoreDungeonRoom.rooms.add(new GCMoonRoomSpawner(null, 0, 0, 0, 0));
+        GCCoreDungeonRoom.rooms.add(new GCMoonRoomSpawner(null, 0, 0, 0, 0));
+        GCCoreDungeonRoom.rooms.add(new GCMoonRoomSpawner(null, 0, 0, 0, 0));
+        GCCoreDungeonRoom.rooms.add(new GCMoonRoomSpawner(null, 0, 0, 0, 0));
+        GCCoreDungeonRoom.rooms.add(new GCMoonRoomSpawner(null, 0, 0, 0, 0));
+        GCCoreDungeonRoom.rooms.add(new GCMoonRoomSpawner(null, 0, 0, 0, 0));
+        GCCoreDungeonRoom.rooms.add(new GCMoonRoomSpawner(null, 0, 0, 0, 0));
+        GCCoreDungeonRoom.rooms.add(new GCMoonRoomChests(null, 0, 0, 0, 0));
+        GCCoreDungeonRoom.rooms.add(new GCMoonRoomChests(null, 0, 0, 0, 0));
+        GCCoreDungeonRoom.bossRooms.add(new GCMoonRoomBoss(null, 0, 0, 0, 0));
+        GCCoreDungeonRoom.treasureRooms.add(new GCMoonRoomTreasure(null, 0, 0, 0, 0));
+    }
 
     private BiomeGenBase[] biomesForGeneration = { GCMoonBiomeGenBase.moonFlat };
 

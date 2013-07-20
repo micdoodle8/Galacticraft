@@ -322,7 +322,7 @@ public class GCCoreMapGenDungeon
                         {
                             flag = true;
                         }
-                        if (i == corridor.minX - 1 || i == corridor.maxX + 1 || j == y - 1 || j == y + 3)
+                        if (i == corridor.minX - 1 || i == corridor.maxX + 1 || j == y - 1 || j == y + this.HALLWAY_HEIGHT)
                         {
                             flag = true;
                         }
@@ -340,7 +340,7 @@ public class GCCoreMapGenDungeon
                         {
                             flag = true;
                         }
-                        if (i == corridor.minX - 1 || i == corridor.maxX + 1 || j == y - 1 || j == y + 3)
+                        if (i == corridor.minX - 1 || i == corridor.maxX + 1 || j == y - 1 || j == y + this.HALLWAY_HEIGHT)
                         {
                             flag = true;
                         }
@@ -358,7 +358,7 @@ public class GCCoreMapGenDungeon
                         {
                             flag = true;
                         }
-                        if (k == corridor.minZ - 1 || k == corridor.maxZ + 1 || j == y - 1 || j == y + 3)
+                        if (k == corridor.minZ - 1 || k == corridor.maxZ + 1 || j == y - 1 || j == y + this.HALLWAY_HEIGHT)
                         {
                             flag = true;
                         }
@@ -376,7 +376,7 @@ public class GCCoreMapGenDungeon
                         {
                             flag = true;
                         }
-                        if (k == corridor.minZ - 1 || k == corridor.maxZ + 1 || j == y - 1 || j == y + 3)
+                        if (k == corridor.minZ - 1 || k == corridor.maxZ + 1 || j == y - 1 || j == y + this.HALLWAY_HEIGHT)
                         {
                             flag = true;
                         }

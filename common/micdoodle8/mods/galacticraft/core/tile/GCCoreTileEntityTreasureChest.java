@@ -60,9 +60,20 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
 
     /** Server sync counter (once per 20 ticks) */
     private int ticksSinceSync;
-    private String field_94045_s;
 
     public boolean locked = true;
+    
+    public int tier = 1;
+    
+    public GCCoreTileEntityTreasureChest()
+    {
+        this(1);
+    }
+    
+    public GCCoreTileEntityTreasureChest(int tier)
+    {
+        this.tier = tier;
+    }
 
     /**
      * Returns the number of slots in the inventory.
@@ -156,26 +167,17 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
         this.onInventoryChanged();
     }
 
-    public void func_94043_a(String par1Str)
-    {
-        this.field_94045_s = par1Str;
-    }
-
     /**
      * Reads a tile entity from NBT.
      */
     @Override
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound)
+    public void readFromNBT(NBTTagCompound nbt)
     {
-        super.readFromNBT(par1NBTTagCompound);
-        this.locked = par1NBTTagCompound.getBoolean("isLocked");
-        final NBTTagList nbttaglist = par1NBTTagCompound.getTagList("Items");
+        super.readFromNBT(nbt);
+        this.locked = nbt.getBoolean("isLocked");
+        this.tier = nbt.getInteger("tier");
+        final NBTTagList nbttaglist = nbt.getTagList("Items");
         this.chestContents = new ItemStack[this.getSizeInventory()];
-
-        if (par1NBTTagCompound.hasKey("CustomName"))
-        {
-            this.field_94045_s = par1NBTTagCompound.getString("CustomName");
-        }
 
         for (int i = 0; i < nbttaglist.tagCount(); ++i)
         {
@@ -193,10 +195,11 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
      * Writes a tile entity to NBT.
      */
     @Override
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound)
+    public void writeToNBT(NBTTagCompound nbt)
     {
-        super.writeToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setBoolean("isLocked", this.locked);
+        super.writeToNBT(nbt);
+        nbt.setBoolean("isLocked", this.locked);
+        nbt.setInteger("tier", this.tier);
         final NBTTagList nbttaglist = new NBTTagList();
 
         for (int i = 0; i < this.chestContents.length; ++i)
@@ -210,7 +213,7 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
             }
         }
 
-        par1NBTTagCompound.setTag("Items", nbttaglist);
+        nbt.setTag("Items", nbttaglist);
     }
 
     /**
@@ -563,7 +566,7 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
     @Override
     public int getTierOfKeyRequired()
     {
-        return 1;
+        return this.tier;
     }
 
     @Override

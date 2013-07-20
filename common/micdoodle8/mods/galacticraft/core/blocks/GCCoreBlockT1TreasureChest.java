@@ -457,7 +457,7 @@ public class GCCoreBlockT1TreasureChest extends BlockContainer implements ITileE
     @Override
     public TileEntity createNewTileEntity(World par1World)
     {
-        return new GCCoreTileEntityTreasureChest();
+        return new GCCoreTileEntityTreasureChest(1);
     }
 
     /**
