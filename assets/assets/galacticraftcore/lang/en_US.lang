@@ -130,6 +130,7 @@ tile.enclosed.PipePowerStone.name=Sealable Stone Conductive Pipe
 tile.enclosed.PipePowerGold.name=Sealable Golden Conductive Pipe
 tile.solar.basic.name=Basic Solar Panel
 tile.solar.advanced.name=Advanced Solar Panel
+tile.parachest.name=Parachest
 
 # ENTITIES
 entity.GalacticraftCore.EvolvedSpider.name=Evolved Spider
