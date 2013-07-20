@@ -4,12 +4,10 @@ import java.util.Iterator;
 import java.util.List;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockParachest;
+import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerParachest;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.ContainerChest;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryLargeChest;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -23,10 +21,6 @@ public class GCCoreTileEntityParachest extends TileEntity implements IInventory
     public ItemStack[] chestContents = new ItemStack[3];
 
     public boolean adjacentChestChecked = false;
-    public GCCoreTileEntityParachest adjacentChestZNeg;
-    public GCCoreTileEntityParachest adjacentChestXPos;
-    public GCCoreTileEntityParachest adjacentChestXNeg;
-    public GCCoreTileEntityParachest adjacentChestZPos;
 
     public float lidAngle;
 
@@ -35,7 +29,6 @@ public class GCCoreTileEntityParachest extends TileEntity implements IInventory
     public int numUsingPlayers;
 
     private int ticksSinceSync;
-    private int field_94046_i = -1;
 
     @Override
     public void validate()
@@ -194,109 +187,10 @@ public class GCCoreTileEntityParachest extends TileEntity implements IInventory
         this.adjacentChestChecked = false;
     }
 
-    private void func_90009_a(GCCoreTileEntityParachest par1TileEntityChest, int par2)
-    {
-        if (par1TileEntityChest.isInvalid())
-        {
-            this.adjacentChestChecked = false;
-        }
-        else if (this.adjacentChestChecked)
-        {
-            switch (par2)
-            {
-            case 0:
-                if (this.adjacentChestZPos != par1TileEntityChest)
-                {
-                    this.adjacentChestChecked = false;
-                }
-
-                break;
-            case 1:
-                if (this.adjacentChestXNeg != par1TileEntityChest)
-                {
-                    this.adjacentChestChecked = false;
-                }
-
-                break;
-            case 2:
-                if (this.adjacentChestZNeg != par1TileEntityChest)
-                {
-                    this.adjacentChestChecked = false;
-                }
-
-                break;
-            case 3:
-                if (this.adjacentChestXPos != par1TileEntityChest)
-                {
-                    this.adjacentChestChecked = false;
-                }
-            }
-        }
-    }
-
-    public void checkForAdjacentChests()
-    {
-        if (!this.adjacentChestChecked)
-        {
-            this.adjacentChestChecked = true;
-            this.adjacentChestZNeg = null;
-            this.adjacentChestXPos = null;
-            this.adjacentChestXNeg = null;
-            this.adjacentChestZPos = null;
-
-            if (this.func_94044_a(this.xCoord - 1, this.yCoord, this.zCoord))
-            {
-                this.adjacentChestXNeg = (GCCoreTileEntityParachest) this.worldObj.getBlockTileEntity(this.xCoord - 1, this.yCoord, this.zCoord);
-            }
-
-            if (this.func_94044_a(this.xCoord + 1, this.yCoord, this.zCoord))
-            {
-                this.adjacentChestXPos = (GCCoreTileEntityParachest) this.worldObj.getBlockTileEntity(this.xCoord + 1, this.yCoord, this.zCoord);
-            }
-
-            if (this.func_94044_a(this.xCoord, this.yCoord, this.zCoord - 1))
-            {
-                this.adjacentChestZNeg = (GCCoreTileEntityParachest) this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord - 1);
-            }
-
-            if (this.func_94044_a(this.xCoord, this.yCoord, this.zCoord + 1))
-            {
-                this.adjacentChestZPos = (GCCoreTileEntityParachest) this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord + 1);
-            }
-
-            if (this.adjacentChestZNeg != null)
-            {
-                this.adjacentChestZNeg.func_90009_a(this, 0);
-            }
-
-            if (this.adjacentChestZPos != null)
-            {
-                this.adjacentChestZPos.func_90009_a(this, 2);
-            }
-
-            if (this.adjacentChestXPos != null)
-            {
-                this.adjacentChestXPos.func_90009_a(this, 1);
-            }
-
-            if (this.adjacentChestXNeg != null)
-            {
-                this.adjacentChestXNeg.func_90009_a(this, 3);
-            }
-        }
-    }
-
-    private boolean func_94044_a(int par1, int par2, int par3)
-    {
-        Block block = Block.blocksList[this.worldObj.getBlockId(par1, par2, par3)];
-        return block != null && block instanceof GCCoreBlockParachest ? ((GCCoreBlockParachest) block).isTrapped == this.func_98041_l() : false;
-    }
-
     @Override
     public void updateEntity()
     {
         super.updateEntity();
-        this.checkForAdjacentChests();
         ++this.ticksSinceSync;
         float f;
 
@@ -304,21 +198,16 @@ public class GCCoreTileEntityParachest extends TileEntity implements IInventory
         {
             this.numUsingPlayers = 0;
             f = 5.0F;
-            List list = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getAABBPool().getAABB(this.xCoord - f, this.yCoord - f, this.zCoord - f, this.xCoord + 1 + f, this.yCoord + 1 + f, this.zCoord + 1 + f));
-            Iterator iterator = list.iterator();
+            List<?> list = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getAABBPool().getAABB(this.xCoord - f, this.yCoord - f, this.zCoord - f, this.xCoord + 1 + f, this.yCoord + 1 + f, this.zCoord + 1 + f));
+            Iterator<?> iterator = list.iterator();
 
             while (iterator.hasNext())
             {
                 EntityPlayer entityplayer = (EntityPlayer) iterator.next();
 
-                if (entityplayer.openContainer instanceof ContainerChest)
+                if (entityplayer.openContainer instanceof GCCoreContainerParachest)
                 {
-                    IInventory iinventory = ((ContainerChest) entityplayer.openContainer).getLowerChestInventory();
-
-                    if (iinventory == this || iinventory instanceof InventoryLargeChest && ((InventoryLargeChest) iinventory).isPartOfLargeChest(this))
-                    {
-                        ++this.numUsingPlayers;
-                    }
+                    ++this.numUsingPlayers;
                 }
             }
         }
@@ -327,20 +216,10 @@ public class GCCoreTileEntityParachest extends TileEntity implements IInventory
         f = 0.1F;
         double d0;
 
-        if (this.numUsingPlayers > 0 && this.lidAngle == 0.0F && this.adjacentChestZNeg == null && this.adjacentChestXNeg == null)
+        if (this.numUsingPlayers > 0 && this.lidAngle == 0.0F)
         {
             double d1 = this.xCoord + 0.5D;
             d0 = this.zCoord + 0.5D;
-
-            if (this.adjacentChestZPos != null)
-            {
-                d0 += 0.5D;
-            }
-
-            if (this.adjacentChestXPos != null)
-            {
-                d1 += 0.5D;
-            }
 
             this.worldObj.playSoundEffect(d1, this.yCoord + 0.5D, d0, "random.chestopen", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
         }
@@ -365,20 +244,10 @@ public class GCCoreTileEntityParachest extends TileEntity implements IInventory
 
             float f2 = 0.5F;
 
-            if (this.lidAngle < f2 && f1 >= f2 && this.adjacentChestZNeg == null && this.adjacentChestXNeg == null)
+            if (this.lidAngle < f2 && f1 >= f2)
             {
                 d0 = this.xCoord + 0.5D;
                 double d2 = this.zCoord + 0.5D;
-
-                if (this.adjacentChestZPos != null)
-                {
-                    d2 += 0.5D;
-                }
-
-                if (this.adjacentChestXPos != null)
-                {
-                    d0 += 0.5D;
-                }
 
                 this.worldObj.playSoundEffect(d0, this.yCoord + 0.5D, d2, "random.chestclosed", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
             }
@@ -441,21 +310,5 @@ public class GCCoreTileEntityParachest extends TileEntity implements IInventory
     {
         super.invalidate();
         this.updateContainingBlockInfo();
-        this.checkForAdjacentChests();
-    }
-
-    public int func_98041_l()
-    {
-        if (this.field_94046_i == -1)
-        {
-            if (this.worldObj == null || !(this.getBlockType() instanceof GCCoreBlockParachest))
-            {
-                return 0;
-            }
-
-            this.field_94046_i = ((GCCoreBlockParachest) this.getBlockType()).isTrapped;
-        }
-
-        return this.field_94046_i;
     }
 }

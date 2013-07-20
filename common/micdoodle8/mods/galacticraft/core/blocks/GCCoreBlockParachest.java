@@ -1,31 +1,59 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
+import java.util.Iterator;
 import java.util.Random;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityParachest;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockChest;
+import net.minecraft.block.BlockContainer;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 
-public class GCCoreBlockParachest extends BlockChest implements ITileEntityProvider
+public class GCCoreBlockParachest extends BlockContainer implements ITileEntityProvider
 {
     private final Random random = new Random();
 
     protected GCCoreBlockParachest(int par1)
     {
-        super(par1, 0);
+        super(par1, Material.wood);
+    }
+
+    @Override
+    public CreativeTabs getCreativeTabToDisplayOn()
+    {
+        return GalacticraftCore.galacticraftTab;
+    }
+
+    public boolean isOpaqueCube()
+    {
+        return false;
+    }
+
+    public boolean renderAsNormalBlock()
+    {
+        return false;
+    }
+
+    public int getRenderType()
+    {
+        return 22;
     }
 
     @Override
@@ -37,13 +65,7 @@ public class GCCoreBlockParachest extends BlockChest implements ITileEntityProvi
     @Override
     public void onBlockAdded(World par1World, int par2, int par3, int par4)
     {
-        ;
-    }
-
-    @Override
-    public void unifyAdjacentChests(World par1World, int par2, int par3, int par4)
-    {
-        ;
+        super.onBlockAdded(par1World, par2, par3, par4);
     }
 
     @Override
@@ -67,9 +89,9 @@ public class GCCoreBlockParachest extends BlockChest implements ITileEntityProvi
     }
 
     @Override
-    public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLiving, ItemStack par6ItemStack)
+    public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack)
     {
-        ;
+        super.onBlockPlacedBy(par1World, par2, par3, par4, par5EntityLivingBase, par6ItemStack);
     }
 
     @Override
@@ -86,9 +108,7 @@ public class GCCoreBlockParachest extends BlockChest implements ITileEntityProvi
     @Override
     public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4)
     {
-        int l = par1World.getBlockId(par2, par3, par4);
-        Block block = Block.blocksList[l];
-        return block == null || block.isBlockReplaceable(par1World, par2, par3, par4);
+        return super.canPlaceBlockAt(par1World, par2, par3, par4);
     }
 
     @Override
@@ -135,10 +155,9 @@ public class GCCoreBlockParachest extends BlockChest implements ITileEntityProvi
             par1World.func_96440_m(par2, par3, par4, par5);
         }
 
-        par1World.removeBlockTileEntity(par2, par3, par4);
+        super.breakBlock(par1World, par2, par3, par4, par5, par6);
     }
 
-    @Override
     public IInventory getInventory(World par1World, int par2, int par3, int par4)
     {
         Object object = par1World.getBlockTileEntity(par2, par3, par4);
@@ -151,23 +170,7 @@ public class GCCoreBlockParachest extends BlockChest implements ITileEntityProvi
         {
             return null;
         }
-        else if (BlockChest.isOcelotBlockingChest(par1World, par2, par3, par4))
-        {
-            return null;
-        }
-        else if (par1World.getBlockId(par2 - 1, par3, par4) == this.blockID && (par1World.isBlockSolidOnSide(par2 - 1, par3 + 1, par4, ForgeDirection.DOWN) || BlockChest.isOcelotBlockingChest(par1World, par2 - 1, par3, par4)))
-        {
-            return null;
-        }
-        else if (par1World.getBlockId(par2 + 1, par3, par4) == this.blockID && (par1World.isBlockSolidOnSide(par2 + 1, par3 + 1, par4, ForgeDirection.DOWN) || BlockChest.isOcelotBlockingChest(par1World, par2 + 1, par3, par4)))
-        {
-            return null;
-        }
-        else if (par1World.getBlockId(par2, par3, par4 - 1) == this.blockID && (par1World.isBlockSolidOnSide(par2, par3 + 1, par4 - 1, ForgeDirection.DOWN) || BlockChest.isOcelotBlockingChest(par1World, par2, par3, par4 - 1)))
-        {
-            return null;
-        }
-        else if (par1World.getBlockId(par2, par3, par4 + 1) == this.blockID && (par1World.isBlockSolidOnSide(par2, par3 + 1, par4 + 1, ForgeDirection.DOWN) || BlockChest.isOcelotBlockingChest(par1World, par2, par3, par4 + 1)))
+        else if (GCCoreBlockParachest.isOcelotBlockingChest(par1World, par2, par3, par4))
         {
             return null;
         }
@@ -175,6 +178,26 @@ public class GCCoreBlockParachest extends BlockChest implements ITileEntityProvi
         {
             return (IInventory) object;
         }
+    }
+    
+    public static boolean isOcelotBlockingChest(World par0World, int par1, int par2, int par3)
+    {
+        Iterator<?> iterator = par0World.getEntitiesWithinAABB(EntityOcelot.class, AxisAlignedBB.getAABBPool().getAABB((double)par1, (double)(par2 + 1), (double)par3, (double)(par1 + 1), (double)(par2 + 2), (double)(par3 + 1))).iterator();
+        EntityOcelot entityocelot;
+
+        do
+        {
+            if (!iterator.hasNext())
+            {
+                return false;
+            }
+
+            EntityOcelot entityocelot1 = (EntityOcelot)iterator.next();
+            entityocelot = (EntityOcelot)entityocelot1;
+        }
+        while (!entityocelot.isSitting());
+
+        return true;
     }
 
     @Override
@@ -184,20 +207,9 @@ public class GCCoreBlockParachest extends BlockChest implements ITileEntityProvi
     }
 
     @Override
-    public boolean canProvidePower()
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IconRegister par1IconRegister)
     {
-        return false;
-    }
-
-    @Override
-    public int isProvidingWeakPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
-    {
-        return 0;
-    }
-
-    @Override
-    public int isProvidingStrongPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
-    {
-        return 0;
+        this.blockIcon = par1IconRegister.registerIcon("planks_oak");
     }
 }
