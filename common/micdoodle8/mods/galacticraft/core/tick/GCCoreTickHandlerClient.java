@@ -275,12 +275,6 @@ public class GCCoreTickHandlerClient implements ITickHandler
                 GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             }
 
-            if (helmetSlot != null && helmetSlot.getItem() instanceof GCCoreItemSensorGlasses && minecraft.currentScreen == null)
-            {
-                GCCoreOverlaySensorGlasses.renderSensorGlassesMain();
-                GCCoreOverlaySensorGlasses.renderSensorGlassesValueableBlocks();
-            }
-
             if (minecraft.currentScreen == null && player != null && player.ridingEntity != null && player.ridingEntity instanceof EntitySpaceshipBase && minecraft.gameSettings.thirdPersonView != 0 && !minecraft.gameSettings.hideGUI)
             {
                 GCCoreOverlaySpaceship.renderSpaceshipOverlay();

@@ -8,6 +8,8 @@ import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
@@ -29,13 +31,8 @@ public class GCCoreOverlaySensorGlasses extends GCCoreOverlay
     /**
      * Render the GUI that displays sensor glasses
      */
-    public static void renderSensorGlassesMain()
+    public static void renderSensorGlassesMain(ItemStack stack, EntityPlayer player, ScaledResolution resolution, float partialTicks, boolean hasScreen, int mouseX, int mouseY)
     {
-        if (GCCoreOverlaySensorGlasses.minecraft.gameSettings.thirdPersonView != 0 || GCCoreOverlaySensorGlasses.minecraft.gameSettings.showDebugProfilerChart)
-        {
-            return;
-        }
-
         GCCoreOverlaySensorGlasses.zoom++;
 
         final float f = MathHelper.sin(GCCoreOverlaySensorGlasses.zoom / 80.0F) * 0.1F + 0.1F;
@@ -66,7 +63,7 @@ public class GCCoreOverlaySensorGlasses extends GCCoreOverlay
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
     }
 
-    public static void renderSensorGlassesValueableBlocks()
+    public static void renderSensorGlassesValueableBlocks(ItemStack stack, EntityPlayer player, ScaledResolution resolution, float partialTicks, boolean hasScreen, int mouseX, int mouseY)
     {
         final Iterator var51 = ClientProxyCore.valueableBlocks.iterator();
         double var52;
