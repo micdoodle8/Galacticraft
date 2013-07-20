@@ -6,7 +6,6 @@ import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockSolar;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
-import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -44,12 +43,12 @@ public class GCCoreTileEntitySolar extends TileEntityUniversalElectrical impleme
     public static final int MAX_GENERATE_WATTS = 15000;
     public static final int MIN_GENERATE_WATTS = 0;
     public float generateWatts = 0;
-    
+
     public GCCoreTileEntitySolar()
     {
         this(0);
     }
-    
+
     public GCCoreTileEntitySolar(float maxEnergy)
     {
         super(maxEnergy);
@@ -69,47 +68,47 @@ public class GCCoreTileEntitySolar extends TileEntityUniversalElectrical impleme
     public void updateEntity()
     {
         this.setEnergyStored(this.getEnergyStored() + this.generateWatts);
-        
+
         super.updateEntity();
-        
+
         if (!this.worldObj.isRemote)
         {
             if (this.disableCooldown > 0)
             {
                 this.disableCooldown--;
             }
-            
+
             if (!this.getDisabled() && this.ticks % 20 == 0)
             {
                 this.solarStrength = 0;
-                
+
                 if (this.worldObj.isDaytime() && !this.worldObj.isRaining() && !this.worldObj.isThundering())
                 {
                     double distance = 100.0D;
-                    double sinA = -Math.sin(((this.currentAngle - 77.5D) * Math.PI) / 180.0D);
-                    double cosA = Math.cos(((this.currentAngle - 77.5D) * Math.PI) / 180.0D);
-                    
+                    double sinA = -Math.sin((this.currentAngle - 77.5D) * Math.PI / 180.0D);
+                    double cosA = Math.cos((this.currentAngle - 77.5D) * Math.PI / 180.0D);
+
                     for (int x = -1; x <= 1; x++)
                     {
                         for (int z = -1; z <= 1; z++)
                         {
                             if (this.getBlockMetadata() < GCCoreBlockSolar.ADVANCED_METADATA)
                             {
-                                if (this.worldObj.canBlockSeeTheSky(xCoord + x, yCoord + 2, zCoord + z))
+                                if (this.worldObj.canBlockSeeTheSky(this.xCoord + x, this.yCoord + 2, this.zCoord + z))
                                 {
                                     boolean valid = true;
-                                    
+
                                     for (int y = this.yCoord + 3; y < 256; y++)
                                     {
                                         int blockID = this.worldObj.getBlockId(this.xCoord + x, y, this.zCoord + z);
-                                        
+
                                         if (blockID != 0 && Block.blocksList[blockID].isOpaqueCube())
                                         {
                                             valid = false;
                                             break;
                                         }
                                     }
-                                    
+
                                     if (valid)
                                     {
                                         this.solarStrength++;
@@ -119,20 +118,20 @@ public class GCCoreTileEntitySolar extends TileEntityUniversalElectrical impleme
                             else
                             {
                                 boolean valid = true;
-                                
+
                                 for (double d = 0.0D; d < distance; d++)
                                 {
                                     Vector3 thisVec = new Vector3(this);
                                     Vector3 blockAt = thisVec.clone().add(new Vector3(x, 3, z)).clone().add(new Vector3(d * sinA, d * cosA, 0));
                                     int blockID = blockAt.getBlockID(this.worldObj);
-                                    
+
                                     if (blockID != 0 && Block.blocksList[blockID].isOpaqueCube())
                                     {
                                         valid = false;
                                         break;
                                     }
                                 }
-                                
+
                                 if (valid)
                                 {
                                     this.solarStrength++;
@@ -143,12 +142,12 @@ public class GCCoreTileEntitySolar extends TileEntityUniversalElectrical impleme
                 }
             }
         }
-        
-        float angle = (this.worldObj.getCelestialAngle(1.0F) - 0.7845194F) < 0 ? 1.0F - 0.7845194F : -0.7845194F;
-        float celestialAngle = ((this.worldObj.getCelestialAngle(1.0F) + angle) * 360.0F);
-        
+
+        float angle = this.worldObj.getCelestialAngle(1.0F) - 0.7845194F < 0 ? 1.0F - 0.7845194F : -0.7845194F;
+        float celestialAngle = (this.worldObj.getCelestialAngle(1.0F) + angle) * 360.0F;
+
         celestialAngle %= 360;
-        
+
         if (this.getBlockMetadata() >= GCCoreBlockSolar.ADVANCED_METADATA)
         {
             if (celestialAngle > 30 && celestialAngle < 150)
@@ -181,46 +180,46 @@ public class GCCoreTileEntitySolar extends TileEntityUniversalElectrical impleme
                 this.targetAngle = 77.5F;
             }
         }
-        
+
         float difference = this.targetAngle - this.currentAngle;
-        
+
         this.currentAngle += difference / 20.0F;
-        
+
         if (!this.worldObj.isRemote)
         {
             if (this.getGenerate() > GCCoreTileEntitySolar.MIN_GENERATE_WATTS)
             {
-                this.generateWatts = (((float) Math.min(Math.max(this.getGenerate(), GCCoreTileEntitySolar.MIN_GENERATE_WATTS), GCCoreTileEntitySolar.MAX_GENERATE_WATTS)) / 20.0F);
+                this.generateWatts = Math.min(Math.max(this.getGenerate(), GCCoreTileEntitySolar.MIN_GENERATE_WATTS), GCCoreTileEntitySolar.MAX_GENERATE_WATTS) / 20.0F;
             }
             else
             {
                 this.generateWatts = 0.0F;
             }
         }
-        
+
         if (this.ticks % 3 == 0)
         {
             PacketManager.sendPacketToClients(this.getDescriptionPacket(), this.worldObj, new Vector3(this), 50);
         }
     }
-    
+
     public float getGenerate()
     {
         if (this.getDisabled())
         {
             return 0.0F;
         }
-        
-        float celestialAngle = ((this.worldObj.getCelestialAngle(1.0F) + (this.worldObj.getCelestialAngle(1.0F) - 0.784690560F) < 0 ? 1.0F - 0.784690560F : -0.784690560F) * 360.0F) % 360;
-        
-        float difference = (180.0F - Math.abs(((this.currentAngle % 360) - (celestialAngle)))) / 180.0F;
-        
-        return (difference * difference) * (this.solarStrength * (difference * 500.0F)) * this.getSolarBoost();
+
+        float celestialAngle = (this.worldObj.getCelestialAngle(1.0F) + (this.worldObj.getCelestialAngle(1.0F) - 0.784690560F) < 0 ? 1.0F - 0.784690560F : -0.784690560F) * 360.0F % 360;
+
+        float difference = (180.0F - Math.abs(this.currentAngle % 360 - celestialAngle)) / 180.0F;
+
+        return difference * difference * (this.solarStrength * (difference * 500.0F)) * this.getSolarBoost();
     }
-    
+
     public float getSolarBoost()
     {
-        return (float) (this.worldObj.provider instanceof ISolarLevel ? (((ISolarLevel) this.worldObj.provider).getSolarEnergyMultiplier()) : 1.0F);
+        return (float) (this.worldObj.provider instanceof ISolarLevel ? ((ISolarLevel) this.worldObj.provider).getSolarEnergyMultiplier() : 1.0F);
     }
 
     @Override
@@ -243,7 +242,7 @@ public class GCCoreTileEntitySolar extends TileEntityUniversalElectrical impleme
     @Override
     public Packet getDescriptionPacket()
     {
-        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.mainBlockPosition != null ? this.mainBlockPosition.intX() : 0, this.mainBlockPosition != null ? this.mainBlockPosition.intY() : 0, this.mainBlockPosition != null ? this.mainBlockPosition.intZ() : 0, this.solarStrength, this.generateWatts, this.disableCooldown, this.disabled);
+        return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.mainBlockPosition != null ? this.mainBlockPosition.intX() : 0, this.mainBlockPosition != null ? this.mainBlockPosition.intY() : 0, this.mainBlockPosition != null ? this.mainBlockPosition.intZ() : 0, this.solarStrength, this.generateWatts, this.disableCooldown, this.disabled);
     }
 
     public void onBlockRemoval()
@@ -287,7 +286,7 @@ public class GCCoreTileEntitySolar extends TileEntityUniversalElectrical impleme
             {
                 for (int z = -1; z < 2; z++)
                 {
-                    final Vector3 vecToAdd = Vector3.add(placedPosition, new Vector3((y == 2 ? x : 0), y, (y == 2 ? z : 0)));
+                    final Vector3 vecToAdd = Vector3.add(placedPosition, new Vector3(y == 2 ? x : 0, y, y == 2 ? z : 0));
 
                     if (!vecToAdd.equals(placedPosition))
                     {
@@ -317,10 +316,10 @@ public class GCCoreTileEntitySolar extends TileEntityUniversalElectrical impleme
                 }
             }
         }
-        
+
         this.worldObj.setBlock(thisBlock.intX(), thisBlock.intY(), thisBlock.intZ(), 0, 0, 3);
     }
-    
+
     @Override
     public void readFromNBT(NBTTagCompound nbt)
     {
@@ -356,7 +355,7 @@ public class GCCoreTileEntitySolar extends TileEntityUniversalElectrical impleme
         {
             nbt.setCompoundTag("mainBlockPosition", this.mainBlockPosition.writeToNBT(new NBTTagCompound()));
         }
-        
+
         nbt.setFloat("maxEnergy", this.getMaxEnergyStored());
         nbt.setFloat("currentAngle", this.currentAngle);
         nbt.setFloat("targetAngle", this.targetAngle);
@@ -401,12 +400,12 @@ public class GCCoreTileEntitySolar extends TileEntityUniversalElectrical impleme
     public ForgeDirection getOutputDirection()
     {
         int metadata = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);
-        
+
         if (metadata >= GCCoreBlockSolar.ADVANCED_METADATA)
         {
             metadata -= GCCoreBlockSolar.ADVANCED_METADATA;
         }
-        
+
         return ForgeDirection.getOrientation(metadata + 2).getOpposite();
     }
 
@@ -447,7 +446,7 @@ public class GCCoreTileEntitySolar extends TileEntityUniversalElectrical impleme
 
     public int getScaledElecticalLevel(int i)
     {
-        return (int)Math.floor(this.getEnergyStored() * i / (this.getMaxEnergyStored()));
+        return (int) Math.floor(this.getEnergyStored() * i / this.getMaxEnergyStored());
     }
 
     @Override
@@ -540,7 +539,7 @@ public class GCCoreTileEntitySolar extends TileEntityUniversalElectrical impleme
     public void closeChest()
     {
     }
-    
+
     @Override
     public int[] getAccessibleSlotsFromSide(int side)
     {

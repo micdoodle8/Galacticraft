@@ -696,7 +696,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
             {
                 this.airRemaining2 = 0;
             }
-            
+
             if (drainSpacing > 0)
             {
                 if (this.tick % drainSpacing == 0 && !OxygenUtil.isAABBInBreathableAirBlock(this))
@@ -705,18 +705,18 @@ public class GCCorePlayerMP extends EntityPlayerMP
                     {
                         tankInSlot.damageItem(1, this);
                     }
-                    
+
                     if (tankInSlot2 != null && tankInSlot2.getMaxDamage() - tankInSlot2.getItemDamage() > 0)
                     {
                         tankInSlot2.damageItem(1, this);
                     }
                 }
-                
+
                 if (tankInSlot != null)
                 {
                     this.airRemaining = tankInSlot.getMaxDamage() - tankInSlot.getItemDamage();
                 }
-                
+
                 if (tankInSlot2 != null)
                 {
                     this.airRemaining2 = tankInSlot2.getMaxDamage() - tankInSlot2.getItemDamage();
@@ -744,7 +744,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
                         {
                             this.airRemaining = Math.max(this.airRemaining - 1, 0);
                         }
-                        
+
                         if (this.airRemaining2 > 0)
                         {
                             this.airRemaining2 = Math.max(this.airRemaining2 - 1, 0);
@@ -993,11 +993,11 @@ public class GCCorePlayerMP extends EntityPlayerMP
         nbt.setDouble("coordsTeleportedFromX", this.coordsTeleportedFromX);
         nbt.setDouble("coordsTeleportedFromZ", this.coordsTeleportedFromZ);
         nbt.setInteger("spaceStationDimensionID", this.spaceStationDimensionID);
-        
+
         Collections.sort(this.unlockedSchematics);
-        
+
         NBTTagList tagList = new NBTTagList();
-        
+
         for (ISchematicPage page : this.unlockedSchematics)
         {
             if (page != null)
@@ -1007,7 +1007,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
                 tagList.appendTag(nbttagcompound);
             }
         }
-        
+
         nbt.setTag("Schematics", tagList);
 
         nbt.setInteger("rocketStacksLength", this.rocketStacks.length);

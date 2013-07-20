@@ -11,7 +11,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.world.World;
 
 public class GCMoonRoomTreasure extends GCCoreDungeonRoom
 {
@@ -25,9 +24,9 @@ public class GCMoonRoomTreasure extends GCCoreDungeonRoom
     public GCMoonRoomTreasure(GCCoreMapGenDungeon dungeon, int posX, int posY, int posZ, int entranceDir)
     {
         super(dungeon, posX, posY, posZ, entranceDir);
-        if (worldObj != null)
+        if (this.worldObj != null)
         {
-            final Random rand = new Random(worldObj.getSeed() * posX * posY * 57 * posZ);
+            final Random rand = new Random(this.worldObj.getSeed() * posX * posY * 57 * posZ);
             this.sizeX = rand.nextInt(6) + 7;
             this.sizeY = rand.nextInt(2) + 5;
             this.sizeZ = rand.nextInt(6) + 7;

@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.tick;
 
 import java.util.EnumSet;
 import micdoodle8.mods.galacticraft.api.block.IDetectableResource;
-import micdoodle8.mods.galacticraft.api.block.IDetectableResource;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockOre;

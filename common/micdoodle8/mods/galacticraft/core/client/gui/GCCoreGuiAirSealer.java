@@ -61,21 +61,21 @@ public class GCCoreGuiAirSealer extends GCCoreGuiContainer
         this.infoRegions.add(new GCCoreInfoRegion((this.width - this.xSize) / 2 + 31, (this.height - this.ySize) / 2 + 26, 18, 18, batterySlotDesc, this.width, this.height));
         List<String> oxygenDesc = new ArrayList<String>();
         oxygenDesc.add("Oxygen Storage");
-        oxygenDesc.add(EnumColor.YELLOW + "Oxygen: " + ((int) Math.floor(this.sealer.storedOxygen) + " / " + ((int) Math.floor(this.sealer.maxOxygen))));
-        oxygenInfoRegion.tooltipStrings = oxygenDesc;
-        oxygenInfoRegion.xPosition = (this.width - this.xSize) / 2 + 112;
-        oxygenInfoRegion.yPosition = (this.height - this.ySize) / 2 + 23;
-        oxygenInfoRegion.parentWidth = this.width;
-        oxygenInfoRegion.parentHeight = this.height;
+        oxygenDesc.add(EnumColor.YELLOW + "Oxygen: " + ((int) Math.floor(this.sealer.storedOxygen) + " / " + (int) Math.floor(this.sealer.maxOxygen)));
+        this.oxygenInfoRegion.tooltipStrings = oxygenDesc;
+        this.oxygenInfoRegion.xPosition = (this.width - this.xSize) / 2 + 112;
+        this.oxygenInfoRegion.yPosition = (this.height - this.ySize) / 2 + 23;
+        this.oxygenInfoRegion.parentWidth = this.width;
+        this.oxygenInfoRegion.parentHeight = this.height;
         this.infoRegions.add(this.oxygenInfoRegion);
         List<String> electricityDesc = new ArrayList<String>();
         electricityDesc.add("Electrical Storage");
-        electricityDesc.add(EnumColor.YELLOW + "Energy: " + ((int) Math.floor(this.sealer.getEnergyStored()) + " / " + ((int) Math.floor(this.sealer.getMaxEnergyStored()))));
-        electricInfoRegion.tooltipStrings = electricityDesc;
-        electricInfoRegion.xPosition = (this.width - this.xSize) / 2 + 112;
-        electricInfoRegion.yPosition = (this.height - this.ySize) / 2 + 36;
-        electricInfoRegion.parentWidth = this.width;
-        electricInfoRegion.parentHeight = this.height;
+        electricityDesc.add(EnumColor.YELLOW + "Energy: " + ((int) Math.floor(this.sealer.getEnergyStored()) + " / " + (int) Math.floor(this.sealer.getMaxEnergyStored())));
+        this.electricInfoRegion.tooltipStrings = electricityDesc;
+        this.electricInfoRegion.xPosition = (this.width - this.xSize) / 2 + 112;
+        this.electricInfoRegion.yPosition = (this.height - this.ySize) / 2 + 36;
+        this.electricInfoRegion.parentWidth = this.width;
+        this.electricInfoRegion.parentHeight = this.height;
         this.infoRegions.add(this.electricInfoRegion);
         this.buttonList.add(this.buttonDisable = new GuiButton(0, this.width / 2 - 38, this.height / 2 - 30 + 21, 76, 20, LanguageRegistry.instance().getStringLocalization("gui.button.enableseal.name")));
     }
@@ -142,24 +142,24 @@ public class GCCoreGuiAirSealer extends GCCoreGuiContainer
         {
             List<String> oxygenDesc = new ArrayList<String>();
             oxygenDesc.add("Oxygen Storage");
-            oxygenDesc.add(EnumColor.YELLOW + "Oxygen: " + ((int) Math.floor(this.sealer.storedOxygen) + " / " + ((int) Math.floor(this.sealer.maxOxygen))));
-            oxygenInfoRegion.tooltipStrings = oxygenDesc;
+            oxygenDesc.add(EnumColor.YELLOW + "Oxygen: " + ((int) Math.floor(this.sealer.storedOxygen) + " / " + (int) Math.floor(this.sealer.maxOxygen)));
+            this.oxygenInfoRegion.tooltipStrings = oxygenDesc;
 
             List<String> electricityDesc = new ArrayList<String>();
             electricityDesc.add("Electrical Storage");
-            electricityDesc.add(EnumColor.YELLOW + "Energy: " + ((int) Math.floor(this.sealer.getEnergyStored()) + " / " + ((int) Math.floor(this.sealer.getMaxEnergyStored()))));
-            electricInfoRegion.tooltipStrings = electricityDesc;
+            electricityDesc.add(EnumColor.YELLOW + "Energy: " + ((int) Math.floor(this.sealer.getEnergyStored()) + " / " + (int) Math.floor(this.sealer.getMaxEnergyStored())));
+            this.electricInfoRegion.tooltipStrings = electricityDesc;
 
             int scale = this.sealer.getCappedScaledOxygenLevel(54);
             this.drawTexturedModalRect(var5 + 113, var6 + 24, 197, 7, Math.min(scale, 54), 7);
             scale = this.sealer.getScaledElecticalLevel(54);
             this.drawTexturedModalRect(var5 + 113, var6 + 37, 197, 0, Math.min(scale, 54), 7);
-            
+
             if (this.sealer.getEnergyStored() > 0)
             {
                 this.drawTexturedModalRect(var5 + 99, var6 + 36, 176, 0, 11, 10);
             }
-            
+
             if (this.sealer.storedOxygen > 0)
             {
                 this.drawTexturedModalRect(var5 + 100, var6 + 23, 187, 0, 10, 10);

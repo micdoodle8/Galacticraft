@@ -46,21 +46,21 @@ public class GCCoreGuiAirDistributor extends GCCoreGuiContainer
         this.infoRegions.add(new GCCoreInfoRegion((this.width - this.xSize) / 2 + 31, (this.height - this.ySize) / 2 + 26, 18, 18, batterySlotDesc, this.width, this.height));
         List<String> oxygenDesc = new ArrayList<String>();
         oxygenDesc.add("Oxygen Storage");
-        oxygenDesc.add(EnumColor.YELLOW + "Oxygen: " + ((int) Math.floor(this.distributor.storedOxygen) + " / " + ((int) Math.floor(this.distributor.maxOxygen))));
-        oxygenInfoRegion.tooltipStrings = oxygenDesc;
-        oxygenInfoRegion.xPosition = (this.width - this.xSize) / 2 + 112;
-        oxygenInfoRegion.yPosition = (this.height - this.ySize) / 2 + 24;
-        oxygenInfoRegion.parentWidth = this.width;
-        oxygenInfoRegion.parentHeight = this.height;
+        oxygenDesc.add(EnumColor.YELLOW + "Oxygen: " + ((int) Math.floor(this.distributor.storedOxygen) + " / " + (int) Math.floor(this.distributor.maxOxygen)));
+        this.oxygenInfoRegion.tooltipStrings = oxygenDesc;
+        this.oxygenInfoRegion.xPosition = (this.width - this.xSize) / 2 + 112;
+        this.oxygenInfoRegion.yPosition = (this.height - this.ySize) / 2 + 24;
+        this.oxygenInfoRegion.parentWidth = this.width;
+        this.oxygenInfoRegion.parentHeight = this.height;
         this.infoRegions.add(this.oxygenInfoRegion);
         List<String> electricityDesc = new ArrayList<String>();
         electricityDesc.add("Electrical Storage");
-        electricityDesc.add(EnumColor.YELLOW + "Energy: " + ((int) Math.floor(this.distributor.getEnergyStored()) + " / " + ((int) Math.floor(this.distributor.getMaxEnergyStored()))));
-        electricInfoRegion.tooltipStrings = electricityDesc;
-        electricInfoRegion.xPosition = (this.width - this.xSize) / 2 + 112;
-        electricInfoRegion.yPosition = (this.height - this.ySize) / 2 + 37;
-        electricInfoRegion.parentWidth = this.width;
-        electricInfoRegion.parentHeight = this.height;
+        electricityDesc.add(EnumColor.YELLOW + "Energy: " + ((int) Math.floor(this.distributor.getEnergyStored()) + " / " + (int) Math.floor(this.distributor.getMaxEnergyStored())));
+        this.electricInfoRegion.tooltipStrings = electricityDesc;
+        this.electricInfoRegion.xPosition = (this.width - this.xSize) / 2 + 112;
+        this.electricInfoRegion.yPosition = (this.height - this.ySize) / 2 + 37;
+        this.electricInfoRegion.parentWidth = this.width;
+        this.electricInfoRegion.parentHeight = this.height;
         this.infoRegions.add(this.electricInfoRegion);
     }
 
@@ -83,7 +83,7 @@ public class GCCoreGuiAirDistributor extends GCCoreGuiContainer
 
     private String getStatus()
     {
-        if (this.distributor.storedOxygen >= 1 && (this.distributor.getEnergyStored() > 0))
+        if (this.distributor.storedOxygen >= 1 && this.distributor.getEnergyStored() > 0)
         {
             return EnumColor.DARK_GREEN + LanguageRegistry.instance().getStringLocalization("gui.status.active.name");
         }
@@ -116,12 +116,12 @@ public class GCCoreGuiAirDistributor extends GCCoreGuiContainer
             this.drawTexturedModalRect(var5 + 113, var6 + 25, 197, 7, Math.min(scale, 54), 7);
             scale = this.distributor.getScaledElecticalLevel(54);
             this.drawTexturedModalRect(var5 + 113, var6 + 38, 197, 0, Math.min(scale, 54), 7);
-            
+
             if (this.distributor.getEnergyStored() > 0)
             {
                 this.drawTexturedModalRect(var5 + 99, var6 + 37, 176, 0, 11, 10);
             }
-            
+
             if (this.distributor.storedOxygen > 0)
             {
                 this.drawTexturedModalRect(var5 + 100, var6 + 24, 187, 0, 10, 10);
@@ -129,13 +129,13 @@ public class GCCoreGuiAirDistributor extends GCCoreGuiContainer
 
             List<String> oxygenDesc = new ArrayList<String>();
             oxygenDesc.add("Oxygen Storage");
-            oxygenDesc.add(EnumColor.YELLOW + "Oxygen: " + ((int) Math.floor(this.distributor.storedOxygen) + " / " + ((int) Math.floor(this.distributor.maxOxygen))));
-            oxygenInfoRegion.tooltipStrings = oxygenDesc;
+            oxygenDesc.add(EnumColor.YELLOW + "Oxygen: " + ((int) Math.floor(this.distributor.storedOxygen) + " / " + (int) Math.floor(this.distributor.maxOxygen)));
+            this.oxygenInfoRegion.tooltipStrings = oxygenDesc;
 
             List<String> electricityDesc = new ArrayList<String>();
             electricityDesc.add("Electrical Storage");
-            electricityDesc.add(EnumColor.YELLOW + "Energy: " + ((int) Math.floor(this.distributor.getEnergyStored()) + " / " + ((int) Math.floor(this.distributor.getMaxEnergyStored()))));
-            electricInfoRegion.tooltipStrings = electricityDesc;
+            electricityDesc.add(EnumColor.YELLOW + "Energy: " + ((int) Math.floor(this.distributor.getEnergyStored()) + " / " + (int) Math.floor(this.distributor.getMaxEnergyStored())));
+            this.electricInfoRegion.tooltipStrings = electricityDesc;
         }
     }
 }

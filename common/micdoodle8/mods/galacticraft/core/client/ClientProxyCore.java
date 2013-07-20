@@ -790,20 +790,20 @@ public class ClientProxyCore extends CommonProxyCore
     }
 
     private static final ResourceLocation underOilTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/misc/underoil.png");
-    
+
     public static void renderLiquidOverlays(float partialTicks)
     {
         Minecraft minecraft = FMLClientHandler.instance().getClient();
-        
+
         if (minecraft.thePlayer.isInsideOfMaterial(GCCoreBlocks.crudeOil))
         {
-            minecraft.func_110434_K().func_110577_a(underOilTexture);
+            minecraft.func_110434_K().func_110577_a(ClientProxyCore.underOilTexture);
         }
         else
         {
             return;
         }
-        
+
         Tessellator tessellator = Tessellator.instance;
         float f1 = minecraft.thePlayer.getBrightness(partialTicks) / 3.0F;
         GL11.glColor4f(f1, f1, f1, 1.0F);
@@ -819,10 +819,10 @@ public class ClientProxyCore extends CommonProxyCore
         float f8 = -minecraft.thePlayer.rotationYaw / 64.0F;
         float f9 = minecraft.thePlayer.rotationPitch / 64.0F;
         tessellator.startDrawingQuads();
-        tessellator.addVertexWithUV((double)f3, (double)f5, (double)f7, (double)(f2 + f8), (double)(f2 + f9));
-        tessellator.addVertexWithUV((double)f4, (double)f5, (double)f7, (double)(0.0F + f8), (double)(f2 + f9));
-        tessellator.addVertexWithUV((double)f4, (double)f6, (double)f7, (double)(0.0F + f8), (double)(0.0F + f9));
-        tessellator.addVertexWithUV((double)f3, (double)f6, (double)f7, (double)(f2 + f8), (double)(0.0F + f9));
+        tessellator.addVertexWithUV(f3, f5, f7, f2 + f8, f2 + f9);
+        tessellator.addVertexWithUV(f4, f5, f7, 0.0F + f8, f2 + f9);
+        tessellator.addVertexWithUV(f4, f6, f7, 0.0F + f8, 0.0F + f9);
+        tessellator.addVertexWithUV(f3, f6, f7, f2 + f8, 0.0F + f9);
         tessellator.draw();
         GL11.glPopMatrix();
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

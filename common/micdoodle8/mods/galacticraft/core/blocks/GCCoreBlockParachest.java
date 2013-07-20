@@ -2,8 +2,6 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.Iterator;
 import java.util.Random;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityParachest;
@@ -25,6 +23,8 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreBlockParachest extends BlockContainer implements ITileEntityProvider
 {
@@ -41,16 +41,19 @@ public class GCCoreBlockParachest extends BlockContainer implements ITileEntityP
         return GalacticraftCore.galacticraftTab;
     }
 
+    @Override
     public boolean isOpaqueCube()
     {
         return false;
     }
 
+    @Override
     public boolean renderAsNormalBlock()
     {
         return false;
     }
 
+    @Override
     public int getRenderType()
     {
         return 22;
@@ -179,10 +182,10 @@ public class GCCoreBlockParachest extends BlockContainer implements ITileEntityP
             return (IInventory) object;
         }
     }
-    
+
     public static boolean isOcelotBlockingChest(World par0World, int par1, int par2, int par3)
     {
-        Iterator<?> iterator = par0World.getEntitiesWithinAABB(EntityOcelot.class, AxisAlignedBB.getAABBPool().getAABB((double)par1, (double)(par2 + 1), (double)par3, (double)(par1 + 1), (double)(par2 + 2), (double)(par3 + 1))).iterator();
+        Iterator<?> iterator = par0World.getEntitiesWithinAABB(EntityOcelot.class, AxisAlignedBB.getAABBPool().getAABB(par1, par2 + 1, par3, par1 + 1, par2 + 2, par3 + 1)).iterator();
         EntityOcelot entityocelot;
 
         do
@@ -192,8 +195,8 @@ public class GCCoreBlockParachest extends BlockContainer implements ITileEntityP
                 return false;
             }
 
-            EntityOcelot entityocelot1 = (EntityOcelot)iterator.next();
-            entityocelot = (EntityOcelot)entityocelot1;
+            EntityOcelot entityocelot1 = (EntityOcelot) iterator.next();
+            entityocelot = entityocelot1;
         }
         while (!entityocelot.isSitting());
 

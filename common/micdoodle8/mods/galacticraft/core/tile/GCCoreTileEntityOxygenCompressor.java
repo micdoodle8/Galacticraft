@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenTank;
-import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -12,8 +11,8 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.packet.Packet;
 import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.core.item.IItemElectric;
+import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 /**
@@ -27,10 +26,10 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityOxygen imp
     private ItemStack[] containingItems = new ItemStack[2];
 
     public static final double WATTS_PER_TICK = 200;
-    
+
     public GCCoreTileEntityOxygenCompressor()
     {
-        super((float) WATTS_PER_TICK, 50000, 1200, 12);
+        super((float) GCCoreTileEntityOxygenCompressor.WATTS_PER_TICK, 50000, 1200, 12);
     }
 
     @Override
@@ -40,7 +39,7 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityOxygen imp
 
         if (!this.worldObj.isRemote)
         {
-            if (this.storedOxygen / 5.0D >= 1.0D && (this.getEnergyStored() > 0))
+            if (this.storedOxygen / 5.0D >= 1.0D && this.getEnergyStored() > 0)
             {
                 if (!this.worldObj.isRemote && this.ticks % ((31 - Math.min(Math.floor(this.storedOxygen / 5.0D), 30)) * 10) == 0)
                 {
@@ -251,7 +250,7 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityOxygen imp
         case 1:
             return itemstack.getItem() instanceof IItemElectric;
         }
-        
+
         return false;
     }
 
@@ -287,7 +286,7 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityOxygen imp
     @Override
     public Packet getPacket()
     {
-        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.storedOxygen, this.getEnergyStored(), this.disabled);
+        return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.storedOxygen, this.getEnergyStored(), this.disabled);
     }
 
     @Override

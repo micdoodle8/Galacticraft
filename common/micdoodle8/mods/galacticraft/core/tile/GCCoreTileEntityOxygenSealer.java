@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import micdoodle8.mods.galacticraft.core.oxygen.OxygenPressureProtocol;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -13,6 +12,7 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.core.item.IItemElectric;
+import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
@@ -35,7 +35,7 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
 
     public GCCoreTileEntityOxygenSealer()
     {
-        super((float) WATTS_PER_TICK, 50000, 10000, 12);
+        super((float) GCCoreTileEntityOxygenSealer.WATTS_PER_TICK, 50000, 10000, 12);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
                 this.sealed = this.checkSeal(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
             }
 
-            if (this.storedOxygen >= 1 && (this.getEnergyStored() > 0) && !this.disabled)
+            if (this.storedOxygen >= 1 && this.getEnergyStored() > 0 && !this.disabled)
             {
                 this.active = true;
             }
@@ -291,7 +291,7 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
     @Override
     public Packet getPacket()
     {
-        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.storedOxygen, this.getEnergyStored(), this.disabled, this.sealed);
+        return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.storedOxygen, this.getEnergyStored(), this.disabled, this.sealed);
     }
 
     @Override

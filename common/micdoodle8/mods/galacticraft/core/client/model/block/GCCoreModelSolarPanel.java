@@ -25,60 +25,60 @@ public class GCCoreModelSolarPanel extends ModelBase
     {
         this.textureWidth = 256;
         this.textureHeight = 128;
-        panelMain = new ModelRenderer(this, 0, 0);
-        panelMain.addBox(-23F, -0.5F, -23F, 46, 1, 46);
-        panelMain.setRotationPoint(0F, 0F, 0F);
-        panelMain.setTextureSize(256, 128);
-        panelMain.mirror = true;
-        setRotation(panelMain, 0F, 0F, 0F);
-        sideHorizontal0 = new ModelRenderer(this, 0, 48);
-        sideHorizontal0.addBox(-24F, -1.111F, -23F, 1, 1, 46);
-        sideHorizontal0.setRotationPoint(0F, 0F, 0F);
-        sideHorizontal0.setTextureSize(256, 128);
-        sideHorizontal0.mirror = true;
-        setRotation(sideHorizontal0, 0F, 0F, 0F);
-        sideVertical0 = new ModelRenderer(this, 94, 48);
-        sideVertical0.addBox(-24F, -1.1F, 23F, 48, 1, 1);
-        sideVertical0.setRotationPoint(0F, 0F, 0F);
-        sideVertical0.setTextureSize(256, 128);
-        sideVertical0.mirror = true;
-        setRotation(sideVertical0, 0F, 0F, 0F);
-        sideVertical2 = new ModelRenderer(this, 94, 48);
-        sideVertical2.addBox(-24F, -1.1F, -24F, 48, 1, 1);
-        sideVertical2.setRotationPoint(0F, 0F, 0F);
-        sideVertical2.setTextureSize(256, 128);
-        sideVertical2.mirror = true;
-        setRotation(sideVertical2, 0F, 0F, 0F);
-        sideVertical1 = new ModelRenderer(this, 94, 48);
-        sideVertical1.addBox(-24F, -1.1F, -0.5F, 48, 1, 1);
-        sideVertical1.setRotationPoint(0F, 0F, 0F);
-        sideVertical1.setTextureSize(256, 128);
-        sideVertical1.mirror = true;
-        setRotation(sideVertical1, 0F, 0F, 0F);
-        sideHorizontal1 = new ModelRenderer(this, 0, 48);
-        sideHorizontal1.addBox(-9F, -1.111F, -23F, 1, 1, 46);
-        sideHorizontal1.setRotationPoint(0F, 0F, 0F);
-        sideHorizontal1.setTextureSize(256, 128);
-        sideHorizontal1.mirror = true;
-        setRotation(sideHorizontal1, 0F, 0F, 0F);
-        sideHorizontal3 = new ModelRenderer(this, 0, 48);
-        sideHorizontal3.addBox(23F, -1.111F, -23F, 1, 1, 46);
-        sideHorizontal3.setRotationPoint(0F, 0F, 0F);
-        sideHorizontal3.setTextureSize(256, 128);
-        sideHorizontal3.mirror = true;
-        setRotation(sideHorizontal3, 0F, 0F, 0F);
-        sideHorizontal2 = new ModelRenderer(this, 0, 48);
-        sideHorizontal2.addBox(8F, -1.111F, -23F, 1, 1, 46);
-        sideHorizontal2.setRotationPoint(0F, 0F, 0F);
-        sideHorizontal2.setTextureSize(256, 128);
-        sideHorizontal2.mirror = true;
-        setRotation(sideHorizontal2, 0F, 0F, 0F);
-        pole = new ModelRenderer(this, 94, 50);
-        pole.addBox(-1.5F, 0.0F, -1.5F, 3, 24, 3);
-        pole.setRotationPoint(0F, 0F, 0F);
-        pole.setTextureSize(256, 128);
-        pole.mirror = true;
-        setRotation(pole, 0F, 0F, 0F);
+        this.panelMain = new ModelRenderer(this, 0, 0);
+        this.panelMain.addBox(-23F, -0.5F, -23F, 46, 1, 46);
+        this.panelMain.setRotationPoint(0F, 0F, 0F);
+        this.panelMain.setTextureSize(256, 128);
+        this.panelMain.mirror = true;
+        this.setRotation(this.panelMain, 0F, 0F, 0F);
+        this.sideHorizontal0 = new ModelRenderer(this, 0, 48);
+        this.sideHorizontal0.addBox(-24F, -1.111F, -23F, 1, 1, 46);
+        this.sideHorizontal0.setRotationPoint(0F, 0F, 0F);
+        this.sideHorizontal0.setTextureSize(256, 128);
+        this.sideHorizontal0.mirror = true;
+        this.setRotation(this.sideHorizontal0, 0F, 0F, 0F);
+        this.sideVertical0 = new ModelRenderer(this, 94, 48);
+        this.sideVertical0.addBox(-24F, -1.1F, 23F, 48, 1, 1);
+        this.sideVertical0.setRotationPoint(0F, 0F, 0F);
+        this.sideVertical0.setTextureSize(256, 128);
+        this.sideVertical0.mirror = true;
+        this.setRotation(this.sideVertical0, 0F, 0F, 0F);
+        this.sideVertical2 = new ModelRenderer(this, 94, 48);
+        this.sideVertical2.addBox(-24F, -1.1F, -24F, 48, 1, 1);
+        this.sideVertical2.setRotationPoint(0F, 0F, 0F);
+        this.sideVertical2.setTextureSize(256, 128);
+        this.sideVertical2.mirror = true;
+        this.setRotation(this.sideVertical2, 0F, 0F, 0F);
+        this.sideVertical1 = new ModelRenderer(this, 94, 48);
+        this.sideVertical1.addBox(-24F, -1.1F, -0.5F, 48, 1, 1);
+        this.sideVertical1.setRotationPoint(0F, 0F, 0F);
+        this.sideVertical1.setTextureSize(256, 128);
+        this.sideVertical1.mirror = true;
+        this.setRotation(this.sideVertical1, 0F, 0F, 0F);
+        this.sideHorizontal1 = new ModelRenderer(this, 0, 48);
+        this.sideHorizontal1.addBox(-9F, -1.111F, -23F, 1, 1, 46);
+        this.sideHorizontal1.setRotationPoint(0F, 0F, 0F);
+        this.sideHorizontal1.setTextureSize(256, 128);
+        this.sideHorizontal1.mirror = true;
+        this.setRotation(this.sideHorizontal1, 0F, 0F, 0F);
+        this.sideHorizontal3 = new ModelRenderer(this, 0, 48);
+        this.sideHorizontal3.addBox(23F, -1.111F, -23F, 1, 1, 46);
+        this.sideHorizontal3.setRotationPoint(0F, 0F, 0F);
+        this.sideHorizontal3.setTextureSize(256, 128);
+        this.sideHorizontal3.mirror = true;
+        this.setRotation(this.sideHorizontal3, 0F, 0F, 0F);
+        this.sideHorizontal2 = new ModelRenderer(this, 0, 48);
+        this.sideHorizontal2.addBox(8F, -1.111F, -23F, 1, 1, 46);
+        this.sideHorizontal2.setRotationPoint(0F, 0F, 0F);
+        this.sideHorizontal2.setTextureSize(256, 128);
+        this.sideHorizontal2.mirror = true;
+        this.setRotation(this.sideHorizontal2, 0F, 0F, 0F);
+        this.pole = new ModelRenderer(this, 94, 50);
+        this.pole.addBox(-1.5F, 0.0F, -1.5F, 3, 24, 3);
+        this.pole.setRotationPoint(0F, 0F, 0F);
+        this.pole.setTextureSize(256, 128);
+        this.pole.mirror = true;
+        this.setRotation(this.pole, 0F, 0F, 0F);
     }
 
     private void setRotation(ModelRenderer model, float x, float y, float z)
@@ -90,19 +90,19 @@ public class GCCoreModelSolarPanel extends ModelBase
 
     public void renderPanel()
     {
-        panelMain.render(0.0625F);
-        sideHorizontal0.render(0.0625F);
-        sideVertical0.render(0.0625F);
-        sideVertical2.render(0.0625F);
-        sideVertical1.render(0.0625F);
-        sideHorizontal1.render(0.0625F);
-        sideHorizontal3.render(0.0625F);
-        sideHorizontal2.render(0.0625F);
+        this.panelMain.render(0.0625F);
+        this.sideHorizontal0.render(0.0625F);
+        this.sideVertical0.render(0.0625F);
+        this.sideVertical2.render(0.0625F);
+        this.sideVertical1.render(0.0625F);
+        this.sideHorizontal1.render(0.0625F);
+        this.sideHorizontal3.render(0.0625F);
+        this.sideHorizontal2.render(0.0625F);
     }
 
     public void renderPole()
     {
-        pole.render(0.0625F);
+        this.pole.render(0.0625F);
     }
 
     @Override

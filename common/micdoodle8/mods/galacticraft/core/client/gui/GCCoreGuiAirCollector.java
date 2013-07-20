@@ -44,15 +44,15 @@ public class GCCoreGuiAirCollector extends GCCoreGuiContainer
         batterySlotDesc.add("Collector battery slot, place battery here");
         batterySlotDesc.add("if not using a connected power source");
         this.infoRegions.add(new GCCoreInfoRegion((this.width - this.xSize) / 2 + 31, (this.height - this.ySize) / 2 + 26, 18, 18, batterySlotDesc, this.width, this.height));
-        oxygenInfoRegion.xPosition = (this.width - this.xSize) / 2 + 112;
-        oxygenInfoRegion.yPosition = (this.height - this.ySize) / 2 + 24;
-        oxygenInfoRegion.parentWidth = this.width;
-        oxygenInfoRegion.parentHeight = this.height;
+        this.oxygenInfoRegion.xPosition = (this.width - this.xSize) / 2 + 112;
+        this.oxygenInfoRegion.yPosition = (this.height - this.ySize) / 2 + 24;
+        this.oxygenInfoRegion.parentWidth = this.width;
+        this.oxygenInfoRegion.parentHeight = this.height;
         this.infoRegions.add(this.oxygenInfoRegion);
-        electricInfoRegion.xPosition = (this.width - this.xSize) / 2 + 112;
-        electricInfoRegion.yPosition = (this.height - this.ySize) / 2 + 37;
-        electricInfoRegion.parentWidth = this.width;
-        electricInfoRegion.parentHeight = this.height;
+        this.electricInfoRegion.xPosition = (this.width - this.xSize) / 2 + 112;
+        this.electricInfoRegion.yPosition = (this.height - this.ySize) / 2 + 37;
+        this.electricInfoRegion.parentWidth = this.width;
+        this.electricInfoRegion.parentHeight = this.height;
         this.infoRegions.add(this.electricInfoRegion);
     }
 
@@ -75,7 +75,7 @@ public class GCCoreGuiAirCollector extends GCCoreGuiContainer
 
     private String getStatus()
     {
-        if (this.collector.getPower() > 1 && (this.collector.getEnergyStored() > 0))
+        if (this.collector.getPower() > 1 && this.collector.getEnergyStored() > 0)
         {
             return EnumColor.DARK_GREEN + LanguageRegistry.instance().getStringLocalization("gui.status.active.name");
         }
@@ -108,12 +108,12 @@ public class GCCoreGuiAirCollector extends GCCoreGuiContainer
             this.drawTexturedModalRect(var5 + 113, var6 + 25, 197, 7, Math.min(scale, 54), 7);
             scale = this.collector.getScaledElecticalLevel(54);
             this.drawTexturedModalRect(var5 + 113, var6 + 38, 197, 0, Math.min(scale, 54), 7);
-            
+
             if (this.collector.getEnergyStored() > 0)
             {
                 this.drawTexturedModalRect(var5 + 99, var6 + 37, 176, 0, 11, 10);
             }
-            
+
             if (this.collector.getPower() > 0)
             {
                 this.drawTexturedModalRect(var5 + 100, var6 + 24, 187, 0, 10, 10);
@@ -121,13 +121,13 @@ public class GCCoreGuiAirCollector extends GCCoreGuiContainer
 
             List<String> oxygenDesc = new ArrayList<String>();
             oxygenDesc.add("Oxygen Storage");
-            oxygenDesc.add(EnumColor.YELLOW + "Oxygen: " + (int)Math.floor(Math.min(this.collector.getPower(), this.collector.MAX_POWER)));
-            oxygenInfoRegion.tooltipStrings = oxygenDesc;
+            oxygenDesc.add(EnumColor.YELLOW + "Oxygen: " + (int) Math.floor(Math.min(this.collector.getPower(), this.collector.MAX_POWER)));
+            this.oxygenInfoRegion.tooltipStrings = oxygenDesc;
 
             List<String> electricityDesc = new ArrayList<String>();
             electricityDesc.add("Electrical Storage");
-            electricityDesc.add(EnumColor.YELLOW + "Energy: " + ((int) Math.floor(this.collector.getEnergyStored()) + " / " + ((int) Math.floor(this.collector.getMaxEnergyStored()))));
-            electricInfoRegion.tooltipStrings = electricityDesc;
+            electricityDesc.add(EnumColor.YELLOW + "Energy: " + ((int) Math.floor(this.collector.getEnergyStored()) + " / " + (int) Math.floor(this.collector.getMaxEnergyStored())));
+            this.electricInfoRegion.tooltipStrings = electricityDesc;
         }
     }
 }

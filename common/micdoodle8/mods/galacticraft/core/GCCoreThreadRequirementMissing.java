@@ -21,7 +21,7 @@ public class GCCoreThreadRequirementMissing extends Thread
     public static void startCheck(Side side)
     {
         Thread thread = new Thread(GCCoreThreadRequirementMissing.instance);
-        threadSide = side;
+        GCCoreThreadRequirementMissing.threadSide = side;
         thread.start();
     }
 
@@ -39,7 +39,7 @@ public class GCCoreThreadRequirementMissing extends Thread
 
         if (!Loader.isModLoaded("Micdoodlecore"))
         {
-            if (threadSide.isServer())
+            if (GCCoreThreadRequirementMissing.threadSide.isServer())
             {
                 FMLCommonHandler.instance().getMinecraftServerInstance().getLogAgent().logSevere("===================================================================");
                 FMLCommonHandler.instance().getMinecraftServerInstance().getLogAgent().logSevere("MicdoodleCore not found in mods folder. Galacticraft will not load.");
@@ -68,7 +68,7 @@ public class GCCoreThreadRequirementMissing extends Thread
         }
         else if (!GCCoreConfigManager.forceLoadGC.getBoolean(false) && !GCCoreConfigManager.loadBC.getBoolean(true) && !GCCoreCompatibilityManager.isIc2Loaded() && !GCCoreCompatibilityManager.isTELoaded())
         {
-            if (threadSide.isServer())
+            if (GCCoreThreadRequirementMissing.threadSide.isServer())
             {
                 FMLCommonHandler.instance().getMinecraftServerInstance().getLogAgent().logSevere("===============================================================================");
                 FMLCommonHandler.instance().getMinecraftServerInstance().getLogAgent().logSevere(LanguageRegistry.instance().getStringLocalization("message.warning1.name", "en_US"));

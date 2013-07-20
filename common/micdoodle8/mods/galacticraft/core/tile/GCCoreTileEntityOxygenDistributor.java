@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core.tile;
 import micdoodle8.mods.galacticraft.api.block.IOxygenReliantBlock;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityOxygenBubble;
-import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -15,6 +14,7 @@ import net.minecraft.network.packet.Packet;
 import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.core.item.IItemElectric;
 import universalelectricity.core.vector.Vector3;
+import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
@@ -30,14 +30,14 @@ public class GCCoreTileEntityOxygenDistributor extends GCCoreTileEntityOxygen im
     public boolean lastActive;
 
     public static final double WATTS_PER_TICK = 200;
-    
+
     private ItemStack[] containingItems = new ItemStack[1];
 
     public GCCoreEntityOxygenBubble oxygenBubble;
 
     public GCCoreTileEntityOxygenDistributor()
     {
-        super((float) WATTS_PER_TICK, 50000, 6000, 12);
+        super((float) GCCoreTileEntityOxygenDistributor.WATTS_PER_TICK, 50000, 6000, 12);
     }
 
     @Override
@@ -52,11 +52,11 @@ public class GCCoreTileEntityOxygenDistributor extends GCCoreTileEntityOxygen im
                     for (int z = (int) Math.floor(this.zCoord - this.oxygenBubble.getSize()); z < Math.ceil(this.zCoord + this.oxygenBubble.getSize()); z++)
                     {
                         int blockID = this.worldObj.getBlockId(x, y, z);
-                        
+
                         if (blockID > 0)
                         {
                             Block block = Block.blocksList[blockID];
-                            
+
                             if (block instanceof IOxygenReliantBlock)
                             {
                                 ((IOxygenReliantBlock) block).onOxygenRemoved(this.worldObj, x, y, z);
@@ -95,7 +95,7 @@ public class GCCoreTileEntityOxygenDistributor extends GCCoreTileEntityOxygen im
 
         if (!this.worldObj.isRemote)
         {
-            if (this.oxygenBubble.getSize() >= 1 && (this.getEnergyStored() > 0))
+            if (this.oxygenBubble.getSize() >= 1 && this.getEnergyStored() > 0)
             {
                 this.active = true;
             }
@@ -104,7 +104,7 @@ public class GCCoreTileEntityOxygenDistributor extends GCCoreTileEntityOxygen im
                 this.active = false;
             }
         }
-        
+
         if (!this.worldObj.isRemote && (this.active != this.lastActive || this.ticks % 20 == 0))
         {
             if (this.active)
@@ -116,11 +116,11 @@ public class GCCoreTileEntityOxygenDistributor extends GCCoreTileEntityOxygen im
                         for (int z = (int) Math.floor(this.zCoord - this.oxygenBubble.getSize() - 4); z < Math.ceil(this.zCoord + this.oxygenBubble.getSize() + 4); z++)
                         {
                             int blockID = this.worldObj.getBlockId(x, y, z);
-                            
+
                             if (blockID > 0)
                             {
                                 Block block = Block.blocksList[blockID];
-                                
+
                                 if (block instanceof IOxygenReliantBlock)
                                 {
                                     if (this.getDistanceFromServer(x, y, z) < Math.pow(this.oxygenBubble.getSize() - 0.5D, 2))
@@ -138,7 +138,7 @@ public class GCCoreTileEntityOxygenDistributor extends GCCoreTileEntityOxygen im
                 }
             }
         }
-        
+
         this.lastActive = this.active;
     }
 
@@ -340,7 +340,7 @@ public class GCCoreTileEntityOxygenDistributor extends GCCoreTileEntityOxygen im
     @Override
     public Packet getPacket()
     {
-        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.storedOxygen, this.getEnergyStored(), this.disabled);
+        return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.storedOxygen, this.getEnergyStored(), this.disabled);
     }
 
     @Override

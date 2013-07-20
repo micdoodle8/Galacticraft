@@ -22,7 +22,7 @@ public class GCCoreItemBlockSolar extends ItemBlock
     public String getUnlocalizedName(ItemStack par1ItemStack)
     {
         int index = Math.min(Math.max(par1ItemStack.getItemDamage() / 4, 0), GCCoreBlockSolar.names.length);
-        
+
         String name = GCCoreBlockSolar.names[index];
 
         return Block.blocksList[this.getBlockID()].getUnlocalizedName() + "." + name;

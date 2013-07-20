@@ -116,7 +116,7 @@ public class GalacticraftCore
     public static final String CHANNEL = "GalacticraftCore";
     public static final String CHANNELENTITIES = "GCCoreEntities";
 
-    public static final int LOCALMAJVERSION = 0; 
+    public static final int LOCALMAJVERSION = 0;
     public static final int LOCALMINVERSION = 1;
     public static final int LOCALBUILDVERSION = 38;
     public static int remoteMajVer;
@@ -219,7 +219,7 @@ public class GalacticraftCore
             BasicComponents.requestItem("infiniteBattery", 0);
             BasicComponents.requireMachines(GalacticraftCore.instance, 0);
             BasicComponents.registerTileEntities();
-            
+
             BasicComponents.register(GalacticraftCore.CHANNELENTITIES);
 
             if (GCCoreConfigManager.disableOreGenTin && BasicComponents.generationOreTin != null)
@@ -328,7 +328,8 @@ public class GalacticraftCore
 
         GCCoreRecipeManager.loadRecipes();
 
-        // Register steel plate after, so the heavy duty boots recipe is added to recipe list first, allowing it to be crafted.
+        // Register steel plate after, so the heavy duty boots recipe is added
+        // to recipe list first, allowing it to be crafted.
         if (GCCoreConfigManager.loadBC.getBoolean(true))
         {
             BasicComponents.requestItem("plateSteel", 0);

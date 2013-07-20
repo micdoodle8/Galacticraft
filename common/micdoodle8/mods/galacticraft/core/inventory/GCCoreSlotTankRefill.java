@@ -26,7 +26,7 @@ public class GCCoreSlotTankRefill extends Slot
         {
             return par1ItemStack.getItem() instanceof GCCoreItemParachute;
         }
-        
+
         return OxygenUtil.isItemValidForPlayerTankInv(this.slotNumber - 45, par1ItemStack);
     }
 

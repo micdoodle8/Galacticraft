@@ -180,7 +180,8 @@ public class GCCoreConfigManager
     public static double dungeonBossHealthMod;
     public static int suffocationCooldown;
     public static int suffocationDamage;
-//    public static boolean disableExternalModGen;
+
+    // public static boolean disableExternalModGen;
 
     private void setDefaultValues()
     {
@@ -333,7 +334,10 @@ public class GCCoreConfigManager
             GCCoreConfigManager.dungeonBossHealthMod = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Dungeon Boss Health Modifier", 1.0D, "Change this is you wish to balance the mod (if you have more powerful weapon mods)").getDouble(1.0D);
             GCCoreConfigManager.suffocationCooldown = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Suffocation Cooldown", 100, "Lower/Raise this value to change time between suffocation damage ticks").getInt(100);
             GCCoreConfigManager.suffocationDamage = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Suffocation Damage", 2, "Change this value to modify the damage taken per suffocation tick").getInt(2);
-//            GCCoreConfigManager.disableExternalModGen = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable External Mod Gen", true, "Set to false if you want to allow other mods to generate ores, flowers, battle towers, etc on planets/moons").getBoolean(true);
+            // GCCoreConfigManager.disableExternalModGen =
+            // GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL,
+            // "Disable External Mod Gen", true,
+            // "Set to false if you want to allow other mods to generate ores, flowers, battle towers, etc on planets/moons").getBoolean(true);
         }
         catch (final Exception e)
         {

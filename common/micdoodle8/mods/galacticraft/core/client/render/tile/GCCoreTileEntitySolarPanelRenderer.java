@@ -20,7 +20,7 @@ public class GCCoreTileEntitySolarPanelRenderer extends TileEntitySpecialRendere
     public void renderTileEntityAt(TileEntity var1, double par2, double par4, double par6, float var8)
     {
         GCCoreTileEntitySolar panel = (GCCoreTileEntitySolar) var1;
-        
+
         if (var1.getBlockMetadata() >= GCCoreBlockSolar.ADVANCED_METADATA)
         {
             this.func_110628_a(GCCoreTileEntitySolarPanelRenderer.solarPanelAdvTexture);
@@ -29,7 +29,7 @@ public class GCCoreTileEntitySolarPanelRenderer extends TileEntitySpecialRendere
         {
             this.func_110628_a(GCCoreTileEntitySolarPanelRenderer.solarPanelTexture);
         }
-        
+
         GL11.glPushMatrix();
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -38,13 +38,13 @@ public class GCCoreTileEntitySolarPanelRenderer extends TileEntitySpecialRendere
         GL11.glTranslatef(0.5F, 1.0F, 0.5F);
         this.model.renderPole();
         GL11.glTranslatef(0.0F, 1.5F, 0.0F);
-        
+
         GL11.glRotatef(180.0F, 0, 0, 1);
         GL11.glRotatef(-90.0F, 0, 1, 0);
 
-        float celestialAngle = ((panel.worldObj.getCelestialAngle(1.0F) - 0.784690560F) * 360.0F);
-        float celestialAngle2 = (panel.worldObj.getCelestialAngle(1.0F) * 360.0F);
-        
+        float celestialAngle = (panel.worldObj.getCelestialAngle(1.0F) - 0.784690560F) * 360.0F;
+        float celestialAngle2 = panel.worldObj.getCelestialAngle(1.0F) * 360.0F;
+
         GL11.glRotatef(panel.currentAngle - (celestialAngle - celestialAngle2), 1.0F, 0.0F, 0.0F);
 
         this.model.renderPanel();

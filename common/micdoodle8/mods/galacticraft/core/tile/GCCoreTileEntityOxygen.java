@@ -5,7 +5,6 @@ import mekanism.api.IGasAcceptor;
 import mekanism.api.ITubeConnection;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.ForgeDirection;
-import cpw.mods.fml.common.FMLLog;
 
 public abstract class GCCoreTileEntityOxygen extends GCCoreTileEntityElectric implements IGasAcceptor, ITubeConnection
 {

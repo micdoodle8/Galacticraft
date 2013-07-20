@@ -19,9 +19,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.core.vector.Vector3;
-import universalelectricity.core.vector.VectorHelper;
 import universalelectricity.prefab.block.BlockTile;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -29,11 +27,11 @@ public class GCCoreBlockSolar extends BlockTile
 {
     public static final int BASIC_METADATA = 0;
     public static final int ADVANCED_METADATA = 4;
-    
+
     public static String[] names = { "basic", "advanced" };
 
     private Icon[] icons = new Icon[6];
-    
+
     public GCCoreBlockSolar(int id)
     {
         super(id, Material.iron);
@@ -43,8 +41,8 @@ public class GCCoreBlockSolar extends BlockTile
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
     {
-        par3List.add(new ItemStack(par1, 1, BASIC_METADATA));
-        par3List.add(new ItemStack(par1, 1, ADVANCED_METADATA));
+        par3List.add(new ItemStack(par1, 1, GCCoreBlockSolar.BASIC_METADATA));
+        par3List.add(new ItemStack(par1, 1, GCCoreBlockSolar.ADVANCED_METADATA));
     }
 
     @Override
@@ -72,7 +70,7 @@ public class GCCoreBlockSolar extends BlockTile
         if (meta >= GCCoreBlockSolar.ADVANCED_METADATA)
         {
             int shiftedMeta = meta -= GCCoreBlockSolar.ADVANCED_METADATA;
-            
+
             if (side == ForgeDirection.getOrientation(shiftedMeta + 2).getOpposite().ordinal())
             {
                 return this.icons[5];
@@ -93,7 +91,7 @@ public class GCCoreBlockSolar extends BlockTile
         else if (meta >= GCCoreBlockSolar.BASIC_METADATA)
         {
             int shiftedMeta = meta -= GCCoreBlockSolar.BASIC_METADATA;
-            
+
             if (side == ForgeDirection.getOrientation(shiftedMeta + 2).getOpposite().ordinal())
             {
                 return this.icons[5];
@@ -111,7 +109,7 @@ public class GCCoreBlockSolar extends BlockTile
                 return this.icons[1];
             }
         }
-        
+
         return this.blockIcon;
     }
 
@@ -125,7 +123,7 @@ public class GCCoreBlockSolar extends BlockTile
                 for (int z = -1; z <= 1; z++)
                 {
                     int blockID = world.getBlockId(x1 + (y == 2 ? x : 0), y1 + 2, z1 + (y == 2 ? z : 0));
-                    
+
                     if (blockID > 0 && !Block.blocksList[blockID].isBlockReplaceable(world, x1 + x, y1 + 2, z1 + z))
                     {
                         return false;
@@ -133,7 +131,7 @@ public class GCCoreBlockSolar extends BlockTile
                 }
             }
         }
-        
+
         return new Vector3(x1, y1, z1).clone().modifyPositionFromSide(ForgeDirection.getOrientation(side).getOpposite()).getBlockID(world) != GCCoreBlocks.dummyBlock.blockID;
     }
 
@@ -142,23 +140,23 @@ public class GCCoreBlockSolar extends BlockTile
     {
         int metadata = world.getBlockMetadata(x, y, z);
 
-        int angle = MathHelper.floor_double((entityLiving.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+        int angle = MathHelper.floor_double(entityLiving.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
         int change = 0;
 
         switch (angle)
         {
-            case 0:
-                change = 1;
-                break;
-            case 1:
-                change = 2;
-                break;
-            case 2:
-                change = 0;
-                break;
-            case 3:
-                change = 3;
-                break;
+        case 0:
+            change = 1;
+            break;
+        case 1:
+            change = 2;
+            break;
+        case 2:
+            change = 0;
+            break;
+        case 3:
+            change = 3;
+            break;
         }
 
         if (metadata >= GCCoreBlockSolar.ADVANCED_METADATA)
@@ -169,9 +167,9 @@ public class GCCoreBlockSolar extends BlockTile
         {
             world.setBlockMetadataWithNotify(x, y, z, GCCoreBlockSolar.BASIC_METADATA + change, 3);
         }
-        
+
         TileEntity tile = world.getBlockTileEntity(x, y, z);
-        
+
         if (tile instanceof GCCoreTileEntitySolar)
         {
             ((GCCoreTileEntitySolar) tile).onCreate(new Vector3(x, y, z));
@@ -199,30 +197,30 @@ public class GCCoreBlockSolar extends BlockTile
 
         int change = 0;
 
-        if (metadata >= ADVANCED_METADATA)
+        if (metadata >= GCCoreBlockSolar.ADVANCED_METADATA)
         {
-            original -= ADVANCED_METADATA;
+            original -= GCCoreBlockSolar.ADVANCED_METADATA;
         }
 
         switch (original)
         {
-            case 0:
-                change = 3;
-                break;
-            case 3:
-                change = 1;
-                break;
-            case 1:
-                change = 2;
-                break;
-            case 2:
-                change = 0;
-                break;
+        case 0:
+            change = 3;
+            break;
+        case 3:
+            change = 1;
+            break;
+        case 1:
+            change = 2;
+            break;
+        case 2:
+            change = 0;
+            break;
         }
 
-        if (metadata >= ADVANCED_METADATA)
+        if (metadata >= GCCoreBlockSolar.ADVANCED_METADATA)
         {
-            change += ADVANCED_METADATA;
+            change += GCCoreBlockSolar.ADVANCED_METADATA;
         }
 
         par1World.setBlockMetadataWithNotify(x, y, z, change, 3);
@@ -239,20 +237,20 @@ public class GCCoreBlockSolar extends BlockTile
     @Override
     public int damageDropped(int metadata)
     {
-        if (metadata >= ADVANCED_METADATA)
+        if (metadata >= GCCoreBlockSolar.ADVANCED_METADATA)
         {
-            return ADVANCED_METADATA;
+            return GCCoreBlockSolar.ADVANCED_METADATA;
         }
         else
         {
-            return BASIC_METADATA;
+            return GCCoreBlockSolar.BASIC_METADATA;
         }
     }
 
     @Override
     public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
     {
-        int id = idPicked(world, x, y, z);
+        int id = this.idPicked(world, x, y, z);
 
         if (id == 0)
         {
@@ -266,7 +264,7 @@ public class GCCoreBlockSolar extends BlockTile
             return null;
         }
 
-        int metadata = getDamageValue(world, x, y, z);
+        int metadata = this.getDamageValue(world, x, y, z);
 
         return new ItemStack(id, 1, metadata);
     }

@@ -21,7 +21,6 @@ import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.IPacketReceiver;
 import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
-import cpw.mods.fml.common.FMLLog;
 
 public abstract class GCCoreTileEntityElectric extends TileEntityUniversalElectrical implements IWrenchable, IPacketReceiver, IDisableableMachine
 {
@@ -33,7 +32,7 @@ public abstract class GCCoreTileEntityElectric extends TileEntityUniversalElectr
     public int disableCooldown = 0;
 
     public abstract boolean shouldPullEnergy();
-    
+
     public abstract boolean shouldUseEnergy();
 
     public abstract void readPacket(ByteArrayDataInput data);
@@ -49,16 +48,16 @@ public abstract class GCCoreTileEntityElectric extends TileEntityUniversalElectr
         super(maxEnergy);
         this.ueWattsPerTick = ueWattsPerTick;
 
-        /*if (PowerFramework.currentFramework != null)
-        {
-            this.bcPowerProvider = new GCCoreLinkedPowerProvider(this);
-            this.bcPowerProvider.configure(20, 1, 10, 10, 1000);
-        }*/
+        /*
+         * if (PowerFramework.currentFramework != null) { this.bcPowerProvider =
+         * new GCCoreLinkedPowerProvider(this);
+         * this.bcPowerProvider.configure(20, 1, 10, 10, 1000); }
+         */
     }
 
     public int getScaledElecticalLevel(int i)
     {
-        return (int)Math.floor(this.getEnergyStored() * i / (this.getMaxEnergyStored() - this.ueWattsPerTick));
+        return (int) Math.floor(this.getEnergyStored() * i / (this.getMaxEnergyStored() - this.ueWattsPerTick));
     }
 
     @Override
@@ -87,12 +86,12 @@ public abstract class GCCoreTileEntityElectric extends TileEntityUniversalElectr
         {
             this.receiveElectricity(this.getInputDirection(), ElectricityPack.getFromWatts(ElectricItemHelper.dischargeItem(this.getBatteryInSlot(), this.getRequest(this.getInputDirection())), this.getVoltage()), true);
         }
-        
+
         if (!this.worldObj.isRemote && this.shouldUseEnergy())
         {
             this.setEnergyStored(this.getEnergyStored() - this.ueWattsPerTick);
         }
-        
+
         super.updateEntity();
 
         if (!this.addedToEnergyNet && this.worldObj != null)

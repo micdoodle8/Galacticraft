@@ -14,7 +14,6 @@ import micdoodle8.mods.galacticraft.core.client.gui.GCCoreOverlayCountdown;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreOverlayLander;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreOverlayOxygenTankIndicator;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreOverlayOxygenWarning;
-import micdoodle8.mods.galacticraft.core.client.gui.GCCoreOverlaySensorGlasses;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreOverlaySpaceship;
 import micdoodle8.mods.galacticraft.core.client.sounds.GCCoreSoundUpdaterSpaceship;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreWorldProviderSpaceStation;
@@ -22,7 +21,6 @@ import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase.EnumLaunchPhase;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityLander;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityRocketT1;
-import micdoodle8.mods.galacticraft.core.items.GCCoreItemSensorGlasses;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
@@ -35,7 +33,6 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.entity.Entity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.WorldProviderSurface;
 import org.lwjgl.opengl.GL11;
@@ -112,7 +109,7 @@ public class GCCoreTickHandlerClient implements ITickHandler
                 {
                     world.provider.setSkyRenderer(new GCCoreSkyProviderOrbit(new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/planets/overworld.png"), true, true));
                 }
-                
+
                 if (world.provider.getCloudRenderer() == null)
                 {
                     world.provider.setCloudRenderer(new GCCoreCloudRenderer());
@@ -225,11 +222,9 @@ public class GCCoreTickHandlerClient implements ITickHandler
 
         final GCCorePlayerSP playerBaseClient = PlayerUtil.getPlayerBaseClientFromPlayer(player);
 
-        ItemStack helmetSlot = null;
-
         if (player != null && player.inventory.armorItemInSlot(3) != null)
         {
-            helmetSlot = player.inventory.armorItemInSlot(3);
+            player.inventory.armorItemInSlot(3);
         }
 
         if (type.equals(EnumSet.of(TickType.RENDER)))

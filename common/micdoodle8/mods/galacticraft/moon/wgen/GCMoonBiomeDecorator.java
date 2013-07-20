@@ -67,11 +67,11 @@ public class GCMoonBiomeDecorator
 
     protected void generateMoon()
     {
-        MinecraftForge.EVENT_BUS.post(new GCCoreEventPopulate.Pre(worldObj, randomGenerator, chunkX, chunkZ));
+        MinecraftForge.EVENT_BUS.post(new GCCoreEventPopulate.Pre(this.worldObj, this.randomGenerator, this.chunkX, this.chunkZ));
         this.genStandardOre1(20, this.dirtGen, 0, 200);
         this.genStandardOre1(26, this.copperGen, 0, 60);
         this.genStandardOre1(23, this.tinGen, 0, 60);
         this.genStandardOre1(12, this.cheeseGen, 0, 128);
-        MinecraftForge.EVENT_BUS.post(new GCCoreEventPopulate.Post(worldObj, randomGenerator, chunkX, chunkZ));
+        MinecraftForge.EVENT_BUS.post(new GCCoreEventPopulate.Post(this.worldObj, this.randomGenerator, this.chunkX, this.chunkZ));
     }
 }

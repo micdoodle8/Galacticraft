@@ -4,7 +4,6 @@ import micdoodle8.mods.galacticraft.api.entity.IFuelable;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemFuelCanister;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
-import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -24,6 +23,7 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 import universalelectricity.core.item.IItemElectric;
 import universalelectricity.core.vector.Vector3;
+import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
@@ -39,7 +39,7 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric impleme
 
     public GCCoreTileEntityFuelLoader()
     {
-        super((float) WATTS_PER_TICK, 50000);
+        super((float) GCCoreTileEntityFuelLoader.WATTS_PER_TICK, 50000);
     }
 
     public int getScaledFuelLevel(int i)
@@ -397,7 +397,7 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric impleme
     @Override
     public Packet getPacket()
     {
-        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getEnergyStored(), this.fuelTank.getFluid() == null ? 0 : this.fuelTank.getFluid().amount, this.disabled, this.disableCooldown);
+        return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getEnergyStored(), this.fuelTank.getFluid() == null ? 0 : this.fuelTank.getFluid().amount, this.disabled, this.disableCooldown);
     }
 
     @Override

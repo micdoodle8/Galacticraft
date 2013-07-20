@@ -55,7 +55,7 @@ public class ClientProxyMoon extends CommonProxyMoon
                     {
                         world.provider.setSkyRenderer(new GCMoonSkyProvider());
                     }
-                    
+
                     if (world.provider.getCloudRenderer() == null)
                     {
                         world.provider.setCloudRenderer(new GCCoreCloudRenderer());

@@ -7,7 +7,6 @@ import mekanism.api.ITubeConnection;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,6 +24,7 @@ import net.minecraftforge.common.IPlantable;
 import universalelectricity.core.item.IItemElectric;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.core.vector.VectorHelper;
+import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
@@ -44,7 +44,7 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityElectric im
 
     public GCCoreTileEntityOxygenCollector()
     {
-        super((float) WATTS_PER_TICK, 50000);
+        super((float) GCCoreTileEntityOxygenCollector.WATTS_PER_TICK, 50000);
     }
 
     public int getCappedScaledOxygenLevel(int scale)
@@ -86,7 +86,7 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityElectric im
                                         sendingGas = this.getPower();
                                     }
 
-                                    final int rejects = ((IGasAcceptor) tileEntity).transferGasToAcceptor(MathHelper.floor_double(sendingGas), EnumGas.OXYGEN);
+                                    ((IGasAcceptor) tileEntity).transferGasToAcceptor(MathHelper.floor_double(sendingGas), EnumGas.OXYGEN);
                                 }
                             }
                         }
@@ -121,7 +121,8 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityElectric im
                                     }
                                     else if (block instanceof IPlantable && ((IPlantable) block).getPlantType(this.worldObj, x, y, z) == EnumPlantType.Crop)
                                     {
-                                        // Add two, since leaves can be packed into
+                                        // Add two, since leaves can be packed
+                                        // into
                                         // an area much easier than crops can.
                                         power += 2.0;
                                     }
@@ -129,14 +130,14 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityElectric im
                             }
                         }
                     }
-                    
+
                     power /= 1.2D;
                 }
                 else
                 {
                     power = this.MAX_POWER;
                 }
-                
+
                 if (power < this.getPower())
                 {
                     this.setPower(this.getPower() - 1);
@@ -146,12 +147,12 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityElectric im
                     this.setPower(this.getPower() + 1);
                 }
             }
-            
+
             if (!this.worldObj.isRemote && this.getEnergyStored() == 0)
             {
                 this.setPower(Math.min(this.MAX_POWER, Math.max(this.getPower() - 1, 0)));
             }
-            
+
             this.setPower(Math.min(this.MAX_POWER, Math.max(this.getPower(), 0)));
         }
     }
@@ -372,7 +373,7 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityElectric im
     @Override
     public Packet getPacket()
     {
-        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.power, this.getEnergyStored(), this.disabled);
+        return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.power, this.getEnergyStored(), this.disabled);
     }
 
     @Override

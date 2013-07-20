@@ -32,7 +32,7 @@ public class GCCoreGuiCargoLoader extends GCCoreGuiContainer
 
     private GuiButton buttonLoadItems;
     private GCCoreInfoRegion electricInfoRegion = new GCCoreInfoRegion((this.width - this.xSize) / 2 + 107, (this.height - this.ySize) / 2 + 101, 56, 9, new ArrayList<String>(), this.width, this.height);
-    
+
     public GCCoreGuiCargoLoader(InventoryPlayer par1InventoryPlayer, GCCoreTileEntityCargoLoader par2TileEntityAirDistributor)
     {
         super(new GCCoreContainerCargoLoader(par1InventoryPlayer, par2TileEntityAirDistributor));
@@ -57,12 +57,12 @@ public class GCCoreGuiCargoLoader extends GCCoreGuiContainer
         super.initGui();
         List<String> electricityDesc = new ArrayList<String>();
         electricityDesc.add("Electrical Storage");
-        electricityDesc.add(EnumColor.YELLOW + "Energy: " + ((int) Math.floor(this.fuelLoader.getEnergyStored()) + " / " + ((int) Math.floor(this.fuelLoader.getMaxEnergyStored()))));
-        electricInfoRegion.tooltipStrings = electricityDesc;
-        electricInfoRegion.xPosition = (this.width - this.xSize) / 2 + 107;
-        electricInfoRegion.yPosition = (this.height - this.ySize) / 2 + 101;
-        electricInfoRegion.parentWidth = this.width;
-        electricInfoRegion.parentHeight = this.height;
+        electricityDesc.add(EnumColor.YELLOW + "Energy: " + ((int) Math.floor(this.fuelLoader.getEnergyStored()) + " / " + (int) Math.floor(this.fuelLoader.getMaxEnergyStored())));
+        this.electricInfoRegion.tooltipStrings = electricityDesc;
+        this.electricInfoRegion.xPosition = (this.width - this.xSize) / 2 + 107;
+        this.electricInfoRegion.yPosition = (this.height - this.ySize) / 2 + 101;
+        this.electricInfoRegion.parentWidth = this.width;
+        this.electricInfoRegion.parentHeight = this.height;
         this.infoRegions.add(this.electricInfoRegion);
         List<String> batterySlotDesc = new ArrayList<String>();
         batterySlotDesc.add("Cargo Loader battery slot, place battery here");
@@ -136,14 +136,14 @@ public class GCCoreGuiCargoLoader extends GCCoreGuiContainer
 
         List<String> electricityDesc = new ArrayList<String>();
         electricityDesc.add("Electrical Storage");
-        electricityDesc.add(EnumColor.YELLOW + "Energy: " + ((int) Math.floor(this.fuelLoader.getEnergyStored()) + " / " + ((int) Math.floor(this.fuelLoader.getMaxEnergyStored()))));
-        electricInfoRegion.tooltipStrings = electricityDesc;
+        electricityDesc.add(EnumColor.YELLOW + "Energy: " + ((int) Math.floor(this.fuelLoader.getEnergyStored()) + " / " + (int) Math.floor(this.fuelLoader.getMaxEnergyStored())));
+        this.electricInfoRegion.tooltipStrings = electricityDesc;
 
         if (this.fuelLoader.getEnergyStored() > 0)
         {
             this.drawTexturedModalRect(var5 + 94, var6 + 101, 176, 0, 11, 10);
         }
-        
+
         this.drawTexturedModalRect(var5 + 108, var6 + 102, 187, 0, Math.min(this.fuelLoader.getScaledElecticalLevel(54), 54), 7);
     }
 }

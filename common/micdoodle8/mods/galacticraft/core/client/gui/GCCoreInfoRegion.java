@@ -61,7 +61,7 @@ public class GCCoreInfoRegion extends Gui
     {
         this.withinRegion = par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + this.width && par3 < this.yPosition + this.height;
 
-//        if (this.drawRegion)
+        // if (this.drawRegion)
         {
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             int k = this.getHoverState(this.withinRegion);

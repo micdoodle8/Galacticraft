@@ -53,7 +53,8 @@ public class GCCoreItemSensorGlasses extends ItemArmor
     {
         return ClientProxyCore.galacticraftItem;
     }
-    
+
+    @Override
     @SideOnly(Side.CLIENT)
     public void renderHelmetOverlay(ItemStack stack, EntityPlayer player, ScaledResolution resolution, float partialTicks, boolean hasScreen, int mouseX, int mouseY)
     {

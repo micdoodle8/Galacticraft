@@ -5,7 +5,6 @@ import java.util.List;
 import micdoodle8.mods.galacticraft.api.item.IKeyable;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockT1TreasureChest;
-import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -469,7 +468,7 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
     @Override
     public Packet getDescriptionPacket()
     {
-        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.locked);
+        return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.locked);
     }
 
     @Override

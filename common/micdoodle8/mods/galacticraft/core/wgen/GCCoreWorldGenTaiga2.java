@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.wgen;
 
 import java.util.Random;
 import micdoodle8.mods.galacticraft.api.block.IPlantableBlock;
-import micdoodle8.mods.galacticraft.api.block.IPlantableBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirt;
 import net.minecraft.block.BlockGrass;

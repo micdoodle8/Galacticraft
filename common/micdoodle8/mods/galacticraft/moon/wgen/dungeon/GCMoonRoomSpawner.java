@@ -8,7 +8,6 @@ import micdoodle8.mods.galacticraft.core.wgen.dungeon.GCCoreMapGenDungeon;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.world.World;
 
 public class GCMoonRoomSpawner extends GCCoreDungeonRoom
 {
@@ -22,9 +21,9 @@ public class GCMoonRoomSpawner extends GCCoreDungeonRoom
     public GCMoonRoomSpawner(GCCoreMapGenDungeon dungeon, int posX, int posY, int posZ, int entranceDir)
     {
         super(dungeon, posX, posY, posZ, entranceDir);
-        if (worldObj != null)
+        if (this.worldObj != null)
         {
-            this.rand = new Random(worldObj.getSeed() * posX * posY * 57 * posZ);
+            this.rand = new Random(this.worldObj.getSeed() * posX * posY * 57 * posZ);
             this.sizeX = this.rand.nextInt(5) + 6;
             this.sizeY = this.rand.nextInt(2) + 4;
             this.sizeZ = this.rand.nextInt(5) + 6;

@@ -32,7 +32,7 @@ public class GCCoreGuiFuelLoader extends GCCoreGuiContainer
 
     private GuiButton buttonLoadFuel;
     private GCCoreInfoRegion electricInfoRegion = new GCCoreInfoRegion((this.width - this.xSize) / 2 + 112, (this.height - this.ySize) / 2 + 65, 56, 9, new ArrayList<String>(), this.width, this.height);
-    
+
     public GCCoreGuiFuelLoader(InventoryPlayer par1InventoryPlayer, GCCoreTileEntityFuelLoader par2TileEntityAirDistributor)
     {
         super(new GCCoreContainerFuelLoader(par1InventoryPlayer, par2TileEntityAirDistributor));
@@ -70,12 +70,12 @@ public class GCCoreGuiFuelLoader extends GCCoreGuiContainer
         this.infoRegions.add(new GCCoreInfoRegion((this.width - this.xSize) / 2 + 6, (this.height - this.ySize) / 2 + 11, 18, 18, oilSlotDesc, this.width, this.height));
         List<String> electricityDesc = new ArrayList<String>();
         electricityDesc.add("Electrical Storage");
-        electricityDesc.add(EnumColor.YELLOW + "Energy: " + ((int) Math.floor(this.fuelLoader.getEnergyStored()) + " / " + ((int) Math.floor(this.fuelLoader.getMaxEnergyStored()))));
-        electricInfoRegion.tooltipStrings = electricityDesc;
-        electricInfoRegion.xPosition = (this.width - this.xSize) / 2 + 112;
-        electricInfoRegion.yPosition = (this.height - this.ySize) / 2 + 65;
-        electricInfoRegion.parentWidth = this.width;
-        electricInfoRegion.parentHeight = this.height;
+        electricityDesc.add(EnumColor.YELLOW + "Energy: " + ((int) Math.floor(this.fuelLoader.getEnergyStored()) + " / " + (int) Math.floor(this.fuelLoader.getMaxEnergyStored())));
+        this.electricInfoRegion.tooltipStrings = electricityDesc;
+        this.electricInfoRegion.xPosition = (this.width - this.xSize) / 2 + 112;
+        this.electricInfoRegion.yPosition = (this.height - this.ySize) / 2 + 65;
+        this.electricInfoRegion.parentWidth = this.width;
+        this.electricInfoRegion.parentHeight = this.height;
         this.infoRegions.add(this.electricInfoRegion);
         this.buttonList.add(this.buttonLoadFuel = new GuiButton(0, this.width / 2 + 2, this.height / 2 - 49, 76, 20, LanguageRegistry.instance().getStringLocalization("gui.button.loadfuel.name")));
     }
@@ -131,14 +131,14 @@ public class GCCoreGuiFuelLoader extends GCCoreGuiContainer
 
         List<String> electricityDesc = new ArrayList<String>();
         electricityDesc.add("Electrical Storage");
-        electricityDesc.add(EnumColor.YELLOW + "Energy: " + ((int) Math.floor(this.fuelLoader.getEnergyStored()) + " / " + ((int) Math.floor(this.fuelLoader.getMaxEnergyStored()))));
-        electricInfoRegion.tooltipStrings = electricityDesc;
+        electricityDesc.add(EnumColor.YELLOW + "Energy: " + ((int) Math.floor(this.fuelLoader.getEnergyStored()) + " / " + (int) Math.floor(this.fuelLoader.getMaxEnergyStored())));
+        this.electricInfoRegion.tooltipStrings = electricityDesc;
 
         if (this.fuelLoader.getEnergyStored() > 0)
         {
             this.drawTexturedModalRect(var5 + 99, var6 + 65, 192, 7, 11, 10);
         }
-        
+
         this.drawTexturedModalRect(var5 + 113, var6 + 66, 192, 0, Math.min(this.fuelLoader.getScaledElecticalLevel(54), 54), 7);
     }
 }

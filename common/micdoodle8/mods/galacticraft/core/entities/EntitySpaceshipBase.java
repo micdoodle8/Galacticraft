@@ -85,7 +85,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
     public abstract int getScaledFuelLevel(int i);
 
     public abstract boolean hasValidFuel();
-    
+
     public abstract int getPreLaunchWait();
 
     @Override
@@ -557,7 +557,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
                 ((GCCorePlayerMP) par1EntityPlayer).chatCooldown = 0;
                 par1EntityPlayer.mountEntity(null);
             }
-            
+
             return true;
         }
         else if (par1EntityPlayer instanceof GCCorePlayerMP)
@@ -571,7 +571,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
                 ((GCCorePlayerMP) par1EntityPlayer).chatCooldown = 0;
                 par1EntityPlayer.mountEntity(this);
             }
-            
+
             return true;
         }
 
@@ -646,7 +646,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
     {
         return this.rocketType;
     }
-    
+
     @Override
     public boolean canRiderInteract()
     {

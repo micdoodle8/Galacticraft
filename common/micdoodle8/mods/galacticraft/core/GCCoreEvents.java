@@ -269,7 +269,7 @@ public class GCCoreEvents
             }
         }
     }
-    
+
     @ForgeSubscribe
     public void schematicUnlocked(Unlock event)
     {
@@ -286,23 +286,23 @@ public class GCCoreEvents
             }
         }
     }
-    
+
     @SideOnly(Side.CLIENT)
     @ForgeSubscribe
     public void schematicFlipEvent(FlipPage event)
     {
         ISchematicPage page = null;
-        
+
         switch (event.direction)
         {
         case 1:
-            page = getNextSchematic(event.index);
+            page = GCCoreEvents.getNextSchematic(event.index);
             break;
         case -1:
-            page = getLastSchematic(event.index);
+            page = GCCoreEvents.getLastSchematic(event.index);
             break;
         }
-        
+
         if (page != null)
         {
             PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 4, new Object[] { page.getPageID() }));
@@ -325,7 +325,7 @@ public class GCCoreEvents
 
         for (int count = 0; count < keys.size(); count++)
         {
-            final int i = (Integer) iterator.next();
+            final int i = iterator.next();
             final ISchematicPage page = SchematicRegistry.getMatchingRecipeForID(idList.get(i));
 
             if (page.getPageID() == currentIndex)
@@ -359,7 +359,7 @@ public class GCCoreEvents
 
         for (int count = 0; count < keys.size(); count++)
         {
-            final int i = (Integer) iterator.next();
+            final int i = iterator.next();
             final ISchematicPage page = SchematicRegistry.getMatchingRecipeForID(idList.get(i));
 
             if (page.getPageID() == currentIndex)

@@ -470,11 +470,11 @@ public class GCCoreRecipeManager
         RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.fuelLoader), new Object[] { "XZX", "ZWZ", "XYX", 'X', "ingotLead", 'Y', ItemRegistry.getItem("powerCoilGold", 1), 'Z', ItemRegistry.getItem("hardenedGlass", 1), 'W', ItemRegistry.getItem("machineFrame", 1) });
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreItems.itemBasic, 2, 0), new Object[] { "XXX", "YYY", "ZZZ", 'X', Block.glass, 'Y', new ItemStack(Block.cloth, 1, 11), 'Z', ItemRegistry.getItem("powerCoilElectrum", 1) });
-        
+
         RecipeUtil.addRecipe(new ItemStack(GCCoreItems.itemBasic, 1, 1), new Object[] { "XXX", "YYY", "XXX", 'X', new ItemStack(GCCoreItems.itemBasic, 1, 0), 'Y', Item.redstone });
-        
+
         RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.solarPanel, 1, 0), new Object[] { " ZY", "XUX", "VWV", 'U', ItemRegistry.getItem("machineFrame", 1), 'V', ItemRegistry.getItem("gearCopper", 1), 'W', ItemRegistry.getItem("powerCoilSilver", 1), 'X', "ingotCopper", 'Y', new ItemStack(GCCoreItems.itemBasic, 1, 1), 'Z', GCCoreItems.flagPole });
-        
+
         RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.solarPanel, 1, 4), new Object[] { " ZY", "XUX", "VWV", 'U', ItemRegistry.getItem("machineFrame", 1), 'V', ItemRegistry.getItem("gearInvar", 1), 'W', ItemRegistry.getItem("powerCoilSilver", 1), 'X', "ingotInvar", 'Y', new ItemStack(GCCoreItems.itemBasic, 1, 1), 'Z', GCCoreItems.flagPole });
     }
 
@@ -607,11 +607,11 @@ public class GCCoreRecipeManager
         RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.fuelLoader), new Object[] { "XXX", "XZX", "XYX", 'X', "ingotSteel", 'Y', "circuitBasic", 'Z', "motor" });
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreItems.itemBasic, 2, 0), new Object[] { "XXX", "YYY", "ZZZ", 'X', Block.glass, 'Y', new ItemStack(Block.cloth, 1, 11), 'Z', "copperWire" });
-        
+
         RecipeUtil.addRecipe(new ItemStack(GCCoreItems.itemBasic, 1, 1), new Object[] { "XXX", "YYY", "XXX", 'X', new ItemStack(GCCoreItems.itemBasic, 1, 0), 'Y', "copperWire" });
-        
+
         RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.solarPanel, 1, 0), new Object[] { "XYX", "XZX", "VWV", 'V', "copperWire", 'W', "circuitBasic", 'X', "plateSteel", 'Y', new ItemStack(GCCoreItems.itemBasic, 1, 1), 'Z', GCCoreItems.flagPole });
-        
+
         RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.solarPanel, 1, 4), new Object[] { "XYX", "XZX", "VWV", 'V', "copperWire", 'W', "circuitAdvanced", 'X', "plateSteel", 'Y', new ItemStack(GCCoreItems.itemBasic, 1, 1), 'Z', GCCoreItems.flagPole });
     }
 

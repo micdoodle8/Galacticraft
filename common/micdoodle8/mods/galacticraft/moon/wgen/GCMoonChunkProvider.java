@@ -215,11 +215,12 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 
         final Chunk var4 = new Chunk(this.worldObj, ids, meta, par1, par2);
 
-//        if (!var4.isTerrainPopulated && GCCoreConfigManager.disableExternalModGen)
-//        {
-//            var4.isTerrainPopulated = true;
-//        }
-        
+        // if (!var4.isTerrainPopulated &&
+        // GCCoreConfigManager.disableExternalModGen)
+        // {
+        // var4.isTerrainPopulated = true;
+        // }
+
         var4.generateSkylightMap();
         return var4;
     }

@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core.tile;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemOilCanister;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
-import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -24,7 +23,6 @@ import universalelectricity.core.item.IItemElectric;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implements IInventory, ISidedInventory, IFluidHandler
@@ -41,13 +39,13 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
 
     public GCCoreTileEntityRefinery()
     {
-        super((float) WATTS_PER_TICK, 50000);
+        super((float) GCCoreTileEntityRefinery.WATTS_PER_TICK, 50000);
 
-        /*if (PowerFramework.currentFramework != null)
-        {
-            this.bcPowerProvider = new GCCoreLinkedPowerProvider(this);
-            this.bcPowerProvider.configure(20, 15, 100, 25, 1000);
-        }*/
+        /*
+         * if (PowerFramework.currentFramework != null) { this.bcPowerProvider =
+         * new GCCoreLinkedPowerProvider(this);
+         * this.bcPowerProvider.configure(20, 15, 100, 25, 1000); }
+         */
     }
 
     @Override
@@ -193,8 +191,8 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
             final int oilAmount = this.oilTank.getFluid().amount;
             final int fuelSpace = this.fuelTank.getCapacity() - (this.fuelTank.getFluid() == null ? 0 : this.fuelTank.getFluid().amount);
 
-            final int amountToDrain = Math.min(Math.min(oilAmount, fuelSpace), OUTPUT_PER_SECOND);
-            
+            final int amountToDrain = Math.min(Math.min(oilAmount, fuelSpace), GCCoreTileEntityRefinery.OUTPUT_PER_SECOND);
+
             this.oilTank.drain(amountToDrain, true);
             this.fuelTank.fill(FluidRegistry.getFluidStack("fuel", amountToDrain), true);
         }
@@ -373,7 +371,7 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
                 return ((IItemElectric) itemstack.getItem()).getElectricityStored(itemstack) > 0;
             case 1:
                 FluidStack stack = FluidContainerRegistry.getFluidForFilledItem(itemstack);
-                return (stack != null && stack.getFluid() != null && stack.getFluid().getName().equalsIgnoreCase("oil"));
+                return stack != null && stack.getFluid() != null && stack.getFluid().getName().equalsIgnoreCase("oil");
             case 2:
                 return FluidContainerRegistry.isEmptyContainer(itemstack);
             default:
@@ -396,7 +394,7 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
                 return FluidContainerRegistry.isEmptyContainer(itemstack);
             case 2:
                 FluidStack stack = FluidContainerRegistry.getFluidForFilledItem(itemstack);
-                return (stack != null && stack.getFluid() != null && stack.getFluid().getName().equalsIgnoreCase("fuel"));
+                return stack != null && stack.getFluid() != null && stack.getFluid().getName().equalsIgnoreCase("fuel");
             default:
                 return false;
             }
@@ -413,12 +411,12 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
             return itemstack.getItem() instanceof IItemElectric;
         case 1:
             FluidStack stack = FluidContainerRegistry.getFluidForFilledItem(itemstack);
-            return (stack != null && stack.getFluid() != null && stack.getFluid().getName().equalsIgnoreCase("oil")) || FluidContainerRegistry.isContainer(itemstack);
+            return stack != null && stack.getFluid() != null && stack.getFluid().getName().equalsIgnoreCase("oil") || FluidContainerRegistry.isContainer(itemstack);
         case 2:
             FluidStack stack2 = FluidContainerRegistry.getFluidForFilledItem(itemstack);
-            return (stack2 != null && stack2.getFluid() != null && stack2.getFluid().getName().equalsIgnoreCase("fuel")) || FluidContainerRegistry.isContainer(itemstack);
+            return stack2 != null && stack2.getFluid() != null && stack2.getFluid().getName().equalsIgnoreCase("fuel") || FluidContainerRegistry.isContainer(itemstack);
         }
-        
+
         return false;
     }
 
@@ -451,7 +449,7 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
     @Override
     public Packet getPacket()
     {
-        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getEnergyStored(), this.processTicks, this.oilTank.getFluid() == null ? 0 : this.oilTank.getFluid().amount, this.fuelTank.getFluid() == null ? 0 : this.fuelTank.getFluid().amount, this.disabled, this.disableCooldown);
+        return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getEnergyStored(), this.processTicks, this.oilTank.getFluid() == null ? 0 : this.oilTank.getFluid().amount, this.fuelTank.getFluid() == null ? 0 : this.fuelTank.getFluid().amount, this.disabled, this.disableCooldown);
     }
 
     @Override

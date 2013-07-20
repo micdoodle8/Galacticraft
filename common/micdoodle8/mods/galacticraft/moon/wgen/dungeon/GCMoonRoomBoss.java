@@ -9,7 +9,6 @@ import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.world.World;
 import universalelectricity.core.vector.Vector3;
 
 public class GCMoonRoomBoss extends GCCoreDungeonRoom
@@ -24,9 +23,9 @@ public class GCMoonRoomBoss extends GCCoreDungeonRoom
     public GCMoonRoomBoss(GCCoreMapGenDungeon dungeon, int posX, int posY, int posZ, int entranceDir)
     {
         super(dungeon, posX, posY, posZ, entranceDir);
-        if (worldObj != null)
+        if (this.worldObj != null)
         {
-            this.rand = new Random(worldObj.getSeed() * posX * posY * 57 * posZ);
+            this.rand = new Random(this.worldObj.getSeed() * posX * posY * 57 * posZ);
             this.sizeX = this.rand.nextInt(6) + 14;
             this.sizeY = this.rand.nextInt(2) + 8;
             this.sizeZ = this.rand.nextInt(6) + 14;

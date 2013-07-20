@@ -31,7 +31,7 @@ public class GCCoreGuiSolar extends GCCoreGuiContainer
 
     private GuiButton buttonEnableSolar;
     private GCCoreInfoRegion electricInfoRegion = new GCCoreInfoRegion((this.width - this.xSize) / 2 + 107, (this.height - this.ySize) / 2 + 101, 56, 9, new ArrayList<String>(), this.width, this.height);
-    
+
     public GCCoreGuiSolar(InventoryPlayer par1InventoryPlayer, GCCoreTileEntitySolar solarPanel)
     {
         super(new GCCoreContainerSolar(par1InventoryPlayer, solarPanel));
@@ -57,19 +57,19 @@ public class GCCoreGuiSolar extends GCCoreGuiContainer
         super.initGui();
         List<String> electricityDesc = new ArrayList<String>();
         electricityDesc.add("Electrical Storage");
-        electricityDesc.add(EnumColor.YELLOW + "Energy: " + ((int) Math.floor(this.solarPanel.getEnergyStored()) + " / " + ((int) Math.floor(this.solarPanel.getMaxEnergyStored()))));
-        electricInfoRegion.tooltipStrings = electricityDesc;
-        electricInfoRegion.xPosition = (this.width - this.xSize) / 2 + 96;
-        electricInfoRegion.yPosition = (this.height - this.ySize) / 2 + 24;
-        electricInfoRegion.parentWidth = this.width;
-        electricInfoRegion.parentHeight = this.height;
+        electricityDesc.add(EnumColor.YELLOW + "Energy: " + ((int) Math.floor(this.solarPanel.getEnergyStored()) + " / " + (int) Math.floor(this.solarPanel.getMaxEnergyStored())));
+        this.electricInfoRegion.tooltipStrings = electricityDesc;
+        this.electricInfoRegion.xPosition = (this.width - this.xSize) / 2 + 96;
+        this.electricInfoRegion.yPosition = (this.height - this.ySize) / 2 + 24;
+        this.electricInfoRegion.parentWidth = this.width;
+        this.electricInfoRegion.parentHeight = this.height;
         this.infoRegions.add(this.electricInfoRegion);
         List<String> batterySlotDesc = new ArrayList<String>();
         batterySlotDesc.add("Solar Panel battery slot, place battery");
         batterySlotDesc.add("here to fill it with energy.");
         this.infoRegions.add(new GCCoreInfoRegion((this.width - this.xSize) / 2 + 151, (this.height - this.ySize) / 2 + 82, 18, 18, batterySlotDesc, this.width, this.height));
         List<String> sunGenDesc = new ArrayList<String>();
-        float sunVisible = Math.round((this.solarPanel.solarStrength / 9.0F) * 1000) / 10.0F;
+        float sunVisible = Math.round(this.solarPanel.solarStrength / 9.0F * 1000) / 10.0F;
         sunGenDesc.add(this.solarPanel.solarStrength > 0 ? "Sun visible: " + sunVisible + "%" : "Sun not visible");
         this.infoRegions.add(new GCCoreInfoRegion((this.width - this.xSize) / 2 + 47, (this.height - this.ySize) / 2 + 20, 18, 18, sunGenDesc, this.width, this.height));
         this.buttonList.add(this.buttonEnableSolar = new GuiButton(0, this.width / 2 - 36, this.height / 2 - 10, 72, 20, LanguageRegistry.instance().getStringLocalization("gui.button.enable.name")));
@@ -101,7 +101,7 @@ public class GCCoreGuiSolar extends GCCoreGuiContainer
         {
             return EnumColor.ORANGE + LanguageRegistry.instance().getStringLocalization("gui.status.disabled.name");
         }
-        
+
         if (!this.solarPanel.worldObj.isDaytime())
         {
             return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.blockedfully.name");
@@ -141,19 +141,19 @@ public class GCCoreGuiSolar extends GCCoreGuiContainer
 
         List<String> electricityDesc = new ArrayList<String>();
         electricityDesc.add("Electrical Storage");
-        electricityDesc.add(EnumColor.YELLOW + "Energy: " + ((int) Math.floor(this.solarPanel.getEnergyStored()) + " / " + ((int) Math.floor(this.solarPanel.getMaxEnergyStored()))));
-        electricInfoRegion.tooltipStrings = electricityDesc;
+        electricityDesc.add(EnumColor.YELLOW + "Energy: " + ((int) Math.floor(this.solarPanel.getEnergyStored()) + " / " + (int) Math.floor(this.solarPanel.getMaxEnergyStored())));
+        this.electricInfoRegion.tooltipStrings = electricityDesc;
 
         if (this.solarPanel.getEnergyStored() > 0)
         {
             this.drawTexturedModalRect(var5 + 83, var6 + 24, 176, 0, 11, 10);
         }
-        
+
         if (this.solarPanel.solarStrength > 0)
         {
             this.drawTexturedModalRect(var5 + 48, var6 + 21, 176, 10, 16, 16);
         }
-        
+
         this.drawTexturedModalRect(var5 + 97, var6 + 25, 187, 0, Math.min(this.solarPanel.getScaledElecticalLevel(54), 54), 7);
     }
 }
