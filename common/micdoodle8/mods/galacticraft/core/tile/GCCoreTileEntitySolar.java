@@ -41,7 +41,7 @@ public class GCCoreTileEntitySolar extends TileEntityUniversalElectrical impleme
     public boolean disabled = true;
     public int disableCooldown = 0;
     private ItemStack[] containingItems = new ItemStack[1];
-    public static final int MAX_GENERATE_WATTS = 12000;
+    public static final int MAX_GENERATE_WATTS = 15000;
     public static final int MIN_GENERATE_WATTS = 0;
     public float generateWatts = 0;
     
@@ -79,7 +79,7 @@ public class GCCoreTileEntitySolar extends TileEntityUniversalElectrical impleme
                 this.disableCooldown--;
             }
             
-            if (this.ticks % 20 == 0)
+            if (!this.getDisabled() && this.ticks % 20 == 0)
             {
                 this.solarStrength = 0;
                 
@@ -144,7 +144,7 @@ public class GCCoreTileEntitySolar extends TileEntityUniversalElectrical impleme
             }
         }
         
-        float angle = (this.worldObj.getCelestialAngle(1.0F) - 0.784690560F) < 0 ? 1.0F - 0.784690560F : -0.784690560F;
+        float angle = (this.worldObj.getCelestialAngle(1.0F) - 0.7845194F) < 0 ? 1.0F - 0.7845194F : -0.7845194F;
         float celestialAngle = ((this.worldObj.getCelestialAngle(1.0F) + angle) * 360.0F);
         
         celestialAngle %= 360;
@@ -157,7 +157,7 @@ public class GCCoreTileEntitySolar extends TileEntityUniversalElectrical impleme
 
                 this.targetAngle -= difference / 20.0F;
             }
-            else if (this.solarStrength == 0)
+            else if (!this.worldObj.isDaytime() || this.worldObj.isRaining() || this.worldObj.isThundering())
             {
                 this.targetAngle = 77.5F + 180.0F;
             }
@@ -172,7 +172,7 @@ public class GCCoreTileEntitySolar extends TileEntityUniversalElectrical impleme
         }
         else
         {
-            if (this.solarStrength == 0)
+            if (!this.worldObj.isDaytime() || this.worldObj.isRaining() || this.worldObj.isThundering())
             {
                 this.targetAngle = 77.5F + 180.0F;
             }
@@ -181,7 +181,7 @@ public class GCCoreTileEntitySolar extends TileEntityUniversalElectrical impleme
                 this.targetAngle = 77.5F;
             }
         }
-
+        
         float difference = this.targetAngle - this.currentAngle;
         
         this.currentAngle += difference / 20.0F;
@@ -190,7 +190,7 @@ public class GCCoreTileEntitySolar extends TileEntityUniversalElectrical impleme
         {
             if (this.getGenerate() > GCCoreTileEntitySolar.MIN_GENERATE_WATTS)
             {
-                this.generateWatts = Math.min(Math.max(this.getGenerate(), GCCoreTileEntitySolar.MIN_GENERATE_WATTS), GCCoreTileEntitySolar.MAX_GENERATE_WATTS);
+                this.generateWatts = (((float) Math.min(Math.max(this.getGenerate(), GCCoreTileEntitySolar.MIN_GENERATE_WATTS), GCCoreTileEntitySolar.MAX_GENERATE_WATTS)) / 20.0F);
             }
             else
             {
@@ -211,19 +211,16 @@ public class GCCoreTileEntitySolar extends TileEntityUniversalElectrical impleme
             return 0.0F;
         }
         
-        float angle = (this.worldObj.getCelestialAngle(1.0F) - 0.784690560F) < 0 ? 1.0F - 0.784690560F : -0.784690560F;
-        float celestialAngle = ((this.worldObj.getCelestialAngle(1.0F) + angle) * 360.0F);
-        
-        celestialAngle %= 360;
+        float celestialAngle = ((this.worldObj.getCelestialAngle(1.0F) + (this.worldObj.getCelestialAngle(1.0F) - 0.784690560F) < 0 ? 1.0F - 0.784690560F : -0.784690560F) * 360.0F) % 360;
         
         float difference = (180.0F - Math.abs(((this.currentAngle % 360) - (celestialAngle)))) / 180.0F;
         
-        return (difference * difference) * (this.solarStrength * (difference * 50.0F)) * this.getSolarBoost();
+        return (difference * difference) * (this.solarStrength * (difference * 500.0F)) * this.getSolarBoost();
     }
     
     public float getSolarBoost()
     {
-        return (this.worldObj instanceof ISolarLevel ? ((float) ((ISolarLevel) this.worldObj).getSolarEnergyMultiplier()) : 1.0F);
+        return (float) (this.worldObj.provider instanceof ISolarLevel ? (((ISolarLevel) this.worldObj.provider).getSolarEnergyMultiplier()) : 1.0F);
     }
 
     @Override

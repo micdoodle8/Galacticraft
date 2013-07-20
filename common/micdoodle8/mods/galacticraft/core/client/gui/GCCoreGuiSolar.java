@@ -78,7 +78,6 @@ public class GCCoreGuiSolar extends GCCoreGuiContainer
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        int offsetX = -17;
         int offsetY = 35;
         this.buttonEnableSolar.enabled = this.solarPanel.disableCooldown == 0;
         this.buttonEnableSolar.displayString = !this.solarPanel.getDisabled() ? LanguageRegistry.instance().getStringLocalization("gui.button.disable.name") : LanguageRegistry.instance().getStringLocalization("gui.button.enable.name");
@@ -88,7 +87,8 @@ public class GCCoreGuiSolar extends GCCoreGuiContainer
         this.fontRenderer.drawString(displayString, this.xSize / 2 - this.fontRenderer.getStringWidth(displayString) / 2, 45 + 23 - 46 + offsetY, 4210752);
         displayString = LanguageRegistry.instance().getStringLocalization("gui.message.generating.name") + ": " + (this.solarPanel.generateWatts > 0 ? ElectricityDisplay.getDisplay(this.solarPanel.generateWatts * 20, ElectricUnit.WATT) : "Not Generating");
         this.fontRenderer.drawString(displayString, this.xSize / 2 - this.fontRenderer.getStringWidth(displayString) / 2, 34 + 23 - 46 + offsetY, 4210752);
-        displayString = LanguageRegistry.instance().getStringLocalization("gui.message.environment.name") + ": " + (this.solarPanel.getSolarBoost() - 1) * 100 + "%";
+        float boost = Math.round((this.solarPanel.getSolarBoost() - 1) * 1000) / 10.0F;
+        displayString = LanguageRegistry.instance().getStringLocalization("gui.message.environment.name") + ": " + boost + "%";
         this.fontRenderer.drawString(displayString, this.xSize / 2 - this.fontRenderer.getStringWidth(displayString) / 2, 56 + 23 - 46 + offsetY, 4210752);
         displayString = ElectricityDisplay.getDisplay(this.solarPanel.getVoltage(), ElectricUnit.VOLTAGE);
         this.fontRenderer.drawString(displayString, this.xSize / 2 - this.fontRenderer.getStringWidth(displayString) / 2, 68 + 23 - 46 + offsetY, 4210752);
@@ -97,6 +97,11 @@ public class GCCoreGuiSolar extends GCCoreGuiContainer
 
     private String getStatus()
     {
+        if (this.solarPanel.getDisabled())
+        {
+            return EnumColor.ORANGE + LanguageRegistry.instance().getStringLocalization("gui.status.disabled.name");
+        }
+        
         if (!this.solarPanel.worldObj.isDaytime())
         {
             return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.blockedfully.name");
@@ -115,11 +120,6 @@ public class GCCoreGuiSolar extends GCCoreGuiContainer
         if (this.solarPanel.solarStrength < 9)
         {
             return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.blockedpartial.name");
-        }
-
-        if (this.solarPanel.getDisabled())
-        {
-            return EnumColor.ORANGE + LanguageRegistry.instance().getStringLocalization("gui.status.disabled.name");
         }
 
         if (this.solarPanel.generateWatts > 0)
