@@ -9,7 +9,14 @@ import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpider;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityZombie;
 import micdoodle8.mods.galacticraft.core.perlin.generator.Gradient;
 import micdoodle8.mods.galacticraft.core.wgen.GCCoreCraterSize;
+import micdoodle8.mods.galacticraft.core.wgen.dungeon.GCCoreDungeonRoom;
+import micdoodle8.mods.galacticraft.core.wgen.dungeon.GCCoreMapGenDungeon;
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
+import micdoodle8.mods.galacticraft.mars.wgen.dungeon.GCMarsRoomBoss;
+import micdoodle8.mods.galacticraft.mars.wgen.dungeon.GCMarsRoomChests;
+import micdoodle8.mods.galacticraft.mars.wgen.dungeon.GCMarsRoomEmpty;
+import micdoodle8.mods.galacticraft.mars.wgen.dungeon.GCMarsRoomSpawner;
+import micdoodle8.mods.galacticraft.mars.wgen.dungeon.GCMarsRoomTreasure;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSand;
 import net.minecraft.entity.EnumCreatureType;
@@ -51,6 +58,25 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 
     private final GCMarsCavern caveGenerator = new GCMarsCavern();
     private final GCMarsCaveGen caveGenerator2 = new GCMarsCaveGen();
+
+    private final GCCoreMapGenDungeon dungeonGenerator = new GCCoreMapGenDungeon(GCMarsBlocks.marsBlock.blockID, 7, 8, 16, 6);
+    
+    static
+    {
+        GCCoreDungeonRoom.rooms.add(new GCMarsRoomEmpty(null, 0, 0, 0, 0));
+        GCCoreDungeonRoom.rooms.add(new GCMarsRoomSpawner(null, 0, 0, 0, 0));
+        GCCoreDungeonRoom.rooms.add(new GCMarsRoomSpawner(null, 0, 0, 0, 0));
+        GCCoreDungeonRoom.rooms.add(new GCMarsRoomSpawner(null, 0, 0, 0, 0));
+        GCCoreDungeonRoom.rooms.add(new GCMarsRoomSpawner(null, 0, 0, 0, 0));
+        GCCoreDungeonRoom.rooms.add(new GCMarsRoomSpawner(null, 0, 0, 0, 0));
+        GCCoreDungeonRoom.rooms.add(new GCMarsRoomSpawner(null, 0, 0, 0, 0));
+        GCCoreDungeonRoom.rooms.add(new GCMarsRoomSpawner(null, 0, 0, 0, 0));
+        GCCoreDungeonRoom.rooms.add(new GCMarsRoomSpawner(null, 0, 0, 0, 0));
+        GCCoreDungeonRoom.rooms.add(new GCMarsRoomChests(null, 0, 0, 0, 0));
+        GCCoreDungeonRoom.rooms.add(new GCMarsRoomChests(null, 0, 0, 0, 0));
+        GCCoreDungeonRoom.bossRooms.add(new GCMarsRoomBoss(null, 0, 0, 0, 0));
+        GCCoreDungeonRoom.treasureRooms.add(new GCMarsRoomTreasure(null, 0, 0, 0, 0));
+    }
 
     private BiomeGenBase[] biomesForGeneration = { GCMarsBiomeGenBase.marsFlat };
 
@@ -279,6 +305,7 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
         this.replaceBlocksForBiome(par1, par2, ids, meta, this.biomesForGeneration);
         this.caveGenerator.generate(this, this.worldObj, par1, par2, ids, meta);
         this.caveGenerator2.generate(this, this.worldObj, par1, par2, ids, meta);
+        this.dungeonGenerator.generateUsingArrays(this.worldObj, this.worldObj.getSeed(), par1 * 16, 25, par2 * 16, par1, par2, ids, meta);
 
         final Chunk var4 = new Chunk(this.worldObj, ids, meta, par1, par2);
         final byte[] var5 = var4.getBiomeArray();
@@ -363,91 +390,6 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
         return 1.0 - (n * (n * n * 15731 + 789221) + 1376312589 & 0x7fffffff) / 1073741824.0;
     }
 
-    /*
-     * private double[] initializeNoiseField(double[] par1ArrayOfDouble, int
-     * par2, int par3, int par4, int par5, int par6, int par7) { if
-     * (par1ArrayOfDouble == null) { par1ArrayOfDouble = new double[par5 * par6
-     * * par7]; }
-     * 
-     * if (this.field_35388_l == null) { this.field_35388_l = new float[25];
-     * 
-     * for (int var8 = -2; var8 <= 2; ++var8) { for (int var9 = -2; var9 <= 2;
-     * ++var9) { final float var10 = 10.0F / MathHelper.sqrt_float(var8 * var8 +
-     * var9 * var9 + 0.2F); this.field_35388_l[var8 + 2 + (var9 + 2) * 5] =
-     * var10; } } }
-     * 
-     * final double var44 = 684.412D; final double var45 = 684.412D; this.noise5
-     * = this.noiseGen5.generateNoiseOctaves(this.noise5, par2, par4, par5,
-     * par7, 1.121D, 1.121D, 0.5D); this.noise6 =
-     * this.noiseGen6.generateNoiseOctaves(this.noise6, par2, par4, par5, par7,
-     * 200.0D, 200.0D, 0.5D); this.noise3 =
-     * this.noiseGen3.generateNoiseOctaves(this.noise3, par2, par3, par4, par5,
-     * par6, par7, var44 / 80.0D, var45 / 160.0D, var44 / 80.0D); this.noise1 =
-     * this.noiseGen1.generateNoiseOctaves(this.noise1, par2, par3, par4, par5,
-     * par6, par7, var44, var45, var44); this.noise2 =
-     * this.noiseGen2.generateNoiseOctaves(this.noise2, par2, par3, par4, par5,
-     * par6, par7, var44, var45, var44); final boolean var43 = false; final
-     * boolean var42 = false; int var12 = 0; int var13 = 0;
-     * 
-     * for (int var14 = 0; var14 < par5; ++var14) { for (int var15 = 0; var15 <
-     * par7; ++var15) { float var16 = 0.0F; float var17 = 0.0F; float var18 =
-     * 0.0F; final int var19 = 2; final BiomeGenBase var20 =
-     * this.biomesForGeneration[var14 + 2 + (var15 + 2) * (par5 + 5)];
-     * 
-     * for (int var21 = -var19; var21 <= var19; ++var21) { for (int var22 =
-     * -var19; var22 <= var19; ++var22) { final BiomeGenBase var23 =
-     * this.biomesForGeneration[var14 + var21 + 2 + (var15 + var22 + 2) * (par5
-     * + 5)]; float var24 = this.field_35388_l[var21 + 2 + (var22 + 2) * 5] /
-     * (var23.minHeight + 2.0F);
-     * 
-     * if (var23.minHeight > var20.minHeight) { var24 /= 2.0F; }
-     * 
-     * var16 += var23.maxHeight * var24 + 2; var17 += var23.minHeight * var24 *
-     * 0.5 + 2; var18 += var24; } }
-     * 
-     * var16 /= var18; var17 /= var18; var16 = var16 * 0.9F + 0.1F; var17 =
-     * (var17 * 4.0F - 1.0F) / 8.0F; double var47 = this.noise6[var13] /
-     * 8000.0D;
-     * 
-     * if (var47 < 0.0D) { var47 = -var47 * 0.3D; }
-     * 
-     * var47 = var47 * 3.0D - 2.0D;
-     * 
-     * if (var47 < 0.0D) { var47 /= 2.0D;
-     * 
-     * if (var47 < -1.0D) { var47 = -1.0D; }
-     * 
-     * var47 /= 1.4D; var47 /= 2.0D; } else { if (var47 > 1.0D) { var47 = 1.0D;
-     * }
-     * 
-     * var47 /= 8.0D; }
-     * 
-     * ++var13;
-     * 
-     * for (int var46 = 0; var46 < par6; ++var46) { double var48 = var17; final
-     * double var26 = var16; var48 += var47 * 0.2D; var48 = var48 * par6 /
-     * 16.0D; final double var28 = par6 / 2.0D + var48 * 4.0D; double var30 =
-     * 0.0D; double var32 = (var46 - var28) * 12.0D * 128.0D / 128.0D / var26;
-     * 
-     * if (var32 < 0.0D) { var32 *= 4.0D; }
-     * 
-     * final double var34 = this.noise1[var12] / 512.0D; final double var36 =
-     * this.noise2[var12] / 512.0D; final double var38 = (this.noise3[var12] /
-     * 10.0D + 1.0D) / 2.0D;
-     * 
-     * if (var38 < 0.0D) { var30 = var34; } else if (var38 > 1.0D) { var30 =
-     * var36; } else { var30 = var34 + (var36 - var34) * var38; }
-     * 
-     * var30 -= var32;
-     * 
-     * if (var46 > par6 - 4) { final double var40 = (var46 - (par6 - 4)) / 3.0F;
-     * var30 = var30 * (1.0D - var40) + -10.0D * var40; }
-     * 
-     * par1ArrayOfDouble[var12] = var30; ++var12; } } }
-     * 
-     * return par1ArrayOfDouble; }
-     */
-
     @Override
     public boolean chunkExists(int par1, int par2)
     {
@@ -473,6 +415,7 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
         this.decoratePlanet(this.worldObj, this.rand, var4, var5);
         var4 += 8;
         var5 += 8;
+        this.dungeonGenerator.handleTileEntities(this.rand);
 
         BlockSand.fallInstantly = false;
     }

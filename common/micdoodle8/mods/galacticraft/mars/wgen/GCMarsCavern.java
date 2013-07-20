@@ -42,10 +42,10 @@ public class GCMarsCavern
 
     protected void recursiveGenerate(World par1World, int xChunkCoord, int zChunkCoord, int origXChunkCoord, int origZChunkCoord, short[] arrayOfIDs, byte[] arrayOfMeta)
     {
-        if (this.rand.nextInt(35) == 0)
+        if (this.rand.nextInt(100) == 0)
         {
             final double xPos = xChunkCoord * 16 + this.rand.nextInt(16);
-            final double yPos = (double) this.rand.nextInt(10) + 15;
+            final double yPos = 25;
             final double zPos = zChunkCoord * 16 + this.rand.nextInt(16);
             this.generateLargeCaveNode(this.rand.nextLong(), origXChunkCoord, origZChunkCoord, arrayOfIDs, arrayOfMeta, xPos, yPos, zPos);
         }

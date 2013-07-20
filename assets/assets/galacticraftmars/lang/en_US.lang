@@ -35,6 +35,7 @@ tile.mars.marsdirt.name=Dirt
 tile.mars.marsgrass.name=Grass
 tile.mars.marsdeco.name=Desh Decoration Block
 tile.mars.marsdungeon.name=Dungeon Wall
+tile.treasureT2.name=Tier 2 Treasure Chest
 
 # GUI
 gui.choosePlanet.desc.mars=Habitable#No Oxygen#Gravity: 38%

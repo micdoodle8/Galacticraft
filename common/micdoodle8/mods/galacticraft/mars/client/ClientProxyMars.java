@@ -11,14 +11,19 @@ import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.mars.CommonProxyMars;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
+import micdoodle8.mods.galacticraft.mars.client.fx.GCMarsEntityDropParticleFX;
 import micdoodle8.mods.galacticraft.mars.client.model.GCMarsModelSpaceshipTier2;
+import micdoodle8.mods.galacticraft.mars.client.render.block.GCMarsBlockRendererRock;
 import micdoodle8.mods.galacticraft.mars.client.render.block.GCMarsBlockRendererVine;
 import micdoodle8.mods.galacticraft.mars.client.render.entity.GCMarsRenderSludgeling;
 import micdoodle8.mods.galacticraft.mars.client.render.item.GCMarsItemRendererSpaceshipT2;
+import micdoodle8.mods.galacticraft.mars.client.render.tile.GCMarsTileEntityTreasureChestRenderer;
+import micdoodle8.mods.galacticraft.mars.client.sounds.GCMarsSounds;
 import micdoodle8.mods.galacticraft.mars.dimension.GCMarsWorldProvider;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityRocketT2;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntitySludgeling;
 import micdoodle8.mods.galacticraft.mars.items.GCMarsItems;
+import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityTreasureChest;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
@@ -31,6 +36,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
@@ -52,6 +58,7 @@ import cpw.mods.fml.relauncher.Side;
 public class ClientProxyMars extends CommonProxyMars
 {
     private static int vineRenderID;
+    private static int rockRenderID;
     public static long getFirstBootTime;
     public static long getCurrentTime;
     private final Random rand = new Random();
@@ -67,9 +74,12 @@ public class ClientProxyMars extends CommonProxyMars
     public void init(FMLInitializationEvent event)
     {
         TickRegistry.registerTickHandler(new TickHandlerClient(), Side.CLIENT);
+        ClientRegistry.bindTileEntitySpecialRenderer(GCMarsTileEntityTreasureChest.class, new GCMarsTileEntityTreasureChestRenderer());
         NetworkRegistry.instance().registerChannel(new ClientPacketHandler(), "GalacticraftMars", Side.CLIENT);
         ClientProxyMars.vineRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new GCMarsBlockRendererVine(ClientProxyMars.vineRenderID));
+        ClientProxyMars.rockRenderID = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(new GCMarsBlockRendererRock(ClientProxyMars.rockRenderID));
     }
 
     @Override
@@ -90,6 +100,12 @@ public class ClientProxyMars extends CommonProxyMars
     public int getVineRenderID()
     {
         return ClientProxyMars.vineRenderID;
+    }
+    
+    @Override
+    public int getRockRenderID()
+    {
+        return ClientProxyMars.rockRenderID;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package micdoodle8.mods.galacticraft.mars.client;
+package micdoodle8.mods.galacticraft.mars.client.fx;
 
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
 import net.minecraft.block.BlockFluid;

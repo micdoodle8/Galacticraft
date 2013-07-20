@@ -1,3 +1,4 @@
+package micdoodle8.mods.galacticraft.mars.client.model;
 //package micdoodle8.mods.galacticraft.mars.client;
 //
 //import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityCreeperBoss;

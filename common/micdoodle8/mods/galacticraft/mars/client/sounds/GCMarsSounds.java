@@ -1,4 +1,4 @@
-package micdoodle8.mods.galacticraft.mars.client;
+package micdoodle8.mods.galacticraft.mars.client.sounds;
 
 import net.minecraftforge.client.event.sound.SoundLoadEvent;
 import net.minecraftforge.event.ForgeSubscribe;
