@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.tick;
 import java.util.EnumSet;
 import micdoodle8.mods.galacticraft.api.block.IDetectableResource;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItemSensorGlasses;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockOre;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,7 +19,7 @@ public class GCCoreTickHandlerSlowClient implements IScheduledTickHandler
     {
         final EntityPlayer player = FMLClientHandler.instance().getClient().thePlayer;
 
-        if (player != null)
+        if (player != null && player.inventory.armorItemInSlot(3) != null && player.inventory.armorItemInSlot(3).getItem() instanceof GCCoreItemSensorGlasses)
         {
             ClientProxyCore.valueableBlocks.clear();
 

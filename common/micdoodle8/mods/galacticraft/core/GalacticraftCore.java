@@ -42,7 +42,6 @@ import micdoodle8.mods.galacticraft.core.recipe.GCCoreRecipeManager;
 import micdoodle8.mods.galacticraft.core.schematic.GCCoreSchematicAdd;
 import micdoodle8.mods.galacticraft.core.schematic.GCCoreSchematicMoonBuggy;
 import micdoodle8.mods.galacticraft.core.schematic.GCCoreSchematicRocketT1;
-import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerCommon;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAdvancedCraftingTable;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAirLock;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityBuggyFueler;
@@ -98,7 +97,6 @@ import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
-import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 
 /**
@@ -349,7 +347,6 @@ public class GalacticraftCore
         GalacticraftCore.moon.serverInit(event);
 
         GCCoreUtil.checkVersion(Side.SERVER);
-        TickRegistry.registerTickHandler(new GCCoreTickHandlerCommon(), Side.SERVER);
         NetworkRegistry.instance().registerChannel(new GCCorePacketHandlerServer(), GalacticraftCore.CHANNEL, Side.SERVER);
     }
 
