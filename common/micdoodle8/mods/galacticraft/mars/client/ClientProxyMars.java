@@ -15,12 +15,14 @@ import micdoodle8.mods.galacticraft.mars.client.fx.GCMarsEntityDropParticleFX;
 import micdoodle8.mods.galacticraft.mars.client.model.GCMarsModelSpaceshipTier2;
 import micdoodle8.mods.galacticraft.mars.client.render.block.GCMarsBlockRendererRock;
 import micdoodle8.mods.galacticraft.mars.client.render.block.GCMarsBlockRendererVine;
+import micdoodle8.mods.galacticraft.mars.client.render.entity.GCMarsRenderSlimeling;
 import micdoodle8.mods.galacticraft.mars.client.render.entity.GCMarsRenderSludgeling;
 import micdoodle8.mods.galacticraft.mars.client.render.item.GCMarsItemRendererSpaceshipT2;
 import micdoodle8.mods.galacticraft.mars.client.render.tile.GCMarsTileEntityTreasureChestRenderer;
 import micdoodle8.mods.galacticraft.mars.client.sounds.GCMarsSounds;
 import micdoodle8.mods.galacticraft.mars.dimension.GCMarsWorldProvider;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityRocketT2;
+import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntitySlimeling;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntitySludgeling;
 import micdoodle8.mods.galacticraft.mars.items.GCMarsItems;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityTreasureChest;
@@ -91,6 +93,7 @@ public class ClientProxyMars extends CommonProxyMars
     public void registerRenderInformation()
     {
         RenderingRegistry.registerEntityRenderingHandler(GCMarsEntitySludgeling.class, new GCMarsRenderSludgeling());
+        RenderingRegistry.registerEntityRenderingHandler(GCMarsEntitySlimeling.class, new GCMarsRenderSlimeling());
         RenderingRegistry.registerEntityRenderingHandler(GCMarsEntityRocketT2.class, new GCCoreRenderSpaceship(new GCMarsModelSpaceshipTier2(), GalacticraftMars.TEXTURE_DOMAIN, "rocketT2"));
         RenderingRegistry.addNewArmourRendererPrefix("desh");
         MinecraftForgeClient.registerItemRenderer(GCMarsItems.spaceship.itemID, new GCMarsItemRendererSpaceshipT2(new GCMarsEntityRocketT2(FMLClientHandler.instance().getClient().theWorld), new GCMarsModelSpaceshipTier2(), new ResourceLocation(GalacticraftMars.TEXTURE_DOMAIN, "textures/model/rocketT2.png")));
