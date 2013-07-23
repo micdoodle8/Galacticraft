@@ -57,8 +57,6 @@ public class GCMoonWorldProvider extends WorldProvider implements IGalacticraftW
     @Override
     public Vec3 getFogColor(float var1, float var2)
     {
-        // return this.worldObj.getWorldVec3Pool().getVecFromPool((double)100F /
-        // 255F, (double)107F / 255F, (double)125F / 255F);
         return this.worldObj.getWorldVec3Pool().getVecFromPool((double) 0F / 255F, (double) 0F / 255F, (double) 0F / 255F);
     }
 
@@ -71,8 +69,8 @@ public class GCMoonWorldProvider extends WorldProvider implements IGalacticraftW
     @Override
     public float calculateCelestialAngle(long par1, float par3)
     {
-        final int var4 = (int) (par1 % 655200L);
-        float var5 = (var4 + par3) / 655200.0F - 0.25F;
+        final int var4 = (int) (par1 % 192000L);
+        float var5 = (var4 + par3) / 192000.0F - 0.25F;
 
         if (var5 < 0.0F)
         {
