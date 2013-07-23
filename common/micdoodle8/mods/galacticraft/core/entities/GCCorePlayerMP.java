@@ -13,7 +13,7 @@ import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GCCoreDamageSource;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryPlayer;
+import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryExtended;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemParachute;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketSchematicList;
@@ -43,6 +43,8 @@ import cpw.mods.fml.relauncher.Side;
 
 public class GCCorePlayerMP extends EntityPlayerMP
 {
+    public GCCoreInventoryExtended extendedInventory = new GCCoreInventoryExtended();
+    
     private int airRemaining;
     private int airRemaining2;
 
@@ -275,11 +277,13 @@ public class GCCorePlayerMP extends EntityPlayerMP
             this.openPlanetSelectionGuiCooldown--;
         }
 
-        this.maskInSlot = ((GCCoreInventoryPlayer) this.inventory).tankItemInSlot(0);
-        this.gearInSlot = ((GCCoreInventoryPlayer) this.inventory).tankItemInSlot(1);
-        this.tankInSlot1 = ((GCCoreInventoryPlayer) this.inventory).tankItemInSlot(2);
-        this.tankInSlot2 = ((GCCoreInventoryPlayer) this.inventory).tankItemInSlot(3);
-        this.parachuteInSlot = ((GCCoreInventoryPlayer) this.inventory).tankItemInSlot(4);
+        this.maskInSlot = this.extendedInventory.getStackInSlot(0);
+        
+        this.maskInSlot = this.extendedInventory.getStackInSlot(0);
+        this.gearInSlot = this.extendedInventory.getStackInSlot(1);
+        this.tankInSlot1 = this.extendedInventory.getStackInSlot(2);
+        this.tankInSlot2 = this.extendedInventory.getStackInSlot(3);
+        this.parachuteInSlot = this.extendedInventory.getStackInSlot(4);
 
         if (this.getParachute())
         {
@@ -680,8 +684,8 @@ public class GCCorePlayerMP extends EntityPlayerMP
             this.fallDistance = 0.0F;
         }
 
-        final ItemStack tankInSlot = ((GCCoreInventoryPlayer) this.inventory).tankItemInSlot(2);
-        final ItemStack tankInSlot2 = ((GCCoreInventoryPlayer) this.inventory).tankItemInSlot(3);
+        final ItemStack tankInSlot = this.extendedInventory.getStackInSlot(2);
+        final ItemStack tankInSlot2 = this.extendedInventory.getStackInSlot(3);
 
         final int drainSpacing = OxygenUtil.getDrainSpacing(tankInSlot, tankInSlot2);
 
@@ -875,11 +879,11 @@ public class GCCorePlayerMP extends EntityPlayerMP
             this.playerNetServerHandler.sendPacketToPlayer(GCCorePacketSchematicList.buildSchematicListPacket(this.unlockedSchematics));
         }
 
-        this.lastMaskInSlot = ((GCCoreInventoryPlayer) this.inventory).tankItemInSlot(0);
-        this.lastGearInSlot = ((GCCoreInventoryPlayer) this.inventory).tankItemInSlot(1);
-        this.lastTankInSlot1 = ((GCCoreInventoryPlayer) this.inventory).tankItemInSlot(2);
-        this.lastTankInSlot2 = ((GCCoreInventoryPlayer) this.inventory).tankItemInSlot(3);
-        this.lastParachuteInSlot = ((GCCoreInventoryPlayer) this.inventory).tankItemInSlot(4);
+        this.lastMaskInSlot = this.extendedInventory.getStackInSlot(0);
+        this.lastGearInSlot = this.extendedInventory.getStackInSlot(1);
+        this.lastTankInSlot1 = this.extendedInventory.getStackInSlot(2);
+        this.lastTankInSlot2 = this.extendedInventory.getStackInSlot(3);
+        this.lastParachuteInSlot = this.extendedInventory.getStackInSlot(4);
 
         this.lastOxygenSetupValid = this.oxygenSetupValid;
         this.lastUnlockedSchematics = this.unlockedSchematics;
@@ -923,12 +927,15 @@ public class GCCorePlayerMP extends EntityPlayerMP
         this.airRemaining = nbt.getInteger("playerAirRemaining");
         this.damageCounter = nbt.getInteger("damageCounter");
 
-        if (nbt.hasKey("InventoryTankRefill"))
-        {
-            final NBTTagList var2 = nbt.getTagList("InventoryTankRefill");
-            ((GCCoreInventoryPlayer) this.inventory).readFromNBTOld(var2);
-        }
+        // Backwards compatibility
+        NBTTagList nbttaglist = nbt.getTagList("Inventory");
+        this.extendedInventory.readFromNBTOld(nbttaglist);
 
+        if (nbt.hasKey("ExtendedInventoryGC"))
+        {
+            this.extendedInventory.readFromNBT(nbt.getTagList("ExtendedInventoryGC"));
+        }
+        
         if (nbt.hasKey("SpaceshipTier"))
         {
             this.spaceshipTier = nbt.getInteger("SpaceshipTier");
@@ -982,6 +989,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
     @Override
     public void writeEntityToNBT(NBTTagCompound nbt)
     {
+        nbt.setTag("ExtendedInventoryGC", this.extendedInventory.writeToNBT(new NBTTagList()));
         nbt.setInteger("playerAirRemaining", this.airRemaining);
         nbt.setInteger("damageCounter", this.damageCounter);
         nbt.setFloat("AstronomyPointsNum", this.astronomyPoints);
@@ -1114,7 +1122,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
     public void sendPlayerParachuteTexturePacket(GCCorePlayerMP player)
     {
-        final ItemStack stack = ((GCCoreInventoryPlayer) this.inventory).tankItemInSlot(4);
+        final ItemStack stack = this.extendedInventory.getStackInSlot(4);
         String s;
         String s2 = null;
         if (stack != null && stack.getItem() instanceof GCCoreItemParachute)

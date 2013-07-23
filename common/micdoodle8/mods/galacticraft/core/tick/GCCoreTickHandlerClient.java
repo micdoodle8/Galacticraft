@@ -30,13 +30,17 @@ import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.WorldProviderSurface;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import cpw.mods.fml.common.TickType;
@@ -48,6 +52,7 @@ public class GCCoreTickHandlerClient implements ITickHandler
     public static int airRemaining;
     public static int airRemaining2;
     public static boolean checkedVersion = true;
+    private static boolean lastInvKeyPressed;
 
     @Override
     public void tickStart(EnumSet<TickType> type, Object... tickData)
@@ -62,6 +67,16 @@ public class GCCoreTickHandlerClient implements ITickHandler
 
         if (type.equals(EnumSet.of(TickType.CLIENT)))
         {
+            if (ClientProxyCore.addTabsNextTick)
+            {
+                if (minecraft.currentScreen.getClass().equals(GuiInventory.class))
+                {
+                    ClientProxyCore.addTabsToInventory((GuiContainer) minecraft.currentScreen);
+                }
+                
+                ClientProxyCore.addTabsNextTick = false;
+            }
+            
             if (minecraft.currentScreen != null && minecraft.currentScreen instanceof GuiMainMenu)
             {
                 GalacticraftCore.playersServer.clear();
@@ -227,7 +242,18 @@ public class GCCoreTickHandlerClient implements ITickHandler
             player.inventory.armorItemInSlot(3);
         }
 
-        if (type.equals(EnumSet.of(TickType.RENDER)))
+        if (type.equals(EnumSet.of(TickType.CLIENT)))
+        {
+            boolean invKeyPressed = Keyboard.isKeyDown(minecraft.gameSettings.keyBindInventory.keyCode);
+            
+            if (!lastInvKeyPressed && invKeyPressed && minecraft.currentScreen != null && minecraft.currentScreen.getClass() == GuiInventory.class)
+            {
+                ClientProxyCore.addTabsToInventory((GuiContainer) minecraft.currentScreen);
+            }
+            
+            lastInvKeyPressed = invKeyPressed;
+        }
+        else if (type.equals(EnumSet.of(TickType.RENDER)))
         {
             final float partialTickTime = (Float) tickData[0];
 

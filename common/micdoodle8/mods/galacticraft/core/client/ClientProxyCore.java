@@ -29,6 +29,7 @@ import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiAirDistributor;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiAirSealer;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiCargoLoader;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiCargoUnloader;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiExtendedInventory;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiFuelLoader;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiGalaxyMap;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiParachest;
@@ -84,6 +85,10 @@ import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySkeleton;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySkeletonBoss;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpider;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityZombie;
+import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryExtended;
+import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryTab;
+import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryTab.GCCoreInventoryTabExtended;
+import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryTab.GCCoreInventoryTabPlayer;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient;
 import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerClient;
@@ -108,6 +113,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SoundPoolEntry;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.particle.EntitySmokeFX;
 import net.minecraft.client.renderer.Tessellator;
@@ -130,6 +137,8 @@ import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry.KeyHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -190,6 +199,8 @@ public class ClientProxyCore extends CommonProxyCore
     public static EnumRarity galacticraftItem = EnumHelperClient.addRarity("GCRarity", 9, "Space");
 
     public static Map<String, String> capeMap = new HashMap<String, String>();
+    
+    public static GCCoreInventoryExtended dummyInventory = new GCCoreInventoryExtended();
 
     @Override
     public void preInit(FMLPreInitializationEvent event)
@@ -763,6 +774,10 @@ public class ClientProxyCore extends CommonProxyCore
                 return null;
             }
         }
+        else if (ID == GCCoreConfigManager.idGuiExtendedInventory)
+        {
+            return new GCCoreGuiExtendedInventory(player, dummyInventory);
+        }
         else
         {
             final GCCorePlayerSP playerClient = PlayerUtil.getPlayerBaseClientFromPlayer(player);
@@ -827,5 +842,34 @@ public class ClientProxyCore extends CommonProxyCore
         GL11.glPopMatrix();
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glDisable(GL11.GL_BLEND);
+    }
+
+    public static boolean addTabsNextTick = false;
+    
+    public static void addTabsToInventory (GuiContainer gui)
+    {
+        boolean tConstructLoaded = Loader.isModLoaded("TConstruct");
+        
+        if (!ClientProxyCore.addTabsNextTick && tConstructLoaded)
+        {
+            ClientProxyCore.addTabsNextTick = true;
+            return;
+        }
+        
+        if (gui.getClass() == GuiInventory.class)
+        {
+            int cornerX = gui.guiLeft;
+            int cornerY = (gui.height - gui.ySize) / 2;
+            
+            if (!tConstructLoaded)
+            {
+                GCCoreInventoryTab tab = new GCCoreInventoryTabPlayer(4, cornerX + gui.buttonList.size() * 28, cornerY - 28, 0);
+                tab.enabled = false;
+                gui.buttonList.add(tab);
+            }
+
+            GCCoreInventoryTab tab = new GCCoreInventoryTabExtended(5, cornerX + gui.buttonList.size() * 28, cornerY - 28, 0);
+            gui.buttonList.add(tab);
+        }
     }
 }

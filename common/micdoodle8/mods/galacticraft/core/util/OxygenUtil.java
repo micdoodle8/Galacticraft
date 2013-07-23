@@ -5,7 +5,6 @@ import micdoodle8.mods.galacticraft.api.item.IBreathableArmor;
 import micdoodle8.mods.galacticraft.api.item.IBreathableArmor.EnumGearType;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryPlayer;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenGear;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenMask;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenTank;
@@ -135,7 +134,7 @@ public class OxygenUtil
     {
         boolean missingComponent = false;
 
-        if (((GCCoreInventoryPlayer) player.inventory).tankItemInSlot(0) == null || !OxygenUtil.isItemValidForPlayerTankInv(0, ((GCCoreInventoryPlayer) player.inventory).tankItemInSlot(0)))
+        if (player.extendedInventory.getStackInSlot(0) == null || !OxygenUtil.isItemValidForPlayerTankInv(0, player.extendedInventory.getStackInSlot(0)))
         {
             boolean handled = false;
 
@@ -161,7 +160,7 @@ public class OxygenUtil
             }
         }
 
-        if (((GCCoreInventoryPlayer) player.inventory).tankItemInSlot(1) == null || !OxygenUtil.isItemValidForPlayerTankInv(1, ((GCCoreInventoryPlayer) player.inventory).tankItemInSlot(1)))
+        if (player.extendedInventory.getStackInSlot(1) == null || !OxygenUtil.isItemValidForPlayerTankInv(1, player.extendedInventory.getStackInSlot(1)))
         {
             boolean handled = false;
 
@@ -187,7 +186,7 @@ public class OxygenUtil
             }
         }
 
-        if ((((GCCoreInventoryPlayer) player.inventory).tankItemInSlot(2) == null || !OxygenUtil.isItemValidForPlayerTankInv(2, ((GCCoreInventoryPlayer) player.inventory).tankItemInSlot(2))) && (((GCCoreInventoryPlayer) player.inventory).tankItemInSlot(3) == null || !OxygenUtil.isItemValidForPlayerTankInv(3, ((GCCoreInventoryPlayer) player.inventory).tankItemInSlot(3))))
+        if ((player.extendedInventory.getStackInSlot(2) == null || !OxygenUtil.isItemValidForPlayerTankInv(2, player.extendedInventory.getStackInSlot(2))) && (player.extendedInventory.getStackInSlot(3) == null || !OxygenUtil.isItemValidForPlayerTankInv(3, player.extendedInventory.getStackInSlot(3))))
         {
             boolean handled = false;
 

@@ -134,6 +134,7 @@ public class GCCoreConfigManager
     public static int idGuiCargoLoader;
     public static int idGuiParachest;
     public static int idGuiSolarPanel;
+    public static int idGuiExtendedInventory;
 
     // ACHIEVEMENTS
     public static int idAchievBase;
@@ -284,6 +285,7 @@ public class GCCoreConfigManager
             GCCoreConfigManager.idGuiCargoLoader = GCCoreConfigManager.configuration.get("GUI", "idGuiCargoLoader", 141).getInt(141);
             GCCoreConfigManager.idGuiParachest = GCCoreConfigManager.configuration.get("GUI", "idGuiParachest", 142).getInt(142);
             GCCoreConfigManager.idGuiSolarPanel = GCCoreConfigManager.configuration.get("GUI", "idGuiSolarPanel", 144).getInt(144);
+            GCCoreConfigManager.idGuiExtendedInventory = GCCoreConfigManager.configuration.get("GUI", "idGuiExtendedInventory", 145).getInt(145);
             // 143 - Tier 2 Rocket Bench GUI
 
             GCCoreConfigManager.idSchematicRocketT1 = GCCoreConfigManager.configuration.get("Schematic", "idSchematicRocketT1", 0).getInt(0);

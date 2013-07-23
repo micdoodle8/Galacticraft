@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerAirCompressor;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerAirDistributor;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerAirSealer;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerCargoLoader;
+import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerExtendedInventory;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerFuelLoader;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerParachest;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerRefinery;
@@ -183,6 +184,10 @@ public class CommonProxyCore extends BCGuiHandler implements IGuiHandler
         else if (ID == GCCoreConfigManager.idGuiSolarPanel)
         {
             return new GCCoreContainerSolar(player.inventory, (GCCoreTileEntitySolar) world.getBlockTileEntity(x, y, z));
+        }
+        else if (ID == GCCoreConfigManager.idGuiExtendedInventory)
+        {
+            return new GCCoreContainerExtendedInventory(player, playerBase.extendedInventory);
         }
         else
         {

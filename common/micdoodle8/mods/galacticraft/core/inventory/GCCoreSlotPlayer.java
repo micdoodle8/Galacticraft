@@ -26,15 +26,15 @@ public class GCCoreSlotPlayer extends Slot
     {
         switch (this.getSlotIndex())
         {
-        case 40:
+        case 0:
             return itemstack.getItem() instanceof GCCoreItemOxygenMask;
-        case 41:
+        case 1:
             return itemstack.itemID == GCCoreItems.oxygenGear.itemID;
-        case 42:
+        case 2:
             return itemstack.getItem() instanceof GCCoreItemOxygenTank;
-        case 43:
+        case 3:
             return itemstack.getItem() instanceof GCCoreItemOxygenTank;
-        case 44:
+        case 4:
             return itemstack.getItem() instanceof GCCoreItemParachute;
         }
 

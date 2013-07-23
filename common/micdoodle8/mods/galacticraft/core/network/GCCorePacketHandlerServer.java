@@ -15,7 +15,6 @@ import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityBuggy;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityLander;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerSchematic;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryPlayer;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemParachute;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityParachest;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -128,7 +127,7 @@ public class GCCorePacketHandlerServer implements IPacketHandler
 
                     if (playerBase != null)
                     {
-                        stack2 = ((GCCoreInventoryPlayer) player.inventory).tankItemInSlot(4);
+                        stack2 = playerBase.extendedInventory.getStackInSlot(4);
                     }
 
                     if (stack2 != null && stack2.getItem() instanceof GCCoreItemParachute || playerBase != null && playerBase.launchAttempts > 0)
@@ -405,6 +404,10 @@ public class GCCorePacketHandlerServer implements IPacketHandler
                 new GCCorePacketParachestUpdate();
                 player.playerNetServerHandler.sendPacketToPlayer(GCCorePacketParachestUpdate.buildKeyPacket((GCCoreTileEntityParachest) tile));
             }
+        }
+        else if (packetType == 23)
+        {
+            player.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiExtendedInventory, player.worldObj, 0, 0, 0);
         }
     }
 }
